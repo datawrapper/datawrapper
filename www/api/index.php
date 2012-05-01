@@ -158,6 +158,18 @@ $app->post('/login', function() {
     echo 'You are logged in now.';
 });
 
+/*
+ * returns the currently selected frontend language
+ */
+$app->get('/lang', function() {
+    echo 'en';
+});
+
+$app->put('/lang', function() {
+    echo 'the language has been set to ' . $app->request()->getBody();
+});
+
+
 /**
  * Step 4: Run the Slim application
  *
