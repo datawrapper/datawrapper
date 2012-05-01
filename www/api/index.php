@@ -166,6 +166,7 @@ $app->get('/lang', function() {
 });
 
 $app->put('/lang', function() {
+    global $app;
     echo 'the language has been set to ' . $app->request()->getBody();
 });
 
