@@ -154,6 +154,10 @@ $app->delete('/delete', function () {
     echo 'This is a DELETE route';
 });
 
+$app->post('/login', function() {
+    echo 'You are logged in now.';
+});
+
 /**
  * Step 4: Run the Slim application
  *
