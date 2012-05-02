@@ -1,4 +1,7 @@
 <?php
+
+session_start();
+
 /**
  * Step 1: Require the Slim PHP 5 Framework
  *
@@ -162,11 +165,13 @@ $app->post('/login', function() {
  * returns the currently selected frontend language
  */
 $app->get('/lang', function() {
-    echo 'en';
+    if (isset($_SESSION['dw_lang'])) echo $_SESSION['dw_lang'];
+    else echo "en (default)";
 });
 
 $app->put('/lang', function() {
     global $app;
+    $_SESSION['dw_lang'] = $app->request()->getBody();
     echo 'the language has been set to ' . $app->request()->getBody();
 });
 
