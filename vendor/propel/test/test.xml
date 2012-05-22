@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<project name="Propel Tests" default="phpunit">
+
+	<!--
+		=========================================================================================
+		Global Properties
+		~~~~~~~~~~~~~~~~~
+
+		=========================================================================================
+	-->
+	<property name="tests.dir" value="./tests" />
+	<property name="tests.phpunit.dir" value="." />
+	<property name="tests.reports.dir" value="${tests.phpunit.dir}/reports" />
+	<property name="tests.tools.dir" value="${tests.phpunit.dir}/tools" />
+
+	<property file="./test.properties" />
+
+	<path id="test-tools">
+		<pathelement dir="${tests.tools.dir}" />
+	</path>
+
+	<taskdef name="define" classname="phing.DefineTask" classpathRef="test-tools" />
+
+	<!--
+		=========================================================================================
+		PHPUnit Targets
+		~~~~~~~~~~~~~~~~
+
+		=========================================================================================
+	-->
+
+	<property name="test.class" value="${test}" />
+
+	<resolvepath propertyName="tests.dir.resolved" file="${tests.phpunit.dir}" />
+	<resolvepath propertyName="tests.classes.dir.resolved" file="${tests.phpunit.dir}/testsuite" />
+	<resolvepath propertyName="propel-generator.classes.dir.resolved" file="../generator/lib" />
+	<resolvepath propertyName="propel-runtime.classes.dir.resolved" file="../runtime/lib" />
+
+	<path id="incthis">
+		<pathelement dir="${tests.dir.resolved}" />
+		<pathelement dir="${tests.classes.dir.resolved}" />
+		<pathelement dir="${propel-generator.classes.dir.resolved}" />
+	</path>
+
+	<target name="configure">
+		<echo>-------------------------------------------------</echo>
+		<echo> +++++ Running Propel unit tests</echo>
+		<echo>-------------------------------------------------</echo>
+		<define name="TESTS_BASE_DIR" value="${tests.dir.resolved}" />
+		<adhoc>
+			<![CDATA[
+			// initializes the Propel runtime autoload
+			require_once '${propel-runtime.classes.dir.resolved}/Propel.php';
+		]]>
+		</adhoc>
+
+		<fileset dir="${tests.classes.dir.resolved}" id="relevant-tests">
+			<include name="**/*${test.class}Test.php" />
+		</fileset>
+	</target>
+
+	<includepath classpathRef="incthis" />
+
+	<target name="reports" depends="configure">
+
+		<phpunit haltonerror="false" haltonfailure="false" printsummary="true">
+			<formatter type="xml" usefile="true" todir="${tests.reports.dir}" outfile="test-results.xml" />
+			<formatter type="plain" usefile="false" />
+			<batchtest>
+				<fileset refid="relevant-tests" />
+			</batchtest>
+		</phpunit>
+		<phpunitreport format="noframes" todir="${tests.reports.dir}" infile="${tests.reports.dir}/test-results.xml" styledir="${tests.phpunit.dir}/etc/xsl" />
+	</target>
+
+	<!-- run the insert-sql target of the build.xml unless we are doing this for one specific test -->
+	<target name="initialize" unless="test">
+		<!--
+		<phing phingFile="build.xml" target="insert-sql"/>
+		-->
+		<property name="test.class" value="" override="true" />
+	</target>
+
+	<target name="phpunit" depends="initialize,reports" description="Executes the PHPUnit test suite" />
+
+</project>

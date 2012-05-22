@@ -56,33 +56,32 @@ $app->post('/login', function() {
     echo 'You are logged in now.';
 });
 
-/*
- * returns the currently selected frontend language
- */
+/* returns the currently selected frontend language */
 $app->get('/lang', function() use ($app) {
     $lang = DW::getLanguage();
     $app->render('json-ok.php', array('lang' => $lang));
 });
 
-/*
- * set a new language
- */
+/* set a new language */
 $app->put('/lang', function() use ($app) {
     $data = json_decode($app->request()->getBody());
     DW::setLanguage( $data->lang );
     echo 'the language has been set to ' . $data->lang;
 });
 
-/*
- * load chart meta data
- */
-$app->get('/chart/:id', function($id) use ($app) {
+/* return a list of all charts by the logged user */
+$app->get('/charts/', function() use ($app) {
+
+});
+
+/* load chart meta data */
+$app->get('/charts/:id', function($id) use ($app) {
     $res = DW::getChartMetaData($id);
     $app->render('json-error.php', $res, 200);
 });
 
 /* check user and update chart meta data */
-$app->put('/chart/:id', function($id) use ($app) {
+$app->put('/charts/:id', function($id) use ($app) {
     if (DW::checkLogin()) {
         if (DW::chartIsWritable($id)) {
             $data = json_decode($app->request()->getBody());

@@ -1,0 +1,409 @@
+# Changelog Of The Propel 1.6 Branch #
+
+## 2012-03-27: Version 1.6.5 ##
+
+cd69910 Preparing the 1.6.5 release
+7b799e3 Fixed composer autoloading based on @grEvenX work
+46c3f86 Merge pull request #317 from fzaninotto/fix_model_pager
+14b9ac1 Merge pull request #319 from K-Phoen/feature-versionable-utility-methods
+45e5c3e Merge pull request #315 from ddalmais/feat-explain-plan
+4e72771 Merge pull request #324 from K-Phoen/fix-versioning-inheritance
+9f80f8b Fix: versioning tables with inheritance
+7769218 Add: some usefull methods to Versionable objects
+45f2924 Fix PropelModelPager::getLastPage() return type.
+4cb3e5e Fix CS
+4c8d9ac Use assertArrayHasKey instead of assertTrue
+2e74a91 Fix indentation and useless blank line
+aeeb66d Fix text formatting
+929080d Add unit test on explain plan compute from text query
+0469a2c Format DBMysql code
+460b90f Make ExplainPlanTest independent from Adapter
+377baf9 Add unit test on getExplainPlanQuery
+2420c3e Add DBOracle doExplainPlan function
+d54388a Remove forced database read connection Oracle must write explain plan in PLAN_TABLE
+e4c3de1 Fix phpdoc function title
+f62cba4 Enable to get the connection name in log
+a8c55fd Enable doExplainPlan to take a binded query
+00bcc96 Fix text in ExplainPlanTest
+2f6a4fa Add explain plan unit test on mysql bookstore
+9f16429 Add explain function use adapter specific doExplainPlan function
+f0c8673 Add specific Mysql doExplainPlan function
+03dda95 Add doExplainPlan on DBAdapter Return PropelException Used to return Exception in adapter without override of doExplainPlan function
+b7669e3 Merge pull request #314 from K-Phoen/fix-is-versionning-necessary-fk
+eb303e5 Fix: some isVersionningNecessary() calls can cause fatal errors
+356947a Merge pull request #310 from akalyaev/master
+38738e6 fixed code style (Refs #309)
+3231a76 Fixed propel-gen. Closes #180
+8168f9d Added phpunit.xml.dist file
+769dbf9 fixed ArchivableBehavior archived_at (Refs #309)
+45f418b Marked PGSQL test skipped
+43e4ae7 Fixed reset_tests.sh script
+865511a [gh-152] Revert change that was made to postgres schema parsing that causes regressions and has no tests. Add tests for my case. I do not understand the case that the person who introduced the bug was trying to solve.
+5ebefc3 Fix #282 versionable behavior FK in generated object classes Fix #282 by replacing foreign key references with PrimaryKey
+14a1702 Merge pull request #298 from Langwhich/master
+841448e Fix MySQL quote issue for table options. Closes #301
+2923a3b Merge pull request #291 from fzaninotto/remove_class_default
+ea41817 Remove remaining BasePeer::CLASS_DEFAULT constant.
+9d0251f Merge pull request #297 from vworldat/patch-1
+82894e7 Merge pull request #299 from havvg/master
+292fc7a add test for multiple HAVING conditions
+41f605a Fixes SQL diff command when there is a custom migration table name defined
+f0ac2e9 `<parameter />` tags inside behaviors are optional. The current schema fails when including a behavior like `<behavior name="auto_add_pk" />`.
+0eacc54 Merge pull request #295 from fzaninotto/versionable_namespace
+1f46f36 Add missing namespace declarations in versionable behavior.
+3d5dc3c Merge pull request #287 from fzaninotto/findoneorcreate_exception
+f033016 Merge pull request #288 from fzaninotto/select_paginate
+f2d1cce Merge pull request #289 from fzaninotto/archivable_namespace
+e9051d4 Merge pull request #290 from fzaninotto/diff_with_migrations
+e0c16e2 Remove BasePeer::CLASS_DEFAULT constant.
+0b34a67 Update diff task to fail when uncommitted migrations are found.
+34bd8d6 Add missing namespace declaration in archivable behavior.
+f216a1a Add unit tests for paginate() used together with select()
+891e332 Update the exception thrown by findOneOrCreate() when used with a join.
+209e34d Merge pull request #279 from grandbora/fixSelectWithPeerConstant
+2f9c987 fixed and tested
+5850dce correct way of checking if a formatter was set
+7afba56 code standard
+b4727af fixing issue #248 allowing the use of custom PropelFormatter with select
+49416d3 Fixed CS/trailing whitespaces
+a8145ce Extended the clear method of the generated Active Record objects so that when dealing with object/array columns, the _unserialized fields will be cleared as well.
+3ddd790 Fixed test showing a warning of undefined key offsets because numerically indexed arrays after cast to objects cannot be accessed by numeric property.
+33acfaa Added failing tests for object and array type columns, caused by object reuse via the PropelOnDemandFormatter.
+af6994e Merge pull request #276 from havvg/patch-1
+84df995 add test for class targets build
+a9d972e make class targets selectable
+e95a5d4 Merge pull request #268 from cedriclombardot/fix-count-with-select-from-select
+ae7bdfc Merge pull request #270 from cedriclombardot/fix-issue-206
+e3f5081 Fix cs
+46dffc8 Fix cs for testSubQueryCount()
+8cc0cb3 Merge pull request #269 from jaugustin/patch-1
+f23575d Fix findPkSimple() uses wrong key for InstancePool (QueryBuilder) #206
+0383d9c Provide unit test for doCount with subqueries
+bdb2e32 this fix an issue with the propelorm/propelbundle#62
+7025b10 Mark as complex queries look like SELECT * FROM (SELECT * FROM book) as b to fix bug in doCount()
+8184e26 Bumped version to 1.6.5-dev
+
+## 2012-01-16: Version 1.6.4 ##
+
+[f8fdf43] Preparing the 1.6.4 release
+[6984ed0] Merged PR #177. Fixes #90
+[1acaf0c] Fix #90 PropelOnDemandFormatter formatter broken when using single table inheritance
+[aa7870b] [aggregate] Fix behavior when used with namespaces.
+[843a7fb] [SchemaValidator] Schema validation fails for equal nest relations.
+[65da18e] Added 'IF EXISTS' on 'DROP' clauses for PostgreSQL
+[176242b] restoring the ability of reverse-engineering views
+[2280ccb] add tests for Graphviz DOT generation
+[3210ec9] mark FK with PK if both apply to column
+[582d79b] Add unit test for 08e597835dd484e8b894f2ca1f56f053d3a4cfdb.
+[08e5978] Add to phpName parameter to ArchivableBehavior.
+[01994f2] Update test/testsuite/runtime/adapter/DBAdapterTest.php
+[a6421e8] Correction to createSelectSqlPart at & after line 441 - it tries to look for a space between the rightmost '(' and the rightmost '.' after it.
+[f93fff8] [Generator][I18nBehavior] fix setLocale when using custom locale_column fixes #223
+[4eb6602] Revert "Fixed Ymd format for PropelDateTime::newInstance"
+[1b97344] Revert "fix isTimestamp."
+[d0813bf] fix PropelQuickBuilder-dependent tests after SQLite DROP TABLE change
+[87f30a6] use DROP TABLE IF EXISTS with SQLite
+[0671d6b] Fixes #218, plus some typo fixes.
+[9d8e12a] fixes #135
+[059df0a] empty test case
+[6c8e974] typo fix (enterface -> interface)
+[3d753de] add extensible ability to versionable
+[18bc846] test typo fix
+[5b0e107] Fixed missing typehint on crossFK methods
+[c47f9fb] add raw sql capability to conditions
+[cc29263] add namespace to check for duplicate table phpName
+[68fe060] fixed versionnable infinite loop when no diff.
+[47e9a2c] add tests to versionnable behavior whit foreign key
+[047fa1e] [Generator] Fixed undefined variable. Fixes #202
+[5b6dda3] Updated phpDoc for populateFromVersion Initialized variable in function declaration instead of the beginning of the function
+[6704737] Fixed so versionable behavior loads correct relations when populating from a an older version. See https://github.com/propelorm/Propel/issues/198 for more info about this issue.
+[5ce2674] Allowed FQCN with namespaces in inheritance keys (working solution). Fixes #135
+[eab615f] Revert "Allowed FQCN with namespaces in inheritance keys. Fixes #135"
+[9e279b6] Prevent notice error if no parameter found. Fixes #190
+[c43415c] Allowed FQCN with namespaces in inheritance keys. Fixes #135
+[af11116] [Generator] fix concrete inheritance deep copy, fix also one to one deep copy, fixes #192
+[7a80f9a] [Generator] fix first part #192, remove pk value when copy object with single PK not autoincremented
+[12b2ddd] Updated composer file
+[af5f683] Fixed a unit test in ModelCriteria
+[0f3eee9] add BasePeer in declare classes, because when you use query_cache behavior with namespace, the BasePeer is not found
+[8ba9370] Fix archivable behavior when used with unique index.
+[16e3554] Fix bug that caused new I18n rows to not return a valid object causing a fatal error.
+[d222741] Put `ModelCriteria` on par with `Criteria` for raw conditions.
+[c89474c] Remove just added methods.
+[1191479] Add the ability to create a raw Criterion to all Criteria methods
+[0af997d] Introducing Criteria::RAW operator (WIP)
+[f720e60] [Generator] [Builder] Fix abstract single table inheritance, refs #159
+[cb71e64] [behavior] [delegate] Fixed behavior with namespaces
+[5423afb] [Generator] [QueryBuilder] fix single table inheritance findPk
+[a8d80bd] Fix archivable behavior when archive table is in another database. There is a nasty bug causing the `archive()` method to use the wrong connection when called after `delete()` (this is because we want to enclose the two operations in a transaction when they operate on the same database) so we need to remove the connection parameter in case the user uses cross-databases archives. A unit test for this case is quite heavy to set up (two more DBs to create), but I have tested it locally and it is OK.
+[f2e260e] Fix regression in 1.6.3, where exception is not caught on namespaced objects. Closes #165.
+[7130d13] Fix BaseObject phpDoc. Closes #170.
+[2b8accf] Do not specify -dev in composer.json
+[2d66201] fix findByXXXAndYYY() when one of the parameters is a relation. Refs #158. Based on a patch by @maikg
+[6cfab63] Fix sql_type regex to allow for values like enum('_self','_blank').
+[efa1c93] fixes #145 : isCrossRef attribute can now be set to false, with tests
+[87c89c6] add test for isCrossRef attribute
+[0204345] add isCrossRef attribute to the TableMap object, set the right value in the TableMapBuilder
+[1b28424] Bumped version to 1.6.4-dev
+
+## 2011-10-13: Version 1.6.3 ##
+
+* [54b1941] [generator] Fix typos in new buildtime validation service
+* [8663103] [generator] Introducing buildtime schema validation. All schema validation cannot be done in XSD. For more complex validations, some PHP processing is required. This patch moves validation logic into a simple and independent validation service. It processes the whole schema in order to output all error messages at once. Closes #3. Closes #96.
+* [a20ad17] Added a unit test to cover changes in commit e47f63b8f224b0b85b91f86f414f223e023ff73c
+* [275174c] Fix Behaviors adding a table when they are added as database behavior. Closes #136.
+* [dbb0d4a] [enum type] Fix isModified() returns true when setting the existing value on a just hydrated object. Closes #139.
+* [e47f63b] Fixed ModelCriteria::replaceNames() to handle namespaced model classes
+* [83f8c5f] Properly define non-integer single PKs when using SQLite.
+* [7a715cd] unit testing fo isTimestamp
+* [4b330e8] fix isTimestamp.
+* [31850e6] Bugfix: Syntaxerror if $archivedAtColumn==true
+* [7b8f7b0] Fix indentation in generated Query classes. The QueryBuilder was using spaces instead of tabs to indent code. This is now fixed.
+* [20fc5ac] Fix getId() in generated doInsert() for Postgresql
+* [8c5d966] Fixed CS
+* [cd0f9e2] Switched identifier escaping at buildtime to off by default. This harmonizes the buildtime and runtime settings, and removes the need to set disableidentifierquoting to true in build.properties for Postgresql. Make sure to rebuild your model and SQL after the update
+* [59a8828] adjust AR generated code formatting
+* [7a2a059] Fixed #118, #119
+* [faf7305] Fixed trailing whitespaces due to PR #116
+* [53a9ed2] [turbo] Add explicit comment to generated code
+* [5ecdda8] [turbo] Final code formatting glitches
+* [ed60055] [turbo] Fix doInsert for PKs using sequences
+* [36c78f6] Implemented One-To-Many setters.
+* [3dc5e3f] Fixed commit 5b1d911fee5ae0ef6321880bc7861dc5227cea45
+* [59a2abd] [turbo] Move logic for pk retrieval after insertion to buildtime
+* [39e0456] Fix bug that would cause a transaction to leak if an Exception that isn't PropelException is thrown during preSave, preInsert, preUpdate, doSave, postInsert, postUpdate, postSave.
+* [9732e08] Fixed builder (setter collection)
+* [bd41e0d] [turbo] Align the syntax of recent additions to ObjectBuilder. Passing the script by reference is a bad habit, but not doing so for only a few methods is confusing. In the future, if a refactoring of the builders occurs, let us not reproduce that mistake
+* [3437149] [turbo behavior] Move the doInsert() acceleration to the core. And now that there is nothing in the turbo behavior, it is removed. doInsert() acceleration is disabled on Mssql platforms, due to very exotic bindings in adapter classes
+* [14bcdaf] [turbo behavior] Bugfix for namespaced classes and query_cache behavior
+* [5bd66f6] [turbo behavior] Move the findPk() acceleration to the core. The behavior now only accelerates doInsert() (until we find a way to marge this into the core, too).
+* [d231655] Revert "Fixed the name of generated SQL files if package contains slashes"
+* [01b03f7] [turbo behavior] Use the correct binding code in accelerated findPk(). This is to accomodate cases where PK columns have special bindings (like timestamps... ot blobs, who knows). I took advantage of this to refactor the custom binding code in the adapters.
+* [977dcd0] [turbo behavior] Refactor ModelCriteria::find(), findOne(), and findPk() to allow preSelect() hook to be called just like the other model hooks. This refactoring allows the turbo behavior to accelerate findPk() on every model, even those using a preSelect() hook. It also harmonizes the AR and Query apis: just like ActiveRecord::save() calls doInsert() or doUpdate(), ActiveQuery::find() calls doSelect(), and ActiveQuery::count() calls doCount().
+* [a9a2f0e] [turbo behavior] slightly better way to have binding type and value preparation depending on the platform
+* [9b0690f] [turbo behavior] Change insert acceleration strategy to allow exotic bindings. This is necessary to let Oracle, for instance, use bindParam() instead of bindValue() for CLOBs.
+* [2339b9d] Fixed commit 46d928f0a8f8e92484d9a031d986d0cc05c100a6
+* [e94b626] fix coding standard
+* [25b86b1] [turbo behavior] Make each acceleration optional
+* [46d928f] the semicolons are missing between sql request in $statementsToInsert
+* [f38f6d0] [turbo behavior] Accelerate save() queries
+* [489353b] [turbo behavior] refactored generated ActiveRecord::doSave() to make it easier to extend (end)
+* [2ce3ef7] [turbo behavior] refactor generated ActiveRecord::doSave() to make it easier to extend (WIP)
+* [970cf4a] Fixed logical error on save() for setter collections.
+* [5b1d911] Fixed the behavior of 'disconnectedEscapeText()' for MySQL platform. Fixes #108
+* [77a166c] Added missing declared class. Refs #103.
+* [d22d141] Removed useless function (setter collection)
+* [b447f15] Added a new protected method 'doAdd*()'
+* [9b44292] Fixed commit f267fdff5979a04b0a43466bc2dc89935831210d
+* [abe38f2] [turbo behavior] Use correct binding for PK search. Backed by unit tests.
+* [f72df02] Added more unit tests for the 'diff' method
+* [f267fdf] Avoid too many deletes for scheduled for deletion objects (collection setter)
+* [3e08824] Kept BC with PHP version under 5.3 (lcfirst() hack)
+* [f442b35] Moved the diff logic to a better place (in PropelCollection)
+* [fca956c] Added insert SQL ability to the PropelSqlManager
+* [e4c37ca] Added more unit tests for the collection setter
+* [9e6ad1d] Fixed setter signature
+* [5eda115] Refactored collection setters thanks to fzaninotto
+* [51729f7] Added more unit tests for the collection setter
+* [594708e] Added auto save for related objects after using the collection setter (N-N)
+* [9efdf58] Passed the connection to the setter
+* [8e657e0] Added more tests for collection setter
+* [c6db541] Added a workaround for collection setters
+* [293a8b8] Added unit tests to bootstrap the work around collection setters
+* [02f87a1] Fixed indentation
+* [398c030] Added convenient methods to the Table class
+* [6a7c4d1] [turbo behavior] Accelerate simple findPk() queries
+* [9d9b246] Moved logic for the new build SQL task in a dedicated class.
+* [31c5462] fix generate sql file when there is multiple schema.xml for the same connection
+* [b5e5602] Make XSD validation for sqlType less restrictive. Fixes #97.
+* [8dc4be5] Added a whitelist for charsets in MySQL adapter and PHP < 5.3.6.
+* [5a40249] Fixed deprecated method since 5.3.0
+* [fd80913] Removed WHATS_NEW file
+* [abd6c76] Fixed INSTALL
+* [4ca8cd6] Fixed maintainer for PEAR package task
+* [c1febde] Bumped version to 1.6.3-dev
+
+## 2011-09-14: Version 1.6.2 ##
+
+* [cb2009a] [delegate behavior] Fix incorrect handling of tablePrefix Refs #63.
+* [9aef5f6] [i18n] Added few tests to prove there is no bug with relations.
+* [4cf9dc7] Fixed #93
+* [65139a1] [PropelSQLTask] Fixed SQL filenames
+* [b27fef5] Revert "Fixed possibility issue on SQL filenames based on package values"
+* [0183944] fixed nested _if using a proxy
+* [26fc546] removed underscore for private methods
+* [4f6c495] fixed typo
+* [c0ba5c5] fixed nested fluent condition
+* [0202db4] [Tests] Preparing PHPUnit 3.6.0 release.
+* [bffd323] Fixed failing unit tests complaining about an "Undefined index: datasources" when running some tests individually
+* [6a0e030] Fixed version column needs to be required for mssql. The `versionable` behavior adds the version table by copying the main table, which already contains the version column. The problem is, as the version column becomes part of the PK of the version table, it must be required. Only MSSQL seems to complay about this, but it must be fixed anyway.
+* [7c1d1b4] Fixed possibility issue on SQL filenames based on package values
+* [d9adc1f] Fix issue with empty migration SQL generated when foreign key has skipSql
+* [0e2463c] Added composer.json file
+* [f46b54a] Fixed the name of generated SQL files if package contains slashes
+* [6c2b8ef] Fix incorrectly generated migration SQL for pgsql if existing default value is removed from schema
+* [672eb1f] Fixed commit 5c77b2a1e3efdab03e93
+* [5c77b2a] Allow configuration of usePrefix and includeLazyLoadColumns when exporting a PropelCollection
+* [3bc2e78] Added usage of connection in PropelModelPager. Fixes #74
+* [ef1ef22] Updated license
+* [691b648] Removed the docs/ directory as the documentation has its own repository
+* [d4e9a51] should be `phpunit`
+* [f581bae] fixed #70 : setByPosition method in enum
+* [3269069] Fix test documentation
+* [f6b6403] default sh shell is no more bash in debian.
+* [d92e3a7] [archivable behavior] Added more tests to cover methods added in 9f7a0670184da5600d6abc4c79c82737f6fbad68
+* [eb4caf3] [archivable behavior] Fixed minor typos
+* [4c10206] Allowed to use '/' in package values
+* [c23b6cb] [archivable behavior] Fixed code formatting issues
+* [5e58668] [archivable behavior] Refactored method generation to use templates
+* [9f7a067] [archivable behavior] Further improved the ActiveRecord API
+* [2de49d5] [archivable behavior] Fixed typos in the documentation
+* [3a3c5f8] [archivable behavior] Added documentation and deprecated soft_delete
+* [97d383c] [archivable behavior] Fixed the archiveOnDelete implementation when the addHooks build property is turned off
+* [ca6f957] [archivable behavior] Made the preDelete hook play well with other preDelete hooks. Previous hooks or behaviors may interrupt the course of the delete() method. This behavior (and other behaviors implementing the preDelete hook) must only execute the code if the $ret value is true.
+* [05633de] [archivable behavior] Refactored archiveOnDelete to avoid the need for static attributes
+* [328a32b] [archivable behavior] Fixed generated ActiveRecord::delete() behaves differently when addHooks build property is disabled
+* [2dc16dc] [archivable behavior] Refactored ActiveRecord and ActiveQuery APIs to harmonize them
+* [a7e00af] [archivable behavior] Implemented archiving on `ActiveQuery::update()` and `::delete()`
+* [3fd6823] [archivable behavior] Fixed a rare bug in `ModelCriteria::update()` causing "undefined index: datasources" error message
+* [b818915] [archivable behavior] Added generated ActiveQuery::archive() method
+* [f1a163d] [archivable behavior] split ArchivableBehavior class to make it more readable and ready for future additions
+* [5d6e4b0] [archivable behavior] Added the ability to use a cutom archive class.
+* [5088e39] [archivable behavior] Added generated ActiveRecord::populateFromArchive() method
+* [182af0c] [archivable behavior] Initial commit
+* [ce59915] [Tests] More tests for MysqlSchemaParser
+* [20d407a] Changed visibility to be less 'open'. Related commit: 381e378cb17b388765dfbb5a3241dacbff449323
+* [dd10eec] [Tests] fixed script to handle reverse fixtures
+* [d64741a] Fixed the test file's syntax
+* [9584188] Fixed unit test
+* [8b20446] used 'SHOW FULL TABLES' instead of the previous one to handle multiple database
+* [acccc26] Excluded read only tables from being counted
+* [1cd82d6] handle views when using diff command
+* [7f89e83] Added unit test for MySQL schema parser
+* [8470dba] Added fixtures for MySQL reverse unit tests
+* [f75334c] Changed prototype to use the interface instead of an implementation class
+* [381e378] Changed visibility of simpleXmlToArray method in PropelConvertConfTask in order to use it in tests
+* [54ce432] Removed stray testing stuff that got left behind
+* [db4e041] FIX: Check that platform exists before using it
+* [be563e8] Fixed false positive in PostgreSQL migrations where generator would generate varchar-fields without explicit size as VARCHAR(255)
+* [7c84b79] Fixed postDelete hook in soft delete behavior
+* [39e3709] [SoftDeleteBehavior] Fixed missing post hook call
+* [8fc39e1] Added test to prove post hook is not fired on soft deleted objects.
+* [c5c30e0] set sequence name configurable
+* [082d27a] Added strict assertions
+* [1ad20fb] added unit-test for Table::appendXml (namespace & package attributes)
+* [3addf99] serialize namespace too
+* [76a3841] store table`s package name in Xml
+* [ff673c0] Added a tiny shell script to reset test fixtures
+* [3d6d4bd] fixed naming and default values in unit test
+* [67a77bf] Fixed bug in PhpNameGenerator. The default name convertor for table and column names is NameGenerator::CONV_METHOD_UNDERSCORE. This method has a slight bug resulting in an incorrect phpName for table using "_0" as a prefix:
+* [04fe003] fix usage of undefined variable
+* [ceb610f] `level` is reserved keywork in oracle
+* [57a0f2c] pass vendor`s type to VentorInfo::__construct in XMLElement::getVendorInfoForType()
+* [a3aaa76] detect autoincrement via sequences
+* [7c84546] [delegate behavior] Documented the fact that, finally, delegate behavior can handle inheritance over several levels
+* [8290ed5] [delegate behavior] Changed class table inheritance examples to show that the behavior is much more powerful than previously thought. Refs #40
+* [1f4ce85] Fixed MySQL type for a BOOLEAN
+* [5e7d765] [delegate behavior] Fixed typo in behavior documentation
+* [4ee22c0] [delegate behavior] Fixed coding standards
+* [4b327c6] [delegate behavior] Fixed wrong file permissions (old samba config)
+* [fe2ce45] [delegate behavior] Throwing exception at buildtime if the delegate table has a one-to-many relationship with the main table
+* [87ed930] [delegate behavior] provided support for delegation by way of a many-to-one relationship
+* [9583e6b] [delegate behavior] Refactoretests to leave less trace
+* [197b533] documented the delegate behavior
+* [ca09d1d] Introducing Delegate behavior, for class table inheritance fans
+* [a78212c] Fixed bad formatting in generated query classes
+* [184e63f] Removed __call() from generted ActiveRecord classes.
+* [0e454c5] Avoid getClassname() to trigger registered autoloaders for nothing.
+* [74cd5eb] Added the ability to define full qualified classnames in build properties.
+* [e1662d0] Reverted change on the TINYINT default size (MysqlSchemaParser)
+* [a2965d4] Fixed CS
+* [9521482] Fixed TINYINT interpretation in MysqlSchemaParser.
+* [e939c2e] Improved generated code for findOneOrCreate() method with ENUM and ARRAY types.
+* [594d44e] Added missing link to the StandardEnglishPluralizer class
+* [61deedb] Added more unit tests for the StandardEnglishPluralizer + Fixed special cases.
+* [5288e48] Improved the StandardEnglishPluralizer. Fixed issue #4
+* [22159b2] Fixed double left-join & "with" issue when a third table is joined and "withed"
+* [ec41624] Fixed phpdoc in parser/
+* [73a7d21] Fixed phpdoc in validator/
+* [10f5dd5] Added unit tests for issue #35 and PR #37
+* [9e62f3c] One-line fix for issue #35 (https://github.com/propelorm/Propel/issues/35)
+* [e84f5fa] Set limit parameter to 0 (like intially done) if clear() is called
+* [b377ebf] Added unit tests for Criteria methods: clear() and limit()
+* [5ce8fa7] Remove unneeded @returns, Fix @param order
+* [176c68f] Fix typo on docblock
+* [425b0f2] Improve Behavior doc blocks
+* [ffd8192] fixed unit test to check identity rather than equality
+* [f5f9d9a] Made generated addRefFk method return the current AR object to allow fluent interface
+* [13611a2] Fixed Typo in the doc mixing ModelCriteria::addSelectQuery() with ModelCriteria::getSelectQuery()
+* [aaff75d] Removed trailing whitespace, unwanted tabs/spaces and so on...
+* [698ce9b] Improved the patch for MySQL driver (possibly subject to sql injections)
+* [54ef274] Added a new unit tests for DBMySQL class
+* [cd547f2] MySQL Driver possibly subject to sql injections with PDO::quote()
+* [cd99264] Fixed wrong peer name in soft_delete behaviour with classPrefix
+* [2d0f101] Fixed Ymd format for PropelDateTime::newInstance
+* [b006238] Fixed permissions for scripts
+* [3e13b29] Fixed tests for PropelDateTime::newInstance
+* [aa0393f] Add support for Ymd format for PropelDateTime::newInstance
+* [35822d7] Fixed permissions for both directories and files.
+* [76fb103] Fixed scandir warning if no valid directory given.
+* [5ade9ff] added more generated files from tests to .gitignore
+* [5c5816e] Added .gitignore to ignore generated files for unit tests
+* [23270ef] Added a unit test for the previous commit
+* [e86b3c3] Always sort columns when comparing composite foreign-keys
+* [3dcd7b2] reproduced default isModified() logic for other mutators
+* [e1ed026] Fix for ActiveRecord::isModified() in limit cases with default values
+* [5f2ff4e] added missing validator in autoload map
+* [7164161] Remove rewind on CLOB to fixe warning
+* [4eb059d] Fixe CS + restore BLOB insert + Add rewind before CLOB bindParam
+* [e693f62] Fixed Error in logic of _if/_elseif/_else. Based on a patch by lvu, updated to Propel standards. Closes #12
+* [6f536c6] Fixe Oracle CLOB save by using PDO bindParam
+* [ea8f4c8] [1.6] Fixed failing test after updating test schema (refs #1319)
+* [258799f] [1.6] Fixed undefined method error when calling with() on a ModelCriteria having a relation with a special name (closes #1477)
+* [9eac2ed] [1.6] Fixed logging of methods (refs #1468)
+* [94193c6] [1.6] Removed old configuration test (refs #1468)
+* [af7ac9c] [1.6] fixed regression in PropelConfiguration when setting an array value via setParameter (closes #1468)
+* [ff2b8c1] [1.6] Fixed notice about undefined hydrationChain when using joinWith() twice and the middle entity is null (closes #1319)
+* [0cee299] [1.6] Removed unused logging configuration setting (closes #1453)
+* [a5ab232] [1.6] Fixed Conflict between concrete inheritance and namespaces (closes #1464)
+* [eba3b40] [1.6] Fixed phpDoc for Criteria::addAscendingOrderByColumn() (patch by bertjan) (closes #1454)
+* [c6b53c9] [1.6] Removed many false positive in migrations (closes #1451)
+* [1d828e5] [1.6] Fixed issue with autoincrement pks when calling diff task in migrations (closes #1456)
+* [942efab] [1.6] Switched to dev version number
+
+## 2011-06-14: Version 1.6.1 ##
+
+* [2318] Fixed handling of custom sqlType in migrations (closes #1348)
+* [2317] fixed `PropelObjectCollection::populateRelation()` when using classPrefix or namespaces (based on a patch by mattleff) (closes #1402)
+* [2316] Made `PropelObjectCollection::populateRelation()` initialize empty collections on entities having no related entity in a one-to-many relationship (closes #1182)
+* [2315] Added all supported MySQL table options (closes #1447)
+* [2314] Fixed phpDoc of generated ActiveRecord getter and setter methods for nested set models
+* [2313] Fixed autoloading of namespaced models when using `useQuery()` (closes #1444)
+* [2312] Fixed formatting issues in generated TableMap classes
+* [2311] Fixed location of FKeys in PostgreSQL migrations (closes #1411)
+* [2310] Fixed handling of empty string values on boolean columns for ActiveRecord mutator and ActiveQuery filter (closes #1437)
+* [2309] fixed inconsistent EOL types in builder classes (closes #1436)
+* [2308] fixed inconsistent EOL types in builder classes (closes #1436)
+* [2307] Fixed "Nesting level too deep" error when similar schemas are used (patch from gepo) (closes #1426)
+* [2306] Improved runtime/exception phpDoc formatting (patch by kupokomapa) (closes #1429)
+* [2305] Improved runtime/logger phpDoc formatting (patch by kupokomapa) (closes #1428)
+* [2304] Improved runtime/connection phpDoc blocks (based on a patch by kupokomapa) (closes #1425)
+* [2303] Added `ModelCriteria::getSelect()` (closes #1412)
+* [2302] Added `PropelOnDemandCollection::toArray()` (closes #1415)
+* [2301] Fixed subquery bug with select (closes #1417)
+* [2300] Added test to prove subquery bug with select (refs #1417)
+* [2299] Fixed `PropelObjectCollection` and `PropelArrayCollection` would throw a fatal error when calling save() in conjunction with readOnly entities (closes #1422)
+* [2298] Improved runtime/config phpDoc blocks (patch by kupokomapa) (closes #1424)
+* [2297] Improved runtime/collections phpDoc blocks (based on a patch by kupokomapa) (closes #1423)
+* [2296] Fixed coding standards in DBAdapter (closes #1421)
+* [2295] Improved runtime/adapter phpDoc blocks (patch by kupokomapa) (refs #1421)
+* [2294] Fixed soft delete via Peer class executes a wrong query (closes #1405)
+* [2293] Fixed `forceDelete()` enables soft delete behavior even when disabled (closes #1404)
+* [2292] Fixed tests under PHP 5.2 (closes #1388)
+* [2291] Fixed minor formatting issue in generated Peer class
+* [2290] Fixed generated column filters for enum columns when passed an arry (closes #1381)
+* [2289] Fixed strict standards error in soft delete behavior (closes #1398)
+* [2288] Added missing `findRoots()` method to nested_set behavior with scope (closes #1397)
+* [2287] Fixed bad binding with SQLSRV adapter (refs #1199) (closes #1400)
+* [2286] Fixed DATE column with defaultValue of 0000-00-00 generates fatal (closes #1389)
+* [2285] Fixed typo in README

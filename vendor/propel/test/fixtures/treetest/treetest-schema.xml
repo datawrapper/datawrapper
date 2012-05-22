@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<database name="treetest" defaultIdMethod="none">
+
+  <table name="test" treeMode="MaterializedPath" description="Test">
+    <column
+      name="npath"
+      required="true"
+      nodeKey="true"
+      nodeKeySep="."
+      primaryKey="true"
+      type="VARCHAR"
+      size="80"
+      description="Node Path"/>
+    <column
+      name="label"
+      required="true"
+      type="VARCHAR"
+      size="10"
+      description="Label"/>
+    <unique name="pk">
+      <unique-column name="label"/>
+    </unique>
+    <unique name="ck">
+      <unique-column name="npath"/>
+    </unique>
+  </table>
+
+</database>

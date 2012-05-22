@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<database name="foo">
+	<table name="bar1">
+		<column name="id" primaryKey="true" type="INTEGER" autoIncrement="true"/>
+	</table>
+	<external-schema filename="./innerSchema.xml" />
+</database>

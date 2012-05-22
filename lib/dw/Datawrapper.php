@@ -13,12 +13,17 @@ class DW {
 
     protected static $datawrapper;
 
-    public static function init() {
-        self::$datawrapper = new Datawrapper();
+    public static function getInstance() {
+        if (self::$datawrapper === null) self::$datawrapper = new Datawrapper();
+        return self::$datawrapper;
     }
 
-    public static function getInstance() {
-        return isset(self::$datawrapper) ? self::$datawrapper : null;
+    /**
+     * creates a new instance
+     */
+    function __construct() {
+        // initialize database
+
     }
 
 

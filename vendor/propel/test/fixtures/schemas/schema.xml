@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<database name="bookstore-schemas" defaultIdMethod="native"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../generator/resources/xsd/database.xsd"
+  schema="bookstore_schemas">
+
+	<table name="book" description="Book Table">
+		<column name="id" required="true" primaryKey="true" autoIncrement="true" type="INTEGER" description="Book Id" />
+		<column name="title" type="VARCHAR" required="true" description="Book Title" primaryString="true" />
+		<column name="isbn" required="true" type="VARCHAR" size="24" phpName="ISBN" description="ISBN Number" />
+		<column name="price" required="false" type="FLOAT" description="Price of the book." />
+		<validator column="title" translate="none">
+			<rule name="unique" message="Book title already in database." />
+			<rule name="minLength" value="10" message="Book title must be more than ${value} characters long." />
+			<rule name="maxLength" value="255" message="Book title must not be longer than ${value} characters." />
+		</validator>
+		<validator column="isbn" translate="none">
+			<rule name="class" class="bookstore.validator.ISBNValidator" message="ISBN does not validate!"/>
+		</validator>
+	</table>
+
+	<!--  Test some custom php column types. -->
+	<table name="bookstore">
+		<column name="id" type="INTEGER" primaryKey="true" autoIncrement="true" description="Book store ID number" />
+		<column name="store_name" type="VARCHAR" size="50" required="true" />
+		<column name="location" type="VARCHAR" size="100" />
+		<column name="population_served" type="BIGINT" />
+		<column name="total_books" type="INTEGER" />
+		<column name="store_open_time" type="TIME" />
+		<column name="website" type="VARCHAR" size="255"/>
+		<validator column="website">
+			<rule name="match" value="/^((ht|f)tp(s?)\:\/\/[a-zA-Z0-9\-\._]+(\.[a-zA-Z0-9\-\._]+){2,}(\/?)([a-zA-Z0-9\-\.\?\,'\/\\\+&amp;amp;%\$#_]*)?$|$)/" message="wrong url"/>
+		</validator>
+		<behavior name="aggregate_column">
+			<parameter name="name" value="total_contest_entries" />
+			<parameter name="expression" value="COUNT(customer_id)" />
+			<parameter name="foreign_table" value="bookstore_contest_entry" />
+			<parameter name="foreign_schema" value="contest" />
+		</behavior>
+	</table>
+
+	<table name="customer" allowPkInsert="true">
+		<column name="id" type="INTEGER" primaryKey="true" autoIncrement="true" />
+		<column name="first_contest" type="INTEGER"/>
+		<column name="second_contest" type="INTEGER"/>
+		<column name="name" type="VARCHAR" size="255" />
+		<column name="join_date" type="DATE" />
+		<foreign-key foreignTable="bookstore_contest" foreignSchema="contest">
+			<reference local="first_contest" foreign="id"/>
+		</foreign-key>
+		<foreign-key foreignTable="bookstore_contest" foreignSchema="contest">
+			<reference local="second_contest" foreign="id"/>
+		</foreign-key>
+	</table>
+
+	<!-- Test one-to-one (1:1) relationship -->
+	<table name="customer_account" reloadOnInsert="true" reloadOnUpdate="true" description="A table that represents a bookstore customer's account.">
+		<column name="customer_id" type="INTEGER" primaryKey="true" description="Primary key for the account ..." />
+		<column name="enabled" type="BOOLEAN" default="true" />
+		<column name="not_enabled" type="BOOLEAN" default="false" />
+		<column name="created" type="TIMESTAMP" defaultExpr="CURRENT_TIMESTAMP" />
+		<foreign-key foreignTable="customer" onDelete="cascade">
+			<reference local="customer_id" foreign="id" />
+		</foreign-key>
+	</table>
+
+	<!-- Test Views (read-only tables) -->
+	<table name="contest_view" readOnly="true" schema="contest">
+		<column name="id" type="INTEGER" primaryKey="true" autoIncrement="true" />
+		<column name="name" type="VARCHAR" size="100" />
+	</table>
+
+	<table name="bookstore_contest" schema="contest">
+		<column name="id" type="INTEGER" primaryKey="true" autoIncrement="true" />
+		<column name="bookstore_id" type="INTEGER" />
+		<column name="prize_book_id" type="INTEGER" />
+		<foreign-key foreignTable="bookstore" foreignSchema="bookstore_schemas" onDelete="cascade">
+			<reference local="bookstore_id" foreign="id" />
+		</foreign-key>
+	</table>
+
+	<table name="second_hand_book" schema="second_hand_books">
+		<column name="age" type="INTEGER" />
+		<behavior name="concrete_inheritance">
+			<parameter name="extends" value="book" />
+			<parameter name="schema" value="bookstore_schemas" />
+		</behavior>
+	</table>
+
+
+	<table name="bookstore_contest_entry" schema="contest" reloadOnInsert="true">
+		<column name="bookstore_id" type="INTEGER" primaryKey="true" />
+		<column name="contest_id" type="INTEGER" primaryKey="true" />
+		<column name="customer_id" type="INTEGER" primaryKey="true" />
+		<column name="entry_date" type="TIMESTAMP" defaultExpr="CURRENT_TIMESTAMP" />
+		<foreign-key foreignTable="bookstore" foreignSchema="bookstore_schemas" onDelete="cascade">
+			<reference local="bookstore_id" foreign="id" />
+		</foreign-key>
+		<foreign-key foreignTable="customer" foreignSchema="bookstore_schemas" onDelete="cascade">
+			<reference local="customer_id" foreign="id" />
+		</foreign-key>
+		<foreign-key foreignTable="bookstore_contest" onDelete="cascade">
+			<reference local="bookstore_id" foreign="bookstore_id" />
+			<reference local="contest_id" foreign="id" />
+		</foreign-key>
+	</table>
+
+</database>

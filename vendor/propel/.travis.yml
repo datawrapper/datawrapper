@@ -1,0 +1,20 @@
+language: php
+
+php:
+  - 5.3
+  - 5.4
+
+env:
+  - DB=mysql DB_USER=root
+
+before_script:
+  # MySQL
+  - sh -c "if [ '$DB' = 'mysql' ]; then mysql -e 'create database test; create schema bookstore_schemas; create schema contest; create schema second_hand_books; create database reverse_bookstore;'; fi"
+
+  # Composer
+  - wget http://getcomposer.org/composer.phar
+  - php composer.phar install
+
+  - ./test/reset_tests.sh
+
+script: phpunit

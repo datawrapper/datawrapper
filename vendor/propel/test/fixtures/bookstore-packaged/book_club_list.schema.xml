@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<!DOCTYPE database SYSTEM "../dtd/database.dtd">
+
+<database package="addon.club" name="bookstore" defaultIdMethod="native">
+
+  <!-- this table exists to test the many-to-many -->
+  <table name="book_club_list" description="Reading list for a book club.">
+	<behavior name="auto_add_pk" />
+	<column
+	  name="group_leader"
+	  required="true"
+	  type="VARCHAR"
+	  size="100"
+	  description="The name of the teacher in charge of summer reading."/>
+	<column
+	  name="theme"
+	  required="false"
+	  type="VARCHAR"
+	  size="50"
+	  description="The theme, if applicable, for the reading list."/>
+  </table>
+
+  <table name="book_x_list" phpName="BookListRel" description="Cross-reference table for many-to-many relationship between book rows and book_club_list rows.">
+	<column
+	  name="book_id"
+	  primaryKey="true"
+	  type="INTEGER"
+	  description="Fkey to book.id"/>
+	<column
+	  name="book_club_list_id"
+	  primaryKey="true"
+	  type="INTEGER"
+	  description="Fkey to book_club_list.id"/>
+	<foreign-key foreignTable="book" onDelete="CASCADE">
+	  <reference local="book_id" foreign="id"/>
+	</foreign-key>
+	<foreign-key foreignTable="book_club_list" onDelete="CASCADE">
+	  <reference local="book_club_list_id" foreign="id"/>
+	</foreign-key>
+  </table>
+
+</database>

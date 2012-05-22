@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<database name="bookstore_namespaced" defaultIdMethod="native"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../generator/resources/xsd/database.xsd">
+
+	<table name="book" description="Book Table" phpName="NamespacedBook" namespace="Foo\Bar">
+		<column name="id" required="true" primaryKey="true" autoIncrement="true" type="INTEGER" description="Book Id" />
+		<column name="title" type="VARCHAR" required="true" description="Book Title" primaryString="true" />
+		<column name="isbn" required="true" type="VARCHAR" size="24" phpName="ISBN" description="ISBN Number" />
+		<column name="price" required="false" type="FLOAT" description="Price of the book." />
+		<column name="publisher_id" required="false" type="INTEGER" description="Foreign Key Publisher" />
+		<column name="author_id" required="false" type="INTEGER" description="Foreign Key Author" />
+		<foreign-key foreignTable="publisher" onDelete="setnull">
+			<reference local="publisher_id" foreign="id" />
+		</foreign-key>
+		<foreign-key foreignTable="author" onDelete="setnull" onUpdate="cascade">
+			<reference local="author_id" foreign="id" />
+		</foreign-key>
+		<validator column="title" translate="none">
+			<rule name="unique" message="Book title already in database." />
+			<rule name="minLength" value="10" message="Book title must be more than ${value} characters long." />
+			<rule name="maxLength" value="255" message="Book title must not be longer than ${value} characters." />
+		</validator>
+		<validator column="isbn" translate="none">
+			<rule name="class" class="bookstore.validator.ISBNValidator" message="ISBN does not validate!"/>
+		</validator>
+	</table>
+
+	<table name="publisher" description="Publisher Table" phpName="NamespacedPublisher" namespace="Baz">
+		<column name="id" required="true" primaryKey="true" autoIncrement="true" type="INTEGER" description="Publisher Id" />
+		<column name="name" required="true" type="VARCHAR" size="128" default="Penguin" description="Publisher Name" />
+	</table>
+
+	<table name="author" description="Author Table" phpName="NamespacedAuthor">
+		<column name="id" required="true" primaryKey="true" autoIncrement="true" type="INTEGER" description="Author Id" />
+		<column name="first_name" required="true" type="VARCHAR" size="128" description="First Name" />
+		<column name="last_name" required="true" type="VARCHAR" size="128" description="Last Name" />
+		<column name="email" type="VARCHAR" size="128" description="E-Mail Address" />
+		<column name="age" type="INTEGER" description="The authors age" />
+		<validator column="last_name" translate="none">
+			<rule name="required" message="The last name field is required." />
+		</validator>
+		<validator column="email" translate="none">
+			<rule name="match" value="/^([a-zA-Z0-9])+([\.a-zA-Z0-9_-])*@([a-zA-Z0-9])+(\.[a-zA-Z0-9_-]+)+$/" message="Please enter a valid email address." />
+		</validator>
+		<validator column="age" translate="none">
+			<rule name="minValue" value="0" message="Please enter a positive number." />
+			<rule name="maxValue" value="100" message="Impressive age! Just kidding, hm?" />
+		</validator>
+	</table>
+
+	<!-- test many-to-many relationships -->
+	<table name="book_club_list" phpName="NamespacedBookClub" namespace="Baz">
+		<column name="id" required="true" primaryKey="true" autoIncrement="true" type="INTEGER" />
+		<column name="group_leader" required="true" type="VARCHAR" size="100" />
+		<column name="theme" required="false" type="VARCHAR" size="50" />
+		<column name="created_at" required="false" type="TIMESTAMP" />
+	</table>
+
+	<table name="book_x_list" phpName="NamespacedBookListRel" isCrossRef="true">
+		<column name="book_id" primaryKey="true" type="INTEGER" />
+		<column name="book_club_list_id" primaryKey="true" type="INTEGER" />
+		<foreign-key foreignTable="book" onDelete="cascade">
+			<reference local="book_id" foreign="id" />
+		</foreign-key>
+		<foreign-key foreignTable="book_club_list" onDelete="cascade">
+			<reference local="book_club_list_id" foreign="id" />
+		</foreign-key>
+	</table>
+
+	<!-- test self-referencing foreign keys and inheritance-->
+	<table name="bookstore_employee" phpName="NamespacedBookstoreEmployee" namespace="Foo\Bar">
+		<column name="id" type="INTEGER" primaryKey="true" autoIncrement="true" />
+		<column name="class_key" type="INTEGER" required="true" default="0" inheritance="single">
+			<inheritance key="0" class="NamespacedBookstoreEmployee" />
+			<inheritance key="1" class="NamespacedBookstoreManager" extends="NamespacedBookstoreEmployee" />
+			<inheritance key="2" class="NamespacedBookstoreCashier" extends="NamespacedBookstoreEmployee" />
+		</column>
+		<column name="name" type="VARCHAR" size="32" />
+		<column name="job_title" type="VARCHAR" size="32" />
+		<column name="supervisor_id" type="INTEGER" />
+		<column name="photo" type="BLOB" lazyLoad="true" />
+		<foreign-key foreignTable="bookstore_employee" phpName="Supervisor" refPhpName="Subordinate" onDelete="setnull">
+			<reference local="supervisor_id" foreign="id" />
+		</foreign-key>
+	</table>
+
+</database>
