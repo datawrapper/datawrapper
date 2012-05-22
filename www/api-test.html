@@ -1,79 +1,267 @@
 <html>
 <head>
-    <title>Datawrapper API Test Page</title>
-    <script type="text/javascript" src="/static/js/jquery.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css">
-    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap-united.css">
-    <style type="text/css">
+   <title>Datawrapper API Test Page</title>
+   <script type="text/javascript" src="/static/js/jquery.min.js"></script>
+   <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css">
+   <link rel="stylesheet" type="text/css" href="/static/css/bootstrap-united.css">
+   <style type="text/css">
 .input-xlarge { height: 28px; }
 h1,h2,h3,h4,h5 { font-weight: normal; }
-    </style>
-    <script type="text/javascript">
+   </style>
+   <script type="text/javascript">
 
-$(function() {
-    $('#get-lang').click(function() {
-        $.getJSON('/api/lang', function(res) {
-            $('#get-lang-out').html(res.data.lang);
-        });
-    });
-
-    $('#set-lang').click(function() {
-        $.ajax({
-            url: '/api/lang',
-            type: 'PUT',
-            data: JSON.stringify({ lang: $('#set-lang-val').val() }),
-            processData: false,
-            success: function(data) {
-                $('#set-lang-out').html(data);
+function formatJSON(json) {
+    if (typeof(json) == "string") json = JSON.parse(json);
+    json = JSON.stringify(json, undefined, 2);
+    json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+        var cls = 'number';
+        if (/^"/.test(match)) {
+            if (/:$/.test(match)) {
+                cls = 'key';
+            } else {
+                cls = 'string';
             }
-        })
+        } else if (/true|false/.test(match)) {
+            cls = 'boolean';
+        } else if (/null/.test(match)) {
+            cls = 'null';
+        }
+        return '<span class="' + cls + '">' + match + '</span>';
     });
-});
+}
+   </script>
+   <style>
+.well { white-space: pre; }
+.well .key { color: #8888cc;}
+.well .string { color: #cc0000;}
+.well .boolean, .well .null { color: #0000bb;}
+hr { border-top: 1px dashed #DCC; }
+   </style>
 
-    </script>
+
 </head>
 <body>
-    <div class="container">
-        <div class="row">
-            <div class="span12">
-                <div class="page-header">
-                    <h2>API test page</h2>
-                    <small>just a few buttons to test the api</small>
-                </div>
+   <div class="container">
+      <div class="row">
+         <div class="span12">
+            <div class="page-header">
+               <h2>Datawrapper JSON API Test Page</h2>
+               <small>just a few buttons to test the api</small>
             </div>
-        </div>
+         </div>
+      </div>
 
-        <div class="row">
-            <div class="span2">
-                api/lang
-            </div>
-            <div class="span3">
-                <a id="get-lang" class="btn btn-primary">get language</a>
-            </div>
-            <div class="span3">
-                <div id="get-lang-out" class="well">result will be shown here</div>
-            </div>
-        </div>
+      <!-- register a new user -->
 
-        <div class="row">
-            <div class="span3 offset2 form-inline">
-                <a id="set-lang" class="btn btn-primary">set language to..</a>
-                 <input id="set-lang-val" type="text" class="input-xlarge span1" value="de" />
-            </div>
-            <div class="span3">
-                <div id="set-lang-out" class="well">result will be shown here</div>
-            </div>
-        </div>
+     <div class="row">
+         <div class="span2">users</div>
+         <div class="span1">GET</div>
+         <div class="span5 form-vertical">
+            <a id="get-users" class="btn btn-primary">get list of users</a>
+         </div>
+         <div class="span4">
+            <div id="get-users-out" class="well"></div>
+         </div>
+         <script type="text/javascript">
+            $('#get-users').click(function() {
+               $.ajax({
+                  url: '/api/users',
+                  type: 'GET',
+                  success: function(data) {
+                     $('#get-users-out').html(formatJSON(data));
+                  }
+               });
+            });
+         </script>
+      </div>
 
-        <div class="row">
-            <div class="span3 offset2 form-inline">
-                <a id="set-lang" class="btn btn-primary">set language to..</a>
-                 <input id="set-lang-val" type="text" class="input-xlarge span1" value="de" />
-            </div>
-            <div class="span3">
-                <div id="set-lang-out" class="well">result will be shown here</div>
-            </div>
-        </div>
-    </div>
+      <div class="row">
+         <div class="span1 offset2">POST</div>
+         <div class="span5 form-vertical">
+            <input id="register-email" type="text" class="input-xlarge span2" placeholder="email" />
+            <input id="register-pwd" type="text" class="input-xlarge span2" placeholder="password" />
+            <a id="register" class="btn btn-primary">create a new user</a>
+         </div>
+         <div class="span4">
+            <div id="register-out" class="well"></div>
+         </div>
+         <script type="text/javascript">
+            $('#register').click(function() {
+               $.ajax({
+                  url: '/api/users',
+                  type: 'POST',
+                  data: JSON.stringify({ email: $('#register-email').val(), pwd: $('#register-pwd').val() }),
+                  success: function(data) {
+                     $('#register-out').html(formatJSON(data));
+                  }
+               });
+            });
+         </script>
+      </div>
+
+      <hr />
+
+      <!-- login user -->
+
+      <div class="row">
+         <div class="span2">session</div>
+         <div class="span1">GET</div>
+         <div class="span5 form-inline">
+            <a id="get-login" class="btn btn-primary">get logged user info</a>
+         </div>
+         <div class="span4">
+            <div id="login-out" class="well"></div>
+         </div>
+      </div>
+
+      <div class="row">
+         <div class="span2">session/login</div>
+         <div class="span1">POST</div>
+         <div class="span5 form-inline">
+            <input id="login-email" type="text" class="input-xlarge span2" placeholder="email" />
+            <input id="login-pwd" type="text" class="input-xlarge span2" placeholder="password" />
+            <a id="login" class="btn btn-primary">login</a>
+         </div>
+         <div class="span4">
+            <div id="login-out" class="well"></div>
+         </div>
+         <script type="text/javascript">
+            $('#login').click(function() {
+               $.ajax({
+                  url: '/api/session/login',
+                  type: 'POST',
+                  success: function(data) {
+                     $('#login-out').html(formatJSON(data));
+                  }
+               });
+            });
+         </script>
+      </div>
+
+      <!-- logout current user -->
+
+      <div class="row">
+         <div class="span2">session/logout</div>
+         <div class="span1">POST</div>
+         <div class="span5 form-inline">
+            <a id="logout" class="btn btn-primary">logout current user</a>
+         </div>
+         <div class="span4">
+            <div id="logout-out" class="well"></div>
+         </div>
+         <script type="text/javascript">
+            $('#logout').click(function() {
+               $.ajax({
+                  url: '/api/session/logout',
+                  type: 'POST',
+                  success: function(data) {
+                     $('#logout-out').html(formatJSON(data));
+                  }
+               });
+            });
+         </script>
+      </div>
+
+      <!-- get current language -->
+
+      <div class="row">
+         <div class="span2">session/lang</div>
+         <div class="span1">GET</div>
+         <div class="span5">
+            <a id="get-lang" class="btn btn-primary">get language</a>
+         </div>
+         <div class="span4">
+            <div id="get-lang-out" class="well"></div>
+         </div>
+         <script type="text/javascript">
+            $('#get-lang').click(function() {
+               $.getJSON('/api/session/lang', function(res) {
+                  $('#get-lang-out').html(formatJSON(res));
+               });
+            });
+         </script>
+      </div>
+
+      <!-- set current language -->
+
+      <div class="row">
+         <div class="span1 offset2">PUT</div>
+         <div class="span5 form-inline">
+            <a id="set-lang" class="btn btn-primary">set language to..</a>
+             <input id="set-lang-val" type="text" class="input-xlarge span1" value="de" />
+         </div>
+         <div class="span4">
+            <div id="set-lang-out" class="well"></div>
+         </div>
+         <script type="text/javascript">
+            $('#set-lang').click(function() {
+               $.ajax({
+                  url: '/api/session/lang',
+                  type: 'PUT',
+                  data: JSON.stringify({ lang: $('#set-lang-val').val() }),
+                  processData: false,
+                  success: function(data) {
+                     $('#set-lang-out').html(formatJSON(data));
+                  }
+               })
+            });
+         </script>
+      </div>
+
+
+      <!-- add a new empty chart -->
+      <hr />
+
+      <div class="row">
+         <div class="span2">charts</div>
+         <div class="span1">POST</div>
+
+         <div class="span5 form-vertical">
+            <a id="add-chart" class="btn btn-primary">add a new empty chart</a>
+         </div>
+         <div class="span4">
+            <div id="add-chart-out" class="well"></div>
+         </div>
+         <script type="text/javascript">
+            $('#add-chart').click(function() {
+               $.ajax({
+                  url: '/api/charts',
+                  type: 'POST',
+                  success: function(data) {
+                     data = formatJSON(JSON.parse(data));
+                     $('#add-chart-out').html(data);
+                  }
+               });
+            });
+         </script>
+      </div>
+
+      <div class="row">
+         <div class="span2">charts/:id</div>
+         <div class="span1">GET</div>
+         <div class="span5 form-inline">
+            <input id="get-chart-id" type="text" class="input-xlarge span2" placeholder="chart-id" />
+            <a id="get-chart" class="btn btn-primary">load chart info</a>
+         </div>
+         <div class="span4">
+            <div id="get-chart-out" class="well"></div>
+         </div>
+      </div>
+
+      <div class="row">
+         <div class="span1 offset2">PUT</div>
+         <div class="span5 form-inline">
+            <a id="update-chart" class="btn btn-primary">update chart</a>
+            <input id="set-lang-val" type="text" class="input-xlarge span1" value="de" />
+         </div>
+         <div class="span4">
+            <div id="set-lang-out" class="well"></div>
+         </div>
+      </div>
+
+      <script type="text/javascript">
+      </script>
+   </div>
 </body>
 </html>
