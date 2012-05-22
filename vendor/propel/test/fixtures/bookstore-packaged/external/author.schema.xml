@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<!DOCTYPE database SYSTEM "../dtd/database.dtd">
+
+<database package="core.author" name="bookstore" defaultIdMethod="native">
+
+  <table name="author" description="Author Table">
+		<behavior name="auto_add_pk" />
+    <column
+      name="first_name"
+      required="true"
+      type="VARCHAR"
+      size="128"
+      description="First Name"/>
+    <column
+      name="last_name"
+      required="true"
+      type="VARCHAR"
+      size="128"
+      description="Last Name"/>
+    <column
+      name="email"
+      type="VARCHAR"
+      size="128"
+      description="E-Mail Address"/>
+    <column
+      name="age"
+      type="INTEGER"
+      description="The authors age"/>
+	<validator column="last_name" translate="none">
+		<rule
+			name="required"
+			message="The last name field is required."/>
+	</validator>
+	<validator column="email" translate="none">
+		<rule
+			name="match"
+			value="/^([a-zA-Z0-9])+([\.a-zA-Z0-9_-])*@([a-zA-Z0-9])+(\.[a-zA-Z0-9_-]+)+$/"
+			message="Please enter a valid email address."/>
+	</validator>
+	<validator column="age" translate="none">
+      <rule
+         name="minValue"
+         value="0"
+         message="Please enter a positive number." />
+      <rule
+         name="maxValue"
+         value="100"
+         message="Impressive age! Just kidding, hm?" />
+	</validator>
+
+  </table>
+
+</database>

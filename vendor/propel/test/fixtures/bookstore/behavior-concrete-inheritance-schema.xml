@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<database name="bookstore-behavior" defaultIdMethod="native" package="behavior.concrete_inheritance">
+
+	<table name="concrete_category">
+		<column name="id" required="true" primaryKey="true" autoIncrement="true" type="INTEGER" />
+		<column name="name" type="VARCHAR" size="100" primaryString="true" />
+	</table>
+
+	<table name="concrete_content">
+		<column name="id" required="true" primaryKey="true" autoIncrement="true" type="INTEGER" />
+		<column name="title" type="VARCHAR" size="100" primaryString="true" />
+		<column name="category_id" required="false" type="INTEGER" />
+		<foreign-key foreignTable="concrete_category" onDelete="cascade">
+			<reference local="category_id" foreign="id" />
+		</foreign-key>
+		<index>
+			<index-column name="title" />
+		</index>
+		<validator column="title" translate="none">
+			<rule name="maxLength" value="100" message="Content title must not be longer than ${value} characters." />
+		</validator>
+
+	</table>
+
+	<table name="concrete_article">
+		<column name="body" type="longvarchar" />
+		<column name="author_id" required="false" type="INTEGER" />
+		<foreign-key foreignTable="concrete_author" refPhpName="Article" onDelete="cascade">
+			<reference local="author_id" foreign="id" />
+		</foreign-key>
+		<behavior name="concrete_inheritance">
+			<parameter name="extends" value="concrete_content" />
+		</behavior>
+	</table>
+
+	<table name="concrete_author">
+		<column name="id" required="true" primaryKey="true" autoIncrement="true" type="INTEGER" />
+		<column name="name" type="VARCHAR" size="100" primaryString="true" />
+	</table>
+
+
+	<table name="concrete_news">
+		<behavior name="concrete_inheritance">
+			<parameter name="extends" value="concrete_article" />
+		</behavior>
+	</table>
+
+	<table name="concrete_quizz">
+		<column name="title" type="VARCHAR" size="200" primaryString="true" />
+		<behavior name="concrete_inheritance">
+			<parameter name="extends" value="concrete_content" />
+			<parameter name="copy_data_to_parent" value="false" />
+		</behavior>
+	</table>
+
+	<table name="concrete_quizz_question">
+		<column name="id" required="true" primaryKey="true" autoIncrement="true" type="INTEGER" />
+		<column name="question" type="VARCHAR" size="100" primaryString="true" />
+		<column name="answer_1" type="VARCHAR" size="100" />
+		<column name="answer_2" type="VARCHAR" size="100" />
+		<column name="correct_answer" type="INTEGER" />
+		<column name="quizz_id" required="true" type="INTEGER" />
+		<foreign-key foreignTable="concrete_quizz" onDelete="cascade">
+			<reference local="quizz_id" foreign="id" />
+		</foreign-key>
+	</table>
+
+	<table name="concrete_comment">
+		<column name="id" required="true" primaryKey="true" autoIncrement="true" type="INTEGER" />
+		<column name="message" type="VARCHAR" size="255" />
+		<column name="concrete_content_id" required="true" type="INTEGER" />
+		<foreign-key foreignTable="concrete_content" onDelete="cascade">
+			<reference local="concrete_content_id" foreign="id" />
+		</foreign-key>
+	</table>
+
+</database>

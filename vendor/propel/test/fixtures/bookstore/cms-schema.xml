@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<database name="bookstore-cms" defaultPhpNamingMethod="nochange" package="cms">
+
+	<table name="Page" idMethod="native" treeMode="NestedSet">
+		<column name="Id" type="INTEGER" required="true" autoIncrement="true" primaryKey="true"/>
+		<column name="LeftChild" type="INTEGER" required="true" nestedSetLeftKey="true"/>
+		<column name="RightChild" type="INTEGER" required="true" nestedSetRightKey="true"/>
+		<column name="ScopeId" type="INTEGER" required="true" default="0" treeScopeKey="true"/>
+		<column name="Title" type="VARCHAR" size="255" />
+	</table>
+
+	<table name="Category" idMethod="native" treeMode="NestedSet">
+		<column name="Id" type="INTEGER" required="true" autoIncrement="true" primaryKey="true"/>
+		<column name="LeftChild" type="INTEGER" required="true" nestedSetLeftKey="true"/>
+		<column name="RightChild" type="INTEGER" required="true" nestedSetRightKey="true"/>
+		<column name="Title" type="VARCHAR" size="255" />
+	</table>
+
+</database>

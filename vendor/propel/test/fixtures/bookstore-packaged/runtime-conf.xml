@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- This new XML configuration format is the default format for properties
+	files.  You can also used the old INI-based .properties format, but
+	support for this will be removed in next major Propel version. -->
+
+<config>
+	<!--
+	#
+	#  L O G G I N G
+	#
+	# We use PEAR-compatible Log for all Propel logging and we embed the
+	# log conf properties within our application configuration.
+	#
+	#   type    - the type of log (default 'file')
+	#   name    - the name of log or path to file. (default './propel.log')
+	#   ident   - the text used to identify the log messages
+	#   level   - the log level
+	#                   PEAR_LOG_EMERG    0
+	#                   PEAR_LOG_ALERT    1
+	#                   PEAR_LOG_CRIT     2
+	#                   PEAR_LOG_ERR      3
+	#                   PEAR_LOG_WARNING  4
+	#                   PEAR_LOG_NOTICE   5
+	#                   PEAR_LOG_INFO     6
+	#                   PEAR_LOG_DEBUG    7  <== DEFAULT
+	-->
+	<log>
+		<ident>propel-bookstore-packaged</ident>
+		<level>7</level>
+	</log>
+	<!--
+	#
+	#  P R O P E L  P R O P E R T I E S
+	#
+	# Note that you can configure multiple datasources; for example if your
+	# project uses several databases.
+	-->
+	<propel>
+		<datasources default="bookstore-packaged">
+			<datasource id="bookstore">
+				<!-- the Propel adapter (usually same as phptype of connection DSN) -->
+				<adapter>sqlite</adapter>
+				<!-- Connection DSN.  See PEAR DSN format for other supported parameters. -->
+				<connection>
+					<dsn>sqlite:/var/tmp/test.db</dsn>
+				</connection>
+			</datasource>
+			<datasource id="bookstore-log">
+				<!-- the Propel adapter (usually same as phptype of connection DSN) -->
+				<adapter>sqlite</adapter>
+				<!-- Connection DSN.  See PEAR DSN format for other supported parameters. -->
+				<connection>
+					<dsn>sqlite:/var/tmp/test.db</dsn>
+				</connection>
+			</datasource>
+		</datasources>
+	</propel>
+</config>

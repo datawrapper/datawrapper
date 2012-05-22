@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<config>
+	<!--
+	#
+	#  P R O P E L  P R O P E R T I E S
+	#
+	# Note that you can configure multiple datasources; for example if your
+	# project uses several databases.
+	-->
+	<propel>
+		<datasources default="bookstore_namespaced">
+			<datasource id="bookstore_namespaced">
+
+				<!-- the Propel adapter to use for this connection -->
+				<adapter>mysql</adapter>
+				<!-- Connection parameters. See PDO documentation for DSN format and available option constants. -->
+				<connection>
+					<classname>DebugPDO</classname>
+					<dsn>mysql:dbname=test</dsn>
+					<!--
+					For MySQL and Oracle you must specify username + password separate from DSN:
+					-->
+					<user>root</user>
+					<password></password>
+					<options>
+						<option id="ATTR_PERSISTENT">false</option>
+					</options>
+
+					<attributes>
+						<!--
+							For MySQL, you should also turn on prepared statement emulation,
+								as prepared statements support is buggy in mysql driver
+						-->
+						<option id="ATTR_EMULATE_PREPARES">true</option>
+					</attributes>
+
+					<settings>
+						<!--  Set the character set for client connection -->
+						<setting id="charset">utf8</setting>
+						<!-- you can also execute arbitrary queries after the connection is created
+						<setting id="queries">
+							<query>SELECT * FROM foo</query>
+							<query>INSERT INTO BAR ('hey', 'there')</query>
+						</setting>
+						-->
+					</settings>
+				</connection>
+			</datasource>
+
+		</datasources>
+	</propel>
+</config>
