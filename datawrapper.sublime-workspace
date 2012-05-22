@@ -1,0 +1,2056 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"pu",
+				"public"
+			],
+			[
+				"data",
+				"datawrapper"
+			],
+			[
+				"var_",
+				"var_export"
+			],
+			[
+				"req",
+				"require"
+			],
+			[
+				"json",
+				"json_encode"
+			],
+			[
+				"se",
+				"set-lang-val"
+			],
+			[
+				"in",
+				"input-xlarge"
+			],
+			[
+				"get",
+				"get-lang-out"
+			],
+			[
+				"is",
+				"isset"
+			],
+			[
+				"sho",
+				"shortDiff"
+			],
+			[
+				"dif",
+				"diff"
+			],
+			[
+				"ins",
+				"inspos"
+			],
+			[
+				"sh",
+				"shortDiff"
+			],
+			[
+				"mod",
+				"modal-law-display"
+			],
+			[
+				"pub",
+				"published"
+			],
+			[
+				"fu",
+				"full_diff"
+			],
+			[
+				"full",
+				"full_diff"
+			],
+			[
+				"st",
+				"status"
+			],
+			[
+				"art",
+				"art_by_id"
+			],
+			[
+				"nex",
+				"next_art_by_id"
+			],
+			[
+				"las",
+				"last_art_by_id"
+			],
+			[
+				"artic",
+				"articles_by_id_per_law"
+			],
+			[
+				"a",
+				"append"
+			],
+			[
+				"diff",
+				"diffString"
+			],
+			[
+				"par",
+				"par0"
+			],
+			[
+				"con",
+				"console"
+			],
+			[
+				"back",
+				"background	background-color: hex"
+			],
+			[
+				"of",
+				"offset"
+			],
+			[
+				"la",
+				"label"
+			],
+			[
+				"law",
+				"law_h"
+			],
+			[
+				"lin",
+				"lines"
+			],
+			[
+				"arti",
+				"article"
+			],
+			[
+				"add",
+				"addClass"
+			],
+			[
+				"ve",
+				"ver1"
+			],
+			[
+				"margin-t",
+				"margin-bottom"
+			],
+			[
+				"y0",
+				"y0t"
+			],
+			[
+				"co",
+				"colw"
+			],
+			[
+				"str",
+				"strip"
+			],
+			[
+				"min",
+				"minYearRound"
+			],
+			[
+				"ci",
+				"circ"
+			],
+			[
+				"pa",
+				"paragraph"
+			],
+			[
+				"s",
+				"strip"
+			],
+			[
+				"vis",
+				"vis-diff"
+			],
+			[
+				"vi",
+				"vis-diff-html"
+			],
+			[
+				"bg",
+				"bgbl-editions"
+			],
+			[
+				"summ",
+				"summerBreakAttr"
+			],
+			[
+				"phi",
+				"phiDelta"
+			],
+			[
+				"month",
+				"monthLabelAttr"
+			],
+			[
+				"date",
+				"date2angle"
+			],
+			[
+				"max",
+				"maxYearRound"
+			],
+			[
+				"gr",
+				"gridCircAttr"
+			],
+			[
+				"da",
+				"date2angle"
+			],
+			[
+				"ye",
+				"year2rad"
+			],
+			[
+				"para",
+				"paragraph"
+			],
+			[
+				"ae",
+				"articles"
+			],
+			[
+				"sec",
+				"section"
+			],
+			[
+				"cont",
+				"contour"
+			],
+			[
+				"path",
+				"path_data"
+			],
+			[
+				"contou",
+				"contour"
+			],
+			[
+				"len",
+				"length"
+			],
+			[
+				"from",
+				"fromInvalidUrl"
+			],
+			[
+				"bar",
+				"barF"
+			],
+			[
+				"hov",
+				"hoverBarOut"
+			],
+			[
+				"ho",
+				"hoverBarIn"
+			],
+			[
+				"all",
+				"all_lines"
+			],
+			[
+				"ani",
+				"animate"
+			],
+			[
+				"attr",
+				"attr"
+			],
+			[
+				"val",
+				"values"
+			],
+			[
+				"wid",
+				"widget-xl"
+			],
+			[
+				"prev",
+				"prevnext"
+			],
+			[
+				"cou",
+				"countries"
+			],
+			[
+				"remo",
+				"removeClass"
+			],
+			[
+				"line",
+				"line-height"
+			],
+			[
+				"ti",
+				"title"
+			],
+			[
+				"has",
+				"hasOwnProperty"
+			],
+			[
+				"en",
+				"enrolmentIn"
+			],
+			[
+				"up",
+				"updateFromHash"
+			],
+			[
+				"sel",
+				"selectedIndex"
+			],
+			[
+				"iso",
+				"isoMap"
+			],
+			[
+				"fact",
+				"factbookDict"
+			],
+			[
+				"fa",
+				"factbookDict"
+			],
+			[
+				"f",
+				"filtered"
+			],
+			[
+				"reg",
+				"region"
+			],
+			[
+				"_",
+				"_dw_literacy_lang"
+			],
+			[
+				"cur",
+				"curve"
+			],
+			[
+				"y",
+				"yF"
+			],
+			[
+				"dw-icon-se",
+				"dw-icon-sec-upper"
+			],
+			[
+				"dw",
+				"dw-icon-pre-school"
+			],
+			[
+				"le",
+				"length"
+			],
+			[
+				"l0",
+				"l0-total"
+			],
+			[
+				"rw",
+				"rows"
+			],
+			[
+				"va",
+				"val2y"
+			],
+			[
+				"tr",
+				"trend"
+			],
+			[
+				"tren",
+				"trends"
+			],
+			[
+				"cha",
+				"chartSize"
+			],
+			[
+				"ch",
+				"chartSize"
+			],
+			[
+				"coor",
+				"colors"
+			],
+			[
+				"bac",
+				"background	background-color: hex"
+			],
+			[
+				"row",
+				"rows"
+			],
+			[
+				"dim",
+				"dimensions"
+			],
+			[
+				"fun",
+				"function"
+			],
+			[
+				"vl",
+				"values"
+			],
+			[
+				"col",
+				"colFilter"
+			],
+			[
+				"__",
+				"__str__"
+			],
+			[
+				"sha",
+				"shapeType"
+			],
+			[
+				"pt",
+				"pts"
+			],
+			[
+				"pro",
+				"proj"
+			],
+			[
+				"proj",
+				"projections"
+			],
+			[
+				"ll",
+				"llbbox"
+			],
+			[
+				"Proj",
+				"Proj4js"
+			],
+			[
+				"dep",
+				"dep_data"
+			],
+			[
+				"c",
+				"column"
+			],
+			[
+				"gener",
+				"generate"
+			],
+			[
+				"ad",
+				"add_argument"
+			],
+			[
+				"gen",
+				"generate_kml"
+			],
+			[
+				"ge",
+				"generate"
+			],
+			[
+				"arg",
+				"args"
+			],
+			[
+				"Kart",
+				"KartographError"
+			],
+			[
+				"confi",
+				"config"
+			],
+			[
+				"config",
+				"configuration"
+			],
+			[
+				"cfg",
+				"config"
+			],
+			[
+				"lat",
+				"lat"
+			],
+			[
+				"stroke",
+				"stroke-width"
+			],
+			[
+				"igno",
+				"ignored"
+			],
+			[
+				"Bb",
+				"BBox"
+			],
+			[
+				"St",
+				"stroke-width"
+			],
+			[
+				"Po",
+				"PolyLine"
+			],
+			[
+				"geom",
+				"geometry"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "/Users/gka/clients/datawrapper/meta/datawrapper url structure",
+			"settings":
+			{
+				"buffer_size": 635,
+				"line_ending": "Unix",
+				"name": "datawrapper url structure"
+			}
+		},
+		{
+			"contents": "\ndatawrapper.de/api/1/charts\n\n\n    Session\n    -------\n    POST /api/login – Log in a new user (create session cookie)\n    POST /api/logout – Log out the logged user (remove session cookie)\n\n\n    Charts\n    ------\n    GET /api/charts - List of all charts\n    GET /api/charts/1 – List info for chart with ID of 1\n    POST /api/charts - Create new chart\n    PUT /api/charts/1 - Update chart with ID of 1\n    DELETE /api/charts/1 – Delete chart with ID of 1\n\n        {\n            \"data\": {\n                \"source\": \"clipboard\",\n                \"url\": \"v1.datawrapper.de/data/ISW8E/data.csv\",\n                \"format\": {\n                    \"first-row-is-header\": true,\n                    \"first-column-is-header\": true,\n                    \"transpose\": false\n                }\n            },\n            \"description\": {\n                \"source\": \"OECD\",\n                \"link\": \"http://www.oecd.org\"\n            }\n        }\n\n\n    Data\n    ----\n    POST /api/data/\n\n\n    Frontend language\n    -----------------\n    GET /api/lang – retrieve the current language\n    PUT /api/lang – set the current language\n\n        two-letter string with the language id\n\n\n    Users\n    -----\n    GET /api/users – List of all users\n    GET /api/users/1 – List info for user with ID of 1\n    POST /api/users – Create a new user\n    PUT /api/users/1 – Update user\n\n    {\n        \"name\": \"gka\",\n        \"email\": \"gka@vis4.net\"\n    }",
+			"file": "/Users/gka/clients/datawrapper/meta/dw-php-api.txt",
+			"file_size": 1272,
+			"file_write_time": 1335894798000000,
+			"settings":
+			{
+				"buffer_size": 1412,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "www/api/index.php",
+			"settings":
+			{
+				"buffer_size": 2276,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "www/api/templates/slim-intro.php",
+			"settings":
+			{
+				"buffer_size": 6789,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "www/api/templates/json-error.php",
+			"settings":
+			{
+				"buffer_size": 80,
+				"line_ending": "Unix",
+				"name": "<?php"
+			}
+		},
+		{
+			"file": "www/api/views/JSONView.php",
+			"settings":
+			{
+				"buffer_size": 721,
+				"line_ending": "Unix",
+				"name": "class JSONView extends Slim_View {"
+			}
+		},
+		{
+			"file": "www/api-test.html",
+			"settings":
+			{
+				"buffer_size": 2108,
+				"line_ending": "Unix",
+				"name": "<html>"
+			}
+		},
+		{
+			"file": "lib/Slim/View.php",
+			"settings":
+			{
+				"buffer_size": 5481,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "lib/Slim/Slim.php",
+			"settings":
+			{
+				"buffer_size": 43308,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "lib/dw/Datawrapper.php",
+			"settings":
+			{
+				"buffer_size": 1084,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "Packages/User/jython.sublime-build",
+	"command_palette":
+	{
+		"height": 347.0,
+		"selected_items":
+		[
+			[
+				"com",
+				"Git: Commit"
+			],
+			[
+				"git",
+				"Git: Commit"
+			],
+			[
+				"ins",
+				"Package Control: Install Package"
+			],
+			[
+				"Snippet: ",
+				"Snippet: New Class"
+			],
+			[
+				"git s",
+				"Git: Status"
+			],
+			[
+				"git st",
+				"Git: Status"
+			],
+			[
+				"pack",
+				"Package Control: Install Package"
+			],
+			[
+				"plug",
+				"Package Control: Upgrade/Overwrite All Packages"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 449.0
+	},
+	"console":
+	{
+		"height": 139.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/Users/gka/clients/datawrapper/1.0/lib/dw/Datawrapper.php",
+		"/Users/gka/clients/datawrapper/meta/dw-php-api.txt",
+		"/Users/gka/Incubator/_paused_/gesetze/site/js/jsdiff.js",
+		"/Users/gka/Incubator/_paused_/gesetze/PartG/src/partg-2002.txt",
+		"/Users/gka/Incubator/_paused_/gesetze/site/js/moment.lang.de.js",
+		"/Users/gka/Incubator/_paused_/gesetze/site/css/bootstrap.css",
+		"/Users/gka/Incubator/_paused_/gesetze/PartG/process.py",
+		"/Users/gka/Incubator/_paused_/gesetze/PartG/src/partg-1967.txt",
+		"/Users/gka/Incubator/_paused_/gesetze/PartG/src/partg-2003.txt",
+		"/Users/gka/Incubator/_paused_/gesetze/PartG/timeline.yaml",
+		"/Users/gka/Incubator/_paused_/gesetze/PartG/src/partg-1974.txt",
+		"/Users/gka/Incubator/_paused_/gesetze/site/js/underscore.string.min.js",
+		"/Users/gka/Incubator/_paused_/gesetze/site/jsdiff.html",
+		"/Users/gka/Incubator/_paused_/gesetze/site/js/vis.modtimes.js",
+		"/Users/gka/Incubator/_paused_/gesetze/site/index.html",
+		"/Users/gka/Incubator/_paused_/gesetze/site/css/custom.css",
+		"/Users/gka/Incubator/_paused_/gesetze/site/js/vis.diffs.js",
+		"/Users/gka/Incubator/_paused_/gesetze/PartG/src/partg-2009.txt",
+		"/Users/gka/Incubator/_paused_/gesetze/PartG/src/partg-1969.txt",
+		"/Users/gka/Incubator/_paused_/gesetze/PartG/src/partg-2004.txt",
+		"/Users/gka/Incubator/_paused_/gesetze/PartG/src/partg-1979.txt",
+		"/Users/gka/Incubator/_paused_/gesetze/PartG/src/partg-1983.txt",
+		"/Users/gka/Incubator/_paused_/gesetze/PartG/src/partg-1984.txt",
+		"/Users/gka/Incubator/_paused_/gesetze/PartG/src/partg-1994.txt",
+		"/Users/gka/Incubator/_paused_/gesetze/PartG/src/partg-1995.txt",
+		"/Users/gka/Incubator/_paused_/gesetze/PartG/src/partg-1997.txt",
+		"/Users/gka/Incubator/_paused_/gesetze/PartG/src/partg-1999.txt",
+		"/Users/gka/Incubator/_paused_/gesetze/site/js/raphael.min.js",
+		"/Users/gka/Incubator/_paused_/gesetze/PartG/src/partg-1988.txt",
+		"/Users/gka/Incubator/_paused_/gesetze/PartG/src/partg-1989.txt",
+		"/Users/gka/Incubator/dw-1.0/datawrapper/fuel/app/classes/controller/welcome.php",
+		"/Users/gka/Incubator/dw/education/site/_layouts/vis-literacy-countries.html",
+		"/Users/gka/Incubator/dw/education/site/js/dw/literacy-regional.js",
+		"/Users/gka/Incubator/dw/education/site/js/jquery.csv.js",
+		"/Users/gka/Incubator/dw/education/site/css/widget.css",
+		"/Users/gka/Incubator/dw/education/site/_layouts/vis-enrolment.html",
+		"/Users/gka/Incubator/dw/education/site/lang/de.js",
+		"/Users/gka/Incubator/dw/education/site/js/dw/literacy-countries-gender.js",
+		"/Users/gka/Incubator/dw/education/site/literacy-regional.html",
+		"/Users/gka/Incubator/dw/education/site/_layouts/dw-frame.html",
+		"/Users/gka/Incubator/dw/education/site/_layouts/vis-literacy-regions.html",
+		"/Users/gka/Incubator/dw/education/site/literacy-countries-gender.en.html",
+		"/Users/gka/Incubator/dw/education/site/literacy-countries-gender.html",
+		"/Users/gka/Incubator/dw/education/site/css/dw-literacy-world.css",
+		"/Users/gka/Incubator/dw/education/site/literacy-regional.en.html",
+		"/Users/gka/Incubator/dw/education/site/enrolment.html",
+		"/Users/gka/Incubator/dw/education/site/enrolment.en.html",
+		"/Users/gka/Incubator/dw/education/site/_layouts/vis-education-military.html",
+		"/Users/gka/Incubator/dw/education/site/education-military.en.html",
+		"/Users/gka/Incubator/dw/education/site/lang/en.js",
+		"/Users/gka/Incubator/dw/education/site/vis-literacy-regions.html",
+		"/Users/gka/Incubator/dw/education/site/_layouts/widget-xl.html",
+		"/Users/gka/Incubator/dw/education/site/_layouts/literacy-countries.html",
+		"/Users/gka/Incubator/kek/js/medianetwork.js",
+		"/Users/gka/Incubator/kek/css/styles.css",
+		"/Users/gka/Incubator/kek/index.html",
+		"/Users/gka/Incubator/maps/iran/index.html",
+		"/Users/gka/Incubator/portfolio/_layouts/core.html",
+		"/Users/gka/Incubator/portfolio/_posts/2011-12-13-chromajs.md",
+		"/Users/gka/Incubator/portfolio/css/styles.css",
+		"/Users/gka/Incubator/portfolio/_layouts/portfolio.html",
+		"/Users/gka/Incubator/portfolio/index.html",
+		"/Users/gka/Incubator/portfolio/_posts/2011-06-25-interactive-bubbletree.md",
+		"/Users/gka/Incubator/portfolio/_posts/2010-10-27-incomes-of-parliament-members.html",
+		"/Users/gka/Incubator/portfolio/_posts/2011-12-01-stuttgart21.md",
+		"/Users/gka/Incubator/portfolio/_posts/2012-03-05-kartograph.html",
+		"/Users/gka/Incubator/portfolio/_posts/2011-11-08-german-energy.html",
+		"/Users/gka/Incubator/portfolio/_posts/2011-10-21-global-digital-divide.html",
+		"/Users/gka/Incubator/portfolio/_posts/2011-02-14-europes-energy.md",
+		"/Users/gka/Incubator/portfolio/_posts/2011-03-16-zeit-nuclear.md",
+		"/Users/gka/Incubator/portfolio/js/classic/galleria.classic.css",
+		"/Users/gka/Incubator/portfolio/_posts/2011-02-18-zeit-pisa.md",
+		"/Users/gka/Incubator/portfolio/_posts/2011-09-13-fraction-vs-conscience.html",
+		"/Users/gka/Incubator/portfolio/_posts/2011-03-04-nuclear-distances.md",
+		"/Users/gka/Incubator/portfolio/_posts/2011-03-04-nuclear-distances.html",
+		"/Users/gka/Incubator/portfolio/_posts/2010-10-04-german-party-donations.md",
+		"/Users/gka/Incubator/portfolio/_posts/2011-01-16-airportnoisemap.html",
+		"/Users/gka/Incubator/dw/education/site/data/countries.csv",
+		"/Users/gka/Incubator/dw/education/site/education-military.html",
+		"/Users/gka/Incubator/dw/education/site/js/dw/education-military.js",
+		"/Users/gka/Incubator/dw/education/site/data/joined.csv",
+		"/Users/gka/Incubator/dw/education/site/js/dw/literacy-countries.js",
+		"/Users/gka/Incubator/dw/education/site/data/map.json",
+		"/Users/gka/Incubator/_libraries_/kartograph/kartograph.js/src/modules/choropleth.coffee",
+		"/Users/gka/Incubator/orig.html",
+		"/Users/gka/Incubator/dw/education/site/css/mapstyles.css",
+		"/Users/gka/Incubator/dw/education/site/literacymap.html",
+		"/Users/gka/Incubator/_libraries_/kartograph/kartograph.js/src/core/kartograph.coffee",
+		"/Users/gka/Incubator/dw/literacymap.svg",
+		"/Users/gka/Incubator/dw/education/site/data/unesco-5-enrolment-ratio.csv",
+		"/Users/gka/Incubator/poverty-deprivation-london-map.htm",
+		"/Users/gka/Incubator/dw/education/site/index.html",
+		"/Users/gka/Incubator/dw/education/site/literacy-countries.html",
+		"/Users/gka/Incubator/_libraries_/kartograph/kpy-master/kartograph/geometry/polygon.py",
+		"/Users/gka/Incubator/_libraries_/kartograph/kpy-master/kartograph/proj/conic.py",
+		"/Users/gka/Incubator/_libraries_/kartograph/kpy-master/kartograph/proj/base.py",
+		"/Users/gka/Incubator/_libraries_/kartograph/kpy-master/kartograph/proj/cylindrical.py",
+		"/Users/gka/Incubator/_libraries_/kartograph/kpy-master/test/test-proj.py",
+		"/Users/gka/Incubator/_libraries_/kartograph/kpy-master/kartograph/kartograph.py",
+		"/Users/gka/Incubator/_libraries_/kartograph/kpy-master/kartograph/layersource/shplayer.py",
+		"/Users/gka/Incubator/_libraries_/kartograph/kpy-master/kartograph/options.py",
+		"/Users/gka/Incubator/_libraries_/kartograph/kpy-master/kartograph/errors.py",
+		"/Users/gka/Incubator/_libraries_/kartograph/kpy-master/kartograph/cli.py",
+		"/Users/gka/Incubator/_libraries_/kartograph/kpy-master/setup.py",
+		"/Users/gka/Incubator/_libraries_/kartograph/kpy-master/kartograph/layersource/shapefile.py",
+		"/Users/gka/Incubator/_libraries_/kartograph/website/_layouts/showcase.html",
+		"/Users/gka/Incubator/portfolio/_posts/2011-06-25-interactive-bubbletree.html",
+		"/Users/gka/Incubator/portfolio/_posts/2010-10-04-german-party-donations.html",
+		"/Users/gka/Incubator/_libraries_/kartograph/website/css/k.css",
+		"/Users/gka/Incubator/_libraries_/kartograph/website/_layouts/showcase-overview.html",
+		"/Users/gka/Library/Application Support/Sublime Text 2/Packages/User/Preferences.sublime-settings",
+		"/Users/gka/Incubator/_libraries_/kartograph/kpy-master/CHANGELOG",
+		"/Users/gka/Downloads/kartograph-custom-svg/chloropets.html",
+		"/Users/gka/Incubator/_libraries_/kartograph/website/_layouts/default.html",
+		"/Users/gka/Downloads/kartograph-custom-svg/css/styles.css",
+		"/Users/gka/Downloads/kartograph-custom-svg/data/countries.svg",
+		"/Users/gka/Incubator/_libraries_/kartograph/website/showcase/editor/index.html",
+		"/Users/gka/Incubator/_libraries_/kartograph/kpy-master/kartograph/geometry/bbox.py",
+		"/Users/gka/Incubator/_libraries_/kartograph/kpy-master/kartograph/layersource/special/graticule.py",
+		"/Users/gka/Incubator/_libraries_/kartograph/kpy-master/kartograph/proj/azimuthal/satellite.py",
+		"/Users/gka/Incubator/_libraries_/kartograph/kpy-master/kartograph/geometry/line.py",
+		"/Users/gka/Incubator/_libraries_/kartograph/website/showcase/eastcoast/eastcoast.json",
+		"/Users/gka/Incubator/_libraries_/kartograph/website/index.html",
+		"/Users/gka/Incubator/_libraries_/kartograph/website/showcase/index.html",
+		"/Users/gka/Incubator/_libraries_/kartograph/website/about/index.html",
+		"/Users/gka/Incubator/_libraries_/kartograph/website/showcase/italia/index.html",
+		"/Users/gka/Incubator/_libraries_/kartograph/website/showcase/eastcoast/index.html",
+		"/Users/gka/Incubator/datamaps.cc/usa.json"
+	],
+	"find":
+	{
+		"height": 35.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"#vis-diff .legend.law .article.par-removed {\n    left: 330px;\n}\n",
+			"#b0b0b0",
+			"content",
+			"current",
+			"1500 Euro Deutsche Mark",
+			"modtimes",
+			"§(\\d+)",
+			"$\\d",
+			"$",
+			"consoe",
+			"Raphael.rad\\(([^)]+)\\)",
+			"config.or",
+			"config.r",
+			"../assets/",
+			"[ \\t]+$",
+			"click",
+			"3",
+			"conso",
+			"console",
+			"countries",
+			"addClass",
+			"{{",
+			"\\{\\{ (\\w+) \\}\\}",
+			"\\{\\{ \\w+ \\}\\}",
+			"{{",
+			"[ \\t]+$",
+			"color: ",
+			",,$",
+			"sort",
+			"trim",
+			"countries",
+			"Guinea",
+			"next",
+			"option",
+			"select",
+			".  ",
+			"Gross enrolment ratio.  Upper secondary.  All programmes.  Total",
+			"v2col",
+			"raise",
+			"d6d3d0",
+			"crop_l",
+			"open",
+			"parser_cartograph",
+			"ignored",
+			"print",
+			"[ \\t]+$",
+			"project",
+			"Nico",
+			"clon",
+			"HALFPI",
+			"visib",
+			"Nico",
+			"Nicolosi",
+			"number",
+			"/img/",
+			"->setID(",
+			"grat",
+			"href",
+			"grat_lon",
+			"grat",
+			"[ \\t]+$",
+			"svgfig",
+			"toxml",
+			"[ \\t]+$",
+			"toxml",
+			"[ \\t]+$",
+			"path",
+			"git",
+			"[ \\t]+$",
+			" = ",
+			"[ \\t]+$",
+			"@name =",
+			".name",
+			"Cylindr",
+			"[ \\t]+$",
+			"/showcase/italy/",
+			"\\[(4\\d+\\.\\d+), ?(\\d+\\.\\d+)\\]",
+			"LatLon\\((\\d+\\.\\d+), ?(\\d+\\.\\d+)\\)",
+			"LatLon\\((\\d+\\.\\d+), (\\d+\\.\\d+)\\)",
+			"\\[(\\d+\\.\\d+), (\\d+\\.\\d+)\\]",
+			"[ \\t]+$",
+			"4px",
+			"[ \\t]+$",
+			"get_fe",
+			"[ \\t]+$",
+			"filter",
+			"comp",
+			"[ \\t]+$",
+			" +$",
+			"\\s+$",
+			"    ",
+			"	",
+			"implement me",
+			"	",
+			"\\t"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": true,
+		"replace_history":
+		[
+			"#a9a9a9",
+			"1500 Euro",
+			"§ $1",
+			"$1",
+			"maxRad",
+			"minRad",
+			"",
+			"(( $1 ))",
+			"",
+			"fff",
+			"parser_cartogram",
+			"",
+			"img/",
+			"",
+			"=",
+			"",
+			"@title =",
+			"",
+			"/showcase/italia/",
+			"[$2, $1]",
+			"LonLat($2, $1)",
+			"[$2, $1]",
+			"",
+			"  ",
+			"    ",
+			"not implemented",
+			"    "
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 9,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "/Users/gka/clients/datawrapper/meta/datawrapper url structure",
+					"settings":
+					{
+						"buffer_size": 635,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								635,
+								635
+							]
+						],
+						"settings":
+						{
+							"auto_name": "datawrapper url structure",
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/Users/gka/clients/datawrapper/meta/dw-php-api.txt",
+					"settings":
+					{
+						"buffer_size": 1412,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								791,
+								791
+							]
+						],
+						"settings":
+						{
+							"annotations":
+							[
+								"TODO",
+								"README",
+								"FIXME"
+							],
+							"gjslint_ignore":
+							[
+								110.0
+							],
+							"gjslint_options":
+							[
+							],
+							"javascript_linter": "jshint",
+							"jshint_options":
+							{
+								"browser": true,
+								"evil": true,
+								"regexdash": true,
+								"sub": true,
+								"trailing": true,
+								"wsh": true
+							},
+							"pep8_ignore":
+							[
+								"E501"
+							],
+							"pyflakes_ignore":
+							[
+							],
+							"pyflakes_ignore_import_*": true,
+							"sublimelinter": true,
+							"sublimelinter_delay": 0.0,
+							"sublimelinter_disable":
+							[
+							],
+							"sublimelinter_executable_map":
+							{
+							},
+							"sublimelinter_fill_outlines": false,
+							"sublimelinter_gutter_marks": false,
+							"sublimelinter_notes": false,
+							"sublimelinter_objj_check_ascii": false,
+							"sublimelinter_popup_errors_on_save": false,
+							"sublimelinter_syntax_map":
+							{
+								"Python Django": "python"
+							},
+							"sublimelinter_wrap_find": true,
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "www/api/index.php",
+					"settings":
+					{
+						"buffer_size": 2276,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1740,
+								1740
+							]
+						],
+						"settings":
+						{
+							"annotations":
+							[
+								"TODO",
+								"README",
+								"FIXME"
+							],
+							"gjslint_ignore":
+							[
+								110.0
+							],
+							"gjslint_options":
+							[
+							],
+							"javascript_linter": "jshint",
+							"jshint_options":
+							{
+								"browser": true,
+								"evil": true,
+								"regexdash": true,
+								"sub": true,
+								"trailing": true,
+								"wsh": true
+							},
+							"pep8_ignore":
+							[
+								"E501"
+							],
+							"pyflakes_ignore":
+							[
+							],
+							"pyflakes_ignore_import_*": true,
+							"sublimelinter": true,
+							"sublimelinter_delay": 0.0,
+							"sublimelinter_disable":
+							[
+							],
+							"sublimelinter_executable_map":
+							{
+							},
+							"sublimelinter_fill_outlines": false,
+							"sublimelinter_gutter_marks": false,
+							"sublimelinter_notes": false,
+							"sublimelinter_objj_check_ascii": false,
+							"sublimelinter_popup_errors_on_save": false,
+							"sublimelinter_syntax_map":
+							{
+								"Python Django": "python"
+							},
+							"sublimelinter_wrap_find": true,
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 792.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "www/api/templates/slim-intro.php",
+					"settings":
+					{
+						"buffer_size": 6789,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								15,
+								15
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1013.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "www/api/templates/json-error.php",
+					"settings":
+					{
+						"buffer_size": 80,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								79,
+								79
+							]
+						],
+						"settings":
+						{
+							"auto_name": "<?php",
+							"syntax": "Packages/PHP/PHP.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "www/api/views/JSONView.php",
+					"settings":
+					{
+						"buffer_size": 721,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								309,
+								309
+							]
+						],
+						"settings":
+						{
+							"auto_name": "class JSONView extends Slim_View {",
+							"syntax": "Packages/PHP/PHP.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "www/api-test.html",
+					"settings":
+					{
+						"buffer_size": 2108,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								797,
+								797
+							]
+						],
+						"settings":
+						{
+							"auto_name": "<html>",
+							"syntax": "Packages/HTML/HTML.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 70.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "lib/Slim/View.php",
+					"settings":
+					{
+						"buffer_size": 5481,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								5107,
+								5472
+							]
+						],
+						"settings":
+						{
+							"annotations":
+							[
+								"TODO",
+								"README",
+								"FIXME"
+							],
+							"gjslint_ignore":
+							[
+								110.0
+							],
+							"gjslint_options":
+							[
+							],
+							"javascript_linter": "jshint",
+							"jshint_options":
+							{
+								"browser": true,
+								"evil": true,
+								"regexdash": true,
+								"sub": true,
+								"trailing": true,
+								"wsh": true
+							},
+							"pep8_ignore":
+							[
+								"E501"
+							],
+							"pyflakes_ignore":
+							[
+							],
+							"pyflakes_ignore_import_*": true,
+							"sublimelinter": true,
+							"sublimelinter_delay": 0.0,
+							"sublimelinter_disable":
+							[
+							],
+							"sublimelinter_executable_map":
+							{
+							},
+							"sublimelinter_fill_outlines": false,
+							"sublimelinter_gutter_marks": false,
+							"sublimelinter_notes": false,
+							"sublimelinter_objj_check_ascii": false,
+							"sublimelinter_popup_errors_on_save": false,
+							"sublimelinter_syntax_map":
+							{
+								"Python Django": "python"
+							},
+							"sublimelinter_wrap_find": true,
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 455.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "lib/Slim/Slim.php",
+					"settings":
+					{
+						"buffer_size": 43308,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4203,
+								4259
+							]
+						],
+						"settings":
+						{
+							"annotations":
+							[
+								"TODO",
+								"README",
+								"FIXME"
+							],
+							"gjslint_ignore":
+							[
+								110.0
+							],
+							"gjslint_options":
+							[
+							],
+							"javascript_linter": "jshint",
+							"jshint_options":
+							{
+								"browser": true,
+								"evil": true,
+								"regexdash": true,
+								"sub": true,
+								"trailing": true,
+								"wsh": true
+							},
+							"pep8_ignore":
+							[
+								"E501"
+							],
+							"pyflakes_ignore":
+							[
+							],
+							"pyflakes_ignore_import_*": true,
+							"sublimelinter": true,
+							"sublimelinter_delay": 0.0,
+							"sublimelinter_disable":
+							[
+							],
+							"sublimelinter_executable_map":
+							{
+							},
+							"sublimelinter_fill_outlines": false,
+							"sublimelinter_gutter_marks": false,
+							"sublimelinter_notes": false,
+							"sublimelinter_objj_check_ascii": false,
+							"sublimelinter_popup_errors_on_save": false,
+							"sublimelinter_syntax_map":
+							{
+								"Python Django": "python"
+							},
+							"sublimelinter_wrap_find": true,
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 2273.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "lib/dw/Datawrapper.php",
+					"settings":
+					{
+						"buffer_size": 1084,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								634,
+								634
+							]
+						],
+						"settings":
+						{
+							"annotations":
+							[
+								"TODO",
+								"README",
+								"FIXME"
+							],
+							"gjslint_ignore":
+							[
+								110.0
+							],
+							"gjslint_options":
+							[
+							],
+							"javascript_linter": "jshint",
+							"jshint_options":
+							{
+								"browser": true,
+								"evil": true,
+								"regexdash": true,
+								"sub": true,
+								"trailing": true,
+								"wsh": true
+							},
+							"pep8_ignore":
+							[
+								"E501"
+							],
+							"pyflakes_ignore":
+							[
+							],
+							"pyflakes_ignore_import_*": true,
+							"sublimelinter": true,
+							"sublimelinter_delay": 0.0,
+							"sublimelinter_disable":
+							[
+							],
+							"sublimelinter_executable_map":
+							{
+							},
+							"sublimelinter_fill_outlines": false,
+							"sublimelinter_gutter_marks": false,
+							"sublimelinter_notes": false,
+							"sublimelinter_objj_check_ascii": false,
+							"sublimelinter_popup_errors_on_save": false,
+							"sublimelinter_syntax_map":
+							{
+								"Python Django": "python"
+							},
+							"sublimelinter_wrap_find": true,
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 146.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"replace":
+	{
+		"height": 64.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"data",
+				"lib/dw/Datawrapper.php"
+			],
+			[
+				"slim",
+				"lib/Slim/Slim.php"
+			],
+			[
+				"slimview",
+				"lib/Slim/View.php"
+			],
+			[
+				"inde",
+				"www/api/index.php"
+			],
+			[
+				"time",
+				"PartG/timeline.yaml"
+			],
+			[
+				"pro",
+				"PartG/process.py"
+			],
+			[
+				"js",
+				"site/js/jsdiff.js"
+			],
+			[
+				"css",
+				"site/css/custom.css"
+			],
+			[
+				"2002",
+				"src/partg-2002.txt"
+			],
+			[
+				"2003",
+				"src/partg-2003.txt"
+			],
+			[
+				"200",
+				"src/partg-2004.txt"
+			],
+			[
+				"2009",
+				"src/partg-2009.txt"
+			],
+			[
+				"198",
+				"src/partg-1983.txt"
+			],
+			[
+				"1979",
+				"src/partg-1979.txt"
+			],
+			[
+				"1967",
+				"src/partg-1967.txt"
+			],
+			[
+				"2004",
+				"src/partg-2004.txt"
+			],
+			[
+				"1999",
+				"src/partg-1999.txt"
+			],
+			[
+				"1997",
+				"src/partg-1997.txt"
+			],
+			[
+				"1995",
+				"src/partg-1995.txt"
+			],
+			[
+				"1994",
+				"src/partg-1994.txt"
+			],
+			[
+				"1984",
+				"src/partg-1984.txt"
+			],
+			[
+				"1983",
+				"src/partg-1983.txt"
+			],
+			[
+				"1",
+				"src/partg-1967.txt"
+			],
+			[
+				"197",
+				"src/partg-1974.txt"
+			],
+			[
+				"1969",
+				"src/partg-1969.txt"
+			],
+			[
+				"19",
+				"src/partg-1969.txt"
+			],
+			[
+				"94",
+				"src/partg-1994.txt"
+			],
+			[
+				"",
+				"src/partg-2004.txt"
+			],
+			[
+				"mapl",
+				"core/maplayerpath.coffee"
+			],
+			[
+				"path",
+				"core/path.coffee"
+			],
+			[
+				"core",
+				"core.coffee"
+			],
+			[
+				"en",
+				"lang/en.js"
+			],
+			[
+				"js/dw/li",
+				"js/dw/literacy-countries-gender.js"
+			],
+			[
+				"de",
+				"lang/de.js"
+			],
+			[
+				"vis-",
+				"_layouts/vis-literacy-countries.html"
+			],
+			[
+				"dw",
+				"_layouts/dw-frame.html"
+			],
+			[
+				"edu",
+				"js/dw/education-military.js"
+			],
+			[
+				"vis-m",
+				"_layouts/vis-education-military.html"
+			],
+			[
+				"vis",
+				"_layouts/vis-literacy-countries.html"
+			],
+			[
+				"regio",
+				"js/dw/literacy-regional.js"
+			],
+			[
+				"vis-li",
+				"_layouts/vis-literacy-regions.html"
+			],
+			[
+				"csv",
+				"js/jquery.csv.js"
+			],
+			[
+				"wi",
+				"css/widget.css"
+			],
+			[
+				"li",
+				"literacy-countries-gender.en.html"
+			],
+			[
+				"vi",
+				"_layouts/vis-literacy-regions.html"
+			],
+			[
+				"enro",
+				"_layouts/vis-enrolment.html"
+			],
+			[
+				"gender",
+				"js/dw/literacy-countries-gender.js"
+			],
+			[
+				"ed",
+				"education-military.html"
+			],
+			[
+				"mil",
+				"education-military.html"
+			],
+			[
+				"reg",
+				"js/dw/literacy-regional.js"
+			],
+			[
+				"lit",
+				"literacy-regional.html"
+			],
+			[
+				"liter",
+				"literacy-regional.html"
+			],
+			[
+				"de.",
+				"lang/de.js"
+			],
+			[
+				"wid",
+				"_layouts/widget-xl.html"
+			],
+			[
+				"med",
+				"js/medianetwork.js"
+			],
+			[
+				"st",
+				"css/styles.css"
+			],
+			[
+				"chrom",
+				"_posts/2011-12-13-chromajs.md"
+			],
+			[
+				"port",
+				"_layouts/portfolio.html"
+			],
+			[
+				"sty",
+				"css/styles.css"
+			],
+			[
+				"eur",
+				"_posts/2011-02-14-europes-energy.md"
+			],
+			[
+				"digi",
+				"_posts/2011-10-21-global-digital-divide.html"
+			],
+			[
+				"german",
+				"_posts/2011-11-08-german-energy.html"
+			],
+			[
+				"kart",
+				"_posts/2012-03-05-kartograph.html"
+			],
+			[
+				"stut",
+				"_posts/2011-12-01-stuttgart21.md"
+			],
+			[
+				"inco",
+				"_posts/2010-10-27-incomes-of-parliament-members.html"
+			],
+			[
+				"eure",
+				"_posts/2011-02-14-europes-energy.md"
+			],
+			[
+				"bub",
+				"_posts/2011-06-25-interactive-bubbletree.md"
+			],
+			[
+				"dist",
+				"_posts/2011-03-04-nuclear-distances.md"
+			],
+			[
+				"fr",
+				"_posts/2011-09-13-fraction-vs-conscience.html"
+			],
+			[
+				"pisa",
+				"_posts/2011-02-18-zeit-pisa.md"
+			],
+			[
+				"germ",
+				"_posts/2011-11-08-german-energy.html"
+			],
+			[
+				"zeit",
+				"_posts/2011-03-16-zeit-nuclear.md"
+			],
+			[
+				"nucl",
+				"_posts/2011-03-04-nuclear-distances.md"
+			],
+			[
+				"nuc",
+				"_posts/2011-03-04-nuclear-distances.html"
+			],
+			[
+				"bubble",
+				"_posts/2011-06-25-interactive-bubbletree.md"
+			],
+			[
+				"air",
+				"_posts/2011-01-16-airportnoisemap.html"
+			],
+			[
+				"inc",
+				"_posts/2010-10-27-incomes-of-parliament-members.html"
+			],
+			[
+				"party",
+				"_posts/2010-10-04-german-party-donations.md"
+			],
+			[
+				"frac",
+				"_posts/2011-09-13-fraction-vs-conscience.html"
+			],
+			[
+				"ka",
+				"_posts/2012-03-05-kartograph.html"
+			],
+			[
+				"classic",
+				"js/classic/galleria.classic.css"
+			],
+			[
+				"cor",
+				"_layouts/core.html"
+			],
+			[
+				"mili",
+				"education-military.html"
+			],
+			[
+				"literacy-c",
+				"js/dw/literacy-countries.js"
+			],
+			[
+				"map.j",
+				"data/map.json"
+			],
+			[
+				"region",
+				"js/dw/literacy-regional.js"
+			],
+			[
+				"literacym",
+				"literacymap.html"
+			],
+			[
+				"maps",
+				"css/mapstyles.css"
+			],
+			[
+				"enr",
+				"enrolment.html"
+			],
+			[
+				"data/",
+				"data/countries.csv"
+			],
+			[
+				"map",
+				"literacymap.html"
+			],
+			[
+				"une",
+				"data/unesco-5-enrolment-ratio.csv"
+			],
+			[
+				"d",
+				"lang/de.js"
+			],
+			[
+				"literacy-cou",
+				"js/dw/literacy-countries-gender.js"
+			],
+			[
+				"cou",
+				"literacy-countries.html"
+			],
+			[
+				"lay",
+				"_layouts/dw-frame.html"
+			],
+			[
+				"shape",
+				"layersource/shapefile.py"
+			],
+			[
+				"fea",
+				"geometry/feature.py"
+			],
+			[
+				"op",
+				"options.py"
+			],
+			[
+				"err",
+				"errors.py"
+			],
+			[
+				"cl",
+				"cli.py"
+			],
+			[
+				"shp",
+				"layersource/shplayer.py"
+			],
+			[
+				"poly",
+				"geometry/polygon.py"
+			],
+			[
+				"cyl",
+				"proj/cylindrical.py"
+			],
+			[
+				"p",
+				"proj/base.py"
+			],
+			[
+				"conic",
+				"proj/conic.py"
+			],
+			[
+				"dig",
+				"_posts/2011-10-21-global-digital-divide.html"
+			],
+			[
+				"_",
+				"_config.yml"
+			],
+			[
+				"boo",
+				"css/bootstrap.css"
+			],
+			[
+				"home",
+				"_layouts/home.html"
+			],
+			[
+				"sate",
+				"proj/azimuthal/satellite.py"
+			],
+			[
+				"azi",
+				"proj/azimuthal/azimuthal.py"
+			],
+			[
+				"line",
+				"geometry/line.py"
+			],
+			[
+				"svg",
+				"svg.py"
+			],
+			[
+				"cli",
+				"cli.py"
+			],
+			[
+				"fil",
+				"filter.py"
+			],
+			[
+				"sh",
+				"layersource/shplayer.py"
+			],
+			[
+				"kar",
+				"kartograph.py"
+			],
+			[
+				"bas",
+				"proj/base.py"
+			],
+			[
+				"gra",
+				"layersource/special/graticule.py"
+			],
+			[
+				"pol",
+				"geometry/polygon.py"
+			],
+			[
+				"bbo",
+				"geometry/bbox.py"
+			],
+			[
+				"bb",
+				"geometry/bbox.py"
+			],
+			[
+				"shap",
+				"layersource/shplayer.py"
+			],
+			[
+				"sat",
+				"proj/azimuthal/satellite.py"
+			],
+			[
+				"az",
+				"proj/azimuthal/azimuthal.py"
+			],
+			[
+				"geo",
+				"geometry/line.py"
+			],
+			[
+				"shpl",
+				"layersource/shplayer.py"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"selected_items":
+		[
+			[
+				"",
+				"/Users/gka/Incubator/dw/education/site/dw-education.sublime-project"
+			]
+		],
+		"width": 380.0
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": false,
+	"side_bar_width": 150.0,
+	"status_bar_visible": true
+}

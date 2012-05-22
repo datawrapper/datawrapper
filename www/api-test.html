@@ -12,19 +12,16 @@ h1,h2,h3,h4,h5 { font-weight: normal; }
 
 $(function() {
     $('#get-lang').click(function() {
-        $.ajax({
-            url: '/api/lang',
-            success: function(data) {
-                $('#get-lang-out').html(data);
-            }
-        })
+        $.getJSON('/api/lang', function(res) {
+            $('#get-lang-out').html(res.data.lang);
+        });
     });
 
     $('#set-lang').click(function() {
         $.ajax({
             url: '/api/lang',
             type: 'PUT',
-            data: $('#set-lang-val').val(),
+            data: JSON.stringify({ lang: $('#set-lang-val').val() }),
             processData: false,
             success: function(data) {
                 $('#set-lang-out').html(data);
@@ -55,6 +52,16 @@ $(function() {
             </div>
             <div class="span3">
                 <div id="get-lang-out" class="well">result will be shown here</div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="span3 offset2 form-inline">
+                <a id="set-lang" class="btn btn-primary">set language to..</a>
+                 <input id="set-lang-val" type="text" class="input-xlarge span1" value="de" />
+            </div>
+            <div class="span3">
+                <div id="set-lang-out" class="well">result will be shown here</div>
             </div>
         </div>
 
