@@ -10,11 +10,17 @@
  * @method     UserQuery orderByEmail($order = Criteria::ASC) Order by the email column
  * @method     UserQuery orderByPwd($order = Criteria::ASC) Order by the pwd column
  * @method     UserQuery orderByToken($order = Criteria::ASC) Order by the token column
+ * @method     UserQuery orderByRole($order = Criteria::ASC) Order by the role column
+ * @method     UserQuery orderByLanguage($order = Criteria::ASC) Order by the language column
+ * @method     UserQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  *
  * @method     UserQuery groupById() Group by the id column
  * @method     UserQuery groupByEmail() Group by the email column
  * @method     UserQuery groupByPwd() Group by the pwd column
  * @method     UserQuery groupByToken() Group by the token column
+ * @method     UserQuery groupByRole() Group by the role column
+ * @method     UserQuery groupByLanguage() Group by the language column
+ * @method     UserQuery groupByCreatedAt() Group by the created_at column
  *
  * @method     UserQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     UserQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -31,11 +37,17 @@
  * @method     User findOneByEmail(string $email) Return the first User filtered by the email column
  * @method     User findOneByPwd(string $pwd) Return the first User filtered by the pwd column
  * @method     User findOneByToken(string $token) Return the first User filtered by the token column
+ * @method     User findOneByRole(int $role) Return the first User filtered by the role column
+ * @method     User findOneByLanguage(string $language) Return the first User filtered by the language column
+ * @method     User findOneByCreatedAt(string $created_at) Return the first User filtered by the created_at column
  *
  * @method     array findById(int $id) Return User objects filtered by the id column
  * @method     array findByEmail(string $email) Return User objects filtered by the email column
  * @method     array findByPwd(string $pwd) Return User objects filtered by the pwd column
  * @method     array findByToken(string $token) Return User objects filtered by the token column
+ * @method     array findByRole(int $role) Return User objects filtered by the role column
+ * @method     array findByLanguage(string $language) Return User objects filtered by the language column
+ * @method     array findByCreatedAt(string $created_at) Return User objects filtered by the created_at column
  *
  * @package    propel.generator.datawrapper.om
  */
@@ -124,7 +136,7 @@ abstract class BaseUserQuery extends ModelCriteria
 	 */
 	protected function findPkSimple($key, $con)
 	{
-		$sql = 'SELECT `ID`, `EMAIL`, `PWD`, `TOKEN` FROM `user` WHERE `ID` = :p0';
+		$sql = 'SELECT `ID`, `EMAIL`, `PWD`, `TOKEN`, `ROLE`, `LANGUAGE`, `CREATED_AT` FROM `user` WHERE `ID` = :p0';
 		try {
 			$stmt = $con->prepare($sql);
 			$stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -317,6 +329,108 @@ abstract class BaseUserQuery extends ModelCriteria
 			}
 		}
 		return $this->addUsingAlias(UserPeer::TOKEN, $token, $comparison);
+	}
+
+	/**
+	 * Filter the query on the role column
+	 *
+	 * @param     mixed $role The value to use as filter
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    UserQuery The current query, for fluid interface
+	 */
+	public function filterByRole($role = null, $comparison = null)
+	{
+		$valueSet = UserPeer::getValueSet(UserPeer::ROLE);
+		if (is_scalar($role)) {
+			if (!in_array($role, $valueSet)) {
+				throw new PropelException(sprintf('Value "%s" is not accepted in this enumerated column', $role));
+			}
+			$role = array_search($role, $valueSet);
+		} elseif (is_array($role)) {
+			$convertedValues = array();
+			foreach ($role as $value) {
+				if (!in_array($value, $valueSet)) {
+					throw new PropelException(sprintf('Value "%s" is not accepted in this enumerated column', $value));
+				}
+				$convertedValues []= array_search($value, $valueSet);
+			}
+			$role = $convertedValues;
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+		}
+		return $this->addUsingAlias(UserPeer::ROLE, $role, $comparison);
+	}
+
+	/**
+	 * Filter the query on the language column
+	 *
+	 * Example usage:
+	 * <code>
+	 * $query->filterByLanguage('fooValue');   // WHERE language = 'fooValue'
+	 * $query->filterByLanguage('%fooValue%'); // WHERE language LIKE '%fooValue%'
+	 * </code>
+	 *
+	 * @param     string $language The value to use as filter.
+	 *              Accepts wildcards (* and % trigger a LIKE)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    UserQuery The current query, for fluid interface
+	 */
+	public function filterByLanguage($language = null, $comparison = null)
+	{
+		if (null === $comparison) {
+			if (is_array($language)) {
+				$comparison = Criteria::IN;
+			} elseif (preg_match('/[\%\*]/', $language)) {
+				$language = str_replace('*', '%', $language);
+				$comparison = Criteria::LIKE;
+			}
+		}
+		return $this->addUsingAlias(UserPeer::LANGUAGE, $language, $comparison);
+	}
+
+	/**
+	 * Filter the query on the created_at column
+	 *
+	 * Example usage:
+	 * <code>
+	 * $query->filterByCreatedAt('2011-03-14'); // WHERE created_at = '2011-03-14'
+	 * $query->filterByCreatedAt('now'); // WHERE created_at = '2011-03-14'
+	 * $query->filterByCreatedAt(array('max' => 'yesterday')); // WHERE created_at > '2011-03-13'
+	 * </code>
+	 *
+	 * @param     mixed $createdAt The value to use as filter.
+	 *              Values can be integers (unix timestamps), DateTime objects, or strings.
+	 *              Empty strings are treated as NULL.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    UserQuery The current query, for fluid interface
+	 */
+	public function filterByCreatedAt($createdAt = null, $comparison = null)
+	{
+		if (is_array($createdAt)) {
+			$useMinMax = false;
+			if (isset($createdAt['min'])) {
+				$this->addUsingAlias(UserPeer::CREATED_AT, $createdAt['min'], Criteria::GREATER_EQUAL);
+				$useMinMax = true;
+			}
+			if (isset($createdAt['max'])) {
+				$this->addUsingAlias(UserPeer::CREATED_AT, $createdAt['max'], Criteria::LESS_EQUAL);
+				$useMinMax = true;
+			}
+			if ($useMinMax) {
+				return $this;
+			}
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+		}
+		return $this->addUsingAlias(UserPeer::CREATED_AT, $createdAt, $comparison);
 	}
 
 	/**

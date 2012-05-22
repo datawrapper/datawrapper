@@ -19,5 +19,8 @@
     <column name="email" type="varchar" size="255" required="true" />
     <column name="pwd" type="varchar" size="255" required="true" />
     <column name="token" type="varchar" size="255" required="true" />
+    <column name="role" type="enum" valueSet="admin,editor" required="true" />
+    <column name="language" type="varchar" size="5" default="en" />
+    <column name="created_at" type="timestamp" required="true" />
   </table>
 </database>

@@ -23,13 +23,13 @@ abstract class BaseUserPeer {
 	const TM_CLASS = 'UserTableMap';
 
 	/** The total number of columns. */
-	const NUM_COLUMNS = 4;
+	const NUM_COLUMNS = 7;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
 
 	/** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-	const NUM_HYDRATE_COLUMNS = 4;
+	const NUM_HYDRATE_COLUMNS = 7;
 
 	/** the column name for the ID field */
 	const ID = 'user.ID';
@@ -42,6 +42,19 @@ abstract class BaseUserPeer {
 
 	/** the column name for the TOKEN field */
 	const TOKEN = 'user.TOKEN';
+
+	/** the column name for the ROLE field */
+	const ROLE = 'user.ROLE';
+
+	/** the column name for the LANGUAGE field */
+	const LANGUAGE = 'user.LANGUAGE';
+
+	/** the column name for the CREATED_AT field */
+	const CREATED_AT = 'user.CREATED_AT';
+
+	/** The enumerated values for the ROLE field */
+	const ROLE_ADMIN = 'admin';
+	const ROLE_EDITOR = 'editor';
 
 	/** The default string format for model objects of the related table **/
 	const DEFAULT_STRING_FORMAT = 'YAML';
@@ -62,12 +75,12 @@ abstract class BaseUserPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	protected static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'Email', 'Pwd', 'Token', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'email', 'pwd', 'token', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, self::EMAIL, self::PWD, self::TOKEN, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'EMAIL', 'PWD', 'TOKEN', ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'email', 'pwd', 'token', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'Email', 'Pwd', 'Token', 'Role', 'Language', 'CreatedAt', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'email', 'pwd', 'token', 'role', 'language', 'createdAt', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::EMAIL, self::PWD, self::TOKEN, self::ROLE, self::LANGUAGE, self::CREATED_AT, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'EMAIL', 'PWD', 'TOKEN', 'ROLE', 'LANGUAGE', 'CREATED_AT', ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'email', 'pwd', 'token', 'role', 'language', 'created_at', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
 	);
 
 	/**
@@ -77,12 +90,20 @@ abstract class BaseUserPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	protected static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Email' => 1, 'Pwd' => 2, 'Token' => 3, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'email' => 1, 'pwd' => 2, 'token' => 3, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::EMAIL => 1, self::PWD => 2, self::TOKEN => 3, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'EMAIL' => 1, 'PWD' => 2, 'TOKEN' => 3, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'email' => 1, 'pwd' => 2, 'token' => 3, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Email' => 1, 'Pwd' => 2, 'Token' => 3, 'Role' => 4, 'Language' => 5, 'CreatedAt' => 6, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'email' => 1, 'pwd' => 2, 'token' => 3, 'role' => 4, 'language' => 5, 'createdAt' => 6, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::EMAIL => 1, self::PWD => 2, self::TOKEN => 3, self::ROLE => 4, self::LANGUAGE => 5, self::CREATED_AT => 6, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'EMAIL' => 1, 'PWD' => 2, 'TOKEN' => 3, 'ROLE' => 4, 'LANGUAGE' => 5, 'CREATED_AT' => 6, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'email' => 1, 'pwd' => 2, 'token' => 3, 'role' => 4, 'language' => 5, 'created_at' => 6, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
+	);
+
+	/** The enumerated values for this table */
+	protected static $enumValueSets = array(
+		self::ROLE => array(
+			UserPeer::ROLE_ADMIN,
+			UserPeer::ROLE_EDITOR,
+		),
 	);
 
 	/**
@@ -123,6 +144,25 @@ abstract class BaseUserPeer {
 	}
 
 	/**
+	 * Gets the list of values for all ENUM columns
+	 * @return array
+	 */
+	public static function getValueSets()
+	{
+	  return UserPeer::$enumValueSets;
+	}
+
+	/**
+	 * Gets the list of values for an ENUM column
+	 * @return array list of possible values for the column
+	 */
+	public static function getValueSet($colname)
+	{
+		$valueSets = self::getValueSets();
+		return $valueSets[$colname];
+	}
+
+	/**
 	 * Convenience method which changes table.column to alias.column.
 	 *
 	 * Using this method you can maintain SQL abstraction while using column aliases.
@@ -158,11 +198,17 @@ abstract class BaseUserPeer {
 			$criteria->addSelectColumn(UserPeer::EMAIL);
 			$criteria->addSelectColumn(UserPeer::PWD);
 			$criteria->addSelectColumn(UserPeer::TOKEN);
+			$criteria->addSelectColumn(UserPeer::ROLE);
+			$criteria->addSelectColumn(UserPeer::LANGUAGE);
+			$criteria->addSelectColumn(UserPeer::CREATED_AT);
 		} else {
 			$criteria->addSelectColumn($alias . '.ID');
 			$criteria->addSelectColumn($alias . '.EMAIL');
 			$criteria->addSelectColumn($alias . '.PWD');
 			$criteria->addSelectColumn($alias . '.TOKEN');
+			$criteria->addSelectColumn($alias . '.ROLE');
+			$criteria->addSelectColumn($alias . '.LANGUAGE');
+			$criteria->addSelectColumn($alias . '.CREATED_AT');
 		}
 	}
 

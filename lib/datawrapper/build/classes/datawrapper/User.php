@@ -15,4 +15,11 @@
  */
 class User extends BaseUser {
 
+    public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false) {
+        $arr = parent::toArray($keyType, $includeLazyLoadColumns, $alreadyDumpedObjects, $includeForeignObjects);
+        unset($arr['Pwd']);  // never transmit passwords
+        unset($arr['Token']);  // never transmit passwords
+        return $arr;
+    }
+
 } // User

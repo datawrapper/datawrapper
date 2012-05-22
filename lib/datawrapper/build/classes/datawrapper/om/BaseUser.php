@@ -55,6 +55,25 @@ abstract class BaseUser extends BaseObject  implements Persistent
 	protected $token;
 
 	/**
+	 * The value for the role field.
+	 * @var        int
+	 */
+	protected $role;
+
+	/**
+	 * The value for the language field.
+	 * Note: this column has a database default value of: 'en'
+	 * @var        string
+	 */
+	protected $language;
+
+	/**
+	 * The value for the created_at field.
+	 * @var        string
+	 */
+	protected $created_at;
+
+	/**
 	 * @var        array Chart[] Collection to store aggregation of Chart objects.
 	 */
 	protected $collCharts;
@@ -78,6 +97,27 @@ abstract class BaseUser extends BaseObject  implements Persistent
 	 * @var		array
 	 */
 	protected $chartsScheduledForDeletion = null;
+
+	/**
+	 * Applies default values to this object.
+	 * This method should be called from the object's constructor (or
+	 * equivalent initialization method).
+	 * @see        __construct()
+	 */
+	public function applyDefaultValues()
+	{
+		$this->language = 'en';
+	}
+
+	/**
+	 * Initializes internal state of BaseUser object.
+	 * @see        applyDefaults()
+	 */
+	public function __construct()
+	{
+		parent::__construct();
+		$this->applyDefaultValues();
+	}
 
 	/**
 	 * Get the [id] column value.
@@ -117,6 +157,71 @@ abstract class BaseUser extends BaseObject  implements Persistent
 	public function getToken()
 	{
 		return $this->token;
+	}
+
+	/**
+	 * Get the [role] column value.
+	 * 
+	 * @return     int
+	 */
+	public function getRole()
+	{
+		if (null === $this->role) {
+			return null;
+		}
+		$valueSet = UserPeer::getValueSet(UserPeer::ROLE);
+		if (!isset($valueSet[$this->role])) {
+			throw new PropelException('Unknown stored enum key: ' . $this->role);
+		}
+		return $valueSet[$this->role];
+	}
+
+	/**
+	 * Get the [language] column value.
+	 * 
+	 * @return     string
+	 */
+	public function getLanguage()
+	{
+		return $this->language;
+	}
+
+	/**
+	 * Get the [optionally formatted] temporal [created_at] column value.
+	 * 
+	 *
+	 * @param      string $format The date/time format string (either date()-style or strftime()-style).
+	 *							If format is NULL, then the raw DateTime object will be returned.
+	 * @return     mixed Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00 00:00:00
+	 * @throws     PropelException - if unable to parse/validate the date/time value.
+	 */
+	public function getCreatedAt($format = 'Y-m-d H:i:s')
+	{
+		if ($this->created_at === null) {
+			return null;
+		}
+
+
+		if ($this->created_at === '0000-00-00 00:00:00') {
+			// while technically this is not a default value of NULL,
+			// this seems to be closest in meaning.
+			return null;
+		} else {
+			try {
+				$dt = new DateTime($this->created_at);
+			} catch (Exception $x) {
+				throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->created_at, true), $x);
+			}
+		}
+
+		if ($format === null) {
+			// Because propel.useDateTimeClass is TRUE, we return a DateTime object.
+			return $dt;
+		} elseif (strpos($format, '%') !== false) {
+			return strftime($format, $dt->format('U'));
+		} else {
+			return $dt->format($format);
+		}
 	}
 
 	/**
@@ -200,6 +305,72 @@ abstract class BaseUser extends BaseObject  implements Persistent
 	} // setToken()
 
 	/**
+	 * Set the value of [role] column.
+	 * 
+	 * @param      int $v new value
+	 * @return     User The current object (for fluent API support)
+	 */
+	public function setRole($v)
+	{
+		if ($v !== null) {
+			$valueSet = UserPeer::getValueSet(UserPeer::ROLE);
+			if (!in_array($v, $valueSet)) {
+				throw new PropelException(sprintf('Value "%s" is not accepted in this enumerated column', $v));
+			}
+			$v = array_search($v, $valueSet);
+		}
+
+		if ($this->role !== $v) {
+			$this->role = $v;
+			$this->modifiedColumns[] = UserPeer::ROLE;
+		}
+
+		return $this;
+	} // setRole()
+
+	/**
+	 * Set the value of [language] column.
+	 * 
+	 * @param      string $v new value
+	 * @return     User The current object (for fluent API support)
+	 */
+	public function setLanguage($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->language !== $v) {
+			$this->language = $v;
+			$this->modifiedColumns[] = UserPeer::LANGUAGE;
+		}
+
+		return $this;
+	} // setLanguage()
+
+	/**
+	 * Sets the value of [created_at] column to a normalized version of the date/time value specified.
+	 * 
+	 * @param      mixed $v string, integer (timestamp), or DateTime value.
+	 *               Empty strings are treated as NULL.
+	 * @return     User The current object (for fluent API support)
+	 */
+	public function setCreatedAt($v)
+	{
+		$dt = PropelDateTime::newInstance($v, null, 'DateTime');
+		if ($this->created_at !== null || $dt !== null) {
+			$currentDateAsString = ($this->created_at !== null && $tmpDt = new DateTime($this->created_at)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+			$newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
+			if ($currentDateAsString !== $newDateAsString) {
+				$this->created_at = $newDateAsString;
+				$this->modifiedColumns[] = UserPeer::CREATED_AT;
+			}
+		} // if either are not null
+
+		return $this;
+	} // setCreatedAt()
+
+	/**
 	 * Indicates whether the columns in this object are only set to default values.
 	 *
 	 * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -209,6 +380,10 @@ abstract class BaseUser extends BaseObject  implements Persistent
 	 */
 	public function hasOnlyDefaultValues()
 	{
+			if ($this->language !== 'en') {
+				return false;
+			}
+
 		// otherwise, everything was equal, so return TRUE
 		return true;
 	} // hasOnlyDefaultValues()
@@ -235,6 +410,9 @@ abstract class BaseUser extends BaseObject  implements Persistent
 			$this->email = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
 			$this->pwd = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
 			$this->token = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+			$this->role = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
+			$this->language = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+			$this->created_at = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -243,7 +421,7 @@ abstract class BaseUser extends BaseObject  implements Persistent
 				$this->ensureConsistency();
 			}
 
-			return $startcol + 4; // 4 = UserPeer::NUM_HYDRATE_COLUMNS.
+			return $startcol + 7; // 7 = UserPeer::NUM_HYDRATE_COLUMNS.
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating User object", $e);
@@ -482,6 +660,15 @@ abstract class BaseUser extends BaseObject  implements Persistent
 		if ($this->isColumnModified(UserPeer::TOKEN)) {
 			$modifiedColumns[':p' . $index++]  = '`TOKEN`';
 		}
+		if ($this->isColumnModified(UserPeer::ROLE)) {
+			$modifiedColumns[':p' . $index++]  = '`ROLE`';
+		}
+		if ($this->isColumnModified(UserPeer::LANGUAGE)) {
+			$modifiedColumns[':p' . $index++]  = '`LANGUAGE`';
+		}
+		if ($this->isColumnModified(UserPeer::CREATED_AT)) {
+			$modifiedColumns[':p' . $index++]  = '`CREATED_AT`';
+		}
 
 		$sql = sprintf(
 			'INSERT INTO `user` (%s) VALUES (%s)',
@@ -504,6 +691,15 @@ abstract class BaseUser extends BaseObject  implements Persistent
 						break;
 					case '`TOKEN`':
 						$stmt->bindValue($identifier, $this->token, PDO::PARAM_STR);
+						break;
+					case '`ROLE`':
+						$stmt->bindValue($identifier, $this->role, PDO::PARAM_INT);
+						break;
+					case '`LANGUAGE`':
+						$stmt->bindValue($identifier, $this->language, PDO::PARAM_STR);
+						break;
+					case '`CREATED_AT`':
+						$stmt->bindValue($identifier, $this->created_at, PDO::PARAM_STR);
 						break;
 				}
 			}
@@ -655,6 +851,15 @@ abstract class BaseUser extends BaseObject  implements Persistent
 			case 3:
 				return $this->getToken();
 				break;
+			case 4:
+				return $this->getRole();
+				break;
+			case 5:
+				return $this->getLanguage();
+				break;
+			case 6:
+				return $this->getCreatedAt();
+				break;
 			default:
 				return null;
 				break;
@@ -688,6 +893,9 @@ abstract class BaseUser extends BaseObject  implements Persistent
 			$keys[1] => $this->getEmail(),
 			$keys[2] => $this->getPwd(),
 			$keys[3] => $this->getToken(),
+			$keys[4] => $this->getRole(),
+			$keys[5] => $this->getLanguage(),
+			$keys[6] => $this->getCreatedAt(),
 		);
 		if ($includeForeignObjects) {
 			if (null !== $this->collCharts) {
@@ -736,6 +944,19 @@ abstract class BaseUser extends BaseObject  implements Persistent
 			case 3:
 				$this->setToken($value);
 				break;
+			case 4:
+				$valueSet = UserPeer::getValueSet(UserPeer::ROLE);
+				if (isset($valueSet[$value])) {
+					$value = $valueSet[$value];
+				}
+				$this->setRole($value);
+				break;
+			case 5:
+				$this->setLanguage($value);
+				break;
+			case 6:
+				$this->setCreatedAt($value);
+				break;
 		} // switch()
 	}
 
@@ -764,6 +985,9 @@ abstract class BaseUser extends BaseObject  implements Persistent
 		if (array_key_exists($keys[1], $arr)) $this->setEmail($arr[$keys[1]]);
 		if (array_key_exists($keys[2], $arr)) $this->setPwd($arr[$keys[2]]);
 		if (array_key_exists($keys[3], $arr)) $this->setToken($arr[$keys[3]]);
+		if (array_key_exists($keys[4], $arr)) $this->setRole($arr[$keys[4]]);
+		if (array_key_exists($keys[5], $arr)) $this->setLanguage($arr[$keys[5]]);
+		if (array_key_exists($keys[6], $arr)) $this->setCreatedAt($arr[$keys[6]]);
 	}
 
 	/**
@@ -779,6 +1003,9 @@ abstract class BaseUser extends BaseObject  implements Persistent
 		if ($this->isColumnModified(UserPeer::EMAIL)) $criteria->add(UserPeer::EMAIL, $this->email);
 		if ($this->isColumnModified(UserPeer::PWD)) $criteria->add(UserPeer::PWD, $this->pwd);
 		if ($this->isColumnModified(UserPeer::TOKEN)) $criteria->add(UserPeer::TOKEN, $this->token);
+		if ($this->isColumnModified(UserPeer::ROLE)) $criteria->add(UserPeer::ROLE, $this->role);
+		if ($this->isColumnModified(UserPeer::LANGUAGE)) $criteria->add(UserPeer::LANGUAGE, $this->language);
+		if ($this->isColumnModified(UserPeer::CREATED_AT)) $criteria->add(UserPeer::CREATED_AT, $this->created_at);
 
 		return $criteria;
 	}
@@ -844,6 +1071,9 @@ abstract class BaseUser extends BaseObject  implements Persistent
 		$copyObj->setEmail($this->getEmail());
 		$copyObj->setPwd($this->getPwd());
 		$copyObj->setToken($this->getToken());
+		$copyObj->setRole($this->getRole());
+		$copyObj->setLanguage($this->getLanguage());
+		$copyObj->setCreatedAt($this->getCreatedAt());
 
 		if ($deepCopy && !$this->startCopy) {
 			// important: temporarily setNew(false) because this affects the behavior of
@@ -1079,9 +1309,13 @@ abstract class BaseUser extends BaseObject  implements Persistent
 		$this->email = null;
 		$this->pwd = null;
 		$this->token = null;
+		$this->role = null;
+		$this->language = null;
+		$this->created_at = null;
 		$this->alreadyInSave = false;
 		$this->alreadyInValidation = false;
 		$this->clearAllReferences();
+		$this->applyDefaultValues();
 		$this->resetModified();
 		$this->setNew(true);
 		$this->setDeleted(false);
