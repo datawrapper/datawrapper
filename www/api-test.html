@@ -6,7 +6,7 @@
    <script type="text/javascript" src="/static/vendor/bootstrap/js/bootstrap.min.js"></script>
    <script type="text/javascript" src="/static/vendor/bootstrap/js/bootstrap-alert.js"></script>
    <link rel="stylesheet" type="text/css" href="/static/vendor/bootstrap/css/bootstrap.css">
-   <link rel="stylesheet" type="text/css" href="/static/vendor/bootstrap/css/bootstrap-united.css">
+   <link rel="stylesheet" type="text/css" href="/static/vendor/bootstrap/css/bootstrap-datawrapper.css">
    <style type="text/css">
 .input-xlarge { height: 28px; }
 h1,h2,h3,h4,h5 { font-weight: normal; }
@@ -64,7 +64,7 @@ function log(id, json) {
          <div class="span12">
             <div class="page-header">
                <h2>Datawrapper JSON API Test Page</h2>
-               <small>just a few buttons to test the api</small>
+               <small>just a few buttons to test the <a href="#">api</a></small>
             </div>
          </div>
       </div>
@@ -145,64 +145,14 @@ function log(id, json) {
          </script>
       </div>
 
-      <!-- change user password -->
-
-      <div class="row">
-         <div class="span2">users/:id</div>
-         <div class="span1">PUT</div>
-         <div class="span5 form-vertical">
-            <input id="change-user-pwd" type="text" class="input-xlarge span3" placeholder="password" />
-            <input id="change-user-pwd-2" type="text" class="input-xlarge span3" placeholder="repeat password" /><br />
-            <a id="change-user" class="btn btn-primary">change password</a>
-         </div>
-         <div class="span4">
-            <div id="change-user-out" class="output">change password of logged user</div>
-         </div>
-         <script type="text/javascript">
-            $.getJSON('/api/auth/salt', function(res) {
-               if (res.status == 'ok') {
-                  $('#change-user').data('salt', res.data);
-               }
-            });
-
-            $('#change-user').click(function() {
-
-               var pwd = $.trim($('#change-user-pwd').val()),
-                  pwd2 = $.trim($('#change-user-pwd-2').val());
-               if (pwd == pwd2) {
-                  if (checkPwd(pwd)) {
-
-                     var payload = {
-                        pwd: CryptoJS.HmacSHA256($('#register-pwd').val(), $('#register').data('salt')),
-                        pwd2: CryptoJS.HmacSHA256($('#register-pwd-2').val(), $('#register').data('salt')),
-                     };
-
-                     $.ajax({
-                        url: '/api/users',
-                        type: 'PUT',
-                        data: JSON.stringify(payload),
-                        success: function(data) {
-                           log('register-out', data);
-                        }
-                     });
-                  } else {
-                     alert('Error: password is to unsecure. please chose a password with at least 8 characters');
-                  }
-               } else {
-                  alert('Error: password mismatch');
-               }
-            });
-         </script>
-      </div>
-
       <!-- login user -->
 
       <div class="row sep">
          <div class="span2">auth/login</div>
          <div class="span1">POST</div>
          <div class="span5 form-inline">
-            <input id="login-email" type="text" class="input-xlarge span2" placeholder="email" />
-            <input id="login-pwd" type="password" class="input-xlarge span2" placeholder="password" />
+            <input id="login-email" type="text" class="input-xlarge span2" value="" placeholder="email" />
+            <input id="login-pwd" type="password" class="input-xlarge span2" value="" placeholder="password" />
             <a id="login" class="btn btn-primary">login</a>
          </div>
          <div class="span4">
@@ -218,46 +168,27 @@ function log(id, json) {
 
             $('#login').click(function() {
                var lg = $('#login'), hmac = CryptoJS.HmacSHA256,
-                  hash = hmac(hmac($('#login-pwd').val(), lg.data('salt')).toString(), String(lg.data('time'))).toString(),
+                  pwd = $('#login-pwd').val(),
+                  hash = hmac(hmac(pwd, lg.data('salt')).toString(), String(lg.data('time'))).toString(),
                   payload = {
                      email: $('#login-email').val(),
                      pwhash: hash,
                      time: $('#login').data('time')
                   };
-
-               $('#login-pwd').val('');
-               $.ajax({
-                  url: '/api/auth/login',
-                  type: 'POST',
-                  data: JSON.stringify(payload),
-                  success: function(data) {
-                     log('login-out', data);
-                  }
-               });
-            });
-         </script>
-      </div>
-
-      <!-- logout current user -->
-
-      <div class="row">
-         <div class="span2">auth/logout</div>
-         <div class="span1">POST</div>
-         <div class="span5 form-inline">
-            <a id="logout" class="btn btn-primary">logout</a>
-         </div>
-         <div class="span4">
-            <div id="logout-out" class="output">logout current user</div>
-         </div>
-         <script type="text/javascript">
-            $('#logout').click(function() {
-               $.ajax({
-                  url: '/api/auth/logout',
-                  type: 'POST',
-                  success: function(data) {
-                     log('logout-out', data);
-                  }
-               });
+               if (checkPwd(pwd)) {
+                  $('#login-email').val('');
+                  $('#login-pwd').val('');
+                  $.ajax({
+                     url: '/api/auth/login',
+                     type: 'POST',
+                     data: JSON.stringify(payload),
+                     success: function(data) {
+                        log('login-out', data);
+                     }
+                  });
+               } else {
+                  alert('Error: password is to unsecure. please chose a password with at least 8 characters');
+               }
             });
          </script>
       </div>
@@ -313,6 +244,65 @@ function log(id, json) {
          </script>
       </div>
 
+      <!-- change user password -->
+
+      <div class="row">
+         <div class="span2">users/:id</div>
+         <div class="span1">PUT</div>
+         <div class="span5 form-vertical">
+            <input id="change-user-pwd-old" type="password" class="input-xlarge span3" value="" placeholder="old password" />
+            <input id="change-user-pwd" type="password" class="input-xlarge span3" value="" placeholder="new password" />
+            <input id="change-user-pwd-2" type="password" class="input-xlarge span3" value="" placeholder="confirm new password" /><br />
+            <a id="change-user" class="btn btn-primary">change password</a>
+         </div>
+         <div class="span4">
+            <div id="change-user-out" class="output">change password of logged user</div>
+         </div>
+         <script type="text/javascript">
+            $.getJSON('/api/auth/salt', function(res) {
+               if (res.status == 'ok') {
+                  $('#change-user').data('salt', res.data.salt);
+                  $('#change-user').data('time', res.data.time);
+               }
+            });
+
+            $('#change-user').click(function() {
+
+               var pwd = $.trim($('#change-user-pwd').val()),
+                   pwd2 = $.trim($('#change-user-pwd-2').val());
+               if (pwd == pwd2) {
+                  if (checkPwd(pwd)) {
+
+                     var lg = $('#change-user'), hmac = CryptoJS.HmacSHA256,
+                     hash = hmac(hmac($('#change-user-pwd-old').val(), lg.data('salt')).toString(), String(lg.data('time'))).toString(),
+                     payload = {
+                        oldpwhash: hash,
+                        time: lg.data('time'),
+                        pwd: CryptoJS.HmacSHA256($('#change-user-pwd').val(), $('#register').data('salt')).toString()
+                     };
+
+                     $('#change-user-pwd').val('');
+                     $('#change-user-pwd-2').val('');
+                     $('#change-user-pwd-old').val('');
+
+                     $.ajax({
+                        url: '/api/users/current',
+                        type: 'PUT',
+                        data: JSON.stringify(payload),
+                        success: function(data) {
+                           log('change-user-out', data);
+                        }
+                     });
+                  } else {
+                     alert('Error: password is to unsecure. please chose a password with at least 8 characters');
+                  }
+               } else {
+                  alert('Error: password mismatch');
+               }
+            });
+         </script>
+      </div>
+
       <!-- add a new empty chart -->
 
       <div class="row sep">
@@ -350,6 +340,8 @@ function log(id, json) {
          </div>
       </div>
 
+      <!-- update chart metadata -->
+
       <div class="row">
          <div class="span1 offset2">PUT</div>
          <div class="span5 form-inline">
@@ -359,6 +351,46 @@ function log(id, json) {
          <div class="span4">
             <div id="set-lang-out" class="output"></div>
          </div>
+      </div>
+
+      <!-- upload chart data -->
+
+      <div class="row">
+         <div class="span2">charts/:id/data</div>
+         <div class="span1">PUT</div>
+         <div class="span5 form-inline">
+            <input id="get-chart-id" type="text" class="input-xlarge span2" placeholder="chart-id" />
+            <a id="get-chart" class="btn btn-primary">upload chart data</a>
+            <div>- or -</div>
+
+         </div>
+         <div class="span4">
+            <div id="get-chart-out" class="output">get chart info</div>
+         </div>
+      </div>
+
+      <!-- logout current user -->
+
+      <div class="row">
+         <div class="span2">auth/logout</div>
+         <div class="span1">POST</div>
+         <div class="span5 form-inline">
+            <a id="logout" class="btn btn-primary">logout</a>
+         </div>
+         <div class="span4">
+            <div id="logout-out" class="output">logout current user</div>
+         </div>
+         <script type="text/javascript">
+            $('#logout').click(function() {
+               $.ajax({
+                  url: '/api/auth/logout',
+                  type: 'POST',
+                  success: function(data) {
+                     log('logout-out', data);
+                  }
+               });
+            });
+         </script>
       </div>
 
    </div>

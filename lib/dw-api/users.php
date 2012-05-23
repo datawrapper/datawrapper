@@ -39,20 +39,31 @@ $app->post('/users', function() use ($app) {
 
 
 /*
- * update an existing user
+ * set a new password
  * @needs admin or existing user
  */
 $app->put('/users/:id', function($user_id) use ($app) {
-    $data = json_decode($app->request()->getBody());
-    $user = new User();
-    $user->setCreatedAt(time());
-    $user->setEmail($data->email);
-    $user->setRole('pending');
-    $user->setPwd($data->pwd);
-    $user->save();
-
-    $result = $user->toArray();
-    ok($result);
+    $payload = json_decode($app->request()->getBody());
+    $curUser = DatawrapperSession::getUser();
+    if ($curUser->isLoggedIn()) {
+        if ($user_id == 'current' || $curUser->getId() === $user_id) {
+            $user = $curUser;
+        } else if ($curUser->isAdmin()) {
+            $user = UserQuery::create()->findPK($user_id);
+        }
+        if (!empty($user)) {
+            $hash = hash_hmac('sha256', $user->getPwd(), $payload->time);
+            if ($hash === $payload->oldpwhash || $curUser->isAdmin()) {
+                $user->setPwd($payload->pwd);
+                $user->save();
+                ok();
+            }
+        } else {
+            error('user-not-found', 'no user found with that id');
+        }
+    } else {
+        error('need-login', 'you must be logged in to do that');
+    }
 });
 
 

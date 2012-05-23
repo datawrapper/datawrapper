@@ -27,4 +27,8 @@ class User extends BaseUser {
         return $this->getRole() != 'guest';
     }
 
+    public function isAdmin() {
+        return $this->getRole() == 'admin';
+    }
+
 } // User
