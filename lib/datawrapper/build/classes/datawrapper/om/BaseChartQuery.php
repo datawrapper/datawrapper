@@ -37,7 +37,7 @@
  * @method     Chart findOne(PropelPDO $con = null) Return the first Chart matching the query
  * @method     Chart findOneOrCreate(PropelPDO $con = null) Return the first Chart matching the query, or a new Chart object populated from the query conditions when no match is found
  *
- * @method     Chart findOneById(int $id) Return the first Chart filtered by the id column
+ * @method     Chart findOneById(string $id) Return the first Chart filtered by the id column
  * @method     Chart findOneByTitle(string $title) Return the first Chart filtered by the title column
  * @method     Chart findOneByTheme(string $theme) Return the first Chart filtered by the theme column
  * @method     Chart findOneByCreatedAt(string $created_at) Return the first Chart filtered by the created_at column
@@ -47,7 +47,7 @@
  * @method     Chart findOneByDeletedAt(string $deleted_at) Return the first Chart filtered by the deleted_at column
  * @method     Chart findOneByAuthorId(int $author_id) Return the first Chart filtered by the author_id column
  *
- * @method     array findById(int $id) Return Chart objects filtered by the id column
+ * @method     array findById(string $id) Return Chart objects filtered by the id column
  * @method     array findByTitle(string $title) Return Chart objects filtered by the title column
  * @method     array findByTheme(string $theme) Return Chart objects filtered by the theme column
  * @method     array findByCreatedAt(string $created_at) Return Chart objects filtered by the created_at column
@@ -147,7 +147,7 @@ abstract class BaseChartQuery extends ModelCriteria
 		$sql = 'SELECT `ID`, `TITLE`, `THEME`, `CREATED_AT`, `LAST_MODIFIED_AT`, `METADATA`, `DELETED`, `DELETED_AT`, `AUTHOR_ID` FROM `chart` WHERE `ID` = :p0';
 		try {
 			$stmt = $con->prepare($sql);
-			$stmt->bindValue(':p0', $key, PDO::PARAM_INT);
+			$stmt->bindValue(':p0', $key, PDO::PARAM_STR);
 			$stmt->execute();
 		} catch (Exception $e) {
 			Propel::log($e->getMessage(), Propel::LOG_ERR);
@@ -234,23 +234,25 @@ abstract class BaseChartQuery extends ModelCriteria
 	 *
 	 * Example usage:
 	 * <code>
-	 * $query->filterById(1234); // WHERE id = 1234
-	 * $query->filterById(array(12, 34)); // WHERE id IN (12, 34)
-	 * $query->filterById(array('min' => 12)); // WHERE id > 12
+	 * $query->filterById('fooValue');   // WHERE id = 'fooValue'
+	 * $query->filterById('%fooValue%'); // WHERE id LIKE '%fooValue%'
 	 * </code>
 	 *
-	 * @param     mixed $id The value to use as filter.
-	 *              Use scalar values for equality.
-	 *              Use array values for in_array() equivalent.
-	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+	 * @param     string $id The value to use as filter.
+	 *              Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ChartQuery The current query, for fluid interface
 	 */
 	public function filterById($id = null, $comparison = null)
 	{
-		if (is_array($id) && null === $comparison) {
-			$comparison = Criteria::IN;
+		if (null === $comparison) {
+			if (is_array($id)) {
+				$comparison = Criteria::IN;
+			} elseif (preg_match('/[\%\*]/', $id)) {
+				$id = str_replace('*', '%', $id);
+				$comparison = Criteria::LIKE;
+			}
 		}
 		return $this->addUsingAlias(ChartPeer::ID, $id, $comparison);
 	}

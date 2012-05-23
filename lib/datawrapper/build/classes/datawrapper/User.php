@@ -19,8 +19,12 @@ class User extends BaseUser {
         $arr = parent::toArray($keyType, $includeLazyLoadColumns, $alreadyDumpedObjects, $includeForeignObjects);
         unset($arr['Pwd']);  // never transmit passwords
         unset($arr['Token']);  // never transmit passwords
-        unset($arr['Role']);  // never transmit passwords
+        // unset($arr['Role']);  // never transmit passwords
         return $arr;
+    }
+
+    public function isLoggedIn() {
+        return $this->getRole() != 'guest';
     }
 
 } // User

@@ -36,9 +36,9 @@ class ChartTableMap extends TableMap
 		$this->setPhpName('Chart');
 		$this->setClassname('Chart');
 		$this->setPackage('datawrapper');
-		$this->setUseIdGenerator(true);
+		$this->setUseIdGenerator(false);
 		// columns
-		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
+		$this->addPrimaryKey('ID', 'Id', 'VARCHAR', true, 5, null);
 		$this->addColumn('TITLE', 'Title', 'VARCHAR', true, 255, null);
 		$this->addColumn('THEME', 'Theme', 'VARCHAR', true, 255, null);
 		$this->addColumn('CREATED_AT', 'CreatedAt', 'TIMESTAMP', true, null, null);

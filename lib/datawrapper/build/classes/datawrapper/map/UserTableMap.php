@@ -39,13 +39,15 @@ class UserTableMap extends TableMap
 		$this->setUseIdGenerator(true);
 		// columns
 		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-		$this->addColumn('EMAIL', 'Email', 'VARCHAR', true, 255, null);
-		$this->addColumn('PWD', 'Pwd', 'VARCHAR', true, 255, null);
-		$this->addColumn('TOKEN', 'Token', 'VARCHAR', true, 255, null);
-		$this->addColumn('ROLE', 'Role', 'ENUM', true, null, 'editor');
+		$this->addColumn('EMAIL', 'Email', 'VARCHAR', true, 512, null);
+		$this->addColumn('PWD', 'Pwd', 'VARCHAR', true, 512, null);
+		$this->addColumn('TOKEN', 'Token', 'VARCHAR', true, 512, null);
+		$this->addColumn('ROLE', 'Role', 'ENUM', true, null, 'pending');
 		$this->getColumn('ROLE', false)->setValueSet(array (
   0 => 'admin',
   1 => 'editor',
+  2 => 'pending',
+  3 => 'guest',
 ));
 		$this->addColumn('LANGUAGE', 'Language', 'VARCHAR', false, 5, 'en');
 		$this->addColumn('CREATED_AT', 'CreatedAt', 'TIMESTAMP', true, null, null);

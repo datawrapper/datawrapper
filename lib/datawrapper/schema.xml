@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <database name="datawrapper" defaultIdMethod="native">
   <table name="chart" phpName="Chart">
-    <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true"/>
+    <column name="id" type="varchar" size="5" required="true" primaryKey="true" />
     <column name="title" type="varchar" size="255" required="true" />
     <column name="theme" type="varchar" size="255" required="true" />
     <column name="created_at" type="timestamp" required="true" />
@@ -19,7 +19,7 @@
     <column name="email" type="varchar" size="512" required="true" />
     <column name="pwd" type="varchar" size="512" required="true" />
     <column name="token" type="varchar" size="512" required="true" />
-    <column name="role" type="enum" valueSet="admin,editor,pending" required="true" default="pending" />
+    <column name="role" type="enum" valueSet="admin,editor,pending,guest" required="true" default="pending" />
     <column name="language" type="varchar" size="5" default="en" />
     <column name="created_at" type="timestamp" required="true" />
   </table>

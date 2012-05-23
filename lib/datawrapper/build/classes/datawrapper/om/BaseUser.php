@@ -56,7 +56,7 @@ abstract class BaseUser extends BaseObject  implements Persistent
 
 	/**
 	 * The value for the role field.
-	 * Note: this column has a database default value of: 1
+	 * Note: this column has a database default value of: 2
 	 * @var        int
 	 */
 	protected $role;
@@ -107,7 +107,7 @@ abstract class BaseUser extends BaseObject  implements Persistent
 	 */
 	public function applyDefaultValues()
 	{
-		$this->role = 1;
+		$this->role = 2;
 		$this->language = 'en';
 	}
 
@@ -382,7 +382,7 @@ abstract class BaseUser extends BaseObject  implements Persistent
 	 */
 	public function hasOnlyDefaultValues()
 	{
-			if ($this->role !== 1) {
+			if ($this->role !== 2) {
 				return false;
 			}
 

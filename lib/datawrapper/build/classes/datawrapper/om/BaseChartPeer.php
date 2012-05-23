@@ -413,7 +413,7 @@ abstract class BaseChartPeer {
 	 */
 	public static function getPrimaryKeyFromRow($row, $startcol = 0)
 	{
-		return (int) $row[$startcol];
+		return (string) $row[$startcol];
 	}
 	
 	/**
@@ -763,10 +763,6 @@ abstract class BaseChartPeer {
 			$criteria = $values->buildCriteria(); // build Criteria from Chart object
 		}
 
-		if ($criteria->containsKey(ChartPeer::ID) && $criteria->keyContainsValue(ChartPeer::ID) ) {
-			throw new PropelException('Cannot insert a value for auto-increment primary key ('.ChartPeer::ID.')');
-		}
-
 
 		// Set the correct dbName
 		$criteria->setDbName(self::DATABASE_NAME);
@@ -952,7 +948,7 @@ abstract class BaseChartPeer {
 	/**
 	 * Retrieve a single object by pkey.
 	 *
-	 * @param      int $pk the primary key.
+	 * @param      string $pk the primary key.
 	 * @param      PropelPDO $con the connection to use
 	 * @return     Chart
 	 */

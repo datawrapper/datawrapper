@@ -58,7 +58,18 @@ $app->get('/foo', function () use ($app) {
     $app->render('json-error.php', $data, 200);
 });
 
+function error($code, $msg) {
+    $result = array('status'=>'error');
+    if (isset($code)) $result['code'] = $code;
+    if (isset($msg)) $result['message'] = $msg;
+    print json_encode($result);
+}
 
+function ok($data = null) {
+    $result = array('status'=>'ok');
+    if (isset($data)) $result['data'] = $data;
+    print json_encode($result);
+}
 
 require_once '../../lib/dw-api/users.php';
 require_once '../../lib/dw-api/auth.php';

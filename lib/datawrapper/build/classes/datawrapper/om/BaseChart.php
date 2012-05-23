@@ -32,7 +32,7 @@ abstract class BaseChart extends BaseObject  implements Persistent
 
 	/**
 	 * The value for the id field.
-	 * @var        int
+	 * @var        string
 	 */
 	protected $id;
 
@@ -128,7 +128,7 @@ abstract class BaseChart extends BaseObject  implements Persistent
 	/**
 	 * Get the [id] column value.
 	 * 
-	 * @return     int
+	 * @return     string
 	 */
 	public function getId()
 	{
@@ -302,13 +302,13 @@ abstract class BaseChart extends BaseObject  implements Persistent
 	/**
 	 * Set the value of [id] column.
 	 * 
-	 * @param      int $v new value
+	 * @param      string $v new value
 	 * @return     Chart The current object (for fluent API support)
 	 */
 	public function setId($v)
 	{
 		if ($v !== null) {
-			$v = (int) $v;
+			$v = (string) $v;
 		}
 
 		if ($this->id !== $v) {
@@ -533,7 +533,7 @@ abstract class BaseChart extends BaseObject  implements Persistent
 	{
 		try {
 
-			$this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
+			$this->id = ($row[$startcol + 0] !== null) ? (string) $row[$startcol + 0] : null;
 			$this->title = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
 			$this->theme = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
 			$this->created_at = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
@@ -768,10 +768,6 @@ abstract class BaseChart extends BaseObject  implements Persistent
 		$modifiedColumns = array();
 		$index = 0;
 
-		$this->modifiedColumns[] = ChartPeer::ID;
-		if (null !== $this->id) {
-			throw new PropelException('Cannot insert a value for auto-increment primary key (' . ChartPeer::ID . ')');
-		}
 
 		 // check the columns in natural order for more readable SQL queries
 		if ($this->isColumnModified(ChartPeer::ID)) {
@@ -813,7 +809,7 @@ abstract class BaseChart extends BaseObject  implements Persistent
 			foreach ($modifiedColumns as $identifier => $columnName) {
 				switch ($columnName) {
 					case '`ID`':
-						$stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
+						$stmt->bindValue($identifier, $this->id, PDO::PARAM_STR);
 						break;
 					case '`TITLE`':
 						$stmt->bindValue($identifier, $this->title, PDO::PARAM_STR);
@@ -846,13 +842,6 @@ abstract class BaseChart extends BaseObject  implements Persistent
 			Propel::log($e->getMessage(), Propel::LOG_ERR);
 			throw new PropelException(sprintf('Unable to execute INSERT statement [%s]', $sql), $e);
 		}
-
-		try {
-			$pk = $con->lastInsertId();
-		} catch (Exception $e) {
-			throw new PropelException('Unable to get autoincrement id.', $e);
-		}
-		$this->setId($pk);
 
 		$this->setNew(false);
 	}
@@ -1184,7 +1173,7 @@ abstract class BaseChart extends BaseObject  implements Persistent
 
 	/**
 	 * Returns the primary key for this object (row).
-	 * @return     int
+	 * @return     string
 	 */
 	public function getPrimaryKey()
 	{
@@ -1194,7 +1183,7 @@ abstract class BaseChart extends BaseObject  implements Persistent
 	/**
 	 * Generic method to set the primary key (id column).
 	 *
-	 * @param      int $key Primary key.
+	 * @param      string $key Primary key.
 	 * @return     void
 	 */
 	public function setPrimaryKey($key)

@@ -9,12 +9,13 @@
 
 session_start();
 
-class DW {
+
+class DatawrapperSession {
 
     protected static $datawrapper;
 
     public static function getInstance() {
-        if (self::$datawrapper === null) self::$datawrapper = new Datawrapper();
+        if (self::$datawrapper === null) self::$datawrapper = new DatawrapperSession();
         return self::$datawrapper;
     }
 
@@ -22,10 +23,34 @@ class DW {
      * creates a new instance
      */
     function __construct() {
-        // initialize database
+        if (isset($_SESSION['dw-lang'])) {
+            $this->lang = $_SESSION['dw-lang'];
+        } else {
+            // default language is english
+            $this->lang = 'en';
+        }
 
+        if (isset($_SESSION['dw-user-id'])) {
+            $this->user = UserQuery::create()->limit(1)->findPK($_SESSION['dw-user-id']);
+        }
+        if (empty($this->user)) {
+            // create temporary guest user for this session
+            $user = new User();
+            $user->setEmail('guest@datawrapper.de');
+            $user->setRole('guest');
+            $user->setLanguage($this->lang);
+            $this->user = $user;
+        }
     }
 
+    public function _toArray() {
+        $res = array('lang' => $this->lang, 'user' => $this->user->toArray());
+        return $res;
+    }
+
+    public static function toArray() {
+        return self::getInstance()->_toArray();
+    }
 
     /*
      * retreive the currently used frontend language
@@ -38,25 +63,21 @@ class DW {
     /*
      * set a new language for the datawrapper user frontend
      */
-    public static function setLanguage($lang, $temporarily = false) {
+    public static function setLanguage($lang) {
         $_SESSION['dw-lang'] = $lang;
-        if (!$temporarily) {
-            // TODO: store language as default for logged users
-            // $user = Datawrapper::getCurrentUser();
-            // if (!$user->isGuest()) {
-            //     $user->setDefaultLanguage($lang);
-            // }
+        $this->user->setLanguage($lang);
+        if ($this->user->getRole() != 'guest') {
+            $this->user->save(); // remember language setting
         }
     }
 
     /* checks if a user is logged in */
-    public static function checkLogin() {
-        return true;
+    public static function isLoggedIn() {
+        return self::getInstance()->user->getRole() != 'guest';
     }
 
-    /* checks weather a chart is writeable by current user */
-    public static function chartIsWritable($id) {
-        return true;
+    public static function getUser() {
+        return self::getInstance()->user;
     }
 
     /*

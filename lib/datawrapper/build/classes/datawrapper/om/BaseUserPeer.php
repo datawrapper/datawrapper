@@ -55,6 +55,8 @@ abstract class BaseUserPeer {
 	/** The enumerated values for the ROLE field */
 	const ROLE_ADMIN = 'admin';
 	const ROLE_EDITOR = 'editor';
+	const ROLE_PENDING = 'pending';
+	const ROLE_GUEST = 'guest';
 
 	/** The default string format for model objects of the related table **/
 	const DEFAULT_STRING_FORMAT = 'YAML';
@@ -103,6 +105,8 @@ abstract class BaseUserPeer {
 		self::ROLE => array(
 			UserPeer::ROLE_ADMIN,
 			UserPeer::ROLE_EDITOR,
+			UserPeer::ROLE_PENDING,
+			UserPeer::ROLE_GUEST,
 		),
 	);
 
