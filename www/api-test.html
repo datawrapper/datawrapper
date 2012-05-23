@@ -11,7 +11,7 @@
 .input-xlarge { height: 28px; }
 h1,h2,h3,h4,h5 { font-weight: normal; }
 .row { padding: 18px 0; }
-.row.sep { border-top: 1px solid #DCC; }
+.row.sep { border-top: 1px solid #c00; }
 .output { color: #999; }
 .output .alert { margin-right: 15px; }
 .output .code { white-space: pre;}
@@ -64,7 +64,7 @@ function log(id, json) {
          <div class="span12">
             <div class="page-header">
                <h2>Datawrapper JSON API Test Page</h2>
-               <small>just a few buttons to test the <a href="#">api</a></small>
+               <small>Just a few forms to test the core functionality in the upcoming Datawrapper release</small>
             </div>
          </div>
       </div>
@@ -303,14 +303,37 @@ function log(id, json) {
          </script>
       </div>
 
-      <!-- add a new empty chart -->
+      <!-- get list of all charts by this user -->
 
       <div class="row sep">
          <div class="span2">charts</div>
-         <div class="span1">POST</div>
+         <div class="span1">GET</div>
+         <div class="span5">
+            <a id="get-charts" class="btn btn-primary">get my charts</a>
+         </div>
+         <div class="span4">
+             <div id="get-charts-out" class="output">get list of all charts by the current user</div>
+         </div>
+         <script type="text/javascript">
+         $('#get-charts').click(function() {
+            $.ajax({
+               url: '/api/charts',
+               type: 'GET',
+               success: function(data) {
+                  log('get-charts-out', data);
+               }
+            });
+         });
+         </script>
+      </div>
+
+      <!-- add a new empty chart -->
+
+      <div class="row">
+         <div class="span1 offset2">POST</div>
 
          <div class="span5 form-vertical">
-            <a id="add-chart" class="btn btn-primary">new chart</a>
+            <a id="add-chart" class="btn btn-primary">create new chart</a>
          </div>
          <div class="span4">
             <div id="add-chart-out" class="output">create a new empty chart</div>
@@ -358,20 +381,24 @@ function log(id, json) {
       <div class="row">
          <div class="span2">charts/:id/data</div>
          <div class="span1">PUT</div>
-         <div class="span5 form-inline">
-            <input id="get-chart-id" type="text" class="input-xlarge span2" placeholder="chart-id" />
-            <a id="get-chart" class="btn btn-primary">upload chart data</a>
+         <div class="span5 form-vertical">
+            <input class="input-xlarge span2" type="text" placeholder="insert a chart-id" />
+            <textarea id="upload-data-content" class="span4" rows="6" placeholder="paste your data here"></textarea>
+            <a id="upload-data" class="btn btn-primary">upload chart data</a>
             <div>- or -</div>
+
+            <a id="upload-file" class="btn btn-primary">upload a csv file</a>
+
 
          </div>
          <div class="span4">
-            <div id="get-chart-out" class="output">get chart info</div>
+            <div id="get-chart-out" class="output">upload some data using copy&amp;paste from spreadsheet applications or by uploading a csv file from your computer.</div>
          </div>
       </div>
 
       <!-- logout current user -->
 
-      <div class="row">
+      <div class="row sep">
          <div class="span2">auth/logout</div>
          <div class="span1">POST</div>
          <div class="span5 form-inline">
@@ -392,7 +419,9 @@ function log(id, json) {
             });
          </script>
       </div>
-
+      <div class="row footer" style="background:#fff">
+         ...
+      </div>
    </div>
 </body>
 </html>
