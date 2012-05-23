@@ -52,7 +52,8 @@ $app = new Slim(array( 'view' => 'JSONView' ));
  */
 
 //GET route
-$app->get('/', function () use ($app) {
+$app->get('/foo', function () use ($app) {
+    echo "foo";
     $data = array('foo' => 'bar', 'msg'=> 'Blublub');
     $app->render('json-error.php', $data, 200);
 });
@@ -60,6 +61,7 @@ $app->get('/', function () use ($app) {
 
 
 require_once '../../lib/dw-api/users.php';
+require_once '../../lib/dw-api/auth.php';
 require_once '../../lib/dw-api/session.php';
 require_once '../../lib/dw-api/charts.php';
 
