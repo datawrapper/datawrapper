@@ -20,6 +20,7 @@ CREATE TABLE `chart`
 	`deleted` TINYINT(1) DEFAULT 0,
 	`deleted_at` DATETIME,
 	`author_id` INTEGER NOT NULL,
+	`show_in_gallery` TINYINT(1) DEFAULT 0,
 	PRIMARY KEY (`id`),
 	INDEX `chart_FI_1` (`author_id`),
 	CONSTRAINT `chart_FK_1`

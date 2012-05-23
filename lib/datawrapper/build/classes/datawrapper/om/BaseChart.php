@@ -86,6 +86,13 @@ abstract class BaseChart extends BaseObject  implements Persistent
 	protected $author_id;
 
 	/**
+	 * The value for the show_in_gallery field.
+	 * Note: this column has a database default value of: false
+	 * @var        boolean
+	 */
+	protected $show_in_gallery;
+
+	/**
 	 * @var        User
 	 */
 	protected $aUser;
@@ -113,6 +120,7 @@ abstract class BaseChart extends BaseObject  implements Persistent
 	public function applyDefaultValues()
 	{
 		$this->deleted = false;
+		$this->show_in_gallery = false;
 	}
 
 	/**
@@ -297,6 +305,16 @@ abstract class BaseChart extends BaseObject  implements Persistent
 	public function getAuthorId()
 	{
 		return $this->author_id;
+	}
+
+	/**
+	 * Get the [show_in_gallery] column value.
+	 * 
+	 * @return     boolean
+	 */
+	public function getShowInGallery()
+	{
+		return $this->show_in_gallery;
 	}
 
 	/**
@@ -498,6 +516,34 @@ abstract class BaseChart extends BaseObject  implements Persistent
 	} // setAuthorId()
 
 	/**
+	 * Sets the value of the [show_in_gallery] column.
+	 * Non-boolean arguments are converted using the following rules:
+	 *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+	 *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+	 * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+	 * 
+	 * @param      boolean|integer|string $v The new value
+	 * @return     Chart The current object (for fluent API support)
+	 */
+	public function setShowInGallery($v)
+	{
+		if ($v !== null) {
+			if (is_string($v)) {
+				$v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+			} else {
+				$v = (boolean) $v;
+			}
+		}
+
+		if ($this->show_in_gallery !== $v) {
+			$this->show_in_gallery = $v;
+			$this->modifiedColumns[] = ChartPeer::SHOW_IN_GALLERY;
+		}
+
+		return $this;
+	} // setShowInGallery()
+
+	/**
 	 * Indicates whether the columns in this object are only set to default values.
 	 *
 	 * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -508,6 +554,10 @@ abstract class BaseChart extends BaseObject  implements Persistent
 	public function hasOnlyDefaultValues()
 	{
 			if ($this->deleted !== false) {
+				return false;
+			}
+
+			if ($this->show_in_gallery !== false) {
 				return false;
 			}
 
@@ -542,6 +592,7 @@ abstract class BaseChart extends BaseObject  implements Persistent
 			$this->deleted = ($row[$startcol + 6] !== null) ? (boolean) $row[$startcol + 6] : null;
 			$this->deleted_at = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
 			$this->author_id = ($row[$startcol + 8] !== null) ? (int) $row[$startcol + 8] : null;
+			$this->show_in_gallery = ($row[$startcol + 9] !== null) ? (boolean) $row[$startcol + 9] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -550,7 +601,7 @@ abstract class BaseChart extends BaseObject  implements Persistent
 				$this->ensureConsistency();
 			}
 
-			return $startcol + 9; // 9 = ChartPeer::NUM_HYDRATE_COLUMNS.
+			return $startcol + 10; // 10 = ChartPeer::NUM_HYDRATE_COLUMNS.
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating Chart object", $e);
@@ -797,6 +848,9 @@ abstract class BaseChart extends BaseObject  implements Persistent
 		if ($this->isColumnModified(ChartPeer::AUTHOR_ID)) {
 			$modifiedColumns[':p' . $index++]  = '`AUTHOR_ID`';
 		}
+		if ($this->isColumnModified(ChartPeer::SHOW_IN_GALLERY)) {
+			$modifiedColumns[':p' . $index++]  = '`SHOW_IN_GALLERY`';
+		}
 
 		$sql = sprintf(
 			'INSERT INTO `chart` (%s) VALUES (%s)',
@@ -834,6 +888,9 @@ abstract class BaseChart extends BaseObject  implements Persistent
 						break;
 					case '`AUTHOR_ID`':
 						$stmt->bindValue($identifier, $this->author_id, PDO::PARAM_INT);
+						break;
+					case '`SHOW_IN_GALLERY`':
+						$stmt->bindValue($identifier, (int) $this->show_in_gallery, PDO::PARAM_INT);
 						break;
 				}
 			}
@@ -997,6 +1054,9 @@ abstract class BaseChart extends BaseObject  implements Persistent
 			case 8:
 				return $this->getAuthorId();
 				break;
+			case 9:
+				return $this->getShowInGallery();
+				break;
 			default:
 				return null;
 				break;
@@ -1035,6 +1095,7 @@ abstract class BaseChart extends BaseObject  implements Persistent
 			$keys[6] => $this->getDeleted(),
 			$keys[7] => $this->getDeletedAt(),
 			$keys[8] => $this->getAuthorId(),
+			$keys[9] => $this->getShowInGallery(),
 		);
 		if ($includeForeignObjects) {
 			if (null !== $this->aUser) {
@@ -1098,6 +1159,9 @@ abstract class BaseChart extends BaseObject  implements Persistent
 			case 8:
 				$this->setAuthorId($value);
 				break;
+			case 9:
+				$this->setShowInGallery($value);
+				break;
 		} // switch()
 	}
 
@@ -1131,6 +1195,7 @@ abstract class BaseChart extends BaseObject  implements Persistent
 		if (array_key_exists($keys[6], $arr)) $this->setDeleted($arr[$keys[6]]);
 		if (array_key_exists($keys[7], $arr)) $this->setDeletedAt($arr[$keys[7]]);
 		if (array_key_exists($keys[8], $arr)) $this->setAuthorId($arr[$keys[8]]);
+		if (array_key_exists($keys[9], $arr)) $this->setShowInGallery($arr[$keys[9]]);
 	}
 
 	/**
@@ -1151,6 +1216,7 @@ abstract class BaseChart extends BaseObject  implements Persistent
 		if ($this->isColumnModified(ChartPeer::DELETED)) $criteria->add(ChartPeer::DELETED, $this->deleted);
 		if ($this->isColumnModified(ChartPeer::DELETED_AT)) $criteria->add(ChartPeer::DELETED_AT, $this->deleted_at);
 		if ($this->isColumnModified(ChartPeer::AUTHOR_ID)) $criteria->add(ChartPeer::AUTHOR_ID, $this->author_id);
+		if ($this->isColumnModified(ChartPeer::SHOW_IN_GALLERY)) $criteria->add(ChartPeer::SHOW_IN_GALLERY, $this->show_in_gallery);
 
 		return $criteria;
 	}
@@ -1221,6 +1287,7 @@ abstract class BaseChart extends BaseObject  implements Persistent
 		$copyObj->setDeleted($this->getDeleted());
 		$copyObj->setDeletedAt($this->getDeletedAt());
 		$copyObj->setAuthorId($this->getAuthorId());
+		$copyObj->setShowInGallery($this->getShowInGallery());
 
 		if ($deepCopy && !$this->startCopy) {
 			// important: temporarily setNew(false) because this affects the behavior of
@@ -1340,6 +1407,7 @@ abstract class BaseChart extends BaseObject  implements Persistent
 		$this->deleted = null;
 		$this->deleted_at = null;
 		$this->author_id = null;
+		$this->show_in_gallery = null;
 		$this->alreadyInSave = false;
 		$this->alreadyInValidation = false;
 		$this->clearAllReferences();

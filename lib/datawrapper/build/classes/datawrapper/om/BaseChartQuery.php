@@ -15,6 +15,7 @@
  * @method     ChartQuery orderByDeleted($order = Criteria::ASC) Order by the deleted column
  * @method     ChartQuery orderByDeletedAt($order = Criteria::ASC) Order by the deleted_at column
  * @method     ChartQuery orderByAuthorId($order = Criteria::ASC) Order by the author_id column
+ * @method     ChartQuery orderByShowInGallery($order = Criteria::ASC) Order by the show_in_gallery column
  *
  * @method     ChartQuery groupById() Group by the id column
  * @method     ChartQuery groupByTitle() Group by the title column
@@ -25,6 +26,7 @@
  * @method     ChartQuery groupByDeleted() Group by the deleted column
  * @method     ChartQuery groupByDeletedAt() Group by the deleted_at column
  * @method     ChartQuery groupByAuthorId() Group by the author_id column
+ * @method     ChartQuery groupByShowInGallery() Group by the show_in_gallery column
  *
  * @method     ChartQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChartQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -46,6 +48,7 @@
  * @method     Chart findOneByDeleted(boolean $deleted) Return the first Chart filtered by the deleted column
  * @method     Chart findOneByDeletedAt(string $deleted_at) Return the first Chart filtered by the deleted_at column
  * @method     Chart findOneByAuthorId(int $author_id) Return the first Chart filtered by the author_id column
+ * @method     Chart findOneByShowInGallery(boolean $show_in_gallery) Return the first Chart filtered by the show_in_gallery column
  *
  * @method     array findById(string $id) Return Chart objects filtered by the id column
  * @method     array findByTitle(string $title) Return Chart objects filtered by the title column
@@ -56,6 +59,7 @@
  * @method     array findByDeleted(boolean $deleted) Return Chart objects filtered by the deleted column
  * @method     array findByDeletedAt(string $deleted_at) Return Chart objects filtered by the deleted_at column
  * @method     array findByAuthorId(int $author_id) Return Chart objects filtered by the author_id column
+ * @method     array findByShowInGallery(boolean $show_in_gallery) Return Chart objects filtered by the show_in_gallery column
  *
  * @package    propel.generator.datawrapper.om
  */
@@ -144,7 +148,7 @@ abstract class BaseChartQuery extends ModelCriteria
 	 */
 	protected function findPkSimple($key, $con)
 	{
-		$sql = 'SELECT `ID`, `TITLE`, `THEME`, `CREATED_AT`, `LAST_MODIFIED_AT`, `METADATA`, `DELETED`, `DELETED_AT`, `AUTHOR_ID` FROM `chart` WHERE `ID` = :p0';
+		$sql = 'SELECT `ID`, `TITLE`, `THEME`, `CREATED_AT`, `LAST_MODIFIED_AT`, `METADATA`, `DELETED`, `DELETED_AT`, `AUTHOR_ID`, `SHOW_IN_GALLERY` FROM `chart` WHERE `ID` = :p0';
 		try {
 			$stmt = $con->prepare($sql);
 			$stmt->bindValue(':p0', $key, PDO::PARAM_STR);
@@ -533,6 +537,32 @@ abstract class BaseChartQuery extends ModelCriteria
 			}
 		}
 		return $this->addUsingAlias(ChartPeer::AUTHOR_ID, $authorId, $comparison);
+	}
+
+	/**
+	 * Filter the query on the show_in_gallery column
+	 *
+	 * Example usage:
+	 * <code>
+	 * $query->filterByShowInGallery(true); // WHERE show_in_gallery = true
+	 * $query->filterByShowInGallery('yes'); // WHERE show_in_gallery = true
+	 * </code>
+	 *
+	 * @param     boolean|string $showInGallery The value to use as filter.
+	 *              Non-boolean arguments are converted using the following rules:
+	 *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+	 *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+	 *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    ChartQuery The current query, for fluid interface
+	 */
+	public function filterByShowInGallery($showInGallery = null, $comparison = null)
+	{
+		if (is_string($showInGallery)) {
+			$show_in_gallery = in_array(strtolower($showInGallery), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+		}
+		return $this->addUsingAlias(ChartPeer::SHOW_IN_GALLERY, $showInGallery, $comparison);
 	}
 
 	/**
