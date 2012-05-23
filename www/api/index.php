@@ -17,12 +17,12 @@ require 'views/JSONView.php';
 require_once '../../vendor/propel/runtime/lib/Propel.php';
 
 // Initialize Propel with the runtime configuration
-Propel::init("../../lib/datawrapper/build/conf/datawrapper-conf.php");
+Propel::init("../../lib/core/build/conf/datawrapper-conf.php");
 
 // Add the generated 'classes' directory to the include path
-set_include_path("../../lib/datawrapper/build/classes" . PATH_SEPARATOR . get_include_path());
+set_include_path("../../lib/core/build/classes" . PATH_SEPARATOR . get_include_path());
 
-require '../../lib/dw/Datawrapper.php';
+require '../../lib/session/Datawrapper.php';
 
 
 /**
@@ -71,10 +71,10 @@ function ok($data = null) {
     print json_encode($result);
 }
 
-require_once '../../lib/dw-api/users.php';
-require_once '../../lib/dw-api/auth.php';
-require_once '../../lib/dw-api/session.php';
-require_once '../../lib/dw-api/charts.php';
+require_once '../../lib/api/users.php';
+require_once '../../lib/api/auth.php';
+require_once '../../lib/api/session.php';
+require_once '../../lib/api/charts.php';
 
 
 /**
