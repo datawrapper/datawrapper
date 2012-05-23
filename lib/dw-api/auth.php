@@ -26,3 +26,14 @@ $app->get('/auth/salt', function() use ($app) {
     $salt = 'uRPAqgUJqNuBdW62bmq3CLszRFkvq4RW';
     ok(array('salt' => $salt, 'time' => time()));
 });
+
+/* logout */
+$app->post('/auth/logout', function() {
+    $user = DatawrapperSession::getUser();
+    if ($user->isLoggedIn()) {
+        DatawrapperSession::logout();
+        ok();
+    } else {
+        error('not-loggin-in', 'you cannot logout if you\'re not logged in');
+    }
+});

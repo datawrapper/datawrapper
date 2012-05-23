@@ -202,7 +202,7 @@ function log(id, json) {
          <div class="span1">POST</div>
          <div class="span5 form-inline">
             <input id="login-email" type="text" class="input-xlarge span2" placeholder="email" />
-            <input id="login-pwd" type="text" class="input-xlarge span2" placeholder="password" />
+            <input id="login-pwd" type="password" class="input-xlarge span2" placeholder="password" />
             <a id="login" class="btn btn-primary">login</a>
          </div>
          <div class="span4">
@@ -217,21 +217,15 @@ function log(id, json) {
             });
 
             $('#login').click(function() {
-
-               var lg = $('#login'), hmac = CryptoJS.HmacSHA256, payload;
-
-               var hash = hmac(hmac($('#login-pwd').val(), lg.data('salt')).toString(), String(lg.data('time'))).toString();
-
-               console.log(hash);
-
-               payload = {
-                  email: $('#login-email').val(),
-                  pwhash: hash,
-                  time: $('#login').data('time')
-               };
+               var lg = $('#login'), hmac = CryptoJS.HmacSHA256,
+                  hash = hmac(hmac($('#login-pwd').val(), lg.data('salt')).toString(), String(lg.data('time'))).toString(),
+                  payload = {
+                     email: $('#login-email').val(),
+                     pwhash: hash,
+                     time: $('#login').data('time')
+                  };
 
                $('#login-pwd').val('');
-
                $.ajax({
                   url: '/api/auth/login',
                   type: 'POST',

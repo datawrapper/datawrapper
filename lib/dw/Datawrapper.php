@@ -30,6 +30,10 @@ class DatawrapperSession {
             $this->lang = 'en';
         }
 
+        $this->initUser();
+    }
+
+    protected function initUser() {
         if (isset($_SESSION['dw-user-id'])) {
             $this->user = UserQuery::create()->limit(1)->findPK($_SESSION['dw-user-id']);
         }
@@ -85,6 +89,12 @@ class DatawrapperSession {
         $_SESSION['dw-user-id'] = $user->getId();
         self::getInstance()->user = $user;
     }
+
+    public static function logout() {
+        $_SESSION['dw-user-id'] = null;
+        self::getInstance()->initUser();
+    }
+
 
     /*
      * load chart meta data from database
