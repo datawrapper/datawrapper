@@ -44,8 +44,21 @@ $app->get('/charts', function() {
     ok(time());
 });
 
+/*
+ * returns the metadata for all charts that are allowed
+ * to show in the gallery
+ */
 $app->get('/gallery', function() {
-
+    $result = array();
+    $charts = ChartQuery::create()
+        ->filterByShowInGallery(true)
+        ->orderByCreatedAt('desc')
+        ->limit(10)
+        ->find();
+    foreach ($charts as $chart) {
+        $result[] = $chart->toArray();
+    }
+    ok($result);
 });
 
 /* load chart meta data */

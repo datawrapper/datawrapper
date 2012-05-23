@@ -65,9 +65,10 @@ class DatawrapperSession {
      */
     public static function setLanguage($lang) {
         $_SESSION['dw-lang'] = $lang;
-        $this->user->setLanguage($lang);
-        if ($this->user->getRole() != 'guest') {
-            $this->user->save(); // remember language setting
+        $user = self::getUser();
+        $user->setLanguage($lang);
+        if ($user->getRole() != 'guest') {
+            $user->save(); // remember language setting
         }
     }
 
@@ -78,6 +79,11 @@ class DatawrapperSession {
 
     public static function getUser() {
         return self::getInstance()->user;
+    }
+
+    public static function login($user) {
+        $_SESSION['dw-user-id'] = $user->getId();
+        self::getInstance()->user = $user;
     }
 
     /*

@@ -109,7 +109,7 @@ function log(id, json) {
          <script type="text/javascript">
             $.getJSON('/api/auth/salt', function(res) {
                if (res.status == 'ok') {
-                  $('#register').data('salt', res.data);
+                  $('#register').data('salt', res.data.salt);
                }
             });
 
@@ -209,10 +209,33 @@ function log(id, json) {
             <div id="login-out" class="output">user login</div>
          </div>
          <script type="text/javascript">
+            $.getJSON('/api/auth/salt', function(res) {
+               if (res.status == 'ok') {
+                  $('#login').data('salt', res.data.salt);
+                  $('#login').data('time', res.data.time);
+               }
+            });
+
             $('#login').click(function() {
+
+               var lg = $('#login'), hmac = CryptoJS.HmacSHA256, payload;
+
+               var hash = hmac(hmac($('#login-pwd').val(), lg.data('salt')).toString(), String(lg.data('time'))).toString();
+
+               console.log(hash);
+
+               payload = {
+                  email: $('#login-email').val(),
+                  pwhash: hash,
+                  time: $('#login').data('time')
+               };
+
+               $('#login-pwd').val('');
+
                $.ajax({
-                  url: '/api/session/login',
+                  url: '/api/auth/login',
                   type: 'POST',
+                  data: JSON.stringify(payload),
                   success: function(data) {
                      log('login-out', data);
                   }
