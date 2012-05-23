@@ -1,18 +1,34 @@
 <html>
 <head>
    <title>Datawrapper API Test Page</title>
-   <script type="text/javascript" src="/static/js/jquery.min.js"></script>
-   <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css">
-   <link rel="stylesheet" type="text/css" href="/static/css/bootstrap-united.css">
+   <script type="text/javascript" src="/static/vendor/jquery/jquery.min.js"></script>
+   <script type="text/javascript" src="/static/vendor/cryptojs/hmac-sha256.js"></script>
+   <script type="text/javascript" src="/static/vendor/bootstrap/js/bootstrap.min.js"></script>
+   <script type="text/javascript" src="/static/vendor/bootstrap/js/bootstrap-alert.js"></script>
+   <link rel="stylesheet" type="text/css" href="/static/vendor/bootstrap/css/bootstrap.css">
+   <link rel="stylesheet" type="text/css" href="/static/vendor/bootstrap/css/bootstrap-united.css">
    <style type="text/css">
 .input-xlarge { height: 28px; }
 h1,h2,h3,h4,h5 { font-weight: normal; }
+.row { padding: 18px 0; }
+.row.sep { border-top: 1px solid #DCC; }
+.output { color: #999; }
+.output .alert { margin-right: 15px; }
+.output .code { white-space: pre;}
+.output .key { color: #336633;}
+.output .string { color: #b84;}
+.output .boolean, .well .null { color: #0000;}
+.output .close-btn { position: absolute; top: 10px; right: 10px; cursor: pointer;}
+.row:nth-child(even) { background-color: whiteSmoke; }
    </style>
    <script type="text/javascript">
 
+function checkPwd(pwd) {
+   return $.trim(pwd).length > 7;
+}
+
 function formatJSON(json) {
-    if (typeof(json) == "string") json = JSON.parse(json);
-    json = JSON.stringify(json, undefined, 2);
+    json = JSON.stringify(json, undefined, 4);
     json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
         var cls = 'number';
@@ -30,15 +46,16 @@ function formatJSON(json) {
         return '<span class="' + cls + '">' + match + '</span>';
     });
 }
-   </script>
-   <style>
-.well { white-space: pre; }
-.well .key { color: #8888cc;}
-.well .string { color: #cc0000;}
-.well .boolean, .well .null { color: #0000bb;}
-hr { border-top: 1px dashed #DCC; }
-   </style>
 
+function log(id, json) {
+   if (typeof(json) == "string") json = JSON.parse(json);
+   var out = $('<div class="alert alert-'+(json.status == 'ok' ? 'success' : 'error')+'" />');
+   out.append('<a class="close" data-dismiss="alert" href="#">&times;</a>');
+   out.append('<div class="code">'+formatJSON(json)+'</div>');
+   $('#'+id).prepend(out);
+   $(".alert").alert();
+}
+   </script>
 
 </head>
 <body>
@@ -52,7 +69,7 @@ hr { border-top: 1px dashed #DCC; }
          </div>
       </div>
 
-      <!-- register a new user -->
+      <!-- get list of users -->
 
      <div class="row">
          <div class="span2">users</div>
@@ -61,7 +78,7 @@ hr { border-top: 1px dashed #DCC; }
             <a id="get-users" class="btn btn-primary">get list of users</a>
          </div>
          <div class="span4">
-            <div id="get-users-out" class="well"></div>
+            <div id="get-users-out" class="output">retreive a list of all users</div>
          </div>
          <script type="text/javascript">
             $('#get-users').click(function() {
@@ -69,54 +86,119 @@ hr { border-top: 1px dashed #DCC; }
                   url: '/api/users',
                   type: 'GET',
                   success: function(data) {
-                     $('#get-users-out').html(formatJSON(data));
+                     log('get-users-out', data);
                   }
                });
             });
          </script>
       </div>
+
+      <!-- register a new user -->
 
       <div class="row">
          <div class="span1 offset2">POST</div>
          <div class="span5 form-vertical">
-            <input id="register-email" type="text" class="input-xlarge span2" placeholder="email" />
-            <input id="register-pwd" type="text" class="input-xlarge span2" placeholder="password" />
-            <a id="register" class="btn btn-primary">create a new user</a>
+            <input id="register-email" type="text" class="input-xlarge span3" placeholder="email" />
+            <input id="register-pwd" type="password" class="input-xlarge span3" placeholder="password" />
+            <input id="register-pwd-2" type="password" class="input-xlarge span3" placeholder="repeat password" /><br />
+            <a id="register" class="btn btn-primary">add a new user</a>
          </div>
          <div class="span4">
-            <div id="register-out" class="well"></div>
+            <div id="register-out" class="output">register a new user</div>
          </div>
          <script type="text/javascript">
+            $.getJSON('/api/auth/salt', function(res) {
+               if (res.status == 'ok') {
+                  $('#register').data('salt', res.data);
+               }
+            });
+
             $('#register').click(function() {
-               $.ajax({
-                  url: '/api/users',
-                  type: 'POST',
-                  data: JSON.stringify({ email: $('#register-email').val(), pwd: $('#register-pwd').val() }),
-                  success: function(data) {
-                     $('#register-out').html(formatJSON(data));
+
+               var pwd = $.trim($('#register-pwd').val()),
+                  pwd2 = $.trim($('#register-pwd-2').val());
+
+               if (pwd == pwd2) {
+                  if (checkPwd(pwd)) {
+
+                     var payload = {
+                        email: $('#register-email').val(),
+                        pwd: CryptoJS.HmacSHA256(pwd, $('#register').data('salt')).toString(),
+                        pwd2: CryptoJS.HmacSHA256(pwd2, $('#register').data('salt')).toString(),
+                     };
+
+                     $.ajax({
+                        url: '/api/users',
+                        type: 'POST',
+                        data: JSON.stringify(payload),
+                        success: function(data) {
+                           log('register-out', data);
+                        }
+                     });
+                  } else {
+                     alert('Error: password is to unsecure. please chose a password with at least 8 characters');
                   }
-               });
+               } else {
+                  alert('Error: password mismatch');
+               }
             });
          </script>
       </div>
 
-      <hr />
+      <!-- change user password -->
+
+      <div class="row">
+         <div class="span2">users/:id</div>
+         <div class="span1">GET</div>
+         <div class="span5 form-vertical">
+            <input id="change-user-pwd" type="text" class="input-xlarge span3" placeholder="password" />
+            <input id="change-user-pwd-2" type="text" class="input-xlarge span3" placeholder="repeat password" /><br />
+            <a id="change-user" class="btn btn-primary">change password</a>
+         </div>
+         <div class="span4">
+            <div id="change-user-out" class="output">change password of logged user</div>
+         </div>
+         <script type="text/javascript">
+            $.getJSON('/api/auth/salt', function(res) {
+               if (res.status == 'ok') {
+                  $('#change-user').data('salt', res.data);
+               }
+            });
+
+            $('#change-user').click(function() {
+
+               var pwd = $.trim($('#change-user-pwd').val()),
+                  pwd2 = $.trim($('#change-user-pwd-2').val());
+               if (pwd == pwd2) {
+                  if (checkPwd(pwd)) {
+
+                     var payload = {
+                        pwd: CryptoJS.HmacSHA256($('#register-pwd').val(), $('#register').data('salt')),
+                        pwd2: CryptoJS.HmacSHA256($('#register-pwd-2').val(), $('#register').data('salt')),
+                     };
+
+                     $.ajax({
+                        url: '/api/users',
+                        type: 'PUT',
+                        data: JSON.stringify(payload),
+                        success: function(data) {
+                           log('register-out', data);
+                        }
+                     });
+                  } else {
+                     alert('Error: password is to unsecure. please chose a password with at least 8 characters');
+                  }
+               } else {
+                  alert('Error: password mismatch');
+               }
+            });
+         </script>
+      </div>
 
       <!-- login user -->
 
-      <div class="row">
-         <div class="span2">session</div>
-         <div class="span1">GET</div>
-         <div class="span5 form-inline">
-            <a id="get-login" class="btn btn-primary">get logged user info</a>
-         </div>
-         <div class="span4">
-            <div id="login-out" class="well"></div>
-         </div>
-      </div>
-
-      <div class="row">
-         <div class="span2">session/login</div>
+      <div class="row sep">
+         <div class="span2">auth/login</div>
          <div class="span1">POST</div>
          <div class="span5 form-inline">
             <input id="login-email" type="text" class="input-xlarge span2" placeholder="email" />
@@ -124,7 +206,7 @@ hr { border-top: 1px dashed #DCC; }
             <a id="login" class="btn btn-primary">login</a>
          </div>
          <div class="span4">
-            <div id="login-out" class="well"></div>
+            <div id="login-out" class="output">user login</div>
          </div>
          <script type="text/javascript">
             $('#login').click(function() {
@@ -132,7 +214,7 @@ hr { border-top: 1px dashed #DCC; }
                   url: '/api/session/login',
                   type: 'POST',
                   success: function(data) {
-                     $('#login-out').html(formatJSON(data));
+                     log('login-out', data);
                   }
                });
             });
@@ -142,25 +224,39 @@ hr { border-top: 1px dashed #DCC; }
       <!-- logout current user -->
 
       <div class="row">
-         <div class="span2">session/logout</div>
+         <div class="span2">auth/logout</div>
          <div class="span1">POST</div>
          <div class="span5 form-inline">
-            <a id="logout" class="btn btn-primary">logout current user</a>
+            <a id="logout" class="btn btn-primary">logout</a>
          </div>
          <div class="span4">
-            <div id="logout-out" class="well"></div>
+            <div id="logout-out" class="output">logout current user</div>
          </div>
          <script type="text/javascript">
+
             $('#logout').click(function() {
                $.ajax({
-                  url: '/api/session/logout',
+                  url: '/api/auth/logout',
                   type: 'POST',
                   success: function(data) {
-                     $('#logout-out').html(formatJSON(data));
+                     log('logout-out', data);
                   }
                });
             });
          </script>
+      </div>
+
+      <!-- get current user -->
+
+      <div class="row sep">
+         <div class="span2">session</div>
+         <div class="span1">GET</div>
+         <div class="span5 form-inline">
+            <a id="get-login" class="btn btn-primary">get logged user info</a>
+         </div>
+         <div class="span4">
+            <div id="login-out" class="output">find out who's logged in currently</div>
+         </div>
       </div>
 
       <!-- get current language -->
@@ -172,12 +268,12 @@ hr { border-top: 1px dashed #DCC; }
             <a id="get-lang" class="btn btn-primary">get language</a>
          </div>
          <div class="span4">
-            <div id="get-lang-out" class="well"></div>
+            <div id="get-lang-out" class="output">get current frontend language</div>
          </div>
          <script type="text/javascript">
             $('#get-lang').click(function() {
                $.getJSON('/api/session/lang', function(res) {
-                  $('#get-lang-out').html(formatJSON(res));
+                  log('get-lang-out', res);
                });
             });
          </script>
@@ -192,7 +288,7 @@ hr { border-top: 1px dashed #DCC; }
              <input id="set-lang-val" type="text" class="input-xlarge span1" value="de" />
          </div>
          <div class="span4">
-            <div id="set-lang-out" class="well"></div>
+            <div id="set-lang-out" class="output">change frontend language</div>
          </div>
          <script type="text/javascript">
             $('#set-lang').click(function() {
@@ -202,26 +298,24 @@ hr { border-top: 1px dashed #DCC; }
                   data: JSON.stringify({ lang: $('#set-lang-val').val() }),
                   processData: false,
                   success: function(data) {
-                     $('#set-lang-out').html(formatJSON(data));
+                     log('set-lang-out', data);
                   }
                })
             });
          </script>
       </div>
 
-
       <!-- add a new empty chart -->
-      <hr />
 
-      <div class="row">
+      <div class="row sep">
          <div class="span2">charts</div>
          <div class="span1">POST</div>
 
          <div class="span5 form-vertical">
-            <a id="add-chart" class="btn btn-primary">add a new empty chart</a>
+            <a id="add-chart" class="btn btn-primary">new empty</a>
          </div>
          <div class="span4">
-            <div id="add-chart-out" class="well"></div>
+            <div id="add-chart-out" class="output">create a new empty chart</div>
          </div>
          <script type="text/javascript">
             $('#add-chart').click(function() {
@@ -229,8 +323,7 @@ hr { border-top: 1px dashed #DCC; }
                   url: '/api/charts',
                   type: 'POST',
                   success: function(data) {
-                     data = formatJSON(JSON.parse(data));
-                     $('#add-chart-out').html(data);
+                     log('add-chart-out', data);
                   }
                });
             });
@@ -245,7 +338,7 @@ hr { border-top: 1px dashed #DCC; }
             <a id="get-chart" class="btn btn-primary">load chart info</a>
          </div>
          <div class="span4">
-            <div id="get-chart-out" class="well"></div>
+            <div id="get-chart-out" class="output">get chart info</div>
          </div>
       </div>
 
@@ -256,12 +349,10 @@ hr { border-top: 1px dashed #DCC; }
             <input id="set-lang-val" type="text" class="input-xlarge span1" value="de" />
          </div>
          <div class="span4">
-            <div id="set-lang-out" class="well"></div>
+            <div id="set-lang-out" class="output"></div>
          </div>
       </div>
 
-      <script type="text/javascript">
-      </script>
    </div>
 </body>
 </html>
