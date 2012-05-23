@@ -45,6 +45,7 @@ $app->put('/users/:id', function($user_id) use ($app) {
     $user = new User();
     $user->setCreatedAt(time());
     $user->setEmail($data->email);
+    $user->setRole('pending');
     $user->setPwd($data->pwd);
     $user->save();
 
@@ -59,5 +60,5 @@ $app->put('/users/:id', function($user_id) use ($app) {
  * activate a pending user
  */
 $app->get('/activate/:token', function($token) use ($app) {
-
+    $users = UserQuery::create()->find();
 });
