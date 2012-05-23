@@ -1,5 +1,24 @@
 <?php
 
+/* get list of all charts by the current user */
+$app->get('/charts', function() {
+    $user = DatawrapperSession::getUser();
+    if ($user->isLoggedIn()) {
+        $charts = ChartQuery::create()
+            ->filterByAuthorId($user->getId())
+            ->filterByDeleted(false)
+            ->orderByLastModifiedAt('desc')
+            ->find();
+        $res = array();
+        foreach ($charts as $chart) {
+            $res[] = $chart->toArray();
+        }
+        ok($res);
+    } else {
+        error('need-login', 'You need to be logged in to do that');
+    }
+});
+
 /* create a new empty chart */
 $app->post('/charts', function() {
     $user = DatawrapperSession::getUser();
