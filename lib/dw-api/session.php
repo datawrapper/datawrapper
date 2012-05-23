@@ -1,6 +1,6 @@
 <?php
 
-$app->post('/login', function() {
+$app->post('/session/login', function() {
     echo 'You are logged in now.';
 });
 
@@ -17,3 +17,4 @@ $app->put('/session/lang', function() use ($app) {
     $app->render('json-ok.php');
 //    echo 'the language has been set to ' . $data->lang;
 });
+
