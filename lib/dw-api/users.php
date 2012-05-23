@@ -20,13 +20,19 @@ $app->get('/users', function() use ($app) {
 $app->post('/users', function() use ($app) {
     $data = json_decode($app->request()->getBody());
 
-    $user = new User();
-    $user->setCreatedAt(time());
-    $user->setEmail($data->email);
-    $user->setPwd($data->pwd);
-    $user->save();
-    $result = $user->toArray();
-    $app->render('json-ok.php', array($result));
+    if ($data->pwd === $data->pwd2) {
+        $user = new User();
+        $user->setCreatedAt(time());
+        $user->setEmail($data->email);
+        $user->setPwd($data->pwd);
+        $user->save();
+        $result = $user->toArray();
+
+        $app->render('json-ok.php', array($result));
+    } else {
+        $app->render('json-error.php', array('code' => 'password-mismatch', 'msg'=> 'Password mismatch'));
+    }
+
 });
 
 
@@ -46,4 +52,12 @@ $app->put('/users/:id', function($user_id) use ($app) {
     unset($result['Pwd']); // never transmit the password to the client
 
     $app->render('json-ok.php', array($result));
+});
+
+
+/*
+ * activate a pending user
+ */
+$app->get('/activate/:token', function($token) use ($app) {
+
 });
