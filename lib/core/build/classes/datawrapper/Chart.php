@@ -15,4 +15,11 @@
  */
 class Chart extends BaseChart {
 
+    public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false) {
+        $arr = parent::toArray($keyType, $includeLazyLoadColumns, $alreadyDumpedObjects, $includeForeignObjects);
+        unset($arr['Deleted']);  // we don't use this, since we never transmit deleted charts
+        unset($arr['DeletedAt']);
+        return $arr;
+    }
+
 } // Chart
