@@ -10,9 +10,10 @@ $app->get('/users', function() use ($app) {
     foreach ($users as $user) {
         $res[] = $user->toArray();
     }
-    $app->render('json-ok.php', $res);
+    ok($res);
 });
 
+define('DW_TOKEN_SALT', 'aVyyrmc2UpoZGJ3SthaKyGrFzaV3Z37iuFU4x5oLb_aKmhopz5md62UHn25Gf4ti');
 
 /*
  * create a new user
@@ -25,12 +26,13 @@ $app->post('/users', function() use ($app) {
         $user->setCreatedAt(time());
         $user->setEmail($data->email);
         $user->setPwd($data->pwd);
+        $user->setToken(hash_hmac('sha256', $data->email.'/'.$data->pwd, DW_TOKEN_SALT));
         $user->save();
         $result = $user->toArray();
 
-        $app->render('json-ok.php', array($result));
+        ok($result);
     } else {
-        $app->render('json-error.php', array('code' => 'password-mismatch', 'msg'=> 'Password mismatch'));
+        error('password-mismatch', 'Password mismatch');
     }
 
 });
@@ -50,15 +52,29 @@ $app->put('/users/:id', function($user_id) use ($app) {
     $user->save();
 
     $result = $user->toArray();
-    unset($result['Pwd']); // never transmit the password to the client
-
-    $app->render('json-ok.php', array($result));
+    ok($result);
 });
 
 
 /*
- * activate a pending user
+ * activate a pending user, might be moved to app later
  */
-$app->get('/activate/:token', function($token) use ($app) {
-    $users = UserQuery::create()->find();
+$app->get('/activate/:token', function($token) {
+    if (!empty($token)) {
+        $users = UserQuery::create()
+          ->filterByToken($token)
+          ->find();
+
+        if (count($users) == 0) {
+            error('token-invalid', 'this token is invalid.');
+        } else if (count($users) > 1) {
+            error('token-ambiguous', 'this token is ambiguous.');
+        } else {
+            $user = $users[0];
+            $user->setRole('editor');
+            $user->setToken('');
+            $user->save();
+            ok();
+        }
+    }
 });
