@@ -39,7 +39,7 @@ CREATE TABLE `user`
 	`email` VARCHAR(255) NOT NULL,
 	`pwd` VARCHAR(255) NOT NULL,
 	`token` VARCHAR(255) NOT NULL,
-	`role` TINYINT NOT NULL,
+	`role` TINYINT DEFAULT 1 NOT NULL,
 	`language` VARCHAR(5) DEFAULT 'en',
 	`created_at` DATETIME NOT NULL,
 	PRIMARY KEY (`id`)

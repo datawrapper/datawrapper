@@ -42,7 +42,7 @@ class UserTableMap extends TableMap
 		$this->addColumn('EMAIL', 'Email', 'VARCHAR', true, 255, null);
 		$this->addColumn('PWD', 'Pwd', 'VARCHAR', true, 255, null);
 		$this->addColumn('TOKEN', 'Token', 'VARCHAR', true, 255, null);
-		$this->addColumn('ROLE', 'Role', 'ENUM', true, null, null);
+		$this->addColumn('ROLE', 'Role', 'ENUM', true, null, 'editor');
 		$this->getColumn('ROLE', false)->setValueSet(array (
   0 => 'admin',
   1 => 'editor',
