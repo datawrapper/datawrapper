@@ -6,6 +6,7 @@
     <column name="theme" type="varchar" size="255" required="true" />
     <column name="created_at" type="timestamp" required="true" />
     <column name="last_modified_at" type="timestamp" required="true" />
+    <column name="type" type="varchar" size="200" required="true" />
     <column name="metadata" type="varchar" size="4096" required="true" />
     <column name="deleted" type="boolean" default="false" />
     <column name="deleted_at" type="timestamp" />

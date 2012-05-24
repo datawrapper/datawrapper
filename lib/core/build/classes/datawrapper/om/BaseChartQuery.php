@@ -11,6 +11,7 @@
  * @method     ChartQuery orderByTheme($order = Criteria::ASC) Order by the theme column
  * @method     ChartQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method     ChartQuery orderByLastModifiedAt($order = Criteria::ASC) Order by the last_modified_at column
+ * @method     ChartQuery orderByType($order = Criteria::ASC) Order by the type column
  * @method     ChartQuery orderByMetadata($order = Criteria::ASC) Order by the metadata column
  * @method     ChartQuery orderByDeleted($order = Criteria::ASC) Order by the deleted column
  * @method     ChartQuery orderByDeletedAt($order = Criteria::ASC) Order by the deleted_at column
@@ -22,6 +23,7 @@
  * @method     ChartQuery groupByTheme() Group by the theme column
  * @method     ChartQuery groupByCreatedAt() Group by the created_at column
  * @method     ChartQuery groupByLastModifiedAt() Group by the last_modified_at column
+ * @method     ChartQuery groupByType() Group by the type column
  * @method     ChartQuery groupByMetadata() Group by the metadata column
  * @method     ChartQuery groupByDeleted() Group by the deleted column
  * @method     ChartQuery groupByDeletedAt() Group by the deleted_at column
@@ -44,6 +46,7 @@
  * @method     Chart findOneByTheme(string $theme) Return the first Chart filtered by the theme column
  * @method     Chart findOneByCreatedAt(string $created_at) Return the first Chart filtered by the created_at column
  * @method     Chart findOneByLastModifiedAt(string $last_modified_at) Return the first Chart filtered by the last_modified_at column
+ * @method     Chart findOneByType(string $type) Return the first Chart filtered by the type column
  * @method     Chart findOneByMetadata(string $metadata) Return the first Chart filtered by the metadata column
  * @method     Chart findOneByDeleted(boolean $deleted) Return the first Chart filtered by the deleted column
  * @method     Chart findOneByDeletedAt(string $deleted_at) Return the first Chart filtered by the deleted_at column
@@ -55,6 +58,7 @@
  * @method     array findByTheme(string $theme) Return Chart objects filtered by the theme column
  * @method     array findByCreatedAt(string $created_at) Return Chart objects filtered by the created_at column
  * @method     array findByLastModifiedAt(string $last_modified_at) Return Chart objects filtered by the last_modified_at column
+ * @method     array findByType(string $type) Return Chart objects filtered by the type column
  * @method     array findByMetadata(string $metadata) Return Chart objects filtered by the metadata column
  * @method     array findByDeleted(boolean $deleted) Return Chart objects filtered by the deleted column
  * @method     array findByDeletedAt(string $deleted_at) Return Chart objects filtered by the deleted_at column
@@ -148,7 +152,7 @@ abstract class BaseChartQuery extends ModelCriteria
 	 */
 	protected function findPkSimple($key, $con)
 	{
-		$sql = 'SELECT `ID`, `TITLE`, `THEME`, `CREATED_AT`, `LAST_MODIFIED_AT`, `METADATA`, `DELETED`, `DELETED_AT`, `AUTHOR_ID`, `SHOW_IN_GALLERY` FROM `chart` WHERE `ID` = :p0';
+		$sql = 'SELECT `ID`, `TITLE`, `THEME`, `CREATED_AT`, `LAST_MODIFIED_AT`, `TYPE`, `METADATA`, `DELETED`, `DELETED_AT`, `AUTHOR_ID`, `SHOW_IN_GALLERY` FROM `chart` WHERE `ID` = :p0';
 		try {
 			$stmt = $con->prepare($sql);
 			$stmt->bindValue(':p0', $key, PDO::PARAM_STR);
@@ -399,6 +403,34 @@ abstract class BaseChartQuery extends ModelCriteria
 			}
 		}
 		return $this->addUsingAlias(ChartPeer::LAST_MODIFIED_AT, $lastModifiedAt, $comparison);
+	}
+
+	/**
+	 * Filter the query on the type column
+	 *
+	 * Example usage:
+	 * <code>
+	 * $query->filterByType('fooValue');   // WHERE type = 'fooValue'
+	 * $query->filterByType('%fooValue%'); // WHERE type LIKE '%fooValue%'
+	 * </code>
+	 *
+	 * @param     string $type The value to use as filter.
+	 *              Accepts wildcards (* and % trigger a LIKE)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    ChartQuery The current query, for fluid interface
+	 */
+	public function filterByType($type = null, $comparison = null)
+	{
+		if (null === $comparison) {
+			if (is_array($type)) {
+				$comparison = Criteria::IN;
+			} elseif (preg_match('/[\%\*]/', $type)) {
+				$type = str_replace('*', '%', $type);
+				$comparison = Criteria::LIKE;
+			}
+		}
+		return $this->addUsingAlias(ChartPeer::TYPE, $type, $comparison);
 	}
 
 	/**

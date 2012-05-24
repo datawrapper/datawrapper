@@ -61,6 +61,12 @@ abstract class BaseChart extends BaseObject  implements Persistent
 	protected $last_modified_at;
 
 	/**
+	 * The value for the type field.
+	 * @var        string
+	 */
+	protected $type;
+
+	/**
 	 * The value for the metadata field.
 	 * @var        string
 	 */
@@ -237,6 +243,16 @@ abstract class BaseChart extends BaseObject  implements Persistent
 		} else {
 			return $dt->format($format);
 		}
+	}
+
+	/**
+	 * Get the [type] column value.
+	 * 
+	 * @return     string
+	 */
+	public function getType()
+	{
+		return $this->type;
 	}
 
 	/**
@@ -422,6 +438,26 @@ abstract class BaseChart extends BaseObject  implements Persistent
 	} // setLastModifiedAt()
 
 	/**
+	 * Set the value of [type] column.
+	 * 
+	 * @param      string $v new value
+	 * @return     Chart The current object (for fluent API support)
+	 */
+	public function setType($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->type !== $v) {
+			$this->type = $v;
+			$this->modifiedColumns[] = ChartPeer::TYPE;
+		}
+
+		return $this;
+	} // setType()
+
+	/**
 	 * Set the value of [metadata] column.
 	 * 
 	 * @param      string $v new value
@@ -588,11 +624,12 @@ abstract class BaseChart extends BaseObject  implements Persistent
 			$this->theme = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
 			$this->created_at = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
 			$this->last_modified_at = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
-			$this->metadata = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-			$this->deleted = ($row[$startcol + 6] !== null) ? (boolean) $row[$startcol + 6] : null;
-			$this->deleted_at = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
-			$this->author_id = ($row[$startcol + 8] !== null) ? (int) $row[$startcol + 8] : null;
-			$this->show_in_gallery = ($row[$startcol + 9] !== null) ? (boolean) $row[$startcol + 9] : null;
+			$this->type = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+			$this->metadata = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+			$this->deleted = ($row[$startcol + 7] !== null) ? (boolean) $row[$startcol + 7] : null;
+			$this->deleted_at = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
+			$this->author_id = ($row[$startcol + 9] !== null) ? (int) $row[$startcol + 9] : null;
+			$this->show_in_gallery = ($row[$startcol + 10] !== null) ? (boolean) $row[$startcol + 10] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -601,7 +638,7 @@ abstract class BaseChart extends BaseObject  implements Persistent
 				$this->ensureConsistency();
 			}
 
-			return $startcol + 10; // 10 = ChartPeer::NUM_HYDRATE_COLUMNS.
+			return $startcol + 11; // 11 = ChartPeer::NUM_HYDRATE_COLUMNS.
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating Chart object", $e);
@@ -836,6 +873,9 @@ abstract class BaseChart extends BaseObject  implements Persistent
 		if ($this->isColumnModified(ChartPeer::LAST_MODIFIED_AT)) {
 			$modifiedColumns[':p' . $index++]  = '`LAST_MODIFIED_AT`';
 		}
+		if ($this->isColumnModified(ChartPeer::TYPE)) {
+			$modifiedColumns[':p' . $index++]  = '`TYPE`';
+		}
 		if ($this->isColumnModified(ChartPeer::METADATA)) {
 			$modifiedColumns[':p' . $index++]  = '`METADATA`';
 		}
@@ -876,6 +916,9 @@ abstract class BaseChart extends BaseObject  implements Persistent
 						break;
 					case '`LAST_MODIFIED_AT`':
 						$stmt->bindValue($identifier, $this->last_modified_at, PDO::PARAM_STR);
+						break;
+					case '`TYPE`':
+						$stmt->bindValue($identifier, $this->type, PDO::PARAM_STR);
 						break;
 					case '`METADATA`':
 						$stmt->bindValue($identifier, $this->metadata, PDO::PARAM_STR);
@@ -1043,18 +1086,21 @@ abstract class BaseChart extends BaseObject  implements Persistent
 				return $this->getLastModifiedAt();
 				break;
 			case 5:
-				return $this->getMetadata();
+				return $this->getType();
 				break;
 			case 6:
-				return $this->getDeleted();
+				return $this->getMetadata();
 				break;
 			case 7:
-				return $this->getDeletedAt();
+				return $this->getDeleted();
 				break;
 			case 8:
-				return $this->getAuthorId();
+				return $this->getDeletedAt();
 				break;
 			case 9:
+				return $this->getAuthorId();
+				break;
+			case 10:
 				return $this->getShowInGallery();
 				break;
 			default:
@@ -1091,11 +1137,12 @@ abstract class BaseChart extends BaseObject  implements Persistent
 			$keys[2] => $this->getTheme(),
 			$keys[3] => $this->getCreatedAt(),
 			$keys[4] => $this->getLastModifiedAt(),
-			$keys[5] => $this->getMetadata(),
-			$keys[6] => $this->getDeleted(),
-			$keys[7] => $this->getDeletedAt(),
-			$keys[8] => $this->getAuthorId(),
-			$keys[9] => $this->getShowInGallery(),
+			$keys[5] => $this->getType(),
+			$keys[6] => $this->getMetadata(),
+			$keys[7] => $this->getDeleted(),
+			$keys[8] => $this->getDeletedAt(),
+			$keys[9] => $this->getAuthorId(),
+			$keys[10] => $this->getShowInGallery(),
 		);
 		if ($includeForeignObjects) {
 			if (null !== $this->aUser) {
@@ -1148,18 +1195,21 @@ abstract class BaseChart extends BaseObject  implements Persistent
 				$this->setLastModifiedAt($value);
 				break;
 			case 5:
-				$this->setMetadata($value);
+				$this->setType($value);
 				break;
 			case 6:
-				$this->setDeleted($value);
+				$this->setMetadata($value);
 				break;
 			case 7:
-				$this->setDeletedAt($value);
+				$this->setDeleted($value);
 				break;
 			case 8:
-				$this->setAuthorId($value);
+				$this->setDeletedAt($value);
 				break;
 			case 9:
+				$this->setAuthorId($value);
+				break;
+			case 10:
 				$this->setShowInGallery($value);
 				break;
 		} // switch()
@@ -1191,11 +1241,12 @@ abstract class BaseChart extends BaseObject  implements Persistent
 		if (array_key_exists($keys[2], $arr)) $this->setTheme($arr[$keys[2]]);
 		if (array_key_exists($keys[3], $arr)) $this->setCreatedAt($arr[$keys[3]]);
 		if (array_key_exists($keys[4], $arr)) $this->setLastModifiedAt($arr[$keys[4]]);
-		if (array_key_exists($keys[5], $arr)) $this->setMetadata($arr[$keys[5]]);
-		if (array_key_exists($keys[6], $arr)) $this->setDeleted($arr[$keys[6]]);
-		if (array_key_exists($keys[7], $arr)) $this->setDeletedAt($arr[$keys[7]]);
-		if (array_key_exists($keys[8], $arr)) $this->setAuthorId($arr[$keys[8]]);
-		if (array_key_exists($keys[9], $arr)) $this->setShowInGallery($arr[$keys[9]]);
+		if (array_key_exists($keys[5], $arr)) $this->setType($arr[$keys[5]]);
+		if (array_key_exists($keys[6], $arr)) $this->setMetadata($arr[$keys[6]]);
+		if (array_key_exists($keys[7], $arr)) $this->setDeleted($arr[$keys[7]]);
+		if (array_key_exists($keys[8], $arr)) $this->setDeletedAt($arr[$keys[8]]);
+		if (array_key_exists($keys[9], $arr)) $this->setAuthorId($arr[$keys[9]]);
+		if (array_key_exists($keys[10], $arr)) $this->setShowInGallery($arr[$keys[10]]);
 	}
 
 	/**
@@ -1212,6 +1263,7 @@ abstract class BaseChart extends BaseObject  implements Persistent
 		if ($this->isColumnModified(ChartPeer::THEME)) $criteria->add(ChartPeer::THEME, $this->theme);
 		if ($this->isColumnModified(ChartPeer::CREATED_AT)) $criteria->add(ChartPeer::CREATED_AT, $this->created_at);
 		if ($this->isColumnModified(ChartPeer::LAST_MODIFIED_AT)) $criteria->add(ChartPeer::LAST_MODIFIED_AT, $this->last_modified_at);
+		if ($this->isColumnModified(ChartPeer::TYPE)) $criteria->add(ChartPeer::TYPE, $this->type);
 		if ($this->isColumnModified(ChartPeer::METADATA)) $criteria->add(ChartPeer::METADATA, $this->metadata);
 		if ($this->isColumnModified(ChartPeer::DELETED)) $criteria->add(ChartPeer::DELETED, $this->deleted);
 		if ($this->isColumnModified(ChartPeer::DELETED_AT)) $criteria->add(ChartPeer::DELETED_AT, $this->deleted_at);
@@ -1283,6 +1335,7 @@ abstract class BaseChart extends BaseObject  implements Persistent
 		$copyObj->setTheme($this->getTheme());
 		$copyObj->setCreatedAt($this->getCreatedAt());
 		$copyObj->setLastModifiedAt($this->getLastModifiedAt());
+		$copyObj->setType($this->getType());
 		$copyObj->setMetadata($this->getMetadata());
 		$copyObj->setDeleted($this->getDeleted());
 		$copyObj->setDeletedAt($this->getDeletedAt());
@@ -1403,6 +1456,7 @@ abstract class BaseChart extends BaseObject  implements Persistent
 		$this->theme = null;
 		$this->created_at = null;
 		$this->last_modified_at = null;
+		$this->type = null;
 		$this->metadata = null;
 		$this->deleted = null;
 		$this->deleted_at = null;

@@ -43,6 +43,7 @@ class ChartTableMap extends TableMap
 		$this->addColumn('THEME', 'Theme', 'VARCHAR', true, 255, null);
 		$this->addColumn('CREATED_AT', 'CreatedAt', 'TIMESTAMP', true, null, null);
 		$this->addColumn('LAST_MODIFIED_AT', 'LastModifiedAt', 'TIMESTAMP', true, null, null);
+		$this->addColumn('TYPE', 'Type', 'VARCHAR', true, 200, null);
 		$this->addColumn('METADATA', 'Metadata', 'VARCHAR', true, 4096, null);
 		$this->addColumn('DELETED', 'Deleted', 'BOOLEAN', false, 1, false);
 		$this->addColumn('DELETED_AT', 'DeletedAt', 'TIMESTAMP', false, null, null);

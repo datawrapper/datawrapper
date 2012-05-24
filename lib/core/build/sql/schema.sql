@@ -16,6 +16,7 @@ CREATE TABLE `chart`
 	`theme` VARCHAR(255) NOT NULL,
 	`created_at` DATETIME NOT NULL,
 	`last_modified_at` DATETIME NOT NULL,
+	`type` VARCHAR(200) NOT NULL,
 	`metadata` VARCHAR(4096) NOT NULL,
 	`deleted` TINYINT(1) DEFAULT 0,
 	`deleted_at` DATETIME,

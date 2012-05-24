@@ -23,13 +23,13 @@ abstract class BaseChartPeer {
 	const TM_CLASS = 'ChartTableMap';
 
 	/** The total number of columns. */
-	const NUM_COLUMNS = 10;
+	const NUM_COLUMNS = 11;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
 
 	/** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-	const NUM_HYDRATE_COLUMNS = 10;
+	const NUM_HYDRATE_COLUMNS = 11;
 
 	/** the column name for the ID field */
 	const ID = 'chart.ID';
@@ -45,6 +45,9 @@ abstract class BaseChartPeer {
 
 	/** the column name for the LAST_MODIFIED_AT field */
 	const LAST_MODIFIED_AT = 'chart.LAST_MODIFIED_AT';
+
+	/** the column name for the TYPE field */
+	const TYPE = 'chart.TYPE';
 
 	/** the column name for the METADATA field */
 	const METADATA = 'chart.METADATA';
@@ -80,12 +83,12 @@ abstract class BaseChartPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	protected static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'Title', 'Theme', 'CreatedAt', 'LastModifiedAt', 'Metadata', 'Deleted', 'DeletedAt', 'AuthorId', 'ShowInGallery', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'title', 'theme', 'createdAt', 'lastModifiedAt', 'metadata', 'deleted', 'deletedAt', 'authorId', 'showInGallery', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, self::TITLE, self::THEME, self::CREATED_AT, self::LAST_MODIFIED_AT, self::METADATA, self::DELETED, self::DELETED_AT, self::AUTHOR_ID, self::SHOW_IN_GALLERY, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'TITLE', 'THEME', 'CREATED_AT', 'LAST_MODIFIED_AT', 'METADATA', 'DELETED', 'DELETED_AT', 'AUTHOR_ID', 'SHOW_IN_GALLERY', ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'title', 'theme', 'created_at', 'last_modified_at', 'metadata', 'deleted', 'deleted_at', 'author_id', 'show_in_gallery', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'Title', 'Theme', 'CreatedAt', 'LastModifiedAt', 'Type', 'Metadata', 'Deleted', 'DeletedAt', 'AuthorId', 'ShowInGallery', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'title', 'theme', 'createdAt', 'lastModifiedAt', 'type', 'metadata', 'deleted', 'deletedAt', 'authorId', 'showInGallery', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::TITLE, self::THEME, self::CREATED_AT, self::LAST_MODIFIED_AT, self::TYPE, self::METADATA, self::DELETED, self::DELETED_AT, self::AUTHOR_ID, self::SHOW_IN_GALLERY, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'TITLE', 'THEME', 'CREATED_AT', 'LAST_MODIFIED_AT', 'TYPE', 'METADATA', 'DELETED', 'DELETED_AT', 'AUTHOR_ID', 'SHOW_IN_GALLERY', ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'title', 'theme', 'created_at', 'last_modified_at', 'type', 'metadata', 'deleted', 'deleted_at', 'author_id', 'show_in_gallery', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, )
 	);
 
 	/**
@@ -95,12 +98,12 @@ abstract class BaseChartPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	protected static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Title' => 1, 'Theme' => 2, 'CreatedAt' => 3, 'LastModifiedAt' => 4, 'Metadata' => 5, 'Deleted' => 6, 'DeletedAt' => 7, 'AuthorId' => 8, 'ShowInGallery' => 9, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'title' => 1, 'theme' => 2, 'createdAt' => 3, 'lastModifiedAt' => 4, 'metadata' => 5, 'deleted' => 6, 'deletedAt' => 7, 'authorId' => 8, 'showInGallery' => 9, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::TITLE => 1, self::THEME => 2, self::CREATED_AT => 3, self::LAST_MODIFIED_AT => 4, self::METADATA => 5, self::DELETED => 6, self::DELETED_AT => 7, self::AUTHOR_ID => 8, self::SHOW_IN_GALLERY => 9, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'TITLE' => 1, 'THEME' => 2, 'CREATED_AT' => 3, 'LAST_MODIFIED_AT' => 4, 'METADATA' => 5, 'DELETED' => 6, 'DELETED_AT' => 7, 'AUTHOR_ID' => 8, 'SHOW_IN_GALLERY' => 9, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'title' => 1, 'theme' => 2, 'created_at' => 3, 'last_modified_at' => 4, 'metadata' => 5, 'deleted' => 6, 'deleted_at' => 7, 'author_id' => 8, 'show_in_gallery' => 9, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Title' => 1, 'Theme' => 2, 'CreatedAt' => 3, 'LastModifiedAt' => 4, 'Type' => 5, 'Metadata' => 6, 'Deleted' => 7, 'DeletedAt' => 8, 'AuthorId' => 9, 'ShowInGallery' => 10, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'title' => 1, 'theme' => 2, 'createdAt' => 3, 'lastModifiedAt' => 4, 'type' => 5, 'metadata' => 6, 'deleted' => 7, 'deletedAt' => 8, 'authorId' => 9, 'showInGallery' => 10, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::TITLE => 1, self::THEME => 2, self::CREATED_AT => 3, self::LAST_MODIFIED_AT => 4, self::TYPE => 5, self::METADATA => 6, self::DELETED => 7, self::DELETED_AT => 8, self::AUTHOR_ID => 9, self::SHOW_IN_GALLERY => 10, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'TITLE' => 1, 'THEME' => 2, 'CREATED_AT' => 3, 'LAST_MODIFIED_AT' => 4, 'TYPE' => 5, 'METADATA' => 6, 'DELETED' => 7, 'DELETED_AT' => 8, 'AUTHOR_ID' => 9, 'SHOW_IN_GALLERY' => 10, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'title' => 1, 'theme' => 2, 'created_at' => 3, 'last_modified_at' => 4, 'type' => 5, 'metadata' => 6, 'deleted' => 7, 'deleted_at' => 8, 'author_id' => 9, 'show_in_gallery' => 10, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, )
 	);
 
 	/**
@@ -177,6 +180,7 @@ abstract class BaseChartPeer {
 			$criteria->addSelectColumn(ChartPeer::THEME);
 			$criteria->addSelectColumn(ChartPeer::CREATED_AT);
 			$criteria->addSelectColumn(ChartPeer::LAST_MODIFIED_AT);
+			$criteria->addSelectColumn(ChartPeer::TYPE);
 			$criteria->addSelectColumn(ChartPeer::METADATA);
 			$criteria->addSelectColumn(ChartPeer::DELETED);
 			$criteria->addSelectColumn(ChartPeer::DELETED_AT);
@@ -188,6 +192,7 @@ abstract class BaseChartPeer {
 			$criteria->addSelectColumn($alias . '.THEME');
 			$criteria->addSelectColumn($alias . '.CREATED_AT');
 			$criteria->addSelectColumn($alias . '.LAST_MODIFIED_AT');
+			$criteria->addSelectColumn($alias . '.TYPE');
 			$criteria->addSelectColumn($alias . '.METADATA');
 			$criteria->addSelectColumn($alias . '.DELETED');
 			$criteria->addSelectColumn($alias . '.DELETED_AT');
