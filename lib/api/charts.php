@@ -68,13 +68,21 @@ $app->get('/charts', function() {
  * returns the metadata for all charts that are allowed
  * to show in the gallery
  */
-$app->get('/gallery', function() {
+$app->get('/gallery', function() use ($app) {
     $result = array();
-    $charts = ChartQuery::create()
+    $q = ChartQuery::create()
         ->filterByShowInGallery(true)
-        ->orderByCreatedAt('desc')
-        ->limit(20)
-        ->find();
+        ->orderByCreatedAt('desc');
+    if ($app->request()->get('type')) {
+        $q->filterByType($app->request()->get('type'));
+    }
+    if ($app->request()->get('theme')) {
+        $q->filterByTheme($app->request()->get('theme'));
+    }
+    if ($app->request()->get('month')) {
+        $q->filterByTheme($app->request()->get('theme'));
+    }
+    $charts = $q->limit(20)->find();
     foreach ($charts as $chart) {
         $result[] = $chart->toArray();
     }
@@ -83,21 +91,43 @@ $app->get('/gallery', function() {
 
 /* load chart meta data */
 $app->get('/charts/:id', function($id) use ($app) {
-    $res = DW::getChartMetaData($id);
-    $app->render('json-error.php', $res, 200);
+    $chart = ChartQuery::create()->findPK($id);
+    if (!empty($chart)) {
+        ok($chart->toArray());
+    } else {
+        error('chart-not-found', 'No chart with that id was found');
+    }
 });
 
 /* check user and update chart meta data */
 $app->put('/charts/:id', function($id) use ($app) {
-    if (DW::checkLogin()) {
-        if (DW::chartIsWritable($id)) {
-            $data = json_decode($app->request()->getBody());
-            DW::setChartMetaData($id, $data);
+
+});
+
+/* upload data to a chart */
+$app->put('/charts/:id/data', function($id) use ($app) {
+    $user = DatawrapperSession::getUser();
+    if ($user->isLoggedIn()) {
+        $chart = ChartQuery::create()->findPK($id);
+        if (!empty($chart)) {
+            if ($chart->getAuthorId() == $user->getId()) {
+                $data = $app->request()->getBody();
+                $path = '../../charts/data/' . $chart->getCreatedAt('Ym');
+                try {
+                    if (!file_exists($path)) {
+                        mkdir($path);
+                    }
+                    $filename = $path . '/' . $chart->getId() . '.csv';
+                    file_put_contents($filename, $data);
+                    ok($filename);
+                } catch (Exception $e) {
+                    error('io-error', $path.' '.$e->getMessage());
+                }
+            } else {
+                error('access-denied', 'this is not your chart');
+            }
         } else {
-            $app->render('json-error.php', array('code' => 'access-denied', 'msg' => 'You don\'t have the rights to modifiy this chart'));
+            error('chart-not-found', 'No chart with that id was found');
         }
-    } else {
-        $app->render('json-error.php', array('code' => 'need-login', 'msg' => 'you must be logged in'));
     }
-    $res = DW::setChartMetaData($id);
 });

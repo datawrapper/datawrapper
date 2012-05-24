@@ -392,8 +392,8 @@ function log(id, json) {
       <div class="row">
          <div class="span1 offset2">PUT</div>
          <div class="span5 form-inline">
-            <a id="update-chart" class="btn btn-primary">update chart</a>
-            <input id="set-lang-val" type="text" class="input-xlarge span1" value="de" />
+            <input id="set-chart-id" type="text" class="input-xlarge span2 disabled" placeholder="insert chart id" />
+            <a id="update-chart" class="disabled btn btn-primary">update chart</a>
          </div>
          <div class="span4">
             <div id="set-lang-out" class="output"></div>
@@ -406,16 +406,29 @@ function log(id, json) {
          <div class="span2">charts/:id/data</div>
          <div class="span1">PUT</div>
          <div class="span5 form-vertical">
-            <input class="input-xlarge span2" type="text" placeholder="insert a chart-id" />
-            <textarea id="upload-data-content" class="span4" rows="6" placeholder="paste your data here"></textarea>
+            <input id="upload-chart-id" class="input-xlarge span2" type="text" placeholder="insert a chart-id" />
+            <textarea id="upload-data-text" class="span4" rows="6" placeholder="paste your data here"></textarea>
             <a id="upload-data" class="btn btn-primary">upload chart data</a>
             <div>- or -</div>
 
-            <a id="upload-file" class="btn btn-primary">upload a csv file</a>
+            <a id="upload-file" class="btn btn-primary disabled">upload a csv file</a>
          </div>
          <div class="span4">
-            <div id="get-chart-out" class="output">upload some data using copy&amp;paste from spreadsheet applications or by uploading a csv file from your computer.</div>
+            <div id="upload-data-out" class="output">upload some data using copy&amp;paste from spreadsheet applications or by uploading a csv file from your computer.</div>
          </div>
+         <script type="text/javascript">
+         $('#upload-data').click(function() {
+            $.ajax({
+               url: '/api/charts/' + $('#upload-chart-id').val() + '/data',
+               type: 'PUT',
+               data: $('#upload-data-text').val(),
+               processData: false,
+               success: function(json) {
+                  log('upload-data-out', json);
+               }
+            })
+         })
+         </script>
       </div>
 
       <!-- visualization types -->
