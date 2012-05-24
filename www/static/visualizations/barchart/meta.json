@@ -1,0 +1,26 @@
+{
+    "id": "barchart",
+    "title": {
+        "en": "bar chart",
+        "de": "Balkendiagramm",
+        "fr": "diagramme temporel"
+    },
+    "author": {
+        "name": "gka",
+        "email": "gka@vis4.net"
+    },
+    "license": {
+        "name": "MIT",
+        "url": "http://www.opensource.org/licenses/mit-license.php"
+    },
+    "libraries": [
+        "d3/d3.vs.js"
+    ],
+    "about": "http://site.com/understanding-bar-charts/",
+    "compatibility": {
+        "msie": "9+",
+        "moz": "5+",
+        "webkit": "3+",
+        "ios": "no"
+    }
+}

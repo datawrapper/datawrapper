@@ -1,0 +1,26 @@
+{
+    "id": "linechart",
+    "title": {
+        "en": "line chart",
+        "de": "Liniendiagramm",
+        "fr": "diagramme temporel"
+    },
+    "author": {
+        "name": "nkb",
+        "email": "hi@nkb.fr"
+    },
+    "license": {
+        "name": "MIT",
+        "url": "http://www.opensource.org/licenses/mit-license.php"
+    },
+    "libraries": [
+        "d3/d3.vs.js"
+    ],
+    "about": "http://site.com/understanding-line-charts/",
+    "compatibility": {
+        "msie": "9+",
+        "moz": "5+",
+        "webkit": "3+",
+        "ios": "no"
+    }
+}

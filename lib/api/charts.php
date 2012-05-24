@@ -11,7 +11,7 @@ $app->get('/charts', function() {
             ->find();
         $res = array();
         foreach ($charts as $chart) {
-            $res[] = $chart->toArray();
+            $res[] = $chart->shortArray();
         }
         ok($res);
     } else {
@@ -32,6 +32,7 @@ $app->post('/charts', function() {
                 $chart->setLastModifiedAt(time());
                 $chart->setAuthorId($user->getId());
                 $chart->save();
+                break;
             } catch (Exception $e) {
                 continue;
             }

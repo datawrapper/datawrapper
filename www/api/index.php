@@ -11,7 +11,7 @@
 require '../../vendor/Slim/Slim.php';
 
 // include our JSON view
-require 'views/JSONView.php';
+require '../../lib/api/views/JSONView.php';
 
 // Include the main Propel script
 require_once '../../vendor/propel/runtime/lib/Propel.php';
@@ -75,6 +75,7 @@ require_once '../../lib/api/users.php';
 require_once '../../lib/api/auth.php';
 require_once '../../lib/api/session.php';
 require_once '../../lib/api/charts.php';
+require_once '../../lib/api/visualizations.php';
 
 
 /**
