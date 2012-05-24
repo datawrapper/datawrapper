@@ -442,6 +442,30 @@ function log(id, json) {
          </script>
       </div>
 
+      <!-- public gallery -->
+
+      <div class="row sep">
+         <div class="span2">gallery</div>
+         <div class="span1">GET</div>
+         <div class="span5 form-inline">
+            <a id="gallery" class="btn btn-primary">get chart gallery</a>
+         </div>
+         <div class="span4">
+            <div id="gallery-out" class="output">get 20 most recent charts for public gallery</div>
+         </div>
+         <script type="text/javascript">
+            $('#gallery').click(function() {
+               $.ajax({
+                  url: '/api/gallery',
+                  type: 'GET',
+                  success: function(data) {
+                     log('gallery-out', data);
+                  }
+               });
+            });
+         </script>
+      </div>
+
       <!-- logout current user -->
 
       <div class="row sep">

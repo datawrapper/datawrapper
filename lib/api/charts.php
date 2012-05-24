@@ -73,7 +73,7 @@ $app->get('/gallery', function() {
     $charts = ChartQuery::create()
         ->filterByShowInGallery(true)
         ->orderByCreatedAt('desc')
-        ->limit(10)
+        ->limit(20)
         ->find();
     foreach ($charts as $chart) {
         $result[] = $chart->toArray();
