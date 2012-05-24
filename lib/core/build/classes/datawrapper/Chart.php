@@ -22,4 +22,14 @@ class Chart extends BaseChart {
         return $arr;
     }
 
+    public function shortArray() {
+        $arr = $this->toArray();
+        unset($arr['Metadata']);
+        unset($arr['CreatedAt']);
+        unset($arr['LastModifiedAt']);
+        unset($arr['AuthorId']);
+        unset($arr['ShowInGallery']);
+        return $arr;
+    }
+
 } // Chart
