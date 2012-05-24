@@ -1,3 +1,5 @@
 .project
 .DS_Store
 *.sublime-workspace
+lib/core/build/conf/datawrapper-conf.php
+lib/datawrapper/build/conf/datawrapper-conf.php
