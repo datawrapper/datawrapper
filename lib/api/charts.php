@@ -31,6 +31,8 @@ $app->post('/charts', function() {
                 $chart->setCreatedAt(time());
                 $chart->setLastModifiedAt(time());
                 $chart->setAuthorId($user->getId());
+                $chart->setMetadata("{ \"data\": {}, \"visualization\": {} }");
+                // $chart->setLanguage($user->getLanguage());  // defaults to user language
                 $chart->save();
                 break;
             } catch (Exception $e) {
@@ -40,7 +42,7 @@ $app->post('/charts', function() {
         if ($chart->isNew()) {
             error('create-chart-error', 'could not get an id for the chart ' . $i . ' ' . rand_chars(5));
         } else {
-            $result = array($chart->toArray());
+            $result = array($chart->serialize());
             ok($result);
         }
     } else {
@@ -93,36 +95,19 @@ $app->get('/gallery', function() use ($app) {
 $app->get('/charts/:id', function($id) use ($app) {
     $chart = ChartQuery::create()->findPK($id);
     if (!empty($chart)) {
-        ok($chart->toArray());
+        ok($chart->serialize());
     } else {
         error('chart-not-found', 'No chart with that id was found');
     }
 });
 
-/* check user and update chart meta data */
-$app->put('/charts/:id', function($id) use ($app) {
-
-});
-
-/* upload data to a chart */
-$app->put('/charts/:id/data', function($id) use ($app) {
+function if_chart_is_writable($id, $func) {
     $user = DatawrapperSession::getUser();
     if ($user->isLoggedIn()) {
         $chart = ChartQuery::create()->findPK($id);
         if (!empty($chart)) {
             if ($chart->getAuthorId() == $user->getId()) {
-                $data = $app->request()->getBody();
-                $path = '../../charts/data/' . $chart->getCreatedAt('Ym');
-                try {
-                    if (!file_exists($path)) {
-                        mkdir($path);
-                    }
-                    $filename = $path . '/' . $chart->getId() . '.csv';
-                    file_put_contents($filename, $data);
-                    ok($filename);
-                } catch (Exception $e) {
-                    error('io-error', $path.' '.$e->getMessage());
-                }
+                call_user_func($func, $user, $chart);
             } else {
                 error('access-denied', 'this is not your chart');
             }
@@ -130,4 +115,33 @@ $app->put('/charts/:id/data', function($id) use ($app) {
             error('chart-not-found', 'No chart with that id was found');
         }
     }
+}
+
+
+/* check user and update chart meta data */
+$app->put('/charts/:id', function($id) use ($app) {
+    if_chart_is_writable($id, function($user, $chart) use ($app) {
+        $json = json_decode($app->request()->getBody(), true);
+        $chart->unserialize($json);
+        ok($chart->serialize());
+    });
+});
+
+
+/* upload data to a chart */
+$app->put('/charts/:id/data', function($id) use ($app) {
+    if_chart_is_writable($id, function($user, $chart) use ($app) {
+    $data = $app->request()->getBody();
+        $path = '../../charts/data/' . $chart->getCreatedAt('Ym');
+        try {
+            if (!file_exists($path)) {
+                mkdir($path);
+            }
+            $filename = $path . '/' . $chart->getId() . '.csv';
+            file_put_contents($filename, $data);
+            ok($filename);
+        } catch (Exception $e) {
+            error('io-error', $path.' '.$e->getMessage());
+        }
+    });
 });
