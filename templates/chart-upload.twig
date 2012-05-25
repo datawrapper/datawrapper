@@ -1,0 +1,71 @@
+{% extends "core.twig" %}
+
+{% block content %}
+
+<div class="dw-create-upload">
+    hello {{ name }}
+    <div class="row">
+        <div class="span4">
+            <h3>Copy &amp; Paste</h3>
+            <p>We want to make the data upload as easy as possible. If you're working in Excel or OpenOffice, just select your data (including header row/column) and paste it in the following text field. <a href="#">learn more</a></p>
+        </div>
+        <div class="span4 inactive">
+            <h3>Upload CSV</h3>
+            <p>If your data is already stored in a CSV file you may want to simply upload the file here. <a href="#">learn more</a></p>
+
+
+        </div>
+        <div class="span4">
+            <h3>Remote Data Source</h3>
+            <p>If your data is stored on a datahub like CKAN, ScraperWiki or Google Docs, you can create visualisations directly. Your charts can be updated automatically as the data source changes. <a href="#">learn more</a></p>
+
+        </div>
+    </div>
+
+     <div class="row">
+        <div class="span4">
+             <form class="well">
+                <textarea placeholder="paste your data here"></textarea>
+
+                <p class="pull-right">
+                    <a class="btn" href="describe.html">Upload and continue <i class="icon-chevron-right"></i></a>
+                </p>
+                <br class="clearfix" />
+            </form>
+        </div>
+        <div class="span4">
+            <div class="well">
+                <button class="btn"><i class="icon-upload"></i> Pick a file from your disk</button>
+                <div style="margin:10px 0 0 10px">..or simply drag &amp; and drop one here!</div>
+            </div>
+        </div>
+        <div class="span4">
+            <form class="well">
+                <label class="radio">
+                    <input type="radio" name="remote-source" />
+                    OKFN DataHub (CKAN)<br />
+                    <input type="text" placeholder="CKAN-URL" />
+                </label>
+
+                <label class="radio">
+                    <input type="radio" name="remote-source" />
+                    Google Docs<br />
+                    <input type="text" placeholder="Google Docs URL" />
+                </label>
+
+                <label class="radio">
+                    <input type="radio" name="remote-source" />
+                    ScraperWiki<br />
+                    <input type="text" placeholder="Insert the name of your scraper" />
+                </label>
+
+                <p class="pull-right">
+                    <a class="btn" href="describe.html">Check and continue <i class="icon-chevron-right"></i></a>
+                </p>
+                <br class="clearfix" />
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

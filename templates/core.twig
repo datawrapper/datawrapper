@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Datawrapper {{ block('title') }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="/static/vendor/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="/static/vendor/bootstrap/css/bootstrap-datawrapper.css" rel="stylesheet">
+    <style>
+      body {
+        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+      }
+    </style>
+    <link href="/static/vendor/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="/css/datawrapper.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+  </head>
+
+  <body class="dw">
+
+    <div class="container">
+
+      {{ block('content') }}
+
+      <footer class="footer">
+
+        <p class="pull-right"><a href="#top">Back to top</a></p>
+
+
+        <p>Datawrapper is a project of <a href="http://abzv.de">ABZV</a>. It is open source and hosted on <a href="#">Github</a>.</p>
+        <p>You can learn more about <a href="#">Datawrapper</a> and the <a href="#">motivation</a> behind it. If you're completely lost, here is a <a href="#">quick start guide</a> and the complete <a href="#">manual</a>. Also we kindly ask you to check out the <a href="#">terms of use</a>.</p>
+
+
+
+        </div>
+      </footer>
+    </div>
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/static/vendor/jquery/jquery.min.js"></script>
+    <script src="/static/vendor/bootstrap/js/bootstrap.js"></script>
+
+  </body>
+</html>
