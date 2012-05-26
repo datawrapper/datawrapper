@@ -28,13 +28,43 @@ $app = new Slim(array(
     'templates.path' => '../templates'
 ));
 
+function add_header_vars(&$page) {
+    // define the header links
+    $headlinks = array();
+    $headlinks[] = array('url' => '/', 'id' => 'home', 'title' => 'Home', 'icon' => 'home');
+    $headlinks[] = array('url' => '/chart/create', 'id' => 'create', 'title' => 'Create', 'icon' => 'pencil');
+    $headlinks[] = array('url' => '/mycharts', 'id' => 'mycharts', 'title' => 'My Charts', 'icon' => 'signal');
+    $headlinks[] = array('url' => '#logout', 'id' => 'logout', 'title' => 'Logout', 'icon' => 'user');
+    $page['headlinks'] = $headlinks;
+}
+
+function add_editor_nav(&$page, $step) {
+    // define 4 step navigation
+    $steps = array();
+    $steps[] = array('index'=>1, 'id'=>'upload', 'title'=>'Upload Data');
+    $steps[] = array('index'=>2, 'id'=>'describe', 'title'=>'Check & Describe');
+    $steps[] = array('index'=>3, 'id'=>'visualize', 'title'=>'Visualize');
+    $steps[] = array('index'=>4, 'id'=>'publish', 'title'=>'Publish');
+    $page['steps'] = $steps;
+    $page['createstep'] = $step;
+}
+
 //GET route
 $app->get('/', function () use ($app) {
-    $app->render('index.twig', array('name' => 'fooo'));
+    $page = array('title' => 'Datawrapper');
+    add_header_vars($page);
+    $app->render('index.twig', $page);
+});
+
+$app->get('/chart/create', function() use ($app) {
+    $app->redirect('/chart/12345/upload');
 });
 
 $app->get('/chart/:id/upload', function ($id) use ($app) {
-    $app->render('chart-upload.twig', array('name' => 'fooo'));
+    $page = array('title' => 'Upload some data');
+    add_header_vars($page);
+    add_editor_nav($page, 1);
+    $app->render('chart-upload.twig', $page);
 });
 
 

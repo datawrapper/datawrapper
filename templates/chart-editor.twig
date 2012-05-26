@@ -1,0 +1,16 @@
+{% extends "core.twig" %}
+
+{% block content %}
+
+<div class="row create-nav">
+    {% for step in steps %}
+        <div class="span3{% if createstep == step.index %} active{% else %}{% if createstep > step.index %} passed{% endif %}{% endif %}">
+            {% if createstep > step.index %}<a href="{{ step.id }}.html">{% endif %}
+            {{ step.index }} {{ step.title }}
+            {% if createstep > step.index %}</a>{% endif %}
+            {% if createstep > step.index %} <i class="icon-ok"></i>{% endif %}
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

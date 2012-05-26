@@ -1,0 +1,29 @@
+{% block header %}
+
+    <div class="row topnav">
+        <div class="span2 dw-logo-type">datawrapper.de</div>
+        <div class="span10 toplinks">
+
+            <div class="pull-right"><ul class="nav nav-pills">
+
+                {% for link in headlinks %}
+                <li class="{% if page.mainnav == link.id %} active{% endif %}">
+                    <a href="{{ link.url }}"><i class="icon-{{ link.icon }}{% if page.mainnav == link.id %} icon-white{% endif %}"></i> {{ link.title }}</a>
+                </li>
+                {% endfor %}
+                <li class="dropdown">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-font"></i> Language<b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                      <li><a href="#en">english</a></li>
+                      <li><a href="#de">deutsch</a></li>
+                      <li><a href="#fr">francais</a></li>
+                  <!-- links -->
+                  </ul>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+
+
+{% endblock %}

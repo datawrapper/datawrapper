@@ -16,7 +16,7 @@
       }
     </style>
     <link href="/static/vendor/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
-    <link href="/css/datawrapper.css" rel="stylesheet">
+    <link href="/static/css/datawrapper.css" rel="stylesheet">
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -29,17 +29,21 @@
 
     <div class="container">
 
+      <header class="header">
+
+        {% use "header.twig" %}
+         {{ block('header') }}
+
+      </header>
+
       {{ block('content') }}
 
       <footer class="footer">
 
         <p class="pull-right"><a href="#top">Back to top</a></p>
 
-
         <p>Datawrapper is a project of <a href="http://abzv.de">ABZV</a>. It is open source and hosted on <a href="#">Github</a>.</p>
         <p>You can learn more about <a href="#">Datawrapper</a> and the <a href="#">motivation</a> behind it. If you're completely lost, here is a <a href="#">quick start guide</a> and the complete <a href="#">manual</a>. Also we kindly ask you to check out the <a href="#">terms of use</a>.</p>
-
-
 
         </div>
       </footer>
@@ -49,7 +53,7 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="/static/vendor/jquery/jquery.min.js"></script>
-    <script src="/static/vendor/bootstrap/js/bootstrap.js"></script>
+    <script src="/static/vendor/bootstrap/js/bootstrap.min.js"></script>
 
   </body>
 </html>
