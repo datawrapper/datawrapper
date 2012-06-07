@@ -4,6 +4,43 @@
 
 {{ parent() }}
 
+<script type="text/javascript">
+$(function() {
+
+    function updateTable(dv) {
+        var table = $('#data-preview');
+        table.html('');  // empty table
+        table.append('<thead><tr></tr><thead><tbody></tbody>');
+        var thead = $('thead tr', table);
+        dv.eachColumn(function(name) {
+            thead.append('<th>'+name+'</th>');
+        });
+        var tbody = $('tbody', table);
+        dv.each(function(row) {
+            var tr = $('<tr></tr>');
+            dv.eachColumn(function(col) {
+                tr.append('<td>'+row[col]+'</td>');
+            });
+            tbody.append(tr);
+        });
+    }
+
+    var ds = new Miso.Dataset({
+        url : '/chart/' + DwEditor.chartId + '/data',
+        delimiter : "\t"
+    }).fetch({
+        success: function() {
+            console.log("Available Columns:" + this.columnNames().join(" -- "));
+            console.log("There are " + this.length + " rows");
+
+            updateTable(this);
+        }
+
+    });
+    window.ds = ds;
+});
+
+</script>
 
 <div class="dw-create-describe">
 
@@ -21,48 +58,8 @@
                 <label class="checkbox"><input type="checkbox"> Transpose data</label>
             </form>
 
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Education status</th>
-                        <th>2005</th>
-                        <th>2006</th>
-                        <th>2007</th>
-                        <th>2008</th>
-                        <th>2009</th>
-                        <th>2010</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Up to secondary education</td>
-                        <td>15369</td><td>14984</td><td>15236</td><td>15960</td><td>15745</td><td>15298</td>
-                    </tr>
-                    <tr>
-                        <td>Up to tertiary education</td>
-                        <td>17293</td><td>17370</td><td>18059</td><td>18639</td><td>18952</td><td>19228</td>
-                    </tr>
-                    <tr>
-                        <td>Tertiary education</td>
-                        <td>21147</td><td>21599</td><td>22623</td><td>23514</td><td>24660</td><td>24823</td>
-                    </tr>
-                    <tr>
-                        <td>Up to secondary education</td>
-                        <td>15369</td><td>14984</td><td>15236</td><td>15960</td><td>15745</td><td>15298</td>
-                    </tr>
-                    <tr>
-                        <td>Up to tertiary education</td>
-                        <td>17293</td><td>17370</td><td>18059</td><td>18639</td><td>18952</td><td>19228</td>
-                    </tr>
-                    <tr>
-                        <td>Up to secondary education</td>
-                        <td>15369</td><td>14984</td><td>15236</td><td>15960</td><td>15745</td><td>15298</td>
-                    </tr>
-                    <tr>
-                        <td>Up to tertiary education</td>
-                        <td>17293</td><td>17370</td><td>18059</td><td>18639</td><td>18952</td><td>19228</td>
-                    </tr>
-                </tbody>
+            <table id="data-preview" class="table table-striped">
+                
             </table>
         </div>
 
