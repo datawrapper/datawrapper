@@ -5,7 +5,7 @@
 /**
  * Skeleton subclass for representing a row from the 'chart' table.
  *
- * 
+ *
  *
  * You should add additional methods to this class to meet the
  * application requirements.  This class will only be generated as
@@ -69,8 +69,79 @@ class Chart extends BaseChart {
         return $arr;
     }
 
+    /**
+     *
+     */
     protected function uppercaseKeys($arr) {
         return $this->lowercaseKeys($arr, false);
+    }
+
+    /**
+     * get the path where this charts data file is stored
+     */
+    protected function getDataPath() {
+        $path = '../charts/data/' . $this->getCreatedAt('Ym');
+        if (substr(dirname($_SERVER['SCRIPT_FILENAME']), -4) == "/api") {
+            $path = '../' . $path;
+        }
+        return $path;
+    }
+
+    /**
+     * get the filename of this charts data file, which is usually
+     * just the chart id + csv extension
+     */
+    protected function getDataFilename() {
+        return $this->getId() . '.csv';
+    }
+
+    /**
+     * writes raw csv data to the file system store
+     *
+     * @param csvdata  raw csv data string
+     */
+    public function writeData($csvdata) {
+        $path = $this->getDataPath();
+        if (!file_exists($path)) {
+            mkdir($path);
+        }
+        $filename = $path . '/' . $this->getDataFilename();
+        file_put_contents($filename, $csvdata);
+        return $filename;
+    }
+
+    /**
+     * load data from file sytem
+     */
+    public function loadData() {
+        $filename = $this->getDataPath() . '/' . $this->getDataFilename();
+        if (!file_exists($filename)) {
+            return '';
+        } else {
+            return file_get_contents($filename);
+        }
+    }
+
+    /**
+     * checks wether a chart is writeable by a certain user
+     *
+     * @param user
+     */
+    public function isWritable($user) {
+        if ($user->isLoggedIn()) {
+            if ($this->getAuthorId() == $user->getId()) {
+                return true;
+            } else {
+                return 'this is not your chart.';
+            }
+        } else {
+            // check if the session matches
+            if ($this->getGuestSession() == session_id()) {
+                return true;
+            } else {
+                return 'this is not your chart (session doesnt match)';
+            }
+        }
     }
 
 } // Chart

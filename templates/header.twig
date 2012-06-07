@@ -4,22 +4,14 @@
         <div class="span2 dw-logo-type">datawrapper.de</div>
         <div class="span10 toplinks">
 
-            <div class="pull-right"><ul class="nav nav-pills">
+            <div class="pull-right"><ul class="nav nav-pills dw-header-nav">
 
                 {% for link in headlinks %}
-                <li class="{% if page.mainnav == link.id %} active{% endif %}">
-                    <a href="{{ link.url }}"><i class="icon-{{ link.icon }}{% if page.mainnav == link.id %} icon-white{% endif %}"></i> {{ link.title }}</a>
+                <li class="{{ link.id }}{% if link.active %} active{% endif %}{% if link.dropdown %} dropdown{% endif %}">
+                    <a href="{{ link.url }}" {% if link.dropdown %} class="dropdown-toggle" data-toggle="dropdown" {% endif %}><i class="icon-{{ link.icon }}{% if link.active %} icon-white{% endif %}"></i> {{ link.title }}{% if link.dropdown %}<b class="caret"></b>{% endif %}</a>
+                    {% if link.dropdown %}<ul class="dropdown-menu"><li><a href="#">hj</a></li></ul>{% endif %}
                 </li>
                 {% endfor %}
-                <li class="dropdown">
-                  <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-font"></i> Language<b class="caret"></b></a>
-                  <ul class="dropdown-menu">
-                      <li><a href="#en">english</a></li>
-                      <li><a href="#de">deutsch</a></li>
-                      <li><a href="#fr">francais</a></li>
-                  <!-- links -->
-                  </ul>
-                </li>
             </ul>
 
         </div>

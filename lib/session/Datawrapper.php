@@ -33,6 +33,9 @@ class DatawrapperSession {
         $this->initUser();
     }
 
+    /**
+     * initializes a new user or creates a guest user if not logged in
+     */
     protected function initUser() {
         if (isset($_SESSION['dw-user-id'])) {
             $this->user = UserQuery::create()->limit(1)->findPK($_SESSION['dw-user-id']);
@@ -56,7 +59,7 @@ class DatawrapperSession {
         return self::getInstance()->_toArray();
     }
 
-    /*
+    /**
      * retreive the currently used frontend language
      */
     public static function getLanguage() {
@@ -64,7 +67,7 @@ class DatawrapperSession {
         // TODO: load user setting from database for logged users
     }
 
-    /*
+    /**
      * set a new language for the datawrapper user frontend
      */
     public static function setLanguage($lang) {

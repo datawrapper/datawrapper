@@ -22,6 +22,8 @@ CREATE TABLE `chart`
 	`deleted_at` DATETIME,
 	`author_id` INTEGER NOT NULL,
 	`show_in_gallery` TINYINT(1) DEFAULT 0,
+	`language` VARCHAR(5) DEFAULT 'en',
+	`guest_session` VARCHAR(255),
 	PRIMARY KEY (`id`),
 	INDEX `chart_FI_1` (`author_id`),
 	CONSTRAINT `chart_FK_1`

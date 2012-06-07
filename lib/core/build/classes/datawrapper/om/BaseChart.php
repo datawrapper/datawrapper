@@ -99,6 +99,19 @@ abstract class BaseChart extends BaseObject  implements Persistent
 	protected $show_in_gallery;
 
 	/**
+	 * The value for the language field.
+	 * Note: this column has a database default value of: 'en'
+	 * @var        string
+	 */
+	protected $language;
+
+	/**
+	 * The value for the guest_session field.
+	 * @var        string
+	 */
+	protected $guest_session;
+
+	/**
 	 * @var        User
 	 */
 	protected $aUser;
@@ -127,6 +140,7 @@ abstract class BaseChart extends BaseObject  implements Persistent
 	{
 		$this->deleted = false;
 		$this->show_in_gallery = false;
+		$this->language = 'en';
 	}
 
 	/**
@@ -331,6 +345,26 @@ abstract class BaseChart extends BaseObject  implements Persistent
 	public function getShowInGallery()
 	{
 		return $this->show_in_gallery;
+	}
+
+	/**
+	 * Get the [language] column value.
+	 * 
+	 * @return     string
+	 */
+	public function getLanguage()
+	{
+		return $this->language;
+	}
+
+	/**
+	 * Get the [guest_session] column value.
+	 * 
+	 * @return     string
+	 */
+	public function getGuestSession()
+	{
+		return $this->guest_session;
 	}
 
 	/**
@@ -580,6 +614,46 @@ abstract class BaseChart extends BaseObject  implements Persistent
 	} // setShowInGallery()
 
 	/**
+	 * Set the value of [language] column.
+	 * 
+	 * @param      string $v new value
+	 * @return     Chart The current object (for fluent API support)
+	 */
+	public function setLanguage($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->language !== $v) {
+			$this->language = $v;
+			$this->modifiedColumns[] = ChartPeer::LANGUAGE;
+		}
+
+		return $this;
+	} // setLanguage()
+
+	/**
+	 * Set the value of [guest_session] column.
+	 * 
+	 * @param      string $v new value
+	 * @return     Chart The current object (for fluent API support)
+	 */
+	public function setGuestSession($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->guest_session !== $v) {
+			$this->guest_session = $v;
+			$this->modifiedColumns[] = ChartPeer::GUEST_SESSION;
+		}
+
+		return $this;
+	} // setGuestSession()
+
+	/**
 	 * Indicates whether the columns in this object are only set to default values.
 	 *
 	 * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -594,6 +668,10 @@ abstract class BaseChart extends BaseObject  implements Persistent
 			}
 
 			if ($this->show_in_gallery !== false) {
+				return false;
+			}
+
+			if ($this->language !== 'en') {
 				return false;
 			}
 
@@ -630,6 +708,8 @@ abstract class BaseChart extends BaseObject  implements Persistent
 			$this->deleted_at = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
 			$this->author_id = ($row[$startcol + 9] !== null) ? (int) $row[$startcol + 9] : null;
 			$this->show_in_gallery = ($row[$startcol + 10] !== null) ? (boolean) $row[$startcol + 10] : null;
+			$this->language = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
+			$this->guest_session = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -638,7 +718,7 @@ abstract class BaseChart extends BaseObject  implements Persistent
 				$this->ensureConsistency();
 			}
 
-			return $startcol + 11; // 11 = ChartPeer::NUM_HYDRATE_COLUMNS.
+			return $startcol + 13; // 13 = ChartPeer::NUM_HYDRATE_COLUMNS.
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating Chart object", $e);
@@ -891,6 +971,12 @@ abstract class BaseChart extends BaseObject  implements Persistent
 		if ($this->isColumnModified(ChartPeer::SHOW_IN_GALLERY)) {
 			$modifiedColumns[':p' . $index++]  = '`SHOW_IN_GALLERY`';
 		}
+		if ($this->isColumnModified(ChartPeer::LANGUAGE)) {
+			$modifiedColumns[':p' . $index++]  = '`LANGUAGE`';
+		}
+		if ($this->isColumnModified(ChartPeer::GUEST_SESSION)) {
+			$modifiedColumns[':p' . $index++]  = '`GUEST_SESSION`';
+		}
 
 		$sql = sprintf(
 			'INSERT INTO `chart` (%s) VALUES (%s)',
@@ -934,6 +1020,12 @@ abstract class BaseChart extends BaseObject  implements Persistent
 						break;
 					case '`SHOW_IN_GALLERY`':
 						$stmt->bindValue($identifier, (int) $this->show_in_gallery, PDO::PARAM_INT);
+						break;
+					case '`LANGUAGE`':
+						$stmt->bindValue($identifier, $this->language, PDO::PARAM_STR);
+						break;
+					case '`GUEST_SESSION`':
+						$stmt->bindValue($identifier, $this->guest_session, PDO::PARAM_STR);
 						break;
 				}
 			}
@@ -1103,6 +1195,12 @@ abstract class BaseChart extends BaseObject  implements Persistent
 			case 10:
 				return $this->getShowInGallery();
 				break;
+			case 11:
+				return $this->getLanguage();
+				break;
+			case 12:
+				return $this->getGuestSession();
+				break;
 			default:
 				return null;
 				break;
@@ -1143,6 +1241,8 @@ abstract class BaseChart extends BaseObject  implements Persistent
 			$keys[8] => $this->getDeletedAt(),
 			$keys[9] => $this->getAuthorId(),
 			$keys[10] => $this->getShowInGallery(),
+			$keys[11] => $this->getLanguage(),
+			$keys[12] => $this->getGuestSession(),
 		);
 		if ($includeForeignObjects) {
 			if (null !== $this->aUser) {
@@ -1212,6 +1312,12 @@ abstract class BaseChart extends BaseObject  implements Persistent
 			case 10:
 				$this->setShowInGallery($value);
 				break;
+			case 11:
+				$this->setLanguage($value);
+				break;
+			case 12:
+				$this->setGuestSession($value);
+				break;
 		} // switch()
 	}
 
@@ -1247,6 +1353,8 @@ abstract class BaseChart extends BaseObject  implements Persistent
 		if (array_key_exists($keys[8], $arr)) $this->setDeletedAt($arr[$keys[8]]);
 		if (array_key_exists($keys[9], $arr)) $this->setAuthorId($arr[$keys[9]]);
 		if (array_key_exists($keys[10], $arr)) $this->setShowInGallery($arr[$keys[10]]);
+		if (array_key_exists($keys[11], $arr)) $this->setLanguage($arr[$keys[11]]);
+		if (array_key_exists($keys[12], $arr)) $this->setGuestSession($arr[$keys[12]]);
 	}
 
 	/**
@@ -1269,6 +1377,8 @@ abstract class BaseChart extends BaseObject  implements Persistent
 		if ($this->isColumnModified(ChartPeer::DELETED_AT)) $criteria->add(ChartPeer::DELETED_AT, $this->deleted_at);
 		if ($this->isColumnModified(ChartPeer::AUTHOR_ID)) $criteria->add(ChartPeer::AUTHOR_ID, $this->author_id);
 		if ($this->isColumnModified(ChartPeer::SHOW_IN_GALLERY)) $criteria->add(ChartPeer::SHOW_IN_GALLERY, $this->show_in_gallery);
+		if ($this->isColumnModified(ChartPeer::LANGUAGE)) $criteria->add(ChartPeer::LANGUAGE, $this->language);
+		if ($this->isColumnModified(ChartPeer::GUEST_SESSION)) $criteria->add(ChartPeer::GUEST_SESSION, $this->guest_session);
 
 		return $criteria;
 	}
@@ -1341,6 +1451,8 @@ abstract class BaseChart extends BaseObject  implements Persistent
 		$copyObj->setDeletedAt($this->getDeletedAt());
 		$copyObj->setAuthorId($this->getAuthorId());
 		$copyObj->setShowInGallery($this->getShowInGallery());
+		$copyObj->setLanguage($this->getLanguage());
+		$copyObj->setGuestSession($this->getGuestSession());
 
 		if ($deepCopy && !$this->startCopy) {
 			// important: temporarily setNew(false) because this affects the behavior of
@@ -1462,6 +1574,8 @@ abstract class BaseChart extends BaseObject  implements Persistent
 		$this->deleted_at = null;
 		$this->author_id = null;
 		$this->show_in_gallery = null;
+		$this->language = null;
+		$this->guest_session = null;
 		$this->alreadyInSave = false;
 		$this->alreadyInValidation = false;
 		$this->clearAllReferences();

@@ -1,0 +1,100 @@
+{% extends "chart-editor.twig" %}
+
+{% block content %}
+
+{{ parent() }}
+
+
+<div class="dw-create-describe">
+
+    <div class="row">
+
+        <div class="span8">
+            <div class="page-header">
+                <h2>Check your data</h2>
+            </div>
+            <p>Please check if the data format was recognized correctly. If not, please <a href="#">help Datawrapper to interpret your data</a>.</p>
+
+            <form class="form-inline">
+                <label class="checkbox"><input type="checkbox"> My data has vertical headers</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                <label class="checkbox"><input type="checkbox"> My data has horizontal headers</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                <label class="checkbox"><input type="checkbox"> Transpose data</label>
+            </form>
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Education status</th>
+                        <th>2005</th>
+                        <th>2006</th>
+                        <th>2007</th>
+                        <th>2008</th>
+                        <th>2009</th>
+                        <th>2010</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Up to secondary education</td>
+                        <td>15369</td><td>14984</td><td>15236</td><td>15960</td><td>15745</td><td>15298</td>
+                    </tr>
+                    <tr>
+                        <td>Up to tertiary education</td>
+                        <td>17293</td><td>17370</td><td>18059</td><td>18639</td><td>18952</td><td>19228</td>
+                    </tr>
+                    <tr>
+                        <td>Tertiary education</td>
+                        <td>21147</td><td>21599</td><td>22623</td><td>23514</td><td>24660</td><td>24823</td>
+                    </tr>
+                    <tr>
+                        <td>Up to secondary education</td>
+                        <td>15369</td><td>14984</td><td>15236</td><td>15960</td><td>15745</td><td>15298</td>
+                    </tr>
+                    <tr>
+                        <td>Up to tertiary education</td>
+                        <td>17293</td><td>17370</td><td>18059</td><td>18639</td><td>18952</td><td>19228</td>
+                    </tr>
+                    <tr>
+                        <td>Up to secondary education</td>
+                        <td>15369</td><td>14984</td><td>15236</td><td>15960</td><td>15745</td><td>15298</td>
+                    </tr>
+                    <tr>
+                        <td>Up to tertiary education</td>
+                        <td>17293</td><td>17370</td><td>18059</td><td>18639</td><td>18952</td><td>19228</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="span4">
+            <div class="page-header">
+                <h2>Describe your data</h2>
+            </div>
+            <h3>Credit the source</h3>
+            <p>
+                <label>Who published the data in the first place?</label>
+                <input type="text" placeholder="name of the organisation">
+            </p>
+            <p>
+                <label>If possible, please provide a link the source data</label>
+                <input type="text" placeholder="http://">
+            </p>
+            <h3>Annotate data</h3>
+            <p>To make the data more useful for your readers you can add details to individual data points or an entire series. This information will be displayed in the visualisations. <a href="#">Learn more..</a></p>
+            <button class="btn"><i class="icon-th-list"></i> Annotate series</button> <button class="btn"><i class="icon-th"></i> Annotate data point</button>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="span12">
+
+            <div class="form-actions">
+                <button class="pull-right btn btn-primary" href="#">Proceed <i class="icon-chevron-right icon-white"></i></button>
+                <button class="btn" href="#"><i class="icon-chevron-left"></i> Back</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

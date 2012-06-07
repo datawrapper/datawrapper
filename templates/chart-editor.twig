@@ -5,12 +5,19 @@
 <div class="row create-nav">
     {% for step in steps %}
         <div class="span3{% if createstep == step.index %} active{% else %}{% if createstep > step.index %} passed{% endif %}{% endif %}">
-            {% if createstep > step.index %}<a href="{{ step.id }}.html">{% endif %}
+            {% if createstep > step.index %}<a href="{{ step.id }}">{% endif %}
             {{ step.index }} {{ step.title }}
             {% if createstep > step.index %}</a>{% endif %}
             {% if createstep > step.index %} <i class="icon-ok"></i>{% endif %}
         </div>
     {% endfor %}
 </div>
+
+<script type="text/javascript">
+
+    window.DwEditor = {};
+    DwEditor.chartId = "{{ chartId }}";
+
+</script>
 
 {% endblock %}

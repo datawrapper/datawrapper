@@ -6,42 +6,72 @@
 
 <div class="dw-create-upload">
 
+    <script type="text/javascript">
+
+        $(function() {
+
+            function init() {
+                $('#demo-data').append('<li><a href="#">Gini</a></li>');
+            }
+
+            function nextPage() {
+                location.href = '/chart/'+DwEditor.chartId+'/describe';
+            }
+
+            $('#upload-data').click(function() {
+                $.ajax({
+                    url: '/api/charts/' + DwEditor.chartId + '/data',
+                    type: 'PUT',
+                    data: $('#upload-data-text').val(),
+                    processData: false,
+                    dataType: 'json',
+                    success: function(result) {
+                        if (result.status == "ok") {
+                            // data is saved correctly, so proceed
+                            nextPage();
+                        } else {
+                            alert(result.message);
+                        }
+                    }
+                });
+                return false;
+            });
+
+        });
+    </script>
+
     <div class="row">
-        <div class="span4">
-            <h3>Copy &amp; Paste</h3>
-            <p>We want to make the data upload as easy as possible. If you're working in Excel or OpenOffice, just select your data (including header row/column) and paste it in the following text field. <a href="#">learn more</a></p>
+        <div class="span7">
+            <h3>Upload Your Data..</h3>
+
+             <form class="well">
+                <textarea id="upload-data-text" placeholder="copy &amp; paste your data here">{{ chartData }}</textarea>
+
+                <a id="upload-data" class="btn btn-primary pull-right" href="#">Upload and continue <i class="icon-chevron-right"></i></a>
+                <button class="btn"><i class="icon-upload"></i>..or pick a file from your disk</button>
+                <br style="clear:both;margin:0" />
+            </form>
+
         </div>
+
+        <div class="span5">
+            <h3>Help</h3>
+            <p>We want to make getting data into Datawrapper as easy as possible. If you're working in Excel or OpenOffice, just select your data (including header row/column) and paste it in the following text field. <a href="#">learn more</a></p>
+
+            <p>Hint: if you just want to play around with Datawrapper, you can use one of the following example datasets:
+                <ul id="demo-data">
+                </ul>
+            </p>
+        </div>
+
         <div class="span4 inactive">
-            <h3>Upload CSV</h3>
-            <p>If your data is already stored in a CSV file you may want to simply upload the file here. <a href="#">learn more</a></p>
-
 
         </div>
+        {# maybe we add this feature in 1.1
         <div class="span4">
             <h3>Remote Data Source</h3>
             <p>If your data is stored on a datahub like CKAN, ScraperWiki or Google Docs, you can create visualisations directly. Your charts can be updated automatically as the data source changes. <a href="#">learn more</a></p>
 
-        </div>
-    </div>
-
-     <div class="row">
-        <div class="span4">
-             <form class="well">
-                <textarea placeholder="paste your data here"></textarea>
-
-                <p class="pull-right">
-                    <a class="btn" href="describe.html">Upload and continue <i class="icon-chevron-right"></i></a>
-                </p>
-                <br class="clearfix" />
-            </form>
-        </div>
-        <div class="span4">
-            <div class="well">
-                <button class="btn"><i class="icon-upload"></i> Pick a file from your disk</button>
-                <div style="margin:10px 0 0 10px">..or simply drag &amp; and drop one here!</div>
-            </div>
-        </div>
-        <div class="span4">
             <form class="well">
                 <label class="radio">
                     <input type="radio" name="remote-source" />
@@ -66,8 +96,13 @@
                 </p>
                 <br class="clearfix" />
             </form>
+
         </div>
+        #}
+
     </div>
+
+
 </div>
 
 {% endblock %}

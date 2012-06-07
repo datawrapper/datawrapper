@@ -17,6 +17,8 @@
  * @method     ChartQuery orderByDeletedAt($order = Criteria::ASC) Order by the deleted_at column
  * @method     ChartQuery orderByAuthorId($order = Criteria::ASC) Order by the author_id column
  * @method     ChartQuery orderByShowInGallery($order = Criteria::ASC) Order by the show_in_gallery column
+ * @method     ChartQuery orderByLanguage($order = Criteria::ASC) Order by the language column
+ * @method     ChartQuery orderByGuestSession($order = Criteria::ASC) Order by the guest_session column
  *
  * @method     ChartQuery groupById() Group by the id column
  * @method     ChartQuery groupByTitle() Group by the title column
@@ -29,6 +31,8 @@
  * @method     ChartQuery groupByDeletedAt() Group by the deleted_at column
  * @method     ChartQuery groupByAuthorId() Group by the author_id column
  * @method     ChartQuery groupByShowInGallery() Group by the show_in_gallery column
+ * @method     ChartQuery groupByLanguage() Group by the language column
+ * @method     ChartQuery groupByGuestSession() Group by the guest_session column
  *
  * @method     ChartQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChartQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -52,6 +56,8 @@
  * @method     Chart findOneByDeletedAt(string $deleted_at) Return the first Chart filtered by the deleted_at column
  * @method     Chart findOneByAuthorId(int $author_id) Return the first Chart filtered by the author_id column
  * @method     Chart findOneByShowInGallery(boolean $show_in_gallery) Return the first Chart filtered by the show_in_gallery column
+ * @method     Chart findOneByLanguage(string $language) Return the first Chart filtered by the language column
+ * @method     Chart findOneByGuestSession(string $guest_session) Return the first Chart filtered by the guest_session column
  *
  * @method     array findById(string $id) Return Chart objects filtered by the id column
  * @method     array findByTitle(string $title) Return Chart objects filtered by the title column
@@ -64,6 +70,8 @@
  * @method     array findByDeletedAt(string $deleted_at) Return Chart objects filtered by the deleted_at column
  * @method     array findByAuthorId(int $author_id) Return Chart objects filtered by the author_id column
  * @method     array findByShowInGallery(boolean $show_in_gallery) Return Chart objects filtered by the show_in_gallery column
+ * @method     array findByLanguage(string $language) Return Chart objects filtered by the language column
+ * @method     array findByGuestSession(string $guest_session) Return Chart objects filtered by the guest_session column
  *
  * @package    propel.generator.datawrapper.om
  */
@@ -152,7 +160,7 @@ abstract class BaseChartQuery extends ModelCriteria
 	 */
 	protected function findPkSimple($key, $con)
 	{
-		$sql = 'SELECT `ID`, `TITLE`, `THEME`, `CREATED_AT`, `LAST_MODIFIED_AT`, `TYPE`, `METADATA`, `DELETED`, `DELETED_AT`, `AUTHOR_ID`, `SHOW_IN_GALLERY` FROM `chart` WHERE `ID` = :p0';
+		$sql = 'SELECT `ID`, `TITLE`, `THEME`, `CREATED_AT`, `LAST_MODIFIED_AT`, `TYPE`, `METADATA`, `DELETED`, `DELETED_AT`, `AUTHOR_ID`, `SHOW_IN_GALLERY`, `LANGUAGE`, `GUEST_SESSION` FROM `chart` WHERE `ID` = :p0';
 		try {
 			$stmt = $con->prepare($sql);
 			$stmt->bindValue(':p0', $key, PDO::PARAM_STR);
@@ -595,6 +603,62 @@ abstract class BaseChartQuery extends ModelCriteria
 			$show_in_gallery = in_array(strtolower($showInGallery), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
 		}
 		return $this->addUsingAlias(ChartPeer::SHOW_IN_GALLERY, $showInGallery, $comparison);
+	}
+
+	/**
+	 * Filter the query on the language column
+	 *
+	 * Example usage:
+	 * <code>
+	 * $query->filterByLanguage('fooValue');   // WHERE language = 'fooValue'
+	 * $query->filterByLanguage('%fooValue%'); // WHERE language LIKE '%fooValue%'
+	 * </code>
+	 *
+	 * @param     string $language The value to use as filter.
+	 *              Accepts wildcards (* and % trigger a LIKE)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    ChartQuery The current query, for fluid interface
+	 */
+	public function filterByLanguage($language = null, $comparison = null)
+	{
+		if (null === $comparison) {
+			if (is_array($language)) {
+				$comparison = Criteria::IN;
+			} elseif (preg_match('/[\%\*]/', $language)) {
+				$language = str_replace('*', '%', $language);
+				$comparison = Criteria::LIKE;
+			}
+		}
+		return $this->addUsingAlias(ChartPeer::LANGUAGE, $language, $comparison);
+	}
+
+	/**
+	 * Filter the query on the guest_session column
+	 *
+	 * Example usage:
+	 * <code>
+	 * $query->filterByGuestSession('fooValue');   // WHERE guest_session = 'fooValue'
+	 * $query->filterByGuestSession('%fooValue%'); // WHERE guest_session LIKE '%fooValue%'
+	 * </code>
+	 *
+	 * @param     string $guestSession The value to use as filter.
+	 *              Accepts wildcards (* and % trigger a LIKE)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    ChartQuery The current query, for fluid interface
+	 */
+	public function filterByGuestSession($guestSession = null, $comparison = null)
+	{
+		if (null === $comparison) {
+			if (is_array($guestSession)) {
+				$comparison = Criteria::IN;
+			} elseif (preg_match('/[\%\*]/', $guestSession)) {
+				$guestSession = str_replace('*', '%', $guestSession);
+				$comparison = Criteria::LIKE;
+			}
+		}
+		return $this->addUsingAlias(ChartPeer::GUEST_SESSION, $guestSession, $comparison);
 	}
 
 	/**

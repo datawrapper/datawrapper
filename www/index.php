@@ -28,15 +28,28 @@ $app = new Slim(array(
     'templates.path' => '../templates'
 ));
 
-function add_header_vars(&$page) {
+
+function add_header_vars(&$page, $active) {
     // define the header links
+    $user = DatawrapperSession::getUser();
     $headlinks = array();
-    $headlinks[] = array('url' => '/', 'id' => 'home', 'title' => 'Home', 'icon' => 'home');
+    $headlinks[] = array('url' => '/', 'id' => 'about', 'title' => 'About', 'icon' => 'home');
     $headlinks[] = array('url' => '/chart/create', 'id' => 'create', 'title' => 'Create', 'icon' => 'pencil');
-    $headlinks[] = array('url' => '/mycharts', 'id' => 'mycharts', 'title' => 'My Charts', 'icon' => 'signal');
-    $headlinks[] = array('url' => '#logout', 'id' => 'logout', 'title' => 'Logout', 'icon' => 'user');
+    if ($user->isLoggedIn()) {
+        $headlinks[] = array('url' => '/mycharts', 'id' => 'mycharts', 'title' => 'My Charts', 'icon' => 'signal');
+    }
+    $headlinks[] = array('url' => '', 'id' => 'lang', 'dropdown' => true, 'title' => 'Language', 'icon' => 'font');
+    if ($user->isLoggedIn()) {
+        $headlinks[] = array('url' => '#logout', 'id' => 'logout', 'title' => 'Logout', 'icon' => 'user');
+    } else {
+        $headlinks[] = array('url' => '#logout', 'id' => 'login', 'title' => 'Login / Sign Up', 'icon' => 'user');
+    }
+    foreach ($headlinks as $i => $link) {
+        $headlinks[$i]['active'] = $headlinks[$i]['id'] == $active;
+    }
     $page['headlinks'] = $headlinks;
 }
+
 
 function add_editor_nav(&$page, $step) {
     // define 4 step navigation
@@ -52,21 +65,88 @@ function add_editor_nav(&$page, $step) {
 //GET route
 $app->get('/', function () use ($app) {
     $page = array('title' => 'Datawrapper');
-    add_header_vars($page);
+    add_header_vars($page, 'about');
     $app->render('index.twig', $page);
 });
 
 $app->get('/chart/create', function() use ($app) {
-    $app->redirect('/chart/12345/upload');
+    $user = DatawrapperSession::getUser();
+    $chart = ChartQuery::createEmptyChart($user);
+    $app->redirect('/chart/'.$chart->getId().'/upload');
 });
 
+/**
+ *
+ */
+function error_page($step, $title, $message) {
+    global $app;
+    $tmpl = array(
+        'title' => $title,
+        'message' => $message
+    );
+    add_header_vars($tmpl, 'create');
+    $app->render('error.twig', $tmpl);
+}
+
+function error_chart_not_found($id) {
+    error_page('create',
+        'Whoops! We couldn\'t find that chart..',
+        'Sorry, but it seems that there is no chart with the id <b>'.$id.'</b> (anymore)'
+    );
+}
+
+function error_chart_not_writable() {
+    error_page('create',
+        'Whoops! That charts doesn‘t belong to you',
+        'Sorry, but the requested chart belongs to someone else.'
+    );
+}
+
+function check_chart($id, $callback) {
+    $chart = ChartQuery::create()->findPK($id);
+    if ($chart) {
+        $user = DatawrapperSession::getUser();
+        if ($chart->isWritable($user) === true) {
+            call_user_func($callback, $user, $chart);
+        } else {
+            // no such chart
+            error_chart_not_writable();
+        }
+    } else {
+        // no such chart
+        error_chart_not_found($id);
+    }
+}
+
+/*
+ * UPLOAD STEP
+ */
 $app->get('/chart/:id/upload', function ($id) use ($app) {
-    $page = array('title' => 'Upload some data');
-    add_header_vars($page);
-    add_editor_nav($page, 1);
-    $app->render('chart-upload.twig', $page);
+    check_chart($id, function($user, $chart) use ($app) {
+        $page = array(
+            'chartId' => $chart->getId(),
+            'chartData' => $chart->loadData()
+        );
+        add_header_vars($page, 'create');
+        add_editor_nav($page, 1);
+        $app->render('chart-upload.twig', $page);
+    });
 });
 
+/*
+ * DESCRIBE STEP
+ */
+$app->get('/chart/:id/describe', function ($id) use ($app) {
+    check_chart($id, function($user, $chart) use ($app) {
+        $page = array(
+            'chartId' => $chart->getId(),
+            'chartData' => $chart->loadData()
+        );
+        add_header_vars($page, 'create');
+        add_editor_nav($page, 2);
+        $app->render('chart-describe.twig', $page);
+    });
+});
 
 /**
  * Step 4: Run the Slim application

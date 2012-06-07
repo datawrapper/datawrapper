@@ -1,6 +1,8 @@
 <?php
 
-/* get list of all charts by the current user */
+/**
+ * API: get list of all charts by the current user
+ */
 $app->get('/charts', function() {
     $user = DatawrapperSession::getUser();
     if ($user->isLoggedIn()) {
@@ -19,47 +21,25 @@ $app->get('/charts', function() {
     }
 });
 
-/* create a new empty chart */
+/**
+ * API: create a new empty chart
+ */
 $app->post('/charts', function() {
     $user = DatawrapperSession::getUser();
     if ($user->isLoggedIn()) {
-        $i = 0;
-        while ($i++ < 10) {
-            try {
-                $chart = new Chart();
-                $chart->setId(rand_chars(5));
-                $chart->setCreatedAt(time());
-                $chart->setLastModifiedAt(time());
-                $chart->setAuthorId($user->getId());
-                $chart->setMetadata("{ \"data\": {}, \"visualization\": {} }");
-                // $chart->setLanguage($user->getLanguage());  // defaults to user language
-                $chart->save();
-                break;
-            } catch (Exception $e) {
-                continue;
-            }
-        }
-        if ($chart->isNew()) {
-            error('create-chart-error', 'could not get an id for the chart ' . $i . ' ' . rand_chars(5));
-        } else {
+        try {
+            $chart = Chart::createEmptyChart($user);
             $result = array($chart->serialize());
             ok($result);
+        } catch (Exception $e) {
+            error('create-chart-error', $e->getMessage());
         }
     } else {
         error('need-login', 'You need to be logged in to create a chart..');
     }
 });
 
-/*
- * generate a random id string
- */
-function rand_chars($l, $u = FALSE) {
-    // implementation taken from http://www.php.net/manual/de/function.rand.php#87487
-    $c = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
-    if (!$u) for ($s = '', $i = 0, $z = strlen($c)-1; $i < $l; $x = rand(0,$z), $s .= $c{$x}, $i++);
-    else for ($i = 0, $z = strlen($c)-1, $s = $c{rand(0,$z)}, $i = 1; $i != $l; $x = rand(0,$z), $s .= $c{$x}, $s = ($s{$i} == $s{$i-1} ? substr($s,0,-1) : $s), $i=strlen($s));
-    return $s;
-}
+
 
 /* return a list of all charts by the logged user */
 $app->get('/charts', function() {
@@ -91,7 +71,11 @@ $app->get('/gallery', function() use ($app) {
     ok($result);
 });
 
-/* load chart meta data */
+/**
+ * load chart meta data
+ *
+ * @param id chart id
+ */
 $app->get('/charts/:id', function($id) use ($app) {
     $chart = ChartQuery::create()->findPK($id);
     if (!empty($chart)) {
@@ -101,21 +85,29 @@ $app->get('/charts/:id', function($id) use ($app) {
     }
 });
 
-function if_chart_is_writable($id, $func) {
-    $user = DatawrapperSession::getUser();
-    if ($user->isLoggedIn()) {
-        $chart = ChartQuery::create()->findPK($id);
-        if (!empty($chart)) {
-            if ($chart->getAuthorId() == $user->getId()) {
-                call_user_func($func, $user, $chart);
-            } else {
-                error('access-denied', 'this is not your chart');
-            }
+
+
+/**
+ * checks if a chart is writeable by the current user (or guest)
+ *
+ * @param chart_id
+ * @param callback the function to be executed if chart is writable
+ */
+function if_chart_is_writable($chart_id, $callback) {
+    $chart = ChartQuery::create()->findPK($chart_id);
+    if (!empty($chart)) {
+        $user = DatawrapperSession::getUser();
+        $res = $chart->isWritable($user);
+        if ($res === true) {
+            call_user_func($callback, $user, $chart);
         } else {
-            error('chart-not-found', 'No chart with that id was found');
+            error('access-denied', $res);
         }
+    } else {
+        error('no-such-chart', '');
     }
 }
+
 
 
 /* check user and update chart meta data */
@@ -128,20 +120,19 @@ $app->put('/charts/:id', function($id) use ($app) {
 });
 
 
-/* upload data to a chart */
-$app->put('/charts/:id/data', function($id) use ($app) {
-    if_chart_is_writable($id, function($user, $chart) use ($app) {
-    $data = $app->request()->getBody();
-        $path = '../../charts/data/' . $chart->getCreatedAt('Ym');
+/**
+ * API: upload data to a chart
+ *
+ * @param chart_id chart id
+ */
+$app->put('/charts/:id/data', function($chart_id) use ($app) {
+    if_chart_is_writable($chart_id, function($user, $chart) use ($app) {
+        $data = $app->request()->getBody();
         try {
-            if (!file_exists($path)) {
-                mkdir($path);
-            }
-            $filename = $path . '/' . $chart->getId() . '.csv';
-            file_put_contents($filename, $data);
+            $filename = $chart->writeData($data);
             ok($filename);
         } catch (Exception $e) {
-            error('io-error', $path.' '.$e->getMessage());
+            error('io-error', $e->getMessage());
         }
     });
 });

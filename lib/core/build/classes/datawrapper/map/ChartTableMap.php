@@ -49,6 +49,8 @@ class ChartTableMap extends TableMap
 		$this->addColumn('DELETED_AT', 'DeletedAt', 'TIMESTAMP', false, null, null);
 		$this->addForeignKey('AUTHOR_ID', 'AuthorId', 'INTEGER', 'user', 'ID', true, null, null);
 		$this->addColumn('SHOW_IN_GALLERY', 'ShowInGallery', 'BOOLEAN', false, 1, false);
+		$this->addColumn('LANGUAGE', 'Language', 'VARCHAR', false, 5, 'en');
+		$this->addColumn('GUEST_SESSION', 'GuestSession', 'VARCHAR', false, 255, null);
 		// validators
 	} // initialize()
 
