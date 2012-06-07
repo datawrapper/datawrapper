@@ -7,19 +7,32 @@
 <script type="text/javascript">
 $(function() {
 
-    function updateTable(dv) {
-        var table = $('#data-preview');
+    $('#has-vertical-headers').change(function() {
+        updateTable(DwEditor.dataView);
+    });
+
+   function updateTable(dv) {
+        var table = $('#data-preview'),
+            vertHeaders = $('#has-vertical-headers').attr('checked') == 'checked',
+            horzHeaders = $('#has-horizontal-headers').attr('checked') == 'checked';
         table.html('');  // empty table
         table.append('<thead><tr></tr><thead><tbody></tbody>');
-        var thead = $('thead tr', table);
-        dv.eachColumn(function(name) {
-            thead.append('<th>'+name+'</th>');
-        });
+
+        if (horzHeaders) {
+            var thead = $('thead tr', table);
+            dv.eachColumn(function(name) {
+                thead.append('<th>'+name+'</th>');
+            });
+        }
         var tbody = $('tbody', table);
         dv.each(function(row) {
             var tr = $('<tr></tr>');
-            dv.eachColumn(function(col) {
-                tr.append('<td>'+row[col]+'</td>');
+            dv.eachColumn(function(col, o, i) {
+                if (i == 0 && vertHeaders) {
+                    tr.append('<th>'+row[col]+'</th>');
+                } else {
+                    tr.append('<td>'+row[col]+'</td>');
+                }
             });
             tbody.append(tr);
         });
@@ -32,6 +45,8 @@ $(function() {
         success: function() {
             console.log("Available Columns:" + this.columnNames().join(" -- "));
             console.log("There are " + this.length + " rows");
+
+            DwEditor.dataView = this;
 
             updateTable(this);
         }
@@ -53,7 +68,7 @@ $(function() {
             <p>Please check if the data format was recognized correctly. If not, please <a href="#">help Datawrapper to interpret your data</a>.</p>
 
             <form class="form-inline">
-                <label class="checkbox"><input type="checkbox"> My data has vertical headers</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                <label class="checkbox"><input id="has-vertical-headers" type="checkbox"> My data has vertical headers</label>&nbsp;&nbsp;&nbsp;&nbsp;
                 <label class="checkbox"><input type="checkbox"> My data has horizontal headers</label>&nbsp;&nbsp;&nbsp;&nbsp;
                 <label class="checkbox"><input type="checkbox"> Transpose data</label>
             </form>
