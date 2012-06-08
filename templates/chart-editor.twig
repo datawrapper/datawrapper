@@ -13,10 +13,26 @@
     {% endfor %}
 </div>
 
-<script type="text/javascript">
-    window.DwEditor = {};
-    DwEditor.chartId = "{{ chartId }}";
-</script>
 <script type="text/javascript" src="/static/vendor/miso/miso.ds.deps.min.0.1.3.js"></script>
+<script type="text/javascript" src="/static/js/datawrapper.js"></script>
+<script type="text/javascript">
+
+(function($) {
+
+    _.templateSettings = {
+        interpolate : /\{\{(.+?)\}\}/g
+    };
+
+})(jQuery);
+
+
+
+
+</script>
+<script type="text/javascript">
+    window.DW = {};
+
+    DW.chart = new Datawrapper.Chart(JSON.parse('{{ chart|raw }}'));
+</script>
 
 {% endblock %}

@@ -108,8 +108,6 @@ function if_chart_is_writable($chart_id, $callback) {
     }
 }
 
-
-
 /* check user and update chart meta data */
 $app->put('/charts/:id', function($id) use ($app) {
     if_chart_is_writable($id, function($user, $chart) use ($app) {

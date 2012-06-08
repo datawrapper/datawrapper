@@ -1,0 +1,40 @@
+{% block login %}
+
+    <div class="modal hide" id="dwLoginForm">
+        <!--<div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">×</button>
+            <h2>&nbsp;</h2>
+        </div>-->
+        <div class="modal-body">
+            <button type="button" class="close" data-dismiss="modal">×</button>
+            <div class="row">
+                <div class="span3 form-vertical">
+                    <h3>Login</h3>
+
+                    <p>We're glad to see you again. Login to access your charts, and create new ones.</p>
+
+                    <input id="login-email" type="text" class="input-xxlarge span3" value="" placeholder="email" />
+                    <input id="login-pwd" type="password" class="input-xxlarge span3" value="" placeholder="password" /><br />
+                     <a id="btn-login" class="btn btn-primary btn-xxlarge">Login</a><br />
+                     <hr />
+                     <a id="forgot-password">Can't recall your Password?</a>
+
+                </div>
+                <div class="span3 form-vertical">
+                    <h3>Create a new account</h3>
+                    <p>Datawrapper is 100% free and creating an account takes less than a minute. Just enter your email and pick a password, and you're done!</p>
+                    <input id="register-email" type="text" class="input-xlarge span2" placeholder="email" /> <span>foo</span><br />
+                    <input id="register-pwd" type="password" class="input-xlarge span2" placeholder="password" />
+                    <input id="register-pwd-2" type="password" class="input-xlarge span2" placeholder="repeat password" /><br />
+                    <a id="btn-register" class="btn">Sign Up</a>
+
+                </div>
+            </div>
+        </div>
+        <!--<div class="modal-footer">
+            <a href="#" class="btn" data-dismiss="modal">Close</a>
+            <a href="#" class="btn btn-primary">Save changes</a>
+        </div>-->
+    </div>
+
+{% endblock %}

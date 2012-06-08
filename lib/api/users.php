@@ -15,26 +15,38 @@ $app->get('/users', function() use ($app) {
 
 define('DW_TOKEN_SALT', 'aVyyrmc2UpoZGJ3SthaKyGrFzaV3Z37iuFU4x5oLb_aKmhopz5md62UHn25Gf4ti');
 
+require_once('utils/validEmail.php');
+
 /*
  * create a new user
  */
 $app->post('/users', function() use ($app) {
     $data = json_decode($app->request()->getBody());
 
-    if ($data->pwd === $data->pwd2) {
-        $user = new User();
-        $user->setCreatedAt(time());
-        $user->setEmail($data->email);
-        $user->setPwd($data->pwd);
-        $user->setToken(hash_hmac('sha256', $data->email.'/'.$data->pwd, DW_TOKEN_SALT));
-        $user->save();
-        $result = $user->toArray();
+    $checks = array(
+        'password-mismatch' => function($d) { return $d->pwd === $d->pwd2; },
+        'password-missing' => function($d) { return trim($d->pwd) != ''; },
+        'email-missing' => function($d) { return trim($d->email) != ''; },
+        'email-invalid' => function($d) { return validEmail($d->email); },
+    );
 
-        ok($result);
-    } else {
-        error('password-mismatch', 'Password mismatch');
+    foreach ($checks as $code => $check) {
+        if (call_user_func($check, $data) == false) {
+            error($code, $code);
+            return;
+        };
     }
 
+    // all checks passed
+    $user = new User();
+    $user->setCreatedAt(time());
+    $user->setEmail($data->email);
+    $user->setPwd($data->pwd);
+    $user->setToken(hash_hmac('sha256', $data->email.'/'.$data->pwd, DW_TOKEN_SALT));
+    $user->save();
+    $result = $user->toArray();
+
+    ok($result);
 });
 
 

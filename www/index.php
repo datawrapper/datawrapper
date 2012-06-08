@@ -29,26 +29,48 @@ $app = new Slim(array(
 ));
 
 
-function add_header_vars(&$page, $active) {
+function add_header_vars(&$page) {
     // define the header links
+    global $app;
+    $active = explode('/', $app->request()->getResourceUri());
+    $active = $active[1];
+
     $user = DatawrapperSession::getUser();
     $headlinks = array();
     $headlinks[] = array('url' => '/', 'id' => 'about', 'title' => 'About', 'icon' => 'home');
-    $headlinks[] = array('url' => '/chart/create', 'id' => 'create', 'title' => 'Create', 'icon' => 'pencil');
+    $headlinks[] = array('url' => '/chart/create', 'id' => 'chart', 'title' => 'Create', 'icon' => 'pencil');
     if ($user->isLoggedIn()) {
         $headlinks[] = array('url' => '/mycharts', 'id' => 'mycharts', 'title' => 'My Charts', 'icon' => 'signal');
     }
     $headlinks[] = array('url' => '', 'id' => 'lang', 'dropdown' => true, 'title' => 'Language', 'icon' => 'font');
     if ($user->isLoggedIn()) {
-        $headlinks[] = array('url' => '#logout', 'id' => 'logout', 'title' => 'Logout', 'icon' => 'user');
+        $headlinks[] = array(
+            'url' => '#logout',
+            'id' => 'logout',
+            'title' => 'Logout',
+            'icon' => 'user'
+        );
     } else {
-        $headlinks[] = array('url' => '#logout', 'id' => 'login', 'title' => 'Login / Sign Up', 'icon' => 'user');
+        $headlinks[] = array(
+            'url' => '#dwLoginForm',
+            'id' => 'login',
+            'title' => 'Login / Sign Up',
+            'icon' => 'user'
+        );
     }
     foreach ($headlinks as $i => $link) {
         $headlinks[$i]['active'] = $headlinks[$i]['id'] == $active;
     }
     $page['headlinks'] = $headlinks;
 }
+
+/**
+ * reloads the header menu after login/logout
+ */
+$app->get('/xhr/header', function() use ($app) {
+    
+    print 'rootUri: ' . $_SERVER['HTTP_REFERER'];
+});
 
 
 function add_editor_nav(&$page, $step) {
@@ -84,7 +106,7 @@ function error_page($step, $title, $message) {
         'title' => $title,
         'message' => $message
     );
-    add_header_vars($tmpl, 'create');
+    add_header_vars($tmpl);
     $app->render('error.twig', $tmpl);
 }
 
@@ -124,8 +146,8 @@ function check_chart($id, $callback) {
 $app->get('/chart/:id/upload', function ($id) use ($app) {
     check_chart($id, function($user, $chart) use ($app) {
         $page = array(
-            'chartId' => $chart->getId(),
-            'chartData' => $chart->loadData()
+            'chartData' => $chart->loadData(),
+            'chart' => json_encode($chart->serialize())
         );
         add_header_vars($page, 'create');
         add_editor_nav($page, 1);
@@ -139,8 +161,8 @@ $app->get('/chart/:id/upload', function ($id) use ($app) {
 $app->get('/chart/:id/describe', function ($id) use ($app) {
     check_chart($id, function($user, $chart) use ($app) {
         $page = array(
-            'chartId' => $chart->getId(),
-            'chartData' => $chart->loadData()
+            'chartData' => $chart->loadData(),
+            'chart' => json_encode($chart->serialize())
         );
         add_header_vars($page, 'create');
         add_editor_nav($page, 2);

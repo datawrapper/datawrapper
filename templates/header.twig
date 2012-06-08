@@ -1,21 +1,41 @@
 {% block header %}
 
-    <div class="row topnav">
-        <div class="span2 dw-logo-type">datawrapper.de</div>
-        <div class="span10 toplinks">
 
-            <div class="pull-right"><ul class="nav nav-pills dw-header-nav">
+        
+        <div class="span9 toplinks">
+
+            <div class="pull-right">
+                <ul class="nav nav-pills dw-header-nav">
 
                 {% for link in headlinks %}
-                <li class="{{ link.id }}{% if link.active %} active{% endif %}{% if link.dropdown %} dropdown{% endif %}">
-                    <a href="{{ link.url }}" {% if link.dropdown %} class="dropdown-toggle" data-toggle="dropdown" {% endif %}><i class="icon-{{ link.icon }}{% if link.active %} icon-white{% endif %}"></i> {{ link.title }}{% if link.dropdown %}<b class="caret"></b>{% endif %}</a>
-                    {% if link.dropdown %}<ul class="dropdown-menu"><li><a href="#">hj</a></li></ul>{% endif %}
-                </li>
+
+                    {% if link.dropdown %}
+
+                        <li class="{{ link.id }} dropdown">
+                            <a id="dw-header-link-{{ link.id }}" href="{{ link.url }}" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="icon-{{ link.icon }}"></i>
+                                {{ link.title }}
+                                <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu"><li><a href="#">hj</a></li></ul>
+                        </li>
+
+                    {% else %}
+
+                        <li class="{{ link.id }}{% if link.active %} active{% endif %}">
+                            <a id="dw-header-link-{{ link.id }}" href="{{ link.url }}"{% if link.modal %} data-toggle="modal"{% endif %}>
+                               <i class="icon-{{ link.icon }}{% if link.active %} icon-white{% endif %}"></i>
+                               {{ link.title }}
+                            </a>
+                        </li>
+
+                    {% endif %}
+
                 {% endfor %}
-            </ul>
+                </ul>
+            </div>
 
         </div>
-    </div>
 
 
 {% endblock %}

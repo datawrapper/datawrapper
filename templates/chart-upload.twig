@@ -15,12 +15,12 @@
             }
 
             function nextPage() {
-                location.href = '/chart/'+DwEditor.chartId+'/describe';
+                location.href = '/chart/'+DW.chart.get('id')+'/describe';
             }
 
             $('#upload-data').click(function() {
                 $.ajax({
-                    url: '/api/charts/' + DwEditor.chartId + '/data',
+                    url: '/api/charts/' + DW.chart.get('id') + '/data',
                     type: 'PUT',
                     data: $('#upload-data-text').val(),
                     processData: false,
@@ -47,7 +47,7 @@
              <form class="well">
                 <textarea id="upload-data-text" placeholder="copy &amp; paste your data here">{{ chartData }}</textarea>
 
-                <a id="upload-data" class="btn btn-primary pull-right" href="#">Upload and continue <i class="icon-chevron-right"></i></a>
+                <a id="upload-data" class="btn btn-primary pull-right" href="#">Upload and continue <i class="icon-chevron-right icon-white"></i></a>
                 <button class="btn"><i class="icon-upload"></i>..or pick a file from your disk</button>
                 <br style="clear:both;margin:0" />
             </form>
