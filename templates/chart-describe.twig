@@ -55,23 +55,6 @@ $(function() {
     });
     window.ds = ds;
 
-    var DescribeForm = Backbone.View.extend({
-        initialize: function() {
-            this.render();
-        },
-        render: function() {
-            var tpl = _.template($('#describe-csv-options-template').html(), {});
-            this.$el.html( tpl );
-        },
-        events: {
-            "change input[type=checkbox]": "checkBoxChanged"
-        },
-        checkBoxChanged: function(event) {
-            console.log('checkBoxChanged', event);
-        }
-    });
-
-    var descForm = new DescribeForm({ el: $('#describe-csv-options-container') });
 
 });
 

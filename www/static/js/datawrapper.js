@@ -40,6 +40,15 @@
     _.extend(Core.prototype, {
 
         initialize: function() {
+            this.initializeSignUp();
+        },
+
+        checkPasswordStrength: function(pwd) {
+            //return $.trim(pwd).length > 7;
+            return true;
+        },
+
+        initializeSignUp: function() {
 
             $('#dw-header-link-login').click(function() {
                 $('#dwLoginForm').modal();
@@ -53,15 +62,6 @@
                 return false;
             });
 
-            this.initializeSignUp();
-        },
-
-        checkPasswordStrength: function(pwd) {
-            //return $.trim(pwd).length > 7;
-            return true;
-        },
-
-        initializeSignUp: function() {
             $('#btn-register').click(function() {
                var pwd = $.trim($('#register-pwd').val()),
                    pwd2 = $.trim($('#register-pwd-2').val());
@@ -91,7 +91,9 @@
         }
     });
 
-    new Datawrapper.Core();
+    $(function() {
+        new Datawrapper.Core();
+    });
 
 
     // Datawrapper.Chart
@@ -103,6 +105,16 @@
     };
 
     _.extend(Chart.prototype, {
+
+        get: function(key) {
+            var keys = key.split('.'),
+                pt = this.attributes;
+
+            _.each(keys, function(key) {
+                pt = pt[key];
+            });
+            return pt;
+        },
 
         sync: function(el, attribute) {
             el.data('sync-attribute', attribute);
