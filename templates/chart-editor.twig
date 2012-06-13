@@ -21,14 +21,14 @@
         interpolate : /\{\{(.+?)\}\}/g
     };
 
+    $(function() {
+        DW.currentChart = new Datawrapper.Chart(JSON.parse('{{ chart|raw }}'));
+    });
+
 })(jQuery);
 
 
 </script>
-<script type="text/javascript">
-    window.DW = {};
 
-    DW.chart = new Datawrapper.Chart(JSON.parse('{{ chart|raw }}'));
-</script>
 
 {% endblock %}

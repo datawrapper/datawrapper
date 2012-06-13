@@ -148,7 +148,9 @@
                     url: '/api/auth/logout',
                     type: 'POST',
                     success: function(data) {
-                        DW.refreshHeader();
+                        // DW.refreshHeader();
+                        // sometimes it's a good idea to redirect
+                        location.href = '/';
                     }
                 });
                 return false;

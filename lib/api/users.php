@@ -47,8 +47,18 @@ $app->post('/users', function() use ($app) {
     $user->save();
     $result = $user->toArray();
 
+    // we don't need to annoy the user with a login form now,
+    // so just log in..
     DatawrapperSession::login($user);
 
+    // make sure that the charts of the guest now belong to
+    // the newly created user
+    $charts = ChartQuery::create()->findByGuestSession(session_id());
+    foreach ($charts as $chart) {
+        $chart->setAuthorId($user->getId());
+        $chart->setGuestSession('');
+        $chart->save();
+    }
     ok($result);
 });
 

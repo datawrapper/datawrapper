@@ -10,10 +10,7 @@
     height: 240px;
 }
 
-.dw .dw-logo-sub {
-    margin-bottom: 40px;
-    padding-left: 3px;
-}
+
 
 .dw .toplinks {
 
@@ -53,7 +50,12 @@
 .dw-logo-type {
     font-size: 36px;
     line-height: 42px;
-    margin-left: -10px;
+    margin-left: 0px;
+}
+
+.dw .dw-logo-sub {
+    margin-bottom: 40px;
+    padding-left: 20px;
 }
 
 .intro-head .dw-logo-type {

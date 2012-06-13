@@ -3,23 +3,34 @@
 {% block content %}
 
 <div class="row">
-    <div clasS="span4">
-        <div class="hero-unit" style="padding:30px">
-            <h2 style="font-weight:100"><b class="dw-logo">Datawrapper</b> is an open source tool helping everyone to create simple, correct and embeddable charts in minutes.</h2>
-        </div>
+    <div clasS="span5">
+        <h2 style="font-weight:100"><b class="dw-logo">Datawrapper</b> is an open source tool helping everyone to create simple, correct and embeddable charts in minutes.</h2>
+        <img src="/static/img/chart.png" alt="" style="margin-bottom:20px"/>
+
 
         </div>
     <div clasS="span4">
-        <img src="/static/img/chart.png" alt="" style="margin-bottom:20px"/>
         <p>We are bridging the gap between journalists and the newest Javascript-visualization libraries such as D3.js, Raphael and others. We make it easier to "wrap" the data into these libraries without coding. Datawrapper minimizes the time needed to create a chart and thus helps data journalists everywhere in the world. </p>
+
+        <p>The benefits in short:</p>
+        <ul>
+            <li>Simple to use, open source, CSS access, no logo.</li>
+            <li>Users can test the online version, organizations can download to their own server for data security, full control and CMS integration.</li>
+        </ul>
 
         <p>Learn more about Datawrapper on datastories.de</p>
     </div>
-    <div class="span4">
-        <ul class="unstyled">
-            <li style="padding-bottom:10px"><a href="#login" class="btn btn-primary btn-large">Sign Up / Log In</a></li>
-            <li><a href="/chart/create" class="btn btn-lage">Try Datawrapper now!</a></li>
-        </ul>
+    <div class="span3">
+        <div class="login-form form-vertical well">
+            <h3>Login / Sign Up</h3>
+            <input id="login-email" type="text" class="input-large" value="" placeholder="email" />
+            <input id="login-pwd" type="password" class="input-large" value="" placeholder="password" /><br />
+            <a id="btn-login" class="btn btn-primary btn-large">Login</a>
+            or <a href="#login" class="btn btn-large">Sign Up</a>
+        </div>
+        <p>Not convinced, yet?</p>
+        <p>
+        <a href="/chart/create" class="btn btn-info"><i class="icon-chevron-right icon-white"></i> Try Datawrapper now!</a></p>
     </div>
 </div>
 

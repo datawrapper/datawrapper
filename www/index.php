@@ -29,7 +29,7 @@ $app = new Slim(array(
 ));
 
 
-function add_header_vars(&$page, $active = undefined) {
+function add_header_vars(&$page, $active = null) {
     // define the header links
     global $app;
     if (!isset($active)) {

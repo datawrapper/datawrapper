@@ -15,12 +15,12 @@
             }
 
             function nextPage() {
-                location.href = '/chart/'+DW.chart.get('id')+'/describe';
+                location.href = '/chart/'+DW.currentChart.get('id')+'/describe';
             }
 
             $('#upload-data').click(function() {
                 $.ajax({
-                    url: '/api/charts/' + DW.chart.get('id') + '/data',
+                    url: '/api/charts/' + DW.currentChart.get('id') + '/data',
                     type: 'PUT',
                     data: $('#upload-data-text').val(),
                     processData: false,
