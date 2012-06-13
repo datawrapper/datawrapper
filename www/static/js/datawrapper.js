@@ -41,6 +41,7 @@
 
         initialize: function() {
             this.initializeSignUp();
+            this.initializeLogout();
         },
 
         checkPasswordStrength: function(pwd) {
@@ -48,17 +49,27 @@
             return true;
         },
 
+        refreshHeader: function() {
+            $.get('/xhr/header/create', function(header) {
+                $('.header .toplinks').replaceWith(header);
+                DW.initializeSignUp();
+                DW.initializeLogout();
+            });
+        },
+
         initializeSignUp: function() {
 
-            $('#dw-header-link-login').click(function() {
+            $('a[href=#login]').click(function() {
                 $('#dwLoginForm').modal();
+                $('#dwLoginForm .alert').remove();
 
                 $.getJSON('/api/auth/salt', function(res) {
                    if (res.status == 'ok') {
                       $('#btn-register').data('salt', res.data.salt);
+                      $('#btn-login').data('salt', res.data.salt);
+                      $('#btn-login').data('time', res.data.time);
                    }
                 });
-
                 return false;
             });
 
@@ -77,8 +88,21 @@
                         url: '/api/users',
                         type: 'POST',
                         data: JSON.stringify(payload),
+                        dataType: 'json',
+                        context: this,
                         success: function(data) {
-                           alert('OK! '+data);
+                            if (data.status == 'ok') {
+                                // If the registration went well, clear sign up form
+                                $('.signup-form input').val('');
+                                // and close popup. User should be logged in now.
+                                DW.logMessage('Yeah, sign up went well.. You are logged in now...', '.signup-form');
+                                setTimeout(function() {
+                                    $('#dwLoginForm').modal().hide();
+                                    DW.refreshHeader();
+                                }, 4000);
+                            } else {
+                                DW.logError(data.code, '.signup-form');
+                            }
                         }
                      });
                   } else {
@@ -88,11 +112,66 @@
                   alert('Error: password mismatch');
                }
             });
+
+            $('#btn-login').click(function() {
+                var lg = $('#btn-login'), hmac = CryptoJS.HmacSHA256,
+                  pwd = $('#login-pwd').val(),
+                  hash = hmac(hmac(pwd, lg.data('salt')).toString(), String(lg.data('time'))).toString(),
+                  payload = {
+                     email: $('#login-email').val(),
+                     pwhash: hash,
+                     time: $('#btn-login').data('time')
+                  };
+                $('#login-email').val('');
+                $('#login-pwd').val('');
+                $.ajax({
+                    url: '/api/auth/login',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: JSON.stringify(payload),
+                    success: function(data) {
+                        if (data.status == "ok") {
+                            $('#dwLoginForm').modal().hide();
+                            $('.login-form input').val('');
+                            DW.refreshHeader();
+                        } else {
+                            DW.logError(data.message, '.login-form');
+                        }
+                    }
+                });
+            });
+        },
+
+        initializeLogout: function() {
+            $('a[href=#logout]').click(function() {
+                $.ajax({
+                    url: '/api/auth/logout',
+                    type: 'POST',
+                    success: function(data) {
+                        DW.refreshHeader();
+                    }
+                });
+                return false;
+            });
+        },
+
+        logMessage: function(msg, parent, type) {
+            $(parent).prepend(alert);
+            if (type === undefined) type = 'success';
+            var alert = $('<div class="alert alert-'+type+'" />');
+            alert.append('<a class="close" data-dismiss="alert" href="#">&times;</a>');
+            alert.append('<div>'+msg+'</div>');
+            $(parent).prepend(alert);
+            $(".alert").alert();
+        },
+
+        logError: function(msg, parent) {
+            this.logMessage(msg, parent, 'error');
         }
     });
 
     $(function() {
-        new Datawrapper.Core();
+        window.DW = new Datawrapper.Core();
     });
 
 

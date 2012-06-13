@@ -15,7 +15,7 @@ $app->get('/users', function() use ($app) {
 
 define('DW_TOKEN_SALT', 'aVyyrmc2UpoZGJ3SthaKyGrFzaV3Z37iuFU4x5oLb_aKmhopz5md62UHn25Gf4ti');
 
-require_once('utils/validEmail.php');
+require_once('utils/check_email.php');
 
 /*
  * create a new user
@@ -27,7 +27,8 @@ $app->post('/users', function() use ($app) {
         'password-mismatch' => function($d) { return $d->pwd === $d->pwd2; },
         'password-missing' => function($d) { return trim($d->pwd) != ''; },
         'email-missing' => function($d) { return trim($d->email) != ''; },
-        'email-invalid' => function($d) { return validEmail($d->email); },
+        'email-invalid' => function($d) { return check_email($d->email); },
+        'email-already-exists' => function($d) { $r = UserQuery::create()->findOneByEmail($d->email); return !isset($r); },
     );
 
     foreach ($checks as $code => $check) {
@@ -45,6 +46,8 @@ $app->post('/users', function() use ($app) {
     $user->setToken(hash_hmac('sha256', $data->email.'/'.$data->pwd, DW_TOKEN_SALT));
     $user->save();
     $result = $user->toArray();
+
+    DatawrapperSession::login($user);
 
     ok($result);
 });

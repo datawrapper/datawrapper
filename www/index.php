@@ -29,11 +29,13 @@ $app = new Slim(array(
 ));
 
 
-function add_header_vars(&$page) {
+function add_header_vars(&$page, $active = undefined) {
     // define the header links
     global $app;
-    $active = explode('/', $app->request()->getResourceUri());
-    $active = $active[1];
+    if (!isset($active)) {
+        $active = explode('/', $app->request()->getResourceUri());
+        $active = $active[1];
+    }
 
     $user = DatawrapperSession::getUser();
     $headlinks = array();
@@ -52,7 +54,7 @@ function add_header_vars(&$page) {
         );
     } else {
         $headlinks[] = array(
-            'url' => '#dwLoginForm',
+            'url' => '#login',
             'id' => 'login',
             'title' => 'Login / Sign Up',
             'icon' => 'user'
@@ -67,9 +69,10 @@ function add_header_vars(&$page) {
 /**
  * reloads the header menu after login/logout
  */
-$app->get('/xhr/header', function() use ($app) {
-    
-    print 'rootUri: ' . $_SERVER['HTTP_REFERER'];
+$app->get('/xhr/header/:page', function($active) use ($app) {
+    $page = array();
+    add_header_vars($page, $active);
+    $app->render('header.twig', $page);
 });
 
 

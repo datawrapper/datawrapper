@@ -5,6 +5,9 @@
  *
  */
 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 // Require the Slim PHP 5 Framework
 require '../../vendor/Slim/Slim.php';
 

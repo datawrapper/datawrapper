@@ -41,11 +41,19 @@
     color: #333;
 }
 
-.dw-logo-type {
+.dw-logo {
     font-weight: 500;
     color: #0063A5;
+    letter-spacing: -2px;
+}
+.dw-logo .wrap {
+    font-style: normal;
+    color: #A7D6DF;
+}
+.dw-logo-type {
     font-size: 36px;
     line-height: 42px;
+    margin-left: -10px;
 }
 
 .intro-head .dw-logo-type {

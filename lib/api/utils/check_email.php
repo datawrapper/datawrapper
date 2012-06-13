@@ -8,7 +8,7 @@
  *
  * taken from http://www.linuxjournal.com/article/9585?page=0,3
  */
-function validEmail($email)
+function check_email($email)
 {
    $isValid = true;
    $atIndex = strrpos($email, "@");
@@ -64,10 +64,10 @@ function validEmail($email)
             $isValid = false;
          }
       }
-       if ($isValid && !(checkdnsrr($domain,"MX") || checkdnsrr($domain,"A")))
+      if ($isValid && !(checkdnsrr($domain,"MX") || checkdnsrr($domain,"A")))
       {
          // domain not found in DNS
-         $isValid = false;
+         // $isValid = false;
       }
    }
    return $isValid;
