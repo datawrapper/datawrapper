@@ -11,9 +11,9 @@
 
                     {% if link.dropdown %}
 
-                        <li class="{{ link.id }} dropdown">
+                        <li class="{{ link.id }} dropdown{% if link.active %} active{% endif %}">
                             <a id="dw-header-link-{{ link.id }}" href="{{ link.url }}" class="dropdown-toggle" data-toggle="dropdown">
-                                <i class="icon-{{ link.icon }}"></i>
+                                <i class="icon-{{ link.icon }}{% if link.active %} icon-white{% endif %}"></i>
                                 {{ link.title }}
                                 <b class="caret"></b>
                             </a>

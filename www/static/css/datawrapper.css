@@ -175,3 +175,17 @@ h1, h2, h3, h4, h5, h6 {
 .link-list li h3 i {
     margin-top: 4px;
 }
+
+.well-danger {
+  background-color: #fee5e5;
+  border: 1px solid #edd;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.form-actions {
+    background: #F5F5F5;
+}
+
+.well-danger .form-actions {
+    background: transparent;
+}

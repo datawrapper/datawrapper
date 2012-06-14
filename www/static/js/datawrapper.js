@@ -109,11 +109,11 @@
                                 // If the registration went well, clear sign up form
                                 $('.signup-form input').val('');
                                 // and close popup. User should be logged in now.
-                                DW.logMessage('Yeah, sign up went well.. You are logged in now...', '.signup-form');
+                                DW.logMessage('Yeah, sign up went well! You are logged in now...', '.signup-form');
                                 setTimeout(function() {
                                     $('#dwLoginForm').modal('hide');
                                     DW.refreshHeader();
-                                }, 4000);
+                                }, 1000);
                             } else {
                                 DW.logError(data.code, '.signup-form');
                             }

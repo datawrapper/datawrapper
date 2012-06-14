@@ -149,6 +149,7 @@ function error_mycharts_need_login() {
 
 require_once '../lib/utils/check_chart.php';
 require_once '../controller/home.php';
+require_once '../controller/settings.php';
 require_once '../controller/chart-create.php';
 require_once '../controller/chart-edit.php';
 require_once '../controller/chart-upload.php';
