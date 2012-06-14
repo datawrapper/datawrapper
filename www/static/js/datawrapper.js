@@ -127,9 +127,9 @@
                }
             });
 
-            $('.btn-login').click(function(evt) {
-                var lgBtn = $(evt.target),
-                  loginForm = lgBtn.parents('.login-form'),
+            function loginEvent(evt) {
+                var loginForm = $(evt.target).parents('.login-form'),
+                  lgBtn = $('.btn-login', loginForm),
                   hmac = CryptoJS.HmacSHA256,
                   pwd = $('.login-pwd', loginForm).val(),
                   hash = hmac(hmac(pwd, lgBtn.data('salt')).toString(), String(lgBtn.data('time'))).toString(),
@@ -139,6 +139,7 @@
                      time: lgBtn.data('time')
                   };
                 $('.alert', loginForm).remove();
+
                 $.ajax({
                     url: '/api/auth/login',
                     type: 'POST',
@@ -154,7 +155,15 @@
                         }
                     }
                 });
+            }
+
+            // log in on login button click
+            $('.btn-login').click(loginEvent);
+            // log in on email,pwd enter press
+            $('.login-form input').keyup(function(evt) {
+                if (evt.keyCode == 13) loginEvent(evt);
             });
+
         },
 
         initializeLogout: function() {
