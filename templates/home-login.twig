@@ -1,5 +1,12 @@
 {% block homelogin %}
 
+    {% if alert %}
+        <div class="alert alert-{{ alert.type }}'">
+            <a class="close" data-dismiss="alert" href="#">&times;</a>
+            <div>{{ alert.message }}</div>
+        </div>
+    {% endif %}
+
         {% if not user.isLoggedIn %}
             <div class="well clearfix">
                 <h3>Login / Sign Up</h3>
@@ -15,13 +22,13 @@
             <a href="/chart/create"><big><i class="icon-chevron-right"></i> Try Datawrapper now!</a></big></p>
         {% else %}
             <div class="well">
-                            <h3>Welcome, back!</h3>
-            <ul class="unstyled link-list">
-                <li><h3><a href="/mycharts"><i class="icon-signal"></i> My Charts</a><br /><small>See what you've wrapped so far..</small></h3></li>
-                <li><h3><a href="/chart/create"><i class="icon-pencil"></i> Create New Chart</a><br /><small>See what you've wrapped so far..</small></h3></li>
-                <li><h3><a href="/settings"><i class="icon-cog"></i> Settings</a><br /><small>Change E-Mail, Password, etc.</small></h3></li>
-                <li><h3><a href="#logout"><i class="icon-off"></i> Logout</a></h3></li>
-            </ul>
+                <h3>Welcome, back!</h3>
+                <ul class="unstyled link-list">
+                    <li><h3><a href="/mycharts"><i class="icon-signal"></i> My Charts</a><br /><small>See what you've wrapped so far..</small></h3></li>
+                    <li><h3><a href="/chart/create"><i class="icon-pencil"></i> Create New Chart</a><br /><small>See what you've wrapped so far..</small></h3></li>
+                    <li><h3><a href="/account/settings"><i class="icon-cog"></i> Settings</a><br /><small>Change E-Mail, Password, etc.</small></h3></li>
+                    <li><h3><a href="#logout"><i class="icon-off"></i> Logout</a></h3></li>
+                </ul>
             </div>
 
             <p></p>

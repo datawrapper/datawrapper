@@ -47,6 +47,26 @@ $app->post('/users', function() use ($app) {
     $user->save();
     $result = $user->toArray();
 
+    // send email with activation key
+    $name = $data->email;
+    $domain = 'dw.vis4.net';
+    $activationLink = 'http://' . $domain . '/account/activate/' . $user->getToken();
+    $from = 'datawrapper@' . $domain;
+    $mail = <<<MAIL
+
+Hello $name,
+
+Thank you for signing up at Datawrapper on $domain!
+
+Please click on this link to activate your email address.
+
+$activationLink
+
+Cheers!
+MAIL;
+    mail($data->email, 'Datawrapper Email Activation', $mail, 'From: ' . $from);
+
+
     // we don't need to annoy the user with a login form now,
     // so just log in..
     DatawrapperSession::login($user);
@@ -91,26 +111,3 @@ $app->put('/users/:id', function($user_id) use ($app) {
     }
 });
 
-
-/*
- * activate a pending user, might be moved to app later
- */
-$app->get('/activate/:token', function($token) {
-    if (!empty($token)) {
-        $users = UserQuery::create()
-          ->filterByToken($token)
-          ->find();
-
-        if (count($users) == 0) {
-            error('token-invalid', 'this token is invalid.');
-        } else if (count($users) > 1) {
-            error('token-ambiguous', 'this token is ambiguous.');
-        } else {
-            $user = $users[0];
-            $user->setRole('editor');
-            $user->setToken('');
-            $user->save();
-            ok();
-        }
-    }
-});
