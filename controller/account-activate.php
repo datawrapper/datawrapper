@@ -12,7 +12,7 @@ $app->get('/account/activate/:token', function ($token) use ($app) {
         if (count($users) != 1) {
             $page['alert'] = array(
                 'type' => 'error',
-                'message' => 'This token is invalid.'
+                'message' => 'This activation token is invalid.'
             );
         } else {
             $user = $users[0];
