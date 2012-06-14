@@ -18,7 +18,7 @@ class ChartQuery extends BaseChartQuery {
     /**
      * creates a new empty chart
      */
-    public static function createEmptyChart($user) {
+    public function createEmptyChart($user) {
         $i = 0;
         while ($i++ < 10) {
             try {
@@ -34,6 +34,15 @@ class ChartQuery extends BaseChartQuery {
                     // to a newly registered user
                     $chart->setGuestSession(session_id());
                 }
+                // find a nice, more or less unique title
+                $title = '[Untitled';
+                $untitledCharts = $this->filterByAuthorId($user->getId())
+                    ->filterByTitle('[Untitled%')
+                    ->filterByDeleted(false)
+                    ->find();
+                if (count($untitledCharts) > 0) $title .= '-'.count($untitledCharts);
+                $chart->setTitle($title . ']');
+
                 $chart->setMetadata("{ \"data\": {}, \"visualization\": {} }");
                 // $chart->setLanguage($user->getLanguage());  // defaults to user language
                 $chart->save();
@@ -60,6 +69,14 @@ class ChartQuery extends BaseChartQuery {
         if (!$u) for ($s = '', $i = 0, $z = strlen($c)-1; $i < $l; $x = rand(0,$z), $s .= $c{$x}, $i++);
         else for ($i = 0, $z = strlen($c)-1, $s = $c{rand(0,$z)}, $i = 1; $i != $l; $x = rand(0,$z), $s .= $c{$x}, $s = ($s{$i} == $s{$i-1} ? substr($s,0,-1) : $s), $i=strlen($s));
         return $s;
+    }
+
+
+    public function getPublicChartsByUser($user) {
+        return $this->filterByAuthorId($user->getId())
+            ->filterByDeleted(false)
+            ->orderByLastModifiedAt('desc')
+            ->find();
     }
 
 

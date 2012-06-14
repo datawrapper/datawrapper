@@ -48,7 +48,7 @@
                 <textarea id="upload-data-text" placeholder="copy &amp; paste your data here">{{ chartData }}</textarea>
 
                 <a id="upload-data" class="btn btn-primary pull-right" href="#">Upload and continue <i class="icon-chevron-right icon-white"></i></a>
-                <button class="btn"><i class="icon-upload"></i>..or pick a file from your disk</button>
+                <button class="btn"><i class="icon-upload"></i>..or pick a file from your disk</button> <span class="label">Not Implemented</span>
                 <br style="clear:both;margin:0" />
             </form>
 
@@ -58,9 +58,24 @@
             <h3>Help</h3>
             <p>We want to make getting data into Datawrapper as easy as possible. If you're working in Excel or OpenOffice, just select your data (including header row/column) and paste it in the following text field. <a href="#">learn more</a></p>
 
-            <p>Hint: if you just want to play around with Datawrapper, you can use one of the following example datasets:
-                <ul id="demo-data">
+            <p><span class="label">Hint</span> if you just want to play around with Datawrapper, you can use one of the following example datasets:
+                <ul id="demo-datasets" class="">
+                    {% for dataset in datasets %}
+                    <li><a href="#{{ dataset.id }}" class="demo-dataset" data-data="{{ dataset.data }}">{{ dataset.title }}</a></li>
+                    {% endfor %}
                 </ul>
+                <script type="text/javascript">
+
+                $(function() {
+
+                    $('.demo-dataset').click(function(evt) {
+                        var a = $(evt.target);
+                        $('#upload-data-text').val(a.data('data'));
+                        return false;
+                    });
+                });
+
+                </script>
             </p>
         </div>
 

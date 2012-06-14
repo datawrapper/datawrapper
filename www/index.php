@@ -5,6 +5,9 @@
  *
  */
 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 // Require the Slim PHP 5 Framework
 require '../vendor/Slim/Slim.php';
 
@@ -44,13 +47,37 @@ function add_header_vars(&$page, $active = null) {
     if ($user->isLoggedIn()) {
         $headlinks[] = array('url' => '/mycharts', 'id' => 'mycharts', 'title' => 'My Charts', 'icon' => 'signal');
     }
-    $headlinks[] = array('url' => '', 'id' => 'lang', 'dropdown' => true, 'title' => 'Language', 'icon' => 'font');
+    $headlinks[] = array(
+        'url' => '',
+        'id' => 'lang',
+        'dropdown' => array(array(
+            'url' => '#lang-de',
+            'title' => 'Deutsch'
+        ), array(
+            'url' => '#lang-en',
+            'title' => 'English'
+        ), array(
+            'url' => '#lang-fr',
+            'title' => 'Francais'
+        )),
+        'title' => 'Language',
+        'icon' => 'font'
+    );
     if ($user->isLoggedIn()) {
         $headlinks[] = array(
-            'url' => '#logout',
-            'id' => 'logout',
-            'title' => 'Logout',
-            'icon' => 'user'
+            'url' => '#user',
+            'id' => 'user',
+            'title' => $user->getEmail(),
+            'icon' => 'user',
+            'dropdown' => array(array(
+                'url' => '/settings',
+                'icon' => 'cog',
+                'title' => 'Settings'
+            ), array(
+                'url' => '#logout',
+                'icon' => 'off',
+                'title' => 'Logout'
+            ))
         );
     } else {
         $headlinks[] = array(
@@ -64,16 +91,8 @@ function add_header_vars(&$page, $active = null) {
         $headlinks[$i]['active'] = $headlinks[$i]['id'] == $active;
     }
     $page['headlinks'] = $headlinks;
+    $page['user'] = DatawrapperSession::getUser();
 }
-
-/**
- * reloads the header menu after login/logout
- */
-$app->get('/xhr/header/:page', function($active) use ($app) {
-    $page = array();
-    add_header_vars($page, $active);
-    $app->render('header.twig', $page);
-});
 
 
 function add_editor_nav(&$page, $step) {
@@ -87,18 +106,9 @@ function add_editor_nav(&$page, $step) {
     $page['createstep'] = $step;
 }
 
-//GET route
-$app->get('/', function () use ($app) {
-    $page = array('title' => 'Datawrapper');
-    add_header_vars($page, 'about');
-    $app->render('index.twig', $page);
-});
 
-$app->get('/chart/create', function() use ($app) {
-    $user = DatawrapperSession::getUser();
-    $chart = ChartQuery::createEmptyChart($user);
-    $app->redirect('/chart/'.$chart->getId().'/upload');
-});
+
+
 
 /**
  *
@@ -127,66 +137,26 @@ function error_chart_not_writable() {
     );
 }
 
-function check_chart($id, $callback) {
-    $chart = ChartQuery::create()->findPK($id);
-    if ($chart) {
-        $user = DatawrapperSession::getUser();
-        if ($chart->isWritable($user) === true) {
-            call_user_func($callback, $user, $chart);
-        } else {
-            // no such chart
-            error_chart_not_writable();
-        }
-    } else {
-        // no such chart
-        error_chart_not_found($id);
-    }
+function error_mycharts_need_login() {
+    error_page('mycharts',
+        'Whoops! You need to be logged in.',
+        'Good news is, sign up is free and takes less than 20 seconds.'
+    );
 }
 
-/*
- * UPLOAD STEP
- */
-$app->get('/chart/:id/upload', function ($id) use ($app) {
-    check_chart($id, function($user, $chart) use ($app) {
-        $page = array(
-            'chartData' => $chart->loadData(),
-            'chart' => json_encode($chart->serialize())
-        );
-        add_header_vars($page, 'create');
-        add_editor_nav($page, 1);
-        $app->render('chart-upload.twig', $page);
-    });
-});
-
-/*
- * DESCRIBE STEP
- */
-$app->get('/chart/:id/describe', function ($id) use ($app) {
-    check_chart($id, function($user, $chart) use ($app) {
-        $page = array(
-            'chartData' => $chart->loadData(),
-            'chart' => json_encode($chart->serialize())
-        );
-        add_header_vars($page, 'create');
-        add_editor_nav($page, 2);
-        $app->render('chart-describe.twig', $page);
-    });
-});
 
 
-/**
- * API: get data to a chart
- *
- * @param chart_id chart id
- */
-$app->get('/chart/:id/data', function($chart_id) use ($app) {
-    $chart = ChartQuery::create()->findPK($chart_id);
-    if (!empty($chart)) {
-        print $chart->loadData();
-    } else {
-        error_chart_not_found($chart_id);
-    }
-});
+
+require_once '../lib/utils/check_chart.php';
+require_once '../controller/home.php';
+require_once '../controller/chart-create.php';
+require_once '../controller/chart-edit.php';
+require_once '../controller/chart-upload.php';
+require_once '../controller/chart-describe.php';
+require_once '../controller/chart-data.php';
+require_once '../controller/mycharts.php';
+require_once '../controller/xhr.php';
+
 
 
 /**

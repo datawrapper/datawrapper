@@ -1,0 +1,30 @@
+{% block homelogin %}
+
+        {% if not user.isLoggedIn %}
+            <div class="well clearfix">
+                <h3>Login / Sign Up</h3>
+                <div class="login-form form-vertical">
+                    <input class="login-email input-large" type="text" value="" placeholder="email" />
+                    <input class="login-pwd input-large" type="password" value="" placeholder="password" /><br />
+                    <p class="pull-right" style="margin-bottom:0"><a class="btn btn-primary btn-large btn-login"><i class="icon-user icon-white"></i> Login</a>
+                    <span style="padding:0 1ex">or</span> <a href="#login" class="btn btn-large"><i class="icon-pencil"></i> Sign Up</a></p>
+                </div>
+            </div>
+            <p>Not convinced, yet?</p>
+            <p>
+            <a href="/chart/create"><big><i class="icon-chevron-right"></i> Try Datawrapper now!</a></big></p>
+        {% else %}
+            <div class="well">
+                            <h3>Welcome, back!</h3>
+            <ul class="unstyled link-list">
+                <li><h3><a href="/mycharts"><i class="icon-signal"></i> My Charts</a><br /><small>See what you've wrapped so far..</small></h3></li>
+                <li><h3><a href="/chart/create"><i class="icon-pencil"></i> Create New Chart</a><br /><small>See what you've wrapped so far..</small></h3></li>
+                <li><h3><a href="/settings"><i class="icon-cog"></i> Settings</a><br /><small>Change E-Mail, Password, etc.</small></h3></li>
+                <li><h3><a href="#logout"><i class="icon-off"></i> Logout</a></h3></li>
+            </ul>
+            </div>
+
+            <p></p>
+        {% endif %}
+
+{% endblock %}

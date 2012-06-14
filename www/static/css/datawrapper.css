@@ -145,3 +145,33 @@ h1, h2, h3, h4, h5, h6 {
     height: 27px;
     line-height: 27px;
 }
+
+.login-form .input-large {
+    width: 95%;
+}
+
+.mycharts h3 {
+    margin-bottom: 0px;
+}
+
+.mycharts .thumbnail {
+    border: 0;
+    box-shadow: none;
+}
+
+.mycharts .thumbnail img {
+    margin: 0 0 5px 0;
+}
+
+.link-list li h3 {
+    margin-bottom: 12px;
+    line-height: 18px;
+}
+
+.link-list li h3 small {
+    font-size: 13px;
+}
+
+.link-list li h3 i {
+    margin-top: 4px;
+}

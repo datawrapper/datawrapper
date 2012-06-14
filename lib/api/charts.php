@@ -6,11 +6,7 @@
 $app->get('/charts', function() {
     $user = DatawrapperSession::getUser();
     if ($user->isLoggedIn()) {
-        $charts = ChartQuery::create()
-            ->filterByAuthorId($user->getId())
-            ->filterByDeleted(false)
-            ->orderByLastModifiedAt('desc')
-            ->find();
+        $charts = ChartQuery::create()->getPublicChartsByUser($user);
         $res = array();
         foreach ($charts as $chart) {
             $res[] = $chart->shortArray();
@@ -28,7 +24,7 @@ $app->post('/charts', function() {
     $user = DatawrapperSession::getUser();
     if ($user->isLoggedIn()) {
         try {
-            $chart = Chart::createEmptyChart($user);
+            $chart = ChartQuery::create()->createEmptyChart($user);
             $result = array($chart->serialize());
             ok($result);
         } catch (Exception $e) {

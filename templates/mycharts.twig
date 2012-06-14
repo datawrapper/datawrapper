@@ -1,0 +1,55 @@
+{% extends "core.twig" %}
+
+{% block content %}
+
+<div class="row">
+    <div class="span9 mycharts">
+        <ul class="thumbnails">
+            {% for chart in charts %}
+            <li class="span3">
+                <div class="thumbnail">
+                    <img src="http://placehold.it/260x180" alt="">
+
+                    <p class="pull-right">
+                        <a href="#edit">edit</a>
+                    </p>
+                     <h3><a href="charts/{{ chart.id }}/edit">{{ chart.title }}</a></h3>
+                     <p>Created: {{ chart.createdAt|date() }}<br/>
+                     Layout: {{ chart.theme }} </p>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="span3">
+        <h3>By Month</h3>
+
+        <span class="label label-info">Not Implemented</span>
+        <ul class="unstyled">
+            {% for month in bymonth %}
+            <li><a href="{{ month.url }}">{{ month.name }}</a> ({{ month.count }})</li>
+            {% endfor %}
+        </ul>
+
+        <h3>By Visualisation</h3>
+
+        <span class="label label-info">Not Implemented</span>
+        <ul class="unstyled">
+            {% for vis in byvis %}
+            <li><a href="{{ vis.url }}">{{ vis.name }}</a> ({{ vis.count }})</li>
+            {% endfor %}
+        </ul>
+
+        <h3>By Layout</h3>
+
+        <span class="label label-info">Not Implemented</span>
+        <ul class="unstyled">
+            {% for layout in bylayout %}
+            <li><a href="{{ layout.url }}">{{ layout.name }}</a> ({{ layout.count }})</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+{{ parent() }}
+{% endblock %}

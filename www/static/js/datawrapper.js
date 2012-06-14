@@ -55,23 +55,37 @@
                 DW.initializeSignUp();
                 DW.initializeLogout();
             });
+
+            // reload login form on homepage
+            var homeLogin = $('#home-login');
+            if (homeLogin.length > 0) {
+                homeLogin.load('/xhr/home-login', null, function() {
+                    DW.initializeSignUp();
+                    DW.initializeLogout();
+                });
+            }
         },
 
         initializeSignUp: function() {
 
-            $('a[href=#login]').click(function() {
-                $('#dwLoginForm').modal();
-                $('#dwLoginForm .alert').remove();
-
+            function refreshSalt() {
                 $.getJSON('/api/auth/salt', function(res) {
                    if (res.status == 'ok') {
                       $('#btn-register').data('salt', res.data.salt);
-                      $('#btn-login').data('salt', res.data.salt);
-                      $('#btn-login').data('time', res.data.time);
+                      $('.btn-login').data('salt', res.data.salt);
+                      $('.btn-login').data('time', res.data.time);
                    }
                 });
+            }
+
+            $('a[href=#login]').click(function() {
+                $('#dwLoginForm').modal();
+                $('#dwLoginForm .alert').remove();
+                refreshSalt();
                 return false;
             });
+
+            refreshSalt();
 
             $('#btn-register').click(function() {
                var pwd = $.trim($('#register-pwd').val()),
@@ -97,7 +111,7 @@
                                 // and close popup. User should be logged in now.
                                 DW.logMessage('Yeah, sign up went well.. You are logged in now...', '.signup-form');
                                 setTimeout(function() {
-                                    $('#dwLoginForm').modal().hide();
+                                    $('#dwLoginForm').modal('hide');
                                     DW.refreshHeader();
                                 }, 4000);
                             } else {
@@ -113,17 +127,18 @@
                }
             });
 
-            $('#btn-login').click(function() {
-                var lg = $('#btn-login'), hmac = CryptoJS.HmacSHA256,
-                  pwd = $('#login-pwd').val(),
-                  hash = hmac(hmac(pwd, lg.data('salt')).toString(), String(lg.data('time'))).toString(),
+            $('.btn-login').click(function(evt) {
+                var lgBtn = $(evt.target),
+                  loginForm = lgBtn.parents('.login-form'),
+                  hmac = CryptoJS.HmacSHA256,
+                  pwd = $('.login-pwd', loginForm).val(),
+                  hash = hmac(hmac(pwd, lgBtn.data('salt')).toString(), String(lgBtn.data('time'))).toString(),
                   payload = {
-                     email: $('#login-email').val(),
+                     email: $('.login-email', loginForm).val(),
                      pwhash: hash,
-                     time: $('#btn-login').data('time')
+                     time: lgBtn.data('time')
                   };
-                $('#login-email').val('');
-                $('#login-pwd').val('');
+                $('.alert', loginForm).remove();
                 $.ajax({
                     url: '/api/auth/login',
                     type: 'POST',
@@ -131,11 +146,11 @@
                     data: JSON.stringify(payload),
                     success: function(data) {
                         if (data.status == "ok") {
-                            $('#dwLoginForm').modal().hide();
-                            $('.login-form input').val('');
+                            $('#dwLoginForm').modal('hide');
+                            $('input', loginForm).val('');
                             DW.refreshHeader();
                         } else {
-                            DW.logError(data.message, '.login-form');
+                            DW.logError(data.message, loginForm);
                         }
                     }
                 });
@@ -158,12 +173,12 @@
         },
 
         logMessage: function(msg, parent, type) {
-            $(parent).prepend(alert);
+            if (_.isString(parent)) parent = $(parent);
             if (type === undefined) type = 'success';
             var alert = $('<div class="alert alert-'+type+'" />');
             alert.append('<a class="close" data-dismiss="alert" href="#">&times;</a>');
             alert.append('<div>'+msg+'</div>');
-            $(parent).prepend(alert);
+            parent.prepend(alert);
             $(".alert").alert();
         },
 
@@ -171,11 +186,6 @@
             this.logMessage(msg, parent, 'error');
         }
     });
-
-    $(function() {
-        window.DW = new Datawrapper.Core();
-    });
-
 
     // Datawrapper.Chart
     // -----------------
@@ -223,5 +233,106 @@
         }
 
     });
+
+    // Datawrapper.ChartData
+    // ---------------------
+
+    // represents the data for a chart. Usage:
+    // new Datawrapper.ChartData({
+    //     url: '/chart/Tjd67/data',
+    //     autoload: true,
+    //     success: function(data) {
+    //         data.transpose(true);
+    //         console.log(data.dataset);
+    //     }
+    // });
+
+    var ChartData = Datawrapper.ChartData = function(opts) {
+        this.url = opts.url;
+        this.transpose = opts.transpose && opts.transpose === true;
+        this.__valid = false;
+        if (opts.autoload) this.load(opts.success);
+    };
+
+    _.extend(ChartData.prototype, {
+
+        load: function(callback) {
+            $.ajax({
+                url: this.url,
+                context: this,
+                success: function(res) {
+                    this.__rawDataString = res;
+                    this.parse();
+                    if (_.isFunction(callback)) callback(this);
+                }
+            });
+        },
+
+        transpose: function(trueOrNot) {
+            if (trueOrNot === undefined) trueOrNot = true;
+            if (trueOrNot !== this.transpose) {
+                this.transpose = trueOrNot;
+                this.changed = true;
+                this.__valid = false;
+            }
+        },
+
+        // returns a Miso.Dataset instance of this data
+        dataset: function() {
+            if (this.__valid) return this.__dataset;
+            var ds = Miso.Dataset({
+                data: data
+            });
+            ds.fetch();
+            this.__valid = true;
+            this.__dataset = ds;
+            return ds;
+        },
+
+        // -- private functions
+
+        // converts rawDataString into 2-d array
+        parse: function(delimiter) {
+            var delimiters = [',','\t',';'],
+                rows = this.__rawDataString.split('\n'),
+                rawData = [];
+
+            if (delimiter === undefined) {
+                delimiter = this.guessDelimiter(rows);
+            }
+            _.each(rows, function(row) {
+                rawData.push(row.split(delimiter));
+            });
+            this.__rawData = rawData;
+        },
+
+        // automagically guess delimiter. uses a very simple algorithm.
+        guessDelimiter: function(rows) {
+            // find delimiter which occurs most often
+            var maxDelimiterCount = 0, k = -1;
+            _.each(delimiters, function(d, i) {
+                var c = rows[0].split(d).length;
+                if (c > maxDelimiterCount) {
+                    maxDelimiterCount = c;
+                    k = i;
+                }
+            });
+            // verify that the file has a valid structure
+            _.each(rows, function(row, i) {
+                if (i < 5) {
+                    if (row.split(delimiters[k]) != maxDelimiterCount) {
+                        throw 'Could not guess csv delimiter';
+                    }
+                }
+            });
+            delimiter = delimiters[k];
+        }
+    });
+
+    // -- now run datawrapper core
+    $(function() {
+        window.DW = new Datawrapper.Core();
+    });
+
 
 }).call(this);

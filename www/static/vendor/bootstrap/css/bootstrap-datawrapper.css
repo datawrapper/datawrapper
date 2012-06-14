@@ -3566,8 +3566,8 @@ a.thumbnail:hover {
 }
 .label {
   padding: 1px 4px 2px;
-  font-size: 10.998px;
-  font-weight: bold;
+  font-size: 11.998px;
+  font-weight: normal;
   line-height: 13px;
   color: #ffffff;
   vertical-align: middle;
