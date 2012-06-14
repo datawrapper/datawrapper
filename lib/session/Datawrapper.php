@@ -91,6 +91,15 @@ class DatawrapperSession {
     public static function login($user) {
         $_SESSION['dw-user-id'] = $user->getId();
         self::getInstance()->user = $user;
+
+        // make sure that the charts of the guest now belong to
+        // the logged or newly created user
+        $charts = ChartQuery::create()->findByGuestSession(session_id());
+        foreach ($charts as $chart) {
+            $chart->setAuthorId($user->getId());
+            $chart->setGuestSession('');
+            $chart->save();
+        }
     }
 
     public static function logout() {

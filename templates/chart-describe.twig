@@ -7,14 +7,12 @@
 <script type="text/javascript">
 $(function() {
 
-    $('#has-vertical-headers').change(function() {
-        updateTable(DW.dataView);
-    });
+    $('#csv-parse-options input').change(reload);
 
     function updateTable(dv) {
         var table = $('#data-preview'),
-            vertHeaders = $('#has-vertical-headers').attr('checked') == 'checked',
             horzHeaders = $('#has-horizontal-headers').attr('checked') == 'checked';
+            vertHeaders = $('#has-vertical-headers').attr('checked') == 'checked';
         table.html('');  // empty table
         table.append('<thead><tr></tr><thead><tbody></tbody>');
 
@@ -23,9 +21,8 @@ $(function() {
             dv.eachColumn(function(name) {
                 thead.append('<th>'+name+'</th>');
             });
-        } else {
-
         }
+
         var tbody = $('tbody', table);
         dv.each(function(row) {
             var tr = $('<tr></tr>');
@@ -40,21 +37,22 @@ $(function() {
         });
     }
 
-    var ds = new Miso.Dataset({
-        url : '/chart/' + DW.currentChart.get('id') + '/data',
-        delimiter : "\t",
+    function reload() {
+        var ds = new Miso.Dataset({
+            url : '/chart/' + DW.currentChart.get('id') + '/data',
+            delimiter : "auto",
+            transpose: $('#transpose').attr('checked') == 'checked',
+            firstRowIsHeader: $('#has-horizontal-headers').attr('checked') == 'checked'
+        }).fetch({
+            success: function() {
+                DW.dataView = this;
+                updateTable(this);
+            }
 
-    }).fetch({
-        success: function() {
-            console.log("Available Columns:" + this.columnNames().join(" -- "));
-            console.log("There are " + this.length + " rows");
-            DW.dataView = this;
-            updateTable(this);
-        }
+        });
+    }
 
-    });
-    window.ds = ds;
-
+    reload();
 
 });
 
@@ -70,14 +68,12 @@ $(function() {
             </div>
             <p>Please check if the data format was recognized correctly. If not, please <a href="#">help Datawrapper to interpret your data</a>.</p>
 
-            <form class="form-inline">
-                <label class="checkbox"><input id="has-vertical-headers" type="checkbox"> My data has vertical headers</label>&nbsp;&nbsp;&nbsp;&nbsp;
-                <label class="checkbox"><input id="has-horizontal-headers" type="checkbox"> My data has horizontal headers</label>&nbsp;&nbsp;&nbsp;&nbsp;
-                <label class="checkbox"><input type="checkbox"> Transpose data</label>
-            </form>
-            
-            <div id="describe-csv-options-container">
-
+            <div id="csv-parse-options">
+                <form class="form-inline">
+                    <label class="checkbox"><input id="has-vertical-headers" type="checkbox"> My data has vertical headers</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <label class="checkbox"><input id="has-horizontal-headers" type="checkbox"> My data has horizontal headers</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <label class="checkbox"><input type="checkbox" id="transpose"> Transpose data</label>
+                </form>
             </div>
 
             <table id="data-preview" class="table table-striped">

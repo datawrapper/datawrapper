@@ -5247,12 +5247,19 @@ Version 0.0.1.2
     };
   }
 
+  if(typeof String.prototype.rtrim !== 'function') {
+    String.prototype.rtrim = function() {
+      return this.replace(/\s+$/g, ''); 
+    };
+  }
+
+
   _.extend(Miso.Parsers.Delimited.prototype, Miso.Parsers.prototype, {
 
     parse : function(data) {
       var columns = [];
       var columnData = {};
-
+      
       var parseCSV = function(delimiterPattern, strData, strDelimiter, skipRows, emptyValue) {
 
         // Check to see if the delimiter is defined. If not,
@@ -5278,7 +5285,7 @@ Version 0.0.1.2
         try {
 
           // trim any empty lines at the end
-          strData = strData.trim();
+          // strData = strData.rtrim();
 
           // do we have any rows to skip? if so, remove them from the string
           if (skipRows > 0) {
@@ -5315,6 +5322,7 @@ Version 0.0.1.2
 
                 // if we caught less items than we expected, throw an error
                 if (columnIndex < columnCount-1) {
+                    console.log(columnIndex, columnCount);
                   rowIndex--;
                   throw new Error("Not enough items in row");
                 }

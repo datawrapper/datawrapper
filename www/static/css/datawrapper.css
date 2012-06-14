@@ -189,3 +189,18 @@ h1, h2, h3, h4, h5, h6 {
 .well-danger .form-actions {
     background: transparent;
 }
+
+.table thead tr {
+    background-color: #555;
+}
+
+.table thead tr th {
+    color: #fff;
+    font-weight: normal;
+}
+.table-striped tbody tr:nth-child(2n+1) th {
+    background-color: #c0c0c0;
+}
+.table tbody tr th {
+    background-color: #ccc;
+}
