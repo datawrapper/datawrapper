@@ -81,6 +81,12 @@
             $('a[href=#login]').click(function() {
                 $('#dwLoginForm').modal();
                 $('#dwLoginForm .alert').remove();
+
+                var logEmail = $('#home-login .login-form .login-email'),
+                    logPwd = $('#home-login .login-form .login-pwd');
+                if (logEmail.val() !== '') $('#register-email').val(logEmail.val());
+                if (logPwd.val() !== '') $('#register-pwd').val(logPwd.val());
+
                 refreshSalt();
                 return false;
             });
