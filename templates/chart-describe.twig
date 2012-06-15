@@ -9,8 +9,8 @@ $(function() {
 
     $('#csv-parse-options input').change(reload);
 
-    DW.currentChart.sync('#has-horizontal-headers', 'metadata.data.horz-headers');
-    DW.currentChart.sync('#has-vertical-headers', 'metadata.data.vert-headers');
+    DW.currentChart.sync('#has-horizontal-headers', 'metadata.data.horizontal-header');
+    DW.currentChart.sync('#has-vertical-headers', 'metadata.data.vertical-header');
     DW.currentChart.sync('#transpose', 'metadata.data.transpose');
     DW.currentChart.sync('#describe-source-name', 'metadata.describe.source-name');
     DW.currentChart.sync('#describe-source-url', 'metadata.describe.source-url');
