@@ -204,3 +204,28 @@ h1, h2, h3, h4, h5, h6 {
 .table tbody tr th {
     background-color: #ccc;
 }
+
+.page-header h2 {
+    margin-bottom: 0;
+}
+
+#csv-parse-options label {
+    padding-right: 1em;
+}
+
+.skip-rows i {
+    position: relative;
+    top: 2px;
+    cursor: pointer;
+}
+
+dl.dl-horizontal dt {
+    width: 150px;
+    text-align: left;
+    padding-top: 17px;
+}
+
+dl.dl-horizontal dd {
+    margin-left: 160px;
+    padding-top: 17px;
+}

@@ -40,7 +40,7 @@ class Chart extends BaseChart {
         // at first we lowercase the keys
         $json = $this->lowercaseKeys($json);
         // then decode metadata from json string
-        $json['metadata'] = json_decode($json['metadata']);
+        $json['metadata'] = $json['metadata'];
         return $json;
     }
 
@@ -142,6 +142,10 @@ class Chart extends BaseChart {
                 return 'this is not your chart (session doesnt match)';
             }
         }
+    }
+
+    public function getMetadata() {
+        return json_decode(parent::getMetadata());
     }
 
 } // Chart

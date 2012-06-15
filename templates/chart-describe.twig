@@ -9,7 +9,18 @@ $(function() {
 
     $('#csv-parse-options input').change(reload);
 
+    DW.currentChart.sync('#has-horizontal-headers', 'metadata.data.horz-headers');
+    DW.currentChart.sync('#has-vertical-headers', 'metadata.data.vert-headers');
+    DW.currentChart.sync('#transpose', 'metadata.data.transpose');
+    DW.currentChart.sync('#describe-source-name', 'metadata.describe.source-name');
+    DW.currentChart.sync('#describe-source-url', 'metadata.describe.source-url');
+
     function updateTable(dv) {
+
+        function isNone(val) {
+            return val === null || val === undefined || (_.isNumber(val) && isNaN(val));
+        }
+
         var table = $('#data-preview'),
             horzHeaders = $('#has-horizontal-headers').attr('checked') == 'checked';
             vertHeaders = $('#has-vertical-headers').attr('checked') == 'checked';
@@ -19,7 +30,7 @@ $(function() {
         if (horzHeaders) {
             var thead = $('thead tr', table);
             dv.eachColumn(function(name) {
-                thead.append('<th>'+name+'</th>');
+                thead.append('<th>'+(!isNone(name) ? name : '')+'</th>');
             });
         }
 
@@ -28,9 +39,9 @@ $(function() {
             var tr = $('<tr></tr>');
             dv.eachColumn(function(col, o, i) {
                 if (i == 0 && vertHeaders) {
-                    tr.append('<th>'+row[col]+'</th>');
+                    tr.append('<th>'+(!isNone(row[col]) ? row[col] : '')+'</th>');
                 } else {
-                    tr.append('<td>'+row[col]+'</td>');
+                    tr.append('<td>'+(!isNone(row[col]) ? row[col] : '')+'</td>');
                 }
             });
             tbody.append(tr);
@@ -66,19 +77,26 @@ $(function() {
             <div class="page-header">
                 <h2>Check your data</h2>
             </div>
-            <p>Please check if the data format was recognized correctly. If not, please <a href="#">help Datawrapper to interpret your data</a>.</p>
+
+            {% use 'help-interpret-data.twig' %}
+            {{ block('helpmodal') }}
+
+            <p>Please check if the data format was recognized correctly. If not, please <a data-target="#helpInterpretData" href="#" data-toggle="modal">help Datawrapper to understand your data</a>.</p>
 
             <div id="csv-parse-options">
                 <form class="form-inline">
-                    <label class="checkbox"><input id="has-vertical-headers" type="checkbox"> My data has vertical headers</label>&nbsp;&nbsp;&nbsp;&nbsp;
-                    <label class="checkbox"><input id="has-horizontal-headers" type="checkbox"> My data has horizontal headers</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <label class="checkbox"><input id="has-horizontal-headers" type="checkbox" checked="checked"> Horizontal headers</label>
+                    <label class="checkbox"><input id="has-vertical-headers" type="checkbox"> Vertical headers</label>
                     <label class="checkbox"><input type="checkbox" id="transpose"> Transpose data</label>
+                    <label class="checkbox skip-rows"><i class="icon-plus-sign"></i> <i class="icon-minus-sign"></i> Skip 0 rows </label>
+
                 </form>
             </div>
 
-            <table id="data-preview" class="table table-striped">
-                
-            </table>
+            <div style="overflow-x:scroll; overflow-y: visible; width:100%">
+                <table id="data-preview" class="table table-striped">
+                </table>
+            </div>
         </div>
 
         <div class="span4">
@@ -88,11 +106,11 @@ $(function() {
             <h3>Credit the source</h3>
             <p>
                 <label>Who published the data in the first place?</label>
-                <input type="text" placeholder="name of the organisation">
+                <input id="describe-source-name" type="text" placeholder="name of the organisation">
             </p>
             <p>
                 <label>If possible, please provide a link the source data</label>
-                <input type="text" placeholder="http://">
+                <input id="describe-source-url" type="text" placeholder="http://">
             </p>
             <h3>Annotate data</h3>
             <p>To make the data more useful for your readers you can add details to individual data points or an entire series. This information will be displayed in the visualisations. <a href="#">Learn more..</a></p>

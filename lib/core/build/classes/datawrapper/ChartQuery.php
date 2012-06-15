@@ -43,7 +43,7 @@ class ChartQuery extends BaseChartQuery {
                 if (count($untitledCharts) > 0) $title .= '-'.count($untitledCharts);
                 $chart->setTitle($title . ']');
 
-                $chart->setMetadata("{ \"data\": {}, \"visualization\": {} }");
+                $chart->setMetadata("{ \"data\": {}, \"visualize\": {}, \"describe\": {} }");
                 // $chart->setLanguage($user->getLanguage());  // defaults to user language
                 $chart->save();
                 break;

@@ -42,6 +42,12 @@
         initialize: function() {
             this.initializeSignUp();
             this.initializeLogout();
+
+            $('a[data-toggle=modal]').click(function(e) {
+                var a = $(e.target),
+                    tgt = $(a.data('target'));
+                tgt.modal();
+            });
         },
 
         checkPasswordStrength: function(pwd) {
@@ -207,14 +213,15 @@
 
     //
     var Chart = Datawrapper.Chart = function(attributes) {
-        this.attributes = attributes;
+        this.__attributes = attributes;
+        this.__changed = false;
     };
 
     _.extend(Chart.prototype, {
 
         get: function(key) {
             var keys = key.split('.'),
-                pt = this.attributes;
+                pt = this.__attributes;
 
             _.each(keys, function(key) {
                 pt = pt[key];
@@ -222,126 +229,74 @@
             return pt;
         },
 
+        set: function(key, value) {
+            var keys = key.split('.'),
+                me = this,
+                lastKey = keys.pop(),
+                pt = me.__attributes;
+
+            _.each(keys, function(key) {
+                pt = pt[key];
+            });
+            pt[lastKey] = value;
+            me.__changed = true;
+            if (me.__saveTimeout) clearTimeout(me.__saveTimeout);
+            me.__saveTimeout = setTimeout(function() {
+                me.save();
+            }, 1000);
+            return this;
+        },
+
         sync: function(el, attribute) {
+            if (_.isString(el)) el = $(el);
             el.data('sync-attribute', attribute);
+
+            var curVal = this.get(attribute);
+            if (el.is('input[type=checkbox]')) {
+                if (curVal) el.attr('checked', 'checked');
+                else el.removeAttr('checked');
+            } else if (el.is('input[type=text]') || el.is('textarea') || el.is('select')) {
+                el.val(curVal);
+            }
+
+            var chart = this;
             el.change(function(evt) {
                 var el = $(evt.target),
-                    attrs, pt;
+                    attr, val;
 
                 // Resolve attribute string to a pointer to the attribute
-                attrs = el.data('sync-attribute').split('.');
-                pt = this.attributes;
-                _.each(attrs, function(key) {
-                    pt = pt[key];
-                });
+                attr = el.data('sync-attribute');
 
-                if (_.isObject(pt)) {
-                    console.warn('Cannot sync a dictionary');
-                } else {
-                    if (el.is('input[type=checkbox]')) {
-                        pt = el.attr('checked') == 'checked';
-                    } else if (el.is('input[type=text]') || el.is('textarea') || el.is('select')) {
-                        pt = el.val();
-                    }
+                if (el.is('input[type=checkbox]')) {
+                    val = el.attr('checked') == 'checked';
+                } else if (el.is('input[type=text]') || el.is('textarea') || el.is('select')) {
+                    val = el.val();
                 }
+                if (val !== undefined) chart.set(attr, val);
             });
-        }
+        },
 
-    });
-
-    // Datawrapper.ChartData
-    // ---------------------
-
-    // represents the data for a chart. Usage:
-    // new Datawrapper.ChartData({
-    //     url: '/chart/Tjd67/data',
-    //     autoload: true,
-    //     success: function(data) {
-    //         data.transpose(true);
-    //         console.log(data.dataset);
-    //     }
-    // });
-
-    var ChartData = Datawrapper.ChartData = function(opts) {
-        this.url = opts.url;
-        this.transpose = opts.transpose && opts.transpose === true;
-        this.__valid = false;
-        if (opts.autoload) this.load(opts.success);
-    };
-
-    _.extend(ChartData.prototype, {
-
-        load: function(callback) {
+        save: function() {
+            // saves the chart meta data to Datawrapper
+            if (!this.__changed) return;
             $.ajax({
-                url: this.url,
+                url: '/api/charts/'+this.get('id'),
+                type: 'PUT',
+                dataType: 'json',
+                data: JSON.stringify(this.__attributes),
+                processData: false,
                 context: this,
-                success: function(res) {
-                    this.__rawDataString = res;
-                    this.parse();
-                    if (_.isFunction(callback)) callback(this);
-                }
-            });
-        },
-
-        transpose: function(trueOrNot) {
-            if (trueOrNot === undefined) trueOrNot = true;
-            if (trueOrNot !== this.transpose) {
-                this.transpose = trueOrNot;
-                this.changed = true;
-                this.__valid = false;
-            }
-        },
-
-        // returns a Miso.Dataset instance of this data
-        dataset: function() {
-            if (this.__valid) return this.__dataset;
-            var ds = Miso.Dataset({
-                data: data
-            });
-            ds.fetch();
-            this.__valid = true;
-            this.__dataset = ds;
-            return ds;
-        },
-
-        // -- private functions
-
-        // converts rawDataString into 2-d array
-        parse: function(delimiter) {
-            var delimiters = [',','\t',';'],
-                rows = this.__rawDataString.split('\n'),
-                rawData = [];
-
-            if (delimiter === undefined) {
-                delimiter = this.guessDelimiter(rows);
-            }
-            _.each(rows, function(row) {
-                rawData.push(row.split(delimiter));
-            });
-            this.__rawData = rawData;
-        },
-
-        // automagically guess delimiter. uses a very simple algorithm.
-        guessDelimiter: function(rows) {
-            // find delimiter which occurs most often
-            var maxDelimiterCount = 0, k = -1;
-            _.each(delimiters, function(d, i) {
-                var c = rows[0].split(d).length;
-                if (c > maxDelimiterCount) {
-                    maxDelimiterCount = c;
-                    k = i;
-                }
-            });
-            // verify that the file has a valid structure
-            _.each(rows, function(row, i) {
-                if (i < 5) {
-                    if (row.split(delimiters[k]) != maxDelimiterCount) {
-                        throw 'Could not guess csv delimiter';
+                success: function(data) {
+                    if (data.status == "ok") {
+                        console.log('saved chart');
+                        this.__changed = false;
+                    } else {
+                        console.warn('could not save the chart', data);
                     }
                 }
             });
-            delimiter = delimiters[k];
         }
+
     });
 
     // -- now run datawrapper core
