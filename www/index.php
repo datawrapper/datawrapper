@@ -155,6 +155,7 @@ require_once '../controller/chart-create.php';
 require_once '../controller/chart-edit.php';
 require_once '../controller/chart-upload.php';
 require_once '../controller/chart-describe.php';
+require_once '../controller/chart-visualize.php';
 require_once '../controller/chart-data.php';
 require_once '../controller/mycharts.php';
 require_once '../controller/xhr.php';

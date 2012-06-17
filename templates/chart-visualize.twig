@@ -1,0 +1,88 @@
+{% extends "chart-editor.twig" %}
+{% block content %}
+
+{{ parent() }}
+
+<script type="text/javascript">
+$(function() {
+
+    DW.currentChart.onSync(function() {
+
+    });
+
+    DW.currentChart.sync('#select-vis', 'type');
+    DW.currentChart.sync('#select-theme', 'theme');
+    DW.currentChart.sync('#text-title', 'title');
+
+});
+
+</script>
+
+<div class="dw-create-visualize">
+
+    <!--<h2>Please select a visualization type</h2>
+    <div class="row">
+        <div class="span12" style="">
+            <ul class="thumbnails">
+            {% for vis in vistypes %}
+            <li class="span2">
+                <a class="thumbnail" href="#" title="{{ vis.title }}">
+                    <img src="http://placehold.it/180x160" alt="">
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+        </div>
+    </div>-->
+
+    <div class="row">
+
+        <div class="span4 visconfig">
+
+            <div class="row">
+                <div class="span2">
+                    <label for="select-vis">Visualization:</label>
+                    <select id="select-vis" class="span2">
+                        {% for vis in visualizations %}
+                        <option value="{{ vis.id }}">{{ vis.title.en }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="span2">
+                    <label for="select-theme">Layout:</label>
+                    <select id="select-theme" class="span2">
+                        {% for theme in themes %}
+                        <option value="{{ theme.id }}">{{ theme.title }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+            </div>
+
+            <label for="text-title" contenteditable="true">Title</label>
+            <input type="text" id="text-title" class="input-xlarge span4" />
+
+            <div class="page-header">
+                <h3>Line Chart Options</h3>
+            </div>
+            <div class="row">
+
+
+            </div>
+
+        </div>
+
+        <div class="span8">
+            <iframe src="/chart/{{ chart.id }}/preview" id="iframe-vis" style="width:100%; height: 450px">
+                
+            </iframe>
+        </div>
+
+    </div>
+
+
+</div>
+
+
+{% endblock %}

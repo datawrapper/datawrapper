@@ -148,4 +148,8 @@ class Chart extends BaseChart {
         return json_decode(parent::getMetadata());
     }
 
+    public function isPublic() {
+        return !$this->getDeleted()
+    }
+
 } // Chart

@@ -19,6 +19,7 @@
  * @method     ChartQuery orderByShowInGallery($order = Criteria::ASC) Order by the show_in_gallery column
  * @method     ChartQuery orderByLanguage($order = Criteria::ASC) Order by the language column
  * @method     ChartQuery orderByGuestSession($order = Criteria::ASC) Order by the guest_session column
+ * @method     ChartQuery orderByLastEditStep($order = Criteria::ASC) Order by the last_edit_step column
  *
  * @method     ChartQuery groupById() Group by the id column
  * @method     ChartQuery groupByTitle() Group by the title column
@@ -33,6 +34,7 @@
  * @method     ChartQuery groupByShowInGallery() Group by the show_in_gallery column
  * @method     ChartQuery groupByLanguage() Group by the language column
  * @method     ChartQuery groupByGuestSession() Group by the guest_session column
+ * @method     ChartQuery groupByLastEditStep() Group by the last_edit_step column
  *
  * @method     ChartQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChartQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -58,6 +60,7 @@
  * @method     Chart findOneByShowInGallery(boolean $show_in_gallery) Return the first Chart filtered by the show_in_gallery column
  * @method     Chart findOneByLanguage(string $language) Return the first Chart filtered by the language column
  * @method     Chart findOneByGuestSession(string $guest_session) Return the first Chart filtered by the guest_session column
+ * @method     Chart findOneByLastEditStep(int $last_edit_step) Return the first Chart filtered by the last_edit_step column
  *
  * @method     array findById(string $id) Return Chart objects filtered by the id column
  * @method     array findByTitle(string $title) Return Chart objects filtered by the title column
@@ -72,6 +75,7 @@
  * @method     array findByShowInGallery(boolean $show_in_gallery) Return Chart objects filtered by the show_in_gallery column
  * @method     array findByLanguage(string $language) Return Chart objects filtered by the language column
  * @method     array findByGuestSession(string $guest_session) Return Chart objects filtered by the guest_session column
+ * @method     array findByLastEditStep(int $last_edit_step) Return Chart objects filtered by the last_edit_step column
  *
  * @package    propel.generator.datawrapper.om
  */
@@ -160,7 +164,7 @@ abstract class BaseChartQuery extends ModelCriteria
 	 */
 	protected function findPkSimple($key, $con)
 	{
-		$sql = 'SELECT `ID`, `TITLE`, `THEME`, `CREATED_AT`, `LAST_MODIFIED_AT`, `TYPE`, `METADATA`, `DELETED`, `DELETED_AT`, `AUTHOR_ID`, `SHOW_IN_GALLERY`, `LANGUAGE`, `GUEST_SESSION` FROM `chart` WHERE `ID` = :p0';
+		$sql = 'SELECT `ID`, `TITLE`, `THEME`, `CREATED_AT`, `LAST_MODIFIED_AT`, `TYPE`, `METADATA`, `DELETED`, `DELETED_AT`, `AUTHOR_ID`, `SHOW_IN_GALLERY`, `LANGUAGE`, `GUEST_SESSION`, `LAST_EDIT_STEP` FROM `chart` WHERE `ID` = :p0';
 		try {
 			$stmt = $con->prepare($sql);
 			$stmt->bindValue(':p0', $key, PDO::PARAM_STR);
@@ -659,6 +663,46 @@ abstract class BaseChartQuery extends ModelCriteria
 			}
 		}
 		return $this->addUsingAlias(ChartPeer::GUEST_SESSION, $guestSession, $comparison);
+	}
+
+	/**
+	 * Filter the query on the last_edit_step column
+	 *
+	 * Example usage:
+	 * <code>
+	 * $query->filterByLastEditStep(1234); // WHERE last_edit_step = 1234
+	 * $query->filterByLastEditStep(array(12, 34)); // WHERE last_edit_step IN (12, 34)
+	 * $query->filterByLastEditStep(array('min' => 12)); // WHERE last_edit_step > 12
+	 * </code>
+	 *
+	 * @param     mixed $lastEditStep The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    ChartQuery The current query, for fluid interface
+	 */
+	public function filterByLastEditStep($lastEditStep = null, $comparison = null)
+	{
+		if (is_array($lastEditStep)) {
+			$useMinMax = false;
+			if (isset($lastEditStep['min'])) {
+				$this->addUsingAlias(ChartPeer::LAST_EDIT_STEP, $lastEditStep['min'], Criteria::GREATER_EQUAL);
+				$useMinMax = true;
+			}
+			if (isset($lastEditStep['max'])) {
+				$this->addUsingAlias(ChartPeer::LAST_EDIT_STEP, $lastEditStep['max'], Criteria::LESS_EQUAL);
+				$useMinMax = true;
+			}
+			if ($useMinMax) {
+				return $this;
+			}
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+		}
+		return $this->addUsingAlias(ChartPeer::LAST_EDIT_STEP, $lastEditStep, $comparison);
 	}
 
 	/**

@@ -1,9 +1,8 @@
 {
-    "id": "barchart",
     "title": {
-        "en": "bar chart",
+        "en": "Bar chart",
         "de": "Balkendiagramm",
-        "fr": "diagramme temporel"
+        "fr": "Diagramme temporel"
     },
     "author": {
         "name": "gka",

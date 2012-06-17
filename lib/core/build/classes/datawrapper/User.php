@@ -31,4 +31,8 @@ class User extends BaseUser {
         return $this->getRole() == 'admin';
     }
 
+    public function isAbleToPublish() {
+        return $this->getRole() == 'editor' || $this->getRole() == 'admin';
+    }
+
 } // User

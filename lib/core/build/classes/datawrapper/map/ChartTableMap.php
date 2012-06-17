@@ -51,6 +51,7 @@ class ChartTableMap extends TableMap
 		$this->addColumn('SHOW_IN_GALLERY', 'ShowInGallery', 'BOOLEAN', false, 1, false);
 		$this->addColumn('LANGUAGE', 'Language', 'VARCHAR', false, 5, 'en');
 		$this->addColumn('GUEST_SESSION', 'GuestSession', 'VARCHAR', false, 255, null);
+		$this->addColumn('LAST_EDIT_STEP', 'LastEditStep', 'INTEGER', false, null, 0);
 		// validators
 	} // initialize()
 

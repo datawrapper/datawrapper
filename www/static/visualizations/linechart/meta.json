@@ -1,9 +1,8 @@
 {
-    "id": "linechart",
     "title": {
-        "en": "line chart",
+        "en": "Line chart",
         "de": "Liniendiagramm",
-        "fr": "diagramme temporel"
+        "fr": "Diagramme temporel"
     },
     "author": {
         "name": "nkb",

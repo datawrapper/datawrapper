@@ -112,6 +112,13 @@ abstract class BaseChart extends BaseObject  implements Persistent
 	protected $guest_session;
 
 	/**
+	 * The value for the last_edit_step field.
+	 * Note: this column has a database default value of: 0
+	 * @var        int
+	 */
+	protected $last_edit_step;
+
+	/**
 	 * @var        User
 	 */
 	protected $aUser;
@@ -141,6 +148,7 @@ abstract class BaseChart extends BaseObject  implements Persistent
 		$this->deleted = false;
 		$this->show_in_gallery = false;
 		$this->language = 'en';
+		$this->last_edit_step = 0;
 	}
 
 	/**
@@ -365,6 +373,16 @@ abstract class BaseChart extends BaseObject  implements Persistent
 	public function getGuestSession()
 	{
 		return $this->guest_session;
+	}
+
+	/**
+	 * Get the [last_edit_step] column value.
+	 * 
+	 * @return     int
+	 */
+	public function getLastEditStep()
+	{
+		return $this->last_edit_step;
 	}
 
 	/**
@@ -654,6 +672,26 @@ abstract class BaseChart extends BaseObject  implements Persistent
 	} // setGuestSession()
 
 	/**
+	 * Set the value of [last_edit_step] column.
+	 * 
+	 * @param      int $v new value
+	 * @return     Chart The current object (for fluent API support)
+	 */
+	public function setLastEditStep($v)
+	{
+		if ($v !== null) {
+			$v = (int) $v;
+		}
+
+		if ($this->last_edit_step !== $v) {
+			$this->last_edit_step = $v;
+			$this->modifiedColumns[] = ChartPeer::LAST_EDIT_STEP;
+		}
+
+		return $this;
+	} // setLastEditStep()
+
+	/**
 	 * Indicates whether the columns in this object are only set to default values.
 	 *
 	 * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -672,6 +710,10 @@ abstract class BaseChart extends BaseObject  implements Persistent
 			}
 
 			if ($this->language !== 'en') {
+				return false;
+			}
+
+			if ($this->last_edit_step !== 0) {
 				return false;
 			}
 
@@ -710,6 +752,7 @@ abstract class BaseChart extends BaseObject  implements Persistent
 			$this->show_in_gallery = ($row[$startcol + 10] !== null) ? (boolean) $row[$startcol + 10] : null;
 			$this->language = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
 			$this->guest_session = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
+			$this->last_edit_step = ($row[$startcol + 13] !== null) ? (int) $row[$startcol + 13] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -718,7 +761,7 @@ abstract class BaseChart extends BaseObject  implements Persistent
 				$this->ensureConsistency();
 			}
 
-			return $startcol + 13; // 13 = ChartPeer::NUM_HYDRATE_COLUMNS.
+			return $startcol + 14; // 14 = ChartPeer::NUM_HYDRATE_COLUMNS.
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating Chart object", $e);
@@ -977,6 +1020,9 @@ abstract class BaseChart extends BaseObject  implements Persistent
 		if ($this->isColumnModified(ChartPeer::GUEST_SESSION)) {
 			$modifiedColumns[':p' . $index++]  = '`GUEST_SESSION`';
 		}
+		if ($this->isColumnModified(ChartPeer::LAST_EDIT_STEP)) {
+			$modifiedColumns[':p' . $index++]  = '`LAST_EDIT_STEP`';
+		}
 
 		$sql = sprintf(
 			'INSERT INTO `chart` (%s) VALUES (%s)',
@@ -1026,6 +1072,9 @@ abstract class BaseChart extends BaseObject  implements Persistent
 						break;
 					case '`GUEST_SESSION`':
 						$stmt->bindValue($identifier, $this->guest_session, PDO::PARAM_STR);
+						break;
+					case '`LAST_EDIT_STEP`':
+						$stmt->bindValue($identifier, $this->last_edit_step, PDO::PARAM_INT);
 						break;
 				}
 			}
@@ -1201,6 +1250,9 @@ abstract class BaseChart extends BaseObject  implements Persistent
 			case 12:
 				return $this->getGuestSession();
 				break;
+			case 13:
+				return $this->getLastEditStep();
+				break;
 			default:
 				return null;
 				break;
@@ -1243,6 +1295,7 @@ abstract class BaseChart extends BaseObject  implements Persistent
 			$keys[10] => $this->getShowInGallery(),
 			$keys[11] => $this->getLanguage(),
 			$keys[12] => $this->getGuestSession(),
+			$keys[13] => $this->getLastEditStep(),
 		);
 		if ($includeForeignObjects) {
 			if (null !== $this->aUser) {
@@ -1318,6 +1371,9 @@ abstract class BaseChart extends BaseObject  implements Persistent
 			case 12:
 				$this->setGuestSession($value);
 				break;
+			case 13:
+				$this->setLastEditStep($value);
+				break;
 		} // switch()
 	}
 
@@ -1355,6 +1411,7 @@ abstract class BaseChart extends BaseObject  implements Persistent
 		if (array_key_exists($keys[10], $arr)) $this->setShowInGallery($arr[$keys[10]]);
 		if (array_key_exists($keys[11], $arr)) $this->setLanguage($arr[$keys[11]]);
 		if (array_key_exists($keys[12], $arr)) $this->setGuestSession($arr[$keys[12]]);
+		if (array_key_exists($keys[13], $arr)) $this->setLastEditStep($arr[$keys[13]]);
 	}
 
 	/**
@@ -1379,6 +1436,7 @@ abstract class BaseChart extends BaseObject  implements Persistent
 		if ($this->isColumnModified(ChartPeer::SHOW_IN_GALLERY)) $criteria->add(ChartPeer::SHOW_IN_GALLERY, $this->show_in_gallery);
 		if ($this->isColumnModified(ChartPeer::LANGUAGE)) $criteria->add(ChartPeer::LANGUAGE, $this->language);
 		if ($this->isColumnModified(ChartPeer::GUEST_SESSION)) $criteria->add(ChartPeer::GUEST_SESSION, $this->guest_session);
+		if ($this->isColumnModified(ChartPeer::LAST_EDIT_STEP)) $criteria->add(ChartPeer::LAST_EDIT_STEP, $this->last_edit_step);
 
 		return $criteria;
 	}
@@ -1453,6 +1511,7 @@ abstract class BaseChart extends BaseObject  implements Persistent
 		$copyObj->setShowInGallery($this->getShowInGallery());
 		$copyObj->setLanguage($this->getLanguage());
 		$copyObj->setGuestSession($this->getGuestSession());
+		$copyObj->setLastEditStep($this->getLastEditStep());
 
 		if ($deepCopy && !$this->startCopy) {
 			// important: temporarily setNew(false) because this affects the behavior of
@@ -1576,6 +1635,7 @@ abstract class BaseChart extends BaseObject  implements Persistent
 		$this->show_in_gallery = null;
 		$this->language = null;
 		$this->guest_session = null;
+		$this->last_edit_step = null;
 		$this->alreadyInSave = false;
 		$this->alreadyInValidation = false;
 		$this->clearAllReferences();

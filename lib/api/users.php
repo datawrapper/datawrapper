@@ -15,7 +15,7 @@ $app->get('/users', function() use ($app) {
 
 define('DW_TOKEN_SALT', 'aVyyrmc2UpoZGJ3SthaKyGrFzaV3Z37iuFU4x5oLb_aKmhopz5md62UHn25Gf4ti');
 
-require_once('utils/check_email.php');
+require_once('../../lib/utils/check_email.php');
 
 /*
  * create a new user

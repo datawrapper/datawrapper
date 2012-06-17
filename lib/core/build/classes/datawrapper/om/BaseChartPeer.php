@@ -23,13 +23,13 @@ abstract class BaseChartPeer {
 	const TM_CLASS = 'ChartTableMap';
 
 	/** The total number of columns. */
-	const NUM_COLUMNS = 13;
+	const NUM_COLUMNS = 14;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
 
 	/** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-	const NUM_HYDRATE_COLUMNS = 13;
+	const NUM_HYDRATE_COLUMNS = 14;
 
 	/** the column name for the ID field */
 	const ID = 'chart.ID';
@@ -70,6 +70,9 @@ abstract class BaseChartPeer {
 	/** the column name for the GUEST_SESSION field */
 	const GUEST_SESSION = 'chart.GUEST_SESSION';
 
+	/** the column name for the LAST_EDIT_STEP field */
+	const LAST_EDIT_STEP = 'chart.LAST_EDIT_STEP';
+
 	/** The default string format for model objects of the related table **/
 	const DEFAULT_STRING_FORMAT = 'YAML';
 
@@ -89,12 +92,12 @@ abstract class BaseChartPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	protected static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'Title', 'Theme', 'CreatedAt', 'LastModifiedAt', 'Type', 'Metadata', 'Deleted', 'DeletedAt', 'AuthorId', 'ShowInGallery', 'Language', 'GuestSession', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'title', 'theme', 'createdAt', 'lastModifiedAt', 'type', 'metadata', 'deleted', 'deletedAt', 'authorId', 'showInGallery', 'language', 'guestSession', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, self::TITLE, self::THEME, self::CREATED_AT, self::LAST_MODIFIED_AT, self::TYPE, self::METADATA, self::DELETED, self::DELETED_AT, self::AUTHOR_ID, self::SHOW_IN_GALLERY, self::LANGUAGE, self::GUEST_SESSION, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'TITLE', 'THEME', 'CREATED_AT', 'LAST_MODIFIED_AT', 'TYPE', 'METADATA', 'DELETED', 'DELETED_AT', 'AUTHOR_ID', 'SHOW_IN_GALLERY', 'LANGUAGE', 'GUEST_SESSION', ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'title', 'theme', 'created_at', 'last_modified_at', 'type', 'metadata', 'deleted', 'deleted_at', 'author_id', 'show_in_gallery', 'language', 'guest_session', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'Title', 'Theme', 'CreatedAt', 'LastModifiedAt', 'Type', 'Metadata', 'Deleted', 'DeletedAt', 'AuthorId', 'ShowInGallery', 'Language', 'GuestSession', 'LastEditStep', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'title', 'theme', 'createdAt', 'lastModifiedAt', 'type', 'metadata', 'deleted', 'deletedAt', 'authorId', 'showInGallery', 'language', 'guestSession', 'lastEditStep', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::TITLE, self::THEME, self::CREATED_AT, self::LAST_MODIFIED_AT, self::TYPE, self::METADATA, self::DELETED, self::DELETED_AT, self::AUTHOR_ID, self::SHOW_IN_GALLERY, self::LANGUAGE, self::GUEST_SESSION, self::LAST_EDIT_STEP, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'TITLE', 'THEME', 'CREATED_AT', 'LAST_MODIFIED_AT', 'TYPE', 'METADATA', 'DELETED', 'DELETED_AT', 'AUTHOR_ID', 'SHOW_IN_GALLERY', 'LANGUAGE', 'GUEST_SESSION', 'LAST_EDIT_STEP', ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'title', 'theme', 'created_at', 'last_modified_at', 'type', 'metadata', 'deleted', 'deleted_at', 'author_id', 'show_in_gallery', 'language', 'guest_session', 'last_edit_step', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, )
 	);
 
 	/**
@@ -104,12 +107,12 @@ abstract class BaseChartPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	protected static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Title' => 1, 'Theme' => 2, 'CreatedAt' => 3, 'LastModifiedAt' => 4, 'Type' => 5, 'Metadata' => 6, 'Deleted' => 7, 'DeletedAt' => 8, 'AuthorId' => 9, 'ShowInGallery' => 10, 'Language' => 11, 'GuestSession' => 12, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'title' => 1, 'theme' => 2, 'createdAt' => 3, 'lastModifiedAt' => 4, 'type' => 5, 'metadata' => 6, 'deleted' => 7, 'deletedAt' => 8, 'authorId' => 9, 'showInGallery' => 10, 'language' => 11, 'guestSession' => 12, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::TITLE => 1, self::THEME => 2, self::CREATED_AT => 3, self::LAST_MODIFIED_AT => 4, self::TYPE => 5, self::METADATA => 6, self::DELETED => 7, self::DELETED_AT => 8, self::AUTHOR_ID => 9, self::SHOW_IN_GALLERY => 10, self::LANGUAGE => 11, self::GUEST_SESSION => 12, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'TITLE' => 1, 'THEME' => 2, 'CREATED_AT' => 3, 'LAST_MODIFIED_AT' => 4, 'TYPE' => 5, 'METADATA' => 6, 'DELETED' => 7, 'DELETED_AT' => 8, 'AUTHOR_ID' => 9, 'SHOW_IN_GALLERY' => 10, 'LANGUAGE' => 11, 'GUEST_SESSION' => 12, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'title' => 1, 'theme' => 2, 'created_at' => 3, 'last_modified_at' => 4, 'type' => 5, 'metadata' => 6, 'deleted' => 7, 'deleted_at' => 8, 'author_id' => 9, 'show_in_gallery' => 10, 'language' => 11, 'guest_session' => 12, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Title' => 1, 'Theme' => 2, 'CreatedAt' => 3, 'LastModifiedAt' => 4, 'Type' => 5, 'Metadata' => 6, 'Deleted' => 7, 'DeletedAt' => 8, 'AuthorId' => 9, 'ShowInGallery' => 10, 'Language' => 11, 'GuestSession' => 12, 'LastEditStep' => 13, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'title' => 1, 'theme' => 2, 'createdAt' => 3, 'lastModifiedAt' => 4, 'type' => 5, 'metadata' => 6, 'deleted' => 7, 'deletedAt' => 8, 'authorId' => 9, 'showInGallery' => 10, 'language' => 11, 'guestSession' => 12, 'lastEditStep' => 13, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::TITLE => 1, self::THEME => 2, self::CREATED_AT => 3, self::LAST_MODIFIED_AT => 4, self::TYPE => 5, self::METADATA => 6, self::DELETED => 7, self::DELETED_AT => 8, self::AUTHOR_ID => 9, self::SHOW_IN_GALLERY => 10, self::LANGUAGE => 11, self::GUEST_SESSION => 12, self::LAST_EDIT_STEP => 13, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'TITLE' => 1, 'THEME' => 2, 'CREATED_AT' => 3, 'LAST_MODIFIED_AT' => 4, 'TYPE' => 5, 'METADATA' => 6, 'DELETED' => 7, 'DELETED_AT' => 8, 'AUTHOR_ID' => 9, 'SHOW_IN_GALLERY' => 10, 'LANGUAGE' => 11, 'GUEST_SESSION' => 12, 'LAST_EDIT_STEP' => 13, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'title' => 1, 'theme' => 2, 'created_at' => 3, 'last_modified_at' => 4, 'type' => 5, 'metadata' => 6, 'deleted' => 7, 'deleted_at' => 8, 'author_id' => 9, 'show_in_gallery' => 10, 'language' => 11, 'guest_session' => 12, 'last_edit_step' => 13, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, )
 	);
 
 	/**
@@ -194,6 +197,7 @@ abstract class BaseChartPeer {
 			$criteria->addSelectColumn(ChartPeer::SHOW_IN_GALLERY);
 			$criteria->addSelectColumn(ChartPeer::LANGUAGE);
 			$criteria->addSelectColumn(ChartPeer::GUEST_SESSION);
+			$criteria->addSelectColumn(ChartPeer::LAST_EDIT_STEP);
 		} else {
 			$criteria->addSelectColumn($alias . '.ID');
 			$criteria->addSelectColumn($alias . '.TITLE');
@@ -208,6 +212,7 @@ abstract class BaseChartPeer {
 			$criteria->addSelectColumn($alias . '.SHOW_IN_GALLERY');
 			$criteria->addSelectColumn($alias . '.LANGUAGE');
 			$criteria->addSelectColumn($alias . '.GUEST_SESSION');
+			$criteria->addSelectColumn($alias . '.LAST_EDIT_STEP');
 		}
 	}
 

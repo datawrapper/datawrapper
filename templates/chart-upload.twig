@@ -19,7 +19,7 @@
             }
 
             $('#upload-data').click(function() {
-                DW.currentChart.set('data.source', 'clipboard');
+                DW.currentChart.set('metadata.data.source', 'clipboard');
                 $.ajax({
                     url: '/api/charts/' + DW.currentChart.get('id') + '/data',
                     type: 'PUT',
