@@ -8,7 +8,7 @@ require_once '../lib/utils/themes.php';
  * VISUALIZE STEP
  */
 $app->get('/chart/:id/visualize', function ($id) use ($app) {
-    check_chart_exists_and_writable($id, function($user, $chart) use ($app) {
+    check_chart_writable($id, function($user, $chart) use ($app) {
         $page = array(
             'chartData' => $chart->loadData(),
             'chart' => $chart,

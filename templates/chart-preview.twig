@@ -1,0 +1,27 @@
+<html>
+<head>
+    <title>Foo</title>
+    <style type="text/css">
+body {
+    padding: 10px;
+}
+    </style>
+{% for src in stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ src }}">
+{% endfor %}
+{% for src in scripts %}
+    <script type="text/javascript" src="{{ src }}"></script>
+{% endfor %}
+</head>
+<body>
+    <h1>{{ chart.title }}</h1>
+    {{ theme.title }}
+    <script type="text/javascript">
+
+    // initialize theme
+    var theme = Datawrapper.Themes.{{ theme.id|classify }};
+    console.log(theme);
+
+    </script>
+</body>
+</html>

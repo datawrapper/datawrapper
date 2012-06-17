@@ -7,12 +7,11 @@
     // theme. They can override everything or just a bit
     // of them. Also, every theme can extend any other
     // existing theme.
-    var BaseTheme = Datawrapper.BaseTheme = function() {};
+    Datawrapper.Themes = {};
 
-    _.extend(BaseTheme.prototype, {
+    Datawrapper.Themes.Base = _.extend({}, {
 
         colors: ['#A41717', '#5B5B5B', '#9A2020', '#737373', '#8E2B2B', '#8B8B8B', '#803838', '#5B5B5B', '#793F3F', '#737373', '#714747', '#8B8B8B', '#655252', '#A41717', '#5B5B5B', '#9A2020', '#737373', '#8E2B2B', '#8B8B8B', '#803838', '#5B5B5B', '#793F3F', '#737373', '#714747', '#8B8B8B', '#655252'],
-
 
         chart: {
             backgroundColor: '#fff',
@@ -26,7 +25,9 @@
                 color: '#000',
                 font: 'bold 16px Arial, Helvetica, sans-serif'
             }
-        }
+        },
+
+        foo: 'bar'
 
     });
 

@@ -6,8 +6,8 @@
 <script type="text/javascript">
 $(function() {
 
-    DW.currentChart.onSync(function() {
-
+    DW.currentChart.onSave(function() {
+        $('#iframe-vis').attr('src', '/chart/{{ chart.id }}/preview')
     });
 
     DW.currentChart.sync('#select-vis', 'type');

@@ -31,6 +31,11 @@ $app = new Slim(array(
     'templates.path' => '../templates'
 ));
 
+$app->view()->getEnvironment()->addFilter('classify', new Twig_Filter_Function('str_classify'));
+
+function str_classify($s) {
+    return preg_replace('/\s/', '', ucwords(preg_replace('/[_\-\.]/', ' ', $s)));
+}
 
 function add_header_vars(&$page, $active = null) {
     // define the header links
@@ -107,46 +112,7 @@ function add_editor_nav(&$page, $step) {
 }
 
 
-
-
-
-/**
- *
- */
-function error_page($step, $title, $message) {
-    global $app;
-    $tmpl = array(
-        'title' => $title,
-        'message' => $message
-    );
-    add_header_vars($tmpl);
-    $app->render('error.twig', $tmpl);
-}
-
-function error_chart_not_found($id) {
-    error_page('create',
-        'Whoops! We couldn\'t find that chart..',
-        'Sorry, but it seems that there is no chart with the id <b>'.$id.'</b> (anymore)'
-    );
-}
-
-function error_chart_not_writable() {
-    error_page('create',
-        'Whoops! That charts doesn‘t belong to you',
-        'Sorry, but the requested chart belongs to someone else.'
-    );
-}
-
-function error_mycharts_need_login() {
-    error_page('mycharts',
-        'Whoops! You need to be logged in.',
-        'Good news is, sign up is free and takes less than 20 seconds.'
-    );
-}
-
-
-
-
+require_once '../lib/utils/errors.php';
 require_once '../lib/utils/check_chart.php';
 require_once '../controller/home.php';
 require_once '../controller/account-settings.php';
@@ -157,6 +123,8 @@ require_once '../controller/chart-upload.php';
 require_once '../controller/chart-describe.php';
 require_once '../controller/chart-visualize.php';
 require_once '../controller/chart-data.php';
+require_once '../controller/chart-preview.php';
+require_once '../controller/chart-embed.php';
 require_once '../controller/mycharts.php';
 require_once '../controller/xhr.php';
 

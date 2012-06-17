@@ -50,10 +50,10 @@ Tertiary education	21147	21599	22623	23514	24660	24823
  * UPLOAD STEP
  */
 $app->get('/chart/:id/upload', function ($id) use ($app) {
-    check_chart_exists_and_writable($id, function($user, $chart) use ($app) {
+    check_chart_writable($id, function($user, $chart) use ($app) {
         $page = array(
             'chartData' => $chart->loadData(),
-            'chart' => json_encode($chart->serialize()),
+            'chart' => $chart,
             'datasets' => getDemoDatasets()
         );
         add_header_vars($page, 'create');

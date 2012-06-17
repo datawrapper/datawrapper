@@ -49,17 +49,9 @@ $(function() {
     }
 
     function reload() {
-        var ds = new Miso.Dataset({
-            url : '/chart/' + DW.currentChart.get('id') + '/data',
-            delimiter : "auto",
-            transpose: $('#transpose').attr('checked') == 'checked',
-            firstRowIsHeader: $('#has-horizontal-headers').attr('checked') == 'checked'
-        }).fetch({
-            success: function() {
-                DW.dataView = this;
-                updateTable(this);
-            }
-
+        DW.currentChart.dataset(function(ds) {
+            DW.dataView = ds;
+            updateTable(ds);
         });
     }
 
@@ -88,31 +80,21 @@ $(function() {
             <p>Please check if the data format was recognized correctly. If not, please <a data-target="#helpInterpretData" href="#" data-toggle="modal">help Datawrapper to understand your data</a>.</p>
 
 
-            <form class="form-inline well">
+            <form class="form-inline">
                 <div id="csv-parse-options" class="row">
                     <div class="span4">
-                        <p>A data series is a list of numbers that represents multiple measurements of the same variable, for instance over time.</p>
-                    </div>
-                    <div class="span3">
-                        <p>A data series is a list of numbers belonging to the same.</p>
-                    </div>
-                    
-                    <div class="span2">
-                        <label class="radio"><input type="radio" name="series-type" /> Data series in rows</label><br />
-                    </div>
-                    <div class="span2">
+                        <label class="radio"><input type="radio" name="series-type" /> Data series in rows</label>
                         <label class="radio"><input type="radio" name="series-type" /> Data series in columns</label>
                     </div>
-                    <div class="span2">
-                        <label class="checkbox"><input id="has-horizontal-headers" type="checkbox" checked="checked"> First row as label</label><br >
+                    <div class="span4">
+                        <label class="checkbox"><input id="has-horizontal-headers" type="checkbox" checked="checked"> First row as label</label>
                         <label class="checkbox"><input id="has-vertical-headers" type="checkbox"> First column as label</label>
                     <!--<label class="checkbox"><input type="checkbox" id="transpose"> Transpose data</label>-->
                     <!--<label class="checkbox skip-rows"><i class="icon-plus-sign"></i> <i class="icon-minus-sign"></i> Skip 0 rows </label> -->
                     </div>
-                    
                 </div>
             </form>
-            
+
             <div style="overflow-x:scroll; overflow-y: visible; width:100%">
                 <table id="data-preview" class="table table-striped">
                 </table>

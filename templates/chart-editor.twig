@@ -5,10 +5,9 @@
 <div class="row create-nav">
     {% for step in steps %}
         <div class="span3{% if createstep == step.index %} active{% else %}{% if createstep > step.index %} passed{% endif %}{% endif %}">
-            {% if createstep > step.index %}<a href="{{ step.id }}">{% endif %}
+            {% if createstep > step.index or createstep != step.index and chart.lastEditStep >= step.index %}<a href="{{ step.id }}">{% endif %}
             {{ step.index }} {{ step.title }}
-            {% if createstep > step.index %}</a>{% endif %}
-            {% if createstep > step.index %} <i class="icon-ok"></i>{% endif %}
+            {% if createstep > step.index or createstep != step.index and chart.lastEditStep >= step.index %}</a><i class="icon-ok"></i>{% endif %}
         </div>
     {% endfor %}
 </div>
@@ -22,7 +21,11 @@
     };
 
     $(function() {
-        DW.currentChart = new Datawrapper.Chart(JSON.parse('{{ chart|raw }}'));
+        DW.currentChart = new Datawrapper.EditableChart(JSON.parse('{{ chart.toJSON|raw }}'));
+
+        if (DW.currentChart.get('lastEditStep') < {{ createstep}}) {
+            DW.currentChart.set('lastEditStep', {{ createstep }});
+        }
     });
 
 })(jQuery);

@@ -44,6 +44,10 @@ class Chart extends BaseChart {
         return $json;
     }
 
+    public function toJSON() {
+        return json_encode($this->serialize());
+    }
+
     public function unserialize($json) {
         // encode metadata as json string
         $json['metadata'] = json_encode($json['metadata']);
@@ -149,7 +153,8 @@ class Chart extends BaseChart {
     }
 
     public function isPublic() {
-        return !$this->getDeleted()
+        // 1 = upload, 2 = describe, 3 = visualize, 4 = publish, 5 = published
+        return !$this->getDeleted() && $this->getLastEditStep() == 5;
     }
 
 } // Chart

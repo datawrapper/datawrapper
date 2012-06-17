@@ -21,10 +21,14 @@ function check_chart_public($id, $callback) {
     if ($chart) {
         $user = DatawrapperSession::getUser();
         if ($user->isAbleToPublish()) {
-            call_user_func($callback, $user, $chart);
+            if ($chart->isPublic()) {
+                call_user_func($callback, $user, $chart);
+            } else {
+                error_chart_not_published();
+            }
         } else {
             // no such chart
-            error_not_allowed_to_published();
+            error_not_allowed_to_publish();
         }
     } else {
         // no such chart

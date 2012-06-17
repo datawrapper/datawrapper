@@ -1,5 +1,6 @@
 {
     "title": "ABZV",
     "link": "http://www.abzv.de",
-    "restricted": null
+    "restricted": null,
+    "extends": "default"
 }
