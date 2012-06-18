@@ -7,23 +7,27 @@
 <script type="text/javascript">
 $(function() {
 
-    $('#csv-parse-options input').change(reload);
+    DW.currentChart.onChange(function(chart) {
+        var val = chart.get('metadata.data.transpose');
+        if (_.isString(val)) chart.set('metadata.data.transpose', val === 'yes');
+        reload();
+    });
 
     DW.currentChart.sync('#has-horizontal-headers', 'metadata.data.horizontal-header');
     DW.currentChart.sync('#has-vertical-headers', 'metadata.data.vertical-header');
-    DW.currentChart.sync('#transpose', 'metadata.data.transpose');
     DW.currentChart.sync('#describe-source-name', 'metadata.describe.source-name');
     DW.currentChart.sync('#describe-source-url', 'metadata.describe.source-url');
+    DW.currentChart.sync('input:radio[name=transpose]', 'metadata.data.transpose');
 
-    function updateTable(dv) {
+    function updateTable(dv, chart) {
 
         function isNone(val) {
             return val === null || val === undefined || (_.isNumber(val) && isNaN(val));
         }
 
         var table = $('#data-preview'),
-            horzHeaders = $('#has-horizontal-headers').attr('checked') == 'checked';
-            vertHeaders = $('#has-vertical-headers').attr('checked') == 'checked';
+            horzHeaders = chart.get('metadata.data.horizontal-header');
+            vertHeaders = chart.get('metadata.data.vertical-header');
         table.html('');  // empty table
         table.append('<thead><tr></tr><thead><tbody></tbody>');
 
@@ -46,13 +50,15 @@ $(function() {
             });
             tbody.append(tr);
         });
+
     }
 
     function reload() {
+
         DW.currentChart.dataset(function(ds) {
             DW.dataView = ds;
-            updateTable(ds);
-        });
+            updateTable(ds, DW.currentChart);
+        }, true);
     }
 
     reload();
@@ -83,14 +89,12 @@ $(function() {
             <form class="form-inline">
                 <div id="csv-parse-options" class="row">
                     <div class="span4">
-                        <label class="radio"><input type="radio" name="series-type" /> Data series in rows</label>
-                        <label class="radio"><input type="radio" name="series-type" /> Data series in columns</label>
+                        <label class="radio"><input type="radio" name="transpose" value="yes" /> Data series in rows</label>
+                        <label class="radio"><input type="radio" name="transpose" value="no" /> Data series in columns</label>
                     </div>
                     <div class="span4">
                         <label class="checkbox"><input id="has-horizontal-headers" type="checkbox" checked="checked"> First row as label</label>
                         <label class="checkbox"><input id="has-vertical-headers" type="checkbox"> First column as label</label>
-                    <!--<label class="checkbox"><input type="checkbox" id="transpose"> Transpose data</label>-->
-                    <!--<label class="checkbox skip-rows"><i class="icon-plus-sign"></i> <i class="icon-minus-sign"></i> Skip 0 rows </label> -->
                     </div>
                 </div>
             </form>

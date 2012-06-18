@@ -124,6 +124,8 @@ $app->put('/charts/:id/data', function($chart_id) use ($app) {
         $data = $app->request()->getBody();
         try {
             $filename = $chart->writeData($data);
+            $chart->setLastModifiedAt(date('Y-m-d H:i:s'));
+            $chart->save();
             ok($filename);
         } catch (Exception $e) {
             error('io-error', $e->getMessage());

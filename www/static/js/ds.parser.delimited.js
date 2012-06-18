@@ -43,6 +43,9 @@
   _.extend(Miso.Parsers.Delimited.prototype, Miso.Parsers.prototype, {
 
     parse: function(data) {
+
+      this.__rawData = data;
+
       if (this.delimiter == 'auto') {
         this.delimiter = this.guessDelimiter(data, this.skipRows);
         this.__delimiterPatterns = this.getDelimiterPatterns(this.delimiter, this.quoteChar);

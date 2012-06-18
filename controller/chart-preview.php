@@ -31,6 +31,10 @@ $app->get('/chart/:id/preview', function ($id) use ($app) {
             '/static/js/dw.theme.js'
         );
 
+        $vis_js = array();
+
+        $vis = get_visualization_meta($chart->getType());
+
         $scripts = array_merge($base_js, array_reverse($theme_js));
 
         $page = array(

@@ -63,6 +63,11 @@ class Chart extends BaseChart {
         $this->save();
     }
 
+    public function preSave(PropelPDO $con = null) {
+        $this->setLastModifiedAt(time());
+        return true;
+    }
+
     protected function lowercaseKeys($arr, $lower=true) {
         foreach ($arr as $key => $value) {
             $lkey = $key;

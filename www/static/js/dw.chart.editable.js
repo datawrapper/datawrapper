@@ -7,6 +7,7 @@
     var EditableChart = Datawrapper.EditableChart = function(attributes) {
         this.__attributes = attributes;
         this.__changed = false;
+        this.__changeCallbacks = [];
         this.__saveCallbacks = [];
     };
 
@@ -18,16 +19,27 @@
                 lastKey = keys.pop(),
                 pt = me.__attributes;
 
+            // resolve property
             _.each(keys, function(key) {
                 pt = pt[key];
             });
-            pt[lastKey] = value;
-            me.__changed = true;
-            if (me.__saveTimeout) clearTimeout(me.__saveTimeout);
-            me.__saveTimeout = setTimeout(function() {
-                me.save();
-            }, 1000);
+            // check if new value is set
+            if (pt[lastKey] != value) {
+                pt[lastKey] = value;
+                me.__changed = true;
+                if (me.__saveTimeout) clearTimeout(me.__saveTimeout);
+                me.__saveTimeout = setTimeout(function() {
+                    me.save();
+                }, 1000);
+                _.each(me.__changeCallbacks, function(cb) {
+                    cb.call(this, me);
+                });
+            }
             return this;
+        },
+
+        onChange: function(callback) {
+            this.__changeCallbacks.push(callback);
         },
 
         sync: function(el, attribute) {
@@ -40,6 +52,8 @@
                 else el.removeAttr('checked');
             } else if (el.is('input[type=text]') || el.is('textarea') || el.is('select')) {
                 el.val(curVal);
+            } else if (el.is('input[type=radio]')) {
+                $('input:radio[name='+el.attr('name')+'][value='+curVal+']').checked = true;
             }
 
             var chart = this;
@@ -54,8 +68,12 @@
                     val = el.attr('checked') == 'checked';
                 } else if (el.is('input[type=text]') || el.is('textarea') || el.is('select')) {
                     val = el.val();
+                } else if (el.is('input[type=radio]')) {
+                    val = $('input:radio[name='+el.attr('name')+']:checked').val();
                 }
-                if (val !== undefined) chart.set(attr, val);
+                if (val !== undefined) {
+                    chart.set(attr, val);
+                }
             });
         },
 
