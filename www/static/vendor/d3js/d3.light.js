@@ -1,3 +1,6 @@
+[].map||(Array.prototype.map=function(a){for(var b=this,c=b.length,d=[],e=0,f;e<b;)d[e]=e in b?a.call(arguments[1],b[e],e++,b):f;return d});
+
+
 d3 = {version: "2.9.3"}; // semver
 function d3_class(ctor, properties) {
   try {

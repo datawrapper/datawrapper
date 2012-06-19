@@ -31,13 +31,13 @@
                 transpose: ignoreTranspose ? false : this.get('metadata.data.transpose'),
                 firstRowIsHeader: this.get('metadata.data.horizontal-header')
             };
-            
             if (!this.__dataview) {
                 dsOpts.url = '/chart/' + this.get('id') + '/data';
             } else {
                 dsOpts.data = this.__dataview.parser.__rawData;
             }
-            ds = new Miso.Dataset(dsOpts).fetch({
+            ds = new Miso.Dataset(dsOpts);
+            ds.fetch({
                 success: function() {
                     me.__dataview = this;
                     callback(this);
