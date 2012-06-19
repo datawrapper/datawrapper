@@ -14,6 +14,7 @@ $(function() {
     DW.currentChart.sync('#describe-source-name', 'metadata.describe.source-name');
     DW.currentChart.sync('#describe-source-url', 'metadata.describe.source-url');
     DW.currentChart.sync('input:radio[name=transpose]', 'metadata.data.transpose');
+    {# DW.currentChart.sync('#number-format', 'metadata.data.number-format'); #}
 
     function updateTable(dv, chart) {
 
@@ -97,12 +98,11 @@ $(function() {
             <form class="form-inline">
                 <div id="csv-parse-options" class="row">
                     <div class="span4">
-                        <label class="radio"><input type="radio" name="transpose" value="yes" /> Data series in rows</label>
-                        <label class="radio"><input type="radio" name="transpose" value="no" /> Data series in columns</label>
+                        
+                        
                     </div>
                     <div class="span4">
-                        <label class="checkbox"><input id="has-horizontal-headers" type="checkbox" checked="checked"> First row as label</label>
-                        <label class="checkbox"><input id="has-vertical-headers" type="checkbox"> First column as label</label>
+                        
                     </div>
                 </div>
             </form>
@@ -117,6 +117,30 @@ $(function() {
             <div class="page-header">
                 <h2>Describe your data</h2>
             </div>
+            <h3>Data structure and locale</h3>
+            <div class="row" style="margin-bottom:15px">
+                <div class="span2">
+                    <p>
+                        <label class="radio"><input type="radio" name="transpose" value="yes" /> Data series in rows</label>
+                        <label class="radio"><input type="radio" name="transpose" value="no" /> Data series in columns</label>
+                    </p>
+
+                </div><div class="span2">
+                    <p>
+                        <label class="checkbox"><input id="has-horizontal-headers" type="checkbox" checked="checked"> First row as label</label>
+                        <label class="checkbox"><input id="has-vertical-headers" type="checkbox"> First column as label</label>
+                    </p>
+                </div>
+            </div>
+
+            {# <p>
+                <label>If possible, please specify the <i>number format</i></label>
+                <select id="number-format">
+                    <option value="en">English (eg 1,234.56)</option>
+                    <option value="de">German/French (eg 1.234,56)</option>
+                </select>
+            </p> #}
+
             <h3>Credit the source</h3>
             <p>
                 <label>Who published the data in the first place?</label>

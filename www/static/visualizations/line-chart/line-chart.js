@@ -123,7 +123,7 @@
                 c = this.__canvas,
                 domain = this.__domain,
                 styles = this.__styles,
-                ticks = yscale.ticks(10),
+                ticks = yscale.ticks(c.h/50),
                 bt = yscale(ticks[0]),
                 tt = yscale(ticks[ticks.length-1]);
 

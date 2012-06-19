@@ -37,6 +37,7 @@
                 dsOpts.data = this.__dataview.parser.__rawData;
             }
             ds = new Miso.Dataset(dsOpts);
+            window.ds = ds;
             ds.fetch({
                 success: function() {
                     me.__dataview = this;

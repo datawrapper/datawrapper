@@ -27,7 +27,9 @@ body {
 </head>
 <body>
     <h1>{{ chart.title }}</h1>
-
+    {% if chart.metadata.describe.intro %}
+    <p>{{ chart.metadata.describe.intro }}</p>
+    {% endif %}
     <div id="chart">
 
     </div>

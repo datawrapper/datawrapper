@@ -23,7 +23,7 @@ $app->get('/chart/:id/preview', function ($id) use ($app) {
             $next_theme_id = $theme['extends'];
         }
         $base_js = array(
-            'http://cloud.github.com/downloads/misoproject/dataset/miso.ds.deps.0.1.3.js',
+            '/static/vendor/miso/miso.ds.deps.0.1.3.js',
             '/static/js/ds.parser.delimited.js',
             '/static/vendor/jquery/jquery.min.js',
             '/static/js/dw.core.js',

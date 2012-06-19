@@ -20,6 +20,7 @@ $(function() {
     DW.currentChart.sync('#select-vis', 'type');
     DW.currentChart.sync('#select-theme', 'theme');
     DW.currentChart.sync('#text-title', 'title');
+    DW.currentChart.sync('#text-intro', 'metadata.describe.intro');
 
     function syncVisOptions() {
         var vis = JSON.parse('{{ vis|json|raw }}');
@@ -70,8 +71,11 @@ $(function() {
 
             </div>
 
-            <label for="text-title" contenteditable="true">Title</label>
+            <label for="text-title">Title</label>
             <input type="text" id="text-title" class="input-xlarge span4" />
+
+            <label for="text-intro">Introduction</label>
+            <textarea type="text" id="text-intro" class="input-xlarge span4"></textarea>
 
             <div id="vis-options" class="form-horizontal">
                 {% use 'vis-options.twig' %}
