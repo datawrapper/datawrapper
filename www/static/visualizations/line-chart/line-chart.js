@@ -1,13 +1,8 @@
 
 (function(){
 
-    // ABZV Theme
-    // ----------
-
-    // Every theme will inherit the properties of this
-    // theme. They can override everything or just a bit
-    // of them. Also, every theme can extend any other
-    // existing theme.
+    // Simple perfect line chart
+    // -------------------------
 
     var LineChart = Datawrapper.Visualizations.LineChart = function() {
 
@@ -95,11 +90,9 @@
                     lval = val;
                 });
             });
-            console.log(slopes);
             M = d3.median(slopes);
             Rx = me.dataset.length * me.dataColumns().length;
             Ry = me.__domain[1] - me.__domain[0];
-            console.log(M, Rx, Ry, M*Rx/Ry);
             return M*Rx/Ry;
         },
 
