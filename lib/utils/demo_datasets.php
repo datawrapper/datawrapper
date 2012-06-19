@@ -85,7 +85,7 @@ Turkey		46	45	0		44,8
     $datasets[] = array(
         "id" => "sunspots",
         "title" => "Yearly number of sunspots, 1700-1988",
-        "data" => "Year Sunspots
+        "data" => "Year	Sunspots
 1700	5
 1701	11
 1702	16
