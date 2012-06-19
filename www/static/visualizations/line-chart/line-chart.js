@@ -26,7 +26,7 @@
                 h: me.chart.get('metadata.visualize.force-banking') ?
                     el.width() / me.computeAspectRatio() : 330,
                 rpad: me.chart.dataColumns().length > 1 ? 120 : 50,
-                lpad: 70,
+                lpad: me.theme.leftPadding,
                 bpad: 50,
                 tpad: 10
             };
@@ -38,6 +38,8 @@
 
             el.height(c.h+c.lpad+c.bpad);
             // init canvas
+
+            me.yAxis();
 
             // draw lines
             _.each(me.chart.dataColumns(), function(col) {
@@ -58,7 +60,6 @@
                     me.label(x+15, y, col.name);
             });
 
-            me.yaxis();
 
             // draw x scale labels
             if (me.chart.hasRowHeader()) {
@@ -112,7 +113,7 @@
             return d3.scale[scale]().domain(domain);
         },
 
-        yaxis: function() {
+        yAxis: function() {
             // draw tick marks and labels
             var yscale = this.__scales.y,
                 me = this,
@@ -130,19 +131,27 @@
             ticks.push(domain[1]);
 
             _.each(ticks, function(val) {
-                var y = yscale(val), x = c.lpad-30;
+                var y = yscale(val), x = c.lpad-me.theme.yLabelOffset;
                 if (val >= domain[0] && val <= domain[1]) {
                     // c.paper.text(x, y, val).attr(styles.labels).attr({ 'text-anchor': 'end' });
                     me.label(x, y, val, 'right', 60);
-                    me.path([['M', c.lpad-25, y], ['L', c.lpad-20,y]], 'axis');
+                    if (me.theme.yTicks) {
+                        me.path([['M', c.lpad-25, y], ['L', c.lpad-20,y]], 'tick');
+                    }
+                    if (me.theme.horizontalGrid) {
+                        me.path([['M', c.lpad, y], ['L', c.w - c.rpad,y]], 'grid')
+                            .attr(me.theme.horizontalGrid);
+                    }
                 }
             });
             // draw axis line
 
-            this.path([
-                ['M', c.lpad-20, yscale(domain[0])],
-                ['L', c.lpad-20, yscale(domain[1])]
-            ], 'axis');
+            if (me.theme.yAxis) {
+                this.path([
+                    ['M', c.lpad-20, yscale(domain[0])],
+                    ['L', c.lpad-20, yscale(domain[1])]
+                ], 'axis').attr(me.theme.yAxis);
+            }
         },
 
         path: function(path, className) {

@@ -15,11 +15,16 @@
             altBg: '#EDE1C7'
         },
 
-        horzLines: {
-            color: '#fff',
-            dashed: '- '
-        }
+        horizontalGrid: {
+            stroke: '#333',
+            'stroke-dasharray': '. '
+        },
 
+        yAxis: false,
+        yTicks: false,
+        yLabelOffset: 8,
+
+        leftPadding: 30
 
     });
 

@@ -12,8 +12,20 @@
     Datawrapper.Themes.Base = _.extend({}, {
 
         colors: {
-            line: '#0063A5'
+            line: '#0063A5',
+            axis: '#000000'
         },
+
+        horizontalGrid: false,
+
+        yTicks: true,
+
+        yAxis: {
+            stroke: '#000'
+        },
+
+        leftPadding: 70,
+        yLabelOffset: 30,
 
         _colors: ['', '#5B5B5B', '#9A2020', '#737373', '#8E2B2B', '#8B8B8B', '#803838', '#5B5B5B', '#793F3F', '#737373', '#714747', '#8B8B8B', '#655252', '#A41717', '#5B5B5B', '#9A2020', '#737373', '#8E2B2B', '#8B8B8B', '#803838', '#5B5B5B', '#793F3F', '#737373', '#714747', '#8B8B8B', '#655252'],
 

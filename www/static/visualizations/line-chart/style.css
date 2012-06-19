@@ -1,5 +1,5 @@
 
-svg .axis {
+svg .axis, svg .tick {
     shape-rendering: crispEdges;
 }
 

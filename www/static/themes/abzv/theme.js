@@ -8,9 +8,11 @@
     // of them. Also, every theme can extend any other
     // existing theme.
 
-    Datawrapper.Themes.Abzv = _.extend({}, Datawrapper.Themes.Default, {
+    Datawrapper.Themes.Abzv = _.extend({}, Datawrapper.Themes.Base, {
 
-
+        colors: {
+            line: '#D21F1F'
+        }
 
     });
 

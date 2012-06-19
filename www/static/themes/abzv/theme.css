@@ -1,0 +1,28 @@
+
+/*
+ * ABZV Theme
+ * ----------
+ *
+ */
+
+body {
+    font-family: Arial;
+    margin:0;
+    font-size: 12px;
+    line-height: 18px;
+    background: url(http://www.abzv.de/grafiken/hintergrund.jpg) -600px -50px;
+}
+
+h1 {
+    font-size: 13px;
+    font-weight: 700;
+    color: #0063A5;
+}
+
+.label {
+    font-size:12px;
+}
+
+#chart {
+    margin-top: 25px;
+}
