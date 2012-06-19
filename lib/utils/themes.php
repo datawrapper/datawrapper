@@ -18,7 +18,8 @@ function get_themes_meta() {
 function get_theme_meta($id) {
     $meta = json_decode(file_get_contents('static/themes/' . $id . '/meta.json'), true);
     $meta['id'] = $id;
-    $meta['hasCSS'] = file_exists('static/themes/' . $id . '/theme.css');
+    $meta['hasStyles'] = file_exists('static/themes/' . $id . '/theme.css');
+    $meta['hasTemplate'] = file_exists('../templates/themes/' . $id . '.twig');
     if (empty($meta['extends'])) $meta['extends'] = null;
     return $meta;
 }

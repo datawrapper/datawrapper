@@ -17,7 +17,7 @@ $app->get('/chart/:id/preview', function ($id) use ($app) {
         while (!empty($next_theme_id)) {
             $theme = get_theme_meta($next_theme_id);
             $theme_js[] = '/static/themes/' . $next_theme_id . '/theme.js';
-            if ($theme['hasCSS']) {
+            if ($theme['hasStyles']) {
                 $theme_css[] = '/static/themes/' . $next_theme_id . '/theme.css';
             }
             $next_theme_id = $theme['extends'];

@@ -9,9 +9,14 @@
 body {
     font-family: Ubuntu;
     font-weight: 400;
+    margin:0;
 }
 
 h1 {
     font-size: 24px;
     font-weight: 700;
+}
+
+#chart {
+    margin-top: 25px;
 }

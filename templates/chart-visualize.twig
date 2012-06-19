@@ -77,6 +77,14 @@ $(function() {
             <label for="text-intro">Introduction</label>
             <textarea type="text" id="text-intro" class="input-xlarge span4"></textarea>
 
+            <label>Highlight series</label>
+            <select id="highlight-series">
+                <option>none</option>
+                {#% for column in chart.dataColumns() %}
+                <option>c: {{ column }}</option>
+                {% endfor %#}
+            </select>
+
             <div id="vis-options" class="form-horizontal">
                 {% use 'vis-options.twig' %}
                 {{ block('visoptions') }}

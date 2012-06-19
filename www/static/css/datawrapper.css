@@ -293,8 +293,8 @@ dl.dl-horizontal dd {
  */
 
 #iframe-vis {
-    box-shadow:inset 1px 1px 2px #ccc;
     border: 0;
+    box-shadow: 1px 1px 2px #CCCCCC inset;
     border-radius: 7px;
 }
 

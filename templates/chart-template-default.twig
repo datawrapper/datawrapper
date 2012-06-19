@@ -1,0 +1,13 @@
+{% block body %}
+
+    <h1>{{ title }}</h1>
+
+    {% if intro %}
+
+    <p>{{ intro|raw }}</p>
+
+    {% endif %}
+
+    <div id="chart"></div>
+
+{% endblock %}

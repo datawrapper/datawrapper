@@ -19,6 +19,10 @@
             $(el).html('implement me!');
         },
 
+        setTheme: function(theme) {
+            this.theme = theme;
+        },
+
         load: function(chart, callback) {
             var me = this;
             this.chart = chart;
@@ -26,32 +30,6 @@
                 me.dataset = ds;
                 callback.call(me, me);
             });
-        },
-
-        hasColHeader: function(invert) {
-            var t = this.chart.get('metadata.data.transpose');
-            if (invert ? !t : t) {
-                return this.chart.get('metadata.data.vertical-header');
-            } else {
-                return this.chart.get('metadata.data.horizontal-header');
-            }
-        },
-
-        hasRowHeader: function() {
-            return this.hasColHeader(true);
-        },
-
-        // returns a list of columns that contain data (no vertical headers)
-        dataColumns: function() {
-            var me = this;
-            if (me.__dataColumns) return me.__dataColumns;
-            me.__dataColumns = [];
-            me.dataset.eachColumn(function(name, col, i) {
-                if (i > 0 || !me.hasRowHeader()) {
-                    me.__dataColumns.push(col);
-                }
-            });
-            return me.__dataColumns;
         }
 
     });

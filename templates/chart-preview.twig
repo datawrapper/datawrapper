@@ -1,10 +1,14 @@
+{% set title = chart.title %}
+{% set intro = chart.metadata.describe.intro %}
+{% include theme.hasTemplate ? 'themes/' ~ theme.id ~ '.twig' : 'chart-template-default.twig' %}
 <html>
 <head>
-    <title>Foo</title>
+    <title>{{ title }}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <style type="text/css">
 
 body {
-    padding: 10px;
+    padding: 20px 20px 0;
 }
 
 
@@ -26,13 +30,9 @@ body {
 
 </head>
 <body>
-    <h1>{{ chart.title }}</h1>
-    {% if chart.metadata.describe.intro %}
-    <p>{{ chart.metadata.describe.intro }}</p>
-    {% endif %}
-    <div id="chart">
 
-    </div>
+    {{ block('body') }}
+
     <script type="text/javascript">
 
 $(function() {
@@ -42,6 +42,8 @@ $(function() {
     var chart = new Datawrapper.Chart(JSON.parse('{{ chart.toJSON|raw }}'));
     // initliaze visualization
     var vis = new Datawrapper.Visualizations.{{ visualization.id|classify }}();
+
+    vis.setTheme(theme);
 
     vis.load(chart, function() {
         vis.render('#chart');

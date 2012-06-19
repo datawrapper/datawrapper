@@ -45,6 +45,31 @@
                 }
             });
             return ds;
+        },
+
+        dataColumns: function() {
+            var me = this;
+            if (me.__dataColumns) return me.__dataColumns;
+            me.__dataColumns = [];
+            me.__dataview.eachColumn(function(name, col, i) {
+                if (i > 0 || !me.hasRowHeader()) {
+                    me.__dataColumns.push(col);
+                }
+            });
+            return me.__dataColumns;
+        },
+
+        hasColHeader: function(invert) {
+            var t = this.get('metadata.data.transpose');
+            if (invert ? !t : t) {
+                return this.get('metadata.data.vertical-header');
+            } else {
+                return this.get('metadata.data.horizontal-header');
+            }
+        },
+
+        hasRowHeader: function() {
+            return this.hasColHeader(true);
         }
     });
 

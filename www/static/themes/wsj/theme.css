@@ -1,0 +1,36 @@
+
+/*
+ * WSJ Theme
+ * ---------
+ *
+ */
+
+@import url(http://fonts.googleapis.com/css?family=Economica:500,700);
+
+body {
+    font-family: "Economica",Arial,Helvetica,sans-serif;
+    font-weight: normal;
+    margin:0;
+    color: #333;
+    line-height: 1.5em;
+    background: #F2F9F2;
+    font-size: 15px;
+}
+
+h1 {
+    font-family: "Economica",Georgia,'Century Schoolbook','Times New Roman',Times,serif;
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0 20px 8px 0;
+    color: #000;
+    line-height: 1.1em;
+}
+
+#chart {
+    margin-top: 25px;
+}
+
+#chart .label {
+    font-size: 14px;
+}
+

@@ -4,9 +4,7 @@
     // Simple perfect line chart
     // -------------------------
 
-    var LineChart = Datawrapper.Visualizations.LineChart = function() {
-
-    };
+    var LineChart = Datawrapper.Visualizations.LineChart = function() {};
 
     _.extend(LineChart.prototype, Datawrapper.Visualizations.Base, {
 
@@ -27,30 +25,22 @@
                 w: el.width(),
                 h: me.chart.get('metadata.visualize.force-banking') ?
                     el.width() / me.computeAspectRatio() : 330,
-                rpad: 120,
+                rpad: me.chart.dataColumns().length > 1 ? 120 : 50,
                 lpad: 70,
                 bpad: 50,
                 tpad: 10
-            },
-            styles = me.__styles = {
-                labels: {
-                    'text-anchor': 'start',
-                    'font-family': 'Ubuntu',
-                    'font-size': 12,
-                    'font-weight': 400
-                }
             };
 
             scales.x = scales.x.range([c.lpad, c.w-c.rpad]);
-            scales.y = scales.y.range([c.h-c.bpad, c.tpad]);
+            scales.y = scales.y.range([c.h, 2]);
 
-            c.paper = Raphael(el[0], c.w, c.h);
+            c.paper = Raphael(el[0], c.w, c.h+2);
 
-            el.height(c.h+10);
+            el.height(c.h+c.lpad+c.bpad);
             // init canvas
 
             // draw lines
-            _.each(me.dataColumns(), function(col) {
+            _.each(me.chart.dataColumns(), function(col) {
                 var path = [], x, y;
                 _.each(col.data, function(val, i) {
                     x = scales.x(i);
@@ -60,18 +50,23 @@
                 c.paper.path(path).attr({
                     'stroke-width': 3,
                     'stroke-linecap': 'round',
+                    'stroke-linejoin': 'round',
                     'stroke-opacity': 1,
-                    'stroke': '#0063A5'
+                    'stroke': me.theme.colors.line
                 });
-                me.label(x+15, y, col.name);
+                if (me.chart.dataColumns().length > 1 && me.chart.dataColumns().length < 10)
+                    me.label(x+15, y, col.name);
             });
 
             me.yaxis();
 
             // draw x scale labels
-            if (me.hasRowHeader()) {
+            if (me.chart.hasRowHeader()) {
+                var last_label_x = -100, min_label_distance = 50;
                 _.each(ds.column(ds.columnNames()[0]).data, function(val, i) {
-                    var x = scales.x(i), y = c.h-10;
+                    var x = scales.x(i), y = c.h+20;
+                    if (x - last_label_x < min_label_distance) return;
+                    last_label_x = x;
                     me.label(x, y, val, 'center');
                 });
             }
@@ -81,17 +76,17 @@
 
         computeAspectRatio: function() {
             var me = this, slopes = [], M, Rx, Ry;
-            _.each(me.dataColumns(), function(col) {
+            _.each(me.chart.dataColumns(), function(col) {
                 var lval;
                 _.each(col.data, function(val, i) {
-                    if (i > 0) {
+                    if (i > 0 && val != lval) {
                         slopes.push(Math.abs(val-lval));
                     }
                     lval = val;
                 });
             });
             M = d3.median(slopes);
-            Rx = me.dataset.length * me.dataColumns().length;
+            Rx = slopes.length;
             Ry = me.__domain[1] - me.__domain[0];
             return M*Rx/Ry;
         },
@@ -104,7 +99,7 @@
             var me = this, scale,
             // find min/max value of each data series
             domain = [Number.MAX_VALUE, Number.MAX_VALUE * -1];
-            _.each(me.dataColumns(), function(col) {
+            _.each(me.chart.dataColumns(), function(col) {
                 domain[0] = Math.min(domain[0], col._min());
                 domain[1] = Math.max(domain[1], col._max());
             });
@@ -113,6 +108,7 @@
                 domain[0] = 0;
             }
             scale = me.chart.get('metadata.visualize.scale') || 'linear';
+            if (scale == 'log' && domain[0] === 0) domain[0] = 0.03;
             return d3.scale[scale]().domain(domain);
         },
 
