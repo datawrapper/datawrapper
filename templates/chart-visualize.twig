@@ -6,13 +6,40 @@
 <script type="text/javascript">
 $(function() {
 
-    DW.currentChart.onSave(function() {
+    var _typeHasChanged = false;
+
+    DW.currentChart.onSave(function(chart) {
         $('#iframe-vis').attr('src', '/chart/{{ chart.id }}/preview')
+        if (_typeHasChanged) {
+            $('#vis-options').load('/xhr/'+chart.get('id')+'/vis-options');
+            syncVisOptions();
+            _typeHasChanged = false;
+        }
     });
 
     DW.currentChart.sync('#select-vis', 'type');
     DW.currentChart.sync('#select-theme', 'theme');
     DW.currentChart.sync('#text-title', 'title');
+
+    function syncVisOptions() {
+        var vis = JSON.parse('{{ vis|json|raw }}');
+        _.each(vis.options, function(opt, key) {
+            if (opt.type == 'radio') {
+                DW.currentChart.sync('input[name='+key+']', 'metadata.visualize.'+key);
+            } else {
+                DW.currentChart.sync('#'+key, 'metadata.visualize.'+key);
+            }
+        });
+    };
+
+    DW.currentChart.onChange(function(chart, key) {
+        console.log('change', key);
+        if (key == 'type') {
+            _typeHasChanged = true;
+        }
+    });
+
+    syncVisOptions();
 
 });
 
@@ -20,23 +47,7 @@ $(function() {
 
 <div class="dw-create-visualize">
 
-    <!--<h2>Please select a visualization type</h2>
     <div class="row">
-        <div class="span12" style="">
-            <ul class="thumbnails">
-            {% for vis in vistypes %}
-            <li class="span2">
-                <a class="thumbnail" href="#" title="{{ vis.title }}">
-                    <img src="http://placehold.it/180x160" alt="">
-                </a>
-            </li>
-            {% endfor %}
-        </ul>
-        </div>
-    </div>-->
-
-    <div class="row">
-
         <div class="span4 visconfig">
 
             <div class="row">
@@ -63,19 +74,14 @@ $(function() {
             <label for="text-title" contenteditable="true">Title</label>
             <input type="text" id="text-title" class="input-xlarge span4" />
 
-            <div class="page-header">
-                <h3>Line Chart Options</h3>
+            <div id="vis-options" class="form-horizontal">
+                {% use 'vis-options.twig' %}
+                {{ block('visoptions') }}
             </div>
-            <div class="row">
-
-
-            </div>
-
         </div>
 
         <div class="span8">
-            <iframe src="/chart/{{ chart.id }}/preview" id="iframe-vis" style="width:100%; height: 450px">
-                
+            <iframe src="/chart/{{ chart.id }}/preview" id="iframe-vis" style="width:100%; height: 500px">
             </iframe>
         </div>
 

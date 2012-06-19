@@ -2,25 +2,52 @@
 <head>
     <title>Foo</title>
     <style type="text/css">
+
 body {
     padding: 10px;
 }
+
+
     </style>
+    <!--[if lt IE 9]>
+    <script src="/static/vendor/json-js/json2.min.js"></script>
+    <script type="text/javascript">
+
+[].map||(Array.prototype.map=function(a){for(var b=this,c=b.length,d=[],e=0,f;e<b;)d[e]=e in b?a.call(arguments[1],b[e],e++,b):f;return d});
+
+    </script>
+    <![endif]-->
+
 {% for src in stylesheets %}
-    <link rel="stylesheet" type="text/css" href="{{ src }}">
+    <link rel="stylesheet" type="text/css" href="{{ src }}"></link>
 {% endfor %}
+
 {% for src in scripts %}
     <script type="text/javascript" src="{{ src }}"></script>
 {% endfor %}
+
 </head>
 <body>
     <h1>{{ chart.title }}</h1>
-    {{ theme.title }}
+
+    <div id="chart">
+
+    </div>
     <script type="text/javascript">
 
+$(function() {
     // initialize theme
     var theme = Datawrapper.Themes.{{ theme.id|classify }};
-    console.log(theme);
+    // initialize chart
+    var chart = new Datawrapper.Chart(JSON.parse('{{ chart.toJSON|raw }}'));
+    // initliaze visualization
+    var vis = new Datawrapper.Visualizations.{{ visualization.id|classify }}();
+
+    vis.load(chart, function() {
+        vis.render('#chart');
+    });
+
+});
 
     </script>
 </body>

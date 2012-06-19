@@ -25,23 +25,36 @@ $app->get('/chart/:id/preview', function ($id) use ($app) {
 
         $base_js = array(
             '/static/vendor/miso/miso.ds.deps.0.1.3.js',
+            '/static/js/ds.parser.delimited.js',
             '/static/vendor/jquery/jquery.min.js',
             '/static/js/dw.core.js',
             '/static/js/dw.chart.js',
-            '/static/js/dw.theme.js'
+            '/static/js/dw.theme.js',
+            '/static/js/dw.visualization.js'
         );
 
         $vis_js = array();
 
         $vis = get_visualization_meta($chart->getType());
+        foreach ($vis['libraries'] as $url) {
+            $vis_js[] = '/static/vendor/' . $url;
+        }
+        $vis_js[] = '/static/visualizations/' . $vis['id'] . '/' . $vis['id'] . '.js';
 
-        $scripts = array_merge($base_js, array_reverse($theme_js));
+        $scripts = array_merge($base_js, array_reverse($theme_js), $vis_js);
+
+        $styles = array();
+        if ($vis['hasCSS']) {
+            $styles[] = '/static/visualizations/' . $vis['id'] . '/style.css';
+        }
+        $styles = array_merge($styles, array_reverse($theme_css));
 
         $page = array(
             'chartData' => $chart->loadData(),
             'chart' => $chart,
             'theme' => get_theme_meta($chart->getTheme()),
-            'stylesheets' => array_reverse($theme_css),
+            'visualization' => get_visualization_meta($chart->getType()),
+            'stylesheets' => $styles,
             'scripts' => $scripts
         );
         $app->render('chart-preview.twig', $page);

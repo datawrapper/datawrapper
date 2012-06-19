@@ -12,7 +12,8 @@ $app->get('/chart/:id/visualize', function ($id) use ($app) {
         $page = array(
             'chartData' => $chart->loadData(),
             'chart' => $chart,
-            'visualizations' => get_visualization_meta('', true),
+            'visualizations' => get_visualizations_meta('', true),
+            'vis' => get_visualization_meta($chart->getType()),
             'themes' => get_themes_meta()
         );
         add_header_vars($page, 'create');

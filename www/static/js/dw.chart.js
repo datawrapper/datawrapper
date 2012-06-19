@@ -16,7 +16,8 @@
 
             _.each(keys, function(key) {
                 if (pt === undefined) {
-                    console.warn('pt is undefined', pt, keys, this.__attributes);
+                    //console.warn('pt is undefined', pt, keys, this.__attributes);
+                    return null;
                 }
                 pt = pt[key];
             });
@@ -27,9 +28,10 @@
             var me = this, ds, dsOpts = {
                 parser: Miso.Parsers.Delimited,
                 delimiter: 'auto',
-                transpose: !ignoreTranspose && this.get('metadata.data.transpose'),
+                transpose: ignoreTranspose ? false : this.get('metadata.data.transpose'),
                 firstRowIsHeader: this.get('metadata.data.horizontal-header')
             };
+            
             if (!this.__dataview) {
                 dsOpts.url = '/chart/' + this.get('id') + '/data';
             } else {

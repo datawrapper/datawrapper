@@ -7,11 +7,7 @@
 <script type="text/javascript">
 $(function() {
 
-    DW.currentChart.onChange(function(chart) {
-        var val = chart.get('metadata.data.transpose');
-        if (_.isString(val)) chart.set('metadata.data.transpose', val === 'yes');
-        reload();
-    });
+    DW.currentChart.onChange(reload);
 
     DW.currentChart.sync('#has-horizontal-headers', 'metadata.data.horizontal-header');
     DW.currentChart.sync('#has-vertical-headers', 'metadata.data.vertical-header');
@@ -26,24 +22,36 @@ $(function() {
         }
 
         var table = $('#data-preview'),
-            horzHeaders = chart.get('metadata.data.horizontal-header');
-            vertHeaders = chart.get('metadata.data.vertical-header');
+            horzHeaders = chart.get('metadata.data.horizontal-header'),
+            vertHeaders = chart.get('metadata.data.vertical-header'),
+            transpose = chart.get('metadata.data.transpose');
         table.html('');  // empty table
         table.append('<thead><tr></tr><thead><tbody></tbody>');
 
+        table.addClass(transpose ? 'row-series' : 'column-series');
+        table.removeClass(transpose ? 'column-series' : 'row-series');
+
+        dv.eachColumn(function() {
+            table.append('<colgroup style="width:'+(100 / dv.columnNames().length)+'%" />');
+        });
+
         if (horzHeaders) {
             var thead = $('thead tr', table);
-            dv.eachColumn(function(name) {
+            dv.eachColumn(function(name, o, i) {
+                if (vertHeaders && i == 0) name = '';
+                else name = '<span>'+name+'</span>';
                 thead.append('<th>'+(!isNone(name) ? name : '')+'</th>');
             });
         }
+
+        if (vertHeaders) table.addClass('vert-header'); else table.removeClass('vert-header');
 
         var tbody = $('tbody', table);
         dv.each(function(row) {
             var tr = $('<tr></tr>');
             dv.eachColumn(function(col, o, i) {
                 if (i == 0 && vertHeaders) {
-                    tr.append('<th>'+(!isNone(row[col]) ? row[col] : '')+'</th>');
+                    tr.append('<th><span>'+(!isNone(row[col]) ? row[col] : '')+'</span></th>');
                 } else {
                     tr.append('<td>'+(!isNone(row[col]) ? row[col] : '')+'</td>');
                 }

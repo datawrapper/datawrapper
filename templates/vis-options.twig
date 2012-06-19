@@ -1,0 +1,40 @@
+{% block visoptions %}
+
+<fieldset>
+    <legend>{{ vis.title.en }} Options</legend>
+
+    {% for key, option in vis.options %}
+    <div class="control-group">
+        {% if option.type == 'checkbox' %}
+            <div class="controls">
+                <label class="checkbox" for="{{ key }}"><input type="checkbox" id="{{ key }}" /> {{ option.label.en }}</label>
+            </div>
+
+        {% elseif option.type == 'select' %}
+
+            <label class="control-label" for="{{ key }}">{{ option.label.en }}</label>
+            <div class="controls">
+                <select id="{{ key }}">
+                    {% for opt in option.options %}
+                    <option value="{{ opt.value }}">{{ opt.label.en }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+        {% elseif option.type == 'radio' %}
+
+            <label class="control-label" for="{{ key }}">{{ option.label.en }}</label>
+            <div class="controls">
+                {% for opt in option.options %}
+                <label class="radio"><input type="radio" name="{{ key }}" value="{{ opt.value }}" {% if opt.default %}checked="checked" {% endif %}/> {{ opt.label.en }}</label>
+                {% endfor %}
+            </div>
+
+        {% else %}
+            <p>Unhandled option type {{ option.type }}</p>
+        {% endif %}
+    </div>
+    {% endfor %}
+</fieldset>
+
+{% endblock %}

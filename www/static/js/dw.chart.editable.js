@@ -19,10 +19,14 @@
                 lastKey = keys.pop(),
                 pt = me.__attributes;
 
-            // resolve property
+            // resolve property until the parent dict
             _.each(keys, function(key) {
+                if (_.isArray(pt[key]) && pt[key].length === 0) {
+                    pt[key] = {};
+                }
                 pt = pt[key];
             });
+
             // check if new value is set
             if (pt[lastKey] != value) {
                 pt[lastKey] = value;
@@ -30,9 +34,9 @@
                 if (me.__saveTimeout) clearTimeout(me.__saveTimeout);
                 me.__saveTimeout = setTimeout(function() {
                     me.save();
-                }, 1000);
+                }, 300);
                 _.each(me.__changeCallbacks, function(cb) {
-                    cb.call(this, me);
+                    cb.call(this, me, key, value);
                 });
             }
             return this;
@@ -46,6 +50,7 @@
             if (_.isString(el)) el = $(el);
             el.data('sync-attribute', attribute);
 
+            // initialize current state in UI
             var curVal = this.get(attribute);
             if (el.is('input[type=checkbox]')) {
                 if (curVal) el.attr('checked', 'checked');
@@ -53,7 +58,10 @@
             } else if (el.is('input[type=text]') || el.is('textarea') || el.is('select')) {
                 el.val(curVal);
             } else if (el.is('input[type=radio]')) {
-                $('input:radio[name='+el.attr('name')+'][value='+curVal+']').checked = true;
+                if (_.isBoolean(curVal)) {
+                    curVal = curVal ? 'yes' : 'no';
+                }
+                $('input:radio[name='+el.attr('name')+'][value='+curVal+']').attr('checked', 'checked');
             }
 
             var chart = this;
@@ -70,6 +78,8 @@
                     val = el.val();
                 } else if (el.is('input[type=radio]')) {
                     val = $('input:radio[name='+el.attr('name')+']:checked').val();
+                    if (val === 'yes') val = true;
+                    else if (val === 'no') val = false;
                 }
                 if (val !== undefined) {
                     chart.set(attr, val);
@@ -84,6 +94,7 @@
         save: function() {
             // saves the chart meta data to Datawrapper
             if (!this.__changed) return;
+            var chart = this;
             $.ajax({
                 url: '/api/charts/'+this.get('id'),
                 type: 'PUT',
@@ -96,7 +107,7 @@
                         this.__changed = false;
                         // run callbacks
                         _.each(this.__saveCallbacks, function(cb) {
-                            cb.call(this);
+                            cb.call(this, chart);
                         });
                     } else {
                         console.warn('could not save the chart', data);

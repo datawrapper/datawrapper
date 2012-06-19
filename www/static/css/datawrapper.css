@@ -190,16 +190,54 @@ h1, h2, h3, h4, h5, h6 {
     background: transparent;
 }
 
-.table tr th {
-    background-color: #fff!important;
-}
+.table { width: auto!important;}
+
+.table-striped td { text-align: center;}
+.table-striped th { text-align: center;}
+.table-striped.vert-header tr th:first-child { text-align: right;}
 
 .table tr th {
-    color: #777;
-    font-weight: bold;
+    font-weight: normal;
+    background-color: #fff!important;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.table tr th span {
+    padding: 3px 6px;
+    border-radius: 4px;
+}
+.table.column-series thead tr th span, .table.row-series tbody tr th span {
+    background-color: #0063A5;
+    color: #fff;
+}
+.table.column-series tbody tr th span, .table.row-series thead tr th span {
+    background-color: #999;
+    color: #fff;
+}
+.table tbody tr td {
+    background: none;
+}
+.table-striped.column-series tbody tr td:nth-child(2n+1) {
+    background-color: #eee;
+}
+.table-striped.column-series.vert-header tbody tr td:nth-child(2n) {
+    background: #eee;
+}
+.table-striped.column-series.vert-header tbody tr td:nth-child(2n+1) {
+    background: none;
+}
+
+.table-striped.row-series tbody tr:nth-child(2n+1) td {
+    background-color: #eee;
+}
+.table-striped tbody tr:nth-child(2n+1) td, .table-striped tbody tr:nth-child(2n+1) th {
+    background: none;
 }
 .table-striped tbody tr:nth-child(2n+1) th {
     background-color: #c0c0c0;
+}
+.table-striped tbody tr:hover td {
+    background: none;
 }
 .table tbody tr th {
     background-color: #ccc;
@@ -228,14 +266,6 @@ dl.dl-horizontal dt {
 dl.dl-horizontal dd {
     margin-left: 160px;
     padding-top: 17px;
-}
-
-.visconfig .form-horizontal .control-label {
-    width: 80px;
-}
-
-.visconfig .form-horizontal .controls {
-    margin-left: 100px;
 }
 
 @media (min-width: 768px) and (max-width: 979px) {
@@ -291,4 +321,14 @@ dl.dl-horizontal dd {
   content: '';
 }
 
-.
+#vis-options fieldset legend {
+    margin-bottom: 10px;
+}
+
+#vis-options .control-group {
+    margin-bottom: 9px;
+}
+
+#vis-options legend + .control-group {
+    margin-top: 0;
+}

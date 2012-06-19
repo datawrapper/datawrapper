@@ -1,6 +1,17 @@
+@import url(http://fonts.googleapis.com/css?family=Ubuntu:700,400);
 
 /*
  * Default Theme
  * -------------
  *
  */
+
+body {
+    font-family: Ubuntu;
+    font-weight: 400;
+}
+
+h1 {
+    font-size: 24px;
+    font-weight: 700;
+}

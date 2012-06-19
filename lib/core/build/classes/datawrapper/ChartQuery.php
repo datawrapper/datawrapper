@@ -43,7 +43,23 @@ class ChartQuery extends BaseChartQuery {
                 if (count($untitledCharts) > 0) $title .= '-'.count($untitledCharts);
                 $chart->setTitle($title . ']');
 
-                $chart->setMetadata("{ \"data\": {}, \"visualize\": {}, \"describe\": {} }");
+                // todo: use global default theme
+                $chart->setTheme('default');
+
+                $defaultMeta = array(
+                    'data' => array(
+                        'transpose' => true,
+                        'horizontal-header' => true
+                    ),
+                    'visualize' => array(
+                    ),
+                    'describe' => array(
+                        'source-name' => '',
+                        'source-url' => ''
+                    )
+                );
+
+                $chart->setMetadata(json_encode($defaultMeta));
                 // $chart->setLanguage($user->getLanguage());  // defaults to user language
                 $chart->save();
                 break;

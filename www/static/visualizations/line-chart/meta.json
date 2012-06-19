@@ -1,0 +1,84 @@
+{
+    "libraries": [
+        "d3js/d3.light.js",
+        "raphaeljs/raphael-min.js"
+    ],
+    "options": {
+        "scale": {
+            "type": "radio",
+            "label": {
+                "en": "Scale (y-axis)",
+                "de": "Skala (y-Achse)",
+                "fr": "Échelle (axe des y)"
+            },
+            "options": [{
+                "value": "linear",
+                "label": {
+                    "en": "linear",
+                    "de": "linear",
+                    "fr": "linéaire"
+                },
+                "default": true
+            },{
+                "value": "log",
+                "label": {
+                    "en": "logarithmic",
+                    "de": "logarithmisch",
+                    "fr": "logarithmique"
+                }
+            }]
+        },
+        "baseline": {
+            "type": "radio",
+            "label": {
+                "en": "Baseline (y-axis)",
+                "de": "Basis (y-Achse)",
+                "fr": "Échelle (axe des y)"
+            },
+            "options": [{
+                "value": "data",
+                "label": {
+                    "en": "data",
+                    "de": "linear",
+                    "fr": "linéaire"
+                },
+                "default": true
+            },{
+                "value": "zero",
+                "label": {
+                    "en": "zero",
+                    "de": "null",
+                    "fr": "zero"
+                }
+            }]
+        },
+        "force-banking": {
+            "type": "checkbox",
+            "label": {
+                "en": "Force banking to 45°",
+                "de": "Logarithmische Skala",
+                "fr": "Use logarithmic scale"
+            }
+        }
+    },
+    "title": {
+        "en": "Line Chart",
+        "de": "Liniendiagramm",
+        "fr": "Diagramme temporel"
+    },
+    "author": {
+        "name": "gka",
+        "email": "gka@vis4.net"
+    },
+    "license": {
+        "name": "MIT",
+        "url": "http://www.opensource.org/licenses/mit-license.php"
+    },
+    "about": "http://site.com/understanding-line-charts/",
+    "compatibility": {
+        "msie": "9+",
+        "moz": "5+",
+        "webkit": "3+",
+        "ios": "no"
+    }
+}

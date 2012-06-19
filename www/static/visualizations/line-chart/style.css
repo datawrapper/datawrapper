@@ -1,0 +1,8 @@
+
+svg .axis {
+    shape-rendering: crispEdges;
+}
+
+.label {
+    font-size: 14px;
+}

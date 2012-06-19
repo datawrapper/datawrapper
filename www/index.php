@@ -32,9 +32,14 @@ $app = new Slim(array(
 ));
 
 $app->view()->getEnvironment()->addFilter('classify', new Twig_Filter_Function('str_classify'));
+$app->view()->getEnvironment()->addFilter('json', new Twig_Filter_Function('toJSON'));
 
 function str_classify($s) {
     return preg_replace('/\s/', '', ucwords(preg_replace('/[_\-\.]/', ' ', $s)));
+}
+
+function toJSON($arr) {
+    return json_encode($arr);
 }
 
 function add_header_vars(&$page, $active = null) {

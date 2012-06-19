@@ -1,21 +1,22 @@
 {
     "title": {
-        "en": "Line chart",
-        "de": "Liniendiagramm",
+        "en": "Bar Chart",
+        "de": "Balkendiagramm",
         "fr": "Diagramme temporel"
     },
     "author": {
-        "name": "nkb",
-        "email": "hi@nkb.fr"
+        "name": "gka",
+        "email": "gka@vis4.net"
     },
     "license": {
         "name": "MIT",
         "url": "http://www.opensource.org/licenses/mit-license.php"
     },
-    "libraries": [
-        "d3/d3.vs.js"
-    ],
-    "about": "http://site.com/understanding-line-charts/",
+    "options": {
+
+    },
+    "libraries": [],
+    "about": "http://site.com/understanding-bar-charts/",
     "compatibility": {
         "msie": "9+",
         "moz": "5+",
