@@ -1,14 +1,12 @@
-{% set title = chart.title %}
-{% set intro = chart.metadata.describe.intro %}
-{% include theme.hasTemplate ? 'themes/' ~ theme.id ~ '.twig' : 'chart-template-default.twig' %}
+<!DOCTYPE html>
 <html>
 <head>
-    <title>{{ title }}</title>
+    <title>{{ chart.title }}</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <style type="text/css">
 
 body {
-    padding: 20px 20px 0;
+    padding: 0;
 }
 
 
@@ -27,30 +25,31 @@ body {
 {% for src in scripts %}
     <script type="text/javascript" src="{{ src }}"></script>
 {% endfor %}
+    <script type="text/javascript">
+    $(function() {
+        // initialize theme
+        var theme = Datawrapper.Themes.{{ theme.id|classify }};
+        // initialize chart
+        var chart = new Datawrapper.Chart(JSON.parse('{{ chart.toJSON|raw }}'));
+        // initliaze visualization
+        var vis = new Datawrapper.Visualizations.{{ visualization.id|classify }}();
 
+        vis.setTheme(theme);
+
+        vis.load(chart, function() {
+            vis.render('#chart');
+        });
+    });
+    </script>
 </head>
 <body>
 
-    {{ block('body') }}
+    {# some convenient short cuts for theme templates #}
+    {% set title = chart.title %}
+    {% set intro = chart.metadata.describe.intro %}
+    {% set source = chart.metadata.describe.source-name %}
 
-    <script type="text/javascript">
+    {% include theme.hasTemplate ? 'themes/' ~ theme.id ~ '.twig' : 'themes/default.twig' %}
 
-$(function() {
-    // initialize theme
-    var theme = Datawrapper.Themes.{{ theme.id|classify }};
-    // initialize chart
-    var chart = new Datawrapper.Chart(JSON.parse('{{ chart.toJSON|raw }}'));
-    // initliaze visualization
-    var vis = new Datawrapper.Visualizations.{{ visualization.id|classify }}();
-
-    vis.setTheme(theme);
-
-    vis.load(chart, function() {
-        vis.render('#chart');
-    });
-
-});
-
-    </script>
 </body>
 </html>

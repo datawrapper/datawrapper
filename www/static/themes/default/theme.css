@@ -10,12 +10,16 @@ body {
     font-family: Ubuntu;
     font-weight: 400;
     margin:0;
+    font-size: 14px;
 }
 
 h1 {
     font-size: 24px;
     font-weight: 700;
+    margin: 15px 20px;
 }
+
+p { margin: 15px 20px; line-height: 19px;}
 
 #chart {
     margin-top: 25px;

@@ -17,7 +17,10 @@ h1 {
     font-size: 13px;
     font-weight: 700;
     color: #0063A5;
+    margin: 10px;
 }
+
+p { margin: 10px;}
 
 .label {
     font-size:12px;
@@ -25,4 +28,11 @@ h1 {
 
 #chart {
     margin-top: 25px;
+    margin-bottom: 40px;
+}
+
+.footer {
+    margin: 20px 20px 0;
+    padding-top: 5px;
+    border-top: 1px solid #bbb;
 }

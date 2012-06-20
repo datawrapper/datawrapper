@@ -24,19 +24,19 @@
                 root: el,
                 w: el.width(),
                 h: me.chart.get('metadata.visualize.force-banking') ?
-                    el.width() / me.computeAspectRatio() : 330,
+                    el.width() / me.computeAspectRatio() : me.getMaxChartHeight(el),
                 rpad: me.chart.dataColumns().length > 1 ? 120 : 50,
                 lpad: me.theme.leftPadding,
-                bpad: 50,
-                tpad: 10
+                bpad: me.theme.bottomPadding,
+                tpad: 0
             };
 
             scales.x = scales.x.range([c.lpad, c.w-c.rpad]);
-            scales.y = scales.y.range([c.h, 2]);
+            scales.y = scales.y.range([c.h-c.bpad, 2]);
 
             c.paper = Raphael(el[0], c.w, c.h+2);
 
-            el.height(c.h+c.lpad+c.bpad);
+            el.height(c.h);
             // init canvas
 
             me.yAxis();
@@ -65,7 +65,7 @@
             if (me.chart.hasRowHeader()) {
                 var last_label_x = -100, min_label_distance = 50;
                 _.each(ds.column(ds.columnNames()[0]).data, function(val, i) {
-                    var x = scales.x(i), y = c.h+20;
+                    var x = scales.x(i), y = c.h-c.bpad+me.theme.xLabelOffset;
                     if (x - last_label_x < min_label_distance) return;
                     last_label_x = x;
                     me.label(x, y, val, 'center');

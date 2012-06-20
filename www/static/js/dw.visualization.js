@@ -1,12 +1,12 @@
 (function(){
 
-    // Datawrapper.Theme
-    // -----------------
+    // Datawrapper.Visualization.Base
+    // ------------------------------
 
-    // Every theme will inherit the properties of this
-    // theme. They can override everything or just a bit
-    // of them. Also, every theme can extend any other
-    // existing theme.
+    // Every visualization should extend this class.
+    // It provides the basic API between the chart template
+    // page and the visualization class.
+
     Datawrapper.Visualizations = {};
 
     var Base = function() {
@@ -30,6 +30,20 @@
                 me.dataset = ds;
                 callback.call(me, me);
             });
+        },
+
+        getMaxChartHeight: function(el) {
+            var ch = 0; // summed height of children
+            $('body > *').each(function(i, el) {
+                var t = el.tagName.toLowerCase();
+                if (t != 'script' && el.id != 'chart') {
+                    ch += $(el).outerHeight(true);
+                }
+            });
+            // subtract body padding
+            //ch += $('body').innerHeight() - $('body').height();
+            console.log($(window).height(), ch);
+            return $(window).height() - ch - 30;
         }
 
     });

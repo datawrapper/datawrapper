@@ -21,13 +21,18 @@ h1 {
     font-family: "Economica",Georgia,'Century Schoolbook','Times New Roman',Times,serif;
     font-size: 28px;
     font-weight: 700;
-    margin: 0 20px 8px 0;
+    padding: 0;
+    margin: 15px 20px 0px 20px;
     color: #000;
     line-height: 1.1em;
 }
 
+p {
+    margin: 0 20px 20px;
+}
+
 #chart {
-    margin-top: 25px;
+    margin-top: 0px;
 }
 
 #chart .label {
