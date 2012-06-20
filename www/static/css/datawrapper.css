@@ -332,3 +332,20 @@ dl.dl-horizontal dd {
 #vis-options legend + .control-group {
     margin-top: 0;
 }
+
+.highlighted-series li {
+    margin-bottom: 3px;
+    margin-right: 10px;
+}
+
+.highlighted-series .badge {
+    max-width: 100%;
+    display: inline-block;
+    overflow: hidden;
+    text-overflow:ellipsis;
+}
+
+.highlighted-series .badge .icon-remove {
+    position: relative;
+    left: -4px;
+}

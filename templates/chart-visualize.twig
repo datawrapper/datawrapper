@@ -78,12 +78,23 @@ $(function() {
             <textarea type="text" id="text-intro" class="input-xlarge span4"></textarea>
 
             <label>Highlight series</label>
-            <select id="highlight-series">
-                <option>none</option>
+            <div class="row"><div class="span2">
+
+            <select id="highlight-series" class="span2">
+                <option>select a data series</option>
                 {#% for column in chart.dataColumns() %}
                 <option>c: {{ column }}</option>
                 {% endfor %#}
             </select>
+           
+            </div><div class="span2 highlighted-series">
+
+                <ul class="unstyled">
+                    <li>
+                <span class="badge badge-info"><i class="icon-remove icon-white"></i>Kohle, Öl</span></li>
+                <li><span class="badge badge-info"><i class="icon-remove icon-white"></i>Renewable Energies Ultra long colum label</span></li>
+            </ul>
+            </div></div>
 
             <div id="vis-options" class="form-horizontal">
                 {% use 'vis-options.twig' %}

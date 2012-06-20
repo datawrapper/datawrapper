@@ -13,7 +13,7 @@ body {
     margin:0;
     color: #333;
     line-height: 1.5em;
-    background: #F2F9F2;
+    background: #fff;
     font-size: 15px;
 }
 
@@ -22,7 +22,7 @@ h1 {
     font-size: 28px;
     font-weight: 700;
     padding: 0;
-    margin: 15px 20px 0px 20px;
+    margin: 15px 20px 15px 20px;
     color: #000;
     line-height: 1.1em;
 }

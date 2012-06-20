@@ -45,6 +45,7 @@ class ChartQuery extends BaseChartQuery {
 
                 // todo: use global default theme
                 $chart->setTheme('default');
+                $chart->setType('line-chart');
 
                 $defaultMeta = array(
                     'data' => array(

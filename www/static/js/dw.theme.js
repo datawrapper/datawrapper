@@ -12,8 +12,14 @@
     Datawrapper.Themes.Base = _.extend({}, {
 
         colors: {
-            line: '#0063A5',
+            focus: '#0063A5',
+            context: '#676',
             axis: '#000000'
+        },
+
+        lineWidth: {
+            focus: 3,
+            context: 2
         },
 
         horizontalGrid: false,
@@ -25,8 +31,9 @@
         },
 
         leftPadding: 70,
+        rightPadding: 70,
+        lineLabelWidth: 50,
         yLabelOffset: 30,
-
 
         bottomPadding: 10,
         xLabelOffset: 20

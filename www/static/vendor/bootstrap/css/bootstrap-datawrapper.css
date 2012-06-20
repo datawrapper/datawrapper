@@ -3615,7 +3615,7 @@ a.thumbnail:hover {
 .badge {
   padding: 1px 9px 2px;
   font-size: 12.025px;
-  font-weight: bold;
+  font-weight: normal;
   white-space: nowrap;
   color: #ffffff;
   background-color: #999999;

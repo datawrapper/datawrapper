@@ -25,7 +25,7 @@
                 w: el.width(),
                 h: me.chart.get('metadata.visualize.force-banking') ?
                     el.width() / me.computeAspectRatio() : me.getMaxChartHeight(el),
-                rpad: me.chart.dataColumns().length > 1 ? 120 : 50,
+                rpad: me.chart.dataColumns().length > 1 ? me.theme.rightPadding + me.theme.lineLabelWidth : me.theme.rightPadding,
                 lpad: me.theme.leftPadding,
                 bpad: me.theme.bottomPadding,
                 tpad: 0
@@ -54,7 +54,7 @@
                     'stroke-linecap': 'round',
                     'stroke-linejoin': 'round',
                     'stroke-opacity': 1,
-                    'stroke': me.theme.colors.line
+                    'stroke': me.theme.colors.focus
                 });
                 if (me.chart.dataColumns().length > 1 && me.chart.dataColumns().length < 10)
                     me.label(x+15, y, col.name);

@@ -16,15 +16,21 @@ body {
 h1 {
     font-size: 24px;
     font-weight: 700;
-    margin: 15px 20px;
+    margin: 0px 0px 15px;
 }
 
-p { margin: 15px 20px; line-height: 19px;}
+p { margin: 0px 0px 15px; line-height: 19px;}
 
 #chart {
     margin-top: 25px;
+    width: 60%;
 }
 
 .label {
     font-size: 14px;
+}
+
+.sidecol {
+    width: 40%;
+    float: right;
 }

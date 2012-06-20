@@ -8,10 +8,10 @@
     // of them. Also, every theme can extend any other
     // existing theme.
 
-    Datawrapper.Themes.Wsj = _.extend({}, Datawrapper.Themes.Base, {
+    Datawrapper.Themes.Wsj = $.extend(true, {}, Datawrapper.Themes.Base, {
 
         colors: {
-            line: '#D21E1D',
+            focus: '#D21E1D',
             altBg: '#EDE1C7'
         },
 

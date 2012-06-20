@@ -35,10 +35,12 @@ $app->get('/chart/:id/preview', function ($id) use ($app) {
         $vis_js = array();
 
         $vis = get_visualization_meta($chart->getType());
-        foreach ($vis['libraries'] as $url) {
-            $vis_js[] = '/static/vendor/' . $url;
+        if (!empty($vis)) {
+            foreach ($vis['libraries'] as $url) {
+                $vis_js[] = '/static/vendor/' . $url;
+            }
+            $vis_js[] = '/static/visualizations/' . $vis['id'] . '/' . $vis['id'] . '.js';
         }
-        $vis_js[] = '/static/visualizations/' . $vis['id'] . '/' . $vis['id'] . '.js';
 
         $scripts = array_merge($base_js, array_reverse($theme_js), $vis_js);
 
