@@ -47,16 +47,16 @@
             return ds;
         },
 
-        dataColumns: function() {
+        dataSeries: function() {
             var me = this;
-            if (me.__dataColumns) return me.__dataColumns;
-            me.__dataColumns = [];
+            if (me.__dataSeries) return me.__dataSeries;
+            me.__dataSeries = [];
             me.__dataview.eachColumn(function(name, col, i) {
                 if (i > 0 || !me.hasRowHeader()) {
-                    me.__dataColumns.push(col);
+                    me.__dataSeries.push(col);
                 }
             });
-            return me.__dataColumns;
+            return me.__dataSeries;
         },
 
         hasColHeader: function(invert) {
@@ -70,7 +70,13 @@
 
         hasRowHeader: function() {
             return this.hasColHeader(true);
+        },
+
+        isHighlighted: function(col) {
+            var hl = this.get('metadata.visualize.highlighted');
+            return !_.isArray(hl) || hl.length === 0 || _.indexOf(hl, col.name) >= 0;
         }
+
     });
 
 }).call(this);

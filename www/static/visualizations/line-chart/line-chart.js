@@ -25,7 +25,7 @@
                 w: el.width(),
                 h: me.chart.get('metadata.visualize.force-banking') ?
                     el.width() / me.computeAspectRatio() : me.getMaxChartHeight(el),
-                rpad: me.chart.dataColumns().length > 1 ? me.theme.rightPadding + me.theme.lineLabelWidth : me.theme.rightPadding,
+                rpad: me.chart.dataSeries().length > 1 ? me.theme.rightPadding + me.theme.lineLabelWidth : me.theme.rightPadding,
                 lpad: me.theme.leftPadding,
                 bpad: me.theme.bottomPadding,
                 tpad: 0
@@ -41,25 +41,30 @@
 
             me.yAxis();
 
+            var seriesLines = {};
+
             // draw lines
-            _.each(me.chart.dataColumns(), function(col) {
+            _.each(me.chart.dataSeries(), function(col) {
                 var path = [], x, y;
                 _.each(col.data, function(val, i) {
                     x = scales.x(i);
                     y = scales.y(val);
                     path.push([path.length> 0 ? 'L' : 'M', x, y]);
                 });
-                c.paper.path(path).attr({
-                    'stroke-width': 3,
+                seriesLines[col.name] = c.paper.path(path).attr({
+                    'stroke-width': me.theme.lineWidth[me.chart.isHighlighted(col) ? 'focus' : 'context'],
                     'stroke-linecap': 'round',
                     'stroke-linejoin': 'round',
                     'stroke-opacity': 1,
-                    'stroke': me.theme.colors.focus
+                    'stroke': me.theme.colors[me.chart.isHighlighted(col) ? 'focus' : 'context']
                 });
-                if (me.chart.dataColumns().length > 1 && me.chart.dataColumns().length < 10)
+                if (me.chart.dataSeries().length > 1 && me.chart.dataSeries().length < 10)
                     me.label(x+15, y, col.name);
             });
 
+            _.each(me.chart.dataSeries(), function(col) {
+                if (me.chart.isHighlighted(col)) seriesLines[col.name].toFront();
+            });
 
             // draw x scale labels
             if (me.chart.hasRowHeader()) {
@@ -77,7 +82,7 @@
 
         computeAspectRatio: function() {
             var me = this, slopes = [], M, Rx, Ry;
-            _.each(me.chart.dataColumns(), function(col) {
+            _.each(me.chart.dataSeries(), function(col) {
                 var lval;
                 _.each(col.data, function(val, i) {
                     if (i > 0 && val != lval) {
@@ -100,7 +105,7 @@
             var me = this, scale,
             // find min/max value of each data series
             domain = [Number.MAX_VALUE, Number.MAX_VALUE * -1];
-            _.each(me.chart.dataColumns(), function(col) {
+            _.each(me.chart.dataSeries(), function(col) {
                 domain[0] = Math.min(domain[0], col._min());
                 domain[1] = Math.max(domain[1], col._max());
             });

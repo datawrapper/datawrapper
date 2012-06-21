@@ -41,6 +41,50 @@ $(function() {
 
     syncVisOptions();
 
+    // load dataset
+    function _getHighlights() {
+        var sel = DW.currentChart.get('metadata.visualize.highlighted');
+        return _.isArray(sel) ? sel.slice() : [];
+    }
+
+    function highlightSeriesClick(e) {
+        var badge = $(e.target).parents('.badge'),
+            series = badge.data('series'),
+            li = badge.parent();
+            selected = _getHighlights();
+        selected = _.without(selected, series);
+        DW.currentChart.set('metadata.visualize.highlighted', selected);
+        li.remove();
+    }
+    $('.highlighted-series .badge').click(highlightSeriesClick);
+
+    DW.currentChart.dataset(function(ds) {
+        var s = $('#highlight-series'), s2 = $('.highlighted-series ul');
+        _.each(DW.currentChart.dataSeries(), function(col) {
+            s.append('<option>'+col.name+'</option>');
+        });
+        s.change(function() {
+            if (s.val() != "---") {
+                var selected = _getHighlights();
+                if (_.indexOf(selected, s.val()) >= 0) {
+                    s.val('---');
+                    return;
+                }
+
+                var li = $('<li><span data-series="'+s.val()+'" class="badge badge-info"><i class="icon-remove icon-white"></i>'+s.val()+'</span></li>');
+
+                selected.push(s.val());
+
+                DW.currentChart.set('metadata.visualize.highlighted', selected);
+
+                $('.badge', li).click(highlightSeriesClick);
+                s2.append(li);
+                s.val('---');
+            }
+        })
+    }, true);
+
+
 });
 
 </script>
@@ -81,19 +125,16 @@ $(function() {
             <div class="row"><div class="span2">
 
             <select id="highlight-series" class="span2">
-                <option>select a data series</option>
-                {#% for column in chart.dataColumns() %}
-                <option>c: {{ column }}</option>
-                {% endfor %#}
-            </select>
-           
-            </div><div class="span2 highlighted-series">
+                <option value="---">- select a data series -</option>
 
+            </select>
+
+            </div><div class="span2 highlighted-series">
                 <ul class="unstyled">
-                    <li>
-                <span class="badge badge-info"><i class="icon-remove icon-white"></i>Kohle, Öl</span></li>
-                <li><span class="badge badge-info"><i class="icon-remove icon-white"></i>Renewable Energies Ultra long colum label</span></li>
-            </ul>
+                    {% for series in chart.metadata.visualize.highlighted %}
+                    <li><span data-series="{{ series }}" class="badge badge-info"><i class="icon-remove icon-white"></i>{{ series }}</span></li>
+                 {% endfor %}
+                </ul>
             </div></div>
 
             <div id="vis-options" class="form-horizontal">
