@@ -131,7 +131,7 @@
                     stroke: me.getSeriesColor(series),
                     'stroke-width': me.getSeriesLineWidth(series),
                     fill: '#fff'
-                }).show();
+                }).data('series', series).show();
             }
         },
 
