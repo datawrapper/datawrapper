@@ -10,8 +10,6 @@
 
     Datawrapper.Themes.Default = _.extend({}, Datawrapper.Themes.Base, {
 
-        leftPadding: 70
-
     });
 
 }).call(this);

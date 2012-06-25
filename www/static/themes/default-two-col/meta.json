@@ -1,5 +1,6 @@
 {
     "title": "Standard layout (2 columns)",
     "link": "http://www.datawrapper.de",
-    "restricted": null
+    "restricted": null,
+    "extends": "default"
 }

@@ -72,6 +72,27 @@
             return this.hasColHeader(true);
         },
 
+        rowHeader: function() {
+            var dv = this.__dataview;
+            return this.hasRowHeader() ? dv.column(dv.columnNames()[0]) : false;
+        },
+
+        rowLabels: function() {
+            if (this.hasRowHeader()) {
+                return this.rowHeader().data;
+            } else {
+                return null;
+            }
+        },
+
+        rowLabel: function(r) {
+            if (this.hasRowHeader()) {
+                return this.rowHeader().data[r];
+            } else {
+                return '';
+            }
+        },
+
         isHighlighted: function(col) {
             var hl = this.get('metadata.visualize.highlighted');
             return !_.isArray(hl) || hl.length === 0 || _.indexOf(hl, col.name) >= 0;

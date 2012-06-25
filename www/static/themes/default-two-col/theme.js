@@ -8,7 +8,7 @@
     // of them. Also, every theme can extend any other
     // existing theme.
 
-    Datawrapper.Themes.DefaultTwoCol = _.extend({}, Datawrapper.Themes.Base, {
+    Datawrapper.Themes.DefaultTwoCol = _.extend({}, Datawrapper.Themes.Default, {
 
         leftPadding: 70,
         rightPadding: 20

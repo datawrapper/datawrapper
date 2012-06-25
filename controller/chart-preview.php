@@ -33,22 +33,28 @@ $app->get('/chart/:id/preview', function ($id) use ($app) {
         );
 
         $vis_js = array();
+        $vis_css = array();
+        $next_vis_id = $chart->getType();
 
-        $vis = get_visualization_meta($chart->getType());
-        if (!empty($vis)) {
-            foreach ($vis['libraries'] as $url) {
-                $vis_js[] = '/static/vendor/' . $url;
+        while (!empty($next_vis_id)) {
+            $vis = get_visualization_meta($next_vis_id);
+            $vjs = array();
+            if (!empty($vis['libraries'])) {
+                foreach ($vis['libraries'] as $url) {
+                    $vjs[] = '/static/vendor/' . $url;
+                }
             }
-            $vis_js[] = '/static/visualizations/' . $vis['id'] . '/' . $vis['id'] . '.js';
+            $vjs[] = '/static/visualizations/' . $vis['id'] . '/' . $vis['id'] . '.js';
+            $vis_js = array_merge($vis_js, array_reverse($vjs));
+            if ($vis['hasCSS']) {
+                $vis_css[] = '/static/visualizations/' . $vis['id'] . '/style.css';
+            }
+            $next_vis_id = !empty($vis['extends']) ? $vis['extends'] : null;
         }
 
-        $scripts = array_merge($base_js, array_reverse($theme_js), $vis_js);
+        $scripts = array_unique(array_merge($base_js, array_reverse($theme_js), array_reverse($vis_js)));
 
-        $styles = array();
-        if ($vis['hasCSS']) {
-            $styles[] = '/static/visualizations/' . $vis['id'] . '/style.css';
-        }
-        $styles = array_merge($styles, array_reverse($theme_css));
+        $styles = array_merge($vis_css, array_reverse($theme_css));
 
         $page = array(
             'chartData' => $chart->loadData(),

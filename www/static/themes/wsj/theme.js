@@ -12,12 +12,13 @@
 
         colors: {
             focus: '#D21E1D',
+            context: '#999',
             altBg: '#EDE1C7'
         },
 
         horizontalGrid: {
-            stroke: '#333',
-            'stroke-dasharray': '. '
+            stroke: '#bbb',
+            'stroke-dasharray': '- '
         },
 
         yAxis: false,

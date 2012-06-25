@@ -336,6 +336,8 @@ dl.dl-horizontal dd {
 .highlighted-series li {
     margin-bottom: 3px;
     margin-right: 10px;
+    float: left;
+    display: inline;
 }
 
 .highlighted-series .badge {
@@ -348,4 +350,17 @@ dl.dl-horizontal dd {
 .highlighted-series .badge .icon-remove {
     position: relative;
     left: -4px;
+    top: 1px;
+}
+
+.dw-create-visualize .collapse {
+
+}
+
+.collapse-hidden:before {
+    content: "+ ";
+}
+
+.collapse-shown:after {
+    content: "";
 }

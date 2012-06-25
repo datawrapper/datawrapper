@@ -1,9 +1,20 @@
 {
-    "libraries": [
-        "d3js/d3.light.js",
-        "raphaeljs/raphael-min.js"
-    ],
-    "options": {
+    "title": {
+        "en": "Line Chart",
+        "de": "Liniendiagramm",
+        "fr": "Diagramme temporel"
+    },
+    "author": {
+        "name": "gka",
+        "email": "gka@vis4.net"
+    },
+    "extends": "raphael-chart",
+    "license": {
+        "name": "MIT",
+        "url": "http://www.opensource.org/licenses/mit-license.php"
+    },
+    "about": "http://site.com/understanding-line-charts/",
+        "options": {
         "scale": {
             "type": "radio",
             "label": {
@@ -61,20 +72,6 @@
             }
         }
     },
-    "title": {
-        "en": "Line Chart",
-        "de": "Liniendiagramm",
-        "fr": "Diagramme temporel"
-    },
-    "author": {
-        "name": "gka",
-        "email": "gka@vis4.net"
-    },
-    "license": {
-        "name": "MIT",
-        "url": "http://www.opensource.org/licenses/mit-license.php"
-    },
-    "about": "http://site.com/understanding-line-charts/",
     "compatibility": {
         "msie": "9+",
         "moz": "5+",

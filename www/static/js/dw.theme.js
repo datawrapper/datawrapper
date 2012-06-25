@@ -14,7 +14,8 @@
         colors: {
             focus: '#0063A5',
             context: '#bbbbbb',
-            axis: '#000000'
+            axis: '#000000',
+            grid: '#999999'
         },
 
         lineWidth: {
@@ -30,13 +31,18 @@
             stroke: '#000'
         },
 
-        leftPadding: 70,
+        leftPadding: 80,
         rightPadding: 70,
         lineLabelWidth: 50,
         yLabelOffset: 30,
 
-        bottomPadding: 10,
-        xLabelOffset: 20
+        bottomPadding: 20,
+        xLabelOffset: 20,
+
+        hover: true,
+        tooltip: true,
+
+        lineHoverDotRadius: 2
     });
 
 }).call(this);

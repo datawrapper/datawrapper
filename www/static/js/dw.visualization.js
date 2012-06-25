@@ -42,7 +42,6 @@
             });
             // subtract body padding
             //ch += $('body').innerHeight() - $('body').height();
-            console.log($(window).height(), ch);
             return $(window).height() - ch - 30;
         }
 

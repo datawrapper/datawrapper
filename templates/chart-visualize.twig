@@ -50,7 +50,7 @@ $(function() {
     function highlightSeriesClick(e) {
         var badge = $(e.target).parents('.badge'),
             series = badge.data('series'),
-            li = badge.parent();
+            li = badge;
             selected = _getHighlights();
         selected = _.without(selected, series);
         DW.currentChart.set('metadata.visualize.highlighted', selected);
@@ -59,7 +59,7 @@ $(function() {
     $('.highlighted-series .badge').click(highlightSeriesClick);
 
     DW.currentChart.dataset(function(ds) {
-        var s = $('#highlight-series'), s2 = $('.highlighted-series ul');
+        var s = $('#highlight-series'), s2 = $('.highlighted-series');
         _.each(DW.currentChart.dataSeries(), function(col) {
             s.append('<option>'+col.name+'</option>');
         });
@@ -71,7 +71,7 @@ $(function() {
                     return;
                 }
 
-                var li = $('<li><span data-series="'+s.val()+'" class="badge badge-info"><i class="icon-remove icon-white"></i>'+s.val()+'</span></li>');
+                var li = $('<span data-series="'+s.val()+'" class="badge badge-info"><i class="icon-remove icon-white"></i>'+s.val()+'</span>');
 
                 selected.push(s.val());
 
@@ -84,7 +84,17 @@ $(function() {
         })
     }, true);
 
+    $('.collapse').on('shown', function(e) {
+        var tgl = $('[data-toggle=collapse][data-target=#'+e.target.id+']');
+        tgl.addClass('collapse-shown');
+        tgl.removeClass('collapse-hidden');
+    });
 
+    $('.collapse').on('hidden', function(e) {
+        var tgl = $('[data-toggle=collapse][data-target=#'+e.target.id+']');
+        tgl.addClass('collapse-hidden');
+        tgl.removeClass('collapse-shown');
+    });
 });
 
 </script>
@@ -98,9 +108,9 @@ $(function() {
                 <div class="span2">
                     <label for="select-vis">Visualization:</label>
                     <select id="select-vis" class="span2">
-                        {% for vis in visualizations %}
+                        {% for vis in visualizations %}{% if vis.title %}
                         <option value="{{ vis.id }}">{{ vis.title.en }}</option>
-                        {% endfor %}
+                        {% endif %}{% endfor %}
                     </select>
                 </div>
 
@@ -118,24 +128,41 @@ $(function() {
             <label for="text-title">Title</label>
             <input type="text" id="text-title" class="input-xlarge span4" />
 
-            <label for="text-intro">Introduction</label>
-            <textarea type="text" id="text-intro" class="input-xlarge span4"></textarea>
+            <label for="text-intro"><a data-toggle="collapse" data-target="#c-intro" class="collapse-{% if chart.metadata.describe.intro %}shown{% else %}hidden{% endif %}">Introduction</a></label>
+            <div id="c-intro" class="collapse{% if chart.metadata.describe.intro %} in{% endif %}">
+                    <textarea type="text" id="text-intro" class="input-xlarge span4"></textarea>
+            </div>
 
-            <label>Highlight series</label>
-            <div class="row"><div class="span2">
+            <label>
+                <a data-toggle="collapse" data-target="#c-highlight" class="collapse-{% if chart.metadata.visualize.highlighted %}shown{% else %}hidden{% endif %}">Highlight series</a>
+            </label>
+            <div class="collapse{% if chart.metadata.visualize.highlighted %} in{% endif %}" id="c-highlight">
+                <div>
+                    <select id="highlight-series" class="span2">
+                        <option value="---">- select a data series -</option>
+                    </select>
+                </div>
+                <p class="highlighted-series">
 
-            <select id="highlight-series" class="span2">
-                <option value="---">- select a data series -</option>
-
-            </select>
-
-            </div><div class="span2 highlighted-series">
-                <ul class="unstyled">
                     {% for series in chart.metadata.visualize.highlighted %}
-                    <li><span data-series="{{ series }}" class="badge badge-info"><i class="icon-remove icon-white"></i>{{ series }}</span></li>
+                    <span data-series="{{ series }}" class="badge badge-info"><i class="icon-remove icon-white"></i>{{ series }}</span>
                  {% endfor %}
-                </ul>
-            </div></div>
+
+                </p>
+            </div>
+
+            <label><a data-toggle="collapse" data-target="#c-tooltips">Customize Tooltips</a></label>
+
+            <div class="collapse" id="c-tooltips">
+
+                
+                    <label class="control-label">Tooltip content</label>
+                    <div class="controls">
+                        <textarea style="width:100%" placeholder="tooltip content"></textarea>
+                    </div>
+                
+
+            </div>
 
             <div id="vis-options" class="form-horizontal">
                 {% use 'vis-options.twig' %}

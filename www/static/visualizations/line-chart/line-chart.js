@@ -6,10 +6,11 @@
 
     var LineChart = Datawrapper.Visualizations.LineChart = function() {};
 
-    _.extend(LineChart.prototype, Datawrapper.Visualizations.Base, {
+    _.extend(LineChart.prototype, Datawrapper.Visualizations.RaphaelChart.prototype, {
 
         render: function(el) {
             el = $(el);
+            $('.tooltip').hide();
             el.css({
                 position: 'relative'
             });
@@ -31,6 +32,8 @@
                 tpad: 0
             };
 
+            me.init();
+
             scales.x = scales.x.range([c.lpad, c.w-c.rpad]);
             scales.y = scales.y.range([c.h-c.bpad, 2]);
 
@@ -41,43 +44,106 @@
 
             me.yAxis();
 
-            var seriesLines = {};
+            me.xAxis();
 
-            // draw lines
+            var seriesLines = this.__seriesLines = {};
+
+            // draw series lines
             _.each(me.chart.dataSeries(), function(col) {
-                var path = [], x, y;
+                var path = [], x, y, sw;
                 _.each(col.data, function(val, i) {
                     x = scales.x(i);
                     y = scales.y(val);
                     path.push([path.length> 0 ? 'L' : 'M', x, y]);
                 });
-                seriesLines[col.name] = c.paper.path(path).attr({
-                    'stroke-width': me.theme.lineWidth[me.chart.isHighlighted(col) ? 'focus' : 'context'],
+                sw = me.theme.lineWidth[me.chart.isHighlighted(col) ? 'focus' : 'context'];
+
+                me.registerSeriesElement(c.paper.path(path).attr({
+                    'stroke-width': sw,
                     'stroke-linecap': 'round',
                     'stroke-linejoin': 'round',
                     'stroke-opacity': 1,
-                    'stroke': me.theme.colors[me.chart.isHighlighted(col) ? 'focus' : 'context']
-                });
-                if (me.chart.dataSeries().length > 1 && me.chart.dataSeries().length < 10)
-                    me.label(x+15, y, col.name);
+                    'stroke': me.getSeriesColor(col)
+                }), col);
+
+                // add invisible line on top to make selection easier
+                me.registerSeriesElement(c.paper.path(path).attr({
+                    'stroke-width': sw*4,
+                    'stroke-opacity': 0
+                }), col);
+
+                if (me.chart.dataSeries().length > 1 && me.chart.dataSeries().length < 10) {
+                    var lbl = me.label(x+15, y, col.name, { cl: me.chart.isHighlighted(col) ? 'highlighted series' : 'series' });
+                    lbl.data('highlighted', me.chart.isHighlighted(col));
+                    me.registerSeriesLabel(lbl, col);
+                }
             });
 
-            _.each(me.chart.dataSeries(), function(col) {
-                if (me.chart.isHighlighted(col)) seriesLines[col.name].toFront();
-            });
+            me.orderSeriesElements();
 
-            // draw x scale labels
-            if (me.chart.hasRowHeader()) {
-                var last_label_x = -100, min_label_distance = 50;
-                _.each(ds.column(ds.columnNames()[0]).data, function(val, i) {
-                    var x = scales.x(i), y = c.h-c.bpad+me.theme.xLabelOffset;
-                    if (x - last_label_x < min_label_distance) return;
-                    last_label_x = x;
-                    me.label(x, y, val, 'center');
-                });
+            if (me.theme.lineHoverDotRadius) {
+                this.hoverDot = c.paper.circle(0, 0, me.theme.lineHoverDotRadius).hide();
             }
+
+            if (true || me.theme.tooltips) {
+                el.mousemove(_.bind(me.onMouseMove, me));
+            }
+
             window.ds = me.dataset;
             window.vis = me;
+        },
+
+        getDataRowByPoint: function(x, y) {
+            return Math.round(this.__scales.x.invert(x));
+        },
+
+        showTooltip: function(series, row, x, y) {
+            var me = this,
+                xval = me.chart.rowLabel(row),
+                yval = series.data[row],
+                tt = $('.tooltip'),
+                yr = me.__scales.y(yval);
+
+            x = me.__scales.x(row);
+            y = Math.min(y, yr + me.__canvas.root.offset().top);
+
+            if (tt) {
+                $('.xval', tt).html(xval);
+                $('.yval', tt).html(yval);
+                if (me.chart.hasRowHeader()) {
+                    $('.xlabel', tt).html(me.chart.rowHeader().name);
+                }
+                $('.ylabel', tt).html(series.name);
+
+                tt.css({
+                    position: 'absolute',
+                    top: (y -tt.outerHeight()-10)+'px',
+                    left: (x - tt.outerWidth()*0.5)+'px'
+                });
+                tt.show();
+            }
+
+            if (me.theme.lineHoverDotRadius) {
+                me.hoverDot.attr({
+                    cx: x,
+                    cy: yr,
+                    r: me.theme.lineHoverDotRadius + me.getSeriesLineWidth(series),
+                    stroke: me.getSeriesColor(series),
+                    'stroke-width': me.getSeriesLineWidth(series),
+                    fill: '#fff'
+                }).show();
+            }
+        },
+
+        getSeriesLineWidth: function(series) {
+            return this.theme.lineWidth[this.chart.isHighlighted(series) ? 'focus' : 'context'];
+        },
+
+        hideTooltip: function() {
+            $('.tooltip').hide();
+            if (vis.theme.lineDotRadius) {
+                vis.hoverDot.hide();
+            }
         },
 
         computeAspectRatio: function() {
@@ -139,7 +205,7 @@
                 var y = yscale(val), x = c.lpad-me.theme.yLabelOffset;
                 if (val >= domain[0] && val <= domain[1]) {
                     // c.paper.text(x, y, val).attr(styles.labels).attr({ 'text-anchor': 'end' });
-                    me.label(x, y, val, 'right', 60);
+                    me.label(x, y, val, { align: 'right', w: 60, cl: 'axis' });
                     if (me.theme.yTicks) {
                         me.path([['M', c.lpad-25, y], ['L', c.lpad-20,y]], 'tick');
                     }
@@ -159,31 +225,20 @@
             }
         },
 
-        path: function(path, className) {
-            var p = this.__canvas.paper.path(path);
-            if (className && Raphael.svg) {
-                $(p.node).attr('class', className);
+        xAxis: function() {
+            // draw x scale labels
+            var me = this, ds = me.dataset, c = me.__canvas;
+            if (me.chart.hasRowHeader()) {
+                var last_label_x = -100, min_label_distance = 50;
+                _.each(me.chart.rowLabels(), function(val, i) {
+                    var x = me.__scales.x(i), y = c.h-c.bpad+me.theme.xLabelOffset;
+                    if (x - last_label_x < min_label_distance) return;
+                    last_label_x = x;
+                    me.label(x, y, val, { align: 'center', cl: 'axis' });
+                });
             }
-            return p;
-        },
-
-        label: function(x, y, txt, align, w, h) {
-            var l = $('<div class="label">'+txt+'</span>');
-            w = w ? w : 80;
-            align = align ? align : 'left';
-            x = align == 'left' ? x : align == 'center' ? x - w * 0.5 : x - w;
-            l.css({
-                position: 'absolute',
-                left: x+'px',
-                width: w+'px',
-                'text-align': align
-            });
-            this.__canvas.root.append(l);
-            h = h ? h : l.height();
-            l.css({
-                top: (y-h*0.5)+'px'
-            });
         }
+
     });
 
 }).call(this);
