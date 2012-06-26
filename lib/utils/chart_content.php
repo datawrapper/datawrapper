@@ -54,6 +54,7 @@ function get_chart_content($chart, $user) {
         'theme' => get_theme_meta($chart->getTheme()),
         'visualization' => get_visualization_meta($chart->getType()),
         'stylesheets' => $styles,
-        'scripts' => $scripts
+        'scripts' => $scripts,
+        'origin' => $_SERVER['HTTP_REFERER']
     );
 }

@@ -8,7 +8,7 @@
             {% for chart in charts %}
             <li class="span3 chart">
                 <div class="thumbnail">
-                    <img src="http://placehold.it/260x180" alt="">
+                    <img src="http://placehold.it/260x180" width="260" height="180" alt="">
 
                     <p class="pull-right">
                         <a href="#delete" class="delete" data-chart="{{ chart.id }}"><i class="icon-remove"></i></a>
@@ -54,30 +54,39 @@
 <script type="text/javascript">
 $(function(){
   //*
-  $('.mycharts .thumbnails').masonry({
-    itemSelector : 'li',
-    columnWidth : function(w) { return w/3; }
-  }); // */
+
+  function layout() {
+      $('.mycharts .thumbnails').masonry({
+        itemSelector : 'li',
+        columnWidth : function(w) { return w/3; }
+      });
+  }
+
+  layout();
+
+  setTimeout(layout, 1000);
+   // */
 
 
     $('a.delete').click(function(e) {
         e.preventDefault();
         var a = e.target.tagName.toLowerCase() == 'a' ? $(e.target) : $(e.target).parents('a');
         var id = a.data('chart');
-        if (window.confirm('Do you really want to delete the chart?')) {
+        if (window.confirm('Do you really want to delete the chart? Note that this chart won\'t be embedable any more, after deleting.')) {
              $.ajax({
                 url: '/api/charts/'+id,
                 type: 'DELETE',
                 success: function(data) {
                     a.parents('.chart').remove();
-                    $('.mycharts .thumbnails').masonry({
-                        itemSelector : 'li',
-                        columnWidth : function(w) { return w/3; }
-                    });
+                    layout();
                 }
             });
         };
     });
+});
+
+$('body').load(function() {
+
 });
 
 </script>
