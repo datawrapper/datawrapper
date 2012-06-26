@@ -42,7 +42,7 @@
         hover: true,
         tooltip: true,
 
-        lineHoverDotRadius: 2
+        lineHoverDotRadius: 4
     });
 
 }).call(this);

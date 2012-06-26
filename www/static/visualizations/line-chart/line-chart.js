@@ -35,7 +35,7 @@
             me.init();
 
             scales.x = scales.x.range([c.lpad, c.w-c.rpad]);
-            scales.y = scales.y.range([c.h-c.bpad, 2]);
+            scales.y = scales.y.range([c.h-c.bpad, 5]);
 
             c.paper = Raphael(el[0], c.w, c.h+2);
 
@@ -105,7 +105,7 @@
                 yr = me.__scales.y(yval);
 
             x = me.__scales.x(row);
-            y = Math.min(y, yr + me.__canvas.root.offset().top);
+            y = yr + me.__canvas.root.offset().top;
 
             if (tt) {
                 $('.xval', tt).html(xval);
@@ -127,9 +127,9 @@
                 me.hoverDot.attr({
                     cx: x,
                     cy: yr,
-                    r: me.theme.lineHoverDotRadius + me.getSeriesLineWidth(series),
+                    r: me.theme.lineHoverDotRadius,
                     stroke: me.getSeriesColor(series),
-                    'stroke-width': me.getSeriesLineWidth(series),
+                    'stroke-width': 1.5,
                     fill: '#fff'
                 }).data('series', series).show();
             }
