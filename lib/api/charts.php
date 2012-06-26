@@ -132,3 +132,12 @@ $app->put('/charts/:id/data', function($chart_id) use ($app) {
         }
     });
 });
+
+/* delete chart */
+$app->delete('/charts/:id', function($id) use ($app) {
+    if_chart_is_writable($id, function($user, $chart) use ($app) {
+        $chart->setDeleted(true);
+        $chart->save();
+        ok('');
+    });
+});

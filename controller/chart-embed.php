@@ -1,22 +1,15 @@
 <?php
 
-
 require_once '../lib/utils/visualizations.php';
 require_once '../lib/utils/themes.php';
+require_once '../lib/utils/chart_content.php';
 
 /*
- * VISUALIZE STEP
+ * Shows a preview of a chart for display in an iFrame
  */
-$app->get('/chart/:id/embed', function ($id) use ($app) {
-    check_chart($id, function($user, $chart) use ($app) {
-        $page = array(
-            'chartData' => $chart->loadData(),
-            'chart' => $chart,
-            'visualizations' => get_visualization_meta('', true),
-            'themes' => get_themes_meta()
-        );
-        add_header_vars($page, 'create');
-        add_editor_nav($page, 3);
-        $app->render('chart-visualize.twig', $page);
+$app->get('/chart/:id', function ($id) use ($app) {
+    check_chart_public($id, function($user, $chart) use ($app) {
+        $page = get_chart_content($chart, $user);
+        $app->render('chart.twig', $page);
     });
 });
