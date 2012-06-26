@@ -21,7 +21,8 @@
 
             if (!series) {
                 // nothing hovered
-                me.hoverSeries();
+                if (me.theme.hover) me.hoverSeries();
+                if (me.theme.tooltip) me.hideTooltip();
             } else {
                 if (me.theme.hover) me.hoverSeries(series);
                 if (me.theme.tooltip) me.showTooltip(series, row, x, y);

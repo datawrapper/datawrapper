@@ -141,8 +141,8 @@
 
         hideTooltip: function() {
             $('.tooltip').hide();
-            if (vis.theme.lineDotRadius) {
-                vis.hoverDot.hide();
+            if (this.theme.lineHoverDotRadius) {
+                this.hoverDot.hide();
             }
         },
 

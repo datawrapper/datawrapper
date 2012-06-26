@@ -12,6 +12,11 @@
 
         colors: {
             focus: '#D21F1F'
+        },
+
+        lineWidth: {
+            focus: 2,
+            context: 1
         }
 
     });

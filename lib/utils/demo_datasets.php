@@ -4,6 +4,18 @@
 function getDemoDatasets() {
     $datasets = array();
     $datasets[] = array(
+        'id' => 'social-protection',
+        'title' => ' Expenditure on social protection - % of GDP',
+        'data' => '	1998	1999	2000	2001	2002	2003	2004	2005	2006	2007	2008	2009
+Germany	29.1	29.5	29.6	29.7	30.3	30.7	30.1	30.0	28.9	27.8	28.0	31.4
+Greece	21.7	22.7	23.5	24.3	24.0	23.5	23.6	24.9	24.7	24.8	26.3	28.0
+Spain	20.2	19.8	20.0	19.7	20.0	20.3	20.3	20.6	20.5	20.7	22.1	25.0
+France	30.1	29.9	29.5	29.6	30.5	31.0	31.4	31.5	30.9	30.6	31.0	33.1
+Italy	24.6	24.8	24.7	24.9	25.3	25.8	26.0	26.4	26.6	26.7	27.8	29.8
+United Kingdom	26.3	25.7	26.4	26.8	25.7	25.7	25.9	26.3	26.0	23.3	26.3	29.2
+'
+    );
+    $datasets[] = array(
         'id' => 'gini',
         'title' => 'Gini coefficient in Germany, Sweden and South Africa (2005)',
         'data' => "	Gini coef.
