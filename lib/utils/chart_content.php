@@ -55,6 +55,6 @@ function get_chart_content($chart, $user) {
         'visualization' => get_visualization_meta($chart->getType()),
         'stylesheets' => $styles,
         'scripts' => $scripts,
-        'origin' => $_SERVER['HTTP_REFERER']
+        'origin' => !empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : ''
     );
 }

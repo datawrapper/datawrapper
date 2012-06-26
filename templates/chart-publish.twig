@@ -1,0 +1,56 @@
+{% extends "chart-editor.twig" %}
+{% block content %}
+
+{{ parent() }}
+
+<script type="text/javascript">
+$(function() {
+
+    DW.currentChart.sync('#make-public', 'showInGallery');
+
+});
+
+</script>
+
+<div class="dw-create-publish">
+    <div class="row">
+        <div class="span4">
+            <p>Congrats, you made it! Now is the time to check back everything. You can return to the previous steps.</p>
+
+            <h3>Link to this visualisation</h3>
+            <p><a href="http://datawrapper.de/chart/{{ chart.id }}">http://datawrapper.de/chart/{{ chart.id }}</a></p>
+
+            <h3>Embed into your website</h3>
+            <p>Just copy &amp; paste the following code into your website.</p>
+            <form class="form-inline">
+                <label>Width: <input type="text" class="input-small" style="width:4ex" value="600" /> px</label>&nbsp;&nbsp;
+                <label>Height: <input type="text" class="input-small" style="width:4ex" value="400" /> px</label>
+
+            <textarea rows="5"><iframe src="/chart/{{ chart.id }}/preview" frameborder="0" scrolling="no" allowtransparency="true" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen width="600" height="400" id="iframe"></iframe>
+            </form>
+            </textarea>
+
+
+             <h3>Make it public</h3>
+             <p>You can show some love to Datawrapper by agreeing to show your visualisation in our <a href="gallery.html">public gallery</a>. Absolutely optional :)</p>
+
+             <label class="checkbox"><input type="checkbox" id="make-public" /> Yes, make it public!</label>
+
+        </div>
+        <div class="span8">
+            <iframe src="/chart/{{ chart.id }}/preview" id="iframe-vis" style="width:100%;height:500px"></iframe>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="span12">
+            <div class="form-actions">
+                <a class="pull-right btn" href="create.html"><i class="icon-pencil"></i> Create another graphic</a>
+                <a class=" btn " href="describe.html"><i class="icon-chevron-left"></i> Return to visualise step</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

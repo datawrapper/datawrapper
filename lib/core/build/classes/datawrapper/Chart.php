@@ -159,7 +159,7 @@ class Chart extends BaseChart {
 
     public function isPublic() {
         // 1 = upload, 2 = describe, 3 = visualize, 4 = publish, 5 = published
-        return !$this->getDeleted() && $this->getLastEditStep() == 5;
+        return !$this->getDeleted() && $this->getLastEditStep() >= 4;
     }
 
 } // Chart

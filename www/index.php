@@ -130,6 +130,7 @@ require_once '../controller/chart-visualize.php';
 require_once '../controller/chart-data.php';
 require_once '../controller/chart-preview.php';
 require_once '../controller/chart-embed.php';
+require_once '../controller/chart-publish.php';
 require_once '../controller/mycharts.php';
 require_once '../controller/xhr.php';
 
