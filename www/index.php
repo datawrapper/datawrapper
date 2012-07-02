@@ -97,7 +97,7 @@ function add_header_vars(&$page, $active = null) {
             'url' => '#lang-es_ES',
             'title' => 'Español'
         )),
-        'title' => 'Language',
+        'title' => _('Language'),
         'icon' => 'font'
     );
     if ($user->isLoggedIn()) {
