@@ -23,11 +23,28 @@
 
     var Core = Datawrapper.Core = function() {
 
-        this.initialize();
-
     };
 
-    _.extend(Core.prototype, {
+    _.extend(Core, {
+
+        initialize: function() {
+            this.initLanguageLinks();
+        },
+
+        initLanguageLinks: function() {
+            $('a[href|=#lang]').click(function(evt) {
+                evt.preventDefault();
+                $.ajax({
+                    url: '/api/session/lang',
+                    type: 'PUT',
+                    data: JSON.stringify({ lang: $(evt.target).attr('href').substr(6) }),
+                    processData: false,
+                    success: function(data) {
+                        location.reload();
+                    }
+                });
+            });
+        }
 
     });
 

@@ -51,17 +51,18 @@ function toJSON($arr) {
 $twig->addExtension(new Twig_Extension_I18n());
 
 if (function_exists('bindtextdomain')) {
-    putenv('LC_ALL=de_DE');
+    $lang = DatawrapperSession::getLanguage();
     $domain = 'messages';
-    setlocale(LC_ALL, 'de_DE');
+    putenv('LC_ALL=' . $lang);
+    setlocale(LC_ALL, $lang);
     bindtextdomain($domain, '../locale');
     bind_textdomain_codeset($domain, 'UTF-8');
     textdomain($domain);
 } else {
     // If no gettext extension is found, we will
     // fake the API to not break the application
-    // function gettext($s) { return $s; }
-    // function ngettext($s) { return $s; }
+    function gettext($s) { return $s; }
+    function ngettext($s) { return $s; }
 }
 
 
@@ -84,14 +85,17 @@ function add_header_vars(&$page, $active = null) {
         'url' => '',
         'id' => 'lang',
         'dropdown' => array(array(
-            'url' => '#lang-de',
+            'url' => '#lang-de_DE',
             'title' => 'Deutsch'
         ), array(
-            'url' => '#lang-en',
+            'url' => '#lang-en_EN',
             'title' => 'English'
         ), array(
-            'url' => '#lang-fr',
-            'title' => 'Francais'
+            'url' => '#lang-fr_FR',
+            'title' => 'Français'
+        ), array(
+            'url' => '#lang-es_ES',
+            'title' => 'Español'
         )),
         'title' => 'Language',
         'icon' => 'font'
