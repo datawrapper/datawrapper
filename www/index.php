@@ -52,10 +52,11 @@ $twig->addExtension(new Twig_Extension_I18n());
 
 if (function_exists('bindtextdomain')) {
     putenv('LC_ALL=de_DE');
+    $domain = 'messages';
     setlocale(LC_ALL, 'de_DE');
-    bindtextdomain('Datawrapper', '../locale');
-    bind_textdomain_codeset('Datawrapper', 'UTF-8');
-    textdomain('Datawrapper');
+    bindtextdomain($domain, '../locale');
+    bind_textdomain_codeset($domain, 'UTF-8');
+    textdomain($domain);
 } else {
     // If no gettext extension is found, we will
     // fake the API to not break the application
