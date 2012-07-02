@@ -1,8 +1,9 @@
 <?php
 
 $docs = array(
-    '/docs' => 'Documentation',
+    '/docs/about' => 'About',
     '/docs/quickstart' => 'Quickstart',
+    '/docs/motivation' => 'Motivation',
     '/credits' => 'Credits',
     '/terms' => 'Terms of Service'
 );
@@ -24,3 +25,7 @@ foreach ($docs as $url => $title) {
         $app->render(str_replace('/', '-', substr($url, 1)) . '.twig', $page);
     });
 }
+
+$app->get('/docs', function() use ($app) {
+    $app->redirect('/docs/about');
+});
