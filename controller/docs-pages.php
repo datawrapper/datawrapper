@@ -12,6 +12,7 @@ $docs = array(
     '/docs/about' => 'About',
     '/docs/quickstart' => 'Quickstart',
     '/docs/motivation' => 'Motivation',
+    '/docs/tutorial' => 'Tutorial',
     '/credits' => 'Credits',
     '/terms' => 'Terms of Service'
 );

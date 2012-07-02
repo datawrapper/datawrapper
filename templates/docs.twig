@@ -2,9 +2,10 @@
 {% extends xhr ? "modal.twig" : "core.twig" %}
 
 
-{% block title %}- Docs / {{ title }}{% endblock %}
+{% block title %}{% if not xhr %}- {% endif %}{{ title }}{% endblock %}
 {% block content %}
 
+{% if not xhr %}
 <div class="row docs">
     <div class="span8 content">
 
@@ -31,6 +32,12 @@
 
     </div>
 </div>
+
+{% else %} {# just the text w/o navigation for modal popups #}
+
+    {{ block('docscontent') }}
+
+{% endif %}
 
 {{ parent() }}
 {% endblock %}
