@@ -6,7 +6,7 @@ require_once dirname(__FILE__) . '/../vendor/Twig/Autoloader.php';
 Twig_Autoloader::register();
 
 $tplDir = dirname(__FILE__) . '/../templates';
-$tmpDir = 'cache/';
+$tmpDir = dirname(__FILE__) . '/cache/';
 $loader = new Twig_Loader_Filesystem($tplDir);
 
 // force auto-reload to always have the latest version of the template

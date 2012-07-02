@@ -1,43 +1,49 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: Datawrapper\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
 "Last-Translator: gka <mail@driven-by-data.net>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: German\n"
+"X-Poedit-Country: GERMANY\n"
 
-#: cache/fd/a7/a02b1c67bdde1dde009129cadbe8.php:51
+#: ../scripts/cache/fd/a7/a02b1c67bdde1dde009129cadbe8.php:49
+msgid "<b class='dw-logo'>Datawrapper</b> is an open source tool helping everyone to create simple, correct and embeddable charts in minutes."
+msgstr "<b class='dw-logo'>Datawrapper</b> ist ein Opensource Tool das dabei hilft, innerhalb von Minuten einfache und korrekte Charts mit Einbett-Code zu erstellen."
+
+#: ../scripts/cache/fd/a7/a02b1c67bdde1dde009129cadbe8.php:54
 msgid "We are bridging the gap between journalists and the newest Javascript-visualization libraries such as D3.js, Raphael and others. We make it easier to \"wrap\" the data into these libraries without coding. Datawrapper minimizes the time needed to create a chart and thus helps data journalists everywhere in the world."
-msgstr ""
+msgstr "Wir füllen die Lücke zwischen Journalisten und den neuesten Javascript-Visualisierungs-Libraries wie D3.js, Raphael und anderen. Wir machen es einfach, Daten ohne Programmierkenntnisse in diese Bibliotheken zu \"wrappen\". Datawrapper reduziert die Zeit, um einfache Datenvisualisierungen zu erstellen und hilft dadurch Datenjournalisten auf der ganzen Welt."
 
-#: cache/fd/a7/a02b1c67bdde1dde009129cadbe8.php:60
+#: ../scripts/cache/fd/a7/a02b1c67bdde1dde009129cadbe8.php:63
 msgid "Main features:"
-msgstr "Wesentliche Funktionen:"
+msgstr "Wesentliche Funktionen"
 
-#: cache/fd/a7/a02b1c67bdde1dde009129cadbe8.php:66
+#: ../scripts/cache/fd/a7/a02b1c67bdde1dde009129cadbe8.php:69
 msgid "Simple: Create and embed charts in minutes"
 msgstr "Einfach: Mit wenigen Klicks zur Visualisierung"
 
-#: cache/fd/a7/a02b1c67bdde1dde009129cadbe8.php:70
+#: ../scripts/cache/fd/a7/a02b1c67bdde1dde009129cadbe8.php:73
 msgid "Open Source: Download and install"
 msgstr "Opensource: Runterladen und installieren"
 
-#: cache/fd/a7/a02b1c67bdde1dde009129cadbe8.php:74
+#: ../scripts/cache/fd/a7/a02b1c67bdde1dde009129cadbe8.php:77
 msgid "CSS: Change the CSS, add your logo"
 msgstr "CSS: Design beliebig anpassen"
 
-#: cache/fd/a7/a02b1c67bdde1dde009129cadbe8.php:78
+#: ../scripts/cache/fd/a7/a02b1c67bdde1dde009129cadbe8.php:81
 msgid "Developers: Add new chart types"
-msgstr "Entwickler: Erweiterung durch HTML5 Charts m�glich"
+msgstr "Entwickler: Erweiterung durch HTML5 Charts möglich"
 
-#: cache/fd/a7/a02b1c67bdde1dde009129cadbe8.php:82
+#: ../scripts/cache/fd/a7/a02b1c67bdde1dde009129cadbe8.php:85
 msgid "Non-profit: This is and will stay free to use"
 msgstr "Non-profit: Dieses Angebot ist und bleibt kostenfrei"
 
-#: cache/fd/a7/a02b1c67bdde1dde009129cadbe8.php:88
+#: ../scripts/cache/fd/a7/a02b1c67bdde1dde009129cadbe8.php:91
 msgid "Why this approach? See our Motivations..."
 msgstr "Mehr zum Hintergrund: Datawrapper Ziele und Funktionen"
 
