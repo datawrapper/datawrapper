@@ -25,6 +25,7 @@ TwigView::$twigDirectory = '../vendor/Twig';
 // include datawrapper session serialization
 require '../lib/session/Datawrapper.php';
 
+define('DW_DOMAIN', 'datawrapper');
 
 $app = new Slim(array(
     'view' => new TwigView(),
@@ -52,7 +53,7 @@ function add_header_vars(&$page, $active = null) {
 
     $user = DatawrapperSession::getUser();
     $headlinks = array();
-    $headlinks[] = array('url' => '/', 'id' => 'about', 'title' => 'About', 'icon' => 'home');
+    $headlinks[] = array('url' => '/docs', 'id' => 'about', 'title' => 'About', 'icon' => 'home');
     $headlinks[] = array('url' => '/chart/create', 'id' => 'chart', 'title' => 'Create', 'icon' => 'pencil');
     if ($user->isLoggedIn()) {
         $headlinks[] = array('url' => '/mycharts', 'id' => 'mycharts', 'title' => 'My Charts', 'icon' => 'signal');
@@ -102,6 +103,7 @@ function add_header_vars(&$page, $active = null) {
     }
     $page['headlinks'] = $headlinks;
     $page['user'] = DatawrapperSession::getUser();
+    $page['DW_DOMAIN'] = DW_DOMAIN;
 }
 
 
@@ -133,6 +135,7 @@ require_once '../controller/chart-embed.php';
 require_once '../controller/chart-publish.php';
 require_once '../controller/mycharts.php';
 require_once '../controller/xhr.php';
+require_once '../controller/docs.php';
 
 
 

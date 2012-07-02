@@ -364,3 +364,11 @@ dl.dl-horizontal dd {
 .collapse-shown:after {
     content: "";
 }
+
+.docs h1.title {
+    font-size: 48px;
+    margin: 0px 0 48px;
+    font-weight: 300;
+    letter-spacing: -1px;
+}
+

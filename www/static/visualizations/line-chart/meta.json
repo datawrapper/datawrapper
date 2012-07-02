@@ -14,7 +14,7 @@
         "url": "http://www.opensource.org/licenses/mit-license.php"
     },
     "about": "http://site.com/understanding-line-charts/",
-        "options": {
+    "options": {
         "scale": {
             "type": "radio",
             "label": {

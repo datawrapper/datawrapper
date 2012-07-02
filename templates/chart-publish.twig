@@ -15,6 +15,9 @@ $(function() {
 <div class="dw-create-publish">
     <div class="row">
         <div class="span4">
+
+            {% if user.isAbleToPublish %}
+
             <p>Congrats, you made it! Now is the time to check back everything. You can return to the previous steps.</p>
 
             <h3>Link to this visualisation</h3>
@@ -26,16 +29,55 @@ $(function() {
                 <label>Width: <input type="text" class="input-small" style="width:4ex" value="600" /> px</label>&nbsp;&nbsp;
                 <label>Height: <input type="text" class="input-small" style="width:4ex" value="400" /> px</label>
 
-            <textarea rows="5"><iframe src="/chart/{{ chart.id }}/preview" frameborder="0" scrolling="no" allowtransparency="true" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen width="600" height="400" id="iframe"></iframe>
-            </form>
-            </textarea>
-
+            <textarea id="iframe-code" class="span4" rows="5"><iframe src="/chart/{{ chart.id }}/preview" frameborder="0" scrolling="no" allowtransparency="true" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen width="600" height="400"></iframe></textarea>
 
              <h3>Make it public</h3>
              <p>You can show some love to Datawrapper by agreeing to show your visualisation in our <a href="gallery.html">public gallery</a>. Absolutely optional :)</p>
 
              <label class="checkbox"><input type="checkbox" id="make-public" /> Yes, make it public!</label>
 
+            {% elseif user.role == 'guest' %}
+
+            <h3>Congrats, you created your first chart!</h3>
+
+            <p>Now, to be able to embed the chart, we ask you to create an account. It's free and all you need is a valid email address. The chart you just created will be transfered to your new account.</p>
+
+            <h3>Sign Up</h3>
+
+            <div class="signup-form form-vertcal">
+                <div class="control-group">
+                    <input id="register-email" type="text" class="input-xlarge span2" placeholder="email" />
+                </div>
+                <div class="control-group">
+                    <input id="register-pwd" type="password" class="input-xlarge span2" placeholder="password" />
+                </div>
+                <div class="control-group">
+                    <input id="register-pwd-2" type="password" class="input-xlarge span2" placeholder="repeat password" />
+                </div>
+                <a id="btn-register" class="btn btn-large"><i class="icon-pencil"></i> Sign Up</a>
+            </div>
+
+            {% elseif user.role == 'pending' %}
+
+            <h3>Congrats, you created a chart!</h3>
+
+            <p>The chart is accessible under <a href="{{ DW_DOMAIN }}/chart/{{ chart.id }}/edit">{{ DW_DOMAIN }}/chart/{{ chart.id }}/edit</a> or via your <a href="/mycharts">My Charts</a> page.
+
+            <p>Now, to be able to publish and embed this chart into other websites, you need to activate the email address you entered during sign up process.</p>
+
+            <p>If you did not get any email within 5 minutes, here's the trouble shooting guide:</p>
+            <ol>
+                <li>At first, don't worry. Everything you created will wait patiently</li>
+                <li>Make sure that your spam filter didn't catch our activation email. They are sent from activate@{{ DW_DOMAIN }}.</li>
+                <li>Of course, you can also let us <a href="#resend">resend the activation email</a>. (TODO)</li>
+                <li>If that didn't work either, please contact our support</li>
+            </ol>
+
+            {% else %}
+
+            {{ user.role }}
+
+            {% endif %}
         </div>
         <div class="span8">
             <iframe src="/chart/{{ chart.id }}/preview" id="iframe-vis" style="width:100%;height:500px"></iframe>

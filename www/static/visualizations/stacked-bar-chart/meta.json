@@ -1,0 +1,59 @@
+{
+    "title": {
+        "en": "Stacked Bar Chart",
+        "de": "Balkendiagramm",
+        "fr": "Diagramme temporel"
+    },
+    "extends": "raphael-chart",
+    "author": {
+        "name": "gka",
+        "email": "gka@vis4.net"
+    },
+    "license": {
+        "name": "MIT",
+        "url": "http://www.opensource.org/licenses/mit-license.php"
+    },
+    "options": {
+        "orientation": {
+            "type": "radio",
+            "label": {
+                "en": "Bar orientation",
+                "de": "Typ",
+                "fr": "Type"
+            },
+            "options": [{
+                "value": "vertical",
+                "label": {
+                    "en": "vertical",
+                    "de": "gestapelt",
+                    "fr": "linéaire"
+                },
+                "default": true
+            },{
+                "value": "horizontal",
+                "label": {
+                    "en": "horizontal",
+                    "de": "normal",
+                    "fr": "linéaire"
+                },
+                "default": true
+            }]
+        },
+        "normalize": {
+            "type": "checkbox",
+            "label": {
+                "en": "Normalize bars to 100%",
+                "de": "Typ",
+                "fr": "Type"
+            }
+        }
+    },
+    "libraries": [],
+    "about": "http://site.com/understanding-bar-charts/",
+    "compatibility": {
+        "msie": "9+",
+        "moz": "5+",
+        "webkit": "3+",
+        "ios": "no"
+    }
+}

@@ -53,7 +53,8 @@ class ChartQuery extends BaseChartQuery {
                         'horizontal-header' => true
                     ),
                     'visualize' => array(
-                        'highlighted' => array()
+                        'highlighted-series' => array(),
+                        'highlighted-values' => array()
                     ),
                     'describe' => array(
                         'source-name' => '',

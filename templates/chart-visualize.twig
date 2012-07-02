@@ -128,31 +128,46 @@ $(function() {
             <label for="text-title">Title</label>
             <input type="text" id="text-title" class="input-xlarge span4" />
 
+            {# add introduction #}
+
             <label for="text-intro"><a data-toggle="collapse" data-target="#c-intro" class="collapse-{% if chart.metadata.describe.intro %}shown{% else %}hidden{% endif %}">Introduction</a></label>
             <div id="c-intro" class="collapse{% if chart.metadata.describe.intro %} in{% endif %}">
                     <textarea type="text" id="text-intro" class="input-xlarge span4"></textarea>
             </div>
 
+            {# highlight series #}
+
             <label>
-                <a data-toggle="collapse" data-target="#c-highlight" class="collapse-{% if chart.metadata.visualize.highlighted %}shown{% else %}hidden{% endif %}">Highlight series</a>
+                <a data-toggle="collapse" data-target="#c-highlight" class="collapse-{% if chart.metadata.visualize.highlighted-series %}shown{% else %}hidden{% endif %}">Highlight series</a>
             </label>
-            <div class="collapse{% if chart.metadata.visualize.highlighted %} in{% endif %}" id="c-highlight">
+            <div class="collapse{% if chart.metadata.visualize.highlighted-series %} in{% endif %}" id="c-highlight">
                 <div>
                     <select id="highlight-series" class="span2">
                         <option value="---">- select a data series -</option>
                     </select>
                 </div>
                 <p class="highlighted-series">
-
-                    {% for series in chart.metadata.visualize.highlighted %}
+                    {% for series in chart.metadata.visualize.highlighted-series %}
                     <span data-series="{{ series }}" class="badge badge-info"><i class="icon-remove icon-white"></i>{{ series }}</span>
-                 {% endfor %}
-
+                    {% endfor %}
                 </p>
             </div>
 
-            <label><a data-toggle="collapse" data-target="#c-tooltips">Customize Tooltips</a></label>
+            {# highlight values #}
 
+            <label>
+                <a data-toggle="collapse" data-target="#c-highlight-values" class="collapse-{% if chart.metadata.visualize.highlighted-values %}shown{% else %}hidden{% endif %}">Highlight values</a>
+            </label>
+            <div class="collapse{% if chart.metadata.visualize.highlighted-values %} in{% endif %}" id="c-highlight-values">
+                <div class="form-horizontal">
+                    <label>Value: <input type="text" class="span1" /> <input type="text" class="span2" placeholder="comment" /></label>
+                </div>
+                    
+            </div>
+
+            {# customize tooltips #}
+
+            <label><a data-toggle="collapse" data-target="#c-tooltips">Customize Tooltips</a></label>
             <div class="collapse" id="c-tooltips">
                 <label class="control-label">Tooltip content</label>
                 <div class="controls">

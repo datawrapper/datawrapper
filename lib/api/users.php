@@ -51,7 +51,7 @@ $app->post('/users', function() use ($app) {
     $name = $data->email;
     $domain = 'dw.vis4.net';
     $activationLink = 'http://' . $domain . '/account/activate/' . $user->getToken();
-    $from = 'datawrapper@' . $domain;
+    $from = 'activate@' . $domain;
     $mail = <<<MAIL
 
 Hello $name,

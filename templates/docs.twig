@@ -1,0 +1,42 @@
+{% extends "core.twig" %}
+
+{% block docscontent %}
+
+Foo
+
+{% endblock %}
+
+
+{% block title %}- Docs / {{ title }}{% endblock %}
+{% block content %}
+
+<div class="row docs">
+    <div class="span8 content">
+
+        {# <ul class="breadcrumb">
+            {% for page in breadcrumb %}
+                <li {% if page.active %}class="active"{% endif %}><a href="{{ page.url }}">{{ page.title }}</a>{% if not page.active %} <span class="divider">/</span>{% endif %}</li>
+            {% endfor %}
+        </ul> #}
+
+        <h1 class="title">{{ title }}</h1>
+
+        {{ block('docscontent') }}
+
+    </div>
+    <div class="span4 nav">
+
+        <h3>Navigation</h3>
+
+        <ul class="nav nav-pills nav-stacked">
+            {% for page in navigation %}
+            <li {% if page.active %}class="active"{% endif %}><a href="{{ page.url }}">{{ page.title }}</a></li>
+            {% endfor %}
+        </ul>
+
+    </div>
+</div>
+
+{{ parent() }}
+{% endblock %}
+
