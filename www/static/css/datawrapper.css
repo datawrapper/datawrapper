@@ -52,6 +52,10 @@
     line-height: 42px;
     margin-left: 0px;
 }
+.dw-logo-type a:hover, .dw-logo-type a:focus {
+    color: #0063A5;
+    text-decoration: none;
+}
 
 .dw .dw-logo-sub {
     margin-bottom: 40px;
@@ -372,3 +376,6 @@ dl.dl-horizontal dd {
     letter-spacing: -1px;
 }
 
+.docs h2 {
+    margin: 1.5em 0 0.5em;
+}

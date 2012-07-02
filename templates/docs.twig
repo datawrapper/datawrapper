@@ -1,10 +1,5 @@
-{% extends "core.twig" %}
 
-{% block docscontent %}
-
-Foo
-
-{% endblock %}
+{% extends xhr ? "modal.twig" : "core.twig" %}
 
 
 {% block title %}- Docs / {{ title }}{% endblock %}

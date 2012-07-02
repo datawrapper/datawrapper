@@ -22,10 +22,10 @@ $app->get('/xhr/home-login', function() use ($app) {
     $app->render('home-login.twig', $page);
 });
 
-/*
- * reloads chart specific options
+/**
+ * reloads visualization specific options after the user
+ * changed the visualization type
  */
-
 require_once '../lib/utils/visualizations.php';
 
 $app->get('/xhr/:chartid/vis-options', function($id) use ($app) {
@@ -36,3 +36,18 @@ $app->get('/xhr/:chartid/vis-options', function($id) use ($app) {
         $app->render('vis-options.twig', $page);
     });
 });
+
+/**
+ * load a page from the docs for a modal window
+ */
+require_once 'docs-pages.php';
+
+foreach ($docs as $url => $title) {
+    $app->get('/xhr' . $url, function() use ($app, $url, $title) {
+        $page = array('title' => $title);
+        add_header_vars($page, 'about');
+        add_docs_vars($page, $url);
+        $page['xhr'] = true;
+        $app->render(str_replace('/', '-', substr($url, 1)) . '.twig', $page);
+    });
+}
