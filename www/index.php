@@ -49,11 +49,17 @@ function toJSON($arr) {
 
 // loae I18n extension for Twig
 $twig->addExtension(new Twig_Extension_I18n());
-putenv('LC_ALL=de_DE');
-setlocale(LC_ALL, 'de_DE');
-bindtextdomain('Datawrapper', '../locale');
-bind_textdomain_codeset('Datawrapper', 'UTF-8');
-textdomain('Datawrapper');
+
+if (function_exists('bindtextdomain')) {
+    putenv('LC_ALL=de_DE');
+    setlocale(LC_ALL, 'de_DE');
+    bindtextdomain('Datawrapper', '../locale');
+    bind_textdomain_codeset('Datawrapper', 'UTF-8');
+    textdomain('Datawrapper');
+} else {
+    function gettext($s) { return $s; }
+    function ngettext($s) { return $s; }
+}
 
 
 function add_header_vars(&$page, $active = null) {
