@@ -58,7 +58,7 @@ if (function_exists('bindtextdomain')) {
     textdomain('Datawrapper');
 } else {
     // If no gettext extension is found, we will
-    // pretend the API to not break the applica
+    // fake the API to not break the application
     function gettext($s) { return $s; }
     function ngettext($s) { return $s; }
 }
