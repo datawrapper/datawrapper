@@ -32,16 +32,29 @@ $app = new Slim(array(
     'templates.path' => '../templates'
 ));
 
-$app->view()->getEnvironment()->addFilter('classify', new Twig_Filter_Function('str_classify'));
-$app->view()->getEnvironment()->addFilter('json', new Twig_Filter_Function('toJSON'));
+// Load twig instance
+$twig = $app->view()->getEnvironment();
 
+// Twig Extension to convert strings to nice JavaScript class names, e.g. bar-chart --> BarChart
+$twig->addFilter('classify', new Twig_Filter_Function('str_classify'));
 function str_classify($s) {
     return preg_replace('/\s/', '', ucwords(preg_replace('/[_\-\.]/', ' ', $s)));
 }
 
+// Twig Extension to jsonify objects
+$twig->addFilter('json', new Twig_Filter_Function('toJSON'));
 function toJSON($arr) {
     return json_encode($arr);
 }
+
+// loae I18n extension for Twig
+$twig->addExtension(new Twig_Extension_I18n());
+putenv('LC_ALL=de_DE');
+setlocale(LC_ALL, 'de_DE');
+bindtextdomain('Datawrapper', '../locale');
+bind_textdomain_codeset('Datawrapper', 'UTF-8');
+textdomain('Datawrapper');
+
 
 function add_header_vars(&$page, $active = null) {
     // define the header links

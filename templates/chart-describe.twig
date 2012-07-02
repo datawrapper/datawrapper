@@ -89,10 +89,7 @@ $(function() {
                 <h2>Check your data</h2>
             </div>
 
-            {% use 'help-interpret-data.twig' %}
-            {{ block('helpmodal') }}
-
-            <p>Please check if the data format was recognized correctly. If not, please <a data-target="#helpInterpretData" href="#" data-toggle="modal">help Datawrapper to understand your data</a>.</p>
+            <p>Please check if the data format was recognized correctly. If not, please <a data-toggle="modal" href="/xhr/docs/describe">help Datawrapper to understand your data</a>.</p>
 
 
             <form class="form-inline">

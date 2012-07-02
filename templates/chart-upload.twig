@@ -57,9 +57,11 @@
 
         <div class="span5">
             <h3>Help</h3>
-            <p>We want to make getting data into Datawrapper as easy as possible. If you're working in Excel or OpenOffice, just select your data (including header row/column) and paste it in the following text field. <a href="#">learn more</a></p>
+            <p>We want to make getting data into Datawrapper as easy as possible. If you're working in Excel or OpenOffice, just select your data (including header row/column) and paste it in the following text field.</p>
 
-            <p><span class="label">Hint</span> if you just want to play around with Datawrapper, you can use one of the following example datasets:
+            <p><a href="/xhr/docs/upload" data-toggle="modal">Learn more about how to upload your data</a>.</p>
+
+            <p>If you simply want to play around with Datawrapper, you can use one of the following example datasets:
                 <ul id="demo-datasets" class="">
                     {% for dataset in datasets %}
                     <li><a href="#{{ dataset.id }}" class="demo-dataset" data-data="{{ dataset.data }}">{{ dataset.title }}</a></li>
