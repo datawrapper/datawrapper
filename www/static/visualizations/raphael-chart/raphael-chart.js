@@ -25,11 +25,11 @@
                 bpad: me.theme.bottomPadding,
                 tpad: 0
             }, canvas);
-            console.log('initCanvas');
             canvas.root = el;
             canvas.paper = Raphael(el[0], canvas.w, canvas.h+2);
             el.height(canvas.h);
             $('.tooltip').hide();
+            me.__canvas = canvas;
             return canvas;
         },
 

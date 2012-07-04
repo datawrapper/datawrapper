@@ -43,6 +43,13 @@
             // subtract body padding
             //ch += $('body').innerHeight() - $('body').height();
             return $(window).height() - ch - 30;
+        },
+
+        /**
+         * short-cut for this.chart.get('metadata.visualizes.*')
+         */
+        get: function(str) {
+            return this.chart.get('metadata.visualize.'+str);
         }
 
     });

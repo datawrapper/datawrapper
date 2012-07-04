@@ -19,7 +19,7 @@
             },
             // init canvas
             c = me.initCanvas(el, {
-                h: me.chart.get('metadata.visualize.force-banking') ?
+                h: me.get('force-banking') ?
                     el.width() / me.computeAspectRatio() : me.getMaxChartHeight(el)
             });
 
@@ -162,10 +162,10 @@
                 domain[1] = Math.max(domain[1], col._max());
             });
             me.__domain = domain;
-            if (me.chart.get('metadata.visualize.baseline') == 'zero') {
+            if (me.get('baseline') == 'zero') {
                 domain[0] = 0;
             }
-            scale = me.chart.get('metadata.visualize.scale') || 'linear';
+            scale = me.get('scale') || 'linear';
             if (scale == 'log' && domain[0] === 0) domain[0] = 0.03;
             return d3.scale[scale]().domain(domain);
         },
@@ -177,7 +177,7 @@
                 c = this.__canvas,
                 domain = this.__domain,
                 styles = this.__styles,
-                ticks = yscale.ticks(c.h/50),
+                ticks = yscale.ticks(c.h / 50),
                 bt = yscale(ticks[0]),
                 tt = yscale(ticks[ticks.length-1]);
 
