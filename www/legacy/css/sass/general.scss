@@ -1,0 +1,957 @@
+/*****************************/
+/*       General.scss        */
+/* Main styles for DataStory */
+/*****************************/
+
+@import "compass";
+@import "compass/css3";
+@import "compass/utilities";
+
+$error-color : #ff8;
+$warning-color: #AB2B2E;
+
+$color-on : #5E9DCD;
+$color-blue:#335EA9;
+$color-off : #606060;
+$color-on_text : #fff;
+$color-off_text : #555;
+$red-1: #A3160D;
+$red-2: #B94E63;
+$black: #000;
+
+$font-size : 1em;
+
+$background-color:#fff;
+$shadow-color:#7f7f7f;
+$dark-color:#f2f2f2;
+$border-color:#e5e5e5;
+
+$box-w:390px;
+
+$margin-left:60px;
+$container-width:960px;
+$grid-cols: 8;
+$row-h: 30px;
+$col-w: $container-width / $grid-cols;
+
+$font-family-container: Arial, Helvetica, Garuda, sans-serif;
+
+@mixin narrow-text {
+    letter-spacing:-1px;
+    font-stretch: 90%;
+    text-transform: uppercase;
+    font-weight:bold;
+}
+
+@mixin explainer {
+    font-size: $font-size + .2;
+}
+
+@mixin title_font {
+    font-size: $font-size + .2;
+    font-family: Georgia, Serif;
+    color:$color-off_text;
+
+}
+
+@mixin inset_input($shadow-length) {
+    color:$color-off_text;
+    background-color:$dark-color;
+    @include single-box-shadow("#999", 0, 0, $shadow-length, $shadow-length/2, true);
+    border: 1px solid $shadow-color;
+}
+
+/***************/
+/*   General    /
+/***************/
+
+html  {
+    height: 100%;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    background-color:$dark-color;
+    text-align: center;
+    height: 100%;
+}
+
+#black_veil {
+    display:none;
+    width: 100%;
+    min-height: 100%;
+    background-color: #000;
+    @include opacity(0.8);
+    position: fixed;
+    z-index:4;
+    top:0;
+    left:0;
+}
+
+$loader-w: 10%;
+$loader-h: 10%;
+
+#loader {
+    position:fixed;
+    z-index:5;
+    display:none;
+    top: 50% - $loader-h/2;
+    left: 50% - $loader-w/2;
+}
+
+.clear {
+    clear:both;
+}
+
+
+
+/***************/
+/*   Container  /
+/***************/
+
+#container {
+
+    width: $container-width;
+    margin: 0 auto;
+    text-align:left;
+    min-height: 100%;
+
+    position:relative;
+
+    font-family: $font-family-container;
+    background-color:$background-color;
+    color:$color-off_text;
+
+    @include box-shadow($shadow-color 0px 0px 10px);
+
+    a {
+        text-decoration:underline;
+        color: $black;
+        &:hover  { text-decoration:underline; }
+    }
+}
+
+#screen_container {
+    min-height:$row-h*11;
+    position: relative;
+    top: 0;
+    left: 0;
+    padding:0;
+    margin: 0 $margin-left;
+}
+
+/***************/
+/*    Header    /
+/***************/
+
+$header-height : $row-h * 3;
+$logo-w: $row-h * 2;
+$navbar-height: $row-h;
+
+#header {
+    width: $container-width;
+    position:relative;
+    top:0;
+    left:0;
+    height: $header-height;
+}
+
+#logo {
+    position:absolute;
+    z-index:0;
+    width:$col-w*3;
+    margin-left:$margin-left;
+    margin-top:-5px;
+    background-image:url('../../images/logo_header.png');
+    width:404px;
+    height:75px;
+    cursor: pointer;
+}
+
+#navbar {
+    width: $container-width - $margin-left;
+    margin-right: $margin-left;
+    background-color:transparent;
+    position:absolute;
+    z-index:3;
+    top:$navbar-height*1.5;
+    left:0;
+    height: $navbar-height;
+    text-transform:uppercase;
+    font-size: $font-size * 0.6;
+
+    #promo  {
+        width: $col-w * 2.2;
+        float:right;
+        text-align:right;
+        margin-top:$row-h/2;
+    }
+
+    #languages {
+        width: $col-w * 1.5;
+        float:right;
+        margin-top:$row-h/2;
+        text-align:right;
+        
+        .language {
+            margin: 0;
+            display:inline;
+            color: $color-off;
+            cursor: pointer;
+            &:hover  { text-decoration: underline; }
+        }
+    }
+
+    #loggedin {
+        
+        float:left;
+        margin: 0px 0 0 60px;
+        font-size: $font-size * 0.9;
+
+        #my_vis {
+            margin: $row-h/2 5px 0 0;
+            float:right;
+        }
+
+        #my_vis a {
+            cursor: pointer;
+            color: $color-on_text;
+            text-decoration:none;
+            background-color: $color-on;
+            @include border-radius(2px);
+            padding: 0 3px;
+            &:hover  { color: $color-on; background-color: $color-on_text; }
+        }
+
+        #loggedas {
+            float:right;
+            margin: $row-h/2 5px 0 0;
+            color: $color-off_text;
+        }
+
+        #logout {
+            margin: $row-h/2 5px 0 0;
+            float:right;
+            cursor: pointer;
+            color: $color-on;
+            &:hover  { color: $color-off_text; }
+        }
+    }
+}
+
+/***************/
+/*   Buttons   */
+/***************/
+
+$button-color-top: #fff;
+$button-color-bottom: #ccc;
+
+.button {
+    
+    cursor:pointer;
+    height:30px;
+        
+    background: $button-color-top;
+    @include background-image(linear-gradient($button-color-top, $button-color-bottom)); 
+    @include border-radius(2px);
+    
+    border-color: #E3E3E3 #DBDBDB #DBDBDB #E3E3E3;
+    border-right: 1px solid #DBDBDB;
+    border-style: solid;
+    border-width: 1px;
+    color: #444444;
+
+    @include text-shadow(rgba(white, 0.2) 1px 1px 0, rgba(white, 0.2) 1px 1px 0, rgba(white, 0.2) 1px 1px 0);
+}
+
+.nav {
+        font-size: $font-size + .2;
+        width: $col-w - $col-w/10;
+    }
+
+
+#button_next, #button_prev {
+    cursor:pointer;
+    position:absolute;
+    top: $row-h * 8;
+    width: $col-w;
+    text-align:center;
+}
+
+#button_next {
+    right: -95px;
+
+    #next, #new_chart  {
+        @include border-right-radius(25px);
+        height:100px;
+        width:70px;
+        border-left:none;
+    }
+}
+
+#button_prev {
+    left: -95px;
+    #prev  {
+        @include border-left-radius(25px);
+        height:100px;
+        width:70px;
+        border-right:none;
+    }
+}
+
+/***************/
+/* Breadcrumbs */
+/***************/
+
+$breadcrumbs-height: $row-h;
+$breadcrumbs-width: $container-width;
+$breadcrumbs_steps: 4;
+$breadcrumbs-padding: 8px;
+
+@mixin transpose-on-off {
+    float:left;
+    width: (($container-width - 2 * $margin-left) / $breadcrumbs_steps) - $breadcrumbs-padding;
+    margin: 0 5px;
+    padding: 5px 0;
+    text-align:center;
+    @include border-radius(6px);
+    @include narrow-text;
+}
+
+#breadcrumbs {
+    
+    height: $breadcrumbs-height;
+    text-align:center;
+    margin:0 $margin-left 15px $margin-left;
+    width: $container-width - 2 * $margin-left;
+
+    .on {
+        background-color:$color-on;
+        color:$color-on_text;
+        @include transpose-on-off;
+    }
+
+    .off  {
+        background-color:$color-off;
+        color:$color-off_text;
+        @include transpose-on-off;
+    }
+}
+
+/***************/
+/* Error box   */
+/***************/
+#error {
+    display:none;
+    color:#000;
+    font-weight:bold;
+    cursor:pointer;
+        
+    background: $error-color;
+    @include background-image(linear-gradient($error-color, scale-lightness($error-color, -20))); 
+
+    font-size:12px;    
+    
+    padding:5px 10px;
+    margin:5px;
+    
+    width: $col-w * 2;
+
+    z-index: 5;
+    position:absolute;
+    top:10px;
+    right:10px;
+
+
+    @include single-box-shadow;
+
+    @include border-radius(6px);
+}
+
+/******************/
+/* Warning edit   */
+/******************/
+
+#warning_edit {
+    color:#000;
+    font-weight:normal;
+        
+    background: $warning-color;
+    @include background-image(linear-gradient($warning-color, scale-lightness($warning-color, -20))); 
+
+    font-size:12px;    
+    
+    padding:5px 10px;
+    
+    margin:10px $margin-left 20px $margin-left;
+    width: $container-width - 2 * $margin-left - $breadcrumbs-padding * 3 + 5;
+
+    z-index: 2;
+    position:relative;
+    top:0px;
+    left:0px;
+
+    @include border-radius();
+}
+
+
+/****************/
+/* Input screen */
+/****************/
+
+$textarea-padding: 10px;
+
+#input {
+    
+    position:relative;
+    z-index:3;
+
+    #explainer {
+        @include explainer;
+    }
+    #input_data {
+        width:$container-width - $textarea-padding * 2 - $margin-left * 2 - 2px;
+        @include inset_input(10px);
+        height: $row-h * 5;
+        padding:$textarea-padding;
+    }
+}
+
+//Sample data
+#sample_data {
+
+    font-size:$font-size * 0.8;
+    width:70%;
+
+    ul  {
+        margin: 0;
+        padding: 0;
+    }
+
+    li  {
+        list-style:none;
+        cursor:pointer;
+        text-decoration:underline;
+        margin:0 1%;
+        text-indent:-1%;
+        &:hover  { text-decoration:none; }
+    }
+}
+
+/****************/
+/* Check screen */
+/****************/
+
+$table-padding: 10px;
+
+#check {
+    #explainer {
+
+        @include explainer;
+
+        #sub_explainer {
+            
+            font-size: $font-size - .2;
+
+            p {
+                margin: 5px 10px;
+            }
+
+            .transpose {
+                font-size: $font-size - .2;
+                width: $col-w * 2;
+            }
+        }
+    }
+
+    table {
+        margin-top: 10px;
+        width:($container-width - 2 * $margin-left);
+        padding:$table-padding;
+        font-size: $font-size - .2;
+    }
+
+    td {
+        background-color:$dark-color;
+        text-align:center;
+        width:$col-w;
+    }
+
+    .header_cell {
+        font-weight: bold;
+        background-color:$color-on;
+    }
+
+    .empty_cell {
+        background-color:$background-color;
+    }
+}
+
+/********************/
+/* Visualize screen */
+/********************/
+
+$customizator-margin-bottom: 5px;
+
+#visualize {
+
+    #chart {
+        width: ($container-width - 2 * $margin-left);
+        height: $row-h * 10;
+        margin: $row-h 0;
+        padding: 0;
+        overflow:hidden;
+    }
+
+    #explainer {
+        @include explainer;
+    }
+
+    #chart_customization {
+        
+        width:$container-width - 2 * $margin-left ;
+        height:$row-h * 3;
+        padding:0;
+
+        input, select {
+            width:($container-width - 2 * $margin-left) / 3 - $table-padding * 4;
+            font-size: $font-size;
+            @include inset_input(1px);
+            height:$row-h - $customizator-margin-bottom;
+        }
+        input {
+            padding: 0 $table-padding;
+        }
+        select {
+            width:($container-width - 2 * $margin-left) / 3 - $table-padding * 2;
+            padding:4px 0 0 4px;
+        }
+
+        .desc {
+            width:529px;
+        }
+
+        .inactive {
+            background-color:$dark-color;
+            color:$color-on_text;
+            border:$shadow-color;
+        }
+    }
+
+    #chart_info {
+        position:absolute;
+        right: -25px;
+        top: 25px;
+        
+        width:25px;
+        height:21px;
+
+        background-image:url('../../images/question_mark.png');
+
+        cursor:pointer;
+    }
+
+    #chart_desc_box {
+        position:absolute;
+        top:58px;
+        left:$col-w*5;
+        z-index:2;
+        
+        font-size:$font-size - .25;
+        
+        width: $col-w * 2 ;
+        border:$shadow-color 1px solid;
+        background: $background-color;
+        @include border-radius(2px);
+        @include box-shadow($shadow-color 0px 0px 5px);
+        padding:5px;
+
+        display:none;
+
+        img {
+            width:15px;
+            height:15px;
+        }
+    }
+
+    .chart_customizator {
+        float: left;
+        font-size: 0.9em;
+        height: 30px;
+        margin: 0 61px 5px 0;
+        width: 228px;
+    }
+}
+
+/********************/
+/*  Publish screen  */
+/********************/
+
+$chart-h:300px;
+$chart-w:400px;
+
+#publish {
+
+    #explainer {
+        @include explainer;
+    }
+
+    p {
+        margin: 8px 0 2px 0;
+    }
+
+    #direct_link_url {
+        width: $col-w * 4;
+        margin: 5px auto;
+        padding: 2px;
+        font-size: $font-size;
+        @include inset_input(1px);
+        margin-bottom: 5px;
+    }
+
+    #iframe_code {
+        position:relative;
+        z-index:3;
+        width: $col-w * 4;
+        height:$row-h * 2;
+        margin: 5px auto;
+        display: block;
+        font-size: $font-size;
+        @include inset_input(1px);
+    }
+
+    .embed_customization {
+        font-size: $font-size - .1;
+        margin-bottom: 5px;
+    }
+
+    .embed_customizator {
+        position:relative;
+        z-index:3;
+        width: 40px;
+        @include inset_input(1px);
+    }
+
+    #embed {
+
+        margin: 0 auto;
+        background-color: #fff;
+
+    }
+}
+
+/************************************/
+/*              Popups              */
+/************************************/
+
+.popup {
+    padding: 20px;
+    margin: 0;
+    background-color:$dark-color;
+    max-height: $col-w*4.8;
+    width:$col-w*6;
+    text-align: left;
+    font-family: $font-family-container;
+    color:scale-lightness($color-off_text, -20);
+    font-size: $font-size - .2;
+
+    li {
+        margin-top:$font-size + .1;
+    }
+
+    a  {
+        color:scale-lightness($color-off_text, -20);
+        text-decoration:underline;
+        &:hover  {text-decoration:none;}
+    }
+
+}
+
+#quickstart_noshow {
+    @include border-radius(5px);
+    padding: 5px;
+    background-color:$color-on_text;
+    border: 1px solid $border-color;
+    font-family: $font-family-container;
+    font-size:$font-size - .1;
+}
+
+/************************************/
+/*              Footer              */
+/************************************/
+
+#footer {
+    padding: 20px 60px;
+    height:50px;
+    margin: 200px 0 0 0;
+    text-transform:uppercase;
+    color:scale-lightness($color-off_text, -20);
+    font-size: $font-size * .7;
+    clear:both;
+
+}
+
+#footer, #promo  {
+    .separator {
+            color:$color-off_text;
+        }
+
+        a  {
+            color:$color-off_text;
+            font-size: $font-size * 0.9;
+            &:hover  {text-decoration:none; }
+        }
+}
+
+/**** Tutorial ****/
+
+.button_tutorial {
+        margin-left: $col-w * 3;
+        cursor:pointer;
+        
+        background: $button-color-top;
+        @include background-image(linear-gradient($button-color-top, $button-color-bottom)); 
+        @include border-radius(2px);
+        
+        border-color: #E3E3E3 #DBDBDB #DBDBDB #E3E3E3;
+        border-right: 1px solid #DBDBDB;
+        border-style: solid;
+        border-width: 1px;
+        color: #444444;
+
+        @include text-shadow(rgba(white, 0.2) 1px 1px 0, rgba(white, 0.2) 1px 1px 0, rgba(white, 0.2) 1px 1px 0);
+    }
+
+#tutorial {
+
+    min-height:$row-h*15;
+
+    h1 {
+        font-size:$font-size + .5;
+    }
+
+    a {
+        text-decoration:underline;
+        color: $black;
+        &:hover  { text-decoration:underline; }
+    
+    }
+
+    img {
+        @include box-shadow($shadow-color 0px 0px 10px);
+        margin-left:$col-w/2;
+    }
+}
+
+.tutorial_class {
+    display:none;
+}
+
+/**** Login ****/
+
+#login, #signup, #reminder, #new_pwd {
+    
+    float:left;
+
+    .login {
+
+        @include border-radius(2px);
+
+        border: 1px #000 solid;
+
+        float:left;
+        margin: 2px 0;
+        font-size: $font-size;
+        height: $font-size + .3;
+        width:96%;
+        padding: 2px 7px;
+
+    }
+
+    #password_forgotten {
+        font-size:$font-size - .3;
+        width:100%;
+        text-align:right;
+        cursor:pointer;
+        text-decoration:underline;
+        &:hover  { text-decoration:none; }
+
+    }
+}
+
+#login, #about, #signup, #reminder, #new_pwd  {
+    width: $box-w;
+    height: $box-w * 0.6;
+    padding:10px;
+    float:left;
+    position:relative;
+    background-color:$color-blue;
+    color:#fff;
+}
+
+#login_submit, #signup_submit, #show_login, #show_signup, #reminder_submit, #pwd_change_submit {
+    font-size: $font-size - .1;
+    line-height: $font-size + .7;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+#login_submit  {
+    margin-top:-5px;
+    margin-left: 0;
+}
+
+#show_signup {
+    position:relative;
+    margin: 2px 0;
+    right:0px;
+    width:100%;
+    background-color:#fff;
+    border:1px #000 solid;
+    @include border-radius(5px);
+    font-size: $font-size;
+    padding:7px;
+    cursor:pointer;
+    text-decoration:underline;
+}
+
+#login, #signup  {
+    background-color:$color-blue;
+    color:#fff;
+
+    a  {
+        color: #fff;
+        &:hover  {text-decoration:none;}
+    }
+
+    h2  {
+        font-size:$font-size * 1.1; 
+        font-weight:normal;
+    }
+}
+
+
+#additional_ressources  {
+    font-size:$font-size * 0.9;
+    position:absolute;
+    bottom:-167px;
+    margin:0;
+    background-color:#fff;
+    color: #000;
+    width: $box-w;
+    height: $box-w * 0.2;
+    padding:10px;
+    right:0;
+
+    a {
+        color: #000;
+    }
+
+}
+
+#about {
+    color:#fff;
+    margin-right:20px;
+    background-color:$color-blue;
+    font-weight:bold;
+
+    h2 {
+       font-weight:normal;
+       font-size:$font-size * 1.1; 
+       padding-right:115px;
+    }
+
+    p, li {
+        margin:0 0 10px 0;
+        padding: 0;
+        font-size: $font-size * 0.8;
+    }
+
+    a {
+        color:#fff;
+    }
+}
+
+.beta_logo  {
+    position:absolute;
+    z-index:1;
+    left:300px;
+    top:0px;
+    
+    text-align:center;
+    font-size:$font-size * 1.4;
+    color:#fff;
+
+    @include border-radius(100px);
+    @include rotate(6deg);
+    @include text-shadow(#222 1px 0px 1px);
+    @include box-shadow(#222 0px 0px 4px);
+    width:70px;
+    height:48px;
+    padding-top:22px;
+    text-transform:uppercase;
+    @include background-image(radial-gradient($red-1, $red-2));
+}
+
+.close_signup {
+    font-size: $font-size - .4;
+    width:100%;
+    text-align:right;
+    color:$shadow-color;
+    cursor:pointer;
+    &:hover  { text-decoration:underline; }
+}
+
+#login, #reminder {
+    display:none;
+}
+
+#verify, #reset_confirmation, #pwd_change_confirmation {
+    width: 92%;
+    display:none;
+    position:relative;
+    z-index:4;
+    padding:15px;
+    margin-right:20px;
+    background-color:#fff;
+    color:#000;
+    border: 1px solid $border-color;
+    @include border-radius(8px);
+    font-size: $font-size - .2;
+}
+
+.login_bigtitle {
+    color:$color-blue;
+    font-weight:bolder;
+    font-size:$font-size * 3; 
+    margin-top:10px;
+    display:inline;
+}
+
+h1.login_title {
+    color:$black;
+    margin:-4px 0 40px;
+    font-weight:normal;
+    display:block;
+    clear:both;
+    font-size:$font-size * 1.5; 
+}
+
+#login_abzv {
+    color:#333;
+    float:right;
+    font-weight:bold;
+    font-size:$font-size; 
+    margin-bottom:0;
+
+    a {
+        color:#333;
+        &:hover { text-decoration:none; }
+    }
+}
+
+.divider {
+    width:100%;
+    height:20px;
+}

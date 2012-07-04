@@ -1,0 +1,127 @@
+{
+	"themes": {
+        "default":
+        {
+            "name": "default",
+            "desc": "Standard layout",
+            "image": null,
+            "restricted": null
+        },
+        "abzv":
+        {
+            "name": "abzv",
+            "desc": "ABZV",
+            "link": "http://www.abzv.de/",
+            "image": {
+                "width": 56,
+                "height": 25,
+                "format": "gif"
+            },
+            "restricted": null
+        },
+        "lemonde":
+        {
+            "name": "lemonde",
+            "desc": "Le Monde",
+            "image": {
+                "width": 101,
+                "height": 18,
+                "format": "gif"
+            },
+            "restricted": ["lemonde.fr"]
+        },
+        "datapublica":
+        {
+            "name": "datapublica",
+            "desc": "Data-Publica",
+            "image": {
+                "width": 100,
+                "height": 25,
+                "format": "png"
+            },
+            "restricted": ["data-publica.com", "nkb.fr"]
+        },
+        "paidcontent":
+        {
+            "name": "paidcontent",
+            "desc": "PaidContent",
+            "image": {
+                "width": 100,
+                "height": 27,
+                "format": "gif"
+            },
+            "restricted": ["paidcontent.org", "robertandrews.co.uk"]
+        },
+        "guardian":
+        {
+            "name": "guardian",
+            "desc": "Guardian.co.uk",
+            "image": {
+                "width": 100,
+                "height": 17,
+                "format": "png"
+            },
+            "restricted": ["guardian.co.uk", "nkb.fr"]
+        },
+        "ruhrnachrichten":
+        {
+            "name": "ruhrnachrichten",
+            "desc": "Ruhr Nachrichten",
+            "link": "http://www.ruhrnachrichten.de/",
+            "image": {
+                "width": 100,
+                "height": 12,
+                "format": "png"
+            },
+            "restricted": ["ruhrnachrichten.de", "nkb.fr"]
+        },
+        "echo-online":
+        {
+            "name": "echo-online",
+            "desc": "Echo Online",
+            "link": "http://www.echo-online.de/",
+            "image": {
+                "width": 40,
+                "height": 19,
+                "format": "png"
+            },
+            "restricted": ["echo-online.de", "darmstaedter-echo.de", "nkb.fr"]
+        },
+        "berlin-maniacs":
+        {
+            "name": "berlin-maniacs",
+            "desc": "Berlin Maniacs",
+            "link": "http://www.berlinmaniacs.org/",
+            "image": {
+                "width": 70,
+                "height": 20,
+                "format": "png"
+            },
+            "restricted": ["nkb.fr"]
+        },
+        "jplusplus":
+        {
+            "name": "jplusplus",
+            "desc": "Journalism++",
+            "link": "http://www.jplusplus.org/",
+            "image": {
+                "width": 74,
+                "height": 20,
+                "format": "png"
+            },
+            "restricted": ["nkb.fr"]
+        },
+        "lavenir":
+        {
+            "name": "lavenir",
+            "desc": "L'avenir",
+            "link": "http://www.lavenir.net/",
+            "image": {
+                "width": 100,
+                "height": 24,
+                "format": "png"
+            },
+            "restricted": ["lavenir.net", "nkb.fr"]
+        }
+    }
+}

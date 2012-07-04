@@ -1,0 +1,11 @@
+This folder contains a copy of the old Datawrapper files that were used
+to render the charts.
+
+After running /scripts/load_legacy_charts.php, this
+folder will also contain one html file per legacy chart, named after the
+alphanumerical id of that chart (e.g. T6.html). Requests to /?c=T6 will
+then be forwarded to /legacy/T6.html
+
+Also, the data/ folder will contain all the data for the legacy charts,
+named after the numerical id of each chart (e.g. 2039.csv). Requests to
+/actions/export.php?c=2039 will then be forwarded to that csv file.

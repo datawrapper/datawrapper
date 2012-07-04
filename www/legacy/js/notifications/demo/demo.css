@@ -1,0 +1,63 @@
+body {
+	background: #1c2029 url(../img/linen.png) repeat;
+	margin: 0px;
+	padding: 0px;
+}
+#welcome {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	z-index: -1;
+	background: -webkit-radial-gradient(circle, rgba(100,100,100,0.2), rgba(0,0,0,0.9));
+	background: -moz-radial-gradient(circle, rgba(100,100,100,0.2), rgba(0,0,0,0.9));
+}
+#welcome::after {
+	content: '';
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	z-index: -1;
+	background: -webkit-radial-gradient(circle, rgba(255,255,255,0.1), rgba(255,255,255,0));
+	background: -moz-radial-gradient(circle, rgba(255,255,255,0.1), rgba(255,255,255,0));
+}
+ul.menu {
+    width: 320px;
+    background: #333;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    position: absolute;
+    padding: 0px;
+    top: 50%;
+    margin-top: -176px;
+    left: 50%;
+    margin-left: -160px;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 6px 6px -6px inset;
+    border: 1px solid #555;
+    background: rgba(0, 0, 0, 0.3);
+}
+ul.menu li {
+	border-bottom: 1px solid #555;
+	padding: 20px;
+	padding-bottom: 12px;
+	padding-top: 12px;
+	font: normal 12px HelveticaNeue, Helvetica, Arial, sans-serif;
+	color: white;
+	text-shadow: black 0px 1px 2px;
+	list-style: none;
+	cursor: pointer;
+}
+ul.menu li:nth-child(even) {
+	background: rgba(0,0,0,0.5);
+}
+ul.menu li:last-child {
+	border: none;
+}
+ul.menu li:hover {
+    background: white;
+    color: black;
+    text-shadow: none;
+    z-index: 2;
+}

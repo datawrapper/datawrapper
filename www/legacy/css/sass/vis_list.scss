@@ -1,0 +1,120 @@
+/*********************************/
+/*        vis_list.scss          */
+/* Vis_list styles for DataStory */
+/*********************************/
+
+@import "compass";
+@import "compass/css3";
+@import "compass/utilities";
+
+$error-color : #ff8;
+$warning-color: #AB2B2E;
+
+$color-on : #3496AE;
+$color-off : #606060;
+$color-on_text : #fff;
+$color-off_text : #555;
+$black: #000;
+
+$font-size : 1em;
+
+$background-color:#fff;
+$shadow-color:#7f7f7f;
+$dark-color:#f2f2f2;
+$border-color:#e5e5e5;
+
+$container-width:900px;
+$grid-cols: 8;
+$row-h: 30px;
+$col-w: $container-width / $grid-cols;
+
+@mixin inset_input($shadow-length){
+    color:$color-off_text;
+    background-color:$dark-color;
+    @include single-box-shadow("#999", 0, 0, $shadow-length, $shadow-length/2, true);
+    border: 1px solid $shadow-color;
+}
+
+@mixin narrow-text{
+    letter-spacing:-1px;
+    font-stretch: 90%;
+    text-transform: uppercase;
+    font-weight:bold;
+}
+
+@mixin explainer{
+    font-size: $font-size + .2;
+}
+
+@mixin title_font{
+    font-size: $font-size + .2;
+    font-weight: normal;
+    font-family: Georgia, Serif;
+    color:$color-off_text;
+
+}
+
+#vis_list{
+    width: $col-w * 6;
+    float:left;
+    padding:15px 0 20px 0;
+    margin-right:20px;
+    background-color:$dark-color;
+    border: 1px solid $border-color;
+    @include title_font;
+    @include border-radius(8px);
+
+    h1{
+        padding-left: $col-w / 2;
+        @include title_font;
+    }
+
+    h2{
+        font-family: Arial, Helvetica, Sans-serif;
+        font-size:$font-size - .3;
+        font-weight:bold;
+        padding-left: $col-w / 2;
+        margin:15px 0 0 0;
+        display:inline;
+    }
+
+    img {
+        margin: 0 5px;
+    }
+
+    p{
+        font-family: Arial, Helvetica, Sans-serif;
+        font-size:$font-size - .5;
+        margin:0 0 0 0;
+        padding: 2px $col-w / 2;
+    }
+
+    .vis_item{
+        margin-top:15px;
+    }
+}
+
+#delete_chart {
+
+    position:fixed;
+    top:0;
+    margin:100px 180px;
+    width:500px;
+    z-index:10;
+    padding:10px 50px;
+    background: $warning-color;
+    text-align:center;
+    @include background-image(linear-gradient($warning-color, scale-lightness($warning-color, -20))); 
+
+    color:#fff;
+    
+    @include border-radius();
+    @include single-box-shadow("#999");
+
+    display:none;
+
+    .chart_title {
+        font-weight:bold;
+        display:block;
+    }
+}

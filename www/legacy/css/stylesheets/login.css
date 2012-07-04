@@ -1,0 +1,127 @@
+/*****************************/
+/*       login.scss          */
+/*Login styles for DataStory */
+/*****************************/
+/* line 58, ../sass/login.scss */
+#login, #signup, #reminder, #new_pwd {
+  width: 470px;
+  float: left;
+}
+/* line 63, ../sass/login.scss */
+#login .login, #signup .login, #reminder .login, #new_pwd .login {
+  color: #555555;
+  background-color: #f2f2f2;
+  -moz-box-shadow: inset 0 0 3px 1.5px "#999";
+  -webkit-box-shadow: inset 0 0 3px 1.5px "#999";
+  -o-box-shadow: inset 0 0 3px 1.5px "#999";
+  box-shadow: inset 0 0 3px 1.5px "#999";
+  border: 1px solid #7f7f7f;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+  -o-border-radius: 2px;
+  -ms-border-radius: 2px;
+  -khtml-border-radius: 2px;
+  border-radius: 2px;
+  float: left;
+  width: 300px;
+  margin: 5px 0;
+  font-size: 1em;
+  height: 1.3em;
+  padding: 2px 7px;
+}
+/* line 77, ../sass/login.scss */
+#login #password_forgotten, #signup #password_forgotten, #reminder #password_forgotten, #new_pwd #password_forgotten {
+  font-size: 0.7em;
+  width: 100%;
+  text-align: right;
+  color: #9dc0fe;
+  cursor: pointer;
+}
+/* line 83, ../sass/login.scss */
+#login #password_forgotten:hover, #signup #password_forgotten:hover, #reminder #password_forgotten:hover, #new_pwd #password_forgotten:hover {
+  text-decoration: underline;
+}
+
+/* line 88, ../sass/login.scss */
+#login_submit, #signup_submit, #show_signup, #reminder_submit, #pwd_change_submit {
+  font-size: 0.9em;
+  line-height: 1.7em;
+  font-weight: bold;
+  margin: 10px;
+}
+
+/* line 95, ../sass/login.scss */
+#show_signup {
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ffffff), color-stop(100%, #9dc0fe));
+  background-image: -webkit-linear-gradient(#ffffff, #9dc0fe);
+  background-image: -moz-linear-gradient(#ffffff, #9dc0fe);
+  background-image: -o-linear-gradient(#ffffff, #9dc0fe);
+  background-image: -ms-linear-gradient(#ffffff, #9dc0fe);
+  background-image: linear-gradient(#ffffff, #9dc0fe);
+}
+
+/* line 99, ../sass/login.scss */
+#about {
+  width: 355px;
+  float: left;
+  padding-top: 15px;
+  margin-right: 20px;
+  background-color: #f2f2f2;
+  border: 1px solid #e5e5e5;
+  font-size: 1.2em;
+  font-family: Georgia, Serif;
+  color: #555555;
+  -moz-border-radius: 8px;
+  -webkit-border-radius: 8px;
+  -o-border-radius: 8px;
+  -ms-border-radius: 8px;
+  -khtml-border-radius: 8px;
+  border-radius: 8px;
+}
+/* line 109, ../sass/login.scss */
+#about p {
+  margin: 0 0 0 0;
+  padding: 15px;
+}
+
+/* line 115, ../sass/login.scss */
+.close_signup {
+  font-size: 0.6em;
+  width: 100%;
+  text-align: right;
+  color: #7f7f7f;
+  cursor: pointer;
+}
+/* line 121, ../sass/login.scss */
+.close_signup:hover {
+  text-decoration: underline;
+}
+
+/* line 124, ../sass/login.scss */
+#signup, #reminder {
+  display: none;
+}
+
+/* line 128, ../sass/login.scss */
+#verify, #reset_confirmation, #pwd_change_confirmation {
+  width: 100%;
+  display: none;
+  padding: 15px;
+  margin-right: 20px;
+  background-color: #ebf2ff;
+  border: 1px solid #e5e5e5;
+  -moz-border-radius: 8px;
+  -webkit-border-radius: 8px;
+  -o-border-radius: 8px;
+  -ms-border-radius: 8px;
+  -khtml-border-radius: 8px;
+  border-radius: 8px;
+  font-size: 0.8em;
+}
+
+/* line 140, ../sass/login.scss */
+#screen_container h1 {
+  color: black;
+  font-weight: normal;
+  font-size: 1.5em;
+}

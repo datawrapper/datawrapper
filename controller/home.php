@@ -2,7 +2,17 @@
 
 //GET route
 $app->get('/', function () use ($app) {
-    $page = array('title' => 'Datawrapper');
-    add_header_vars($page, '');
-    $app->render('home.twig', $page);
+    if ($app->request()->get('c')) {
+        // found link to a legacy chart
+        $app->redirect('/legacy/'.$app->request()->get('c').'.html');
+    } else {
+        $page = array('title' => 'Datawrapper');
+        add_header_vars($page, '');
+        $app->render('home.twig', $page);
+    }
+});
+
+$app->get('/legacy/actions/export.php', function() use ($app) {
+    $c = $app->request()->get('c');
+    $app->redirect('/legacy/data/'.$c.'.csv');
 });

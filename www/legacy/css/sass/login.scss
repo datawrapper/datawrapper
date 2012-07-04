@@ -1,0 +1,145 @@
+/*****************************/
+/*       login.scss          */
+/*Login styles for DataStory */
+/*****************************/
+
+@import "compass";
+@import "compass/css3";
+@import "compass/utilities";
+
+$error-color : #ff8;
+
+$color-on : #9DC0FE;
+$color-off : #606060;
+$color-on_text : #fff;
+$color-off_text : #555;
+$black: #000;
+
+$font-size : 1em;
+
+$font-family-container: "Lucida Sans Unicode","Lucida Grande", Arial, Helvetica, Garuda, sans-serif;
+
+$background-color:#fff;
+$shadow-color:#7f7f7f;
+$dark-color:#f2f2f2;
+$border-color:#e5e5e5;
+
+$box-w:470px;
+$container-width:960px;
+$grid-cols: 8;
+$row-h: 30px;
+$col-w: $container-width / $grid-cols;
+
+@mixin inset_input($shadow-length){
+    color:$color-off_text;
+    background-color:$dark-color;
+    @include single-box-shadow("#999", 0, 0, $shadow-length, $shadow-length/2, true);
+    border: 1px solid $shadow-color;
+}
+
+@mixin narrow-text{
+    letter-spacing:-1px;
+    font-stretch: 90%;
+    text-transform: uppercase;
+    font-weight:bold;
+}
+
+@mixin explainer{
+    font-size: $font-size + .2;
+}
+
+@mixin title_font{
+    font-size: $font-size + .2;
+    font-family: Georgia, Serif;
+    color:$color-off_text;
+
+}
+
+#login, #signup, #reminder, #new_pwd{
+    
+    width: $box-w;
+    float:left;
+
+    .login{
+
+        @include inset_input(3px);
+        @include border-radius(2px);
+
+        float:left;
+        width: $col-w * 2.5;
+        margin: 5px 0;
+        font-size: $font-size;
+        height: $font-size + .3;
+        padding: 2px 7px;
+
+    }
+
+    #password_forgotten{
+        font-size:$font-size - .3;
+        width:100%;
+        text-align:right;
+        color:$color-on;
+        cursor:pointer;
+        &:hover { text-decoration:underline; }
+
+    }
+}
+
+#login_submit, #signup_submit, #show_signup, #reminder_submit, #pwd_change_submit{
+        font-size: $font-size - .1;
+        line-height: $font-size + .7;
+        font-weight: bold;
+        margin: 10px;
+    }
+
+#show_signup{
+    @include background-image(linear-gradient(lighten($color-on, 40%), $color-on)); 
+}
+
+#about{
+    width: $col-w * 3 - 5px;
+    float:left;
+    padding-top:15px;
+    margin-right:20px;
+    background-color:$dark-color;
+    border: 1px solid $border-color;
+    @include title_font;
+    @include border-radius(8px);
+
+    p{
+        margin:0 0 0 0;
+        padding: 15px;
+    }
+}
+
+.close_signup{
+    font-size: $font-size - .4;
+    width:100%;
+    text-align:right;
+    color:$shadow-color;
+    cursor:pointer;
+    &:hover { text-decoration:underline; }
+}
+
+#signup, #reminder{
+    display:none;
+}
+
+#verify, #reset_confirmation, #pwd_change_confirmation{
+    width: 100%;
+    display:none;
+    padding:15px;
+    margin-right:20px;
+    background-color:scale-lightness($color-on, 80);
+    border: 1px solid $border-color;
+    @include border-radius(8px);
+    font-size: $font-size - .2;
+}
+
+#screen_container {
+    h1 {
+        color:$black;
+        font-weight:normal;
+        font-size:$font-size * 1.5;
+    }
+}
