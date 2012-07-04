@@ -56,6 +56,18 @@ msgstr ""
 msgid "Why this approach? See our Motivations..."
 msgstr ""
 
+#: ../www/index.php:80 ../lib/templates/docs-pages.php:12
+msgid "About"
+msgstr ""
+
+#: ../www/index.php:81
+msgid "Create"
+msgstr ""
+
+#: ../www/index.php:83
+msgid "My Charts"
+msgstr ""
+
 #: ../www/index.php:101
 msgid "Language"
 msgstr ""
@@ -121,10 +133,6 @@ msgstr ""
 
 #: ../lib/templates/demo_datasets.php:394
 msgid "Energy consumption by source in Germany, 1950-2010"
-msgstr ""
-
-#: ../lib/templates/docs-pages.php:12
-msgid "About"
 msgstr ""
 
 #: ../lib/utils/errors.php:18

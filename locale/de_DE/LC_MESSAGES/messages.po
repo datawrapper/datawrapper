@@ -55,6 +55,19 @@ msgstr "Non-profit: Dieses Angebot ist und bleibt kostenfrei"
 msgid "Why this approach? See our Motivations..."
 msgstr "Mehr zum Hintergrund: Datawrapper Ziele und Funktionen"
 
+#: ../www/index.php:80
+#: ../lib/templates/docs-pages.php:12
+msgid "About"
+msgstr "Über"
+
+#: ../www/index.php:81
+msgid "Create"
+msgstr "Erstellen"
+
+#: ../www/index.php:83
+msgid "My Charts"
+msgstr "Meine Visualisierungen"
+
 #: ../www/index.php:101
 msgid "Language"
 msgstr "Sprache"
@@ -98,31 +111,27 @@ msgstr "Gini-Koeffizient in Deutschland, Schweden und Südafrika (2005)"
 
 #: ../lib/templates/demo_datasets.php:31
 msgid "Evolution of the Gini coefficient in Germany, France and Greece at 5-year intervals, 1995-2010."
-msgstr ""
+msgstr "Entwicklung des Gini-Koeffizienten in Deutschland, Frankreich und Griechenland, 1995-2010"
 
 #: ../lib/templates/demo_datasets.php:40
 msgid "Median income according to education status in Germany, 2005-2010."
-msgstr ""
+msgstr "Mittleres Einkommen nach Bildungsniveau in Deutschland, 2005-2010"
 
 #: ../lib/templates/demo_datasets.php:49
 msgid "Income distribution in Germany in the 1990's."
-msgstr ""
+msgstr "Einkommensverteilung in Deutschland in den 1990ern."
 
 #: ../lib/templates/demo_datasets.php:60
 msgid "Gini coefficient in Europe, 2001-2010"
-msgstr ""
+msgstr "Gini-Koeffizient in Europa, 2001-2010"
 
 #: ../lib/templates/demo_datasets.php:99
 msgid "Yearly number of sunspots, 1700-1988"
-msgstr ""
+msgstr "Jährliche Anzahl von Sonnenflecken, 1700-1988"
 
 #: ../lib/templates/demo_datasets.php:394
 msgid "Energy consumption by source in Germany, 1950-2010"
-msgstr ""
-
-#: ../lib/templates/docs-pages.php:12
-msgid "About"
-msgstr "Über"
+msgstr "Energieverbrauch nach Quelle, 1950-2010"
 
 #: ../lib/utils/errors.php:18
 msgid "Hold on!"
@@ -150,15 +159,15 @@ msgstr ""
 
 #: ../lib/utils/errors.php:40
 msgid "Whoops! That charts doesn't belong to you"
-msgstr ""
+msgstr "Huch, diese Visualisierung gehört dir nicht."
 
 #: ../lib/utils/errors.php:41
 msgid "Sorry, but the requested chart belongs to someone else."
-msgstr ""
+msgstr "Es tut mir leid, aber diese Visualisierung gehört jemand anderem."
 
 #: ../lib/utils/errors.php:47
 msgid "Whoops! You need to be logged in."
-msgstr ""
+msgstr "Huch! Dafür musst du eingeloggt sein."
 
 #: ../lib/utils/errors.php:48
 msgid "Good news is, sign up is free and takes less than 20 seconds."
