@@ -47,20 +47,7 @@ class ChartQuery extends BaseChartQuery {
                 $chart->setTheme('default');
                 $chart->setType('line-chart');
 
-                $defaultMeta = array(
-                    'data' => array(
-                        'transpose' => true,
-                        'horizontal-header' => true
-                    ),
-                    'visualize' => array(
-                        'highlighted-series' => array(),
-                        'highlighted-values' => array()
-                    ),
-                    'describe' => array(
-                        'source-name' => '',
-                        'source-url' => ''
-                    )
-                );
+                $defaultMeta = Chart::defaultMetaData();
 
                 $chart->setMetadata(json_encode($defaultMeta));
                 // $chart->setLanguage($user->getLanguage());  // defaults to user language

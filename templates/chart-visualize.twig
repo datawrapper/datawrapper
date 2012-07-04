@@ -43,7 +43,7 @@ $(function() {
 
     // load dataset
     function _getHighlights() {
-        var sel = DW.currentChart.get('metadata.visualize.highlighted');
+        var sel = DW.currentChart.get('metadata.visualize.highlighted-series');
         return _.isArray(sel) ? sel.slice() : [];
     }
 
@@ -53,7 +53,7 @@ $(function() {
             li = badge;
             selected = _getHighlights();
         selected = _.without(selected, series);
-        DW.currentChart.set('metadata.visualize.highlighted', selected);
+        DW.currentChart.set('metadata.visualize.highlighted-series', selected);
         li.remove();
     }
     $('.highlighted-series .badge').click(highlightSeriesClick);
@@ -75,7 +75,7 @@ $(function() {
 
                 selected.push(s.val());
 
-                DW.currentChart.set('metadata.visualize.highlighted', selected);
+                DW.currentChart.set('metadata.visualize.highlighted-series', selected);
 
                 $('.badge', li).click(highlightSeriesClick);
                 s2.append(li);
@@ -153,7 +153,7 @@ $(function() {
                 </p>
             </div>
 
-            {# highlight values #}
+            {# highlight values }
 
             <label>
                 <a data-toggle="collapse" data-target="#c-highlight-values" class="collapse-{% if chart.metadata.visualize.highlighted-values %}shown{% else %}hidden{% endif %}">Highlight values</a>
@@ -162,10 +162,9 @@ $(function() {
                 <div class="form-horizontal">
                     <label>Value: <input type="text" class="span1" /> <input type="text" class="span2" placeholder="comment" /></label>
                 </div>
-                    
             </div>
 
-            {# customize tooltips #}
+            {# customize tooltips }
 
             <label><a data-toggle="collapse" data-target="#c-tooltips">Customize Tooltips</a></label>
             <div class="collapse" id="c-tooltips">
@@ -174,6 +173,8 @@ $(function() {
                     <textarea style="width:100%" placeholder="not implemented yet"></textarea>
                 </div>
             </div>
+
+            {# visualization specific options #}
 
             <div id="vis-options" class="form-horizontal">
                 {% use 'vis-options.twig' %}

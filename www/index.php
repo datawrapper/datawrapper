@@ -61,6 +61,7 @@ if (function_exists('bindtextdomain')) {
 } else {
     // If no gettext extension is found, we will
     // fake the API to not break the application
+    function _($s) { return $s; }
     function gettext($s) { return $s; }
     function ngettext($s) { return $s; }
 }
@@ -109,18 +110,18 @@ function add_header_vars(&$page, $active = null) {
             'dropdown' => array(array(
                 'url' => '/account/settings',
                 'icon' => 'cog',
-                'title' => 'Settings'
+                'title' => _('Settings')
             ), array(
                 'url' => '#logout',
                 'icon' => 'off',
-                'title' => 'Logout'
+                'title' => _('Logout')
             ))
         );
     } else {
         $headlinks[] = array(
             'url' => '#login',
             'id' => 'login',
-            'title' => 'Login / Sign Up',
+            'title' => _('Login / Sign Up'),
             'icon' => 'user'
         );
     }
@@ -136,10 +137,10 @@ function add_header_vars(&$page, $active = null) {
 function add_editor_nav(&$page, $step) {
     // define 4 step navigation
     $steps = array();
-    $steps[] = array('index'=>1, 'id'=>'upload', 'title'=>'Upload Data');
-    $steps[] = array('index'=>2, 'id'=>'describe', 'title'=>'Check & Describe');
-    $steps[] = array('index'=>3, 'id'=>'visualize', 'title'=>'Visualize');
-    $steps[] = array('index'=>4, 'id'=>'publish', 'title'=>'Publish');
+    $steps[] = array('index'=>1, 'id'=>'upload', 'title'=>_('Upload Data'));
+    $steps[] = array('index'=>2, 'id'=>'describe', 'title'=>_('Check & Describe'));
+    $steps[] = array('index'=>3, 'id'=>'visualize', 'title'=>_('Visualize'));
+    $steps[] = array('index'=>4, 'id'=>'publish', 'title'=>_('Publish'));
     $page['steps'] = $steps;
     $page['createstep'] = $step;
 }

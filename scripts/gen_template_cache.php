@@ -6,7 +6,7 @@ require_once dirname(__FILE__) . '/../vendor/Twig/Autoloader.php';
 Twig_Autoloader::register();
 
 $tplDir = dirname(__FILE__) . '/../templates';
-$tmpDir = dirname(__FILE__) . '/cache/';
+$tmpDir = dirname(__FILE__) . '/tmpl_cache/';
 $loader = new Twig_Loader_Filesystem($tplDir);
 
 // force auto-reload to always have the latest version of the template
@@ -33,6 +33,12 @@ foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($tplDir), 
 {
     if (substr($file, -5) == ".twig") {
         // force compilation
-        $twig->loadTemplate(str_replace($tplDir.'/', '', $file));
+        $tmplPath = str_replace($tplDir.'/', '', $file);
+        $twig->loadTemplate($tmplPath);
+        $cacheFile = $twig->getCacheFilename($tmplPath);
+        $compiled = file_get_contents($cacheFile);
+        $outPath = $tmpDir . str_replace("/", "__", $tmplPath).".php";
+        file_put_contents($outPath, $compiled);
+        unlink($cacheFile);
     }
 }

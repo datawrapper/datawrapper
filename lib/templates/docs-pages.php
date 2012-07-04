@@ -9,7 +9,7 @@ function add_docs_vars(&$page, $active_url) {
 }
 
 $docs = array(
-    '/docs/about' => 'About',
+    '/docs/about' => _('About'),
     '/docs/motivation' => 'Motivation',
     '/docs/quickstart' => 'Quickstart',
     '/docs/tutorial' => 'Tutorial',

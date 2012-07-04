@@ -10,10 +10,6 @@
 
         render: function(el) {
             el = $(el);
-            $('.tooltip').hide();
-            el.css({
-                position: 'relative'
-            });
             var
             me = this,
             ds = me.dataset,
@@ -21,26 +17,16 @@
                 x: me.xScale(),
                 y: me.yScale()
             },
-            c = me.__canvas = {
-                root: el,
-                w: el.width(),
+            // init canvas
+            c = me.initCanvas(el, {
                 h: me.chart.get('metadata.visualize.force-banking') ?
-                    el.width() / me.computeAspectRatio() : me.getMaxChartHeight(el),
-                rpad: me.chart.dataSeries().length > 1 ? me.theme.rightPadding + me.theme.lineLabelWidth : me.theme.rightPadding,
-                lpad: me.theme.leftPadding,
-                bpad: me.theme.bottomPadding,
-                tpad: 0
-            };
+                    el.width() / me.computeAspectRatio() : me.getMaxChartHeight(el)
+            });
 
             me.init();
 
             scales.x = scales.x.range([c.lpad, c.w-c.rpad]);
             scales.y = scales.y.range([c.h-c.bpad, 5]);
-
-            c.paper = Raphael(el[0], c.w, c.h+2);
-
-            el.height(c.h);
-            // init canvas
 
             me.yAxis();
 

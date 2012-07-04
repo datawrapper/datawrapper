@@ -40,7 +40,7 @@ $app->get('/xhr/:chartid/vis-options', function($id) use ($app) {
 /**
  * load a page from the docs for a modal window
  */
-require_once 'docs-pages.php';
+require_once '../lib/templates/docs-pages.php';
 
 foreach ($docs as $url => $title) {
     $app->get('/xhr' . $url, function() use ($app, $url, $title) {

@@ -11,6 +11,14 @@ msgstr ""
 "X-Poedit-Language: German\n"
 "X-Poedit-Country: GERMANY\n"
 
+#: ../scripts/cache/32/6e/34b6d01290c2812dfea30b310377.php:119
+msgid "Back to top"
+msgstr "Zurück nach oben"
+
+#: ../scripts/cache/32/6e/34b6d01290c2812dfea30b310377.php:124
+msgid "Datawrapper is open source and hosted on <a href=\"http://github.com/\">Github</a>. You can <a href=\"/docs/about\">learn more about Datawrapper</a>, <a href=\"/credits\">who created it</a> and the <a href=\"#\">motivation</a> behind it. If you're completely lost, here is a <a href=\"/docs/quickstart\">quick start guide</a> and the complete <a href=\"/docs\">manual</a>. Also we kindly ask you to check out the <a href=\"/terms\">terms of use</a>."
+msgstr ""
+
 #: ../scripts/cache/fd/a7/a02b1c67bdde1dde009129cadbe8.php:49
 msgid "<b class='dw-logo'>Datawrapper</b> is an open source tool helping everyone to create simple, correct and embeddable charts in minutes."
 msgstr "<b class='dw-logo'>Datawrapper</b> ist ein Opensource Tool das dabei hilft, innerhalb von Minuten einfache und korrekte Charts mit Einbett-Code zu erstellen."

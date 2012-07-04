@@ -1,6 +1,6 @@
 <?php
 
-require_once 'docs-pages.php';
+require_once '../lib/templates/docs-pages.php';
 
 foreach ($docs as $url => $title) {
     $app->get($url, function() use ($app, $url, $title) {

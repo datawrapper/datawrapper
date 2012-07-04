@@ -1,10 +1,25 @@
-#: ../scripts/cache/fd/a7/a02b1c67bdde1dde009129cadbe8.php:49
+#: ../scripts/tmpl_cache/core.twig.php:119
+msgid "Back to top"
+msgstr ""
+
+#: ../scripts/tmpl_cache/core.twig.php:124
+msgid ""
+"Datawrapper is open source and hosted on <a href=\"http://github.com/"
+"\">Github</a>. You can <a href=\"/docs/about\">learn more about Datawrapper</"
+"a>, <a href=\"/credits\">who created it</a> and the <a href=\"#"
+"\">motivation</a> behind it. If you're completely lost, here is a <a href=\"/"
+"docs/quickstart\">quick start guide</a> and the complete <a href=\"/docs"
+"\">manual</a>. Also we kindly ask you to check out the <a href=\"/terms"
+"\">terms of use</a>."
+msgstr ""
+
+#: ../scripts/tmpl_cache/home.twig.php:49
 msgid ""
 "<b class='dw-logo'>Datawrapper</b> is an open source tool helping everyone "
 "to create simple, correct and embeddable charts in minutes."
 msgstr ""
 
-#: ../scripts/cache/fd/a7/a02b1c67bdde1dde009129cadbe8.php:54
+#: ../scripts/tmpl_cache/home.twig.php:54
 msgid ""
 "We are bridging the gap between journalists and the newest Javascript-"
 "visualization libraries such as D3.js, Raphael and others. We make it easier "
@@ -13,30 +28,66 @@ msgid ""
 "everywhere in the world."
 msgstr ""
 
-#: ../scripts/cache/fd/a7/a02b1c67bdde1dde009129cadbe8.php:63
+#: ../scripts/tmpl_cache/home.twig.php:63
 msgid "Main features:"
 msgstr ""
 
-#: ../scripts/cache/fd/a7/a02b1c67bdde1dde009129cadbe8.php:69
+#: ../scripts/tmpl_cache/home.twig.php:69
 msgid "Simple: Create and embed charts in minutes"
 msgstr ""
 
-#: ../scripts/cache/fd/a7/a02b1c67bdde1dde009129cadbe8.php:73
+#: ../scripts/tmpl_cache/home.twig.php:73
 msgid "Open Source: Download and install"
 msgstr ""
 
-#: ../scripts/cache/fd/a7/a02b1c67bdde1dde009129cadbe8.php:77
+#: ../scripts/tmpl_cache/home.twig.php:77
 msgid "CSS: Change the CSS, add your logo"
 msgstr ""
 
-#: ../scripts/cache/fd/a7/a02b1c67bdde1dde009129cadbe8.php:81
+#: ../scripts/tmpl_cache/home.twig.php:81
 msgid "Developers: Add new chart types"
 msgstr ""
 
-#: ../scripts/cache/fd/a7/a02b1c67bdde1dde009129cadbe8.php:85
+#: ../scripts/tmpl_cache/home.twig.php:85
 msgid "Non-profit: This is and will stay free to use"
 msgstr ""
 
-#: ../scripts/cache/fd/a7/a02b1c67bdde1dde009129cadbe8.php:91
+#: ../scripts/tmpl_cache/home.twig.php:91
 msgid "Why this approach? See our Motivations..."
+msgstr ""
+
+#: ../www/index.php:101
+msgid "Language"
+msgstr ""
+
+#: ../www/index.php:113
+msgid "Settings"
+msgstr ""
+
+#: ../www/index.php:117
+msgid "Logout"
+msgstr ""
+
+#: ../www/index.php:124
+msgid "Login / Sign Up"
+msgstr ""
+
+#: ../www/index.php:140
+msgid "Upload Data"
+msgstr ""
+
+#: ../www/index.php:141
+msgid "Check & Describe"
+msgstr ""
+
+#: ../www/index.php:142
+msgid "Visualize"
+msgstr ""
+
+#: ../www/index.php:143
+msgid "Publish"
+msgstr ""
+
+#: ../lib/templates/docs-pages.php:12
+msgid "About"
 msgstr ""

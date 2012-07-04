@@ -59,6 +59,10 @@
             return me.__dataSeries;
         },
 
+        numRows: function() {
+            return this.__dataview.length;
+        },
+
         hasColHeader: function(invert) {
             var t = this.get('metadata.data.transpose');
             if (invert ? !t : t) {

@@ -1,6 +1,6 @@
 <?php
 
-
+require_once dirname(__FILE__) . '/../../../../utils/array_merge_recursive_simple.php';
 
 /**
  * Skeleton subclass for representing a row from the 'chart' table.
@@ -40,12 +40,12 @@ class Chart extends BaseChart {
         // at first we lowercase the keys
         $json = $this->lowercaseKeys($json);
         // then decode metadata from json string
-        $json['metadata'] = $json['metadata'];
+        $json['metadata'] = $this->getMetadata();
         return $json;
     }
 
     public function toJSON() {
-        return json_encode($this->serialize());
+        return trim(json_encode($this->serialize()));
     }
 
     public function unserialize($json) {
@@ -153,13 +153,36 @@ class Chart extends BaseChart {
         }
     }
 
+    /**
+     * returns the chart meta data
+     */
     public function getMetadata() {
-        return json_decode(parent::getMetadata());
+        $default = Chart::defaultMetaData();
+        $meta = json_decode(parent::getMetadata(), true);
+        $meta = array_merge_recursive_simple($default, $meta);
+        return $meta;
     }
 
     public function isPublic() {
         // 1 = upload, 2 = describe, 3 = visualize, 4 = publish, 5 = published
         return !$this->getDeleted() && $this->getLastEditStep() >= 4;
+    }
+
+    public static function defaultMetaData() {
+        return array(
+            'data' => array(
+                'transpose' => true,
+                'horizontal-header' => true
+            ),
+            'visualize' => array(
+                'highlighted-series' => array(),
+                'highlighted-values' => array()
+            ),
+            'describe' => array(
+                'source-name' => '',
+                'source-url' => ''
+            )
+        );
     }
 
 } // Chart
