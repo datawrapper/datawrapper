@@ -34,6 +34,10 @@
             });
         },
 
+        initDimensions: function() {
+            //
+        },
+
         barDimensions: function(series, s, r) {
             var me = this, w, h, x, y;
             if (me.chart.get('metadata.visualize.orientation') == 'horizontal') {

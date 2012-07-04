@@ -21,3 +21,4 @@ $app->get('/chart/:id/visualize', function ($id) use ($app) {
         $app->render('chart-visualize.twig', $page);
     });
 });
+

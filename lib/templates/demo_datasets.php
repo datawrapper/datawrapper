@@ -5,7 +5,7 @@ function getDemoDatasets() {
     $datasets = array();
     $datasets[] = array(
         'id' => 'social-protection',
-        'title' => ' Expenditure on social protection - % of GDP',
+        'title' => _(' Expenditure on social protection - % of GDP'),
         'data' => '	1998	1999	2000	2001	2002	2003	2004	2005	2006	2007	2008	2009
 Germany	29.1	29.5	29.6	29.7	30.3	30.7	30.1	30.0	28.9	27.8	28.0	31.4
 Greece	21.7	22.7	23.5	24.3	24.0	23.5	23.6	24.9	24.7	24.8	26.3	28.0
@@ -17,7 +17,7 @@ United Kingdom	26.3	25.7	26.4	26.8	25.7	25.7	25.9	26.3	26.0	23.3	26.3	29.2
     );
     $datasets[] = array(
         'id' => 'gini',
-        'title' => 'Gini coefficient in Germany, Sweden and South Africa (2005)',
+        'title' => _('Gini coefficient in Germany, Sweden and South Africa (2005)'),
         'data' => "	Gini coef.
 Sweden 	0,23
 Sachsen 	0,24
@@ -28,7 +28,7 @@ Johannesburg	0,73
     );
     $datasets[] = array(
         'id' => 'gini-evolution',
-        'title' => 'Evolution of the Gini coefficient in Germany, France and Greece at 5-year intervals, 1995-2010.',
+        'title' => _('Evolution of the Gini coefficient in Germany, France and Greece at 5-year intervals, 1995-2010.'),
         'data' => "	1995	2000	2005	2010
 Germany	29	25	28	29
 France	29	28	28	30
@@ -37,7 +37,7 @@ Greece	35	33	33	33
     );
     $datasets[] = array(
         'id' => 'median-income',
-        'title' => 'Median income according to education status in Germany, 2005-2010.',
+        'title' => _('Median income according to education status in Germany, 2005-2010.'),
         'data' => "	2005	2006	2007	2008	2009	2010
 Up to secondary education	15369	14984	15236	15960	15745	15298
 Up to tertiary education	17293	17370	18059	18639	18952	19228
@@ -46,7 +46,7 @@ Tertiary education	21147	21599	22623	23514	24660	24823
     );
     $datasets[] = array(
         'id' => 'income-dist',
-        'title' => 'Income distribution in Germany in the 1990\'s.',
+        'title' => _('Income distribution in Germany in the 1990\'s.'),
         'data' => "	Share of income
 1st quintile	3,76
 2nd quintile	10,72
@@ -57,7 +57,7 @@ Tertiary education	21147	21599	22623	23514	24660	24823
     );
     $datasets[] = array(
         'id' => 'gini-europe',
-        'title' => 'Gini coefficient in Europe, 2001-2010',
+        'title' => _('Gini coefficient in Europe, 2001-2010'),
         'data' => "	2001	2002	2003	2004	2005	2006	2007	2008	2009	2010
 European Union					30,6	30,2	30,6	30,7	30,4	30,4
 Belgium	28		28,3	26,1	28,0	27,8	26,3	27,5	26,4	26,6
@@ -96,7 +96,7 @@ Turkey		46	45	0		44,8
     );
     $datasets[] = array(
         "id" => "sunspots",
-        "title" => "Yearly number of sunspots, 1700-1988",
+        "title" => _("Yearly number of sunspots, 1700-1988"),
         "data" => "Year	Sunspots
 1700	5
 1701	11
@@ -391,7 +391,7 @@ Turkey		46	45	0		44,8
     );
     $datasets[] = array(
         "id" => "german-energy-mix",
-        "title" => "Energy consumption by source in Germany, 1950-2010",
+        'title' => _('Energy consumption by source in Germany, 1950-2010'),
         "data" => "Jahr	Braunkohle	Steinkohle	Mineralöl	Erdgas	Kernenergie	Erneuerbare	Sonstiges
 1950	66.94	103.27	6.30	0.09	0.00	6.43	3.59
 1951	70.87	116.21	7.19	0.11	0.00	6.29	3.32

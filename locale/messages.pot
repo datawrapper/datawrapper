@@ -88,6 +88,88 @@ msgstr ""
 msgid "Publish"
 msgstr ""
 
+#: ../lib/templates/demo_datasets.php:8
+#, php-format
+msgid " Expenditure on social protection - % of GDP"
+msgstr ""
+
+#: ../lib/templates/demo_datasets.php:20
+msgid "Gini coefficient in Germany, Sweden and South Africa (2005)"
+msgstr ""
+
+#: ../lib/templates/demo_datasets.php:31
+msgid ""
+"Evolution of the Gini coefficient in Germany, France and Greece at 5-year "
+"intervals, 1995-2010."
+msgstr ""
+
+#: ../lib/templates/demo_datasets.php:40
+msgid "Median income according to education status in Germany, 2005-2010."
+msgstr ""
+
+#: ../lib/templates/demo_datasets.php:49
+msgid "Income distribution in Germany in the 1990's."
+msgstr ""
+
+#: ../lib/templates/demo_datasets.php:60
+msgid "Gini coefficient in Europe, 2001-2010"
+msgstr ""
+
+#: ../lib/templates/demo_datasets.php:99
+msgid "Yearly number of sunspots, 1700-1988"
+msgstr ""
+
+#: ../lib/templates/demo_datasets.php:394
+msgid "Energy consumption by source in Germany, 1950-2010"
+msgstr ""
+
 #: ../lib/templates/docs-pages.php:12
 msgid "About"
+msgstr ""
+
+#: ../lib/utils/errors.php:18
+msgid "Hold on!"
+msgstr ""
+
+#: ../lib/utils/errors.php:19
+msgid ""
+"Sorry, but it seems that the chart you want to see is not quite ready for "
+"the world, yet. Why don't you just relax and wait a minute?"
+msgstr ""
+
+#: ../lib/utils/errors.php:25
+msgid "Whoops! You're not allowed to publish charts, yet"
+msgstr ""
+
+#: ../lib/utils/errors.php:26
+msgid ""
+"Sorry, but it seems that your account is not ready to publish charts, yet. "
+"If you created the chart as a guest, you should <a href=\"#login\">sign up "
+"for a free account</a> now. In case you already did that, you probably still "
+"need to activate you e-mail address by clicking on that activation link we "
+"sent you."
+msgstr ""
+
+#: ../lib/utils/errors.php:33
+msgid "Whoops! We couldn't find that chart.."
+msgstr ""
+
+#: ../lib/utils/errors.php:34
+msgid "Sorry, but it seems that there is no chart with the id <b>"
+msgstr ""
+
+#: ../lib/utils/errors.php:40
+msgid "Whoops! That charts doesn't belong to you"
+msgstr ""
+
+#: ../lib/utils/errors.php:41
+msgid "Sorry, but the requested chart belongs to someone else."
+msgstr ""
+
+#: ../lib/utils/errors.php:47
+msgid "Whoops! You need to be logged in."
+msgstr ""
+
+#: ../lib/utils/errors.php:48
+msgid "Good news is, sign up is free and takes less than 20 seconds."
 msgstr ""
