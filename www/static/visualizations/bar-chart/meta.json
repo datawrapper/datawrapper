@@ -38,38 +38,6 @@
                 },
                 "default": true
             }]
-        },
-        "stacked": {
-            "type": "radio",
-            "label": {
-                "en": "Stack data rows?",
-                "de": "Typ",
-                "fr": "Type"
-            },
-            "options": [{
-                "value": "no",
-                "label": {
-                    "en": "no",
-                    "de": "normal",
-                    "fr": "linéaire"
-                },
-                "default": true
-            },{
-                "value": "yes",
-                "label": {
-                    "en": "yes",
-                    "de": "gestapelt",
-                    "fr": "linéaire"
-                },
-                "default": true
-            },{
-                "value": "stacked-percent",
-                "label": {
-                    "en": "yes (percent stacked)",
-                    "de": "logarithmisch",
-                    "fr": "logarithmique"
-                }
-            }]
         }
     },
     "libraries": [],

@@ -36,5 +36,24 @@
     </div>
     {% endfor %}
 </fieldset>
+<script type="text/javascript">
+
+$(function() {
+    function syncVisOptions(vis) {
+        _.each(vis.options, function(opt, key) {
+            if (opt.type == 'radio') {
+                DW.currentChart.sync('input[name='+key+']', 'metadata.visualize.'+key);
+            } else {
+                DW.currentChart.sync('#'+key, 'metadata.visualize.'+key);
+            }
+        });
+    };
+
+    // initial visualization meta
+    var vis = JSON.parse('{{ vis|json|raw }}');
+    syncVisOptions(vis);
+});
+
+</script>
 
 {% endblock %}

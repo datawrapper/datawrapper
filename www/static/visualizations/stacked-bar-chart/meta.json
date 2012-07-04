@@ -4,7 +4,7 @@
         "de": "Balkendiagramm",
         "fr": "Diagramme temporel"
     },
-    "extends": "raphael-chart",
+    "extends": "bar-chart",
     "author": {
         "name": "gka",
         "email": "gka@vis4.net"

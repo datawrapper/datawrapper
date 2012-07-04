@@ -11,8 +11,8 @@ $(function() {
     DW.currentChart.onSave(function(chart) {
         $('#iframe-vis').attr('src', '/chart/{{ chart.id }}/preview')
         if (_typeHasChanged) {
+            // load new visualization options
             $('#vis-options').load('/xhr/'+chart.get('id')+'/vis-options');
-            syncVisOptions();
             _typeHasChanged = false;
         }
     });
@@ -22,24 +22,12 @@ $(function() {
     DW.currentChart.sync('#text-title', 'title');
     DW.currentChart.sync('#text-intro', 'metadata.describe.intro');
 
-    function syncVisOptions() {
-        var vis = JSON.parse('{{ vis|json|raw }}');
-        _.each(vis.options, function(opt, key) {
-            if (opt.type == 'radio') {
-                DW.currentChart.sync('input[name='+key+']', 'metadata.visualize.'+key);
-            } else {
-                DW.currentChart.sync('#'+key, 'metadata.visualize.'+key);
-            }
-        });
-    };
-
-    DW.currentChart.onChange(function(chart, key) {
+    DW.currentChart.onChange(function(chart, key, value) {
+        console.log(key, value);
         if (key == 'type') {
             _typeHasChanged = true;
         }
     });
-
-    syncVisOptions();
 
     // load dataset
     function _getHighlights() {
