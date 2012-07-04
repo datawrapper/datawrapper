@@ -78,14 +78,16 @@
                         x += sc.data(series.data[i])+1;
                     }
                 } else {
-                    h = Math.round(bw / 1.3 / series.data.length);
+                    if (series.data.length > 1) {
+                        h = Math.round(bw / 1.3 / series.data.length);
+                    }
                     y = Math.round(s*bw*1.5 + r * h*1.35);
                 }
             } else {
                 bw = (c.w - c.lpad - c.rpad) / me.chart.dataSeries().length / 1.5;
                 h = sc.data(series.data[r]);
                 w = bw;
-                x = r*bw*1.5;
+                x = c.lpad + s*bw*1.5;
                 y = c.h - c.bpad - h;
             }
             return { w: w, h: h, x: x, y: y };

@@ -3,6 +3,8 @@
 
 {{ parent() }}
 
+{% set vismeta = chart.metadata.visualize %}
+
 <script type="text/javascript">
 $(function() {
 
@@ -23,7 +25,6 @@ $(function() {
     DW.currentChart.sync('#text-intro', 'metadata.describe.intro');
 
     DW.currentChart.onChange(function(chart, key, value) {
-        console.log(key, value);
         if (key == 'type') {
             _typeHasChanged = true;
         }
@@ -126,16 +127,16 @@ $(function() {
             {# highlight series #}
 
             <label>
-                <a data-toggle="collapse" data-target="#c-highlight" class="collapse-{% if chart.metadata.visualize.highlighted-series %}shown{% else %}hidden{% endif %}">Highlight series</a>
+                <a data-toggle="collapse" data-target="#c-highlight" class="collapse-{% if vismeta['highlighted-series'] %}shown{% else %}hidden{% endif %}">Highlight series</a>
             </label>
-            <div class="collapse{% if chart.metadata.visualize.highlighted-series %} in{% endif %}" id="c-highlight">
+            <div class="collapse{% if vismeta['highlighted-series'] %} in{% endif %}" id="c-highlight">
                 <div>
                     <select id="highlight-series" class="span2">
                         <option value="---">- select a data series -</option>
                     </select>
                 </div>
                 <p class="highlighted-series">
-                    {% for series in chart.metadata.visualize.highlighted-series %}
+                    {% for series in vismeta['highlighted-series'] %}
                     <span data-series="{{ series }}" class="badge badge-info"><i class="icon-remove icon-white"></i>{{ series }}</span>
                     {% endfor %}
                 </p>
@@ -144,9 +145,9 @@ $(function() {
             {# highlight values }
 
             <label>
-                <a data-toggle="collapse" data-target="#c-highlight-values" class="collapse-{% if chart.metadata.visualize.highlighted-values %}shown{% else %}hidden{% endif %}">Highlight values</a>
+                <a data-toggle="collapse" data-target="#c-highlight-values" class="collapse-{% if vismeta.highlighted-values %}shown{% else %}hidden{% endif %}">Highlight values</a>
             </label>
-            <div class="collapse{% if chart.metadata.visualize.highlighted-values %} in{% endif %}" id="c-highlight-values">
+            <div class="collapse{% if vismeta.highlighted-values %} in{% endif %}" id="c-highlight-values">
                 <div class="form-horizontal">
                     <label>Value: <input type="text" class="span1" /> <input type="text" class="span2" placeholder="comment" /></label>
                 </div>

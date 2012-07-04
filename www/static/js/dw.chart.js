@@ -98,7 +98,7 @@
         },
 
         isHighlighted: function(col) {
-            var hl = this.get('metadata.visualize.highlighted');
+            var hl = this.get('metadata.visualize.highlighted-series');
             return !_.isArray(hl) || hl.length === 0 || _.indexOf(hl, col.name) >= 0;
         }
 
