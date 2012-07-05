@@ -17,6 +17,7 @@ h1 {
     font-size: 24px;
     font-weight: 700;
     margin: 15px 20px;
+    text-align: center;
 }
 
 p { margin: 15px 20px; line-height: 19px;}
@@ -56,3 +57,4 @@ p { margin: 15px 20px; line-height: 19px;}
 .tooltip label:after {
     content: ": ";
 }
+

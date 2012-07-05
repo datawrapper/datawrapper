@@ -17,13 +17,15 @@
                 x: me.xScale(),
                 y: me.yScale()
             },
-            // init canvas
+
+            c;
+
+            me.init();
+
             c = me.initCanvas(el, {
                 h: me.get('force-banking') ?
                     el.width() / me.computeAspectRatio() : me.getMaxChartHeight(el)
             });
-
-            me.init();
 
             scales.x = scales.x.range([c.lpad, c.w-c.rpad]);
             scales.y = scales.y.range([c.h-c.bpad, 5]);
