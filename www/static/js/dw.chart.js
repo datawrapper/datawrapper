@@ -97,6 +97,11 @@
             }
         },
 
+        hasHighlight: function() {
+            var hl = this.get('metadata.visualize.highlighted-series');
+            return _.isArray(hl) && hl.length > 0;
+        },
+
         isHighlighted: function(col) {
             var hl = this.get('metadata.visualize.highlighted-series');
             return !_.isArray(hl) || hl.length === 0 || _.indexOf(hl, col.name) >= 0;
