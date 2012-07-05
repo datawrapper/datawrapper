@@ -32,8 +32,6 @@
     background: #E3E7F6;
 }
 
-
-
 #datatable tr.odd td {
     background: #f9f9f9;
 }
@@ -56,12 +54,33 @@
     float: left;
 }
 
+#datatable_length, #datatable_filter {
+    margin-bottom: 10px;
+}
+
 #datatable_paginate, #datatable_filter {
     float: right;
 }
 
 #datatable_paginate a {
     padding-left: 20px;
+    cursor: pointer;
+}
+
+#datatable_next:after {
+    content: ' ►';
+    color: #777;
+}
+
+#datatable_previous:before {
+    content: '◀ ';
+    color: #777;
+}
+
+.paginate_disabled_next,
+.paginate_disabled_previous {
+    color: #777;
+    cursor: default;
 }
 
 #datatable th.sorting,
@@ -79,11 +98,13 @@
 }
 
 #datatable th.sorting_asc:after {
-    content: ' ▼';
+    content: '▼';
     color: #777;
+    white-space: nowrap;
 }
 
 #datatable th.sorting_desc:after {
-    content: ' ▲';
+    content: '▲';
+    white-space: nowrap;
     color: #777;
 }

@@ -36,3 +36,21 @@ p { margin: 10px;}
     padding-top: 5px;
     border-top: 1px solid #bbb;
 }
+
+#datatable tr.odd td {
+    background: rgba(0,0,0,.03);
+}
+
+#datatable th.highlight {
+    background: #622F24;
+    color: #fff;
+}
+
+#datatable tr td.highlight {
+    background: #FBDBBE;
+}
+
+#datatable tr.odd td.highlight {
+    background: #E5B398;
+}
+
