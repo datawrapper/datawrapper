@@ -1,0 +1,51 @@
+{
+    "title": {
+        "en": "Data Table",
+        "de": "Tabelle",
+        "fr": "Diagramme temporel"
+    },
+    "author": {
+        "name": "gka",
+        "email": "gka@vis4.net"
+    },
+    "license": {
+        "name": "MIT",
+        "url": "http://www.opensource.org/licenses/mit-license.php"
+    },
+    "about": "http://datatables.net",
+    "libraries": [
+        "datatables/jquery.dataTables.min.js"
+    ],
+    "options": {
+        "table-sortable": {
+            "type": "checkbox",
+            "label": {
+                "en": "sortable",
+                "de": "sortierbar",
+                "fr": "triable"
+            }
+        },
+        "table-paginate": {
+            "type": "checkbox",
+            "label": {
+                "en": "pagination",
+                "de": "Auf mehrere Seiten verteilen ",
+                "fr": "Étendre sur les côtés"
+            }
+        },
+        "table-filter": {
+            "type": "checkbox",
+            "label": {
+                "en": "Show filter",
+                "de": "Suchfilter",
+                "fr": "Filtres de recherche"
+            }
+        }
+    },
+    "compatibility": {
+        "msie": "9+",
+        "moz": "5+",
+        "webkit": "3+",
+        "ios": "no"
+    }
+}

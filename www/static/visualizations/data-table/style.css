@@ -1,0 +1,89 @@
+
+/*
+ * basic styles for data tables
+ *
+ */
+#datatable_wrapper {
+    margin: 10px 20px;
+}
+#datatable {
+    width: 100%;
+    border: 0;
+    border-spacing:0;
+    margin: 10px 0 20px;
+    border-collapse:collapse;
+    clear: both;
+}
+
+#datatable td, #datatable th {
+    border: 0;
+    padding: 6px 3px;
+}
+
+#datatable th.highlight {
+    background: #CFD9EF;
+}
+
+#datatable tr td.highlight {
+    background: #F7F6FC;
+}
+
+#datatable tr.odd td.highlight {
+    background: #E3E7F6;
+}
+
+
+
+#datatable tr.odd td {
+    background: #f9f9f9;
+}
+
+#datatable thead th {
+    padding: 6px 3px 6px;
+    border-left: 1px solid #fff;
+}
+
+#datatable tbody th {
+    background: none;
+}
+
+#datatable tbody td {
+    text-align: center;
+    border-left: 1px solid #fff;
+}
+
+#datatable_info, #datatable_length {
+    float: left;
+}
+
+#datatable_paginate, #datatable_filter {
+    float: right;
+}
+
+#datatable_paginate a {
+    padding-left: 20px;
+}
+
+#datatable th.sorting,
+#datatable th.sorting_desc,
+#datatable th.sorting_asc
+{
+    cursor: pointer;
+}
+
+#datatable th.sorting:hover,
+#datatable th.sorting_desc:hover,
+#datatable th.sorting_asc:hover
+{
+    text-decoration: underline;
+}
+
+#datatable th.sorting_asc:after {
+    content: ' ▼';
+    color: #777;
+}
+
+#datatable th.sorting_desc:after {
+    content: ' ▲';
+    color: #777;
+}
