@@ -13,7 +13,7 @@
         "name": "MIT",
         "url": "http://www.opensource.org/licenses/mit-license.php"
     },
-    "about": "http://site.com/understanding-line-charts/",
+    "about": "http://vis4.net/blog/posts/doing-the-line-charts-right/",
     "options": {
         "scale": {
             "type": "radio",
