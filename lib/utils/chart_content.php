@@ -12,11 +12,15 @@ function get_chart_content($chart, $user) {
         if ($theme['hasStyles']) {
             $theme_css[] = '/static/themes/' . $next_theme_id . '/theme.css';
         }
+        if ($theme['hasLocaleJS']) {
+            $theme_js[] = $theme['localeJS'];
+        }
         $next_theme_id = $theme['extends'];
     }
     $base_js = array(
         '/static/vendor/miso/miso.ds.deps.0.1.3.js',
         '/static/js/ds.parser.delimited.js',
+        '/static/vendor/globalize/globalize.js',
         '/static/vendor/jquery/jquery.min.js',
         '/static/js/dw.core.js',
         '/static/js/dw.chart.js',

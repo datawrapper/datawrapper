@@ -37,10 +37,6 @@ p { margin: 10px;}
     border-top: 1px solid #bbb;
 }
 
-#datatable tr.odd td {
-    background: rgba(0,0,0,.03);
-}
-
 #datatable th.highlight {
     background: #622F24;
     color: #fff;
@@ -50,7 +46,11 @@ p { margin: 10px;}
     background: #FBDBBE;
 }
 
-#datatable tr.odd td.highlight {
+#datatable tbody tr:hover {
+    background: rgba(0,0,0,0.05);
+}
+
+#datatable tbody tr:hover td.highlight {
     background: #E5B398;
 }
 

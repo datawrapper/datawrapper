@@ -20,35 +20,67 @@
     padding: 6px 3px;
 }
 
+#datatable thead tr {
+    border-bottom: 2px solid #000;
+}
+
 #datatable th.highlight {
     background: #CFD9EF;
 }
 
 #datatable tr td.highlight {
-    background: #F7F6FC;
-}
-
-#datatable tr.odd td.highlight {
     background: #E3E7F6;
 }
 
+#datatable tr.odd td.highlight {
+    /* background: #E3E7F6; */
+}
+
 #datatable tr.odd td {
-    background: #f9f9f9;
+    /* background: #f9f9f9; */
 }
 
 #datatable thead th {
     padding: 6px 3px 6px;
     border-left: 1px solid #fff;
+    font-weight: normal;
 }
 
 #datatable tbody th {
     background: none;
+    font-weight: normal;
 }
 
 #datatable tbody td {
     text-align: center;
-    border-left: 1px solid #fff;
 }
+
+#datatable tbody tr:nth-child(4),
+#datatable tbody tr:nth-child(8),
+#datatable tbody tr:nth-child(12),
+#datatable tbody tr:nth-child(16),
+#datatable tbody tr:nth-child(20),
+#datatable tbody tr:nth-child(24),
+#datatable tbody tr:nth-child(28),
+#datatable tbody tr:nth-child(32),
+#datatable tbody tr:nth-child(36),
+#datatable tbody tr:nth-child(40),
+#datatable tbody tr:nth-child(44),
+#datatable tbody tr:nth-child(48),
+#datatable tbody tr:nth-child(52),
+#datatable tbody tr:last-child
+ {
+    border-bottom: 1px solid #777;
+}
+
+#datatable tbody tr:hover {
+    background: #eee;
+}
+
+#datatable tbody tr:hover td.highlight {
+    background: #CFD9EF;
+}
+
 
 #datatable_info, #datatable_length {
     float: left;

@@ -32,6 +32,8 @@ body {
 
         vis.setTheme(theme);
 
+        vis.setLocale(theme.locale);
+
         vis.load(chart, function() {
             vis.render('#chart');
         });

@@ -18,6 +18,8 @@
             grid: '#999999'
         },
 
+        locale: 'en_GB',
+
         lineWidth: {
             focus: 3,
             context: 2
