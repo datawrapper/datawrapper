@@ -36,7 +36,7 @@
                     "de": "normal",
                     "fr": "linéaire"
                 },
-                "default": true
+                "default": false
             }]
         }
     },

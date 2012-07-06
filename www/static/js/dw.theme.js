@@ -23,6 +23,14 @@
             context: 2
         },
 
+        lineChart: {
+
+        },
+
+        barChart: {
+
+        },
+
         horizontalGrid: false,
 
         yTicks: true,

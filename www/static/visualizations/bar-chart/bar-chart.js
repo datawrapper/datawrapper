@@ -34,10 +34,6 @@
             });
         },
 
-        isStacked: function() {
-            return false;
-        },
-
         initDimensions: function() {
             //
             var me = this, c = me.__canvas,
@@ -72,33 +68,17 @@
                 w = sc.data(series.data[r]);
                 h = bw;
                 x = c.lpad;
-                if (me.isStacked()) {
-                    y = s*bw*1.5;
-                    var tw = w;
-                    for (i=0; i<r; i++) {
-                        tw += sc.data(series.data[i])+1;
-                    }
-                    x = c.lpad + tw - w;
-                } else {
-                    if (series.data.length > 1) {
-                        h = Math.round(bw / 1.3 / series.data.length);
-                    }
-                    y = Math.round(s*bw*1.5 + r * h*1.35);
+
+                if (series.data.length > 1) {
+                    h = Math.round(bw / 1.3 / series.data.length);
                 }
+                y = Math.round(s*bw*1.5 + r * h*1.35);
             } else {
                 bw = (c.w - c.lpad - c.rpad) / me.chart.dataSeries().length / 1.5;
                 h = sc.data(series.data[r]);
                 w = bw;
                 x = c.lpad + s*bw*1.5;
-                if (me.isStacked()) {
-                    var th = h;
-                    for (i=0;i<r;i++) {
-                        th += sc.data(series.data[i])+1;
-                    }
-                    y = c.h - c.bpad - th;
-                } else {
-                    y = c.h - c.bpad - h;
-                }
+                y = c.h - c.bpad - h;
             }
             return { w: w, h: h, x: x, y: y };
         }

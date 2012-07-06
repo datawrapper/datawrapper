@@ -10,9 +10,8 @@
 
     _.extend(StackedBarChart.prototype, Datawrapper.Visualizations.BarChart.prototype, {
 
-        isStacked: function() {
-            return true;
-        }
+        // override barDimensions()
+        // override initDimensions()
     });
 
 }).call(this);
