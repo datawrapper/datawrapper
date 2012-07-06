@@ -16,7 +16,7 @@
       <reference local="author_id" foreign="id"/>
     </foreign-key>
     <column name="show_in_gallery" type="boolean" default="false" />
-    <column name="language" type="varchar" size="5" default="en" />
+    <column name="language" type="varchar" size="5" default="" />
     <column name="guest_session" type="varchar" />
     <column name="last_edit_step" type="integer" default="0" />
   </table>

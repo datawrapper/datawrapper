@@ -20,10 +20,12 @@ function get_theme_meta($id) {
     $meta['id'] = $id;
     $meta['hasStyles'] = file_exists('static/themes/' . $id . '/theme.css');
     $meta['hasTemplate'] = file_exists('../templates/themes/' . $id . '.twig');
-    $localeJS = 'static/vendor/globalize/cultures/globalize.culture.' . str_replace('_', '-', $meta['locale']) . '.js';
-    if (file_exists($localeJS)) {
-        $meta['localeJS'] = '/'.$localeJS;
-        $meta['hasLocaleJS'] = true;
+    if (!empty($meta['locale'])) {
+        $localeJS = 'static/vendor/globalize/cultures/globalize.culture.' . str_replace('_', '-', $meta['locale']) . '.js';
+        if (file_exists($localeJS)) {
+            $meta['localeJS'] = '/'.$localeJS;
+            $meta['hasLocaleJS'] = true;
+        }
     }
     if (empty($meta['extends'])) $meta['extends'] = null;
     return $meta;

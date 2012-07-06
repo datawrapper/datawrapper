@@ -23,10 +23,6 @@
             this.theme = theme;
         },
 
-        setLocale: function(locale) {
-            Globalize.culture(locale);
-        },
-
         load: function(chart, callback) {
             var me = this;
             this.chart = chart;

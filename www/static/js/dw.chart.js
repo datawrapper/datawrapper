@@ -16,7 +16,6 @@
 
             _.each(keys, function(key) {
                 if (pt === undefined) {
-                    //console.warn('pt is undefined', pt, keys, this.__attributes);
                     return null;
                 }
                 pt = pt[key];
@@ -105,6 +104,40 @@
         isHighlighted: function(col) {
             var hl = this.get('metadata.visualize.highlighted-series');
             return !_.isArray(hl) || hl.length === 0 || _.indexOf(hl, col.name) >= 0;
+        },
+
+        setLocale: function(locale, metric_prefix) {
+            this.locale = locale;
+            this.metric_prefix = metric_prefix;
+        },
+
+        formatValue: function(val, showUnit) {
+            var me = this,
+                format = me.get('metadata.describe.number-format'),
+                div = Number(me.get('metadata.describe.number-divisor'));
+            if (format != '-') {
+                var culture = Globalize.culture(me.locale), currPat = culture.numberFormat.currency.pattern.slice(0);
+                if (!showUnit && format == 'c') format = 'n2';
+                if (format == 'c') {
+                    if (div > 0 && me.metric_prefix[div] && showUnit) {
+                        var curFmt = culture.numberFormat.currency;
+                        curFmt.pattern[0] = curFmt.pattern[0].replace('n', 'n'+me.metric_prefix[div]);
+                        curFmt.pattern[1] = curFmt.pattern[1].replace('n', 'n'+me.metric_prefix[div]);
+                    }
+                    var chartCurrency = me.get('metadata.describe.number-currency').split('|');
+                    culture.numberFormat.currency.symbol = chartCurrency[1];
+                }
+                val = Globalize.format(Number(val) / Math.pow(10, div), format);
+                // reset pattern
+                culture.numberFormat.currency.pattern = currPat;
+                if (div > 0 && format[0] == 'n') {
+                    val += me.metric_prefix[div];
+                }
+                if (format[0] == 'n' && showUnit) {
+                    val += ' '+me.get('metadata.describe.number-unit');
+                }
+            }
+            return val;
         }
 
     });

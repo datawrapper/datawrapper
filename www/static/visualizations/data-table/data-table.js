@@ -37,8 +37,8 @@
                 if (me.chart.hasRowHeader()) {
                     tr.append('<th>'+me.chart.rowLabel(r)+'</tr>');
                 }
-                _.each(me.chart.dataSeries(), function(series) {
-                    td = $('<td>'+series.data[r]+'</td>');
+                _.each(me.chart.dataSeries(), function(series, s) {
+                    td = $('<td>'+me.chart.formatValue(series.data[r], r === 0 && s === 0)+'</td>');
                     if (isHighlighted(series)) {
                         td.addClass('highlight');
                     }

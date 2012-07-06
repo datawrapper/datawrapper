@@ -6,6 +6,9 @@ function get_chart_content($chart, $user) {
 
     $next_theme_id = $chart->getTheme();
 
+    $locale = $user->getLanguage();
+    $themeLocale = null;
+
     while (!empty($next_theme_id)) {
         $theme = get_theme_meta($next_theme_id);
         $theme_js[] = '/static/themes/' . $next_theme_id . '/theme.js';
@@ -14,9 +17,16 @@ function get_chart_content($chart, $user) {
         }
         if ($theme['hasLocaleJS']) {
             $theme_js[] = $theme['localeJS'];
+            if (empty($themeLocale)) $themeLocale = $theme['locale'];
         }
         $next_theme_id = $theme['extends'];
     }
+    // theme locale overrides user locale
+    if (!empty($themeLocale)) $locale = $themeLocale;
+    // per-chart locale overrides theme locale
+    $chartLocale = $chart->getLanguage();
+    if (!empty($chartLocale)) $locale = $chartLocale;
+
     $base_js = array(
         '/static/vendor/miso/miso.ds.deps.0.1.3.js',
         '/static/js/ds.parser.delimited.js',
@@ -55,6 +65,8 @@ function get_chart_content($chart, $user) {
     return array(
         'chartData' => $chart->loadData(),
         'chart' => $chart,
+        'chartLocale' => $locale,
+        'metricPrefix' => get_metric_prefix($locale),
         'theme' => get_theme_meta($chart->getTheme()),
         'visualization' => get_visualization_meta($chart->getType()),
         'stylesheets' => $styles,

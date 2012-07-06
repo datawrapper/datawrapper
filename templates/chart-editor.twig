@@ -23,6 +23,8 @@
     $(function() {
         DW.currentChart = new Datawrapper.EditableChart(JSON.parse('{{ chart.toJSON|raw }}'));
 
+        DW.currentChart.setLocale('{{ chartLocale }}', {{ metricPrefix | json | raw }});
+
         if (DW.currentChart.get('lastEditStep') < {{ createstep}}) {
             DW.currentChart.set('lastEditStep', {{ createstep }});
         }

@@ -14,7 +14,38 @@ $(function() {
     DW.currentChart.sync('#describe-source-name', 'metadata.describe.source-name');
     DW.currentChart.sync('#describe-source-url', 'metadata.describe.source-url');
     DW.currentChart.sync('input:radio[name=transpose]', 'metadata.data.transpose');
-    {# DW.currentChart.sync('#number-format', 'metadata.data.number-format'); #}
+
+    DW.currentChart.sync('#number-format', 'metadata.describe.number-format');
+    DW.currentChart.sync('#number-divisor', 'metadata.describe.number-divisor');
+    DW.currentChart.sync('#number-unit', 'metadata.describe.number-unit');
+    DW.currentChart.sync('#number-currency', 'metadata.describe.number-currency');
+
+    // swap between currency and unit
+    function swapUnitAndCurrency() {
+        if ($('#number-format').val() == 'c') {
+            $('#number-currency').show();
+            $('#number-unit').hide();
+        } else {
+            $('#number-currency').hide();
+            $('#number-unit').show();
+        }
+    }
+    $('#number-format').change(swapUnitAndCurrency);
+    swapUnitAndCurrency();
+
+    // update currency in number-format select
+    function updateCurrencyInNumberFormat() {
+        var curOpt = $('#number-format option[value=c]');
+        Globalize.culture("{{ chartLocale }}").numberFormat.currency.symbol = $('#number-currency option:selected').data('symbol');
+        curOpt.html(Globalize.format(1234.56, 'c'));
+    }
+    updateCurrencyInNumberFormat();
+    $('#number-currency').change(updateCurrencyInNumberFormat);
+
+    // update data table after format changes
+    $('.number-format').change(function() {
+        updateTable(DW.dataView, DW.currentChart);
+    });
 
     function updateTable(dv, chart) {
 
@@ -54,7 +85,9 @@ $(function() {
                 if (i == 0 && vertHeaders) {
                     tr.append('<th><span>'+(!isNone(row[col]) ? row[col] : '')+'</span></th>');
                 } else {
-                    tr.append('<td>'+(!isNone(row[col]) ? row[col] : '')+'</td>');
+                    var val = row[col];
+                    val = chart.formatValue(val, true);
+                    tr.append('<td>'+(!isNone(row[col]) ? val : '')+'</td>');
                 }
             });
             tbody.append(tr);
@@ -129,9 +162,38 @@ $(function() {
                 </div>
             </div>
 
-            <h3>Number format</h3>
+            <h3>{% trans "Output number format" %}</h3>
 
-            {# <p>
+            <p>
+                <select id="number-format" class="select span2 number-format">
+                    <option value="-">{% trans "keep original" %}</option>
+                    {% for key, formats in numberformats %}
+                    <optgroup label="{{ key }}">
+                        {% for id, format in formats %}
+                        <option value="{{ id }}">{{ format }}</option>
+                        {% endfor %}
+                    </optgroup>
+                    {% endfor %}
+                </select>
+
+                <select class="span1 number-format" id="number-divisor">
+                    <option value="0">-</option>
+                    <option value="3">{% trans "thousand" %}</option>
+                    <option value="6">{% trans "million" %}</option>
+                    <option value="9">{% trans "billion" %}</option>
+                </select>
+
+                <input type="text" id="number-unit" placeholder="unit" class="span1 number-format" />
+                <select class="span1 number-format" id="number-currency">
+                    <option data-symbol="€" value="EUR|€">EUR</option>
+                    <option data-symbol="£" value="GBP|£">GBP</option>
+                    <option data-symbol="$" value="USD|$">USD</option>
+                    <option data-symbol="¥" value="YEN|¥">YEN</option>
+                </select>
+
+            </p>
+
+                {# <p>
                 <label>{% trans "If possible, please specify the <i>number format</i>" %}</label>
                 <select id="number-format">
                     <option value="en">{% trans "English (eg 1,234.56)" %}</option>

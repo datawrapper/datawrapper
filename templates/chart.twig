@@ -24,15 +24,15 @@ body {
     <script type="text/javascript">
     $(function() {
         // initialize theme
-        var theme = Datawrapper.Themes.{{ theme.id|classify }};
+        var theme = Datawrapper.Themes.{{ theme.id | classify }};
         // initialize chart
-        var chart = new Datawrapper.Chart(JSON.parse('{{ chart.toJSON|raw }}'));
+        var chart = new Datawrapper.Chart(JSON.parse('{{ chart.toJSON | raw }}'));
         // initliaze visualization
-        var vis = new Datawrapper.Visualizations.{{ visualization.id|classify }}();
+        var vis = new Datawrapper.Visualizations.{{ visualization.id | classify }}();
 
         vis.setTheme(theme);
 
-        vis.setLocale(theme.locale);
+        chart.setLocale('{{ chartLocale }}', {{ metricPrefix | json | raw }});
 
         vis.load(chart, function() {
             vis.render('#chart');

@@ -67,6 +67,26 @@ if (function_exists('bindtextdomain')) {
 }
 
 
+function get_metric_prefix($locale) {
+    switch (substr($locale, 0, 2)) {
+        case 'de':
+            $pre = array();
+            $pre[3] = ' Tsd.';
+            $pre[6] = ' Mio.';
+            $pre[9] = ' Mrd.';
+            $pre[12] = ' Bio.';
+            return $pre;
+        default:
+            $pre = array();
+            $pre[3] = 'k';
+            $pre[6] = 'm';
+            $pre[9] = 'b';
+            $pre[12] = 't';
+            return $pre;
+    }
+}
+
+
 function add_header_vars(&$page, $active = null) {
     // define the header links
     global $app;
@@ -86,16 +106,16 @@ function add_header_vars(&$page, $active = null) {
         'url' => '',
         'id' => 'lang',
         'dropdown' => array(array(
-            'url' => '#lang-de_DE',
+            'url' => '#lang-de-DE',
             'title' => 'Deutsch'
         ), array(
-            'url' => '#lang-en_EN',
+            'url' => '#lang-en-GB',
             'title' => 'English'
         ), array(
-            'url' => '#lang-fr_FR',
+            'url' => '#lang-fr-FR',
             'title' => 'Français'
         ), array(
-            'url' => '#lang-es_ES',
+            'url' => '#lang-es-ES',
             'title' => 'Español'
         )),
         'title' => _('Language'),
@@ -130,6 +150,8 @@ function add_header_vars(&$page, $active = null) {
     }
     $page['headlinks'] = $headlinks;
     $page['user'] = DatawrapperSession::getUser();
+    $page['language'] = substr(DatawrapperSession::getLanguage(), 0, 2);
+    $page['locale'] = DatawrapperSession::getLanguage();
     $page['DW_DOMAIN'] = DW_DOMAIN;
 }
 
@@ -142,6 +164,8 @@ function add_editor_nav(&$page, $step) {
     $steps[] = array('index'=>3, 'id'=>'visualize', 'title'=>_('Visualize'));
     $steps[] = array('index'=>4, 'id'=>'publish', 'title'=>_('Publish'));
     $page['steps'] = $steps;
+    $page['chartLocale'] = $page['locale'];
+    $page['metricPrefix'] = get_metric_prefix($page['chartLocale']);
     $page['createstep'] = $step;
 }
 

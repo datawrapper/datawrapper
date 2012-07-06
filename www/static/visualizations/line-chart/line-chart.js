@@ -97,7 +97,7 @@
 
             if (tt) {
                 $('.xval', tt).html(xval);
-                $('.yval', tt).html(yval);
+                $('.yval', tt).html(me.chart.formatValue(yval, true));
                 if (me.chart.hasRowHeader()) {
                     $('.xlabel', tt).html(me.chart.rowHeader().name);
                 }
@@ -189,11 +189,11 @@
             ticks.unshift(domain[0]);
             ticks.push(domain[1]);
 
-            _.each(ticks, function(val) {
+            _.each(ticks, function(val, t) {
                 var y = yscale(val), x = c.lpad-me.theme.yLabelOffset;
                 if (val >= domain[0] && val <= domain[1]) {
                     // c.paper.text(x, y, val).attr(styles.labels).attr({ 'text-anchor': 'end' });
-                    me.label(x, y, val, { align: 'right', w: 60, cl: 'axis' });
+                    me.label(x, y, me.chart.formatValue(val, t == ticks.length-1), { align: 'right', w: 60, cl: 'axis' });
                     if (me.theme.yTicks) {
                         me.path([['M', c.lpad-25, y], ['L', c.lpad-20,y]], 'tick');
                     }

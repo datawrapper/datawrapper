@@ -168,6 +168,14 @@ class Chart extends BaseChart {
         return !$this->getDeleted() && $this->getLastEditStep() >= 4;
     }
 
+    public function getLocale() {
+        return $this->getLanguage();
+    }
+
+    public function setLocale($locale) {
+        $this->setLanguage($locale);
+    }
+
     public static function defaultMetaData() {
         return array(
             'data' => array(
@@ -180,7 +188,9 @@ class Chart extends BaseChart {
             ),
             'describe' => array(
                 'source-name' => '',
-                'source-url' => ''
+                'source-url' => '',
+                'number_format' => '-',
+                'number_divisor' => 1
             )
         );
     }
