@@ -9,9 +9,9 @@ $conf = array (
       'adapter' => 'mysql',
       'connection' => 
       array (
-        'dsn' => 'mysql:host=localhost;dbname=datawrapper',
+        'dsn' => 'mysql:host=localhost;dbname=dw_new',
         'user' => 'root',
-        'password' => '',
+        'password' => 'root',
       ),
     ),
     'default' => 'datawrapper',

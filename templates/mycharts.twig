@@ -14,15 +14,15 @@
                         <a href="#delete" class="delete" data-chart="{{ chart.id }}"><i class="icon-remove"></i></a>
                     </p>
                      <h3><a href="chart/{{ chart.id }}/edit">{{ chart.title }}</a></h3>
-                     <p>Created: {{ chart.createdAt|date() }}<br/>
-                     Layout: {{ chart.theme }} </p>
+                     <p>{% trans "Created" %}: {{ chart.createdAt|date() }}<br/>
+                     {% trans "Layout" %}: {{ chart.theme }} </p>
                 </div>
             </li>
             {% endfor %}
         </ul>
     </div>
     <div class="span3">
-        <h3>By Month</h3>
+        <h3>{% trans "By Month" %}</h3>
 
         <span class="label label-info">Not Implemented</span>
         <ul class="unstyled">
@@ -31,7 +31,7 @@
             {% endfor %}
         </ul>
 
-        <h3>By Visualisation</h3>
+        <h3>{% trans "By Visualisation" %}</h3>
 
         <span class="label label-info">Not Implemented</span>
         <ul class="unstyled">
@@ -40,7 +40,7 @@
             {% endfor %}
         </ul>
 
-        <h3>By Layout</h3>
+        <h3>{% trans "By Layout" %}</h3>
 
         <span class="label label-info">Not Implemented</span>
         <ul class="unstyled">

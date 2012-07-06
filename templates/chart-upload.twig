@@ -43,25 +43,25 @@
 
     <div class="row">
         <div class="span7">
-            <h3>Upload Your Data..</h3>
+            <h3>{% trans "Upload Your Data" %}</h3>
 
              <form class="well">
                 <textarea id="upload-data-text" placeholder="copy &amp; paste your data here">{{ chartData }}</textarea>
 
-                <a id="upload-data" class="btn btn-primary pull-right" href="#">Upload and continue <i class="icon-chevron-right icon-white"></i></a>
-                <button class="btn"><i class="icon-upload"></i>..or pick a file from your disk</button> <span class="label">Not Implemented</span>
+                <a id="upload-data" class="btn btn-primary pull-right" href="#">{% trans "Upload and continue" %} <i class="icon-chevron-right icon-white"></i></a>
+                <button class="btn"><i class="icon-upload"></i>{% trans "...or pick a file from your disk" %}</button> <span class="label">Not Implemented</span>
                 <br style="clear:both;margin:0" />
             </form>
 
         </div>
 
         <div class="span5">
-            <h3>Help</h3>
-            <p>We want to make getting data into Datawrapper as easy as possible. If you're working in Excel or OpenOffice, just select your data (including header row/column) and paste it in the following text field.</p>
+            <h3>{% trans "Help" %}</h3>
+            <p>{% trans "We want to make getting data into Datawrapper as easy as possible. If you're working in Excel or OpenOffice, just select your data (including header row/column) and paste it in the following text field." %}</p>
 
-            <p><a href="/xhr/docs/upload" data-toggle="modal">Learn more about how to upload your data</a>.</p>
+            <p><a href="/xhr/docs/upload" data-toggle="modal">{% trans "Learn more about how to upload your data" %}</a>.</p>
 
-            <p>If you simply want to play around with Datawrapper, you can use one of the following example datasets:
+            <p>{% trans "If you simply want to play around with Datawrapper, you can use one of the following example datasets:" %}
                 <ul id="demo-datasets" class="">
                     {% for dataset in datasets %}
                     <li><a href="#{{ dataset.id }}" class="demo-dataset" data-data="{{ dataset.data }}">{{ dataset.title }}</a></li>
@@ -87,30 +87,30 @@
         </div>
         {# maybe we add this feature in 1.1
         <div class="span4">
-            <h3>Remote Data Source</h3>
-            <p>If your data is stored on a datahub like CKAN, ScraperWiki or Google Docs, you can create visualisations directly. Your charts can be updated automatically as the data source changes. <a href="#">learn more</a></p>
+            <h3>{% trans "Remote Data Source" %}</h3>
+            <p>{% trans "If your data is stored on a datahub like CKAN, ScraperWiki or Google Docs, you can create visualisations directly. Your charts can be updated automatically as the data source changes." %} <a href="#">{% trans "learn more" %}</a></p>
 
             <form class="well">
                 <label class="radio">
                     <input type="radio" name="remote-source" />
-                    OKFN DataHub (CKAN)<br />
+                    {% trans "OKFN DataHub (CKAN)" %}<br />
                     <input type="text" placeholder="CKAN-URL" />
                 </label>
 
                 <label class="radio">
                     <input type="radio" name="remote-source" />
-                    Google Docs<br />
+                    {% trans "Google Docs" %}<br />
                     <input type="text" placeholder="Google Docs URL" />
                 </label>
 
                 <label class="radio">
                     <input type="radio" name="remote-source" />
-                    ScraperWiki<br />
+                    {% trans "ScraperWiki" %}<br />
                     <input type="text" placeholder="Insert the name of your scraper" />
                 </label>
 
                 <p class="pull-right">
-                    <a class="btn" href="describe.html">Check and continue <i class="icon-chevron-right"></i></a>
+                    <a class="btn" href="describe.html">{% trans "Check and continue" %} <i class="icon-chevron-right"></i></a>
                 </p>
                 <br class="clearfix" />
             </form>
