@@ -38,7 +38,8 @@ $app->get('/chart/:id/describe', function ($id) use ($app) {
                 'p0' => number_format(95.72, 0, $d, $k).' %'
             ),
             'currency' => array(
-                'c' => number_format(1234.56, 2, $d, $k).' X'
+                'c' => number_format(1234.56, 2, $d, $k).' X',
+                'c0' => number_format(1234.56, 0, $d, $k).' X'
             )
         );
 

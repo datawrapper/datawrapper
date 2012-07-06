@@ -191,7 +191,7 @@ class Chart extends BaseChart {
                 'source-url' => '',
                 'number-format' => '-',
                 'number-divisor' => 0,
-                'number-currency' => 'EUR',
+                'number-currency' => 'EUR|€',
                 'number-unit' => ''
             )
         );

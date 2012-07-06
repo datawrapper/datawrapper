@@ -35,9 +35,12 @@ $(function() {
 
     // update currency in number-format select
     function updateCurrencyInNumberFormat() {
-        var curOpt = $('#number-format option[value=c]');
+        var curOpt = $('#number-format option[value=c], #number-format option[value=c0]');
         Globalize.culture("{{ chartLocale }}").numberFormat.currency.symbol = $('#number-currency option:selected').data('symbol');
-        curOpt.html(Globalize.format(1234.56, 'c'));
+        curOpt.each(function(i, el) {
+            el = $(el);
+            el.html(Globalize.format(1234.56, el.val()));
+        });
     }
     updateCurrencyInNumberFormat();
     $('#number-currency').change(updateCurrencyInNumberFormat);

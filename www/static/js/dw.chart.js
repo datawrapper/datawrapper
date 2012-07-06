@@ -117,8 +117,8 @@
                 div = Number(me.get('metadata.describe.number-divisor'));
             if (format != '-') {
                 var culture = Globalize.culture(me.locale), currPat = culture.numberFormat.currency.pattern.slice(0);
-                if (!showUnit && format == 'c') format = 'n2';
-                if (format == 'c') {
+                if (!showUnit && format[0] == 'c') format = format == 'c0' ? 'n0': 'n2';
+                if (format[0] == 'c') {
                     if (div > 0 && me.metric_prefix[div] && showUnit) {
                         var curFmt = culture.numberFormat.currency;
                         curFmt.pattern[0] = curFmt.pattern[0].replace('n', 'n'+me.metric_prefix[div]);
