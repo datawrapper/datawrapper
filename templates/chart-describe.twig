@@ -29,6 +29,7 @@ $(function() {
             $('#number-currency').hide();
             $('#number-unit').show();
         }
+        $('#number-currency, #number-unit, #number-divisor').attr('disabled', $('#number-format').val() == '-');
     }
     $('#number-format').change(swapUnitAndCurrency);
     swapUnitAndCurrency();
