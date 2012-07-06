@@ -95,7 +95,7 @@ $(function() {
 
             <div class="row">
                 <div class="span2">
-                    <label for="select-vis">Visualization:</label>
+                    <label for="select-vis">{% trans "Visualization:" %}</label>
                     <select id="select-vis" class="span2">
                         {% for vis in visualizations %}{% if vis.title %}
                         <option value="{{ vis.id }}">{{ vis.title.en }}</option>
@@ -114,7 +114,7 @@ $(function() {
 
             </div>
 
-            <label for="text-title">Title</label>
+            <label for="text-title">{% trans "Title" %}</label>
             <input type="text" id="text-title" class="input-xlarge span4" />
 
             {# add introduction #}
@@ -132,7 +132,7 @@ $(function() {
             <div class="collapse{% if vismeta['highlighted-series'] %} in{% endif %}" id="c-highlight">
                 <div>
                     <select id="highlight-series" class="span2">
-                        <option value="---">- select a data series -</option>
+                        <option value="---">- {% trans "select a data series" %} -</option>
                     </select>
                 </div>
                 <p class="highlighted-series">
@@ -155,9 +155,9 @@ $(function() {
 
             {# customize tooltips }
 
-            <label><a data-toggle="collapse" data-target="#c-tooltips">Customize Tooltips</a></label>
+            <label><a data-toggle="collapse" data-target="#c-tooltips">{% trans "Customize Tooltips" %}</a></label>
             <div class="collapse" id="c-tooltips">
-                <label class="control-label">Tooltip content</label>
+                <label class="control-label">{% trans "Tooltip content" %}</label>
                 <div class="controls">
                     <textarea style="width:100%" placeholder="not implemented yet"></textarea>
                 </div>
@@ -181,7 +181,7 @@ $(function() {
 
     <div class="form-actions">
         <a href="publish" class="pull-right btn btn-primary" id="visualize-proceed">Publish <i class="icon-chevron-right icon-white"></i></a>
-        <a class="btn" href="describe"><i class="icon-chevron-left"></i> Back</a>
+        <a class="btn" href="describe"><i class="icon-chevron-left"></i> {% trans "Back" %}</a>
     </div>
 
 </div>

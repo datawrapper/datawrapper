@@ -12,39 +12,39 @@
 
                     <h3>Login</h3>
 
-                    <p>We're glad to see you again. Login to access your charts, and create new ones.</p>
+                    <p>{% trans "We're glad to see you again. Login to access your charts, and create new ones." %}</p>
 
                     <div class="login-form form-vertical">
-                        <input class="login-email" type="text" class="input-xxlarge span3" value="" placeholder="email" />
-                        <input class="login-pwd" type="password" class="input-xxlarge span3" value="" placeholder="password" /><br />
-                        <a class="btn btn-login btn-primary btn-large"><i class="icon-user icon-white"></i> Login</a>
+                        <input class="login-email" type="text" class="input-xxlarge span3" value="" placeholder="{% trans "email" %}" />
+                        <input class="login-pwd" type="password" class="input-xxlarge span3" value="" placeholder="{% trans "password" %}" /><br />
+                        <a class="btn btn-login btn-primary btn-large"><i class="icon-user icon-white"></i> {% trans "Login" %}</a>
                     </div>
                      <hr />
-                     <a id="forgot-password">Can't recall your Password?</a>
+                     <a id="forgot-password">{% trans "Can't recall your password?" %}</a>
 
                 </div>
                 <div class="span3">
-                    <h3>Create a new account</h3>
-                    <p>Datawrapper is 100% free and creating an account takes less than a minute. Just enter your email and pick a password, and you're done!</p>
+                    <h3>{% trans "Create a new account" %}</h3>
+                    <p>{% trans "Datawrapper is 100% free and creating an account takes less than a minute. Just enter your email and pick a password, and you're done!" %}</p>
                     <div class="signup-form form-vertcal">
                         <div class="control-group">
-                            <input id="register-email" type="text" class="input-xlarge span2" placeholder="email" />
+                            <input id="register-email" type="text" class="input-xlarge span2" placeholder="{% trans "email" %}" />
                         </div>
                         <div class="control-group">
-                            <input id="register-pwd" type="password" class="input-xlarge span2" placeholder="password" />
+                            <input id="register-pwd" type="password" class="input-xlarge span2" placeholder="{% trans "password" %}" />
                         </div>
                         <div class="control-group">
-                            <input id="register-pwd-2" type="password" class="input-xlarge span2" placeholder="repeat password" />
+                            <input id="register-pwd-2" type="password" class="input-xlarge span2" placeholder="{% trans "repeat password" %}" />
                         </div>
-                        <a id="btn-register" class="btn btn-large"><i class="icon-pencil"></i> Sign Up</a>
+                        <a id="btn-register" class="btn btn-large"><i class="icon-pencil"></i> {% trans "Sign Up" %}</a>
                     </div>
 
                 </div>
             </div>
         </div>
         <!--<div class="modal-footer">
-            <a href="#" class="btn" data-dismiss="modal">Close</a>
-            <a href="#" class="btn btn-primary">Save changes</a>
+            <a href="#" class="btn" data-dismiss="modal">{% trans "Close" %}</a>
+            <a href="#" class="btn btn-primary">{% trans "Save changes" %}</a>
         </div>-->
     </div>
 

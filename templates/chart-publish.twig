@@ -18,31 +18,31 @@ $(function() {
 
             {% if user.isAbleToPublish %}
 
-            <p>Congrats, you made it! Now is the time to check back everything. You can return to the previous steps.</p>
+            <p>{% trans "Congrats, you made it! Now is the time to check back everything. You can return to the previous steps." %}</p>
 
-            <h3>Link to this visualisation</h3>
+            <h3>{% trans "Link to this visualisation" %}</h3>
             <p><a href="http://datawrapper.de/chart/{{ chart.id }}">http://datawrapper.de/chart/{{ chart.id }}</a></p>
 
-            <h3>Embed into your website</h3>
-            <p>Just copy &amp; paste the following code into your website.</p>
+            <h3>{% trans "Embed into your website" %}</h3>
+            <p>{% trans "Just copy &amp; paste the following code into your website." %}</p>
             <form class="form-inline">
-                <label>Width: <input type="text" class="input-small" style="width:4ex" value="600" /> px</label>&nbsp;&nbsp;
-                <label>Height: <input type="text" class="input-small" style="width:4ex" value="400" /> px</label>
+                <label>{% trans "Width" %}: <input type="text" class="input-small" style="width:4ex" value="600" /> px</label>&nbsp;&nbsp;
+                <label>{% trans "Height" %}: <input type="text" class="input-small" style="width:4ex" value="400" /> px</label>
 
             <textarea id="iframe-code" class="span4" rows="5"><iframe src="/chart/{{ chart.id }}/preview" frameborder="0" scrolling="no" allowtransparency="true" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen width="600" height="400"></iframe></textarea>
 
-             <h3>Make it public</h3>
-             <p>You can show some love to Datawrapper by agreeing to show your visualisation in our <a href="gallery.html">public gallery</a>. Absolutely optional :)</p>
+             <h3>{% trans "Make it public" %}</h3>
+             <p>{% trans "You can show some love to Datawrapper by agreeing to show your visualisation in our <a href='gallery.html'>public gallery</a>" %}. {% trans "This is absolutely optional." %}</p>
 
-             <label class="checkbox"><input type="checkbox" id="make-public" /> Yes, make it public!</label>
+             <label class="checkbox"><input type="checkbox" id="make-public" /> {% trans "Yes, make it public!" %}</label>
 
             {% elseif user.role == 'guest' %}
 
-            <h3>Congrats, you created your first chart!</h3>
+            <h3>{% trans "Congrats, you created your first chart!" %}</h3>
 
-            <p>Now, to be able to embed the chart, we ask you to create an account. It's free and all you need is a valid email address. The chart you just created will be transfered to your new account.</p>
+            <p>{% trans "Now, to be able to embed the chart, we ask you to create an account. It's free and all you need is a valid email address. The chart you just created will be transfered to your new account." %}</p>
 
-            <h3>Sign Up</h3>
+            <h3>{% trans "Sign Up" %}</h3>
 
             <div class="signup-form form-vertcal">
                 <div class="control-group">
@@ -59,18 +59,18 @@ $(function() {
 
             {% elseif user.role == 'pending' %}
 
-            <h3>Congrats, you created a chart!</h3>
+            <h3>{% trans "Congrats, you created a chart!" %}</h3>
 
-            <p>The chart is accessible under <a href="{{ DW_DOMAIN }}/chart/{{ chart.id }}/edit">{{ DW_DOMAIN }}/chart/{{ chart.id }}/edit</a> or via your <a href="/mycharts">My Charts</a> page.
+            <p>{% trans "The chart is accessible under" %} <a href="{{ DW_DOMAIN }}/chart/{{ chart.id }}/edit">{{ DW_DOMAIN }}/chart/{{ chart.id }}/edit</a> {% trans "or via your <a href='/mycharts'>My Charts</a> page." %}
 
-            <p>Now, to be able to publish and embed this chart into other websites, you need to activate the email address you entered during sign up process.</p>
+            <p>{% trans "Now, to be able to publish and embed this chart into other websites, you need to activate the email address you entered during sign up process." %}</p>
 
-            <p>If you did not get any email within 5 minutes, here's the trouble shooting guide:</p>
+            <p>{% trans "If you did not get any email within 5 minutes, here's the trouble shooting guide:" %}</p>
             <ol>
-                <li>At first, don't worry. Everything you created will wait patiently</li>
-                <li>Make sure that your spam filter didn't catch our activation email. They are sent from activate@{{ DW_DOMAIN }}.</li>
-                <li>Of course, you can also let us <a href="#resend">resend the activation email</a>. (TODO)</li>
-                <li>If that didn't work either, please contact our support</li>
+                <li>{% trans "At first, don't worry. Everything you created will wait patiently" %}</li>
+                <li>{% trans "Make sure that your spam filter didn't catch our activation email. They are sent from" %} activate@{{ DW_DOMAIN }}.</li>
+                <li>{% trans "Of course, you can also let us <a href='#resend'>resend the activation email</a>." %} (TODO)</li>
+                <li>{% trans "If that didn't work either, please contact our support" %}</li>
             </ol>
 
             {% else %}
@@ -87,8 +87,8 @@ $(function() {
     <div class="row">
         <div class="span12">
             <div class="form-actions">
-                <a class="pull-right btn" href="create.html"><i class="icon-pencil"></i> Create another graphic</a>
-                <a class=" btn " href="describe.html"><i class="icon-chevron-left"></i> Return to visualise step</a>
+                <a class="pull-right btn" href="create.html"><i class="icon-pencil"></i> {% trans "Create another graphic" %}</a>
+                <a class=" btn " href="describe.html"><i class="icon-chevron-left"></i> {% trans "Return to visualise step" %}</a>
             </div>
         </div>
     </div>

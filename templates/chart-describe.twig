@@ -86,10 +86,10 @@ $(function() {
 
         <div class="span8">
             <div class="page-header">
-                <h2>Check your data</h2>
+                <h2>{% trans "Check your data" %}</h2>
             </div>
 
-            <p>Please check if the data format was recognized correctly. If not, please <a data-toggle="modal" href="/xhr/docs/describe">help Datawrapper to understand your data</a>.</p>
+            <p>{% trans "Please check if the data format was recognized correctly. If not, please <a data-toggle='modal' href='/xhr/docs/describe'>help Datawrapper to understand your data</a>." %}</p>
 
 
             <form class="form-inline">
@@ -112,47 +112,47 @@ $(function() {
 
         <div class="span4">
             <div class="page-header">
-                <h2>Describe your data</h2>
+                <h2>{% trans "Describe your data" %}</h2>
             </div>
             <div class="row" style="margin-bottom:15px">
                 <div class="span2">
                     <p>
-                        <label class="radio"><input type="radio" name="transpose" value="yes" /> Data series in rows</label>
-                        <label class="radio"><input type="radio" name="transpose" value="no" /> Data series in columns</label>
+                        <label class="radio"><input type="radio" name="transpose" value="yes" /> {% trans "Data series in rows" %}</label>
+                        <label class="radio"><input type="radio" name="transpose" value="no" /> {% trans "Data series in columns" %}</label>
                     </p>
 
                 </div><div class="span2">
                     <p>
-                        <label class="checkbox"><input id="has-horizontal-headers" type="checkbox" checked="checked"> First row as label</label>
-                        <label class="checkbox"><input id="has-vertical-headers" type="checkbox"> First column as label</label>
+                        <label class="checkbox"><input id="has-horizontal-headers" type="checkbox" checked="checked"> {% trans "First row as label" %}</label>
+                        <label class="checkbox"><input id="has-vertical-headers" type="checkbox"> {% trans "First column as label" %}</label>
                     </p>
                 </div>
             </div>
 
             {# <p>
-                <label>If possible, please specify the <i>number format</i></label>
+                <label>{% trans "If possible, please specify the <i>number format</i>" %}</label>
                 <select id="number-format">
-                    <option value="en">English (eg 1,234.56)</option>
-                    <option value="de">German/French (eg 1.234,56)</option>
+                    <option value="en">{% trans "English (eg 1,234.56)" %}</option>
+                    <option value="de">{% trans "German/French (eg 1.234,56)" %}</option>
                 </select>
             </p> #}
 
-            <h3>Credit the source</h3>
+            <h3>{% trans "Credit the source" %}</h3>
             <p>
-                <label>Who published the data in the first place?</label>
+                <label>{% trans "Who published the data in the first place?" %}</label>
                 <input id="describe-source-name" type="text" placeholder="name of the organisation">
             </p>
             <p>
-                <label>If possible, please provide a link the source data</label>
+                <label>{% trans "If possible, please provide a link the source data" %}</label>
                 <input id="describe-source-url" type="text" placeholder="http://">
             </p>
-            <h3>Annotate data</h3>
-            <p>To make the data more useful for your readers you can add details to individual data points or an entire series. This information will be displayed in the visualisations. <a href="#">Learn more..</a></p>
-            <button class="btn"><i class="icon-th-list"></i> Annotate series</button> <button class="btn"><i class="icon-th"></i> Annotate data point</button>
+            <h3>{% trans "Annotate data" %}</h3>
+            <p>{% trans "To make the data more useful for your readers you can add details to individual data points or an entire series. This information will be displayed in the visualisations." %} <a href="#">{% trans "Learn more" %}</a></p>
+            <button class="btn"><i class="icon-th-list"></i> {% trans "Annotate series" %}</button> <button class="btn"><i class="icon-th"></i> {% trans "Annotate data point" %}</button>
 
             <div class="form-actions">
-                <a href="visualize" class="pull-right btn btn-primary" id="describe-proceed">Visualize <i class="icon-chevron-right icon-white"></i></a>
-                <a class="btn" href="upload"><i class="icon-chevron-left"></i> Back</a>
+                <a href="visualize" class="pull-right btn btn-primary" id="describe-proceed">{% trans "Visualize" %} <i class="icon-chevron-right icon-white"></i></a>
+                <a class="btn" href="upload"><i class="icon-chevron-left"></i> {% trans "Back" %}</a>
             </div>
         </div>
     </div>
