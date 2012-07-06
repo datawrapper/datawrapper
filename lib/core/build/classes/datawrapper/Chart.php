@@ -189,8 +189,8 @@ class Chart extends BaseChart {
             'describe' => array(
                 'source-name' => '',
                 'source-url' => '',
-                'number_format' => '-',
-                'number_divisor' => 1
+                'number-format' => '-',
+                'number-divisor' => 0
             )
         );
     }
