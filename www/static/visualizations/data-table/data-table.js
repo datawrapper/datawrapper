@@ -42,11 +42,17 @@
                     if (isHighlighted(series)) {
                         td.addClass('highlight');
                     }
+                    td.attr('title', series.name);
                     tr.append(td);
                 });
                 $('tbody', table).append(tr);
             }
             el.append(table);
+
+            if (me.get('table-responsive')) {
+                table.addClass('responsive');
+            }
+
             table.dataTable({
                 "bPaginate": me.get('table-paginate'),
                 "bInfo": me.get('table-paginate'),

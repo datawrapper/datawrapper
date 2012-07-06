@@ -25,6 +25,14 @@
                 "fr": "triable"
             }
         },
+        "table-responsive": {
+            "type": "checkbox",
+            "label": {
+                "en": "responsive",
+                "de": "sortierbar",
+                "fr": "triable"
+            }
+        },
         "table-paginate": {
             "type": "checkbox",
             "label": {
