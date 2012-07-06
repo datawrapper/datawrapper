@@ -22,7 +22,7 @@ $(function() {
 
     // swap between currency and unit
     function swapUnitAndCurrency() {
-        if ($('#number-format').val() == 'c') {
+        if ($('#number-format').val()[0] == 'c') {
             $('#number-currency').show();
             $('#number-unit').hide();
         } else {
