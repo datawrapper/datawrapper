@@ -63,7 +63,11 @@ class DatawrapperSession {
      * retreive the currently used frontend language
      */
     public static function getLanguage() {
-        return isset($_SESSION['dw-lang']) ? $_SESSION['dw-lang'] : 'en';
+        if (self::getUser()->isLoggedIn()) {
+            return self::getUser()->getLanguage();
+        } else {
+            return isset($_SESSION['dw-lang']) ? $_SESSION['dw-lang'] : 'en';
+        }
         // TODO: load user setting from database for logged users
     }
 
