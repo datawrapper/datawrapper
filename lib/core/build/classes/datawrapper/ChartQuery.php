@@ -83,6 +83,7 @@ class ChartQuery extends BaseChartQuery {
         return $this->filterByAuthorId($user->getId())
             ->filterByDeleted(false)
             ->orderByLastModifiedAt('desc')
+            ->filterByLastEditStep(array('min' => 2))
             ->find();
     }
 
