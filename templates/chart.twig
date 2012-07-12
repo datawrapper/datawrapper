@@ -38,7 +38,16 @@ body {
             vis.render('#chart');
         });
 
-        window.chart = chart;
+        window.vis = vis;
+
+        var reload_timer;
+
+        $(window).resize(function() {
+            if (reload_timer) clearTimeout(reload_timer);
+            reload_timer = setTimeout(function() {
+                location.reload();
+            }, 300);
+        })
     });
     </script>
 </head>
