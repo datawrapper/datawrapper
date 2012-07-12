@@ -172,8 +172,10 @@ $(function() {
         </div>
 
         <div class="span8">
-            <iframe src="/chart/{{ chart.id }}/preview" id="iframe-vis" style="width:100%; height: 500px">
-            </iframe>
+            <div id="iframe-wrapper" style="height:500px;">
+                <iframe src="/chart/{{ chart.id }}/preview" id="iframe-vis">
+                </iframe>
+            </div>
 
         </div>
 
