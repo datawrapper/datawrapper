@@ -28,12 +28,12 @@ p { margin: 15px 0; line-height: 19px;}
 }
 
 .label span {
-    font-size: 10px;
+    font-size: 12px;
     color: #999;
 }
 
 .label.highlighted, .label.axis {
-    font-size: 10px;
+    font-size: 12px;
     z-index: 100;
 }
 
