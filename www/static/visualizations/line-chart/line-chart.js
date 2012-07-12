@@ -194,23 +194,6 @@
             return d3.scale[scale]().domain(domain);
         },
 
-        getYTicks: function(h) {
-            var me = this,
-                yscale = me.__scales.y,
-                ticks = yscale.ticks(h / 80),
-                domain = me.__domain,
-                bt = yscale(ticks[0]),
-                tt = yscale(ticks[ticks.length-1]);
-
-            if (Math.abs(yscale(domain[0]) - bt) < 30) ticks.shift();
-            if (Math.abs(tt - yscale(domain[1])) < 30) ticks.pop();
-
-            ticks.unshift(domain[0]);
-            ticks.push(domain[1]);
-
-            return ticks;
-        },
-
         yAxisWidth: function(h) {
             var me = this,
                 ticks = me.getYTicks(h),
@@ -246,8 +229,8 @@
                     }
                 }
             });
-            // draw axis line
 
+            // draw axis line
             if (domain[0] <= 0 && domain[1] >= 0) {
                 y = yscale(0);
                 me.path([['M', c.lpad, y], ['L', c.w - c.rpad,y]], 'axis')
