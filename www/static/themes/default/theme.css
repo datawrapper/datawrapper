@@ -36,6 +36,10 @@ p { margin: 15px 20px; line-height: 19px;}
     z-index: 100;
 }
 
+.label.value span {
+    font-size: 12px;
+}
+
 .tooltip {
     z-index: 200;
     padding-bottom: 0px;
@@ -89,4 +93,8 @@ html[xmlns] .clearfix {
  
 * html .clearfix {
     height: 1%;
+}
+
+svg .axis, svg .tick, svg .grid {
+    shape-rendering: crispEdges;
 }

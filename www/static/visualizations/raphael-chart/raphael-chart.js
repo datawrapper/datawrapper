@@ -102,7 +102,9 @@
         },
 
         label: function(x, y, txt, attrs) {
-            var l, w, align, h;
+            var l, w, align, h, va;
+            if (attrs === undefined) attrs = {};
+            va = attrs.valign;
             l = $('<div class="label'+(attrs.cl ? ' '+attrs.cl : '')+'"><span>'+txt+'</span></div>');
             w = attrs.w ? attrs.w : this.labelWidth(txt, attrs.cl);
             align = attrs.align ? attrs.align : 'left';
@@ -117,8 +119,9 @@
             }
             this.__canvas.root.append(l);
             h = attrs.h ? attrs.h : l.height();
+            if (!va) va = 'middle';
             l.css({
-                top: (y-h*0.5)+'px'
+                top: (y-h*(va == 'top' ? 0 : va == 'middle' ? 0.5 : 1))+'px'
             });
             return l;
         },

@@ -13,7 +13,7 @@
 
         colors: {
             focus: '#0063A5',
-            context: '#777',
+            context: '#aaa',
             axis: '#000000',
             grid: '#999999'
         },

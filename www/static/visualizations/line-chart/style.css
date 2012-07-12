@@ -1,8 +1,4 @@
 
-svg .axis, svg .tick, svg .grid {
-    shape-rendering: crispEdges;
-}
-
 
 .label span {
     font-size: 12px;
