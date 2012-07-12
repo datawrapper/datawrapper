@@ -10,17 +10,18 @@ body {
     font-weight: 400;
     margin:0;
     font-size: 12px;
+    background: #fff;
     overflow: hidden;
 }
 
 h1 {
     font-size: 24px;
     font-weight: 700;
-    margin: 10px 20px 15px;
+    margin: 0 0 15px;
     text-align: left;
 }
 
-p { margin: 15px 20px; line-height: 19px;}
+p { margin: 15px 0; line-height: 19px;}
 
 #chart {
     margin-top: 25px;
@@ -39,6 +40,11 @@ p { margin: 15px 20px; line-height: 19px;}
 .label.value span {
     font-size: 12px;
 }
+
+.label.series span {
+    font-size: 12px;
+}
+
 
 .tooltip {
     z-index: 200;
@@ -61,10 +67,10 @@ p { margin: 15px 20px; line-height: 19px;}
 }
 
 #footer {
-    margin: 10px 20px 0px;
+    margin: 10px 0px 0px;
     padding-top: 5px;
     border-top: 1px solid #eee;
-    font-size: 10px;
+    font-size: 11px;
 }
 
 .footer-left {
@@ -82,15 +88,15 @@ p { margin: 15px 20px; line-height: 19px;}
     line-height: 0;
     height: 0;
 }
- 
+
 .clearfix {
     display: inline-block;
 }
- 
+
 html[xmlns] .clearfix {
     display: block;
 }
- 
+
 * html .clearfix {
     height: 1%;
 }

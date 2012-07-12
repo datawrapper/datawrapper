@@ -39,11 +39,13 @@
 
         yTicks: false,
 
-        yAxis: false,
+        yAxis: {
+            'stroke-width': 1
+        },
 
         padding: {
-            left: 20,
-            right: 20,
+            left: 0,
+            right: 0,
             bottom: 40,
             top: 10
         },
