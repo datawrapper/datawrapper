@@ -57,7 +57,7 @@ if (function_exists('bindtextdomain')) {
     setlocale(LC_ALL, $locale);
     bindtextdomain($domain, '../locale');
     bind_textdomain_codeset($domain, 'UTF-8');
-    textdomain($domain);
+    textdomain($domain);    
 } else {
     // If no gettext extension is found, we will
     // fake the API to not break the application

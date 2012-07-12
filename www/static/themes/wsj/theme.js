@@ -25,7 +25,6 @@
         yTicks: false,
         yLabelOffset: 8,
 
-        leftPadding: 50,
         bottomPadding: 10,
         xLabelOffset: 20
 

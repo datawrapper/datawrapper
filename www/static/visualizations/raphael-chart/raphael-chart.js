@@ -11,24 +11,30 @@
             this.__seriesElements = {};
             this.__seriesLabels = {};
 
-            $('body').append('<div id="tooltip" class="tooltip"><div class="content"><label class="xlabel">x</label> <span class="xval"></span><br /><label class="ylabel">y</label> <span class="yval"></span></div></div>');
+            $('body').append('<div id="tooltip" class="tooltip"><div class="content"><span class="yval"></span></div></div>');
         },
 
-        initCanvas: function(el, canvas) {
-            var me = this;
+        setRoot: function(el) {
+            this.__root = el;
             el.css({
                 position: 'relative'
             });
+        },
+
+        initCanvas: function(canvas) {
+            var me = this, el = me.__root, w = $(document).width();
             canvas = _.extend({
-                w: el.width(),
+                w: w,
                 h: me.getMaxChartHeight(el),
-                rpad: me.chart.dataSeries().length > 1 ? me.theme.rightPadding + me.theme.lineLabelWidth : me.theme.rightPadding,
-                lpad: me.theme.leftPadding,
-                bpad: me.theme.bottomPadding,
-                tpad: 0
+                rpad: me.theme.padding.right,
+                lpad: me.theme.padding.left,
+                bpad: me.theme.padding.bottom,
+                tpad: me.theme.padding.top
             }, canvas);
             canvas.root = el;
             canvas.paper = Raphael(el[0], canvas.w, canvas.h+2);
+            //console.log(w, w-canvas.lpad-canvas.rpad);
+            //canvas.paper.rect(canvas.lpad, canvas.tpad, canvas.w - canvas.lpad - canvas.rpad, canvas.h - canvas.tpad - canvas.bpad);
             el.height(canvas.h);
             $('.tooltip').hide();
             me.__canvas = canvas;
@@ -98,21 +104,32 @@
         label: function(x, y, txt, attrs) {
             var l, w, align, h;
             l = $('<div class="label'+(attrs.cl ? ' '+attrs.cl : '')+'"><span>'+txt+'</span></div>');
-            w = attrs.w ? attrs.w : 80;
+            w = attrs.w ? attrs.w : this.labelWidth(txt, attrs.cl);
             align = attrs.align ? attrs.align : 'left';
             x = align == 'left' ? x : align == 'center' ? x - w * 0.5 : x - w;
             l.css({
                 position: 'absolute',
                 left: x+'px',
-                width: w+'px',
                 'text-align': align
             });
+            if (attrs.w) {
+                l.css({ width: w+'px' });
+            }
             this.__canvas.root.append(l);
             h = attrs.h ? attrs.h : l.height();
             l.css({
                 top: (y-h*0.5)+'px'
             });
             return l;
+        },
+
+        labelWidth: function(txt, className) {
+            // returns the width of a label
+            var l = $('<div class="label'+(className ? ' '+className : '')+'"><span>'+txt+'</span></div>');
+            this.__root.append(l);
+            var w = $('span', l).width();
+            l.remove();
+            return w;
         },
 
         orderSeriesElements: function() {

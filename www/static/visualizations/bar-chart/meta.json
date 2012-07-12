@@ -13,6 +13,7 @@
         "name": "MIT",
         "url": "http://www.opensource.org/licenses/mit-license.php"
     },
+    "dimensions": 1,
     "options": {
         "orientation": {
             "type": "radio",

@@ -7,9 +7,6 @@
  *
  */
 
-session_start();
-
-
 class DatawrapperSession {
 
     protected static $datawrapper;
@@ -31,6 +28,18 @@ class DatawrapperSession {
         }
 
         $this->initUser();
+    }
+
+    public static function initSession() {
+        $ses = 'dw-session';
+        $lifetime = 86400 * 30;  // 30 days
+        session_set_cookie_params($lifetime);
+        session_name($ses);
+        session_start();
+
+        // Reset the expiration time upon page load
+        if (isset($_COOKIE[$ses]))
+            setcookie($ses, $_COOKIE[$ses], time() + $lifetime, "/");
     }
 
     /**
@@ -122,5 +131,6 @@ class DatawrapperSession {
     public static function setChartMetaData($chart_id, $chart_info) {
 
     }
-
 }
+
+DatawrapperSession::initSession();

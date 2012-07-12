@@ -1,4 +1,3 @@
-@import url(http://fonts.googleapis.com/css?family=Ubuntu:700,400);
 
 /*
  * Default Theme
@@ -7,17 +6,18 @@
  */
 
 body {
-    font-family: Ubuntu;
+    font-family: Helvetica Neue, Arial;
     font-weight: 400;
     margin:0;
-    font-size: 14px;
+    font-size: 12px;
+    overflow: hidden;
 }
 
 h1 {
     font-size: 24px;
     font-weight: 700;
-    margin: 15px 20px;
-    text-align: center;
+    margin: 10px 20px 15px;
+    text-align: left;
 }
 
 p { margin: 15px 20px; line-height: 19px;}
@@ -26,20 +26,19 @@ p { margin: 15px 20px; line-height: 19px;}
     margin-top: 25px;
 }
 
-.label {
-    font-size: 12px;
+.label span {
+    font-size: 10px;
     color: #999;
 }
 
 .label.highlighted, .label.axis {
-    font-size: 14px;
+    font-size: 10px;
     z-index: 100;
 }
 
 .tooltip {
     z-index: 200;
-    padding-bottom: 10px;
-    background: url('tooltip-bg.png') center bottom  no-repeat;
+    padding-bottom: 0px;
 }
 
 .tooltip .content {
@@ -47,7 +46,6 @@ p { margin: 15px 20px; line-height: 19px;}
     border: 1px solid #888;
     box-shadow: 2px 2px 2px rgba(0,0,0,.2);
     padding: 5px 8px;
-    border-radius: 10px;
 }
 
 .tooltip label {
@@ -58,3 +56,6 @@ p { margin: 15px 20px; line-height: 19px;}
     content: ": ";
 }
 
+#footer {
+    margin: 10px 20px 10px;
+}

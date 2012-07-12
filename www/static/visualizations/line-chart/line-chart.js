@@ -11,23 +11,38 @@
         render: function(el) {
             el = $(el);
             var
-            me = this,
+            me = this;
+            me.setRoot(el);
+
+            var
             ds = me.dataset,
             scales = me.__scales = {
                 x: me.xScale(),
                 y: me.yScale()
             },
-
+            h = me.get('force-banking') ? el.width() / me.computeAspectRatio() : me.getMaxChartHeight(el),
             c;
 
             me.init();
 
-            c = me.initCanvas(el, {
-                h: me.get('force-banking') ?
-                    el.width() / me.computeAspectRatio() : me.getMaxChartHeight(el)
+            c = me.initCanvas({
+                h: h
             });
 
-            scales.x = scales.x.range([c.lpad, c.w-c.rpad]);
+            if (me.lineLabelsVisible()) {
+                c.labelWidth = 0;
+                _.each(me.chart.dataSeries(), function(col) {
+                    console.log(col.name, me.labelWidth(col.name));
+                    c.labelWidth = Math.max(c.labelWidth, me.labelWidth(col.name, 'series')+10);
+                });
+                if (c.labelWidth > me.theme.lineChart.maxLabelWidth) {
+                    c.labelWidth = me.theme.lineChart.maxLabelWidth;
+                }
+                c.rpad += c.labelWidth;
+                console.log(c.labelWidth);
+            }
+
+            scales.x = scales.x.range([c.lpad+me.yAxisWidth(h)+20, c.w-c.rpad]);
             scales.y = scales.y.range([c.h-c.bpad, 5]);
 
             me.yAxis();
@@ -44,7 +59,7 @@
                     y = scales.y(val);
                     path.push([path.length> 0 ? 'L' : 'M', x, y]);
                 });
-                sw = me.theme.lineWidth[me.chart.isHighlighted(col) ? 'focus' : 'context'];
+                sw = me.theme.lineChart.strokeWidth[me.chart.isHighlighted(col) ? 'highlight' : 'normal'];
 
                 me.registerSeriesElement(c.paper.path(path).attr({
                     'stroke-width': sw,
@@ -60,17 +75,19 @@
                     'stroke-opacity': 0
                 }), col);
 
-                if (me.chart.dataSeries().length > 1 && me.chart.dataSeries().length < 10) {
-                    var lbl = me.label(x+15, y, col.name, { cl: me.chart.isHighlighted(col) ? 'highlighted series' : 'series' });
+                if (me.lineLabelsVisible()) {
+                    var lbl = me.label(x+10, y, col.name,
+                        { cl: me.chart.isHighlighted(col) ? 'highlighted series' : 'series',
+                          w: c.labelWidth });
                     lbl.data('highlighted', me.chart.isHighlighted(col));
                     me.registerSeriesLabel(lbl, col);
-                }
+                } // */
             });
 
             me.orderSeriesElements();
 
-            if (me.theme.lineHoverDotRadius) {
-                this.hoverDot = c.paper.circle(0, 0, me.theme.lineHoverDotRadius).hide();
+            if (me.theme.lineChart.hoverDotRadius) {
+                this.hoverDot = c.paper.circle(0, 0, me.theme.lineChart.hoverDotRadius).hide();
             }
 
             if (true || me.theme.tooltips) {
@@ -79,6 +96,11 @@
 
             window.ds = me.dataset;
             window.vis = me;
+        },
+
+        lineLabelsVisible: function() {
+            var me = this;
+            return me.chart.dataSeries().length > 1 && me.chart.dataSeries().length < 10;
         },
 
         getDataRowByPoint: function(x, y) {
@@ -93,7 +115,7 @@
                 yr = me.__scales.y(yval);
 
             x = me.__scales.x(row);
-            y = yr + me.__canvas.root.offset().top;
+            y = yr + me.__root.offset().top;
 
             if (tt) {
                 $('.xval', tt).html(xval);
@@ -111,11 +133,11 @@
                 tt.show();
             }
 
-            if (me.theme.lineHoverDotRadius) {
+            if (me.theme.lineChart.hoverDotRadius) {
                 me.hoverDot.attr({
                     cx: x,
                     cy: yr,
-                    r: me.theme.lineHoverDotRadius,
+                    r: me.theme.lineChart.hoverDotRadius,
                     stroke: me.getSeriesColor(series),
                     'stroke-width': 1.5,
                     fill: '#fff'
@@ -164,7 +186,7 @@
                 domain[1] = Math.max(domain[1], col._max());
             });
             me.__domain = domain;
-            if (me.get('baseline') == 'zero') {
+            if (me.get('baseline-zero')) {
                 domain[0] = 0;
             }
             scale = me.get('scale') || 'linear';
@@ -172,14 +194,11 @@
             return d3.scale[scale]().domain(domain);
         },
 
-        yAxis: function() {
-            // draw tick marks and labels
-            var yscale = this.__scales.y,
-                me = this,
-                c = this.__canvas,
-                domain = this.__domain,
-                styles = this.__styles,
-                ticks = yscale.ticks(c.h / 50),
+        getYTicks: function(h) {
+            var me = this,
+                yscale = me.__scales.y,
+                ticks = yscale.ticks(h / 80),
+                domain = me.__domain,
                 bt = yscale(ticks[0]),
                 tt = yscale(ticks[ticks.length-1]);
 
@@ -189,11 +208,35 @@
             ticks.unshift(domain[0]);
             ticks.push(domain[1]);
 
+            return ticks;
+        },
+
+        yAxisWidth: function(h) {
+            var me = this,
+                ticks = me.getYTicks(h),
+                maxw = 0;
+
             _.each(ticks, function(val, t) {
-                var y = yscale(val), x = c.lpad-me.theme.yLabelOffset;
+                val = me.chart.formatValue(val, false);
+                maxw = Math.max(maxw, me.labelWidth(val));
+            });
+            return maxw;
+        },
+
+        yAxis: function() {
+            // draw tick marks and labels
+            var me = this,
+                yscale = me.__scales.y,
+                c = me.__canvas,
+                domain = me.__domain,
+                styles = me.__styles,
+                ticks = me.getYTicks(c.h);
+
+            _.each(ticks, function(val, t) {
+                var y = yscale(val), x = c.lpad;
                 if (val >= domain[0] && val <= domain[1]) {
                     // c.paper.text(x, y, val).attr(styles.labels).attr({ 'text-anchor': 'end' });
-                    me.label(x, y, me.chart.formatValue(val, t == ticks.length-1), { align: 'right', w: 60, cl: 'axis' });
+                    me.label(x+2, y-10, me.chart.formatValue(val, t == ticks.length-1), { align: 'left', cl: 'axis' });
                     if (me.theme.yTicks) {
                         me.path([['M', c.lpad-25, y], ['L', c.lpad-20,y]], 'tick');
                     }
@@ -205,11 +248,10 @@
             });
             // draw axis line
 
-            if (me.theme.yAxis) {
-                this.path([
-                    ['M', c.lpad-20, yscale(domain[0])],
-                    ['L', c.lpad-20, yscale(domain[1])]
-                ], 'axis').attr(me.theme.yAxis);
+            if (domain[0] <= 0 && domain[1] >= 0) {
+                y = yscale(0);
+                me.path([['M', c.lpad, y], ['L', c.w - c.rpad,y]], 'axis')
+                            .attr(me.theme.yAxis);
             }
         },
 

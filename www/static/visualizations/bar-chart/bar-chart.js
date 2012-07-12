@@ -15,17 +15,20 @@
 
             var me = this,
             c = me.initCanvas(el, {}),
-            all_series = me.chart.dataSeries(),
             chart_width = c.w - c.lpad - c.rpad,
             series_gap = 0.05, // pull from theme
             row_gap = 0.01; // pull from theme
+
+            if (me.get('selected-row') !== null) {
+                me.chart.filterRow(me.get('selected-row'));
+            }
 
             me.init();
             me.initDimensions();
 
             $('.tooltip').hide();
 
-            _.each(all_series, function(series, s) {
+            _.each(me.chart.dataSeries(), function(series, s) {
                 _.each(series.data, function(val, r) {
                     var d = me.barDimensions(series, s, r);
                     me.registerSeriesElement(c.paper.rect(d.x, d.y, d.w, d.h).attr({
@@ -36,7 +39,7 @@
             });
         },
 
-        initDimensions: function() {
+        initDimensions: function(r) {
             //
             var me = this, c = me.__canvas,
                 dMin = 0, dMax = 0;
@@ -62,20 +65,12 @@
                 w = sc.data(series.data[r]);
                 h = bw;
                 x = c.lpad;
-
-                if (series.data.length > 1) {
-                    h = Math.round(bw / 1.3 / series.data.length);
-                }
                 y = Math.round(s*bw*1.5 + r * h*1.35);
             } else {
                 bw = (c.w - c.lpad - c.rpad) / me.chart.dataSeries().length / series.data.length/1.5;
                 h = sc.data(series.data[r]);
                 w = bw;
                 y = c.h - c.bpad - h;
-
-                if (series.data.length > 1) {
-                    //w = Math.round(bw / 1.3 / series.data.length);
-                }
                 x = c.lpad + s*bw*1.5*series.data.length + r * w * 1.35;
             }
             return { w: w, h: h, x: x, y: y };

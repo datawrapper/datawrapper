@@ -15,7 +15,7 @@ function get_chart_content($chart, $user) {
         if ($theme['hasStyles']) {
             $theme_css[] = '/static/themes/' . $next_theme_id . '/theme.css';
         }
-        if ($theme['hasLocaleJS']) {
+        if (!empty($theme['hasLocaleJS'])) {
             $theme_js[] = $theme['localeJS'];
             if (empty($themeLocale)) $themeLocale = $theme['locale'];
         }
@@ -65,7 +65,7 @@ function get_chart_content($chart, $user) {
     return array(
         'chartData' => $chart->loadData(),
         'chart' => $chart,
-        'chartLocale' => $locale,
+        'chartLocale' => str_replace('_', '-', $locale),
         'metricPrefix' => get_metric_prefix($locale),
         'theme' => get_theme_meta($chart->getTheme()),
         'visualization' => get_visualization_meta($chart->getType()),

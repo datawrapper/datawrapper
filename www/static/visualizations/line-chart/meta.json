@@ -9,6 +9,7 @@
         "email": "gka@vis4.net"
     },
     "extends": "raphael-chart",
+    "dimensions": 2,
     "license": {
         "name": "MIT",
         "url": "http://www.opensource.org/licenses/mit-license.php"
@@ -39,29 +40,13 @@
                 }
             }]
         },
-        "baseline": {
-            "type": "radio",
+        "baseline-zero": {
+            "type": "checkbox",
             "label": {
-                "en": "Baseline (y-axis)",
-                "de": "Basis (y-Achse)",
-                "fr": "Échelle (axe des y)"
-            },
-            "options": [{
-                "value": "data",
-                "label": {
-                    "en": "data",
-                    "de": "linear",
-                    "fr": "linéaire"
-                },
-                "default": true
-            },{
-                "value": "zero",
-                "label": {
-                    "en": "zero",
-                    "de": "null",
-                    "fr": "zero"
-                }
-            }]
+                "en": "Baseline zero",
+                "de": "Baseline bei null",
+                "fr": "Échelle en zero"
+            }
         },
         "force-banking": {
             "type": "checkbox",
