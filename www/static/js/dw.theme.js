@@ -13,7 +13,7 @@
 
         colors: {
             focus: '#0063A5',
-            context: '#bbbbbb',
+            context: '#777',
             axis: '#000000',
             grid: '#999999'
         },
@@ -23,7 +23,7 @@
         lineChart: {
             strokeWidth: {
                 highlight: 3,
-                normal: 2
+                normal: 1
             },
             hoverDotRadius: 3,
             maxLabelWidth: 80
@@ -54,7 +54,7 @@
         yLabelOffset: 8,
 
         bottomPadding: 40,
-        xLabelOffset: 30,
+        xLabelOffset: 20,
 
         hover: true,
         tooltip: true

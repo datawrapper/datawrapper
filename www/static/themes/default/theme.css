@@ -57,5 +57,36 @@ p { margin: 15px 20px; line-height: 19px;}
 }
 
 #footer {
-    margin: 10px 20px 10px;
+    margin: 10px 20px 0px;
+    padding-top: 5px;
+    border-top: 1px solid #eee;
+    font-size: 10px;
+}
+
+.footer-left {
+    float: left;
+}
+.footer-right {
+    float: right;
+}
+
+.clearfix:after {
+    content: ".";
+    display: block;
+    clear: both;
+    visibility: hidden;
+    line-height: 0;
+    height: 0;
+}
+ 
+.clearfix {
+    display: inline-block;
+}
+ 
+html[xmlns] .clearfix {
+    display: block;
+}
+ 
+* html .clearfix {
+    height: 1%;
 }
