@@ -28,31 +28,28 @@
 
         {% endif %}
     </div>
-    <div class="span3">
+    <div class="span3 mycharts-filter">
         <h3>{% trans "By Month" %}</h3>
 
-        <span class="label label-info">Not Implemented</span>
         <ul class="unstyled">
             {% for month in bymonth %}
-            <li><a href="{{ month.url }}">{{ month.name }}</a> ({{ month.count }})</li>
+            <li {% if key == 'month' and val == month.id %}class="active"{% endif %}><a href="/mycharts/by/month/{{ month.id }}">{{ month.name }}</a> ({{ month.count }})</li>
             {% endfor %}
         </ul>
 
         <h3>{% trans "By Visualisation" %}</h3>
 
-        <span class="label label-info">Not Implemented</span>
         <ul class="unstyled">
             {% for vis in byvis %}
-            <li><a href="{{ vis.url }}">{{ vis.name }}</a> ({{ vis.count }})</li>
+            <li {% if key == 'vis' and val == vis.id %}class="active"{% endif %}><a href="/mycharts/by/vis/{{ vis.id }}">{{ vis.name }}</a> ({{ vis.count }})</li>
             {% endfor %}
         </ul>
 
         <h3>{% trans "By Layout" %}</h3>
 
-        <span class="label label-info">Not Implemented</span>
         <ul class="unstyled">
             {% for layout in bylayout %}
-            <li><a href="{{ layout.url }}">{{ layout.name }}</a> ({{ layout.count }})</li>
+            <li {% if key == 'layout' and val == layout.id %}class="active"{% endif %}><a href="/mycharts/by/layout/{{ layout.id }}">{{ layout.name }}</a> ({{ layout.count }})</li>
             {% endfor %}
         </ul>
     </div>

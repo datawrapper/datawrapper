@@ -79,12 +79,16 @@ class ChartQuery extends BaseChartQuery {
     }
 
 
-    public function getPublicChartsByUser($user) {
-        return $this->filterByAuthorId($user->getId())
+    public function getPublicChartsByUser($user, $key = '', $val = '') {
+        $query = $this->filterByAuthorId($user->getId())
             ->filterByDeleted(false)
             ->orderByLastModifiedAt('desc')
-            ->filterByLastEditStep(array('min' => 2))
-            ->find();
+            ->filterByLastEditStep(array('min' => 2));
+
+        if ($key == 'layout') $query->filterByTheme($val);
+        if ($key == 'vis') $query->filterByType($val);
+        if ($key == 'month') $query->filterByCreatedAt(array('min' => $val.'-01', 'max' => $val.'-31'));
+        return $query->find();
     }
 
 

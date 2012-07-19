@@ -167,6 +167,14 @@ h1, h2, h3, h4, h5, h6 {
     margin: 0 0 5px 0;
 }
 
+.mycharts-filter li.active a {
+    font-weight: bold;
+}
+
+.mycharts-filter ul {
+    margin-bottom: 30px;
+}
+
 .link-list li h3 {
     margin-bottom: 12px;
     line-height: 18px;
