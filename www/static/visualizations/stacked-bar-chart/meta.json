@@ -1,9 +1,4 @@
 {
-    "title": {
-        "en": "Stacked Bar Chart (work in progress)",
-        "de": "Balkendiagramm",
-        "fr": "Diagramme temporel"
-    },
     "extends": "bar-chart",
     "author": {
         "name": "gka",
