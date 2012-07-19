@@ -53,7 +53,7 @@ $app->post('/users', function() use ($app) {
     $activationLink = 'http://' . $domain . '/account/activate/' . $user->getToken();
     $from = 'activate@' . $domain;
 
-    include('../../lib/templates/activation-mail.php');
+    include('../../lib/templates/activation-email.php');
 
     mail($data->email, 'Datawrapper Email Activation', $mail, 'From: ' . $from);
 
