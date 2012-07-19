@@ -49,21 +49,12 @@ $app->post('/users', function() use ($app) {
 
     // send email with activation key
     $name = $data->email;
-    $domain = 'dw.vis4.net';
+    $domain = DW_DOMAIN;
     $activationLink = 'http://' . $domain . '/account/activate/' . $user->getToken();
     $from = 'activate@' . $domain;
-    $mail = <<<MAIL
 
-Hello $name,
+    include('../../lib/templates/activation-mail.php');
 
-Thank you for signing up at Datawrapper on $domain!
-
-Please click on this link to activate your email address.
-
-$activationLink
-
-Cheers!
-MAIL;
     mail($data->email, 'Datawrapper Email Activation', $mail, 'From: ' . $from);
 
 

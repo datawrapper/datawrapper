@@ -25,6 +25,7 @@ set_include_path("../../lib/core/build/classes" . PATH_SEPARATOR . get_include_p
 
 require '../../lib/session/Datawrapper.php';
 
+require '../../config.php';
 
 /**
  * Step 2: Instantiate the Slim application
