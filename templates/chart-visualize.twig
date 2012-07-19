@@ -91,93 +91,111 @@ $(function() {
 <div class="dw-create-visualize">
 
     <div class="row">
-        <div class="span4 visconfig">
-
-            <div class="row">
-                <div class="span2">
-                    <label for="select-vis">{% trans "Visualization:" %}</label>
-                    <select id="select-vis" class="span2">
-                        {% for vis in visualizations %}{% if vis.title %}
-                        <option value="{{ vis.id }}">{{ vis.title.en }}</option>
-                        {% endif %}{% endfor %}
-                    </select>
-                </div>
-
-                <div class="span2">
-                    <label for="select-theme">Layout:</label>
-                    <select id="select-theme" class="span2">
-                        {% for theme in themes %}
-                        <option value="{{ theme.id }}">{{ theme.title }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-
-            </div>
-
-            <label for="text-title">{% trans "Title" %}</label>
-            <input type="text" id="text-title" class="input-xlarge span4" />
-
-            {# add introduction #}
-
-            <label for="text-intro"><a data-toggle="collapse" data-target="#c-intro" class="collapse-{% if chart.metadata.describe.intro %}shown{% else %}hidden{% endif %}">Introduction</a></label>
-            <div id="c-intro" class="collapse{% if chart.metadata.describe.intro %} in{% endif %}">
-                    <textarea type="text" id="text-intro" class="input-xlarge span4"></textarea>
-            </div>
-
-            {# highlight series #}
-
-            <label>
-                <a data-toggle="collapse" data-target="#c-highlight" class="collapse-{% if vismeta['highlighted-series'] %}shown{% else %}hidden{% endif %}">Highlight series</a>
-            </label>
-            <div class="collapse{% if vismeta['highlighted-series'] %} in{% endif %}" id="c-highlight">
-                <div>
-                    <select id="highlight-series" class="span2">
-                        <option value="---">- {% trans "select a data series" %} -</option>
-                    </select>
-                </div>
-                <p class="highlighted-series">
-                    {% for series in vismeta['highlighted-series'] %}
-                    <span data-series="{{ series }}" class="badge badge-info"><i class="icon-remove icon-white"></i>{{ series }}</span>
-                    {% endfor %}
-                </p>
-            </div>
-
-            {# highlight values }
-
-            <label>
-                <a data-toggle="collapse" data-target="#c-highlight-values" class="collapse-{% if vismeta.highlighted-values %}shown{% else %}hidden{% endif %}">Highlight values</a>
-            </label>
-            <div class="collapse{% if vismeta.highlighted-values %} in{% endif %}" id="c-highlight-values">
-                <div class="form-horizontal">
-                    <label>Value: <input type="text" class="span1" /> <input type="text" class="span2" placeholder="comment" /></label>
-                </div>
-            </div>
-
-            {# customize tooltips }
-
-            <label><a data-toggle="collapse" data-target="#c-tooltips">{% trans "Customize Tooltips" %}</a></label>
-            <div class="collapse" id="c-tooltips">
-                <label class="control-label">{% trans "Tooltip content" %}</label>
-                <div class="controls">
-                    <textarea style="width:100%" placeholder="not implemented yet"></textarea>
-                </div>
-            </div>
-
-            {# visualization specific options #}
-
-            <div id="vis-options" class="form-horizontal">
-                {% use 'vis-options.twig' %}
-                {{ block('visoptions') }}
-            </div>
-        </div>
-
         <div class="span8">
+
+            <div class="page-header">
+                <h2>{% trans "Preview your chart" %}<small> (this is how you chart will look like)</small></h2>
+            </div>
             <div id="iframe-wrapper" style="height:500px;">
                 <iframe src="/chart/{{ chart.id }}/preview" id="iframe-vis">
                 </iframe>
             </div>
 
         </div>
+
+
+        <div class="span4 visconfig">
+            <div class="section">
+                <h2>{% trans "Select visualization and layout" %}</h2>
+                <div class="row">
+                    <div class="span2">
+                        <label for="select-vis">{% trans "Visualization:" %}</label>
+                        <select id="select-vis" class="span2">
+                            {% for vis in visualizations %}{% if vis.title %}
+                            <option value="{{ vis.id }}">{{ vis.title.en }}</option>
+                            {% endif %}{% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="span2">
+                        <label for="select-theme">Layout:</label>
+                        <select id="select-theme" class="span2">
+                            {% for theme in themes %}
+                            <option value="{{ theme.id }}">{{ theme.title }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>{% trans "Tell your story" %}</h2>
+
+                <label for="text-title">{% trans "Title" %} <span style="float:right"><input type="checkbox" style="display:inline" /> hide</span></label>
+                <input type="text" id="text-title" class="input-xlarge span4" />
+
+                {# add introduction #}
+
+                <label for="text-intro"><a data-toggle="collapse" data-target="#c-intro" class="collapse-{% if chart.metadata.describe.intro %}shown{% else %}hidden{% endif %}">Introduction text</a></label>
+                <div id="c-intro" class="collapse{% if chart.metadata.describe.intro %} in{% endif %}">
+                        <textarea type="text" id="text-intro" class="input-xlarge span4"></textarea>
+                </div>
+
+                {# highlight series #}
+
+                <label>
+                    <a data-toggle="collapse" data-target="#c-highlight" class="collapse-{% if vismeta['highlighted-series'] %}shown{% else %}hidden{% endif %}">Highlight series</a>
+                </label>
+                <div class="collapse{% if vismeta['highlighted-series'] %} in{% endif %}" id="c-highlight">
+                    <div>
+                        <select id="highlight-series" class="span2">
+                            <option value="---">- {% trans "select a data series" %} -</option>
+                        </select>
+                    </div>
+                    <p class="highlighted-series">
+                        {% for series in vismeta['highlighted-series'] %}
+                        <span data-series="{{ series }}" class="badge badge-info"><i class="icon-remove icon-white"></i>{{ series }}</span>
+                        {% endfor %}
+                    </p>
+                </div>
+
+                {# highlight values }
+
+                <label>
+                    <a data-toggle="collapse" data-target="#c-highlight-values" class="collapse-{% if vismeta.highlighted-values %}shown{% else %}hidden{% endif %}">Highlight values</a>
+                </label>
+                <div class="collapse{% if vismeta.highlighted-values %} in{% endif %}" id="c-highlight-values">
+                    <div class="form-horizontal">
+                        <label>Value: <input type="text" class="span1" /> <input type="text" class="span2" placeholder="comment" /></label>
+                    </div>
+                </div>
+
+                {# customize tooltips }
+
+                <label><a data-toggle="collapse" data-target="#c-tooltips">{% trans "Customize Tooltips" %}</a></label>
+                <div class="collapse" id="c-tooltips">
+                    <label class="control-label">{% trans "Tooltip content" %}</label>
+                    <div class="controls">
+                        <textarea style="width:100%" placeholder="not implemented yet"></textarea>
+                    </div>
+                </div>
+
+                #}
+            </div>
+
+            {# visualization specific options #}
+
+            <div class="section">
+                <h2>{% trans "Refine the chart" %}</h2>
+
+                <div id="vis-options" class="form-horizontal">
+                    {% use 'vis-options.twig' %}
+                    {{ block('visoptions') }}
+                </div>
+            </div>
+        </div>
+
+
 
     </div>
 

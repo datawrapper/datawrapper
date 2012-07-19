@@ -390,3 +390,7 @@ dl.dl-horizontal dd {
 .docs h2 {
     margin: 1.5em 0 0.5em;
 }
+
+.section {
+    margin-top: 20px;
+}
