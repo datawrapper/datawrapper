@@ -25,7 +25,7 @@ TwigView::$twigDirectory = '../vendor/Twig';
 // include datawrapper session serialization
 require '../lib/session/Datawrapper.php';
 
-define('DW_DOMAIN', 'datawrapper');
+require '../config.php';
 
 $app = new Slim(array(
     'view' => new TwigView(),
@@ -99,7 +99,7 @@ function add_header_vars(&$page, $active = null) {
     $headlinks = array();
     $headlinks[] = array('url' => '/docs', 'id' => 'about', 'title' => _('About'), 'icon' => 'home');
     $headlinks[] = array('url' => '/chart/create', 'id' => 'chart', 'title' => _('Create'), 'icon' => 'pencil');
-    if ($user->isLoggedIn()) {
+    if ($user->isLoggedIn() && $user->hasCharts()) {
         $headlinks[] = array('url' => '/mycharts', 'id' => 'mycharts', 'title' => _('My Charts'), 'icon' => 'signal');
     }
     $headlinks[] = array(

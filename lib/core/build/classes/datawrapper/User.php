@@ -35,4 +35,8 @@ class User extends BaseUser {
         return $this->getRole() == 'editor' || $this->getRole() == 'admin';
     }
 
+    public function hasCharts() {
+        return count(ChartQuery::create()->getPublicChartsByUser($this)) > 0;
+    }
+
 } // User

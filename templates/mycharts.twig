@@ -4,6 +4,7 @@
 
 <div class="row">
     <div class="span9 mycharts">
+        {% if user.hasCharts %}
         <ul class="thumbnails">
             {% for chart in charts %}
             <li class="span3 chart">
@@ -20,6 +21,12 @@
             </li>
             {% endfor %}
         </ul>
+        {% else %}
+
+            <h2>{% trans "No charts here, yet" %}</h2>
+            <p>{% trans "Why not <a href='/chart/create'>create a new chart now</a>?" %}</p>
+
+        {% endif %}
     </div>
     <div class="span3">
         <h3>{% trans "By Month" %}</h3>
