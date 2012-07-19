@@ -131,8 +131,8 @@
                     currPat = culture.numberFormat.currency.pattern.slice(0);
                 if (!full && format[0] == 'c') format = format == 'c0' ? 'n0': 'n2';
                 if (format[0] == 'c') {
+                    var curFmt = culture.numberFormat.currency;
                     if (div > 0 && me.metric_prefix[div] && full) {
-                        var curFmt = culture.numberFormat.currency;
                         curFmt.pattern[0] = curFmt.pattern[0].replace('n', 'n'+me.metric_prefix[div]);
                         curFmt.pattern[1] = curFmt.pattern[1].replace('n', 'n'+me.metric_prefix[div]);
                     }
@@ -146,7 +146,15 @@
                     val += me.metric_prefix[div];
                 }
                 if (format[0] == 'n' && full) {
-                    val += ' '+me.get('metadata.describe.number-unit');
+                    val += ' <span class="unit">'+me.get('metadata.describe.number-unit')+'</span>';
+                }
+                if (format[0] == 'c') {
+                    var curSym = culture.numberFormat.currency.symbol;
+                    if (full) {
+                        val = val.replace(curSym, '<span class="unit">'+curSym+'</span>');
+                    } else {
+                        val = val.replace(curSym, '');
+                    }
                 }
             }
             return val;

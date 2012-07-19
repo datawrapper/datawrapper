@@ -41,7 +41,7 @@
 }
 
 #datatable thead th {
-    padding: 6px 3px 6px;
+    padding: 6px 20px 6px;
     border-left: 1px solid #fff;
     font-weight: normal;
 }
@@ -53,21 +53,10 @@
 
 #datatable tbody td {
     text-align: center;
+    padding: 3px 20px;
 }
 
-#datatable tbody tr:nth-child(4),
-#datatable tbody tr:nth-child(8),
-#datatable tbody tr:nth-child(12),
-#datatable tbody tr:nth-child(16),
-#datatable tbody tr:nth-child(20),
-#datatable tbody tr:nth-child(24),
-#datatable tbody tr:nth-child(28),
-#datatable tbody tr:nth-child(32),
-#datatable tbody tr:nth-child(36),
-#datatable tbody tr:nth-child(40),
-#datatable tbody tr:nth-child(44),
-#datatable tbody tr:nth-child(48),
-#datatable tbody tr:nth-child(52),
+#datatable tbody tr:nth-child(4n)
 #datatable tbody tr:last-child
  {
     border-bottom: 1px solid #777;
@@ -141,8 +130,22 @@
     color: #777;
 }
 
+#datatable tbody tr .unit {
+    opacity: 0;
+}
 
+#datatable tbody tr:first-child .unit {
+    opacity: 1;
+}
 
+#datatable .number,
+#datatable .number-decimal {
+    text-align: right;
+}
+
+#datatable .number-small {
+    text-align: center;
+}
 /*
 Max width before this PARTICULAR table gets nasty
 This query will take effect for any screen smaller than 760px

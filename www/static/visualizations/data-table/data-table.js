@@ -24,11 +24,25 @@
                 if (h.length == 2 && h[0] == 'X') h = '';
                 tr.append('<th>'+h+'</tr>');
             }
+            var colType = [];
             _.each(me.chart.dataSeries(), function(series) {
                 th = $('<th>'+series.name+'</th>');
                 if (isHighlighted(series)) {
                     th.addClass('highlight');
                 }
+                if (series.type.substr(0,14) == 'number-decimal') {
+                    colType.push('number-decimal');
+                    th.addClass('number-decimal');
+                } else if (series.type == 'number') {
+                    // check for small numbers
+                    var small = true;
+                    _.each(series.data, function(val) {
+                        small = small && val <= 100 && val >= -100;
+                    });
+                    colType.push('number'+(small ? '-small' : ''));
+                    th.addClass('number'+(small ? '-small' : ''));
+                }
+
                 tr.append(th);
             });
             $('thead', table).append(tr);
@@ -38,10 +52,11 @@
                     tr.append('<th>'+me.chart.rowLabel(r)+'</tr>');
                 }
                 _.each(me.chart.dataSeries(), function(series, s) {
-                    td = $('<td>'+me.chart.formatValue(series.data[r], r === 0 && s === 0)+'</td>');
+                    td = $('<td>'+me.chart.formatValue(series.data[r], true)+'</td>');
                     if (isHighlighted(series)) {
                         td.addClass('highlight');
                     }
+                    td.addClass(colType[s]);
                     td.attr('title', series.name);
                     tr.append(td);
                 });
