@@ -16,30 +16,6 @@
     },
     "about": "http://vis4.net/blog/posts/doing-the-line-charts-right/",
     "options": {
-        "scale": {
-            "type": "radio",
-            "label": {
-                "en": "Scale (y-axis)",
-                "de": "Skala (y-Achse)",
-                "fr": "Échelle (axe des y)"
-            },
-            "options": [{
-                "value": "linear",
-                "label": {
-                    "en": "linear",
-                    "de": "linear",
-                    "fr": "linéaire"
-                },
-                "default": true
-            },{
-                "value": "log",
-                "label": {
-                    "en": "logarithmic",
-                    "de": "logarithmisch",
-                    "fr": "logarithmique"
-                }
-            }]
-        },
         "baseline-zero": {
             "type": "checkbox",
             "label": {
