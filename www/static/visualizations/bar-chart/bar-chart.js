@@ -20,11 +20,13 @@
             c = me.initCanvas({}),
             chart_width = c.w - c.lpad - c.rpad,
             series_gap = 0.05, // pull from theme
-            row_gap = 0.01; // pull from theme
-
+            row_gap = 0.01,
+            row = 0; // pull from theme
             if (me.get('selected-row') !== null) {
-                me.chart.filterRow(me.get('selected-row'));
+                row = me.get('selected-row');
             }
+            if (row > me.chart.numRows()) row = 0;
+            me.chart.filterRow(row);
 
             me.init();
             me.initDimensions();
