@@ -100,7 +100,7 @@ abstract class BaseChart extends BaseObject  implements Persistent
 
 	/**
 	 * The value for the language field.
-	 * Note: this column has a database default value of: 'en'
+	 * Note: this column has a database default value of: ''
 	 * @var        string
 	 */
 	protected $language;
@@ -147,7 +147,7 @@ abstract class BaseChart extends BaseObject  implements Persistent
 	{
 		$this->deleted = false;
 		$this->show_in_gallery = false;
-		$this->language = 'en';
+		$this->language = '';
 		$this->last_edit_step = 0;
 	}
 
@@ -709,7 +709,7 @@ abstract class BaseChart extends BaseObject  implements Persistent
 				return false;
 			}
 
-			if ($this->language !== 'en') {
+			if ($this->language !== '') {
 				return false;
 			}
 

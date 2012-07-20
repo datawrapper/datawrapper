@@ -51,6 +51,9 @@ class UserTableMap extends TableMap
 ));
 		$this->addColumn('LANGUAGE', 'Language', 'VARCHAR', false, 5, 'en');
 		$this->addColumn('CREATED_AT', 'CreatedAt', 'TIMESTAMP', true, null, null);
+		$this->addColumn('NAME', 'Name', 'VARCHAR', false, 512, null);
+		$this->addColumn('WEBSITE', 'Website', 'VARCHAR', false, 512, null);
+		$this->addColumn('SM_PROFILE', 'SmProfile', 'VARCHAR', false, 512, null);
 		// validators
 	} // initialize()
 

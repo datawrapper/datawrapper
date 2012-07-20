@@ -22,7 +22,7 @@ CREATE TABLE `chart`
 	`deleted_at` DATETIME,
 	`author_id` INTEGER NOT NULL,
 	`show_in_gallery` TINYINT(1) DEFAULT 0,
-	`language` VARCHAR(5) DEFAULT 'en',
+	`language` VARCHAR(5) DEFAULT '',
 	`guest_session` VARCHAR(255),
 	`last_edit_step` INTEGER DEFAULT 0,
 	PRIMARY KEY (`id`),
@@ -47,6 +47,9 @@ CREATE TABLE `user`
 	`role` TINYINT DEFAULT 2 NOT NULL,
 	`language` VARCHAR(5) DEFAULT 'en',
 	`created_at` DATETIME NOT NULL,
+	`name` VARCHAR(512),
+	`website` VARCHAR(512),
+	`sm_profile` VARCHAR(512),
 	PRIMARY KEY (`id`)
 ) ENGINE=MyISAM;
 

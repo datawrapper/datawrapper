@@ -75,6 +75,24 @@ abstract class BaseUser extends BaseObject  implements Persistent
 	protected $created_at;
 
 	/**
+	 * The value for the name field.
+	 * @var        string
+	 */
+	protected $name;
+
+	/**
+	 * The value for the website field.
+	 * @var        string
+	 */
+	protected $website;
+
+	/**
+	 * The value for the sm_profile field.
+	 * @var        string
+	 */
+	protected $sm_profile;
+
+	/**
 	 * @var        array Chart[] Collection to store aggregation of Chart objects.
 	 */
 	protected $collCharts;
@@ -227,6 +245,36 @@ abstract class BaseUser extends BaseObject  implements Persistent
 	}
 
 	/**
+	 * Get the [name] column value.
+	 * 
+	 * @return     string
+	 */
+	public function getName()
+	{
+		return $this->name;
+	}
+
+	/**
+	 * Get the [website] column value.
+	 * 
+	 * @return     string
+	 */
+	public function getWebsite()
+	{
+		return $this->website;
+	}
+
+	/**
+	 * Get the [sm_profile] column value.
+	 * 
+	 * @return     string
+	 */
+	public function getSmProfile()
+	{
+		return $this->sm_profile;
+	}
+
+	/**
 	 * Set the value of [id] column.
 	 * 
 	 * @param      int $v new value
@@ -373,6 +421,66 @@ abstract class BaseUser extends BaseObject  implements Persistent
 	} // setCreatedAt()
 
 	/**
+	 * Set the value of [name] column.
+	 * 
+	 * @param      string $v new value
+	 * @return     User The current object (for fluent API support)
+	 */
+	public function setName($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->name !== $v) {
+			$this->name = $v;
+			$this->modifiedColumns[] = UserPeer::NAME;
+		}
+
+		return $this;
+	} // setName()
+
+	/**
+	 * Set the value of [website] column.
+	 * 
+	 * @param      string $v new value
+	 * @return     User The current object (for fluent API support)
+	 */
+	public function setWebsite($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->website !== $v) {
+			$this->website = $v;
+			$this->modifiedColumns[] = UserPeer::WEBSITE;
+		}
+
+		return $this;
+	} // setWebsite()
+
+	/**
+	 * Set the value of [sm_profile] column.
+	 * 
+	 * @param      string $v new value
+	 * @return     User The current object (for fluent API support)
+	 */
+	public function setSmProfile($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->sm_profile !== $v) {
+			$this->sm_profile = $v;
+			$this->modifiedColumns[] = UserPeer::SM_PROFILE;
+		}
+
+		return $this;
+	} // setSmProfile()
+
+	/**
 	 * Indicates whether the columns in this object are only set to default values.
 	 *
 	 * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -419,6 +527,9 @@ abstract class BaseUser extends BaseObject  implements Persistent
 			$this->role = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
 			$this->language = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
 			$this->created_at = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+			$this->name = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
+			$this->website = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
+			$this->sm_profile = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -427,7 +538,7 @@ abstract class BaseUser extends BaseObject  implements Persistent
 				$this->ensureConsistency();
 			}
 
-			return $startcol + 7; // 7 = UserPeer::NUM_HYDRATE_COLUMNS.
+			return $startcol + 10; // 10 = UserPeer::NUM_HYDRATE_COLUMNS.
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating User object", $e);
@@ -675,6 +786,15 @@ abstract class BaseUser extends BaseObject  implements Persistent
 		if ($this->isColumnModified(UserPeer::CREATED_AT)) {
 			$modifiedColumns[':p' . $index++]  = '`CREATED_AT`';
 		}
+		if ($this->isColumnModified(UserPeer::NAME)) {
+			$modifiedColumns[':p' . $index++]  = '`NAME`';
+		}
+		if ($this->isColumnModified(UserPeer::WEBSITE)) {
+			$modifiedColumns[':p' . $index++]  = '`WEBSITE`';
+		}
+		if ($this->isColumnModified(UserPeer::SM_PROFILE)) {
+			$modifiedColumns[':p' . $index++]  = '`SM_PROFILE`';
+		}
 
 		$sql = sprintf(
 			'INSERT INTO `user` (%s) VALUES (%s)',
@@ -706,6 +826,15 @@ abstract class BaseUser extends BaseObject  implements Persistent
 						break;
 					case '`CREATED_AT`':
 						$stmt->bindValue($identifier, $this->created_at, PDO::PARAM_STR);
+						break;
+					case '`NAME`':
+						$stmt->bindValue($identifier, $this->name, PDO::PARAM_STR);
+						break;
+					case '`WEBSITE`':
+						$stmt->bindValue($identifier, $this->website, PDO::PARAM_STR);
+						break;
+					case '`SM_PROFILE`':
+						$stmt->bindValue($identifier, $this->sm_profile, PDO::PARAM_STR);
 						break;
 				}
 			}
@@ -866,6 +995,15 @@ abstract class BaseUser extends BaseObject  implements Persistent
 			case 6:
 				return $this->getCreatedAt();
 				break;
+			case 7:
+				return $this->getName();
+				break;
+			case 8:
+				return $this->getWebsite();
+				break;
+			case 9:
+				return $this->getSmProfile();
+				break;
 			default:
 				return null;
 				break;
@@ -902,6 +1040,9 @@ abstract class BaseUser extends BaseObject  implements Persistent
 			$keys[4] => $this->getRole(),
 			$keys[5] => $this->getLanguage(),
 			$keys[6] => $this->getCreatedAt(),
+			$keys[7] => $this->getName(),
+			$keys[8] => $this->getWebsite(),
+			$keys[9] => $this->getSmProfile(),
 		);
 		if ($includeForeignObjects) {
 			if (null !== $this->collCharts) {
@@ -963,6 +1104,15 @@ abstract class BaseUser extends BaseObject  implements Persistent
 			case 6:
 				$this->setCreatedAt($value);
 				break;
+			case 7:
+				$this->setName($value);
+				break;
+			case 8:
+				$this->setWebsite($value);
+				break;
+			case 9:
+				$this->setSmProfile($value);
+				break;
 		} // switch()
 	}
 
@@ -994,6 +1144,9 @@ abstract class BaseUser extends BaseObject  implements Persistent
 		if (array_key_exists($keys[4], $arr)) $this->setRole($arr[$keys[4]]);
 		if (array_key_exists($keys[5], $arr)) $this->setLanguage($arr[$keys[5]]);
 		if (array_key_exists($keys[6], $arr)) $this->setCreatedAt($arr[$keys[6]]);
+		if (array_key_exists($keys[7], $arr)) $this->setName($arr[$keys[7]]);
+		if (array_key_exists($keys[8], $arr)) $this->setWebsite($arr[$keys[8]]);
+		if (array_key_exists($keys[9], $arr)) $this->setSmProfile($arr[$keys[9]]);
 	}
 
 	/**
@@ -1012,6 +1165,9 @@ abstract class BaseUser extends BaseObject  implements Persistent
 		if ($this->isColumnModified(UserPeer::ROLE)) $criteria->add(UserPeer::ROLE, $this->role);
 		if ($this->isColumnModified(UserPeer::LANGUAGE)) $criteria->add(UserPeer::LANGUAGE, $this->language);
 		if ($this->isColumnModified(UserPeer::CREATED_AT)) $criteria->add(UserPeer::CREATED_AT, $this->created_at);
+		if ($this->isColumnModified(UserPeer::NAME)) $criteria->add(UserPeer::NAME, $this->name);
+		if ($this->isColumnModified(UserPeer::WEBSITE)) $criteria->add(UserPeer::WEBSITE, $this->website);
+		if ($this->isColumnModified(UserPeer::SM_PROFILE)) $criteria->add(UserPeer::SM_PROFILE, $this->sm_profile);
 
 		return $criteria;
 	}
@@ -1080,6 +1236,9 @@ abstract class BaseUser extends BaseObject  implements Persistent
 		$copyObj->setRole($this->getRole());
 		$copyObj->setLanguage($this->getLanguage());
 		$copyObj->setCreatedAt($this->getCreatedAt());
+		$copyObj->setName($this->getName());
+		$copyObj->setWebsite($this->getWebsite());
+		$copyObj->setSmProfile($this->getSmProfile());
 
 		if ($deepCopy && !$this->startCopy) {
 			// important: temporarily setNew(false) because this affects the behavior of
@@ -1318,6 +1477,9 @@ abstract class BaseUser extends BaseObject  implements Persistent
 		$this->role = null;
 		$this->language = null;
 		$this->created_at = null;
+		$this->name = null;
+		$this->website = null;
+		$this->sm_profile = null;
 		$this->alreadyInSave = false;
 		$this->alreadyInValidation = false;
 		$this->clearAllReferences();

@@ -12,22 +12,22 @@
                 <legend>{% trans "Account Settings" %}</legend>
 
                 <div class="control-group">
-                    <label class="control-label" for="input01">{% trans "E-Mail" %}</label>
+                    <label class="control-label" for="email">{% trans "E-Mail" %}</label>
                     <div class="controls">
-                        <input type="text" class="input-xlarge" id="input01">
-                        <p class="help-block">{% trans "This is the email address which you used to sign up. If you change your email, you will be asked to verify it again." %}</p>
+                        <input type="text" class="input-xlarge" id="email" value="{{ user.email }}">
+                        <p class="help-block">{% trans "This is the email address which you used to sign up." %}</p>
                     </div>
                 </div>
                 <div class="control-group">
-                    <label class="control-label" for="input01">{% trans "Password" %}</label>
+                    <label class="control-label" for="pwd">{% trans "Password" %}</label>
                     <div class="controls">
-                        <input type="text" class="input-xlarge" id="input01">
+                        <input type="text" class="input-xlarge" id="pwd">
                     </div>
                 </div>
                 <div class="control-group">
-                    <label class="control-label" for="input01">{% trans "Password (repeat)" %}</label>
+                    <label class="control-label" for="pwd2">{% trans "Password (repeat)" %}</label>
                     <div class="controls">
-                        <input type="text" class="input-xlarge" id="input01">
+                        <input type="text" class="input-xlarge" id="pwd2">
                         <p class="help-block">{% trans "Just leave the password fields blank if you don't want to change your password." %}</p>
                     </div>
                 </div>
@@ -47,32 +47,25 @@
                 <legend>{% trans "User Profile" %}</legend>
 
                 <div class="control-group">
-                    <label class="control-label" for="input01">{% trans "Name" %}</label>
+                    <label class="control-label" for="name">{% trans "Name" %}</label>
                     <div class="controls">
-                        <input type="text" class="input-xlarge" id="input01" placeholder="">
+                        <input type="text" class="input-xlarge" id="name" placeholder="" value="{{ user.name }}">
                         <p class="help-block">{% trans "Filling out your profile is optional. If you do, you can display these information below the charts you publish." %}</p>
                     </div>
                 </div>
 
                 <div class="control-group">
-                    <label class="control-label" for="input01">{% trans "Website" %}</label>
+                    <label class="control-label" for="website">{% trans "Website" %}</label>
                     <div class="controls">
-                        <input type="text" class="input-xlarge" id="input01" placeholder="http://">
+                        <input type="text" class="input-xlarge" id="website" placeholder="http://" value="{{ user.website }}">
                         <p class="help-block">{% trans "Add a website that contains more information about you (e.g. your blog). Optionally you can display these information below you published charts." %}</p>
                     </div>
                 </div>
                 <div class="control-group">
-                    <label class="control-label" for="input01">Twitter</label>
+                    <label class="control-label" for="socialmedia">Twitter/Facebook/etc</label>
                     <div class="controls">
-                        <input type="text" class="input-xlarge" id="input01">
-                        <p class="help-block">{% trans "Enter your Twitter-Name, if you like." %}</p>
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label" for="input01">{% trans "Password (repeat)" %}</label>
-                    <div class="controls">
-                        <input type="text" class="input-xlarge" id="input01">
-                        <p class="help-block">{% trans "Just leave the password fields blank if you don't want to change your password." %}</p>
+                        <input type="text" class="input-xlarge" id="socialmedia" placeholder="http://twitter.com/" value="{{ user.smProfile }}">
+                        <p class="help-block">{% trans "Enter the link to your favorite social media profile (e.g. Twitter)." %}</p>
                     </div>
                 </div>
 
@@ -86,9 +79,35 @@
 
     </div>
 </div>
-<div class="row">
+<div class="row" style="margin-top:4em">
     <div class="span6">
-        <div class="form-horizontal" style="margin-top:4em">
+
+        <div class="form-horizontal">
+            <fieldset>
+                <legend>{% trans "Account Status" %}</legend>
+
+                {% if user.isAbleToPublish %}
+                <p>Your account has been activated, and you are able to create and publish charts.</p>
+
+                {% elseif user.role == 'pending' %}
+
+                <p>Your account is pending because your email address has not been activated, yet. You can create charts, but they will not be visible for anybody else.</p>
+
+                <p>Having trouble with the account activation?</p>
+
+                <ul>
+                    <li>Check your spam folder.</li>
+                    <li><a href="">Re-send activation link</a></li>
+                    <li><a href="">Contact us</a> to find other ways to activate your account</li>
+                </ul>
+
+                {% endif %}
+
+            </fieldset>
+        </div>
+    </div>
+    <div class="span6">
+        <div class="form-horizontal">
              <fieldset>
                 <legend>{% trans "Delete Datawrapper Account" %}</legend>
 
@@ -96,7 +115,6 @@
                         <button class="btn btn-danger">{% trans "Yes, delete my account!" %}</button>
 
              </fieldset>
-            
             <p></p>
         </div>
     </div>

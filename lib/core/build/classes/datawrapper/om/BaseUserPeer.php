@@ -23,13 +23,13 @@ abstract class BaseUserPeer {
 	const TM_CLASS = 'UserTableMap';
 
 	/** The total number of columns. */
-	const NUM_COLUMNS = 7;
+	const NUM_COLUMNS = 10;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
 
 	/** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-	const NUM_HYDRATE_COLUMNS = 7;
+	const NUM_HYDRATE_COLUMNS = 10;
 
 	/** the column name for the ID field */
 	const ID = 'user.ID';
@@ -51,6 +51,15 @@ abstract class BaseUserPeer {
 
 	/** the column name for the CREATED_AT field */
 	const CREATED_AT = 'user.CREATED_AT';
+
+	/** the column name for the NAME field */
+	const NAME = 'user.NAME';
+
+	/** the column name for the WEBSITE field */
+	const WEBSITE = 'user.WEBSITE';
+
+	/** the column name for the SM_PROFILE field */
+	const SM_PROFILE = 'user.SM_PROFILE';
 
 	/** The enumerated values for the ROLE field */
 	const ROLE_ADMIN = 'admin';
@@ -77,12 +86,12 @@ abstract class BaseUserPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	protected static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'Email', 'Pwd', 'Token', 'Role', 'Language', 'CreatedAt', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'email', 'pwd', 'token', 'role', 'language', 'createdAt', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, self::EMAIL, self::PWD, self::TOKEN, self::ROLE, self::LANGUAGE, self::CREATED_AT, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'EMAIL', 'PWD', 'TOKEN', 'ROLE', 'LANGUAGE', 'CREATED_AT', ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'email', 'pwd', 'token', 'role', 'language', 'created_at', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'Email', 'Pwd', 'Token', 'Role', 'Language', 'CreatedAt', 'Name', 'Website', 'SmProfile', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'email', 'pwd', 'token', 'role', 'language', 'createdAt', 'name', 'website', 'smProfile', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::EMAIL, self::PWD, self::TOKEN, self::ROLE, self::LANGUAGE, self::CREATED_AT, self::NAME, self::WEBSITE, self::SM_PROFILE, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'EMAIL', 'PWD', 'TOKEN', 'ROLE', 'LANGUAGE', 'CREATED_AT', 'NAME', 'WEBSITE', 'SM_PROFILE', ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'email', 'pwd', 'token', 'role', 'language', 'created_at', 'name', 'website', 'sm_profile', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
 	);
 
 	/**
@@ -92,12 +101,12 @@ abstract class BaseUserPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	protected static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Email' => 1, 'Pwd' => 2, 'Token' => 3, 'Role' => 4, 'Language' => 5, 'CreatedAt' => 6, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'email' => 1, 'pwd' => 2, 'token' => 3, 'role' => 4, 'language' => 5, 'createdAt' => 6, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::EMAIL => 1, self::PWD => 2, self::TOKEN => 3, self::ROLE => 4, self::LANGUAGE => 5, self::CREATED_AT => 6, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'EMAIL' => 1, 'PWD' => 2, 'TOKEN' => 3, 'ROLE' => 4, 'LANGUAGE' => 5, 'CREATED_AT' => 6, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'email' => 1, 'pwd' => 2, 'token' => 3, 'role' => 4, 'language' => 5, 'created_at' => 6, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Email' => 1, 'Pwd' => 2, 'Token' => 3, 'Role' => 4, 'Language' => 5, 'CreatedAt' => 6, 'Name' => 7, 'Website' => 8, 'SmProfile' => 9, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'email' => 1, 'pwd' => 2, 'token' => 3, 'role' => 4, 'language' => 5, 'createdAt' => 6, 'name' => 7, 'website' => 8, 'smProfile' => 9, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::EMAIL => 1, self::PWD => 2, self::TOKEN => 3, self::ROLE => 4, self::LANGUAGE => 5, self::CREATED_AT => 6, self::NAME => 7, self::WEBSITE => 8, self::SM_PROFILE => 9, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'EMAIL' => 1, 'PWD' => 2, 'TOKEN' => 3, 'ROLE' => 4, 'LANGUAGE' => 5, 'CREATED_AT' => 6, 'NAME' => 7, 'WEBSITE' => 8, 'SM_PROFILE' => 9, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'email' => 1, 'pwd' => 2, 'token' => 3, 'role' => 4, 'language' => 5, 'created_at' => 6, 'name' => 7, 'website' => 8, 'sm_profile' => 9, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
 	);
 
 	/** The enumerated values for this table */
@@ -205,6 +214,9 @@ abstract class BaseUserPeer {
 			$criteria->addSelectColumn(UserPeer::ROLE);
 			$criteria->addSelectColumn(UserPeer::LANGUAGE);
 			$criteria->addSelectColumn(UserPeer::CREATED_AT);
+			$criteria->addSelectColumn(UserPeer::NAME);
+			$criteria->addSelectColumn(UserPeer::WEBSITE);
+			$criteria->addSelectColumn(UserPeer::SM_PROFILE);
 		} else {
 			$criteria->addSelectColumn($alias . '.ID');
 			$criteria->addSelectColumn($alias . '.EMAIL');
@@ -213,6 +225,9 @@ abstract class BaseUserPeer {
 			$criteria->addSelectColumn($alias . '.ROLE');
 			$criteria->addSelectColumn($alias . '.LANGUAGE');
 			$criteria->addSelectColumn($alias . '.CREATED_AT');
+			$criteria->addSelectColumn($alias . '.NAME');
+			$criteria->addSelectColumn($alias . '.WEBSITE');
+			$criteria->addSelectColumn($alias . '.SM_PROFILE');
 		}
 	}
 

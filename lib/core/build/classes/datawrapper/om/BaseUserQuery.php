@@ -13,6 +13,9 @@
  * @method     UserQuery orderByRole($order = Criteria::ASC) Order by the role column
  * @method     UserQuery orderByLanguage($order = Criteria::ASC) Order by the language column
  * @method     UserQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
+ * @method     UserQuery orderByName($order = Criteria::ASC) Order by the name column
+ * @method     UserQuery orderByWebsite($order = Criteria::ASC) Order by the website column
+ * @method     UserQuery orderBySmProfile($order = Criteria::ASC) Order by the sm_profile column
  *
  * @method     UserQuery groupById() Group by the id column
  * @method     UserQuery groupByEmail() Group by the email column
@@ -21,6 +24,9 @@
  * @method     UserQuery groupByRole() Group by the role column
  * @method     UserQuery groupByLanguage() Group by the language column
  * @method     UserQuery groupByCreatedAt() Group by the created_at column
+ * @method     UserQuery groupByName() Group by the name column
+ * @method     UserQuery groupByWebsite() Group by the website column
+ * @method     UserQuery groupBySmProfile() Group by the sm_profile column
  *
  * @method     UserQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     UserQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -40,6 +46,9 @@
  * @method     User findOneByRole(int $role) Return the first User filtered by the role column
  * @method     User findOneByLanguage(string $language) Return the first User filtered by the language column
  * @method     User findOneByCreatedAt(string $created_at) Return the first User filtered by the created_at column
+ * @method     User findOneByName(string $name) Return the first User filtered by the name column
+ * @method     User findOneByWebsite(string $website) Return the first User filtered by the website column
+ * @method     User findOneBySmProfile(string $sm_profile) Return the first User filtered by the sm_profile column
  *
  * @method     array findById(int $id) Return User objects filtered by the id column
  * @method     array findByEmail(string $email) Return User objects filtered by the email column
@@ -48,6 +57,9 @@
  * @method     array findByRole(int $role) Return User objects filtered by the role column
  * @method     array findByLanguage(string $language) Return User objects filtered by the language column
  * @method     array findByCreatedAt(string $created_at) Return User objects filtered by the created_at column
+ * @method     array findByName(string $name) Return User objects filtered by the name column
+ * @method     array findByWebsite(string $website) Return User objects filtered by the website column
+ * @method     array findBySmProfile(string $sm_profile) Return User objects filtered by the sm_profile column
  *
  * @package    propel.generator.datawrapper.om
  */
@@ -136,7 +148,7 @@ abstract class BaseUserQuery extends ModelCriteria
 	 */
 	protected function findPkSimple($key, $con)
 	{
-		$sql = 'SELECT `ID`, `EMAIL`, `PWD`, `TOKEN`, `ROLE`, `LANGUAGE`, `CREATED_AT` FROM `user` WHERE `ID` = :p0';
+		$sql = 'SELECT `ID`, `EMAIL`, `PWD`, `TOKEN`, `ROLE`, `LANGUAGE`, `CREATED_AT`, `NAME`, `WEBSITE`, `SM_PROFILE` FROM `user` WHERE `ID` = :p0';
 		try {
 			$stmt = $con->prepare($sql);
 			$stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -431,6 +443,90 @@ abstract class BaseUserQuery extends ModelCriteria
 			}
 		}
 		return $this->addUsingAlias(UserPeer::CREATED_AT, $createdAt, $comparison);
+	}
+
+	/**
+	 * Filter the query on the name column
+	 *
+	 * Example usage:
+	 * <code>
+	 * $query->filterByName('fooValue');   // WHERE name = 'fooValue'
+	 * $query->filterByName('%fooValue%'); // WHERE name LIKE '%fooValue%'
+	 * </code>
+	 *
+	 * @param     string $name The value to use as filter.
+	 *              Accepts wildcards (* and % trigger a LIKE)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    UserQuery The current query, for fluid interface
+	 */
+	public function filterByName($name = null, $comparison = null)
+	{
+		if (null === $comparison) {
+			if (is_array($name)) {
+				$comparison = Criteria::IN;
+			} elseif (preg_match('/[\%\*]/', $name)) {
+				$name = str_replace('*', '%', $name);
+				$comparison = Criteria::LIKE;
+			}
+		}
+		return $this->addUsingAlias(UserPeer::NAME, $name, $comparison);
+	}
+
+	/**
+	 * Filter the query on the website column
+	 *
+	 * Example usage:
+	 * <code>
+	 * $query->filterByWebsite('fooValue');   // WHERE website = 'fooValue'
+	 * $query->filterByWebsite('%fooValue%'); // WHERE website LIKE '%fooValue%'
+	 * </code>
+	 *
+	 * @param     string $website The value to use as filter.
+	 *              Accepts wildcards (* and % trigger a LIKE)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    UserQuery The current query, for fluid interface
+	 */
+	public function filterByWebsite($website = null, $comparison = null)
+	{
+		if (null === $comparison) {
+			if (is_array($website)) {
+				$comparison = Criteria::IN;
+			} elseif (preg_match('/[\%\*]/', $website)) {
+				$website = str_replace('*', '%', $website);
+				$comparison = Criteria::LIKE;
+			}
+		}
+		return $this->addUsingAlias(UserPeer::WEBSITE, $website, $comparison);
+	}
+
+	/**
+	 * Filter the query on the sm_profile column
+	 *
+	 * Example usage:
+	 * <code>
+	 * $query->filterBySmProfile('fooValue');   // WHERE sm_profile = 'fooValue'
+	 * $query->filterBySmProfile('%fooValue%'); // WHERE sm_profile LIKE '%fooValue%'
+	 * </code>
+	 *
+	 * @param     string $smProfile The value to use as filter.
+	 *              Accepts wildcards (* and % trigger a LIKE)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    UserQuery The current query, for fluid interface
+	 */
+	public function filterBySmProfile($smProfile = null, $comparison = null)
+	{
+		if (null === $comparison) {
+			if (is_array($smProfile)) {
+				$comparison = Criteria::IN;
+			} elseif (preg_match('/[\%\*]/', $smProfile)) {
+				$smProfile = str_replace('*', '%', $smProfile);
+				$comparison = Criteria::LIKE;
+			}
+		}
+		return $this->addUsingAlias(UserPeer::SM_PROFILE, $smProfile, $comparison);
 	}
 
 	/**

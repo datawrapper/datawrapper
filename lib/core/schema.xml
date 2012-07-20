@@ -29,5 +29,9 @@
     <column name="role" type="enum" valueSet="admin,editor,pending,guest" required="true" default="pending" />
     <column name="language" type="varchar" size="5" default="en" />
     <column name="created_at" type="timestamp" required="true" />
+    <!-- extended user profiles -->
+    <column name="name" type="varchar" required="false" size="512" />
+    <column name="website" type="varchar" required="false" size="512" />
+    <column name="sm_profile" type="varchar" required="false" size="512" />
   </table>
 </database>
