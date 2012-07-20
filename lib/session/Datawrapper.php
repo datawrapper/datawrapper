@@ -31,6 +31,7 @@ class DatawrapperSession {
     }
 
     public static function initSession() {
+        session_cache_limiter(false);
         $ses = 'dw-session';
         $lifetime = 86400 * 30;  // 30 days
         session_set_cookie_params($lifetime);
@@ -118,6 +119,7 @@ class DatawrapperSession {
     public static function logout() {
         $_SESSION['dw-user-id'] = null;
         self::getInstance()->initUser();
+        setcookie('dw-session');
     }
 
 

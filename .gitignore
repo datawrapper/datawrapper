@@ -6,3 +6,4 @@ lib/core/build/conf/datawrapper-conf.php
 lib/datawrapper/build/conf/datawrapper-conf.php
 charts/data/*
 charts/images/*
+push
