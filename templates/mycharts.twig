@@ -14,7 +14,7 @@
                     <p class="pull-right">
                         <a href="#delete" class="delete" data-chart="{{ chart.id }}"><i class="icon-remove"></i></a>
                     </p>
-                     <h3><a href="chart/{{ chart.id }}/edit">{{ chart.title }}</a></h3>
+                     <h3><a href="/chart/{{ chart.id }}/edit">{{ chart.title }}</a></h3>
                      <p>{% trans "Created" %}: {{ chart.createdAt|date() }}<br/>
                      {% trans "Layout" %}: {{ chart.theme }} </p>
                 </div>
