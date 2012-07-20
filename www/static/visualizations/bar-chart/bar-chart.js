@@ -15,7 +15,7 @@
             this.setRoot(el);
 
             var me = this,
-            isVertical = me.get('orientation') == 'vertical',
+            isVertical = me.get('orientation', 'vertical') == 'vertical',
             c = me.initCanvas({}),
             chart_width = c.w - c.lpad - c.rpad,
             series_gap = 0.05, // pull from theme
@@ -109,7 +109,7 @@
                 y: d3.scale.linear().domain([dMin, dMax])
             };
 
-            if (me.get('orientation') == 'horizontal') {
+            if (me.get('orientation', 'vertical') == 'horizontal') {
                 me.__scales.y.rangeRound([c.lpad, c.w-c.rpad-c.lpad-30]);
             } else {
                 me.__scales.y.rangeRound([0, c.h - c.bpad - c.tpad]);
@@ -120,7 +120,7 @@
             var me = this, w, h, x, y, i, cw, n = me.chart.dataSeries().length,
                 sc = me.__scales, c = me.__canvas, bw, pad = 0.35, vspace = 0.1;
 
-            if (me.get('orientation') == 'horizontal') {
+            if (me.get('orientation', 'vertical') == 'horizontal') {
                 cw = c.h - c.bpad - c.tpad;
                 bw = Math.min(24, cw / (n + (n-1) * pad));
                 w = sc.y(series.data[r]) - sc.y(0);

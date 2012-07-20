@@ -48,8 +48,8 @@
         /**
          * short-cut for this.chart.get('metadata.visualizes.*')
          */
-        get: function(str) {
-            return this.chart.get('metadata.visualize.'+str);
+        get: function(str, _default) {
+            return this.chart.get('metadata.visualize.'+str, _default);
         }
 
     });

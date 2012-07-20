@@ -10,17 +10,17 @@
 
     _.extend(Chart.prototype, {
 
-        get: function(key) {
+        get: function(key, _default) {
             var keys = key.split('.'),
                 pt = this.__attributes;
 
             _.each(keys, function(key) {
                 if (pt === undefined) {
-                    return null;
+                    return _default;
                 }
                 pt = pt[key];
             });
-            return pt;
+            return _.isUndefined(pt) ? _default : pt;
         },
 
         dataset: function(callback, ignoreTranspose) {
