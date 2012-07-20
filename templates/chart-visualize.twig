@@ -14,7 +14,7 @@ $(function() {
         $('#iframe-vis').attr('src', '/chart/{{ chart.id }}/preview?nocache='+Math.random())
         if (_typeHasChanged) {
             // load new visualization options
-            $('#vis-options').load('/xhr/'+chart.get('id')+'/vis-options');
+            $('#vis-options').load('/xhr/'+chart.get('id')+'/vis-options?nocache='+Math.random());
             _typeHasChanged = false;
         }
     });
