@@ -11,14 +11,12 @@ $(function() {
     var _typeHasChanged = false;
 
     DW.currentChart.onSave(function(chart) {
-        setTimeout(function() {
-            $('#iframe-vis')[0].contentWindow.location.reload(); //.attr('src', '/chart/{{ chart.id }}/preview')
-            if (_typeHasChanged) {
-                // load new visualization options
-                $('#vis-options').load('/xhr/'+chart.get('id')+'/vis-options');
-                _typeHasChanged = false;
-            }
-        }, 300);
+        $('#iframe-vis')[0].attr('src', '/chart/{{ chart.id }}/preview?nocache='+Math.random())
+        if (_typeHasChanged) {
+            // load new visualization options
+            $('#vis-options').load('/xhr/'+chart.get('id')+'/vis-options');
+            _typeHasChanged = false;
+        }
     });
 
     DW.currentChart.sync('#select-vis', 'type');
