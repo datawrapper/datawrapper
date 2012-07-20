@@ -11,7 +11,7 @@ $(function() {
     var _typeHasChanged = false;
 
     DW.currentChart.onSave(function(chart) {
-        $('#iframe-vis').attr('src', '/chart/{{ chart.id }}/preview')
+        $('#iframe-vis')[0].contentWindow.location.reload(); //.attr('src', '/chart/{{ chart.id }}/preview')
         if (_typeHasChanged) {
             // load new visualization options
             $('#vis-options').load('/xhr/'+chart.get('id')+'/vis-options');
