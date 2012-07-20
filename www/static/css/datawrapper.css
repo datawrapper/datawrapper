@@ -76,7 +76,8 @@ body {
 }
 .dw-logo .wrap {
     font-style: normal;
-    color: #A7D6DF;
+    color: #e3e3e3;
+    text-shadow: 2px 0px 0px rgba(0,0,0,.3)
 }
 .dw-logo-type {
     font-size: 36px;
@@ -107,6 +108,10 @@ body {
 
 .dw-create-upload p {
     margin-bottom: 1.5em;
+}
+
+.dw-create-upload .btn {
+    height: 42px;
 }
 
 
@@ -336,9 +341,9 @@ dl.dl-horizontal dd {
  */
 
 #iframe-wrapper {
-    box-shadow: 0 0 2px #EEEEEE inset;
-    border: 1px solid #CCCCCC;
-    padding: 15px;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+    border: 2px solid #fff;
+    padding: 10px;
     border-radius: 7px;
     resize: both;
     overflow: hidden;
@@ -434,3 +439,9 @@ dl.dl-horizontal dd {
 .section {
     margin-bottom: 20px;
 }
+
+form.well form {
+    margin: 0;
+}
+
+

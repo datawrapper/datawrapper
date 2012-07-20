@@ -38,6 +38,22 @@
                 return false;
             });
 
+            $('#pick-file-from-disk').ajaxUploadPrompt({
+                url: '/api/charts/' + DW.currentChart.get('id') + '/data',
+                type: 'PUT',
+                onprogress: function (e) {
+                    if (e.lengthComputable) {
+                        var percentComplete = e.loaded / e.total;
+                        console.log(percentComplete);
+                        $( "#progress" ).progressbar({ value: percentComplete*100 });
+                    }
+                },
+                success: function (data, status, xhr) {
+                    console.log(data);
+                    $('#upload-data').html(data);
+                }
+            });
+
         });
     </script>
 
@@ -48,8 +64,8 @@
              <form class="well">
                 <textarea id="upload-data-text" placeholder="copy &amp; paste your data here">{{ chartData }}</textarea>
 
-                <a id="upload-data" class="btn btn-primary pull-right" href="#">{% trans "Upload and continue" %} <i class="icon-chevron-right icon-white"></i></a>
-                <button class="btn"><i class="icon-upload"></i>{% trans "...or pick a file from your disk" %}</button> <span class="label">Not Implemented</span>
+                <button id="upload-data" class="btn btn-primary pull-right">{% trans "Upload and continue" %} <i class="icon-chevron-right icon-white"></i></button>
+                <button class="btn" id="pick-file-from-disk"><i class="icon-upload"></i>{% trans "...or pick a file from your disk" %}</button>
                 <br style="clear:both;margin:0" />
             </form>
 
@@ -122,5 +138,6 @@
 
 
 </div>
+<script type="text/javascript" src="/static/vendor/ajaxupload/jquery.ajaxupload.js"></script>
 
 {% endblock %}

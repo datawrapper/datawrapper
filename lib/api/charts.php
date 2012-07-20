@@ -133,6 +133,30 @@ $app->put('/charts/:id/data', function($chart_id) use ($app) {
     });
 });
 
+/**
+ * API: upload csv file to a chart
+ *
+ * @param chart_id chart id
+ */
+$app->post('/charts/:id/data', function($chart_id) use ($app) {
+    if_chart_is_writable($chart_id, function($user, $chart) use ($app) {
+        if (isset($_FILES) && $_FILES["file"]["error"] == 0) {
+
+        }
+        $data = $app->request()->getBody();
+        try {
+            $filename = $chart->writeData($data);
+            $chart->setLastModifiedAt(date('Y-m-d H:i:s'));
+            $chart->save();
+            ok($filename);
+        } catch (Exception $e) {
+            error('io-error', $e->getMessage());
+        }
+    });
+});
+
+
+
 /* delete chart */
 $app->delete('/charts/:id', function($id) use ($app) {
     if_chart_is_writable($id, function($user, $chart) use ($app) {
