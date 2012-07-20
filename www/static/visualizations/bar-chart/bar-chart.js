@@ -1,6 +1,5 @@
 
 (function(){
-
     // Simple perfect bar chart
     // -------------------------
 
@@ -22,10 +21,10 @@
             series_gap = 0.05, // pull from theme
             row_gap = 0.01,
             row = 0; // pull from theme
-            if (me.get('selected-row') !== null) {
+            if (!_.isUndefined(me.get('selected-row'))) {
                 row = me.get('selected-row');
             }
-            if (row > me.chart.numRows()) row = 0;
+            if (row > me.chart.numRows() || row === undefined) row = 0;
             me.chart.filterRow(row);
 
             me.init();
