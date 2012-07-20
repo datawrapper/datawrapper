@@ -20,7 +20,7 @@
                 }
                 pt = pt[key];
             });
-            return _.isUndefined(pt) ? _default : pt;
+            return _.isUndefined(pt) || _.isNull(pt) ? _default : pt;
         },
 
         dataset: function(callback, ignoreTranspose) {
@@ -40,6 +40,7 @@
             ds.fetch({
                 success: function() {
                     me.__dataview = this;
+                    me.__dsLoaded = true;
                     callback(this);
                     if (me.__datasetLoadedCallbacks) {
                         for (var i=0; i<me.__datasetLoadedCallbacks.length; i++) {
@@ -53,8 +54,13 @@
 
         datasetLoaded: function(callback) {
             var me = this;
-            if (!me.__datasetLoadedCallbacks) me.__datasetLoadedCallbacks = [];
-            me.__datasetLoadedCallbacks.push(callback);
+            if (me.__dsLoaded) {
+                // run now
+                callback(me);
+            } else {
+                if (!me.__datasetLoadedCallbacks) me.__datasetLoadedCallbacks = [];
+                me.__datasetLoadedCallbacks.push(callback);
+            }
         },
 
         dataSeries: function() {

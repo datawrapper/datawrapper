@@ -65,6 +65,7 @@ $(function() {
     // populate select-row
     if (vis.dimensions == 1) {
         DW.currentChart.datasetLoaded(function(chart) {
+            console.log('loaded');
             var selRows = $('#select-row');
             for (var r=0; r<chart.numRows(); r++) {
                 selRows.append('<option value="'+r+'">'+chart.rowLabel(r)+'</option>');
