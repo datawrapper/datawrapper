@@ -50,13 +50,21 @@
 
             if (!series) {
                 // nothing hovered
-                if (me.theme.hover) me.hoverSeries();
-                if (me.theme.tooltip) me.hideTooltip();
+                if (me.__mouseOverTimer) clearTimeout(me.__mouseOverTimer);
+                me.__mouseOutTimer = setTimeout(function() {
+                    if (me.theme.hover) me.hoverSeries();
+                    if (me.theme.tooltip) me.hideTooltip();
+                }, 200);
             } else {
-                if (me.theme.hover) me.hoverSeries(series);
-                if (me.theme.tooltip) me.showTooltip(series, row, x, y);
+                if (me.__mouseOutTimer) clearTimeout(me.__mouseOutTimer);
+                me.__mouseOverTimer = setTimeout(function() {
+                    if (me.theme.hover) me.hoverSeries(series);
+                    if (me.theme.tooltip) me.showTooltip(series, row, x, y);
+                }, 200);
             }
         },
+
+
 
         registerSeriesElement: function(el, series) {
             el.data('series', series);
@@ -158,7 +166,8 @@
         },
 
         getSeriesColor: function(series) {
-             return this.theme.colors[this.chart.isHighlighted(series) ? 'focus' : 'context'];
+            if (!this.chart.hasHighlight()) return this.theme.colors['main'];
+            return this.theme.colors[this.chart.isHighlighted(series) ? 'highlight' : 'main'];
         },
 
         getYTicks: function(h) {

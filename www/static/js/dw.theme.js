@@ -12,6 +12,8 @@
     Datawrapper.Themes.Base = _.extend({}, {
 
         colors: {
+            main: '#85B4D4',
+            highlight: '#00589E',
             focus: '#0063A5',
             context: '#aaa',
             axis: '#000000',

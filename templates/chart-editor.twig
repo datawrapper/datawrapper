@@ -5,9 +5,10 @@
 <div class="row create-nav">
     {% for step in steps %}
         <div class="span3{% if createstep == step.index %} active{% else %}{% if createstep > step.index %} passed{% endif %}{% endif %}">
-            {% if createstep > step.index or createstep != step.index and chart.lastEditStep >= step.index %}<a href="{{ step.id }}">{% endif %}
-            {{ step.index }} {{ step.title }}
+            <span class="step">{{ step.index }}</span>{% if createstep > step.index or createstep != step.index and chart.lastEditStep >= step.index %}<a href="{{ step.id }}">{% endif %}
+            {{ step.title }}
             {% if createstep > step.index or createstep != step.index and chart.lastEditStep >= step.index %}</a><i class="icon-ok"></i>{% endif %}
+            <div class="corner"></div>
         </div>
     {% endfor %}
 </div>
