@@ -160,6 +160,7 @@ $app->post('/charts/:id/data', function($chart_id) use ($app) {
                 $chart->setLastModifiedAt(date('Y-m-d H:i:s'));
                 $chart->save();
                 echo htmlspecialchars(json_encode($result), ENT_NOQUOTES);
+                unlink($uploader->filename);
             } else {
                 error('upload-error', $result['error']);
             }
