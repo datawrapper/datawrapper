@@ -38,20 +38,37 @@
                 return false;
             });
 
-            $('#pick-file-from-disk').ajaxUploadPrompt({
-                url: '/api/charts/' + DW.currentChart.get('id') + '/data',
-                type: 'PUT',
-                onprogress: function (e) {
-                    if (e.lengthComputable) {
-                        var percentComplete = e.loaded / e.total;
-                        console.log(percentComplete);
-                        $( "#progress" ).progressbar({ value: percentComplete*100 });
-                    }
+
+            new qq.FileUploader({
+                element: $('#upload')[0],
+                action: '/api/charts/' + DW.currentChart.get('id') + '/data',
+                allowedExtensions: ['txt', 'csv', 'tsv'],
+                template: '<div class="upload-drop">{% trans "drop your csv file here" %}</div><div class="btn upload-button" id="pick-file-from-disk">{% trans "Pick a file from your disk" %}</div><ul class="qq-upload-list" style="display:none"></ul>',
+                classes: {
+                    button: 'upload-button',
+                    drop: 'upload-drop',
+                    dropActive: 'upload-drop-active',
+                    list: 'qq-upload-list',
+                    file: 'qq-upload-file',
+                    spinner: 'qq-upload-spinner',
+                    size: 'qq-upload-size',
+                    cancel: 'qq-upload-cancel'
                 },
-                success: function (data, status, xhr) {
-                    console.log(data);
-                    $('#upload-data').html(data);
+                multiple: false,
+                onComplete: function(e) {
+                    nextPage();
                 }
+            });
+
+            var txtarea = $('#upload-data-text');
+
+            $('.upload-drop').css({
+                position: 'absolute',
+                top: txtarea.offset().top +2,
+                left: txtarea.offset().left+2,
+                width: txtarea.width()+2,
+                height: txtarea.height()+2,
+                'line-height': txtarea.height()+'px'
             });
 
         });
@@ -64,9 +81,10 @@
              <form class="well">
                 <textarea id="upload-data-text" placeholder="copy &amp; paste your data here">{{ chartData }}</textarea>
 
-                <button id="upload-data" class="btn btn-primary pull-right">{% trans "Upload and continue" %} <i class="icon-chevron-right icon-white"></i></button>
-                <button class="btn" id="pick-file-from-disk"><i class="icon-upload"></i>{% trans "...or pick a file from your disk" %}</button>
-                <br style="clear:both;margin:0" />
+                <div id="upload-data" class="btn btn-primary pull-right">{% trans "Upload and continue" %} <i class="icon-chevron-right icon-white"></i></div>
+
+                <div id="upload"></div>
+                
             </form>
 
         </div>
@@ -138,6 +156,6 @@
 
 
 </div>
-<script type="text/javascript" src="/static/vendor/ajaxupload/jquery.ajaxupload.js"></script>
-
+<script type="text/javascript" src="/static/vendor/ajaxupload/fileuploader.js"></script>
+<link rel="stylesheet" type="text/css" href="/static/vendor/ajaxupload/fileuploader.css">
 {% endblock %}

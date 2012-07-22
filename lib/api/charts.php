@@ -140,18 +140,33 @@ $app->put('/charts/:id/data', function($chart_id) use ($app) {
  */
 $app->post('/charts/:id/data', function($chart_id) use ($app) {
     if_chart_is_writable($chart_id, function($user, $chart) use ($app) {
-        if (isset($_FILES) && $_FILES["file"]["error"] == 0) {
 
-        }
-        $data = $app->request()->getBody();
+        require_once '../../lib/utils/file-uploader.php';
+
+        // list of valid extensions, ex. array("jpeg", "xml", "bmp")
+        $allowedExtensions = array('txt', 'csv', 'tsv');
+        // max file size in bytes
+        $sizeLimit = 2 * 1024 * 1024;
+
+        $uploader = new qqFileUploader($allowedExtensions, $sizeLimit);
+        $result = $uploader->handleUpload('../../charts/data/tmp/');
+        // to pass data through iframe you will need to encode all html tags
+
+        $data = file_get_contents($uploader->filename);
+
         try {
-            $filename = $chart->writeData($data);
-            $chart->setLastModifiedAt(date('Y-m-d H:i:s'));
-            $chart->save();
-            ok($filename);
+            if ($result['success']) {
+                $filename = $chart->writeData($data);
+                $chart->setLastModifiedAt(date('Y-m-d H:i:s'));
+                $chart->save();
+                echo htmlspecialchars(json_encode($result), ENT_NOQUOTES);
+            } else {
+                error('upload-error', $result['error']);
+            }
         } catch (Exception $e) {
             error('io-error', $e->getMessage());
         }
+
     });
 });
 

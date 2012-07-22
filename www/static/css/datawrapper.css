@@ -111,9 +111,22 @@ body {
 }
 
 .dw-create-upload .btn {
-    height: 42px;
+    height: 36px;
+    line-height: 36px;
 }
 
+.dw-create-upload ul {
+    margin: 0;
+    padding: 0;
+}
+
+.dw-create-upload .upload-drop {
+    background: rgba(255,255,255,.9);
+    text-align: center;
+    font-size: 36px;
+    color: #ddd;
+    font-weight: 300;
+}
 
 h3 label.radio {
     font-size: 18px;
@@ -231,7 +244,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .form-actions {
-    background: #F5F5F5;
+    background: #F2F2F2 url(../img/bg-well.png);
 }
 
 .well-danger .form-actions {
@@ -444,4 +457,7 @@ form.well form {
     margin: 0;
 }
 
+.well {
+    background: url(../img/bg-well.png);
+}
 
