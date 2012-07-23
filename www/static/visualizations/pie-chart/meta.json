@@ -15,39 +15,6 @@
     },
     "dimensions": 1,
     "options": {
-        "pie-type": {
-            "type": "radio",
-            "label": {
-                "en": "Type",
-                "de": "Typ",
-                "fr": "Type"
-            },
-            "options": [{
-                "value": "full",
-                "label": {
-                    "en": "full circle",
-                    "de": "gestapelt",
-                    "fr": "linéaire"
-                }
-            },{
-                "value": "horizontal",
-                "label": {
-                    "en": "donut",
-                    "de": "normal",
-                    "fr": "linéaire"
-                }
-            }],
-            "default": "vertical"
-        },
-        "sort-values": {
-            "type": "checkbox",
-            "label": {
-                "en": "Autmatically sort bars",
-                "de": "Balken sortieren",
-                "fr": "Type"
-            },
-            "default": true
-        }
     },
     "libraries": [],
     "about": "http://site.com/understanding-bar-charts/",

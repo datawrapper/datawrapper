@@ -355,7 +355,7 @@ dl.dl-horizontal dd {
 
 #iframe-wrapper {
     box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
-    border: 2px solid #fff;
+    border: 1px solid #fff;
     padding: 10px;
     border-radius: 7px;
     resize: both;

@@ -8,13 +8,13 @@
 @import url(http://fonts.googleapis.com/css?family=Economica:500,700);
 
 body {
-    font-family: "Economica","Helvetica Neue",Arial,Helvetica,sans-serif;
+    font-family: Arial,Helvetica,sans-serif;
     font-weight: normal;
     margin:0;
     color: #333;
     line-height: 1.5em;
-    background: #fff;
-    font-size: 15px;
+    background: #F5F2EB;
+    font-size: 12px;
 }
 
 h1 {
@@ -22,13 +22,13 @@ h1 {
     font-size: 28px;
     font-weight: 700;
     padding: 0;
-    margin: 15px 20px 15px 20px;
+    margin: 2px 20px 15px 0px;
     color: #000;
     line-height: 1.1em;
 }
 
 p {
-    margin: 0 20px 20px;
+    margin: 0 0px 20px;
 }
 
 #chart {
@@ -36,7 +36,7 @@ p {
 }
 
 #chart .label {
-    font-size: 16px;
+    font-size: 12px;
 }
 
 .tooltip {
@@ -60,3 +60,6 @@ p {
     content: ": ";
 }
 
+.label.inverse span {
+    color: #F5F2EB;
+}

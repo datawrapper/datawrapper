@@ -11,8 +11,8 @@
     Datawrapper.Themes.Wsj = $.extend(true, {}, Datawrapper.Themes.Base, {
 
         colors: {
-            focus: '#D21E1D',
-            context: '#999',
+            main: '#E8B3A4',
+            highlight: '#C72535',
             altBg: '#EDE1C7'
         },
 

@@ -11,7 +11,8 @@
     Datawrapper.Themes.Abzv = $.extend(true, {}, Datawrapper.Themes.Base, {
 
         colors: {
-            focus: '#D21F1F'
+            highlight: '#D21F1F',
+            main: '#cde'
         },
 
         lineWidth: {

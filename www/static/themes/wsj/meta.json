@@ -1,5 +1,6 @@
 {
     "title": "Wallstreet Journal",
     "link": "",
-    "restricted": null
+    "restricted": null,
+    "extends": "default"
 }

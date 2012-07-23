@@ -133,7 +133,6 @@
             x -= c.root.offset().left + c.cx;
             y -= c.root.offset().top + c.cy;
             dist = x*x + y*y;
-            document.title = dist;
             if (dist > c.or_sq || dist < c.ir_sq) return false;
             a = Math.atan2(y, x) + HALF_PI;
             if (a < 0) a += TWO_PI;
