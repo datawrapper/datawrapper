@@ -19,7 +19,7 @@ function check_chart_writable($id, $callback) {
 function check_chart_public($id, $callback) {
     $chart = ChartQuery::create()->findPK($id);
     if ($chart) {
-        $user = DatawrapperSession::getUser();
+        $user = $chart->getUser();
         if ($user->isAbleToPublish()) {
             if ($chart->isPublic()) {
                 call_user_func($callback, $user, $chart);
