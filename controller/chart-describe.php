@@ -44,6 +44,7 @@ $app->get('/chart/:id/describe', function ($id) use ($app) {
         );
         $app->etag('chart/'.$chart->getId().'/describe/'.$chart->getLastModifiedAt('U'));
         $app->lastModified(intval($chart->getLastModifiedAt('U')));
+        $app->expires(intval($chart->getLastModifiedAt('U'))-3600);
         $app->render('chart-describe.twig', $page);
     });
 });

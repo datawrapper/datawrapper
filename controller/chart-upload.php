@@ -16,6 +16,7 @@ $app->get('/chart/:id/upload', function ($id) use ($app) {
         add_editor_nav($page, 1);
         $app->etag('chart/'.$chart->getId().'/upload/'.$chart->getLastModifiedAt('U'));
         $app->lastModified(intval($chart->getLastModifiedAt('U')));
+        $app->expires(intval($chart->getLastModifiedAt('U'))-3600);
         $app->render('chart-upload.twig', $page);
     });
 });
