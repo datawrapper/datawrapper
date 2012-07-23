@@ -18,6 +18,8 @@ $app->get('/chart/:id/visualize', function ($id) use ($app) {
         );
         add_header_vars($page, 'create');
         add_editor_nav($page, 3);
+        $app->etag('chart/'.$id.'/visualize/'.$chart->getLastModifiedAt('U'));
+        $app->lastModified(intval($chart->getLastModifiedAt('U')));
         $app->render('chart-visualize.twig', $page);
     });
 });
