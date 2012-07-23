@@ -7,7 +7,8 @@
  */
 $app->get('/chart/:id/data', function($chart_id) use ($app) {
     $chart = ChartQuery::create()->findPK($chart_id);
-    header('Cache-Control', 'max-age=0');
+    $res = $app->response();
+    $res['Cache-Control'] = 'max-age=0';
     if (!empty($chart)) {
         print $chart->loadData();
     } else {
