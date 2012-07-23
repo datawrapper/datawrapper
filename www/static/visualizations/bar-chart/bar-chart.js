@@ -15,6 +15,7 @@
             this.setRoot(el);
 
             var me = this,
+            sortBars = me.get('sort-values'),
             isVertical = me.get('orientation', 'vertical') == 'vertical',
             c = me.initCanvas({}),
             chart_width = c.w - c.lpad - c.rpad,
@@ -34,7 +35,7 @@
 
             if (isVertical) me.horzGrid();
 
-            _.each(me.chart.dataSeries(), function(series, s) {
+            _.each(me.chart.dataSeries(sortBars), function(series, s) {
                 _.each(series.data, function(val, r) {
                     var d = me.barDimensions(series, s, r);
                     var fill = me.getSeriesColor(series, r),

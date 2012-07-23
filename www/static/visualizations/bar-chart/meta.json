@@ -39,6 +39,14 @@
                 },
                 "default": false
             }]
+        },
+        "sort-values": {
+            "type": "checkbox",
+            "label": {
+                "en": "Autmatically sort bars",
+                "de": "Balken sortieren",
+                "fr": "Type"
+            }
         }
     },
     "libraries": [],
