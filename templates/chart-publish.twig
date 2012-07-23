@@ -21,7 +21,7 @@ $(function() {
             <p>{% trans "Congrats, you made it! Now is the time to check back everything. You can return to the previous steps." %}</p>
 
             <h3>{% trans "Link to this visualisation" %}</h3>
-            <p><a href="http://datawrapper.de/chart/{{ chart.id }}">http://datawrapper.de/chart/{{ chart.id }}</a></p>
+            <p><a href="http://{{ DW_DOMAIN }}/chart/{{ chart.id }}">http://{{ DW_DOMAIN }}/chart/{{ chart.id }}</a></p>
 
             <h3>{% trans "Embed into your website" %}</h3>
             <p>{% trans "Just copy &amp; paste the following code into your website." %}</p>
