@@ -17,6 +17,8 @@ $app->get('/chart/:id/upload', function ($id) use ($app) {
         $app->etag('chart/'.$chart->getId().'/upload/'.$chart->getLastModifiedAt('U'));
         $app->lastModified(intval($chart->getLastModifiedAt('U')));
         $app->expires(intval($chart->getLastModifiedAt('U'))-3600);
+        $res = $app->response();
+        $res['Cache-Control'] = 'max-age=0';
         $app->render('chart-upload.twig', $page);
     });
 });
