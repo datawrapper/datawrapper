@@ -7,16 +7,30 @@
         {% if user.hasCharts %}
         <ul class="thumbnails">
             {% for chart in charts %}
-            <li class="span3 chart">
+            <li class="span3 chart" data-id="{{ chart.id }}">
                 <div class="thumbnail">
-                    <img src="/chart/{{ chart.id }}/static?w=260&amp;h=180" width="260" height="180" alt="">
+                    <a href="/chart/{{ chart.id }}/edit"><img src="/chart/{{ chart.id }}/static?w=260&amp;h=170&amp;padding=5" width="260" height="170" alt="">
 
-                    <p class="pull-right">
+                    {# <p class="pull-right">
                         <a href="#delete" class="delete" data-chart="{{ chart.id }}"><i class="icon-remove"></i></a>
-                    </p>
-                     <h3><a href="/chart/{{ chart.id }}/edit">{{ chart.title }}</a></h3>
-                     <p>{% trans "Created" %}: {{ chart.createdAt|date() }}<br/>
-                     {% trans "Layout" %}: {{ chart.theme }} </p>
+                    </p> #}
+
+                     <h3>{{ chart.title }}</h3></a>
+                     <div class="btn-group">
+                        <a class="btn btn-mini dropdown-toggle" data-toggle="dropdown" href="#">
+                          <i class="icon-wrench"></i>
+                        <span class="caret"></span>
+                        </a>
+                         <ul class="dropdown-menu">
+                            <li><a class="duplicate" href="#"><i class="icon-plus"></i> Duplicate</a></li>
+                            <li><a href="/chart/{{ chart.id }}/static?w=700&amp;h=490&amp;f=pdf&amp;padding=20"><i class="icon-download"></i> Save as PDF</a></li>
+                            <li class="divider"></li>
+                            <li><a href=""><i class="icon-remove"></i> Delete</a></li>
+                        <!-- dropdown menu links -->
+                        </ul>
+                     </div>
+                    {# <p>{% trans "Created" %}: {{ chart.createdAt|date() }}<br/>
+                     {% trans "Layout" %}: {{ chart.theme }} </p> #}
                 </div>
             </li>
             {% endfor %}
@@ -60,10 +74,11 @@ $(function(){
   //*
 
   function layout() {
-      $('.mycharts .thumbnails').masonry({
+      /*$('.mycharts .thumbnails').masonry({
         itemSelector : 'li',
         columnWidth : function(w) { return w/3; }
       });
+*/
   }
 
   layout();
@@ -86,6 +101,19 @@ $(function(){
                 }
             });
         };
+    });
+
+    $('.chart a.duplicate').click(function(e) {
+        e.preventDefault();
+        var id = $(e.target).parents('.chart').data('id');
+        $.ajax({
+            url: '/api/charts/'+id+'/copy',
+            type: 'POST',
+            success: function(data) {
+                console.log(data);
+                //window.location.reload();
+            }
+        });
     });
 });
 

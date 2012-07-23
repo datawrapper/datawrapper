@@ -179,3 +179,19 @@ $app->delete('/charts/:id', function($id) use ($app) {
         ok('');
     });
 });
+
+/**
+ * API: copy a chart
+ *
+ * @param chart_id chart id
+ */
+$app->post('/charts/:id/copy', function($chart_id) use ($app) {
+    if_chart_is_writable($chart_id, function($user, $chart) use ($app) {
+        try {
+            $copy = ChartQuery::create()->copyChart($chart);
+            ok(array('id' => $copy->getId()));
+        } catch (Exception $e) {
+            error('io-error', $e->getMessage());
+        }
+    });
+});

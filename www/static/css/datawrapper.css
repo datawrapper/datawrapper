@@ -210,10 +210,36 @@ h1, h2, h3, h4, h5, h6 {
 .mycharts .thumbnail {
     border: 0;
     box-shadow: none;
+    position: relative;
 }
 
 .mycharts .thumbnail img {
     margin: 0 0 5px 0;
+    padding: 5px;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.mycharts .thumbnail .btn-group {
+    position: absolute;
+    top: 10px;
+    right: 5px;
+    visibility: hidden;
+}
+
+.mycharts .thumbnail:hover .btn-group {
+    visibility: visible;
+}
+
+.mycharts .thumbnail h3 {
+    font-size: 14px;
+   bottom: -20px;
+    height: 20px;
+    line-height: 20px;
+    left: 4px;
+    width: 100%;
+    padding: 0 5px;
 }
 
 .mycharts-filter li.active a {

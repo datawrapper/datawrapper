@@ -2312,7 +2312,7 @@ table .span24 {
 }
 
 .icon-wrench {
-  background-position: -360px -144px;
+  background-position: -360px -144px!important;
 }
 
 .icon-tasks {

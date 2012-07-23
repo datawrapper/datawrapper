@@ -169,11 +169,12 @@
                         lbl.removeClass('hover');
                     }
                     _.each(me.__seriesElements[s.name], function(el) {
-                        var fill = me.getSeriesColor(s, 0), stroke;
-                        if (series !== undefined && s.name == series.name) fill = d3.cie.lch(d3.rgb(fill)).darker(0.6).toString();
+                        var fill = me.getSeriesColor(s, 0), stroke, hover = series !== undefined && s.name == series.name;
+                        if (hover) fill = d3.cie.lch(d3.rgb(fill)).darker(0.6).toString();
                         stroke = d3.cie.lch(d3.rgb(fill)).darker(0.6).toString();
                         if (el.attrs.fill != fill || el.attrs.stroke != stroke)
                             el.animate({ fill: fill, stroke: stroke }, 50);
+                        if (hover) el.toFront();
                     });
                 });
             });

@@ -24,7 +24,6 @@ class ChartQuery extends BaseChartQuery {
             try {
                 $chart = new Chart();
                 $chart->setId(self::_rand_chars(5));
-                print $chart->getId();
                 $chart->setCreatedAt(time());
                 $chart->setLastModifiedAt(time());
                 if ($user->isLoggedIn()) {
@@ -64,6 +63,33 @@ class ChartQuery extends BaseChartQuery {
         } else {
             return $chart;
         }
+    }
+
+    /*
+     * copy an existing chart and store it as new
+     */
+    public function copyChart($src) {
+        $chart = new Chart();
+        // new id
+        $chart->setId(self::_rand_chars(5));
+        // but the rest remains the same
+        $chart->setUser($src->getUser());
+        $chart->setTitle($src->getTitle().' ('._('Copy').')');
+        $chart->setMetadata(json_encode($src->getMetadata()));
+        $chart->setTheme($src->getTheme());
+        $chart->setLocale($src->getLocale());
+        $chart->setType($src->getType());
+        $chart->setCreatedAt(time());
+        $chart->setLastModifiedAt(time());
+
+        $chart->setLastEditStep(3);
+
+        // we need to copy the data, too
+        $chart->writeData($src->loadData());
+
+        $chart->save();
+
+        return $chart;
     }
 
 
