@@ -42,9 +42,8 @@ $app->get('/chart/:id/describe', function ($id) use ($app) {
                 'c0' => number_format(1234.56, 0, $d, $k).' X'
             )
         );
-        $app->etag('chart/'.$chart->getId().'/describe/'.$chart->getLastModifiedAt('U'));
-        $app->lastModified(intval($chart->getLastModifiedAt('U')));
-        $app->expires(intval($chart->getLastModifiedAt('U'))-3600);
+        $res = $app->response();
+        $res['Cache-Control'] = 'max-age=0';
         $app->render('chart-describe.twig', $page);
     });
 });
