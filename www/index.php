@@ -184,11 +184,15 @@ require_once '../controller/chart-data.php';
 require_once '../controller/chart-preview.php';
 require_once '../controller/chart-embed.php';
 require_once '../controller/chart-publish.php';
+require_once '../controller/chart-static.php';
 require_once '../controller/mycharts.php';
 require_once '../controller/xhr.php';
 require_once '../controller/docs.php';
 
 
+$app->get('/phpinfo', function() use ($app) {
+    phpinfo();
+});
 
 /**
  * Step 4: Run the Slim application

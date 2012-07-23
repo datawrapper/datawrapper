@@ -33,7 +33,7 @@
             }, canvas);
 
             if (w <= 300) {
-                canvas.bpad = canvas.tpad = 5;
+                canvas.bpad = canvas.tpad = canvas.lpad = canvas.rpad = 5;
             }
 
             canvas.root = el;
