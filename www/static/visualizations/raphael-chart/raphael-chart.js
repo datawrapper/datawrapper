@@ -68,8 +68,6 @@
             }
         },
 
-
-
         registerSeriesElement: function(el, series) {
             el.data('series', series);
             if (!this.__seriesElements[series.name]) {

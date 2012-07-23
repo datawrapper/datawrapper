@@ -121,7 +121,7 @@ body {
 }
 
 .dw-create-upload .upload-drop {
-    background: rgba(255,255,255,.9);
+    background: #fff;
     text-align: center;
     font-size: 36px;
     color: #ddd;

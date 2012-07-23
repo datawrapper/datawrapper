@@ -41,6 +41,10 @@ p { margin: 15px 0; line-height: 19px;}
     font-weight: bold;
 }
 
+.label.inverse span {
+    color: #fff;
+}
+
 .label.value span {
     font-size: 12px;
 }

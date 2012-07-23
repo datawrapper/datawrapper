@@ -79,6 +79,10 @@
             return ds;
         },
 
+        seriesByName: function(name) {
+            return this.__dataview.column(name);
+        },
+
         numRows: function() {
             return this.__dataview.length;
         },

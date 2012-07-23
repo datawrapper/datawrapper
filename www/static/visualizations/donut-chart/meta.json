@@ -1,0 +1,36 @@
+{
+    "title": {
+        "en": "Donut Chart",
+        "de": "Kreisdiagramm",
+        "fr": "Diagramme temporel"
+    },
+    "extends": "pie-chart",
+    "author": {
+        "name": "gka",
+        "email": "gka@vis4.net"
+    },
+    "license": {
+        "name": "MIT",
+        "url": "http://www.opensource.org/licenses/mit-license.php"
+    },
+    "dimensions": 1,
+    "options": {
+        "show-total": {
+            "type": "checkbox",
+            "label": {
+                "en": "Show total value in center",
+                "de": "Zeige Summe in der Mitte",
+                "fr": "Type"
+            },
+            "default": true
+        }
+    },
+    "libraries": [],
+    "about": "http://site.com/understanding-bar-charts/",
+    "compatibility": {
+        "msie": "9+",
+        "moz": "5+",
+        "webkit": "3+",
+        "ios": "no"
+    }
+}
