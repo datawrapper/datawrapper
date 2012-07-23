@@ -111,7 +111,7 @@
                     w: 50,
                     align: 'center',
                     valign: 'middle',
-                    cl: me.chart.isHighlighted(s) ? 'series highlighted inverse' : 'series'
+                    cl: me.chart.hasHighlight() && me.chart.isHighlighted(s) ? 'series highlighted inverse' : 'series'
                 }), s);
 
             });
