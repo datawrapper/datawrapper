@@ -50,17 +50,21 @@
 
             if (!series) {
                 // nothing hovered
-                if (me.__mouseOverTimer) clearTimeout(me.__mouseOverTimer);
+                clearTimeout(me.__mouseOverTimer);
                 me.__mouseOutTimer = setTimeout(function() {
+                    clearTimeout(me.__mouseOverTimer);
+                    clearTimeout(me.__mouseOutTimer);
                     if (me.theme.hover) me.hoverSeries();
                     if (me.theme.tooltip) me.hideTooltip();
                 }, 200);
             } else {
                 if (me.__mouseOutTimer) clearTimeout(me.__mouseOutTimer);
                 me.__mouseOverTimer = setTimeout(function() {
+                    clearTimeout(me.__mouseOverTimer);
+                    clearTimeout(me.__mouseOutTimer);
                     if (me.theme.hover) me.hoverSeries(series);
                     if (me.theme.tooltip) me.showTooltip(series, row, x, y);
-                }, 200);
+                }, 100);
             }
         },
 

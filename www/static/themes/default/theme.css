@@ -29,12 +29,16 @@ p { margin: 15px 0; line-height: 19px;}
 
 .label span {
     font-size: 12px;
-    color: #999;
+    color: #333;
 }
 
 .label.highlighted, .label.axis {
     font-size: 12px;
     z-index: 100;
+}
+
+.label.hover {
+    font-weight: bold;
 }
 
 .label.value span {
@@ -101,6 +105,6 @@ html[xmlns] .clearfix {
     height: 1%;
 }
 
-svg .axis, svg .tick, svg .grid {
+svg .axis, svg .tick, svg .grid, svg rect {
     shape-rendering: crispEdges;
 }

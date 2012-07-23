@@ -37,10 +37,12 @@
             _.each(me.chart.dataSeries(), function(series, s) {
                 _.each(series.data, function(val, r) {
                     var d = me.barDimensions(series, s, r);
+                    var fill = me.getSeriesColor(series, r),
+                        stroke = d3.cie.lch(d3.rgb(fill)).darker(0.6).toString();
                     me.registerSeriesElement(c.paper.rect(d.x, d.y, d.w, d.h).attr({
-                        'stroke': 'none',
-                        'fill': me.getSeriesColor(series, r)
-                    }), series);
+                        'stroke': stroke,
+                        'fill': fill
+                    }).data('strokeCol', stroke), series);
 
                     if (isVertical) {
                         var val_y = val > 0 ? d.y - 10 : d.y + d.h + 10,
@@ -184,6 +186,30 @@
                     }
                 }
             });
+        },
+
+        hoverSeries: function(series) {
+            var me = this;
+            _.each(me.chart.dataSeries(), function(s) {
+                _.each(me.__seriesLabels[s.name], function(lbl) {
+                    if (series !== undefined && s.name == series.name) {
+                        lbl.addClass('hover');
+                    } else {
+                        lbl.removeClass('hover');
+                    }
+                    _.each(me.__seriesElements[s.name], function(el) {
+                        var fill = me.getSeriesColor(s, 0), stroke;
+                        if (series !== undefined && s.name == series.name) fill = d3.cie.lch(d3.rgb(fill)).darker(0.6).toString();
+                        stroke = d3.cie.lch(d3.rgb(fill)).darker(0.6).toString();
+                        if (el.attrs.fill != fill || el.attrs.stroke != stroke)
+                            el.animate({ fill: fill, stroke: stroke }, 50);
+                    });
+                });
+            });
+        },
+
+        unhoverSeries: function() {
+            this.hoverSeries();
         }
     });
 
