@@ -32,7 +32,7 @@ class DatawrapperSession {
 
     public static function initSession() {
         session_cache_limiter(false);
-        $ses = 'dw-session';
+        $ses = 'DW-SESSION';
         $lifetime = 86400 * 30;  // 30 days
         session_set_cookie_params($lifetime);
         session_name($ses);

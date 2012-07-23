@@ -112,3 +112,7 @@ html[xmlns] .clearfix {
 svg .axis, svg .tick, svg .grid, svg rect {
     shape-rendering: crispEdges;
 }
+
+@media screen and (max-width: 400px) {
+    h1, #footer, p, .label { display: none; position: absolute; height: 0; width: 0; padding: 0; margin: 0;}
+}
