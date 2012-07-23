@@ -9,7 +9,7 @@
             {% for chart in charts %}
             <li class="span3 chart">
                 <div class="thumbnail">
-                    <img src="http://placehold.it/260x180" width="260" height="180" alt="">
+                    <img src="/chart/{{ chart.id }}/static?w=260&amp;h=180" width="260" height="180" alt="">
 
                     <p class="pull-right">
                         <a href="#delete" class="delete" data-chart="{{ chart.id }}"><i class="icon-remove"></i></a>
