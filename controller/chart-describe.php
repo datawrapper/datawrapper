@@ -43,6 +43,7 @@ $app->get('/chart/:id/describe', function ($id) use ($app) {
             )
         );
 
+        $app->lastModified(intval($chart->getLastModifiedAt('U')));
         $app->render('chart-describe.twig', $page);
     });
 });

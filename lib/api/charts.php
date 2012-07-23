@@ -124,7 +124,6 @@ $app->put('/charts/:id/data', function($chart_id) use ($app) {
         $data = $app->request()->getBody();
         try {
             $filename = $chart->writeData($data);
-            $chart->setLastModifiedAt(date('Y-m-d H:i:s'));
             $chart->save();
             ok($filename);
         } catch (Exception $e) {
@@ -157,7 +156,6 @@ $app->post('/charts/:id/data', function($chart_id) use ($app) {
         try {
             if ($result['success']) {
                 $filename = $chart->writeData($data);
-                $chart->setLastModifiedAt(date('Y-m-d H:i:s'));
                 $chart->save();
                 echo htmlspecialchars(json_encode($result), ENT_NOQUOTES);
                 unlink($uploader->filename);
