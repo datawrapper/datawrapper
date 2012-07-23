@@ -102,7 +102,7 @@ body {
 /** dw-create-upload **/
 
 .dw-create-upload textarea {
-    width: 96.5%;
+    width: 98%;
     height: 200px;
 }
 
@@ -111,11 +111,11 @@ body {
 }
 
 .dw-create-upload .btn {
-    height: 36px;
-    line-height: 36px;
+    height: 32px;
+    line-height: 32px;
 }
 
-.dw-create-upload ul {
+.dw-create-upload .upload-form ul {
     margin: 0;
     padding: 0;
 }

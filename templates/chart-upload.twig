@@ -43,7 +43,7 @@
                 element: $('#upload')[0],
                 action: '/api/charts/' + DW.currentChart.get('id') + '/data',
                 allowedExtensions: ['txt', 'csv', 'tsv'],
-                template: '<div class="upload-drop">{% trans "drop your csv file here" %}</div><div class="btn upload-button" id="pick-file-from-disk">{% trans "Pick a file from your disk" %}</div><ul class="qq-upload-list" style="display:none"></ul>',
+                template: '<div class="upload-drop">{% trans "drop your csv file here" %}</div><div class="btn upload-button" id="pick-file-from-disk"><span><i class="icon-upload"></i> {% trans "..or pick a file from your disk" %}</span></div><ul class="qq-upload-list" style="display:none"></ul>',
                 classes: {
                     button: 'upload-button',
                     drop: 'upload-drop',
@@ -78,8 +78,8 @@
         <div class="span7">
             <h2>{% trans "Upload Your Data" %}</h2>
 
-             <form class="well">
-                <textarea id="upload-data-text" placeholder="copy &amp; paste your data here">{{ chartData }}</textarea>
+             <form class="well upload-form">
+                <textarea id="upload-data-text" placeholder="{% trans "Copy &amp; paste your data here" %}">{{ chartData }}</textarea>
 
                 <div id="upload-data" class="btn btn-primary pull-right">{% trans "Upload and continue" %} <i class="icon-chevron-right icon-white"></i></div>
 
