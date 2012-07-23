@@ -42,7 +42,8 @@
             });
             // subtract body padding
             //ch += $('body').innerHeight() - $('body').height();
-            return $(window).height() - ch - 40;
+            var m = $('#chart').css('margin-top');
+            return $(window).height() - ch - Number(m.substr(0, m.length-2));
         },
 
         /**

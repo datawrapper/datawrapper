@@ -27,8 +27,8 @@
                 groupAfter = 5,
 
                 c = me.initCanvas({}),
-                chart_width = c.w - c.lpad - c.rpad,
-                chart_height = c.h - c.bpad - c.tpad;
+                chart_width = c.w,
+                chart_height = c.h;
 
             c.cx = chart_width * 0.5;
             c.cy = chart_height * 0.5;
