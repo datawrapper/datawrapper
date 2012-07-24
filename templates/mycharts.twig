@@ -25,7 +25,7 @@
                             <li><a class="duplicate" href="#"><i class="icon-plus"></i> Duplicate</a></li>
                             <li><a href="/chart/{{ chart.id }}/static?w=700&amp;h=490&amp;f=pdf&amp;padding=20"><i class="icon-download"></i> Save as PDF</a></li>
                             <li class="divider"></li>
-                            <li><a href=""><i class="icon-remove"></i> Delete</a></li>
+                            <li><a href="" class="delete"><i class="icon-remove"></i> Delete</a></li>
                         <!-- dropdown menu links -->
                         </ul>
                      </div>
@@ -89,14 +89,14 @@ $(function(){
 
     $('a.delete').click(function(e) {
         e.preventDefault();
-        var a = e.target.tagName.toLowerCase() == 'a' ? $(e.target) : $(e.target).parents('a');
-        var id = a.data('chart');
+        var chart = $(e.target).parents('.chart'),
+            id = chart.data('id');
         if (window.confirm('Do you really want to delete the chart? Note that this chart won\'t be embedable any more, after deleting.')) {
              $.ajax({
                 url: '/api/charts/'+id,
                 type: 'DELETE',
                 success: function(data) {
-                    a.parents('.chart').remove();
+                    chart.remove();
                     layout();
                 }
             });
@@ -110,8 +110,12 @@ $(function(){
             url: '/api/charts/'+id+'/copy',
             type: 'POST',
             success: function(data) {
-                console.log(data);
-                //window.location.reload();
+                data = JSON.parse(data);
+                if (data.status == "ok") {
+                    window.location.reload();
+                } else {
+                    console.log(data);
+                }
             }
         });
     });
