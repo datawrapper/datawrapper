@@ -193,6 +193,10 @@ class Chart extends BaseChart {
                 'number-divisor' => 0,
                 'number-currency' => 'EUR|€',
                 'number-unit' => ''
+            ),
+            'publish' => array(
+                'embed-width' => 600,
+                'embed-height' => 400
             )
         );
     }

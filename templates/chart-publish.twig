@@ -8,9 +8,54 @@ $(function() {
 
     DW.currentChart.sync('#make-public', 'showInGallery');
 
+    DW.currentChart.sync('#embed-width', 'metadata.publish.embed-width');
+    DW.currentChart.sync('#embed-height', 'metadata.publish.embed-height');
+
+    $('#embed-width, #embed-height').change(function() {
+        var w = $('#embed-width').val(), h = $('#embed-height').val(),
+            embedCode = $('#iframe-code').html();
+        embedCode = embedCode.replace(/width="\d+"/, 'width="' + w + '"');
+        embedCode = embedCode.replace(/height="\d+"/, 'height="' + h + '"');
+        $('#iframe-code').html(embedCode);
+
+        resizeIFrame();
+    });
+
+    function resizeIFrame() {
+        var iframe = $('#iframe-vis'),
+            w = $('#embed-width').val(),
+            h = $('#embed-height').val(),
+            ow = iframe.parent().width();
+            oh = $('div.span4').height();
+
+        iframe.width(w);
+        iframe.height(h);
+        iframe.css({ 'margin-left': Math.max(0, (ow - w) * 0.5) + 'px' });
+        iframe.css({ 'margin-top': Math.max(0, (oh - h) * 0.5) + 'px' });
+    }
+
+    resizeIFrame();
 });
 
 </script>
+<style type="text/css">
+
+#iframe-vis {
+    box-shadow: 2px 2px 11px rgba(0,0,0,.2);
+
+-webkit-transition: all 800ms cubic-bezier(0.190, 1.000, 0.220, 1.000);
+   -moz-transition: all 800ms cubic-bezier(0.190, 1.000, 0.220, 1.000);
+    -ms-transition: all 800ms cubic-bezier(0.190, 1.000, 0.220, 1.000);
+     -o-transition: all 800ms cubic-bezier(0.190, 1.000, 0.220, 1.000);
+        transition: all 800ms cubic-bezier(0.190, 1.000, 0.220, 1.000); /* easeOutExpo */
+
+-webkit-transition-timing-function: cubic-bezier(0.190, 1.000, 0.220, 1.000);
+   -moz-transition-timing-function: cubic-bezier(0.190, 1.000, 0.220, 1.000);
+    -ms-transition-timing-function: cubic-bezier(0.190, 1.000, 0.220, 1.000);
+     -o-transition-timing-function: cubic-bezier(0.190, 1.000, 0.220, 1.000);
+        transition-timing-function: cubic-bezier(0.190, 1.000, 0.220, 1.000); /* easeOutExpo */
+}
+</style>
 
 <div class="dw-create-publish">
     <div class="row">
@@ -26,10 +71,10 @@ $(function() {
             <h3>{% trans "Embed into your website" %}</h3>
             <p>{% trans "Just copy &amp; paste the following code into your website." %}</p>
             <form class="form-inline">
-                <label>{% trans "Width" %}: <input type="text" class="input-small" style="width:4ex" value="600" /> px</label>&nbsp;&nbsp;
-                <label>{% trans "Height" %}: <input type="text" class="input-small" style="width:4ex" value="400" /> px</label>
+                <label>{% trans "Width" %}: <input type="text" id="embed-width" class="input-small" style="width:4ex" value="600" /> px</label>&nbsp;&nbsp;
+                <label>{% trans "Height" %}: <input type="text" id="embed-height" class="input-small" style="width:4ex" value="400" /> px</label>
 
-            <textarea id="iframe-code" class="span4" rows="5"><iframe src="/chart/{{ chart.id }}/preview" frameborder="0" scrolling="no" allowtransparency="true" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen width="600" height="400"></iframe></textarea>
+            <textarea id="iframe-code" class="span4" rows="5"><iframe src="/chart/{{ chart.id }}/preview" frameborder="0" scrolling="no" allowtransparency="true" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen width="{{ chart.metadata.publish['embed-width'] }}" height="{{ chart.metadata.publish['embed-height'] }}"></iframe></textarea>
 
              <h3>{% trans "Make it public" %}</h3>
              <p>{% trans "You can show some love to Datawrapper by agreeing to show your visualisation in our <a href='gallery.html'>public gallery</a>" %}. {% trans "This is absolutely optional." %}</p>
@@ -80,7 +125,7 @@ $(function() {
             {% endif %}
         </div>
         <div class="span8">
-            <iframe src="/chart/{{ chart.id }}/preview" id="iframe-vis" style="width:100%;height:500px"></iframe>
+            <iframe src="/chart/{{ chart.id }}/preview" id="iframe-vis" style="width:{{ chart.metadata.publish['embed-width'] }}px;height:{{ chart.metadata.publish['embed-height'] }}px"></iframe>
         </div>
     </div>
 
