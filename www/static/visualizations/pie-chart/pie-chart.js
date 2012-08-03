@@ -25,7 +25,6 @@
                 donut = me.isDonut(),
                 showTotal = donut && me.get('show-total'),
                 groupAfter = 5,
-
                 c = me.initCanvas({}),
                 chart_width = c.w,
                 chart_height = c.h;
@@ -63,9 +62,22 @@
 
             var series = me.chart.dataSeries(true),
                 total = 0, min = Number.MAX_VALUE, max = 0,
-                reverse;
+                reverse, oseries, others = 0;
 
-            _.each(series, function(s) {
+
+            // now group small series into one big chunk named 'others'
+            oseries = [];
+            _.each(series, function(s, i) {
+                if (i < groupAfter) oseries.push(s);
+                else others += s.data[0];
+            });
+            oseries.push(new Miso.Column({
+                name: 'others',
+                type: series[0].type,
+                data: [others]
+            }));
+
+            _.each(oseries, function(s) {
                 total += s.data[0];
                 min = Math.min(min, s.data[0]);
                 max = Math.max(max, s.data[0]);
@@ -87,7 +99,7 @@
                 return [a0, a1];
             }
 
-            _.each(series, function(s) {
+            _.each(oseries, function(s) {
 
                 var da = s.data[0] / total * Math.PI * 2,
                     fill = me.getSeriesColor(s, 0),
@@ -108,7 +120,7 @@
                 sa += reverse ? -da : da;
 
                 me.registerSeriesLabel(me.label(lx, ly, s.name+'<br />'+value, {
-                    w: 50,
+                    w: 80,
                     align: 'center',
                     valign: 'middle',
                     cl: me.chart.hasHighlight() && me.chart.isHighlighted(s) ? 'series highlighted inverse' : 'series'
