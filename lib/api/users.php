@@ -17,6 +17,11 @@ define('DW_TOKEN_SALT', 'aVyyrmc2UpoZGJ3SthaKyGrFzaV3Z37iuFU4x5oLb_aKmhopz5md62U
 
 require_once('../../lib/utils/check_email.php');
 
+function email_exists($email) {
+    $r = UserQuery::create()->findOneByEmail($d->email);
+    return isset($r);
+}
+
 /*
  * create a new user
  */
@@ -28,7 +33,7 @@ $app->post('/users', function() use ($app) {
         'password-missing' => function($d) { return trim($d->pwd) != ''; },
         'email-missing' => function($d) { return trim($d->email) != ''; },
         'email-invalid' => function($d) { return check_email($d->email); },
-        'email-already-exists' => function($d) { $r = UserQuery::create()->findOneByEmail($d->email); return !isset($r); },
+        'email-already-exists' => function($d) { return !email_exists($d->email); },
     );
 
     foreach ($checks as $code => $check) {
@@ -68,7 +73,7 @@ $app->post('/users', function() use ($app) {
 
 
 /*
- * set a new password
+ * update user profile
  * @needs admin or existing user
  */
 $app->put('/users/:id', function($user_id) use ($app) {
@@ -81,12 +86,51 @@ $app->put('/users/:id', function($user_id) use ($app) {
             $user = UserQuery::create()->findPK($user_id);
         }
         if (!empty($user)) {
-            $hash = hash_hmac('sha256', $user->getPwd(), $payload->time);
-            if ($hash === $payload->oldpwhash || $curUser->isAdmin()) {
-                $user->setPwd($payload->pwd);
-                $user->save();
-                ok();
+            $changed = array();
+            $errors = array();
+
+            if (!empty($payload->pwd)) {
+                // update password
+                $hash = hash_hmac('sha256', $user->getPwd(), $payload->time);
+                if ($hash === $payload->oldpwhash || $curUser->isAdmin()) {
+                    $user->setPwd($payload->pwd);
+                    $changed[] = 'password';
+                }
             }
+
+            if (!empty($payload->email)) {
+                if (check_email($payload->email)) {
+                    if (!email_exists($payload->email)) {
+                        $user->setEmail($payload->email);
+                        $changed[] = 'email';
+                    } else {
+                        $errors[] = 'email-already-exists';
+                    }
+                } else {
+                    $errors[] = 'email-is-invalid';
+                }
+            }
+
+            if (!empty($payload->name)) {
+                $user->setName($payload->name);
+                $changed[] = 'name';
+            }
+
+            if (!empty($payload->website)) {
+                $user->setWebsite($payload->website);
+                $changed[] = 'website';
+            }
+
+            if (!empty($payload->profile)) {
+                $user->setSmProfile($payload->profile);
+                $changed[] = 'sm_profile';
+            }
+
+            if (!empty($changed)) {
+                $user->save();
+            }
+
+            ok(array('updated' => $changed, 'errors' => $errors));
         } else {
             error('user-not-found', 'no user found with that id');
         }
