@@ -12,7 +12,7 @@ $app->get('/chart/:id/upload', function ($id) use ($app) {
             'chart' => $chart,
             'datasets' => getDemoDatasets()
         );
-        add_header_vars($page, 'create');
+        add_header_vars($page, 'chart');
         add_editor_nav($page, 1);
         $res = $app->response();
         $res['Cache-Control'] = 'max-age=0';

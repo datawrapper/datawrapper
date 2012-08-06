@@ -1,43 +1,53 @@
 {% block header %}
 
-        <div class="span9 toplinks">
+    <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container">
+                 <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </a>
 
-            <div class="pull-right">
-                <ul class="nav nav-pills dw-header-nav">
+                <a class="brand" href="/"><img src="/static/img/logo.png" /> Datawrapper</a>
 
-                {% for link in headlinks %}
+                <div class="nav-collapse">
+                    <ul class="nav dw-header-nav pull-right">
 
-                    {% if link.dropdown %}
+                    {% for link in headlinks %}
 
-                        <li class="{{ link.id }} dropdown{% if link.active %} active{% endif %}">
-                            <a id="dw-header-link-{{ link.id }}" href="{{ link.url }}" class="dropdown-toggle" data-toggle="dropdown">
-                                <i class="icon-{{ link.icon }}{% if link.active %} icon-white{% endif %}"></i>
-                                {{ link.title }}
-                                <b class="caret"></b>
-                            </a>
-                            <ul class="dropdown-menu">
-                                {% for slink in link.dropdown %}
-                                <li><a href="{{ slink.url }}">{%if slink.icon %}<i class="icon-{{ slink.icon }}"></i> {% endif %}{{ slink.title }}</a></li>
-                                {% endfor %}
-                            </ul>
-                        </li>
+                        {% if link.dropdown %}
 
-                    {% else %}
+                            <li class="{{ link.id }} dropdown{% if link.active %} active{% endif %}">
+                                <a id="dw-header-link-{{ link.id }}" href="{{ link.url }}" class="dropdown-toggle" data-toggle="dropdown">
+                                    <i class="icon-{{ link.icon }} icon-whte"></i>
+                                    {{ link.title }}
+                                    <b class="caret"></b>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    {% for slink in link.dropdown %}
+                                    <li><a href="{{ slink.url }}">{%if slink.icon %}<i class="icon-{{ slink.icon }}"></i> {% endif %}{{ slink.title }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </li>
 
-                        <li class="{{ link.id }}{% if link.active %} active{% endif %}">
-                            <a id="dw-header-link-{{ link.id }}" href="{{ link.url }}"{% if link.modal %} data-toggle="modal"{% endif %}>
-                               <i class="icon-{{ link.icon }}{% if link.active %} icon-white{% endif %}"></i>
-                               {{ link.title }}
-                            </a>
-                        </li>
+                        {% else %}
 
-                    {% endif %}
+                            <li class="{{ link.id }}{% if link.active %} active{% endif %}">
+                                <a id="dw-header-link-{{ link.id }}" href="{{ link.url }}"{% if link.modal %} data-toggle="modal"{% endif %}>
+                                  <i class="icon-{{ link.icon }} icon-whie"></i>
+                                   {{ link.title }}
+                                </a>
+                            </li>
 
-                {% endfor %}
-                </ul>
+                        {% endif %}
+
+                    {% endfor %}
+                    </ul>
+                </div>
             </div>
-
         </div>
+    </div>
 
 
 {% endblock %}
