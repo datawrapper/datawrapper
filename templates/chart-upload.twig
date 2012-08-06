@@ -76,7 +76,7 @@
 
     <div class="row">
         <div class="span7">
-            <h2>{% trans "Upload Your Data" %}</h2>
+            <h2 style="margin-bottom:10px">{% trans "Upload Your Data" %}</h2>
 
              <form class="well upload-form">
                 <textarea id="upload-data-text" placeholder="{% trans "Copy &amp; paste your data here" %}">{{ chartData }}</textarea>
@@ -90,12 +90,12 @@
         </div>
 
         <div class="span5">
-            <h3>{% trans "Help" %}</h3>
-            <p>{% trans "We want to make getting data into Datawrapper as easy as possible. If you're working in Excel or OpenOffice, just select your data (including header row/column) and paste it in the following text field." %}</p>
+            <h3>{% trans "How it works.." %}</h3>
+            <p>{% trans "We want to make getting data into Datawrapper as easy as possible. If you're working in Excel or OpenOffice, just select your data (including header row/column) and paste it in the following text field." %} <a href="/xhr/docs/upload" data-toggle="modal">{% trans "Learn more about how to upload your data" %}</a>.</p>
 
-            <p><a href="/xhr/docs/upload" data-toggle="modal">{% trans "Learn more about how to upload your data" %}</a>.</p>
+            <p></p>
 
-            <p>{% trans "If you simply want to play around with Datawrapper, you can use one of the following example datasets:" %}
+            <p>{% trans "If you simply want to play around with Datawrapper, here's a list of some example datasets:" %}
                 <ul id="demo-datasets" class="">
                     {% for dataset in datasets %}
                     <li><a href="#{{ dataset.id }}" class="demo-dataset" data-data="{{ dataset.data }}">{{ dataset.title }}</a></li>

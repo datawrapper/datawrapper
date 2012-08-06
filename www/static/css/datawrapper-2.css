@@ -149,7 +149,7 @@ body {
 
 .navbar-fixed-top .navbar-inner, .navbar-fixed-bottom .navbar-inner {
     background-image: url(../img/bg-navbar.png);
-    background: #eee;
+    background-color: #eee;
     min-height: 51px;
 }
 
@@ -561,7 +561,7 @@ dl.dl-horizontal dd {
  */
 
 #iframe-wrapper {
-    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.3);
     border: 1px solid #fff;
     padding: 10px;
     border-radius: 7px;
