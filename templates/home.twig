@@ -3,9 +3,28 @@
 {% block content %}
 
 <div class="row">
-    <div class="span12 teaser" style="height:360px;background:url(/static/img/teaser-1.png); margin-bottom:40px;position:relative;">
-        <h2 style="font-weight:300;color:#f9f9f9; background:rgba(0,0,0,.8); width:33%; position:absolute;left:0;bottom:0;margin:0; padding: 20px; margin: 0 0 30px 30px">
-            {% trans "<b class='dw-logo'>Datawrapper</b> is an open source tool helping everyone to create simple, correct and embeddable charts in minutes." %}</h2>
+    <div class="span12 teaser" style="">
+        <h2>
+            {% trans "<b class='dw-logo'>Datawrapper</b> is an open source tool helping everyone to create simple, correct and embeddable charts in minutes." %}
+
+            {% if not user.isLoggedIn %}
+                <div class="login">
+                    <div class="login-form form-inline">
+                       
+                        <input class="login-email" type="text" value="" placeholder="{% trans "email" %}" />
+                        <input class="login-pwd" type="password" value="" placeholder="{% trans "password" %}" />
+                        <a class="btn btn-primary btn-login btn-large"><i class="icon-user icon-white"></i> {% trans "Login" %}</a><br />
+                        <div style="text-align:right">or <a href="#login" class="onblack"> {% trans "sign up" %}</a> {% trans "now, for free" %}</div>
+                    </div>
+                </div>
+            {% else %}
+                <div style="margin-top:10px">
+                    <a href="/chart/create" class="btn-primary btn btn-large"><i class="icon-pencil icon-white"></i> Create a Chart</a>
+                    <a href="/mycharts" class="btn btn-large"><i class="icon-signal"></i> My Charts</a>
+                </div>
+            {% endif %}
+        </h2>
+
     </div>
 </div>
 
