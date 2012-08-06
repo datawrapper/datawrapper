@@ -10,7 +10,7 @@ $(function() {
     DW.currentChart.onChange(reload);
 
     DW.currentChart.sync('#has-horizontal-headers', 'metadata.data.horizontal-header');
-    DW.currentChart.sync('#has-vertical-headers', 'metadata.data.vertical-header');
+    // vertical header setting will be synched after data has loaded
     DW.currentChart.sync('#describe-source-name', 'metadata.describe.source-name');
     DW.currentChart.sync('#describe-source-url', 'metadata.describe.source-url');
     DW.currentChart.sync('input:radio[name=transpose]', 'metadata.data.transpose');
@@ -99,9 +99,14 @@ $(function() {
 
     }
 
-    function reload() {
-
+    function reload(f) {
         DW.currentChart.dataset(function(ds) {
+            if (f === undefined) {
+                if (DW.currentChart.get('metadata.data.vertical-header') === undefined) {
+                    DW.currentChart.set('metadata.data.vertical-header', ds._columns[1].type == 'string');
+                }
+                DW.currentChart.sync('#has-vertical-headers', 'metadata.data.vertical-header');
+            }
             DW.dataView = ds;
             updateTable(ds, DW.currentChart);
         }, true);

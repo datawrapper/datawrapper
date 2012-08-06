@@ -46,12 +46,12 @@
             this.__changeCallbacks.push(callback);
         },
 
-        sync: function(el, attribute) {
+        sync: function(el, attribute, _default) {
             if (_.isString(el)) el = $(el);
             el.data('sync-attribute', attribute);
 
             // initialize current state in UI
-            var curVal = this.get(attribute);
+            var curVal = this.get(attribute, _default);
             if (el.is('input[type=checkbox]')) {
                 if (curVal) el.attr('checked', 'checked');
                 else el.removeAttr('checked');
