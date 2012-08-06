@@ -3,17 +3,40 @@
 {% block content %}
 
 <div class="row">
-    <div clasS="span4">
-        <h2 style="font-weight:100;">
-            {% trans "<b class='dw-logo'>Datawrapper</b> is an open source tool helping everyone to create simple, correct and embeddable charts in minutes." %}</h2>
+    <div class="span12 teaser" style="">
+        <h2>
+            {% trans "<b class='dw-logo'>Datawrapper</b> is an open source tool helping everyone to create simple, correct and embeddable charts in minutes." %}
+
+            {% if not user.isLoggedIn %}
+                <div class="login">
+                    <div class="login-form form-inline">
+                       
+                        <input class="login-email" type="text" value="" placeholder="{% trans "email" %}" />
+                        <input class="login-pwd" type="password" value="" placeholder="{% trans "password" %}" />
+                        <a class="btn btn-primary btn-login btn-large"><i class="icon-user icon-white"></i> {% trans "Login" %}</a><br />
+                        <div style="text-align:right">or <a href="#login" class="onblack"> {% trans "sign up" %}</a> {% trans "now, for free" %}</div>
+                    </div>
+                </div>
+            {% else %}
+                <div style="margin-top:10px">
+                    <a href="/chart/create" class="btn-primary btn btn-large"><i class="icon-pencil icon-white"></i> Create a Chart</a>
+                    <a href="/mycharts" class="btn btn-large"><i class="icon-signal"></i> My Charts</a>
+                </div>
+            {% endif %}
+        </h2>
+
+    </div>
+</div>
+
+<div class="row">
+    <div class="span4">
+        
 
             <p>{% trans "We are bridging the gap between journalists and the newest Javascript-visualization libraries such as D3.js, Raphael and others. We make it easier to \"wrap\" the data into these libraries without coding. Datawrapper minimizes the time needed to create a chart and thus helps data journalists everywhere in the world." %}</p>
 
     </div>
     <div class="span4">
-        <img src="/static/img/chart.png" alt="" style="margin-bottom:30px;"/>
-
-        <h3>{% trans "Main features:" %}</h3>
+        <!-- <h3>{% trans "Main features:" %}</h3> -->
 
         <ul>
             <li>{% trans "Simple: Create and embed charts in minutes" %}</li>

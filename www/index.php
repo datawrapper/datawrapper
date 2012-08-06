@@ -84,7 +84,7 @@ function add_header_vars(&$page, $active = null) {
     $user = DatawrapperSession::getUser();
     $headlinks = array();
     $headlinks[] = array('url' => '/docs', 'id' => 'about', 'title' => _('About'), 'icon' => 'home');
-    $headlinks[] = array('url' => '/chart/create', 'id' => 'chart', 'title' => _('Create'), 'icon' => 'pencil');
+    $headlinks[] = array('url' => '/chart/create', 'id' => 'chart', 'title' => _('Create Chart'), 'icon' => 'pencil');
     if ($user->isLoggedIn() && $user->hasCharts()) {
         $headlinks[] = array('url' => '/mycharts', 'id' => 'mycharts', 'title' => _('My Charts'), 'icon' => 'signal');
     }
@@ -148,7 +148,7 @@ function add_editor_nav(&$page, $step) {
     $steps[] = array('index'=>1, 'id'=>'upload', 'title'=>_('Upload Data'));
     $steps[] = array('index'=>2, 'id'=>'describe', 'title'=>_('Check & Describe'));
     $steps[] = array('index'=>3, 'id'=>'visualize', 'title'=>_('Visualize'));
-    $steps[] = array('index'=>4, 'id'=>'publish', 'title'=>_('Publish'));
+    $steps[] = array('index'=>4, 'id'=>'publish', 'title'=>_('Publish & Embed'));
     $page['steps'] = $steps;
     $page['chartLocale'] = $page['locale'];
     $page['metricPrefix'] = get_metric_prefix($page['chartLocale']);
