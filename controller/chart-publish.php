@@ -16,7 +16,7 @@ $app->get('/chart/:id/publish', function ($id) use ($app) {
             'vis' => get_visualization_meta($chart->getType()),
             'themes' => get_themes_meta()
         );
-        add_header_vars($page, 'create');
+        add_header_vars($page, 'chart');
         add_editor_nav($page, 4);
         $app->render('chart-publish.twig', $page);
     });

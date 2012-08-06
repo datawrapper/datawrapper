@@ -10,7 +10,7 @@
 
     <!-- Le styles -->
     <link href="/static/vendor/bootstrap/css/bootstrap.css" rel="stylesheet">
-    <link href="/static/vendor/bootstrap/css/bootstrap-datawrapper.css" rel="stylesheet">
+   <!-- <link href="/static/vendor/bootstrap/css/bootstrap-datawrapper-2.css" rel="stylesheet">-->
     <!-- <link href="/static/vendor/fontawesome/css/font-awesome.css" rel="stylesheet"> -->
     <style>
       body {
@@ -18,7 +18,7 @@
       }
     </style>
     <link href="/static/vendor/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
-    <link href="/static/css/datawrapper.css" rel="stylesheet">
+    <link href="/static/css/datawrapper-2.css" rel="stylesheet">
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -42,14 +42,15 @@
 
   <body class="dw">
 
+
     <div class="container">
 
       <header class="header">
         <div class="row topnav">
-            <div class="span3">
+            <!--<div class="span3">
               <div class="dw-logo-type dw-logo"><i class="wrap">[&nbsp;</i><a href="/">Datawrapper</a><i class="wrap">&nbsp;]</i></div>
               <div class="dw-logo-sub">{% trans "Open Source Data Visualization" %}</div>
-            </div>
+            </div>-->
 
             {% use "login.twig" %}
             {{ block('login') }}

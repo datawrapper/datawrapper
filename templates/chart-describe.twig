@@ -123,7 +123,7 @@ $(function() {
 
         <div class="span8">
 
-            <h2>{% trans "Check your data" %}</h2>
+            <h2>{% trans "Check and Describe Your Data" %}</h2>
 
             <p>{% trans "Please check if the data format was recognized correctly. If not, please <a data-toggle='modal' href='/xhr/docs/describe'>help Datawrapper to understand your data</a>." %}</p>
 
@@ -146,22 +146,25 @@ $(function() {
             </div>
         </div>
 
-        <div class="span4">
-            <h2>{% trans "Describe your data" %}</h2>
+        <div class="span4"><div class="well">
+
+            <h3>{% trans "Describe your data" %}</h3>
             
-            <div class="row" style="margin-bottom:15px">
-                <div class="span2">
+            <div style="margin-bottom:15px;">
+                
+                <div class="half">
                     <p>
                         <label class="radio"><input type="radio" name="transpose" value="yes" /> {% trans "Data series in rows" %}</label>
                         <label class="radio"><input type="radio" name="transpose" value="no" /> {% trans "Data series in columns" %}</label>
                     </p>
 
-                </div><div class="span2">
+                </div><div class="half">
                     <p>
                         <label class="checkbox"><input id="has-horizontal-headers" type="checkbox" checked="checked"> {% trans "First row as label" %}</label>
                         <label class="checkbox"><input id="has-vertical-headers" type="checkbox"> {% trans "First column as label" %}</label>
                     </p>
                 </div>
+                <div class="clearfix"></div>
             </div>
 
             <h3>{% trans "Output number format" %}</h3>
@@ -217,11 +220,10 @@ $(function() {
             <button class="btn"><i class="icon-th-list"></i> {% trans "Annotate series" %}</button> <button class="btn"><i class="icon-th"></i> {% trans "Annotate data point" %}</button>
             -->
 
-            <div class="form-actions">
-                <a href="visualize" class="pull-right btn btn-primary" id="describe-proceed">{% trans "Visualize" %} <i class="icon-chevron-right icon-white"></i></a>
+                <a href="visualize" class="pull-right btn-large btn btn-primary" id="describe-proceed">{% trans "Visualize" %} <i class="icon-chevron-right icon-white"></i></a>
                 <a class="btn" href="upload"><i class="icon-chevron-left"></i> {% trans "Back" %}</a>
-            </div>
-        </div>
+                <div class="clearfix"></div>
+        </div></div>
     </div>
 
     <div class="row">

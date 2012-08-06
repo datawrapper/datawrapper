@@ -3,17 +3,21 @@
 {% block content %}
 
 <div class="row">
-    <div clasS="span4">
-        <h2 style="font-weight:100;">
+    <div class="span12 teaser" style="height:360px;background:url(/static/img/teaser-1.png); margin-bottom:40px;position:relative;">
+        <h2 style="font-weight:300;color:#f9f9f9; background:rgba(0,0,0,.8); width:33%; position:absolute;left:0;bottom:0;margin:0; padding: 20px; margin: 0 0 30px 30px">
             {% trans "<b class='dw-logo'>Datawrapper</b> is an open source tool helping everyone to create simple, correct and embeddable charts in minutes." %}</h2>
+    </div>
+</div>
+
+<div class="row">
+    <div class="span4">
+        
 
             <p>{% trans "We are bridging the gap between journalists and the newest Javascript-visualization libraries such as D3.js, Raphael and others. We make it easier to \"wrap\" the data into these libraries without coding. Datawrapper minimizes the time needed to create a chart and thus helps data journalists everywhere in the world." %}</p>
 
     </div>
     <div class="span4">
-        <img src="/static/img/chart.png" alt="" style="margin-bottom:30px;"/>
-
-        <h3>{% trans "Main features:" %}</h3>
+        <!-- <h3>{% trans "Main features:" %}</h3> -->
 
         <ul>
             <li>{% trans "Simple: Create and embed charts in minutes" %}</li>
