@@ -18,9 +18,12 @@
                         <input class="login-email" type="text" class="input-xxlarge span3" value="" placeholder="{% trans "email" %}" />
                         <input class="login-pwd" type="password" class="input-xxlarge span3" value="" placeholder="{% trans "password" %}" /><br />
                         <a class="btn btn-login btn-primary btn-large"><i class="icon-user icon-white"></i> {% trans "Login" %}</a>
+                        <a style="display:none" class="btn btn-send-pw btn-info btn-large"><i class="icon-envelope icon-white"></i> {% trans "Send new password" %}</a>
+
                     </div>
                      <hr />
-                     <a id="forgot-password">{% trans "Can't recall your password?" %}</a>
+                     <a id="forgot-password" href="#">{% trans "Can't recall your password?" %}</a>
+                     <a id="send-pw-cancel" style="display:none" href="#">{% trans "Return to login..." %}</a>
 
                 </div>
                 <div class="span3">
@@ -46,6 +49,31 @@
             <a href="#" class="btn" data-dismiss="modal">{% trans "Close" %}</a>
             <a href="#" class="btn btn-primary">{% trans "Save changes" %}</a>
         </div>-->
+        <script type="text/javascript">
+        $(function() {
+            $('#forgot-password').click(function(e) {
+                e.preventDefault();
+                $('.login-pwd', $(e.target).parent()).hide();
+                $('.btn-login', $(e.target).parent()).hide();
+                $('.btn-send-pw', $(e.target).parent()).fadeIn();
+                $('#forgot-password', $(e.target).parent()).hide();
+                $('#send-pw-cancel', $(e.target).parent()).fadeIn();
+            });
+
+            $('#send-pw-cancel').click(function(e) {
+                e.preventDefault();
+                $('.login-pwd', $(e.target).parent()).fadeIn();
+                $('.btn-login', $(e.target).parent()).fadeIn();
+                $('.btn-send-pw', $(e.target).parent()).hide();
+                $('#forgot-password', $(e.target).parent()).fadeIn();
+                $('#send-pw-cancel', $(e.target).parent()).hide();
+            });
+
+            $('.btn-send-pw').click(function(e) {
+
+            });
+        });
+        </script>
     </div>
 
 {% endblock %}

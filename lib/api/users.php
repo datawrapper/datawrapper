@@ -48,14 +48,14 @@ $app->post('/users', function() use ($app) {
     $user->setCreatedAt(time());
     $user->setEmail($data->email);
     $user->setPwd($data->pwd);
-    $user->setToken(hash_hmac('sha256', $data->email.'/'.$data->pwd, DW_TOKEN_SALT));
+    $user->setActivateToken(hash_hmac('sha256', $data->email.'/'.$data->pwd.time(), DW_TOKEN_SALT));
     $user->save();
     $result = $user->toArray();
 
     // send email with activation key
     $name = $data->email;
     $domain = DW_DOMAIN;
-    $activationLink = 'http://' . $domain . '/account/activate/' . $user->getToken();
+    $activationLink = 'http://' . $domain . '/account/activate/' . $user->getActivateToken();
     $from = 'activate@' . $domain;
 
     include('../../lib/templates/activation-email.php');

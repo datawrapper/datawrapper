@@ -1,12 +1,12 @@
 <?php
 
 //GET route
-$app->get('/account/activate/:token', function ($token) use ($app) {
+$app->get('/account/reset-password/:token', function ($token) use ($app) {
     $page = array();
     add_header_vars($page, 'about');
     if (!empty($token)) {
         $users = UserQuery::create()
-          ->filterByActivateToken($token)
+          ->filterByResetPasswordToken($token)
           ->find();
 
         if (count($users) != 1) {
