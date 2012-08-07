@@ -12,16 +12,16 @@ $app->get('/account/activate/:token', function ($token) use ($app) {
         if (count($users) != 1) {
             $page['alert'] = array(
                 'type' => 'error',
-                'message' => 'This activation token is invalid.'
+                'message' => 'This activation token is invalid. Your email address is probably already activated.'
             );
         } else {
             $user = $users[0];
             $user->setRole('editor');
-            $user->setToken('');
+            $user->setActivateToken('');
             $user->save();
             $page['alert'] = array(
                 'type' => 'success',
-                'message' => 'You\'re email address ' . $user->getEmail() . ' has been activated!'
+                'message' => 'Your email address ' . $user->getEmail() . ' has been successfully activated!'
             );
         }
     }

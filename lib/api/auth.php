@@ -3,21 +3,22 @@
 /* login user */
 $app->post('/auth/login', function() use($app) {
     $payload = json_decode($app->request()->getBody());
-    if (time() - $payload->time < 300) {
+    if (time() - $payload->time < 3000) {
         $user = UserQuery::create()->findOneByEmail($payload->email);
         if (!empty($user)) {
             $hash = hash_hmac('sha256', $user->getPwd(), $payload->time);
             if ($hash === $payload->pwhash) {
-                ok();
                 DatawrapperSession::login($user);
+                ok();
             } else {
-                error('login-invalid', 'Either the password is incorrect or your login has expired.');
+                Action::logAction($user, 'wrong-password', $_SERVER['REMOTE_ADDR'].' / '.$_SERVER['HTTP_X_FORWARDED_FOR'].' / '.$_SERVER['HTTP_CLIENT_IP']);
+                error('login-invalid', _('The password is incorrect.'));
             }
         } else {
-            error('login-email-unknown', 'The email is not registered yet.');
+            error('login-email-unknown', _('The email is not registered yet.'));
         }
     } else {
-        error('login-expired', 'Your session is expired, please reload the page and try again.');
+        error('login-expired', _('Your session is expired, please reload the page and try again.'));
     }
 });
 
@@ -27,7 +28,9 @@ $app->get('/auth/salt', function() use ($app) {
     ok(array('salt' => $salt, 'time' => time()));
 });
 
-/* logout */
+/*
+ *logs out the current user
+ */
 $app->post('/auth/logout', function() {
     $user = DatawrapperSession::getUser();
     if ($user->isLoggedIn()) {
@@ -35,5 +38,71 @@ $app->post('/auth/logout', function() {
         ok();
     } else {
         error('not-loggin-in', 'you cannot logout if you\'re not logged in');
+    }
+});
+
+
+/*
+ * endpoint for sending a new password to a user
+ *
+ * expects payload { "email": "validemail@domain.tld" }
+ */
+$app->post('/account/reset-password', function() use($app) {
+    $payload = json_decode($app->request()->getBody());
+    $user = UserQuery::create()->findOneByEmail($payload->email);
+    if (!empty($user)) {
+
+        $curToken = $user->getResetPasswordToken();
+        if (!empty($curToken)) {
+            error('password-already-reset', _('The password reset email has already been sent. Please contact an <a href="mailto:hello@datawrapper.de">administrator</a>.'));
+            return;
+        }
+
+        if ($user->getRole() == 'pending') {
+            error('account-not-activated', _('You haven\'t activated this email address yet, so we cannot safely send emails to it. Please contact an <a href="mailto:hello@datawrapper.de">administrator</a>.'));
+            return;
+        }
+
+        $token = hash_hmac('sha256', $user->getEmail().'/'.$user->getPwd().'/'.microtime(), DW_TOKEN_SALT);
+        Action::logAction($user, 'reset-password', $token);
+
+        $user->setResetPasswordToken($token);
+        $user->save();
+
+        $name = $user->getEmail();
+        $passwordResetLink = 'http://' . $domain . '/account/reset-password/' . $token;
+        $from = 'password-reset@' . $domain;
+        include('../../lib/templates/password-reset-email.php');
+        mail($user->getEmail(), 'Datawrapper Password Reset', $password_reset_mail, 'From: ' . $from);
+        ok(_('You should soon receive an email with further instructions.'));
+
+    } else {
+        error('login-email-unknown', _('The email is not registered yet.'));
+    }
+});
+
+
+/*
+ * endpoint for re-sending the activation link to a user
+ */
+$app->post('/account/resend-activation', function() use($app) {
+    $user = DatawrapperSession::getUser();
+    $token = $user->getActivateToken();
+    if (!empty($token)) {
+        // check how often the activation email has been send
+        Action::logAction($user, 'resend-activation', $token);
+
+        // send email with activation key
+        $name = $user->getEmail();
+        $domain = DW_DOMAIN;
+        $activationLink = 'http://' . $domain . '/account/activate/' . $token;
+        $from = 'activate@' . $domain;
+
+        include('../../lib/templates/activation-email.php');
+
+        mail($user->getEmail(), 'Datawrapper Email Activation', $activation_mail, 'From: ' . $from);
+
+    } else {
+        error('token-empty');
     }
 });
