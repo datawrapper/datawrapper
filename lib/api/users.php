@@ -18,7 +18,7 @@ define('DW_TOKEN_SALT', 'aVyyrmc2UpoZGJ3SthaKyGrFzaV3Z37iuFU4x5oLb_aKmhopz5md62U
 require_once('../../lib/utils/check_email.php');
 
 function email_exists($email) {
-    $r = UserQuery::create()->findOneByEmail($d->email);
+    $r = UserQuery::create()->findOneByEmail($email);
     return isset($r);
 }
 

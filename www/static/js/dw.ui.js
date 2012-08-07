@@ -129,7 +129,13 @@
                      pwhash: hash,
                      time: lgBtn.data('time')
                   };
-                $('.alert', loginForm).remove();
+
+                if (pwd === '') {
+                    $('.login-pwd', loginForm).parent().addClass('error');
+                    return false;
+                }
+
+                $('.control-group', loginForm).removeClass('error');
 
                 $.ajax({
                     url: '/api/auth/login',
@@ -142,6 +148,11 @@
                             $('input', loginForm).val('');
                             DW.refreshHeader();
                         } else {
+                            if (data.code == 'login-invalid') {
+                                $('.login-pwd', loginForm).parent().addClass('error');
+                            } else if (data.code == 'login-email-unknown') {
+                                $('.login-email', loginForm).parent().addClass('error');
+                            }
                             DW.logError(data.message, loginForm);
                         }
                     }
@@ -174,6 +185,7 @@
 
         logMessage: function(msg, parent, type) {
             if (_.isString(parent)) parent = $(parent);
+            $('.alert', parent).remove();
             if (type === undefined) type = 'success';
             var alert = $('<div class="alert alert-'+type+'" />');
             alert.append('<a class="close" data-dismiss="alert" href="#">&times;</a>');

@@ -106,8 +106,10 @@
                 <p><em>{% trans "Having trouble with the account activation?" %}</em></p>
 
                 <ul class="options">
-                    <li><i class="icon-chevron-right"></i> {{ "Maybe the email has been catched by your email providers spam filter. Please check the spam folder for the last activation email we sent on %DATE%." | trans | replace({'%DATE%': activation_email_date }) }}</li>
+                    <li><i class="icon-chevron-right"></i> {{ "Maybe the email has been catched by your email providers spam filter. Please check the spam folder for the last activation email we sent on <strong>%DATE%</strong>." | trans | replace({'%DATE%': activation_email_date }) | raw }}</li>
+
                     <li><i class="icon-chevron-right"></i> <a class="btn" href="#" id="resend-activation-link">{% trans "Re-send activation link" %}</a></li>
+
                     <li><i class="icon-chevron-right"></i> {{ "Or, <a href='mailto:%ADMINMAIL%'>contact us</a> to find other ways to activate your account." | trans | replace({'%ADMINMAIL%': ADMIN_EMAIL }) | raw }}</li>
                 </ul>
 
@@ -140,6 +142,11 @@ $(function() {
             dataType: 'json',
             success: function(res) {
                 console.log(res);
+                if (res.status == 'ok') {
+                    DW.logMessage(res.data, $(e.target).parent());
+                } else {
+                    DW.logError(res.message, $(e.target).parent());
+                }
             }
         });
     });
