@@ -19,16 +19,22 @@
                     </div>
                 </div>
                 <div class="control-group">
-                    <label class="control-label" for="pwd">{% trans "Password" %}</label>
+                    <label class="control-label" for="pwd">{% trans "Current Password" %}</label>
                     <div class="controls">
                         <input type="text" class="input-xlarge" id="pwd">
                     </div>
                 </div>
                 <div class="control-group">
-                    <label class="control-label" for="pwd2">{% trans "Password (repeat)" %}</label>
+                    <label class="control-label" for="pwd">{% trans "New Password" %}</label>
+                    <div class="controls">
+                        <input type="text" class="input-xlarge" id="pwd">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="pwd2">{% trans "New Password (repeat)" %}</label>
                     <div class="controls">
                         <input type="text" class="input-xlarge" id="pwd2">
-                        <p class="help-block">{% trans "Just leave the password fields blank if you don't want to change your password." %}</p>
+                        <p class="help-block">{% trans "If you don't feel like changing your password, just leave the password fields blank for now." %}</p>
                     </div>
                 </div>
 
@@ -97,7 +103,7 @@
 
                 <ul>
                     <li>Check your spam folder.</li>
-                    <li><a href="">Re-send activation link</a></li>
+                    <li><a href="#" id="resend-activation-link">Re-send activation link</a></li>
                     <li><a href="">Contact us</a> to find other ways to activate your account</li>
                 </ul>
 
@@ -119,6 +125,15 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
+
+$(function() {
+    $('#resend-activation-link').click(function(e) {
+        e.preventDefault();
+    });
+})
+
+</script>
 
 {{ parent() }}
 {% endblock %}
