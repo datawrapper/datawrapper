@@ -1,10 +1,12 @@
 <?php
 
+$locale = str_replace('-', '_', DatawrapperSession::getLanguage());
+$domain = 'messages';
+putenv('LC_ALL=' . $locale);
+setlocale(LC_ALL, $locale);
+
+
 if (function_exists('bindtextdomain')) {
-    $locale = str_replace('-', '_', DatawrapperSession::getLanguage());
-    $domain = 'messages';
-    putenv('LC_ALL=' . $locale);
-    setlocale(LC_ALL, $locale);
     bindtextdomain($domain, '../locale');
     bind_textdomain_codeset($domain, 'UTF-8');
     textdomain($domain);
