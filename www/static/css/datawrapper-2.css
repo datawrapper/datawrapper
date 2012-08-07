@@ -155,7 +155,7 @@ body {
 
 .navbar .brand {
     padding-top: 13px;
-    color: #888;
+    color: #556;
 }
 
 .navbar .nav > li > a {
@@ -663,17 +663,17 @@ dl.dl-horizontal dd {
     margin-bottom: 1em;
 }
 
-.error .options {
+ul.options {
     position: relative;
 }
 
-.error .options li {
+ul.options li {
     list-style: none;
     margin-bottom: 1em;
     position: relative;
 }
 
-.error .options li i:first-child {
+ul.options li i:first-child {
     position: absolute;
     left: -20px;
     top: 2px;
