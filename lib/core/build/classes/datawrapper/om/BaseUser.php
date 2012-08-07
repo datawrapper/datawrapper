@@ -104,6 +104,11 @@ abstract class BaseUser extends BaseObject  implements Persistent
 	protected $collCharts;
 
 	/**
+	 * @var        array Action[] Collection to store aggregation of Action objects.
+	 */
+	protected $collActions;
+
+	/**
 	 * Flag to prevent endless save loop, if this object is referenced
 	 * by another object which falls in this transaction.
 	 * @var        boolean
@@ -122,6 +127,12 @@ abstract class BaseUser extends BaseObject  implements Persistent
 	 * @var		array
 	 */
 	protected $chartsScheduledForDeletion = null;
+
+	/**
+	 * An array of objects scheduled for deletion.
+	 * @var		array
+	 */
+	protected $actionsScheduledForDeletion = null;
 
 	/**
 	 * Applies default values to this object.
@@ -639,6 +650,8 @@ abstract class BaseUser extends BaseObject  implements Persistent
 
 			$this->collCharts = null;
 
+			$this->collActions = null;
+
 		} // if (deep)
 	}
 
@@ -771,6 +784,23 @@ abstract class BaseUser extends BaseObject  implements Persistent
 
 			if ($this->collCharts !== null) {
 				foreach ($this->collCharts as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
+			if ($this->actionsScheduledForDeletion !== null) {
+				if (!$this->actionsScheduledForDeletion->isEmpty()) {
+					ActionQuery::create()
+						->filterByPrimaryKeys($this->actionsScheduledForDeletion->getPrimaryKeys(false))
+						->delete($con);
+					$this->actionsScheduledForDeletion = null;
+				}
+			}
+
+			if ($this->collActions !== null) {
+				foreach ($this->collActions as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
 						$affectedRows += $referrerFK->save($con);
 					}
@@ -984,6 +1014,14 @@ abstract class BaseUser extends BaseObject  implements Persistent
 					}
 				}
 
+				if ($this->collActions !== null) {
+					foreach ($this->collActions as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
 
 			$this->alreadyInValidation = false;
 		}
@@ -1094,6 +1132,9 @@ abstract class BaseUser extends BaseObject  implements Persistent
 		if ($includeForeignObjects) {
 			if (null !== $this->collCharts) {
 				$result['Charts'] = $this->collCharts->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+			}
+			if (null !== $this->collActions) {
+				$result['Actions'] = $this->collActions->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
 			}
 		}
 		return $result;
@@ -1306,6 +1347,12 @@ abstract class BaseUser extends BaseObject  implements Persistent
 				}
 			}
 
+			foreach ($this->getActions() as $relObj) {
+				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+					$copyObj->addAction($relObj->copy($deepCopy));
+				}
+			}
+
 			//unflag object copy
 			$this->startCopy = false;
 		} // if ($deepCopy)
@@ -1367,6 +1414,9 @@ abstract class BaseUser extends BaseObject  implements Persistent
 	{
 		if ('Chart' == $relationName) {
 			return $this->initCharts();
+		}
+		if ('Action' == $relationName) {
+			return $this->initActions();
 		}
 	}
 
@@ -1519,6 +1569,154 @@ abstract class BaseUser extends BaseObject  implements Persistent
 	}
 
 	/**
+	 * Clears out the collActions collection
+	 *
+	 * This does not modify the database; however, it will remove any associated objects, causing
+	 * them to be refetched by subsequent calls to accessor method.
+	 *
+	 * @return     void
+	 * @see        addActions()
+	 */
+	public function clearActions()
+	{
+		$this->collActions = null; // important to set this to NULL since that means it is uninitialized
+	}
+
+	/**
+	 * Initializes the collActions collection.
+	 *
+	 * By default this just sets the collActions collection to an empty array (like clearcollActions());
+	 * however, you may wish to override this method in your stub class to provide setting appropriate
+	 * to your application -- for example, setting the initial array to the values stored in database.
+	 *
+	 * @param      boolean $overrideExisting If set to true, the method call initializes
+	 *                                        the collection even if it is not empty
+	 *
+	 * @return     void
+	 */
+	public function initActions($overrideExisting = true)
+	{
+		if (null !== $this->collActions && !$overrideExisting) {
+			return;
+		}
+		$this->collActions = new PropelObjectCollection();
+		$this->collActions->setModel('Action');
+	}
+
+	/**
+	 * Gets an array of Action objects which contain a foreign key that references this object.
+	 *
+	 * If the $criteria is not null, it is used to always fetch the results from the database.
+	 * Otherwise the results are fetched from the database the first time, then cached.
+	 * Next time the same method is called without $criteria, the cached collection is returned.
+	 * If this User is new, it will return
+	 * an empty collection or the current collection; the criteria is ignored on a new object.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @return     PropelCollection|array Action[] List of Action objects
+	 * @throws     PropelException
+	 */
+	public function getActions($criteria = null, PropelPDO $con = null)
+	{
+		if(null === $this->collActions || null !== $criteria) {
+			if ($this->isNew() && null === $this->collActions) {
+				// return empty collection
+				$this->initActions();
+			} else {
+				$collActions = ActionQuery::create(null, $criteria)
+					->filterByUser($this)
+					->find($con);
+				if (null !== $criteria) {
+					return $collActions;
+				}
+				$this->collActions = $collActions;
+			}
+		}
+		return $this->collActions;
+	}
+
+	/**
+	 * Sets a collection of Action objects related by a one-to-many relationship
+	 * to the current object.
+	 * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+	 * and new objects from the given Propel collection.
+	 *
+	 * @param      PropelCollection $actions A Propel collection.
+	 * @param      PropelPDO $con Optional connection object
+	 */
+	public function setActions(PropelCollection $actions, PropelPDO $con = null)
+	{
+		$this->actionsScheduledForDeletion = $this->getActions(new Criteria(), $con)->diff($actions);
+
+		foreach ($actions as $action) {
+			// Fix issue with collection modified by reference
+			if ($action->isNew()) {
+				$action->setUser($this);
+			}
+			$this->addAction($action);
+		}
+
+		$this->collActions = $actions;
+	}
+
+	/**
+	 * Returns the number of related Action objects.
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct
+	 * @param      PropelPDO $con
+	 * @return     int Count of related Action objects.
+	 * @throws     PropelException
+	 */
+	public function countActions(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+	{
+		if(null === $this->collActions || null !== $criteria) {
+			if ($this->isNew() && null === $this->collActions) {
+				return 0;
+			} else {
+				$query = ActionQuery::create(null, $criteria);
+				if($distinct) {
+					$query->distinct();
+				}
+				return $query
+					->filterByUser($this)
+					->count($con);
+			}
+		} else {
+			return count($this->collActions);
+		}
+	}
+
+	/**
+	 * Method called to associate a Action object to this object
+	 * through the Action foreign key attribute.
+	 *
+	 * @param      Action $l Action
+	 * @return     User The current object (for fluent API support)
+	 */
+	public function addAction(Action $l)
+	{
+		if ($this->collActions === null) {
+			$this->initActions();
+		}
+		if (!$this->collActions->contains($l)) { // only add it if the **same** object is not already associated
+			$this->doAddAction($l);
+		}
+
+		return $this;
+	}
+
+	/**
+	 * @param	Action $action The action object to add.
+	 */
+	protected function doAddAction($action)
+	{
+		$this->collActions[]= $action;
+		$action->setUser($this);
+	}
+
+	/**
 	 * Clears the current object and sets all attributes to their default values
 	 */
 	public function clear()
@@ -1560,12 +1758,21 @@ abstract class BaseUser extends BaseObject  implements Persistent
 					$o->clearAllReferences($deep);
 				}
 			}
+			if ($this->collActions) {
+				foreach ($this->collActions as $o) {
+					$o->clearAllReferences($deep);
+				}
+			}
 		} // if ($deep)
 
 		if ($this->collCharts instanceof PropelCollection) {
 			$this->collCharts->clearIterator();
 		}
 		$this->collCharts = null;
+		if ($this->collActions instanceof PropelCollection) {
+			$this->collActions->clearIterator();
+		}
+		$this->collActions = null;
 	}
 
 	/**

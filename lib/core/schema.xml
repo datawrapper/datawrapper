@@ -35,4 +35,16 @@
     <column name="website" type="varchar" required="false" size="512" />
     <column name="sm_profile" type="varchar" required="false" size="512" />
   </table>
+
+  <!-- store security relevant user actions in this table -->
+  <table name="action" phpName="Action">
+    <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+    <column name="user_id" type="integer" required="true"/>
+    <foreign-key foreignTable="user">
+      <reference local="user_id" foreign="id"/>
+    </foreign-key>
+    <column name="action_time" type="timestamp" required="true" />
+    <column name="key" type="varchar" size="100" required="true" />
+    <column name="details" type="varchar" size="512" required="false" />
+  </table>
 </database>

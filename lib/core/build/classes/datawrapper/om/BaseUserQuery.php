@@ -38,6 +38,10 @@
  * @method     UserQuery rightJoinChart($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Chart relation
  * @method     UserQuery innerJoinChart($relationAlias = null) Adds a INNER JOIN clause to the query using the Chart relation
  *
+ * @method     UserQuery leftJoinAction($relationAlias = null) Adds a LEFT JOIN clause to the query using the Action relation
+ * @method     UserQuery rightJoinAction($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Action relation
+ * @method     UserQuery innerJoinAction($relationAlias = null) Adds a INNER JOIN clause to the query using the Action relation
+ *
  * @method     User findOne(PropelPDO $con = null) Return the first User matching the query
  * @method     User findOneOrCreate(PropelPDO $con = null) Return the first User matching the query, or a new User object populated from the query conditions when no match is found
  *
@@ -632,6 +636,79 @@ abstract class BaseUserQuery extends ModelCriteria
 		return $this
 			->joinChart($relationAlias, $joinType)
 			->useQuery($relationAlias ? $relationAlias : 'Chart', 'ChartQuery');
+	}
+
+	/**
+	 * Filter the query by a related Action object
+	 *
+	 * @param     Action $action  the related object to use as filter
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    UserQuery The current query, for fluid interface
+	 */
+	public function filterByAction($action, $comparison = null)
+	{
+		if ($action instanceof Action) {
+			return $this
+				->addUsingAlias(UserPeer::ID, $action->getUserId(), $comparison);
+		} elseif ($action instanceof PropelCollection) {
+			return $this
+				->useActionQuery()
+				->filterByPrimaryKeys($action->getPrimaryKeys())
+				->endUse();
+		} else {
+			throw new PropelException('filterByAction() only accepts arguments of type Action or PropelCollection');
+		}
+	}
+
+	/**
+	 * Adds a JOIN clause to the query using the Action relation
+	 *
+	 * @param     string $relationAlias optional alias for the relation
+	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+	 *
+	 * @return    UserQuery The current query, for fluid interface
+	 */
+	public function joinAction($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+	{
+		$tableMap = $this->getTableMap();
+		$relationMap = $tableMap->getRelation('Action');
+
+		// create a ModelJoin object for this join
+		$join = new ModelJoin();
+		$join->setJoinType($joinType);
+		$join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+		if ($previousJoin = $this->getPreviousJoin()) {
+			$join->setPreviousJoin($previousJoin);
+		}
+
+		// add the ModelJoin to the current object
+		if($relationAlias) {
+			$this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+			$this->addJoinObject($join, $relationAlias);
+		} else {
+			$this->addJoinObject($join, 'Action');
+		}
+
+		return $this;
+	}
+
+	/**
+	 * Use the Action relation Action object
+	 *
+	 * @see       useQuery()
+	 *
+	 * @param     string $relationAlias optional alias for the relation,
+	 *                                   to be used as main alias in the secondary query
+	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+	 *
+	 * @return    ActionQuery A secondary query class using the current class as primary query
+	 */
+	public function useActionQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+	{
+		return $this
+			->joinAction($relationAlias, $joinType)
+			->useQuery($relationAlias ? $relationAlias : 'Action', 'ActionQuery');
 	}
 
 	/**

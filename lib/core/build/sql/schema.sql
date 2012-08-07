@@ -54,5 +54,25 @@ CREATE TABLE `user`
 	PRIMARY KEY (`id`)
 ) ENGINE=MyISAM;
 
+-- ---------------------------------------------------------------------
+-- action
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `action`;
+
+CREATE TABLE `action`
+(
+	`id` INTEGER NOT NULL AUTO_INCREMENT,
+	`user_id` INTEGER NOT NULL,
+	`action_time` DATETIME NOT NULL,
+	`key` VARCHAR(100) NOT NULL,
+	`details` VARCHAR(512),
+	PRIMARY KEY (`id`),
+	INDEX `action_FI_1` (`user_id`),
+	CONSTRAINT `action_FK_1`
+		FOREIGN KEY (`user_id`)
+		REFERENCES `user` (`id`)
+) ENGINE=MyISAM;
+
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;
