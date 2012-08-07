@@ -70,7 +70,18 @@
             });
 
             $('.btn-send-pw').click(function(e) {
-
+                $.ajax({
+                    url: '/api/auth/reset-password',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    dataType: 'application/json',
+                    data: JSON.stringify({
+                        email: $('.login-email').value()
+                    }),
+                    success: function(res) {
+                        console.log(res);
+                    }
+                })
             });
         });
         </script>
