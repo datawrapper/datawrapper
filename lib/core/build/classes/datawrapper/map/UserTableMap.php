@@ -41,7 +41,8 @@ class UserTableMap extends TableMap
 		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
 		$this->addColumn('EMAIL', 'Email', 'VARCHAR', true, 512, null);
 		$this->addColumn('PWD', 'Pwd', 'VARCHAR', true, 512, null);
-		$this->addColumn('TOKEN', 'Token', 'VARCHAR', true, 512, null);
+		$this->addColumn('ACTIVATE_TOKEN', 'ActivateToken', 'VARCHAR', false, 512, null);
+		$this->addColumn('RESET_PASSWORD_TOKEN', 'ResetPasswordToken', 'VARCHAR', false, 512, null);
 		$this->addColumn('ROLE', 'Role', 'ENUM', true, null, 'pending');
 		$this->getColumn('ROLE', false)->setValueSet(array (
   0 => 'admin',

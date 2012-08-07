@@ -49,10 +49,16 @@ abstract class BaseUser extends BaseObject  implements Persistent
 	protected $pwd;
 
 	/**
-	 * The value for the token field.
+	 * The value for the activate_token field.
 	 * @var        string
 	 */
-	protected $token;
+	protected $activate_token;
+
+	/**
+	 * The value for the reset_password_token field.
+	 * @var        string
+	 */
+	protected $reset_password_token;
 
 	/**
 	 * The value for the role field.
@@ -170,13 +176,23 @@ abstract class BaseUser extends BaseObject  implements Persistent
 	}
 
 	/**
-	 * Get the [token] column value.
+	 * Get the [activate_token] column value.
 	 * 
 	 * @return     string
 	 */
-	public function getToken()
+	public function getActivateToken()
 	{
-		return $this->token;
+		return $this->activate_token;
+	}
+
+	/**
+	 * Get the [reset_password_token] column value.
+	 * 
+	 * @return     string
+	 */
+	public function getResetPasswordToken()
+	{
+		return $this->reset_password_token;
 	}
 
 	/**
@@ -335,24 +351,44 @@ abstract class BaseUser extends BaseObject  implements Persistent
 	} // setPwd()
 
 	/**
-	 * Set the value of [token] column.
+	 * Set the value of [activate_token] column.
 	 * 
 	 * @param      string $v new value
 	 * @return     User The current object (for fluent API support)
 	 */
-	public function setToken($v)
+	public function setActivateToken($v)
 	{
 		if ($v !== null) {
 			$v = (string) $v;
 		}
 
-		if ($this->token !== $v) {
-			$this->token = $v;
-			$this->modifiedColumns[] = UserPeer::TOKEN;
+		if ($this->activate_token !== $v) {
+			$this->activate_token = $v;
+			$this->modifiedColumns[] = UserPeer::ACTIVATE_TOKEN;
 		}
 
 		return $this;
-	} // setToken()
+	} // setActivateToken()
+
+	/**
+	 * Set the value of [reset_password_token] column.
+	 * 
+	 * @param      string $v new value
+	 * @return     User The current object (for fluent API support)
+	 */
+	public function setResetPasswordToken($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->reset_password_token !== $v) {
+			$this->reset_password_token = $v;
+			$this->modifiedColumns[] = UserPeer::RESET_PASSWORD_TOKEN;
+		}
+
+		return $this;
+	} // setResetPasswordToken()
 
 	/**
 	 * Set the value of [role] column.
@@ -523,13 +559,14 @@ abstract class BaseUser extends BaseObject  implements Persistent
 			$this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
 			$this->email = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
 			$this->pwd = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
-			$this->token = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
-			$this->role = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
-			$this->language = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-			$this->created_at = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
-			$this->name = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
-			$this->website = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
-			$this->sm_profile = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
+			$this->activate_token = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+			$this->reset_password_token = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+			$this->role = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
+			$this->language = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+			$this->created_at = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
+			$this->name = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
+			$this->website = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
+			$this->sm_profile = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -538,7 +575,7 @@ abstract class BaseUser extends BaseObject  implements Persistent
 				$this->ensureConsistency();
 			}
 
-			return $startcol + 10; // 10 = UserPeer::NUM_HYDRATE_COLUMNS.
+			return $startcol + 11; // 11 = UserPeer::NUM_HYDRATE_COLUMNS.
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating User object", $e);
@@ -774,8 +811,11 @@ abstract class BaseUser extends BaseObject  implements Persistent
 		if ($this->isColumnModified(UserPeer::PWD)) {
 			$modifiedColumns[':p' . $index++]  = '`PWD`';
 		}
-		if ($this->isColumnModified(UserPeer::TOKEN)) {
-			$modifiedColumns[':p' . $index++]  = '`TOKEN`';
+		if ($this->isColumnModified(UserPeer::ACTIVATE_TOKEN)) {
+			$modifiedColumns[':p' . $index++]  = '`ACTIVATE_TOKEN`';
+		}
+		if ($this->isColumnModified(UserPeer::RESET_PASSWORD_TOKEN)) {
+			$modifiedColumns[':p' . $index++]  = '`RESET_PASSWORD_TOKEN`';
 		}
 		if ($this->isColumnModified(UserPeer::ROLE)) {
 			$modifiedColumns[':p' . $index++]  = '`ROLE`';
@@ -815,8 +855,11 @@ abstract class BaseUser extends BaseObject  implements Persistent
 					case '`PWD`':
 						$stmt->bindValue($identifier, $this->pwd, PDO::PARAM_STR);
 						break;
-					case '`TOKEN`':
-						$stmt->bindValue($identifier, $this->token, PDO::PARAM_STR);
+					case '`ACTIVATE_TOKEN`':
+						$stmt->bindValue($identifier, $this->activate_token, PDO::PARAM_STR);
+						break;
+					case '`RESET_PASSWORD_TOKEN`':
+						$stmt->bindValue($identifier, $this->reset_password_token, PDO::PARAM_STR);
 						break;
 					case '`ROLE`':
 						$stmt->bindValue($identifier, $this->role, PDO::PARAM_INT);
@@ -984,24 +1027,27 @@ abstract class BaseUser extends BaseObject  implements Persistent
 				return $this->getPwd();
 				break;
 			case 3:
-				return $this->getToken();
+				return $this->getActivateToken();
 				break;
 			case 4:
-				return $this->getRole();
+				return $this->getResetPasswordToken();
 				break;
 			case 5:
-				return $this->getLanguage();
+				return $this->getRole();
 				break;
 			case 6:
-				return $this->getCreatedAt();
+				return $this->getLanguage();
 				break;
 			case 7:
-				return $this->getName();
+				return $this->getCreatedAt();
 				break;
 			case 8:
-				return $this->getWebsite();
+				return $this->getName();
 				break;
 			case 9:
+				return $this->getWebsite();
+				break;
+			case 10:
 				return $this->getSmProfile();
 				break;
 			default:
@@ -1036,13 +1082,14 @@ abstract class BaseUser extends BaseObject  implements Persistent
 			$keys[0] => $this->getId(),
 			$keys[1] => $this->getEmail(),
 			$keys[2] => $this->getPwd(),
-			$keys[3] => $this->getToken(),
-			$keys[4] => $this->getRole(),
-			$keys[5] => $this->getLanguage(),
-			$keys[6] => $this->getCreatedAt(),
-			$keys[7] => $this->getName(),
-			$keys[8] => $this->getWebsite(),
-			$keys[9] => $this->getSmProfile(),
+			$keys[3] => $this->getActivateToken(),
+			$keys[4] => $this->getResetPasswordToken(),
+			$keys[5] => $this->getRole(),
+			$keys[6] => $this->getLanguage(),
+			$keys[7] => $this->getCreatedAt(),
+			$keys[8] => $this->getName(),
+			$keys[9] => $this->getWebsite(),
+			$keys[10] => $this->getSmProfile(),
 		);
 		if ($includeForeignObjects) {
 			if (null !== $this->collCharts) {
@@ -1089,28 +1136,31 @@ abstract class BaseUser extends BaseObject  implements Persistent
 				$this->setPwd($value);
 				break;
 			case 3:
-				$this->setToken($value);
+				$this->setActivateToken($value);
 				break;
 			case 4:
+				$this->setResetPasswordToken($value);
+				break;
+			case 5:
 				$valueSet = UserPeer::getValueSet(UserPeer::ROLE);
 				if (isset($valueSet[$value])) {
 					$value = $valueSet[$value];
 				}
 				$this->setRole($value);
 				break;
-			case 5:
+			case 6:
 				$this->setLanguage($value);
 				break;
-			case 6:
+			case 7:
 				$this->setCreatedAt($value);
 				break;
-			case 7:
+			case 8:
 				$this->setName($value);
 				break;
-			case 8:
+			case 9:
 				$this->setWebsite($value);
 				break;
-			case 9:
+			case 10:
 				$this->setSmProfile($value);
 				break;
 		} // switch()
@@ -1140,13 +1190,14 @@ abstract class BaseUser extends BaseObject  implements Persistent
 		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
 		if (array_key_exists($keys[1], $arr)) $this->setEmail($arr[$keys[1]]);
 		if (array_key_exists($keys[2], $arr)) $this->setPwd($arr[$keys[2]]);
-		if (array_key_exists($keys[3], $arr)) $this->setToken($arr[$keys[3]]);
-		if (array_key_exists($keys[4], $arr)) $this->setRole($arr[$keys[4]]);
-		if (array_key_exists($keys[5], $arr)) $this->setLanguage($arr[$keys[5]]);
-		if (array_key_exists($keys[6], $arr)) $this->setCreatedAt($arr[$keys[6]]);
-		if (array_key_exists($keys[7], $arr)) $this->setName($arr[$keys[7]]);
-		if (array_key_exists($keys[8], $arr)) $this->setWebsite($arr[$keys[8]]);
-		if (array_key_exists($keys[9], $arr)) $this->setSmProfile($arr[$keys[9]]);
+		if (array_key_exists($keys[3], $arr)) $this->setActivateToken($arr[$keys[3]]);
+		if (array_key_exists($keys[4], $arr)) $this->setResetPasswordToken($arr[$keys[4]]);
+		if (array_key_exists($keys[5], $arr)) $this->setRole($arr[$keys[5]]);
+		if (array_key_exists($keys[6], $arr)) $this->setLanguage($arr[$keys[6]]);
+		if (array_key_exists($keys[7], $arr)) $this->setCreatedAt($arr[$keys[7]]);
+		if (array_key_exists($keys[8], $arr)) $this->setName($arr[$keys[8]]);
+		if (array_key_exists($keys[9], $arr)) $this->setWebsite($arr[$keys[9]]);
+		if (array_key_exists($keys[10], $arr)) $this->setSmProfile($arr[$keys[10]]);
 	}
 
 	/**
@@ -1161,7 +1212,8 @@ abstract class BaseUser extends BaseObject  implements Persistent
 		if ($this->isColumnModified(UserPeer::ID)) $criteria->add(UserPeer::ID, $this->id);
 		if ($this->isColumnModified(UserPeer::EMAIL)) $criteria->add(UserPeer::EMAIL, $this->email);
 		if ($this->isColumnModified(UserPeer::PWD)) $criteria->add(UserPeer::PWD, $this->pwd);
-		if ($this->isColumnModified(UserPeer::TOKEN)) $criteria->add(UserPeer::TOKEN, $this->token);
+		if ($this->isColumnModified(UserPeer::ACTIVATE_TOKEN)) $criteria->add(UserPeer::ACTIVATE_TOKEN, $this->activate_token);
+		if ($this->isColumnModified(UserPeer::RESET_PASSWORD_TOKEN)) $criteria->add(UserPeer::RESET_PASSWORD_TOKEN, $this->reset_password_token);
 		if ($this->isColumnModified(UserPeer::ROLE)) $criteria->add(UserPeer::ROLE, $this->role);
 		if ($this->isColumnModified(UserPeer::LANGUAGE)) $criteria->add(UserPeer::LANGUAGE, $this->language);
 		if ($this->isColumnModified(UserPeer::CREATED_AT)) $criteria->add(UserPeer::CREATED_AT, $this->created_at);
@@ -1232,7 +1284,8 @@ abstract class BaseUser extends BaseObject  implements Persistent
 	{
 		$copyObj->setEmail($this->getEmail());
 		$copyObj->setPwd($this->getPwd());
-		$copyObj->setToken($this->getToken());
+		$copyObj->setActivateToken($this->getActivateToken());
+		$copyObj->setResetPasswordToken($this->getResetPasswordToken());
 		$copyObj->setRole($this->getRole());
 		$copyObj->setLanguage($this->getLanguage());
 		$copyObj->setCreatedAt($this->getCreatedAt());
@@ -1473,7 +1526,8 @@ abstract class BaseUser extends BaseObject  implements Persistent
 		$this->id = null;
 		$this->email = null;
 		$this->pwd = null;
-		$this->token = null;
+		$this->activate_token = null;
+		$this->reset_password_token = null;
 		$this->role = null;
 		$this->language = null;
 		$this->created_at = null;

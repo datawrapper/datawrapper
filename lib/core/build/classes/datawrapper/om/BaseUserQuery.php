@@ -9,7 +9,8 @@
  * @method     UserQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     UserQuery orderByEmail($order = Criteria::ASC) Order by the email column
  * @method     UserQuery orderByPwd($order = Criteria::ASC) Order by the pwd column
- * @method     UserQuery orderByToken($order = Criteria::ASC) Order by the token column
+ * @method     UserQuery orderByActivateToken($order = Criteria::ASC) Order by the activate_token column
+ * @method     UserQuery orderByResetPasswordToken($order = Criteria::ASC) Order by the reset_password_token column
  * @method     UserQuery orderByRole($order = Criteria::ASC) Order by the role column
  * @method     UserQuery orderByLanguage($order = Criteria::ASC) Order by the language column
  * @method     UserQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
@@ -20,7 +21,8 @@
  * @method     UserQuery groupById() Group by the id column
  * @method     UserQuery groupByEmail() Group by the email column
  * @method     UserQuery groupByPwd() Group by the pwd column
- * @method     UserQuery groupByToken() Group by the token column
+ * @method     UserQuery groupByActivateToken() Group by the activate_token column
+ * @method     UserQuery groupByResetPasswordToken() Group by the reset_password_token column
  * @method     UserQuery groupByRole() Group by the role column
  * @method     UserQuery groupByLanguage() Group by the language column
  * @method     UserQuery groupByCreatedAt() Group by the created_at column
@@ -42,7 +44,8 @@
  * @method     User findOneById(int $id) Return the first User filtered by the id column
  * @method     User findOneByEmail(string $email) Return the first User filtered by the email column
  * @method     User findOneByPwd(string $pwd) Return the first User filtered by the pwd column
- * @method     User findOneByToken(string $token) Return the first User filtered by the token column
+ * @method     User findOneByActivateToken(string $activate_token) Return the first User filtered by the activate_token column
+ * @method     User findOneByResetPasswordToken(string $reset_password_token) Return the first User filtered by the reset_password_token column
  * @method     User findOneByRole(int $role) Return the first User filtered by the role column
  * @method     User findOneByLanguage(string $language) Return the first User filtered by the language column
  * @method     User findOneByCreatedAt(string $created_at) Return the first User filtered by the created_at column
@@ -53,7 +56,8 @@
  * @method     array findById(int $id) Return User objects filtered by the id column
  * @method     array findByEmail(string $email) Return User objects filtered by the email column
  * @method     array findByPwd(string $pwd) Return User objects filtered by the pwd column
- * @method     array findByToken(string $token) Return User objects filtered by the token column
+ * @method     array findByActivateToken(string $activate_token) Return User objects filtered by the activate_token column
+ * @method     array findByResetPasswordToken(string $reset_password_token) Return User objects filtered by the reset_password_token column
  * @method     array findByRole(int $role) Return User objects filtered by the role column
  * @method     array findByLanguage(string $language) Return User objects filtered by the language column
  * @method     array findByCreatedAt(string $created_at) Return User objects filtered by the created_at column
@@ -148,7 +152,7 @@ abstract class BaseUserQuery extends ModelCriteria
 	 */
 	protected function findPkSimple($key, $con)
 	{
-		$sql = 'SELECT `ID`, `EMAIL`, `PWD`, `TOKEN`, `ROLE`, `LANGUAGE`, `CREATED_AT`, `NAME`, `WEBSITE`, `SM_PROFILE` FROM `user` WHERE `ID` = :p0';
+		$sql = 'SELECT `ID`, `EMAIL`, `PWD`, `ACTIVATE_TOKEN`, `RESET_PASSWORD_TOKEN`, `ROLE`, `LANGUAGE`, `CREATED_AT`, `NAME`, `WEBSITE`, `SM_PROFILE` FROM `user` WHERE `ID` = :p0';
 		try {
 			$stmt = $con->prepare($sql);
 			$stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -316,31 +320,59 @@ abstract class BaseUserQuery extends ModelCriteria
 	}
 
 	/**
-	 * Filter the query on the token column
+	 * Filter the query on the activate_token column
 	 *
 	 * Example usage:
 	 * <code>
-	 * $query->filterByToken('fooValue');   // WHERE token = 'fooValue'
-	 * $query->filterByToken('%fooValue%'); // WHERE token LIKE '%fooValue%'
+	 * $query->filterByActivateToken('fooValue');   // WHERE activate_token = 'fooValue'
+	 * $query->filterByActivateToken('%fooValue%'); // WHERE activate_token LIKE '%fooValue%'
 	 * </code>
 	 *
-	 * @param     string $token The value to use as filter.
+	 * @param     string $activateToken The value to use as filter.
 	 *              Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    UserQuery The current query, for fluid interface
 	 */
-	public function filterByToken($token = null, $comparison = null)
+	public function filterByActivateToken($activateToken = null, $comparison = null)
 	{
 		if (null === $comparison) {
-			if (is_array($token)) {
+			if (is_array($activateToken)) {
 				$comparison = Criteria::IN;
-			} elseif (preg_match('/[\%\*]/', $token)) {
-				$token = str_replace('*', '%', $token);
+			} elseif (preg_match('/[\%\*]/', $activateToken)) {
+				$activateToken = str_replace('*', '%', $activateToken);
 				$comparison = Criteria::LIKE;
 			}
 		}
-		return $this->addUsingAlias(UserPeer::TOKEN, $token, $comparison);
+		return $this->addUsingAlias(UserPeer::ACTIVATE_TOKEN, $activateToken, $comparison);
+	}
+
+	/**
+	 * Filter the query on the reset_password_token column
+	 *
+	 * Example usage:
+	 * <code>
+	 * $query->filterByResetPasswordToken('fooValue');   // WHERE reset_password_token = 'fooValue'
+	 * $query->filterByResetPasswordToken('%fooValue%'); // WHERE reset_password_token LIKE '%fooValue%'
+	 * </code>
+	 *
+	 * @param     string $resetPasswordToken The value to use as filter.
+	 *              Accepts wildcards (* and % trigger a LIKE)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    UserQuery The current query, for fluid interface
+	 */
+	public function filterByResetPasswordToken($resetPasswordToken = null, $comparison = null)
+	{
+		if (null === $comparison) {
+			if (is_array($resetPasswordToken)) {
+				$comparison = Criteria::IN;
+			} elseif (preg_match('/[\%\*]/', $resetPasswordToken)) {
+				$resetPasswordToken = str_replace('*', '%', $resetPasswordToken);
+				$comparison = Criteria::LIKE;
+			}
+		}
+		return $this->addUsingAlias(UserPeer::RESET_PASSWORD_TOKEN, $resetPasswordToken, $comparison);
 	}
 
 	/**

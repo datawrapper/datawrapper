@@ -23,13 +23,13 @@ abstract class BaseUserPeer {
 	const TM_CLASS = 'UserTableMap';
 
 	/** The total number of columns. */
-	const NUM_COLUMNS = 10;
+	const NUM_COLUMNS = 11;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
 
 	/** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-	const NUM_HYDRATE_COLUMNS = 10;
+	const NUM_HYDRATE_COLUMNS = 11;
 
 	/** the column name for the ID field */
 	const ID = 'user.ID';
@@ -40,8 +40,11 @@ abstract class BaseUserPeer {
 	/** the column name for the PWD field */
 	const PWD = 'user.PWD';
 
-	/** the column name for the TOKEN field */
-	const TOKEN = 'user.TOKEN';
+	/** the column name for the ACTIVATE_TOKEN field */
+	const ACTIVATE_TOKEN = 'user.ACTIVATE_TOKEN';
+
+	/** the column name for the RESET_PASSWORD_TOKEN field */
+	const RESET_PASSWORD_TOKEN = 'user.RESET_PASSWORD_TOKEN';
 
 	/** the column name for the ROLE field */
 	const ROLE = 'user.ROLE';
@@ -86,12 +89,12 @@ abstract class BaseUserPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	protected static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'Email', 'Pwd', 'Token', 'Role', 'Language', 'CreatedAt', 'Name', 'Website', 'SmProfile', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'email', 'pwd', 'token', 'role', 'language', 'createdAt', 'name', 'website', 'smProfile', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, self::EMAIL, self::PWD, self::TOKEN, self::ROLE, self::LANGUAGE, self::CREATED_AT, self::NAME, self::WEBSITE, self::SM_PROFILE, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'EMAIL', 'PWD', 'TOKEN', 'ROLE', 'LANGUAGE', 'CREATED_AT', 'NAME', 'WEBSITE', 'SM_PROFILE', ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'email', 'pwd', 'token', 'role', 'language', 'created_at', 'name', 'website', 'sm_profile', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'Email', 'Pwd', 'ActivateToken', 'ResetPasswordToken', 'Role', 'Language', 'CreatedAt', 'Name', 'Website', 'SmProfile', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'email', 'pwd', 'activateToken', 'resetPasswordToken', 'role', 'language', 'createdAt', 'name', 'website', 'smProfile', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::EMAIL, self::PWD, self::ACTIVATE_TOKEN, self::RESET_PASSWORD_TOKEN, self::ROLE, self::LANGUAGE, self::CREATED_AT, self::NAME, self::WEBSITE, self::SM_PROFILE, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'EMAIL', 'PWD', 'ACTIVATE_TOKEN', 'RESET_PASSWORD_TOKEN', 'ROLE', 'LANGUAGE', 'CREATED_AT', 'NAME', 'WEBSITE', 'SM_PROFILE', ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'email', 'pwd', 'activate_token', 'reset_password_token', 'role', 'language', 'created_at', 'name', 'website', 'sm_profile', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, )
 	);
 
 	/**
@@ -101,12 +104,12 @@ abstract class BaseUserPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	protected static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Email' => 1, 'Pwd' => 2, 'Token' => 3, 'Role' => 4, 'Language' => 5, 'CreatedAt' => 6, 'Name' => 7, 'Website' => 8, 'SmProfile' => 9, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'email' => 1, 'pwd' => 2, 'token' => 3, 'role' => 4, 'language' => 5, 'createdAt' => 6, 'name' => 7, 'website' => 8, 'smProfile' => 9, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::EMAIL => 1, self::PWD => 2, self::TOKEN => 3, self::ROLE => 4, self::LANGUAGE => 5, self::CREATED_AT => 6, self::NAME => 7, self::WEBSITE => 8, self::SM_PROFILE => 9, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'EMAIL' => 1, 'PWD' => 2, 'TOKEN' => 3, 'ROLE' => 4, 'LANGUAGE' => 5, 'CREATED_AT' => 6, 'NAME' => 7, 'WEBSITE' => 8, 'SM_PROFILE' => 9, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'email' => 1, 'pwd' => 2, 'token' => 3, 'role' => 4, 'language' => 5, 'created_at' => 6, 'name' => 7, 'website' => 8, 'sm_profile' => 9, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Email' => 1, 'Pwd' => 2, 'ActivateToken' => 3, 'ResetPasswordToken' => 4, 'Role' => 5, 'Language' => 6, 'CreatedAt' => 7, 'Name' => 8, 'Website' => 9, 'SmProfile' => 10, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'email' => 1, 'pwd' => 2, 'activateToken' => 3, 'resetPasswordToken' => 4, 'role' => 5, 'language' => 6, 'createdAt' => 7, 'name' => 8, 'website' => 9, 'smProfile' => 10, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::EMAIL => 1, self::PWD => 2, self::ACTIVATE_TOKEN => 3, self::RESET_PASSWORD_TOKEN => 4, self::ROLE => 5, self::LANGUAGE => 6, self::CREATED_AT => 7, self::NAME => 8, self::WEBSITE => 9, self::SM_PROFILE => 10, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'EMAIL' => 1, 'PWD' => 2, 'ACTIVATE_TOKEN' => 3, 'RESET_PASSWORD_TOKEN' => 4, 'ROLE' => 5, 'LANGUAGE' => 6, 'CREATED_AT' => 7, 'NAME' => 8, 'WEBSITE' => 9, 'SM_PROFILE' => 10, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'email' => 1, 'pwd' => 2, 'activate_token' => 3, 'reset_password_token' => 4, 'role' => 5, 'language' => 6, 'created_at' => 7, 'name' => 8, 'website' => 9, 'sm_profile' => 10, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, )
 	);
 
 	/** The enumerated values for this table */
@@ -210,7 +213,8 @@ abstract class BaseUserPeer {
 			$criteria->addSelectColumn(UserPeer::ID);
 			$criteria->addSelectColumn(UserPeer::EMAIL);
 			$criteria->addSelectColumn(UserPeer::PWD);
-			$criteria->addSelectColumn(UserPeer::TOKEN);
+			$criteria->addSelectColumn(UserPeer::ACTIVATE_TOKEN);
+			$criteria->addSelectColumn(UserPeer::RESET_PASSWORD_TOKEN);
 			$criteria->addSelectColumn(UserPeer::ROLE);
 			$criteria->addSelectColumn(UserPeer::LANGUAGE);
 			$criteria->addSelectColumn(UserPeer::CREATED_AT);
@@ -221,7 +225,8 @@ abstract class BaseUserPeer {
 			$criteria->addSelectColumn($alias . '.ID');
 			$criteria->addSelectColumn($alias . '.EMAIL');
 			$criteria->addSelectColumn($alias . '.PWD');
-			$criteria->addSelectColumn($alias . '.TOKEN');
+			$criteria->addSelectColumn($alias . '.ACTIVATE_TOKEN');
+			$criteria->addSelectColumn($alias . '.RESET_PASSWORD_TOKEN');
 			$criteria->addSelectColumn($alias . '.ROLE');
 			$criteria->addSelectColumn($alias . '.LANGUAGE');
 			$criteria->addSelectColumn($alias . '.CREATED_AT');
