@@ -1,5 +1,12 @@
 <?php
 
+function get_user_ips() {
+    $ips = array('remote_addr' => $_SERVER['REMOTE_ADDR']);
+    if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) $ips['x_forwared_for'] = $_SERVER['HTTP_X_FORWARDED_FOR'];
+    if (isset($_SERVER['HTTP_CLIENT_IP'])) $ips['client_ip'] = $_SERVER['HTTP_CLIENT_IP'];
+    return $ips;
+}
+
 /* login user */
 $app->post('/auth/login', function() use($app) {
     $payload = json_decode($app->request()->getBody());
@@ -11,7 +18,7 @@ $app->post('/auth/login', function() use($app) {
                 DatawrapperSession::login($user);
                 ok();
             } else {
-                Action::logAction($user, 'wrong-password', $_SERVER['REMOTE_ADDR'].' / '.$_SERVER['HTTP_X_FORWARDED_FOR'].' / '.$_SERVER['HTTP_CLIENT_IP']);
+                Action::logAction($user, 'wrong-password', json_encode(get_user_ips()));
                 error('login-invalid', _('The password is incorrect.'));
             }
         } else {
@@ -70,8 +77,8 @@ $app->post('/account/reset-password', function() use($app) {
         $user->save();
 
         $name = $user->getEmail();
-        $passwordResetLink = 'http://' . $domain . '/account/reset-password/' . $token;
-        $from = 'password-reset@' . $domain;
+        $passwordResetLink = 'http://' . DW_DOMAIN . '/account/reset-password/' . $token;
+        $from = 'password-reset@' . DW_DOMAIN;
         include('../../lib/templates/password-reset-email.php');
         mail($user->getEmail(), 'Datawrapper Password Reset', $password_reset_mail, 'From: ' . $from);
         ok(_('You should soon receive an email with further instructions.'));
@@ -90,6 +97,17 @@ $app->post('/account/resend-activation', function() use($app) {
     $token = $user->getActivateToken();
     if (!empty($token)) {
         // check how often the activation email has been send
+        // we don't want to send it too often in order to prevent
+        // mail spam coming from our server
+        $r = ActionQuery::create()->filterByUser($user)
+            ->filterByKey('resend-activation')
+            ->find();
+        if (count($r) > 2) {
+            error('avoid-spam', str_replace('%ADMINEMAIL%', ADMIN_EMAIL, _('You already resent the activation mail three times, now. Please <a href="mailto:%ADMINEMAIL%">contact an administrator</a> to proceed with your account activation.')));
+            return false;
+        }
+
+        // remember that we send the email
         Action::logAction($user, 'resend-activation', $token);
 
         // send email with activation key
@@ -102,7 +120,9 @@ $app->post('/account/resend-activation', function() use($app) {
 
         mail($user->getEmail(), 'Datawrapper Email Activation', $activation_mail, 'From: ' . $from);
 
+        ok(_('The activation email has been send to your email address, again.'));
+
     } else {
-        error('token-empty');
+        error('token-empty', _('You\'re account is probably already activated.'));
     }
 });
