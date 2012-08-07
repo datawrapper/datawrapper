@@ -14,6 +14,9 @@ $app->get('/account/reset-password/:token', function ($token) use ($app) {
                 'type' => 'error',
                 'message' => 'This activation token is invalid.'
             );
+
+            error_invalid_password_reset_token();
+
         } else {
             $user = $users[0];
             $user->setRole('editor');
@@ -23,8 +26,10 @@ $app->get('/account/reset-password/:token', function ($token) use ($app) {
                 'type' => 'success',
                 'message' => 'You\'re email address ' . $user->getEmail() . ' has been activated!'
             );
+
+            $app->render('account-reset-password.twig', $page);
         }
     }
-    $app->render('home.twig', $page);
+    
 });
 
