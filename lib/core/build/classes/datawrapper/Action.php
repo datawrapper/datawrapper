@@ -15,4 +15,13 @@
  */
 class Action extends BaseAction {
 
+    public static function logAction($user, $key, $details = null) {
+        $action = new Action();
+        $action->setUser($user);
+        $action->setKey($key);
+        if (!empty($details)) $action->setDetails($details);
+        $action->setActionTime(time());
+        $action->save();
+    }
+
 } // Action
