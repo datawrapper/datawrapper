@@ -105,6 +105,7 @@ class DatawrapperSession {
     public static function login($user) {
         $_SESSION['dw-user-id'] = $user->getId();
         self::getInstance()->user = $user;
+        Action::logAction($user, 'login');
 
         // make sure that the charts of the guest now belong to
         // the logged or newly created user
@@ -117,6 +118,7 @@ class DatawrapperSession {
     }
 
     public static function logout() {
+        Action::logAction(self::getInstance()->user, 'logout');
         $_SESSION['dw-user-id'] = null;
         self::getInstance()->initUser();
         setcookie('dw-session');
