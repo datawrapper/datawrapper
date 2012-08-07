@@ -2,17 +2,32 @@
 
 {% block content %}
 
-    <div class="row">
+    <div class="row docs error">
 
         <div class="span8">
-            <div class="page-header">
-                <h2>{{ title }}</h2>
-            </div>
-            <p>{{ message|raw }}</p>
 
-            <h3>{% trans "What should I do now?" %}</h3>
+            <h1 class="title">{{ title }}</h1>
 
-            <p>{% trans "Create a new chart or look in your charts" %}</p>
+            <p class="big">
+
+                {{ message|raw }}
+
+            </p>
+
+            {% if options %}
+            <h2>{% trans "So, what can I do now?" %}</h2>
+
+            <ul class="options">
+                {% for o in options %}
+                    <li><i class="icon-chevron-right"></i> {{ o | raw }}</li>
+                {% endfor %}
+            </ul>
+
+            {% else %}
+
+            <p>{% trans "Resturn to the Datawrapper <a href='/'>homepage</a>." %}</p>
+
+            {% endif %}
 
         </div>
     </div>

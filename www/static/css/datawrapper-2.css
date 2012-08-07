@@ -656,6 +656,29 @@ dl.dl-horizontal dd {
     margin: 1.5em 0 0.5em;
 }
 
+.error .big {
+    font-size: 20px;
+    line-height: 30px;
+    color: #B94A48;
+    margin-bottom: 1em;
+}
+
+.error .options {
+    position: relative;
+}
+
+.error .options li {
+    list-style: none;
+    margin-bottom: 1em;
+    position: relative;
+}
+
+.error .options li i:first-child {
+    position: absolute;
+    left: -20px;
+    top: 2px;
+}
+
 .section {
     margin-bottom: 20px;
 }

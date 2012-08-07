@@ -3,42 +3,50 @@
 /**
  *
  */
-function error_page($step, $title, $message) {
+function error_page($step, $title, $message, $options = false) {
     global $app;
     $tmpl = array(
         'title' => $title,
-        'message' => $message
+        'message' => $message,
+        'options' => $options,
+
     );
-    add_header_vars($tmpl);
+    add_header_vars($tmpl, $step);
     $app->render('error.twig', $tmpl);
 }
 
 function error_chart_not_published() {
-    error_page('create',
+    error_page('chart',
         _('Hold on!'),
         _('Sorry, but it seems that the chart you want to see is not quite ready for the world, yet. Why don\'t you just relax and wait a minute?')
     );
 }
 
 function error_not_allowed_to_publish() {
-    error_page('create',
+    error_page('chart',
         _('Whoops! You\'re not allowed to publish charts, yet'),
-        _('Sorry, but it seems that your account is not ready to publish charts, yet. If you created the chart as a guest, you should <a href="#login">sign up for a free account</a> now. In case you already did that, you probably still need to activate you e-mail address by clicking on that activation link we sent you.')
+        _('Sorry, but it seems that your account is not ready to publish charts, yet.'),
+        array(
+            _('If you created the chart as a guest, you should <a href="#login">sign up for a free account</a> now. In case you already did that, you probably still need to activate you e-mail address by clicking on that activation link we sent you.')
+        )
     );
 }
 
 
 function error_chart_not_found($id) {
-    error_page('create',
+    error_page('chart',
         _('Whoops! We couldn\'t find that chart..'),
         _('Sorry, but it seems that there is no chart with the id <b>'.$id.'</b> (anymore)')
     );
 }
 
 function error_chart_not_writable() {
-    error_page('create',
+    error_page('chart',
         _('Whoops! That charts doesn\'t belong to you'),
-        _('Sorry, but the requested chart belongs to someone else.')
+        _('Sorry, but the requested chart belongs to someone else.'),
+        array(
+            _('Please check if you\'re logged in.')
+        )
     );
 }
 
@@ -49,3 +57,13 @@ function error_mycharts_need_login() {
     );
 }
 
+function error_invalid_password_reset_token() {
+    error_page('user',
+        _('Something went horribly wrong'),
+        _('The password reset link you entered is invalid.'),
+        array(
+            _('Re-check the link you received in our email. Make sure you copied the full link and try again.'),
+            _('Contact someone of our friendly <a href="mailto:hello@datawrapper.de">administrators</a> and ask for help with the password reset process.')
+        )
+    );
+}
