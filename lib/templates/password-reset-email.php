@@ -12,7 +12,7 @@ Someone, probably you, filed a request to reset your password.
 
 If that's true, please click the following link to reset your password.
 
-$password_reset_link
+$passwordResetLink
 
 If you ignore this email, your password stays the same as before.
 
