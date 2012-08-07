@@ -15,7 +15,7 @@ $app->get('/account/settings', function () use ($app) {
         if (empty($t)) {
             $t = $user->getCreatedAt('U');
         } else {
-            $t1 = $t->getActionTime('U');
+            $t = $t->getActionTime('U');
         }
         $page['activation_email_date'] = strftime('%x', $t);
     }
