@@ -9,7 +9,7 @@ function nbChartsByMonth($user) {
     $rs = $con->query($sql);
     $res = array();
     foreach ($rs as $r) {
-        $res[] = array('count' => $r['c'], 'id' => $r['ym'], 'name' => $r['ym']);
+        $res[] = array('count' => $r['c'], 'id' => $r['ym'], 'name' => strftime('%B %Y', strtotime($r['ym'].'-01')));
     }
     return $res;
 }
@@ -22,7 +22,9 @@ function nbChartsByType($user) {
 
     foreach ($rs as $r) {
         $vis = get_visualization_meta($r['type']);
-        $res[] = array('count' => $r['c'], 'id' => $r['type'], 'name' => $vis['title'][substr(DatawrapperSession::getLanguage(), 0, 2)]);
+        $lang = substr(DatawrapperSession::getLanguage(), 0, 2);
+        if (empty($vis['title'][$lang])) $lang = 'en';
+        $res[] = array('count' => $r['c'], 'id' => $r['type'], 'name' => $vis['title'][$lang]);
     }
     return $res;
 }

@@ -1,9 +1,12 @@
 {% extends "core.twig" %}
 
 {% block content %}
-
+<div class="docs">
+    <h1 class="title">{% trans "My Charts" %}</h1>
+</div>
 <div class="row">
     <div class="span9 mycharts">
+
         {% if user.hasCharts %}
         <ul class="thumbnails">
             {% for chart in charts %}
@@ -42,8 +45,8 @@
 
         {% endif %}
     </div>
-    <div class="span3 mycharts-filter">
-        <h3>{% trans "By Month" %}</h3>
+    <div class="span3 mycharts-filter" style="position:relative;left: 30px">
+        <h2>{% trans "By Month" %}</h2>
 
         <ul class="unstyled">
             {% for month in bymonth %}
@@ -51,7 +54,7 @@
             {% endfor %}
         </ul>
 
-        <h3>{% trans "By Visualisation" %}</h3>
+        <h2>{% trans "By Visualisation" %}</h2>
 
         <ul class="unstyled">
             {% for vis in byvis %}
@@ -59,7 +62,7 @@
             {% endfor %}
         </ul>
 
-        <h3>{% trans "By Layout" %}</h3>
+        <h2>{% trans "By Layout" %}</h2>
 
         <ul class="unstyled">
             {% for layout in bylayout %}
