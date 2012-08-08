@@ -76,7 +76,6 @@ function ok($data = null) {
 
 require_once '../../lib/api/users.php';
 require_once '../../lib/api/auth.php';
-require_once '../../lib/api/session.php';
 require_once '../../lib/api/charts.php';
 require_once '../../lib/api/visualizations.php';
 

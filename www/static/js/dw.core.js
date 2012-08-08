@@ -35,7 +35,7 @@
             $('a[href|=#lang]').click(function(evt) {
                 evt.preventDefault();
                 $.ajax({
-                    url: '/api/session/lang',
+                    url: '/api/account/lang',
                     type: 'PUT',
                     data: JSON.stringify({ lang: $(evt.target).attr('href').substr(6) }),
                     processData: false,

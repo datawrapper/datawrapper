@@ -1,5 +1,24 @@
 <?php
 
+/* get session info */
+$app->get('/account', function() {
+    try {
+        $r = DatawrapperSession::toArray();
+        ok($r);
+    } catch (Exception $e) {
+        error('exception', $e->getMessage());
+    }
+});
+
+/* set a new language */
+$app->put('/account/lang', function() use ($app) {
+    $data = json_decode($app->request()->getBody());
+    DatawrapperSession::setLanguage( $data->lang );
+    ok();
+});
+
+
+
 function get_user_ips() {
     $ips = array('remote_addr' => $_SERVER['REMOTE_ADDR']);
     if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) $ips['x_forwared_for'] = $_SERVER['HTTP_X_FORWARDED_FOR'];
