@@ -36,12 +36,6 @@ $app->post('/charts', function() {
 });
 
 
-
-/* return a list of all charts by the logged user */
-$app->get('/charts', function() {
-    ok(time());
-});
-
 /*
  * returns the metadata for all charts that are allowed
  * to show in the gallery
