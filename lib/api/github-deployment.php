@@ -29,8 +29,9 @@ $app->post('/github', function() use ($app) {
 
                 mail(ADMIN_LOG_EMAIL, 'Datawrapper has been updated', $body, $headers);
 
-                $cmd = '/bin/sh ' . dirname(dirname(__FILE__)) . '/scripts/deploy.sh';
+                $cmd = dirname(dirname(dirname(__FILE__))) . '/scripts/deploy.sh';
                 exec($cmd);
+                exit;
             }
         } else {
             error('untrusted-origin', 'This does not appear to be a valid requests from Github.');
