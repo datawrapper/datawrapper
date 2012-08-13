@@ -24,4 +24,3 @@ $app->post('/github', function() use ($app) {
         error('untrusted-origin', 'This does not appear to be a valid requests from Github.');
     }
 });
-
