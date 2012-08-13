@@ -136,6 +136,11 @@ h3 label.radio {
 h3 {
     margin-bottom: 1em;
 }
+
+.well h3 {
+    margin-bottom: 0.4em;
+}
+
 .page-header h3 {
     margin-bottom: 0;
 }
