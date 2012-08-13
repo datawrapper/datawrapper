@@ -11,6 +11,8 @@ $app->get('/chart/:id', function ($id) use ($app) {
     check_chart_public($id, function($user, $chart) use ($app) {
         $page = get_chart_content($chart, $user);
         $page['padding'] = $app->request()->params('padding');
+        $res = $app->response();
+        $res['Cache-Control'] = 'max-age=0';
         $app->render('chart.twig', $page);
     });
 });
