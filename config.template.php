@@ -10,5 +10,6 @@ define('ADMIN_LOG_EMAIL', 'admin@datawrapper.de');
 
 // will be used to verify deploy-requests
 define('GITHUB_REPO_URL', 'http://github.com/datawrapper/datawrapper');
+define('GITHUB_REPO_BRANCH', 'master');
 
 // for database config see lib/core/build/conf/datawrapper-conf.php
