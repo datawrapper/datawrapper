@@ -29,7 +29,7 @@ $app->post('/github', function() use ($app) {
 
                 mail(ADMIN_LOG_EMAIL, 'Datawrapper has been updated', $body, $headers);
 
-                $cmd = dirname(dirname(__FILE__)).'/scripts/deploy.sh';
+                $cmd = '/bin/sh ' . dirname(dirname(__FILE__)) . '/scripts/deploy.sh';
                 exec($cmd);
             }
         } else {
