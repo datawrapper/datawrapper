@@ -5,7 +5,7 @@
  */
 $app->post('/github', function() use ($app) {
     $from = 'update-notify@' . DW_DOMAIN;
-    $body = 'REMOTE_ADDR: '.$_SERVER['REMOTE_ADDR'].'\n\n'.$app->request()->getBody();
+    $body = "REMOTE_ADDR: " . $_SERVER['REMOTE_ADDR'] . "\n\n" . json_encode(json_decode($app->request()->getBody()));
     mail(ADMIN_LOG_EMAIL, 'Datawrapper has been updated!', $body, 'From: ' . $from);
 
     // handles push requests by github
