@@ -1,14 +1,14 @@
 # Datawrapper JSON API
 
-This API is mainly used by the Datawrapper front-end.
+This API is mainly used by the Datawrapper web front-end, and could be used to develop Datawrapper front-ends for other platforms (Desktop, Mobile).
 
 ## Charts
 
 ### GET /charts/
-Get a list of all charts by the logged user. See **/charts/:id** for sample output.
+Get a list of all charts by the logged user. See **/charts/:id** for sample output of each chart.
 
 ### GET /charts/:id
-Get the chart info for a specific chart.
+Get the configuration of a specific chart.
 
 Sample result:
 
@@ -50,6 +50,8 @@ Sample result:
 
 ### PUT /charts/:id
 Update the chart info for a specific chart.
+
+Expects the same
 
 ### PUT /charts/:id/data
 Upload new data for a specific chart. Uses the request body directly.
@@ -118,15 +120,21 @@ Expects:
 
 ### POST /account/resend-activation
 
-Re-sends the email with the activation link.
+Re-sends the email with the activation link. Requires a valid session.
 
 ## Users
 
 ### GET /users
-Get a list of all registered users. Needs admin rights.
+Get a list of all registered users. Requires a valid session with admin rights.
 
 ### POST /users
 Create a new user (sign in).
+
+Expects:
+
+```
+
+```
 
 ### PUT /users/:id
 Updates the profile information of a specific user.
