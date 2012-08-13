@@ -24,4 +24,3 @@ $app->post('/github', function() use ($app) {
     }
 });
 
-    
