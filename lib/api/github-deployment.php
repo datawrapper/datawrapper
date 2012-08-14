@@ -9,7 +9,7 @@ $app->post('/github', function() use ($app) {
 
         $payload = json_decode($app->request()->post('payload'));
 
-        $headers = 'From: update-notify@' . DW_DOMAIN . "\r\n";
+        $headers = 'From: Datawrapper Bot <update-notify@' . DW_DOMAIN . ">\r\n";
         $headers .= 'CC: ' . $payload->pusher->email . "\r\n";
         $headers .= "MIME-Version: 1.0\r\n";
         $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
@@ -31,7 +31,7 @@ $app->post('/github', function() use ($app) {
                 $body .= '<ul>';
                 foreach ($payload->commits as $commit) {
                     $body .= '<li>'.$commit->message.'<br />';
-                    $body .= '<small>added: <b>'.count($commit->added).'</b> +++ modified: <b>'.count($commit->modified).'</b> +++ removed: <b>'.count($commit->removed).'</b> +++ <a href="' . $commit->url . '">read more</a></small></li>';
+                    $body .= '<small style="color:#999">added: <b>'.count($commit->added).'</b> &nbsp; modified: <b>'.count($commit->modified).'</b> &nbsp; removed: <b>'.count($commit->removed).'</b> &nbsp; <a href="' . $commit->url . '">read more</a></small></li>';
                 }
                 $body .= '</ul>';
                 $body .= '<p>Cheers, <br/>The friendly Datawrapper bot</p>';
