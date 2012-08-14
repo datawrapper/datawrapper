@@ -194,6 +194,8 @@
 <script type="text/javascript">
 
 $(function() {
+
+
     $('#resend-activation-link').click(function(e) {
         e.preventDefault();
         $.ajax({
@@ -238,35 +240,6 @@ $(function() {
          });
     });
 
-    function checkPwd(curPwd, pwd, pwd2) {
-        var msg, errFields;
-        if (curPwd == '') {
-            errFields = '#cur-pwd';
-            msg = '{% trans "For security reasons, please provide your current password." %}';
-        }
-        else if (pwd.length < 4) {
-            errFields = '#pwd';
-            msg = '{% trans "Your password doesn\\\'t meet our security guidelines. Please provide at least 4 characters" %}';
-        }
-        else if (pwd != pwd2) {
-            errFields = '#pwd,#pwd2';
-            msg = '{% trans "The password and the repeated password must not differ." %}';
-        }
-        if (msg) {
-            DW.logError(
-                msg, $(errFields.split(',')[0]).parents('.control-group')
-            );
-            $(errFields).parents('.control-group').addClass('error');
-            return false;
-        }
-        return true;
-    }
-
-    function clearAlerts() {
-        $('.settings .alert').remove();
-        $('.settings .error').removeClass('error');
-    }
-
     // change password
     $('#change-password').click(function(e) {
         var submit = $(e.target),
@@ -276,9 +249,9 @@ $(function() {
             pwd2 = $.trim($('#pwd2').val()),
             check;
 
-        clearAlerts()
+        DW.clearAlerts()
 
-        check = checkPwd(curPwd, pwd, pwd2);
+        check = DW.checkPassword(curPwd, pwd, pwd2);
         if (check === true) {
             // at first we req
             submit.addClass('loading');

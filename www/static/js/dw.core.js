@@ -11,7 +11,7 @@
     if (typeof exports !== 'undefined') {
         Datawrapper = exports;
     } else {
-        Datawrapper = root.Datawrapper = {};
+        Datawrapper = root.Datawrapper = { };
     }
 
     // Current version of the library
@@ -22,7 +22,6 @@
     // ----------------
 
     var Core = Datawrapper.Core = function() {
-
     };
 
     _.extend(Core, {

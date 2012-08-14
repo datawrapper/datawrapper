@@ -116,6 +116,17 @@ body {
 
 }
 
+@media (max-width: 979px) {
+    body .docs h1.title {
+        font-size: 36px;
+        margin-bottom: 10px;
+    }
+
+    body .docs h2 {
+        font-size: 21px;
+    }
+}
+
 @media (min-width: 1200px) {
     .teaser {
         background: url(/static/img/teaser-1.png) 0 0;
@@ -696,6 +707,8 @@ form.well form {
 
 .mysettings .row h2 {
     font-weight: normal;
+    line-height: 1.2;
+    margin-bottom: 0.2em;
 }
 .mysettings .row .span3 > p {
     color: #999;

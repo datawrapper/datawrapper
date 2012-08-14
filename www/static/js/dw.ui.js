@@ -27,11 +27,42 @@
                     tgt = $(a.data('target'));
                 tgt.modal();
             });
+
+            this.Errors = {};
         },
 
         checkPasswordStrength: function(pwd) {
             //return $.trim(pwd).length > 7;
             return true;
+        },
+
+        checkPassword: function(curPwd, pwd, pwd2) {
+            var msg, errFields;
+            if (curPwd === '') {
+                errFields = '#cur-pwd';
+                msg = Datawrapper.Messages.provideCurPwd;
+            }
+            else if (pwd.length < 4) {
+                errFields = '#pwd';
+                msg = Datawrapper.Messages.pwdTooShort;
+            }
+            else if (pwd != pwd2) {
+                errFields = '#pwd,#pwd2';
+                msg = Datawrapper.Messages.pwdMismatch;
+            }
+            if (msg) {
+                DW.logError(
+                    msg, $(errFields.split(',')[0]).parents('.control-group')
+                );
+                $(errFields).parents('.control-group').addClass('error');
+                return false;
+            }
+            return true;
+        },
+
+        clearAlerts: function () {
+            $('.alert').remove();
+            $('.error').removeClass('error');
         },
 
         refreshHeader: function() {
