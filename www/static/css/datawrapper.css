@@ -697,7 +697,7 @@ form.well form {
 .mysettings .row h2 {
     font-weight: normal;
 }
-.mysettings .row .span3 p {
+.mysettings .row .span3 > p {
     color: #999;
     font-style: italic;
 }

@@ -143,12 +143,26 @@
     <div class="row" id="-delete">
         <div class="span3">
             <h2>{% trans "Delete Your Account" %}</h2>
-            <p>{% trans "This will remove your Datawrapper account and all the charts you created so far. They won't be visible in places where you embedded them." %}</p>
+            <div class="alert alert-danger">
+                <h4 class="alert-heading">{% trans "Warning" %}</h4>
+                <p>{% trans "This will remove your Datawrapper account and all the charts you created so far. They won't be visible in places where you embedded them." %}</p>
+            </div>
         </div>
         <div class="span9">
             <div class="form-horizontal">
                  <fieldset>
-                    <button class="btn btn-danger">{% trans "Yes, delete my account!" %}</button>
+                     <div class="control-group">
+                        <label class="control-label" for="pwd2">{% trans "Are you sure?" %}</label>
+                        <div class="controls">
+                            <label class="checkbox" for="are-you-sure"><input type="checkbox" id="are-you-sure" /> Yes, I really know what I'm doing</label>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="pwd2">{% trans "So then.." %}</label>
+                        <div class="controls">
+                            <button class="btn btn-danger" id="delete-account">{% trans "Delete my account!" %}</button>
+                        </div>
+                    </div>
                  </fieldset>
                 <p></p>
             </div>
@@ -282,10 +296,16 @@ $(function() {
         }
     });
 
+    // show password in clear text
     $('#show-passwords').change(function() {
         var t = $('#show-passwords').attr('checked') ? 'text' : 'password';
         $('#pwd')[0].type = t;
         $('#pwd2')[0].type = t;
+    });
+
+    $('#delete-account').attr('disabled', true);
+    $('#are-you-sure').change(function() {
+        $('#delete-account').attr('disabled', $('#are-you-sure').attr('checked') != 'checked');
     });
 });
 
