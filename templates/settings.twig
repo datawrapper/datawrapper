@@ -163,6 +163,23 @@
                             <button class="btn btn-danger" id="delete-account">{% trans "Delete my account!" %}</button>
                         </div>
                     </div>
+                    <div class="modal hide" id="confirmDeletion">
+                        <div class="modal-body">
+                            <h2 style="margin-bottom:20px">That's your last chance to stop that damn thing..</h2>
+                            <p>Think about it, one more time. Have you considered all the terrible consequences of deleting your account?</p>
+                            <ul>
+                                <li>You cannot login and logout anymore.</li>
+                                <li>The fine charts you created will be deleted, too.</li>
+                                <li>All the pages where you embedded your charts will show empty white space.</li>
+                            </ul>
+                            <p>Note that we will not only deactivate your account. All your data (including your charts) will be physically removed from our database. There's no way back!</p>
+                            <div class="alert alert-danger"><div>So, do you still <b>really</b> want to delete your Datawrapper account?</div></div>
+                        </div>
+                        <div class="modal-footer">
+                            <div class="btn btn-info" data-dismiss="modal">No, changed my mind..</div>
+                            <div id="really-delete-account" class="btn btn-danger">Yes, delete it!</div>
+                        </div>
+                    </div>
                  </fieldset>
                 <p></p>
             </div>
@@ -307,6 +324,12 @@ $(function() {
     $('#are-you-sure').change(function() {
         $('#delete-account').attr('disabled', $('#are-you-sure').attr('checked') != 'checked');
     });
+    $('#delete-account').click(function() {
+        $('#confirmDeletion').modal({
+            keyboard: true
+        });
+    });
+
 });
 
 </script>
