@@ -154,7 +154,7 @@
                      <div class="control-group">
                         <label class="control-label" for="pwd2">{% trans "Are you sure?" %}</label>
                         <div class="controls">
-                            <label class="checkbox" for="are-you-sure"><input type="checkbox" id="are-you-sure" /> Yes, I really know what I'm doing</label>
+                            <label class="checkbox" for="are-you-sure"><input type="checkbox" id="are-you-sure" /> {% trans "Yes, I really know what I'm doing" %}</label>
                         </div>
                     </div>
                     <div class="control-group">
@@ -165,23 +165,23 @@
                     </div>
                     <div class="modal hide" id="confirmDeletion">
                         <div class="modal-body">
-                            <h2 style="margin-bottom:20px">That's your last chance to stop that damn thing..</h2>
-                            <p>Think about it, one more time. Have you considered all the terrible consequences of deleting your account?</p>
+                            <h2 style="margin-bottom:20px">{% trans "That's your last chance to stop that damn thing.." %}</h2>
+                            <p>{% trans "Think about it, one more time. Have you considered all the terrible consequences of deleting your account?" %}</p>
                             <ul>
-                                <li>You cannot login and logout anymore.</li>
-                                <li>The fine charts you created will be deleted, too.</li>
-                                <li>All the pages where you embedded your charts will show empty white space.</li>
+                                <li>{% trans "You cannot login and logout anymore." %}</li>
+                                <li>{% trans "The fine charts you created will be deleted, too." %}</li>
+                                <li>{% trans "All the pages where you embedded your charts will show empty white space." %}</li>
                             </ul>
-                            <p>Note that we will not only deactivate your account. All your data (including your charts) will be physically removed from our database. There's no way back!</p>
-                            <div class="alert alert-danger"><div>So, do you still <b>really</b> want to delete your Datawrapper account?</div></div>
+                            <p>{% trans "Note that we will not only deactivate your account. All your data (including your charts) will be physically removed from our database. There's no way back!" %}</p>
+                            <div class="alert alert-danger"><div>{% trans "So, do you still <b>really</b> want to delete your Datawrapper account?" %}</div></div>
                         </div>
                         <div class="modal-footer">
-                            <div class="btn btn-info" data-dismiss="modal">No, changed my mind..</div>
-                            <div id="really-delete-account" class="btn btn-danger">Yes, delete it!</div>
+                            <div class="btn btn-info" data-dismiss="modal">{% trans "No, changed my mind.." %}</div>
+                            <div id="really-delete-account" class="btn btn-danger">{% trans "Yes, delete it!" %}</div>
                         </div>
                         <div class="post-delete" style="display:none">
-                            <h2 style="margin-bottom:20px;text-align:center">Your account has been deleted.</h2>
-                            <a href="/" class="btn btn-primary btn-large">Goodbye!</a>
+                            <h2 style="margin-bottom:20px;text-align:center">{% trans "Your account has been deleted." %}</h2>
+                            <a href="/" class="btn btn-primary btn-large">{% trans "Goodbye!" %}</a>
                         </div>
                     </div>
                  </fieldset>
