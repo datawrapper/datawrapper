@@ -25,7 +25,16 @@ $app->post('/github', function() use ($app) {
                 $body = '<p>The Github user <a href="https://github.com/'. $payload->pusher->name .'">@' . $payload->pusher->name . '</a>'
                   . ' has pushed to ' . $payload->repository->url
                   . ' and consequently, the instance of Datawrapper runnig at ' . DW_DOMAIN
-                  . ' has been updated.</p><p>Cheers, <br/>The friendly Datawrapper bot</p>';
+                  . ' has been updated.</p>';
+
+                $body .= '<p>Here\'s a brief list of what have been changed:</p>';
+                $body .= '<ul>';
+                foreach ($payload->commits as $commit) {
+                    $body .= '<li>'.$commit->message.'<br />';
+                    $body .= '<small>added: <b>'.count($commit->added).'</b> +++ modified: <b>'.count($commit->modified).'</b> +++ removed: <b>'.count($commit->removed).'</b> +++ <a href="' . $commit->url . '">read more</a></small></li>';
+                }
+                $body .= '</ul>';
+                $body .= '<p>Cheers, <br/>The friendly Datawrapper bot</p>';
 
                 mail(ADMIN_LOG_EMAIL, 'Datawrapper has been updated', $body, $headers);
 
