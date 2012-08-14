@@ -5,7 +5,140 @@
  */
 
 body {
-    background: url(../img/bg.png) repeat scroll 0 0 #f8f8f8;
+    background: #fff;
+    color: #656565;
+    margin-top: 60px;
+}
+
+/* teaser */
+.teaser {
+    height:330px;
+    background: url(/static/img/teaser-1.png) -100px bottom;
+    margin-bottom:40px;position:relative;
+    background-size: 115%;
+}
+
+.big-login-home {
+    display: none;
+}
+
+
+.teaser .login {
+    font-size: 15px;
+    margin: 10px 0 -10px;
+}
+
+.teaser a.onblack {
+    color: #5FCAFF;
+}
+
+.teaser .login input {
+    width: 30%;
+    padding: 6px;
+}
+.teaser .login .btn-large {
+    padding: 6px 8px;
+}
+
+.teaser .login h3 {
+    color: #fff;
+    font-weight: normal;
+    line-height: 40px;
+    padding-right: 10px;
+}
+
+.teaser h2 {
+    font-weight:300;
+    color:#f9f9f9;
+    background:rgba(0,0,0,.8);
+    width:33%;
+    position:absolute;
+    left:0;
+    bottom:0;
+    font-size: 20px;
+    line-height: 30px;
+    margin:0;
+    padding: 20px;
+    margin: 0 0 30px 30px;
+}
+
+.navbar .btn-navbar {
+    margin-top: 5px;
+    padding: 10px;
+    margin-top: 9px;
+}
+
+@media (max-width: 767px) {
+    /* mobile display, no teaser image */
+    .teaser {
+        position: relative;
+        height: auto;
+        background: #eee;
+    }
+    .teaser h2 {
+        font-size: 16px;
+        line-height: 22px;
+        margin: 0;
+        width: auto;
+        position: relative;
+        background: none;
+        color: #222;
+    }
+
+    .teaser .login {
+        display: none;
+    }
+
+    .big-login-home {
+        display: block;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 979px) {
+    /* ipad display */
+    .teaser {
+        background: url(/static/img/teaser-1.png) 0 0;
+        background-size: 100%;
+        height: 230px;
+    }
+    .teaser h2 {
+        font-size: 18px;
+        line-height: 24px;
+    }
+
+    .teaser .login {
+        display: none;
+    }
+
+    .big-login-home {
+        display: block;
+    }
+
+}
+
+@media (min-width: 1200px) {
+    .teaser {
+        background: url(/static/img/teaser-1.png) 0 0;
+        height: 360px;
+    }
+
+    .teaser h2 {
+        font-size: 24px;
+        line-height: 36px;
+    }
+
+    .teaser .login {
+        font-size: 18px;
+    }
+
+    .teaser .login input {
+        width: 30%;
+        padding: 9px;
+    }
+
+    .teaser .login .btn-large {
+        padding: 9px 14px;
+    }
 }
 
 /* intro */
@@ -14,17 +147,60 @@ body {
     height: 240px;
 }
 
+.navbar-fixed-top .navbar-inner, .navbar-fixed-bottom .navbar-inner {
+    background-image: url(../img/bg-navbar.png);
+    background-color: #eee;
+    min-height: 51px;
+}
 
+.navbar .brand {
+    padding-top: 13px;
+    color: #556;
+}
+
+.navbar .nav > li > a {
+    padding-top: 15px;
+    text-shadow: 0 -1px 0 rgba(255, 255, 255, 0.25)
+}
+
+.navbar .nav > li > a:hover {
+    color: #000;
+}
+
+.navbar .nav .active > a, .navbar .nav .active > a:hover {
+    background: transparent;
+    font-weight: bold;
+    color: #444;
+}
+
+.navbar .nav li.dropdown .dropdown-toggle .caret, .navbar .nav li.dropdown.open .caret,
+.nav li.dropdown.open .caret, .nav li.dropdown.open.active .caret, .nav li.dropdown.open a:hover .caret {
+    border-bottom-color: #000;
+    border-top-color: #000;
+}
 
 .dw .toplinks {
 
+}
+
+.half {
+    width:50%;
+    float:left;
+}
+
+.half select {
+    width:90%;
+}
+
+.span4 .well .span4 {
+    width: 90%;
 }
 
 .dw .create-nav div {
     background: #f2f2f2;
     position: relative;
     box-shadow: 2px 2px 2px #e2e2e2 inset;
-    border-radius: 25px 0 0 25px;
+    border-radius: 10px 0 0 10px;
     text-align: left;
     height: 50px;
     font-size: 16px;
@@ -72,16 +248,18 @@ body {
 .dw-logo {
     font-weight: 500;
     color: #0063A5;
-    letter-spacing: -2px;
+    letter-spacing: -1px;
+}
+.teaser .dw-logo {
+    color: #fff;
 }
 .dw-logo .wrap {
     font-style: normal;
-    color: #e3e3e3;
-    text-shadow: 2px 0px 0px rgba(0,0,0,.3)
+    color: #d8d8d8;
 }
 .dw-logo-type {
-    font-size: 36px;
-    line-height: 42px;
+    font-size: 24px;
+    line-height: 34px;
     margin-left: 0px;
 }
 .dw-logo-type a:hover, .dw-logo-type a:focus {
@@ -91,7 +269,9 @@ body {
 
 .dw .dw-logo-sub {
     margin-bottom: 40px;
-    padding-left: 20px;
+    padding-left: 15px;
+    font-size: 11px;
+    color: #999;
 }
 
 .intro-head .dw-logo-type {
@@ -136,13 +316,11 @@ h3 label.radio {
 h3 {
     margin-bottom: 1em;
 }
-
-.well h3 {
-    margin-bottom: 0.4em;
-}
-
 .page-header h3 {
     margin-bottom: 0;
+}
+.well h3 {
+    margin-bottom: 0.4em;
 }
 
 .fat-buttons .btn-large {
@@ -175,7 +353,8 @@ footer p {
 }
 
 h1, h2, h3, h4, h5, h6 {
-    font-weight: normal;
+    font-weight: bold;
+    color: #000;
 }
 
 .dw-create-publish h3 {
@@ -385,7 +564,7 @@ dl.dl-horizontal dd {
  */
 
 #iframe-wrapper {
-    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.3);
     border: 1px solid #fff;
     padding: 10px;
     border-radius: 7px;
@@ -478,6 +657,29 @@ dl.dl-horizontal dd {
 
 .docs h2 {
     margin: 1.5em 0 0.5em;
+}
+
+.error .big {
+    font-size: 20px;
+    line-height: 30px;
+    color: #B94A48;
+    margin-bottom: 1em;
+}
+
+ul.options {
+    position: relative;
+}
+
+ul.options li {
+    list-style: none;
+    margin-bottom: 1em;
+    position: relative;
+}
+
+ul.options li i:first-child {
+    position: absolute;
+    left: -20px;
+    top: 2px;
 }
 
 .section {
