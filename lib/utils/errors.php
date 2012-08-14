@@ -57,6 +57,13 @@ function error_mycharts_need_login() {
     );
 }
 
+function error_settings_need_login() {
+    error_page('user',
+        _('Whoops! You need to be logged in.'),
+        _('Guess what, in order to edit your user profile, you need to either login or create yourself an account.')
+    );
+}
+
 function error_invalid_password_reset_token() {
     error_page('user',
         _('Something went horribly wrong'),

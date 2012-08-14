@@ -6,6 +6,12 @@ $app->get('/account/settings', function () use ($app) {
     add_header_vars($page, 'user');
 
     $user = DatawrapperSession::getUser();
+
+    if ($user->getRole() == 'guest') {
+        error_settings_need_login();
+        return;
+    }
+
     if ($user->getRole() == 'pending') {
         $t = ActionQuery::create()
             ->filterByUser($user)
