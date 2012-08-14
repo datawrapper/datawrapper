@@ -27,7 +27,7 @@ $app->post('/github', function() use ($app) {
                   . ' and consequently, the instance of Datawrapper runnig at ' . DW_DOMAIN
                   . ' has been updated.</p>';
 
-                $body .= '<p>Here\'s a brief list of what have been changed:</p>';
+                $body .= '<p>Here\'s a brief list of what has been changed:</p>';
                 $body .= '<ul>';
                 foreach ($payload->commits as $commit) {
                     $body .= '<li>'.$commit->message.'<br />';
