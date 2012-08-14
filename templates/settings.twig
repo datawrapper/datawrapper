@@ -7,7 +7,7 @@
 <div class="row">
 
     <div class="span6">
-        <div class="form-horizontal">
+        <div class="form-horizontal settings login">
             <fieldset>
                 <legend>{% trans "Account Settings" %}</legend>
 
@@ -19,9 +19,9 @@
                     </div>
                 </div>
                 <div class="control-group">
-                    <label class="control-label" for="pwd">{% trans "Current Password" %}</label>
+                    <label class="control-label" for="cur-pwd">{% trans "Current Password" %}</label>
                     <div class="controls">
-                        <input type="text" class="input-xlarge" id="pwd">
+                        <input type="text" class="input-xlarge" id="cur-pwd">
                     </div>
                 </div>
                 <div class="control-group">
@@ -39,8 +39,8 @@
                 </div>
 
                 <div class="form-actions">
-                    <button class="btn btn-primary" type="submit">{% trans "Save changes" %}</button>
-                    <button class="btn">{% trans "Undo changes" %}</button>
+                    <button class="btn btn-primary" type="submit" id="save-login">{% trans "Save changes" %}</button>
+                    <button class="btn reset" id="reset-login">{% trans "Undo changes" %}</button>
                 </div>
             </fieldset>
 
@@ -48,7 +48,7 @@
 
     </div>
     <div class="span6">
-        <div class="form-horizontal">
+        <div class="form-horizontal settings profile">
             <fieldset>
                 <legend>{% trans "User Profile" %}</legend>
 
@@ -76,8 +76,8 @@
                 </div>
 
                 <div class="form-actions">
-                    <button class="btn btn-primary" type="submit">{% trans "Save changes" %}</button>
-                    <button class="btn">{% trans "Undo changes" %}</button>
+                    <button class="btn btn-primary" type="submit" id="save-profile">{% trans "Save changes" %}</button>
+                    <button class="btn reset" id="reset-profile">{% trans "Undo changes" %}</button>
                 </div>
             </fieldset>
 
@@ -146,6 +146,33 @@ $(function() {
                     DW.logMessage(res.data, $(e.target).parent());
                 } else {
                     DW.logError(res.message, $(e.target).parent());
+                }
+            }
+        });
+    });
+
+    // initially we deactivate the reset button
+    $('.reset').attr('disabled', true);
+    // but right after the user changed sth, we activate it again
+    $('.settings input').change(function(e) {
+        $('.reset', $(e.target).parents('.settings')).attr('disabled', false);
+    });
+
+    $('.reset').click(function(e) {
+        
+        // load and populate current profile
+        $.ajax({
+            url: '/api/account',
+            dataType: 'json',
+            success: function(res) {
+                console.log(res);
+                if (e.target.id == 'reset-profile') {
+                    $('#name').val(res.data.user.Name);
+                    $('#website').val(res.data.user.Website);
+                    $('#socialmedia').val(res.data.user.SmProfile);
+                } else {
+                    $('#email').val(res.data.user.Email);
+                    $('#cur-pwd, #pwd, #pwd2').val('');
                 }
             }
         });
