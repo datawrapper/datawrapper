@@ -2,135 +2,160 @@
 
 {% block content %}
 
-<span class="label">The settings page is not implemented yet</span>
+<div class="docs">
+    <ul class="nav nav-pills pull-right">
+        <li><a href="#-status">{% trans "Account Status" %}</a></li>
+        <li><a href="#-profile">{% trans "Edit Profile" %}</a></li>
+        <li><a href="#-password">{% trans "Change Password" %}</a></li>
+        <li><a href="#-delete">{% trans "Delete Account" %}</a></li>
+    </ul>
+    <h1 class="title">User Settings</h1>
 
-<div class="row">
-
-    <div class="span6">
-        <div class="form-horizontal settings login">
-            <fieldset>
-                <legend>{% trans "Account Settings" %}</legend>
-
-                <div class="control-group">
-                    <label class="control-label" for="email">{% trans "E-Mail" %}</label>
-                    <div class="controls">
-                        <input type="text" class="input-xlarge" id="email" value="{{ user.email }}">
-                        <p class="help-block">{% trans "This is the email address which you used to sign up." %}</p>
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label" for="cur-pwd">{% trans "Current Password" %}</label>
-                    <div class="controls">
-                        <input type="text" class="input-xlarge" id="cur-pwd">
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label" for="pwd">{% trans "New Password" %}</label>
-                    <div class="controls">
-                        <input type="text" class="input-xlarge" id="pwd">
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label" for="pwd2">{% trans "New Password (repeat)" %}</label>
-                    <div class="controls">
-                        <input type="text" class="input-xlarge" id="pwd2">
-                        <p class="help-block">{% trans "If you don't feel like changing your password, just leave the password fields blank for now." %}</p>
-                    </div>
-                </div>
-
-                <div class="form-actions">
-                    <button class="btn btn-primary" type="submit" id="save-login">{% trans "Save changes" %}</button>
-                    <button class="btn reset" id="reset-login">{% trans "Undo changes" %}</button>
-                </div>
-            </fieldset>
-
-        </div>
-
-    </div>
-    <div class="span6">
-        <div class="form-horizontal settings profile">
-            <fieldset>
-                <legend>{% trans "User Profile" %}</legend>
-
-                <div class="control-group">
-                    <label class="control-label" for="name">{% trans "Name" %}</label>
-                    <div class="controls">
-                        <input type="text" class="input-xlarge" id="name" placeholder="" value="{{ user.name }}">
-                        <p class="help-block">{% trans "Filling out your profile is optional. If you do, you can display these information below the charts you publish." %}</p>
-                    </div>
-                </div>
-
-                <div class="control-group">
-                    <label class="control-label" for="website">{% trans "Website" %}</label>
-                    <div class="controls">
-                        <input type="text" class="input-xlarge" id="website" placeholder="http://" value="{{ user.website }}">
-                        <p class="help-block">{% trans "Add a website that contains more information about you (e.g. your blog). Optionally you can display these information below you published charts." %}</p>
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label" for="socialmedia">Twitter/Facebook/etc</label>
-                    <div class="controls">
-                        <input type="text" class="input-xlarge" id="socialmedia" placeholder="http://twitter.com/" value="{{ user.smProfile }}">
-                        <p class="help-block">{% trans "Enter the link to your favorite social media profile (e.g. Twitter)." %}</p>
-                    </div>
-                </div>
-
-                <div class="form-actions">
-                    <button class="btn btn-primary" type="submit" id="save-profile">{% trans "Save changes" %}</button>
-                    <button class="btn reset" id="reset-profile">{% trans "Undo changes" %}</button>
-                </div>
-            </fieldset>
-
-        </div>
-
-    </div>
 </div>
-<div class="row" style="margin-top:4em">
-    <div class="span6">
 
-        <div class="form-horizontal">
-            <fieldset>
+<div class="mysettings">
+    <div id="-status" class="row">
+        <div class="span3">
+            <h2>{% trans "Account Status" %}</h2>
+            <p>See how your account is doing.</p>
+        </div>
+        <div class="span9">
+            <div class="form-horizontal" style="margin-bottom:30px">
+                <fieldset>
 
                 {% if user.isAbleToPublish %}
 
-                <legend>{% trans "Account Status" %} <span class="label label-success">{% trans "activated" %}</span></legend>
-
-                <p>Your account has been activated, and you are able to create and publish charts.</p>
+                    <div class="btn btn-success btn-large pull-left" style="margin-right: 20px" disabled="disabled">Activated</div>
+                    <p>Your account has been activated, and you are able to create and publish charts.</p>
 
                 {% elseif user.role == 'pending' %}
 
-                <legend>{% trans "Account Status" %} <span class="label label-warning">{% trans "pending" %}</span></legend>
+                    <div class="btn btn-warning btn-large pull-left" style="margin-right: 20px" disabled="disabled">{% trans "Pending" %}</div>
+                    <p>{% trans "Your account is pending because your email address has not been activated, yet. You can create charts, but they will not be visible for anybody else." %}</p>
 
-                <p>{% trans "Your account is pending because your email address has not been activated, yet. You can create charts, but they will not be visible for anybody else." %}</p>
+                    <p><em>{% trans "Having trouble with the account activation?" %}</em></p>
 
-                <p><em>{% trans "Having trouble with the account activation?" %}</em></p>
+                    <ul class="options">
+                        <li><i class="icon-chevron-right"></i> {{ "Maybe the email has been catched by your email providers spam filter. Please check the spam folder for the last activation email we sent on <strong>%DATE%</strong>." | trans | replace({'%DATE%': activation_email_date }) | raw }}</li>
 
-                <ul class="options">
-                    <li><i class="icon-chevron-right"></i> {{ "Maybe the email has been catched by your email providers spam filter. Please check the spam folder for the last activation email we sent on <strong>%DATE%</strong>." | trans | replace({'%DATE%': activation_email_date }) | raw }}</li>
+                        <li><i class="icon-chevron-right"></i> <a class="btn" href="#" id="resend-activation-link">{% trans "Re-send activation link" %}</a></li>
 
-                    <li><i class="icon-chevron-right"></i> <a class="btn" href="#" id="resend-activation-link">{% trans "Re-send activation link" %}</a></li>
-
-                    <li><i class="icon-chevron-right"></i> {{ "Or, <a href='mailto:%ADMINMAIL%'>contact us</a> to find other ways to activate your account." | trans | replace({'%ADMINMAIL%': ADMIN_EMAIL }) | raw }}</li>
-                </ul>
+                        <li><i class="icon-chevron-right"></i> {{ "Or, <a href='mailto:%ADMINMAIL%'>contact us</a> to find other ways to activate your account." | trans | replace({'%ADMINMAIL%': ADMIN_EMAIL }) | raw }}</li>
+                    </ul>
 
                 {% endif %}
 
-            </fieldset>
+                </fieldset>
+            </div>
         </div>
     </div>
-    <div class="span6">
-        <div class="form-horizontal">
-             <fieldset>
-                <legend>{% trans "Delete Datawrapper Account" %}</legend>
 
-                        <p>{% trans "This will remove your Datawrapper account and all the charts you created so far. They won't be visible in places where you embedded them." %}</p>
-                        <button class="btn btn-danger">{% trans "Yes, delete my account!" %}</button>
+    <div class="row" id="-profile">
+        <div class="span3">
+            <h2>{% trans "Edit Profile" %}</h2>
+            <p>{% trans "Filling out your profile is optional. If you do, you can display these information below the charts you publish." %}</p>
 
-             </fieldset>
-            <p></p>
+        </div>
+        <div class="span9">
+            <div class="form-horizontal settings profile">
+                <fieldset>
+
+                    <div class="control-group">
+                        <label class="control-label" for="email">{% trans "E-Mail" %}</label>
+                        <div class="controls">
+                            <input type="text" class="input-xlarge" id="email" value="{{ user.email }}">
+                            <p class="help-block">{% trans "This is the email address which you used to sign up." %}</p>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label" for="name">{% trans "Name" %}</label>
+                        <div class="controls">
+                            <input type="text" class="input-xlarge" id="name" placeholder="" value="{{ user.name }}">
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label" for="website">{% trans "Website" %}</label>
+                        <div class="controls">
+                            <input type="text" class="input-xlarge" id="website" placeholder="http://" value="{{ user.website }}">
+                            <p class="help-block">{% trans "Add a website that contains more information about you (e.g. your blog). Optionally you can display these information below you published charts." %}</p>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="socialmedia">Twitter/Facebook/etc</label>
+                        <div class="controls">
+                            <input type="text" class="input-xlarge" id="socialmedia" placeholder="http://twitter.com/" value="{{ user.smProfile }}">
+                            <p class="help-block">{% trans "Enter the link to your favorite social media profile (e.g. Twitter)." %}</p>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button class="btn btn-primary" type="submit" id="save-profile">{% trans "Save changes" %}</button>
+                    </div>
+                </fieldset>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="row" id="-password">
+        <div class="span3">
+            <h2>{% trans "Change Password" %}</h2>
+            <p>{% trans "For security reasons we ask you to provide your current password. Please make sure you use a strong password." %}</p>
+        </div>
+        <div class="span9">
+            <div class="form-horizontal settings password">
+                <fieldset>
+                    <div class="control-group">
+                        <label class="control-label" for="cur-pwd">{% trans "Current Password" %}</label>
+                        <div class="controls">
+                            <input type="password" class="input-xlarge" id="cur-pwd">
+                            <p class="help-block">{% trans "" %}</p>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="pwd">{% trans "New Password" %}</label>
+                        <div class="controls">
+                            <input type="password" class="input-xlarge" id="pwd">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="pwd2">{% trans "(repeat)" %}</label>
+                        <div class="controls">
+                            <input type="password" class="input-xlarge" id="pwd2">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="controls">
+                            <label class="checkbox"><input type="checkbox" id="show-passwords" /> Show password in clear text</label>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button class="btn btn-primary" type="submit" id="change-password">{% trans "Change Password" %}</button>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" id="-delete">
+        <div class="span3">
+            <h2>{% trans "Delete Your Account" %}</h2>
+            <p>{% trans "This will remove your Datawrapper account and all the charts you created so far. They won't be visible in places where you embedded them." %}</p>
+        </div>
+        <div class="span9">
+            <div class="form-horizontal">
+                 <fieldset>
+                    <button class="btn btn-danger">{% trans "Yes, delete my account!" %}</button>
+                 </fieldset>
+                <p></p>
+            </div>
         </div>
     </div>
 </div>
+
 <script type="text/javascript">
 
 $(function() {
@@ -151,31 +176,116 @@ $(function() {
         });
     });
 
-    // initially we deactivate the reset button
-    $('.reset').attr('disabled', true);
-    // but right after the user changed sth, we activate it again
-    $('.settings input').change(function(e) {
-        $('.reset', $(e.target).parents('.settings')).attr('disabled', false);
-    });
-
-    $('.reset').click(function(e) {
-        
-        // load and populate current profile
+    // save profile
+    $('#save-profile').click(function(e) {
+        var submit = $(e.target),
+        payload = {
+            email: $('#email').val(),
+            name: $('#name').val(),
+            website: $('#website').val(),
+            profile: $('#socialmedia').val()
+        };
+        submit.addClass('loading');
         $.ajax({
-            url: '/api/account',
+            url: '/api/users/current',
+            type: 'PUT',
             dataType: 'json',
-            success: function(res) {
-                console.log(res);
-                if (e.target.id == 'reset-profile') {
-                    $('#name').val(res.data.user.Name);
-                    $('#website').val(res.data.user.Website);
-                    $('#socialmedia').val(res.data.user.SmProfile);
+            data: JSON.stringify(payload),
+            success: function(data) {
+                submit.removeClass('loading');
+                if (data.status == 'ok') {
+                    DW.logMessage('{% trans "This just worked fine. Your profile has been updated." %}', $('.settings.profile .control-group')[0]);
+                    $('.profile .reset').attr('disabled', true);
                 } else {
-                    $('#email').val(res.data.user.Email);
-                    $('#cur-pwd, #pwd, #pwd2').val('');
+                    DW.logError(data.message, $('.settings.profile .control-group')[0]);
                 }
             }
-        });
+         });
+    });
+
+    function checkPwd(curPwd, pwd, pwd2) {
+        var msg, errFields;
+        if (curPwd == '') {
+            errFields = '#cur-pwd';
+            msg = '{% trans "For security reasons, please provide your current password." %}';
+        }
+        else if (pwd.length < 4) {
+            errFields = '#pwd';
+            msg = '{% trans "Your password doesn\\\'t meet our security guidelines. Please provide at least 4 characters" %}';
+        }
+        else if (pwd != pwd2) {
+            errFields = '#pwd,#pwd2';
+            msg = '{% trans "The password and the repeated password must not differ." %}';
+        }
+        if (msg) {
+            DW.logError(
+                msg, $(errFields.split(',')[0]).parents('.control-group')
+            );
+            $(errFields).parents('.control-group').addClass('error');
+            return false;
+        }
+        return true;
+    }
+
+    function clearAlerts() {
+        $('.settings .alert').remove();
+        $('.settings .error').removeClass('error');
+    }
+
+    // change password
+    $('#change-password').click(function(e) {
+        var submit = $(e.target),
+            parent = $($('.settings.password .control-group')[0]),
+            curPwd = $.trim($('#cur-pwd').val()),
+            pwd = $.trim($('#pwd').val()),
+            pwd2 = $.trim($('#pwd2').val()),
+            check;
+
+        clearAlerts()
+
+        check = checkPwd(curPwd, pwd, pwd2);
+        if (check === true) {
+            // at first we req
+            submit.addClass('loading');
+
+            $.getJSON('/api/auth/salt', function(res) {
+                if (res.status == 'ok') {
+                    var salt = res.data.salt, time = res.data.time,
+                        hmac = CryptoJS.HmacSHA256,
+                        hash = hmac(hmac(curPwd, salt).toString(), String(time)).toString(),
+                        payload = {
+                            oldpwhash: hash,
+                            time: time,
+                            pwd: CryptoJS.HmacSHA256(pwd, salt).toString()
+                        };
+
+                    $('#pwd').val('');
+                    $('#pwd2').val('');
+                    $('#cur-pwd').val('');
+
+                    $.ajax({
+                        url: '/api/users/current',
+                        type: 'PUT',
+                        data: JSON.stringify(payload),
+                        dataType: 'json',
+                        success: function(data) {
+                            submit.removeClass('loading');
+                            if (data.status == 'ok') {
+                                DW.logMessage('{% trans "Congrats! Your password has been changed." %}', parent);
+                            } else {
+                                DW.logError(data.message, parent);
+                            }
+                        }
+                    });
+                }
+            });
+        }
+    });
+
+    $('#show-passwords').change(function() {
+        var t = $('#show-passwords').attr('checked') ? 'text' : 'password';
+        $('#pwd')[0].type = t;
+        $('#pwd2')[0].type = t;
     });
 });
 

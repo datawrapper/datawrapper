@@ -184,7 +184,7 @@
         },
 
         logMessage: function(msg, parent, type) {
-            if (_.isString(parent)) parent = $(parent);
+            if (!_.isFunction(parent.prepend)) parent = $(parent);
             $('.alert', parent).remove();
             if (type === undefined) type = 'success';
             var alert = $('<div class="alert alert-'+type+'" />');

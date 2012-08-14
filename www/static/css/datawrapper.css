@@ -694,3 +694,26 @@ form.well form {
     background: url(../img/bg-well.png);
 }
 
+.mysettings .row h2 {
+    font-weight: normal;
+}
+.mysettings .row .span3 p {
+    color: #999;
+    font-style: italic;
+}
+.mysettings .row {
+    margin-bottom: 30px;
+}
+
+.mysettings .row .span9 {
+    padding-top: 10px;
+}
+
+.btn-primary.loading:after {
+    content: url("../img/btn-loading.gif");
+    float: right;
+    left: 1px;
+    margin-left: 5px;
+    position: relative;
+    top: 1px;
+}
