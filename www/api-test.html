@@ -220,7 +220,7 @@ function log(id, json) {
       <!-- get current user -->
 
       <div class="row sep">
-         <div class="span2">session</div>
+         <div class="span2">account</div>
          <div class="span1">GET</div>
          <div class="span5 form-inline">
             <a id="get-session" class="btn btn-primary">get session</a>
@@ -231,7 +231,7 @@ function log(id, json) {
          <script type="text/javascript">
             $('#get-session').click(function() {
                $.ajax({
-                  url: '/api/session',
+                  url: '/api/account',
                   type: 'GET',
                   success: function(data) {
                      log('get-session-out', data);
@@ -244,7 +244,7 @@ function log(id, json) {
       <!-- set current language -->
 
       <div class="row">
-         <div class="span2">session/lang</div>
+         <div class="span2">account/lang</div>
          <div class="span1">PUT</div>
          <div class="span5 form-inline">
             <a id="set-lang" class="btn btn-primary">set language to..</a>
@@ -256,7 +256,7 @@ function log(id, json) {
          <script type="text/javascript">
             $('#set-lang').click(function() {
                $.ajax({
-                  url: '/api/session/lang',
+                  url: '/api/account/lang',
                   type: 'PUT',
                   data: JSON.stringify({ lang: $('#set-lang-val').val() }),
                   processData: false,
