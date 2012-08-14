@@ -55,11 +55,6 @@ $app = new Slim(array( 'view' => 'JSONView' ));
  */
 
 //GET route
-$app->get('/foo', function () use ($app) {
-    echo "foo";
-    $data = array('foo' => 'bar', 'msg'=> 'Blublub');
-    $app->render('json-error.php', $data, 200);
-});
 
 function error($code, $msg) {
     $result = array('status'=>'error');
