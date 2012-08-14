@@ -90,11 +90,21 @@ $app->put('/users/:id', function($user_id) use ($app) {
             $errors = array();
 
             if (!empty($payload->pwd)) {
+                if (!empty($payload->token)) {
+                    $chk = $payload->token === $curUser->getResetPasswordToken();
+                } else if (!empty($payload->oldpwhash)) {
+                    $chk = $hash === $payload->oldpwhash;
+                } else {
+                    $chk = false;
+                }
                 // update password
                 $hash = hash_hmac('sha256', $user->getPwd(), $payload->time);
-                if ($hash === $payload->oldpwhash || $curUser->isAdmin()) {
+                if ($chk || $curUser->isAdmin()) {
                     $user->setPwd($payload->pwd);
+                    $curUser->setResetPasswordToken('');
                     $changed[] = 'password';
+                } else {
+                    $errors[] = 'password-or-token-invalid';
                 }
             }
 

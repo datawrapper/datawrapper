@@ -19,13 +19,9 @@ $app->get('/account/reset-password/:token', function ($token) use ($app) {
 
         } else {
             $user = $users[0];
-            $user->setRole('editor');
-            $user->setToken('');
-            $user->save();
-            $page['alert'] = array(
-                'type' => 'success',
-                'message' => 'You\'re email address ' . $user->getEmail() . ' has been activated!'
-            );
+            // $user->setResetPasswordToken('');
+            // $user->save();
+            $page['token'] = $token;
 
             $app->render('account-reset-password.twig', $page);
         }
