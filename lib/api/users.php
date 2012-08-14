@@ -139,3 +139,40 @@ $app->put('/users/:id', function($user_id) use ($app) {
     }
 });
 
+
+
+/*
+ * delete a user
+ * @needs admin or existing user
+ */
+$app->delete('/users/:id', function($user_id) use ($app) {
+    $curUser = DatawrapperSession::getUser();
+    if ($curUser->isLoggedIn()) {
+        if ($user_id == 'current' || $curUser->getId() === $user_id) {
+            $user = $curUser;
+        } else if ($curUser->isAdmin()) {
+            $user = UserQuery::create()->findPK($user_id);
+        }
+        if (!empty($user)) {
+
+            // Delete all charts
+            ChartQuery::create()
+                ->findByUser($user)
+                ->delete();
+
+            // Delete user actions from log
+            ActionQuery::create()
+                ->findByUser($user)
+                ->delete();
+
+            // Delete user
+            $user->delete();
+
+            ok();
+        } else {
+            error('user-not-found', 'no user found with that id');
+        }
+    } else {
+        error('need-login', 'you must be logged in to do that');
+    }
+});

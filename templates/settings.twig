@@ -179,6 +179,10 @@
                             <div class="btn btn-info" data-dismiss="modal">No, changed my mind..</div>
                             <div id="really-delete-account" class="btn btn-danger">Yes, delete it!</div>
                         </div>
+                        <div class="post-delete" style="display:none">
+                            <h2 style="margin-bottom:20px;text-align:center">Your account has been deleted.</h2>
+                            <a href="/" class="btn btn-primary btn-large">Goodbye!</a>
+                        </div>
                     </div>
                  </fieldset>
                 <p></p>
@@ -329,7 +333,25 @@ $(function() {
             keyboard: true
         });
     });
-
+    $('#really-delete-account').click(function() {
+        $.ajax({
+            url: '/api/users/current',
+            type: 'delete',
+            dataType: 'json',
+            success: function(res) {
+                if (res.status == 'ok') {
+                    $('#confirmDeletion .modal-body').remove();
+                    $('#confirmDeletion .modal-footer').remove();
+                    $('#confirmDeletion .post-delete').css({
+                        'text-align': 'center',
+                        'padding': '30px'
+                    });
+                    $('#confirmDeletion .post-delete').addClass('modal-body');
+                    $('#confirmDeletion .post-delete').show();
+                }
+            }
+        });
+    });
 });
 
 </script>
