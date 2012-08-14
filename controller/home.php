@@ -8,6 +8,10 @@ $app->get('/', function () use ($app) {
     } else {
         $page = array('title' => 'Datawrapper');
         add_header_vars($page, '');
+
+        $res = $app->response();
+        $res['Cache-Control'] = 'max-age=0';
+
         $app->render('home.twig', $page);
     }
 });
