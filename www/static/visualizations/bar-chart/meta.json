@@ -1,7 +1,7 @@
 {
     "title": {
         "en": "Bar Chart",
-        "de": "Balkendiagramm",
+        "de": "Balkendiagramm (horiz)",
         "fr": "Diagramme temporel"
     },
     "extends": "raphael-chart",
@@ -15,31 +15,6 @@
     },
     "dimensions": 1,
     "options": {
-        "orientation": {
-            "type": "radio",
-            "label": {
-                "en": "Bar orientation",
-                "de": "Typ",
-                "fr": "Type"
-            },
-            "options": [{
-                "value": "vertical",
-                "label": {
-                    "en": "vertical",
-                    "de": "gestapelt",
-                    "fr": "linéaire"
-                },
-                "default": true
-            },{
-                "value": "horizontal",
-                "label": {
-                    "en": "horizontal",
-                    "de": "normal",
-                    "fr": "linéaire"
-                },
-                "default": false
-            }]
-        },
         "sort-values": {
             "type": "checkbox",
             "label": {

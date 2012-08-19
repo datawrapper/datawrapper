@@ -54,7 +54,6 @@
                                 w: d.w,
                                 align: 'center',
                                 cl: 'value'
-                            }), series);
                         }
 
                         // add series label
