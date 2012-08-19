@@ -168,6 +168,7 @@ $app->delete('/users/:id', function($user_id) use ($app) {
             if ($user->getPwd() == $payload->pwd) {
 
                 // Delete user
+                DatawrapperSession::logout();
                 $user->erase();
 
                 ok();
