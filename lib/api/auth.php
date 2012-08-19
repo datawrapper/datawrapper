@@ -23,7 +23,7 @@ $app->post('/auth/login', function() use($app) {
     $payload = json_decode($app->request()->getBody());
     if (time() - $payload->time < 3000) {
         $user = UserQuery::create()->findOneByEmail($payload->email);
-        if (!empty($user)) {
+        if (!empty($user) && $user->getDeleted() == false) {
             $hash = hash_hmac('sha256', $user->getPwd(), $payload->time);
             if ($hash === $payload->pwhash) {
                 DatawrapperSession::login($user);

@@ -167,18 +167,8 @@ $app->delete('/users/:id', function($user_id) use ($app) {
         if (!empty($user)) {
             if ($user->getPwd() == $payload->pwd) {
 
-                // Delete all charts
-                ChartQuery::create()
-                    ->findByUser($user)
-                    ->delete();
-
-                // Delete user actions from log
-                ActionQuery::create()
-                    ->findByUser($user)
-                    ->delete();
-
                 // Delete user
-                $user->delete();
+                $user->erase();
 
                 ok();
             } else {

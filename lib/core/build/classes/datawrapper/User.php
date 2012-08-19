@@ -39,4 +39,22 @@ class User extends BaseUser {
         return count(ChartQuery::create()->getPublicChartsByUser($this)) > 0;
     }
 
+    /*
+     * this deletes all information stored by the user and
+     * makes it impossible to login again
+     */
+    public function erase() {
+        $u = $this;
+        $u->setEmail('DELETED');
+        $u->setName('');
+        $u->setWebsite('');
+        $u->setSmProfile('');
+        $u->setActivateToken('');
+        $u->setResetPasswordToken('');
+        $u->setPwd('');
+        $u->setRole('guest');
+        $u->setDeleted(true);
+        $u->save();
+    }
+
 } // User
