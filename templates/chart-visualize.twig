@@ -107,6 +107,23 @@ $(function() {
     }
 
     $('#iframe-vis').load(updateVisBackground);
+
+    $('.nav-tabs').each(function(i, el) {
+        var navTabs = $(el);
+        $('li a', navTabs).each(function(i, el) {
+            $('.'+$(el).data('target')).hide();
+            $(el).click(function(e) {
+                e.preventDefault();
+                $('.' + navTabs.data('target') + ' > div').hide();
+                $('.' + $(e.target).data('target')).show();
+                $('li', navTabs).removeClass('active');
+                $(e.target).parents('li').addClass('active');
+            });
+        });
+        $('li.active a', navTabs).each(function(i, el) {
+            $('.'+$(el).data('target')).show();
+        });
+    });
 });
 
 </script>
@@ -151,32 +168,36 @@ $(function() {
             <div class="section">
                 <h3>{% trans "Tell your story" %}</h3>
 
-                <label for="text-title">{% trans "Title" %}</label>
-                <input type="text" id="text-title" class="input-xlarge span4" />
+                <ul class="nav nav-tabs" data-target="story">
+                    <li class="active"><a href="#" data-target="story-title">Title</a></li>
+                    <li><a href="#" data-target="story-intro">Introduction</a></li>
+                    <li><a href="#" data-target="story-highlight">Highlight</a></li>
+                </ul>
 
-                {# add introduction #}
-
-                <label for="text-intro"><a data-toggle="collapse" data-target="#c-intro" class="collapse-{% if chart.metadata.describe.intro %}shown{% else %}hidden{% endif %}">Introduction text</a></label>
-                <div id="c-intro" class="collapse{% if chart.metadata.describe.intro %} in{% endif %}">
-                        <textarea type="text" id="text-intro" class="input-xlarge span4"></textarea>
-                </div>
-
-                {# highlight series #}
-
-                <label>
-                    <a data-toggle="collapse" data-target="#c-highlight" class="collapse-{% if vismeta['highlighted-series'] %}shown{% else %}hidden{% endif %}">Highlight series</a>
-                </label>
-                <div class="collapse{% if vismeta['highlighted-series'] %} in{% endif %}" id="c-highlight">
-                    <div>
-                        <select id="highlight-series" class="span2">
-                            <option value="---">- {% trans "select a data series" %} -</option>
-                        </select>
+                <div class="story">
+                    <div class="story-title">
+                        <label for="text-title">{% trans "Tell the story in five words" %}:</label>
+                        <input type="text" id="text-title" class="input-xlarge span4" />
                     </div>
-                    <p class="highlighted-series">
-                        {% for series in vismeta['highlighted-series'] %}
-                        <span data-series="{{ series }}" class="badge badge-info"><i class="icon-remove icon-white"></i>{{ series }}</span>
-                        {% endfor %}
-                    </p>
+
+                    <div class="story-intro">
+                        <label for="text-intro">{% trans "Guide the audience to read the chart" %}:</label>
+                        <textarea type="text" id="text-intro" class="input-xlarge span4"></textarea>
+                    </div>
+
+                    <div class="story-highlight">
+                        <label>Highlight the most import data series:</label>
+                        <div>
+                            <select id="highlight-series" class="span2">
+                                <option value="---">- {% trans "select a data series" %} -</option>
+                            </select>
+                        </div>
+                        <p class="highlighted-series">
+                            {% for series in vismeta['highlighted-series'] %}
+                            <span data-series="{{ series }}" class="badge badge-info"><i class="icon-remove icon-white"></i>{{ series }}</span>
+                            {% endfor %}
+                        </p>
+                    </div>
                 </div>
 
                 {# highlight values }

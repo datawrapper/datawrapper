@@ -68,6 +68,7 @@ body {
     margin-top: 9px;
 }
 
+
 @media (max-width: 767px) {
     /* mobile display, no teaser image */
     .teaser {
@@ -178,10 +179,13 @@ body {
     color: #000;
 }
 
-.navbar .nav .active > a, .navbar .nav .active > a:hover {
+body .navbar .nav .active > a,
+body .navbar .nav .active > a:hover,
+body .navbar .nav li.dropdown.active > .dropdown-toggle:hover
+ {
     background: transparent;
     font-weight: bold;
-    color: #444;
+    color: #444!important;
 }
 
 .navbar .nav li.dropdown .dropdown-toggle .caret, .navbar .nav li.dropdown.open .caret,
@@ -729,4 +733,24 @@ form.well form {
     margin-left: 5px;
     position: relative;
     top: 1px;
+}
+
+.well .nav-tabs > .active > a, .nav-tabs > .active > a:hover {
+    background: url(../img/bg-well.png);
+    border-left-color: #c0c0c0;
+    border-right-color: #c0c0c0;
+    border-top-color: #c0c0c0;
+}
+
+.well .nav-tabs,
+.well .nav-tabs > li > a:hover {
+    border-bottom-color: #c0c0c0;
+}
+
+.well .nav-tabs > li.active > a:hover {
+    border-bottom-color: transparent;;
+}
+
+.well .nav-tabs > li > a:hover {
+    background: #e8e8e8;
 }
