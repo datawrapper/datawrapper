@@ -3,7 +3,7 @@
 <fieldset>
 
     {% if vis.dimensions == 1 %}
-    <div class="control-group">
+    <div class="control-group select-row">
         <label class="control-label" for="text-title">{% trans "Select row to display" %}</label>
         <div class="controls">
             <select id="select-row" style="width:auto">
@@ -65,12 +65,15 @@ $(function() {
     // populate select-row
     if (vis.dimensions == 1) {
         DW.currentChart.datasetLoaded(function(chart) {
-            console.log('loaded');
-            var selRows = $('#select-row');
-            for (var r=0; r<chart.numRows(); r++) {
-                selRows.append('<option value="'+r+'">'+chart.rowLabel(r)+'</option>');
+            if (chart.numRows() > 1) {
+                var selRows = $('#select-row');
+                for (var r=0; r<chart.numRows(); r++) {
+                    selRows.append('<option value="'+r+'">'+chart.rowLabel(r)+'</option>');
+                }
+                chart.sync('#select-row', 'metadata.visualize.selected-row');
+            } else {
+                $('.select-row').hide();
             }
-            chart.sync('#select-row', 'metadata.visualize.selected-row');
         });
     }
 });
