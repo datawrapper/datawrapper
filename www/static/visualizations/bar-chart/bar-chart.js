@@ -44,13 +44,13 @@
 
                     var val_x = val > 0 ?
                             d.x - me.__canvas.maxValueLabelWidth + 10
-                            : d.x - 5,
+                            : d.x + d.w - 10 + me.__canvas.maxValueLabelWidth,
                         lbl_x = val > 0 ?
                             d.x - 10 - me.__canvas.maxValueLabelWidth
-                            : d.x + d.w + 5;
+                            : d.x + d.w + me.__canvas.maxValueLabelWidth + 10;
                     me.registerSeriesLabel(me.label(val_x, d.y + d.h * 0.5, me.chart.formatValue(series.data[r], s === 0),{
                         w: 40,
-                        align: 'left',
+                        align: val <= 0 ? 'right' : 'left',
                         cl: 'value'
                     }), series);
 
@@ -65,7 +65,7 @@
             });
 
             if (me.__domain[0] < 0) {
-                var x = c.lpad + me.__scales.y(0);
+                var x = c.lpad + me.__scales.y(0) + me.__canvas.maxValueLabelWidth + me.__canvas.maxSeriesLabelWidth;
                 me.path([['M', x, c.tpad], ['L', x, c.h - c.bpad]], 'axis')
                     .attr(me.theme.yAxis);
             }
