@@ -19,15 +19,15 @@
         "baseline-zero": {
             "type": "checkbox",
             "label": {
-                "en": "Baseline zero",
-                "de": "Baseline bei null",
+                "en": "Force a baseline at zero",
+                "de": "Erweitere die Achse bis zur null",
                 "fr": "Échelle en zero"
             }
         },
         "force-banking": {
             "type": "checkbox",
             "label": {
-                "en": "Force banking to 45°",
+                "en": "Bank the lines to 45°",
                 "de": "Logarithmische Skala",
                 "fr": "Use logarithmic scale"
             }

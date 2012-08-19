@@ -20,7 +20,7 @@
         "table-sortable": {
             "type": "checkbox",
             "label": {
-                "en": "sortable",
+                "en": "Make columns sortable",
                 "de": "sortierbar",
                 "fr": "triable"
             }
@@ -28,7 +28,7 @@
         "table-responsive": {
             "type": "checkbox",
             "label": {
-                "en": "responsive",
+                "en": "Use responsive layout",
                 "de": "sortierbar",
                 "fr": "triable"
             }
@@ -36,7 +36,7 @@
         "table-paginate": {
             "type": "checkbox",
             "label": {
-                "en": "pagination",
+                "en": "Display content over multiple pages",
                 "de": "Auf mehrere Seiten verteilen ",
                 "fr": "Étendre sur les côtés"
             }
