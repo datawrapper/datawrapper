@@ -22,6 +22,14 @@
                 "de": "Balken sortieren",
                 "fr": "Type"
             }
+        },
+        "labels-inside-bars": {
+            "type": "checkbox",
+            "label": {
+                "en": "Display labels inside bars",
+                "de": "Balken sortieren",
+                "fr": "Type"
+            }
         }
     },
     "libraries": [],

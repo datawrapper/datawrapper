@@ -42,18 +42,21 @@
                         'fill': fill
                     }).data('strokeCol', stroke), series);
 
-
-                    var val_x = val > 0 ? d.x + d.w + 10 : d.x- 5,
-                        lbl_x = val <= 0 ? d.x + d.w + 5 : d.x- 10;
-                    me.registerSeriesLabel(me.label(val_x, d.y + d.h * 0.5, me.chart.formatValue(series.data[r]),{
+                    var val_x = val > 0 ?
+                            d.x - me.__canvas.maxValueLabelWidth + 10
+                            : d.x - 5,
+                        lbl_x = val > 0 ?
+                            d.x - 10 - me.__canvas.maxValueLabelWidth
+                            : d.x + d.w + 5;
+                    me.registerSeriesLabel(me.label(val_x, d.y + d.h * 0.5, me.chart.formatValue(series.data[r], s === 0),{
                         w: 40,
-                        align: val > 0 ? 'left' : 'right',
+                        align: 'left',
                         cl: 'value'
                     }), series);
 
                     // add series label
-                    me.registerSeriesLabel(me.label(lbl_x, d.y + d.h * 0.5, series.name,{
-                        w: 80,
+                    me.registerSeriesLabel(me.label(lbl_x , d.y + d.h * 0.5, series.name,{
+                        w: 160,
                         align: val <= 0 ? 'left' : 'right',
                         cl: me.chart.isHighlighted(series) ? 'series highlighted' : 'series'
                     }), series);
@@ -74,7 +77,7 @@
         initDimensions: function(r) {
             //
             var me = this, c = me.__canvas,
-                dMin = 0, dMax = 0;
+                dMin = 0, dMax = 0, w = c.w - c.lpad - c.rpad - 20;
             _.each(me.chart.dataSeries(), function(series) {
                 dMin = Math.min(dMin, series._min());
                 dMax = Math.max(dMax, series._max());
@@ -83,15 +86,31 @@
             me.__scales = {
                 y: d3.scale.linear().domain([dMin, dMax])
             };
+            if (!me.get('labels-inside-bars')) {
+                // compute maximum width of series labels
+                var max_sw = 0, max_vw = 0;
+                _.each(me.chart.dataSeries(), function(series, s) {
+                    max_sw = Math.max(max_sw, me.labelWidth(series.name, 'series'));
+                    max_vw = Math.max(max_vw, me.labelWidth(me.chart.formatValue(series.data[r], s === 0), 'value'));
+                });
+                max_sw += 20;
+                max_vw += 10;
+                w -= max_sw + max_vw;
+                me.__canvas.maxSeriesLabelWidth = max_sw;
+                me.__canvas.maxValueLabelWidth = max_vw;
 
-            me.__scales.y.rangeRound([c.lpad, c.w-c.rpad-c.lpad-30]);
+            }
+
+            me.__scales.y.rangeRound([c.lpad, w]);
         },
 
         barDimensions: function(series, s, r) {
             var me = this, w, h, x, y, i, cw, n = me.chart.dataSeries().length,
                 sc = me.__scales, c = me.__canvas, bw, pad = 0.35, vspace = 0.1;
 
+            //
             cw = c.h - c.bpad - c.tpad;
+            //
             bw = Math.min(24, cw / (n + (n-1) * pad));
             w = sc.y(series.data[r]) - sc.y(0);
             h = bw;
@@ -101,6 +120,8 @@
                 x = c.lpad + sc.y(0) + w;
                 w *= -1;
             }
+            x += me.__canvas.maxSeriesLabelWidth;
+            x += me.__canvas.maxValueLabelWidth;
             y = Math.round(c.tpad + s * (bw + bw * pad));
             return { w: w, h: h, x: x, y: y };
         },
