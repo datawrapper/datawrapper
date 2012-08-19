@@ -157,6 +157,7 @@ $app->put('/users/:id', function($user_id) use ($app) {
  */
 $app->delete('/users/:id', function($user_id) use ($app) {
     $curUser = DatawrapperSession::getUser();
+    $payload = json_decode($app->request()->getBody());
     if ($curUser->isLoggedIn()) {
         if ($user_id == 'current' || $curUser->getId() === $user_id) {
             $user = $curUser;
@@ -164,21 +165,26 @@ $app->delete('/users/:id', function($user_id) use ($app) {
             $user = UserQuery::create()->findPK($user_id);
         }
         if (!empty($user)) {
+            if ($user->getPwd() == $payload->pwd) {
 
-            // Delete all charts
-            ChartQuery::create()
-                ->findByUser($user)
-                ->delete();
+                // Delete all charts
+                ChartQuery::create()
+                    ->findByUser($user)
+                    ->delete();
 
-            // Delete user actions from log
-            ActionQuery::create()
-                ->findByUser($user)
-                ->delete();
+                // Delete user actions from log
+                ActionQuery::create()
+                    ->findByUser($user)
+                    ->delete();
 
-            // Delete user
-            $user->delete();
+                // Delete user
+                $user->delete();
 
-            ok();
+                ok();
+            } else {
+                Action::logAction($user, 'delete-request-wrong-password', json_encode(get_user_ips()));
+                error('wrong-password', _('The password you entered is not correct.'));
+            }
         } else {
             error('user-not-found', 'no user found with that id');
         }

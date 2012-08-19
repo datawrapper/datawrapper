@@ -69,6 +69,15 @@ function ok($data = null) {
     print json_encode($result);
 }
 
+
+function get_user_ips() {
+    $ips = array('remote_addr' => $_SERVER['REMOTE_ADDR']);
+    if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) $ips['x_forwared_for'] = $_SERVER['HTTP_X_FORWARDED_FOR'];
+    if (isset($_SERVER['HTTP_CLIENT_IP'])) $ips['client_ip'] = $_SERVER['HTTP_CLIENT_IP'];
+    return $ips;
+}
+
+
 require_once '../../lib/api/users.php';
 require_once '../../lib/api/auth.php';
 require_once '../../lib/api/charts.php';

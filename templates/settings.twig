@@ -165,20 +165,26 @@
                     </div>
                     <div class="modal hide" id="confirmDeletion">
                         <div class="modal-body">
-                            <h2 style="margin-bottom:20px">{% trans "That's your last chance to stop that damn thing.." %}</h2>
-                            <p>{% trans "Think about it, one more time. Have you considered all the terrible consequences of deleting your account?" %}</p>
+                            <h2 style="margin-bottom:20px">{% trans "Account deletion" %}</h2>
+                            <p>{% trans "Think about it one more time. Have you considered all the consequences of deleting your account?" %}</p>
                             <ul>
                                 <li>{% trans "You cannot login and logout anymore." %}</li>
-                                <li>{% trans "The fine charts you created will be deleted, too." %}</li>
-                                <li>{% trans "All the pages where you embedded your charts will show empty white space." %}</li>
+                                <li>{% trans "You cannot edit or remove your charts anymore." %}</li>
                             </ul>
-                            <p>{% trans "Note that we will not only deactivate your account. All your data (including your charts) will be physically removed from our database. There's no way back!" %}</p>
-                            <div class="alert alert-danger"><div>{% trans "So, do you still <b>really</b> want to delete your Datawrapper account?" %}</div></div>
+                            <p>{% trans "Note that this will only delete your account. Your charts will not be removed. If you want to remove your charts, please do it manually." %}</p>
+                            <div class="">
+                                <p><b>{% trans "Please enter your password to confirm the deletion request:" %}</b></p>
+                                <div class="control-group">
+                                    <input type="password" id="confirm-pwd" placeholder="{% trans "Password" %}" />
+                                </div>
+                                <p>{% trans "Do you still <b>really</b> want to delete your Datawrapper account?" %}</p>
+                                <div class="control-group">
+                                    <div class="btn btn-info" data-dismiss="modal">{% trans "No, I changed my mind.." %}</div>
+                                    <div id="really-delete-account" class="btn btn-danger">{% trans "Yes, delete it!" %}</div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="modal-footer">
-                            <div class="btn btn-info" data-dismiss="modal">{% trans "No, changed my mind.." %}</div>
-                            <div id="really-delete-account" class="btn btn-danger">{% trans "Yes, delete it!" %}</div>
-                        </div>
+
                         <div class="post-delete" style="display:none">
                             <h2 style="margin-bottom:20px;text-align:center">{% trans "Your account has been deleted." %}</h2>
                             <a href="/" class="btn btn-primary btn-large">{% trans "Goodbye!" %}</a>
@@ -307,21 +313,30 @@ $(function() {
         });
     });
     $('#really-delete-account').click(function() {
-        $.ajax({
-            url: '/api/users/current',
-            type: 'delete',
-            dataType: 'json',
-            success: function(res) {
-                if (res.status == 'ok') {
-                    $('#confirmDeletion .modal-body').remove();
-                    $('#confirmDeletion .modal-footer').remove();
-                    $('#confirmDeletion .post-delete').css({
-                        'text-align': 'center',
-                        'padding': '30px'
-                    });
-                    $('#confirmDeletion .post-delete').addClass('modal-body');
-                    $('#confirmDeletion .post-delete').show();
-                }
+        $.getJSON('/api/auth/salt', function(r) {
+            if (r.status == 'ok') {
+                $.ajax({
+                    url: '/api/users/current',
+                    type: 'DELETE',
+                    data: JSON.stringify({
+                        pwd: CryptoJS.HmacSHA256($('#confirm-pwd').val(), r.data.salt).toString()
+                    }),
+                    dataType: 'json',
+                    success: function(res) {
+                        if (res.status == 'ok') {
+                            $('#confirmDeletion .modal-body').remove();
+                            $('#confirmDeletion .modal-footer').remove();
+                            $('#confirmDeletion .post-delete').css({
+                                'text-align': 'center',
+                                'padding': '30px'
+                            });
+                            $('#confirmDeletion .post-delete').addClass('modal-body');
+                            $('#confirmDeletion .post-delete').show();
+                        } else {
+                            DW.logError(res.message, $('#confirm-pwd').parent());
+                        }
+                    }
+                });
             }
         });
     });

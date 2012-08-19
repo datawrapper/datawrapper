@@ -18,14 +18,6 @@ $app->put('/account/lang', function() use ($app) {
 });
 
 
-
-function get_user_ips() {
-    $ips = array('remote_addr' => $_SERVER['REMOTE_ADDR']);
-    if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) $ips['x_forwared_for'] = $_SERVER['HTTP_X_FORWARDED_FOR'];
-    if (isset($_SERVER['HTTP_CLIENT_IP'])) $ips['client_ip'] = $_SERVER['HTTP_CLIENT_IP'];
-    return $ips;
-}
-
 /* login user */
 $app->post('/auth/login', function() use($app) {
     $payload = json_decode($app->request()->getBody());
