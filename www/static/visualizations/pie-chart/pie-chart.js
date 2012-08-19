@@ -62,20 +62,25 @@
 
             var series = me.chart.dataSeries(true),
                 total = 0, min = Number.MAX_VALUE, max = 0,
-                reverse, oseries, others = 0;
+                reverse, oseries, others = 0, ocnt = 0;
 
 
             // now group small series into one big chunk named 'others'
             oseries = [];
             _.each(series, function(s, i) {
                 if (i < groupAfter) oseries.push(s);
-                else others += s.data[0];
+                else {
+                    ocnt += 1;
+                    others += s.data[0];
+                }
             });
-            oseries.push(new Miso.Column({
-                name: 'others',
-                type: series[0].type,
-                data: [others]
-            }));
+            if (ocnt > 0) {
+                oseries.push(new Miso.Column({
+                    name: 'others',
+                    type: series[0].type,
+                    data: [others]
+                }));
+            }
 
             _.each(oseries, function(s) {
                 total += s.data[0];
