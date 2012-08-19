@@ -5,7 +5,7 @@
 /**
  * Skeleton subclass for representing a row from the 'user' table.
  *
- * 
+ *
  *
  * You should add additional methods to this class to meet the
  * application requirements.  This class will only be generated as
@@ -52,7 +52,6 @@ class User extends BaseUser {
         $u->setActivateToken('');
         $u->setResetPasswordToken('');
         $u->setPwd('');
-        $u->setRole('guest');
         $u->setDeleted(true);
         $u->save();
     }
