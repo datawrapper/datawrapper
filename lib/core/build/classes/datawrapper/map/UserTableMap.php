@@ -50,6 +50,7 @@ class UserTableMap extends TableMap
   2 => 'pending',
   3 => 'guest',
 ));
+		$this->addColumn('DELETED', 'Deleted', 'BOOLEAN', false, 1, false);
 		$this->addColumn('LANGUAGE', 'Language', 'VARCHAR', false, 5, 'en');
 		$this->addColumn('CREATED_AT', 'CreatedAt', 'TIMESTAMP', true, null, null);
 		$this->addColumn('NAME', 'Name', 'VARCHAR', false, 512, null);

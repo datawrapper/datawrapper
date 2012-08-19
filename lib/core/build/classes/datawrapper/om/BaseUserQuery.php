@@ -12,6 +12,7 @@
  * @method     UserQuery orderByActivateToken($order = Criteria::ASC) Order by the activate_token column
  * @method     UserQuery orderByResetPasswordToken($order = Criteria::ASC) Order by the reset_password_token column
  * @method     UserQuery orderByRole($order = Criteria::ASC) Order by the role column
+ * @method     UserQuery orderByDeleted($order = Criteria::ASC) Order by the deleted column
  * @method     UserQuery orderByLanguage($order = Criteria::ASC) Order by the language column
  * @method     UserQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method     UserQuery orderByName($order = Criteria::ASC) Order by the name column
@@ -24,6 +25,7 @@
  * @method     UserQuery groupByActivateToken() Group by the activate_token column
  * @method     UserQuery groupByResetPasswordToken() Group by the reset_password_token column
  * @method     UserQuery groupByRole() Group by the role column
+ * @method     UserQuery groupByDeleted() Group by the deleted column
  * @method     UserQuery groupByLanguage() Group by the language column
  * @method     UserQuery groupByCreatedAt() Group by the created_at column
  * @method     UserQuery groupByName() Group by the name column
@@ -51,6 +53,7 @@
  * @method     User findOneByActivateToken(string $activate_token) Return the first User filtered by the activate_token column
  * @method     User findOneByResetPasswordToken(string $reset_password_token) Return the first User filtered by the reset_password_token column
  * @method     User findOneByRole(int $role) Return the first User filtered by the role column
+ * @method     User findOneByDeleted(boolean $deleted) Return the first User filtered by the deleted column
  * @method     User findOneByLanguage(string $language) Return the first User filtered by the language column
  * @method     User findOneByCreatedAt(string $created_at) Return the first User filtered by the created_at column
  * @method     User findOneByName(string $name) Return the first User filtered by the name column
@@ -63,6 +66,7 @@
  * @method     array findByActivateToken(string $activate_token) Return User objects filtered by the activate_token column
  * @method     array findByResetPasswordToken(string $reset_password_token) Return User objects filtered by the reset_password_token column
  * @method     array findByRole(int $role) Return User objects filtered by the role column
+ * @method     array findByDeleted(boolean $deleted) Return User objects filtered by the deleted column
  * @method     array findByLanguage(string $language) Return User objects filtered by the language column
  * @method     array findByCreatedAt(string $created_at) Return User objects filtered by the created_at column
  * @method     array findByName(string $name) Return User objects filtered by the name column
@@ -156,7 +160,7 @@ abstract class BaseUserQuery extends ModelCriteria
 	 */
 	protected function findPkSimple($key, $con)
 	{
-		$sql = 'SELECT `ID`, `EMAIL`, `PWD`, `ACTIVATE_TOKEN`, `RESET_PASSWORD_TOKEN`, `ROLE`, `LANGUAGE`, `CREATED_AT`, `NAME`, `WEBSITE`, `SM_PROFILE` FROM `user` WHERE `ID` = :p0';
+		$sql = 'SELECT `ID`, `EMAIL`, `PWD`, `ACTIVATE_TOKEN`, `RESET_PASSWORD_TOKEN`, `ROLE`, `DELETED`, `LANGUAGE`, `CREATED_AT`, `NAME`, `WEBSITE`, `SM_PROFILE` FROM `user` WHERE `ID` = :p0';
 		try {
 			$stmt = $con->prepare($sql);
 			$stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -409,6 +413,32 @@ abstract class BaseUserQuery extends ModelCriteria
 			}
 		}
 		return $this->addUsingAlias(UserPeer::ROLE, $role, $comparison);
+	}
+
+	/**
+	 * Filter the query on the deleted column
+	 *
+	 * Example usage:
+	 * <code>
+	 * $query->filterByDeleted(true); // WHERE deleted = true
+	 * $query->filterByDeleted('yes'); // WHERE deleted = true
+	 * </code>
+	 *
+	 * @param     boolean|string $deleted The value to use as filter.
+	 *              Non-boolean arguments are converted using the following rules:
+	 *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+	 *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+	 *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    UserQuery The current query, for fluid interface
+	 */
+	public function filterByDeleted($deleted = null, $comparison = null)
+	{
+		if (is_string($deleted)) {
+			$deleted = in_array(strtolower($deleted), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+		}
+		return $this->addUsingAlias(UserPeer::DELETED, $deleted, $comparison);
 	}
 
 	/**

@@ -28,6 +28,7 @@
     <column name="activate_token" type="varchar" size="512" required="false" />
     <column name="reset_password_token" type="varchar" size="512" required="false" />
     <column name="role" type="enum" valueSet="admin,editor,pending,guest" required="true" default="pending" />
+    <column name="deleted" type="boolean" default="false" />
     <column name="language" type="varchar" size="5" default="en" />
     <column name="created_at" type="timestamp" required="true" />
     <!-- extended user profiles -->

@@ -46,6 +46,7 @@ CREATE TABLE `user`
 	`activate_token` VARCHAR(512),
 	`reset_password_token` VARCHAR(512),
 	`role` TINYINT DEFAULT 2 NOT NULL,
+	`deleted` TINYINT(1) DEFAULT 0,
 	`language` VARCHAR(5) DEFAULT 'en',
 	`created_at` DATETIME NOT NULL,
 	`name` VARCHAR(512),
