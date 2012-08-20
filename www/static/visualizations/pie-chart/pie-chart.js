@@ -62,18 +62,25 @@
 
             var series = me.chart.dataSeries(true),
                 total = 0, min = Number.MAX_VALUE, max = 0,
-                reverse, oseries, others = 0, ocnt = 0;
+                reverse, oseries, others = 0, ocnt = 0, hasNegativeValues = false;
 
 
             // now group small series into one big chunk named 'others'
             oseries = [];
             _.each(series, function(s, i) {
+                if (s.data[0] < 0) {
+                    hasNegativeValues = true;
+                    return;
+                }
                 if (i < groupAfter) oseries.push(s);
                 else {
                     ocnt += 1;
                     others += s.data[0];
                 }
             });
+            if (hasNegativeValues) {
+                me.warn('<b>Warning:</b> Pie charts are not suitable for displaying negative values.');
+            }
             if (ocnt > 0) {
                 oseries.push(new Miso.Column({
                     name: 'others',

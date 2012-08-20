@@ -51,6 +51,27 @@
          */
         get: function(str, _default) {
             return this.chart.get('metadata.visualize.'+str, _default);
+        },
+
+        warn: function(str) {
+            var warning = $('<div>' + str + '</div>');
+            warning.css({
+                'background-color': '#FCF8E3',
+                'border': '1px solid #FBEED5',
+                'border-radius': '4px 4px 4px 4px',
+                'color': '#a07833',
+                'margin-bottom': '18px',
+                'padding': '8px 35px 8px 14px',
+                'text-shadow': '0 1px 0 rgba(255, 255, 255, 0.5)',
+                'left': '10%',
+                'right': '10%',
+                'text-align': 'center',
+                position: 'absolute'
+            });
+            $('body').prepend(warning);
+            warning.hide();
+            warning.fadeIn();
+            
         }
 
     });
