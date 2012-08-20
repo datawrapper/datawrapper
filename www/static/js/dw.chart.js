@@ -140,14 +140,15 @@
             var me = this,
                 format = me.get('metadata.describe.number-format'),
                 div = Number(me.get('metadata.describe.number-divisor')),
-                append = me.get('metadata.describe.number-append'),
-                prepend = me.get('metadata.describe.number-prepend');
+                append = me.get('metadata.describe.number-append', '').replace(' ', '&nbsp;'),
+                prepend = me.get('metadata.describe.number-prepend', '').replace(' ', '&nbsp;');
 
             if (format != '-') {
                 var culture = Globalize.culture(me.locale);
                 val = Globalize.format(Number(val) / Math.pow(10, div), format);
             }
-            return prepend + val + append;
+
+            return full ? prepend + val + append : val;
         },
 
         filterRow: function(r) {

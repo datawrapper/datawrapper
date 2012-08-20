@@ -41,8 +41,12 @@ p { margin: 15px 0; line-height: 19px;}
     font-weight: bold;
 }
 
-.label.inverse span {
+.label.highlighted.reverse span {
     color: #fff;
+}
+
+.label.highlighted {
+    font-weight: bold;
 }
 
 .label.value span {

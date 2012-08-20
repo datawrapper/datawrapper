@@ -187,6 +187,15 @@ $(function() {
                     </div>
                 </div>
 
+
+                <div class="control-group">
+                    <label class="control-label" for="text-title">{% trans "Prepend/Append" %}</label>
+                    <div class="controls">
+                        <input type="text" id="number-prepend" style="width:2em;text-align:right" /> ### <input type="text" id="number-append" style="width:2em" />
+                    </div>
+                </div>
+
+
                 <div class="control-group">
                     <label class="control-label" for="text-title">{% trans "Devide numbers by" %}</label>
                     <div class="controls">
@@ -199,22 +208,7 @@ $(function() {
                     </div>
                 </div>
 
-                <div class="control-group">
-                    <label class="control-label" for="text-title">{% trans "Prepend/Append" %}</label>
-                    <div class="controls">
-                        <input type="text" id="number-prepend" style="width:2em;text-align:right" /> # <input type="text" id="number-append" style="width:2em" />
-                    </div>
-                </div>
-
             </div>
-
-                {# <p>
-                <label>{% trans "If possible, please specify the <i>number format</i>" %}</label>
-                <select id="number-format">
-                    <option value="en">{% trans "English (eg 1,234.56)" %}</option>
-                    <option value="de">{% trans "German/French (eg 1.234,56)" %}</option>
-                </select>
-            </p> #}
 
             <h3>{% trans "Credit the source" %}</h3>
             <p>

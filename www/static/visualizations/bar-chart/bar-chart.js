@@ -20,7 +20,9 @@
             chart_width = c.w - c.lpad - c.rpad,
             series_gap = 0.05, // pull from theme
             row_gap = 0.01,
-            row = 0; // pull from theme
+            row = 0, // pull from theme
+            labelsInsideBars = me.get('labels-inside-bars', false);
+
             if (!_.isUndefined(me.get('selected-row'))) {
                 row = me.get('selected-row');
             }
@@ -32,6 +34,8 @@
 
             $('.tooltip').hide();
 
+            c.lastBarY = 0;
+
             _.each(me.chart.dataSeries(sortBars), function(series, s) {
                 _.each(series.data, function(val, r) {
                     var d = me.barDimensions(series, s, r);
@@ -42,31 +46,43 @@
                         'fill': fill
                     }).data('strokeCol', stroke), series);
 
-                    var lbl_x = val > 0 ?
+                    var lbl_x = val >= 0 ?
                             c.zero - c.maxValueLabelWidth[0] - 10
                             : c.zero + c.maxValueLabelWidth[1] + 10,
-                        val_x = val > 0 ?
+                        lbl_align = val >= 0 ? 'right' : 'left',
+                        val_x = val >= 0 ?
                             c.zero - c.maxValueLabelWidth[0]
-                            : c.zero + c.maxValueLabelWidth[1];
+                            : c.zero + c.maxValueLabelWidth[1],
+                        val_align = val >= 0 ? 'left' : 'right',
+                        lblClass = me.chart.isHighlighted(series) ? ' highlighted' : '';
+
+                    if (labelsInsideBars) {
+                        lbl_x = val >= 0 ? d.x + 10 : d.x + d.w - 10;
+                        val_x = val >= 0 ? d.x + d.w - 10 : d.x + 10;
+                        lbl_align = val >= 0 ? 'left' : 'right';
+                        val_align = val >= 0 ? 'right' : 'left';
+                        lblClass += ' reverse';
+                    }
                     me.registerSeriesLabel(me.label(val_x, d.y + d.h * 0.5, me.chart.formatValue(series.data[r], s === 0),{
                         w: 40,
-                        align: val <= 0 ? 'right' : 'left',
-                        cl: 'value'
+                        align: val_align,
+                        cl: 'value' + lblClass
                     }), series);
 
                     // add series label
                     me.registerSeriesLabel(me.label(lbl_x , d.y + d.h * 0.5, series.name,{
                         w: 160,
-                        align: val <= 0 ? 'left' : 'right',
-                        cl: me.chart.isHighlighted(series) ? 'series highlighted' : 'series'
+                        align: lbl_align,
+                        cl: 'series' + lblClass
                     }), series);
 
+                    c.lastBarY = Math.max(c.lastBarY, d.y + d.h);
                 });
             });
 
             if (me.__domain[0] < 0) {
                 var x = c.lpad + c.zero ;
-                me.path([['M', x, c.tpad], ['L', x, c.h - c.bpad]], 'axis')
+                me.path([['M', x, c.tpad], ['L', x, c.lastBarY ]], 'axis')
                     .attr(me.theme.yAxis);
             }
 
@@ -90,14 +106,14 @@
             _.each(me.chart.dataSeries(), function(series, s) {
                 var t = series.data[r] < 0 ? 3 : 0;
                 maxw[t] = Math.max(maxw[t], me.labelWidth(series.name, 'series') + 20);
-                maxw[t+1] = Math.max(maxw[t+1], me.labelWidth(me.chart.formatValue(series.data[r], s === 0), 'value') + 10);
+                maxw[t+1] = Math.max(maxw[t+1], me.labelWidth(me.chart.formatValue(series.data[r], true), 'value') + 10);
                 maxw[t+2] = Math.max(maxw[t+2], Math.abs(series.data[r]));
             });
             c.left = 0;
             c.right = 0;
             c.zero = 10 + maxw[5] / (maxw[2] + maxw[5]) * w;
 
-            if (!me.get('labels-inside-bars')) {
+            if (!me.get('labels-inside-bars', false)) {
 
                 c.left = Math.max(maxw[0] + maxw[1] - c.zero, 0);
                 c.right = Math.max((maxw[3] + maxw[4]) - (w - c.zero), 0);
@@ -110,7 +126,6 @@
             c.maxValueLabelWidth = [maxw[1], maxw[4]];
 
             me.__scales.y.rangeRound([c.lpad, w]);
-            console.log(c.left, c.right, c.zero, w);
         },
 
         barDimensions: function(series, s, r) {
@@ -121,7 +136,7 @@
             //
             cw = c.h - c.bpad - c.tpad;
             //
-            bw = Math.min(24, cw / (n + (n-1) * pad));
+            bw = Math.min(50, cw / (n + (n-1) * pad));
             w = sc.y(val) - sc.y(0);
             h = bw;
             if (w > 0) {

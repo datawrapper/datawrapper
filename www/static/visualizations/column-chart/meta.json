@@ -14,7 +14,14 @@
         "url": "http://www.opensource.org/licenses/mit-license.php"
     },
     "options": {
-
+        "sort-values": {
+            "type": "checkbox",
+            "label": {
+                "en": "Autmatically sort bars",
+                "de": "Balken sortieren",
+                "fr": "Type"
+            }
+        }
     },
     "libraries": [],
     "about": "http://site.com/understanding-bar-charts/",
