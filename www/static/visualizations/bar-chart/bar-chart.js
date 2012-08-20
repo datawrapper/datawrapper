@@ -28,7 +28,7 @@
             me.chart.filterRow(row);
 
             me.init();
-            me.initDimensions();
+            me.initDimensions(0);
 
             $('.tooltip').hide();
 
@@ -42,12 +42,12 @@
                         'fill': fill
                     }).data('strokeCol', stroke), series);
 
-                    var val_x = val > 0 ?
-                            d.x - me.__canvas.maxValueLabelWidth + 10
-                            : d.x + d.w - 10 + me.__canvas.maxValueLabelWidth,
-                        lbl_x = val > 0 ?
-                            d.x - 10 - me.__canvas.maxValueLabelWidth
-                            : d.x + d.w + me.__canvas.maxValueLabelWidth + 10;
+                    var lbl_x = val > 0 ?
+                            c.zero - c.maxValueLabelWidth[0] - 10
+                            : c.zero + c.maxValueLabelWidth[1] + 10,
+                        val_x = val > 0 ?
+                            c.zero - c.maxValueLabelWidth[0]
+                            : c.zero + c.maxValueLabelWidth[1];
                     me.registerSeriesLabel(me.label(val_x, d.y + d.h * 0.5, me.chart.formatValue(series.data[r], s === 0),{
                         w: 40,
                         align: val <= 0 ? 'right' : 'left',
@@ -65,7 +65,7 @@
             });
 
             if (me.__domain[0] < 0) {
-                var x = c.lpad + me.__scales.y(0) + me.__canvas.maxValueLabelWidth + me.__canvas.maxSeriesLabelWidth;
+                var x = c.lpad + c.zero ;
                 me.path([['M', x, c.tpad], ['L', x, c.h - c.bpad]], 'axis')
                     .attr(me.theme.yAxis);
             }
@@ -77,7 +77,7 @@
         initDimensions: function(r) {
             //
             var me = this, c = me.__canvas,
-                dMin = 0, dMax = 0, w = c.w - c.lpad - c.rpad - 20;
+                dMin = 0, dMax = 0, w = c.w - c.lpad - c.rpad - 30;
             _.each(me.chart.dataSeries(), function(series) {
                 dMin = Math.min(dMin, series._min());
                 dMax = Math.max(dMax, series._max());
@@ -86,42 +86,50 @@
             me.__scales = {
                 y: d3.scale.linear().domain([dMin, dMax])
             };
-            if (!me.get('labels-inside-bars')) {
-                // compute maximum width of series labels
-                var max_sw = 0, max_vw = 0;
-                _.each(me.chart.dataSeries(), function(series, s) {
-                    max_sw = Math.max(max_sw, me.labelWidth(series.name, 'series'));
-                    max_vw = Math.max(max_vw, me.labelWidth(me.chart.formatValue(series.data[r], s === 0), 'value'));
-                });
-                max_sw += 20;
-                max_vw += 10;
-                w -= max_sw + max_vw;
-                me.__canvas.maxSeriesLabelWidth = max_sw;
-                me.__canvas.maxValueLabelWidth = max_vw;
+            var maxw = [0, 0, 0, 0, 0, 0], ratio;
+            _.each(me.chart.dataSeries(), function(series, s) {
+                var t = series.data[r] < 0 ? 3 : 0;
+                maxw[t] = Math.max(maxw[t], me.labelWidth(series.name, 'series') + 20);
+                maxw[t+1] = Math.max(maxw[t+1], me.labelWidth(me.chart.formatValue(series.data[r], s === 0), 'value') + 10);
+                maxw[t+2] = Math.max(maxw[t+2], Math.abs(series.data[r]));
+            });
+            c.left = 0;
+            c.right = 0;
+            c.zero = 10 + maxw[5] / (maxw[2] + maxw[5]) * w;
 
+            if (!me.get('labels-inside-bars')) {
+
+                c.left = Math.max(maxw[0] + maxw[1] - c.zero, 0);
+                c.right = Math.max((maxw[3] + maxw[4]) - (w - c.zero), 0);
+
+                w -= c.left + c.right;
+
+                c.zero = c.left + maxw[5] / (maxw[2] + maxw[5]) * w;
             }
+            c.maxSeriesLabelWidth = [maxw[0], maxw[3]];
+            c.maxValueLabelWidth = [maxw[1], maxw[4]];
 
             me.__scales.y.rangeRound([c.lpad, w]);
+            console.log(c.left, c.right, c.zero, w);
         },
 
         barDimensions: function(series, s, r) {
             var me = this, w, h, x, y, i, cw, n = me.chart.dataSeries().length,
-                sc = me.__scales, c = me.__canvas, bw, pad = 0.35, vspace = 0.1;
+                sc = me.__scales, c = me.__canvas, bw, pad = 0.35, vspace = 0.1,
+                val = series.data[r];
 
             //
             cw = c.h - c.bpad - c.tpad;
             //
             bw = Math.min(24, cw / (n + (n-1) * pad));
-            w = sc.y(series.data[r]) - sc.y(0);
+            w = sc.y(val) - sc.y(0);
             h = bw;
             if (w > 0) {
-                x = c.lpad + sc.y(0);
+                x = c.lpad + c.zero;
             } else {
-                x = c.lpad + sc.y(0) + w;
+                x = c.lpad + c.zero + w;
                 w *= -1;
             }
-            x += me.__canvas.maxSeriesLabelWidth;
-            x += me.__canvas.maxValueLabelWidth;
             y = Math.round(c.tpad + s * (bw + bw * pad));
             return { w: w, h: h, x: x, y: y };
         },
