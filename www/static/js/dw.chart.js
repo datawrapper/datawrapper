@@ -139,39 +139,15 @@
         formatValue: function(val, full) {
             var me = this,
                 format = me.get('metadata.describe.number-format'),
-                div = Number(me.get('metadata.describe.number-divisor'));
+                div = Number(me.get('metadata.describe.number-divisor')),
+                append = me.get('metadata.describe.number-append'),
+                prepend = me.get('metadata.describe.number-prepend');
+
             if (format != '-') {
-                var culture = Globalize.culture(me.locale),
-                    currPat = culture.numberFormat.currency.pattern.slice(0);
-                if (!full && format[0] == 'c') format = format == 'c0' ? 'n0': 'n2';
-                if (format[0] == 'c') {
-                    var curFmt = culture.numberFormat.currency;
-                    if (div > 0 && me.metric_prefix[div] && full) {
-                        curFmt.pattern[0] = curFmt.pattern[0].replace('n', 'n'+me.metric_prefix[div]);
-                        curFmt.pattern[1] = curFmt.pattern[1].replace('n', 'n'+me.metric_prefix[div]);
-                    }
-                    var chartCurrency = me.get('metadata.describe.number-currency').split('|');
-                    culture.numberFormat.currency.symbol = chartCurrency[1];
-                }
+                var culture = Globalize.culture(me.locale);
                 val = Globalize.format(Number(val) / Math.pow(10, div), format);
-                // reset pattern
-                culture.numberFormat.currency.pattern = currPat;
-                if (div > 0 && format[0] == 'n' && full) {
-                    val += me.metric_prefix[div];
-                }
-                if (format[0] == 'n' && full) {
-                    val += ' <span class="unit">'+me.get('metadata.describe.number-unit')+'</span>';
-                }
-                if (format[0] == 'c') {
-                    var curSym = culture.numberFormat.currency.symbol;
-                    if (full) {
-                        val = val.replace(curSym, '<span class="unit">'+curSym+'</span>');
-                    } else {
-                        val = val.replace(curSym, '');
-                    }
-                }
             }
-            return val;
+            return prepend + val + append;
         },
 
         filterRow: function(r) {

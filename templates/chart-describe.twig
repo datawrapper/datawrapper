@@ -17,8 +17,8 @@ $(function() {
 
     DW.currentChart.sync('#number-format', 'metadata.describe.number-format');
     DW.currentChart.sync('#number-divisor', 'metadata.describe.number-divisor');
-    DW.currentChart.sync('#number-unit', 'metadata.describe.number-unit');
-    DW.currentChart.sync('#number-currency', 'metadata.describe.number-currency');
+    DW.currentChart.sync('#number-append', 'metadata.describe.number-append');
+    DW.currentChart.sync('#number-prepend', 'metadata.describe.number-prepend');
 
     // swap between currency and unit
     function swapUnitAndCurrency() {
@@ -174,34 +174,39 @@ $(function() {
 
             <h3>{% trans "Output number format" %}</h3>
 
-            <p>
-                <select id="number-format" class="select span2 number-format">
-                    <option value="-">{% trans "keep original" %}</option>
-                    {% for key, formats in numberformats %}
-                    <optgroup label="{{ key }}">
-                        {% for id, format in formats %}
-                        <option value="{{ id }}">{{ format }}</option>
-                        {% endfor %}
-                    </optgroup>
-                    {% endfor %}
-                </select>
+            <div class="form-horizontal compact">
+                <div class="control-group">
+                    <label class="control-label" for="text-title">{% trans "Decimals after point" %}</label>
+                    <div class="controls">
+                       <select id="number-format" class="select span2 number-format">
+                            <option value="-">{% trans "keep original" %}</option>
+                            {% for id, format in numberformats %}
+                                <option value="{{ id }}">{{ format }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
 
-                <select class="span1 number-format" id="number-divisor">
-                    <option value="0">-</option>
-                    <option value="3">{% trans "thousand" %}</option>
-                    <option value="6">{% trans "million" %}</option>
-                    <option value="9">{% trans "billion" %}</option>
-                </select>
+                <div class="control-group">
+                    <label class="control-label" for="text-title">{% trans "Devide numbers by" %}</label>
+                    <div class="controls">
+                        <select class="span1 number-format" id="number-divisor">
+                            <option value="0">-</option>
+                            <option value="3">{% trans "1000" %}</option>
+                            <option value="6">{% trans "1 million" %}</option>
+                            <option value="9">{% trans "1 billion" %}</option>
+                        </select>
+                    </div>
+                </div>
 
-                <input type="text" id="number-unit" placeholder="unit" class="span1 number-format" />
-                <select class="span1 number-format" id="number-currency">
-                    <option data-symbol="€" value="EUR|€">EUR</option>
-                    <option data-symbol="£" value="GBP|£">GBP</option>
-                    <option data-symbol="$" value="USD|$">USD</option>
-                    <option data-symbol="¥" value="YEN|¥">YEN</option>
-                </select>
+                <div class="control-group">
+                    <label class="control-label" for="text-title">{% trans "Prepend/Append" %}</label>
+                    <div class="controls">
+                        <input type="text" id="number-prepend" style="width:2em;text-align:right" /> # <input type="text" id="number-append" style="width:2em" />
+                    </div>
+                </div>
 
-            </p>
+            </div>
 
                 {# <p>
                 <label>{% trans "If possible, please specify the <i>number format</i>" %}</label>
