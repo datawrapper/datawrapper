@@ -54,7 +54,7 @@
                             c.zero - c.maxValueLabelWidth[0]
                             : c.zero + c.maxValueLabelWidth[1],
                         val_align = val >= 0 ? 'left' : 'right',
-                        lblClass = me.chart.isHighlighted(series) ? ' highlighted' : '';
+                        lblClass = me.chart.hasHighlight() && me.chart.isHighlighted(series) ? ' highlighted' : '';
 
                     if (labelsInsideBars) {
                         lbl_x = val >= 0 ? d.x + 10 : d.x + d.w - 10;

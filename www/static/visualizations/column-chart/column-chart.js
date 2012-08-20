@@ -60,7 +60,7 @@
                         w: d.w,
                         align: 'center',
                         valign: val > 0 ? 'top' : 'bottom',
-                        cl: me.chart.isHighlighted(series) ? 'series highlighted' : 'series'
+                        cl: me.chart.hasHighlight() && me.chart.isHighlighted(series) ? 'series highlighted' : 'series'
                     }), series);
 
                 });
