@@ -37,7 +37,7 @@
             _.each(me.chart.dataSeries(sortBars), function(series, s) {
                 _.each(series.data, function(val, r) {
                     var d = me.barDimensions(series, s, r);
-                    var fill = me.getSeriesColor(series, r),
+                    var fill = me.getSeriesColor(series, r, me.get('negative-color', false)),
                         stroke = d3.cie.lch(d3.rgb(fill)).darker(0.6).toString();
                     me.registerSeriesElement(c.paper.rect(d.x, d.y, d.w, d.h).attr({
                         'stroke': stroke,
@@ -156,7 +156,7 @@
                         lbl.removeClass('hover');
                     }
                     _.each(me.__seriesElements[s.name], function(el) {
-                        var fill = me.getSeriesColor(s, 0), stroke;
+                        var fill = me.getSeriesColor(s, 0, me.get('negative-color', false)), stroke;
                         if (series !== undefined && s.name == series.name) fill = d3.cie.lch(d3.rgb(fill)).darker(0.6).toString();
                         stroke = d3.cie.lch(d3.rgb(fill)).darker(0.6).toString();
                         if (el.attrs.fill != fill || el.attrs.stroke != stroke)

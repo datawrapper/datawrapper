@@ -19,7 +19,15 @@
             "label": {
                 "en": "Autmatically sort bars",
                 "de": "Balken sortieren",
-                "fr": "Type"
+                "fr": "Barres de tri Autmatically"
+            }
+        },
+        "negative-color": {
+            "type": "checkbox",
+            "label": {
+                "en": "Use different color for negative values",
+                "de": "Andere Farbe für negative Werte ",
+                "fr": "Couleur différentes pour les valeurs négatives"
             }
         }
     },

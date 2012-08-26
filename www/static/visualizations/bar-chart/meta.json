@@ -20,15 +20,23 @@
             "label": {
                 "en": "Autmatically sort bars",
                 "de": "Balken sortieren",
-                "fr": "Type"
+                "fr": "Barres de tri Autmatically"
             }
         },
         "labels-inside-bars": {
             "type": "checkbox",
             "label": {
                 "en": "Display labels inside bars",
-                "de": "Balken sortieren",
-                "fr": "Type"
+                "de": "Zahlen innerhalb der Balken",
+                "fr": "Afficher les étiquettes dans les barres"
+            }
+        },
+        "negative-color": {
+            "type": "checkbox",
+            "label": {
+                "en": "Use different color for negative values",
+                "de": "Andere Farbe für negative Werte ",
+                "fr": "Couleur différentes pour les valeurs négatives"
             }
         }
     },

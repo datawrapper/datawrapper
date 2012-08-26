@@ -172,9 +172,12 @@
             throw 'getDataRowByPoint() needs to be implemented by each visualization';
         },
 
-        getSeriesColor: function(series) {
-            if (!this.chart.hasHighlight()) return this.theme.colors['main'];
-            return this.theme.colors[this.chart.isHighlighted(series) ? 'highlight' : 'main'];
+        getSeriesColor: function(series, row, useNegativeColor) {
+            var me = this,
+                main = useNegativeColor && series.data[row] < 0 ? 'negative' : 'main',
+                highlight = useNegativeColor && series.data[row] < 0 ? 'highlight-negative' : 'highlight';
+            if (!me.chart.hasHighlight()) return me.theme.colors[main];
+            return me.theme.colors[me.chart.isHighlighted(series) ? highlight : main];
         },
 
         getYTicks: function(h) {

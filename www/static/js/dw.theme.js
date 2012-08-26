@@ -17,7 +17,9 @@
             focus: '#0063A5',
             context: '#aaa',
             axis: '#000000',
-            grid: '#999999'
+            grid: '#999999',
+            negative: '#D4B485',
+            'highlight-negative': '#9E5800'
         },
 
         locale: 'de_DE',

@@ -13,6 +13,8 @@
         colors: {
             main: '#E8B3A4',
             highlight: '#C72535',
+            negative: '#A4B3E8',
+            'negative-highlight': '#3525C7',
             altBg: '#EDE1C7'
         },
 
