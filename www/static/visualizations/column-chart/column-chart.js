@@ -16,6 +16,7 @@
 
             var me = this,
             sortBars = me.get('sort-values'),
+            reverse = me.get('reverse-order'),
             c = me.initCanvas({}),
             chart_width = c.w - c.lpad - c.rpad,
             series_gap = 0.05, // pull from theme
@@ -34,7 +35,7 @@
 
             me.horzGrid();
 
-            _.each(me.chart.dataSeries(sortBars), function(series, s) {
+            _.each(me.chart.dataSeries(sortBars, reverse), function(series, s) {
                 _.each(series.data, function(val, r) {
                     var d = me.barDimensions(series, s, r);
                     var fill = me.getSeriesColor(series, r, me.get('negative-color', false)),
@@ -46,7 +47,8 @@
 
                     var val_y = val > 0 ? d.y - 10 : d.y + d.h + 10,
                         lbl_y = val <= 0 ? d.y - 10 : d.y + d.h + 5;
-                    if (me.chart.isHighlighted(series)) {
+
+                    if ((me.chart.hasHighlight() && me.chart.isHighlighted(series)) || (d.w > 40)) {
                         // add value labels
                         me.registerSeriesLabel(me.label(d.x + d.w * 0.5, val_y, me.chart.formatValue(series.data[r]),{
                             w: d.w,

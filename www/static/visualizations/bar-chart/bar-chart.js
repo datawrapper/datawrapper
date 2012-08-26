@@ -16,6 +16,7 @@
 
             var me = this,
             sortBars = me.get('sort-values'),
+            reverse = me.get('reverse-order'),
             useNegativeColor = me.get('negative-color', false),
             c = me.initCanvas({}),
             chart_width = c.w - c.lpad - c.rpad,
@@ -37,7 +38,7 @@
 
             c.lastBarY = 0;
 
-            _.each(me.chart.dataSeries(sortBars), function(series, s) {
+            _.each(me.chart.dataSeries(sortBars, reverse), function(series, s) {
                 _.each(series.data, function(val, r) {
                     var d = me.barDimensions(series, s, r);
                     var fill = me.getSeriesColor(series, r, useNegativeColor),

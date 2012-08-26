@@ -23,6 +23,14 @@
                 "fr": "Barres de tri Autmatically"
             }
         },
+        "reverse-order": {
+            "type": "checkbox",
+            "label": {
+                "en": "Reverse order",
+                "de": "Umgekehrte Reihenfolge",
+                "fr": "inverser ordre"
+            }
+        },
         "labels-inside-bars": {
             "type": "checkbox",
             "label": {

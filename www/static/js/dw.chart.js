@@ -63,7 +63,7 @@
             }
         },
 
-        dataSeries: function(sortByFirstValue) {
+        dataSeries: function(sortByFirstValue, reverseOrder) {
             var me = this;
             ds = [];
             me.__dataview.eachColumn(function(name, col, i) {
@@ -76,6 +76,7 @@
                     return b.data[0] > a.data[0] ? 1 : -1;
                 });
             }
+            if (reverseOrder) ds.reverse();
             return ds;
         },
 

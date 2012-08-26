@@ -4,6 +4,7 @@
         "de": "Balkendiagramm (vert.)",
         "fr": "Diagramme temporel"
     },
+    "dimensions": 1,
     "extends": "raphael-chart",
     "author": {
         "name": "gka",
@@ -20,6 +21,14 @@
                 "en": "Autmatically sort bars",
                 "de": "Balken sortieren",
                 "fr": "Barres de tri Autmatically"
+            }
+        },
+        "reverse-order": {
+            "type": "checkbox",
+            "label": {
+                "en": "Reverse order",
+                "de": "Umgekehrte Reihenfolge",
+                "fr": "inverser ordre"
             }
         },
         "negative-color": {
