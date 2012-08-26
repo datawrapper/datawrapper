@@ -168,11 +168,21 @@ body {
 .navbar .brand {
     padding-top: 13px;
     color: #556;
+    text-shadow: 1px 1px 0 rgba(255, 255, 255, .55)
+}
+
+.navbar .brand .beta {
+    font-size:10px;
+    font-weight:500;
+    position:relative;
+    top:-8px;
+    left:3px;
+    color:#999;
 }
 
 .navbar .nav > li > a {
     padding-top: 15px;
-    text-shadow: 0 -1px 0 rgba(255, 255, 255, 0.25)
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.45)
 }
 
 .navbar .nav > li > a:hover {
