@@ -145,7 +145,12 @@
             });
 
             if (showTotal) {
-                me.label(c.cx, c.cy, '<strong>Total:</strong><br />'+me.chart.formatValue(total, true), {
+                if (me.get('custom-total')) {
+                    total = me.get('custom-total-value', '');
+                } else {
+                    total = me.chart.formatValue(total, true);
+                }
+                me.label(c.cx, c.cy, '<strong>Total:</strong><br />'+total, {
                     w: 50,
                     align: 'center',
                     valign: 'middle'

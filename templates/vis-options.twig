@@ -1,7 +1,6 @@
 {% block visoptions %}
 
 <fieldset>
-
     {% if vis.dimensions == 1 %}
     <div class="control-group select-row">
         <label class="control-label" for="text-title">{% trans "Select row to display" %}</label>
@@ -13,30 +12,37 @@
     {% endif %}
 
     {% for key, option in vis.options %}
-    <div class="control-group" style="margin-bottom:0px">
+    <div class="control-group" style="margin-bottom:0px" id="vis-options-{{ key }}">
         {% if option.type == 'checkbox' %}
             <div class="contols">
-                <label class="checkbox" for="{{ key }}"><input type="checkbox" id="{{ key }}" /> {{ option.label.en }}</label>
+                <label class="checkbox" for="{{ key }}"><input type="checkbox" id="{{ key }}" /> {{ option.label[language] }}</label>
             </div>
 
         {% elseif option.type == 'select' %}
 
-            <label class="control-label" for="{{ key }}">{{ option.label.en }}</label>
+            <label class="control-label" for="{{ key }}">{{ option.label[language] }}</label>
             <div class="controls">
                 <select id="{{ key }}">
                     {% for opt in option.options %}
-                    <option value="{{ opt.value }}">{{ opt.label.en }}</option>
+                    <option value="{{ opt.value }}">{{ opt.label[language] }}</option>
                     {% endfor %}
                 </select>
             </div>
 
         {% elseif option.type == 'radio' %}
 
-            <label class="control-label"  for="{{ key }}">{{ option.label.en }}</label>
+            <label class="control-label"  for="{{ key }}">{{ option.label[language] }}</label>
             <div class="controls form-inline">
                 {% for opt in option.options %}
-                <label class="radio"><input type="radio" name="{{ key }}" value="{{ opt.value }}" {% if opt.default %}checked="checked" {% endif %}/> {{ opt.label.en }}</label><br />
+                <label class="radio"><input type="radio" name="{{ key }}" value="{{ opt.value }}" {% if opt.default %}checked="checked" {% endif %}/> {{ opt.label[language] }}</label><br />
                 {% endfor %}
+            </div>
+
+        {% elseif option.type == 'text' %}
+
+            <label class="control-label"  for="{{ key }}">{{ option.label[language] }}</label>
+            <div class="controls form-inline">
+                <input type="text" style="width:auto" id="{{ key }}" value="" />
             </div>
 
         {% else %}
@@ -48,14 +54,31 @@
 <script type="text/javascript">
 
 $(function() {
+    var chart = DW.currentChart;
+
     function syncVisOptions(vis) {
         _.each(vis.options, function(opt, key) {
             if (opt.type == 'radio') {
-                DW.currentChart.sync('input[name='+key+']', 'metadata.visualize.'+key);
+                chart.sync('input[name='+key+']', 'metadata.visualize.'+key);
             } else {
-                DW.currentChart.sync('#'+key, 'metadata.visualize.'+key);
+                chart.sync('#'+key, 'metadata.visualize.'+key);
             }
         });
+        // check visibility of each option (evaluate "depends-on" property)
+        function checkDepends() {
+            _.each(vis.options, function(opt, key) {
+                if (opt['depends-on'] !== undefined) {
+                    var visible = true;
+                    _.each(opt['depends-on'], function(val, key) {
+                        visible = visible && chart.get('metadata.visualize.'+key) == val;
+                    });
+                    if (visible) $('#vis-options-'+key).show();
+                    else $('#vis-options-'+key).hide()
+                }
+            });
+        }
+        checkDepends();
+        chart.onChange(checkDepends);
     };
 
     // initial visualization meta
@@ -64,7 +87,7 @@ $(function() {
 
     // populate select-row
     if (vis.dimensions == 1) {
-        DW.currentChart.datasetLoaded(function(chart) {
+        chart.datasetLoaded(function(chart) {
             if (chart.numRows() > 1) {
                 var selRows = $('#select-row');
                 for (var r=0; r<chart.numRows(); r++) {
@@ -76,6 +99,7 @@ $(function() {
             }
         });
     }
+
 });
 
 </script>

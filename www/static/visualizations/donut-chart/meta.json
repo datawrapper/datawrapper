@@ -23,6 +23,30 @@
                 "fr": "Type"
             },
             "default": true
+        },
+        "custom-total": {
+            "type": "checkbox",
+            "label": {
+                "en": "Use custom total value instead of sum",
+                "de": "Eigenen Wert anstelle der Summe verwenden",
+                "fr": "translate me.."
+            },
+            "default": false,
+            "depends-on": {
+                "show-total": true
+            }
+        },
+        "custom-total-value": {
+            "type": "text",
+            "label": {
+                "en": "Custom total value",
+                "de": "Eigener Wert",
+                "fr": ".."
+            },
+            "depends-on": {
+                "show-total": true,
+                "custom-total": true
+            }
         }
     },
     "libraries": [],
