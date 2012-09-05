@@ -10,6 +10,8 @@
 $app->get('/xhr/header/:page', function($active) use ($app) {
     $page = array();
     add_header_vars($page, $active);
+    $res = $app->response();
+    $res['Cache-Control'] = 'max-age=0';
     $app->render('header.twig', $page);
 });
 
@@ -19,6 +21,8 @@ $app->get('/xhr/header/:page', function($active) use ($app) {
 $app->get('/xhr/home-login', function() use ($app) {
     $page = array();
     add_header_vars($page);
+    $res = $app->response();
+    $res['Cache-Control'] = 'max-age=0';
     $app->render('home-login.twig', $page);
 });
 
@@ -33,6 +37,8 @@ $app->get('/xhr/:chartid/vis-options', function($id) use ($app) {
         $page = array(
             'vis' => get_visualization_meta($chart->getType()),
         );
+        $res = $app->response();
+        $res['Cache-Control'] = 'max-age=0';
         $app->render('vis-options.twig', $page);
     });
 });
