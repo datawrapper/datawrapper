@@ -42,8 +42,9 @@
             });
             // subtract body padding
             //ch += $('body').innerHeight() - $('body').height();
-            var m = $('#chart').css('margin-top');
-            return $(window).height() - ch - Number(m.substr(0, m.length-2));
+            var m = $('#chart').css('margin-top'),
+                maxH = $(window).height() - ch - Number(m.substr(0, m.length-2));
+            return maxH;
         },
 
         /**

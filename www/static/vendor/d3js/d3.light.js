@@ -1,4 +1,6 @@
-[].map||(Array.prototype.map=function(a){for(var b=this,c=b.length,d=[],e=0,f;e<b;)d[e]=e in b?a.call(arguments[1],b[e],e++,b):f;return d});
+//[].map||(Array.prototype.map=function(a){for(var b=this,c=b.length,d=[],e=0,f;e<b;)d[e]=e in b?a.call(arguments[1],b[e],e++,b):f;return d});
+
+[].map||(Array.prototype.map=function(a,t){for(var c=this,b=c.length,d=[],e=0;e<b;)e in c&&(d[e]=a.call(t,c[e],e++,c));d.lengh=b;return d});
 
 [].filter||(Array.prototype.filter=function(a,b,c,d,e){c=this;d=[];for(e in c)~~e+''==e&&e>=0&&a.call(b,c[e],+e,c)&&d.push(c[e]);return d})
 
@@ -876,10 +878,6 @@ d3.ascending = function(a, b) {
         : lch(+l, +c, +h);
   };
 
-  d3_Rgb.prototype.lch = function() {
-    return rgb_lch(this.r, this.g, this.b);
-  };
-
   cie.interpolateLab = function(a, b) {
     a = cie.lab(a);
     b = cie.lab(b);
@@ -995,11 +993,6 @@ d3.ascending = function(a, b) {
     return lch(l, c, h);
   }
 
-  function rgb_lch(r, g, b) {
-    var t = rgb_lab(r, g, b);
-    return lab_lch(t.l, t.a, t.b);
-  }
-
   function lch_lab(l, c, h) {
     h = h * Math.PI / 180;
     return lab(l, Math.cos(h) * c, Math.sin(h) * c);
@@ -1020,6 +1013,15 @@ d3.ascending = function(a, b) {
   function rgb_xyz(r) {
     return (r /= 255) <= 0.04045 ? r / 12.92 : Math.pow((r + 0.055) / 1.055, 2.4);
   }
+
+  function rgb_lch(r, g, b) {
+    var t = rgb_lab(r, g, b);
+    return lab_lch(t.l, t.a, t.b);
+  }
+
+  d3_Rgb.prototype.lch = function() {
+    return rgb_lch(this.r, this.g, this.b);
+  };
 })(d3);
 d3.scale = {};
 
