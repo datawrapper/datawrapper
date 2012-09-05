@@ -42,7 +42,7 @@
                 row = me.get('selected-row');
                 if (row > me.chart.numRows() || row === undefined) row = 0;
             }
-            me.chart.filterRow(row);
+            if (me.chart.numRows() > 1) me.chart.filterRow(row);
 
             me.init();
 
@@ -56,8 +56,11 @@
                     x2 = cx+Math.cos(endAngle)*or,
                     y2 = cy+Math.sin(endAngle)*or,
                     x3 = cx+Math.cos(startAngle)*or,
-                    y3 = cy+Math.sin(startAngle)*or;
-                return me.path("M"+x0+" "+y0+" A"+ir+","+ir+" 0 0,1 "+x1+","+y1+" L"+x2+" "+y2+" A"+or+","+or+" 0 0,0 "+x3+" "+y3+" Z", 'slice');
+                    y3 = cy+Math.sin(startAngle)*or,
+                    largeArc = endAngle - startAngle > Math.PI ? 1 : 0;
+
+
+                return me.path("M"+x0+" "+y0+" A"+ir+","+ir+" 0 "+largeArc+",1 "+x1+","+y1+" L"+x2+" "+y2+" A"+or+","+or+" 0 "+largeArc+",0 "+x3+" "+y3+" Z", 'slice');
             }
 
             var series = me.chart.dataSeries(true),
@@ -78,6 +81,7 @@
                     others += s.data[0];
                 }
             });
+
             if (hasNegativeValues) {
                 me.warn('<b>Warning:</b> Pie charts are not suitable for displaying negative values.');
             }

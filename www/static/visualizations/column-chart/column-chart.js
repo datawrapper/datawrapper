@@ -25,8 +25,9 @@
             if (!_.isUndefined(me.get('selected-row'))) {
                 row = me.get('selected-row');
             }
+
             if (row > me.chart.numRows() || row === undefined) row = 0;
-            me.chart.filterRow(row);
+            if (me.chart.numRows() > 1) me.chart.filterRow(row);
 
             me.init();
             me.initDimensions();
