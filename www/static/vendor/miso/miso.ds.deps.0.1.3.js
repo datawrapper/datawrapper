@@ -6049,9 +6049,9 @@
             row[column.name] = Type.coerce(row[column.name], column);
 
           } else {
-            throw("incorrect value '" + row[column.name] + 
-                  "' of type " + Miso.typeOf(row[column.name], column) +
-                  " passed to column with type " + column.type);  
+            //throw("incorrect value '" + row[column.name] + 
+            //      "' of type " + Miso.typeOf(row[column.name], column) +
+            //      " passed to column with type " + column.type);  
           
           }
         }
