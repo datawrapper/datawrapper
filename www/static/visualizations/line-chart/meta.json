@@ -28,8 +28,16 @@
             "type": "checkbox",
             "label": {
                 "en": "Bank the lines to 45°",
-                "de": "Logarithmische Skala",
-                "fr": "Use logarithmic scale"
+                "de": "Anstiege auf 45° ausrichten",
+                "fr": "translate me"
+            }
+        },
+        "connect-missing-values": {
+            "type": "checkbox",
+            "label": {
+                "en": "Connect lines between missing values",
+                "de": "Linien zwischen fehlenden Werten verbinden",
+                "fr": "translate me"
             }
         }
     },

@@ -53,27 +53,51 @@
 
             // draw series lines
             _.each(me.chart.dataSeries(), function(col) {
-                var path = [], x, y, sw;
+                var paths = [], path = [], x, y, sw, connectMissingValuePath = [];
                 _.each(col.data, function(val, i) {
                     x = scales.x(i);
                     y = scales.y(val);
+                    if (isNaN(y)) {
+                        if (path.length > 0) {
+                            paths.push(path);
+                            path = [];
+                        }
+                        return;
+                    }
+                    if (path.length === 0 && paths.length > 0) {
+                        var lp = paths[paths.length-1], ls = lp[lp.length-1];
+                        connectMissingValuePath.push(['M', ls[1], ls[2]]);
+                        connectMissingValuePath.push(['L', x, y]);
+                    }
                     path.push([path.length> 0 ? 'L' : 'M', x, y]);
                 });
+                paths.push(path);
+
                 sw = me.theme.lineChart.strokeWidth[me.chart.isHighlighted(col) ? 'highlight' : 'normal'];
 
-                me.registerSeriesElement(c.paper.path(path).attr({
-                    'stroke-width': sw,
-                    'stroke-linecap': 'round',
-                    'stroke-linejoin': 'round',
-                    'stroke-opacity': 1,
-                    'stroke': me.getSeriesColor(col)
-                }), col);
+                _.each(paths, function(path) {
+                    me.registerSeriesElement(c.paper.path(path).attr({
+                        'stroke-width': sw,
+                        'stroke-linecap': 'round',
+                        'stroke-linejoin': 'round',
+                        'stroke-opacity': 1,
+                        'stroke': me.getSeriesColor(col)
+                    }), col);
 
-                // add invisible line on top to make selection easier
-                me.registerSeriesElement(c.paper.path(path).attr({
-                    'stroke-width': sw*4,
-                    'stroke-opacity': 0
-                }), col);
+                    // add invisible line on top to make selection easier
+                    me.registerSeriesElement(c.paper.path(path).attr({
+                        'stroke-width': sw*4,
+                        'stroke-opacity': 0
+                    }), col);
+                });
+
+                if (me.get('connect-missing-values', false)) {
+                    me.registerSeriesElement(c.paper.path(connectMissingValuePath).attr({
+                        'stroke-width': sw*0.35,
+                        'stroke-dasharray': '- ',
+                        stroke: me.getSeriesColor(col)
+                    }), col);
+                }
 
                 if (me.lineLabelsVisible()) {
                     var lbl = me.label(x+10, y, col.name,
