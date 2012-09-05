@@ -245,7 +245,7 @@
                 var last_label_x = -100, min_label_distance = 50;
                 _.each(me.chart.rowLabels(), function(val, i) {
                     var x = me.__scales.x(i), y = c.h-c.bpad+me.theme.xLabelOffset;
-                    if (x - last_label_x < min_label_distance) return;
+                    if (x - last_label_x < min_label_distance || x + min_label_distance > c.w) return;
                     last_label_x = x;
                     me.label(x, y, val, { align: 'center', cl: 'axis' });
                 });
