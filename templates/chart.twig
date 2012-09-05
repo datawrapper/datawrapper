@@ -42,12 +42,15 @@ body {
 
         var reload_timer;
 
-        $(window).resize(function() {
-            if (reload_timer) clearTimeout(reload_timer);
-            reload_timer = setTimeout(function() {
-                location.reload();
-            }, 300);
-        })
+        if (!$.browser.msie) {
+            // IE continuosly reloads the chart for some strange reasons
+            $(window).resize(function() {
+                if (reload_timer) clearTimeout(reload_timer);
+                reload_timer = setTimeout(function() {
+                    location.reload();
+                }, 300);
+            });
+        }
     });
     </script>
 </head>
