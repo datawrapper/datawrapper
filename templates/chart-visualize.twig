@@ -8,9 +8,11 @@
 <script type="text/javascript">
 $(function() {
 
-    var _typeHasChanged = false, _themeHasChanged = false;
+    var _typeHasChanged = false,
+        _themeHasChanged = false,
+        chart = DW.currentChart;
 
-    DW.currentChart.onSave(function(chart) {
+    chart.onSave(function(chart) {
 
         $('#iframe-vis').attr('src', '/chart/{{ chart.id }}/preview?nocache='+Math.random());
 
@@ -24,15 +26,14 @@ $(function() {
             $('#vis-options').load('/xhr/'+chart.get('id')+'/vis-options?nocache='+Math.random());
             _typeHasChanged = false;
         }
-
     });
 
-    DW.currentChart.sync('#select-vis', 'type');
-    DW.currentChart.sync('#select-theme', 'theme');
-    DW.currentChart.sync('#text-title', 'title');
-    DW.currentChart.sync('#text-intro', 'metadata.describe.intro');
+    chart.sync('#select-vis', 'type');
+    chart.sync('#select-theme', 'theme');
+    chart.sync('#text-title', 'title');
+    chart.sync('#text-intro', 'metadata.describe.intro');
 
-    DW.currentChart.onChange(function(chart, key, value) {
+    chart.onChange(function(chart, key, value) {
         if (key == 'type') {
             _typeHasChanged = true;
         } else if (key == 'theme') {
@@ -42,7 +43,7 @@ $(function() {
 
     // load dataset
     function _getHighlights() {
-        var sel = DW.currentChart.get('metadata.visualize.highlighted-series');
+        var sel = chart.get('metadata.visualize.highlighted-series');
         return _.isArray(sel) ? sel.slice() : [];
     }
 
@@ -52,14 +53,14 @@ $(function() {
             li = badge;
             selected = _getHighlights();
         selected = _.without(selected, series);
-        DW.currentChart.set('metadata.visualize.highlighted-series', selected);
+        chart.set('metadata.visualize.highlighted-series', selected);
         li.remove();
     }
     $('.highlighted-series .badge').click(highlightSeriesClick);
 
-    DW.currentChart.dataset(function(ds) {
+    chart.dataset(function(ds) {
         var s = $('#highlight-series'), s2 = $('.highlighted-series');
-        _.each(DW.currentChart.dataSeries(), function(col) {
+        _.each(chart.dataSeries(), function(col) {
             s.append('<option>'+col.name+'</option>');
         });
         s.change(function() {
@@ -74,7 +75,7 @@ $(function() {
 
                 selected.push(s.val());
 
-                DW.currentChart.set('metadata.visualize.highlighted-series', selected);
+                chart.set('metadata.visualize.highlighted-series', selected);
 
                 $('.badge', li).click(highlightSeriesClick);
                 s2.append(li);
@@ -123,6 +124,10 @@ $(function() {
         $('li.active a', navTabs).each(function(i, el) {
             $('.'+$(el).data('target')).show();
         });
+    });
+
+    $('#btn-transpose').click(function() {
+        chart.set('metadata.data.transpose', !chart.get('metadata.data.transpose'));
     });
 });
 
@@ -238,9 +243,14 @@ $(function() {
             <a href="publish" class="pull-right btn btn-primary btn-large" id="visualize-proceed">Publish <i class="icon-chevron-right icon-white"></i></a>
             <a class="btn" href="describe"><i class="icon-chevron-left"></i> {% trans "Back" %}</a>
             <div class="clearfix"></div>
-        </div></div>
+        </div>
+        <p><b>{% trans "Hint" %}:</b> {% trans "In case the visualization doesn't look like you expected, you should try to transpose the data." %}</p>
+        <ul class="unstyled">
+            <li><button id="btn-transpose" class="btn"><i class="icon-rotate"></i> {% trans "Transpose chart data." %}</button></li>
+        </ul>
+    </div>
 
-
+        
 
     </div>
 

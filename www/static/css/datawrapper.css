@@ -773,3 +773,8 @@ form.well form {
 .form-horizontal.compact .control-group {
     margin-bottom: 5px;
 }
+
+.icon-rotate {
+    background: url(../img/icon-rotate.png) no-repeat;
+    width: 16px;
+}
