@@ -52,9 +52,10 @@ $(function() {
             series = badge.data('series'),
             li = badge;
             selected = _getHighlights();
-        selected = _.without(selected, series);
+        selected = _.without(selected, String(series));
         chart.set('metadata.visualize.highlighted-series', selected);
         li.remove();
+        e.preventDefault();
     }
     $('.highlighted-series .badge').click(highlightSeriesClick);
 
@@ -71,14 +72,14 @@ $(function() {
                     return;
                 }
 
-                var li = $('<span data-series="'+s.val()+'" class="badge badge-info"><i class="icon-remove icon-white"></i>'+s.val()+'</span>');
+                var span = $('<span data-series="'+s.val()+'" class="badge badge-info"><i class="icon-remove icon-white"></i>'+s.val()+'</span>');
 
                 selected.push(s.val());
 
                 chart.set('metadata.visualize.highlighted-series', selected);
 
-                $('.badge', li).click(highlightSeriesClick);
-                s2.append(li);
+                s2.append(span);
+                span.click(highlightSeriesClick);
                 s.val('---');
             }
         })
