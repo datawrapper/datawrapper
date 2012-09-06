@@ -47,7 +47,10 @@
                     }).data('strokeCol', stroke), series);
 
                     var val_y = val > 0 ? d.y - 10 : d.y + d.h + 10,
-                        lbl_y = val <= 0 ? d.y - 10 : d.y + d.h + 5;
+                        lbl_y = val <= 0 ? d.y - 10 : d.y + d.h + 5,
+                        lblcl = ['series'],
+                        valign = val > 0 ? 'top' : 'bottom',
+                        halign = 'center';
 
                     if ((me.chart.hasHighlight() && me.chart.isHighlighted(series)) || (d.w > 40)) {
                         // add value labels
@@ -58,12 +61,21 @@
                         }), series);
                     }
 
+                    if (me.chart.hasHighlight() && me.chart.isHighlighted(series)) {
+                        lblcl.push('highlighted');
+                    }
+                    if (d.w < 30) {
+                        lblcl.push('rotate90');
+                        lbl_y += 5;
+                    }
+                    if (d.w < 20) lblcl.push('smaller');
+
                     // add series label
                     me.registerSeriesLabel(me.label(d.x + d.w * 0.5, lbl_y, series.name, {
                         w: d.w,
-                        align: 'center',
-                        valign: val > 0 ? 'top' : 'bottom',
-                        cl: me.chart.hasHighlight() && me.chart.isHighlighted(series) ? 'series highlighted' : 'series'
+                        align: halign,
+                        valign: valign,
+                        cl: lblcl.join(' ')
                     }), series);
 
                 });
@@ -96,6 +108,8 @@
         barDimensions: function(series, s, r) {
             var me = this, w, h, x, y, i, cw, n = me.chart.dataSeries().length,
                 sc = me.__scales, c = me.__canvas, bw, pad = 0.35, vspace = 0.1;
+
+            if (c.w / n < 30) vspace = 0.05;
 
             cw = (c.w - c.lpad - c.rpad) * (1 - vspace - vspace);
             bw = cw / (n + (n-1) * pad);
