@@ -5,7 +5,7 @@
     <div class="control-group select-row">
         <label class="control-label" for="text-title">{% trans "Select row to display" %}</label>
         <div class="controls">
-            <select id="select-row" style="width:auto">
+            <select id="select-row" style="width:150px">
             </select>
         </div>
     </div>
@@ -14,8 +14,9 @@
     {% for key, option in vis.options %}
     <div class="control-group" style="margin-bottom:0px" id="vis-options-{{ key }}">
         {% if option.type == 'checkbox' %}
-            <div class="contols">
-                <label class="checkbox" for="{{ key }}"><input type="checkbox" id="{{ key }}" /> {{ option.label[language] }}</label>
+            <label class="control-label" for="{{ key }}">{{ option.label[language] }}</label>
+            <div class="controls">
+                <input type="checkbox" id="{{ key }}" />
             </div>
 
         {% elseif option.type == 'select' %}
@@ -34,7 +35,7 @@
             <label class="control-label"  for="{{ key }}">{{ option.label[language] }}</label>
             <div class="controls form-inline">
                 {% for opt in option.options %}
-                <label class="radio"><input type="radio" name="{{ key }}" value="{{ opt.value }}" {% if opt.default %}checked="checked" {% endif %}/> {{ opt.label[language] }}</label><br />
+                <div><label class="radio"><input type="radio" name="{{ key }}" value="{{ opt.value }}" {% if opt.default %}checked="checked" {% endif %}/> {{ opt.label[language] }}</label></div>
                 {% endfor %}
             </div>
 
