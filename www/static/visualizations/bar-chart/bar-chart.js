@@ -18,7 +18,9 @@
             sortBars = me.get('sort-values'),
             reverse = me.get('reverse-order'),
             useNegativeColor = me.get('negative-color', false),
-            c = me.initCanvas({}),
+            c = me.initCanvas({
+                h: Math.max(me.getMaxChartHeight(el), 18 * 1.35 * me.chart.dataSeries().length)
+            }),
             chart_width = c.w - c.lpad - c.rpad,
             series_gap = 0.05, // pull from theme
             row_gap = 0.01,
@@ -138,7 +140,7 @@
             //
             cw = c.h - c.bpad - c.tpad;
             //
-            bw = Math.min(50, cw / (n + (n-1) * pad));
+            bw = Math.max(18, Math.min(50, cw / (n + (n-1) * pad)));
             w = sc.y(val) - sc.y(0);
             h = bw;
             if (w > 0) {
