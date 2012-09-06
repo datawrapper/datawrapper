@@ -11,7 +11,7 @@
     if (typeof exports !== 'undefined') {
         Datawrapper = exports;
     } else {
-        Datawrapper = root.Datawrapper = { };
+        Datawrapper = root.Datawrapper = { Parsers: {} };
     }
 
     // Current version of the library

@@ -28,12 +28,13 @@ function get_chart_content($chart, $user) {
     if (!empty($chartLocale)) $locale = $chartLocale;
 
     $base_js = array(
-        '/static/vendor/miso/miso.ds.deps.0.1.3.js',
-        '/static/js/ds.parser.delimited.js',
         '/static/vendor/globalize/globalize.js',
+        '/static/vendor/underscore/underscore-min.js',
         '/static/vendor/jquery/jquery.min.js',
         '/static/js/dw.core.js',
+        '/static/js/dw.dataset.js',
         '/static/js/dw.chart.js',
+        '/static/js/dw.parsers.delimited.js',
         '/static/js/dw.theme.js',
         '/static/js/dw.visualization.js'
     );

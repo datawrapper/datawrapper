@@ -7,18 +7,20 @@
 <script type="text/javascript">
 $(function() {
 
-    DW.currentChart.onChange(reload);
+    var chart = DW.currentChart;
 
-    DW.currentChart.sync('#has-horizontal-headers', 'metadata.data.horizontal-header');
+    chart.onChange(reload);
+
+    chart.sync('#has-horizontal-headers', 'metadata.data.horizontal-header');
     // vertical header setting will be synched after data has loaded
-    DW.currentChart.sync('#describe-source-name', 'metadata.describe.source-name');
-    DW.currentChart.sync('#describe-source-url', 'metadata.describe.source-url');
-    DW.currentChart.sync('input:radio[name=transpose]', 'metadata.data.transpose');
+    chart.sync('#describe-source-name', 'metadata.describe.source-name');
+    chart.sync('#describe-source-url', 'metadata.describe.source-url');
+    chart.sync('input:radio[name=transpose]', 'metadata.data.transpose');
 
-    DW.currentChart.sync('#number-format', 'metadata.describe.number-format');
-    DW.currentChart.sync('#number-divisor', 'metadata.describe.number-divisor');
-    DW.currentChart.sync('#number-append', 'metadata.describe.number-append');
-    DW.currentChart.sync('#number-prepend', 'metadata.describe.number-prepend');
+    chart.sync('#number-format', 'metadata.describe.number-format');
+    chart.sync('#number-divisor', 'metadata.describe.number-divisor');
+    chart.sync('#number-append', 'metadata.describe.number-append');
+    chart.sync('#number-prepend', 'metadata.describe.number-prepend');
 
     // swap between currency and unit
     function swapUnitAndCurrency() {
@@ -48,10 +50,10 @@ $(function() {
 
     // update data table after format changes
     $('.number-format').change(function() {
-        updateTable(DW.dataView, DW.currentChart);
+        updateTable(DW.dataView, chart);
     });
 
-    function updateTable(dv, chart) {
+    function updateTable(dataset, chart) {
 
         function isNone(val) {
             return val === null || val === undefined || (_.isNumber(val) && isNaN(val));
@@ -100,22 +102,22 @@ $(function() {
     }
 
     function reload(f) {
-        DW.currentChart.dataset(function(ds) {
+        chart.dataset(function(ds) {
             if (f === undefined) {
-                if (DW.currentChart.get('metadata.data.vertical-header') === undefined) {
-                    DW.currentChart.set('metadata.data.vertical-header', ds._columns[1].type == 'string');
+                if (chart.get('metadata.data.vertical-header') === undefined) {
+                    chart.set('metadata.data.vertical-header', ds._columns[1].type == 'string');
                 }
-                DW.currentChart.sync('#has-vertical-headers', 'metadata.data.vertical-header');
+                chart.sync('#has-vertical-headers', 'metadata.data.vertical-header');
             }
-            DW.dataView = ds;
-            updateTable(ds, DW.currentChart);
+            DW.dataset = ds;
+            updateTable(ds, chart);
         }, true);
     }
 
     reload();
 
     $('#describe-proceed').click(function(e) {
-        DW.currentChart.save();
+        chart.save();
     });
 
 });
