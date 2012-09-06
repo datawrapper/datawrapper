@@ -5,10 +5,12 @@
 
     //
     var EditableChart = Datawrapper.EditableChart = function(attributes) {
-        this.__attributes = attributes;
-        this.__changed = false;
-        this.__changeCallbacks = [];
-        this.__saveCallbacks = [];
+        var me = this;
+        me.__attributes = attributes;
+        me.__changed = false;
+        me.__changeCallbacks = [];
+        me.__saveCallbacks = [];
+        me.__syncedElements = [];
     };
 
     _.extend(EditableChart.prototype, Datawrapper.Chart.prototype, {
@@ -31,7 +33,7 @@
             if (pt[lastKey] != value) {
                 pt[lastKey] = value;
                 me.__changed = true;
-                if (me.__saveTimeout) clearTimeout(me.__saveTimeout);
+                clearTimeout(me.__saveTimeout);
                 me.__saveTimeout = setTimeout(function() {
                     me.save();
                 }, 300);
@@ -65,10 +67,11 @@
             }
 
             var chart = this;
-            el.change(function(evt) {
-                var el = $(evt.target),
-                    attr, val;
 
+            chart.__syncedElements.push(el);
+
+            function storeElementValue(el) {
+                var attr, val;
                 // Resolve attribute string to a pointer to the attribute
                 attr = el.data('sync-attribute');
 
@@ -84,21 +87,34 @@
                 if (val !== undefined) {
                     chart.set(attr, val);
                 }
+            }
+
+            el.change(function(evt) {
+                storeElementValue($(evt.target));
             });
+
+            window.onbeforeunload = function(e) {
+                _.each(chart.__syncedElements, storeElementValue);
+                var res = chart.save(true);
+                if (res === false) return;
+                return 'Please wait a second until the data has been saved!';
+            };
         },
 
         onSave: function(callback) {
             this.__saveCallbacks.push(callback);
         },
 
-        save: function() {
+        save: function(sync) {
             // saves the chart meta data to Datawrapper
-            if (!this.__changed) return;
+            if (!this.__changed) return false;
+            clearTimeout(this.__saveTimeout);
             var chart = this;
             $.ajax({
                 url: '/api/charts/'+this.get('id'),
                 type: 'PUT',
                 dataType: 'json',
+                async: sync === true,
                 data: JSON.stringify(this.__attributes),
                 processData: false,
                 context: this,
