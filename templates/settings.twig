@@ -9,7 +9,7 @@
         <li><a href="#-password">{% trans "Change Password" %}</a></li>
         <li><a href="#-delete">{% trans "Delete Account" %}</a></li>
     </ul>
-    <h1 class="title">User Settings</h1>
+    <h1 class="title">{% trans "User Settings" %}</h1>
 
 </div>
 
@@ -17,7 +17,7 @@
     <div id="-status" class="row">
         <div class="span3">
             <h2>{% trans "Account Status" %}</h2>
-            <p>See how your account is doing.</p>
+            <p>{% trans "See how your account is doing." %}</p>
         </div>
         <div class="span9">
             <div class="form-horizontal" style="margin-bottom:30px">
@@ -25,8 +25,8 @@
 
                 {% if user.isAbleToPublish %}
 
-                    <div class="btn btn-success btn-large pull-left" style="margin-right: 20px" disabled="disabled">Activated</div>
-                    <p>Your account has been activated, and you are able to create and publish charts.</p>
+                    <div class="btn btn-success btn-large pull-left" style="margin-right: 20px" disabled="disabled">{% trans "Activated" %}</div>
+                    <p>{% trans "Your account has been activated, and you are able to create and publish charts." %}</p>
 
                 {% elseif user.role == 'pending' %}
 
@@ -83,7 +83,7 @@
                         </div>
                     </div>
                     <div class="control-group">
-                        <label class="control-label" for="socialmedia">Twitter/Facebook/etc</label>
+                        <label class="control-label" for="socialmedia">{% trans "Twitter/Facebook/etc" %}</label>
                         <div class="controls">
                             <input type="text" class="input-xlarge" id="socialmedia" placeholder="http://twitter.com/" value="{{ user.smProfile }}">
                             <p class="help-block">{% trans "Enter the link to your favorite social media profile (e.g. Twitter)." %}</p>
@@ -128,7 +128,7 @@
                     </div>
                     <div class="control-group">
                         <div class="controls">
-                            <label class="checkbox"><input type="checkbox" id="show-passwords" /> Show password in clear text</label>
+                            <label class="checkbox"><input type="checkbox" id="show-passwords" /> {% trans "Show password in clear text" %}</label>
                         </div>
                     </div>
 

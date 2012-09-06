@@ -14,6 +14,6 @@ if (function_exists('bindtextdomain')) {
     // If no gettext extension is found, we will
     // fake the API to not break the application
     function _($s) { return $s; }
-    function gettext($s) { return $s; }
-    function ngettext($s) { return $s; }
+    function gettext($s) { return _($s); }
+    function ngettext($s) { return _($s); }
 }

@@ -161,7 +161,7 @@ $(function() {
                     </div>
 
                     <div class="half">
-                        <label for="select-theme">Layout:</label>
+                        <label for="select-theme">{% trans "Layout:" %}</label>
                         <select id="select-theme">
                             {% for theme in themes %}
                             <option value="{{ theme.id }}">{{ theme.title }}</option>
@@ -175,9 +175,9 @@ $(function() {
                 <h3>{% trans "Tell your story" %}</h3>
 
                 <ul class="nav nav-tabs" data-target="story">
-                    <li class="active"><a href="#" data-target="story-title">Title</a></li>
-                    <li><a href="#" data-target="story-intro">Introduction</a></li>
-                    <li><a href="#" data-target="story-highlight">Highlight</a></li>
+                    <li class="active"><a href="#" data-target="story-title">{% trans "Title" %}</a></li>
+                    <li><a href="#" data-target="story-intro">{% trans "Introduction" %}</a></li>
+                    <li><a href="#" data-target="story-highlight">{% trans "Highlight" %}</a></li>
                 </ul>
 
                 <div class="story">
@@ -241,7 +241,7 @@ $(function() {
                 </div>
             </div>
 
-            <a href="publish" class="pull-right btn btn-primary btn-large" id="visualize-proceed">Publish <i class="icon-chevron-right icon-white"></i></a>
+            <a href="publish" class="pull-right btn btn-primary btn-large" id="visualize-proceed">{% trans "Publish" %} <i class="icon-chevron-right icon-white"></i></a>
             <a class="btn" href="describe"><i class="icon-chevron-left"></i> {% trans "Back" %}</a>
             <div class="clearfix"></div>
         </div>
@@ -250,10 +250,7 @@ $(function() {
             <li><button id="btn-transpose" class="btn"><i class="icon-rotate"></i> {% trans "Transpose chart data." %}</button></li>
         </ul>
     </div>
-
-        
-
-    </div>
+</div>
 
 
 
