@@ -9,6 +9,7 @@ $app->get('/chart/:id/data', function($chart_id) use ($app) {
     $chart = ChartQuery::create()->findPK($chart_id);
     $res = $app->response();
     $res['Cache-Control'] = 'max-age=0';
+    $res['Content-Type'] = 'text/csv';
     if (!empty($chart)) {
         print $chart->loadData();
     } else {
