@@ -4,12 +4,23 @@
 
 <div class="row create-nav">
     {% for step in steps %}
-        <div class="span3{% if createstep == step.index %} active{% else %}{% if createstep > step.index %} passed{% endif %}{% endif %}">
-            <span class="step">{{ step.index }}</span>{% if createstep > step.index or createstep != step.index and chart.lastEditStep >= step.index %}<a href="{{ step.id }}">{% endif %}
-            {{ step.title }}
-            {% if createstep > step.index or createstep != step.index and chart.lastEditStep >= step.index %}</a><i class="icon-ok"></i>{% endif %}
-            <div class="corner"></div>
-        </div>
+        {% if createstep > step.index or createstep != step.index and chart.lastEditStep >= step.index %}
+            <a href="{{ step.id }}" class="span3{% if createstep == step.index %} active{% else %}{% if createstep > step.index %} passed{% endif %}{% endif %}">
+                <span class="step">{{ step.index }}</span>
+                <span class="title">{{ step.title }}</span>
+                <i class="icon-ok"></i>
+                 <div class="corner"></div>
+            </a>
+        {% else %}
+            <div class="span3{% if createstep == step.index %} active{% else %}{% if createstep > step.index %} passed{% else %} unseen{% endif %}{% endif %}">
+                <span class="step">{{ step.index }}</span>
+                {{ step.title }}
+                <div class="corner"></div>
+            </div>
+        {% endif %}
+
+
+        
     {% endfor %}
 </div>
 

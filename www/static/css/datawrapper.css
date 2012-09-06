@@ -221,7 +221,7 @@ body .navbar .nav li.dropdown.active > .dropdown-toggle:hover
     width: 90%;
 }
 
-.dw .create-nav div {
+.dw .create-nav > * {
     background: #f2f2f2;
     position: relative;
     box-shadow: 2px 2px 2px #e2e2e2 inset;
@@ -231,11 +231,10 @@ body .navbar .nav li.dropdown.active > .dropdown-toggle:hover
     font-size: 16px;
     line-height: 50px;
     font-weight: 300;
-    color: #999;
     margin-bottom: 2em;
 }
 
-.dw .create-nav div .corner {
+.dw .create-nav .corner {
     background: url(../img/create-nav-bg.png) left center no-repeat;
     width: 25px;
     height: 100%;
@@ -246,19 +245,26 @@ body .navbar .nav li.dropdown.active > .dropdown-toggle:hover
     box-shadow: none;
 }
 
-.dw .create-nav div.active {
+.dw .create-nav > div.active {
     background: #cc0000;
     box-shadow: none;
     font-weight: normal;
     color: #fff;
 }
 
-.dw .create-nav div.passed {
-    background: #ddd;
-    color: #333;
+.dw .create-nav > div.unseen {
+    color: #999;
 }
 
-.dw .create-nav div .step {
+.dw .create-nav > a:hover {
+    text-decoration: none;
+}
+
+.dw .create-nav > a.passed {
+    background: #ddd;
+}
+
+.dw .create-nav > * .step {
     font-weight: bold;
     color: #fff;
     font-size: 26px;
