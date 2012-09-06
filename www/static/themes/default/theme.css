@@ -11,7 +11,8 @@ body {
     margin:0 10px;
     font-size: 12px;
     background: #fff;
-    overflow: hidden;
+    overflow: visible;
+    overflow-x:hidden;
 }
 
 h1 {

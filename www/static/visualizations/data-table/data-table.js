@@ -69,10 +69,10 @@
             }
 
             table.dataTable({
-                "bPaginate": me.get('table-paginate'),
-                "bInfo": me.get('table-paginate'),
-                "bFilter": me.get('table-filter'),
-                "bSort": me.get('table-sortable')
+                "bPaginate": me.get('table-paginate', false),
+                "bInfo": me.get('table-paginate', false),
+                "bFilter": me.get('table-filter', false),
+                "bSort": me.get('table-sortable', false)
             });
         }
 

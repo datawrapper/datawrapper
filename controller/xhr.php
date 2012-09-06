@@ -36,6 +36,7 @@ $app->get('/xhr/:chartid/vis-options', function($id) use ($app) {
     check_chart_writable($id, function($user, $chart) use ($app) {
         $page = array(
             'vis' => get_visualization_meta($chart->getType()),
+            'language' => substr(DatawrapperSession::getLanguage(), 0, 2)
         );
         $res = $app->response();
         $res['Cache-Control'] = 'max-age=0';

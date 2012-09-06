@@ -21,7 +21,7 @@
             "type": "checkbox",
             "label": {
                 "en": "Make columns sortable",
-                "de": "sortierbar",
+                "de": "Spalten sortierbar",
                 "fr": "triable"
             }
         },
@@ -29,7 +29,7 @@
             "type": "checkbox",
             "label": {
                 "en": "Use responsive layout",
-                "de": "sortierbar",
+                "de": "Responsives Layout",
                 "fr": "triable"
             }
         },
@@ -37,7 +37,7 @@
             "type": "checkbox",
             "label": {
                 "en": "Display content over multiple pages",
-                "de": "Auf mehrere Seiten verteilen ",
+                "de": "Daten auf mehrere Seiten verteilen",
                 "fr": "Étendre sur les côtés"
             }
         },
@@ -45,7 +45,7 @@
             "type": "checkbox",
             "label": {
                 "en": "Show filter",
-                "de": "Suchfilter",
+                "de": "Suchfilter anzeigen",
                 "fr": "Filtres de recherche"
             }
         }
