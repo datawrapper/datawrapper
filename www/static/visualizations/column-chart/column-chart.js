@@ -71,12 +71,14 @@
                     if (d.w < 20) lblcl.push('smaller');
 
                     // add series label
-                    me.registerSeriesLabel(me.label(d.x + d.w * 0.5, lbl_y, series.name, {
-                        w: d.w,
-                        align: halign,
-                        valign: valign,
-                        cl: lblcl.join(' ')
-                    }), series);
+                    if (!/^X\.\d+$/.test(series.name)) {
+                        me.registerSeriesLabel(me.label(d.x + d.w * 0.5, lbl_y, series.name, {
+                            w: d.w,
+                            align: halign,
+                            valign: valign,
+                            cl: lblcl.join(' ')
+                        }), series);
+                    }
 
                 });
             });
@@ -94,9 +96,10 @@
             var me = this, c = me.__canvas,
                 dMin = 0, dMax = 0;
             _.each(me.chart.dataSeries(), function(series) {
-                dMin = Math.min(dMin, series._min());
-                dMax = Math.max(dMax, series._max());
+                dMin = Math.min(dMin, series.min);
+                dMax = Math.max(dMax, series.max);
             });
+            console.debug(dMin, dMax);
             me.__domain = [dMin, dMax];
             me.__scales = {
                 y: d3.scale.linear().domain([dMin, dMax])

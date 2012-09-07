@@ -32,14 +32,12 @@
             if (me.lineLabelsVisible()) {
                 c.labelWidth = 0;
                 _.each(me.chart.dataSeries(), function(col) {
-                    console.log(col.name, me.labelWidth(col.name));
-                    c.labelWidth = Math.max(c.labelWidth, me.labelWidth(col.name, 'series')+10);
+                    c.labelWidth = Math.max(c.labelWidth, me.labelWidth(col.name, 'series'));
                 });
                 if (c.labelWidth > me.theme.lineChart.maxLabelWidth) {
                     c.labelWidth = me.theme.lineChart.maxLabelWidth;
                 }
-                c.rpad += c.labelWidth;
-                console.log(c.labelWidth);
+                c.rpad += c.labelWidth + 20;
             }
 
             scales.x = scales.x.range([c.lpad+me.yAxisWidth(h)+20, c.w-c.rpad]);
@@ -198,7 +196,7 @@
         },
 
         xScale: function() {
-            return d3.scale.linear().domain([0, this.dataset.length-1]);
+            return d3.scale.linear().domain([0, this.dataset.numRows()-1]);
         },
 
         yScale: function() {

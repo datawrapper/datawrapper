@@ -59,42 +59,43 @@ $(function() {
             return val === null || val === undefined || (_.isNumber(val) && isNaN(val));
         }
 
+        console.log(dataset);
+
         var table = $('#data-preview'),
             horzHeaders = chart.get('metadata.data.horizontal-header'),
             vertHeaders = chart.get('metadata.data.vertical-header'),
-            transpose = chart.get('metadata.data.transpose');
+            transpose = chart.get('metadata.data.transpose'),
+            i, colCnt = dataset.series().length + (dataset.hasRowNames() ? 1 : 0);
         table.html('');  // empty table
         table.append('<thead><tr></tr><thead><tbody></tbody>');
 
         table.addClass(transpose ? 'row-series' : 'column-series');
         table.removeClass(transpose ? 'column-series' : 'row-series');
 
-        dv.eachColumn(function() {
-            table.append('<colgroup style="width:'+(100 / dv.columnNames().length)+'%" />');
-        });
+        for (i=0; i < colCnt; i++) {
+            table.append('<colgroup style="width:'+(100 / colCnt)+'%" />');
+        }
 
         if (horzHeaders) {
             var thead = $('thead tr', table);
-            dv.eachColumn(function(name, o, i) {
-                if (vertHeaders && i == 0) name = '';
-                else name = '<span>'+name+'</span>';
-                thead.append('<th>'+(!isNone(name) ? name : '')+'</th>');
+            if (vertHeaders) thead.append('<th></th>');
+            _.each(dataset.series(), function(s) {
+                thead.append('<th>'+(!isNone(s.name) ? '<span>'+s.name+'</span>' : '')+'</th>');
             });
         }
 
         if (vertHeaders) table.addClass('vert-header'); else table.removeClass('vert-header');
 
         var tbody = $('tbody', table);
-        dv.each(function(row) {
+        dataset.eachRow(function(row) {
             var tr = $('<tr></tr>');
-            dv.eachColumn(function(col, o, i) {
-                if (i == 0 && vertHeaders) {
-                    tr.append('<th><span>'+(!isNone(row[col]) ? row[col] : '')+'</span></th>');
-                } else {
-                    var val = row[col];
-                    val = chart.formatValue(val, true);
-                    tr.append('<td>'+(!isNone(row[col]) ? val : '')+'</td>');
-                }
+            if (dataset.hasRowNames()) {
+                tr.append('<th><span>'+(!isNone(dataset.rowName(row)) ? dataset.rowName(row) : '')+'</span></th>');
+            }
+            dataset.eachSeries(function(s, i) {
+                var val = s.data[row];
+                val = chart.formatValue(val, true);
+                tr.append('<td>'+(!isNone(s.data[row]) ? val : '')+'</td>');
             });
             tbody.append(tr);
         });

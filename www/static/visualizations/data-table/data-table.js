@@ -20,8 +20,8 @@
             table = $('<table id="datatable"><thead /><tbody /></table>');
             tr = $('<tr />');
             if (me.chart.hasRowHeader()) {
-                var h = me.chart.rowHeader().name;
-                if (h.length == 2 && h[0] == 'X') h = '';
+                var h = me.dataset.rowNameLabel();
+                if (/^X\.\d+$/.test(h)) h = '';
                 tr.append('<th>'+h+'</tr>');
             }
             var colType = [];
@@ -30,18 +30,18 @@
                 if (isHighlighted(series)) {
                     th.addClass('highlight');
                 }
-                if (series.type.substr(0,14) == 'number-decimal') {
+                /*if (series.type.substr(0,14) == 'number-decimal') {
                     colType.push('number-decimal');
                     th.addClass('number-decimal');
-                } else if (series.type == 'number') {
+                } else if (series.type == 'number') {*/
                     // check for small numbers
-                    var small = true;
-                    _.each(series.data, function(val) {
-                        small = small && val <= 100 && val >= -100;
-                    });
-                    colType.push('number'+(small ? '-small' : ''));
-                    th.addClass('number'+(small ? '-small' : ''));
-                }
+                var small = true;
+                _.each(series.data, function(val) {
+                    small = small && val <= 100 && val >= -100;
+                });
+                colType.push('number'+(small ? '-small' : ''));
+                th.addClass('number'+(small ? '-small' : ''));
+                //}
 
                 tr.append(th);
             });

@@ -26,22 +26,15 @@
         dataset: function(callback, ignoreTranspose) {
             var me = this, ds, dsOpts = {
                 delimiter: 'auto',
+                url: '/chart/' + this.get('id') + '/data',
                 transpose: ignoreTranspose ? false : this.get('metadata.data.transpose'),
                 firstRowIsHeader: this.get('metadata.data.horizontal-header'),
                 firstColumnIsHeader: this.get('metadata.data.vertical-header')
             };
-            if (!this.__dataview) {
-                dsOpts.url = '/chart/' + this.get('id') + '/data';
-            } else {
-                dsOpts.data = this.__dataview.parser.__rawData;
-            }
-            ds = new Datawrapper.Dataset(dsOpts);
-            window.ds = ds;
+            me.__dataset = ds = new Datawrapper.Dataset(dsOpts);
             ds.fetch({
                 success: function() {
-                    me.__dataview = this;
-                    me.__dsLoaded = true;
-                    callback(this);
+                    callback(ds);
                     if (me.__datasetLoadedCallbacks) {
                         for (var i=0; i<me.__datasetLoadedCallbacks.length; i++) {
                             me.__datasetLoadedCallbacks[i](me);
@@ -54,7 +47,7 @@
 
         datasetLoaded: function(callback) {
             var me = this;
-            if (me.__dsLoaded) {
+            if (me.__dataset.__loaded) {
                 // run now
                 callback(me);
             } else {
@@ -66,10 +59,8 @@
         dataSeries: function(sortByFirstValue, reverseOrder) {
             var me = this;
             ds = [];
-            me.__dataview.eachColumn(function(name, col, i) {
-                if (i > 0 || !me.hasRowHeader()) {
-                    ds.push(col);
-                }
+            me.__dataset.eachSeries(function(series, i) {
+                ds.push(series);
             });
             if (sortByFirstValue) {
                 ds = ds.sort(function(a,b) {
@@ -81,11 +72,11 @@
         },
 
         seriesByName: function(name) {
-            return this.__dataview.column(name);
+            return this.__dataset.series(name);
         },
 
         numRows: function() {
-            return this.__dataview.length;
+            return this.__dataset.series().length;
         },
 
         // column header is the first value of each data series
@@ -104,11 +95,12 @@
         },
 
         rowHeader: function() {
-            var dv = this.__dataview;
-            return this.hasRowHeader() ? dv.column(dv.columnNames()[0]) : false;
+            var ds = this.__dataset;
+            return this.hasRowHeader() ? { data: ds.rowNames() } : false;
         },
 
         rowLabels: function() {
+            console.warn('chart.rowLabels() is marked deprecated. Use chart.dataset().rowNames() instead');
             if (this.hasRowHeader()) {
                 return this.rowHeader().data;
             } else {
@@ -155,16 +147,8 @@
         },
 
         filterRow: function(r) {
-            var me = this;
-            var ds = new Miso.Dataset({
-                data: [me.__dataview.rowByPosition(r)]
-            });
-            ds.fetch({
-                success: function() {
-                    me.__dataview = this;
-                    me.__dataSeries = false;
-                }
-            });
+            console.warn('chart.filterRow() is marked deprecated. Use chart.dataset().filterRow() instead.');
+            this.__dataset.filterRow(r);
         }
 
     });

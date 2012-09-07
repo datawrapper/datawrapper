@@ -15,7 +15,7 @@
     }
 
     // Current version of the library
-    Datawrapper.VERSION = '0.2.1';
+    Datawrapper.VERSION = '0.7.1';
 
 
     // Datawrapper.Core
