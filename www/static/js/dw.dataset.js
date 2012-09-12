@@ -200,8 +200,10 @@
             return bestMatch[0];
         },
 
-        parse: function(number) {
-            var me = this, fmt = this.__format;
+        parse: function(raw) {
+            var me = this,
+                number = raw,
+                fmt = this.__format;
             if (fmt === undefined) {
                 fmt = this.__format = this._getFormat();
             }
@@ -214,7 +216,8 @@
                 // replace decimal char w/ point
                 number = number.replace(fmt[1], '.');
             }
-            return Number(number);
+            number = Number(number);
+            return isNaN(number) ? raw : number;
         }
     });
 

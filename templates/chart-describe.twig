@@ -106,7 +106,7 @@ $(function() {
         chart.dataset(function(ds) {
             if (f === undefined) {
                 if (chart.get('metadata.data.vertical-header') === undefined) {
-                    chart.set('metadata.data.vertical-header', ds._columns[1].type == 'string');
+                    chart.set('metadata.data.vertical-header', isNaN(ds.series(0).data[0]));
                 }
                 chart.sync('#has-vertical-headers', 'metadata.data.vertical-header');
             }
