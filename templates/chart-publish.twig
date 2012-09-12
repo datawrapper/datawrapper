@@ -3,6 +3,9 @@
 
 {{ parent() }}
 
+<script type="text/javascript" src="http://canvg.googlecode.com/svn/trunk/rgbcolor.js"></script>
+<script type="text/javascript" src="http://canvg.googlecode.com/svn/trunk/canvg.js"></script>
+
 <script type="text/javascript">
 $(function() {
 
@@ -38,6 +41,59 @@ $(function() {
     }
 
     resizeIFrame();
+
+    function snapshot(width, height) {
+        // 1. make iframe and load chart
+        var iframe = $('<iframe />');
+        iframe.attr({
+            src: 'http://{{ DW_DOMAIN }}/chart/{{ chart.id }}'
+        });
+        iframe.css({
+            position: 'absolute',
+            top: 0,
+            left: -4000,
+            width: width+'px',
+            height: height+'px'
+        });
+        $('body').append(iframe);
+        // 2.
+        var canvas = $('<canvas id="canvas" width="'+width+'px" height="'+height+'px"></canvas>')
+        $('body').append(canvas);
+
+        function px(s) {
+            return Number(s.substr(0, s.length-2));
+        }
+
+        setTimeout(function() {
+            var body = iframe.get(0).contentDocument,
+                ctx = canvas.get(0).getContext('2d');
+            canvg('canvas', $('svg', body).get(0).innerSVG);
+            $('.label', body).each(function(i, lbl) {
+                lbl = $(lbl);
+                var x = px(lbl.css('left')),
+                    y = px(lbl.css('top')),
+                    txt = $('span', lbl).html();
+                console.log(x,y,txt);
+                ctx.font = "8pt Arial";
+                ctx.fillText(txt, x, y);
+
+            });
+        }, 1000);
+
+    }
+
+
+    setTimeout(function() {
+       /* var iframe = $('#iframe-vis'),
+            ibody = iframe.get(0).contentDocument,
+            svgXml = $('svg', ibody).get(0).innerSVG,
+            canvas = $('<canvas id="canvas" width="1000px" height="600px"></canvas>');
+        console.debug(svgXml);
+        //$('body').append(canvas);
+        canvg('canvas', svgXml);
+        $('body').append(canvas);*/
+        snapshot(1200,600);
+    },4000);
 });
 
 </script>
