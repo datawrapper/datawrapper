@@ -49,6 +49,7 @@
                     var val_y = val > 0 ? d.y - 10 : d.y + d.h + 10,
                         lbl_y = val <= 0 ? d.y - 10 : d.y + d.h + 5,
                         lblcl = ['series'],
+                        lbl_w = d.w,
                         valign = val > 0 ? 'top' : 'bottom',
                         halign = 'center';
 
@@ -65,18 +66,23 @@
                         lblcl.push('highlighted');
                     }
                     if (d.w < 30) {
-                        lblcl.push('rotate90');
+                        //lblcl.push('rotate90');
                         lbl_y += 5;
+                        lbl_w = 100;
+                        halign = 'right';
                     }
-                    if (d.w < 20) lblcl.push('smaller');
-
+                    if (d.w < 20) {
+                        lblcl.push('smaller');
+                        lbl_w = 90;
+                    }
                     // add series label
                     if (!/^X\.\d+$/.test(series.name)) {
                         me.registerSeriesLabel(me.label(d.x + d.w * 0.5, lbl_y, series.name, {
-                            w: d.w,
+                            w: lbl_w,
                             align: halign,
                             valign: valign,
-                            cl: lblcl.join(' ')
+                            cl: lblcl.join(' '),
+                            rotate: d.w < 30 ? -90 : 0
                         }), series);
                     }
 

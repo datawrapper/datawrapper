@@ -119,25 +119,46 @@
         label: function(x, y, txt, attrs) {
             var l, w, align, h, va;
             if (attrs === undefined) attrs = {};
-            va = attrs.valign;
-            l = $('<div class="label'+(attrs.cl ? ' '+attrs.cl : '')+'"><span>'+txt+'</span></div>');
-            w = attrs.w ? attrs.w : this.labelWidth(txt, attrs.cl);
-            align = attrs.align ? attrs.align : 'left';
-            x = align == 'left' ? x : align == 'center' ? x - w * 0.5 : x - w;
-            l.css({
-                position: 'absolute',
-                left: x+'px',
-                'text-align': align
-            });
-            if (attrs.w) {
-                l.css({ width: w+'px' });
+            if (attrs.rotate == -90) {
+                l = $('<div class="label'+(attrs.cl ? ' '+attrs.cl : '')+'"><span>'+txt+'</span></div>');
+                w = 60;
+                l.css({
+                    position: 'absolute',
+                    left: (x-w*0.5)+'px',
+                    top: (y+12),
+                    width: w,
+                    height: 20,
+                    'text-align': 'right'
+                });
+                l.css({
+                    '-moz-transform': 'rotate(-90deg)',
+                    '-webkit-transform': 'rotate(-90deg)',
+                    '-ms-transform': 'rotate(-90deg)',
+                    '-o-transform': 'rotate(-90deg)',
+                    'filter': 'progid:DXImageTransform.Microsoft.BasicImage(rotation=3)'
+                });
+                this.__canvas.root.append(l);
+            } else {
+                va = attrs.valign;
+                l = $('<div class="label'+(attrs.cl ? ' '+attrs.cl : '')+'"><span>'+txt+'</span></div>');
+                w = attrs.w ? attrs.w : this.labelWidth(txt, attrs.cl);
+                align = attrs.align ? attrs.align : 'left';
+                x = align == 'left' ? x : align == 'center' ? x - w * 0.5 : x - w;
+                l.css({
+                    position: 'absolute',
+                    left: x+'px',
+                    'text-align': align
+                });
+                if (attrs.w) {
+                    l.css({ width: w+'px' });
+                }
+                this.__canvas.root.append(l);
+                h = attrs.h ? attrs.h : l.height();
+                if (!va) va = 'middle';
+                l.css({
+                    top: (y-h*(va == 'top' ? 0 : va == 'middle' ? 0.5 : 1))+'px'
+                });
             }
-            this.__canvas.root.append(l);
-            h = attrs.h ? attrs.h : l.height();
-            if (!va) va = 'middle';
-            l.css({
-                top: (y-h*(va == 'top' ? 0 : va == 'middle' ? 0.5 : 1))+'px'
-            });
             return l;
         },
 
