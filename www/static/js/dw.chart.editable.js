@@ -96,7 +96,7 @@
             window.onbeforeunload = function(e) {
                 _.each(chart.__syncedElements, storeElementValue);
                 var res = chart.save(true);
-                if (res === false) return;
+                if (res === false) return undefined;
                 return 'Please wait a second until the data has been saved!';
             };
         },
@@ -130,6 +130,7 @@
                     }
                 }
             });
+            return true;
         }
     });
 
