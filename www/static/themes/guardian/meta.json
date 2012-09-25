@@ -1,0 +1,8 @@
+{
+    "title": "Guardian",
+    "link": "http://www.guardian.co.uk",
+    "restricted": null,
+    "locale": "en_UK",
+    "extends": "default",
+    "default_width": 460
+}
