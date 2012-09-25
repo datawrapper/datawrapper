@@ -10,6 +10,7 @@ $app->get('/chart/:id/data', function($chart_id) use ($app) {
     $res = $app->response();
     $res['Cache-Control'] = 'max-age=0';
     $res['Content-Type'] = 'text/csv';
+    $res['Content-Disposition'] = 'attachment; filename="datawrapper-'.$chart_id.'.csv"';
     if (!empty($chart)) {
         print $chart->loadData();
     } else {
