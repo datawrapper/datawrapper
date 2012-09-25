@@ -66,6 +66,9 @@
         },
 
         refreshHeader: function() {
+            location.reload();
+            return;
+            /*
             $.get('/xhr/header/create', function(header) {
                 $('.header .toplinks').replaceWith(header);
                 DW.initializeSignUp();
@@ -79,7 +82,7 @@
                     DW.initializeSignUp();
                     DW.initializeLogout();
                 });
-            }
+            }*/
         },
 
         initializeSignUp: function() {
