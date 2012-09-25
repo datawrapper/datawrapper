@@ -10,7 +10,8 @@ $(function() {
 
     var _typeHasChanged = false,
         _themeHasChanged = false,
-        chart = DW.currentChart;
+        chart = DW.currentChart,
+        themes = {{ themes | json | raw }};
 
     chart.onSave(function(chart) {
 
@@ -19,6 +20,13 @@ $(function() {
         if (_themeHasChanged) {
             _themeHasChanged = false;
             $("#iframe-vis").load(updateVisBackground);
+            _.each(themes, function(theme) {
+                if (theme.id == chart.get('theme')) {
+                    if (theme.default_width) $('#iframe-wrapper').width(theme.default_width);
+                    else $('#iframe-wrapper').width('auto');
+                    return false;
+                }
+            });
         }
 
         if (_typeHasChanged) {
@@ -82,7 +90,14 @@ $(function() {
                 span.click(highlightSeriesClick);
                 s.val('---');
             }
-        })
+        });
+        _.each(themes, function(theme) {
+            if (theme.id == chart.get('theme')) {
+                if (theme.default_width) $('#iframe-wrapper').width(theme.default_width);
+                else $('#iframe-wrapper').width('auto');
+                return false;
+            }
+        });
     });
 
     $('.collapse').on('shown', function(e) {
