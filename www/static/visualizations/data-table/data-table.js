@@ -74,6 +74,8 @@
                 "bFilter": me.get('table-filter', false),
                 "bSort": me.get('table-sortable', false)
             });
+
+            el.append('<br style="clear:both"/>');
         }
 
     });

@@ -4,13 +4,13 @@
  *
  */
 #datatable_wrapper {
-    margin: 10px 0px;
+    margin: 10px 0px 10px;
 }
 #datatable {
     width: 100%;
     border: 0;
     border-spacing:0;
-    margin: 10px 0 20px;
+    margin: 10px 0 5px;
     border-collapse:collapse;
     clear: both;
 }
@@ -59,7 +59,7 @@
 #datatable tbody tr:nth-child(4n),
 #datatable tbody tr:last-child
  {
-    border-bottom: 1px solid #777;
+    border-bottom: 1px solid #aaa;
 }
 
 #datatable tbody tr:hover {
