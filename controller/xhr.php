@@ -47,14 +47,29 @@ $app->get('/xhr/:chartid/vis-options', function($id) use ($app) {
 /**
  * load a page from the docs for a modal window
  */
-require_once '../lib/templates/docs-pages.php';
+require_once '../templates/imported/pages.inc.php';
 
-foreach ($docs as $url => $title) {
-    $app->get('/xhr' . $url, function() use ($app, $url, $title) {
-        $page = array('title' => $title);
+$urls = array();
+
+foreach ($docs_pages as $lang => $pages) {
+    foreach ($pages as $url => $p) {
+        if (!in_array($url, $urls)) $urls[] = $url;
+    }
+}
+
+foreach ($urls as $url) {
+    $app->get('/popup/' . $url, function() use ($app, $url, $docs_pages) {
+        $page = array();
         add_header_vars($page, 'about');
-        add_docs_vars($page, $url);
-        $page['xhr'] = true;
-        $app->render(str_replace('/', '-', substr($url, 1)) . '.twig', $page);
+        $lang = $page['language'];
+        $tpl_path = 'imported/' . $lang . '/' . str_replace('/', '-', $url) . '.twig';
+        if (!empty($docs_pages[$lang]) && !empty($docs_pages[$lang][$url])) {
+            $page['title'] = $docs_pages[$lang][$url]['title'];
+            add_docs_vars($page, $url);
+            $page['xhr'] = true;
+            $app->render($tpl_path, $page);
+        } else {
+            error_page('about', _('Not found'), _('Sorry, but this content is not available in your language, yet.'));
+        }
     });
 }
