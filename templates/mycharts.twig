@@ -50,7 +50,11 @@
 
         <ul class="unstyled">
             {% for month in bymonth %}
-            <li {% if key == 'month' and val == month.id %}class="active"{% endif %}><a href="/mycharts/by/month/{{ month.id }}">{{ month.name }}</a> ({{ month.count }})</li>
+            {% if key == 'month' and val == month.id %}
+            <li class="active"><a href="/mycharts/"><i class="icon-check"></i> {{ month.name }} </a> ({{ month.count }}) </li>
+            {% else %}
+            <li><a href="/mycharts/by/month/{{ month.id }}">{{ month.name }}</a> ({{ month.count }})</li>
+            {% endif %}
             {% endfor %}
         </ul>
 
@@ -58,7 +62,11 @@
 
         <ul class="unstyled">
             {% for vis in byvis %}
-            <li {% if key == 'vis' and val == vis.id %}class="active"{% endif %}><a href="/mycharts/by/vis/{{ vis.id }}">{{ vis.name }}</a> ({{ vis.count }})</li>
+            {% if key == 'vis' and val == vis.id %}
+            <li class="active"><a href="/mycharts/"><i class="icon-check"></i> {{ vis.name }} </a> ({{ vis.count }}) </li>
+            {% else %}
+            <li><a href="/mycharts/by/vis/{{ vis.id }}">{{ vis.name }}</a> ({{ vis.count }})</li>
+            {% endif %}
             {% endfor %}
         </ul>
 
@@ -66,7 +74,12 @@
 
         <ul class="unstyled">
             {% for layout in bylayout %}
-            <li {% if key == 'layout' and val == layout.id %}class="active"{% endif %}><a href="/mycharts/by/layout/{{ layout.id }}">{{ layout.name }}</a> ({{ layout.count }})</li>
+            {% if key == 'layout' and val == layout.id %}
+            <li class="active"><a href="/mycharts/"><i class="icon-check"></i> {{ layout.name }} </a> ({{ layout.count }}) </li>
+            {% else %}
+            <li><a href="/mycharts/by/layout/{{ layout.id }}">{{ layout.name }}</a> ({{ layout.count }})</li>
+            {% endif %}
+
             {% endfor %}
         </ul>
     </div>

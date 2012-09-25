@@ -41,7 +41,7 @@ function nbChartsByLayout($user) {
     return $res;
 }
 
-$app->get('/mycharts', function () use ($app) {
+$app->get('/mycharts/?', function () use ($app) {
     $user = DatawrapperSession::getUser();
     if ($user->isLoggedIn()) {
         $page = array(

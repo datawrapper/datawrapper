@@ -459,6 +459,15 @@ h1, h2, h3, h4, h5, h6 {
 
 .mycharts-filter li.active a {
     font-weight: bold;
+    color: #335;
+}
+
+.mycharts-filter li.active a {
+
+}
+
+.mycharts-filter ul li {
+    margin-bottom: 5px;
 }
 
 .mycharts-filter ul {
