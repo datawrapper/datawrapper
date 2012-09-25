@@ -5,14 +5,14 @@
 <div class="row create-nav">
     {% for step in steps %}
         {% if createstep > step.index or createstep != step.index and chart.lastEditStep >= step.index %}
-            <a href="{{ step.id }}" class="span3{% if createstep == step.index %} active{% else %}{% if createstep > step.index %} passed{% endif %}{% endif %}">
+            <a href="{{ step.id }}" class="submit span3{% if createstep == step.index %} active{% else %}{% if createstep > step.index %} passed{% endif %}{% endif %}">
                 <span class="step">{{ step.index }}</span>
                 <span class="title">{{ step.title }}</span>
                 <i class="icon-ok"></i>
                  <div class="corner"></div>
             </a>
         {% elseif createstep == step.index-1 %}
-            <a href="{{ step.id }}" class="span3{% if createstep == step.index %} active{% else %}{% if createstep > step.index %} passed{% else %} unseen{% endif %}{% endif %}">
+            <a href="{{ step.id }}" class="submit span3{% if createstep == step.index %} active{% else %}{% if createstep > step.index %} passed{% else %} unseen{% endif %}{% endif %}">
                 <span class="step">{{ step.index }}</span>
                 {{ step.title }}
                 <div class="corner"></div>
@@ -43,6 +43,17 @@
 
         if (DW.currentChart.get('lastEditStep') < {{ createstep}}) {
             DW.currentChart.set('lastEditStep', {{ createstep }});
+        }
+    });
+
+    $('a.submit').click(function(e) {
+        var a = $(e.target), chart = DW.currentChart;
+        if (e.target.nodeName.toLowerCase() != 'a') a = a.parents('a');
+        if (chart.__changed) {
+            e.preventDefault();
+            chart.onSave(function() {
+                location.href = a.attr('href');
+            });
         }
     });
 
