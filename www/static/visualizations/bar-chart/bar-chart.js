@@ -45,6 +45,9 @@
                     var d = me.barDimensions(series, s, r);
                     var fill = me.getSeriesColor(series, r, useNegativeColor),
                         stroke = d3.cie.lch(d3.rgb(fill)).darker(0.6).toString();
+
+                    if (labelsInsideBars) d.x -= 10;
+
                     me.registerSeriesElement(c.paper.rect(d.x, d.y, d.w, d.h).attr({
                         'stroke': stroke,
                         'fill': fill
