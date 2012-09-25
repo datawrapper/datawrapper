@@ -9,3 +9,5 @@ charts/images/*
 push
 
 config.php
+
+www/tests/index.html
