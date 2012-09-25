@@ -76,7 +76,7 @@
         },
 
         numRows: function() {
-            return this.__dataset.series().length;
+            return this.__dataset.numRows();
         },
 
         // column header is the first value of each data series
