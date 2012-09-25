@@ -36,11 +36,7 @@ foreach ($urls as $url) {
     });
 }
 
-$lang = substr(DatawrapperSession::getLanguage(), 0, 2);
-if (isset($docs_pages[$lang])) {
-    $lang_urls = array_keys($docs_pages[$lang]);
 
-    $app->get('/docs/?', function() use ($app, $lang_urls) {
-        $app->redirect('/' . $lang_urls[0]);
-    });
-}
+$app->get('/docs/?', function() use ($app, $lang_urls) {
+    $app->redirect('/docs/about');
+});
