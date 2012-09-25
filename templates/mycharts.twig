@@ -115,9 +115,10 @@ $(function(){
             success: function(data) {
                 data = JSON.parse(data);
                 if (data.status == "ok") {
-                    window.location.reload();
+                    // redirect to copied chart
+                    location.href = '/chart/'+data.data.id+'/visualize';
                 } else {
-                    console.log(data);
+                    console.warn(data);
                 }
             }
         });
