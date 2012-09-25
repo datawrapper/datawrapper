@@ -59,8 +59,6 @@ $(function() {
             return val === null || val === undefined || (_.isNumber(val) && isNaN(val));
         }
 
-        console.log(dataset);
-
         var table = $('#data-preview'),
             horzHeaders = chart.get('metadata.data.horizontal-header'),
             vertHeaders = chart.get('metadata.data.vertical-header'),
