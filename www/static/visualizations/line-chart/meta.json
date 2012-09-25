@@ -25,6 +25,15 @@
             },
             "default": true
         },
+        "rotate-x-labels": {
+            "type": "checkbox",
+            "label": {
+                "en": "Rotate labels 45°",
+                "de": "Beschriftungen um 45° drehen",
+                "fr": "rotate labels 45°"
+            },
+            "default": true
+        },
         "baseline-zero": {
             "type": "checkbox",
             "label": {

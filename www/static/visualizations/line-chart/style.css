@@ -11,3 +11,10 @@
 .label.highlighted span, .label.axis span {
     background-color: #fff;
 }
+
+.label.rotate45 {
+    -moz-transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+}
