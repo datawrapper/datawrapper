@@ -48,11 +48,19 @@
 
             me.xAxis();
 
-            var seriesLines = this.__seriesLines = {},
+            var all_series = me.chart.dataSeries(),
+                seriesLines = this.__seriesLines = {},
                 legend_y_offset = 0;
 
+            if (!directLabeling) {
+                // sort lines by last data point
+                all_series = all_series.sort(function(a, b) {
+                    return b.data[ds.numRows()-1] -a.data[ds.numRows()-1];
+                });
+            }
+
             // draw series lines
-            _.each(me.chart.dataSeries(), function(col, index) {
+            _.each(all_series, function(col, index) {
                 var paths = [], path = [], x, y, sw, connectMissingValuePath = [];
                 _.each(col.data, function(val, i) {
                     x = scales.x(i);
