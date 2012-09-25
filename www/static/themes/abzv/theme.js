@@ -12,7 +12,8 @@
 
         colors: {
             highlight: '#D21F1F',
-            main: '#cde'
+            main: '#cde',
+            background: '#fff'
         },
 
         lineWidth: {

@@ -18,11 +18,10 @@
             axis: '#000000',
             grid: '#999999',
             negative: '#F27F6D',
+            'highlight-negative': '#801100',
             background: '#ffffff',
-            'highlight-negative': '#801100'
+            palette: ['#1F78B4', '#B2DF8A', '#FF7F00', '#6A3D9A', '#B15928']
         },
-
-        locale: 'en_UK',
 
         lineChart: {
             strokeWidth: {

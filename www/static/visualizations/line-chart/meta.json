@@ -16,6 +16,15 @@
     },
     "about": "http://vis4.net/blog/posts/doing-the-line-charts-right/",
     "options": {
+        "direct-labeling": {
+            "type": "checkbox",
+            "label": {
+                "en": "Direct labeling",
+                "de": "Linien direkt beschriften",
+                "fr": "direct labeling"
+            },
+            "default": true
+        },
         "baseline-zero": {
             "type": "checkbox",
             "label": {
@@ -24,19 +33,19 @@
                 "fr": "Échelle en zero"
             }
         },
-        "force-banking": {
-            "type": "checkbox",
-            "label": {
-                "en": "Bank the lines to 45°",
-                "de": "Anstiege auf 45° ausrichten",
-                "fr": "translate me"
-            }
-        },
         "connect-missing-values": {
             "type": "checkbox",
             "label": {
                 "en": "Connect lines between missing values",
                 "de": "Linien zwischen fehlenden Werten verbinden",
+                "fr": "translate me"
+            }
+        },
+        "force-banking": {
+            "type": "checkbox",
+            "label": {
+                "en": "Bank the lines to 45°",
+                "de": "Anstiege auf 45° ausrichten",
                 "fr": "translate me"
             }
         }

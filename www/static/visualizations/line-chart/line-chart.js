@@ -16,6 +16,7 @@
 
             var
             ds = me.dataset,
+            directLabeling = me.get('direct-labeling'),
             scales = me.__scales = {
                 x: me.xScale(),
                 y: me.yScale()
@@ -47,10 +48,11 @@
 
             me.xAxis();
 
-            var seriesLines = this.__seriesLines = {};
+            var seriesLines = this.__seriesLines = {},
+                legend_y_offset = 0;
 
             // draw series lines
-            _.each(me.chart.dataSeries(), function(col) {
+            _.each(me.chart.dataSeries(), function(col, index) {
                 var paths = [], path = [], x, y, sw, connectMissingValuePath = [];
                 _.each(col.data, function(val, i) {
                     x = scales.x(i);
@@ -71,7 +73,14 @@
                 });
                 paths.push(path);
 
-                sw = me.theme.lineChart.strokeWidth[me.chart.isHighlighted(col) ? 'highlight' : 'normal'];
+                sw = me.getSeriesLineWidth(col);
+
+                var strokeColor = me.getSeriesColor(col);
+
+                if (!directLabeling && index > 0) {
+                    strokeColor = me.theme.colors.palette[index-1];
+                    me.setSeriesColor(col, strokeColor);
+                }
 
                 _.each(paths, function(path) {
                     me.registerSeriesElement(c.paper.path(path).attr({
@@ -79,7 +88,7 @@
                         'stroke-linecap': 'round',
                         'stroke-linejoin': 'round',
                         'stroke-opacity': 1,
-                        'stroke': me.getSeriesColor(col)
+                        'stroke': strokeColor
                     }), col);
 
                     // add invisible line on top to make selection easier
@@ -93,14 +102,35 @@
                     me.registerSeriesElement(c.paper.path(connectMissingValuePath).attr({
                         'stroke-width': sw*0.35,
                         'stroke-dasharray': '- ',
-                        stroke: me.getSeriesColor(col)
+                        stroke: strokeColor
                     }), col);
                 }
 
                 if (me.lineLabelsVisible()) {
-                    var lbl = me.label(x+10, y, col.name,
-                        { cl: me.chart.isHighlighted(col) ? 'highlighted series' : 'series',
-                          w: c.labelWidth });
+                    var div, lbl, lblx = x + 10, lbly = y, valign = 'middle';
+                    if (!directLabeling) {
+                        lblx += 15;
+                        valign = 'top';
+                        lbly = legend_y_offset;
+                        div = $('<div></div>');
+                        div.css({
+                            background: strokeColor,
+                            width: 10,
+                            height: 10,
+                            position: 'absolute',
+                            left: x+10,
+                            top: lbly+3
+                        });
+                        el.append(div);
+                    }
+                    lbl = me.label(lblx, lbly, col.name, {
+                        cl: me.chart.isHighlighted(col) ? 'highlighted series' : 'series',
+                        w: c.labelWidth,
+                        valign: valign
+                    });
+                    if (!directLabeling) {
+                        legend_y_offset += lbl.height()+15;
+                    }
                     lbl.data('highlighted', me.chart.isHighlighted(col));
                     me.registerSeriesLabel(lbl, col);
                 } // */
@@ -168,7 +198,7 @@
         },
 
         getSeriesLineWidth: function(series) {
-            return this.theme.lineWidth[this.chart.isHighlighted(series) ? 'focus' : 'context'];
+            return this.theme.lineChart.strokeWidth[this.chart.isHighlighted(series) ? 'highlight' : 'normal'];
         },
 
         hideTooltip: function() {
@@ -272,6 +302,31 @@
                     me.label(x, y, val, { align: 'center', cl: 'axis' });
                 });
             }
+        },
+
+        hoverSeries: function(series) {
+            var me = this,
+                seriesElements = me.__seriesElements;
+            _.each(seriesElements, function(elements, key) {
+                var h = !series || key == series.name;
+                _.each(elements, function(el) {
+                    if (el.attrs['stroke-opacity'] > 0) {
+                        el.attr({
+                            opacity: h ? 1 : 0.5,
+                            'stroke-width': h ? me.getSeriesLineWidth(series) : 1
+                        });
+                    }
+                });
+            });
+
+            var seriesLabels = me.__seriesLabels;
+            _.each(seriesLabels, function(labels, key) {
+                var h = !series || key == series.name;
+                _.each(labels, function(lbl) {
+                    lbl.css({ opacity: h ? 1 : 0.5 });
+                    if (h) lbl.addClass('highlighted');
+                });
+            });
         }
 
     });

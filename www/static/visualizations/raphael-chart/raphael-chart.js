@@ -51,7 +51,10 @@
                 x = e.pageX,
                 y = e.pageY,
                 series = this.getSeriesByPoint(x, y),
-                row = this.getDataRowByPoint(x, y);
+                row = this.getDataRowByPoint(x, y),
+                hoveredNode = series !== null;
+
+            if (!series) series = me.getSeriesByLabel();
 
             if (!series) {
                 // nothing hovered
@@ -68,7 +71,7 @@
                     clearTimeout(me.__mouseOverTimer);
                     clearTimeout(me.__mouseOutTimer);
                     if (me.theme.hover) me.hoverSeries(series);
-                    if (me.theme.tooltip) me.showTooltip(series, row, x, y);
+                    if (me.theme.tooltip && hoveredNode) me.showTooltip(series, row, x, y);
                 }, 100);
             }
         },
@@ -82,11 +85,21 @@
         },
 
         registerSeriesLabel: function(lbl, series) {
+            var me = this;
             lbl.data('series', series);
             if (!this.__seriesLabels[series.name]) {
                 this.__seriesLabels[series.name] = [];
             }
             this.__seriesLabels[series.name].push(lbl);
+            lbl.on('mouseenter', function(e) {
+                me.__hoveredSeriesLabel = e.target;
+                clearTimeout(me.__mouseLeaveTimer);
+            });
+            lbl.on('mouseleave', function() {
+                me.__mouseLeaveTimer = setTimeout(function() {
+                    me.__hoveredSeriesLabel = null;
+                }, 100);
+            });
         },
 
         hoverSeries: function(series) {
@@ -102,7 +115,7 @@
             _.each(seriesLabels, function(labels, key) {
                 var h = !series || key == series.name;
                 _.each(labels, function(lbl) {
-                    lbl.css({ opacity: h ? 1 : 0.1 });
+                    lbl.css({ opacity: h ? 1 : 0.5 });
                     if (h) lbl.addClass('highlighted');
                 });
             });
@@ -184,8 +197,20 @@
         },
 
         getSeriesByPoint: function(x, y) {
-            var el = this.__canvas.paper.getElementByPoint(x, y);
-            return el && el.data('series') ? el.data('series') : null;
+            var me = this,
+                el = me.__canvas.paper.getElementByPoint(x, y);
+            if (el && el.data('series')) return el.data('series');
+            return null;
+        },
+
+        getSeriesByLabel: function() {
+            var me = this;
+            if (me.__hoveredSeriesLabel) {
+                lbl = $(me.__hoveredSeriesLabel);
+                if (me.__hoveredSeriesLabel.nodeName.toLowerCase() == 'span') lbl = lbl.parent();
+                if (lbl.data('series')) return lbl.data('series');
+            }
+            return null;
         },
 
         getDataRowByPoint: function(x, y) {
@@ -193,12 +218,21 @@
             throw 'getDataRowByPoint() needs to be implemented by each visualization';
         },
 
-        getSeriesColor: function(series, row, useNegativeColor) {
+        getSeriesColor: function(series, row, useNegativeColor, colorful) {
             var me = this,
                 main = useNegativeColor && series.data[row] < 0 ? 'negative' : 'main',
                 highlight = useNegativeColor && series.data[row] < 0 ? 'highlight-negative' : 'highlight';
+            // use a different color, if set via setSeriesColor
+            if (me.__customSeriesColors && me.__customSeriesColors[series.name])
+                return me.__customSeriesColors[series.name];
             if (!me.chart.hasHighlight()) return me.theme.colors[main];
             return me.theme.colors[me.chart.isHighlighted(series) ? highlight : main];
+        },
+
+        setSeriesColor: function(series, color) {
+            var me = this;
+            if (!me.__customSeriesColors) me.__customSeriesColors = {};
+            me.__customSeriesColors[series.name] = color;
         },
 
         getYTicks: function(h) {

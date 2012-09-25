@@ -20,7 +20,8 @@
             grid: '#999999',
             negative: '#D4B485',
             'highlight-negative': '#9E5800',
-            background: '#ffffff'
+            background: '#ffffff',
+            palette: ['#1F78B4', '#B2DF8A', '#FF7F00', '#6A3D9A', '#B15928']
         },
 
         locale: 'de_DE',
