@@ -37,6 +37,6 @@ foreach ($urls as $url) {
 }
 
 
-$app->get('/docs/?', function() use ($app, $lang_urls) {
+$app->get('/docs/?', function() use ($app) {
     $app->redirect('/docs/about');
 });
