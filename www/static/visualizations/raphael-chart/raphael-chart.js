@@ -11,7 +11,7 @@
             this.__seriesElements = {};
             this.__seriesLabels = {};
 
-            $('body').append('<div id="tooltip" class="tooltip"><div class="content"><span class="yval"></span></div></div>');
+            $('body').append('<div id="tooltip" class="tooltip"><div class="content"><b><span class="xval"></span></b><br /><span class="yval"></span></div></div>');
         },
 
         setRoot: function(el) {
