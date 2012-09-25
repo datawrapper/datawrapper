@@ -94,7 +94,7 @@
             _.each(seriesElements, function(elements, key) {
                 var h = !series || key == series.name;
                 _.each(elements, function(el) {
-                    el.attr({ opacity: h ? 1 : 0.1 });
+                    el.attr({ opacity: h ? 1 : 0.5 });
                 });
             });
 

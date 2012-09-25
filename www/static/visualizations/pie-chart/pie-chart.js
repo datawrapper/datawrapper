@@ -130,6 +130,7 @@
 
                 me.registerSeriesElement(arc(c.cx, c.cy, c.or, c.ir, a0, a1).attr({
                     'stroke': me.theme.colors.background,
+                    'stroke-width': 2,
                     'fill': fill
                 }), s);
 
