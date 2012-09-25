@@ -11,6 +11,12 @@
                 <i class="icon-ok"></i>
                  <div class="corner"></div>
             </a>
+        {% elseif createstep == step.index-1 %}
+            <a href="{{ step.id }}" class="span3{% if createstep == step.index %} active{% else %}{% if createstep > step.index %} passed{% else %} unseen{% endif %}{% endif %}">
+                <span class="step">{{ step.index }}</span>
+                {{ step.title }}
+                <div class="corner"></div>
+            </a>
         {% else %}
             <div class="span3{% if createstep == step.index %} active{% else %}{% if createstep > step.index %} passed{% else %} unseen{% endif %}{% endif %}">
                 <span class="step">{{ step.index }}</span>
@@ -19,8 +25,6 @@
             </div>
         {% endif %}
 
-
-        
     {% endfor %}
 </div>
 
