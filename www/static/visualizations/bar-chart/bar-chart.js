@@ -71,11 +71,16 @@
                         lblClass += ' reverse';
 
                         // check if the label is bigger than the bar
-                        var slblw = me.labelWidth(series.name, 'series')+20,
-                            vlblw = me.labelWidth(me.chart.formatValue(series.data[r], true), 'value')+20;
+                        var slblw = me.labelWidth(series.name, 'series')+10,
+                            vlblw = me.labelWidth(me.chart.formatValue(val, true), 'value')+20;
                         if (slblw + vlblw > d.w) {
                             lbl_x = d.x + d.w + 10;
-                            val_x = lbl_x + slblw + 20;
+                            val_x = lbl_x + slblw + 10;
+                            val_align = 'left';
+                            if (val < 0) {
+                                lbl_align = 'left';
+                            }
+
                         }
                     }
                     me.registerSeriesLabel(me.label(val_x, d.y + d.h * 0.5, me.chart.formatValue(series.data[r], s === 0),{
