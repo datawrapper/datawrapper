@@ -97,6 +97,7 @@
 
             if (me.__domain[0] < 0) {
                 var x = c.lpad + c.zero ;
+                if (labelsInsideBars) x -= 10;
                 me.path([['M', x, c.tpad], ['L', x, c.lastBarY ]], 'axis')
                     .attr(me.theme.yAxis);
             }
