@@ -19,7 +19,8 @@
             axis: '#000000',
             grid: '#999999',
             negative: '#D4B485',
-            'highlight-negative': '#9E5800'
+            'highlight-negative': '#9E5800',
+            background: '#ffffff'
         },
 
         locale: 'de_DE',
