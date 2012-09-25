@@ -126,8 +126,10 @@
                     ly = c.cy + Math.sin((a0 + a1) * 0.5) * c.or * 0.7,
                     value = showTotal ? Math.round(s.data[0] / total * 100)+'%' : me.chart.formatValue(s.data[0], true);
 
+                if (s.data[0] === 0) return;
+
                 me.registerSeriesElement(arc(c.cx, c.cy, c.or, c.ir, a0, a1).attr({
-                    'stroke': stroke,
+                    'stroke': me.theme.colors.background,
                     'fill': fill
                 }), s);
 
@@ -204,9 +206,8 @@
                     _.each(me.__seriesElements[s.name], function(el) {
                         var fill = me.getSeriesColor(s, 0), stroke, hover = series !== undefined && s.name == series.name;
                         if (hover) fill = d3.cie.lch(d3.rgb(fill)).darker(0.6).toString();
-                        stroke = d3.cie.lch(d3.rgb(fill)).darker(0.6).toString();
-                        if (el.attrs.fill != fill || el.attrs.stroke != stroke)
-                            el.animate({ fill: fill, stroke: stroke }, 50);
+                        if (el.attrs.fill != fill)
+                            el.animate({ fill: fill }, 50);
                         if (hover) el.toFront();
                     });
                 });
