@@ -49,7 +49,7 @@
 
         padding: {
             left: 0,
-            right: 0,
+            right: 20,
             bottom: 30,
             top: 10
         },
