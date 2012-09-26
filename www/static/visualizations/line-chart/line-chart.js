@@ -16,6 +16,7 @@
 
             var
             ds = me.dataset,
+            bpad = me.theme.padding.bottom,
             directLabeling = me.get('direct-labeling'),
             scales = me.__scales = {
                 x: me.xScale(),
@@ -27,7 +28,8 @@
             me.init();
 
             c = me.initCanvas({
-                h: h
+                h: h,
+                bpad: me.get('rotate-x-labels') ? bpad + 20 : bpad
             });
 
             if (me.lineLabelsVisible()) {
