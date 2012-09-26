@@ -7,7 +7,7 @@ function getDemoDatasets() {
     $datasets[] = array(
     	'id' => 'marriages',
     	'title' => _('Line chart: Marriages in Germany (per capita)'),
-    	'data' => _('Jahr').'	'._('Eheschließungen').'
+    	'data' => _('Year').'	'._('Marriages').'
 1946	8.1
 1947	9.8
 1948	10.5

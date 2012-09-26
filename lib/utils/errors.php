@@ -18,7 +18,7 @@ function error_page($step, $title, $message, $options = false, $status = 500) {
 
 function error_not_found() {
     error_page('',
-        _('404 – Page not found'),
+        _('404 - Page not found'),
         _('The page you are looking for could not be found. Check the address bar to ensure your URL is spelled correctly. If all else fails, you can visit our home page at the link below.')
     );
 }
