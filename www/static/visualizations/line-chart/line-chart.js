@@ -166,7 +166,7 @@
         },
 
         getDataRowByPoint: function(x, y) {
-            return Math.round(this.__scales.x.invert(x));
+            return Math.round(this.__scales.x.invert(x-10));
         },
 
         showTooltip: function(series, row, x, y) {
