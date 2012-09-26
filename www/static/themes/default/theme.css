@@ -5,7 +5,7 @@
  *
  */
 
-body {
+body.chart {
     font-family: Helvetica Neue, Arial;
     font-weight: 400;
     margin:5px 10px;
@@ -22,7 +22,7 @@ h1 {
     text-align: left;
 }
 
-p { margin: 15px 0; line-height: 19px;}
+.chart p { margin: 15px 0; line-height: 19px;}
 
 #chart {
     margin-top: 25px;
