@@ -23,13 +23,14 @@
             return _.isUndefined(pt) || _.isNull(pt) ? _default : pt;
         },
 
+        // loads the dataset of this chart
         dataset: function(callback, ignoreTranspose) {
             var me = this, ds, dsOpts = {
                 delimiter: 'auto',
                 url: '/chart/' + this.get('id') + '/data',
-                transpose: ignoreTranspose ? false : this.get('metadata.data.transpose'),
-                firstRowIsHeader: this.get('metadata.data.horizontal-header'),
-                firstColumnIsHeader: this.get('metadata.data.vertical-header')
+                transpose: ignoreTranspose ? false : this.get('metadata.data.transpose', false),
+                firstRowIsHeader: this.get('metadata.data.horizontal-header', true),
+                firstColumnIsHeader: this.get('metadata.data.vertical-header', true)
             };
             me.__dataset = ds = new Datawrapper.Dataset(dsOpts);
             ds.fetch({
@@ -43,6 +44,19 @@
                 }
             });
             return ds;
+        },
+
+        rawData: function(rawData) {
+            var me = this,
+                dsOpts = {
+                    rawData: rawData,
+                    delimiter: 'auto',
+                    transpose: this.get('metadata.data.transpose', false),
+                    firstRowIsHeader: this.get('metadata.data.horizontal-header', true),
+                    firstColumnIsHeader: this.get('metadata.data.vertical-header', true)
+                };
+            me.__dataset = ds = new Datawrapper.Dataset(dsOpts);
+            ds.fetchRaw();
         },
 
         datasetLoaded: function(callback) {

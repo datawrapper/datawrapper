@@ -23,19 +23,6 @@
             var me = this,
                 opts = me.__options;
 
-            var loaded = function(raw) {
-                me.__rawData = raw;
-                // parse data
-                var parser = new Datawrapper.Parsers.Delimited(opts),
-                    data = parser.parse(raw);
-                me._processData(data);
-                me.__data = data;
-                me.__loaded = true;
-                if (_.isFunction(callbacks.success)) {
-                    callbacks.success();
-                }
-            };
-
             if (opts.url !== undefined) {
                 if (me.__lastUrl == opts.url) {
                     // use cached data
@@ -45,10 +32,26 @@
                     $.ajax({
                         url: opts.url,
                         method: 'GET',
-                        success: loaded
+                        success: function(raw) {
+                            me._delimtedLoaded(raw);
+                            if (_.isFunction(callbacks.success)) {
+                                callbacks.success();
+                            }
+                        }
                     });
                 }
             }
+        },
+
+        _delimtedLoaded: function(raw, callbacks) {
+            var me = this, opts = me.__options;
+            me.__rawData = raw;
+            // parse data
+            var parser = new Datawrapper.Parsers.Delimited(opts),
+                data = parser.parse(raw);
+            me._processData(data);
+            me.__data = data;
+            me.__loaded = true;
         },
 
         _processData: function(data) {
@@ -97,6 +100,16 @@
 
             if (opts.type == "delimited") {
                 me._fetchDelimited(callbacks);
+            }
+        },
+
+        /*
+         *
+         */
+        fetchRaw: function() {
+            var me = this, opts = me.__options;
+            if (opts.type == "delimited") {
+                me._delimtedLoaded(opts.rawData);
             }
         },
 
