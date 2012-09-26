@@ -115,7 +115,7 @@ function add_header_vars(&$page, $active = null) {
             'icon' => 'user',
             'dropdown' => array(array(
                 'url' => '/account/settings',
-                'icon' => 'cog',
+                'icon' => 'wrench',
                 'title' => _('Settings')
             ), array(
                 'url' => '#logout',
@@ -123,6 +123,14 @@ function add_header_vars(&$page, $active = null) {
                 'title' => _('Logout')
             ))
         );
+        if ($user->isAdmin()) {
+            $headlinks[] = array(
+                'url' => '/admin',
+                'id' => 'admin',
+                'icon' => 'fire',
+                'title' => _('Admin')
+            );
+        }
     } else {
         $headlinks[] = array(
             'url' => '#login',
@@ -176,7 +184,11 @@ require_once '../controller/chart-static.php';
 require_once '../controller/mycharts.php';
 require_once '../controller/xhr.php';
 require_once '../controller/docs.php';
+require_once '../controller/admin.php';
 
+$app->notFound(function() {
+    error_not_found();
+});
 
 $app->get('/phpinfo', function() use ($app) {
     phpinfo();
