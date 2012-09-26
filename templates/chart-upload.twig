@@ -14,11 +14,11 @@
                 $('#demo-data').append('<li><a href="#">Gini</a></li>');
             }
 
-            function nextPage() {
-                location.href = '/chart/'+DW.currentChart.get('id')+'/describe';
+            function nextPage(url) {
+                location.href = url;
             }
 
-            $('#upload-data').click(function() {
+            function uploadData(url) {
                 DW.currentChart.set('metadata.data.source', 'clipboard');
                 $.ajax({
                     url: '/api/charts/' + DW.currentChart.get('id') + '/data',
@@ -29,15 +29,18 @@
                     success: function(result) {
                         if (result.status == "ok") {
                             // data is saved correctly, so proceed
-                            nextPage();
+                            nextPage(url);
                         } else {
                             alert(result.message);
                         }
                     }
                 });
                 return false;
-            });
+            }
 
+            $('#upload-data').click(function() {
+                uploadData('describe');
+            });
 
             new qq.FileUploader({
                 element: $('#upload')[0],
@@ -56,11 +59,13 @@
                 },
                 multiple: false,
                 onComplete: function(e) {
-                    nextPage();
+                    nextPage('describe');
                 }
             });
 
             var txtarea = $('#upload-data-text');
+
+            txtarea.data('orig-val', txtarea.val());
 
             $('.upload-drop').css({
                 position: 'absolute',
@@ -69,6 +74,15 @@
                 width: txtarea.width()+2,
                 height: txtarea.height()+2,
                 'line-height': txtarea.height()+'px'
+            });
+
+            $('.submit').click(function(e) {
+                if (txtarea.val() != txtarea.data('orig-val')) {
+                    e.preventDefault();
+                    var a = $(e.target);
+                    if (e.target.nodeName.toLowerCase() != "a") a = a.parents('a');
+                    uploadData(a.attr('href'));
+                }
             });
 
         });
