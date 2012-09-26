@@ -46,7 +46,7 @@
         }
     });
 
-    $('a.submit').click(function(e) {
+    $('.submit').live('click', function(e) {
         var a = $(e.target), chart = DW.currentChart;
         if (e.target.nodeName.toLowerCase() != 'a') a = a.parents('a');
         if (chart.__changed) {

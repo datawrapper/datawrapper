@@ -94,6 +94,7 @@
             });
 
             window.onbeforeunload = function(e) {
+                //console.debug('onbeforeunload()');
                 _.each(chart.__syncedElements, storeElementValue);
                 var res = chart.save(true);
                 if (res === false) return undefined;
@@ -107,6 +108,7 @@
 
         save: function(sync) {
             // saves the chart meta data to Datawrapper
+            //console.debug('save()', this.__changed);
             if (!this.__changed) return false;
             clearTimeout(this.__saveTimeout);
             var chart = this;
@@ -114,11 +116,11 @@
                 url: '/api/charts/'+this.get('id'),
                 type: 'PUT',
                 dataType: 'json',
-                async: sync === true,
                 data: JSON.stringify(this.__attributes),
                 processData: false,
                 context: this,
                 success: function(data) {
+                    //console.debug('save completed');
                     if (data.status == "ok") {
                         this.__changed = false;
                         // run callbacks
