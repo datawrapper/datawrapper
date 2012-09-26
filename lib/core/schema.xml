@@ -48,4 +48,12 @@
     <column name="key" type="varchar" size="100" required="true" />
     <column name="details" type="varchar" size="512" required="false" />
   </table>
+
+  <!-- some stats to keep admins happy -->
+  <table name="stats" phpName="Stats">
+    <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+    <column name="time" type="timestamp" required="true" />
+    <column name="metric" type="varchar" required="true" />
+    <column name="value" type="integer" required="true" />
+  </table>
 </database>

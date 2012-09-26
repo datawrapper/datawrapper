@@ -75,5 +75,20 @@ CREATE TABLE `action`
 		REFERENCES `user` (`id`)
 ) ENGINE=MyISAM;
 
+-- ---------------------------------------------------------------------
+-- stats
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `stats`;
+
+CREATE TABLE `stats`
+(
+	`id` INTEGER NOT NULL AUTO_INCREMENT,
+	`time` DATETIME NOT NULL,
+	`metric` VARCHAR(255) NOT NULL,
+	`value` INTEGER NOT NULL,
+	PRIMARY KEY (`id`)
+) ENGINE=MyISAM;
+
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;
