@@ -4,5 +4,6 @@
     "restricted": null,
     "locale": "en_UK",
     "extends": "default",
-    "default_width": 460
+    "default_width": 460,
+    "restrict": "@guardian.co.uk"
 }
