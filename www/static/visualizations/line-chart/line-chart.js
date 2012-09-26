@@ -22,7 +22,7 @@
                 x: me.xScale(),
                 y: me.yScale()
             },
-            h = me.get('force-banking') ? el.width() / me.computeAspectRatio() : me.getMaxChartHeight(el),
+            h = me.get('force-banking') ? el.width() / me.computeAspectRatio() : me.getSize()[1],
             c;
 
             me.init();

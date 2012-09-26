@@ -21,25 +21,28 @@
             });
         },
 
+        getSize: function() {
+            var me = this, el = me.__root;
+            return [$(document).width(), me.getMaxChartHeight(el)];
+        },
+
         initCanvas: function(canvas) {
-            var me = this, el = me.__root, w = $(document).width();
+            var me = this, el = me.__root, size = me.getSize();
             canvas = _.extend({
-                w: w,
-                h: me.getMaxChartHeight(el),
+                w: size[0],
+                h: size[1],
                 rpad: me.theme.padding.right,
                 lpad: me.theme.padding.left,
                 bpad: me.theme.padding.bottom,
                 tpad: me.theme.padding.top
             }, canvas);
 
-            if (w <= 300) {
+            if (size[0] <= 300) {
                 canvas.bpad = canvas.tpad = canvas.lpad = canvas.rpad = 5;
             }
 
             canvas.root = el;
             canvas.paper = Raphael(el[0], canvas.w, canvas.h+2);
-            //console.log(w, w-canvas.lpad-canvas.rpad);
-            //canvas.paper.rect(canvas.lpad, canvas.tpad, canvas.w - canvas.lpad - canvas.rpad, canvas.h - canvas.tpad - canvas.bpad);
             el.height(canvas.h);
             $('.tooltip').hide();
             me.__canvas = canvas;
