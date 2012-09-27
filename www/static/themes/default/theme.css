@@ -83,8 +83,8 @@ h1 {
     margin: 10px 0px 0px;
     padding-top: 5px;
     padding-bottom: 5px;
-    border-top: 1px solid #eee;
     font-size: 11px;
+    color: #888;
 }
 
 .footer-left {
