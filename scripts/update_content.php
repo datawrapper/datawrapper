@@ -1,5 +1,11 @@
 <?php
 
+
+if (file_exists("new_wp_content.txt") && trim(file_get_contents("new_wp_content.txt")) != "1") {
+    // no new changes were made, so no need to update
+    exit();
+}
+
 $url = "http://datastory.de/?post_type=datawrapper&custom_fields=dw_url,dw_lang,dw_show_page&json=1";
 
 $userpwd = getenv('DATASTORY_AUTH');
@@ -34,7 +40,7 @@ foreach ($data->posts as $post) {
         if (!file_exists($tpl_dir)) mkdir($tpl_dir);
         file_put_contents($tpl_file, $tpl);
         $show_page = isset($post->custom_fields->dw_show_page) && $post->custom_fields->dw_show_page[0] == "1";
-        
+
         if (!isset($pages[$lang])) $pages[$lang] = array();
         $pages[$lang][$url] = array(
             'title' => $post->title,
@@ -44,3 +50,7 @@ foreach ($data->posts as $post) {
 }
 
 file_put_contents("../templates/imported/pages.inc.php", "<?php\n$autogen_php\n\$docs_pages = " . var_export($pages, true) . ";\n");
+
+if (file_exists("new_wp_content.txt")) {
+    file_put_contents("new_wp_content.txt", "0");
+}
