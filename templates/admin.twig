@@ -75,8 +75,8 @@
             vis.render(cont);
         }
 
-        lineChart('#user-stats', 'date;users-signed;users-activated\n12.3.;9;6\n13.3.;15;8\n14.3.;15;9\n15.3.;15;12\n16.3.;19;13');
-        lineChart('#chart-stats', 'date;users-signed;users-activated\n12.3.;9;6\n13.3.;15;8\n14.3.;15;9\n15.3.;15;12\n16.3.;19;13');
+        lineChart('#user-stats', '{{ user_csv | raw }}');
+        lineChart('#chart-stats', '{{ chart_csv | raw }}');
     });
     </script>
 
