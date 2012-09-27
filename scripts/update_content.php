@@ -23,12 +23,23 @@ foreach ($data->posts as $post) {
     if ($post->status == "publish") {
         $lang = $post->custom_fields->dw_lang[0];
         $url = $post->custom_fields->dw_url[0];
+
+        if (count($post->categories) == 0) {
+            print "ignoring ".$post->title." (no category)\n";
+            continue;
+        }
+        $category = $post->categories[0]->slug == "dw" && count($post->categories) > 1 ? $post->categories[1] : $post->categories[0];
+
+        if ($category->slug == "docs") $url = "docs/" . $url;
+        else if ($category->slug == "popups") $url = "popups/" . $url;
+
         $tpl = $header . "\n<article> <!-- begin wordpress content -->\n\n" . $post->content . "\n\n</article> <!-- end wordpress content -->\n" . $footer;
         $tpl_dir = "../templates/imported/" . $lang;
         $tpl_file = $tpl_dir . "/" . str_replace('/', '-', $url) . ".twig";
         if (!file_exists($tpl_dir)) mkdir($tpl_dir);
         file_put_contents($tpl_file, $tpl);
-        $show_page = isset($post->custom_fields->dw_show_page) && $post->custom_fields->dw_show_page[0] == "1";
+
+        $show_page = $category->slug == "docs";
 
         if (!isset($pages[$lang])) $pages[$lang] = array();
         $pages[$lang][$url] = array(
