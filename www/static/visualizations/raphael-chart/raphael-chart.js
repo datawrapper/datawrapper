@@ -22,8 +22,11 @@
         },
 
         getSize: function() {
-            var me = this, el = me.__root;
-            return [$(document).width(), me.getMaxChartHeight(el)];
+            var me = this, el = me.__root,
+                width = $(document).width();
+            // IE Fix
+            if ($.browser.msie) width -= 10;
+            return [width, me.getMaxChartHeight(el)];
         },
 
         initCanvas: function(canvas) {

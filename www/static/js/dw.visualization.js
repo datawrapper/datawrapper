@@ -44,6 +44,8 @@
             //ch += $('body').innerHeight() - $('body').height();
             var m = $('#chart').css('margin-top'),
                 maxH = $(window).height() - ch - Number(m.substr(0, m.length-2));
+            // IE Fix
+            if ($.browser.msie) maxH -= 10;
             return maxH;
         },
 
