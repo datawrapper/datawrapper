@@ -7,9 +7,5 @@ lib/datawrapper/build/conf/datawrapper-conf.php
 charts/data/*
 charts/images/*
 push
-
 config.php
-
-www/tests/index.html
-
 scripts/history.php
