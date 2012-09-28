@@ -62,11 +62,11 @@
             _.each(data.series, function(s) {
                 me.__seriesByName[s.name] = s;
                 s._min = function() {
-                    console.warn('series._min() is deprecated, use series.min instead.');
+                    //console.warn('series._min() is deprecated, use series.min instead.');
                     return s.min;
                 };
                 s._max = function() {
-                    console.warn('series._max() is deprecated, use series.max instead.');
+                    //console.warn('series._max() is deprecated, use series.max instead.');
                     return s.max;
                 };
                 _.each(s.data, function(number) {

@@ -105,7 +105,6 @@
                 dMin = Math.min(dMin, series.min);
                 dMax = Math.max(dMax, series.max);
             });
-            console.debug(dMin, dMax);
             me.__domain = [dMin, dMax];
             me.__scales = {
                 y: d3.scale.linear().domain([dMin, dMax])

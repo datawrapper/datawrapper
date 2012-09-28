@@ -114,7 +114,7 @@
         },
 
         rowLabels: function() {
-            console.warn('chart.rowLabels() is marked deprecated. Use chart.dataset().rowNames() instead');
+            //console.warn('chart.rowLabels() is marked deprecated. Use chart.dataset().rowNames() instead');
             if (this.hasRowHeader()) {
                 return this.rowHeader().data;
             } else {
@@ -161,7 +161,7 @@
         },
 
         filterRow: function(r) {
-            console.warn('chart.filterRow() is marked deprecated. Use chart.dataset().filterRow() instead.');
+            //console.warn('chart.filterRow() is marked deprecated. Use chart.dataset().filterRow() instead.');
             this.__dataset.filterRow(r);
         }
 

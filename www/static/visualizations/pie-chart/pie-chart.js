@@ -59,8 +59,10 @@
                     y3 = cy+Math.sin(startAngle)*or,
                     largeArc = endAngle - startAngle > Math.PI ? 1 : 0;
 
-
-                return me.path("M"+x0+" "+y0+" A"+ir+","+ir+" 0 "+largeArc+",1 "+x1+","+y1+" L"+x2+" "+y2+" A"+or+","+or+" 0 "+largeArc+",0 "+x3+" "+y3+" Z", 'slice');
+                if (ir > 0)
+                    return me.path("M"+x0+" "+y0+" A"+ir+","+ir+" 0 "+largeArc+",1 "+x1+","+y1+" L"+x2+" "+y2+" A"+or+","+or+" 0 "+largeArc+",0 "+x3+" "+y3+" Z", 'slice');
+                else
+                    return me.path("M"+cx+" "+cy+" L"+x2+" "+y2+" A"+or+","+or+" 0 "+largeArc+",0 "+x3+" "+y3+" Z", 'slice');
             }
 
             var series = me.chart.dataSeries(true),
