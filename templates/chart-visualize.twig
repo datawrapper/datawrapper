@@ -178,9 +178,9 @@ $(function() {
                     <div class="half">
                         <label for="select-theme">{% trans "Layout:" %}</label>
                         <select id="select-theme">
-                            {% for theme in themes %}
+                            {% for theme in themes %}{% if not theme.hidden %}
                             <option value="{{ theme.id }}">{{ theme.title }}</option>
-                            {% endfor %}
+                            {% endif %}{% endfor %}
                         </select>
                     </div>
                 <div class="clearfix"></div>
