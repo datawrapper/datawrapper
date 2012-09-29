@@ -43,7 +43,7 @@ class ChartQuery extends BaseChartQuery {
                 $chart->setTitle($title . ']');
 
                 // todo: use global default theme
-                $chart->setTheme('default');
+                $chart->setTheme(defined('DEFAULT_LAYOUT') ? DEFAULT_LAYOUT : 'default');
                 $chart->setLocale(''); // no default locale
                 $chart->setType('bar-chart');
 
