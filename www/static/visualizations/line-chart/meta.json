@@ -38,18 +38,11 @@
             "type": "checkbox",
             "label": {
                 "en": "Force a baseline at zero",
-                "de": "Erweitere die Achse bis zur null",
+                "de": "Erweitere die Achse bis zur Null",
                 "fr": "Échelle en zero"
             }
         },
-        "connect-missing-values": {
-            "type": "checkbox",
-            "label": {
-                "en": "Connect lines between missing values",
-                "de": "Linien zwischen fehlenden Werten verbinden",
-                "fr": "translate me"
-            }
-        },
+
         "smooth-lines": {
             "type": "checkbox",
             "label": {
@@ -58,6 +51,14 @@
                 "fr": "Smooth lines"
             },
             "default": false
+        },
+        "connect-missing-values": {
+            "type": "checkbox",
+            "label": {
+                "en": "Connect lines between missing values",
+                "de": "Linien zwischen fehlenden Werten verbinden",
+                "fr": "translate me"
+            }
         },
         "force-banking": {
             "type": "checkbox",
