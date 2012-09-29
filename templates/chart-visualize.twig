@@ -184,6 +184,10 @@ $(function() {
                         </select>
                     </div>
                 <div class="clearfix"></div>
+                <p><b>{% trans "Hint" %}:</b> {% trans "In case the visualization doesn't look like you expected, you should try to transpose the data." %}</p>
+                <ul class="unstyled">
+                    <li><button id="btn-transpose" class="btn"><i class="icon-rotate"></i> {% trans "Transpose chart data." %}</button></li>
+                </ul>
             </div>
 
             <div class="section">
@@ -260,10 +264,7 @@ $(function() {
             <a class="btn submit" href="describe"><i class="icon-chevron-left"></i> {% trans "Back" %}</a>
             <div class="clearfix"></div>
         </div>
-        <p><b>{% trans "Hint" %}:</b> {% trans "In case the visualization doesn't look like you expected, you should try to transpose the data." %}</p>
-        <ul class="unstyled">
-            <li><button id="btn-transpose" class="btn"><i class="icon-rotate"></i> {% trans "Transpose chart data." %}</button></li>
-        </ul>
+        
     </div>
 </div>
 
