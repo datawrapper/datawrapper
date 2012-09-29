@@ -50,6 +50,15 @@
                 "fr": "translate me"
             }
         },
+        "smooth-lines": {
+            "type": "checkbox",
+            "label": {
+                "en": "Smooth lines",
+                "de": "Linien glätten",
+                "fr": "Smooth lines"
+            },
+            "default": false
+        },
         "force-banking": {
             "type": "checkbox",
             "label": {

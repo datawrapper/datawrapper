@@ -63,25 +63,27 @@
 
             // draw series lines
             _.each(all_series, function(col, index) {
-                var paths = [], path = [], x, y, sw, connectMissingValuePath = [];
+                var paths = [], pts_ = [], pts = [], x, y, sw, connectMissingValuePath = [];
                 _.each(col.data, function(val, i) {
                     x = scales.x(i);
                     y = scales.y(val);
                     if (isNaN(y)) {
-                        if (path.length > 0) {
-                            paths.push(path);
-                            path = [];
+                        if (pts.length > 0) {
+                            pts_.push(pts);
+                            pts = [];
                         }
                         return;
                     }
-                    if (path.length === 0 && paths.length > 0) {
-                        var lp = paths[paths.length-1], ls = lp[lp.length-1];
-                        connectMissingValuePath.push(['M', ls[1], ls[2]]);
-                        connectMissingValuePath.push(['L', x, y]);
+                    if (pts.length === 0 && paths.length > 0) {
+                        var lp = pts_[pts_.length-1], s = lp.length-2;
+                        connectMissingValuePath.push(['M', lp[s], lp[s+1], 'M', x, y]);
                     }
-                    path.push([path.length> 0 ? 'L' : 'M', x, y]);
+                    pts.push(x, y);
                 });
-                paths.push(path);
+                pts_.push(pts);
+                _.each(pts_, function(pts) {
+                    paths.push("M" + [pts.shift(), pts.shift()] + (me.get('smooth-lines') ? "R" : "L") + pts);
+                });
 
                 sw = me.getSeriesLineWidth(col);
 
