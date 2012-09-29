@@ -11,7 +11,7 @@
     </div>
     {% endif %}
 
-    {% for key, option in vis.options %}
+    {% for key, option in vis.options %} {% if not option.hidden %}
     <div class="control-group" style="margin-bottom:0px" id="vis-options-{{ key }}">
         {% if option.type == 'checkbox' %}
             <label class="control-label" for="{{ key }}">{{ option.label[language] }}</label>
@@ -50,7 +50,7 @@
             <p>Unhandled option type {{ option.type }}</p>
         {% endif %}
     </div>
-    {% endfor %}
+    {% endif %}{% endfor %}
 </fieldset>
 <script type="text/javascript">
 

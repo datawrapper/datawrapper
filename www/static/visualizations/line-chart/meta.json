@@ -62,6 +62,7 @@
         },
         "force-banking": {
             "type": "checkbox",
+            "hidden": true,
             "label": {
                 "en": "Bank the lines to 45°",
                 "de": "Anstiege auf 45° ausrichten",
