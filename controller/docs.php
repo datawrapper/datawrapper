@@ -21,13 +21,14 @@ foreach ($docs_pages as $lang => $pages) {
 }
 
 foreach ($urls as $url) {
-    $app->get('/' . $url, function() use ($app, $url, $docs_pages) {
+    $app->get('/' . $url .'/?', function() use ($app, $url, $docs_pages) {
         $page = array();
         add_header_vars($page, 'about');
         $lang = $page['language'];
         $tpl_path = 'imported/' . $lang . '/' . str_replace('/', '-', $url) . '.twig';
         if (!empty($docs_pages[$lang]) && !empty($docs_pages[$lang][$url])) {
             $page['title'] = $docs_pages[$lang][$url]['title'];
+            if ($app->request()->get('popup') == 1) $page['xhr'] = true;
             add_docs_vars($page, $url);
             $app->render($tpl_path, $page);
         } else {
