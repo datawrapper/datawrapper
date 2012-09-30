@@ -459,7 +459,7 @@ msgid "Welcome back!"
 msgstr ""
 
 #: ../scripts/tmpl_cache/home-login.twig.php:84
-#: ../scripts/tmpl_cache/home.twig.php:110
+#: ../scripts/tmpl_cache/home.twig.php:112
 #: ../scripts/tmpl_cache/mycharts.twig.php:34 ../www/index.php:88
 msgid "My Charts"
 msgstr ""
@@ -495,18 +495,22 @@ msgid ""
 msgstr ""
 
 #: ../scripts/tmpl_cache/home.twig.php:94
-msgid "sign up"
+msgid "or"
 msgstr ""
 
 #: ../scripts/tmpl_cache/home.twig.php:96
+msgid "sign up"
+msgstr ""
+
+#: ../scripts/tmpl_cache/home.twig.php:98
 msgid "now, for free"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:106
+#: ../scripts/tmpl_cache/home.twig.php:108
 msgid "Create a Chart"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:127
+#: ../scripts/tmpl_cache/home.twig.php:129
 msgid ""
 "We are bridging the gap between journalists and the newest Javascript-"
 "visualization libraries such as D3.js, Raphael and others. We make it easier "
@@ -515,31 +519,31 @@ msgid ""
 "everywhere in the world."
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:134
+#: ../scripts/tmpl_cache/home.twig.php:136
 msgid "Main features:"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:140
+#: ../scripts/tmpl_cache/home.twig.php:142
 msgid "Simple: Create and embed charts in minutes"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:144
+#: ../scripts/tmpl_cache/home.twig.php:146
 msgid "Open Source: Download and install"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:148
+#: ../scripts/tmpl_cache/home.twig.php:150
 msgid "CSS: Change the CSS, add your logo"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:152
+#: ../scripts/tmpl_cache/home.twig.php:154
 msgid "Developers: Add new chart types"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:156
+#: ../scripts/tmpl_cache/home.twig.php:158
 msgid "Non-profit: This is and will stay free to use"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:162
+#: ../scripts/tmpl_cache/home.twig.php:164
 msgid "Why this approach? See our Motivations..."
 msgstr ""
 

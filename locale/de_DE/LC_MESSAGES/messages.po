@@ -499,7 +499,7 @@ msgid "Welcome back!"
 msgstr "Willkommen!"
 
 #: ../scripts/tmpl_cache/home-login.twig.php:84
-#: ../scripts/tmpl_cache/home.twig.php:110
+#: ../scripts/tmpl_cache/home.twig.php:112
 #: ../scripts/tmpl_cache/mycharts.twig.php:34 ../www/index.php:88
 msgid "My Charts"
 msgstr "Meine Visualisierungen"
@@ -539,20 +539,23 @@ msgstr ""
 "erstellen."
 
 #: ../scripts/tmpl_cache/home.twig.php:94
-#, fuzzy
-msgid "sign up"
-msgstr "Einloggen / Registrieren"
+msgid "or"
+msgstr "oder jetzt"
 
 #: ../scripts/tmpl_cache/home.twig.php:96
-msgid "now, for free"
-msgstr ""
+msgid "sign up"
+msgstr "kostenslos anmelden"
 
-#: ../scripts/tmpl_cache/home.twig.php:106
+#: ../scripts/tmpl_cache/home.twig.php:98
+msgid "now, for free"
+msgstr " "
+
+#: ../scripts/tmpl_cache/home.twig.php:108
 #, fuzzy
 msgid "Create a Chart"
 msgstr "Erstelle ein Diagramm"
 
-#: ../scripts/tmpl_cache/home.twig.php:127
+#: ../scripts/tmpl_cache/home.twig.php:129
 msgid ""
 "We are bridging the gap between journalists and the newest Javascript-"
 "visualization libraries such as D3.js, Raphael and others. We make it easier "
@@ -566,31 +569,31 @@ msgstr ""
 "\". Datawrapper reduziert die Zeit, um einfache Datenvisualisierungen zu "
 "erstellen und hilft dadurch Datenjournalisten auf der ganzen Welt."
 
-#: ../scripts/tmpl_cache/home.twig.php:134
+#: ../scripts/tmpl_cache/home.twig.php:136
 msgid "Main features:"
 msgstr "Wesentliche Funktionen"
 
-#: ../scripts/tmpl_cache/home.twig.php:140
+#: ../scripts/tmpl_cache/home.twig.php:142
 msgid "Simple: Create and embed charts in minutes"
 msgstr "Einfach: Mit wenigen Klicks zur Visualisierung"
 
-#: ../scripts/tmpl_cache/home.twig.php:144
+#: ../scripts/tmpl_cache/home.twig.php:146
 msgid "Open Source: Download and install"
 msgstr "Opensource: Runterladen und installieren"
 
-#: ../scripts/tmpl_cache/home.twig.php:148
+#: ../scripts/tmpl_cache/home.twig.php:150
 msgid "CSS: Change the CSS, add your logo"
 msgstr "CSS: Design beliebig anpassen"
 
-#: ../scripts/tmpl_cache/home.twig.php:152
+#: ../scripts/tmpl_cache/home.twig.php:154
 msgid "Developers: Add new chart types"
 msgstr "Entwickler: Erweiterung durch HTML5 Charts möglich"
 
-#: ../scripts/tmpl_cache/home.twig.php:156
+#: ../scripts/tmpl_cache/home.twig.php:158
 msgid "Non-profit: This is and will stay free to use"
 msgstr "Non-profit: Dieses Angebot ist und bleibt kostenfrei"
 
-#: ../scripts/tmpl_cache/home.twig.php:162
+#: ../scripts/tmpl_cache/home.twig.php:164
 msgid "Why this approach? See our Motivations..."
 msgstr "Mehr zum Hintergrund: Datawrapper Ziele und Funktionen"
 
@@ -1084,7 +1087,7 @@ msgstr "Energieverbrauch nach Quelle, 1950-2010"
 
 #: ../lib/utils/errors.php:21
 msgid "404 - Page not found"
-msgstr ""
+msgstr "404 – Seite nicht gefunden"
 
 #: ../lib/utils/errors.php:22
 msgid ""

@@ -26,6 +26,7 @@ body {
 .teaser .login {
     font-size: 15px;
     margin: 10px 0 -10px;
+    white-space: nowrap;
 }
 
 .teaser a.onblack {
