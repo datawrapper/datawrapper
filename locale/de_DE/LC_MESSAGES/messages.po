@@ -412,6 +412,9 @@ msgid ""
 "source</a> project by <a href=\"http://abzv.de\">ABZV</a> - a German "
 "training institution for newspaper journalists."
 msgstr ""
+"Datawrapper ist ein <a href='http://github.com/datawrapper/"
+"datawrapper'>Opensource-Projekt</a> von der <a href='http://abzv.de'>ABZV</"
+"a> – dem Bildungswerk der Zeitungen."
 
 #: ../scripts/tmpl_cache/core.twig.php:150
 msgid "Motivation"
@@ -419,20 +422,19 @@ msgstr "Motivation"
 
 #: ../scripts/tmpl_cache/core.twig.php:152
 msgid "Quick Start Guide"
-msgstr "Schnellstart-Anleitung"
+msgstr "Schnellstart"
 
 #: ../scripts/tmpl_cache/core.twig.php:154
 msgid "Manual"
-msgstr "Handbuch"
+msgstr "Anleitung"
 
 #: ../scripts/tmpl_cache/core.twig.php:156
 msgid "Terms of Use"
-msgstr "Benutzungsbedingungen"
+msgstr "Nutzungsbedingungen"
 
 #: ../scripts/tmpl_cache/core.twig.php:158
-#, fuzzy
-msgid "Credits"
-msgstr "Erstellen"
+msgid "Imprint"
+msgstr "Impressum"
 
 #: ../scripts/tmpl_cache/docs.twig.php:69
 msgid "Navigation"
@@ -607,7 +609,7 @@ msgstr "Passwort wiederholen"
 
 #: ../scripts/tmpl_cache/login.twig.php:66
 msgid "Can't recall your password?"
-msgstr ""
+msgstr "Passwort vergessen?"
 
 #: ../scripts/tmpl_cache/login.twig.php:70
 msgid "Return to login..."
@@ -615,7 +617,7 @@ msgstr ""
 
 #: ../scripts/tmpl_cache/login.twig.php:77
 msgid "Create a new account"
-msgstr "Erstelle einen Account"
+msgstr "Benutzerkonto anlegen"
 
 #: ../scripts/tmpl_cache/login.twig.php:81
 #, fuzzy
@@ -919,9 +921,8 @@ msgid "Select row to display"
 msgstr ""
 
 #: ../www/index.php:86
-#, fuzzy
 msgid "Create Chart"
-msgstr "Erstelle ein Diagramm"
+msgstr "Diagramm erstellen"
 
 #: ../www/index.php:90 ../lib/templates/docs-pages.php:5
 msgid "About"
@@ -1172,6 +1173,10 @@ msgid ""
 "Contact someone of our friendly <a href=\"mailto:hello@datawrapper.de"
 "\">administrators</a> and ask for help with the password reset process."
 msgstr ""
+
+#, fuzzy
+#~ msgid "Credits"
+#~ msgstr "Erstellen"
 
 #, fuzzy
 #~ msgid "Save as PDF"

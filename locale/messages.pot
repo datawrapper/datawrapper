@@ -393,7 +393,7 @@ msgid "Terms of Use"
 msgstr ""
 
 #: ../scripts/tmpl_cache/core.twig.php:158
-msgid "Credits"
+msgid "Imprint"
 msgstr ""
 
 #: ../scripts/tmpl_cache/docs.twig.php:69
