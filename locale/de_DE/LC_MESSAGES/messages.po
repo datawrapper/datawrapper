@@ -93,35 +93,35 @@ msgstr "Original behalten"
 
 #: ../scripts/tmpl_cache/chart-describe.twig.php:274
 msgid "Prepend/Append"
-msgstr ""
+msgstr "Präfix/Suffix"
 
 #: ../scripts/tmpl_cache/chart-describe.twig.php:285
 msgid "Devide numbers by"
-msgstr ""
+msgstr "Zahlen teilen durch"
 
 #: ../scripts/tmpl_cache/chart-describe.twig.php:292
 msgid "1000"
-msgstr ""
+msgstr "Tausend"
 
 #: ../scripts/tmpl_cache/chart-describe.twig.php:296
 msgid "1 million"
-msgstr ""
+msgstr "Eine Million"
 
 #: ../scripts/tmpl_cache/chart-describe.twig.php:300
 msgid "1 billion"
-msgstr ""
+msgstr "Eine Milliarde"
 
 #: ../scripts/tmpl_cache/chart-describe.twig.php:310
 msgid "Credit the source"
-msgstr ""
+msgstr "Quelle benennen"
 
 #: ../scripts/tmpl_cache/chart-describe.twig.php:315
 msgid "Who published the data in the first place?"
-msgstr ""
+msgstr "Wer hat die Daten zuerst veröffentlicht?"
 
 #: ../scripts/tmpl_cache/chart-describe.twig.php:322
 msgid "If possible, please provide a link the source data"
-msgstr ""
+msgstr "Falls möglich, gib bitte einen Link zur Datenquelle"
 
 #: ../scripts/tmpl_cache/chart-describe.twig.php:328
 msgid "Annotate data"
@@ -161,6 +161,8 @@ msgid ""
 "Congrats, you made it! Now is the time to check back everything. You can "
 "return to the previous steps."
 msgstr ""
+"Herzlichen Glückwunsch, du bist fertig! Jetzt ist die Zeit alles noch einmal "
+"zu überprüfen. Du kannst jederzeit zu den vorherigen Schritten zurückkehren."
 
 #: ../scripts/tmpl_cache/chart-publish.twig.php:185
 msgid "Link to this visualisation"
@@ -213,6 +215,10 @@ msgid ""
 "free and all you need is a valid email address. The chart you just created "
 "will be transfered to your new account."
 msgstr ""
+"Um die Grafik einbetten zu können, möchten wir dich darum bitten, einen "
+"Benutzerkonto zu erstellen. Dieser ist kostenlos und alles was du brauchst "
+"ist eine gültige E-Mail Adresse. Dein soeben erstelltes Diagramm wird "
+"natürlich zum neuen Konto übertragen."
 
 #: ../scripts/tmpl_cache/chart-publish.twig.php:267
 #: ../scripts/tmpl_cache/home-login.twig.php:47
@@ -224,15 +230,15 @@ msgstr "Einloggen / Registrieren"
 
 #: ../scripts/tmpl_cache/chart-publish.twig.php:289
 msgid "Congrats, you created a chart!"
-msgstr ""
+msgstr "Glückwunsch! Du hast ein Diagramm erstellt."
 
 #: ../scripts/tmpl_cache/chart-publish.twig.php:294
 msgid "The chart is accessible under"
-msgstr ""
+msgstr "Das Diagramm kann abgerufen werden unter"
 
 #: ../scripts/tmpl_cache/chart-publish.twig.php:308
 msgid "or via your <a href='/mycharts'>My Charts</a> page."
-msgstr ""
+msgstr "oder über <a href='/mycharts'>Meine Visualisierungen</a>."
 
 #: ../scripts/tmpl_cache/chart-publish.twig.php:313
 msgid ""
@@ -272,7 +278,7 @@ msgstr "Neue Grafik erstellen"
 
 #: ../scripts/tmpl_cache/chart-publish.twig.php:380
 msgid "Duplicate this chart"
-msgstr ""
+msgstr "Diagramm duplizieren"
 
 #: ../scripts/tmpl_cache/chart-publish.twig.php:384
 msgid "Return to visualise step"
@@ -303,7 +309,7 @@ msgstr "Daten hochladen"
 
 #: ../scripts/tmpl_cache/chart-upload.twig.php:157
 msgid "How it works.."
-msgstr ""
+msgstr "Wie es funktionier.."
 
 #: ../scripts/tmpl_cache/chart-upload.twig.php:161
 msgid ""
@@ -311,6 +317,9 @@ msgid ""
 "in Excel or OpenOffice, just select your data (including header row/column) "
 "and paste it in the following text field."
 msgstr ""
+"Wir haben uns bemüht, das einfügen von Daten so leicht wie möglich zu "
+"machen. Wenn du mit Excel oder OpenOffice arbeitest, kannst du die Tabelle "
+"kopieren (inkl. Kopfzeile) und in das nebenstehende Textfeld einfügen."
 
 #: ../scripts/tmpl_cache/chart-upload.twig.php:163
 msgid "Learn more about how to upload your data"
@@ -353,7 +362,7 @@ msgstr ""
 
 #: ../scripts/tmpl_cache/chart-visualize.twig.php:312
 msgid "Tell your story"
-msgstr ""
+msgstr "Erzähl die Geschichte"
 
 #: ../scripts/tmpl_cache/chart-visualize.twig.php:318
 msgid "Title"
@@ -361,7 +370,7 @@ msgstr "Titel"
 
 #: ../scripts/tmpl_cache/chart-visualize.twig.php:322
 msgid "Introduction"
-msgstr ""
+msgstr "Einleitung"
 
 #: ../scripts/tmpl_cache/chart-visualize.twig.php:326
 #, fuzzy
@@ -370,7 +379,7 @@ msgstr "Höhe"
 
 #: ../scripts/tmpl_cache/chart-visualize.twig.php:334
 msgid "Tell the story in five words"
-msgstr ""
+msgstr "Dein Aufhänger in fünf Worten"
 
 #: ../scripts/tmpl_cache/chart-visualize.twig.php:342
 msgid "Guide the audience to read the chart"
@@ -382,7 +391,7 @@ msgstr ""
 
 #: ../scripts/tmpl_cache/chart-visualize.twig.php:392
 msgid "Refine the chart"
-msgstr ""
+msgstr "Darstellung anpassen"
 
 #: ../scripts/tmpl_cache/chart-visualize.twig.php:406
 msgid "Publish"
@@ -406,19 +415,19 @@ msgstr ""
 
 #: ../scripts/tmpl_cache/core.twig.php:150
 msgid "Motivation"
-msgstr ""
+msgstr "Motivation"
 
 #: ../scripts/tmpl_cache/core.twig.php:152
 msgid "Quick Start Guide"
-msgstr ""
+msgstr "Schnellstart-Anleitung"
 
 #: ../scripts/tmpl_cache/core.twig.php:154
 msgid "Manual"
-msgstr ""
+msgstr "Handbuch"
 
 #: ../scripts/tmpl_cache/core.twig.php:156
 msgid "Terms of Use"
-msgstr ""
+msgstr "Benutzungsbedingungen"
 
 #: ../scripts/tmpl_cache/core.twig.php:158
 #, fuzzy
@@ -456,7 +465,7 @@ msgstr ""
 
 #: ../scripts/tmpl_cache/home-login.twig.php:37
 msgid "Can't wait?"
-msgstr ""
+msgstr "Du kannst es nicht erwarten?"
 
 #: ../scripts/tmpl_cache/home-login.twig.php:39
 msgid "Try Datawrapper now!"
@@ -495,7 +504,7 @@ msgstr "Meine Visualisierungen"
 
 #: ../scripts/tmpl_cache/home-login.twig.php:86
 msgid "See what you created so far."
-msgstr ""
+msgstr "Schau dir an, was du bisher erstellt hast."
 
 #: ../scripts/tmpl_cache/home-login.twig.php:92
 msgid "Create New Chart"
@@ -503,7 +512,7 @@ msgstr "Erstelle ein Diagramm"
 
 #: ../scripts/tmpl_cache/home-login.twig.php:94
 msgid "Wrap again!"
-msgstr ""
+msgstr "\"Wrap\" nochmal!"
 
 #: ../scripts/tmpl_cache/home-login.twig.php:98 ../www/index.php:121
 msgid "Settings"
@@ -588,6 +597,8 @@ msgid ""
 "We're glad to see you again. Login to access your charts, and create new "
 "ones."
 msgstr ""
+"Hallo, schön dich wieder zu sehen. Melde dich an, um deine Diagramme zu "
+"sehen und neue zu erstellen."
 
 #: ../scripts/tmpl_cache/login.twig.php:59
 #, fuzzy
