@@ -1,8 +1,8 @@
-#: ../controller/docs.php:34 ../controller/xhr.php:72
+#: ../controller/docs.php:35
 msgid "Not found"
 msgstr ""
 
-#: ../controller/docs.php:34 ../controller/xhr.php:72
+#: ../controller/docs.php:35
 msgid "Sorry, but this content is not available in your language, yet."
 msgstr ""
 
@@ -131,12 +131,12 @@ msgstr ""
 msgid "Annotate data point"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-describe.twig.php:346 ../www/index.php:159
+#: ../scripts/tmpl_cache/chart-describe.twig.php:346 ../www/index.php:161
 msgid "Visualize"
 msgstr ""
 
 #: ../scripts/tmpl_cache/chart-describe.twig.php:350
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:395
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:410
 msgid "Back"
 msgstr ""
 
@@ -312,53 +312,53 @@ msgid "Layout:"
 msgstr ""
 
 #: ../scripts/tmpl_cache/chart-visualize.twig.php:297
-msgid "Tell your story"
-msgstr ""
-
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:303
-msgid "Title"
-msgstr ""
-
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:307
-msgid "Introduction"
-msgstr ""
-
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:311
-msgid "Highlight"
-msgstr ""
-
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:319
-msgid "Tell the story in five words"
-msgstr ""
-
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:327
-msgid "Guide the audience to read the chart"
-msgstr ""
-
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:338
-msgid "select a data series"
-msgstr ""
-
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:377
-msgid "Refine the chart"
-msgstr ""
-
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:391
-msgid "Publish"
-msgstr ""
-
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:401
 msgid "Hint"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:403
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:299
 msgid ""
 "In case the visualization doesn't look like you expected, you should try to "
 "transpose the data."
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:408
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:304
 msgid "Transpose chart data."
+msgstr ""
+
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:312
+msgid "Tell your story"
+msgstr ""
+
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:318
+msgid "Title"
+msgstr ""
+
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:322
+msgid "Introduction"
+msgstr ""
+
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:326
+msgid "Highlight"
+msgstr ""
+
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:334
+msgid "Tell the story in five words"
+msgstr ""
+
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:342
+msgid "Guide the audience to read the chart"
+msgstr ""
+
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:353
+msgid "select a data series"
+msgstr ""
+
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:392
+msgid "Refine the chart"
+msgstr ""
+
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:406
+msgid "Publish"
 msgstr ""
 
 #: ../scripts/tmpl_cache/core.twig.php:110
@@ -460,7 +460,7 @@ msgstr ""
 
 #: ../scripts/tmpl_cache/home-login.twig.php:84
 #: ../scripts/tmpl_cache/home.twig.php:110
-#: ../scripts/tmpl_cache/mycharts.twig.php:34 ../www/index.php:89
+#: ../scripts/tmpl_cache/mycharts.twig.php:34 ../www/index.php:88
 msgid "My Charts"
 msgstr ""
 
@@ -476,15 +476,15 @@ msgstr ""
 msgid "Wrap again!"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home-login.twig.php:98 ../www/index.php:119
+#: ../scripts/tmpl_cache/home-login.twig.php:98 ../www/index.php:121
 msgid "Settings"
 msgstr ""
 
 #: ../scripts/tmpl_cache/home-login.twig.php:100
-msgid "Edit your personal informaiont."
+msgid "Edit your personal information."
 msgstr ""
 
-#: ../scripts/tmpl_cache/home-login.twig.php:104 ../www/index.php:123
+#: ../scripts/tmpl_cache/home-login.twig.php:104 ../www/index.php:125
 msgid "Logout"
 msgstr ""
 
@@ -566,10 +566,9 @@ msgid "Create a new account"
 msgstr ""
 
 #: ../scripts/tmpl_cache/login.twig.php:81
-#, php-format
 msgid ""
-"Datawrapper is 100% free and creating an account takes less than a minute. "
-"Just enter your email and pick a password, and you're done!"
+"Datawrapper is 100&#37; free and creating an account takes less than a "
+"minute. Just enter your email and pick a password, and you're done!"
 msgstr ""
 
 #: ../scripts/tmpl_cache/login.twig.php:99
@@ -840,6 +839,7 @@ msgid "Created with"
 msgstr ""
 
 #: ../scripts/tmpl_cache/themes__default.twig.php:62
+#: ../scripts/tmpl_cache/themes__guardian.twig.php:52
 msgid "Source: "
 msgstr ""
 
@@ -847,39 +847,47 @@ msgstr ""
 msgid "Download data"
 msgstr ""
 
+#: ../scripts/tmpl_cache/themes__guardian.twig.php:83
+msgid "Get the data"
+msgstr ""
+
 #: ../scripts/tmpl_cache/vis-options.twig.php:36
 msgid "Select row to display"
 msgstr ""
 
-#: ../www/index.php:86 ../lib/templates/docs-pages.php:5
-msgid "About"
-msgstr ""
-
-#: ../www/index.php:87
+#: ../www/index.php:86
 msgid "Create Chart"
 msgstr ""
 
-#: ../www/index.php:107
+#: ../www/index.php:90 ../lib/templates/docs-pages.php:5
+msgid "About"
+msgstr ""
+
+#: ../www/index.php:91
+msgid "Blog"
+msgstr ""
+
+#: ../www/index.php:109
 msgid "Language"
 msgstr ""
 
-#: ../www/index.php:131
+#: ../www/index.php:133
 msgid "Admin"
 msgstr ""
 
-#: ../www/index.php:138
+#: ../www/index.php:140
 msgid "Login / Sign Up"
 msgstr ""
 
-#: ../www/index.php:157
+#: ../www/index.php:159
 msgid "Upload Data"
 msgstr ""
 
-#: ../www/index.php:158
+#: ../www/index.php:160
 msgid "Check & Describe"
 msgstr ""
 
-#: ../www/index.php:160
+#: ../www/index.php:162
 msgid "Publish & Embed"
 msgstr ""
 
@@ -972,8 +980,7 @@ msgid "Andere Todesursache"
 msgstr ""
 
 #: ../lib/templates/demo_datasets.php:113
-#, php-format
-msgid " Expenditure on social protection - % of GDP"
+msgid "Expenditure on social protection - &#37; of GDP"
 msgstr ""
 
 #: ../lib/templates/demo_datasets.php:125
