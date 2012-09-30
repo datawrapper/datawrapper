@@ -6,7 +6,7 @@ if (file_exists("new_wp_content.txt") && trim(file_get_contents("new_wp_content.
     exit();
 }
 
-$url = "http://blog.datawrapper.de/?post_type=datawrapper&custom_fields=dw_url,dw_lang&order=ASC&order_by=menu_order&json=1";
+$url = "http://blog.datawrapper.de/?post_type=datawrapper&custom_fields=dw_url,dw_lang&order=ASC&order_by=menu_order&count=-1&json=1";
 
 $data = json_decode(file_get_contents($url));
 
