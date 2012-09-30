@@ -395,6 +395,7 @@ h1, h2, h3, h4, h5, h6 {
 
 #dwLoginForm {
     width: 670px;
+    margin-left: -335px;
 }
 
 #dwLoginForm div.span3 {
@@ -793,4 +794,17 @@ form.well form {
 .icon-rotate {
     background: url(../img/icon-rotate.png) no-repeat;
     width: 16px;
+}
+
+.dw .modal-backdrop {
+    background-color: #888;
+    background-image: url(../img/modal-backdrop.png);
+}
+
+.dw .modal-header h1 {
+    font-weight: normal;
+}
+
+.dw .modal-body li {
+    margin-bottom: 5px;
 }
