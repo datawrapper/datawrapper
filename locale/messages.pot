@@ -39,8 +39,8 @@ msgstr ""
 #: ../scripts/tmpl_cache/chart-describe.twig.php:173
 msgid ""
 "Please check if the data format was recognized correctly. If not, please <a "
-"data-toggle='modal' href='/popup/help/describe'>help Datawrapper to "
-"understand your data</a>."
+"data-toggle='modal' href='%LINK%'>help Datawrapper to understand your data</"
+"a>."
 msgstr ""
 
 #: ../scripts/tmpl_cache/chart-describe.twig.php:197
@@ -250,11 +250,11 @@ msgstr ""
 msgid "Create another graphic"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:380
+#: ../scripts/tmpl_cache/chart-publish.twig.php:383
 msgid "Duplicate this chart"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:384
+#: ../scripts/tmpl_cache/chart-publish.twig.php:388
 msgid "Return to visualise step"
 msgstr ""
 
@@ -593,6 +593,10 @@ msgstr ""
 msgid "The password and the repeated password must not differ."
 msgstr ""
 
+#: ../scripts/tmpl_cache/modal.twig.php:35
+msgid "Close"
+msgstr ""
+
 #: ../scripts/tmpl_cache/mycharts.twig.php:80
 msgid "Duplicate"
 msgstr ""
@@ -766,8 +770,8 @@ msgstr ""
 
 #: ../scripts/tmpl_cache/settings.twig.php:308
 msgid ""
-"This will remove your Datawrapper account and all the charts you created so "
-"far. They won't be visible in places where you embedded them."
+"This will remove your Datawrapper account. The charts you created so far "
+"will remain visible in places where you embedded them."
 msgstr ""
 
 #: ../scripts/tmpl_cache/settings.twig.php:318

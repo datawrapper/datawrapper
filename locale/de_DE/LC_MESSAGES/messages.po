@@ -52,9 +52,11 @@ msgstr "Daten prüfen und beschreiben"
 #: ../scripts/tmpl_cache/chart-describe.twig.php:173
 msgid ""
 "Please check if the data format was recognized correctly. If not, please <a "
-"data-toggle='modal' href='/popup/help/describe'>help Datawrapper to "
-"understand your data</a>."
+"data-toggle='modal' href='%LINK%'>help Datawrapper to understand your data</"
+"a>."
 msgstr ""
+"Sieh nach ob die Daten korrekt erkannt wurden. Falls nicht, hilf Datawrapper "
+"bitte, <a data-toggle='modal' href=''%LINK%'>die Daten zu verstehen</a>."
 
 #: ../scripts/tmpl_cache/chart-describe.twig.php:197
 msgid "Describe your data"
@@ -247,16 +249,20 @@ msgid ""
 "If you did not get any email within 5 minutes, here's the trouble shooting "
 "guide:"
 msgstr ""
+"Falls du von uns innerhalb von5 Minuten keine E-Mail erhalten hast, befolge "
+"die folgenden Hinweise:"
 
 #: ../scripts/tmpl_cache/chart-publish.twig.php:323
 msgid "At first, don't worry. Everything you created will wait patiently"
-msgstr ""
+msgstr "Keine Sorge, dein Diagramm wartet geduldig auf die Aktivierung."
 
 #: ../scripts/tmpl_cache/chart-publish.twig.php:327
 msgid ""
 "Make sure that your spam filter didn't catch our activation email. They are "
 "sent from"
 msgstr ""
+"Schau nach ob dein Spam-Filter vielleicht unsere Aktivierungs-Email "
+"gefiltert hat. Sie wurde gesendet von "
 
 #: ../scripts/tmpl_cache/chart-publish.twig.php:334
 msgid ""
@@ -266,23 +272,23 @@ msgstr ""
 
 #: ../scripts/tmpl_cache/chart-publish.twig.php:338
 msgid "If that didn't work either, please contact our support"
-msgstr ""
+msgstr "Wenn das auch nicht geholfen hat, bitte kontaktiere den Support."
 
 #: ../scripts/tmpl_cache/chart-publish.twig.php:376
 msgid "Create another graphic"
 msgstr "Neue Grafik erstellen"
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:380
+#: ../scripts/tmpl_cache/chart-publish.twig.php:383
 msgid "Duplicate this chart"
 msgstr "Diagramm duplizieren"
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:384
+#: ../scripts/tmpl_cache/chart-publish.twig.php:388
 msgid "Return to visualise step"
 msgstr "Zurück zum Visualisieren"
 
 #: ../scripts/tmpl_cache/chart-upload.twig.php:81
 msgid "drop your csv file here"
-msgstr ""
+msgstr "Oder ziehe deine CSV-Datei hier her.."
 
 #: ../scripts/tmpl_cache/chart-upload.twig.php:83
 msgid "..or pick a file from your disk"
@@ -316,7 +322,7 @@ msgstr ""
 
 #: ../scripts/tmpl_cache/chart-upload.twig.php:163
 msgid "Learn more about how to upload your data"
-msgstr ""
+msgstr "Erfahre mehr über das Hochladen von Daten"
 
 #: ../scripts/tmpl_cache/chart-upload.twig.php:170
 msgid ""
@@ -347,10 +353,12 @@ msgid ""
 "In case the visualization doesn't look like you expected, you should try to "
 "transpose the data."
 msgstr ""
+"Falls das Diagramm nicht so aussieht wie du erwartet hast, versuche die "
+"Daten zu transponieren."
 
 #: ../scripts/tmpl_cache/chart-visualize.twig.php:304
 msgid "Transpose chart data."
-msgstr ""
+msgstr "Daten transponieren."
 
 #: ../scripts/tmpl_cache/chart-visualize.twig.php:312
 msgid "Tell your story"
@@ -374,7 +382,7 @@ msgstr "Dein Aufhänger in fünf Worten"
 
 #: ../scripts/tmpl_cache/chart-visualize.twig.php:342
 msgid "Guide the audience to read the chart"
-msgstr ""
+msgstr "Hilf den Lesern, das Diagramm zu lesen"
 
 #: ../scripts/tmpl_cache/chart-visualize.twig.php:353
 msgid "select a data series"
@@ -428,7 +436,7 @@ msgstr "Impressum"
 
 #: ../scripts/tmpl_cache/docs.twig.php:69
 msgid "Navigation"
-msgstr ""
+msgstr "Inhalt"
 
 #: ../scripts/tmpl_cache/error.twig.php:58
 msgid "So, what can I do now?"
@@ -623,7 +631,7 @@ msgstr "Passwort wiederholen"
 
 #: ../scripts/tmpl_cache/messages.twig.php:32
 msgid "For security reasons, please provide your current password."
-msgstr ""
+msgstr "Zur Sicherheit noch mal dein altes Passwort."
 
 #: ../scripts/tmpl_cache/messages.twig.php:37
 msgid ""
@@ -637,17 +645,21 @@ msgstr ""
 msgid "The password and the repeated password must not differ."
 msgstr ""
 
+#: ../scripts/tmpl_cache/modal.twig.php:35
+msgid "Close"
+msgstr "Schließen"
+
 #: ../scripts/tmpl_cache/mycharts.twig.php:80
 msgid "Duplicate"
-msgstr ""
+msgstr "Duplizieren"
 
 #: ../scripts/tmpl_cache/mycharts.twig.php:85
 msgid "Delete"
-msgstr ""
+msgstr "Löschen"
 
 #: ../scripts/tmpl_cache/mycharts.twig.php:107
 msgid "No charts here, yet"
-msgstr ""
+msgstr "Hier sind noch keine Diagramme…"
 
 #: ../scripts/tmpl_cache/mycharts.twig.php:111
 msgid "Why not <a href='/chart/create'>create a new chart now</a>?"
@@ -684,7 +696,7 @@ msgstr "Passwort"
 
 #: ../scripts/tmpl_cache/settings.twig.php:48
 msgid "Delete Account"
-msgstr ""
+msgstr "Benutzerkonto löschen"
 
 #: ../scripts/tmpl_cache/settings.twig.php:53
 msgid "User Settings"
@@ -692,7 +704,7 @@ msgstr "Einstellungen"
 
 #: ../scripts/tmpl_cache/settings.twig.php:67
 msgid "See how your account is doing."
-msgstr ""
+msgstr "Sieh nach wie es deinem Benutzerkonto so geht"
 
 #: ../scripts/tmpl_cache/settings.twig.php:82
 msgid "Activated"
@@ -721,7 +733,7 @@ msgstr ""
 
 #: ../scripts/tmpl_cache/settings.twig.php:104
 msgid "Having trouble with the account activation?"
-msgstr ""
+msgstr "Probleme bei der Aktivierung des Benutzerkontos?"
 
 #: ../scripts/tmpl_cache/settings.twig.php:111
 msgid ""
@@ -729,6 +741,9 @@ msgid ""
 "check the spam folder for the last activation email we sent on <strong>%DATE"
 "%</strong>."
 msgstr ""
+"Vielleicht wurde die E-Mail vom Spam-Filter deines E-Mail Anbieters "
+"erwischt. Schau bitte im Spam-Ordner nach unserer letzten Aktivierungsmail "
+"vom <strong>%DATE%</strong>."
 
 #: ../scripts/tmpl_cache/settings.twig.php:116
 msgid "Re-send activation link"
@@ -752,19 +767,19 @@ msgstr ""
 
 #: ../scripts/tmpl_cache/settings.twig.php:154
 msgid "E-Mail"
-msgstr ""
+msgstr "E-Mail"
 
 #: ../scripts/tmpl_cache/settings.twig.php:164
 msgid "This is the email address which you used to sign up."
-msgstr ""
+msgstr "Mit dieser E-Mail Adresse hast du dich angemeldet."
 
 #: ../scripts/tmpl_cache/settings.twig.php:172
 msgid "Name"
-msgstr ""
+msgstr "Name"
 
 #: ../scripts/tmpl_cache/settings.twig.php:186
 msgid "Website"
-msgstr ""
+msgstr "Website"
 
 #: ../scripts/tmpl_cache/settings.twig.php:196
 msgid ""
@@ -792,6 +807,8 @@ msgid ""
 "For security reasons we ask you to provide your current password. Please "
 "make sure you use a strong password."
 msgstr ""
+"Aus Sicherheitsgründen bitten wir dich, dein derzeitiges Password noch "
+"einmal einzugeben."
 
 #: ../scripts/tmpl_cache/settings.twig.php:247
 msgid "Current Password"
@@ -811,17 +828,18 @@ msgstr "Zeige das Passwort in Klartext"
 
 #: ../scripts/tmpl_cache/settings.twig.php:299
 msgid "Delete Your Account"
-msgstr ""
+msgstr "Lösche dein Benutzerkonto"
 
 #: ../scripts/tmpl_cache/settings.twig.php:304
 msgid "Warning"
-msgstr ""
+msgstr "Warnung"
 
 #: ../scripts/tmpl_cache/settings.twig.php:308
+#, fuzzy
 msgid ""
-"This will remove your Datawrapper account and all the charts you created so "
-"far. They won't be visible in places where you embedded them."
-msgstr ""
+"This will remove your Datawrapper account. The charts you created so far "
+"will remain visible in places where you embedded them."
+msgstr "Dein Datawrapper-Benutzerkonto "
 
 #: ../scripts/tmpl_cache/settings.twig.php:318
 msgid "Are you sure?"
@@ -862,6 +880,8 @@ msgid ""
 "Note that this will only delete your account. Your charts will not be "
 "removed. If you want to remove your charts, please do it manually."
 msgstr ""
+"Hinweis: dies wird nur dein Benutzerkonto, nicht aber deine Diagramme "
+"löschen. Falls du diese auch entfernen willst, mach es bitte von Hand."
 
 #: ../scripts/tmpl_cache/settings.twig.php:366
 msgid "Please enter your password to confirm the deletion request:"
@@ -869,7 +889,7 @@ msgstr ""
 
 #: ../scripts/tmpl_cache/settings.twig.php:376
 msgid "Do you still <b>really</b> want to delete your Datawrapper account?"
-msgstr ""
+msgstr "Möchtest du dein Benutzerkonto <b>wirklich</b> löschen?"
 
 #: ../scripts/tmpl_cache/settings.twig.php:381
 msgid "No, I changed my mind.."
@@ -885,11 +905,11 @@ msgstr "Dein Benutzerkonto wurde gelöscht."
 
 #: ../scripts/tmpl_cache/settings.twig.php:398
 msgid "Goodbye!"
-msgstr ""
+msgstr "Auf wiedersehen!"
 
 #: ../scripts/tmpl_cache/settings.twig.php:451
 msgid "This just worked fine. Your profile has been updated."
-msgstr ""
+msgstr "Die Aktualisierung des Nutzerprofils war erfolgreich."
 
 #: ../scripts/tmpl_cache/themes__default.twig.php:48
 msgid "Created with"
@@ -922,7 +942,7 @@ msgstr "Über"
 
 #: ../www/index.php:91
 msgid "Blog"
-msgstr ""
+msgstr "Blog"
 
 #: ../www/index.php:109
 msgid "Language"
@@ -1005,11 +1025,11 @@ msgstr ""
 
 #: ../lib/core/build/classes/datawrapper/ChartQuery.php:77
 msgid "Copy"
-msgstr ""
+msgstr "Kopie"
 
 #: ../lib/templates/demo_datasets.php:9
 msgid "Line chart: Marriages in Germany (per capita)"
-msgstr ""
+msgstr "Liniendiagramm: Eheschließungen in Deutschland"
 
 #: ../lib/templates/demo_datasets.php:10
 msgid "Year"
@@ -1017,15 +1037,15 @@ msgstr "Jahr"
 
 #: ../lib/templates/demo_datasets.php:10
 msgid "Marriages"
-msgstr ""
+msgstr "Eheschließungen"
 
 #: ../lib/templates/demo_datasets.php:82
 msgid "Death causes of British soldiers"
-msgstr ""
+msgstr "Todesursachen britischer Soldaten"
 
 #: ../lib/templates/demo_datasets.php:83
 msgid "Monat"
-msgstr ""
+msgstr "Monat"
 
 #: ../lib/templates/demo_datasets.php:83
 msgid "Soldaten gesamt"
@@ -1037,7 +1057,7 @@ msgstr ""
 
 #: ../lib/templates/demo_datasets.php:83
 msgid "Wunden und Verletzungen"
-msgstr ""
+msgstr "Wunden und Verletzungen"
 
 #: ../lib/templates/demo_datasets.php:83
 msgid "Andere Todesursache"
@@ -1092,13 +1112,15 @@ msgstr ""
 
 #: ../lib/utils/errors.php:28
 msgid "Hold on!"
-msgstr ""
+msgstr "Moment!"
 
 #: ../lib/utils/errors.php:29
 msgid ""
 "Sorry, but it seems that the chart you want to see is not quite ready for "
 "the world, yet. Why don't you just relax and wait a minute?"
 msgstr ""
+"Es tut uns leid, aber es sieht so aus als ob dieses Diagramm noch nicht ganz "
+"bereit für die Welt ist. Warte doch einfach noch ein wenig.."
 
 #: ../lib/utils/errors.php:37
 msgid "Whoops! You're not allowed to publish charts, yet"
@@ -1146,12 +1168,16 @@ msgstr "Huch! Dafür musst du eingeloggt sein."
 #: ../lib/utils/errors.php:69
 msgid "Good news is, sign up is free and takes less than 20 seconds."
 msgstr ""
+"Die gute Nachricht: die Anmeldung ist kostenlos und dauert weniger als 20 "
+"Sekunden."
 
 #: ../lib/utils/errors.php:76
 msgid ""
 "Guess what, in order to edit your user profile, you need to either login or "
 "create yourself an account."
 msgstr ""
+"Um dein Nutzerprofil zu bearbeiten musst du dich schon entweder eingeloggen "
+"oder ein Benutzerkonto anlegen."
 
 #: ../lib/utils/errors.php:82
 msgid "Something went horribly wrong"
@@ -1191,6 +1217,3 @@ msgstr ""
 
 #~ msgid "Not convinced yet?"
 #~ msgstr "Noch nicht überzeugt?"
-
-#~ msgid "Close"
-#~ msgstr "Schließen"

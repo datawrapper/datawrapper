@@ -131,7 +131,7 @@ $(function() {
 
             <h2>{% trans "Check and Describe Your Data" %}</h2>
 
-            <p>{% trans "Please check if the data format was recognized correctly. If not, please <a data-toggle='modal' href='/popup/help/describe'>help Datawrapper to understand your data</a>." %}</p>
+            <p>{{ "Please check if the data format was recognized correctly. If not, please <a data-toggle='modal' href='%LINK%'>help Datawrapper to understand your data</a>." | trans | replace({'%LINK%': "/popups/describe-step?popup=1" }) | raw}}</p>
 
 
             <form class="form-inline">

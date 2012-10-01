@@ -55,8 +55,8 @@ msgstr "Vérifiez et décrivez vos données"
 #, fuzzy
 msgid ""
 "Please check if the data format was recognized correctly. If not, please <a "
-"data-toggle='modal' href='/popup/help/describe'>help Datawrapper to "
-"understand your data</a>."
+"data-toggle='modal' href='%LINK%'>help Datawrapper to understand your data</"
+"a>."
 msgstr ""
 "Vérifiez que vos données ont été correctement interprétées. Sinon, <a data-"
 "toggle='modal' href='/xhr/docs/describe'>aidez Datawrapper à comprendre vos "
@@ -289,12 +289,12 @@ msgstr "Si ça ne fonctionne pas non plus, contactez le support"
 msgid "Create another graphic"
 msgstr "Créer un autre graph"
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:380
+#: ../scripts/tmpl_cache/chart-publish.twig.php:383
 #, fuzzy
 msgid "Duplicate this chart"
 msgstr "Dupliquer"
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:384
+#: ../scripts/tmpl_cache/chart-publish.twig.php:388
 msgid "Return to visualise step"
 msgstr "Retour à l'étape de visualisation"
 
@@ -444,8 +444,8 @@ msgid "Terms of Use"
 msgstr "Conditions d'utilisation"
 
 #: ../scripts/tmpl_cache/core.twig.php:158
-msgid "Credits"
-msgstr "Crédits"
+msgid "Imprint"
+msgstr ""
 
 #: ../scripts/tmpl_cache/docs.twig.php:69
 msgid "Navigation"
@@ -520,7 +520,7 @@ msgid "Welcome back!"
 msgstr "Bienvenue!"
 
 #: ../scripts/tmpl_cache/home-login.twig.php:84
-#: ../scripts/tmpl_cache/home.twig.php:110
+#: ../scripts/tmpl_cache/home.twig.php:112
 #: ../scripts/tmpl_cache/mycharts.twig.php:34 ../www/index.php:88
 msgid "My Charts"
 msgstr "Mes Visualisations"
@@ -559,18 +559,22 @@ msgstr ""
 "chacun de créer des visualisations simples et correctes en quelques minutes."
 
 #: ../scripts/tmpl_cache/home.twig.php:94
+msgid "or"
+msgstr ""
+
+#: ../scripts/tmpl_cache/home.twig.php:96
 msgid "sign up"
 msgstr "Créer un compte"
 
-#: ../scripts/tmpl_cache/home.twig.php:96
+#: ../scripts/tmpl_cache/home.twig.php:98
 msgid "now, for free"
 msgstr "maintenant, gratuitement"
 
-#: ../scripts/tmpl_cache/home.twig.php:106
+#: ../scripts/tmpl_cache/home.twig.php:108
 msgid "Create a Chart"
 msgstr "Créer un nouveau graphique"
 
-#: ../scripts/tmpl_cache/home.twig.php:127
+#: ../scripts/tmpl_cache/home.twig.php:129
 msgid ""
 "We are bridging the gap between journalists and the newest Javascript-"
 "visualization libraries such as D3.js, Raphael and others. We make it easier "
@@ -583,31 +587,31 @@ msgstr ""
 "datavisualisations interactives: Datawrapper minimise le temps nécessaire "
 "pour designer des charts et aide les journalistes à travers le monde."
 
-#: ../scripts/tmpl_cache/home.twig.php:134
+#: ../scripts/tmpl_cache/home.twig.php:136
 msgid "Main features:"
 msgstr "Principales fonctionnalités:"
 
-#: ../scripts/tmpl_cache/home.twig.php:140
+#: ../scripts/tmpl_cache/home.twig.php:142
 msgid "Simple: Create and embed charts in minutes"
 msgstr "Simple: Créer et intégrer des visualisations en quelques minutes"
 
-#: ../scripts/tmpl_cache/home.twig.php:144
+#: ../scripts/tmpl_cache/home.twig.php:146
 msgid "Open Source: Download and install"
 msgstr "Open source: Téléchargez et installez"
 
-#: ../scripts/tmpl_cache/home.twig.php:148
+#: ../scripts/tmpl_cache/home.twig.php:150
 msgid "CSS: Change the CSS, add your logo"
 msgstr "CSS: Changez les CSS et ajoutez votre logo"
 
-#: ../scripts/tmpl_cache/home.twig.php:152
+#: ../scripts/tmpl_cache/home.twig.php:154
 msgid "Developers: Add new chart types"
 msgstr "Développeurs: Ajoutez de nouveaux types de visualisations"
 
-#: ../scripts/tmpl_cache/home.twig.php:156
+#: ../scripts/tmpl_cache/home.twig.php:158
 msgid "Non-profit: This is and will stay free to use"
 msgstr "Non lucratif: C'est gratuit et ça le restera"
 
-#: ../scripts/tmpl_cache/home.twig.php:162
+#: ../scripts/tmpl_cache/home.twig.php:164
 msgid "Why this approach? See our Motivations..."
 msgstr "Pourquoi cette approche? Lisez nos motivations..."
 
@@ -664,6 +668,10 @@ msgstr ""
 #: ../scripts/tmpl_cache/messages.twig.php:41
 msgid "The password and the repeated password must not differ."
 msgstr "Les mots de passes ne sont pas identiques."
+
+#: ../scripts/tmpl_cache/modal.twig.php:35
+msgid "Close"
+msgstr "Fermer"
 
 #: ../scripts/tmpl_cache/mycharts.twig.php:80
 msgid "Duplicate"
@@ -852,9 +860,10 @@ msgid "Warning"
 msgstr "Attention"
 
 #: ../scripts/tmpl_cache/settings.twig.php:308
+#, fuzzy
 msgid ""
-"This will remove your Datawrapper account and all the charts you created so "
-"far. They won't be visible in places where you embedded them."
+"This will remove your Datawrapper account. The charts you created so far "
+"will remain visible in places where you embedded them."
 msgstr ""
 "Cette action supprimera votre compte Datawrapper et toutes les "
 "visualisations que vous avez créé. Elles ne seront plus visibles là où vous "
@@ -1232,6 +1241,9 @@ msgstr ""
 "\">administrateurs</a> et demandez de l'aide pour réinitialiser votre mot de "
 "passe."
 
+#~ msgid "Credits"
+#~ msgstr "Crédits"
+
 #~ msgid "Save as PDF"
 #~ msgstr "Enregistrer en PDF"
 
@@ -1263,9 +1275,6 @@ msgstr ""
 
 #~ msgid "Not convinced yet?"
 #~ msgstr "Pas encore convaincu?"
-
-#~ msgid "Close"
-#~ msgstr "Fermer"
 
 #~ msgid ""
 #~ "Just leave the password fields blank if you don't want to change your "
