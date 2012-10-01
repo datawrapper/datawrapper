@@ -20,13 +20,6 @@ class DatawrapperSession {
      * creates a new instance
      */
     function __construct() {
-        if (isset($_SESSION['dw-lang'])) {
-            $this->lang = $_SESSION['dw-lang'];
-        } else {
-            // default language is english
-            $this->lang = 'en';
-        }
-
         $this->initUser();
     }
 
@@ -55,7 +48,7 @@ class DatawrapperSession {
             $user = new User();
             $user->setEmail('guest@datawrapper.de');
             $user->setRole('guest');
-            $user->setLanguage($this->lang);
+            $user->setLanguage(self::getBrowserLocale());
             $this->user = $user;
         }
     }
@@ -69,6 +62,23 @@ class DatawrapperSession {
         return self::getInstance()->_toArray();
     }
 
+    public static function getBrowserLocale() {
+        // get list of available locales
+        $available_locales = array();
+        foreach (glob('../locale/*', GLOB_ONLYDIR) as $l) {
+            $available_locales[] = substr($l, 10);
+        }
+        $locales = explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']);
+        foreach ($locales as $loc) {
+            $parts = explode(';', $loc);
+            $pp = explode('-', $parts[0]);
+            if (count($pp) > 1) $pp[1] = strtoupper($pp[1]);
+            $locale = implode('_', $pp);
+            if (in_array($locale, $available_locales)) return $locale;  // match!
+        }
+        return 'en';
+    }
+
     /**
      * retreive the currently used frontend language
      */
@@ -76,7 +86,7 @@ class DatawrapperSession {
         if (self::getUser()->isLoggedIn()) {
             return self::getUser()->getLanguage();
         } else {
-            return isset($_SESSION['dw-lang']) ? $_SESSION['dw-lang'] : 'en';
+            return isset($_SESSION['dw-lang']) ? $_SESSION['dw-lang'] : self::getBrowserLocale();
         }
         // TODO: load user setting from database for logged users
     }
@@ -121,7 +131,7 @@ class DatawrapperSession {
         Action::logAction(self::getInstance()->user, 'logout');
         $_SESSION['dw-user-id'] = null;
         self::getInstance()->initUser();
-        setcookie('dw-session');
+        setcookie('DW-SESSION');
     }
 
 
