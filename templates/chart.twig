@@ -46,7 +46,7 @@ body {
 
         var reload_timer;
 
-        if (!$.browser.msie) {
+        if (!$.browser.msie && navigator.userAgent.match(/iPad/i) == null) {
             // IE continuosly reloads the chart for some strange reasons
             $(window).resize(function() {
                 if (reload_timer) clearTimeout(reload_timer);
