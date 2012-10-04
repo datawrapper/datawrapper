@@ -17,12 +17,17 @@ body {
 }
 
 h1 {
-    font-size: 14px;
-    font-weight: bold;
+    font-size: 18px;
+    font-weight: normal;
     margin: 0 0 10px;
     line-height: 18px;
     text-align: left;
+    color: #006cb5;
+    border-top: 1px solid #2b2b2a;
+    padding: 5px 0 10px;
+    border-bottom: 1px solid #2b2b2a;
 }
+
 
 p { margin: 10px 0; line-height: 19px;}
 
@@ -85,10 +90,15 @@ p { margin: 10px 0; line-height: 19px;}
     margin: 10px 0px 0px;
     padding-top: 5px;
     padding-bottom: 5px;
-    font-size: 12px;
     clear: both;
-    color: #666;
+    text-transform: uppercase;
+    color: #2b2b2a;
+    font-size: 10px;
+}
 
+#footer a {
+    color: #2b2b2a;
+    text-decoration: underline;
 }
 
 .footer-left {

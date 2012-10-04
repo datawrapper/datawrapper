@@ -11,21 +11,22 @@
     Datawrapper.Themes.Guardian = _.extend({}, Datawrapper.Themes.Base, {
 
         colors: {
-            main: '#98BCDB',
-            highlight: '#004A83',
-            focus: '#004A83',
+            main: '#e41f25',
+            highlight: '#e41f25',
+            focus: '#e41f25',
             context: '#aaa',
             axis: '#000000',
             grid: '#999999',
-            negative: '#F27F6D',
+            positive: '#0089c0',
+            negative: '#e41f25',
             'highlight-negative': '#801100',
             background: '#ffffff',
-            palette: ['#1F78B4', '#B2DF8A', '#FF7F00', '#6A3D9A', '#B15928']
+            palette: ['#96c22c', '#fdc400', '#2974b9', '#6A3D9A', '#B15928']
         },
 
         lineChart: {
             strokeWidth: {
-                highlight: 2,
+                highlight: 3,
                 normal: 1
             },
             hoverDotRadius: 4,
