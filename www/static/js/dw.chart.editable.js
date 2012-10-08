@@ -95,10 +95,11 @@
 
             window.onbeforeunload = function(e) {
                 //console.debug('onbeforeunload()');
-                _.each(chart.__syncedElements, storeElementValue);
-                var res = chart.save(true);
-                if (res === false) return undefined;
-                return 'Please wait a second until the data has been saved!';
+                if (chart.__changed) return 'Caution: unsaved changes';
+                //_.each(chart.__syncedElements, storeElementValue);
+                //var res = chart.save();
+                //if (res === false) return undefined;
+                //return 'Please wait a second until the data has been saved!';
             };
         },
 
