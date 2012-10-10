@@ -23,10 +23,10 @@
 
         getSize: function() {
             var me = this, el = me.__root,
-                width = $(document).width();
+                width = $(document).width() - me.theme.hpadding*2;
             // IE Fix
             if ($.browser.msie) width -= 10;
-            return [width, me.getMaxChartHeight(el)];
+            return [width, me.getMaxChartHeight(el) - me.theme.vpadding];
         },
 
         initCanvas: function(canvas) {
@@ -82,12 +82,14 @@
             }
         },
 
-        registerSeriesElement: function(el, series) {
+        registerSeriesElement: function(el, series, row) {
             el.data('series', series);
+            el.data('row', row);
             if (!this.__seriesElements[series.name]) {
                 this.__seriesElements[series.name] = [];
             }
             this.__seriesElements[series.name].push(el);
+            return el;
         },
 
         registerSeriesLabel: function(lbl, series) {
@@ -106,6 +108,7 @@
                     me.__hoveredSeriesLabel = null;
                 }, 100);
             });
+            return lbl;
         },
 
         hoverSeries: function(series) {
@@ -138,6 +141,7 @@
         label: function(x, y, txt, attrs) {
             var l, w, align, h, va;
             if (attrs === undefined) attrs = {};
+            if (attrs.root === undefined) attrs.root = this.__canvas.root;
             if (attrs.rotate == -90) {
                 l = $('<div class="label'+(attrs.cl ? ' '+attrs.cl : '')+'"><span>'+txt+'</span></div>');
                 w = 60;
@@ -156,7 +160,7 @@
                     '-o-transform': 'rotate(-90deg)',
                     'filter': 'progid:DXImageTransform.Microsoft.BasicImage(rotation=3)'
                 });
-                this.__canvas.root.append(l);
+                attrs.root.append(l);
             } else {
                 va = attrs.valign;
                 l = $('<div class="label'+(attrs.cl ? ' '+attrs.cl : '')+'"><span>'+txt+'</span></div>');
@@ -171,7 +175,7 @@
                 if (attrs.w) {
                     l.css({ width: w+'px' });
                 }
-                this.__canvas.root.append(l);
+                attrs.root.append(l);
                 h = attrs.h ? attrs.h : l.height();
                 if (!va) va = 'middle';
                 l.css({
@@ -225,20 +229,52 @@
         },
 
         getSeriesColor: function(series, row, useNegativeColor, colorful) {
-            var me = this,
-                main = useNegativeColor && series.data[row] < 0 ? 'negative' : 'main',
-                highlight = useNegativeColor && series.data[row] < 0 ? 'highlight-negative' : 'highlight';
+            var me = this, color;
             // use a different color, if set via setSeriesColor
-            if (me.__customSeriesColors && me.__customSeriesColors[series.name])
-                return me.__customSeriesColors[series.name];
-            if (!me.chart.hasHighlight()) return me.theme.colors[main];
-            return me.theme.colors[me.chart.isHighlighted(series) ? highlight : main];
+            if (useNegativeColor) {
+                color = me.theme.colors[series.data[row] < 0 ? 'negative' : 'positive'];
+            } else {
+                if (me.__customSeriesColors && me.__customSeriesColors[series.name])
+                    color = me.__customSeriesColors[series.name];
+                else if (me.__customRowColors && me.__customRowColors[row])
+                    color = me.__customRowColors[row];
+                else color = me.theme.colors.palette[0];
+            }
+
+            var hsl = d3.hsl(color), lch = d3.cie.lch(d3.rgb(color));
+            if (series && !me.chart.isHighlighted(series)) {
+                // dim color
+                hsl.s = 0.2;
+                hsl.l = Math.min(0.85, hsl.l * 1.5);
+                console.log(lch.l);
+                lch.c *= 0.3;
+                lch.l = 90;// Math.min(90, lch.l * 1.5);
+                //lch.l = Math.min(1.5, lch.l * 1.5);
+            } else if (series && me.chart.hasHighlight() && me.chart.isHighlighted(series)) {
+                hsl.l = Math.max(0.46, hsl.l * 0.5);
+                hsl.s *= 1.4;
+                
+                lch.l *= 0.8;
+                
+
+            }
+            color = hsl.toString();
+            color = lch.toString();
+
+            return color;
+            //return me.theme.colors[me.chart.isHighlighted(series) ? highlight : main];
         },
 
         setSeriesColor: function(series, color) {
             var me = this;
             if (!me.__customSeriesColors) me.__customSeriesColors = {};
             me.__customSeriesColors[series.name] = color;
+        },
+
+        setRowColor: function(row, color) {
+            var me = this;
+            if (!me.__customRowColors) me.__customRowColors = {};
+            me.__customRowColors[row] = color;
         },
 
         getYTicks: function(h) {

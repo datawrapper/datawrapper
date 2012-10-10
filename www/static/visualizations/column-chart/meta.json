@@ -4,7 +4,7 @@
         "de": "Balkendiagramm (vert.)",
         "fr": "Diagramme temporel"
     },
-    "dimensions": 1,
+    "dimensions": 2,
     "extends": "raphael-chart",
     "author": {
         "name": "gka",
