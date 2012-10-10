@@ -32,20 +32,21 @@ function get_chart_content($chart, $user, $minified = false, $path = '') {
     $base_js = array(
         $abs . '/static/vendor/globalize/globalize.min.js',
         $abs . '/static/vendor/underscore/underscore-min.js',
-        $abs . '/static/vendor/jquery/jquery.min.js',
-        $abs . '/static/js/dw.min.js'
+        $abs . '/static/vendor/jquery/jquery.min.js'
     );
 
     $vis_js = array();
     $vis_css = array();
     $next_vis_id = $chart->getType();
 
+    $vis_libs = array();
+
     while (!empty($next_vis_id)) {
         $vis = get_visualization_meta($next_vis_id, $path);
         $vjs = array();
         if (!empty($vis['libraries'])) {
             foreach ($vis['libraries'] as $url) {
-                $vjs[] = '/static/vendor/' . $url;
+                $vis_libs[] = '/static/vendor/' . $url;
             }
         }
         $vjs[] = '/static/visualizations/' . $vis['id'] . '/' . $vis['id'] . '.js';
@@ -56,13 +57,30 @@ function get_chart_content($chart, $user, $minified = false, $path = '') {
         $next_vis_id = !empty($vis['extends']) ? $vis['extends'] : null;
     }
 
-    $scripts = array_unique(array_merge($base_js, array_reverse($theme_js), array_reverse($vis_js)));
-
     $styles = array_merge($vis_css, array_reverse($theme_css));
 
+    $the_vis = get_visualization_meta($chart->getType(), $path);
+    $the_theme = get_theme_meta($chart->getTheme(), $path);
+
     if ($minified) {
-        $scripts = array_merge($base_js, array($chart->getID().'.min.js'));
+        $scripts = array_merge(
+            $base_js,
+            array(
+                '/lib/vis/' . $the_vis['id'] . '-' . $the_vis['version'] . '.min.js',
+                '/lib/theme/' . $the_theme['id'] . '-' . $the_theme['version'] . '.min.js',
+            )
+        );
         $styles = array($chart->getID().'.min.css');
+    } else {
+        $scripts = array_unique(
+            array_merge(
+                $base_js,
+                array('/static/js/dw.min.js'),
+                array_reverse($theme_js),
+                array_reverse($vis_js),
+                $vis_libs
+            )
+        );
     }
 
     return array(
@@ -70,10 +88,12 @@ function get_chart_content($chart, $user, $minified = false, $path = '') {
         'chart' => $chart,
         'chartLocale' => str_replace('_', '-', $locale),
         'metricPrefix' => get_metric_prefix($locale),
-        'theme' => get_theme_meta($chart->getTheme(), $path),
-        'visualization' => get_visualization_meta($chart->getType(), $path),
+        'theme' => $the_theme,
+        'visualization' => $the_vis,
         'stylesheets' => $styles,
         'scripts' => $scripts,
+        'themeJS' => array_reverse($theme_js),
+        'visJS' => array_merge(array_reverse($vis_js), $vis_libs),
         'origin' => !empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : ''
     );
 }

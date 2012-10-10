@@ -133,9 +133,17 @@ $(function() {
 
             {% if user.isAbleToPublish %}
 
-            <p>{% trans "Congrats, you made it! The chart has been published." %}</p>
+            {% if chart.publishedAt < chart.lastModifiedAt %}
+                <div class="alert alert-warning">
+                    <p>{% trans "You have changed the chart after its last publication. To make you changes visible, please re-publish the chart." %}</p>
+                    <a href="?republish=1" class="btn"><i class="icon-refresh"></i> {% trans "Re-publish chart!" %}</a>
+                </div>
 
-            <a href="" class="btn btn-primary">Update published chart</a>
+            {% else %}
+                <p>{% trans "Congrats, you made it! The chart has been published." %}</p>
+            {% endif %}
+
+            
 
 
             <h3>{% trans "Link to this visualisation" %}</h3>

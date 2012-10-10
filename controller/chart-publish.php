@@ -24,9 +24,9 @@ $app->get('/chart/:id/publish', function ($id) use ($app) {
         add_editor_nav($page, 4);
 
         if ($chart->getLastEditStep() == 3 || $app->request()->get('republish') == 1) {
-            // hardcore publish action
-            publish_chart($chart);
             // generate thumbnails
+            $chart->setPublishedAt(time());
+            $chart->save();
             $app->render('chart-generate-thumbnails.twig', $page);
 
         } else {

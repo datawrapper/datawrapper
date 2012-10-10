@@ -232,26 +232,37 @@ require_once '../../vendor/jsmin/jsmin.php';
 $app->post('/charts/:id/publish/js', function($chart_id) use ($app) {
     if_chart_is_writable($chart_id, function($user, $chart) use ($app) {
         try {
-            $static_path = get_static_path($chart);
+            $static_path = $static_path = '../../charts/static/lib/';
             $data = get_chart_content($chart, $user, false, '../');
 
-            $all = '';
-
-            $vendor = true;
-
-            foreach ($data['scripts'] as $js) {
-                if (substr($js, 0, 7) != 'http://') {
-                    $all .= file_get_contents('..' . $js)."\n\n\n";
+            // generate visualization script
+            $vis = $data['visualization'];
+            $vis_path = $static_path . 'vis/' . $vis['id'] . '-' . $vis['version'] . '.min.js';
+            if (!file_exists($vis_path)) {
+                $all = file_get_contents('../static/js/dw.js');
+                foreach ($data['visJS'] as $js) {
+                    if (substr($js, 0, 7) != 'http://') {
+                        $all .= "\n\n\n" . file_get_contents('..' . $js);
+                    }
                 }
-                if ($vendor && substr($js, 0, 15) != '/static/vendor/') {
-                    $all .= "(function(){\n";
-                    $vendor = false;
-                }
+                $all = JSMin::minify($all);
+                file_put_contents($vis_path, $all);
             }
-            $all .= "\n}).call(this);";
 
-            $minified = JSMin::minify($all);
-            file_put_contents($static_path . "/" . $chart->getID() . '.min.js', $minified);
+            // generate theme script
+            $theme = $data['theme'];
+            $theme_path = $static_path . 'theme/' . $theme['id'] . '-' . $theme['version'] . '.min.js';
+
+            if (!file_exists($theme_path)) {
+                $all = '';
+                foreach ($data['themeJS'] as $js) {
+                    if (substr($js, 0, 7) != 'http://') {
+                        $all .= "\n\n\n" . file_get_contents('..' . $js);
+                    }
+                }
+                $minified = JSMin::minify($all);
+                file_put_contents($theme_path, $minified);
+            }
 
             ok();
         } catch (Exception $e) {
