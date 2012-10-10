@@ -4,6 +4,7 @@
         "de": "Liniendiagramm",
         "fr": "Diagramme temporel"
     },
+    "version": "0.8",
     "author": {
         "name": "gka",
         "email": "gka@vis4.net"
@@ -69,11 +70,5 @@
                 "fr": "translate me"
             }
         }
-    },
-    "compatibility": {
-        "msie": "9+",
-        "moz": "5+",
-        "webkit": "3+",
-        "ios": "no"
     }
 }

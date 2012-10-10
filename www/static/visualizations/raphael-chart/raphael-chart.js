@@ -253,10 +253,7 @@
             } else if (series && me.chart.hasHighlight() && me.chart.isHighlighted(series)) {
                 hsl.l = Math.max(0.46, hsl.l * 0.5);
                 hsl.s *= 1.4;
-                
                 lch.l *= 0.8;
-                
-
             }
             color = hsl.toString();
             color = lch.toString();

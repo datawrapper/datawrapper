@@ -1,4 +1,3 @@
-
 (function(){
 
     // Simple line chart

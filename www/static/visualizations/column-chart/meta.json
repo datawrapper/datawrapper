@@ -4,6 +4,7 @@
         "de": "Balkendiagramm (vert.)",
         "fr": "Diagramme temporel"
     },
+    "version": "0.8",
     "dimensions": 2,
     "extends": "raphael-chart",
     "author": {
@@ -41,11 +42,5 @@
         }
     },
     "libraries": [],
-    "about": "http://site.com/understanding-bar-charts/",
-    "compatibility": {
-        "msie": "9+",
-        "moz": "5+",
-        "webkit": "3+",
-        "ios": "no"
-    }
+    "about": "http://site.com/understanding-bar-charts/"
 }
