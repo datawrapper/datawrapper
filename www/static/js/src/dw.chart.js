@@ -27,7 +27,7 @@
         dataset: function(callback, ignoreTranspose) {
             var me = this, ds, dsOpts = {
                 delimiter: 'auto',
-                url: '/chart/' + this.get('id') + '/data',
+                url: 'data',
                 transpose: ignoreTranspose ? false : this.get('metadata.data.transpose', false),
                 firstRowIsHeader: this.get('metadata.data.horizontal-header', true),
                 firstColumnIsHeader: this.get('metadata.data.vertical-header', true)

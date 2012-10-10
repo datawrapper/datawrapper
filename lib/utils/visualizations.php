@@ -15,9 +15,9 @@ function get_visualizations_meta($pathToStatic = '') {
 }
 
 
-function get_visualization_meta($id) {
+function get_visualization_meta($id, $path='') {
     $res = array();
-    $vis_path = 'static/visualizations/' . $id .'/meta.json';
+    $vis_path = $path . 'static/visualizations/' . $id .'/meta.json';
     if (file_exists($vis_path)) {
         $meta = json_decode(file_get_contents($vis_path), true);
         $meta['id'] = $id;

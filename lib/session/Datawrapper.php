@@ -68,7 +68,7 @@ class DatawrapperSession {
         foreach (glob('../locale/*', GLOB_ONLYDIR) as $l) {
             $available_locales[] = substr($l, 10);
         }
-        $locales = explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']);
+        $locales = isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']) : array();
         foreach ($locales as $loc) {
             $parts = explode(';', $loc);
             $pp = explode('-', $parts[0]);

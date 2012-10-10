@@ -1,0 +1,175 @@
+{% extends "chart-editor.twig" %}
+{% block content %}
+
+{{ parent() }}
+
+<!--<script type="text/javascript" src="http://canvg.googlecode.com/svn/trunk/rgbcolor.js"></script>
+<script type="text/javascript" src="http://canvg.googlecode.com/svn/trunk/canvg.js"></script>-->
+
+<script type="text/javascript">
+$(function() {
+
+    $('.status li').hide();
+    var bar = $('.progress .bar'), current = $('.current');
+
+    function publish_remote(cb) {
+        var steps = [];
+        steps.push({
+            url: '/api/charts/{{ chart.id }}/publish/html',
+            id: 'p1',
+            progress: 20
+        });
+        steps.push({
+            url: '/api/charts/{{ chart.id }}/publish/js',
+            id: 'p2',
+            progress: 35
+        });
+        steps.push({
+            url: '/api/charts/{{ chart.id }}/publish/css',
+            id: 'p3',
+            progress: 50
+        });
+        steps.push({
+            url: '/api/charts/{{ chart.id }}/publish/data',
+            id: 'p4',
+            progress: 65
+        });
+        function nextStep() {
+            var step = steps.shift();
+            current.html($('.'+step.id).data('current'));
+            $.ajax({
+                url: step.url,
+                type: 'post',
+                dataType: 'json',
+                success: function(res) {
+                    if (res.status == "ok") {
+                        bar.width(step.progress+'%');
+                        $('.'+step.id).fadeIn();
+                        if (steps.length > 0) nextStep();
+                        else {
+                            current.html(current.data('finished'));
+                            cb();
+                        }
+                    }
+                }
+            });
+        }
+        nextStep();
+    }
+
+    publish_remote(function() {
+        current.html($('.p5').data('current'));
+    });
+
+
+    function snapshot(width, height) {
+        // 1. make iframe and load chart
+        var iframe = $('<iframe />');
+        iframe.attr({
+            src: 'http://{{ DW_DOMAIN }}/chart/{{ chart.id }}'
+        });
+        iframe.css({
+            position: 'absolute',
+            top: 0,
+            left: -4000,
+            width: width+'px',
+            height: height+'px'
+        });
+        $('body').append(iframe);
+        // 2.
+        var canvas = $('<canvas id="canvas" width="'+width+'px" height="'+height+'px"></canvas>')
+        $('body').append(canvas);
+
+        function px(s) {
+            return Number(s.substr(0, s.length-2));
+        }
+
+        setTimeout(function() {
+            var body = iframe.get(0).contentDocument,
+                ctx = canvas.get(0).getContext('2d');
+            canvg('canvas', $('svg', body).get(0).innerSVG);
+            $('.label', body).each(function(i, lbl) {
+                lbl = $(lbl);
+                var x = px(lbl.css('left')),
+                    y = px(lbl.css('top')),
+                    txt = $('span', lbl).html();
+                console.log(x,y,txt);
+                ctx.font = "8pt Arial";
+                ctx.fillText(txt, x, y);
+
+            });
+        }, 1000);
+
+    }
+
+    $('.')
+
+    /*setTimeout(function() {
+
+        snapshot(1200,600);
+    },4000);*/
+});
+
+</script>
+<style type="text/css">
+
+.current {
+    padding: 10px 10px 10px 35px;
+    font-style: italic;
+    background: url(/static/img/ajax-loader.gif) 10px 10px no-repeat;
+}
+</style>
+
+<div class="dw-create-publish">
+    <div class="row">
+        <div class="span4">
+
+            {% if user.isAbleToPublish %}
+
+            <h2>{% trans "Publishing chart..." %}</h2>
+
+            <p>{% trans "Please hold on a second while your chart is being published. Try not to close this page.." %}</p>
+
+            <div class="progress progress-striped active">
+                <div class="bar" style="width: 5%;"></div>
+            </div>
+
+            <ol class="status">
+                <li data-current="{% trans "Generating static HTML pages" %}" class="p1">
+                    {% trans "Generated static HTML page" %}
+                </li>
+                <li data-current="{% trans "Packing and crunching JavaScript" %}" class="p2">
+                    {% trans "Packed and minified JavaScript" %}
+                </li>
+                <li data-current="{% trans "Packing and crunching stylesheets" %}" class="p3">
+                    {% trans "Packed and minified stylesheets" %}
+                </li>
+                <li data-current="{% trans "Publishing chart data" %}" class="p4">
+                    {% trans "Published chart data" %}
+                </li>
+                <li data-current="{% trans "Generating chart thumbnails" %}" class="p5">
+                    {% trans "Generated Thumbnails" %}
+                </li>
+            </ol>
+
+            <div class="current"></div>
+
+
+            {% endif %}
+        </div>
+        <div class="span8">
+            Thumbnails
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="span12">
+            <div class="form-actions">
+                ...
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

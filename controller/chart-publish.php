@@ -3,12 +3,16 @@
 
 require_once '../lib/utils/visualizations.php';
 require_once '../lib/utils/themes.php';
+require_once '../vendor/jsmin/jsmin.php';
+
 
 /*
- * PUBLISH STEP
+ * PUBLISH STEP - shows progress of publishing action and thumbnail generation
+ * forwards to /chart/:id/finish
  */
 $app->get('/chart/:id/publish', function ($id) use ($app) {
     check_chart_writable($id, function($user, $chart) use ($app) {
+
         $page = array(
             'chartData' => $chart->loadData(),
             'chart' => $chart,
@@ -18,6 +22,18 @@ $app->get('/chart/:id/publish', function ($id) use ($app) {
         );
         add_header_vars($page, 'chart');
         add_editor_nav($page, 4);
-        $app->render('chart-publish.twig', $page);
+
+        if ($chart->getLastEditStep() == 3 || $app->request()->get('republish') == 1) {
+            // hardcore publish action
+            publish_chart($chart);
+            // generate thumbnails
+            $app->render('chart-generate-thumbnails.twig', $page);
+
+        } else {
+
+            $app->render('chart-publish.twig', $page);
+        }
+
     });
 });
+
