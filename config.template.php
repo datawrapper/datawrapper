@@ -1,7 +1,8 @@
 <?php
 
 define('DW_DOMAIN', 'datawrapper.de');
-define('PHANTOMJS', '/path/to/phantomjs-1.5.0/bin/phantomjs');
+
+define('DW_CHART_BASE', '');
 
 // email address for user feedback and questions
 define('ADMIN_EMAIL', 'hello@datawrapper.de');
@@ -16,3 +17,8 @@ define('GITHUB_REPO_BRANCH', 'master');
 
 // default layout
 define('DEFAULT_LAYOUT', 'default');
+
+// chart thumbnail widths
+define('DW_THUMBNAIL_S', 200);
+define('DW_THUMBNAIL_M', 400);
+define('DW_THUMBNAIL_L', 600);
