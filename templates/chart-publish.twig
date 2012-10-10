@@ -133,10 +133,13 @@ $(function() {
 
             {% if user.isAbleToPublish %}
 
-            <p>{% trans "Congrats, you made it! Now is the time to check back everything. You can return to the previous steps." %}</p>
+            <p>{% trans "Congrats, you made it! The chart has been published." %}</p>
+
+            <a href="" class="btn btn-primary">Update published chart</a>
+
 
             <h3>{% trans "Link to this visualisation" %}</h3>
-            <p><a href="http://{{ DW_DOMAIN }}/chart/{{ chart.id }}">http://{{ DW_DOMAIN }}/chart/{{ chart.id }}</a></p>
+            <p><a href="http://{{ DW_CHART_CACHE_DOMAIN }}/{{ chart.id }}">http://{{ DW_CHART_CACHE_DOMAIN }}/{{ chart.id }}</a></p>
 
             <h3>{% trans "Embed into your website" %}</h3>
             <p>{% trans "Just copy &amp; paste the following code into your website." %}</p>
@@ -144,7 +147,7 @@ $(function() {
                 <label>{% trans "Width" %}: <input type="text" id="embed-width" class="input-small" style="width:4ex" value="600" /> px</label>&nbsp;&nbsp;
                 <label>{% trans "Height" %}: <input type="text" id="embed-height" class="input-small" style="width:4ex" value="400" /> px</label>
 
-            <textarea id="iframe-code" class="span4" rows="5"><iframe src="http://{{ DW_DOMAIN }}/chart/{{ chart.id }}" frameborder="0" allowtransparency="true" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen width="{{ chart.metadata.publish['embed-width'] }}" height="{{ chart.metadata.publish['embed-height'] }}"></iframe></textarea>
+            <textarea id="iframe-code" class="span4" rows="5"><iframe src="http://{{ DW_CHART_CACHE_DOMAIN }}/{{ chart.id }}" frameborder="0" allowtransparency="true" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen width="{{ chart.metadata.publish['embed-width'] }}" height="{{ chart.metadata.publish['embed-height'] }}"></iframe></textarea>
 
              <h3>{% trans "Make it public" %}</h3>
              <p>{% trans "You can show some love to Datawrapper by agreeing to show your visualisation in our <a href='gallery.html'>public gallery</a>" %}. {% trans "This is absolutely optional." %}</p>

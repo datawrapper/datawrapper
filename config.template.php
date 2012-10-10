@@ -2,7 +2,7 @@
 
 define('DW_DOMAIN', 'datawrapper.de');
 
-define('DW_CHART_BASE', '');
+define('DW_CHART_CACHE_DOMAIN', 'charts.datawrapper.de');
 
 // email address for user feedback and questions
 define('ADMIN_EMAIL', 'hello@datawrapper.de');

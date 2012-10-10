@@ -9,3 +9,5 @@ charts/images/*
 push
 config.php
 scripts/history.php
+
+*.log

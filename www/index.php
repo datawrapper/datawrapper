@@ -149,6 +149,7 @@ function add_header_vars(&$page, $active = null) {
     $page['language'] = substr(DatawrapperSession::getLanguage(), 0, 2);
     $page['locale'] = DatawrapperSession::getLanguage();
     $page['DW_DOMAIN'] = DW_DOMAIN;
+    $page['DW_CHART_CACHE_DOMAIN'] = DW_CHART_CACHE_DOMAIN;
     $page['ADMIN_EMAIL'] = ADMIN_EMAIL;
 }
 
