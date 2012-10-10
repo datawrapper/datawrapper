@@ -14,14 +14,12 @@
         vpadding: -10,
 
         colors: {
-            palette: ['#009BFF', '#DC0F6E', '#AAC30A',  '#EB8C14', '#6A3D9A', '#B15928'],
+            palette: ['#AAC30A',  '#EB8C14', '#6A3D9A', '#B15928', '#009BFF', '#DC0F6E'],
             highlight: '#00589E',
-            focus: '#0063A5',
-            context: '#aaa',
             axis: '#000000',
-            positive: '#85B4D4',
+            positive: '#009BFF',
             'highlight-positive': '#85B4D4',
-            negative: '#E31A1C',
+            negative: '#DC0F6E',
             'highlight-negative': '#9E5800',
             background: '#E6E3E0'
         },
