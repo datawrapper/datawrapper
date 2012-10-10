@@ -189,3 +189,118 @@ $app->post('/charts/:id/copy', function($chart_id) use ($app) {
         }
     });
 });
+
+
+function get_static_path($chart) {
+    $static_path = "../../charts/static/" . $chart->getID();
+    if (!is_dir($static_path)) {
+        mkdir($static_path);
+    }
+    return $static_path;
+}
+
+/**
+ * API: copy a chart
+ *
+ * @param chart_id chart id
+ */
+$app->post('/charts/:id/publish/html', function($chart_id) use ($app) {
+    if_chart_is_writable($chart_id, function($user, $chart) use ($app) {
+        try {
+            $static_path = get_static_path($chart);
+            $url = 'http://'.DW_DOMAIN.'/chart/'.$chart->getID().'?minify=1';
+            $html = file_get_contents($url);
+            file_put_contents($static_path . "/index.html", $html);
+            ok();
+        } catch (Exception $e) {
+            error('io-error', $e->getMessage());
+        }
+    });
+});
+
+
+require_once '../../lib/utils/themes.php';
+require_once '../../lib/utils/visualizations.php';
+require_once '../../lib/utils/chart_content.php';
+require_once '../../vendor/jsmin/jsmin.php';
+
+/**
+ * API: generate minified JS for a chart
+ *
+ * @param chart_id chart id
+ */
+$app->post('/charts/:id/publish/js', function($chart_id) use ($app) {
+    if_chart_is_writable($chart_id, function($user, $chart) use ($app) {
+        try {
+            $static_path = get_static_path($chart);
+            $data = get_chart_content($chart, $user, false, '../');
+
+            $all = '';
+
+            $vendor = true;
+
+            foreach ($data['scripts'] as $js) {
+                if (substr($js, 0, 7) != 'http://') {
+                    $all .= file_get_contents('..' . $js)."\n\n\n";
+                }
+                if ($vendor && substr($js, 0, 15) != '/static/vendor/') {
+                    $all .= "(function(){\n";
+                    $vendor = false;
+                }
+            }
+            $all .= "\n}).call(this);";
+
+            $minified = JSMin::minify($all);
+            file_put_contents($static_path . "/" . $chart->getID() . '.min.js', $minified);
+
+            ok();
+        } catch (Exception $e) {
+            error('io-error', $e->getMessage());
+        }
+    });
+});
+
+require_once '../../vendor/cssmin/cssmin.php';
+
+/**
+ * API: generate minified JS for a chart
+ *
+ * @param chart_id chart id
+ */
+$app->post('/charts/:id/publish/css', function($chart_id) use ($app) {
+    if_chart_is_writable($chart_id, function($user, $chart) use ($app) {
+        try {
+            $static_path = get_static_path($chart);
+            $data = get_chart_content($chart, $user, false, '../');
+
+            $all = '';
+
+            foreach ($data['stylesheets'] as $css) {
+                $all .= file_get_contents('..' . $css)."\n\n";
+            }
+
+            $cssmin = new CSSmin();
+            $minified = $cssmin->run($all);
+            file_put_contents($static_path . "/" . $chart->getID() . '.min.css', $minified);
+
+            ok();
+        } catch (Exception $e) {
+            error('io-error', $e->getMessage());
+        }
+    });
+});
+
+
+$app->post('/charts/:id/publish/data', function($chart_id) use ($app) {
+    if_chart_is_writable($chart_id, function($user, $chart) use ($app) {
+        try {
+            $static_path = get_static_path($chart);
+            file_put_contents($static_path . "/data", $chart->loadData());
+
+            ok();
+        } catch (Exception $e) {
+            error('io-error', $e->getMessage());
+        }
+    });
+});
+
