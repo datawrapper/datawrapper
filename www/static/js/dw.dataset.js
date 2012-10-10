@@ -164,14 +164,21 @@
         },
 
         // removes every row except the one with index i
-        filterRow: function(i) {
+        filterRows: function(rows) {
             this.eachSeries(function(s) {
-                var v = s.data[i];
-                s.data = [v];
-                s.total = s.min = s.max = v;
+                var d = [];
+                s.total = 0;
+                s.min = Number.MAX_VALUE;
+                s.max = Number.MAX_VALUE*-1;
+                _.each(rows, function(i) {
+                    d.push(s.data[i]);
+                    s.total += s.data[i];
+                    s.min = Math.min(s.min, s.data[i]);
+                    s.max = Math.max(s.max, s.data[i]);
+                });
+                s.data = d;
             });
         }
-
     });
 
     var NumberParser = function() {

@@ -136,6 +136,7 @@
         },
 
         isHighlighted: function(col) {
+            if (col === undefined) return false;
             var hl = this.get('metadata.visualize.highlighted-series');
             return !_.isArray(hl) || hl.length === 0 || _.indexOf(hl, col.name) >= 0;
         },
@@ -145,7 +146,7 @@
             this.metric_prefix = metric_prefix;
         },
 
-        formatValue: function(val, full) {
+        formatValue: function(val, full, round) {
             var me = this,
                 format = me.get('metadata.describe.number-format'),
                 div = Number(me.get('metadata.describe.number-divisor')),
@@ -154,15 +155,19 @@
 
             if (format != '-') {
                 var culture = Globalize.culture(me.locale);
+                if (round) format = format.substr(0,1)+'0';
                 val = Globalize.format(Number(val) / Math.pow(10, div), format);
             }
 
             return full ? prepend + val + append : val;
         },
 
-        filterRow: function(r) {
-            //console.warn('chart.filterRow() is marked deprecated. Use chart.dataset().filterRow() instead.');
-            this.__dataset.filterRow(r);
+        filterRow: function(row) {
+            this.__dataset.filterRows([row]);
+        },
+
+        filterRows: function(rows) {
+            this.__dataset.filterRows(rows);
         }
 
     });
