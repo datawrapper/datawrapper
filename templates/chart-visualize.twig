@@ -144,6 +144,9 @@ $(function() {
 
     $('#btn-transpose').click(function() {
         chart.set('metadata.data.transpose', !chart.get('metadata.data.transpose'));
+        setTimeout(function() {
+            $('#vis-options').load('/xhr/'+chart.get('id')+'/vis-options?nocache='+Math.random());
+        }, 2000);
     });
 });
 
