@@ -2,88 +2,55 @@
 
 
 /**
- * Base static class for performing query and update operations on the 'chart' table.
+ * Base static class for performing query and update operations on the 'stats' table.
  *
  * 
  *
  * @package    propel.generator.datawrapper.om
  */
-abstract class BaseChartPeer {
+abstract class BaseStatsPeer {
 
 	/** the default database name for this class */
 	const DATABASE_NAME = 'datawrapper';
 
 	/** the table name for this class */
-	const TABLE_NAME = 'chart';
+	const TABLE_NAME = 'stats';
 
 	/** the related Propel class for this table */
-	const OM_CLASS = 'Chart';
+	const OM_CLASS = 'Stats';
 
 	/** the related TableMap class for this table */
-	const TM_CLASS = 'ChartTableMap';
+	const TM_CLASS = 'StatsTableMap';
 
 	/** The total number of columns. */
-	const NUM_COLUMNS = 15;
+	const NUM_COLUMNS = 4;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
 
 	/** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-	const NUM_HYDRATE_COLUMNS = 15;
+	const NUM_HYDRATE_COLUMNS = 4;
 
 	/** the column name for the ID field */
-	const ID = 'chart.ID';
+	const ID = 'stats.ID';
 
-	/** the column name for the TITLE field */
-	const TITLE = 'chart.TITLE';
+	/** the column name for the TIME field */
+	const TIME = 'stats.TIME';
 
-	/** the column name for the THEME field */
-	const THEME = 'chart.THEME';
+	/** the column name for the METRIC field */
+	const METRIC = 'stats.METRIC';
 
-	/** the column name for the CREATED_AT field */
-	const CREATED_AT = 'chart.CREATED_AT';
-
-	/** the column name for the LAST_MODIFIED_AT field */
-	const LAST_MODIFIED_AT = 'chart.LAST_MODIFIED_AT';
-
-	/** the column name for the TYPE field */
-	const TYPE = 'chart.TYPE';
-
-	/** the column name for the METADATA field */
-	const METADATA = 'chart.METADATA';
-
-	/** the column name for the DELETED field */
-	const DELETED = 'chart.DELETED';
-
-	/** the column name for the DELETED_AT field */
-	const DELETED_AT = 'chart.DELETED_AT';
-
-	/** the column name for the AUTHOR_ID field */
-	const AUTHOR_ID = 'chart.AUTHOR_ID';
-
-	/** the column name for the SHOW_IN_GALLERY field */
-	const SHOW_IN_GALLERY = 'chart.SHOW_IN_GALLERY';
-
-	/** the column name for the LANGUAGE field */
-	const LANGUAGE = 'chart.LANGUAGE';
-
-	/** the column name for the GUEST_SESSION field */
-	const GUEST_SESSION = 'chart.GUEST_SESSION';
-
-	/** the column name for the LAST_EDIT_STEP field */
-	const LAST_EDIT_STEP = 'chart.LAST_EDIT_STEP';
-
-	/** the column name for the PUBLISHED_AT field */
-	const PUBLISHED_AT = 'chart.PUBLISHED_AT';
+	/** the column name for the VALUE field */
+	const VALUE = 'stats.VALUE';
 
 	/** The default string format for model objects of the related table **/
 	const DEFAULT_STRING_FORMAT = 'YAML';
 
 	/**
-	 * An identiy map to hold any loaded instances of Chart objects.
+	 * An identiy map to hold any loaded instances of Stats objects.
 	 * This must be public so that other peer classes can access this when hydrating from JOIN
 	 * queries.
-	 * @var        array Chart[]
+	 * @var        array Stats[]
 	 */
 	public static $instances = array();
 
@@ -95,12 +62,12 @@ abstract class BaseChartPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	protected static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'Title', 'Theme', 'CreatedAt', 'LastModifiedAt', 'Type', 'Metadata', 'Deleted', 'DeletedAt', 'AuthorId', 'ShowInGallery', 'Language', 'GuestSession', 'LastEditStep', 'PublishedAt', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'title', 'theme', 'createdAt', 'lastModifiedAt', 'type', 'metadata', 'deleted', 'deletedAt', 'authorId', 'showInGallery', 'language', 'guestSession', 'lastEditStep', 'publishedAt', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, self::TITLE, self::THEME, self::CREATED_AT, self::LAST_MODIFIED_AT, self::TYPE, self::METADATA, self::DELETED, self::DELETED_AT, self::AUTHOR_ID, self::SHOW_IN_GALLERY, self::LANGUAGE, self::GUEST_SESSION, self::LAST_EDIT_STEP, self::PUBLISHED_AT, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'TITLE', 'THEME', 'CREATED_AT', 'LAST_MODIFIED_AT', 'TYPE', 'METADATA', 'DELETED', 'DELETED_AT', 'AUTHOR_ID', 'SHOW_IN_GALLERY', 'LANGUAGE', 'GUEST_SESSION', 'LAST_EDIT_STEP', 'PUBLISHED_AT', ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'title', 'theme', 'created_at', 'last_modified_at', 'type', 'metadata', 'deleted', 'deleted_at', 'author_id', 'show_in_gallery', 'language', 'guest_session', 'last_edit_step', 'published_at', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'Time', 'Metric', 'Value', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'time', 'metric', 'value', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::TIME, self::METRIC, self::VALUE, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'TIME', 'METRIC', 'VALUE', ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'time', 'metric', 'value', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
 	);
 
 	/**
@@ -110,12 +77,12 @@ abstract class BaseChartPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	protected static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Title' => 1, 'Theme' => 2, 'CreatedAt' => 3, 'LastModifiedAt' => 4, 'Type' => 5, 'Metadata' => 6, 'Deleted' => 7, 'DeletedAt' => 8, 'AuthorId' => 9, 'ShowInGallery' => 10, 'Language' => 11, 'GuestSession' => 12, 'LastEditStep' => 13, 'PublishedAt' => 14, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'title' => 1, 'theme' => 2, 'createdAt' => 3, 'lastModifiedAt' => 4, 'type' => 5, 'metadata' => 6, 'deleted' => 7, 'deletedAt' => 8, 'authorId' => 9, 'showInGallery' => 10, 'language' => 11, 'guestSession' => 12, 'lastEditStep' => 13, 'publishedAt' => 14, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::TITLE => 1, self::THEME => 2, self::CREATED_AT => 3, self::LAST_MODIFIED_AT => 4, self::TYPE => 5, self::METADATA => 6, self::DELETED => 7, self::DELETED_AT => 8, self::AUTHOR_ID => 9, self::SHOW_IN_GALLERY => 10, self::LANGUAGE => 11, self::GUEST_SESSION => 12, self::LAST_EDIT_STEP => 13, self::PUBLISHED_AT => 14, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'TITLE' => 1, 'THEME' => 2, 'CREATED_AT' => 3, 'LAST_MODIFIED_AT' => 4, 'TYPE' => 5, 'METADATA' => 6, 'DELETED' => 7, 'DELETED_AT' => 8, 'AUTHOR_ID' => 9, 'SHOW_IN_GALLERY' => 10, 'LANGUAGE' => 11, 'GUEST_SESSION' => 12, 'LAST_EDIT_STEP' => 13, 'PUBLISHED_AT' => 14, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'title' => 1, 'theme' => 2, 'created_at' => 3, 'last_modified_at' => 4, 'type' => 5, 'metadata' => 6, 'deleted' => 7, 'deleted_at' => 8, 'author_id' => 9, 'show_in_gallery' => 10, 'language' => 11, 'guest_session' => 12, 'last_edit_step' => 13, 'published_at' => 14, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Time' => 1, 'Metric' => 2, 'Value' => 3, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'time' => 1, 'metric' => 2, 'value' => 3, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::TIME => 1, self::METRIC => 2, self::VALUE => 3, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'TIME' => 1, 'METRIC' => 2, 'VALUE' => 3, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'time' => 1, 'metric' => 2, 'value' => 3, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
 	);
 
 	/**
@@ -164,12 +131,12 @@ abstract class BaseChartPeer {
 	 *		$c->addJoin(TablePeer::alias("alias1", TablePeer::PRIMARY_KEY_COLUMN), TablePeer::PRIMARY_KEY_COLUMN);
 	 * </code>
 	 * @param      string $alias The alias for the current table.
-	 * @param      string $column The column name for current table. (i.e. ChartPeer::COLUMN_NAME).
+	 * @param      string $column The column name for current table. (i.e. StatsPeer::COLUMN_NAME).
 	 * @return     string
 	 */
 	public static function alias($alias, $column)
 	{
-		return str_replace(ChartPeer::TABLE_NAME.'.', $alias.'.', $column);
+		return str_replace(StatsPeer::TABLE_NAME.'.', $alias.'.', $column);
 	}
 
 	/**
@@ -187,37 +154,15 @@ abstract class BaseChartPeer {
 	public static function addSelectColumns(Criteria $criteria, $alias = null)
 	{
 		if (null === $alias) {
-			$criteria->addSelectColumn(ChartPeer::ID);
-			$criteria->addSelectColumn(ChartPeer::TITLE);
-			$criteria->addSelectColumn(ChartPeer::THEME);
-			$criteria->addSelectColumn(ChartPeer::CREATED_AT);
-			$criteria->addSelectColumn(ChartPeer::LAST_MODIFIED_AT);
-			$criteria->addSelectColumn(ChartPeer::TYPE);
-			$criteria->addSelectColumn(ChartPeer::METADATA);
-			$criteria->addSelectColumn(ChartPeer::DELETED);
-			$criteria->addSelectColumn(ChartPeer::DELETED_AT);
-			$criteria->addSelectColumn(ChartPeer::AUTHOR_ID);
-			$criteria->addSelectColumn(ChartPeer::SHOW_IN_GALLERY);
-			$criteria->addSelectColumn(ChartPeer::LANGUAGE);
-			$criteria->addSelectColumn(ChartPeer::GUEST_SESSION);
-			$criteria->addSelectColumn(ChartPeer::LAST_EDIT_STEP);
-			$criteria->addSelectColumn(ChartPeer::PUBLISHED_AT);
+			$criteria->addSelectColumn(StatsPeer::ID);
+			$criteria->addSelectColumn(StatsPeer::TIME);
+			$criteria->addSelectColumn(StatsPeer::METRIC);
+			$criteria->addSelectColumn(StatsPeer::VALUE);
 		} else {
 			$criteria->addSelectColumn($alias . '.ID');
-			$criteria->addSelectColumn($alias . '.TITLE');
-			$criteria->addSelectColumn($alias . '.THEME');
-			$criteria->addSelectColumn($alias . '.CREATED_AT');
-			$criteria->addSelectColumn($alias . '.LAST_MODIFIED_AT');
-			$criteria->addSelectColumn($alias . '.TYPE');
-			$criteria->addSelectColumn($alias . '.METADATA');
-			$criteria->addSelectColumn($alias . '.DELETED');
-			$criteria->addSelectColumn($alias . '.DELETED_AT');
-			$criteria->addSelectColumn($alias . '.AUTHOR_ID');
-			$criteria->addSelectColumn($alias . '.SHOW_IN_GALLERY');
-			$criteria->addSelectColumn($alias . '.LANGUAGE');
-			$criteria->addSelectColumn($alias . '.GUEST_SESSION');
-			$criteria->addSelectColumn($alias . '.LAST_EDIT_STEP');
-			$criteria->addSelectColumn($alias . '.PUBLISHED_AT');
+			$criteria->addSelectColumn($alias . '.TIME');
+			$criteria->addSelectColumn($alias . '.METRIC');
+			$criteria->addSelectColumn($alias . '.VALUE');
 		}
 	}
 
@@ -237,21 +182,21 @@ abstract class BaseChartPeer {
 		// We need to set the primary table name, since in the case that there are no WHERE columns
 		// it will be impossible for the BasePeer::createSelectSql() method to determine which
 		// tables go into the FROM clause.
-		$criteria->setPrimaryTableName(ChartPeer::TABLE_NAME);
+		$criteria->setPrimaryTableName(StatsPeer::TABLE_NAME);
 
 		if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
 			$criteria->setDistinct();
 		}
 
 		if (!$criteria->hasSelectClause()) {
-			ChartPeer::addSelectColumns($criteria);
+			StatsPeer::addSelectColumns($criteria);
 		}
 
 		$criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 		$criteria->setDbName(self::DATABASE_NAME); // Set the correct dbName
 
 		if ($con === null) {
-			$con = Propel::getConnection(ChartPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+			$con = Propel::getConnection(StatsPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 		// BasePeer returns a PDOStatement
 		$stmt = BasePeer::doCount($criteria, $con);
@@ -269,7 +214,7 @@ abstract class BaseChartPeer {
 	 *
 	 * @param      Criteria $criteria object used to create the SELECT statement.
 	 * @param      PropelPDO $con
-	 * @return     Chart
+	 * @return     Stats
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
@@ -277,7 +222,7 @@ abstract class BaseChartPeer {
 	{
 		$critcopy = clone $criteria;
 		$critcopy->setLimit(1);
-		$objects = ChartPeer::doSelect($critcopy, $con);
+		$objects = StatsPeer::doSelect($critcopy, $con);
 		if ($objects) {
 			return $objects[0];
 		}
@@ -294,7 +239,7 @@ abstract class BaseChartPeer {
 	 */
 	public static function doSelect(Criteria $criteria, PropelPDO $con = null)
 	{
-		return ChartPeer::populateObjects(ChartPeer::doSelectStmt($criteria, $con));
+		return StatsPeer::populateObjects(StatsPeer::doSelectStmt($criteria, $con));
 	}
 	/**
 	 * Prepares the Criteria object and uses the parent doSelect() method to execute a PDOStatement.
@@ -312,12 +257,12 @@ abstract class BaseChartPeer {
 	public static function doSelectStmt(Criteria $criteria, PropelPDO $con = null)
 	{
 		if ($con === null) {
-			$con = Propel::getConnection(ChartPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+			$con = Propel::getConnection(StatsPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
 		if (!$criteria->hasSelectClause()) {
 			$criteria = clone $criteria;
-			ChartPeer::addSelectColumns($criteria);
+			StatsPeer::addSelectColumns($criteria);
 		}
 
 		// Set the correct dbName
@@ -335,7 +280,7 @@ abstract class BaseChartPeer {
 	 * to the cache in order to ensure that the same objects are always returned by doSelect*()
 	 * and retrieveByPK*() calls.
 	 *
-	 * @param      Chart $value A Chart object.
+	 * @param      Stats $value A Stats object.
 	 * @param      string $key (optional) key to use for instance map (for performance boost if key was already calculated externally).
 	 */
 	public static function addInstanceToPool($obj, $key = null)
@@ -356,18 +301,18 @@ abstract class BaseChartPeer {
 	 * methods in your stub classes -- you may need to explicitly remove objects
 	 * from the cache in order to prevent returning objects that no longer exist.
 	 *
-	 * @param      mixed $value A Chart object or a primary key value.
+	 * @param      mixed $value A Stats object or a primary key value.
 	 */
 	public static function removeInstanceFromPool($value)
 	{
 		if (Propel::isInstancePoolingEnabled() && $value !== null) {
-			if (is_object($value) && $value instanceof Chart) {
+			if (is_object($value) && $value instanceof Stats) {
 				$key = (string) $value->getId();
 			} elseif (is_scalar($value)) {
 				// assume we've been passed a primary key
 				$key = (string) $value;
 			} else {
-				$e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or Chart object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value,true)));
+				$e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or Stats object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value,true)));
 				throw $e;
 			}
 
@@ -382,7 +327,7 @@ abstract class BaseChartPeer {
 	 * a multi-column primary key, a serialize()d version of the primary key will be returned.
 	 *
 	 * @param      string $key The key (@see getPrimaryKeyHash()) for this instance.
-	 * @return     Chart Found object or NULL if 1) no instance exists for specified key or 2) instance pooling has been disabled.
+	 * @return     Stats Found object or NULL if 1) no instance exists for specified key or 2) instance pooling has been disabled.
 	 * @see        getPrimaryKeyHash()
 	 */
 	public static function getInstanceFromPool($key)
@@ -406,7 +351,7 @@ abstract class BaseChartPeer {
 	}
 	
 	/**
-	 * Method to invalidate the instance pool of all tables related to chart
+	 * Method to invalidate the instance pool of all tables related to stats
 	 * by a foreign key with ON DELETE CASCADE
 	 */
 	public static function clearRelatedInstancePool()
@@ -443,7 +388,7 @@ abstract class BaseChartPeer {
 	 */
 	public static function getPrimaryKeyFromRow($row, $startcol = 0)
 	{
-		return (string) $row[$startcol];
+		return (int) $row[$startcol];
 	}
 	
 	/**
@@ -458,11 +403,11 @@ abstract class BaseChartPeer {
 		$results = array();
 	
 		// set the class once to avoid overhead in the loop
-		$cls = ChartPeer::getOMClass();
+		$cls = StatsPeer::getOMClass();
 		// populate the object(s)
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-			$key = ChartPeer::getPrimaryKeyHashFromRow($row, 0);
-			if (null !== ($obj = ChartPeer::getInstanceFromPool($key))) {
+			$key = StatsPeer::getPrimaryKeyHashFromRow($row, 0);
+			if (null !== ($obj = StatsPeer::getInstanceFromPool($key))) {
 				// We no longer rehydrate the object, since this can cause data loss.
 				// See http://www.propelorm.org/ticket/509
 				// $obj->hydrate($row, 0, true); // rehydrate
@@ -471,7 +416,7 @@ abstract class BaseChartPeer {
 				$obj = new $cls();
 				$obj->hydrate($row);
 				$results[] = $obj;
-				ChartPeer::addInstanceToPool($obj, $key);
+				StatsPeer::addInstanceToPool($obj, $key);
 			} // if key exists
 		}
 		$stmt->closeCursor();
@@ -484,257 +429,23 @@ abstract class BaseChartPeer {
 	 * @param      int $startcol The 0-based offset for reading from the resultset row.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
-	 * @return     array (Chart object, last column rank)
+	 * @return     array (Stats object, last column rank)
 	 */
 	public static function populateObject($row, $startcol = 0)
 	{
-		$key = ChartPeer::getPrimaryKeyHashFromRow($row, $startcol);
-		if (null !== ($obj = ChartPeer::getInstanceFromPool($key))) {
+		$key = StatsPeer::getPrimaryKeyHashFromRow($row, $startcol);
+		if (null !== ($obj = StatsPeer::getInstanceFromPool($key))) {
 			// We no longer rehydrate the object, since this can cause data loss.
 			// See http://www.propelorm.org/ticket/509
 			// $obj->hydrate($row, $startcol, true); // rehydrate
-			$col = $startcol + ChartPeer::NUM_HYDRATE_COLUMNS;
+			$col = $startcol + StatsPeer::NUM_HYDRATE_COLUMNS;
 		} else {
-			$cls = ChartPeer::OM_CLASS;
+			$cls = StatsPeer::OM_CLASS;
 			$obj = new $cls();
 			$col = $obj->hydrate($row, $startcol);
-			ChartPeer::addInstanceToPool($obj, $key);
+			StatsPeer::addInstanceToPool($obj, $key);
 		}
 		return array($obj, $col);
-	}
-
-
-	/**
-	 * Returns the number of rows matching criteria, joining the related User table
-	 *
-	 * @param      Criteria $criteria
-	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
-	 * @param      PropelPDO $con
-	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-	 * @return     int Number of matching rows.
-	 */
-	public static function doCountJoinUser(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
-	{
-		// we're going to modify criteria, so copy it first
-		$criteria = clone $criteria;
-
-		// We need to set the primary table name, since in the case that there are no WHERE columns
-		// it will be impossible for the BasePeer::createSelectSql() method to determine which
-		// tables go into the FROM clause.
-		$criteria->setPrimaryTableName(ChartPeer::TABLE_NAME);
-
-		if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
-			$criteria->setDistinct();
-		}
-
-		if (!$criteria->hasSelectClause()) {
-			ChartPeer::addSelectColumns($criteria);
-		}
-
-		$criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
-
-		// Set the correct dbName
-		$criteria->setDbName(self::DATABASE_NAME);
-
-		if ($con === null) {
-			$con = Propel::getConnection(ChartPeer::DATABASE_NAME, Propel::CONNECTION_READ);
-		}
-
-		$criteria->addJoin(ChartPeer::AUTHOR_ID, UserPeer::ID, $join_behavior);
-
-		$stmt = BasePeer::doCount($criteria, $con);
-
-		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-			$count = (int) $row[0];
-		} else {
-			$count = 0; // no rows returned; we infer that means 0 matches.
-		}
-		$stmt->closeCursor();
-		return $count;
-	}
-
-
-	/**
-	 * Selects a collection of Chart objects pre-filled with their User objects.
-	 * @param      Criteria  $criteria
-	 * @param      PropelPDO $con
-	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-	 * @return     array Array of Chart objects.
-	 * @throws     PropelException Any exceptions caught during processing will be
-	 *		 rethrown wrapped into a PropelException.
-	 */
-	public static function doSelectJoinUser(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-	{
-		$criteria = clone $criteria;
-
-		// Set the correct dbName if it has not been overridden
-		if ($criteria->getDbName() == Propel::getDefaultDB()) {
-			$criteria->setDbName(self::DATABASE_NAME);
-		}
-
-		ChartPeer::addSelectColumns($criteria);
-		$startcol = ChartPeer::NUM_HYDRATE_COLUMNS;
-		UserPeer::addSelectColumns($criteria);
-
-		$criteria->addJoin(ChartPeer::AUTHOR_ID, UserPeer::ID, $join_behavior);
-
-		$stmt = BasePeer::doSelect($criteria, $con);
-		$results = array();
-
-		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-			$key1 = ChartPeer::getPrimaryKeyHashFromRow($row, 0);
-			if (null !== ($obj1 = ChartPeer::getInstanceFromPool($key1))) {
-				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://www.propelorm.org/ticket/509
-				// $obj1->hydrate($row, 0, true); // rehydrate
-			} else {
-
-				$cls = ChartPeer::getOMClass();
-
-				$obj1 = new $cls();
-				$obj1->hydrate($row);
-				ChartPeer::addInstanceToPool($obj1, $key1);
-			} // if $obj1 already loaded
-
-			$key2 = UserPeer::getPrimaryKeyHashFromRow($row, $startcol);
-			if ($key2 !== null) {
-				$obj2 = UserPeer::getInstanceFromPool($key2);
-				if (!$obj2) {
-
-					$cls = UserPeer::getOMClass();
-
-					$obj2 = new $cls();
-					$obj2->hydrate($row, $startcol);
-					UserPeer::addInstanceToPool($obj2, $key2);
-				} // if obj2 already loaded
-
-				// Add the $obj1 (Chart) to $obj2 (User)
-				$obj2->addChart($obj1);
-
-			} // if joined row was not null
-
-			$results[] = $obj1;
-		}
-		$stmt->closeCursor();
-		return $results;
-	}
-
-
-	/**
-	 * Returns the number of rows matching criteria, joining all related tables
-	 *
-	 * @param      Criteria $criteria
-	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
-	 * @param      PropelPDO $con
-	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-	 * @return     int Number of matching rows.
-	 */
-	public static function doCountJoinAll(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
-	{
-		// we're going to modify criteria, so copy it first
-		$criteria = clone $criteria;
-
-		// We need to set the primary table name, since in the case that there are no WHERE columns
-		// it will be impossible for the BasePeer::createSelectSql() method to determine which
-		// tables go into the FROM clause.
-		$criteria->setPrimaryTableName(ChartPeer::TABLE_NAME);
-
-		if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
-			$criteria->setDistinct();
-		}
-
-		if (!$criteria->hasSelectClause()) {
-			ChartPeer::addSelectColumns($criteria);
-		}
-
-		$criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
-
-		// Set the correct dbName
-		$criteria->setDbName(self::DATABASE_NAME);
-
-		if ($con === null) {
-			$con = Propel::getConnection(ChartPeer::DATABASE_NAME, Propel::CONNECTION_READ);
-		}
-
-		$criteria->addJoin(ChartPeer::AUTHOR_ID, UserPeer::ID, $join_behavior);
-
-		$stmt = BasePeer::doCount($criteria, $con);
-
-		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-			$count = (int) $row[0];
-		} else {
-			$count = 0; // no rows returned; we infer that means 0 matches.
-		}
-		$stmt->closeCursor();
-		return $count;
-	}
-
-	/**
-	 * Selects a collection of Chart objects pre-filled with all related objects.
-	 *
-	 * @param      Criteria  $criteria
-	 * @param      PropelPDO $con
-	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-	 * @return     array Array of Chart objects.
-	 * @throws     PropelException Any exceptions caught during processing will be
-	 *		 rethrown wrapped into a PropelException.
-	 */
-	public static function doSelectJoinAll(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-	{
-		$criteria = clone $criteria;
-
-		// Set the correct dbName if it has not been overridden
-		if ($criteria->getDbName() == Propel::getDefaultDB()) {
-			$criteria->setDbName(self::DATABASE_NAME);
-		}
-
-		ChartPeer::addSelectColumns($criteria);
-		$startcol2 = ChartPeer::NUM_HYDRATE_COLUMNS;
-
-		UserPeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + UserPeer::NUM_HYDRATE_COLUMNS;
-
-		$criteria->addJoin(ChartPeer::AUTHOR_ID, UserPeer::ID, $join_behavior);
-
-		$stmt = BasePeer::doSelect($criteria, $con);
-		$results = array();
-
-		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-			$key1 = ChartPeer::getPrimaryKeyHashFromRow($row, 0);
-			if (null !== ($obj1 = ChartPeer::getInstanceFromPool($key1))) {
-				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://www.propelorm.org/ticket/509
-				// $obj1->hydrate($row, 0, true); // rehydrate
-			} else {
-				$cls = ChartPeer::getOMClass();
-
-				$obj1 = new $cls();
-				$obj1->hydrate($row);
-				ChartPeer::addInstanceToPool($obj1, $key1);
-			} // if obj1 already loaded
-
-			// Add objects for joined User rows
-
-			$key2 = UserPeer::getPrimaryKeyHashFromRow($row, $startcol2);
-			if ($key2 !== null) {
-				$obj2 = UserPeer::getInstanceFromPool($key2);
-				if (!$obj2) {
-
-					$cls = UserPeer::getOMClass();
-
-					$obj2 = new $cls();
-					$obj2->hydrate($row, $startcol2);
-					UserPeer::addInstanceToPool($obj2, $key2);
-				} // if obj2 loaded
-
-				// Add the $obj1 (Chart) to the collection in $obj2 (User)
-				$obj2->addChart($obj1);
-			} // if joined row not null
-
-			$results[] = $obj1;
-		}
-		$stmt->closeCursor();
-		return $results;
 	}
 
 	/**
@@ -754,10 +465,10 @@ abstract class BaseChartPeer {
 	 */
 	public static function buildTableMap()
 	{
-	  $dbMap = Propel::getDatabaseMap(BaseChartPeer::DATABASE_NAME);
-	  if (!$dbMap->hasTable(BaseChartPeer::TABLE_NAME))
+	  $dbMap = Propel::getDatabaseMap(BaseStatsPeer::DATABASE_NAME);
+	  if (!$dbMap->hasTable(BaseStatsPeer::TABLE_NAME))
 	  {
-	    $dbMap->addTableObject(new ChartTableMap());
+	    $dbMap->addTableObject(new StatsTableMap());
 	  }
 	}
 
@@ -769,13 +480,13 @@ abstract class BaseChartPeer {
 	 */
 	public static function getOMClass()
 	{
-		return ChartPeer::OM_CLASS;
+		return StatsPeer::OM_CLASS;
 	}
 
 	/**
-	 * Performs an INSERT on the database, given a Chart or Criteria object.
+	 * Performs an INSERT on the database, given a Stats or Criteria object.
 	 *
-	 * @param      mixed $values Criteria or Chart object containing data that is used to create the INSERT statement.
+	 * @param      mixed $values Criteria or Stats object containing data that is used to create the INSERT statement.
 	 * @param      PropelPDO $con the PropelPDO connection to use
 	 * @return     mixed The new primary key.
 	 * @throws     PropelException Any exceptions caught during processing will be
@@ -784,13 +495,17 @@ abstract class BaseChartPeer {
 	public static function doInsert($values, PropelPDO $con = null)
 	{
 		if ($con === null) {
-			$con = Propel::getConnection(ChartPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+			$con = Propel::getConnection(StatsPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
 
 		if ($values instanceof Criteria) {
 			$criteria = clone $values; // rename for clarity
 		} else {
-			$criteria = $values->buildCriteria(); // build Criteria from Chart object
+			$criteria = $values->buildCriteria(); // build Criteria from Stats object
+		}
+
+		if ($criteria->containsKey(StatsPeer::ID) && $criteria->keyContainsValue(StatsPeer::ID) ) {
+			throw new PropelException('Cannot insert a value for auto-increment primary key ('.StatsPeer::ID.')');
 		}
 
 
@@ -812,9 +527,9 @@ abstract class BaseChartPeer {
 	}
 
 	/**
-	 * Performs an UPDATE on the database, given a Chart or Criteria object.
+	 * Performs an UPDATE on the database, given a Stats or Criteria object.
 	 *
-	 * @param      mixed $values Criteria or Chart object containing data that is used to create the UPDATE statement.
+	 * @param      mixed $values Criteria or Stats object containing data that is used to create the UPDATE statement.
 	 * @param      PropelPDO $con The connection to use (specify PropelPDO connection object to exert more control over transactions).
 	 * @return     int The number of affected rows (if supported by underlying database driver).
 	 * @throws     PropelException Any exceptions caught during processing will be
@@ -823,7 +538,7 @@ abstract class BaseChartPeer {
 	public static function doUpdate($values, PropelPDO $con = null)
 	{
 		if ($con === null) {
-			$con = Propel::getConnection(ChartPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+			$con = Propel::getConnection(StatsPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
 
 		$selectCriteria = new Criteria(self::DATABASE_NAME);
@@ -831,15 +546,15 @@ abstract class BaseChartPeer {
 		if ($values instanceof Criteria) {
 			$criteria = clone $values; // rename for clarity
 
-			$comparison = $criteria->getComparison(ChartPeer::ID);
-			$value = $criteria->remove(ChartPeer::ID);
+			$comparison = $criteria->getComparison(StatsPeer::ID);
+			$value = $criteria->remove(StatsPeer::ID);
 			if ($value) {
-				$selectCriteria->add(ChartPeer::ID, $value, $comparison);
+				$selectCriteria->add(StatsPeer::ID, $value, $comparison);
 			} else {
-				$selectCriteria->setPrimaryTableName(ChartPeer::TABLE_NAME);
+				$selectCriteria->setPrimaryTableName(StatsPeer::TABLE_NAME);
 			}
 
-		} else { // $values is Chart object
+		} else { // $values is Stats object
 			$criteria = $values->buildCriteria(); // gets full criteria
 			$selectCriteria = $values->buildPkeyCriteria(); // gets criteria w/ primary key(s)
 		}
@@ -851,7 +566,7 @@ abstract class BaseChartPeer {
 	}
 
 	/**
-	 * Deletes all rows from the chart table.
+	 * Deletes all rows from the stats table.
 	 *
 	 * @param      PropelPDO $con the connection to use
 	 * @return     int The number of affected rows (if supported by underlying database driver).
@@ -859,19 +574,19 @@ abstract class BaseChartPeer {
 	public static function doDeleteAll(PropelPDO $con = null)
 	{
 		if ($con === null) {
-			$con = Propel::getConnection(ChartPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+			$con = Propel::getConnection(StatsPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
 		$affectedRows = 0; // initialize var to track total num of affected rows
 		try {
 			// use transaction because $criteria could contain info
 			// for more than one table or we could emulating ON DELETE CASCADE, etc.
 			$con->beginTransaction();
-			$affectedRows += BasePeer::doDeleteAll(ChartPeer::TABLE_NAME, $con, ChartPeer::DATABASE_NAME);
+			$affectedRows += BasePeer::doDeleteAll(StatsPeer::TABLE_NAME, $con, StatsPeer::DATABASE_NAME);
 			// Because this db requires some delete cascade/set null emulation, we have to
 			// clear the cached instance *after* the emulation has happened (since
 			// instances get re-added by the select statement contained therein).
-			ChartPeer::clearInstancePool();
-			ChartPeer::clearRelatedInstancePool();
+			StatsPeer::clearInstancePool();
+			StatsPeer::clearRelatedInstancePool();
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -881,9 +596,9 @@ abstract class BaseChartPeer {
 	}
 
 	/**
-	 * Performs a DELETE on the database, given a Chart or Criteria object OR a primary key value.
+	 * Performs a DELETE on the database, given a Stats or Criteria object OR a primary key value.
 	 *
-	 * @param      mixed $values Criteria or Chart object or primary key or array of primary keys
+	 * @param      mixed $values Criteria or Stats object or primary key or array of primary keys
 	 *              which is used to create the DELETE statement
 	 * @param      PropelPDO $con the connection to use
 	 * @return     int 	The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -894,27 +609,27 @@ abstract class BaseChartPeer {
 	 public static function doDelete($values, PropelPDO $con = null)
 	 {
 		if ($con === null) {
-			$con = Propel::getConnection(ChartPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+			$con = Propel::getConnection(StatsPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
 
 		if ($values instanceof Criteria) {
 			// invalidate the cache for all objects of this type, since we have no
 			// way of knowing (without running a query) what objects should be invalidated
 			// from the cache based on this Criteria.
-			ChartPeer::clearInstancePool();
+			StatsPeer::clearInstancePool();
 			// rename for clarity
 			$criteria = clone $values;
-		} elseif ($values instanceof Chart) { // it's a model object
+		} elseif ($values instanceof Stats) { // it's a model object
 			// invalidate the cache for this single object
-			ChartPeer::removeInstanceFromPool($values);
+			StatsPeer::removeInstanceFromPool($values);
 			// create criteria based on pk values
 			$criteria = $values->buildPkeyCriteria();
 		} else { // it's a primary key, or an array of pks
 			$criteria = new Criteria(self::DATABASE_NAME);
-			$criteria->add(ChartPeer::ID, (array) $values, Criteria::IN);
+			$criteria->add(StatsPeer::ID, (array) $values, Criteria::IN);
 			// invalidate the cache for this object(s)
 			foreach ((array) $values as $singleval) {
-				ChartPeer::removeInstanceFromPool($singleval);
+				StatsPeer::removeInstanceFromPool($singleval);
 			}
 		}
 
@@ -929,7 +644,7 @@ abstract class BaseChartPeer {
 			$con->beginTransaction();
 			
 			$affectedRows += BasePeer::doDelete($criteria, $con);
-			ChartPeer::clearRelatedInstancePool();
+			StatsPeer::clearRelatedInstancePool();
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -939,13 +654,13 @@ abstract class BaseChartPeer {
 	}
 
 	/**
-	 * Validates all modified columns of given Chart object.
+	 * Validates all modified columns of given Stats object.
 	 * If parameter $columns is either a single column name or an array of column names
 	 * than only those columns are validated.
 	 *
 	 * NOTICE: This does not apply to primary or foreign keys for now.
 	 *
-	 * @param      Chart $obj The object to validate.
+	 * @param      Stats $obj The object to validate.
 	 * @param      mixed $cols Column name or array of column names.
 	 *
 	 * @return     mixed TRUE if all columns are valid or the error message of the first invalid column.
@@ -955,8 +670,8 @@ abstract class BaseChartPeer {
 		$columns = array();
 
 		if ($cols) {
-			$dbMap = Propel::getDatabaseMap(ChartPeer::DATABASE_NAME);
-			$tableMap = $dbMap->getTable(ChartPeer::TABLE_NAME);
+			$dbMap = Propel::getDatabaseMap(StatsPeer::DATABASE_NAME);
+			$tableMap = $dbMap->getTable(StatsPeer::TABLE_NAME);
 
 			if (! is_array($cols)) {
 				$cols = array($cols);
@@ -972,31 +687,31 @@ abstract class BaseChartPeer {
 
 		}
 
-		return BasePeer::doValidate(ChartPeer::DATABASE_NAME, ChartPeer::TABLE_NAME, $columns);
+		return BasePeer::doValidate(StatsPeer::DATABASE_NAME, StatsPeer::TABLE_NAME, $columns);
 	}
 
 	/**
 	 * Retrieve a single object by pkey.
 	 *
-	 * @param      string $pk the primary key.
+	 * @param      int $pk the primary key.
 	 * @param      PropelPDO $con the connection to use
-	 * @return     Chart
+	 * @return     Stats
 	 */
 	public static function retrieveByPK($pk, PropelPDO $con = null)
 	{
 
-		if (null !== ($obj = ChartPeer::getInstanceFromPool((string) $pk))) {
+		if (null !== ($obj = StatsPeer::getInstanceFromPool((string) $pk))) {
 			return $obj;
 		}
 
 		if ($con === null) {
-			$con = Propel::getConnection(ChartPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+			$con = Propel::getConnection(StatsPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria = new Criteria(ChartPeer::DATABASE_NAME);
-		$criteria->add(ChartPeer::ID, $pk);
+		$criteria = new Criteria(StatsPeer::DATABASE_NAME);
+		$criteria->add(StatsPeer::ID, $pk);
 
-		$v = ChartPeer::doSelect($criteria, $con);
+		$v = StatsPeer::doSelect($criteria, $con);
 
 		return !empty($v) > 0 ? $v[0] : null;
 	}
@@ -1012,23 +727,23 @@ abstract class BaseChartPeer {
 	public static function retrieveByPKs($pks, PropelPDO $con = null)
 	{
 		if ($con === null) {
-			$con = Propel::getConnection(ChartPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+			$con = Propel::getConnection(StatsPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
 		$objs = null;
 		if (empty($pks)) {
 			$objs = array();
 		} else {
-			$criteria = new Criteria(ChartPeer::DATABASE_NAME);
-			$criteria->add(ChartPeer::ID, $pks, Criteria::IN);
-			$objs = ChartPeer::doSelect($criteria, $con);
+			$criteria = new Criteria(StatsPeer::DATABASE_NAME);
+			$criteria->add(StatsPeer::ID, $pks, Criteria::IN);
+			$objs = StatsPeer::doSelect($criteria, $con);
 		}
 		return $objs;
 	}
 
-} // BaseChartPeer
+} // BaseStatsPeer
 
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-BaseChartPeer::buildTableMap();
+BaseStatsPeer::buildTableMap();
 

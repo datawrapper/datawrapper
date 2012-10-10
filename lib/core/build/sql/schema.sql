@@ -25,6 +25,7 @@ CREATE TABLE `chart`
 	`language` VARCHAR(5) DEFAULT '',
 	`guest_session` VARCHAR(255),
 	`last_edit_step` INTEGER DEFAULT 0,
+	`published_at` DATETIME,
 	PRIMARY KEY (`id`),
 	INDEX `chart_FI_1` (`author_id`),
 	CONSTRAINT `chart_FK_1`

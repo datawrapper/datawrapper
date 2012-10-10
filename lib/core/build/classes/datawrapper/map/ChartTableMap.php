@@ -52,6 +52,7 @@ class ChartTableMap extends TableMap
 		$this->addColumn('LANGUAGE', 'Language', 'VARCHAR', false, 5, '');
 		$this->addColumn('GUEST_SESSION', 'GuestSession', 'VARCHAR', false, 255, null);
 		$this->addColumn('LAST_EDIT_STEP', 'LastEditStep', 'INTEGER', false, null, 0);
+		$this->addColumn('PUBLISHED_AT', 'PublishedAt', 'TIMESTAMP', false, null, null);
 		// validators
 	} // initialize()
 

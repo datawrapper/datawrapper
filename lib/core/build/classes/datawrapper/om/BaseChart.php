@@ -119,6 +119,12 @@ abstract class BaseChart extends BaseObject  implements Persistent
 	protected $last_edit_step;
 
 	/**
+	 * The value for the published_at field.
+	 * @var        string
+	 */
+	protected $published_at;
+
+	/**
 	 * @var        User
 	 */
 	protected $aUser;
@@ -383,6 +389,44 @@ abstract class BaseChart extends BaseObject  implements Persistent
 	public function getLastEditStep()
 	{
 		return $this->last_edit_step;
+	}
+
+	/**
+	 * Get the [optionally formatted] temporal [published_at] column value.
+	 * 
+	 *
+	 * @param      string $format The date/time format string (either date()-style or strftime()-style).
+	 *							If format is NULL, then the raw DateTime object will be returned.
+	 * @return     mixed Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00 00:00:00
+	 * @throws     PropelException - if unable to parse/validate the date/time value.
+	 */
+	public function getPublishedAt($format = 'Y-m-d H:i:s')
+	{
+		if ($this->published_at === null) {
+			return null;
+		}
+
+
+		if ($this->published_at === '0000-00-00 00:00:00') {
+			// while technically this is not a default value of NULL,
+			// this seems to be closest in meaning.
+			return null;
+		} else {
+			try {
+				$dt = new DateTime($this->published_at);
+			} catch (Exception $x) {
+				throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->published_at, true), $x);
+			}
+		}
+
+		if ($format === null) {
+			// Because propel.useDateTimeClass is TRUE, we return a DateTime object.
+			return $dt;
+		} elseif (strpos($format, '%') !== false) {
+			return strftime($format, $dt->format('U'));
+		} else {
+			return $dt->format($format);
+		}
 	}
 
 	/**
@@ -692,6 +736,28 @@ abstract class BaseChart extends BaseObject  implements Persistent
 	} // setLastEditStep()
 
 	/**
+	 * Sets the value of [published_at] column to a normalized version of the date/time value specified.
+	 * 
+	 * @param      mixed $v string, integer (timestamp), or DateTime value.
+	 *               Empty strings are treated as NULL.
+	 * @return     Chart The current object (for fluent API support)
+	 */
+	public function setPublishedAt($v)
+	{
+		$dt = PropelDateTime::newInstance($v, null, 'DateTime');
+		if ($this->published_at !== null || $dt !== null) {
+			$currentDateAsString = ($this->published_at !== null && $tmpDt = new DateTime($this->published_at)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+			$newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
+			if ($currentDateAsString !== $newDateAsString) {
+				$this->published_at = $newDateAsString;
+				$this->modifiedColumns[] = ChartPeer::PUBLISHED_AT;
+			}
+		} // if either are not null
+
+		return $this;
+	} // setPublishedAt()
+
+	/**
 	 * Indicates whether the columns in this object are only set to default values.
 	 *
 	 * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -753,6 +819,7 @@ abstract class BaseChart extends BaseObject  implements Persistent
 			$this->language = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
 			$this->guest_session = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
 			$this->last_edit_step = ($row[$startcol + 13] !== null) ? (int) $row[$startcol + 13] : null;
+			$this->published_at = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -761,7 +828,7 @@ abstract class BaseChart extends BaseObject  implements Persistent
 				$this->ensureConsistency();
 			}
 
-			return $startcol + 14; // 14 = ChartPeer::NUM_HYDRATE_COLUMNS.
+			return $startcol + 15; // 15 = ChartPeer::NUM_HYDRATE_COLUMNS.
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating Chart object", $e);
@@ -1023,6 +1090,9 @@ abstract class BaseChart extends BaseObject  implements Persistent
 		if ($this->isColumnModified(ChartPeer::LAST_EDIT_STEP)) {
 			$modifiedColumns[':p' . $index++]  = '`LAST_EDIT_STEP`';
 		}
+		if ($this->isColumnModified(ChartPeer::PUBLISHED_AT)) {
+			$modifiedColumns[':p' . $index++]  = '`PUBLISHED_AT`';
+		}
 
 		$sql = sprintf(
 			'INSERT INTO `chart` (%s) VALUES (%s)',
@@ -1075,6 +1145,9 @@ abstract class BaseChart extends BaseObject  implements Persistent
 						break;
 					case '`LAST_EDIT_STEP`':
 						$stmt->bindValue($identifier, $this->last_edit_step, PDO::PARAM_INT);
+						break;
+					case '`PUBLISHED_AT`':
+						$stmt->bindValue($identifier, $this->published_at, PDO::PARAM_STR);
 						break;
 				}
 			}
@@ -1253,6 +1326,9 @@ abstract class BaseChart extends BaseObject  implements Persistent
 			case 13:
 				return $this->getLastEditStep();
 				break;
+			case 14:
+				return $this->getPublishedAt();
+				break;
 			default:
 				return null;
 				break;
@@ -1296,6 +1372,7 @@ abstract class BaseChart extends BaseObject  implements Persistent
 			$keys[11] => $this->getLanguage(),
 			$keys[12] => $this->getGuestSession(),
 			$keys[13] => $this->getLastEditStep(),
+			$keys[14] => $this->getPublishedAt(),
 		);
 		if ($includeForeignObjects) {
 			if (null !== $this->aUser) {
@@ -1374,6 +1451,9 @@ abstract class BaseChart extends BaseObject  implements Persistent
 			case 13:
 				$this->setLastEditStep($value);
 				break;
+			case 14:
+				$this->setPublishedAt($value);
+				break;
 		} // switch()
 	}
 
@@ -1412,6 +1492,7 @@ abstract class BaseChart extends BaseObject  implements Persistent
 		if (array_key_exists($keys[11], $arr)) $this->setLanguage($arr[$keys[11]]);
 		if (array_key_exists($keys[12], $arr)) $this->setGuestSession($arr[$keys[12]]);
 		if (array_key_exists($keys[13], $arr)) $this->setLastEditStep($arr[$keys[13]]);
+		if (array_key_exists($keys[14], $arr)) $this->setPublishedAt($arr[$keys[14]]);
 	}
 
 	/**
@@ -1437,6 +1518,7 @@ abstract class BaseChart extends BaseObject  implements Persistent
 		if ($this->isColumnModified(ChartPeer::LANGUAGE)) $criteria->add(ChartPeer::LANGUAGE, $this->language);
 		if ($this->isColumnModified(ChartPeer::GUEST_SESSION)) $criteria->add(ChartPeer::GUEST_SESSION, $this->guest_session);
 		if ($this->isColumnModified(ChartPeer::LAST_EDIT_STEP)) $criteria->add(ChartPeer::LAST_EDIT_STEP, $this->last_edit_step);
+		if ($this->isColumnModified(ChartPeer::PUBLISHED_AT)) $criteria->add(ChartPeer::PUBLISHED_AT, $this->published_at);
 
 		return $criteria;
 	}
@@ -1512,6 +1594,7 @@ abstract class BaseChart extends BaseObject  implements Persistent
 		$copyObj->setLanguage($this->getLanguage());
 		$copyObj->setGuestSession($this->getGuestSession());
 		$copyObj->setLastEditStep($this->getLastEditStep());
+		$copyObj->setPublishedAt($this->getPublishedAt());
 
 		if ($deepCopy && !$this->startCopy) {
 			// important: temporarily setNew(false) because this affects the behavior of
@@ -1636,6 +1719,7 @@ abstract class BaseChart extends BaseObject  implements Persistent
 		$this->language = null;
 		$this->guest_session = null;
 		$this->last_edit_step = null;
+		$this->published_at = null;
 		$this->alreadyInSave = false;
 		$this->alreadyInValidation = false;
 		$this->clearAllReferences();

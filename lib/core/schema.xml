@@ -19,6 +19,7 @@
     <column name="language" type="varchar" size="5" default="" />
     <column name="guest_session" type="varchar" />
     <column name="last_edit_step" type="integer" default="0" />
+    <column name="published_at" type="timestamp" />
   </table>
 
   <table name="user" phpName="User">
