@@ -11,7 +11,6 @@
     Datawrapper.Themes.Guardian = _.extend({}, Datawrapper.Themes.Base, {
 
         colors: {
-            main: '#e41f25',
             highlight: '#e41f25',
             focus: '#e41f25',
             context: '#aaa',
@@ -21,7 +20,7 @@
             negative: '#e41f25',
             'highlight-negative': '#801100',
             background: '#ffffff',
-            palette: ['#96c22c', '#fdc400', '#2974b9', '#6A3D9A', '#B15928']
+            palette: ['#e41f25', '#96c22c', '#fdc400', '#2974b9', '#6A3D9A', '#B15928']
         },
 
         lineChart: {
