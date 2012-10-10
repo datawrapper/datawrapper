@@ -31,12 +31,7 @@ function get_chart_content($chart, $user) {
         '/static/vendor/globalize/globalize.js',
         '/static/vendor/underscore/underscore-min.js',
         '/static/vendor/jquery/jquery.min.js',
-        '/static/js/dw.core.js',
-        '/static/js/dw.dataset.js',
-        '/static/js/dw.chart.js',
-        '/static/js/dw.parsers.delimited.js',
-        '/static/js/dw.theme.js',
-        '/static/js/dw.visualization.js'
+        '/static/js/dw.min.js'
     );
 
     $vis_js = array();
