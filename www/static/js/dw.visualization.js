@@ -33,7 +33,7 @@
         },
 
         getMaxChartHeight: function(el) {
-            var ch = 10; // summed height of children, 10px for top & bottom margin
+            var ch = 0; // summed height of children, 10px for top & bottom margin
             $('body > *').each(function(i, el) {
                 var t = el.tagName.toLowerCase();
                 if (t != 'script' && el.id != 'chart' && !$(el).hasClass('tooltip')) {

@@ -12,16 +12,18 @@
     Datawrapper.Themes.Base = _.extend({}, {
 
         colors: {
-            main: '#85B4D4',
+            palette: ['#85B4D4', '#B2DF8A', '#E31A1C',  '#FF7F00', '#6A3D9A', '#B15928'],
             highlight: '#00589E',
             focus: '#0063A5',
             context: '#aaa',
             axis: '#000000',
             grid: '#999999',
-            negative: '#D4B485',
+            positive: '#85B4D4',
+            'highlight-positive': '#85B4D4',
+            negative: '#E31A1C',
             'highlight-negative': '#9E5800',
-            background: '#ffffff',
-            palette: ['#1F78B4', '#B2DF8A', '#FF7F00', '#6A3D9A', '#B15928']
+            background: '#ffffff'
+            
         },
 
         locale: 'de_DE',
@@ -65,7 +67,10 @@
         xLabelOffset: 20,
 
         hover: true,
-        tooltip: true
+        tooltip: true,
+
+        hpadding: 0,
+        vpadding: 10
     });
 
 }).call(this);
