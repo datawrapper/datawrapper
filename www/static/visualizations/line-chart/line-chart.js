@@ -1,8 +1,8 @@
 
 (function(){
 
-    // Simple perfect line chart
-    // -------------------------
+    // Simple line chart
+    // -----------------
 
     var LineChart = Datawrapper.Visualizations.LineChart = function() {};
 
@@ -68,18 +68,22 @@
                     x = scales.x(i);
                     y = scales.y(val);
                     if (isNaN(y)) {
+                        // store the current line
                         if (pts.length > 0) {
                             pts_.push(pts);
                             pts = [];
                         }
                         return;
                     }
-                    if (pts.length === 0 && paths.length > 0) {
+                    if (pts.length === 0 && pts_.length > 0) {
+                        // first valid point after NaNs
                         var lp = pts_[pts_.length-1], s = lp.length-2;
-                        connectMissingValuePath.push(['M', lp[s], lp[s+1], 'M', x, y]);
+                        console.log(lp[s], lp[s+1],'-',x,y);
+                        connectMissingValuePath.push('M'+[lp[s], lp[s+1]]+'L'+[ x, y]);
                     }
-                    pts.push(x, y);
+                    pts.push(x, y); // store current point
                 });
+                // store the last line
                 pts_.push(pts);
                 _.each(pts_, function(pts) {
                     paths.push("M" + [pts.shift(), pts.shift()] + (me.get('smooth-lines') ? "R" : "L") + pts);
@@ -87,12 +91,11 @@
 
                 sw = me.getSeriesLineWidth(col);
 
-                var strokeColor = me.getSeriesColor(col);
-
-                if (!directLabeling && index > 0) {
-                    strokeColor = me.theme.colors.palette[index-1];
-                    me.setSeriesColor(col, strokeColor);
+                if (!directLabeling) {
+                    me.setSeriesColor(col, me.theme.colors.palette[index]);
                 }
+
+                var strokeColor = me.getSeriesColor(col);
 
                 _.each(paths, function(path) {
                     me.registerSeriesElement(c.paper.path(path).attr({
@@ -111,6 +114,7 @@
                 });
 
                 if (me.get('connect-missing-values', false)) {
+                    console.log('connect-missing-values', connectMissingValuePath);
                     me.registerSeriesElement(c.paper.path(connectMissingValuePath).attr({
                         'stroke-width': sw*0.35,
                         'stroke-dasharray': '- ',
@@ -210,7 +214,7 @@
         },
 
         getSeriesLineWidth: function(series) {
-            return this.theme.lineChart.strokeWidth[this.chart.isHighlighted(series) ? 'highlight' : 'normal'];
+            return this.theme.lineChart.strokeWidth['highlight'];
         },
 
         hideTooltip: function() {
