@@ -2,5 +2,6 @@
     "title": "Deutsche Welle",
     "link": "http://www.dw.de",
     "restricted": null,
-    "locale": "de_DE"
+    "locale": "de_DE",
+    "version": "0.8"
 }

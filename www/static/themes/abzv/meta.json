@@ -3,5 +3,6 @@
     "link": "http://www.abzv.de",
     "restricted": null,
     "extends": "default",
-    "locale": "de-DE"
+    "locale": "de-DE",
+    "version": "0.8"
 }
