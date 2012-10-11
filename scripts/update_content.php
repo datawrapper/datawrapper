@@ -9,7 +9,7 @@ if (file_exists("new_wp_content.txt") && trim(file_get_contents("new_wp_content.
     exit();
 }
 
-$url = $config['wordpress']['url'];
+$url = $config['wordpress']['api_url'];
 
 $data = json_decode(file_get_contents($url));
 
