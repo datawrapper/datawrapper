@@ -118,12 +118,15 @@ $(function() {
 
         setTimeout(function() {
             var body = iframe.get(0).contentDocument,
+                s = (height-10)/height,
                 ctx = canvas.get(0).getContext('2d');
-            ctx.translate(0,10);
-            ctx.drawSvg($('svg', body).get(0).innerSVG, 0, 10, width, height-30);
+
+            //ctx.translate(5,5);
+
+            ctx.drawSvg($('svg', body).get(0).innerSVG, 0, 0, width, height);
 
             //canvg('canvas', $('svg', body).get(0).innerSVG);
-            $('.label', body).each(function(i, lbl) {
+            /*$('.label', body).each(function(i, lbl) {
                 lbl = $(lbl);
                 var x = px(lbl.css('left')),
                     y = px(lbl.css('top'))+10,
@@ -131,7 +134,7 @@ $(function() {
                 ctx.fillStyle = '#666';
                 ctx.font = "9px Arial";
                 ctx.fillText(txt, x+0.5, y+0.5);
-            });
+            });*/
             var imgData = canvas.get(0).toDataURL("image/png");
             $('#thumbs').append('<img src="'+imgData+'"/>');
             $.ajax({

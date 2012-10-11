@@ -209,15 +209,28 @@ $app->post('/charts/:id/publish/html', function($chart_id) use ($app) {
         try {
             $static_path = get_static_path($chart);
             $url = 'http://'.$GLOBALS['dw_config']['domain'].'/chart/'.$chart->getID().'/?minify=1';
-            $context = stream_context_create(array(
-                'http' => array(
-                    'header' => 'Connection: close\r\n',
-                    'method' => 'GET',
 
-                )
-            ));
-            $html = file_get_contents($url, false, $context);
-            file_put_contents($static_path . "/index.html", $html);
+            if (function_exists('curl_init')) {
+                $ch = curl_init($url);
+                $fp = fopen($static_path . '/index.html', 'w');
+
+                curl_setopt($ch, CURLOPT_FILE, $fp);
+                curl_setopt($ch, CURLOPT_HEADER, 0);
+                curl_exec($ch);
+                curl_close($ch);
+                fclose($fp);
+
+            } else {
+                $context = stream_context_create(array(
+                    'http' => array(
+                        'header' => 'Connection: close\r\n',
+                        'method' => 'GET'
+                    )
+                ));
+                $html = file_get_contents($url, false, $context);
+                file_put_contents($static_path . '/index.html', $html);
+            }
+
             ok();
         } catch (Exception $e) {
             error('io-error', $e->getMessage());
