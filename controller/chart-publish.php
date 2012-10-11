@@ -23,7 +23,7 @@ $app->get('/chart/:id/publish', function ($id) use ($app) {
         add_header_vars($page, 'chart');
         add_editor_nav($page, 4);
 
-        if ($chart->getLastEditStep() == 3 || $app->request()->get('republish') == 1) {
+        if ($user->isAbleToPublish() && ($chart->getLastEditStep() == 3 || $app->request()->get('republish') == 1)) {
             // generate thumbnails
             $page['thumbnails'] = $GLOBALS['dw_config']['thumbnails'];
             $app->render('chart-generate-thumbnails.twig', $page);
