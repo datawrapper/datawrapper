@@ -91,7 +91,7 @@ $(function() {
         // 1. make iframe and load chart
         var iframe = $('<iframe />');
         iframe.attr({
-            src: 'http://{{ DW_DOMAIN }}/chart/{{ chart.id }}/?innersvg=1'
+            src: '/chart/{{ chart.id }}/?innersvg=1'
         });
         iframe.css({
             position: 'absolute',
