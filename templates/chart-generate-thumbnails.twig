@@ -116,12 +116,14 @@ $(function() {
             return Math.floor(Number(s.substr(0, s.length-2)));
         }
 
-        setTimeout(function() {
+        var timer = setInterval(function() {
+
             var body = iframe.get(0).contentDocument,
                 s = (height-10)/height,
                 ctx = canvas.get(0).getContext('2d');
 
-            //ctx.translate(5,5);
+            if ($('svg', body).get(0) !== undefined) clearInterval(timer);
+            else return;
 
             ctx.drawSvg($('svg', body).get(0).innerSVG, 0, 0, width, height);
 
@@ -148,7 +150,7 @@ $(function() {
                     else throw res;
                 }
             })
-        }, 1000);
+        }, 300);
 
     }
 
