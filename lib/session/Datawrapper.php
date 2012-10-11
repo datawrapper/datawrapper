@@ -29,6 +29,7 @@ class DatawrapperSession {
         $lifetime = 86400 * 30;  // 30 days
         session_set_cookie_params($lifetime);
         session_name($ses);
+        //if(!session_id()) session_regenerate_id();
         session_start();
 
         // Reset the expiration time upon page load
@@ -54,7 +55,7 @@ class DatawrapperSession {
     }
 
     public function _toArray() {
-        $res = array('lang' => $this->lang, 'user' => $this->user->toArray());
+        $res = array('user' => $this->user->toArray());
         return $res;
     }
 
@@ -131,7 +132,7 @@ class DatawrapperSession {
         Action::logAction(self::getInstance()->user, 'logout');
         $_SESSION['dw-user-id'] = null;
         self::getInstance()->initUser();
-        setcookie('DW-SESSION');
+        setcookie('DW-SESSION', null, 0, '/');
     }
 
 
@@ -148,3 +149,4 @@ class DatawrapperSession {
 }
 
 DatawrapperSession::initSession();
+

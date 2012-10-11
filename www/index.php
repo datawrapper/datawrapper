@@ -4,9 +4,12 @@
  * Datawrapper main index
  *
  */
-
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
+
+// include datawrapper session serialization
+require '../lib/session/Datawrapper.php';
+
 
 // Require the Slim PHP 5 Framework
 require '../vendor/Slim/Slim.php';
@@ -21,10 +24,6 @@ set_include_path("../lib/core/build/classes" . PATH_SEPARATOR . get_include_path
 // Load TwigView
 require_once '../vendor/Slim-Extras/Views/TwigView.php';
 TwigView::$twigDirectory = '../vendor/Twig';
-
-// include datawrapper session serialization
-require '../lib/session/Datawrapper.php';
-
 
 // load YAML parser and config
 require_once '../vendor/spyc/spyc.php';
@@ -188,3 +187,5 @@ $app->get('/phpinfo', function() use ($app) {
  * the Slim application using the settings and routes defined above.
  */
 $app->run();
+
+
