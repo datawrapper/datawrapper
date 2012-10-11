@@ -134,8 +134,6 @@ $(function() {
             });
             var imgData = canvas.get(0).toDataURL("image/png");
             $('#thumbs').append('<img src="'+imgData+'"/>');
-            canvas.remove();
-            iframe.remove();
             $.ajax({
                 url: '/api/charts/{{ chart.id }}/thumbnail/'+id,
                 type: 'PUT',
