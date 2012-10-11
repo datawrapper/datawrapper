@@ -90,7 +90,7 @@
 
                 sw = me.getSeriesLineWidth(col);
 
-                if (!directLabeling) {
+                if (true || !directLabeling) {
                     me.setSeriesColor(col, me.theme.colors.palette[index]);
                 }
 

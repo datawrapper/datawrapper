@@ -14,7 +14,7 @@
         vpadding: -10,
 
         colors: {
-            palette: ['#AAC30A',  '#EB8C14', '#6A3D9A', '#B15928', '#009BFF', '#DC0F6E'],
+            palette: ['#BE232D', '#EB6E14', '#F0AA00', '#82141E'],
             highlight: '#00589E',
             axis: '#000000',
             positive: '#009BFF',

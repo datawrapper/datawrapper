@@ -12,7 +12,7 @@
     Datawrapper.Themes.Base = _.extend({}, {
 
         colors: {
-            palette: ['#85B4D4', '#B2DF8A', '#E31A1C',  '#FF7F00', '#6A3D9A', '#B15928'],
+            palette: ['#6E7DA1', '#64A4C4', '#53CCDD',  '#4EF4E8'],
             highlight: '#00589E',
             focus: '#0063A5',
             context: '#aaa',
@@ -23,7 +23,6 @@
             negative: '#E31A1C',
             'highlight-negative': '#9E5800',
             background: '#ffffff'
-            
         },
 
         locale: 'de_DE',
