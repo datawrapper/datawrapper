@@ -209,7 +209,14 @@ $app->post('/charts/:id/publish/html', function($chart_id) use ($app) {
         try {
             $static_path = get_static_path($chart);
             $url = 'http://'.$GLOBALS['dw_config']['domain'].'/chart/'.$chart->getID().'?minify=1';
-            $html = file_get_contents($url);
+            $context = stream_context_create(array(
+                'http' => array(
+                    'header' => 'Connection: close\r\n',
+                    'method' => 'GET',
+
+                )
+            ));
+            $html = file_get_contents($url, false, $context);
             file_put_contents($static_path . "/index.html", $html);
             ok();
         } catch (Exception $e) {
