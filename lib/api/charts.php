@@ -301,13 +301,32 @@ $app->post('/charts/:id/publish/css', function($chart_id) use ($app) {
     });
 });
 
-
+/*
+ * publishes the data to static chart cache
+ */
 $app->post('/charts/:id/publish/data', function($chart_id) use ($app) {
     if_chart_is_writable($chart_id, function($user, $chart) use ($app) {
         try {
             $static_path = get_static_path($chart);
             file_put_contents($static_path . "/data", $chart->loadData());
 
+            ok();
+        } catch (Exception $e) {
+            error('io-error', $e->getMessage());
+        }
+    });
+});
+
+/*
+ * stores client-side generated chart thumbnail
+ */
+$app->put('/charts/:id/thumbnail/:thumb', function($chart_id, $thumb) use ($app) {
+    if_chart_is_writable($chart_id, function($user, $chart) use ($app, $thumb) {
+        try {
+            $imgurl = $app->request()->getBody();
+            $imgdata = base64_decode(substr($imgurl, strpos($imgurl, ",") + 1));
+            $static_path = get_static_path($chart);
+            file_put_contents($static_path . "/" . $thumb . '.png', $imgdata);
             ok();
         } catch (Exception $e) {
             error('io-error', $e->getMessage());

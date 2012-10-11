@@ -3,8 +3,8 @@
 
 {{ parent() }}
 
-<!--<script type="text/javascript" src="http://canvg.googlecode.com/svn/trunk/rgbcolor.js"></script>
-<script type="text/javascript" src="http://canvg.googlecode.com/svn/trunk/canvg.js"></script>-->
+<script type="text/javascript" src="/static/vendor/canvg/rgbcolor.js"></script>
+<script type="text/javascript" src="/static/vendor/canvg/canvg.js"></script>
 
 <script type="text/javascript">
 $(function() {
@@ -58,51 +58,98 @@ $(function() {
     }
 
     publish_remote(function() {
-        current.html($('.p5').data('current'));
+        var thumbs = {{ thumbnails | json | raw }}, tasks = [], i = 0, total;
+        $.each(thumbs, function(id, size) { tasks.push([id, size[0], size[1]]); });
+        i = 1;
+        total = tasks.length;
+        function next() {
+            var task = tasks.shift();
+            current.html($('.p5').data('current') + ' ('+i+'/'+total+')');
+            snapshot(task[0], task[1], task[2], function() {
+                bar.width((i/total*35 + 65)+'%');
+                i += 1;
+                if (tasks.length > 0) next();
+                else {
+                    bar.parent()
+                        .removeClass('active')
+                        .removeClass('progress-striped')
+                        .addClass('progress-success');
+                    $('.p5').fadeIn();
+                    current.html(current.data('finished'));
+                    current.removeClass('active');
+                    DW.currentChart.set('publishedAt', Math.floor(+new Date()/1000));
+                    DW.currentChart.save();
+                    setTimeout(function() {
+                        location.href = 'publish';
+                    },2000);
+                }
+            });
+        }
+        next();
     });
 
 
-    function snapshot(width, height) {
+    function snapshot(id, width, height, callback) {
         // 1. make iframe and load chart
         var iframe = $('<iframe />');
         iframe.attr({
-            src: 'http://{{ DW_DOMAIN }}/chart/{{ chart.id }}'
+            src: 'http://{{ DW_DOMAIN }}/chart/{{ chart.id }}/?innersvg=1'
         });
         iframe.css({
             position: 'absolute',
             top: 0,
             left: -4000,
             width: width+'px',
-            height: height+'px'
+            height: (height)+'px'
         });
         $('body').append(iframe);
         // 2.
         var canvas = $('<canvas id="canvas" width="'+width+'px" height="'+height+'px"></canvas>')
+        canvas.css({
+            position: 'absolute',
+            top: 0,
+            left: -4000
+        });
         $('body').append(canvas);
 
         function px(s) {
-            return Number(s.substr(0, s.length-2));
+            return Math.floor(Number(s.substr(0, s.length-2)));
         }
 
         setTimeout(function() {
             var body = iframe.get(0).contentDocument,
                 ctx = canvas.get(0).getContext('2d');
-            canvg('canvas', $('svg', body).get(0).innerSVG);
+            ctx.translate(0,10);
+            ctx.drawSvg($('svg', body).get(0).innerSVG, 0, 10, width, height-30);
+
+            //canvg('canvas', $('svg', body).get(0).innerSVG);
             $('.label', body).each(function(i, lbl) {
                 lbl = $(lbl);
                 var x = px(lbl.css('left')),
-                    y = px(lbl.css('top')),
+                    y = px(lbl.css('top'))+10,
                     txt = $('span', lbl).html();
-                console.log(x,y,txt);
-                ctx.font = "8pt Arial";
-                ctx.fillText(txt, x, y);
-
+                ctx.fillStyle = '#666';
+                ctx.font = "9px Arial";
+                ctx.fillText(txt, x+0.5, y+0.5);
             });
+            var imgData = canvas.get(0).toDataURL("image/png");
+            $('#thumbs').append('<img src="'+imgData+'"/>');
+            canvas.remove();
+            iframe.remove();
+            $.ajax({
+                url: '/api/charts/{{ chart.id }}/thumbnail/'+id,
+                type: 'PUT',
+                data: imgData,
+                processData: false,
+                dataType: 'json',
+                success: function(res) {
+                    if (res.status == "ok") callback();
+                    else throw res;
+                }
+            })
         }, 1000);
 
     }
-
-    $('.')
 
     /*setTimeout(function() {
 
@@ -113,16 +160,37 @@ $(function() {
 </script>
 <style type="text/css">
 
-.current {
-    padding: 10px 10px 10px 35px;
-    font-style: italic;
-    background: url(/static/img/ajax-loader.gif) 10px 10px no-repeat;
+h2 {
+    margin-bottom: 20px;
 }
+
+.current {
+    padding: 0px 10px 10px 35px;
+    font-weight: bold;
+}
+
+.current.active {
+    background: url(/static/img/ajax-loader.gif) 10px 0px no-repeat;
+}
+
+#thumbs img {
+    border: 1px solid #ccc;
+    margin: 10px;
+    vertical-align: top;
+}
+
+.status li {
+    margin-bottom: 5px;
+    font-style: italic;
+    margin-left: 35px;
+    color: #aaa;
+}
+
 </style>
 
 <div class="dw-create-publish">
     <div class="row">
-        <div class="span4">
+        <div class="span6">
 
             {% if user.isAbleToPublish %}
 
@@ -134,8 +202,12 @@ $(function() {
                 <div class="bar" style="width: 5%;"></div>
             </div>
 
-            <ol class="status">
-                <li data-current="{% trans "Generating static HTML pages" %}" class="p1">
+            <div class="current active" data-finished="{% trans "Finished." %}" >
+
+            </div>
+
+            <ul class="status unstyled">
+                <li data-current="{% trans "Generating static HTML page" %}" class="p1">
                     {% trans "Generated static HTML page" %}
                 </li>
                 <li data-current="{% trans "Packing and crunching JavaScript" %}" class="p2">
@@ -150,25 +222,15 @@ $(function() {
                 <li data-current="{% trans "Generating chart thumbnails" %}" class="p5">
                     {% trans "Generated Thumbnails" %}
                 </li>
-            </ol>
-
-            <div class="current"></div>
-
-
+            </ul>
             {% endif %}
         </div>
-        <div class="span8">
-            Thumbnails
+        <div id="thumbs" class="span6">
+            
         </div>
     </div>
 
-    <div class="row">
-        <div class="span12">
-            <div class="form-actions">
-                ...
-            </div>
-        </div>
-    </div>
+
 </div>
 
 

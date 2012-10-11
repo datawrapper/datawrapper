@@ -15,7 +15,12 @@ body {
     </script>
     <![endif]-->
 
-    <!-- <script type="text/javascript" src="/static/vendor/innersvg/innersvg.js"></script> -->
+    {% if innersvg %}
+    <script type="text/javascript" src="/static/vendor/innersvg/innersvg.js"></script>
+    <style>
+        body { padding: 0!important;}
+    </style>
+    {% endif %}
 
 
 {% for src in stylesheets %}

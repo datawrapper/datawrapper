@@ -12,7 +12,7 @@
             {% for chart in charts %}
             <li class="span3 chart" data-id="{{ chart.id }}">
                 <div class="thumbnail">
-                    <a href="/chart/{{ chart.id }}/edit"><img src="/static/img/nopreview.png" width="260" height="170" alt="">
+                    <a href="/chart/{{ chart.id }}/edit"><img src="{% if chart.isPublic %}http://{{ DW_CHART_CACHE_DOMAIN }}/{{ chart.id }}/m.png{% else %}/static/img/nopreview.png{% endif %}" width="260" alt="">
 
                     {# <p class="pull-right">
                         <a href="#delete" class="delete" data-chart="{{ chart.id }}"><i class="icon-remove"></i></a>

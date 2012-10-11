@@ -497,6 +497,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .form-actions {
     background: #F2F2F2 url(../img/bg-well.png);
+    border-radius: 0 0 10px 10px;
 }
 
 .well-danger .form-actions {

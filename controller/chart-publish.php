@@ -25,8 +25,7 @@ $app->get('/chart/:id/publish', function ($id) use ($app) {
 
         if ($chart->getLastEditStep() == 3 || $app->request()->get('republish') == 1) {
             // generate thumbnails
-            $chart->setPublishedAt(time());
-            $chart->save();
+            $page['thumbnails'] = $GLOBALS['dw_config']['thumbnails'];
             $app->render('chart-generate-thumbnails.twig', $page);
 
         } else {

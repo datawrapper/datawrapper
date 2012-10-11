@@ -3,9 +3,6 @@
 
 {{ parent() }}
 
-<!--<script type="text/javascript" src="http://canvg.googlecode.com/svn/trunk/rgbcolor.js"></script>
-<script type="text/javascript" src="http://canvg.googlecode.com/svn/trunk/canvg.js"></script>-->
-
 <script type="text/javascript">
 $(function() {
 
@@ -139,8 +136,9 @@ $(function() {
                     <a href="?republish=1" class="btn"><i class="icon-refresh"></i> {% trans "Re-publish chart!" %}</a>
                 </div>
 
+            {% elseif chart.lastEditStep == 3 %}
+                <p class="alert alert-success">{% trans "Congrats, you made it! The chart has been published." %}</p>
             {% else %}
-                <p>{% trans "Congrats, you made it! The chart has been published." %}</p>
             {% endif %}
 
             
