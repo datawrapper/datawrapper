@@ -43,9 +43,9 @@ class ChartQuery extends BaseChartQuery {
                 $chart->setTitle($title . ']');
 
                 // todo: use global default theme
-                $chart->setTheme(defined('DEFAULT_LAYOUT') ? DEFAULT_LAYOUT : 'default');
+                $chart->setTheme(isset($GLOBALS['dw_config']['default_theme']) ? $GLOBALS['dw_config']['default_theme'] : 'default');
                 $chart->setLocale(''); // no default locale
-                $chart->setType('bar-chart');
+                $chart->setType(isset($GLOBALS['dw_config']['default_vis']) ? $GLOBALS['dw_config']['default_vis'] : 'bar-chart');
 
                 $defaultMeta = Chart::defaultMetaData();
 

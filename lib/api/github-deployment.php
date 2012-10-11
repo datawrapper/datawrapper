@@ -5,11 +5,11 @@
  */
 $app->post('/github', function() use ($app) {
 
-    if (defined('GITHUB_REPO_URL')) {
+    if (isset($GLOBALS['dw_config']['github'])) {
 
         $payload = json_decode($app->request()->post('payload'));
 
-        $headers = 'From: Datawrapper Bot <update-notify@' . DW_DOMAIN . ">\r\n";
+        $headers = 'From: Datawrapper Bot <update-notify@' . $GLOBALS['dw_config']['domain'] . ">\r\n";
         $headers .= 'CC: ' . $payload->pusher->email . "\r\n";
         $headers .= "MIME-Version: 1.0\r\n";
         $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
@@ -21,10 +21,10 @@ $app->post('/github', function() use ($app) {
         $github_ips = array('207.97.227.253', '50.57.128.197', '108.171.174.178');
         if (in_array($_SERVER['REMOTE_ADDR'], $github_ips)) {
             // check wether the push came from the right repository
-            if ($payload->repository->url == GITHUB_REPO_URL && $payload->ref == 'refs/heads/' . GITHUB_REPO_BRANCH) {
+            if ($payload->repository->url == $GLOBALS['dw_config']['github']['repo'] && $payload->ref == 'refs/heads/' . $GLOBALS['dw_config']['github']['branch']) {
                 $body = '<p>The Github user <a href="https://github.com/'. $payload->pusher->name .'">@' . $payload->pusher->name . '</a>'
                   . ' has pushed to ' . $payload->repository->url
-                  . ' and consequently, the instance of Datawrapper runnig at ' . DW_DOMAIN
+                  . ' and consequently, the instance of Datawrapper runnig at ' . $GLOBALS['dw_config']['domain']
                   . ' has been updated.</p>';
 
                 $body .= '<p>Here\'s a brief list of what has been changed:</p>';
@@ -36,7 +36,7 @@ $app->post('/github', function() use ($app) {
                 $body .= '</ul>';
                 $body .= '<p>Cheers, <br/>The friendly Datawrapper bot</p>';
 
-                mail(ADMIN_LOG_EMAIL, 'Datawrapper has been updated', $body, $headers);
+                mail($GLOBALS['dw_config']['log_email'], 'Datawrapper has been updated', $body, $headers);
 
                 $cmd = dirname(dirname(dirname(__FILE__))) . '/scripts/deploy.sh';
                 exec($cmd);

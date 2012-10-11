@@ -88,8 +88,8 @@ $app->post('/account/reset-password', function() use($app) {
         $user->save();
 
         $name = $user->getEmail();
-        $passwordResetLink = 'http://' . DW_DOMAIN . '/account/reset-password/' . $token;
-        $from = 'password-reset@' . DW_DOMAIN;
+        $passwordResetLink = 'http://' . $GLOBALS['dw_config']['domain'] . '/account/reset-password/' . $token;
+        $from = 'password-reset@' . $GLOBALS['dw_config']['domain'];
         include('../../lib/templates/password-reset-email.php');
         mail($user->getEmail(), 'Datawrapper Password Reset', $password_reset_mail, 'From: ' . $from);
         ok(_('You should soon receive an email with further instructions.'));
@@ -114,7 +114,7 @@ $app->post('/account/resend-activation', function() use($app) {
             ->filterByKey('resend-activation')
             ->find();
         if (count($r) > 2) {
-            error('avoid-spam', str_replace('%ADMINEMAIL%', ADMIN_EMAIL, _('You already resent the activation mail three times, now. Please <a href="mailto:%ADMINEMAIL%">contact an administrator</a> to proceed with your account activation.')));
+            error('avoid-spam', str_replace('%ADMINEMAIL%', $GLOBALS['dw_config']['admin_email'], _('You already resent the activation mail three times, now. Please <a href="mailto:%ADMINEMAIL%">contact an administrator</a> to proceed with your account activation.')));
             return false;
         }
 
@@ -123,7 +123,7 @@ $app->post('/account/resend-activation', function() use($app) {
 
         // send email with activation key
         $name = $user->getEmail();
-        $domain = DW_DOMAIN;
+        $domain = $GLOBALS['dw_config']['domain'];
         $activationLink = 'http://' . $domain . '/account/activate/' . $token;
         $from = 'activate@' . $domain;
 

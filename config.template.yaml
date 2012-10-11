@@ -1,0 +1,20 @@
+# Datawrapper configuration
+#
+
+domain: datawrapper.de
+chart_domain: c.datawrapper.de
+
+# some default values
+default_theme: default
+default_vis: bar-chart
+
+# thumbnail sizes (width,height)
+thumbnails:
+    s: [300,200]
+    m: [400,300]
+    l: [600,400]
+
+# email address for admin
+admin_email: hello@datawrapper.de
+log_email: debug@datawrapper.de
+

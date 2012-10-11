@@ -1,12 +1,15 @@
 <?php
 
+// load YAML parser and config
+require_once '../vendor/spyc/spyc.php';
+$config = Spyc::YAMLLoad('../config.yaml');
 
 if (file_exists("new_wp_content.txt") && trim(file_get_contents("new_wp_content.txt")) != "1") {
     // no new changes were made, so no need to update
     exit();
 }
 
-$url = "http://blog.datawrapper.de/?post_type=datawrapper&custom_fields=dw_url,dw_lang&order=ASC&order_by=menu_order&count=-1&json=1";
+$url = $config['wordpress']['url'];
 
 $data = json_decode(file_get_contents($url));
 

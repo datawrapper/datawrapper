@@ -9,6 +9,7 @@ charts/images/*
 charts/static/*
 push
 config.php
+config.yaml
 scripts/history.php
 
 *.log

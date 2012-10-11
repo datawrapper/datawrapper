@@ -27,7 +27,7 @@ function get_chart_content($chart, $user, $minified = false, $path = '') {
     $chartLocale = $chart->getLanguage();
     if (!empty($chartLocale)) $locale = $chartLocale;
 
-    $abs = 'http://' . DW_DOMAIN;
+    $abs = 'http://' . $GLOBALS['dw_config']['domain'];
 
     $base_js = array(
         $abs . '/static/vendor/globalize/globalize.min.js',

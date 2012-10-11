@@ -6,11 +6,11 @@
 
 $app->post('/wordpress', function() use ($app) {
 
-    if (defined('WORDPRESS_SECRET')) {
+    if (isset($GLOBALS['dw_config']['wordpress']['secret'])) {
         // check that the request comes from the right server
-        $wordpress_ips = array('176.9.139.73');
+        $wordpress_ips = $GLOBALS['dw_config']['wordpress']['ips'];
         if (in_array($_SERVER['REMOTE_ADDR'], $wordpress_ips)) {
-            if ($app->request()->post('secret') == WORDPRESS_SECRET) {
+            if ($app->request()->post('secret') == $GLOBALS['dw_config']['wordpress']['secret']) {
                 file_put_contents("../../scripts/new_wp_content.txt", "1");
                 $app->status(200);
                 print "ok.";

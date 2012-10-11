@@ -208,7 +208,7 @@ $app->post('/charts/:id/publish/html', function($chart_id) use ($app) {
     if_chart_is_writable($chart_id, function($user, $chart) use ($app) {
         try {
             $static_path = get_static_path($chart);
-            $url = 'http://'.DW_DOMAIN.'/chart/'.$chart->getID().'?minify=1';
+            $url = 'http://'.$GLOBALS['dw_config']['domain'].'/chart/'.$chart->getID().'?minify=1';
             $html = file_get_contents($url);
             file_put_contents($static_path . "/index.html", $html);
             ok();

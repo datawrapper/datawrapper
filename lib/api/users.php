@@ -54,7 +54,7 @@ $app->post('/users', function() use ($app) {
 
     // send email with activation key
     $name = $data->email;
-    $domain = DW_DOMAIN;
+    $domain = $GLOBALS['dw_config']['domain'];
     $activationLink = 'http://' . $domain . '/account/activate/' . $user->getActivateToken();
     $from = 'activate@' . $domain;
 
