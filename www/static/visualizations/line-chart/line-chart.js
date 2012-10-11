@@ -316,7 +316,7 @@
                     if (x - last_label_x < min_label_distance || x + min_label_distance > c.w) return;
                     last_label_x = x;
                     if (rotate45) x -= 5;
-                    me.label(x, y, val, { align: 'center', cl: 'axis' + (rotate45 ? ' rotate45' : '') });
+                    me.label(x, y, val, { align: 'center', cl: 'axis x-axis' + (rotate45 ? ' rotate45' : '') });
                 });
             }
         },

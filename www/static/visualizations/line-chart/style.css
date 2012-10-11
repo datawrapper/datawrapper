@@ -18,3 +18,7 @@
     -ms-transform: rotate(-45deg);
     -o-transform: rotate(-45deg);
 }
+
+.label.x-axis {
+    font-weight: bold;
+}
