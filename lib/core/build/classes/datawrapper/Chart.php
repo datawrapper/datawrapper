@@ -64,7 +64,7 @@ class Chart extends BaseChart {
     }
 
     public function preSave(PropelPDO $con = null) {
-        $this->setLastModifiedAt(time());
+        if ($this->isModified()) $this->setLastModifiedAt(time());
         return true;
     }
 
