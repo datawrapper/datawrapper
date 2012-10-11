@@ -329,7 +329,8 @@ $app->post('/charts/:id/publish/data', function($chart_id) use ($app) {
         try {
             $static_path = get_static_path($chart);
             file_put_contents($static_path . "/data", $chart->loadData());
-
+            $chart->setPublishedAt(time());
+            $chart->save();
             ok();
         } catch (Exception $e) {
             error('io-error', $e->getMessage());

@@ -77,8 +77,6 @@ $(function() {
                     $('.p5').fadeIn();
                     current.html(current.data('finished'));
                     current.removeClass('active');
-                    DW.currentChart.set('publishedAt', Math.floor(+new Date()/1000));
-                    DW.currentChart.save();
                     setTimeout(function() {
                         location.href = 'publish';
                     },2000);
