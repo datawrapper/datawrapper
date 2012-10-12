@@ -113,7 +113,6 @@
                 });
 
                 if (me.get('connect-missing-values', false)) {
-                    console.log('connect-missing-values', connectMissingValuePath);
                     me.registerSeriesElement(c.paper.path(connectMissingValuePath).attr({
                         'stroke-width': sw*0.35,
                         'stroke-dasharray': '- ',
@@ -311,6 +310,9 @@
                 rotate45 = me.get('rotate-x-labels');
             if (me.chart.hasRowHeader()) {
                 var last_label_x = -100, min_label_distance = rotate45 ? 30 : 40;
+                _.each(me.chart.rowLabels(), function(val, i) {
+
+                });
                 _.each(me.chart.rowLabels(), function(val, i) {
                     var x = me.__scales.x(i),
                         y = c.h-c.bpad+me.theme.xLabelOffset;
