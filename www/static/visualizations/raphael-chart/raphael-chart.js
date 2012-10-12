@@ -246,7 +246,6 @@
                 // dim color
                 hsl.s = 0.2;
                 hsl.l = Math.min(0.85, hsl.l * 1.5);
-                console.log(lch.l);
                 lch.c *= 0.3;
                 lch.l = 90;// Math.min(90, lch.l * 1.5);
                 //lch.l = Math.min(1.5, lch.l * 1.5);
