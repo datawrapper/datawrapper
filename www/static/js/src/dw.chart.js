@@ -155,8 +155,9 @@
 
             if (format != '-') {
                 var culture = Globalize.culture(me.locale);
-                if (round) format = format.substr(0,1)+'0';
-                val = Globalize.format(Number(val) / Math.pow(10, div), format);
+                val = Number(val) / Math.pow(10, div);
+                if (round || val == Math.round(val)) format = format.substr(0,1)+'0';
+                val = Globalize.format(val, format);
             }
 
             return full ? prepend + val + append : val;

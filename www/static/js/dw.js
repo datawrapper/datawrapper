@@ -449,8 +449,9 @@
 
             if (format != '-') {
                 var culture = Globalize.culture(me.locale);
-                if (round) format = format.substr(0,1)+'0';
-                val = Globalize.format(Number(val) / Math.pow(10, div), format);
+                val = Number(val) / Math.pow(10, div);
+                if (round || val == Math.round(val)) format = format.substr(0,1)+'0';
+                val = Globalize.format(val, format);
             }
 
             return full ? prepend + val + append : val;
@@ -480,7 +481,7 @@
     Datawrapper.Themes.Base = _.extend({}, {
 
         colors: {
-            palette: ['#58A3BE', '#3DC1BD', '#5EDBA8',  '#A3F08A'],
+            palette: ['#6E7DA1', '#64A4C4', '#53CCDD',  '#4EF4E8'],
             highlight: '#00589E',
             focus: '#0063A5',
             context: '#aaa',
