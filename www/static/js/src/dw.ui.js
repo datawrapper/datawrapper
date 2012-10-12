@@ -100,6 +100,7 @@
             $('a[href=#login]').click(function() {
                 $('#dwLoginForm').modal();
                 $('#dwLoginForm .alert').remove();
+                $('#dwLoginForm .login-email').focus();
 
                 var logEmail = $('#home-login .login-form .login-email'),
                     logPwd = $('#home-login .login-form .login-pwd');
