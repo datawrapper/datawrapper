@@ -105,6 +105,37 @@ h2 { margin-bottom: 30px!important; }
 
         </div>
     </div>
+
+    <h2>Chart Gallery <small>(the last 10 charts)</small></h2>
+    <div class="row" id="gallery">
+
+        <script type="text/javascript">
+        $(function() {
+            $.ajax({
+                url: '/api/gallery',
+                dataType: 'json',
+                success: function(res) {
+                    $.each(res.data.slice(0,12), function(i, chart) {
+                        console.log(chart);
+                        var div = $('<div class="span4 pull-left"><div style="font-weight:bold;padding:3px 3px 10px;display:block;font-size:16px"><a href="http://{{ DW_CHART_CACHE_DOMAIN }}/'+chart.Id+'">'+chart.Title+'</a> <span style="font-weight:normal">by</span> <span data-id="'+chart.AuthorId+'" class="user" style="border-bottom:1px dotted orange">'+chart.AuthorId+'</span></div><iframe style="border:none" src="http://{{ DW_CHART_CACHE_DOMAIN }}/'+chart.Id+'" width="100%" height="260"></iframe></div>');
+                        $('#gallery').append(div);
+                    });
+                }
+            });
+
+            $('span.user').live('click', function(e) {
+                var s = $(e.target);
+                if (s.data('id')) {
+                    $.getJSON('/api/users/'+s.data('id'), function(res) {
+                        s.data('id', null);
+                        s.html(res.data.Email);
+                    });
+                }
+            });
+        });
+        </script>
+        
+    </div>
 </div>
 
 {% endblock %}

@@ -5,12 +5,26 @@
  * @needs admin
  */
 $app->get('/users', function() use ($app) {
-    $users = UserQuery::create()->find();
-    $res = array();
-    foreach ($users as $user) {
-        $res[] = $user->toArray();
+    $user = DatawrapperSession::getUser();
+    if ($user->isAdmin()) {
+        $users = UserQuery::create()->find();
+        $res = array();
+        foreach ($users as $user) {
+            $res[] = $user->toArray();
+        }
+        ok($res);
+    } else {
+        error(403, 'Permission denied');
     }
-    ok($res);
+});
+
+$app->get('/users/:id', function($id) use ($app) {
+    $user = DatawrapperSession::getUser();
+    if ($user->isAdmin()) {
+        ok(UserQuery::create()->findPK($id)->toArray());
+    } else {
+        error(403, 'Permission denied');
+    }
 });
 
 define('DW_TOKEN_SALT', 'aVyyrmc2UpoZGJ3SthaKyGrFzaV3Z37iuFU4x5oLb_aKmhopz5md62UHn25Gf4ti');
