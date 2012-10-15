@@ -167,9 +167,18 @@ body {
 }
 
 .navbar .brand {
-    padding-top: 13px;
+    padding-top: 14px;
+    padding-bottom: 4px;
     color: #556;
     text-shadow: 1px 1px 0 rgba(255, 255, 255, .55)
+}
+
+.navbar .brand img {
+    float: left;
+    margin-right: 7px;
+    margin-left: 4px;
+    position:relative;
+    top:-4px;
 }
 
 .navbar .brand .beta {
