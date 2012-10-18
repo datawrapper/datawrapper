@@ -208,14 +208,17 @@ $app->post('/charts/:id/publish/html', function($chart_id) use ($app) {
     if_chart_is_writable($chart_id, function($user, $chart) use ($app) {
         try {
             $static_path = get_static_path($chart);
-            $url = 'http://'.$GLOBALS['dw_config']['domain'].'/chart/'.$chart->getID().'/?minify=1';
-
+            $url = 'http://'.$GLOBALS['dw_config']['domain'].'/chart/'.$chart->getID().'/preview?minify=1';
             if (function_exists('curl_init')) {
                 $ch = curl_init($url);
                 $fp = fopen($static_path . '/index.html', 'w');
 
+                $strCookie = 'DW-SESSION=' . $_COOKIE['DW-SESSION'] . '; path=/';
+                session_write_close();
+
                 curl_setopt($ch, CURLOPT_FILE, $fp);
-                curl_setopt($ch, CURLOPT_HEADER, 0);
+                curl_setopt($ch, CURLOPT_HEADER, 0 );
+                curl_setopt($ch, CURLOPT_COOKIE, $strCookie);
                 curl_exec($ch);
                 curl_close($ch);
                 fclose($fp);
