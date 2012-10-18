@@ -97,10 +97,19 @@
                 });
             }
 
-            $('a[href=#login]').click(function() {
+            $('a[href=#login], a[href=#signup]').click(function(e) {
                 $('#dwLoginForm').modal();
                 $('#dwLoginForm .alert').remove();
-                $('#dwLoginForm .login-email').focus();
+                var clickedLogin = $(e.target).attr('href') == '#login';
+                if (clickedLogin) {
+                    $('#dwLoginForm .login-email').focus();
+                } else {
+                    $('#register-email').focus();
+                    $('.row-login').css('opacity', 0.5);
+                    $('.row-login *').click(function() {
+                        $('.row-login').css('opacity', 1);
+                    });
+                }
 
                 var logEmail = $('#home-login .login-form .login-email'),
                     logPwd = $('#home-login .login-form .login-pwd');
