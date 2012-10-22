@@ -229,7 +229,7 @@ msgid "Height"
 msgstr ""
 
 #: ../scripts/tmpl_cache/chart-publish.twig.php:278
-msgid "Make it public"
+msgid "Show in Gallery"
 msgstr ""
 
 #: ../scripts/tmpl_cache/chart-publish.twig.php:282
@@ -243,7 +243,7 @@ msgid "This is absolutely optional."
 msgstr ""
 
 #: ../scripts/tmpl_cache/chart-publish.twig.php:289
-msgid "Yes, make it public!"
+msgid "Yes, show this chart in the gallery"
 msgstr ""
 
 #: ../scripts/tmpl_cache/chart-publish.twig.php:298

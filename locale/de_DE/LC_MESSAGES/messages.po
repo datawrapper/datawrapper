@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.5.3\n"
+"X-Generator: Poedit 1.5.4\n"
 
 #: ../controller/docs.php:35
 msgid "Not found"
@@ -249,8 +249,8 @@ msgid "Height"
 msgstr "Höhe"
 
 #: ../scripts/tmpl_cache/chart-publish.twig.php:278
-msgid "Make it public"
-msgstr "Veröffentlichen"
+msgid "Show in Gallery"
+msgstr "In Galerie aufnehmen"
 
 #: ../scripts/tmpl_cache/chart-publish.twig.php:282
 msgid ""
@@ -266,8 +266,8 @@ msgid "This is absolutely optional."
 msgstr "Natürlich absolut freiwillig."
 
 #: ../scripts/tmpl_cache/chart-publish.twig.php:289
-msgid "Yes, make it public!"
-msgstr "Ja, bitte veröffentlichen!"
+msgid "Yes, show this chart in the gallery"
+msgstr "Ja, bitte in die Galerie aufnehmen"
 
 #: ../scripts/tmpl_cache/chart-publish.twig.php:298
 msgid "Congrats, you created your first chart!"
@@ -1273,6 +1273,12 @@ msgid ""
 msgstr ""
 "Bitte einen unserer freundlichen <a href=\"mailto:hello@datawrapper.de"
 "\">Administratoren</a> dir beim Zurücksetzen des Passworts zu helfen."
+
+#~ msgid "Make it public"
+#~ msgstr "In Galerie aufnehmen"
+
+#~ msgid "Yes, make it public!"
+#~ msgstr "Ja, bitte in Galerie aufnehmen!"
 
 #~ msgid "Please provide your current password for security reasons."
 #~ msgstr "Zur Sicherheit noch mal dein altes Passwort."
