@@ -671,6 +671,14 @@ dl.dl-horizontal dd {
     margin-top: 0;
 }
 
+#vis-options .control-label {
+    width: 45%;
+}
+
+#vis-options .controls {
+    margin-left: 50%;
+}
+
 .highlighted-series li {
     margin-bottom: 3px;
     margin-right: 10px;

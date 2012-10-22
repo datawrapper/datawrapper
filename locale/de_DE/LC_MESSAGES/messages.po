@@ -151,7 +151,7 @@ msgid "Visualize"
 msgstr "Visualisieren"
 
 #: ../scripts/tmpl_cache/chart-describe.twig.php:350
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:466
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:505
 msgid "Back"
 msgstr "Zurück"
 
@@ -399,23 +399,23 @@ msgstr ""
 "Wenn du Datawrapper einfach nur ausprobieren möchtest, versuche doch die "
 "folgenden Beispieldaten:"
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:288
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:324
 msgid "Select visualization and layout"
 msgstr "Visualisierung und Design wählen"
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:294
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:330
 msgid "Visualization:"
 msgstr "Visualisierung:"
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:326
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:362
 msgid "Layout:"
 msgstr "Design:"
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:358
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:394
 msgid "Hint"
 msgstr "Hinweis"
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:360
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:396
 msgid ""
 "In case the visualization doesn't look like you expected, you should try to "
 "<a href='#' id='btn-transpose'><i class='icon-rotate'></i> transpose the "
@@ -425,39 +425,43 @@ msgstr ""
 "href='#' id='btn-transpose'><i class='icon-rotate'></i>Daten zu "
 "transponieren</a>."
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:368
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:404
 msgid "Tell your story"
 msgstr "Erzähl die Geschichte"
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:374
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:410
 msgid "Title"
 msgstr "Titel"
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:378
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:414
 msgid "Introduction"
 msgstr "Einleitung"
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:382
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:418
 msgid "Highlight"
 msgstr "Hervorheben"
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:390
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:426
 msgid "Tell the story in five words"
-msgstr "Dein Aufhänger in fünf Worten"
+msgstr "Der Aufhänger in fünf Worten"
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:398
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:434
 msgid "Guide the audience to read the chart"
-msgstr "Hilf den Lesern, das Diagramm zu lesen"
+msgstr "Hilf den Lesern, das Diagramm zu verstehen."
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:409
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:442
+msgid "Highlight the most import data series:"
+msgstr "Hebe die wichtigste Datenreihe hervor:"
+
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:448
 msgid "select a data series"
 msgstr "Datenreihe auswählen"
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:448
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:487
 msgid "Refine the chart"
 msgstr "Darstellung anpassen"
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:462
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:501
 msgid "Publish"
 msgstr "Veröffentlichen"
 
@@ -1009,7 +1013,7 @@ msgstr "Daten"
 msgid "Pick base color"
 msgstr "Basisfarbe auswählen"
 
-#: ../scripts/tmpl_cache/vis-options.twig.php:48
+#: ../scripts/tmpl_cache/vis-options.twig.php:47
 msgid "Select row to display"
 msgstr "Diese Zeile anzeigen"
 
