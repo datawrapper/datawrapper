@@ -688,6 +688,12 @@ msgstr ""
 msgid "By Layout"
 msgstr ""
 
+#: ../scripts/tmpl_cache/mycharts.twig.php:309
+msgid ""
+"Do you really want to delete the chart? Note that after deleting this chart "
+"won't be embedable any more."
+msgstr ""
+
 #: ../scripts/tmpl_cache/settings.twig.php:36
 #: ../scripts/tmpl_cache/settings.twig.php:63
 msgid "Account Status"
@@ -1093,16 +1099,26 @@ msgid ""
 "the world, yet. Why don't you just relax and wait a minute?"
 msgstr ""
 
-#: ../lib/utils/errors.php:37
+#: ../lib/utils/errors.php:38
+msgid "Too late"
+msgstr ""
+
+#: ../lib/utils/errors.php:39
+msgid ""
+"Sorry, but it seems that the chart you want to see has already passed away "
+"because its author decided to delete it."
+msgstr ""
+
+#: ../lib/utils/errors.php:48
 msgid "Whoops! You're not allowed to publish charts, yet"
 msgstr ""
 
-#: ../lib/utils/errors.php:38
+#: ../lib/utils/errors.php:49
 msgid ""
 "Sorry, but it seems that your account is not ready to publish charts, yet."
 msgstr ""
 
-#: ../lib/utils/errors.php:40
+#: ../lib/utils/errors.php:51
 msgid ""
 "If you created the chart as a guest, you should <a href=\"#login\">sign up "
 "for a free account</a> now. In case you already did that, you probably still "
@@ -1110,55 +1126,55 @@ msgid ""
 "sent you."
 msgstr ""
 
-#: ../lib/utils/errors.php:49
+#: ../lib/utils/errors.php:60
 msgid "Whoops! We couldn't find that chart.."
 msgstr ""
 
-#: ../lib/utils/errors.php:50
+#: ../lib/utils/errors.php:61
 msgid "Sorry, but it seems that there is no chart with the id <b>"
 msgstr ""
 
-#: ../lib/utils/errors.php:57
+#: ../lib/utils/errors.php:68
 msgid "Whoops! That charts doesn't belong to you"
 msgstr ""
 
-#: ../lib/utils/errors.php:58
+#: ../lib/utils/errors.php:69
 msgid "Sorry, but the requested chart belongs to someone else."
 msgstr ""
 
-#: ../lib/utils/errors.php:60
+#: ../lib/utils/errors.php:71
 msgid "Please check if you're logged in."
 msgstr ""
 
-#: ../lib/utils/errors.php:68 ../lib/utils/errors.php:75
+#: ../lib/utils/errors.php:79 ../lib/utils/errors.php:86
 msgid "Whoops! You need to be logged in."
 msgstr ""
 
-#: ../lib/utils/errors.php:69
+#: ../lib/utils/errors.php:80
 msgid "Good news is, sign up is free and takes less than 20 seconds."
 msgstr ""
 
-#: ../lib/utils/errors.php:76
+#: ../lib/utils/errors.php:87
 msgid ""
 "Guess what, in order to edit your user profile, you need to either login or "
 "create yourself an account."
 msgstr ""
 
-#: ../lib/utils/errors.php:82
+#: ../lib/utils/errors.php:93
 msgid "Something went horribly wrong"
 msgstr ""
 
-#: ../lib/utils/errors.php:83
+#: ../lib/utils/errors.php:94
 msgid "The password reset link you entered is invalid."
 msgstr ""
 
-#: ../lib/utils/errors.php:85
+#: ../lib/utils/errors.php:96
 msgid ""
 "Re-check the link you received in our email. Make sure you copied the full "
 "link and try again."
 msgstr ""
 
-#: ../lib/utils/errors.php:86
+#: ../lib/utils/errors.php:97
 msgid ""
 "Contact someone of our friendly <a href=\"mailto:hello@datawrapper.de"
 "\">administrators</a> and ask for help with the password reset process."

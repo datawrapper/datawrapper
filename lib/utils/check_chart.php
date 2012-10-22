@@ -23,6 +23,8 @@ function check_chart_public($id, $callback) {
         if ($user->isAbleToPublish()) {
             if ($chart->isPublic()) {
                 call_user_func($callback, $user, $chart);
+            } else if ($chart->_isDeleted()) {
+                error_chart_deleted();
             } else {
                 error_chart_not_published();
             }

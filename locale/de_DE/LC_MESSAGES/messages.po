@@ -746,6 +746,14 @@ msgstr "Nach Diagrammtyp"
 msgid "By Layout"
 msgstr "Nach Layout"
 
+#: ../scripts/tmpl_cache/mycharts.twig.php:309
+msgid ""
+"Do you really want to delete the chart? Note that after deleting this chart "
+"won't be embedable any more."
+msgstr ""
+"Willst du das Diagramm wirklich löschen? Nach der Löschung kann es nicht "
+"mehr in andere Webseiten eingebettet werden."
+
 #: ../scripts/tmpl_cache/settings.twig.php:36
 #: ../scripts/tmpl_cache/settings.twig.php:63
 msgid "Account Status"
@@ -1187,20 +1195,32 @@ msgstr ""
 "Es tut uns leid, aber es sieht so aus als ob dieses Diagramm noch nicht ganz "
 "bereit für die Welt ist. Warte doch einfach noch ein wenig.."
 
-#: ../lib/utils/errors.php:37
+#: ../lib/utils/errors.php:38
+msgid "Too late"
+msgstr "Zu spät…"
+
+#: ../lib/utils/errors.php:39
+msgid ""
+"Sorry, but it seems that the chart you want to see has already passed away "
+"because its author decided to delete it."
+msgstr ""
+"Schade, dieses Diagramm wurde in der Zwischenzeit gelöscht und kann daher "
+"nicht mehr aufgerufen werden."
+
+#: ../lib/utils/errors.php:48
 msgid "Whoops! You're not allowed to publish charts, yet"
 msgstr ""
 "Huch, du darfst noch keine Diagramme veröffentlichen, weil deine E-Mail "
 "Adresse nicht aktiviert wurde."
 
-#: ../lib/utils/errors.php:38
+#: ../lib/utils/errors.php:49
 msgid ""
 "Sorry, but it seems that your account is not ready to publish charts, yet."
 msgstr ""
 "Es tut uns leid, aber es sieht so aus als ob dein Benutzerkonto noch nicht "
 "für die Veröffentlichung von Diagrammen bereit ist."
 
-#: ../lib/utils/errors.php:40
+#: ../lib/utils/errors.php:51
 msgid ""
 "If you created the chart as a guest, you should <a href=\"#login\">sign up "
 "for a free account</a> now. In case you already did that, you probably still "
@@ -1212,37 +1232,37 @@ msgstr ""
 "vermutlich noch deine E-Mail Adresse freischalten, indem du dem "
 "Aktivierungslink folgst, den wir dir geschickt haben."
 
-#: ../lib/utils/errors.php:49
+#: ../lib/utils/errors.php:60
 msgid "Whoops! We couldn't find that chart.."
 msgstr "Ups, wir konnten das Diagramm nicht finden.."
 
-#: ../lib/utils/errors.php:50
+#: ../lib/utils/errors.php:61
 msgid "Sorry, but it seems that there is no chart with the id <b>"
 msgstr "Es tut uns leid, aber es gibt kein Diagramm mit der ID <b>"
 
-#: ../lib/utils/errors.php:57
+#: ../lib/utils/errors.php:68
 msgid "Whoops! That charts doesn't belong to you"
 msgstr "Huch, diese Visualisierung gehört dir nicht."
 
-#: ../lib/utils/errors.php:58
+#: ../lib/utils/errors.php:69
 msgid "Sorry, but the requested chart belongs to someone else."
 msgstr "Es tut mir leid, aber diese Visualisierung gehört jemand anderem."
 
-#: ../lib/utils/errors.php:60
+#: ../lib/utils/errors.php:71
 msgid "Please check if you're logged in."
 msgstr "Bist du wirklich eingeloggt?"
 
-#: ../lib/utils/errors.php:68 ../lib/utils/errors.php:75
+#: ../lib/utils/errors.php:79 ../lib/utils/errors.php:86
 msgid "Whoops! You need to be logged in."
 msgstr "Huch! Dafür musst du eingeloggt sein."
 
-#: ../lib/utils/errors.php:69
+#: ../lib/utils/errors.php:80
 msgid "Good news is, sign up is free and takes less than 20 seconds."
 msgstr ""
 "Die gute Nachricht: die Anmeldung ist kostenlos und dauert weniger als 20 "
 "Sekunden."
 
-#: ../lib/utils/errors.php:76
+#: ../lib/utils/errors.php:87
 msgid ""
 "Guess what, in order to edit your user profile, you need to either login or "
 "create yourself an account."
@@ -1250,15 +1270,15 @@ msgstr ""
 "Um dein Nutzerprofil zu bearbeiten musst du dich schon entweder eingeloggen "
 "oder ein Benutzerkonto anlegen."
 
-#: ../lib/utils/errors.php:82
+#: ../lib/utils/errors.php:93
 msgid "Something went horribly wrong"
 msgstr "Irgendetwas ist ziemlich schief gelaufen"
 
-#: ../lib/utils/errors.php:83
+#: ../lib/utils/errors.php:94
 msgid "The password reset link you entered is invalid."
 msgstr "Der Link zum Zurücksetzen des Passworts ist ungültig."
 
-#: ../lib/utils/errors.php:85
+#: ../lib/utils/errors.php:96
 msgid ""
 "Re-check the link you received in our email. Make sure you copied the full "
 "link and try again."
@@ -1266,7 +1286,7 @@ msgstr ""
 "Bitte überprüfe den Link noch einmal. Hast du beim Kopieren vielleicht die "
 "letzten Zeichen vergessen?"
 
-#: ../lib/utils/errors.php:86
+#: ../lib/utils/errors.php:97
 msgid ""
 "Contact someone of our friendly <a href=\"mailto:hello@datawrapper.de"
 "\">administrators</a> and ask for help with the password reset process."

@@ -96,6 +96,14 @@ class Chart extends BaseChart {
         return $path;
     }
 
+    protected function getStaticPath() {
+        $path = '../charts/static/' . $this->getID();
+        if (substr(dirname($_SERVER['SCRIPT_FILENAME']), -4) == "/api") {
+            $path = '../' . $path;
+        }
+        return $path;
+    }
+
     /**
      * get the filename of this charts data file, which is usually
      * just the chart id + csv extension
@@ -168,6 +176,10 @@ class Chart extends BaseChart {
         return !$this->getDeleted() && $this->getLastEditStep() > 3;
     }
 
+    public function _isDeleted() {
+        return $this->getDeleted();
+    }
+
     public function getLocale() {
         return $this->getLanguage();
     }
@@ -199,6 +211,13 @@ class Chart extends BaseChart {
                 'embed-height' => 400
             )
         );
+    }
+
+    public function unpublish() {
+        $path = $this->getStaticPath();
+        //print $path;
+        array_map('unlink', glob($path . "/*"));
+        rmdir($path);
     }
 
 } // Chart
