@@ -211,7 +211,7 @@ msgstr "Erzeuge Vorschaubilder"
 msgid "Generated Thumbnails"
 msgstr "Vorschaubilder erzeugt"
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:183
+#: ../scripts/tmpl_cache/chart-publish.twig.php:200
 msgid ""
 "You have changed the chart after its last publication. To make you changes "
 "visible, please re-publish the chart."
@@ -220,39 +220,39 @@ msgstr ""
 "diese Änderungen sichtbar zu machen, veröffentliche das Diagramm bitte noch "
 "einmal."
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:187
+#: ../scripts/tmpl_cache/chart-publish.twig.php:204
 msgid "Re-publish chart!"
 msgstr "Diagramm erneut veröffentlichen!"
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:195
+#: ../scripts/tmpl_cache/chart-publish.twig.php:212
 msgid "Congrats, you made it! The chart has been published."
 msgstr "Glückwunsch! Das Diagramm wurde veröffentlicht."
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:209
+#: ../scripts/tmpl_cache/chart-publish.twig.php:226
 msgid "Link to this visualisation"
 msgstr "Link zur Visualisierung"
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:228
+#: ../scripts/tmpl_cache/chart-publish.twig.php:245
 msgid "Embed into your website"
 msgstr "In Webseite einbetten"
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:232
+#: ../scripts/tmpl_cache/chart-publish.twig.php:249
 msgid "Just copy &amp; paste the following code into your website."
 msgstr "Einfach den folgenden Code in deine Webseite einfügen."
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:237
+#: ../scripts/tmpl_cache/chart-publish.twig.php:254
 msgid "Width"
 msgstr "Breite"
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:241
+#: ../scripts/tmpl_cache/chart-publish.twig.php:258
 msgid "Height"
 msgstr "Höhe"
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:261
+#: ../scripts/tmpl_cache/chart-publish.twig.php:278
 msgid "Make it public"
 msgstr "Veröffentlichen"
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:265
+#: ../scripts/tmpl_cache/chart-publish.twig.php:282
 msgid ""
 "You can show some love to Datawrapper by agreeing to show your visualisation "
 "in our <a href='gallery.html'>public gallery</a>"
@@ -261,19 +261,19 @@ msgstr ""
 "wir deine Visualisierung in unserer <a href='gallery.html'>Galerie</a> "
 "zeigen."
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:267
+#: ../scripts/tmpl_cache/chart-publish.twig.php:284
 msgid "This is absolutely optional."
 msgstr "Natürlich absolut freiwillig."
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:272
+#: ../scripts/tmpl_cache/chart-publish.twig.php:289
 msgid "Yes, make it public!"
 msgstr "Ja, bitte veröffentlichen!"
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:281
+#: ../scripts/tmpl_cache/chart-publish.twig.php:298
 msgid "Congrats, you created your first chart!"
 msgstr "Herzlichen Glückwunsch, du hast Dein erstes Diagramm erstellt!"
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:286
+#: ../scripts/tmpl_cache/chart-publish.twig.php:303
 msgid ""
 "Now, to be able to embed the chart, we ask you to create an account. It's "
 "free and all you need is a valid email address. The chart you just created "
@@ -284,26 +284,26 @@ msgstr ""
 "ist eine gültige E-Mail Adresse. Dein soeben erstelltes Diagramm wird "
 "natürlich zum neuen Konto übertragen."
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:291
+#: ../scripts/tmpl_cache/chart-publish.twig.php:308
 #: ../scripts/tmpl_cache/home-login.twig.php:45
 #: ../scripts/tmpl_cache/home-login.twig.php:62
 #: ../scripts/tmpl_cache/login.twig.php:104
 msgid "Sign Up"
 msgstr "Einloggen / Registrieren"
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:313
+#: ../scripts/tmpl_cache/chart-publish.twig.php:330
 msgid "Congrats, you created a chart!"
 msgstr "Glückwunsch! Du hast ein Diagramm erstellt."
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:318
+#: ../scripts/tmpl_cache/chart-publish.twig.php:335
 msgid "The chart is accessible under"
 msgstr "Das Diagramm kann abgerufen werden unter"
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:332
+#: ../scripts/tmpl_cache/chart-publish.twig.php:349
 msgid "or via your <a href='/mycharts'>My Charts</a> page."
 msgstr "oder über <a href='/mycharts'>Meine Visualisierungen</a>."
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:337
+#: ../scripts/tmpl_cache/chart-publish.twig.php:354
 msgid ""
 "Now, to be able to publish and embed this chart into other websites, you "
 "need to activate the email address you entered during sign up process."
@@ -311,7 +311,7 @@ msgstr ""
 "Um das Diagramm zu veröffentlichen und in anderen Seiten einbetten zu "
 "können, musst du deine E-Mail-Adresse bestätigen."
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:342
+#: ../scripts/tmpl_cache/chart-publish.twig.php:359
 msgid ""
 "If you did not get any email within 5 minutes, here's the trouble shooting "
 "guide:"
@@ -319,11 +319,11 @@ msgstr ""
 "Falls du von uns innerhalb von5 Minuten keine E-Mail erhalten hast, befolge "
 "die folgenden Hinweise:"
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:347
+#: ../scripts/tmpl_cache/chart-publish.twig.php:364
 msgid "At first, don't worry. Everything you created will wait patiently"
 msgstr "Keine Sorge, dein Diagramm wartet geduldig auf die Aktivierung."
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:351
+#: ../scripts/tmpl_cache/chart-publish.twig.php:368
 msgid ""
 "Make sure that your spam filter didn't catch our activation email. They are "
 "sent from"
@@ -331,25 +331,25 @@ msgstr ""
 "Schau nach ob dein Spam-Filter vielleicht unsere Aktivierungs-Email "
 "gefiltert hat. Sie wurde gesendet von "
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:358
+#: ../scripts/tmpl_cache/chart-publish.twig.php:375
 msgid ""
 "Of course, you can also let us <a href='#resend'>resend the activation "
 "email</a>."
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:362
+#: ../scripts/tmpl_cache/chart-publish.twig.php:379
 msgid "If that didn't work either, please contact our support"
 msgstr "Wenn das auch nicht geholfen hat, bitte kontaktiere den Support."
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:400
+#: ../scripts/tmpl_cache/chart-publish.twig.php:417
 msgid "Create another graphic"
 msgstr "Neue Grafik erstellen"
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:407
+#: ../scripts/tmpl_cache/chart-publish.twig.php:424
 msgid "Duplicate this chart"
 msgstr "Diagramm duplizieren"
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:412
+#: ../scripts/tmpl_cache/chart-publish.twig.php:429
 msgid "Return to visualise step"
 msgstr "Zurück zum Visualisieren"
 
@@ -1097,7 +1097,11 @@ msgstr "Dein Benutzerkonto wurde vermutlich schon aktiviert."
 msgid "The password you entered is not correct."
 msgstr "Das Passwort ist nicht korrekt."
 
-#: ../lib/core/build/classes/datawrapper/ChartQuery.php:77
+#: ../lib/core/build/classes/datawrapper/ChartQuery.php:37
+msgid "Untitled"
+msgstr "Ohne Titel"
+
+#: ../lib/core/build/classes/datawrapper/ChartQuery.php:78
 msgid "Copy"
 msgstr "Kopie"
 
