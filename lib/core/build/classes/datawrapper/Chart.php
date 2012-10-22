@@ -138,7 +138,7 @@ class Chart extends BaseChart {
      */
     public function isWritable($user) {
         if ($user->isLoggedIn()) {
-            if ($this->getAuthorId() == $user->getId()) {
+            if ($this->getAuthorId() == $user->getId() || $user->isAdmin()) {
                 return true;
             } else {
                 return 'this is not your chart.';
