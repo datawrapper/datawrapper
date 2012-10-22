@@ -241,13 +241,15 @@
                 else color = me.theme.colors.palette[me.get('base-color', 0)];
             }
 
-            var hsl = d3.hsl(color), lch = d3.cie.lch(d3.rgb(color));
+            var hsl = d3.hsl(color), lch = d3.cie.lch(d3.rgb(color)),
+                bg = d3.rgb(me.theme.colors.background);
             if (series && !me.chart.isHighlighted(series)) {
                 // dim color
-                hsl.s = 0.2;
-                hsl.l = Math.min(0.85, hsl.l * 1.5);
-                lch.c *= 0.3;
-                lch.l = 90;// Math.min(90, lch.l * 1.5);
+                // hsl.s = 0.2;
+                // hsl.l = Math.min(0.85, hsl.l * 1.5);
+                // lch.c *= 0.3;
+                // lch.l = 90;// Math.min(90, lch.l * 1.5);
+                lch = d3.interpolateRgb(d3.rgb(color), bg)(0.72);
                 //lch.l = Math.min(1.5, lch.l * 1.5);
             } else if (series && me.chart.hasHighlight() && me.chart.isHighlighted(series)) {
                 hsl.l = Math.max(0.46, hsl.l * 0.5);
