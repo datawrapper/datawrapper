@@ -15,10 +15,12 @@
         },
 
         setRoot: function(el) {
-            this.__root = el;
+            var me = this;
+            me.__root = el;
             el.css({
                 position: 'relative'
             });
+            el.addClass(me.chart.get('type'));
         },
 
         getSize: function() {
