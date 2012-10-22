@@ -235,7 +235,7 @@ msgstr ""
 #: ../scripts/tmpl_cache/chart-publish.twig.php:282
 msgid ""
 "You can show some love to Datawrapper by agreeing to show your visualisation "
-"in our <a href='gallery.html'>public gallery</a>"
+"in our <a href='%GALLERY_URL%'>public gallery</a>"
 msgstr ""
 
 #: ../scripts/tmpl_cache/chart-publish.twig.php:284
