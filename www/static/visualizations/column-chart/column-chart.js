@@ -107,7 +107,7 @@
                 // add legend
                 var l = $('<div class="legend"></div>'),
                     xo = 0;
-                
+
                 me.chart.__dataset.eachRow(function(r) {
                     div = $('<div></div>');
                     div.css({
@@ -124,6 +124,9 @@
                         root: l
                     });
                     xo += me.labelWidth(me.chart.__dataset.rowName(r))+30;
+                });
+                l.css({
+                    position: 'relative'
                 });
                 $('#header', c.root.parent()).append(l);
             }
