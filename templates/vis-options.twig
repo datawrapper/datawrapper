@@ -1,6 +1,14 @@
 {% block visoptions %}
 
 <fieldset>
+
+    <div class="control-group select-color">
+        <label class="control-label" for="select-color">{% trans "Pick base color" %}</label>
+        <div class="controls">
+            <div id="select-color"></div>
+        </div>
+    </div>
+
     {% if vis.dimensions == 1 %}
     <div class="control-group select-row">
         <label class="control-label" for="text-title">{% trans "Select row to display" %}</label>

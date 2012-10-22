@@ -136,7 +136,7 @@ msgid "Visualize"
 msgstr ""
 
 #: ../scripts/tmpl_cache/chart-describe.twig.php:350
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:413
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:466
 msgid "Back"
 msgstr ""
 
@@ -361,65 +361,62 @@ msgid ""
 "example datasets:"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:231
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:288
 msgid "Select visualization and layout"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:237
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:294
 msgid "Visualization:"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:269
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:326
 msgid "Layout:"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:300
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:358
 msgid "Hint"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:302
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:360
 msgid ""
 "In case the visualization doesn't look like you expected, you should try to "
-"transpose the data."
+"<a href='#' id='btn-transpose'><i class='icon-rotate'></i> transpose the "
+"data</a>."
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:307
-msgid "Transpose chart data."
-msgstr ""
-
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:315
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:368
 msgid "Tell your story"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:321
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:374
 msgid "Title"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:325
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:378
 msgid "Introduction"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:329
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:382
 msgid "Highlight"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:337
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:390
 msgid "Tell the story in five words"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:345
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:398
 msgid "Guide the audience to read the chart"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:356
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:409
 msgid "select a data series"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:395
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:448
 msgid "Refine the chart"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:409
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:462
 msgid "Publish"
 msgstr ""
 
@@ -926,7 +923,11 @@ msgstr ""
 msgid "Get the data"
 msgstr ""
 
-#: ../scripts/tmpl_cache/vis-options.twig.php:36
+#: ../scripts/tmpl_cache/vis-options.twig.php:32
+msgid "Pick base color"
+msgstr ""
+
+#: ../scripts/tmpl_cache/vis-options.twig.php:48
 msgid "Select row to display"
 msgstr ""
 

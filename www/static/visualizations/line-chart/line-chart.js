@@ -17,6 +17,7 @@
             ds = me.dataset,
             bpad = me.theme.padding.bottom,
             directLabeling = me.get('direct-labeling'),
+            baseCol = me.get('base-color', 0),
             scales = me.__scales = {
                 x: me.xScale(),
                 y: me.yScale()
@@ -91,7 +92,7 @@
                 sw = me.getSeriesLineWidth(col);
 
                 if (true || !directLabeling) {
-                    me.setSeriesColor(col, me.theme.colors.palette[index]);
+                    me.setSeriesColor(col, me.theme.colors.palette[(index + baseCol) % me.theme.colors.palette.length]);
                 }
 
                 var strokeColor = me.getSeriesColor(col);

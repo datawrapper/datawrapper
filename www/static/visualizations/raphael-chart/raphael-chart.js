@@ -238,7 +238,7 @@
                     color = me.__customSeriesColors[series.name];
                 else if (me.__customRowColors && me.__customRowColors[row])
                     color = me.__customRowColors[row];
-                else color = me.theme.colors.palette[0];
+                else color = me.theme.colors.palette[me.get('base-color', 0)];
             }
 
             var hsl = d3.hsl(color), lch = d3.cie.lch(d3.rgb(color));
