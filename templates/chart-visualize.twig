@@ -261,12 +261,11 @@ $(function() {
         <div class="span5 visconfig"><div class="well">
             <div class="section">
                 <h3>{% trans "Select visualization and layout" %}</h3>
-                
                     <div class="half">
                         <label for="select-vis">{% trans "Visualization:" %}</label>
                         <select id="select-vis">
                             {% for vis in visualizations %}{% if vis.title %}
-                            <option value="{{ vis.id }}">{{ vis.title.en }}</option>
+                            <option value="{{ vis.id }}">{{ vis.title[language] }}</option>
                             {% endif %}{% endfor %}
                         </select>
                     </div>
