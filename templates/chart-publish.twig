@@ -98,6 +98,23 @@ $(function() {
     }
 
 
+    $('a[href=#resend]').click(function(e) {
+        e.preventDefault();
+        $.ajax({
+            url: '/api/account/resend-activation',
+            type: 'POST',
+            dataType: 'json',
+            success: function(res) {
+                console.log(res);
+                if (res.status == 'ok') {
+                    DW.logMessage(res.data, $(e.target).parent());
+                } else {
+                    DW.logError(res.message, $(e.target).parent());
+                }
+            }
+        });
+    });
+
     /*setTimeout(function() {
 
         snapshot(1200,600);
