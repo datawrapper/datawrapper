@@ -311,7 +311,7 @@
             if (me.chart.hasRowHeader()) {
                 var last_label_x = -100, min_label_distance = rotate45 ? 30 : 40;
                 _.each(me.chart.rowLabels(), function(val, i) {
-
+                    min_label_distance = Math.max(min_label_distance, me.labelWidth(val)+10);
                 });
                 _.each(me.chart.rowLabels(), function(val, i) {
                     var x = me.__scales.x(i),
