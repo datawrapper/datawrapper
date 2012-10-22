@@ -9,7 +9,7 @@ body {
     font-family: arial,sans-serif;
     font-weight: 400;
     line-height: 15px;
-    color: #333;
+    color: #16212c;
     font-size: 12px;
     background: red;
     overflow: visible;
@@ -22,7 +22,6 @@ h1 {
     margin: 0 0 10px;
     line-height: 18px;
     text-align: left;
-    color: #006cb5;
     padding: 5px 0 10px;
 }
 
@@ -35,7 +34,7 @@ p { margin: 10px 0; line-height: 19px;}
 
 .label span {
     font-size: 10px;
-    color: #333;
+    color: #16212c;
 }
 
 .label.highlighted, .label.axis {
@@ -95,8 +94,12 @@ p { margin: 10px 0; line-height: 19px;}
 }
 
 #footer a {
-    color: #2b2b2a;
+    color: #003366;
     text-decoration: underline;
+}
+
+#footer a:hover {
+    color: #129af0;
 }
 
 .footer-left {
