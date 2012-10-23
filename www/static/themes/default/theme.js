@@ -16,7 +16,6 @@
             focus: '#0063A5',
             context: '#aaa',
             axis: '#000000',
-            grid: '#999999',
             positive: '#85B4D4',
             'highlight-positive': '#85B4D4',
             negative: '#E31A1C',
