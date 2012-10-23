@@ -2,7 +2,7 @@
     "title": {
         "en": "Bar Chart",
         "de": "Balkendiagramm (horiz)",
-        "fr": "Diagramme temporel"
+        "fr": "Diagramme à bandes horizontales"
     },
     "version": "0.8",
     "extends": "raphael-chart",
@@ -21,7 +21,7 @@
             "label": {
                 "en": "Autmatically sort bars",
                 "de": "Balken sortieren",
-                "fr": "Barres de tri Autmatically"
+                "fr": "Trier les barres"
             }
         },
         "reverse-order": {
@@ -29,7 +29,7 @@
             "label": {
                 "en": "Reverse order",
                 "de": "Umgekehrte Reihenfolge",
-                "fr": "inverser ordre"
+                "fr": "inverser l'ordre"
             }
         },
         "labels-inside-bars": {
