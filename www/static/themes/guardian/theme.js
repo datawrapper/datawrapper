@@ -11,6 +11,7 @@
     Datawrapper.Themes.Guardian = _.extend({}, Datawrapper.Themes.Base, {
 
         colors: {
+            palette: ['#e41f25', '#96c22c', '#fdc400', '#2974b9', '#6A3D9A', '#B15928'],
             highlight: '#e41f25',
             focus: '#e41f25',
             context: '#aaa',
@@ -19,8 +20,8 @@
             positive: '#0089c0',
             negative: '#e41f25',
             'highlight-negative': '#801100',
-            background: '#ffffff',
-            palette: ['#e41f25', '#96c22c', '#fdc400', '#2974b9', '#6A3D9A', '#B15928']
+            background: '#ffffff'
+            //gradient: ['#2974b9', '#4374AE', '#6A91C8', '#92AEDD', '#BCCBEE' ]
         },
 
         lineChart: {

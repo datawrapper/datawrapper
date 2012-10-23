@@ -32,6 +32,17 @@ function error_chart_not_published() {
     );
 }
 
+
+function error_chart_deleted() {
+    error_page('chart',
+        _('Too late'),
+        _('Sorry, but it seems that the chart you want to see has already passed away because its author decided to delete it.'),
+        false,
+        404
+    );
+}
+
+
 function error_not_allowed_to_publish() {
     error_page('chart',
         _('Whoops! You\'re not allowed to publish charts, yet'),

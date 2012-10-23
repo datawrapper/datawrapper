@@ -39,8 +39,20 @@
 
             me.horzGrid();
 
+            var base = me.theme.colors.palette[me.get('base-color', 0)],
+                bLch = d3.cie.lch(d3.rgb(base)),
+                ml = Math.min(bLch.l, 50),
+                colors = [];
+
+
+            colors = d3.range(ml, 91, (90 - ml) / (me.chart.numRows() - 1)).map(function(l) {
+                return ''+d3.cie.lch(l, bLch.c, bLch.h).rgb();
+            });
+            //
+
+
             ds.eachRow(function(i) {
-                me.setRowColor(i, me.theme.colors.palette[i % me.theme.colors.palette.length]);
+                me.setRowColor(i, colors[i % colors.length]);
             });
 
             _.each(me.chart.dataSeries(sortBars, reverse), function(series, s) {
@@ -107,7 +119,7 @@
                 // add legend
                 var l = $('<div class="legend"></div>'),
                     xo = 0;
-                
+
                 me.chart.__dataset.eachRow(function(r) {
                     div = $('<div></div>');
                     div.css({
@@ -124,6 +136,9 @@
                         root: l
                     });
                     xo += me.labelWidth(me.chart.__dataset.rowName(r))+30;
+                });
+                l.css({
+                    position: 'relative'
                 });
                 $('#header', c.root.parent()).append(l);
             }

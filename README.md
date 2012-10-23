@@ -8,4 +8,4 @@ It was created by [Mirko Lorenz](http://www.mirkolorenz.com/), [Nicolas Kayser-B
 
 ### Current progress
 
-At the moment we're working on the first version of Datawrapper that is going to replace the current public prototype we released earlier at [datawrapper.de](http://datawrapper.de).
+At the moment we're getting closer and closer to Datawrapper 1.0, which is going to replace the current public prototype we released earlier at [datawrapper.de](http://datawrapper.de).
