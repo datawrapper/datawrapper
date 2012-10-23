@@ -167,9 +167,19 @@ body {
 }
 
 .navbar .brand {
-    padding-top: 13px;
+    padding-top: 14px;
+    padding-bottom: 4px;
     color: #556;
-    text-shadow: 1px 1px 0 rgba(255, 255, 255, .55)
+    text-shadow: 1px 1px 0 rgba(255, 255, 255, .55);
+    white-space: nowrap;
+}
+
+.navbar .brand img {
+    float: left;
+    margin-right: 7px;
+    margin-left: 4px;
+    position:relative;
+    top:-4px;
 }
 
 .navbar .brand .beta {
@@ -180,6 +190,7 @@ body {
     left:3px;
     color:#999;
 }
+
 
 .navbar .nav > li > a {
     padding-top: 15px;
@@ -658,6 +669,14 @@ dl.dl-horizontal dd {
 
 #vis-options legend + .control-group {
     margin-top: 0;
+}
+
+#vis-options .control-label {
+    width: 45%;
+}
+
+#vis-options .controls {
+    margin-left: 50%;
 }
 
 .highlighted-series li {

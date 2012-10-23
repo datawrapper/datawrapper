@@ -10,7 +10,12 @@
                 </a>
 
                 <a class="brand" href="/">
-                    <img src="/static/img/abzv-logo.png" style="float: left; margin-right: 7px;">
+                    <!--[if IE ]>
+                    <img src="/static/img/abzv-logo.png">
+                    <![endif]-->
+                    <![if !IE]>
+                    <img src="/static/img/abzv-logo.svg" height="30" width="69" />
+                    <![endif]>
                     Datawrapper<span class="beta">BETA</span>
                 </a>
 

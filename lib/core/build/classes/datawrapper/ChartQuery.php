@@ -34,9 +34,10 @@ class ChartQuery extends BaseChartQuery {
                     $chart->setGuestSession(session_id());
                 }
                 // find a nice, more or less unique title
-                $title = '[Untitled';
+                $untitled = _('Untitled');
+                $title = '[' . $untitled;
                 $untitledCharts = $this->filterByAuthorId($user->getId())
-                    ->filterByTitle('[Untitled%')
+                    ->filterByTitle('['.$untitled.'%')
                     ->filterByDeleted(false)
                     ->find();
                 if (count($untitledCharts) > 0) $title .= '-'.count($untitledCharts);

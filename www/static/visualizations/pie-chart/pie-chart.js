@@ -88,11 +88,12 @@
                 me.warn('<b>Warning:</b> Pie charts are not suitable for displaying negative values.');
             }
             if (ocnt > 0) {
-                oseries.push(new Miso.Column({
+                var _others = {
                     name: 'others',
-                    type: series[0].type,
                     data: [others]
-                }));
+                };
+                oseries.push(_others);
+                me.chart.__dataset.__seriesByName[_others.name] = _others;
             }
 
             _.each(oseries, function(s) {

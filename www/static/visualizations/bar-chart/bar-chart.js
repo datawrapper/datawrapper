@@ -83,7 +83,7 @@
 
                         }
                     }
-                    me.registerSeriesLabel(me.label(val_x, d.y + d.h * 0.5, me.chart.formatValue(series.data[r], s === 0),{
+                    me.registerSeriesLabel(me.label(val_x, d.y + d.h * 0.5, me.chart.formatValue(series.data[r], true),{
                         w: 40,
                         align: val_align,
                         cl: 'value' + lblClass

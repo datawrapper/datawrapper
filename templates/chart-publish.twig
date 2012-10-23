@@ -98,6 +98,23 @@ $(function() {
     }
 
 
+    $('a[href=#resend]').click(function(e) {
+        e.preventDefault();
+        $.ajax({
+            url: '/api/account/resend-activation',
+            type: 'POST',
+            dataType: 'json',
+            success: function(res) {
+                console.log(res);
+                if (res.status == 'ok') {
+                    DW.logMessage(res.data, $(e.target).parent());
+                } else {
+                    DW.logError(res.message, $(e.target).parent());
+                }
+            }
+        });
+    });
+
     /*setTimeout(function() {
 
         snapshot(1200,600);
@@ -155,10 +172,10 @@ $(function() {
 
             <textarea id="iframe-code" class="span4" rows="5"><iframe src="http://{{ DW_CHART_CACHE_DOMAIN }}/{{ chart.id }}" frameborder="0" allowtransparency="true" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen width="{{ chart.metadata.publish['embed-width'] }}" height="{{ chart.metadata.publish['embed-height'] }}"></iframe></textarea>
 
-             <h3>{% trans "Make it public" %}</h3>
-             <p>{% trans "You can show some love to Datawrapper by agreeing to show your visualisation in our <a href='gallery.html'>public gallery</a>" %}. {% trans "This is absolutely optional." %}</p>
+             <h3>{% trans "Show in Gallery" %}</h3>
+             <p>{% trans "You can show some love to Datawrapper by agreeing to show your visualisation in our <a href='%GALLERY_URL%'>public gallery</a>" %}. {% trans "This is absolutely optional." %}</p>
 
-             <label class="checkbox"><input type="checkbox" id="make-public" /> {% trans "Yes, make it public!" %}</label>
+             <label class="checkbox"><input type="checkbox" id="make-public" /> {% trans "Yes, show this chart in the gallery" %}</label>
 
             {% elseif user.role == 'guest' %}
 

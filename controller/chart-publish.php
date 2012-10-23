@@ -22,6 +22,8 @@ $app->get('/chart/:id/publish', function ($id) use ($app) {
         );
         add_header_vars($page, 'chart');
         add_editor_nav($page, 4);
+        $res = $app->response();
+        $res['Cache-Control'] = 'max-age=0';
 
         if ($user->isAbleToPublish() && ($chart->getLastEditStep() == 3 || $app->request()->get('republish') == 1)) {
             // generate thumbnails

@@ -6,19 +6,108 @@
 {% set vismeta = chart.metadata.visualize %}
 
 <script type="text/javascript">
+
 $(function() {
+
+    function classify(s) {
+        s = s.replace(/[-_\s]+(.)?/g, function(match, c){ return c.toUpperCase(); });
+        s = s.substr(0, 1).toUpperCase() + s.substr(1);
+        return s;
+    }
+
+    $.fn.colorpicker = function(props) {
+        var rt = $(this),
+            colors = rt.data('colors').split(','),
+            active = rt.data('color');
+        // clean up html at first
+        rt.html('');
+        rt.css({
+            position: 'relative'
+        });
+        $.each(colors, function(i, col) {
+            var d = $('<div />');
+            d.css({
+                position: 'absolute',
+                left: i*28 - (col == active ? 1 : 0),
+                top: col == active ? -1 : 0,
+                height: 26,
+                width: 26,
+                cursor: 'pointer',
+                background: col,
+                'border-radius': col == active ? 4 : 0,
+                'border-width': col == active ? 3 : 2,
+                'border-style': 'solid',
+                'border-color': col == active ? 'black' : 'white',
+                'z-index': (col == active ? '10' : '0')
+            });
+            d.data('color', col);
+            d.click(function(e) {
+                var a = $(e.target);
+                rt.data('color', a.data('color'));
+                rt.colorpicker(props);
+                if (props && props.change) props.change(rt.data('color'));
+            });
+            rt.append(d);
+        });
+    };
 
     var _typeHasChanged = false,
         _themeHasChanged = false,
         chart = DW.currentChart,
-        themes = {{ themes | json | raw }};
+        themes = {{ themes | json | raw }},
+        themesById = {};
+
+    $.each(themes, function(i, theme) { themesById[theme.id] = theme; themesById[theme.id].__loaded = false });
+
+    function loadThemeColors() {
+        var picker = $('#select-color'),
+            themeid = $('#select-theme').val(),
+            theme = themesById[themeid],
+            needed = [themeid];
+        while (theme['extends']) {
+            needed.unshift(theme['extends']);
+            theme = themesById[theme['extends']];
+        }
+        function loadNext() {
+            if (needed.length > 0) {
+                var next = themesById[needed.shift()];
+                if (!next.__loaded) {
+                    next.__loaded = true;
+                    $.getScript('/static/themes/' + next.id + '/theme.js', loadNext);
+                } else {
+                    loadNext();
+                }
+            } else {
+                allLoaded();
+            }
+        }
+        function allLoaded() {
+            var themeClass = classify(themeid),
+                theTheme = Datawrapper.Themes[themeClass];
+
+            picker.data('colors', theTheme.colors.palette.join(','));
+            picker.data('color', theTheme.colors.palette[chart.get('metadata.visualize.base-color', 0)]);
+            picker.colorpicker({
+                change: function(color) {
+                    chart.set('metadata.visualize.base-color', theTheme.colors.palette.indexOf(color));
+                }
+            });
+        }
+        loadNext();
+    } // end loadThemeColors()
+
+    function loadOptions() {
+        $('#vis-options').load('/xhr/'+chart.get('id')+'/vis-options?nocache='+Math.random(), function() {
+            // update colors
+            loadThemeColors();
+        });
+    }
 
     chart.onSave(function(chart) {
 
         $('#iframe-vis').attr('src', '/chart/{{ chart.id }}/preview?nocache='+Math.random());
 
         if (_themeHasChanged) {
-            _themeHasChanged = false;
             $("#iframe-vis").load(updateVisBackground);
             _.each(themes, function(theme) {
                 if (theme.id == chart.get('theme')) {
@@ -29,11 +118,13 @@ $(function() {
             });
         }
 
-        if (_typeHasChanged) {
+        if (_typeHasChanged || _themeHasChanged) {
             // load new visualization options
-            $('#vis-options').load('/xhr/'+chart.get('id')+'/vis-options?nocache='+Math.random());
-            _typeHasChanged = false;
+            loadOptions();
         }
+
+        _themeHasChanged = false;
+        _typeHasChanged = false;
     });
 
     chart.sync('#select-vis', 'type');
@@ -98,6 +189,7 @@ $(function() {
                 return false;
             }
         });
+        loadThemeColors();
     });
 
     $('.collapse').on('shown', function(e) {
@@ -142,10 +234,11 @@ $(function() {
         });
     });
 
-    $('#btn-transpose').click(function() {
+    $('#btn-transpose').click(function(e) {
+        e.preventDefault();
         chart.set('metadata.data.transpose', !chart.get('metadata.data.transpose'));
         setTimeout(function() {
-            $('#vis-options').load('/xhr/'+chart.get('id')+'/vis-options?nocache='+Math.random());
+            loadOptions();
         }, 2000);
     });
 });
@@ -155,7 +248,7 @@ $(function() {
 <div class="dw-create-visualize">
 
     <div class="row">
-        <div class="span8">
+        <div class="span7">
 
             <div id="iframe-wrapper" style="height:500px;">
                 <iframe src="/chart/{{ chart.id }}/preview" id="iframe-vis">
@@ -165,15 +258,14 @@ $(function() {
         </div>
 
 
-        <div class="span4 visconfig"><div class="well">
+        <div class="span5 visconfig"><div class="well">
             <div class="section">
                 <h3>{% trans "Select visualization and layout" %}</h3>
-                
                     <div class="half">
                         <label for="select-vis">{% trans "Visualization:" %}</label>
                         <select id="select-vis">
                             {% for vis in visualizations %}{% if vis.title %}
-                            <option value="{{ vis.id }}">{{ vis.title.en }}</option>
+                            <option value="{{ vis.id }}">{{ vis.title[language] }}</option>
                             {% endif %}{% endfor %}
                         </select>
                     </div>
@@ -187,10 +279,9 @@ $(function() {
                         </select>
                     </div>
                 <div class="clearfix"></div>
-                <p><b>{% trans "Hint" %}:</b> {% trans "In case the visualization doesn't look like you expected, you should try to transpose the data." %}</p>
-                <ul class="unstyled">
-                    <li><button id="btn-transpose" class="btn"><i class="icon-rotate"></i> {% trans "Transpose chart data." %}</button></li>
-                </ul>
+                    <p>
+                        <b>{% trans "Hint" %}:</b> {% trans "In case the visualization doesn't look like you expected, you should try to <a href='#' id='btn-transpose'><i class='icon-rotate'></i> transpose the data</a>." %}
+                    </p>
             </div>
 
             <div class="section">
@@ -214,7 +305,7 @@ $(function() {
                     </div>
 
                     <div class="story-highlight">
-                        <label>Highlight the most import data series:</label>
+                        <label>{% trans "Highlight the most import data series:" %}</label>
                         <div>
                             <select id="highlight-series" class="span2">
                                 <option value="---">- {% trans "select a data series" %} -</option>
