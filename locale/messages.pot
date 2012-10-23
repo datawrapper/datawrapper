@@ -356,6 +356,10 @@ msgid "Learn more about how to upload your data"
 msgstr ""
 
 #: ../scripts/tmpl_cache/chart-upload.twig.php:170
+msgid "Sample Data"
+msgstr ""
+
+#: ../scripts/tmpl_cache/chart-upload.twig.php:174
 msgid ""
 "If you simply want to play around with Datawrapper, here's a list of some "
 "example datasets:"
@@ -365,7 +369,7 @@ msgstr ""
 msgid "Select visualization and layout"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:330
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:329
 msgid "Visualization:"
 msgstr ""
 

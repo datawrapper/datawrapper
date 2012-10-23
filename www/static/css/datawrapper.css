@@ -835,3 +835,7 @@ form.well form {
 .docs li {
     margin-bottom: 8px;
 }
+
+.demo-datasets p {
+    margin: 5px 0 10px;
+}
