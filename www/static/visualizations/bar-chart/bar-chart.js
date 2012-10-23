@@ -68,7 +68,7 @@
                         val_x = val >= 0 ? d.x + d.w - 10 : d.x + 10;
                         lbl_align = val >= 0 ? 'left' : 'right';
                         val_align = val >= 0 ? 'right' : 'left';
-                        lblClass += ' reverse';
+                        if (me.invertLabel(fill)) lblClass += ' inverted';
 
                         // check if the label is bigger than the bar
                         var slblw = me.labelWidth(series.name, 'series')+10,

@@ -49,7 +49,7 @@ p { margin: 10px 0; line-height: 19px;}
     font-weight: bold;
 }
 
-.label.highlighted.reverse span {
+.label.inverted span {
     color: #fff;
 }
 

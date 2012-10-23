@@ -4,7 +4,7 @@
         "de": "Donut-Diagramm",
         "fr": "Diagramme temporel"
     },
-    "version": "0.9",
+    "version": "0.9.1",
     "extends": "pie-chart",
     "author": {
         "name": "gka",

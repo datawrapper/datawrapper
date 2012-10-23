@@ -42,7 +42,7 @@ h1 {
     font-weight: bold;
 }
 
-.label.highlighted.reverse span {
+.label.inverted span {
     color: #fff;
 }
 

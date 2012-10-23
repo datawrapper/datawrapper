@@ -59,8 +59,13 @@ h1 {
     font-weight: bold;
 }
 
-.label.highlighted.reverse span {
-    color: #000;
+.pie-chart .label.hover span,
+.donut-chart .label.hover span {
+    color: #fff;
+}
+
+.label.inverted span {
+    color: #000!important;
 }
 
 .label.highlighted {

@@ -55,7 +55,7 @@ body.chart {
     font-weight: bold;
 }
 
-.label.highlighted.reverse span {
+.label.inverted span {
     color: #fff;
 }
 
