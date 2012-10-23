@@ -4,7 +4,7 @@
         "de": "Liniendiagramm",
         "fr": "Diagramme temporel"
     },
-    "version": "0.9",
+    "version": "0.9.1",
     "author": {
         "name": "gka",
         "email": "gka@vis4.net"

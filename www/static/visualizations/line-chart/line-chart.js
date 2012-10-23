@@ -92,7 +92,15 @@
                 sw = me.getSeriesLineWidth(col);
 
                 if (true || !directLabeling) {
-                    me.setSeriesColor(col, me.theme.colors.palette[(index + baseCol) % me.theme.colors.palette.length]);
+                    var palette = me.theme.colors.palette.slice();
+                    for (var i=0; i < baseCol; i++) palette.push(palette.shift());
+                    if (all_series.length > palette.length) {
+                        // add variations of palette colors
+                        $.each(palette, function(i, col) {
+                            palette.push(d3.cie.lch(d3.rgb(col)).darker(-2).toString());
+                        });
+                    }
+                    me.setSeriesColor(col, palette[(index + baseCol) % palette.length]);
                 }
 
                 var strokeColor = me.getSeriesColor(col);
