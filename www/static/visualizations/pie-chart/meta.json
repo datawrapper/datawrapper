@@ -4,7 +4,7 @@
         "de": "Kreisdiagramm",
         "fr": "Diagramme temporel"
     },
-    "version": "0.8",
+    "version": "0.9",
     "extends": "raphael-chart",
     "author": {
         "name": "gka",
