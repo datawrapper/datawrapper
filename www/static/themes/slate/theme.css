@@ -1,0 +1,165 @@
+
+/*
+ * Slate Theme
+ * -----------
+ *
+ * based on http://bootswatch.com/slate/
+ */
+
+body.chart {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-weight: 400;
+    margin:5px 10px;
+    font-size: 13px;
+    line-height: 18px;
+    background: #272B30;
+    overflow: visible;
+    overflow-x:hidden;
+    color: #757C82;
+}
+
+a {
+    color: #fff;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
+h1 {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0 0 15px;
+    text-align: left;
+}
+
+.chart p { margin: 15px 0; line-height: 19px;}
+
+#chart {
+    margin-top: 25px;
+}
+
+.label span {
+    font-size: 12px;
+    color: #757C82;
+}
+
+.line-chart .label span {
+    background: #272B30!important;
+}
+
+.label.highlighted, .label.axis {
+    font-size: 12px;
+    z-index: 100;
+}
+
+.label.hover {
+    font-weight: bold;
+}
+
+.label.highlighted.reverse span {
+    color: #000;
+}
+
+.label.highlighted {
+    font-weight: bold;
+}
+
+.label.value span {
+    font-size: 12px;
+}
+
+.label.series span {
+    font-size: 12px;
+}
+
+
+.tooltip {
+    z-index: 200;
+    padding-bottom: 0px;
+}
+
+.tooltip .content {
+    background-color: #202328;
+    border: 1px solid #101214;
+    border-radius: 4px 4px 4px 4px;
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5) inset;
+    padding: 5px 8px;
+}
+
+.tooltip label {
+    font-weight: 700;
+}
+
+.tooltip label:after {
+    content: ": ";
+}
+
+#footer {
+    margin: 10px 0px 0px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.footer-left {
+    float: left;
+}
+.footer-right {
+    float: right;
+}
+
+.clearfix:after {
+    content: ".";
+    display: block;
+    clear: both;
+    visibility: hidden;
+    line-height: 0;
+    height: 0;
+}
+
+.clearfix {
+    display: inline-block;
+}
+
+html[xmlns] .clearfix {
+    display: block;
+}
+
+* html .clearfix {
+    height: 1%;
+}
+
+svg .axis, svg .tick, svg .grid, svg rect {
+    shape-rendering: crispEdges;
+}
+
+@media screen and (max-width: 400px) {
+    h1, #footer, p, .label {
+        display: none;
+        position: absolute;
+        height: 0;
+        width: 0;
+        padding: 0;
+        margin: 0;
+    }
+
+    #chart {
+        margin: 0;
+    }
+
+    body { margin:0; padding: 0;}
+}
+
+.label.rotate90 {
+    -moz-transform: rotate(-90deg);
+    -webkit-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
+    -o-transform: rotate(-90deg);
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+}
+
+.label.smaller span {
+    font-size: 80%;
+}
