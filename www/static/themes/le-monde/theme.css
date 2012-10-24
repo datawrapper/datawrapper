@@ -28,8 +28,9 @@ h1 {
 
 p { margin: 10px 0; line-height: 19px;}
 
-#chart {
+body.chart {
     margin-top: 30px;
+    font-family: arial,sans-serif;
 }
 
 .label span {
@@ -84,13 +85,11 @@ p { margin: 10px 0; line-height: 19px;}
 }
 
 #footer {
-    margin: 10px 0px 0px;
-    padding-top: 5px;
-    padding-bottom: 5px;
     clear: both;
     text-transform: uppercase;
     color: #2b2b2a;
     font-size: 10px;
+    height:45px;
 }
 
 #footer a {
@@ -104,6 +103,8 @@ p { margin: 10px 0; line-height: 19px;}
 
 .footer-left {
     float: left;
+    position: relative;
+    top: 27px;
 }
 .footer-right {
     float: right;
