@@ -815,12 +815,9 @@
             //ch += $('body').innerHeight() - $('body').height();
             var m = $('#chart').css('margin-top'),
                 maxH = $(window).height() - ch - Number(m.substr(0, m.length-2));
-            // NOTE (edouard): for Le Monde theme, with the large footer,
-            // I have to reduce the maxHeight by 10, on firefox and chrome too.
-            maxH -= 10
             // IE Fix
-            // if ($.browser.msie) maxH -= 10;
-            return maxH - 10;
+            if ($.browser.msie) maxH -= 10;
+            return maxH;
         },
 
         /**
