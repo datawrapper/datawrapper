@@ -4,6 +4,6 @@
     "restricted": null,
     "locale": "fr_FR",
     "extends": "default",
-    "default_width": 460,
+    "restrict": "@lemonde.fr",
     "version": "0.1"
 }
