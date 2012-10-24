@@ -16,10 +16,13 @@ body.chart {
 }
 
 h1 {
-    font-size: 24px;
-    font-weight: 700;
-    margin: 0 0 15px;
+    font-size: 22px;
+    font-weight: 300;
+    margin: 0 0 20px;
     text-align: left;
+}
+
+h1 span {
 }
 
 .chart p { margin: 15px 0; line-height: 19px;}
@@ -42,7 +45,7 @@ h1 {
     font-weight: bold;
 }
 
-.label.highlighted.reverse span {
+.label.inverted span {
     color: #fff;
 }
 

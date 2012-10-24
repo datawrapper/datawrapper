@@ -221,7 +221,15 @@ $(function() {
             {% endif %}
         </div>
         <div class="span8">
+            {% if user.isAbleToPublish %}
+
+            <iframe src="http://{{ DW_CHART_CACHE_DOMAIN }}/{{ chart.id }}" id="iframe-vis" style="width:{{ chart.metadata.publish['embed-width'] }}px;height:{{ chart.metadata.publish['embed-height'] }}px"></iframe>
+
+            {% else %}
+
             <iframe src="/chart/{{ chart.id }}/preview" id="iframe-vis" style="width:{{ chart.metadata.publish['embed-width'] }}px;height:{{ chart.metadata.publish['embed-height'] }}px"></iframe>
+
+            {% endif %}
         </div>
     </div>
 

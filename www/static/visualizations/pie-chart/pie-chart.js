@@ -140,12 +140,14 @@
                 me.__seriesAngles[s.name] = normalize(a0, a1);
 
                 sa += reverse ? -da : da;
+                var lblcl = me.chart.hasHighlight() && me.chart.isHighlighted(s) ? 'series highlighted' : 'series';
+                if (me.invertLabel(fill)) lblcl += ' inverted';
 
                 me.registerSeriesLabel(me.label(lx, ly, s.name+'<br />'+value, {
                     w: 80,
                     align: 'center',
                     valign: 'middle',
-                    cl: me.chart.hasHighlight() && me.chart.isHighlighted(s) ? 'series highlighted reverse' : 'series'
+                    cl: lblcl
                 }), s);
 
             });
@@ -199,7 +201,8 @@
         },
 
         hoverSeries: function(series) {
-            var me = this;
+            var me = this,
+                bg = d3.cie.lch(d3.rgb(me.theme.colors.background));
             _.each(me.chart.dataSeries(), function(s) {
                 _.each(me.__seriesLabels[s.name], function(lbl) {
                     if (series !== undefined && s.name == series.name) {
@@ -209,7 +212,7 @@
                     }
                     _.each(me.__seriesElements[s.name], function(el) {
                         var fill = me.getSeriesColor(s, 0), stroke, hover = series !== undefined && s.name == series.name;
-                        if (hover) fill = d3.cie.lch(d3.rgb(fill)).darker(0.6).toString();
+                        if (hover) fill = d3.cie.lch(d3.rgb(fill)).darker(bg.l > 60 ? 0.6 : -0.6).toString();
                         if (el.attrs.fill != fill)
                             el.animate({ fill: fill }, 50);
                         if (hover) el.toFront();

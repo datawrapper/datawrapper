@@ -4,7 +4,7 @@
         "de": "Liniendiagramm",
         "fr": "Graphique linéaire"
     },
-    "version": "0.8",
+    "version": "0.9.1",
     "author": {
         "name": "gka",
         "email": "gka@vis4.net"

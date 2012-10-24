@@ -108,9 +108,10 @@
             <h3>{% trans "How it works.." %}</h3>
             <p>{% trans "We made getting data into Datawrapper as easy as possible. If you're working in Excel or OpenOffice, just select your data (including header row/column) and paste it in the following text field." %} <a href="/xhr/docs/upload" data-toggle="modal">{% trans "Learn more about how to upload your data" %}</a>.</p>
 
-            <p></p>
 
-            <p>{% trans "If you simply want to play around with Datawrapper, here's a list of some example datasets:" %}
+            <div class="demo-datasets">
+                <h4>{% trans "Sample Data" %}</h4>
+                <p>{% trans "If you simply want to play around with Datawrapper, here's a list of some example datasets:" %}</p>
                 <ul id="demo-datasets" class="">
                     {% for dataset in datasets %}
                     <li><a href="#{{ dataset.id }}" class="demo-dataset" data-data="{{ dataset.data }}">{{ dataset.title }}</a></li>
@@ -128,7 +129,7 @@
                 });
 
                 </script>
-            </p>
+            </div>
         </div>
 
         <div class="span4 inactive">
