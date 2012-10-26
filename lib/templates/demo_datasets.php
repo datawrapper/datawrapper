@@ -7,6 +7,14 @@ function getDemoDatasets() {
     $datasets[] = array(
     	'id' => 'marriages',
     	'title' => _('Line chart: Marriages in Germany (per capita)'),
+        'chartid' => '',
+        'presets' => array(
+            'type' => 'line-chart',
+            'metadata.describe.source-name' => 'Statistisches Bundesamt',
+            'metadata.describe.source-url' => 'http://destatis.de',
+            'metadata.data.vertical-header' => true,
+            'metadata.data.transpose' => false
+        ),
     	'data' => _('Year').'	'._('Marriages').'
 1946	8.1
 1947	9.8
