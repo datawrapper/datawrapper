@@ -47,9 +47,7 @@
 
             colors = d3.range(ml, 91, (90 - ml) / (me.chart.numRows() - 1)).map(function(l) {
                 return ''+d3.cie.lch(l, bLch.c, bLch.h).rgb();
-            });
-            //
-
+            }).reverse();
 
             ds.eachRow(function(i) {
                 me.setRowColor(i, colors[i % colors.length]);
