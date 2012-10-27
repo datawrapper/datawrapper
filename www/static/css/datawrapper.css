@@ -184,11 +184,11 @@ body {
 
 .navbar .brand .beta {
     font-size:10px;
-    font-weight:500;
+    font-weight:400;
     position:relative;
     top:-8px;
     left:3px;
-    color:#999;
+    color:#aaa;
 }
 
 
@@ -381,6 +381,12 @@ footer p {
     color: #555;
     max-width: 70%;
     margin-bottom: 0;
+}
+
+footer .version {
+    color: #bbb;
+    display: block;
+    text-align: right;
 }
 
 .footer-logo {
