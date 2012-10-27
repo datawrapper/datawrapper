@@ -83,7 +83,7 @@ function get_chart_content($chart, $user, $minified = false, $path = '') {
         );
     }
 
-    return array(
+    $page = array(
         'chartData' => $chart->loadData(),
         'chart' => $chart,
         'chartLocale' => str_replace('_', '-', $locale),
@@ -96,4 +96,16 @@ function get_chart_content($chart, $user, $minified = false, $path = '') {
         'visJS' => array_merge(array_reverse($vis_js), $vis_libs),
         'origin' => !empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : ''
     );
+
+    if (isset($GLOBALS['dw_config']['piwik'])) {
+        $page['PIWIK_URL'] = $GLOBALS['dw_config']['piwik']['url'];
+        if (isset($GLOBALS['dw_config']['piwik']['idSiteCharts'])) {
+            $page['PIWIK_IDSITE'] = $GLOBALS['dw_config']['piwik']['idSiteCharts'];
+        } else {
+            $page['PIWIK_IDSITE'] = $GLOBALS['dw_config']['piwik']['idSite'];
+        }
+
+    }
+
+    return $page;
 }

@@ -134,6 +134,11 @@ function add_header_vars(&$page, $active = null) {
     $page['DW_DOMAIN'] = $GLOBALS['dw_config']['domain'];
     $page['DW_CHART_CACHE_DOMAIN'] = $GLOBALS['dw_config']['chart_domain'];
     $page['ADMIN_EMAIL'] = $GLOBALS['dw_config']['admin_email'];
+    if (isset($GLOBALS['dw_config']['piwik'])) {
+        $page['PIWIK_URL'] = $GLOBALS['dw_config']['piwik']['url'];
+        $page['PIWIK_IDSITE'] = $GLOBALS['dw_config']['piwik']['idSite'];
+    }
+
 }
 
 
