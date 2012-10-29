@@ -4,6 +4,12 @@
  * -------------
  *
  */
+@font-face {
+    font-family: "TheSerifOffice";
+    font-style: normal;
+    font-weight: normal;
+    src: url("http://s1.lemde.fr/medias/web/font/eot/TheSerifOffice-TT7_.eot?#iefix") format("embedded-opentype"), url("http://s1.lemde.fr/medias/web/font/woff/TheSerifOffice-TT7_.woff") format("woff");
+}
 
 body {
     font-family: arial,sans-serif;
@@ -29,7 +35,17 @@ h1 {
 p { margin: 10px 0; line-height: 19px;}
 
 body.chart {
-    font-family: arial,sans-serif;
+    font-family: "arial",sans-serif;
+}
+
+.chart h1 {
+    background-image: url("triangleArrow-Right.png");
+    background-size: 0.5em auto;
+    background-position: left 9px;
+    background-repeat: no-repeat;
+    padding-left: 16px;
+    font-family: "TheSerifOffice", arial, sans-serif;
+    font-weight: normal;
 }
 
 .label span {
