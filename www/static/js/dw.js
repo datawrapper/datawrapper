@@ -102,7 +102,6 @@
                 data = parser.parse(raw);
             me._processData(data);
             me.__data = data;
-            console.log(data);
             me.__loaded = true;
         },
 
