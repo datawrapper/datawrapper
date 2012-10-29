@@ -156,7 +156,7 @@
 
             c.left = 0;
             c.right = 0;
-            c.zero = 10 + largestVal[1] / (largestVal[0] + largestVal[1]) * w;
+            c.zero = largestVal[1] / (largestVal[0] + largestVal[1]) * w;
 
             if (!me.get('labels-inside-bars', false)) {
 
@@ -168,7 +168,10 @@
                 w -= c.left + c.right;
 
                 c.zero = c.left + largestVal[1] / (largestVal[0] + largestVal[1]) * w;
+            } else {
+                c.zero += 15;
             }
+
             c.maxSeriesLabelWidth = [maxw[0], maxw[2]];
             c.maxValueLabelWidth = [maxw[1], maxw[3]];
 
