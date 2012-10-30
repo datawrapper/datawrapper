@@ -121,7 +121,11 @@ $(function() {
                 ctx = canvas.get(0).getContext('2d');
 
             if ($('svg', body).get(0) !== undefined) clearInterval(timer);
-            else return;
+            else {
+                // no svg found, so skip thumbnails
+                callback();
+                return;
+            };
 
             ctx.drawSvg($('svg', body).get(0).innerSVG, 0, 0, width, height);
 

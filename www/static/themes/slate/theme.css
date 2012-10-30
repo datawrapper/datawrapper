@@ -1,47 +1,57 @@
 
 /*
- * Default Theme
- * -------------
+ * Slate Theme
+ * -----------
  *
+ * based on http://bootswatch.com/slate/
  */
 
-body {
-    font-family: arial,sans-serif;
+body.chart {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     font-weight: 400;
-    line-height: 15px;
-    color: #333;
-    font-size: 12px;
-    background: #fff;
+    margin:5px 10px;
+    font-size: 13px;
+    line-height: 18px;
+    background: #272B30;
     overflow: visible;
     overflow-x:hidden;
+    color: #757C82;
+}
+
+a {
+    color: #fff;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #fff;
+    text-decoration: underline;
 }
 
 h1 {
-    font-size: 18px;
-    font-weight: normal;
-    margin: 0 0 10px;
-    line-height: 18px;
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0 0 15px;
     text-align: left;
-    color: #006cb5;
-    border-top: 1px solid #2b2b2a;
-    padding: 5px 0 10px;
-    border-bottom: 1px solid #2b2b2a;
 }
 
-
-p { margin: 10px 0; line-height: 19px;}
+.chart p { margin: 15px 0; line-height: 19px;}
 
 #chart {
-    margin-top: 30px;
+    margin-top: 25px;
 }
 
 .label span {
-    font-size: 10px;
-    color: #333;
+    font-size: 12px;
+    color: #757C82;
+}
+
+.line-chart .label span {
+    background: #272B30!important;
 }
 
 .label.highlighted, .label.axis {
-    font-size: 11px;
+    font-size: 12px;
     z-index: 100;
 }
 
@@ -49,8 +59,13 @@ p { margin: 10px 0; line-height: 19px;}
     font-weight: bold;
 }
 
-.label.inverted span {
+.pie-chart .label.hover span,
+.donut-chart .label.hover span {
     color: #fff;
+}
+
+.label.inverted span {
+    color: #000!important;
 }
 
 .label.highlighted {
@@ -58,11 +73,11 @@ p { margin: 10px 0; line-height: 19px;}
 }
 
 .label.value span {
-    font-size: 11px;
+    font-size: 12px;
 }
 
 .label.series span {
-    font-size: 11px;
+    font-size: 12px;
 }
 
 
@@ -72,9 +87,10 @@ p { margin: 10px 0; line-height: 19px;}
 }
 
 .tooltip .content {
-    background-color: #fff;
-    border: 1px solid #888;
-    box-shadow: 2px 2px 2px rgba(0,0,0,.2);
+    background-color: #202328;
+    border: 1px solid #101214;
+    border-radius: 4px 4px 4px 4px;
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5) inset;
     padding: 5px 8px;
 }
 
@@ -90,15 +106,6 @@ p { margin: 10px 0; line-height: 19px;}
     margin: 10px 0px 0px;
     padding-top: 5px;
     padding-bottom: 5px;
-    clear: both;
-    text-transform: uppercase;
-    color: #2b2b2a;
-    font-size: 10px;
-}
-
-#footer a {
-    color: #2b2b2a;
-    text-decoration: underline;
 }
 
 .footer-left {
@@ -160,21 +167,4 @@ svg .axis, svg .tick, svg .grid, svg rect {
 
 .label.smaller span {
     font-size: 80%;
-}
-
-#datatable {
-    background: #F3F3F3;
-}
-
-#datatable thead tr {
-    background: #D3D3D3;
-    border-bottom: 0;
-}
-
-#datatable thead th {
-    border-color: #D3D3D3;
-}
-
-#datatable tbody tr:hover {
-    background: #dbdbdb;
 }

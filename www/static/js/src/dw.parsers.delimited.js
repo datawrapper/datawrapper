@@ -199,10 +199,16 @@
                rowNames: header ? header.data : undefined,
                rowNameLabels: header ? header.name : undefined
             };
-         },
+         }, // end parseDataArray
 
          arrData = parseCSV(this.__delimiterPatterns, data, this.delimiter);
-         if (this.transpose) arrData = transpose(arrData);
+         if (this.transpose) {
+            arrData = transpose(arrData);
+            // swap row/column header setting
+            var t = this.firstRowIsHeader;
+            this.firstRowIsHeader = this.firstColumnIsHeader;
+            this.firstColumnIsHeader = t;
+         }
          return parseDataArray(arrData, this.skipRows, this.emptyValue, this.firstRowIsHeader, this.firstColumnIsHeader);
       },
 

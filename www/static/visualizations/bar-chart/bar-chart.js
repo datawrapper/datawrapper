@@ -54,13 +54,15 @@
                     }).data('strokeCol', stroke), series);
 
                     var lbl_x = val >= 0 ?
-                            c.zero - c.maxValueLabelWidth[0] - 10
-                            : c.zero + c.maxValueLabelWidth[1] + 10,
+                            c.zero - 10
+                            : c.zero + 10,
                         lbl_align = val >= 0 ? 'right' : 'left',
                         val_x = val >= 0 ?
-                            c.zero - c.maxValueLabelWidth[0]
-                            : c.zero + c.maxValueLabelWidth[1],
+                            d.x + d.w + 10
+                            : d.x - 10,
                         val_align = val >= 0 ? 'left' : 'right',
+                        show_lbl = true,
+                        show_val = true,
                         lblClass = me.chart.hasHighlight() && me.chart.isHighlighted(series) ? ' highlighted' : '';
 
                     if (labelsInsideBars) {
@@ -68,33 +70,38 @@
                         val_x = val >= 0 ? d.x + d.w - 10 : d.x + 10;
                         lbl_align = val >= 0 ? 'left' : 'right';
                         val_align = val >= 0 ? 'right' : 'left';
-                        lblClass += ' reverse';
 
                         // check if the label is bigger than the bar
                         var slblw = me.labelWidth(series.name, 'series')+10,
                             vlblw = me.labelWidth(me.chart.formatValue(val, true), 'value')+20;
                         if (slblw + vlblw > d.w) {
-                            lbl_x = d.x + d.w + 10;
+                            show_val = false;
+                            if (slblw > d.w) show_lbl = false;
+                            /*lbl_x = d.x + d.w + 10;
                             val_x = lbl_x + slblw + 10;
                             val_align = 'left';
                             if (val < 0) {
                                 lbl_align = 'left';
-                            }
+                            }*/
 
                         }
+                        if (me.invertLabel(fill)) lblClass += ' inverted';
                     }
-                    me.registerSeriesLabel(me.label(val_x, d.y + d.h * 0.5, me.chart.formatValue(series.data[r], true),{
-                        w: 40,
-                        align: val_align,
-                        cl: 'value' + lblClass
-                    }), series);
+                    if (show_val) {
+                        me.registerSeriesLabel(me.label(val_x, d.y + d.h * 0.5, me.chart.formatValue(series.data[r], true),{
+                            w: 40,
+                            align: val_align,
+                            cl: 'value' + lblClass
+                        }), series);
+                    }
 
-                    // add series label
-                    me.registerSeriesLabel(me.label(lbl_x , d.y + d.h * 0.5, series.name,{
-                        w: 160,
-                        align: lbl_align,
-                        cl: 'series' + lblClass
-                    }), series);
+                    if (show_lbl) {
+                        me.registerSeriesLabel(me.label(lbl_x , d.y + d.h * 0.5, series.name,{
+                            w: 160,
+                            align: lbl_align,
+                            cl: 'series' + lblClass
+                        }), series);
+                    }
 
                     c.lastBarY = Math.max(c.lastBarY, d.y + d.h);
                 });
@@ -123,28 +130,50 @@
             me.__scales = {
                 y: d3.scale.linear().domain([dMin, dMax])
             };
-            var maxw = [0, 0, 0, 0, 0, 0], ratio;
+            /* how maxw works:
+             *
+             * maxw[0] .. max series name label width      \
+             * maxw[1] .. max formatted value label width   } positive
+             * largestVal[0] .. max absolute value               /
+             * maxw[2] .. max series name label width      \
+             * maxw[3] .. max formatted value label width   } negative
+             * largestVal[1] .. max absolute value               /
+             */
+            var maxw = [0, 0, 0, 0], ratio, largestVal = [0, 0];
             _.each(me.chart.dataSeries(), function(series, s) {
-                var t = series.data[r] < 0 ? 3 : 0;
-                maxw[t] = Math.max(maxw[t], me.labelWidth(series.name, 'series') + 20);
-                maxw[t+1] = Math.max(maxw[t+1], me.labelWidth(me.chart.formatValue(series.data[r], true), 'value') + 10);
-                maxw[t+2] = Math.max(maxw[t+2], Math.abs(series.data[r]));
+                var neg = series.data[r] < 0;
+                largestVal[neg ? 1 : 0] = Math.max(largestVal[neg ? 1 : 0], Math.abs(series.data[r]));
             });
+            _.each(me.chart.dataSeries(), function(series, s) {
+                var val = series.data[r],
+                    neg = val < 0,
+                    t = neg ? 2 : 0,
+                    bw;
+                bw = Math.abs(val) / (largestVal[0] + largestVal[1]) * w;
+                maxw[t] = Math.max(maxw[t], me.labelWidth(series.name, 'series') + 20);
+                maxw[t+1] = Math.max(maxw[t+1], me.labelWidth(me.chart.formatValue(series.data[r], true), 'value') + 20 + bw);
+            });
+
             c.left = 0;
             c.right = 0;
-            c.zero = 10 + maxw[5] / (maxw[2] + maxw[5]) * w;
+            c.zero = largestVal[1] / (largestVal[0] + largestVal[1]) * w;
 
             if (!me.get('labels-inside-bars', false)) {
 
-                c.left = Math.max(maxw[0] + maxw[1] - c.zero, 0);
-                c.right = Math.max((maxw[3] + maxw[4]) - (w - c.zero), 0);
+                var maxNegBar = c.zero;
+                //console.log('c.left', );
+                c.left = Math.max(maxw[0], maxw[3]) - c.zero;
+                c.right = Math.max(maxw[1], maxw[2]) - (w - c.zero); // Math.max((maxw[2] + maxw[1]) - (w - c.zero), 0);
 
                 w -= c.left + c.right;
 
-                c.zero = c.left + maxw[5] / (maxw[2] + maxw[5]) * w;
+                c.zero = c.left + largestVal[1] / (largestVal[0] + largestVal[1]) * w;
+            } else {
+                c.zero += 15;
             }
-            c.maxSeriesLabelWidth = [maxw[0], maxw[3]];
-            c.maxValueLabelWidth = [maxw[1], maxw[4]];
+
+            c.maxSeriesLabelWidth = [maxw[0], maxw[2]];
+            c.maxValueLabelWidth = [maxw[1], maxw[3]];
 
             me.__scales.y.rangeRound([c.lpad, w]);
         },

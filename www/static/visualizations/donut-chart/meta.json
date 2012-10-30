@@ -4,7 +4,7 @@
         "de": "Donut-Diagramm",
         "fr": "Graphique en anneau"
     },
-    "version": "0.8",
+    "version": "0.9.1",
     "extends": "pie-chart",
     "author": {
         "name": "gka",

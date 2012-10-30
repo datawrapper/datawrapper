@@ -7,6 +7,8 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
+define('DATAWRAPPER_VERSION', '1.0');
+
 // include datawrapper session serialization
 require '../lib/session/Datawrapper.php';
 
@@ -132,8 +134,14 @@ function add_header_vars(&$page, $active = null) {
     $page['language'] = substr(DatawrapperSession::getLanguage(), 0, 2);
     $page['locale'] = DatawrapperSession::getLanguage();
     $page['DW_DOMAIN'] = $GLOBALS['dw_config']['domain'];
+    $page['DW_VERSION'] = DATAWRAPPER_VERSION;
     $page['DW_CHART_CACHE_DOMAIN'] = $GLOBALS['dw_config']['chart_domain'];
     $page['ADMIN_EMAIL'] = $GLOBALS['dw_config']['admin_email'];
+    if (isset($GLOBALS['dw_config']['piwik'])) {
+        $page['PIWIK_URL'] = $GLOBALS['dw_config']['piwik']['url'];
+        $page['PIWIK_IDSITE'] = $GLOBALS['dw_config']['piwik']['idSite'];
+    }
+
 }
 
 

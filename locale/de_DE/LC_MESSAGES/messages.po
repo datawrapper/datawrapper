@@ -392,6 +392,10 @@ msgid "Learn more about how to upload your data"
 msgstr "Erfahre mehr über das Hochladen von Daten"
 
 #: ../scripts/tmpl_cache/chart-upload.twig.php:170
+msgid "Sample Data"
+msgstr "Beispieldaten"
+
+#: ../scripts/tmpl_cache/chart-upload.twig.php:174
 msgid ""
 "If you simply want to play around with Datawrapper, here's a list of some "
 "example datasets:"
@@ -403,7 +407,7 @@ msgstr ""
 msgid "Select visualization and layout"
 msgstr "Visualisierung und Design wählen"
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:330
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:329
 msgid "Visualization:"
 msgstr "Visualisierung:"
 
@@ -534,11 +538,11 @@ msgstr ""
 
 #: ../scripts/tmpl_cache/home-login.twig.php:35
 msgid "Can't wait?"
-msgstr "Du kannst es nicht erwarten?"
+msgstr "Neugierig?"
 
 #: ../scripts/tmpl_cache/home-login.twig.php:37
 msgid "Try Datawrapper now!"
-msgstr "Probier Datawrapper jetzt!"
+msgstr "Datawrapper ausprobieren, ohne Anmeldung."
 
 #: ../scripts/tmpl_cache/home-login.twig.php:43
 #: ../scripts/tmpl_cache/home-login.twig.php:58

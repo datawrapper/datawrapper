@@ -4,6 +4,7 @@
         "de": "Tabelle",
         "fr": "Table de données"
     },
+    "version": "0.8",
     "author": {
         "name": "gka",
         "email": "gka@vis4.net"
