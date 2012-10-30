@@ -11,7 +11,7 @@
         $(function() {
 
             function init() {
-                $('#demo-data').append('<li><a href="#">Gini</a></li>');
+                
             }
 
             function nextPage(url) {
@@ -106,15 +106,14 @@
 
         <div class="span5">
             <h3>{% trans "How it works.." %}</h3>
-            <p>{% trans "We made getting data into Datawrapper as easy as possible. If you're working in Excel or OpenOffice, just select your data (including header row/column) and paste it in the following text field." %} <a href="/xhr/docs/upload" data-toggle="modal">{% trans "Learn more about how to upload your data" %}</a>.</p>
-
+            <p>{% trans "We made getting data into Datawrapper as easy as possible. If you're working in Excel or OpenOffice, just select your data (including header row/column) and paste it in the following text field." %} <a href="/popups/uploading-data?popup=1" data-toggle="modal">{% trans "Learn more about how to upload your data" %}</a>.</p>
 
             <div class="demo-datasets">
                 <h4>{% trans "Sample Data" %}</h4>
                 <p>{% trans "If you simply want to play around with Datawrapper, here's a list of some example datasets:" %}</p>
                 <ul id="demo-datasets" class="">
                     {% for dataset in datasets %}
-                    <li><a href="#{{ dataset.id }}" class="demo-dataset" data-data="{{ dataset.data }}">{{ dataset.title }}</a></li>
+                    <li>{{ dataset.type }}: <a href="#{{ dataset.id }}" class="demo-dataset" data-data="{{ dataset.data }}" data-presets='{{ dataset.presets | json | raw }}'>{{ dataset.title }}</a></li>
                     {% endfor %}
                 </ul>
                 <script type="text/javascript">
@@ -122,9 +121,14 @@
                 $(function() {
 
                     $('.demo-dataset').click(function(evt) {
+                        evt.preventDefault();
                         var a = $(evt.target);
                         $('#upload-data-text').val(a.data('data'));
-                        return false;
+                        if (a.data('presets')) {
+                            $.each(a.data('presets'), function(key, val) {
+                                DW.currentChart.set(key, val);
+                            });
+                        }
                     });
                 });
 

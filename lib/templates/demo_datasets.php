@@ -4,222 +4,109 @@
 function getDemoDatasets() {
     $datasets = array();
 
+
     $datasets[] = array(
-    	'id' => 'marriages',
-    	'title' => _('Line chart: Marriages in Germany (per capita)'),
-    	'data' => _('Year').'	'._('Marriages').'
-1946	8.1
-1947	9.8
-1948	10.5
-1949	10.2
-1950	 11.0
-1951	 10.4
-1952	 9.5
-1953	 8.9
-1954	 8.7
-1955	 8.8
-1956	 8.9
-1957	 8.9
-1958	 9.1
-1959	 9.2
-1960	 9.5
-1961	 9.5
-1962	 9.4
-1963	 8.8
-1964	 8.5
-1965	 8.2
-1966	 8.0
-1967	 7.9
-1968	 7.3
-1969	 7.4
-1970	 7.4
-1971	 7.2
-1972	 7.0
-1973	 6.7
-1974	 6.5
-1975	 6.7
-1976	 6.5
-1977	 6.5
-1978	 6.0
-1979	 6.2
-1980	 6.3
-1981	 6.2
-1982	 6.2
-1983	 6.3
-1984	 6.4
-1985	 6.4
-1986	 6.6
-1987	 6.7
-1988	 6.8
-1989	 6.7
-1990	 6.5
-1991	 5.7
-1992	 5.6
-1993	 5.5
-1994	 5.4
-1995	5.3
-1996	5.2
-1997	5.2
-1998	5.1
-1999	5.2
-2000	5.1
-2001	4.7
-2002	4.8
-2003	4.6
-2004	4.8
-2005	4.7
-2006	4.5
-2007	4.5
-2008	4.6
-2009	4.6
-2010	4.7
-2011	4.6
+        'id' => 'debt-per-person',
+        'title' => _('National external debt per person'),
+        'type' => _('Bar chart'),
+        'presets' => array(
+            'type' => 'bar-chart',
+            'metadata.describe.source-name' => 'Wikipedia',
+            'metadata.describe.source-url' => 'http://en.wikipedia.org/wiki/List_of_countries_by_external_debt',
+            'metadata.data.vertical-header' => true,
+            'metadata.visualize.sort-values' => true
+        ),
+        'data' => "Country 	Debt per capita
+Netherlands 	226503
+United Kingdom 	156126
+Switzerland 	154063
+Norway 	131220
+Belgium 	113603
+Sweden 	91487
+Austria 	90128
+France 	74619
+Finland 	68960
+Germany 	57755
+United States 	50266
+Greece 	47636
+Portugal 	46795
+Italy 	36841
+"
+    );
+
+
+    $datasets[] = array(
+        'id' => 'marriages',
+    	'title' => _('Marriages in Germany'),
+        'chartid' => '',
+        'type' => _('Line chart'),
+        'presets' => array(
+            'type' => 'line-chart',
+            'metadata.describe.source-name' => 'Statistisches Bundesamt',
+            'metadata.describe.source-url' => 'http://destatis.de',
+            'metadata.data.vertical-header' => true,
+            'metadata.data.transpose' => false
+        ),
+    	'data' => _('Year').'	'._('Marriages')."\n1946\t8.1\n1947\t9.8\n1948\t10.5\n1949\t10.2\n1950\t11.0\n1951\t10.4\n1952\t9.5\n1953\t8.9\n1954\t8.7\n1955\t8.8\n1956\t8.9\n1957\t8.9\n1958\t9.1\n1959\t9.2\n1960\t9.5\n1961\t9.5\n1962\t9.4\n1963\t8.8\n1964\t8.5\n1965\t8.2\n1966\t8.0\n1967\t7.9\n1968\t7.3\n1969\t7.4\n1970\t7.4\n1971\t7.2\n1972\t7.0\n1973\t6.7\n1974\t6.5\n1975\t6.7\n1976\t6.5\n1977\t6.5\n1978\t6.0\n1979\t6.2\n1980\t6.3\n1981\t6.2\n1982\t6.2\n1983\t6.3\n1984\t6.4\n1985\t6.4\n1986\t6.6\n1987\t6.7\n1988\t6.8\n1989\t6.7\n1990\t6.5\n1991\t5.7\n1992\t5.6\n1993\t5.5\n1994\t5.4\n1995\t5.3\n1996\t5.2\n1997\t5.2\n1998\t5.1\n1999\t5.2\n2000\t5.1\n2001\t4.7\n2002\t4.8\n2003\t4.6\n2004\t4.8\n2005\t4.7\n2006\t4.5\n2007\t4.5\n2008\t4.6\n2009\t4.6\n2010\t4.7\n2011\t4.6
+"
+    );
+
+    $datasets[] = array(
+        'id' => 'new-borrowing',
+        'type' => _('Bar chart'),
+        'presets' => array(
+            'type' => 'column-chart',
+            'metadata.describe.source-name' => 'BMF, Haushaltsausschuss',
+            'metadata.describe.source-url' => 'http://www.bundesfinanzministerium.de/bundeshaushalt2012/pdf/finanzplan.pdf',
+            'metadata.data.transpose' => false
+        ),
+        'title' => _('Net borrowing of Germany'),
+        'data' => '"","2007","2008","2009","2010","2011","2012","2013","2014","2015","2016"
+"'._('New debt in Bio.').'","14.3","11.5","34.1","44","17.3","34.8","19.6","14.6","10.3","1.1"
 '
     );
 
+
     $datasets[] = array(
-        'id' => 'nightingale',
-        'title' => _('Death causes of British soldiers'),
-        'data' => _('Monat').';'._('Soldaten gesamt').';'._('Ansteckungskrankheit').';'._('Wunden und Verletzungen').';'._('Andere Todesursache').'
-Apr 1854;8571;1;0;5
-May 1854;23333;12;0;9
-Jun 1854;28333;11;0;6
-Jul 1854;28722;359;0;23
-Aug 1854;30246;828;1;30
-Sep 1854;30290;788;81;70
-Oct 1854;30643;503;132;128
-Nov 1854;29736;844;287;106
-Dec 1854;32779;1725;114;131
-Jan 1855;32393;2761;83;324
-Feb 1855;30919;2120;42;361
-Mar 1855;30107;1205;32;172
-Apr 1855;32252;477;48;57
-May 1855;35473;508;49;37
-Jun 1855;38863;802;209;31
-Jul 1855;42647;382;134;33
-Aug 1855;44614;483;164;25
-Sep 1855;47751;189;276;20
-Oct 1855;46852;128;53;18
-Nov 1855;37853;178;33;32
-Dec 1855;43217;91;18;28
-Jan 1856;44212;42;2;48
-Feb 1856;43485;24;0;19
-Mar 1856;46140;15;0;35
+        'id' => 'women-parliament',
+        'title' => _('Women in German Parliament'),
+        'type' => _('Bar chart (grouped)'),
+        'presets' => array(
+            'type' => 'column-chart',
+            'metadata.describe.source-name' => 'Bundestag',
+            'metadata.describe.source-url' => 'http://www.bundestag.de/bundestag/abgeordnete17/mdb_zahlen/frauen_maenner.html',
+            'metadata.data.vertical-header' => true,
+            'metadata.visualize.sort-values' => true
+        ),
+        'data' => _('Party')."\t"._('Women')."\t"._('Men').'
+CDU/CSU	45	192
+SPD	57	89
+FDP	24	69
+Die Linke	42	34
+Bündnis 90/Die Grünen	36	32
 '
     );
 
-    $datasets[] = array(
-        'id' => 'social-protection',
-        'title' => _('Expenditure on social protection - &#37; of GDP'),
-        'data' => '	1998	1999	2000	2001	2002	2003	2004	2005	2006	2007	2008	2009
-Germany	29.1	29.5	29.6	29.7	30.3	30.7	30.1	30.0	28.9	27.8	28.0	31.4
-Greece	21.7	22.7	23.5	24.3	24.0	23.5	23.6	24.9	24.7	24.8	26.3	28.0
-Spain	20.2	19.8	20.0	19.7	20.0	20.3	20.3	20.6	20.5	20.7	22.1	25.0
-France	30.1	29.9	29.5	29.6	30.5	31.0	31.4	31.5	30.9	30.6	31.0	33.1
-Italy	24.6	24.8	24.7	24.9	25.3	25.8	26.0	26.4	26.6	26.7	27.8	29.8
-United Kingdom	26.3	25.7	26.4	26.8	25.7	25.7	25.9	26.3	26.0	23.3	26.3	29.2
-'
-    );
-    $datasets[] = array(
-        'id' => 'gini',
-        'title' => _('Gini coefficient in Germany, Sweden and South Africa (2005)'),
-        'data' => "	Gini coef.
-Sweden 	0,23
-Sachsen 	0,24
-Germany	0,29
-Hamburg	0,32
-Johannesburg	0,73
-"
-    );
 
     $datasets[] = array(
-        'id' => 'median-income',
-        'title' => _('Median income according to education status in Germany, 2005-2010.'),
-        'data' => "	2005	2006	2007	2008	2009	2010
-Up to secondary education	15369	14984	15236	15960	15745	15298
-Up to tertiary education	17293	17370	18059	18639	18952	19228
-Tertiary education	21147	21599	22623	23514	24660	24823
-"
+        'id' => 'bundestag-sitze',
+        'title' => _('Seats in German Parliament'),
+        'type' => _('Donut chart'),
+        'presets' => array(
+            'type' => 'donut-chart',
+            'metadata.describe.source-name' => 'Bundestag',
+            'metadata.describe.source-url' => 'http://www.bundestag.de/bundestag/abgeordnete17/mdb_zahlen/',
+            'metadata.data.vertical-header' => true,
+            'metadata.visualize.sort-values' => true
+        ),
+        'data' => "Fraktion	Abgeordnete
+CDU/CSU	237
+SPD	146
+FDP	93
+DIE LINKE.	76
+BÜNDNIS 90/DIE GRÜNEN	68"
     );
-    $datasets[] = array(
-        'id' => 'income-dist',
-        'title' => _('Income distribution in Germany in the 1990\'s.'),
-        'data' => "	Share of income
-1st quintile	3,76
-2nd quintile	10,72
-3rd quintile	15,9
-4th quintile	22,62
-5th quintile	47
-"
-    );
- 
 
-    $datasets[] = array(
-        "id" => "german-energy-mix",
-        'title' => _('Energy consumption by source in Germany, 1950-2010'),
-        "data" => "Jahr	Braunkohle	Steinkohle	Mineralöl	Erdgas	Kernenergie	Erneuerbare	Sonstiges
-1950	66.94	103.27	6.30	0.09	0.00	6.43	3.59
-1951	70.87	116.21	7.19	0.11	0.00	6.29	3.32
-1952	74.24	123.61	8.02	0.13	0.00	6.49	3.02
-1953	77.90	119.47	9.77	0.17	0.00	5.79	2.78
-1954	82.51	125.94	12.71	0.23	0.00	6.37	2.83
-1955	86.48	137.51	16.39	0.42	0.00	6.50	2.57
-1956	89.95	144.19	21.01	0.61	0.00	6.66	2.35
-1957	93.15	143.64	23.00	0.64	0.00	6.03	2.32
-1958	95.47	131.55	29.78	0.67	0.00	6.85	2.09
-1959	97.39	128.95	37.39	0.79	0.00	5.99	2.25
-1960	100.80	135.80	46.79	0.92	0.00	7.22	1.80
-1961	101.70	131.17	57.01	1.07	0.03	7.05	1.55
-1962	103.82	133.27	70.94	1.34	0.07	6.21	1.60
-1963	106.29	135.27	85.96	1.81	0.07	5.73	1.70
-1964	107.47	130.54	99.63	2.63	0.11	4.93	1.83
-1965	105.24	123.51	115.22	3.60	0.14	7.13	1.79
-1966	104.03	111.62	130.26	4.34	0.21	8.60	1.78
-1967	103.66	106.40	136.76	5.75	0.56	8.16	1.65
-1968	105.49	108.16	153.13	9.46	0.77	8.04	1.66
-1969	107.14	112.17	172.39	13.37	1.88	6.78	1.56
-1970	108.84	107.19	192.86	18.77	2.31	8.75	2.11
-1971	106.09	100.23	200.81	24.95	2.19	6.74	2.29
-1972	106.32	93.29	213.46	32.41	3.28	8.63	2.37
-1973	107.82	93.97	227.78	42.04	4.05	8.86	2.31
-1974	107.60	91.70	208.17	52.79	5.03	8.01	2.33
-1975	108.45	74.75	202.24	56.01	8.20	8.15	2.30
-1976	112.85	78.79	218.61	59.10	10.07	4.71	2.43
-1977	111.59	75.03	218.11	62.39	13.98	7.60	2.42
-1978	112.59	77.31	228.55	68.03	15.09	7.01	2.55
-1979	114.29	84.89	231.72	74.15	17.98	6.45	2.59
-1980	115.64	85.22	206.72	73.90	19.23	8.25	2.90
-1981	118.91	84.48	187.74	70.60	22.55	9.37	3.26
-1982	118.49	82.62	177.07	65.54	25.30	8.63	3.53
-1983	119.92	82.62	174.35	68.12	26.49	9.61	3.88
-1984	125.08	84.18	171.50	71.15	35.04	7.00	4.44
-1985	125.81	85.69	174.52	70.31	46.19	6.02	4.48
-1986	123.53	83.87	181.94	71.24	43.02	7.58	4.36
-1987	121.74	82.56	180.75	77.14	46.54	8.73	4.49
-1988	120.68	80.59	180.70	74.80	51.57	6.73	4.88
-1989	120.21	78.70	171.08	77.49	53.01	5.79	4.82
-1990	109.21	78.69	178.00	78.23	56.90	6.69	0.85
-1991	85.54	79.50	188.50	82.20	54.89	6.73	1.13
-1992	74.26	74.92	191.48	81.27	59.13	7.07	0.46
-1993	67.65	72.97	195.56	86.00	57.15	7.77	1.14
-1994	63.51	73.01	193.84	87.57	56.30	8.62	1.15
-1995	59.18	70.28	194.11	95.49	57.39	9.37	1.05
-1996	57.59	71.31	198.18	106.85	60.19	9.21	0.19
-1997	54.44	70.46	196.30	102.08	63.43	11.75	0.17
-1998	51.66	70.25	197.05	103.01	60.20	12.94	0.33
-1999	50.25	67.12	191.03	102.71	63.31	13.76	0.53
-2000	52.89	68.97	187.62	101.86	63.16	14.21	2.65
-2001	55.72	66.49	190.29	107.42	63.75	14.75	2.43
-2002	56.74	65.74	183.62	107.25	61.35	15.54	2.03
-2003	55.93	68.57	180.37	108.55	61.44	19.14	4.15
-2004	56.23	65.14	177.91	109.10	62.18	22.18	5.13
-2005	54.45	61.68	176.26	110.17	60.69	26.25	6.53
-2006	53.76	67.02	174.72	111.27	62.29	32.03	3.41
-2007	55.03	68.82	157.84	106.51	52.31	38.10	3.43
-2008	53.04	61.42	167.31	104.35	55.38	39.14	4.43
-2009	51.42	51.06	158.16	100.21	50.22	40.98	6.14
-2010	51.52	57.80	161.29	104.51	52.27	45.04	7.20
-"
-    );
+
     return $datasets;
 }

@@ -47,9 +47,7 @@
 
             colors = d3.range(ml, 91, (90 - ml) / (me.chart.numRows() - 1)).map(function(l) {
                 return ''+d3.cie.lch(l, bLch.c, bLch.h).rgb();
-            });
-            //
-
+            }).reverse();
 
             ds.eachRow(function(i) {
                 me.setRowColor(i, colors[i % colors.length]);
@@ -70,16 +68,15 @@
                         lblcl = ['series'],
                         lbl_w = d.bw,
                         valign = val > 0 ? 'top' : 'bottom',
-                        halign = 'center';
+                        halign = 'center',
+                        alwaysShow = (me.chart.hasHighlight() && me.chart.isHighlighted(series)) || (d.w > 40);
 
-                    if ((me.chart.hasHighlight() && me.chart.isHighlighted(series)) || (d.w > 40)) {
-                        // add value labels
-                        me.registerSeriesLabel(me.label(d.x + d.w * 0.5, val_y, me.chart.formatValue(series.data[r]),{
-                            w: d.w,
-                            align: 'center',
-                            cl: 'value'
-                        }), series);
-                    }
+                    // add value labels
+                    me.registerSeriesLabel(me.label(d.x + d.w * 0.5, val_y, me.chart.formatValue(series.data[r]),{
+                        w: d.w,
+                        align: 'center',
+                        cl: 'value' + (alwaysShow ? '' : ' showOnHover')
+                    }), series);
 
                     if (me.chart.hasHighlight() && me.chart.isHighlighted(series)) {
                         lblcl.push('highlighted');
@@ -142,6 +139,7 @@
                 });
                 $('#header', c.root.parent()).append(l);
             }
+            $('.showOnHover').hide();
         },
 
         getBarColor: function(series, row, useNegativeColor, colorful) {
@@ -151,7 +149,7 @@
 
             return me.getSeriesColor(series, row, useNegativeColor);
 
-            if (useNegativeColor) {
+            /*if (useNegativeColor) {
                 return me.theme.colors[(hl ? 'highlight-' : '') + (series.data[row] < 0 ? 'positive' : 'negative')];
             }
             var col = me.theme.colors.palette[row % me.theme.colors.palette.length];
@@ -167,7 +165,7 @@
             // if (me.__customSeriesColors && me.__customSeriesColors[series.name])
             //     return me.__customSeriesColors[series.name];
             // if (!me.chart.hasHighlight()) return me.theme.colors[main];
-            // return me.theme.colors[me.chart.isHighlighted(series) ? highlight : main];
+            // return me.theme.colors[me.chart.isHighlighted(series) ? highlight : main];*/
         },
 
         initDimensions: function(r) {
@@ -255,8 +253,10 @@
                 _.each(me.__seriesLabels[s.name], function(lbl) {
                     if (series !== undefined && s.name == series.name) {
                         lbl.addClass('hover');
+                        if (lbl.hasClass('showOnHover')) lbl.show(0.5);
                     } else {
                         lbl.removeClass('hover');
+                        if (lbl.hasClass('showOnHover')) lbl.hide(0.5);
                     }
                     _.each(me.__seriesElements[s.name], function(el) {
                         var fill = me.getBarColor(s, el.data('row'), me.get('negative-color', false)), stroke;

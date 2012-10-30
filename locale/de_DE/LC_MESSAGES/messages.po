@@ -538,11 +538,11 @@ msgstr ""
 
 #: ../scripts/tmpl_cache/home-login.twig.php:35
 msgid "Can't wait?"
-msgstr "Du kannst es nicht erwarten?"
+msgstr "Neugierig?"
 
 #: ../scripts/tmpl_cache/home-login.twig.php:37
 msgid "Try Datawrapper now!"
-msgstr "Probier Datawrapper jetzt!"
+msgstr "Datawrapper ausprobieren, ohne Anmeldung."
 
 #: ../scripts/tmpl_cache/home-login.twig.php:43
 #: ../scripts/tmpl_cache/home-login.twig.php:58

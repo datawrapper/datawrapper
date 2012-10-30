@@ -12,14 +12,10 @@
 
         colors: {
             palette: ["#1f77b4","#ff7f0e","#2ca02c","#d62728","#9467bd"],
-            highlight: '#00589E',
-            focus: '#0063A5',
             context: '#aaa',
             axis: '#000000',
-            positive: '#85B4D4',
-            'highlight-positive': '#85B4D4',
-            negative: '#E31A1C',
-            'highlight-negative': '#9E5800',
+            positive: '#1f77b4',
+            negative: '#d62728',
             background: '#ffffff'
         }
 

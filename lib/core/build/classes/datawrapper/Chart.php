@@ -192,7 +192,8 @@ class Chart extends BaseChart {
         return array(
             'data' => array(
                 'transpose' => true,
-                'horizontal-header' => true
+                'vertical-header' => true,
+                'horizontal-header' => true,
             ),
             'visualize' => array(
                 'highlighted-series' => array(),

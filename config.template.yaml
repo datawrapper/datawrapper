@@ -18,3 +18,8 @@ thumbnails:
 admin_email: hello@datawrapper.de
 log_email: debug@datawrapper.de
 
+# piwik tracking code
+piwik:
+    url: datastory.de/piwik  # without http:// and trailing slash
+    idSite: 5
+    # idSiteCharts: 6  # you can use a separate site id for the charts

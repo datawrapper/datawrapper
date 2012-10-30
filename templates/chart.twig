@@ -73,5 +73,8 @@ body {
 
     {% include theme.hasTemplate ? 'themes/' ~ theme.id ~ '.twig' : 'themes/default.twig' %}
 
+    {% use "tracking.twig" %}
+    {{ block('piwik') }}
+
 </body>
 </html>
