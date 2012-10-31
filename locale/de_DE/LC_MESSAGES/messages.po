@@ -426,7 +426,7 @@ msgid ""
 "data</a>."
 msgstr ""
 "Falls das Diagramm nicht so aussieht wie du erwartet hast, versuche die <a "
-"href='#' id='btn-transpose'><i class='icon-rotate'></i>Daten zu "
+"href='#' id='btn-transpose'><i class='icon-rotate'></i> Daten zu "
 "transponieren</a>."
 
 #: ../scripts/tmpl_cache/chart-visualize.twig.php:404
@@ -538,7 +538,7 @@ msgstr ""
 
 #: ../scripts/tmpl_cache/home-login.twig.php:35
 msgid "Can't wait?"
-msgstr "Neugierig?"
+msgstr ""
 
 #: ../scripts/tmpl_cache/home-login.twig.php:37
 msgid "Try Datawrapper now!"
