@@ -94,7 +94,9 @@ function get_chart_content($chart, $user, $minified = false, $path = '') {
         'scripts' => $scripts,
         'themeJS' => array_reverse($theme_js),
         'visJS' => array_merge(array_reverse($vis_js), $vis_libs),
-        'origin' => !empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : ''
+        'origin' => !empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '',
+        'DW_DOMAIN' => 'http://' . $GLOBALS['dw_config']['domain'] . '/',
+        'DW_CHART_DATA' => 'http://' . $GLOBALS['dw_config']['domain'] . '/chart/' . $chart->getID() . '/data'
     );
 
     if (isset($GLOBALS['dw_config']['piwik'])) {
