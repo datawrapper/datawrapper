@@ -1,7 +1,7 @@
 
 /*
- * Default Theme
- * -------------
+ * Guardian Theme
+ * --------------
  *
  */
 
@@ -14,7 +14,7 @@ body.chart {
     background: #fff;
     overflow: visible;
     overflow-x: hidden;
-    padding: 0px 5px 0;
+    padding: 4px 5px 0;
     margin: 0;
 }
 
@@ -107,12 +107,7 @@ p { margin: 10px 0; line-height: 19px;}
     float: left;
 }
 .footer-right {
-    background: url(guardian-logo.png) no-repeat;
-    width: 90px;
-    height: 19px;
-    position: absolute;
-    bottom: 3px;
-    right: 5px;
+    float: right;
 }
 
 .clearfix:after {

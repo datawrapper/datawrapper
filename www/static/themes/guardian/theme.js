@@ -24,7 +24,9 @@
             },
             hoverDotRadius: 4,
             maxLabelWidth: 80
-        }
+        },
+
+        vpadding: 10
 
     });
 
