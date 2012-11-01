@@ -2,22 +2,11 @@
 
 {% block content %}
 <div class="docs">
-    <h1 class="title">{% trans "Chart Gallery" %} <small>{% trans "See what others create with Datawrapper recently" %}</small></h1>
+    <h1 class="title">{% trans "Chart Gallery" %} <small>{% trans "See what others created with Datawrapper recently" %}</small></h1>
 </div>
 <div class="row">
     <div class="span3">
         <p>{% trans "Welcome to the public gallery of Datawrapper charts. Here you can see the nice charts that other users have created recently. Click on the charts to see the interactive version." %}</p>
-        <h3>{% trans "By Month" %}</h3>
-
-        <ul class="unstyled">
-            {% for month in bymonth %}
-            {% if key == 'month' and val == month.id %}
-            <li class="active"><a href="/gallery/"><i class="icon-check"></i> {{ month.name }} </a> ({{ month.count }}) </li>
-            {% else %}
-            <li><a href="/gallery/by/month/{{ month.id }}">{{ month.name }}</a> ({{ month.count }})</li>
-            {% endif %}
-            {% endfor %}
-        </ul>
 
         <h3>{% trans "By Visualisation" %}</h3>
 
@@ -31,7 +20,36 @@
             {% endfor %}
         </ul>
 
-        <h3>{% trans "By Layout" %}</h3>
+        <h3>{% trans "By Month" %}</h3>
+
+        <ul class="unstyled">
+            {% for month in bymonth %}
+            {% if key == 'month' and val == month.id %}
+            <li class="active"><a href="/gallery/"><i class="icon-check"></i> {{ month.name }} </a> ({{ month.count }}) </li>
+            {% else %}
+            <li><a href="/gallery/by/month/{{ month.id }}">{{ month.name }}</a> ({{ month.count }})</li>
+            {% endif %}
+            {% endfor %}
+        </ul>
+
+        {% if pager.first != pager.last %}
+        <div class="pagination">
+            <ul>
+                <li {% if pager.first == pager.current %}class="disabled"{% endif %}>
+                    <a href="?page={{ pager.first }}">«</a>
+                </li>
+                {% for pg in pager.pages %}
+                    <li {% if pg == pager.current %}class="active" {% endif %}>
+                        <a href="?page={{ pg }}">{{ pg + 1 }}</a></li>
+                {% endfor %}
+                <li {% if pager.last == pager.current %}class="disabled"{% endif %}>
+                    <a href="?page={{ pager.last }}">»</a>
+                </li>
+            </ul>
+        </div>
+        {% endif %}
+
+        {# <h3>{% trans "By Layout" %}</h3>
 
         <ul class="unstyled">
             {% for layout in bylayout %}
@@ -42,7 +60,7 @@
             {% endif %}
 
             {% endfor %}
-        </ul>
+        </ul> #}
     </div>
     <div class="span9 gallery">
 
@@ -50,9 +68,9 @@
             {% for chart in charts %}
             <li class="span3 chart" data-id="{{ chart.id }}">
                 <div class="thumbnail">
-                    <h3 style="color:{{ chart.metadata.publish.text }};text-shadow:2px 2px 2px {{ chart.metadata.publish.background }}">{{ chart.title }}</h3></a>
+                    <h3 style="color:{{ chart.metadata.publish.text }};text-shadow:2px 2px 2px {{ chart.metadata.publish.background }}">{{ chart.title }}</h3>
 
-                    <a href="http://{{ DW_CHART_CACHE_DOMAIN }}/{{ chart.id }}"><img src="http://{{ DW_CHART_CACHE_DOMAIN }}/{{ chart.id }}/m.png" width="260" alt="" style="background:{{ chart.metadata.publish.background }}">
+                    <a href="http://{{ DW_CHART_CACHE_DOMAIN }}/{{ chart.id }}"><img src="http://{{ DW_CHART_CACHE_DOMAIN }}/{{ chart.id }}/m.png" width="260" alt="" style="background:{{ chart.metadata.publish.background }}"></a>
 
                 </div>
             </li>
@@ -60,14 +78,15 @@
         </ul>
 
     </div>
-    <div class="span3 gallery-filter" style="position:relative;left: 30px">
-       
-    </div>
+    
 </div>
+
+
 <script type="text/javascript" src="/static/vendor/masonry/jquery.masonry.min.js"></script>
 <script type="text/javascript">
 $(function(){
   //*
+
 
   function layout() {
       /*$('.gallery .thumbnails').masonry({

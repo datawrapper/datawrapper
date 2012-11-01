@@ -118,13 +118,21 @@ class ChartQuery extends BaseChartQuery {
         return $query->find();
     }
 
-    public function getPublicGalleryCharts($key = '', $val = '') {
+    public function getGalleryCharts($key='', $val='', $start=0, $perPage=15) {
         $result = array();
-        $q = $this->filterByShowInGallery(true)
+        $query = $this->filterByShowInGallery(true)
+            ->filterByDeleted(false)
             ->orderByCreatedAt('desc');
+        if ($key == 'vis') $query->filterByType($val);
+        if ($key == 'month') $query->filterByCreatedAt(array('min' => $val.'-01', 'max' => $val.'-31'));
+        $query->limit($perPage)->offset($start);
+        return $query->find();
+    }
 
-        $charts = $q->limit(20)->find();
-        return $charts;
+    public function countGalleryCharts() {
+        return $this->filterByShowInGallery(true)
+            ->filterByDeleted(false)
+            ->count();
     }
 
 } // ChartQuery

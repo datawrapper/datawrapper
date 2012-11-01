@@ -5,7 +5,7 @@ require_once '../lib/utils/visualizations.php';
 
 function gal_nbChartsByMonth($user) {
     $con = Propel::getConnection();
-    $sql = "SELECT DATE_FORMAT(created_at, '%Y-%m') ym, COUNT(*) c FROM chart WHERE author_id = ". $user->getId() ." AND deleted = 0 AND last_edit_step >= 2 GROUP BY ym ORDER BY ym DESC ;";
+    $sql = "SELECT DATE_FORMAT(created_at, '%Y-%m') ym, COUNT(*) c FROM chart WHERE show_in_gallery AND deleted = 0 AND last_edit_step >= 2 GROUP BY ym ORDER BY ym DESC ;";
     $rs = $con->query($sql);
     $res = array();
     foreach ($rs as $r) {
@@ -29,36 +29,37 @@ function gal_nbChartsByType($user) {
     return $res;
 }
 
-function gal_nbChartsByLayout($user) {
-    $con = Propel::getConnection();
-    $sql = "SELECT theme, COUNT(*) c FROM chart WHERE author_id = ". $user->getId() ." AND deleted = 0 AND last_edit_step >= 2 GROUP BY theme ORDER BY c DESC ;";
-    $rs = $con->query($sql);
-    $res = array();
-    foreach ($rs as $r) {
-        $theme = get_theme_meta($r['theme']);
-        $res[] = array('count' => $r['c'], 'id' => $r['theme'], 'name' => $theme['title']);
-    }
-    return $res;
-}
 
-$app->get('/gallery/?', function () use ($app) {
+$app->get('/gallery(/?|/by/:key/:val)', function ($key = false, $val = false) use ($app) {
     $user = DatawrapperSession::getUser();
-    $charts =  ChartQuery::create()->getPublicGalleryCharts();
-    $page = array(
+    $page = $app->request()->params('page');
+    if (empty($page)) $page = 0;
+    $perPage = 15;
+    $start = $page * $perPage;
+    $charts =  ChartQuery::create()->getGalleryCharts($key, $val, $start, $perPage);
+    $total = ChartQuery::create()->countGalleryCharts();
+    $pgs = array();
+    $p_min = 0;
+    $p_max = $lastPage = floor($total / $perPage) - 1;
+
+    if ($page == 0) $p_max = min($lastPage, $page + 4);
+    else if ($page == 1) $p_max = min($lastPage, $page + 3);
+    else $p_max = min($lastPage, $page + 2);
+
+    if ($page == $lastPage) $p_min = max(0, $page - 4);
+    else if ($page == $lastPage-1) $p_min = max(0, $page - 3);
+    else $p_min = max(0, $page - 2);
+
+    for ($p = $p_min; $p <= $p_max; $p++) $pgs[] = $p;
+    $vars = array(
         'charts' => $charts,
-        'picked' => $charts[1]
+        'pager' => array(
+            'pages' => $pgs,
+            'first' => 0,
+            'current' => $page,
+            'last' => floor($total / $perPage) - 1
+        )
     );
-
-    add_header_vars($page, 'gallery');
-    $app->render('gallery.twig', $page);
-});
-
-$app->get('/gallery/by/:key/:val', function ($key, $val) use ($app) {
-    $user = DatawrapperSession::getUser();
-    $page = array(
-        'charts' => ChartQuery::create()->getPublicChartsByUser($user, $key, $val)
-    );
-
-    add_header_vars($page, 'mycharts');
-    $app->render('gallery.twig', $page);
+    add_header_vars($vars, 'gallery');
+    $app->render('gallery.twig', $vars);
 });
