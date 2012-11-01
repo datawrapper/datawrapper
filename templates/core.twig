@@ -24,6 +24,7 @@
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
       <script src="/static/vendor/json-js/json2.min.js"></script>
+      <link href="/static/css/datawrapper-ie.css" rel="stylesheet">
     <![endif]-->
 
     <script type="text/javascript" src="/static/vendor/jquery/jquery.min.js"></script>
@@ -56,7 +57,10 @@
 
       </header>
 
+
+
       {{ block('content') }}
+
 
       <footer class="footer">
 
@@ -68,12 +72,13 @@
         <p>{% trans %}
           Datawrapper is an <a href="http://github.com/datawrapper/datawrapper">open source</a> project by <a href="http://abzv.de">ABZV</a> - a German training institution for newspaper journalists.
           {% endtrans %}
-          <div class="footer-links">
-            <a href="/docs/about">{% trans "Learn more" %}</a> – <a href="/docs/motivation">{% trans "Motivation" %}</a> – <a href="/docs/quickstart">{% trans "Quick Start Guide" %}</a> – <a href="/docs/tutorial">{% trans "Manual" %}</a> – <a href="/terms">{% trans "Terms of Use" %}</a> – <a href="/imprint">{% trans "Imprint" %}</a>.
-          </div>
         </p>
-
+        <div class="footer-links">
+            <a href="/docs/about">{% trans "Learn more" %}</a> – <a href="/docs/motivation">{% trans "Motivation" %}</a> – <a href="/docs/quickstart">{% trans "Quick Start Guide" %}</a> – <a href="/docs/tutorial">{% trans "Manual" %}</a> – <a href="/terms">{% trans "Terms of Use" %}</a> – <a href="/imprint">{% trans "Imprint" %}</a>.
+        </div>
+        
       </footer>
+
 
     </div>
 

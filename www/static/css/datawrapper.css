@@ -48,19 +48,22 @@ body {
     padding-right: 10px;
 }
 
-.teaser h2 {
-    font-weight:300;
-    color:#f9f9f9;
+.teaser-h2 {
     background:rgba(0,0,0,.8);
     width:33%;
     position:absolute;
     left:0;
     bottom:0;
-    font-size: 20px;
-    line-height: 30px;
     margin:0;
     padding: 20px;
     margin: 0 0 30px 30px;
+}
+
+.teaser h2 {
+    font-weight:300;
+    color:#f9f9f9;
+    font-size: 20px;
+    line-height: 30px;
 }
 
 .navbar .btn-navbar {
@@ -460,6 +463,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .gallery .thumbnail img {
     padding: 40px 5px 5px;
+    border-radius: 5px;
 }
 
 .mycharts .thumbnail .btn-group {
