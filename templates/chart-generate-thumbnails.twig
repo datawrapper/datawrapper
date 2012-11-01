@@ -137,7 +137,7 @@ $(function() {
             ctx.fillStyle = iframe.get(0).contentWindow.vis.theme.colors.background;
             ctx.fillRect(0, 0, width, height);
 
-            ctx.drawSvg($('svg', body).get(0).innerSVG, 0,0, width, $('svg', body).height());
+            ctx.drawSvg($('svg', body).get(0).innerSVG, 0.5,0.5, width, $('svg', body).height());
 
             //canvg('canvas', $('svg', body).get(0).innerSVG);
             /*$('.label', body).each(function(i, lbl) {
