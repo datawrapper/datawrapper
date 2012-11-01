@@ -11,16 +11,10 @@
     Datawrapper.Themes.LeMonde = _.extend({}, Datawrapper.Themes.Base, {
 
         colors: {
-            highlight: '#e41f25',
-            focus: '#e41f25',
-            context: '#aaa',
-            axis: '#000000',
-            grid: '#999999',
+            palette: ['#0386C3', '#D50303', '#6FAA12', '#FFD500', '#680240', '#F20559', '#1F0D67', '#0CB4AE'],
             positive: '#0089c0',
             negative: '#e41f25',
-            'highlight-negative': '#801100',
-            background: '#ffffff',
-            palette: ['#e41f25', '#96c22c', '#fdc400', '#2974b9', '#6A3D9A', '#B15928']
+            background: '#ffffff'
         },
 
         lineChart: {
