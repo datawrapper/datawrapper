@@ -62,7 +62,7 @@
                 <div class="thumbnail">
                     <h3 style="color:{{ chart.metadata.publish.text }};text-shadow:2px 2px 2px {{ chart.metadata.publish.background }}">{{ chart.title }}</h3>
 
-                    <a href="http://{{ DW_CHART_CACHE_DOMAIN }}/{{ chart.id }}"><img src="http://{{ DW_CHART_CACHE_DOMAIN }}/{{ chart.id }}/m.png" width="260" alt="" style="background:{{ chart.metadata.publish.background }}"></a>
+                    <a class="chart-preview" href="http://{{ DW_CHART_CACHE_DOMAIN }}/{{ chart.id }}/" data-id="{{ chart.id }}" data-bg="{{ chart.metadata.publish.background }}" data-w="{{ chart.metadata.publish['embed-width'] }}" data-h="{{ chart.metadata.publish['embed-height'] }}"><img src="http://{{ DW_CHART_CACHE_DOMAIN }}/{{ chart.id }}/m.png" width="260" alt="" style="background:{{ chart.metadata.publish.background }}"></a>
 
                 </div>
             </li>
@@ -70,32 +70,30 @@
         </ul>
 
     </div>
-    
 </div>
 
 
-<script type="text/javascript" src="/static/vendor/masonry/jquery.masonry.min.js"></script>
+<script type="text/javascript" src="/static/vendor/overlay/ender.overlay.js"></script>
 <script type="text/javascript">
 $(function(){
-  //*
 
+    $('.chart-preview').click(function(e) {
+        e.preventDefault();
 
-  function layout() {
-      /*$('.gallery .thumbnails').masonry({
-        itemSelector : 'li',
-        columnWidth : function(w) { return w/3; }
-      });
-*/
-  }
+        var a = $(e.target).parent('a'),
+            id = a.data('id'),
+            chartIframe = $('<iframe src="http://{{ DW_CHART_CACHE_DOMAIN }}/' + id + '"></iframe>'),
+            overlay = chartIframe.overlay();
+        chartIframe.css({
+            width: a.data('w'),
+            height: a.data('h'),
+            'border-radius': 10,
+            border: '10px solid '+(a.data('bg') || '#fff')
+        });
+        console.log(a, id);
+        overlay.open();
 
-  layout();
-
-  setTimeout(layout, 1000);
-   // */
-
-});
-
-$('body').load(function() {
+    });
 
 });
 
