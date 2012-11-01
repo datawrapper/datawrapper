@@ -458,6 +458,10 @@ h1, h2, h3, h4, h5, h6 {
     box-shadow: 2px 1px 5px rgba(0, 0, 0, 0.24);
 }
 
+.gallery .thumbnail img {
+    padding: 40px 5px 5px;
+}
+
 .mycharts .thumbnail .btn-group {
     position: absolute;
     top: 10px;
@@ -480,15 +484,14 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .gallery .thumbnail h3 {
-    position: absolute;
-    bottom: 9px;
-    left: 5px;
-    background: rgba(0,0,0,0.65);
     padding: 2px 10px 4px 6px;
-    color: #fff;
+    color: #000;
+    position: absolute;
+    top: 10px;
+    left: 10px;
     font-size: 14px;
     line-height: 20px;
-    text-shadow: 0px 0px 2px #000;
+    text-shadow: 0px 0px 2px #fff;
 }
 
 .mycharts-filter li.active a {
