@@ -165,7 +165,7 @@ msgid ""
 "close this page.."
 msgstr ""
 "Bitte einen Moment gedulden während dein Diagramm veröffentlicht wird. "
-"Versuche diese Seite nicht zu schließen..."
+"Versuche diese Seite nicht zu schließen…"
 
 #: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:277
 msgid "Finished."
@@ -230,7 +230,7 @@ msgstr "Glückwunsch! Das Diagramm wurde veröffentlicht."
 
 #: ../scripts/tmpl_cache/chart-publish.twig.php:226
 msgid "Link to this visualisation"
-msgstr "Link zur Visualisierung"
+msgstr "Link zum Diagramm"
 
 #: ../scripts/tmpl_cache/chart-publish.twig.php:245
 msgid "Embed into your website"
@@ -257,9 +257,9 @@ msgid ""
 "You can show some love to Datawrapper by agreeing to show your visualisation "
 "in our <a href='%GALLERY_URL%'>public gallery</a>"
 msgstr ""
-"Als Option kann der Chart auch in der <a href='%GALLERY_URL%'>Datawrapper-"
-"Galerie</a> zusätzlich veröffentlicht werden. So sehen andere, welche Charts "
-"bisher erstellt wurden."
+"Als Option kann das Diagramm auch in der <a href='%GALLERY_URL%'>Datawrapper-"
+"Galerie</a> zusätzlich veröffentlicht werden. So sehen andere, welche "
+"Diagramme bisher erstellt wurden."
 
 #: ../scripts/tmpl_cache/chart-publish.twig.php:284
 msgid "This is absolutely optional."
@@ -279,7 +279,7 @@ msgid ""
 "free and all you need is a valid email address. The chart you just created "
 "will be transfered to your new account."
 msgstr ""
-"Um die Grafik einbetten zu können, möchten wir dich darum bitten, einen "
+"Um das Diagramm einbetten zu können, möchten wir dich darum bitten, einen "
 "Benutzerkonto zu erstellen. Dieser ist kostenlos und alles was du brauchst "
 "ist eine gültige E-Mail Adresse. Dein soeben erstelltes Diagramm wird "
 "natürlich zum neuen Konto übertragen."
@@ -316,7 +316,7 @@ msgid ""
 "If you did not get any email within 5 minutes, here's the trouble shooting "
 "guide:"
 msgstr ""
-"Falls du von uns innerhalb von5 Minuten keine E-Mail erhalten hast, befolge "
+"Falls du von uns innerhalb von 5 Minuten keine E-Mail erhalten hast, befolge "
 "die folgenden Hinweise:"
 
 #: ../scripts/tmpl_cache/chart-publish.twig.php:364
@@ -343,7 +343,7 @@ msgstr "Wenn das auch nicht geholfen hat, bitte kontaktiere den Support."
 
 #: ../scripts/tmpl_cache/chart-publish.twig.php:417
 msgid "Create another graphic"
-msgstr "Neue Grafik erstellen"
+msgstr "Neues Diagramm erstellen"
 
 #: ../scripts/tmpl_cache/chart-publish.twig.php:424
 msgid "Duplicate this chart"
@@ -463,7 +463,7 @@ msgstr "Datenreihe auswählen"
 
 #: ../scripts/tmpl_cache/chart-visualize.twig.php:487
 msgid "Refine the chart"
-msgstr "Darstellung anpassen"
+msgstr "Diagramm anpassen"
 
 #: ../scripts/tmpl_cache/chart-visualize.twig.php:501
 msgid "Publish"
@@ -581,7 +581,7 @@ msgstr "\"Wrap\" nochmal!"
 #: ../scripts/tmpl_cache/home.twig.php:119
 #: ../scripts/tmpl_cache/mycharts.twig.php:34 ../www/index.php:71
 msgid "My Charts"
-msgstr "Meine Visualisierungen"
+msgstr "Meine Diagramme"
 
 #: ../scripts/tmpl_cache/home-login.twig.php:90
 msgid "See what you created so far."
@@ -605,7 +605,7 @@ msgid ""
 "to create simple, correct and embeddable charts in minutes."
 msgstr ""
 "<b class='dw-logo'>Datawrapper</b> ist ein Opensource Tool das dabei hilft, "
-"innerhalb von Minuten einfache und korrekte Charts mit Einbett-Code zu "
+"innerhalb von Minuten einfache und korrekte Diagramme mit Einbett-Code zu "
 "erstellen."
 
 #: ../scripts/tmpl_cache/home.twig.php:101
@@ -644,7 +644,7 @@ msgstr "Wesentliche Funktionen"
 
 #: ../scripts/tmpl_cache/home.twig.php:149
 msgid "Simple: Create and embed charts in minutes"
-msgstr "Einfach: Mit wenigen Klicks zur Visualisierung"
+msgstr "Einfach: Mit wenigen Klicks zum Diagramm"
 
 #: ../scripts/tmpl_cache/home.twig.php:153
 msgid "Open Source: Download and install"
@@ -656,7 +656,7 @@ msgstr "CSS: Design beliebig anpassen"
 
 #: ../scripts/tmpl_cache/home.twig.php:161
 msgid "Developers: Add new chart types"
-msgstr "Entwickler: Erweiterung durch HTML5 Charts möglich"
+msgstr "Entwickler: Erweiterung durch HTML5 Diagramme möglich"
 
 #: ../scripts/tmpl_cache/home.twig.php:165
 msgid "Non-profit: This is and will stay free to use"
@@ -797,7 +797,7 @@ msgid ""
 "Your account has been activated, and you are able to create and publish "
 "charts."
 msgstr ""
-"Dein Benutzerkonto wurde aktiviert. Jetzt kannst du Visualisierungen "
+"Dein Benutzerkonto wurde aktiviert. Jetzt kannst du Diagramme "
 "veröffentlichen und einbetten."
 
 #: ../scripts/tmpl_cache/settings.twig.php:95
@@ -845,7 +845,7 @@ msgid ""
 "information below the charts you publish."
 msgstr ""
 "Das Ausfüllen des Nutzerprofils ist optional. Wenn du es tust, kannst du "
-"diese Informationen unter deinen Visualisierungen anzeigen."
+"diese Informationen unter deinen Diagrammen anzeigen."
 
 #: ../scripts/tmpl_cache/settings.twig.php:154
 msgid "E-Mail"
@@ -869,8 +869,8 @@ msgid ""
 "Optionally you can display these information below you published charts."
 msgstr ""
 "Gib eine Webseite an, auf der mehr man mehr über dich erfährt (z.B. dein "
-"Blog). Optional kann man den Link (später) auch unter deinen "
-"Visualisierungen einblenden."
+"Blog). Optional kann man den Link (später) auch unter deinen Diagrammen "
+"einblenden."
 
 #: ../scripts/tmpl_cache/settings.twig.php:203
 msgid "Twitter/Facebook/etc"
@@ -956,7 +956,7 @@ msgstr "Du kannst dich nicht mehr ein- und ausloggen."
 
 #: ../scripts/tmpl_cache/settings.twig.php:356
 msgid "You cannot edit or remove your charts anymore."
-msgstr "Du kannst deine Grafiken nicht mehr bearbeiten oder löschen."
+msgstr "Du kannst deine Diagramme nicht mehr bearbeiten oder löschen."
 
 #: ../scripts/tmpl_cache/settings.twig.php:361
 msgid ""
@@ -1252,11 +1252,11 @@ msgstr "Es tut uns leid, aber es gibt kein Diagramm mit der ID <b>"
 
 #: ../lib/utils/errors.php:68
 msgid "Whoops! That charts doesn't belong to you"
-msgstr "Huch, diese Visualisierung gehört dir nicht."
+msgstr "Huch, dieses Diagramm gehört dir nicht."
 
 #: ../lib/utils/errors.php:69
 msgid "Sorry, but the requested chart belongs to someone else."
-msgstr "Es tut mir leid, aber diese Visualisierung gehört jemand anderem."
+msgstr "Es tut mir leid, aber dieses Diagramm gehört jemand anderem."
 
 #: ../lib/utils/errors.php:71
 msgid "Please check if you're logged in."

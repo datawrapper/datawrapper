@@ -100,6 +100,8 @@ $(function() {
                     chart.set('metadata.visualize.base-color', theTheme.colors.palette.indexOf(color));
                 }
             });
+            chart.set('metadata.publish.background', theTheme.colors.background);
+            chart.set('metadata.publish.text', theTheme.colors.text);
         }
         loadNext();
     } // end loadThemeColors()

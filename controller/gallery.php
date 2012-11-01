@@ -43,8 +43,10 @@ function gal_nbChartsByLayout($user) {
 
 $app->get('/gallery/?', function () use ($app) {
     $user = DatawrapperSession::getUser();
+    $charts =  ChartQuery::create()->getPublicGalleryCharts();
     $page = array(
-        'charts' => ChartQuery::create()->getPublicGalleryCharts()
+        'charts' => $charts,
+        'picked' => $charts[1]
     );
 
     add_header_vars($page, 'gallery');

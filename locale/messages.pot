@@ -119,7 +119,7 @@ msgid ""
 msgstr ""
 
 #: ../scripts/tmpl_cache/chart-describe.twig.php:334
-#: ../scripts/tmpl_cache/core.twig.php:142
+#: ../scripts/tmpl_cache/core.twig.php:157
 msgid "Learn more"
 msgstr ""
 
@@ -131,66 +131,66 @@ msgstr ""
 msgid "Annotate data point"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-describe.twig.php:346 ../www/index.php:145
+#: ../scripts/tmpl_cache/chart-describe.twig.php:346 ../www/index.php:153
 msgid "Visualize"
 msgstr ""
 
 #: ../scripts/tmpl_cache/chart-describe.twig.php:350
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:505
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:513
 msgid "Back"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:263
+#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:277
 msgid "Publishing chart..."
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:268
+#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:282
 msgid ""
 "Please hold on a second while your chart is being published. Try not to "
 "close this page.."
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:277
+#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:291
 msgid "Finished."
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:285
+#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:299
 msgid "Generating static HTML page"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:289
+#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:303
 msgid "Generated static HTML page"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:294
+#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:308
 msgid "Packing and crunching JavaScript"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:298
+#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:312
 msgid "Packed and minified JavaScript"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:303
+#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:317
 msgid "Packing and crunching stylesheets"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:307
+#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:321
 msgid "Packed and minified stylesheets"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:312
+#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:326
 msgid "Publishing chart data"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:316
+#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:330
 msgid "Published chart data"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:321
+#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:335
 msgid "Generating chart thumbnails"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:325
+#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:339
 msgid "Generated Thumbnails"
 msgstr ""
 
@@ -258,8 +258,8 @@ msgid ""
 msgstr ""
 
 #: ../scripts/tmpl_cache/chart-publish.twig.php:308
-#: ../scripts/tmpl_cache/home-login.twig.php:45
-#: ../scripts/tmpl_cache/home-login.twig.php:62
+#: ../scripts/tmpl_cache/home-login.twig.php:43
+#: ../scripts/tmpl_cache/home-login.twig.php:60
 #: ../scripts/tmpl_cache/login.twig.php:104
 msgid "Sign Up"
 msgstr ""
@@ -308,15 +308,15 @@ msgstr ""
 msgid "If that didn't work either, please contact our support"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:417
+#: ../scripts/tmpl_cache/chart-publish.twig.php:446
 msgid "Create another graphic"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:424
+#: ../scripts/tmpl_cache/chart-publish.twig.php:453
 msgid "Duplicate this chart"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:429
+#: ../scripts/tmpl_cache/chart-publish.twig.php:458
 msgid "Return to visualise step"
 msgstr ""
 
@@ -355,111 +355,111 @@ msgstr ""
 msgid "Learn more about how to upload your data"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-upload.twig.php:170
+#: ../scripts/tmpl_cache/chart-upload.twig.php:169
 msgid "Sample Data"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-upload.twig.php:174
+#: ../scripts/tmpl_cache/chart-upload.twig.php:173
 msgid ""
 "If you simply want to play around with Datawrapper, here's a list of some "
 "example datasets:"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:324
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:332
 msgid "Select visualization and layout"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:329
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:337
 msgid "Visualization:"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:362
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:370
 msgid "Layout:"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:394
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:402
 msgid "Hint"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:396
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:404
 msgid ""
 "In case the visualization doesn't look like you expected, you should try to "
 "<a href='#' id='btn-transpose'><i class='icon-rotate'></i> transpose the "
 "data</a>."
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:404
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:412
 msgid "Tell your story"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:410
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:418
 msgid "Title"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:414
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:422
 msgid "Introduction"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:418
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:426
 msgid "Highlight"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:426
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:434
 msgid "Tell the story in five words"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:434
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:442
 msgid "Guide the audience to read the chart"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:442
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:450
 msgid "Highlight the most import data series:"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:448
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:456
 msgid "select a data series"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:487
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:495
 msgid "Refine the chart"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:501
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:509
 msgid "Publish"
 msgstr ""
 
-#: ../scripts/tmpl_cache/core.twig.php:104
+#: ../scripts/tmpl_cache/core.twig.php:112
 msgid "Open Source Data Visualization"
 msgstr ""
 
-#: ../scripts/tmpl_cache/core.twig.php:132
+#: ../scripts/tmpl_cache/core.twig.php:141
 msgid "Back to top"
 msgstr ""
 
-#: ../scripts/tmpl_cache/core.twig.php:137
+#: ../scripts/tmpl_cache/core.twig.php:152
 msgid ""
 "Datawrapper is an <a href=\"http://github.com/datawrapper/datawrapper\">open "
 "source</a> project by <a href=\"http://abzv.de\">ABZV</a> - a German "
 "training institution for newspaper journalists."
 msgstr ""
 
-#: ../scripts/tmpl_cache/core.twig.php:144
+#: ../scripts/tmpl_cache/core.twig.php:159
 msgid "Motivation"
 msgstr ""
 
-#: ../scripts/tmpl_cache/core.twig.php:146
+#: ../scripts/tmpl_cache/core.twig.php:161
 msgid "Quick Start Guide"
 msgstr ""
 
-#: ../scripts/tmpl_cache/core.twig.php:148
+#: ../scripts/tmpl_cache/core.twig.php:163
 msgid "Manual"
 msgstr ""
 
-#: ../scripts/tmpl_cache/core.twig.php:150
+#: ../scripts/tmpl_cache/core.twig.php:165
 msgid "Terms of Use"
 msgstr ""
 
-#: ../scripts/tmpl_cache/core.twig.php:152
+#: ../scripts/tmpl_cache/core.twig.php:167
 msgid "Imprint"
 msgstr ""
 
@@ -473,6 +473,54 @@ msgstr ""
 
 #: ../scripts/tmpl_cache/error.twig.php:87
 msgid "Resturn to the Datawrapper <a href='/'>homepage</a>."
+msgstr ""
+
+#: ../scripts/tmpl_cache/gallery.twig.php:34
+msgid "Chart Gallery"
+msgstr ""
+
+#: ../scripts/tmpl_cache/gallery.twig.php:36
+msgid "See what others create with Datawrapper recently"
+msgstr ""
+
+#: ../scripts/tmpl_cache/gallery.twig.php:43
+msgid ""
+"Welcome to the public gallery of Datawrapper charts. Here you can see the "
+"charts other users have created recently. Click on the charts to see the "
+"interactive version."
+msgstr ""
+
+#: ../scripts/tmpl_cache/gallery.twig.php:47
+msgid "1"
+msgstr ""
+
+#: ../scripts/tmpl_cache/gallery.twig.php:51
+msgid "2"
+msgstr ""
+
+#: ../scripts/tmpl_cache/gallery.twig.php:124
+#: ../scripts/tmpl_cache/mycharts.twig.php:120
+msgid "No charts here, yet"
+msgstr ""
+
+#: ../scripts/tmpl_cache/gallery.twig.php:128
+#: ../scripts/tmpl_cache/mycharts.twig.php:124
+msgid "Why not <a href='/chart/create'>create a new chart now</a>?"
+msgstr ""
+
+#: ../scripts/tmpl_cache/gallery.twig.php:138
+#: ../scripts/tmpl_cache/mycharts.twig.php:134
+msgid "By Month"
+msgstr ""
+
+#: ../scripts/tmpl_cache/gallery.twig.php:188
+#: ../scripts/tmpl_cache/mycharts.twig.php:184
+msgid "By Visualisation"
+msgstr ""
+
+#: ../scripts/tmpl_cache/gallery.twig.php:238
+#: ../scripts/tmpl_cache/mycharts.twig.php:234
+msgid "By Layout"
 msgstr ""
 
 #: ../scripts/tmpl_cache/help-interpret-data.twig.php:31
@@ -493,65 +541,61 @@ msgid ""
 msgstr ""
 
 #: ../scripts/tmpl_cache/home-login.twig.php:35
-msgid "Can't wait?"
-msgstr ""
-
-#: ../scripts/tmpl_cache/home-login.twig.php:37
 msgid "Try Datawrapper now!"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home-login.twig.php:43
-#: ../scripts/tmpl_cache/home-login.twig.php:58
+#: ../scripts/tmpl_cache/home-login.twig.php:41
+#: ../scripts/tmpl_cache/home-login.twig.php:56
 #: ../scripts/tmpl_cache/home.twig.php:97
 #: ../scripts/tmpl_cache/login.twig.php:55
 msgid "Login"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home-login.twig.php:50
+#: ../scripts/tmpl_cache/home-login.twig.php:48
 #: ../scripts/tmpl_cache/home.twig.php:89
 #: ../scripts/tmpl_cache/login.twig.php:47
 #: ../scripts/tmpl_cache/login.twig.php:87
 msgid "email"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home-login.twig.php:54
+#: ../scripts/tmpl_cache/home-login.twig.php:52
 #: ../scripts/tmpl_cache/home.twig.php:93
 #: ../scripts/tmpl_cache/login.twig.php:51
 #: ../scripts/tmpl_cache/login.twig.php:93
 msgid "password"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home-login.twig.php:73
+#: ../scripts/tmpl_cache/home-login.twig.php:71
 msgid "Welcome back!"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home-login.twig.php:78
+#: ../scripts/tmpl_cache/home-login.twig.php:76
 msgid "Create New Chart"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home-login.twig.php:80
+#: ../scripts/tmpl_cache/home-login.twig.php:78
 msgid "Wrap again!"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home-login.twig.php:88
+#: ../scripts/tmpl_cache/home-login.twig.php:86
 #: ../scripts/tmpl_cache/home.twig.php:119
-#: ../scripts/tmpl_cache/mycharts.twig.php:34 ../www/index.php:71
+#: ../scripts/tmpl_cache/mycharts.twig.php:34 ../www/index.php:73
 msgid "My Charts"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home-login.twig.php:90
+#: ../scripts/tmpl_cache/home-login.twig.php:88
 msgid "See what you created so far."
 msgstr ""
 
-#: ../scripts/tmpl_cache/home-login.twig.php:96 ../www/index.php:104
+#: ../scripts/tmpl_cache/home-login.twig.php:94 ../www/index.php:106
 msgid "Settings"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home-login.twig.php:98
+#: ../scripts/tmpl_cache/home-login.twig.php:96
 msgid "Edit your personal information."
 msgstr ""
 
-#: ../scripts/tmpl_cache/home-login.twig.php:102 ../www/index.php:108
+#: ../scripts/tmpl_cache/home-login.twig.php:100 ../www/index.php:110
 msgid "Logout"
 msgstr ""
 
@@ -671,26 +715,6 @@ msgstr ""
 
 #: ../scripts/tmpl_cache/mycharts.twig.php:98
 msgid "Delete"
-msgstr ""
-
-#: ../scripts/tmpl_cache/mycharts.twig.php:120
-msgid "No charts here, yet"
-msgstr ""
-
-#: ../scripts/tmpl_cache/mycharts.twig.php:124
-msgid "Why not <a href='/chart/create'>create a new chart now</a>?"
-msgstr ""
-
-#: ../scripts/tmpl_cache/mycharts.twig.php:134
-msgid "By Month"
-msgstr ""
-
-#: ../scripts/tmpl_cache/mycharts.twig.php:184
-msgid "By Visualisation"
-msgstr ""
-
-#: ../scripts/tmpl_cache/mycharts.twig.php:234
-msgid "By Layout"
 msgstr ""
 
 #: ../scripts/tmpl_cache/mycharts.twig.php:309
@@ -919,11 +943,13 @@ msgstr ""
 #: ../scripts/tmpl_cache/themes__default.twig.php:62
 #: ../scripts/tmpl_cache/themes__deutsche-welle.twig.php:59
 #: ../scripts/tmpl_cache/themes__guardian.twig.php:52
+#: ../scripts/tmpl_cache/themes__le-monde.twig.php:59
 msgid "Source: "
 msgstr ""
 
-#: ../scripts/tmpl_cache/themes__default.twig.php:90
+#: ../scripts/tmpl_cache/themes__default.twig.php:87
 #: ../scripts/tmpl_cache/themes__deutsche-welle.twig.php:87
+#: ../scripts/tmpl_cache/themes__le-monde.twig.php:86
 msgid "Download data"
 msgstr ""
 
@@ -939,39 +965,39 @@ msgstr ""
 msgid "Select row to display"
 msgstr ""
 
-#: ../www/index.php:69
+#: ../www/index.php:71
 msgid "Create Chart"
 msgstr ""
 
-#: ../www/index.php:73 ../lib/templates/docs-pages.php:5
+#: ../www/index.php:75 ../lib/templates/docs-pages.php:5
 msgid "About"
 msgstr ""
 
-#: ../www/index.php:74
+#: ../www/index.php:76
 msgid "Blog"
 msgstr ""
 
-#: ../www/index.php:92
+#: ../www/index.php:94
 msgid "Language"
 msgstr ""
 
-#: ../www/index.php:116
+#: ../www/index.php:118
 msgid "Admin"
 msgstr ""
 
-#: ../www/index.php:123
+#: ../www/index.php:125
 msgid "Login / Sign Up"
 msgstr ""
 
-#: ../www/index.php:143
+#: ../www/index.php:151
 msgid "Upload Data"
 msgstr ""
 
-#: ../www/index.php:144
+#: ../www/index.php:152
 msgid "Check & Describe"
 msgstr ""
 
-#: ../www/index.php:146
+#: ../www/index.php:154
 msgid "Publish & Embed"
 msgstr ""
 
@@ -1031,60 +1057,64 @@ msgstr ""
 msgid "Copy"
 msgstr ""
 
-#: ../lib/templates/demo_datasets.php:9
-msgid "Line chart: Marriages in Germany (per capita)"
+#: ../lib/templates/demo_datasets.php:10
+msgid "National external debt per person"
 msgstr ""
 
-#: ../lib/templates/demo_datasets.php:10
+#: ../lib/templates/demo_datasets.php:11 ../lib/templates/demo_datasets.php:56
+msgid "Bar chart"
+msgstr ""
+
+#: ../lib/templates/demo_datasets.php:40
+msgid "Marriages in Germany"
+msgstr ""
+
+#: ../lib/templates/demo_datasets.php:42
+msgid "Line chart"
+msgstr ""
+
+#: ../lib/templates/demo_datasets.php:50
 msgid "Year"
 msgstr ""
 
-#: ../lib/templates/demo_datasets.php:10
+#: ../lib/templates/demo_datasets.php:50
 msgid "Marriages"
 msgstr ""
 
-#: ../lib/templates/demo_datasets.php:82
-msgid "Death causes of British soldiers"
+#: ../lib/templates/demo_datasets.php:63
+msgid "Net borrowing of Germany"
 msgstr ""
 
-#: ../lib/templates/demo_datasets.php:83
-msgid "Monat"
+#: ../lib/templates/demo_datasets.php:65
+msgid "New debt in Bio."
 msgstr ""
 
-#: ../lib/templates/demo_datasets.php:83
-msgid "Soldaten gesamt"
+#: ../lib/templates/demo_datasets.php:72
+msgid "Women in German Parliament"
 msgstr ""
 
-#: ../lib/templates/demo_datasets.php:83
-msgid "Ansteckungskrankheit"
+#: ../lib/templates/demo_datasets.php:73
+msgid "Bar chart (grouped)"
 msgstr ""
 
-#: ../lib/templates/demo_datasets.php:83
-msgid "Wunden und Verletzungen"
+#: ../lib/templates/demo_datasets.php:81
+msgid "Party"
 msgstr ""
 
-#: ../lib/templates/demo_datasets.php:83
-msgid "Andere Todesursache"
+#: ../lib/templates/demo_datasets.php:81
+msgid "Women"
 msgstr ""
 
-#: ../lib/templates/demo_datasets.php:113
-msgid "Expenditure on social protection - &#37; of GDP"
+#: ../lib/templates/demo_datasets.php:81
+msgid "Men"
 msgstr ""
 
-#: ../lib/templates/demo_datasets.php:125
-msgid "Gini coefficient in Germany, Sweden and South Africa (2005)"
+#: ../lib/templates/demo_datasets.php:93
+msgid "Seats in German Parliament"
 msgstr ""
 
-#: ../lib/templates/demo_datasets.php:137
-msgid "Median income according to education status in Germany, 2005-2010."
-msgstr ""
-
-#: ../lib/templates/demo_datasets.php:146
-msgid "Income distribution in Germany in the 1990's."
-msgstr ""
-
-#: ../lib/templates/demo_datasets.php:159
-msgid "Energy consumption by source in Germany, 1950-2010"
+#: ../lib/templates/demo_datasets.php:94
+msgid "Donut chart"
 msgstr ""
 
 #: ../lib/utils/errors.php:21

@@ -6,7 +6,7 @@
 </div>
 <div class="row">
     <div class="span3">
-        <p>{% trans "Welcome to the public gallery of Datawrapper charts. Here you can see the charts other users have created recently. Click on the charts to see the interactive version." %}</p>
+        <p>{% trans "Welcome to the public gallery of Datawrapper charts. Here you can see the nice charts that other users have created recently. Click on the charts to see the interactive version." %}</p>
         <p>{% trans "1" %}</p>
         <p>{% trans "2" %}</p>
         <h3>Most active users</h3>
@@ -16,32 +16,21 @@
     </div>
     <div class="span9 gallery">
 
-        {% if user.hasCharts %}
+
+
         <ul class="thumbnails">
             {% for chart in charts %}
             <li class="span3 chart" data-id="{{ chart.id }}">
                 <div class="thumbnail">
-                    <h3>{{ chart.title }}</h3></a>
+                    <h3 style="color:{{ chart.metadata.publish.text }};text-shadow:2px 2px 2px {{ chart.metadata.publish.background }}">{{ chart.title }}</h3></a>
 
-                    <a href="/chart/{{ chart.id }}/edit"><img src="{% if chart.isPublic %}http://{{ DW_CHART_CACHE_DOMAIN }}/{{ chart.id }}/m.png{% else %}/static/img/nopreview.png{% endif %}" width="260" alt="">
+                    <a href="http://{{ DW_CHART_CACHE_DOMAIN }}/{{ chart.id }}"><img src="http://{{ DW_CHART_CACHE_DOMAIN }}/{{ chart.id }}/m.png" width="260" alt="" style="background:{{ chart.metadata.publish.background }}">
 
-                    {# <p class="pull-right">
-                        <a href="#delete" class="delete" data-chart="{{ chart.id }}"><i class="icon-remove"></i></a>
-                    </p> #}
-
-                     
-                    {# <p>{% trans "Created" %}: {{ chart.createdAt|date() }}<br/>
-                     {% trans "Layout" %}: {{ chart.theme }} </p> #}
                 </div>
             </li>
             {% endfor %}
         </ul>
-        {% else %}
 
-            <h2>{% trans "No charts here, yet" %}</h2>
-            <p>{% trans "Why not <a href='/chart/create'>create a new chart now</a>?" %}</p>
-
-        {% endif %}
     </div>
     <div class="span3 gallery-filter" style="position:relative;left: 30px">
         <h2>{% trans "By Month" %}</h2>
