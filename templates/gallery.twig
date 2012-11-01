@@ -7,16 +7,44 @@
 <div class="row">
     <div class="span3">
         <p>{% trans "Welcome to the public gallery of Datawrapper charts. Here you can see the nice charts that other users have created recently. Click on the charts to see the interactive version." %}</p>
-        <p>{% trans "1" %}</p>
-        <p>{% trans "2" %}</p>
-        <h3>Most active users</h3>
-        <ul>
-            <li>Guardian</li>
+        <h3>{% trans "By Month" %}</h3>
+
+        <ul class="unstyled">
+            {% for month in bymonth %}
+            {% if key == 'month' and val == month.id %}
+            <li class="active"><a href="/gallery/"><i class="icon-check"></i> {{ month.name }} </a> ({{ month.count }}) </li>
+            {% else %}
+            <li><a href="/gallery/by/month/{{ month.id }}">{{ month.name }}</a> ({{ month.count }})</li>
+            {% endif %}
+            {% endfor %}
+        </ul>
+
+        <h3>{% trans "By Visualisation" %}</h3>
+
+        <ul class="unstyled">
+            {% for vis in byvis %}
+            {% if key == 'vis' and val == vis.id %}
+            <li class="active"><a href="/gallery/"><i class="icon-check"></i> {{ vis.name }} </a> ({{ vis.count }}) </li>
+            {% else %}
+            <li><a href="/gallery/by/vis/{{ vis.id }}">{{ vis.name }}</a> ({{ vis.count }})</li>
+            {% endif %}
+            {% endfor %}
+        </ul>
+
+        <h3>{% trans "By Layout" %}</h3>
+
+        <ul class="unstyled">
+            {% for layout in bylayout %}
+            {% if key == 'layout' and val == layout.id %}
+            <li class="active"><a href="/gallery/"><i class="icon-check"></i> {{ layout.name }} </a> ({{ layout.count }}) </li>
+            {% else %}
+            <li><a href="/gallery/by/layout/{{ layout.id }}">{{ layout.name }}</a> ({{ layout.count }})</li>
+            {% endif %}
+
+            {% endfor %}
         </ul>
     </div>
     <div class="span9 gallery">
-
-
 
         <ul class="thumbnails">
             {% for chart in charts %}
@@ -33,42 +61,7 @@
 
     </div>
     <div class="span3 gallery-filter" style="position:relative;left: 30px">
-        <h2>{% trans "By Month" %}</h2>
-
-        <ul class="unstyled">
-            {% for month in bymonth %}
-            {% if key == 'month' and val == month.id %}
-            <li class="active"><a href="/gallery/"><i class="icon-check"></i> {{ month.name }} </a> ({{ month.count }}) </li>
-            {% else %}
-            <li><a href="/gallery/by/month/{{ month.id }}">{{ month.name }}</a> ({{ month.count }})</li>
-            {% endif %}
-            {% endfor %}
-        </ul>
-
-        <h2>{% trans "By Visualisation" %}</h2>
-
-        <ul class="unstyled">
-            {% for vis in byvis %}
-            {% if key == 'vis' and val == vis.id %}
-            <li class="active"><a href="/gallery/"><i class="icon-check"></i> {{ vis.name }} </a> ({{ vis.count }}) </li>
-            {% else %}
-            <li><a href="/gallery/by/vis/{{ vis.id }}">{{ vis.name }}</a> ({{ vis.count }})</li>
-            {% endif %}
-            {% endfor %}
-        </ul>
-
-        <h2>{% trans "By Layout" %}</h2>
-
-        <ul class="unstyled">
-            {% for layout in bylayout %}
-            {% if key == 'layout' and val == layout.id %}
-            <li class="active"><a href="/gallery/"><i class="icon-check"></i> {{ layout.name }} </a> ({{ layout.count }}) </li>
-            {% else %}
-            <li><a href="/gallery/by/layout/{{ layout.id }}">{{ layout.name }}</a> ({{ layout.count }})</li>
-            {% endif %}
-
-            {% endfor %}
-        </ul>
+       
     </div>
 </div>
 <script type="text/javascript" src="/static/vendor/masonry/jquery.masonry.min.js"></script>
