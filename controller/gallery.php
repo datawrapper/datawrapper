@@ -40,7 +40,7 @@ $app->get('/gallery(/?|/by/:key/:val)', function ($key = false, $val = false) us
     $total = ChartQuery::create()->countGalleryCharts();
     $pgs = array();
     $p_min = 0;
-    $p_max = $lastPage = floor($total / $perPage) - 1;
+    $p_max = $lastPage = floor($total / $perPage);
 
     if ($page == 0) $p_max = min($lastPage, $page + 4);
     else if ($page == 1) $p_max = min($lastPage, $page + 3);
@@ -57,7 +57,7 @@ $app->get('/gallery(/?|/by/:key/:val)', function ($key = false, $val = false) us
             'pages' => $pgs,
             'first' => 0,
             'current' => $page,
-            'last' => floor($total / $perPage) - 1
+            'last' => floor($total / $perPage)
         )
     );
     add_header_vars($vars, 'gallery');
