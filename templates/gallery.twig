@@ -85,13 +85,14 @@ $(function(){
             id = a.data('id'),
             chartIframe = $('<iframe src="http://{{ DW_CHART_CACHE_DOMAIN }}/' + id + '"></iframe>'),
             overlay = chartIframe.overlay();
+
         chartIframe.css({
             width: a.data('w'),
             height: a.data('h'),
+            background: (a.data('bg') || '#fff'),
             'border-radius': 10,
             border: '10px solid '+(a.data('bg') || '#fff')
         });
-        console.log(a, id);
         overlay.open();
 
     });
