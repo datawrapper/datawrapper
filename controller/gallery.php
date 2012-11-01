@@ -43,28 +43,20 @@ function gal_nbChartsByLayout($user) {
 
 $app->get('/gallery/?', function () use ($app) {
     $user = DatawrapperSession::getUser();
-    if ($user->isLoggedIn()) {
-        $page = array(
-            'charts' => ChartQuery::create()->getPublicGalleryCharts()
-        );
+    $page = array(
+        'charts' => ChartQuery::create()->getPublicGalleryCharts()
+    );
 
-        add_header_vars($page, 'mycharts');
-        $app->render('gallery.twig', $page);
-    } else {
-        error_mycharts_need_login();
-    }
+    add_header_vars($page, 'gallery');
+    $app->render('gallery.twig', $page);
 });
 
 $app->get('/gallery/by/:key/:val', function ($key, $val) use ($app) {
     $user = DatawrapperSession::getUser();
-    if ($user->isLoggedIn()) {
-        $page = array(
-            'charts' => ChartQuery::create()->getPublicChartsByUser($user, $key, $val)
-        );
+    $page = array(
+        'charts' => ChartQuery::create()->getPublicChartsByUser($user, $key, $val)
+    );
 
-        add_header_vars($page, 'mycharts');
-        $app->render('gallery.twig', $page);
-    } else {
-        error_mycharts_need_login();
-    }
+    add_header_vars($page, 'mycharts');
+    $app->render('gallery.twig', $page);
 });
