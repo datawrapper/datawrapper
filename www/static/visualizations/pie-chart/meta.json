@@ -2,7 +2,7 @@
     "title": {
         "en": "Pie Chart",
         "de": "Kreisdiagramm",
-        "fr": "Diagramme temporel"
+        "fr": "Diagramme circulaire"
     },
     "version": "0.9.1",
     "extends": "raphael-chart",

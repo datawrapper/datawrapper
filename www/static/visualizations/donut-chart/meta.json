@@ -2,7 +2,7 @@
     "title": {
         "en": "Donut Chart",
         "de": "Donut-Diagramm",
-        "fr": "Diagramme temporel"
+        "fr": "Graphique en anneau"
     },
     "version": "0.9.1",
     "extends": "pie-chart",
@@ -21,7 +21,7 @@
             "label": {
                 "en": "Show total value in center",
                 "de": "Zeige Summe in der Mitte",
-                "fr": "Type"
+                "fr": "Afficher la somme au centre"
             },
             "default": true
         },
@@ -30,7 +30,7 @@
             "label": {
                 "en": "Use custom total value instead of sum",
                 "de": "Eigenen Wert anstelle der Summe verwenden",
-                "fr": "translate me.."
+                "fr": "Afficher une autre valeur au centre"
             },
             "default": false,
             "depends-on": {
@@ -42,7 +42,7 @@
             "label": {
                 "en": "Custom total value",
                 "de": "Eigener Wert",
-                "fr": ".."
+                "fr": "Valeur personnalisée"
             },
             "depends-on": {
                 "show-total": true,

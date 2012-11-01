@@ -2,7 +2,7 @@
     "title": {
         "en": "Data Table",
         "de": "Tabelle",
-        "fr": "Diagramme temporel"
+        "fr": "Table de données"
     },
     "version": "0.8",
     "author": {
@@ -23,7 +23,7 @@
             "label": {
                 "en": "Make columns sortable",
                 "de": "Spalten sortierbar",
-                "fr": "triable"
+                "fr": "Colonnes triables"
             }
         },
         "table-responsive": {
@@ -31,7 +31,7 @@
             "label": {
                 "en": "Use responsive layout",
                 "de": "Responsives Layout",
-                "fr": "triable"
+                "fr": "Disposition réactive"
             }
         },
         "table-paginate": {

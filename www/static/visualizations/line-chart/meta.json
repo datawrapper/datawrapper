@@ -2,7 +2,7 @@
     "title": {
         "en": "Line Chart",
         "de": "Liniendiagramm",
-        "fr": "Diagramme temporel"
+        "fr": "Graphique linéaire"
     },
     "version": "0.9.1",
     "author": {
@@ -22,7 +22,7 @@
             "label": {
                 "en": "Direct labeling",
                 "de": "Linien direkt beschriften",
-                "fr": "direct labeling"
+                "fr": "Nommer les lignes"
             },
             "default": true
         },
@@ -31,7 +31,7 @@
             "label": {
                 "en": "Rotate labels 45°",
                 "de": "Beschriftungen um 45° drehen",
-                "fr": "rotate labels 45°"
+                "fr": "Pivoter les étiquettes de 45°"
             },
             "default": true
         },
@@ -40,7 +40,7 @@
             "label": {
                 "en": "Force a baseline at zero",
                 "de": "Erweitere die Achse bis zur Null",
-                "fr": "Échelle en zero"
+                "fr": "Échelle à zero"
             }
         },
 
@@ -49,7 +49,7 @@
             "label": {
                 "en": "Smooth lines",
                 "de": "Linien glätten",
-                "fr": "Smooth lines"
+                "fr": "Lisser les lignes"
             },
             "default": false
         },
@@ -58,7 +58,7 @@
             "label": {
                 "en": "Connect lines between missing values",
                 "de": "Linien zwischen fehlenden Werten verbinden",
-                "fr": "translate me"
+                "fr": "Joindre les lignes pour les valeurs manquantes"
             }
         },
         "force-banking": {
@@ -67,7 +67,7 @@
             "label": {
                 "en": "Bank the lines to 45°",
                 "de": "Anstiege auf 45° ausrichten",
-                "fr": "translate me"
+                "fr": "Limiter à 45° les lignes"
             }
         }
     }

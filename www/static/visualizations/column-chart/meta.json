@@ -2,7 +2,7 @@
     "title": {
         "en": "Column Chart",
         "de": "Balken (vertikal)",
-        "fr": "Diagramme temporel"
+        "fr": "Diagramme à bandes verticales"
     },
     "version": "0.9.3",
     "dimensions": 2,
@@ -21,7 +21,7 @@
             "label": {
                 "en": "Autmatically sort bars",
                 "de": "Balken sortieren",
-                "fr": "Barres de tri Autmatically"
+                "fr": "Trier les barres"
             }
         },
         "reverse-order": {
@@ -29,7 +29,7 @@
             "label": {
                 "en": "Reverse order",
                 "de": "Umgekehrte Reihenfolge",
-                "fr": "inverser ordre"
+                "fr": "inverser l&#39;ordre"
             }
         },
         "negative-color": {
