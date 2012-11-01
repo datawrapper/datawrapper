@@ -1,0 +1,27 @@
+
+{% block pagination %}
+
+{% if pager.first != pager.last %}
+<div class="pagination">
+    <ul>
+        <li {% if pager.first == pager.current %}class="disabled"{% endif %}>
+            <a href="?page={{ pager.first }}">«</a>
+        </li>
+        {% for pg in pager.pages %}
+            <li {% if pg == pager.current %}class="active" {% endif %}>
+                <a href="?page={{ pg }}">{{ pg + 1 }}</a></li>
+        {% endfor %}
+        <li {% if pager.last == pager.current %}class="disabled"{% endif %}>
+            <a href="?page={{ pager.last }}">»</a>
+        </li>
+    </ul>
+</div>
+{% endif %}
+
+{% endblock %}
+
+
+{% block gallery_thumbnail %}
+
+
+{% endblock %}

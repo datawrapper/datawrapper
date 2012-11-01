@@ -32,38 +32,22 @@ function gal_nbChartsByType() {
 
 $app->get('/gallery(/?|/by/:key/:val)', function ($key = false, $val = false) use ($app) {
     $user = DatawrapperSession::getUser();
-    $page = $app->request()->params('page');
-    if (empty($page)) $page = 0;
-    $perPage = 15;
-    $start = $page * $perPage;
-    $charts =  ChartQuery::create()->getGalleryCharts($key, $val, $start, $perPage);
-    $total = ChartQuery::create()->countGalleryCharts($key, $val);
-    $pgs = array();
-    $p_min = 0;
-    $p_max = $lastPage = floor($total / $perPage);
+    $curPage = $app->request()->params('page');
+    if (empty($curPage)) $curPage = 0;
+    $perPage = 12;
+    $filter = !empty($key) ? array($key => $val) : array();
 
-    if ($page == 0) $p_max = min($lastPage, $page + 4);
-    else if ($page == 1) $p_max = min($lastPage, $page + 3);
-    else $p_max = min($lastPage, $page + 2);
+    $charts =  ChartQuery::create()->getGalleryCharts($filter, $curPage * $perPage, $perPage);
+    $total = ChartQuery::create()->countGalleryCharts($filter);
 
-    if ($page == $lastPage) $p_min = max(0, $page - 4);
-    else if ($page == $lastPage-1) $p_min = max(0, $page - 3);
-    else $p_min = max(0, $page - 2);
-
-    for ($p = $p_min; $p <= $p_max; $p++) $pgs[] = $p;
-    $vars = array(
+    $page = array(
         'charts' => $charts,
-        'pager' => array(
-            'pages' => $pgs,
-            'first' => 0,
-            'current' => $page,
-            'last' => floor($total / $perPage)
-        ),
         'bymonth' => gal_nbChartsByMonth(),
         'byvis' => gal_nbChartsByType(),
         'key' => $key,
         'val' => $val
     );
-    add_header_vars($vars, 'gallery');
-    $app->render('gallery.twig', $vars);
+    add_pagination_vars($page, $total, $curPage, $perPage);
+    add_header_vars($page, 'gallery');
+    $app->render('gallery.twig', $page);
 });

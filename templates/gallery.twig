@@ -1,24 +1,14 @@
+{% use "utils.twig" %}
 {% extends "core.twig" %}
 
 {% block content %}
 
 <div class="docs">
-   {% if pager.first != pager.last %}
-    <div class="pagination pull-right" style="position:relative;top:-16px">
-        <ul>
-            <li {% if pager.first == pager.current %}class="disabled"{% endif %}>
-                <a href="?page={{ pager.first }}">«</a>
-            </li>
-            {% for pg in pager.pages %}
-                <li {% if pg == pager.current %}class="active" {% endif %}>
-                    <a href="?page={{ pg }}">{{ pg + 1 }}</a></li>
-            {% endfor %}
-            <li {% if pager.last == pager.current %}class="disabled"{% endif %}>
-                <a href="?page={{ pager.last }}">»</a>
-            </li>
-        </ul>
+
+
+    <div class="pull-right" style="position:relative;top:-16px">
+        {{ block('pagination') }}
     </div>
-    {% endif %}
 
     <h1 class="title">{% trans "Chart Gallery" %} <small>{% trans "See what others created with Datawrapper recently" %}</small></h1>
 </div>
@@ -71,6 +61,10 @@
         </ul>
 
     </div>
+    <div class="pull-right">
+        {{ block('pagination') }}
+    </div>
+
 </div>
 
 
