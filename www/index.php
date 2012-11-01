@@ -71,6 +71,8 @@ function add_header_vars(&$page, $active = null) {
     $headlinks[] = array('url' => '/chart/create', 'id' => 'chart', 'title' => _('Create Chart'), 'icon' => 'pencil');
     if ($user->isLoggedIn() && $user->hasCharts()) {
         $headlinks[] = array('url' => '/mycharts', 'id' => 'mycharts', 'title' => _('My Charts'), 'icon' => 'signal');
+    } else {
+        $headlinks[] = array('url' => '/gallery', 'id' => 'gallery', 'title' => _('Gallery'), 'icon' => 'signal');
     }
     $headlinks[] = array('url' => '/docs', 'id' => 'about', 'title' => _('About'), 'icon' => 'info-sign');
     $headlinks[] = array('url' => 'http://blog.datawrapper.de', 'id' => 'blog', 'title' => _('Blog'), 'icon' => 'tag');

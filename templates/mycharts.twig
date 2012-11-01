@@ -46,6 +46,8 @@
         {% endif %}
     </div>
     <div class="span3 mycharts-filter" style="position:relative;left: 30px">
+        
+
         <h2>{% trans "By Month" %}</h2>
 
         <ul class="unstyled">
@@ -82,9 +84,11 @@
 
             {% endfor %}
         </ul>
+
+        <p class="well">{{ "Want to see what other users created using Datawrapper? Take a look in the <a href='%GALLERY%'>Gallery</a>!" | trans | replace({ '%GALLERY%': '/gallery' }) | raw }}</p>
+
     </div>
 </div>
-<script type="text/javascript" src="/static/vendor/masonry/jquery.masonry.min.js"></script>
 <script type="text/javascript">
 $(function(){
   //*

@@ -59,10 +59,11 @@
         <ul class="thumbnails">
             {% for chart in charts %}
             <li class="span3 chart" data-id="{{ chart.id }}">
-                <div class="thumbnail">
-                    <h3 style="color:{{ chart.metadata.publish.text }};text-shadow:2px 2px 2px {{ chart.metadata.publish.background }}">{{ chart.title }}</h3>
+                <div data-id="{{ chart.id }}" data-bg="{{ chart.metadata.publish.background }}" data-w="{{ chart.metadata.publish['embed-width'] }}" data-h="{{ chart.metadata.publish['embed-height'] }}" class="thumbnail">
+                    <h3><a href="http://{{ DW_CHART_CACHE_DOMAIN }}/{{ chart.id }}/" style="color:{% if  chart.metadata.publish.text %}{{ chart.metadata.publish.text }}{% else %}#000{% endif %};text-shadow:1px 1px 3px {% if  chart.metadata.publish.background %}{{ chart.metadata.publish.background }}{% else %}#fff{% endif %};">{{ chart.title }}</a></h3>
 
-                    <a class="chart-preview" href="http://{{ DW_CHART_CACHE_DOMAIN }}/{{ chart.id }}/" data-id="{{ chart.id }}" data-bg="{{ chart.metadata.publish.background }}" data-w="{{ chart.metadata.publish['embed-width'] }}" data-h="{{ chart.metadata.publish['embed-height'] }}"><img src="http://{{ DW_CHART_CACHE_DOMAIN }}/{{ chart.id }}/m.png" width="260" alt="" style="background:{{ chart.metadata.publish.background }}"></a>
+                    <a href="http://{{ DW_CHART_CACHE_DOMAIN }}/{{ chart.id }}/" >
+                        <img src="http://{{ DW_CHART_CACHE_DOMAIN }}/{{ chart.id }}/m.png" width="260" alt="" style="background:{{ chart.metadata.publish.background }}"></a>
 
                 </div>
             </li>
@@ -77,10 +78,10 @@
 <script type="text/javascript">
 $(function(){
 
-    $('.chart-preview').click(function(e) {
+    $('.thumbnail a').click(function(e) {
         e.preventDefault();
 
-        var a = $(e.target).parent('a'),
+        var a = $(e.target).parents('.thumbnail'),
             id = a.data('id'),
             chartIframe = $('<iframe src="http://{{ DW_CHART_CACHE_DOMAIN }}/' + id + '"></iframe>'),
             overlay = chartIframe.overlay();

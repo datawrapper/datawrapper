@@ -521,7 +521,7 @@ msgstr "Zurück zur <a href='/'>Datawrapper-Startseite</a>"
 
 #: ../scripts/tmpl_cache/gallery.twig.php:101
 msgid "Chart Gallery"
-msgstr "Datawrapper-Gallerie"
+msgstr "Datawrapper-Galerie"
 
 #: ../scripts/tmpl_cache/gallery.twig.php:103
 msgid "See what others created with Datawrapper recently"
