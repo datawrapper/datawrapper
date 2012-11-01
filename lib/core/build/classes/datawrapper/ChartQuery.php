@@ -118,5 +118,13 @@ class ChartQuery extends BaseChartQuery {
         return $query->find();
     }
 
+    public function getPublicGalleryCharts($key = '', $val = '') {
+        $result = array();
+        $q = $this->filterByShowInGallery(true)
+            ->orderByCreatedAt('desc');
+
+        $charts = $q->limit(20)->find();
+        return $charts;
+    }
 
 } // ChartQuery

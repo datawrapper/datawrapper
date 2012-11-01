@@ -43,6 +43,7 @@
             }, canvas);
 
             if (size[0] <= 300) {
+                // no padding if generating thumbnail
                 canvas.bpad = canvas.tpad = canvas.lpad = canvas.rpad = 5;
             }
 
