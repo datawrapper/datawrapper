@@ -24,12 +24,18 @@ $(function() {
         rt.css({
             position: 'relative'
         });
+        var c = 0, r = 0;
         $.each(colors, function(i, col) {
             var d = $('<div />');
+            if ((c+1)*28 > rt.parent().width()) {
+                c = 0;
+                r+=1;
+                rt.css('height', (r+1)*28+4);
+            }
             d.css({
                 position: 'absolute',
-                left: i*28 - (col == active ? 1 : 0),
-                top: col == active ? -1 : 0,
+                left: c*28 - (col == active ? 1 : 0),
+                top: r*28 + (col == active ? -1 : 0),
                 height: 26,
                 width: 26,
                 cursor: 'pointer',
@@ -48,6 +54,8 @@ $(function() {
                 if (props && props.change) props.change(rt.data('color'));
             });
             rt.append(d);
+            c += 1;
+
         });
     };
 

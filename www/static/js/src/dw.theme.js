@@ -13,15 +13,8 @@
 
         colors: {
             palette: ['#6E7DA1', '#64A4C4', '#53CCDD',  '#4EF4E8'],
-            highlight: '#00589E',
-            focus: '#0063A5',
-            context: '#aaa',
-            axis: '#000000',
-            grid: '#999999',
             positive: '#85B4D4',
-            'highlight-positive': '#85B4D4',
             negative: '#E31A1C',
-            'highlight-negative': '#9E5800',
             background: '#ffffff'
         },
 

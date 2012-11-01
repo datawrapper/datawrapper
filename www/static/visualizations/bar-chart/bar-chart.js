@@ -20,7 +20,9 @@
             useNegativeColor = me.get('negative-color', false),
             c = me.initCanvas({
                 h: Math.max(me.getMaxChartHeight(el), 18 * 1.35 * me.chart.dataSeries().length)
-            }),
+            });
+
+            var
             chart_width = c.w - c.lpad - c.rpad,
             series_gap = 0.05, // pull from theme
             row_gap = 0.01,
@@ -158,7 +160,7 @@
             c.right = 0;
             c.zero = largestVal[1] / (largestVal[0] + largestVal[1]) * w;
 
-            if (!me.get('labels-inside-bars', false)) {
+            if (!me.get('labels-inside-bars', false) && w > 300) {
 
                 var maxNegBar = c.zero;
                 //console.log('c.left', );
