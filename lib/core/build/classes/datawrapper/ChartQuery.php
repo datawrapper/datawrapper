@@ -129,10 +129,14 @@ class ChartQuery extends BaseChartQuery {
         return $query->find();
     }
 
-    public function countGalleryCharts() {
-        return $this->filterByShowInGallery(true)
-            ->filterByDeleted(false)
-            ->count();
+    public function countGalleryCharts($key='', $val='') {
+        $query = $this->filterByShowInGallery(true)
+            ->filterByDeleted(false);
+
+        if ($key == 'vis') $query->filterByType($val);
+        if ($key == 'month') $query->filterByCreatedAt(array('min' => $val.'-01', 'max' => $val.'-31'));
+        
+        return $query->count();
     }
 
 } // ChartQuery

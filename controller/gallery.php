@@ -3,9 +3,9 @@
 require_once '../lib/utils/themes.php';
 require_once '../lib/utils/visualizations.php';
 
-function gal_nbChartsByMonth($user) {
+function gal_nbChartsByMonth() {
     $con = Propel::getConnection();
-    $sql = "SELECT DATE_FORMAT(created_at, '%Y-%m') ym, COUNT(*) c FROM chart WHERE show_in_gallery AND deleted = 0 AND last_edit_step >= 2 GROUP BY ym ORDER BY ym DESC ;";
+    $sql = "SELECT DATE_FORMAT(created_at, '%Y-%m') ym, COUNT(*) c FROM chart WHERE show_in_gallery = 1 AND deleted = 0 GROUP BY ym ORDER BY ym DESC ;";
     $rs = $con->query($sql);
     $res = array();
     foreach ($rs as $r) {
@@ -14,9 +14,9 @@ function gal_nbChartsByMonth($user) {
     return $res;
 }
 
-function gal_nbChartsByType($user) {
+function gal_nbChartsByType() {
     $con = Propel::getConnection();
-    $sql = "SELECT type, COUNT(*) c FROM chart WHERE author_id = ". $user->getId() ." AND deleted = 0 AND last_edit_step >= 2 GROUP BY type ORDER BY c DESC ;";
+    $sql = "SELECT type, COUNT(*) c FROM chart WHERE show_in_gallery = 1 AND deleted = 0 GROUP BY type ORDER BY c DESC ;";
     $rs = $con->query($sql);
     $res = array();
 
@@ -37,7 +37,7 @@ $app->get('/gallery(/?|/by/:key/:val)', function ($key = false, $val = false) us
     $perPage = 15;
     $start = $page * $perPage;
     $charts =  ChartQuery::create()->getGalleryCharts($key, $val, $start, $perPage);
-    $total = ChartQuery::create()->countGalleryCharts();
+    $total = ChartQuery::create()->countGalleryCharts($key, $val);
     $pgs = array();
     $p_min = 0;
     $p_max = $lastPage = floor($total / $perPage);
@@ -58,7 +58,11 @@ $app->get('/gallery(/?|/by/:key/:val)', function ($key = false, $val = false) us
             'first' => 0,
             'current' => $page,
             'last' => floor($total / $perPage)
-        )
+        ),
+        'bymonth' => gal_nbChartsByMonth(),
+        'byvis' => gal_nbChartsByType(),
+        'key' => $key,
+        'val' => $val
     );
     add_header_vars($vars, 'gallery');
     $app->render('gallery.twig', $vars);

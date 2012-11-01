@@ -1,53 +1,56 @@
 {% extends "core.twig" %}
 
 {% block content %}
+
 <div class="docs">
+   {% if pager.first != pager.last %}
+    <div class="pagination pull-right" style="position:relative;top:-16px">
+        <ul>
+            <li {% if pager.first == pager.current %}class="disabled"{% endif %}>
+                <a href="?page={{ pager.first }}">«</a>
+            </li>
+            {% for pg in pager.pages %}
+                <li {% if pg == pager.current %}class="active" {% endif %}>
+                    <a href="?page={{ pg }}">{{ pg + 1 }}</a></li>
+            {% endfor %}
+            <li {% if pager.last == pager.current %}class="disabled"{% endif %}>
+                <a href="?page={{ pager.last }}">»</a>
+            </li>
+        </ul>
+    </div>
+    {% endif %}
+
     <h1 class="title">{% trans "Chart Gallery" %} <small>{% trans "See what others created with Datawrapper recently" %}</small></h1>
 </div>
 <div class="row">
     <div class="span3">
         <p>{% trans "Welcome to the public gallery of Datawrapper charts. Here you can see the nice charts that other users have created recently. Click on the charts to see the interactive version." %}</p>
 
-        <h3>{% trans "By Visualisation" %}</h3>
+        <div class="gallery-filter">
+            <h3>{% trans "By Visualisation" %}</h3>
 
-        <ul class="unstyled">
-            {% for vis in byvis %}
-            {% if key == 'vis' and val == vis.id %}
-            <li class="active"><a href="/gallery/"><i class="icon-check"></i> {{ vis.name }} </a> ({{ vis.count }}) </li>
-            {% else %}
-            <li><a href="/gallery/by/vis/{{ vis.id }}">{{ vis.name }}</a> ({{ vis.count }})</li>
-            {% endif %}
-            {% endfor %}
-        </ul>
-
-        <h3>{% trans "By Month" %}</h3>
-
-        <ul class="unstyled">
-            {% for month in bymonth %}
-            {% if key == 'month' and val == month.id %}
-            <li class="active"><a href="/gallery/"><i class="icon-check"></i> {{ month.name }} </a> ({{ month.count }}) </li>
-            {% else %}
-            <li><a href="/gallery/by/month/{{ month.id }}">{{ month.name }}</a> ({{ month.count }})</li>
-            {% endif %}
-            {% endfor %}
-        </ul>
-
-        {% if pager.first != pager.last %}
-        <div class="pagination">
-            <ul>
-                <li {% if pager.first == pager.current %}class="disabled"{% endif %}>
-                    <a href="?page={{ pager.first }}">«</a>
-                </li>
-                {% for pg in pager.pages %}
-                    <li {% if pg == pager.current %}class="active" {% endif %}>
-                        <a href="?page={{ pg }}">{{ pg + 1 }}</a></li>
+            <ul class="unstyled">
+                {% for vis in byvis %}
+                {% if key == 'vis' and val == vis.id %}
+                <li class="active"><a href="/gallery/">{{ vis.name }} </a> ({{ vis.count }}) </li>
+                {% else %}
+                <li><a href="/gallery/by/vis/{{ vis.id }}">{{ vis.name }}</a> ({{ vis.count }})</li>
+                {% endif %}
                 {% endfor %}
-                <li {% if pager.last == pager.current %}class="disabled"{% endif %}>
-                    <a href="?page={{ pager.last }}">»</a>
-                </li>
+            </ul>
+
+            <h3>{% trans "By Month" %}</h3>
+
+            <ul class="unstyled">
+                {% for month in bymonth %}
+                {% if key == 'month' and val == month.id %}
+                <li class="active"><a href="/gallery/">{{ month.name }} </a> ({{ month.count }}) </li>
+                {% else %}
+                <li><a href="/gallery/by/month/{{ month.id }}">{{ month.name }}</a> ({{ month.count }})</li>
+                {% endif %}
+                {% endfor %}
             </ul>
         </div>
-        {% endif %}
 
         {# <h3>{% trans "By Layout" %}</h3>
 
