@@ -299,7 +299,8 @@ $app->post('/charts/:id/publish/js', function($chart_id) use ($app) {
 require_once '../../vendor/cssmin/cssmin.php';
 
 /**
- * API: generate minified JS for a chart
+ * API: generate minified CSS for a chart
+ *      and copy assets
  *
  * @param chart_id chart id
  */
@@ -318,6 +319,18 @@ $app->post('/charts/:id/publish/css', function($chart_id) use ($app) {
             $cssmin = new CSSmin();
             $minified = $cssmin->run($all);
             file_put_contents($static_path . "/" . $chart->getID() . '.min.css', $minified);
+
+            // copy themes assets
+            $theme = $data['theme'];
+            if (isset($theme['assets'])) {
+                foreach ($theme['assets'] as $asset) {
+                    $asset_src = '../../www/static/themes/' . $theme['id'] . '/' . $asset;
+                    $asset_tgt = $static_path . "/" . $asset;
+                    if (file_exists($asset_src)) {
+                        file_put_contents($asset_tgt, file_get_contents($asset_src));
+                    }
+                }
+            }
 
             ok();
         } catch (Exception $e) {
