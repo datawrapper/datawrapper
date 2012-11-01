@@ -146,7 +146,7 @@ msgstr ""
 msgid "Annotate data point"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-describe.twig.php:346 ../www/index.php:153
+#: ../scripts/tmpl_cache/chart-describe.twig.php:346 ../www/index.php:155
 msgid "Visualize"
 msgstr "Visualisieren"
 
@@ -525,7 +525,7 @@ msgstr "Datawrapper-Galerie"
 
 #: ../scripts/tmpl_cache/gallery.twig.php:103
 msgid "See what others created with Datawrapper recently"
-msgstr ""
+msgstr " "
 
 #: ../scripts/tmpl_cache/gallery.twig.php:110
 msgid ""
@@ -538,12 +538,12 @@ msgstr ""
 "Version zu sehen."
 
 #: ../scripts/tmpl_cache/gallery.twig.php:116
-#: ../scripts/tmpl_cache/mycharts.twig.php:184
+#: ../scripts/tmpl_cache/mycharts.twig.php:186
 msgid "By Visualisation"
 msgstr "Nach Diagrammtyp"
 
 #: ../scripts/tmpl_cache/gallery.twig.php:166
-#: ../scripts/tmpl_cache/mycharts.twig.php:134
+#: ../scripts/tmpl_cache/mycharts.twig.php:136
 msgid "By Month"
 msgstr "Nach Monat"
 
@@ -611,7 +611,7 @@ msgstr "Meine Diagramme"
 msgid "See what you created so far."
 msgstr "Schau dir an, was du bisher erstellt hast."
 
-#: ../scripts/tmpl_cache/home-login.twig.php:94 ../www/index.php:106
+#: ../scripts/tmpl_cache/home-login.twig.php:94 ../www/index.php:108
 msgid "Settings"
 msgstr "Einstellungen"
 
@@ -619,7 +619,7 @@ msgstr "Einstellungen"
 msgid "Edit your personal information."
 msgstr "Ändere deine persönlichen Daten"
 
-#: ../scripts/tmpl_cache/home-login.twig.php:100 ../www/index.php:110
+#: ../scripts/tmpl_cache/home-login.twig.php:100 ../www/index.php:112
 msgid "Logout"
 msgstr "Ausloggen"
 
@@ -764,11 +764,19 @@ msgid "Why not <a href='/chart/create'>create a new chart now</a>?"
 msgstr ""
 "Wieso erstellst du nicht ein <a href='/chart/create'>neues Diagramm</a>?"
 
-#: ../scripts/tmpl_cache/mycharts.twig.php:234
+#: ../scripts/tmpl_cache/mycharts.twig.php:236
 msgid "By Layout"
 msgstr "Nach Layout"
 
-#: ../scripts/tmpl_cache/mycharts.twig.php:309
+#: ../scripts/tmpl_cache/mycharts.twig.php:287
+msgid ""
+"Want to see what other users created using Datawrapper? Take a look in the "
+"<a href='%GALLERY%'>Gallery</a>!"
+msgstr ""
+"Neugierig, was andere bisher so visualisiert haben? Schau doch in der <a "
+"href='%GALLERY%'>Datawrapper-Galerie</a> vorbei!"
+
+#: ../scripts/tmpl_cache/mycharts.twig.php:316
 msgid ""
 "Do you really want to delete the chart? Note that after deleting this chart "
 "won't be embedable any more."
@@ -1043,35 +1051,39 @@ msgstr "Diese Zeile anzeigen"
 msgid "Create Chart"
 msgstr "Diagramm erstellen"
 
-#: ../www/index.php:75 ../lib/templates/docs-pages.php:5
+#: ../www/index.php:75
+msgid "Gallery"
+msgstr "Galerie"
+
+#: ../www/index.php:77 ../lib/templates/docs-pages.php:5
 msgid "About"
 msgstr "Über"
 
-#: ../www/index.php:76
+#: ../www/index.php:78
 msgid "Blog"
 msgstr "Blog"
 
-#: ../www/index.php:94
+#: ../www/index.php:96
 msgid "Language"
 msgstr "Sprache"
 
-#: ../www/index.php:118
+#: ../www/index.php:120
 msgid "Admin"
 msgstr "Admin"
 
-#: ../www/index.php:125
+#: ../www/index.php:127
 msgid "Login / Sign Up"
 msgstr "Einloggen / Registrieren"
 
-#: ../www/index.php:151
+#: ../www/index.php:153
 msgid "Upload Data"
 msgstr "Daten hochladen"
 
-#: ../www/index.php:152
+#: ../www/index.php:154
 msgid "Check & Describe"
 msgstr "Prüfen & Beschreiben"
 
-#: ../www/index.php:154
+#: ../www/index.php:156
 msgid "Publish & Embed"
 msgstr "Veröffentlichen & Einbetten"
 
