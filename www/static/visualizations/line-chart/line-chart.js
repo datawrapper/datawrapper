@@ -97,9 +97,9 @@
                 });
 
                 sw = me.getSeriesLineWidth(col);
+                var palette = me.theme.colors.palette.slice();
 
-                if (true || !directLabeling) {
-                    var palette = me.theme.colors.palette.slice();
+                if (!directLabeling && all_series.length < palette.length * 2) {
                     for (var i=0; i < baseCol; i++) palette.push(palette.pop());
                     if (all_series.length > palette.length) {
                         // add variations of palette colors
@@ -108,6 +108,15 @@
                         });
                     }
                     me.setSeriesColor(col, palette[(index + baseCol) % palette.length]);
+                } else {
+                    if (all_series.length < 5) {
+                        // use different shades of the same color
+                        var base = palette[baseCol % palette.length],
+                            bLch = d3.cie.lch(d3.rgb(base)),
+                            ml = Math.min(bLch.l, 50),
+                            l = d3.range(81, ml, -(80 - ml) / (all_series.length - 1));
+                        me.setSeriesColor(col, ''+d3.cie.lch(l[index], bLch.c, bLch.h));
+                    }
                 }
 
                 var strokeColor = me.getSeriesColor(col);
@@ -236,7 +245,6 @@
                 ticks = me.getYTicks(h),
                 maxw = 0;
 
-            console.log(me.__canvas.bpad);
             if (me.__canvas.w <= 400) return 4;
 
             _.each(ticks, function(val, t) {
