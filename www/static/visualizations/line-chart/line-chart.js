@@ -100,7 +100,7 @@
 
                 if (true || !directLabeling) {
                     var palette = me.theme.colors.palette.slice();
-                    for (var i=0; i < baseCol; i++) palette.push(palette.shift());
+                    for (var i=0; i < baseCol; i++) palette.push(palette.pop());
                     if (all_series.length > palette.length) {
                         // add variations of palette colors
                         $.each(palette, function(i, col) {
