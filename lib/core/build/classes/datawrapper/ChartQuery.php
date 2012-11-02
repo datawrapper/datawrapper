@@ -112,7 +112,7 @@ class ChartQuery extends BaseChartQuery {
     private function publicChartsByUserQuery($user, $filter) {
         $query = $this->filterByAuthorId($user->getId())
             ->filterByDeleted(false)
-            ->orderByLastModifiedAt('desc')
+            ->orderByCreatedAt('desc')
             ->filterByLastEditStep(array('min' => 2));
 
         foreach ($filter as $key => $val) {
