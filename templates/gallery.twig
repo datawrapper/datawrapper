@@ -50,9 +50,9 @@
             {% for chart in charts %}
             <li class="span3 chart" data-id="{{ chart.id }}">
                 <div data-id="{{ chart.id }}" data-bg="{{ chart.metadata.publish.background }}" data-w="{{ chart.metadata.publish['embed-width'] }}" data-h="{{ chart.metadata.publish['embed-height'] }}" class="thumbnail">
-                    <h3><a href="http://{{ DW_CHART_CACHE_DOMAIN }}/{{ chart.id }}/" style="color:{% if  chart.metadata.publish.text %}{{ chart.metadata.publish.text }}{% else %}#000{% endif %};text-shadow:1px 1px 3px {% if  chart.metadata.publish.background %}{{ chart.metadata.publish.background }}{% else %}#fff{% endif %};">{{ chart.title }}</a></h3>
+                    <h3><a href="#/{{ chart.id }}" style="color:{% if  chart.metadata.publish.text %}{{ chart.metadata.publish.text }}{% else %}#000{% endif %};text-shadow:1px 1px 3px {% if  chart.metadata.publish.background %}{{ chart.metadata.publish.background }}{% else %}#fff{% endif %};">{{ chart.title }}</a></h3>
 
-                    <a href="http://{{ DW_CHART_CACHE_DOMAIN }}/{{ chart.id }}/" >
+                    <a href="#/{{ chart.id }}" >
                         <img src="http://{{ DW_CHART_CACHE_DOMAIN }}/{{ chart.id }}/m.png" width="260" alt="" style="background:{{ chart.metadata.publish.background }}"></a>
 
                 </div>
@@ -72,23 +72,44 @@
 <script type="text/javascript">
 $(function(){
 
-    $('.thumbnail a').click(function(e) {
-        e.preventDefault();
+    function popupChart(id) {
 
-        var a = $(e.target).parents('.thumbnail'),
-            id = a.data('id'),
-            chartIframe = $('<iframe src="http://{{ DW_CHART_CACHE_DOMAIN }}/' + id + '"></iframe>'),
-            overlay = chartIframe.overlay();
+        $.getJSON('/api/charts/'+id, function(res) {
 
-        chartIframe.css({
-            width: a.data('w'),
-            height: a.data('h'),
-            background: (a.data('bg') || '#fff'),
-            'border-radius': 10,
-            border: '10px solid '+(a.data('bg') || '#fff')
+            if (res.status == "ok") {
+                var chart = res.data,
+                    chartIframe = $('<iframe src="http://{{ DW_CHART_CACHE_DOMAIN }}/' + chart.id + '"></iframe>'),
+                    overlay = chartIframe.overlay({
+                        onClose: function() {
+                            location.hash = '';
+                        }
+                    });
+
+                chartIframe.css({
+                    width: chart.metadata.publish['embed-width'],
+                    height: chart.metadata.publish['embed-height'],
+                    background: (chart.metadata.publish['background'] || '#fff'),
+                    border: '10px solid '+(chart.metadata.publish['background'] || '#fff'),
+                    'border-radius': 10
+                });
+                overlay.open();
+                if (location.hash != '#/' + chart.id) {
+                    location.hash = '#/' + chart.id;
+                }
+            }
         });
-        overlay.open();
 
+    }
+
+    if (location.hash.length == 7) {
+        // try to find the chart
+        popupChart(location.hash.substr(2));
+    }
+
+    $(window).bind('hashchange', function() {
+        if (location.hash.length == 7) {
+            popupChart(location.hash.substr(2));
+        }
     });
 
 });

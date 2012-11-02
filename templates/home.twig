@@ -64,14 +64,14 @@
             </div>
         </div>
         
-        <div class="row" style="margin-top:20px;">
+        <div class="row gallery-preview">
             <div class="span2">
                 <h3>Recent charts</h3>
-                {{ "In the <a href='%GALLERY%'>Gallery</a> you take a look at charts that have been created with Datawrapper so far." | trans | replace({'%GALLERY%': '/gallery/' }) | raw }}
+                {{ "Take a look at charts that have been created with Datawrapper in the <a href='%GALLERY%'>chart gallery</a>." | trans | replace({'%GALLERY%': '/gallery/' }) | raw }}
             </div>
         {% for chart in recent_charts %}
             <div class="span2">
-                <a href=""><img src="http://{{ DW_CHART_CACHE_DOMAIN }}/{{ chart.id }}/s.png"></a>
+                <a href="/gallery/#/{{ chart.id }}"><img src="http://{{ DW_CHART_CACHE_DOMAIN }}/{{ chart.id }}/s.png"></a>
             </div>
         {% endfor %}
             
