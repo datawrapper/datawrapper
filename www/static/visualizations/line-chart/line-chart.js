@@ -99,17 +99,18 @@
                 sw = me.getSeriesLineWidth(col);
                 var palette = me.theme.colors.palette.slice();
 
-                if (!directLabeling && all_series.length < palette.length * 2) {
-                    for (var i=0; i < baseCol; i++) palette.push(palette.pop());
-                    if (all_series.length > palette.length) {
-                        // add variations of palette colors
-                        $.each(palette, function(i, col) {
-                            palette.push(d3.cie.lch(d3.rgb(col)).darker(-2).toString());
-                        });
-                    }
-                    me.setSeriesColor(col, palette[(index + baseCol) % palette.length]);
-                } else {
-                    if (all_series.length < 5) {
+                if (all_series.length < palette.length * 2) {
+                    // we only color lines if there's a reasonable number of them
+                    if (!directLabeling || all_series.length > 4) {
+                        for (var i=0; i < baseCol; i++) palette.push(palette.pop());
+                        if (all_series.length > palette.length) {
+                            // add variations of palette colors
+                            $.each(palette, function(i, col) {
+                                palette.push(d3.cie.lch(d3.rgb(col)).darker(-2).toString());
+                            });
+                        }
+                        me.setSeriesColor(col, palette[(index + baseCol) % palette.length]);
+                    } else {
                         // use different shades of the same color
                         var base = palette[baseCol % palette.length],
                             bLch = d3.cie.lch(d3.rgb(base)),
