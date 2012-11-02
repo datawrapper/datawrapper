@@ -42,24 +42,40 @@
 </div>
 
 <div class="row">
-    <div class="span4">
+    <div class="span8">
+        <div class="row">
+            <div class="span4">
+
+                    <p>{% trans "We are bridging the gap between journalists and the newest Javascript-visualization libraries such as D3.js, Raphael and others. We make it easier to \"wrap\" the data into these libraries without coding. Datawrapper minimizes the time needed to create a chart and thus helps data journalists everywhere in the world." %}</p>
+
+            </div>
+            <div class="span4">
+                <!-- <h3>{% trans "Main features:" %}</h3> -->
+
+                <ul>
+                    <li>{% trans "Simple: Create and embed charts in minutes" %}</li>
+                    <li>{% trans "Open Source: Download and install" %}</li>
+                    <li>{% trans "CSS: Change the CSS, add your logo" %}</li>
+                    <li>{% trans "Developers: Add new chart types" %}</li>
+                    <li>{% trans "Non-profit: This is and will stay free to use" %}</li>
+                </ul>
+
+                <p><a href="/docs/motivation">{% trans "Why this approach? See our Motivations..." %}</a></p>
+            </div>
+        </div>
         
-
-            <p>{% trans "We are bridging the gap between journalists and the newest Javascript-visualization libraries such as D3.js, Raphael and others. We make it easier to \"wrap\" the data into these libraries without coding. Datawrapper minimizes the time needed to create a chart and thus helps data journalists everywhere in the world." %}</p>
-
-    </div>
-    <div class="span4">
-        <!-- <h3>{% trans "Main features:" %}</h3> -->
-
-        <ul>
-            <li>{% trans "Simple: Create and embed charts in minutes" %}</li>
-            <li>{% trans "Open Source: Download and install" %}</li>
-            <li>{% trans "CSS: Change the CSS, add your logo" %}</li>
-            <li>{% trans "Developers: Add new chart types" %}</li>
-            <li>{% trans "Non-profit: This is and will stay free to use" %}</li>
-        </ul>
-
-        <p><a href="/docs/motivation">{% trans "Why this approach? See our Motivations..." %}</a></p>
+        <div class="row" style="margin-top:20px;">
+            <div class="span2">
+                <h3>Recent charts</h3>
+                {{ "In the <a href='%GALLERY%'>Gallery</a> you take a look at charts that have been created with Datawrapper so far." | trans | replace({'%GALLERY%': '/gallery/' }) | raw }}
+            </div>
+        {% for chart in recent_charts %}
+            <div class="span2">
+                <a href=""><img src="http://{{ DW_CHART_CACHE_DOMAIN }}/{{ chart.id }}/s.png"></a>
+            </div>
+        {% endfor %}
+            
+        </div>
     </div>
     <div class="span4" id="home-login">
 

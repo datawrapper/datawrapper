@@ -146,6 +146,7 @@ class ChartQuery extends BaseChartQuery {
             ->filterByDeleted(false)
             ->orderByCreatedAt('desc');
         foreach ($filter as $key => $val) {
+            if ($key == 'layout') $query->filterByTheme($val);
             if ($key == 'vis') $query->filterByType($val);
             if ($key == 'month') $query->filterByCreatedAt(array('min' => $val.'-01', 'max' => $val.'-31'));
         }

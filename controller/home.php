@@ -6,7 +6,10 @@ $app->get('/', function () use ($app) {
         // found link to a legacy chart
         $app->redirect('/legacy/'.$app->request()->get('c').'.html');
     } else {
-        $page = array('title' => 'Datawrapper');
+        $page = array(
+            'title' => 'Datawrapper',
+            'recent_charts' => ChartQuery::create()->getGalleryCharts(array('layout'=>'default'), 0, 3)
+        );
         add_header_vars($page, '');
 
         $res = $app->response();
