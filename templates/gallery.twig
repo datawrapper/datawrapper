@@ -79,11 +79,14 @@ $(function(){
             if (res.status == "ok") {
                 var chart = res.data,
                     chartIframe = $('<iframe src="http://{{ DW_CHART_CACHE_DOMAIN }}/' + chart.id + '"></iframe>'),
-                    overlay = chartIframe.overlay({
+                    wrapper = $('<div></div>'),
+                    overlay = wrapper.overlay({
                         onClose: function() {
                             location.hash = '';
                         }
                     });
+                wrapper.append('<a class="close close-button">&#9747;</a>');
+                wrapper.append(chartIframe);
 
                 chartIframe.css({
                     width: chart.metadata.publish['embed-width'],

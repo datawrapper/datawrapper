@@ -860,3 +860,26 @@ form.well form {
 .demo-datasets p {
     margin: 5px 0 10px;
 }
+
+.ender-overlay .close-button {
+    background: none repeat scroll 0 0 #333333;
+    border: 2px solid #FFFFFF;
+    border-radius: 13px 13px 13px 13px;
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
+    color: #FFFFFF;
+    cursor: pointer;
+    font-size: 15px;
+    font-family: Arial;
+    height: 23px;
+    line-height: 24px;
+    letter-spacing: 2;
+    margin: 0;
+    position: absolute;
+    right: -10px;
+    text-align: center;
+    text-decoration: none;
+    top: -10px;
+    text-shadow: none;
+    width: 23px;
+    opacity: 1;
+}
