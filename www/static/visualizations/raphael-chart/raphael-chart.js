@@ -27,7 +27,7 @@
             var me = this, el = me.__root,
                 width = $(document).width();
             // no padding for thumbnails
-            if (width <= 400) {
+            if (width <= 350) {
                 me.theme.vpadding = 10;
                 me.theme.hpadding = 0;
             }

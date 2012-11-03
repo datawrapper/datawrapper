@@ -64,7 +64,9 @@
         tooltip: true,
 
         hpadding: 0,
-        vpadding: 10
+        vpadding: 10,
+
+        minWidth: 400
     });
 
 }).call(this);
