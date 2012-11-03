@@ -1,0 +1,11 @@
+{
+    "title": "Ruhr Nachrichten",
+    "link": "http://www.ruhrnachrichten.de",
+    "restricted": null,
+    "locale": "de_DE",
+    "default_width": 368,
+    "default_height": 360,
+    "restrict": "@ruhrnachrichten.de",
+    "version": "0.1.1",
+    "assets": []
+}
