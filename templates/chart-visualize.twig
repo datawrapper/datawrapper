@@ -123,6 +123,7 @@ $(function() {
                 if (theme.id == chart.get('theme')) {
                     if (theme.default_width) $('#iframe-wrapper').width(theme.default_width);
                     else $('#iframe-wrapper').width('auto');
+                    if (theme.default_height) $('#iframe-wrapper').height(theme.default_height);
                     return false;
                 }
             });
@@ -196,6 +197,7 @@ $(function() {
             if (theme.id == chart.get('theme')) {
                 if (theme.default_width) $('#iframe-wrapper').width(theme.default_width);
                 else $('#iframe-wrapper').width('auto');
+                if (theme.default_height) $('#iframe-wrapper').height(theme.default_height);
                 return false;
             }
         });

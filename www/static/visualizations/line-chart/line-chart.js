@@ -22,6 +22,11 @@
                 x: me.xScale(),
                 y: me.yScale()
             },
+            legend = {
+                pos: me.get('legend-position', 'right'),
+                xoffset: 0,
+                yoffset: -5
+            },
             h = me.get('force-banking') ? el.width() / me.computeAspectRatio() : me.getSize()[1],
             c;
 
@@ -32,14 +37,18 @@
                 bpad: me.get('rotate-x-labels') ? bpad + 20 : bpad
             });
 
-            if (c.w <= 400) {
+            if (c.w <= me.theme.minWidth) {
                 c.tpad = 15;
                 c.rpad = 9;
                 c.lpad = 5;
                 c.bpad = 5;
             }
 
-            if (me.lineLabelsVisible()) {
+            if (!directLabeling && me.lineLabelsVisible() && legend.pos == 'top') {
+                c.tpad += 20;
+            }
+
+            if (me.lineLabelsVisible() && (directLabeling || legend.pos == 'right')) {
                 c.labelWidth = 0;
                 _.each(me.chart.dataSeries(), function(col) {
                     c.labelWidth = Math.max(c.labelWidth, me.labelWidth(col.name, 'series'));
@@ -48,6 +57,9 @@
                     c.labelWidth = me.theme.lineChart.maxLabelWidth;
                 }
                 c.rpad += c.labelWidth + 20;
+                if (!directLabeling) c.rpad += 15;
+            } else {
+                c.rpad += 5;
             }
 
             scales.x = scales.x.range([c.lpad+me.yAxisWidth(h), c.w-c.rpad]);
@@ -66,6 +78,11 @@
                 all_series = all_series.sort(function(a, b) {
                     return b.data[ds.numRows()-1] -a.data[ds.numRows()-1];
                 });
+                //
+                if (legend.pos == "inside") {
+                    legend.xoffset = me.yAxisWidth(h);
+                    legend.yoffset = 40;
+                }
             }
 
             // draw series lines
@@ -149,19 +166,36 @@
                 if (me.lineLabelsVisible()) {
                     var div, lbl, lblx = x + 10, lbly = y, valign = 'middle';
                     if (!directLabeling) {
-                        lblx += 15;
-                        valign = 'top';
-                        lbly = legend_y_offset;
-                        div = $('<div></div>');
-                        div.css({
-                            background: strokeColor,
-                            width: 10,
-                            height: 10,
-                            position: 'absolute',
-                            left: x+10,
-                            top: lbly+3
-                        });
-                        el.append(div);
+                        // legend
+                        if (legend.pos == 'right') {
+                            lblx += 15;
+                            valign = 'top';
+                            lbly = legend_y_offset;
+                            div = $('<div></div>');
+                            div.css({
+                                background: strokeColor,
+                                width: 10,
+                                height: 10,
+                                position: 'absolute',
+                                left: x+10,
+                                top: lbly+3
+                            });
+                            el.append(div);
+                        } else if (legend.pos == 'top' || legend.pos == 'inside') {
+                            lblx = legend.xoffset + 15;
+                            lbly = legend.yoffset;
+                            div = $('<div></div>');
+                            div.css({
+                                background: strokeColor,
+                                width: 10,
+                                height: 10,
+                                position: 'absolute',
+                                left: legend.xoffset,
+                                top: lbly-5
+                            });
+                            el.append(div);
+                            legend.xoffset += me.labelWidth(col.name, 'series')+30;
+                        }
                     }
                     lbl = me.label(lblx, lbly, col.name, {
                         cl: me.chart.isHighlighted(col) ? 'highlighted series' : 'series',
@@ -192,7 +226,7 @@
 
         lineLabelsVisible: function() {
             var me = this;
-            return me.chart.dataSeries().length > 1 && me.chart.dataSeries().length < 10 && me.__canvas.w >= 400;
+            return me.chart.dataSeries().length > 1 && me.chart.dataSeries().length < 10 && me.__canvas.w >= me.theme.minWidth;
         },
 
         getDataRowByPoint: function(x, y) {
@@ -246,7 +280,7 @@
                 ticks = me.getYTicks(h),
                 maxw = 0;
 
-            if (me.__canvas.w <= 400) return 4;
+            if (me.__canvas.w <= me.theme.minWidth) return 4;
 
             _.each(ticks, function(val, t) {
                 val = me.chart.formatValue(val, false);
