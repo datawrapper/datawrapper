@@ -21,7 +21,8 @@ $app->put('/account/lang', function() use ($app) {
 /* login user */
 $app->post('/auth/login', function() use($app) {
     $payload = json_decode($app->request()->getBody());
-    if (time() - $payload->time < 3000) {
+    //  v-- don't expire login anymore
+    if (true || time() - $payload->time < 3000) {
         $user = UserQuery::create()->findOneByEmail($payload->email);
         if (!empty($user) && $user->getDeleted() == false) {
             $hash = hash_hmac('sha256', $user->getPwd(), $payload->time);
