@@ -151,7 +151,7 @@ msgid "Visualize"
 msgstr "Visualisieren"
 
 #: ../scripts/tmpl_cache/chart-describe.twig.php:350
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:515
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:517
 msgid "Back"
 msgstr "Zurück"
 
@@ -403,23 +403,23 @@ msgstr ""
 "Wenn du Datawrapper einfach nur ausprobieren möchtest, versuche doch die "
 "folgenden Beispieldaten:"
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:334
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:336
 msgid "Select visualization and layout"
 msgstr "Visualisierung und Design wählen"
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:339
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:341
 msgid "Visualization:"
 msgstr "Visualisierung:"
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:372
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:374
 msgid "Layout:"
 msgstr "Design:"
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:404
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:406
 msgid "Hint"
 msgstr "Hinweis"
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:406
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:408
 msgid ""
 "In case the visualization doesn't look like you expected, you should try to "
 "<a href='#' id='btn-transpose'><i class='icon-rotate'></i> transpose the "
@@ -429,43 +429,43 @@ msgstr ""
 "href='#' id='btn-transpose'><i class='icon-rotate'></i> Daten zu "
 "transponieren</a>."
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:414
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:416
 msgid "Tell your story"
 msgstr "Erzähl die Geschichte"
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:420
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:422
 msgid "Title"
 msgstr "Titel"
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:424
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:426
 msgid "Introduction"
 msgstr "Einleitung"
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:428
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:430
 msgid "Highlight"
 msgstr "Hervorheben"
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:436
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:438
 msgid "Tell the story in five words"
 msgstr "Der Aufhänger in fünf Worten"
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:444
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:446
 msgid "Guide the audience to read the chart"
 msgstr "Hilf den Lesern, das Diagramm zu verstehen."
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:452
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:454
 msgid "Highlight the most import data series:"
 msgstr "Hebe die wichtigste Datenreihe hervor:"
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:458
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:460
 msgid "select a data series"
 msgstr "Datenreihe auswählen"
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:497
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:499
 msgid "Refine the chart"
 msgstr "Diagramm anpassen"
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:511
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:513
 msgid "Publish"
 msgstr "Veröffentlichen"
 
@@ -519,15 +519,15 @@ msgstr "Was kann ich jetzt tun?"
 msgid "Resturn to the Datawrapper <a href='/'>homepage</a>."
 msgstr "Zurück zur <a href='/'>Datawrapper-Startseite</a>"
 
-#: ../scripts/tmpl_cache/gallery.twig.php:101
+#: ../scripts/tmpl_cache/gallery.twig.php:56
 msgid "Chart Gallery"
 msgstr "Datawrapper-Galerie"
 
-#: ../scripts/tmpl_cache/gallery.twig.php:103
+#: ../scripts/tmpl_cache/gallery.twig.php:58
 msgid "See what others created with Datawrapper recently"
 msgstr " "
 
-#: ../scripts/tmpl_cache/gallery.twig.php:110
+#: ../scripts/tmpl_cache/gallery.twig.php:65
 msgid ""
 "Welcome to the public gallery of Datawrapper charts. Here you can see the "
 "nice charts that other users have created recently. Click on the charts to "
@@ -537,13 +537,13 @@ msgstr ""
 "die bisher erstellt wurden. Klicke auf die Diagramme, um die interaktive "
 "Version zu sehen."
 
-#: ../scripts/tmpl_cache/gallery.twig.php:116
-#: ../scripts/tmpl_cache/mycharts.twig.php:186
+#: ../scripts/tmpl_cache/gallery.twig.php:71
+#: ../scripts/tmpl_cache/mycharts.twig.php:110
 msgid "By Visualisation"
 msgstr "Nach Diagrammtyp"
 
-#: ../scripts/tmpl_cache/gallery.twig.php:166
-#: ../scripts/tmpl_cache/mycharts.twig.php:136
+#: ../scripts/tmpl_cache/gallery.twig.php:121
+#: ../scripts/tmpl_cache/mycharts.twig.php:60
 msgid "By Month"
 msgstr "Nach Monat"
 
@@ -603,7 +603,7 @@ msgstr "\"Wrap\" nochmal!"
 
 #: ../scripts/tmpl_cache/home-login.twig.php:86
 #: ../scripts/tmpl_cache/home.twig.php:118
-#: ../scripts/tmpl_cache/mycharts.twig.php:34 ../www/index.php:73
+#: ../scripts/tmpl_cache/mycharts.twig.php:52 ../www/index.php:73
 msgid "My Charts"
 msgstr "Meine Diagramme"
 
@@ -648,7 +648,7 @@ msgstr " "
 msgid "Create a Chart"
 msgstr "Diagramm erstellen"
 
-#: ../scripts/tmpl_cache/home.twig.php:135
+#: ../scripts/tmpl_cache/home.twig.php:136
 msgid ""
 "We are bridging the gap between journalists and the newest Javascript-"
 "visualization libraries such as D3.js, Raphael and others. We make it easier "
@@ -662,33 +662,48 @@ msgstr ""
 "\". Datawrapper reduziert die Zeit, um einfache Datenvisualisierungen zu "
 "erstellen und hilft dadurch Datenjournalisten auf der ganzen Welt."
 
-#: ../scripts/tmpl_cache/home.twig.php:142
+#: ../scripts/tmpl_cache/home.twig.php:141
+#: ../scripts/tmpl_cache/home.twig.php:174
 msgid "Main features:"
 msgstr "Wesentliche Funktionen"
 
-#: ../scripts/tmpl_cache/home.twig.php:148
+#: ../scripts/tmpl_cache/home.twig.php:146
 msgid "Simple: Create and embed charts in minutes"
 msgstr "Einfach: Mit wenigen Klicks zum Diagramm"
 
-#: ../scripts/tmpl_cache/home.twig.php:152
+#: ../scripts/tmpl_cache/home.twig.php:150
 msgid "Open Source: Download and install"
 msgstr "Opensource: Runterladen und installieren"
 
-#: ../scripts/tmpl_cache/home.twig.php:156
+#: ../scripts/tmpl_cache/home.twig.php:154
 msgid "CSS: Change the CSS, add your logo"
 msgstr "CSS: Design beliebig anpassen"
 
-#: ../scripts/tmpl_cache/home.twig.php:160
+#: ../scripts/tmpl_cache/home.twig.php:158
 msgid "Developers: Add new chart types"
 msgstr "Entwickler: Erweiterung durch HTML5 Diagramme möglich"
 
-#: ../scripts/tmpl_cache/home.twig.php:164
+#: ../scripts/tmpl_cache/home.twig.php:162
 msgid "Non-profit: This is and will stay free to use"
 msgstr "Non-profit: Dieses Angebot ist und bleibt kostenfrei"
 
-#: ../scripts/tmpl_cache/home.twig.php:170
+#: ../scripts/tmpl_cache/home.twig.php:168
 msgid "Why this approach? See our Motivations..."
 msgstr "Mehr zum Hintergrund: Datawrapper Ziele und Funktionen"
+
+#: ../scripts/tmpl_cache/home.twig.php:179
+#, fuzzy
+msgid "Recently created charts:"
+msgstr "Kürzlich erstellte Diagramme:"
+
+#: ../scripts/tmpl_cache/home.twig.php:184
+msgid ""
+"Here's a selection of what other users have created with Datawrapper "
+"recently. You find a lot more examples in the <a href='%GALLERY%'>chart "
+"gallery</a>."
+msgstr ""
+"Diese Diagramme wurden kürzlich von anderen Nutzern erstellt. Weitere "
+"Beispiele gibt es in der <a href='%GALLERY%'>Datawrapper-Galerie</a>."
 
 #: ../scripts/tmpl_cache/login.twig.php:41
 msgid ""
@@ -747,28 +762,11 @@ msgstr "Die beiden Passwörter müssen übereinstimmen."
 msgid "Close"
 msgstr "Schließen"
 
-#: ../scripts/tmpl_cache/mycharts.twig.php:93
-msgid "Duplicate"
-msgstr "Duplizieren"
-
-#: ../scripts/tmpl_cache/mycharts.twig.php:98
-msgid "Delete"
-msgstr "Löschen"
-
-#: ../scripts/tmpl_cache/mycharts.twig.php:120
-msgid "No charts here, yet"
-msgstr "Hier sind noch keine Diagramme…"
-
-#: ../scripts/tmpl_cache/mycharts.twig.php:124
-msgid "Why not <a href='/chart/create'>create a new chart now</a>?"
-msgstr ""
-"Wieso erstellst du nicht ein <a href='/chart/create'>neues Diagramm</a>?"
-
-#: ../scripts/tmpl_cache/mycharts.twig.php:236
+#: ../scripts/tmpl_cache/mycharts.twig.php:160
 msgid "By Layout"
 msgstr "Nach Layout"
 
-#: ../scripts/tmpl_cache/mycharts.twig.php:287
+#: ../scripts/tmpl_cache/mycharts.twig.php:211
 msgid ""
 "Want to see what other users created using Datawrapper? Take a look in the "
 "<a href='%GALLERY%'>Gallery</a>!"
@@ -776,7 +774,24 @@ msgstr ""
 "Neugierig, was andere bisher so visualisiert haben? Schau doch in der <a "
 "href='%GALLERY%'>Datawrapper-Galerie</a> vorbei!"
 
-#: ../scripts/tmpl_cache/mycharts.twig.php:316
+#: ../scripts/tmpl_cache/mycharts.twig.php:293
+msgid "Duplicate"
+msgstr "Duplizieren"
+
+#: ../scripts/tmpl_cache/mycharts.twig.php:298
+msgid "Delete"
+msgstr "Löschen"
+
+#: ../scripts/tmpl_cache/mycharts.twig.php:320
+msgid "No charts here, yet"
+msgstr "Hier sind noch keine Diagramme…"
+
+#: ../scripts/tmpl_cache/mycharts.twig.php:324
+msgid "Why not <a href='/chart/create'>create a new chart now</a>?"
+msgstr ""
+"Wieso erstellst du nicht ein <a href='/chart/create'>neues Diagramm</a>?"
+
+#: ../scripts/tmpl_cache/mycharts.twig.php:363
 msgid ""
 "Do you really want to delete the chart? Note that after deleting this chart "
 "won't be embedable any more."
@@ -1026,6 +1041,7 @@ msgstr "Erstellt mit "
 #: ../scripts/tmpl_cache/themes__deutsche-welle.twig.php:59
 #: ../scripts/tmpl_cache/themes__guardian.twig.php:52
 #: ../scripts/tmpl_cache/themes__le-monde.twig.php:59
+#: ../scripts/tmpl_cache/themes__ruhrnachrichten.twig.php:52
 msgid "Source: "
 msgstr "Quelle:"
 
@@ -1036,6 +1052,7 @@ msgid "Download data"
 msgstr "Daten speichern "
 
 #: ../scripts/tmpl_cache/themes__guardian.twig.php:81
+#: ../scripts/tmpl_cache/themes__ruhrnachrichten.twig.php:83
 msgid "Get the data"
 msgstr "Daten"
 

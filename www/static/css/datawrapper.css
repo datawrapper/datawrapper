@@ -72,6 +72,64 @@ body {
     margin-top: 9px;
 }
 
+#recent-charts {
+    position: relative;
+    height: 170px;
+    overflow: hidden;
+}
+
+.recent-charts-bg {
+    position: absolute;
+    right: 0;
+    z-index: 12;
+    top: 0;
+    width: 70px;
+    height: 200px;
+    background: -moz-linear-gradient(left,  rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(255,255,255,0)), color-stop(100%,rgba(255,255,255,1))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(left,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(left,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(left,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%); /* IE10+ */
+    background: linear-gradient(to right,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=1 ); /* IE6-9 */
+
+}
+
+#recent-charts img {
+}
+
+#recent-charts a {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    z-index: 10;
+    box-shadow: 3px 3px 8px rgba(0,0,0,.3);
+}
+
+#recent-charts a+a {
+    z-index: 8;
+    left: 25%;
+}
+
+#recent-charts a+a+a {
+    z-index: 7;
+    left: 45%;
+}
+
+#recent-charts a+a+a+a {
+    z-index: 6;
+    left: 50%;
+}
+
+#recent-charts a+a+a+a+a {
+    z-index: 5;
+    left: 60%;
+}
+
+#recent-charts a+a+a+a+a+a {
+    z-index: 5;
+    left: 70%;
+}
 
 @media (max-width: 767px) {
     /* mobile display, no teaser image */
