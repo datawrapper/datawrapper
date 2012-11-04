@@ -93,12 +93,14 @@ $app->post('/users', function() use ($app) {
 $app->put('/users/:id', function($user_id) use ($app) {
     $payload = json_decode($app->request()->getBody());
     $curUser = DatawrapperSession::getUser();
+
     if ($curUser->isLoggedIn()) {
         if ($user_id == 'current' || $curUser->getId() === $user_id) {
             $user = $curUser;
         } else if ($curUser->isAdmin()) {
             $user = UserQuery::create()->findPK($user_id);
         }
+
         if (!empty($user)) {
             $changed = array();
             $errors = array();
@@ -115,7 +117,6 @@ $app->put('/users/:id', function($user_id) use ($app) {
                 $hash = hash_hmac('sha256', $user->getPwd(), $payload->time);
                 if ($chk || $curUser->isAdmin()) {
                     $user->setPwd($payload->pwd);
-                    $curUser->setResetPasswordToken('');
                     $changed[] = 'password';
                 } else {
                     $errors[] = 'password-or-token-invalid';
@@ -164,7 +165,6 @@ $app->put('/users/:id', function($user_id) use ($app) {
 });
 
 
-
 /*
  * delete a user
  * @needs admin or existing user
@@ -197,3 +197,25 @@ $app->delete('/users/:id', function($user_id) use ($app) {
         error('need-login', 'you must be logged in to do that');
     }
 });
+
+$app->put('/account/reset-password', function() use ($app) {
+    $payload = json_decode($app->request()->getBody());
+    if (!empty($payload->token)) {
+        $user = UserQuery::create()->getUserByPwdResetToken($payload->token);
+        if (!empty($user)) {
+            if (!empty($payload->pwd)) {
+                // update password
+                $hash = hash_hmac('sha256', $user->getPwd(), $payload->time);
+                $user->setPwd($payload->pwd);
+                $user->setResetPasswordToken('');
+                $user->save();
+                ok();
+            } else {
+                error('empty-password', _('The password must not be empty.'));
+            }
+        } else {
+            error('invalid-token', _('The supplied token for password resetting is invalid.'));
+        }
+    }
+});
+

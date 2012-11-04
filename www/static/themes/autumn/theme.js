@@ -25,7 +25,9 @@
 
         columnChart: {
             cutGridLines: true
-        }
+        },
+
+        vpadding: 10
 
     });
 

@@ -10,26 +10,42 @@ msgstr ""
 msgid "Reset Your Password"
 msgstr ""
 
-#: ../scripts/tmpl_cache/account-reset-password.twig.php:47
+#: ../scripts/tmpl_cache/account-reset-password.twig.php:41
+msgid ""
+"You see this page because you requested to reset your password. Please "
+"choose yourself a new password"
+msgstr ""
+
+#: ../scripts/tmpl_cache/account-reset-password.twig.php:50
 msgid "Reset Code"
 msgstr ""
 
-#: ../scripts/tmpl_cache/account-reset-password.twig.php:62
+#: ../scripts/tmpl_cache/account-reset-password.twig.php:60
+msgid "This reset token is valid."
+msgstr ""
+
+#: ../scripts/tmpl_cache/account-reset-password.twig.php:68
 #: ../scripts/tmpl_cache/settings.twig.php:371
 msgid "Password"
 msgstr ""
 
-#: ../scripts/tmpl_cache/account-reset-password.twig.php:71
+#: ../scripts/tmpl_cache/account-reset-password.twig.php:77
 msgid "Password (repeat)"
 msgstr ""
 
-#: ../scripts/tmpl_cache/account-reset-password.twig.php:85
+#: ../scripts/tmpl_cache/account-reset-password.twig.php:87
+#: ../scripts/tmpl_cache/settings.twig.php:279
+msgid "Show password in clear text"
+msgstr ""
+
+#: ../scripts/tmpl_cache/account-reset-password.twig.php:94
 msgid "Set New Password"
 msgstr ""
 
-#: ../scripts/tmpl_cache/account-reset-password.twig.php:139
-#: ../scripts/tmpl_cache/settings.twig.php:502
-msgid "Congrats! Your password has been changed."
+#: ../scripts/tmpl_cache/account-reset-password.twig.php:148
+msgid ""
+"Congrats! Your password has been changed. You can log in with your new "
+"password now."
 msgstr ""
 
 #: ../scripts/tmpl_cache/chart-describe.twig.php:168
@@ -857,10 +873,6 @@ msgstr ""
 msgid "(repeat)"
 msgstr ""
 
-#: ../scripts/tmpl_cache/settings.twig.php:279
-msgid "Show password in clear text"
-msgstr ""
-
 #: ../scripts/tmpl_cache/settings.twig.php:299
 msgid "Delete Your Account"
 msgstr ""
@@ -943,6 +955,10 @@ msgstr ""
 msgid "This just worked fine. Your profile has been updated."
 msgstr ""
 
+#: ../scripts/tmpl_cache/settings.twig.php:502
+msgid "Congrats! Your password has been changed."
+msgstr ""
+
 #: ../scripts/tmpl_cache/themes__default.twig.php:48
 msgid "Created with"
 msgstr ""
@@ -1014,52 +1030,60 @@ msgstr ""
 msgid "Publish & Embed"
 msgstr ""
 
-#: ../lib/api/auth.php:33
+#: ../lib/api/auth.php:34
 msgid "The password is incorrect."
 msgstr ""
 
-#: ../lib/api/auth.php:36 ../lib/api/auth.php:98
+#: ../lib/api/auth.php:37 ../lib/api/auth.php:99
 msgid "The email is not registered yet."
 msgstr ""
 
-#: ../lib/api/auth.php:39
+#: ../lib/api/auth.php:40
 msgid "Your session is expired, please reload the page and try again."
 msgstr ""
 
-#: ../lib/api/auth.php:75
+#: ../lib/api/auth.php:76
 msgid ""
 "The password reset email has already been sent. Please contact an <a href="
 "\"mailto:hello@datawrapper.de\">administrator</a>."
 msgstr ""
 
-#: ../lib/api/auth.php:80
+#: ../lib/api/auth.php:81
 msgid ""
 "You haven't activated this email address yet, so we cannot safely send "
 "emails to it. Please contact an <a href=\"mailto:hello@datawrapper.de"
 "\">administrator</a>."
 msgstr ""
 
-#: ../lib/api/auth.php:95
+#: ../lib/api/auth.php:96
 msgid "You should soon receive an email with further instructions."
 msgstr ""
 
-#: ../lib/api/auth.php:117
+#: ../lib/api/auth.php:118
 msgid ""
 "You already resent the activation mail three times, now. Please <a href="
 "\"mailto:%ADMINEMAIL%\">contact an administrator</a> to proceed with your "
 "account activation."
 msgstr ""
 
-#: ../lib/api/auth.php:134
+#: ../lib/api/auth.php:135
 msgid "The activation email has been send to your email address, again."
 msgstr ""
 
-#: ../lib/api/auth.php:137
+#: ../lib/api/auth.php:138
 msgid "You're account is probably already activated."
 msgstr ""
 
 #: ../lib/api/users.php:191
 msgid "The password you entered is not correct."
+msgstr ""
+
+#: ../lib/api/users.php:214
+msgid "The password must not be empty."
+msgstr ""
+
+#: ../lib/api/users.php:217
+msgid "The supplied token for password resetting is invalid."
 msgstr ""
 
 #: ../lib/core/build/classes/datawrapper/ChartQuery.php:37
