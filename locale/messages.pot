@@ -55,9 +55,7 @@ msgid ""
 msgstr ""
 
 #: ../scripts/tmpl_cache/account-reset-password.twig.php:118
-#: ../scripts/tmpl_cache/home-login.twig.php:41
-#: ../scripts/tmpl_cache/home-login.twig.php:56
-#: ../scripts/tmpl_cache/home.twig.php:109
+#: ../scripts/tmpl_cache/home.twig.php:89
 #: ../scripts/tmpl_cache/login.twig.php:55
 msgid "Login"
 msgstr ""
@@ -149,7 +147,7 @@ msgid ""
 msgstr ""
 
 #: ../scripts/tmpl_cache/chart-describe.twig.php:334
-#: ../scripts/tmpl_cache/core.twig.php:162
+#: ../scripts/tmpl_cache/core.twig.php:185
 msgid "Learn more"
 msgstr ""
 
@@ -161,7 +159,7 @@ msgstr ""
 msgid "Annotate data point"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-describe.twig.php:346 ../www/index.php:155
+#: ../scripts/tmpl_cache/chart-describe.twig.php:346 ../www/index.php:157
 msgid "Visualize"
 msgstr ""
 
@@ -288,8 +286,6 @@ msgid ""
 msgstr ""
 
 #: ../scripts/tmpl_cache/chart-publish.twig.php:308
-#: ../scripts/tmpl_cache/home-login.twig.php:43
-#: ../scripts/tmpl_cache/home-login.twig.php:60
 #: ../scripts/tmpl_cache/login.twig.php:104
 msgid "Sign Up"
 msgstr ""
@@ -458,38 +454,49 @@ msgstr ""
 msgid "Publish"
 msgstr ""
 
-#: ../scripts/tmpl_cache/core.twig.php:113
+#: ../scripts/tmpl_cache/core.twig.php:114
 msgid "Open Source Data Visualization"
 msgstr ""
 
-#: ../scripts/tmpl_cache/core.twig.php:145
+#: ../scripts/tmpl_cache/core.twig.php:138
+msgid "Your browser is not supported"
+msgstr ""
+
+#: ../scripts/tmpl_cache/core.twig.php:142
+msgid ""
+"You are using a browser that is not supported at the moment. Please use one "
+"of the following browsers instead. Note that this only applies to the chart "
+"editor. The charts itself can be viewed with any major browser."
+msgstr ""
+
+#: ../scripts/tmpl_cache/core.twig.php:168
 msgid "Back to top"
 msgstr ""
 
-#: ../scripts/tmpl_cache/core.twig.php:156
+#: ../scripts/tmpl_cache/core.twig.php:179
 msgid ""
 "Datawrapper is an <a href=\"http://github.com/datawrapper/datawrapper\">open "
 "source</a> project by <a href=\"http://abzv.de\">ABZV</a> - a German "
 "training institution for newspaper journalists."
 msgstr ""
 
-#: ../scripts/tmpl_cache/core.twig.php:164
+#: ../scripts/tmpl_cache/core.twig.php:187
 msgid "Motivation"
 msgstr ""
 
-#: ../scripts/tmpl_cache/core.twig.php:166
+#: ../scripts/tmpl_cache/core.twig.php:189
 msgid "Quick Start Guide"
 msgstr ""
 
-#: ../scripts/tmpl_cache/core.twig.php:168
+#: ../scripts/tmpl_cache/core.twig.php:191
 msgid "Manual"
 msgstr ""
 
-#: ../scripts/tmpl_cache/core.twig.php:170
+#: ../scripts/tmpl_cache/core.twig.php:193
 msgid "Terms of Use"
 msgstr ""
 
-#: ../scripts/tmpl_cache/core.twig.php:172
+#: ../scripts/tmpl_cache/core.twig.php:195
 msgid "Imprint"
 msgstr ""
 
@@ -551,90 +558,81 @@ msgstr ""
 msgid "Try Datawrapper now!"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home-login.twig.php:48
-#: ../scripts/tmpl_cache/home.twig.php:101
-#: ../scripts/tmpl_cache/login.twig.php:47
-#: ../scripts/tmpl_cache/login.twig.php:87
-msgid "email"
+#: ../scripts/tmpl_cache/home-login.twig.php:40
+msgid ""
+"Looking for the old beta version of Datawrapper?<br />It's still available "
+"at <a href='http://beta.datawrapper.de'>beta.datawrapper.de</a>"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home-login.twig.php:52
-#: ../scripts/tmpl_cache/home.twig.php:105
-#: ../scripts/tmpl_cache/login.twig.php:51
-#: ../scripts/tmpl_cache/login.twig.php:93
-msgid "password"
-msgstr ""
-
-#: ../scripts/tmpl_cache/home-login.twig.php:71
+#: ../scripts/tmpl_cache/home-login.twig.php:51
 msgid "Welcome back!"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home-login.twig.php:76
+#: ../scripts/tmpl_cache/home-login.twig.php:56
 msgid "Create New Chart"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home-login.twig.php:78
+#: ../scripts/tmpl_cache/home-login.twig.php:58
 msgid "Wrap again!"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home-login.twig.php:86
-#: ../scripts/tmpl_cache/home.twig.php:131
+#: ../scripts/tmpl_cache/home-login.twig.php:66
+#: ../scripts/tmpl_cache/home.twig.php:111
 #: ../scripts/tmpl_cache/mycharts.twig.php:52 ../www/index.php:73
 msgid "My Charts"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home-login.twig.php:88
+#: ../scripts/tmpl_cache/home-login.twig.php:68
 msgid "See what you created so far."
 msgstr ""
 
-#: ../scripts/tmpl_cache/home-login.twig.php:94 ../www/index.php:108
+#: ../scripts/tmpl_cache/home-login.twig.php:74 ../www/index.php:108
 msgid "Settings"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home-login.twig.php:96
+#: ../scripts/tmpl_cache/home-login.twig.php:76
 msgid "Edit your personal information."
 msgstr ""
 
-#: ../scripts/tmpl_cache/home-login.twig.php:100 ../www/index.php:112
+#: ../scripts/tmpl_cache/home-login.twig.php:80 ../www/index.php:112
 msgid "Logout"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:73
-msgid "Your browser is not supported"
-msgstr ""
-
-#: ../scripts/tmpl_cache/home.twig.php:77
-msgid ""
-"You are using a browser that is not supported at the moment. Please use <a "
-"href='http://mozilla.org/firefox/'>Firefox</a>, <a href='http://google.com/"
-"chrome'>Chrome</a>, or <a href='http://www.opera.com/'>Opera</a> instead. "
-"Note that this only applies to the chart editor. The charts itself can be "
-"viewed with any major browser."
-msgstr ""
-
-#: ../scripts/tmpl_cache/home.twig.php:89
+#: ../scripts/tmpl_cache/home.twig.php:69
 msgid ""
 "<b class='dw-logo'>Datawrapper</b> is an open source tool helping everyone "
 "to create simple, correct and embeddable charts in minutes."
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:113
+#: ../scripts/tmpl_cache/home.twig.php:81
+#: ../scripts/tmpl_cache/login.twig.php:47
+#: ../scripts/tmpl_cache/login.twig.php:87
+msgid "email"
+msgstr ""
+
+#: ../scripts/tmpl_cache/home.twig.php:85
+#: ../scripts/tmpl_cache/login.twig.php:51
+#: ../scripts/tmpl_cache/login.twig.php:93
+msgid "password"
+msgstr ""
+
+#: ../scripts/tmpl_cache/home.twig.php:93
 msgid "or"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:115
+#: ../scripts/tmpl_cache/home.twig.php:95
 msgid "sign up"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:117
+#: ../scripts/tmpl_cache/home.twig.php:97
 msgid "now, for free"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:127
+#: ../scripts/tmpl_cache/home.twig.php:107
 msgid "Create a Chart"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:149
+#: ../scripts/tmpl_cache/home.twig.php:129
 msgid ""
 "We are bridging the gap between journalists and the newest Javascript-"
 "visualization libraries such as D3.js, Raphael and others. We make it easier "
@@ -643,40 +641,40 @@ msgid ""
 "everywhere in the world."
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:154
-#: ../scripts/tmpl_cache/home.twig.php:187
+#: ../scripts/tmpl_cache/home.twig.php:134
+#: ../scripts/tmpl_cache/home.twig.php:167
 msgid "Main features:"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:159
+#: ../scripts/tmpl_cache/home.twig.php:139
 msgid "Simple: Create and embed charts in minutes"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:163
+#: ../scripts/tmpl_cache/home.twig.php:143
 msgid "Open Source: Download and install"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:167
+#: ../scripts/tmpl_cache/home.twig.php:147
 msgid "CSS: Change the CSS, add your logo"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:171
+#: ../scripts/tmpl_cache/home.twig.php:151
 msgid "Developers: Add new chart types"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:175
+#: ../scripts/tmpl_cache/home.twig.php:155
 msgid "Non-profit: This is and will stay free to use"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:181
+#: ../scripts/tmpl_cache/home.twig.php:161
 msgid "Why this approach? See our Motivations..."
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:192
+#: ../scripts/tmpl_cache/home.twig.php:172
 msgid "Recently created charts:"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:197
+#: ../scripts/tmpl_cache/home.twig.php:177
 msgid ""
 "Here's a selection of what other users have created with Datawrapper "
 "recently. You find a lot more examples in the <a href='%GALLERY%'>chart "
@@ -1038,15 +1036,15 @@ msgstr ""
 msgid "Login / Sign Up"
 msgstr ""
 
-#: ../www/index.php:153
+#: ../www/index.php:155
 msgid "Upload Data"
 msgstr ""
 
-#: ../www/index.php:154
+#: ../www/index.php:156
 msgid "Check & Describe"
 msgstr ""
 
-#: ../www/index.php:156
+#: ../www/index.php:158
 msgid "Publish & Embed"
 msgstr ""
 
