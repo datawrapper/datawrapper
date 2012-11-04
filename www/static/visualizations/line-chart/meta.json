@@ -24,7 +24,7 @@
                 "de": "Linien direkt beschriften",
                 "fr": "Nommer les lignes"
             },
-            "default": true,
+            "default": false,
             "depends-on": {
                 "chart.min_series_num": 2
             }
@@ -58,6 +58,7 @@
                     "fr": "dedans"
                 }
             }],
+            "default": "right",
             "depends-on": {
                 "direct-labeling": false,
                 "chart.min_series_num": 2

@@ -8,7 +8,7 @@ $app->get('/', function () use ($app) {
     } else {
         $page = array(
             'title' => 'Datawrapper',
-            'recent_charts' => ChartQuery::create()->getGalleryCharts(array('layout'=>'default'), 0, 3)
+            'recent_charts' => ChartQuery::create()->getGalleryCharts(array(), 0, 3)
         );
         add_header_vars($page, '');
 
