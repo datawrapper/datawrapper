@@ -18,6 +18,10 @@ body.chart {
     overflow-x:hidden;
 }
 
+a {
+    color: #F24405;
+}
+
 h1 {
     font-family: 'Sanchez', serif;
     font-size: 22px;
