@@ -11,9 +11,7 @@ msgid "Reset Your Password"
 msgstr ""
 
 #: ../scripts/tmpl_cache/account-reset-password.twig.php:41
-msgid ""
-"You see this page because you requested to reset your password. Please "
-"choose yourself a new password"
+msgid "On this page you are able to reset your password."
 msgstr ""
 
 #: ../scripts/tmpl_cache/account-reset-password.twig.php:50
@@ -25,27 +23,39 @@ msgid "This reset token is valid."
 msgstr ""
 
 #: ../scripts/tmpl_cache/account-reset-password.twig.php:68
+msgid "Now please enter a new password:"
+msgstr ""
+
+#: ../scripts/tmpl_cache/account-reset-password.twig.php:72
 #: ../scripts/tmpl_cache/settings.twig.php:371
 msgid "Password"
 msgstr ""
 
-#: ../scripts/tmpl_cache/account-reset-password.twig.php:77
+#: ../scripts/tmpl_cache/account-reset-password.twig.php:81
 msgid "Password (repeat)"
 msgstr ""
 
-#: ../scripts/tmpl_cache/account-reset-password.twig.php:87
+#: ../scripts/tmpl_cache/account-reset-password.twig.php:91
 #: ../scripts/tmpl_cache/settings.twig.php:279
 msgid "Show password in clear text"
 msgstr ""
 
-#: ../scripts/tmpl_cache/account-reset-password.twig.php:94
+#: ../scripts/tmpl_cache/account-reset-password.twig.php:98
 msgid "Set New Password"
 msgstr ""
 
-#: ../scripts/tmpl_cache/account-reset-password.twig.php:148
+#: ../scripts/tmpl_cache/account-reset-password.twig.php:108
 msgid ""
 "Congrats! Your password has been changed. You can log in with your new "
 "password now."
+msgstr ""
+
+#: ../scripts/tmpl_cache/account-reset-password.twig.php:112
+#: ../scripts/tmpl_cache/home-login.twig.php:41
+#: ../scripts/tmpl_cache/home-login.twig.php:56
+#: ../scripts/tmpl_cache/home.twig.php:96
+#: ../scripts/tmpl_cache/login.twig.php:55
+msgid "Login"
 msgstr ""
 
 #: ../scripts/tmpl_cache/chart-describe.twig.php:168
@@ -535,13 +545,6 @@ msgstr ""
 
 #: ../scripts/tmpl_cache/home-login.twig.php:35
 msgid "Try Datawrapper now!"
-msgstr ""
-
-#: ../scripts/tmpl_cache/home-login.twig.php:41
-#: ../scripts/tmpl_cache/home-login.twig.php:56
-#: ../scripts/tmpl_cache/home.twig.php:96
-#: ../scripts/tmpl_cache/login.twig.php:55
-msgid "Login"
 msgstr ""
 
 #: ../scripts/tmpl_cache/home-login.twig.php:48
