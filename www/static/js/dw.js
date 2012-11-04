@@ -515,7 +515,7 @@
         yTicks: false,
 
         xAxis: {
-            stroke: 'rgba(0,0,0,.5)'
+            stroke: '#333'
         },
 
         yAxis: {
