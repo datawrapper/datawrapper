@@ -203,6 +203,16 @@
             return w;
         },
 
+        labelHeight: function(txt, className, width) {
+            // returns the width of a label
+            var l = $('<div class="label'+(className ? ' '+className : '')+'"><span>'+txt+'</span></div>');
+            l.width(width);
+            this.__root.append(l);
+            var w = $('span', l).height();
+            l.remove();
+            return w;
+        },
+
         orderSeriesElements: function() {
             // put highlighted lines on top
             var me = this;

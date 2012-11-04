@@ -33,6 +33,17 @@
            //}
 
             me.init();
+
+            // compute maximum x-label height
+            var lh = 0,
+                n = me.chart.dataSeries().length;
+            _.each(me.chart.dataSeries(), function(series, s) {
+                lh = Math.max(lh, me.labelHeight(series.name, 'series', c.w / (n)));
+                console.log(series.name, me.labelHeight(series.name, 'series', c.w / (n)));
+            });
+            c.bpad = lh+10;
+
+
             me.initDimensions();
 
             $('.tooltip').hide();
@@ -66,7 +77,7 @@
                     var val_y = val > 0 ? d.y - 10 : d.y + d.h + 10,
                         lbl_y = val <= 0 ? d.y - 10 : d.y + d.h + 5,
                         lblcl = ['series'],
-                        lbl_w = d.bw,
+                        lbl_w = c.w / (n+2),
                         valign = val > 0 ? 'top' : 'bottom',
                         halign = 'center',
                         alwaysShow = (me.chart.hasHighlight() && me.chart.isHighlighted(series)) || (d.w > 40);
