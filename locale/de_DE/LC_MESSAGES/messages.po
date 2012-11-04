@@ -610,7 +610,7 @@ msgid ""
 "Looking for the old beta version of Datawrapper?<br />It's still available "
 "at <a href='http://beta.datawrapper.de'>beta.datawrapper.de</a>"
 msgstr ""
-"Auf der Suche nach der alten Datawrapper-Beta?<br/>Von nun ab erreichbar "
+"Auf der Suche nach der alten Datawrapper-Beta?<br/>Von nun an erreichbar "
 "unter <a href='http://beta.datawrapper.de'>beta.datawrapper.de</a>"
 
 #: /Users/gka/clients/datawrapper/1.0/scripts/tmpl_cache/home-login.twig.php:51
