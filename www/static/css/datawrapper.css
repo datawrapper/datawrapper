@@ -894,3 +894,31 @@ form.well form {
     width: 23px;
     opacity: 1;
 }
+
+.browser {
+    display: inline-block;
+    width: 66px;
+    height: 66px;
+    margin: 10px 10px;
+    background-image: url(/static/img/browser.png);
+}
+
+.browser.firefox {
+    background-position: -72px 0;
+}
+
+.browser.opera {
+    background-position: -142px 0;
+}
+
+.browser.safari {
+    background-position: -211px 0;
+}
+
+.browser.msie {
+    background-position: -280px 0;
+}
+
+.alert {
+    color: #821;
+}

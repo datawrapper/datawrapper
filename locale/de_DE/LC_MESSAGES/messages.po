@@ -35,33 +35,33 @@ msgstr "Reset Code"
 msgid "This reset token is valid."
 msgstr "Der Link zum Zurücksetzen des Passworts ist gültig."
 
-#: ../scripts/tmpl_cache/account-reset-password.twig.php:68
+#: ../scripts/tmpl_cache/account-reset-password.twig.php:69
+msgid "Now please enter a new password."
+msgstr "Bitte wähle jetzt ein neues Passwort."
+
+#: ../scripts/tmpl_cache/account-reset-password.twig.php:71
+msgid "The password should contain at least four characters."
+msgstr "Das Passwort muss mindestens vier Zeichen lang sein."
+
+#: ../scripts/tmpl_cache/account-reset-password.twig.php:79
 #: ../scripts/tmpl_cache/settings.twig.php:371
 msgid "Password"
 msgstr "Passwort"
 
-#: ../scripts/tmpl_cache/account-reset-password.twig.php:73
-msgid "Now please enter a new password."
-msgstr "Bitte wähle jetzt ein neues Passwort."
-
-#: ../scripts/tmpl_cache/account-reset-password.twig.php:75
-msgid "The password should contain at least four characters."
-msgstr "Das Passwort muss mindestens vier Zeichen lang sein."
-
-#: ../scripts/tmpl_cache/account-reset-password.twig.php:83
+#: ../scripts/tmpl_cache/account-reset-password.twig.php:88
 msgid "Password (repeat)"
 msgstr "Passwort (wdh.)"
 
-#: ../scripts/tmpl_cache/account-reset-password.twig.php:93
+#: ../scripts/tmpl_cache/account-reset-password.twig.php:98
 #: ../scripts/tmpl_cache/settings.twig.php:279
 msgid "Show password in clear text"
 msgstr "Zeige das Passwort in Klartext"
 
-#: ../scripts/tmpl_cache/account-reset-password.twig.php:100
+#: ../scripts/tmpl_cache/account-reset-password.twig.php:105
 msgid "Set New Password"
 msgstr "Neues Passwort setzen"
 
-#: ../scripts/tmpl_cache/account-reset-password.twig.php:110
+#: ../scripts/tmpl_cache/account-reset-password.twig.php:114
 msgid ""
 "Congrats! Your password has been changed. You can log in with your new "
 "password now."
@@ -69,10 +69,10 @@ msgstr ""
 "Glückwunsch! Dein Passwort wurde geändert. Nun kannst du dich mit dem neuen "
 "Passwort anmelden."
 
-#: ../scripts/tmpl_cache/account-reset-password.twig.php:114
+#: ../scripts/tmpl_cache/account-reset-password.twig.php:118
 #: ../scripts/tmpl_cache/home-login.twig.php:41
 #: ../scripts/tmpl_cache/home-login.twig.php:56
-#: ../scripts/tmpl_cache/home.twig.php:96
+#: ../scripts/tmpl_cache/home.twig.php:109
 #: ../scripts/tmpl_cache/login.twig.php:55
 msgid "Login"
 msgstr "Einloggen"
@@ -601,14 +601,14 @@ msgid "Try Datawrapper now!"
 msgstr "Datawrapper ausprobieren, ohne Anmeldung."
 
 #: ../scripts/tmpl_cache/home-login.twig.php:48
-#: ../scripts/tmpl_cache/home.twig.php:88
+#: ../scripts/tmpl_cache/home.twig.php:101
 #: ../scripts/tmpl_cache/login.twig.php:47
 #: ../scripts/tmpl_cache/login.twig.php:87
 msgid "email"
 msgstr "E-Mail"
 
 #: ../scripts/tmpl_cache/home-login.twig.php:52
-#: ../scripts/tmpl_cache/home.twig.php:92
+#: ../scripts/tmpl_cache/home.twig.php:105
 #: ../scripts/tmpl_cache/login.twig.php:51
 #: ../scripts/tmpl_cache/login.twig.php:93
 msgid "password"
@@ -627,7 +627,7 @@ msgid "Wrap again!"
 msgstr "\"Wrap\" nochmal!"
 
 #: ../scripts/tmpl_cache/home-login.twig.php:86
-#: ../scripts/tmpl_cache/home.twig.php:118
+#: ../scripts/tmpl_cache/home.twig.php:131
 #: ../scripts/tmpl_cache/mycharts.twig.php:52 ../www/index.php:73
 msgid "My Charts"
 msgstr "Meine Diagramme"
@@ -648,7 +648,25 @@ msgstr "Ändere deine persönlichen Daten"
 msgid "Logout"
 msgstr "Ausloggen"
 
-#: ../scripts/tmpl_cache/home.twig.php:76
+#: ../scripts/tmpl_cache/home.twig.php:73
+msgid "Your browser is not supported"
+msgstr "Dein Browser wird nicht unterstützt"
+
+#: ../scripts/tmpl_cache/home.twig.php:77
+msgid ""
+"You are using a browser that is not supported at the moment. Please use <a "
+"href='http://mozilla.org/firefox/'>Firefox</a>, <a href='http://google.com/"
+"chrome'>Chrome</a>, or <a href='http://www.opera.com/'>Opera</a> instead. "
+"Note that this only applies to the chart editor. The charts itself can be "
+"viewed with any major browser."
+msgstr ""
+"Du benutzt einen Browser den wir derzeit nicht unterstützen. Bitte benutze "
+"stattdessen <a href='http://mozilla.org/firefox/'>Firefox</a>, <a "
+"href='http://google.com/chrome'>Chrome</a> oder <a href='http://www.opera."
+"com/'>Opera</a>. Dies betrifft im Übrigen nur den Diagramm-Editor. Die "
+"Diagramme funktionieren mit allen Browsern. "
+
+#: ../scripts/tmpl_cache/home.twig.php:89
 msgid ""
 "<b class='dw-logo'>Datawrapper</b> is an open source tool helping everyone "
 "to create simple, correct and embeddable charts in minutes."
@@ -657,23 +675,23 @@ msgstr ""
 "innerhalb von Minuten einfache und korrekte Diagramme mit Einbett-Code zu "
 "erstellen."
 
-#: ../scripts/tmpl_cache/home.twig.php:100
+#: ../scripts/tmpl_cache/home.twig.php:113
 msgid "or"
 msgstr "oder jetzt"
 
-#: ../scripts/tmpl_cache/home.twig.php:102
+#: ../scripts/tmpl_cache/home.twig.php:115
 msgid "sign up"
 msgstr "kostenlos anmelden"
 
-#: ../scripts/tmpl_cache/home.twig.php:104
+#: ../scripts/tmpl_cache/home.twig.php:117
 msgid "now, for free"
 msgstr " "
 
-#: ../scripts/tmpl_cache/home.twig.php:114
+#: ../scripts/tmpl_cache/home.twig.php:127
 msgid "Create a Chart"
 msgstr "Diagramm erstellen"
 
-#: ../scripts/tmpl_cache/home.twig.php:136
+#: ../scripts/tmpl_cache/home.twig.php:149
 msgid ""
 "We are bridging the gap between journalists and the newest Javascript-"
 "visualization libraries such as D3.js, Raphael and others. We make it easier "
@@ -687,40 +705,40 @@ msgstr ""
 "\". Datawrapper reduziert die Zeit, um einfache Datenvisualisierungen zu "
 "erstellen und hilft dadurch Datenjournalisten auf der ganzen Welt."
 
-#: ../scripts/tmpl_cache/home.twig.php:141
-#: ../scripts/tmpl_cache/home.twig.php:174
+#: ../scripts/tmpl_cache/home.twig.php:154
+#: ../scripts/tmpl_cache/home.twig.php:187
 msgid "Main features:"
 msgstr "Wesentliche Funktionen"
 
-#: ../scripts/tmpl_cache/home.twig.php:146
+#: ../scripts/tmpl_cache/home.twig.php:159
 msgid "Simple: Create and embed charts in minutes"
 msgstr "Einfach: Mit wenigen Klicks zum Diagramm"
 
-#: ../scripts/tmpl_cache/home.twig.php:150
+#: ../scripts/tmpl_cache/home.twig.php:163
 msgid "Open Source: Download and install"
 msgstr "Opensource: Runterladen und installieren"
 
-#: ../scripts/tmpl_cache/home.twig.php:154
+#: ../scripts/tmpl_cache/home.twig.php:167
 msgid "CSS: Change the CSS, add your logo"
 msgstr "CSS: Design beliebig anpassen"
 
-#: ../scripts/tmpl_cache/home.twig.php:158
+#: ../scripts/tmpl_cache/home.twig.php:171
 msgid "Developers: Add new chart types"
 msgstr "Entwickler: Erweiterung durch HTML5 Diagramme möglich"
 
-#: ../scripts/tmpl_cache/home.twig.php:162
+#: ../scripts/tmpl_cache/home.twig.php:175
 msgid "Non-profit: This is and will stay free to use"
 msgstr "Non-profit: Dieses Angebot ist und bleibt kostenfrei"
 
-#: ../scripts/tmpl_cache/home.twig.php:168
+#: ../scripts/tmpl_cache/home.twig.php:181
 msgid "Why this approach? See our Motivations..."
 msgstr "Mehr zum Hintergrund: Datawrapper Ziele und Funktionen"
 
-#: ../scripts/tmpl_cache/home.twig.php:179
+#: ../scripts/tmpl_cache/home.twig.php:192
 msgid "Recently created charts:"
 msgstr "Kürzlich erstellte Diagramme:"
 
-#: ../scripts/tmpl_cache/home.twig.php:184
+#: ../scripts/tmpl_cache/home.twig.php:197
 msgid ""
 "Here's a selection of what other users have created with Datawrapper "
 "recently. You find a lot more examples in the <a href='%GALLERY%'>chart "
