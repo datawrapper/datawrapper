@@ -21,6 +21,10 @@
 
         horizontalGrid: {
             stroke: '#ccc'
+        },
+
+        columnChart: {
+            cutGridLines: true
         }
 
     });

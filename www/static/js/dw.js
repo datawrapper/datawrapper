@@ -504,11 +504,19 @@
 
         },
 
+        columnChart: {
+            cutGridLines: false
+        },
+
         horizontalGrid: {
             stroke: '#e9e9e9'
         },
 
         yTicks: false,
+
+        xAxis: {
+            stroke: 'rgba(0,0,0,.5)'
+        },
 
         yAxis: {
             'stroke-width': 1

@@ -35,11 +35,19 @@
 
         },
 
+        columnChart: {
+            cutGridLines: false
+        },
+
         horizontalGrid: {
             stroke: '#e9e9e9'
         },
 
         yTicks: false,
+
+        xAxis: {
+            stroke: '#333'
+        },
 
         yAxis: {
             'stroke-width': 1
