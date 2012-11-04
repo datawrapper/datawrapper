@@ -26,15 +26,15 @@ class DatawrapperSession {
     public static function initSession() {
         session_cache_limiter(false);
         $ses = 'DW-SESSION';
-        $lifetime = 86400 * 30;  // 30 days
+        $lifetime = 86400 * 90;  // 90 days
         session_set_cookie_params($lifetime);
         session_name($ses);
         //if(!session_id()) session_regenerate_id();
         session_start();
 
         // Reset the expiration time upon page load
-        if (isset($_COOKIE[$ses]))
-            setcookie($ses, $_COOKIE[$ses], time() + $lifetime, "/");
+        //if (isset($_COOKIE[$ses]))
+        //    setcookie($ses, $_COOKIE[$ses], time() + $lifetime, "/");
     }
 
     /**
