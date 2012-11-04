@@ -23,34 +23,38 @@ msgid "This reset token is valid."
 msgstr ""
 
 #: ../scripts/tmpl_cache/account-reset-password.twig.php:68
-msgid "Now please enter a new password:"
-msgstr ""
-
-#: ../scripts/tmpl_cache/account-reset-password.twig.php:72
 #: ../scripts/tmpl_cache/settings.twig.php:371
 msgid "Password"
 msgstr ""
 
-#: ../scripts/tmpl_cache/account-reset-password.twig.php:81
+#: ../scripts/tmpl_cache/account-reset-password.twig.php:73
+msgid "Now please enter a new password."
+msgstr ""
+
+#: ../scripts/tmpl_cache/account-reset-password.twig.php:75
+msgid "The password should contain at least four characters."
+msgstr ""
+
+#: ../scripts/tmpl_cache/account-reset-password.twig.php:83
 msgid "Password (repeat)"
 msgstr ""
 
-#: ../scripts/tmpl_cache/account-reset-password.twig.php:91
+#: ../scripts/tmpl_cache/account-reset-password.twig.php:93
 #: ../scripts/tmpl_cache/settings.twig.php:279
 msgid "Show password in clear text"
 msgstr ""
 
-#: ../scripts/tmpl_cache/account-reset-password.twig.php:98
+#: ../scripts/tmpl_cache/account-reset-password.twig.php:100
 msgid "Set New Password"
 msgstr ""
 
-#: ../scripts/tmpl_cache/account-reset-password.twig.php:108
+#: ../scripts/tmpl_cache/account-reset-password.twig.php:110
 msgid ""
 "Congrats! Your password has been changed. You can log in with your new "
 "password now."
 msgstr ""
 
-#: ../scripts/tmpl_cache/account-reset-password.twig.php:112
+#: ../scripts/tmpl_cache/account-reset-password.twig.php:114
 #: ../scripts/tmpl_cache/home-login.twig.php:41
 #: ../scripts/tmpl_cache/home-login.twig.php:56
 #: ../scripts/tmpl_cache/home.twig.php:96
