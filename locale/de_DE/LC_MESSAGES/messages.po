@@ -692,7 +692,6 @@ msgid "Why this approach? See our Motivations..."
 msgstr "Mehr zum Hintergrund: Datawrapper Ziele und Funktionen"
 
 #: ../scripts/tmpl_cache/home.twig.php:179
-#, fuzzy
 msgid "Recently created charts:"
 msgstr "Kürzlich erstellte Diagramme:"
 
