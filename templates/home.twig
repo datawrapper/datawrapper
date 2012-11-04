@@ -66,16 +66,28 @@
 
                 <p>{{ "Here's a selection of what other users have created with Datawrapper recently. You find a lot more examples in the <a href='%GALLERY%'>chart gallery</a>." | trans | replace({'%GALLERY%': '/gallery/' }) | raw }}</p>
 
-                <div id="recent-charts">
-                    <div class="recent-charts-bg"></div>
-                    {% for chart in recent_charts %}
-                    <a href="/gallery/#/{{ chart.id }}">
-                        <img src="http://{{ DW_CHART_CACHE_DOMAIN }}/{{ chart.id }}/s.png">
-                    </a>
-                    {% endfor %}
-                </div>
+                <script type="text/javascript" src="/static/vendor/roundabout/jquery.roundabout.min.js"></script>
 
-                 
+                <ul id="recent-charts">
+                    {% for chart in recent_charts %}
+                    <li><a href="/gallery/#/{{ chart.id }}">
+                        <img src="http://{{ DW_CHART_CACHE_DOMAIN }}/{{ chart.id }}/s.png">
+                    </a></li>
+                    {% endfor %}
+                </ul>
+
+                <script type="text/javascript">
+
+                $(function() {
+                    $('#recent-charts').roundabout({
+                        autoplay: true,
+                        minOpacity: .8,
+                        responsive: true,
+                        autoplayDuration: 5000,
+                        autoplayPauseOnHover: true
+                    });
+                });
+                </script>
             </div>
         </div>
 
