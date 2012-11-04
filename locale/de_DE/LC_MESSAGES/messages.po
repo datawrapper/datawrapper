@@ -28,8 +28,8 @@ msgid ""
 "You see this page because you requested to reset your password. Please "
 "choose yourself a new password"
 msgstr ""
-"Aus Sicherheitsgründen bitten wir dich, dein derzeitiges Password noch "
-"einmal einzugeben."
+"Auf dieser Seite kannst du dein Passwort zurücksetzen. Bitte wähle nun ein "
+"neues Passwort."
 
 #: ../scripts/tmpl_cache/account-reset-password.twig.php:50
 msgid "Reset Code"
@@ -37,7 +37,7 @@ msgstr "Reset Code"
 
 #: ../scripts/tmpl_cache/account-reset-password.twig.php:60
 msgid "This reset token is valid."
-msgstr "Der Link zum Zurücksetzen des Passworts ist ungültig."
+msgstr "Der Link zum Zurücksetzen des Passworts ist gültig."
 
 #: ../scripts/tmpl_cache/account-reset-password.twig.php:68
 #: ../scripts/tmpl_cache/settings.twig.php:371
