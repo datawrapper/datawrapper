@@ -142,8 +142,10 @@ function add_header_vars(&$page, $active = null) {
     if (isset($GLOBALS['dw_config']['piwik'])) {
         $page['PIWIK_URL'] = $GLOBALS['dw_config']['piwik']['url'];
         $page['PIWIK_IDSITE'] = $GLOBALS['dw_config']['piwik']['idSite'];
+        if (isset($GLOBALS['dw_config']['piwik']['idSiteNoCharts'])) {
+            $page['PIWIK_IDSITE_NO_CHARTS'] = $GLOBALS['dw_config']['piwik']['idSiteNoCharts'];
+        }
     }
-
 }
 
 

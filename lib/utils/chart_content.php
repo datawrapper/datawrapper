@@ -102,12 +102,7 @@ function get_chart_content($chart, $user, $minified = false, $path = '') {
 
     if (isset($GLOBALS['dw_config']['piwik'])) {
         $page['PIWIK_URL'] = $GLOBALS['dw_config']['piwik']['url'];
-        if (isset($GLOBALS['dw_config']['piwik']['idSiteCharts'])) {
-            $page['PIWIK_IDSITE'] = $GLOBALS['dw_config']['piwik']['idSiteCharts'];
-        } else {
-            $page['PIWIK_IDSITE'] = $GLOBALS['dw_config']['piwik']['idSite'];
-        }
-
+        $page['PIWIK_IDSITE'] = $GLOBALS['dw_config']['piwik']['idSite'];
     }
 
     return $page;
