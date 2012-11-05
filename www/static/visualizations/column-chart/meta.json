@@ -4,7 +4,7 @@
         "de": "Balken (vertikal)",
         "fr": "Diagramme à bandes verticales"
     },
-    "version": "0.9.3",
+    "version": "0.9.5",
     "dimensions": 2,
     "extends": "raphael-chart",
     "author": {
@@ -29,7 +29,7 @@
             "label": {
                 "en": "Reverse order",
                 "de": "Umgekehrte Reihenfolge",
-                "fr": "inverser l'ordre"
+                "fr": "inverser l&#39;ordre"
             }
         },
         "negative-color": {

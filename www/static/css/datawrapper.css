@@ -6,14 +6,14 @@
 
 body {
     background: #fff;
-    color: #656565;
+    color: #444;
     margin-top: 60px;
 }
 
 /* teaser */
 .teaser {
-    height:330px;
-    background: url(/static/img/teaser-1.png) -100px bottom;
+    height:371px;
+    background: url(/static/img/teaser-1.png) -110px top no-repeat;
     margin-bottom:40px;position:relative;
     background-size: 115%;
 }
@@ -22,12 +22,42 @@ body {
     display: none;
 }
 
+body.home {
+    background: url(/static/img/teaser-home-bg.jpg) no-repeat;
+    background-position: 0 -21px;
+}
+
+
+.teaser-h2 {
+    width:33%;
+    position:absolute;
+    left:0;
+    color: #bbb;
+    font-weight: 300;
+    bottom:30px;
+    margin:0;
+    padding: 20px;
+    margin: 0 0 30px 30px;
+}
+
+.teaser-mobile {
+    display: none;
+}
+
+body.de .teaser-h2 {
+    width: 40%;
+}
 
 .teaser .login {
     font-size: 15px;
-    margin: 10px 0 -10px;
+    margin: 20px 0 -10px;
     white-space: nowrap;
 }
+
+.teaser .login div {
+    margin-top: 5px;
+}
+
 
 .teaser a.onblack {
     color: #5FCAFF;
@@ -51,16 +81,8 @@ body {
 .teaser h2 {
     font-weight:300;
     color:#f9f9f9;
-    background:rgba(0,0,0,.8);
-    width:33%;
-    position:absolute;
-    left:0;
-    bottom:0;
     font-size: 20px;
     line-height: 30px;
-    margin:0;
-    padding: 20px;
-    margin: 0 0 30px 30px;
 }
 
 .navbar .btn-navbar {
@@ -69,13 +91,29 @@ body {
     margin-top: 9px;
 }
 
+#recent-charts {
+    list-style: none;
+    height: 200px;
+    margin-right: 30px;
+}
+
+#recent-charts img {
+    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
+    background: #fff;
+}
+
 
 @media (max-width: 767px) {
     /* mobile display, no teaser image */
     .teaser {
         position: relative;
         height: auto;
-        background: #eee;
+    }
+    .teaser-h2 {
+        display: none;
+    }
+    .teaser-mobile {
+        display: block;
     }
     .teaser h2 {
         font-size: 16px;
@@ -83,7 +121,6 @@ body {
         margin: 0;
         width: auto;
         position: relative;
-        background: none;
         color: #222;
     }
 
@@ -93,6 +130,10 @@ body {
 
     .big-login-home {
         display: block;
+    }
+
+    body.home {
+        background-image: none;
     }
 }
 
@@ -127,11 +168,23 @@ body {
     body .docs h2 {
         font-size: 21px;
     }
+
+    body.home {
+       background-position: 0 -144px;
+    }
+
+    .teaser .dw-logo {
+        font-size: 48px!important;
+    }
+
+    .teaser-h2 {
+        bottom: 10px;
+    }
 }
 
 @media (min-width: 1200px) {
     .teaser {
-        background: url(/static/img/teaser-1.png) 0 0;
+        background: url(/static/img/teaser-1.png) 0 0 no-repeat;
         height: 360px;
     }
 
@@ -151,6 +204,10 @@ body {
 
     .teaser .login .btn-large {
         padding: 9px 14px;
+    }
+
+    body.home {
+        background-position: 0 0;
     }
 }
 
@@ -295,6 +352,10 @@ body .navbar .nav li.dropdown.active > .dropdown-toggle:hover
 }
 .teaser .dw-logo {
     color: #fff;
+    font-size: 60px;
+    line-height: 80px;
+    text-shadow: 0px 0px 4px #000;
+    display: block;
 }
 .dw-logo .wrap {
     font-style: normal;
@@ -437,60 +498,77 @@ h1, h2, h3, h4, h5, h6 {
     width: 95%;
 }
 
-.mycharts h3 {
+.gallery h3 {
     margin-bottom: 0px;
 }
 
-.mycharts .thumbnail {
+.gallery .thumbnail {
     border: 0;
     box-shadow: none;
     position: relative;
 }
 
-.mycharts .thumbnail img {
+.gallery .thumbnail img {
     margin: 0 0 5px 0;
     padding: 5px;
     border-radius: 0;
     background: #fff;
-    box-shadow: 2px 1px 5px rgba(0, 0, 0, 0.24);
+    box-shadow: 2px 1px 10px rgba(0, 0, 0, 0.34);
+    transition: box-shadow 0.1s linear;
 }
 
-.mycharts .thumbnail .btn-group {
+.gallery .thumbnail:hover img {
+    box-shadow: 2px 1px 15px rgba(40, 0, 0, 0.54);
+}
+
+.gallery .thumbnail img {
+    padding: 40px 5px 5px;
+    border-radius: 5px;
+}
+
+.gallery .thumbnail .btn-group {
     position: absolute;
     top: 10px;
     right: 5px;
     visibility: hidden;
 }
 
-.mycharts .thumbnail:hover .btn-group {
+.gallery .thumbnail:hover .btn-group {
     visibility: visible;
 }
 
-.mycharts .thumbnail h3 {
+
+.gallery .thumbnail h3 {
+    padding: 2px 10px 4px 6px;
+    color: #000;
+    position: absolute;
+    top: 10px;
+    left: 10px;
     font-size: 14px;
-   bottom: -20px;
-    height: 20px;
     line-height: 20px;
-    left: 4px;
-    width: 100%;
-    padding: 0 5px;
+    text-shadow: 0px 0px 2px #fff;
 }
 
-.mycharts-filter li.active a {
+.gallery-filter li.active a {
     font-weight: bold;
     color: #335;
 }
 
-.mycharts-filter li.active a {
-
-}
-
-.mycharts-filter ul li {
+.gallery-filter ul li {
     margin-bottom: 5px;
 }
 
-.mycharts-filter ul {
+.gallery-filter ul {
     margin-bottom: 30px;
+}
+
+.gallery-filter h3 {
+    margin: 20px 0 10px;
+}
+
+.gallery .dropdown-menu {
+    left: auto;
+    right: 0;
 }
 
 .link-list li h3 {
@@ -730,6 +808,11 @@ dl.dl-horizontal dd {
     margin: 1.5em 0 0.5em;
 }
 
+.docs p, .docs li {
+    font-size: 14px;
+    line-height: 22px;
+}
+
 .docs .alert big {
     line-height: 1.3;
 }
@@ -844,4 +927,134 @@ form.well form {
 
 .demo-datasets p {
     margin: 5px 0 10px;
+}
+
+.ender-overlay .close-button {
+    background: none repeat scroll 0 0 #333333;
+    border: 2px solid #FFFFFF;
+    border-radius: 13px 13px 13px 13px;
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
+    color: #FFFFFF;
+    cursor: pointer;
+    font-size: 15px;
+    font-family: Arial;
+    height: 23px;
+    line-height: 24px;
+    letter-spacing: 2;
+    margin: 0;
+    position: absolute;
+    right: -10px;
+    text-align: center;
+    text-decoration: none;
+    top: -10px;
+    text-shadow: none;
+    width: 23px;
+    opacity: 1;
+}
+
+.browser {
+    display: inline-block;
+    width: 66px;
+    height: 66px;
+    margin: 10px 10px;
+    background-image: url(/static/img/browser.png);
+}
+
+.browser.firefox {
+    background-position: -72px 0;
+}
+
+.browser.opera {
+    background-position: -142px 0;
+}
+
+.browser.safari {
+    background-position: -211px 0;
+}
+
+.browser.msie {
+    background-position: -280px 0;
+}
+
+.arguments .span4 {
+    text-align: center;
+}
+
+.arguments p,
+.home .gallery p {
+    font-size: 16px;
+    padding: 0 20px;
+    text-align: center;
+    line-height: 26px;
+    color: #656565;
+}
+
+.arguments {
+    margin-bottom: 40px;
+}
+
+.arguments h2 {
+    font-size: 30px;
+    font-weight: 300;
+    margin-bottom: 10px;
+}
+
+.home .gallery ul {
+    margin-bottom: 40px;
+}
+
+.home .big-head h1 {
+    text-align: center;
+    font-size: 40px;
+    font-weight: 300;
+    color: #222;
+    line-height: 60px;
+    margin-bottom: 0px;
+}
+
+.home .big-head p {
+    margin-bottom: 30px;
+    color: #656565;
+    padding: 0 20px;
+    text-align: center;
+    font-size: 16px;
+    line-height: 26px;
+
+}
+
+.home .docs h3 {
+    font-weight: 400;
+}
+
+.home .docs p {
+    font-size: 16px;
+    line-height: 26px;
+
+}
+
+.icon-quickstart,
+.icon-help,
+.icon-info,
+.icon-github {
+    width: 32px;
+    height: 32px;
+    display: inline-block;
+    background-image: url(/static/img/home-icons.png);
+    background-repeat: no-repeat;
+    vertical-align: sub;
+}
+.icon-quickstart {
+    background-position: 0 0;
+}
+
+.icon-help {
+    background-position: -32px 0;
+}
+
+.icon-info {
+    background-position: -64px 0;
+}
+
+.icon-github {
+    background-position: -96px 0;
 }

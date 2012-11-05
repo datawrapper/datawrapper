@@ -1,26 +1,75 @@
+{% use "utils.twig" %}
+
 {% extends "core.twig" %}
+
 
 {% block content %}
 <div class="docs">
+    <div class="pull-right" style="position:relative;top:-16px">
+        {{ block('pagination') }}
+    </div>
     <h1 class="title">{% trans "My Charts" %}</h1>
 </div>
 <div class="row">
-    <div class="span9 mycharts">
+    <div class="span3 gallery-filter" >
+
+        <h3>{% trans "By Month" %}</h3>
+
+        <ul class="unstyled">
+            {% for month in bymonth %}
+            {% if key == 'month' and val == month.id %}
+            <li class="active"><a href="/mycharts/"><i class="icon-check"></i> {{ month.name }} </a> ({{ month.count }}) </li>
+            {% else %}
+            <li><a href="/mycharts/by/month/{{ month.id }}">{{ month.name }}</a> ({{ month.count }})</li>
+            {% endif %}
+            {% endfor %}
+        </ul>
+
+        <h3>{% trans "By Visualisation" %}</h3>
+
+        <ul class="unstyled">
+            {% for vis in byvis %}
+            {% if key == 'vis' and val == vis.id %}
+            <li class="active"><a href="/mycharts/"><i class="icon-check"></i> {{ vis.name }} </a> ({{ vis.count }}) </li>
+            {% else %}
+            <li><a href="/mycharts/by/vis/{{ vis.id }}">{{ vis.name }}</a> ({{ vis.count }})</li>
+            {% endif %}
+            {% endfor %}
+        </ul>
+
+        <h3>{% trans "By Layout" %}</h3>
+
+        <ul class="unstyled">
+            {% for layout in bylayout %}
+            {% if key == 'layout' and val == layout.id %}
+            <li class="active"><a href="/mycharts/"><i class="icon-check"></i> {{ layout.name }} </a> ({{ layout.count }}) </li>
+            {% else %}
+            <li><a href="/mycharts/by/layout/{{ layout.id }}">{{ layout.name }}</a> ({{ layout.count }})</li>
+            {% endif %}
+
+            {% endfor %}
+        </ul>
+
+        <p class="well">{{ "Want to see what other users created using Datawrapper? Take a look in the <a href='%GALLERY%'>Gallery</a>!" | trans | replace({ '%GALLERY%': '/gallery' }) | raw }}</p>
+
+    </div>
+
+    <div class="span9 gallery">
 
         {% if user.hasCharts %}
         <ul class="thumbnails">
             {% for chart in charts %}
             <li class="span3 chart" data-id="{{ chart.id }}">
                 <div class="thumbnail">
-                    <a href="/chart/{{ chart.id }}/edit"><img src="{% if chart.isPublic %}http://{{ DW_CHART_CACHE_DOMAIN }}/{{ chart.id }}/m.png{% else %}/static/img/nopreview.png{% endif %}" width="260" alt="">
+                    <a href="/chart/{{ chart.id }}/edit"><img src="{% if chart.isPublic %}http://{{ DW_CHART_CACHE_DOMAIN }}/{{ chart.id }}/m.png{% else %}/static/img/nopreview.png{% endif %}" width="260" alt="{{ chart.title }}" style="background:{{ chart.metadata.publish.background }}">
 
                     {# <p class="pull-right">
                         <a href="#delete" class="delete" data-chart="{{ chart.id }}"><i class="icon-remove"></i></a>
                     </p> #}
 
-                     <h3>{{ chart.title }}</h3></a>
+                     <h3 style="color:{% if chart.metadata.publish.text %}{{ chart.metadata.publish.text }}{% else %}#000{% endif %};text-shadow:1px 1px 3px {% if chart.metadata.publish.background %}{{ chart.metadata.publish.background }}{% else %}#fff{% endif %};">{{ chart.title }}</h3></a>
                      <div class="btn-group">
-                        <a class="btn btn-mini dropdown-toggle" data-toggle="dropdown" href="#">
+                        <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
                           <i class="icon-wrench"></i>
                         <span class="caret"></span>
                         </a>
@@ -45,46 +94,11 @@
 
         {% endif %}
     </div>
-    <div class="span3 mycharts-filter" style="position:relative;left: 30px">
-        <h2>{% trans "By Month" %}</h2>
-
-        <ul class="unstyled">
-            {% for month in bymonth %}
-            {% if key == 'month' and val == month.id %}
-            <li class="active"><a href="/mycharts/"><i class="icon-check"></i> {{ month.name }} </a> ({{ month.count }}) </li>
-            {% else %}
-            <li><a href="/mycharts/by/month/{{ month.id }}">{{ month.name }}</a> ({{ month.count }})</li>
-            {% endif %}
-            {% endfor %}
-        </ul>
-
-        <h2>{% trans "By Visualisation" %}</h2>
-
-        <ul class="unstyled">
-            {% for vis in byvis %}
-            {% if key == 'vis' and val == vis.id %}
-            <li class="active"><a href="/mycharts/"><i class="icon-check"></i> {{ vis.name }} </a> ({{ vis.count }}) </li>
-            {% else %}
-            <li><a href="/mycharts/by/vis/{{ vis.id }}">{{ vis.name }}</a> ({{ vis.count }})</li>
-            {% endif %}
-            {% endfor %}
-        </ul>
-
-        <h2>{% trans "By Layout" %}</h2>
-
-        <ul class="unstyled">
-            {% for layout in bylayout %}
-            {% if key == 'layout' and val == layout.id %}
-            <li class="active"><a href="/mycharts/"><i class="icon-check"></i> {{ layout.name }} </a> ({{ layout.count }}) </li>
-            {% else %}
-            <li><a href="/mycharts/by/layout/{{ layout.id }}">{{ layout.name }}</a> ({{ layout.count }})</li>
-            {% endif %}
-
-            {% endfor %}
-        </ul>
+    <div class="pull-right">
+        {{ block('pagination') }}
     </div>
+
 </div>
-<script type="text/javascript" src="/static/vendor/masonry/jquery.masonry.min.js"></script>
 <script type="text/javascript">
 $(function(){
   //*

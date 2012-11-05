@@ -25,10 +25,15 @@
 
         getSize: function() {
             var me = this, el = me.__root,
-                width = $(document).width() - me.theme.hpadding*2;
+                width = $(document).width();
+            // no padding for thumbnails
+            if (width <= 350) {
+                me.theme.vpadding = 10;
+                me.theme.hpadding = 0;
+            }
             // IE Fix
             if ($.browser.msie) width -= 10;
-            return [width, me.getMaxChartHeight(el) - me.theme.vpadding];
+            return [width - me.theme.hpadding*2, me.getMaxChartHeight(el) - me.theme.vpadding];
         },
 
         initCanvas: function(canvas) {
@@ -42,8 +47,10 @@
                 tpad: me.theme.padding.top
             }, canvas);
 
-            if (size[0] <= 300) {
+            if (size[0] <= 400) {
+                // no padding if generating thumbnail
                 canvas.bpad = canvas.tpad = canvas.lpad = canvas.rpad = 5;
+                canvas.bpad = canvas.tpad = 15;
             }
 
             canvas.root = el;
@@ -192,6 +199,16 @@
             var l = $('<div class="label'+(className ? ' '+className : '')+'"><span>'+txt+'</span></div>');
             this.__root.append(l);
             var w = $('span', l).width();
+            l.remove();
+            return w;
+        },
+
+        labelHeight: function(txt, className, width) {
+            // returns the width of a label
+            var l = $('<div class="label'+(className ? ' '+className : '')+'"><span>'+txt+'</span></div>');
+            l.width(width);
+            this.__root.append(l);
+            var w = $('span', l).height();
             l.remove();
             return w;
         },

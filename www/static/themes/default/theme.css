@@ -136,7 +136,7 @@ svg .axis, svg .tick, svg .grid, svg rect {
         margin: 0;
     }
 
-    body { margin:0; padding: 0;}
+    body.chart { margin:0; padding: 0;}
 }
 
 .label.rotate90 {

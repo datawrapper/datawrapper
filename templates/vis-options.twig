@@ -19,7 +19,7 @@
     </div>
     {% endif %}
 
-    {% for key, option in vis.options %} {% if not option.hidden %}
+    {% for key, option in vis.options %} {% if not option.hidden and not option.expert %}
     <div class="control-group" style="margin-bottom:0px" id="vis-options-{{ key }}">
         {% if option.type == 'checkbox' %}
             <label class="control-label" for="{{ key }}">{{ option.label[language] }}</label>
@@ -43,7 +43,7 @@
             <label class="control-label"  for="{{ key }}">{{ option.label[language] }}</label>
             <div class="controls form-inline">
                 {% for opt in option.options %}
-                <div><label class="radio"><input type="radio" name="{{ key }}" value="{{ opt.value }}" {% if opt.default %}checked="checked" {% endif %}/> {{ opt.label[language] }}</label></div>
+                <div><label class="radio"><input type="radio" name="{{ key }}" value="{{ opt.value }}" {% if opt.default %}checked="checked" {% endif %}/>&nbsp;{{ opt.label[language] }}</label></div>
                 {% endfor %}
             </div>
 
@@ -78,8 +78,17 @@ $(function() {
             _.each(vis.options, function(opt, key) {
                 if (opt['depends-on'] !== undefined) {
                     var visible = true;
+                    // special conditions:
                     _.each(opt['depends-on'], function(val, key) {
-                        visible = visible && chart.get('metadata.visualize.'+key) == val;
+                        if (key == 'chart.min_series_num') {
+                            console.log(key);
+                            console.log(key, chart.dataSeries().length);
+                            visible = visible && chart.dataSeries().length >= +val;
+                        } else if (key == 'chart.max_series_num') {
+                            visible = visible && chart.dataSeries().length <= +val;
+                        } else {
+                            visible = visible && chart.get('metadata.visualize.'+key) == val;
+                        }
                     });
                     if (visible) $('#vis-options-'+key).show();
                     else $('#vis-options-'+key).hide()
@@ -92,11 +101,13 @@ $(function() {
 
     // initial visualization meta
     var vis = JSON.parse('{{ vis|json|raw }}');
-    syncVisOptions(vis);
 
-    // populate select-row
-    if (vis.dimensions == 1) {
-        chart.datasetLoaded(function(chart) {
+    chart.datasetLoaded(function(chart) {
+
+        syncVisOptions(vis);
+
+        // populate select-row
+        if (vis.dimensions == 1) {
             if (chart.numRows() > 1) {
                 var selRows = $('#select-row');
                 for (var r=0; r<chart.numRows(); r++) {
@@ -106,8 +117,10 @@ $(function() {
             } else {
                 $('.select-row').hide();
             }
-        });
-    }
+        }
+    });
+
+    
 
 });
 

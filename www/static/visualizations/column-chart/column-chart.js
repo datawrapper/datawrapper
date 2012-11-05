@@ -33,11 +33,21 @@
            //}
 
             me.init();
+
+            // compute maximum x-label height
+            var lh = 0,
+                n = me.chart.dataSeries().length;
+            _.each(me.chart.dataSeries(), function(series, s) {
+                lh = Math.max(lh, me.labelHeight(series.name, 'series', c.w / (n)));
+            });
+            c.bpad = lh+10;
+
+
             me.initDimensions();
 
             $('.tooltip').hide();
 
-            me.horzGrid();
+            if (!me.theme.columnChart.cutGridLines) me.horzGrid();
 
             var base = me.theme.colors.palette[me.get('base-color', 0)],
                 bLch = d3.cie.lch(d3.rgb(base)),
@@ -66,7 +76,7 @@
                     var val_y = val > 0 ? d.y - 10 : d.y + d.h + 10,
                         lbl_y = val <= 0 ? d.y - 10 : d.y + d.h + 5,
                         lblcl = ['series'],
-                        lbl_w = d.bw,
+                        lbl_w = c.w / (n+2),
                         valign = val > 0 ? 'top' : 'bottom',
                         halign = 'center',
                         alwaysShow = (me.chart.hasHighlight() && me.chart.isHighlighted(series)) || (d.w > 40);
@@ -140,6 +150,8 @@
                 $('#header', c.root.parent()).append(l);
             }
             $('.showOnHover').hide();
+
+            if (me.theme.columnChart.cutGridLines) me.horzGrid();
         },
 
         getBarColor: function(series, row, useNegativeColor, colorful) {
@@ -232,16 +244,19 @@
 
             _.each(ticks, function(val, t) {
                 if (t == ticks.length-1) return;
-                var y = c.h - c.bpad - yscale(val), x = c.lpad;
+                var y = c.h - c.bpad - yscale(val), x = c.lpad, ly = y-10;
                 if (val >= domain[0] && val <= domain[1]) {
                     // c.paper.text(x, y, val).attr(styles.labels).attr({ 'text-anchor': 'end' });
-                    me.label(x+2, y-10, me.chart.formatValue(val, t == ticks.length-2, true), { align: 'left', cl: 'axis' });
+                    if (me.theme.columnChart.cutGridLines) ly += 10;
+                    if (val !== 0) me.label(x+2, ly, me.chart.formatValue(val, t == ticks.length-2, true), { align: 'left', cl: 'axis' });
                     if (me.theme.yTicks) {
                         me.path([['M', c.lpad-25, y], ['L', c.lpad-20,y]], 'tick');
                     }
                     if (me.theme.horizontalGrid) {
-                        me.path([['M', c.lpad, y], ['L', c.w - c.rpad,y]], 'grid')
+                        var l = me.path([['M', c.lpad, y], ['L', c.w - c.rpad,y]], 'grid')
                             .attr(me.theme.horizontalGrid);
+                        if (val === 0) l.attr(me.theme.xAxis);
+                        else if (me.theme.columnChart.cutGridLines) l.attr('stroke', me.theme.colors.background);
                     }
                 }
             });

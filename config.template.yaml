@@ -22,4 +22,4 @@ log_email: debug@datawrapper.de
 piwik:
     url: datastory.de/piwik  # without http:// and trailing slash
     idSite: 5
-    # idSiteCharts: 6  # you can use a separate site id for the charts
+    # idSiteNoCharts: 6  # additionally, you can track the user interface w/o the charts, too

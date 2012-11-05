@@ -1,0 +1,167 @@
+
+/*
+ * Autumn Theme
+ * -------------
+ *
+ */
+
+@import url(http://fonts.googleapis.com/css?family=BenchNine:400,700);
+@import url(http://fonts.googleapis.com/css?family=Sanchez);
+
+body.chart {
+    font-weight: 400;
+    margin:5px 10px;
+    font-size: 12px;
+    background: #F2F2F2;
+    overflow: visible;
+    font-family: Palatino, Georgia, serif;
+    overflow-x:hidden;
+}
+
+a {
+    color: #F24405;
+}
+
+h1 {
+    font-family: 'Sanchez', serif;
+    font-size: 22px;
+    font-weight: 300;
+    margin: 0 0 20px;
+    text-align: left;
+    text-shadow: 2px 2px 2px #c2c2c2;
+}
+
+h1 span {
+}
+
+.chart p { margin: 15px 0; line-height: 19px;}
+
+#chart {
+    margin-top: 25px;
+}
+
+.label span {
+    font-size: 14px;
+    color: #000;
+    font-family: 'BenchNine', sans-serif;
+}
+
+.label.highlighted, .label.axis {
+    font-size: 14px;
+    z-index: 100;
+}
+
+.label.hover {
+    font-weight: bold;
+}
+
+.label.inverted span {
+    color: #fff;
+}
+
+.label.highlighted {
+    font-weight: bold;
+}
+
+.label.value span {
+    font-size: 14px;
+}
+
+.label.series span {
+    font-size: 14px;
+}
+
+
+.tooltip {
+    z-index: 200;
+    padding-bottom: 0px;
+}
+
+.tooltip .content {
+    background-color: #fff;
+    border: 1px solid #888;
+    box-shadow: 2px 2px 2px rgba(0,0,0,.2);
+    padding: 5px 8px;
+}
+
+.tooltip label {
+    font-weight: 700;
+}
+
+.tooltip label:after {
+    content: ": ";
+}
+
+#footer {
+    margin: 10px 0px 0px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    font-size: 11px;
+    color: #888;
+}
+
+.footer-left {
+    float: left;
+}
+.footer-right {
+    float: right;
+}
+
+.clearfix:after {
+    content: ".";
+    display: block;
+    clear: both;
+    visibility: hidden;
+    line-height: 0;
+    height: 0;
+}
+
+.clearfix {
+    display: inline-block;
+}
+
+html[xmlns] .clearfix {
+    display: block;
+}
+
+* html .clearfix {
+    height: 1%;
+}
+
+svg .axis, svg .tick, svg .grid, svg rect {
+    shape-rendering: crispEdges;
+}
+
+@media screen and (max-width: 400px) {
+    h1, #footer, p, .label {
+        display: none;
+        position: absolute;
+        height: 0;
+        width: 0;
+        padding: 0;
+        margin: 0;
+    }
+
+    #chart {
+        margin: 0;
+    }
+
+    body.chart { margin:0; padding: 0;}
+}
+
+.label.rotate90 {
+    -moz-transform: rotate(-90deg);
+    -webkit-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
+    -o-transform: rotate(-90deg);
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+}
+
+.label.smaller span {
+    font-size: 80%;
+}
+
+.line-chart .label.series span,
+.line-chart .label.axis span {
+    background-color: #F2F2F2;
+}

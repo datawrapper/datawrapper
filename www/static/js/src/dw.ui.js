@@ -100,7 +100,8 @@
             $('a[href=#login], a[href=#signup]').click(function(e) {
                 $('#dwLoginForm').modal();
                 $('#dwLoginForm .alert').remove();
-                var clickedLogin = $(e.target).attr('href') == '#login';
+                var a = $(e.target);
+                var clickedLogin = a.attr('href') == '#login';
                 if (clickedLogin) {
                     $('#dwLoginForm .login-email').focus();
                 } else {
@@ -110,6 +111,7 @@
                         $('.row-login').css('opacity', 1);
                     });
                 }
+                if (a.data('target')) $('#dwLoginForm .login-form').data('target', a.data('target'));
 
                 var logEmail = $('#home-login .login-form .login-email'),
                     logPwd = $('#home-login .login-form .login-pwd');
@@ -190,7 +192,8 @@
                         if (data.status == "ok") {
                             $('#dwLoginForm').modal('hide');
                             $('input', loginForm).val('');
-                            DW.refreshHeader();
+                            if (loginForm.data('target')) location.href = loginForm.data('target');
+                            else location.reload();
                         } else {
                             if (data.code == 'login-invalid') {
                                 $('.login-pwd', loginForm).parent().addClass('error');

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Datawrapper {{ block('title') }}</title>
+    <title>Datawrapper</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Datawrapper is an open source tool helping everyone to create simple, correct and embeddable charts in minutes.">
     <meta name="author" content="Mirko Lorenz, Nicolas Kayser-Bril, Gregor Aisch">
@@ -24,6 +24,7 @@
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
       <script src="/static/vendor/json-js/json2.min.js"></script>
+      <link href="/static/css/datawrapper-ie.css" rel="stylesheet">
     <![endif]-->
 
     <script type="text/javascript" src="/static/vendor/jquery/jquery.min.js"></script>
@@ -35,7 +36,8 @@
 
   </head>
 
-  <body class="dw">
+
+  <body class="dw {{ pageClass }} {{ language }}">
 
 
     <div class="container">
@@ -56,7 +58,26 @@
 
       </header>
 
+    <!--[if lt IE 9]>
+    <div style="position:relative">
+        <div id="disclaimer" class="alert alert-warning span8 offset2" style="font-size:14px;line-height:22px" style="color:#821">
+            <h3>{% trans "Your browser is not supported" %}</h3>
+            <p>{% trans "You are using a browser that is not supported at the moment. Please use one of the following browsers instead. Note that this only applies to the chart editor. The charts itself can be viewed with any major browser." %}</p>
+
+            <div style="text-align:center">
+                <a href="http://mozilla.org/firefox/" title="Firefox" class="browser firefox"></a>
+                <a href="http://google.com/chrome" title="Chrome" class="browser chrome"></a>
+                <a href="http://www.opera.com/" title="Opera" class="browser opera"></a>
+                <a href="http://www.apple.com/safari/" title="Safari" class="browser safari"></a>
+                <a href="http://windows.microsoft.com/en-US/internet-explorer/help/ie-9/9-reasons-to-get-internet-explorer-9" title="Internet Explorer 9.0" class="browser msie"></a>
+            </div>
+        </div>
+    </div>
+    <![endif]-->
+
+
       {{ block('content') }}
+
 
       <footer class="footer">
 
@@ -68,12 +89,12 @@
         <p>{% trans %}
           Datawrapper is an <a href="http://github.com/datawrapper/datawrapper">open source</a> project by <a href="http://abzv.de">ABZV</a> - a German training institution for newspaper journalists.
           {% endtrans %}
-          <div class="footer-links">
-            <a href="/docs/about">{% trans "Learn more" %}</a> – <a href="/docs/motivation">{% trans "Motivation" %}</a> – <a href="/docs/quickstart">{% trans "Quick Start Guide" %}</a> – <a href="/docs/tutorial">{% trans "Manual" %}</a> – <a href="/terms">{% trans "Terms of Use" %}</a> – <a href="/imprint">{% trans "Imprint" %}</a>.
-          </div>
         </p>
-
+        <div class="footer-links">
+            <a href="/docs/quickstart">{% trans "Quick Start" %}</a> – <a href="/docs/tutorial">{% trans "Tutorial" %}</a> – <a href="/terms">{% trans "Terms of Use" %}</a> – <a href="/imprint">{% trans "Imprint" %}</a>.
+        </div>
       </footer>
+
 
     </div>
 

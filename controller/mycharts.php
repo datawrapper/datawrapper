@@ -2,6 +2,7 @@
 
 require_once '../lib/utils/themes.php';
 require_once '../lib/utils/visualizations.php';
+require_once '../lib/utils/pagination.php';
 
 function nbChartsByMonth($user) {
     $con = Propel::getConnection();
@@ -41,28 +42,19 @@ function nbChartsByLayout($user) {
     return $res;
 }
 
-$app->get('/mycharts/?', function () use ($app) {
+$app->get('/mycharts(/?|/by/:key/:val)', function ($key = false, $val = false) use ($app) {
     $user = DatawrapperSession::getUser();
     if ($user->isLoggedIn()) {
-        $page = array(
-            'charts' => ChartQuery::create()->getPublicChartsByUser($user),
-            'bymonth' => nbChartsByMonth($user),
-            'byvis' => nbChartsByType($user),
-            'bylayout' => nbChartsByLayout($user)
-        );
 
-        add_header_vars($page, 'mycharts');
-        $app->render('mycharts.twig', $page);
-    } else {
-        error_mycharts_need_login();
-    }
-});
+        $curPage = $app->request()->params('page');
+        if (empty($curPage)) $curPage = 0;
+        $perPage = 12;
+        $filter = !empty($key) ? array($key => $val) : array();
+        $charts =  ChartQuery::create()->getPublicChartsByUser($user, $filter, $curPage * $perPage, $perPage);
+        $total = ChartQuery::create()->countPublicChartsByUser($user, $filter);
 
-$app->get('/mycharts/by/:key/:val', function ($key, $val) use ($app) {
-    $user = DatawrapperSession::getUser();
-    if ($user->isLoggedIn()) {
         $page = array(
-            'charts' => ChartQuery::create()->getPublicChartsByUser($user, $key, $val),
+            'charts' => $charts,
             'bymonth' => nbChartsByMonth($user),
             'byvis' => nbChartsByType($user),
             'bylayout' => nbChartsByLayout($user),
@@ -71,8 +63,10 @@ $app->get('/mycharts/by/:key/:val', function ($key, $val) use ($app) {
         );
 
         add_header_vars($page, 'mycharts');
+        add_pagination_vars($page, $total, $curPage, $perPage);
         $app->render('mycharts.twig', $page);
     } else {
         error_mycharts_need_login();
     }
 });
+

@@ -114,7 +114,10 @@ $(function() {
             return Math.floor(Number(s.substr(0, s.length-2)));
         }
 
-        var timer = setInterval(function() {
+        var triesLeft = 10,
+            timer;
+
+        timer = setInterval(function() {
 
             var body = iframe.get(0).contentDocument,
                 s = (height-10)/height,
@@ -122,12 +125,19 @@ $(function() {
 
             if ($('svg', body).get(0) !== undefined) clearInterval(timer);
             else {
-                // no svg found, so skip thumbnails
+                // try again
+                if (triesLeft > 0) return;
+                triesLeft--;
+                // no svg found (after a while), so skip thumbnails
+                clearInterval(timer);
                 callback();
                 return;
             };
 
-            ctx.drawSvg($('svg', body).get(0).innerSVG, 0, 0, width, height);
+            ctx.fillStyle = iframe.get(0).contentWindow.vis.theme.colors.background;
+            ctx.fillRect(0, 0, width, height);
+
+            ctx.drawSvg($('svg', body).get(0).innerSVG, 0.5,0.5, width, $('svg', body).height());
 
             //canvg('canvas', $('svg', body).get(0).innerSVG);
             /*$('.label', body).each(function(i, lbl) {
@@ -152,7 +162,7 @@ $(function() {
                     else throw res;
                 }
             })
-        }, 300);
+        }, 200);
 
     }
 

@@ -105,18 +105,66 @@ class ChartQuery extends BaseChartQuery {
         return $s;
     }
 
+    /*
+     * My Charts
+     */
 
-    public function getPublicChartsByUser($user, $key = '', $val = '') {
+    private function publicChartsByUserQuery($user, $filter) {
         $query = $this->filterByAuthorId($user->getId())
             ->filterByDeleted(false)
-            ->orderByLastModifiedAt('desc')
+            ->orderByCreatedAt('desc')
             ->filterByLastEditStep(array('min' => 2));
 
-        if ($key == 'layout') $query->filterByTheme($val);
-        if ($key == 'vis') $query->filterByType($val);
-        if ($key == 'month') $query->filterByCreatedAt(array('min' => $val.'-01', 'max' => $val.'-31'));
-        return $query->find();
+        foreach ($filter as $key => $val) {
+            if ($key == 'layout') $query->filterByTheme($val);
+            if ($key == 'vis') $query->filterByType($val);
+            if ($key == 'month') $query->filterByCreatedAt(array('min' => $val.'-01', 'max' => $val.'-31'));
+        }
+        return $query;
     }
 
+    public function getPublicChartsByUser($user, $filter=array(), $start=0, $perPage=15) {
+        return $this
+            ->publicChartsByUserQuery($user, $filter)
+            ->limit($perPage)
+            ->offset($start)
+            ->find();
+    }
+
+    public function countPublicChartsByUser($user, $filter=array()) {
+        return $this
+            ->publicChartsByUserQuery($user, $filter)
+            ->count();
+    }
+
+    /*
+     * Gallery Charts
+     */
+
+    private function galleryChartsQuery($filter) {
+        $query = $this->filterByShowInGallery(true)
+            ->filterByDeleted(false)
+            ->orderByCreatedAt('desc');
+        foreach ($filter as $key => $val) {
+            if ($key == 'layout') $query->filterByTheme($val);
+            if ($key == 'vis') $query->filterByType($val);
+            if ($key == 'month') $query->filterByCreatedAt(array('min' => $val.'-01', 'max' => $val.'-31'));
+        }
+        return $query;
+    }
+
+    public function getGalleryCharts($filter=array(), $start=0, $perPage=15) {
+        return $this
+            ->galleryChartsQuery($filter)
+            ->limit($perPage)
+            ->offset($start)
+            ->find();
+    }
+
+    public function countGalleryCharts($filter=array()) {
+        return $this
+            ->galleryChartsQuery($filter)
+            ->count();
+    }
 
 } // ChartQuery

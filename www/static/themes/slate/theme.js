@@ -8,15 +8,10 @@
 
         colors: {
             palette: ["#eeeeee"], // monochrome!
-            highlight: '#00589E',
-            focus: '#0063A5',
-            context: '#aaa',
-            axis: '#000000',
             positive: '#85B4D4',
-            'highlight-positive': '#85B4D4',
             negative: '#E31A1C',
-            'highlight-negative': '#9E5800',
-            background: '#272B30'
+            background: '#272B30',
+            text: '#eeeeee'
         },
 
         horizontalGrid: {

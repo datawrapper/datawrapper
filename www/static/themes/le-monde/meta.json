@@ -1,0 +1,10 @@
+{
+    "title": "Le Monde",
+    "link": "http://www.lemonde.fr",
+    "restricted": null,
+    "locale": "fr_FR",
+    "extends": "default",
+    "restrict": "@lemonde.fr",
+    "version": "0.1.1",
+    "assets": ["lemonde-logo.png", "triangleArrow-Right.png"]
+}

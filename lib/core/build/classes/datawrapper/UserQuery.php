@@ -15,4 +15,10 @@
  */
 class UserQuery extends BaseUserQuery {
 
+    public function getUserByPwdResetToken($token) {
+        $users = $this->filterByResetPasswordToken($token)->find();
+        if (count($users) == 1) return $users[0];
+        return false;
+    }
+
 } // UserQuery

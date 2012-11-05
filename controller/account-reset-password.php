@@ -3,7 +3,7 @@
 //GET route
 $app->get('/account/reset-password/:token', function ($token) use ($app) {
     $page = array();
-    add_header_vars($page, 'about');
+    add_header_vars($page, 'account');
     if (!empty($token)) {
         $users = UserQuery::create()
           ->filterByResetPasswordToken($token)
@@ -26,6 +26,5 @@ $app->get('/account/reset-password/:token', function ($token) use ($app) {
             $app->render('account-reset-password.twig', $page);
         }
     }
-    
 });
 
