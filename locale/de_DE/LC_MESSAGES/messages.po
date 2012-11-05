@@ -390,8 +390,8 @@ msgid "drop your csv file here"
 msgstr "Oder ziehe deine CSV-Datei hier her.."
 
 #: ../scripts/tmpl_cache/chart-upload.twig.php:83
-msgid "..or pick a file from your disk"
-msgstr "…oder wähle eine Datei von deinem Computer"
+msgid "..or upload a CSV file"
+msgstr "..oder lade eine CSV-Datei hoch"
 
 #: ../scripts/tmpl_cache/chart-upload.twig.php:130
 msgid "Upload Your Data"
@@ -1448,6 +1448,9 @@ msgid ""
 msgstr ""
 "Bitte einen unserer freundlichen <a href=\"mailto:hello@datawrapper.de"
 "\">Administratoren</a> dir beim Zurücksetzen des Passworts zu helfen."
+
+#~ msgid "..or pick a CSV file from your disk"
+#~ msgstr "…oder lade eine CSV-Datei hoch"
 
 #~ msgid "Customized layouts"
 #~ msgstr "Anpassbares Design"

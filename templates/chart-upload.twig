@@ -46,7 +46,7 @@
                 element: $('#upload')[0],
                 action: '/api/charts/' + DW.currentChart.get('id') + '/data',
                 allowedExtensions: ['txt', 'csv', 'tsv'],
-                template: '<div class="upload-drop">{% trans "drop your csv file here" %}</div><div class="btn upload-button" id="pick-file-from-disk"><span><i class="icon-upload"></i> {% trans "..or pick a file from your disk" %}</span></div><ul class="qq-upload-list" style="display:none"></ul>',
+                template: '<div class="upload-drop">{% trans "drop your csv file here" %}</div><div class="btn upload-button" id="pick-file-from-disk"><span><i class="icon-upload"></i> {% trans "..or upload a CSV file" %}</span></div><ul class="qq-upload-list" style="display:none"></ul>',
                 classes: {
                     button: 'upload-button',
                     drop: 'upload-drop',

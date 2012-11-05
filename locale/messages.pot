@@ -349,7 +349,7 @@ msgid "drop your csv file here"
 msgstr ""
 
 #: ../scripts/tmpl_cache/chart-upload.twig.php:83
-msgid "..or pick a file from your disk"
+msgid "..or upload a CSV file"
 msgstr ""
 
 #: ../scripts/tmpl_cache/chart-upload.twig.php:130
