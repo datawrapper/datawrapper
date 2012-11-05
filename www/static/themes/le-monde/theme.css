@@ -119,10 +119,17 @@ body.chart {
 .footer-left {
     float: left;
     position: relative;
-    top: 27px;
+    top: 38px;
 }
 .footer-right {
     float: right;
+    text-align: center;
+}
+
+.footer-right img {
+    width : 80%;
+    position: relative;
+    top :20px;
 }
 
 .clearfix:after {
