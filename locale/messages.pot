@@ -349,7 +349,7 @@ msgid "drop your csv file here"
 msgstr ""
 
 #: ../scripts/tmpl_cache/chart-upload.twig.php:83
-msgid "..or pick a file from your disk"
+msgid "..or upload a CSV file"
 msgstr ""
 
 #: ../scripts/tmpl_cache/chart-upload.twig.php:130
@@ -645,8 +645,9 @@ msgstr ""
 
 #: ../scripts/tmpl_cache/home.twig.php:184
 msgid ""
-"We encourage you to customize the charts layout, fonts and colors to make "
-"them integrate nicely in your website. Strengthen your own brand, not ours."
+"We encourage you to <a href='/docs/howtouse#customize'>customize the charts "
+"layout</a>, fonts and colors to make them integrate nicely in your website. "
+"Strengthen your own brand, not ours."
 msgstr ""
 
 #: ../scripts/tmpl_cache/home.twig.php:193

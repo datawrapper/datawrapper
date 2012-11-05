@@ -390,8 +390,8 @@ msgid "drop your csv file here"
 msgstr "Oder ziehe deine CSV-Datei hier her.."
 
 #: ../scripts/tmpl_cache/chart-upload.twig.php:83
-msgid "..or pick a file from your disk"
-msgstr "…oder wähle eine Datei von deinem Computer"
+msgid "..or upload a CSV file"
+msgstr "..oder lade eine CSV-Datei hoch"
 
 #: ../scripts/tmpl_cache/chart-upload.twig.php:130
 msgid "Upload Your Data"
@@ -714,12 +714,13 @@ msgstr "White label-Diagramme"
 
 #: ../scripts/tmpl_cache/home.twig.php:184
 msgid ""
-"We encourage you to customize the charts layout, fonts and colors to make "
-"them integrate nicely in your website. Strengthen your own brand, not ours."
+"We encourage you to <a href='/docs/howtouse#customize'>customize the charts "
+"layout</a>, fonts and colors to make them integrate nicely in your website. "
+"Strengthen your own brand, not ours."
 msgstr ""
-"Passe das Layout, die Schriftarten und Farben der Diagramme an, damit sie "
-"sich besser in deine Webseite integrieren. Stärke deine eigene Marke, nicht "
-"unsere."
+"<a href='/docs/howtouse#customize'>Passe das Layout, die Schriftarten und "
+"Farben der Diagramme an</a>, damit sie sich besser in deine Webseite "
+"integrieren. Stärke deine eigene Marke, nicht unsere."
 
 #: ../scripts/tmpl_cache/home.twig.php:193
 msgid "Created with Datawrapper"
@@ -1448,6 +1449,9 @@ msgid ""
 msgstr ""
 "Bitte einen unserer freundlichen <a href=\"mailto:hello@datawrapper.de"
 "\">Administratoren</a> dir beim Zurücksetzen des Passworts zu helfen."
+
+#~ msgid "..or pick a CSV file from your disk"
+#~ msgstr "…oder lade eine CSV-Datei hoch"
 
 #~ msgid "Customized layouts"
 #~ msgstr "Anpassbares Design"
