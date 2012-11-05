@@ -54,8 +54,8 @@
                     <a href="/chart/create" class="btn-primary btn btn-large"><i class="icon-pencil icon-white"></i> {% trans "Create a Chart" %}</a>
                     <a href="/mycharts" class="btn btn-large"><i class="icon-signal"></i> {% trans "My Charts" %}</a>
             {% endif %}
-        </div>
-
+         </div>
+     </div>
 </div>
 
 <div class="row arguments">
@@ -78,7 +78,7 @@
         <h1>{% trans "Created with Datawrapper" %}.</h1>
         <p>{% trans "Need some inspiration? See what others have created <a href='/gallery/'>in our gallery</a>." %}</p>
     </div>
-    <<ul class="thumbnails">
+    <ul class="thumbnails">
         {% for chart in recent_charts %}
             {{ block('gallerythumb') }}
         {% endfor %}
