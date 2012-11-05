@@ -22,14 +22,14 @@
     {% for key, option in vis.options %} {% if not option.hidden and not option.expert %}
     <div class="control-group" style="margin-bottom:0px" id="vis-options-{{ key }}">
         {% if option.type == 'checkbox' %}
-            <label class="control-label" for="{{ key }}">{{ option.label[language] }}</label>
+            <label class="control-label" for="{{ key }}">{{ option.label[language]|raw }}</label>
             <div class="controls">
                 <input type="checkbox" id="{{ key }}" />
             </div>
 
         {% elseif option.type == 'select' %}
 
-            <label class="control-label" for="{{ key }}">{{ option.label[language] }}</label>
+            <label class="control-label" for="{{ key }}">{{ option.label[language]|raw }}</label>
             <div class="controls">
                 <select id="{{ key }}">
                     {% for opt in option.options %}
@@ -40,7 +40,7 @@
 
         {% elseif option.type == 'radio' %}
 
-            <label class="control-label"  for="{{ key }}">{{ option.label[language] }}</label>
+            <label class="control-label"  for="{{ key }}">{{ option.label[language]|raw }}</label>
             <div class="controls form-inline">
                 {% for opt in option.options %}
                 <div><label class="radio"><input type="radio" name="{{ key }}" value="{{ opt.value }}" {% if opt.default %}checked="checked" {% endif %}/>&nbsp;{{ opt.label[language] }}</label></div>
@@ -49,7 +49,7 @@
 
         {% elseif option.type == 'text' %}
 
-            <label class="control-label"  for="{{ key }}">{{ option.label[language] }}</label>
+            <label class="control-label"  for="{{ key }}">{{ option.label[language]|raw }}</label>
             <div class="controls form-inline">
                 <input type="text" style="width:auto" id="{{ key }}" value="" />
             </div>
