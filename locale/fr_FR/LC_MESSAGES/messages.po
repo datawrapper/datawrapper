@@ -651,7 +651,7 @@ msgstr "Apprenez-en d'avantage sur <a href='/docs/motivation'>la raison pour laq
 
 #: ../scripts/tmpl_cache/home.twig.php:283
 msgid "Find it on Github"
-msgstr "Trouvez nous sur Github"
+msgstr "Github"
 
 #: ../scripts/tmpl_cache/home.twig.php:287
 msgid "You can find and fork the Datawrapper source code on Github. It is licensed under the MIT license."
@@ -1063,7 +1063,7 @@ msgstr "Copier"
 
 #: ../lib/templates/demo_datasets.php:10
 msgid "National external debt per person"
-msgstr "Dette national extérieure par personne"
+msgstr "Dette nationale extérieure par personne"
 
 #: ../lib/templates/demo_datasets.php:11
 #: ../lib/templates/demo_datasets.php:56
@@ -1076,7 +1076,7 @@ msgstr "Mariages en Allemagne"
 
 #: ../lib/templates/demo_datasets.php:42
 msgid "Line chart"
-msgstr "Raffiner le graphique"
+msgstr "Graphique en ligne"
 
 #: ../lib/templates/demo_datasets.php:50
 msgid "Year"
