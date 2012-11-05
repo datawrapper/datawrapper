@@ -55,7 +55,6 @@ msgid ""
 msgstr ""
 
 #: ../scripts/tmpl_cache/account-reset-password.twig.php:118
-#: ../scripts/tmpl_cache/home.twig.php:113
 #: ../scripts/tmpl_cache/login.twig.php:55
 msgid "Login"
 msgstr ""
@@ -480,6 +479,7 @@ msgid ""
 msgstr ""
 
 #: ../scripts/tmpl_cache/core.twig.php:189
+#: ../scripts/tmpl_cache/home.twig.php:249
 msgid "Quick Start"
 msgstr ""
 
@@ -572,7 +572,8 @@ msgid "Wrap again!"
 msgstr ""
 
 #: ../scripts/tmpl_cache/home-login.twig.php:66
-#: ../scripts/tmpl_cache/home.twig.php:138
+#: ../scripts/tmpl_cache/home.twig.php:103
+#: ../scripts/tmpl_cache/home.twig.php:147
 #: ../scripts/tmpl_cache/mycharts.twig.php:52 ../www/index.php:73
 msgid "My Charts"
 msgstr ""
@@ -593,111 +594,125 @@ msgstr ""
 msgid "Logout"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:79
+#: ../scripts/tmpl_cache/home.twig.php:69
+#: ../scripts/tmpl_cache/home.twig.php:116
 msgid ""
 "An open source tool helping everyone to create simple, correct and "
 "embeddable charts in minutes."
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:93 ../www/index.php:127
+#: ../scripts/tmpl_cache/home.twig.php:82
+#: ../scripts/tmpl_cache/home.twig.php:129 ../www/index.php:127
 msgid "Login / Sign Up"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:99
+#: ../scripts/tmpl_cache/home.twig.php:88
+#: ../scripts/tmpl_cache/home.twig.php:135
 msgid "Try it now!"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:105
-#: ../scripts/tmpl_cache/login.twig.php:47
-#: ../scripts/tmpl_cache/login.twig.php:87
-msgid "email"
-msgstr ""
-
-#: ../scripts/tmpl_cache/home.twig.php:109
-#: ../scripts/tmpl_cache/login.twig.php:51
-#: ../scripts/tmpl_cache/login.twig.php:93
-msgid "password"
-msgstr ""
-
-#: ../scripts/tmpl_cache/home.twig.php:118
-msgid "Try it without login"
-msgstr ""
-
-#: ../scripts/tmpl_cache/home.twig.php:120
-msgid "or"
-msgstr ""
-
-#: ../scripts/tmpl_cache/home.twig.php:122
-msgid "sign up"
-msgstr ""
-
-#: ../scripts/tmpl_cache/home.twig.php:124
-msgid "now, for free"
-msgstr ""
-
-#: ../scripts/tmpl_cache/home.twig.php:134
+#: ../scripts/tmpl_cache/home.twig.php:99
+#: ../scripts/tmpl_cache/home.twig.php:143
 msgid "Create a Chart"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:153
+#: ../scripts/tmpl_cache/home.twig.php:160
 msgid "Easy to use"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:157
+#: ../scripts/tmpl_cache/home.twig.php:164
 msgid ""
 "This little tool reduces the time needed to create a correct chart and embed "
 "it into any CMS from hours to seconds. It makes charting easy, and helps you "
 "avoiding common pitfalls."
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:163
+#: ../scripts/tmpl_cache/home.twig.php:170
 msgid "Full control"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:167
+#: ../scripts/tmpl_cache/home.twig.php:174
 msgid ""
 "Datawrapper is 100&#37; free software. You can use this free hosted service, "
-"or <a href=''>install it on your own server</a> for maximum control."
+"or <a href='/docs/howtouse#server'>install it on your own server</a> for "
+"maximum control."
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:173
+#: ../scripts/tmpl_cache/home.twig.php:180
 msgid "Customized layouts"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:177
+#: ../scripts/tmpl_cache/home.twig.php:184
 msgid ""
 "The styling is accessible, meaning that in one day you can make sure that "
 "the charts generated with Datawrapper have your logo, your visual styles and "
 "colours."
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:185
+#: ../scripts/tmpl_cache/home.twig.php:193
 msgid "Created with Datawrapper"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:189
+#: ../scripts/tmpl_cache/home.twig.php:197
 msgid ""
 "Need some inspiration? See what others have created <a href='/gallery/'>in "
 "our gallery</a>."
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:238
-msgid ""
-"We are bridging the gap between journalists and the newest Javascript-"
-"visualization libraries such as D3.js, Raphael and others. We make it easier "
-"to \"wrap\" the data into these libraries without coding. Datawrapper "
-"minimizes the time needed to create a chart and thus helps data journalists "
-"everywhere in the world."
+#: ../scripts/tmpl_cache/home.twig.php:253
+msgid "A concise introduction into the functions of Datawrapper."
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:244
-msgid "Why this approach? See our Motivations..."
+#: ../scripts/tmpl_cache/home.twig.php:259
+msgid "Step by step"
+msgstr ""
+
+#: ../scripts/tmpl_cache/home.twig.php:263
+msgid ""
+"This tutorial guides you through the entire charting process, from finding "
+"data to embedding your chart."
+msgstr ""
+
+#: ../scripts/tmpl_cache/home.twig.php:269
+msgid "Motivation"
+msgstr ""
+
+#: ../scripts/tmpl_cache/home.twig.php:273
+msgid ""
+"Learn more about <a href='/docs/motivation'>why we created Datawrapper</a>, "
+"and why we chosed this approach."
+msgstr ""
+
+#: ../scripts/tmpl_cache/home.twig.php:280
+msgid "Find it on Github"
+msgstr ""
+
+#: ../scripts/tmpl_cache/home.twig.php:284
+msgid ""
+"You can find and fork the Datawrapper source code on Github. It is licensed "
+"under the MIT license."
+msgstr ""
+
+#: ../scripts/tmpl_cache/home.twig.php:294
+msgid ""
+"Looking for the old beta version of Datawrapper? It's still available at <a "
+"href='http://beta.datawrapper.de'>beta.datawrapper.de</a>"
 msgstr ""
 
 #: ../scripts/tmpl_cache/login.twig.php:41
 msgid ""
 "We're glad to see you again. Login to access your charts, and create new "
 "ones."
+msgstr ""
+
+#: ../scripts/tmpl_cache/login.twig.php:47
+#: ../scripts/tmpl_cache/login.twig.php:87
+msgid "email"
+msgstr ""
+
+#: ../scripts/tmpl_cache/login.twig.php:51
+#: ../scripts/tmpl_cache/login.twig.php:93
+msgid "password"
 msgstr ""
 
 #: ../scripts/tmpl_cache/login.twig.php:59

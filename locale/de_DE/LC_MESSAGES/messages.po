@@ -73,7 +73,6 @@ msgstr ""
 "Passwort anmelden."
 
 #: ../scripts/tmpl_cache/account-reset-password.twig.php:118
-#: ../scripts/tmpl_cache/home.twig.php:113
 #: ../scripts/tmpl_cache/login.twig.php:55
 msgid "Login"
 msgstr "Einloggen"
@@ -535,6 +534,7 @@ msgstr ""
 "a> – dem Bildungswerk der Zeitungen."
 
 #: ../scripts/tmpl_cache/core.twig.php:189
+#: ../scripts/tmpl_cache/home.twig.php:249
 msgid "Quick Start"
 msgstr "Schnellstart"
 
@@ -632,7 +632,8 @@ msgid "Wrap again!"
 msgstr "\"Wrap\" nochmal!"
 
 #: ../scripts/tmpl_cache/home-login.twig.php:66
-#: ../scripts/tmpl_cache/home.twig.php:138
+#: ../scripts/tmpl_cache/home.twig.php:103
+#: ../scripts/tmpl_cache/home.twig.php:147
 #: ../scripts/tmpl_cache/mycharts.twig.php:52 ../www/index.php:73
 msgid "My Charts"
 msgstr "Meine Diagramme"
@@ -653,7 +654,8 @@ msgstr "Ändere deine persönlichen Daten"
 msgid "Logout"
 msgstr "Ausloggen"
 
-#: ../scripts/tmpl_cache/home.twig.php:79
+#: ../scripts/tmpl_cache/home.twig.php:69
+#: ../scripts/tmpl_cache/home.twig.php:116
 msgid ""
 "An open source tool helping everyone to create simple, correct and "
 "embeddable charts in minutes."
@@ -661,51 +663,26 @@ msgstr ""
 "Ein Opensource Tool das dabei hilft, innerhalb von Minuten einfache und "
 "korrekte Diagramme mit Einbett-Code zu erstellen."
 
-#: ../scripts/tmpl_cache/home.twig.php:93 ../www/index.php:127
+#: ../scripts/tmpl_cache/home.twig.php:82
+#: ../scripts/tmpl_cache/home.twig.php:129 ../www/index.php:127
 msgid "Login / Sign Up"
 msgstr "Einloggen / Anmelden"
 
-#: ../scripts/tmpl_cache/home.twig.php:99
+#: ../scripts/tmpl_cache/home.twig.php:88
+#: ../scripts/tmpl_cache/home.twig.php:135
 msgid "Try it now!"
 msgstr "Sofort ausprobieren"
 
-#: ../scripts/tmpl_cache/home.twig.php:105
-#: ../scripts/tmpl_cache/login.twig.php:47
-#: ../scripts/tmpl_cache/login.twig.php:87
-msgid "email"
-msgstr "E-Mail"
-
-#: ../scripts/tmpl_cache/home.twig.php:109
-#: ../scripts/tmpl_cache/login.twig.php:51
-#: ../scripts/tmpl_cache/login.twig.php:93
-msgid "password"
-msgstr "Passwort"
-
-#: ../scripts/tmpl_cache/home.twig.php:118
-msgid "Try it without login"
-msgstr ""
-
-#: ../scripts/tmpl_cache/home.twig.php:120
-msgid "or"
-msgstr "oder jetzt"
-
-#: ../scripts/tmpl_cache/home.twig.php:122
-msgid "sign up"
-msgstr "kostenlos anmelden"
-
-#: ../scripts/tmpl_cache/home.twig.php:124
-msgid "now, for free"
-msgstr " "
-
-#: ../scripts/tmpl_cache/home.twig.php:134
+#: ../scripts/tmpl_cache/home.twig.php:99
+#: ../scripts/tmpl_cache/home.twig.php:143
 msgid "Create a Chart"
 msgstr "Diagramm erstellen"
 
-#: ../scripts/tmpl_cache/home.twig.php:153
+#: ../scripts/tmpl_cache/home.twig.php:160
 msgid "Easy to use"
 msgstr "Einfach zu Benutzen"
 
-#: ../scripts/tmpl_cache/home.twig.php:157
+#: ../scripts/tmpl_cache/home.twig.php:164
 msgid ""
 "This little tool reduces the time needed to create a correct chart and embed "
 "it into any CMS from hours to seconds. It makes charting easy, and helps you "
@@ -715,35 +692,36 @@ msgstr ""
 "mit Einbett-Code von Stunden auf Minuten. Es ist einfach zu bedienen und "
 "hilft, mögliche Fallstricke zu vermeiden."
 
-#: ../scripts/tmpl_cache/home.twig.php:163
+#: ../scripts/tmpl_cache/home.twig.php:170
 msgid "Full control"
 msgstr "Volle Kontrolle"
 
-#: ../scripts/tmpl_cache/home.twig.php:167
+#: ../scripts/tmpl_cache/home.twig.php:174
 msgid ""
 "Datawrapper is 100&#37; free software. You can use this free hosted service, "
-"or <a href=''>install it on your own server</a> for maximum control."
+"or <a href='/docs/howtouse#server'>install it on your own server</a> for "
+"maximum control."
 msgstr ""
 "Datawrapper ist 100% freie Software. Benutze entweder unseren gehosteten "
-"Service oder <a href=''>installiere es auf deinem eigenen Server</a> für "
-"maximale Kontrolle über die Daten."
+"Service oder <a href='/docs/howtouse#server'>installiere es auf deinem "
+"eigenen Server</a> für maximale Kontrolle über die Daten."
 
-#: ../scripts/tmpl_cache/home.twig.php:173
+#: ../scripts/tmpl_cache/home.twig.php:180
 msgid "Customized layouts"
 msgstr "Anpassbares Design"
 
-#: ../scripts/tmpl_cache/home.twig.php:177
+#: ../scripts/tmpl_cache/home.twig.php:184
 msgid ""
 "The styling is accessible, meaning that in one day you can make sure that "
 "the charts generated with Datawrapper have your logo, your visual styles and "
 "colours."
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:185
+#: ../scripts/tmpl_cache/home.twig.php:193
 msgid "Created with Datawrapper"
 msgstr "Erstellt mit Datawrapper"
 
-#: ../scripts/tmpl_cache/home.twig.php:189
+#: ../scripts/tmpl_cache/home.twig.php:197
 msgid ""
 "Need some inspiration? See what others have created <a href='/gallery/'>in "
 "our gallery</a>."
@@ -751,23 +729,53 @@ msgstr ""
 "Etwas Inspiration benötigt? Schau <a href='/gallery/'>in unserer Galerie</a> "
 "nach was andere so erstellt haben."
 
-#: ../scripts/tmpl_cache/home.twig.php:238
-msgid ""
-"We are bridging the gap between journalists and the newest Javascript-"
-"visualization libraries such as D3.js, Raphael and others. We make it easier "
-"to \"wrap\" the data into these libraries without coding. Datawrapper "
-"minimizes the time needed to create a chart and thus helps data journalists "
-"everywhere in the world."
-msgstr ""
-"Wir füllen die Lücke zwischen Journalisten und den neuesten Javascript-"
-"Visualisierungs-Libraries wie D3.js, Raphael und anderen. Wir machen es "
-"einfach, Daten ohne Programmierkenntnisse in diese Bibliotheken zu \"wrappen"
-"\". Datawrapper reduziert die Zeit, um einfache Datenvisualisierungen zu "
-"erstellen und hilft dadurch Datenjournalisten auf der ganzen Welt."
+#: ../scripts/tmpl_cache/home.twig.php:253
+msgid "A concise introduction into the functions of Datawrapper."
+msgstr "Eine knappe Einführung in die Funktionen von Datawrapper."
 
-#: ../scripts/tmpl_cache/home.twig.php:244
-msgid "Why this approach? See our Motivations..."
-msgstr "Mehr zum Hintergrund: Datawrapper Ziele und Funktionen"
+#: ../scripts/tmpl_cache/home.twig.php:259
+msgid "Step by step"
+msgstr "Schritt für Schritt"
+
+#: ../scripts/tmpl_cache/home.twig.php:263
+msgid ""
+"This tutorial guides you through the entire charting process, from finding "
+"data to embedding your chart."
+msgstr ""
+"Diese Anleitung führt durch die komplette Diagrammerstellung. Vom Finden der "
+"Daten bis zum Einbetten des Diagramms."
+
+#: ../scripts/tmpl_cache/home.twig.php:269
+msgid "Motivation"
+msgstr "Motivation"
+
+#: ../scripts/tmpl_cache/home.twig.php:273
+msgid ""
+"Learn more about <a href='/docs/motivation'>why we created Datawrapper</a>, "
+"and why we chosed this approach."
+msgstr ""
+"Erfahre <a href='/docs/motivation'>warum wir Datawrapper erstellt haben</a> "
+"und weshalb wir diesen Ansatz gewählt haben."
+
+#: ../scripts/tmpl_cache/home.twig.php:280
+msgid "Find it on Github"
+msgstr "Datawrapper auf Github"
+
+#: ../scripts/tmpl_cache/home.twig.php:284
+msgid ""
+"You can find and fork the Datawrapper source code on Github. It is licensed "
+"under the MIT license."
+msgstr ""
+"Du findest den Quellcode von Datawrapper auf Github. Lizensiert unter der "
+"MIT-Lizenz."
+
+#: ../scripts/tmpl_cache/home.twig.php:294
+msgid ""
+"Looking for the old beta version of Datawrapper? It's still available at <a "
+"href='http://beta.datawrapper.de'>beta.datawrapper.de</a>"
+msgstr ""
+"Auf der Suche nach der alten Datawrapper-Beta? Von nun an erreichbar unter "
+"<a href='http://beta.datawrapper.de'>beta.datawrapper.de</a>"
 
 #: ../scripts/tmpl_cache/login.twig.php:41
 msgid ""
@@ -776,6 +784,16 @@ msgid ""
 msgstr ""
 "Hallo, schön dich wieder zu sehen. Melde dich an, um deine Diagramme zu "
 "sehen und neue zu erstellen."
+
+#: ../scripts/tmpl_cache/login.twig.php:47
+#: ../scripts/tmpl_cache/login.twig.php:87
+msgid "email"
+msgstr "E-Mail"
+
+#: ../scripts/tmpl_cache/login.twig.php:51
+#: ../scripts/tmpl_cache/login.twig.php:93
+msgid "password"
+msgstr "Passwort"
 
 #: ../scripts/tmpl_cache/login.twig.php:59
 msgid "Send new password"
@@ -1423,8 +1441,31 @@ msgstr ""
 "Bitte einen unserer freundlichen <a href=\"mailto:hello@datawrapper.de"
 "\">Administratoren</a> dir beim Zurücksetzen des Passworts zu helfen."
 
-#~ msgid "Motivation"
-#~ msgstr "Motivation"
+#~ msgid "or"
+#~ msgstr "oder jetzt"
+
+#~ msgid "sign up"
+#~ msgstr "kostenlos anmelden"
+
+#~ msgid "now, for free"
+#~ msgstr " "
+
+#~ msgid ""
+#~ "We are bridging the gap between journalists and the newest Javascript-"
+#~ "visualization libraries such as D3.js, Raphael and others. We make it "
+#~ "easier to \"wrap\" the data into these libraries without coding. "
+#~ "Datawrapper minimizes the time needed to create a chart and thus helps "
+#~ "data journalists everywhere in the world."
+#~ msgstr ""
+#~ "Wir füllen die Lücke zwischen Journalisten und den neuesten Javascript-"
+#~ "Visualisierungs-Libraries wie D3.js, Raphael und anderen. Wir machen es "
+#~ "einfach, Daten ohne Programmierkenntnisse in diese Bibliotheken zu "
+#~ "\"wrappen\". Datawrapper reduziert die Zeit, um einfache "
+#~ "Datenvisualisierungen zu erstellen und hilft dadurch Datenjournalisten "
+#~ "auf der ganzen Welt."
+
+#~ msgid "Why this approach? See our Motivations..."
+#~ msgstr "Mehr zum Hintergrund: Datawrapper Ziele und Funktionen"
 
 #~ msgid "Manual"
 #~ msgstr "Anleitung"
