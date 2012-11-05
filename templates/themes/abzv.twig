@@ -1,7 +1,7 @@
     {% block body %}
 
         <h1>{{ title }}</h1>
-        <p>{{ intro|raw }}</p>
+        <p>{{ intro|purify|raw }}</p>
 
         <div id="chart"></div>
 

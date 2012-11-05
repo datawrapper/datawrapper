@@ -1,10 +1,10 @@
 
 
 <div id="header">
-    <h1><span>{{ title }}</span></h1>
+    <h1><span>{{ title|purify }}</span></h1>
 
     {% if intro %}
-    <p>{{ intro|raw }}</p>
+    <p>{{ intro|purify|raw }}</p>
     {% endif %}
 </div>
 

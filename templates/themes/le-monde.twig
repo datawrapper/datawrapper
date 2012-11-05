@@ -8,7 +8,7 @@
 
     {% if intro %}
         <div id="header">
-            <p>{{ intro|raw }}</p>
+            <p>{{ intro|purify|raw }}</p>
         </div>
     {% endif %}
 

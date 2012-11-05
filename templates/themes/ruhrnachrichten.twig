@@ -4,7 +4,7 @@
     <h1>{{ title }}</h1>
 
     {% if intro %}
-    <p>{{ intro|raw }}</p>
+    <p>{{ intro|purify|raw }}</p>
     {% endif %}
 </div>
 
