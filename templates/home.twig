@@ -1,4 +1,6 @@
 {% extends "core.twig" %}
+{% use "utils.twig" %}
+
 
 {% block content %}
 
@@ -12,16 +14,18 @@
 
     <div class="span12 teaser" style="">
         <div class="teaser-h2">
-            <h2>{% trans "<b class='dw-logo'>Datawrapper</b> is an open source tool helping everyone to create simple, correct and embeddable charts in minutes." %}</h2>
+            <h2><b class='dw-logo'>Datawrapper</b> {% trans "An open source tool helping everyone to create simple, correct and embeddable charts in minutes." %}</h2>
 
             {% if not user.isLoggedIn %}
+
                 <div class="login">
-                    <div class="login-form form-inline">
-                        <input class="login-email" type="text" value="" placeholder="{% trans "email" %}" />
-                        <input class="login-pwd" type="password" value="" placeholder="{% trans "password" %}" />
-                        <a class="btn btn-primary btn-login btn-large"><i class="icon-user icon-white"></i> {% trans "Login" %}</a><br />
-                        <div style="text-align:right">{% trans "or" %} <a href="#signup" class="onblack"> {% trans "sign up" %}</a> {% trans "now, for free" %}</div>
-                    </div>
+                    <a href="#login" class="btn btn-primary btn-login btn-large">
+                        <i class="icon-user icon-white"></i> {% trans "Login / Sign Up" %}
+                    </a>
+                    <a href="/chart/create" class="btn btn-login btn-large">
+                        <i class="icon-pencil"></i> {% trans "Try it now!" %}
+                    </a>
+
                 </div>
             {% else %}
                 <div style="margin-top:10px">
@@ -32,66 +36,85 @@
         </div>
 
     </div>
-</div>
+    <div class="teaser-mobile big-head">
+            <h1 style="font-weight:700">Datawrapper</h1>
+            <p>{% trans "An open source tool helping everyone to create simple, correct and embeddable charts in minutes." %}</p>
 
-<div class="row">
-    <div class="span8">
-        <div class="row">
-            <div class="span4">
+            <div style="text-align:center; margin: 20px 0 40px">
+            {% if not user.isLoggedIn %}
 
-                    <p>{% trans "We are bridging the gap between journalists and the newest Javascript-visualization libraries such as D3.js, Raphael and others. We make it easier to \"wrap\" the data into these libraries without coding. Datawrapper minimizes the time needed to create a chart and thus helps data journalists everywhere in the world." %}</p>
+                    <a href="#login" class="btn btn-primary btn-login btn-large">
+                        <i class="icon-user icon-white"></i> {% trans "Login / Sign Up" %}
+                    </a>
+                    <a href="/chart/create" class="btn btn-login btn-large">
+                        <i class="icon-pencil"></i> {% trans "Try it now!" %}
+                    </a>
 
-                    <p><b>{% trans "Main features:" %}</b></p>
-                    <ul>
-                        <li>{% trans "Simple: Create and embed charts in minutes" %}</li>
-                        <li>{% trans "Open Source: Download and install" %}</li>
-                        <li>{% trans "CSS: Change the CSS, add your logo" %}</li>
-                        <li>{% trans "Developers: Add new chart types" %}</li>
-                        <li>{% trans "Non-profit: This is and will stay free to use" %}</li>
-                    </ul>
-
-                <p><a href="/docs/motivation">{% trans "Why this approach? See our Motivations..." %}</a></p>
-            </div>
-            <div class="span4">
-                <!-- <h3>{% trans "Main features:" %}</h3> -->
-
-                <h3 style="margin-bottom:10px">{% trans "Recently created charts:" %}</h3>
-
-                <p>{{ "Here's a selection of what other users have created with Datawrapper recently. You find a lot more examples in the <a href='%GALLERY%'>chart gallery</a>." | trans | replace({'%GALLERY%': '/gallery/' }) | raw }}</p>
-
-                <script type="text/javascript" src="/static/vendor/roundabout/jquery.roundabout.min.js"></script>
-
-                <ul id="recent-charts">
-                    {% for chart in recent_charts %}
-                    <li><a href="/gallery/#/{{ chart.id }}">
-                        <img src="http://{{ DW_CHART_CACHE_DOMAIN }}/{{ chart.id }}/s.png">
-                    </a></li>
-                    {% endfor %}
-                </ul>
-
-                <script type="text/javascript">
-
-                $(function() {
-                    $('#recent-charts').roundabout({
-                        autoplay: true,
-                        minOpacity: .8,
-                        responsive: true,
-                        autoplayDuration: 5000,
-                        autoplayPauseOnHover: true
-                    });
-                });
-                </script>
-            </div>
+            {% else %}
+                    <a href="/chart/create" class="btn-primary btn btn-large"><i class="icon-pencil icon-white"></i> {% trans "Create a Chart" %}</a>
+                    <a href="/mycharts" class="btn btn-large"><i class="icon-signal"></i> {% trans "My Charts" %}</a>
+            {% endif %}
         </div>
 
+</div>
+
+<div class="row arguments">
+    <div class="span4">
+        <h2>{% trans "Easy to use" %}</h2>
+        <p>{% trans "This little tool reduces the time needed to create a correct chart and embed it into any CMS from hours to seconds. It makes charting easy, and helps you avoiding common pitfalls." %}</p>
     </div>
-    <div class="span4" id="home-login">
-
-        {% use 'home-login.twig' %}
-        {{ block('homelogin') }}
-
+    <div class="span4">
+        <h2>{% trans "Full control" %}</h2>
+        <p>{% trans "Datawrapper is 100&#37; free software. You can use this free hosted service, or <a href='/docs/howtouse#server'>install it on your own server</a> for maximum control." %}</p>
+    </div>
+    <div class="span4">
+        <h2>{% trans "Customized layouts" %}</h2>
+        <p>{% trans "The styling is accessible, meaning that in one day you can make sure that the charts generated with Datawrapper have your logo, your visual styles and colours." %}</p>
     </div>
 </div>
+
+<div class="gallery">
+    <div class="big-head">
+        <h1>{% trans "Created with Datawrapper" %}.</h1>
+        <p>{% trans "Need some inspiration? See what others have created <a href='/gallery/'>in our gallery</a>." %}</p>
+    </div>
+    <<ul class="thumbnails">
+        {% for chart in recent_charts %}
+            {{ block('gallerythumb') }}
+        {% endfor %}
+    </ul>
+</div>
+
+<div class="row docs">
+    <div class="big-head">
+        <h1>Want to learn more?</h1>
+    </div>
+
+    <div class="span3">
+        <h3><i class="icon-quickstart"></i> <a href="/docs/quickstart">{% trans "Quick Start" %}</a></h3>
+        <p>{% trans "A concise introduction into the functions of Datawrapper." %}</p>
+    </div>
+    <div class="span3">
+        <h3><i class="icon-help"></i> <a href="/docs/tutorial">{% trans "Step by step" %}</a></h3>
+        <p>{% trans "This tutorial guides you through the entire charting process, from finding data to embedding your chart." %}</p>
+    </div>
+    <div class="span3">
+        <h3><i class="icon-info"></i> <a href="/docs/motivation">{% trans "Motivation" %}</a></h3>
+        <p>{% trans "Learn more about <a href='/docs/motivation'>why we created Datawrapper</a>, and why we chosed this approach." %}</p>
+    </div>
+
+    <div class="span3">
+        <h3><i class="icon-github"></i> <a href="https://github.com/datawrapper/datawrapper">{% trans "Find it on Github" %}</a></h3>
+        <p>{% trans "You can find and fork the Datawrapper source code on Github. It is licensed under the MIT license." %}</p>
+    </div>
+
+
+</div>
+
+<div class="alert alert">
+    <p style="text-align:center">{% trans "Looking for the old beta version of Datawrapper? It's still available at <a href='http://beta.datawrapper.de'>beta.datawrapper.de</a>" %}</p>
+</div>
+
 
 {{ parent() }}
 {% endblock %}

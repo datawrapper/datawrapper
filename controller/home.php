@@ -8,13 +8,13 @@ $app->get('/', function () use ($app) {
     } else {
         $page = array(
             'title' => 'Datawrapper',
-            'recent_charts' => ChartQuery::create()->getGalleryCharts(array(), 0, 6)
+            'pageClass' => 'home',
+            'recent_charts' => ChartQuery::create()->getGalleryCharts(array(), 0, 4)
         );
         add_header_vars($page, '');
 
         $res = $app->response();
         $res['Cache-Control'] = 'max-age=0';
-
         $app->render('home.twig', $page);
     }
 });
