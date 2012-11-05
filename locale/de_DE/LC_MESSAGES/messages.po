@@ -710,7 +710,7 @@ msgstr ""
 
 #: ../scripts/tmpl_cache/home.twig.php:180
 msgid "White-label charts"
-msgstr "White label-Diagramme"
+msgstr "Anpassbar"
 
 #: ../scripts/tmpl_cache/home.twig.php:184
 msgid ""
