@@ -44,7 +44,7 @@ body.home {
     display: none;
 }
 
-body.de .teaser-h2 {
+body.de .teaser-h2, body.fr .teaser-h2 {
     width: 40%;
 }
 
@@ -812,7 +812,7 @@ dl.dl-horizontal dd {
     margin: 20px 0 10px;
 }
 
-.docs p, .docs li {
+.docs p, .docs li, .docs div {
     font-size: 14px;
     line-height: 22px;
 }
