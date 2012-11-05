@@ -44,7 +44,7 @@ body.home {
     display: none;
 }
 
-body.de .teaser-h2 {
+body.de .teaser-h2, body.fr .teaser-h2 {
     width: 40%;
 }
 
