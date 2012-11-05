@@ -808,6 +808,10 @@ dl.dl-horizontal dd {
     margin: 1.5em 0 0.5em;
 }
 
+.docs h4 {
+    margin: 20px 0 10px;
+}
+
 .docs p, .docs li {
     font-size: 14px;
     line-height: 22px;
