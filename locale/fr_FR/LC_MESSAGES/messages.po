@@ -34,19 +34,16 @@ msgid "Reset Code"
 msgstr "Réinitialliser le code"
 
 #: ../scripts/tmpl_cache/account-reset-password.twig.php:60
-#, fuzzy
 msgid "This reset token is valid."
-msgstr "Le lien de réinitialisation du mot de passe est invalide."
+msgstr "Le lien de réinitialisation du mot de passe est valide."
 
 #: ../scripts/tmpl_cache/account-reset-password.twig.php:69
-#, fuzzy
 msgid "Now please enter a new password."
-msgstr "Envoyer le nouveau mot de passe"
+msgstr "Taper le nouveau mot de passe."
 
 #: ../scripts/tmpl_cache/account-reset-password.twig.php:71
-#, fuzzy
 msgid "The password should contain at least four characters."
-msgstr "Le mot de passe que vous avez saisi est incorrect."
+msgstr "Le mot de passe doit contenir au moins 4 caractères."
 
 #: ../scripts/tmpl_cache/account-reset-password.twig.php:79
 #: ../scripts/tmpl_cache/settings.twig.php:371
@@ -67,7 +64,6 @@ msgid "Set New Password"
 msgstr "Choisissez un nouveau mot de passe"
 
 #: ../scripts/tmpl_cache/account-reset-password.twig.php:114
-#, fuzzy
 msgid "Congrats! Your password has been changed. You can log in with your new password now."
 msgstr "Félicitiations! Le mot de passe a été changé."
 
@@ -81,9 +77,8 @@ msgid "Check and Describe Your Data"
 msgstr "Vérifiez et décrivez vos données"
 
 #: ../scripts/tmpl_cache/chart-describe.twig.php:173
-#, fuzzy
 msgid "Please check if the data format was recognized correctly. If not, please <a data-toggle='modal' href='%LINK%'>help Datawrapper to understand your data</a>."
-msgstr "Vérifiez que vos données ont été correctement interprétées. Sinon, <a data-toggle='modal' href='/xhr/docs/describe'>aidez Datawrapper à comprendre vos données</a>."
+msgstr "Vérifiez que vos données ont été correctement interprétées. Sinon, <a data-toggle='modal' href='%LINK%'>aidez Datawrapper à comprendre vos données</a>."
 
 #: ../scripts/tmpl_cache/chart-describe.twig.php:197
 msgid "Describe your data"
@@ -220,9 +215,8 @@ msgid "Publishing chart data"
 msgstr "Publication des données du graphique"
 
 #: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:330
-#, fuzzy
 msgid "Published chart data"
-msgstr "Transposer les données"
+msgstr "Publiez les données du graphique"
 
 #: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:335
 msgid "Generating chart thumbnails"
@@ -237,14 +231,12 @@ msgid "You have changed the chart after its last publication. To make you change
 msgstr "Vous avez modifié le graphique depuis sa dernière publication. Pour rendre vos changments publics republiez le graphique."
 
 #: ../scripts/tmpl_cache/chart-publish.twig.php:204
-#, fuzzy
 msgid "Re-publish chart!"
-msgstr "Raffiner le graphique"
+msgstr "Re-publier le graphique!"
 
 #: ../scripts/tmpl_cache/chart-publish.twig.php:212
-#, fuzzy
 msgid "Congrats, you made it! The chart has been published."
-msgstr "Félicitiations! Le mot de passe a été changé."
+msgstr "Félicitiations! Vous l'avez fait! Le graphique vient d'être publier."
 
 #: ../scripts/tmpl_cache/chart-publish.twig.php:226
 msgid "Link to this visualisation"
@@ -271,9 +263,8 @@ msgid "Show in Gallery"
 msgstr "Afficher dans la galerie"
 
 #: ../scripts/tmpl_cache/chart-publish.twig.php:282
-#, fuzzy
 msgid "You can show some love to Datawrapper by agreeing to show your visualisation in our <a href='%GALLERY_URL%'>public gallery</a>"
-msgstr "Vous pouvez intégrer cette visualisation à la <a href='gallery.html'>gallerie publique</a> de Datawrapper."
+msgstr "Vous pouvez rendre un peu d'amour à Datawrapper en acceptant que nous publions votre visualisation dans notre <a href='%GALLERY_URL%'>galerie publique</a>"
 
 #: ../scripts/tmpl_cache/chart-publish.twig.php:284
 msgid "This is absolutely optional."
@@ -337,7 +328,6 @@ msgid "Create another graphic"
 msgstr "Créer un autre graph"
 
 #: ../scripts/tmpl_cache/chart-publish.twig.php:453
-#, fuzzy
 msgid "Duplicate this chart"
 msgstr "Dupliquer"
 
@@ -378,9 +368,8 @@ msgid "Learn more about how to upload your data"
 msgstr "En savoir plus sur le téléchargement de données"
 
 #: ../scripts/tmpl_cache/chart-upload.twig.php:169
-#, fuzzy
 msgid "Sample Data"
-msgstr "Télécharger des données"
+msgstr "Exemple de données"
 
 #: ../scripts/tmpl_cache/chart-upload.twig.php:173
 msgid "If you simply want to play around with Datawrapper, here's a list of some example datasets:"
@@ -403,9 +392,8 @@ msgid "Hint"
 msgstr "Indice"
 
 #: ../scripts/tmpl_cache/chart-visualize.twig.php:408
-#, fuzzy
 msgid "In case the visualization doesn't look like you expected, you should try to <a href='#' id='btn-transpose'><i class='icon-rotate'></i> transpose the data</a>."
-msgstr "Au cas où la visualisation ne ressemble pas à ce qui était prévu, essayez de transposer les données."
+msgstr "Au cas où la visualisation ne ressemble pas à ce qui était prévu, essayez de <a href='#' id='btn-transpose'><i class='icon-rotate'></i>  transposer les données</a>."
 
 #: ../scripts/tmpl_cache/chart-visualize.twig.php:416
 msgid "Tell your story"
@@ -469,7 +457,6 @@ msgstr "Datawrapper set un project <a href=\"http://github.com/datawrapper/dataw
 
 #: ../scripts/tmpl_cache/core.twig.php:189
 #: ../scripts/tmpl_cache/home.twig.php:252
-#, fuzzy
 msgid "Quick Start"
 msgstr "Démarrage rapide"
 
@@ -577,7 +564,6 @@ msgid "Settings"
 msgstr "Préférences"
 
 #: ../scripts/tmpl_cache/home-login.twig.php:76
-#, fuzzy
 msgid "Edit your personal information."
 msgstr "Editez vos informations personnelles"
 
@@ -588,9 +574,8 @@ msgstr "Déconnexion"
 
 #: ../scripts/tmpl_cache/home.twig.php:69
 #: ../scripts/tmpl_cache/home.twig.php:116
-#, fuzzy
 msgid "An open source tool helping everyone to create simple, correct and embeddable charts in minutes."
-msgstr "<b class='dw-logo'>Datawrapper</b> est un outil open source qui permet à chacun de créer des visualisations simples et correctes en quelques minutes."
+msgstr "Un outil libre aidant n'importe qui à créer en quelques minutes des graphiques simples, élégants et facilement intégrables."
 
 #: ../scripts/tmpl_cache/home.twig.php:82
 #: ../scripts/tmpl_cache/home.twig.php:129
@@ -600,7 +585,6 @@ msgstr "Connexion / Inscription"
 
 #: ../scripts/tmpl_cache/home.twig.php:88
 #: ../scripts/tmpl_cache/home.twig.php:135
-#, fuzzy
 msgid "Try it now!"
 msgstr "Essayez Datawrapper!"
 
@@ -614,18 +598,16 @@ msgid "Easy to use"
 msgstr "Facile à utiliser"
 
 #: ../scripts/tmpl_cache/home.twig.php:164
-#, fuzzy
 msgid "This little tool reduces the time needed to create a correct chart and embed it into any website from hours to seconds. It makes charting easy, and helps you avoiding common pitfalls."
-msgstr "Cet outil réduit le temps de création d'un graphique et d'intégration dans n'importe quel CMS. Il facilite la visualisation de données et vous aide à éviter les pièges les plus courants."
+msgstr "Cet outil réduit le temps de création d'un graphique et d'intégration dans n'importe quel site web. Il facilite la visualisation de données et vous aide à éviter les pièges les plus courants."
 
 #: ../scripts/tmpl_cache/home.twig.php:170
 msgid "Full control"
 msgstr "Côntrole total"
 
 #: ../scripts/tmpl_cache/home.twig.php:174
-#, fuzzy
 msgid "Datawrapper is 100&#37; free software. You can use our free hosted service, or <a href='/docs/howtouse#server'>install it on your own server</a> for maximum control. Written in PHP, Datawrapper is easy to install, modify and extend."
-msgstr "Datawrapper est 100&#37; libre. Vous pouvez utiliser ce service hébergé gratuitement ou <a href='/docs/howtouse#server'>l'installer sur votre propre serveur</a> pour un contrôle maximal."
+msgstr "Datawrapper est 100&#37; libre. Vous pouvez utiliser ce service hébergé gratuitement ou <a href='/docs/howtouse#server'>l'installer sur votre propre serveur</a> pour un contrôle maximal. Ecrit en PHP, Datawrapper est facile à installer et modifier."
 
 #: ../scripts/tmpl_cache/home.twig.php:180
 msgid "White-label charts"
@@ -636,16 +618,14 @@ msgid "We encourage you to customize the charts layout, fonts and colors to make
 msgstr "Nous vous encourageons à personnaliser le thème de vos graphiques, la typo et les couleurs pour une meilleur intégration sur votre site web. Renforcez votre propre marque, pas la nôtre."
 
 #: ../scripts/tmpl_cache/home.twig.php:193
-#, fuzzy
 msgid "Created with Datawrapper"
-msgstr "Créé avec"
+msgstr "Créé avec Datawrapper"
 
 #: ../scripts/tmpl_cache/home.twig.php:197
 msgid "Need some inspiration? See what others have created <a href='/gallery/'>in our gallery</a>."
 msgstr "Vous cherchez de l'inspiration? Regardez ce que les autres ont créé <a href='/gallery/'>dans notre galerie</a>."
 
 #: ../scripts/tmpl_cache/home.twig.php:245
-#, fuzzy
 msgid "Want to learn more?"
 msgstr "En savoir plus"
 
@@ -712,7 +692,6 @@ msgid "Create a new account"
 msgstr "Créer un nouveau compte"
 
 #: ../scripts/tmpl_cache/login.twig.php:81
-#, fuzzy
 msgid "Datawrapper is 100&#37; free and creating an account takes less than a minute. Just enter your email and pick a password, and you're done!"
 msgstr "Datawrapper est 100% gratuit et créer un compte prend moins d'une minute. Indiquez votre adresse e-mail, choisissez un mot de passe et c'est parti!"
 
@@ -886,7 +865,6 @@ msgid "Warning"
 msgstr "Attention"
 
 #: ../scripts/tmpl_cache/settings.twig.php:308
-#, fuzzy
 msgid "This will remove your Datawrapper account. The charts you created so far will remain visible in places where you embedded them."
 msgstr "Cette action supprimera votre compte Datawrapper et toutes les visualisations que vous avez créé. Elles ne seront plus visibles là où vous les avez intégrées."
 
@@ -978,9 +956,8 @@ msgstr "Télécharger des données"
 
 #: ../scripts/tmpl_cache/themes__guardian.twig.php:81
 #: ../scripts/tmpl_cache/themes__ruhrnachrichten.twig.php:83
-#, fuzzy
 msgid "Get the data"
-msgstr "Annotez les données"
+msgstr "Récupérer les données"
 
 #: ../scripts/tmpl_cache/vis-options.twig.php:32
 msgid "Pick base color"
@@ -1069,17 +1046,14 @@ msgid "The password you entered is not correct."
 msgstr "Le mot de passe que vous avez saisi est incorrect."
 
 #: ../lib/api/users.php:211
-#, fuzzy
 msgid "The password must not be empty."
-msgstr "Le mot de passe est incorrect."
+msgstr "Le mot de passe ne doit pas être vide."
 
 #: ../lib/api/users.php:214
-#, fuzzy
 msgid "The supplied token for password resetting is invalid."
 msgstr "Le lien de réinitialisation du mot de passe est invalide."
 
 #: ../lib/core/build/classes/datawrapper/ChartQuery.php:37
-#, fuzzy
 msgid "Untitled"
 msgstr "Titre"
 
@@ -1101,7 +1075,6 @@ msgid "Marriages in Germany"
 msgstr "Mariages en Allemagne"
 
 #: ../lib/templates/demo_datasets.php:42
-#, fuzzy
 msgid "Line chart"
 msgstr "Raffiner le graphique"
 
@@ -1170,9 +1143,8 @@ msgid "Too late"
 msgstr "Trop tard"
 
 #: ../lib/utils/errors.php:39
-#, fuzzy
 msgid "Sorry, but it seems that the chart you want to see has already passed away because its author decided to delete it."
-msgstr "Désolé, mais il semble que la visualisation que vous voulez voir n'est pas encore tout à fait prête. Attendez une minute!"
+msgstr "Désolé, mais il semble que la visualisation que vous voulez voir n'est plus disponible parce que son auteur l'a supprimée."
 
 #: ../lib/utils/errors.php:48
 msgid "Whoops! You're not allowed to publish charts, yet"
