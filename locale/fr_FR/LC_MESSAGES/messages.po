@@ -340,8 +340,8 @@ msgid "drop your csv file here"
 msgstr "déposez vos CSV ici"
 
 #: ../scripts/tmpl_cache/chart-upload.twig.php:83
-msgid "..or pick a file from your disk"
-msgstr "...ou choisissez un fichier sur votre ordinateur"
+msgid "..or upload a CSV file"
+msgstr "... ou envoyez un fichier CSV"
 
 #: ../scripts/tmpl_cache/chart-upload.twig.php:130
 msgid "Upload Your Data"
@@ -614,8 +614,8 @@ msgid "White-label charts"
 msgstr "Personnalisable"
 
 #: ../scripts/tmpl_cache/home.twig.php:184
-msgid "We encourage you to customize the charts layout, fonts and colors to make them integrate nicely in your website. Strengthen your own brand, not ours."
-msgstr "Nous vous encourageons à personnaliser le thème de vos graphiques, la typo et les couleurs pour une meilleur intégration sur votre site web. Renforcez votre propre marque, pas la nôtre."
+msgid "We encourage you to <a href='/docs/howtouse#customize'>customize the charts layout</a>, fonts and colors to make them integrate nicely in your website. Strengthen your own brand, not ours."
+msgstr "Nous vous encourageons à  <a href='/docs/howtouse#customize'>personnaliser le thème de vos graphiques</a>, la typographie et les couleurs pour une meilleur intégration sur votre site web. Renforcez votre propre marque, pas la nôtre."
 
 #: ../scripts/tmpl_cache/home.twig.php:193
 msgid "Created with Datawrapper"
@@ -990,7 +990,7 @@ msgstr "Langue"
 
 #: ../www/index.php:120
 msgid "Admin"
-msgstr ""
+msgstr "Admin"
 
 #: ../www/index.php:155
 msgid "Upload Data"
@@ -1206,6 +1206,9 @@ msgstr "Revérifiez le lien que vous avez reçu par email. Vérifiez bien que vo
 #: ../lib/utils/errors.php:97
 msgid "Contact someone of our friendly <a href=\"mailto:hello@datawrapper.de\">administrators</a> and ask for help with the password reset process."
 msgstr "Contactez l'un de nos sympathiques <a href=\"mailto:hello@datawrapper.de\">administrateurs</a> et demandez de l'aide pour réinitialiser votre mot de passe."
+
+#~ msgid "..or pick a file from your disk"
+#~ msgstr "...ou choisissez un fichier sur votre ordinateur"
 
 #~ msgid "Customized layouts"
 #~ msgstr "Thèmes personnalisés"
