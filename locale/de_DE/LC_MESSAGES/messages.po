@@ -534,7 +534,7 @@ msgstr ""
 "a> – dem Bildungswerk der Zeitungen."
 
 #: ../scripts/tmpl_cache/core.twig.php:189
-#: ../scripts/tmpl_cache/home.twig.php:249
+#: ../scripts/tmpl_cache/home.twig.php:252
 msgid "Quick Start"
 msgstr "Schnellstart"
 
@@ -685,8 +685,8 @@ msgstr "Einfach zu Benutzen"
 #: ../scripts/tmpl_cache/home.twig.php:164
 msgid ""
 "This little tool reduces the time needed to create a correct chart and embed "
-"it into any CMS from hours to seconds. It makes charting easy, and helps you "
-"avoiding common pitfalls."
+"it into any website from hours to seconds. It makes charting easy, and helps "
+"you avoiding common pitfalls."
 msgstr ""
 "Dieses handliche Werkzeug reduziert die Zeit zum Erstellen von Diagrammen "
 "mit Einbett-Code von Stunden auf Minuten. Es ist einfach zu bedienen und "
@@ -698,24 +698,28 @@ msgstr "Volle Kontrolle"
 
 #: ../scripts/tmpl_cache/home.twig.php:174
 msgid ""
-"Datawrapper is 100&#37; free software. You can use this free hosted service, "
+"Datawrapper is 100&#37; free software. You can use our free hosted service, "
 "or <a href='/docs/howtouse#server'>install it on your own server</a> for "
-"maximum control."
+"maximum control. Written in PHP, Datawrapper is easy to install, modify and "
+"extend."
 msgstr ""
 "Datawrapper ist 100% freie Software. Benutze entweder unseren gehosteten "
 "Service oder <a href='/docs/howtouse#server'>installiere es auf deinem "
-"eigenen Server</a> für maximale Kontrolle über die Daten."
+"Server</a> für maximale Kontrolle. Als PHP-Software ist Datawrapper einfach "
+"zu installieren und erweitern."
 
 #: ../scripts/tmpl_cache/home.twig.php:180
-msgid "Customized layouts"
-msgstr "Anpassbares Design"
+msgid "White-label charts"
+msgstr "White label-Diagramme"
 
 #: ../scripts/tmpl_cache/home.twig.php:184
 msgid ""
-"The styling is accessible, meaning that in one day you can make sure that "
-"the charts generated with Datawrapper have your logo, your visual styles and "
-"colours."
+"We encourage you to customize the charts layout, fonts and colors to make "
+"them integrate nicely in your website. Strengthen your own brand, not ours."
 msgstr ""
+"Passe das Layout, die Schriftarten und Farben der Diagramme an, damit sie "
+"sich besser in deine Webseite integrieren. Stärke deine eigene Marke, nicht "
+"unsere."
 
 #: ../scripts/tmpl_cache/home.twig.php:193
 msgid "Created with Datawrapper"
@@ -726,18 +730,22 @@ msgid ""
 "Need some inspiration? See what others have created <a href='/gallery/'>in "
 "our gallery</a>."
 msgstr ""
-"Etwas Inspiration benötigt? Schau <a href='/gallery/'>in unserer Galerie</a> "
+"Mehr Inspiration gewünscht? Schau <a href='/gallery/'>in unserer Galerie</a> "
 "nach was andere so erstellt haben."
 
-#: ../scripts/tmpl_cache/home.twig.php:253
+#: ../scripts/tmpl_cache/home.twig.php:245
+msgid "Want to learn more?"
+msgstr "Weitere Informationen"
+
+#: ../scripts/tmpl_cache/home.twig.php:256
 msgid "A concise introduction into the functions of Datawrapper."
 msgstr "Eine knappe Einführung in die Funktionen von Datawrapper."
 
-#: ../scripts/tmpl_cache/home.twig.php:259
+#: ../scripts/tmpl_cache/home.twig.php:262
 msgid "Step by step"
 msgstr "Schritt für Schritt"
 
-#: ../scripts/tmpl_cache/home.twig.php:263
+#: ../scripts/tmpl_cache/home.twig.php:266
 msgid ""
 "This tutorial guides you through the entire charting process, from finding "
 "data to embedding your chart."
@@ -745,11 +753,11 @@ msgstr ""
 "Diese Anleitung führt durch die komplette Diagrammerstellung. Vom Finden der "
 "Daten bis zum Einbetten des Diagramms."
 
-#: ../scripts/tmpl_cache/home.twig.php:269
+#: ../scripts/tmpl_cache/home.twig.php:272
 msgid "Motivation"
 msgstr "Motivation"
 
-#: ../scripts/tmpl_cache/home.twig.php:273
+#: ../scripts/tmpl_cache/home.twig.php:276
 msgid ""
 "Learn more about <a href='/docs/motivation'>why we created Datawrapper</a>, "
 "and why we chosed this approach."
@@ -757,11 +765,11 @@ msgstr ""
 "Erfahre <a href='/docs/motivation'>warum wir Datawrapper erstellt haben</a> "
 "und weshalb wir diesen Ansatz gewählt haben."
 
-#: ../scripts/tmpl_cache/home.twig.php:280
+#: ../scripts/tmpl_cache/home.twig.php:283
 msgid "Find it on Github"
-msgstr "Datawrapper auf Github"
+msgstr "Auf Github finden"
 
-#: ../scripts/tmpl_cache/home.twig.php:284
+#: ../scripts/tmpl_cache/home.twig.php:287
 msgid ""
 "You can find and fork the Datawrapper source code on Github. It is licensed "
 "under the MIT license."
@@ -769,7 +777,7 @@ msgstr ""
 "Du findest den Quellcode von Datawrapper auf Github. Lizensiert unter der "
 "MIT-Lizenz."
 
-#: ../scripts/tmpl_cache/home.twig.php:294
+#: ../scripts/tmpl_cache/home.twig.php:297
 msgid ""
 "Looking for the old beta version of Datawrapper? It's still available at <a "
 "href='http://beta.datawrapper.de'>beta.datawrapper.de</a>"
@@ -1440,6 +1448,9 @@ msgid ""
 msgstr ""
 "Bitte einen unserer freundlichen <a href=\"mailto:hello@datawrapper.de"
 "\">Administratoren</a> dir beim Zurücksetzen des Passworts zu helfen."
+
+#~ msgid "Customized layouts"
+#~ msgstr "Anpassbares Design"
 
 #~ msgid "or"
 #~ msgstr "oder jetzt"
