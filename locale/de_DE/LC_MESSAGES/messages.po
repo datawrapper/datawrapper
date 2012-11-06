@@ -680,7 +680,7 @@ msgstr "Diagramm erstellen"
 
 #: ../scripts/tmpl_cache/home.twig.php:160
 msgid "Easy to use"
-msgstr "Einfach zu Benutzen"
+msgstr "Einfach"
 
 #: ../scripts/tmpl_cache/home.twig.php:164
 msgid ""
@@ -688,9 +688,9 @@ msgid ""
 "it into any website from hours to seconds. It makes charting easy, and helps "
 "you avoiding common pitfalls."
 msgstr ""
-"Reduziert die Zeit zum Erstellen von Diagrammen mit Einbett-Code von Stunden "
-"auf Minuten. Es ist einfach zu bedienen und hilft, mögliche Fallstricke zu "
-"vermeiden."
+"Reduziert den Aufwand für die Erstellung eines Diagramms mit Einbett-Code "
+"von Stunden auf Minuten. Viele Einstellungs&shy;möglichkeiten sorgen für "
+"hohe Qualität."
 
 #: ../scripts/tmpl_cache/home.twig.php:170
 msgid "Full control"

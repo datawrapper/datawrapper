@@ -1,11 +1,14 @@
 
 {% extends xhr ? "modal.twig" : "core.twig" %}
-
+{% use "utils.twig" %}
 
 {% block title %}{% if not xhr %}- {% endif %}{{ title }}{% endblock %}
 {% block content %}
 
 {% if not xhr %}
+
+{{ block('alert') }}
+
 <div class="row docs">
     <div class="span8 content">
 

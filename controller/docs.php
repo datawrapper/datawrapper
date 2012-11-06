@@ -23,9 +23,26 @@ foreach ($docs_pages as $lang => $pages) {
 foreach ($urls as $url) {
     $app->get('/' . $url .'/?', function() use ($app, $url, $docs_pages) {
         $page = array();
+        $alt_languages = array('en', 'de');
         add_header_vars($page, 'about');
         $lang = $page['language'];
+
+        if (empty($docs_pages[$lang]) || empty($docs_pages[$lang][$url])) {
+            // page not found in this language, trying alternative languages
+            foreach ($alt_languages as $l) {
+                if ($l != $lang && !empty($docs_pages[$l]) && !empty($docs_pages[$l][$url])) {
+                    $page['alert'] = array(
+                        'type' => 'info',
+                        'message' => _('Sorry, but this content is not available in your language, yet.')
+                    );
+                    $lang = $page['language'] = $l;
+                    break;
+                }
+            }
+        }
+
         $tpl_path = 'imported/' . $lang . '/' . str_replace('/', '-', $url) . '.twig';
+
         if (!empty($docs_pages[$lang]) && !empty($docs_pages[$lang][$url])) {
             $page['title'] = $docs_pages[$lang][$url]['title'];
             if ($app->request()->get('popup') == 1) $page['xhr'] = true;
