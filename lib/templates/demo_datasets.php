@@ -7,30 +7,23 @@ function getDemoDatasets() {
 
     $datasets[] = array(
         'id' => 'debt-per-person',
-        'title' => _('National external debt per person'),
-        'type' => _('Bar chart'),
+        'title' => _('Fearless Felix: How far did he fall'),
+        'type' => _('Column chart'),
         'presets' => array(
-            'type' => 'bar-chart',
-            'metadata.describe.source-name' => 'Wikipedia',
-            'metadata.describe.source-url' => 'http://en.wikipedia.org/wiki/List_of_countries_by_external_debt',
+            'type' => 'column-chart',
+            'metadata.describe.source-name' => 'DataRemixed',
+            'metadata.describe.source-url' => 'http://dataremixed.com/2012/10/a-tribute-to-fearless-felix/',
             'metadata.data.vertical-header' => true,
-            'metadata.visualize.sort-values' => true
+            'metadata.data.transpose' => true
         ),
-        'data' => "Country 	Debt per capita
-Netherlands 	226503
-United Kingdom 	156126
-Switzerland 	154063
-Norway 	131220
-Belgium 	113603
-Sweden 	91487
-Austria 	90128
-France 	74619
-Finland 	68960
-Germany 	57755
-United States 	50266
-Greece 	47636
-Portugal 	46795
-Italy 	36841
+        'data' => "	Height
+SpaceShipOne	367500
+Felix Baumgartner (2012)	128100
+Joe Kittinger (1960)	108200
+Weather balloons	100000
+Commercial airliners	33000
+Mt. Everest	29029
+Burj Khalifa (tallest building Dubai)	2723
 "
     );
 
