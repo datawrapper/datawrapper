@@ -60,7 +60,7 @@ function toJSON($arr) {
 // Twig Extension to clean HTML from malicious code
 require_once '../vendor/htmlpurifier/HTMLPurifier.standalone.php';
 $config = HTMLPurifier_Config::createDefault();
-$config->set('HTML.Allowed', 'a[href],p,b,u,i,q,blockquote,*[style]');
+$config->set('HTML.Allowed', 'a[href],p,b,strong,u,i,em,q,blockquote,*[style]');
 $_HTMLPurifier = new HTMLPurifier($config);
 $twig->addFilter('purify', new Twig_Filter_Function('str_purify'));
 
