@@ -121,7 +121,7 @@ $(function(){
         e.preventDefault();
         var chart = $(e.target).parents('.chart'),
             id = chart.data('id');
-        if (window.confirm('{% trans "Do you really want to delete the chart? Note that after deleting this chart won\'t be embedable any more." %}')) {
+        if (window.confirm("{% trans "Do you really want to delete the chart? Note that after deleting this chart won\'t be embedable any more." %}")) {
              $.ajax({
                 url: '/api/charts/'+id,
                 type: 'DELETE',
