@@ -8,7 +8,7 @@ function getDemoDatasets() {
     $datasets[] = array(
         'id' => 'debt-per-person',
         'title' => _('Fearless Felix: How far did he fall'),
-        'type' => _('Column chart'),
+        'type' => _('Bar chart'),
         'presets' => array(
             'type' => 'column-chart',
             'metadata.describe.source-name' => 'DataRemixed',
