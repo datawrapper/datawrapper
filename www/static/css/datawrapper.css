@@ -18,6 +18,10 @@ body {
     background-size: 115%;
 }
 
+.small-teaser {
+    display: none;
+}
+
 .big-login-home {
     display: none;
 }
@@ -27,6 +31,13 @@ body.home {
     background-position: 0 -21px;
 }
 
+body.home.blog {
+    background: #fff!important;
+}
+
+.home .docs h3 {
+    font-size: 20px;
+}
 
 .teaser-h2 {
     width:33%;
@@ -34,7 +45,7 @@ body.home {
     left:0;
     color: #bbb;
     font-weight: 300;
-    bottom:30px;
+    bottom:55px;
     margin:0;
     padding: 20px;
     margin: 0 0 30px 30px;
@@ -114,6 +125,16 @@ body.de .teaser-h2, body.fr .teaser-h2 {
     }
     .teaser-mobile {
         display: block;
+        margin-bottom: 70px;
+    }
+    .teaser-mobile .btn {
+        margin: 0 5px;
+    }
+    .home .teaser-mobile.big-head h1 {
+        font-size: 48px;
+        letter-spacing: -1px;
+        color: #4F4E54;
+        margin-bottom: 10px;
     }
     .teaser h2 {
         font-size: 16px;
@@ -135,14 +156,27 @@ body.de .teaser-h2, body.fr .teaser-h2 {
     body.home {
         background-image: none;
     }
+
+    .home .docs h3, .home .docs p {
+        text-align: center;
+    }
+
+    .home .docs p {
+        padding: 0 20%;
+    }
+
 }
 
 @media (min-width: 768px) and (max-width: 979px) {
     /* ipad display */
     .teaser {
-        background: url(/static/img/teaser-1.png) 0 0;
+        background: #4F4E54 url(/static/img/teaser-1.png) 0 32px no-repeat;
         background-size: 100%;
-        height: 230px;
+        height: 260px;
+        border-radius: 7px;
+        -moz-box-shadow:    inset 0 0 20px #222;
+        -webkit-box-shadow: inset 0 0 20px #222;
+        box-shadow:         inset 0 0 20px #222;
     }
     .teaser h2 {
         font-size: 18px;
@@ -155,6 +189,37 @@ body.de .teaser-h2, body.fr .teaser-h2 {
 
     .big-login-home {
         display: block;
+    }
+
+    .small-teaser {
+        display: block;
+    }
+
+    .small-teaser .btn {
+        margin: 0 5px;
+    }
+
+    body.home {
+        background: #fff;
+    }
+
+    .home .arguments p,
+    body.home .gallery p,
+    body.home .docs p {
+        font-size: 14px;
+        line-height: 24px;
+    }
+
+    body.home .docs h3 {
+        font-size: 30px;
+    }
+
+    .home .arguments h2 {
+        font-size: 24px;
+    }
+
+    .home .docs h3 i {
+        display: none;
     }
 
 }
@@ -174,7 +239,7 @@ body.de .teaser-h2, body.fr .teaser-h2 {
     }
 
     .teaser .dw-logo {
-        font-size: 48px!important;
+        font-size: 30px;
     }
 
     .teaser-h2 {
@@ -186,6 +251,10 @@ body.de .teaser-h2, body.fr .teaser-h2 {
     .teaser {
         background: url(/static/img/teaser-1.png) 0 0 no-repeat;
         height: 360px;
+    }
+
+    .teaser-h2 {
+        bottom: 30px;
     }
 
     .teaser h2 {
@@ -208,6 +277,14 @@ body.de .teaser-h2, body.fr .teaser-h2 {
 
     body.home {
         background-position: 0 0;
+    }
+
+    .teaser .dw-logo {
+        font-size: 60px!important;
+    }
+
+    .home .docs h3 {
+        font-size: 26px;
     }
 }
 
@@ -352,7 +429,7 @@ body .navbar .nav li.dropdown.active > .dropdown-toggle:hover
 }
 .teaser .dw-logo {
     color: #fff;
-    font-size: 60px;
+    font-size: 50px;
     line-height: 80px;
     text-shadow: 0px 0px 4px #000;
     display: block;
@@ -680,7 +757,7 @@ dl.dl-horizontal dd {
 @media (min-width: 768px) and (max-width: 979px) {
 
     .dw .dw-logo-type {
-        font-size: 28px;
+        font-size: 22px;
         line-height: 36px;
     }
 

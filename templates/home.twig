@@ -12,49 +12,31 @@
         </div>
     {% endif %}
 
-    <div class="span12 teaser" style="">
+    <div class="span12 teaser">
         <div class="teaser-h2">
             <h2><b class='dw-logo'>Datawrapper</b> {% trans "An open source tool helping everyone to create simple, correct and embeddable charts in minutes." %}</h2>
 
-            {% if not user.isLoggedIn %}
+            <div class="login">
+                {{ block('teaserlogin') }}
+            </div>
+        </div>
+    </div>
 
-                <div class="login">
-                    <a href="#login" class="btn btn-primary btn-login btn-large">
-                        <i class="icon-user icon-white"></i> {% trans "Login / Sign Up" %}
-                    </a>
-                    <a href="/chart/create" class="btn btn-login btn-large">
-                        <i class="icon-pencil"></i> {% trans "Try it now!" %}
-                    </a>
+    <div class="small-teaser span12">
 
-                </div>
-            {% else %}
-                <div style="margin-top:10px">
-                    <a href="/chart/create" class="btn-primary btn btn-large"><i class="icon-pencil icon-white"></i> {% trans "Create a Chart" %}</a>
-                    <a href="/mycharts" class="btn btn-large"><i class="icon-signal"></i> {% trans "My Charts" %}</a>
-                </div>
-            {% endif %}
+        <div style="text-align:center; margin: 20px 0 40px">
+            {{ block('teaserlogin') }}
         </div>
 
     </div>
-    <div class="teaser-mobile big-head">
-            <h1 style="font-weight:700">Datawrapper</h1>
-            <p>{% trans "An open source tool helping everyone to create simple, correct and embeddable charts in minutes." %}</p>
 
-            <div style="text-align:center; margin: 20px 0 40px">
-            {% if not user.isLoggedIn %}
+    <div class="teaser-mobile big-head span12">
+        <h1 style="font-weight:700">Datawrapper</h1>
+        <p>{% trans "An open source tool helping everyone to create simple, correct and embeddable charts in minutes." %}</p>
 
-                    <a href="#login" class="btn btn-primary btn-login btn-large">
-                        <i class="icon-user icon-white"></i> {% trans "Login / Sign Up" %}
-                    </a>
-                    <a href="/chart/create" class="btn btn-login btn-large">
-                        <i class="icon-pencil"></i> {% trans "Try it now!" %}
-                    </a>
-
-            {% else %}
-                    <a href="/chart/create" class="btn-primary btn btn-large"><i class="icon-pencil icon-white"></i> {% trans "Create a Chart" %}</a>
-                    <a href="/mycharts" class="btn btn-large"><i class="icon-signal"></i> {% trans "My Charts" %}</a>
-            {% endif %}
-         </div>
+        <div style="text-align:center; margin: 20px 0 40px">
+            {{ block('teaserlogin') }}
+        </div>
      </div>
 </div>
 
