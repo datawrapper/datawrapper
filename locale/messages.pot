@@ -1,9 +1,9 @@
-#: ../controller/docs.php:35
-msgid "Not found"
+#: ../controller/docs.php:36 ../controller/docs.php:52
+msgid "Sorry, but this content is not available in your language, yet."
 msgstr ""
 
-#: ../controller/docs.php:35
-msgid "Sorry, but this content is not available in your language, yet."
+#: ../controller/docs.php:52
+msgid "Not found"
 msgstr ""
 
 #: ../scripts/tmpl_cache/account-reset-password.twig.php:37
@@ -157,7 +157,7 @@ msgstr ""
 msgid "Annotate data point"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-describe.twig.php:346 ../www/index.php:157
+#: ../scripts/tmpl_cache/chart-describe.twig.php:346 ../www/index.php:174
 msgid "Visualize"
 msgstr ""
 
@@ -479,7 +479,7 @@ msgid ""
 msgstr ""
 
 #: ../scripts/tmpl_cache/core.twig.php:189
-#: ../scripts/tmpl_cache/home.twig.php:252
+#: ../scripts/tmpl_cache/home.twig.php:189
 msgid "Quick Start"
 msgstr ""
 
@@ -495,7 +495,7 @@ msgstr ""
 msgid "Imprint"
 msgstr ""
 
-#: ../scripts/tmpl_cache/docs.twig.php:69
+#: ../scripts/tmpl_cache/docs.twig.php:87
 msgid "Navigation"
 msgstr ""
 
@@ -572,9 +572,8 @@ msgid "Wrap again!"
 msgstr ""
 
 #: ../scripts/tmpl_cache/home-login.twig.php:66
-#: ../scripts/tmpl_cache/home.twig.php:103
-#: ../scripts/tmpl_cache/home.twig.php:147
-#: ../scripts/tmpl_cache/mycharts.twig.php:52 ../www/index.php:73
+#: ../scripts/tmpl_cache/mycharts.twig.php:52
+#: ../scripts/tmpl_cache/utils.twig.php:252 ../www/index.php:90
 msgid "My Charts"
 msgstr ""
 
@@ -582,7 +581,7 @@ msgstr ""
 msgid "See what you created so far."
 msgstr ""
 
-#: ../scripts/tmpl_cache/home-login.twig.php:74 ../www/index.php:108
+#: ../scripts/tmpl_cache/home-login.twig.php:74 ../www/index.php:125
 msgid "Settings"
 msgstr ""
 
@@ -590,48 +589,33 @@ msgstr ""
 msgid "Edit your personal information."
 msgstr ""
 
-#: ../scripts/tmpl_cache/home-login.twig.php:80 ../www/index.php:112
+#: ../scripts/tmpl_cache/home-login.twig.php:80 ../www/index.php:129
 msgid "Logout"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:69
-#: ../scripts/tmpl_cache/home.twig.php:116
+#: ../scripts/tmpl_cache/home.twig.php:54
+#: ../scripts/tmpl_cache/home.twig.php:81
 msgid ""
 "An open source tool helping everyone to create simple, correct and "
 "embeddable charts in minutes."
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:82
-#: ../scripts/tmpl_cache/home.twig.php:129 ../www/index.php:127
-msgid "Login / Sign Up"
-msgstr ""
-
-#: ../scripts/tmpl_cache/home.twig.php:88
-#: ../scripts/tmpl_cache/home.twig.php:135
-msgid "Try it now!"
-msgstr ""
-
-#: ../scripts/tmpl_cache/home.twig.php:99
-#: ../scripts/tmpl_cache/home.twig.php:143
-msgid "Create a Chart"
-msgstr ""
-
-#: ../scripts/tmpl_cache/home.twig.php:160
+#: ../scripts/tmpl_cache/home.twig.php:97
 msgid "Easy to use"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:164
+#: ../scripts/tmpl_cache/home.twig.php:101
 msgid ""
 "This little tool reduces the time needed to create a correct chart and embed "
 "it into any website from hours to seconds. It makes charting easy, and helps "
 "you avoiding common pitfalls."
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:170
+#: ../scripts/tmpl_cache/home.twig.php:107
 msgid "Full control"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:174
+#: ../scripts/tmpl_cache/home.twig.php:111
 msgid ""
 "Datawrapper is 100&#37; free software. You can use our free hosted service, "
 "or <a href='/docs/howtouse#server'>install it on your own server</a> for "
@@ -639,66 +623,66 @@ msgid ""
 "extend."
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:180
-msgid "White-label charts"
+#: ../scripts/tmpl_cache/home.twig.php:117
+msgid "Customizable"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:184
+#: ../scripts/tmpl_cache/home.twig.php:121
 msgid ""
 "We encourage you to <a href='/docs/howtouse#customize'>customize the charts "
 "layout</a>, fonts and colors to make them integrate nicely in your website. "
 "Strengthen your own brand, not ours."
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:193
+#: ../scripts/tmpl_cache/home.twig.php:130
 msgid "Created with Datawrapper"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:197
+#: ../scripts/tmpl_cache/home.twig.php:134
 msgid ""
 "Need some inspiration? See what others have created <a href='/gallery/'>in "
 "our gallery</a>."
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:245
+#: ../scripts/tmpl_cache/home.twig.php:182
 msgid "Want to learn more?"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:256
+#: ../scripts/tmpl_cache/home.twig.php:193
 msgid "A concise introduction into the functions of Datawrapper."
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:262
+#: ../scripts/tmpl_cache/home.twig.php:199
 msgid "Step by step"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:266
+#: ../scripts/tmpl_cache/home.twig.php:203
 msgid ""
 "This tutorial guides you through the entire charting process, from finding "
 "data to embedding your chart."
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:272
+#: ../scripts/tmpl_cache/home.twig.php:209
 msgid "Motivation"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:276
+#: ../scripts/tmpl_cache/home.twig.php:213
 msgid ""
 "Learn more about <a href='/docs/motivation'>why we created Datawrapper</a>, "
 "and why we chosed this approach."
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:283
+#: ../scripts/tmpl_cache/home.twig.php:220
 msgid "Find it on Github"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:287
+#: ../scripts/tmpl_cache/home.twig.php:224
 msgid ""
 "You can find and fork the Datawrapper source code on Github. It is licensed "
 "under the MIT license."
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:297
+#: ../scripts/tmpl_cache/home.twig.php:234
 msgid ""
 "Looking for the old beta version of Datawrapper? It's still available at <a "
 "href='http://beta.datawrapper.de'>beta.datawrapper.de</a>"
@@ -1033,6 +1017,18 @@ msgstr ""
 msgid "Get the data"
 msgstr ""
 
+#: ../scripts/tmpl_cache/utils.twig.php:235 ../www/index.php:144
+msgid "Login / Sign Up"
+msgstr ""
+
+#: ../scripts/tmpl_cache/utils.twig.php:241
+msgid "Try it now!"
+msgstr ""
+
+#: ../scripts/tmpl_cache/utils.twig.php:248
+msgid "Create a Chart"
+msgstr ""
+
 #: ../scripts/tmpl_cache/vis-options.twig.php:32
 msgid "Pick base color"
 msgstr ""
@@ -1041,39 +1037,39 @@ msgstr ""
 msgid "Select row to display"
 msgstr ""
 
-#: ../www/index.php:71
+#: ../www/index.php:88
 msgid "Create Chart"
 msgstr ""
 
-#: ../www/index.php:75
+#: ../www/index.php:92
 msgid "Gallery"
 msgstr ""
 
-#: ../www/index.php:77 ../lib/templates/docs-pages.php:5
+#: ../www/index.php:94 ../lib/templates/docs-pages.php:5
 msgid "About"
 msgstr ""
 
-#: ../www/index.php:78
+#: ../www/index.php:95
 msgid "Blog"
 msgstr ""
 
-#: ../www/index.php:96
+#: ../www/index.php:113
 msgid "Language"
 msgstr ""
 
-#: ../www/index.php:120
+#: ../www/index.php:137
 msgid "Admin"
 msgstr ""
 
-#: ../www/index.php:155
+#: ../www/index.php:172
 msgid "Upload Data"
 msgstr ""
 
-#: ../www/index.php:156
+#: ../www/index.php:173
 msgid "Check & Describe"
 msgstr ""
 
-#: ../www/index.php:158
+#: ../www/index.php:175
 msgid "Publish & Embed"
 msgstr ""
 
@@ -1142,62 +1138,62 @@ msgid "Copy"
 msgstr ""
 
 #: ../lib/templates/demo_datasets.php:10
-msgid "National external debt per person"
+msgid "Fearless Felix: How far did he fall"
 msgstr ""
 
-#: ../lib/templates/demo_datasets.php:11 ../lib/templates/demo_datasets.php:56
+#: ../lib/templates/demo_datasets.php:11 ../lib/templates/demo_datasets.php:49
 msgid "Bar chart"
 msgstr ""
 
-#: ../lib/templates/demo_datasets.php:40
+#: ../lib/templates/demo_datasets.php:33
 msgid "Marriages in Germany"
 msgstr ""
 
-#: ../lib/templates/demo_datasets.php:42
+#: ../lib/templates/demo_datasets.php:35
 msgid "Line chart"
 msgstr ""
 
-#: ../lib/templates/demo_datasets.php:50
+#: ../lib/templates/demo_datasets.php:43
 msgid "Year"
 msgstr ""
 
-#: ../lib/templates/demo_datasets.php:50
+#: ../lib/templates/demo_datasets.php:43
 msgid "Marriages"
 msgstr ""
 
-#: ../lib/templates/demo_datasets.php:63
+#: ../lib/templates/demo_datasets.php:56
 msgid "Net borrowing of Germany"
 msgstr ""
 
-#: ../lib/templates/demo_datasets.php:65
+#: ../lib/templates/demo_datasets.php:58
 msgid "New debt in Bio."
 msgstr ""
 
-#: ../lib/templates/demo_datasets.php:72
+#: ../lib/templates/demo_datasets.php:65
 msgid "Women in German Parliament"
 msgstr ""
 
-#: ../lib/templates/demo_datasets.php:73
+#: ../lib/templates/demo_datasets.php:66
 msgid "Bar chart (grouped)"
 msgstr ""
 
-#: ../lib/templates/demo_datasets.php:81
+#: ../lib/templates/demo_datasets.php:74
 msgid "Party"
 msgstr ""
 
-#: ../lib/templates/demo_datasets.php:81
+#: ../lib/templates/demo_datasets.php:74
 msgid "Women"
 msgstr ""
 
-#: ../lib/templates/demo_datasets.php:81
+#: ../lib/templates/demo_datasets.php:74
 msgid "Men"
 msgstr ""
 
-#: ../lib/templates/demo_datasets.php:93
+#: ../lib/templates/demo_datasets.php:86
 msgid "Seats in German Parliament"
 msgstr ""
 
-#: ../lib/templates/demo_datasets.php:94
+#: ../lib/templates/demo_datasets.php:87
 msgid "Donut chart"
 msgstr ""
 

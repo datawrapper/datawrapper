@@ -14,13 +14,13 @@ msgstr ""
 "X-Poedit-SearchPath-0: /Users/gka/clients/datawrapper/1.0/scripts/"
 "tmpl_cache\n"
 
-#: ../controller/docs.php:35
-msgid "Not found"
-msgstr "Seite nicht gefunden"
-
-#: ../controller/docs.php:35
+#: ../controller/docs.php:36 ../controller/docs.php:52
 msgid "Sorry, but this content is not available in your language, yet."
 msgstr "Dieser Inhalt ist leider noch nicht in dieser Sprache verfügbar."
+
+#: ../controller/docs.php:52
+msgid "Not found"
+msgstr "Seite nicht gefunden"
 
 #: ../scripts/tmpl_cache/account-reset-password.twig.php:37
 msgid "Reset Your Password"
@@ -180,7 +180,7 @@ msgstr "Datenreihe kommentieren"
 msgid "Annotate data point"
 msgstr "Datenpunkt kommentieren"
 
-#: ../scripts/tmpl_cache/chart-describe.twig.php:346 ../www/index.php:157
+#: ../scripts/tmpl_cache/chart-describe.twig.php:346 ../www/index.php:174
 msgid "Visualize"
 msgstr "Visualisieren"
 
@@ -534,7 +534,7 @@ msgstr ""
 "a> – dem Bildungswerk der Zeitungen."
 
 #: ../scripts/tmpl_cache/core.twig.php:189
-#: ../scripts/tmpl_cache/home.twig.php:252
+#: ../scripts/tmpl_cache/home.twig.php:189
 msgid "Quick Start"
 msgstr "Schnellstart"
 
@@ -550,7 +550,7 @@ msgstr "Nutzungsbedingungen"
 msgid "Imprint"
 msgstr "Impressum"
 
-#: ../scripts/tmpl_cache/docs.twig.php:69
+#: ../scripts/tmpl_cache/docs.twig.php:87
 msgid "Navigation"
 msgstr "Inhalt"
 
@@ -632,9 +632,8 @@ msgid "Wrap again!"
 msgstr "\"Wrap\" nochmal!"
 
 #: ../scripts/tmpl_cache/home-login.twig.php:66
-#: ../scripts/tmpl_cache/home.twig.php:103
-#: ../scripts/tmpl_cache/home.twig.php:147
-#: ../scripts/tmpl_cache/mycharts.twig.php:52 ../www/index.php:73
+#: ../scripts/tmpl_cache/mycharts.twig.php:52
+#: ../scripts/tmpl_cache/utils.twig.php:252 ../www/index.php:90
 msgid "My Charts"
 msgstr "Meine Diagramme"
 
@@ -642,7 +641,7 @@ msgstr "Meine Diagramme"
 msgid "See what you created so far."
 msgstr "Schau dir an, was du bisher erstellt hast."
 
-#: ../scripts/tmpl_cache/home-login.twig.php:74 ../www/index.php:108
+#: ../scripts/tmpl_cache/home-login.twig.php:74 ../www/index.php:125
 msgid "Settings"
 msgstr "Einstellungen"
 
@@ -650,12 +649,12 @@ msgstr "Einstellungen"
 msgid "Edit your personal information."
 msgstr "Ändere deine persönlichen Daten"
 
-#: ../scripts/tmpl_cache/home-login.twig.php:80 ../www/index.php:112
+#: ../scripts/tmpl_cache/home-login.twig.php:80 ../www/index.php:129
 msgid "Logout"
 msgstr "Ausloggen"
 
-#: ../scripts/tmpl_cache/home.twig.php:69
-#: ../scripts/tmpl_cache/home.twig.php:116
+#: ../scripts/tmpl_cache/home.twig.php:54
+#: ../scripts/tmpl_cache/home.twig.php:81
 msgid ""
 "An open source tool helping everyone to create simple, correct and "
 "embeddable charts in minutes."
@@ -663,26 +662,11 @@ msgstr ""
 "Ein Opensource Tool das dabei hilft, innerhalb von Minuten einfache und "
 "korrekte Diagramme mit Einbett-Code zu erstellen."
 
-#: ../scripts/tmpl_cache/home.twig.php:82
-#: ../scripts/tmpl_cache/home.twig.php:129 ../www/index.php:127
-msgid "Login / Sign Up"
-msgstr "Einloggen / Anmelden"
-
-#: ../scripts/tmpl_cache/home.twig.php:88
-#: ../scripts/tmpl_cache/home.twig.php:135
-msgid "Try it now!"
-msgstr "Sofort ausprobieren"
-
-#: ../scripts/tmpl_cache/home.twig.php:99
-#: ../scripts/tmpl_cache/home.twig.php:143
-msgid "Create a Chart"
-msgstr "Diagramm erstellen"
-
-#: ../scripts/tmpl_cache/home.twig.php:160
+#: ../scripts/tmpl_cache/home.twig.php:97
 msgid "Easy to use"
 msgstr "Einfach"
 
-#: ../scripts/tmpl_cache/home.twig.php:164
+#: ../scripts/tmpl_cache/home.twig.php:101
 msgid ""
 "This little tool reduces the time needed to create a correct chart and embed "
 "it into any website from hours to seconds. It makes charting easy, and helps "
@@ -692,11 +676,11 @@ msgstr ""
 "von Stunden auf Minuten. Viele Einstellungs&shy;möglichkeiten sorgen für "
 "hohe Qualität."
 
-#: ../scripts/tmpl_cache/home.twig.php:170
+#: ../scripts/tmpl_cache/home.twig.php:107
 msgid "Full control"
 msgstr "Volle Kontrolle"
 
-#: ../scripts/tmpl_cache/home.twig.php:174
+#: ../scripts/tmpl_cache/home.twig.php:111
 msgid ""
 "Datawrapper is 100&#37; free software. You can use our free hosted service, "
 "or <a href='/docs/howtouse#server'>install it on your own server</a> for "
@@ -708,11 +692,11 @@ msgstr ""
 "Server</a> für maximale Kontrolle. Als PHP-Software ist Datawrapper einfach "
 "zu installieren und erweitern."
 
-#: ../scripts/tmpl_cache/home.twig.php:180
-msgid "White-label charts"
+#: ../scripts/tmpl_cache/home.twig.php:117
+msgid "Customizable"
 msgstr "Anpassbar"
 
-#: ../scripts/tmpl_cache/home.twig.php:184
+#: ../scripts/tmpl_cache/home.twig.php:121
 msgid ""
 "We encourage you to <a href='/docs/howtouse#customize'>customize the charts "
 "layout</a>, fonts and colors to make them integrate nicely in your website. "
@@ -722,11 +706,11 @@ msgstr ""
 "Diagramme an</a>, damit sie sich besser in deine Webseite integrieren. "
 "Stärke deine eigene Marke, nicht unsere."
 
-#: ../scripts/tmpl_cache/home.twig.php:193
+#: ../scripts/tmpl_cache/home.twig.php:130
 msgid "Created with Datawrapper"
 msgstr "Erstellt mit Datawrapper"
 
-#: ../scripts/tmpl_cache/home.twig.php:197
+#: ../scripts/tmpl_cache/home.twig.php:134
 msgid ""
 "Need some inspiration? See what others have created <a href='/gallery/'>in "
 "our gallery</a>."
@@ -734,19 +718,19 @@ msgstr ""
 "Mehr Inspiration gewünscht? Schau <a href='/gallery/'>in unserer Galerie</a> "
 "nach was andere so erstellt haben."
 
-#: ../scripts/tmpl_cache/home.twig.php:245
+#: ../scripts/tmpl_cache/home.twig.php:182
 msgid "Want to learn more?"
 msgstr "Weitere Informationen"
 
-#: ../scripts/tmpl_cache/home.twig.php:256
+#: ../scripts/tmpl_cache/home.twig.php:193
 msgid "A concise introduction into the functions of Datawrapper."
 msgstr "Eine knappe Einführung in die Funktionen von Datawrapper."
 
-#: ../scripts/tmpl_cache/home.twig.php:262
+#: ../scripts/tmpl_cache/home.twig.php:199
 msgid "Step by step"
 msgstr "Schritt für Schritt"
 
-#: ../scripts/tmpl_cache/home.twig.php:266
+#: ../scripts/tmpl_cache/home.twig.php:203
 msgid ""
 "This tutorial guides you through the entire charting process, from finding "
 "data to embedding your chart."
@@ -754,11 +738,11 @@ msgstr ""
 "Diese Anleitung führt durch die komplette Diagrammerstellung. Vom Finden der "
 "Daten bis zum Einbetten des Diagramms."
 
-#: ../scripts/tmpl_cache/home.twig.php:272
+#: ../scripts/tmpl_cache/home.twig.php:209
 msgid "Motivation"
 msgstr "Motivation"
 
-#: ../scripts/tmpl_cache/home.twig.php:276
+#: ../scripts/tmpl_cache/home.twig.php:213
 msgid ""
 "Learn more about <a href='/docs/motivation'>why we created Datawrapper</a>, "
 "and why we chosed this approach."
@@ -766,11 +750,11 @@ msgstr ""
 "Erfahre <a href='/docs/motivation'>warum wir Datawrapper erstellt haben</a> "
 "und weshalb wir diesen Ansatz gewählt haben."
 
-#: ../scripts/tmpl_cache/home.twig.php:283
+#: ../scripts/tmpl_cache/home.twig.php:220
 msgid "Find it on Github"
 msgstr "Auf Github finden"
 
-#: ../scripts/tmpl_cache/home.twig.php:287
+#: ../scripts/tmpl_cache/home.twig.php:224
 msgid ""
 "You can find and fork the Datawrapper source code on Github. It is licensed "
 "under the MIT license."
@@ -778,7 +762,7 @@ msgstr ""
 "Du findest den Quellcode von Datawrapper auf Github. Lizensiert unter der "
 "MIT-Lizenz."
 
-#: ../scripts/tmpl_cache/home.twig.php:297
+#: ../scripts/tmpl_cache/home.twig.php:234
 msgid ""
 "Looking for the old beta version of Datawrapper? It's still available at <a "
 "href='http://beta.datawrapper.de'>beta.datawrapper.de</a>"
@@ -1147,6 +1131,18 @@ msgstr "Daten speichern "
 msgid "Get the data"
 msgstr "Daten"
 
+#: ../scripts/tmpl_cache/utils.twig.php:235 ../www/index.php:144
+msgid "Login / Sign Up"
+msgstr "Einloggen / Anmelden"
+
+#: ../scripts/tmpl_cache/utils.twig.php:241
+msgid "Try it now!"
+msgstr "Sofort ausprobieren"
+
+#: ../scripts/tmpl_cache/utils.twig.php:248
+msgid "Create a Chart"
+msgstr "Diagramm erstellen"
+
 #: ../scripts/tmpl_cache/vis-options.twig.php:32
 msgid "Pick base color"
 msgstr "Basisfarbe auswählen"
@@ -1155,39 +1151,39 @@ msgstr "Basisfarbe auswählen"
 msgid "Select row to display"
 msgstr "Diese Zeile anzeigen"
 
-#: ../www/index.php:71
+#: ../www/index.php:88
 msgid "Create Chart"
 msgstr "Diagramm erstellen"
 
-#: ../www/index.php:75
+#: ../www/index.php:92
 msgid "Gallery"
 msgstr "Galerie"
 
-#: ../www/index.php:77 ../lib/templates/docs-pages.php:5
+#: ../www/index.php:94 ../lib/templates/docs-pages.php:5
 msgid "About"
 msgstr "Über"
 
-#: ../www/index.php:78
+#: ../www/index.php:95
 msgid "Blog"
 msgstr "Blog"
 
-#: ../www/index.php:96
+#: ../www/index.php:113
 msgid "Language"
 msgstr "Sprache"
 
-#: ../www/index.php:120
+#: ../www/index.php:137
 msgid "Admin"
 msgstr "Admin"
 
-#: ../www/index.php:155
+#: ../www/index.php:172
 msgid "Upload Data"
 msgstr "Daten hochladen"
 
-#: ../www/index.php:156
+#: ../www/index.php:173
 msgid "Check & Describe"
 msgstr "Prüfen & Beschreiben"
 
-#: ../www/index.php:158
+#: ../www/index.php:175
 msgid "Publish & Embed"
 msgstr "Veröffentlichen & Einbetten"
 
@@ -1266,62 +1262,62 @@ msgid "Copy"
 msgstr "Kopie"
 
 #: ../lib/templates/demo_datasets.php:10
-msgid "National external debt per person"
-msgstr "Staatsschulden pro Person"
+msgid "Fearless Felix: How far did he fall"
+msgstr "Fearless Felix: Wie tief ist er gefallen?"
 
-#: ../lib/templates/demo_datasets.php:11 ../lib/templates/demo_datasets.php:56
+#: ../lib/templates/demo_datasets.php:11 ../lib/templates/demo_datasets.php:49
 msgid "Bar chart"
 msgstr "Balken"
 
-#: ../lib/templates/demo_datasets.php:40
+#: ../lib/templates/demo_datasets.php:33
 msgid "Marriages in Germany"
 msgstr "Eheschließungen in Deutschland"
 
-#: ../lib/templates/demo_datasets.php:42
+#: ../lib/templates/demo_datasets.php:35
 msgid "Line chart"
 msgstr "Liniendiagramm"
 
-#: ../lib/templates/demo_datasets.php:50
+#: ../lib/templates/demo_datasets.php:43
 msgid "Year"
 msgstr "Jahr"
 
-#: ../lib/templates/demo_datasets.php:50
+#: ../lib/templates/demo_datasets.php:43
 msgid "Marriages"
 msgstr "Eheschließungen"
 
-#: ../lib/templates/demo_datasets.php:63
+#: ../lib/templates/demo_datasets.php:56
 msgid "Net borrowing of Germany"
 msgstr "Nettoneuverschuldung"
 
-#: ../lib/templates/demo_datasets.php:65
+#: ../lib/templates/demo_datasets.php:58
 msgid "New debt in Bio."
 msgstr "Neuverschuldung in Mrd."
 
-#: ../lib/templates/demo_datasets.php:72
+#: ../lib/templates/demo_datasets.php:65
 msgid "Women in German Parliament"
 msgstr "Frauen im Bundestag"
 
-#: ../lib/templates/demo_datasets.php:73
+#: ../lib/templates/demo_datasets.php:66
 msgid "Bar chart (grouped)"
 msgstr "Balken (gruppiert)"
 
-#: ../lib/templates/demo_datasets.php:81
+#: ../lib/templates/demo_datasets.php:74
 msgid "Party"
 msgstr "Partei"
 
-#: ../lib/templates/demo_datasets.php:81
+#: ../lib/templates/demo_datasets.php:74
 msgid "Women"
 msgstr "Frauen"
 
-#: ../lib/templates/demo_datasets.php:81
+#: ../lib/templates/demo_datasets.php:74
 msgid "Men"
 msgstr "Männer"
 
-#: ../lib/templates/demo_datasets.php:93
+#: ../lib/templates/demo_datasets.php:86
 msgid "Seats in German Parliament"
 msgstr "Sitzverteilung im Bundestag"
 
-#: ../lib/templates/demo_datasets.php:94
+#: ../lib/templates/demo_datasets.php:87
 msgid "Donut chart"
 msgstr "Donut-Diagramm"
 
@@ -1450,11 +1446,14 @@ msgstr ""
 "Bitte einen unserer freundlichen <a href=\"mailto:hello@datawrapper.de"
 "\">Administratoren</a> dir beim Zurücksetzen des Passworts zu helfen."
 
+#~ msgid "White-label charts"
+#~ msgstr "Anpassbar"
+
+#~ msgid "National external debt per person"
+#~ msgstr "Staatsschulden pro Person"
+
 #~ msgid "..or pick a CSV file from your disk"
 #~ msgstr "…oder lade eine CSV-Datei hoch"
-
-#~ msgid "Customized layouts"
-#~ msgstr "Anpassbares Design"
 
 #~ msgid "or"
 #~ msgstr "oder jetzt"
