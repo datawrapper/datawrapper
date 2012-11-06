@@ -216,9 +216,10 @@ class Chart extends BaseChart {
 
     public function unpublish() {
         $path = $this->getStaticPath();
-        //print $path;
-        array_map('unlink', glob($path . "/*"));
-        rmdir($path);
+        if (file_exists($path)) {
+            array_map('unlink', glob($path . "/*"));
+            rmdir($path);
+        }
     }
 
 } // Chart
