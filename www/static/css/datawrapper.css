@@ -27,7 +27,7 @@ body {
 }
 
 body.home {
-    background: url(/static/img/teaser-home-bg.jpg) no-repeat;
+    background: url(/static/img/teaser-home-bg.jpg) repeat-x;
     background-position: 0 -21px;
 }
 
