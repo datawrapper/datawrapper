@@ -6,10 +6,14 @@ $app->get('/', function () use ($app) {
         // found link to a legacy chart
         $app->redirect('/legacy/'.$app->request()->get('c').'.html');
     } else {
+
+        $chart_ids = array('RXoKw', 'rf47Q', 'a4Yyf', '78iap');
+        $charts = ChartQuery::create()->findPKs($chart_ids);
+
         $page = array(
             'title' => 'Datawrapper',
             'pageClass' => 'home',
-            'recent_charts' => ChartQuery::create()->getGalleryCharts(array(), 0, 4)
+            'recent_charts' => $charts
         );
         add_header_vars($page, '');
 
