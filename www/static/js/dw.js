@@ -765,7 +765,7 @@
          var maxMatchCount = 0,
             k = -1,
             me = this,
-            delimiters = ['\t', ',',';','|'];
+            delimiters = ['\t',';','|',','];
          _.each(delimiters, function(delimiter, i) {
             var regex = me.getDelimiterPatterns(delimiter, me.quoteChar),
                c = strData.match(regex).length;
