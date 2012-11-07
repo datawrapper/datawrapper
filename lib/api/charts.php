@@ -266,7 +266,7 @@ $app->post('/charts/:id/publish/js', function($chart_id) use ($app) {
             if (!file_exists($vis_path)) {
                 $all = file_get_contents('../static/js/dw.js');
                 foreach ($data['visJS'] as $js) {
-                    if (substr($js, 0, 7) != 'http://') {
+                    if (substr($js, 0, 7) != 'http://' && substr($js, 0, 2) != '//') {
                         $all .= "\n\n\n" . file_get_contents('..' . $js);
                     }
                 }
@@ -281,7 +281,7 @@ $app->post('/charts/:id/publish/js', function($chart_id) use ($app) {
             if (!file_exists($theme_path)) {
                 $all = '';
                 foreach ($data['themeJS'] as $js) {
-                    if (substr($js, 0, 7) != 'http://') {
+                    if (substr($js, 0, 7) != 'http://' && substr($js, 0, 2) != '//') {
                         $all .= "\n\n\n" . file_get_contents('..' . $js);
                     }
                 }

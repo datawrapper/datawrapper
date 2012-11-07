@@ -31,8 +31,12 @@ function get_chart_content($chart, $user, $minified = false, $path = '') {
 
     $base_js = array(
         $abs . '/static/vendor/globalize/globalize.min.js',
-        $abs . '/static/vendor/underscore/underscore-min.js',
-        $abs . '/static/vendor/jquery/jquery.min.js'
+
+        // use CDN instead
+        // $abs . '/static/vendor/underscore/underscore-min.js',
+        // $abs . '/static/vendor/jquery/jquery.min.js'
+        '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.2/underscore-min.js',
+        '//cdnjs.cloudflare.com/ajax/libs/jquery/1.8.2/jquery.min.js'
     );
 
     $vis_js = array();

@@ -4,25 +4,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
     <title>{{ chart.title }}</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <style type="text/css">
-body {
-    padding: {{ padding }}px;
-}
-    </style>
     <!--[if lt IE 9]>
     <script src="/static/vendor/json-js/json2.min.js"></script>
     <script type="text/javascript">
     </script>
     <![endif]-->
-
     {% if innersvg %}
     <script type="text/javascript" src="/static/vendor/innersvg/innersvg.js"></script>
     <style>
         body { padding: 0!important;}
     </style>
     {% endif %}
-
-
 {% for src in stylesheets %}
     <link rel="stylesheet" type="text/css" href="{{ src }}"></link>
 {% endfor %}
@@ -40,17 +32,12 @@ body {
         var vis = new Datawrapper.Visualizations.{{ visualization.id | classify }}();
 
         vis.setTheme(theme);
-
         chart.setLocale('{{ chartLocale }}', {{ metricPrefix | json | raw }});
-
         vis.load(chart, function() {
             vis.render('#chart');
         });
-
         window.vis = vis;
-
         var reload_timer;
-
         if (!$.browser.msie && navigator.userAgent.match(/iPad/i) == null) {
             // IE continuosly reloads the chart for some strange reasons
             $(window).resize(function() {
@@ -64,17 +51,11 @@ body {
     </script>
 </head>
 <body class="chart">
-
     {# some convenient short cuts for theme templates #}
-    {% set title = chart.title %}
-    {% set intro = chart.metadata.describe.intro %}
-    {% set source = chart.metadata.describe['source-name'] %}
-    {% set sourceURL = chart.metadata.describe['source-url'] %}
+    {% set title = chart.title %}{% set intro = chart.metadata.describe.intro %}{% set source = chart.metadata.describe['source-name'] %}{% set sourceURL = chart.metadata.describe['source-url'] %}
 
     {% include theme.hasTemplate ? 'themes/' ~ theme.id ~ '.twig' : 'themes/default.twig' %}
 
-    {% use "tracking.twig" %}
-    {{ block('piwik') }}
-
+    {% use "tracking.twig" %}{{ block('piwik') }}
 </body>
 </html>
