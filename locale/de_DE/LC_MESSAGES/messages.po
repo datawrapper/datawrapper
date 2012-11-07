@@ -529,9 +529,9 @@ msgid ""
 "source</a> project by <a href=\"http://abzv.de\">ABZV</a> - a German "
 "training institution for newspaper journalists."
 msgstr ""
-"Datawrapper ist ein <a href='http://github.com/datawrapper/"
-"datawrapper'>Opensource-Projekt</a> von der <a href='http://abzv.de'>ABZV</"
-"a> – dem Bildungswerk der Zeitungen."
+"Datawrapper ist ein <a href='http://github.com/datawrapper/datawrapper'>Open-"
+"Source-Projekt</a> der <a href='http://abzv.de'>ABZV</a> — dem Bildungswerk "
+"der Zeitungen."
 
 #: ../scripts/tmpl_cache/core.twig.php:189
 #: ../scripts/tmpl_cache/home.twig.php:189
@@ -659,8 +659,8 @@ msgid ""
 "An open source tool helping everyone to create simple, correct and "
 "embeddable charts in minutes."
 msgstr ""
-"Ein Opensource Tool das dabei hilft, innerhalb von Minuten einfache und "
-"korrekte Diagramme mit Einbett-Code zu erstellen."
+"Ein Open-Source Werkzeug, dass dabei hilft, innerhalb von Minuten einfache "
+"und korrekte Diagramme mit Einbett-Code zu erstellen."
 
 #: ../scripts/tmpl_cache/home.twig.php:97
 msgid "Easy to use"
