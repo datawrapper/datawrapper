@@ -15,7 +15,7 @@ if ($GLOBALS['dw_config']['debug'] == true) {
     ini_set('display_errors', 1);
 }
 
-define('DATAWRAPPER_VERSION', '1.0');
+define('DATAWRAPPER_VERSION', '1.0.1');
 
 // include datawrapper session serialization
 require '../lib/session/Datawrapper.php';
