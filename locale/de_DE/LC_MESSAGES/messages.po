@@ -659,7 +659,7 @@ msgid ""
 "An open source tool helping everyone to create simple, correct and "
 "embeddable charts in minutes."
 msgstr ""
-"Ein Open-Source Werkzeug, dass dabei hilft, innerhalb von Minuten einfache "
+"Ein Open-Source Werkzeug, das dabei hilft, innerhalb von Minuten einfache "
 "und korrekte Diagramme mit Einbett-Code zu erstellen."
 
 #: ../scripts/tmpl_cache/home.twig.php:97
