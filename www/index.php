@@ -206,9 +206,12 @@ $app->notFound(function() {
     error_not_found();
 });
 
-$app->get('/phpinfo', function() use ($app) {
-    phpinfo();
-});
+
+if ($GLOBALS['dw_config']['debug']) {
+    $app->get('/phpinfo', function() use ($app) {
+        phpinfo();
+    });
+}
 
 /**
  * Step 4: Run the Slim application
