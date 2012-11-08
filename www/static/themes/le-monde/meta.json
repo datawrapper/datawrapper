@@ -5,6 +5,6 @@
     "locale": "fr_FR",
     "extends": "default",
     "restrict": "@lemonde.fr",
-    "version": "0.1.1",
-    "assets": ["lemonde-logo.png", "triangleArrow-Right.png"]
+    "version": "0.1.2",
+    "assets": ["triangleArrow-Right.png"]
 }

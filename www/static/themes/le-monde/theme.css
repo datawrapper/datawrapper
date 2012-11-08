@@ -104,7 +104,7 @@ body.chart {
     text-transform: uppercase;
     color: #2b2b2a;
     font-size: 10px;
-    height:45px;
+
 }
 
 #footer a {
@@ -118,8 +118,6 @@ body.chart {
 
 .footer-left {
     float: left;
-    position: relative;
-    top: 38px;
 }
 .footer-right {
     float: right;
