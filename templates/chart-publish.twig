@@ -159,7 +159,7 @@ $(function() {
             {% endif %}
 
             <h3>{% trans "Link to this visualisation" %}</h3>
-            <p><a href="http://{{ DW_CHART_CACHE_DOMAIN }}/{{ chart.id }}/">http://{{ DW_CHART_CACHE_DOMAIN }}/{{ chart.id }}/</a></p>
+            <p><a href="{{ iframe }}">{{ iframe }}</a></p>
 
             <h3>{% trans "Embed into your website" %}</h3>
             <p>{% trans "Just copy &amp; paste the following code into your website." %}</p>
@@ -167,7 +167,7 @@ $(function() {
                 <label>{% trans "Width" %}: <input type="text" id="embed-width" class="input-small" style="width:4ex" value="600" /> px</label>&nbsp;&nbsp;
                 <label>{% trans "Height" %}: <input type="text" id="embed-height" class="input-small" style="width:4ex" value="400" /> px</label>
 
-            <textarea id="iframe-code" class="span4" rows="5"><iframe src="http://{{ DW_CHART_CACHE_DOMAIN }}/{{ chart.id }}/" frameborder="0" allowtransparency="true" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen width="{{ chart.metadata.publish['embed-width'] }}" height="{{ chart.metadata.publish['embed-height'] }}"></iframe></textarea>
+            <textarea id="iframe-code" class="span4" rows="5"><iframe src="{{ iframe }}" frameborder="0" allowtransparency="true" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen width="{{ chart.metadata.publish['embed-width'] }}" height="{{ chart.metadata.publish['embed-height'] }}"></iframe></textarea>
 
              <h3>{% trans "Show in Gallery" %}</h3>
              <p>{{ "You can show some love to Datawrapper by agreeing to show your visualisation in our <a href='%GALLERY_URL%'>public gallery</a>" | trans | replace({ '%GALLERY_URL%': '/gallery/' }) | raw }}. {% trans "This is absolutely optional." %}</p>
@@ -220,7 +220,7 @@ $(function() {
         <div class="span8">
             {% if user.isAbleToPublish %}
 
-            <iframe src="http://{{ DW_CHART_CACHE_DOMAIN }}/{{ chart.id }}" id="iframe-vis" style="width:{{ chart.metadata.publish['embed-width'] }}px;height:{{ chart.metadata.publish['embed-height'] }}px"></iframe>
+            <iframe src="{{ iframe }}" id="iframe-vis" style="width:{{ chart.metadata.publish['embed-width'] }}px;height:{{ chart.metadata.publish['embed-height'] }}px"></iframe>
 
             {% else %}
 

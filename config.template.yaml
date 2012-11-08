@@ -25,3 +25,10 @@ piwik:
     url: datastory.de/piwik  # without http:// and trailing slash
     idSite: 5
     # idSiteNoCharts: 6  # additionally, you can track the user interface w/o the charts, too
+
+# optional: publish your charts on Amazon S3
+
+# s3:
+#     bucket: BUCKET_NAME
+#     accesskey: YOUR_AWS_ACCESS_KEY
+#     secretkey: YOUR_AWS_SECTET_KEY

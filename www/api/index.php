@@ -30,6 +30,11 @@ require '../../lib/session/Datawrapper.php';
 require_once '../../vendor/spyc/spyc.php';
 $GLOBALS['dw_config'] = Spyc::YAMLLoad('../../config.yaml');
 
+// Load S3 class
+if (!empty($GLOBALS['dw_config']['s3'])) {
+    require_once '../../vendor/s3/S3.php';
+}
+
 require '../../lib/utils/i18n.php';
 
 /**

@@ -13,11 +13,19 @@ require_once '../vendor/jsmin/jsmin.php';
 $app->get('/chart/:id/publish', function ($id) use ($app) {
     check_chart_writable($id, function($user, $chart) use ($app) {
 
+        $cfg = $GLOBALS['dw_config'];
+        if (empty($cfg['s3'])) {
+            $iframe_src = 'http://' . $cfg['chart_domain'] . '/' . $chart->getID() . '/';
+        } else {
+            $iframe_src = 'http://' . $cfg['s3']['bucket'] . '.s3.amazonaws.com/' . $chart->getID() . '/index.html';
+        }
+
         $page = array(
             'chartData' => $chart->loadData(),
             'chart' => $chart,
             'visualizations' => get_visualizations_meta('', true),
             'vis' => get_visualization_meta($chart->getType()),
+            'iframe' => $iframe_src,
             'themes' => get_themes_meta()
         );
         add_header_vars($page, 'chart');

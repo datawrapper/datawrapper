@@ -201,6 +201,14 @@ function get_static_path($chart) {
     return $static_path;
 }
 
+function push_to_s3($filename, $uploadName, $contentType = 'text/plain') {
+    if (!empty($GLOBALS['dw_config']['s3'])) {
+        $cfg = $GLOBALS['dw_config']['s3'];
+        $s3 = new S3($cfg['accesskey'], $cfg['secretkey']);
+        $s3->putObject($s3->inputFile($filename, false), $cfg['bucket'], $uploadName, S3::ACL_PUBLIC_READ, array(), array('Content-Type' => $contentType));
+    }
+}
+
 /**
  * API: copy a chart
  *
@@ -211,9 +219,10 @@ $app->post('/charts/:id/publish/html', function($chart_id) use ($app) {
         try {
             $static_path = get_static_path($chart);
             $url = 'http://'.$GLOBALS['dw_config']['domain'].'/chart/'.$chart->getID().'/preview?minify=1';
+            $outf = $static_path . '/index.html';
             if (function_exists('curl_init')) {
                 $ch = curl_init($url);
-                $fp = fopen($static_path . '/index.html', 'w');
+                $fp = fopen($outf, 'w');
 
                 $strCookie = 'DW-SESSION=' . $_COOKIE['DW-SESSION'] . '; path=/';
                 session_write_close();
@@ -233,9 +242,9 @@ $app->post('/charts/:id/publish/html', function($chart_id) use ($app) {
                     )
                 ));
                 $html = file_get_contents($url, false, $context);
-                file_put_contents($static_path . '/index.html', $html);
+                file_put_contents($outf, $html);
             }
-
+            push_to_s3($outf, $chart->getID() . '/index.html', 'text/html');
             ok();
         } catch (Exception $e) {
             error('io-error', $e->getMessage());
@@ -262,8 +271,8 @@ $app->post('/charts/:id/publish/js', function($chart_id) use ($app) {
 
             // generate visualization script
             $vis = $data['visualization'];
-            $vis_path = $static_path . 'vis/' . $vis['id'] . '-' . $vis['version'] . '.min.js';
-            if (!file_exists($vis_path)) {
+            $vis_path = 'vis/' . $vis['id'] . '-' . $vis['version'] . '.min.js';
+            if (!file_exists($static_path . $vis_path)) {
                 $all = file_get_contents('../static/js/dw.js');
                 foreach ($data['visJS'] as $js) {
                     if (substr($js, 0, 7) != 'http://' && substr($js, 0, 2) != '//') {
@@ -271,14 +280,15 @@ $app->post('/charts/:id/publish/js', function($chart_id) use ($app) {
                     }
                 }
                 $all = JSMin::minify($all);
-                file_put_contents($vis_path, $all);
+                file_put_contents($static_path . $vis_path, $all);
             }
+            push_to_s3($static_path . $vis_path, 'lib/' . $vis_path, 'application/javascript');
 
             // generate theme script
             $theme = $data['theme'];
-            $theme_path = $static_path . 'theme/' . $theme['id'] . '-' . $theme['version'] . '.min.js';
+            $theme_path = 'theme/' . $theme['id'] . '-' . $theme['version'] . '.min.js';
 
-            if (!file_exists($theme_path)) {
+            if (!file_exists($static_path . $theme_path)) {
                 $all = '';
                 foreach ($data['themeJS'] as $js) {
                     if (substr($js, 0, 7) != 'http://' && substr($js, 0, 2) != '//') {
@@ -286,8 +296,9 @@ $app->post('/charts/:id/publish/js', function($chart_id) use ($app) {
                     }
                 }
                 $minified = JSMin::minify($all);
-                file_put_contents($theme_path, $minified);
+                file_put_contents($static_path . $theme_path, $minified);
             }
+            push_to_s3($static_path . $theme_path, 'lib/' . $theme_path, 'application/javascript');
 
             ok();
         } catch (Exception $e) {
@@ -317,8 +328,10 @@ $app->post('/charts/:id/publish/css', function($chart_id) use ($app) {
             }
 
             $cssmin = new CSSmin();
-            $minified = $cssmin->run($all);
+            $minified = $all; //$cssmin->run($all);
             file_put_contents($static_path . "/" . $chart->getID() . '.min.css', $minified);
+
+            push_to_s3($static_path."/".$chart->getID().'.min.css', $chart->getID().'/'.$chart->getID().'.min.css', 'text/css');
 
             // copy themes assets
             $theme = $data['theme'];
@@ -328,6 +341,7 @@ $app->post('/charts/:id/publish/css', function($chart_id) use ($app) {
                     $asset_tgt = $static_path . "/" . $asset;
                     if (file_exists($asset_src)) {
                         file_put_contents($asset_tgt, file_get_contents($asset_src));
+                        push_to_s3($asset_src, $chart->getID() . '/' . $asset);
                     }
                 }
             }
@@ -347,6 +361,7 @@ $app->post('/charts/:id/publish/data', function($chart_id) use ($app) {
         try {
             $static_path = get_static_path($chart);
             file_put_contents($static_path . "/data", $chart->loadData());
+            push_to_s3($static_path . "/data", $chart->getID() . '/data');
             $chart->setPublishedAt(time());
             $chart->save();
             ok();

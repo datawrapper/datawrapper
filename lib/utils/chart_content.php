@@ -30,11 +30,12 @@ function get_chart_content($chart, $user, $minified = false, $path = '') {
     $abs = 'http://' . $GLOBALS['dw_config']['domain'];
 
     $base_js = array(
-        $abs . '/static/vendor/globalize/globalize.min.js',
 
         // use CDN instead
+        // $abs . '/static/vendor/globalize/globalize.min.js',
         // $abs . '/static/vendor/underscore/underscore-min.js',
         // $abs . '/static/vendor/jquery/jquery.min.js'
+        '//assets.datawrapper.s3.amazonaws.com/globalize.min.js',
         '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.2/underscore-min.js',
         '//cdnjs.cloudflare.com/ajax/libs/jquery/1.8.2/jquery.min.js'
     );
