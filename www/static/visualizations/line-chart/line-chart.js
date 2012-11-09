@@ -62,6 +62,11 @@
                 c.rpad += 5;
             }
 
+            if (!directLabeling && legend.pos != 'right') {
+                // some more space for last x-label
+                c.rpad += 0.25 * me.labelWidth(me.chart.rowLabel(me.numRows-1));
+            }
+
             scales.x = scales.x.range([c.lpad+me.yAxisWidth(h), c.w-c.rpad]);
             scales.y = scales.y.range([c.h-c.bpad, c.tpad]);
 
@@ -86,6 +91,7 @@
             }
 
             // draw series lines
+            var all_paths = [];
             _.each(all_series, function(col, index) {
                 var paths = [], pts_ = [], pts = [], x, y, sw, connectMissingValuePath = [];
                 _.each(col.data, function(val, i) {
@@ -102,7 +108,6 @@
                     if (pts.length === 0 && pts_.length > 0) {
                         // first valid point after NaNs
                         var lp = pts_[pts_.length-1], s = lp.length-2;
-                        console.log(lp[s], lp[s+1],'-',x,y);
                         connectMissingValuePath.push('M'+[lp[s], lp[s+1]]+'L'+[ x, y]);
                     }
                     pts.push(x, y); // store current point
@@ -138,6 +143,8 @@
                 }
 
                 var strokeColor = me.getSeriesColor(col);
+
+                all_paths.push(paths);
 
                 _.each(paths, function(path) {
                     me.registerSeriesElement(c.paper.path(path).attr({
@@ -222,6 +229,102 @@
 
             window.ds = me.dataset;
             window.vis = me;
+
+            // fill space between lines
+            if (me.get('fill-between', false)) {
+                // compute intersections
+                if (all_paths.length == 2) {
+                    if (all_paths[0].length == 1 && all_paths[1].length == 1) {
+                        var path1 = Raphael.parsePathString(all_paths[0][0]),
+                            path2 = Raphael.parsePathString(all_paths[1][0]),
+                            pts = Raphael.pathIntersection(path1, path2),
+                            hull1 = [], hull2 = [],
+                            fills1 = [], fills2 = [],
+                            seg1 = 0, seg2 = 0,
+                            next;
+
+                        if (me.get('smooth-lines', false) === false) {
+                            // easy for straight lines
+                            $.each(pts, function(i, pt) {
+                                while (seg1 < pt.segment1) {
+                                    hull1.push(path1[seg1][1], path1[seg1][2]);
+                                    seg1++;
+                                }
+                                hull1.push([pt.x, pt.y]);
+                                while (seg2 < pt.segment2) {
+                                    hull2.unshift(path2[seg2][1], path2[seg2][2]);
+                                    seg2++;
+                                }
+                                (hull1[1] < hull2[hull2.length-1] ? fills1 : fills2).push([].concat(hull1, hull2));
+                                hull1 = [pt.x, pt.y];
+                                hull2 = [];
+                            });
+                            while (seg1 < path1.length) {
+                                hull1.push(path1[seg1][1], path1[seg1][2]);
+                                seg1++;
+                            }
+                            while (seg2 < path2.length) {
+                                hull2.unshift(path2[seg2][1], path2[seg2][2]);
+                                seg2++;
+                            }
+                            (hull1[1] < hull2[hull2.length-1] ? fills1 : fills2).push([].concat(hull1, hull2));
+
+                            $.each([fills1, fills2], function(i, fills) {
+                                var path = [];
+                                _.each(fills, function(pts) {
+                                    path.push("M" + [pts.shift(), pts.shift()] + (me.get('smooth-lines') ? "R" : "L") + pts);
+                                });
+                                c.paper.path(path).attr({ fill: me.getSeriesColor(all_series[i]), 'fill-opacity': 0.1, stroke: false });
+                            });
+
+                        } else {
+                            // harder for smooth lines?
+                            //var pts1 = [].concat
+
+                            var pts1 = [].concat(path1[0].slice(1), path1[1].slice(1)),
+                                pts2 = [].concat(path2[0].slice(1), path2[1].slice(1));
+
+                            $.each(pts, function(i, pt) {
+                                while (seg1 < pt.segment1) {
+                                    hull1.push(pts1[seg1*2], pts1[seg1*2+1]);
+                                    seg1++;
+                                }
+                                hull1.push(pt.x, pt.y);
+                                while (seg2 < pt.segment2) {
+                                    hull2.unshift(pts2[seg2*2], pts2[seg2*2+1]);
+                                    seg2++;
+                                }
+                                var f = hull1[1] < hull2[hull2.length-3] ? fills1 : fills2;
+                                f.push('M' + [hull1.shift(), hull1.shift()] + (hull1.length > 3 ? ' R '+hull1 : hull1.length > 1 ? ' L ' + hull1 : '')+
+                                    ' L ' + [hull2.shift(), hull2.shift()] + (hull2.length > 1 ? ' R '+hull2 : hull2.length > 1 ? ' L ' + hull2 : ''));
+                                //f[0] += ' M' + [hull2.shift(), hull2.shift()] + 'L' + hull2;
+                                //console.log(f[0]);
+                                hull1 = [pt.x, pt.y];
+                                hull2 = [pt.x, pt.y];
+                                //c.paper.circle(pt.x, pt.y, 5);
+                                //return false;
+                            });
+                            while (seg1*2 < pts1.length) {
+                                hull1.push(pts1[seg1*2], pts1[seg1*2+1]);
+                                seg1++;
+                            }
+                            while (seg2*2 < pts2.length) {
+                                hull2.unshift(pts2[seg2*2], pts2[seg2*2+1]);
+                                seg2++;
+                            }
+                            var f = hull1[1] < hull2[hull2.length-3] ? fills1 : fills2;
+                            f.push('M' + [hull1.shift(), hull1.shift()] + ' R' + hull1 + 'L' + [hull2.shift(), hull2.shift()] + ' R' + hull2);
+
+                            $.each([fills1, fills2], function(i, fills) {
+                                _.each(fills, function(path) {
+                                    c.paper.path(path).attr({ fill: me.getSeriesColor(all_series[i]), 'fill-opacity': 0.1, stroke: false });
+                                });
+                            });
+                        }
+
+                    } else me.warn('<b>Warning:</b> Area filling is not supported for lines with missing values.');
+                } else me.warn('<b>Warning:</b> Filling is only supported for exactly two lines.');
+            }
         },
 
         lineLabelsVisible: function() {
@@ -323,23 +426,74 @@
 
         xAxis: function() {
             // draw x scale labels
+            if (!this.chart.hasRowHeader()) return;
+
             var me = this, ds = me.dataset, c = me.__canvas,
-                rotate45 = me.get('rotate-x-labels');
-            if (me.chart.hasRowHeader()) {
-                var last_label_x = -100, min_label_distance = rotate45 ? 30 : 40;
-                _.each(me.chart.rowLabels(), function(val, i) {
-                    min_label_distance = Math.max(min_label_distance, me.labelWidth(val)+10);
-                });
-                _.each(me.chart.rowLabels(), function(val, i) {
-                    var x = me.__scales.x(i),
-                        y = c.h-c.bpad+me.theme.xLabelOffset;
-                    if (x - last_label_x < min_label_distance || x + min_label_distance > c.w) return;
-                    if (!val) return;
-                    last_label_x = x;
-                    if (rotate45) x -= 5;
-                    me.label(x, y, val, { align: 'center', cl: 'axis x-axis' + (rotate45 ? ' rotate45' : '') });
-                });
+                xscl = me.__scales.x,
+                rotate45 = me.get('rotate-x-labels'),
+                labels = me.chart.rowLabels(),
+                k = labels.length-1;
+
+            var last_label_x = -100, min_label_distance = rotate45 ? 30 : 0;
+            _.each(me.chart.rowLabels(), function(val, i) {
+                min_label_distance = Math.max(min_label_distance, me.labelWidth(val));
+            });
+
+            function addlbl(x, val, i, low) {
+                var y = c.h-c.bpad+me.theme.xLabelOffset, lbl;
+                if (!val) return;
+                if (rotate45) x -= 5;
+                lbl = me.label(x, y, val, { align: 'center', cl: 'axis x-axis' + (rotate45 ? ' rotate45' : '') });
+                //if (low) lbl.css({ 'font-weight': 'normal'});
             }
+
+            function center(k0, k1, l) {
+                // 7   0 1 2 3 4 5 6
+                var d = k1 - k0,
+                    divs = [2, 3, 5],
+                    stops = [];
+                if (Math.abs(k1 - k0) < 2) return;
+                _.each(divs, function(div) {
+                    if (d % div === 0) {
+                        for (var i=0; i<div-1; i++) stops.push(Math.round(k0 + d * (i + 1) / div));
+                        return false;
+                    }
+                });
+                if (stops.length === 0) {
+                    // no suitable division found (7,13 or other prime numbers)
+                    // just cut into half
+                    stops.push(Math.floor(k0 + d*0.5));
+                }
+
+                if (stops.length < 1) return;
+
+                var lblw = me.labelWidth(labels[k0]+'axis x-axis')*0.5 + me.labelWidth(labels[k1], 'axis x-axis')*0.5 + 20, i;
+                for (i=0; i<stops.length; i++) {
+                    lblw += me.labelWidth(labels[stops[i]], 'axis x-axis')+10;
+                }
+
+                if (xscl(k1) - xscl(k0) >= lblw) {
+                    var t = k0 + (k1 - k0) * 0.5;
+                    stops.unshift(k0);
+                    for (i=1; i<stops.length; i++) {
+                        addlbl(xscl(stops[i]), labels[stops[i]], stops[i], l>1);
+                        center(stops[i-1], stops[i], l+1);
+                    }
+                    center(stops[stops.length-1], k1, l+1);
+                }
+            }
+
+            center(0, k, 0);
+
+            addlbl(xscl(0), labels[0], 0);
+            addlbl(xscl(k), labels[k], k);
+
+            /*_.each(labels.slice(1, labels.length-2), function(val, i) {
+                var x = xscl(i);
+                if (x - last_label_x < min_label_distance || x + min_label_distance > c.w) return;
+                last_label_x = x;
+                addlbl(x, val, i);
+            });*/
         },
 
         hoverSeries: function(series) {

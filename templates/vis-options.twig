@@ -81,11 +81,11 @@ $(function() {
                     // special conditions:
                     _.each(opt['depends-on'], function(val, key) {
                         if (key == 'chart.min_series_num') {
-                            console.log(key);
-                            console.log(key, chart.dataSeries().length);
                             visible = visible && chart.dataSeries().length >= +val;
                         } else if (key == 'chart.max_series_num') {
                             visible = visible && chart.dataSeries().length <= +val;
+                        } else if (key == 'chart.missing_values') {
+                            visible = visible && chart.hasMissingValues() == val;
                         } else {
                             visible = visible && chart.get('metadata.visualize.'+key) == val;
                         }
