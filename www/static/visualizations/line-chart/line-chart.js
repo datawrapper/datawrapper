@@ -294,7 +294,7 @@
                                     hull2.unshift(pts2[seg2*2], pts2[seg2*2+1]);
                                     seg2++;
                                 }
-                                var f = hull1[1] < hull2[hull2.length-3] ? fills1 : fills2;
+                                var f = hull1[1] < hull2[hull2.length-(i === 0 ? 1 : 3)] ? fills1 : fills2;
                                 f.push('M' + [hull1.shift(), hull1.shift()] + (hull1.length > 3 ? ' R '+hull1 : hull1.length > 1 ? ' L ' + hull1 : '')+
                                     ' L ' + [hull2.shift(), hull2.shift()] + (hull2.length > 1 ? ' R '+hull2 : hull2.length > 1 ? ' L ' + hull2 : ''));
                                 //f[0] += ' M' + [hull2.shift(), hull2.shift()] + 'L' + hull2;
@@ -317,7 +317,7 @@
 
                             $.each([fills1, fills2], function(i, fills) {
                                 _.each(fills, function(path) {
-                                    c.paper.path(path).attr({ fill: me.getSeriesColor(all_series[i]), 'fill-opacity': 0.1, stroke: false });
+                                    c.paper.path(path).attr({ fill: me.getSeriesColor(all_series[i]), 'fill-opacity': 0.2, stroke: false });
                                 });
                             });
                         }
