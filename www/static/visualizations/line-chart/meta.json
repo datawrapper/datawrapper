@@ -4,7 +4,7 @@
         "de": "Liniendiagramm",
         "fr": "Graphique linéaire"
     },
-    "version": "0.9.3",
+    "version": "0.10.1",
     "author": {
         "name": "gka",
         "email": "gka@vis4.net"
@@ -64,6 +64,29 @@
                 "chart.min_series_num": 2
             }
         },
+        "fill-between": {
+            "type": "checkbox",
+            "label": {
+                "en": "Fill between lines",
+                "de": "Flächen ausfüllen",
+                "fr": "Fill between lines"
+            },
+            "default": false,
+            "depends-on": {
+                "chart.min_series_num": 2,
+                "chart.max_series_num": 2
+            }
+        },
+        "smooth-lines": {
+            "type": "checkbox",
+            "label": {
+                "en": "Smooth lines",
+                "de": "Linien glätten",
+                "fr": "Lisser les lignes"
+            },
+            "default": false,
+            "expert": false
+        },
         "rotate-x-labels": {
             "type": "checkbox",
             "label": {
@@ -82,22 +105,15 @@
             }
         },
 
-        "smooth-lines": {
-            "type": "checkbox",
-            "label": {
-                "en": "Smooth lines",
-                "de": "Linien glätten",
-                "fr": "Lisser les lignes"
-            },
-            "default": false,
-            "expert": true
-        },
         "connect-missing-values": {
             "type": "checkbox",
             "label": {
                 "en": "Connect lines between missing values",
                 "de": "Linien zwischen fehlenden Werten verbinden",
                 "fr": "Joindre les lignes pour les valeurs manquantes"
+            },
+            "depends-on": {
+                "chart.missing_values": true
             }
         },
         "force-banking": {

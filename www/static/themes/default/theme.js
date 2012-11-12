@@ -8,7 +8,7 @@
     // of them. Also, every theme can extend any other
     // existing theme.
 
-    Datawrapper.Themes.Default = _.extend({}, Datawrapper.Themes.Base, {
+    Datawrapper.Themes.Default = $.extend(true, {}, Datawrapper.Themes.Base, {
 
         colors: {
             palette: ["#1f77b4","#ff7f0e","#2ca02c","#d62728","#9467bd"],
@@ -17,6 +17,10 @@
             positive: '#1f77b4',
             negative: '#d62728',
             background: '#ffffff'
+        },
+
+        lineChart: {
+            fillOpacity: 0.5
         }
 
     });

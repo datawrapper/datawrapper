@@ -8,7 +8,7 @@
     // of them. Also, every theme can extend any other
     // existing theme.
 
-    Datawrapper.Themes.Ruhrnachrichten = _.extend({}, Datawrapper.Themes.Base, {
+    Datawrapper.Themes.Ruhrnachrichten = $.extend(true, {}, Datawrapper.Themes.Base, {
 
         colors: {
             palette: ['#00A3DA', '#A59E89', '#CF233B', '#667E86'],

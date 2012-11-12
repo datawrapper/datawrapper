@@ -463,6 +463,20 @@
 
         filterRows: function(rows) {
             this.__dataset.filterRows(rows);
+        },
+
+        hasMissingValues: function() {
+            var missValues = false;
+            _.each(this.dataSeries(), function(ds) {
+                _.each(ds.data, function(val) {
+                    if (val != Number(val)) {
+                        missValues = true;
+                        return false;
+                    }
+                });
+                if (missValues) return false;
+            });
+            return missValues;
         }
 
     });
@@ -497,7 +511,8 @@
                 normal: 1
             },
             hoverDotRadius: 3,
-            maxLabelWidth: 80
+            maxLabelWidth: 80,
+            fillOpacity: 0.2
         },
 
         barChart: {
