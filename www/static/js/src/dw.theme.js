@@ -28,7 +28,8 @@
                 normal: 1
             },
             hoverDotRadius: 3,
-            maxLabelWidth: 80
+            maxLabelWidth: 80,
+            fillOpacity: 0.2
         },
 
         barChart: {

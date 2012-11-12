@@ -8,7 +8,7 @@
     // of them. Also, every theme can extend any other
     // existing theme.
 
-    Datawrapper.Themes.DeutscheWelle = _.extend({}, Datawrapper.Themes.Base, {
+    Datawrapper.Themes.DeutscheWelle = $.extend(true, {}, Datawrapper.Themes.Base, {
 
         hpadding: 20,
         vpadding: -10,

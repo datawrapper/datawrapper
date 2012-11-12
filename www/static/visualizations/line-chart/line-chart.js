@@ -238,86 +238,81 @@
                         var path1 = Raphael.parsePathString(all_paths[0][0]),
                             path2 = Raphael.parsePathString(all_paths[1][0]),
                             pts = Raphael.pathIntersection(path1, path2),
-                            hull1 = [], hull2 = [],
-                            fills1 = [], fills2 = [],
-                            seg1 = 0, seg2 = 0,
+                            h1 = [], h2 = [],  // points for fill polygons
+                            f1 = [], f2 = [],  // paths for fill polygons
+                            s1 = 0, s2 = 0,
                             next;
 
                         if (me.get('smooth-lines', false) === false) {
-                            // easy for straight lines
+                            // straight line fills
                             $.each(pts, function(i, pt) {
-                                while (seg1 < pt.segment1) {
-                                    hull1.push(path1[seg1][1], path1[seg1][2]);
-                                    seg1++;
+                                while (s1 < pt.segment1) {
+                                    h1.push(path1[s1][1], path1[s1][2]);
+                                    s1++;
                                 }
-                                hull1.push([pt.x, pt.y]);
-                                while (seg2 < pt.segment2) {
-                                    hull2.unshift(path2[seg2][1], path2[seg2][2]);
-                                    seg2++;
+                                h1.push([pt.x, pt.y]);
+                                while (s2 < pt.segment2) {
+                                    h2.unshift(path2[s2][1], path2[s2][2]);
+                                    s2++;
                                 }
-                                (hull1[1] < hull2[hull2.length-1] ? fills1 : fills2).push([].concat(hull1, hull2));
-                                hull1 = [pt.x, pt.y];
-                                hull2 = [];
+                                (h1[1] < h2[h2.length-1] ? f1 : f2).push([].concat(h1, h2));
+                                h1 = [pt.x, pt.y];
+                                h2 = [];
                             });
-                            while (seg1 < path1.length) {
-                                hull1.push(path1[seg1][1], path1[seg1][2]);
-                                seg1++;
+                            while (s1 < path1.length) {
+                                h1.push(path1[s1][1], path1[s1][2]);
+                                s1++;
                             }
-                            while (seg2 < path2.length) {
-                                hull2.unshift(path2[seg2][1], path2[seg2][2]);
-                                seg2++;
+                            while (s2 < path2.length) {
+                                h2.unshift(path2[s2][1], path2[s2][2]);
+                                s2++;
                             }
-                            (hull1[1] < hull2[hull2.length-1] ? fills1 : fills2).push([].concat(hull1, hull2));
+                            (h1[1] < h2[h2.length-1] ? f1 : f2).push([].concat(h1, h2));
 
-                            $.each([fills1, fills2], function(i, fills) {
+                            $.each([f1, f2], function(i, fills) {
                                 var path = [];
                                 _.each(fills, function(pts) {
-                                    path.push("M" + [pts.shift(), pts.shift()] + (me.get('smooth-lines') ? "R" : "L") + pts);
+                                    path.push("M" + [pts.shift(), pts.shift()] + "L" + pts);
                                 });
-                                c.paper.path(path).attr({ fill: me.getSeriesColor(all_series[i]), 'fill-opacity': 0.1, stroke: false });
+                                c.paper.path(path).attr({ fill: me.getSeriesColor(all_series[i]), 'fill-opacity': me.theme.lineChart.fillOpacity, stroke: false });
                             });
 
                         } else {
-                            // harder for smooth lines?
-                            //var pts1 = [].concat
-
+                            // smooth line fills
                             var pts1 = [].concat(path1[0].slice(1), path1[1].slice(1)),
                                 pts2 = [].concat(path2[0].slice(1), path2[1].slice(1));
 
                             $.each(pts, function(i, pt) {
-                                while (seg1 < pt.segment1) {
-                                    hull1.push(pts1[seg1*2], pts1[seg1*2+1]);
-                                    seg1++;
+                                while (s1 < pt.segment1) {
+                                    h1.push(pts1[s1*2], pts1[s1*2+1]);
+                                    s1++;
                                 }
-                                hull1.push(pt.x, pt.y);
-                                while (seg2 < pt.segment2) {
-                                    hull2.unshift(pts2[seg2*2], pts2[seg2*2+1]);
-                                    seg2++;
+                                h1.push(pt.x, pt.y);
+                                while (s2 < pt.segment2) {
+                                    h2.unshift(pts2[s2*2], pts2[s2*2+1]);
+                                    s2++;
                                 }
-                                var f = hull1[1] < hull2[hull2.length-(i === 0 ? 1 : 3)] ? fills1 : fills2;
-                                f.push('M' + [hull1.shift(), hull1.shift()] + (hull1.length > 3 ? ' R '+hull1 : hull1.length > 1 ? ' L ' + hull1 : '')+
-                                    ' L ' + [hull2.shift(), hull2.shift()] + (hull2.length > 1 ? ' R '+hull2 : hull2.length > 1 ? ' L ' + hull2 : ''));
-                                //f[0] += ' M' + [hull2.shift(), hull2.shift()] + 'L' + hull2;
-                                //console.log(f[0]);
-                                hull1 = [pt.x, pt.y];
-                                hull2 = [pt.x, pt.y];
-                                //c.paper.circle(pt.x, pt.y, 5);
-                                //return false;
-                            });
-                            while (seg1*2 < pts1.length) {
-                                hull1.push(pts1[seg1*2], pts1[seg1*2+1]);
-                                seg1++;
-                            }
-                            while (seg2*2 < pts2.length) {
-                                hull2.unshift(pts2[seg2*2], pts2[seg2*2+1]);
-                                seg2++;
-                            }
-                            var f = hull1[1] < hull2[hull2.length-3] ? fills1 : fills2;
-                            f.push('M' + [hull1.shift(), hull1.shift()] + ' R' + hull1 + 'L' + [hull2.shift(), hull2.shift()] + ' R' + hull2);
+                                console.log(i);
+                                var f = h1[1] < h2[h2.length-(i === 0 ? 1 : 3)] ? f1 : f2;
+                                f.push('M' + [h1.shift(), h1.shift()] + (h1.length > 2 ? 'R' + h1 + /*'L' + [h2.shift(), h2.shift()] +*/ 'R' + h2 : 'L' + h1 +'L'+ h2));
 
-                            $.each([fills1, fills2], function(i, fills) {
+                                h1 = [pt.x, pt.y];
+                                h2 = [pt.x, pt.y];
+                            });
+                            while (s1*2 < pts1.length) {
+                                h1.push(pts1[s1*2], pts1[s1*2+1]);
+                                s1++;
+                            }
+                            while (s2*2 < pts2.length) {
+                                h2.unshift(pts2[s2*2], pts2[s2*2+1]);
+                                s2++;
+                            }
+                            var f = h1[1] < h2[h2.length-3] ? f1 : f2;
+                            f.push('M' + [h1.shift(), h1.shift()] + (h1.length > 2 ? 'R' + h1 + 'L' + [h2.shift(), h2.shift()] + 'R' + h2 : 'L' + h1 +'L'+ h2));
+
+                            $.each([f1, f2], function(i, fills) {
                                 _.each(fills, function(path) {
-                                    c.paper.path(path).attr({ fill: me.getSeriesColor(all_series[i]), 'fill-opacity': 0.2, stroke: false });
+                                    c.paper.path(path).attr({ fill: me.getSeriesColor(all_series[i]), 'fill-opacity': me.theme.lineChart.fillOpacity, stroke: false });
                                 });
                             });
                         }

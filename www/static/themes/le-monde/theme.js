@@ -8,7 +8,7 @@
     // of them. Also, every theme can extend any other
     // existing theme.
 
-    Datawrapper.Themes.LeMonde = _.extend({}, Datawrapper.Themes.Base, {
+    Datawrapper.Themes.LeMonde = $.extend(true, {}, Datawrapper.Themes.Base, {
 
         colors: {
             palette: ['#0386C3', '#D50303', '#6FAA12', '#FFD500', '#680240', '#F20559', '#1F0D67', '#0CB4AE'],

@@ -8,7 +8,7 @@
     // of them. Also, every theme can extend any other
     // existing theme.
 
-    Datawrapper.Themes.Autumn = _.extend({}, Datawrapper.Themes.Base, {
+    Datawrapper.Themes.Autumn = $.extend(true, {}, Datawrapper.Themes.Base, {
 
         colors: {
             palette: ["#F24405", "#96685C","#404040", "#389486", "#9A718A"],

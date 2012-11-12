@@ -4,7 +4,7 @@
     // -------------
     //
 
-    Datawrapper.Themes.Slate = _.extend({}, Datawrapper.Themes.Base, {
+    Datawrapper.Themes.Slate = $.extend(true, {}, Datawrapper.Themes.Base, {
 
         colors: {
             palette: ["#eeeeee"], // monochrome!

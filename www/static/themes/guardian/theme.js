@@ -8,7 +8,7 @@
     // of them. Also, every theme can extend any other
     // existing theme.
 
-    Datawrapper.Themes.Guardian = _.extend({}, Datawrapper.Themes.Base, {
+    Datawrapper.Themes.Guardian = $.extend(true, {}, Datawrapper.Themes.Base, {
 
         colors: {
             palette: ['#e41f25', '#96c22c', '#fdc400', '#2974b9', '#6A3D9A', '#B15928'],
