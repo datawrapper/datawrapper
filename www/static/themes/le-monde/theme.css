@@ -1,6 +1,6 @@
 
 /*
- * Default Theme
+ * LeMonde Theme
  * -------------
  *
  */
@@ -49,7 +49,7 @@ body.chart {
 }
 
 .label span {
-    font-size: 10px;
+    font-size: 11px;
     color: #16212c;
 }
 
@@ -103,7 +103,7 @@ body.chart {
     clear: both;
     text-transform: uppercase;
     color: #2b2b2a;
-    font-size: 10px;
+    font-size: 11px;
 
 }
 
