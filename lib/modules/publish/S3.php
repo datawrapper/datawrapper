@@ -14,13 +14,11 @@ class Datawrapper_Publish_S3 implements IDatawrapper_Publish {
     /**
      * pushs a list of files to S3
      *
-     * @param files: list of file descriptions in the following format:
+     * @param files: list of file descriptions in the format [localFile, remoteFile, contentType]
+     * e.g.
+     *
      * array(
-     *     array(
-     *        'source' => 'path/to/local/file',
-     *        'target' => 'remote/file',
-     *        'content-type' => 'text/plain'
-     *     )
+     *     array('path/to/local/file', 'remote/file', 'text/plain')
      * )
      */
     function publish($files) {
