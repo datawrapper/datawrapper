@@ -116,7 +116,6 @@ $(function() {
     {% use "messages.twig" %}
     {{ block('messages') }}
 
-    {% use "tracking.twig" %}
-    {{ block('piwik') }}
+    {{ trackingCode | raw }}
   </body>
 </html>

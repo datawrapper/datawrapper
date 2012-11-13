@@ -3,7 +3,6 @@
 
 require_once '../lib/utils/visualizations.php';
 require_once '../lib/utils/themes.php';
-require_once '../lib/utils/get_publish_module.php';
 require_once '../vendor/jsmin/jsmin.php';
 
 
@@ -18,7 +17,7 @@ $app->get('/chart/:id/publish', function ($id) use ($app) {
         if (empty($cfg['publish'])) {
             $iframe_src = 'http://' . $cfg['chart_domain'] . '/' . $chart->getID() . '/';
         } else {
-            $pub = get_publish_module('../lib/');
+            $pub = get_module('publish', '../lib/');
             $iframe_src = $pub->getUrl($chart);
         }
 

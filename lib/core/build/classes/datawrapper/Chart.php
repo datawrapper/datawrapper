@@ -225,9 +225,8 @@ class Chart extends BaseChart {
         $config = $GLOBALS['dw_config'];
         if (!empty($config['publish'])) {
 
-            require_once dirname(__FILE__) . '/../../../../utils/get_publish_module.php';
             // remove files from CDN
-            $pub = get_publish_module(dirname(__FILE__) . '/../../../../');
+            $pub = get_module('publish', dirname(__FILE__) . '/../../../../');
 
             $id = $this->getID();
 

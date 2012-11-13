@@ -162,6 +162,10 @@ function add_header_vars(&$page, $active = null) {
     $page['DW_VERSION'] = DATAWRAPPER_VERSION;
     $page['DW_CHART_CACHE_DOMAIN'] = $GLOBALS['dw_config']['chart_domain'];
     $page['ADMIN_EMAIL'] = $GLOBALS['dw_config']['admin_email'];
+
+    $analyticsMod = get_module('analytics', '../lib/');
+    $page['trackingCode'] = !empty($analyticsMod) ? $analyticsMod->getTrackingCode() : '';
+
     if (isset($GLOBALS['dw_config']['piwik'])) {
         $page['PIWIK_URL'] = $GLOBALS['dw_config']['piwik']['url'];
         $page['PIWIK_IDSITE'] = $GLOBALS['dw_config']['piwik']['idSite'];
@@ -188,6 +192,7 @@ function add_editor_nav(&$page, $step) {
 
 require_once '../lib/utils/errors.php';
 require_once '../lib/utils/check_chart.php';
+require_once '../lib/utils/get_module.php';
 require_once '../controller/home.php';
 require_once '../controller/account-settings.php';
 require_once '../controller/account-activate.php';

@@ -1,5 +1,6 @@
 <?php
 
+
 function get_chart_content($chart, $user, $minified = false, $path = '') {
     $theme_css = array();
     $theme_js = array();
@@ -92,6 +93,8 @@ function get_chart_content($chart, $user, $minified = false, $path = '') {
         );
     }
 
+    $analyticsMod = get_module('analytics', '../lib/');
+
     $page = array(
         'chartData' => $chart->loadData(),
         'chart' => $chart,
@@ -106,7 +109,8 @@ function get_chart_content($chart, $user, $minified = false, $path = '') {
         'origin' => !empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '',
         'DW_DOMAIN' => 'http://' . $GLOBALS['dw_config']['domain'] . '/',
         'DW_CHART_DATA' => 'http://' . $GLOBALS['dw_config']['domain'] . '/chart/' . $chart->getID() . '/data',
-        'ASSET_PATH' => $minified ? '' : '/static/themes/'.$the_theme['id'].'/'
+        'ASSET_PATH' => $minified ? '' : '/static/themes/'.$the_theme['id'].'/',
+        'trackingCode' => !empty($analyticsMod) ? $analyticsMod->getTrackingCode() : ''
     );
 
     if (isset($GLOBALS['dw_config']['piwik'])) {

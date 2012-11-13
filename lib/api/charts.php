@@ -201,8 +201,6 @@ function get_static_path($chart) {
     return $static_path;
 }
 
-require_once '../../lib/utils/get_publish_module.php';
-
 /**
  * API: copy a chart
  *
@@ -244,7 +242,7 @@ $app->post('/charts/:id/publish/html', function($chart_id) use ($app) {
         } catch (Exception $e) {
             error('io-error', $e->getMessage());
         }
-        if ($pub = get_publish_module()) {
+        if ($pub = get_module('publish')) {
             $pub->publish($cdn_files);
         }
     });
@@ -302,7 +300,7 @@ $app->post('/charts/:id/publish/js', function($chart_id) use ($app) {
         } catch (Exception $e) {
             error('io-error', $e->getMessage());
         }
-        if ($pub = get_publish_module()) {
+        if ($pub = get_module('publish')) {
             $pub->publish($cdn_files);
         }
     });
@@ -352,7 +350,7 @@ $app->post('/charts/:id/publish/css', function($chart_id) use ($app) {
         } catch (Exception $e) {
             error('io-error', $e->getMessage());
         }
-        if ($pub = get_publish_module()) {
+        if ($pub = get_module('publish')) {
             $pub->publish($cdn_files);
         }
     });
@@ -374,7 +372,7 @@ $app->post('/charts/:id/publish/data', function($chart_id) use ($app) {
         } catch (Exception $e) {
             error('io-error', $e->getMessage());
         }
-        if ($pub = get_publish_module()) {
+        if ($pub = get_module('publish')) {
             $pub->publish($cdn_files);
         }
     });
