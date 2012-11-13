@@ -217,8 +217,6 @@
                 } // */
             });
 
-            me.orderSeriesElements();
-
             if (me.theme.lineChart.hoverDotRadius) {
                 this.hoverDot = c.paper.circle(0, 0, me.theme.lineChart.hoverDotRadius).hide();
             }
@@ -230,6 +228,14 @@
             window.ds = me.dataset;
             window.vis = me;
 
+            function addFill(series, path) {
+                c.paper.path(path)
+                    .attr({
+                        fill: me.getSeriesColor(series),
+                        'fill-opacity': me.theme.lineChart.fillOpacity,
+                        stroke: false
+                    });
+            }
             // fill space between lines
             if (me.get('fill-between', false)) {
                 // compute intersections
@@ -274,7 +280,7 @@
                                 _.each(fills, function(pts) {
                                     path.push("M" + [pts.shift(), pts.shift()] + "L" + pts);
                                 });
-                                c.paper.path(path).attr({ fill: me.getSeriesColor(all_series[i]), 'fill-opacity': me.theme.lineChart.fillOpacity, stroke: false });
+                                addFill(all_series[i], path);
                             });
 
                         } else {
@@ -292,7 +298,6 @@
                                     h2.unshift(pts2[s2*2], pts2[s2*2+1]);
                                     s2++;
                                 }
-                                console.log(i);
                                 var f = h1[1] < h2[h2.length-(i === 0 ? 1 : 3)] ? f1 : f2;
                                 f.push('M' + [h1.shift(), h1.shift()] + (h1.length > 2 ? 'R' + h1 + /*'L' + [h2.shift(), h2.shift()] +*/ 'R' + h2 : 'L' + h1 +'L'+ h2));
 
@@ -312,7 +317,7 @@
 
                             $.each([f1, f2], function(i, fills) {
                                 _.each(fills, function(path) {
-                                    c.paper.path(path).attr({ fill: me.getSeriesColor(all_series[i]), 'fill-opacity': me.theme.lineChart.fillOpacity, stroke: false });
+                                    addFill(all_series[i], path);
                                 });
                             });
                         }
@@ -320,6 +325,9 @@
                     } else me.warn('<b>Warning:</b> Area filling is not supported for lines with missing values.');
                 } else me.warn('<b>Warning:</b> Filling is only supported for exactly two lines.');
             }
+
+            me.orderSeriesElements();
+
         },
 
         lineLabelsVisible: function() {
