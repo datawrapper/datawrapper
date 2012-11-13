@@ -43,6 +43,11 @@ class Datawrapper_Publish_S3 implements IDatawrapper_Publish {
         }
     }
 
+    /**
+     * Returns URL to the chart hosted on S3
+     *
+     * @param chart Chart class
+     */
     function getUrl($chart) {
         $cfg = $GLOBALS['dw_config']['publish']['config'];
         return 'http://' . $cfg['bucket'] . '.s3.amazonaws.com/' . $chart->getID() . '/index.html';
