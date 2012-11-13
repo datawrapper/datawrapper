@@ -14,7 +14,7 @@ class Datawrapper_Publish_S3 implements IDatawrapper_Publish {
     /**
      * pushs a list of files to S3
      *
-     * @param files: list of file descriptions in the format [localFile, remoteFile, contentType]
+     * @param files list of file descriptions in the format [localFile, remoteFile, contentType]
      * e.g.
      *
      * array(
@@ -29,8 +29,18 @@ class Datawrapper_Publish_S3 implements IDatawrapper_Publish {
         }
     }
 
+    /**
+     * Removes a list of files from S3
+     *
+     * @param files  list of remote file names (removeFile)
+     */
     function unpublish($files) {
-        // not implemented yet
+        $cfg = $GLOBALS['dw_config']['publish']['config'];
+        $s3 = new S3($cfg['accesskey'], $cfg['secretkey']);
+        $s3->setExceptions(true);
+        foreach ($files as $file) {
+            $s3->deleteObject($cfg['bucket'], $file);
+        }
     }
 
     function getUrl($chart) {

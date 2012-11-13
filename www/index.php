@@ -8,9 +8,9 @@
 
 // load YAML parser and config
 require_once '../vendor/spyc/spyc.php';
-$GLOBALS['dw_config'] = $config = Spyc::YAMLLoad('../config.yaml');
+$GLOBALS['dw_config'] = Spyc::YAMLLoad('../config.yaml');
 
-if ($config['debug'] == true) {
+if ($GLOBALS['dw_config']['debug'] == true) {
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
 }
@@ -34,7 +34,6 @@ set_include_path("../lib/core/build/classes" . PATH_SEPARATOR . get_include_path
 // Load TwigView
 require_once '../vendor/Slim-Extras/Views/TwigView.php';
 TwigView::$twigDirectory = '../vendor/Twig';
-
 
 $app = new Slim(array(
     'view' => new TwigView(),
@@ -73,6 +72,13 @@ function str_purify($dirty_html) {
 $twig->addExtension(new Twig_Extension_I18n());
 
 require_once '../lib/utils/i18n.php';
+
+// Load CDN publishing class
+if (!empty($GLOBALS['dw_config']['publish']) && !empty($GLOBALS['dw_config']['publish']['requires'])) {
+    foreach($GLOBALS['dw_config']['publish']['requires'] as $lib) {
+        require_once '../' . $lib;
+    }
+}
 
 
 function add_header_vars(&$page, $active = null) {

@@ -31,7 +31,7 @@ if ($config['debug'] == true) {
     ini_set('display_errors', 1);
 }
 
-// Load S3 class
+// Load CDN publishing class
 if (!empty($config['publish']) && !empty($config['publish']['requires'])) {
     foreach($config['publish']['requires'] as $lib) {
         require_once '../../' . $lib;

@@ -201,26 +201,7 @@ function get_static_path($chart) {
     return $static_path;
 }
 
-function get_publish_module() {
-    if (!empty($GLOBALS['dw_config']['publish'])) {
-        $cfg = $GLOBALS['dw_config']['publish'];
-        // try to load class
-        $cl = "../../lib/modules/publish/" . $cfg['type'] . ".php";
-        if (file_exists($cl)) {
-            try {
-                include_once $cl;
-                $className = 'Datawrapper_Publish_' . $cfg['type'];
-                $pub = new $className();
-                return $pub;
-            } catch (Exception $e) {
-                throw $e;
-                return false;
-            }
-        }
-        throw new Exception("Class not found ".$cl, 1);
-        return false;
-    }
-}
+require_once '../../lib/utils/get_publish_module.php';
 
 /**
  * API: copy a chart

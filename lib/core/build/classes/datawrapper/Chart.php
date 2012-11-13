@@ -220,6 +220,25 @@ class Chart extends BaseChart {
             array_map('unlink', glob($path . "/*"));
             rmdir($path);
         }
+
+        // Load CDN publishing class
+        $config = $GLOBALS['dw_config'];
+        if (!empty($config['publish'])) {
+
+            require_once dirname(__FILE__) . '/../../../../utils/get_publish_module.php';
+            // remove files from CDN
+            $pub = get_publish_module(dirname(__FILE__) . '/../../../../');
+
+            $id = $this->getID();
+
+            $chart_files = array();
+            $chart_files[] = "$id/index.html";
+            $chart_files[] = "$id/data";
+            $chart_files[] = "$id/$id.min.js";
+
+            $pub->unpublish($chart_files);
+        }
+
     }
 
 } // Chart

@@ -3,6 +3,7 @@
 
 require_once '../lib/utils/visualizations.php';
 require_once '../lib/utils/themes.php';
+require_once '../lib/utils/get_publish_module.php';
 require_once '../vendor/jsmin/jsmin.php';
 
 
@@ -14,10 +15,11 @@ $app->get('/chart/:id/publish', function ($id) use ($app) {
     check_chart_writable($id, function($user, $chart) use ($app) {
 
         $cfg = $GLOBALS['dw_config'];
-        if (empty($cfg['s3'])) {
+        if (empty($cfg['publish'])) {
             $iframe_src = 'http://' . $cfg['chart_domain'] . '/' . $chart->getID() . '/';
         } else {
-            $iframe_src = 'http://' . $cfg['s3']['bucket'] . '.s3.amazonaws.com/' . $chart->getID() . '/index.html';
+            $pub = get_publish_module('../lib/');
+            $iframe_src = $pub->getUrl($chart);
         }
 
         $page = array(
