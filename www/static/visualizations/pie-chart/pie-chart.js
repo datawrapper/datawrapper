@@ -1,7 +1,8 @@
 
 (function(){
-    // Simple perfect bar chart
-    // -------------------------
+
+    // Pie chart
+    // ---------
 
     var PieChart = Datawrapper.Visualizations.PieChart = function() {
 
@@ -13,6 +14,10 @@
 
         isDonut: function() {
             return false;
+        },
+
+        getFullArc: function() {
+            return TWO_PI;
         },
 
         render: function(el) {
@@ -27,11 +32,12 @@
                 groupAfter = 5,
                 c = me.initCanvas({}),
                 chart_width = c.w,
-                chart_height = c.h;
+                chart_height = c.h,
+                FA = me.getFullArc(); // full arc
 
             c.cx = chart_width * 0.5;
-            c.cy = chart_height * 0.5;
-            c.or = Math.min(chart_height, chart_width) * 0.5 - 3;
+            c.cy = chart_height * (FA < TWO_PI ? 0.75 : 0.5); // 1:1 1.5:1
+            c.or = Math.min(FA == TWO_PI ? chart_height : chart_height, chart_width * 0.5) - 3;
             c.ir = donut ? c.or * 0.3 : 0;
             c.or_sq = c.or * c.or;
             c.ir_sq = c.ir * c.ir;
@@ -65,7 +71,7 @@
                     return me.path("M"+cx+" "+cy+" L"+x2+" "+y2+" A"+or+","+or+" 0 "+largeArc+",0 "+x3+" "+y3+" Z", 'slice');
             }
 
-            var series = me.chart.dataSeries(true),
+            var series = me.chart.dataSeries(me.get('sort-values', true)),
                 total = 0, min = Number.MAX_VALUE, max = 0,
                 reverse, oseries, others = 0, ocnt = 0, hasNegativeValues = false;
 
@@ -102,9 +108,13 @@
                 max = Math.max(max, s.data[0]);
             });
             reverse = min < total / series.length * 0.66 || max > total/series.length * 1.5;
-
             sa = -HALF_PI;
-            if (reverse) sa += TWO_PI * (series[0].data[0] / total);
+            if (reverse) sa += FA * (series[0].data[0] / total);
+
+            if (FA < TWO_PI) {
+                reverse = false;
+                sa = -HALF_PI - FA * 0.5;
+            }
 
             me.__seriesAngles = {};
 
@@ -120,7 +130,7 @@
 
             _.each(oseries, function(s) {
 
-                var da = s.data[0] / total * Math.PI * 2,
+                var da = s.data[0] / total * FA,
                     fill = me.getSeriesColor(s, 0),
                     stroke = d3.cie.lch(d3.rgb(fill)).darker(0.6).toString(),
                     a0 = reverse ? sa - da : sa,
