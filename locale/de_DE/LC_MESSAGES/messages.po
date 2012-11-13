@@ -415,7 +415,7 @@ msgid ""
 "in Excel or OpenOffice, just select your data (including header row/column) "
 "and paste it in the following text field."
 msgstr ""
-"Wir haben uns bemüht, das einfügen von Daten so leicht wie möglich zu "
+"Wir haben uns bemüht, das Einfügen von Daten so leicht wie möglich zu "
 "machen. Wenn du mit Excel oder OpenOffice arbeitest, kannst du die Tabelle "
 "kopieren (inkl. Kopfzeile) und in das nebenstehende Textfeld einfügen."
 
