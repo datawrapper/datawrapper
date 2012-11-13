@@ -14,7 +14,7 @@
     <div class="footer-left">
         {% if source %}
             {% trans "Source: " %}
-                {% if sourceURL %}<a href="{{ sourceURL }}">{% endif %}{{ source }}{% if sourceURL %}</a>
+                {% if sourceURL %}<a target="_blank" href="{{ sourceURL }}">{% endif %}{{ source }}{% if sourceURL %}</a>
                 {% endif %}, 
         {% endif %}
          <a href="{{ DW_DOMAIN }}/chart/{{ chart.id }}/data">{% trans "Get the data" %}</a>
