@@ -8,14 +8,14 @@
 
 // load YAML parser and config
 require_once '../vendor/spyc/spyc.php';
-$GLOBALS['dw_config'] = Spyc::YAMLLoad('../config.yaml');
+$GLOBALS['dw_config'] = $config = Spyc::YAMLLoad('../config.yaml');
 
-if ($GLOBALS['dw_config']['debug'] == true) {
+if ($config['debug'] == true) {
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
 }
 
-define('DATAWRAPPER_VERSION', '1.0.2');
+define('DATAWRAPPER_VERSION', '1.1 pre-alpha');
 
 // include datawrapper session serialization
 require '../lib/session/Datawrapper.php';
