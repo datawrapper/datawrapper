@@ -17,6 +17,10 @@ $app->get('/', function () use ($app) {
         );
         add_header_vars($page, '');
 
+        if (!empty($GLOBALS['dw_config']['disclaimer'])) {
+            $page['disclaimer'] = $GLOBALS['dw_config']['disclaimer'];
+        }
+
         $res = $app->response();
         $res['Cache-Control'] = 'max-age=0';
         $app->render('home.twig', $page);

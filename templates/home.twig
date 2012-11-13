@@ -7,6 +7,14 @@
 <div class="row">
     {{ block('alert') }}
 
+    {% if disclaimer %}
+    <div style="position:relative">
+        <div id="disclaimer" class="alert alert-warning span6 offset3" style="position:absolute;top:80px;left:0px;z-index:1000;font-size:14px;line-height:22px;color:#752">
+            <div>{{ disclaimer | raw }}</div>
+        </div>
+    </div>
+    {% endif %}
+
     <div class="span12 teaser">
         <div class="teaser-h2">
             <h2><b class='dw-logo'>Datawrapper</b> {% trans "An open source tool helping everyone to create simple, correct and embeddable charts in minutes." %}</h2>
