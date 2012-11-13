@@ -5,10 +5,6 @@
  *
  */
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
-
 // Require the Slim PHP 5 Framework
 require '../../vendor/Slim/Slim.php';
 
@@ -28,11 +24,18 @@ require '../../lib/session/Datawrapper.php';
 
 // load YAML parser and config
 require_once '../../vendor/spyc/spyc.php';
-$GLOBALS['dw_config'] = Spyc::YAMLLoad('../../config.yaml');
+$GLOBALS['dw_config'] = $config = Spyc::YAMLLoad('../../config.yaml');
+
+if ($config['debug'] == true) {
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+}
 
 // Load S3 class
-if (!empty($GLOBALS['dw_config']['s3'])) {
-    require_once '../../vendor/s3/S3.php';
+if (!empty($config['publish']) && !empty($config['publish']['requires'])) {
+    foreach($config['publish']['requires'] as $lib) {
+        require_once '../../' . $lib;
+    }
 }
 
 require '../../lib/utils/i18n.php';

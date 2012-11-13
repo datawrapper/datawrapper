@@ -201,11 +201,24 @@ function get_static_path($chart) {
     return $static_path;
 }
 
-function push_to_s3($filename, $uploadName, $contentType = 'text/plain') {
-    if (!empty($GLOBALS['dw_config']['s3'])) {
-        $cfg = $GLOBALS['dw_config']['s3'];
-        $s3 = new S3($cfg['accesskey'], $cfg['secretkey']);
-        $s3->putObject($s3->inputFile($filename, false), $cfg['bucket'], $uploadName, S3::ACL_PUBLIC_READ, array(), array('Content-Type' => $contentType));
+function get_publish_module() {
+    if (!empty($GLOBALS['dw_config']['publish'])) {
+        $cfg = $GLOBALS['dw_config']['publish'];
+        // try to load class
+        $cl = "../../lib/modules/publish/" . $cfg['type'] . ".php";
+        if (file_exists($cl)) {
+            try {
+                include_once $cl;
+                $className = 'Datawrapper_Publish_' . $cfg['type'];
+                $pub = new $className();
+                return $pub;
+            } catch (Exception $e) {
+                throw $e;
+                return false;
+            }
+        }
+        throw new Exception("Class not found ".$cl, 1);
+        return false;
     }
 }
 
@@ -216,6 +229,7 @@ function push_to_s3($filename, $uploadName, $contentType = 'text/plain') {
  */
 $app->post('/charts/:id/publish/html', function($chart_id) use ($app) {
     if_chart_is_writable($chart_id, function($user, $chart) use ($app) {
+        $cdn_files = array();
         try {
             $static_path = get_static_path($chart);
             $url = 'http://'.$GLOBALS['dw_config']['domain'].'/chart/'.$chart->getID().'/preview?minify=1';
@@ -244,10 +258,13 @@ $app->post('/charts/:id/publish/html', function($chart_id) use ($app) {
                 $html = file_get_contents($url, false, $context);
                 file_put_contents($outf, $html);
             }
-            push_to_s3($outf, $chart->getID() . '/index.html', 'text/html');
+            $cdn_files[] = array($outf, $chart->getID() . '/index.html', 'text/html');
             ok();
         } catch (Exception $e) {
             error('io-error', $e->getMessage());
+        }
+        if ($pub = get_publish_module()) {
+            $pub->publish($cdn_files);
         }
     });
 });
@@ -265,6 +282,7 @@ require_once '../../vendor/jsmin/jsmin.php';
  */
 $app->post('/charts/:id/publish/js', function($chart_id) use ($app) {
     if_chart_is_writable($chart_id, function($user, $chart) use ($app) {
+        $cdn_files = array();
         try {
             $static_path = $static_path = '../../charts/static/lib/';
             $data = get_chart_content($chart, $user, false, '../');
@@ -282,7 +300,7 @@ $app->post('/charts/:id/publish/js', function($chart_id) use ($app) {
                 $all = JSMin::minify($all);
                 file_put_contents($static_path . $vis_path, $all);
             }
-            push_to_s3($static_path . $vis_path, 'lib/' . $vis_path, 'application/javascript');
+            $cdn_files[] = array($static_path . $vis_path, 'lib/' . $vis_path, 'application/javascript');
 
             // generate theme script
             $theme = $data['theme'];
@@ -298,11 +316,13 @@ $app->post('/charts/:id/publish/js', function($chart_id) use ($app) {
                 $minified = JSMin::minify($all);
                 file_put_contents($static_path . $theme_path, $minified);
             }
-            push_to_s3($static_path . $theme_path, 'lib/' . $theme_path, 'application/javascript');
-
+            $cdn_files[] = array($static_path . $theme_path, 'lib/' . $theme_path, 'application/javascript');
             ok();
         } catch (Exception $e) {
             error('io-error', $e->getMessage());
+        }
+        if ($pub = get_publish_module()) {
+            $pub->publish($cdn_files);
         }
     });
 });
@@ -317,6 +337,7 @@ require_once '../../vendor/cssmin/cssmin.php';
  */
 $app->post('/charts/:id/publish/css', function($chart_id) use ($app) {
     if_chart_is_writable($chart_id, function($user, $chart) use ($app) {
+        $cdn_files = array();
         try {
             $static_path = get_static_path($chart);
             $data = get_chart_content($chart, $user, false, '../');
@@ -331,7 +352,7 @@ $app->post('/charts/:id/publish/css', function($chart_id) use ($app) {
             $minified = $all; //$cssmin->run($all);
             file_put_contents($static_path . "/" . $chart->getID() . '.min.css', $minified);
 
-            push_to_s3($static_path."/".$chart->getID().'.min.css', $chart->getID().'/'.$chart->getID().'.min.css', 'text/css');
+            $cdn_files[] = array($static_path."/".$chart->getID().'.min.css', $chart->getID().'/'.$chart->getID().'.min.css', 'text/css');
 
             // copy themes assets
             $theme = $data['theme'];
@@ -341,7 +362,7 @@ $app->post('/charts/:id/publish/css', function($chart_id) use ($app) {
                     $asset_tgt = $static_path . "/" . $asset;
                     if (file_exists($asset_src)) {
                         file_put_contents($asset_tgt, file_get_contents($asset_src));
-                        push_to_s3($asset_src, $chart->getID() . '/' . $asset);
+                        $cdn_files[] = array($asset_src, $chart->getID() . '/' . $asset);
                     }
                 }
             }
@@ -349,6 +370,9 @@ $app->post('/charts/:id/publish/css', function($chart_id) use ($app) {
             ok();
         } catch (Exception $e) {
             error('io-error', $e->getMessage());
+        }
+        if ($pub = get_publish_module()) {
+            $pub->publish($cdn_files);
         }
     });
 });
@@ -358,15 +382,19 @@ $app->post('/charts/:id/publish/css', function($chart_id) use ($app) {
  */
 $app->post('/charts/:id/publish/data', function($chart_id) use ($app) {
     if_chart_is_writable($chart_id, function($user, $chart) use ($app) {
+        $cdn_files = array();
         try {
             $static_path = get_static_path($chart);
             file_put_contents($static_path . "/data", $chart->loadData());
-            push_to_s3($static_path . "/data", $chart->getID() . '/data');
+            $cdn_files[] = array($static_path . "/data", $chart->getID() . '/data', 'text/plain');
             $chart->setPublishedAt(time());
             $chart->save();
             ok();
         } catch (Exception $e) {
             error('io-error', $e->getMessage());
+        }
+        if ($pub = get_publish_module()) {
+            $pub->publish($cdn_files);
         }
     });
 });
