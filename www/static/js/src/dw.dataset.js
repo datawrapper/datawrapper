@@ -32,6 +32,7 @@
                     $.ajax({
                         url: opts.url,
                         method: 'GET',
+                        dataType: "text", // NOTE (edouard): Without that jquery try to parse the content and return a Document
                         success: function(raw) {
                             me._delimtedLoaded(raw);
                             if (_.isFunction(callbacks.success)) {
