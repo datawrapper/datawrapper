@@ -240,10 +240,9 @@
                 c = me.__canvas,
                 domain = me.__domain,
                 styles = me.__styles,
-                ticks = me.getYTicks(c.h);
+                ticks = me.getYTicks(c.h, true);
 
             _.each(ticks, function(val, t) {
-                if (t == ticks.length-1) return;
                 var y = c.h - c.bpad - yscale(val), x = c.lpad, ly = y-10;
                 if (val >= domain[0] && val <= domain[1]) {
                     // c.paper.text(x, y, val).attr(styles.labels).attr({ 'text-anchor': 'end' });

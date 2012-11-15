@@ -286,7 +286,7 @@
             me.__customRowColors[row] = color;
         },
 
-        getYTicks: function(h) {
+        getYTicks: function(h, noDomain) {
             var me = this,
                 yscale = me.__scales.y,
                 ticks = yscale.ticks(h / 80),
@@ -294,11 +294,14 @@
                 bt = yscale(ticks[0]),
                 tt = yscale(ticks[ticks.length-1]);
 
-            if (Math.abs(yscale(domain[0]) - bt) < 30) ticks.shift();
-            if (Math.abs(tt - yscale(domain[1])) < 30) ticks.pop();
+            if (!noDomain) {
+                if (Math.abs(yscale(domain[0]) - bt) < 30) ticks.shift();
+                if (Math.abs(tt - yscale(domain[1])) < 30) ticks.pop();
 
-            ticks.unshift(domain[0]);
-            ticks.push(domain[1]);
+                ticks.unshift(domain[0]);
+                ticks.push(domain[1]);
+            }
+
 
             return ticks;
         },
