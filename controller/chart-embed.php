@@ -12,6 +12,7 @@ $app->get('/chart/:id/', function ($id) use ($app) {
         $page = get_chart_content($chart, $user, $app->request()->get('minify') == 1);
         $page['padding'] = $app->request()->params('padding');
         $page['innersvg'] = $app->request()->get('innersvg') == 1;
+        $page['plain'] = $app->request()->get('plain') == 1;
         $res = $app->response();
         $res['Cache-Control'] = 'max-age=0';
         $app->render('chart.twig', $page);

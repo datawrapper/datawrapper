@@ -10,6 +10,7 @@ require_once '../lib/utils/chart_content.php';
 $app->get('/chart/:id/preview/?', function ($id) use ($app) {
     check_chart_writable($id, function($user, $chart) use ($app) {
         $page = get_chart_content($chart, $user, $app->request()->get('minify') == 1);
+        $page['plain'] = $app->request()->get('plain') == 1;
         $res = $app->response();
         $res['Cache-Control'] = 'max-age=0';
         $app->render('chart.twig', $page);
