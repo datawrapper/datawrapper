@@ -818,6 +818,14 @@
 
         setTheme: function(theme) {
             this.theme = theme;
+            return this;
+        },
+
+        setSize: function(width, height) {
+            var me = this;
+            me.__w = width;
+            me.__h = height;
+            return me;
         },
 
         load: function(chart, callback) {
@@ -833,16 +841,19 @@
             var ch = 0; // summed height of children, 10px for top & bottom margin
             $('body > *').each(function(i, el) {
                 var t = el.tagName.toLowerCase();
-                if (t != 'script' && el.id != 'chart' && !$(el).hasClass('tooltip')) {
+                if (t != 'script' && el.id != 'chart' && !$(el).hasClass('tooltip') && !$(el).hasClass('container')) {
                     ch += $(el).outerHeight(true);
                 }
             });
             // subtract body padding
             //ch += $('body').innerHeight() - $('body').height();
-            var m = $('#chart').css('margin-top'),
-                maxH = $(window).height() - ch - Number(m.substr(0, m.length-2));
+            var mt = $('#chart').css('margin-top').replace('px', ''),
+                mb = $('#chart').css('margin-bottom').replace('px', ''),
+                maxH = $(window).height() - ch - mt - mb - 25;
             // IE Fix
             if ($.browser.msie) maxH -= 10;
+            maxH -= $('body').css('padding-top').replace('px', '');
+            maxH -= $('body').css('padding-bottom').replace('px', '');
             return maxH;
         },
 

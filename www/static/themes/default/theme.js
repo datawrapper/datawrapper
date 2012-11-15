@@ -20,8 +20,10 @@
         },
 
         lineChart: {
-            fillOpacity: 0.5
-        }
+            fillOpacity: 0.25
+        },
+
+        vpadding: 10
 
     });
 

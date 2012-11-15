@@ -5,11 +5,16 @@
  *
  */
 
+body, html {
+    height: 100%;
+}
+
+
 body.chart {
     font-family: Helvetica Neue, Arial;
     font-weight: 400;
-    margin:5px 10px;
     font-size: 12px;
+    margin: 0 5px;
     background: #fff;
     overflow: visible;
     overflow-x:hidden;
@@ -85,7 +90,7 @@ h1 span {
 #footer {
     margin: 10px 0px 0px;
     padding-top: 5px;
-    padding-bottom: 5px;
+    padding-bottom: 10px;
     font-size: 11px;
     color: #888;
 }
@@ -150,3 +155,4 @@ svg .axis, svg .tick, svg .grid, svg rect {
 .label.smaller span {
     font-size: 80%;
 }
+
