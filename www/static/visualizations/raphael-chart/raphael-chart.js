@@ -24,16 +24,7 @@
         },
 
         getSize: function() {
-            var me = this, el = me.__root,
-                width = $(document).width();
-            // no padding for thumbnails
-            if (width <= 350) {
-                me.theme.vpadding = 10;
-                me.theme.hpadding = 0;
-            }
-            // IE Fix
-            if ($.browser.msie) width -= 10;
-            return [width - me.theme.hpadding*2, me.getMaxChartHeight(el) - me.theme.vpadding];
+            return [this.__w, this.__h];
         },
 
         initCanvas: function(canvas) {
