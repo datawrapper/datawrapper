@@ -25,7 +25,9 @@ class Datawrapper_Publish_S3 implements IDatawrapper_Publish {
         $cfg = $GLOBALS['dw_config']['publish']['config'];
         $s3 = new S3($cfg['accesskey'], $cfg['secretkey']);
         foreach ($files as $info) {
-            $s3->putObject($s3->inputFile($info[0], false), $cfg['bucket'], $info[1], S3::ACL_PUBLIC_READ, array(), array('Content-Type' => $info[2]));
+            $header = array();
+            if (count($info) > 2) $header['Content-Type'] = $info[2];
+            $s3->putObject($s3->inputFile($info[0], false), $cfg['bucket'], $info[1], S3::ACL_PUBLIC_READ, array(), $header);
         }
     }
 

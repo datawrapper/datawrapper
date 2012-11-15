@@ -201,6 +201,33 @@ function get_static_path($chart) {
     return $static_path;
 }
 
+function download($url, $outf) {
+    if (function_exists('curl_init')) {
+        $ch = curl_init($url);
+        $fp = fopen($outf, 'w');
+
+        $strCookie = 'DW-SESSION=' . $_COOKIE['DW-SESSION'] . '; path=/';
+        session_write_close();
+
+        curl_setopt($ch, CURLOPT_FILE, $fp);
+        curl_setopt($ch, CURLOPT_HEADER, 0 );
+        curl_setopt($ch, CURLOPT_COOKIE, $strCookie);
+        curl_exec($ch);
+        curl_close($ch);
+        fclose($fp);
+
+    } else {
+        $context = stream_context_create(array(
+            'http' => array(
+                'header' => 'Connection: close\r\n',
+                'method' => 'GET'
+            )
+        ));
+        $html = file_get_contents($url, false, $context);
+        file_put_contents($outf, $html);
+    }
+}
+
 /**
  * API: copy a chart
  *
@@ -213,31 +240,12 @@ $app->post('/charts/:id/publish/html', function($chart_id) use ($app) {
             $static_path = get_static_path($chart);
             $url = 'http://'.$GLOBALS['dw_config']['domain'].'/chart/'.$chart->getID().'/preview?minify=1';
             $outf = $static_path . '/index.html';
-            if (function_exists('curl_init')) {
-                $ch = curl_init($url);
-                $fp = fopen($outf, 'w');
+            download($url, $outf);
+            download($url . '&plain=1', $static_path . '/plain.html');
 
-                $strCookie = 'DW-SESSION=' . $_COOKIE['DW-SESSION'] . '; path=/';
-                session_write_close();
-
-                curl_setopt($ch, CURLOPT_FILE, $fp);
-                curl_setopt($ch, CURLOPT_HEADER, 0 );
-                curl_setopt($ch, CURLOPT_COOKIE, $strCookie);
-                curl_exec($ch);
-                curl_close($ch);
-                fclose($fp);
-
-            } else {
-                $context = stream_context_create(array(
-                    'http' => array(
-                        'header' => 'Connection: close\r\n',
-                        'method' => 'GET'
-                    )
-                ));
-                $html = file_get_contents($url, false, $context);
-                file_put_contents($outf, $html);
-            }
             $cdn_files[] = array($outf, $chart->getID() . '/index.html', 'text/html');
+            $cdn_files[] = array($static_path . '/plain.html', $chart->getID() . '/plain.html', 'text/html');
+
             ok();
         } catch (Exception $e) {
             error('io-error', $e->getMessage());
@@ -388,6 +396,9 @@ $app->put('/charts/:id/thumbnail/:thumb', function($chart_id, $thumb) use ($app)
             $imgdata = base64_decode(substr($imgurl, strpos($imgurl, ",") + 1));
             $static_path = get_static_path($chart);
             file_put_contents($static_path . "/" . $thumb . '.png', $imgdata);
+            if ($pub = get_module('publish')) {
+                $pub->publish(array(array($static_path . "/" . $thumb . '.png', $chart->getID() . '/' . $thumb . '.png', 'image/png')));
+            }
             ok();
         } catch (Exception $e) {
             error('io-error', $e->getMessage());
