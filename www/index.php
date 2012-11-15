@@ -112,10 +112,10 @@ function add_header_vars(&$page, $active = null) {
         ), array(
             'url' => '#lang-fr-FR',
             'title' => 'Français'
-        )/*, array(
+        ), array(
             'url' => '#lang-es-ES',
             'title' => 'Español'
-        )*/),
+        )),
         'title' => _('Language'),
         'icon' => 'font'
     );
