@@ -32,7 +32,7 @@ function get_chart_content($chart, $user, $minified = false, $path = '') {
 
     if ($minified) {
         $base_js = array(
-            '//assets.datawrapper.s3.amazonaws.com/globalize.min.js',
+            '//assets-datawrapper.s3.amazonaws.com/globalize.min.js',
             '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.2/underscore-min.js',
             '//cdnjs.cloudflare.com/ajax/libs/jquery/1.8.2/jquery.min.js'
         );
@@ -93,7 +93,7 @@ function get_chart_content($chart, $user, $minified = false, $path = '') {
         );
     }
 
-    $analyticsMod = get_module('analytics', '../lib/');
+    $analyticsMod = get_module('analytics', $path . '../lib/');
 
     $page = array(
         'chartData' => $chart->loadData(),
