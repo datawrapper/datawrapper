@@ -41,18 +41,24 @@
         },
 
         getMaxChartHeight: function(el) {
-            var ch = 0; // summed height of children, 10px for top & bottom margin
+            function margin(el, type) {
+                return +$(el).css('margin-' + type).replace('px', '');
+            }
+            var ch = 0, bottom = 0; // summed height of children, 10px for top & bottom margin
             $('body > *').each(function(i, el) {
                 var t = el.tagName.toLowerCase();
                 if (t != 'script' && el.id != 'chart' && !$(el).hasClass('tooltip') && !$(el).hasClass('container')) {
-                    ch += $(el).outerHeight(true);
+                    ch += $(el).outerHeight(false); // element height
                 }
+                ch += Math.max(margin(el, 'top'), bottom);
+                bottom = margin(el, 'bottom');
             });
+            ch += bottom;
             // subtract body padding
             //ch += $('body').innerHeight() - $('body').height();
             var mt = $('#chart').css('margin-top').replace('px', ''),
                 mb = $('#chart').css('margin-bottom').replace('px', ''),
-                maxH = $(window).height() - ch - mt - mb;
+                maxH = $(window).height() - ch - 2;
             // IE Fix
             if ($.browser.msie) maxH -= 10;
             maxH -= $('body').css('padding-top').replace('px', '');
