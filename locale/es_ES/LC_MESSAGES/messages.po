@@ -552,9 +552,8 @@ msgstr "Términos de Uso"
 
 # Imprint as printing?
 #: ../scripts/tmpl_cache/core.twig.php:195
-#, fuzzy
 msgid "Imprint"
-msgstr "Impresión"
+msgstr "Colofón"
 
 #: ../scripts/tmpl_cache/docs.twig.php:87
 msgid "Navigation"
