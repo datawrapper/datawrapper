@@ -44,8 +44,9 @@
                 c.bpad = 5;
             }
 
-            if (!directLabeling && me.lineLabelsVisible() && legend.pos == 'top') {
+            if (!directLabeling && me.lineLabelsVisible() && legend.pos != 'right') {
                 c.tpad += 20;
+                c.rpad = 0;
             }
 
             if (me.lineLabelsVisible() && (directLabeling || legend.pos == 'right')) {
@@ -413,7 +414,7 @@
                         me.path([['M', c.lpad-25, y], ['L', c.lpad-20,y]], 'tick');
                     }
                     if (me.theme.horizontalGrid) {
-                        me.path([['M', c.lpad, y], ['L', c.w - c.rpad,y]], 'grid')
+                        me.path([['M', c.lpad, y], ['L', c.w,y]], 'grid')
                             .attr(me.theme.horizontalGrid);
                     }
                 }
