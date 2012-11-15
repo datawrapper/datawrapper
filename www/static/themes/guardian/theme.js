@@ -26,7 +26,7 @@
             maxLabelWidth: 80
         },
 
-        vpadding: 10
+        vpadding: 0
 
     });
 

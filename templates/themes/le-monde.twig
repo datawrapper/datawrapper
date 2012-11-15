@@ -19,10 +19,12 @@
         {% if sourceURL %}<a target="_blank" href="{{ sourceURL }}">{% endif %}{{ source }}{% if sourceURL %}</a>{% endif %}
     {% endif %}
         <!-- <a href="{{ DW_DOMAIN }}/chart/{{ chart.id }}/data">{% trans "Download data" %}</a> -->
-
     </div>
-    {# <div class="footer-right">
-        <img src="{{ ASSET_PATH }}lemonde-logo.png"/>
-    </div> #}
+
+    <a href="http://lemonde.fr" class="logo"><img src="{{ ASSET_PATH }}lemonde-logo-small.png"/></a>
+
+    {% use 'utils.twig' %}
+    {{ block('chartMenu') }}
+
     <br class="clearfix" />
 </div>

@@ -1,27 +1,35 @@
 
 
 <div id="header">
+    {% if not plain %}
     <h1><span>{{ title|purify }}</span></h1>
 
-    {% if intro %}
-    <p>{{ intro|purify|raw }}</p>
+        {% if intro %}
+        <p>{{ intro|purify|raw }}</p>
+        {% endif %}
     {% endif %}
 </div>
 
 <div id="chart"></div>
 
+{% if not plain %}
 <div id="footer">
     <div class="footer-left">
-    {% trans "Created with" %}
-    <a href="{{ DW_DOMAIN }}">Datawrapper</a>
-    </div>
-    <div class="footer-right">
-        {% if source %}
+         {% if source %}
         {% trans "Source: " %}
         {% if sourceURL %}<a target="_blank" href="{{ sourceURL }}">{% endif %}{{ source }}{% if sourceURL %}</a>{% endif %}
-        |
         {% endif %}
-        <a href="{{ DW_CHART_DATA }}">{% trans "Download data" %}</a>
+
+        <div class="lgo">
+            {% trans "Created with" %} <a href="http://{{ DW_DOMAIN }}" class="lgo">Datawrapper</a>
+        </div>
     </div>
+
+    {% use "utils.twig" %}
+    {{ block('chartMenu') }}
     <br class="clearfix" />
 </div>
+
+{% else %}
+<div style="height:1px"></div>
+{% endif %}

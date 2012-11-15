@@ -30,10 +30,10 @@ h1 {
 h1 span {
 }
 
-.chart p { margin: 15px 0; line-height: 19px;}
+.chart p { margin: 15px 0 0; line-height: 19px;}
 
 #chart {
-    margin-top: 25px;
+    margin-top: 0px;
 }
 
 .label span {
@@ -88,7 +88,7 @@ h1 span {
 }
 
 #footer {
-    margin: 10px 0px 0px;
+    margin: 10px 20px 0px 0;
     padding-top: 5px;
     padding-bottom: 10px;
     font-size: 11px;

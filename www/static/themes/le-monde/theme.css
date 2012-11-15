@@ -17,7 +17,6 @@ body {
     line-height: 15px;
     color: #16212c;
     font-size: 12px;
-    background: red;
     overflow: visible;
     overflow-x:hidden;
 }
@@ -25,17 +24,32 @@ body {
 h1 {
     font-size: 18px;
     font-weight: bold;
-    margin: 0 0 10px;
+    margin: 0 0 5px;
     line-height: 18px;
     text-align: left;
     padding: 5px 0 10px;
 }
 
 
-p { margin: 10px 0; line-height: 19px;}
+.chart p {
+    margin: 0px 0 5px!important;
+    line-height: 1.3;
+}
+
+.fullscreen p, .fullscreen #footer {
+    padding-right: 200px;
+}
 
 body.chart {
     font-family: "arial",sans-serif;
+}
+
+#chart {
+    margin-top: 20px;
+}
+
+.fullscreen #chart {
+    margin-top: 40px;
 }
 
 .chart h1 {
@@ -46,6 +60,12 @@ body.chart {
     padding-left: 16px;
     font-family: "TheSerifOffice", arial, sans-serif;
     font-weight: normal;
+}
+
+.fullscreen.chart h1 {
+    background-size: 0.5em auto;
+    background-position: left 3px;
+    padding-left: 30px;
 }
 
 .label span {
@@ -100,11 +120,11 @@ body.chart {
 }
 
 #footer {
-    clear: both;
     text-transform: uppercase;
     color: #2b2b2a;
     font-size: 11px;
-
+    height: 36px;
+    width: 100%;
 }
 
 #footer a {
@@ -119,16 +139,7 @@ body.chart {
 .footer-left {
     float: left;
 }
-.footer-right {
-    float: right;
-    text-align: center;
-}
 
-.footer-right img {
-    width : 80%;
-    position: relative;
-    top :20px;
-}
 
 .clearfix:after {
     content: ".";

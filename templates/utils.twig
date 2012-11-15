@@ -34,7 +34,6 @@
 
 
 {% block gallerythumb %}
-
     <li class="span3 chart" data-id="{{ chart.id }}">
         <div data-id="{{ chart.id }}" data-bg="{{ chart.metadata.publish.background }}" data-w="{{ chart.metadata.publish['embed-width'] }}" data-h="{{ chart.metadata.publish['embed-height'] }}" class="thumbnail">
             <h3><a href="/gallery/#/{{ chart.id }}" style="color:{% if  chart.metadata.publish.text %}{{ chart.metadata.publish.text }}{% else %}#000{% endif %};text-shadow:1px 1px 3px {% if  chart.metadata.publish.background %}{{ chart.metadata.publish.background }}{% else %}#fff{% endif %};">{{ chart.title }}</a></h3>
@@ -44,7 +43,6 @@
 
         </div>
     </li>
-
 {% endblock %}
 
 
@@ -62,3 +60,122 @@
         {% endif %}
 {% endblock %}
 
+{% block chartMenuHTML %}
+    <div class="chartMenu">
+        <a href="{{ DW_CHART_URL }}" target="_blank" title="{% trans "Fullscreen" %}" data-toggle="fullscreen"><i class="icon-fullscreen"></i></a>
+        <a href="{{ DW_DOMAIN }}/chart/{{ chart.id }}/data" title="{% trans "Get the data" %}"><i class="icon-download"></i></a>
+        <a href="{{ DW_DOMAIN }}/chart/{{ chart.id }}/data" title="{% trans "Share this chart" %}"><i class="icon-share"></i></a>
+    </div>
+{% endblock %}
+
+
+{% block chartMenu %}
+
+    <style type="text/css">
+    .chartMenu {
+        position: absolute;
+        bottom: 5px;
+        right: 0;
+        z-index: 1000;
+        width: 120px;
+        text-align: right;
+        height: 22px;
+    }
+
+    .icon-fullscreen, .icon-share, .icon-download {
+        background-image: url(//assets-datawrapper.s3.amazonaws.com/chart-icons.png);
+        background-repeat: no-repeat;
+        display: inline-block;
+        margin-left: 10px;
+        opacity: 0.3;
+        cursor: pointer;
+    }
+
+    .icon-fullscreen:hover, .icon-share:hover, .icon-download:hover {
+        opacity: 0.8;
+    }
+
+    .icon-fullscreen {
+        width: 23px;
+        height: 22px;
+        background-position: 0 0;
+    }
+
+    .icon-fullscreen.icon-white { background-position: 0 -22px; }
+
+    .icon-share {
+        width: 25px;
+        height: 22px;
+        background-position: -45px 0;
+    }
+
+    .icon-share.icon-white { background-position: -45px -22px; }
+
+    .icon-download {
+        width: 20px;
+        height: 22px;
+        background-position: -24px 0;
+    }
+
+    .icon-download.icon-white { background-position: -24px -22px; }
+
+    </style>
+    {{ block('chartMenuHTML') }}
+
+{% endblock %}
+
+
+{% block chartMenuSmall %}
+
+    <style type="text/css">
+    .chartMenu {
+        position: absolute;
+        bottom: 5px;
+        right: 0;
+        z-index: 1000;
+        width: 120px;
+        text-align: right;
+        height: 15px;
+    }
+
+    .icon-fullscreen, .icon-share, .icon-download {
+        background-image: url(//assets-datawrapper.s3.amazonaws.com/chart-icons-small.png);
+        background-repeat: no-repeat;
+        display: inline-block;
+        margin-left: 6px;
+        opacity: 0.3;
+        cursor: pointer;
+    }
+
+    .icon-fullscreen:hover, .icon-share:hover, .icon-download:hover {
+        opacity: 0.8;
+    }
+
+    .icon-fullscreen {
+        width: 16px;
+        height: 15px;
+        background-position: 0 0;
+    }
+
+    .reverse .icon-fullscreen { background-position: 0 -15px; }
+
+    .icon-share {
+        width: 17px;
+        height: 15px;
+        background-position: -32px 0;
+    }
+
+    .reverse .icon-share { background-position: -32px -15px; }
+
+    .icon-download {
+        width: 14px;
+        height: 15px;
+        background-position: -17px 0;
+    }
+
+    .reverse .icon-download { background-position: -17px -15px; }
+
+    </style>
+    {{ block('chartMenuHTML') }}
+
+{% endblock %}

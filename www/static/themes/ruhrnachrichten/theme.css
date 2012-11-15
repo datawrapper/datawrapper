@@ -36,6 +36,11 @@ p {
 
 #chart {
     margin-top: 25px;
+    margin-bottom: 5px;
+}
+
+.fullscreen #chart {
+    margin-top: 40px;
 }
 
 .label span {
@@ -96,6 +101,7 @@ p {
     clear: both;
     color: #777;
     font-size: 11px;
+    height: 35px;
 }
 
 #footer a {

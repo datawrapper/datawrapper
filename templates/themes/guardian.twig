@@ -12,15 +12,20 @@
 
 <div id="footer">
     <div class="footer-left">
-        {% if source %}
+        <div style="padding-bottom:3px" >
+
+            {% if source %}
             {% trans "Source: " %}
                 {% if sourceURL %}<a target="_blank" href="{{ sourceURL }}">{% endif %}{{ source }}{% if sourceURL %}</a>
-                {% endif %}, 
-        {% endif %}
-         <a href="{{ DW_DOMAIN }}/chart/{{ chart.id }}/data">{% trans "Get the data" %}</a>
+                {% endif %}
+            {% endif %}
+        </div>
+        <a class="logo" href="http://guardian.co.uk" target="_blank">
+            <img src="{{ ASSET_PATH }}guardian-logo-bw.png" alt="The Guardian" width="90" height="19" />
+        </a>
     </div>
-    <div class="footer-right">
-        {# <img src="{{ ASSET_PATH }}guardian-logo.png" alt="The Guardian" /> #}
-    </div>
+
+    {% use "utils.twig" %}
+    {{ block('chartMenu') }}
     <br class="clearfix" />
 </div>

@@ -13,11 +13,77 @@
     <script type="text/javascript" src="/static/vendor/innersvg/innersvg.js"></script>
     <style>
         body { padding: 0!important;}
+
     </style>
     {% endif %}
+
+    {# markup for twitter cards #}
+    <meta name="twitter:card" content="player">
+    <meta name="twitter:site" content="@datawrapper">
+    <meta name="twitter:url" content="https://c-datawrapper.s3.amazonaws.com/{{ chart.id }}/index.html">
+    <meta name="twitter:title" content="{{ chart.title }}">
+    <meta name="twitter:description" content="{{ chart.metadata.describe.intro }}">
+    <meta name="twitter:image" content="http://c-datawrapper.s3.amazonaws.com/{{ chart.id }}/m.png">
+    <meta name="twitter:player" content="https://c-datawrapper.s3.amazonaws.com/{{ chart.id }}/plain.html">
+    <meta name="twitter:player:width" content="435">
+    <meta name="twitter:player:height" content="251">
+
 {% for src in stylesheets %}
     <link rel="stylesheet" type="text/css" href="{{ src }}"></link>
 {% endfor %}
+
+    <style type="text/css">
+
+        /*
+         * FULLSCREEN CSS
+         */
+
+        html body.chart.fullscreen {
+            padding: 50px 100px;
+            width: 100%;
+        }
+
+        #header {
+            min-height: 1px;
+        }
+
+        #footer {
+            min-height: 1px;
+            position: relative;
+        }
+
+        body.fullscreen h1 {
+            font-size: 36px;
+            margin: 0 0 30px;
+        }
+
+        body.fullscreen p {
+            font-size: 15px;
+        }
+
+        body.fullscreen .label span {
+            font-size: 15px;
+        }
+
+        body.fullscreen #footer {
+            font-size: 13px;
+            margin-top: 20px;
+            padding-right: 220px;
+        }
+
+        .footer-left, .footer-right {
+            position: relative;
+            height: 100%;
+        }
+
+        .logo {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+        }
+
+
+    </style>
 
 {% for src in scripts %}
     <script type="text/javascript" src="{{ src }}"></script>
@@ -34,16 +100,29 @@
         function loadChart() {
             // clean chart
             $('#chart').html('');
+            $('#header .legend').remove();
+            //$('.container').height($(window).height());
             // initialize theme
             var theme = Datawrapper.Themes.{{ theme.id | classify }};
             // initialize chart
             var chart = new Datawrapper.Chart(JSON.parse('{{ chart.toJSON | raw }}'));
+            chart.setLocale('{{ chartLocale }}', {{ metricPrefix | json | raw }});
+
             // initliaze visualization
             var vis = new Datawrapper.Visualizations.{{ visualization.id | classify }}();
 
-            vis.setTheme(theme);
+            // compute chart dimensions
+            var w = $('#chart').innerWidth(),
+                h = vis.getMaxChartHeight($('#chart'));
+            if (w <= 350) {  // no padding for thumbnails
+                theme.vpadding = 10;
+                theme.hpadding = 0;
+            }
+            if ($.browser.msie) w -= 10; // IE Fix
+            w -= $('body').css('padding-left').replace('px', '');
+            w -= $('body').css('padding-right').replace('px', '');
 
-            chart.setLocale('{{ chartLocale }}', {{ metricPrefix | json | raw }});
+            vis.setTheme(theme).setSize(w - theme.hpadding*2, h - theme.vpadding);
 
             vis.load(chart, function() {
                 vis.render('#chart');
@@ -64,10 +143,37 @@
             });
         }
 
-        $("a[data-toggle='fullscreen']").click(function(e) {
-            e.preventDefault();
-            $('.chart').requestFullScreen();
+
+        var isFullScreen = false;
+
+        $(window).bind('resize', function() {
+
+            if (isFullScreen != fullScreenApi.isFullScreen()) { // video fullscreen mode has changed
+                isFullScreen = fullScreenApi.isFullScreen();
+
+                if (isFullScreen) {
+                    $('.chart').addClass('fullscreen');
+                    // you have just ENTERED full screen video
+                } else {
+                    $('.chart').removeClass('fullscreen');
+                    // you have just EXITED full screen video
+                }
+            }
+
         });
+
+        var chartMenu = $('.chart-menu');
+        if (chartMenu) {
+
+        }
+
+        $("a[data-toggle='fullscreen']").click(function(e) {
+            if (fullScreenApi.supportsFullScreen) {
+                e.preventDefault();
+                $('.chart').requestFullScreen();
+            }
+        });
+
     });
     </script>
 </head>

@@ -14,7 +14,7 @@ body.chart {
     background: #fff;
     overflow: visible;
     overflow-x: hidden;
-    padding: 4px 5px 0;
+    padding: 0px 5px 0;
     margin: 0;
 }
 
@@ -26,15 +26,20 @@ h1 {
     text-align: left;
     color: #006cb5;
     border-top: 1px solid #2b2b2a;
-    padding: 5px 0 10px;
+    padding: 5px 0 7px;
     border-bottom: 1px solid #2b2b2a;
 }
 
+.fullscreen h1 {
+    font-size: 26px;
+    line-height: 26px;
+    padding: 10px 0 15px;
+}
 
 p { margin: 10px 0; line-height: 19px;}
 
 #chart {
-    margin-top: 25px;
+    margin-top: 20px;
 }
 
 .label span {
@@ -67,7 +72,6 @@ p { margin: 10px 0; line-height: 19px;}
     font-size: 11px;
 }
 
-
 .tooltip {
     z-index: 200;
     padding-bottom: 0px;
@@ -89,9 +93,10 @@ p { margin: 10px 0; line-height: 19px;}
 }
 
 #footer {
-    margin: 10px 0px 0px;
+    margin: 10px 0px 3px;
     padding-top: 5px;
-    padding-bottom: 5px;
+    padding-bottom: 0px;
+    height: 40px;
     clear: both;
     text-transform: uppercase;
     color: #2b2b2a;
@@ -106,8 +111,18 @@ p { margin: 10px 0; line-height: 19px;}
 .footer-left {
     float: left;
 }
+
 .footer-right {
     float: right;
+}
+
+.logo {
+    left: -2px;
+    bottom: 0px;
+}
+
+.fullscreen #footer {
+    height: 45px;
 }
 
 .clearfix:after {
