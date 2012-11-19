@@ -169,8 +169,9 @@ $(function() {
     }
     $('.highlighted-series .badge').click(highlightSeriesClick);
 
-    chart.dataset(function(ds) {
+    function onDatasetLoaded(ds) {
         var s = $('#highlight-series'), s2 = $('.highlighted-series');
+        s.find("option[value!='---']").remove();
         _.each(chart.dataSeries(), function(col) {
             s.append('<option>'+col.name+'</option>');
         });
@@ -202,7 +203,9 @@ $(function() {
             }
         });
         loadThemeColors();
-    });
+    }
+
+    chart.dataset(onDatasetLoaded);
 
     $('.collapse').on('shown', function(e) {
         var tgl = $('[data-toggle=collapse][data-target=#'+e.target.id+']');
@@ -249,6 +252,7 @@ $(function() {
     $('#btn-transpose').click(function(e) {
         e.preventDefault();
         chart.set('metadata.data.transpose', !chart.get('metadata.data.transpose'));
+        chart.dataset(onDatasetLoaded);
         setTimeout(function() {
             loadOptions();
         }, 2000);
