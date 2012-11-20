@@ -7,6 +7,11 @@
         {% if intro %}
         <p>{{ intro|purify|raw }}</p>
         {% endif %}
+
+
+    {% use "utils.twig" %}
+    {{ block('chartMenuSmall') }}
+
     {% endif %}
 </div>
 
@@ -28,9 +33,7 @@
         <img src="{{ ASSET_PATH }}logo-bw.png" alt="Ruhrnachrichten" width="115" height="18" />
     </a>
 
-    {% use "utils.twig" %}
-    {{ block('chartMenuSmall') }}
-
     <br class="clearfix" />
 </div>
+
 {% endif %}

@@ -6,6 +6,9 @@
     {% if intro %}
     <p>{{ intro|purify|raw }}</p>
     {% endif %}
+
+    {% use "utils.twig" %}
+    {{ block('chartMenu') }}
 </div>
 
 <div id="chart"></div>
@@ -20,12 +23,10 @@
                 {% endif %}
             {% endif %}
         </div>
-        <a class="logo" href="http://guardian.co.uk" target="_blank">
-            <img src="{{ ASSET_PATH }}guardian-logo-bw.png" alt="The Guardian" width="90" height="19" />
-        </a>
     </div>
+    <a class="logo" href="http://guardian.co.uk" target="_blank">
+        <img src="{{ ASSET_PATH }}guardian-logo-bw.png" alt="The Guardian" width="90" height="19" />
+    </a>
 
-    {% use "utils.twig" %}
-    {{ block('chartMenu') }}
     <br class="clearfix" />
 </div>

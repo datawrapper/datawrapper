@@ -74,12 +74,24 @@
     <style type="text/css">
     .chartMenu {
         position: absolute;
-        bottom: 5px;
-        right: 0;
+        top: 9px;
+        right: 9px;
         z-index: 1000;
-        width: 120px;
+        width: 110px;
         text-align: right;
-        height: 22px;
+        height: 30px;
+        display: none;
+        background: #fff;
+        padding-top: 9px;
+        padding-right: 9px;
+        border-radius: 5px;
+                box-shadow: 2px 2px 10px #bbb;
+
+    }
+
+
+    #header:hover .chartMenu {
+        display: block;
     }
 
     .icon-fullscreen, .icon-share, .icon-download {
@@ -87,12 +99,12 @@
         background-repeat: no-repeat;
         display: inline-block;
         margin-left: 10px;
-        opacity: 0.3;
+        opacity: 0.4;
         cursor: pointer;
     }
 
     .icon-fullscreen:hover, .icon-share:hover, .icon-download:hover {
-        opacity: 0.8;
+        opacity: 1;
     }
 
     .icon-fullscreen {
@@ -128,14 +140,25 @@
 {% block chartMenuSmall %}
 
     <style type="text/css">
+
     .chartMenu {
         position: absolute;
-        bottom: 5px;
-        right: 0;
+        top: 10px;
+        right: 10px;
         z-index: 1000;
-        width: 120px;
+        width: 80px;
         text-align: right;
-        height: 15px;
+        height: 26px;
+        background: #fff;
+        padding-top: 6px;
+        padding-right: 9px;
+        border-radius: 5px;
+        box-shadow: 2px 5px 5px #ddd;
+        display: none;
+    }
+
+    #header:hover .chartMenu {
+        display: block;
     }
 
     .icon-fullscreen, .icon-share, .icon-download {

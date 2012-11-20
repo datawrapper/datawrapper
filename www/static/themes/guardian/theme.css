@@ -96,7 +96,7 @@ p { margin: 10px 0; line-height: 19px;}
     margin: 10px 0px 3px;
     padding-top: 5px;
     padding-bottom: 0px;
-    height: 40px;
+    height: 20px;
     clear: both;
     text-transform: uppercase;
     color: #2b2b2a;
@@ -117,7 +117,7 @@ p { margin: 10px 0; line-height: 19px;}
 }
 
 .logo {
-    left: -2px;
+    right: -2px;
     bottom: 0px;
 }
 
