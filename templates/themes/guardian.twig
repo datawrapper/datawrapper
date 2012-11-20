@@ -7,26 +7,26 @@
     <p>{{ intro|purify|raw }}</p>
     {% endif %}
 
-    {% use "utils.twig" %}
-    {{ block('chartMenu') }}
 </div>
 
 <div id="chart"></div>
 
 <div id="footer">
     <div class="footer-left">
-        <div style="padding-bottom:3px" >
 
-            {% if source %}
-            {% trans "Source: " %}
-                {% if sourceURL %}<a target="_blank" href="{{ sourceURL }}">{% endif %}{{ source }}{% if sourceURL %}</a>
-                {% endif %}
+        {% if source %}
+        {% trans "Source: " %}
+            {% if sourceURL %}<a target="_blank" href="{{ sourceURL }}">{% endif %}{{ source }}{% if sourceURL %}</a>
             {% endif %}
-        </div>
+        {% endif %}
+
     </div>
-    <a class="logo" href="http://guardian.co.uk" target="_blank">
+    <div class="footer-right">
+    <a href="http://guardian.co.uk" target="_blank">
         <img src="{{ ASSET_PATH }}guardian-logo-bw.png" alt="The Guardian" width="90" height="19" />
     </a>
+</div>
 
-    <br class="clearfix" />
+    {% use "utils.twig" %}
+    {{ block('chartMenu') }}
 </div>

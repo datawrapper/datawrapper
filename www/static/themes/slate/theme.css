@@ -1,3 +1,6 @@
+.chart .chartMenu a {
+    color: #fff;
+}
 
 /*
  * Slate Theme
@@ -168,3 +171,21 @@ svg .axis, svg .tick, svg .grid, svg rect {
 .label.smaller span {
     font-size: 80%;
 }
+
+.chart .chartMenu {
+    background: #272B30;
+    box-shadow: 0 0 5px #444;
+}
+
+.chart .chartMenu a {
+    color: #bbb;
+}
+
+.chart .chartMenu a:hover {
+    color: #fff;
+}
+
+
+.chart .icon-fullscreen { background-position: 0 -15px; }
+.chart .icon-share { background-position: -32px -15px; }
+.chart .icon-download { background-position: -17px -15px; }

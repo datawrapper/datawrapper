@@ -8,8 +8,6 @@
         <p>{{ intro|purify|raw }}</p>
         {% endif %}
 
-        {% use "utils.twig" %}
-        {{ block('chartMenu') }}
     {% endif %}
 </div>
 
@@ -24,11 +22,13 @@
         {% endif %}
 
     </div>
-        <div class="logo">
-            {% trans "Created with" %} <a href="http://{{ DW_DOMAIN }}" class="lgo">Datawrapper</a>
-        </div>
+    <div class="logo">
+        {% trans "Created with" %} <a href="http://{{ DW_DOMAIN }}" class="lgo">Datawrapper</a>
+    </div>
 
-    <br class="clearfix" />
+
+        {% use "utils.twig" %}
+        {{ block('chartMenu') }}
 </div>
 
 {% else %}

@@ -88,19 +88,10 @@ h1 span {
 }
 
 #footer {
-    margin: 10px 20px 0px 0;
-    padding-top: 5px;
-    padding-bottom: 10px;
     font-size: 11px;
     color: #888;
 }
 
-.footer-left {
-    float: left;
-}
-.footer-right {
-    float: right;
-}
 
 .clearfix:after {
     content: ".";

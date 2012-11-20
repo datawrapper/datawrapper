@@ -8,9 +8,6 @@
     <p>{{ intro|purify|raw }}</p>
     {% endif %}
 
-    {% use 'utils.twig' %}
-    {{ block('chartMenu') }}
-
 </div>
 
 
@@ -25,7 +22,10 @@
         <!-- <a href="{{ DW_DOMAIN }}/chart/{{ chart.id }}/data">{% trans "Download data" %}</a> -->
     </div>
 
-    <a href="http://lemonde.fr" class="logo"><img src="{{ ASSET_PATH }}lemonde-logo-small.png"/></a>
+    <div class="footer-right">
+        <a href="http://lemonde.fr"><img src="{{ ASSET_PATH }}lemonde-logo-small.png"/></a>
+    </div>
 
-    <br class="clearfix" />
+    {% use 'utils.twig' %}
+    {{ block('chartMenu') }}
 </div>
