@@ -31,9 +31,12 @@ h1 {
 }
 
 .fullscreen h1 {
+    border-top-width: 2px;
+    border-bottom-width: 2px;
     font-size: 26px;
     line-height: 26px;
     padding: 10px 0 15px;
+    margin-right: 200px!important;
 }
 
 p { margin: 10px 0; line-height: 19px;}

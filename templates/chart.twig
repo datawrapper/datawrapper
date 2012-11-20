@@ -39,12 +39,14 @@
          */
 
         html body.chart.fullscreen {
+            margin: 0;
             padding: 50px 100px;
             width: 100%;
         }
 
         #header {
             min-height: 1px;
+            position: relative;
         }
 
         #footer {
@@ -52,20 +54,24 @@
             position: relative;
         }
 
-        body.fullscreen h1 {
+        .fullscreen h1 {
             font-size: 36px;
             margin: 0 0 30px;
         }
 
-        body.fullscreen p {
+        .fullscreen p {
             font-size: 15px;
         }
 
-        body.fullscreen .label span {
+        .fullscreen .logo {
+            right: 200px;
+        }
+
+        .fullscreen .label span {
             font-size: 15px;
         }
 
-        body.fullscreen #footer {
+        .fullscreen #footer {
             font-size: 13px;
             margin-top: 20px;
             padding-right: 220px;
