@@ -11,5 +11,6 @@ push
 config.php
 config.yaml
 scripts/history.php
-
+fabfile.py*
+archive.tar
 *.log
