@@ -179,6 +179,13 @@
                 $('.chart').requestFullScreen();
             }
         });
+
+        $('.chart').mouseenter(function() {
+            setTimeout(function() {
+                $('.chart').addClass('menuSeen');
+            }, 3000);
+        });
+
     });
     </script>
 </head>

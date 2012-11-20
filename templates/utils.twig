@@ -89,10 +89,7 @@
             -ms-transition: all .15s ease-out;
              -o-transition: all .15s ease-out;
                 transition: all .15s ease-out;
-
-
     }
-
 
     .chart #header:hover .chartMenuCont {
         display: block;
@@ -102,7 +99,13 @@
 
     .chart:hover .chartMenuCont {
         display: block;
-        opacity: 0.3;
+        opacity: 1;
+        top: -5px;
+    }
+
+    .chart.menuSeen:hover .chartMenuCont {
+        top: -40px;
+        opacity: 0;
     }
 
     .chartMenu {
