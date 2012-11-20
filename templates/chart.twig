@@ -168,11 +168,6 @@
 
         });
 
-        var chartMenu = $('.chart-menu');
-        if (chartMenu) {
-
-        }
-
         $("a[data-toggle='fullscreen']").click(function(e) {
             if (fullScreenApi.supportsFullScreen) {
                 e.preventDefault();
@@ -180,11 +175,16 @@
             }
         });
 
-        $('.chart').mouseenter(function() {
+        function markMenuAsSeen() {
+            $('.chartMenuCont').removeClass('menuSeen');
+            $('.chartMenuCont').show();
             setTimeout(function() {
-                $('.chart').addClass('menuSeen');
-            }, 3000);
-        });
+                $('.chartMenuCont').addClass('menuSeen');
+            }, 1000);
+            $('.chart').unbind('mouseenter', markMenuAsSeen);
+        }
+
+        $('.chart').bind('mouseenter', markMenuAsSeen);
 
     });
     </script>

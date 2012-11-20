@@ -63,7 +63,7 @@
 
 
 {% block chartMenuHTML %}
-    <div class="chartMenuCont">
+    <div class="chartMenuCont menuSeen">
         <div class="chartMenu">
             <a href="{{ DW_CHART_URL }}" target="_blank" title="{% trans "Fullscreen" %}" data-toggle="fullscreen"><i class="icon-fullscreen"></i> {% trans "Fullscreen" %}</a>
             <a href="{{ DW_DOMAIN }}/chart/{{ chart.id }}/data" title="{% trans "Get the data" %}"><i class="icon-download"></i> {% trans "Data" %}</a>
@@ -79,10 +79,10 @@
 
     .chartMenuCont {
         position: absolute;
-        top: -40px;
-        left: 0px;
-        right: 0px;
-        opacity: 0;
+        top: -5px;
+        left: 0;
+        right: 0;
+        opacity: 1;
 
         -webkit-transition: all .15s ease-out;
            -moz-transition: all .15s ease-out;
@@ -91,21 +91,18 @@
                 transition: all .15s ease-out;
     }
 
-    .chart #header:hover .chartMenuCont {
-        display: block;
-        top: -5px;
-        opacity: 1;
-    }
-
-    .chart:hover .chartMenuCont {
-        display: block;
-        opacity: 1;
-        top: -5px;
-    }
-
-    .chart.menuSeen:hover .chartMenuCont {
+    body .chartMenuCont.menuSeen {
+        position: absolute;
         top: -40px;
+        left: 0px;
+        right: 0px;
         opacity: 0;
+    }
+
+    #header:hover .chartMenuCont {
+        display: block;
+        top: -5px;
+        opacity: 1;
     }
 
     .chartMenu {
