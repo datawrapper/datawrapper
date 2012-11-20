@@ -7,6 +7,10 @@
     {% if intro %}
     <p>{{ intro|purify|raw }}</p>
     {% endif %}
+
+    {% use 'utils.twig' %}
+    {{ block('chartMenu') }}
+
 </div>
 
 
@@ -22,9 +26,6 @@
     </div>
 
     <a href="http://lemonde.fr" class="logo"><img src="{{ ASSET_PATH }}lemonde-logo-small.png"/></a>
-
-    {% use 'utils.twig' %}
-    {{ block('chartMenu') }}
 
     <br class="clearfix" />
 </div>

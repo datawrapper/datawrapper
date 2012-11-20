@@ -7,6 +7,9 @@
         {% if intro %}
         <p>{{ intro|purify|raw }}</p>
         {% endif %}
+
+        {% use "utils.twig" %}
+        {{ block('chartMenu') }}
     {% endif %}
 </div>
 
@@ -25,8 +28,6 @@
         </div>
     </div>
 
-    {% use "utils.twig" %}
-    {{ block('chartMenu') }}
     <br class="clearfix" />
 </div>
 
