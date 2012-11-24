@@ -3,9 +3,16 @@
 <fieldset>
 
     <div class="control-group select-color">
-        <label class="control-label" for="select-color">{% trans "Pick base color" %}</label>
+        <label class="control-label" for="select-color">{% trans "Choose a base color" %}</label>
         <div class="controls">
             <div id="select-color"></div>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label"></label>
+        <div class="controls">
+            <a class="btn btn-small" role="button" href="#customColors">or define custom colors</a>
         </div>
     </div>
 
@@ -60,6 +67,48 @@
     </div>
     {% endif %}{% endfor %}
 </fieldset>
+
+{#
+    modal for picking custom colors
+#}
+<div class="modal hide" id="customColors" style="width:600px;margin-left:-300px" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal">×</button>
+        <h2>{% trans "Farben anpassen" %}</h2>
+        <p style="border-bottom:1px solid #ccc;padding-bottom:20px;margin-bottom:20px">Bitte nur eigene Farben benutzen, wenn dies unbedingt notwendig ist, etwa um politischen Parteien zu kennzeichnen. Nach Möglichkeit bitte die vorgegebenen Farben benutzen.</p>
+
+        <div class="row">
+            <div class="span2">
+                <div>
+                    <h4>1. Datenreihe auswählen</h4>
+                    <ul class="unstyled">
+                        <li>SPD</li><li>CDU/CSU</li>
+                        <li>SPD</li><li>CDU/CSU</li>
+                        <li>SPD</li><li>CDU/CSU</li>
+                        <li>SPD</li><li>CDU/CSU</li>
+                        <li>SPD</li><li>CDU/CSU</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="span4">
+                <div>
+                    <h4>2. Farbe auswählen</h4>
+                    <p>Verwende nach Möglichkeit eine der vorgegebenen Farben.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="color-row">
+            <div class="colorsel" data-color="#ff0000"></div>
+            <label class="color">Dataseries 1</label>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-warning pull-left">Farbwahl zurücksetzen</button>
+        <button class="btn btn-primary">Save changes</button>
+    </div>
+</div>
+
 <script type="text/javascript">
 
 $(function() {
@@ -118,12 +167,19 @@ $(function() {
                 $('.select-row').hide();
             }
         }
+
+        // populate custom color selector
+
     });
 
-    
+    $('a[href=#customColors]').click(function(e) {
+        e.preventDefault();
+        $('#customColors').modal();
+    })
 
 });
 
 </script>
+
 
 {% endblock %}
