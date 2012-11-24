@@ -29,12 +29,12 @@ class DatawrapperSession {
         $lifetime = 86400 * 90;  // 90 days
         session_set_cookie_params($lifetime);
         session_name($ses);
-        //if(!session_id()) session_regenerate_id();
+        if(!session_id()) session_regenerate_id();
         session_start();
 
         // Reset the expiration time upon page load
-        //if (isset($_COOKIE[$ses]))
-        //    setcookie($ses, $_COOKIE[$ses], time() + $lifetime, "/");
+        if (isset($_COOKIE[$ses]))
+            setcookie($ses, $_COOKIE[$ses], time() + $lifetime, "/");
     }
 
     /**
