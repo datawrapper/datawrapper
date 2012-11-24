@@ -37,7 +37,7 @@
 
             c.cx = chart_width * 0.5;
             c.cy = chart_height * (FA < TWO_PI ? 0.75 : 0.5); // 1:1 1.5:1
-            c.or = Math.min(FA == TWO_PI ? chart_height : chart_height, chart_width * 0.5) - 3;
+            c.or = Math.min(FA == TWO_PI ? chart_height * 0.5 : chart_height * 0.6, chart_width * 0.5) - 3;
             c.ir = donut ? c.or * 0.3 : 0;
             c.or_sq = c.or * c.or;
             c.ir_sq = c.ir * c.ir;
