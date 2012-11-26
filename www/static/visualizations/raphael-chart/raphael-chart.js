@@ -242,8 +242,12 @@
             var me = this,
                 palette =me.theme.colors.palette,
                 color;
-            // use a different color, if set via setSeriesColor
-            if (useNegativeColor) {
+
+            // highest priority for user-defined series colors
+            var userCustomColors = me.get('custom-colors', {});
+            if (userCustomColors[series.name]) {
+                color = userCustomColors[series.name];
+            } else if (useNegativeColor) {  // use a different color, if set via setSeriesColor
                 color = me.theme.colors[series.data[row] < 0 ? 'negative' : 'positive'];
             } else {
                 if (me.__customSeriesColors && me.__customSeriesColors[series.name])

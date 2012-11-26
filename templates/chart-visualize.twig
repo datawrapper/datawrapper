@@ -17,8 +17,8 @@ $(function() {
 
     $.fn.colorpicker = function(props) {
         var rt = $(this),
-            colors = rt.data('colors').split(','),
-            active = rt.data('color');
+            colors = rt.data('colors').toLowerCase().split(','),
+            active = (rt.data('color') || "").toLowerCase();
         // clean up html at first
         rt.html('');
         rt.css({
@@ -26,6 +26,7 @@ $(function() {
         });
         var c = 0, r = 0;
         $.each(colors, function(i, col) {
+            if (!col) return;
             var d = $('<div />');
             if ((c+1)*28 > rt.parent().width()) {
                 c = 0;
@@ -69,6 +70,7 @@ $(function() {
 
     function loadThemeColors() {
         var picker = $('#select-color'),
+            customColors = $('#palette-colors'),
             themeid = $('#select-theme').val(),
             theme = themesById[themeid],
             needed = [themeid];
@@ -102,6 +104,9 @@ $(function() {
             });
             chart.set('metadata.publish.background', theTheme.colors.background);
             chart.set('metadata.publish.text', theTheme.colors.text);
+
+            var colors = theTheme.colors.palette.slice().concat(theTheme.colors.secondary || []);
+            customColors.data('colors', colors.join(','));
         }
         loadNext();
     } // end loadThemeColors()

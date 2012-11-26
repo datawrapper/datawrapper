@@ -74,41 +74,78 @@
 <div class="modal hide" id="customColors" style="width:600px;margin-left:-300px" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-body">
         <button type="button" class="close" data-dismiss="modal">×</button>
-        <h2>{% trans "Farben anpassen" %}</h2>
+        <h2>{% trans "Customize chart colors" %}</h2>
         <p style="border-bottom:1px solid #ccc;padding-bottom:20px;margin-bottom:20px">Bitte nur eigene Farben benutzen, wenn dies unbedingt notwendig ist, etwa um politischen Parteien zu kennzeichnen. Nach Möglichkeit bitte die vorgegebenen Farben benutzen.</p>
 
         <div class="row">
             <div class="span2">
                 <div>
-                    <h4>1. Datenreihe auswählen</h4>
-                    <ul class="unstyled">
-                        <li>SPD</li><li>CDU/CSU</li>
-                        <li>SPD</li><li>CDU/CSU</li>
-                        <li>SPD</li><li>CDU/CSU</li>
-                        <li>SPD</li><li>CDU/CSU</li>
-                        <li>SPD</li><li>CDU/CSU</li>
+                    <h4>{% trans "1. Select data series" %}</h4>
+                    <ul class="dataseries unstyled">
                     </ul>
                 </div>
             </div>
             <div class="span4">
                 <div>
-                    <h4>2. Farbe auswählen</h4>
-                    <p>Verwende nach Möglichkeit eine der vorgegebenen Farben.</p>
+                    <h4>{% trans "2. Choose a color for" %} "<span class="selected-series-name"></span>"</h4>
+                </div>
+                <div class="row">
+                    <div class="span2">
+                        <label>{% trans "Pick from palette..." %}</label>
+                        <div id="palette-colors"></div>
+                    </div>
+                    <div class="span2">
+                        <label>{% trans "...or enter a custom color" %}</label>
+                        <div class="control-group">
+                            <input id="user-color" type="text" class="text input-small" placeholder="hex-color" />
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top:20px">
+                    <button id="reset-color-choice" class="btn">{% trans "Reset color (use default)" %}</button>
                 </div>
             </div>
         </div>
 
-        <div class="color-row">
-            <div class="colorsel" data-color="#ff0000"></div>
-            <label class="color">Dataseries 1</label>
-        </div>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-warning pull-left">Farbwahl zurücksetzen</button>
-        <button class="btn btn-primary">Save changes</button>
+        <button id="reset-all-colors" class="btn pull-left">{% trans "Reset all colors" %}</button>
+        <button class="btn btn-primary" data-dismiss="modal">{% trans "Close" %}</button>
     </div>
 </div>
+<style type="text/css">
 
+#customColors h4 {
+    margin-bottom: 10px;
+}
+
+#customColors .color {
+    width: 18px;
+    height: 18px;
+    float: left;
+    background: #ccc;
+    text-align: center;
+    line-height: 14px;
+    color: #fff;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+#customColors .dataseries li {
+    padding-left: 5px;
+    padding-bottom: 3px;
+}
+
+#customColors .dataseries label {
+    padding-left: 25px;
+}
+
+#customColors .dataseries .selected label {
+    font-weight: bold;
+}
+
+
+</style>
 <script type="text/javascript">
 
 $(function() {
@@ -168,14 +205,107 @@ $(function() {
             }
         }
 
-        // populate custom color selector
+        initCustomColors(chart);
 
     });
 
+    function initCustomColors(chart) {
+
+        var customColors = $('#customColors'),
+            sel = chart.get('metadata.visualize.custom-colors', {});
+
+        // populate custom color selector
+        $.each(chart.dataSeries(), function(i, ds) {
+            var li = $('<li data-series="'+ds.name+'"></li>');
+            li.append('<div class="color">×</div><label>'+ds.name+'</label>');
+            if (sel[ds.name]) {
+                $('.color', li).html('').css('background', sel[ds.name]);
+                li.data('color', sel[ds.name]);
+            }
+            $('#customColors .dataseries').append(li);
+        });
+        // auto-select first series
+        $('#customColors .dataseries li:first-child').addClass('selected');
+        $('#customColors .selected-series-name').html(chart.dataSeries()[0].name);
+
+        // define select event handler
+        $('#customColors .dataseries li').click(function(e) {
+            var li = e.target.nodeName.toLowerCase() == 'li' ? $(e.target) : $(e.target).parents('li');
+            $('#customColors .dataseries li').removeClass('selected');
+            $('#customColors .selected-series-name').html($('label', li).html());
+            li.addClass('selected');
+            customColorSelectSeries();
+        });
+
+    }
+
+    // action for "reset all colors" button
+    $('#reset-color-choice').click(function(e) {
+        var li = $('#customColors .dataseries li.selected');
+        li.data('color', '');
+        $('.color', li)
+            .css('background', '')
+            .html('×');
+        var sel = $.extend({}, chart.get('metadata.visualize.custom-colors', {}));
+        sel[$('label', li).html()] = '';
+        chart.set('metadata.visualize.custom-colors', sel);
+    });
+
+    // called whenever the user selects a new series
+    function customColorSelectSeries() {
+        var li = $('#customColors .dataseries li.selected');
+        var palette = $('#palette-colors').data('colors').split(',');
+        if (palette.indexOf(li.data('color')) < 0) $('#user-color').val(li.data('color'));
+        else $('#user-color').val('');
+
+        $('#palette-colors')
+          .data('color', li.data('color'))
+          .colorpicker({
+            change: function(color) {
+                $('#user-color').val('');
+                setNewColorForCurrentSeries(color);
+            }
+        });
+    }
+
+    // set a new color and save
+    function setNewColorForCurrentSeries(color) {
+        var sel = $.extend({}, chart.get('metadata.visualize.custom-colors', {})),
+            li = $('#customColors .dataseries li.selected');
+        $('.color', li)
+            .css('background', color)
+            .html('');
+        li.data('color', color);
+        sel[$('label', li).html()] = color;
+        chart.set('metadata.visualize.custom-colors', sel);
+    }
+
+    // init custom colors button
     $('a[href=#customColors]').click(function(e) {
         e.preventDefault();
         $('#customColors').modal();
-    })
+        customColorSelectSeries();
+    });
+
+    $('#reset-all-colors').click(function(e) {
+        $('#customColors .dataseries li .color').html('×').css('background', '');
+        $('#customColors .dataseries li').data('color', '');
+        chart.set('metadata.visualize.custom-colors', {});
+    });
+
+    // user-defined hex-color
+    var usercolor = $('#user-color');
+    usercolor.keyup(function() {
+        var col = usercolor.val();
+        if (col.trim() == '') {
+            usercolor.parent().removeClass('error').removeClass('success');
+        } else if (!col.trim().match(/#[A-F|0-9]{6}/i)) {
+            usercolor.parent().removeClass('success').addClass('error');
+        } else {
+            usercolor.parent().removeClass('error').addClass('success');
+            setNewColorForCurrentSeries(col.trim());
+        }
+    });
 
 });
 
