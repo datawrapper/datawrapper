@@ -1,0 +1,33 @@
+
+/*
+ * LeMonde Theme
+ * -------------
+ *
+ */
+
+
+body {
+    font-family: verdana, arial,sans-serif;
+    font-weight: 400;
+    color: #16212c;
+    font-size: 0.7em;
+
+}
+
+#header {
+    font-family: verdana, arial,sans-serif;
+    text-align: left;
+    padding-bottom: 25px;
+
+}
+
+#header h1 {
+    font-size: 1.7em;
+    font-weight: bold;
+    color: #184E8A;
+}
+
+#header p {
+    font-size: 1.2em;
+    padding-left: 10px;
+}
