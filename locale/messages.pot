@@ -746,7 +746,7 @@ msgid "The password and the repeated password must not differ."
 msgstr ""
 
 #: ../scripts/tmpl_cache/modal.twig.php:35
-#: ../scripts/tmpl_cache/vis-options.twig.php:296
+#: ../scripts/tmpl_cache/vis-options.twig.php:299
 msgid "Close"
 msgstr ""
 
@@ -1055,41 +1055,45 @@ msgstr ""
 msgid "Choose a base color"
 msgstr ""
 
-#: ../scripts/tmpl_cache/vis-options.twig.php:54
+#: ../scripts/tmpl_cache/vis-options.twig.php:44
+msgid "or define custom colors"
+msgstr ""
+
+#: ../scripts/tmpl_cache/vis-options.twig.php:57
 msgid "Select row to display"
 msgstr ""
 
-#: ../scripts/tmpl_cache/vis-options.twig.php:236
+#: ../scripts/tmpl_cache/vis-options.twig.php:239
 msgid "Customize chart colors"
 msgstr ""
 
-#: ../scripts/tmpl_cache/vis-options.twig.php:240
+#: ../scripts/tmpl_cache/vis-options.twig.php:243
 msgid ""
 "Please use custom colors only if it is absolutely necessary, for instance to "
 "identify political parties. If possible please use the palette colors."
 msgstr ""
 
-#: ../scripts/tmpl_cache/vis-options.twig.php:248
+#: ../scripts/tmpl_cache/vis-options.twig.php:251
 msgid "1. Select data series"
 msgstr ""
 
-#: ../scripts/tmpl_cache/vis-options.twig.php:258
+#: ../scripts/tmpl_cache/vis-options.twig.php:261
 msgid "2. Choose a color for"
 msgstr ""
 
-#: ../scripts/tmpl_cache/vis-options.twig.php:265
+#: ../scripts/tmpl_cache/vis-options.twig.php:268
 msgid "Pick from palette..."
 msgstr ""
 
-#: ../scripts/tmpl_cache/vis-options.twig.php:272
+#: ../scripts/tmpl_cache/vis-options.twig.php:275
 msgid "...or enter a custom color"
 msgstr ""
 
-#: ../scripts/tmpl_cache/vis-options.twig.php:282
+#: ../scripts/tmpl_cache/vis-options.twig.php:285
 msgid "Reset color (use default)"
 msgstr ""
 
-#: ../scripts/tmpl_cache/vis-options.twig.php:292
+#: ../scripts/tmpl_cache/vis-options.twig.php:295
 msgid "Reset all colors"
 msgstr ""
 
