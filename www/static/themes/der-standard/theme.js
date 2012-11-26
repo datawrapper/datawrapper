@@ -14,7 +14,7 @@
             palette: ['#162964', '#6FAA12', '#FFD500', '#680240', '#F20559', '#1F0D67'],
             positive: '#162964',
             negative: '#e41f25',
-            background: '#ec008c',
+            background: '#e0e3e0'
         },
 
         lineChart: {
