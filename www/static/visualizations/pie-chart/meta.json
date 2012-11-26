@@ -4,7 +4,7 @@
         "de": "Kreisdiagramm",
         "fr": "Diagramme circulaire"
     },
-    "version": "0.9.1",
+    "version": "0.9.2",
     "extends": "raphael-chart",
     "author": {
         "name": "gka",
