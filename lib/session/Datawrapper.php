@@ -30,6 +30,9 @@ class DatawrapperSession {
         session_set_cookie_params($lifetime);
         session_name($ses);
         if(!session_id()) session_regenerate_id();
+        session_cache_limiter('private_no_expire');
+        session_cache_expire(1440 * 90);  // 90 days
+
         session_start();
 
         // Reset the expiration time upon page load
