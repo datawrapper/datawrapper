@@ -212,17 +212,25 @@ function download($url, $outf) {
         curl_setopt($ch, CURLOPT_FILE, $fp);
         curl_setopt($ch, CURLOPT_HEADER, 0 );
         curl_setopt($ch, CURLOPT_COOKIE, $strCookie);
+        if (isset($GLOBALS['dw_config']['http_auth'])) {
+            curl_setopt($ch, CURLOPT_USERPWD, $GLOBALS['dw_config']['http_auth']);
+        }
         curl_exec($ch);
         curl_close($ch);
         fclose($fp);
 
     } else {
-        $context = stream_context_create(array(
+        $cfg = array(
             'http' => array(
                 'header' => 'Connection: close\r\n',
                 'method' => 'GET'
             )
-        ));
+        );
+        if (isset($GLOBALS['dw_config']['http_auth'])) {
+            $cfg['http']['header'] .=
+                "Authorization: Basic " . base64_encode($GLOBALS['dw_config']['http_auth']) . '\r\n';
+        }
+        $context = stream_context_create($cfg);
         $html = file_get_contents($url, false, $context);
         file_put_contents($outf, $html);
     }
