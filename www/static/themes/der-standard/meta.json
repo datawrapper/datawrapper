@@ -1,9 +1,0 @@
-{
-    "title": "Der Standard",
-    "link": "http://derstandard.at",
-    "restricted": null,
-    "locale": "de_DE",
-    "restrict": "@derstandard.at",
-    "version": "0.1",
-    "assets": []
-}

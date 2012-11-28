@@ -1,9 +1,0 @@
-{
-    "title": "Berliner Zeitung",
-    "link": "http://berliner-zeitung.de",
-    "restricted": null,
-    "locale": "de_DE",
-    "restrict": "@berliner-verlag.de",
-    "version": "0.1",
-    "assets": []
-}
