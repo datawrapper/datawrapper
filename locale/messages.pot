@@ -1,3 +1,9 @@
+#: ../controller/account-invitation.php:15 ../lib/api/auth.php:149
+msgid ""
+"This activation token is invalid. Your email address is probably already "
+"activated."
+msgstr ""
+
 #: ../controller/docs.php:36 ../controller/docs.php:52
 msgid "Sorry, but this content is not available in your language, yet."
 msgstr ""
@@ -57,6 +63,92 @@ msgstr ""
 #: ../scripts/tmpl_cache/account-reset-password.twig.php:118
 #: ../scripts/tmpl_cache/login.twig.php:55
 msgid "Login"
+msgstr ""
+
+#: ../scripts/tmpl_cache/admin-users.twig.php:65
+msgid "removed."
+msgstr ""
+
+#: ../scripts/tmpl_cache/admin-users.twig.php:71
+msgid "added."
+msgstr ""
+
+#: ../scripts/tmpl_cache/admin-users.twig.php:77
+msgid "You should give an email."
+msgstr ""
+
+#: ../scripts/tmpl_cache/admin-users.twig.php:83
+msgid "The given email is not correct."
+msgstr ""
+
+#: ../scripts/tmpl_cache/admin-users.twig.php:89
+msgid "The given email is already in our database."
+msgstr ""
+
+#: ../scripts/tmpl_cache/admin-users.twig.php:96
+msgid "will lost his administrator status. Continue?"
+msgstr ""
+
+#: ../scripts/tmpl_cache/admin-users.twig.php:100
+msgid "will become an administrator. Continue?"
+msgstr ""
+
+#: ../scripts/tmpl_cache/admin-users.twig.php:104
+msgid "will be deleted. Continue?"
+msgstr ""
+
+#: ../scripts/tmpl_cache/admin-users.twig.php:112
+msgid "Add a user"
+msgstr ""
+
+#: ../scripts/tmpl_cache/admin-users.twig.php:118
+#: ../scripts/tmpl_cache/login.twig.php:47
+#: ../scripts/tmpl_cache/login.twig.php:87
+msgid "email"
+msgstr ""
+
+#: ../scripts/tmpl_cache/admin-users.twig.php:126
+#: ../scripts/tmpl_cache/admin-users.twig.php:183
+msgid "Editor"
+msgstr ""
+
+#: ../scripts/tmpl_cache/admin-users.twig.php:130
+#: ../scripts/tmpl_cache/admin-users.twig.php:179
+#: ../scripts/tmpl_cache/admin-users.twig.php:197
+msgid "Administrator"
+msgstr ""
+
+#: ../scripts/tmpl_cache/admin-users.twig.php:137
+msgid "Add"
+msgstr ""
+
+#: ../scripts/tmpl_cache/admin-users.twig.php:142
+msgid "Loading ..."
+msgstr ""
+
+#: ../scripts/tmpl_cache/admin-users.twig.php:148
+msgid "Refresh"
+msgstr ""
+
+#: ../scripts/tmpl_cache/admin-users.twig.php:156
+msgid "Email"
+msgstr ""
+
+#: ../scripts/tmpl_cache/admin-users.twig.php:160
+msgid "Status"
+msgstr ""
+
+#: ../scripts/tmpl_cache/admin-users.twig.php:164
+msgid "Created at"
+msgstr ""
+
+#: ../scripts/tmpl_cache/admin-users.twig.php:168
+msgid "Actions"
+msgstr ""
+
+#: ../scripts/tmpl_cache/admin-users.twig.php:190
+#: ../scripts/tmpl_cache/mycharts.twig.php:298
+msgid "Delete"
 msgstr ""
 
 #: ../scripts/tmpl_cache/chart-describe.twig.php:168
@@ -157,7 +249,7 @@ msgstr ""
 msgid "Annotate data point"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-describe.twig.php:346 ../www/index.php:184
+#: ../scripts/tmpl_cache/chart-describe.twig.php:346 ../www/index.php:183
 msgid "Visualize"
 msgstr ""
 
@@ -573,7 +665,7 @@ msgstr ""
 
 #: ../scripts/tmpl_cache/home-login.twig.php:66
 #: ../scripts/tmpl_cache/mycharts.twig.php:52
-#: ../scripts/tmpl_cache/utils.twig.php:264 ../www/index.php:96
+#: ../scripts/tmpl_cache/utils.twig.php:264 ../www/index.php:95
 msgid "My Charts"
 msgstr ""
 
@@ -581,7 +673,7 @@ msgstr ""
 msgid "See what you created so far."
 msgstr ""
 
-#: ../scripts/tmpl_cache/home-login.twig.php:74 ../www/index.php:131
+#: ../scripts/tmpl_cache/home-login.twig.php:74 ../www/index.php:130
 msgid "Settings"
 msgstr ""
 
@@ -589,7 +681,7 @@ msgstr ""
 msgid "Edit your personal information."
 msgstr ""
 
-#: ../scripts/tmpl_cache/home-login.twig.php:80 ../www/index.php:135
+#: ../scripts/tmpl_cache/home-login.twig.php:80 ../www/index.php:134
 msgid "Logout"
 msgstr ""
 
@@ -688,14 +780,26 @@ msgid ""
 "href='http://beta.datawrapper.de'>beta.datawrapper.de</a>"
 msgstr ""
 
-#: ../scripts/tmpl_cache/invitation.twig.php:82
-#: ../scripts/tmpl_cache/invitation.twig.php:90
+#: ../scripts/tmpl_cache/invitation.twig.php:64
+msgid "Choose your password"
+msgstr ""
+
+#: ../scripts/tmpl_cache/invitation.twig.php:69
 #: ../scripts/tmpl_cache/login.twig.php:51
 #: ../scripts/tmpl_cache/login.twig.php:93
 msgid "password"
 msgstr ""
 
-#: ../scripts/tmpl_cache/invitation.twig.php:94
+#: ../scripts/tmpl_cache/invitation.twig.php:75
+msgid "Repeat your password"
+msgstr ""
+
+#: ../scripts/tmpl_cache/invitation.twig.php:80
+#: ../scripts/tmpl_cache/login.twig.php:99
+msgid "repeat password"
+msgstr ""
+
+#: ../scripts/tmpl_cache/invitation.twig.php:84
 msgid "Confirm"
 msgstr ""
 
@@ -703,11 +807,6 @@ msgstr ""
 msgid ""
 "We're glad to see you again. Login to access your charts, and create new "
 "ones."
-msgstr ""
-
-#: ../scripts/tmpl_cache/login.twig.php:47
-#: ../scripts/tmpl_cache/login.twig.php:87
-msgid "email"
 msgstr ""
 
 #: ../scripts/tmpl_cache/login.twig.php:59
@@ -730,10 +829,6 @@ msgstr ""
 msgid ""
 "Datawrapper is 100&#37; free and creating an account takes less than a "
 "minute. Just enter your email and pick a password, and you're done!"
-msgstr ""
-
-#: ../scripts/tmpl_cache/login.twig.php:99
-msgid "repeat password"
 msgstr ""
 
 #: ../scripts/tmpl_cache/messages.twig.php:32
@@ -768,10 +863,6 @@ msgstr ""
 
 #: ../scripts/tmpl_cache/mycharts.twig.php:293
 msgid "Duplicate"
-msgstr ""
-
-#: ../scripts/tmpl_cache/mycharts.twig.php:298
-msgid "Delete"
 msgstr ""
 
 #: ../scripts/tmpl_cache/mycharts.twig.php:320
@@ -1024,7 +1115,7 @@ msgstr ""
 msgid "Created with"
 msgstr ""
 
-#: ../scripts/tmpl_cache/utils.twig.php:247 ../www/index.php:150
+#: ../scripts/tmpl_cache/utils.twig.php:247 ../www/index.php:149
 msgid "Login / Sign Up"
 msgstr ""
 
@@ -1103,39 +1194,39 @@ msgstr ""
 msgid "Reset all colors"
 msgstr ""
 
-#: ../www/index.php:94
+#: ../www/index.php:93
 msgid "Create Chart"
 msgstr ""
 
-#: ../www/index.php:98
+#: ../www/index.php:97
 msgid "Gallery"
 msgstr ""
 
-#: ../www/index.php:100 ../lib/templates/docs-pages.php:5
+#: ../www/index.php:99 ../lib/templates/docs-pages.php:5
 msgid "About"
 msgstr ""
 
-#: ../www/index.php:101
+#: ../www/index.php:100
 msgid "Blog"
 msgstr ""
 
-#: ../www/index.php:119
+#: ../www/index.php:118
 msgid "Language"
 msgstr ""
 
-#: ../www/index.php:143
+#: ../www/index.php:142
 msgid "Admin"
 msgstr ""
 
-#: ../www/index.php:182
+#: ../www/index.php:181
 msgid "Upload Data"
 msgstr ""
 
-#: ../www/index.php:183
+#: ../www/index.php:182
 msgid "Check & Describe"
 msgstr ""
 
-#: ../www/index.php:185
+#: ../www/index.php:184
 msgid "Publish & Embed"
 msgstr ""
 
@@ -1183,15 +1274,27 @@ msgstr ""
 msgid "You're account is probably already activated."
 msgstr ""
 
-#: ../lib/api/users.php:188
+#: ../lib/api/auth.php:151
+msgid "You must enter a password."
+msgstr ""
+
+#: ../lib/api/auth.php:153
+msgid "Both passwords must be the same."
+msgstr ""
+
+#: ../lib/api/auth.php:165
+msgid "Confirmation of account creation"
+msgstr ""
+
+#: ../lib/api/users.php:204
 msgid "The password you entered is not correct."
 msgstr ""
 
-#: ../lib/api/users.php:211
+#: ../lib/api/users.php:234
 msgid "The password must not be empty."
 msgstr ""
 
-#: ../lib/api/users.php:214
+#: ../lib/api/users.php:237
 msgid "The supplied token for password resetting is invalid."
 msgstr ""
 
@@ -1201,6 +1304,32 @@ msgstr ""
 
 #: ../lib/core/build/classes/datawrapper/ChartQuery.php:78
 msgid "Copy"
+msgstr ""
+
+#: ../lib/templates/activation-email.php:7
+#, php-format
+msgid ""
+"Hello %s,\n"
+"\n"
+"Thank you for signing up at Datawrapper on %s!\n"
+"\n"
+"Please click on this link to activate your email address.\n"
+"\n"
+"%s\n"
+"\n"
+"Cheers!"
+msgstr ""
+
+#: ../lib/templates/confirmation-email.php:7
+#, php-format
+msgid ""
+"Hello %s,\n"
+"\n"
+"Your account has been created, you can now log in on %s\n"
+"\n"
+"and use your email address and your chosen password.\n"
+"\n"
+"Cheers!"
 msgstr ""
 
 #: ../lib/templates/demo_datasets.php:10
@@ -1261,6 +1390,38 @@ msgstr ""
 
 #: ../lib/templates/demo_datasets.php:87
 msgid "Donut chart"
+msgstr ""
+
+#: ../lib/templates/invitation-email.php:8
+#, php-format
+msgid ""
+"Hello %s,\n"
+"\n"
+"Your account has just created on Datawrapper.\n"
+"\n"
+"To choose your password and to activate your account please click on this "
+"link.\n"
+"\n"
+"%s\n"
+"\n"
+"See you soon"
+msgstr ""
+
+#: ../lib/templates/password-reset-email.php:7
+#, php-format
+msgid ""
+"Hello %s,\n"
+"\n"
+"Someone, probably you, filed a request to reset your password.\n"
+"\n"
+"If that's true, please click the following link to reset your password.\n"
+"\n"
+"%s\n"
+"\n"
+"If you ignore this email, your password stays the same as before.\n"
+"\n"
+"Best,\n"
+"Datawrapper"
 msgstr ""
 
 #: ../lib/utils/errors.php:21

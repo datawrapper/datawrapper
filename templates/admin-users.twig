@@ -1,0 +1,97 @@
+<style>
+    /* Basic style */
+    .widget .template{
+        display: none !important;
+    }
+    /* Admin-Users Widget*/
+    .widget.Admin-Users table tr.pending td {
+        background-color: #FFDDB6;
+    }
+    .widget.Admin-Users table .action {
+        margin-left: 10px;
+    }
+    /* show the correct icon for the given type of profile */
+    .widget.Admin-Users table tr.admin .normal {
+        display: none !important;
+    }
+    .widget.Admin-Users table tr:not(.admin) .admin {
+        display: none !important;
+    }
+</style>
+
+<div class="Admin-Users widget" data-widget="datawrapper.AdminUsers">
+
+    <div class="delete-succeed alert alert-success hidden">
+        <strong class="out" data-field="email"></strong> {% trans "removed." %}
+    </div>
+    <div class="add-success alert alert-success hidden">
+        <strong class="out" data-field="email"></strong> {% trans "added." %}
+    </div>
+    <div class="error-email-missing alert alert-error hidden">
+        {% trans "You should give an email." %}
+    </div>
+    <div class="error-email-invalid alert alert-error hidden">
+        {% trans "The given email is not correct." %}
+    </div>
+    <div class="error-email-already-exists alert alert-error hidden">
+        {% trans "The given email is already in our database." %}
+    </div>
+    <!-- NOTE (Edouard): Never shown like that, used to translate this confirmation dialog's texts.
+                         Need to be inlined. -->
+    <div class="confirm-admin-lost hidden">{% trans "will lost his administrator status. Continue?" %}</div>
+    <div class="confirm-admin-new hidden">{% trans "will become an administrator. Continue?" %}</div>
+    <div class="confirm-delete hidden">{% trans "will be deleted. Continue?" %}</div>
+
+    <div class="addUserContainer">
+        <form action="#" method="post" class="form-inline">
+            <fieldset>
+                <legend>{% trans "Add a user" %}</legend>
+                <div class="input-prepend">
+                    <span class="add-on"><i class="icon-envelope"></i></span>
+                    <input class="span2" name="email" placeholder="{% trans "email" %}" type="text" />
+                </div>
+                <div class="input-prepend">
+                    <span class="add-on"><i class="icon-tag"></i></span>
+                    <select name="status"
+                        <option value="editor">{% trans "Editor" %}</option>
+                        <option value="admin">{% trans "Administrator" %}</option>
+                    </select>
+                </div>
+                
+                <input type="submit" name="addUser" value="{% trans "Add" %}" class="btn btn-danger do" data-action="addUserAction" />
+            </fieldset>
+            <p class="loading hidden">{% trans "Loading ..." %}</p>
+        </form>
+    </div>
+    <a href="#" class="do btn" data-action="getUsers"><i class="icon-refresh"></i>{% trans "Refresh" %}</a>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>{% trans "Email" %}</th>
+                <th>{% trans "Status" %}</th>
+                <th>{% trans "Created at" %}</th>
+                <th>{% trans "Actions" %}</th>
+            </tr>
+        </thead>
+        <tbody class="users">
+            <tr class="user template" data-userid="">
+                <td class="id out">id</td>
+                <td class="email out">email</td>
+                <td class="status">
+                    <i class="admin icon-fire" title="{% trans "Administrator" %}"></i>
+                    <i class="normal icon-user" title="{% trans "Editor" %}"></i></td>
+                <td class="creation out">creation</td>
+                <td class="actions">
+                    <a href="#" class="action do" data-action="deleteAction">
+                        <i class="icon-trash" title="{% trans "Delete" %}"></i>
+                    </a>
+                    <label class="checkbox inline action">
+						<input type="checkbox" value="admin" name="isAdmin" class="do" data-action="toggleAdminAction">
+						{% trans "Administrator" %}
+					</label>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

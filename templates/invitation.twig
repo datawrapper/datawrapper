@@ -1,0 +1,29 @@
+{% extends "core.twig" %}
+{% use "utils.twig" %}
+
+{% block content %}
+<div class="row widget" data-widget="datawrapper.InvitationForm">
+    <div class="error alert alert-error{% if not alert %} hidden {% endif %}">
+        <a class="close" data-dismiss="alert" href="#">&times;</a>
+        <div>{{ alert.message }}</div>
+    </div>
+
+    <div class="span8 inviation-form form-vertical">
+        <div class="control-group">
+            <label>
+                {% trans "Choose your password" %}
+            </label>
+            <input class="" name="password1" type="password" class="input-xxlarge span3" value="" placeholder="{% trans "password" %}" /></div>
+        <div class="control-group">
+            <label>
+                {% trans "Repeat your password" %}
+            </label>
+            <input class="" name="password2" type="password" class="input-xxlarge span3" value="" placeholder="{% trans "repeat password" %}" /></div>
+        <a class="btn btn-invitation btn-primary btn-large do" data-action="send"><i class="icon-user icon-white"></i> {% trans "Confirm" %}</a>
+    </div>
+
+
+</div>
+
+{{ parent() }}
+{% endblock %}

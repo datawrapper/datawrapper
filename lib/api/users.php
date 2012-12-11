@@ -40,16 +40,26 @@ function email_exists($email) {
  * create a new user
  */
 $app->post('/users', function() use ($app) {
+    # check if the user can create a new user
+    $currUser = DatawrapperSession::getUser();
+    if (!empty($GLOBALS['dw_config']['only_admin_can_create_user_account']) && !$currUser->isAdmin()) {
+        return error(403, 'Permission denied');
+    }
     $data = json_decode($app->request()->getBody());
-
+    $invitation = empty($data->invitation)? false : (bool) $data->invitation;
+    # check values
     $checks = array(
-        'password-mismatch' => function($d) { return $d->pwd === $d->pwd2; },
-        'password-missing' => function($d) { return trim($d->pwd) != ''; },
         'email-missing' => function($d) { return trim($d->email) != ''; },
         'email-invalid' => function($d) { return check_email($d->email); },
         'email-already-exists' => function($d) { return !email_exists($d->email); },
     );
-
+    // if invitation is false: classic way, we check passwords
+    if (!$invitation) {
+        $checks = array_merge($checks, array(
+            'password-mismatch' => function($d) { return $d->pwd === $d->pwd2; },
+            'password-missing' => function($d) { return trim($d->pwd) != ''; },
+        ));
+    }
     foreach ($checks as $code => $check) {
         if (call_user_func($check, $data) == false) {
             error($code, $code);
@@ -61,25 +71,32 @@ $app->post('/users', function() use ($app) {
     $user = new User();
     $user->setCreatedAt(time());
     $user->setEmail($data->email);
-    $user->setPwd($data->pwd);
-    $user->setActivateToken(hash_hmac('sha256', $data->email.'/'.$data->pwd.time(), DW_TOKEN_SALT));
+    if ($currUser->isAdmin() && !empty($data->role))
+        $user->SetRole($data->role);
+    $user->setActivateToken(hash_hmac('sha256', $data->email.'/'.time(), DW_TOKEN_SALT));
+    // set password, HACK for invitation mode
+    if ($invitation) {
+        $user->setPwd("__IS_INVITED__");
+    } else {
+        $user->setPwd($data->pwd);
+    }
     $user->save();
     $result = $user->toArray();
-
-    // send email with activation key
-    $name = $data->email;
+    // send an email
+    $name   = $data->email;
     $domain = $GLOBALS['dw_config']['domain'];
-    $activationLink = 'http://' . $domain . '/account/activate/' . $user->getActivateToken();
-    $from = 'activate@' . $domain;
-
-    include('../../lib/templates/activation-email.php');
-
-    mail($data->email, 'Datawrapper Email Activation', $activation_mail, 'From: ' . $from);
-
-
-    // we don't need to annoy the user with a login form now,
-    // so just log in..
-    DatawrapperSession::login($user);
+    $from   = $GLOBALS['dw_config']['email'];
+    if ($invitation) {
+    // send email with invitation
+        $activationLink = 'http://' . $domain . '/account/invitation/' . $user->getActivateToken();
+        include('../../lib/templates/invitation-email.php');
+        mail($data->email, 'Invitation '. $domain, $invitation_mail, 'From: '.$from);
+    } else {
+        // send email with activation key
+        $activationLink = 'http://' . $domain . '/account/activate/' . $user->getActivateToken();
+        include('../../lib/templates/activation-email.php');
+        mail($data->email, 'Activation ' . $domain, $activation_mail, 'From: '.$from);
+    }
 
     ok($result);
 
@@ -137,6 +154,10 @@ $app->put('/users/:id', function($user_id) use ($app) {
                 $user->setName($payload->name);
                 $changed[] = 'name';
             }
+            if ($curUser->isAdmin() && !empty($payload->role)) {
+                $user->setRole($payload->role);
+                $changed[] = 'role';
+            }
 
             if (!empty($payload->website)) {
                 $user->setWebsite($payload->website);
@@ -167,26 +188,24 @@ $app->put('/users/:id', function($user_id) use ($app) {
  * @needs admin or existing user
  */
 $app->delete('/users/:id', function($user_id) use ($app) {
-    $curUser = DatawrapperSession::getUser();
     $payload = json_decode($app->request()->getBody());
+    $curUser = DatawrapperSession::getUser();
     if ($curUser->isLoggedIn()) {
         if ($user_id == 'current' || $curUser->getId() === $user_id) {
             $user = $curUser;
-        } else if ($curUser->isAdmin()) {
-            $user = UserQuery::create()->findPK($user_id);
-        }
-        if (!empty($user)) {
             if ($user->getPwd() == $payload->pwd) {
-
-                // Delete user
                 DatawrapperSession::logout();
-                $user->erase();
-
-                ok();
             } else {
                 Action::logAction($user, 'delete-request-wrong-password', json_encode(get_user_ips()));
                 error('wrong-password', _('The password you entered is not correct.'));
             }
+        } else if ($curUser->isAdmin()) {
+            $user = UserQuery::create()->findPK($user_id);
+        }
+        if (!empty($user)) {
+            // Delete user
+            $user->erase();
+            ok($user);
         } else {
             error('user-not-found', 'no user found with that id');
         }

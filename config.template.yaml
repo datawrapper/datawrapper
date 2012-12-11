@@ -28,3 +28,5 @@ piwik:
 
 # uncomment this if your Datawrapper is locked behind HTTP Authentication
 # http_auth: username:password
+
+only_admin_can_create_user_account: false

@@ -20,7 +20,6 @@ define('DATAWRAPPER_VERSION', '1.1 pre-alpha');
 // include datawrapper session serialization
 require '../lib/session/Datawrapper.php';
 
-
 // Require the Slim PHP 5 Framework
 require '../vendor/Slim/Slim.php';
 
@@ -196,6 +195,7 @@ require_once '../lib/utils/get_module.php';
 require_once '../controller/home.php';
 require_once '../controller/account-settings.php';
 require_once '../controller/account-activate.php';
+require_once '../controller/account-invitation.php';
 require_once '../controller/account-reset-password.php';
 require_once '../controller/chart-create.php';
 require_once '../controller/chart-edit.php';
@@ -212,6 +212,7 @@ require_once '../controller/xhr.php';
 require_once '../controller/docs.php';
 require_once '../controller/gallery.php';
 require_once '../controller/admin.php';
+require_once '../controller/admin-users.php';
 
 $app->notFound(function() {
     error_not_found();
