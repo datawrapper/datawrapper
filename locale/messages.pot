@@ -688,6 +688,17 @@ msgid ""
 "href='http://beta.datawrapper.de'>beta.datawrapper.de</a>"
 msgstr ""
 
+#: ../scripts/tmpl_cache/invitation.twig.php:82
+#: ../scripts/tmpl_cache/invitation.twig.php:90
+#: ../scripts/tmpl_cache/login.twig.php:51
+#: ../scripts/tmpl_cache/login.twig.php:93
+msgid "password"
+msgstr ""
+
+#: ../scripts/tmpl_cache/invitation.twig.php:94
+msgid "Confirm"
+msgstr ""
+
 #: ../scripts/tmpl_cache/login.twig.php:41
 msgid ""
 "We're glad to see you again. Login to access your charts, and create new "
@@ -697,11 +708,6 @@ msgstr ""
 #: ../scripts/tmpl_cache/login.twig.php:47
 #: ../scripts/tmpl_cache/login.twig.php:87
 msgid "email"
-msgstr ""
-
-#: ../scripts/tmpl_cache/login.twig.php:51
-#: ../scripts/tmpl_cache/login.twig.php:93
-msgid "password"
 msgstr ""
 
 #: ../scripts/tmpl_cache/login.twig.php:59
