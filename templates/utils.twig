@@ -64,6 +64,7 @@
 
 {% block chartMenuHTML %}
 
+    <div class="chartMenuHandle"></div>
     <div class="chartMenuContWrap">
         <div class="chartMenuCont menuSeen">
             <div class="chartMenu">
@@ -93,33 +94,20 @@
     .chartMenuCont {
         position: absolute;
         z-index: 1010000000!important;
-        bottom: -5px;
+        bottom: -40px;
         left: 0;
         right: 0;
         opacity: 1;
-
-        -webkit-transition: all .15s ease-out;
-           -moz-transition: all .15s ease-out;
-            -ms-transition: all .15s ease-out;
-             -o-transition: all .15s ease-out;
-                transition: all .15s ease-out;
     }
 
-
-    #footer:hover .chartMenuCont {
-        display: block;
-        bottom: -2px;
-        opacity: 1;
-    }
-
-    body .chartMenuCont.menuSeen {
+    .chartMenuHandle {
         position: absolute;
-        bottom: -40px;
-        left: 0px;
-        right: 0px;
-        opacity: 0;
+        bottom: 0;
+        left: 30%;
+        right: 30%;
+        height: 30px;
+        z-index: 5000;
     }
-
 
     .chartMenu {
         text-align: center;

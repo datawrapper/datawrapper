@@ -22,13 +22,13 @@
         {% endif %}
 
     </div>
-    <div class="logo">
+    <div class="footer-right">
         {% trans "Created with" %} <a href="http://{{ DW_DOMAIN }}" class="lgo">Datawrapper</a>
     </div>
 
 
-        {% use "utils.twig" %}
-        {{ block('chartMenu') }}
+    {% use "utils.twig" %}
+    {{ block('chartMenu') }}
 </div>
 
 {% else %}

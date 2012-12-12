@@ -187,19 +187,43 @@
             }
         });
 
-        function markMenuAsSeen() {
-            $('.chartMenuCont').removeClass('menuSeen');
-            $('.chartMenuCont').show();
-            setTimeout(function() {
+        function initializeChartMenu() {
 
-                $('.chartMenuCont').get(0).removeAttribute('style');
-                $('.chartMenuCont').addClass('menuSeen');
+            var chartMenuCont = $('.chartMenuCont'),
+                focusHandle = $('.chartMenuHandle');
 
-            }, 2000);
-            $('.chart').unbind('mouseenter', markMenuAsSeen);
+            function showMenu() {
+                if (chartMenuCont.data('status') != 'shown') {
+                    chartMenuCont.stop().animate({
+                        bottom: -5
+                    }, 500);
+                    chartMenuCont.data('status', 'shown');
+                    focusHandle.hide();
+                }
+            }
+
+            function hideMenu() {
+                if (chartMenuCont.data('status') == 'shown') {
+                    chartMenuCont.animate({
+                        bottom: -40
+                    }, 300);
+                    chartMenuCont.data('status', 'hidden');
+                    focusHandle.show();
+                }
+            }
+
+            $('.chart').on('mouseenter', function() {
+                $('.chart').off('mouseenter');
+                hideMenu();
+            });
+
+            showMenu();
+
+            focusHandle.on('mouseenter', showMenu);
+            $('.chartMenuContWrap').on('mouseleave', hideMenu);
         }
 
-        $('.chart').bind('mouseenter', markMenuAsSeen);
+        initializeChartMenu();
 
     });
     </script>
