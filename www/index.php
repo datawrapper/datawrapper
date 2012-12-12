@@ -17,10 +17,6 @@ if ($GLOBALS['dw_config']['debug'] == true) {
 
 define('DATAWRAPPER_VERSION', '1.1 pre-alpha');
 
-// include datawrapper session serialization
-require '../lib/session/Datawrapper.php';
-
-
 // Require the Slim PHP 5 Framework
 require '../vendor/Slim/Slim.php';
 
@@ -31,14 +27,24 @@ require_once '../vendor/propel/runtime/lib/Propel.php';
 Propel::init("../lib/core/build/conf/datawrapper-conf.php");
 set_include_path("../lib/core/build/classes" . PATH_SEPARATOR . get_include_path());
 
+
+
 // Load TwigView
 require_once '../vendor/Slim-Extras/Views/TwigView.php';
 TwigView::$twigDirectory = '../vendor/Twig';
 
 $app = new Slim(array(
     'view' => new TwigView(),
-    'templates.path' => '../templates'
+    'templates.path' => '../templates',
+    'session.handler' => null
 ));
+
+
+require '../lib/session/database.php';
+
+// include datawrapper session serialization
+require '../lib/session/Datawrapper.php';
+
 
 
 // Load twig instance
