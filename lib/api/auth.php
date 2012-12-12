@@ -27,7 +27,7 @@ $app->post('/auth/login', function() use($app) {
         if (!empty($user) && $user->getDeleted() == false) {
             $hash = hash_hmac('sha256', $user->getPwd(), $payload->time);
             if ($hash === $payload->pwhash) {
-                DatawrapperSession::login($user);
+                DatawrapperSession::login($user, $payload->keeplogin == true);
                 ok();
             } else {
                 Action::logAction($user, 'wrong-password', json_encode(get_user_ips()));

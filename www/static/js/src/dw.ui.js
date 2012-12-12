@@ -173,7 +173,8 @@
                   payload = {
                      email: $('.login-email', loginForm).val(),
                      pwhash: hash,
-                     time: lgBtn.data('time')
+                     time: lgBtn.data('time'),
+                     keeplogin: $('.keep-login', loginForm).attr('checked') == 'checked'
                   };
 
                 if (pwd === '') {
