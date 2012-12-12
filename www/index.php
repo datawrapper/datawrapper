@@ -20,6 +20,9 @@ define('DATAWRAPPER_VERSION', '1.1 pre-alpha');
 // Require the Slim PHP 5 Framework
 require '../vendor/Slim/Slim.php';
 
+// Provide the custom_mail function to send email (it manages Amazon SES)
+require_once '../lib/mailing/mailing.php';
+
 // Include the main Propel script
 // Initialize Propel with the runtime configuration
 // Add the generated 'classes' directory to the include path

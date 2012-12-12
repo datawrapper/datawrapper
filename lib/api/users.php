@@ -70,11 +70,11 @@ $app->post('/users', function() use ($app) {
     $name = $data->email;
     $domain = $GLOBALS['dw_config']['domain'];
     $activationLink = 'http://' . $domain . '/account/activate/' . $user->getActivateToken();
-    $from = 'activate@' . $domain;
+    $from = $GLOBALS['dw_config']['email'];
 
     include('../../lib/templates/activation-email.php');
 
-    mail($data->email, 'Datawrapper Email Activation', $activation_mail, 'From: ' . $from);
+    custom_mail($data->email, 'Datawrapper Email Activation', $activation_mail, $from);
 
 
     // we don't need to annoy the user with a login form now,
