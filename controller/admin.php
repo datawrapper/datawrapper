@@ -1,6 +1,8 @@
 <?php
 
 $app->get('/admin/?', function() use ($app) {
+    disable_cache($app);
+
     $user = DatawrapperSession::getUser();
     if ($user->isAdmin()) {
 

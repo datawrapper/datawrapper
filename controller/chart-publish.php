@@ -11,9 +11,9 @@ require_once '../vendor/jsmin/jsmin.php';
  * forwards to /chart/:id/finish
  */
 $app->get('/chart/:id/publish', function ($id) use ($app) {
-    check_chart_writable($id, function($user, $chart) use ($app) {
+    disable_cache($app);
 
-        disable_cache($app);
+    check_chart_writable($id, function($user, $chart) use ($app) {
 
         $cfg = $GLOBALS['dw_config'];
         if (empty($cfg['publish'])) {
