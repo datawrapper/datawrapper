@@ -190,6 +190,7 @@
         function initializeChartMenu() {
 
             var chartMenuCont = $('.chartMenuCont'),
+                chartMenuContWrap = $('.chartMenuContWrap'),
                 focusHandle = $('.chartMenuHandle');
 
             function showMenu() {
@@ -199,6 +200,7 @@
                     }, 500);
                     chartMenuCont.data('status', 'shown');
                     focusHandle.hide();
+                    chartMenuContWrap.show();
                 }
             }
 
@@ -207,6 +209,7 @@
                     chartMenuCont.animate({
                         bottom: -40
                     }, 300);
+                    setTimeout(function() { chartMenuContWrap.hide() }, 300);
                     chartMenuCont.data('status', 'hidden');
                     focusHandle.show();
                 }
@@ -220,7 +223,7 @@
             showMenu();
 
             focusHandle.on('mouseenter', showMenu);
-            $('.chartMenuContWrap').on('mouseleave', hideMenu);
+            chartMenuContWrap.on('mouseleave', hideMenu);
         }
 
         initializeChartMenu();

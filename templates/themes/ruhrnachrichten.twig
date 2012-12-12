@@ -8,10 +8,6 @@
         <p>{{ intro|purify|raw }}</p>
         {% endif %}
 
-
-    {% use "utils.twig" %}
-    {{ block('chartMenu') }}
-
     {% endif %}
 </div>
 
@@ -32,6 +28,9 @@
     <a class="logo" href="http://ruhrnachrichten.de" target="_blank">
         <img src="{{ ASSET_PATH }}logo-bw.png" alt="Ruhrnachrichten" width="115" height="18" />
     </a>
+
+    {% use "utils.twig" %}
+    {{ block('chartMenu') }}
 
     <br class="clearfix" />
 </div>
