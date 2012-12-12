@@ -11,7 +11,8 @@
 <script type="text/javascript" src="/static/vendor/underscore/underscore-min.js"></script>
 <script type="text/javascript" src="/static/vendor/jquery/jquery.min.js"></script>
 
-<script type="text/javascript" src="/static/js/dw.min.js"></script>
+<!-- NOTE: commented because it raises an error (TypeError: Datawrapper.UI is not a constructor) -->
+<!-- <script type="text/javascript" src="/static/js/dw.min.js"></script> -->
 
 <script type="text/javascript" src="/static/vendor/globalize/cultures/globalize.culture.de-DE.js"></script>
 <script type="text/javascript" src="/static/themes/default/theme.js"></script>
@@ -136,6 +137,7 @@ h2 { margin-bottom: 30px!important; }
         </script>
         
     </div>
+    {% include 'admin-users.twig' %}
 </div>
 
 {% endblock %}
