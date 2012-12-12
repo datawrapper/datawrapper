@@ -42,6 +42,7 @@ if (!empty($config['publish']) && !empty($config['publish']['requires'])) {
 }
 
 require '../../lib/utils/i18n.php';
+require '../../lib/utils/disable_cache.php';
 
 /**
  * Step 2: Instantiate the Slim application

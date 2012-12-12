@@ -78,6 +78,7 @@ function str_purify($dirty_html) {
 $twig->addExtension(new Twig_Extension_I18n());
 
 require_once '../lib/utils/i18n.php';
+require_once '../lib/utils/disable_cache.php';
 
 // Load CDN publishing class
 if (!empty($GLOBALS['dw_config']['publish']) && !empty($GLOBALS['dw_config']['publish']['requires'])) {
