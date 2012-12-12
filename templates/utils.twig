@@ -79,6 +79,54 @@
 
 {% block chartMenu %}
 
+    <script type="text/javascript">
+
+    $(function() {
+
+        function initializeChartMenu() {
+
+            var chartMenuCont = $('.chartMenuCont'),
+                chartMenuContWrap = $('.chartMenuContWrap'),
+                focusHandle = $('.chartMenuHandle');
+
+            function showMenu() {
+                if (chartMenuCont.data('status') != 'shown') {
+                    chartMenuCont.stop().animate({
+                        bottom: -5
+                    }, 300);
+                    chartMenuCont.data('status', 'shown');
+                    focusHandle.hide();
+                    chartMenuContWrap.show();
+                }
+            }
+
+            function hideMenu() {
+                if (chartMenuCont.data('status') == 'shown') {
+                    chartMenuCont.animate({
+                        bottom: -40
+                    }, 200);
+                    setTimeout(function() { chartMenuContWrap.hide() }, 200);
+                    chartMenuCont.data('status', 'hidden');
+                    focusHandle.show();
+                }
+            }
+
+            $('.chart').on('mouseenter', function() {
+                $('.chart').off('mouseenter');
+                hideMenu();
+            });
+
+            showMenu();
+
+            focusHandle.on('mouseenter', showMenu);
+            chartMenuContWrap.on('mouseleave', hideMenu);
+        }
+
+        initializeChartMenu();
+    });
+
+    </script>
+
     <style type="text/css">
 
     .chartMenuContWrap {
