@@ -2,6 +2,8 @@
 
 //GET route
 $app->get('/', function () use ($app) {
+    disable_cache($app);
+
     if ($app->request()->get('c')) {
         // found link to a legacy chart
         $app->redirect('/legacy/'.$app->request()->get('c').'.html');
@@ -21,8 +23,6 @@ $app->get('/', function () use ($app) {
             $page['disclaimer'] = $GLOBALS['dw_config']['disclaimer'];
         }
 
-        $res = $app->response();
-        $res['Cache-Control'] = 'max-age=0';
         $app->render('home.twig', $page);
     }
 });

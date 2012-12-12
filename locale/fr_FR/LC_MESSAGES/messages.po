@@ -74,92 +74,92 @@ msgid "Congrats! Your password has been changed. You can log in with your new pa
 msgstr "Félicitiations! Le mot de passe a été changé."
 
 #: ../scripts/tmpl_cache/account-reset-password.twig.php:118
-#: ../scripts/tmpl_cache/login.twig.php:55
+#: ../scripts/tmpl_cache/login.twig.php:56
 msgid "Login"
 msgstr "Connexion"
 
-#: ../scripts/tmpl_cache/admin-users.twig.php:65
+#: ../scripts/tmpl_cache/admin-users.twig.php:45
 msgid "removed."
 msgstr "a été supprimé."
 
-#: ../scripts/tmpl_cache/admin-users.twig.php:71
+#: ../scripts/tmpl_cache/admin-users.twig.php:51
 msgid "added."
 msgstr "a été ajouté."
 
-#: ../scripts/tmpl_cache/admin-users.twig.php:77
+#: ../scripts/tmpl_cache/admin-users.twig.php:57
 msgid "You should give an email."
 msgstr "Vous devez rentrer une adresse email."
 
-#: ../scripts/tmpl_cache/admin-users.twig.php:83
+#: ../scripts/tmpl_cache/admin-users.twig.php:63
 msgid "The given email is not correct."
 msgstr "L'adresse email n'est pas correcte."
 
-#: ../scripts/tmpl_cache/admin-users.twig.php:89
+#: ../scripts/tmpl_cache/admin-users.twig.php:69
 msgid "The given email is already in our database."
 msgstr "L'adresse email existe déjà dans notre base de données."
 
-#: ../scripts/tmpl_cache/admin-users.twig.php:96
+#: ../scripts/tmpl_cache/admin-users.twig.php:76
 msgid "will lost his administrator status. Continue?"
 msgstr "va perdre son statut d'administrateur. Voulez vous continuer?"
 
-#: ../scripts/tmpl_cache/admin-users.twig.php:100
+#: ../scripts/tmpl_cache/admin-users.twig.php:80
 msgid "will become an administrator. Continue?"
 msgstr "va devenir administrateur. Voulez vous continuer?"
 
-#: ../scripts/tmpl_cache/admin-users.twig.php:104
+#: ../scripts/tmpl_cache/admin-users.twig.php:84
 msgid "will be deleted. Continue?"
 msgstr "va être supprimé. Voulez vous continuer?"
 
-#: ../scripts/tmpl_cache/admin-users.twig.php:112
+#: ../scripts/tmpl_cache/admin-users.twig.php:92
 msgid "Add a user"
 msgstr "Ajouter un utilisateur"
 
-#: ../scripts/tmpl_cache/admin-users.twig.php:118
+#: ../scripts/tmpl_cache/admin-users.twig.php:98
 #: ../scripts/tmpl_cache/login.twig.php:47
-#: ../scripts/tmpl_cache/login.twig.php:87
+#: ../scripts/tmpl_cache/login.twig.php:93
 msgid "email"
 msgstr "e-mail"
 
-#: ../scripts/tmpl_cache/admin-users.twig.php:126
-#: ../scripts/tmpl_cache/admin-users.twig.php:183
+#: ../scripts/tmpl_cache/admin-users.twig.php:106
+#: ../scripts/tmpl_cache/admin-users.twig.php:163
 msgid "Editor"
 msgstr "Editeur"
 
-#: ../scripts/tmpl_cache/admin-users.twig.php:130
-#: ../scripts/tmpl_cache/admin-users.twig.php:179
-#: ../scripts/tmpl_cache/admin-users.twig.php:197
+#: ../scripts/tmpl_cache/admin-users.twig.php:110
+#: ../scripts/tmpl_cache/admin-users.twig.php:159
+#: ../scripts/tmpl_cache/admin-users.twig.php:177
 msgid "Administrator"
 msgstr "Administrateur"
 
-#: ../scripts/tmpl_cache/admin-users.twig.php:137
+#: ../scripts/tmpl_cache/admin-users.twig.php:117
 msgid "Add"
 msgstr "Ajouter"
 
-#: ../scripts/tmpl_cache/admin-users.twig.php:142
+#: ../scripts/tmpl_cache/admin-users.twig.php:122
 msgid "Loading ..."
 msgstr "En cours de chargement ..."
 
-#: ../scripts/tmpl_cache/admin-users.twig.php:148
+#: ../scripts/tmpl_cache/admin-users.twig.php:128
 msgid "Refresh"
 msgstr "Actualisez"
 
-#: ../scripts/tmpl_cache/admin-users.twig.php:156
+#: ../scripts/tmpl_cache/admin-users.twig.php:136
 msgid "Email"
 msgstr "e-mail"
 
-#: ../scripts/tmpl_cache/admin-users.twig.php:160
+#: ../scripts/tmpl_cache/admin-users.twig.php:140
 msgid "Status"
 msgstr "Statut"
 
-#: ../scripts/tmpl_cache/admin-users.twig.php:164
+#: ../scripts/tmpl_cache/admin-users.twig.php:144
 msgid "Created at"
 msgstr "Création"
 
-#: ../scripts/tmpl_cache/admin-users.twig.php:168
+#: ../scripts/tmpl_cache/admin-users.twig.php:148
 msgid "Actions"
 msgstr "Actions"
 
-#: ../scripts/tmpl_cache/admin-users.twig.php:190
+#: ../scripts/tmpl_cache/admin-users.twig.php:170
 #: ../scripts/tmpl_cache/mycharts.twig.php:298
 msgid "Delete"
 msgstr "Supprimer"
@@ -257,7 +257,7 @@ msgid "Annotate data point"
 msgstr "Annotez un point de donnée"
 
 #: ../scripts/tmpl_cache/chart-describe.twig.php:346
-#: ../www/index.php:183
+#: ../www/index.php:191
 msgid "Visualize"
 msgstr "Visualisez"
 
@@ -266,55 +266,55 @@ msgstr "Visualisez"
 msgid "Back"
 msgstr "Retour"
 
-#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:277
+#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:279
 msgid "Publishing chart..."
 msgstr "Publications du graphique..."
 
-#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:282
+#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:284
 msgid "Please hold on a second while your chart is being published. Try not to close this page.."
 msgstr "Attendez un moment que votre graphique soit publié. Ne fermez pas cette page."
 
-#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:291
+#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:293
 msgid "Finished."
 msgstr "Terminé."
 
-#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:299
+#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:301
 msgid "Generating static HTML page"
 msgstr "Création de la page HTML statique"
 
-#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:303
+#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:305
 msgid "Generated static HTML page"
 msgstr "Page statique HTML crée"
 
-#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:308
+#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:310
 msgid "Packing and crunching JavaScript"
 msgstr "Emballage du JavaScript"
 
-#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:312
+#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:314
 msgid "Packed and minified JavaScript"
 msgstr "JavaScript emballé"
 
-#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:317
+#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:319
 msgid "Packing and crunching stylesheets"
 msgstr "Emballage des feuilles de style"
 
-#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:321
+#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:323
 msgid "Packed and minified stylesheets"
 msgstr "Feuilles de style emballées"
 
-#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:326
+#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:328
 msgid "Publishing chart data"
 msgstr "Publication des données du graphique"
 
-#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:330
+#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:332
 msgid "Published chart data"
 msgstr "Publiez les données du graphique"
 
-#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:335
+#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:337
 msgid "Generating chart thumbnails"
 msgstr "Création des miniatures"
 
-#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:339
+#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:341
 msgid "Generated Thumbnails"
 msgstr "Miniatures créées"
 
@@ -375,7 +375,7 @@ msgid "Now, to be able to embed the chart, we ask you to create an account. It's
 msgstr "Maintenant, pour pouvoir intégrer le graph, nous vous demandons de créer un compte. C'est gratuit et ne nécessite qu'une adresse e-mail valide. Le graph que vous venez de créer sera transféré à votre nouveau compte."
 
 #: ../scripts/tmpl_cache/chart-publish.twig.php:296
-#: ../scripts/tmpl_cache/login.twig.php:104
+#: ../scripts/tmpl_cache/login.twig.php:110
 msgid "Sign Up"
 msgstr "Créer un compte"
 
@@ -641,7 +641,7 @@ msgstr "Recommencer!"
 #: ../scripts/tmpl_cache/home-login.twig.php:66
 #: ../scripts/tmpl_cache/mycharts.twig.php:52
 #: ../scripts/tmpl_cache/utils.twig.php:264
-#: ../www/index.php:95
+#: ../www/index.php:103
 msgid "My Charts"
 msgstr "Mes Visualisations"
 
@@ -650,7 +650,7 @@ msgid "See what you created so far."
 msgstr "Regardez ce que vous avez réalisé."
 
 #: ../scripts/tmpl_cache/home-login.twig.php:74
-#: ../www/index.php:130
+#: ../www/index.php:138
 msgid "Settings"
 msgstr "Préférences"
 
@@ -659,7 +659,7 @@ msgid "Edit your personal information."
 msgstr "Editez vos informations personnelles"
 
 #: ../scripts/tmpl_cache/home-login.twig.php:80
-#: ../www/index.php:134
+#: ../www/index.php:142
 msgid "Logout"
 msgstr "Déconnexion"
 
@@ -742,7 +742,7 @@ msgstr "Choisissez un mot de passe"
 
 #: ../scripts/tmpl_cache/invitation.twig.php:69
 #: ../scripts/tmpl_cache/login.twig.php:51
-#: ../scripts/tmpl_cache/login.twig.php:93
+#: ../scripts/tmpl_cache/login.twig.php:99
 msgid "password"
 msgstr "mot de passe"
 
@@ -751,7 +751,7 @@ msgid "Repeat your password"
 msgstr "Répétez votre mot de passe"
 
 #: ../scripts/tmpl_cache/invitation.twig.php:80
-#: ../scripts/tmpl_cache/login.twig.php:99
+#: ../scripts/tmpl_cache/login.twig.php:105
 msgid "repeat password"
 msgstr "confirmez le mot de passe"
 
@@ -763,23 +763,27 @@ msgstr "Validez"
 msgid "We're glad to see you again. Login to access your charts, and create new ones."
 msgstr "Nous sommes heureux de vous revoir! Connectez-vous pour accéder à vos visualisations et en créer de nouvelles."
 
-#: ../scripts/tmpl_cache/login.twig.php:59
+#: ../scripts/tmpl_cache/login.twig.php:61
+msgid "Remember login?"
+msgstr "Se souvenir de moi?"
+
+#: ../scripts/tmpl_cache/login.twig.php:66
 msgid "Send new password"
 msgstr "Envoyer le nouveau mot de passe"
 
-#: ../scripts/tmpl_cache/login.twig.php:66
+#: ../scripts/tmpl_cache/login.twig.php:72
 msgid "Can't recall your password?"
 msgstr "Mot de passe oublié?"
 
-#: ../scripts/tmpl_cache/login.twig.php:70
+#: ../scripts/tmpl_cache/login.twig.php:76
 msgid "Return to login..."
 msgstr "Retourner à la connexion"
 
-#: ../scripts/tmpl_cache/login.twig.php:77
+#: ../scripts/tmpl_cache/login.twig.php:83
 msgid "Create a new account"
 msgstr "Créer un nouveau compte"
 
-#: ../scripts/tmpl_cache/login.twig.php:81
+#: ../scripts/tmpl_cache/login.twig.php:87
 msgid "Datawrapper is 100&#37; free and creating an account takes less than a minute. Just enter your email and pick a password, and you're done!"
 msgstr "Datawrapper est 100% gratuit et créer un compte prend moins d'une minute. Indiquez votre adresse e-mail, choisissez un mot de passe et c'est parti!"
 
@@ -1041,7 +1045,7 @@ msgid "Created with"
 msgstr "Créé avec"
 
 #: ../scripts/tmpl_cache/utils.twig.php:247
-#: ../www/index.php:149
+#: ../www/index.php:157
 msgid "Login / Sign Up"
 msgstr "Connexion / Inscription"
 
@@ -1118,40 +1122,40 @@ msgstr "Remettre la couleur par défaut"
 msgid "Reset all colors"
 msgstr "Remettre toutes les couleurs par défaut"
 
-#: ../www/index.php:93
+#: ../www/index.php:101
 msgid "Create Chart"
 msgstr "Créer un nouveau graphique"
 
-#: ../www/index.php:97
+#: ../www/index.php:105
 msgid "Gallery"
 msgstr "Galerie"
 
-#: ../www/index.php:99
+#: ../www/index.php:107
 #: ../lib/templates/docs-pages.php:5
 msgid "About"
 msgstr "A propos"
 
-#: ../www/index.php:100
+#: ../www/index.php:108
 msgid "Blog"
 msgstr "Blog"
 
-#: ../www/index.php:118
+#: ../www/index.php:126
 msgid "Language"
 msgstr "Langue"
 
-#: ../www/index.php:142
+#: ../www/index.php:150
 msgid "Admin"
 msgstr "Admin"
 
-#: ../www/index.php:181
+#: ../www/index.php:189
 msgid "Upload Data"
 msgstr "Télécharger des données"
 
-#: ../www/index.php:182
+#: ../www/index.php:190
 msgid "Check & Describe"
 msgstr "Vérifiez et décrivez"
 
-#: ../www/index.php:184
+#: ../www/index.php:192
 msgid "Publish & Embed"
 msgstr "Publiez"
 
@@ -1204,15 +1208,15 @@ msgstr "Les deux mots de passe doivent être identiques."
 msgid "Confirmation of account creation"
 msgstr "Confirmation de création de compte"
 
-#: ../lib/api/users.php:204
+#: ../lib/api/users.php:200
 msgid "The password you entered is not correct."
 msgstr "Le mot de passe que vous avez saisi est incorrect."
 
-#: ../lib/api/users.php:234
+#: ../lib/api/users.php:230
 msgid "The password must not be empty."
 msgstr "Le mot de passe ne doit pas être vide."
 
-#: ../lib/api/users.php:237
+#: ../lib/api/users.php:233
 msgid "The supplied token for password resetting is invalid."
 msgstr "Le lien de réinitialisation du mot de passe est invalide."
 

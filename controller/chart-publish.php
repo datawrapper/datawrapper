@@ -11,6 +11,8 @@ require_once '../vendor/jsmin/jsmin.php';
  * forwards to /chart/:id/finish
  */
 $app->get('/chart/:id/publish', function ($id) use ($app) {
+    disable_cache($app);
+
     check_chart_writable($id, function($user, $chart) use ($app) {
 
         $cfg = $GLOBALS['dw_config'];
@@ -31,10 +33,9 @@ $app->get('/chart/:id/publish', function ($id) use ($app) {
         );
         add_header_vars($page, 'chart');
         add_editor_nav($page, 4);
-        $res = $app->response();
-        $res['Cache-Control'] = 'max-age=0';
 
-        if ($user->isAbleToPublish() && ($chart->getLastEditStep() == 3 || $app->request()->get('republish') == 1)) {
+        if ($user->isAbleToPublish()
+            && ($chart->getLastEditStep() == 3 || $app->request()->get('republish') == 1)) {
             // generate thumbnails
             $page['thumbnails'] = $GLOBALS['dw_config']['thumbnails'];
             $app->render('chart-generate-thumbnails.twig', $page);

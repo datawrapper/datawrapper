@@ -73,7 +73,7 @@ msgstr ""
 "Passwort anmelden."
 
 #: ../scripts/tmpl_cache/account-reset-password.twig.php:118
-#: ../scripts/tmpl_cache/login.twig.php:55
+#: ../scripts/tmpl_cache/login.twig.php:56
 msgid "Login"
 msgstr "Einloggen"
 
@@ -180,7 +180,7 @@ msgstr "Datenreihe kommentieren"
 msgid "Annotate data point"
 msgstr "Datenpunkt kommentieren"
 
-#: ../scripts/tmpl_cache/chart-describe.twig.php:346 ../www/index.php:184
+#: ../scripts/tmpl_cache/chart-describe.twig.php:346 ../www/index.php:190
 msgid "Visualize"
 msgstr "Visualisieren"
 
@@ -319,7 +319,7 @@ msgstr ""
 "natürlich zum neuen Konto übertragen."
 
 #: ../scripts/tmpl_cache/chart-publish.twig.php:296
-#: ../scripts/tmpl_cache/login.twig.php:104
+#: ../scripts/tmpl_cache/login.twig.php:110
 msgid "Sign Up"
 msgstr "Anmelden"
 
@@ -633,7 +633,7 @@ msgstr "\"Wrap\" nochmal!"
 
 #: ../scripts/tmpl_cache/home-login.twig.php:66
 #: ../scripts/tmpl_cache/mycharts.twig.php:52
-#: ../scripts/tmpl_cache/utils.twig.php:264 ../www/index.php:96
+#: ../scripts/tmpl_cache/utils.twig.php:264 ../www/index.php:102
 msgid "My Charts"
 msgstr "Meine Diagramme"
 
@@ -641,7 +641,7 @@ msgstr "Meine Diagramme"
 msgid "See what you created so far."
 msgstr "Schau dir an, was du bisher erstellt hast."
 
-#: ../scripts/tmpl_cache/home-login.twig.php:74 ../www/index.php:131
+#: ../scripts/tmpl_cache/home-login.twig.php:74 ../www/index.php:137
 msgid "Settings"
 msgstr "Einstellungen"
 
@@ -649,7 +649,7 @@ msgstr "Einstellungen"
 msgid "Edit your personal information."
 msgstr "Ändere deine persönlichen Daten"
 
-#: ../scripts/tmpl_cache/home-login.twig.php:80 ../www/index.php:135
+#: ../scripts/tmpl_cache/home-login.twig.php:80 ../www/index.php:141
 msgid "Logout"
 msgstr "Ausloggen"
 
@@ -779,32 +779,36 @@ msgstr ""
 "sehen und neue zu erstellen."
 
 #: ../scripts/tmpl_cache/login.twig.php:47
-#: ../scripts/tmpl_cache/login.twig.php:87
+#: ../scripts/tmpl_cache/login.twig.php:93
 msgid "email"
 msgstr "E-Mail"
 
 #: ../scripts/tmpl_cache/login.twig.php:51
-#: ../scripts/tmpl_cache/login.twig.php:93
+#: ../scripts/tmpl_cache/login.twig.php:99
 msgid "password"
 msgstr "Passwort"
 
-#: ../scripts/tmpl_cache/login.twig.php:59
+#: ../scripts/tmpl_cache/login.twig.php:61
+msgid "Remember login?"
+msgstr "Login merken?"
+
+#: ../scripts/tmpl_cache/login.twig.php:66
 msgid "Send new password"
 msgstr "Neues Passwort zusenden"
 
-#: ../scripts/tmpl_cache/login.twig.php:66
+#: ../scripts/tmpl_cache/login.twig.php:72
 msgid "Can't recall your password?"
 msgstr "Passwort vergessen?"
 
-#: ../scripts/tmpl_cache/login.twig.php:70
+#: ../scripts/tmpl_cache/login.twig.php:76
 msgid "Return to login..."
 msgstr "Zurück zum Login"
 
-#: ../scripts/tmpl_cache/login.twig.php:77
+#: ../scripts/tmpl_cache/login.twig.php:83
 msgid "Create a new account"
 msgstr "Benutzerkonto anlegen"
 
-#: ../scripts/tmpl_cache/login.twig.php:81
+#: ../scripts/tmpl_cache/login.twig.php:87
 msgid ""
 "Datawrapper is 100&#37; free and creating an account takes less than a "
 "minute. Just enter your email and pick a password, and you're done!"
@@ -812,7 +816,7 @@ msgstr ""
 "Datawrapper ist 100% kostenlos und die Registrierung dauert weniger als eine "
 "Minute. Einfach E-Mail eingeben und Passwort auswählen, und das war's!"
 
-#: ../scripts/tmpl_cache/login.twig.php:99
+#: ../scripts/tmpl_cache/login.twig.php:105
 msgid "repeat password"
 msgstr "Passwort wiederholen"
 
@@ -1132,7 +1136,7 @@ msgstr "Daten speichern "
 msgid "Created with"
 msgstr "Erstellt mit "
 
-#: ../scripts/tmpl_cache/utils.twig.php:247 ../www/index.php:150
+#: ../scripts/tmpl_cache/utils.twig.php:247 ../www/index.php:156
 msgid "Login / Sign Up"
 msgstr "Einloggen / Anmelden"
 
@@ -1214,39 +1218,39 @@ msgstr "Farbwahl zurücksetzen"
 msgid "Reset all colors"
 msgstr "Komplette Farbwahl zurücksetzen"
 
-#: ../www/index.php:94
+#: ../www/index.php:100
 msgid "Create Chart"
 msgstr "Diagramm erstellen"
 
-#: ../www/index.php:98
+#: ../www/index.php:104
 msgid "Gallery"
 msgstr "Galerie"
 
-#: ../www/index.php:100 ../lib/templates/docs-pages.php:5
+#: ../www/index.php:106 ../lib/templates/docs-pages.php:5
 msgid "About"
 msgstr "Über"
 
-#: ../www/index.php:101
+#: ../www/index.php:107
 msgid "Blog"
 msgstr "Blog"
 
-#: ../www/index.php:119
+#: ../www/index.php:125
 msgid "Language"
 msgstr "Sprache"
 
-#: ../www/index.php:143
+#: ../www/index.php:149
 msgid "Admin"
 msgstr "Admin"
 
-#: ../www/index.php:182
+#: ../www/index.php:188
 msgid "Upload Data"
 msgstr "Daten hochladen"
 
-#: ../www/index.php:183
+#: ../www/index.php:189
 msgid "Check & Describe"
 msgstr "Prüfen & Beschreiben"
 
-#: ../www/index.php:185
+#: ../www/index.php:191
 msgid "Publish & Embed"
 msgstr "Veröffentlichen & Einbetten"
 

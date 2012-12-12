@@ -6,6 +6,8 @@
  * @param chart_id chart id
  */
 $app->get('/chart/:id/data', function($chart_id) use ($app) {
+    disable_cache($app);
+
     $chart = ChartQuery::create()->findPK($chart_id);
     $res = $app->response();
     $res['Cache-Control'] = 'max-age=0';

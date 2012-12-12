@@ -20,10 +20,13 @@ Propel::init("../../lib/core/build/conf/datawrapper-conf.php");
 // Add the generated 'classes' directory to the include path
 set_include_path("../../lib/core/build/classes" . PATH_SEPARATOR . get_include_path());
 
+require '../../lib/session/database.php';
+
 require '../../lib/session/Datawrapper.php';
 
 // load YAML parser and config
 require_once '../../vendor/spyc/spyc.php';
+
 $GLOBALS['dw_config'] = $config = Spyc::YAMLLoad('../../config.yaml');
 
 if ($config['debug'] == true) {
@@ -39,6 +42,7 @@ if (!empty($config['publish']) && !empty($config['publish']['requires'])) {
 }
 
 require '../../lib/utils/i18n.php';
+require '../../lib/utils/disable_cache.php';
 
 /**
  * Step 2: Instantiate the Slim application

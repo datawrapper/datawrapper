@@ -56,5 +56,7 @@ foreach ($urls as $url) {
 
 
 $app->get('/docs/?', function() use ($app) {
+    disable_cache($app);
+
     $app->redirect('/docs/about');
 });

@@ -31,6 +31,8 @@ function gal_nbChartsByType() {
 
 
 $app->get('/gallery(/?|/by/:key/:val)', function ($key = false, $val = false) use ($app) {
+    disable_cache($app);
+
     $user = DatawrapperSession::getUser();
     $curPage = $app->request()->params('page');
     if (empty($curPage)) $curPage = 0;

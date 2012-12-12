@@ -2,6 +2,8 @@
 
 //GET route
 $app->get('/account/reset-password/:token', function ($token) use ($app) {
+    disable_cache($app);
+
     $page = array();
     add_header_vars($page, 'account');
     if (!empty($token)) {

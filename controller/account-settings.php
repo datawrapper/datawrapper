@@ -2,6 +2,8 @@
 
 //GET route
 $app->get('/account/settings', function () use ($app) {
+    disable_cache($app);
+
     $page = array('title' => 'Datawrapper');
     add_header_vars($page, 'user');
 

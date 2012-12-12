@@ -132,6 +132,7 @@ $app->put('/charts/:id/data', function($chart_id) use ($app) {
  * @param chart_id chart id
  */
 $app->post('/charts/:id/data', function($chart_id) use ($app) {
+    disable_cache($app);
     if_chart_is_writable($chart_id, function($user, $chart) use ($app) {
 
         require_once '../../lib/utils/file-uploader.php';
@@ -242,14 +243,19 @@ function download($url, $outf) {
  * @param chart_id chart id
  */
 $app->post('/charts/:id/publish/html', function($chart_id) use ($app) {
+    disable_cache($app);
     if_chart_is_writable($chart_id, function($user, $chart) use ($app) {
         $cdn_files = array();
+
         try {
             $static_path = get_static_path($chart);
             $url = 'http://'.$GLOBALS['dw_config']['domain'].'/chart/'.$chart->getID().'/preview?minify=1';
             $outf = $static_path . '/index.html';
             download($url, $outf);
             download($url . '&plain=1', $static_path . '/plain.html');
+
+            $chart->setPublishedAt(time() + 5);
+            $chart->save();
 
             $cdn_files[] = array($outf, $chart->getID() . '/index.html', 'text/html');
             $cdn_files[] = array($static_path . '/plain.html', $chart->getID() . '/plain.html', 'text/html');
@@ -259,6 +265,8 @@ $app->post('/charts/:id/publish/html', function($chart_id) use ($app) {
             error('io-error', $e->getMessage());
         }
         if ($pub = get_module('publish')) {
+            // to be sure, we remove the old index first
+            $pub->unpublish(array($chart->getID() . '/index.html'));
             $pub->publish($cdn_files);
         }
     });
@@ -276,6 +284,7 @@ require_once '../../vendor/jsmin/jsmin.php';
  * @param chart_id chart id
  */
 $app->post('/charts/:id/publish/js', function($chart_id) use ($app) {
+    disable_cache($app);
     if_chart_is_writable($chart_id, function($user, $chart) use ($app) {
         $cdn_files = array();
         try {
@@ -331,6 +340,7 @@ require_once '../../vendor/cssmin/cssmin.php';
  * @param chart_id chart id
  */
 $app->post('/charts/:id/publish/css', function($chart_id) use ($app) {
+    disable_cache($app);
     if_chart_is_writable($chart_id, function($user, $chart) use ($app) {
         $cdn_files = array();
         try {
@@ -376,14 +386,13 @@ $app->post('/charts/:id/publish/css', function($chart_id) use ($app) {
  * publishes the data to static chart cache
  */
 $app->post('/charts/:id/publish/data', function($chart_id) use ($app) {
+    disable_cache($app);
     if_chart_is_writable($chart_id, function($user, $chart) use ($app) {
         $cdn_files = array();
         try {
             $static_path = get_static_path($chart);
             file_put_contents($static_path . "/data", $chart->loadData());
             $cdn_files[] = array($static_path . "/data", $chart->getID() . '/data', 'text/plain');
-            $chart->setPublishedAt(time());
-            $chart->save();
             ok();
         } catch (Exception $e) {
             error('io-error', $e->getMessage());
@@ -398,6 +407,7 @@ $app->post('/charts/:id/publish/data', function($chart_id) use ($app) {
  * stores client-side generated chart thumbnail
  */
 $app->put('/charts/:id/thumbnail/:thumb', function($chart_id, $thumb) use ($app) {
+    disable_cache($app);
     if_chart_is_writable($chart_id, function($user, $chart) use ($app, $thumb) {
         try {
             $imgurl = $app->request()->getBody();

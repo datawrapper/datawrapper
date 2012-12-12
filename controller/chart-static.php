@@ -8,6 +8,8 @@ require_once '../lib/utils/themes.php';
  * VISUALIZE STEP
  */
 $app->get('/chart/:id/static', function ($id) use ($app) {
+    disable_cache($app);
+
     check_chart_public($id, function($user, $chart) use ($app) {
 
         function get($var, $default) {
