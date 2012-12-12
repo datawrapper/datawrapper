@@ -90,9 +90,9 @@ $app->post('/account/reset-password', function() use($app) {
 
         $name = $user->getEmail();
         $passwordResetLink = 'http://' . $GLOBALS['dw_config']['domain'] . '/account/reset-password/' . $token;
-        $from = 'password-reset@' . $GLOBALS['dw_config']['domain'];
+        $from = $GLOBALS['dw_config']['email'];
         include('../../lib/templates/password-reset-email.php');
-        mail($user->getEmail(), 'Datawrapper Password Reset', $password_reset_mail, 'From: ' . $from);
+        custom_mail($user->getEmail(), 'Datawrapper Password Reset', $password_reset_mail, $from);
         ok(_('You should soon receive an email with further instructions.'));
 
     } else {
@@ -126,11 +126,11 @@ $app->post('/account/resend-activation', function() use($app) {
         $name = $user->getEmail();
         $domain = $GLOBALS['dw_config']['domain'];
         $activationLink = 'http://' . $domain . '/account/activate/' . $token;
-        $from = 'activate@' . $domain;
+        $from = $GLOBALS['dw_config']['email'];
 
         include('../../lib/templates/activation-email.php');
 
-        mail($user->getEmail(), 'Datawrapper Email Activation', $activation_mail, 'From: ' . $from);
+        custom_mail($user->getEmail(), 'Datawrapper Email Activation', $activation_mail, $from);
 
         ok(_('The activation email has been send to your email address, again.'));
 

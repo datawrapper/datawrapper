@@ -24,6 +24,9 @@ require '../../lib/session/database.php';
 
 require '../../lib/session/Datawrapper.php';
 
+// Provide the custom_mail function to send email (it manages Amazon SES)
+require_once '../../lib/mailing/mailing.php';
+
 // load YAML parser and config
 require_once '../../vendor/spyc/spyc.php';
 
