@@ -2,6 +2,8 @@
 
 //GET route
 $app->get('/account/activate/:token', function ($token) use ($app) {
+    disable_cache($app);
+
     $page = array();
     add_header_vars($page, 'about');
     if (!empty($token)) {

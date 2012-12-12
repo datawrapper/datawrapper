@@ -43,6 +43,8 @@ function nbChartsByLayout($user) {
 }
 
 $app->get('/mycharts(/?|/by/:key/:val)', function ($key = false, $val = false) use ($app) {
+    disable_cache($app);
+
     $user = DatawrapperSession::getUser();
     if ($user->isLoggedIn()) {
 

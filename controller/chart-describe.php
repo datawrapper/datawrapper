@@ -4,6 +4,8 @@
  * DESCRIBE STEP
  */
 $app->get('/chart/:id/describe', function ($id) use ($app) {
+    disable_cache($app);
+
     check_chart_writable($id, function($user, $chart) use ($app) {
         $page = array(
             'chartData' => $chart->loadData(),
@@ -32,8 +34,7 @@ $app->get('/chart/:id/describe', function ($id) use ($app) {
             'n1' => '1 ('.number_format(1234.56789, 1, $d, $k).')',
             'n0' => '0 ('.number_format(1234.56789, 0, $d, $k).')'
         );
-        $res = $app->response();
-        $res['Cache-Control'] = 'max-age=0';
+
         $app->render('chart-describe.twig', $page);
     });
 });

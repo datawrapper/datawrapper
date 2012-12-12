@@ -45,7 +45,10 @@ class DatawrapperSession {
      */
     protected function initUser() {
         if (isset($_SESSION['dw-user-id'])) {
-            $this->user = UserQuery::create()->limit(1)->findPK($_SESSION['dw-user-id']);
+            if ($_SESSION['persistent'] || time() - $_SESSION['last_action_time'] < 1800) {
+                $this->user = UserQuery::create()->limit(1)->findPK($_SESSION['dw-user-id']);
+                $_SESSION['last_action_time'] = time();
+            }
         }
         if (empty($this->user)) {
             // create temporary guest user for this session
@@ -116,10 +119,13 @@ class DatawrapperSession {
         return self::getInstance()->user;
     }
 
-    public static function login($user) {
+    public static function login($user, $keepLoggedIn = true) {
         $_SESSION['dw-user-id'] = $user->getId();
         self::getInstance()->user = $user;
         Action::logAction($user, 'login');
+
+        $_SESSION['persistent'] = $keepLoggedIn;
+        $_SESSION['last_action_time'] = time();
 
         // make sure that the charts of the guest now belong to
         // the logged or newly created user
