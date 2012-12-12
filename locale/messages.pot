@@ -55,7 +55,7 @@ msgid ""
 msgstr ""
 
 #: ../scripts/tmpl_cache/account-reset-password.twig.php:118
-#: ../scripts/tmpl_cache/login.twig.php:55
+#: ../scripts/tmpl_cache/login.twig.php:56
 msgid "Login"
 msgstr ""
 
@@ -157,7 +157,7 @@ msgstr ""
 msgid "Annotate data point"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-describe.twig.php:346 ../www/index.php:184
+#: ../scripts/tmpl_cache/chart-describe.twig.php:346 ../www/index.php:190
 msgid "Visualize"
 msgstr ""
 
@@ -284,7 +284,7 @@ msgid ""
 msgstr ""
 
 #: ../scripts/tmpl_cache/chart-publish.twig.php:296
-#: ../scripts/tmpl_cache/login.twig.php:104
+#: ../scripts/tmpl_cache/login.twig.php:110
 msgid "Sign Up"
 msgstr ""
 
@@ -573,7 +573,7 @@ msgstr ""
 
 #: ../scripts/tmpl_cache/home-login.twig.php:66
 #: ../scripts/tmpl_cache/mycharts.twig.php:52
-#: ../scripts/tmpl_cache/utils.twig.php:264 ../www/index.php:96
+#: ../scripts/tmpl_cache/utils.twig.php:264 ../www/index.php:102
 msgid "My Charts"
 msgstr ""
 
@@ -581,7 +581,7 @@ msgstr ""
 msgid "See what you created so far."
 msgstr ""
 
-#: ../scripts/tmpl_cache/home-login.twig.php:74 ../www/index.php:131
+#: ../scripts/tmpl_cache/home-login.twig.php:74 ../www/index.php:137
 msgid "Settings"
 msgstr ""
 
@@ -589,7 +589,7 @@ msgstr ""
 msgid "Edit your personal information."
 msgstr ""
 
-#: ../scripts/tmpl_cache/home-login.twig.php:80 ../www/index.php:135
+#: ../scripts/tmpl_cache/home-login.twig.php:80 ../www/index.php:141
 msgid "Logout"
 msgstr ""
 
@@ -695,38 +695,42 @@ msgid ""
 msgstr ""
 
 #: ../scripts/tmpl_cache/login.twig.php:47
-#: ../scripts/tmpl_cache/login.twig.php:87
+#: ../scripts/tmpl_cache/login.twig.php:93
 msgid "email"
 msgstr ""
 
 #: ../scripts/tmpl_cache/login.twig.php:51
-#: ../scripts/tmpl_cache/login.twig.php:93
+#: ../scripts/tmpl_cache/login.twig.php:99
 msgid "password"
 msgstr ""
 
-#: ../scripts/tmpl_cache/login.twig.php:59
-msgid "Send new password"
+#: ../scripts/tmpl_cache/login.twig.php:61
+msgid "Remember login?"
 msgstr ""
 
 #: ../scripts/tmpl_cache/login.twig.php:66
+msgid "Send new password"
+msgstr ""
+
+#: ../scripts/tmpl_cache/login.twig.php:72
 msgid "Can't recall your password?"
 msgstr ""
 
-#: ../scripts/tmpl_cache/login.twig.php:70
+#: ../scripts/tmpl_cache/login.twig.php:76
 msgid "Return to login..."
 msgstr ""
 
-#: ../scripts/tmpl_cache/login.twig.php:77
+#: ../scripts/tmpl_cache/login.twig.php:83
 msgid "Create a new account"
 msgstr ""
 
-#: ../scripts/tmpl_cache/login.twig.php:81
+#: ../scripts/tmpl_cache/login.twig.php:87
 msgid ""
 "Datawrapper is 100&#37; free and creating an account takes less than a "
 "minute. Just enter your email and pick a password, and you're done!"
 msgstr ""
 
-#: ../scripts/tmpl_cache/login.twig.php:99
+#: ../scripts/tmpl_cache/login.twig.php:105
 msgid "repeat password"
 msgstr ""
 
@@ -1018,7 +1022,7 @@ msgstr ""
 msgid "Created with"
 msgstr ""
 
-#: ../scripts/tmpl_cache/utils.twig.php:247 ../www/index.php:150
+#: ../scripts/tmpl_cache/utils.twig.php:247 ../www/index.php:156
 msgid "Login / Sign Up"
 msgstr ""
 
@@ -1097,39 +1101,39 @@ msgstr ""
 msgid "Reset all colors"
 msgstr ""
 
-#: ../www/index.php:94
+#: ../www/index.php:100
 msgid "Create Chart"
 msgstr ""
 
-#: ../www/index.php:98
+#: ../www/index.php:104
 msgid "Gallery"
 msgstr ""
 
-#: ../www/index.php:100 ../lib/templates/docs-pages.php:5
+#: ../www/index.php:106 ../lib/templates/docs-pages.php:5
 msgid "About"
 msgstr ""
 
-#: ../www/index.php:101
+#: ../www/index.php:107
 msgid "Blog"
 msgstr ""
 
-#: ../www/index.php:119
+#: ../www/index.php:125
 msgid "Language"
 msgstr ""
 
-#: ../www/index.php:143
+#: ../www/index.php:149
 msgid "Admin"
 msgstr ""
 
-#: ../www/index.php:182
+#: ../www/index.php:188
 msgid "Upload Data"
 msgstr ""
 
-#: ../www/index.php:183
+#: ../www/index.php:189
 msgid "Check & Describe"
 msgstr ""
 
-#: ../www/index.php:185
+#: ../www/index.php:191
 msgid "Publish & Embed"
 msgstr ""
 
