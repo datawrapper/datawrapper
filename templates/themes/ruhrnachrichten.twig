@@ -7,7 +7,7 @@
         {% if intro %}
         <p>{{ intro|purify|raw }}</p>
         {% endif %}
-
+        <a href="{{ chartUrlFs }}" target="_blank" class="fs-btn top-right small" title="{% trans "Fullscreen" %}" data-toggle="fullscreen"></a>
     {% endif %}
 </div>
 
@@ -20,17 +20,14 @@
         <div style="padding-bottom:3px" >
             {% if source %}
             {% trans "Source: " %}
-                {% if sourceURL %}<a target="_blank" href="{{ sourceURL }}">{% endif %}{{ source }}{% if sourceURL %}</a>
-                {% endif %}
+                {% if sourceURL %}<a target="_blank" href="{{ sourceURL }}">{% endif %}{{ source }}{% if sourceURL %}</a>{% endif %}, 
             {% endif %}
+            <a href="">{% trans "Get the data" %}</a>
         </div>
     </div>
     <a class="logo" href="http://ruhrnachrichten.de" target="_blank">
         <img src="{{ ASSET_PATH }}logo-bw.png" alt="Ruhrnachrichten" width="115" height="18" />
     </a>
-
-    {% use "chart-menu.twig" %}
-    {{ block('chartMenu') }}
 
     <br class="clearfix" />
 </div>

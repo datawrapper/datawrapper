@@ -1,7 +1,10 @@
 
 
 {% block chartMenuHTML %}
-
+    <div id="chartMenuShareOverlay"></div>
+    <div id="chartMenuShare">
+        Share this chart on Twitter
+    </div>
     <div class="chartMenuHandle"></div>
     <div class="chartMenuContWrap">
         <div class="chartMenuCont menuSeen">
@@ -12,11 +15,40 @@
             </div>
         </div>
     </div>
+    
 {% endblock %}
 
-{% block chartMenuCSS %}
 
+
+{% block chartMenuCSS %}
     <style type="text/css">
+
+    body {
+        position: relative;
+        overflow: hidden!important;
+    }
+
+    #chartMenuShareOverlay {
+        background: #eee;
+        opacity: 0.75;
+        position: absolute;
+        left: -1000px;
+        top: -1000px;
+        height: 3000px;
+        width: 3000px;
+        z-index: 5000;
+    }
+
+    #chartMenuShare {
+        position: absolute;
+        top: -200px;
+        width: 300px;
+        height: 100px;
+        z-index: 5001;
+        background: #fff;
+        box-shadow: 0 0 30px #aaa;
+        border-radius: 10px;
+    }
 
     .chartMenuContWrap {
         position: absolute;
@@ -120,14 +152,12 @@
     }
 
     </style>
-
 {% endblock %}
 
+
+
 {% block chartMenuJS %}
-
-
     <script type="text/javascript">
-
     $(function() {
 
         function initializeChartMenu() {
@@ -173,9 +203,8 @@
     });
 
     </script>
-
-
 {% endblock %}
+
 
 
 
