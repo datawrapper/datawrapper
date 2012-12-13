@@ -99,7 +99,7 @@ function get_chart_content($chart, $user, $minified = false, $path = '') {
     if (empty($cfg['publish'])) {
         $chart_url = 'http://' . $cfg['chart_domain'] . '/' . $chart->getID() . '/';
     } else {
-        $pub = get_module('publish', '../lib/');
+        $pub = get_module('publish',  $path . '../lib/');
         $chart_url = $pub->getUrl($chart);
     }
 
