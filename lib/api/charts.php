@@ -253,12 +253,14 @@ $app->post('/charts/:id/publish/html', function($chart_id) use ($app) {
             $outf = $static_path . '/index.html';
             download($url, $outf);
             download($url . '&plain=1', $static_path . '/plain.html');
+            download($url . '&fs=1', $static_path . '/fs.html');
 
             $chart->setPublishedAt(time() + 5);
             $chart->save();
 
             $cdn_files[] = array($outf, $chart->getID() . '/index.html', 'text/html');
             $cdn_files[] = array($static_path . '/plain.html', $chart->getID() . '/plain.html', 'text/html');
+            $cdn_files[] = array($static_path . '/fs.html', $chart->getID() . '/fs.html', 'text/html');
 
             ok();
         } catch (Exception $e) {
