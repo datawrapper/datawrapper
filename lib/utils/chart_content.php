@@ -120,7 +120,7 @@ function get_chart_content($chart, $user, $minified = false, $path = '') {
         'ASSET_PATH' => $minified ? '' : '/static/themes/'.$the_theme['id'].'/',
         'trackingCode' => !empty($analyticsMod) ? $analyticsMod->getTrackingCode() : '',
         'chartUrl' => $chart_url,
-        'chartUrlFs' => strpos('.html', $chart_url) > 0 ? str_replace('index.html', 'fs.html', $chart_url) : $chart_url . '?fs=1'
+        'chartUrlFs' => strpos($chart_url, '.html') > 0 ? str_replace('index.html', 'fs.html', $chart_url) : $chart_url . '?fs=1'
     );
 
     if (isset($GLOBALS['dw_config']['piwik'])) {
