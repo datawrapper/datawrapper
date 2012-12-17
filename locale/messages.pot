@@ -18,415 +18,439 @@ msgstr ""
 msgid "Reset Code"
 msgstr ""
 
-#: ../scripts/tmpl_cache/account-reset-password.twig.php:60
+#: ../scripts/tmpl_cache/account-reset-password.twig.php:59
 msgid "This reset token is valid."
 msgstr ""
 
-#: ../scripts/tmpl_cache/account-reset-password.twig.php:69
+#: ../scripts/tmpl_cache/account-reset-password.twig.php:68
 msgid "Now please enter a new password."
 msgstr ""
 
-#: ../scripts/tmpl_cache/account-reset-password.twig.php:71
+#: ../scripts/tmpl_cache/account-reset-password.twig.php:70
 msgid "The password should contain at least four characters."
 msgstr ""
 
-#: ../scripts/tmpl_cache/account-reset-password.twig.php:79
-#: ../scripts/tmpl_cache/settings.twig.php:371
+#: ../scripts/tmpl_cache/account-reset-password.twig.php:78
+#: ../scripts/tmpl_cache/settings.twig.php:364
 msgid "Password"
 msgstr ""
 
-#: ../scripts/tmpl_cache/account-reset-password.twig.php:88
+#: ../scripts/tmpl_cache/account-reset-password.twig.php:87
 msgid "Password (repeat)"
 msgstr ""
 
-#: ../scripts/tmpl_cache/account-reset-password.twig.php:98
-#: ../scripts/tmpl_cache/settings.twig.php:279
+#: ../scripts/tmpl_cache/account-reset-password.twig.php:97
+#: ../scripts/tmpl_cache/settings.twig.php:272
 msgid "Show password in clear text"
 msgstr ""
 
-#: ../scripts/tmpl_cache/account-reset-password.twig.php:105
+#: ../scripts/tmpl_cache/account-reset-password.twig.php:104
 msgid "Set New Password"
 msgstr ""
 
-#: ../scripts/tmpl_cache/account-reset-password.twig.php:114
+#: ../scripts/tmpl_cache/account-reset-password.twig.php:113
 msgid ""
 "Congrats! Your password has been changed. You can log in with your new "
 "password now."
 msgstr ""
 
-#: ../scripts/tmpl_cache/account-reset-password.twig.php:118
+#: ../scripts/tmpl_cache/account-reset-password.twig.php:117
 #: ../scripts/tmpl_cache/login.twig.php:56
 msgid "Login"
 msgstr ""
 
-#: ../scripts/tmpl_cache/admin-users.twig.php:65
+#: ../scripts/tmpl_cache/admin-users.twig.php:45
 msgid "removed."
 msgstr ""
 
-#: ../scripts/tmpl_cache/admin-users.twig.php:71
+#: ../scripts/tmpl_cache/admin-users.twig.php:51
 msgid "added."
 msgstr ""
 
-#: ../scripts/tmpl_cache/admin-users.twig.php:77
+#: ../scripts/tmpl_cache/admin-users.twig.php:57
 msgid "You should give an email."
 msgstr ""
 
-#: ../scripts/tmpl_cache/admin-users.twig.php:83
+#: ../scripts/tmpl_cache/admin-users.twig.php:63
 msgid "The given email is not correct."
 msgstr ""
 
-#: ../scripts/tmpl_cache/admin-users.twig.php:89
+#: ../scripts/tmpl_cache/admin-users.twig.php:69
 msgid "The given email is already in our database."
 msgstr ""
 
-#: ../scripts/tmpl_cache/admin-users.twig.php:96
+#: ../scripts/tmpl_cache/admin-users.twig.php:76
 msgid "will lost his administrator status. Continue?"
 msgstr ""
 
-#: ../scripts/tmpl_cache/admin-users.twig.php:100
+#: ../scripts/tmpl_cache/admin-users.twig.php:80
 msgid "will become an administrator. Continue?"
 msgstr ""
 
-#: ../scripts/tmpl_cache/admin-users.twig.php:104
+#: ../scripts/tmpl_cache/admin-users.twig.php:84
 msgid "will be deleted. Continue?"
 msgstr ""
 
-#: ../scripts/tmpl_cache/admin-users.twig.php:112
+#: ../scripts/tmpl_cache/admin-users.twig.php:92
 msgid "Add a user"
 msgstr ""
 
-#: ../scripts/tmpl_cache/admin-users.twig.php:118
+#: ../scripts/tmpl_cache/admin-users.twig.php:98
 #: ../scripts/tmpl_cache/login.twig.php:47
 #: ../scripts/tmpl_cache/login.twig.php:93
 msgid "email"
 msgstr ""
 
-#: ../scripts/tmpl_cache/admin-users.twig.php:126
-#: ../scripts/tmpl_cache/admin-users.twig.php:183
+#: ../scripts/tmpl_cache/admin-users.twig.php:106
+#: ../scripts/tmpl_cache/admin-users.twig.php:163
 msgid "Editor"
 msgstr ""
 
-#: ../scripts/tmpl_cache/admin-users.twig.php:130
-#: ../scripts/tmpl_cache/admin-users.twig.php:179
-#: ../scripts/tmpl_cache/admin-users.twig.php:197
+#: ../scripts/tmpl_cache/admin-users.twig.php:110
+#: ../scripts/tmpl_cache/admin-users.twig.php:159
+#: ../scripts/tmpl_cache/admin-users.twig.php:177
 msgid "Administrator"
 msgstr ""
 
-#: ../scripts/tmpl_cache/admin-users.twig.php:137
+#: ../scripts/tmpl_cache/admin-users.twig.php:117
 msgid "Add"
 msgstr ""
 
-#: ../scripts/tmpl_cache/admin-users.twig.php:142
+#: ../scripts/tmpl_cache/admin-users.twig.php:122
 msgid "Loading ..."
 msgstr ""
 
-#: ../scripts/tmpl_cache/admin-users.twig.php:148
+#: ../scripts/tmpl_cache/admin-users.twig.php:128
 msgid "Refresh"
 msgstr ""
 
-#: ../scripts/tmpl_cache/admin-users.twig.php:156
+#: ../scripts/tmpl_cache/admin-users.twig.php:136
 msgid "Email"
 msgstr ""
 
-#: ../scripts/tmpl_cache/admin-users.twig.php:160
+#: ../scripts/tmpl_cache/admin-users.twig.php:140
 msgid "Status"
 msgstr ""
 
-#: ../scripts/tmpl_cache/admin-users.twig.php:164
+#: ../scripts/tmpl_cache/admin-users.twig.php:144
 msgid "Created at"
 msgstr ""
 
-#: ../scripts/tmpl_cache/admin-users.twig.php:168
+#: ../scripts/tmpl_cache/admin-users.twig.php:148
 msgid "Actions"
 msgstr ""
 
-#: ../scripts/tmpl_cache/admin-users.twig.php:190
-#: ../scripts/tmpl_cache/mycharts.twig.php:298
+#: ../scripts/tmpl_cache/admin-users.twig.php:170
+#: ../scripts/tmpl_cache/mycharts.twig.php:257
 msgid "Delete"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-describe.twig.php:168
+#: ../scripts/tmpl_cache/chart-describe.twig.php:167
 msgid "Check and Describe Your Data"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-describe.twig.php:173
-msgid ""
-"Please check if the data format was recognized correctly. If not, please <a "
-"data-toggle='modal' href='%LINK%'>help Datawrapper to understand your data</"
-"a>."
+#: ../scripts/tmpl_cache/chart-describe.twig.php:172
+msgid "Please check if the data format was recognized correctly."
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-describe.twig.php:197
+#: ../scripts/tmpl_cache/chart-describe.twig.php:195
 msgid "Describe your data"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-describe.twig.php:206
+#: ../scripts/tmpl_cache/chart-describe.twig.php:204
 msgid "Data series in rows"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-describe.twig.php:210
+#: ../scripts/tmpl_cache/chart-describe.twig.php:208
 msgid "Data series in columns"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-describe.twig.php:218
+#: ../scripts/tmpl_cache/chart-describe.twig.php:216
 msgid "First row as label"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-describe.twig.php:222
+#: ../scripts/tmpl_cache/chart-describe.twig.php:220
 msgid "First column as label"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-describe.twig.php:231
+#: ../scripts/tmpl_cache/chart-describe.twig.php:229
 msgid "Output number format"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-describe.twig.php:238
+#: ../scripts/tmpl_cache/chart-describe.twig.php:236
 msgid "Decimals after point"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-describe.twig.php:244
+#: ../scripts/tmpl_cache/chart-describe.twig.php:242
 msgid "keep original"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-describe.twig.php:274
+#: ../scripts/tmpl_cache/chart-describe.twig.php:269
 msgid "Prepend/Append"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-describe.twig.php:285
+#: ../scripts/tmpl_cache/chart-describe.twig.php:280
 msgid "Devide numbers by"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-describe.twig.php:292
+#: ../scripts/tmpl_cache/chart-describe.twig.php:287
 msgid "1000"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-describe.twig.php:296
+#: ../scripts/tmpl_cache/chart-describe.twig.php:291
 msgid "1 million"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-describe.twig.php:300
+#: ../scripts/tmpl_cache/chart-describe.twig.php:295
 msgid "1 billion"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-describe.twig.php:310
+#: ../scripts/tmpl_cache/chart-describe.twig.php:305
 msgid "Credit the source"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-describe.twig.php:315
+#: ../scripts/tmpl_cache/chart-describe.twig.php:310
 msgid "Who published the data in the first place?"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-describe.twig.php:322
+#: ../scripts/tmpl_cache/chart-describe.twig.php:317
 msgid "If possible, please provide a link the source data"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-describe.twig.php:328
+#: ../scripts/tmpl_cache/chart-describe.twig.php:323
 msgid "Annotate data"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-describe.twig.php:332
+#: ../scripts/tmpl_cache/chart-describe.twig.php:327
 msgid ""
 "To make the data more useful for your readers you can add details to "
 "individual data points or an entire series. This information will be "
 "displayed in the visualisations."
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-describe.twig.php:334
+#: ../scripts/tmpl_cache/chart-describe.twig.php:329
 msgid "Learn more"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-describe.twig.php:338
+#: ../scripts/tmpl_cache/chart-describe.twig.php:333
 msgid "Annotate series"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-describe.twig.php:340
+#: ../scripts/tmpl_cache/chart-describe.twig.php:335
 msgid "Annotate data point"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-describe.twig.php:346 ../www/index.php:191
+#: ../scripts/tmpl_cache/chart-describe.twig.php:341 ../www/index.php:191
 msgid "Visualize"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-describe.twig.php:350
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:526
+#: ../scripts/tmpl_cache/chart-describe.twig.php:345
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:510
 msgid "Back"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:279
+#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:271
 msgid "Publishing chart..."
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:284
+#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:276
 msgid ""
 "Please hold on a second while your chart is being published. Try not to "
 "close this page.."
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:293
+#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:285
 msgid "Finished."
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:301
+#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:293
 msgid "Generating static HTML page"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:305
+#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:297
 msgid "Generated static HTML page"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:310
+#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:302
 msgid "Packing and crunching JavaScript"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:314
+#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:306
 msgid "Packed and minified JavaScript"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:319
+#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:311
 msgid "Packing and crunching stylesheets"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:323
+#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:315
 msgid "Packed and minified stylesheets"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:328
+#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:320
 msgid "Publishing chart data"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:332
+#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:324
 msgid "Published chart data"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:337
+#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:329
 msgid "Generating chart thumbnails"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:341
+#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:333
 msgid "Generated Thumbnails"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:200
+#: ../scripts/tmpl_cache/chart-menu.twig.php:68
+#: ../scripts/tmpl_cache/chart-menu.twig.php:70
+#: ../scripts/tmpl_cache/themes__default.twig.php:47
+#: ../scripts/tmpl_cache/themes__guardian.twig.php:40
+#: ../scripts/tmpl_cache/themes__le-monde.twig.php:40
+#: ../scripts/tmpl_cache/themes__ruhrnachrichten.twig.php:43
+msgid "Fullscreen"
+msgstr ""
+
+#: ../scripts/tmpl_cache/chart-menu.twig.php:78
+#: ../scripts/tmpl_cache/themes__guardian.twig.php:51
+#: ../scripts/tmpl_cache/themes__ruhrnachrichten.twig.php:82
+msgid "Get the data"
+msgstr ""
+
+#: ../scripts/tmpl_cache/chart-menu.twig.php:80
+msgid "Data"
+msgstr ""
+
+#: ../scripts/tmpl_cache/chart-menu.twig.php:88
+msgid "Share this chart"
+msgstr ""
+
+#: ../scripts/tmpl_cache/chart-menu.twig.php:90
+msgid "Share"
+msgstr ""
+
+#: ../scripts/tmpl_cache/chart-publish.twig.php:196
 msgid ""
 "You have changed the chart after its last publication. To make you changes "
 "visible, please re-publish the chart."
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:204
+#: ../scripts/tmpl_cache/chart-publish.twig.php:200
 msgid "Re-publish chart!"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:212
+#: ../scripts/tmpl_cache/chart-publish.twig.php:208
 msgid "Congrats, you made it! The chart has been published."
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:223
+#: ../scripts/tmpl_cache/chart-publish.twig.php:219
 msgid "Link to this visualisation"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:236
+#: ../scripts/tmpl_cache/chart-publish.twig.php:230
 msgid "Embed into your website"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:240
+#: ../scripts/tmpl_cache/chart-publish.twig.php:234
 msgid "Just copy &amp; paste the following code into your website."
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:245
+#: ../scripts/tmpl_cache/chart-publish.twig.php:239
 msgid "Width"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:249
+#: ../scripts/tmpl_cache/chart-publish.twig.php:243
 msgid "Height"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:266
+#: ../scripts/tmpl_cache/chart-publish.twig.php:257
 msgid "Show in Gallery"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:270
+#: ../scripts/tmpl_cache/chart-publish.twig.php:261
 msgid ""
 "You can show some love to Datawrapper by agreeing to show your visualisation "
 "in our <a href='%GALLERY_URL%'>public gallery</a>"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:272
+#: ../scripts/tmpl_cache/chart-publish.twig.php:263
 msgid "This is absolutely optional."
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:277
+#: ../scripts/tmpl_cache/chart-publish.twig.php:268
 msgid "Yes, show this chart in the gallery"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:286
+#: ../scripts/tmpl_cache/chart-publish.twig.php:277
 msgid "Congrats, you created your first chart!"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:291
+#: ../scripts/tmpl_cache/chart-publish.twig.php:282
 msgid ""
 "Now, to be able to embed the chart, we ask you to create an account. It's "
 "free and all you need is a valid email address. The chart you just created "
 "will be transfered to your new account."
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:296
+#: ../scripts/tmpl_cache/chart-publish.twig.php:287
 #: ../scripts/tmpl_cache/login.twig.php:110
 msgid "Sign Up"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:318
+#: ../scripts/tmpl_cache/chart-publish.twig.php:309
 msgid "Congrats, you created a chart!"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:323
+#: ../scripts/tmpl_cache/chart-publish.twig.php:314
 msgid "The chart is accessible under"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:337
+#: ../scripts/tmpl_cache/chart-publish.twig.php:324
 msgid "or via your <a href='/mycharts'>My Charts</a> page."
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:342
+#: ../scripts/tmpl_cache/chart-publish.twig.php:329
 msgid ""
 "Now, to be able to publish and embed this chart into other websites, you "
 "need to activate the email address you entered during sign up process."
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:347
+#: ../scripts/tmpl_cache/chart-publish.twig.php:334
 msgid ""
 "If you did not get any email within 5 minutes, here's the trouble shooting "
 "guide:"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:352
+#: ../scripts/tmpl_cache/chart-publish.twig.php:339
 msgid "At first, don't worry. Everything you created will wait patiently"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:356
+#: ../scripts/tmpl_cache/chart-publish.twig.php:343
 msgid ""
 "Make sure that your spam filter didn't catch our activation email. They are "
 "sent from"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:363
+#: ../scripts/tmpl_cache/chart-publish.twig.php:349
 msgid ""
 "Of course, you can also let us <a href='#resend'>resend the activation "
 "email</a>."
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:367
+#: ../scripts/tmpl_cache/chart-publish.twig.php:353
 msgid "If that didn't work either, please contact our support"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:431
+#: ../scripts/tmpl_cache/chart-publish.twig.php:409
 msgid "Create another graphic"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:438
+#: ../scripts/tmpl_cache/chart-publish.twig.php:415
 msgid "Duplicate this chart"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:443
+#: ../scripts/tmpl_cache/chart-publish.twig.php:420
 msgid "Return to visualise step"
 msgstr ""
 
@@ -446,150 +470,150 @@ msgstr ""
 msgid "Copy &amp; paste your data here"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-upload.twig.php:144
+#: ../scripts/tmpl_cache/chart-upload.twig.php:143
 msgid "Upload and continue"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-upload.twig.php:157
+#: ../scripts/tmpl_cache/chart-upload.twig.php:156
 msgid "How it works.."
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-upload.twig.php:161
+#: ../scripts/tmpl_cache/chart-upload.twig.php:160
 msgid ""
 "We made getting data into Datawrapper as easy as possible. If you're working "
 "in Excel or OpenOffice, just select your data (including header row/column) "
 "and paste it in the following text field."
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-upload.twig.php:163
+#: ../scripts/tmpl_cache/chart-upload.twig.php:162
 msgid "Learn more about how to upload your data"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-upload.twig.php:169
+#: ../scripts/tmpl_cache/chart-upload.twig.php:168
 msgid "Sample Data"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-upload.twig.php:173
+#: ../scripts/tmpl_cache/chart-upload.twig.php:172
 msgid ""
 "If you simply want to play around with Datawrapper, here's a list of some "
 "example datasets:"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:345
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:341
 msgid "Select visualization and layout"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:350
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:346
 msgid "Visualization:"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:383
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:374
 msgid "Layout:"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:415
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:402
 msgid "Hint"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:417
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:404
 msgid ""
 "In case the visualization doesn't look like you expected, you should try to "
 "<a href='#' id='btn-transpose'><i class='icon-rotate'></i> transpose the "
 "data</a>."
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:425
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:412
 msgid "Tell the story"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:431
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:418
 msgid "Title"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:435
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:422
 msgid "Introduction"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:439
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:426
 msgid "Highlight"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:447
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:434
 msgid "Tell the story in five words"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:455
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:442
 msgid "Guide the audience to read the chart"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:463
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:450
 msgid "Highlight the most import data series:"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:469
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:456
 msgid "select a data series"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:508
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:492
 msgid "Refine the chart"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:522
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:506
 msgid "Publish"
 msgstr ""
 
-#: ../scripts/tmpl_cache/core.twig.php:110
+#: ../scripts/tmpl_cache/core.twig.php:107
 msgid "Open Source Data Visualization"
 msgstr ""
 
-#: ../scripts/tmpl_cache/core.twig.php:134
+#: ../scripts/tmpl_cache/core.twig.php:131
 msgid "Your browser is not supported"
 msgstr ""
 
-#: ../scripts/tmpl_cache/core.twig.php:138
+#: ../scripts/tmpl_cache/core.twig.php:135
 msgid ""
 "You are using a browser that is not supported at the moment. Please use one "
 "of the following browsers instead. Note that this only applies to the chart "
 "editor. The charts itself can be viewed with any major browser."
 msgstr ""
 
-#: ../scripts/tmpl_cache/core.twig.php:164
+#: ../scripts/tmpl_cache/core.twig.php:161
 msgid "Back to top"
 msgstr ""
 
-#: ../scripts/tmpl_cache/core.twig.php:175
+#: ../scripts/tmpl_cache/core.twig.php:171
 msgid ""
 "Datawrapper is an <a href=\"http://github.com/datawrapper/datawrapper\">open "
 "source</a> project by <a href=\"http://abzv.de\">ABZV</a> - a German "
 "training institution for newspaper journalists."
 msgstr ""
 
-#: ../scripts/tmpl_cache/core.twig.php:181
-#: ../scripts/tmpl_cache/home.twig.php:207
+#: ../scripts/tmpl_cache/core.twig.php:177
+#: ../scripts/tmpl_cache/home.twig.php:204
 msgid "Quick Start"
 msgstr ""
 
-#: ../scripts/tmpl_cache/core.twig.php:183
+#: ../scripts/tmpl_cache/core.twig.php:179
 msgid "Tutorial"
 msgstr ""
 
-#: ../scripts/tmpl_cache/core.twig.php:185
+#: ../scripts/tmpl_cache/core.twig.php:181
 msgid "Terms of Use"
 msgstr ""
 
-#: ../scripts/tmpl_cache/core.twig.php:187
+#: ../scripts/tmpl_cache/core.twig.php:183
 msgid "Imprint"
 msgstr ""
 
-#: ../scripts/tmpl_cache/docs.twig.php:87
+#: ../scripts/tmpl_cache/docs.twig.php:83
 msgid "Navigation"
 msgstr ""
 
-#: ../scripts/tmpl_cache/error.twig.php:58
+#: ../scripts/tmpl_cache/error.twig.php:55
 msgid "So, what can I do now?"
 msgstr ""
 
-#: ../scripts/tmpl_cache/error.twig.php:87
+#: ../scripts/tmpl_cache/error.twig.php:82
 msgid "Resturn to the Datawrapper <a href='/'>homepage</a>."
 msgstr ""
 
@@ -609,11 +633,11 @@ msgid ""
 msgstr ""
 
 #: ../scripts/tmpl_cache/gallery.twig.php:71
-#: ../scripts/tmpl_cache/mycharts.twig.php:110
+#: ../scripts/tmpl_cache/mycharts.twig.php:101
 msgid "By Visualisation"
 msgstr ""
 
-#: ../scripts/tmpl_cache/gallery.twig.php:121
+#: ../scripts/tmpl_cache/gallery.twig.php:112
 #: ../scripts/tmpl_cache/mycharts.twig.php:60
 msgid "By Month"
 msgstr ""
@@ -635,73 +659,73 @@ msgid ""
 "                <dd>...</dd>"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home-login.twig.php:35
+#: ../scripts/tmpl_cache/home-login.twig.php:34
 msgid "Try Datawrapper now!"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home-login.twig.php:40
+#: ../scripts/tmpl_cache/home-login.twig.php:39
 msgid ""
 "Looking for the old beta version of Datawrapper?<br />It's still available "
 "at <a href='http://beta.datawrapper.de'>beta.datawrapper.de</a>"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home-login.twig.php:51
+#: ../scripts/tmpl_cache/home-login.twig.php:50
 msgid "Welcome back!"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home-login.twig.php:56
+#: ../scripts/tmpl_cache/home-login.twig.php:55
 msgid "Create New Chart"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home-login.twig.php:58
+#: ../scripts/tmpl_cache/home-login.twig.php:57
 msgid "Wrap again!"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home-login.twig.php:66
+#: ../scripts/tmpl_cache/home-login.twig.php:64
 #: ../scripts/tmpl_cache/mycharts.twig.php:52
-#: ../scripts/tmpl_cache/utils.twig.php:264 ../www/index.php:103
+#: ../scripts/tmpl_cache/utils.twig.php:222 ../www/index.php:103
 msgid "My Charts"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home-login.twig.php:68
+#: ../scripts/tmpl_cache/home-login.twig.php:66
 msgid "See what you created so far."
 msgstr ""
 
-#: ../scripts/tmpl_cache/home-login.twig.php:74 ../www/index.php:138
+#: ../scripts/tmpl_cache/home-login.twig.php:72 ../www/index.php:138
 msgid "Settings"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home-login.twig.php:76
+#: ../scripts/tmpl_cache/home-login.twig.php:74
 msgid "Edit your personal information."
 msgstr ""
 
-#: ../scripts/tmpl_cache/home-login.twig.php:80 ../www/index.php:142
+#: ../scripts/tmpl_cache/home-login.twig.php:78 ../www/index.php:142
 msgid "Logout"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:72
-#: ../scripts/tmpl_cache/home.twig.php:99
+#: ../scripts/tmpl_cache/home.twig.php:70
+#: ../scripts/tmpl_cache/home.twig.php:97
 msgid ""
 "An open source tool helping everyone to create simple, correct and "
 "embeddable charts in minutes."
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:115
+#: ../scripts/tmpl_cache/home.twig.php:113
 msgid "Easy to use"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:119
+#: ../scripts/tmpl_cache/home.twig.php:117
 msgid ""
 "This little tool reduces the time needed to create a correct chart and embed "
 "it into any website from hours to seconds. It makes charting easy, and helps "
 "you avoiding common pitfalls."
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:125
+#: ../scripts/tmpl_cache/home.twig.php:123
 msgid "Full control"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:129
+#: ../scripts/tmpl_cache/home.twig.php:127
 msgid ""
 "Datawrapper is 100&#37; free software. You can use our free hosted service, "
 "or <a href='/docs/howtouse#server'>install it on your own server</a> for "
@@ -709,66 +733,66 @@ msgid ""
 "extend."
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:135
+#: ../scripts/tmpl_cache/home.twig.php:133
 msgid "Customizable"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:139
+#: ../scripts/tmpl_cache/home.twig.php:137
 msgid ""
 "We encourage you to <a href='/docs/howtouse#customize'>customize the charts "
 "layout</a>, fonts and colors to make them integrate nicely in your website. "
 "Strengthen your own brand, not ours."
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:148
+#: ../scripts/tmpl_cache/home.twig.php:146
 msgid "Created with Datawrapper"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:152
+#: ../scripts/tmpl_cache/home.twig.php:150
 msgid ""
 "Need some inspiration? See what others have created <a href='/gallery/'>in "
 "our gallery</a>."
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:200
+#: ../scripts/tmpl_cache/home.twig.php:197
 msgid "Want to learn more?"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:211
+#: ../scripts/tmpl_cache/home.twig.php:208
 msgid "A concise introduction into the functions of Datawrapper."
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:217
+#: ../scripts/tmpl_cache/home.twig.php:214
 msgid "Step by step"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:221
+#: ../scripts/tmpl_cache/home.twig.php:218
 msgid ""
 "This tutorial guides you through the entire charting process, from finding "
 "data to embedding your chart."
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:227
+#: ../scripts/tmpl_cache/home.twig.php:224
 msgid "Motivation"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:231
+#: ../scripts/tmpl_cache/home.twig.php:228
 msgid ""
 "Learn more about <a href='/docs/motivation'>why we created Datawrapper</a>, "
 "and why we chosed this approach."
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:238
+#: ../scripts/tmpl_cache/home.twig.php:235
 msgid "Find it on Github"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:242
+#: ../scripts/tmpl_cache/home.twig.php:239
 msgid ""
 "You can find and fork the Datawrapper source code on Github. It is licensed "
 "under the MIT license."
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:252
+#: ../scripts/tmpl_cache/home.twig.php:249
 msgid ""
 "Looking for the old beta version of Datawrapper? It's still available at <a "
 "href='http://beta.datawrapper.de'>beta.datawrapper.de</a>"
@@ -830,7 +854,7 @@ msgid ""
 msgstr ""
 
 #: ../scripts/tmpl_cache/messages.twig.php:32
-#: ../scripts/tmpl_cache/settings.twig.php:253
+#: ../scripts/tmpl_cache/settings.twig.php:246
 msgid "For security reasons, please provide your current password."
 msgstr ""
 
@@ -845,33 +869,33 @@ msgid "The password and the repeated password must not differ."
 msgstr ""
 
 #: ../scripts/tmpl_cache/modal.twig.php:35
-#: ../scripts/tmpl_cache/vis-options.twig.php:299
+#: ../scripts/tmpl_cache/vis-options.twig.php:268
 msgid "Close"
 msgstr ""
 
-#: ../scripts/tmpl_cache/mycharts.twig.php:160
+#: ../scripts/tmpl_cache/mycharts.twig.php:142
 msgid "By Layout"
 msgstr ""
 
-#: ../scripts/tmpl_cache/mycharts.twig.php:211
+#: ../scripts/tmpl_cache/mycharts.twig.php:184
 msgid ""
 "Want to see what other users created using Datawrapper? Take a look in the "
 "<a href='%GALLERY%'>Gallery</a>!"
 msgstr ""
 
-#: ../scripts/tmpl_cache/mycharts.twig.php:293
+#: ../scripts/tmpl_cache/mycharts.twig.php:252
 msgid "Duplicate"
 msgstr ""
 
-#: ../scripts/tmpl_cache/mycharts.twig.php:320
+#: ../scripts/tmpl_cache/mycharts.twig.php:279
 msgid "No charts here, yet"
 msgstr ""
 
-#: ../scripts/tmpl_cache/mycharts.twig.php:324
+#: ../scripts/tmpl_cache/mycharts.twig.php:283
 msgid "Why not <a href='/chart/create'>create a new chart now</a>?"
 msgstr ""
 
-#: ../scripts/tmpl_cache/mycharts.twig.php:363
+#: ../scripts/tmpl_cache/mycharts.twig.php:322
 msgid ""
 "Do you really want to delete the chart? Note that after deleting this chart "
 "won't be embedable any more."
@@ -883,13 +907,13 @@ msgid "Account Status"
 msgstr ""
 
 #: ../scripts/tmpl_cache/settings.twig.php:40
-#: ../scripts/tmpl_cache/settings.twig.php:139
+#: ../scripts/tmpl_cache/settings.twig.php:136
 msgid "Edit Profile"
 msgstr ""
 
 #: ../scripts/tmpl_cache/settings.twig.php:44
-#: ../scripts/tmpl_cache/settings.twig.php:234
-#: ../scripts/tmpl_cache/settings.twig.php:287
+#: ../scripts/tmpl_cache/settings.twig.php:227
+#: ../scripts/tmpl_cache/settings.twig.php:280
 msgid "Change Password"
 msgstr ""
 
@@ -905,245 +929,224 @@ msgstr ""
 msgid "See how your account is doing."
 msgstr ""
 
-#: ../scripts/tmpl_cache/settings.twig.php:82
+#: ../scripts/tmpl_cache/settings.twig.php:81
 msgid "Activated"
 msgstr ""
 
-#: ../scripts/tmpl_cache/settings.twig.php:86
+#: ../scripts/tmpl_cache/settings.twig.php:85
 msgid ""
 "Your account has been activated, and you are able to create and publish "
 "charts."
 msgstr ""
 
-#: ../scripts/tmpl_cache/settings.twig.php:95
+#: ../scripts/tmpl_cache/settings.twig.php:94
 msgid "Pending"
 msgstr ""
 
-#: ../scripts/tmpl_cache/settings.twig.php:99
+#: ../scripts/tmpl_cache/settings.twig.php:98
 msgid ""
 "Your account is pending because your email address has not been activated, "
 "yet. You can create charts, but they will not be visible for anybody else."
 msgstr ""
 
-#: ../scripts/tmpl_cache/settings.twig.php:104
+#: ../scripts/tmpl_cache/settings.twig.php:103
 msgid "Having trouble with the account activation?"
 msgstr ""
 
-#: ../scripts/tmpl_cache/settings.twig.php:111
+#: ../scripts/tmpl_cache/settings.twig.php:109
 msgid ""
 "Maybe the email has been catched by your email providers spam filter. Please "
 "check the spam folder for the last activation email we sent on <strong>%DATE"
 "%</strong>."
 msgstr ""
 
-#: ../scripts/tmpl_cache/settings.twig.php:116
+#: ../scripts/tmpl_cache/settings.twig.php:114
 msgid "Re-send activation link"
 msgstr ""
 
-#: ../scripts/tmpl_cache/settings.twig.php:122
+#: ../scripts/tmpl_cache/settings.twig.php:119
 msgid ""
 "Or, <a href='mailto:%ADMINMAIL%'>contact us</a> to find other ways to "
 "activate your account."
 msgstr ""
 
-#: ../scripts/tmpl_cache/settings.twig.php:143
+#: ../scripts/tmpl_cache/settings.twig.php:140
 msgid ""
 "Filling out your profile is optional. If you do, you can display these "
 "information below the charts you publish."
 msgstr ""
 
-#: ../scripts/tmpl_cache/settings.twig.php:154
+#: ../scripts/tmpl_cache/settings.twig.php:151
 msgid "E-Mail"
 msgstr ""
 
-#: ../scripts/tmpl_cache/settings.twig.php:164
+#: ../scripts/tmpl_cache/settings.twig.php:160
 msgid "This is the email address which you used to sign up."
 msgstr ""
 
-#: ../scripts/tmpl_cache/settings.twig.php:172
+#: ../scripts/tmpl_cache/settings.twig.php:168
 msgid "Name"
 msgstr ""
 
-#: ../scripts/tmpl_cache/settings.twig.php:186
+#: ../scripts/tmpl_cache/settings.twig.php:181
 msgid "Website"
 msgstr ""
 
-#: ../scripts/tmpl_cache/settings.twig.php:196
+#: ../scripts/tmpl_cache/settings.twig.php:190
 msgid ""
 "Add a website that contains more information about you (e.g. your blog). "
 "Optionally you can display these information below you published charts."
 msgstr ""
 
-#: ../scripts/tmpl_cache/settings.twig.php:203
+#: ../scripts/tmpl_cache/settings.twig.php:197
 msgid "Twitter/Facebook/etc"
 msgstr ""
 
-#: ../scripts/tmpl_cache/settings.twig.php:213
+#: ../scripts/tmpl_cache/settings.twig.php:206
 msgid "Enter the link to your favorite social media profile (e.g. Twitter)."
 msgstr ""
 
-#: ../scripts/tmpl_cache/settings.twig.php:221
+#: ../scripts/tmpl_cache/settings.twig.php:214
 msgid "Save changes"
 msgstr ""
 
-#: ../scripts/tmpl_cache/settings.twig.php:238
+#: ../scripts/tmpl_cache/settings.twig.php:231
 msgid ""
 "For security reasons we ask you to provide your current password. Please "
 "make sure you use a strong password."
 msgstr ""
 
-#: ../scripts/tmpl_cache/settings.twig.php:247
+#: ../scripts/tmpl_cache/settings.twig.php:240
 msgid "Current Password"
 msgstr ""
 
-#: ../scripts/tmpl_cache/settings.twig.php:260
+#: ../scripts/tmpl_cache/settings.twig.php:253
 msgid "New Password"
 msgstr ""
 
-#: ../scripts/tmpl_cache/settings.twig.php:269
+#: ../scripts/tmpl_cache/settings.twig.php:262
 msgid "(repeat)"
 msgstr ""
 
-#: ../scripts/tmpl_cache/settings.twig.php:299
+#: ../scripts/tmpl_cache/settings.twig.php:292
 msgid "Delete Your Account"
 msgstr ""
 
-#: ../scripts/tmpl_cache/settings.twig.php:304
+#: ../scripts/tmpl_cache/settings.twig.php:297
 msgid "Warning"
 msgstr ""
 
-#: ../scripts/tmpl_cache/settings.twig.php:308
+#: ../scripts/tmpl_cache/settings.twig.php:301
 msgid ""
 "This will remove your Datawrapper account. The charts you created so far "
 "will remain visible in places where you embedded them."
 msgstr ""
 
-#: ../scripts/tmpl_cache/settings.twig.php:318
+#: ../scripts/tmpl_cache/settings.twig.php:311
 msgid "Are you sure?"
 msgstr ""
 
-#: ../scripts/tmpl_cache/settings.twig.php:323
+#: ../scripts/tmpl_cache/settings.twig.php:316
 msgid "Yes, I really know what I'm doing"
 msgstr ""
 
-#: ../scripts/tmpl_cache/settings.twig.php:330
+#: ../scripts/tmpl_cache/settings.twig.php:323
 msgid "So then.."
 msgstr ""
 
-#: ../scripts/tmpl_cache/settings.twig.php:335
+#: ../scripts/tmpl_cache/settings.twig.php:328
 msgid "Delete my account!"
 msgstr ""
 
-#: ../scripts/tmpl_cache/settings.twig.php:343
+#: ../scripts/tmpl_cache/settings.twig.php:336
 msgid "Account deletion"
 msgstr ""
 
-#: ../scripts/tmpl_cache/settings.twig.php:347
+#: ../scripts/tmpl_cache/settings.twig.php:340
 msgid ""
 "Think about it one more time. Have you considered all the consequences of "
 "deleting your account?"
 msgstr ""
 
-#: ../scripts/tmpl_cache/settings.twig.php:352
+#: ../scripts/tmpl_cache/settings.twig.php:345
 msgid "You cannot login and logout anymore."
 msgstr ""
 
-#: ../scripts/tmpl_cache/settings.twig.php:356
+#: ../scripts/tmpl_cache/settings.twig.php:349
 msgid "You cannot edit or remove your charts anymore."
 msgstr ""
 
-#: ../scripts/tmpl_cache/settings.twig.php:361
+#: ../scripts/tmpl_cache/settings.twig.php:354
 msgid ""
 "Note that this will only delete your account. Your charts will not be "
 "removed. If you want to remove your charts, please do it manually."
 msgstr ""
 
-#: ../scripts/tmpl_cache/settings.twig.php:366
+#: ../scripts/tmpl_cache/settings.twig.php:359
 msgid "Please enter your password to confirm the deletion request:"
 msgstr ""
 
-#: ../scripts/tmpl_cache/settings.twig.php:376
+#: ../scripts/tmpl_cache/settings.twig.php:369
 msgid "Do you still <b>really</b> want to delete your Datawrapper account?"
 msgstr ""
 
-#: ../scripts/tmpl_cache/settings.twig.php:381
+#: ../scripts/tmpl_cache/settings.twig.php:374
 msgid "No, I changed my mind.."
 msgstr ""
 
-#: ../scripts/tmpl_cache/settings.twig.php:385
+#: ../scripts/tmpl_cache/settings.twig.php:378
 msgid "Yes, delete it!"
 msgstr ""
 
-#: ../scripts/tmpl_cache/settings.twig.php:394
+#: ../scripts/tmpl_cache/settings.twig.php:387
 msgid "Your account has been deleted."
 msgstr ""
 
-#: ../scripts/tmpl_cache/settings.twig.php:398
+#: ../scripts/tmpl_cache/settings.twig.php:391
 msgid "Goodbye!"
 msgstr ""
 
-#: ../scripts/tmpl_cache/settings.twig.php:451
+#: ../scripts/tmpl_cache/settings.twig.php:444
 msgid "This just worked fine. Your profile has been updated."
 msgstr ""
 
-#: ../scripts/tmpl_cache/settings.twig.php:502
+#: ../scripts/tmpl_cache/settings.twig.php:495
 msgid "Congrats! Your password has been changed."
 msgstr ""
 
-#: ../scripts/tmpl_cache/themes__avenir.twig.php:67
+#: ../scripts/tmpl_cache/themes__avenir.twig.php:63
 #: ../scripts/tmpl_cache/themes__berliner-zeitung.twig.php:67
-#: ../scripts/tmpl_cache/themes__default.twig.php:77
+#: ../scripts/tmpl_cache/themes__default.twig.php:64
 #: ../scripts/tmpl_cache/themes__der-standard.twig.php:67
-#: ../scripts/tmpl_cache/themes__deutsche-welle.twig.php:59
-#: ../scripts/tmpl_cache/themes__guardian.twig.php:66
-#: ../scripts/tmpl_cache/themes__le-monde.twig.php:67
-#: ../scripts/tmpl_cache/themes__ruhrnachrichten.twig.php:86
+#: ../scripts/tmpl_cache/themes__deutsche-welle.twig.php:55
+#: ../scripts/tmpl_cache/themes__guardian.twig.php:58
+#: ../scripts/tmpl_cache/themes__le-monde.twig.php:54
+#: ../scripts/tmpl_cache/themes__ruhrnachrichten.twig.php:65
 msgid "Source: "
 msgstr ""
 
-#: ../scripts/tmpl_cache/themes__avenir.twig.php:94
+#: ../scripts/tmpl_cache/themes__avenir.twig.php:84
 #: ../scripts/tmpl_cache/themes__berliner-zeitung.twig.php:94
 #: ../scripts/tmpl_cache/themes__der-standard.twig.php:94
-#: ../scripts/tmpl_cache/themes__deutsche-welle.twig.php:87
-#: ../scripts/tmpl_cache/themes__le-monde.twig.php:94
+#: ../scripts/tmpl_cache/themes__deutsche-welle.twig.php:77
+#: ../scripts/tmpl_cache/themes__le-monde.twig.php:75
 msgid "Download data"
 msgstr ""
 
-#: ../scripts/tmpl_cache/themes__default.twig.php:102
+#: ../scripts/tmpl_cache/themes__default.twig.php:84
 msgid "Created with"
 msgstr ""
 
-#: ../scripts/tmpl_cache/utils.twig.php:247 ../www/index.php:157
+#: ../scripts/tmpl_cache/utils.twig.php:205 ../www/index.php:157
 msgid "Login / Sign Up"
 msgstr ""
 
-#: ../scripts/tmpl_cache/utils.twig.php:253
+#: ../scripts/tmpl_cache/utils.twig.php:211
 msgid "Try it now!"
 msgstr ""
 
-#: ../scripts/tmpl_cache/utils.twig.php:260
+#: ../scripts/tmpl_cache/utils.twig.php:218
 msgid "Create a Chart"
-msgstr ""
-
-#: ../scripts/tmpl_cache/utils.twig.php:283
-#: ../scripts/tmpl_cache/utils.twig.php:285
-msgid "Fullscreen"
-msgstr ""
-
-#: ../scripts/tmpl_cache/utils.twig.php:295
-msgid "Get the data"
-msgstr ""
-
-#: ../scripts/tmpl_cache/utils.twig.php:297
-msgid "Data"
-msgstr ""
-
-#: ../scripts/tmpl_cache/utils.twig.php:307
-msgid "Share this chart"
-msgstr ""
-
-#: ../scripts/tmpl_cache/utils.twig.php:309
-msgid "Share"
 msgstr ""
 
 #: ../scripts/tmpl_cache/vis-options.twig.php:32
@@ -1154,41 +1157,41 @@ msgstr ""
 msgid "or define custom colors"
 msgstr ""
 
-#: ../scripts/tmpl_cache/vis-options.twig.php:57
+#: ../scripts/tmpl_cache/vis-options.twig.php:56
 msgid "Select row to display"
 msgstr ""
 
-#: ../scripts/tmpl_cache/vis-options.twig.php:239
+#: ../scripts/tmpl_cache/vis-options.twig.php:208
 msgid "Customize chart colors"
 msgstr ""
 
-#: ../scripts/tmpl_cache/vis-options.twig.php:243
+#: ../scripts/tmpl_cache/vis-options.twig.php:212
 msgid ""
 "Please use custom colors only if it is absolutely necessary, for instance to "
 "identify political parties. If possible please use the palette colors."
 msgstr ""
 
-#: ../scripts/tmpl_cache/vis-options.twig.php:251
+#: ../scripts/tmpl_cache/vis-options.twig.php:220
 msgid "1. Select data series"
 msgstr ""
 
-#: ../scripts/tmpl_cache/vis-options.twig.php:261
+#: ../scripts/tmpl_cache/vis-options.twig.php:230
 msgid "2. Choose a color for"
 msgstr ""
 
-#: ../scripts/tmpl_cache/vis-options.twig.php:268
+#: ../scripts/tmpl_cache/vis-options.twig.php:237
 msgid "Pick from palette..."
 msgstr ""
 
-#: ../scripts/tmpl_cache/vis-options.twig.php:275
+#: ../scripts/tmpl_cache/vis-options.twig.php:244
 msgid "...or enter a custom color"
 msgstr ""
 
-#: ../scripts/tmpl_cache/vis-options.twig.php:285
+#: ../scripts/tmpl_cache/vis-options.twig.php:254
 msgid "Reset color (use default)"
 msgstr ""
 
-#: ../scripts/tmpl_cache/vis-options.twig.php:295
+#: ../scripts/tmpl_cache/vis-options.twig.php:264
 msgid "Reset all colors"
 msgstr ""
 

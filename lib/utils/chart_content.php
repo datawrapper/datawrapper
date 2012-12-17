@@ -95,6 +95,14 @@ function get_chart_content($chart, $user, $minified = false, $path = '') {
 
     $analyticsMod = get_module('analytics', $path . '../lib/');
 
+    $cfg = $GLOBALS['dw_config'];
+    if (empty($cfg['publish'])) {
+        $chart_url = 'http://' . $cfg['chart_domain'] . '/' . $chart->getID() . '/';
+    } else {
+        $pub = get_module('publish',  $path . '../lib/');
+        $chart_url = $pub->getUrl($chart);
+    }
+
     $page = array(
         'chartData' => $chart->loadData(),
         'chart' => $chart,
@@ -110,7 +118,9 @@ function get_chart_content($chart, $user, $minified = false, $path = '') {
         'DW_DOMAIN' => 'http://' . $GLOBALS['dw_config']['domain'] . '/',
         'DW_CHART_DATA' => 'http://' . $GLOBALS['dw_config']['domain'] . '/chart/' . $chart->getID() . '/data',
         'ASSET_PATH' => $minified ? '' : '/static/themes/'.$the_theme['id'].'/',
-        'trackingCode' => !empty($analyticsMod) ? $analyticsMod->getTrackingCode() : ''
+        'trackingCode' => !empty($analyticsMod) ? $analyticsMod->getTrackingCode() : '',
+        'chartUrl' => $chart_url,
+        'chartUrlFs' => strpos($chart_url, '.html') > 0 ? str_replace('index.html', 'fs.html', $chart_url) : $chart_url . '?fs=1'
     );
 
     if (isset($GLOBALS['dw_config']['piwik'])) {

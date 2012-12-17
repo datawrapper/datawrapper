@@ -9,6 +9,7 @@
         {% endif %}
 
     {% endif %}
+    <a href="{{ chartUrlFs }}" target="_blank" class="fs-btn top-right" title="{% trans "Fullscreen" %}" data-toggle="fullscreen"></a>
 </div>
 
 <div id="chart"></div>
@@ -16,19 +17,14 @@
 {% if not plain %}
 <div id="footer">
     <div class="footer-left">
-         {% if source %}
-        {% trans "Source: " %}
-        {% if sourceURL %}<a target="_blank" href="{{ sourceURL }}">{% endif %}{{ source }}{% if sourceURL %}</a>{% endif %}
+        {% if source %}
+            {% trans "Source: " %}
+            {% if sourceURL %}<a target="_blank" href="{{ sourceURL }}">{% endif %}{{ source }}{% if sourceURL %}</a>{% endif %}
         {% endif %}
-
     </div>
-    <div class="logo">
+    <div class="footer-right">
         {% trans "Created with" %} <a href="http://{{ DW_DOMAIN }}" class="lgo">Datawrapper</a>
     </div>
-
-
-        {% use "utils.twig" %}
-        {{ block('chartMenu') }}
 </div>
 
 {% else %}

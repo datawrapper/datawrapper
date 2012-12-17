@@ -3,11 +3,10 @@
 <div id="header">
     <h1>{{ title }}</h1>
 
-
     {% if intro %}
     <p>{{ intro|purify|raw }}</p>
     {% endif %}
-
+    <a href="{{ chartUrlFs }}" target="_blank" class="fs-btn top-right" title="{% trans "Fullscreen" %}" data-toggle="fullscreen"></a>
 </div>
 
 
@@ -26,6 +25,4 @@
         <a href="http://lemonde.fr"><img src="{{ ASSET_PATH }}lemonde-logo-small.png"/></a>
     </div>
 
-    {% use 'utils.twig' %}
-    {{ block('chartMenu') }}
 </div>
