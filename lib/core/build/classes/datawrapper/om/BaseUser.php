@@ -116,6 +116,11 @@ abstract class BaseUser extends BaseObject  implements Persistent
 	protected $collActions;
 
 	/**
+	 * @var        array Job[] Collection to store aggregation of Job objects.
+	 */
+	protected $collJobs;
+
+	/**
 	 * Flag to prevent endless save loop, if this object is referenced
 	 * by another object which falls in this transaction.
 	 * @var        boolean
@@ -140,6 +145,12 @@ abstract class BaseUser extends BaseObject  implements Persistent
 	 * @var		array
 	 */
 	protected $actionsScheduledForDeletion = null;
+
+	/**
+	 * An array of objects scheduled for deletion.
+	 * @var		array
+	 */
+	protected $jobsScheduledForDeletion = null;
 
 	/**
 	 * Applies default values to this object.
@@ -703,6 +714,8 @@ abstract class BaseUser extends BaseObject  implements Persistent
 
 			$this->collActions = null;
 
+			$this->collJobs = null;
+
 		} // if (deep)
 	}
 
@@ -852,6 +865,23 @@ abstract class BaseUser extends BaseObject  implements Persistent
 
 			if ($this->collActions !== null) {
 				foreach ($this->collActions as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
+			if ($this->jobsScheduledForDeletion !== null) {
+				if (!$this->jobsScheduledForDeletion->isEmpty()) {
+					JobQuery::create()
+						->filterByPrimaryKeys($this->jobsScheduledForDeletion->getPrimaryKeys(false))
+						->delete($con);
+					$this->jobsScheduledForDeletion = null;
+				}
+			}
+
+			if ($this->collJobs !== null) {
+				foreach ($this->collJobs as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
 						$affectedRows += $referrerFK->save($con);
 					}
@@ -1079,6 +1109,14 @@ abstract class BaseUser extends BaseObject  implements Persistent
 					}
 				}
 
+				if ($this->collJobs !== null) {
+					foreach ($this->collJobs as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
 
 			$this->alreadyInValidation = false;
 		}
@@ -1196,6 +1234,9 @@ abstract class BaseUser extends BaseObject  implements Persistent
 			}
 			if (null !== $this->collActions) {
 				$result['Actions'] = $this->collActions->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+			}
+			if (null !== $this->collJobs) {
+				$result['Jobs'] = $this->collJobs->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
 			}
 		}
 		return $result;
@@ -1420,6 +1461,12 @@ abstract class BaseUser extends BaseObject  implements Persistent
 				}
 			}
 
+			foreach ($this->getJobs() as $relObj) {
+				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+					$copyObj->addJob($relObj->copy($deepCopy));
+				}
+			}
+
 			//unflag object copy
 			$this->startCopy = false;
 		} // if ($deepCopy)
@@ -1484,6 +1531,9 @@ abstract class BaseUser extends BaseObject  implements Persistent
 		}
 		if ('Action' == $relationName) {
 			return $this->initActions();
+		}
+		if ('Job' == $relationName) {
+			return $this->initJobs();
 		}
 	}
 
@@ -1784,6 +1834,179 @@ abstract class BaseUser extends BaseObject  implements Persistent
 	}
 
 	/**
+	 * Clears out the collJobs collection
+	 *
+	 * This does not modify the database; however, it will remove any associated objects, causing
+	 * them to be refetched by subsequent calls to accessor method.
+	 *
+	 * @return     void
+	 * @see        addJobs()
+	 */
+	public function clearJobs()
+	{
+		$this->collJobs = null; // important to set this to NULL since that means it is uninitialized
+	}
+
+	/**
+	 * Initializes the collJobs collection.
+	 *
+	 * By default this just sets the collJobs collection to an empty array (like clearcollJobs());
+	 * however, you may wish to override this method in your stub class to provide setting appropriate
+	 * to your application -- for example, setting the initial array to the values stored in database.
+	 *
+	 * @param      boolean $overrideExisting If set to true, the method call initializes
+	 *                                        the collection even if it is not empty
+	 *
+	 * @return     void
+	 */
+	public function initJobs($overrideExisting = true)
+	{
+		if (null !== $this->collJobs && !$overrideExisting) {
+			return;
+		}
+		$this->collJobs = new PropelObjectCollection();
+		$this->collJobs->setModel('Job');
+	}
+
+	/**
+	 * Gets an array of Job objects which contain a foreign key that references this object.
+	 *
+	 * If the $criteria is not null, it is used to always fetch the results from the database.
+	 * Otherwise the results are fetched from the database the first time, then cached.
+	 * Next time the same method is called without $criteria, the cached collection is returned.
+	 * If this User is new, it will return
+	 * an empty collection or the current collection; the criteria is ignored on a new object.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @return     PropelCollection|array Job[] List of Job objects
+	 * @throws     PropelException
+	 */
+	public function getJobs($criteria = null, PropelPDO $con = null)
+	{
+		if(null === $this->collJobs || null !== $criteria) {
+			if ($this->isNew() && null === $this->collJobs) {
+				// return empty collection
+				$this->initJobs();
+			} else {
+				$collJobs = JobQuery::create(null, $criteria)
+					->filterByUser($this)
+					->find($con);
+				if (null !== $criteria) {
+					return $collJobs;
+				}
+				$this->collJobs = $collJobs;
+			}
+		}
+		return $this->collJobs;
+	}
+
+	/**
+	 * Sets a collection of Job objects related by a one-to-many relationship
+	 * to the current object.
+	 * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+	 * and new objects from the given Propel collection.
+	 *
+	 * @param      PropelCollection $jobs A Propel collection.
+	 * @param      PropelPDO $con Optional connection object
+	 */
+	public function setJobs(PropelCollection $jobs, PropelPDO $con = null)
+	{
+		$this->jobsScheduledForDeletion = $this->getJobs(new Criteria(), $con)->diff($jobs);
+
+		foreach ($jobs as $job) {
+			// Fix issue with collection modified by reference
+			if ($job->isNew()) {
+				$job->setUser($this);
+			}
+			$this->addJob($job);
+		}
+
+		$this->collJobs = $jobs;
+	}
+
+	/**
+	 * Returns the number of related Job objects.
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct
+	 * @param      PropelPDO $con
+	 * @return     int Count of related Job objects.
+	 * @throws     PropelException
+	 */
+	public function countJobs(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+	{
+		if(null === $this->collJobs || null !== $criteria) {
+			if ($this->isNew() && null === $this->collJobs) {
+				return 0;
+			} else {
+				$query = JobQuery::create(null, $criteria);
+				if($distinct) {
+					$query->distinct();
+				}
+				return $query
+					->filterByUser($this)
+					->count($con);
+			}
+		} else {
+			return count($this->collJobs);
+		}
+	}
+
+	/**
+	 * Method called to associate a Job object to this object
+	 * through the Job foreign key attribute.
+	 *
+	 * @param      Job $l Job
+	 * @return     User The current object (for fluent API support)
+	 */
+	public function addJob(Job $l)
+	{
+		if ($this->collJobs === null) {
+			$this->initJobs();
+		}
+		if (!$this->collJobs->contains($l)) { // only add it if the **same** object is not already associated
+			$this->doAddJob($l);
+		}
+
+		return $this;
+	}
+
+	/**
+	 * @param	Job $job The job object to add.
+	 */
+	protected function doAddJob($job)
+	{
+		$this->collJobs[]= $job;
+		$job->setUser($this);
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this User is new, it will return
+	 * an empty collection; or if this User has previously
+	 * been saved, it will retrieve related Jobs from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in User.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+	 * @return     PropelCollection|array Job[] List of Job objects
+	 */
+	public function getJobsJoinChart($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		$query = JobQuery::create(null, $criteria);
+		$query->joinWith('Chart', $join_behavior);
+
+		return $this->getJobs($query, $con);
+	}
+
+	/**
 	 * Clears the current object and sets all attributes to their default values
 	 */
 	public function clear()
@@ -1831,6 +2054,11 @@ abstract class BaseUser extends BaseObject  implements Persistent
 					$o->clearAllReferences($deep);
 				}
 			}
+			if ($this->collJobs) {
+				foreach ($this->collJobs as $o) {
+					$o->clearAllReferences($deep);
+				}
+			}
 		} // if ($deep)
 
 		if ($this->collCharts instanceof PropelCollection) {
@@ -1841,6 +2069,10 @@ abstract class BaseUser extends BaseObject  implements Persistent
 			$this->collActions->clearIterator();
 		}
 		$this->collActions = null;
+		if ($this->collJobs instanceof PropelCollection) {
+			$this->collJobs->clearIterator();
+		}
+		$this->collJobs = null;
 	}
 
 	/**

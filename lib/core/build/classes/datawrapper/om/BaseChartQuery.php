@@ -46,6 +46,10 @@
  * @method     ChartQuery rightJoinUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the User relation
  * @method     ChartQuery innerJoinUser($relationAlias = null) Adds a INNER JOIN clause to the query using the User relation
  *
+ * @method     ChartQuery leftJoinJob($relationAlias = null) Adds a LEFT JOIN clause to the query using the Job relation
+ * @method     ChartQuery rightJoinJob($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Job relation
+ * @method     ChartQuery innerJoinJob($relationAlias = null) Adds a INNER JOIN clause to the query using the Job relation
+ *
  * @method     Chart findOne(PropelPDO $con = null) Return the first Chart matching the query
  * @method     Chart findOneOrCreate(PropelPDO $con = null) Return the first Chart matching the query, or a new Chart object populated from the query conditions when no match is found
  *
@@ -823,6 +827,79 @@ abstract class BaseChartQuery extends ModelCriteria
 		return $this
 			->joinUser($relationAlias, $joinType)
 			->useQuery($relationAlias ? $relationAlias : 'User', 'UserQuery');
+	}
+
+	/**
+	 * Filter the query by a related Job object
+	 *
+	 * @param     Job $job  the related object to use as filter
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    ChartQuery The current query, for fluid interface
+	 */
+	public function filterByJob($job, $comparison = null)
+	{
+		if ($job instanceof Job) {
+			return $this
+				->addUsingAlias(ChartPeer::ID, $job->getChartId(), $comparison);
+		} elseif ($job instanceof PropelCollection) {
+			return $this
+				->useJobQuery()
+				->filterByPrimaryKeys($job->getPrimaryKeys())
+				->endUse();
+		} else {
+			throw new PropelException('filterByJob() only accepts arguments of type Job or PropelCollection');
+		}
+	}
+
+	/**
+	 * Adds a JOIN clause to the query using the Job relation
+	 *
+	 * @param     string $relationAlias optional alias for the relation
+	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+	 *
+	 * @return    ChartQuery The current query, for fluid interface
+	 */
+	public function joinJob($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+	{
+		$tableMap = $this->getTableMap();
+		$relationMap = $tableMap->getRelation('Job');
+
+		// create a ModelJoin object for this join
+		$join = new ModelJoin();
+		$join->setJoinType($joinType);
+		$join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+		if ($previousJoin = $this->getPreviousJoin()) {
+			$join->setPreviousJoin($previousJoin);
+		}
+
+		// add the ModelJoin to the current object
+		if($relationAlias) {
+			$this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+			$this->addJoinObject($join, $relationAlias);
+		} else {
+			$this->addJoinObject($join, 'Job');
+		}
+
+		return $this;
+	}
+
+	/**
+	 * Use the Job relation Job object
+	 *
+	 * @see       useQuery()
+	 *
+	 * @param     string $relationAlias optional alias for the relation,
+	 *                                   to be used as main alias in the secondary query
+	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+	 *
+	 * @return    JobQuery A secondary query class using the current class as primary query
+	 */
+	public function useJobQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+	{
+		return $this
+			->joinJob($relationAlias, $joinType)
+			->useQuery($relationAlias ? $relationAlias : 'Job', 'JobQuery');
 	}
 
 	/**

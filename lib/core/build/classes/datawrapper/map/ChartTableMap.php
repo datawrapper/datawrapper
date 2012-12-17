@@ -62,6 +62,7 @@ class ChartTableMap extends TableMap
 	public function buildRelations()
 	{
 		$this->addRelation('User', 'User', RelationMap::MANY_TO_ONE, array('author_id' => 'id', ), null, null);
+		$this->addRelation('Job', 'Job', RelationMap::ONE_TO_MANY, array('id' => 'chart_id', ), null, null, 'Jobs');
 	} // buildRelations()
 
 } // ChartTableMap
