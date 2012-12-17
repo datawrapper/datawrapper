@@ -34,7 +34,7 @@ $(function() {
         iframe.width(w);
         iframe.height(h);
         iframe.css({ 'margin-left': Math.max(0, (ow - w) * 0.5) + 'px' });
-        iframe.css({ 'margin-top': Math.max(0, (oh - h) * 0.5) + 'px' });
+        iframe.css({ 'margin-top':  '10px' });
     }
 
     $('a.duplicate').click(function(e) {
@@ -139,6 +139,10 @@ $(function() {
      -o-transition-timing-function: cubic-bezier(0.190, 1.000, 0.220, 1.000);
         transition-timing-function: cubic-bezier(0.190, 1.000, 0.220, 1.000); /* easeOutExpo */
 }
+
+p.lead {
+    margin-top: 30px;
+}
 </style>
 
 <div class="dw-create-publish">
@@ -147,32 +151,30 @@ $(function() {
 
             {% if user.isAbleToPublish %}
 
-            {% if chart.publishedAt < chart.lastModifiedAt %}
-                <div class="alert alert-warning">
-                    <p>{% trans "You have changed the chart after its last publication. To make you changes visible, please re-publish the chart." %}</p>
-                    <a href="?republish=1" class="btn"><i class="icon-refresh"></i> {% trans "Re-publish chart!" %}</a>
-                </div>
-
-            {% elseif chart.lastEditStep == 3 %}
-                <p class="alert alert-success">{% trans "Congrats, you made it! The chart has been published." %}</p>
-            {% else %}
-            {% endif %}
-
-            <h3>{% trans "Link to this visualisation" %}</h3>
+            <p class="lead" style="margin-top:0">{% trans "Link to this visualisation" %}</p>
             <p><a href="{{ iframe }}">{{ iframe }}</a></p>
 
-            <h3>{% trans "Embed into your website" %}</h3>
+
+            <p class="lead">{% trans "Embed into your website" %}</p>
             <p>{% trans "Just copy &amp; paste the following code into your website." %}</p>
             <form class="form-inline">
                 <label>{% trans "Width" %}: <input type="text" id="embed-width" class="input-small" style="width:4ex" value="600" /> px</label>&nbsp;&nbsp;
                 <label>{% trans "Height" %}: <input type="text" id="embed-height" class="input-small" style="width:4ex" value="400" /> px</label>
 
-            <textarea id="iframe-code" class="span4" rows="5"><iframe src="{{ iframe }}" frameborder="0" allowtransparency="true" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen width="{{ chart.metadata.publish['embed-width'] }}" height="{{ chart.metadata.publish['embed-height'] }}"></iframe></textarea>
+            <textarea style="font-size: 13px;padding:5px" id="iframe-code" class="well span4" rows="5"><iframe src="{{ iframe }}" frameborder="0" allowtransparency="true" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen width="{{ chart.metadata.publish['embed-width'] }}" height="{{ chart.metadata.publish['embed-height'] }}"></iframe></textarea>
 
-             <h3>{% trans "Show in Gallery" %}</h3>
-             <p>{{ "You can show some love to Datawrapper by agreeing to show your visualisation in our <a href='%GALLERY_URL%'>public gallery</a>" | trans | replace({ '%GALLERY_URL%': '/gallery/' }) | raw }}. {% trans "This is absolutely optional." %}</p>
 
-             <label class="checkbox"><input type="checkbox" id="make-public" /> {% trans "Yes, show this chart in the gallery" %}</label>
+            <p class="lead">{%trans "Other things to do" %}</p>
+
+            <p><a ><i class="icon-print"></i>&nbsp;&nbsp;{% trans "Export to PDF/PNG for printing" %}</a></p>
+            <p><a ><i class="icon-plus"></i>&nbsp;&nbsp;{% trans "Duplicate this chart" %}</a></p>
+
+            <p class="lead">{% trans "Show in Gallery" %}</p>
+
+            <p>{{ "You can show some love to Datawrapper by agreeing to show your visualisation in our <a href='%GALLERY_URL%'>public gallery</a>" | trans | replace({ '%GALLERY_URL%': '/gallery/' }) | raw }}. {% trans "This is absolutely optional." %}</p>
+
+            <label class="checkbox"><input type="checkbox" id="make-public" /> {% trans "Yes, show this chart in the gallery" %}</label>
+
 
             {% elseif user.role == 'guest' %}
 
@@ -217,14 +219,26 @@ $(function() {
 
             {% endif %}
         </div>
-        <div class="span8">
+        <div class="span7">
             {% if user.isAbleToPublish %}
+
+            {% if chart.publishedAt < chart.lastModifiedAt %}
+                <div class="alert alert-warning">
+                    <p>{% trans "You have changed the chart after its last publication. To make you changes visible, please re-publish the chart." %}</p>
+                    <a href="?republish=1" class="btn"><i class="icon-refresh"></i> {% trans "Re-publish chart!" %}</a>
+                </div>
+
+            {% elseif chart.lastEditStep == 3 %}
+                <p class="alert alert-success">{% trans "Congrats, you made it! The chart has been published." %}</p>
+            {% else %}
+            {% endif %}
 
             <iframe src="{{ iframe }}" id="iframe-vis" style="width:{{ chart.metadata.publish['embed-width'] }}px;height:{{ chart.metadata.publish['embed-height'] }}px" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>
 
             {% else %}
 
             <iframe src="/chart/{{ chart.id }}/preview" id="iframe-vis" style="width:{{ chart.metadata.publish['embed-width'] }}px;height:{{ chart.metadata.publish['embed-height'] }}px" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>
+
 
             {% endif %}
         </div>
@@ -234,7 +248,7 @@ $(function() {
         <div class="span12">
             <div class="form-actions">
                 <a class="submit pull-right btn" href="/chart/create"><i class="icon-pencil"></i> {% trans "Create another graphic" %}</a>
-                {% if user.isAbleToPublish %}<a class="submit duplicate pull-right btn" style="margin-right:10px"><i class="icon-plus"></i> {% trans "Duplicate this chart" %}</a>{% endif %}
+                
                 <a class="submit btn" href="visualize"><i class="icon-chevron-left"></i> {% trans "Return to visualise step" %}</a>
             </div>
         </div>
