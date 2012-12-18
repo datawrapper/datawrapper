@@ -7,10 +7,9 @@ if (phantom.args.length < 2 || phantom.args.length > 5) {
     console.log('Usage: rasterize.js URL filename width height');
     phantom.exit();
 } else {
-
     output = phantom.args[1];
     format = output.substr(-3);
-    address = 'http://datawrapper/chart/' + phantom.args[0] + (format == 'pdf' ? '?padding=10' : '');
+    address = 'http://dev.datawrapper.de/chart/' + phantom.args[0] + (format == 'pdf' ? '?padding=10' : '');
     width = phantom.args.length > 2 ? Number(phantom.args[2]) : 600;
     height = phantom.args.length > 3 ? Number(phantom.args[3]) : 400;
 
