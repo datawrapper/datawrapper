@@ -106,9 +106,9 @@ html .navbar li {
   line-height: 26px;
 }
 
-html .navbar li > a{
-  padding-top: 14px;
-  padding-bottom: 11px;
+html .navbar .nav > li > a {
+  padding-top: 13px;
+  padding-bottom: 12px;
 }
 
 html h2 {
