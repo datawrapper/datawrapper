@@ -23,13 +23,13 @@ abstract class BaseJobPeer {
 	const TM_CLASS = 'JobTableMap';
 
 	/** The total number of columns. */
-	const NUM_COLUMNS = 7;
+	const NUM_COLUMNS = 8;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
 
 	/** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-	const NUM_HYDRATE_COLUMNS = 7;
+	const NUM_HYDRATE_COLUMNS = 8;
 
 	/** the column name for the ID field */
 	const ID = 'job.ID';
@@ -39,6 +39,9 @@ abstract class BaseJobPeer {
 
 	/** the column name for the CHART_ID field */
 	const CHART_ID = 'job.CHART_ID';
+
+	/** the column name for the STATUS field */
+	const STATUS = 'job.STATUS';
 
 	/** the column name for the CREATED_AT field */
 	const CREATED_AT = 'job.CREATED_AT';
@@ -51,6 +54,10 @@ abstract class BaseJobPeer {
 
 	/** the column name for the PARAMETER field */
 	const PARAMETER = 'job.PARAMETER';
+
+	/** The enumerated values for the STATUS field */
+	const STATUS_QUEUED = 'queued';
+	const STATUS_DONE = 'done';
 
 	/** The default string format for model objects of the related table **/
 	const DEFAULT_STRING_FORMAT = 'YAML';
@@ -71,12 +78,12 @@ abstract class BaseJobPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	protected static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'UserId', 'ChartId', 'CreatedAt', 'DoneAt', 'Type', 'Parameter', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'userId', 'chartId', 'createdAt', 'doneAt', 'type', 'parameter', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, self::USER_ID, self::CHART_ID, self::CREATED_AT, self::DONE_AT, self::TYPE, self::PARAMETER, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'USER_ID', 'CHART_ID', 'CREATED_AT', 'DONE_AT', 'TYPE', 'PARAMETER', ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'user_id', 'chart_id', 'created_at', 'done_at', 'type', 'parameter', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'UserId', 'ChartId', 'Status', 'CreatedAt', 'DoneAt', 'Type', 'Parameter', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'userId', 'chartId', 'status', 'createdAt', 'doneAt', 'type', 'parameter', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::USER_ID, self::CHART_ID, self::STATUS, self::CREATED_AT, self::DONE_AT, self::TYPE, self::PARAMETER, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'USER_ID', 'CHART_ID', 'STATUS', 'CREATED_AT', 'DONE_AT', 'TYPE', 'PARAMETER', ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'user_id', 'chart_id', 'status', 'created_at', 'done_at', 'type', 'parameter', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
 	);
 
 	/**
@@ -86,12 +93,20 @@ abstract class BaseJobPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	protected static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'UserId' => 1, 'ChartId' => 2, 'CreatedAt' => 3, 'DoneAt' => 4, 'Type' => 5, 'Parameter' => 6, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'userId' => 1, 'chartId' => 2, 'createdAt' => 3, 'doneAt' => 4, 'type' => 5, 'parameter' => 6, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::USER_ID => 1, self::CHART_ID => 2, self::CREATED_AT => 3, self::DONE_AT => 4, self::TYPE => 5, self::PARAMETER => 6, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'USER_ID' => 1, 'CHART_ID' => 2, 'CREATED_AT' => 3, 'DONE_AT' => 4, 'TYPE' => 5, 'PARAMETER' => 6, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'user_id' => 1, 'chart_id' => 2, 'created_at' => 3, 'done_at' => 4, 'type' => 5, 'parameter' => 6, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'UserId' => 1, 'ChartId' => 2, 'Status' => 3, 'CreatedAt' => 4, 'DoneAt' => 5, 'Type' => 6, 'Parameter' => 7, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'userId' => 1, 'chartId' => 2, 'status' => 3, 'createdAt' => 4, 'doneAt' => 5, 'type' => 6, 'parameter' => 7, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::USER_ID => 1, self::CHART_ID => 2, self::STATUS => 3, self::CREATED_AT => 4, self::DONE_AT => 5, self::TYPE => 6, self::PARAMETER => 7, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'USER_ID' => 1, 'CHART_ID' => 2, 'STATUS' => 3, 'CREATED_AT' => 4, 'DONE_AT' => 5, 'TYPE' => 6, 'PARAMETER' => 7, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'user_id' => 1, 'chart_id' => 2, 'status' => 3, 'created_at' => 4, 'done_at' => 5, 'type' => 6, 'parameter' => 7, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
+	);
+
+	/** The enumerated values for this table */
+	protected static $enumValueSets = array(
+		self::STATUS => array(
+			JobPeer::STATUS_QUEUED,
+			JobPeer::STATUS_DONE,
+		),
 	);
 
 	/**
@@ -132,6 +147,25 @@ abstract class BaseJobPeer {
 	}
 
 	/**
+	 * Gets the list of values for all ENUM columns
+	 * @return array
+	 */
+	public static function getValueSets()
+	{
+	  return JobPeer::$enumValueSets;
+	}
+
+	/**
+	 * Gets the list of values for an ENUM column
+	 * @return array list of possible values for the column
+	 */
+	public static function getValueSet($colname)
+	{
+		$valueSets = self::getValueSets();
+		return $valueSets[$colname];
+	}
+
+	/**
 	 * Convenience method which changes table.column to alias.column.
 	 *
 	 * Using this method you can maintain SQL abstraction while using column aliases.
@@ -166,6 +200,7 @@ abstract class BaseJobPeer {
 			$criteria->addSelectColumn(JobPeer::ID);
 			$criteria->addSelectColumn(JobPeer::USER_ID);
 			$criteria->addSelectColumn(JobPeer::CHART_ID);
+			$criteria->addSelectColumn(JobPeer::STATUS);
 			$criteria->addSelectColumn(JobPeer::CREATED_AT);
 			$criteria->addSelectColumn(JobPeer::DONE_AT);
 			$criteria->addSelectColumn(JobPeer::TYPE);
@@ -174,6 +209,7 @@ abstract class BaseJobPeer {
 			$criteria->addSelectColumn($alias . '.ID');
 			$criteria->addSelectColumn($alias . '.USER_ID');
 			$criteria->addSelectColumn($alias . '.CHART_ID');
+			$criteria->addSelectColumn($alias . '.STATUS');
 			$criteria->addSelectColumn($alias . '.CREATED_AT');
 			$criteria->addSelectColumn($alias . '.DONE_AT');
 			$criteria->addSelectColumn($alias . '.TYPE');

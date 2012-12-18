@@ -41,6 +41,11 @@ class JobTableMap extends TableMap
 		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
 		$this->addForeignKey('USER_ID', 'UserId', 'INTEGER', 'user', 'ID', true, null, null);
 		$this->addForeignKey('CHART_ID', 'ChartId', 'VARCHAR', 'chart', 'ID', true, 5, null);
+		$this->addColumn('STATUS', 'Status', 'ENUM', true, null, 'queued');
+		$this->getColumn('STATUS', false)->setValueSet(array (
+  0 => 'queued',
+  1 => 'done',
+));
 		$this->addColumn('CREATED_AT', 'CreatedAt', 'TIMESTAMP', true, null, null);
 		$this->addColumn('DONE_AT', 'DoneAt', 'TIMESTAMP', true, null, null);
 		$this->addColumn('TYPE', 'Type', 'VARCHAR', true, 32, null);

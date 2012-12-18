@@ -49,6 +49,13 @@ abstract class BaseJob extends BaseObject  implements Persistent
 	protected $chart_id;
 
 	/**
+	 * The value for the status field.
+	 * Note: this column has a database default value of: 0
+	 * @var        int
+	 */
+	protected $status;
+
+	/**
 	 * The value for the created_at field.
 	 * @var        string
 	 */
@@ -97,6 +104,27 @@ abstract class BaseJob extends BaseObject  implements Persistent
 	protected $alreadyInValidation = false;
 
 	/**
+	 * Applies default values to this object.
+	 * This method should be called from the object's constructor (or
+	 * equivalent initialization method).
+	 * @see        __construct()
+	 */
+	public function applyDefaultValues()
+	{
+		$this->status = 0;
+	}
+
+	/**
+	 * Initializes internal state of BaseJob object.
+	 * @see        applyDefaults()
+	 */
+	public function __construct()
+	{
+		parent::__construct();
+		$this->applyDefaultValues();
+	}
+
+	/**
 	 * Get the [id] column value.
 	 * 
 	 * @return     int
@@ -124,6 +152,23 @@ abstract class BaseJob extends BaseObject  implements Persistent
 	public function getChartId()
 	{
 		return $this->chart_id;
+	}
+
+	/**
+	 * Get the [status] column value.
+	 * 
+	 * @return     int
+	 */
+	public function getStatus()
+	{
+		if (null === $this->status) {
+			return null;
+		}
+		$valueSet = JobPeer::getValueSet(JobPeer::STATUS);
+		if (!isset($valueSet[$this->status])) {
+			throw new PropelException('Unknown stored enum key: ' . $this->status);
+		}
+		return $valueSet[$this->status];
 	}
 
 	/**
@@ -291,6 +336,30 @@ abstract class BaseJob extends BaseObject  implements Persistent
 	} // setChartId()
 
 	/**
+	 * Set the value of [status] column.
+	 * 
+	 * @param      int $v new value
+	 * @return     Job The current object (for fluent API support)
+	 */
+	public function setStatus($v)
+	{
+		if ($v !== null) {
+			$valueSet = JobPeer::getValueSet(JobPeer::STATUS);
+			if (!in_array($v, $valueSet)) {
+				throw new PropelException(sprintf('Value "%s" is not accepted in this enumerated column', $v));
+			}
+			$v = array_search($v, $valueSet);
+		}
+
+		if ($this->status !== $v) {
+			$this->status = $v;
+			$this->modifiedColumns[] = JobPeer::STATUS;
+		}
+
+		return $this;
+	} // setStatus()
+
+	/**
 	 * Sets the value of [created_at] column to a normalized version of the date/time value specified.
 	 * 
 	 * @param      mixed $v string, integer (timestamp), or DateTime value.
@@ -384,6 +453,10 @@ abstract class BaseJob extends BaseObject  implements Persistent
 	 */
 	public function hasOnlyDefaultValues()
 	{
+			if ($this->status !== 0) {
+				return false;
+			}
+
 		// otherwise, everything was equal, so return TRUE
 		return true;
 	} // hasOnlyDefaultValues()
@@ -409,10 +482,11 @@ abstract class BaseJob extends BaseObject  implements Persistent
 			$this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
 			$this->user_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
 			$this->chart_id = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
-			$this->created_at = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
-			$this->done_at = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
-			$this->type = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-			$this->parameter = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+			$this->status = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
+			$this->created_at = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+			$this->done_at = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+			$this->type = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+			$this->parameter = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -421,7 +495,7 @@ abstract class BaseJob extends BaseObject  implements Persistent
 				$this->ensureConsistency();
 			}
 
-			return $startcol + 7; // 7 = JobPeer::NUM_HYDRATE_COLUMNS.
+			return $startcol + 8; // 8 = JobPeer::NUM_HYDRATE_COLUMNS.
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating Job object", $e);
@@ -665,6 +739,9 @@ abstract class BaseJob extends BaseObject  implements Persistent
 		if ($this->isColumnModified(JobPeer::CHART_ID)) {
 			$modifiedColumns[':p' . $index++]  = '`CHART_ID`';
 		}
+		if ($this->isColumnModified(JobPeer::STATUS)) {
+			$modifiedColumns[':p' . $index++]  = '`STATUS`';
+		}
 		if ($this->isColumnModified(JobPeer::CREATED_AT)) {
 			$modifiedColumns[':p' . $index++]  = '`CREATED_AT`';
 		}
@@ -696,6 +773,9 @@ abstract class BaseJob extends BaseObject  implements Persistent
 						break;
 					case '`CHART_ID`':
 						$stmt->bindValue($identifier, $this->chart_id, PDO::PARAM_STR);
+						break;
+					case '`STATUS`':
+						$stmt->bindValue($identifier, $this->status, PDO::PARAM_INT);
 						break;
 					case '`CREATED_AT`':
 						$stmt->bindValue($identifier, $this->created_at, PDO::PARAM_STR);
@@ -867,15 +947,18 @@ abstract class BaseJob extends BaseObject  implements Persistent
 				return $this->getChartId();
 				break;
 			case 3:
-				return $this->getCreatedAt();
+				return $this->getStatus();
 				break;
 			case 4:
-				return $this->getDoneAt();
+				return $this->getCreatedAt();
 				break;
 			case 5:
-				return $this->getType();
+				return $this->getDoneAt();
 				break;
 			case 6:
+				return $this->getType();
+				break;
+			case 7:
 				return $this->getParameter();
 				break;
 			default:
@@ -910,10 +993,11 @@ abstract class BaseJob extends BaseObject  implements Persistent
 			$keys[0] => $this->getId(),
 			$keys[1] => $this->getUserId(),
 			$keys[2] => $this->getChartId(),
-			$keys[3] => $this->getCreatedAt(),
-			$keys[4] => $this->getDoneAt(),
-			$keys[5] => $this->getType(),
-			$keys[6] => $this->getParameter(),
+			$keys[3] => $this->getStatus(),
+			$keys[4] => $this->getCreatedAt(),
+			$keys[5] => $this->getDoneAt(),
+			$keys[6] => $this->getType(),
+			$keys[7] => $this->getParameter(),
 		);
 		if ($includeForeignObjects) {
 			if (null !== $this->aUser) {
@@ -963,15 +1047,22 @@ abstract class BaseJob extends BaseObject  implements Persistent
 				$this->setChartId($value);
 				break;
 			case 3:
-				$this->setCreatedAt($value);
+				$valueSet = JobPeer::getValueSet(JobPeer::STATUS);
+				if (isset($valueSet[$value])) {
+					$value = $valueSet[$value];
+				}
+				$this->setStatus($value);
 				break;
 			case 4:
-				$this->setDoneAt($value);
+				$this->setCreatedAt($value);
 				break;
 			case 5:
-				$this->setType($value);
+				$this->setDoneAt($value);
 				break;
 			case 6:
+				$this->setType($value);
+				break;
+			case 7:
 				$this->setParameter($value);
 				break;
 		} // switch()
@@ -1001,10 +1092,11 @@ abstract class BaseJob extends BaseObject  implements Persistent
 		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
 		if (array_key_exists($keys[1], $arr)) $this->setUserId($arr[$keys[1]]);
 		if (array_key_exists($keys[2], $arr)) $this->setChartId($arr[$keys[2]]);
-		if (array_key_exists($keys[3], $arr)) $this->setCreatedAt($arr[$keys[3]]);
-		if (array_key_exists($keys[4], $arr)) $this->setDoneAt($arr[$keys[4]]);
-		if (array_key_exists($keys[5], $arr)) $this->setType($arr[$keys[5]]);
-		if (array_key_exists($keys[6], $arr)) $this->setParameter($arr[$keys[6]]);
+		if (array_key_exists($keys[3], $arr)) $this->setStatus($arr[$keys[3]]);
+		if (array_key_exists($keys[4], $arr)) $this->setCreatedAt($arr[$keys[4]]);
+		if (array_key_exists($keys[5], $arr)) $this->setDoneAt($arr[$keys[5]]);
+		if (array_key_exists($keys[6], $arr)) $this->setType($arr[$keys[6]]);
+		if (array_key_exists($keys[7], $arr)) $this->setParameter($arr[$keys[7]]);
 	}
 
 	/**
@@ -1019,6 +1111,7 @@ abstract class BaseJob extends BaseObject  implements Persistent
 		if ($this->isColumnModified(JobPeer::ID)) $criteria->add(JobPeer::ID, $this->id);
 		if ($this->isColumnModified(JobPeer::USER_ID)) $criteria->add(JobPeer::USER_ID, $this->user_id);
 		if ($this->isColumnModified(JobPeer::CHART_ID)) $criteria->add(JobPeer::CHART_ID, $this->chart_id);
+		if ($this->isColumnModified(JobPeer::STATUS)) $criteria->add(JobPeer::STATUS, $this->status);
 		if ($this->isColumnModified(JobPeer::CREATED_AT)) $criteria->add(JobPeer::CREATED_AT, $this->created_at);
 		if ($this->isColumnModified(JobPeer::DONE_AT)) $criteria->add(JobPeer::DONE_AT, $this->done_at);
 		if ($this->isColumnModified(JobPeer::TYPE)) $criteria->add(JobPeer::TYPE, $this->type);
@@ -1087,6 +1180,7 @@ abstract class BaseJob extends BaseObject  implements Persistent
 	{
 		$copyObj->setUserId($this->getUserId());
 		$copyObj->setChartId($this->getChartId());
+		$copyObj->setStatus($this->getStatus());
 		$copyObj->setCreatedAt($this->getCreatedAt());
 		$copyObj->setDoneAt($this->getDoneAt());
 		$copyObj->setType($this->getType());
@@ -1253,6 +1347,7 @@ abstract class BaseJob extends BaseObject  implements Persistent
 		$this->id = null;
 		$this->user_id = null;
 		$this->chart_id = null;
+		$this->status = null;
 		$this->created_at = null;
 		$this->done_at = null;
 		$this->type = null;
@@ -1260,6 +1355,7 @@ abstract class BaseJob extends BaseObject  implements Persistent
 		$this->alreadyInSave = false;
 		$this->alreadyInValidation = false;
 		$this->clearAllReferences();
+		$this->applyDefaultValues();
 		$this->resetModified();
 		$this->setNew(true);
 		$this->setDeleted(false);

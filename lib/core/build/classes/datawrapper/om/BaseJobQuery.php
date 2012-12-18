@@ -9,6 +9,7 @@
  * @method     JobQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     JobQuery orderByUserId($order = Criteria::ASC) Order by the user_id column
  * @method     JobQuery orderByChartId($order = Criteria::ASC) Order by the chart_id column
+ * @method     JobQuery orderByStatus($order = Criteria::ASC) Order by the status column
  * @method     JobQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method     JobQuery orderByDoneAt($order = Criteria::ASC) Order by the done_at column
  * @method     JobQuery orderByType($order = Criteria::ASC) Order by the type column
@@ -17,6 +18,7 @@
  * @method     JobQuery groupById() Group by the id column
  * @method     JobQuery groupByUserId() Group by the user_id column
  * @method     JobQuery groupByChartId() Group by the chart_id column
+ * @method     JobQuery groupByStatus() Group by the status column
  * @method     JobQuery groupByCreatedAt() Group by the created_at column
  * @method     JobQuery groupByDoneAt() Group by the done_at column
  * @method     JobQuery groupByType() Group by the type column
@@ -40,6 +42,7 @@
  * @method     Job findOneById(int $id) Return the first Job filtered by the id column
  * @method     Job findOneByUserId(int $user_id) Return the first Job filtered by the user_id column
  * @method     Job findOneByChartId(string $chart_id) Return the first Job filtered by the chart_id column
+ * @method     Job findOneByStatus(int $status) Return the first Job filtered by the status column
  * @method     Job findOneByCreatedAt(string $created_at) Return the first Job filtered by the created_at column
  * @method     Job findOneByDoneAt(string $done_at) Return the first Job filtered by the done_at column
  * @method     Job findOneByType(string $type) Return the first Job filtered by the type column
@@ -48,6 +51,7 @@
  * @method     array findById(int $id) Return Job objects filtered by the id column
  * @method     array findByUserId(int $user_id) Return Job objects filtered by the user_id column
  * @method     array findByChartId(string $chart_id) Return Job objects filtered by the chart_id column
+ * @method     array findByStatus(int $status) Return Job objects filtered by the status column
  * @method     array findByCreatedAt(string $created_at) Return Job objects filtered by the created_at column
  * @method     array findByDoneAt(string $done_at) Return Job objects filtered by the done_at column
  * @method     array findByType(string $type) Return Job objects filtered by the type column
@@ -140,7 +144,7 @@ abstract class BaseJobQuery extends ModelCriteria
 	 */
 	protected function findPkSimple($key, $con)
 	{
-		$sql = 'SELECT `ID`, `USER_ID`, `CHART_ID`, `CREATED_AT`, `DONE_AT`, `TYPE`, `PARAMETER` FROM `job` WHERE `ID` = :p0';
+		$sql = 'SELECT `ID`, `USER_ID`, `CHART_ID`, `STATUS`, `CREATED_AT`, `DONE_AT`, `TYPE`, `PARAMETER` FROM `job` WHERE `ID` = :p0';
 		try {
 			$stmt = $con->prepare($sql);
 			$stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -319,6 +323,38 @@ abstract class BaseJobQuery extends ModelCriteria
 			}
 		}
 		return $this->addUsingAlias(JobPeer::CHART_ID, $chartId, $comparison);
+	}
+
+	/**
+	 * Filter the query on the status column
+	 *
+	 * @param     mixed $status The value to use as filter
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    JobQuery The current query, for fluid interface
+	 */
+	public function filterByStatus($status = null, $comparison = null)
+	{
+		$valueSet = JobPeer::getValueSet(JobPeer::STATUS);
+		if (is_scalar($status)) {
+			if (!in_array($status, $valueSet)) {
+				throw new PropelException(sprintf('Value "%s" is not accepted in this enumerated column', $status));
+			}
+			$status = array_search($status, $valueSet);
+		} elseif (is_array($status)) {
+			$convertedValues = array();
+			foreach ($status as $value) {
+				if (!in_array($value, $valueSet)) {
+					throw new PropelException(sprintf('Value "%s" is not accepted in this enumerated column', $value));
+				}
+				$convertedValues []= array_search($value, $valueSet);
+			}
+			$status = $convertedValues;
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+		}
+		return $this->addUsingAlias(JobPeer::STATUS, $status, $comparison);
 	}
 
 	/**
