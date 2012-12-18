@@ -2,15 +2,15 @@
 
 
 /*
- * creates new export job
+ * creates new job
  */
-$app->post('/jobs/export/:id', function($chart_id) use ($app) {
+$app->post('/jobs/:type/:id', function($type, $chart_id) use ($app) {
     disable_cache($app);
-    if_chart_is_writable($chart_id, function($user, $chart) use ($app) {
+    if_chart_is_writable($chart_id, function($user, $chart) use ($app, $type) {
         try {
             // create a new export job for this chart
             $params = json_decode($app->request()->getBody(), true);
-            $job = JobQuery::create()->createExportJob($chart, $user, $params);
+            $job = JobQuery::create()->createJob($type, $chart, $user, $params);
             ok();
         } catch (Exception $e) {
             error('io-error', $e->getMessage());
@@ -22,7 +22,7 @@ $app->post('/jobs/export/:id', function($chart_id) use ($app) {
  * returns the estimated time to complete a new print job
  * in minutes
  */
-$app->get('/jobs/export', function() use ($app) {
+$app->get('/jobs/:type/estimate', function($type) use ($app) {
     disable_cache($app);
-    ok(JobQuery::create()->estimatedTime('export'));
+    ok(ceil(JobQuery::create()->estimatedTime($type) / 60));
 });

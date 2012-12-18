@@ -5,7 +5,7 @@
 /**
  * Skeleton subclass for performing query and update operations on the 'job' table.
  *
- * 
+ *
  *
  * You should add additional methods to this class to meet the
  * application requirements.  This class will only be generated as
@@ -15,18 +15,19 @@
  */
 class JobQuery extends BaseJobQuery {
 
-    public function createExportJob($chart, $user, $params) {
-        $this->createJob('export', $chart, $user, $params);
-    }
 
     /*
      * returns the estimated time to complete a new job
      */
     public function estimatedTime($type) {
-        return -1;
+        $avgTimePerJob = array(
+            'export' => 7
+        );
+        $numJobsInQueue = $this->filterByType($type)->filterByStatus('queued')->count();
+        return $numJobsInQueue * $avgTimePerJob[$type];
     }
 
-    private function createJob($type, $chart, $user, $params) {
+    public function createJob($type, $chart, $user, $params) {
         $job = new Job();
         $job->setChartId($chart->getId());
         $job->setUserId($user->getId());
