@@ -26,9 +26,9 @@ if (empty($cfg['phantomjs']) || empty($cfg['phantomjs']['path'])) {
 $messages = array(
     'subject' => array(
         'de' => 'Dein Diagramm (:id) wurde exportiert',
-        'en' => 'Your chart [:id] has been exported',
-        'fr' => 'Your chart [:id] has been exported',
-        'es' => 'Your chart [:id] has been exported'
+        'en' => 'Your chart (:id) has been exported',
+        'fr' => 'Your chart (:id) has been exported',
+        'es' => 'Your chart (:id) has been exported'
     ),
     'body' => array(
         'de' => "Hallo,\n\nhiermit senden wir die statische Grafik zu deinem Diagramm.\n\nMit freundlichen Grüßen,\nDas Datawrapper Team\n",
@@ -71,8 +71,8 @@ foreach ($jobs as $job) {
     if (file_exists($outfile)) {
         $to = $job['email'];
         $from = 'export@' . $cfg['domain'];
-        $subject = str_replace(':id', $job['chart_id'], $messages['subject'][$job['lang']]);
-        $body = $messages['body'][$job['lang']];
+        $subject = utf8_decode(str_replace(':id', $job['chart_id'], $messages['subject'][$job['lang']]));
+        $body = utf8_decode($messages['body'][$job['lang']]);
 
         $format = $params['format'];
         $fn = basename($outfile);
