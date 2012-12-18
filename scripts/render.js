@@ -22,10 +22,7 @@ if (phantom.args.length < 2 || phantom.args.length > 5) {
         if (status !== 'success') {
             console.log('Unable to load the address!');
         } else {
-            page.injectJs("jquery.min.js");
-            page.evaluate(function() {
-                
-            });
+
             window.setTimeout(function () {
                 page.clipRect = { top: 0, left: 0, width: width, height: height };
                 page.render(output);
