@@ -159,7 +159,7 @@
                     // add invisible line on top to make selection easier
                     me.registerSeriesElement(c.paper.path(path).attr({
                         'stroke-width': sw*4,
-                        'stroke-opacity': 0
+                        'opacity': 0
                     }), col);
                 });
 
@@ -341,7 +341,7 @@
         },
 
         getSeriesLineWidth: function(series) {
-            return this.theme.lineChart.strokeWidth['highlight'];
+            return this.theme.lineChart.strokeWidth['highlight'] * ($('body').hasClass('fullscreen') ? 1.5 : 1);
         },
 
         computeAspectRatio: function() {
@@ -404,6 +404,10 @@
                 domain = me.__domain,
                 styles = me.__styles,
                 ticks = me.getYTicks(c.h);
+
+            if ($('body').hasClass('fullscreen')) {
+                me.theme.horizontalGrid['stroke-width'] = 2;
+            }
 
             _.each(ticks, function(val, t) {
                 var y = yscale(val), x = c.lpad;

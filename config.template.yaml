@@ -4,23 +4,23 @@
 domain: datawrapper.de
 chart_domain: c.datawrapper.de
 
-# show debug message?
+## show debug message?
 debug: true
 
-# some default values
+## some default values
 default_theme: default
 default_vis: bar-chart
 
-# thumbnail sizes [width, height]
+## thumbnail sizes [width, height]
 thumbnails:
     s: [150, 150]
     m: [260, 170]
 
-# email address for admin
+## email address for admin
 admin_email: hello@datawrapper.de
 log_email: debug@datawrapper.de
 
-# analytics
+## analytics module
 analytics:
     type: Piwik
     config:
@@ -28,5 +28,9 @@ analytics:
         idSite: 5
 
 
-# uncomment this if your Datawrapper is locked behind HTTP Authentication
+## uncomment this if your Datawrapper is locked behind HTTP Authentication
 # http_auth: username:password
+
+## uncomment to enable chart exporting
+# phantomjs:
+#     path: /path/to/phantomjs
