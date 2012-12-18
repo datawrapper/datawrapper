@@ -174,15 +174,19 @@ p.lead {
 
             <p class="lead">{%trans "Other things to do" %}</p>
 
+            {% if exportStaticImage %}
             <p>
                 <a role="button" href="#export">
                     <i class="icon-print"></i>&nbsp;&nbsp;{% trans "Export to static image for printing" %}
                 </a>
-
             </p>
+            {% endif %}
 
-
-            <p><a class="submit duplicate" role="button"><i class="icon-plus"></i>&nbsp;&nbsp;{% trans "Duplicate this chart" %}</a></p>
+            <p>
+                <a class="submit duplicate" role="button">
+                    <i class="icon-plus"></i>&nbsp;&nbsp;{% trans "Duplicate this chart" %}
+                </a>
+            </p>
 
             <p class="lead">{% trans "Show in Gallery" %}</p>
 
@@ -373,8 +377,8 @@ $(function() {
                 </div>
             </div>
         </div>
-        <p>{% trans "The exported chart will be send to your email address once it has been created. This will take approximately %n minutes." %}</p>
-        
+        <p>{{ "The exported chart will be send to your email address once it has been created. This will take approximately %n minute(s)." | trans | replace({'%n': estExportTime }) }}</p>
+
     </div>
     <div class="modal-footer">
        <button class="btn" data-dismiss="modal" aria-hidden="true">{% trans "Cancel" %}</button>
