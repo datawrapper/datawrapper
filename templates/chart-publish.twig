@@ -236,6 +236,7 @@ p.lead {
         </div>
         <div class="span7">
             {% if user.isAbleToPublish %}
+            <div class="messages"></div>
 
             {% if chart.publishedAt < chart.lastModifiedAt %}
                 <div class="alert alert-warning">
@@ -330,6 +331,8 @@ $(function() {
             })
         }).done(function(resp) {
             console.log(resp);
+            $('#dwExportChart').modal('hide');
+            DW.logMessage('{% trans "You will soon receive an email with the exported chart." %}', '.messages');
         });
     });
 });
@@ -340,6 +343,7 @@ $(function() {
         <p class="lead" style="margin:0">{% trans "Export to static image for printing" %}</p>
     </div>
     <div class="modal-body">
+        <p class="alert">This feature is not fully implemented, yet!</p>
         <p>{% trans "Please select an image format and aspect ratio for your exported chart." %}</p>
         <div class="form-horizontal">
             <div class="control-group">
