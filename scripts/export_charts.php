@@ -100,6 +100,7 @@ foreach ($jobs as $job) {
         else {
             mysql_query('UPDATE job SET status = 1, done_at = NOW() WHERE id = '.$job['job_id']);
             print mysql_error();
+            sleep(1);
         }
     } else {
         print "Err: chart rendering failed\n";
