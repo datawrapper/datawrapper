@@ -74,7 +74,7 @@
 <div class="modal hide" id="customColors" style="width:600px;margin-left:-300px" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-body">
         <button type="button" class="close" data-dismiss="modal">×</button>
-        <h2>{% trans "Customize chart colors" %}</h2>
+        <p class="lead">{% trans "Customize chart colors" %}</p>
         <p style="border-bottom:1px solid #ccc;padding-bottom:20px;margin-bottom:20px">{% trans "Please use custom colors only if it is absolutely necessary, for instance to identify political parties. If possible please use the palette colors." %}</p>
 
         <div class="row">
@@ -85,7 +85,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="span3">
+            <div class="span4">
                 <div>
                     <h4>{% trans "2. Choose a color for" %} "<span class="selected-series-name"></span>"</h4>
                 </div>
@@ -97,7 +97,7 @@
                     <div class="span2">
                         <label>{% trans "...or enter a custom color" %}</label>
                         <div class="control-group">
-                            <input id="user-color" type="text" class="text input-small" placeholder="hex-color" />
+                            <input id="user-color" type="text" class="text input-small" placeholder="FF0000" />
                         </div>
                     </div>
                 </div>
@@ -116,12 +116,14 @@
 <style type="text/css">
 
 #customColors h4 {
-    margin-bottom: 10px;
+    margin: 0 0 20px;
+    font-size: 15px;
+    font-weight: normal;
 }
 
 #customColors .color {
-    width: 18px;
-    height: 18px;
+    width: 17px;
+    height: 17px;
     float: left;
     background: #ccc;
     text-align: center;
@@ -134,14 +136,18 @@
 #customColors .dataseries li {
     padding-left: 5px;
     padding-bottom: 3px;
+    cursor: pointer;
 }
 
 #customColors .dataseries label {
     padding-left: 25px;
+    line-height: 17px;
+    color: #999;
 }
 
 #customColors .dataseries .selected label {
     font-weight: bold;
+    color: #000;
 }
 
 
