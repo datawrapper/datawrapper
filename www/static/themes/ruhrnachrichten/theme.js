@@ -12,6 +12,7 @@
 
         colors: {
             palette: ['#00A3DA', '#A59E89', '#CF233B', '#667E86'],
+            secondary: ["#000000", '#ffd500', '#6FAA12',"#ff7f0e"],
             positive: '#00A3DA',
             negative: '#CF233B',
             background: '#ffffff'
