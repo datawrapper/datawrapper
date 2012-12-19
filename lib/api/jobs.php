@@ -11,7 +11,7 @@ $app->post('/jobs/:type/:id', function($type, $chart_id) use ($app) {
             // create a new export job for this chart
             $params = json_decode($app->request()->getBody(), true);
             $job = JobQuery::create()->createJob($type, $chart, $user, $params);
-            ok();
+            ok(ceil(JobQuery::create()->estimatedTime($type) / 60));
         } catch (Exception $e) {
             error('io-error', $e->getMessage());
         }

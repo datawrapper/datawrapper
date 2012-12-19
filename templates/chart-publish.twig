@@ -334,9 +334,10 @@ $(function() {
                 format: $('input[name=format]:checked').val()
             })
         }).done(function(resp) {
-            console.log(resp);
             $('#dwExportChart').modal('hide');
-            DW.logMessage('{% trans "You will soon receive an email with the exported chart." %}', '.messages');
+            var msg = '{% trans "You will receive an email with the exported chart in about %d minute(s)." %}';
+            msg = msg.replace('%d', '<b>'+resp.data+'</b>');
+            DW.logMessage(msg, '.messages');
         });
     });
 });
