@@ -120,6 +120,7 @@ function get_chart_content($chart, $user, $minified = false, $path = '') {
         'ASSET_PATH' => $minified ? '' : '/static/themes/'.$the_theme['id'].'/',
         'trackingCode' => !empty($analyticsMod) ? $analyticsMod->getTrackingCode() : '',
         'chartUrl' => $chart_url,
+        'embedCode' => '<iframe src="' .$chart_url. '" frameborder="0" allowtransparency="true" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen width="'.$chart->getMetadata('publish.embed-width') . '" height="'. $chart->getMetadata('publish.embed-height') .'"></iframe>',
         'chartUrlFs' => strpos($chart_url, '.html') > 0 ? str_replace('index.html', 'fs.html', $chart_url) : $chart_url . '?fs=1'
     );
 
