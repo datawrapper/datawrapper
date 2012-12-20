@@ -1,37 +1,45 @@
 
 /*
- * Autumn Theme
+ * Playfair Theme
  * -------------
  *
  */
 
-@import url(http://fonts.googleapis.com/css?family=BenchNine:400,700);
-@import url(http://fonts.googleapis.com/css?family=Sanchez);
+@import url(http://fonts.googleapis.com/css?family=Pinyon+Script);
+@import url(http://fonts.googleapis.com/css?family=Jacques+Francois+Shadow);
+@import url(http://fonts.googleapis.com/css?family=Parisienne);
 
 body.chart {
     font-weight: 400;
     margin:5px 10px;
     font-size: 12px;
-    background: #F2F2F2;
+    background: #FEFAF2;
     overflow: visible;
     font-family: Palatino, Georgia, serif;
     overflow-x:hidden;
 }
 
+html body.chart.fullscreen {
+    background: #FEFAF2!important;
+}
+
 a {
-    color: #F24405;
+    color: #b24405;
 }
 
 h1 {
-    font-family: 'Sanchez', serif;
-    font-size: 22px;
+    font-family: 'Pinyon Script', serif;
+    font-size: 25px;
     font-weight: 300;
     margin: 0 0 20px;
-    text-align: left;
-    text-shadow: 2px 2px 2px #c2c2c2;
+    text-align: center;
+    text-shadow: 0px 0px 2px #F28445, 2px 2px 3px rgba(0,0,0,.2);
 }
 
 h1 span {
+    border-bottom: 1px solid #000;
+    padding: 3px 20px;
+    padding-bottom: 2px;
 }
 
 .chart p { margin: 15px 0; line-height: 19px;}
@@ -43,7 +51,8 @@ h1 span {
 .label span {
     font-size: 14px;
     color: #000;
-    font-family: 'BenchNine', sans-serif;
+        font-family: 'Pinyon Script', serif;
+
 }
 
 .label.highlighted, .label.axis {
@@ -52,7 +61,6 @@ h1 span {
 }
 
 .label.hover {
-    font-weight: bold;
 }
 
 .label.inverted span {
@@ -60,7 +68,6 @@ h1 span {
 }
 
 .label.highlighted {
-    font-weight: bold;
 }
 
 .label.value span {
@@ -69,6 +76,8 @@ h1 span {
 
 .label.series span {
     font-size: 14px;
+       font-family: 'Jacques Francois Shadow', cursive;
+   text-transform: uppercase;
 }
 
 
@@ -92,12 +101,20 @@ h1 span {
     content: ": ";
 }
 
+.label.tooltip {
+    border-radius: 15px;
+    padding: 3px 8px!important;
+    box-shadow: 3px 3px 3px rgba(0,0,0,.3);
+}
+
 #footer {
     margin: 10px 0px 0px;
     padding-top: 5px;
     padding-bottom: 5px;
-    font-size: 11px;
+    font-size: 14px;
     color: #888;
+    font-family: 'Parisienne', serif;
+
 }
 
 .footer-left {
@@ -132,22 +149,6 @@ svg .axis, svg .tick, svg .grid, svg rect {
     shape-rendering: crispEdges;
 }
 
-@media screen and (max-width: 400px) {
-    h1, #footer, p, .label {
-        display: none;
-        position: absolute;
-        height: 0;
-        width: 0;
-        padding: 0;
-        margin: 0;
-    }
-
-    #chart {
-        margin: 0;
-    }
-
-    body.chart { margin:0; padding: 0;}
-}
 
 .label.rotate90 {
     -moz-transform: rotate(-90deg);
@@ -163,5 +164,5 @@ svg .axis, svg .tick, svg .grid, svg rect {
 
 .line-chart .label.series span,
 .line-chart .label.axis span {
-    background-color: #F2F2F2;
+    background-color: #FEFAF2;
 }

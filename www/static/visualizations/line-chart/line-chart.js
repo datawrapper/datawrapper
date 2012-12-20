@@ -49,6 +49,7 @@
                 c.rpad = 0;
             }
 
+
             if (me.lineLabelsVisible() && (directLabeling || legend.pos == 'right')) {
                 c.labelWidth = 0;
                 _.each(me.chart.dataSeries(), function(col) {
@@ -74,6 +75,19 @@
                 c.tpad = c.bpad = c.lpad = c.rpad = c.lpad2 = 5;
             }
 
+            function frame() {
+                return c.paper.rect(
+                    c.lpad + c.lpad2,
+                    c.tpad,
+                    c.w - c.rpad - c.lpad - c.lpad2,
+                    c.h - c.bpad - c.tpad
+                ).attr(me.theme.frame);
+            }
+
+            if (me.theme.frame) {
+                frame().attr({ stroke: false });
+                scales.y = scales.y.nice();
+            }
 
             scales.x = scales.x.range([c.lpad + c.lpad2, c.w-c.rpad]);
             scales.y = scales.y.range([c.h-c.bpad, c.tpad]);
@@ -347,6 +361,10 @@
                 if (me.__xline) me.__xline.hide();
                 $('.label.tooltip').hide();
             });
+
+            if (me.theme.frame) {
+                frame().attr({ fill: false });
+            }
         },
 
         lineLabelsVisible: function() {
@@ -428,7 +446,7 @@
                 c = me.__canvas,
                 domain = me.__domain,
                 styles = me.__styles,
-                ticks = me.getYTicks(c.h);
+                ticks = me.getYTicks(c.h, me.theme.frame);
 
             if ($('body').hasClass('fullscreen')) {
                 me.theme.horizontalGrid['stroke-width'] = 2;
@@ -436,7 +454,7 @@
 
             _.each(ticks, function(val, t) {
                 var y = yscale(val), x = c.lpad;
-                if (val >= domain[0] && val <= domain[1]) {
+                if (val >= domain[0] && val <= domain[1] || me.theme.frame) {
                     // c.paper.text(x, y, val).attr(styles.labels).attr({ 'text-anchor': 'end' });
                     me.label(x+2, y-10, me.chart.formatValue(val, t == ticks.length-1), { align: 'left', cl: 'axis' });
                     if (me.theme.yTicks) {
@@ -483,7 +501,7 @@
             function center(k0, k1, l) {
                 // 7   0 1 2 3 4 5 6
                 var d = k1 - k0,
-                    divs = [2, 3, 5],
+                    divs = [2,3],
                     stops = [];
                 if (Math.abs(k1 - k0) < 2) return;
                 _.each(divs, function(div) {
@@ -520,6 +538,15 @@
 
             addlbl(xscl(0), labels[0], 0);
             addlbl(xscl(k), labels[k], k);
+
+            if (me.theme.verticalGrid) {
+                // draw vertical grid
+                _.each(xscl.ticks(20), function(tick) {
+                    var x = xscl(tick), t=c.tpad, b=c.h-c.bpad;
+                    c.paper.path('M'+x+','+t+' '+x+','+b).attr(me.theme.verticalGrid);
+                });
+            }
+            
 
             /*_.each(labels.slice(1, labels.length-2), function(val, i) {
                 var x = xscl(i);
