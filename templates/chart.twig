@@ -42,6 +42,7 @@
             margin: 0;
             padding: 50px 100px;
             width: 100%;
+            background: #fff;
             overflow: hidden;
         }
 
@@ -155,6 +156,10 @@
             display: none;
         }
 
+        html .chart.plain #footer {
+            height: 10px;
+        }
+
     </style>
 
 {% for src in scripts %}
@@ -175,7 +180,17 @@
             $('#header .legend').remove();
             //$('.container').height($(window).height());
             // initialize theme
-            var theme = Datawrapper.Themes.{{ theme.id | classify }};
+            var theme = Datawrapper.Themes.{{ theme.id | classify }},
+                thumb = false;
+            {% if thumb %}
+            theme.padding.bottom = 0;
+            theme.padding.top = 0;
+            theme.padding.left = 0;
+            theme.padding.left = 0;
+            theme.vpadding = 0;
+            theme.hpadding = 0;
+            thumb = true;
+            {% endif %}
             // initialize chart
             var chart = new Datawrapper.Chart(JSON.parse('{{ chart.toJSON | raw }}'));
             chart.setLocale('{{ chartLocale }}', {{ metricPrefix | json | raw }});
@@ -186,10 +201,7 @@
             // compute chart dimensions
             var w = $('#chart').innerWidth(),
                 h = vis.getMaxChartHeight($('#chart'));
-            if (w <= 350) {  // no padding for thumbnails
-                theme.vpadding = 10;
-                theme.hpadding = 0;
-            }
+
             if ($.browser.msie) w -= 10; // IE Fix
             w -= $('body').css('padding-left').replace('px', '');
             w -= $('body').css('padding-right').replace('px', '');
@@ -197,7 +209,10 @@
             vis.setTheme(theme).setSize(w - theme.hpadding*2, h - theme.vpadding);
 
             vis.load(chart, function() {
-                vis.render('#chart');
+                vis.render('#chart', thumb);
+                if (thumb) {
+                   $('.label').remove();
+                }
             });
             window.vis = vis;
         }
@@ -243,12 +258,11 @@
     });
     </script>
 </head>
-<body class="chart{% if fullscreen %} fullscreen{% endif %}">
+<body class="chart{% if fullscreen %} fullscreen{% endif %}{% if plain %} plain{% endif %}">
     {# some convenient short cuts for theme templates #}
     {% set title = chart.title %}{% set intro = chart.metadata.describe.intro %}{% set source = chart.metadata.describe['source-name'] %}{% set sourceURL = chart.metadata.describe['source-url'] %}
 
     {% include theme.hasTemplate ? 'themes/' ~ theme.id ~ '.twig' : 'themes/default.twig' %}
-
     {{ trackingCode | raw }}
 </body>
 </html>
