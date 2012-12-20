@@ -5,9 +5,7 @@
  *
  */
 
-@import url(http://fonts.googleapis.com/css?family=Pinyon+Script);
-@import url(http://fonts.googleapis.com/css?family=Jacques+Francois+Shadow);
-@import url(http://fonts.googleapis.com/css?family=Parisienne);
+@import url(http://fonts.googleapis.com/css?family=Euphoria+Script|Jacques+Francois+Shadow|Parisienne|Pinyon+Script);
 
 body.chart {
     font-weight: 400;
@@ -49,10 +47,9 @@ h1 span {
 }
 
 .label span {
-    font-size: 14px;
+    font-size: 15px;
     color: #000;
-        font-family: 'Pinyon Script', serif;
-
+    font-family: 'Euphoria Script', serif;
 }
 
 .label.highlighted, .label.axis {
