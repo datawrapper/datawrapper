@@ -443,7 +443,7 @@
                         me.path([['M', c.lpad-25, y], ['L', c.lpad-20,y]], 'tick');
                     }
                     if (me.theme.horizontalGrid) {
-                        me.path([['M', c.lpad, y], ['L', c.w,y]], 'grid')
+                        me.path([['M', c.lpad, y], ['L', c.w - c.rpad,y]], 'grid')
                             .attr(me.theme.horizontalGrid);
                     }
                 }
