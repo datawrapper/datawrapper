@@ -498,45 +498,23 @@
                 //if (low) lbl.css({ 'font-weight': 'normal'});
             }
 
-            function center(k0, k1, l) {
-                // 7   0 1 2 3 4 5 6
-                var d = k1 - k0,
-                    divs = [2,3],
-                    stops = [];
-                if (Math.abs(k1 - k0) < 2) return;
-                _.each(divs, function(div) {
-                    if (d % div === 0) {
-                        for (var i=0; i<div-1; i++) stops.push(Math.round(k0 + d * (i + 1) / div));
-                        return false;
-                    }
-                });
-                if (stops.length === 0) {
-                    // no suitable division found (7,13 or other prime numbers)
-                    // just cut into half
-                    stops.push(Math.floor(k0 + d*0.5));
-                }
+            addlbl(xscl(0), labels[0], 0);
 
-                if (stops.length < 1) return;
+            var cl = 'axis x-axis',
 
-                var lblw = me.labelWidth(labels[k0]+'axis x-axis')*0.5 + me.labelWidth(labels[k1], 'axis x-axis')*0.5 + 20, i;
-                for (i=0; i<stops.length; i++) {
-                    lblw += me.labelWidth(labels[stops[i]], 'axis x-axis')+10;
-                }
+                lw, x,
+                l0 = xscl(0) + me.labelWidth(labels[0], cl) * 0.6,
+                l1 = xscl(k) - me.labelWidth(labels[k], cl) * 0.6;
 
-                if (xscl(k1) - xscl(k0) >= lblw) {
-                    var t = k0 + (k1 - k0) * 0.5;
-                    stops.unshift(k0);
-                    for (i=1; i<stops.length; i++) {
-                        addlbl(xscl(stops[i]), labels[stops[i]], stops[i], l>1);
-                        center(stops[i-1], stops[i], l+1);
-                    }
-                    center(stops[stops.length-1], k1, l+1);
+            for (var i=1; i<k; i++) {
+                lw = me.labelWidth(labels[i], cl);
+                x = xscl(i);
+                if (x - lw * 0.6 > l0 && x + lw * 0.6 < l1) {
+                    addlbl(xscl(i), labels[i], i);
+                    l0 = x + lw * 0.6;
                 }
             }
 
-            center(0, k, 0);
-
-            addlbl(xscl(0), labels[0], 0);
             addlbl(xscl(k), labels[k], k);
 
             if (me.theme.verticalGrid) {
@@ -546,14 +524,7 @@
                     c.paper.path('M'+x+','+t+' '+x+','+b).attr(me.theme.verticalGrid);
                 });
             }
-            
 
-            /*_.each(labels.slice(1, labels.length-2), function(val, i) {
-                var x = xscl(i);
-                if (x - last_label_x < min_label_distance || x + min_label_distance > c.w) return;
-                last_label_x = x;
-                addlbl(x, val, i);
-            });*/
         },
 
         hoverSeries: function(series) {
@@ -618,7 +589,7 @@
                             zIndex: 100
                         }
                     }).addClass(me.invertLabel(me.getSeriesColor(s)) ? 'inverted' : '');
-                $('span', lbl).html(s.data[row]).css('background', 'transparent').parent()
+                $('span', lbl).html(me.chart.formatValue(s.data[row])).css('background', 'transparent').parent()
                     .css({
                         left: me.__scales.x(row) - lbl.outerWidth() * 0.5,
                         top: me.__scales.y(s.data[row]) - lbl.outerHeight() * 0.5
