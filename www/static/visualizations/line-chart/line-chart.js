@@ -7,7 +7,7 @@
 
     _.extend(LineChart.prototype, Datawrapper.Visualizations.RaphaelChart.prototype, {
 
-        render: function(el) {
+        render: function(el, thumb) {
             el = $(el);
             var
             me = this;
@@ -33,8 +33,8 @@
             me.init();
 
             c = me.initCanvas({
-                h: h,
-                bpad: me.get('rotate-x-labels') ? bpad + 20 : bpad
+                h: thumb ? $('.chart').height()-40 : h,
+                bpad: thumb ? 0 : me.get('rotate-x-labels') ? bpad + 20 : bpad
             });
 
             if (c.w <= me.theme.minWidth) {
@@ -68,7 +68,14 @@
                 c.rpad += 0.25 * me.labelWidth(me.chart.rowLabel(me.numRows-1));
             }
 
-            scales.x = scales.x.range([c.lpad+me.yAxisWidth(h), c.w-c.rpad]);
+            c.lpad2 = me.yAxisWidth(h);
+
+            if (thumb) {
+                c.tpad = c.bpad = c.lpad = c.rpad = c.lpad2 = 5;
+            }
+
+
+            scales.x = scales.x.range([c.lpad + c.lpad2, c.w-c.rpad]);
             scales.y = scales.y.range([c.h-c.bpad, c.tpad]);
 
             me.yAxis();
@@ -329,6 +336,17 @@
 
             me.orderSeriesElements();
 
+            $('.chart').mouseenter(function() {
+                $('.label.x-axis').css({ opacity: 0.6 });
+                if (me.__xlab) me.__xlab.css('opacity', 1).show();
+                if (me.__xline) me.__xline.show();
+                $('.label.tooltip').show();
+            }).mouseleave(function() {
+                $('.label.x-axis').css({ opacity: 1});
+                if (me.__xlab) me.__xlab.hide();
+                if (me.__xline) me.__xline.hide();
+                $('.label.tooltip').hide();
+            });
         },
 
         lineLabelsVisible: function() {
@@ -337,7 +355,14 @@
         },
 
         getDataRowByPoint: function(x, y) {
-            return Math.round(this.__scales.x.invert(x-10));
+            var me = this;
+            // var d = me.__d = me.__d || $('<div />').css({ position: 'absolute', width: 20, height: 20, 'border-radius': 20, border: '3px solid rgba(200,0,0,.5)' }).appendTo('body');
+            // d.css({ left: x - 10, top: y - 10});
+            x -= me.__root.offset().left;//me.__root.parent().offset().left;
+            y -= me.__root.offset().top;//me.__root.parent().offset().left;
+            // var c = me.__c = me.__c || me.__canvas.paper.circle(0,0,10);
+            // c.attr({ cx: x || 0, cy: y || 0 });
+            return Math.min(me.dataset.numRows()-1, Math.max(0, Math.round(me.__scales.x.invert(x))));
         },
 
         getSeriesLineWidth: function(series) {
@@ -531,38 +556,56 @@
 
         onMouseMove: function(e) {
             var me = this,
+                c = me.__canvas,
                 x = e.pageX,
                 y = e.pageY,
                 series = this.getSeriesByPoint(x, y),
                 row = this.getDataRowByPoint(x, y),
-                hoveredNode = series !== null;
+                hoveredNode = series !== null,
+                xlabel = me.__xlab = me.__xlab ||
+                    me.label(x, c.h - c.bpad+me.theme.xLabelOffset - 5, 'foo', {
+                        cl: 'axis x-axis',
+                        css: {
+                            background: me.theme.colors.background,
+                            padding: '5px 10px',
+                            zIndex: 100
+                        }
+                    });
+               /* xline = me.__xline = me.__xline ||
+                    c.paper.path('M0,'+c.tpad+' 0,'+(c.h - c.bpad)).attr(me.theme.horizontalGrid).toBack();*/
 
-            if (!series) series = me.getSeriesByLabel();
+            // update x-label
+            $('span', xlabel).html(me.dataset.rowName(row))
+                .parent().css({ left: me.__scales.x(row) - xlabel.outerWidth() * 0.5 });
 
-            if (!series) {
-                // nothing hovered
-                clearTimeout(me.__mouseOverTimer);
-                me.__mouseOutTimer = setTimeout(function() {
-                    clearTimeout(me.__mouseOverTimer);
-                    clearTimeout(me.__mouseOutTimer);
-                    if (me.theme.hover) me.hoverSeries();
-                    if (me.theme.tooltip) me.hideTooltip();
-                }, 200);
-            } else {
-                if (me.__mouseOutTimer) clearTimeout(me.__mouseOutTimer);
-                me.__mouseOverTimer = setTimeout(function() {
-                    clearTimeout(me.__mouseOverTimer);
-                    clearTimeout(me.__mouseOutTimer);
-                    if (me.theme.hover) me.hoverSeries(series);
-                    if (me.theme.tooltip && hoveredNode) me.showTooltip(series, row, x, y);
-                }, 100);
-            }
+            // update x-line
+            //xline.transform('t'+me.__scales.x(row)+',0');
+
+            me.dataset.eachSeries(function(s) {
+                var lbl = s._label = s._label ||
+                    me.label(0, 0, 'foo', {
+                        cl: 'tooltip',
+                        css: {
+                            background: me.getSeriesColor(s),
+                            padding: '2px 3px',
+                            zIndex: 100
+                        }
+                    }).addClass(me.invertLabel(me.getSeriesColor(s)) ? 'inverted' : '');
+                $('span', lbl).html(s.data[row]).css('background', 'transparent').parent()
+                    .css({
+                        left: me.__scales.x(row) - lbl.outerWidth() * 0.5,
+                        top: me.__scales.y(s.data[row]) - lbl.outerHeight() * 0.5
+                    });
+            });
+
+            return;
         },
 
         showTooltip: function(series, row, x, y) {
             var me = this,
                 xval = me.chart.rowLabel(row),
                 yval = series.data[row],
+                xtto = me.__root.offset().left - me.__root.parent().offset().left,
                 tt = $('.tooltip'),
                 yr = me.__scales.y(yval);
 
@@ -579,8 +622,8 @@
 
                 tt.css({
                     position: 'absolute',
-                    top: (y -tt.outerHeight()-10)+'px',
-                    left: (x - tt.outerWidth()*0.5)+'px'
+                    top: (y - tt.outerHeight()-10)+'px',
+                    left: (x - tt.outerWidth()*0.5 + xtto)+'px'
                 });
                 tt.show();
             }
