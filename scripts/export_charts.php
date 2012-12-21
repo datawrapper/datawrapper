@@ -51,20 +51,12 @@ date_default_timezone_set('Europe/Berlin');
 foreach ($jobs as $job) {
     $params = json_decode($job['parameter'], true);
 
-    $dim = array(
-        'landscape' => array(1200,700),
-        'portrait' => array(800,1000),
-        'square' => array(900,900)
-    );
-    $w = $dim[$params['ratio']][0];
-    $h = $dim[$params['ratio']][1];
-
-    $url = 'http://' . $cfg['domain'] . '/chart/' . $job['chart_id'] . '/?fs=1';
+    $url = 'http://' . $cfg['domain'] . '/chart/' . $job['chart_id'] . '/' . ($params['format'] == 'pdf' ? '?fs=1' : '');
 
     $outfile = '../charts/exports/' . $job['chart_id'] . '-' . $params['ratio'] . '.' . $params['format'];
 
     $out = array();
-    $cmd = $cfg['phantomjs']['path'] . ' render.js '. $url.' '.$outfile.' '.$w.' '.$h;
+    $cmd = $cfg['phantomjs']['path'] . ' export_chart.js '. $url.' '.$outfile.' '.$params['ratio'];
     //print "\n".'running '.$cmd;
     exec($cmd, $out);
 
