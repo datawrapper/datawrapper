@@ -90,6 +90,9 @@ class DatawrapperSession {
      * retreive the currently used frontend language
      */
     public static function getLanguage() {
+        // use language set via ?lang=, if set
+        if (!empty($_GET['lang'])) return substr($_GET['lang'],0,2);
+        // otherwise use user preference, or browser language
         if (self::getUser()->isLoggedIn()) {
             return self::getUser()->getLanguage();
         } else {
