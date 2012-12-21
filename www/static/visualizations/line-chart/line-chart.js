@@ -17,7 +17,7 @@
             ds = me.dataset,
             bpad = me.theme.padding.bottom,
             directLabeling = me.get('direct-labeling'),
-            baseCol = me.get('base-color', 0),
+            baseCol = Math.max(0, me.get('base-color', 0)),
             scales = me.__scales = {
                 x: me.xScale(),
                 y: me.yScale()
@@ -158,7 +158,7 @@
                         // use different shades of the same color
                         var base = palette[baseCol % palette.length],
                             bLch = d3.cie.lch(d3.rgb(base)),
-                            ml = Math.min(bLch.l, 50),
+                            ml = Math.max(bLch.l, 50),
                             l = d3.range(81, ml, -(80 - ml) / (all_series.length - 1));
                         me.setSeriesColor(col, ''+d3.cie.lch(l[index], bLch.c, bLch.h));
                     }
