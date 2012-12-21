@@ -350,13 +350,11 @@
 
             $('.chart').mouseenter(function() {
                 $('.label.x-axis').css({ opacity: 0.6 });
-                if (me.__xlab) me.__xlab.css('opacity', 1).show();
-                if (me.__xline) me.__xline.show();
                 $('.label.tooltip').show();
             }).mouseleave(function() {
                 $('.label.x-axis').css({ opacity: 1});
-                if (me.__xlab) me.__xlab.hide();
-                if (me.__xline) me.__xline.hide();
+                if (me.__xlab) me.__xlab.remove();
+                me.__xlab = null;
                 $('.label.tooltip').hide();
             });
 
