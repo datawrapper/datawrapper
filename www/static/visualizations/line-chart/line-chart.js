@@ -31,19 +31,16 @@
             c;
 
             me.init();
-
             c = me.initCanvas({
                 h: thumb ? h : h,
                 bpad: thumb ? 0 : me.get('rotate-x-labels') ? bpad + 20 : bpad
             });
-
             if (c.w <= me.theme.minWidth) {
                 c.tpad = 15;
                 c.rpad = 9;
                 c.lpad = 5;
                 c.bpad = 5;
             }
-
             if (!directLabeling && me.lineLabelsVisible() && legend.pos != 'right') {
                 c.tpad += 20;
                 c.rpad = 0;
@@ -119,6 +116,7 @@
                 _.each(col.data, function(val, i) {
                     x = scales.x(i);
                     y = scales.y(val);
+
                     if (isNaN(y)) {
                         // store the current line
                         if (pts.length > 0) {
