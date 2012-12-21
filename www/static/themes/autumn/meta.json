@@ -4,5 +4,5 @@
     "extends": "default",
     "restricted": null,
     "locale": "de_DE",
-    "version": "0.2.4"
+    "version": "0.2.5"
 }
