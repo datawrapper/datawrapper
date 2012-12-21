@@ -113,6 +113,14 @@ $(function() {
         }, true);
     }
 
+    $('#describe-source-url').blur(function() {
+        var v = $(this).val();
+        if (v.substr(0,2) != '//' && v.substr(0,7) != 'http://' &&  v.substr(0,8) != 'https://') {
+            $(this).val('//'+v);
+            chart.set('metadata.describe.source-url', $(this).val());
+        }
+    });
+
     reload();
 
     $('#describe-proceed').click(function(e) {
