@@ -1,11 +1,10 @@
+@import url(http://fonts.googleapis.com/css?family=Euphoria+Script|Jacques+Francois+Shadow|Parisienne|Pinyon+Script);
 
 /*
  * Playfair Theme
  * -------------
  *
  */
-
-@import url(http://fonts.googleapis.com/css?family=Euphoria+Script|Jacques+Francois+Shadow|Parisienne|Pinyon+Script);
 
 body.chart {
     font-weight: 400;
