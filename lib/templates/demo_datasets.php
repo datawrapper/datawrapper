@@ -92,12 +92,58 @@ Bündnis 90/Die Grünen	36	32
             'metadata.data.vertical-header' => true,
             'metadata.visualize.sort-values' => true
         ),
-        'data' => "Fraktion	Abgeordnete
-CDU/CSU	237
-SPD	146
-FDP	93
-DIE LINKE.	76
-BÜNDNIS 90/DIE GRÜNEN	68"
+        'data' => "Fraktion Abgeordnete
+CDU/CSU 237
+SPD 146
+FDP 93
+DIE LINKE.  76
+BÜNDNIS 90/DIE GRÜNEN   68"
+    );
+
+    $datasets[] = array(
+        'id' => 'bundestag-sitze',
+        'title' => _('US Trade with United Kingdom'),
+        'type' => _('Line chart'),
+        'presets' => array(
+            'type' => 'line-chart',
+            'theme' => 'autumn',
+            'metadata.describe.source-name' => 'US Census Bureau',
+            'metadata.describe.source-url' => 'http://www.census.gov/foreign-trade/balance/c4120.html',
+            'metadata.data.vertical-header' => true,
+            'metadata.describe.number-format' => 'n1',
+            'metadata.describe.number-divisor' => '3',
+            'metadata.describe.number-append' => ' Billion USD',
+            'metadata.visualize.sort-values' => false,
+            'metadata.data.transpose' => false
+        ),
+        'data' => "	Imports	Exports
+1985	31965.608	24123.792
+'86	32331.39	23978.43
+'87	35202.636	28651.014
+'88	35054.175	35810.58
+'89	34073.526	38756.82
+'90	35531.408	41343.28
+'91	31117.801	37257.233
+'92	32952.848	37391.836
+'93	34551.177	42036.738
+'94	38838.97	41694.225
+'95	40663.847	43573.315
+'96	42598.689	45514.581
+'97	46702.656	52088.179
+'98	49122.003	55071.921
+'99	54147.474	53001.936
+'00	58082.434	55704.604
+'01	53779.31	52928.46
+'02	52153.472	42502.016
+'03	53493.69681625	42284.9120525
+'04	56454.06451384	43800.02305036
+'05	60218.4929039	45510.33799428
+'06	61004.84107176	51767.52144762
+'07	63111.87209175	55479.45533967
+'08	62688.49984317	57351.00459077
+'09	50803.48289813	48902.85013178
+'10	52740.81484518	51406.46960534
+2011	52260.822	56998.314"
     );
 
 

@@ -225,6 +225,7 @@
             var me = this,
                 number = raw,
                 fmt = this.__format;
+            if (raw === null || raw === undefined || raw === '') return 'n/a';
             if (fmt === undefined) {
                 fmt = this.__format = this._getFormat();
             }

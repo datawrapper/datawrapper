@@ -22,3 +22,7 @@
 .label.x-axis {
     font-weight: bold;
 }
+
+html {
+    overflow: hidden;
+}

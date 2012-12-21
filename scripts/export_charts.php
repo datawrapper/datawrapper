@@ -51,20 +51,12 @@ date_default_timezone_set('Europe/Berlin');
 foreach ($jobs as $job) {
     $params = json_decode($job['parameter'], true);
 
-    $dim = array(
-        'landscape' => array(1200,700),
-        'portrait' => array(800,1000),
-        'square' => array(900,900)
-    );
-    $w = $dim[$params['ratio']][0];
-    $h = $dim[$params['ratio']][1];
-
-    $url = 'http://' . $cfg['domain'] . '/chart/' . $job['chart_id'] . '/?fs=1';
+    $url = 'http://' . $cfg['domain'] . '/chart/' . $job['chart_id'] . '/' . ($params['format'] == 'pdf' ? '?fs=1' : '');
 
     $outfile = '../charts/exports/' . $job['chart_id'] . '-' . $params['ratio'] . '.' . $params['format'];
 
     $out = array();
-    $cmd = $cfg['phantomjs']['path'] . ' render.js '. $url.' '.$outfile.' '.$w.' '.$h;
+    $cmd = $cfg['phantomjs']['path'] . ' export_chart.js '. $url.' '.$outfile.' '.$params['ratio'];
     //print "\n".'running '.$cmd;
     exec($cmd, $out);
 
@@ -100,6 +92,7 @@ foreach ($jobs as $job) {
         else {
             mysql_query('UPDATE job SET status = 1, done_at = NOW() WHERE id = '.$job['job_id']);
             print mysql_error();
+            sleep(1);
         }
     } else {
         print "Err: chart rendering failed\n";

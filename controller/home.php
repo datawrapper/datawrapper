@@ -9,7 +9,7 @@ $app->get('/', function () use ($app) {
         $app->redirect('/legacy/'.$app->request()->get('c').'.html');
     } else {
 
-        $chart_ids = array('RXoKw', 'rf47Q', 'a4Yyf', '78iap');
+        $chart_ids = array('RXoKw', 'a4Yyf', '78iap', 'weD23');
         $charts = ChartQuery::create()->findPKs($chart_ids);
 
         $page = array(

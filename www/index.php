@@ -15,7 +15,7 @@ if ($GLOBALS['dw_config']['debug'] == true) {
     ini_set('display_errors', 1);
 }
 
-define('DATAWRAPPER_VERSION', '1.1 pre-alpha');
+define('DATAWRAPPER_VERSION', '1.1');
 
 // Require the Slim PHP 5 Framework
 require '../vendor/Slim/Slim.php';

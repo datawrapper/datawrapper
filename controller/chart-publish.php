@@ -28,7 +28,7 @@ $app->get('/chart/:id/publish', function ($id) use ($app) {
             'chart' => $chart,
             'visualizations' => get_visualizations_meta('', true),
             'vis' => get_visualization_meta($chart->getType()),
-            'iframe' => $iframe_src,
+            'iframe' => $iframe_src.'?rev='.rand(0,100),
             'themes' => get_themes_meta(),
             'exportStaticImage' => !empty($cfg['phantomjs']),
             'estExportTime' => ceil(JobQuery::create()->estimatedTime('export') / 60)

@@ -7,7 +7,7 @@
 
     _.extend(LineChart.prototype, Datawrapper.Visualizations.RaphaelChart.prototype, {
 
-        render: function(el) {
+        render: function(el, thumb) {
             el = $(el);
             var
             me = this;
@@ -17,7 +17,7 @@
             ds = me.dataset,
             bpad = me.theme.padding.bottom,
             directLabeling = me.get('direct-labeling'),
-            baseCol = me.get('base-color', 0),
+            baseCol = Math.max(0, me.get('base-color', 0)),
             scales = me.__scales = {
                 x: me.xScale(),
                 y: me.yScale()
@@ -31,23 +31,21 @@
             c;
 
             me.init();
-
             c = me.initCanvas({
-                h: h,
-                bpad: me.get('rotate-x-labels') ? bpad + 20 : bpad
+                h: thumb ? h : h,
+                bpad: thumb ? 0 : me.get('rotate-x-labels') ? bpad + 20 : bpad
             });
-
             if (c.w <= me.theme.minWidth) {
                 c.tpad = 15;
                 c.rpad = 9;
                 c.lpad = 5;
                 c.bpad = 5;
             }
-
             if (!directLabeling && me.lineLabelsVisible() && legend.pos != 'right') {
                 c.tpad += 20;
                 c.rpad = 0;
             }
+
 
             if (me.lineLabelsVisible() && (directLabeling || legend.pos == 'right')) {
                 c.labelWidth = 0;
@@ -68,7 +66,27 @@
                 c.rpad += 0.25 * me.labelWidth(me.chart.rowLabel(me.numRows-1));
             }
 
-            scales.x = scales.x.range([c.lpad+me.yAxisWidth(h), c.w-c.rpad]);
+            c.lpad2 = me.yAxisWidth(h);
+
+            if (thumb) {
+                c.tpad = c.bpad = c.lpad = c.rpad = c.lpad2 = 5;
+            }
+
+            function frame() {
+                return c.paper.rect(
+                    c.lpad + c.lpad2,
+                    c.tpad,
+                    c.w - c.rpad - c.lpad - c.lpad2,
+                    c.h - c.bpad - c.tpad
+                ).attr(me.theme.frame);
+            }
+
+            if (me.theme.frame) {
+                frame().attr({ stroke: false });
+                scales.y = scales.y.nice();
+            }
+
+            scales.x = scales.x.range([c.lpad + c.lpad2, c.w-c.rpad]);
             scales.y = scales.y.range([c.h-c.bpad, c.tpad]);
 
             me.yAxis();
@@ -98,6 +116,7 @@
                 _.each(col.data, function(val, i) {
                     x = scales.x(i);
                     y = scales.y(val);
+
                     if (isNaN(y)) {
                         // store the current line
                         if (pts.length > 0) {
@@ -137,7 +156,7 @@
                         // use different shades of the same color
                         var base = palette[baseCol % palette.length],
                             bLch = d3.cie.lch(d3.rgb(base)),
-                            ml = Math.min(bLch.l, 50),
+                            ml = Math.max(bLch.l, 50),
                             l = d3.range(81, ml, -(80 - ml) / (all_series.length - 1));
                         me.setSeriesColor(col, ''+d3.cie.lch(l[index], bLch.c, bLch.h));
                     }
@@ -329,6 +348,19 @@
 
             me.orderSeriesElements();
 
+            $('.chart').mouseenter(function() {
+                $('.label.x-axis').css({ opacity: 0.6 });
+                $('.label.tooltip').show();
+            }).mouseleave(function() {
+                $('.label.x-axis').css({ opacity: 1});
+                if (me.__xlab) me.__xlab.remove();
+                me.__xlab = null;
+                $('.label.tooltip').hide();
+            });
+
+            if (me.theme.frame) {
+                frame().attr({ fill: false });
+            }
         },
 
         lineLabelsVisible: function() {
@@ -337,7 +369,14 @@
         },
 
         getDataRowByPoint: function(x, y) {
-            return Math.round(this.__scales.x.invert(x-10));
+            var me = this;
+            // var d = me.__d = me.__d || $('<div />').css({ position: 'absolute', width: 20, height: 20, 'border-radius': 20, border: '3px solid rgba(200,0,0,.5)' }).appendTo('body');
+            // d.css({ left: x - 10, top: y - 10});
+            x -= me.__root.offset().left;//me.__root.parent().offset().left;
+            y -= me.__root.offset().top;//me.__root.parent().offset().left;
+            // var c = me.__c = me.__c || me.__canvas.paper.circle(0,0,10);
+            // c.attr({ cx: x || 0, cy: y || 0 });
+            return Math.min(me.dataset.numRows()-1, Math.max(0, Math.round(me.__scales.x.invert(x))));
         },
 
         getSeriesLineWidth: function(series) {
@@ -403,7 +442,7 @@
                 c = me.__canvas,
                 domain = me.__domain,
                 styles = me.__styles,
-                ticks = me.getYTicks(c.h);
+                ticks = me.getYTicks(c.h, me.theme.frame);
 
             if ($('body').hasClass('fullscreen')) {
                 me.theme.horizontalGrid['stroke-width'] = 2;
@@ -411,14 +450,14 @@
 
             _.each(ticks, function(val, t) {
                 var y = yscale(val), x = c.lpad;
-                if (val >= domain[0] && val <= domain[1]) {
+                if (val >= domain[0] && val <= domain[1] || me.theme.frame) {
                     // c.paper.text(x, y, val).attr(styles.labels).attr({ 'text-anchor': 'end' });
                     me.label(x+2, y-10, me.chart.formatValue(val, t == ticks.length-1), { align: 'left', cl: 'axis' });
                     if (me.theme.yTicks) {
                         me.path([['M', c.lpad-25, y], ['L', c.lpad-20,y]], 'tick');
                     }
                     if (me.theme.horizontalGrid) {
-                        me.path([['M', c.lpad, y], ['L', c.w,y]], 'grid')
+                        me.path([['M', c.lpad, y], ['L', c.w - c.rpad,y]], 'grid')
                             .attr(me.theme.horizontalGrid);
                     }
                 }
@@ -455,53 +494,33 @@
                 //if (low) lbl.css({ 'font-weight': 'normal'});
             }
 
-            function center(k0, k1, l) {
-                // 7   0 1 2 3 4 5 6
-                var d = k1 - k0,
-                    divs = [2, 3, 5],
-                    stops = [];
-                if (Math.abs(k1 - k0) < 2) return;
-                _.each(divs, function(div) {
-                    if (d % div === 0) {
-                        for (var i=0; i<div-1; i++) stops.push(Math.round(k0 + d * (i + 1) / div));
-                        return false;
-                    }
-                });
-                if (stops.length === 0) {
-                    // no suitable division found (7,13 or other prime numbers)
-                    // just cut into half
-                    stops.push(Math.floor(k0 + d*0.5));
-                }
+            addlbl(xscl(0), labels[0], 0);
 
-                if (stops.length < 1) return;
+            var cl = 'axis x-axis',
 
-                var lblw = me.labelWidth(labels[k0]+'axis x-axis')*0.5 + me.labelWidth(labels[k1], 'axis x-axis')*0.5 + 20, i;
-                for (i=0; i<stops.length; i++) {
-                    lblw += me.labelWidth(labels[stops[i]], 'axis x-axis')+10;
-                }
+                lw, x,
+                l0 = xscl(0) + me.labelWidth(labels[0], cl) * 0.6,
+                l1 = xscl(k) - me.labelWidth(labels[k], cl) * 0.6;
 
-                if (xscl(k1) - xscl(k0) >= lblw) {
-                    var t = k0 + (k1 - k0) * 0.5;
-                    stops.unshift(k0);
-                    for (i=1; i<stops.length; i++) {
-                        addlbl(xscl(stops[i]), labels[stops[i]], stops[i], l>1);
-                        center(stops[i-1], stops[i], l+1);
-                    }
-                    center(stops[stops.length-1], k1, l+1);
+            for (var i=1; i<k; i++) {
+                lw = me.labelWidth(labels[i], cl);
+                x = xscl(i);
+                if (x - lw * 0.6 > l0 && x + lw * 0.6 < l1) {
+                    addlbl(xscl(i), labels[i], i);
+                    l0 = x + lw * 0.6;
                 }
             }
 
-            center(0, k, 0);
-
-            addlbl(xscl(0), labels[0], 0);
             addlbl(xscl(k), labels[k], k);
 
-            /*_.each(labels.slice(1, labels.length-2), function(val, i) {
-                var x = xscl(i);
-                if (x - last_label_x < min_label_distance || x + min_label_distance > c.w) return;
-                last_label_x = x;
-                addlbl(x, val, i);
-            });*/
+            if (me.theme.verticalGrid) {
+                // draw vertical grid
+                _.each(xscl.ticks(20), function(tick) {
+                    var x = xscl(tick), t=c.tpad, b=c.h-c.bpad;
+                    c.paper.path('M'+x+','+t+' '+x+','+b).attr(me.theme.verticalGrid);
+                });
+            }
+
         },
 
         hoverSeries: function(series) {
@@ -531,38 +550,56 @@
 
         onMouseMove: function(e) {
             var me = this,
+                c = me.__canvas,
                 x = e.pageX,
                 y = e.pageY,
                 series = this.getSeriesByPoint(x, y),
                 row = this.getDataRowByPoint(x, y),
-                hoveredNode = series !== null;
+                hoveredNode = series !== null,
+                xlabel = me.__xlab = me.__xlab ||
+                    me.label(x, c.h - c.bpad+me.theme.xLabelOffset - 5, 'foo', {
+                        cl: 'axis x-axis',
+                        css: {
+                            background: me.theme.colors.background,
+                            padding: '5px 10px',
+                            zIndex: 100
+                        }
+                    });
+               /* xline = me.__xline = me.__xline ||
+                    c.paper.path('M0,'+c.tpad+' 0,'+(c.h - c.bpad)).attr(me.theme.horizontalGrid).toBack();*/
 
-            if (!series) series = me.getSeriesByLabel();
+            // update x-label
+            $('span', xlabel).html(me.dataset.rowName(row))
+                .parent().css({ left: me.__scales.x(row) - xlabel.outerWidth() * 0.5 });
 
-            if (!series) {
-                // nothing hovered
-                clearTimeout(me.__mouseOverTimer);
-                me.__mouseOutTimer = setTimeout(function() {
-                    clearTimeout(me.__mouseOverTimer);
-                    clearTimeout(me.__mouseOutTimer);
-                    if (me.theme.hover) me.hoverSeries();
-                    if (me.theme.tooltip) me.hideTooltip();
-                }, 200);
-            } else {
-                if (me.__mouseOutTimer) clearTimeout(me.__mouseOutTimer);
-                me.__mouseOverTimer = setTimeout(function() {
-                    clearTimeout(me.__mouseOverTimer);
-                    clearTimeout(me.__mouseOutTimer);
-                    if (me.theme.hover) me.hoverSeries(series);
-                    if (me.theme.tooltip && hoveredNode) me.showTooltip(series, row, x, y);
-                }, 100);
-            }
+            // update x-line
+            //xline.transform('t'+me.__scales.x(row)+',0');
+
+            me.dataset.eachSeries(function(s) {
+                var lbl = s._label = s._label ||
+                    me.label(0, 0, 'foo', {
+                        cl: 'tooltip',
+                        css: {
+                            background: me.getSeriesColor(s),
+                            padding: '2px 3px',
+                            zIndex: 100
+                        }
+                    }).addClass(me.invertLabel(me.getSeriesColor(s)) ? 'inverted' : '');
+                $('span', lbl).html(me.chart.formatValue(s.data[row])).css('background', 'transparent').parent()
+                    .css({
+                        left: me.__scales.x(row) - lbl.outerWidth() * 0.5,
+                        top: me.__scales.y(s.data[row]) - lbl.outerHeight() * 0.5
+                    });
+            });
+
+            return;
         },
 
         showTooltip: function(series, row, x, y) {
             var me = this,
                 xval = me.chart.rowLabel(row),
                 yval = series.data[row],
+                xtto = me.__root.offset().left - me.__root.parent().offset().left,
                 tt = $('.tooltip'),
                 yr = me.__scales.y(yval);
 
@@ -579,8 +616,8 @@
 
                 tt.css({
                     position: 'absolute',
-                    top: (y -tt.outerHeight()-10)+'px',
-                    left: (x - tt.outerWidth()*0.5)+'px'
+                    top: (y - tt.outerHeight()-10)+'px',
+                    left: (x - tt.outerWidth()*0.5 + xtto)+'px'
                 });
                 tt.show();
             }

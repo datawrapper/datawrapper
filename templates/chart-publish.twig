@@ -334,9 +334,10 @@ $(function() {
                 format: $('input[name=format]:checked').val()
             })
         }).done(function(resp) {
-            console.log(resp);
             $('#dwExportChart').modal('hide');
-            DW.logMessage('{% trans "You will soon receive an email with the exported chart." %}', '.messages');
+            var msg = '{% trans "You will receive an email with the exported chart in about %d minute(s)." %}';
+            msg = msg.replace('%d', '<b>'+resp.data+'</b>');
+            DW.logMessage(msg, '.messages');
         });
     });
 });
@@ -347,7 +348,6 @@ $(function() {
         <p class="lead" style="margin:0">{% trans "Export to static image for printing" %}</p>
     </div>
     <div class="modal-body">
-        <p class="alert">This feature is not fully implemented, yet!</p>
         <p>{% trans "Please select an image format and aspect ratio for your exported chart." %}</p>
         <div class="form-horizontal">
             <div class="control-group">
@@ -377,7 +377,7 @@ $(function() {
                 </div>
             </div>
         </div>
-        <p>{{ "The exported chart will be send to your email address once it has been created. This will take approximately %n minute(s)." | trans | replace({'%n': estExportTime }) }}</p>
+        <p>{{ "The exported chart will be send to your email address <b>%e</b> once it has been created. This will take approximately <b>%n</b> minute(s)." | trans | replace({'%n': estExportTime, '%e': user.email }) | raw }}</p>
 
     </div>
     <div class="modal-footer">

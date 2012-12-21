@@ -62,6 +62,7 @@ $app->post('/users', function() use ($app) {
     $user->setCreatedAt(time());
     $user->setEmail($data->email);
     $user->setPwd($data->pwd);
+    $user->setLanguage(DatawrapperSession::getLanguage());
     $user->setActivateToken(hash_hmac('sha256', $data->email.'/'.$data->pwd.time(), DW_TOKEN_SALT));
     $user->save();
     $result = $user->toArray();

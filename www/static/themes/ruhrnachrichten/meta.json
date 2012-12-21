@@ -3,6 +3,7 @@
     "link": "http://www.ruhrnachrichten.de",
     "restricted": null,
     "locale": "de_DE",
+    "extends": "default",
     "default_width": 368,
     "default_height": 360,
     "restrict": "@ruhrnachrichten.de",

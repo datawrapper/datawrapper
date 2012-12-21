@@ -71,7 +71,7 @@ class DatawrapperSession {
 
     public static function getBrowserLocale() {
         // get list of available locales
-        $available_locales = array();
+        $available_locales = array('en');
         foreach (glob('../locale/*', GLOB_ONLYDIR) as $l) {
             $available_locales[] = substr($l, 10);
         }
@@ -90,12 +90,14 @@ class DatawrapperSession {
      * retreive the currently used frontend language
      */
     public static function getLanguage() {
+        // use language set via ?lang=, if set
+        if (!empty($_GET['lang'])) return substr($_GET['lang'],0,2);
+        // otherwise use user preference, or browser language
         if (self::getUser()->isLoggedIn()) {
             return self::getUser()->getLanguage();
         } else {
             return isset($_SESSION['dw-lang']) ? $_SESSION['dw-lang'] : self::getBrowserLocale();
         }
-        // TODO: load user setting from database for logged users
     }
 
     /**
