@@ -281,7 +281,7 @@
         $("a[data-toggle='fullscreen']").click(function(e) {
             if (fullScreenApi.supportsFullScreen) {
                 e.preventDefault();
-                $('.chart').requestFullScreen();
+                $('html').requestFullScreen();
             }
         });
 
