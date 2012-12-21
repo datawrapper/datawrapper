@@ -1,7 +1,8 @@
 {
     "title": "Playfair",
     "link": "http://www.datawrapper.de",
+    "extends": "default",
     "restricted": null,
     "locale": "de_DE",
-    "version": "0.2.3"
+    "version": "0.2.4"
 }
