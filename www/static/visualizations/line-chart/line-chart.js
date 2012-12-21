@@ -33,7 +33,7 @@
             me.init();
 
             c = me.initCanvas({
-                h: thumb ? $('.chart').height()-40 : h,
+                h: thumb ? h : h,
                 bpad: thumb ? 0 : me.get('rotate-x-labels') ? bpad + 20 : bpad
             });
 
