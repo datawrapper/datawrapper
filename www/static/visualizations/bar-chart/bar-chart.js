@@ -19,7 +19,7 @@
             reverse = me.get('reverse-order'),
             useNegativeColor = me.get('negative-color', false),
             c = me.initCanvas({
-                h: Math.max(me.getMaxChartHeight(el)  - me.theme.vpadding, 18 * 1.35 * me.chart.dataSeries().length)
+                h: Math.max(me.getSize()[1]  - me.theme.vpadding, 18 * 1.35 * me.chart.dataSeries().length)
             });
 
             var
