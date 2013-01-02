@@ -244,12 +244,12 @@
 
             // highest priority for user-defined series colors
             var userCustomColors = me.get('custom-colors', {});
-            if (userCustomColors[series.name]) {
+            if (series && userCustomColors[series.name]) {
                 color = userCustomColors[series.name];
-            } else if (useNegativeColor) {  // use a different color, if set via setSeriesColor
+            } else if (series && useNegativeColor) {  // use a different color, if set via setSeriesColor
                 color = me.theme.colors[series.data[row] < 0 ? 'negative' : 'positive'];
             } else {
-                if (me.__customSeriesColors && me.__customSeriesColors[series.name])
+                if (series && me.__customSeriesColors && me.__customSeriesColors[series.name])
                     color = me.__customSeriesColors[series.name];
                 else if (me.__customRowColors && me.__customRowColors[row])
                     color = me.__customRowColors[row];
