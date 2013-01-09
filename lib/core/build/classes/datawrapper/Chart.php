@@ -167,6 +167,7 @@ class Chart extends BaseChart {
     public function getMetadata($key = null) {
         $default = Chart::defaultMetaData();
         $meta = json_decode(parent::getMetadata(), true);
+        if (!is_array($meta)) $meta = array();
         $meta = array_merge_recursive_simple($default, $meta);
         if (empty($key)) return $meta;
         $keys = explode('.', $key);
