@@ -590,6 +590,8 @@
                         left: me.__scales.x(row) - lbl.outerWidth() * 0.5,
                         top: me.__scales.y(s.data[row]) - lbl.outerHeight() * 0.5
                     });
+                if (isNaN(s.data[row])) lbl.hide();
+                else lbl.show();
             });
 
             return;
