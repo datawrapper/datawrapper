@@ -12,8 +12,9 @@
     {% if innersvg %}
     <script type="text/javascript" src="/static/vendor/innersvg/innersvg.js"></script>
     <style>
-        body { padding: 0!important;}
-
+        body { padding: 0!important; }
+        html, body { overflow: hidden; }
+        .label { display: none!important;}
     </style>
     {% endif %}
 
@@ -42,6 +43,7 @@
             margin: 0;
             padding: 50px 100px;
             width: 100%;
+            background: #fff;
             overflow: hidden;
         }
 
@@ -61,11 +63,13 @@
 
         .fullscreen h1 {
             font-size: 36px;
-            margin: 0 0 30px;
+            margin: 0 200px 30px 0
         }
 
         .fullscreen p {
             font-size: 15px;
+            margin-right: 200px!important;
+
         }
 
         .fullscreen .logo {
@@ -143,6 +147,22 @@
             right: 4px;
         }
 
+        .logo .big {
+            display: none;
+        }
+
+        .fullscreen .logo .big {
+            display: inline;
+        }
+
+        .fullscreen .logo .small {
+            display: none;
+        }
+
+        html .chart.plain #footer {
+            height: 10px;
+        }
+
     </style>
 
 {% for src in scripts %}
@@ -157,13 +177,50 @@
     <script type="text/javascript">
     $(function() {
 
+        function getMaxChartHeight (el) {
+            function margin(el, type) {
+                if ($(el).css('margin-' + type) == 'auto') return 0;
+                return +$(el).css('margin-' + type).replace('px', '');
+            }
+            var ch = 0, bottom = 0; // summed height of children, 10px for top & bottom margin
+            $('body > *').each(function(i, el) {
+                var t = el.tagName.toLowerCase();
+                if (t != 'script' && el.id != 'chart' && !$(el).hasClass('tooltip') && !$(el).hasClass('container')) {
+                    ch += $(el).outerHeight(false); // element height
+                }
+                ch += Math.max(margin(el, 'top'), bottom);
+                bottom = margin(el, 'bottom');
+            });
+            ch += bottom;
+            // subtract body padding
+            //ch += $('body').innerHeight() - $('body').height();
+            var mt = $('#chart').css('margin-top').replace('px', ''),
+                mb = $('#chart').css('margin-bottom').replace('px', ''),
+                maxH = $(window).height() - ch - 2;
+            // IE Fix
+            if ($.browser.msie) maxH -= 10;
+            maxH -= $('body').css('padding-top').replace('px', '');
+            maxH -= $('body').css('padding-bottom').replace('px', '');
+            return maxH;
+        }
+
         function loadChart() {
             // clean chart
             $('#chart').html('');
             $('#header .legend').remove();
             //$('.container').height($(window).height());
             // initialize theme
-            var theme = Datawrapper.Themes.{{ theme.id | classify }};
+            var theme = Datawrapper.Themes.{{ theme.id | classify }},
+                thumb = false;
+            {% if thumb %}
+            theme.padding.bottom = 0;
+            theme.padding.top = 0;
+            theme.padding.left = 0;
+            theme.padding.left = 0;
+            theme.vpadding = 0;
+            theme.hpadding = 0;
+            thumb = true;
+            {% endif %}
             // initialize chart
             var chart = new Datawrapper.Chart(JSON.parse('{{ chart.toJSON | raw }}'));
             chart.setLocale('{{ chartLocale }}', {{ metricPrefix | json | raw }});
@@ -173,19 +230,20 @@
 
             // compute chart dimensions
             var w = $('#chart').innerWidth(),
-                h = vis.getMaxChartHeight($('#chart'));
-            if (w <= 350) {  // no padding for thumbnails
-                theme.vpadding = 10;
-                theme.hpadding = 0;
-            }
+                h = getMaxChartHeight($('#chart'));
+
             if ($.browser.msie) w -= 10; // IE Fix
             w -= $('body').css('padding-left').replace('px', '');
             w -= $('body').css('padding-right').replace('px', '');
 
-            vis.setTheme(theme).setSize(w - theme.hpadding*2, h - theme.vpadding);
+            vis.setTheme(theme)
+                .setSize(w - theme.hpadding*2, h - theme.vpadding);
 
             vis.load(chart, function() {
-                vis.render('#chart');
+                vis.render('#chart', thumb);
+                if (thumb) {
+                   $('.label').remove();
+                }
             });
             window.vis = vis;
         }
@@ -224,19 +282,18 @@
         $("a[data-toggle='fullscreen']").click(function(e) {
             if (fullScreenApi.supportsFullScreen) {
                 e.preventDefault();
-                $('.chart').requestFullScreen();
+                $('html').requestFullScreen();
             }
         });
 
     });
     </script>
 </head>
-<body class="chart{% if fullscreen %} fullscreen{% endif %}">
+<body class="chart{% if fullscreen %} fullscreen{% endif %}{% if plain %} plain{% endif %}">
     {# some convenient short cuts for theme templates #}
     {% set title = chart.title %}{% set intro = chart.metadata.describe.intro %}{% set source = chart.metadata.describe['source-name'] %}{% set sourceURL = chart.metadata.describe['source-url'] %}
 
     {% include theme.hasTemplate ? 'themes/' ~ theme.id ~ '.twig' : 'themes/default.twig' %}
-
     {{ trackingCode | raw }}
 </body>
 </html>

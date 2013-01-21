@@ -57,4 +57,30 @@
     <column name="metric" type="varchar" required="true" />
     <column name="value" type="integer" required="true" />
   </table>
+
+  <!-- user sessions -->
+  <table name="session" phpName="Session">
+    <column name="session_id" type="varchar" size="32" required="true" primaryKey="true" />
+    <column name="date_created" type="timestamp" required="true" />
+    <column name="last_updated" type="timestamp" required="true" />
+    <column name="session_data" type="varchar" size="4096" required="true" />
+  </table>
+
+  <!-- chart export job queue -->
+  <table name="job" phpName="Job">
+    <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+    <column name="user_id" type="integer" required="true"/>
+    <foreign-key foreignTable="user">
+      <reference local="user_id" foreign="id"/>
+    </foreign-key>
+    <column name="chart_id" type="varchar" size="5" required="true" />
+    <foreign-key foreignTable="chart">
+      <reference local="chart_id" foreign="id"/>
+    </foreign-key>
+    <column name="status" type="enum" valueSet="queued,done" required="true" default="queued" />
+    <column name="created_at" type="timestamp" required="true" />
+    <column name="done_at" type="timestamp" required="true" />
+    <column name="type" type="varchar" size="32" required="true" />
+    <column name="parameter" type="varchar" size="4096" required="true" />
+  </table>
 </database>

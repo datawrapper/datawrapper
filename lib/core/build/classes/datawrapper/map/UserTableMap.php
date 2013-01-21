@@ -66,6 +66,7 @@ class UserTableMap extends TableMap
 	{
 		$this->addRelation('Chart', 'Chart', RelationMap::ONE_TO_MANY, array('id' => 'author_id', ), null, null, 'Charts');
 		$this->addRelation('Action', 'Action', RelationMap::ONE_TO_MANY, array('id' => 'user_id', ), null, null, 'Actions');
+		$this->addRelation('Job', 'Job', RelationMap::ONE_TO_MANY, array('id' => 'user_id', ), null, null, 'Jobs');
 	} // buildRelations()
 
 } // UserTableMap

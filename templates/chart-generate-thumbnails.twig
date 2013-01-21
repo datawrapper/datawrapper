@@ -91,16 +91,17 @@ $(function() {
 
     function snapshot(id, width, height, callback) {
         // 1. make iframe and load chart
-        var iframe = $('<iframe />');
+        var iframe = $('<iframe allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen />');
         iframe.attr({
-            src: '/chart/{{ chart.id }}/?plain=1&innersvg=1'
+            src: '/chart/{{ chart.id }}/?plain=1&innersvg=1&t=1'
         });
         iframe.css({
             position: 'absolute',
             top: 0,
             left: -4000,
             width: width+'px',
-            height: (height)+'px'
+            height: (height)+'px',
+            overflow: 'hidden'
         });
         $('body').append(iframe);
         // 2.
@@ -139,7 +140,7 @@ $(function() {
             ctx.fillStyle = iframe.get(0).contentWindow.vis.theme.colors.background;
             ctx.fillRect(0, 0, width, height);
 
-            ctx.drawSvg($('svg', body).get(0).innerSVG, 0.5,0.5, width, $('svg', body).height());
+            ctx.drawSvg($('svg', body).get(0).innerSVG, 0.5,0.5, width, height);
 
             //canvg('canvas', $('svg', body).get(0).innerSVG);
             /*$('.label', body).each(function(i, lbl) {

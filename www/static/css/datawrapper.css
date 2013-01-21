@@ -102,6 +102,24 @@ body.de .teaser-h2, body.fr .teaser-h2, body.es .teaser-h2 {
     margin-top: 9px;
 }
 
+html .navbar li {
+  line-height: 26px;
+}
+
+html .navbar .nav > li > a {
+  padding-top: 13px;
+  padding-bottom: 12px;
+}
+
+html h2 {
+    font-size: 24px;
+    line-height: 36px;
+}
+html h3 {
+    font-size: 18px;
+    line-height: 27px;
+}
+
 #recent-charts {
     list-style: none;
     height: 200px;

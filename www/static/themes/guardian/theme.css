@@ -187,3 +187,40 @@ svg .axis, svg .tick, svg .grid, svg rect {
 #datatable tbody tr:hover {
     background: #dbdbdb;
 }
+
+.embed-code {
+    position: absolute;
+    bottom: 40px;
+    left: 0;
+    width: 370px;
+    padding: 15px;
+    background: #eee;
+    color: #000;
+    border-radius: 6px;
+    text-transform: none;
+    font-size: 12px;
+    box-shadow: 2px 2px 0px rgba(0,0,0,.4);
+}
+
+.embed-code textarea {
+    width: 360px;
+    margin-top: 8px;
+    height: 7em;
+}
+
+.hide {
+    display: none;
+}
+
+.embed-code .close {
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    font-size: 18px;
+    opacity: 0.7;
+}
+
+.embed-code .close:hover {
+    opacity: 1;
+}

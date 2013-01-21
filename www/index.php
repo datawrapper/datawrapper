@@ -15,7 +15,7 @@ if ($GLOBALS['dw_config']['debug'] == true) {
     ini_set('display_errors', 1);
 }
 
-define('DATAWRAPPER_VERSION', '1.1 pre-alpha');
+define('DATAWRAPPER_VERSION', '1.1');
 
 // Require the Slim PHP 5 Framework
 require '../vendor/Slim/Slim.php';
@@ -127,10 +127,12 @@ function add_header_vars(&$page, $active = null) {
         'icon' => 'font'
     );
     if ($user->isLoggedIn()) {
+        $shortenedMail = $user->getEmail();
+        $shortenedMail = strlen($shortenedMail) > 18 ? substr($shortenedMail, 0, 9).'...'.substr($shortenedMail, strlen($shortenedMail)-9) : $shortenedMail;
         $headlinks[] = array(
             'url' => '#user',
             'id' => 'user',
-            'title' => $user->getEmail(),
+            'title' => $shortenedMail,
             'icon' => 'user',
             'dropdown' => array(array(
                 'url' => '/account/settings',

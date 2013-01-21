@@ -164,11 +164,16 @@ class Chart extends BaseChart {
     /**
      * returns the chart meta data
      */
-    public function getMetadata() {
+    public function getMetadata($key = null) {
         $default = Chart::defaultMetaData();
         $meta = json_decode(parent::getMetadata(), true);
+        if (!is_array($meta)) $meta = array();
         $meta = array_merge_recursive_simple($default, $meta);
-        return $meta;
+        if (empty($key)) return $meta;
+        $keys = explode('.', $key);
+        $p = $meta;
+        foreach ($keys as $key) $p = $p[$key];
+        return $p;
     }
 
     public function isPublic() {

@@ -98,6 +98,7 @@ require_once '../../lib/utils/get_module.php';
 require_once '../../lib/api/users.php';
 require_once '../../lib/api/auth.php';
 require_once '../../lib/api/charts.php';
+require_once '../../lib/api/jobs.php';
 require_once '../../lib/api/visualizations.php';
 require_once '../../lib/api/github-deployment.php';
 require_once '../../lib/api/wordpress-deployment.php';

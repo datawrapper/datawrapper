@@ -355,6 +355,16 @@ $app->post('/charts/:id/publish/css', function($chart_id) use ($app) {
                 $all .= file_get_contents('..' . $css)."\n\n";
             }
 
+            // move @imports to top of file
+            $imports = array();
+            $body = "";
+            $lines = explode("\n", $all);
+            foreach($lines as $line) {
+                if (substr($line, 0, 7) == '@import') $imports[] = $line;
+                else $body .= $line."\n";
+            }
+            $all = implode("\n", $imports) . "\n\n" . $body;
+
             $cssmin = new CSSmin();
             $minified = $all; //$cssmin->run($all);
             file_put_contents($static_path . "/" . $chart->getID() . '.min.css', $minified);

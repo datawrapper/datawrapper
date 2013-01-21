@@ -142,8 +142,9 @@
             var l, w, align, h, va;
             if (attrs === undefined) attrs = {};
             if (attrs.root === undefined) attrs.root = this.__canvas.root;
+            l = $('<div class="label'+(attrs.cl ? ' '+attrs.cl : '')+'"><span>'+txt+'</span></div>');
+            if (attrs.css) l.css(attrs.css);
             if (attrs.rotate == -90) {
-                l = $('<div class="label'+(attrs.cl ? ' '+attrs.cl : '')+'"><span>'+txt+'</span></div>');
                 w = 60;
                 l.css({
                     position: 'absolute',
@@ -152,8 +153,7 @@
                     width: w,
                     height: 20,
                     'text-align': 'right'
-                });
-                l.css({
+                }).css({
                     '-moz-transform': 'rotate(-90deg)',
                     '-webkit-transform': 'rotate(-90deg)',
                     '-ms-transform': 'rotate(-90deg)',
@@ -163,7 +163,6 @@
                 attrs.root.append(l);
             } else {
                 va = attrs.valign;
-                l = $('<div class="label'+(attrs.cl ? ' '+attrs.cl : '')+'"><span>'+txt+'</span></div>');
                 w = attrs.w ? attrs.w : this.labelWidth(txt, attrs.cl);
                 align = attrs.align ? attrs.align : 'left';
                 x = align == 'left' ? x : align == 'center' ? x - w * 0.5 : x - w;
@@ -245,12 +244,12 @@
 
             // highest priority for user-defined series colors
             var userCustomColors = me.get('custom-colors', {});
-            if (userCustomColors[series.name]) {
+            if (series && userCustomColors[series.name]) {
                 color = userCustomColors[series.name];
-            } else if (useNegativeColor) {  // use a different color, if set via setSeriesColor
+            } else if (series && useNegativeColor) {  // use a different color, if set via setSeriesColor
                 color = me.theme.colors[series.data[row] < 0 ? 'negative' : 'positive'];
             } else {
-                if (me.__customSeriesColors && me.__customSeriesColors[series.name])
+                if (series && me.__customSeriesColors && me.__customSeriesColors[series.name])
                     color = me.__customSeriesColors[series.name];
                 else if (me.__customRowColors && me.__customRowColors[row])
                     color = me.__customRowColors[row];
@@ -313,7 +312,7 @@
         invertLabel: function(col) {
             var c = d3.cie.lch(d3.rgb(col)),
                 bg = d3.cie.lch(d3.rgb(this.theme.colors.background));
-            return bg.l > 60 ? c.l < 60 : c.l > 60;
+            return bg.l > 60 ? c.l < 70 : c.l > 60;
         }
 
     });

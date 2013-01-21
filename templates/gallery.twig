@@ -72,7 +72,7 @@ $(function(){
 
             if (res.status == "ok") {
                 var chart = res.data,
-                    chartIframe = $('<iframe src="http://{{ DW_CHART_CACHE_DOMAIN }}/' + chart.id + '"></iframe>'),
+                    chartIframe = $('<iframe src="http://{{ DW_CHART_CACHE_DOMAIN }}/' + chart.id + '" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>'),
                     wrapper = $('<div></div>'),
                     overlay = wrapper.overlay({
                         onClose: function() {

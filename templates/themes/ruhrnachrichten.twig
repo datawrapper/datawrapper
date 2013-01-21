@@ -13,23 +13,21 @@
 
 <div id="chart"></div>
 
-{% if not plain %}
 <div id="footer">
-
+    {% if not plain %}
     <div class="footer-left">
         <div style="padding-bottom:3px" >
             {% if source %}
             {% trans "Source: " %}
-                {% if sourceURL %}<a target="_blank" href="{{ sourceURL }}">{% endif %}{{ source }}{% if sourceURL %}</a>{% endif %}, 
-            {% endif %}
-            <a href="">{% trans "Get the data" %}</a>
+                {% if sourceURL %}<a target="_blank" href="{{ sourceURL }}">{% endif %}{{ source }}{% if sourceURL %}</a>{% endif %}
+            ({% endif %}<a href="data">Daten</a>{% if source %}){% endif %}
         </div>
     </div>
     <a class="logo" href="http://ruhrnachrichten.de" target="_blank">
-        <img src="{{ ASSET_PATH }}logo-bw.png" alt="Ruhrnachrichten" width="115" height="18" />
+        <img src="{{ ASSET_PATH }}logo-bw.png" class="small" alt="Ruhrnachrichten" width="115" height="18" />
+        <img src="{{ ASSET_PATH }}logo-bw-big.png" class="big" alt="Ruhrnachrichten" />
     </a>
-
     <br class="clearfix" />
+    {% endif %}
 </div>
 
-{% endif %}

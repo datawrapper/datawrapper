@@ -91,5 +91,47 @@ CREATE TABLE `stats`
 	PRIMARY KEY (`id`)
 ) ENGINE=MyISAM;
 
+-- ---------------------------------------------------------------------
+-- session
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `session`;
+
+CREATE TABLE `session`
+(
+	`session_id` VARCHAR(32) NOT NULL,
+	`date_created` DATETIME NOT NULL,
+	`last_updated` DATETIME NOT NULL,
+	`session_data` VARCHAR(4096) NOT NULL,
+	PRIMARY KEY (`session_id`)
+) ENGINE=MyISAM;
+
+-- ---------------------------------------------------------------------
+-- job
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `job`;
+
+CREATE TABLE `job`
+(
+	`id` INTEGER NOT NULL AUTO_INCREMENT,
+	`user_id` INTEGER NOT NULL,
+	`chart_id` VARCHAR(5) NOT NULL,
+	`status` TINYINT DEFAULT 0 NOT NULL,
+	`created_at` DATETIME NOT NULL,
+	`done_at` DATETIME NOT NULL,
+	`type` VARCHAR(32) NOT NULL,
+	`parameter` VARCHAR(4096) NOT NULL,
+	PRIMARY KEY (`id`),
+	INDEX `job_FI_1` (`user_id`),
+	INDEX `job_FI_2` (`chart_id`),
+	CONSTRAINT `job_FK_1`
+		FOREIGN KEY (`user_id`)
+		REFERENCES `user` (`id`),
+	CONSTRAINT `job_FK_2`
+		FOREIGN KEY (`chart_id`)
+		REFERENCES `chart` (`id`)
+) ENGINE=MyISAM;
+
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;

@@ -5,13 +5,12 @@
  *
  */
 
-body.chart {
+body {
     font-family: arial,sans-serif;
     font-weight: 400;
     line-height: 15px;
     color: #333;
     font-size: 10px;
-    background: #fff;
     overflow: visible;
     overflow-x: hidden;
     padding: 4px 5px 0;
@@ -97,11 +96,16 @@ p {
 #footer {
     margin: 20px 0px 0px;
     padding-top: 5px;
-    padding-bottom: 5px;
+    padding-bottom: 0px;
     clear: both;
     color: #777;
     font-size: 11px;
-    height: 18px;
+    height: 28px;
+}
+
+.chart.fullscreen #footer {
+    height: 40px;
+    font-size: 15px;
 }
 
 #footer a {
@@ -111,51 +115,15 @@ p {
 
 .footer-left {
     float: left;
+    margin-right: 120px;
 }
 .footer-right {
     float: right;
 }
 
-.clearfix:after {
-    content: ".";
-    display: block;
-    clear: both;
-    visibility: hidden;
-    line-height: 0;
-    height: 0;
-}
-
-.clearfix {
-    display: inline-block;
-}
-
-html[xmlns] .clearfix {
-    display: block;
-}
-
-* html .clearfix {
-    height: 1%;
-}
 
 svg .axis, svg .tick, svg .grid, svg rect {
     shape-rendering: crispEdges;
-}
-
-@media screen and (max-width: 350px) {
-    h1, #footer, p, .label {
-        display: none;
-        position: absolute;
-        height: 0;
-        width: 0;
-        padding: 0;
-        margin: 0;
-    }
-
-    #chart {
-        margin: 0;
-    }
-
-    body { margin:0; padding: 0;}
 }
 
 .label.rotate90 {
