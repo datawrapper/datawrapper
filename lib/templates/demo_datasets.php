@@ -92,12 +92,12 @@ Bündnis 90/Die Grünen	36	32
             'metadata.data.vertical-header' => true,
             'metadata.visualize.sort-values' => true
         ),
-        'data' => "Fraktion Abgeordnete
-CDU/CSU 237
-SPD 146
-FDP 93
-DIE LINKE.  76
-BÜNDNIS 90/DIE GRÜNEN   68"
+        'data' => "Fraktion\tAbgeordnete
+CDU/CSU\t237
+SPD\t146
+FDP\t93
+DIE LINKE.\t76
+BÜNDNIS 90/DIE GRÜNEN\t68"
     );
 
     $datasets[] = array(
