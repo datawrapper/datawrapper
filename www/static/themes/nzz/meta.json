@@ -6,6 +6,6 @@
     "extends": "default",
     "default_width": 643,
     "restrict": null,
-    "version": "0.0.1",
-    "assets": ["nzz-logo.png"]
+    "version": "0.0.2",
+    "assets": ["nzz-logo-big.png", "nzz-logo-small.png"]
 }

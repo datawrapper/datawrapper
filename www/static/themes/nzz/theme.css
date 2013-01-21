@@ -6,7 +6,7 @@
  */
 
 body.chart {
-    font-family: georgia;
+    font-family: arial,sans-serif;
     font-weight: 400;
     line-height: 15px;
     color: #333;
@@ -19,7 +19,6 @@ body.chart {
 }
 
 h1 {
-    font-family: arial,sans-serif;
     font-size: 18px;
     font-weight: bold;
     margin: 0 0 10px;
