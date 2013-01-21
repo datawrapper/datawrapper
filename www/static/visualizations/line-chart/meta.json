@@ -94,7 +94,7 @@
                 "de": "Beschriftungen um 45° drehen",
                 "fr": "Pivoter les étiquettes de 45°"
             },
-            "default": true
+            "default": false
         },
         "baseline-zero": {
             "type": "checkbox",

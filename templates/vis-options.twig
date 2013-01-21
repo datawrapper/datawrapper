@@ -159,6 +159,9 @@ $(function() {
 
     function syncVisOptions(vis) {
         _.each(vis.options, function(opt, key) {
+            if (chart.get('metadata.visualize.'+key) == undefined){
+                chart.set('metadata.visualize.'+key, opt.default);
+            }
             if (opt.type == 'radio') {
                 chart.sync('input[name='+key+']', 'metadata.visualize.'+key);
             } else {
