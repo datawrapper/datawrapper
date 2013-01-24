@@ -18,7 +18,7 @@ $app->post('/github', function() use ($app) {
         // mail($GLOBALS['dw_config']['log_email'], 'Datawrapper Github Push!', "REMOTE_ADDR: " . $_SERVER['REMOTE_ADDR'] . "\n\n" . $app->request()->post('payload'), $headers);
 
         // check if the request comes from github server
-        $github_ips = array('207.97.227.253', '50.57.128.197', '108.171.174.178');
+        $github_ips = array('207.97.227.253', '50.57.128.197', '108.171.174.178', '50.57.231.61');
         if (in_array($_SERVER['REMOTE_ADDR'], $github_ips)) {
             // check wether the push came from the right repository
             if ($payload->repository->url == $GLOBALS['dw_config']['github']['repo'] && $payload->ref == 'refs/heads/' . $GLOBALS['dw_config']['github']['branch']) {
