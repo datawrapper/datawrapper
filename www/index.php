@@ -104,7 +104,10 @@ function add_header_vars(&$page, $active = null) {
     } else {
         $headlinks[] = array('url' => '/gallery/', 'id' => 'gallery', 'title' => _('Gallery'), 'icon' => 'signal');
     }
-    $headlinks[] = array('url' => '/docs', 'id' => 'about', 'title' => _('About'), 'icon' => 'info-sign');
+    if (!empty($GLOBALS['dw_config']['wordpress'])) {
+        // only show "about" link if we're connected to a CMS
+        $headlinks[] = array('url' => '/docs', 'id' => 'about', 'title' => _('About'), 'icon' => 'info-sign');
+    }
     $headlinks[] = array('url' => 'http://blog.datawrapper.de', 'id' => 'blog', 'title' => _('Blog'), 'icon' => 'tag');
 
     $headlinks[] = array(

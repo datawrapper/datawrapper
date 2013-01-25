@@ -1,6 +1,11 @@
 <?php
 
-require_once '../templates/imported/pages.inc.php';
+$doc_page_file = '../templates/imported/pages.inc.php';
+if (!file_exists($doc_page_file)) {
+    $docs_pages = array();
+} else {
+    require_once $doc_page_file;
+}
 
 function add_docs_vars(&$page, $active_url) {
     global $docs_pages;
