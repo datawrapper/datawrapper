@@ -91,6 +91,7 @@ if (!empty($GLOBALS['dw_config']['publish']) && !empty($GLOBALS['dw_config']['pu
 function add_header_vars(&$page, $active = null) {
     // define the header links
     global $app;
+    $config = $GLOBALS['dw_config'];
     if (!isset($active)) {
         $active = explode('/', $app->request()->getResourceUri());
         $active = $active[1];
@@ -104,11 +105,15 @@ function add_header_vars(&$page, $active = null) {
     } else {
         $headlinks[] = array('url' => '/gallery/', 'id' => 'gallery', 'title' => _('Gallery'), 'icon' => 'signal');
     }
-    if (!empty($GLOBALS['dw_config']['wordpress'])) {
+    if (!empty($config['wordpress'])) {
         // only show "about" link if we're connected to a CMS
         $headlinks[] = array('url' => '/docs', 'id' => 'about', 'title' => _('About'), 'icon' => 'info-sign');
     }
-    $headlinks[] = array('url' => 'http://blog.datawrapper.de', 'id' => 'blog', 'title' => _('Blog'), 'icon' => 'tag');
+    if (!empty($config['blog'])) {
+        // only show "blog" link if configured
+        $headlinks[] = array('url' => $config['blog'], 'id' => 'blog', 'title' => _('Blog'), 'icon' => 'tag');
+    }
+
 
     $headlinks[] = array(
         'url' => '',
