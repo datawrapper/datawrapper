@@ -14,11 +14,11 @@ msgstr ""
 "X-Poedit-SearchPath-0: /Users/gka/clients/datawrapper/1.0/scripts/"
 "tmpl_cache\n"
 
-#: ../controller/docs.php:36 ../controller/docs.php:52
+#: ../controller/docs.php:41 ../controller/docs.php:57
 msgid "Sorry, but this content is not available in your language, yet."
 msgstr "Dieser Inhalt ist leider noch nicht in dieser Sprache verfügbar."
 
-#: ../controller/docs.php:52
+#: ../controller/docs.php:57
 msgid "Not found"
 msgstr "Seite nicht gefunden"
 
@@ -137,23 +137,27 @@ msgstr "Eine Million"
 msgid "1 billion"
 msgstr "Eine Milliarde"
 
-#: ../scripts/tmpl_cache/chart-describe.twig.php:317
+#: ../scripts/tmpl_cache/chart-describe.twig.php:312
+msgid "One Percent"
+msgstr "Ein Prozent"
+
+#: ../scripts/tmpl_cache/chart-describe.twig.php:323
 msgid "Credit the source"
 msgstr "Quelle benennen"
 
-#: ../scripts/tmpl_cache/chart-describe.twig.php:322
+#: ../scripts/tmpl_cache/chart-describe.twig.php:328
 msgid "Who published the data in the first place?"
 msgstr "Wer hat die Daten zuerst veröffentlicht?"
 
-#: ../scripts/tmpl_cache/chart-describe.twig.php:329
+#: ../scripts/tmpl_cache/chart-describe.twig.php:335
 msgid "If possible, please provide a link the source data"
 msgstr "Falls möglich, gib bitte einen Link zur Datenquelle"
 
-#: ../scripts/tmpl_cache/chart-describe.twig.php:335
+#: ../scripts/tmpl_cache/chart-describe.twig.php:341
 msgid "Annotate data"
 msgstr "Daten "
 
-#: ../scripts/tmpl_cache/chart-describe.twig.php:339
+#: ../scripts/tmpl_cache/chart-describe.twig.php:345
 msgid ""
 "To make the data more useful for your readers you can add details to "
 "individual data points or an entire series. This information will be "
@@ -163,32 +167,32 @@ msgstr ""
 "zu Datenpunkten oder ganzen Datenreihen hinzufügen. Dies wird in den "
 "Diagrammen dargestellt."
 
-#: ../scripts/tmpl_cache/chart-describe.twig.php:341
+#: ../scripts/tmpl_cache/chart-describe.twig.php:347
 msgid "Learn more"
 msgstr "Mehr erfahren"
 
-#: ../scripts/tmpl_cache/chart-describe.twig.php:345
+#: ../scripts/tmpl_cache/chart-describe.twig.php:351
 msgid "Annotate series"
 msgstr "Datenreihe kommentieren"
 
-#: ../scripts/tmpl_cache/chart-describe.twig.php:347
+#: ../scripts/tmpl_cache/chart-describe.twig.php:353
 msgid "Annotate data point"
 msgstr "Datenpunkt kommentieren"
 
-#: ../scripts/tmpl_cache/chart-describe.twig.php:353 ../www/index.php:193
+#: ../scripts/tmpl_cache/chart-describe.twig.php:359 ../www/index.php:201
 msgid "Visualize"
 msgstr "Visualisieren"
 
-#: ../scripts/tmpl_cache/chart-describe.twig.php:357
+#: ../scripts/tmpl_cache/chart-describe.twig.php:363
 #: ../scripts/tmpl_cache/chart-visualize.twig.php:526
 msgid "Back"
 msgstr "Zurück"
 
-#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:279
+#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:280
 msgid "Publishing chart..."
 msgstr "Visualisierung wird veröffentlicht..."
 
-#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:284
+#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:285
 msgid ""
 "Please hold on a second while your chart is being published. Try not to "
 "close this page.."
@@ -196,47 +200,47 @@ msgstr ""
 "Bitte einen Moment gedulden während dein Diagramm veröffentlicht wird. "
 "Versuche diese Seite nicht zu schließen…"
 
-#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:293
+#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:294
 msgid "Finished."
 msgstr "Fertig."
 
-#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:301
+#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:302
 msgid "Generating static HTML page"
 msgstr "Erzeuge statische HTML-Seite"
 
-#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:305
+#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:306
 msgid "Generated static HTML page"
 msgstr "Statische HTML-Seite erzeugt"
 
-#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:310
+#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:311
 msgid "Packing and crunching JavaScript"
 msgstr "JavaScript zusammenfassen und komprimieren"
 
-#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:314
+#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:315
 msgid "Packed and minified JavaScript"
 msgstr "JavaScript zusammengefasst und komprimiert"
 
-#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:319
+#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:320
 msgid "Packing and crunching stylesheets"
 msgstr "Stylesheets zusammenfassen und komprimieren"
 
-#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:323
+#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:324
 msgid "Packed and minified stylesheets"
 msgstr "Stylesheets zusammengefasst und komprimiert"
 
-#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:328
+#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:329
 msgid "Publishing chart data"
 msgstr "Veröffentliche Daten"
 
-#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:332
+#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:333
 msgid "Published chart data"
 msgstr "Diagrammdaten veröffentlicht"
 
-#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:337
+#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:338
 msgid "Generating chart thumbnails"
 msgstr "Erzeuge Vorschaubilder"
 
-#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:341
+#: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:342
 msgid "Generated Thumbnails"
 msgstr "Vorschaubilder erzeugt"
 
@@ -722,7 +726,7 @@ msgstr "\"Wrap\" nochmal!"
 
 #: ../scripts/tmpl_cache/home-login.twig.php:66
 #: ../scripts/tmpl_cache/mycharts.twig.php:52
-#: ../scripts/tmpl_cache/utils.twig.php:251 ../www/index.php:103
+#: ../scripts/tmpl_cache/utils.twig.php:251 ../www/index.php:104
 msgid "My Charts"
 msgstr "Meine Diagramme"
 
@@ -730,7 +734,7 @@ msgstr "Meine Diagramme"
 msgid "See what you created so far."
 msgstr "Schau dir an, was du bisher erstellt hast."
 
-#: ../scripts/tmpl_cache/home-login.twig.php:74 ../www/index.php:140
+#: ../scripts/tmpl_cache/home-login.twig.php:74 ../www/index.php:148
 msgid "Settings"
 msgstr "Einstellungen"
 
@@ -738,7 +742,7 @@ msgstr "Einstellungen"
 msgid "Edit your personal information."
 msgstr "Ändere deine persönlichen Daten"
 
-#: ../scripts/tmpl_cache/home-login.twig.php:80 ../www/index.php:144
+#: ../scripts/tmpl_cache/home-login.twig.php:80 ../www/index.php:152
 msgid "Logout"
 msgstr "Ausloggen"
 
@@ -1195,17 +1199,13 @@ msgid "Congrats! Your password has been changed."
 msgstr "Glückwunsch! Dein Passwort wurde geändert."
 
 #: ../scripts/tmpl_cache/themes__avenir.twig.php:67
-#: ../scripts/tmpl_cache/themes__berliner-zeitung.twig.php:67
 #: ../scripts/tmpl_cache/themes__default.twig.php:80
-#: ../scripts/tmpl_cache/themes__der-standard.twig.php:67
 #: ../scripts/tmpl_cache/themes__deutsche-welle.twig.php:59
 #: ../scripts/tmpl_cache/themes__ruhrnachrichten.twig.php:71
 msgid "Source: "
 msgstr "Quelle:"
 
 #: ../scripts/tmpl_cache/themes__avenir.twig.php:94
-#: ../scripts/tmpl_cache/themes__berliner-zeitung.twig.php:94
-#: ../scripts/tmpl_cache/themes__der-standard.twig.php:94
 #: ../scripts/tmpl_cache/themes__deutsche-welle.twig.php:87
 #: ../scripts/tmpl_cache/themes__le-monde.twig.php:98
 msgid "Download data"
@@ -1215,7 +1215,7 @@ msgstr "Daten speichern "
 msgid "Created with"
 msgstr "Erstellt mit "
 
-#: ../scripts/tmpl_cache/utils.twig.php:234 ../www/index.php:159
+#: ../scripts/tmpl_cache/utils.twig.php:234 ../www/index.php:167
 msgid "Login / Sign Up"
 msgstr "Einloggen / Anmelden"
 
@@ -1276,39 +1276,39 @@ msgstr "Farbwahl zurücksetzen"
 msgid "Reset all colors"
 msgstr "Komplette Farbwahl zurücksetzen"
 
-#: ../www/index.php:101
+#: ../www/index.php:102
 msgid "Create Chart"
 msgstr "Diagramm erstellen"
 
-#: ../www/index.php:105
+#: ../www/index.php:106
 msgid "Gallery"
 msgstr "Galerie"
 
-#: ../www/index.php:107 ../lib/templates/docs-pages.php:5
+#: ../www/index.php:110 ../lib/templates/docs-pages.php:5
 msgid "About"
 msgstr "Über"
 
-#: ../www/index.php:108
+#: ../www/index.php:114
 msgid "Blog"
 msgstr "Blog"
 
-#: ../www/index.php:126
+#: ../www/index.php:134
 msgid "Language"
 msgstr "Sprache"
 
-#: ../www/index.php:152
+#: ../www/index.php:160
 msgid "Admin"
 msgstr "Admin"
 
-#: ../www/index.php:191
+#: ../www/index.php:199
 msgid "Upload Data"
 msgstr "Daten hochladen"
 
-#: ../www/index.php:192
+#: ../www/index.php:200
 msgid "Check & Describe"
 msgstr "Prüfen & Beschreiben"
 
-#: ../www/index.php:194
+#: ../www/index.php:202
 msgid "Publish & Embed"
 msgstr "Veröffentlichen & Einbetten"
 

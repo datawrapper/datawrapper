@@ -449,11 +449,12 @@
                 append = me.get('metadata.describe.number-append', '').replace(' ', '&nbsp;'),
                 prepend = me.get('metadata.describe.number-prepend', '').replace(' ', '&nbsp;');
 
+            if (div !== 0) val = Number(val) / Math.pow(10, div);
             if (format != '-') {
-                var culture = Globalize.culture(me.locale);
-                val = Number(val) / Math.pow(10, div);
                 if (round || val == Math.round(val)) format = format.substr(0,1)+'0';
                 val = Globalize.format(val, format);
+            } else if (div !== 0) {
+                val = val.toFixed(1);
             }
 
             return full ? prepend + val + append : val;
