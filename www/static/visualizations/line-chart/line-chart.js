@@ -30,6 +30,8 @@
             h = me.get('force-banking') ? el.width() / me.computeAspectRatio() : me.getSize()[1],
             c;
 
+            me.__extendRange = me.get('extend-range', false) || me.theme.frame;
+
             me.init();
             c = me.initCanvas({
                 h: thumb ? h : h,
@@ -83,6 +85,8 @@
 
             if (me.theme.frame) {
                 frame().attr({ stroke: false });
+            }
+            if (me.__extendRange) {
                 scales.y = scales.y.nice();
             }
 
@@ -423,7 +427,7 @@
 
         yAxisWidth: function(h) {
             var me = this,
-                ticks = me.getYTicks(h),
+                ticks = me.getYTicks(h, me.__extendRange),
                 maxw = 0;
 
             if (me.__canvas.w <= me.theme.minWidth) return 4;
@@ -442,7 +446,7 @@
                 c = me.__canvas,
                 domain = me.__domain,
                 styles = me.__styles,
-                ticks = me.getYTicks(c.h, me.theme.frame);
+                ticks = me.getYTicks(c.h, me.__extendRange);
 
             if ($('body').hasClass('fullscreen')) {
                 me.theme.horizontalGrid['stroke-width'] = 2;
@@ -450,12 +454,16 @@
 
             _.each(ticks, function(val, t) {
                 var y = yscale(val), x = c.lpad;
-                if (val >= domain[0] && val <= domain[1] || me.theme.frame) {
+                if (val >= domain[0] && val <= domain[1] || me.__extendRange) {
                     // c.paper.text(x, y, val).attr(styles.labels).attr({ 'text-anchor': 'end' });
+
+                    // axis label
                     me.label(x+2, y-10, me.chart.formatValue(val, t == ticks.length-1), { align: 'left', cl: 'axis' });
+                    // axis ticks
                     if (me.theme.yTicks) {
                         me.path([['M', c.lpad-25, y], ['L', c.lpad-20,y]], 'tick');
                     }
+                    // grid line
                     if (me.theme.horizontalGrid) {
                         me.path([['M', c.lpad, y], ['L', c.w - c.rpad,y]], 'grid')
                             .attr(me.theme.horizontalGrid);

@@ -116,6 +116,14 @@
                 "chart.missing_values": true
             }
         },
+        "extend-range": {
+            "type": "checkbox",
+            "label": {
+                "en": "Extend y-range to nice axis ticks",
+                "de": "Erweiterte y-Achse",
+                "fr": "Échelle à zero"
+            }
+        },
         "force-banking": {
             "type": "checkbox",
             "hidden": true,

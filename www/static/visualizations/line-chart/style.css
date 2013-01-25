@@ -23,6 +23,6 @@
     font-weight: bold;
 }
 
-html {
-    overflow: hidden;
+html, body {
+    overflow: hidden!important;
 }
