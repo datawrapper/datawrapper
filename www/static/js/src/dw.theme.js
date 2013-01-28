@@ -44,6 +44,10 @@
             stroke: '#e9e9e9'
         },
 
+        verticalGrid: {
+            stroke: '#ccc5c5'
+        },
+
         yTicks: false,
 
         xAxis: {

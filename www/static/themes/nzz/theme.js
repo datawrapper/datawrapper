@@ -23,8 +23,6 @@
             hoverDotRadius: 4,
             maxLabelWidth: 80
         },
-
         vpadding: 0
-
     });
 }).call(this);
