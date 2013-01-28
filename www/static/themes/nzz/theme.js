@@ -23,6 +23,17 @@
             hoverDotRadius: 4,
             maxLabelWidth: 80
         },
+
+        horizontalGrid: {
+            stroke: '#e9e9e9',
+            "stroke-dasharray": "."
+        },
+
+         verticalGrid: {
+            stroke: '#e9e9e9',
+            "stroke-dasharray": "."
+        },
+
         vpadding: 0
     });
 }).call(this);
