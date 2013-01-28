@@ -520,7 +520,7 @@
             }
 
             addlbl(xscl(k), labels[k], k);
-            if (me.get('show-grid')) {
+            if (me.get('show-grid', false)) {
                 // draw vertical grid
                 _.each(xscl.ticks(20), function(tick) {
                     var x = xscl(tick), t=c.tpad, b=c.h-c.bpad;
