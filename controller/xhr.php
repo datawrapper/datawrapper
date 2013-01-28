@@ -33,6 +33,7 @@ $app->get('/xhr/home-login', function() use ($app) {
  * changed the visualization type
  */
 require_once '../lib/utils/visualizations.php';
+require_once '../lib/utils/themes.php';
 
 $app->get('/xhr/:chartid/vis-options', function($id) use ($app) {
     disable_cache($app);
@@ -40,6 +41,7 @@ $app->get('/xhr/:chartid/vis-options', function($id) use ($app) {
     check_chart_writable($id, function($user, $chart) use ($app) {
         $page = array(
             'vis' => get_visualization_meta($chart->getType()),
+            'theme' => get_theme_meta($chart->getTheme()),
             'language' => substr(DatawrapperSession::getLanguage(), 0, 2)
         );
         $app->render('vis-options.twig', $page);

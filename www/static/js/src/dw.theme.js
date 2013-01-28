@@ -44,9 +44,18 @@
             stroke: '#e9e9e9'
         },
 
-        verticalGrid: {
-            stroke: '#e9e9e9'
-        },
+        verticalGrid: false,
+
+        /*
+         * draws a frame around the chart area (only in line chart)
+         */
+        frame: false,
+
+        /*
+         * if set to true, the frame border is drawn separately above
+         * the other chart elements
+         */
+        frameStrokeOnTop: false,
 
         yTicks: false,
 

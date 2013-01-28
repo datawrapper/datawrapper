@@ -25,13 +25,17 @@
         },
 
         horizontalGrid: {
-            stroke: '#e9e9e9',
+            stroke: '#d3d3d3',
             "stroke-dasharray": "."
         },
 
-         verticalGrid: {
-            stroke: '#e9e9e9',
+        verticalGrid: {
+            stroke: '#d3d3d3',
             "stroke-dasharray": "."
+        },
+
+        frame: {
+            stroke: '#d3d3d3'
         },
 
         vpadding: 0

@@ -30,7 +30,7 @@
             h = me.get('force-banking') ? el.width() / me.computeAspectRatio() : me.getSize()[1],
             c;
 
-            me.__extendRange = me.get('extend-range', false) || me.theme.frame;
+            me.__extendRange = me.get('extend-range', false) || (me.theme.frame && me.get('show-grid', false));
 
             me.init();
             c = me.initCanvas({
@@ -83,8 +83,13 @@
                 ).attr(me.theme.frame);
             }
 
-            if (me.theme.frame) {
-                frame().attr({ stroke: false });
+            if (me.theme.frame && me.get('show-grid', false)) {
+                if (me.theme.frameStrokeOnTop) {
+                    // draw frame fill, but without stroke
+                    frame().attr({ stroke: false });
+                } else {
+                    frame();
+                }
             }
             if (me.__extendRange) {
                 scales.y = scales.y.nice();
@@ -362,8 +367,11 @@
                 $('.label.tooltip').hide();
             });
 
-            if (me.theme.frame) {
-                frame().attr({ fill: false });
+            if (me.theme.frameStrokeOnTop) {
+                // add frame stroke on top
+                if (me.theme.frame && me.get('show-grid', false)) {
+                    frame().attr({ fill: false });
+                }
             }
         },
 
@@ -448,6 +456,8 @@
                 styles = me.__styles,
                 ticks = me.getYTicks(c.h, me.__extendRange);
 
+            if (me.__extendRange && ticks[ticks.length-1] != domain[1]) ticks.push(domain[1]);
+
             if ($('body').hasClass('fullscreen')) {
                 me.theme.horizontalGrid['stroke-width'] = 2;
             }
@@ -520,7 +530,7 @@
             }
 
             addlbl(xscl(k), labels[k], k);
-            if (me.get('show-grid', false)) {
+            if (me.get('show-grid', false) && me.theme.verticalGrid) {
                 // draw vertical grid
                 _.each(xscl.ticks(20), function(tick) {
                     var x = xscl(tick), t=c.tpad, b=c.h-c.bpad;

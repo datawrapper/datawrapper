@@ -16,7 +16,8 @@ $app->get('/chart/:id/visualize', function ($id) use ($app) {
             'chart' => $chart,
             'visualizations' => get_visualizations_meta('', true),
             'vis' => get_visualization_meta($chart->getType()),
-            'themes' => get_themes_meta()
+            'themes' => get_themes_meta(),
+            'theme' => get_theme_meta($chart->getTheme())
         );
         add_header_vars($page, 'chart');
         add_editor_nav($page, 3);

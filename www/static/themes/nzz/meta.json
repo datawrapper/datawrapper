@@ -7,5 +7,10 @@
     "default_width": 643,
     "restrict": null,
     "version": "0.0.2",
-    "assets": ["nzz-logo-big.png", "nzz-logo-small.png"]
+    "assets": ["nzz-logo-big.png", "nzz-logo-small.png"],
+    "option-filter": {
+        "line-chart": {
+            "show-grid": true
+        }
+    }
 }

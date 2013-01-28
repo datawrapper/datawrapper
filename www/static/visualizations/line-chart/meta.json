@@ -135,6 +135,7 @@
         },
         "show-grid": {
             "type": "checkbox",
+            "hidden": true,
             "label": {
                 "en": "Show grid",
                 "de": "Show grid",

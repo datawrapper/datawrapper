@@ -1,5 +1,5 @@
 {% block visoptions %}
-
+   theme: {{ theme['option-filter']['line-chart']['show-grid'] }} {{ vis.id }}
 <fieldset>
 
     <div class="control-group select-color">
@@ -26,7 +26,10 @@
     </div>
     {% endif %}
 
-    {% for key, option in vis.options %} {% if not option.hidden and not option.expert %}
+
+
+    {% for key, option in vis.options %}
+        {% if theme['option-filter'][vis.id][key] or (not option.hidden and not option.expert)  %}
     <div class="control-group" style="margin-bottom:0px" id="vis-options-{{ key }}">
         {% if option.type == 'checkbox' %}
             <label class="control-label" for="{{ key }}">{{ option.label[language]|raw }}</label>
