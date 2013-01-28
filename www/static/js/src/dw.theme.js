@@ -45,7 +45,7 @@
         },
 
         verticalGrid: {
-            stroke: '#ccc5c5'
+            stroke: '#e9e9e9'
         },
 
         yTicks: false,
