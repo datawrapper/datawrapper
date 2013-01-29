@@ -1,7 +1,7 @@
 
 (function(){
-    // Simple perfect bar chart
-    // -------------------------
+    // Simple bar chart
+    // ----------------
 
     var BarChart = Datawrapper.Visualizations.BarChart = function() {
 
@@ -17,10 +17,15 @@
             var me = this,
             sortBars = me.get('sort-values'),
             reverse = me.get('reverse-order'),
-            useNegativeColor = me.get('negative-color', false),
-            c = me.initCanvas({
-                h: Math.max(me.getSize()[1]  - me.theme.vpadding, 18 * 1.35 * me.chart.dataSeries().length)
+            useNegativeColor = me.get('negative-color', false);
+
+            var filterUI = me.getFilterUI();
+            $('#header').append(filterUI);
+
+            var c = me.initCanvas({
+                h: Math.max(me.getSize()[1]  - me.theme.vpadding - (filterUI ? filterUI.height() : 0), 18 * 1.35 * me.chart.dataSeries().length)
             });
+
 
             var
             chart_width = c.w - c.lpad - c.rpad,
@@ -118,6 +123,10 @@
 
             // enable mouse events
             el.mousemove(_.bind(me.onMouseMove, me));
+        },
+
+        update: function(row) {
+            console.log('update', row);
         },
 
         initDimensions: function(r) {

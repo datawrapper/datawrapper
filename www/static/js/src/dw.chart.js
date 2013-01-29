@@ -118,7 +118,9 @@
             if (this.hasRowHeader()) {
                 return this.rowHeader().data;
             } else {
-                return null;
+                var rh = [];
+                for (var i=0; i<this.numRows(); i++) rh.push('Row '+(i+1));
+                return rh;
             }
         },
 

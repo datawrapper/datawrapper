@@ -1,12 +1,12 @@
 {
     "title": {
-        "en": "Column Chart",
-        "de": "Balken (vertikal)",
+        "en": "Stacked Column Chart",
+        "de": "Balken (vertikal, gestapelt)",
         "fr": "Diagramme à bandes verticales"
     },
-    "version": "0.9.9",
-    "dimensions": 1,
-    "extends": "raphael-chart",
+    "version": "0.10.1",
+    "dimensions": 2,
+    "extends": "grouped-column-chart",
     "author": {
         "name": "gka",
         "email": "gka@vis4.net"

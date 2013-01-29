@@ -14,6 +14,10 @@
             $('body').append('<div id="tooltip" class="tooltip"><div class="content"><b><span class="xval"></span></b><br /><span class="yval"></span></div></div>');
         },
 
+        update: function(row) {
+            console.warn('vis.update(): override me!', row);
+        },
+
         setRoot: function(el) {
             var me = this;
             me.__root = el;
@@ -313,6 +317,40 @@
             var c = d3.cie.lch(d3.rgb(col)),
                 bg = d3.cie.lch(d3.rgb(this.theme.colors.background));
             return bg.l > 60 ? c.l < 70 : c.l > 60;
+        },
+
+        getFilterUI: function(callback) {
+            var vis = this,
+                rowLabels = vis.chart.rowLabels();
+            if (rowLabels.length > 3) {
+                // use <select>
+                var select = $('<select />');
+                _.each(rowLabels, function(lbl, i) {
+                    select.append('<option value="'+i+'">'+lbl+'</option>');
+                });
+                select.change(function(evt) {
+                    var cur = select.val();
+                    vis.update(cur);
+                    if (callback) callback();
+                });
+                return select;
+            } else if (rowLabels.length > 1) {
+                // use links
+                var div = $('<div />');
+                _.each(rowLabels, function(lbl, i) {
+                    div.append('<a href="#'+i+'">'+lbl+'</option>');
+                });
+                $('a', div).click(function(e) {
+                    var a = $(e.target);
+                    $('a', div).removeClass('active');
+                    a.addClass('active');
+                    vis.update(a.attr('href').substr(1));
+                    e.preventDefault();
+                    if (callback) callback(e);
+                });
+                return div;
+            }
+            return null;
         }
 
     });

@@ -1,11 +1,11 @@
 {
     "title": {
-        "en": "Column Chart",
-        "de": "Balken (vertikal)",
+        "en": "Grouped Column Chart",
+        "de": "Balken (vertikal, gruppiert)",
         "fr": "Diagramme à bandes verticales"
     },
-    "version": "0.9.9",
-    "dimensions": 1,
+    "version": "0.10.1",
+    "dimensions": 2,
     "extends": "raphael-chart",
     "author": {
         "name": "gka",

@@ -3,11 +3,11 @@
     // Simple vertical bar chart
     // -------------------------
 
-    var ColumnChart = Datawrapper.Visualizations.ColumnChart = function() {
+    var GroupedColumnChart = Datawrapper.Visualizations.GroupedColumnChart = function() {
 
     };
 
-    _.extend(ColumnChart.prototype, Datawrapper.Visualizations.RaphaelChart.prototype, {
+    _.extend(GroupedColumnChart.prototype, Datawrapper.Visualizations.RaphaelChart.prototype, {
 
         render: function(el) {
             el = $(el);
@@ -21,16 +21,10 @@
             ds = me.chart.__dataset,
             chart_width = c.w - c.lpad - c.rpad,
             series_gap = 0.05, // pull from theme
-            row_gap = 0.01,
-            row = 0;
-
-            // 2d -> 1d
+            row_gap = 0.01;
             if (!_.isUndefined(me.get('selected-row'))) {
                 row = me.get('selected-row');
-                if (row > me.chart.numRows() || row === undefined) row = 0;
             }
-            if (me.chart.numRows() > 1) me.chart.filterRow(row);
-
 
             //if (row > me.chart.numRows() || row === undefined) row = 0;
             ///if (me.chart.numRows() > 3) {
@@ -166,24 +160,6 @@
                 hl = series && me.chart.hasHighlight() && me.chart.isHighlighted(series);
 
             return me.getSeriesColor(series, row, useNegativeColor);
-
-            /*if (useNegativeColor) {
-                return me.theme.colors[(hl ? 'highlight-' : '') + (series.data[row] < 0 ? 'positive' : 'negative')];
-            }
-            var col = me.theme.colors.palette[row % me.theme.colors.palette.length];
-            if (series === null || me.chart.isHighlighted(series)) return col;
-            var hsl = d3.hsl(col);
-            //lch.c *= 0.15;
-            //lch.l *= 1.15;
-            hsl.s = 0.3;
-            hsl.l *= 1.1;
-            return hsl.toString();
-
-            // // use a different color, if set via setSeriesColor
-            // if (me.__customSeriesColors && me.__customSeriesColors[series.name])
-            //     return me.__customSeriesColors[series.name];
-            // if (!me.chart.hasHighlight()) return me.theme.colors[main];
-            // return me.theme.colors[me.chart.isHighlighted(series) ? highlight : main];*/
         },
 
         initDimensions: function(r) {
@@ -198,8 +174,8 @@
             me.__scales = {
                 y: d3.scale.linear().domain([dMin, dMax])
             };
-
-            me.__scales.y.rangeRound([0, c.h - c.bpad - c.tpad]);
+            //                                                    v-- substract a few pixel to get space for the legend!
+            me.__scales.y.rangeRound([0, c.h - c.bpad - c.tpad - 30]);
         },
 
         barDimensions: function(series, s, r) {
