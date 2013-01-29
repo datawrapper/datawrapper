@@ -105,15 +105,12 @@ function add_header_vars(&$page, $active = null) {
     } else {
         $headlinks[] = array('url' => '/gallery/', 'id' => 'gallery', 'title' => _('Gallery'), 'icon' => 'signal');
     }
-    if (!empty($config['wordpress'])) {
-        // only show "about" link if we're connected to a CMS
-        $headlinks[] = array('url' => '/docs', 'id' => 'about', 'title' => _('About'), 'icon' => 'info-sign');
-    }
-    if (!empty($config['blog'])) {
-        // only show "blog" link if configured
-        $headlinks[] = array('url' => $config['blog'], 'id' => 'blog', 'title' => _('Blog'), 'icon' => 'tag');
-    }
 
+    foreach ($config['navigation'] as $item) {
+        $link = array('url' => str_replace('%lang%', substr(DatawrapperSession::getLanguage(), 0, 2), $item['url']), 'id' => $item['id'], 'title' => _($item['title']));
+        if (!empty($item['icon'])) $link['icon'] = $item['icon'];
+        $headlinks[] = $link;
+    }
 
     $headlinks[] = array(
         'url' => '',

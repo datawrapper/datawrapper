@@ -34,3 +34,15 @@ analytics:
 ## uncomment to enable chart exporting
 # phantomjs:
 #     path: /path/to/phantomjs
+
+
+## edit and uncomment to add further links to the navigation menu
+# navigation:
+#   - id: about
+#     title: About
+#     url: http://docs.datawrapper.de/%lang%/
+#     icon: info-sign
+#   - id: blog
+#     title: Blog
+#     url: http://blog.datawrapper.de
+#     icon: tag
