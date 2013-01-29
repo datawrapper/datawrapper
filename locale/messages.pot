@@ -158,7 +158,7 @@ msgstr ""
 msgid "Annotate data point"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-describe.twig.php:359 ../www/index.php:201
+#: ../scripts/tmpl_cache/chart-describe.twig.php:359 ../www/index.php:198
 msgid "Visualize"
 msgstr ""
 
@@ -565,20 +565,20 @@ msgid ""
 "training institution for newspaper journalists."
 msgstr ""
 
-#: ../scripts/tmpl_cache/core.twig.php:181
-#: ../scripts/tmpl_cache/home.twig.php:207
+#: ../scripts/tmpl_cache/core.twig.php:184
+#: ../scripts/tmpl_cache/home.twig.php:212
 msgid "Quick Start"
 msgstr ""
 
-#: ../scripts/tmpl_cache/core.twig.php:183
+#: ../scripts/tmpl_cache/core.twig.php:189
 msgid "Tutorial"
 msgstr ""
 
-#: ../scripts/tmpl_cache/core.twig.php:185
+#: ../scripts/tmpl_cache/core.twig.php:191
 msgid "Terms of Use"
 msgstr ""
 
-#: ../scripts/tmpl_cache/core.twig.php:187
+#: ../scripts/tmpl_cache/core.twig.php:193
 msgid "Imprint"
 msgstr ""
 
@@ -668,7 +668,7 @@ msgstr ""
 msgid "See what you created so far."
 msgstr ""
 
-#: ../scripts/tmpl_cache/home-login.twig.php:74 ../www/index.php:148
+#: ../scripts/tmpl_cache/home-login.twig.php:74 ../www/index.php:145
 msgid "Settings"
 msgstr ""
 
@@ -676,7 +676,7 @@ msgstr ""
 msgid "Edit your personal information."
 msgstr ""
 
-#: ../scripts/tmpl_cache/home-login.twig.php:80 ../www/index.php:152
+#: ../scripts/tmpl_cache/home-login.twig.php:80 ../www/index.php:149
 msgid "Logout"
 msgstr ""
 
@@ -702,68 +702,67 @@ msgstr ""
 msgid "Full control"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:129
+#: ../scripts/tmpl_cache/home.twig.php:130
 msgid ""
 "Datawrapper is 100&#37; free software. You can use our free hosted service, "
-"or <a href='/docs/howtouse#server'>install it on your own server</a> for "
-"maximum control. Written in PHP, Datawrapper is easy to install, modify and "
-"extend."
+"or <a href='#URL'>install it on your own server</a> for maximum control. "
+"Written in PHP, Datawrapper is easy to install, modify and extend."
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:135
+#: ../scripts/tmpl_cache/home.twig.php:136
 msgid "Customizable"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:139
+#: ../scripts/tmpl_cache/home.twig.php:141
 msgid ""
-"We encourage you to <a href='/docs/howtouse#customize'>customize the charts "
-"layout</a>, fonts and colors to make them integrate nicely in your website. "
-"Strengthen your own brand, not ours."
+"We encourage you to <a href='#URL'>customize the charts layout</a>, fonts "
+"and colors to make them integrate nicely in your website. Strengthen your "
+"own brand, not ours."
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:148
+#: ../scripts/tmpl_cache/home.twig.php:150
 msgid "Created with Datawrapper"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:152
+#: ../scripts/tmpl_cache/home.twig.php:154
 msgid ""
 "Need some inspiration? See what others have created <a href='/gallery/'>in "
 "our gallery</a>."
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:200
+#: ../scripts/tmpl_cache/home.twig.php:202
 msgid "Want to learn more?"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:211
+#: ../scripts/tmpl_cache/home.twig.php:216
 msgid "A concise introduction into the functions of Datawrapper."
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:217
+#: ../scripts/tmpl_cache/home.twig.php:225
 msgid "Step by step"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:221
+#: ../scripts/tmpl_cache/home.twig.php:229
 msgid ""
 "This tutorial guides you through the entire charting process, from finding "
 "data to embedding your chart."
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:227
+#: ../scripts/tmpl_cache/home.twig.php:238
 msgid "Motivation"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:231
+#: ../scripts/tmpl_cache/home.twig.php:243
 msgid ""
-"Learn more about <a href='/docs/motivation'>why we created Datawrapper</a>, "
-"and why we chosed this approach."
+"Learn more about <a href='#URL'>why we created Datawrapper</a>, and why we "
+"chose this approach."
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:238
+#: ../scripts/tmpl_cache/home.twig.php:250
 msgid "Find it on Github"
 msgstr ""
 
-#: ../scripts/tmpl_cache/home.twig.php:242
+#: ../scripts/tmpl_cache/home.twig.php:254
 msgid ""
 "You can find and fork the Datawrapper source code on Github. It is licensed "
 "under the MIT license."
@@ -831,7 +830,7 @@ msgid "The password and the repeated password must not differ."
 msgstr ""
 
 #: ../scripts/tmpl_cache/modal.twig.php:35
-#: ../scripts/tmpl_cache/vis-options.twig.php:299
+#: ../scripts/tmpl_cache/vis-options.twig.php:305
 msgid "Close"
 msgstr ""
 
@@ -1097,7 +1096,7 @@ msgstr ""
 msgid "Created with"
 msgstr ""
 
-#: ../scripts/tmpl_cache/utils.twig.php:234 ../www/index.php:167
+#: ../scripts/tmpl_cache/utils.twig.php:234 ../www/index.php:164
 msgid "Login / Sign Up"
 msgstr ""
 
@@ -1121,37 +1120,37 @@ msgstr ""
 msgid "Select row to display"
 msgstr ""
 
-#: ../scripts/tmpl_cache/vis-options.twig.php:239
+#: ../scripts/tmpl_cache/vis-options.twig.php:245
 msgid "Customize chart colors"
 msgstr ""
 
-#: ../scripts/tmpl_cache/vis-options.twig.php:243
+#: ../scripts/tmpl_cache/vis-options.twig.php:249
 msgid ""
 "Please use custom colors only if it is absolutely necessary, for instance to "
 "identify political parties. If possible please use the palette colors."
 msgstr ""
 
-#: ../scripts/tmpl_cache/vis-options.twig.php:251
+#: ../scripts/tmpl_cache/vis-options.twig.php:257
 msgid "1. Select data series"
 msgstr ""
 
-#: ../scripts/tmpl_cache/vis-options.twig.php:261
+#: ../scripts/tmpl_cache/vis-options.twig.php:267
 msgid "2. Choose a color for"
 msgstr ""
 
-#: ../scripts/tmpl_cache/vis-options.twig.php:268
+#: ../scripts/tmpl_cache/vis-options.twig.php:274
 msgid "Pick from palette..."
 msgstr ""
 
-#: ../scripts/tmpl_cache/vis-options.twig.php:275
+#: ../scripts/tmpl_cache/vis-options.twig.php:281
 msgid "...or enter a custom color"
 msgstr ""
 
-#: ../scripts/tmpl_cache/vis-options.twig.php:285
+#: ../scripts/tmpl_cache/vis-options.twig.php:291
 msgid "Reset color (use default)"
 msgstr ""
 
-#: ../scripts/tmpl_cache/vis-options.twig.php:295
+#: ../scripts/tmpl_cache/vis-options.twig.php:301
 msgid "Reset all colors"
 msgstr ""
 
@@ -1163,31 +1162,23 @@ msgstr ""
 msgid "Gallery"
 msgstr ""
 
-#: ../www/index.php:110 ../lib/templates/docs-pages.php:5
-msgid "About"
-msgstr ""
-
-#: ../www/index.php:114
-msgid "Blog"
-msgstr ""
-
-#: ../www/index.php:134
+#: ../www/index.php:131
 msgid "Language"
 msgstr ""
 
-#: ../www/index.php:160
+#: ../www/index.php:157
 msgid "Admin"
 msgstr ""
 
-#: ../www/index.php:199
+#: ../www/index.php:196
 msgid "Upload Data"
 msgstr ""
 
-#: ../www/index.php:200
+#: ../www/index.php:197
 msgid "Check & Describe"
 msgstr ""
 
-#: ../www/index.php:202
+#: ../www/index.php:199
 msgid "Publish & Embed"
 msgstr ""
 
@@ -1318,6 +1309,10 @@ msgstr ""
 
 #: ../lib/templates/demo_datasets.php:105
 msgid "US Trade with United Kingdom"
+msgstr ""
+
+#: ../lib/templates/docs-pages.php:5
+msgid "About"
 msgstr ""
 
 #: ../lib/utils/errors.php:21

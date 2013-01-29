@@ -50,11 +50,11 @@
     </div>
     <div class="span4">
         <h2>{% trans "Full control" %}</h2>
-        <p>{% trans "Datawrapper is 100&#37; free software. You can use our free hosted service, or <a href='http://docs.datawrapper.de/{{ language }}/howtouse#server'>install it on your own server</a> for maximum control. Written in PHP, Datawrapper is easy to install, modify and extend." %}</p>
+        <p>{{ "Datawrapper is 100&#37; free software. You can use our free hosted service, or <a href='#URL'>install it on your own server</a> for maximum control. Written in PHP, Datawrapper is easy to install, modify and extend." | trans | replace({ '#URL': 'http://docs.datawrapper.de/%lang%/howtouse#server'}) | replace({ '%lang%': language }) | raw }}</p>
     </div>
     <div class="span4">
         <h2>{% trans "Customizable" %}</h2>
-        <p>{% trans "We encourage you to <a href='http://docs.datawrapper.de/{{ language }}/howtouse#customize'>customize the charts layout</a>, fonts and colors to make them integrate nicely in your website. Strengthen your own brand, not ours." %}</p>
+        <p>{{ "We encourage you to <a href='#URL'>customize the charts layout</a>, fonts and colors to make them integrate nicely in your website. Strengthen your own brand, not ours." | trans | replace({ '#URL': 'http://docs.datawrapper.de/%lang%/howtouse#customize'}) | replace({ '%lang%': language }) | raw }}</p>
     </div>
 </div>
 
@@ -85,7 +85,7 @@
     </div>
     <div class="span3">
         <h3><i class="icon-info"></i> <a href="http://docs.datawrapper.de/{{ language }}/motivation">{% trans "Motivation" %}</a></h3>
-        <p>{% trans "Learn more about <a href='http://docs.datawrapper.de/{{ language }}/motivation'>why we created Datawrapper</a>, and why we chosed this approach." %}</p>
+        <p>{{ "Learn more about <a href='#URL'>why we created Datawrapper</a>, and why we chose this approach." | trans | replace({ '#URL': 'http://docs.datawrapper.de/%lang%/motivation' }) | replace({ '%lang%': language }) | raw }}</p>
     </div>
 
     <div class="span3">
