@@ -88,7 +88,6 @@ $(function() {
                 var x = px(lbl.css('left')),
                     y = px(lbl.css('top')),
                     txt = $('span', lbl).html();
-                console.log(x,y,txt);
                 ctx.font = "8pt Arial";
                 ctx.fillText(txt, x, y);
 
@@ -105,7 +104,6 @@ $(function() {
             type: 'POST',
             dataType: 'json',
             success: function(res) {
-                console.log(res);
                 if (res.status == 'ok') {
                     DW.logMessage(res.data, $(e.target).parent());
                 } else {

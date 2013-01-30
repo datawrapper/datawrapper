@@ -209,7 +209,6 @@ $(function() {
             type: 'POST',
             dataType: 'json',
             success: function(res) {
-                console.log(res);
                 if (res.status == 'ok') {
                     DW.logMessage(res.data, $(e.target).parent());
                 } else {
