@@ -32,7 +32,7 @@ body.chart {
 
 #header {
     position: relative;
-    padding-left: 10px;
+    padding-left: 20px;
     padding-top: 50px;
 }
 
@@ -50,6 +50,11 @@ body.chart {
     color: #fff;
     height: 30px;
 
+}
+
+.intro {
+    margin-top: -20px;
+    margin-bottom: 20px;
 }
 
 .widget-body {
