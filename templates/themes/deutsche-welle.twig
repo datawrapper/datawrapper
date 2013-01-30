@@ -1,37 +1,28 @@
 
-
-<div class="widget">
-    <div class="widget-header">
-        <h1>{{ title }}</h1>
-    </div>
-
-
-    {% if intro %}
-        <div id="header">
-            <p>{{ intro|purify|raw }}</p>
-        </div>
+<div id="header">
+    <h1>{{ title }}</h1>
+     {% if intro %}
+        <p>{{ intro|purify|raw }}</p>
     {% endif %}
+</div>
 
-    <div class="widget-body">
 
-        <div id="chart"></div>
+<div id="chart"></div>
 
-        <div id="footer">
-            <div class="footer-left">
-            {% if source %}
-                {% trans "Source: " %}
-                {% if sourceURL %}<a target="_blank" href="{{ sourceURL }}">{% endif %}{{ source }}{% if sourceURL %}</a>{% endif %}
-                |
-                {% endif %}
-                <a href="{{ DW_DOMAIN }}/chart/{{ chart.id }}/data">{% trans "Download data" %}</a>
+<div id="footer">
+    <div class="footer-left">
+    {% if source %}
+        {% trans "Source: " %}
+        {% if sourceURL %}<a target="_blank" href="{{ sourceURL }}">{% endif %}{{ source }}{% if sourceURL %}</a>{% endif %}
+        |
+        {% endif %}
+        <a href="{{ DW_DOMAIN }}/chart/{{ chart.id }}/data">{% trans "Download data" %}</a>
 
-            </div>
-            <div class="footer-right">
-
-                &copy; Deutsche Welle
-
-            </div>
-            <br class="clearfix" />
-        </div>
     </div>
+    <div class="footer-right">
+
+        &copy; Deutsche Welle
+
+    </div>
+    <br class="clearfix" />
 </div>

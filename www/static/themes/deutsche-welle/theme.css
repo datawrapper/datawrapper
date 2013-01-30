@@ -10,9 +10,10 @@ body.chart {
     margin:0;
     overflow: visible;
     overflow-x:hidden;
+    background: #E6E3E0;
 }
 
-.widget, .line-chart .label span {
+.widget, .line-chart .label.axis span, .label.series span {
     background: #E6E3E0!important;
 }
 
@@ -27,6 +28,28 @@ body.chart {
     font: 17px/30px normal Georgia,serif;
     padding-left: 20px;
     margin: 0;
+}
+
+#header {
+    position: relative;
+    padding-left: 10px;
+    padding-top: 50px;
+}
+
+#header h1 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 30px;
+    font: 17px/30px normal Georgia,serif;
+    padding-left: 20px;
+    margin-left: -20px;
+    margin: 0;
+    background: #666666;
+    color: #fff;
+    height: 30px;
+
 }
 
 .widget-body {
@@ -93,7 +116,7 @@ body.chart {
 }
 
 #footer {
-    margin: 10px 0px 0px;
+    margin: 10px 10px 5px;
     padding-top: 5px;
     padding-bottom: 5px;
     font-size: 11px;
