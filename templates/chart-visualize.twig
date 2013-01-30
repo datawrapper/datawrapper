@@ -312,6 +312,32 @@ $(function() {
         unfolded.show();
         folded.hide();
     }
+
+    // chart resizing
+    var __timer;
+    function _updateSize() {
+        clearTimeout(__timer);
+        __timer = setTimeout(updateSize, 300);
+    }
+    function updateSize() {
+        var w = Math.min(Number($('#resize-w').val()) || 600, $('.span7').width()-22),
+            h = Number($('#resize-h').val()) || 400;
+        $('#resize-w').val(w);
+        $('#resize-h').val(h);
+        $('#iframe-wrapper').animate({ width: w+'px', height: h+'px' }, 400, 'easeOutExpo');
+        chart.set('metadata.publish.embed-width', w);
+        chart.set('metadata.publish.embed-height', h);
+    }
+    $('.resize-chart a').click(function(e) {
+        e.preventDefault();
+        var dim = $(e.target).html().split('×');
+        $('#resize-w').val(dim[0]);
+        $('#resize-h').val(dim[1]);
+        updateSize();
+    });
+    $('.resize-chart input').change(_updateSize);
+    $('#resize-w').val($('#iframe-wrapper').width());
+    $('#resize-h').val($('#iframe-wrapper').height());
 });
 
 </script>
@@ -326,13 +352,24 @@ $(function() {
                 </iframe>
             </div>
 
+            <div class="resize-chart">
+                {% trans "Resize to: " %}
+                <input id="resize-w" class="input-large" type="text" /> ×
+                <input id="resize-h" class="input-large" type="text" />
+                (e.g. <a href="#">480×320</a>
+                <a href="#">480×480</a>
+                <a href="#">640×360</a>
+                <a href="#">640×480</a>)
+
+            </div>
+
         </div>
 
 
         <div class="span5 visconfig"><div class="well">
             <div class="section">
                 <div class="vis-selector-unfolded">
-                <h3>{% trans "Select visualization and layout" %}</h3>
+                <h3>{% trans "Select visualization" %}</h3>
                     <div class="vis-thumbs">
                         {% for vis in visualizations %}{% if vis.title %}
                         <div class="vis-thumb{% if vis.id == chart.type %} active{% endif %}" data-id="{{ vis.id }}" data-title="{{ vis.title[language] }}"><img title="{{ vis.title[language] }}" src="/static/visualizations/{{ vis.id }}/thumb.png" /></div>

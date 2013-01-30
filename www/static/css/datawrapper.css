@@ -1261,6 +1261,7 @@ form.well form {
     margin-top: 20px;
     margin-left: 10px;
     color: #666;
+    line-height: 28px;
 }
 
 .resize-chart a {
@@ -1269,5 +1270,7 @@ form.well form {
 }
 .resize-chart input[type=text] {
     width: 4ex;
+    position: relative;
+    top: 3px;
 }
 .resize-chart a.active { color: #000; font-weight: bold }
