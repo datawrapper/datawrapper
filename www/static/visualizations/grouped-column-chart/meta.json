@@ -15,6 +15,7 @@
         "name": "MIT",
         "url": "http://www.opensource.org/licenses/mit-license.php"
     },
+    "order": 10,
     "options": {
         "group-bars": {
             "type": "checkbox",

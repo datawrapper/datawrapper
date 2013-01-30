@@ -15,6 +15,7 @@
         "name": "MIT",
         "url": "http://www.opensource.org/licenses/mit-license.php"
     },
+    "order": 40,
     "about": "http://vis4.net/blog/posts/doing-the-line-charts-right/",
     "options": {
         "direct-labeling": {

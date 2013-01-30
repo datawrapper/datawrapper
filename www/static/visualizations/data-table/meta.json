@@ -17,6 +17,7 @@
     "libraries": [
         "datatables/jquery.dataTables.min.js"
     ],
+    "order": 70,
     "options": {
         "table-sortable": {
             "type": "checkbox",

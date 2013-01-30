@@ -10,6 +10,7 @@
         "name": "gka",
         "email": "gka@vis4.net"
     },
+    "order": 30,
     "license": {
         "name": "MIT",
         "url": "http://www.opensource.org/licenses/mit-license.php"

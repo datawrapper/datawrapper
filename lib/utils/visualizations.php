@@ -1,5 +1,7 @@
 <?php
 
+
+
 function get_visualizations_meta($pathToStatic = '') {
     $res = array();
     $vis_path = $pathToStatic . 'static/visualizations';
@@ -11,6 +13,12 @@ function get_visualizations_meta($pathToStatic = '') {
             $res[] = $meta;
         }
     }
+    // sort by something
+    usort($res, function ($a, $b) {
+        if (!isset($a['order'])) $a['order'] = 99999;
+        if (!isset($b['order'])) $b['order'] = 99999;
+        return $a['order'] - $b['order'];
+    });
     return $res;
 }
 
