@@ -456,7 +456,7 @@
                 styles = me.__styles,
                 ticks = me.getYTicks(c.h, me.__extendRange);
 
-            if (me.__extendRange && ticks[ticks.length-1] != domain[1]) ticks.push(domain[1]);
+            if (!me.__extendRange && ticks[ticks.length-1] != domain[1]) ticks.push(domain[1]);
 
             if ($('body').hasClass('fullscreen')) {
                 me.theme.horizontalGrid['stroke-width'] = 2;
