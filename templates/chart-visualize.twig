@@ -99,7 +99,8 @@ $(function() {
             picker.data('color', theTheme.colors.palette[chart.get('metadata.visualize.base-color', 0)]);
             picker.colorpicker({
                 change: function(color) {
-                    chart.set('metadata.visualize.base-color', theTheme.colors.palette.indexOf(color));
+                    var colIndex = theTheme.colors.palette.join(',').toLowerCase().split(',').indexOf(color.toLowerCase());
+                    chart.set('metadata.visualize.base-color', colIndex);
                 }
             });
             chart.set('metadata.publish.background', theTheme.colors.background);
