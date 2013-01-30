@@ -103,6 +103,7 @@ $(function() {
                 }
             });
             chart.set('metadata.publish.background', theTheme.colors.background);
+            chart.set('metadata.publish.contextBg', theTheme.colors.contextBackground);
             chart.set('metadata.publish.text', theTheme.colors.text);
 
             var colors = theTheme.colors.palette.slice().concat(theTheme.colors.secondary || []);
@@ -229,7 +230,7 @@ $(function() {
             white = bgcol == 'rgb(255, 255, 255)' || bgcol == '#ffffff' || bgcol == 'white' || bgcol == 'transparent',
             border = white ? '#ffffff' : '#bbb';
 
-        bgcol = DW.currentChart.get('metadata.publish.background');
+        bgcol = DW.currentChart.get('metadata.publish.contextBg') || DW.currentChart.get('metadata.publish.background');
 
         $('#iframe-wrapper').css({
             'background-color': white ? '#ffffff' : bgcol,

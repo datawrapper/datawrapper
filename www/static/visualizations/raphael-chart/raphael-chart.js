@@ -50,7 +50,8 @@
 
             canvas.root = el;
             canvas.paper = Raphael(el[0], canvas.w, canvas.h+2);
-            el.height(canvas.h);
+            console.log("foo", canvas.h, canvas.tpad, canvas.bpad, canvas.vpadding);
+            el.height(canvas.h + canvas.tpad + canvas.bpad);
             $('.tooltip').hide();
             me.__canvas = canvas;
             return canvas;
