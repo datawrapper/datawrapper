@@ -23,7 +23,7 @@
             $('#header').append(filterUI);
 
             var c = me.initCanvas({
-                h: Math.max(me.getSize()[1]  - me.theme.vpadding - (filterUI ? filterUI.height() : 0), 18 * 1.35 * me.chart.dataSeries().length)
+                h: Math.max(me.getSize()[1] - me.theme.tpad - me.theme.bpad - me.theme.vpadding - (filterUI ? filterUI.height() : 0), 18 * 1.35 * me.chart.dataSeries().length)
             });
 
 
