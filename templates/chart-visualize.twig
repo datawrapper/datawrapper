@@ -7,6 +7,21 @@
 
 <script type="text/javascript">
 
+$.extend($.easing, {
+    easeInExpo: function (x, t, b, c, d) {
+        return (t==0) ? b : c * Math.pow(2, 10 * (t/d - 1)) + b;
+    },
+    easeOutExpo: function (x, t, b, c, d) {
+        return (t==d) ? b+c : c * (-Math.pow(2, -10 * t/d) + 1) + b;
+    },
+    easeInOutExpo: function (x, t, b, c, d) {
+        if (t==0) return b;
+        if (t==d) return b+c;
+        if ((t/=d/2) < 1) return c/2 * Math.pow(2, 10 * (t - 1)) + b;
+        return c/2 * (-Math.pow(2, -10 * --t) + 2) + b;
+    }
+});
+
 $(function() {
 
     function classify(s) {
@@ -145,7 +160,7 @@ $(function() {
         _typeHasChanged = false;
     });
 
-    chart.sync('#select-vis', 'type');
+//    chart.sync('#select-vis', 'type');
     chart.sync('#select-theme', 'theme');
     chart.sync('#text-title', 'title');
     chart.sync('#text-intro', 'metadata.describe.intro');
@@ -266,6 +281,37 @@ $(function() {
             loadOptions();
         }, 2000);
     });
+
+    // graphical vis selector
+    var unfolded = $('.vis-selector-unfolded'),
+        folded = $('.vis-selector-folded'),
+        thumbs = $('.vis-thumb'),
+        selected = $('.vis-selected');
+    unfolded.data('h', unfolded.height());
+    thumbs.click(function(e) {
+        var thumb = $(e.target);
+        if (!thumb.hasClass('vis-thumb')) thumb = thumb.parents('.vis-thumb');
+        thumbs.removeClass('active');
+        thumb.addClass('active');
+        selected.html('<img src="/static/visualizations/'+thumb.data('id')+'/thumb.png" width="24" />' + thumb.data('title'));
+        setTimeout(function() {
+            folded.show();
+            unfolded.animate({ height: 0 }, 300, 'easeOutExpo', function() {
+                unfolded.hide();
+            });
+            chart.set('type', thumb.data('id'));
+        }, 100);
+    });
+
+    folded.click(function() {
+        folded.hide();
+        unfolded.height(0).animate({ height: unfolded.data('h') }, 300, 'easeOutExpo').show();
+    });
+
+    if (DW.__firstTime) {
+        unfolded.show();
+        folded.hide();
+    }
 });
 
 </script>
@@ -285,29 +331,30 @@ $(function() {
 
         <div class="span5 visconfig"><div class="well">
             <div class="section">
+                <div class="vis-selector-unfolded">
                 <h3>{% trans "Select visualization and layout" %}</h3>
-                    <div class="half">
-                        <label for="select-vis">{% trans "Visualization:" %}</label>
-                        <select id="select-vis">
-                            {% for vis in visualizations %}{% if vis.title %}
-                            <option value="{{ vis.id }}">{{ vis.title[language] }}</option>
-                            {% endif %}{% endfor %}
-                        </select>
+                    <div class="vis-thumbs">
+                        {% for vis in visualizations %}{% if vis.title %}
+                        <div class="vis-thumb{% if vis.id == chart.type %} active{% endif %}" data-id="{{ vis.id }}" data-title="{{ vis.title[language] }}"><img title="{{ vis.title[language] }}" src="/static/visualizations/{{ vis.id }}/thumb.png" /></div>
+                        {% endif %}{% endfor %}
                     </div>
+                </div>
+                <div class="vis-selector-folded">
+                    <h3><u>{% trans "Visualization:" %}</u> <span class="vis-selected"><img src="/static/visualizations/{{ chart.type }}/thumb.png" width="24" /> {{ vis.title[language] }}</span></h3>
+                </div>
 
-                    <div class="half">
-                        <label for="select-theme">{% trans "Layout:" %}</label>
-                        <select id="select-theme">
-                            {% for theme in themes %}{% if not theme.hidden %}
-                            <option value="{{ theme.id }}">{{ theme.title }}</option>
-                            {% endif %}{% endfor %}
-                        </select>
-                    </div>
-                <div class="clearfix"></div>
+                <div style="margin-top:10px;margin-bottom:20px">
+                    <label class="pull-left" style="line-height:28px;color:#000;font-size:18px;padding-right:1ex;font-weight:bold" for="select-theme">{% trans "Layout:" %}</label>
+                    <select id="select-theme" class="span2">
+                        {% for theme in themes %}{% if not theme.hidden %}
+                        <option value="{{ theme.id }}">{{ theme.title }}</option>
+                        {% endif %}{% endfor %}
+                    </select>
+                </div>
                     <p>
                         <b>{% trans "Hint" %}:</b> {% trans "In case the visualization doesn't look like you expected, you should try to <a href='#' id='btn-transpose'><i class='icon-rotate'></i> transpose the data</a>." %}
                     </p>
-            </div>
+             </div>       
 
             <div class="section">
                 <h3>{% trans "Tell the story" %}</h3>
