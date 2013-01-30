@@ -396,6 +396,7 @@ body .navbar .nav li.dropdown.active > .dropdown-toggle:hover
     line-height: 50px;
     font-weight: 300;
     margin-bottom: 2em;
+    white-space: nowrap;
 }
 
 .dw .create-nav .corner {
@@ -801,7 +802,6 @@ dl.dl-horizontal dd {
     border: 1px solid #fff;
     padding: 10px;
     border-radius: 7px;
-    resize: both;
     overflow: hidden;
     background: #fff;
     max-width: 98%;
@@ -821,7 +821,6 @@ dl.dl-horizontal dd {
   font-size: 12px;
   font-family: sans-serif;
   color: #ccc;
-  .text-stroke(0);
 }
 
 .visualization [contenteditable]:hover,
@@ -1229,3 +1228,46 @@ form.well form {
     text-decoration: none;
     border-bottom: 1px solid #000;
 }
+
+@media (max-width: 1199px) {
+    .vis-thumb {
+        width: 75px;
+        height: 75px;
+    }
+
+    .vis-thumb img {
+        width: 65px;
+        height: 65px;
+        left: 5px;
+        top: 5px;
+    }
+}
+
+@media (max-width: 976px) {
+    .vis-thumb {
+        width: 55px;
+        height: 55px;
+    }
+
+    .vis-thumb img {
+        width: 45px;
+        height: 45px;
+        left: 5px;
+        top: 5px;
+    }
+}
+
+.resize-chart {
+    margin-top: 20px;
+    margin-left: 10px;
+    color: #666;
+}
+
+.resize-chart a {
+    padding-left: 1ex;
+    color: #666;
+}
+.resize-chart input[type=text] {
+    width: 4ex;
+}
+.resize-chart a.active { color: #000; font-weight: bold }
