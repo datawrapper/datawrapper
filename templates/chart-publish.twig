@@ -96,34 +96,20 @@ $(function() {
 
     }
 
-
+    // send ajax request for re-sending activation email
     $('a[href=#resend]').click(function(e) {
         e.preventDefault();
-        $.ajax({
-            url: '/api/account/resend-activation',
-            type: 'POST',
-            dataType: 'json',
-            success: function(res) {
-                if (res.status == 'ok') {
-                    DW.logMessage(res.data, $(e.target).parent());
-                } else {
-                    DW.logError(res.message, $(e.target).parent());
-                }
-            }
-        });
+        DW.resendActivationMail($(e.target).parent());
     });
 
+    // open modal popup for exporting charts to PNG/PDF
     $('a[href=#export]').click(function(e) {
         e.preventDefault();
         $('#dwExportChart').modal();
         return false;
     });
 
-    /*setTimeout(function() {
-
-        snapshot(1200,600);
-    },4000);*/
-
+    // automatically select embed code
     $("textarea").click(function() { $(this).focus().select(); } );
 });
 
@@ -253,6 +239,8 @@ p.lead {
 
             <iframe src="{{ iframe }}" id="iframe-vis" style="width:{{ chart.metadata.publish['embed-width'] }}px;height:{{ chart.metadata.publish['embed-height'] }}px" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>
 
+            <div style="color: #999;margin-top:20px"><b>{% trans "Note" %}:</b> {% trans "It may take a while until the republished chart. You can force reloading of the chart by right-clicking it and selecting 'Reload Iframe'. " %}
+
             {% else %}
 
             <iframe src="/chart/{{ chart.id }}/preview" id="iframe-vis" style="width:{{ chart.metadata.publish['embed-width'] }}px;height:{{ chart.metadata.publish['embed-height'] }}px" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>
@@ -266,7 +254,7 @@ p.lead {
         <div class="span12">
             <div class="form-actions">
                 <a class="submit pull-right btn" href="/chart/create"><i class="icon-pencil"></i> {% trans "Create another graphic" %}</a>
-                
+
                 <a class="submit btn" href="visualize"><i class="icon-chevron-left"></i> {% trans "Return to visualise step" %}</a>
             </div>
         </div>

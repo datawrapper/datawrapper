@@ -68,21 +68,6 @@
         refreshHeader: function() {
             location.reload();
             return;
-            /*
-            $.get('/xhr/header/create', function(header) {
-                $('.header .toplinks').replaceWith(header);
-                DW.initializeSignUp();
-                DW.initializeLogout();
-            });
-
-            // reload login form on homepage
-            var homeLogin = $('#home-login');
-            if (homeLogin.length > 0) {
-                homeLogin.load('/xhr/home-login', null, function() {
-                    DW.initializeSignUp();
-                    DW.initializeLogout();
-                });
-            }*/
         },
 
         initializeSignUp: function() {
@@ -244,6 +229,24 @@
 
         logError: function(msg, parent) {
             this.logMessage(msg, parent, 'error');
+        },
+
+        resendActivationMail: function(msgElement) {
+            var req = $.ajax({
+                url: '/api/account/resend-activation',
+                type: 'POST',
+                dataType: 'json'
+            });
+            if (msgElement) {
+                req.done(function(res) {
+                    if (res.status == 'ok') {
+                        DW.logMessage(res.data, msgElement);
+                    } else {
+                        DW.logError(res.message, msgElement);
+                    }
+                });
+            }
+            return req;
         }
     });
 

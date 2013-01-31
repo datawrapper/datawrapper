@@ -22,7 +22,7 @@
     <div class="footer-right">
         {% if source %}
             {% trans "Source: " %}
-            {% if sourceURL %}<a target="_blank" href="{{ sourceURL }}">{% endif %}{{ source }}{% if sourceURL %}</a>{% endif %},
+            {% if sourceURL %}<a target="_blank" class="source" href="{{ sourceURL }}">{% endif %}{{ source }}{% if sourceURL %}</a>{% endif %},
         {% endif %}
         <a href="data">{% trans "Get the data" %}</a>
     </div>

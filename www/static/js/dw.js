@@ -414,7 +414,9 @@
             if (this.hasRowHeader()) {
                 return this.rowHeader().data;
             } else {
-                return null;
+                var rh = [];
+                for (var i=0; i<this.numRows(); i++) rh.push('Row '+(i+1));
+                return rh;
             }
         },
 
@@ -532,7 +534,16 @@
 
         verticalGrid: false,
 
+        /*
+         * draws a frame around the chart area (only in line chart)
+         */
         frame: false,
+
+        /*
+         * if set to true, the frame border is drawn separately above
+         * the other chart elements
+         */
+        frameStrokeOnTop: false,
 
         yTicks: false,
 
