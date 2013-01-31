@@ -9,6 +9,9 @@
 
     _.extend(StackedColumnChart.prototype, Datawrapper.Visualizations.GroupedColumnChart.prototype, {
 
+        // some config
+        _showValueLabels: function() { return false; },
+
         initDimensions: function(r) {
             //
             var me = this, c = me.__canvas,

@@ -9,6 +9,9 @@
 
     _.extend(GroupedColumnChart.prototype, Datawrapper.Visualizations.RaphaelChart.prototype, {
 
+        // some config
+        _showValueLabels: function() { return true; },
+
         render: function(el) {
             el = $(el);
 
@@ -81,12 +84,14 @@
                         halign = 'center',
                         alwaysShow = (me.chart.hasHighlight() && me.chart.isHighlighted(series)) || (d.w > 40);
 
-                    // add value labels
-                    me.registerSeriesLabel(me.label(d.x + d.w * 0.5, val_y, me.chart.formatValue(series.data[r]),{
-                        w: d.w,
-                        align: 'center',
-                        cl: 'value' + (alwaysShow ? '' : ' showOnHover')
-                    }), series);
+                    if (false && me._showValueLabels()) {
+                        // add value labels
+                        me.registerSeriesLabel(me.label(d.x + d.w * 0.5, val_y, me.chart.formatValue(series.data[r]),{
+                            w: d.w,
+                            align: 'center',
+                            cl: 'value' + (alwaysShow ? '' : ' showOnHover')
+                        }), series);
+                    }
 
                     if (me.chart.hasHighlight() && me.chart.isHighlighted(series)) {
                         lblcl.push('highlighted');
