@@ -24,6 +24,7 @@ function nbChartsByType($user) {
     foreach ($rs as $r) {
         $vis = get_visualization_meta($r['type']);
         $lang = substr(DatawrapperSession::getLanguage(), 0, 2);
+        if (!isset($vis['title'])) continue;
         if (empty($vis['title'][$lang])) $lang = 'en';
         $res[] = array('count' => $r['c'], 'id' => $r['type'], 'name' => $vis['title'][$lang]);
     }
