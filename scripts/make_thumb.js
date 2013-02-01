@@ -24,6 +24,7 @@ if (system.args.length < 3 || system.args.length > 5) {
                 r = [], title = "";
                 $('.label, h1, .footer-left, .footer-right').css('opacity', 0).each(function(i, el) {
                     el = $(el);
+                    if (el.css('opacity') === 0 || el.is(':hidden')) return;
                     r.push({
                         txt: el.html(),
                         x: el.offset().left,
