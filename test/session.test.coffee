@@ -42,7 +42,7 @@ register = (user, pass) ->
 
     # check if login was successful
     casper.then () ->
-        @wait 1000, () ->
+        @reload () ->
             @test.assertExists '#dw-header-link-user', 'logged in after sign up'
 
 
