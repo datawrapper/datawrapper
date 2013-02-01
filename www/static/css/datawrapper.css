@@ -8,6 +8,7 @@ body {
     background: #fff;
     color: #444;
     margin-top: 60px;
+    position: relative;
 }
 
 /* teaser */
@@ -1264,9 +1265,11 @@ form.well form {
 }
 
 .resize-chart {
-    margin-top: 20px;
+    margin-top: 10px;
+    text-align: center;
     margin-left: 10px;
     color: #666;
+    font-size: 13px;
     line-height: 28px;
 }
 
@@ -1280,3 +1283,16 @@ form.well form {
     top: 3px;
 }
 .resize-chart a.active { color: #000; font-weight: bold }
+
+.dw-create-describe .well.affix {
+    top: 70px;
+}
+
+.dw-create-visualize .affix-cont.affix {
+    top: 70px;
+}
+
+.dw-create-visualize .affix-cont.affix-bottom {
+    position: absolute;
+    bottom: 100px;
+}
