@@ -1241,6 +1241,12 @@ form.well form {
         left: 5px;
         top: 5px;
     }
+
+    .navbar .nav > li > a {
+        padding-left: 8px;
+        padding-right: 8px;
+        font-size: 13px;
+    }
 }
 
 @media (max-width: 976px) {
