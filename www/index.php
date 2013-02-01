@@ -46,6 +46,8 @@ require '../lib/session/database.php';
 require '../lib/session/Datawrapper.php';
 
 
+require_once '../lib/utils/check_server.php';
+check_server();
 
 // Load twig instance
 $twig = $app->view()->getEnvironment();
