@@ -9,5 +9,5 @@
 
 3. Run the test:
 
-	casperjs session.test.coffee
-	python api.test.py
+    casperjs session.test.coffee
+    python api.test.py
