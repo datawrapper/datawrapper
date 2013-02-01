@@ -22,16 +22,12 @@ $app->get('/charts', function() {
  */
 $app->post('/charts', function() {
     $user = DatawrapperSession::getUser();
-    if ($user->isLoggedIn()) {
-        try {
-            $chart = ChartQuery::create()->createEmptyChart($user);
-            $result = array($chart->serialize());
-            ok($result);
-        } catch (Exception $e) {
-            error('create-chart-error', $e->getMessage());
-        }
-    } else {
-        error('need-login', 'You need to be logged in to create a chart..');
+    try {
+        $chart = ChartQuery::create()->createEmptyChart($user);
+        $result = array($chart->serialize());
+        ok($result);
+    } catch (Exception $e) {
+        error('create-chart-error', $e->getMessage());
     }
 });
 
@@ -108,6 +104,21 @@ $app->put('/charts/:id', function($id) use ($app) {
 });
 
 
+
+/**
+ * API: get chart data
+ *
+ * @param chart_id chart id
+ */
+$app->get('/charts/:id/data', function($chart_id) use ($app) {
+    if_chart_is_writable($chart_id, function($user, $chart) use ($app) {
+        $data = $chart->loadData();
+        $app->response()->header('Content-Type', 'text/csv;charset=utf-8');
+        print $data;
+    });
+});
+
+
 /**
  * API: upload data to a chart
  *
@@ -144,8 +155,8 @@ $app->post('/charts/:id/data', function($chart_id) use ($app) {
 
         $uploader = new qqFileUploader($allowedExtensions, $sizeLimit);
         $result = $uploader->handleUpload('../../charts/data/tmp/');
-        // to pass data through iframe you will need to encode all html tags
 
+        // to pass data through iframe you will need to encode all html tags
         $data = file_get_contents($uploader->filename);
 
         try {
