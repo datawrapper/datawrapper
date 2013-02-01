@@ -14,3 +14,7 @@ scripts/history.php
 fabfile.py*
 archive.tar
 *.log
+
+*.html
+
+*.png
