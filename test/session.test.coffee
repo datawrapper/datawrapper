@@ -1,6 +1,12 @@
 
-domain = "http://datawrapper"
+domain = "http://dev.datawrapper.de"
+system = require('system')
+if system.env.DATAWRAPPER_DOMAIN?
+    domain = system.env.DATAWRAPPER_DOMAIN
+
 testuser = "testuser-" + Math.floor(Math.random()*100000) + "@example.com"
+
+console.log 'testing on '+domain
 
 # no need to change anything below this line
 
