@@ -99,7 +99,7 @@ $(function() {
     // send ajax request for re-sending activation email
     $('a[href=#resend]').click(function(e) {
         e.preventDefault();
-        DW.resendActivationMail($(e.target).parent());
+        DW.resendActivationMail($(e.target).parent().parent().parent());
     });
 
     // open modal popup for exporting charts to PNG/PDF
