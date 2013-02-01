@@ -60,7 +60,7 @@ foreach ($jobs as $job) {
         $out = array();
         $cmd = $cfg['phantomjs']['path'] . ' export_chart.js '. $url.' '.$outfile.' '.$params['ratio'];
         //print "\n".'running '.$cmd;
-        exec($cmd, $out);
+        passthru($cmd);
 
         if (file_exists($outfile)) {
             $to = $job['email'];
@@ -106,8 +106,8 @@ foreach ($jobs as $job) {
         //print "\n".'running '.$cmd;
         passthru($cmd);
 
-        //mysql_query('UPDATE job SET status = 1, done_at = NOW() WHERE id = '.$job['job_id']);
-        //print mysql_error();
+        mysql_query('UPDATE job SET status = 1, done_at = NOW() WHERE id = '.$job['job_id']);
+        print mysql_error();
         //sleep(1);
     }
 
