@@ -31,11 +31,11 @@
             return [this.__w, this.__h];
         },
 
-        initCanvas: function(canvas) {
+        initCanvas: function(canvas, w, h) {
             var me = this, el = me.__root, size = me.getSize();
             canvas = _.extend({
-                w: size[0],
-                h: size[1],
+                w: size[0] - (w || 0),
+                h: size[1] - (h || 0),
                 rpad: me.theme.padding.right,
                 lpad: me.theme.padding.left,
                 bpad: me.theme.padding.bottom,
@@ -53,6 +53,33 @@
             el.height(canvas.h);
             $('.tooltip').hide();
             me.__canvas = canvas;
+
+            // add some nice easing
+            Raphael.easing_formulas['expoInOut'] = function (n, time, beg, diff, dur) {
+                dur = 1000;
+                time = n*1000;
+                beg = 0;
+                diff = 1;
+                if (time===0) return beg;
+                if (time==dur) return beg+diff;
+                if ((time/=dur/2) < 1) return diff/2 * Math.pow(2, 10 * (time - 1)) + beg;
+                return diff/2 * (-Math.pow(2, -10 * --time) + 2) + beg;
+            };
+            $.extend(jQuery.easing, {
+
+                easeInExpo: function (x, t, b, c, d) {
+                    return (t==0) ? b : c * Math.pow(2, 10 * (t/d - 1)) + b;
+                },
+                easeOutExpo: function (x, t, b, c, d) {
+                    return (t==d) ? b+c : c * (-Math.pow(2, -10 * t/d) + 1) + b;
+                },
+                easeInOutExpo: function (x, t, b, c, d) {
+                    if (t==0) return b;
+                    if (t==d) return b+c;
+                    if ((t/=d/2) < 1) return c/2 * Math.pow(2, 10 * (t - 1)) + b;
+                    return c/2 * (-Math.pow(2, -10 * --t) + 2) + b;
+                }
+            });
             return canvas;
         },
 
@@ -143,11 +170,41 @@
         },
 
         label: function(x, y, txt, attrs) {
+
+            var me = this;
+
+            function lblcss(lbl, x, y) {
+                var w, align, h, va;
+
+                attrs = lbl.data('attrs');
+
+                if (attrs.rotate == -90) {
+
+                } else {
+                    w = attrs.w ? attrs.w : me.labelWidth(txt, attrs.cl);
+                    align = attrs.align ? attrs.align : 'left';
+                    x = align == 'left' ? x : align == 'center' ? x - w * 0.5 : x - w;
+                    h = attrs.h ? attrs.h : lbl.height();
+                    va = attrs.valign || 'middle';
+                    y = (y-h*(va == 'top' ? 0 : va == 'middle' ? 0.5 : 1));
+                }
+                return _.extend(attrs.css || {}, {
+                    left: x,
+                    top: y,
+                    width: w,
+                    height: h,
+                    position: 'absolute',
+                    'text-align': align
+                });
+            }
+
             var l, w, align, h, va;
             if (attrs === undefined) attrs = {};
             if (attrs.root === undefined) attrs.root = this.__canvas.root;
+            // create label DIV element
             l = $('<div class="label'+(attrs.cl ? ' '+attrs.cl : '')+'"><span>'+txt+'</span></div>');
             if (attrs.css) l.css(attrs.css);
+            l.data('attrs', attrs);
             if (attrs.rotate == -90) {
                 w = 60;
                 l.css({
@@ -166,7 +223,7 @@
                 });
                 attrs.root.append(l);
             } else {
-                va = attrs.valign;
+                /* va = attrs.valign;
                 w = attrs.w ? attrs.w : this.labelWidth(txt, attrs.cl);
                 align = attrs.align ? attrs.align : 'left';
                 x = align == 'left' ? x : align == 'center' ? x - w * 0.5 : x - w;
@@ -183,8 +240,11 @@
                 if (!va) va = 'middle';
                 l.css({
                     top: (y-h*(va == 'top' ? 0 : va == 'middle' ? 0.5 : 1))+'px'
-                });
+                });*/
+                attrs.root.append(l);
+                l.css(lblcss(l, x, y));
             }
+            l.data('lblcss', lblcss); // store css function for later reuse
             return l;
         },
 
@@ -319,7 +379,7 @@
             return bg.l > 60 ? c.l < 70 : c.l > 60;
         },
 
-        getFilterUI: function(callback) {
+        getFilterUI: function(active, callback) {
             var vis = this,
                 rowLabels = vis.chart.rowLabels();
             if (rowLabels.length > 3) {
@@ -333,19 +393,22 @@
                     vis.update(cur);
                     if (callback) callback();
                 });
+                select.addClass('filter-ui filter-select');
                 return select;
             } else if (rowLabels.length > 1) {
                 // use links
                 var div = $('<div />');
+                div.addClass('filter-ui filter-links');
                 _.each(rowLabels, function(lbl, i) {
-                    div.append('<a href="#'+i+'">'+lbl+'</option>');
+                    div.append('<a href="#'+i+'"'+(i == active ? ' class="active" ': '')+'>'+lbl+'</option>');
                 });
                 $('a', div).click(function(e) {
                     var a = $(e.target);
+                    e.preventDefault();
+                    if (a.hasClass('active')) return;
                     $('a', div).removeClass('active');
                     a.addClass('active');
                     vis.update(a.attr('href').substr(1));
-                    e.preventDefault();
                     if (callback) callback(e);
                 });
                 return div;
@@ -356,3 +419,4 @@
     });
 
 }).call(this);
+

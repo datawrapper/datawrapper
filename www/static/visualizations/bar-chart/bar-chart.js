@@ -14,30 +14,30 @@
 
             this.setRoot(el);
 
-            var me = this,
+
+            var me = this, row = 0,
             sortBars = me.get('sort-values'),
             reverse = me.get('reverse-order'),
             useNegativeColor = me.get('negative-color', false);
 
-            var filterUI = me.getFilterUI();
-            $('#header').append(filterUI);
+            if (!_.isUndefined(me.get('selected-row'))) {
+                row = me.get('selected-row', 0);
+                row = row > me.chart.numRows() ? 0 : row;
+            }
+
+            var filterUI = me.getFilterUI(row);
+            if (filterUI) $('#header').append(filterUI);
 
             var c = me.initCanvas({
-                h: Math.max(me.getSize()[1] - me.theme.tpad - me.theme.bpad - me.theme.vpadding - (filterUI ? filterUI.height() : 0), 18 * 1.35 * me.chart.dataSeries().length)
+                h: Math.max(me.getSize()[1] - me.theme.padding.top - me.theme.padding.bottom - me.theme.vpadding, 18 * 1.35 * me.chart.dataSeries().length)
             });
-
 
             var
             chart_width = c.w - c.lpad - c.rpad,
             series_gap = 0.05, // pull from theme
             row_gap = 0.01,
-            row = 0, // pull from theme
             labelsInsideBars = me.get('labels-inside-bars', false);
 
-            if (!_.isUndefined(me.get('selected-row'))) {
-                row = me.get('selected-row');
-            }
-            if (row > me.chart.numRows() || row === undefined) row = 0;
             if (me.chart.numRows() > 1) me.chart.filterRow(row);
 
             me.init();
@@ -47,6 +47,7 @@
 
             c.lastBarY = 0;
 
+
             _.each(me.chart.dataSeries(sortBars, reverse), function(series, s) {
                 _.each(series.data, function(val, r) {
                     var d = me.barDimensions(series, s, r);
@@ -54,6 +55,8 @@
                         stroke = d3.cie.lch(d3.rgb(fill)).darker(0.6).toString();
 
                     if (labelsInsideBars) d.x -= 10;
+
+                    console.log(series.name, d);
 
                     me.registerSeriesElement(c.paper.rect(d.x, d.y, d.w, d.h).attr({
                         'stroke': stroke,
@@ -123,6 +126,7 @@
 
             // enable mouse events
             el.mousemove(_.bind(me.onMouseMove, me));
+
         },
 
         update: function(row) {
@@ -207,6 +211,7 @@
                 w *= -1;
             }
             y = Math.round(c.tpad + s * (bw + bw * pad));
+            console.log(h, bw, cw, n, pad, c.h, c.bpad, c.tpad);
             return { w: w, h: h, x: x, y: y };
         },
 

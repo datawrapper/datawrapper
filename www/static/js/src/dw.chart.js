@@ -166,6 +166,9 @@
             return full ? prepend + val + append : val;
         },
 
+        /*
+         * filter to a single row in the dataset
+         */
         filterRow: function(row) {
             this.__dataset.filterRows([row]);
         },

@@ -135,3 +135,46 @@ svg .axis, svg .tick, svg .grid, svg rect {
     font-size: 80%;
 }
 
+.filter-links a {
+    padding: 0px 10px;
+    box-shadow: 0 0 10px #ddd inset;
+    border: 1px solid #bbb;
+    border-left: 0;
+    display: inline-block;
+    text-decoration: none;
+    color: #666;
+    height: 28px;
+    line-height: 28px;
+    background: #fbfbfb;
+}
+
+
+.filter-links a:hover {
+    background: #fff;
+}
+
+.filter-links a.active {
+    font-weight: bold;
+    color: #000;
+    box-shadow: none;
+    background: #fff;
+    cursor: default;
+}
+
+.filter-links a:first-child {
+    border-radius: 10px 0 0 10px;
+    border-left: 1px solid #bbb;
+}
+
+.filter-links a:last-child {
+    border-radius: 0 10px 10px 0;
+}
+
+.filter-select {
+    background-color: #FFFFFF;
+    border: 1px solid #CCCCCC;
+    border-radius: 4px 4px 4px 4px;
+    padding: 4px 6px;
+    vertical-align: middle;
+    font-size: 12px;
+}
