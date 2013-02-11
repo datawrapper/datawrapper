@@ -24,9 +24,9 @@ _paq.push(["setSiteId", ' . $idSite . ']);
 _paq.push(["setTrackerUrl", u+"piwik.php"]);
 _paq.push(["trackPageView"]);
 _paq.push(["enableLinkTracking"]);
-' . ($chart != null ? '_paq.push(["setCustomUrl", "/chart/'.$chart->getId().'"]);'."\n"
+' . ($chart != null && $chart->isPublic() ? '_paq.push(["setCustomUrl", "/chart/'.$chart->getId().'"]);'."\n"
     .'_paq.push(["setCustomVariable", "1", "Layout", "'.$chart->getTheme().'", "page"]);'."\n"
-    .'_paq.push(["setCustomVariable", "2", "Author", "'.$chart->getUser()->getEmail().'", "page"]);'."\n"
+    .'_paq.push(["setCustomVariable", "2", "Author", "'.$chart->getUser()->getId().'", "page"]);'."\n"
     .'_paq.push(["setCustomVariable", "3", "Visualization", "'.$chart->getType().'", "page"]);'."\n"
  : '') .
 'var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript"; g.defer=true; g.async=true; g.src=u+"piwik.js";
