@@ -21,6 +21,19 @@
 
         setTheme: function(theme) {
             this.theme = theme;
+            var attr_properties = ['horizontalGrid', 'verticalGrid'];
+            _.each(attr_properties, function(prop) {
+                // convert camel-case to dashes
+                if (theme.hasOwnProperty(prop)) {
+                    for (var key in theme[prop]) {
+                        // dasherize
+                        var lkey = key.replace(/([A-Z])/g, "-$1").toLowerCase();
+                        if (!theme[prop].hasOwnProperty(lkey)) {
+                            theme[prop][lkey] = theme[prop][key];
+                        }
+                    }
+                }
+            });
             return this;
         },
 
