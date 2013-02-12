@@ -1,11 +1,10 @@
 {
     "title": "Neue Zürcher Zeitung",
     "link": "http://www.nzz.ch",
-    "restricted": null,
     "locale": "de_DE",
     "extends": "default",
     "default_width": 643,
-    "restrict": null,
+    "restrict": "@nzz.ch",
     "version": "0.0.2",
     "assets": ["nzz-logo-big.png", "nzz-logo-small.png"],
     "option-filter": {
