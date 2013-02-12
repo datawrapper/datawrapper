@@ -26,3 +26,9 @@
 html, body {
     overflow: hidden!important;
 }
+
+.line-chart .tooltip {
+    padding: 2px 0px;
+    text-align: center;
+    z-index: 100;
+}

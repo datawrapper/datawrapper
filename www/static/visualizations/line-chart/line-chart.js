@@ -246,10 +246,6 @@
                 } // */
             });
 
-            if (me.theme.lineChart.hoverDotRadius) {
-                this.hoverDot = c.paper.circle(0, 0, me.theme.lineChart.hoverDotRadius).hide();
-            }
-
             if (true || me.theme.tooltips) {
                 el.mousemove(_.bind(me.onMouseMove, me));
             }
@@ -594,15 +590,16 @@
 
             me.dataset.eachSeries(function(s) {
                 var lbl = s._label = s._label ||
-                    me.label(0, 0, 'foo', {
+                    me.label(0, 0, '0', {
                         cl: 'tooltip',
+                        align: 'center',
                         css: {
-                            background: me.getSeriesColor(s),
-                            padding: '2px 3px',
-                            zIndex: 100
+                            background: me.getSeriesColor(s)
                         }
-                    }).addClass(me.invertLabel(me.getSeriesColor(s)) ? 'inverted' : '');
-                $('span', lbl).html(me.chart.formatValue(s.data[row])).css('background', 'transparent').parent()
+                    }).addClass(me.invertLabel(me.getSeriesColor(s)) ? 'inverted' : ''),
+                    val = me.chart.formatValue(s.data[row]);
+                $('span', lbl).html(val).css('background', 'transparent').parent()
+                    .css({ width: me.labelWidth(val)+10 })
                     .css({
                         left: me.__scales.x(row) - lbl.outerWidth() * 0.5,
                         top: me.__scales.y(s.data[row]) - lbl.outerHeight() * 0.5
@@ -612,52 +609,6 @@
             });
 
             return;
-        },
-
-        showTooltip: function(series, row, x, y) {
-            var me = this,
-                xval = me.chart.rowLabel(row),
-                yval = series.data[row],
-                xtto = me.__root.offset().left - me.__root.parent().offset().left,
-                tt = $('.tooltip'),
-                yr = me.__scales.y(yval);
-
-            x = me.__scales.x(row);
-            y = yr + me.__root.offset().top;
-
-            if (tt) {
-                $('.xval', tt).html(xval);
-                $('.yval', tt).html(me.chart.formatValue(yval, true));
-                if (me.chart.hasRowHeader()) {
-                    $('.xlabel', tt).html(me.chart.rowHeader().name);
-                }
-                $('.ylabel', tt).html(series.name);
-
-                tt.css({
-                    position: 'absolute',
-                    top: (y - tt.outerHeight()-10)+'px',
-                    left: (x - tt.outerWidth()*0.5 + xtto)+'px'
-                });
-                tt.show();
-            }
-
-            if (me.theme.lineChart.hoverDotRadius) {
-                me.hoverDot.attr({
-                    cx: x,
-                    cy: yr,
-                    r: me.theme.lineChart.hoverDotRadius,
-                    stroke: me.getSeriesColor(series),
-                    'stroke-width': 1.5,
-                    fill: '#fff'
-                }).data('series', series).show();
-            }
-        },
-
-        hideTooltip: function() {
-            $('.tooltip').hide();
-            if (this.theme.lineHoverDotRadius) {
-                this.hoverDot.hide();
-            }
         }
 
 
