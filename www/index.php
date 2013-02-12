@@ -108,7 +108,7 @@ function add_header_vars(&$page, $active = null) {
         $headlinks[] = array('url' => '/gallery/', 'id' => 'gallery', 'title' => _('Gallery'), 'icon' => 'signal');
     }
 
-    foreach ($config['navigation'] as $item) {
+    if (isset($config['navigation'])) foreach ($config['navigation'] as $item) {
         $link = array('url' => str_replace('%lang%', substr(DatawrapperSession::getLanguage(), 0, 2), $item['url']), 'id' => $item['id'], 'title' => _($item['title']));
         if (!empty($item['icon'])) $link['icon'] = $item['icon'];
         $headlinks[] = $link;
