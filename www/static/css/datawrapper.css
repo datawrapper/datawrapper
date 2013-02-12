@@ -696,56 +696,56 @@ h1, h2, h3, h4, h5, h6 {
     background: transparent;
 }
 
-.table { width: auto!important;}
+#data-preview.table { width: auto!important;}
 
-.table-striped td { text-align: center;}
-.table-striped th { text-align: center;}
-.table-striped.vert-header tr th:first-child { text-align: right;}
+#data-preview.table-striped td { text-align: center;}
+#data-preview.table-striped th { text-align: center;}
+#data-preview.table-striped.vert-header tr th:first-child { text-align: right;}
 
-.table tr th {
+#data-preview.table tr th {
     font-weight: normal;
     background: none!important;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
-.table tr th span {
+#data-preview.table tr th span {
     padding: 3px 6px;
     border-radius: 4px;
 }
-.table.column-series thead tr th span, .table.row-series tbody tr th span {
+#data-preview.table.column-series thead tr th span, #data-preview.table.row-series tbody tr th span {
     background-color: #0063A5;
     color: #fff;
 }
-.table.column-series tbody tr th span, .table.row-series thead tr th span {
+#data-preview.table.column-series tbody tr th span, #data-preview.table.row-series thead tr th span {
     background-color: #999;
     color: #fff;
 }
-.table tbody tr td {
+#data-preview.table tbody tr td {
     background: none;
 }
-.table-striped.column-series tbody tr td:nth-child(2n+1) {
+#data-preview.table-striped.column-series tbody tr td:nth-child(2n+1) {
     background-color: #eee;
 }
-.table-striped.column-series.vert-header tbody tr td:nth-child(2n) {
+#data-preview.table-striped.column-series.vert-header tbody tr td:nth-child(2n) {
     background: #eee;
 }
-.table-striped.column-series.vert-header tbody tr td:nth-child(2n+1) {
+#data-preview.table-striped.column-series.vert-header tbody tr td:nth-child(2n+1) {
     background: none;
 }
 
-.table-striped.row-series tbody tr:nth-child(2n+1) td {
+#data-preview.table-striped.row-series tbody tr:nth-child(2n+1) td {
     background-color: #eee;
 }
-.table-striped tbody tr:nth-child(2n+1) td, .table-striped tbody tr:nth-child(2n+1) th {
+#data-preview.table-striped tbody tr:nth-child(2n+1) td, .table-striped tbody tr:nth-child(2n+1) th {
     background: none;
 }
-.table-striped tbody tr:nth-child(2n+1) th {
+#data-preview.table-striped tbody tr:nth-child(2n+1) th {
     background-color: #c0c0c0;
 }
-.table-striped tbody tr:hover td {
+#data-preview.table-striped tbody tr:hover td {
     background: none;
 }
-.table tbody tr th {
+#data-preview.table tbody tr th {
     background-color: #ccc;
 }
 
@@ -890,7 +890,7 @@ dl.dl-horizontal dd {
     content: "";
 }
 
-.docs h1.title {
+.docs h1.title, .admin h1.title {
     font-size: 48px;
     margin: 0px 0 48px;
     font-weight: 300;
@@ -901,6 +901,12 @@ dl.dl-horizontal dd {
     font-weight: 400;
     font-size: 24px;
     margin: 1.5em 0 0.5em;
+}
+
+.admin h2, .admin h3 {
+    font-weight: 300;
+    font-size: 24px;
+    margin-top: 0;
 }
 
 .docs h4 {
