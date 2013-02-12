@@ -38,3 +38,17 @@ function get_theme_meta($id, $path = '') {
     if (empty($meta['extends'])) $meta['extends'] = null;
     return $meta;
 }
+
+/*
+ * returns a simple array('theme_id' => count, ...)
+ */
+function count_charts_per_themes() {
+    $con = Propel::getConnection();
+    $sql = "SELECT theme, COUNT(*) c FROM chart WHERE deleted = 0 GROUP BY theme;";
+    $res = $con->query($sql);
+    $ret = array();
+    foreach ($res as $r) {
+        $ret[$r['theme']] = $r['c'];
+    }
+    return $ret;
+}

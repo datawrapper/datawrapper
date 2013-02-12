@@ -1,5 +1,18 @@
 <?php
 
+require_once '../lib/utils/themes.php';
+
+
+function add_adminpage_vars(&$page, $active) {
+    $page['adminmenu'] = array(
+        '/admin' => 'Dashboard',
+        '/admin/themes' => 'Manage Themes',
+        '/admin/users' => 'Manage Users'
+    );
+    $page['adminactive'] = $active;
+}
+
+
 $app->get('/admin/?', function() use ($app) {
     disable_cache($app);
 
@@ -51,7 +64,42 @@ $app->get('/admin/?', function() use ($app) {
             'chart_csv' => $chart_csv
         );
         add_header_vars($page, 'admin');
-        $app->render('admin.twig', $page);
+        add_adminpage_vars($page, '/admin');
+        $app->render('admin-dashboard.twig', $page);
+    } else {
+        $app->notFound();
+    }
+});
+
+
+
+
+$app->get('/admin/themes/?', function() use ($app) {
+    $user = DatawrapperSession::getUser();
+    if ($user->isAdmin()) {
+        $page = array(
+            'title' => 'Datawrapper Admin',
+            'themes' => get_themes_meta(),
+            'count' => count_charts_per_themes()
+        );
+        add_header_vars($page, 'admin');
+        add_adminpage_vars($page, '/admin/themes');
+        $app->render('admin-themes.twig', $page);
+    } else {
+        $app->notFound();
+    }
+});
+
+
+$app->get('/admin/users/?', function() use ($app) {
+    $user = DatawrapperSession::getUser();
+    if ($user->isAdmin()) {
+        $page = array(
+            'title' => 'Datawrapper Admin',
+        );
+        add_header_vars($page, 'admin');
+        add_adminpage_vars($page, '/admin/users');
+        $app->render('admin-users.twig', $page);
     } else {
         $app->notFound();
     }
