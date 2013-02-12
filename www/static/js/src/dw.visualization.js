@@ -21,7 +21,7 @@
 
         setTheme: function(theme) {
             this.theme = theme;
-            var attr_properties = ['horizontalGrid', 'verticalGrid'];
+            var attr_properties = ['horizontalGrid', 'verticalGrid', 'yAxis', 'xAxis'];
             _.each(attr_properties, function(prop) {
                 // convert camel-case to dashes
                 if (theme.hasOwnProperty(prop)) {

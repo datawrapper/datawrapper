@@ -45,7 +45,9 @@
             // the maximum width of direct labels, in px
             maxLabelWidth: 80,
             // the opacity used for fills between two lines
-            fillOpacity: 0.2
+            fillOpacity: 0.2,
+            // distance between labels and x-axis
+            xLabelOffset: 20
         },
 
         /*
@@ -64,24 +66,46 @@
 
         },
 
-        locale: 'de_DE',
+        /*
+         * attributes of x axis, if there is any
+         */
+        xAxis: {
+            stroke: '#333'
+        },
+
+        /*
+         * attributes of y-axis if there is any shown
+         */
+        yAxis: {
+            strokeWidth: 1
+        },
+
 
         /*
          * attributes applied to horizontal grids if displayed
          * e.g. in line charts, column charts, ...
          *
          * you can use any property that makes sense on lines
-         * such as stroke, stroke-width, stroke-dasharray,
-         * stroke-opacity
+         * such as stroke, strokeWidth, strokeDasharray,
+         * strokeOpacity, etc.
          */
         horizontalGrid: {
-            stroke: '#e9e9e9'
+            stroke: '#d9d9d9'
         },
 
+        /*
+         * just like horizontalGrid. used in line charts only so far
+         *
+         * you can define the grid line attributes here, e.g.
+         * verticalGrid: { stroke: 'black', strokeOpacity: 0.4 }
+         */
         verticalGrid: false,
 
         /*
-         * draws a frame around the chart area (only in line chart)
+         * draw a frame around the chart area (only in line chart)
+         *
+         * you can define the frame attributes here, e.g.
+         * frame: { fill: 'white', stroke: 'black' }
          */
         frame: false,
 
@@ -91,25 +115,11 @@
          */
         frameStrokeOnTop: false,
 
+        /*
+         * probably deprecated
+         */
         yTicks: false,
 
-        xAxis: {
-            stroke: '#333'
-        },
-
-        yAxis: {
-            'stroke-width': 1
-        },
-
-
-
-        leftPadding: 20,
-        rightPadding: 20,
-        lineLabelWidth: 20,
-        yLabelOffset: 8,
-
-        bottomPadding: 40,
-        xLabelOffset: 20,
 
         hover: true,
         tooltip: true,
@@ -117,7 +127,17 @@
         hpadding: 0,
         vpadding: 10,
 
-        minWidth: 400
+        /*
+         * some chart types (line chart) go into a 'compact'
+         * mode if the chart width is below this value
+         */
+        minWidth: 400,
+
+        /*
+         * theme locale, probably unused
+         */
+        locale: 'de_DE'
+
     });
 
 }).call(this);
