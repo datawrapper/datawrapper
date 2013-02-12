@@ -388,7 +388,7 @@
         },
 
         getSeriesLineWidth: function(series) {
-            return this.theme.lineChart.strokeWidth['highlight'] * ($('body').hasClass('fullscreen') ? 1.5 : 1);
+            return this.theme.lineChart.strokeWidth * ($('body').hasClass('fullscreen') ? 1.5 : 1);
         },
 
         computeAspectRatio: function() {
@@ -501,7 +501,7 @@
             });
 
             function addlbl(x, val, i, low) {
-                var y = c.h-c.bpad+me.theme.xLabelOffset, lbl;
+                var y = c.h - c.bpad + me.theme.lineChart.xLabelOffset, lbl;
                 if (!val) return;
                 if (rotate45) x -= 5;
                 lbl = me.label(x, y, val, { align: 'center', cl: 'axis x-axis' + (rotate45 ? ' rotate45' : '') });
