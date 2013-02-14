@@ -7,14 +7,6 @@
     "version": "0.11.1",
     "dimensions": 1,
     "extends": "raphael-chart",
-    "author": {
-        "name": "gka",
-        "email": "gka@vis4.net"
-    },
-    "license": {
-        "name": "MIT",
-        "url": "http://www.opensource.org/licenses/mit-license.php"
-    },
     "order": 0,
     "options": {
         "group-bars": {
@@ -50,6 +42,5 @@
             }
         }
     },
-    "libraries": [],
-    "about": "http://site.com/understanding-bar-charts/"
+    "libraries": []
 }

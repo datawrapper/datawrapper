@@ -5,18 +5,9 @@
         "fr": "Graphique linéaire"
     },
     "version": "0.12.7",
-    "author": {
-        "name": "gka",
-        "email": "gka@vis4.net"
-    },
     "extends": "raphael-chart",
     "dimensions": 2,
-    "license": {
-        "name": "MIT",
-        "url": "http://www.opensource.org/licenses/mit-license.php"
-    },
     "order": 40,
-    "about": "http://vis4.net/blog/posts/doing-the-line-charts-right/",
     "options": {
         "direct-labeling": {
             "type": "checkbox",

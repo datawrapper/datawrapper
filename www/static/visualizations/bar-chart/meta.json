@@ -6,15 +6,7 @@
     },
     "version": "0.9.5",
     "extends": "raphael-chart",
-    "author": {
-        "name": "gka",
-        "email": "gka@vis4.net"
-    },
     "order": 30,
-    "license": {
-        "name": "MIT",
-        "url": "http://www.opensource.org/licenses/mit-license.php"
-    },
     "dimensions": 1,
     "options": {
         "sort-values": {
@@ -50,6 +42,5 @@
             }
         }
     },
-    "libraries": [],
-    "about": "http://site.com/understanding-bar-charts/"
+    "libraries": []
 }
