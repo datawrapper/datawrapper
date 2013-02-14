@@ -4,7 +4,7 @@
         "de": "Balken (horizontal)",
         "fr": "Diagramme à bandes horizontales"
     },
-    "version": "0.9.4",
+    "version": "0.9.5",
     "extends": "raphael-chart",
     "author": {
         "name": "gka",
