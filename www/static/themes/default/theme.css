@@ -178,3 +178,7 @@ svg .axis, svg .tick, svg .grid, svg rect {
     vertical-align: middle;
     font-size: 12px;
 }
+
+.line-chart .tooltip {
+    border-radius: 5px;
+}
