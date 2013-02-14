@@ -387,8 +387,10 @@
 
         getFilterUI: function(active, callback) {
             var vis = this,
-                rowLabels = vis.chart.rowLabels();
-            if (rowLabels.length > 3) {
+                rowLabels = vis.chart.rowLabels(),
+                sumChars = 0;
+            _.each(rowLabels, function(t) { sumChars += t.length; });
+            if (sumChars > 30) {
                 // use <select>
                 var select = $('<select />');
                 _.each(rowLabels, function(lbl, i) {
