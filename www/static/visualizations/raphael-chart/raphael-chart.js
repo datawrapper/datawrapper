@@ -390,6 +390,10 @@
                 rowLabels = vis.chart.rowLabels(),
                 sumChars = 0;
             _.each(rowLabels, function(t) { sumChars += t.length; });
+            function update(cur) {
+                vis.update(cur);
+                if (callback) callback();
+            }
             if (sumChars > 30) {
                 // use <select>
                 var select = $('<select />');
@@ -398,8 +402,7 @@
                 });
                 select.change(function(evt) {
                     var cur = select.val();
-                    vis.update(cur);
-                    if (callback) callback();
+                    update(cur);
                 });
                 select.addClass('filter-ui filter-select');
                 return select;
@@ -416,8 +419,7 @@
                     if (a.hasClass('active')) return;
                     $('a', div).removeClass('active');
                     a.addClass('active');
-                    vis.update(a.attr('href').substr(1));
-                    if (callback) callback(e);
+                    update(a.attr('href').substr(1));
                 });
                 return div;
             }
