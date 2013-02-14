@@ -76,9 +76,13 @@
             me.__dataset.eachSeries(function(series, i) {
                 ds.push(series);
             });
-            if (sortByFirstValue) {
+            if (sortByFirstValue === true) {
                 ds = ds.sort(function(a,b) {
                     return b.data[0] > a.data[0] ? 1 : -1;
+                });
+            } else if ($.type(sortByFirstValue) == "number") {
+                ds = ds.sort(function(a,b) {
+                    return b.origdata[sortByFirstValue] > a.origdata[sortByFirstValue] ? 1 : -1;
                 });
             }
             if (reverseOrder) ds.reverse();

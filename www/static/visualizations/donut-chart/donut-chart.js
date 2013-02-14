@@ -1,7 +1,5 @@
 
 (function(){
-    // Simple perfect bar chart
-    // -------------------------
 
     var DonutChart = Datawrapper.Visualizations.DonutChart = function() {
 

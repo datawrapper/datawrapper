@@ -1,18 +1,14 @@
 {
-    "_title": {
+    "title": {
         "en": "Election Donut",
         "de": "Sitzverteilung",
         "fr": "Graphique en anneau"
     },
-    "version": "0.0.2",
+    "version": "0.10.1",
     "extends": "donut-chart",
     "author": {
         "name": "gka",
         "email": "gka@vis4.net"
-    },
-    "license": {
-        "name": "MIT",
-        "url": "http://www.opensource.org/licenses/mit-license.php"
     },
     "dimensions": 1,
     "options": {
@@ -26,6 +22,5 @@
             "default": true
         }
     },
-    "libraries": [],
-    "about": "http://site.com/understanding-bar-charts/"
+    "libraries": []
 }
