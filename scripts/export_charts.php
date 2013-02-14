@@ -16,10 +16,28 @@ mysql_select_db($m[2]);
 
 // load dw config
 require_once '../vendor/spyc/spyc.php';
-$cfg = Spyc::YAMLLoad('../config.yaml');
+$cfg = $GLOBALS['dw_config'] = Spyc::YAMLLoad('../config.yaml');
 
 if (empty($cfg['phantomjs']) || empty($cfg['phantomjs']['path'])) {
     die("Err: phantomjs is not configured properly");
+}
+
+// load publish module (needed to push files to S3)
+if (!empty($cfg['publish'])) {
+    foreach ($cfg['publish']['requires'] as $lib) {
+        require_once '../'.$lib;
+    }
+    require_once '../lib/utils/get_module.php';
+    $pub = get_module('publish', '../lib/');
+}
+
+function publish_file($remote_file, $content_type='text/plain') {
+    global $pub;
+    $local_file = '../charts/static/' . $remote_file;
+    if ($pub) {
+        $pub->unpublish(array($remote_file));
+        $pub->publish(array(array($local_file, $remote_file, $content_type)));
+    }
 }
 
 // some messages
@@ -108,7 +126,10 @@ foreach ($jobs as $job) {
 
         mysql_query('UPDATE job SET status = 1, done_at = NOW() WHERE id = '.$job['job_id']);
         print mysql_error();
-        //sleep(1);
+
+        // push files to CDN
+        publish_file($job['chart_id'] . '/static.html', 'text/html');
+        publish_file($job['chart_id'] . '/static.png', 'image/png');
     }
 
 }
