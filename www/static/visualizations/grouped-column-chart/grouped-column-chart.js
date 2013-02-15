@@ -85,11 +85,11 @@
                         'fill': fill
                     }).data('strokeCol', stroke), series, r);
 
-                    var val_y = val > 0 ? d.y - 10 : d.y + d.h + 10,
-                        lbl_y = val <= 0 ? d.y - 10 : d.y + d.h + 5,
+                    var val_y = val >= 0 ? d.y - 10 : d.y + d.h + 10,
+                        lbl_y = val < 0 ? d.y - 10 : d.y + d.h + 5,
                         lblcl = ['series'],
                         lbl_w = c.w / (n+2),
-                        valign = val > 0 ? 'top' : 'bottom',
+                        valign = val >= 0 ? 'top' : 'bottom',
                         halign = 'center',
                         alwaysShow = (me.chart.hasHighlight() && me.chart.isHighlighted(series)) || (d.w > 40);
 
@@ -173,7 +173,7 @@
                 main = series && useNegativeColor && series.data[row] < 0 ? 'negative' : 'main',
                 hl = series && me.chart.hasHighlight() && me.chart.isHighlighted(series);
 
-            return me.getSeriesColor(me.chart.dataSeries()[0], row, false, false);
+            return me.getSeriesColor(series || me.chart.dataSeries()[0], row, false, false);
         },
 
         initDimensions: function(r) {
