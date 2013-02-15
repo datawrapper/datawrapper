@@ -230,6 +230,7 @@
 
             // initliaze visualization
             var vis = new Datawrapper.Visualizations.{{ visualization.id | classify }}();
+            vis.meta = JSON.parse('{{ visualization | json | raw }}');
 
             // compute chart dimensions
             var w = $('#chart').innerWidth(),
