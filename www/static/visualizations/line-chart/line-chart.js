@@ -202,7 +202,7 @@
                 if (me.lineLabelsVisible()) {
                     var visible = all_series.length < 10 || me.chart.isHighlighted(col);
                     var div, lbl, lblx = x + 10, lbly = y, valign = 'middle';
-                    if (!directLabeling) {
+                    if (!directLabeling && visible) {
                         // legend
                         if (legend.pos == 'right') {
                             lblx += 15;
