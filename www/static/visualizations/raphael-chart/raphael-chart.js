@@ -309,20 +309,27 @@
 
         getSeriesColor: function(series, row, useNegativeColor, colorful) {
             var me = this,
-                palette =me.theme.colors.palette,
-                color;
+                palette = me.theme.colors.palette,
+                color,
+                colorByRow = me.meta['color-by-row'] === true,
+                colorKey = colorByRow ? me.chart.rowLabels()[row] : series.name;
 
-            // highest priority for user-defined series colors
             var userCustomColors = me.get('custom-colors', {});
-            if (series && userCustomColors[series.name]) {
-                color = userCustomColors[series.name];
-            } else if (series && useNegativeColor) {  // use a different color, if set via setSeriesColor
+            if (series && userCustomColors[colorKey]) {
+                // highest priority for user-defined series colors
+                color = userCustomColors[colorKey];
+            } else if (series && useNegativeColor) {
+                // if requested we display negative values in different color
                 color = me.theme.colors[series.data[row] < 0 ? 'negative' : 'positive'];
             } else {
+                // if the visualization has defined custom series colors, let's use them
                 if (series && me.__customSeriesColors && me.__customSeriesColors[series.name])
                     color = me.__customSeriesColors[series.name];
+                else if (colorByRow && colorful)
+                    color = palette[(Math.min(me.get('base-color', 0), palette.length-1) + row) % palette.length];
                 else if (me.__customRowColors && me.__customRowColors[row])
                     color = me.__customRowColors[row];
+
                 else color = palette[Math.min(me.get('base-color', 0), palette.length-1)];
             }
 

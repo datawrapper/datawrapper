@@ -12,6 +12,23 @@
         // some config
         _showValueLabels: function() { return true; },
 
+        _getRowColors: function() {
+            var me = this,
+                base = me.theme.colors.palette[me.get('base-color', 0)],
+                bLch = d3.cie.lch(d3.rgb(base)),
+                ml = Math.min(bLch.l, 50),
+                colors = [];
+
+            colors = d3.range(ml, 91, (90 - ml) / (me.chart.numRows() - 1)).map(function(l) {
+                return ''+d3.cie.lch(l, bLch.c, bLch.h).rgb();
+            });
+            return colors;
+        },
+
+        getRowColors: function() {
+            return this._getRowColors().reverse();
+        },
+
         render: function(el) {
             el = $(el);
 
@@ -52,15 +69,7 @@
 
             if (!me.theme.columnChart.cutGridLines) me.horzGrid();
 
-            var base = me.theme.colors.palette[me.get('base-color', 0)],
-                bLch = d3.cie.lch(d3.rgb(base)),
-                ml = Math.min(bLch.l, 50),
-                colors = [];
-
-
-            colors = d3.range(ml, 91, (90 - ml) / (me.chart.numRows() - 1)).map(function(l) {
-                return ''+d3.cie.lch(l, bLch.c, bLch.h).rgb();
-            }).reverse();
+            var colors = me.getRowColors();
 
             ds.eachRow(function(i) {
                 me.setRowColor(i, colors[i % colors.length]);
@@ -164,7 +173,7 @@
                 main = series && useNegativeColor && series.data[row] < 0 ? 'negative' : 'main',
                 hl = series && me.chart.hasHighlight() && me.chart.isHighlighted(series);
 
-            return me.getSeriesColor(series, row, useNegativeColor);
+            return me.getSeriesColor(me.chart.dataSeries()[0], row, false, false);
         },
 
         initDimensions: function(r) {
