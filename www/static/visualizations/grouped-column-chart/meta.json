@@ -7,16 +7,9 @@
     "version": "1.2.beta",
     "dimensions": 2,
     "extends": "raphael-chart",
+    "color-by-row": true,
     "order": 10,
     "options": {
-        "group-bars": {
-            "type": "checkbox",
-            "label": {
-                "en": "Group bars",
-                "de": "Balken gruppieren",
-                "fr": "Trier les barres"
-            }
-        },
         "sort-values": {
             "type": "checkbox",
             "label": {

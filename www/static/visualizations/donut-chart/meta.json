@@ -6,10 +6,6 @@
     },
     "version": "1.2.beta",
     "extends": "pie-chart",
-    "author": {
-        "name": "gka",
-        "email": "gka@vis4.net"
-    },
     "order": 60,
     "dimensions": 1,
     "options": {

@@ -8,15 +8,8 @@
     "dimensions": 2,
     "extends": "grouped-column-chart",
     "order": 20,
+    "color-by-row": true,
     "options": {
-        "group-bars": {
-            "type": "checkbox",
-            "label": {
-                "en": "Group bars",
-                "de": "Balken gruppieren",
-                "fr": "Trier les barres"
-            }
-        },
         "sort-values": {
             "type": "checkbox",
             "label": {
@@ -31,14 +24,6 @@
                 "en": "Reverse order",
                 "de": "Umgekehrte Reihenfolge",
                 "fr": "inverser l&#39;ordre"
-            }
-        },
-        "negative-color": {
-            "type": "checkbox",
-            "label": {
-                "en": "Use different color for negative values",
-                "de": "Andere Farbe für negative Werte ",
-                "fr": "Couleur différentes pour les valeurs négatives"
             }
         }
     },

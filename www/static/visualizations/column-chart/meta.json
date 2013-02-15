@@ -9,14 +9,6 @@
     "extends": "raphael-chart",
     "order": 0,
     "options": {
-        "group-bars": {
-            "type": "checkbox",
-            "label": {
-                "en": "Group bars",
-                "de": "Balken gruppieren",
-                "fr": "Trier les barres"
-            }
-        },
         "sort-values": {
             "type": "checkbox",
             "label": {
