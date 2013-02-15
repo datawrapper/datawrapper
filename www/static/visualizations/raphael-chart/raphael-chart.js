@@ -337,7 +337,8 @@
                 else color = palette[Math.min(me.get('base-color', 0), palette.length-1)];
             }
 
-            var hsl = d3.hsl(color), lch = d3.cie.lch(d3.rgb(color)),
+            var hsl = d3.hsl(color),
+                lch = d3.cie.lch(d3.rgb(color)),
                 bg = d3.rgb(me.theme.colors.background),
                 bglch = d3.cie.lch(bg);
             if (series && !me.chart.isHighlighted(series)) {
@@ -346,12 +347,12 @@
                 // hsl.l = Math.min(0.85, hsl.l * 1.5);
                 // lch.c *= 0.3;
                 // lch.l = 90;// Math.min(90, lch.l * 1.5);
-                lch = d3.interpolateRgb(d3.rgb(color), bg)(bglch.l < 60 ? 0.9 : 0.73);
+                lch = d3.interpolateRgb(d3.rgb(color), bg)(bglch.l < 60 ? 0.7 : 0.63);
                 //lch.l = Math.min(1.5, lch.l * 1.5);
             } else if (series && me.chart.hasHighlight() && me.chart.isHighlighted(series)) {
                 //lch.l *= bglch.l < 60 ? 1 : 0.8;
             }
-            color = hsl.toString();
+            //color = hsl.toString();
             color = lch.toString();
 
             return color;
