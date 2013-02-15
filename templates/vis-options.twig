@@ -225,20 +225,27 @@ $(function() {
 
         var customColors = $('#customColors'),
             sel = chart.get('metadata.visualize.custom-colors', {});
+            labels = [];
+
+        if (!vis['color-by-row']) {
+            $.each(chart.dataSeries(), function(i, ds) { labels.push(ds.name); });
+        } else {
+            $.each(chart.rowLabels(), function(i, n) { labels.push(n); })
+        }
 
         // populate custom color selector
-        $.each(chart.dataSeries(), function(i, ds) {
-            var li = $('<li data-series="'+ds.name+'"></li>');
-            li.append('<div class="color">×</div><label>'+ds.name+'</label>');
-            if (sel[ds.name]) {
-                $('.color', li).html('').css('background', sel[ds.name]);
-                li.data('color', sel[ds.name]);
+        $.each(labels, function(i, lbl) {
+            var li = $('<li data-series="'+lbl+'"></li>');
+            li.append('<div class="color">×</div><label>'+lbl+'</label>');
+            if (sel[lbl]) {
+                $('.color', li).html('').css('background', sel[lbl]);
+                li.data('color', sel[lbl]);
             }
             $('#customColors .dataseries').append(li);
         });
         // auto-select first series
         $('#customColors .dataseries li:first-child').addClass('selected');
-        $('#customColors .selected-series-name').html(chart.dataSeries()[0].name);
+        $('#customColors .selected-series-name').html(labels[0]);
 
         // define select event handler
         $('#customColors .dataseries li').click(function(e) {
