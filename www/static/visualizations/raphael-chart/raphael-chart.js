@@ -285,9 +285,13 @@
             });
         },
 
-        getSeriesByPoint: function(x, y) {
+        getSeriesByPoint: function(x, y, evt) {
             var me = this,
                 el = me.__canvas.paper.getElementByPoint(x, y);
+            if (!el) {
+                el = $(evt.target);
+                if (!el.hasClass('label')) el = el.parents('.label');
+            }
             if (el && el.data('series')) return el.data('series');
             return null;
         },
