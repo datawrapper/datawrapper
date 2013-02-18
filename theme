@@ -1,0 +1,62 @@
+#!/usr/bin/env python
+# -----------------------------------------------------------------------------
+# Theme manager for Datawrapper
+# -----------------------------------------------------------------------------
+# Author : Edouard Richard                                  <edou4rd@gmail.com>
+# -----------------------------------------------------------------------------
+# License : MIT License
+# -----------------------------------------------------------------------------
+# Creation : 18-Feb-2013
+# Last mod : 18-Feb-2013
+# -----------------------------------------------------------------------------
+import subprocess
+import sys, os, uuid
+
+BASE_DIR  = os.path.abspath(os.path.dirname(__file__))
+THEME_DIR = os.path.join(BASE_DIR, "www/static/themes")
+TEMPL_DIR = os.path.join(BASE_DIR, "templates/themes")
+
+ADD_SYNTAX    = "theme add <id> <git_url>"
+UPDATE_SYNTAX = "theme update <id>"
+
+def create_symlink(source, destination, force=False):
+	if os.path.exists(destination):
+		if force:
+			moved_file = "%s.backup-%s" % (destination, uuid.uuid4())
+			os.rename(destination, moved_file)
+			print "the template %s already exists. We moved it to %s" % (destination, moved_file)
+		else:
+			raise Exception("the template %s already exists. Do a './theme update'" % destination)
+	os.symlink(template_file, destination)
+	print "template file copied in %s" % destination
+
+if __name__ == "__main__":
+	if len(sys.argv) > 2:
+		action, theme_id = sys.argv[1:3]
+		theme_dir        = os.path.join(THEME_DIR, theme_id)
+		template_file    = os.path.join(theme_dir, "%s.twig" % theme_id)
+		template_dest    = os.path.join(TEMPL_DIR, "%s.twig" % theme_id)
+		assert action in ('add', 'update'), "Command '%s' unknown" % action
+		if action == "add":
+			assert len(sys.argv) == 4, "Syntax: %s" % ADD_SYNTAX
+			theme_git = sys.argv[3]
+			assert not os.path.exists(theme_dir), "the folder %s already exists. You probably want to update it.\nRun: ./theme update %s" % (theme_dir, theme_id)
+			# clone the theme repository
+			subprocess.call(['git', 'clone', theme_git, theme_dir], stdout=subprocess.PIPE)
+			print "theme cloned in %s" % theme_dir
+			# create a symlink for template file
+			create_symlink(template_file, template_dest)
+		if action == "update":
+			assert len(sys.argv) == 3, "Syntax: %s" % UPDATE_SYNTAX
+			assert os.path.exists(theme_dir), "%s doesn't exist, please run '%s' before" %  (theme_dir, ADD_SYNTAX)
+			# update the theme repository
+			subprocess.call(['git', 'pull', 'origin'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=theme_dir)
+			create_symlink(template_file, template_dest, force=True)
+	else:
+		print "\nTheme manager for Datawrapper\n-----------------------------"
+		print "Two options:\n"
+		print '1. Add a theme to this datawrapper instance. Copy the template file (<id>.twig) in the template directory'
+		print "\t$ ./%s" % ADD_SYNTAX
+		print '\n2. update a theme from git repository. Copy the template file (<id>.twig) in the template directory'
+		print "\t$ ./%s" % UPDATE_SYNTAX
+# EOF
