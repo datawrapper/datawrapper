@@ -71,7 +71,7 @@ class DatawrapperSession {
 
     public static function getBrowserLocale() {
         // get list of available locales
-        $available_locales = array('en');
+        $available_locales = array('en_US');
         foreach (glob('../locale/*', GLOB_ONLYDIR) as $l) {
             $available_locales[] = substr($l, 10);
         }
