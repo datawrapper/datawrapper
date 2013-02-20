@@ -73,6 +73,8 @@ $app = new Slim(array( 'view' => 'JSONView' ));
 //GET route
 
 function error($code, $msg) {
+    global $app;
+    $app->response()->header('Content-Type', 'application/json;charset=utf-8');
     $result = array('status'=>'error');
     if (isset($code)) $result['code'] = $code;
     if (isset($msg)) $result['message'] = $msg;
@@ -80,6 +82,8 @@ function error($code, $msg) {
 }
 
 function ok($data = null) {
+    global $app;
+    $app->response()->header('Content-Type', 'application/json;charset=utf-8');
     $result = array('status'=>'ok');
     if (isset($data)) $result['data'] = $data;
     print json_encode($result);
