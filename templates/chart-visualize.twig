@@ -468,10 +468,26 @@ $(function() {
             </div>
 
             <a href="publish" class="submit pull-right btn btn-primary btn-lrge" id="visualize-proceed">{% trans "Publish" %} <i class="icon-chevron-right icon-white"></i></a>
+
+            {% if debug %}
+            <a href="#" id="snapshot" class="submit btn btn-info">store as test case</a>
+            <script type="text/javascript">
+            $('#snapshot').click(function(e) {
+                e.preventDefault();
+                $.getJSON('/api/charts/{{ chart.id }}/store_snapshot?name='+prompt("Enter name for this test case..")).done(function(res) {
+                    if (res.status == "ok") {
+                        DW.logMessage("test case has been created.", '.visconfig');
+                    }
+                });
+            })
+            </script>
+            {% endif %}
+
             <a class="btn submit" href="describe"><i class="icon-chevron-left"></i> {% trans "Back" %}</a>
+
             <div class="clearfix"></div>
         </div>
-        
+
     </div>
 </div>
 

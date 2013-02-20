@@ -94,6 +94,17 @@ function if_chart_is_writable($chart_id, $callback) {
     }
 }
 
+
+function if_chart_exists($id, $callback) {
+    $chart = ChartQuery::create()->findPK($id);
+    if ($chart) {
+        call_user_func($callback, $chart);
+    } else {
+        // no such chart
+        error('no-such-chart', '');
+    }
+}
+
 /* check user and update chart meta data */
 $app->put('/charts/:id', function($id) use ($app) {
     if_chart_is_writable($id, function($user, $chart) use ($app) {
@@ -463,5 +474,27 @@ $app->put('/charts/:id/thumbnail/:thumb', function($chart_id, $thumb) use ($app)
             error('io-error', $e->getMessage());
         }
     });
+});
+
+/*
+ * stores static snapshot of a chart (data, configuration, etc) as JSON
+ * to /test/test-charts. This aims to simplify the generation of test
+ * cases using the Datawrapper editor. Only for debugging.
+ */
+$app->get('/charts/:id/store_snapshot', function($chart_id) use ($app) {
+    if (!empty($GLOBALS['dw_config']['debug_export_test_cases'])) {
+        if_chart_exists($chart_id, function($chart) use ($app) {
+            $json = $chart->serialize();
+            $name = $app->request()->get('name');
+            $json['_data'] = $chart->loadData();
+            if (empty($name)) {
+                error('', 'no name specified');
+            } else {
+                $name = str_replace(" ", "-", $name);
+                file_put_contents("../../test/test-charts/" . $name . ".json", json_encode($json));
+                ok();
+            }
+        });
+    }
 });
 
