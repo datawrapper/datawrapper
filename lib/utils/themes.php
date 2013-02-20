@@ -12,6 +12,7 @@ function get_themes_meta($path = '') {
         foreach ($files as $file) {
             $id = substr($file, 14, -10);
             $meta = get_theme_meta($id, $path);
+            if (!$meta) continue;
             if (!isset($meta['restrict'])  // no restriction at all
                  || $meta['restrict'] == $domain  // check for email domain
                  || $meta['restrict'] == $email  // check for entire email address
@@ -23,20 +24,24 @@ function get_themes_meta($path = '') {
 }
 
 function get_theme_meta($id, $path = '') {
-    $meta = json_decode(file_get_contents($path . 'static/themes/' . $id . '/meta.json'), true);
-    $meta['id'] = $id;
-    $meta['hasStyles'] = file_exists($path . 'static/themes/' . $id . '/theme.css');
-    $meta['hasTemplate'] = file_exists('../templates/themes/' . $id . '.twig');
+    $theme_meta = $path . 'static/themes/' . $id . '/meta.json';
+    if (file_exists($theme_meta)) {
+        $meta = json_decode(file_get_contents($theme_meta), true);
+        $meta['id'] = $id;
+        $meta['hasStyles'] = file_exists($path . 'static/themes/' . $id . '/theme.css');
+        $meta['hasTemplate'] = file_exists('../templates/themes/' . $id . '.twig');
 
-    if (!empty($meta['locale'])) {
-        $localeJS = 'static/vendor/globalize/cultures/globalize.culture.' . str_replace('_', '-', $meta['locale']) . '.js';
-        if (file_exists($path . $localeJS)) {
-            $meta['localeJS'] = '/'.$localeJS;
-            $meta['hasLocaleJS'] = true;
+        if (!empty($meta['locale'])) {
+            $localeJS = 'static/vendor/globalize/cultures/globalize.culture.' . str_replace('_', '-', $meta['locale']) . '.js';
+            if (file_exists($path . $localeJS)) {
+                $meta['localeJS'] = '/'.$localeJS;
+                $meta['hasLocaleJS'] = true;
+            }
         }
+        if (empty($meta['extends'])) $meta['extends'] = null;
+        return $meta;
     }
-    if (empty($meta['extends'])) $meta['extends'] = null;
-    return $meta;
+    return false;
 }
 
 /*
