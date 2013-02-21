@@ -50,6 +50,7 @@ class ChartQuery extends BaseChartQuery {
         $chart->setMetadata(json_encode($defaultMeta));
         // $chart->setLanguage($user->getLanguage());  // defaults to user language
         $chart->save();
+        return $chart;
     }
 
     public function getUnusedRandomId() {
