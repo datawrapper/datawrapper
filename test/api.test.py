@@ -72,6 +72,22 @@ class TestDatawrapperAPI(unittest.TestCase):
         self.checkRes(r)
         #self.assertEqual(r.json['data']['showInGallery'], False)
 
+    def test_06_gallery(self):
+        url = endpoint + 'gallery'
+        r = ns['session'].get(url)
+        self.checkRes(r)
+
+    def test_06_visualizations(self):
+        url = endpoint + 'visualizations'
+        r = ns['session'].get(url)
+        self.checkRes(r)
+        self.assertIsInstance(r.json['data'], list)
+
+    def test_07_bar_chart(self):
+        url = endpoint + 'visualizations/bar-chart'
+        r = ns['session'].get(url)
+        self.checkRes(r)
+        self.assertIsInstance(r.json['data'], dict)
 
 if __name__ == '__main__':
     unittest.main()
