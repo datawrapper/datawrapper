@@ -19,51 +19,44 @@ class ChartQuery extends BaseChartQuery {
      * creates a new empty chart
      */
     public function createEmptyChart($user) {
-        $i = 0;
-        while ($i++ < 10) {
-            try {
-                $chart = new Chart();
-                $chart->setId(self::_rand_chars(5));
-                $chart->setCreatedAt(time());
-                $chart->setLastModifiedAt(time());
-                if ($user->isLoggedIn()) {
-                    $chart->setAuthorId($user->getId());
-                } else {
-                    // remember session id to be able to assign this chart
-                    // to a newly registered user
-                    $chart->setGuestSession(session_id());
-                }
-                // find a nice, more or less unique title
-                $untitled = _('Untitled');
-                $title = '[' . $untitled;
-                $untitledCharts = $this->filterByAuthorId($user->getId())
-                    ->filterByTitle('['.$untitled.'%')
-                    ->filterByDeleted(false)
-                    ->find();
-                if (count($untitledCharts) > 0) $title .= '-'.count($untitledCharts);
-                $chart->setTitle($title . ']');
-
-                // todo: use global default theme
-                $chart->setTheme(isset($GLOBALS['dw_config']['default_theme']) ? $GLOBALS['dw_config']['default_theme'] : 'default');
-                $chart->setLocale(''); // no default locale
-                $chart->setType(isset($GLOBALS['dw_config']['default_vis']) ? $GLOBALS['dw_config']['default_vis'] : 'bar-chart');
-
-                $defaultMeta = Chart::defaultMetaData();
-
-                $chart->setMetadata(json_encode($defaultMeta));
-                // $chart->setLanguage($user->getLanguage());  // defaults to user language
-                $chart->save();
-                break;
-            } catch (Exception $e) {
-                print $e;
-                continue;
-            }
-        }
-        if ($chart->isNew()) {
-            throw Exception('could not get an id for the chart');
+        $chart = new Chart();
+        $chart->setId($this->getUnusedRandomId());
+        $chart->setCreatedAt(time());
+        $chart->setLastModifiedAt(time());
+        if ($user->isLoggedIn()) {
+            $chart->setAuthorId($user->getId());
         } else {
-            return $chart;
+            // remember session id to be able to assign this chart
+            // to a newly registered user
+            $chart->setGuestSession(session_id());
         }
+        // find a nice, more or less unique title
+        $untitled = _('Untitled');
+        $title = '[' . $untitled;
+        $untitledCharts = $this->filterByAuthorId($user->getId())
+            ->filterByTitle('['.$untitled.'%')
+            ->filterByDeleted(false)
+            ->find();
+        if (count($untitledCharts) > 0) $title .= '-'.count($untitledCharts);
+        $chart->setTitle($title . ']');
+
+        // todo: use global default theme
+        $chart->setTheme(isset($GLOBALS['dw_config']['default_theme']) ? $GLOBALS['dw_config']['default_theme'] : 'default');
+        $chart->setLocale(''); // no default locale
+        $chart->setType(isset($GLOBALS['dw_config']['default_vis']) ? $GLOBALS['dw_config']['default_vis'] : 'bar-chart');
+
+        $defaultMeta = Chart::defaultMetaData();
+
+        $chart->setMetadata(json_encode($defaultMeta));
+        // $chart->setLanguage($user->getLanguage());  // defaults to user language
+        $chart->save();
+    }
+
+    public function getUnusedRandomId() {
+        do {
+            $randid = self::_rand_chars(5);
+        } while ($this->findOneById($randid));
+        return $randid;
     }
 
     /*
@@ -72,7 +65,7 @@ class ChartQuery extends BaseChartQuery {
     public function copyChart($src) {
         $chart = new Chart();
         // new id
-        $chart->setId(self::_rand_chars(5));
+        $chart->setId($this->getUnusedRandomId());
         // but the rest remains the same
         $chart->setUser($src->getUser());
         $chart->setTitle($src->getTitle().' ('._('Copy').')');
