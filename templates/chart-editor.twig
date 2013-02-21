@@ -6,6 +6,7 @@
   {% trans "Your changes have been saved." %}
 </div>
 
+
 <div class="row create-nav">
     {% for step in steps %}
         {% if createstep > step.index or createstep != step.index and chart.lastEditStep >= step.index %}
@@ -31,6 +32,13 @@
 
     {% endfor %}
 </div>
+
+{% if user != chart.user %}
+<div class="alert alert-danger" style="text-align:center">
+ {{ "<b>CAUTION!</b> This chart belongs to <a href='/admin/charts/%uid'>%email</a>. Great power comes with great responsibility, so be careful with what you're doing!" | trans 
+    | replace({"%email": chart.user.email, "%uid": chart.user.id }) | raw }}
+</div>
+{% endif %}
 
 <script type="text/javascript">
 
