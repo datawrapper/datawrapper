@@ -118,6 +118,7 @@ resendActivation = () ->
 createChart = (i=0, el='rect', num=7) ->
     chartId = 0
     casper.thenOpen domain + '/chart/create', () ->
+        @test.assertNotEquals @getCurrentUrl(), domain + '/chart/create', 'redirected to chart editor'
         chartId = @getCurrentUrl().substr(domain.length + 7, 5)
         @test.assertExists '#upload-data-text', 'created chart ' + chartId
         data = @evaluate (i) ->
