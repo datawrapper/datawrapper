@@ -17,8 +17,8 @@ class Chart extends BaseChart {
 
     public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false) {
         $arr = parent::toArray($keyType, $includeLazyLoadColumns, $alreadyDumpedObjects, $includeForeignObjects);
-        unset($arr['Deleted']);  // we don't use this, since we never transmit deleted charts
-        unset($arr['DeletedAt']);
+        // unset($arr['Deleted']);  // we don't use this, since we never transmit deleted charts
+        //unset($arr['DeletedAt']);
         return $arr;
     }
 
@@ -37,6 +37,8 @@ class Chart extends BaseChart {
      */
     public function serialize() {
         $json = $this->toArray();
+        unset($json['Deleted']);
+        unset($json['DeletedAt']);
         // at first we lowercase the keys
         $json = $this->lowercaseKeys($json);
         // then decode metadata from json string
