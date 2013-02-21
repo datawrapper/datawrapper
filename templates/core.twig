@@ -111,6 +111,8 @@
 
 $(function() {
   Datawrapper.Core.initialize();
+  DW.__chartCacheDomain = '{{ DW_CHART_CACHE_DOMAIN }}';
+  DW.__domain = '{{ DW_DOMAIN }}';
 });
     </script>
     {% use "messages.twig" %}
