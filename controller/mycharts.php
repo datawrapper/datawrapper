@@ -44,33 +44,64 @@ function nbChartsByLayout($user) {
     return $res;
 }
 
+
+/*
+ * shows MyChart page for a given user, which is typically the
+ * logged user, but admins can view others MyCharts page, too.
+ */
+function user_charts($app, $user, $key, $val) {
+    $curPage = $app->request()->params('page');
+    if (empty($curPage)) $curPage = 0;
+    $perPage = 12;
+    $filter = !empty($key) ? array($key => $val) : array();
+    $charts =  ChartQuery::create()->getPublicChartsByUser($user, $filter, $curPage * $perPage, $perPage);
+    $total = ChartQuery::create()->countPublicChartsByUser($user, $filter);
+
+    $page = array(
+        'charts' => $charts,
+        'bymonth' => nbChartsByMonth($user),
+        'byvis' => nbChartsByType($user),
+        'bylayout' => nbChartsByLayout($user),
+        'key' => $key,
+        'val' => $val,
+        'mycharts_base' => '/mycharts'
+    );
+
+    if (DatawrapperSession::getUser()->isAdmin() && $user != DatawrapperSession::getUser()) {
+        $page['user2'] = $user;
+        $page['mycharts_base'] = '/admin/charts/' . $user->getId();
+        $page['all_users'] = UserQuery::create()->filterByDeleted(false)->orderByEmail()->find();
+    }
+
+    add_header_vars($page, 'mycharts');
+    add_pagination_vars($page, $total, $curPage, $perPage);
+    $app->render('mycharts.twig', $page);
+}
+
+
 $app->get('/mycharts(/?|/by/:key/:val)', function ($key = false, $val = false) use ($app) {
     disable_cache($app);
-
     $user = DatawrapperSession::getUser();
     if ($user->isLoggedIn()) {
-
-        $curPage = $app->request()->params('page');
-        if (empty($curPage)) $curPage = 0;
-        $perPage = 12;
-        $filter = !empty($key) ? array($key => $val) : array();
-        $charts =  ChartQuery::create()->getPublicChartsByUser($user, $filter, $curPage * $perPage, $perPage);
-        $total = ChartQuery::create()->countPublicChartsByUser($user, $filter);
-
-        $page = array(
-            'charts' => $charts,
-            'bymonth' => nbChartsByMonth($user),
-            'byvis' => nbChartsByType($user),
-            'bylayout' => nbChartsByLayout($user),
-            'key' => $key,
-            'val' => $val
-        );
-
-        add_header_vars($page, 'mycharts');
-        add_pagination_vars($page, $total, $curPage, $perPage);
-        $app->render('mycharts.twig', $page);
+        user_charts($app, $user, $key, $val);
     } else {
         error_mycharts_need_login();
+    }
+});
+
+
+$app->get('/admin/charts/:userid(/?|/by/:key/:val)', function($userid, $key = false, $val = false) use ($app) {
+    disable_cache($app);
+    $user = DatawrapperSession::getUser();
+    if ($user->isAdmin()) {
+        $user2 = UserQuery::create()->findOneById($userid);
+        if ($user2) {
+            user_charts($app, $user2, $key, $val);
+        } else {
+            error_mycharts_user_not_found();
+        }
+    } else {
+        $app->notFound();
     }
 });
 
