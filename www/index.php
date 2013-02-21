@@ -6,44 +6,11 @@
  */
 
 
-// load YAML parser and config
-require_once '../vendor/spyc/spyc.php';
-$GLOBALS['dw_config'] = Spyc::YAMLLoad('../config.yaml');
-
-if ($GLOBALS['dw_config']['debug'] == true) {
-    error_reporting(E_ALL);
-    ini_set('display_errors', 1);
-}
 
 define('DATAWRAPPER_VERSION', '1.2.beta');
+define('ROOT_PATH', '../');
 
-// Require the Slim PHP 5 Framework
-require '../vendor/Slim/Slim.php';
-
-// Include the main Propel script
-// Initialize Propel with the runtime configuration
-// Add the generated 'classes' directory to the include path
-require_once '../vendor/propel/runtime/lib/Propel.php';
-Propel::init("../lib/core/build/conf/datawrapper-conf.php");
-set_include_path("../lib/core/build/classes" . PATH_SEPARATOR . get_include_path());
-
-
-
-// Load TwigView
-require_once '../vendor/Slim-Extras/Views/TwigView.php';
-TwigView::$twigDirectory = '../vendor/Twig';
-
-$app = new Slim(array(
-    'view' => new TwigView(),
-    'templates.path' => '../templates',
-    'session.handler' => null
-));
-
-
-require '../lib/session/database.php';
-
-// include datawrapper session serialization
-require '../lib/session/Datawrapper.php';
+require '../lib/bootstrap.php';
 
 
 require_once '../lib/utils/check_server.php';
