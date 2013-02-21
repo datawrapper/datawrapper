@@ -1302,3 +1302,7 @@ form.well form {
     position: absolute;
     bottom: 100px;
 }
+
+#ender-overlay-mask {
+    top: -60px!important;
+}
