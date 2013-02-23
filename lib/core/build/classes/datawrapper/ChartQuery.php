@@ -131,6 +131,14 @@ class ChartQuery extends BaseChartQuery {
             ->count();
     }
 
+    public function getGuestCharts() {
+        return $this
+            ->filterByGuestSession(session_id())
+            ->filterByDeleted(false)
+            ->orderByCreatedAt('desc')
+            ->find();
+    }
+
     /*
      * Gallery Charts
      */

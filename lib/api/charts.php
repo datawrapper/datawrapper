@@ -7,14 +7,14 @@ $app->get('/charts', function() {
     $user = DatawrapperSession::getUser();
     if ($user->isLoggedIn()) {
         $charts = ChartQuery::create()->getPublicChartsByUser($user);
-        $res = array();
-        foreach ($charts as $chart) {
-            $res[] = $chart->shortArray();
-        }
-        ok($res);
     } else {
-        error('need-login', 'You need to be logged in to do that');
+        $charts = ChartQuery::create()->getGuestCharts();
     }
+    $res = array();
+    foreach ($charts as $chart) {
+        $res[] = $chart->shortArray();
+    }
+    ok($res);
 });
 
 /**
