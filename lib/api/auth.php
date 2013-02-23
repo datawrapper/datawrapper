@@ -10,6 +10,11 @@ $app->get('/account', function() {
     }
 });
 
+/* get current language */
+$app->get('/account/lang', function() use ($app) {
+    ok(DatawrapperSession::getLanguage());
+});
+
 /* set a new language */
 $app->put('/account/lang', function() use ($app) {
     $data = json_decode($app->request()->getBody());
