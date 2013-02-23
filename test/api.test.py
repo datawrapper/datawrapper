@@ -29,14 +29,14 @@ class TestDatawrapperAPI(unittest.TestCase):
         if r.json['status'] == 'error':
             print r.json['message']
 
-    def test_01_createChart(self):
+    def test_01_create_new_chart(self):
         global ns
         r = ns['session'].post(endpoint + 'charts')
         #self.assertEqual(r.json['status'], 'ok')
         self.checkRes(r)
         ns['chartId'] = r.json['data'][0]['id']
 
-    def test_02_putData(self):
+    def test_02_set_chart_data(self):
         data = 'some,data,to,send\nanother,row,to,send\n'
         url = endpoint + 'charts/%s/data' % ns['chartId']
         r = ns['session'].put(url, data=data)
@@ -45,7 +45,7 @@ class TestDatawrapperAPI(unittest.TestCase):
         r = ns['session'].get(url)
         self.assertEqual(r.text, data)
 
-    def test_03_postData(self):
+    def test_03_upload_chart_data(self):
         files = {'qqfile': ('report.csv', 'other,data,to,send\nanother,row,to,send\n')}
         url = endpoint + 'charts/%s/data' % ns['chartId']
         r = ns['session'].post(url, files=files)
@@ -54,7 +54,7 @@ class TestDatawrapperAPI(unittest.TestCase):
         r = ns['session'].get(url)
         self.assertEqual(r.text, files['qqfile'][1])
 
-    def test_04_loadMetadata(self):
+    def test_04_get_chart_meta(self):
         url = endpoint + 'charts/%s' % ns['chartId']
         r = ns['session'].get(url)
         self.checkRes(r)
@@ -88,6 +88,35 @@ class TestDatawrapperAPI(unittest.TestCase):
         r = ns['session'].get(url)
         self.checkRes(r)
         self.assertIsInstance(r.json['data'], dict)
+
+    def test_08_account(self):
+        url = endpoint + 'account'
+        r = ns['session'].get(url)
+        self.checkRes(r)
+        self.assertIn('user', r.json['data'])
+        self.assertIsInstance(r.json['data']['user'], dict)
+
+    def test_09_set_lang_to_fr(self):
+        url = endpoint + 'account/lang'
+        r = ns['session'].put(url, data=json.dumps(dict(lang='fr')))
+        self.checkRes(r)
+
+    def test_10_check_lang_is_fr(self):
+        url = endpoint + 'account/lang'
+        r = ns['session'].get(url)
+        self.checkRes(r)
+        self.assertEqual(r.json['data'], 'fr')
+
+    def test_11_charts(self):
+        url = endpoint + 'charts'
+        r = ns['session'].get(url)
+        self.checkRes(r)
+        self.assertEqual(len(r.json['data']), 1)
+
+    def test_12_estimate_job(self):
+        url = endpoint + 'jobs/export/estimate'
+        r = ns['session'].get(url)
+        self.checkRes(r)
 
 if __name__ == '__main__':
     unittest.main()
