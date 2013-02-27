@@ -44,7 +44,7 @@ $app->post('/auth/login', function() use($app) {
 
 /* return the server salt for secure auth */
 $app->get('/auth/salt', function() use ($app) {
-    $salt = 'uRPAqgUJqNuBdW62bmq3CLszRFkvq4RW';
+    $salt = DW_AUTH_SALT;
     ok(array('salt' => $salt, 'time' => time()));
 });
 
