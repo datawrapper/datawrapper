@@ -5,6 +5,7 @@
 import requests
 import os
 import json
+from random import randint
 import yaml
 
 
@@ -121,6 +122,14 @@ class TestDatawrapperAPI(unittest.TestCase):
     def test_12_estimate_job(self):
         url = endpoint + 'jobs/export/estimate'
         r = ns['session'].get(url)
+        self.checkRes(r)
+
+    def test_13_create_user(self):
+        url = endpoint + '/users'
+        password = '1234'
+        body = dict(pwd=password, pwd2=password,
+            email=('test-%d@' + config['domain']) % randint(10000, 99999))
+        r = ns['session'].post(url, data=json.dumps(body))
         self.checkRes(r)
 
 if __name__ == '__main__':
