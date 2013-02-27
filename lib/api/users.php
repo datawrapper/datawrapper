@@ -54,7 +54,7 @@ $app->post('/users', function() use ($app) {
         if (call_user_func($check, $data) == false) {
             error($code, $code);
             return;
-        };
+        }
     }
 
     // all checks passed
