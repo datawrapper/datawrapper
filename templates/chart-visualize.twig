@@ -482,25 +482,34 @@ $(function() {
 
             #}
 
-            <a href="#" id="snapshot" class="btn btn-info">store as test case</a>
+            <a href="#" class="snapshot btn btn-info">new test</a>
+            <a href="#" class="snapshot update btn btn-info">update test</a>
             <script type="text/javascript">
-            $('#snapshot').click(function(e) {
-                e.preventDefault();
-                var vis = $('#iframe-vis').get(0).contentWindow.vis;
-                $.ajax({
-                    type: 'POST',
-                    url: '/api/charts/{{ chart.id }}/store_snapshot',
-                    data: JSON.stringify({
-                        id: prompt("Enter unique name for this test case.."),
-                        signature: vis.signature()
-                    }),
-                    dataType: 'json'
-                }).done(function(res) {
-                    if (res.status == "ok") {
-                        DW.logMessage("test case has been created.", '.visconfig');
-                    }
+
+            $(function() {
+                var testId = DW.currentChart.get('metadata.describe.__test_id', null);
+                if (!testId) $('.snapshot.update').hide();
+
+                $('.snapshot').click(function(e) {
+                    e.preventDefault();
+                    var vis = $('#iframe-vis').get(0).contentWindow.vis;
+                    var id = testId && $(e.target).hasClass('update') ? testId : prompt("Enter unique name for this test case..");
+                    $.ajax({
+                        type: 'POST',
+                        url: '/api/charts/{{ chart.id }}/store_snapshot',
+                        data: JSON.stringify({
+                            id: id,
+                            signature: vis.signature()
+                        }),
+                        dataType: 'json'
+                    }).done(function(res) {
+                        if (res.status == "ok") {
+                            DW.logMessage("The test case <b>"+id+"</b> has been "+(testId && $(e.target).hasClass('update') ? 'updated.' : 'created.'), '.visconfig');
+                        }
+                    });
                 });
-            })
+            });
+
             </script>
 
             {% endif %}
