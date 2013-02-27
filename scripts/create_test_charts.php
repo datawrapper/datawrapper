@@ -60,6 +60,7 @@ foreach (glob("../test/test-charts/*.json") as $test) {
         $chart->unserialize($config);
         $chart->writeData($data);
         $chart->setTheme($theme['id']);
+        $chart->setLastEditStep(5);
         $chart->save();
     }
 }
