@@ -78,6 +78,15 @@
             $('body').prepend(warning);
             warning.hide();
             warning.fadeIn();
+        },
+
+        /**
+         * returns a signature for this visualization which will be used
+         * to test correct rendering of the chart in different browsers.
+         * See raphael-chart.js for example implementation.
+         */
+        signature: function() {
+            // nothing here, please overload
         }
 
     });

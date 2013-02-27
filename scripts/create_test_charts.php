@@ -46,6 +46,7 @@ foreach (glob("../test/test-charts/*.json") as $test) {
     $config = json_decode(file_get_contents($test), true);
     $data = $config['_data'];
     unset($config['_data']);
+    unset($config['_sig']);
     unset($config['id']);
 
     foreach ($themes as $theme) {

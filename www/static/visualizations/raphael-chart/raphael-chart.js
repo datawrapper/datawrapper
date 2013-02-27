@@ -436,6 +436,19 @@
                 return div;
             }
             return null;
+        },
+
+        /**
+         * returns a signature for this visualization which will be used
+         * to test correct rendering of the chart in different browsers.
+         */
+        signature: function() {
+            var me = this,
+                sig = { el: {} };
+            $.each(me.__seriesElements, function(key, elements) {
+                sig.el[key] = elements.length;
+            });
+            return sig;
         }
 
     });

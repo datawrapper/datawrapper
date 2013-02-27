@@ -483,12 +483,14 @@ $app->put('/charts/:id/thumbnail/:thumb', function($chart_id, $thumb) use ($app)
  * to /test/test-charts. This aims to simplify the generation of test
  * cases using the Datawrapper editor. Only for debugging.
  */
-$app->get('/charts/:id/store_snapshot', function($chart_id) use ($app) {
+$app->post('/charts/:id/store_snapshot', function($chart_id) use ($app) {
     if (!empty($GLOBALS['dw_config']['debug_export_test_cases'])) {
         if_chart_exists($chart_id, function($chart) use ($app) {
             $json = $chart->serialize();
-            $name = $app->request()->get('name');
+            $payload = json_decode($app->request()->getBody(), true);
+            $name = $payload['id'];
             $json['_data'] = $chart->loadData();
+            $json['_sig'] = $payload['signature'];
             if (empty($name)) {
                 error('', 'no name specified');
             } else {
