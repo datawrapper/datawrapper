@@ -444,7 +444,7 @@
          */
         signature: function() {
             var me = this,
-                sig = { el: {} };
+                sig = { type: 'raphael-chart', el: {} };
             $.each(me.__seriesElements, function(key, elements) {
                 sig.el[key] = elements.length;
             });
