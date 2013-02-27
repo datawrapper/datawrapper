@@ -1,10 +1,17 @@
 
-domain = "http://dev.datawrapper.de"
-system = require('system')
-if system.env.DATAWRAPPER_DOMAIN?
-    domain = system.env.DATAWRAPPER_DOMAIN
 
-testuser = "testuser-" + Math.floor(Math.random()*100000) + "@example.com"
+sys = require 'system'
+fs = require 'fs'
+yaml = require './lib/yamlparser.js'
+
+config = yaml.eval fs.read '../config.yaml'
+
+domain = 'http://' + config.domain
+
+if sys.env.DATAWRAPPER_DOMAIN?
+    domain = sys.env.DATAWRAPPER_DOMAIN
+
+testuser = "testuser-" + Math.floor(Math.random()*100000) + "@localhost"
 
 console.log 'testing on '+domain
 
