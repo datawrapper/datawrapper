@@ -52,7 +52,7 @@ class Datawrapper_Publish_S3 implements IDatawrapper_Publish {
      */
     function getUrl($chart) {
         $cfg = $GLOBALS['dw_config']['publish']['config'];
-        return 'http://' . $cfg['bucket'] . '.s3.amazonaws.com/' . $chart->getID() . '/index.html';
+        return '//' . $cfg['bucket'] . '.s3.amazonaws.com/' . $chart->getID() . '/index.html';
     }
 
 }
