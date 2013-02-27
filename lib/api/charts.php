@@ -3,7 +3,7 @@
 /**
  * API: get list of all charts by the current user
  */
-$app->get('/charts', function() {
+$app->get('/charts', function() use ($app) {
     $user = DatawrapperSession::getUser();
     if ($user->isLoggedIn()) {
         $charts = ChartQuery::create()->getPublicChartsByUser($user);
@@ -12,7 +12,7 @@ $app->get('/charts', function() {
     }
     $res = array();
     foreach ($charts as $chart) {
-        $res[] = $chart->shortArray();
+        $res[] = $app->request()->get('expand') ? $chart->serialize() : $chart->shortArray();
     }
     ok($res);
 });
