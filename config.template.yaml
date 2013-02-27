@@ -20,23 +20,13 @@ thumbnails:
 admin_email: hello@datawrapper.de
 log_email: debug@datawrapper.de
 
-## analytics module
-analytics:
-    type: Piwik
-    config:
-        url: piwik.datawrapper.de  # without http:// and trailing slash
-        idSite: 5
-
-
-## uncomment this if your Datawrapper is locked behind HTTP Authentication
+## HTTP AUTH (optional)
+## edit and uncomment if Datawrapper is locked behind HTTP Auth
 # http_auth: username:password
 
-## uncomment to enable chart exporting
-# phantomjs:
-#     path: /path/to/phantomjs
 
-
-## edit and uncomment to add further links to the navigation menu
+## TOP NAV MENU (optional)
+## edit and uncomment to add further links to the nav menu
 # navigation:
 #   - id: about
 #     title: About
@@ -46,3 +36,46 @@ analytics:
 #     title: Blog
 #     url: http://blog.datawrapper.de
 #     icon: tag
+
+
+## ANALYTICS (optional)
+## configure analytics module, e.g. Piwik
+# analytics:
+#     type: Piwik
+#     config:
+#         url: piwik.datawrapper.de  # without http:// and trailing slash
+#         idSite: 5
+
+
+## PUBLISH (optional)
+## configure CDN publication module, e.g. Amazon S3
+# publish:
+#     type: S3
+#     requires:
+#       - vendor/s3/S3.php
+#     config:
+#         accesskey: YOUR_ACCESS_KEY
+#         secretkey: YOUR_SECRET_KEY
+#         bucket: your-bucket
+
+
+## PHANTOMJS (optional)
+## edit and uncomment to enable static image chart exporting
+# phantomjs:
+#     path: /path/to/phantomjs
+
+
+########################################################
+#                                                      #
+#  Anything below this line is for debugging/testing   #
+#  only and thus can safely be ignored.                #
+#                                                      #
+########################################################
+
+## if set to true, datawrapper will display a button for
+## simplifying creation of test cases
+# debug_export_test_cases: true
+
+## create_test_charts.php creates a test user who owns
+## the test charts, and will get the following password:
+# testuser_pwd: '1234'
