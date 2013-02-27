@@ -9,7 +9,6 @@ define('ROOT_PATH', '../');
 define('NO_SLIM', 1);
 
 require_once ROOT_PATH . 'lib/bootstrap.php';
-
 require_once ROOT_PATH . 'lib/utils/themes.php';
 
 date_default_timezone_set('Europe/Berlin');
@@ -25,21 +24,25 @@ if ($user) {
             $chart->save();
         }
     }
-} else {
-    // create test user
-    $user = new User();
-    $user->setEmail('test');
-    $user->setPwd(rand());
-    $user->setRole('editor');
-    $user->setCreatedAt(time());
+    // delete user
+    $user->delete();
     $user->save();
-    print 'created new user "test"...'."\n";
 }
+
+// create test user
+$user = new User();
+$user->setEmail('test');
+$pwd = !empty($cfg['testuser_pwd']) ? $cfg['testuser_pwd'] : 'test';
+$user->setPwd(hash_hmac('sha256', $pwd, DW_AUTH_SALT));
+$user->setRole('editor');
+$user->setCreatedAt(time());
+$user->save();
+
 
 $themes = get_themes_meta();
 
 
-foreach (glob("test-charts/*.json") as $test) {
+foreach (glob("../test/test-charts/*.json") as $test) {
     $config = json_decode(file_get_contents($test), true);
     $data = $config['_data'];
     unset($config['_data']);
