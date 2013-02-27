@@ -47,6 +47,7 @@ foreach (glob("../test/test-charts/*.json") as $test) {
     $data = $config['_data'];
     unset($config['_data']);
     unset($config['_sig']);
+    unset($config['_id']);
     unset($config['id']);
 
     foreach ($themes as $theme) {

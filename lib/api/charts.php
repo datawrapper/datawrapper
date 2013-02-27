@@ -495,6 +495,7 @@ $app->post('/charts/:id/store_snapshot', function($chart_id) use ($app) {
                 error('', 'no name specified');
             } else {
                 $name = str_replace(" ", "-", $name);
+                $json['_id'] = $name;
                 file_put_contents("../../test/test-charts/" . $name . ".json", json_encode($json));
                 ok();
             }
