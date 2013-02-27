@@ -10,11 +10,10 @@
 define('DATAWRAPPER_VERSION', '1.2.beta');
 define('ROOT_PATH', '../');
 
-require '../lib/bootstrap.php';
-
-
 require_once '../lib/utils/check_server.php';
 check_server();
+
+require '../lib/bootstrap.php';
 
 // Load twig instance
 $twig = $app->view()->getEnvironment();
