@@ -5,14 +5,19 @@
 import requests
 import os
 import json
+import yaml
 
-domain = 'http://dev.datawrapper.de'
+
+config = yaml.load(open('../config.yaml').read())
+
+domain = 'http://' + config['domain']
 
 if 'DATAWRAPPER_DOMAIN' in os.environ:
     domain = os.environ['DATAWRAPPER_DOMAIN']
-endpoint = domain + '/api/'
-import unittest
 
+endpoint = domain + '/api/'
+
+import unittest
 print 'testing on ' + domain
 
 ns = {
@@ -25,6 +30,7 @@ ns = {
 class TestDatawrapperAPI(unittest.TestCase):
 
     def checkRes(self, r):
+        self.assertIsInstance(r.json, dict)
         self.assertEqual(r.json['status'], 'ok')
         if r.json['status'] == 'error':
             print r.json['message']
@@ -32,7 +38,6 @@ class TestDatawrapperAPI(unittest.TestCase):
     def test_01_create_new_chart(self):
         global ns
         r = ns['session'].post(endpoint + 'charts')
-        #self.assertEqual(r.json['status'], 'ok')
         self.checkRes(r)
         ns['chartId'] = r.json['data'][0]['id']
 
