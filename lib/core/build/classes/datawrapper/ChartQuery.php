@@ -103,11 +103,15 @@ class ChartQuery extends BaseChartQuery {
      * My Charts
      */
 
-    private function publicChartsByUserQuery($user, $filter) {
+    private function publicChartsByUserQuery($user, $filter, $order='date') {
         $query = $this->filterByAuthorId($user->getId())
-            ->filterByDeleted(false)
-            ->orderByCreatedAt('desc')
-            ->filterByLastEditStep(array('min' => 2));
+            ->filterByDeleted(false);
+        switch ($order) {
+            case 'theme': $query->orderByTheme(); break;
+            case 'type': $query->orderByType(); break;
+            default: $query->orderByCreatedAt('desc'); break;
+        }
+        $query->filterByLastEditStep(array('min' => 2));
 
         foreach ($filter as $key => $val) {
             if ($key == 'layout') $query->filterByTheme($val);
@@ -117,9 +121,9 @@ class ChartQuery extends BaseChartQuery {
         return $query;
     }
 
-    public function getPublicChartsByUser($user, $filter=array(), $start=0, $perPage=15) {
+    public function getPublicChartsByUser($user, $filter=array(), $start=0, $perPage=15, $order=false) {
         return $this
-            ->publicChartsByUserQuery($user, $filter)
+            ->publicChartsByUserQuery($user, $filter, $order)
             ->limit($perPage)
             ->offset($start)
             ->find();

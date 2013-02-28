@@ -6,7 +6,7 @@
 $app->get('/charts', function() use ($app) {
     $user = DatawrapperSession::getUser();
     if ($user->isLoggedIn()) {
-        $charts = ChartQuery::create()->getPublicChartsByUser($user);
+        $charts = ChartQuery::create()->getPublicChartsByUser($user, $app->request()->get('order'));
     } else {
         $charts = ChartQuery::create()->getGuestCharts();
     }
