@@ -2,7 +2,7 @@
 
 // TODO: cache file i/o
 
-function get_themes_meta($path = '') {
+function get_themes_meta($ignoreRestrictions = false) {
     $res = array();
     $user = DatawrapperSession::getInstance()->getUser();
     $email = $user->getEmail();
@@ -16,6 +16,7 @@ function get_themes_meta($path = '') {
             if (!isset($meta['restrict'])  // no restriction at all
                  || $meta['restrict'] == $domain  // check for email domain
                  || $meta['restrict'] == $email  // check for entire email address
+                 || $ignoreRestrictions === true // we want to test *all* layouts
                  || $user->isAdmin())  // of course, admins can see all, too
                 $res[] = $meta;
         }

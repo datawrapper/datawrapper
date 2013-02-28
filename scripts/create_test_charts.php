@@ -38,9 +38,7 @@ $user->setRole('editor');
 $user->setCreatedAt(time());
 $user->save();
 
-
-$themes = get_themes_meta();
-
+$themes = get_themes_meta(true);
 
 foreach (glob("../test/test-charts/*.json") as $test) {
     $config = json_decode(file_get_contents($test), true);
