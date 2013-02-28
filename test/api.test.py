@@ -119,6 +119,12 @@ class TestDatawrapperAPI(unittest.TestCase):
         self.checkRes(r)
         self.assertEqual(len(r.json['data']), 1)
 
+    def test_11a_charts_sorted(self):
+        url = endpoint + 'charts?order=theme'
+        r = ns['session'].get(url)
+        self.checkRes(r)
+        self.assertEqual(len(r.json['data']), 1)
+
     def test_12_estimate_job(self):
         url = endpoint + 'jobs/export/estimate'
         r = ns['session'].get(url)
