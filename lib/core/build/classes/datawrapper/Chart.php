@@ -244,7 +244,11 @@ class Chart extends BaseChart {
 
             $pub->unpublish($chart_files);
         }
+    }
 
+    public function hasPreview() {
+        return false;
+        return $this->getLastEditStep() == 5 && file_exists($this->getStaticPath() . '/m.png');
     }
 
 } // Chart
