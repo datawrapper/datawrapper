@@ -57,9 +57,8 @@ def main():
     themes = ['default'] + list(themes)
 
     # now test charts
-    for theme in themes:
-        for dc in TEST_ON:
-            test_charts(dc, charts, screenshots)
+    for dc in TEST_ON:
+        test_charts(dc, charts, screenshots)
 
     out_html = init_output()
     for theme in themes:
@@ -120,7 +119,9 @@ def test_charts(dc, charts, screenshots):
                         screenshots[chart['id']].append(False)
 
         driver.quit()
-
+    except KeyboardInterrupt:
+        print "Canceling...", bn
+        driver.quit()
     except WebDriverException, e:
         print "err", e
 
