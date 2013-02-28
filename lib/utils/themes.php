@@ -11,7 +11,7 @@ function get_themes_meta($ignoreRestrictions = false) {
     if (count($files) > 0) {
         foreach ($files as $file) {
             $id = substr($file, strlen(ROOT_PATH) + 18, -10);
-            $meta = get_theme_meta($id, $path);
+            $meta = get_theme_meta($id);
             if (!$meta) continue;
             if (!isset($meta['restrict'])  // no restriction at all
                  || $meta['restrict'] == $domain  // check for email domain
@@ -24,7 +24,7 @@ function get_themes_meta($ignoreRestrictions = false) {
     return $res;
 }
 
-function get_theme_meta($id, $path = '') {
+function get_theme_meta($id) {
     $theme_meta = ROOT_PATH . 'www/static/themes/' . $id . '/meta.json';
     if (file_exists($theme_meta)) {
         $meta = json_decode(file_get_contents($theme_meta), true);
@@ -34,7 +34,7 @@ function get_theme_meta($id, $path = '') {
 
         if (!empty($meta['locale'])) {
             $localeJS = 'static/vendor/globalize/cultures/globalize.culture.' . str_replace('_', '-', $meta['locale']) . '.js';
-            if (file_exists($path . $localeJS)) {
+            if (file_exists($localeJS)) {
                 $meta['localeJS'] = '/'.$localeJS;
                 $meta['hasLocaleJS'] = true;
             }
