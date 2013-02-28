@@ -40,48 +40,73 @@ def main():
     login()
     # load list of test charts
     charts = load_charts()
-    # create empty directory for screenshots if not exists
-    out_html = init_output()
+    # dict to store filenames of screenshots per chart
+    screenshots = dict()
+
     # now test charts
     for dc in TEST_ON:
-        for chart in charts:
-            if '__test_id' in chart['metadata']['describe']:
-                testId = chart['metadata']['describe']['__test_id']
-                test = json.loads(open('test-charts/%s.json' % testId).read())
-                if '_sig' in test:
-                    sig = test['_sig']
-                    test_chart(dc, chart, sig, out_html)
+        test_charts(dc, charts, screenshots)
+
+    out_html = init_output()
+
+    for chartid in screenshots:
+        out_html.write('<div class="row">')
+        url = domain + '/chart/' + chartid + '/'
+        for f in screenshots[chartid]:
+            out_html.write('<div style="display:inline-block; padding: 20px">')
+            if f:
+                out_html.write('<a href="%s"><img src="%s" width="200" /></a>' % (url, f[7:]))
+            else:
+                out_html.write('<div style="width:200px;height:150px;' +
+                    'line-height:150px;text-align:center;color:darkred"><a href="%s">fail</a></div>' % url)
+            out_html.write('</div>')  # row
+        out_html.write('</div>')  # row
 
     out_html.write('</body></html>')
     out_html.close()
 
 
-def test_chart(dc, chart, signature, out_html):
-    print 'testing', chart['id']
+def test_charts(dc, charts, screenshots):
     bn = dc['browserName'].replace(' ', '-')
     if dc['platform'] != 'ANY':
-        bn = dc['platform'].replace(' ', '-').lower() + '-' + bn
+        bn = dc['platform'].replace(' ', '').lower() + '-' + bn
     if dc['version'] != '':
         bn += '-' + dc['version']
-    fn = 'result/png/%s-%s.png' % (chart['id'], bn)
-    url = domain + '/chart/' + chart['id'] + '/'
-    print fn
-    print url
-    w = chart['metadata']['publish']['embed-width']
-    h = chart['metadata']['publish']['embed-height']
-    print w, h
-    try:
+    print "now testing on " + bn
+
+    try:  # open remote webdriver
         driver = webdriver.Remote(SELENIUM_HUB, dc)
-        driver.get(url)
-        driver.set_window_size(w + 5, h + 100)
-        #WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.CLASS_NAME, 'label')))
-        driver.save_screenshot(fn)
+
+        for chart in charts:
+            if '__test_id' in chart['metadata']['describe']:
+                testId = chart['metadata']['describe']['__test_id']
+                test = json.loads(open('test-charts/%s.json' % testId).read())
+                if '_sig' in test:
+                    #signature = test['_sig']
+
+                    fn = 'result/png/%s-%s.png' % (chart['id'], bn)
+                    url = domain + '/chart/' + chart['id'] + '/'
+
+                    w = chart['metadata']['publish']['embed-width']
+                    h = chart['metadata']['publish']['embed-height']
+                    driver.get(url)
+                    try:
+                        WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.CSS_SELECTOR, '.label')))
+                    finally:
+                        driver.set_window_size(w + 5, h + 100)
+                        driver.save_screenshot(fn)
+
+                    if chart['id'] not in screenshots:
+                        screenshots[chart['id']] = []
+                    if os.path.exists(fn):
+                        screenshots[chart['id']].append(fn)
+                    else:
+                        screenshots[chart['id']].append(False)
+
         driver.quit()
 
     except WebDriverException, e:
         print "err", e
-    #iw, ih = driver.execute_script('return [$(window).width(), $(window).height()]')
-    #print iw, ih
 
 
 def init_output():
@@ -90,16 +115,18 @@ def init_output():
     if not os.path.isdir('result/png'):
         os.mkdir('result/png')
     # remove previous screenshots
-    for img in glob.glob('result/png/*.png'):
-        os.remove(img)
+    #for img in glob.glob('result/png/*.png'):
+    #    os.remove(img)
     f = open('result/screenshots.html', 'w')
     title = 'Test / ' + str(datetime.now())[:19]
-    f.write('<!DOCTYPE html><html><head><title>%s</title></head><body><h1>%s</h1>' % (title, title))
+    f.write('<!DOCTYPE html><html><head><title>%s</title>' % title)
+    f.write('<style>a img { border: 0; vertical-align: top } body { font-family: Helvetica; }</style>')
+    f.write('</head><body><h1>%s</h1>' % title)
     return f
 
 
 def load_charts():
-    r = session.get(domain + '/api/charts?expand=1')
+    r = session.get(domain + '/api/charts?expand=1&order=theme')
     assert r.json['status'] == 'ok'
     return r.json['data']
 
