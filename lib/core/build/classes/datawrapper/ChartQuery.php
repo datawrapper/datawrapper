@@ -112,11 +112,12 @@ class ChartQuery extends BaseChartQuery {
             default: $query->orderByCreatedAt('desc'); break;
         }
         $query->filterByLastEditStep(array('min' => 2));
-
-        foreach ($filter as $key => $val) {
-            if ($key == 'layout') $query->filterByTheme($val);
-            if ($key == 'vis') $query->filterByType($val);
-            if ($key == 'month') $query->filterByCreatedAt(array('min' => $val.'-01', 'max' => $val.'-31'));
+        if (count($filter) > 0) {
+            foreach ($filter as $key => $val) {
+                if ($key == 'layout' || $key == 'theme') $query->filterByTheme($val);
+                if ($key == 'vis') $query->filterByType($val);
+                if ($key == 'month') $query->filterByCreatedAt(array('min' => $val.'-01', 'max' => $val.'-31'));
+            }
         }
         return $query;
     }

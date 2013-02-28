@@ -6,7 +6,15 @@
 $app->get('/charts', function() use ($app) {
     $user = DatawrapperSession::getUser();
     if ($user->isLoggedIn()) {
-        $charts = ChartQuery::create()->getPublicChartsByUser($user, $app->request()->get('order'));
+        $filter = array();
+        if ($app->request()->get('filter')) {
+            $f = explode("|", $app->request()->get('filter'));
+            foreach ($f as $e) {
+                list($key, $val) = explode(":", $e);
+                $filter[$key] = $val;
+            }
+        }
+        $charts = ChartQuery::create()->getPublicChartsByUser($user, $filter, 0, 200, $app->request()->get('order'));
     } else {
         $charts = ChartQuery::create()->getGuestCharts();
     }
