@@ -43,25 +43,41 @@ def main():
     # dict to store filenames of screenshots per chart
     screenshots = dict()
 
+    # group charts by theme
+    charts_by_theme = dict()
+    themes = set()
+    for chart in charts:
+        t = chart['theme']
+        if t not in charts_by_theme:
+            charts_by_theme[t] = []
+            themes.add(t)
+        charts_by_theme[t].append(chart)
+
+    themes.remove('default')
+    themes = ['default'] + list(themes)
+
     # now test charts
-    for dc in TEST_ON:
-        test_charts(dc, charts, screenshots)
+    for theme in themes:
+        for dc in TEST_ON:
+            test_charts(dc, charts, screenshots)
 
     out_html = init_output()
-
-    for chartid in screenshots:
-        out_html.write('<div class="row">')
-        url = domain + '/chart/' + chartid + '/'
-        for f in screenshots[chartid]:
-            out_html.write('<div style="display:inline-block; padding: 20px">')
-            if f:
-                out_html.write('<a href="%s"><img src="%s" width="200" /></a>' % (url, f[7:]))
-            else:
-                out_html.write('<div style="width:200px;height:150px;' +
-                    'line-height:150px;text-align:center;color:darkred"><a href="%s">fail</a></div>' % url)
-            out_html.write('</div>')  # row
-        out_html.write('</div>')  # row
-
+    for theme in themes:
+        out_html.write('<h2>theme: %s</h2>' % theme)
+        for c in charts_by_theme[theme]:
+            if c['id'] in screenshots:
+                out_html.write('<div class="row">')
+                url = domain + '/chart/' + c['id'] + '/'
+                for f in screenshots[c['id']]:
+                    out_html.write('<div style="display:inline-block; padding: 20px">')
+                    if f:
+                        out_html.write('<a href="%s"><img src="%s" width="200" /></a>' % (url, f[7:]))
+                    else:
+                        out_html.write('<div style="width:200px;height:150px;' +
+                            'line-height:150px;text-align:center;color:darkred"><a href="%s">fail</a></div>' % url)
+                    out_html.write('</div>')  # row
+                out_html.write('</div>')  # row
+        out_html.write('<hr />')
     out_html.write('</body></html>')
     out_html.close()
 
