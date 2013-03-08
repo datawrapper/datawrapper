@@ -32,7 +32,12 @@ AUTH_SALT = 'uRPAqgUJqNuBdW62bmq3CLszRFkvq4RW'
 SELENIUM_HUB = config['selenium']
 
 dc = webdriver.DesiredCapabilities
-TEST_ON = [dc.INTERNETEXPLORER, dc.FIREFOX, dc.CHROME]
+TEST_ON = [
+    dc.FIREFOX,
+    dc.CHROME,
+    dict(platform='VISTA', browserName='internet explorer', version='', javascriptEnabled=True),
+    dict(platform='XP', browserName='internet explorer', version='', javascriptEnabled=True)
+]
 
 
 def main():
@@ -57,25 +62,36 @@ def main():
     themes = ['default'] + list(themes)
 
     # now test charts
+    envs = []
     for dc in TEST_ON:
-        test_charts(dc, charts, screenshots)
+        env = test_charts(dc, charts, screenshots)
+        envs.append(env)
 
     out_html = init_output()
     for theme in themes:
         out_html.write('<h2>theme: %s</h2>' % theme)
+        out_html.write('<table cellpadding="10" border="1"><thead><tr>')
+        for env in envs:
+            out_html.write('<th>%s</th>' % env)
+        out_html.write('</tr></thead><tbody>')
         for c in charts_by_theme[theme]:
             if c['id'] in screenshots:
-                out_html.write('<div class="row">')
+                out_html.write('<tr class="row">')
                 url = domain + '/chart/' + c['id'] + '/'
-                for f in screenshots[c['id']]:
-                    out_html.write('<div style="display:inline-block; padding: 20px">')
+                for env in envs:
+                    if env not in screenshots[c['id']]:
+                        f = False
+                    else:
+                        f = screenshots[c['id']][env]
+                    out_html.write('<td>')
                     if f:
                         out_html.write('<a href="%s"><img src="%s" width="200" /></a>' % (url, f[7:]))
                     else:
                         out_html.write('<div style="width:200px;height:150px;' +
                             'line-height:150px;text-align:center;color:darkred"><a href="%s">fail</a></div>' % url)
-                    out_html.write('</div>')  # row
-                out_html.write('</div>')  # row
+                    out_html.write('</td>')  # row
+                out_html.write('</tr>')  # row
+        out_html.write('</tbody></table>')
         out_html.write('<hr />')
     out_html.write('</body></html>')
     out_html.close()
@@ -104,26 +120,32 @@ def test_charts(dc, charts, screenshots):
 
                     w = chart['metadata']['publish']['embed-width']
                     h = chart['metadata']['publish']['embed-height']
-                    driver.get(url)
+
+                    if dc['browserName'] == 'firefox':
+                        w += 70
+
                     try:
-                        WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.CSS_SELECTOR, '.label')))
-                    finally:
-                        driver.set_window_size(w + 5, h + 100)
-                        driver.save_screenshot(fn)
+                        driver.get(url)
+                        try:
+                            WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.CSS_SELECTOR, '.label')))
+                        finally:
+                            driver.set_window_size(w + 5, h + 100)
+                            driver.save_screenshot(fn)
+                    except WebDriverException, e:
+                        print 'WARN: javascript error', e
 
                     if chart['id'] not in screenshots:
-                        screenshots[chart['id']] = []
+                        screenshots[chart['id']] = dict()
                     if os.path.exists(fn):
-                        screenshots[chart['id']].append(fn)
+                        screenshots[chart['id']][bn] = fn
                     else:
-                        screenshots[chart['id']].append(False)
+                        screenshots[chart['id']][bn] = False
 
         driver.quit()
     except KeyboardInterrupt:
         print "Canceling...", bn
         driver.quit()
-    except WebDriverException, e:
-        print "err", e
+    return bn
 
 
 def init_output():
@@ -137,7 +159,9 @@ def init_output():
     f = open('result/screenshots.html', 'w')
     title = 'Test / ' + str(datetime.now())[:19]
     f.write('<!DOCTYPE html><html><head><title>%s</title>' % title)
-    f.write('<style>a img { border: 0; vertical-align: top } body { font-family: Helvetica; }</style>')
+    f.write('<style>body { background: #eee; padding: 30px; font-family: Helvetica Neue; }')
+    f.write('h1, h2 { font-weight: 300; margin-top:0; font-size: 48px; } h2 { font-size: 36px }')
+    f.write(' a img { border: 0; vertical-align: top } </style>')
     f.write('</head><body><h1>%s</h1>' % title)
     return f
 
