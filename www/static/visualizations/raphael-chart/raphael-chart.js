@@ -199,7 +199,6 @@
                     top: y,
                     width: w,
                     height: h,
-                    position: 'absolute',
                     'text-align': align
                 });
             }
@@ -209,6 +208,7 @@
             if (attrs.root === undefined) attrs.root = this.__canvas.root;
             // create label DIV element
             l = $('<div class="label'+(attrs.cl ? ' '+attrs.cl : '')+'"><span>'+txt+'</span></div>');
+            l.css('position', 'absolute');
             if (attrs.css) l.css(attrs.css);
             l.data('attrs', attrs);
             if (attrs.rotate == -90) {
