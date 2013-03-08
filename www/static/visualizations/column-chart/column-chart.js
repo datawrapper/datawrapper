@@ -192,7 +192,13 @@
                     }
                     if (lpos) {
                         lbl.data('attrs', $.extend(lbl.data('attrs'), { valign: lpos.valign, halign: lpos.halign }));
-                        lbl.animate(lbl.data('lblcss')(lbl, lpos.left, lpos.top), {
+                        var lattrs = lbl.data('lblcss')(lbl, lpos.left, lpos.top);
+                        if (lattrs['text-align']) {
+                            lbl.css('text-align', lattrs['text-align']);
+                            lattrs['text-align'] = undefined;
+                            delete lattrs['text-align'];
+                        }
+                        lbl.animate(lattrs, {
                             easing: 'easeInOutExpo',
                             duration: 1000
                         });
@@ -328,7 +334,13 @@
                     if (val !== 0) {
                         var lbl = tickLabels[key] = tickLabels[key] || me.label(x+2, ly, me.chart.formatValue(val, t == ticks.length-2, true), { align: 'left', cl: 'axis' }).css({ opacity: 0 });
                         lcss = lbl.data('lblcss');
-                        lbl.animate($.extend(lcss(lbl, c.lpad+2, ly), { opacity: 1 }), { duration: 1000, easing: 'easeInOutExpo' });
+                        var lattrs = $.extend(lcss(lbl, c.lpad+2, ly), { opacity: 1 });
+                        if (lattrs['text-align']) {
+                            lbl.css('text-align', lattrs['text-align']);
+                            lattrs['text-align'] = undefined;
+                            delete lattrs['text-align'];
+                        }
+                        lbl.animate(lattrs, { duration: 1000, easing: 'easeInOutExpo' });
                     }
                     if (me.theme.yTicks) {
                         me.path([['M', c.lpad-25, y], ['L', c.lpad-20,y]], 'tick');
