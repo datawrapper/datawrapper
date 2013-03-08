@@ -108,7 +108,6 @@
             _.each(me.chart.dataSeries(), function(series, s) {
                 _.each(me.__seriesElements[series.name], function(rect) {
                     var dim = me.barDimensions(series, s, 0);
-                    console.log(series.name, rect, dim);
                     rect.animate(dim, 1000, 'expoInOut');
                 });
 
@@ -159,9 +158,7 @@
             _.each(me.chart.dataSeries(), function(series, s) {
                 var neg = series.data[r] < 0;
                 largestVal[neg ? 1 : 0] = Math.max(largestVal[neg ? 1 : 0], Math.abs(series.data[r]));
-                console.log(series.name, r, series.data[r]);
             });
-            console.log(largestVal);
             _.each(me.chart.dataSeries(), function(series, s) {
                 var val = series.data[r],
                     neg = val < 0,
@@ -189,8 +186,6 @@
             } else {
                 c.zero += 15;
             }
-
-            console.log('zero', c.zero, c.left, largestVal, w);
 
             c.maxSeriesLabelWidth = [maxw[0], maxw[2]];
             c.maxValueLabelWidth = [maxw[1], maxw[3]];
