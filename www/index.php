@@ -7,7 +7,7 @@
 
 
 
-define('DATAWRAPPER_VERSION', '1.2.beta');
+define('DATAWRAPPER_VERSION', '1.2');
 define('ROOT_PATH', '../');
 
 require_once '../lib/utils/check_server.php';
