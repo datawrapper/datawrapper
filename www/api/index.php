@@ -9,7 +9,7 @@ define('ROOT_PATH', '../../');
 
 require_once ROOT_PATH . 'lib/bootstrap.php';
 
-
+$config = $GLOBALS['dw_config'];
 // Load CDN publishing class
 if (!empty($config['publish']) && !empty($config['publish']['requires'])) {
     foreach($config['publish']['requires'] as $lib) {

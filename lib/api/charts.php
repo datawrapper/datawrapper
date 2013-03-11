@@ -306,6 +306,7 @@ $app->post('/charts/:id/publish/html', function($chart_id) use ($app) {
             download($url . '&fs=1', $static_path . '/fs.html');
 
             $chart->setPublishedAt(time() + 5);
+            $chart->setLastEditStep(5);
             $chart->save();
 
             $cdn_files[] = array($outf, $chart->getID() . '/index.html', 'text/html');
