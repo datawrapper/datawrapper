@@ -188,6 +188,20 @@ svg .axis, svg .tick, svg .grid, svg rect {
     background: #dbdbdb;
 }
 
+.filter-links a {
+    border-radius: 0!important;
+    line-height: 25px;
+    height: 25px;
+    text-decoration: underline;
+    box-shadow: none;
+    color: #000;
+    background: #eee;
+}
+
+.filter-links a.active {
+    text-decoration: none;
+}
+
 .embed-code {
     position: absolute;
     bottom: 40px;

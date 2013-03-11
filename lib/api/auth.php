@@ -10,6 +10,11 @@ $app->get('/account', function() {
     }
 });
 
+/* get current language */
+$app->get('/account/lang', function() use ($app) {
+    ok(DatawrapperSession::getLanguage());
+});
+
 /* set a new language */
 $app->put('/account/lang', function() use ($app) {
     $data = json_decode($app->request()->getBody());
@@ -22,28 +27,24 @@ $app->put('/account/lang', function() use ($app) {
 $app->post('/auth/login', function() use($app) {
     $payload = json_decode($app->request()->getBody());
     //  v-- don't expire login anymore
-    if (true || time() - $payload->time < 3000) {
-        $user = UserQuery::create()->findOneByEmail($payload->email);
-        if (!empty($user) && $user->getDeleted() == false) {
-            $hash = hash_hmac('sha256', $user->getPwd(), $payload->time);
-            if ($hash === $payload->pwhash) {
-                DatawrapperSession::login($user, $payload->keeplogin == true);
-                ok();
-            } else {
-                Action::logAction($user, 'wrong-password', json_encode(get_user_ips()));
-                error('login-invalid', _('The password is incorrect.'));
-            }
+    $user = UserQuery::create()->findOneByEmail($payload->email);
+    if (!empty($user) && $user->getDeleted() == false) {
+        $hash = hash_hmac('sha256', $user->getPwd(), $payload->time);
+        if ($hash === $payload->pwhash) {
+            DatawrapperSession::login($user, $payload->keeplogin == true);
+            ok();
         } else {
-            error('login-email-unknown', _('The email is not registered yet.'));
+            Action::logAction($user, 'wrong-password', json_encode(get_user_ips()));
+            error('login-invalid', _('The password is incorrect.'));
         }
     } else {
-        error('login-expired', _('Your session is expired, please reload the page and try again.'));
+        error('login-email-unknown', _('The email is not registered yet.'));
     }
 });
 
 /* return the server salt for secure auth */
 $app->get('/auth/salt', function() use ($app) {
-    $salt = 'uRPAqgUJqNuBdW62bmq3CLszRFkvq4RW';
+    $salt = DW_AUTH_SALT;
     ok(array('salt' => $salt, 'time' => time()));
 });
 

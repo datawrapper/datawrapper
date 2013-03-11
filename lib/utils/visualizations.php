@@ -1,8 +1,10 @@
 <?php
 
-function get_visualizations_meta($pathToStatic = '') {
+
+
+function get_visualizations_meta() {
     $res = array();
-    $vis_path = $pathToStatic . 'static/visualizations';
+    $vis_path = ROOT_PATH . 'www/static/visualizations';
     $files = glob($vis_path . '/*/meta.json');
     if (count($files) > 0) {
         foreach ($files as $file) {
@@ -11,17 +13,23 @@ function get_visualizations_meta($pathToStatic = '') {
             $res[] = $meta;
         }
     }
+    // sort by something
+    usort($res, function ($a, $b) {
+        if (!isset($a['order'])) $a['order'] = 99999;
+        if (!isset($b['order'])) $b['order'] = 99999;
+        return $a['order'] - $b['order'];
+    });
     return $res;
 }
 
 
-function get_visualization_meta($id, $path='') {
+function get_visualization_meta($id) {
     $res = array();
-    $vis_path = $path . 'static/visualizations/' . $id .'/meta.json';
+    $vis_path = ROOT_PATH . 'www/static/visualizations/' . $id .'/meta.json';
     if (file_exists($vis_path)) {
         $meta = json_decode(file_get_contents($vis_path), true);
         $meta['id'] = $id;
-        $meta['hasCSS'] = file_exists($path . 'static/visualizations/' . $id . '/style.css');
+        $meta['hasCSS'] = file_exists(ROOT_PATH . 'www/static/visualizations/' . $id . '/style.css');
         return $meta;
     }
     return false;

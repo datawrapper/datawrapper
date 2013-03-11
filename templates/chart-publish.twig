@@ -61,7 +61,7 @@ $(function() {
         // 1. make iframe and load chart
         var iframe = $('<iframe />');
         iframe.attr({
-            src: 'http://{{ DW_DOMAIN }}/chart/{{ chart.id }}'
+            src: 'http://{{ DW_DOMAIN }}/chart/{{ chart.id }}/preview'
         });
         iframe.css({
             position: 'absolute',
@@ -88,7 +88,6 @@ $(function() {
                 var x = px(lbl.css('left')),
                     y = px(lbl.css('top')),
                     txt = $('span', lbl).html();
-                console.log(x,y,txt);
                 ctx.font = "8pt Arial";
                 ctx.fillText(txt, x, y);
 
@@ -97,35 +96,20 @@ $(function() {
 
     }
 
-
+    // send ajax request for re-sending activation email
     $('a[href=#resend]').click(function(e) {
         e.preventDefault();
-        $.ajax({
-            url: '/api/account/resend-activation',
-            type: 'POST',
-            dataType: 'json',
-            success: function(res) {
-                console.log(res);
-                if (res.status == 'ok') {
-                    DW.logMessage(res.data, $(e.target).parent());
-                } else {
-                    DW.logError(res.message, $(e.target).parent());
-                }
-            }
-        });
+        DW.resendActivationMail($(e.target).parent().parent().parent());
     });
 
+    // open modal popup for exporting charts to PNG/PDF
     $('a[href=#export]').click(function(e) {
         e.preventDefault();
         $('#dwExportChart').modal();
         return false;
     });
 
-    /*setTimeout(function() {
-
-        snapshot(1200,600);
-    },4000);*/
-
+    // automatically select embed code
     $("textarea").click(function() { $(this).focus().select(); } );
 });
 
@@ -169,7 +153,7 @@ p.lead {
                 <label>{% trans "Width" %}: <input type="text" id="embed-width" class="input-small" style="width:4ex" value="600" /> px</label>&nbsp;&nbsp;
                 <label>{% trans "Height" %}: <input type="text" id="embed-height" class="input-small" style="width:4ex" value="400" /> px</label>
 
-            <textarea style="font-size: 13px;padding:5px" id="iframe-code" class="well span4" rows="5"><iframe src="{{ iframe }}" frameborder="0" allowtransparency="true" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen width="{{ chart.metadata.publish['embed-width'] }}" height="{{ chart.metadata.publish['embed-height'] }}"></iframe></textarea>
+            <textarea style="font-size: 13px;padding:5px" id="iframe-code" class="well span4" rows="5"><iframe src="{{ iframe }}" frameborder="0" allowtransparency="true" allowfullscreen="allowfullscreen" webkitallowfullscreen="webkitallowfullscreen" mozallowfullscreen="mozallowfullscreen" oallowfullscreen="oallowfullscreen" msallowfullscreen="msallowfullscreen" width="{{ chart.metadata.publish['embed-width'] }}" height="{{ chart.metadata.publish['embed-height'] }}"></iframe></textarea>
 
 
             <p class="lead">{%trans "Other things to do" %}</p>
@@ -228,7 +212,7 @@ p.lead {
             <ol>
                 <li>{% trans "At first, don't worry. Everything you created will wait patiently" %}</li>
                 <li>{% trans "Make sure that your spam filter didn't catch our activation email. They are sent from" %} activate@{{ DW_DOMAIN }}.</li>
-                <li>{% trans "Of course, you can also let us <a href='#resend'>resend the activation email</a>." %} (TODO)</li>
+                <li>{% trans "Of course, you can also let us <a href='#resend'>resend the activation email</a>." %}</li>
                 <li>{% trans "If that didn't work either, please contact our support" %}</li>
             </ol>
 
@@ -255,6 +239,8 @@ p.lead {
 
             <iframe src="{{ iframe }}" id="iframe-vis" style="width:{{ chart.metadata.publish['embed-width'] }}px;height:{{ chart.metadata.publish['embed-height'] }}px" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>
 
+            <div style="color: #999;margin-top:20px"><b>{% trans "Note" %}:</b> {% trans "It may take a while until the republished chart. You can force reloading of the chart by right-clicking it and selecting 'Reload Iframe'. " %}
+
             {% else %}
 
             <iframe src="/chart/{{ chart.id }}/preview" id="iframe-vis" style="width:{{ chart.metadata.publish['embed-width'] }}px;height:{{ chart.metadata.publish['embed-height'] }}px" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>
@@ -268,7 +254,7 @@ p.lead {
         <div class="span12">
             <div class="form-actions">
                 <a class="submit pull-right btn" href="/chart/create"><i class="icon-pencil"></i> {% trans "Create another graphic" %}</a>
-                
+
                 <a class="submit btn" href="visualize"><i class="icon-chevron-left"></i> {% trans "Return to visualise step" %}</a>
             </div>
         </div>

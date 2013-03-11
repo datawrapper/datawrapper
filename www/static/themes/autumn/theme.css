@@ -172,6 +172,22 @@ svg .axis, svg .tick, svg .grid, svg rect {
     background-color: #FEFAF2;
 }
 
+.filter-links a {
+    line-height: 25px;
+    height: 25px;
+    text-decoration: underline;
+    box-shadow: none;
+    color: #000;
+    border-color: #CFB98E;
+    background: #EFE5D1;
+    box-shadow: 0 0 10px #DFD1B5 inset;
+}
+
+.filter-links a.active {
+    text-decoration: none;
+}
+
+
 html .fs-btn {
     background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABcAAAAUBAMAAACUkLs9AAAAA3NCSVQICAjb4U/gAAAAMFBMVEX///97d297d297d297d297d297d297d297d297d297d297d297d297d297d297d280X5C+AAAAEHRSTlMAESIzRFVmd4iZqrvM3e7/dpUBFQAAAAlwSFlzAAALEgAACxIB0t1+/AAAABh0RVh0Q3JlYXRpb24gVGltZQAyMS4xMi4yMDEytzLJCAAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNXG14zYAAACtSURBVBiVYyhnYBRgYGBgcgISDPvfvZ8ApFjP3b2rwBD//wlIjIH9/T8BBv//BWCO/P9/DAx2z7+DOQx5/xUY5CbkgaVYD84vYOAXYAVzvBQ4BRgYIYoYPjGQCYAGmEBYbAwMfgKMS4AszgMMfgwMfA0yCSBX32I4J8DA82U6WJHd9v8MDDz/D4A5zO9Bbvt/C+Q5Btn//w2AnPcfgWzeeyD/sLgYgW1QZmhhAAAbrS+zW6BWbAAAAABJRU5ErkJggg==);
     width: 23px;

@@ -31,7 +31,7 @@ $(function() {
             $('#number-currency').hide();
             $('#number-unit').show();
         }
-        $('#number-currency, #number-unit, #number-divisor').attr('disabled', $('#number-format').val() == '-');
+       //$('#number-currency, #number-unit, #number-divisor').attr('disabled', $('#number-format').val() == '-');
     }
     $('#number-format').change(swapUnitAndCurrency);
     swapUnitAndCurrency();
@@ -157,7 +157,7 @@ $(function() {
             </div>
         </div>
 
-        <div class="span4"><div class="well">
+        <div class="span4"><div class="well"  data-spy="affix" data-offset-top="100">
 
             <h3>{% trans "Describe your data" %}</h3>
             
@@ -205,11 +205,14 @@ $(function() {
                 <div class="control-group">
                     <label class="control-label" for="text-title">{% trans "Devide numbers by" %}</label>
                     <div class="controls">
-                        <select class="span1 number-format" id="number-divisor">
+                        <select class="number-format" id="number-divisor"  style="width:90%">
                             <option value="0">-</option>
                             <option value="3">{% trans "1000" %}</option>
                             <option value="6">{% trans "1 million" %}</option>
                             <option value="9">{% trans "1 billion" %}</option>
+                            <optgroup label="⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯"></optgroup>
+                            <option value="-2">{% trans "One Percent" %}</option>
+
                         </select>
                     </div>
                 </div>

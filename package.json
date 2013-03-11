@@ -1,0 +1,17 @@
+{
+    "name": "datawrapper",
+    "version": "1.2",
+    "devDependencies": {
+        "tape": "~0.0.4"
+    },
+    "testling": {
+        "files": "test/*.js",
+        "browsers": {
+            "ie": [ 8, 9 ],
+            "firefox": [ 13 ],
+            "chrome": [ 20 ],
+            "safari": [ 5.1 ],
+            "opera": [ 12 ]
+        }
+    }
+}

@@ -8,7 +8,13 @@
     <div class="pull-right" style="position:relative;top:-16px">
         {{ block('pagination') }}
     </div>
-    <h1 class="title">{% trans "My Charts" %}</h1>
+    <h1 class="title">
+        {% if user2 %}
+            {{ "Charts by %s" | trans | replace({'%s': user2.email }) }}
+        {% else %}
+            {% trans "My Charts" %}
+        {% endif %}
+    </h1>
 </div>
 <div class="row">
     <div class="span3 gallery-filter" >
@@ -18,9 +24,9 @@
         <ul class="unstyled">
             {% for month in bymonth %}
             {% if key == 'month' and val == month.id %}
-            <li class="active"><a href="/mycharts/"><i class="icon-check"></i> {{ month.name }} </a> ({{ month.count }}) </li>
+            <li class="active"><a href="{{ mycharts_base }}/"><i class="icon-check"></i> {{ month.name }} </a> ({{ month.count }}) </li>
             {% else %}
-            <li><a href="/mycharts/by/month/{{ month.id }}">{{ month.name }}</a> ({{ month.count }})</li>
+            <li><a href="{{ mycharts_base }}/by/month/{{ month.id }}">{{ month.name }}</a> ({{ month.count }})</li>
             {% endif %}
             {% endfor %}
         </ul>
@@ -30,9 +36,9 @@
         <ul class="unstyled">
             {% for vis in byvis %}
             {% if key == 'vis' and val == vis.id %}
-            <li class="active"><a href="/mycharts/"><i class="icon-check"></i> {{ vis.name }} </a> ({{ vis.count }}) </li>
+            <li class="active"><a href="{{ mycharts_base }}/"><i class="icon-check"></i> {{ vis.name }} </a> ({{ vis.count }}) </li>
             {% else %}
-            <li><a href="/mycharts/by/vis/{{ vis.id }}">{{ vis.name }}</a> ({{ vis.count }})</li>
+            <li><a href="{{ mycharts_base }}/by/vis/{{ vis.id }}">{{ vis.name }}</a> ({{ vis.count }})</li>
             {% endif %}
             {% endfor %}
         </ul>
@@ -42,15 +48,34 @@
         <ul class="unstyled">
             {% for layout in bylayout %}
             {% if key == 'layout' and val == layout.id %}
-            <li class="active"><a href="/mycharts/"><i class="icon-check"></i> {{ layout.name }} </a> ({{ layout.count }}) </li>
+            <li class="active"><a href="{{ mycharts_base }}/"><i class="icon-check"></i> {{ layout.name }} </a> ({{ layout.count }}) </li>
             {% else %}
-            <li><a href="/mycharts/by/layout/{{ layout.id }}">{{ layout.name }}</a> ({{ layout.count }})</li>
+            <li><a href="{{ mycharts_base }}/by/layout/{{ layout.id }}">{{ layout.name }}</a> ({{ layout.count }})</li>
             {% endif %}
 
             {% endfor %}
         </ul>
 
+        {% if not user2 %}
+
         <p class="well">{{ "Want to see what other users created using Datawrapper? Take a look in the <a href='%GALLERY%'>Gallery</a>!" | trans | replace({ '%GALLERY%': '/gallery' }) | raw }}</p>
+
+        {% else %}
+
+        <h3>{% trans "Switch User" %}</h3>
+
+        <select id="switch_user" style="width:80%">
+            {% for user in all_users %}
+            <option {% if user == user2 %}selected="selected" {% endif %}value="{{ user.id }}">{{ user.email }}</option>
+            {% endfor %}
+        </select>
+        <script type="text/javascript">
+        $('#switch_user').change(function(e) {
+            e.preventDefault();
+            location.href = '/admin/charts/' + $('#switch_user').val();
+        });
+        </script>
+        {% endif %}
 
     </div>
 
@@ -61,7 +86,7 @@
             {% for chart in charts %}
             <li class="span3 chart" data-id="{{ chart.id }}">
                 <div class="thumbnail">
-                    <a href="/chart/{{ chart.id }}/edit"><img src="{% if chart.isPublic %}http://{{ DW_CHART_CACHE_DOMAIN }}/{{ chart.id }}/m.png{% else %}/static/img/nopreview.png{% endif %}" width="260" alt="{{ chart.title }}" style="background:{{ chart.metadata.publish.background }}">
+                    <a href="/chart/{{ chart.id }}/edit"><img src="{% if chart.hasPreview %}http://{{ DW_CHART_CACHE_DOMAIN }}/{{ chart.id }}/m.png{% else %}/static/img/nopreview.png{% endif %}" width="260" style="background:{{ chart.metadata.publish.background }}">
 
                     {# <p class="pull-right">
                         <a href="#delete" class="delete" data-chart="{{ chart.id }}"><i class="icon-remove"></i></a>
@@ -74,6 +99,9 @@
                         <span class="caret"></span>
                         </a>
                          <ul class="dropdown-menu">
+                            {% if user2 %}
+                            <li><a class="edit" href="#"><i class="icon-edit"></i> {% trans "Edit" %}</a></li>
+                            {% endif %}
                             <li><a class="duplicate" href="#"><i class="icon-plus"></i> {% trans "Duplicate" %}</a></li>
                             {# <li><a href="/chart/{{ chart.id }}/static?w=700&amp;h=490&amp;f=pdf&amp;padding=20"><i class="icon-download"></i> {% trans "Save as PDF" %}</a></li>
                             <li class="divider"></li> #}
@@ -99,22 +127,25 @@
     </div>
 
 </div>
+<script type="text/javascript" src="/static/vendor/overlay/ender.overlay.js"></script>
 <script type="text/javascript">
 $(function(){
   //*
 
-  function layout() {
-      /*$('.mycharts .thumbnails').masonry({
-        itemSelector : 'li',
-        columnWidth : function(w) { return w/3; }
-      });
-*/
-  }
-
-  layout();
-
-  setTimeout(layout, 1000);
    // */
+   {% if user2 %}
+    $('.thumbnail > a').click(function(e) {
+        e.preventDefault();
+        console.log($(e.target).parents('.chart').data('id'));
+        DW.popupChart($(e.target).parents('.chart').data('id'), true);
+    });
+
+    $('a.edit').click(function(e) {
+        e.preventDefault();
+        var chart = $(e.target).parents('.chart');
+        location.href = $('.thumbnail > a', chart).attr('href');
+    });
+   {% endif %}
 
 
     $('a.delete').click(function(e) {
@@ -127,7 +158,6 @@ $(function(){
                 type: 'DELETE',
                 success: function(data) {
                     chart.remove();
-                    layout();
                 }
             });
         };
@@ -140,11 +170,14 @@ $(function(){
             url: '/api/charts/'+id+'/copy',
             type: 'POST',
             success: function(data) {
-                data = JSON.parse(data);
-                if (data.status == "ok") {
-                    // redirect to copied chart
-                    location.href = '/chart/'+data.data.id+'/visualize';
-                } else {
+                try {
+                    if (data.status == "ok") {
+                        // redirect to copied chart
+                        location.href = '/chart/'+data.data.id+'/visualize';
+                    } else {
+                        console.warn(data);
+                    }
+                } catch (e) {
                     console.warn(data);
                 }
             }

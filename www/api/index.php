@@ -5,35 +5,11 @@
  *
  */
 
-// Require the Slim PHP 5 Framework
-require '../../vendor/Slim/Slim.php';
+define('ROOT_PATH', '../../');
 
-// include our JSON view
-require '../../lib/api/views/JSONView.php';
+require_once ROOT_PATH . 'lib/bootstrap.php';
 
-// Include the main Propel script
-require_once '../../vendor/propel/runtime/lib/Propel.php';
-
-// Initialize Propel with the runtime configuration
-Propel::init("../../lib/core/build/conf/datawrapper-conf.php");
-
-// Add the generated 'classes' directory to the include path
-set_include_path("../../lib/core/build/classes" . PATH_SEPARATOR . get_include_path());
-
-require '../../lib/session/database.php';
-
-require '../../lib/session/Datawrapper.php';
-
-// load YAML parser and config
-require_once '../../vendor/spyc/spyc.php';
-
-$GLOBALS['dw_config'] = $config = Spyc::YAMLLoad('../../config.yaml');
-
-if ($config['debug'] == true) {
-    error_reporting(E_ALL);
-    ini_set('display_errors', 1);
-}
-
+$config = $GLOBALS['dw_config'];
 // Load CDN publishing class
 if (!empty($config['publish']) && !empty($config['publish']['requires'])) {
     foreach($config['publish']['requires'] as $lib) {
@@ -44,14 +20,6 @@ if (!empty($config['publish']) && !empty($config['publish']['requires'])) {
 require '../../lib/utils/i18n.php';
 require '../../lib/utils/disable_cache.php';
 
-/**
- * Step 2: Instantiate the Slim application
- *
- * Here we instantiate the Slim application with its default settings.
- * However, we could also pass a key-value array of settings.
- * Refer to the online documentation for available settings.
- */
-$app = new Slim(array( 'view' => 'JSONView' ));
 
 /**
  * Step 3: Define the Slim application routes
@@ -73,6 +41,8 @@ $app = new Slim(array( 'view' => 'JSONView' ));
 //GET route
 
 function error($code, $msg) {
+    global $app;
+    $app->response()->header('Content-Type', 'application/json;charset=utf-8');
     $result = array('status'=>'error');
     if (isset($code)) $result['code'] = $code;
     if (isset($msg)) $result['message'] = $msg;
@@ -80,6 +50,8 @@ function error($code, $msg) {
 }
 
 function ok($data = null) {
+    global $app;
+    $app->response()->header('Content-Type', 'application/json;charset=utf-8');
     $result = array('status'=>'ok');
     if (isset($data)) $result['data'] = $data;
     print json_encode($result);

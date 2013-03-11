@@ -27,7 +27,11 @@
             fillOpacity: 0.2
         },
 
-        vpadding: 10
+        vpadding: 10,
+
+        frame: false,
+
+        verticalGrid: false
 
     });
 

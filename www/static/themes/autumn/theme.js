@@ -40,6 +40,8 @@
             'stroke-opacity': 1
         },
 
+        frameStrokeOnTop: true,
+
         vpadding: 10
 
     });

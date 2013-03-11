@@ -74,7 +74,7 @@
                     numParser.learn(number);
                 });
             });
-            // then we let him parse the numbers
+            // then we let parse the numbers
             _.each(data.series, function(s) {
                 s.min = Number.MAX_VALUE;
                 s.max = -Number.MAX_VALUE;
@@ -87,6 +87,8 @@
                         s.total += s.data[i];
                     }
                 });
+                // store copy of original data in origdata
+                s.origdata = s.data.slice();
             });
         },
 
@@ -164,7 +166,10 @@
             return this.__data.rowNameLabel !== undefined ? this.__data.rowNameLabel : '';
         },
 
-        // removes every row except the one with index i
+        /*
+         * removes every row except the one with index i
+         * and updates min, max and total of each series
+         */
         filterRows: function(rows) {
             this.eachSeries(function(s) {
                 var d = [];
@@ -172,10 +177,10 @@
                 s.min = Number.MAX_VALUE;
                 s.max = Number.MAX_VALUE*-1;
                 _.each(rows, function(i) {
-                    d.push(s.data[i]);
-                    s.total += s.data[i];
-                    s.min = Math.min(s.min, s.data[i]);
-                    s.max = Math.max(s.max, s.data[i]);
+                    d.push(s.origdata[i]);
+                    s.total += s.origdata[i];
+                    s.min = Math.min(s.min, s.origdata[i]);
+                    s.max = Math.max(s.max, s.origdata[i]);
                 });
                 s.data = d;
             });

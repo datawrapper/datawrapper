@@ -76,9 +76,13 @@
             me.__dataset.eachSeries(function(series, i) {
                 ds.push(series);
             });
-            if (sortByFirstValue) {
+            if (sortByFirstValue === true) {
                 ds = ds.sort(function(a,b) {
                     return b.data[0] > a.data[0] ? 1 : -1;
+                });
+            } else if ($.type(sortByFirstValue) == "number") {
+                ds = ds.sort(function(a,b) {
+                    return b.origdata[sortByFirstValue] > a.origdata[sortByFirstValue] ? 1 : -1;
                 });
             }
             if (reverseOrder) ds.reverse();
@@ -118,7 +122,9 @@
             if (this.hasRowHeader()) {
                 return this.rowHeader().data;
             } else {
-                return null;
+                var rh = [];
+                for (var i=0; i<this.numRows(); i++) rh.push('Row '+(i+1));
+                return rh;
             }
         },
 
@@ -153,16 +159,20 @@
                 append = me.get('metadata.describe.number-append', '').replace(' ', '&nbsp;'),
                 prepend = me.get('metadata.describe.number-prepend', '').replace(' ', '&nbsp;');
 
+            if (div !== 0) val = Number(val) / Math.pow(10, div);
             if (format != '-') {
-                var culture = Globalize.culture(me.locale);
-                val = Number(val) / Math.pow(10, div);
                 if (round || val == Math.round(val)) format = format.substr(0,1)+'0';
                 val = Globalize.format(val, format);
+            } else if (div !== 0) {
+                val = val.toFixed(1);
             }
 
             return full ? prepend + val + append : val;
         },
 
+        /*
+         * filter to a single row in the dataset
+         */
         filterRow: function(row) {
             this.__dataset.filterRows([row]);
         },

@@ -1,5 +1,5 @@
 {
-    "title": {
+    "_title": {
         "en": "Data Table",
         "de": "Tabelle",
         "fr": "Table de données"
@@ -17,6 +17,7 @@
     "libraries": [
         "datatables/jquery.dataTables.min.js"
     ],
+    "order": 70,
     "options": {
         "table-sortable": {
             "type": "checkbox",

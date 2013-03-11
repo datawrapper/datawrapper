@@ -26,7 +26,10 @@
     </div>
     {% endif %}
 
-    {% for key, option in vis.options %} {% if not option.hidden and not option.expert %}
+
+
+    {% for key, option in vis.options %}
+        {% if theme['option-filter'][vis.id][key] or (not option.hidden and not option.expert)  %}
     <div class="control-group" style="margin-bottom:0px" id="vis-options-{{ key }}">
         {% if option.type == 'checkbox' %}
             <label class="control-label" for="{{ key }}">{{ option.label[language]|raw }}</label>
@@ -71,7 +74,7 @@
 {#
     modal for picking custom colors
 #}
-<div class="modal hide" id="customColors" style="width:600px;margin-left:-300px" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal hide" id="customColors" style="width:620px;margin-left:-310px" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-body">
         <button type="button" class="close" data-dismiss="modal">×</button>
         <p class="lead">{% trans "Customize chart colors" %}</p>
@@ -159,6 +162,9 @@ $(function() {
 
     function syncVisOptions(vis) {
         _.each(vis.options, function(opt, key) {
+            if (chart.get('metadata.visualize.'+key) == undefined){
+                chart.set('metadata.visualize.'+key, opt.default);
+            }
             if (opt.type == 'radio') {
                 chart.sync('input[name='+key+']', 'metadata.visualize.'+key);
             } else {
@@ -219,20 +225,27 @@ $(function() {
 
         var customColors = $('#customColors'),
             sel = chart.get('metadata.visualize.custom-colors', {});
+            labels = [];
+
+        if (!vis['color-by-row']) {
+            $.each(chart.dataSeries(), function(i, ds) { labels.push(ds.name); });
+        } else {
+            $.each(chart.rowLabels(), function(i, n) { labels.push(n); })
+        }
 
         // populate custom color selector
-        $.each(chart.dataSeries(), function(i, ds) {
-            var li = $('<li data-series="'+ds.name+'"></li>');
-            li.append('<div class="color">×</div><label>'+ds.name+'</label>');
-            if (sel[ds.name]) {
-                $('.color', li).html('').css('background', sel[ds.name]);
-                li.data('color', sel[ds.name]);
+        $.each(labels, function(i, lbl) {
+            var li = $('<li data-series="'+lbl+'"></li>');
+            li.append('<div class="color">×</div><label>'+lbl+'</label>');
+            if (sel[lbl]) {
+                $('.color', li).html('').css('background', sel[lbl]);
+                li.data('color', sel[lbl]);
             }
             $('#customColors .dataseries').append(li);
         });
         // auto-select first series
         $('#customColors .dataseries li:first-child').addClass('selected');
-        $('#customColors .selected-series-name').html(chart.dataSeries()[0].name);
+        $('#customColors .selected-series-name').html(labels[0]);
 
         // define select event handler
         $('#customColors .dataseries li').click(function(e) {

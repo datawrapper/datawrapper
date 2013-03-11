@@ -1,0 +1,39 @@
+{
+    "title": {
+        "en": "Grouped Column Chart",
+        "de": "Balken (vertikal, gruppiert)",
+        "fr": "Diagramme à bandes verticales"
+    },
+    "version": "1.2-beta1",
+    "dimensions": 2,
+    "extends": "raphael-chart",
+    "color-by-row": true,
+    "order": 10,
+    "options": {
+        "sort-values": {
+            "type": "checkbox",
+            "label": {
+                "en": "Autmatically sort bars",
+                "de": "Balken sortieren",
+                "fr": "Trier les barres"
+            }
+        },
+        "reverse-order": {
+            "type": "checkbox",
+            "label": {
+                "en": "Reverse order",
+                "de": "Umgekehrte Reihenfolge",
+                "fr": "inverser l&#39;ordre"
+            }
+        },
+        "negative-color": {
+            "type": "checkbox",
+            "label": {
+                "en": "Use different color for negative values",
+                "de": "Andere Farbe für negative Werte ",
+                "fr": "Couleur différentes pour les valeurs négatives"
+            }
+        }
+    },
+    "libraries": []
+}
