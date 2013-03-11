@@ -406,6 +406,7 @@
                 vis.update(cur);
                 if (callback) callback();
             }
+            if (rowLabels.length == 1) return null;
             if (sumChars > 30) {
                 // use <select>
                 var select = $('<select />');
@@ -418,7 +419,7 @@
                 });
                 select.addClass('filter-ui filter-select');
                 return select;
-            } else if (rowLabels.length > 1) {
+            } else {
                 // use links
                 var div = $('<div />');
                 div.addClass('filter-ui filter-links');
