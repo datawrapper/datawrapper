@@ -6,5 +6,9 @@ RewriteEngine On
 #
 # RewriteBase /
 
+# RewriteCond %{REQUEST_URI} ^/docs/.* [NC]
+RewriteRule ^docs/(.*)$ http://docs.datawrapper.de/en/$1 [L]
+
+
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^ index.php [QSA,L]
