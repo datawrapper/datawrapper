@@ -6,10 +6,12 @@
 <script type="text/javascript">
 $(function() {
 
-    DW.currentChart.sync('#make-public', 'showInGallery');
+    var chart = DW.currentChart;
 
-    DW.currentChart.sync('#embed-width', 'metadata.publish.embed-width');
-    DW.currentChart.sync('#embed-height', 'metadata.publish.embed-height');
+    chart.sync('#make-public', 'showInGallery');
+
+    chart.sync('#embed-width', 'metadata.publish.embed-width');
+    chart.sync('#embed-height', 'metadata.publish.embed-height');
 
     $('#embed-width, #embed-height').change(function() {
         var w = $('#embed-width').val(), h = $('#embed-height').val(),
@@ -39,12 +41,11 @@ $(function() {
 
     $('a.duplicate').click(function(e) {
         e.preventDefault();
-        var id = DW.currentChart.get('id');
+        var id = chart.get('id');
         $.ajax({
             url: '/api/charts/'+id+'/copy',
             type: 'POST',
             success: function(data) {
-                data = JSON.parse(data);
                 if (data.status == "ok") {
                     // redirect to copied chart
                     location.href = '/chart/'+data.data.id+'/visualize';
@@ -167,7 +168,7 @@ p.lead {
             {% endif %}
 
             <p>
-                <a class="submit duplicate" role="button">
+                <a class="duplicate" role="button">
                     <i class="icon-plus"></i>&nbsp;&nbsp;{% trans "Duplicate this chart" %}
                 </a>
             </p>
@@ -271,7 +272,7 @@ p.lead {
     cursor: pointer;
     border-radius: 8px;
 }
-.ratio-select .option.selected {
+.ratio-select .option.selected {DW.currentChart;
     background-color: rgba(82, 168, 236, 0.3);
 }
 .ratio-select .option .img {
@@ -312,7 +313,7 @@ $(function() {
     $('.btn-export-chart').click(function(e) {
         e.preventDefault();
         $.ajax({
-            url: '/api/jobs/export/'+DW.currentChart.get('id'),
+            url: '/api/jobs/export/'+chart.get('id'),
             type: 'post',
             dataType: 'json',
             data: JSON.stringify({
