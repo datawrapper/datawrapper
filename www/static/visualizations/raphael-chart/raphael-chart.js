@@ -401,6 +401,8 @@
             var vis = this,
                 rowLabels = vis.chart.rowLabels(),
                 sumChars = 0;
+            // remove any existing filter-ui
+            $('.filter-ui').remove();
             _.each(rowLabels, function(t) { sumChars += t.length; });
             function update(cur) {
                 vis.update(cur);
