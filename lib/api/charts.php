@@ -348,13 +348,14 @@ $app->post('/charts/:id/publish/js', function($chart_id) use ($app) {
             $vis = $data['visualization'];
             $vis_path = 'vis/' . $vis['id'] . '-' . $vis['version'] . '.min.js';
             if (!file_exists($static_path . $vis_path)) {
-                $all = file_get_contents('../static/js/dw.js');
+                $all = '';
                 foreach ($data['visJS'] as $js) {
                     if (substr($js, 0, 7) != 'http://' && substr($js, 0, 2) != '//') {
                         $all .= "\n\n\n" . file_get_contents('..' . $js);
                     }
                 }
                 $all = JSMin::minify($all);
+                $all = file_get_contents('../static/js/datawrapper.min.js') . "\n\n" . $all;
                 file_put_contents($static_path . $vis_path, $all);
             }
             $cdn_files[] = array($static_path . $vis_path, 'lib/' . $vis_path, 'application/javascript');

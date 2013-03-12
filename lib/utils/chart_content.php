@@ -85,7 +85,7 @@ function get_chart_content($chart, $user, $minified = false, $path = '') {
         $scripts = array_unique(
             array_merge(
                 $base_js,
-                array('/static/js/dw.min.js'),
+                array('/static/js/datawrapper.min.js'),
                 array_reverse($theme_js),
                 array_reverse($vis_js),
                 $vis_libs
