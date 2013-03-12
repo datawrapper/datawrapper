@@ -4,7 +4,7 @@
         "de": "Balken (vertikal)",
         "fr": "Diagramme à bandes verticales"
     },
-    "version": "1.2.beta",
+    "version": "1.2.1",
     "dimensions": 1,
     "extends": "raphael-chart",
     "order": 0,
