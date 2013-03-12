@@ -1,7 +1,0 @@
-#!/bin/sh
-
-cat dw.core.js dw.dataset.js dw.ui.js dw.chart.js dw.chart.editable.js dw.theme.js dw.parsers.delimited.js dw.visualization.js > _.js
-uglifyjs _.js > ../datawrapper.min.js
-cat dw.core.js dw.dataset.js dw.chart.js dw.theme.js dw.parsers.delimited.js dw.visualization.js > ../dw.js
-uglifyjs ../dw.js > ../dw.min.js
-rm _.js
