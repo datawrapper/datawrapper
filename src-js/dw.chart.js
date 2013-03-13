@@ -148,6 +148,7 @@
         },
 
         setLocale: function(locale, metric_prefix) {
+            Globalize.culture(locale);
             this.locale = locale;
             this.metric_prefix = metric_prefix;
         },

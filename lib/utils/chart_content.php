@@ -25,8 +25,8 @@ function get_chart_content($chart, $user, $minified = false, $path = '') {
     // theme locale overrides user locale
     if (!empty($themeLocale)) $locale = $themeLocale;
     // per-chart locale overrides theme locale
-    $chartLocale = $chart->getLanguage();
-    if (!empty($chartLocale)) $locale = $chartLocale;
+    // $chartLocale = $chart->getLanguage();
+    // if (!empty($chartLocale)) $locale = $chartLocale;
 
     $abs = 'http://' . $GLOBALS['dw_config']['domain'];
 
