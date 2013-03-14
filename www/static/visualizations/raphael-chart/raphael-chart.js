@@ -180,7 +180,9 @@
             var me = this;
 
             function lblcss(lbl, x, y) {
-                var w, align, h, va;
+                var w, align, h, va, xo = +$('#chart').css('padding-left').split('px')[0];
+
+                x += xo;
 
                 attrs = lbl.data('attrs');
 
