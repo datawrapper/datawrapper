@@ -651,8 +651,32 @@ h1, h2, h3, h4, h5, h6 {
     color: #335;
 }
 
+.gallery-filter li a {
+    text-shadow: 1px 1px 0 #fff;
+}
+
+.gallery-filter ul li div.bar {
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    height: 21px;
+    background: #f2f2f4; /* Old browsers */
+    background: -moz-linear-gradient(top,  #f2f2f4 29%, #eaebee 55%, #eaebee 99%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(29%,#f2f2f4), color-stop(55%,#eaebee), color-stop(99%,#eaebee)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #f2f2f4 29%,#eaebee 55%,#eaebee 99%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #f2f2f4 29%,#eaebee 55%,#eaebee 99%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #f2f2f4 29%,#eaebee 55%,#eaebee 99%); /* IE10+ */
+    background: linear-gradient(to bottom,  #f2f2f4 29%,#eaebee 55%,#eaebee 99%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f2f2f4', endColorstr='#eaebee',GradientType=0 ); /* IE6-9 */
+
+    border-radius: 0 3px 3px 0;
+}
+
 .gallery-filter ul li {
     margin-bottom: 5px;
+    position: relative;
+    padding-left: 5px;
 }
 
 .gallery-filter ul {
