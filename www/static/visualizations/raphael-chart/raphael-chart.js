@@ -231,24 +231,6 @@
                 });
                 attrs.root.append(l);
             } else {
-                /* va = attrs.valign;
-                w = attrs.w ? attrs.w : this.labelWidth(txt, attrs.cl);
-                align = attrs.align ? attrs.align : 'left';
-                x = align == 'left' ? x : align == 'center' ? x - w * 0.5 : x - w;
-                l.css({
-                    position: 'absolute',
-                    left: x+'px',
-                    'text-align': align
-                });
-                if (attrs.w) {
-                    l.css({ width: w+'px' });
-                }
-                attrs.root.append(l);
-                h = attrs.h ? attrs.h : l.height();
-                if (!va) va = 'middle';
-                l.css({
-                    top: (y-h*(va == 'top' ? 0 : va == 'middle' ? 0.5 : 1))+'px'
-                });*/
                 attrs.root.append(l);
                 l.css(lblcss(l, x, y));
             }

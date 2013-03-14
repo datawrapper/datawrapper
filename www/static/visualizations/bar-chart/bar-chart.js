@@ -14,7 +14,6 @@
 
             this.setRoot(el);
 
-
             var me = this, row = 0,
             sortBars = me.get('sort-values'),
             reverse = me.get('reverse-order'),
@@ -287,5 +286,20 @@
             this.hoverSeries();
         }
     });
+
+
+    var Slice = function(paper, cx, cy, or, ir, startAngle, endAngle, label) {
+        var me = this;
+        me.cx = cx;
+        me.cy = cy;
+        me.or = or;
+        me.ir = ir;
+        me.startAngle = startAngle;
+        me.endAngle = endAngle;
+        me.path = paper.path(me.arcPath());
+        me.label = label;
+        me.updateLabelPos();
+    };
+
 
 }).call(this);
