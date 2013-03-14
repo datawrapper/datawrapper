@@ -66,7 +66,7 @@ if __name__ == "__main__":
 			assert not os.path.exists(theme_dir), "the folder %s already exists. You probably want to update it.\nRun: ./theme update %s" % (theme_dir, theme_id)
 			uri = sys.argv[3]
 			# it's a git repository
-			if uri.split('://')[0] in ('ssh', 'http', 'https', 'git'):
+			if uri.split('://')[0] in ('ssh', 'http', 'https', 'git') or uri.startswith('git@'):
 				# clone the theme repository
 				error = subprocess.call(['git', 'clone', uri, theme_dir], stdout=subprocess.PIPE)
 				assert int(error) == 0, "An error has occurred, aborted"
