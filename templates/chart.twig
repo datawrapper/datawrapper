@@ -297,7 +297,7 @@
     {# some convenient short cuts for theme templates #}
     {% set title = chart.title %}{% set intro = chart.metadata.describe.intro %}{% set source = chart.metadata.describe['source-name'] %}{% set sourceURL = chart.metadata.describe['source-url'] %}
 
-    {% include theme.hasTemplate ? 'themes/' ~ theme.id ~ '.twig' : 'themes/default.twig' %}
+    {% include theme.template ? 'themes/' ~ theme.template ~ '.twig' : 'themes/default.twig' %}
     {{ trackingCode | raw }}
 </body>
 </html>

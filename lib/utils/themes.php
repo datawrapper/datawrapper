@@ -30,7 +30,11 @@ function get_theme_meta($id) {
         $meta = json_decode(file_get_contents($theme_meta), true);
         $meta['id'] = $id;
         $meta['hasStyles'] = file_exists(ROOT_PATH . 'www/static/themes/' . $id . '/theme.css');
-        $meta['hasTemplate'] = file_exists(ROOT_PATH . 'templates/themes/' . $id . '.twig');
+        if (file_exists(ROOT_PATH . 'templates/themes/' . $id . '.twig')) {
+            $meta['template'] = $id;
+        } else if (!empty($meta['extends']) && file_exists(ROOT_PATH . 'templates/themes/' . $meta['extends'] . '.twig')) {
+            $meta['template'] = $meta['extends'];
+        }
 
         if (!empty($meta['locale'])) {
             $localeJS = 'static/vendor/globalize/cultures/globalize.culture.' . str_replace('_', '-', $meta['locale']) . '.js';
