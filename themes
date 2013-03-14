@@ -1,49 +1,60 @@
 #!/usr/bin/env python
 # -----------------------------------------------------------------------------
-# Theme manager for Datawrapper
+# Themes manager for Datawrapper
 # -----------------------------------------------------------------------------
 # Author : Edouard Richard                                  <edou4rd@gmail.com>
 # -----------------------------------------------------------------------------
 # License : MIT License
 # -----------------------------------------------------------------------------
 # Creation : 18-Feb-2013
-# Last mod : 18-Feb-2013
+# Last mod : 13-Mar-2013
 # -----------------------------------------------------------------------------
 """
-	Theme manager for Datawrapper
+	   Theme manager for Datawrapper
+	   -----------------------------
 
-Install a theme from a git repository and create a symlink to template in 
-twig's directory.
+List, install, update, create and delete them
+
+ Installation may be done via git or symlink
 
 """
-# TODO:
-# [] create action
-# [X] remove action
 
-import subprocess
-import sys, os, uuid, shutil
+import sys, os, uuid, shutil, json, subprocess
 
 BASE_DIR  = os.path.abspath(os.path.dirname(__file__))
 THEME_DIR = os.path.join(BASE_DIR, "www/static/themes")
 TEMPL_DIR = os.path.join(BASE_DIR, "templates/themes")
 
-ADD_SYNTAX    = "theme add <id> <git_url>"
-UPDATE_SYNTAX = "theme update <id>"
-REMOVE_SYNTAX = "theme remove <id>"
-CREATE_SYNTAX = "theme create <id>"
-
 def create_symlink(source, destination, force=False):
-	if os.path.exists(destination):
+	if os.path.lexists(destination):
 		if force:
-			moved_file = "%s.backup-%s" % (destination, uuid.uuid4())
-			os.rename(destination, moved_file)
-			print "the template %s already exists. We moved it to %s" % (destination, moved_file)
+			save = raw_input("the file %s already exists. Do you want a backup? [y/n]\n" % destination) == 'y'
+			if save:
+				moved_file = "%s.backup-%s" % (destination, uuid.uuid4())
+				os.rename(destination, moved_file)
+				print " We saved it to %s" % (moved_file)
+			else:
+				os.remove(destination)
 		else:
-			raise Exception("the template %s already exists. Do a './theme update'" % destination)
-	os.symlink(template_file, destination)
-	print "template file copied in %s" % destination
+			raise Exception("the file %s already exists. Do a './theme update'" % destination)
+	os.symlink(source, destination)
+	print "file created in %s" % destination
+
+# -----------------------------------------------------------------------------
+#
+#    MAIN
+#
+# -----------------------------------------------------------------------------
 
 if __name__ == "__main__":
+
+	ADD_SYNTAX    = "theme add <id> <git_url|local_path>"
+	LIST_SYNTAX   = "theme list"
+	UPDATE_SYNTAX = "theme update <id>"
+	REMOVE_SYNTAX = "theme remove <id>"
+	CREATE_SYNTAX = "theme create <id>"
+
+	# we manage a specified theme
 	if len(sys.argv) > 2:
 		action, theme_id = sys.argv[1:3]
 		theme_dir        = os.path.join(THEME_DIR, theme_id)
@@ -52,17 +63,23 @@ if __name__ == "__main__":
 
 		if action == "add":
 			assert len(sys.argv) == 4, "Syntax: %s" % ADD_SYNTAX
-			theme_git = sys.argv[3]
 			assert not os.path.exists(theme_dir), "the folder %s already exists. You probably want to update it.\nRun: ./theme update %s" % (theme_dir, theme_id)
-			# clone the theme repository
-			error = subprocess.call(['git', 'clone', theme_git, theme_dir], stdout=subprocess.PIPE)
-			assert int(error) == 0, "An error has occurred, aborted"
-			print "theme cloned in %s" % theme_dir
-			# create a symlink for template file
-			create_symlink(template_file, template_dest)
+			uri = sys.argv[3]
+			# it's a git repository
+			if uri.split('://')[0] in ('ssh', 'http', 'https', 'git'):
+				# clone the theme repository
+				error = subprocess.call(['git', 'clone', uri, theme_dir], stdout=subprocess.PIPE)
+				assert int(error) == 0, "An error has occurred, aborted"
+				print "theme cloned in %s" % theme_dir
+				# create a symlink for template file
+				create_symlink(template_file, template_dest)
+			else: # it's a local path
+				uri = os.path.abspath(uri)
+				create_symlink(uri, theme_dir)
+				create_symlink(template_file, template_dest)
 			sys.exit()
 
-		if action == "update":
+		elif action == "update":
 			assert len(sys.argv) == 3, "Syntax: %s" % UPDATE_SYNTAX
 			assert os.path.exists(theme_dir), "%s doesn't exist, please run '%s' before" % (theme_dir, ADD_SYNTAX)
 			# update the theme repository
@@ -71,15 +88,27 @@ if __name__ == "__main__":
 			create_symlink(template_file, template_dest, force=True)
 			sys.exit()
 
-		if action == "remove":
+		elif action == "remove":
 			assert len(sys.argv) == 3, "Syntax: %s" % REMOVE_SYNTAX
 			assert os.path.exists(theme_dir), "%s theme doesn't exist" % (theme_id)
-			shutil.rmtree(theme_dir)
+			if os.path.islink(theme_dir):
+				os.unlink(theme_dir)
+			else:
+				shutil.rmtree(theme_dir)
 			print "%s theme (%s) removed" % (theme_id, theme_dir)
 			if os.path.lexists(template_dest):
 				os.remove(template_dest)
 				print "symlink %s removed" % template_dest
 			sys.exit()
+
+	elif len(sys.argv) == 2 and sys.argv[1] == 'list':
+		assert len(sys.argv) == 2, "Syntax: %s" % LIST_SYNTAX
+		theme_names = os.listdir(THEME_DIR)
+		print "%s installed themes" % len(theme_names)
+		for theme_name in theme_names:
+			meta = json.load(open(os.path.join(THEME_DIR, theme_name, 'meta.json')))
+			print "* [%(locale)s] %(name)s v%(version)s" % dict(meta, **dict({'name': theme_name}))
+		sys.exit()
 
 		# TODO
 		# if action == "create":
@@ -89,10 +118,12 @@ if __name__ == "__main__":
 		# 	sys.exit()
 
 	print "\nTheme manager for Datawrapper\n-----------------------------"
-	print "3 options:\n"
-	print '1. Add a theme to this datawrapper instance. Copy the template file (<id>.twig) in the template directory'
+	print "USAGE:\n"
+	print '1. List installed themes'
+	print "\t$ ./%s" % LIST_SYNTAX
+	print '\n2. Add a theme to this datawrapper instance. Copy the template file (<id>.twig) in the template directory'
 	print "\t$ ./%s" % ADD_SYNTAX
-	print '\n2. Update a theme from git repository. Copy the template file (<id>.twig) in the template directory'
+	print '\n3. Update a theme from git repository. Copy the template file (<id>.twig) in the template directory'
 	print "\t$ ./%s" % UPDATE_SYNTAX
 	# NOTE: uncomment when create action will be implemented
 	# print '\n3. Create a new theme directory prepared to be configured'
