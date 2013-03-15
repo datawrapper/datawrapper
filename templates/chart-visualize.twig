@@ -241,8 +241,9 @@ $(function() {
         tgl.removeClass('collapse-shown');
     });
 
-    function updateVisBackground() {
-        var bgcol =  $('body', $('#iframe-vis').contents()).css('background-color'),
+    function updateVisBackground() {  // and show msg if chart needs more space
+        var iframe = $('#iframe-vis').contents(),
+            bgcol =  $('body', iframe).css('background-color'),
             white = bgcol == 'rgb(255, 255, 255)' || bgcol == '#ffffff' || bgcol == 'white' || bgcol == 'transparent',
             border = white ? '#ffffff' : '#bbb';
 
@@ -252,6 +253,20 @@ $(function() {
             'background-color': white ? '#ffffff' : bgcol,
             'border-color': border
         });
+
+        var vis_h = iframe.height(),
+            iframe_h = $('#iframe-vis').height();
+
+        if (vis_h > iframe_h+5) {
+            DW.logMessage('Watch out: Your chart needs more space. To get rid of the scrollbars just <a href="#" id="resize-iframe">resize iFrame to chart</a> ', $('.resize-chart-wrap'), 'warning');
+            $('#resize-iframe').click(function(e) {
+                e.preventDefault();
+                //$('#iframe-wrapper').height(vis_h);
+                $('#resize-h').val(vis_h);
+                updateSize();
+                $('.alert').remove();
+            });
+        }
     }
 
     $('#iframe-vis').load(updateVisBackground);
@@ -336,9 +351,12 @@ $(function() {
         updateSize();
     });
     $('.resize-chart input').change(_updateSize);
-    $('#resize-w').val($('#iframe-wrapper').width());
-    $('#resize-h').val($('#iframe-wrapper').height());
-
+    var cw = chart.get('metadata.publish.embed-width', $('#iframe-wrapper').width()),
+        ch = chart.get('metadata.publish.embed-height', $('#iframe-wrapper').height());
+    $('#resize-w').val(cw);
+    $('#resize-h').val(ch);
+    $('#iframe-wrapper').width(cw);
+    $('#iframe-wrapper').height(ch);
     $('.affix-cont').css('width', $('#iframe-wrapper').width()+'px');
 });
 
@@ -354,18 +372,18 @@ $(function() {
                     <iframe src="/chart/{{ chart.id }}/preview" id="iframe-vis" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen>
                     </iframe>
                 </div>
+                <div class="resize-chart-wrap">
+                    <div class="resize-chart">
+                        {% trans "Resize to: " %}
+                        <input id="resize-w" class="input-large" type="text" value="" /> ×
+                        <input id="resize-h" class="input-large" type="text" value="" />
+                        (e.g. <a href="#">480×320</a>
+                        <a href="#">480×480</a>
+                        <a href="#">640×360</a>
+                        <a href="#">640×480</a>)
 
-                <div class="resize-chart">
-                    {% trans "Resize to: " %}
-                    <input id="resize-w" class="input-large" type="text" /> ×
-                    <input id="resize-h" class="input-large" type="text" />
-                    (e.g. <a href="#">480×320</a>
-                    <a href="#">480×480</a>
-                    <a href="#">640×360</a>
-                    <a href="#">640×480</a>)
-
+                    </div>
                 </div>
-
             </div>
         </div>
 

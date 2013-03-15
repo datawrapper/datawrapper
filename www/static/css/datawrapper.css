@@ -1270,8 +1270,11 @@ form.well form {
     }
 }
 
-.resize-chart {
+.resize-chart-wrap {
     margin-top: 10px;
+}
+
+.resize-chart {
     text-align: center;
     margin-left: 10px;
     color: #666;
