@@ -163,7 +163,8 @@ svg .axis, svg .tick, svg .grid, svg rect {
     color: #666;
     height: 28px;
     line-height: 28px;
-    background: #fbfbfb;
+    background: #eeeeee;
+    background: #fbfbfb\9;
 }
 
 
