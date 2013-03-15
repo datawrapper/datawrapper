@@ -63,7 +63,7 @@
         var me = this;
         lx = me.cx + Math.cos((me.startAngle + me.endAngle) * 0.5) * me.or * 0.7,
         ly = me.cy + Math.sin((me.startAngle + me.endAngle) * 0.5) * me.or * 0.7;
-        me.label.css(me.label.data('lblcss')(me.label, lx, ly));
+        me.label.attr({ x: lx, y: ly });
     };
 
     _.extend(PieChart.prototype, Datawrapper.Visualizations.RaphaelChart.prototype, {
@@ -237,7 +237,7 @@
                     });
                 } else {
                     slice = slices[s.name];
-                    $('span', slice.label).html('<b>'+s.name+'</b><br />'+value);
+                    slice.label.text('<b>'+s.name+'</b><br />'+value);
                     slice.animate(c.cx, c.cy, c.or, c.ir, a0, a1);
 
                 }

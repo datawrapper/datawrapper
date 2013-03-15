@@ -267,6 +267,7 @@
             label.hasClass = function() { return lbl.hasClass.apply(lbl, arguments); };
             label.addClass = function() { return lbl.addClass.apply(lbl, arguments); };
             label.removeClass = function() { return lbl.removeClass.apply(lbl, arguments); };
+            label.remove = function() { return lbl.remove.apply(lbl, arguments); };
 
             lbl.data('label', label);
 
