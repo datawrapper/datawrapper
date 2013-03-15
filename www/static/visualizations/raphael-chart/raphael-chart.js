@@ -446,7 +446,7 @@
                 var div = $('<div />');
                 div.addClass('filter-ui filter-links');
                 _.each(rowLabels, function(lbl, i) {
-                    div.append('<a href="#'+i+'"'+(i == active ? ' class="active" ': '')+'>'+lbl+'</option>');
+                    div.append('<a href="#'+i+'"'+(i == active ? ' class="active" ': '')+'>'+lbl+'</a>');
                 });
                 $('a', div).click(function(e) {
                     var a = $(e.target);
