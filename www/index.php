@@ -6,7 +6,9 @@
  */
 
 
+
 define('DATAWRAPPER_VERSION', '1.2.4');  // must be the same as in package.json
+
 define('ROOT_PATH', '../');
 
 require_once '../lib/utils/check_server.php';

@@ -254,7 +254,7 @@
                 if (res.status == "ok") {
                     var chart = res.data,
                         chartUrl = preview ? 'http://' + DW.__domain + '/chart/' + chart.id + '/preview' :
-                            'http://' + DW.__chartCacheDomain + '/' + chart.id;
+                            'http://' + DW.__chartCacheDomain + '/' + chart.id + '/index.html';
                         chartIframe = $('<iframe src="'+chartUrl+'" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>'),
                         wrapper = $('<div></div>'),
                         overlay = wrapper.overlay({

@@ -8,8 +8,13 @@ function gal_nbChartsByMonth() {
     $sql = "SELECT DATE_FORMAT(created_at, '%Y-%m') ym, COUNT(*) c FROM chart WHERE show_in_gallery = 1 AND deleted = 0 GROUP BY ym ORDER BY ym DESC ;";
     $rs = $con->query($sql);
     $res = array();
+    $max = 0;
     foreach ($rs as $r) {
         $res[] = array('count' => $r['c'], 'id' => $r['ym'], 'name' => strftime('%B %Y', strtotime($r['ym'].'-01')));
+        $max = max($max, $r['c']);
+    }
+    foreach ($res as $c => $r) {
+        $res[$c]['bar'] = round($r['count'] / $max * 80);
     }
     return $res;
 }
@@ -20,11 +25,16 @@ function gal_nbChartsByType() {
     $rs = $con->query($sql);
     $res = array();
 
+    $max = 0;
     foreach ($rs as $r) {
         $vis = get_visualization_meta($r['type']);
         $lang = substr(DatawrapperSession::getLanguage(), 0, 2);
         if (empty($vis['title'][$lang])) $lang = 'en';
         $res[] = array('count' => $r['c'], 'id' => $r['type'], 'name' => $vis['title'][$lang]);
+        $max = max($max, $r['c']);
+    }
+    foreach ($res as $c => $r) {
+        $res[$c]['bar'] = round($r['count'] / $max * 80);
     }
     return $res;
 }
