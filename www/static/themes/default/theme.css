@@ -9,6 +9,7 @@ body, html {
     height: 100%;
 }
 
+a { color: #0088CC; }
 
 body.chart {
     font-family: Helvetica Neue, Arial;
@@ -163,14 +164,17 @@ svg .axis, svg .tick, svg .grid, svg rect {
     color: #666;
     height: 28px;
     line-height: 28px;
-    background: #eeeeee;
-    background: #fbfbfb\9;
+    background: #fbfbfb;
 }
-
 
 .filter-links a:hover {
     background: #fff;
+    color: #0088CC;
 }
+
+*+html .filter-links a {  background: #eeeeee; } /** IE7 hack **/
+.filter-links a { background: #eeeeee\0/; }  /** IE8 hack **/
+
 
 .filter-links a.active {
     font-weight: bold;
