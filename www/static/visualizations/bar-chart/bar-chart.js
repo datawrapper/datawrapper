@@ -109,7 +109,7 @@
             _.each(me.chart.dataSeries(me.get('sort-values', false)), function(series, s) {
                 _.each(me.__seriesElements[series.name], function(rect) {
                     var dim = me.barDimensions(series, s, 0);
-                    rect.animate(dim, 1000, 'expoInOut');
+                    rect.animate(dim, me.theme.duration, me.theme.easing);
                 });
 
                 _.each(me.__seriesLabels[series.name], function(lbl) {
@@ -127,7 +127,7 @@
                             align: lpos.halign,
                             x: lpos.left,
                             y: lpos.top
-                        }, 1000, 'easeInOutExpo');
+                        }, me.theme.duration, me.theme.easing);
                     }
                 });
             });
@@ -137,12 +137,12 @@
                     p = 'M' + [x, c.tpad] + 'V' + c.lastBarY;
                 // add y-axis
                 if (me.__yaxis) {
-                    me.__yaxis.animate({ path: p, opacity: 1 }, 1000, 'easeInOutExpo');
+                    me.__yaxis.animate({ path: p, opacity: 1 }, me.theme.duration, me.theme.easing);
                 } else {
                     me.__yaxis = me.path(p, 'axis').attr(me.theme.yAxis);
                 }
             } else if (me.__yaxis) {
-                me.__yaxis.animate({ opacity: 0 }, 500, 'easeInOutExpo');
+                me.__yaxis.animate({ opacity: 0 }, me.theme.duration * 0.5, me.theme.easing);
             }
         },
 

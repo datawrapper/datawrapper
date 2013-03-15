@@ -97,7 +97,7 @@
                     me.registerSeriesLabel(me.label(lpos.left, lpos.top, me.chart.formatValue(series.data[r]),{
                         w: lpos.width,
                         align: 'center',
-                        cl: 'value' + (alwaysShow ? '' : ' showOnHover')
+                        cl: 'value outline ' + (alwaysShow ? '' : ' showOnHover')
                     }), series);
 
                     if (me.chart.hasHighlight() && me.chart.isHighlighted(series)) {
@@ -160,6 +160,7 @@
             $('.showOnHover').hide();
 
             if (me.theme.columnChart.cutGridLines) me.horzGrid();
+            me.__gridLines['0'].toFront();
         },
 
         update: function(row) {
@@ -177,7 +178,7 @@
             _.each(me.chart.dataSeries(), function(series, s) {
                 _.each(me.__seriesElements[series.name], function(rect) {
                     var dim = me.barDimensions(series, s, 0);
-                    rect.animate(dim, 1000, 'expoInOut');
+                    rect.animate(dim, me.theme.duration, me.theme.easing);
                 });
 
                 _.each(me.__seriesLabels[series.name], function(lbl) {
@@ -191,20 +192,16 @@
                         lpos = me.labelPosition(series, s, 0, 'series');
                     }
                     if (lpos) {
-                        lbl.data('attrs', $.extend(lbl.data('attrs'), { valign: lpos.valign, halign: lpos.halign }));
-                        var lattrs = lbl.data('lblcss')(lbl, lpos.left, lpos.top);
-                        if (lattrs['text-align']) {
-                            lbl.css('text-align', lattrs['text-align']);
-                            lattrs['text-align'] = undefined;
-                            delete lattrs['text-align'];
-                        }
-                        lbl.animate(lattrs, {
-                            easing: 'easeInOutExpo',
-                            duration: 1000
-                        });
+                        lbl.animate({
+                            x: lpos.left,
+                            y: lpos.top,
+                            align: lpos.halign,
+                            valign: lpos.valign
+                        }, me.theme.duration, me.theme.easing);
                     }
                 });
             });
+            me.__gridLines['0'].toFront();
         },
 
         getBarColor: function(series, row, useNegativeColor, colorful) {
@@ -332,8 +329,10 @@
                     var key = String(val);
                     // show or update label
                     if (val !== 0) {
-                        var lbl = tickLabels[key] = tickLabels[key] || me.label(x+2, ly, me.chart.formatValue(val, t == ticks.length-2, true), { align: 'left', cl: 'axis', css: { opacity: 0 } });
-                        lbl.animate({ x: c.lpad+2, y: ly, css: { opacity: 1 } }, 1000, 'easeInOutExpo');
+                        var lbl = tickLabels[key] = tickLabels[key] ||
+                            me.label(x+2, ly, me.chart.formatValue(val, t == ticks.length-2, true),
+                                { align: 'left', cl: 'axis', css: { opacity: 0 } });
+                        lbl.animate({ x: c.lpad+2, y: ly, css: { opacity: 1 } }, me.theme.duration, me.theme.easing);
                     }
                     if (me.theme.yTicks) {
                         me.path([['M', c.lpad-25, y], ['L', c.lpad-20,y]], 'tick');
@@ -350,7 +349,7 @@
                             lattrs = $.extend(me.theme.horizontalGrid, lattrs);
                         }
                         if (val !== 0 && me.theme.columnChart.cutGridLines) lattrs.stroke = me.theme.colors.background;
-                        l.animate(lattrs, 1000, 'expoInOut');
+                        l.animate(lattrs, me.theme.duration, me.theme.easing);
                     }
                 }
             });
@@ -359,12 +358,21 @@
                 if (_.indexOf(ticks, Number(val)) < 0) {
                     var y = c.h - c.bpad - yscale(val), props;
                     props = $.extend(me.theme.horizontalGrid, { path: [['M', c.lpad, y], ['L', c.w - c.rpad, y]], opacity: 0 });
-                    line.animate(props, 1000, 'expoInOut');
+                    line.animate(props, me.theme.duration, me.theme.easing);
                     if (tickLabels[val]) {
-                        var lbl = tickLabels[val], lcss = lbl.data('lblcss'),
-                            lattrs = $.extend(lcss(lbl, c.lpad+2, y + (me.theme.columnChart.cutGridLines ? -10 : 0)), { opacity: 0 });
-                        lattrs.top = Math.min(lattrs.top, c.h);
-                        tickLabels[val].animate(lattrs, { duration: 1000, easing: 'easeInOutExpo' });
+                        var lbl = tickLabels[val];
+
+                        tickLabels[val].animate({
+                            x: c.lpad+2,
+                            y: y + (me.theme.columnChart.cutGridLines ? -10 : 0),
+                            css: {
+                                opacity: 0
+                            }
+                        }, me.theme.duration, me.theme.easing );
+
+                        
+                        // lattrs.top = Math.min(lattrs.top, c.h);
+                        // tickLabels[val].animate(lattrs, { duration: me.theme.duration, easing: me.theme.easing });
                     }
                 }
             });

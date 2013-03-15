@@ -23,11 +23,11 @@
         me.updateLabelPos();
     };
 
-    Slice.prototype.animate = function(cx, cy, or, ir, startAngle, endAngle) {
+    Slice.prototype.animate = function(cx, cy, or, ir, startAngle, endAngle, duration, easing) {
         var running = true, me = this;
         $(me).animate(
             { cx: cx, cy: cy, or: or, ir: ir, startAngle: startAngle, endAngle: endAngle },
-            { easing: 'easeInOutExpo', duration: 1000, complete: function() {
+            { easing: easing, duration: duration, complete: function() {
                 running = false;
                 frame();
             } });
@@ -229,7 +229,7 @@
                         w: 80, cl: lblcl, align: 'center', valign: 'middle'
                     }), s);
 
-                    slice = slices[s.name] = new Slice(c.paper, c.cx, c.cy, c.or, c.ir, a0, a1, lbl);
+                    slice = slices[s.name] = new Slice(c.paper, c.cx, c.cy, c.or, c.ir, a0, a1, lbl, me.theme);
                     slice.path.attr({
                         'stroke': me.theme.colors.background,
                         'stroke-width': 2,
@@ -238,7 +238,7 @@
                 } else {
                     slice = slices[s.name];
                     slice.label.text('<b>'+s.name+'</b><br />'+value);
-                    slice.animate(c.cx, c.cy, c.or, c.ir, a0, a1);
+                    slice.animate(c.cx, c.cy, c.or, c.ir, a0, a1, me.theme.duration, me.theme.easing);
 
                 }
 

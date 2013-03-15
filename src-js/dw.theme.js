@@ -136,7 +136,17 @@
         /*
          * theme locale, probably unused
          */
-        locale: 'de_DE'
+        locale: 'de_DE',
+
+        /*
+         * duration for animated transitions (ms)
+         */
+        duration: 1000,
+
+        /*
+         * easing for animated transitions
+         */
+         easing: 'expoInOut'
 
     });
 
