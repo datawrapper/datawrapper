@@ -75,8 +75,8 @@ Burj Khalifa (tallest building Dubai)	2723
 CDU/CSU	45	192
 SPD	57	89
 FDP	24	69
-Die Linke	42	34
-Bündnis 90/Die Grünen	36	32
+LINKE	42	34
+GRÜNE	36	32
 '
     );
 
@@ -96,8 +96,8 @@ Bündnis 90/Die Grünen	36	32
 CDU/CSU\t237
 SPD\t146
 FDP\t93
-DIE LINKE.\t76
-BÜNDNIS 90/DIE GRÜNEN\t68"
+LINKE\t76
+GRÜNE\t68"
     );
 
     $datasets[] = array(
