@@ -15,7 +15,7 @@
             this.setRoot(el);
 
             var me = this, row = 0,
-            sortBars = me.get('sort-values'),
+            sortBars = me.get('sort-values', false),
             reverse = me.get('reverse-order'),
             useNegativeColor = me.get('negative-color', false);
 
@@ -45,7 +45,6 @@
             $('.tooltip').hide();
 
             c.lastBarY = 0;
-
 
             _.each(me.chart.dataSeries(sortBars, reverse), function(series, s) {
                 _.each(series.data, function(val, r) {
@@ -86,7 +85,7 @@
                 var x = c.lpad + c.zero ;
                 if (labelsInsideBars) x -= 10;
                 // add y-axis
-                me.path([['M', x, c.tpad], ['L', x, c.lastBarY ]], 'axis')
+                me.__yaxis = me.path('M' + [x, c.tpad] + 'V' + c.lastBarY, 'axis')
                     .attr(me.theme.yAxis);
             }
 
@@ -104,7 +103,7 @@
             me.initDimensions(0);
 
             // update bar heights and labels
-            _.each(me.chart.dataSeries(), function(series, s) {
+            _.each(me.chart.dataSeries(me.get('sort-values', false)), function(series, s) {
                 _.each(me.__seriesElements[series.name], function(rect) {
                     var dim = me.barDimensions(series, s, 0);
                     rect.animate(dim, 1000, 'expoInOut');
@@ -116,20 +115,32 @@
                         // update value
                         $('span', lbl).html(me.chart.formatValue(series.data[0]));
                         lpos = { halign: pos.val_align, left: pos.val_x, top: pos.top };
-
                     } else if (lbl.hasClass('series')) {
                         // update series label position
                         lpos = { halign: pos.lbl_align, left: pos.lbl_x, top: pos.top };
                     }
                     if (lpos) {
-                        lbl.data('attrs', $.extend(lbl.data('attrs'), { halign: lpos.halign }));
-                        lbl.animate(lbl.data('lblcss')(lbl, lpos.left, lpos.top), {
-                            easing: 'easeInOutExpo',
-                            duration: 1000
-                        });
+                        lbl.animate({
+                            align: lpos.halign,
+                            x: lpos.left,
+                            y: lpos.top
+                        }, 1000, 'easeInOutExpo');
                     }
                 });
             });
+            if (me.__domain[0] < 0) {
+                var c = me.__canvas,
+                    x = c.lpad + c.zero - (me.get('labels-inside-bars', false) ? 10 : 0),
+                    p = 'M' + [x, c.tpad] + 'V' + c.lastBarY;
+                // add y-axis
+                if (me.__yaxis) {
+                    me.__yaxis.animate({ path: p, opacity: 1 }, 1000, 'easeInOutExpo');
+                } else {
+                    me.__yaxis = me.path(p, 'axis').attr(me.theme.yAxis);
+                }
+            } else if (me.__yaxis) {
+                me.__yaxis.animate({ opacity: 0 }, 500, 'easeInOutExpo');
+            }
         },
 
         initDimensions: function(r) {

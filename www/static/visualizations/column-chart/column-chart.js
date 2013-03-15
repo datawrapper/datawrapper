@@ -332,15 +332,8 @@
                     var key = String(val);
                     // show or update label
                     if (val !== 0) {
-                        var lbl = tickLabels[key] = tickLabels[key] || me.label(x+2, ly, me.chart.formatValue(val, t == ticks.length-2, true), { align: 'left', cl: 'axis' }).css({ opacity: 0 });
-                        lcss = lbl.data('lblcss');
-                        var lattrs = $.extend(lcss(lbl, c.lpad+2, ly), { opacity: 1 });
-                        if (lattrs['text-align']) {
-                            lbl.css('text-align', lattrs['text-align']);
-                            lattrs['text-align'] = undefined;
-                            delete lattrs['text-align'];
-                        }
-                        lbl.animate(lattrs, { duration: 1000, easing: 'easeInOutExpo' });
+                        var lbl = tickLabels[key] = tickLabels[key] || me.label(x+2, ly, me.chart.formatValue(val, t == ticks.length-2, true), { align: 'left', cl: 'axis', css: { opacity: 0 } });
+                        lbl.animate({ x: c.lpad+2, y: ly, css: { opacity: 1 } }, 1000, 'easeInOutExpo');
                     }
                     if (me.theme.yTicks) {
                         me.path([['M', c.lpad-25, y], ['L', c.lpad-20,y]], 'tick');
