@@ -238,7 +238,7 @@
                     'filter': 'progid:DXImageTransform.Microsoft.BasicImage(rotation=3)'
                 });
             }
-            var label = {};
+            var label = { el: lbl };
             // update label text
             label.text = function(txt) {
                 $('span', lbl).html(txt);
@@ -446,7 +446,8 @@
                 var div = $('<div />');
                 div.addClass('filter-ui filter-links');
                 _.each(rowLabels, function(lbl, i) {
-                    div.append('<a href="#'+i+'"'+(i == active ? ' class="active" ': '')+'>'+lbl+'</a>');
+                    var a = $('<a href="#'+i+'"'+(i == active ? ' class="active" ': '')+'>'+lbl+'</a>').data('row', i);
+                    div.append(a);
                 });
                 $('a', div).click(function(e) {
                     var a = $(e.target);
@@ -454,7 +455,7 @@
                     if (a.hasClass('active')) return;
                     $('a', div).removeClass('active');
                     a.addClass('active');
-                    update(a.attr('href').substr(1));
+                    update(a.data('row'));
                 });
                 return div;
             }

@@ -201,7 +201,7 @@
                 mb = $('#chart').css('margin-bottom').replace('px', ''),
                 maxH = $(window).height() - ch - 2;
             // IE Fix
-            if (!$.support.boxModel) maxH -= 10;
+            if (!$.support.leadingWhitespace) maxH -= 15;
             maxH -= $('body').css('padding-top').replace('px', '');
             maxH -= $('body').css('padding-bottom').replace('px', '');
             return maxH;
@@ -236,7 +236,7 @@
             var w = $('#chart').innerWidth(),
                 h = getMaxChartHeight($('#chart'));
 
-            if (!$.support.boxModel) w -= 10; // IE Fix
+            if (!$.support.leadingWhitespace) w -= 10; // IE Fix
             w -= $('body').css('padding-left').replace('px', '');
             w -= $('body').css('padding-right').replace('px', '');
 

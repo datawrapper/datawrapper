@@ -560,8 +560,8 @@
                     });
 
             // update x-label
-            $('span', xlabel).html(me.dataset.rowName(row))
-                .parent().css({ left: me.__scales.x(row) - xlabel.outerWidth() * 0.5 });
+            xlabel.text(me.dataset.rowName(row));
+            xlabel.el.css({ left: me.__scales.x(row) - xlabel.el.outerWidth() * 0.5 });
 
             me.dataset.eachSeries(function(s) {
                 var lbl = s._label = s._label ||

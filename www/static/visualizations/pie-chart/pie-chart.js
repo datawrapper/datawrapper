@@ -11,59 +11,64 @@
     var TWO_PI = Math.PI * 2, HALF_PI = Math.PI * 0.5;
 
     var Slice = function(paper, cx, cy, or, ir, startAngle, endAngle, label) {
-        var me = this;
-        me.cx = cx;
-        me.cy = cy;
-        me.or = or;
-        me.ir = ir;
-        me.startAngle = startAngle;
-        me.endAngle = endAngle;
-        me.path = paper.path(me.arcPath());
-        me.label = label;
-        me.updateLabelPos();
-    };
+        var me = {
+            cx: cx,
+            cy: cy,
+            or: or,
+            ir: ir,
+            startAngle: startAngle,
+            endAngle: endAngle
+        };
 
-    Slice.prototype.animate = function(cx, cy, or, ir, startAngle, endAngle, duration, easing) {
-        var running = true, me = this;
-        $(me).animate(
-            { cx: cx, cy: cy, or: or, ir: ir, startAngle: startAngle, endAngle: endAngle },
-            { easing: easing, duration: duration, complete: function() {
-                running = false;
-                frame();
-            } });
+        function arcPath() {
+            var cx = me.cx, cy = me.cy, ir = me.ir, or = me.or,
+                startAngle = me.startAngle, endAngle = me.endAngle;
+
+            var x0 = cx+Math.cos(startAngle)*ir,
+                y0 = cy+Math.sin(startAngle)*ir,
+                x1 = cx+Math.cos(endAngle)*ir,
+                y1 = cy+Math.sin(endAngle)*ir,
+                x2 = cx+Math.cos(endAngle)*or,
+                y2 = cy+Math.sin(endAngle)*or,
+                x3 = cx+Math.cos(startAngle)*or,
+                y3 = cy+Math.sin(startAngle)*or,
+                largeArc = endAngle - startAngle > Math.PI ? 1 : 0;
+
+            if (ir > 0)
+                return "M"+x0+" "+y0+" A"+ir+","+ir+" 0 "+largeArc+",1 "+x1+","+y1+" L"+x2+" "+y2+" A"+or+","+or+" 0 "+largeArc+",0 "+x3+" "+y3+" Z";
+            else
+                return "M"+cx+" "+cy+" L"+x2+" "+y2+" A"+or+","+or+" 0 "+largeArc+",0 "+x3+" "+y3+" Z";
+        }
+
+        function updateLabelPos() {
+            lx = me.cx + Math.cos((me.startAngle + me.endAngle) * 0.5) * me.or * 0.7,
+            ly = me.cy + Math.sin((me.startAngle + me.endAngle) * 0.5) * me.or * 0.7;
+            label.attr({ x: lx, y: ly });
+        }
+
+        var running;
         function frame() {
-            me.path.attr({ path: me.arcPath() });
-            me.updateLabelPos();
+            path.attr({ path: arcPath() });
+            updateLabelPos();
             if (running) requestAnimationFrame(frame);
         }
-        requestAnimationFrame(frame);
-    };
 
-    Slice.prototype.arcPath = function() {
-        var me = this, cx = me.cx, cy = me.cy, ir = me.ir, or = me.or,
-            startAngle = me.startAngle, endAngle = me.endAngle;
+        var path = paper.path(arcPath());
+        updateLabelPos();
 
-        var x0 = cx+Math.cos(startAngle)*ir,
-            y0 = cy+Math.sin(startAngle)*ir,
-            x1 = cx+Math.cos(endAngle)*ir,
-            y1 = cy+Math.sin(endAngle)*ir,
-            x2 = cx+Math.cos(endAngle)*or,
-            y2 = cy+Math.sin(endAngle)*or,
-            x3 = cx+Math.cos(startAngle)*or,
-            y3 = cy+Math.sin(startAngle)*or,
-            largeArc = endAngle - startAngle > Math.PI ? 1 : 0;
-
-        if (ir > 0)
-            return "M"+x0+" "+y0+" A"+ir+","+ir+" 0 "+largeArc+",1 "+x1+","+y1+" L"+x2+" "+y2+" A"+or+","+or+" 0 "+largeArc+",0 "+x3+" "+y3+" Z";
-        else
-            return "M"+cx+" "+cy+" L"+x2+" "+y2+" A"+or+","+or+" 0 "+largeArc+",0 "+x3+" "+y3+" Z";
-    };
-
-    Slice.prototype.updateLabelPos = function() {
-        var me = this;
-        lx = me.cx + Math.cos((me.startAngle + me.endAngle) * 0.5) * me.or * 0.7,
-        ly = me.cy + Math.sin((me.startAngle + me.endAngle) * 0.5) * me.or * 0.7;
-        me.label.attr({ x: lx, y: ly });
+        var slice = { path: path, label: label };
+        slice.animate = function(cx, cy, or, ir, sa, ea, duration, easing) {
+            running = true;
+            $(me).animate(
+                { cx: cx, cy: cy, or: or, ir: ir, startAngle: sa, endAngle: ea },
+                { easing: easing, duration: duration, complete: function() {
+                    running = false;
+                    frame();
+                }
+            });
+            requestAnimationFrame(frame);
+        };
+        return slice;
     };
 
     _.extend(PieChart.prototype, Datawrapper.Visualizations.RaphaelChart.prototype, {
@@ -136,27 +141,10 @@
                 slices = me.__slices = me.__slices ? me.__slices : {};
 
             me.chart.filterRow(row);
-            function arc(cx, cy, or, ir, startAngle, endAngle) {
-                var x0 = cx+Math.cos(startAngle)*ir,
-                    y0 = cy+Math.sin(startAngle)*ir,
-                    x1 = cx+Math.cos(endAngle)*ir,
-                    y1 = cy+Math.sin(endAngle)*ir,
-                    x2 = cx+Math.cos(endAngle)*or,
-                    y2 = cy+Math.sin(endAngle)*or,
-                    x3 = cx+Math.cos(startAngle)*or,
-                    y3 = cy+Math.sin(startAngle)*or,
-                    largeArc = endAngle - startAngle > Math.PI ? 1 : 0;
-
-                if (ir > 0)
-                    return "M"+x0+" "+y0+" A"+ir+","+ir+" 0 "+largeArc+",1 "+x1+","+y1+" L"+x2+" "+y2+" A"+or+","+or+" 0 "+largeArc+",0 "+x3+" "+y3+" Z";
-                else
-                    return "M"+cx+" "+cy+" L"+x2+" "+y2+" A"+or+","+or+" 0 "+largeArc+",0 "+x3+" "+y3+" Z";
-            }
 
             var series = me.chart.dataSeries(me.get('sort-values', true) ? me.__initialRow : false),
                 total = 0, min = Number.MAX_VALUE, max = 0,
                 reverse, oseries, others = 0, ocnt = 0, hasNegativeValues = false;
-
 
             // now group small series into one big chunk named 'others'
             oseries = [];
@@ -229,7 +217,7 @@
                         w: 80, cl: lblcl, align: 'center', valign: 'middle'
                     }), s);
 
-                    slice = slices[s.name] = new Slice(c.paper, c.cx, c.cy, c.or, c.ir, a0, a1, lbl, me.theme);
+                    slice = slices[s.name] = Slice(c.paper, c.cx, c.cy, c.or, c.ir, a0, a1, lbl, me.theme);
                     slice.path.attr({
                         'stroke': me.theme.colors.background,
                         'stroke-width': 2,
@@ -272,7 +260,6 @@
             if (a < 0) a += TWO_PI;
 
             _.each(me.__seriesAngles, function(range, sname) {
-                // console.log(a, range);
                 if (a >= range[0] && a < range[1]) {
                     match = sname;
                     return false;
