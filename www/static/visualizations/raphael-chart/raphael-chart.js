@@ -93,7 +93,7 @@
             var me = this,
                 x = e.pageX,
                 y = e.pageY,
-                series = this.getSeriesByPoint(x, y),
+                series = this.getSeriesByPoint(x, y, e),
                 row = this.getDataRowByPoint(x, y),
                 hoveredNode = series !== null;
 
@@ -132,9 +132,11 @@
         registerSeriesLabel: function(lbl, series) {
             var me = this;
             lbl.data('series', series);
+
             if (!this.__seriesLabels[series.name]) {
                 this.__seriesLabels[series.name] = [];
             }
+
             this.__seriesLabels[series.name].push(lbl);
             lbl.on('mouseenter', function(e) {
                 me.__hoveredSeriesLabel = e.target;
@@ -145,6 +147,7 @@
                     me.__hoveredSeriesLabel = null;
                 }, 100);
             });
+
             return lbl;
         },
 
@@ -175,67 +178,99 @@
             return p;
         },
 
-        label: function(x, y, txt, attrs) {
+        label: function(x, y, txt, _attrs) {
 
-            var me = this;
+            var me = this,
+                lbl,  // $(<div class="label" />)
+                attrs = {  // default attributes
+                    root: this.__canvas.root,
+                    align: 'left',
+                    valign: 'middle',
+                    cl: '',
+                    rotate: 0,
+                    css: {
+                        position: 'absolute'
+                    },
+                    x: x,
+                    y: y,
+                    txt: txt
+                };
 
-            function lblcss(lbl, x, y) {
-                var w, align, h, va, xo = +$('#chart').css('padding-left').split('px')[0];
+            $.extend(true, attrs, _attrs || {});
 
-                x += xo;
+            lbl = $('<div class="label'+(attrs.cl ? ' '+attrs.cl : '')+'"><span>'+txt+'</span></div>');
+            lbl.css(attrs.css);
+            lbl.css({ 'text-align': attrs.align });
+            attrs.root.append(lbl);
 
-                attrs = lbl.data('attrs');
-
-                if (attrs.rotate == -90) {
-
-                } else {
-                    w = attrs.w ? attrs.w : me.labelWidth(txt, attrs.cl);
-                    align = attrs.align ? attrs.align : 'left';
-                    x = align == 'left' ? x : align == 'center' ? x - w * 0.5 : x - w;
-                    h = attrs.h ? attrs.h : lbl.height();
-                    va = attrs.valign || 'middle';
-                    y = (y-h*(va == 'top' ? 0 : va == 'middle' ? 0.5 : 1));
-                }
-                return _.extend(attrs.css || {}, {
-                    left: x,
-                    top: y,
-                    width: w,
-                    height: h,
-                    'text-align': align
-                });
-            }
-
-            var l, w, align, h, va;
-            if (attrs === undefined) attrs = {};
-            if (attrs.root === undefined) attrs.root = this.__canvas.root;
-            // create label DIV element
-            l = $('<div class="label'+(attrs.cl ? ' '+attrs.cl : '')+'"><span>'+txt+'</span></div>');
-            l.css('position', 'absolute');
-            if (attrs.css) l.css(attrs.css);
-            l.data('attrs', attrs);
-            if (attrs.rotate == -90) {
-                w = 60;
-                l.css({
-                    position: 'absolute',
-                    left: (x-w*0.5)+'px',
-                    top: (y+12),
-                    width: w,
+            // compute the label position according to text and align
+            function position() {
+                var w = attrs.w || me.labelWidth(attrs.txt, attrs.cl),
+                    h = attrs.h || lbl.height(),
+                    x = attrs.x,
+                    y = attrs.y,
+                    rot_w = 60;
+                return attrs.rotate == -90 ? {
+                    // rotated
+                    left: x - rot_w * 0.5,
+                    top: y + 12,
+                    width: rot_w,
                     height: 20,
                     'text-align': 'right'
-                }).css({
+                } : {
+                    // not rotated
+                    left: attrs.align == 'left' ? x : attrs.align == 'center' ? x - w * 0.5 : x - w,
+                    top: y - h * (attrs.valign == 'top' ? 0 : attrs.valign == 'middle' ? 0.5 : 1),
+                    width: w,
+                    height: h
+                };
+            }
+
+            // create label DIV element
+            lbl.css($.extend({}, attrs.css, position()));
+
+            if (attrs.rotate == -90) {
+                lbl.css({
                     '-moz-transform': 'rotate(-90deg)',
                     '-webkit-transform': 'rotate(-90deg)',
                     '-ms-transform': 'rotate(-90deg)',
                     '-o-transform': 'rotate(-90deg)',
                     'filter': 'progid:DXImageTransform.Microsoft.BasicImage(rotation=3)'
                 });
-                attrs.root.append(l);
-            } else {
-                attrs.root.append(l);
-                l.css(lblcss(l, x, y));
             }
-            l.data('lblcss', lblcss); // store css function for later reuse
-            return l;
+            var label = {};
+            // update label text
+            label.text = function(txt) {
+                $('span', lbl).html(txt);
+            };
+            // animate label attributes
+            label.animate = function(_attrs, duration, easing) {
+                //
+                if (_attrs.align != attrs.align) {
+                    setTimeout(function() {
+                        lbl.css({ 'text-align': _attrs.align });
+                    }, duration ? duration * 0.5 : 10);
+                }
+                if (_attrs.txt != attrs.txt) label.text(_attrs.txt);
+                $.extend(attrs, _attrs);
+                var _css = $.extend({}, attrs.css, position());
+                return duration ? lbl.animate(_css, duration, easing) : lbl.css(_css);
+            };
+            label.attr = label.animate;
+            // wrap lbl.data
+            label.data = function() { return lbl.data.apply(lbl, arguments); };
+            label.hide = function() { return lbl.hide.apply(lbl, arguments); };
+            label.show = function() { return lbl.show.apply(lbl, arguments); };
+            label.width = function() { return lbl.width.apply(lbl, arguments); };
+            label.height = function() { return lbl.height.apply(lbl, arguments); };
+            label.on = function() { return lbl.on.apply(lbl, arguments); };
+            label.hasClass = function() { return lbl.hasClass.apply(lbl, arguments); };
+            label.addClass = function() { return lbl.addClass.apply(lbl, arguments); };
+            label.removeClass = function() { return lbl.removeClass.apply(lbl, arguments); };
+
+            lbl.data('label', label);
+
+            return label;
         },
 
         labelWidth: function(txt, className) {
@@ -439,6 +474,7 @@
         }
 
     });
+
 
 }).call(this);
 
