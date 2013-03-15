@@ -19,14 +19,23 @@
         initDimensions: function(r) {
             //
             var me = this, c = me.__canvas,
+                normalize = me.get('normalize', false),
                 dMin = 0, dMax = 0;
             _.each(me.chart.dataSeries(), function(series) {
                 var ssum = 0;
                 _.each(series.data, function(v) {
-                    ssum += v;
+                    ssum += isNaN(v) ? 0 : v;
                 });
-                dMin = Math.min(dMin, series.min);
-                dMax = Math.max(dMax, ssum);
+                if (normalize) {
+                    dMin = 0;
+                    dMax = 1;
+                    $.each(series.data, function(i, v) {
+                        series.data[i] = v / ssum;
+                    });
+                } else {
+                    dMin = Math.min(dMin, series.min);
+                    dMax = Math.max(dMax, ssum);
+                }
             });
             me.__domain = [dMin, dMax];
             me.__scales = {
@@ -64,6 +73,11 @@
             y = y - yo;
             me.__yoffset = yo + h;
             return { w: w, h: h, x: x, y: y, bx: x, bw: bw };
+        },
+
+        formatValue: function(v) {
+            var me = this;
+            return me.get('normalize', false) ? Math.round(v * 100)+'%' : me.chart.formatValue.apply(me.chart, arguments);
         }
 
     });

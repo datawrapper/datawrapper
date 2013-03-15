@@ -95,7 +95,7 @@
 
                     if (false && me._showValueLabels()) {
                         // add value labels
-                        me.registerSeriesLabel(me.label(d.x + d.w * 0.5, val_y, me.chart.formatValue(series.data[r]),{
+                        me.registerSeriesLabel(me.label(d.x + d.w * 0.5, val_y, me.formatValue(series.data[r]),{
                             w: d.w,
                             align: 'center',
                             cl: 'value' + (alwaysShow ? '' : ' showOnHover')
@@ -243,7 +243,7 @@
                 if (val >= domain[0] && val <= domain[1]) {
                     // c.paper.text(x, y, val).attr(styles.labels).attr({ 'text-anchor': 'end' });
                     if (me.theme.columnChart.cutGridLines) ly += 10;
-                    if (val !== 0) me.label(x+2, ly, me.chart.formatValue(val, t == ticks.length-2, true), { align: 'left', cl: 'axis' });
+                    if (val !== 0) me.label(x+2, ly, me.formatValue(val, t == ticks.length-2, true), { align: 'left', cl: 'axis' });
                     if (me.theme.yTicks) {
                         me.path([['M', c.lpad-25, y], ['L', c.lpad-20,y]], 'tick');
                     }
@@ -281,6 +281,10 @@
 
         unhoverSeries: function() {
             this.hoverSeries();
+        },
+
+        formatValue: function() {
+            return this.chart.formatValue.apply(this.chart, arguments);
         }
     });
 

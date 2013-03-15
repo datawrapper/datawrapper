@@ -4,7 +4,7 @@
         "de": "Balken (vertikal, gestapelt)",
         "fr": "Diagramme à bandes verticales"
     },
-    "version": "1.2.4",
+    "version": "1.2.5",
     "dimensions": 2,
     "extends": "grouped-column-chart",
     "order": 20,
@@ -25,6 +25,15 @@
                 "de": "Umgekehrte Reihenfolge",
                 "fr": "inverser l&#39;ordre"
             }
+        },
+        "normalize": {
+            "type": "checkbox",
+            "label": {
+                "en": "Normalize to 100%",
+                "de": "Zu 100% normalisieren",
+                "fr": "Normalize to 100%"
+            },
+            "default": false
         }
     },
     "libraries": []
