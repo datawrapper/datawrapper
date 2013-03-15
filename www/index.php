@@ -139,20 +139,27 @@ function add_header_vars(&$page, $active = null) {
     $page['user'] = DatawrapperSession::getUser();
     $page['language'] = substr(DatawrapperSession::getLanguage(), 0, 2);
     $page['locale'] = DatawrapperSession::getLanguage();
-    $page['DW_DOMAIN'] = $GLOBALS['dw_config']['domain'];
+    $page['DW_DOMAIN'] = $config['domain'];
     $page['DW_VERSION'] = DATAWRAPPER_VERSION;
-    $page['DW_CHART_CACHE_DOMAIN'] = $GLOBALS['dw_config']['chart_domain'];
-    $page['ADMIN_EMAIL'] = $GLOBALS['dw_config']['admin_email'];
+    $page['DW_CHART_CACHE_DOMAIN'] = $config['chart_domain'];
+    $page['ADMIN_EMAIL'] = $config['admin_email'];
 
     $analyticsMod = get_module('analytics', '../lib/');
     $page['trackingCode'] = !empty($analyticsMod) ? $analyticsMod->getTrackingCode() : '';
 
-    if (isset($GLOBALS['dw_config']['piwik'])) {
-        $page['PIWIK_URL'] = $GLOBALS['dw_config']['piwik']['url'];
-        $page['PIWIK_IDSITE'] = $GLOBALS['dw_config']['piwik']['idSite'];
-        if (isset($GLOBALS['dw_config']['piwik']['idSiteNoCharts'])) {
-            $page['PIWIK_IDSITE_NO_CHARTS'] = $GLOBALS['dw_config']['piwik']['idSiteNoCharts'];
+    if (isset($config['piwik'])) {
+        $page['PIWIK_URL'] = $config['piwik']['url'];
+        $page['PIWIK_IDSITE'] = $config['piwik']['idSite'];
+        if (isset($config['piwik']['idSiteNoCharts'])) {
+            $page['PIWIK_IDSITE_NO_CHARTS'] = $config['piwik']['idSiteNoCharts'];
         }
+    }
+
+    if ($config['debug']) {
+        // parse git branch
+        $head = file_get_contents('../.git/HEAD');
+        $parts = explode("/", $head);
+        $page['BRANCH'] = ' ('.trim($parts[count($parts)-1]).')';
     }
 }
 
