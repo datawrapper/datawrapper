@@ -28,7 +28,10 @@
             if (filterUI) $('#header').append(filterUI);
 
             var c = me.initCanvas({
-                h: Math.max(me.getSize()[1] - me.theme.padding.top - me.theme.padding.bottom - me.theme.vpadding, 18 * 1.35 * me.chart.dataSeries().length)
+                h: Math.max(
+                    me.getSize()[1] - me.theme.padding.top - me.theme.padding.bottom - me.theme.vpadding,
+                    18 * 1.35 * me.chart.dataSeries().length + 5
+                )
             });
 
             var
