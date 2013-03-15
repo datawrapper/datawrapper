@@ -135,13 +135,18 @@ svg .axis, svg .tick, svg .grid, svg rect {
     font-size: 80%;
 }
 
+.filter-links {
+    height: 28px;
+}
+
 .filter-links a {
     padding: 0px 10px;
     box-shadow: 0 0 10px #ddd inset;
     border: 1px solid #bbb;
     border-left: 0;
-    display: inline-block;
-    text-decoration: none;
+    display: block;
+    float: left;
+    text-decoration: underline;
     color: #666;
     height: 28px;
     line-height: 28px;
@@ -159,6 +164,7 @@ svg .axis, svg .tick, svg .grid, svg rect {
     box-shadow: none;
     background: #fff;
     cursor: default;
+    text-decoration: none;
 }
 
 .filter-links a:first-child {
