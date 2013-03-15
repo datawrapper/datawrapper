@@ -201,7 +201,7 @@
                 mb = $('#chart').css('margin-bottom').replace('px', ''),
                 maxH = $(window).height() - ch - 2;
             // IE Fix
-            if ($.browser.msie) maxH -= 10;
+            if (!$.support.boxModel) maxH -= 10;
             maxH -= $('body').css('padding-top').replace('px', '');
             maxH -= $('body').css('padding-bottom').replace('px', '');
             return maxH;
@@ -236,7 +236,7 @@
             var w = $('#chart').innerWidth(),
                 h = getMaxChartHeight($('#chart'));
 
-            if ($.browser.msie) w -= 10; // IE Fix
+            if (!$.support.boxModel) w -= 10; // IE Fix
             w -= $('body').css('padding-left').replace('px', '');
             w -= $('body').css('padding-right').replace('px', '');
 
@@ -255,7 +255,7 @@
         loadChart();
 
         var reload_timer;
-        if (!$.browser.msie && navigator.userAgent.match(/iPad/i) == null) {
+        if (navigator.userAgent.match(/iPad|msie/i) == null) {
             // IE continuosly reloads the chart for some strange reasons
             $(window).resize(function() {
                 if (reload_timer) clearTimeout(reload_timer);

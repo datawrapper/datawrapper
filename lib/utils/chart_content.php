@@ -30,7 +30,9 @@ function get_chart_content($chart, $user, $minified = false, $path = '') {
 
     $abs = 'http://' . $GLOBALS['dw_config']['domain'];
 
-    if ($minified) {
+    $debug = $GLOBALS['dw_config']['debug'] == true;
+
+    if ($minified && !$debug) {
         $base_js = array(
             '//assets-datawrapper.s3.amazonaws.com/globalize.min.js',
             '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.2/underscore-min.js',
@@ -41,7 +43,7 @@ function get_chart_content($chart, $user, $minified = false, $path = '') {
         $base_js = array(
             $abs . '/static/vendor/globalize/globalize.min.js',
             $abs . '/static/vendor/underscore/underscore-min.js',
-            $abs . '/static/vendor/jquery/jquery.min.js'
+            $abs . '/static/vendor/jquery/jquery-1.9.1'.($debug ? '' : '.min').'.js'
         );
     }
 
