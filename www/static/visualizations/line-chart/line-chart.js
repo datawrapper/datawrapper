@@ -575,7 +575,7 @@
                     val = me.chart.formatValue(s.data[row]);
                 lbl.data('series', s);
                 lbl.data('row', 0);
-                $('span', lbl).html(val).css('background', 'transparent').parent()
+                lbl.text(val).css('background', 'transparent').parent()
                     .css({ width: me.labelWidth(val)+10 })
                     .css({
                         left: me.__scales.x(row) - lbl.outerWidth() * 0.5,

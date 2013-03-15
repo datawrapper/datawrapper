@@ -116,7 +116,7 @@
                     var pos = me.labelPosition(series, s, 0), lpos;
                     if (lbl.hasClass('value')) {
                         // update value
-                        $('span', lbl).html(me.chart.formatValue(series.data[0]));
+                        lbl.text(me.chart.formatValue(series.data[0]));
                         lpos = { halign: pos.val_align, left: pos.val_x, top: pos.top };
                     } else if (lbl.hasClass('series')) {
                         // update series label position
