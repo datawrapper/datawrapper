@@ -29,11 +29,22 @@
         "normalize": {
             "type": "checkbox",
             "label": {
-                "en": "Normalize to 100%",
-                "de": "Zu 100% normalisieren",
+                "en": "Stack percentages",
+                "de": "Prozentwerte stapeln",
                 "fr": "Normalize to 100%"
             },
             "default": false
+        },
+        "normalize-user": {
+            "type": "checkbox",
+            "label": {
+                "en": "Let user switch mode",
+                "de": "Nutzer kann umschalten",
+                "fr": "Let user switch mode"
+            },
+            "depends-on": {
+                "normalize": true
+            }
         }
     },
     "libraries": []

@@ -19,10 +19,13 @@
         initDimensions: function(r) {
             //
             var me = this, c = me.__canvas,
-                normalize = me.get('normalize', false),
+                normalize = me.is_normalized(),
                 dMin = 0, dMax = 0;
+
             _.each(me.chart.dataSeries(), function(series) {
                 var ssum = 0;
+                if (!series.odata) series.odata = series.data.slice(0); // save a copy of the original data
+                series.data = series.odata.slice(0);
                 _.each(series.data, function(v) {
                     ssum += isNaN(v) ? 0 : v;
                 });
@@ -77,7 +80,30 @@
 
         formatValue: function(v) {
             var me = this;
-            return me.get('normalize', false) ? Math.round(v * 100)+'%' : me.chart.formatValue.apply(me.chart, arguments);
+            return me.is_normalized() ? Math.round(v * 100)+'%' : me.chart.formatValue.apply(me.chart, arguments);
+        },
+
+        is_normalized: function() {
+            var me = this;
+            return me.get('normalize', false) && (!me.get('normalize-user', false) || $('#normalize:checked').length > 0);
+        },
+
+        post_render: function() {
+            var me = this;
+            if (me.get('normalize-user', false)) {
+                var chkNormalize = $('<div><label for="normalize"><input type="checkbox" id="normalize" /> Stack percentages</label></div>');
+                chkNormalize.css({
+                    position: 'absolute',
+                    right: 10,
+                    'z-index': 20
+                });
+                $('#normalize', chkNormalize).on('change', function() {
+                    me.initDimensions();
+                    me.update();
+                    me.horzGrid();
+                });
+                $('#header').append(chkNormalize);
+            }
         }
 
     });

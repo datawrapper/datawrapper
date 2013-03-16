@@ -321,36 +321,38 @@
                 tickLabels = me.__tickLabels = me.__tickLabels || {},
                 gridLines = me.__gridLines = me.__gridLines || {};
 
+            ticks = ticks.filter(function(val, t) {
+                return val >= domain[0] && val <= domain[1];
+            });
+
             _.each(ticks, function(val, t) {
                 var y = c.h - c.bpad - yscale(val), x = c.lpad, ly = y-10;
-                if (val >= domain[0] && val <= domain[1]) {
-                    // c.paper.text(x, y, val).attr(styles.labels).attr({ 'text-anchor': 'end' });
-                    if (me.theme.columnChart.cutGridLines) ly += 10;
-                    var key = String(val);
-                    // show or update label
-                    if (val !== 0) {
-                        var lbl = tickLabels[key] = tickLabels[key] ||
-                            me.label(x+2, ly, me.chart.formatValue(val, t == ticks.length-2, true),
-                                { align: 'left', cl: 'axis', css: { opacity: 0 } });
-                        lbl.animate({ x: c.lpad+2, y: ly, css: { opacity: 1 } }, me.theme.duration, me.theme.easing);
+                // c.paper.text(x, y, val).attr(styles.labels).attr({ 'text-anchor': 'end' });
+                if (me.theme.columnChart.cutGridLines) ly += 10;
+                var key = String(val);
+                // show or update label
+                if (val !== 0) {
+                    var lbl = tickLabels[key] = tickLabels[key] ||
+                        me.label(x+2, ly, me.chart.formatValue(val, t == ticks.length-1, true),
+                            { align: 'left', cl: 'axis', css: { opacity: 0 } });
+                    lbl.animate({ x: c.lpad+2, y: ly, css: { opacity: 1 } }, me.theme.duration, me.theme.easing);
+                }
+                if (me.theme.yTicks) {
+                    me.path([['M', c.lpad-25, y], ['L', c.lpad-20,y]], 'tick');
+                }
+                if (me.theme.horizontalGrid) {
+                    var lattrs = { path: [['M', c.lpad, y], ['L', c.w - c.rpad,y]], opacity: 1 },
+                        l = gridLines[key] = gridLines[key] || me.path(lattrs.path, 'grid');
+                    l.toBack();
+                    if (val === 0) {
+                        lattrs = $.extend(me.theme.xAxis, lattrs);
+                        l.toFront();
+                    } else {
+                        l.attr(me.theme.horizontalGrid);
+                        lattrs = $.extend(me.theme.horizontalGrid, lattrs);
                     }
-                    if (me.theme.yTicks) {
-                        me.path([['M', c.lpad-25, y], ['L', c.lpad-20,y]], 'tick');
-                    }
-                    if (me.theme.horizontalGrid) {
-                        var lattrs = { path: [['M', c.lpad, y], ['L', c.w - c.rpad,y]], opacity: 1 },
-                            l = gridLines[key] = gridLines[key] || me.path(lattrs.path, 'grid');
-                        l.toBack();
-                        if (val === 0) {
-                            lattrs = $.extend(me.theme.xAxis, lattrs);
-                            l.toFront();
-                        } else {
-                            l.attr(me.theme.horizontalGrid);
-                            lattrs = $.extend(me.theme.horizontalGrid, lattrs);
-                        }
-                        if (val !== 0 && me.theme.columnChart.cutGridLines) lattrs.stroke = me.theme.colors.background;
-                        l.animate(lattrs, me.theme.duration, me.theme.easing);
-                    }
+                    if (val !== 0 && me.theme.columnChart.cutGridLines) lattrs.stroke = me.theme.colors.background;
+                    l.animate(lattrs, me.theme.duration, me.theme.easing);
                 }
             });
             // hide invisible grid lines
