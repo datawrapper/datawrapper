@@ -27,6 +27,10 @@
     font-weight: bold;
 }
 
+.label.x-axis.h span {
+    padding: 2px 5px 5px;
+}
+
 html, body {
     overflow: hidden!important;
 }

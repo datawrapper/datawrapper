@@ -508,7 +508,10 @@
                 var y = c.h - c.bpad + me.theme.lineChart.xLabelOffset, lbl;
                 if (!val) return;
                 if (rotate45) x -= 5;
-                lbl = me.label(x, y, val, { align: 'center', cl: 'axis x-axis' + (rotate45 ? ' rotate45' : '') });
+                lbl = me.label(x, y, val, {
+                    align: 'center',
+                    cl: 'axis x-axis' + (rotate45 ? ' rotate45' : '')
+                });
                 //if (low) lbl.css({ 'font-weight': 'normal'});
             }
 
@@ -548,22 +551,25 @@
                 series = me.getSeriesByPoint(x, y, e),
                 row = me.getDataRowByPoint(x, y, e),
                 hoveredNode = series !== null,
-                xLabelTop = c.h - c.bpad + me.theme.lineChart.xLabelOffset - 5,
+                xLabelTop = c.h - c.bpad + me.theme.lineChart.xLabelOffset,
                 xlabel = me.__xlab = me.__xlab ||
                     me.label(x, xLabelTop, 'foo', {
-                        cl: 'axis x-axis',
+                        cl: 'axis x-axis h',
                         align: 'center',
-                        valign: 'middle',
                         css: {
                             background: me.theme.colors.background,
-                            zIndex: 100,
-                            padding: '5px 10px'
+                            zIndex: 100
                         }
                     });
 
             // update x-label
             xlabel.text(me.dataset.rowName(row));
-            xlabel.attr({ x: me.__scales.x(row), y: xLabelTop, w: Math.min(100, c.w / me.chart.numRows()) });
+            xlabel.attr({
+                x: me.__scales.x(row) - 8,
+                y: xLabelTop,
+                w: Math.min(100, c.w / me.chart.numRows())
+            });
+
             //xlabel.el.css({ left: me.__scales.x(row) - xlabel.el.outerWidth() * 0.5 });
 
             me.dataset.eachSeries(function(s) {
