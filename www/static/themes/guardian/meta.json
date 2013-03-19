@@ -6,6 +6,6 @@
     "extends": "default",
     "default_width": 460,
     "restrict": "@guardian.co.uk",
-    "version": "0.9.7",
+    "version": "1.2.5",
     "assets": ["guardian-logo-bw.png", "guardian-logo-bw-big.png"]
 }
