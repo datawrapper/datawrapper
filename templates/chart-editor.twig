@@ -71,7 +71,8 @@
         });*/
     });
 
-    $('.submit').live('click', function(e) {
+
+    $('.chart-editor').on('click', '.submit', function(e) {
         var a = $(e.target);
         if (e.target.nodeName.toLowerCase() != 'a') a = a.parents('a');
         if (chart.__changed) {

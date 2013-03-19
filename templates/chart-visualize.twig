@@ -320,7 +320,10 @@ $(function() {
 
     folded.click(function() {
         folded.hide();
-        unfolded.height(0).animate({ height: unfolded.data('h') }, 300, 'easeOutExpo').show();
+        unfolded.height(100).show();
+        unfolded.animate({ height: 200 }, 1000);
+        //.animate({ height: unfolded.data('h') }, 300);
+        //unfolded.height(unfolded.data('h')).show();
     });
 
     if (DW.__firstTime) {
@@ -362,7 +365,7 @@ $(function() {
 
 </script>
 
-<div class="dw-create-visualize">
+<div class="dw-create-visualize chart-editor">
 
     <div class="row">
         <div class="span7">
