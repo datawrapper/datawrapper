@@ -209,7 +209,7 @@
 
         function loadChart() {
             // clean chart
-            $('#chart').html('');
+            $('#chart').html('').off('click').off('mousemove').off('mouseenter').off('mouseover');
             $('#header .legend').remove();
             //$('.container').height($(window).height());
             // initialize theme
