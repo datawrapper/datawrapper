@@ -4,13 +4,15 @@ var page = require('webpage').create(),
 
 var fs = require('fs');
 
+
 if (system.args.length < 3 || system.args.length > 5) {
     console.log('Usage: make_thumb.js url chart_id width height');
     phantom.exit(1);
+
 } else {
     chart_id = system.args[2];
     address = system.args[1].replace('%s', chart_id);
-    output = '../charts/static/' + chart_id + '/static';
+    output = phantom.libraryPath + '/../charts/static/' + chart_id + '/static';
 
     page.zoomFactor = 1;
     page.viewportSize = { width: system.args[3], height: system.args[4] };
@@ -53,12 +55,22 @@ if (system.args.length < 3 || system.args.length > 5) {
                 html += 'text-align:'+t.ta+';">'+t.txt+'</div>';
             }
             html += "</body></html>";
-            fs.write(output + '.html', html, 'w');
+
+
             // render chart as PNG
             window.setTimeout(function () {
                 page.render(output+'.png');
                 phantom.exit();
             }, 200);
+
+            try {
+                fs.write(output + '.html', html, 'w');
+            } catch (e) {
+                console.log(output + '.html' + ' is not writable!');
+                //console.log(e);
+                phantom.exit();
+            }
+
         }
     });
 }
