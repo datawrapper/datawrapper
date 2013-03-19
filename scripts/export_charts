@@ -1,7 +1,7 @@
 #!/usr/bin/php
 <?php
 
-define('LOCKFILE', dirname(__FILE__) + '/export-charts.lock');
+define('LOCKFILE', dirname(__FILE__) + '/export_charts.lock');
 
 if (!isset($argv[1]) || !in_array($argv[1], array('start', 'stop', 'restart'))) {
     print "Usage: ".basename($argv[0])." start|stop|restart\n";
@@ -40,4 +40,4 @@ $pid = getmypid();
 
 print "Started chart export daemon... ($pid)\n";
 
-require_once "lib/export-charts.inc";
+require_once "lib/export_charts.inc";
