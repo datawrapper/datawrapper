@@ -4,6 +4,10 @@
     background-color: #fff;
 }
 
+.label.inverted span {
+    background: none;
+}
+
 .label.highlighted {
     z-index: 100;
 }

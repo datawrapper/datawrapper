@@ -242,6 +242,7 @@
             // update label text
             label.text = function(txt) {
                 $('span', lbl).html(txt);
+                return label;
             };
             // animate label attributes
             label.animate = function(_attrs, duration, easing) {
@@ -254,7 +255,7 @@
                 if (_attrs.txt != attrs.txt) label.text(_attrs.txt);
                 $.extend(attrs, _attrs);
                 var _css = $.extend({}, attrs.css, position());
-                return duration ? lbl.animate(_css, duration, easing) : lbl.css(_css);
+                return duration ? lbl.stop().animate(_css, duration, easing) : lbl.css(_css);
             };
             label.attr = label.animate;
             // wrap lbl.data

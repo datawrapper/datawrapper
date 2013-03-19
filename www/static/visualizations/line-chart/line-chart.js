@@ -356,7 +356,7 @@
             me.orderSeriesElements();
 
             $('.chart').mouseenter(function() {
-                $('.label.x-axis').css({ opacity: 0.6 });
+                $('.label.x-axis').css({ opacity: 0.4 });
                 $('.label.tooltip').show();
             }).mouseleave(function() {
                 $('.label.x-axis').css({ opacity: 1});
@@ -545,42 +545,52 @@
                 c = me.__canvas,
                 x = e.pageX,
                 y = e.pageY,
-                series = this.getSeriesByPoint(x, y, e),
-                row = this.getDataRowByPoint(x, y, e),
+                series = me.getSeriesByPoint(x, y, e),
+                row = me.getDataRowByPoint(x, y, e),
                 hoveredNode = series !== null,
                 xLabelTop = c.h - c.bpad + me.theme.lineChart.xLabelOffset - 5,
                 xlabel = me.__xlab = me.__xlab ||
                     me.label(x, xLabelTop, 'foo', {
                         cl: 'axis x-axis',
+                        align: 'center',
+                        valign: 'middle',
                         css: {
                             background: me.theme.colors.background,
-                            padding: '5px 10px',
-                            zIndex: 100
+                            zIndex: 100,
+                            padding: '5px 10px'
                         }
                     });
 
             // update x-label
             xlabel.text(me.dataset.rowName(row));
-            xlabel.el.css({ left: me.__scales.x(row) - xlabel.el.outerWidth() * 0.5 });
+            xlabel.attr({ x: me.__scales.x(row), y: xLabelTop, w: Math.min(100, c.w / me.chart.numRows()) });
+            //xlabel.el.css({ left: me.__scales.x(row) - xlabel.el.outerWidth() * 0.5 });
 
             me.dataset.eachSeries(function(s) {
                 var lbl = s._label = s._label ||
                     me.label(0, 0, '0', {
-                        cl: 'tooltip',
+                        cl: 'tooltip'+(me.getSeriesColor(s) ? ' inverted' : ''),
                         align: 'center',
+                        valign: 'middle',
                         css: {
                             background: me.getSeriesColor(s)
                         }
-                    }).addClass(me.invertLabel(me.getSeriesColor(s)) ? 'inverted' : ''),
+                    }),
                     val = me.chart.formatValue(s.data[row]);
                 lbl.data('series', s);
                 lbl.data('row', 0);
-                lbl.text(val).css('background', 'transparent').parent()
-                    .css({ width: me.labelWidth(val)+10 })
+                lbl.text(val);
+                lbl.attr({
+                    x: me.__scales.x(row),
+                    y: me.__scales.y(s.data[row]),
+                    w: me.labelWidth(val)+10
+                });
+                /*lbl.text(val).el.css('background', 'transparent')
+                    .css({ width:  })
                     .css({
-                        left: me.__scales.x(row) - lbl.outerWidth() * 0.5,
-                        top: me.__scales.y(s.data[row]) - lbl.outerHeight() * 0.5
-                    });
+                        left:  - lbl.outerWidth() * 0.5,
+                        top:  - lbl.outerHeight() * 0.5
+                    });*/
                 if (isNaN(s.data[row]) || me.chart.hasHighlight() &&
                     !me.chart.isHighlighted(s) && (s != series)) lbl.hide();
                 else lbl.show();
