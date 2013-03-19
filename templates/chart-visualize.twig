@@ -320,10 +320,7 @@ $(function() {
 
     folded.click(function() {
         folded.hide();
-        unfolded.height(100).show();
-        unfolded.animate({ height: 200 }, 1000);
-        //.animate({ height: unfolded.data('h') }, 300);
-        //unfolded.height(unfolded.data('h')).show();
+        unfolded.height(0).show().animate({ height: unfolded.data('h') }, 300);
     });
 
     if (DW.__firstTime) {
