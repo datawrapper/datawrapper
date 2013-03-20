@@ -165,7 +165,7 @@
             }
             if (ocnt > 0) {
                 var _others = {
-                    name: 'others',
+                    name: $('.chart').data('lang-other'),
                     data: [others]
                 };
                 oseries.push(_others);

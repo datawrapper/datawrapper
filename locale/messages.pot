@@ -651,6 +651,10 @@ msgstr ""
 msgid "Publish"
 msgstr ""
 
+#: ../scripts/tmpl_cache/chart.twig.php:413
+msgid "other"
+msgstr ""
+
 #: ../scripts/tmpl_cache/core.twig.php:114
 msgid "Open Source Data Visualization"
 msgstr ""
