@@ -4,7 +4,7 @@
     background-color: #fff;
 }
 
-.label.inverted span {
+html .label.tooltip span {
     background: none;
 }
 

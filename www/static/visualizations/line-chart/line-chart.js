@@ -99,7 +99,6 @@
             scales.y = scales.y.range([c.h-c.bpad, c.tpad]);
 
             me.yAxis();
-
             me.xAxis();
 
             var all_series = me.chart.dataSeries(),
@@ -117,6 +116,13 @@
                     legend.yoffset = 40;
                 }
             }
+
+            // get number of 'highlighted' series (or all if none)
+            var highlightedSeriesCount = 0, seriesColIndex = 1;
+            $.each(all_series, function(i, s) {
+                if (me.chart.hasHighlight() && me.chart.isHighlighted(s)) highlightedSeriesCount++;
+            });
+            highlightedSeriesCount = highlightedSeriesCount || all_series.length;
 
             // draw series lines
             var all_paths = [];
@@ -150,7 +156,13 @@
                 sw = me.getSeriesLineWidth(col);
                 var palette = me.theme.colors.palette.slice();
 
-                if (all_series.length < palette.length * 2) {
+                if (highlightedSeriesCount < 5) {
+                    if (me.chart.isHighlighted(col)) {
+                        me.setSeriesColor(col, palette[(seriesColIndex + baseCol) % palette.length]);
+                        seriesColIndex++;
+                    }
+                }
+                /*if (all_series.length < palette.length * 2) {
                     // we only color lines if there's a reasonable number of them
                     if (!directLabeling || all_series.length > 4) {
                         for (var i=0; i < baseCol; i++) palette.push(palette.pop());
@@ -169,9 +181,9 @@
                             l = d3.range(81, ml, -(80 - ml) / (all_series.length - 1));
                         me.setSeriesColor(col, ''+d3.cie.lch(l[index], bLch.c, bLch.h));
                     }
-                }
+                }*/
 
-                var strokeColor = me.getSeriesColor(col);
+                var strokeColor = me.getLineColor(col);
 
                 all_paths.push(paths);
 
@@ -258,7 +270,7 @@
             function addFill(series, path) {
                 c.paper.path(path)
                     .attr({
-                        fill: me.getSeriesColor(series),
+                        fill: me.getLineColor(series),
                         'fill-opacity': me.theme.lineChart.fillOpacity,
                         stroke: false
                     });
@@ -380,6 +392,23 @@
                 me.__canvas.w >= me.theme.minWidth;
         },
 
+        getLineColor: function(series) {
+            var me = this,
+                bgcol = chroma.hex(me.theme.colors.background),
+                bglum = bgcol.luminance(),
+                col = chroma.hex(me.getSeriesColor(series)),
+                i = 0;
+
+
+            while (chroma.contrast(bgcol, col) < (me.chart.isHighlighted(series) ? 2.5 : 1.65) && i++ < 10) {
+                if (bglum > 0.5) col = col.darker();
+                else col = col.brighter();
+            }
+
+            // make sure there's enough contrast with background
+            return col.hex();
+        },
+
         getDataRowByPoint: function(x, y) {
             var me = this;
             // var d = me.__d = me.__d || $('<div />').css({ position: 'absolute', width: 20, height: 20, 'border-radius': 20, border: '3px solid rgba(200,0,0,.5)' }).appendTo('body');
@@ -392,7 +421,10 @@
         },
 
         getSeriesLineWidth: function(series) {
-            return this.theme.lineChart.strokeWidth * ($('body').hasClass('fullscreen') ? 1.5 : 1);
+            var me = this,
+                fs_scale = $('body').hasClass('fullscreen') ? 1.5 : 1,
+                scale = me.chart.hasHighlight() ? me.chart.isHighlighted(series) ? 1 : 0.65 : 1;
+            return me.theme.lineChart.strokeWidth * fs_scale * scale;
         },
 
         computeAspectRatio: function() {
@@ -485,7 +517,7 @@
             if (domain[0] <= 0 && domain[1] >= 0) {
                 y = yscale(0);
                 me.path([['M', c.lpad, y], ['L', c.w - c.rpad,y]], 'axis')
-                            .attr(me.theme.yAxis);
+                            .attr(me.theme.xAxis);
             }
         },
 
@@ -537,7 +569,7 @@
                 // draw vertical grid
                 _.each(xscl.ticks(20), function(tick) {
                     var x = xscl(tick), t=c.tpad, b=c.h-c.bpad;
-                    c.paper.path('M'+x+','+t+' '+x+','+b).attr(me.theme.verticalGrid);
+                    var p = c.paper.path('M'+x+','+t+' '+x+','+b).attr(me.theme.verticalGrid);
                 });
             }
 
@@ -579,7 +611,7 @@
                         align: 'center',
                         valign: 'middle',
                         css: {
-                            background: me.getSeriesColor(s)
+                            background: me.getLineColor(s)
                         }
                     }),
                     val = me.chart.formatValue(s.data[row]);
@@ -597,12 +629,20 @@
                         left:  - lbl.outerWidth() * 0.5,
                         top:  - lbl.outerHeight() * 0.5
                     });*/
-                if (isNaN(s.data[row]) || me.chart.hasHighlight() &&
-                    !me.chart.isHighlighted(s) && (s != series)) lbl.hide();
-                else lbl.show();
+                if (isNaN(s.data[row]) || me.chart.hasHighlight() && !me.chart.isHighlighted(s) && (s != series)) {
+                    lbl.hide();
+                    $.each(me.__seriesLabels[s.name], function(i, l) {
+                        l.hide();
+                    });
+                } else {
+                    lbl.show();
+                    $.each(me.__seriesLabels[s.name], function(i, l) {
+                        l.show();
+                    });
+                }
             });
 
-            if (series) me.hoverSeries(series);
+            //if (series) me.hoverSeries(series);
 
             return;
         },
@@ -612,13 +652,13 @@
             var me = this,
                 seriesElements = me.__seriesElements;
             var seriesLabels = me.__seriesLabels;
-            _.each(seriesLabels, function(labels, key) {
-                var h = !series || key == series.name;
+            /*_.each(seriesLabels, function(labels, key) {
+                  var h = !series || key == series.name;
                 _.each(labels, function(lbl) {
                     if (h || lbl.hasClass('highlighted')) lbl.show();
                     else lbl.hide();
                 });
-            });
+            });*/
         }
 
     });
