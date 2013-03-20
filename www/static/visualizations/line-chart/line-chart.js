@@ -631,14 +631,18 @@
                     });*/
                 if (isNaN(s.data[row]) || me.chart.hasHighlight() && !me.chart.isHighlighted(s) && (s != series)) {
                     lbl.hide();
-                    $.each(me.__seriesLabels[s.name], function(i, l) {
-                        l.hide();
-                    });
+                    if (me.get('direct-labeling')) {
+                        $.each(me.__seriesLabels[s.name], function(i, l) { l.hide(); });
+                    } else {
+                        $.each(me.__seriesLabels[s.name], function(i, l) { l.el.css('text-decoration', 'none'); });
+                    }
                 } else {
                     lbl.show();
-                    $.each(me.__seriesLabels[s.name], function(i, l) {
-                        l.show();
-                    });
+                    if (me.get('direct-labeling')) {
+                        $.each(me.__seriesLabels[s.name], function(i, l) { l.show(); });
+                    } else {
+                        if (!me.chart.isHighlighted(s)) $.each(me.__seriesLabels[s.name], function(i, l) { l.el.css('text-decoration', 'underline'); });
+                    }
                 }
             });
 
