@@ -118,7 +118,7 @@
             }
 
             // get number of 'highlighted' series (or all if none)
-            var highlightedSeriesCount = 0, seriesColIndex = 1;
+            var highlightedSeriesCount = 0, seriesColIndex = 0;
             $.each(all_series, function(i, s) {
                 if (me.chart.hasHighlight() && me.chart.isHighlighted(s)) highlightedSeriesCount++;
             });
@@ -397,12 +397,12 @@
                 bgcol = chroma.hex(me.theme.colors.background),
                 bglum = bgcol.luminance(),
                 col = chroma.hex(me.getSeriesColor(series)),
+                min_contrast = me.chart.hasHighlight() ? (me.chart.isHighlighted(series) ? 4.5 : 1.45) : 1.7,
                 i = 0;
 
-
-            while (chroma.contrast(bgcol, col) < (me.chart.isHighlighted(series) ? 2.5 : 1.65) && i++ < 10) {
-                if (bglum > 0.5) col = col.darker();
-                else col = col.brighter();
+            while (chroma.contrast(bgcol, col) < min_contrast && i++ < 20) {
+                if (bglum > 0.5) col = col.darker(5);
+                else col = col.brighter(5);
             }
 
             // make sure there's enough contrast with background
