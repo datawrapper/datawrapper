@@ -54,7 +54,7 @@
                     var d = me.barDimensions(series, s, r),
                         lpos = me.labelPosition(series, s, r),
                         fill = me.getSeriesColor(series, r, useNegativeColor),
-                        stroke = chroma.color(fill).darker(14).hex();
+                        stroke = chroma.color(fill).darken(14).hex();
 
                     if (labelsInsideBars) d.x -= 10;
 
