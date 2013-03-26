@@ -54,7 +54,7 @@
                     var d = me.barDimensions(series, s, r),
                         lpos = me.labelPosition(series, s, r),
                         fill = me.getSeriesColor(series, r, useNegativeColor),
-                        stroke = d3.cie.lch(d3.rgb(fill)).darker(0.6).toString();
+                        stroke = d3.cie.lch(d3.rgb(fill)).darken(0.6).toString();
 
                     if (labelsInsideBars) d.x -= 10;
 
@@ -287,8 +287,8 @@
                     }
                     _.each(me.__seriesElements[s.name], function(el) {
                         var fill = me.getSeriesColor(s, 0, me.get('negative-color', false)), stroke;
-                        if (series !== undefined && s.name == series.name) fill = d3.cie.lch(d3.rgb(fill)).darker(0.6).toString();
-                        stroke = d3.cie.lch(d3.rgb(fill)).darker(0.6).toString();
+                        if (series !== undefined && s.name == series.name) fill = d3.cie.lch(d3.rgb(fill)).darken(0.6).toString();
+                        stroke = d3.cie.lch(d3.rgb(fill)).darken(0.6).toString();
                         if (el.attrs.fill != fill || el.attrs.stroke != stroke)
                             el.animate({ fill: fill, stroke: stroke }, 50);
                     });

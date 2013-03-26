@@ -202,7 +202,7 @@
 
                 var da = s.data[0] / total * FA,
                     fill = me.getSeriesColor(s, 0),
-                    stroke = d3.cie.lch(d3.rgb(fill)).darker(0.6).toString(),
+                    stroke = d3.cie.lch(d3.rgb(fill)).darken(0.6).toString(),
                     a0 = reverse ? sa - da : sa,
                     a1 = reverse ? sa : sa + da,
                     value = showTotal ? Math.round(s.data[0] / total * 100)+'%' : me.chart.formatValue(s.data[0], true);
@@ -292,7 +292,7 @@
                     }
                     _.each(me.__seriesElements[s.name], function(el) {
                         var fill = me.getSeriesColor(s, 0), stroke, hover = series !== undefined && s.name == series.name;
-                        if (hover) fill = d3.cie.lch(d3.rgb(fill)).darker(bg.l > 60 ? 0.6 : -0.6).toString();
+                        if (hover) fill = d3.cie.lch(d3.rgb(fill)).darken(bg.l > 60 ? 0.6 : -0.6).toString();
                         if (el.attrs.fill != fill)
                             el.animate({ fill: fill }, 50);
                         if (hover) el.toFront();

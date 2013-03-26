@@ -169,7 +169,7 @@
                         if (all_series.length > palette.length) {
                             // add variations of palette colors
                             $.each(palette, function(i, col) {
-                                palette.push(d3.cie.lch(d3.rgb(col)).darker(-2).toString());
+                                palette.push(d3.cie.lch(d3.rgb(col)).darken(-2).toString());
                             });
                         }
                         me.setSeriesColor(col, palette[(index + baseCol) % palette.length]);
@@ -401,8 +401,8 @@
                 i = 0;
 
             while (chroma.contrast(bgcol, col) < min_contrast && i++ < 20) {
-                if (bglum > 0.5) col = col.darker(5);
-                else col = col.brighter(5);
+                if (bglum > 0.5) col = col.darken(5);
+                else col = col.brighten(5);
             }
 
             // make sure there's enough contrast with background
