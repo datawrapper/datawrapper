@@ -42,7 +42,7 @@ $(function() {
         Globalize.culture("{{ chartLocale }}").numberFormat.currency.symbol = $('#number-currency option:selected').data('symbol');
         curOpt.each(function(i, el) {
             el = $(el);
-            el.html(Globalize.format(1234.56, el.val()));
+            el.html(Globalize.format(1234.567, el.val()));
         });
     }
     updateCurrencyInNumberFormat();
@@ -50,7 +50,7 @@ $(function() {
 
     // update data table after format changes
     $('.number-format').change(function() {
-        updateTable(DW.dataView, chart);
+        updateTable(DW.dataset, chart);
     });
 
     function updateTable(dataset, chart) {
