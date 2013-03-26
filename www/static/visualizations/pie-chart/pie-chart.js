@@ -165,7 +165,7 @@
             }
             if (ocnt > 0) {
                 var _others = {
-                    name: $('.chart').data('lang-other'),
+                    name: me.translate('other'),
                     data: [others]
                 };
                 oseries.push(_others);
@@ -202,7 +202,7 @@
 
                 var da = s.data[0] / total * FA,
                     fill = me.getSeriesColor(s, 0),
-                    stroke = d3.cie.lch(d3.rgb(fill)).darken(0.6).toString(),
+                    stroke = chroma.color(fill).darken(15).hex(),
                     a0 = reverse ? sa - da : sa,
                     a1 = reverse ? sa : sa + da,
                     value = showTotal ? Math.round(s.data[0] / total * 100)+'%' : me.chart.formatValue(s.data[0], true);

@@ -231,6 +231,7 @@
             // initliaze visualization
             var vis = new Datawrapper.Visualizations.{{ visualization.id | classify }}();
             vis.meta = JSON.parse('{{ visualization | json | raw }}');
+            vis.lang = '{{ lang }}';
 
             // compute chart dimensions
             var w = $('#chart').innerWidth(),
@@ -293,7 +294,7 @@
     });
     </script>
 </head>
-<body class="chart{% if fullscreen %} fullscreen{% endif %}{% if plain %} plain{% endif %}" data-lang-other="{% trans "other" %}">
+<body class="chart{% if fullscreen %} fullscreen{% endif %}{% if plain %} plain{% endif %}">
     {# some convenient short cuts for theme templates #}
     {% set title = chart.title %}{% set intro = chart.metadata.describe.intro %}{% set source = chart.metadata.describe['source-name'] %}{% set sourceURL = chart.metadata.describe['source-url'] %}
 

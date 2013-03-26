@@ -91,7 +91,7 @@
         post_render: function() {
             var me = this;
             if (me.get('normalize-user', false)) {
-                var chkNormalize = $('<div><label for="normalize"><input type="checkbox" id="normalize" /> Stack percentages</label></div>');
+                var chkNormalize = $('<div><label for="normalize"><input type="checkbox" id="normalize" /> ' + me.translate('stack percentages') + '</label></div>');
                 chkNormalize.css({
                     position: 'absolute',
                     right: 10,

@@ -4,7 +4,7 @@
         "de": "Balken (vertikal, gestapelt)",
         "fr": "Diagramme à bandes verticales"
     },
-    "version": "1.2.5",
+    "version": "1.2.6",
     "dimensions": 2,
     "extends": "grouped-column-chart",
     "order": 20,
@@ -46,6 +46,9 @@
                 "normalize": true
             }
         }
+    },
+    "locale": {
+        "stack percentages": { "de": "Prozente darstellen" }
     },
     "libraries": []
 }
