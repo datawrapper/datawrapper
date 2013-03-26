@@ -5,6 +5,7 @@ CHANGELOG
 * visualizations now may define [localized strings](https://github.com/datawrapper/datawrapper/wiki/Visualization-Meta.json-Properties#locale)
 * fixed bug with localized numbers in charts
 * fixed stack percentages in fullscreen mode
+* fixed Piwik tracking code
 
 ### 1.2.5
 * added percentage stacking mode to stacked column charts
