@@ -119,7 +119,7 @@
                 _.each(series.data, function(val, r) {
                     var d = me.barDimensions(series, s, r),
                         fill = me.getBarColor(series, r, me.get('negative-color', false)),
-                        stroke = d3.cie.lch(d3.rgb(fill)).darken(0.6).toString(),
+                        stroke = chroma.color(fill).darken(15).hex(),
                         key = series.name+'-'+r,
                         bar_attrs = {
                             x: d.x,
@@ -317,8 +317,8 @@
                     }
                     _.each(me.__seriesElements[s.name], function(el) {
                         var fill = me.getBarColor(s, el.data('row'), me.get('negative-color', false)), stroke;
-                        if (series !== undefined && s.name == series.name) fill = d3.cie.lch(d3.rgb(fill)).darken(0.6).toString();
-                        stroke = d3.cie.lch(d3.rgb(fill)).darken(0.6).toString();
+                        if (series !== undefined && s.name == series.name) fill = chroma.color(fill).darken(15).hex();
+                        stroke = chroma.color(fill).darken(15).hex();
                         if (el.attrs.fill != fill || el.attrs.stroke != stroke)
                             el.animate({ fill: fill, stroke: stroke }, 50);
                     });

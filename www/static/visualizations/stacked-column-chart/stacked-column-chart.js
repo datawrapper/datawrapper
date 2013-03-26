@@ -91,12 +91,9 @@
         post_render: function() {
             var me = this;
             if (me.get('normalize-user', false)) {
+                $('.header-right').remove();
                 var chkNormalize = $('<div><label for="normalize"><input type="checkbox" id="normalize" /> ' + me.translate('stack percentages') + '</label></div>');
-                chkNormalize.css({
-                    position: 'absolute',
-                    right: 10,
-                    'z-index': 20
-                });
+                chkNormalize.addClass('header-right');
                 $('#normalize', chkNormalize).on('change', function() {
                     me.initDimensions();
                     me.update();

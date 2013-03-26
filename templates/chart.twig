@@ -38,10 +38,6 @@
 
     <style type="text/css">
 
-        /*
-         * FULLSCREEN CSS
-         */
-
         html body.chart.fullscreen {
             margin: 0;
             padding: 50px 100px;
@@ -53,6 +49,16 @@
         #header {
             min-height: 1px;
             position: relative;
+        }
+
+        #header .header-right {
+            position: absolute;
+            right: 10px;
+            z-index: 20;
+        }
+
+        .fullscreen #header .header-right {
+            right: 200px;
         }
 
         #footer {
@@ -72,7 +78,10 @@
         .fullscreen p {
             font-size: 15px;
             margin-right: 200px!important;
+        }
 
+        .fullscreen #header label {
+            font-size: 15px;
         }
 
         .fullscreen .logo {
