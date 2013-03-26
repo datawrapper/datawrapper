@@ -35,14 +35,6 @@ function get_theme_meta($id) {
         } else if (!empty($meta['extends']) && file_exists(ROOT_PATH . 'templates/themes/' . $meta['extends'] . '.twig')) {
             $meta['template'] = $meta['extends'];
         }
-
-        if (!empty($meta['locale'])) {
-            $localeJS = 'static/vendor/globalize/cultures/globalize.culture.' . str_replace('_', '-', $meta['locale']) . '.js';
-            if (file_exists($localeJS)) {
-                $meta['localeJS'] = '/'.$localeJS;
-                $meta['hasLocaleJS'] = true;
-            }
-        }
         if (empty($meta['extends'])) $meta['extends'] = null;
         return $meta;
     }
