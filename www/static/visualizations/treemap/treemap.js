@@ -24,4 +24,9 @@
 
     });
 
+    function parseTree(dataset, row) {
+        var tree = { children: [] };
+
+    }
+
 }).call(this);
