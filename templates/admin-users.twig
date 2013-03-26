@@ -30,6 +30,10 @@
     .users .user.admin td {
         color: #c00;
     }
+
+    table th a {
+        color: #000;
+    }
 </style>
 
 <div class="Admin-Users widget docs" data-widget="datawrapper.AdminUsers">
@@ -86,11 +90,11 @@ Need to be inlined. -->
     <table class="table users">
         <thead>
             <tr>
-                <th>#</th>
-                <th>{% trans "Email" %}</th>
+                <th><a href="?sort=id">#</a></th>
+                <th><a href="?sort=email">{% trans "Email" %}</a></th>
                 <th>{% trans "Status" %}</th>
                 <th>{% trans "Created at" %}</th>
-                <th class="center">{% trans "Charts" %}</th>
+                <th class="center"><a href="?sort=charts">{% trans "Charts" %}</a></th>
                 <th>{% trans "Actions" %}</th>
             </tr>
         </thead>

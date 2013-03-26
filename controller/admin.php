@@ -102,20 +102,29 @@ $app->get('/admin/users/?', function() use ($app) {
         );
         add_header_vars($page, 'admin');
         add_adminpage_vars($page, '/admin/users');
+        $sort = $app->request()->params('sort', '');
         function getQuery() {
             global $app;
+            $sort = $app->request()->params('sort', '');
             $query = UserQuery::create()->filterByDeleted(false);
             if ($app->request()->params('q')) {
                 $query->filterByEmail('%' . $app->request()->params('q') . '%');
+            }
+            switch ($sort) {
+                case 'email': $query->orderByEmail('asc'); break;
+                //case 'charts': $query->orderByChartCount(); break;
             }
             return $query;
         }
         $curPage = $app->request()->params('page', 0);
         $total = getQuery()->count();
-        $perPage = 50;
+        $perPage = 5;
         $append = '';
         if ($page['q']) {
             $append = '&q=' . $page['q'];
+        }
+        if (!empty($sort)) {
+            $append .= '&sort='.$sort;
         }
         add_pagination_vars($page, $total, $curPage, $perPage, $append);
         $page['users'] = getQuery()->limit($perPage)->offset($curPage * $perPage)->find();

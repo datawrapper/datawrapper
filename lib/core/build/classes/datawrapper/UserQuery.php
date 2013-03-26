@@ -21,4 +21,10 @@ class UserQuery extends BaseUserQuery {
         return false;
     }
 
+    public function orderByChartCount($dir = Criteria::ASC) {
+        return $this->orderBy('chartCount', $dir);
+    }
+
+
+
 } // UserQuery
