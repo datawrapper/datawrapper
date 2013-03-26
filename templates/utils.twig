@@ -5,14 +5,14 @@
 <div class="pagination">
     <ul>
         <li {% if pager.first == pager.current %}class="disabled"{% endif %}>
-            <a href="?page={{ pager.first }}">«</a>
+            <a href="?page={{ pager.first }}{{ pager.append }}">«</a>
         </li>
         {% for pg in pager.pages %}
             <li {% if pg == pager.current %}class="active" {% endif %}>
-                <a href="?page={{ pg }}">{{ pg + 1 }}</a></li>
+                <a href="?page={{ pg }}{{ pager.append }}">{{ pg + 1 }}</a></li>
         {% endfor %}
         <li {% if pager.last == pager.current %}class="disabled"{% endif %}>
-            <a href="?page={{ pager.last }}">»</a>
+            <a href="?page={{ pager.last }}{{ pager.append }}">»</a>
         </li>
     </ul>
 </div>

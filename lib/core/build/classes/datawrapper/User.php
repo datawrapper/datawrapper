@@ -36,7 +36,11 @@ class User extends BaseUser {
     }
 
     public function hasCharts() {
-        return count(ChartQuery::create()->getPublicChartsByUser($this)) > 0;
+        return $this->chartCount() > 0;
+    }
+
+    public function chartCount() {
+        return count(ChartQuery::create()->getPublicChartsByUser($this));
     }
 
     /*
