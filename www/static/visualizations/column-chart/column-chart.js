@@ -58,13 +58,13 @@
             if (!me.theme.columnChart.cutGridLines) me.horzGrid();
 
             var base = me.theme.colors.palette[me.get('base-color', 0)],
-                bLch = d3.cie.lch(d3.rgb(base)),
+                bLch = chroma.color(base).lch(),
                 ml = Math.min(bLch.l, 50),
                 colors = [];
 
 
             colors = d3.range(ml, 91, (90 - ml) / (me.chart.numRows() - 1)).map(function(l) {
-                return ''+d3.cie.lch(l, bLch.c, bLch.h).rgb();
+                return chroma.lch(l, bLch.c, bLch.h).hex();
             }).reverse();
 
             ds.eachRow(function(i) {
@@ -75,7 +75,7 @@
                 _.each(series.data, function(val, r) {
                     var d = me.barDimensions(series, s, r);
                     var fill = me.getBarColor(series, r, me.get('negative-color', false)),
-                        stroke = d3.cie.lch(d3.rgb(fill)).darken(0.6).toString();
+                        stroke = chroma.color(fill).darken(14).hex();
                     // create bar
                     me.registerSeriesElement(c.paper.rect().attr(d).attr({
                         'stroke': stroke,
@@ -393,8 +393,8 @@
                     }
                     _.each(me.__seriesElements[s.name], function(el) {
                         var fill = me.getBarColor(s, el.data('row'), me.get('negative-color', false)), stroke;
-                        if (series !== undefined && s.name == series.name) fill = d3.cie.lch(d3.rgb(fill)).darken(0.6).toString();
-                        stroke = d3.cie.lch(d3.rgb(fill)).darken(0.6).toString();
+                        if (series !== undefined && s.name == series.name) fill = chroma.color(fill).darken(14).hex();
+                        stroke = chroma.color(fill).darken(18).hex();
                         if (el.attrs.fill != fill || el.attrs.stroke != stroke)
                             el.animate({ fill: fill, stroke: stroke }, 50);
                     });

@@ -15,12 +15,12 @@
         _getRowColors: function() {
             var me = this,
                 base = me.theme.colors.palette[me.get('base-color', 0)],
-                bLch = d3.cie.lch(d3.rgb(base)),
+                bLch = chroma.hex(base),
                 ml = Math.min(bLch.l, 50),
                 colors = [];
 
             colors = d3.range(ml, 91, (90 - ml) / (me.chart.numRows() - 1)).map(function(l) {
-                return ''+d3.cie.lch(l, bLch.c, bLch.h).rgb();
+                return chroma.lch(l, bLch.c, bLch.h).hex();
             });
             return colors;
         },

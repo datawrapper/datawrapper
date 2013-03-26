@@ -282,7 +282,7 @@
 
         hoverSeries: function(series) {
             var me = this,
-                bg = d3.cie.lch(d3.rgb(me.theme.colors.background));
+                bg = chroma.color(me.theme.colors.background);
             _.each(me.chart.dataSeries(), function(s) {
                 _.each(me.__seriesLabels[s.name], function(lbl) {
                     if (series !== undefined && s.name == series.name) {
@@ -292,7 +292,7 @@
                     }
                     _.each(me.__seriesElements[s.name], function(el) {
                         var fill = me.getSeriesColor(s, 0), stroke, hover = series !== undefined && s.name == series.name;
-                        if (hover) fill = d3.cie.lch(d3.rgb(fill)).darken(bg.l > 60 ? 0.6 : -0.6).toString();
+                        if (hover) fill = chroma.lch(fill).darken(bg.hcl()[2] > 60 ? 14 : -14).hex();
                         if (el.attrs.fill != fill)
                             el.animate({ fill: fill }, 50);
                         if (hover) el.toFront();
