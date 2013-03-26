@@ -2,8 +2,7 @@
     "title": "L'Avenir",
     "link": "http://www.lavenir.net",
     "restricted": null,
-    "locale": "fr_FR",
     "restrict": "@lavenir.net",
-    "version": "1.2.5",
+    "version": "1.2.6",
     "assets": []
 }
