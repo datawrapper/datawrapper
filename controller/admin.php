@@ -106,13 +106,17 @@ $app->get('/admin/users/?', function() use ($app) {
         function getQuery() {
             global $app;
             $sort = $app->request()->params('sort', '');
-            $query = UserQuery::create()->filterByDeleted(false);
+            $query = UserQuery::create()
+                ->join('User.Chart')
+                ->withColumn('COUNT(Chart.Id)', 'NbCharts')
+                ->groupBy('User.Id')
+                ->filterByDeleted(false);
             if ($app->request()->params('q')) {
                 $query->filterByEmail('%' . $app->request()->params('q') . '%');
             }
             switch ($sort) {
                 case 'email': $query->orderByEmail('asc'); break;
-                //case 'charts': $query->orderByChartCount(); break;
+                case 'charts': $query->orderBy('NbCharts', 'desc'); break;
             }
             return $query;
         }
