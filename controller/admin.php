@@ -6,9 +6,8 @@ require_once '../lib/utils/themes.php';
 function add_adminpage_vars(&$page, $active) {
     $page['adminmenu'] = array(
         '/admin' => 'Dashboard',
-        '/admin/themes' => 'Themes',
         '/admin/users' => 'Users',
-      //  '/admin/charts/28' => 'Charts by user',
+        '/admin/themes' => 'Themes',
         '/admin/translations' => 'Translations'
     );
     $page['adminactive'] = $active;
@@ -63,7 +62,8 @@ $app->get('/admin/?', function() use ($app) {
         $page = array(
             'title' => 'Dashboard',
             'user_csv' => $user_csv,
-            'chart_csv' => $chart_csv
+            'chart_csv' => $chart_csv,
+            'linechart' => get_visualization_meta('line-chart')
         );
         add_header_vars($page, 'admin');
         add_adminpage_vars($page, '/admin');
