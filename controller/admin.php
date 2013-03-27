@@ -118,7 +118,7 @@ $app->get('/admin/users/?', function() use ($app) {
         }
         $curPage = $app->request()->params('page', 0);
         $total = getQuery()->count();
-        $perPage = 5;
+        $perPage = 50;
         $append = '';
         if ($page['q']) {
             $append = '&q=' . $page['q'];
