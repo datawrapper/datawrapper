@@ -38,7 +38,7 @@ $app->get('/admin/?', function() use ($app) {
         }
 
         $user_csv = "Date;Activated;Signed\\n";
-        $chart_csv = "Date;Uploaded;Described;Visualized;Published\\n";
+        $chart_csv = "Date;Visualized;Published\\n";
 
         for ($ago = 30; $ago >= 0; $ago--) {
             $lbl = date('j/n', time() - $ago*86400);
@@ -49,10 +49,10 @@ $app->get('/admin/?', function() use ($app) {
             $user_csv .= "\\n";
 
             $chart_csv .= $lbl.';';
-            $chart_csv .= isset($data['charts_uploaded'][$lbl]) ? $data['charts_uploaded'][$lbl] : '-';
-            $chart_csv .= ';';
-            $chart_csv .= isset($data['charts_described'][$lbl]) ? $data['charts_described'][$lbl] : '-';
-            $chart_csv .= ';';
+            // $chart_csv .= isset($data['charts_uploaded'][$lbl]) ? $data['charts_uploaded'][$lbl] : '-';
+            // $chart_csv .= ';';
+            // $chart_csv .= isset($data['charts_described'][$lbl]) ? $data['charts_described'][$lbl] : '-';
+            // $chart_csv .= ';';
             $chart_csv .= isset($data['charts_visualized'][$lbl]) ? $data['charts_visualized'][$lbl] : '-';
             $chart_csv .= ';';
             $chart_csv .= isset($data['charts_published'][$lbl]) ? $data['charts_published'][$lbl] : '-';
