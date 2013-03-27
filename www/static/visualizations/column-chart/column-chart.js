@@ -292,7 +292,7 @@
                     //lblcl.push('rotate90');
                     lbl_y += 5;
                     lbl_w = 100;
-                    halign = 'right';
+                    halign = 'right'; // lbl_top ? 'right' : 'left';
                 }
                 if (d.bw < 20) {
                     lbl_w = 90;
