@@ -66,7 +66,7 @@
 
                     if (lpos.show_val) {
                         me.registerSeriesLabel(me.label(lpos.val_x, lpos.top, me.chart.formatValue(series.data[r], true),{
-                            w: 40,
+                            // w: 40,
                             align: lpos.val_align,
                             cl: 'value' + lpos.lblClass
                         }), series);
@@ -151,8 +151,8 @@
             var me = this, c = me.__canvas,
                 dMin = 0, dMax = 0, w = c.w - c.lpad - c.rpad - 30;
             _.each(me.chart.dataSeries(), function(series) {
-                dMin = Math.min(dMin, series._min());
-                dMax = Math.max(dMax, series._max());
+                if (!isNaN(series.min)) dMin = Math.min(dMin, series.min);
+                if (!isNaN(series.max)) dMax = Math.max(dMax, series.max);
             });
             me.__domain = [dMin, dMax];
             me.__scales = {
@@ -169,10 +169,12 @@
              */
             var maxw = [0, 0, 0, 0], ratio, largestVal = [0, 0];
             _.each(me.chart.dataSeries(), function(series, s) {
+                if (isNaN(series.data[r])) return;
                 var neg = series.data[r] < 0;
                 largestVal[neg ? 1 : 0] = Math.max(largestVal[neg ? 1 : 0], Math.abs(series.data[r]));
             });
             _.each(me.chart.dataSeries(), function(series, s) {
+                if (isNaN(series.data[r])) return;
                 var val = series.data[r],
                     neg = val < 0,
                     t = neg ? 2 : 0,
@@ -210,6 +212,8 @@
             var me = this, w, h, x, y, i, cw, n = me.chart.dataSeries().length,
                 sc = me.__scales, c = me.__canvas, bw, pad = 0.35, vspace = 0.1,
                 val = series.data[r];
+
+            if (isNaN(val)) val = 0;
             //
             cw = c.h - c.bpad - c.tpad;
             //
@@ -231,23 +235,24 @@
                 d = me.barDimensions(series, s, r),
                 c = me.__canvas,
                 val = series.data[r],
-                lbl_x = val >= 0 ?
+                lbl_left = val >= 0 || isNaN(val),
+                lbl_x = lbl_left ?
                     c.zero - 10
                     : c.zero + 10,
-                lbl_align = val >= 0 ? 'right' : 'left',
-                val_x = val >= 0 ?
+                lbl_align = lbl_left ? 'right' : 'left',
+                val_x = lbl_left ?
                     d.x + d.width + 10
                     : d.x - 10,
-                val_align = val >= 0 ? 'left' : 'right',
+                val_align = lbl_left ? 'left' : 'right',
                 show_lbl = true,
                 show_val = true,
                 lblClass = me.chart.hasHighlight() && me.chart.isHighlighted(series) ? ' highlighted' : '';
 
             if (me.get('labels-inside-bars', false)) {
-                lbl_x = val >= 0 ? d.x + 10 : d.x + d.width - 10;
-                val_x = val >= 0 ? d.x + d.width - 10 : d.x + 10;
-                lbl_align = val >= 0 ? 'left' : 'right';
-                val_align = val >= 0 ? 'right' : 'left';
+                lbl_x = lbl_left ? d.x + 10 : d.x + d.width - 10;
+                val_x = lbl_left ? d.x + d.width - 10 : d.x + 10;
+                lbl_align = lbl_left ? 'left' : 'right';
+                val_align = lbl_left ? 'right' : 'left';
 
                 // check if the label is bigger than the bar
                 var slblw = me.labelWidth(series.name, 'series')+10,
@@ -300,20 +305,6 @@
             this.hoverSeries();
         }
     });
-
-
-    var Slice = function(paper, cx, cy, or, ir, startAngle, endAngle, label) {
-        var me = this;
-        me.cx = cx;
-        me.cy = cy;
-        me.or = or;
-        me.ir = ir;
-        me.startAngle = startAngle;
-        me.endAngle = endAngle;
-        me.path = paper.path(me.arcPath());
-        me.label = label;
-        me.updateLabelPos();
-    };
 
 
 }).call(this);
