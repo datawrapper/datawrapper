@@ -235,8 +235,8 @@
             var me = this, c = me.__canvas,
                 dMin = 0, dMax = 0;
             _.each(me.chart.dataSeries(), function(series) {
-                dMin = Math.min(dMin, series.min);
-                dMax = Math.max(dMax, series.max);
+                if (!isNaN(series.min)) dMin = Math.min(dMin, series.min);
+                if (!isNaN(series.max)) dMax = Math.max(dMax, series.max);
             });
             me.__domain = [dMin, dMax];
             me.__scales = {
@@ -253,13 +253,16 @@
                 n = me.chart.dataSeries().length,
                 w, h, x, y, i, cw, bw,
                 pad = 0.35,
-                vspace = 0.1;
+                vspace = 0.1,
+                val = series.data[r];
+
+            if (isNaN(val)) val = 0;
 
             if (c.w / n < 30) vspace = 0.05;
 
             cw = (c.w - c.lpad - c.rpad) * (1 - vspace - vspace);
             bw = cw / (n + (n-1) * pad);
-            h = sc.y(series.data[r]) - sc.y(0);
+            h = sc.y(val) - sc.y(0);
             w = Math.round(bw / series.data.length);
             if (h >= 0) {
                 y = c.h - c.bpad - sc.y(0) - h;
@@ -275,12 +278,12 @@
             var me = this, d = me.barDimensions(series, s, r),
                 val = series.data[r],
                 c = me.__canvas,
-                valign = val > 0 ? 'top' : 'bottom',
+                lbl_top = val >= 0 || isNaN(val),
+                valign = lbl_top ? 'top' : 'bottom',
                 halign = 'center',
-
                 lbl_w = c.w / (me.chart.dataSeries().length+2),
-                val_y = val > 0 ? d.y - 10 : d.y + d.height + 10,
-                lbl_y = val <= 0 ? d.y - 10 : d.y + d.height + 5;
+                val_y = lbl_top ? d.y - 10 : d.y + d.height + 10,
+                lbl_y = !lbl_top ? d.y - 10 : d.y + d.height + 5;
 
             if (type == "value") {
                 return { left: d.x + d.width * 0.5, top: val_y, width: d.width };
