@@ -28,3 +28,23 @@ CHANGELOG
 * redirecting IE6 visitors to static chart
 * extensive chart testing in multiple browsers
 * simplified installation
+
+### 1.1
+* fullscreen mode
+* customizable colors
+* export static PNG/PDF
+* filled line charts
+* new theme: Playfair
+* spanish translation
+* fixed session bug
+* updated to bootstrap 2.2
+* lots of bugfixes
+* [release notes](http://blog.datawrapper.de/2012/datawrapper-1-1/)
+
+### 1.0.2
+* publishing charts to Amazon S3
+
+### 1.0
+* complete rewrite of old prototype
+* replaced Highcharts with custom charts based on d3 and Raphael.js
+* [release notes](http://blog.datawrapper.de/2012/hello-world-datawrapper/)
