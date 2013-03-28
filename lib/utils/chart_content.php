@@ -8,17 +8,12 @@ function get_chart_content($chart, $user, $minified = false, $path = '') {
     $next_theme_id = $chart->getTheme();
 
     $locale = DatawrapperSession::getLanguage();
-    $themeLocale = null;
 
     while (!empty($next_theme_id)) {
         $theme = get_theme_meta($next_theme_id, $path);
         $theme_js[] = '/static/themes/' . $next_theme_id . '/theme.js';
         if ($theme['hasStyles']) {
             $theme_css[] = '/static/themes/' . $next_theme_id . '/theme.css';
-        }
-        if (!empty($theme['hasLocaleJS'])) {
-            $theme_js[] = $theme['localeJS'];
-            if (empty($themeLocale)) $themeLocale = $theme['locale'];
         }
         $next_theme_id = $theme['extends'];
     }
