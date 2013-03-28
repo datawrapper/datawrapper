@@ -54,7 +54,12 @@ function get_chart_content($chart, $user, $minified = false, $path = '') {
         $vjs = array();
         if (!empty($vis['libraries'])) {
             foreach ($vis['libraries'] as $url) {
-                $vis_libs[] = '/static/vendor/' . $url;
+                // at first we check if the library lives in ./lib of the vis module
+                if (file_exists(ROOT_PATH . 'www/static/visualizations/' . $vis['id'] . '/lib/' . $url)) {
+                    $vis_libs[] = '/static/visualizations/'.$vis['id'].'/lib/'.$url;
+                } else if (file_exists(ROOT_PATH . 'www/static/vendor/' . $url)) {
+                    $vis_libs[] = '/static/vendor/' . $url;
+                }
             }
         }
         if (!empty($vis['locale'])) {
