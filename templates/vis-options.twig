@@ -184,6 +184,10 @@ $(function() {
                             visible = visible && chart.dataSeries().length <= +val;
                         } else if (key == 'chart.missing_values') {
                             visible = visible && chart.hasMissingValues() == val;
+                        } else if (key == 'chart.min_row_num') {
+                            visible = visible && chart.numRows() >= +val;
+                        }  else if (key == 'chart.max_row_num') {
+                            visible = visible && chart.numRows() <= +val;
                         } else {
                             visible = visible && chart.get('metadata.visualize.'+key) == val;
                         }

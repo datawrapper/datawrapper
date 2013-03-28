@@ -27,7 +27,8 @@
             },
             "default": false,
             "depends-on": {
-                "show-total": true
+                "show-total": true,
+                "chart.max_row_num": 1
             }
         },
         "custom-total-value": {
