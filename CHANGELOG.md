@@ -1,6 +1,9 @@
 CHANGELOG
 ---------
 
+### 1.2.7
+* added generic support for hierarchical datasets
+
 ### 1.2.6
 * visualizations now may define [localized strings](https://github.com/datawrapper/datawrapper/wiki/Visualization-Meta.json-Properties#locale)
 * fixed bug with localized numbers in charts
