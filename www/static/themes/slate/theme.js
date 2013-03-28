@@ -7,7 +7,8 @@
     Datawrapper.Themes.Slate = $.extend(true, {}, Datawrapper.Themes.Base, {
 
         colors: {
-            palette: ["#eeeeee"], // monochrome!
+            palette: ['#9ab', '#cde', '#678', '#d34', '#bcd'], // monochrome!
+            secondary: [], // monochrome!
             positive: '#85B4D4',
             negative: '#E31A1C',
             background: '#272B30',
@@ -15,7 +16,11 @@
         },
 
         horizontalGrid: {
-            stroke: '#1C1E22'
+            stroke: '#456'
+        },
+
+        xAxis: {
+            stroke: '#9ab'
         }
 
     });

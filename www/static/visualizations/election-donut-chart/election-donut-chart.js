@@ -11,6 +11,10 @@
 
         getFullArc: function() {
             return Math.PI * 1.2;
+        },
+
+        groupAfter: function() {
+            return 10;
         }
 
     });

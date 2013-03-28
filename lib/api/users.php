@@ -7,7 +7,7 @@
 $app->get('/users', function() use ($app) {
     $user = DatawrapperSession::getUser();
     if ($user->isAdmin()) {
-        $users = UserQuery::create()->find();
+        $users = UserQuery::create()->filterByDeleted(false)->find();
         $res = array();
         foreach ($users as $user) {
             $res[] = $user->toArray();
@@ -54,7 +54,7 @@ $app->post('/users', function() use ($app) {
         if (call_user_func($check, $data) == false) {
             error($code, $code);
             return;
-        };
+        }
     }
 
     // all checks passed
@@ -170,6 +170,15 @@ $app->put('/users/:id', function($user_id) use ($app) {
 $app->delete('/users/:id', function($user_id) use ($app) {
     $curUser = DatawrapperSession::getUser();
     $payload = json_decode($app->request()->getBody());
+    if (!isset($payload->pwd)) {
+        $pwd = $app->request()->get('pwd');
+        if (empty($pwd)) {
+            error('no-password', 'no password was provided with the delete request');
+            return;
+        }
+    } else {
+        $pwd = $payload->pwd;
+    }
     if ($curUser->isLoggedIn()) {
         if ($user_id == 'current' || $curUser->getId() === $user_id) {
             $user = $curUser;
@@ -177,7 +186,7 @@ $app->delete('/users/:id', function($user_id) use ($app) {
             $user = UserQuery::create()->findPK($user_id);
         }
         if (!empty($user)) {
-            if ($user->getPwd() == $payload->pwd) {
+            if ($user->getPwd() == $pwd) {
 
                 // Delete user
                 DatawrapperSession::logout();

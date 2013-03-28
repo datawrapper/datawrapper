@@ -10,6 +10,67 @@
 
     var TWO_PI = Math.PI * 2, HALF_PI = Math.PI * 0.5;
 
+    var Slice = function(paper, cx, cy, or, ir, startAngle, endAngle, label) {
+        var me = {
+            cx: cx,
+            cy: cy,
+            or: or,
+            ir: ir,
+            startAngle: startAngle,
+            endAngle: endAngle
+        };
+
+        function arcPath() {
+            var cx = me.cx, cy = me.cy, ir = me.ir, or = me.or,
+                startAngle = me.startAngle, endAngle = me.endAngle;
+
+            var x0 = cx+Math.cos(startAngle)*ir,
+                y0 = cy+Math.sin(startAngle)*ir,
+                x1 = cx+Math.cos(endAngle)*ir,
+                y1 = cy+Math.sin(endAngle)*ir,
+                x2 = cx+Math.cos(endAngle)*or,
+                y2 = cy+Math.sin(endAngle)*or,
+                x3 = cx+Math.cos(startAngle)*or,
+                y3 = cy+Math.sin(startAngle)*or,
+                largeArc = endAngle - startAngle > Math.PI ? 1 : 0;
+
+            if (ir > 0)
+                return "M"+x0+" "+y0+" A"+ir+","+ir+" 0 "+largeArc+",1 "+x1+","+y1+" L"+x2+" "+y2+" A"+or+","+or+" 0 "+largeArc+",0 "+x3+" "+y3+" Z";
+            else
+                return "M"+cx+" "+cy+" L"+x2+" "+y2+" A"+or+","+or+" 0 "+largeArc+",0 "+x3+" "+y3+" Z";
+        }
+
+        function updateLabelPos() {
+            lx = me.cx + Math.cos((me.startAngle + me.endAngle) * 0.5) * me.or * 0.7,
+            ly = me.cy + Math.sin((me.startAngle + me.endAngle) * 0.5) * me.or * 0.7;
+            label.attr({ x: lx, y: ly });
+        }
+
+        var running;
+        function frame() {
+            path.attr({ path: arcPath() });
+            updateLabelPos();
+            if (running) requestAnimationFrame(frame);
+        }
+
+        var path = paper.path(arcPath());
+        updateLabelPos();
+
+        var slice = { path: path, label: label };
+        slice.animate = function(cx, cy, or, ir, sa, ea, duration, easing) {
+            running = true;
+            $(me).animate(
+                { cx: cx, cy: cy, or: or, ir: ir, startAngle: sa, endAngle: ea },
+                { easing: easing, duration: duration, complete: function() {
+                    running = false;
+                    frame();
+                }
+            });
+            requestAnimationFrame(frame);
+        };
+        return slice;
+    };
+
     _.extend(PieChart.prototype, Datawrapper.Visualizations.RaphaelChart.prototype, {
 
         isDonut: function() {
@@ -20,6 +81,10 @@
             return TWO_PI;
         },
 
+        groupAfter: function() {
+            return 5;
+        },
+
         render: function(el) {
             el = $(el);
 
@@ -28,53 +93,58 @@
             var me = this,
                 sort = true,
                 donut = me.isDonut(),
-                showTotal = donut && me.get('show-total'),
-                groupAfter = 5,
-                c = me.initCanvas({}),
+                row = 0;
+
+            // 2d -> 1d
+            if (!_.isUndefined(me.get('selected-row'))) {
+                row = me.get('selected-row', 0);
+                if (row > me.chart.numRows() || row === undefined) row = 0;
+            }
+
+            var filterUI = me.getFilterUI(row);
+            if (filterUI) $('#header').append(filterUI);
+
+            var c = me.initCanvas({}, 0, filterUI ? filterUI.height()+10 : 0),
                 chart_width = c.w,
                 chart_height = c.h,
                 FA = me.getFullArc(); // full arc
 
             c.cx = chart_width * 0.5;
-            c.cy = chart_height * (FA < TWO_PI ? 0.75 : 0.5); // 1:1 1.5:1
-            c.or = Math.min(FA == TWO_PI ? chart_height * 0.5 : chart_height * 0.6, chart_width * 0.5) - 3;
+            c.cy = chart_height * (FA < TWO_PI ? 0.69 : 0.5); // 1:1 1.5:1
+            c.or = Math.min(FA == TWO_PI ? chart_height * 0.5 : chart_height * 0.66, chart_width * 0.5) - 3;
             c.ir = donut ? c.or * 0.3 : 0;
             c.or_sq = c.or * c.or;
             c.ir_sq = c.ir * c.ir;
 
-            row = 0;
-            // 2d -> 1d
-            if (!_.isUndefined(me.get('selected-row'))) {
-                row = me.get('selected-row');
-                if (row > me.chart.numRows() || row === undefined) row = 0;
-            }
-            if (me.chart.numRows() > 1) me.chart.filterRow(row);
 
             me.init();
 
             $('.tooltip').hide();
 
-            function arc(cx, cy, or, ir, startAngle, endAngle) {
-                var x0 = cx+Math.cos(startAngle)*ir,
-                    y0 = cy+Math.sin(startAngle)*ir,
-                    x1 = cx+Math.cos(endAngle)*ir,
-                    y1 = cy+Math.sin(endAngle)*ir,
-                    x2 = cx+Math.cos(endAngle)*or,
-                    y2 = cy+Math.sin(endAngle)*or,
-                    x3 = cx+Math.cos(startAngle)*or,
-                    y3 = cy+Math.sin(startAngle)*or,
-                    largeArc = endAngle - startAngle > Math.PI ? 1 : 0;
+            me.__initialRow = row;
+            me.update(row);
 
-                if (ir > 0)
-                    return me.path("M"+x0+" "+y0+" A"+ir+","+ir+" 0 "+largeArc+",1 "+x1+","+y1+" L"+x2+" "+y2+" A"+or+","+or+" 0 "+largeArc+",0 "+x3+" "+y3+" Z", 'slice');
-                else
-                    return me.path("M"+cx+" "+cy+" L"+x2+" "+y2+" A"+or+","+or+" 0 "+largeArc+",0 "+x3+" "+y3+" Z", 'slice');
-            }
+            // enable mouse events
+            el.mousemove(_.bind(me.onMouseMove, me));
+        },
 
-            var series = me.chart.dataSeries(me.get('sort-values', true)),
+        /*
+         * updates the chart according to the given row
+         */
+        update: function(row) {
+            var me = this,
+                groupAfter = me.groupAfter(),
+                c = me.__canvas,
+                donut = me.isDonut(),
+                showTotal = donut && me.get('show-total', false),
+                FA = me.getFullArc(),
+                slices = me.__slices = me.__slices ? me.__slices : {};
+
+            me.chart.filterRow(row);
+
+            var series = me.chart.dataSeries(me.get('sort-values', true) ? me.__initialRow : false),
                 total = 0, min = Number.MAX_VALUE, max = 0,
                 reverse, oseries, others = 0, ocnt = 0, hasNegativeValues = false;
-
 
             // now group small series into one big chunk named 'others'
             oseries = [];
@@ -95,7 +165,7 @@
             }
             if (ocnt > 0) {
                 var _others = {
-                    name: 'others',
+                    name: me.translate('other'),
                     data: [others]
                 };
                 oseries.push(_others);
@@ -132,33 +202,36 @@
 
                 var da = s.data[0] / total * FA,
                     fill = me.getSeriesColor(s, 0),
-                    stroke = d3.cie.lch(d3.rgb(fill)).darker(0.6).toString(),
+                    stroke = chroma.color(fill).darken(15).hex(),
                     a0 = reverse ? sa - da : sa,
                     a1 = reverse ? sa : sa + da,
-                    lx = c.cx + Math.cos((a0 + a1) * 0.5) * c.or * 0.7,
-                    ly = c.cy + Math.sin((a0 + a1) * 0.5) * c.or * 0.7,
                     value = showTotal ? Math.round(s.data[0] / total * 100)+'%' : me.chart.formatValue(s.data[0], true);
 
                 if (s.data[0] === 0) return;
 
-                me.registerSeriesElement(arc(c.cx, c.cy, c.or, c.ir, a0, a1).attr({
-                    'stroke': me.theme.colors.background,
-                    'stroke-width': 2,
-                    'fill': fill
-                }), s);
+                if (!slices[s.name]) {
+                    var lblcl = me.chart.hasHighlight() && me.chart.isHighlighted(s) ? 'series highlighted' : 'series';
+                    if (me.invertLabel(fill)) lblcl += ' inverted';
+
+                    var lbl = me.registerSeriesLabel(me.label(0, 0, '<b>'+s.name+'</b><br />'+value, {
+                        w: 80, cl: lblcl, align: 'center', valign: 'middle'
+                    }), s);
+
+                    slice = slices[s.name] = Slice(c.paper, c.cx, c.cy, c.or, c.ir, a0, a1, lbl, me.theme);
+                    slice.path.attr({
+                        'stroke': me.theme.colors.background,
+                        'stroke-width': 2,
+                        'fill': fill
+                    });
+                } else {
+                    slice = slices[s.name];
+                    slice.label.text('<b>'+s.name+'</b><br />'+value);
+                    slice.animate(c.cx, c.cy, c.or, c.ir, a0, a1, me.theme.duration, me.theme.easing);
+
+                }
 
                 me.__seriesAngles[s.name] = normalize(a0, a1);
-
                 sa += reverse ? -da : da;
-                var lblcl = me.chart.hasHighlight() && me.chart.isHighlighted(s) ? 'series highlighted' : 'series';
-                if (me.invertLabel(fill)) lblcl += ' inverted';
-
-                me.registerSeriesLabel(me.label(lx, ly, s.name+'<br />'+value, {
-                    w: 80,
-                    align: 'center',
-                    valign: 'middle',
-                    cl: lblcl
-                }), s);
 
             });
 
@@ -168,15 +241,13 @@
                 } else {
                     total = me.chart.formatValue(total, true);
                 }
-                me.label(c.cx, c.cy, '<strong>Total:</strong><br />'+total, {
+                if (me.__labelTotal) me.__labelTotal.remove();
+                me.__labelTotal = me.label(c.cx, c.cy, '<strong>Total:</strong><br />'+total, {
                     w: 50,
                     align: 'center',
                     valign: 'middle'
                 });
             }
-
-            // enable mouse events
-            el.mousemove(_.bind(me.onMouseMove, me));
         },
 
         getSeriesByPoint: function(x, y) {
@@ -189,7 +260,6 @@
             if (a < 0) a += TWO_PI;
 
             _.each(me.__seriesAngles, function(range, sname) {
-                // console.log(a, range);
                 if (a >= range[0] && a < range[1]) {
                     match = sname;
                     return false;
@@ -212,7 +282,7 @@
 
         hoverSeries: function(series) {
             var me = this,
-                bg = d3.cie.lch(d3.rgb(me.theme.colors.background));
+                bg = chroma.color(me.theme.colors.background);
             _.each(me.chart.dataSeries(), function(s) {
                 _.each(me.__seriesLabels[s.name], function(lbl) {
                     if (series !== undefined && s.name == series.name) {
@@ -222,7 +292,7 @@
                     }
                     _.each(me.__seriesElements[s.name], function(el) {
                         var fill = me.getSeriesColor(s, 0), stroke, hover = series !== undefined && s.name == series.name;
-                        if (hover) fill = d3.cie.lch(d3.rgb(fill)).darker(bg.l > 60 ? 0.6 : -0.6).toString();
+                        if (hover) fill = chroma.lch(fill).darken(bg.hcl()[2] > 60 ? 14 : -14).hex();
                         if (el.attrs.fill != fill)
                             el.animate({ fill: fill }, 50);
                         if (hover) el.toFront();

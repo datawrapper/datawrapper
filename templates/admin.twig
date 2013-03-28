@@ -1,142 +1,26 @@
+{% use "utils.twig" %}
 
 {% extends "core.twig" %}
-
-{% block title %}Admin{% endblock %}
 {% block content %}
 
-<link rel="stylesheet" type="text/css" href="/static/visualizations/line-chart/style.css"></link>
-<link rel="stylesheet" type="text/css" href="/static/themes/default/theme.css"></link>
+<div class="admin">
 
-<script type="text/javascript" src="/static/vendor/globalize/globalize.js"></script>
-<script type="text/javascript" src="/static/vendor/underscore/underscore-min.js"></script>
-<script type="text/javascript" src="/static/vendor/jquery/jquery.min.js"></script>
-
-<script type="text/javascript" src="/static/js/dw.min.js"></script>
-
-<script type="text/javascript" src="/static/vendor/globalize/cultures/globalize.culture.de-DE.js"></script>
-<script type="text/javascript" src="/static/themes/default/theme.js"></script>
-<script type="text/javascript" src="/static/vendor/d3js/d3.light.js"></script>
-<script type="text/javascript" src="/static/vendor/raphaeljs/raphael-2.1.0.min.js"></script>
-<script type="text/javascript" src="/static/visualizations/raphael-chart/raphael-chart.js"></script>
-<script type="text/javascript" src="/static/visualizations/line-chart/line-chart.js"></script>
-
-
-<div class="docs">
-
-    <script type="text/javascript">
-    $(function() {
-
-        function lineChart(cont, data) {
-        // initialize theme
-            var theme = Datawrapper.Themes.Default;
-            // initialize chart
-            var chart = new Datawrapper.Chart({
-                type: "line-chart",
-                metadata: {
-                    data: {
-                        transpose: false,
-                        'horizontal-header': true,
-                        'vertical-header': true
-                    },
-                    visualize: {
-                        'direct-labeling': false,
-                        'legend-position': 'top',
-                        'rotate-x-labels': false,
-                        'baseline-zero': false,
-                        'force-banking': false,
-                        'connect-missing-values': true,
-                        'highlighted-values': [],
-                        'highlighted-series': []
-                    },
-                    describe: {
-                        'number-format': 'n0',
-                        'number-divisor': 0,
-                        'number-currency': '',
-                        'number-unit': '',
-                        'number-append': '',
-                        'number-prepend': ''
-                    }
-                }
-            });
-
-            // initliaze visualization
-            var vis = new Datawrapper.Visualizations.LineChart();
-
-            vis.setTheme(theme);
-            vis.chart = chart;
-            chart.setLocale('en', {"3":"k","6":"m","9":"b","12":"t"});
-            chart.rawData(data);
-            vis.dataset = chart.__dataset;
-            vis.getSize = function() { return [$('.span6').width(),200] };
-            vis.render(cont);
-        }
-
-        lineChart('#user-stats', '{{ user_csv | raw }}');
-        lineChart('#chart-stats', '{{ chart_csv | raw }}');
-    });
-    </script>
-
-    <style type="text/css">
-
-.linechart .label {
-    background: none;
-    font-weight: inherit;
-    text-shadow: none;
-}
-
-.linechart {
-    height: 230px!important;
-    position: relative;
-}
-
-h2 { margin-bottom: 30px!important; }
-    </style>
-
-    <h1 class="title" style="margin-bottom:10px">Datawrapper Admin</h1>
+    <h1 class="title">Admin &raquo; {{ title }}</h1>
 
     <div class="row">
-        <div class="span6">
-            <h2>User Statistics <small>(last 30 days)</small></h2>
 
-            <div id="user-stats" class="linechart"></div>
+        <div class="span2">
+            <ul class="nav nav-stacked nav-tabs">
+                {% for url, title in adminmenu %}
+                <li{% if url == adminactive %} class="active" {% endif %}><a href="{{ url }}">{{ title }}</a></li>
+                {% endfor %}
+            </ul>
         </div>
-        <div class="span6">
-            <h2>Chart Statistics <small>(last 30 days)</small></h2>
-            <div id="chart-stats" class="linechart"></div>
-
+        <div class="span10">
+            {{ block('adminpage') }}
         </div>
     </div>
 
-    <h2>Chart Gallery <small>(the last 10 charts)</small></h2>
-    <div class="row" id="gallery">
-
-        <script type="text/javascript">
-        $(function() {
-            $.ajax({
-                url: '/api/gallery',
-                dataType: 'json',
-                success: function(res) {
-                    $.each(res.data.slice(0,12), function(i, chart) {
-                        var div = $('<div class="span4 pull-left"><div style="padding:3px 3px 10px;display:block;"><a href="http://{{ DW_CHART_CACHE_DOMAIN }}/'+chart.Id+'" style="font-weight:bold;font-size:16px">'+chart.Title+'</a> <span style="font-weight:normal">by</span> <span data-id="'+chart.AuthorId+'" class="user" style="border-bottom:1px dotted orange">'+chart.AuthorId+'</span> at '+chart.LastModifiedAt+' (<a href="http://{{ DW_DOMAIN }}/chart/'+chart.Id+'/edit"><i class="icon-pencil"></i></a>)</div><iframe style="border:none" src="http://{{ DW_CHART_CACHE_DOMAIN }}/'+chart.Id+'" width="100%" height="260"></iframe></div>');
-                        $('#gallery').append(div);
-                    });
-                }
-            });
-
-            $('span.user').live('click', function(e) {
-                var s = $(e.target);
-                if (s.data('id')) {
-                    $.getJSON('/api/users/'+s.data('id'), function(res) {
-                        s.data('id', null);
-                        s.html(res.data.Email);
-                    });
-                }
-            });
-        });
-        </script>
-        
-    </div>
 </div>
 
 {% endblock %}
-

@@ -42,8 +42,14 @@ $app->get('/chart/:id/publish', function ($id) use ($app) {
             $page['thumbnails'] = $GLOBALS['dw_config']['thumbnails'];
             $app->render('chart-generate-thumbnails.twig', $page);
 
-        } else {
+            // queue a job for thumbnail generation
+            $params = array(
+                'width' => $chart->getMetadata('publish.embed-width'),
+                'height' => $chart->getMetadata('publish.embed-height')
+            );
+            $job = JobQuery::create()->createJob("static", $chart, $user, $params);
 
+        } else {
             $app->render('chart-publish.twig', $page);
         }
 

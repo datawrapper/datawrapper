@@ -1,0 +1,43 @@
+#!/usr/bin/php
+<?php
+
+define('LOCKFILE', dirname(__FILE__) + '/export_charts.lock');
+
+if (!isset($argv[1]) || !in_array($argv[1], array('start', 'stop', 'restart'))) {
+    print "Usage: ".basename($argv[0])." start|stop|restart\n";
+    exit();
+}
+
+if (file_exists(LOCKFILE)) {
+    if ($argv[1] == 'stop' || $argv[1] == 'restart') {
+        $pid = file_get_contents(LOCKFILE);
+        posix_kill($pid, 1);
+        print "stopped. $pid \n";
+        unlink(LOCKFILE);
+        if ($argv[1] == 'stop') exit();
+    } else {
+        print "Chart exporter already running as [" . file_get_contents(LOCKFILE). "]\n";
+        exit();
+    }
+} else {
+    if ($argv[1] == 'stop') {
+        print "No running process found\n";
+        exit();
+    }
+}
+
+
+// Daemonize
+$pid = pcntl_fork(); // parent gets the child PID, child gets 0
+
+if($pid){
+    // store PID in lockfile
+    file_put_contents(LOCKFILE, $pid);
+    exit();
+}
+
+$pid = getmypid();
+
+print "Started chart export daemon... ($pid)\n";
+
+require_once "lib/export_charts.inc";

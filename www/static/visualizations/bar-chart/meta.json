@@ -4,16 +4,9 @@
         "de": "Balken (horizontal)",
         "fr": "Diagramme à bandes horizontales"
     },
-    "version": "0.9.4",
+    "version": "1.2.6-1",
     "extends": "raphael-chart",
-    "author": {
-        "name": "gka",
-        "email": "gka@vis4.net"
-    },
-    "license": {
-        "name": "MIT",
-        "url": "http://www.opensource.org/licenses/mit-license.php"
-    },
+    "order": 30,
     "dimensions": 1,
     "options": {
         "sort-values": {
@@ -49,6 +42,5 @@
             }
         }
     },
-    "libraries": [],
-    "about": "http://site.com/understanding-bar-charts/"
+    "libraries": []
 }

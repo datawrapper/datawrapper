@@ -6,46 +6,15 @@
  */
 
 
-// load YAML parser and config
-require_once '../vendor/spyc/spyc.php';
-$GLOBALS['dw_config'] = Spyc::YAMLLoad('../config.yaml');
 
-if ($GLOBALS['dw_config']['debug'] == true) {
-    error_reporting(E_ALL);
-    ini_set('display_errors', 1);
-}
+define('DATAWRAPPER_VERSION', '1.2.6');  // must be the same as in package.json
 
-define('DATAWRAPPER_VERSION', '1.1');
+define('ROOT_PATH', '../');
 
-// Require the Slim PHP 5 Framework
-require '../vendor/Slim/Slim.php';
+require_once '../lib/utils/check_server.php';
+check_server();
 
-// Include the main Propel script
-// Initialize Propel with the runtime configuration
-// Add the generated 'classes' directory to the include path
-require_once '../vendor/propel/runtime/lib/Propel.php';
-Propel::init("../lib/core/build/conf/datawrapper-conf.php");
-set_include_path("../lib/core/build/classes" . PATH_SEPARATOR . get_include_path());
-
-
-
-// Load TwigView
-require_once '../vendor/Slim-Extras/Views/TwigView.php';
-TwigView::$twigDirectory = '../vendor/Twig';
-
-$app = new Slim(array(
-    'view' => new TwigView(),
-    'templates.path' => '../templates',
-    'session.handler' => null
-));
-
-
-require '../lib/session/database.php';
-
-// include datawrapper session serialization
-require '../lib/session/Datawrapper.php';
-
-
+require '../lib/bootstrap.php';
 
 // Load twig instance
 $twig = $app->view()->getEnvironment();
@@ -91,6 +60,7 @@ if (!empty($GLOBALS['dw_config']['publish']) && !empty($GLOBALS['dw_config']['pu
 function add_header_vars(&$page, $active = null) {
     // define the header links
     global $app;
+    $config = $GLOBALS['dw_config'];
     if (!isset($active)) {
         $active = explode('/', $app->request()->getResourceUri());
         $active = $active[1];
@@ -104,8 +74,12 @@ function add_header_vars(&$page, $active = null) {
     } else {
         $headlinks[] = array('url' => '/gallery/', 'id' => 'gallery', 'title' => _('Gallery'), 'icon' => 'signal');
     }
-    $headlinks[] = array('url' => '/docs', 'id' => 'about', 'title' => _('About'), 'icon' => 'info-sign');
-    $headlinks[] = array('url' => 'http://blog.datawrapper.de', 'id' => 'blog', 'title' => _('Blog'), 'icon' => 'tag');
+
+    if (isset($config['navigation'])) foreach ($config['navigation'] as $item) {
+        $link = array('url' => str_replace('%lang%', substr(DatawrapperSession::getLanguage(), 0, 2), $item['url']), 'id' => $item['id'], 'title' => _($item['title']));
+        if (!empty($item['icon'])) $link['icon'] = $item['icon'];
+        $headlinks[] = $link;
+    }
 
     $headlinks[] = array(
         'url' => '',
@@ -167,20 +141,27 @@ function add_header_vars(&$page, $active = null) {
     $page['user'] = DatawrapperSession::getUser();
     $page['language'] = substr(DatawrapperSession::getLanguage(), 0, 2);
     $page['locale'] = DatawrapperSession::getLanguage();
-    $page['DW_DOMAIN'] = $GLOBALS['dw_config']['domain'];
+    $page['DW_DOMAIN'] = $config['domain'];
     $page['DW_VERSION'] = DATAWRAPPER_VERSION;
-    $page['DW_CHART_CACHE_DOMAIN'] = $GLOBALS['dw_config']['chart_domain'];
-    $page['ADMIN_EMAIL'] = $GLOBALS['dw_config']['admin_email'];
+    $page['DW_CHART_CACHE_DOMAIN'] = $config['chart_domain'];
+    $page['ADMIN_EMAIL'] = $config['admin_email'];
 
     $analyticsMod = get_module('analytics', '../lib/');
     $page['trackingCode'] = !empty($analyticsMod) ? $analyticsMod->getTrackingCode() : '';
 
-    if (isset($GLOBALS['dw_config']['piwik'])) {
-        $page['PIWIK_URL'] = $GLOBALS['dw_config']['piwik']['url'];
-        $page['PIWIK_IDSITE'] = $GLOBALS['dw_config']['piwik']['idSite'];
-        if (isset($GLOBALS['dw_config']['piwik']['idSiteNoCharts'])) {
-            $page['PIWIK_IDSITE_NO_CHARTS'] = $GLOBALS['dw_config']['piwik']['idSiteNoCharts'];
+    if (isset($config['piwik'])) {
+        $page['PIWIK_URL'] = $config['piwik']['url'];
+        $page['PIWIK_IDSITE'] = $config['piwik']['idSite'];
+        if (isset($config['piwik']['idSiteNoCharts'])) {
+            $page['PIWIK_IDSITE_NO_CHARTS'] = $config['piwik']['idSiteNoCharts'];
         }
+    }
+
+    if ($config['debug']) {
+        // parse git branch
+        $head = file_get_contents('../.git/HEAD');
+        $parts = explode("/", $head);
+        $page['BRANCH'] = ' ('.trim($parts[count($parts)-1]).')';
     }
 }
 

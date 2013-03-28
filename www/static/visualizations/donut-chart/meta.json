@@ -4,16 +4,9 @@
         "de": "Donut-Diagramm",
         "fr": "Graphique en anneau"
     },
-    "version": "0.9.2",
+    "version": "1.2.6",
     "extends": "pie-chart",
-    "author": {
-        "name": "gka",
-        "email": "gka@vis4.net"
-    },
-    "license": {
-        "name": "MIT",
-        "url": "http://www.opensource.org/licenses/mit-license.php"
-    },
+    "order": 60,
     "dimensions": 1,
     "options": {
         "show-total": {
@@ -50,6 +43,5 @@
             }
         }
     },
-    "libraries": [],
-    "about": "http://site.com/understanding-bar-charts/"
+    "libraries": []
 }

@@ -1,7 +1,6 @@
 {
-    "title": "Standard layout",
+    "title": "Datawrapper",
     "link": "http://www.datawrapper.de",
     "restricted": null,
-    "locale": "de_DE",
-    "version": "0.9.6"
+    "version": "1.2.6"
 }

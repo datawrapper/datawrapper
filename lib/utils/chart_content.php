@@ -7,7 +7,7 @@ function get_chart_content($chart, $user, $minified = false, $path = '') {
 
     $next_theme_id = $chart->getTheme();
 
-    $locale = $user->getLanguage();
+    $locale = DatawrapperSession::getLanguage();
     $themeLocale = null;
 
     while (!empty($next_theme_id)) {
@@ -22,27 +22,28 @@ function get_chart_content($chart, $user, $minified = false, $path = '') {
         }
         $next_theme_id = $theme['extends'];
     }
-    // theme locale overrides user locale
-    if (!empty($themeLocale)) $locale = $themeLocale;
-    // per-chart locale overrides theme locale
-    $chartLocale = $chart->getLanguage();
-    if (!empty($chartLocale)) $locale = $chartLocale;
 
     $abs = 'http://' . $GLOBALS['dw_config']['domain'];
 
-    if ($minified) {
+    $debug = $GLOBALS['dw_config']['debug'] == true;
+
+    if ($minified && !$debug) {
         $base_js = array(
             '//assets-datawrapper.s3.amazonaws.com/globalize.min.js',
             '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.2/underscore-min.js',
-            '//cdnjs.cloudflare.com/ajax/libs/jquery/1.8.2/jquery.min.js'
+            '//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js'
         );
     } else {
         // use local assets
         $base_js = array(
             $abs . '/static/vendor/globalize/globalize.min.js',
             $abs . '/static/vendor/underscore/underscore-min.js',
-            $abs . '/static/vendor/jquery/jquery.min.js'
+            $abs . '/static/vendor/jquery/jquery-1.9.1'.($debug ? '' : '.min').'.js'
         );
+    }
+
+    if (substr($locale, 0, 2) != 'en') {
+        $base_js[] = $abs . '/static/vendor/globalize/cultures/globalize.culture.' . str_replace('_', '-', $locale) . '.js';
     }
 
     $vis_js = array();
@@ -51,12 +52,19 @@ function get_chart_content($chart, $user, $minified = false, $path = '') {
 
     $vis_libs = array();
 
+    $vis_locale = array();  // visualizations may define localized strings, e.g. "other"
+
     while (!empty($next_vis_id)) {
         $vis = get_visualization_meta($next_vis_id, $path);
         $vjs = array();
         if (!empty($vis['libraries'])) {
             foreach ($vis['libraries'] as $url) {
                 $vis_libs[] = '/static/vendor/' . $url;
+            }
+        }
+        if (!empty($vis['locale'])) {
+            foreach ($vis['locale'] as $term => $translations) {
+                if (!isset($vis_locale[$term])) $vis_locale[$term] = $translations;
             }
         }
         $vjs[] = '/static/visualizations/' . $vis['id'] . '/' . $vis['id'] . '.js';
@@ -70,6 +78,7 @@ function get_chart_content($chart, $user, $minified = false, $path = '') {
     $styles = array_merge($vis_css, array_reverse($theme_css));
 
     $the_vis = get_visualization_meta($chart->getType(), $path);
+    $the_vis['locale'] = $vis_locale;
     $the_theme = get_theme_meta($chart->getTheme(), $path);
 
     if ($minified) {
@@ -85,7 +94,7 @@ function get_chart_content($chart, $user, $minified = false, $path = '') {
         $scripts = array_unique(
             array_merge(
                 $base_js,
-                array('/static/js/dw.min.js'),
+                array('/static/js/datawrapper.min.js'),
                 array_reverse($theme_js),
                 array_reverse($vis_js),
                 $vis_libs
@@ -107,6 +116,7 @@ function get_chart_content($chart, $user, $minified = false, $path = '') {
         'chartData' => $chart->loadData(),
         'chart' => $chart,
         'chartLocale' => str_replace('_', '-', $locale),
+        'lang' => strtolower(substr($locale, 0, 2)),
         'metricPrefix' => get_metric_prefix($locale),
         'theme' => $the_theme,
         'visualization' => $the_vis,

@@ -22,9 +22,15 @@
             <ul class="unstyled">
                 {% for vis in byvis %}
                 {% if key == 'vis' and val == vis.id %}
-                <li class="active"><a href="/gallery/">{{ vis.name }} </a> ({{ vis.count }}) </li>
+                    <li class="active">
+                        <a href="/gallery/">{{ vis.name }} </a> ({{ vis.count }})
+                        <div class="bar" style="width:{{ vis.bar }}%"></div>
+                    </li>
                 {% else %}
-                <li><a href="/gallery/by/vis/{{ vis.id }}">{{ vis.name }}</a> ({{ vis.count }})</li>
+                    <li>
+                        <a href="/gallery/by/vis/{{ vis.id }}">{{ vis.name }}</a> ({{ vis.count }})
+                        <div class="bar" style="width:{{ vis.bar }}%"></div>
+                    </li>
                 {% endif %}
                 {% endfor %}
             </ul>
@@ -34,9 +40,14 @@
             <ul class="unstyled">
                 {% for month in bymonth %}
                 {% if key == 'month' and val == month.id %}
-                <li class="active"><a href="/gallery/">{{ month.name }} </a> ({{ month.count }}) </li>
+                    <li class="active"><a href="/gallery/">{{ month.name }} </a> ({{ month.count }})
+                        <div class="bar" style="width:{{ month.bar }}%"></div>
+                    </li>
                 {% else %}
-                <li><a href="/gallery/by/month/{{ month.id }}">{{ month.name }}</a> ({{ month.count }})</li>
+                    <li>
+                        <a href="/gallery/by/month/{{ month.id }}">{{ month.name }}</a> ({{ month.count }})
+                        <div class="bar" style="width:{{ month.bar }}%"></div>
+                    </li>
                 {% endif %}
                 {% endfor %}
             </ul>
@@ -66,46 +77,14 @@
 <script type="text/javascript">
 $(function(){
 
-    function popupChart(id) {
-
-        $.getJSON('/api/charts/'+id, function(res) {
-
-            if (res.status == "ok") {
-                var chart = res.data,
-                    chartIframe = $('<iframe src="http://{{ DW_CHART_CACHE_DOMAIN }}/' + chart.id + '" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>'),
-                    wrapper = $('<div></div>'),
-                    overlay = wrapper.overlay({
-                        onClose: function() {
-                            location.hash = '';
-                        }
-                    });
-                wrapper.append('<a class="close close-button">&#9747;</a>');
-                wrapper.append(chartIframe);
-
-                chartIframe.css({
-                    width: chart.metadata.publish['embed-width'],
-                    height: chart.metadata.publish['embed-height'],
-                    background: (chart.metadata.publish['background'] || '#fff'),
-                    border: '10px solid '+(chart.metadata.publish['background'] || '#fff'),
-                    'border-radius': 10
-                });
-                overlay.open();
-                if (location.hash != '#/' + chart.id) {
-                    location.hash = '#/' + chart.id;
-                }
-            }
-        });
-
-    }
-
     if (location.hash.length == 7) {
         // try to find the chart
-        popupChart(location.hash.substr(2));
+        DW.popupChart(location.hash.substr(2));
     }
 
     $(window).bind('hashchange', function() {
         if (location.hash.length == 7) {
-            popupChart(location.hash.substr(2));
+            DW.popupChart(location.hash.substr(2));
         }
     });
 

@@ -4,18 +4,10 @@
         "de": "Liniendiagramm",
         "fr": "Graphique linéaire"
     },
-    "version": "0.12.5",
-    "author": {
-        "name": "gka",
-        "email": "gka@vis4.net"
-    },
+    "version": "1.2.5-2",
     "extends": "raphael-chart",
     "dimensions": 2,
-    "license": {
-        "name": "MIT",
-        "url": "http://www.opensource.org/licenses/mit-license.php"
-    },
-    "about": "http://vis4.net/blog/posts/doing-the-line-charts-right/",
+    "order": 40,
     "options": {
         "direct-labeling": {
             "type": "checkbox",
@@ -94,7 +86,7 @@
                 "de": "Beschriftungen um 45° drehen",
                 "fr": "Pivoter les étiquettes de 45°"
             },
-            "default": true
+            "default": false
         },
         "baseline-zero": {
             "type": "checkbox",
@@ -116,6 +108,14 @@
                 "chart.missing_values": true
             }
         },
+        "extend-range": {
+            "type": "checkbox",
+            "label": {
+                "en": "Extend y-range to nice axis ticks",
+                "de": "Erweiterte y-Achse",
+                "fr": "Échelle à zero"
+            }
+        },
         "force-banking": {
             "type": "checkbox",
             "hidden": true,
@@ -124,6 +124,16 @@
                 "de": "Anstiege auf 45° ausrichten",
                 "fr": "Limiter à 45° les lignes"
             }
+        },
+        "show-grid": {
+            "type": "checkbox",
+            "hidden": true,
+            "label": {
+                "en": "Show grid",
+                "de": "Show grid",
+                "fr": "Afficher la grille"
+            },
+            "default": false
         }
     }
 }

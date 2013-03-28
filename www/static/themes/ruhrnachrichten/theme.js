@@ -19,10 +19,7 @@
         },
 
         lineChart: {
-            strokeWidth: {
-                highlight: 2,
-                normal: 1
-            },
+            strokeWidth: 2,
             hoverDotRadius: 3,
             maxLabelWidth: 80
         },

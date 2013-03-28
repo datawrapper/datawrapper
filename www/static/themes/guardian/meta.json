@@ -2,10 +2,9 @@
     "title": "Guardian",
     "link": "http://www.guardian.co.uk",
     "restricted": null,
-    "locale": "en_UK",
     "extends": "default",
     "default_width": 460,
     "restrict": "@guardian.co.uk",
-    "version": "0.9.7",
+    "version": "1.2.6",
     "assets": ["guardian-logo-bw.png", "guardian-logo-bw-big.png"]
 }

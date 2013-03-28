@@ -4,6 +4,10 @@
     background-color: #fff;
 }
 
+html .label.tooltip span {
+    background: none;
+}
+
 .label.highlighted {
     z-index: 100;
 }
@@ -23,6 +27,16 @@
     font-weight: bold;
 }
 
-html {
-    overflow: hidden;
+.label.x-axis.h span {
+    padding: 2px 5px 5px;
+}
+
+html, body {
+    overflow: hidden!important;
+}
+
+.line-chart .tooltip {
+    padding: 2px 0px;
+    text-align: center;
+    z-index: 100;
 }

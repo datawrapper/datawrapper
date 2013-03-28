@@ -50,9 +50,8 @@ body.chart {
 }
 
 .chart h1 {
-    background-image: url("triangleArrow-Right.png");
-    background-size: 0.5em auto;
-    background-position: left 9px;
+    background-image: url("trianglearrow-right-small.png");
+    background-position: left 7px;
     background-repeat: no-repeat;
     padding-left: 16px;
     font-family: "TheSerifOffice", arial, sans-serif;
@@ -60,8 +59,8 @@ body.chart {
 }
 
 .fullscreen.chart h1 {
-    background-size: 0.5em auto;
-    background-position: left 3px;
+    background-image: url("triangleArrow-Right.png");
+    background-position: left 2px;
     padding-left: 30px;
 }
 

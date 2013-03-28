@@ -6,9 +6,10 @@
  */
 
 body, html {
-    height: 100%;
+    height: 99%;
 }
 
+a { color: #0088CC; }
 
 body.chart {
     font-family: Helvetica Neue, Arial;
@@ -43,6 +44,19 @@ h1 span {
 .label span {
     font-size: 12px;
     color: #333;
+    text-shadow: 0 0 2px #fff;
+}
+
+.label.inverted span {
+    text-shadow: 0 0px 2px #000000;
+}
+
+.label.outline span {
+    text-shadow: 0 1px 0 #FFFFFF, 1px 0 0 #FFFFFF, 0 -1px 0 #FFFFFF, -1px 0 0 #FFFFFF,
+        1px 1px 0 #FFFFFF, 1px -1px 0 #FFFFFF, -1px -1px 0 #FFFFFF, -1px 1px 0 #FFFFFF,
+        0 2px 1px #FFFFFF, 2px 0 1px #FFFFFF, 0 -2px 1px #FFFFFF, -2px 0 1px #FFFFFF,
+        -1px 2px 0px #FFFFFF, 2px -1px 0px #FFFFFF, -1px -2px 0px #FFFFFF, -2px -1px 0px #FFFFFF,
+        1px 2px 0px #FFFFFF, 2px 1px 0px #FFFFFF, 1px -2px 0px #FFFFFF, -2px 1px 0px #FFFFFF;
 }
 
 .label.highlighted, .label.axis {
@@ -135,3 +149,60 @@ svg .axis, svg .tick, svg .grid, svg rect {
     font-size: 80%;
 }
 
+.filter-links {
+    height: 28px;
+}
+
+.filter-links a {
+    padding: 0px 10px;
+    box-shadow: 0 0 10px #ddd inset;
+    border: 1px solid #bbb;
+    border-left: 0;
+    display: block;
+    float: left;
+    text-decoration: underline;
+    color: #666;
+    height: 28px;
+    line-height: 28px;
+    background: #fbfbfb;
+}
+
+.filter-links a:hover {
+    background: #fff;
+    color: #0088CC;
+}
+
+*+html .filter-links a {  background: #eeeeee; } /** IE7 hack **/
+.filter-links a { background: #eeeeee\0/; }  /** IE8 hack **/
+
+
+.filter-links a.active {
+    font-weight: bold;
+    color: #000;
+    box-shadow: none;
+    background: #fff;
+    cursor: default;
+    text-decoration: none;
+}
+
+.filter-links a:first-child {
+    border-radius: 10px 0 0 10px;
+    border-left: 1px solid #bbb;
+}
+
+.filter-links a:last-child {
+    border-radius: 0 10px 10px 0;
+}
+
+.filter-select {
+    background-color: #FFFFFF;
+    border: 1px solid #CCCCCC;
+    border-radius: 4px 4px 4px 4px;
+    padding: 4px 6px;
+    vertical-align: middle;
+    font-size: 12px;
+}
+
+.line-chart .tooltip {
+    border-radius: 5px;
+}

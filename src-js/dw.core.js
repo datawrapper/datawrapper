@@ -14,10 +14,6 @@
         Datawrapper = root.Datawrapper = { Parsers: {} };
     }
 
-    // Current version of the library
-    Datawrapper.VERSION = '0.7.1';
-
-
     // Datawrapper.Core
     // ----------------
 

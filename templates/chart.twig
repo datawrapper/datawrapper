@@ -4,6 +4,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
     <title>{{ chart.title }}</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <!--[if lt IE 7]>
+    <meta http-equiv="refresh" content="0;URL='static.html'">
+    <![endif]-->
     <!--[if lt IE 9]>
     <script src="/static/vendor/json-js/json2.min.js"></script>
     <script type="text/javascript">
@@ -35,10 +38,6 @@
 
     <style type="text/css">
 
-        /*
-         * FULLSCREEN CSS
-         */
-
         html body.chart.fullscreen {
             margin: 0;
             padding: 50px 100px;
@@ -50,6 +49,16 @@
         #header {
             min-height: 1px;
             position: relative;
+        }
+
+        #header .header-right {
+            position: absolute;
+            right: 10px;
+            z-index: 20;
+        }
+
+        .fullscreen #header .header-right {
+            right: 200px;
         }
 
         #footer {
@@ -69,7 +78,10 @@
         .fullscreen p {
             font-size: 15px;
             margin-right: 200px!important;
+        }
 
+        .fullscreen #header label {
+            font-size: 15px;
         }
 
         .fullscreen .logo {
@@ -198,7 +210,7 @@
                 mb = $('#chart').css('margin-bottom').replace('px', ''),
                 maxH = $(window).height() - ch - 2;
             // IE Fix
-            if ($.browser.msie) maxH -= 10;
+            if (!$.support.leadingWhitespace) maxH -= 15;
             maxH -= $('body').css('padding-top').replace('px', '');
             maxH -= $('body').css('padding-bottom').replace('px', '');
             return maxH;
@@ -206,7 +218,7 @@
 
         function loadChart() {
             // clean chart
-            $('#chart').html('');
+            $('#chart').html('').off('click').off('mousemove').off('mouseenter').off('mouseover');
             $('#header .legend').remove();
             //$('.container').height($(window).height());
             // initialize theme
@@ -227,12 +239,14 @@
 
             // initliaze visualization
             var vis = new Datawrapper.Visualizations.{{ visualization.id | classify }}();
+            vis.meta = JSON.parse('{{ visualization | json | raw }}');
+            vis.lang = '{{ lang }}';
 
             // compute chart dimensions
             var w = $('#chart').innerWidth(),
                 h = getMaxChartHeight($('#chart'));
 
-            if ($.browser.msie) w -= 10; // IE Fix
+            if (!$.support.leadingWhitespace) w -= 10; // IE Fix
             w -= $('body').css('padding-left').replace('px', '');
             w -= $('body').css('padding-right').replace('px', '');
 
@@ -251,7 +265,7 @@
         loadChart();
 
         var reload_timer;
-        if (!$.browser.msie && navigator.userAgent.match(/iPad/i) == null) {
+        if (navigator.userAgent.match(/iPad|msie/i) == null) {
             // IE continuosly reloads the chart for some strange reasons
             $(window).resize(function() {
                 if (reload_timer) clearTimeout(reload_timer);
@@ -293,7 +307,7 @@
     {# some convenient short cuts for theme templates #}
     {% set title = chart.title %}{% set intro = chart.metadata.describe.intro %}{% set source = chart.metadata.describe['source-name'] %}{% set sourceURL = chart.metadata.describe['source-url'] %}
 
-    {% include theme.hasTemplate ? 'themes/' ~ theme.id ~ '.twig' : 'themes/default.twig' %}
+    {% include theme.template ? 'themes/' ~ theme.template ~ '.twig' : 'themes/default.twig' %}
     {{ trackingCode | raw }}
 </body>
 </html>

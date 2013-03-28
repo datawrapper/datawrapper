@@ -7,7 +7,6 @@ if (phantom.args.length < 2 || phantom.args.length > 5) {
     console.log('Usage: render.js chart-id outfile width height');
     phantom.exit();
 } else {
-
     output = phantom.args[1];
     format = output.substr(-3);
     address = phantom.args[0];
@@ -15,7 +14,6 @@ if (phantom.args.length < 2 || phantom.args.length > 5) {
     height = phantom.args.length > 3 ? Number(phantom.args[3]) : 400;
 
     page.viewportSize = { width: width, height: height };
-    if (format == 'pdf') height += 30;
     page.paperSize = { width: (width/35)+"cm", height: (height/35)+"cm" };
 
     page.open(address, function (status) {

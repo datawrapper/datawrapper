@@ -30,6 +30,8 @@
             h = me.get('force-banking') ? el.width() / me.computeAspectRatio() : me.getSize()[1],
             c;
 
+            me.__extendRange = me.get('extend-range', false) || (me.theme.frame && me.get('show-grid', false));
+
             me.init();
             c = me.initCanvas({
                 h: thumb ? h : h,
@@ -81,8 +83,15 @@
                 ).attr(me.theme.frame);
             }
 
-            if (me.theme.frame) {
-                frame().attr({ stroke: false });
+            if (me.theme.frame && me.get('show-grid', false)) {
+                if (me.theme.frameStrokeOnTop) {
+                    // draw frame fill, but without stroke
+                    frame().attr({ stroke: false });
+                } else {
+                    frame();
+                }
+            }
+            if (me.__extendRange) {
                 scales.y = scales.y.nice();
             }
 
@@ -90,7 +99,6 @@
             scales.y = scales.y.range([c.h-c.bpad, c.tpad]);
 
             me.yAxis();
-
             me.xAxis();
 
             var all_series = me.chart.dataSeries(),
@@ -108,6 +116,13 @@
                     legend.yoffset = 40;
                 }
             }
+
+            // get number of 'highlighted' series (or all if none)
+            var highlightedSeriesCount = 0, seriesColIndex = 0;
+            $.each(all_series, function(i, s) {
+                if (me.chart.hasHighlight() && me.chart.isHighlighted(s)) highlightedSeriesCount++;
+            });
+            highlightedSeriesCount = highlightedSeriesCount || all_series.length;
 
             // draw series lines
             var all_paths = [];
@@ -141,14 +156,20 @@
                 sw = me.getSeriesLineWidth(col);
                 var palette = me.theme.colors.palette.slice();
 
-                if (all_series.length < palette.length * 2) {
+                if (highlightedSeriesCount < 5) {
+                    if (me.chart.isHighlighted(col)) {
+                        me.setSeriesColor(col, palette[(seriesColIndex + baseCol) % palette.length]);
+                        seriesColIndex++;
+                    }
+                }
+                /*if (all_series.length < palette.length * 2) {
                     // we only color lines if there's a reasonable number of them
                     if (!directLabeling || all_series.length > 4) {
                         for (var i=0; i < baseCol; i++) palette.push(palette.pop());
                         if (all_series.length > palette.length) {
                             // add variations of palette colors
                             $.each(palette, function(i, col) {
-                                palette.push(d3.cie.lch(d3.rgb(col)).darker(-2).toString());
+                                palette.push(d3.cie.lch(d3.rgb(col)).darken(-2).toString());
                             });
                         }
                         me.setSeriesColor(col, palette[(index + baseCol) % palette.length]);
@@ -160,9 +181,9 @@
                             l = d3.range(81, ml, -(80 - ml) / (all_series.length - 1));
                         me.setSeriesColor(col, ''+d3.cie.lch(l[index], bLch.c, bLch.h));
                     }
-                }
+                }*/
 
-                var strokeColor = me.getSeriesColor(col);
+                var strokeColor = me.getLineColor(col);
 
                 all_paths.push(paths);
 
@@ -191,8 +212,9 @@
                 }
 
                 if (me.lineLabelsVisible()) {
+                    var visible = all_series.length < 10 || me.chart.isHighlighted(col);
                     var div, lbl, lblx = x + 10, lbly = y, valign = 'middle';
-                    if (!directLabeling) {
+                    if (!directLabeling && visible) {
                         // legend
                         if (legend.pos == 'right') {
                             lblx += 15;
@@ -229,6 +251,7 @@
                         w: c.labelWidth,
                         valign: valign
                     });
+                    if (!visible) lbl.hide();
                     if (!directLabeling) {
                         legend_y_offset += lbl.height()+15;
                     }
@@ -236,10 +259,6 @@
                     me.registerSeriesLabel(lbl, col);
                 } // */
             });
-
-            if (me.theme.lineChart.hoverDotRadius) {
-                this.hoverDot = c.paper.circle(0, 0, me.theme.lineChart.hoverDotRadius).hide();
-            }
 
             if (true || me.theme.tooltips) {
                 el.mousemove(_.bind(me.onMouseMove, me));
@@ -251,7 +270,7 @@
             function addFill(series, path) {
                 c.paper.path(path)
                     .attr({
-                        fill: me.getSeriesColor(series),
+                        fill: me.getLineColor(series),
                         'fill-opacity': me.theme.lineChart.fillOpacity,
                         stroke: false
                     });
@@ -349,7 +368,7 @@
             me.orderSeriesElements();
 
             $('.chart').mouseenter(function() {
-                $('.label.x-axis').css({ opacity: 0.6 });
+                $('.label.x-axis').css({ opacity: 0.4 });
                 $('.label.tooltip').show();
             }).mouseleave(function() {
                 $('.label.x-axis').css({ opacity: 1});
@@ -358,14 +377,36 @@
                 $('.label.tooltip').hide();
             });
 
-            if (me.theme.frame) {
-                frame().attr({ fill: false });
+            if (me.theme.frameStrokeOnTop) {
+                // add frame stroke on top
+                if (me.theme.frame && me.get('show-grid', false)) {
+                    frame().attr({ fill: false });
+                }
             }
         },
 
         lineLabelsVisible: function() {
             var me = this;
-            return me.chart.dataSeries().length > 1 && me.chart.dataSeries().length < 10 && me.__canvas.w >= me.theme.minWidth;
+            return me.chart.dataSeries().length > 1 &&
+                (me.chart.dataSeries().length < 10 || me.chart.hasHighlight()) &&
+                me.__canvas.w >= me.theme.minWidth;
+        },
+
+        getLineColor: function(series) {
+            var me = this,
+                bgcol = chroma.hex(me.theme.colors.background),
+                bglum = bgcol.luminance(),
+                col = chroma.hex(me.getSeriesColor(series)),
+                min_contrast = me.chart.hasHighlight() ? (me.chart.isHighlighted(series) ? 4.5 : 1.45) : 1.7,
+                i = 0;
+
+            while (chroma.contrast(bgcol, col) < min_contrast && i++ < 20) {
+                if (bglum > 0.5) col = col.darken(5);
+                else col = col.brighten(5);
+            }
+
+            // make sure there's enough contrast with background
+            return col.hex();
         },
 
         getDataRowByPoint: function(x, y) {
@@ -380,7 +421,10 @@
         },
 
         getSeriesLineWidth: function(series) {
-            return this.theme.lineChart.strokeWidth['highlight'] * ($('body').hasClass('fullscreen') ? 1.5 : 1);
+            var me = this,
+                fs_scale = $('body').hasClass('fullscreen') ? 1.5 : 1,
+                scale = me.chart.hasHighlight() ? me.chart.isHighlighted(series) ? 1 : 0.65 : 1;
+            return me.theme.lineChart.strokeWidth * fs_scale * scale;
         },
 
         computeAspectRatio: function() {
@@ -423,7 +467,7 @@
 
         yAxisWidth: function(h) {
             var me = this,
-                ticks = me.getYTicks(h),
+                ticks = me.getYTicks(h, me.__extendRange),
                 maxw = 0;
 
             if (me.__canvas.w <= me.theme.minWidth) return 4;
@@ -442,7 +486,9 @@
                 c = me.__canvas,
                 domain = me.__domain,
                 styles = me.__styles,
-                ticks = me.getYTicks(c.h, me.theme.frame);
+                ticks = me.getYTicks(c.h, me.__extendRange);
+
+            if (!me.__extendRange && ticks[ticks.length-1] != domain[1]) ticks.push(domain[1]);
 
             if ($('body').hasClass('fullscreen')) {
                 me.theme.horizontalGrid['stroke-width'] = 2;
@@ -450,12 +496,16 @@
 
             _.each(ticks, function(val, t) {
                 var y = yscale(val), x = c.lpad;
-                if (val >= domain[0] && val <= domain[1] || me.theme.frame) {
+                if (val >= domain[0] && val <= domain[1] || me.__extendRange) {
                     // c.paper.text(x, y, val).attr(styles.labels).attr({ 'text-anchor': 'end' });
+
+                    // axis label
                     me.label(x+2, y-10, me.chart.formatValue(val, t == ticks.length-1), { align: 'left', cl: 'axis' });
+                    // axis ticks
                     if (me.theme.yTicks) {
                         me.path([['M', c.lpad-25, y], ['L', c.lpad-20,y]], 'tick');
                     }
+                    // grid line
                     if (me.theme.horizontalGrid) {
                         me.path([['M', c.lpad, y], ['L', c.w - c.rpad,y]], 'grid')
                             .attr(me.theme.horizontalGrid);
@@ -467,7 +517,7 @@
             if (domain[0] <= 0 && domain[1] >= 0) {
                 y = yscale(0);
                 me.path([['M', c.lpad, y], ['L', c.w - c.rpad,y]], 'axis')
-                            .attr(me.theme.yAxis);
+                            .attr(me.theme.xAxis);
             }
         },
 
@@ -487,10 +537,13 @@
             });
 
             function addlbl(x, val, i, low) {
-                var y = c.h-c.bpad+me.theme.xLabelOffset, lbl;
+                var y = c.h - c.bpad + me.theme.lineChart.xLabelOffset, lbl;
                 if (!val) return;
                 if (rotate45) x -= 5;
-                lbl = me.label(x, y, val, { align: 'center', cl: 'axis x-axis' + (rotate45 ? ' rotate45' : '') });
+                lbl = me.label(x, y, val, {
+                    align: 'center',
+                    cl: 'axis x-axis' + (rotate45 ? ' rotate45' : '')
+                });
                 //if (low) lbl.css({ 'font-weight': 'normal'});
             }
 
@@ -512,40 +565,14 @@
             }
 
             addlbl(xscl(k), labels[k], k);
-
-            if (me.theme.verticalGrid) {
+            if (me.get('show-grid', false) && me.theme.verticalGrid) {
                 // draw vertical grid
                 _.each(xscl.ticks(20), function(tick) {
                     var x = xscl(tick), t=c.tpad, b=c.h-c.bpad;
-                    c.paper.path('M'+x+','+t+' '+x+','+b).attr(me.theme.verticalGrid);
+                    var p = c.paper.path('M'+x+','+t+' '+x+','+b).attr(me.theme.verticalGrid);
                 });
             }
 
-        },
-
-        hoverSeries: function(series) {
-            var me = this,
-                seriesElements = me.__seriesElements;
-            _.each(seriesElements, function(elements, key) {
-                var h = !series || key == series.name;
-                _.each(elements, function(el) {
-                    if (el.attrs['stroke-opacity'] > 0) {
-                        el.attr({
-                            opacity: h ? 1 : 0.5,
-                            'stroke-width': h ? me.getSeriesLineWidth(series) : 1
-                        });
-                    }
-                });
-            });
-
-            var seriesLabels = me.__seriesLabels;
-            _.each(seriesLabels, function(labels, key) {
-                var h = !series || key == series.name;
-                _.each(labels, function(lbl) {
-                    lbl.css({ opacity: h ? 1 : 0.5 });
-                    if (h) lbl.addClass('highlighted');
-                });
-            });
         },
 
         onMouseMove: function(e) {
@@ -553,96 +580,90 @@
                 c = me.__canvas,
                 x = e.pageX,
                 y = e.pageY,
-                series = this.getSeriesByPoint(x, y),
-                row = this.getDataRowByPoint(x, y),
+                series = me.getSeriesByPoint(x, y, e),
+                row = me.getDataRowByPoint(x, y, e),
                 hoveredNode = series !== null,
+                xLabelTop = c.h - c.bpad + me.theme.lineChart.xLabelOffset,
                 xlabel = me.__xlab = me.__xlab ||
-                    me.label(x, c.h - c.bpad+me.theme.xLabelOffset - 5, 'foo', {
-                        cl: 'axis x-axis',
+                    me.label(x, xLabelTop, 'foo', {
+                        cl: 'axis x-axis h',
+                        align: 'center',
                         css: {
                             background: me.theme.colors.background,
-                            padding: '5px 10px',
                             zIndex: 100
                         }
                     });
-               /* xline = me.__xline = me.__xline ||
-                    c.paper.path('M0,'+c.tpad+' 0,'+(c.h - c.bpad)).attr(me.theme.horizontalGrid).toBack();*/
 
             // update x-label
-            $('span', xlabel).html(me.dataset.rowName(row))
-                .parent().css({ left: me.__scales.x(row) - xlabel.outerWidth() * 0.5 });
+            xlabel.text(me.dataset.rowName(row));
+            xlabel.attr({
+                x: me.__scales.x(row) - 8,
+                y: xLabelTop,
+                w: Math.min(100, c.w / me.chart.numRows())
+            });
 
-            // update x-line
-            //xline.transform('t'+me.__scales.x(row)+',0');
+            //xlabel.el.css({ left: me.__scales.x(row) - xlabel.el.outerWidth() * 0.5 });
 
             me.dataset.eachSeries(function(s) {
                 var lbl = s._label = s._label ||
-                    me.label(0, 0, 'foo', {
-                        cl: 'tooltip',
+                    me.label(0, 0, '0', {
+                        cl: 'tooltip'+(me.getSeriesColor(s) ? ' inverted' : ''),
+                        align: 'center',
+                        valign: 'middle',
                         css: {
-                            background: me.getSeriesColor(s),
-                            padding: '2px 3px',
-                            zIndex: 100
+                            background: me.getLineColor(s)
                         }
-                    }).addClass(me.invertLabel(me.getSeriesColor(s)) ? 'inverted' : '');
-                $('span', lbl).html(me.chart.formatValue(s.data[row])).css('background', 'transparent').parent()
+                    }),
+                    val = me.chart.formatValue(s.data[row]);
+                lbl.data('series', s);
+                lbl.data('row', 0);
+                lbl.text(val);
+                lbl.attr({
+                    x: me.__scales.x(row),
+                    y: me.__scales.y(s.data[row]),
+                    w: me.labelWidth(val)+10
+                });
+                /*lbl.text(val).el.css('background', 'transparent')
+                    .css({ width:  })
                     .css({
-                        left: me.__scales.x(row) - lbl.outerWidth() * 0.5,
-                        top: me.__scales.y(s.data[row]) - lbl.outerHeight() * 0.5
-                    });
-                if (isNaN(s.data[row])) lbl.hide();
-                else lbl.show();
+                        left:  - lbl.outerWidth() * 0.5,
+                        top:  - lbl.outerHeight() * 0.5
+                    });*/
+                if (isNaN(s.data[row]) || me.chart.hasHighlight() && !me.chart.isHighlighted(s) && (s != series)) {
+                    lbl.hide();
+                    if (me.get('direct-labeling')) {
+                        $.each(me.__seriesLabels[s.name], function(i, l) { l.hide(); });
+                    } else {
+                        $.each(me.__seriesLabels[s.name], function(i, l) { l.el.css('text-decoration', 'none'); });
+                    }
+                } else {
+                    lbl.show();
+                    if (me.get('direct-labeling')) {
+                        $.each(me.__seriesLabels[s.name], function(i, l) { l.show(); });
+                    } else {
+                        if (!me.chart.isHighlighted(s)) $.each(me.__seriesLabels[s.name], function(i, l) { l.el.css('text-decoration', 'underline'); });
+                    }
+                }
             });
+
+            //if (series) me.hoverSeries(series);
 
             return;
         },
 
-        showTooltip: function(series, row, x, y) {
+
+        hoverSeries: function(series) {
             var me = this,
-                xval = me.chart.rowLabel(row),
-                yval = series.data[row],
-                xtto = me.__root.offset().left - me.__root.parent().offset().left,
-                tt = $('.tooltip'),
-                yr = me.__scales.y(yval);
-
-            x = me.__scales.x(row);
-            y = yr + me.__root.offset().top;
-
-            if (tt) {
-                $('.xval', tt).html(xval);
-                $('.yval', tt).html(me.chart.formatValue(yval, true));
-                if (me.chart.hasRowHeader()) {
-                    $('.xlabel', tt).html(me.chart.rowHeader().name);
-                }
-                $('.ylabel', tt).html(series.name);
-
-                tt.css({
-                    position: 'absolute',
-                    top: (y - tt.outerHeight()-10)+'px',
-                    left: (x - tt.outerWidth()*0.5 + xtto)+'px'
+                seriesElements = me.__seriesElements;
+            var seriesLabels = me.__seriesLabels;
+            /*_.each(seriesLabels, function(labels, key) {
+                  var h = !series || key == series.name;
+                _.each(labels, function(lbl) {
+                    if (h || lbl.hasClass('highlighted')) lbl.show();
+                    else lbl.hide();
                 });
-                tt.show();
-            }
-
-            if (me.theme.lineChart.hoverDotRadius) {
-                me.hoverDot.attr({
-                    cx: x,
-                    cy: yr,
-                    r: me.theme.lineChart.hoverDotRadius,
-                    stroke: me.getSeriesColor(series),
-                    'stroke-width': 1.5,
-                    fill: '#fff'
-                }).data('series', series).show();
-            }
-        },
-
-        hideTooltip: function() {
-            $('.tooltip').hide();
-            if (this.theme.lineHoverDotRadius) {
-                this.hoverDot.hide();
-            }
+            });*/
         }
-
 
     });
 

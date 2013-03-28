@@ -7,6 +7,21 @@
 
 <script type="text/javascript">
 
+$.extend($.easing, {
+    easeInExpo: function (x, t, b, c, d) {
+        return (t==0) ? b : c * Math.pow(2, 10 * (t/d - 1)) + b;
+    },
+    easeOutExpo: function (x, t, b, c, d) {
+        return (t==d) ? b+c : c * (-Math.pow(2, -10 * t/d) + 1) + b;
+    },
+    easeInOutExpo: function (x, t, b, c, d) {
+        if (t==0) return b;
+        if (t==d) return b+c;
+        if ((t/=d/2) < 1) return c/2 * Math.pow(2, 10 * (t - 1)) + b;
+        return c/2 * (-Math.pow(2, -10 * --t) + 2) + b;
+    }
+});
+
 $(function() {
 
     function classify(s) {
@@ -99,10 +114,12 @@ $(function() {
             picker.data('color', theTheme.colors.palette[chart.get('metadata.visualize.base-color', 0)]);
             picker.colorpicker({
                 change: function(color) {
-                    chart.set('metadata.visualize.base-color', theTheme.colors.palette.indexOf(color));
+                    var colIndex = theTheme.colors.palette.join(',').toLowerCase().split(',').indexOf(color.toLowerCase());
+                    chart.set('metadata.visualize.base-color', colIndex);
                 }
             });
             chart.set('metadata.publish.background', theTheme.colors.background);
+            chart.set('metadata.publish.contextBg', theTheme.colors.contextBackground);
             chart.set('metadata.publish.text', theTheme.colors.text);
 
             var colors = theTheme.colors.palette.slice().concat(theTheme.colors.secondary || []);
@@ -143,7 +160,7 @@ $(function() {
         _typeHasChanged = false;
     });
 
-    chart.sync('#select-vis', 'type');
+//    chart.sync('#select-vis', 'type');
     chart.sync('#select-theme', 'theme');
     chart.sync('#text-title', 'title');
     chart.sync('#text-intro', 'metadata.describe.intro');
@@ -224,15 +241,32 @@ $(function() {
         tgl.removeClass('collapse-shown');
     });
 
-    function updateVisBackground() {
-        var bgcol =  $('body', $('#iframe-vis').contents()).css('background-color'),
+    function updateVisBackground() {  // and show msg if chart needs more space
+        var iframe = $('#iframe-vis').contents(),
+            bgcol =  $('body', iframe).css('background-color'),
             white = bgcol == 'rgb(255, 255, 255)' || bgcol == '#ffffff' || bgcol == 'white' || bgcol == 'transparent',
             border = white ? '#ffffff' : '#bbb';
+
+        bgcol = DW.currentChart.get('metadata.publish.contextBg') || DW.currentChart.get('metadata.publish.background');
 
         $('#iframe-wrapper').css({
             'background-color': white ? '#ffffff' : bgcol,
             'border-color': border
-        })
+        });
+
+        var vis_h = iframe.height(),
+            iframe_h = $('#iframe-vis').height();
+
+        if (vis_h > iframe_h+5) {
+            DW.logMessage('Watch out: Your chart needs more space. To get rid of the scrollbars just <a href="#" id="resize-iframe">resize iFrame to chart</a> ', $('.resize-chart-wrap'), 'warning');
+            $('#resize-iframe').click(function(e) {
+                e.preventDefault();
+                //$('#iframe-wrapper').height(vis_h);
+                $('#resize-h').val(vis_h);
+                updateSize();
+                $('.alert').remove();
+            });
+        }
     }
 
     $('#iframe-vis').load(updateVisBackground);
@@ -262,48 +296,124 @@ $(function() {
             loadOptions();
         }, 2000);
     });
+
+    // graphical vis selector
+    var unfolded = $('.vis-selector-unfolded'),
+        folded = $('.vis-selector-folded'),
+        thumbs = $('.vis-thumb'),
+        selVis = $('.vis-selected');
+    unfolded.data('h', unfolded.height());
+    thumbs.click(function(e) {
+        var thumb = $(e.target);
+        if (!thumb.hasClass('vis-thumb')) thumb = thumb.parents('.vis-thumb');
+        thumbs.removeClass('active');
+        thumb.addClass('active');
+        selVis.html('<img src="/static/visualizations/'+thumb.data('id')+'/thumb.png" width="24" />' + thumb.data('title'));
+        setTimeout(function() {
+            folded.show();
+            unfolded.animate({ height: 0 }, 300, 'easeOutExpo', function() {
+                unfolded.hide();
+            });
+            chart.set('type', thumb.data('id'));
+        }, 100);
+    });
+
+    folded.click(function() {
+        folded.hide();
+        unfolded.height(0).show().animate({ height: unfolded.data('h') }, 300);
+    });
+
+    if (DW.__firstTime) {
+        unfolded.show();
+        folded.hide();
+    }
+
+    // chart resizing
+    var __timer;
+    function _updateSize() {
+        clearTimeout(__timer);
+        __timer = setTimeout(updateSize, 300);
+    }
+    function updateSize() {
+        var w = Math.min(Number($('#resize-w').val()) || 600, $('.span7').width()-22),
+            h = Number($('#resize-h').val()) || 400;
+        $('#resize-w').val(w);
+        $('#resize-h').val(h);
+        $('#iframe-wrapper').animate({ width: w+'px', height: h+'px' }, 400, 'easeOutExpo');
+        chart.set('metadata.publish.embed-width', w);
+        chart.set('metadata.publish.embed-height', h);
+    }
+    $('.resize-chart a').click(function(e) {
+        e.preventDefault();
+        var dim = $(e.target).html().split('×');
+        $('#resize-w').val(dim[0]);
+        $('#resize-h').val(dim[1]);
+        updateSize();
+    });
+    $('.resize-chart input').change(_updateSize);
+    var cw = chart.get('metadata.publish.embed-width', $('#iframe-wrapper').width()),
+        ch = chart.get('metadata.publish.embed-height', $('#iframe-wrapper').height());
+    $('#resize-w').val(cw);
+    $('#resize-h').val(ch);
+    $('#iframe-wrapper').width(cw);
+    $('#iframe-wrapper').height(ch);
+    $('.affix-cont').css('width', $('#iframe-wrapper').width()+'px');
 });
 
 </script>
 
-<div class="dw-create-visualize">
+<div class="dw-create-visualize chart-editor">
 
     <div class="row">
         <div class="span7">
 
-            <div id="iframe-wrapper" style="height:500px;">
-                <iframe src="/chart/{{ chart.id }}/preview" id="iframe-vis" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen>
-                </iframe>
-            </div>
+            <div class="affix-cont" data-spy="affix" data-offset-top="100" data-offset-bottom="130">
+                <div id="iframe-wrapper" style="height:500px;" >
+                    <iframe src="/chart/{{ chart.id }}/preview" id="iframe-vis" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen>
+                    </iframe>
+                </div>
+                <div class="resize-chart-wrap">
+                    <div class="resize-chart">
+                        {% trans "Resize to: " %}
+                        <input id="resize-w" class="input-large" type="text" value="" /> ×
+                        <input id="resize-h" class="input-large" type="text" value="" />
+                        (e.g. <a href="#">480×320</a>
+                        <a href="#">480×480</a>
+                        <a href="#">640×360</a>
+                        <a href="#">640×480</a>)
 
+                    </div>
+                </div>
+            </div>
         </div>
 
 
         <div class="span5 visconfig"><div class="well">
             <div class="section">
-                <h3>{% trans "Select visualization and layout" %}</h3>
-                    <div class="half">
-                        <label for="select-vis">{% trans "Visualization:" %}</label>
-                        <select id="select-vis">
-                            {% for vis in visualizations %}{% if vis.title %}
-                            <option value="{{ vis.id }}">{{ vis.title[language] }}</option>
-                            {% endif %}{% endfor %}
-                        </select>
+                <div class="vis-selector-unfolded">
+                <h3>{% trans "Select visualization" %}</h3>
+                    <div class="vis-thumbs">
+                        {% for vis in visualizations %}{% if vis.title %}
+                        <div class="vis-thumb{% if vis.id == chart.type %} active{% endif %}" data-id="{{ vis.id }}" data-title="{{ vis.title[language] }}"><img title="{{ vis.title[language] }}" src="/static/visualizations/{{ vis.id }}/thumb.png" /></div>
+                        {% endif %}{% endfor %}
                     </div>
+                </div>
+                <div class="vis-selector-folded">
+                    <h3><u>{% trans "Visualization:" %}</u> <span class="vis-selected"><img src="/static/visualizations/{{ chart.type }}/thumb.png" width="24" /> {{ vis.title[language] }}</span></h3>
+                </div>
 
-                    <div class="half">
-                        <label for="select-theme">{% trans "Layout:" %}</label>
-                        <select id="select-theme">
-                            {% for theme in themes %}{% if not theme.hidden %}
-                            <option value="{{ theme.id }}">{{ theme.title }}</option>
-                            {% endif %}{% endfor %}
-                        </select>
-                    </div>
-                <div class="clearfix"></div>
+                <div style="margin-top:10px;margin-bottom:20px">
+                    <label class="pull-left" style="line-height:28px;color:#000;font-size:18px;padding-right:1ex;font-weight:bold" for="select-theme">{% trans "Layout:" %}</label>
+                    <select id="select-theme" class="span2">
+                        {% for theme in themes %}{% if not theme.hidden %}
+                        <option value="{{ theme.id }}">{{ theme.title }}</option>
+                        {% endif %}{% endfor %}
+                    </select>
+                </div>
                     <p>
                         <b>{% trans "Hint" %}:</b> {% trans "In case the visualization doesn't look like you expected, you should try to <a href='#' id='btn-transpose'><i class='icon-rotate'></i> transpose the data</a>." %}
                     </p>
-            </div>
+             </div>       
 
             <div class="section">
                 <h3>{% trans "Tell the story" %}</h3>
@@ -376,10 +486,57 @@ $(function() {
             </div>
 
             <a href="publish" class="submit pull-right btn btn-primary btn-lrge" id="visualize-proceed">{% trans "Publish" %} <i class="icon-chevron-right icon-white"></i></a>
+
+            {% if debug %}
+
+            {#
+
+            The purpose of this section is to show a button labeled "store as test case", which
+            calls the API and stores a kind of snapshot of the current chart configuration including
+            data and a visual signature (or footprint if you like) for testing the chart in
+            different browsers.
+
+            It should never be visible on live instances
+
+            #}
+
+            <a href="#" class="snapshot btn btn-info">new test</a>
+            <a href="#" class="snapshot update btn btn-info">update test</a>
+            <script type="text/javascript">
+
+            $(function() {
+                var testId = DW.currentChart.get('metadata.describe.__test_id', null);
+                if (!testId) $('.snapshot.update').hide();
+
+                $('.snapshot').click(function(e) {
+                    e.preventDefault();
+                    var vis = $('#iframe-vis').get(0).contentWindow.vis;
+                    var id = testId && $(e.target).hasClass('update') ? testId : prompt("Enter unique name for this test case..");
+                    $.ajax({
+                        type: 'POST',
+                        url: '/api/charts/{{ chart.id }}/store_snapshot',
+                        data: JSON.stringify({
+                            id: id,
+                            signature: vis.signature()
+                        }),
+                        dataType: 'json'
+                    }).done(function(res) {
+                        if (res.status == "ok") {
+                            DW.logMessage("The test case <b>"+id+"</b> has been "+(testId && $(e.target).hasClass('update') ? 'updated.' : 'created.'), '.visconfig');
+                        }
+                    });
+                });
+            });
+
+            </script>
+
+            {% endif %}
+
             <a class="btn submit" href="describe"><i class="icon-chevron-left"></i> {% trans "Back" %}</a>
+
             <div class="clearfix"></div>
         </div>
-        
+
     </div>
 </div>
 

@@ -32,7 +32,7 @@
     <script type="text/javascript" src="/static/vendor/cryptojs/hmac-sha256.js"></script>
     <script type="text/javascript" src="/static/vendor/globalize/globalize.js"></script>
     <script type="text/javascript" src="/static/vendor/globalize/cultures/globalize.culture.{{ locale | replace({'_':'-'}) }}.js"></script>
-    <script type="text/javascript" src="/static/js/datawrapper.min.js"></script>
+    <script type="text/javascript" src="/static/js/datawrapper-backend-{{ DW_VERSION }}.min.js"></script>
 
   </head>
 
@@ -83,7 +83,7 @@
 
         <p class="pull-right" style="text-align:right">
           <a href="#top">{% trans "Back to top" %}</a>
-          <span class="version">version {{ DW_VERSION }}</span>
+          <span class="version">version <a href="https://github.com/datawrapper/datawrapper/blob/master/CHANGELOG.md#{{ DW_VERSION | replace({ '.': '' }) }}">{{ DW_VERSION }}</a> {{ BRANCH }}</span>
         </p>
 
         <p>{% trans %}
@@ -91,7 +91,7 @@
           {% endtrans %}
         </p>
         <div class="footer-links">
-            <a href="/docs/quickstart">{% trans "Quick Start" %}</a> – <a href="/docs/tutorial">{% trans "Tutorial" %}</a> – <a href="/terms">{% trans "Terms of Use" %}</a> – <a href="/imprint">{% trans "Imprint" %}</a>.
+            <a href="http://docs.datawrapper.de/{{ language }}/quickstart">{% trans "Quick Start" %}</a> – <a href="http://docs.datawrapper.de/{{ language }}/tutorial">{% trans "Tutorial" %}</a> – <a href="http://docs.datawrapper.de/{{ language }}/terms">{% trans "Terms of Use" %}</a> – <a href="http://docs.datawrapper.de/{{ language }}/imprint">{% trans "Imprint" %}</a>.
         </div>
       </footer>
 
@@ -111,6 +111,8 @@
 
 $(function() {
   Datawrapper.Core.initialize();
+  DW.__chartCacheDomain = '{{ DW_CHART_CACHE_DOMAIN }}';
+  DW.__domain = '{{ DW_DOMAIN }}';
 });
     </script>
     {% use "messages.twig" %}

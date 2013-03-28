@@ -5,8 +5,7 @@ var page = require('webpage').create(),
 
 
 if (system.args.length < 3 || system.args.length > 5) {
-    console.log('Usage: rasterize.js URL filename [format]');
-    console.log(' paper (pdf output) examples: "5in*7.5in", "10cm*20cm", "A4", "Letter"');
+    console.log('Usage: export_chart.js URL filename [format]');
     phantom.exit(1);
 } else {
     address = system.args[1];

@@ -4,7 +4,7 @@
 
 {{ parent() }}
 
-<div class="dw-create-upload">
+<div class="dw-create-upload chart-editor">
 
     <script type="text/javascript">
 
@@ -42,6 +42,9 @@
                 uploadData('describe');
             });
 
+            var txtarea = $('#upload-data-text');
+
+
             new qq.FileUploader({
                 element: $('#upload')[0],
                 action: '/api/charts/' + DW.currentChart.get('id') + '/data',
@@ -58,18 +61,19 @@
                     cancel: 'qq-upload-cancel'
                 },
                 multiple: false,
-                onComplete: function(e) {
-                    nextPage('describe');
+                onComplete: function(code, filename, res) {
+                    if (res.status == "ok") nextPage('describe');
+                    else {
+                        DW.logError(res.message, txtarea.parent().parent());
+                    }
                 }
             });
-
-            var txtarea = $('#upload-data-text');
 
             txtarea.data('orig-val', txtarea.val());
 
             $('.upload-drop').css({
                 position: 'absolute',
-                top: txtarea.offset().top +2,
+                top: txtarea.offset().top - $('.navbar').height(),
                 left: txtarea.offset().left+2,
                 width: txtarea.width()+2,
                 height: txtarea.height()+2,

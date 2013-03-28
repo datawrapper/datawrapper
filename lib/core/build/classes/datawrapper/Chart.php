@@ -17,8 +17,8 @@ class Chart extends BaseChart {
 
     public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false) {
         $arr = parent::toArray($keyType, $includeLazyLoadColumns, $alreadyDumpedObjects, $includeForeignObjects);
-        unset($arr['Deleted']);  // we don't use this, since we never transmit deleted charts
-        unset($arr['DeletedAt']);
+        // unset($arr['Deleted']);  // we don't use this, since we never transmit deleted charts
+        //unset($arr['DeletedAt']);
         return $arr;
     }
 
@@ -37,6 +37,8 @@ class Chart extends BaseChart {
      */
     public function serialize() {
         $json = $this->toArray();
+        unset($json['Deleted']);
+        unset($json['DeletedAt']);
         // at first we lowercase the keys
         $json = $this->lowercaseKeys($json);
         // then decode metadata from json string
@@ -120,7 +122,7 @@ class Chart extends BaseChart {
     public function writeData($csvdata) {
         $path = $this->getDataPath();
         if (!file_exists($path)) {
-            mkdir($path);
+            mkdir($path, 0777);
         }
         $filename = $path . '/' . $this->getDataFilename();
         file_put_contents($filename, $csvdata);
@@ -178,7 +180,7 @@ class Chart extends BaseChart {
 
     public function isPublic() {
         // 1 = upload, 2 = describe, 3 = visualize, 4 = publish, 5 = published
-        return !$this->getDeleted() && $this->getLastEditStep() > 3;
+        return !$this->getDeleted() && $this->getLastEditStep() > 4;
     }
 
     public function _isDeleted() {
@@ -242,7 +244,11 @@ class Chart extends BaseChart {
 
             $pub->unpublish($chart_files);
         }
+    }
 
+    public function hasPreview() {
+        return false;
+        return $this->getLastEditStep() == 5 && file_exists($this->getStaticPath() . '/m.png');
     }
 
 } // Chart

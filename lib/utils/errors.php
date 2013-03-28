@@ -98,3 +98,11 @@ function error_invalid_password_reset_token() {
         )
     );
 }
+
+function error_mycharts_user_not_found() {
+    error_page('mycharts',
+        _('User not found!'),
+        _('There is no user with the given user id.')
+    );
+}
+

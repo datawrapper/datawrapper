@@ -2,6 +2,11 @@
 
 {% block content %}
 
+<div id="msg-changes-saved" class="alert alert-info" style="text-align:center;position:fixed;top:-45px;z-index:9999;left: 30%;right:30%;opacity:0">
+  {% trans "Your changes have been saved." %}
+</div>
+
+
 <div class="row create-nav">
     {% for step in steps %}
         {% if createstep > step.index or createstep != step.index and chart.lastEditStep >= step.index %}
@@ -28,6 +33,13 @@
     {% endfor %}
 </div>
 
+{% if user != chart.user and user.isAdmin() %}
+<div class="alert alert-danger" style="text-align:center">
+ {{ "<b>CAUTION!</b> This chart belongs to <a href='/admin/charts/%uid'>%email</a>. Great power comes with great responsibility, so be careful with what you're doing!" | trans
+    | replace({"%email": chart.user.email, "%uid": chart.user.id }) | raw }}
+</div>
+{% endif %}
+
 <script type="text/javascript">
 
 (function($) {
@@ -37,17 +49,31 @@
     };
 
     $(function() {
-        DW.currentChart = new Datawrapper.EditableChart(JSON.parse('{{ chart.toJSON|raw }}'));
+        var chart = DW.currentChart = new Datawrapper.EditableChart(JSON.parse('{{ chart.toJSON|raw }}'));
 
-        DW.currentChart.setLocale('{{ chartLocale }}', {{ metricPrefix | json | raw }});
+        chart.setLocale('{{ chartLocale }}', {{ metricPrefix | json | raw }});
 
-        if (DW.currentChart.get('lastEditStep') < {{ createstep}}) {
-            DW.currentChart.set('lastEditStep', {{ createstep }});
+        if (chart.get('lastEditStep') < {{ createstep }}) {
+            DW.__firstTime = true;
+            chart.set('lastEditStep', {{ createstep }});
         }
+
+        /*var saveMsg = $('#msg-changes-saved');
+        chart.onSave(function() {
+            setTimeout(function() {
+                saveMsg.css({ top: 65 }).animate({ opacity: 1 }, 100);
+                setTimeout(function() {
+                    saveMsg.animate({ opacity: 0 }, 700, function() {
+                        saveMsg.css({ top: -45 });
+                    });
+                }, 1000);
+            }, 500);
+        });*/
     });
 
-    $('.submit').live('click', function(e) {
-        var a = $(e.target), chart = DW.currentChart;
+
+    $('.chart-editor').on('click', '.submit', function(e) {
+        var a = $(e.target);
         if (e.target.nodeName.toLowerCase() != 'a') a = a.parents('a');
         if (chart.__changed) {
             e.preventDefault();

@@ -6,10 +6,12 @@
 <script type="text/javascript">
 $(function() {
 
-    DW.currentChart.sync('#make-public', 'showInGallery');
+    var chart = DW.currentChart;
 
-    DW.currentChart.sync('#embed-width', 'metadata.publish.embed-width');
-    DW.currentChart.sync('#embed-height', 'metadata.publish.embed-height');
+    chart.sync('#make-public', 'showInGallery');
+
+    chart.sync('#embed-width', 'metadata.publish.embed-width');
+    chart.sync('#embed-height', 'metadata.publish.embed-height');
 
     $('#embed-width, #embed-height').change(function() {
         var w = $('#embed-width').val(), h = $('#embed-height').val(),
@@ -39,12 +41,11 @@ $(function() {
 
     $('a.duplicate').click(function(e) {
         e.preventDefault();
-        var id = DW.currentChart.get('id');
+        var id = chart.get('id');
         $.ajax({
             url: '/api/charts/'+id+'/copy',
             type: 'POST',
             success: function(data) {
-                data = JSON.parse(data);
                 if (data.status == "ok") {
                     // redirect to copied chart
                     location.href = '/chart/'+data.data.id+'/visualize';
@@ -61,7 +62,7 @@ $(function() {
         // 1. make iframe and load chart
         var iframe = $('<iframe />');
         iframe.attr({
-            src: 'http://{{ DW_DOMAIN }}/chart/{{ chart.id }}'
+            src: 'http://{{ DW_DOMAIN }}/chart/{{ chart.id }}/preview'
         });
         iframe.css({
             position: 'absolute',
@@ -88,7 +89,6 @@ $(function() {
                 var x = px(lbl.css('left')),
                     y = px(lbl.css('top')),
                     txt = $('span', lbl).html();
-                console.log(x,y,txt);
                 ctx.font = "8pt Arial";
                 ctx.fillText(txt, x, y);
 
@@ -97,35 +97,20 @@ $(function() {
 
     }
 
-
+    // send ajax request for re-sending activation email
     $('a[href=#resend]').click(function(e) {
         e.preventDefault();
-        $.ajax({
-            url: '/api/account/resend-activation',
-            type: 'POST',
-            dataType: 'json',
-            success: function(res) {
-                console.log(res);
-                if (res.status == 'ok') {
-                    DW.logMessage(res.data, $(e.target).parent());
-                } else {
-                    DW.logError(res.message, $(e.target).parent());
-                }
-            }
-        });
+        DW.resendActivationMail($(e.target).parent().parent().parent());
     });
 
+    // open modal popup for exporting charts to PNG/PDF
     $('a[href=#export]').click(function(e) {
         e.preventDefault();
         $('#dwExportChart').modal();
         return false;
     });
 
-    /*setTimeout(function() {
-
-        snapshot(1200,600);
-    },4000);*/
-
+    // automatically select embed code
     $("textarea").click(function() { $(this).focus().select(); } );
 });
 
@@ -153,7 +138,7 @@ p.lead {
 }
 </style>
 
-<div class="dw-create-publish">
+<div class="dw-create-publish chart-editor">
     <div class="row">
         <div class="span4">
 
@@ -183,7 +168,7 @@ p.lead {
             {% endif %}
 
             <p>
-                <a class="submit duplicate" role="button">
+                <a class="duplicate" role="button">
                     <i class="icon-plus"></i>&nbsp;&nbsp;{% trans "Duplicate this chart" %}
                 </a>
             </p>
@@ -228,7 +213,7 @@ p.lead {
             <ol>
                 <li>{% trans "At first, don't worry. Everything you created will wait patiently" %}</li>
                 <li>{% trans "Make sure that your spam filter didn't catch our activation email. They are sent from" %} activate@{{ DW_DOMAIN }}.</li>
-                <li>{% trans "Of course, you can also let us <a href='#resend'>resend the activation email</a>." %} (TODO)</li>
+                <li>{% trans "Of course, you can also let us <a href='#resend'>resend the activation email</a>." %}</li>
                 <li>{% trans "If that didn't work either, please contact our support" %}</li>
             </ol>
 
@@ -255,6 +240,8 @@ p.lead {
 
             <iframe src="{{ iframe }}" id="iframe-vis" style="width:{{ chart.metadata.publish['embed-width'] }}px;height:{{ chart.metadata.publish['embed-height'] }}px" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>
 
+            <div style="color: #999;margin-top:20px"><b>{% trans "Note" %}:</b> {% trans "It may take a while until the republished chart. You can force reloading of the chart by right-clicking it and selecting 'Reload Iframe'. " %}
+
             {% else %}
 
             <iframe src="/chart/{{ chart.id }}/preview" id="iframe-vis" style="width:{{ chart.metadata.publish['embed-width'] }}px;height:{{ chart.metadata.publish['embed-height'] }}px" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>
@@ -268,7 +255,7 @@ p.lead {
         <div class="span12">
             <div class="form-actions">
                 <a class="submit pull-right btn" href="/chart/create"><i class="icon-pencil"></i> {% trans "Create another graphic" %}</a>
-                
+
                 <a class="submit btn" href="visualize"><i class="icon-chevron-left"></i> {% trans "Return to visualise step" %}</a>
             </div>
         </div>
@@ -285,7 +272,7 @@ p.lead {
     cursor: pointer;
     border-radius: 8px;
 }
-.ratio-select .option.selected {
+.ratio-select .option.selected {DW.currentChart;
     background-color: rgba(82, 168, 236, 0.3);
 }
 .ratio-select .option .img {
@@ -326,7 +313,7 @@ $(function() {
     $('.btn-export-chart').click(function(e) {
         e.preventDefault();
         $.ajax({
-            url: '/api/jobs/export/'+DW.currentChart.get('id'),
+            url: '/api/jobs/export/'+chart.get('id'),
             type: 'post',
             dataType: 'json',
             data: JSON.stringify({

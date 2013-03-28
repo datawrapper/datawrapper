@@ -68,21 +68,6 @@
         refreshHeader: function() {
             location.reload();
             return;
-            /*
-            $.get('/xhr/header/create', function(header) {
-                $('.header .toplinks').replaceWith(header);
-                DW.initializeSignUp();
-                DW.initializeLogout();
-            });
-
-            // reload login form on homepage
-            var homeLogin = $('#home-login');
-            if (homeLogin.length > 0) {
-                homeLogin.load('/xhr/home-login', null, function() {
-                    DW.initializeSignUp();
-                    DW.initializeLogout();
-                });
-            }*/
         },
 
         initializeSignUp: function() {
@@ -244,6 +229,55 @@
 
         logError: function(msg, parent) {
             this.logMessage(msg, parent, 'error');
+        },
+
+        resendActivationMail: function(msgElement) {
+            var req = $.ajax({
+                url: '/api/account/resend-activation',
+                type: 'POST',
+                dataType: 'json'
+            });
+            if (msgElement) {
+                req.done(function(res) {
+                    if (res.status == 'ok') {
+                        DW.logMessage(res.data, msgElement);
+                    } else {
+                        DW.logError(res.message, msgElement);
+                    }
+                });
+            }
+            return req;
+        },
+
+        popupChart: function (id, preview) {
+            $.getJSON('/api/charts/'+id, function(res) {
+                if (res.status == "ok") {
+                    var chart = res.data,
+                        chartUrl = preview ? 'http://' + DW.__domain + '/chart/' + chart.id + '/preview' :
+                            'http://' + DW.__chartCacheDomain + '/' + chart.id + '/index.html';
+                        chartIframe = $('<iframe src="'+chartUrl+'" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>'),
+                        wrapper = $('<div></div>'),
+                        overlay = wrapper.overlay({
+                            onClose: function() {
+                                location.hash = '';
+                            }
+                        });
+                    wrapper.append('<a class="close close-button">&#9747;</a>');
+                    wrapper.append(chartIframe);
+
+                    chartIframe.css({
+                        width: chart.metadata.publish['embed-width'],
+                        height: chart.metadata.publish['embed-height'],
+                        background: (chart.metadata.publish['background'] || '#fff'),
+                        border: '10px solid '+(chart.metadata.publish['background'] || '#fff'),
+                        'border-radius': 10
+                    });
+                    overlay.open();
+                    if (location.hash != '#/' + chart.id) {
+                        location.hash = '#/' + chart.id;
+                    }
+                }
+            });
         }
     });
 

@@ -1,0 +1,29 @@
+{% extends "admin.twig" %}
+
+{% block adminpage %}
+
+<table class="table table-striped table-bordered table-hover">
+    <thead><tr>
+        <th>Name</th>
+        <th>ID</th>
+        <th>Version</th>
+        <th>Parent</th>
+        <th>Restriction</th>
+        <th># Charts</th>
+    </tr></thead>
+    <tbody>
+
+{% for theme in themes %}
+    <tr>
+        <td>{{ theme.title }}</td>
+        <td>{{ theme.id }}</td>
+        <td>{{ theme.version }}</td>
+        <td>{{ theme.extends }}</td>
+        <td>{{ theme.restrict }}</td>
+        <td>{{ count[theme.id] }}</td>
+    </tr>
+{% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

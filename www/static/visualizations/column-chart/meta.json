@@ -4,17 +4,10 @@
         "de": "Balken (vertikal)",
         "fr": "Diagramme à bandes verticales"
     },
-    "version": "0.9.9",
-    "dimensions": 2,
+    "version": "1.2.6",
+    "dimensions": 1,
     "extends": "raphael-chart",
-    "author": {
-        "name": "gka",
-        "email": "gka@vis4.net"
-    },
-    "license": {
-        "name": "MIT",
-        "url": "http://www.opensource.org/licenses/mit-license.php"
-    },
+    "order": 0,
     "options": {
         "sort-values": {
             "type": "checkbox",
@@ -41,6 +34,5 @@
             }
         }
     },
-    "libraries": [],
-    "about": "http://site.com/understanding-bar-charts/"
+    "libraries": []
 }
