@@ -91,11 +91,11 @@ body.chart {
     font-weight: bold;
 }
 
-.label.value span {
+.label.value {
     font-size: 12px;
 }
 
-.label.series span {
+.label.series {
     font-size: 12px;
 }
 

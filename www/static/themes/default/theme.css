@@ -41,8 +41,11 @@ h1 span {
     margin-top: 20px;
 }
 
-.label span {
+.label {
     font-size: 12px;
+}
+
+.label span {
     color: #333;
     text-shadow: 0 0 2px #fff;
 }

@@ -64,10 +64,8 @@ body.chart {
     padding-left: 30px;
 }
 
-.label span {
-    font-size: 11px;
-    color: #16212c;
-}
+.label { font-size: 11px; }
+.label span { color: #16212c; }
 
 .label.highlighted, .label.axis {
     font-size: 11px;
