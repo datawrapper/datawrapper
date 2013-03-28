@@ -8,7 +8,7 @@
     "dimensions": 2,
     "extends": "grouped-column-chart",
     "order": 20,
-    "color-by-row": true,
+    "color-by": "row",
     "options": {
         "sort-values": {
             "type": "checkbox",
