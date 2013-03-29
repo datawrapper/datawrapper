@@ -36,7 +36,7 @@
 
             var me = this,
             c = me.initCanvas({}),
-            ds = me.chart.__dataset,
+            dataset = me.chart.__dataset,
             chart_width = c.w - c.lpad - c.rpad,
             series_gap = 0.05, // pull from theme
             row_gap = 0.01;
@@ -69,7 +69,7 @@
 
             var colors = me.getRowColors();
 
-            ds.eachRow(function(i) {
+            dataset.eachRow(function(i) {
                 me.setRowColor(i, colors[i % colors.length]);
             });
 
@@ -79,31 +79,14 @@
             el.mousemove(_.bind(me.onMouseMove, me));
 
             if (me.chart.numRows() > 1) {
-                // add legend
-                var l = $('<div class="legend"></div>'),
-                    xo = 0;
-
-                me.chart.__dataset.eachRow(function(r) {
-                    div = $('<div></div>');
-                    div.css({
-                        background: me.getBarColor(null, r),
-                        width: 12,
-                        height: 12,
-                        position: 'absolute',
-                        left: xo,
-                        top: 1
+                var items = [];
+                dataset.eachRow(function(r) {
+                    items.push({
+                        label: dataset.rowName(r),
+                        color: me.getBarColor(null, r)
                     });
-                    l.append(div);
-                    lbl = me.label(xo + 15, 0, me.chart.__dataset.rowName(r), {
-                        valign: 'left',
-                        root: l
-                    });
-                    xo += me.labelWidth(me.chart.__dataset.rowName(r))+30;
                 });
-                l.css({
-                    position: 'relative'
-                });
-                $('#header', c.root.parent()).append(l);
+                me.addLegend(items, $('#header', c.root.parent()));
             }
             $('.showOnHover').hide();
 

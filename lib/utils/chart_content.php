@@ -8,17 +8,12 @@ function get_chart_content($chart, $user, $minified = false, $path = '') {
     $next_theme_id = $chart->getTheme();
 
     $locale = DatawrapperSession::getLanguage();
-    $themeLocale = null;
 
     while (!empty($next_theme_id)) {
         $theme = get_theme_meta($next_theme_id, $path);
         $theme_js[] = '/static/themes/' . $next_theme_id . '/theme.js';
         if ($theme['hasStyles']) {
             $theme_css[] = '/static/themes/' . $next_theme_id . '/theme.css';
-        }
-        if (!empty($theme['hasLocaleJS'])) {
-            $theme_js[] = $theme['localeJS'];
-            if (empty($themeLocale)) $themeLocale = $theme['locale'];
         }
         $next_theme_id = $theme['extends'];
     }
@@ -59,7 +54,12 @@ function get_chart_content($chart, $user, $minified = false, $path = '') {
         $vjs = array();
         if (!empty($vis['libraries'])) {
             foreach ($vis['libraries'] as $url) {
-                $vis_libs[] = '/static/vendor/' . $url;
+                // at first we check if the library lives in ./lib of the vis module
+                if (file_exists(ROOT_PATH . 'www/static/visualizations/' . $vis['id'] . '/lib/' . $url)) {
+                    $vis_libs[] = '/static/visualizations/'.$vis['id'].'/lib/'.$url;
+                } else if (file_exists(ROOT_PATH . 'www/static/vendor/' . $url)) {
+                    $vis_libs[] = '/static/vendor/' . $url;
+                }
             }
         }
         if (!empty($vis['locale'])) {
