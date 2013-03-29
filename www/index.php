@@ -81,22 +81,28 @@ function add_header_vars(&$page, $active = null) {
         $headlinks[] = $link;
     }
 
+    $headlinks[] = array('url' => 'http://datawrapper.de/docs/about', 'id' => 'about', 'title' => _('About'), 'icon' => 'info-sign');
+    $headlinks[] = array('url' => 'http://www.dataninja.it', 'id' => 'blog', 'title' => 'Dataninja', 'icon' => 'tag');
+
     $headlinks[] = array(
         'url' => '',
         'id' => 'lang',
         'dropdown' => array(array(
-            'url' => '#lang-de-DE',
-            'title' => 'Deutsch'
+            'url' => '#lang-it-IT',
+            'title' => 'Italiano'
         ), array(
             'url' => '#lang-en-GB',
             'title' => 'English'
+        /*), array(
+            'url' => '#lang-de-DE',
+            'title' => 'Deutsch'
         ), array(
             'url' => '#lang-fr-FR',
             'title' => 'Français'
         ), array(
             'url' => '#lang-es-ES',
             'title' => 'Español'
-        )),
+         */)),
         'title' => _('Language'),
         'icon' => 'font'
     );
@@ -199,7 +205,7 @@ require_once '../controller/chart-publish.php';
 require_once '../controller/chart-static.php';
 require_once '../controller/mycharts.php';
 require_once '../controller/xhr.php';
-require_once '../controller/docs.php';
+#require_once '../controller/docs.php';
 require_once '../controller/gallery.php';
 require_once '../controller/admin.php';
 

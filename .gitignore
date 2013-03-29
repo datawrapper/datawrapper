@@ -16,3 +16,4 @@ archive.tar
 *.log
 *.html
 *.png
+archive_tag.sh
