@@ -2,7 +2,6 @@
     "title": "Deutsche Welle",
     "link": "http://www.dw.de",
     "restrict": "@dw.de",
-    "locale": "de_DE",
     "extends": "default",
-    "version": "0.9.4"
+    "version": "1.2.6"
 }

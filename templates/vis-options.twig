@@ -184,6 +184,10 @@ $(function() {
                             visible = visible && chart.dataSeries().length <= +val;
                         } else if (key == 'chart.missing_values') {
                             visible = visible && chart.hasMissingValues() == val;
+                        } else if (key == 'chart.min_row_num') {
+                            visible = visible && chart.numRows() >= +val;
+                        }  else if (key == 'chart.max_row_num') {
+                            visible = visible && chart.numRows() <= +val;
                         } else {
                             visible = visible && chart.get('metadata.visualize.'+key) == val;
                         }
@@ -227,31 +231,43 @@ $(function() {
             sel = chart.get('metadata.visualize.custom-colors', {});
             labels = [];
 
-        if (!vis['color-by-row']) {
-            $.each(chart.dataSeries(), function(i, ds) { labels.push(ds.name); });
+        if (vis['color-by'] && vis['color-by'] == 'row') {
+            $.each(chart.rowLabels(), function(i, n) { labels.push(n); });
+        } else if (vis['color-by'] && vis['color-by'] == 'hierarchy') {
+            var tree = chart.__dataset.parseTree(0);
+            function visitNode(n) {
+                if (n.name) labels.push([n.name, $.trim(_.range(n.depth-1).map(function() { return '...'; }).join('')+' '+n.name)]);
+                _.each(n.children, visitNode);
+            }
+            visitNode(tree);
         } else {
-            $.each(chart.rowLabels(), function(i, n) { labels.push(n); })
+            $.each(chart.dataSeries(), function(i, ds) { labels.push(ds.name); });
         }
 
         // populate custom color selector
         $.each(labels, function(i, lbl) {
-            var li = $('<li data-series="'+lbl+'"></li>');
+            var s = lbl;
+            if (_.isArray(lbl)) {
+                s = lbl[0];
+                lbl = lbl[1];
+            }
+            var li = $('<li data-series="'+s+'"></li>');
             li.append('<div class="color">×</div><label>'+lbl+'</label>');
-            if (sel[lbl]) {
-                $('.color', li).html('').css('background', sel[lbl]);
-                li.data('color', sel[lbl]);
+            if (sel[s]) {
+                $('.color', li).html('').css('background', sel[s]);
+                li.data('color', sel[s]);
             }
             $('#customColors .dataseries').append(li);
         });
         // auto-select first series
         $('#customColors .dataseries li:first-child').addClass('selected');
-        $('#customColors .selected-series-name').html(labels[0]);
+        $('#customColors .selected-series-name').html(_.isArray(labels[0]) ? labels[0][1] : labels[0]);
 
         // define select event handler
         $('#customColors .dataseries li').click(function(e) {
             var li = e.target.nodeName.toLowerCase() == 'li' ? $(e.target) : $(e.target).parents('li');
             $('#customColors .dataseries li').removeClass('selected');
-            $('#customColors .selected-series-name').html($('label', li).html());
+            $('#customColors .selected-series-name').html(li.data('series'));
             li.addClass('selected');
             customColorSelectSeries();
         });
@@ -266,7 +282,7 @@ $(function() {
             .css('background', '')
             .html('×');
         var sel = $.extend({}, chart.get('metadata.visualize.custom-colors', {}));
-        sel[$('label', li).html()] = '';
+        sel[li.data('series')] = '';
         chart.set('metadata.visualize.custom-colors', sel);
     });
 
@@ -295,7 +311,7 @@ $(function() {
             .css('background', color)
             .html('');
         li.data('color', color);
-        sel[$('label', li).html()] = color;
+        sel[li.data('series')] = color;
         chart.set('metadata.visualize.custom-colors', sel);
     }
 

@@ -58,13 +58,13 @@
             if (!me.theme.columnChart.cutGridLines) me.horzGrid();
 
             var base = me.theme.colors.palette[me.get('base-color', 0)],
-                bLch = d3.cie.lch(d3.rgb(base)),
+                bLch = chroma.color(base).lch(),
                 ml = Math.min(bLch.l, 50),
                 colors = [];
 
 
             colors = d3.range(ml, 91, (90 - ml) / (me.chart.numRows() - 1)).map(function(l) {
-                return ''+d3.cie.lch(l, bLch.c, bLch.h).rgb();
+                return chroma.lch(l, bLch.c, bLch.h).hex();
             }).reverse();
 
             ds.eachRow(function(i) {
@@ -75,7 +75,7 @@
                 _.each(series.data, function(val, r) {
                     var d = me.barDimensions(series, s, r);
                     var fill = me.getBarColor(series, r, me.get('negative-color', false)),
-                        stroke = d3.cie.lch(d3.rgb(fill)).darker(0.6).toString();
+                        stroke = chroma.color(fill).darken(14).hex();
                     // create bar
                     me.registerSeriesElement(c.paper.rect().attr(d).attr({
                         'stroke': stroke,
@@ -235,8 +235,8 @@
             var me = this, c = me.__canvas,
                 dMin = 0, dMax = 0;
             _.each(me.chart.dataSeries(), function(series) {
-                dMin = Math.min(dMin, series.min);
-                dMax = Math.max(dMax, series.max);
+                if (!isNaN(series.min)) dMin = Math.min(dMin, series.min);
+                if (!isNaN(series.max)) dMax = Math.max(dMax, series.max);
             });
             me.__domain = [dMin, dMax];
             me.__scales = {
@@ -253,13 +253,16 @@
                 n = me.chart.dataSeries().length,
                 w, h, x, y, i, cw, bw,
                 pad = 0.35,
-                vspace = 0.1;
+                vspace = 0.1,
+                val = series.data[r];
+
+            if (isNaN(val)) val = 0;
 
             if (c.w / n < 30) vspace = 0.05;
 
             cw = (c.w - c.lpad - c.rpad) * (1 - vspace - vspace);
             bw = cw / (n + (n-1) * pad);
-            h = sc.y(series.data[r]) - sc.y(0);
+            h = sc.y(val) - sc.y(0);
             w = Math.round(bw / series.data.length);
             if (h >= 0) {
                 y = c.h - c.bpad - sc.y(0) - h;
@@ -275,12 +278,12 @@
             var me = this, d = me.barDimensions(series, s, r),
                 val = series.data[r],
                 c = me.__canvas,
-                valign = val > 0 ? 'top' : 'bottom',
+                lbl_top = val >= 0 || isNaN(val),
+                valign = lbl_top ? 'top' : 'bottom',
                 halign = 'center',
-
                 lbl_w = c.w / (me.chart.dataSeries().length+2),
-                val_y = val > 0 ? d.y - 10 : d.y + d.height + 10,
-                lbl_y = val <= 0 ? d.y - 10 : d.y + d.height + 5;
+                val_y = lbl_top ? d.y - 10 : d.y + d.height + 10,
+                lbl_y = !lbl_top ? d.y - 10 : d.y + d.height + 5;
 
             if (type == "value") {
                 return { left: d.x + d.width * 0.5, top: val_y, width: d.width };
@@ -289,7 +292,7 @@
                     //lblcl.push('rotate90');
                     lbl_y += 5;
                     lbl_w = 100;
-                    halign = 'right';
+                    halign = 'right'; // lbl_top ? 'right' : 'left';
                 }
                 if (d.bw < 20) {
                     lbl_w = 90;
@@ -321,36 +324,38 @@
                 tickLabels = me.__tickLabels = me.__tickLabels || {},
                 gridLines = me.__gridLines = me.__gridLines || {};
 
+            ticks = ticks.filter(function(val, t) {
+                return val >= domain[0] && val <= domain[1];
+            });
+
             _.each(ticks, function(val, t) {
                 var y = c.h - c.bpad - yscale(val), x = c.lpad, ly = y-10;
-                if (val >= domain[0] && val <= domain[1]) {
-                    // c.paper.text(x, y, val).attr(styles.labels).attr({ 'text-anchor': 'end' });
-                    if (me.theme.columnChart.cutGridLines) ly += 10;
-                    var key = String(val);
-                    // show or update label
-                    if (val !== 0) {
-                        var lbl = tickLabels[key] = tickLabels[key] ||
-                            me.label(x+2, ly, me.chart.formatValue(val, t == ticks.length-2, true),
-                                { align: 'left', cl: 'axis', css: { opacity: 0 } });
-                        lbl.animate({ x: c.lpad+2, y: ly, css: { opacity: 1 } }, me.theme.duration, me.theme.easing);
+                // c.paper.text(x, y, val).attr(styles.labels).attr({ 'text-anchor': 'end' });
+                if (me.theme.columnChart.cutGridLines) ly += 10;
+                var key = String(val);
+                // show or update label
+                if (val !== 0) {
+                    var lbl = tickLabels[key] = tickLabels[key] ||
+                        me.label(x+2, ly, me.chart.formatValue(val, t == ticks.length-1, true),
+                            { align: 'left', cl: 'axis', css: { opacity: 0 } });
+                    lbl.animate({ x: c.lpad+2, y: ly, css: { opacity: 1 } }, me.theme.duration, me.theme.easing);
+                }
+                if (me.theme.yTicks) {
+                    me.path([['M', c.lpad-25, y], ['L', c.lpad-20,y]], 'tick');
+                }
+                if (me.theme.horizontalGrid) {
+                    var lattrs = { path: [['M', c.lpad, y], ['L', c.w - c.rpad,y]], opacity: 1 },
+                        l = gridLines[key] = gridLines[key] || me.path(lattrs.path, 'grid');
+                    l.toBack();
+                    if (val === 0) {
+                        lattrs = $.extend(me.theme.xAxis, lattrs);
+                        l.toFront();
+                    } else {
+                        l.attr(me.theme.horizontalGrid);
+                        lattrs = $.extend(me.theme.horizontalGrid, lattrs);
                     }
-                    if (me.theme.yTicks) {
-                        me.path([['M', c.lpad-25, y], ['L', c.lpad-20,y]], 'tick');
-                    }
-                    if (me.theme.horizontalGrid) {
-                        var lattrs = { path: [['M', c.lpad, y], ['L', c.w - c.rpad,y]], opacity: 1 },
-                            l = gridLines[key] = gridLines[key] || me.path(lattrs.path, 'grid');
-                        l.toBack();
-                        if (val === 0) {
-                            lattrs = $.extend(me.theme.xAxis, lattrs);
-                            l.toFront();
-                        } else {
-                            l.attr(me.theme.horizontalGrid);
-                            lattrs = $.extend(me.theme.horizontalGrid, lattrs);
-                        }
-                        if (val !== 0 && me.theme.columnChart.cutGridLines) lattrs.stroke = me.theme.colors.background;
-                        l.animate(lattrs, me.theme.duration, me.theme.easing);
-                    }
+                    if (val !== 0 && me.theme.columnChart.cutGridLines) lattrs.stroke = me.theme.colors.background;
+                    l.animate(lattrs, me.theme.duration, me.theme.easing);
                 }
             });
             // hide invisible grid lines
@@ -391,8 +396,8 @@
                     }
                     _.each(me.__seriesElements[s.name], function(el) {
                         var fill = me.getBarColor(s, el.data('row'), me.get('negative-color', false)), stroke;
-                        if (series !== undefined && s.name == series.name) fill = d3.cie.lch(d3.rgb(fill)).darker(0.6).toString();
-                        stroke = d3.cie.lch(d3.rgb(fill)).darker(0.6).toString();
+                        if (series !== undefined && s.name == series.name) fill = chroma.color(fill).darken(14).hex();
+                        stroke = chroma.color(fill).darken(18).hex();
                         if (el.attrs.fill != fill || el.attrs.stroke != stroke)
                             el.animate({ fill: fill, stroke: stroke }, 50);
                     });

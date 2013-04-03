@@ -136,7 +136,6 @@ $(function(){
    {% if user2 %}
     $('.thumbnail > a').click(function(e) {
         e.preventDefault();
-        console.log($(e.target).parents('.chart').data('id'));
         DW.popupChart($(e.target).parents('.chart').data('id'), true);
     });
 

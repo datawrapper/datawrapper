@@ -11,12 +11,13 @@
 <script type="text/javascript" src="/static/vendor/underscore/underscore-min.js"></script>
 <script type="text/javascript" src="/static/vendor/jquery/jquery.min.js"></script>
 
-<script type="text/javascript" src="/static/js/dw.min.js"></script>
+<script type="text/javascript" src="/static/js/datawrapper-backend-1.2.6.min.js"></script>
 
 <script type="text/javascript" src="/static/vendor/globalize/cultures/globalize.culture.de-DE.js"></script>
 <script type="text/javascript" src="/static/themes/default/theme.js"></script>
 <script type="text/javascript" src="/static/vendor/d3js/d3.light.js"></script>
 <script type="text/javascript" src="/static/vendor/raphaeljs/raphael-2.1.0.min.js"></script>
+<script type="text/javascript" src="/static/vendor/chromajs/chroma.min.js"></script>
 <script type="text/javascript" src="/static/visualizations/raphael-chart/raphael-chart.js"></script>
 <script type="text/javascript" src="/static/visualizations/line-chart/line-chart.js"></script>
 
@@ -62,10 +63,12 @@
 
             vis.setTheme(theme);
             vis.chart = chart;
-            chart.setLocale('en', {"3":"k","6":"m","9":"b","12":"t"});
+            vis.meta = JSON.parse('{{ linechart | json | raw }}');
+            chart.setLocale('en-US', {"3":"k","6":"m","9":"b","12":"t"});
             chart.rawData(data);
             vis.dataset = chart.__dataset;
-            vis.getSize = function() { return [$('.span6').width(),200] };
+            vis.getSize = function() { return [$('.span5').width(),200] };
+            console.log(data);
             vis.render(cont);
         }
 

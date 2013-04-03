@@ -4,6 +4,10 @@
     background-color: #fff;
 }
 
+html .label.tooltip span {
+    background: none;
+}
+
 .label.highlighted {
     z-index: 100;
 }
@@ -21,6 +25,10 @@
 
 .label.x-axis {
     font-weight: bold;
+}
+
+.label.x-axis.h span {
+    padding: 2px 5px 5px;
 }
 
 html, body {

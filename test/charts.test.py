@@ -132,7 +132,7 @@ def test_charts(dc, charts, screenshots):
                             driver.set_window_size(w + 5, h + 100)
                             driver.save_screenshot(fn)
                     except WebDriverException, e:
-                        print 'WARN: javascript error', e
+                        print 'WARN: javascript error at chart %s / ' % chart['id'], e
 
                     if chart['id'] not in screenshots:
                         screenshots[chart['id']] = dict()

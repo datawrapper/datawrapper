@@ -165,7 +165,7 @@
             }
             if (ocnt > 0) {
                 var _others = {
-                    name: 'others',
+                    name: me.translate('other'),
                     data: [others]
                 };
                 oseries.push(_others);
@@ -202,7 +202,7 @@
 
                 var da = s.data[0] / total * FA,
                     fill = me.getSeriesColor(s, 0),
-                    stroke = d3.cie.lch(d3.rgb(fill)).darker(0.6).toString(),
+                    stroke = chroma.color(fill).darken(15).hex(),
                     a0 = reverse ? sa - da : sa,
                     a1 = reverse ? sa : sa + da,
                     value = showTotal ? Math.round(s.data[0] / total * 100)+'%' : me.chart.formatValue(s.data[0], true);
@@ -282,7 +282,7 @@
 
         hoverSeries: function(series) {
             var me = this,
-                bg = d3.cie.lch(d3.rgb(me.theme.colors.background));
+                bg = chroma.color(me.theme.colors.background);
             _.each(me.chart.dataSeries(), function(s) {
                 _.each(me.__seriesLabels[s.name], function(lbl) {
                     if (series !== undefined && s.name == series.name) {
@@ -292,7 +292,7 @@
                     }
                     _.each(me.__seriesElements[s.name], function(el) {
                         var fill = me.getSeriesColor(s, 0), stroke, hover = series !== undefined && s.name == series.name;
-                        if (hover) fill = d3.cie.lch(d3.rgb(fill)).darker(bg.l > 60 ? 0.6 : -0.6).toString();
+                        if (hover) fill = chroma.lch(fill).darken(bg.hcl()[2] > 60 ? 14 : -14).hex();
                         if (el.attrs.fill != fill)
                             el.animate({ fill: fill }, 50);
                         if (hover) el.toFront();

@@ -53,7 +53,7 @@ class DatabaseSessionHandler
     }
 
     function gc($sess_maxlifetime) {
-        mysql_query("DELETE FROM session WHERE TIMESTAMPDIFF(SECOND, last_updated, NOW()) > $sess_maxlifetime;");
+        mysql_query("DELETE FROM session WHERE session_data = \"slim.flash|a:0:{}\" AND last_updated < '".date('c', time()-86400*7)."'");
         return true;
     }
 

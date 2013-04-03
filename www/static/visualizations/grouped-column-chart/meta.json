@@ -4,10 +4,10 @@
         "de": "Balken (vertikal, gruppiert)",
         "fr": "Diagramme à bandes verticales"
     },
-    "version": "1.2.4",
+    "version": "1.2.6",
     "dimensions": 2,
     "extends": "raphael-chart",
-    "color-by-row": true,
+    "color-by": "row",
     "order": 10,
     "options": {
         "sort-values": {

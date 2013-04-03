@@ -4,11 +4,11 @@
         "de": "Balken (vertikal, gestapelt)",
         "fr": "Diagramme à bandes verticales"
     },
-    "version": "1.2.4",
+    "version": "1.2.6",
     "dimensions": 2,
     "extends": "grouped-column-chart",
     "order": 20,
-    "color-by-row": true,
+    "color-by": "row",
     "options": {
         "sort-values": {
             "type": "checkbox",
@@ -25,7 +25,30 @@
                 "de": "Umgekehrte Reihenfolge",
                 "fr": "inverser l&#39;ordre"
             }
+        },
+        "normalize": {
+            "type": "checkbox",
+            "label": {
+                "en": "Stack percentages",
+                "de": "Prozentwerte stapeln",
+                "fr": "Normalize to 100%"
+            },
+            "default": false
+        },
+        "normalize-user": {
+            "type": "checkbox",
+            "label": {
+                "en": "Let user switch mode",
+                "de": "Nutzer kann umschalten",
+                "fr": "Let user switch mode"
+            },
+            "depends-on": {
+                "normalize": true
+            }
         }
+    },
+    "locale": {
+        "stack percentages": { "de": "Prozente darstellen" }
     },
     "libraries": []
 }

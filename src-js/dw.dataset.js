@@ -184,6 +184,35 @@
                 });
                 s.data = d;
             });
+        },
+
+        /*
+         * returns a tree data structure from this dataset
+         */
+        parseTree: function(row) {
+            var tree = { children: [], depth: 0 };
+            this.eachSeries(function(s) {
+                var parts = s.name.split('>');
+                var node = tree;
+                _.each(parts, function(p, i) {
+                    parts[i] = p = p.trim();
+                    var found = false;
+                    _.each(node.children, function(c) {
+                        if (c.name.trim() == p) {
+                            node = c;
+                            found = true;
+                            return false;
+                        }
+                    });
+                    if (!found) { // child not found, create new one
+                        var n = { name: p, children: [], _series: s, _row: 0, depth: i+1 };
+                        if (i == parts.length-1) n.value = s.data[row];
+                        node.children.push(n);
+                        node = n;
+                    }
+                });
+            });
+            return tree;
         }
     });
 
@@ -246,6 +275,7 @@
             number = Number(number);
             return isNaN(number) ? raw : number;
         }
+
     });
 
 }).call(this);

@@ -6,7 +6,7 @@
  */
 
 body, html {
-    height: 100%;
+    height: 99%;
 }
 
 a { color: #0088CC; }
@@ -41,8 +41,11 @@ h1 span {
     margin-top: 20px;
 }
 
-.label span {
+.label {
     font-size: 12px;
+}
+
+.label span {
     color: #333;
     text-shadow: 0 0 2px #fff;
 }

@@ -5,8 +5,41 @@
  * and sending them via email once generated
  */
 
+define('BASEDIR', dirname(dirname(__FILE__)));
+define('LOGFILE', BASEDIR . "/logs/export-charts.log");
+
+
+function execute($cmd, &$error=null) {
+    ob_start();  // grab output
+    passthru($cmd, $error);
+    $output = ob_get_contents();
+    ob_end_clean();
+    return $output;
+}
+
+$flog = fopen(LOGFILE, 'a+');
+if (!$flog) {
+    die("could not open logfile!\n");
+}
+
+function _log($msg = "", $job=null, $type='LOG') {
+    global $flog, $cfg;
+    if (!empty($msg)) {
+        $prefix = date('Y-m-d H:i:s').",".$type.",";
+        if ($job) {
+            $prefix .= $job['job_id'].",";
+        } else {
+            $prefix .= ",";
+        }
+        fwrite($flog, $prefix . '"' . $msg . "\"\n");
+        if ($type == 'ERROR') {
+            @mail($cfg['log_email'], 'export-charts / error / '.substr($msg, 0, 80).'...', $msg, "From: ".$cfg['admin_mail']."\r\n");
+        }
+    }
+}
+
 // load db config
-require_once "../lib/core/build/conf/datawrapper-conf.php";
+require_once BASEDIR . "/../lib/core/build/conf/datawrapper-conf.php";
 
 // connect to database
 $dbconn = $conf['datasources']['datawrapper']['connection'];
@@ -15,8 +48,12 @@ mysql_connect($m[1], $dbconn['user'], $dbconn['password']);
 mysql_select_db($m[2]);
 
 // load dw config
-require_once '../vendor/spyc/spyc.php';
-$cfg = $GLOBALS['dw_config'] = Spyc::YAMLLoad('../config.yaml');
+require_once BASEDIR . '/../vendor/spyc/spyc.php';
+
+// set system timezone
+date_default_timezone_set('Europe/Berlin');
+
+$cfg = $GLOBALS['dw_config'] = Spyc::YAMLLoad(BASEDIR . '/../config.yaml');
 
 if (empty($cfg['phantomjs']) || empty($cfg['phantomjs']['path'])) {
     die("Err: phantomjs is not configured properly");
@@ -40,6 +77,7 @@ function publish_file($remote_file, $content_type='text/plain') {
     }
 }
 
+
 // some messages
 $messages = array(
     'subject' => array(
@@ -56,29 +94,22 @@ $messages = array(
     )
 );
 
-// get next jobs in line
-$res = mysql_query('SELECT job.id job_id, user.email email, chart_id, parameter, SUBSTR(language,1,2) lang, type FROM job JOIN user ON (user.id = user_id) WHERE status = 0 and type IN ("export", "static") ORDER BY job.created_at ASC LIMIT 12');
-print mysql_error();
-$jobs = array();
-while ($job = mysql_fetch_array($res)) {
-    $jobs[] = $job;
-}
 
-date_default_timezone_set('Europe/Berlin');
+function run($job) {
+    global $cfg, $messages;
 
-foreach ($jobs as $job) {
     $params = json_decode($job['parameter'], true);
 
     if ($job['type'] == 'export') {
 
         $url = 'http://' . $cfg['domain'] . '/chart/' . $job['chart_id'] . '/' . ($params['format'] == 'pdf' ? '?fs=1' : '');
 
-        $outfile = '../charts/exports/' . $job['chart_id'] . '-' . $params['ratio'] . '.' . $params['format'];
+        $outfile = BASEDIR . '/../charts/exports/' . $job['chart_id'] . '-' . $params['ratio'] . '.' . $params['format'];
 
         $out = array();
         $cmd = $cfg['phantomjs']['path'] . ' export_chart.js '. $url.' '.$outfile.' '.$params['ratio'];
         //print "\n".'running '.$cmd;
-        passthru($cmd);
+        $output = execute($cmd, $error);
 
         if (file_exists($outfile)) {
             $to = $job['email'];
@@ -108,28 +139,48 @@ foreach ($jobs as $job) {
             $mbody .= "\r\n--PHP-mixed-$random_hash\r\n";
 
             $mail_sent = @mail($to, $subject, $mbody, $headers);
-            if (!$mail_sent) print "Err: could not send mail";
+            if (!$mail_sent) _log("ERROR: could not send mail");
             else {
                 mysql_query('UPDATE job SET status = 1, done_at = NOW() WHERE id = '.$job['job_id']);
-                print mysql_error();
+                _log(mysql_error());
                 sleep(1);
             }
         } else {
-            print "Err: chart rendering failed\n";
+            _log("ERROR: chart rendering failed");
         }
+
     } else if ($job['type'] == 'static') {
 
         $url = 'http://' . $cfg['domain'] . '/chart/%s/';
         $cmd = $cfg['phantomjs']['path'] . ' make_thumb.js '. $url.' '.$job['chart_id'].' '.$params['width'].' '.$params['height'];
         //print "\n".'running '.$cmd;
-        passthru($cmd);
 
-        mysql_query('UPDATE job SET status = 1, done_at = NOW() WHERE id = '.$job['job_id']);
-        print mysql_error();
+        $output = execute($cmd, $error);
 
-        // push files to CDN
-        publish_file($job['chart_id'] . '/static.html', 'text/html');
-        publish_file($job['chart_id'] . '/static.png', 'image/png');
+        if (!empty($output) || $error) {
+            _log("static chart export failed (".trim($output).")", $job, "ERROR");
+
+        } else {
+            mysql_query('UPDATE job SET status = 1, done_at = NOW() WHERE id = '.$job['job_id']);
+            $err = mysql_error();
+            if (!empty($err)) {
+                _log($err, $job, "ERROR");
+            } else {
+                // push files to CDN
+                publish_file($job['chart_id'] . '/static.html', 'text/html');
+                publish_file($job['chart_id'] . '/static.png', 'image/png');
+            }
+        }
     }
+}
 
+while (1) {  // run forever
+    // get next job in line
+    $res = mysql_query('SELECT job.id job_id, user.email email, chart_id, parameter, SUBSTR(language,1,2) lang, type FROM job JOIN user ON (user.id = user_id) WHERE status = 0 and type IN ("export", "static") ORDER BY job.created_at ASC LIMIT 1');
+    _log(mysql_error(), "ERROR");
+    $job = mysql_fetch_array($res);
+
+    run($job);
+
+    sleep(10);
 }

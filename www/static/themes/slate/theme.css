@@ -3,8 +3,8 @@
 }
 
 /*
- * Slate Theme
- * -----------
+ * Noir Theme
+ * ----------
  *
  * based on http://bootswatch.com/slate/
  */
@@ -18,7 +18,7 @@ body.chart {
     background: #272B30;
     overflow: visible;
     overflow-x:hidden;
-    color: #757C82;
+    color: #9ab;
 }
 
 a {
@@ -46,11 +46,19 @@ h1 {
 
 .label span {
     font-size: 12px;
-    color: #757C82;
+    color: #9ab;
 }
 
 .line-chart .label span {
     background: #272B30!important;
+}
+
+html .line-chart .label.tooltip span {
+    background: none!important;
+}
+
+html .line-chart .label.tooltip.inverted span {
+    color: #fff!important;
 }
 
 .label.highlighted, .label.axis {

@@ -87,6 +87,11 @@
          */
         signature: function() {
             // nothing here, please overload
+        },
+
+        translate: function(str) {
+            var locale = this.meta.locale, lang = this.lang;
+            return locale[str] ? locale[str][lang] || str : str;
         }
 
     });

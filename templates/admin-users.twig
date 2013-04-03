@@ -10,7 +10,7 @@
     }
     /* Admin-Users Widget*/
     .widget.Admin-Users table tr.pending td {
-        background-color: #FFDDB6;
+        background-color: beige;
     }
     .widget.Admin-Users table .action {
         margin-left: 10px;
@@ -22,11 +22,23 @@
     .widget.Admin-Users table tr:not(.admin) .admin {
         display: none !important;
     }
+
+    table.users .center {
+        text-align: center;
+    }
+
+    .users .user.admin td {
+        color: #c00;
+    }
+
+    table th a {
+        color: #000;
+    }
 </style>
 
 <div class="Admin-Users widget docs" data-widget="datawrapper.AdminUsers">
 
-    <div class="delete-succeed alert alert-success hidden">
+    {# <div class="delete-succeed alert alert-success hidden">
         <strong class="out" data-field="email"></strong> {% trans "removed." %}
     </div>
     <div class="add-success alert alert-success hidden">
@@ -68,37 +80,50 @@ Need to be inlined. -->
             <p class="loading hidden">{% trans "Loading ..." %}</p>
         </form>
     </div>
-    <a href="#" class="do btn" data-action="getUsers"><i class="icon-refresh"></i>{% trans "Refresh" %}</a>
-    <table class="table">
+    <a href="#" class="do btn" data-action="getUsers"><i class="icon-refresh"></i>{% trans "Refresh" %}</a> #}
+
+    <form action="/admin/users" method="GET" class="pull-right form-horizontal">
+        <input type="text" name="q" value="{{ q }}" placeholder="Seach by email" /> <input type="submit" class="btn" value="Search" />
+    </form>
+    <p>Below you find the complete list of users. You can search by email.</p>
+
+    <table class="table users">
         <thead>
             <tr>
-                <th>#</th>
-                <th>{% trans "Email" %}</th>
+                <th><a href="?sort=id">#</a></th>
+                <th><a href="?sort=email">{% trans "Email" %}</a></th>
                 <th>{% trans "Status" %}</th>
                 <th>{% trans "Created at" %}</th>
+                <th class="center"><a href="?sort=charts">{% trans "Charts" %}</a></th>
                 <th>{% trans "Actions" %}</th>
             </tr>
         </thead>
         <tbody class="users">
-            <tr class="user template" data-userid="">
-                <td class="id out">id</td>
-                <td class="email out">email</td>
-                <td class="status">
-                    <i class="admin icon-fire" title="{% trans "Administrator" %}"></i>
-                    <i class="normal icon-user" title="{% trans "Editor" %}"></i></td>
-                <td class="creation out">creation</td>
-                <td class="actions">
-                    <a href="#" class="action do" data-action="deleteAction">
-                        <i class="icon-trash" title="{% trans "Delete" %}"></i>
-                    </a>
-                    <label class="checkbox inline action">
-<input type="checkbox" value="admin" name="isAdmin" class="do" data-action="toggleAdminAction">
-{% trans "Administrator" %}
-</label>
-                </td>
-            </tr>
+            {% for user in users %}
+                <tr class="user {{ user.role }}">
+                    <td class="id out">{{ user.id }}</td>
+                    <td class="email out">{{ user.email }}</td>
+                    <td>
+                        {% if user.isAdmin %}
+                            <i class="icon-fire" title="{% trans "Administrator" %}"></i>
+                        {% else %}
+                            <i class="icon-user" title="{% trans "Editor" %}"></i>
+                        {% endif %}
+                        {{ user.role }}
+                    </td>
+                    <td class="creation out">{{ user.createdAt }}</td>
+                    <td class="center">
+                        <a href="/admin/charts/{{ user.id }}">{{ user.getNbCharts() }}</a></td>
+                    <td class="actions">
+                        ..
+                    </td>
+                </tr>
+            {% endfor %}
         </tbody>
     </table>
+    <div class="pull-right">
+        {{ block('pagination') }}
+    </div>
 </div>
 
 {% endblock %}

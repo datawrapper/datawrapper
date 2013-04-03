@@ -7,7 +7,7 @@
 $app->get('/users', function() use ($app) {
     $user = DatawrapperSession::getUser();
     if ($user->isAdmin()) {
-        $users = UserQuery::create()->find();
+        $users = UserQuery::create()->filterByDeleted(false)->find();
         $res = array();
         foreach ($users as $user) {
             $res[] = $user->toArray();

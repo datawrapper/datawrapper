@@ -2,9 +2,8 @@
     "title": "Le Monde",
     "link": "http://www.lemonde.fr",
     "restricted": null,
-    "locale": "fr_FR",
     "extends": "default",
     "restrict": "@lemonde.fr",
-    "version": "0.2.2",
+    "version": "1.2.6",
     "assets": ["triangleArrow-Right.png", "trianglearrow-right-small.png", "lemonde-logo-small.png", "lemonde-logo-big.png"]
 }

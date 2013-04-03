@@ -4,7 +4,7 @@
  * Pagination
  */
 
-function add_pagination_vars(&$page, $total, $curPage, $perPage) {
+function add_pagination_vars(&$page, $total, $curPage, $perPage, $append = '') {
     $pgs = array();
     $p_min = 0;
     $p_max = $lastPage = floor($total / $perPage);
@@ -23,6 +23,7 @@ function add_pagination_vars(&$page, $total, $curPage, $perPage) {
         'pages' => $pgs,
         'first' => 0,
         'current' => $curPage,
-        'last' => floor($total / $perPage)
+        'last' => floor($total / $perPage),
+        'append' => $append
     );
 }

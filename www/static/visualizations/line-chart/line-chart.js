@@ -99,7 +99,6 @@
             scales.y = scales.y.range([c.h-c.bpad, c.tpad]);
 
             me.yAxis();
-
             me.xAxis();
 
             var all_series = me.chart.dataSeries(),
@@ -117,6 +116,13 @@
                     legend.yoffset = 40;
                 }
             }
+
+            // get number of 'highlighted' series (or all if none)
+            var highlightedSeriesCount = 0, seriesColIndex = 0;
+            $.each(all_series, function(i, s) {
+                if (me.chart.hasHighlight() && me.chart.isHighlighted(s)) highlightedSeriesCount++;
+            });
+            highlightedSeriesCount = highlightedSeriesCount || all_series.length;
 
             // draw series lines
             var all_paths = [];
@@ -150,14 +156,20 @@
                 sw = me.getSeriesLineWidth(col);
                 var palette = me.theme.colors.palette.slice();
 
-                if (all_series.length < palette.length * 2) {
+                if (highlightedSeriesCount < 5) {
+                    if (me.chart.isHighlighted(col)) {
+                        me.setSeriesColor(col, palette[(seriesColIndex + baseCol) % palette.length]);
+                        seriesColIndex++;
+                    }
+                }
+                /*if (all_series.length < palette.length * 2) {
                     // we only color lines if there's a reasonable number of them
                     if (!directLabeling || all_series.length > 4) {
                         for (var i=0; i < baseCol; i++) palette.push(palette.pop());
                         if (all_series.length > palette.length) {
                             // add variations of palette colors
                             $.each(palette, function(i, col) {
-                                palette.push(d3.cie.lch(d3.rgb(col)).darker(-2).toString());
+                                palette.push(d3.cie.lch(d3.rgb(col)).darken(-2).toString());
                             });
                         }
                         me.setSeriesColor(col, palette[(index + baseCol) % palette.length]);
@@ -169,9 +181,9 @@
                             l = d3.range(81, ml, -(80 - ml) / (all_series.length - 1));
                         me.setSeriesColor(col, ''+d3.cie.lch(l[index], bLch.c, bLch.h));
                     }
-                }
+                }*/
 
-                var strokeColor = me.getSeriesColor(col);
+                var strokeColor = me.getLineColor(col);
 
                 all_paths.push(paths);
 
@@ -258,7 +270,7 @@
             function addFill(series, path) {
                 c.paper.path(path)
                     .attr({
-                        fill: me.getSeriesColor(series),
+                        fill: me.getLineColor(series),
                         'fill-opacity': me.theme.lineChart.fillOpacity,
                         stroke: false
                     });
@@ -356,7 +368,7 @@
             me.orderSeriesElements();
 
             $('.chart').mouseenter(function() {
-                $('.label.x-axis').css({ opacity: 0.6 });
+                $('.label.x-axis').css({ opacity: 0.4 });
                 $('.label.tooltip').show();
             }).mouseleave(function() {
                 $('.label.x-axis').css({ opacity: 1});
@@ -380,6 +392,23 @@
                 me.__canvas.w >= me.theme.minWidth;
         },
 
+        getLineColor: function(series) {
+            var me = this,
+                bgcol = chroma.hex(me.theme.colors.background),
+                bglum = bgcol.luminance(),
+                col = chroma.hex(me.getSeriesColor(series)),
+                min_contrast = me.chart.hasHighlight() ? (me.chart.isHighlighted(series) ? 4.5 : 1.45) : 1.7,
+                i = 0;
+
+            while (chroma.contrast(bgcol, col) < min_contrast && i++ < 20) {
+                if (bglum > 0.5) col = col.darken(5);
+                else col = col.brighten(5);
+            }
+
+            // make sure there's enough contrast with background
+            return col.hex();
+        },
+
         getDataRowByPoint: function(x, y) {
             var me = this;
             // var d = me.__d = me.__d || $('<div />').css({ position: 'absolute', width: 20, height: 20, 'border-radius': 20, border: '3px solid rgba(200,0,0,.5)' }).appendTo('body');
@@ -392,7 +421,10 @@
         },
 
         getSeriesLineWidth: function(series) {
-            return this.theme.lineChart.strokeWidth * ($('body').hasClass('fullscreen') ? 1.5 : 1);
+            var me = this,
+                fs_scale = $('body').hasClass('fullscreen') ? 1.5 : 1,
+                scale = me.chart.hasHighlight() ? me.chart.isHighlighted(series) ? 1 : 0.65 : 1;
+            return me.theme.lineChart.strokeWidth * fs_scale * scale;
         },
 
         computeAspectRatio: function() {
@@ -485,7 +517,7 @@
             if (domain[0] <= 0 && domain[1] >= 0) {
                 y = yscale(0);
                 me.path([['M', c.lpad, y], ['L', c.w - c.rpad,y]], 'axis')
-                            .attr(me.theme.yAxis);
+                            .attr(me.theme.xAxis);
             }
         },
 
@@ -508,7 +540,10 @@
                 var y = c.h - c.bpad + me.theme.lineChart.xLabelOffset, lbl;
                 if (!val) return;
                 if (rotate45) x -= 5;
-                lbl = me.label(x, y, val, { align: 'center', cl: 'axis x-axis' + (rotate45 ? ' rotate45' : '') });
+                lbl = me.label(x, y, val, {
+                    align: 'center',
+                    cl: 'axis x-axis' + (rotate45 ? ' rotate45' : '')
+                });
                 //if (low) lbl.css({ 'font-weight': 'normal'});
             }
 
@@ -534,7 +569,7 @@
                 // draw vertical grid
                 _.each(xscl.ticks(20), function(tick) {
                     var x = xscl(tick), t=c.tpad, b=c.h-c.bpad;
-                    c.paper.path('M'+x+','+t+' '+x+','+b).attr(me.theme.verticalGrid);
+                    var p = c.paper.path('M'+x+','+t+' '+x+','+b).attr(me.theme.verticalGrid);
                 });
             }
 
@@ -545,48 +580,73 @@
                 c = me.__canvas,
                 x = e.pageX,
                 y = e.pageY,
-                series = this.getSeriesByPoint(x, y, e),
-                row = this.getDataRowByPoint(x, y, e),
+                series = me.getSeriesByPoint(x, y, e),
+                row = me.getDataRowByPoint(x, y, e),
                 hoveredNode = series !== null,
-                xLabelTop = c.h - c.bpad + me.theme.lineChart.xLabelOffset - 5,
+                xLabelTop = c.h - c.bpad + me.theme.lineChart.xLabelOffset,
                 xlabel = me.__xlab = me.__xlab ||
                     me.label(x, xLabelTop, 'foo', {
-                        cl: 'axis x-axis',
+                        cl: 'axis x-axis h',
+                        align: 'center',
                         css: {
                             background: me.theme.colors.background,
-                            padding: '5px 10px',
                             zIndex: 100
                         }
                     });
 
             // update x-label
             xlabel.text(me.dataset.rowName(row));
-            xlabel.el.css({ left: me.__scales.x(row) - xlabel.el.outerWidth() * 0.5 });
+            xlabel.attr({
+                x: me.__scales.x(row) - 8,
+                y: xLabelTop,
+                w: Math.min(100, c.w / me.chart.numRows())
+            });
+
+            //xlabel.el.css({ left: me.__scales.x(row) - xlabel.el.outerWidth() * 0.5 });
 
             me.dataset.eachSeries(function(s) {
                 var lbl = s._label = s._label ||
                     me.label(0, 0, '0', {
-                        cl: 'tooltip',
+                        cl: 'tooltip'+(me.getSeriesColor(s) ? ' inverted' : ''),
                         align: 'center',
+                        valign: 'middle',
                         css: {
-                            background: me.getSeriesColor(s)
+                            background: me.getLineColor(s)
                         }
-                    }).addClass(me.invertLabel(me.getSeriesColor(s)) ? 'inverted' : ''),
+                    }),
                     val = me.chart.formatValue(s.data[row]);
                 lbl.data('series', s);
                 lbl.data('row', 0);
-                lbl.text(val).css('background', 'transparent').parent()
-                    .css({ width: me.labelWidth(val)+10 })
+                lbl.text(val);
+                lbl.attr({
+                    x: me.__scales.x(row),
+                    y: me.__scales.y(s.data[row]),
+                    w: me.labelWidth(val)+10
+                });
+                /*lbl.text(val).el.css('background', 'transparent')
+                    .css({ width:  })
                     .css({
-                        left: me.__scales.x(row) - lbl.outerWidth() * 0.5,
-                        top: me.__scales.y(s.data[row]) - lbl.outerHeight() * 0.5
-                    });
-                if (isNaN(s.data[row]) || me.chart.hasHighlight() &&
-                    !me.chart.isHighlighted(s) && (s != series)) lbl.hide();
-                else lbl.show();
+                        left:  - lbl.outerWidth() * 0.5,
+                        top:  - lbl.outerHeight() * 0.5
+                    });*/
+                if (isNaN(s.data[row]) || me.chart.hasHighlight() && !me.chart.isHighlighted(s) && (s != series)) {
+                    lbl.hide();
+                    if (me.get('direct-labeling')) {
+                        $.each(me.__seriesLabels[s.name], function(i, l) { l.hide(); });
+                    } else {
+                        $.each(me.__seriesLabels[s.name], function(i, l) { l.el.css('text-decoration', 'none'); });
+                    }
+                } else {
+                    lbl.show();
+                    if (me.get('direct-labeling')) {
+                        $.each(me.__seriesLabels[s.name], function(i, l) { l.show(); });
+                    } else {
+                        if (!me.chart.isHighlighted(s)) $.each(me.__seriesLabels[s.name], function(i, l) { l.el.css('text-decoration', 'underline'); });
+                    }
+                }
             });
 
-            if (series) me.hoverSeries(series);
+            //if (series) me.hoverSeries(series);
 
             return;
         },
@@ -596,13 +656,13 @@
             var me = this,
                 seriesElements = me.__seriesElements;
             var seriesLabels = me.__seriesLabels;
-            _.each(seriesLabels, function(labels, key) {
-                var h = !series || key == series.name;
+            /*_.each(seriesLabels, function(labels, key) {
+                  var h = !series || key == series.name;
                 _.each(labels, function(lbl) {
                     if (h || lbl.hasClass('highlighted')) lbl.show();
                     else lbl.hide();
                 });
-            });
+            });*/
         }
 
     });

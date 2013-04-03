@@ -205,12 +205,12 @@
 
             // compute the label position according to text and align
             function position() {
-                var w = attrs.w || me.labelWidth(attrs.txt, attrs.cl),
+                var w = attrs.w || me.labelWidth(attrs.txt, attrs.cl, attrs.size),
                     h = attrs.h || lbl.height(),
                     x = attrs.x,
                     y = attrs.y,
                     rot_w = 60;
-                return attrs.rotate == -90 ? {
+                var css = attrs.rotate == -90 ? {
                     // rotated
                     left: x - rot_w * 0.5,
                     top: y + 12,
@@ -224,6 +224,10 @@
                     width: w,
                     height: h
                 };
+                if (attrs.size) {
+                    css['font-size'] = attrs.size;
+                }
+                return css;
             }
 
             // create label DIV element
@@ -242,6 +246,7 @@
             // update label text
             label.text = function(txt) {
                 $('span', lbl).html(txt);
+                return label;
             };
             // animate label attributes
             label.animate = function(_attrs, duration, easing) {
@@ -254,7 +259,7 @@
                 if (_attrs.txt != attrs.txt) label.text(_attrs.txt);
                 $.extend(attrs, _attrs);
                 var _css = $.extend({}, attrs.css, position());
-                return duration ? lbl.animate(_css, duration, easing) : lbl.css(_css);
+                return duration ? lbl.stop().animate(_css, duration, easing) : lbl.css(_css);
             };
             label.attr = label.animate;
             // wrap lbl.data
@@ -274,18 +279,20 @@
             return label;
         },
 
-        labelWidth: function(txt, className) {
+        labelWidth: function(txt, className, fontSize) {
             // returns the width of a label
             var l = $('<div class="label'+(className ? ' '+className : '')+'"><span>'+txt+'</span></div>');
+            if (fontSize) $('span', l).css('font-size', fontSize);
             this.__root.append(l);
-            var w = $('span', l).width();
+            var w = $('span', l).outerWidth();
             l.remove();
             return w;
         },
 
-        labelHeight: function(txt, className, width) {
+        labelHeight: function(txt, className, width, fontSize) {
             // returns the width of a label
             var l = $('<div class="label'+(className ? ' '+className : '')+'"><span>'+txt+'</span></div>');
+            if (fontSize) $('span', l).css('font-size', fontSize);
             l.width(width);
             this.__root.append(l);
             var w = $('span', l).height();
@@ -335,7 +342,7 @@
             var me = this,
                 palette = me.theme.colors.palette,
                 color,
-                colorByRow = me.meta['color-by-row'] === true,
+                colorByRow = me.meta['color-by'] == 'row',
                 colorKey = colorByRow ? me.chart.rowLabels()[row] : series.name;
 
             var userCustomColors = me.get('custom-colors', {});
@@ -412,9 +419,11 @@
         },
 
         invertLabel: function(col) {
-            var c = d3.cie.lch(d3.rgb(col)),
-                bg = d3.cie.lch(d3.rgb(this.theme.colors.background));
-            return bg.l > 60 ? c.l < 70 : c.l > 60;
+            var c = chroma.color(col),
+                bg = chroma.color(this.theme.colors.background);
+            return bg.lab()[0] > 60 ?  // check if background is whitish
+                c.lab()[0] < 80 :  //
+                c.lab()[0] > 60;
         },
 
         getFilterUI: function(active, callback) {
@@ -473,6 +482,35 @@
                 sig.el[key] = elements.length;
             });
             return sig;
+        },
+
+        addLegend: function(items, container) {
+            // add legend
+            var me = this,
+                l = $('<div class="legend"></div>'),
+                xo = 0;
+
+            _.each(items, function(item) {
+                div = $('<div></div>');
+                div.css({
+                    background: item.color,
+                    width: 12,
+                    height: 12,
+                    position: 'absolute',
+                    left: xo,
+                    top: 1
+                });
+                l.append(div);
+                lbl = me.label(xo + 15, 0, item.label, {
+                    valign: 'left',
+                    root: l
+                });
+                xo += me.labelWidth(item.label)+30;
+            });
+            l.css({
+                position: 'relative'
+            });
+            container.append(l);
         }
 
     });

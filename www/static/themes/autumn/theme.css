@@ -50,15 +50,21 @@ h1 span {
     margin-top: 25px;
 }
 
-.label span {
+.label {
     font-size: 15px;
+}
+
+.label span {
     color: #000;
     font-family: 'Euphoria Script', serif;
 }
 
 
-.chart.fullscreen .label span {
+.chart.fullscreen .label {
     font-size: 20px;
+}
+
+.chart.fullscreen .label span {
     line-height: 28px;
 }
 
@@ -78,17 +84,19 @@ h1 span {
 .label.highlighted {
 }
 
-.label.value span {
+.label.value {
+    font-size: 14px;
+}
+
+.label.series {
     font-size: 14px;
 }
 
 .label.series span {
-    font-size: 14px;
-       font-family: 'Jacques Francois Shadow', cursive;
-   text-transform: uppercase;
-   font-weight: normal;
+    font-family: 'Jacques Francois Shadow', cursive;
+    text-transform: uppercase;
+    font-weight: normal;
 }
-
 
 .tooltip {
     z-index: 200;

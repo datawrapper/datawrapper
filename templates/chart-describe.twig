@@ -42,7 +42,7 @@ $(function() {
         Globalize.culture("{{ chartLocale }}").numberFormat.currency.symbol = $('#number-currency option:selected').data('symbol');
         curOpt.each(function(i, el) {
             el = $(el);
-            el.html(Globalize.format(1234.56, el.val()));
+            el.html(Globalize.format(1234.567, el.val()));
         });
     }
     updateCurrencyInNumberFormat();
@@ -131,7 +131,7 @@ $(function() {
 
 </script>
 
-<div class="dw-create-describe">
+<div class="dw-create-describe chart-editor">
 
     <div class="row">
 

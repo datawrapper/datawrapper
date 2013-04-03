@@ -38,10 +38,6 @@
 
     <style type="text/css">
 
-        /*
-         * FULLSCREEN CSS
-         */
-
         html body.chart.fullscreen {
             margin: 0;
             padding: 50px 100px;
@@ -53,6 +49,16 @@
         #header {
             min-height: 1px;
             position: relative;
+        }
+
+        #header .header-right {
+            position: absolute;
+            right: 10px;
+            z-index: 20;
+        }
+
+        .fullscreen #header .header-right {
+            right: 200px;
         }
 
         #footer {
@@ -72,14 +78,17 @@
         .fullscreen p {
             font-size: 15px;
             margin-right: 200px!important;
+        }
 
+        .fullscreen #header label {
+            font-size: 15px;
         }
 
         .fullscreen .logo {
             right: 100px;
         }
 
-        .fullscreen .label span {
+        .fullscreen .label {
             font-size: 15px;
         }
 
@@ -209,7 +218,7 @@
 
         function loadChart() {
             // clean chart
-            $('#chart').html('');
+            $('#chart').html('').off('click').off('mousemove').off('mouseenter').off('mouseover');
             $('#header .legend').remove();
             //$('.container').height($(window).height());
             // initialize theme
@@ -231,6 +240,7 @@
             // initliaze visualization
             var vis = new Datawrapper.Visualizations.{{ visualization.id | classify }}();
             vis.meta = JSON.parse('{{ visualization | json | raw }}');
+            vis.lang = '{{ lang }}';
 
             // compute chart dimensions
             var w = $('#chart').innerWidth(),
