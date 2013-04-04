@@ -107,7 +107,7 @@ if __name__ == "__main__":
 		print "%s installed themes" % len(theme_names)
 		for theme_name in theme_names:
 			meta = json.load(open(os.path.join(THEME_DIR, theme_name, 'meta.json')))
-			print "* [%(locale)s] %(name)s v%(version)s" % dict(meta, **dict({'name': theme_name}))
+			print "* %(name)s v%(version)s" % dict(meta, **dict({'name': theme_name}))
 		sys.exit()
 
 		# TODO
