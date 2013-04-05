@@ -101,7 +101,6 @@ function run($job) {
     global $cfg, $messages;
 
     $params = json_decode($job['parameter'], true);
-    _log("decoded job parameters", $job, 'DEBUG');
 
     if ($job['type'] == 'export') {
 
@@ -178,6 +177,8 @@ function run($job) {
                 // push files to CDN
                 publish_file($job['chart_id'] . '/static.html', 'text/html');
                 publish_file($job['chart_id'] . '/static.png', 'image/png');
+                _log("created static fallback".$cmd, $job, 'LOG');
+
             }
         }
     }
