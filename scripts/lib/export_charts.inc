@@ -145,7 +145,7 @@ function run($job) {
             else {
                 mysql_query('UPDATE job SET status = 1, done_at = NOW() WHERE id = '.$job['job_id']);
                 _log(mysql_error());
-                sleep(1);
+                _log("exported static chart", $job, 'LOG');
             }
         } else {
             _log("ERROR: chart rendering failed");
