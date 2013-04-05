@@ -34,6 +34,9 @@ function _log($msg = "", $job=null, $type='LOG') {
         fwrite($flog, $prefix . '"' . $msg . "\"\n");
         if ($type == 'ERROR') {
             @mail($cfg['log_email'], 'export-charts / error / '.substr($msg, 0, 60).'...', $msg."\n\n".print_r($job, true), "From: ".$cfg['admin_email']."\r\n");
+            if ($job) {
+                mysql_query('UPDATE job SET status = 2, done_at = NOW(), fail_reason = "'.addslashes($msg).'" WHERE id = '.$job['job_id']);
+            }
         }
     }
 }
@@ -149,8 +152,6 @@ function run($job) {
             }
         } else {
             _log("chart rendering failed", $job, 'ERROR');
-            mysql_query('UPDATE job SET status = 2 WHERE id = '.$job['job_id']);
-            _log(mysql_error(), null, "ERROR");
         }
 
     } else if ($job['type'] == 'static') {
@@ -169,8 +170,6 @@ function run($job) {
 
         if (!empty($output) || $error) {
             _log("static chart export failed (".trim($output).")", $job, "ERROR");
-            mysql_query('UPDATE job SET status = 2 WHERE id = '.$job['job_id']);
-            _log(mysql_error(), null, "ERROR");
 
         } else {
             mysql_query('UPDATE job SET status = 1, done_at = NOW() WHERE id = '.$job['job_id']);

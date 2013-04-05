@@ -15,23 +15,25 @@
 
 <table class="table table-striped table-bordered table-hover">
     <thead><tr>
-        <th>ID</th>
+        <th>#</th>
+        <th>Type</th>
         <th>User</th>
         <th>Chart</th>
+        <th>Visualization</th>
         <th>Theme</th>
-        <th>Type</th>
-        <th>Type</th>
+        <th>Fail Reason</th>
     </tr></thead>
     <tbody>
 
 {% for job in jobs %}
     <tr>
         <td>{{ job.id }}</td>
+        <td>{{ job.type }}</td>
         <td><a href="/admin/charts/{{ job.user.id }}">{{ job.user.email }}</td>
+        <td><a href="/chart/{{ job.chartid }}/visualize">{{ job.chartid }}</a></td>
         <td>{{ job.chart.type }}</td>
         <td>{{ job.chart.theme }}</td>
-        <td><a href="/chart/{{ job.chartid }}/visualize">{{ job.chartid }}</a></td>
-        <td>{{ job.type }}</td>
+        <td>{{ job.failReason }}</td>
 
     </tr>
 {% endfor %}
