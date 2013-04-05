@@ -197,7 +197,7 @@ $app->get('/admin/jobs', function() use ($app) {
         // get untranslated strings from all the meta.jsons
         $jobs = JobQuery::create()->filterByStatus('failed')->orderById('desc')->find();
         $page = array(
-            'title' => 'Jobs',
+            'title' => 'Background Jobs',
             'jobs' => count($jobs) > 0 ? $jobs : false,
             'queued' => JobQuery::create()->filterByStatus('queued')->count(),
             'failed' => JobQuery::create()->filterByStatus('failed')->count(),
