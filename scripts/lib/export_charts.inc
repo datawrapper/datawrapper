@@ -8,7 +8,6 @@
 define('BASEDIR', dirname(dirname(__FILE__)));
 define('LOGFILE', BASEDIR . "/logs/export-charts.log");
 
-
 function execute($cmd, &$error=null) {
     ob_start();  // grab output
     passthru($cmd, $error);
@@ -24,6 +23,7 @@ if (!$flog) {
 
 function _log($msg = "", $job=null, $type='LOG') {
     global $flog, $cfg;
+    if (!VERBOSE && $type == 'DEBUG') return;
     if (!empty($msg)) {
         $prefix = date('Y-m-d H:i:s').",".$type.",";
         if ($job) {
@@ -54,6 +54,8 @@ require_once BASEDIR . '/../vendor/spyc/spyc.php';
 date_default_timezone_set('Europe/Berlin');
 
 $cfg = $GLOBALS['dw_config'] = Spyc::YAMLLoad(BASEDIR . '/../config.yaml');
+
+define('VERBOSE', $cfg['debug']);
 
 if (empty($cfg['phantomjs']) || empty($cfg['phantomjs']['path'])) {
     die("Err: phantomjs is not configured properly");
@@ -99,6 +101,7 @@ function run($job) {
     global $cfg, $messages;
 
     $params = json_decode($job['parameter'], true);
+    _log("decoded job parameters", $job, 'DEBUG');
 
     if ($job['type'] == 'export') {
 
@@ -151,11 +154,17 @@ function run($job) {
 
     } else if ($job['type'] == 'static') {
 
+        _log("job is about static chart export", $job, 'DEBUG');
+
         $url = 'http://' . $cfg['domain'] . '/chart/%s/';
         $cmd = $cfg['phantomjs']['path'] . ' make_thumb.js '. $url.' '.$job['chart_id'].' '.$params['width'].' '.$params['height'];
         //print "\n".'running '.$cmd;
 
+        _log("cmd: ".$cmd, $job, 'DEBUG');
+
         $output = execute($cmd, $error);
+
+        _log("cmd output: ".$output, $job, 'DEBUG');
 
         if (!empty($output) || $error) {
             _log("static chart export failed (".trim($output).")", $job, "ERROR");
@@ -182,7 +191,7 @@ while (1) {  // run forever
     _log(mysql_error(), "ERROR");
     $job = mysql_fetch_array($res);
     if ($job) {
-        _log("found a new job (".$job['job_id'].")");
+        _log("found a new job", $job, 'DEBUG');
         run($job);
         sleep(2);
     } else {
