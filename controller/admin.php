@@ -203,6 +203,7 @@ $app->get('/admin/jobs', function() use ($app) {
             'failed' => JobQuery::create()->filterByStatus('failed')->count(),
             'done' => JobQuery::create()->filterByStatus('done')->count(),
         );
+        $page['est_time'] = ceil($page['queued'] * 2 / 60);
         add_header_vars($page, 'admin');
         add_adminpage_vars($page, '/admin/jobs');
         $app->render('admin-jobs.twig', $page);
