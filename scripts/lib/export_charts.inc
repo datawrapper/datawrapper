@@ -156,7 +156,7 @@ function run($job) {
 
         _log("job is about static chart export", $job, 'DEBUG');
 
-        $url = 'http://' . $cfg['domain'] . '/chart/%s/';
+        $url = 'http://' . $cfg['domain'] . '/chart/%s/' % $job['chart_id'];
         $cmd = $cfg['phantomjs']['path'] . ' make_thumb.js '. $url.' '.$job['chart_id'].' '.$params['width'].' '.$params['height'];
         //print "\n".'running '.$cmd;
 
