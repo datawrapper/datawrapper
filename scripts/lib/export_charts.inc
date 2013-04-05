@@ -33,7 +33,7 @@ function _log($msg = "", $job=null, $type='LOG') {
         }
         fwrite($flog, $prefix . '"' . $msg . "\"\n");
         if ($type == 'ERROR') {
-            @mail($cfg['log_email'], 'export-charts / error / '.substr($msg, 0, 80).'...', $msg, "From: ".$cfg['admin_mail']."\r\n");
+            @mail($cfg['log_email'], 'export-charts / error / '.substr($msg, 0, 60).'...', $msg."\n\n".print_r($job, true), "From: ".$cfg['admin_email']."\r\n");
         }
     }
 }
