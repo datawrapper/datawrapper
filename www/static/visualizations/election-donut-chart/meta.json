@@ -4,7 +4,7 @@
         "de": "Sitzverteilung",
         "fr": "Graphique en anneau"
     },
-    "version": "1.2.6",
+    "version": "1.2.8",
     "extends": "donut-chart",
     "author": {
         "name": "gka",
