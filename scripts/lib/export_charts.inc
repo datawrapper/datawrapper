@@ -148,7 +148,9 @@ function run($job) {
                 _log("exported static chart", $job, 'LOG');
             }
         } else {
-            _log("ERROR: chart rendering failed");
+            _log("chart rendering failed", $job, 'ERROR');
+            mysql_query('UPDATE job SET status = 2 WHERE id = '.$job['job_id']);
+            _log(mysql_error(), null, "ERROR");
         }
 
     } else if ($job['type'] == 'static') {
@@ -167,6 +169,8 @@ function run($job) {
 
         if (!empty($output) || $error) {
             _log("static chart export failed (".trim($output).")", $job, "ERROR");
+            mysql_query('UPDATE job SET status = 2 WHERE id = '.$job['job_id']);
+            _log(mysql_error(), null, "ERROR");
 
         } else {
             mysql_query('UPDATE job SET status = 1, done_at = NOW() WHERE id = '.$job['job_id']);
