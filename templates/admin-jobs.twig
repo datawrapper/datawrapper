@@ -12,10 +12,26 @@
     <h4>Warning!</h4>
     The following jobs have not been finished properly.
 </div>
+<style type="text/css">
+.msg {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 250px;
+}
+tr:hover .msg {
+    overflow: visible;
+    white-space: normal;
+    text-overflow: none;
+    -o-text-overflow: none;
+}
+</style>
 
 <table class="table table-striped table-bordered table-hover">
     <thead><tr>
         <th>#</th>
+        <th>Created</th>
         <th>Type</th>
         <th>User</th>
         <th>Chart</th>
@@ -28,12 +44,13 @@
 {% for job in jobs %}
     <tr>
         <td>{{ job.id }}</td>
+        <td>{{ job.createdAt | date("Y-m-d") }}</td>
         <td>{{ job.type }}</td>
         <td><a href="/admin/charts/{{ job.user.id }}">{{ job.user.email }}</td>
         <td><a href="/chart/{{ job.chartid }}/visualize">{{ job.chartid }}</a></td>
         <td>{{ job.chart.type }}</td>
         <td>{{ job.chart.theme }}</td>
-        <td>{{ job.failReason }}</td>
+        <td><div class="msg">{{ job.failReason }}</div></td>
 
     </tr>
 {% endfor %}

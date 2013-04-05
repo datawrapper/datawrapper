@@ -195,7 +195,7 @@ $app->get('/admin/jobs', function() use ($app) {
     $user = DatawrapperSession::getUser();
     if ($user->isAdmin()) {
         // get untranslated strings from all the meta.jsons
-        $jobs = JobQuery::create()->filterByStatus('failed')->find();
+        $jobs = JobQuery::create()->filterByStatus('failed')->orderById('desc')->find();
         $page = array(
             'title' => 'Jobs',
             'jobs' => count($jobs) > 0 ? $jobs : false
