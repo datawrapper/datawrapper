@@ -12,10 +12,6 @@
         // some config
         _showValueLabels: function() { return false; },
 
-        getRowColors: function() {
-            return this._getRowColors();
-        },
-
         initDimensions: function(r) {
             //
             var me = this, c = me.__canvas,

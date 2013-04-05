@@ -12,23 +12,6 @@
         // some config
         _showValueLabels: function() { return true; },
 
-        _getRowColors: function() {
-            var me = this,
-                base = me.theme.colors.palette[me.get('base-color', 0)],
-                bLch = chroma.hex(base),
-                ml = Math.min(bLch.l, 50),
-                colors = [];
-
-            colors = d3.range(ml, 91, (90 - ml) / (me.chart.numRows() - 1)).map(function(l) {
-                return chroma.lch(l, bLch.c, bLch.h).hex();
-            });
-            return colors;
-        },
-
-        getRowColors: function() {
-            return this._getRowColors().reverse();
-        },
-
         render: function(el) {
             el = $(el);
 
@@ -42,6 +25,16 @@
             row_gap = 0.01;
             if (!_.isUndefined(me.get('selected-row'))) {
                 row = me.get('selected-row');
+            }
+
+            me._color_opts = {};
+
+            if (me.get('negative-color', false)) {
+                me._color_opts.byValue = function(v) {
+                    return me.theme.colors[v < 0 ? 'negative' : 'positive'];
+                };
+            } else {
+                me._color_opts.varyLightness = true;
             }
 
             me.init();
@@ -67,12 +60,6 @@
 
             if (!me.theme.columnChart.cutGridLines) me.horzGrid();
 
-            var colors = me.getRowColors();
-
-            dataset.eachRow(function(i) {
-                me.setRowColor(i, colors[i % colors.length]);
-            });
-
             me.update();
 
             // enable mouse events
@@ -83,7 +70,7 @@
                 dataset.eachRow(function(r) {
                     items.push({
                         label: dataset.rowName(r),
-                        color: me.getBarColor(null, r)
+                        color: me.getColor(null, r, { varyLightness: true })
                     });
                 });
                 me.addLegend(items, $('#header', c.root.parent()));
@@ -96,12 +83,15 @@
         },
 
         update: function() {
-            var me = this, c = me.__canvas, n = me.chart.dataSeries().length;
+            var me = this,
+                c = me.__canvas,
+                n = me.chart.dataSeries().length;
+
             // draw bars
             _.each(me.chart.dataSeries(me.get('sort-values'), me.get('reverse-order')), function(series, s) {
                 _.each(series.data, function(val, r) {
                     var d = me.barDimensions(series, s, r),
-                        fill = me.getBarColor(series, r, me.get('negative-color', false)),
+                        fill = me.getColor(series, r, me._color_opts),
                         stroke = chroma.color(fill).darken(15).hex(),
                         key = series.name+'-'+r,
                         bar_attrs = {
@@ -172,14 +162,6 @@
             var y = c.h - me.__scales.y(0) - c.bpad;
             me.path([['M', c.lpad, y], ['L', c.w - c.rpad, y]], 'axis')
                 .attr(me.theme.yAxis);
-        },
-
-        getBarColor: function(series, row, useNegativeColor, colorful) {
-            var me = this,
-                main = series && useNegativeColor && series.data[row] < 0 ? 'negative' : 'main',
-                hl = series && me.chart.hasHighlight() && me.chart.isHighlighted(series);
-
-            return me.getSeriesColor(series || me.chart.dataSeries()[0], row, false, false);
         },
 
         initDimensions: function(r) {
@@ -299,7 +281,7 @@
                         if (lbl.hasClass('showOnHover')) lbl.hide(0.5);
                     }
                     _.each(me.__seriesElements[s.name], function(el) {
-                        var fill = me.getBarColor(s, el.data('row'), me.get('negative-color', false)), stroke;
+                        var fill = me.getColor(s, el.data('row'), me._color_opts), stroke;
                         if (series !== undefined && s.name == series.name) fill = chroma.color(fill).darken(15).hex();
                         stroke = chroma.color(fill).darken(15).hex();
                         if (el.attrs.fill != fill || el.attrs.stroke != stroke)
