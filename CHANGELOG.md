@@ -1,6 +1,11 @@
 CHANGELOG
 ---------
 
+### 1.2.8
+* made job execution (e.g. static chart exports) fail safe
+* added admin page showing job status
+* you need to migrate the database schema, see [commit message](https://github.com/datawrapper/datawrapper/commit/288a8f13343268e8d8ad46a1f6930a33818fad24)
+
 ### 1.2.7
 * added generic support for hierarchical datasets
 * fixed chart export
