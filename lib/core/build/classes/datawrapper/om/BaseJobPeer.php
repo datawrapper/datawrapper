@@ -58,6 +58,7 @@ abstract class BaseJobPeer {
 	/** The enumerated values for the STATUS field */
 	const STATUS_QUEUED = 'queued';
 	const STATUS_DONE = 'done';
+	const STATUS_FAILED = 'failed';
 
 	/** The default string format for model objects of the related table **/
 	const DEFAULT_STRING_FORMAT = 'YAML';
@@ -106,6 +107,7 @@ abstract class BaseJobPeer {
 		self::STATUS => array(
 			JobPeer::STATUS_QUEUED,
 			JobPeer::STATUS_DONE,
+			JobPeer::STATUS_FAILED,
 		),
 	);
 
