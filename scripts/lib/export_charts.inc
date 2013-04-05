@@ -174,6 +174,8 @@ function run($job) {
     }
 }
 
+_log("Starting chart export service.");
+
 while (1) {  // run forever
     // get next job in line
     $res = mysql_query('SELECT job.id job_id, user.email email, chart_id, parameter, SUBSTR(language,1,2) lang, type FROM job JOIN user ON (user.id = user_id) WHERE status = 0 and type IN ("export", "static") ORDER BY job.created_at ASC LIMIT 1');
