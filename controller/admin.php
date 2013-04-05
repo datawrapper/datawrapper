@@ -198,7 +198,10 @@ $app->get('/admin/jobs', function() use ($app) {
         $jobs = JobQuery::create()->filterByStatus('failed')->orderById('desc')->find();
         $page = array(
             'title' => 'Jobs',
-            'jobs' => count($jobs) > 0 ? $jobs : false
+            'jobs' => count($jobs) > 0 ? $jobs : false,
+            'queued' => JobQuery::create()->filterByStatus('queued')->count(),
+            'failed' => JobQuery::create()->filterByStatus('failed')->count(),
+            'done' => JobQuery::create()->filterByStatus('done')->count(),
         );
         add_header_vars($page, 'admin');
         add_adminpage_vars($page, '/admin/jobs');
