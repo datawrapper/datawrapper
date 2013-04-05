@@ -197,7 +197,7 @@ while (1) {  // run forever
         _log("yeah! found a new job", $job, 'DEBUG');
         run($job);
     } else {
-        if ($is_sleeping) {
+        if (!$is_sleeping) {
             _log("no new jobs found, going into sleep mode", null, 'DEBUG');
             $is_sleeping = true;
         }
