@@ -185,16 +185,22 @@ function run($job) {
 
 _log("Starting chart export service.");
 
+$is_sleeping = false;
+
 while (1) {  // run forever
     // get next job in line
     $res = mysql_query('SELECT job.id job_id, user.email email, chart_id, parameter, SUBSTR(language,1,2) lang, type FROM job JOIN user ON (user.id = user_id) WHERE status = 0 and type IN ("export", "static") ORDER BY job.created_at ASC LIMIT 1');
     _log(mysql_error(), "ERROR");
     $job = mysql_fetch_array($res);
     if ($job) {
-        _log("found a new job", $job, 'DEBUG');
+        $is_sleeping = false;
+        _log("yeah! found a new job", $job, 'DEBUG');
         run($job);
-        sleep(2);
     } else {
-        sleep(10);
+        if ($is_sleeping) {
+            _log("no new jobs found, going into sleep mode", null, 'DEBUG');
+            $is_sleeping = true;
+        }
     }
+    sleep($is_sleeping ? 10 : 2);
 }
