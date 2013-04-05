@@ -82,5 +82,6 @@
     <column name="done_at" type="timestamp" required="true" />
     <column name="type" type="varchar" size="32" required="true" />
     <column name="parameter" type="varchar" size="4096" required="true" />
+    <column name="fail_reason" type="varchar" size="4096" required="true" />
   </table>
 </database>

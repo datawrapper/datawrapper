@@ -80,6 +80,12 @@ abstract class BaseJob extends BaseObject  implements Persistent
 	protected $parameter;
 
 	/**
+	 * The value for the fail_reason field.
+	 * @var        string
+	 */
+	protected $fail_reason;
+
+	/**
 	 * @var        User
 	 */
 	protected $aUser;
@@ -268,6 +274,16 @@ abstract class BaseJob extends BaseObject  implements Persistent
 	}
 
 	/**
+	 * Get the [fail_reason] column value.
+	 * 
+	 * @return     string
+	 */
+	public function getFailReason()
+	{
+		return $this->fail_reason;
+	}
+
+	/**
 	 * Set the value of [id] column.
 	 * 
 	 * @param      int $v new value
@@ -444,6 +460,26 @@ abstract class BaseJob extends BaseObject  implements Persistent
 	} // setParameter()
 
 	/**
+	 * Set the value of [fail_reason] column.
+	 * 
+	 * @param      string $v new value
+	 * @return     Job The current object (for fluent API support)
+	 */
+	public function setFailReason($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->fail_reason !== $v) {
+			$this->fail_reason = $v;
+			$this->modifiedColumns[] = JobPeer::FAIL_REASON;
+		}
+
+		return $this;
+	} // setFailReason()
+
+	/**
 	 * Indicates whether the columns in this object are only set to default values.
 	 *
 	 * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -487,6 +523,7 @@ abstract class BaseJob extends BaseObject  implements Persistent
 			$this->done_at = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
 			$this->type = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
 			$this->parameter = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
+			$this->fail_reason = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -495,7 +532,7 @@ abstract class BaseJob extends BaseObject  implements Persistent
 				$this->ensureConsistency();
 			}
 
-			return $startcol + 8; // 8 = JobPeer::NUM_HYDRATE_COLUMNS.
+			return $startcol + 9; // 9 = JobPeer::NUM_HYDRATE_COLUMNS.
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating Job object", $e);
@@ -754,6 +791,9 @@ abstract class BaseJob extends BaseObject  implements Persistent
 		if ($this->isColumnModified(JobPeer::PARAMETER)) {
 			$modifiedColumns[':p' . $index++]  = '`PARAMETER`';
 		}
+		if ($this->isColumnModified(JobPeer::FAIL_REASON)) {
+			$modifiedColumns[':p' . $index++]  = '`FAIL_REASON`';
+		}
 
 		$sql = sprintf(
 			'INSERT INTO `job` (%s) VALUES (%s)',
@@ -788,6 +828,9 @@ abstract class BaseJob extends BaseObject  implements Persistent
 						break;
 					case '`PARAMETER`':
 						$stmt->bindValue($identifier, $this->parameter, PDO::PARAM_STR);
+						break;
+					case '`FAIL_REASON`':
+						$stmt->bindValue($identifier, $this->fail_reason, PDO::PARAM_STR);
 						break;
 				}
 			}
@@ -961,6 +1004,9 @@ abstract class BaseJob extends BaseObject  implements Persistent
 			case 7:
 				return $this->getParameter();
 				break;
+			case 8:
+				return $this->getFailReason();
+				break;
 			default:
 				return null;
 				break;
@@ -998,6 +1044,7 @@ abstract class BaseJob extends BaseObject  implements Persistent
 			$keys[5] => $this->getDoneAt(),
 			$keys[6] => $this->getType(),
 			$keys[7] => $this->getParameter(),
+			$keys[8] => $this->getFailReason(),
 		);
 		if ($includeForeignObjects) {
 			if (null !== $this->aUser) {
@@ -1065,6 +1112,9 @@ abstract class BaseJob extends BaseObject  implements Persistent
 			case 7:
 				$this->setParameter($value);
 				break;
+			case 8:
+				$this->setFailReason($value);
+				break;
 		} // switch()
 	}
 
@@ -1097,6 +1147,7 @@ abstract class BaseJob extends BaseObject  implements Persistent
 		if (array_key_exists($keys[5], $arr)) $this->setDoneAt($arr[$keys[5]]);
 		if (array_key_exists($keys[6], $arr)) $this->setType($arr[$keys[6]]);
 		if (array_key_exists($keys[7], $arr)) $this->setParameter($arr[$keys[7]]);
+		if (array_key_exists($keys[8], $arr)) $this->setFailReason($arr[$keys[8]]);
 	}
 
 	/**
@@ -1116,6 +1167,7 @@ abstract class BaseJob extends BaseObject  implements Persistent
 		if ($this->isColumnModified(JobPeer::DONE_AT)) $criteria->add(JobPeer::DONE_AT, $this->done_at);
 		if ($this->isColumnModified(JobPeer::TYPE)) $criteria->add(JobPeer::TYPE, $this->type);
 		if ($this->isColumnModified(JobPeer::PARAMETER)) $criteria->add(JobPeer::PARAMETER, $this->parameter);
+		if ($this->isColumnModified(JobPeer::FAIL_REASON)) $criteria->add(JobPeer::FAIL_REASON, $this->fail_reason);
 
 		return $criteria;
 	}
@@ -1185,6 +1237,7 @@ abstract class BaseJob extends BaseObject  implements Persistent
 		$copyObj->setDoneAt($this->getDoneAt());
 		$copyObj->setType($this->getType());
 		$copyObj->setParameter($this->getParameter());
+		$copyObj->setFailReason($this->getFailReason());
 
 		if ($deepCopy && !$this->startCopy) {
 			// important: temporarily setNew(false) because this affects the behavior of
@@ -1352,6 +1405,7 @@ abstract class BaseJob extends BaseObject  implements Persistent
 		$this->done_at = null;
 		$this->type = null;
 		$this->parameter = null;
+		$this->fail_reason = null;
 		$this->alreadyInSave = false;
 		$this->alreadyInValidation = false;
 		$this->clearAllReferences();

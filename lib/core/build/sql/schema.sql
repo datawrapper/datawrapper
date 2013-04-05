@@ -122,6 +122,7 @@ CREATE TABLE `job`
 	`done_at` DATETIME NOT NULL,
 	`type` VARCHAR(32) NOT NULL,
 	`parameter` VARCHAR(4096) NOT NULL,
+	`fail_reason` VARCHAR(4096) NOT NULL,
 	PRIMARY KEY (`id`),
 	INDEX `job_FI_1` (`user_id`),
 	INDEX `job_FI_2` (`chart_id`),
