@@ -181,8 +181,11 @@ while (1) {  // run forever
     $res = mysql_query('SELECT job.id job_id, user.email email, chart_id, parameter, SUBSTR(language,1,2) lang, type FROM job JOIN user ON (user.id = user_id) WHERE status = 0 and type IN ("export", "static") ORDER BY job.created_at ASC LIMIT 1');
     _log(mysql_error(), "ERROR");
     $job = mysql_fetch_array($res);
-
-    run($job);
-
-    sleep(10);
+    if ($job) {
+        _log("found a new job (".$job['job_id'].")");
+        run($job);
+        sleep(2);
+    } else {
+        sleep(10);
+    }
 }
