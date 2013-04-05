@@ -39,13 +39,13 @@ if (system.args.length < 3 || system.args.length > 5) {
                         ta: el.css('text-align')
                     });
                     if (el.get(0).nodeName.toLowerCase() == "h1") {
-                        title = $('span', el).html();
+                        title = $('span', el).html() || el.html();
                     }
                 });
                 return [r, title];
             });
             // write static.html
-            var html = "<html><head><title>"+texts[1]+"</title><style type='text/css'>";
+            var html = "<html><head><title>" + texts[1] + "</title><style type='text/css'>";
             html += "body { background: url(static.png) top left no-repeat; }\n";
             html += "</style></head><body>";
             for (var i = 0; i < texts[0].length; i++) {
