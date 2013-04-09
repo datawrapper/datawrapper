@@ -247,8 +247,15 @@ class Chart extends BaseChart {
     }
 
     public function hasPreview() {
-        return false;
         return $this->getLastEditStep() == 5 && file_exists($this->getStaticPath() . '/m.png');
+    }
+
+    public function thumbUrl() {
+        return dirname($this->getPublicUrl() . '_') . '/m.png';
+    }
+
+    public function plainUrl() {
+        return dirname($this->getPublicUrl() . '_') . '/plain.html';
     }
 
 } // Chart
