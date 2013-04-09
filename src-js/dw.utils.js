@@ -7,10 +7,10 @@
     var $ = root.jQuery || root.Zepto || root.ender;
 
 
-    // Datawrapper.UI
-    // --------------
+    // Datawrapper.Utils
+    // -----------------
 
-    var UI = Datawrapper.Utils = function() {
+    var Utils = Datawrapper.Utils = function() {
 
         this.initialize();
 
@@ -300,7 +300,7 @@
                 y = 0,
                 w = c.w - x - c.rpad,
                 h = c.h - y - c.bpad,
-                scale = Math.max(width / w, height / h);
+                scale = Math.max(width / c.w, height / c.h);
 
             var canvas = document.createElement("canvas"),
                 ctx = canvas.getContext("2d");
@@ -318,7 +318,8 @@
             tempCanvas.width = width;
             tempCanvas.height = height;
 
-            tCtx.drawImage(canvas, -x, -y);
+            //console.log( * scale);
+            tCtx.drawImage(canvas, -x + (width - c.w * scale) * 0.5, -y);
 
             var imgData = tempCanvas.toDataURL("image/png");
             $.ajax({
