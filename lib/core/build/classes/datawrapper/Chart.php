@@ -247,7 +247,7 @@ class Chart extends BaseChart {
     }
 
     public function hasPreview() {
-        return $this->getLastEditStep() == 5 && file_exists($this->getStaticPath() . '/m.png');
+        return $this->getLastEditStep() >= 3 && file_exists($this->getStaticPath() . '/m.png');
     }
 
     public function thumbUrl() {
