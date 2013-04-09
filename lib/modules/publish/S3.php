@@ -23,11 +23,11 @@ class Datawrapper_Publish_S3 implements IDatawrapper_Publish {
      */
     function publish($files) {
         $cfg = $GLOBALS['dw_config']['publish']['config'];
-        $s3 = new S3($cfg['accesskey'], $cfg['secretkey']);
+        $s3 = $this->_getS3($cfg);
         foreach ($files as $info) {
             $header = array();
             if (count($info) > 2) $header['Content-Type'] = $info[2];
-            $s3->putObject($s3->inputFile($info[0], false), $cfg['bucket'], $info[1], S3::ACL_PUBLIC_READ, array(), $header);
+            $s3->putObjectFile($info[0], $cfg['bucket'], $info[1], S3::ACL_PUBLIC_READ, array(), $header);
         }
     }
 
@@ -38,7 +38,7 @@ class Datawrapper_Publish_S3 implements IDatawrapper_Publish {
      */
     function unpublish($files) {
         $cfg = $GLOBALS['dw_config']['publish']['config'];
-        $s3 = new S3($cfg['accesskey'], $cfg['secretkey']);
+        $s3 = $this->_getS3($cfg);
         $s3->setExceptions(true);
         foreach ($files as $file) {
             $s3->deleteObject($cfg['bucket'], $file);
@@ -52,7 +52,22 @@ class Datawrapper_Publish_S3 implements IDatawrapper_Publish {
      */
     function getUrl($chart) {
         $cfg = $GLOBALS['dw_config']['publish']['config'];
+        $alias = $GLOBALS['dw_config']['publish']['alias'];
+        if (!empty($alias)) {
+            return $alias . '/' . $chart->getID() . '/';
+        }
         return '//' . $cfg['bucket'] . '.s3.amazonaws.com/' . $chart->getID() . '/index.html';
+    }
+
+    /**
+     * Returns a fresh S3 instance
+     */
+    private function _getS3($cfg) {
+        $s3 = new S3($cfg['accesskey'], $cfg['secretkey']);
+        if (!empty($cfg['endpoint'])) {
+            $s3->setEndpoint($cfg['endpoint']);
+        }
+        return $s3;
     }
 
 }
