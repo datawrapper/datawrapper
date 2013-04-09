@@ -58,44 +58,6 @@ $(function() {
 
     resizeIFrame();
 
-    function snapshot(width, height) {
-        // 1. make iframe and load chart
-        var iframe = $('<iframe />');
-        iframe.attr({
-            src: 'http://{{ DW_DOMAIN }}/chart/{{ chart.id }}/preview'
-        });
-        iframe.css({
-            position: 'absolute',
-            top: 0,
-            left: -4000,
-            width: width+'px',
-            height: height+'px'
-        });
-        $('body').append(iframe);
-        // 2.
-        var canvas = $('<canvas id="canvas" width="'+width+'px" height="'+height+'px"></canvas>')
-        $('body').append(canvas);
-
-        function px(s) {
-            return Number(s.substr(0, s.length-2));
-        }
-
-        setTimeout(function() {
-            var body = iframe.get(0).contentDocument,
-                ctx = canvas.get(0).getContext('2d');
-            canvg('canvas', $('svg', body).get(0).innerSVG);
-            $('.label', body).each(function(i, lbl) {
-                lbl = $(lbl);
-                var x = px(lbl.css('left')),
-                    y = px(lbl.css('top')),
-                    txt = $('span', lbl).html();
-                ctx.font = "8pt Arial";
-                ctx.fillText(txt, x, y);
-
-            });
-        }, 1000);
-
-    }
 
     // send ajax request for re-sending activation email
     $('a[href=#resend]').click(function(e) {
