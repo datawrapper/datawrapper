@@ -16,7 +16,7 @@
 
     };
 
-    _.extend(UI.prototype, {
+    _.extend(Utils.prototype, {
 
         initialize: function() {
             this.initializeSignUp();
