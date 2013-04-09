@@ -321,6 +321,9 @@ $app->post('/charts/:id/publish/html', function($chart_id) use ($app) {
             // to be sure, we remove the old index first
             $pub->unpublish(array($chart->getID() . '/index.html'));
             $pub->publish($cdn_files);
+            // store public url in chart table
+            $chart->setPublicUrl($pub->getUrl($chart));
+            $chart->save();
         }
     });
 });
