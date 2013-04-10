@@ -7,6 +7,7 @@ CHANGELOG
 * recatored chart publication, fixed occosional bug that stopped chart publication
 * live-generating chart thumbnails during chart editing instead of during publication
 * you need to migrate the database schema, see [commit message](https://github.com/datawrapper/datawrapper/commit/015fd7a95c5bc5521a9fa2112f9b3bd564995e2b)
+* changed mysql engine to innodb
 
 
 ### 1.2.8
