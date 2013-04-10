@@ -36,7 +36,7 @@
                 clearTimeout(me.__saveTimeout);
                 me.__saveTimeout = setTimeout(function() {
                     me.save();
-                }, 300);
+                }, 800);
                 _.each(me.__changeCallbacks, function(cb) {
                     cb.call(this, me, key, value);
                 });
@@ -92,6 +92,12 @@
             el.change(function(evt) {
                 storeElementValue($(evt.target));
             });
+
+            if (el.is('input[type=text]') || el.is('textarea')) {
+                el.keyup(function(evt) {
+                    storeElementValue($(evt.target));
+                });
+            }
 
             window.onbeforeunload = function(e) {
                 //console.debug('onbeforeunload()');
