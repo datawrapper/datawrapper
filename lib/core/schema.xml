@@ -2,6 +2,9 @@
 <database name="datawrapper" defaultIdMethod="native">
 
   <table name="chart" phpName="Chart">
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
     <column name="id" type="varchar" size="5" required="true" primaryKey="true" />
     <column name="title" type="varchar" size="255" required="true" />
     <column name="theme" type="varchar" size="255" required="true" />
@@ -24,6 +27,9 @@
   </table>
 
   <table name="user" phpName="User">
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
     <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true"/>
     <column name="email" type="varchar" size="512" required="true" />
     <column name="pwd" type="varchar" size="512" required="true" />
@@ -41,6 +47,9 @@
 
   <!-- store security relevant user actions in this table -->
   <table name="action" phpName="Action">
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
     <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
     <column name="user_id" type="integer" required="true"/>
     <foreign-key foreignTable="user">
@@ -53,6 +62,9 @@
 
   <!-- some stats to keep admins happy -->
   <table name="stats" phpName="Stats">
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
     <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
     <column name="time" type="timestamp" required="true" />
     <column name="metric" type="varchar" required="true" />
@@ -61,6 +73,9 @@
 
   <!-- user sessions -->
   <table name="session" phpName="Session">
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
     <column name="session_id" type="varchar" size="32" required="true" primaryKey="true" />
     <column name="date_created" type="timestamp" required="true" />
     <column name="last_updated" type="timestamp" required="true" />
@@ -69,6 +84,9 @@
 
   <!-- chart export job queue -->
   <table name="job" phpName="Job">
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
     <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
     <column name="user_id" type="integer" required="true"/>
     <foreign-key foreignTable="user">
