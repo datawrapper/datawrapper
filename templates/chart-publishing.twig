@@ -23,9 +23,11 @@ $(function() {
     }
 
     publish_remote(function() {
-        //location.href = 'publish';
+        location.href = 'publish';
     });
 
+    $('h2').animate({ opacity:  1 }, 1000);
+    $('p').animate({ opacity:  1 }, 2000);
 
 });
 
@@ -33,20 +35,22 @@ $(function() {
 <style type="text/css">
 
 .dw-create-publish h2 {
-    margin: 40px 100px;
+    margin: 0px 100px 30px;
     font-size: 40px;
     font-weight: 300;
     text-align: center;
     color: #444;
     text-shadow: 2px 2px 0 #eee;
+    opacity: 0;
 }
 
 .dw-create-publish p {
-    font-size: 21px;
-    line-height: 28px;
+    font-size: 18px;
+    line-height: 26px;
     font-weight: 300;
-    margin: 20px 20%;
+    margin: 20px 15% 40px;
     text-align: center;
+    opacity: 0;
 }
 
 
@@ -58,17 +62,16 @@ $(function() {
 
 <div class="dw-create-publish">
 
-
     {% if user.isAbleToPublish %}
 
-    <h2>{% trans "Publishing chart..." %}</h2>
-
-        <div class="progress progress-striped active">
-    <div class="bar" style="width: 40%;"></div>
+    <div style="text-align:center">
+        <img src="/static/img/publishing-action.gif" alt="" />
     </div>
+    <h2>{% trans "Publishing chart" %}</h2>
 
-    <p>{% trans "Please hold on a second while your chart is being published. We're packing the chart assets and making them ready for the world..." %}</p>
-
+    <p>{% trans "Please hold on a few seconds while we're making your chart ready for the world." %} <br/>
+        {% trans "You are automatically redirected once this is finished." %}
+    </p>
 
     {% endif %}
 
