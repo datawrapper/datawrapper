@@ -294,12 +294,14 @@ $app->post('/charts/:id/publish', function($chart_id) use ($app) {
     disable_cache($app);
     if_chart_is_writable($chart_id, function($user, $chart) use ($app) {
 
-        $res = array();
+        $files = array();
 
-        $res[] = publish_html($user, $chart);
-        $res[] = publish_js($user, $chart);
-        $res[] = publish_css($user, $chart);
-        $res[] = publish_data($user, $chart);
+        $files = array_merge($files, publish_html($user, $chart));
+        $files = array_merge($files, publish_js($user, $chart));
+        $files = array_merge($files, publish_css($user, $chart));
+        $files = array_merge($files, publish_data($user, $chart));
+
+        publish_push_to_cdn($files, $chart);
 
         ok();
     });

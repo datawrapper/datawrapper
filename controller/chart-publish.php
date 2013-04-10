@@ -38,7 +38,7 @@ $app->get('/chart/:id/publish', function ($id) use ($app) {
             && ($chart->getLastEditStep() == 3 || $app->request()->get('republish') == 1)) {
             // generate thumbnails
             $page['thumbnails'] = $GLOBALS['dw_config']['thumbnails'];
-            $app->render('chart-generate-thumbnails.twig', $page);
+            $app->render('chart-publishing.twig', $page);
 
             // queue a job for thumbnail generation
             $params = array(
