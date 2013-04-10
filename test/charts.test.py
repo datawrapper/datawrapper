@@ -168,8 +168,8 @@ def init_output():
 
 def load_charts():
     r = session.get(domain + '/api/charts?expand=1&order=theme')
-    assert r.json['status'] == 'ok'
-    return r.json['data']
+    assert r.json()['status'] == 'ok'
+    return r.json()['data']
 
 
 def login():
@@ -180,7 +180,7 @@ def login():
     pwd = hmac.new('123', msg=pwd, digestmod=sha256).hexdigest()
     payload = dict(pwhash=pwd, time='123', email='test', keeplogin=False)
     r = session.post(domain + '/api/auth/login', data=json.dumps(payload))
-    assert r.json['status'] == 'ok'
+    assert r.json()['status'] == 'ok'
 
 
 if __name__ == '__main__':

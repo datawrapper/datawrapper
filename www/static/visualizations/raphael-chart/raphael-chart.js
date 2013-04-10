@@ -338,6 +338,64 @@
             throw 'getDataRowByPoint() needs to be implemented by each visualization';
         },
 
+        _getColor: function(series, row, opts) {
+            var me = this,
+                key = opts.key;
+
+            if (!key) {
+                if (me.meta['color-by'] == 'row') {
+                    key = me.chart.rowLabels()[row];
+                } else {
+                    key = series.name;
+                }
+            }
+            // check if user has selected a custom color for this key
+            var customColors = me.get('custom-colors', {});
+            if (customColors[key]) return customColors[key];
+
+            // check if we have a color scale
+            if (opts.byValue) {
+                return opts.byValue(series.data[row]);
+            }
+
+            // eventually the visualization has requested colors
+            if (series && me.__colors && me.__colors[key]) {
+                return me.__colors[key];
+            }
+
+            // cycle through palette opts.usePalette is true
+            var palette = me.theme.colors.palette;
+            if (opts.usePalette) {
+                return palette[(Math.min(me.get('base-color', 0), palette.length-1) + row) % palette.length];
+            }
+
+            var baseColor = palette[Math.min(me.get('base-color', 0), palette.length-1)];
+
+            // opts.varyLightness for each row
+            if (opts.varyLightness) {
+                var lab = chroma.color(baseColor).lab(),
+                    minL = Math.min(lab[0], 50),
+                    maxL = 91,
+                    f = row / (me.chart.numRows()-1);
+                return chroma.lab(minL + f * (maxL - minL), lab[1], lab[2]).hex();
+            }
+
+            // otherwise just return the base color
+            return baseColor;
+        },
+
+        getColor: function(series, row, opts) {
+            var me = this,
+                color = me._getColor(series, row, opts);
+
+            // modify colors to indicate highlighting
+            if (series && me.chart.hasHighlight() && !me.chart.isHighlighted(series)) {
+                // mix color with background
+                return chroma.interpolate(color, me.theme.colors.background, 0.65, 'rgb').hex();
+            }
+            return color;
+        },
+
         getSeriesColor: function(series, row, useNegativeColor, colorful) {
             var me = this,
                 palette = me.theme.colors.palette,
@@ -346,9 +404,11 @@
                 colorKey = colorByRow ? me.chart.rowLabels()[row] : series.name;
 
             var userCustomColors = me.get('custom-colors', {});
-            if (series && userCustomColors[colorKey]) {
-                // highest priority for user-defined series colors
+
+            // user has defined a colors for this key
+            if (userCustomColors[colorKey]) {
                 color = userCustomColors[colorKey];
+
             } else if (series && useNegativeColor) {
                 // if requested we display negative values in different color
                 color = me.theme.colors[series.data[row] < 0 ? 'negative' : 'positive'];

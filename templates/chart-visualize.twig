@@ -5,6 +5,9 @@
 
 {% set vismeta = chart.metadata.visualize %}
 
+<script type="text/javascript" src="/static/vendor/canvg/rgbcolor.js"></script>
+<script type="text/javascript" src="/static/vendor/canvg/canvg.js"></script>
+
 <script type="text/javascript">
 
 $.extend($.easing, {
@@ -137,10 +140,11 @@ $(function() {
 
     chart.onSave(function(chart) {
 
-        $('#iframe-vis').attr('src', '/chart/{{ chart.id }}/preview?nocache='+Math.random());
+        var iframe = $('#iframe-vis');
+        iframe.attr('src', '/chart/{{ chart.id }}/preview?nocache='+Math.random());
 
         if (_themeHasChanged) {
-            $("#iframe-vis").load(updateVisBackground);
+            iframe.one('load', updateVisBackground);
             _.each(themes, function(theme) {
                 if (theme.id == chart.get('theme')) {
                     if (theme.default_width) $('#iframe-wrapper').width(theme.default_width);
@@ -158,7 +162,19 @@ $(function() {
 
         _themeHasChanged = false;
         _typeHasChanged = false;
+
+        iframe.one('load', scheduleThumbnail);
     });
+
+    var _thumbTimer;
+
+    function scheduleThumbnail() {
+        clearTimeout(_thumbTimer);
+        _thumbTimer = setTimeout(function() {
+            //console.log('snapshot', $('#iframe-wrapper iframe'), '{{ chart.id }}', 'm', 260, 160);
+            DW.snapshot($('#iframe-vis'), '{{ chart.id }}', 'm', 260, 160);
+        }, 500);
+    }
 
 //    chart.sync('#select-vis', 'type');
     chart.sync('#select-theme', 'theme');
@@ -357,8 +373,10 @@ $(function() {
     $('#resize-h').val(ch);
     $('#iframe-wrapper').width(cw);
     $('#iframe-wrapper').height(ch);
-    $('.affix-cont').css('width', $('#iframe-wrapper').width()+'px');
+    //$('.affix-cont').css('width', $('#iframe-wrapper').width()+'px');
+
 });
+
 
 </script>
 
@@ -367,7 +385,7 @@ $(function() {
     <div class="row">
         <div class="span7">
 
-            <div class="affix-cont" data-spy="affix" data-offset-top="100" data-offset-bottom="130">
+            <div data-offset-top="100" data-offset-bottom="130">
                 <div id="iframe-wrapper" style="height:500px;" >
                     <iframe src="/chart/{{ chart.id }}/preview" id="iframe-vis" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen>
                     </iframe>

@@ -16,11 +16,9 @@ $app->get('/chart/:id/publish', function ($id) use ($app) {
     check_chart_writable($id, function($user, $chart) use ($app) {
 
         $cfg = $GLOBALS['dw_config'];
-        if (empty($cfg['publish'])) {
-            $iframe_src = 'http://' . $cfg['chart_domain'] . '/' . $chart->getID() . '/';
-        } else {
-            $pub = get_module('publish', '../lib/');
-            $iframe_src = $pub->getUrl($chart);
+        $public_url = $chart->getPublicUrl();
+        if (empty($public_url)) {
+            $public_url = 'http://' . $cfg['chart_domain'] . '/' . $chart->getID() . '/';
         }
 
         $page = array(
@@ -28,7 +26,7 @@ $app->get('/chart/:id/publish', function ($id) use ($app) {
             'chart' => $chart,
             'visualizations' => get_visualizations_meta('', true),
             'vis' => get_visualization_meta($chart->getType()),
-            'iframe' => $iframe_src.'?rev='.rand(0,100),
+            'iframe' => $public_url,
             'themes' => get_themes_meta(),
             'exportStaticImage' => !empty($cfg['phantomjs']),
             'estExportTime' => ceil(JobQuery::create()->estimatedTime('export') / 60)
@@ -40,7 +38,7 @@ $app->get('/chart/:id/publish', function ($id) use ($app) {
             && ($chart->getLastEditStep() == 3 || $app->request()->get('republish') == 1)) {
             // generate thumbnails
             $page['thumbnails'] = $GLOBALS['dw_config']['thumbnails'];
-            $app->render('chart-generate-thumbnails.twig', $page);
+            $app->render('chart-publishing.twig', $page);
 
             // queue a job for thumbnail generation
             $params = array(

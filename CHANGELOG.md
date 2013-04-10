@@ -1,8 +1,22 @@
 CHANGELOG
 ---------
 
+### 1.2.9
+* added support for S3 domain alias (e.g. s3.datawrapper.de)
+* added support for S3 endpoints
+* recatored chart publication, fixed occosional bug that stopped chart publication
+* live-generating chart thumbnails during chart editing instead of during publication
+* you need to migrate the database schema, see [commit message](https://github.com/datawrapper/datawrapper/commit/015fd7a95c5bc5521a9fa2112f9b3bd564995e2b)
+
+
+### 1.2.8
+* made job execution (e.g. static chart exports) fail safe
+* added admin page showing job status
+* you need to migrate the database schema, see [commit message](https://github.com/datawrapper/datawrapper/commit/288a8f13343268e8d8ad46a1f6930a33818fad24)
+
 ### 1.2.7
 * added generic support for hierarchical datasets
+* fixed chart export
 
 ### 1.2.6
 * visualizations now may define [localized strings](https://github.com/datawrapper/datawrapper/wiki/Visualization-Meta.json-Properties#locale)

@@ -8,7 +8,6 @@
 define('BASEDIR', dirname(dirname(__FILE__)));
 define('LOGFILE', BASEDIR . "/logs/export-charts.log");
 
-
 function execute($cmd, &$error=null) {
     ob_start();  // grab output
     passthru($cmd, $error);
@@ -24,6 +23,7 @@ if (!$flog) {
 
 function _log($msg = "", $job=null, $type='LOG') {
     global $flog, $cfg;
+    if (!VERBOSE && $type == 'DEBUG') return;
     if (!empty($msg)) {
         $prefix = date('Y-m-d H:i:s').",".$type.",";
         if ($job) {
@@ -33,7 +33,10 @@ function _log($msg = "", $job=null, $type='LOG') {
         }
         fwrite($flog, $prefix . '"' . $msg . "\"\n");
         if ($type == 'ERROR') {
-            @mail($cfg['log_email'], 'export-charts / error / '.substr($msg, 0, 80).'...', $msg, "From: ".$cfg['admin_mail']."\r\n");
+            @mail($cfg['log_email'], 'export-charts / error / '.substr($msg, 0, 60).'...', $msg."\n\n".print_r($job, true), "From: ".$cfg['admin_email']."\r\n");
+            if ($job) {
+                mysql_query('UPDATE job SET status = 2, done_at = NOW(), fail_reason = "'.addslashes($msg).'" WHERE id = '.$job['job_id']);
+            }
         }
     }
 }
@@ -54,6 +57,8 @@ require_once BASEDIR . '/../vendor/spyc/spyc.php';
 date_default_timezone_set('Europe/Berlin');
 
 $cfg = $GLOBALS['dw_config'] = Spyc::YAMLLoad(BASEDIR . '/../config.yaml');
+
+define('VERBOSE', $cfg['debug']);
 
 if (empty($cfg['phantomjs']) || empty($cfg['phantomjs']['path'])) {
     die("Err: phantomjs is not configured properly");
@@ -143,19 +148,25 @@ function run($job) {
             else {
                 mysql_query('UPDATE job SET status = 1, done_at = NOW() WHERE id = '.$job['job_id']);
                 _log(mysql_error());
-                sleep(1);
+                _log("exported static chart", $job, 'LOG');
             }
         } else {
-            _log("ERROR: chart rendering failed");
+            _log("chart rendering failed", $job, 'ERROR');
         }
 
     } else if ($job['type'] == 'static') {
+
+        _log("job is about static chart export", $job, 'DEBUG');
 
         $url = 'http://' . $cfg['domain'] . '/chart/%s/';
         $cmd = $cfg['phantomjs']['path'] . ' make_thumb.js '. $url.' '.$job['chart_id'].' '.$params['width'].' '.$params['height'];
         //print "\n".'running '.$cmd;
 
+        _log("cmd: ".$cmd, $job, 'DEBUG');
+
         $output = execute($cmd, $error);
+
+        _log("cmd output: ".$output, $job, 'DEBUG');
 
         if (!empty($output) || $error) {
             _log("static chart export failed (".trim($output).")", $job, "ERROR");
@@ -169,18 +180,31 @@ function run($job) {
                 // push files to CDN
                 publish_file($job['chart_id'] . '/static.html', 'text/html');
                 publish_file($job['chart_id'] . '/static.png', 'image/png');
+                _log("created static fallback", $job, 'LOG');
+
             }
         }
     }
 }
+
+_log("Starting chart export service.");
+
+$is_sleeping = false;
 
 while (1) {  // run forever
     // get next job in line
     $res = mysql_query('SELECT job.id job_id, user.email email, chart_id, parameter, SUBSTR(language,1,2) lang, type FROM job JOIN user ON (user.id = user_id) WHERE status = 0 and type IN ("export", "static") ORDER BY job.created_at ASC LIMIT 1');
     _log(mysql_error(), "ERROR");
     $job = mysql_fetch_array($res);
-
-    run($job);
-
-    sleep(10);
+    if ($job) {
+        $is_sleeping = false;
+        _log("yeah! found a new job", $job, 'DEBUG');
+        run($job);
+    } else {
+        if (!$is_sleeping) {
+            _log("no new jobs found, going into sleep mode", null, 'DEBUG');
+            $is_sleeping = true;
+        }
+    }
+    sleep($is_sleeping ? 10 : 2);
 }

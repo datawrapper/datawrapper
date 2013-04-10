@@ -23,13 +23,13 @@ abstract class BaseJobPeer {
 	const TM_CLASS = 'JobTableMap';
 
 	/** The total number of columns. */
-	const NUM_COLUMNS = 8;
+	const NUM_COLUMNS = 9;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
 
 	/** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-	const NUM_HYDRATE_COLUMNS = 8;
+	const NUM_HYDRATE_COLUMNS = 9;
 
 	/** the column name for the ID field */
 	const ID = 'job.ID';
@@ -55,9 +55,13 @@ abstract class BaseJobPeer {
 	/** the column name for the PARAMETER field */
 	const PARAMETER = 'job.PARAMETER';
 
+	/** the column name for the FAIL_REASON field */
+	const FAIL_REASON = 'job.FAIL_REASON';
+
 	/** The enumerated values for the STATUS field */
 	const STATUS_QUEUED = 'queued';
 	const STATUS_DONE = 'done';
+	const STATUS_FAILED = 'failed';
 
 	/** The default string format for model objects of the related table **/
 	const DEFAULT_STRING_FORMAT = 'YAML';
@@ -78,12 +82,12 @@ abstract class BaseJobPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	protected static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'UserId', 'ChartId', 'Status', 'CreatedAt', 'DoneAt', 'Type', 'Parameter', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'userId', 'chartId', 'status', 'createdAt', 'doneAt', 'type', 'parameter', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, self::USER_ID, self::CHART_ID, self::STATUS, self::CREATED_AT, self::DONE_AT, self::TYPE, self::PARAMETER, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'USER_ID', 'CHART_ID', 'STATUS', 'CREATED_AT', 'DONE_AT', 'TYPE', 'PARAMETER', ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'user_id', 'chart_id', 'status', 'created_at', 'done_at', 'type', 'parameter', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'UserId', 'ChartId', 'Status', 'CreatedAt', 'DoneAt', 'Type', 'Parameter', 'FailReason', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'userId', 'chartId', 'status', 'createdAt', 'doneAt', 'type', 'parameter', 'failReason', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::USER_ID, self::CHART_ID, self::STATUS, self::CREATED_AT, self::DONE_AT, self::TYPE, self::PARAMETER, self::FAIL_REASON, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'USER_ID', 'CHART_ID', 'STATUS', 'CREATED_AT', 'DONE_AT', 'TYPE', 'PARAMETER', 'FAIL_REASON', ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'user_id', 'chart_id', 'status', 'created_at', 'done_at', 'type', 'parameter', 'fail_reason', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
 	);
 
 	/**
@@ -93,12 +97,12 @@ abstract class BaseJobPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	protected static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'UserId' => 1, 'ChartId' => 2, 'Status' => 3, 'CreatedAt' => 4, 'DoneAt' => 5, 'Type' => 6, 'Parameter' => 7, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'userId' => 1, 'chartId' => 2, 'status' => 3, 'createdAt' => 4, 'doneAt' => 5, 'type' => 6, 'parameter' => 7, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::USER_ID => 1, self::CHART_ID => 2, self::STATUS => 3, self::CREATED_AT => 4, self::DONE_AT => 5, self::TYPE => 6, self::PARAMETER => 7, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'USER_ID' => 1, 'CHART_ID' => 2, 'STATUS' => 3, 'CREATED_AT' => 4, 'DONE_AT' => 5, 'TYPE' => 6, 'PARAMETER' => 7, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'user_id' => 1, 'chart_id' => 2, 'status' => 3, 'created_at' => 4, 'done_at' => 5, 'type' => 6, 'parameter' => 7, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'UserId' => 1, 'ChartId' => 2, 'Status' => 3, 'CreatedAt' => 4, 'DoneAt' => 5, 'Type' => 6, 'Parameter' => 7, 'FailReason' => 8, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'userId' => 1, 'chartId' => 2, 'status' => 3, 'createdAt' => 4, 'doneAt' => 5, 'type' => 6, 'parameter' => 7, 'failReason' => 8, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::USER_ID => 1, self::CHART_ID => 2, self::STATUS => 3, self::CREATED_AT => 4, self::DONE_AT => 5, self::TYPE => 6, self::PARAMETER => 7, self::FAIL_REASON => 8, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'USER_ID' => 1, 'CHART_ID' => 2, 'STATUS' => 3, 'CREATED_AT' => 4, 'DONE_AT' => 5, 'TYPE' => 6, 'PARAMETER' => 7, 'FAIL_REASON' => 8, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'user_id' => 1, 'chart_id' => 2, 'status' => 3, 'created_at' => 4, 'done_at' => 5, 'type' => 6, 'parameter' => 7, 'fail_reason' => 8, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
 	);
 
 	/** The enumerated values for this table */
@@ -106,6 +110,7 @@ abstract class BaseJobPeer {
 		self::STATUS => array(
 			JobPeer::STATUS_QUEUED,
 			JobPeer::STATUS_DONE,
+			JobPeer::STATUS_FAILED,
 		),
 	);
 
@@ -205,6 +210,7 @@ abstract class BaseJobPeer {
 			$criteria->addSelectColumn(JobPeer::DONE_AT);
 			$criteria->addSelectColumn(JobPeer::TYPE);
 			$criteria->addSelectColumn(JobPeer::PARAMETER);
+			$criteria->addSelectColumn(JobPeer::FAIL_REASON);
 		} else {
 			$criteria->addSelectColumn($alias . '.ID');
 			$criteria->addSelectColumn($alias . '.USER_ID');
@@ -214,6 +220,7 @@ abstract class BaseJobPeer {
 			$criteria->addSelectColumn($alias . '.DONE_AT');
 			$criteria->addSelectColumn($alias . '.TYPE');
 			$criteria->addSelectColumn($alias . '.PARAMETER');
+			$criteria->addSelectColumn($alias . '.FAIL_REASON');
 		}
 	}
 

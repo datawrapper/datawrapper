@@ -14,6 +14,7 @@
  * @method     JobQuery orderByDoneAt($order = Criteria::ASC) Order by the done_at column
  * @method     JobQuery orderByType($order = Criteria::ASC) Order by the type column
  * @method     JobQuery orderByParameter($order = Criteria::ASC) Order by the parameter column
+ * @method     JobQuery orderByFailReason($order = Criteria::ASC) Order by the fail_reason column
  *
  * @method     JobQuery groupById() Group by the id column
  * @method     JobQuery groupByUserId() Group by the user_id column
@@ -23,6 +24,7 @@
  * @method     JobQuery groupByDoneAt() Group by the done_at column
  * @method     JobQuery groupByType() Group by the type column
  * @method     JobQuery groupByParameter() Group by the parameter column
+ * @method     JobQuery groupByFailReason() Group by the fail_reason column
  *
  * @method     JobQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     JobQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -47,6 +49,7 @@
  * @method     Job findOneByDoneAt(string $done_at) Return the first Job filtered by the done_at column
  * @method     Job findOneByType(string $type) Return the first Job filtered by the type column
  * @method     Job findOneByParameter(string $parameter) Return the first Job filtered by the parameter column
+ * @method     Job findOneByFailReason(string $fail_reason) Return the first Job filtered by the fail_reason column
  *
  * @method     array findById(int $id) Return Job objects filtered by the id column
  * @method     array findByUserId(int $user_id) Return Job objects filtered by the user_id column
@@ -56,6 +59,7 @@
  * @method     array findByDoneAt(string $done_at) Return Job objects filtered by the done_at column
  * @method     array findByType(string $type) Return Job objects filtered by the type column
  * @method     array findByParameter(string $parameter) Return Job objects filtered by the parameter column
+ * @method     array findByFailReason(string $fail_reason) Return Job objects filtered by the fail_reason column
  *
  * @package    propel.generator.datawrapper.om
  */
@@ -144,7 +148,7 @@ abstract class BaseJobQuery extends ModelCriteria
 	 */
 	protected function findPkSimple($key, $con)
 	{
-		$sql = 'SELECT `ID`, `USER_ID`, `CHART_ID`, `STATUS`, `CREATED_AT`, `DONE_AT`, `TYPE`, `PARAMETER` FROM `job` WHERE `ID` = :p0';
+		$sql = 'SELECT `ID`, `USER_ID`, `CHART_ID`, `STATUS`, `CREATED_AT`, `DONE_AT`, `TYPE`, `PARAMETER`, `FAIL_REASON` FROM `job` WHERE `ID` = :p0';
 		try {
 			$stmt = $con->prepare($sql);
 			$stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -495,6 +499,34 @@ abstract class BaseJobQuery extends ModelCriteria
 			}
 		}
 		return $this->addUsingAlias(JobPeer::PARAMETER, $parameter, $comparison);
+	}
+
+	/**
+	 * Filter the query on the fail_reason column
+	 *
+	 * Example usage:
+	 * <code>
+	 * $query->filterByFailReason('fooValue');   // WHERE fail_reason = 'fooValue'
+	 * $query->filterByFailReason('%fooValue%'); // WHERE fail_reason LIKE '%fooValue%'
+	 * </code>
+	 *
+	 * @param     string $failReason The value to use as filter.
+	 *              Accepts wildcards (* and % trigger a LIKE)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    JobQuery The current query, for fluid interface
+	 */
+	public function filterByFailReason($failReason = null, $comparison = null)
+	{
+		if (null === $comparison) {
+			if (is_array($failReason)) {
+				$comparison = Criteria::IN;
+			} elseif (preg_match('/[\%\*]/', $failReason)) {
+				$failReason = str_replace('*', '%', $failReason);
+				$comparison = Criteria::LIKE;
+			}
+		}
+		return $this->addUsingAlias(JobPeer::FAIL_REASON, $failReason, $comparison);
 	}
 
 	/**

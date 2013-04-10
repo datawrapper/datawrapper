@@ -21,6 +21,7 @@
  * @method     ChartQuery orderByGuestSession($order = Criteria::ASC) Order by the guest_session column
  * @method     ChartQuery orderByLastEditStep($order = Criteria::ASC) Order by the last_edit_step column
  * @method     ChartQuery orderByPublishedAt($order = Criteria::ASC) Order by the published_at column
+ * @method     ChartQuery orderByPublicUrl($order = Criteria::ASC) Order by the public_url column
  *
  * @method     ChartQuery groupById() Group by the id column
  * @method     ChartQuery groupByTitle() Group by the title column
@@ -37,6 +38,7 @@
  * @method     ChartQuery groupByGuestSession() Group by the guest_session column
  * @method     ChartQuery groupByLastEditStep() Group by the last_edit_step column
  * @method     ChartQuery groupByPublishedAt() Group by the published_at column
+ * @method     ChartQuery groupByPublicUrl() Group by the public_url column
  *
  * @method     ChartQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChartQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -68,6 +70,7 @@
  * @method     Chart findOneByGuestSession(string $guest_session) Return the first Chart filtered by the guest_session column
  * @method     Chart findOneByLastEditStep(int $last_edit_step) Return the first Chart filtered by the last_edit_step column
  * @method     Chart findOneByPublishedAt(string $published_at) Return the first Chart filtered by the published_at column
+ * @method     Chart findOneByPublicUrl(string $public_url) Return the first Chart filtered by the public_url column
  *
  * @method     array findById(string $id) Return Chart objects filtered by the id column
  * @method     array findByTitle(string $title) Return Chart objects filtered by the title column
@@ -84,6 +87,7 @@
  * @method     array findByGuestSession(string $guest_session) Return Chart objects filtered by the guest_session column
  * @method     array findByLastEditStep(int $last_edit_step) Return Chart objects filtered by the last_edit_step column
  * @method     array findByPublishedAt(string $published_at) Return Chart objects filtered by the published_at column
+ * @method     array findByPublicUrl(string $public_url) Return Chart objects filtered by the public_url column
  *
  * @package    propel.generator.datawrapper.om
  */
@@ -172,7 +176,7 @@ abstract class BaseChartQuery extends ModelCriteria
 	 */
 	protected function findPkSimple($key, $con)
 	{
-		$sql = 'SELECT `ID`, `TITLE`, `THEME`, `CREATED_AT`, `LAST_MODIFIED_AT`, `TYPE`, `METADATA`, `DELETED`, `DELETED_AT`, `AUTHOR_ID`, `SHOW_IN_GALLERY`, `LANGUAGE`, `GUEST_SESSION`, `LAST_EDIT_STEP`, `PUBLISHED_AT` FROM `chart` WHERE `ID` = :p0';
+		$sql = 'SELECT `ID`, `TITLE`, `THEME`, `CREATED_AT`, `LAST_MODIFIED_AT`, `TYPE`, `METADATA`, `DELETED`, `DELETED_AT`, `AUTHOR_ID`, `SHOW_IN_GALLERY`, `LANGUAGE`, `GUEST_SESSION`, `LAST_EDIT_STEP`, `PUBLISHED_AT`, `PUBLIC_URL` FROM `chart` WHERE `ID` = :p0';
 		try {
 			$stmt = $con->prepare($sql);
 			$stmt->bindValue(':p0', $key, PDO::PARAM_STR);
@@ -753,6 +757,34 @@ abstract class BaseChartQuery extends ModelCriteria
 			}
 		}
 		return $this->addUsingAlias(ChartPeer::PUBLISHED_AT, $publishedAt, $comparison);
+	}
+
+	/**
+	 * Filter the query on the public_url column
+	 *
+	 * Example usage:
+	 * <code>
+	 * $query->filterByPublicUrl('fooValue');   // WHERE public_url = 'fooValue'
+	 * $query->filterByPublicUrl('%fooValue%'); // WHERE public_url LIKE '%fooValue%'
+	 * </code>
+	 *
+	 * @param     string $publicUrl The value to use as filter.
+	 *              Accepts wildcards (* and % trigger a LIKE)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    ChartQuery The current query, for fluid interface
+	 */
+	public function filterByPublicUrl($publicUrl = null, $comparison = null)
+	{
+		if (null === $comparison) {
+			if (is_array($publicUrl)) {
+				$comparison = Criteria::IN;
+			} elseif (preg_match('/[\%\*]/', $publicUrl)) {
+				$publicUrl = str_replace('*', '%', $publicUrl);
+				$comparison = Criteria::LIKE;
+			}
+		}
+		return $this->addUsingAlias(ChartPeer::PUBLIC_URL, $publicUrl, $comparison);
 	}
 
 	/**

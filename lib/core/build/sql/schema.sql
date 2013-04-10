@@ -26,6 +26,7 @@ CREATE TABLE `chart`
 	`guest_session` VARCHAR(255),
 	`last_edit_step` INTEGER DEFAULT 0,
 	`published_at` DATETIME,
+	`public_url` VARCHAR(255),
 	PRIMARY KEY (`id`),
 	INDEX `chart_FI_1` (`author_id`),
 	CONSTRAINT `chart_FK_1`
@@ -122,6 +123,7 @@ CREATE TABLE `job`
 	`done_at` DATETIME NOT NULL,
 	`type` VARCHAR(32) NOT NULL,
 	`parameter` VARCHAR(4096) NOT NULL,
+	`fail_reason` VARCHAR(4096) NOT NULL,
 	PRIMARY KEY (`id`),
 	INDEX `job_FI_1` (`user_id`),
 	INDEX `job_FI_2` (`chart_id`),

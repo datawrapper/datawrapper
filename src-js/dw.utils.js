@@ -7,16 +7,16 @@
     var $ = root.jQuery || root.Zepto || root.ender;
 
 
-    // Datawrapper.UI
-    // --------------
+    // Datawrapper.Utils
+    // -----------------
 
-    var UI = Datawrapper.UI = function() {
+    var Utils = Datawrapper.Utils = function() {
 
         this.initialize();
 
     };
 
-    _.extend(UI.prototype, {
+    _.extend(Utils.prototype, {
 
         initialize: function() {
             this.initializeSignUp();
@@ -278,13 +278,68 @@
                     }
                 }
             });
+        },
+
+        /*
+         * creates a PNG snapshot of a chart in a given iframe
+         */
+        snapshot: function (iframe, chart_id, thumb_id, width, height, callback) {
+
+            function px(s) {
+                return Math.floor(Number(s.substr(0, s.length-2)));
+            }
+
+            var body = iframe.get(0).contentDocument,
+                win = iframe.get(0).contentWindow;
+
+            if ($('svg', body).get(0) === undefined) return false;
+
+            var svg = $('svg', body),
+                c = win.vis.__canvas,
+                x = c.lpad + (c.lpad2 || 0),
+                y = 0,
+                w = c.w - x - c.rpad,
+                h = c.h - y - c.bpad,
+                scale = Math.max(width / c.w, height / c.h);
+
+            var canvas = document.createElement("canvas"),
+                ctx = canvas.getContext("2d");
+
+            canvas.width = c.w * scale;
+            canvas.height = c.h * scale;
+
+            ctx.fillStyle = win.vis.theme.colors.background;
+            ctx.fillRect(0, 0, c.w * scale, c.h * scale);
+            ctx.drawSvg(svg.get(0).innerSVG, 0, 0, c.w * scale, c.h * scale);
+
+            var tempCanvas = document.createElement("canvas"),
+                tCtx = tempCanvas.getContext("2d");
+
+            tempCanvas.width = width;
+            tempCanvas.height = height;
+
+            //console.log( * scale);
+            tCtx.drawImage(canvas, -x + (width - c.w * scale) * 0.5, -y);
+
+            var imgData = tempCanvas.toDataURL("image/png");
+            $.ajax({
+                url: '/api/charts/' + chart_id + '/thumbnail/' + thumb_id,
+                type: 'PUT',
+                data: imgData,
+                processData: false,
+                dataType: 'json',
+                success: function(res) {
+                    if (res.status == "ok") (callback || function() {})();
+                    else console.error(res);
+                }
+            });
         }
     });
 
 
     // -- now run datawrapper user interface
     $(function() {
-        window.DW = new Datawrapper.UI();
+        window.DW = new Datawrapper.Utils();
     });
 
 

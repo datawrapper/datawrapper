@@ -16,3 +16,5 @@ archive.tar
 *.log
 *.html
 *.png
+
+www/static/visualizations/treemap

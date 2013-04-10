@@ -1,0 +1,78 @@
+{% extends "chart-editor.twig" %}
+{% block content %}
+
+{{ parent() }}
+
+
+<script type="text/javascript">
+$(function() {
+
+    function publish_remote(cb) {
+        $.ajax({
+            url: '/api/charts/{{ chart.id }}/publish',
+            type: 'post',
+            dataType: 'json',
+            success: function(res) {
+                if (res.status == "ok") {
+                    cb();
+                } else {
+                    console.warn(res);
+                }
+            }
+        });
+    }
+
+    publish_remote(function() {
+        //location.href = 'publish';
+    });
+
+
+});
+
+</script>
+<style type="text/css">
+
+.dw-create-publish h2 {
+    margin: 40px 100px;
+    font-size: 40px;
+    font-weight: 300;
+    text-align: center;
+    color: #444;
+    text-shadow: 2px 2px 0 #eee;
+}
+
+.dw-create-publish p {
+    font-size: 21px;
+    line-height: 28px;
+    font-weight: 300;
+    margin: 20px 20%;
+    text-align: center;
+}
+
+
+.current.active {
+    background: url(/static/img/ajax-loader.gif) 10px 0px no-repeat;
+}
+
+</style>
+
+<div class="dw-create-publish">
+
+
+    {% if user.isAbleToPublish %}
+
+    <h2>{% trans "Publishing chart..." %}</h2>
+
+        <div class="progress progress-striped active">
+    <div class="bar" style="width: 40%;"></div>
+    </div>
+
+    <p>{% trans "Please hold on a second while your chart is being published. We're packing the chart assets and making them ready for the world..." %}</p>
+
+
+    {% endif %}
+
+</div>
+
+
+{% endblock %}

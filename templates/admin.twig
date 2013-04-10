@@ -12,7 +12,7 @@
         <div class="span2">
             <ul class="nav nav-stacked nav-tabs">
                 {% for url, title in adminmenu %}
-                <li{% if url == adminactive %} class="active" {% endif %}><a href="{{ url }}">{{ title }}</a></li>
+                <li{% if url == adminactive %} class="active" {% endif %}><a href="{{ url }}">{{ title | raw }}</a></li>
                 {% endfor %}
             </ul>
         </div>

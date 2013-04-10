@@ -125,6 +125,12 @@ abstract class BaseChart extends BaseObject  implements Persistent
 	protected $published_at;
 
 	/**
+	 * The value for the public_url field.
+	 * @var        string
+	 */
+	protected $public_url;
+
+	/**
 	 * @var        User
 	 */
 	protected $aUser;
@@ -438,6 +444,16 @@ abstract class BaseChart extends BaseObject  implements Persistent
 		} else {
 			return $dt->format($format);
 		}
+	}
+
+	/**
+	 * Get the [public_url] column value.
+	 * 
+	 * @return     string
+	 */
+	public function getPublicUrl()
+	{
+		return $this->public_url;
 	}
 
 	/**
@@ -769,6 +785,26 @@ abstract class BaseChart extends BaseObject  implements Persistent
 	} // setPublishedAt()
 
 	/**
+	 * Set the value of [public_url] column.
+	 * 
+	 * @param      string $v new value
+	 * @return     Chart The current object (for fluent API support)
+	 */
+	public function setPublicUrl($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->public_url !== $v) {
+			$this->public_url = $v;
+			$this->modifiedColumns[] = ChartPeer::PUBLIC_URL;
+		}
+
+		return $this;
+	} // setPublicUrl()
+
+	/**
 	 * Indicates whether the columns in this object are only set to default values.
 	 *
 	 * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -831,6 +867,7 @@ abstract class BaseChart extends BaseObject  implements Persistent
 			$this->guest_session = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
 			$this->last_edit_step = ($row[$startcol + 13] !== null) ? (int) $row[$startcol + 13] : null;
 			$this->published_at = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
+			$this->public_url = ($row[$startcol + 15] !== null) ? (string) $row[$startcol + 15] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -839,7 +876,7 @@ abstract class BaseChart extends BaseObject  implements Persistent
 				$this->ensureConsistency();
 			}
 
-			return $startcol + 15; // 15 = ChartPeer::NUM_HYDRATE_COLUMNS.
+			return $startcol + 16; // 16 = ChartPeer::NUM_HYDRATE_COLUMNS.
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating Chart object", $e);
@@ -1123,6 +1160,9 @@ abstract class BaseChart extends BaseObject  implements Persistent
 		if ($this->isColumnModified(ChartPeer::PUBLISHED_AT)) {
 			$modifiedColumns[':p' . $index++]  = '`PUBLISHED_AT`';
 		}
+		if ($this->isColumnModified(ChartPeer::PUBLIC_URL)) {
+			$modifiedColumns[':p' . $index++]  = '`PUBLIC_URL`';
+		}
 
 		$sql = sprintf(
 			'INSERT INTO `chart` (%s) VALUES (%s)',
@@ -1178,6 +1218,9 @@ abstract class BaseChart extends BaseObject  implements Persistent
 						break;
 					case '`PUBLISHED_AT`':
 						$stmt->bindValue($identifier, $this->published_at, PDO::PARAM_STR);
+						break;
+					case '`PUBLIC_URL`':
+						$stmt->bindValue($identifier, $this->public_url, PDO::PARAM_STR);
 						break;
 				}
 			}
@@ -1367,6 +1410,9 @@ abstract class BaseChart extends BaseObject  implements Persistent
 			case 14:
 				return $this->getPublishedAt();
 				break;
+			case 15:
+				return $this->getPublicUrl();
+				break;
 			default:
 				return null;
 				break;
@@ -1411,6 +1457,7 @@ abstract class BaseChart extends BaseObject  implements Persistent
 			$keys[12] => $this->getGuestSession(),
 			$keys[13] => $this->getLastEditStep(),
 			$keys[14] => $this->getPublishedAt(),
+			$keys[15] => $this->getPublicUrl(),
 		);
 		if ($includeForeignObjects) {
 			if (null !== $this->aUser) {
@@ -1495,6 +1542,9 @@ abstract class BaseChart extends BaseObject  implements Persistent
 			case 14:
 				$this->setPublishedAt($value);
 				break;
+			case 15:
+				$this->setPublicUrl($value);
+				break;
 		} // switch()
 	}
 
@@ -1534,6 +1584,7 @@ abstract class BaseChart extends BaseObject  implements Persistent
 		if (array_key_exists($keys[12], $arr)) $this->setGuestSession($arr[$keys[12]]);
 		if (array_key_exists($keys[13], $arr)) $this->setLastEditStep($arr[$keys[13]]);
 		if (array_key_exists($keys[14], $arr)) $this->setPublishedAt($arr[$keys[14]]);
+		if (array_key_exists($keys[15], $arr)) $this->setPublicUrl($arr[$keys[15]]);
 	}
 
 	/**
@@ -1560,6 +1611,7 @@ abstract class BaseChart extends BaseObject  implements Persistent
 		if ($this->isColumnModified(ChartPeer::GUEST_SESSION)) $criteria->add(ChartPeer::GUEST_SESSION, $this->guest_session);
 		if ($this->isColumnModified(ChartPeer::LAST_EDIT_STEP)) $criteria->add(ChartPeer::LAST_EDIT_STEP, $this->last_edit_step);
 		if ($this->isColumnModified(ChartPeer::PUBLISHED_AT)) $criteria->add(ChartPeer::PUBLISHED_AT, $this->published_at);
+		if ($this->isColumnModified(ChartPeer::PUBLIC_URL)) $criteria->add(ChartPeer::PUBLIC_URL, $this->public_url);
 
 		return $criteria;
 	}
@@ -1636,6 +1688,7 @@ abstract class BaseChart extends BaseObject  implements Persistent
 		$copyObj->setGuestSession($this->getGuestSession());
 		$copyObj->setLastEditStep($this->getLastEditStep());
 		$copyObj->setPublishedAt($this->getPublishedAt());
+		$copyObj->setPublicUrl($this->getPublicUrl());
 
 		if ($deepCopy && !$this->startCopy) {
 			// important: temporarily setNew(false) because this affects the behavior of
@@ -1956,6 +2009,7 @@ abstract class BaseChart extends BaseObject  implements Persistent
 		$this->guest_session = null;
 		$this->last_edit_step = null;
 		$this->published_at = null;
+		$this->public_url = null;
 		$this->alreadyInSave = false;
 		$this->alreadyInValidation = false;
 		$this->clearAllReferences();

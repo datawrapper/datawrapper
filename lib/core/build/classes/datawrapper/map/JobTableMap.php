@@ -45,11 +45,13 @@ class JobTableMap extends TableMap
 		$this->getColumn('STATUS', false)->setValueSet(array (
   0 => 'queued',
   1 => 'done',
+  2 => 'failed',
 ));
 		$this->addColumn('CREATED_AT', 'CreatedAt', 'TIMESTAMP', true, null, null);
 		$this->addColumn('DONE_AT', 'DoneAt', 'TIMESTAMP', true, null, null);
 		$this->addColumn('TYPE', 'Type', 'VARCHAR', true, 32, null);
 		$this->addColumn('PARAMETER', 'Parameter', 'VARCHAR', true, 4096, null);
+		$this->addColumn('FAIL_REASON', 'FailReason', 'VARCHAR', true, 4096, null);
 		// validators
 	} // initialize()
 

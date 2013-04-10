@@ -14,21 +14,16 @@
     <![endif]-->
     {% if innersvg %}
     <script type="text/javascript" src="/static/vendor/innersvg/innersvg.js"></script>
-    <style>
-        body { padding: 0!important; }
-        html, body { overflow: hidden; }
-        .label { display: none!important;}
-    </style>
     {% endif %}
 
-    {# markup for twitter cards #}
+{# markup for twitter cards #}
     <meta name="twitter:card" content="player">
     <meta name="twitter:site" content="@datawrapper">
-    <meta name="twitter:url" content="https://c-datawrapper.s3.amazonaws.com/{{ chart.id }}/index.html">
+    <meta name="twitter:url" content="{{ chart.publicUrl }}">
     <meta name="twitter:title" content="{{ chart.title }}">
     <meta name="twitter:description" content="{{ chart.metadata.describe.intro }}">
-    <meta name="twitter:image" content="http://c-datawrapper.s3.amazonaws.com/{{ chart.id }}/m.png">
-    <meta name="twitter:player" content="https://c-datawrapper.s3.amazonaws.com/{{ chart.id }}/plain.html">
+    <meta name="twitter:image" content="{{ chart.thumbUrl }}">
+    <meta name="twitter:player" content="{{ chart.plainUrl }}">
     <meta name="twitter:player:width" content="435">
     <meta name="twitter:player:height" content="251">
 

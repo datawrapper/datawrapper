@@ -28,6 +28,9 @@ function get_chart_content($chart, $user, $minified = false, $path = '') {
             '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.2/underscore-min.js',
             '//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js'
         );
+        if (substr($locale, 0, 2) != 'en') {
+            $base_js[] = '//assets-datawrapper.s3.amazonaws.com/cultures/globalize.culture.' . str_replace('_', '-', $locale) . '.js';
+        }
     } else {
         // use local assets
         $base_js = array(
@@ -35,10 +38,9 @@ function get_chart_content($chart, $user, $minified = false, $path = '') {
             $abs . '/static/vendor/underscore/underscore-min.js',
             $abs . '/static/vendor/jquery/jquery-1.9.1'.($debug ? '' : '.min').'.js'
         );
-    }
-
-    if (substr($locale, 0, 2) != 'en') {
-        $base_js[] = $abs . '/static/vendor/globalize/cultures/globalize.culture.' . str_replace('_', '-', $locale) . '.js';
+        if (substr($locale, 0, 2) != 'en') {
+            $base_js[] = $abs . '/static/vendor/globalize/cultures/globalize.culture.' . str_replace('_', '-', $locale) . '.js';
+        }
     }
 
     $vis_js = array();

@@ -8,8 +8,13 @@ function add_adminpage_vars(&$page, $active) {
         '/admin' => 'Dashboard',
         '/admin/users' => 'Users',
         '/admin/themes' => 'Themes',
-        '/admin/translations' => 'Translations'
+        '/admin/translations' => 'Translations',
+        '/admin/jobs' => 'Jobs',
     );
+    $q = JobQuery::create()->filterByStatus('queued')->count();
+    if ($q > 0) $page['adminmenu']['/admin/jobs'] .= ' <span class="badge badge-info">'.$q.'</span>';
+    $f = JobQuery::create()->filterByStatus('failed')->count();
+    if ($f > 0) $page['adminmenu']['/admin/jobs'] .= ' <span class="badge badge-important">'.$f.'</span>';
     $page['adminactive'] = $active;
 }
 
@@ -178,6 +183,30 @@ $app->get('/admin/translations', function() use ($app) {
         add_header_vars($page, 'admin');
         add_adminpage_vars($page, '/admin/translations');
         $app->render('admin-translations.twig', $page);
+    } else {
+        $app->notFound();
+    }
+});
+
+
+
+
+$app->get('/admin/jobs', function() use ($app) {
+    $user = DatawrapperSession::getUser();
+    if ($user->isAdmin()) {
+        // get untranslated strings from all the meta.jsons
+        $jobs = JobQuery::create()->filterByStatus('failed')->orderById('desc')->find();
+        $page = array(
+            'title' => 'Background Jobs',
+            'jobs' => count($jobs) > 0 ? $jobs : false,
+            'queued' => JobQuery::create()->filterByStatus('queued')->count(),
+            'failed' => JobQuery::create()->filterByStatus('failed')->count(),
+            'done' => JobQuery::create()->filterByStatus('done')->count(),
+        );
+        $page['est_time'] = ceil($page['queued'] * 2 / 60);
+        add_header_vars($page, 'admin');
+        add_adminpage_vars($page, '/admin/jobs');
+        $app->render('admin-jobs.twig', $page);
     } else {
         $app->notFound();
     }
