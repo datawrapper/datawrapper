@@ -147,9 +147,9 @@ $(function() {
             iframe.one('load', updateVisBackground);
             _.each(themes, function(theme) {
                 if (theme.id == chart.get('theme')) {
-                    if (theme.default_width) $('#iframe-wrapper').width(theme.default_width);
-                    else $('#iframe-wrapper').width('auto');
-                    if (theme.default_height) $('#iframe-wrapper').height(theme.default_height);
+                    var w = theme.default_width || 600,
+                        h = theme.default_height || 400;
+                    updateSize(w, h);
                     return false;
                 }
             });
@@ -234,9 +234,9 @@ $(function() {
         });
         _.each(themes, function(theme) {
             if (theme.id == chart.get('theme')) {
-                if (theme.default_width) $('#iframe-wrapper').width(theme.default_width);
-                else $('#iframe-wrapper').width('auto');
-                if (theme.default_height) $('#iframe-wrapper').height(theme.default_height);
+                var w = theme.default_width || 560,
+                    h = theme.default_height || 400;
+                updateSize(w, h);
                 return false;
             }
         });
@@ -350,12 +350,18 @@ $(function() {
         clearTimeout(__timer);
         __timer = setTimeout(updateSize, 300);
     }
-    function updateSize() {
-        var w = Math.min(Number($('#resize-w').val()) || 600, $('.span7').width()-22),
-            h = Number($('#resize-h').val()) || 400;
+    function updateSize(_w, _h) {
+        var maxW = $('#iframe-wrapper').parent().parent().width()-22,
+            w = _w || Math.min(Number($('#resize-w').val()) || 580, maxW),
+            h = _h || Number($('#resize-h').val()) || 400;
         $('#resize-w').val(w);
         $('#resize-h').val(h);
-        $('#iframe-wrapper').animate({ width: w+'px', height: h+'px' }, 400, 'easeOutExpo');
+        $('#iframe-wrapper').animate({
+            width: w,
+            height: h,
+            'margin-left': (maxW - w) * 0.5
+        }, 400, 'easeOutExpo');
+
         chart.set('metadata.publish.embed-width', w);
         chart.set('metadata.publish.embed-height', h);
     }
@@ -373,8 +379,6 @@ $(function() {
     $('#resize-h').val(ch);
     $('#iframe-wrapper').width(cw);
     $('#iframe-wrapper').height(ch);
-    //$('.affix-cont').css('width', $('#iframe-wrapper').width()+'px');
-
 });
 
 
@@ -431,7 +435,7 @@ $(function() {
                     <p>
                         <b>{% trans "Hint" %}:</b> {% trans "In case the visualization doesn't look like you expected, you should try to <a href='#' id='btn-transpose'><i class='icon-rotate'></i> transpose the data</a>." %}
                     </p>
-             </div>       
+             </div>
 
             <div class="section">
                 <h3>{% trans "Tell the story" %}</h3>
