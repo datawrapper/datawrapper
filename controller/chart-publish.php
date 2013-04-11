@@ -16,17 +16,19 @@ $app->get('/chart/:id/publish', function ($id) use ($app) {
     check_chart_writable($id, function($user, $chart) use ($app) {
 
         $cfg = $GLOBALS['dw_config'];
+        $local_url = 'http://' . $cfg['chart_domain'] . '/' . $chart->getID() . '/';
         $public_url = $chart->getPublicUrl();
-        if (empty($public_url)) {
-            $public_url = 'http://' . $cfg['chart_domain'] . '/' . $chart->getID() . '/';
-        }
+
+        if (empty($public_url)) $public_url = $local_url;
+
 
         $page = array(
             'chartData' => $chart->loadData(),
             'chart' => $chart,
             'visualizations' => get_visualizations_meta('', true),
             'vis' => get_visualization_meta($chart->getType()),
-            'iframe' => $public_url,
+            'chartUrl' => $public_url,
+            'chartUrlLocal' => $local_url,
             'themes' => get_themes_meta(),
             'exportStaticImage' => !empty($cfg['phantomjs']),
             'estExportTime' => ceil(JobQuery::create()->estimatedTime('export') / 60)
@@ -40,9 +42,11 @@ $app->get('/chart/:id/publish', function ($id) use ($app) {
             if ($pub = get_module('publish', '../lib/')) {
                 $url = $pub->getUrl($chart);
                 $chart->setPublicUrl($url);
-                $chart->save();
-                $page['iframe'] = $url;
+                $page['chartUrl'] = $url;
+            } else {
+                $chart->setPublicUrl($local_url);
             }
+            $chart->save();
 
             // generate thumbnails
             $page['publish'] = true;

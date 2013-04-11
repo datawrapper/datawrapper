@@ -75,21 +75,32 @@ $(function() {
     $("textarea").click(function() { $(this).focus().select(); } );
 
     {% if publish %}
+
     $('.published').hide();
+    
+    var checkStatus;
     $.ajax({
         url: '/api/charts/{{ chart.id }}/publish',
         type: 'post',
         dataType: 'json',
         success: function(res) {
+            clearInterval(checkStatus);
             if (res.status == "ok") {
                 $('.publishing').hide();
                 $('.published').fadeIn();
-                $('#iframe-vis').attr('src', '{{ iframe }}');
+                $('#iframe-vis').attr('src', '{{ chartUrl }}');
             } else {
                 console.warn(res);
             }
         }
     });
+    checkStatus = setInterval(function() {
+        $.get('/api/charts/{{ chart.id }}/publish/status', function(res) {
+            $('.publishing .bar').width(Number(res)+'%');
+        });
+    }, 1000);
+
+
     {% endif %}
 });
 
@@ -115,6 +126,9 @@ $(function() {
 p.lead {
     margin-top: 30px;
 }
+.publishing .progress {
+    height: 10px;
+}
 </style>
 
 <div class="dw-create-publish chart-editor">
@@ -124,7 +138,7 @@ p.lead {
             {% if user.isAbleToPublish %}
 
             <p class="lead" style="margin-top:0">{% trans "Link to this visualisation" %}</p>
-            <p><a href="{{ iframe }}">{{ iframe }}</a></p>
+            <p><a href="{{ chartUrl }}">{{ chartUrl }}</a></p>
 
 
             <p class="lead">{% trans "Embed into your website" %}</p>
@@ -133,7 +147,7 @@ p.lead {
                 <label>{% trans "Width" %}: <input type="text" id="embed-width" class="input-small" style="width:4ex" value="600" /> px</label>&nbsp;&nbsp;
                 <label>{% trans "Height" %}: <input type="text" id="embed-height" class="input-small" style="width:4ex" value="400" /> px</label>
 
-            <textarea style="font-size: 13px;padding:5px" id="iframe-code" class="well span4" rows="5"><iframe src="{{ iframe }}" frameborder="0" allowtransparency="true" allowfullscreen="allowfullscreen" webkitallowfullscreen="webkitallowfullscreen" mozallowfullscreen="mozallowfullscreen" oallowfullscreen="oallowfullscreen" msallowfullscreen="msallowfullscreen" width="{{ chart.metadata.publish['embed-width'] }}" height="{{ chart.metadata.publish['embed-height'] }}"></iframe></textarea>
+            <textarea style="font-size: 13px;padding:5px" id="iframe-code" class="well span4" rows="5"><iframe src="{{ chartUrl }}" frameborder="0" allowtransparency="true" allowfullscreen="allowfullscreen" webkitallowfullscreen="webkitallowfullscreen" mozallowfullscreen="mozallowfullscreen" oallowfullscreen="oallowfullscreen" msallowfullscreen="msallowfullscreen" width="{{ chart.metadata.publish['embed-width'] }}" height="{{ chart.metadata.publish['embed-height'] }}"></iframe></textarea>
 
 
             <p class="lead">{%trans "Other things to do" %}</p>
@@ -209,7 +223,12 @@ p.lead {
 
             {% if publish %}
                 <div class="publishing alert alert-info">
-                    <p><img src="/static/img/ajax-loader.gif" /> {% trans "Your chart is now being published and uploaded." %}</p>
+                    <p>
+                        {% trans "Your chart is now being published and uploaded, and should be ready in a minute." %} <img src="/static/img/ajax-loader.gif" />
+                        <div class="progress progress-striped active">
+                            <div class="bar" style="width: 0%;"></div>
+                        </div>
+                    </p>
                 </div>
             {% else %}
                 {% if chart.publishedAt < chart.lastModifiedAt %}
@@ -225,7 +244,7 @@ p.lead {
             {% else %}
             {% endif %}
 
-            <iframe src="{{ iframe }}" id="iframe-vis" style="width:{{ chart.metadata.publish['embed-width'] }}px;height:{{ chart.metadata.publish['embed-height'] }}px" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>
+            <iframe src="{% if publish %}{{ chartUrlLocal }}{% else %}{{ chartUrl }}{% endif %}" id="iframe-vis" style="width:{{ chart.metadata.publish['embed-width'] }}px;height:{{ chart.metadata.publish['embed-height'] }}px" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>
 
             <div style="color: #999;margin-top:20px"><b>{% trans "Note" %}:</b> {% trans "It may take a while until the republished chart. You can force reloading of the chart by right-clicking it and selecting 'Reload Iframe'. " %}
 

@@ -46,8 +46,12 @@ function publish_js($user, $chart) {
         $all = JSMin::minify($all);
         $all = file_get_contents('../static/js/datawrapper.min.js') . "\n\n" . $all;
         file_put_contents($static_path . $vis_path, $all);
+        $cdn_files[] = array(
+            $static_path . $vis_path,
+            'lib/' . $vis_path,
+            'application/javascript'
+        );
     }
-    $cdn_files[] = array($static_path . $vis_path, 'lib/' . $vis_path, 'application/javascript');
 
     // generate theme script
     $theme = $data['theme'];
@@ -93,7 +97,10 @@ function publish_css($user, $chart) {
     $minified = $all; //$cssmin->run($all);
     file_put_contents($static_path . "/" . $chart->getID() . '.min.css', $minified);
 
-    $cdn_files[] = array($static_path."/".$chart->getID().'.min.css', $chart->getID().'/'.$chart->getID().'.min.css', 'text/css');
+    $cdn_files[] = array(
+        $static_path."/".$chart->getID().'.min.css',
+        $chart->getID().'/'.$chart->getID().'.min.css', 'text/css'
+    );
 
     // copy themes assets
     $theme = $data['theme'];
@@ -123,11 +130,7 @@ function publish_data($user, $chart) {
 
 function publish_push_to_cdn($cdn_files, $chart) {
     if ($pub = get_module('publish')) {
-        $pub->unpublish(array($chart->getID() . '/index.html'));
+        // $pub->unpublish(array($chart->getID() . '/index.html'));
         $pub->publish($cdn_files);
-        $chart->setPublicUrl($pub->getUrl($chart));
-    } else {
-        $chart->setPublicUrl('http://'.$GLOBALS['dw_config']['chart_domain'].'/'.$chart->getID().'/');
     }
-    $chart->save();
 }

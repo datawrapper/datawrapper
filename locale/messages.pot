@@ -191,7 +191,7 @@ msgid "Visualize"
 msgstr ""
 
 #: ../scripts/tmpl_cache/chart-describe.twig.php:363
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:733
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:737
 msgid "Back"
 msgstr ""
 
@@ -286,198 +286,204 @@ msgstr ""
 msgid "Share"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:146
+#: ../scripts/tmpl_cache/chart-publish.twig.php:195
 msgid "Link to this visualisation"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:160
+#: ../scripts/tmpl_cache/chart-publish.twig.php:209
 msgid "Embed into your website"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:164
+#: ../scripts/tmpl_cache/chart-publish.twig.php:213
 msgid "Just copy &amp; paste the following code into your website."
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:169
+#: ../scripts/tmpl_cache/chart-publish.twig.php:218
 msgid "Width"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:173
+#: ../scripts/tmpl_cache/chart-publish.twig.php:222
 msgid "Height"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:191
+#: ../scripts/tmpl_cache/chart-publish.twig.php:240
 msgid "Other things to do"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:203
-#: ../scripts/tmpl_cache/chart-publish.twig.php:515
+#: ../scripts/tmpl_cache/chart-publish.twig.php:252
+#: ../scripts/tmpl_cache/chart-publish.twig.php:597
 msgid "Export to static image for printing"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:215
+#: ../scripts/tmpl_cache/chart-publish.twig.php:264
 msgid "Duplicate this chart"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:222
+#: ../scripts/tmpl_cache/chart-publish.twig.php:271
 msgid "Show in Gallery"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:227
+#: ../scripts/tmpl_cache/chart-publish.twig.php:276
 msgid ""
 "You can show some love to Datawrapper by agreeing to show your visualisation "
 "in our <a href='%GALLERY_URL%'>public gallery</a>"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:229
+#: ../scripts/tmpl_cache/chart-publish.twig.php:278
 msgid "This is absolutely optional."
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:234
+#: ../scripts/tmpl_cache/chart-publish.twig.php:283
 msgid "Yes, show this chart in the gallery"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:244
+#: ../scripts/tmpl_cache/chart-publish.twig.php:293
 msgid "Congrats, you created your first chart!"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:249
+#: ../scripts/tmpl_cache/chart-publish.twig.php:298
 msgid ""
 "Now, to be able to embed the chart, we ask you to create an account. It's "
 "free and all you need is a valid email address. The chart you just created "
 "will be transfered to your new account."
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:254
+#: ../scripts/tmpl_cache/chart-publish.twig.php:303
 #: ../scripts/tmpl_cache/login.twig.php:110
 msgid "Sign Up"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:276
+#: ../scripts/tmpl_cache/chart-publish.twig.php:325
 msgid "Congrats, you created a chart!"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:281
+#: ../scripts/tmpl_cache/chart-publish.twig.php:330
 msgid "The chart is accessible under"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:295
+#: ../scripts/tmpl_cache/chart-publish.twig.php:344
 msgid "or via your <a href='/mycharts'>My Charts</a> page."
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:300
+#: ../scripts/tmpl_cache/chart-publish.twig.php:349
 msgid ""
 "Now, to be able to publish and embed this chart into other websites, you "
 "need to activate the email address you entered during sign up process."
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:305
+#: ../scripts/tmpl_cache/chart-publish.twig.php:354
 msgid ""
 "If you did not get any email within 5 minutes, here's the trouble shooting "
 "guide:"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:310
+#: ../scripts/tmpl_cache/chart-publish.twig.php:359
 msgid "At first, don't worry. Everything you created will wait patiently"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:314
+#: ../scripts/tmpl_cache/chart-publish.twig.php:363
 msgid ""
 "Make sure that your spam filter didn't catch our activation email. They are "
 "sent from"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:321
+#: ../scripts/tmpl_cache/chart-publish.twig.php:370
 msgid ""
 "Of course, you can also let us <a href='#resend'>resend the activation "
 "email</a>."
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:325
+#: ../scripts/tmpl_cache/chart-publish.twig.php:374
 msgid "If that didn't work either, please contact our support"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:359
+#: ../scripts/tmpl_cache/chart-publish.twig.php:410
+msgid ""
+"Your chart is now being published and uploaded, and should be ready in a "
+"minute."
+msgstr ""
+
+#: ../scripts/tmpl_cache/chart-publish.twig.php:427
 msgid ""
 "You have changed the chart after its last publication. To make you changes "
 "visible, please re-publish the chart."
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:363
+#: ../scripts/tmpl_cache/chart-publish.twig.php:431
 msgid "Re-publish chart!"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:371
-msgid "Congrats, you made it! The chart has been published."
+#: ../scripts/tmpl_cache/chart-publish.twig.php:447
+msgid "Congrats, your chart has been published."
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:394
+#: ../scripts/tmpl_cache/chart-publish.twig.php:476
 msgid "Note"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:396
+#: ../scripts/tmpl_cache/chart-publish.twig.php:478
 msgid ""
 "It may take a while until the republished chart. You can force reloading of "
 "the chart by right-clicking it and selecting 'Reload Iframe'. "
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:427
+#: ../scripts/tmpl_cache/chart-publish.twig.php:509
 msgid "Create another graphic"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:432
+#: ../scripts/tmpl_cache/chart-publish.twig.php:514
 msgid "Return to visualise step"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:502
+#: ../scripts/tmpl_cache/chart-publish.twig.php:584
 #, php-format
 msgid ""
 "You will receive an email with the exported chart in about %d minute(s)."
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:521
+#: ../scripts/tmpl_cache/chart-publish.twig.php:603
 msgid "Please select an image format and aspect ratio for your exported chart."
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:527
+#: ../scripts/tmpl_cache/chart-publish.twig.php:609
 msgid "Select image type"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:532
+#: ../scripts/tmpl_cache/chart-publish.twig.php:614
 msgid "bitmap (PNG)"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:536
+#: ../scripts/tmpl_cache/chart-publish.twig.php:618
 msgid "vector (PDF)"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:543
+#: ../scripts/tmpl_cache/chart-publish.twig.php:625
 msgid "Select aspect ratio"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:551
+#: ../scripts/tmpl_cache/chart-publish.twig.php:633
 msgid "landscape"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:558
+#: ../scripts/tmpl_cache/chart-publish.twig.php:640
 msgid "portrait"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:565
+#: ../scripts/tmpl_cache/chart-publish.twig.php:647
 msgid "square"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:576
+#: ../scripts/tmpl_cache/chart-publish.twig.php:658
 msgid ""
 "The exported chart will be send to your email address <b>%e</b> once it has "
 "been created. This will take approximately <b>%n</b> minute(s)."
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:583
+#: ../scripts/tmpl_cache/chart-publish.twig.php:665
 msgid "Cancel"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-publish.twig.php:587
+#: ../scripts/tmpl_cache/chart-publish.twig.php:669
 msgid "Export chart"
 msgstr ""
 
@@ -540,70 +546,70 @@ msgid ""
 "example datasets:"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:464
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:468
 msgid "Resize to: "
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:484
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:488
 msgid "Select visualization"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:529
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:533
 msgid "Visualization:"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:543
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:547
 msgid "Layout:"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:574
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:578
 msgid "Hint"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:576
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:580
 msgid ""
 "In case the visualization doesn't look like you expected, you should try to "
 "<a href='#' id='btn-transpose'><i class='icon-rotate'></i> transpose the "
 "data</a>."
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:584
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:588
 msgid "Tell the story"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:590
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:594
 msgid "Title"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:594
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:598
 msgid "Introduction"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:598
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:602
 msgid "Highlight"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:606
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:610
 msgid "Tell the story in five words"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:614
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:618
 msgid "Guide the audience to read the chart"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:622
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:626
 msgid "Highlight the most import data series:"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:628
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:632
 msgid "select a data series"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:667
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:671
 msgid "Refine the chart"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-visualize.twig.php:681
+#: ../scripts/tmpl_cache/chart-visualize.twig.php:685
 msgid "Publish"
 msgstr ""
 
