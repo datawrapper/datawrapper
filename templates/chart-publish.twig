@@ -94,9 +94,11 @@ $(function() {
             }
         }
     });
+    var status = 0;
     checkStatus = setInterval(function() {
         $.get('/api/charts/{{ chart.id }}/publish/status', function(res) {
-            $('.publishing .bar').width(Number(res)+'%');
+            status = Math.max(status, Number(res));
+            $('.publishing .bar').width(status+'%');
         });
     }, 1000);
 
