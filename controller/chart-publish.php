@@ -28,7 +28,7 @@ $app->get('/chart/:id/publish', function ($id) use ($app) {
             'visualizations' => get_visualizations_meta('', true),
             'vis' => get_visualization_meta($chart->getType()),
             'chartUrl' => $public_url,
-            'chartUrlLocal' => '/chart/' . $chart->getID() . '/',
+            'chartUrlLocal' => '/chart/' . $chart->getID() . '/preview',
             'themes' => get_themes_meta(),
             'exportStaticImage' => !empty($cfg['phantomjs']),
             'estExportTime' => ceil(JobQuery::create()->estimatedTime('export') / 60)
