@@ -243,12 +243,11 @@ p.lead {
 
             {% if chart.lastEditStep == 5 %}
                 <p class="published alert alert-success">{% trans "Congrats, your chart has been published." %}</p>
-            {% else %}
             {% endif %}
 
             <iframe src="{% if publish %}{{ chartUrlLocal }}{% else %}{{ chartUrl }}{% endif %}" id="iframe-vis" style="width:{{ chart.metadata.publish['embed-width'] }}px;height:{{ chart.metadata.publish['embed-height'] }}px" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>
 
-            <div style="color: #999;margin-top:20px"><b>{% trans "Note" %}:</b> {% trans "It may take a while until the republished chart. You can force reloading of the chart by right-clicking it and selecting 'Reload Iframe'. " %}
+            <div style="color: #999;margin-top:20px"><b>{% trans "Note" %}:</b> {% trans "It may take a while until the republished chart. You can force reloading of the chart by right-clicking it and selecting 'Reload Iframe'. " %}</div>
 
             {% else %}
 
@@ -268,6 +267,7 @@ p.lead {
             </div>
         </div>
     </div>
+
 </div>
 
 {# export modal #}
