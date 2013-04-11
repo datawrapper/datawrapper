@@ -276,7 +276,7 @@ function download($url, $outf) {
         $cfg = array(
             'http' => array(
                 'header' => 'Connection: close\r\n',
-                'method' => 'GET'
+                'method' => 'GET'   
             )
         );
         if (isset($GLOBALS['dw_config']['http_auth'])) {

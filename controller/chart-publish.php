@@ -36,9 +36,16 @@ $app->get('/chart/:id/publish', function ($id) use ($app) {
 
         if ($user->isAbleToPublish()
             && ($chart->getLastEditStep() == 3 || $app->request()->get('republish') == 1)) {
+
+            if ($pub = get_module('publish', '../lib/')) {
+                $url = $pub->getUrl($chart);
+                $chart->setPublicUrl($url);
+                $chart->save();
+                $page['iframe'] = $url;
+            }
+
             // generate thumbnails
-            $page['thumbnails'] = $GLOBALS['dw_config']['thumbnails'];
-            $app->render('chart-publishing.twig', $page);
+            $page['publish'] = true;
 
             // queue a job for thumbnail generation
             $params = array(
@@ -47,9 +54,8 @@ $app->get('/chart/:id/publish', function ($id) use ($app) {
             );
             $job = JobQuery::create()->createJob("static", $chart, $user, $params);
 
-        } else {
-            $app->render('chart-publish.twig', $page);
         }
+        $app->render('chart-publish.twig', $page);
 
     });
 });
