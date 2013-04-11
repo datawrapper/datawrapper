@@ -458,9 +458,8 @@ msgid "Re-publish chart!"
 msgstr "Diagramm erneut veröffentlichen!"
 
 #: ../scripts/tmpl_cache/chart-publish.twig.php:447
-#, fuzzy
 msgid "Congrats, your chart has been published."
-msgstr "Glückwunsch! Das Diagramm wurde veröffentlicht."
+msgstr "Glückwunsch! Das Diagramm wurde veröffentlicht. "
 
 #: ../scripts/tmpl_cache/chart-publish.twig.php:476
 msgid "Note"
