@@ -4,6 +4,6 @@
     "restricted": null,
     "extends": "default",
     "restrict": "@lemonde.fr",
-    "version": "1.2.8",
+    "version": "1.2.9",
     "assets": ["triangleArrow-Right.png", "trianglearrow-right-small.png", "lemonde-logo-small.png", "lemonde-logo-big.png"]
 }

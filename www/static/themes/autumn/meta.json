@@ -3,7 +3,7 @@
     "link": "http://www.datawrapper.de",
     "extends": "default",
     "restricted": null,
-    "version": "1.2.8",
+    "version": "1.2.9",
     "option-filter": {
         "line-chart": {
             "show-grid": true
