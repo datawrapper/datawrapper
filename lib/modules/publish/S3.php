@@ -52,9 +52,8 @@ class Datawrapper_Publish_S3 implements IDatawrapper_Publish {
      */
     function getUrl($chart) {
         $cfg = $GLOBALS['dw_config']['publish']['config'];
-        $alias = $GLOBALS['dw_config']['publish']['alias'];
-        if (!empty($alias)) {
-            return $alias . '/' . $chart->getID() . '/';
+        if (!empty($GLOBALS['dw_config']['publish']['alias'])) {
+            return $GLOBALS['dw_config']['publish']['alias'] . '/' . $chart->getID() . '/';
         }
         return '//' . $cfg['bucket'] . '.s3.amazonaws.com/' . $chart->getID() . '/index.html';
     }
