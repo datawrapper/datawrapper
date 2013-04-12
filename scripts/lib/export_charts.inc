@@ -33,7 +33,14 @@ function _log($msg = "", $job=null, $type='LOG') {
         }
         fwrite($flog, $prefix . '"' . $msg . "\"\n");
         if ($type == 'ERROR') {
-            @mail($cfg['log_email'], 'export-charts / error / '.substr($msg, 0, 60).'...', $msg."\n\n".print_r($job, true), "From: ".$cfg['admin_email']."\r\n");
+            $url = $job['chart_url'];
+            unset $job['chart_url'];
+            @mail(
+                $cfg['log_email'],
+                'export-charts / error / '.substr($msg, 0, 60).'...',
+                'Bug found in '.$url."\n\n".$msg."\n\n".print_r($job, true),
+                "From: ".$cfg['admin_email']."\r\n"
+            );
             if ($job) {
                 mysql_query('UPDATE job SET status = 2, done_at = NOW(), fail_reason = "'.addslashes($msg).'" WHERE id = '.$job['job_id']);
             }
@@ -104,6 +111,7 @@ function run($job) {
     global $cfg, $messages;
 
     $params = json_decode($job['parameter'], true);
+    $job['chart_url'] = 'http://' . $cfg['domain'] . '/chart/' . $job['chart_id'] . '/';
 
     if ($job['type'] == 'export') {
 
