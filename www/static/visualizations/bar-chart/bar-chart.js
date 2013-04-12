@@ -256,7 +256,8 @@
 
                 // check if the label is bigger than the bar
                 var slblw = me.labelWidth(series.name, 'series')+10,
-                    vlblw = me.labelWidth(me.chart.formatValue(val, true), 'value')+20;
+                    vlblw = me.labelWidth(me.chart.formatValue(val, true), 'value')+20,
+                    fill = me.getSeriesColor(series, r, me.get('negative-color', false));
                 if (slblw + vlblw > d.width) {
                     show_val = false;
                     if (slblw > d.width) show_lbl = false;
