@@ -51,13 +51,6 @@ $app->get('/chart/:id/publish', function ($id) use ($app) {
             // generate thumbnails
             $page['publish'] = true;
 
-            // queue a job for thumbnail generation
-            $params = array(
-                'width' => $chart->getMetadata('publish.embed-width'),
-                'height' => $chart->getMetadata('publish.embed-height')
-            );
-            $job = JobQuery::create()->createJob("static", $chart, $user, $params);
-
         }
         $app->render('chart-publish.twig', $page);
 
