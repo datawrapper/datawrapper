@@ -492,7 +492,7 @@
                 sumChars = 0;
             // remove any existing filter-ui
             $('.filter-ui').remove();
-            _.each(rowLabels, function(t) { sumChars += t.length; });
+            _.each(rowLabels, function(t) { sumChars += t ? t.length : 0; });
             function update(cur) {
                 vis.update(cur);
                 if (callback) callback();

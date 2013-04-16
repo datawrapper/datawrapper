@@ -3,5 +3,5 @@
     "link": "http://www.dw.de",
     "restrict": "@dw.de",
     "extends": "default",
-    "version": "1.2.8"
+    "version": "1.2.9"
 }

@@ -32,7 +32,7 @@ CREATE TABLE `chart`
 	CONSTRAINT `chart_FK_1`
 		FOREIGN KEY (`author_id`)
 		REFERENCES `user` (`id`)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
 -- user
@@ -55,7 +55,7 @@ CREATE TABLE `user`
 	`website` VARCHAR(512),
 	`sm_profile` VARCHAR(512),
 	PRIMARY KEY (`id`)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
 -- action
@@ -75,7 +75,7 @@ CREATE TABLE `action`
 	CONSTRAINT `action_FK_1`
 		FOREIGN KEY (`user_id`)
 		REFERENCES `user` (`id`)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
 -- stats
@@ -90,7 +90,7 @@ CREATE TABLE `stats`
 	`metric` VARCHAR(255) NOT NULL,
 	`value` INTEGER NOT NULL,
 	PRIMARY KEY (`id`)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
 -- session
@@ -105,7 +105,7 @@ CREATE TABLE `session`
 	`last_updated` DATETIME NOT NULL,
 	`session_data` VARCHAR(4096) NOT NULL,
 	PRIMARY KEY (`session_id`)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
 -- job
@@ -133,7 +133,7 @@ CREATE TABLE `job`
 	CONSTRAINT `job_FK_2`
 		FOREIGN KEY (`chart_id`)
 		REFERENCES `chart` (`id`)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB;
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;

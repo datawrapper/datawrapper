@@ -290,77 +290,89 @@ function download($url, $outf) {
 }
 
 
+function _setPublishStatus($chart, $status) {
+    if (isset($_GLOBALS['dw-config']['memcache'])) {
+        $memcache->set('publish-status-' . $chart->getID(), round($status*100));
+    } else {
+        file_put_contents('../../charts/tmp/publish-status-' . $chart->getID(), round($status*100));
+    }
+}
+
+function _getPublishStatus($chart) {
+    if (isset($_GLOBALS['dw-config']['memcache'])) {
+        return $memcache->get('publish-status-' . $chart->getID());
+    } else {
+        $fn = '../../charts/tmp/publish-status-' . $chart->getID();
+        if (!file_exists($fn)) return false;
+        return file_get_contents($fn);
+    }
+}
+
+function _clearPublishStatus($chart) {
+    if (isset($_GLOBALS['dw-config']['memcache'])) {
+        global $memcache;
+        $memcache->delete('publish-status-' . $chart->getID());
+    } else {
+        unlink('../../charts/tmp/publish-status-' . $chart->getID());
+    }
+}
+
+
 $app->post('/charts/:id/publish', function($chart_id) use ($app) {
     disable_cache($app);
     if_chart_is_writable($chart_id, function($user, $chart) use ($app) {
 
+        if (isset($_GLOBALS['dw-config']['memcache'])) {
+            $memcfg = $_GLOBALS['dw-config']['memcache'];
+            global $memcache;
+            $memcache = new Memcache;
+            $memcache->connect($memcfg['host'], $memcfg['port']) or die ("Could not connect");
+        }
+
         $files = array();
+        _setPublishStatus($chart, 0);
 
         $files = array_merge($files, publish_html($user, $chart));
-        $files = array_merge($files, publish_js($user, $chart));
         $files = array_merge($files, publish_css($user, $chart));
         $files = array_merge($files, publish_data($user, $chart));
+        $files = array_merge($files, publish_js($user, $chart));
 
-        publish_push_to_cdn($files, $chart);
+        _setPublishStatus($chart, 0.3);
+
+        $totalSize = 0;  // total file size
+        foreach ($files as $i => $file) {
+            $totalSize += filesize($file[0]);
+        }
+
+        $done = 0;
+        foreach ($files as $file) {
+            publish_push_to_cdn(array($file), $chart);
+            $done += filesize($file[0]);
+            _setPublishStatus($chart, 0.3 + ($done / $totalSize) * 0.7);
+        }
+
+        _setPublishStatus($chart, 1);
+        _clearPublishStatus($chart);
+
+        // queue a job for thumbnail generation
+        $params = array(
+            'width' => $chart->getMetadata('publish.embed-width'),
+            'height' => $chart->getMetadata('publish.embed-height')
+        );
+        $job = JobQuery::create()->createJob("static", $chart, $user, $params);
 
         ok();
+
     });
 });
 
-
-
-/**
- * API: copy a chart
- *
- * @param chart_id chart id
- */
-$app->post('/charts/:id/publish/html', function($chart_id) use ($app) {
+$app->get('/charts/:id/publish/status', function($chart_id) use ($app) {
     disable_cache($app);
     if_chart_is_writable($chart_id, function($user, $chart) use ($app) {
-        publish_html($user, $chart);
+        echo _getPublishStatus($chart);
     });
 });
 
-
-
-/**
- * API: generate minified JS for a chart
- *
- * @param chart_id chart id
- */
-$app->post('/charts/:id/publish/js', function($chart_id) use ($app) {
-    disable_cache($app);
-    if_chart_is_writable($chart_id, function($user, $chart) use ($app) {
-        publish_js($user, $chart);
-        ok();
-    });
-});
-
-
-/**
- * API: generate minified CSS for a chart
- *      and copy assets
- *
- * @param chart_id chart id
- */
-$app->post('/charts/:id/publish/css', function($chart_id) use ($app) {
-    disable_cache($app);
-    if_chart_is_writable($chart_id, function($user, $chart) use ($app) {
-        publish_css($user, $chart);
-        ok();
-    });
-});
-
-/*
- * publishes the data to static chart cache
- */
-$app->post('/charts/:id/publish/data', function($chart_id) use ($app) {
-    disable_cache($app);
-    if_chart_is_writable($chart_id, function($user, $chart) use ($app) {
-        publish_data($user, $chart);
-        ok();
-    });
-});
 
 /*
  * stores client-side generated chart thumbnail

@@ -158,8 +158,11 @@ createChart = (i=0, el='rect', num=7) ->
     casper.then () ->
         [url, name] = @evaluate () ->
             iframe = $('body', $('#iframe-vis').contents())
-            a = $('.footer-right a.source', iframe)
-            [a.attr('href'), a.html()]
+            a = $('a.source', iframe)
+            if a.length == 1
+                [a.attr('href'), a.html()]
+            else
+                ['', '']
         @test.assertEquals name, "My Source", "correct source name"
 
         n = @evaluate (el, num) ->
