@@ -34,7 +34,7 @@ function _log($msg = "", $job=null, $type='LOG') {
         fwrite($flog, $prefix . '"' . $msg . "\"\n");
         if ($type == 'ERROR') {
             $url = $job['chart_url'];
-            unset $job['chart_url'];
+            unset($job['chart_url']);
             @mail(
                 $cfg['log_email'],
                 'export-charts / error / '.substr($msg, 0, 60).'...',
