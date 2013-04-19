@@ -80,7 +80,7 @@ msgstr "Vérifiez et décrivez vos données"
 
 #: ../scripts/tmpl_cache/chart-describe.twig.php:181
 msgid "Please check if the data format was recognized correctly."
-msgstr "Vérifiez que le format de données a été recconu correctement"
+msgstr "Vérifiez que le format de données a été reconnu correctement"
 
 #: ../scripts/tmpl_cache/chart-describe.twig.php:204
 msgid "Describe your data"
