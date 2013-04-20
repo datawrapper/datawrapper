@@ -31,7 +31,7 @@ msgstr "Vous pouvez ici réinitialiser le mot de passe."
 
 #: ../scripts/tmpl_cache/account-reset-password.twig.php:50
 msgid "Reset Code"
-msgstr "Réinitialliser le code"
+msgstr "Réinitialisez le code"
 
 #: ../scripts/tmpl_cache/account-reset-password.twig.php:60
 msgid "This reset token is valid."
@@ -39,7 +39,7 @@ msgstr "Le lien de réinitialisation du mot de passe est valide."
 
 #: ../scripts/tmpl_cache/account-reset-password.twig.php:69
 msgid "Now please enter a new password."
-msgstr "Taper le nouveau mot de passe."
+msgstr "Tapez le nouveau mot de passe."
 
 #: ../scripts/tmpl_cache/account-reset-password.twig.php:71
 msgid "The password should contain at least four characters."
@@ -57,7 +57,7 @@ msgstr "Mot de passe (confirmation)"
 #: ../scripts/tmpl_cache/account-reset-password.twig.php:98
 #: ../scripts/tmpl_cache/settings.twig.php:279
 msgid "Show password in clear text"
-msgstr "Montrer le mot de passe"
+msgstr "Montrez le mot de passe"
 
 #: ../scripts/tmpl_cache/account-reset-password.twig.php:105
 msgid "Set New Password"
