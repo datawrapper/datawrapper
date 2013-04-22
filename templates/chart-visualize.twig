@@ -141,7 +141,7 @@ $(function() {
     chart.onSave(function(chart) {
 
         var iframe = $('#iframe-vis');
-        iframe.attr('src', '/chart/{{ chart.id }}/preview?nocache='+Math.random());
+        iframe.attr('src', '/chart/{{ chart.id }}/preview?innersvg=1&nocache='+Math.random());
 
         if (_themeHasChanged) {
             iframe.one('load', updateVisBackground);
@@ -391,7 +391,7 @@ $(function() {
 
             <div data-offset-top="100" data-offset-bottom="130">
                 <div id="iframe-wrapper" style="height:500px;" >
-                    <iframe src="/chart/{{ chart.id }}/preview" id="iframe-vis" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen>
+                    <iframe src="/chart/{{ chart.id }}/preview?innersvg=1" id="iframe-vis" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen>
                     </iframe>
                 </div>
                 <div class="resize-chart-wrap">
