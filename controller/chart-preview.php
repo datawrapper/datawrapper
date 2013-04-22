@@ -14,7 +14,7 @@ $app->get('/chart/:id/preview/?', function ($id) use ($app) {
         $page = get_chart_content($chart, $user, $app->request()->get('minify') == 1);
         $page['plain'] = $app->request()->get('plain') == 1;
         $page['fullscreen'] = $app->request()->get('fs') == 1;
-        $page['innersvg'] = true;
+        $page['innersvg'] = $app->request()->get('innersvg') == 1;
         $app->render('chart.twig', $page);
     });
 });
