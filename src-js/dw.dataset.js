@@ -159,7 +159,7 @@
         },
 
         rowName: function(i) {
-            return this.__data.rowNames[i];
+            return this.hasRowNames() ? this.__data.rowNames[i] : '';
         },
 
         rowNameLabel: function() {
