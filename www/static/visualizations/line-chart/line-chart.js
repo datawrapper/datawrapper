@@ -127,7 +127,13 @@
             // draw series lines
             var all_paths = [];
             _.each(all_series, function(col, index) {
-                var paths = [], pts_ = [], pts = [], x, y, sw, connectMissingValuePath = [];
+                var paths = [],
+                    pts_ = [],
+                    pts = [],
+                    x, y, sw,
+                    connectMissingValuePath = [],
+                    last_valid_y; // keep the last non-NaN y for direct label position
+
                 _.each(col.data, function(val, i) {
                     x = scales.x(i);
                     y = scales.y(val);
@@ -140,6 +146,7 @@
                         }
                         return;
                     }
+                    last_valid_y = y;
                     if (pts.length === 0 && pts_.length > 0) {
                         // first valid point after NaNs
                         var lp = pts_[pts_.length-1], s = lp.length-2;
@@ -148,7 +155,7 @@
                     pts.push(x, y); // store current point
                 });
                 // store the last line
-                pts_.push(pts);
+                if (pts.length > 0) pts_.push(pts);
                 _.each(pts_, function(pts) {
                     paths.push("M" + [pts.shift(), pts.shift()] + (me.get('smooth-lines') ? "R" : "L") + pts);
                 });
@@ -162,26 +169,6 @@
                         seriesColIndex++;
                     }
                 }
-                /*if (all_series.length < palette.length * 2) {
-                    // we only color lines if there's a reasonable number of them
-                    if (!directLabeling || all_series.length > 4) {
-                        for (var i=0; i < baseCol; i++) palette.push(palette.pop());
-                        if (all_series.length > palette.length) {
-                            // add variations of palette colors
-                            $.each(palette, function(i, col) {
-                                palette.push(d3.cie.lch(d3.rgb(col)).darken(-2).toString());
-                            });
-                        }
-                        me.setSeriesColor(col, palette[(index + baseCol) % palette.length]);
-                    } else {
-                        // use different shades of the same color
-                        var base = palette[baseCol % palette.length],
-                            bLch = d3.cie.lch(d3.rgb(base)),
-                            ml = Math.max(bLch.l, 50),
-                            l = d3.range(81, ml, -(80 - ml) / (all_series.length - 1));
-                        me.setSeriesColor(col, ''+d3.cie.lch(l[index], bLch.c, bLch.h));
-                    }
-                }*/
 
                 var strokeColor = me.getLineColor(col);
 
@@ -213,7 +200,7 @@
 
                 if (me.lineLabelsVisible()) {
                     var visible = all_series.length < 10 || me.chart.isHighlighted(col);
-                    var div, lbl, lblx = x + 10, lbly = y, valign = 'middle';
+                    var div, lbl, lblx = x + 10, lbly = last_valid_y, valign = 'middle';
                     if (!directLabeling && visible) {
                         // legend
                         if (legend.pos == 'right') {
@@ -602,7 +589,7 @@
                 w: Math.min(100, c.w / me.chart.numRows())
             });
 
-            //xlabel.el.css({ left: me.__scales.x(row) - xlabel.el.outerWidth() * 0.5 });
+            var spaghetti = me.chart.dataSeries().length > 9;
 
             me.dataset.eachSeries(function(s) {
                 var lbl = s._label = s._label ||
@@ -623,47 +610,37 @@
                     y: me.__scales.y(s.data[row]),
                     w: me.labelWidth(val)+10
                 });
-                /*lbl.text(val).el.css('background', 'transparent')
-                    .css({ width:  })
-                    .css({
-                        left:  - lbl.outerWidth() * 0.5,
-                        top:  - lbl.outerHeight() * 0.5
-                    });*/
-                if (isNaN(s.data[row]) || me.chart.hasHighlight() && !me.chart.isHighlighted(s) && (s != series)) {
+
+                // if the current value is NaN we cannot show it
+                if (isNaN(s.data[row])) {
                     lbl.hide();
-                    if (me.get('direct-labeling')) {
-                        $.each(me.__seriesLabels[s.name], function(i, l) { l.hide(); });
-                    } else {
-                        $.each(me.__seriesLabels[s.name], function(i, l) { l.el.css('text-decoration', 'none'); });
-                    }
                 } else {
                     lbl.show();
+                }
+
+                if (spaghetti) {  // special treatment for spaghetti charts
+                    // only show series label if the line is highlighted or hovered
+                    var hide_label = me.chart.hasHighlight() && !me.chart.isHighlighted(s) && (s != series);
                     if (me.get('direct-labeling')) {
-                        $.each(me.__seriesLabels[s.name], function(i, l) { l.show(); });
+                        if (hide_label) {
+                            $.each(me.__seriesLabels[s.name], function(i, l) { l.hide(); });
+                        } else {
+                            $.each(me.__seriesLabels[s.name], function(i, l) { l.show(); });
+                        }
                     } else {
-                        if (!me.chart.isHighlighted(s)) $.each(me.__seriesLabels[s.name], function(i, l) { l.el.css('text-decoration', 'underline'); });
+                        if (hide_label) {
+                            $.each(me.__seriesLabels[s.name], function(i, l) { l.el.css('text-decoration', 'none'); });
+                        } else {
+                            if (!me.chart.isHighlighted(s)) $.each(me.__seriesLabels[s.name], function(i, l) { l.el.css('text-decoration', 'underline'); });
+                        }
                     }
                 }
             });
 
-            //if (series) me.hoverSeries(series);
-
             return;
         },
 
-
-        hoverSeries: function(series) {
-            var me = this,
-                seriesElements = me.__seriesElements;
-            var seriesLabels = me.__seriesLabels;
-            /*_.each(seriesLabels, function(labels, key) {
-                  var h = !series || key == series.name;
-                _.each(labels, function(lbl) {
-                    if (h || lbl.hasClass('highlighted')) lbl.show();
-                    else lbl.hide();
-                });
-            });*/
-        }
+        hoverSeries: function(series) { }
 
     });
 
