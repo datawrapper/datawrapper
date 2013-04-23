@@ -68,9 +68,11 @@ function add_header_vars(&$page, $active = null) {
 
     $user = DatawrapperSession::getUser();
     $headlinks = array();
-    $headlinks[] = array('url' => '/chart/create', 'id' => 'chart', 'title' => _('Create Chart'), 'icon' => 'pencil');
-    if ($user->isLoggedIn() && $user->hasCharts()) {
-        $headlinks[] = array('url' => '/mycharts/', 'id' => 'mycharts', 'title' => _('My Charts'), 'icon' => 'signal');
+    if ($user->isLoggedIn()) {
+    	$headlinks[] = array('url' => '/chart/create', 'id' => 'chart', 'title' => _('Create Chart'), 'icon' => 'pencil');
+    	if ($user->hasCharts()) {
+        	$headlinks[] = array('url' => '/mycharts/', 'id' => 'mycharts', 'title' => _('My Charts'), 'icon' => 'signal');
+	}
     } else {
         $headlinks[] = array('url' => '/gallery/', 'id' => 'gallery', 'title' => _('Gallery'), 'icon' => 'signal');
     }
