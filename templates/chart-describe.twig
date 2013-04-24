@@ -71,7 +71,7 @@ $(function() {
             return val === null || val === undefined || (_.isNumber(val) && isNaN(val));
         }
 
-        var data = [[]];
+        var data = [];
 
         var horzHeaders = chart.get('metadata.data.horizontal-header'),
             vertHeaders = chart.get('metadata.data.vertical-header'),
@@ -80,10 +80,12 @@ $(function() {
             i;
 
         if (horzHeaders) {
-            if (vertHeaders) data[0].push('');
+            var tr = [];
+            if (vertHeaders) tr.push('');
             _.each(dataset.series(), function(s) {
-                data[0].push((!isNone(s.name) ? s.name : ''));
+                tr.push((!isNone(s.name) ? s.name : ''));
             });
+            data.push(tr);
         }
 
         dataset.eachRow(function(row) {
@@ -129,31 +131,22 @@ $(function() {
             height: 400,
             fixedRowsTop: horzHeaders ? 1: 0,
             fixedColumnsLeft: vertHeaders ? 1: 0,
-            manualColumnResize: true,
             contextMenu: true,
             rowHeaders: true,
             colHeaders: true,
+            fillHandle: false,
             stretchH: 'all',
             cells: function (row, col, prop) {
                 return {
                     type: {
-                        renderer: myRenderer
+                        renderer: myRenderer,
+                        readOnly: true
                     }
                 };
-            },
-            onChange: function (change, source) {
-                if (source === 'loadData') {
-                    return; //don't save this change
-                }
-                console.log(change, source);
             }
         });
 
         $('#data-preview table').addClass('table table-bordered');
-
-        return;
-
-
 
     }
 
