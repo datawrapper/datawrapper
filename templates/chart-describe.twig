@@ -4,6 +4,18 @@
 
 {{ parent() }}
 
+<style type="text/css">
+
+table.htCore tr td {
+    font-size: 1.1em;
+    font-family: Helvetica;
+    font-weight: 400;
+    padding: 3px 6px;
+}
+</style>
+<link rel="stylesheet" type="text/css" href="/static/vendor/handsontable/jquery.handsontable.full.css">
+<link rel="stylesheet" type="text/css" href="/static/vendor/handsontable/jquery.handsontable.bootstrap.css">
+<script type="text/javascript" src="/static/vendor/handsontable/jquery.handsontable.full.js"></script>
 <script type="text/javascript">
 $(function() {
 
@@ -59,44 +71,89 @@ $(function() {
             return val === null || val === undefined || (_.isNumber(val) && isNaN(val));
         }
 
-        var table = $('#data-preview'),
-            horzHeaders = chart.get('metadata.data.horizontal-header'),
+        var data = [[]];
+
+        var horzHeaders = chart.get('metadata.data.horizontal-header'),
             vertHeaders = chart.get('metadata.data.vertical-header'),
             transpose = chart.get('metadata.data.transpose'),
-            i, colCnt = dataset.series().length + (dataset.hasRowNames() ? 1 : 0);
-        table.html('');  // empty table
-        table.append('<thead><tr></tr><thead><tbody></tbody>');
-
-        table.addClass(transpose ? 'row-series' : 'column-series');
-        table.removeClass(transpose ? 'column-series' : 'row-series');
-
-        for (i=0; i < colCnt; i++) {
-            table.append('<colgroup style="width:'+(100 / colCnt)+'%" />');
-        }
+            colCnt = dataset.series().length + (dataset.hasRowNames() ? 1 : 0),
+            i;
 
         if (horzHeaders) {
-            var thead = $('thead tr', table);
-            if (vertHeaders) thead.append('<th></th>');
+            if (vertHeaders) data[0].push('');
             _.each(dataset.series(), function(s) {
-                thead.append('<th>'+(!isNone(s.name) ? '<span>'+s.name+'</span>' : '')+'</th>');
+                data[0].push((!isNone(s.name) ? s.name : ''));
             });
         }
 
-        if (vertHeaders) table.addClass('vert-header'); else table.removeClass('vert-header');
-
-        var tbody = $('tbody', table);
         dataset.eachRow(function(row) {
-            var tr = $('<tr></tr>');
+            var tr = [];
             if (dataset.hasRowNames()) {
-                tr.append('<th><span>'+(!isNone(dataset.rowName(row)) ? dataset.rowName(row) : '')+'</span></th>');
+                tr.push(!isNone(dataset.rowName(row)) ? dataset.rowName(row) : '');
             }
             dataset.eachSeries(function(s, i) {
                 var val = s.data[row];
                 val = chart.formatValue(val, true);
-                tr.append('<td>'+(!isNone(s.data[row]) ? val : '')+'</td>');
+                tr.push((!isNone(s.data[row]) ? val : ''));
             });
-            tbody.append(tr);
+            data.push(tr);
         });
+
+        function myRenderer(instance, td, row, col, prop, value, cellProperties) {
+            Handsontable.TextCell.renderer.apply(this, arguments);
+            if (parseInt(value, 10) < 0) { //if row contains negative number
+                td.className = 'negative'; //add class "negative"
+            } else {
+                td.className = '';
+            }
+            if (horzHeaders && row === 0) {
+                td.style.borderBottom = '1px solid #000';
+                td.style.fontWeight = 'bold';
+                td.style.background = '#eef4ff';
+            }
+            if (vertHeaders && col === 0) {
+                if (horzHeaders && row === 0) td.style.background = '#dde4ef';
+                else td.style.background = row % 2 ? '#f3f8ff': '#eef4ff' ;
+                td.style.borderRight = '1px solid #000';
+                td.style.fontWeight = 'bold';
+            } else if (row > horzHeaders ? 1 : 0) {
+                td.style.background = row % 2 ? '#FFF' : '#f9f9f9';
+            }
+        }
+
+        $("#data-preview").handsontable({
+            data: data,
+            startRows: 6,
+            startCols: 8,
+            width: $("#data-preview").width(),
+            height: 400,
+            fixedRowsTop: horzHeaders ? 1: 0,
+            fixedColumnsLeft: vertHeaders ? 1: 0,
+            manualColumnResize: true,
+            contextMenu: true,
+            rowHeaders: true,
+            colHeaders: true,
+            stretchH: 'all',
+            cells: function (row, col, prop) {
+                return {
+                    type: {
+                        renderer: myRenderer
+                    }
+                };
+            },
+            onChange: function (change, source) {
+                if (source === 'loadData') {
+                    return; //don't save this change
+                }
+                console.log(change, source);
+            }
+        });
+
+        $('#data-preview table').addClass('table table-bordered');
+
+        return;
+
+
 
     }
 
@@ -151,10 +208,7 @@ $(function() {
                 </div>
             </form>
 
-            <div style="overflow-x:scroll; overflow-y: visible; width:100%">
-                <table id="data-preview" class="table table-striped">
-                </table>
-            </div>
+            <div id="data-preview"></div>
         </div>
 
         <div class="span4"><div class="well">

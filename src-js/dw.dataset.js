@@ -53,6 +53,7 @@
             me._processData(data);
             me.__data = data;
             me.__loaded = true;
+            me.__parser = parser;
         },
 
         _processData: function(data) {
@@ -213,6 +214,35 @@
                 });
             });
             return tree;
+        },
+
+        serializeDelimited: function() {
+            var me = this;
+            var data = [[]];
+
+            if (me.hasRowNames()) data[0].push('');
+
+            function isNone(val) {
+                return val === null || val === undefined || (_.isNumber(val) && isNaN(val));
+            }
+
+            _.each(me.series(), function(s) {
+                data[0].push((!isNone(s.name) ? s.name : ''));
+            });
+
+            me.eachRow(function(row) {
+                var tr = [];
+                if (me.hasRowNames()) {
+                    tr.push(!isNone(me.rowName(row)) ? me.rowName(row) : '');
+                }
+                me.eachSeries(function(s, i) {
+                    var val = s.data[row];
+                    tr.push((!isNone(s.data[row]) ? val : 'n/a'));
+                });
+                data.push(tr);
+            });
+
+            return data.map(function(row) { return row.join(me.__parser.delimiter); }).join('\n');
         }
     });
 
