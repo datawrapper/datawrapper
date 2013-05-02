@@ -9,7 +9,6 @@
             type: 'delimited'
         });
         this.__options = options;
-
     };
 
     _.extend(Dataset.prototype, {
@@ -243,6 +242,16 @@
             });
 
             return data.map(function(row) { return row.join(me.__parser.delimiter); }).join('\n');
+        },
+
+        /*
+         * removes ignored series from dataset
+         */
+        filterSeries: function(ignore) {
+            var me = this;
+            me.__data.series = me.__data.series.filter(function(s) {
+                return !ignore[s.name];
+            });
         }
     });
 

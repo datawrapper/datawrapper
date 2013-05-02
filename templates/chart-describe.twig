@@ -13,6 +13,17 @@ table.htCore tr td {
     padding: 3px 6px;
 }
 
+.table thead th {
+    cursor: pointer;
+}
+
+.table thead th.ignored {
+    background: #b99;
+}
+.table td.ignored {
+    color: #999;
+    text-decoration: line-through
+}
 
 </style>
 <link rel="stylesheet" type="text/css" href="/static/vendor/handsontable/jquery.handsontable.full.css">
@@ -81,14 +92,16 @@ $(function() {
             colCnt = dataset.series().length + (dataset.hasRowNames() ? 1 : 0),
             i;
 
-        if (horzHeaders) {
+        dataset.ignoreIgnores = true;
+
+        //if (horzHeaders) {
             var tr = [];
             if (vertHeaders) tr.push('');
             _.each(dataset.series(), function(s) {
                 tr.push((!isNone(s.name) ? s.name : ''));
             });
             data.push(tr);
-        }
+        //}
 
         dataset.eachRow(function(row) {
             var tr = [];
@@ -98,10 +111,12 @@ $(function() {
             dataset.eachSeries(function(s, i) {
                 var val = s.data[row];
                 val = chart.formatValue(val, true);
-                tr.push((!isNone(s.data[row]) ? val : ''));
+                tr.push((!isNone(s.data[row]) ? $("<div />").html(val).text() : ''));
             });
             data.push(tr);
         });
+
+        var ignoreSeries = _.clone(chart.get('metadata.data.ignore-series', {}));
 
         function myRenderer(instance, td, row, col, prop, value, cellProperties) {
             Handsontable.TextCell.renderer.apply(this, arguments);
@@ -110,7 +125,7 @@ $(function() {
             } else {
                 td.className = '';
             }
-            if (horzHeaders && row === 0) {
+            if (row === 0) {
                 td.style.borderBottom = '1px solid #000';
                 td.style.fontWeight = 'bold';
                 td.style.background = '#eef4ff';
@@ -123,10 +138,17 @@ $(function() {
             } else if (row > horzHeaders ? 1 : 0) {
                 td.style.background = row % 2 ? '#FFF' : '#f9f9f9';
             }
+
+            if (ignoreSeries[data[0][col]]) {
+                td.className = 'ignored';
+            } else {
+                td.className = '';
+            }
         }
 
         $("#data-preview").handsontable({
             data: data,
+            allowHtml: true,
             startRows: 6,
             startCols: 8,
             width: $("#data-preview").width(),
@@ -149,6 +171,24 @@ $(function() {
 
         $('#data-preview table').addClass('table table-bordered');
 
+        // add event handler for ignoring data series
+        $('.colHeader').each(function(i, el) {
+            var th = $(el).parents('th');
+            if (i === 0 && vertHeaders) return;
+            var sn = data[0][i];
+            th.data('series', sn);
+            if (ignoreSeries[sn]) th.addClass('ignored');
+            th.click(function() {
+                if (ignoreSeries[sn]) {
+                    ignoreSeries[sn] = false;
+                    th.removeClass('ignored');
+                } else {
+                    ignoreSeries[sn] = true;
+                    th.addClass('ignored');
+                }
+                chart.set('metadata.data.ignore-series', _.clone(ignoreSeries));
+            });
+        });
     }
 
     function reload(f) {
@@ -161,7 +201,7 @@ $(function() {
             }
             DW.dataset = ds;
             updateTable(ds, chart);
-        }, true);
+        });
     }
 
     $('#describe-source-url').blur(function() {
@@ -190,7 +230,10 @@ $(function() {
 
             <h2>{% trans "Check and Describe Your Data" %}</h2>
 
-            <p>{% trans "Please check if the data format was recognized correctly." %}</p>
+            <p>
+                {% trans "Please check if the data format was recognized correctly." %}
+                {% trans "You can hide columns by clicking the table header." %}
+            </p>
 
             <form class="form-inline">
                 <div id="csv-parse-options" class="row">

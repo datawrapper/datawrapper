@@ -30,7 +30,7 @@
             });
 
             // check if new value is set
-            if (pt[lastKey] != value) {
+            if (!_.isEqual(pt[lastKey], value)) {
                 pt[lastKey] = value;
                 me.__changed = true;
                 clearTimeout(me.__saveTimeout);
