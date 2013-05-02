@@ -5,6 +5,7 @@ CHANGELOG
 * allowed input of named colors
 * ignoring data series by clicking table header
 * made MyCharts page searchable
+* allowed preventing guest access
 
 ### 1.2.9
 * added support for S3 domain alias (e.g. s3.datawrapper.de)
