@@ -20,6 +20,13 @@ thumbnails:
 admin_email: hello@datawrapper.de
 log_email: debug@datawrapper.de
 
+## prevent guest from creating charts
+prevent_guest_charts: false
+
+## prevent guests from creating accounts
+## (an admin need to create the account)
+prevent_guest_access: false
+
 ## HTTP AUTH (optional)
 ## edit and uncomment if Datawrapper is locked behind HTTP Auth
 # http_auth: username:password

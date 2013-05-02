@@ -6,7 +6,7 @@
 
 // load YAML parser and config
 require_once ROOT_PATH . 'vendor/spyc/spyc.php';
-$GLOBALS['dw_config'] = $cfg = Spyc::YAMLLoad(ROOT_PATH . 'config.yaml');
+$GLOBALS['dw_config'] = $dw_config = Spyc::YAMLLoad(ROOT_PATH . 'config.yaml');
 
 if ($GLOBALS['dw_config']['debug'] == true) {
     error_reporting(E_ALL);

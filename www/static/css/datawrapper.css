@@ -1333,3 +1333,37 @@ form.well form {
 #ender-overlay-mask {
     top: -60px!important;
 }
+
+body.login {
+    background: #eee;
+}
+
+body.login header, body.login footer {
+    display: none;
+}
+
+body.login .modal.hide {
+    display: block;
+}
+
+body.login .row-signup {
+    display: none;
+}
+
+body.login #dwLoginForm {
+    width: 400px;
+    margin-left: -200px;
+}
+
+body.login .row-login {
+    width: 340px;
+}
+
+body.login .modal .close {
+    display: none;
+}
+
+body.login .modal h3 {
+    margin-top: 0;
+    font-size: 24px;
+}

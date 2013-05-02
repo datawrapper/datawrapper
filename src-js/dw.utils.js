@@ -179,7 +179,10 @@
                             $('#dwLoginForm').modal('hide');
                             $('input', loginForm).val('');
                             if (loginForm.data('target')) location.href = loginForm.data('target');
-                            else location.reload();
+                            else {
+                                if (location.pathname == "/login") location.pathname = "/";
+                                else location.reload();
+                            }
                         } else {
                             if (data.code == 'login-invalid') {
                                 $('.login-pwd', loginForm).parent().addClass('error');

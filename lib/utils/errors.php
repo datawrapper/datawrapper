@@ -81,6 +81,13 @@ function error_mycharts_need_login() {
     );
 }
 
+function error_access_denied() {
+    error_page('chart',
+        _('Access denied.'),
+        _('You need to be signed in.')
+    );
+}
+
 function error_settings_need_login() {
     error_page('user',
         _('Whoops! You need to be logged in.'),
