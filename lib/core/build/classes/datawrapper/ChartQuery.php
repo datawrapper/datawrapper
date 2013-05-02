@@ -117,6 +117,11 @@ class ChartQuery extends BaseChartQuery {
                 if ($key == 'layout' || $key == 'theme') $query->filterByTheme($val);
                 if ($key == 'vis') $query->filterByType($val);
                 if ($key == 'month') $query->filterByCreatedAt(array('min' => $val.'-01', 'max' => $val.'-31'));
+                if ($key == 'q') {
+                    $query->condition('in-title', 'Chart.Title LIKE ?', '%'.$val.'%');
+                    $query->condition('in-intro', 'Chart.Metadata LIKE ?', '%"intro":"%'.$val.'%"%');
+                    $query->where(array('in-title', 'in-intro'), 'or');
+                }
             }
         }
         return $query;

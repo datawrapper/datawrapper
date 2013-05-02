@@ -51,9 +51,11 @@ function nbChartsByLayout($user) {
  */
 function user_charts($app, $user, $key, $val) {
     $curPage = $app->request()->params('page');
+    $q = $app->request()->params('q');
     if (empty($curPage)) $curPage = 0;
     $perPage = 12;
     $filter = !empty($key) ? array($key => $val) : array();
+    if (!empty($q)) $filter['q'] = $q;
     $charts =  ChartQuery::create()->getPublicChartsByUser($user, $filter, $curPage * $perPage, $perPage);
     $total = ChartQuery::create()->countPublicChartsByUser($user, $filter);
 
@@ -64,6 +66,7 @@ function user_charts($app, $user, $key, $val) {
         'bylayout' => nbChartsByLayout($user),
         'key' => $key,
         'val' => $val,
+        'search_query' => empty($q) ? '' : $q,
         'mycharts_base' => '/mycharts'
     );
 
@@ -74,7 +77,7 @@ function user_charts($app, $user, $key, $val) {
     }
 
     add_header_vars($page, 'mycharts');
-    add_pagination_vars($page, $total, $curPage, $perPage);
+    add_pagination_vars($page, $total, $curPage, $perPage, empty($q) ? '' : '&q='.$q);
     $app->render('mycharts.twig', $page);
 }
 

@@ -19,6 +19,10 @@
 <div class="row">
     <div class="span3 gallery-filter" >
 
+        <form method="get" action="">
+            <input name="q" class="search-query input-medium" type="text" placeholder="{% trans "Search" %}" value="{{ search_query }}" />
+        </form>
+
         <h3>{% trans "By Month" %}</h3>
 
         <ul class="unstyled">
@@ -86,7 +90,7 @@
             {% for chart in charts %}
             <li class="span3 chart" data-id="{{ chart.id }}">
                 <div class="thumbnail">
-                    <a href="/chart/{{ chart.id }}/edit"><img src="{% if chart.hasPreview %}http://{{ DW_CHART_CACHE_DOMAIN }}/{{ chart.id }}/m.png{% else %}/static/img/nopreview.png{% endif %}" width="260" style="background:{{ chart.metadata.publish.background }}">
+                    <a href="/chart/{{ chart.id }}/edit"><img src="{% if chart.hasPreview %}http://{{ DW_CHART_CACHE_DOMAIN }}/{{ chart.id }}/m.png{% else %}/static/img/nopreview.png{% endif %}" width="260" style="height:160px;background:{{ chart.metadata.publish.background }}">
 
                     {# <p class="pull-right">
                         <a href="#delete" class="delete" data-chart="{{ chart.id }}"><i class="icon-remove"></i></a>
