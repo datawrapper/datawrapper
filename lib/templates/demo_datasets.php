@@ -106,7 +106,6 @@ GRÜNE\t68"
         'type' => _('Line chart'),
         'presets' => array(
             'type' => 'line-chart',
-            'theme' => 'autumn',
             'metadata.describe.source-name' => 'US Census Bureau',
             'metadata.describe.source-url' => 'http://www.census.gov/foreign-trade/balance/c4120.html',
             'metadata.data.vertical-header' => true,
