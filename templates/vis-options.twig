@@ -334,11 +334,14 @@ $(function() {
         var col = usercolor.val();
         if (col.trim() == '') {
             usercolor.parent().removeClass('error').removeClass('success');
-        } else if (!col.trim().match(/#[A-F|0-9]{6}/i)) {
-            usercolor.parent().removeClass('success').addClass('error');
         } else {
-            usercolor.parent().removeClass('error').addClass('success');
-            setNewColorForCurrentSeries(col.trim());
+            try {
+                var color = chroma.color(col.trim());
+                usercolor.parent().removeClass('error').addClass('success');
+                setNewColorForCurrentSeries(color.hex());
+            } catch (e) {
+                usercolor.parent().removeClass('success').addClass('error');
+            }
         }
     });
 
