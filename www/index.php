@@ -89,25 +89,22 @@ function add_header_vars(&$page, $active = null) {
         $headlinks[] = $link;
     }
 
-    $headlinks[] = array(
-        'url' => '',
-        'id' => 'lang',
-        'dropdown' => array(array(
-            'url' => '#lang-de-DE',
-            'title' => 'Deutsch'
-        ), array(
-            'url' => '#lang-en-GB',
-            'title' => 'English'
-        ), array(
-            'url' => '#lang-fr-FR',
-            'title' => 'Français'
-        ), array(
-            'url' => '#lang-es-ES',
-            'title' => 'Español'
-        )),
-        'title' => _('Language'),
-        'icon' => 'font'
-    );
+    if (!empty($config['languages'])) {
+        $langDropdown = array(
+            'url' => '',
+            'id' => 'lang',
+            'dropdown' => array(),
+            'title' => _('Language'),
+            'icon' => 'font'
+        );
+        foreach ($config['languages'] as $lang) {
+            $langDropdown['dropdown'][] = array(
+                'url' => '#lang-'.$lang['id'],
+                'title' => $lang['title']
+            );
+        }
+        $headlinks[] = $langDropdown;
+    }
     if ($user->isLoggedIn()) {
         $shortenedMail = $user->getEmail();
         $shortenedMail = strlen($shortenedMail) > 18 ? substr($shortenedMail, 0, 9).'...'.substr($shortenedMail, strlen($shortenedMail)-9) : $shortenedMail;
@@ -153,6 +150,7 @@ function add_header_vars(&$page, $active = null) {
     $page['DW_VERSION'] = DATAWRAPPER_VERSION;
     $page['DW_CHART_CACHE_DOMAIN'] = $config['chart_domain'];
     $page['ADMIN_EMAIL'] = $config['admin_email'];
+    $page['config'] = $config;
 
     $analyticsMod = get_module('analytics', '../lib/');
     $page['trackingCode'] = !empty($analyticsMod) ? $analyticsMod->getTrackingCode() : '';
