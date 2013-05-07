@@ -27,11 +27,6 @@ body {
     display: none;
 }
 
-body.home {
-    background: url(/static/img/teaser-home-bg.jpg) repeat-x;
-    background-position: 0 -21px;
-}
-
 body.home.blog {
     background: #fff!important;
 }
@@ -551,6 +546,10 @@ footer .version {
     text-align: right;
 }
 
+.footer-links a + a:before {
+    content: ' – ';
+}
+
 .dw .thumbnail > h5 {
     margin-top: 5px;
 }
@@ -574,7 +573,7 @@ h1, h2, h3, h4, h5, h6 {
     margin-left: -335px;
 }
 
-#dwLoginForm div.span3 {
+#dwLoginForm div.span3, #dwLoginForm div.span4 {
     padding: 15px;
 }
 
@@ -1334,36 +1333,3 @@ form.well form {
     top: -60px!important;
 }
 
-body.login {
-    background: #eee;
-}
-
-body.login header, body.login footer {
-    display: none;
-}
-
-body.login .modal.hide {
-    display: block;
-}
-
-body.login .row-signup {
-    display: none;
-}
-
-body.login #dwLoginForm {
-    width: 400px;
-    margin-left: -200px;
-}
-
-body.login .row-login {
-    width: 340px;
-}
-
-body.login .modal .close {
-    display: none;
-}
-
-body.login .modal h3 {
-    margin-top: 0;
-    font-size: 24px;
-}

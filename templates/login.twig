@@ -8,7 +8,7 @@
         <div class="modal-body">
             <button type="button" class="close" data-dismiss="modal">×</button>
             <div class="row">
-                <div class="span3 row-login">
+                <div class="span{% if noSignup %}4{% else %}3{% endif %} row-login">
 
                     <h3>Login</h3>
 
@@ -18,17 +18,27 @@
                         <div class="control-group"><input class="login-email input-xxlarge span3" type="text" value="" placeholder="{% trans "email" %}" /></div>
                         <div class="control-group"><input class="login-pwd input-xxlarge span3" type="password" value="" placeholder="{% trans "password" %}" /></div>
 
-                        <a class="btn btn-login btn-primary btn-large"><i class="icon-user icon-white"></i> {% trans "Login" %}</a>
-                        <label class="checkbox pull-right" for="keep-login">
-                            <input id="keep-login" class="keep-login" type="checkbox" checked="checked"> {% trans "Remember login?" %}
-                        </label>
-                        <a style="display:none" class="btn btn-send-pw btn-info btn-large"><i class="icon-envelope icon-white"></i> {% trans "Send new password" %}</a>
+                        <div class="row">
+                            <div class="span2" style="padding-bottom:10px">
+                                <a class="btn btn-login btn-primary btn-large">
+                                    <i class="icon-user icon-white"></i> {% trans "Login" %}
+                                </a>
+                                <a style="display:none" class="btn btn-send-pw btn-info">
+                                    {% trans "Send new password" %}
+                                </a>
+                            </div>
+                            <div class="span2">
+                                <label class="checkbox" for="keep-login">
+                                    <input id="keep-login" class="keep-login" type="checkbox" checked="checked"> {% trans "Remember login?" %}
+                                </label>
+                                <a id="forgot-password" href="#">{% trans "Can't recall your password?" %}</a>
+                                <a id="send-pw-cancel" style="display:none" href="#">{% trans "Return to login..." %}</a>
+                            </div>
+                        </div>
                     </div>
-                     <hr />
-                     <a id="forgot-password" href="#">{% trans "Can't recall your password?" %}</a>
-                     <a id="send-pw-cancel" style="display:none" href="#">{% trans "Return to login..." %}</a>
 
                 </div>
+                {% if not noSignup %}
                 <div class="span3 row-signup">
                     <h3>{% trans "Create a new account" %}</h3>
                     <p>{% trans "Datawrapper is 100&#37; free and creating an account takes less than a minute. Just enter your email and pick a password, and you're done!" %}</p>
@@ -44,29 +54,36 @@
                         </div>
                         <a id="btn-register" class="btn btn-large"><i class="icon-pencil"></i> {% trans "Sign Up" %}</a>
                     </div>
-
                 </div>
+                {% endif %}
             </div>
         </div>
 
+    </div>
+
         <script type="text/javascript">
         $(function() {
+            //$('a').click(console.log);
             $('#forgot-password').click(function(e) {
                 e.preventDefault();
-                $('.login-pwd', $(e.target).parent()).hide();
-                $('.btn-login', $(e.target).parent()).hide();
-                $('.btn-send-pw', $(e.target).parent()).fadeIn();
-                $('#forgot-password', $(e.target).parent()).hide();
-                $('#send-pw-cancel', $(e.target).parent()).fadeIn();
+                var form = $(e.target).parents('.modal');
+                $('.login-pwd', form).hide();
+                $('.btn-login', form).hide();
+                $('label[for=keep-login]', form).hide();
+                $('#forgot-password', form).hide();
+                $('.btn-send-pw', form).fadeIn();
+                $('#send-pw-cancel', form).fadeIn();
             });
 
             $('#send-pw-cancel').click(function(e) {
                 e.preventDefault();
-                $('.login-pwd', $(e.target).parent()).fadeIn();
-                $('.btn-login', $(e.target).parent()).fadeIn();
-                $('.btn-send-pw', $(e.target).parent()).hide();
-                $('#forgot-password', $(e.target).parent()).fadeIn();
-                $('#send-pw-cancel', $(e.target).parent()).hide();
+                var form = $(e.target).parents('.modal');
+                $('.login-pwd', form).fadeIn();
+                $('.btn-login', form).fadeIn();
+                $('label[for=keep-login]', form).fadeIn();
+                $('#forgot-password', form).fadeIn();
+                $('.btn-send-pw', form).hide();
+                $('#send-pw-cancel', form).hide();
             });
 
             $('.btn-send-pw').click(function(e) {
@@ -97,6 +114,5 @@
             });
         });
         </script>
-    </div>
 
 {% endblock %}

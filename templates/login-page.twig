@@ -3,6 +3,70 @@
 
 {% block content %}
 
+    <div class="brand">
+        <img src="/static/img/abzv-logo.svg" style="height:50px;" />
+    </div>
+
     {{ block('login') }}
 
+    <style type="text/css">
+
+.brand {
+    text-align: center;
+    position: relative;
+    top: -30px;
+}
+
+.foot {
+    position:absolute;
+    left:130px;
+    right:130px;
+    top:430px;
+    text-align:center;
+    padding-top: 10px;
+    font-size: 12px;
+    opacity: 0.5;
+}
+
+body.login {
+    background: #eee url(/static/img/wavegrid.png);
+}
+
+body.login .modal.hide {
+    display: block;
+}
+
+body.login #dwLoginForm {
+    width: 420px;
+    margin-left: -210px;
+    box-shadow: 0 0 20px rgba(0,0,0, 0.3);
+    border: 0;
+    position: relative;
+}
+
+body.login .row-login {
+    width: 370px;
+}
+
+body.login .modal .close {
+    display: none;
+}
+
+body.login .modal h3 {
+    margin-top: 0;
+    font-size: 26px;
+    font-weight: 300;
+    margin-bottom: 20px;
+}
+    </style>
+
+
+    <script type="text/javascript">
+
+$(function() {
+    $('.login-email').focus();
+    $('h3').text('{% trans "Welcome to Datawrapper" %}')
+});
+
+    </script>
 {% endblock %}

@@ -7,7 +7,10 @@ $app->get('/login', function () use ($app) {
 
     $page = array(
         'title' => 'Datawrapper',
-        'pageClass' => 'login'
+        'pageClass' => 'login',
+        'noHeader' => true,
+        'noFooter' => true,
+        'noSignup' => true
     );
     add_header_vars($page, '');
     $app->render('login-page.twig', $page);
