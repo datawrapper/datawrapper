@@ -785,7 +785,7 @@ msgid ""
 msgstr ""
 "Datawrapper est 100&#37; libre. Vous pouvez utiliser ce service hébergé "
 "gratuitement ou <a href='/docs/howtouse#server'>l'installer sur votre propre "
-"serveur</a> pour un contrôle maximal. Ecrit en PHP, Datawrapper est facile à "
+"serveur</a> pour un contrôle maximal. Écrit en PHP, Datawrapper est facile à "
 "installer et modifier."
 
 #: ../scripts/tmpl_cache/home.twig.php:136
@@ -826,7 +826,7 @@ msgstr "Une introduction concise sur les fonctions de Datawrapper."
 
 #: ../scripts/tmpl_cache/home.twig.php:225
 msgid "Step by step"
-msgstr "Etape par etape"
+msgstr "Étape par étape"
 
 #: ../scripts/tmpl_cache/home.twig.php:229
 msgid ""
@@ -890,7 +890,7 @@ msgstr "Envoyer le nouveau mot de passe"
 
 #: ../scripts/tmpl_cache/login.twig.php:72
 msgid "Can't recall your password?"
-msgstr "Mot de passe oublié?"
+msgstr "Mot de passe oublié ?"
 
 #: ../scripts/tmpl_cache/login.twig.php:76
 msgid "Return to login..."
@@ -899,7 +899,7 @@ msgstr "Retourner à la connexion"
 #: ../scripts/tmpl_cache/login.twig.php:83
 #, fuzzy
 msgid "Create a new account"
-msgstr "Créer un neveau compte"
+msgstr "Créer un nouveau compte"
 
 #: ../scripts/tmpl_cache/login.twig.php:87
 msgid ""
@@ -938,19 +938,19 @@ msgstr "Fermer"
 
 #: ../scripts/tmpl_cache/mycharts.twig.php:160
 msgid "By Layout"
-msgstr "Par layout"
+msgstr "Par mise en page"
 
 #: ../scripts/tmpl_cache/mycharts.twig.php:211
 msgid ""
 "Want to see what other users created using Datawrapper? Take a look in the "
 "<a href='%GALLERY%'>Gallery</a>!"
 msgstr ""
-"Vous voulez voir ce que les autres utilisateurs ont fait sur Datawrapper? "
+"Vous voulez voir ce que les autres utilisateurs ont fait sur Datawrapper ?"
 "Jetez un oeil à la <a href='%GALLERY%'>galerie</a>!"
 
 #: ../scripts/tmpl_cache/mycharts.twig.php:293
 msgid "Duplicate"
-msgstr "Dupliquer"
+msgstr "Dupliquez"
 
 #: ../scripts/tmpl_cache/mycharts.twig.php:298
 msgid "Delete"
@@ -981,7 +981,7 @@ msgstr "Statut du compte"
 #: ../scripts/tmpl_cache/settings.twig.php:40
 #: ../scripts/tmpl_cache/settings.twig.php:139
 msgid "Edit Profile"
-msgstr "Editez votre profil"
+msgstr "Éditez votre profil"
 
 #: ../scripts/tmpl_cache/settings.twig.php:44
 #: ../scripts/tmpl_cache/settings.twig.php:234
@@ -1137,7 +1137,7 @@ msgstr ""
 
 #: ../scripts/tmpl_cache/settings.twig.php:318
 msgid "Are you sure?"
-msgstr "Êtes-vous sûr?"
+msgstr "Êtes-vous sûr ?"
 
 #: ../scripts/tmpl_cache/settings.twig.php:323
 msgid "Yes, I really know what I'm doing"
@@ -1203,11 +1203,11 @@ msgstr "Votre compte a été supprimé."
 
 #: ../scripts/tmpl_cache/settings.twig.php:398
 msgid "Goodbye!"
-msgstr "A bientôt!"
+msgstr "À bientôt!"
 
 #: ../scripts/tmpl_cache/settings.twig.php:451
 msgid "This just worked fine. Your profile has been updated."
-msgstr "Ca a bien marché. Votre profil a été mis à jour."
+msgstr "Ça a bien marché. Votre profil a été mis à jour."
 
 #: ../scripts/tmpl_cache/settings.twig.php:502
 msgid "Congrats! Your password has been changed."
@@ -1454,11 +1454,11 @@ msgstr "Graphique en anneau"
 
 #: ../lib/templates/demo_datasets.php:105
 msgid "US Trade with United Kingdom"
-msgstr ""
+msgstr "Commerce américain avec le Royaume-Uni"
 
 #: ../lib/templates/docs-pages.php:5
 msgid "About"
-msgstr "A propos"
+msgstr "À propos"
 
 #: ../lib/utils/errors.php:21
 msgid "404 - Page not found"
@@ -1499,7 +1499,7 @@ msgstr ""
 
 #: ../lib/utils/errors.php:48
 msgid "Whoops! You're not allowed to publish charts, yet"
-msgstr "Oups! Vous ne pouvez pas encore publier de visualisations"
+msgstr "Oups ! Vous ne pouvez pas encore publier de visualisations"
 
 #: ../lib/utils/errors.php:49
 msgid ""
@@ -1687,7 +1687,7 @@ msgstr ""
 #~ msgstr "Non lucratif: C'est gratuit et ça le restera"
 
 #~ msgid "Why this approach? See our Motivations..."
-#~ msgstr "Pourquoi cette approche? Lisez nos motivations..."
+#~ msgstr "Pourquoi cette approche ? Lisez nos motivations..."
 
 #~ msgid "Make it public"
 #~ msgstr "Rendre public"
@@ -1728,7 +1728,7 @@ msgstr ""
 #~ "Evolution of the Gini coefficient in Germany, France and Greece at 5-year "
 #~ "intervals, 1995-2010."
 #~ msgstr ""
-#~ "Evolution du coefficient de Gini en Allemagne, France et Grèce, 1995-2010."
+#~ "Évolution du coefficient de Gini en Allemagne, France et Grèce, 1995-2010."
 
 #~ msgid "Gini coefficient in Europe, 2001-2010"
 #~ msgstr "Coefficient de Gini en Europe, 2001-2010"
