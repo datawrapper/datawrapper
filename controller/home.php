@@ -19,10 +19,6 @@ $app->get('/', function () use ($app) {
         );
         add_header_vars($page, '');
 
-        if (!empty($GLOBALS['dw_config']['disclaimer'])) {
-            $page['disclaimer'] = $GLOBALS['dw_config']['disclaimer'];
-        }
-
         $app->render('home.twig', $page);
     }
 });

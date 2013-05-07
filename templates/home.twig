@@ -1,101 +1,18 @@
 {% extends "core.twig" %}
-{% use "utils.twig" %}
-
 
 {% block content %}
 
-<div class="row">
-    {{ block('alert') }}
+    {% if config.custom_home %}
 
-    {% if disclaimer %}
-    <div style="position:relative">
-        <div id="disclaimer" class="alert alert-warning span6 offset3" style="position:absolute;top:80px;left:0px;z-index:1000;font-size:14px;line-height:22px;color:#752">
-            <div>{{ disclaimer | raw }}</div>
-        </div>
-    </div>
+        {% include "custom/" ~ config.custom_home ~ ".twig" %}
+        {{ block('home') }}
+
+    {% else %}
+
+        Please add a custom home page.
+
     {% endif %}
 
-    <div class="span12 teaser">
-        <div class="teaser-h2">
-            <h2><b class='dw-logo'>Datawrapper</b> {% trans "An open source tool helping anyone to create simple, correct and embeddable charts in minutes." %}</h2>
-
-            <div class="login">
-                {{ block('teaserlogin') }}
-            </div>
-        </div>
-    </div>
-
-    <div class="small-teaser span12">
-
-        <div style="text-align:center; margin: 20px 0 40px">
-            {{ block('teaserlogin') }}
-        </div>
-
-    </div>
-
-    <div class="teaser-mobile big-head span12">
-        <h1 style="font-weight:700">Datawrapper</h1>
-        <p>{% trans "An open source tool helping everyone to create simple, correct and embeddable charts in minutes." %}</p>
-
-        <div style="text-align:center; margin: 20px 0 40px">
-            {{ block('teaserlogin') }}
-        </div>
-     </div>
-</div>
-
-<div class="row arguments">
-    <div class="span4">
-        <h2>{% trans "Easy to use" %}</h2>
-        <p>{% trans "This little tool reduces the time needed to create a correct chart and embed it into any website from hours to seconds. It makes charting easy, and helps you avoiding common pitfalls." %}</p>
-    </div>
-    <div class="span4">
-        <h2>{% trans "Full control" %}</h2>
-        <p>{{ "Datawrapper is 100&#37; free software. You can use our free hosted service, or <a href='#URL'>install it on your own server</a> for maximum control. Written in PHP, Datawrapper is easy to install, modify and extend." | trans | replace({ '#URL': 'http://docs.datawrapper.de/%lang%/howtouse#server'}) | replace({ '%lang%': language }) | raw }}</p>
-    </div>
-    <div class="span4">
-        <h2>{% trans "Customizable" %}</h2>
-        <p>{{ "We encourage you to <a href='#URL'>customize the charts layout</a>, fonts and colors to make them integrate nicely in your website. Strengthen your own brand, not ours." | trans | replace({ '#URL': 'http://docs.datawrapper.de/%lang%/howtouse#customize'}) | replace({ '%lang%': language }) | raw }}</p>
-    </div>
-</div>
-
-<div class="gallery">
-    <div class="big-head">
-        <h1>{% trans "Created with Datawrapper" %}.</h1>
-        <p>{% trans "Need some inspiration? See what others have created <a href='/gallery/'>in our gallery</a>." %}</p>
-    </div>
-    <ul class="thumbnails">
-        {% for chart in recent_charts %}
-            {{ block('gallerythumb') }}
-        {% endfor %}
-    </ul>
-</div>
-
-<div class="row docs">
-    <div class="big-head">
-        <h1>{% trans "Want to learn more?" %}</h1>
-    </div>
-
-    <div class="span3">
-        <h3><i class="icon-quickstart"></i> <a href="http://docs.datawrapper.de/{{ language }}/quickstart">{% trans "Quick Start" %}</a></h3>
-        <p>{% trans "A concise introduction into the functions of Datawrapper." %}</p>
-    </div>
-    <div class="span3">
-        <h3><i class="icon-help"></i> <a href="http://docs.datawrapper.de/{{ language }}/tutorial">{% trans "Step by step" %}</a></h3>
-        <p>{% trans "This tutorial guides you through the entire charting process, from finding data to embedding your chart." %}</p>
-    </div>
-    <div class="span3">
-        <h3><i class="icon-info"></i> <a href="http://docs.datawrapper.de/{{ language }}/motivation">{% trans "Motivation" %}</a></h3>
-        <p>{{ "Learn more about <a href='#URL'>why we created Datawrapper</a>, and why we chose this approach." | trans | replace({ '#URL': 'http://docs.datawrapper.de/%lang%/motivation' }) | replace({ '%lang%': language }) | raw }}</p>
-    </div>
-
-    <div class="span3">
-        <h3><i class="icon-github"></i> <a href="https://github.com/datawrapper/datawrapper">{% trans "Find it on Github" %}</a></h3>
-        <p>{% trans "You can find and fork the Datawrapper source code on Github. It is licensed under the MIT license." %}</p>
-    </div>
-
-
-</div>
-
-
 {{ parent() }}
+
 {% endblock %}

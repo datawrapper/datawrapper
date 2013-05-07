@@ -39,6 +39,11 @@ footer_links:
         de: Tutorial
       url: http://docs.datawrapper.de/%lang/tutorial
 
+## to use a custom home page in your installation
+## uncomment the following setting and create a new
+## Twig template (e.g. my-home.twig) in /templates/custom/
+# custom_home: my-home
+
 
 ## HTTP AUTH (optional)
 ## edit and uncomment if Datawrapper is locked behind HTTP Auth
