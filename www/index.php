@@ -88,7 +88,7 @@ function add_header_vars(&$page, $active = null) {
         if (!empty($item['icon'])) $link['icon'] = $item['icon'];
         $headlinks[] = $link;
     }
-
+    // language dropdown
     if (!empty($config['languages'])) {
         $langDropdown = array(
             'url' => '',
@@ -103,7 +103,7 @@ function add_header_vars(&$page, $active = null) {
                 'title' => $lang['title']
             );
         }
-        $headlinks[] = $langDropdown;
+        if (count($langDropdown['dropdown']) > 1) $headlinks[] = $langDropdown;
     }
     if ($user->isLoggedIn()) {
         $shortenedMail = $user->getEmail();
