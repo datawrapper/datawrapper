@@ -69,21 +69,44 @@ class DatawrapperSession {
         return self::getInstance()->_toArray();
     }
 
+    private static function getDefaultLanguage() {
+        if (!empty($GLOBALS['dw_config']['languages'])) {
+            return substr($GLOBALS['dw_config']['languages'][0]['id'], 0, 2);
+        }
+        return 'en';
+    }
+
+    private static function checkLanguageInConfig($locale) {
+        if (!empty($GLOBALS['dw_config']['languages'])) {
+            $configured_languages = array();
+            foreach ($GLOBALS['dw_config']['languages'] as $loc) {
+                $configured_languages[] = substr($loc['id'], 0, 2);
+            }
+        } else {
+            $configured_languages = array('en');
+        }
+        return in_array(substr($locale, 0, 2), $configured_languages);
+    }
+
     public static function getBrowserLocale() {
         // get list of available locales
         $available_locales = array('en_US');
         foreach (glob('../locale/*', GLOB_ONLYDIR) as $l) {
             $available_locales[] = substr($l, 10);
         }
+        // filter out locales that are not defined in
+        // config.languages
+
         $locales = isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']) : array();
         foreach ($locales as $loc) {
             $parts = explode(';', $loc);
             $pp = explode('-', $parts[0]);
             if (count($pp) > 1) $pp[1] = strtoupper($pp[1]);
             $locale = implode('_', $pp);
-            if (in_array($locale, $available_locales)) return $locale;  // match!
+            if (in_array($locale, $available_locales)
+                && self::checkLanguageInConfig($locale)) return $locale;  // match!
         }
-        return 'en';
+        return self::getDefaultLanguage();
     }
 
     /**
@@ -98,6 +121,7 @@ class DatawrapperSession {
         } else {
             return isset($_SESSION['dw-lang']) ? $_SESSION['dw-lang'] : self::getBrowserLocale();
         }
+        return self::getDefaultLanguage();
     }
 
     /**
