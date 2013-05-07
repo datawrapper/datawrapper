@@ -27,6 +27,19 @@ prevent_guest_charts: false
 ## (an admin need to create the account)
 prevent_guest_access: false
 
+## the following links are shown in the footer
+## please link to your own imprint (and not ours)
+footer_links:
+    - title:
+        en: Quick Start
+        de: Schnellstart
+      url: http://docs.datawrapper.de/%lang/quickstart
+    - title:
+        en: Tutorial
+        de: Tutorial
+      url: http://docs.datawrapper.de/%lang/tutorial
+
+
 ## HTTP AUTH (optional)
 ## edit and uncomment if Datawrapper is locked behind HTTP Auth
 # http_auth: username:password
