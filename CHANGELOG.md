@@ -6,6 +6,9 @@ CHANGELOG
 * ignoring data series by clicking table header
 * made MyCharts page searchable
 * allowed preventing guest access
+* customizable home page
+* customizable languages
+* added roles sysadmin and graphic-editor
 
 ### 1.2.9
 * added support for S3 domain alias (e.g. s3.datawrapper.de)

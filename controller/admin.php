@@ -108,7 +108,7 @@ $app->get('/admin/users/?', function() use ($app) {
         add_header_vars($page, 'admin');
         add_adminpage_vars($page, '/admin/users');
         $sort = $app->request()->params('sort', '');
-        function getQuery() {
+        function getQuery($user) {
             global $app;
             $sort = $app->request()->params('sort', '');
             $query = UserQuery::create()
@@ -119,6 +119,9 @@ $app->get('/admin/users/?', function() use ($app) {
             if ($app->request()->params('q')) {
                 $query->filterByEmail('%' . $app->request()->params('q') . '%');
             }
+            if (!$user->isSysAdmin()) {
+                $query->filterByRole('sysadmin', Criteria::NOT_EQUAL);
+            }
             switch ($sort) {
                 case 'email': $query->orderByEmail('asc'); break;
                 case 'charts': $query->orderBy('NbCharts', 'desc'); break;
@@ -126,7 +129,7 @@ $app->get('/admin/users/?', function() use ($app) {
             return $query;
         }
         $curPage = $app->request()->params('page', 0);
-        $total = getQuery()->count();
+        $total = getQuery($user)->count();
         $perPage = 50;
         $append = '';
         if ($page['q']) {
@@ -136,7 +139,7 @@ $app->get('/admin/users/?', function() use ($app) {
             $append .= '&sort='.$sort;
         }
         add_pagination_vars($page, $total, $curPage, $perPage, $append);
-        $page['users'] = getQuery()->limit($perPage)->offset($curPage * $perPage)->find();
+        $page['users'] = getQuery($user)->limit($perPage)->offset($curPage * $perPage)->find();
         $app->render('admin-users.twig', $page);
     } else {
         $app->notFound();

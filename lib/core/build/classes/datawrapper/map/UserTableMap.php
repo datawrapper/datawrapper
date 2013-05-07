@@ -49,6 +49,8 @@ class UserTableMap extends TableMap
   1 => 'editor',
   2 => 'pending',
   3 => 'guest',
+  4 => 'sysadmin',
+  5 => 'graphic-editor',
 ));
 		$this->addColumn('DELETED', 'Deleted', 'BOOLEAN', false, 1, false);
 		$this->addColumn('LANGUAGE', 'Language', 'VARCHAR', false, 5, 'en');

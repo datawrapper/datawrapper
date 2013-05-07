@@ -24,15 +24,28 @@ class User extends BaseUser {
     }
 
     public function isLoggedIn() {
-        return $this->getRole() != 'guest';
+        return $this->getRole() != UserPeer::ROLE_GUEST;
     }
 
     public function isAdmin() {
-        return $this->getRole() == 'admin';
+        return in_array($this->getRole(), array(UserPeer::ROLE_ADMIN, UserPeer::ROLE_SYSADMIN));
+    }
+
+    public function isGraphicEditor() {
+        return $this->getRole() == UserPeer::ROLE_GRAPHIC_EDITOR;
+    }
+
+    public function isSysAdmin() {
+        return $this->getRole() == UserPeer::ROLE_SYSADMIN;
     }
 
     public function isAbleToPublish() {
-        return $this->getRole() == 'editor' || $this->getRole() == 'admin';
+        return in_array($this->getRole(), array(
+            UserPeer::ROLE_EDITOR,
+            UserPeer::ROLE_GRAPHIC_EDITOR,
+            UserPeer::ROLE_ADMIN,
+            UserPeer::ROLE_SYSADMIN
+        ));
     }
 
     public function hasCharts() {

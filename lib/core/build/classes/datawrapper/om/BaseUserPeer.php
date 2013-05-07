@@ -72,6 +72,8 @@ abstract class BaseUserPeer {
 	const ROLE_EDITOR = 'editor';
 	const ROLE_PENDING = 'pending';
 	const ROLE_GUEST = 'guest';
+	const ROLE_SYSADMIN = 'sysadmin';
+	const ROLE_GRAPHIC_EDITOR = 'graphic-editor';
 
 	/** The default string format for model objects of the related table **/
 	const DEFAULT_STRING_FORMAT = 'YAML';
@@ -122,6 +124,8 @@ abstract class BaseUserPeer {
 			UserPeer::ROLE_EDITOR,
 			UserPeer::ROLE_PENDING,
 			UserPeer::ROLE_GUEST,
+			UserPeer::ROLE_SYSADMIN,
+			UserPeer::ROLE_GRAPHIC_EDITOR,
 		),
 	);
 
