@@ -135,7 +135,7 @@
                     last_valid_y; // keep the last non-NaN y for direct label position
 
                 _.each(col.data, function(val, i) {
-                    x = scales.x(i);
+                    x = scales.x(ds.hasRowDates() ? ds.rowDate(i) : i);
                     y = scales.y(val);
 
                     if (isNaN(y)) {
@@ -404,7 +404,24 @@
             y -= me.__root.offset().top;//me.__root.parent().offset().left;
             // var c = me.__c = me.__c || me.__canvas.paper.circle(0,0,10);
             // c.attr({ cx: x || 0, cy: y || 0 });
-            return Math.min(me.dataset.numRows()-1, Math.max(0, Math.round(me.__scales.x.invert(x))));
+            if (me.dataset.hasRowDates()) {
+                var mouse_date = me.__scales.x.invert(x),
+                    min_dist = Number.MAX_VALUE,
+                    closest_row = 0;
+                // find closest date
+                _.each(me.dataset.rowDates(), function(date, i) {
+                    var dist = Math.abs(date.getTime() - mouse_date.getTime());
+                    if (dist < min_dist) {
+                        min_dist = dist;
+                        closest_row = i;
+                    }
+                });
+                return closest_row;
+            }
+            return Math.min(
+                me.dataset.numRows()-1,
+                Math.max(0, Math.round(me.__scales.x.invert(x)))
+            );
         },
 
         getSeriesLineWidth: function(series) {
@@ -432,7 +449,12 @@
         },
 
         xScale: function() {
-            return d3.scale.linear().domain([0, this.dataset.numRows()-1]);
+            var me = this, ds = me.dataset;
+            if (ds.hasRowDates()) {
+                return d3.time.scale().domain([ds.rowDate(0), ds.rowDate(ds.numRows()-1)]);
+            } else {
+                return d3.scale.linear().domain([0, ds.numRows()-1]);
+            }
         },
 
         yScale: function() {
@@ -508,6 +530,9 @@
             }
         },
 
+        /*
+         * draws the x-axis
+         */
         xAxis: function() {
             // draw x scale labels
             if (!this.chart.hasRowHeader()) return;
@@ -517,6 +542,8 @@
                 rotate45 = me.get('rotate-x-labels'),
                 labels = me.chart.rowLabels(),
                 k = labels.length-1;
+
+            if (ds.hasRowDates()) return me.dateAxis();
 
             var last_label_x = -100, min_label_distance = rotate45 ? 30 : 0;
             _.each(me.chart.rowLabels(), function(val, i) {
@@ -559,7 +586,22 @@
                     var p = c.paper.path('M'+x+','+t+' '+x+','+b).attr(me.theme.verticalGrid);
                 });
             }
+        },
 
+        dateAxis: function() {
+            var me = this,
+                c = me.__canvas,
+                scale = me.__scales.x,
+                ticks = scale.ticks(c.w / 60),
+                tickFormat = scale.tickFormat();
+
+
+            _.each(ticks, function(date) {
+                var x = scale(date),
+                    y = c.h - c.bpad + me.theme.lineChart.xLabelOffset,
+                    lbl = tickFormat(date);
+                me.label(x, y, lbl, { align: 'center', cl: 'axis, x-axis'});
+            });
         },
 
         onMouseMove: function(e) {
@@ -582,11 +624,14 @@
                     });
 
             // update x-label
+            var lx = me.__scales.x(me.dataset.hasRowDates() ? me.dataset.rowDate(row) : row),
+                lw = me.labelWidth(me.dataset.rowName(row), 'axis x-axis');
+
             xlabel.text(me.dataset.rowName(row));
             xlabel.attr({
-                x: me.__scales.x(row) - 8,
+                x: lx,
                 y: xLabelTop,
-                w: Math.min(100, c.w / me.chart.numRows())
+                w: lw
             });
 
             var spaghetti = me.chart.dataSeries().length > 9;
@@ -606,7 +651,7 @@
                 lbl.data('row', 0);
                 lbl.text(val);
                 lbl.attr({
-                    x: me.__scales.x(row),
+                    x: lx,
                     y: me.__scales.y(s.data[row]),
                     w: me.labelWidth(val)+10
                 });

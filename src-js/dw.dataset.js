@@ -49,10 +49,10 @@
             // parse data
             var parser = new Datawrapper.Parsers.Delimited(opts),
                 data = parser.parse(raw);
-            me._processData(data);
             me.__data = data;
             me.__loaded = true;
             me.__parser = parser;
+            me._processData(data);
         },
 
         _processData: function(data) {
@@ -90,6 +90,19 @@
                 // store copy of original data in origdata
                 s.origdata = s.data.slice();
             });
+            // check if row names contain dates
+            if (me.hasRowNames()) {
+                var dateParser = new DateParser();
+                me.eachRow(function(i) {
+                    dateParser.learn(me.rowName(i));
+                });
+                if (dateParser.validFormat()) {
+                    me.__rowDates = [];
+                    me.eachRow(function(i) {
+                        me.__rowDates.push(dateParser.parse(me.rowName(i)));
+                    });
+                }
+            }
         },
 
 
@@ -161,6 +174,8 @@
         rowName: function(i) {
             return this.hasRowNames() ? this.__data.rowNames[i] : '';
         },
+
+
 
         rowNameLabel: function() {
             return this.__data.rowNameLabel !== undefined ? this.__data.rowNameLabel : '';
@@ -252,6 +267,18 @@
             me.__data.series = me.__data.series.filter(function(s) {
                 return !ignore[s.name];
             });
+        },
+
+        hasRowDates: function() {
+            return this.__rowDates !== undefined;
+        },
+
+        rowDate: function(i) {
+            return this.__rowDates[i];
+        },
+
+        rowDates: function() {
+            return this.__rowDates.slice(0);
         }
     });
 
@@ -302,7 +329,7 @@
             if (fmt === undefined) {
                 fmt = this.__format = this._getFormat();
             }
-            // clean number
+            // normalize number
             if (fmt[0] == ',' || fmt[0] == '.' || fmt[0] == ' ') {
                 // remove kilo seperator
                 number = number.replace(fmt[0], '');
@@ -315,6 +342,68 @@
             return isNaN(number) ? raw : number;
         }
 
+    });
+
+    var DateParser = function() {
+        var me = this;
+        me.__dates = [];
+        me.__knownFormats = {
+            'year': /^([12][0-9]{3})$/,
+            'quarter': /^([12][0-9]{3}) ?[\-\/Q|]([1234])$/,
+            'month': /^([12][0-9]{3}) ?[-\/\.M](0[1-9]|1[0-2])$/,
+            'date': /^([12][0-9]{3})[-\/](0[1-9]|1[0-2])[-\/]([0-2][0-9]|3[01])$/
+        };
+    };
+
+    _.extend(DateParser.prototype, {
+        // get some input numbers
+        learn: function(date_str) {
+            this.__dates.push(date_str);
+        },
+
+        // test all strings against the known formats
+        _getFormat: function() {
+            var me = this, format = false;
+            _.each(me.__knownFormats, function(regex, fmt) {
+                var valid = true;
+                _.each(me.__dates, function(n) {
+                    if (!regex.test(n)) {
+                        valid = false;
+                        return false;
+                    }
+                });
+                if (valid) {
+                    format = fmt;
+                    return false;
+                }
+            });
+            return format;
+        },
+
+        validFormat: function() {
+            var me = this;
+            me.__format = me._getFormat();
+            return me.__format !== false;
+        },
+
+        parse: function(raw) {
+            var me = this,
+                date = raw,
+                fmt = me.__format = me.__format === undefined ? me._getFormat() : me.__format;
+
+            if (fmt === false) return raw;
+            var regex = me.__knownFormats[fmt],
+                m = raw.match(regex);
+
+            if (!m) return raw;
+            switch (fmt) {
+                case 'year': return new Date(m[1]);
+                case 'quarter': return new Date(m[1], (m[2]-1) * 3);
+                case 'month': return new Date(m[1], (m[2]-1));
+                case 'date': return new Date(m[1], (m[2]-1), m[3]);
+            }
+            return raw;
+        }
     });
 
 }).call(this);
