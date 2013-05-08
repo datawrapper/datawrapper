@@ -210,24 +210,6 @@
                 hl = series && me.chart.hasHighlight() && me.chart.isHighlighted(series);
 
             return me.getSeriesColor(series, row, useNegativeColor);
-
-            /*if (useNegativeColor) {
-                return me.theme.colors[(hl ? 'highlight-' : '') + (series.data[row] < 0 ? 'positive' : 'negative')];
-            }
-            var col = me.theme.colors.palette[row % me.theme.colors.palette.length];
-            if (series === null || me.chart.isHighlighted(series)) return col;
-            var hsl = d3.hsl(col);
-            //lch.c *= 0.15;
-            //lch.l *= 1.15;
-            hsl.s = 0.3;
-            hsl.l *= 1.1;
-            return hsl.toString();
-
-            // // use a different color, if set via setSeriesColor
-            // if (me.__customSeriesColors && me.__customSeriesColors[series.name])
-            //     return me.__customSeriesColors[series.name];
-            // if (!me.chart.hasHighlight()) return me.theme.colors[main];
-            // return me.theme.colors[me.chart.isHighlighted(series) ? highlight : main];*/
         },
 
         initDimensions: function(r) {
