@@ -9,6 +9,7 @@ CHANGELOG
 * customizable home page
 * customizable languages
 * added roles sysadmin and graphic-editor
+* line chart interprets dates in x-axis
 
 ### 1.2.9
 * added support for S3 domain alias (e.g. s3.datawrapper.de)
