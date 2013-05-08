@@ -1,6 +1,6 @@
 {
     "libraries": [
-        "d3js/d3.light.js",
+        "d3js/d3.scale.min.js",
         "chromajs/chroma.min.js",
         "raphaeljs/raphael-2.1.0.min.js"
     ]
