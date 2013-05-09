@@ -148,8 +148,8 @@ $(function() {
             iframe.one('load', updateVisBackground);
             _.each(themes, function(theme) {
                 if (theme.id == chart.get('theme')) {
-                    var w = theme.default_width || 600,
-                        h = theme.default_height || 400;
+                    var w = theme.default_width || chart.get('metadata.publish.embed-width'),
+                        h = theme.default_height || chart.get('metadata.publish.embed-height');
                     updateSize(w, h);
                     return false;
                 }
@@ -235,8 +235,8 @@ $(function() {
         });
         _.each(themes, function(theme) {
             if (theme.id == chart.get('theme')) {
-                var w = theme.default_width || 560,
-                    h = theme.default_height || 400;
+                var w = chart.get('metadata.publish.embed-width', theme.default_width || 560),
+                    h = chart.get('metadata.publish.embed-height', theme.default_height || 400);
                 updateSize(w, h);
                 return false;
             }
@@ -373,11 +373,12 @@ $(function() {
         $('#resize-h').val(dim[1]);
         updateSize();
     });
-    $('.resize-chart input').change(_updateSize);
+    
     var cw = chart.get('metadata.publish.embed-width', $('#iframe-wrapper').width()),
         ch = chart.get('metadata.publish.embed-height', $('#iframe-wrapper').height());
     $('#resize-w').val(cw);
     $('#resize-h').val(ch);
+    $('.resize-chart input').change(_updateSize);
     $('#iframe-wrapper').width(cw);
     $('#iframe-wrapper').height(ch);
 });
