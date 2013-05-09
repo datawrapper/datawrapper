@@ -591,17 +591,39 @@
             var me = this,
                 c = me.__canvas,
                 scale = me.__scales.x,
-                ticks = scale.ticks(c.w / 75),
-                tickFormat = scale.tickFormat();
+                tickCount = Math.round(c.w / 75),
+                ticks = scale.ticks(tickCount),
+                fmt = me.dataset.__dateFormat,
+                tickFormat = scale.tickFormat(tickCount),
+                daysDelta = Math.round((me.dataset.rowDate(-1).getTime() - me.dataset.rowDate(0).getTime()) / 86400000);
+
+            function timeFormat(formats) {
+              return function(date) {
+                var i = formats.length - 1, f = formats[i];
+                while (!f[1](date)) f = formats[--i];
+                return f[0](date);
+              };
+            }
+
+            var customTimeFormat = timeFormat([
+              [d3.time.format("%Y"), function() { return true; }],
+              [d3.time.format(daysDelta > 100 ? "%b" : "%B"), function(d) { return d.getMonth(); }],
+              [d3.time.format("%b %d"), function(d) { return d.getDate() != 1; }],
+              [d3.time.format("%a %d"), function(d) { return d.getDay() && d.getDate() != 1; }],
+              [d3.time.format("%I %p"), function(d) { return d.getHours(); }],
+              [d3.time.format("%I:%M"), function(d) { return d.getMinutes(); }],
+              [d3.time.format(":%S"), function(d) { return d.getSeconds(); }],
+              [d3.time.format(".%L"), function(d) { return d.getMilliseconds(); }]
+            ]);
 
             _.each(ticks, function(date, i) {
                 var x = scale(date),
                     y = c.h - c.bpad + me.theme.lineChart.xLabelOffset,
-                    lbl = tickFormat(date);
+                    lbl = customTimeFormat(date);
                 if (me.dataset.__dateFormat == 'year' && i > 0 && i < ticks.length-1) {
                     lbl = '’'+String(date.getFullYear()).substr(2);
                 }
-                me.label(x, y, lbl, { align: 'center', cl: 'axis, x-axis'});
+                me.label(x, y, lbl, { align: 'center', cl: 'axis x-axis'});
             });
         },
 
