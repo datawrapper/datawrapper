@@ -97,6 +97,7 @@
                     dateParser.learn(me.rowName(i));
                 });
                 if (dateParser.validFormat()) {
+                    me.__dateFormat = dateParser.__format;
                     me.__rowDates = [];
                     me.eachRow(function(i) {
                         me.__rowDates.push(dateParser.parse(me.rowName(i)));
