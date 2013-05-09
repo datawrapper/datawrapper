@@ -48,7 +48,6 @@
                 c.rpad = 0;
             }
 
-
             if (me.lineLabelsVisible() && (directLabeling || legend.pos == 'right')) {
                 c.labelWidth = 0;
                 _.each(me.chart.dataSeries(), function(col) {
@@ -135,7 +134,7 @@
                     last_valid_y; // keep the last non-NaN y for direct label position
 
                 _.each(col.data, function(val, i) {
-                    x = scales.x(ds.hasRowDates() ? ds.rowDate(i) : i);
+                    x = scales.x(me.useDateFormat() ? ds.rowDate(i) : i);
                     y = scales.y(val);
 
                     if (isNaN(y)) {
@@ -404,7 +403,7 @@
             y -= me.__root.offset().top;//me.__root.parent().offset().left;
             // var c = me.__c = me.__c || me.__canvas.paper.circle(0,0,10);
             // c.attr({ cx: x || 0, cy: y || 0 });
-            if (me.dataset.hasRowDates()) {
+            if (me.useDateFormat()) {
                 var mouse_date = me.__scales.x.invert(x),
                     min_dist = Number.MAX_VALUE,
                     closest_row = 0;
@@ -450,7 +449,7 @@
 
         xScale: function() {
             var me = this, ds = me.dataset;
-            if (ds.hasRowDates()) {
+            if (me.useDateFormat()) {
                 return d3.time.scale().domain([ds.rowDate(0), ds.rowDate(ds.numRows()-1)]);
             } else {
                 return d3.scale.linear().domain([0, ds.numRows()-1]);
@@ -543,7 +542,7 @@
                 labels = me.chart.rowLabels(),
                 k = labels.length-1;
 
-            if (ds.hasRowDates()) return me.dateAxis();
+            if (me.useDateFormat()) return me.dateAxis();
 
             var last_label_x = -100, min_label_distance = rotate45 ? 30 : 0;
             _.each(me.chart.rowLabels(), function(val, i) {
@@ -592,14 +591,16 @@
             var me = this,
                 c = me.__canvas,
                 scale = me.__scales.x,
-                ticks = scale.ticks(c.w / 60),
+                ticks = scale.ticks(c.w / 75),
                 tickFormat = scale.tickFormat();
 
-
-            _.each(ticks, function(date) {
+            _.each(ticks, function(date, i) {
                 var x = scale(date),
                     y = c.h - c.bpad + me.theme.lineChart.xLabelOffset,
                     lbl = tickFormat(date);
+                if (me.dataset.__dateFormat == 'year' && i > 0 && i < ticks.length-1) {
+                    lbl = '’'+String(date.getFullYear()).substr(2);
+                }
                 me.label(x, y, lbl, { align: 'center', cl: 'axis, x-axis'});
             });
         },
@@ -624,7 +625,7 @@
                     });
 
             // update x-label
-            var lx = me.__scales.x(me.dataset.hasRowDates() ? me.dataset.rowDate(row) : row),
+            var lx = me.__scales.x(me.useDateFormat() ? me.dataset.rowDate(row) : row),
                 lw = me.labelWidth(me.dataset.rowName(row), 'axis x-axis');
 
             xlabel.text(me.dataset.rowName(row));
@@ -685,7 +686,11 @@
             return;
         },
 
-        hoverSeries: function(series) { }
+        hoverSeries: function(series) { },
+
+        useDateFormat: function() {
+            return this.dataset.hasRowDates();
+        }
 
     });
 
