@@ -173,10 +173,11 @@
         },
 
         rowName: function(i) {
-            return this.hasRowNames() ? this.__data.rowNames[i] : '';
+            var me = this, k;
+            if (!me.hasRowNames()) return '';
+            k = me.__data.rowNames.length;
+            return me.__data.rowNames[(i + k) % k];
         },
-
-
 
         rowNameLabel: function() {
             return this.__data.rowNameLabel !== undefined ? this.__data.rowNameLabel : '';
@@ -275,7 +276,8 @@
         },
 
         rowDate: function(i) {
-            return this.__rowDates[i];
+            var k = this.__rowDates.length;
+            return this.__rowDates[(i + k) % k];
         },
 
         rowDates: function() {
