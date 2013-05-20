@@ -10,8 +10,6 @@
         init: function() {
             this.__seriesElements = {};
             this.__seriesLabels = {};
-
-            $('body').append('<div id="tooltip" class="tooltip"><div class="content"><b><span class="xval"></span></b><br /><span class="yval"></span></div></div>');
         },
 
         update: function(row) {
@@ -178,6 +176,10 @@
             return p;
         },
 
+        /**
+         * Creates a HTML label. This is used extensively by all visualizations
+         * based on raphael-chart. Using HTML instead of SVG has several benefits.
+         */
         label: function(x, y, txt, _attrs) {
 
             var me = this,
@@ -468,6 +470,12 @@
             return ticks;
         },
 
+        /**
+         * checks whether a label needs to be inverted depending
+         * on a given label background color (col) and the theme background.
+         *
+         * returns true if a label needs to be inverted
+         */
         invertLabel: function(col) {
             var c = chroma.color(col),
                 bg = chroma.color(this.theme.colors.background);
@@ -476,9 +484,23 @@
                 c.lab()[0] > 60;
         },
 
+        /**
+         * this function creates the filter controls that appears when
+         * a two-dimensional dataset is displayed in a one-dimensional
+         * chart type (such as a pie chart). Usually this creates
+         * just a couple of buttons to switch the displayed row.
+         *
+         * If there are too many rows or the row names are too long,
+         * a select box is shown instead of the buttons.
+         *
+         * As of 1.3 there is a special case for time series datasets
+         * which is handled by getDateSelector().
+         */
         getFilterUI: function(active, callback) {
             var vis = this,
+                ds = vis.dataset,
                 rowLabels = vis.chart.rowLabels(),
+                lfmt = vis.longDateFormat(),
                 sumChars = 0;
             // remove any existing filter-ui
             $('.filter-ui').remove();
@@ -488,10 +510,17 @@
                 if (callback) callback();
             }
             if (rowLabels.length == 1) return null;
+
+            // special case for long time series
+            if (rowLabels.length > 10 && ds.isTimeSeries()) {
+                return vis.getDateSelector(active, update);
+            }
+
             if (sumChars > 30) {
                 // use <select>
                 var select = $('<select />');
                 _.each(rowLabels, function(lbl, i) {
+                    lbl = ds.isTimeSeries() ? lfmt(ds.rowDate(i)) : lbl;
                     select.append('<option value="'+i+'">'+lbl+'</option>');
                 });
                 select.change(function(evt) {
@@ -501,10 +530,11 @@
                 select.addClass('filter-ui filter-select');
                 return select;
             } else {
-                // use links
+                // use link buttons
                 var div = $('<div />');
                 div.addClass('filter-ui filter-links');
                 _.each(rowLabels, function(lbl, i) {
+                    lbl = ds.isTimeSeries() ? lfmt(ds.rowDate(i)) : lbl;
                     var a = $('<a href="#'+i+'"'+(i == active ? ' class="active" ': '')+'>'+lbl+'</a>').data('row', i);
                     div.append(a);
                 });
@@ -519,6 +549,169 @@
                 return div;
             }
             return null;
+        },
+
+        /**
+         * special case of getFilterUI, shows a time scale instead of select box
+         */
+        getDateSelector: function(active, update) {
+            var vis = this,
+                ds = vis.dataset,
+                w = vis.__w * 0.7,
+                timescale = d3.time.scale()
+                    .domain([ds.rowDate(0), ds.rowDate(ds.numRows()-1)])
+                    .range([0, w]),
+                timesel = $('<div></div>').css({
+                    position:'relative',
+                    height: 45,
+                    'margin-left': 20
+                }).addClass('filter-ui'),
+                nticks = w / 80,
+                ticks = timescale.ticks(nticks),
+                daysDelta = Math.round((ds.rowDate(-1).getTime() - ds.rowDate(0).getTime()) / 86400000),
+                fmt = vis.getDateTickFormat(daysDelta),
+                lfmt = vis.longDateFormat(),
+                dots = timescale.ticks(w / 15);
+
+            // show text labels for bigger tick marks (about every 80 pixel)
+            _.each(ticks, function(d) {
+                var s = $('<span>'+fmt(d)+'</span>');
+                s.css({ position: 'absolute', top:0, width: 80, left: timescale(d) - 40,
+                    'text-align': 'center', opacity: 0.5 });
+                timesel.append(s);
+            });
+
+            // show tiny tick marks every 15 pixel
+            _.each(dots, function(d) {
+                if (d.getTime() < ds.rowDate(0).getTime() || d.getTime() > ds.rowDate(-1).getTime()) return;
+                var s = $('<span class="dot">|</span>');
+                s.css({
+                    position: 'absolute',
+                    top: '2em',
+                    width: 5,
+                    'font-family': 'Arial',
+                    'font-size': 7,
+                    'text-align': 'center',
+                    'vertical-align': 'bottom',
+                    left: Math.round(timescale(d) - 2)+0.5
+                });
+                timesel.append(s);
+            });
+
+            // a pointer symbol to highlight the current date
+            var pointer = $('<div>▲</div>').css({
+                position: 'absolute',
+                width: 20,
+                bottom: 2,
+                left: timescale(ds.rowDate(active))-10,
+                'text-align': 'center'});
+            timesel.append(pointer);
+
+            // a label to show the current date
+            var lbl = $('<div><span></span></div>').css({
+                position: 'absolute',
+                width: 80,
+                top: 0,
+                left: timescale(ds.rowDate(active)) - 40,
+                'text-align': 'center'
+            })
+             .data('last-txt', lfmt(ds.rowDate(active)))
+             .data('last-left', timescale(ds.rowDate(active)) - 40);
+            $('span', lbl).css({
+                background: vis.theme.colors.background,
+                'font-weight': 'bold',
+                'padding': '0 1ex'
+            }).html(lfmt(ds.rowDate(active)));
+            timesel.append(lbl);
+
+            // add hairline as time axis
+            $('<div />').css({
+                position: 'absolute',
+                width: w,
+                bottom: 15,
+                height: 2,
+                'border-bottom': '1px solid #000'
+            }).appendTo(timesel);
+
+            // add an invisible div to catch mouse events
+            var bar = $('<div />').css({
+                position: 'absolute',
+                left: 0,
+                width: w,
+                height: 40
+            });
+            timesel.append(bar);
+
+            /*
+             * this helper function returns the nearest date to an x position
+             */
+            function nearest(rel_x) {
+                var x_date = timescale.invert(rel_x),
+                    min_dist = Number.MAX_VALUE,
+                    nearest_row = 0;
+                // find nearest date
+                _.each(vis.dataset.rowDates(), function(date, i) {
+                    var dist = Math.abs(date.getTime() - x_date.getTime());
+                    if (dist < min_dist) {
+                        min_dist = dist;
+                        nearest_row = i;
+                    }
+                });
+                return nearest_row;
+            }
+
+            // clicking the bar updates the visualization
+            bar.click(function(evt) {
+                // find nearest data row
+                var rel_x = evt.clientX - bar.offset().left,
+                    nearest_row = nearest(rel_x);
+                update(nearest_row);
+                pointer.animate({ left: timescale(ds.rowDate(nearest_row)) - 10 }, 500, 'expoInOut');
+
+                var lbl_x = timescale(ds.rowDate(nearest_row)) - 40,
+                    lbl_txt = lfmt(ds.rowDate(nearest_row));
+
+                $('span', lbl).html(lbl_txt);
+                lbl.css({ left: lbl_x });
+                lbl.data('last-left', lbl_x);
+                lbl.data('last-txt', lbl_txt);
+            });
+
+            // hovering the bar shows nearest date
+            bar.mousemove(function(evt) {
+                var rel_x = evt.clientX - bar.offset().left,
+                    nearest_row = nearest(rel_x);
+                $('span', lbl).html(lfmt(ds.rowDate(nearest_row)));
+                lbl.css({ left: timescale(ds.rowDate(nearest_row)) - 40 });
+                pointer.css({ left: timescale(ds.rowDate(nearest_row)) - 10 });
+            });
+
+            // reset position after mouse has gone
+            bar.mouseleave(function() {
+                lbl.css({ left: lbl.data('last-left') });
+                pointer.css({ left: lbl.data('last-left')+30 });
+                $('span', lbl).html(lbl.data('last-txt'));
+            });
+            return timesel;
+        },
+
+        /**
+         * returns a function for formating a date based on the
+         * input format of the dates in the dataset
+         */
+        longDateFormat: function() {
+            var me = this,
+                ds = me.dataset;
+            return function(d) {
+                if (ds.__dateFormat) {
+                    switch (ds.__dateFormat) {
+                        case 'year': return d.getFullYear();
+                        case 'quarter': return d.getFullYear() + ' Q'+(d.getMonth()/3 + 1);
+                        case 'month': return Globalize.format(d, 'MMM yyyy');
+                        case 'date': return Globalize.format(d, 'd');
+                    }
+                }
+            };
         },
 
         /**
@@ -561,6 +754,34 @@
                 position: 'relative'
             });
             container.append(l);
+        },
+
+        /*
+         * return a custom date tick format function for d3.time.scales
+         */
+        getDateTickFormat: function(daysDelta) {
+            var new_month = true, last_date = false;
+            function timeFormat(formats) {
+              return function(date) {
+                new_month = last_date && date.getMonth() != last_date.getMonth();
+                last_date = date;
+                var i = formats.length - 1, f = formats[i];
+                while (!f[1](date)) f = formats[--i];
+                return f[0](date);
+              };
+            }
+
+            return timeFormat([
+              [d3.time.format("%Y"), function() { return true; }],
+              [d3.time.format(daysDelta > 70 ? "%b" : "%B"), function(d) { return d.getMonth() !== 0; }],  // not January
+              [d3.time.format("%d"), function(d) { return d.getDate() != 1; }],  // not 1st of month
+              [d3.time.format(daysDelta > 70 ? "%b %d" : "%B %d"), function(d) { return d.getDate() != 1 && new_month; }],  // not 1st of month
+              //[d3.time.format("%a %d"), function(d) { return d.getDay() && d.getDate() != 1; }],  // not monday
+              [d3.time.format("%I %p"), function(d) { return d.getHours(); }],
+              [d3.time.format("%I:%M"), function(d) { return d.getMinutes(); }],
+              [d3.time.format(":%S"), function(d) { return d.getSeconds(); }],
+              [d3.time.format(".%L"), function(d) { return d.getMilliseconds(); }]
+            ]);
         }
 
     });
