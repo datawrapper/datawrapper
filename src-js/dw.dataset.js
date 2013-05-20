@@ -82,6 +82,7 @@
                 _.each(s.data, function(number, i) {
                     s.data[i] = numParser.parse(number);
                     if (!isNaN(s.data[i])) {
+                        // this is buggy in IE7
                         s.min = Math.min(s.min, s.data[i]);
                         s.max = Math.max(s.max, s.data[i]);
                         s.total += s.data[i];
