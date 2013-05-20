@@ -271,15 +271,25 @@
             });
         },
 
-        hasRowDates: function() {
+        /**
+         * Returns true if the datasets row labels could
+         * correctly be parsed as date values.
+         */
+        isTimeSeries: function() {
             return this.__rowDates !== undefined;
         },
 
+        /**
+         * Returns a Date object for a given row.
+         */
         rowDate: function(i) {
-            var k = this.__rowDates.length;
-            return this.__rowDates[(i + k) % k];
+            if (i < 0) i += this.__rowDates.length;
+            return this.__rowDates[i];
         },
 
+        /**
+         * Returns (a copy of) the list of all rows Date objects.
+         */
         rowDates: function() {
             return this.__rowDates.slice(0);
         }
