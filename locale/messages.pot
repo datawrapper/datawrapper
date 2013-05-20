@@ -96,7 +96,7 @@ msgid "Please check if the data format was recognized correctly."
 msgstr ""
 
 #: ../scripts/tmpl_cache/chart-describe.twig.php:276
-msgid "You can hide columns by clicking the table header."
+msgid "You can hide columns by clicking the table header. "
 msgstr ""
 
 #: ../scripts/tmpl_cache/chart-describe.twig.php:297
