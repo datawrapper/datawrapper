@@ -7,7 +7,7 @@
 
 
 
-define('DATAWRAPPER_VERSION', '1.2.10-beta');  // must be the same as in package.json
+define('DATAWRAPPER_VERSION', '1.3.0');  // must be the same as in package.json
 
 define('ROOT_PATH', '../');
 

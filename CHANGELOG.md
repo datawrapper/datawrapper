@@ -1,7 +1,7 @@
 CHANGELOG
 ---------
 
-### 1.2.10
+### 1.3.0
 * allowed input of named colors
 * ignoring data series by clicking table header
 * made MyCharts page searchable
