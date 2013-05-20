@@ -3,16 +3,43 @@
 {% block adminpage %}
 
 <div class="docs">
+    <h3>Configured translations</h3>
+
+    <table style="margin-top:20px" class="table table-striped table-bordered table-hover">
+        <thead><tr><th>Language</th><th>Locale</th><th>ID</th>
+            <th>Core translation status</th> <th>Module translation status</th>
+        </tr></thead>
+        <tbody>
+        {% for lang in languages %}
+            <tr>
+                <td>{{ langinfo[lang]['title'] }}</td>
+                <td>{{ langinfo[lang]['id'] }}</td>
+                <td>{{ lang }}</td>
+                <td>
+                    <div class="progress progress-{{ langinfo[lang]['class'] }}" style="margin-bottom:0">
+                        <div class="bar" style="width: {{ langinfo[lang]['status'] }}%;">{{ langinfo[lang]['status'] }}%</div>
+                    </div>
+                </td>
+                <td>
+                    <div class="progress progress-{{ langinfo[lang]['mod-class'] }}" style="margin-bottom:0">
+                        <div class="bar" style="width: {{ langinfo[lang]['mod-status'] }}%;"> {{ langinfo[lang]['mod-status'] }}%</div>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+
     <p>The following table lists all the translations defined by visualization modules. To fix translations, please follow the link to the meta.json file Github and fix them in the repository. Try not to destroy the JSON.</p>
 
     <table style="margin-top:20px" class="table table-striped table-bordered table-hover">
         <thead><tr>
             <th>Visualization</th>
             <th>Key</th>
-            <th>EN</th>
-            <th>DE</th>
-            <th>FR</th>
-            <th>ES</th>
+            {% for lang in languages %}
+            <th>{{ lang | upper }}</th>
+            {% endfor %}
         </tr></thead>
         <tbody>
 
@@ -20,10 +47,9 @@
         <tr>
             <td><a href="https://github.com/datawrapper/datawrapper/blob/master/www/static/visualizations/{{ msg.vis }}/meta.json">{{ msg.vis }}</a></td>
             <td>{{ msg.key }}</td>
-            <td>{{ msg.en | raw }}</td>
-            <td>{{ msg.de | raw }}</td>
-            <td>{{ msg.fr | raw }}</td>
-            <td>{{ msg.es | raw }}</td>
+            {% for lang in languages %}
+            <td>{{ msg[lang] | raw }}</td>
+            {% endfor %}
         </tr>
     {% endfor %}
         </tbody>

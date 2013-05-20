@@ -147,6 +147,44 @@ $app->get('/admin/users/?', function() use ($app) {
 });
 
 
+require_once '../vendor/poparser/poparser.php';
+
+function get_msgid($entry) {
+    if (is_array($entry['msgid'])) return implode(' ', $entry['msgid']);
+    return $entry['msgid'];
+}
+
+function get_translation_status($locale) {
+    $po_file = '../locale/' . str_replace('-', '_', $locale) . '/LC_MESSAGES/messages.po';
+    if (!file_exists($po_file)) return substr($locale, 0, 2) == 'en' ? 100 : 0;
+    $poparser = new PO_Parser();
+    $master = $poparser->read( '../locale/messages.pot');
+    $entries = $poparser->read($po_file);
+    $total = 0;
+    $translated = 0;
+    $outdated = 0;
+    $missing = 0;
+    $messages = array();
+
+    foreach ($master as $entry) {
+        $total += 1;
+        $msgid = get_msgid($entry);
+        $messages[$msgid] = false;
+    }
+    foreach ($entries as $entry) {
+        $id = get_msgid($entry);
+        if (!isset($messages[$id])) $outdated += 1;
+        else {
+            $msgstr = is_string($entry['msgstr']) ? $entry['msgstr'] : implode('', $entry['msgstr']);
+            if (!empty($msgstr)) {
+                $messages[$id] = true;
+                $translated += 1;
+            }
+        }
+    }
+    return round(100 * $translated / $total);
+}
+
 
 $app->get('/admin/translations', function() use ($app) {
     $user = DatawrapperSession::getUser();
@@ -154,35 +192,60 @@ $app->get('/admin/translations', function() use ($app) {
         // get untranslated strings from all the meta.jsons
         $missing = array();
         $messages = array();
-        function msg($vis, $key, $o, $fallback = false) {
-            $languages = array('de', 'fr', 'en', 'es');
+        $languages = array();
+        $langinfo = array();
+        foreach ($GLOBALS['dw_config']['languages'] as $l) {
+            $lang = substr($l['id'], 0, 2);
+            $languages[] = $lang;
+            $langinfo[$lang] = $l;
+            $langinfo[$lang]['status'] = $s = get_translation_status($l['id']);
+            $langinfo[$lang]['class'] = $s > 95 ? 'success' : ($s > 40 ? 'warning' : 'danger');
+        }
+
+        $msg = function($vis, $key, $o, $fallback = false) use ($languages) {
             $msg = array('vis' => $vis, 'key' => $key);
             foreach ($languages as $lang) {
                 if (isset($o[$lang])) $msg[$lang] = $o[$lang];
                 else if ($lang == "en" && $fallback) $msg[$lang] = $fallback;
-                else $msg[$lang] = '<span class="label label-warning">missing</span>';
+                else $msg[$lang] = '<a href="/static/visualizations/'.$vis.'/meta.json"><span class="label label-warning">missing</span></a>';
             }
             return $msg;
-        }
+        };
         $vis_path = ROOT_PATH . 'www/static/visualizations';
         $visMetaFiles = glob($vis_path . '/*/meta.json');
         foreach ($visMetaFiles as $file) {
             $meta = json_decode(file_get_contents($file), true);
             if (!isset($meta['title'])) continue;
             $vis = substr($file, strlen($vis_path)+1, -10);
-            $messages[] = msg($vis, 'title', $meta['title']);
+            $messages[] = $msg($vis, 'title', $meta['title']);
             foreach ($meta['options'] as $key => $opt) {
                 if (isset($opt['label'])) {
-                    $messages[] = msg($vis, $key, $opt['label']);
+                    $messages[] = $msg($vis, $key, $opt['label']);
                 }
             }
             if (isset($meta['locale'])) {
                 foreach ($meta['locale'] as $key => $loc) {
-                    $messages[] = msg($vis, $key, $loc, $key);
+                    $messages[] = $msg($vis, $key, $loc, $key);
                 }
             }
         }
-        $page = array('title' => 'Translations', 'messages' => $messages);
+        foreach ($languages as $lang) {
+            $mod_total = 0;
+            $mod_translated = 0;
+            foreach ($messages as $msg) {
+                $mod_total += 1;
+                if (substr($msg[$lang], 0, 2) != '<a') $mod_translated += 1;
+            }
+            $langinfo[$lang]['mod-status'] = $s = round(100 * $mod_translated / $mod_total);
+            $langinfo[$lang]['mod-class'] = $s > 95 ? 'success' : ($s > 40 ? 'warning' : 'danger');
+            # code...
+        }
+        $page = array(
+            'title' => 'Translations',
+            'messages' => $messages,
+            'languages' => $languages,
+            'langinfo' => $langinfo
+        );
         add_header_vars($page, 'admin');
         add_adminpage_vars($page, '/admin/translations');
         $app->render('admin-translations.twig', $page);
