@@ -201,7 +201,7 @@
                     }
                 });
             });
-            me.__gridLines['0'].toFront();
+            if (me.__gridLines['0']) me.__gridLines['0'].toFront();
         },
 
         getBarColor: function(series, row, useNegativeColor, colorful) {
