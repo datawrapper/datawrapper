@@ -557,44 +557,51 @@
         getDateSelector: function(active, update) {
             var vis = this,
                 ds = vis.dataset,
-                w = vis.__w * 0.7,
+                w = Math.min(vis.__w, Math.max(300, vis.__w * 0.7)),
                 timescale = d3.time.scale()
                     .domain([ds.rowDate(0), ds.rowDate(ds.numRows()-1)])
                     .range([0, w]),
                 timesel = $('<div></div>').css({
                     position:'relative',
                     height: 45,
-                    'margin-left': 20
+                    'margin-left': 3
                 }).addClass('filter-ui'),
                 nticks = w / 80,
                 ticks = timescale.ticks(nticks),
                 daysDelta = Math.round((ds.rowDate(-1).getTime() - ds.rowDate(0).getTime()) / 86400000),
                 fmt = vis.getDateTickFormat(daysDelta),
                 lfmt = vis.longDateFormat(),
-                dots = timescale.ticks(w / 15);
+                dots = timescale.ticks(w / 6),
+                lbl_x = function(i) { return Math.max(-18, timescale(ds.rowDate(i)) - 40); };
+
 
             // show text labels for bigger tick marks (about every 80 pixel)
             _.each(ticks, function(d) {
-                var s = $('<span>'+fmt(d)+'</span>');
-                s.css({ position: 'absolute', top:0, width: 80, left: timescale(d) - 40,
-                    'text-align': 'center', opacity: 0.5 });
+                var s = $('<span>'+fmt(d)+'</span>'),
+                    x = timescale(d) - 40,
+                    lw = vis.labelWidth(fmt(d));
+                if (40 - lw*0.5 + x < 0) x = -40 +0.5 * lw;
+                s.css({ position: 'absolute', top:0, width: 80, left: x,
+                    'text-align': 'center', opacity: 0.55 });
                 timesel.append(s);
             });
 
             // show tiny tick marks every 15 pixel
             _.each(dots, function(d) {
                 if (d.getTime() < ds.rowDate(0).getTime() || d.getTime() > ds.rowDate(-1).getTime()) return;
-                var s = $('<span class="dot">|</span>');
+                var s = $('<span class="dot"></span>');
                 s.css({
                     position: 'absolute',
-                    top: '2em',
-                    width: 5,
-                    'font-family': 'Arial',
-                    'font-size': 7,
-                    'text-align': 'center',
+                    bottom: 19,
+                    width: 1,
+                    height: '1ex',
+                    'border-left': '1px solid #000',
                     'vertical-align': 'bottom',
-                    left: Math.round(timescale(d) - 2)+0.5
+                    left: Math.round(timescale(d))+0.5
                 });
+                if (!_.find(ticks, function(td) { return d.getTime() == td.getTime(); })) {
+                    s.css({ height: '0.6ex', opacity: 0.5 });
+                }
                 timesel.append(s);
             });
 
@@ -603,7 +610,7 @@
                 position: 'absolute',
                 width: 20,
                 bottom: 2,
-                left: timescale(ds.rowDate(active))-10,
+                left: timescale(ds.rowDate(active))-9,
                 'text-align': 'center'});
             timesel.append(pointer);
 
@@ -612,11 +619,11 @@
                 position: 'absolute',
                 width: 80,
                 top: 0,
-                left: timescale(ds.rowDate(active)) - 40,
+                left: lbl_x(active),
                 'text-align': 'center'
             })
              .data('last-txt', lfmt(ds.rowDate(active)))
-             .data('last-left', timescale(ds.rowDate(active)) - 40);
+             .data('last-left', lbl_x(active));
             $('span', lbl).css({
                 background: vis.theme.colors.background,
                 'font-weight': 'bold',
@@ -627,7 +634,7 @@
             // add hairline as time axis
             $('<div />').css({
                 position: 'absolute',
-                width: w,
+                width: w+1,
                 bottom: 15,
                 height: 2,
                 'border-bottom': '1px solid #000'
@@ -668,12 +675,12 @@
                 update(nearest_row);
                 pointer.animate({ left: timescale(ds.rowDate(nearest_row)) - 10 }, 500, 'expoInOut');
 
-                var lbl_x = timescale(ds.rowDate(nearest_row)) - 40,
+                var l_x = lbl_x(nearest_row),
                     lbl_txt = lfmt(ds.rowDate(nearest_row));
 
                 $('span', lbl).html(lbl_txt);
-                lbl.css({ left: lbl_x });
-                lbl.data('last-left', lbl_x);
+                lbl.css({ left: l_x });
+                lbl.data('last-left', l_x);
                 lbl.data('last-txt', lbl_txt);
             });
 
@@ -682,7 +689,7 @@
                 var rel_x = evt.clientX - bar.offset().left,
                     nearest_row = nearest(rel_x);
                 $('span', lbl).html(lfmt(ds.rowDate(nearest_row)));
-                lbl.css({ left: timescale(ds.rowDate(nearest_row)) - 40 });
+                lbl.css({ left: lbl_x(nearest_row) });
                 pointer.css({ left: timescale(ds.rowDate(nearest_row)) - 10 });
             });
 
