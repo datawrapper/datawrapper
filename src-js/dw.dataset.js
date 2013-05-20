@@ -400,9 +400,9 @@
 
             if (!m) return raw;
             switch (fmt) {
-                case 'year': return new Date(m[1]);
-                case 'quarter': return new Date(m[1], (m[2]-1) * 3);
-                case 'month': return new Date(m[1], (m[2]-1));
+                case 'year': return new Date(m[1], 0, 1);
+                case 'quarter': return new Date(m[1], (m[2]-1) * 3, 1);
+                case 'month': return new Date(m[1], (m[2]-1), 1);
                 case 'date': return new Date(m[1], (m[2]-1), m[3]);
             }
             return raw;
