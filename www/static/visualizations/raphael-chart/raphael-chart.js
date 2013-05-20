@@ -514,16 +514,18 @@
             $('.chart').off('keyup').on('keyup', function(e) {
                 var i;
                 if (e.keyCode == 39) {
-                    i = (vis.__lastActiveRow+1) % ds.rowNames().length;
+                    console.log(vis.__lastActiveRow);
+                    i = Number(vis.__lastActiveRow)+1;
+                    if (i >= ds.rowNames().length) i = 0;
                 } else if (e.keyCode == 37) {
                     i = (vis.__lastActiveRow-1);
                     if (i < 0) i += ds.rowNames().length;
                 }
                 if (i != vis.__lastActiveRow) {
-                    update(i);
                     if ($('.filter-ui').data('update-func')) {
                         $('.filter-ui').data('update-func')(i);
                     }
+                    update(i);
                 }
             });
 
@@ -531,8 +533,8 @@
             _.each(rowLabels, function(t) { sumChars += t ? t.length : 0; });
             function update(cur) {
                 vis.update(cur);
-                vis.__lastActiveRow = cur;
                 if (callback) callback();
+                vis.__lastActiveRow = cur;
             }
 
             // special case for long time series
@@ -595,7 +597,7 @@
                 daysDelta = Math.round((ds.rowDate(-1).getTime() - ds.rowDate(0).getTime()) / 86400000),
                 fmt = vis.getDateTickFormat(daysDelta),
                 lfmt = vis.longDateFormat(),
-                dots = timescale.ticks(w / 6),
+                dots = timescale.ticks(w / 8),
                 lbl_x = function(i) { return Math.max(-18, timescale(ds.rowDate(i)) - 40); };
 
             // show text labels for bigger tick marks (about every 80 pixel)
