@@ -187,7 +187,7 @@ msgstr "Retour"
 
 #: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:280
 msgid "Publishing chart..."
-msgstr "Publications du graphique..."
+msgstr "Publication du graphique..."
 
 #: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:285
 msgid ""
@@ -251,7 +251,7 @@ msgstr "Plein écran"
 #: ../scripts/tmpl_cache/chart-menu.twig.php:81
 #: ../scripts/tmpl_cache/themes__default.twig.php:101
 msgid "Get the data"
-msgstr "Récupérer les données"
+msgstr "Récupérez les données"
 
 #: ../scripts/tmpl_cache/chart-menu.twig.php:83
 msgid "Data"
@@ -271,7 +271,7 @@ msgstr "Lien vers cette visualisation"
 
 #: ../scripts/tmpl_cache/chart-publish.twig.php:220
 msgid "Embed into your website"
-msgstr "Intégrer dans votre site web"
+msgstr "Intégrez dans votre site web"
 
 #: ../scripts/tmpl_cache/chart-publish.twig.php:224
 msgid "Just copy &amp; paste the following code into your website."
@@ -292,7 +292,7 @@ msgstr ""
 #: ../scripts/tmpl_cache/chart-publish.twig.php:263
 #: ../scripts/tmpl_cache/chart-publish.twig.php:568
 msgid "Export to static image for printing"
-msgstr ""
+msgstr "Exportez vers une image statique pour impression"
 
 #: ../scripts/tmpl_cache/chart-publish.twig.php:275
 msgid "Duplicate this chart"
@@ -329,8 +329,8 @@ msgid ""
 "free and all you need is a valid email address. The chart you just created "
 "will be transfered to your new account."
 msgstr ""
-"Maintenant, pour pouvoir intégrer le graph, nous vous demandons de créer un "
-"compte. C'est gratuit et ne nécessite qu'une adresse e-mail valide. Le graph "
+"Maintenant, pour pouvoir intégrer le graphique, nous vous demandons de créer un "
+"compte. C'est gratuit et ne nécessite qu'une adresse e-mail valide. Le graphique "
 "que vous venez de créer sera transféré à votre nouveau compte."
 
 #: ../scripts/tmpl_cache/chart-publish.twig.php:314
@@ -398,19 +398,19 @@ msgid ""
 "visible, please re-publish the chart."
 msgstr ""
 "Vous avez modifié le graphique depuis sa dernière publication. Pour rendre "
-"vos changments publics republiez le graphique."
+"vos changements publics republiez le graphique."
 
 #: ../scripts/tmpl_cache/chart-publish.twig.php:423
 msgid "Re-publish chart!"
-msgstr "Re-publier le graphique!"
+msgstr "Re-publiez le graphique!"
 
 #: ../scripts/tmpl_cache/chart-publish.twig.php:431
 msgid "Congrats, you made it! The chart has been published."
-msgstr "Félicitiations! Vous l'avez fait! Le graphique vient d'être publier."
+msgstr "Félicitiations! Vous l'avez fait! Le graphique vient d'être publié."
 
 #: ../scripts/tmpl_cache/chart-publish.twig.php:480
 msgid "Create another graphic"
-msgstr "Créer un autre graph"
+msgstr "Créez un autre graph"
 
 #: ../scripts/tmpl_cache/chart-publish.twig.php:485
 msgid "Return to visualise step"
