@@ -18,8 +18,8 @@
 
             row = 0;
             if (!_.isUndefined(me.get('selected-row'))) {
-                row = me.get('selected-row');
-                if (row > me.chart.numRows() || row === undefined) row = 0;
+                row = me.get('selected-row', 0);
+                if (row > me.chart.numRows()) row = 0;
             }
 
             filterUI = me.getFilterUI(row);
