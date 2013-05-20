@@ -11,6 +11,8 @@ CHANGELOG
 * added roles sysadmin and graphic-editor
 * line chart interprets time series data
 * bugfix: chart editor overrides preferred embed size in visualize step
+* showing translation status in admin pages
+* special date selector for time series shown in 1d charts
 
 ### 1.2.9
 * added support for S3 domain alias (e.g. s3.datawrapper.de)
