@@ -502,14 +502,38 @@
                 rowLabels = vis.chart.rowLabels(),
                 lfmt = vis.longDateFormat(),
                 sumChars = 0;
+
+            // cancel if we got only one row
+            if (rowLabels.length == 1) return null;
+
+            vis.__lastActiveRow = active;
             // remove any existing filter-ui
             $('.filter-ui').remove();
+
+            // allow changing of filter using left/right keys
+            $('.chart').off('keyup').on('keyup', function(e) {
+                var i;
+                if (e.keyCode == 39) {
+                    i = (vis.__lastActiveRow+1) % ds.rowNames().length;
+                } else if (e.keyCode == 37) {
+                    i = (vis.__lastActiveRow-1);
+                    if (i < 0) i += ds.rowNames().length;
+                }
+                if (i != vis.__lastActiveRow) {
+                    update(i);
+                    if ($('.filter-ui').data('update-func')) {
+                        $('.filter-ui').data('update-func')(i);
+                    }
+                }
+            });
+
+            // count total characters of row labels
             _.each(rowLabels, function(t) { sumChars += t ? t.length : 0; });
             function update(cur) {
                 vis.update(cur);
+                vis.__lastActiveRow = cur;
                 if (callback) callback();
             }
-            if (rowLabels.length == 1) return null;
 
             // special case for long time series
             if (rowLabels.length > 10 && ds.isTimeSeries()) {
@@ -573,7 +597,6 @@
                 lfmt = vis.longDateFormat(),
                 dots = timescale.ticks(w / 6),
                 lbl_x = function(i) { return Math.max(-18, timescale(ds.rowDate(i)) - 40); };
-
 
             // show text labels for bigger tick marks (about every 80 pixel)
             _.each(ticks, function(d) {
@@ -673,15 +696,7 @@
                 var rel_x = evt.clientX - bar.offset().left,
                     nearest_row = nearest(rel_x);
                 update(nearest_row);
-                pointer.animate({ left: timescale(ds.rowDate(nearest_row)) - 10 }, 500, 'expoInOut');
-
-                var l_x = lbl_x(nearest_row),
-                    lbl_txt = lfmt(ds.rowDate(nearest_row));
-
-                $('span', lbl).html(lbl_txt);
-                lbl.css({ left: l_x });
-                lbl.data('last-left', l_x);
-                lbl.data('last-txt', lbl_txt);
+                timesel.data('update-func')(nearest_row);
             });
 
             // hovering the bar shows nearest date
@@ -698,6 +713,18 @@
                 lbl.css({ left: lbl.data('last-left') });
                 pointer.css({ left: lbl.data('last-left')+30 });
                 $('span', lbl).html(lbl.data('last-txt'));
+            });
+
+            timesel.data('update-func', function(i) {
+                pointer.stop().animate({ left: timescale(ds.rowDate(i)) - 10 }, 500, 'expoInOut');
+
+                var l_x = lbl_x(i),
+                    lbl_txt = lfmt(ds.rowDate(i));
+
+                $('span', lbl).html(lbl_txt);
+                lbl.css({ left: l_x });
+                lbl.data('last-left', l_x);
+                lbl.data('last-txt', lbl_txt);
             });
             return timesel;
         },
