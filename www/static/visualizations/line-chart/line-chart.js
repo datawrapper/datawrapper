@@ -595,31 +595,11 @@
                 tickCount = Math.round(c.w / 75),
                 ticks = scale.ticks(tickCount),
                 fmt = me.dataset.__dateFormat,
-                tickFormat = scale.tickFormat(tickCount),
+                daysDelta = Math.round((ds.rowDate(-1).getTime() - ds.rowDate(0).getTime()) / 86400000),
+                tickFormat = me.getDateTickFormat(daysDelta),
                 last_month = -1, new_month,
                 last_year = -1, new_year,
-                new_decade, new_quarter,
-                daysDelta = Math.round((ds.rowDate(-1).getTime() - ds.rowDate(0).getTime()) / 86400000);
-
-            function timeFormat(formats) {
-              return function(date) {
-                var i = formats.length - 1, f = formats[i];
-                while (!f[1](date)) f = formats[--i];
-                return f[0](date);
-              };
-            }
-
-            var customTimeFormat = timeFormat([
-              [d3.time.format("%Y"), function() { return true; }],
-              [d3.time.format(daysDelta > 70 ? "%b" : "%B"), function(d) { return d.getMonth() !== 0; }],  // not January
-              [d3.time.format("%d"), function(d) { return d.getDate() != 1; }],  // not 1st of month
-              [d3.time.format(daysDelta > 70 ? "%b %d" : "%B %d"), function(d) { return d.getDate() != 1 && new_month; }],  // not 1st of month
-              //[d3.time.format("%a %d"), function(d) { return d.getDay() && d.getDate() != 1; }],  // not monday
-              [d3.time.format("%I %p"), function(d) { return d.getHours(); }],
-              [d3.time.format("%I:%M"), function(d) { return d.getMinutes(); }],
-              [d3.time.format(":%S"), function(d) { return d.getSeconds(); }],
-              [d3.time.format(".%L"), function(d) { return d.getMilliseconds(); }]
-            ]);
+                new_decade, new_quarter;
 
             _.each(ticks, function(date, i) {
                 new_month = date.getMonth() != last_month;
@@ -628,7 +608,7 @@
                 new_decade = new_year && date.getFullYear() % 10 === 0;
                 var x = scale(date),
                     y = c.h - c.bpad + me.theme.lineChart.xLabelOffset,
-                    lbl = customTimeFormat(date);
+                    lbl = tickFormat(date);
                 if (ds.__dateFormat == 'year' && i > 0 && i < ticks.length-1) {
                     lbl = '’'+String(date.getFullYear()).substr(2);
                 }
@@ -670,9 +650,10 @@
 
             // update x-label
             var lx = me.__scales.x(me.useDateFormat() ? me.dataset.rowDate(row) : row),
-                lw = me.labelWidth(me.dataset.rowName(row), 'axis x-axis');
+                lw = me.labelWidth(me.dataset.rowName(row), 'axis x-axis'),
+                lfmt = me.longDateFormat();
 
-            xlabel.text(me.dataset.rowName(row));
+            xlabel.text(me.useDateFormat() ? lfmt(me.dataset.rowDate(row)) : me.dataset.rowName(row));
             xlabel.attr({
                 x: lx,
                 y: xLabelTop,
@@ -733,7 +714,7 @@
         hoverSeries: function(series) { },
 
         useDateFormat: function() {
-            return this.dataset.hasRowDates();
+            return this.dataset.isTimeSeries();
         }
 
     });
