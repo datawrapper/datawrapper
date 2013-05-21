@@ -97,6 +97,22 @@
                 });
                 $('#header').append(chkNormalize);
             }
+        },
+
+        checkData: function() {
+            var me = this, ds = me.dataset, allPositive = true;
+            ds.eachSeries(function(s) {
+                ds.eachRow(function(r) {
+                    if (s.data[r] < 0) {
+                        allPositive = false;
+                        return false;
+                    }
+                });
+                if (!allPositive) return false;
+            });
+            if (!allPositive) {
+                me.warn('<b>Warning:</b> Stacked column charts cannot display negative values!');
+            }
         }
 
     });

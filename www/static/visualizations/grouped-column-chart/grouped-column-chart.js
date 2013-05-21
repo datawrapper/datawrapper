@@ -18,14 +18,16 @@
             this.setRoot(el);
 
             var me = this,
-            c = me.initCanvas({}),
-            dataset = me.chart.__dataset,
-            chart_width = c.w - c.lpad - c.rpad,
-            series_gap = 0.05, // pull from theme
-            row_gap = 0.01;
+                c = me.initCanvas({}),
+                dataset = me.chart.__dataset,
+                chart_width = c.w - c.lpad - c.rpad,
+                series_gap = 0.05, // pull from theme
+                row_gap = 0.01;
             if (!_.isUndefined(me.get('selected-row'))) {
                 row = me.get('selected-row');
             }
+
+            me.checkData();
 
             me._color_opts = {};
 
@@ -305,6 +307,10 @@
 
         post_render: function() {
 
+        },
+
+        checkData: function() {
+            return true;
         }
     });
 
