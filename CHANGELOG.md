@@ -14,6 +14,8 @@ CHANGELOG
 * showing translation status in admin pages
 * special date selector for time series shown in 1d charts
 * mycharts: allowed filtering charts by publish status
+* show warning if negative values are displayed in stacked bar charts
+* show values on hover in grouped/stacked bar charts
 
 ### 1.2.9
 * added support for S3 domain alias (e.g. s3.datawrapper.de)
