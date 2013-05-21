@@ -73,6 +73,7 @@
                 'text-shadow': '0 1px 0 rgba(255, 255, 255, 0.5)',
                 'left': '10%',
                 'right': '10%',
+                'z-index': 1000,
                 'text-align': 'center',
                 position: 'absolute'
             });
