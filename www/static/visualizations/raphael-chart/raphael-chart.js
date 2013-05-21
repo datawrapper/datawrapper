@@ -692,6 +692,8 @@
                 return nearest_row;
             }
 
+            var autoClickTimer;
+
             // clicking the bar updates the visualization
             bar.click(function(evt) {
                 // find nearest data row
@@ -699,6 +701,7 @@
                     nearest_row = nearest(rel_x);
                 update(nearest_row);
                 timesel.data('update-func')(nearest_row);
+                clearTimeout(autoClickTimer);
             });
 
             // hovering the bar shows nearest date
@@ -708,6 +711,12 @@
                 $('span', lbl).html(lfmt(ds.rowDate(nearest_row)));
                 lbl.css({ left: lbl_x(nearest_row) });
                 pointer.css({ left: timescale(ds.rowDate(nearest_row)) - 10 });
+                clearTimeout(autoClickTimer);
+                autoClickTimer = setTimeout(function() {
+                    update(nearest_row);
+                    lbl.data('last-left', lbl_x(nearest_row));
+                    lbl.data('last-txt', lbl.text());
+                }, 500);
             });
 
             // reset position after mouse has gone
@@ -715,6 +724,7 @@
                 lbl.css({ left: lbl.data('last-left') });
                 pointer.css({ left: lbl.data('last-left')+30 });
                 $('span', lbl).html(lbl.data('last-txt'));
+                clearTimeout(autoClickTimer);
             });
 
             timesel.data('update-func', function(i) {
