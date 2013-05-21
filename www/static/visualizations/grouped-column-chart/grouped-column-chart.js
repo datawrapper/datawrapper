@@ -104,6 +104,10 @@
                         };
 
                     me.__bars[key] = me.__bars[key] || me.registerSeriesElement(c.paper.rect().attr(bar_attrs), series, r);
+                    if (me.theme.columnChart.barAttrs) {
+                        me.__bars[key].attr(me.theme.columnChart.barAttrs);
+                    }
+
                     me.__bars[key].animate(bar_attrs, me.theme.duration, me.theme.easing).data('strokeCol', stroke);
 
                     var val_y = val >= 0 ? d.y - 10 : d.y + d.h + 10,

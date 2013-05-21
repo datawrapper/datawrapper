@@ -75,12 +75,16 @@
                 _.each(series.data, function(val, r) {
                     var d = me.barDimensions(series, s, r);
                     var fill = me.getBarColor(series, r, me.get('negative-color', false)),
-                        stroke = chroma.color(fill).darken(14).hex();
+                        stroke = chroma.color(fill).darken(14).hex(),
                     // create bar
-                    me.registerSeriesElement(c.paper.rect().attr(d).attr({
+                    bar = me.registerSeriesElement(c.paper.rect().attr(d).attr({
                         'stroke': stroke,
                         'fill': fill
                     }).data('strokeCol', stroke), series, r);
+
+                    if (me.theme.columnChart.barAttrs) {
+                        bar.attr(me.theme.columnChart.barAttrs);
+                    }
 
                     var val_y = val > 0 ? d.y - 10 : d.y + d.height + 10,
                         lbl_y = val <= 0 ? d.y - 10 : d.y + d.height + 5,

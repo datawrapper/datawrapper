@@ -56,14 +56,21 @@
         columnChart: {
             // if set to true, the horizontal grid lines are cut
             // so that they don't overlap with the grid label.
-            cutGridLines: false
+            cutGridLines: false,
+            // you can customize bar attributes
+            barAttrs: {
+                'stroke-width': 1
+            }
         },
 
         /*
          * custom properties for bar charts
          */
         barChart: {
-
+            // you can customize bar attributes
+            barAttrs: {
+                'stroke-width': 1
+            }
         },
 
         /*

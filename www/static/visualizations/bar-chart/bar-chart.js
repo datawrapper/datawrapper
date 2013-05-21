@@ -59,10 +59,13 @@
                     if (labelsInsideBars) d.x -= 10;
 
                     // draw bar
-                    me.registerSeriesElement(c.paper.rect(d.x, d.y, d.width, d.height).attr({
+                    var bar = me.registerSeriesElement(c.paper.rect(d.x, d.y, d.width, d.height).attr({
                         'stroke': stroke,
                         'fill': fill
                     }).data('strokeCol', stroke), series);
+                    if (me.theme.barChart.barAttrs) {
+                        bar.attr(me.theme.barChart.barAttrs);
+                    }
 
                     if (lpos.show_val) {
                         me.registerSeriesLabel(me.label(lpos.val_x, lpos.top, me.chart.formatValue(series.data[r], true),{
