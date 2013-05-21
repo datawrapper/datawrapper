@@ -583,7 +583,7 @@
         getDateSelector: function(active, update) {
             var vis = this,
                 ds = vis.dataset,
-                w = Math.min(vis.__w, Math.max(300, vis.__w * 0.7)),
+                w = Math.min(vis.__w-30, Math.max(300, vis.__w * 0.7)),
                 timescale = d3.time.scale()
                     .domain([ds.rowDate(0), ds.rowDate(ds.numRows()-1)])
                     .range([0, w]),
