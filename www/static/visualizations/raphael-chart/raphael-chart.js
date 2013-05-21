@@ -743,7 +743,7 @@
                     switch (ds.__dateFormat) {
                         case 'year': return d.getFullYear();
                         case 'quarter': return d.getFullYear() + ' Q'+(d.getMonth()/3 + 1);
-                        case 'month': return Globalize.format(d, 'MMM yyyy');
+                        case 'month': return Globalize.format(d, 'MMM yy');
                         case 'date': return Globalize.format(d, 'd');
                     }
                 }
