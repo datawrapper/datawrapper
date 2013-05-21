@@ -13,6 +13,7 @@ CHANGELOG
 * bugfix: chart editor overrides preferred embed size in visualize step
 * showing translation status in admin pages
 * special date selector for time series shown in 1d charts
+* mycharts: allowed filtering charts by publish status
 
 ### 1.2.9
 * added support for S3 domain alias (e.g. s3.datawrapper.de)

@@ -44,6 +44,15 @@ function nbChartsByLayout($user) {
     return $res;
 }
 
+function nbChartsByStatus($user) {
+    $published = ChartQuery::create()->filterByUser($user)->filterByDeleted(false)->filterByLastEditStep(array('min'=>4))->count();
+    $draft = ChartQuery::create()->filterByUser($user)->filterByDeleted(false)->filterByLastEditStep(array('max'=>3))->count();
+    return array(
+        array('id'=>'published', 'name' => _('Published'), 'count' => $published),
+        array('id'=>'draft', 'name' => _('Draft'), 'count' => $draft)
+    );
+}
+
 
 /*
  * shows MyChart page for a given user, which is typically the
@@ -64,6 +73,7 @@ function user_charts($app, $user, $key, $val) {
         'bymonth' => nbChartsByMonth($user),
         'byvis' => nbChartsByType($user),
         'bylayout' => nbChartsByLayout($user),
+        'bystatus' => nbChartsByStatus($user),
         'key' => $key,
         'val' => $val,
         'search_query' => empty($q) ? '' : $q,

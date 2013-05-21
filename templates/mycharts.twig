@@ -17,6 +17,11 @@
     </h1>
 </div>
 <div class="row">
+    <style type="text/css">
+.by-month li + li + li + li + li + li {
+    display: none;
+}
+    </style>
     <div class="span3 gallery-filter" >
 
         <form method="get" action="">
@@ -25,7 +30,7 @@
 
         <h3>{% trans "By Month" %}</h3>
 
-        <ul class="unstyled">
+        <ul class="unstyled by-month">
             {% for month in bymonth %}
             {% if key == 'month' and val == month.id %}
             <li class="active"><a href="{{ mycharts_base }}/"><i class="icon-check"></i> {{ month.name }} </a> ({{ month.count }}) </li>
@@ -55,6 +60,18 @@
             <li class="active"><a href="{{ mycharts_base }}/"><i class="icon-check"></i> {{ layout.name }} </a> ({{ layout.count }}) </li>
             {% else %}
             <li><a href="{{ mycharts_base }}/by/layout/{{ layout.id }}">{{ layout.name }}</a> ({{ layout.count }})</li>
+            {% endif %}
+
+            {% endfor %}
+        </ul>
+
+        <h3>{% trans "By Status" %}</h3>
+        <ul class="unstyled">
+            {% for status in bystatus %}
+            {% if key == 'status' and val == status.id %}
+            <li class="active"><a href="{{ mycharts_base }}/"><i class="icon-check"></i> {{ status.name }} </a> ({{ status.count }}) </li>
+            {% else %}
+            <li><a href="{{ mycharts_base }}/by/status/{{ status.id }}">{{ status.name }}</a> ({{ status.count }})</li>
             {% endif %}
 
             {% endfor %}

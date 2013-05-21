@@ -124,6 +124,10 @@ class ChartQuery extends BaseChartQuery {
                     $query->condition('in-source-url', 'Chart.Metadata LIKE ?', '%"source-url":"%'.$val.'%"%');
                     $query->where(array('in-title', 'in-intro', 'in-source', 'in-source-url'), 'or');
                 }
+                if ($key == 'status') {
+                    if ($val == 'published') $query->filterByLastEditStep(array('min' => 4));
+                    else if ($val == 'draft') $query->filterByLastEditStep(array('max'=> 3));
+                }
             }
         }
         return $query;
