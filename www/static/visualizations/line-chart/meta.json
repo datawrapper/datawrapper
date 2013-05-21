@@ -4,7 +4,7 @@
         "de": "Liniendiagramm",
         "fr": "Graphique linéaire"
     },
-    "version": "1.2.10",
+    "version": "1.3.0",
     "extends": "raphael-chart",
     "dimensions": 2,
     "order": 40,

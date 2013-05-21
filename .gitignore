@@ -18,3 +18,5 @@ archive.tar
 *.png
 
 www/static/visualizations/treemap
+
+www/static/vendor/d3js/d3.scale.js
