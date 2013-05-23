@@ -46,6 +46,7 @@ class JobTableMap extends TableMap
   0 => 'queued',
   1 => 'done',
   2 => 'failed',
+  3 => 'canceled',
 ));
 		$this->addColumn('CREATED_AT', 'CreatedAt', 'TIMESTAMP', true, null, null);
 		$this->addColumn('DONE_AT', 'DoneAt', 'TIMESTAMP', true, null, null);

@@ -96,7 +96,7 @@
     <foreign-key foreignTable="chart">
       <reference local="chart_id" foreign="id"/>
     </foreign-key>
-    <column name="status" type="enum" valueSet="queued,done,failed" required="true" default="queued" />
+    <column name="status" type="enum" valueSet="queued,done,failed,canceled" required="true" default="queued" />
     <column name="created_at" type="timestamp" required="true" />
     <column name="done_at" type="timestamp" required="true" />
     <column name="type" type="varchar" size="32" required="true" />
