@@ -1,6 +1,10 @@
 CHANGELOG
 ---------
 
+### 1.3.1
+* allowed changing job status in admin page
+* added job status 'canceled'
+
 ### 1.3.0
 * allowed input of named colors
 * ignoring data series by clicking table header

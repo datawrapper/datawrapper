@@ -65,6 +65,14 @@ function get_user_ips() {
     return $ips;
 }
 
+function if_is_admin($callback) {
+    $user = DatawrapperSession::getUser();
+    if ($user->isAdmin()) {
+        call_user_func($callback);
+    } else {
+        error('access-denied', 'need admin privileges.');
+    }
+}
 
 require_once '../../lib/utils/get_module.php';
 require_once '../../lib/api/users.php';

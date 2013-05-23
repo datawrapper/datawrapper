@@ -26,3 +26,17 @@ $app->get('/jobs/:type/estimate', function($type) use ($app) {
     disable_cache($app);
     ok(ceil(JobQuery::create()->estimatedTime($type) / 60));
 });
+
+/*
+ * change status of a job, need admin access
+ */
+$app->put('/jobs/:id', function($job_id) use ($app) {
+    if_is_admin(function() use ($app, $job_id) {
+        $job = JobQuery::create()->findOneById($job_id);
+        $params = json_decode($app->request()->getBody(), true);
+        $job->setStatus($params['status']);
+        $job->save();
+        ok();
+    });
+});
+
