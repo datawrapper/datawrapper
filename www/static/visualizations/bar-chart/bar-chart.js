@@ -221,7 +221,7 @@
             cw = c.h - c.bpad - c.tpad;
             //
             bw = Math.max(18, Math.min(50, cw / (n + (n-1) * pad)));
-            w = sc.y(val) - sc.y(0);
+            w = Math.max(val !== 0 ? 1 : 0, sc.y(val) - sc.y(0));
             h = bw;
             if (w > 0) {
                 x = c.lpad + c.zero;

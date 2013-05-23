@@ -207,7 +207,7 @@
 
             cw = (c.w - c.lpad - c.rpad) * (1 - vspace - vspace);
             bw = cw / (n + (n-1) * pad);
-            h = sc.y(series.data[r]) - sc.y(0);
+            h = Math.max(val !== 0 ? 0.5 : 0, sc.y(series.data[r]) - sc.y(0));
             w = Math.round(bw / series.data.length);
             if (h >= 0) {
                 y = c.h - c.bpad - sc.y(0) - h;

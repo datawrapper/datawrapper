@@ -4,6 +4,7 @@ CHANGELOG
 ### 1.3.1
 * allowed changing job status in admin page
 * added job status 'canceled'
+* ensured minimum width/height of 1 pixel for bars in bar/column charts
 
 ### 1.3.0
 * allowed input of named colors
