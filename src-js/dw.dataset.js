@@ -293,6 +293,18 @@
          */
         rowDates: function() {
             return this.__rowDates.slice(0);
+        },
+
+        /**
+         * Returns array of min/max values
+         */
+        minMax: function() {
+            var minmax = [Number.MAX_VALUE, -Number.MAX_VALUE];
+            this.eachSeries(function(s) {
+                minmax[0] = Math.min(minmax[0], s.min);
+                minmax[1] = Math.max(minmax[1], s.max);
+            });
+            return minmax;
         }
     });
 

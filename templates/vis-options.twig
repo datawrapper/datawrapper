@@ -158,7 +158,8 @@
 <script type="text/javascript">
 
 $(function() {
-    var chart = DW.currentChart;
+    var chart = DW.currentChart,
+        dataset = chart.__dataset;
 
     function syncVisOptions(vis) {
         _.each(vis.options, function(opt, key) {
@@ -188,6 +189,10 @@ $(function() {
                             visible = visible && chart.numRows() >= +val;
                         }  else if (key == 'chart.max_row_num') {
                             visible = visible && chart.numRows() <= +val;
+                        } else if (key == 'chart.min_value') {
+                            visible = visible && dataset.minMax()[0] >= +val;
+                        } else if (key == 'chart.max_value') {
+                            visible = visible && dataset.minMax()[1] <= +val;
                         } else {
                             visible = visible && chart.get('metadata.visualize.'+key) == val;
                         }
