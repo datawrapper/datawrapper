@@ -11,20 +11,17 @@
 
         <div class="row">
 
-             <div class="span6">
+             <div class="span8 offset2">
                 <p style="font-size:36px;font-weight:300;line-height:42px">Congratulations! You have successfully installed Datawrapper.</p>
-
-             </div>
-             <div class="span6">
                 <h2>Customize this page</h2>
-                <p>To create a custom homepage for your Datawrapper installation 
+                <p>To create a custom homepage for your Datawrapper installation
                     you have to do the following steps:</p>
                 <ol>
                     <li>Create a new <a href="http://twig.sensiolabs.org/">Twig template</a> (that is basically an HTML file with
-                        some special tags) and store it into <b>/templates/custom/</b>.</li>
-                    <li>Edit <b>config.yaml</b> and add the following line. Replace <i>my-template</i>
+                        some special tags) and store it into <b>/templates/custom/</b>, e.g. <b>my-home-template.twig</b>.</li>
+                    <li>Edit <b>config.yaml</b> and add the following line. Replace <i>my-home-template</i>
                         with the filename of your new Twig template (without the extension .twig):
-                        <pre>custom_home: my-template</pre>
+                        <pre>custom_home: my-home-template</pre>
                     <li>That's it</li>
                 </ol>
 
