@@ -4,7 +4,7 @@
 {% block content %}
 
     <div class="brand">
-        <img src="/static/img/abzv-logo.svg" style="height:50px;" />
+        {% if config.custom_logo %}<img src="/static/custom/{{ config.custom_logo }}" style="height:50px;" />{% endif %}
     </div>
 
     {{ block('login') }}
@@ -29,7 +29,7 @@
 }
 
 body.login {
-    background: #eee url(/static/img/wavegrid.png);
+    background: #eee url(/static/img/bg/wavegrid.png);
 }
 
 body.login .modal.hide {
