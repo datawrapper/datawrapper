@@ -10,11 +10,12 @@
                 </a>
 
                 <a class="brand" href="/">
-                    <!--[if IE ]>
-                    <img src="/static/img/abzv-logo.png">
+                    {% if config.custom_logo %}<!--[if IE ]>
+                    <img src="/static/custom/{{ config.custom_logo | replace({'.svg':'.png'})}}">
                     <![endif]-->
-                    <img class="hide-from-ie" src="/static/img/abzv-logo.svg" alt="ABZV" height="30" width="69" />
-                    Datawrapper<span class="beta"></span>
+                    <img class="hide-from-ie" src="/static/custom/{{ config.custom_logo }}" />
+                    {% endif %}
+                    Datawrapper
                 </a>
 
                 <div class="nav-collapse">
