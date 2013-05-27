@@ -8,7 +8,7 @@
 require_once ROOT_PATH . 'vendor/spyc/spyc.php';
 $GLOBALS['dw_config'] = $dw_config = Spyc::YAMLLoad(ROOT_PATH . 'config.yaml');
 
-if ($GLOBALS['dw_config']['debug'] == true) {
+if ($dw_config['debug'] == true) {
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
 }
@@ -27,7 +27,8 @@ Propel::init(ROOT_PATH . "lib/core/build/conf/datawrapper-conf.php");
 set_include_path(ROOT_PATH . "lib/core/build/classes" . PATH_SEPARATOR . get_include_path());
 
 // this salt is used to hash the passwords in database
-define('DW_AUTH_SALT', 'uRPAqgUJqNuBdW62bmq3CLszRFkvq4RW');
+if (!isset($dw_config['auth_salt'])) $dw_config['auth_salt'] = 'uRPAqgUJqNuBdW62bmq3CLszRFkvq4RW';
+define('DW_AUTH_SALT', $dw_config['auth_salt']);
 
 if (!defined('NO_SLIM')) {
     // Initialize Slim app..
