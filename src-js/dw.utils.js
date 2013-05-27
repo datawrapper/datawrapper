@@ -75,9 +75,7 @@
             function refreshSalt() {
                 $.getJSON('/api/auth/salt', function(res) {
                    if (res.status == 'ok') {
-                      $('#btn-register').data('salt', res.data.salt);
-                      $('.btn-login').data('salt', res.data.salt);
-                      $('.btn-login').data('time', res.data.time);
+                      $('#btn-register, .btn-login').data('salt', res.data.salt);
                    }
                 });
             }
@@ -111,14 +109,15 @@
 
             $('#btn-register').click(function() {
                var pwd = $.trim($('#register-pwd').val()),
-                   pwd2 = $.trim($('#register-pwd-2').val());
+                   pwd2 = $.trim($('#register-pwd-2').val()),
+                   auth_salt = $('#btn-register').data('salt');
 
                if (pwd == pwd2) {
                   if (true) {
                      var payload = {
                         email: $('#register-email').val(),
-                        pwd: CryptoJS.HmacSHA256(pwd, $('#btn-register').data('salt')).toString(),
-                        pwd2: CryptoJS.HmacSHA256(pwd2, $('#btn-register').data('salt')).toString()
+                        pwd: CryptoJS.HmacSHA256(pwd, auth_salt).toString(),
+                        pwd2: CryptoJS.HmacSHA256(pwd2, auth_salt).toString()
                      };
                      $.ajax({
                         url: '/api/users',
@@ -151,17 +150,14 @@
 
             function loginEvent(evt) {
                 var loginForm = $(evt.target).parents('.login-form'),
-                  lgBtn = $('.btn-login', loginForm),
-                  hmac = CryptoJS.HmacSHA256,
-                  pwd = $('.login-pwd', loginForm).val(),
-                  hash = hmac(hmac(pwd, lgBtn.data('salt')).toString(), String(lgBtn.data('time'))).toString(),
-                  payload = {
-                     email: $('.login-email', loginForm).val(),
-                     pwhash: hash,
-                     time: lgBtn.data('time'),
-                     keeplogin: $('.keep-login', loginForm).attr('checked') == 'checked'
-                  };
-
+                    lgBtn = $('.btn-login', loginForm),
+                    pwd = $('.login-pwd', loginForm).val(),
+                    auth_salt = lgBtn.data('salt'),
+                    payload = {
+                        email: $('.login-email', loginForm).val(),
+                        pwhash: CryptoJS.HmacSHA256(pwd, auth_salt).toString(),
+                        keeplogin: $('.keep-login', loginForm).attr('checked') == 'checked'
+                    };
                 if (pwd === '') {
                     $('.login-pwd', loginForm).parent().addClass('error');
                     return false;

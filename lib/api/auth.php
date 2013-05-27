@@ -29,8 +29,7 @@ $app->post('/auth/login', function() use($app) {
     //  v-- don't expire login anymore
     $user = UserQuery::create()->findOneByEmail($payload->email);
     if (!empty($user) && $user->getDeleted() == false) {
-        $hash = hash_hmac('sha256', $user->getPwd(), $payload->time);
-        if ($hash === $payload->pwhash) {
+        if ($user->getPwd() === secure_password($payload->pwhash)) {
             DatawrapperSession::login($user, $payload->keeplogin == true);
             ok();
         } else {
@@ -44,8 +43,7 @@ $app->post('/auth/login', function() use($app) {
 
 /* return the server salt for secure auth */
 $app->get('/auth/salt', function() use ($app) {
-    $salt = DW_AUTH_SALT;
-    ok(array('salt' => $salt, 'time' => time()));
+    ok(array('salt' => DW_AUTH_SALT));
 });
 
 /*

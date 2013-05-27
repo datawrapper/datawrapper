@@ -1,6 +1,10 @@
 CHANGELOG
 ---------
 
+### 1.3.2
+* added (optional) higher security for passwords, [read more](https://github.com/datawrapper/datawrapper/wiki/Enabling-secure-auth-key).
+
+
 ### 1.3.1
 * allowed changing job status in admin page
 * added job status 'canceled'

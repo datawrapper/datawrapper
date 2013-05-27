@@ -56,6 +56,10 @@ class User extends BaseUser {
         return count(ChartQuery::create()->getPublicChartsByUser($this));
     }
 
+    public function setPwd($pwd) {
+        return parent::setPwd(secure_password($pwd));
+    }
+
     /*
      * this deletes all information stored by the user and
      * makes it impossible to login again

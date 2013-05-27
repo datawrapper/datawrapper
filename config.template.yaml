@@ -4,6 +4,19 @@
 domain: datawrapper.de
 chart_domain: c.datawrapper.de
 
+## the following keys are used to hash passwords.
+##
+## auth_salt is used to hash passwords before sending via HTTP.
+## secure_auth_key is used to hash passwords again before
+## storing them in the database.
+##
+## Please change these keys on initial setup of Datawrapper.
+## If you change them later no user will be able to login
+## with their former passwords.
+# auth_salt: "MY_AUTH_SALT"
+# secure_auth_key: "MY_SECRET_AUTH_KEY"
+
+
 ## show debug message?
 debug: true
 
@@ -104,3 +117,5 @@ footer_links:
 ## create_test_charts.php creates a test user who owns
 ## the test charts, and will get the following password:
 # testuser_pwd: '1234'
+
+

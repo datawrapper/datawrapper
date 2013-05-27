@@ -30,6 +30,18 @@ set_include_path(ROOT_PATH . "lib/core/build/classes" . PATH_SEPARATOR . get_inc
 if (!isset($dw_config['auth_salt'])) $dw_config['auth_salt'] = 'uRPAqgUJqNuBdW62bmq3CLszRFkvq4RW';
 define('DW_AUTH_SALT', $dw_config['auth_salt']);
 
+/*
+ * secure passwords with secure_auth_key, if configured
+ */
+function secure_password($pwd) {
+    global $dw_config;
+    if (isset($dw_config['secure_auth_key'])) {
+        return hash_hmac('sha256', $pwd, $dw_config['secure_auth_key']);
+    } else {
+        return $pwd;
+    }
+}
+
 if (!defined('NO_SLIM')) {
     // Initialize Slim app..
     if (ROOT_PATH == '../') {
