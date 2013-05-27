@@ -1,0 +1,2 @@
+
+ALTER TABLE chart ADD COLUMN `public_url` VARCHAR(255);
