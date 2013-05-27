@@ -184,6 +184,7 @@ $app->delete('/users/:id', function($user_id) use ($app) {
             $user = $curUser;
         } else if ($curUser->isAdmin()) {
             $user = UserQuery::create()->findPK($user_id);
+            $pwd = $user->getPwd();
         }
         if (!empty($user)) {
             if ($user->getPwd() == $pwd) {
