@@ -27,6 +27,8 @@
       <link href="/static/css/datawrapper-ie.css" rel="stylesheet">
     <![endif]-->
 
+    {% if config.custom_css %}<link href="/static/custom/{{ config.custom_css }}" rel="stylesheet">{% endif %}
+
     <script type="text/javascript" src="/static/vendor/jquery/jquery.min.js"></script>
     <script type="text/javascript" src="/static/vendor/underscore/underscore-min.js"></script>
     <script type="text/javascript" src="/static/vendor/cryptojs/hmac-sha256.js"></script>

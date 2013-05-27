@@ -5,6 +5,8 @@ CHANGELOG
 * allowed changing job status in admin page
 * added job status 'canceled'
 * ensured minimum width/height of 1 pixel for bars in bar/column charts
+* allowed customization of logo
+* allowed insertion of custom css
 
 ### 1.3.0
 * allowed input of named colors
@@ -31,7 +33,6 @@ CHANGELOG
 * changed mysql engine to innodb
 * center preview chart in editor
 * replaced old data table with handsontable widget
-
 
 ### 1.2.8
 * made job execution (e.g. static chart exports) fail safe
