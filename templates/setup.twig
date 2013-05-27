@@ -1,0 +1,106 @@
+{% extends "core.twig" %}
+
+{% block content %}
+
+    <style type="text/css">
+
+.brand {
+    text-align: center;
+    position: relative;
+    top: -30px;
+}
+
+.foot {
+    position:absolute;
+    left:130px;
+    right:130px;
+    top:430px;
+    text-align:center;
+    padding-top: 10px;
+    font-size: 12px;
+    opacity: 0.5;
+}
+
+body.setup {
+    background: #eee url(/static/img/bg/wavegrid.png);
+    text-align: center;
+}
+
+body.setup p {
+    padding: 0 20%;
+    font-size: 20px;
+    font-weight: 300;
+    line-height: 28px;
+}
+
+.modal {
+    width: 420px;
+    margin-left: -210px;
+    box-shadow: 0 0 20px rgba(0,0,0, 0.3);
+    border: 0;
+    position: relative;
+    margin-top: 40px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.row-login {
+    width: 370px;
+}
+
+.modal h3 {
+    margin-top: 0;
+    font-size: 26px;
+    font-weight: 300;
+    margin-bottom: 20px;
+}
+
+.notify {
+    vertical-align: top;
+    margin-right: 4px;
+}
+    </style>
+
+    <script type="text/javascript">
+
+$(function() {
+    $('.btn').click(function() {
+        $.ajax({
+            url: '/setup',
+            type: 'POST',
+            data: JSON.stringify({
+                email: $('.login-email').val(),
+                pwd: CryptoJS.HmacSHA256($('.login-pwd').val(), '{{ auth_salt }}').toString(),
+            }),
+            dataType: 'json',
+            success: function() {
+                location.href = '/';
+            }
+        })
+    });
+});
+
+    </script>
+
+    <p>Hello and welcome to your fresh Datawrapper install. In order to complete the setup you now need to create an admin account.</p>
+
+    <div class="modal">
+        <!--<div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">×</button>
+            <h2>&nbsp;</h2>
+        </div>-->
+        <div class="modal-body">
+            <h3>{% trans "Create Admin Account" %}</h3>
+            <div class="form form-vertical">
+                <div class="control-group">
+                    <input class="login-email input-xxlarge span3" type="text" value="" placeholder="{% trans "email" %}" />
+                </div>
+                <div class="control-group">
+                    <input class="login-pwd input-xxlarge span3" type="password" value="" placeholder="{% trans "password" %}" />
+                </div>
+            </div>
+            <button class="btn btn-large btn-primary">Proceed</button>
+        </div>
+    </div>
+
+{% endblock %}

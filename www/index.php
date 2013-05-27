@@ -7,7 +7,7 @@
 
 
 
-define('DATAWRAPPER_VERSION', '1.3.1');  // must be the same as in package.json
+define('DATAWRAPPER_VERSION', '1.3.2');  // must be the same as in package.json
 
 define('ROOT_PATH', '../');
 
@@ -231,8 +231,15 @@ $app->hook('slim.before.router', function () use ($app, $dw_config) {
     $user = DatawrapperSession::getUser();
     if (!$user->isLoggedIn() && !empty($dw_config['prevent_guest_access'])) {
         $req = $app->request();
-        if ($req->getResourceUri() != '/login') {
-            $app->redirect('/login');
+
+        if (UserQuery::create()->filterByRole('admin')->count() > 0) {
+            if ($req->getResourceUri() != '/login') {
+                $app->redirect('/login');
+            }
+        } else {
+            if ($req->getResourceUri() != '/setup') {
+                $app->redirect('/setup');
+            }
         }
     }
 });
