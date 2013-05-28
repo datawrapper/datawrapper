@@ -9,6 +9,7 @@ CHANGELOG
 * refactored defaults in config
 * allowed setting default for show_in_gallery
 * enabled inverting the nav bar
+* fixed bar chart display with negative bars
 
 ### 1.3.1
 * allowed changing job status in admin page
