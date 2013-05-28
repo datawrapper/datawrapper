@@ -11,11 +11,11 @@
 
                 <a class="brand" href="/">
                     {% if config.custom_logo %}<!--[if IE ]>
-                    <img src="/static/custom/{{ config.custom_logo | replace({'.svg':'.png'})}}">
-                    <![endif]-->
-                    <img class="hide-from-ie" src="/static/custom/{{ config.custom_logo }}" />
+                        <img src="/static/custom/{{ config.custom_logo | replace({'.svg':'.png'})}}">
+                        <![endif]-->
+                        <img class="hide-from-ie" src="/static/custom/{{ config.custom_logo }}" />
                     {% endif %}
-                    Datawrapper
+                    {% if config.custom_title %}{{ config.custom_title }}{% else %}Datawrapper{% endif %}<span class="beta">{{ config.custom_title_tag }}</span>
                 </a>
 
                 <div class="nav-collapse">
