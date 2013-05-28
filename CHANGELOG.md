@@ -6,6 +6,8 @@ CHANGELOG
 * added page for setting up admin account after fresh install
 * fixed admin dashboard
 * allowed customization of title
+* refactored defaults in config
+* allowed setting default for show_in_gallery
 
 ### 1.3.1
 * allowed changing job status in admin page

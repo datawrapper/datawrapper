@@ -19,6 +19,9 @@ class ChartQuery extends BaseChartQuery {
      * creates a new empty chart
      */
     public function createEmptyChart($user) {
+        $cfg = $GLOBALS['dw_config'];
+        $defaults = isset($cfg['defaults']) ? $cfg['defaults'] : array();
+
         $chart = new Chart();
         $chart->setId($this->getUnusedRandomId());
         $chart->setCreatedAt(time());
@@ -41,14 +44,15 @@ class ChartQuery extends BaseChartQuery {
         $chart->setTitle($title . ']');
 
         // todo: use global default theme
-        $chart->setTheme(isset($GLOBALS['dw_config']['default_theme']) ? $GLOBALS['dw_config']['default_theme'] : 'default');
+        $chart->setTheme(isset($defaults['theme']) ? $defaults['theme'] : 'default');
         $chart->setLocale(''); // no default locale
-        $chart->setType(isset($GLOBALS['dw_config']['default_vis']) ? $GLOBALS['dw_config']['default_vis'] : 'bar-chart');
+        $chart->setType(isset($defaults['vis']) ? $defaults['vis'] : 'bar-chart');
 
         $defaultMeta = Chart::defaultMetaData();
 
         $chart->setMetadata(json_encode($defaultMeta));
         // $chart->setLanguage($user->getLanguage());  // defaults to user language
+        $chart->setShowInGallery(isset($defaults['show_in_gallery']) ? $defaults['show_in_gallery'] : false);
         $chart->save();
         return $chart;
     }

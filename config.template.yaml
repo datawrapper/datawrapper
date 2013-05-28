@@ -21,8 +21,10 @@ chart_domain: c.datawrapper.de
 debug: true
 
 ## some default values
-default_theme: default
-default_vis: bar-chart
+defaults:
+  show_in_gallery: true
+  theme: default
+  vis: bar-chart
 
 ## thumbnail sizes [width, height]
 thumbnails:
