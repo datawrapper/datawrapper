@@ -11,8 +11,6 @@ body {
     position: relative;
 }
 
-
-
 html .navbar li {
   line-height: 26px;
 }
@@ -42,8 +40,6 @@ html h3 {
     background: #fff;
 }
 
-
-
 @media (max-width: 979px) {
     body .docs h1.title {
         font-size: 36px;
@@ -56,16 +52,33 @@ html h3 {
 
 }
 
-/* intro */
-.dw-intro .intro-head {
-    background: url(../img/abzv-kopf.jpg) no-repeat;
-    height: 240px;
-}
-
 .navbar-fixed-top .navbar-inner, .navbar-fixed-bottom .navbar-inner {
     background-image: url(../img/bg-navbar.png);
     background-color: #eee;
     min-height: 51px;
+}
+
+.navbar.navbar-inverse .navbar-inner {
+  background-color: #1b1b1b;
+  background-image: -moz-linear-gradient(top, #222222, #111111);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#222222), to(#111111));
+  background-image: -webkit-linear-gradient(top, #222222, #111111);
+  background-image: -o-linear-gradient(top, #222222, #111111);
+  background-image: linear-gradient(to bottom, #222222, #111111);
+  background-repeat: repeat-x;
+  border-color: #252525;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff222222', endColorstr='#ff111111', GradientType=0);
+}
+
+.navbar-inverse .nav li a [class^="icon-"],
+.navbar-inverse .nav li a [class*=" icon-"] {
+    background-image: url("../vendor/bootstrap/img/glyphicons-halflings-white.png");
+    opacity: 0.8;
+}
+
+.navbar-inverse .nav .active a [class^="icon-"],
+.navbar-inverse .nav .active a [class*=" icon-"] {
+    opacity: 1;
 }
 
 .navbar .brand {
@@ -74,6 +87,11 @@ html h3 {
     color: #556;
     text-shadow: 1px 1px 0 rgba(255, 255, 255, .55);
     white-space: nowrap;
+}
+
+.navbar-inverse .brand {
+    color: #ddd;
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, .55);
 }
 
 .navbar .brand img {
@@ -99,9 +117,18 @@ html h3 {
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.45)
 }
 
+.navbar-inverse .nav > li > a {
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.45)
+}
+
 .navbar .nav > li > a:hover {
     color: #000;
 }
+
+.navbar-inverse .nav > li > a:hover {
+    color: #fff;
+}
+
 
 body .navbar .nav .active > a,
 body .navbar .nav .active > a:hover,
@@ -110,6 +137,15 @@ body .navbar .nav li.dropdown.active > .dropdown-toggle:hover
     background: transparent;
     font-weight: bold;
     color: #444!important;
+}
+
+body .navbar-inverse .nav .active > a,
+body .navbar-inverse .nav .active > a:hover,
+body .navbar-inverse .nav li.dropdown.active > .dropdown-toggle:hover
+ {
+    background: #111111;
+    font-weight: bold;
+    color: #fff!important;
 }
 
 .navbar .nav li.dropdown .dropdown-toggle .caret, .navbar .nav li.dropdown.open .caret,

@@ -151,6 +151,7 @@ function add_header_vars(&$page, $active = null) {
     $page['DW_CHART_CACHE_DOMAIN'] = $config['chart_domain'];
     $page['ADMIN_EMAIL'] = $config['admin_email'];
     $page['config'] = $config;
+    $page['invert_navbar'] = substr($config['domain'], -4) == '.pro';
 
     $analyticsMod = get_module('analytics', '../lib/');
     $page['trackingCode'] = !empty($analyticsMod) ? $analyticsMod->getTrackingCode() : '';
