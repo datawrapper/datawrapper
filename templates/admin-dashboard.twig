@@ -69,7 +69,6 @@
             chart.rawData(data);
             vis.dataset = chart.__dataset;
             vis.getSize = function() { return [$('.span5').width(),200] };
-            console.log(data);
             vis.render(cont);
         }
 
@@ -96,7 +95,7 @@ h2 { margin-bottom: 30px!important; }
 
     <div class="row">
         <div class="span5">
-            <h2>User Statistics <small>(last 30 days)</small></h2>
+            <h2>User Statistics <small>(last 90 days)</small></h2>
 
             <div id="user-stats" class="linechart"></div>
         </div>

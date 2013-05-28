@@ -25,14 +25,14 @@ $app->get('/admin/?', function() use ($app) {
     $user = DatawrapperSession::getUser();
     if ($user->isAdmin()) {
 
-        $metrics = array('users_signed', 'users_activated', 'charts_uploaded', 'charts_described', 'charts_visualized', 'charts_published');
+        $metrics = array('users_signed', 'users_activated', 'charts_visualized', 'charts_published');
 
         $con = Propel::getConnection();
         $data = array();
 
         foreach ($metrics as $metric) {
             $data[$metric] = array();
-            $sql = 'SELECT MONTH(time) m, DAYOFMONTH(time) d, value FROM `stats` WHERE metric = "'.$metric.'" GROUP BY m, d ORDER BY `time`  DESC LIMIT 30';
+            $sql = 'SELECT MONTH(time) m, DAYOFMONTH(time) d, value FROM `stats` WHERE metric = "'.$metric.'" GROUP BY m, d ORDER BY `time` DESC LIMIT 90';
             $rs = $con->query($sql);
             $res = array();
             foreach ($rs as $r) {
@@ -45,12 +45,13 @@ $app->get('/admin/?', function() use ($app) {
         $user_csv = "Date;Activated;Signed\\n";
         $chart_csv = "Date;Visualized;Published\\n";
 
-        for ($ago = 30; $ago >= 0; $ago--) {
+        for ($ago = 90; $ago >= 0; $ago--) {
+            $key = date('j/n', time() - $ago*86400);
             $lbl = date('Y-m-d', time() - $ago*86400);
             $user_csv .= $lbl.';';
-            $user_csv .= isset($data['users_activated'][$lbl]) ? $data['users_activated'][$lbl] : '-';
+            $user_csv .= isset($data['users_activated'][$key]) ? $data['users_activated'][$key] : '-';
             $user_csv .= ';';
-            $user_csv .= isset($data['users_signed'][$lbl]) ? $data['users_signed'][$lbl] : '-';
+            $user_csv .= isset($data['users_signed'][$key]) ? $data['users_signed'][$key] : '-';
             $user_csv .= "\\n";
 
             $chart_csv .= $lbl.';';
@@ -58,9 +59,9 @@ $app->get('/admin/?', function() use ($app) {
             // $chart_csv .= ';';
             // $chart_csv .= isset($data['charts_described'][$lbl]) ? $data['charts_described'][$lbl] : '-';
             // $chart_csv .= ';';
-            $chart_csv .= isset($data['charts_visualized'][$lbl]) ? $data['charts_visualized'][$lbl] : '-';
+            $chart_csv .= isset($data['charts_visualized'][$key]) ? $data['charts_visualized'][$key] : '-';
             $chart_csv .= ';';
-            $chart_csv .= isset($data['charts_published'][$lbl]) ? $data['charts_published'][$lbl] : '-';
+            $chart_csv .= isset($data['charts_published'][$key]) ? $data['charts_published'][$key] : '-';
             $chart_csv .= "\\n";
         }
 
