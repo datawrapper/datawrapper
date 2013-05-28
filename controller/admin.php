@@ -46,7 +46,7 @@ $app->get('/admin/?', function() use ($app) {
         $chart_csv = "Date;Visualized;Published\\n";
 
         for ($ago = 30; $ago >= 0; $ago--) {
-            $lbl = date('j/n', time() - $ago*86400);
+            $lbl = date('Y-m-d', time() - $ago*86400);
             $user_csv .= $lbl.';';
             $user_csv .= isset($data['users_activated'][$lbl]) ? $data['users_activated'][$lbl] : '-';
             $user_csv .= ';';
@@ -68,7 +68,8 @@ $app->get('/admin/?', function() use ($app) {
             'title' => 'Dashboard',
             'user_csv' => $user_csv,
             'chart_csv' => $chart_csv,
-            'linechart' => get_visualization_meta('line-chart')
+            'linechart' => get_visualization_meta('line-chart'),
+            'chartLocale' => 'en-US'
         );
         add_header_vars($page, 'admin');
         add_adminpage_vars($page, '/admin');
