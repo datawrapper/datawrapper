@@ -165,10 +165,12 @@ function add_header_vars(&$page, $active = null) {
     }
 
     if ($config['debug']) {
-        // parse git branch
-        $head = file_get_contents('../.git/HEAD');
-        $parts = explode("/", $head);
-        $page['BRANCH'] = ' ('.trim($parts[count($parts)-1]).')';
+        if (file_exists('../.git')) {
+            // parse git branch
+            $head = file_get_contents('../.git/HEAD');
+            $parts = explode("/", $head);
+            $page['BRANCH'] = ' ('.trim($parts[count($parts)-1]).')';
+        }
     }
 }
 
