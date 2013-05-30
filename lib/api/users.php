@@ -41,14 +41,21 @@ function email_exists($email) {
  */
 $app->post('/users', function() use ($app) {
     $data = json_decode($app->request()->getBody());
-
+    $currUser = DatawrapperSession::getUser();
+    $invitation = empty($data->invitation)? false : (bool) $data->invitation;
+    // check values
     $checks = array(
-        'password-mismatch' => function($d) { return $d->pwd === $d->pwd2; },
-        'password-missing' => function($d) { return trim($d->pwd) != ''; },
         'email-missing' => function($d) { return trim($d->email) != ''; },
         'email-invalid' => function($d) { return check_email($d->email); },
         'email-already-exists' => function($d) { return !email_exists($d->email); },
     );
+    // if invitation is false: classic way, we check passwords
+    if (!$invitation) {
+        $checks = array_merge($checks, array(
+            'password-mismatch' => function($d) { return $d->pwd === $d->pwd2; },
+            'password-missing' => function($d) { return trim($d->pwd) != ''; },
+        ));
+    }
 
     foreach ($checks as $code => $check) {
         if (call_user_func($check, $data) == false) {
@@ -61,26 +68,44 @@ $app->post('/users', function() use ($app) {
     $user = new User();
     $user->setCreatedAt(time());
     $user->setEmail($data->email);
-    $user->setPwd($data->pwd);
+    // set password, HACK for invitation mode
+    if ($invitation) {
+        $user->setPwd("__IS_INVITED__");
+    } else {
+        $user->setPwd($data->pwd);
+    }
+    if ($currUser->isAdmin() && !empty($data->role)) {
+        // Only sysadmin can set a sysadmin role
+        if ($data->role == "sysadmin"){
+            if (!$currUser->isSysAdmin()) {
+                error(403, 'Permission denied');
+                return;
+            }
+        }
+        $user->SetRole($data->role);
+        
+    }
     $user->setLanguage(DatawrapperSession::getLanguage());
-    $user->setActivateToken(hash_hmac('sha256', $data->email.'/'.$data->pwd.time(), DW_TOKEN_SALT));
+    $user->setActivateToken(hash_hmac('sha256', $data->email.'/'.time(), DW_TOKEN_SALT));
     $user->save();
     $result = $user->toArray();
 
-    // send email with activation key
-    $name = $data->email;
+    // send an email
+    $name   = $data->email;
     $domain = $GLOBALS['dw_config']['domain'];
-    $activationLink = 'http://' . $domain . '/account/activate/' . $user->getActivateToken();
-    $from = 'activate@' . $domain;
-
-    include('../../lib/templates/activation-email.php');
-
-    mail($data->email, 'Datawrapper Email Activation', $activation_mail, 'From: ' . $from);
-
-
-    // we don't need to annoy the user with a login form now,
-    // so just log in..
-    DatawrapperSession::login($user);
+    $from   = $GLOBALS['dw_config']['email'];
+    if ($invitation) {
+    // send email with invitation
+        $activationLink = 'http://' . $domain . '/account/set-password/' . $user->getActivateToken();
+        include('../../lib/templates/invitation-email.php');
+        mail($data->email, 'Invitation '. $domain, $invitation_mail, 'From: '.$from);
+    } else {
+        // send email with activation key
+        $activationLink = 'http://' . $domain . '/account/activate/' . $user->getActivateToken();
+        include('../../lib/templates/activation-email.php');
+        mail($data->email, 'Activation ' . $domain, $activation_mail, 'From: '.$from);
+        DatawrapperSession::login($user);
+    }
 
     ok($result);
 
@@ -139,6 +164,18 @@ $app->put('/users/:id', function($user_id) use ($app) {
                 $changed[] = 'name';
             }
 
+            if ($curUser->isAdmin() && !empty($payload->role)) {
+                // Only sysadmin can set a sysadmin role
+                if ($payload->role == "sysadmin"){
+                    if (!$curUser->isSysAdmin()) {
+                        error(403, 'Permission denied');
+                        return;
+                    }
+                }
+                $user->setRole($payload->role);
+                $changed[] = 'role';
+            }
+
             if (!empty($payload->website)) {
                 $user->setWebsite($payload->website);
                 $changed[] = 'website';
@@ -190,7 +227,9 @@ $app->delete('/users/:id', function($user_id) use ($app) {
             if ($user->getPwd() == $pwd) {
 
                 // Delete user
-                DatawrapperSession::logout();
+                if (!$curUser->isAdmin()) {
+                    DatawrapperSession::logout();
+                }
                 $user->erase();
 
                 ok();

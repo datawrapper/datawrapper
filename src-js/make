@@ -10,3 +10,8 @@ uglifyjs tmp.js > ../www/static/js/datawrapper-backend-$VERSION.min.js
 cat dw.core.js dw.dataset.js dw.chart.js dw.theme.js dw.parsers.delimited.js dw.visualization.js > tmp.js
 uglifyjs tmp.js > ../www/static/js/datawrapper.min.js
 rm tmp.js
+
+# if coffeescript is installed, generate javascript for user's administration
+if type "coffdee" >/dev/null 2>&1; then
+	coffee -b -c -o ../www/static/js/ dw.admin.users.coffee
+fi

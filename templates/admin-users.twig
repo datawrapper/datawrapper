@@ -3,6 +3,9 @@
 {% block title %}Admin / Users{% endblock %}
 {% block adminpage %}
 
+<script type="text/javascript" src="/static/vendor/serious-toolkit/serious-widget.js"></script>
+<script type="text/javascript" src="/static/js/dw.admin.users.js"></script>
+
 <style>
     /* Basic style */
     .widget .template{
@@ -32,35 +35,38 @@
         color: #c00;
     }
 
+    .widget.Admin-Users table .actions a {
+        margin-right: 20px;
+    }
+
     table th a {
         color: #000;
     }
 </style>
 
-<div class="Admin-Users widget docs" data-widget="datawrapper.AdminUsers">
-
-    {# <div class="delete-succeed alert alert-success hidden">
-        <strong class="out" data-field="email"></strong> {% trans "removed." %}
-    </div>
-    <div class="add-success alert alert-success hidden">
-        <strong class="out" data-field="email"></strong> {% trans "added." %}
-    </div>
+<div class="Admin-Users widget docs" data-widget="admin_users.AdminUsers">
     <div class="error-email-missing alert alert-error hidden">
-        {% trans "You should give an email." %}
+        {% trans "email-missing" %}
     </div>
-    <div class="error-email-invalid alert alert-error hidden">
-        {% trans "The given email is not correct." %}
+    <div class="error-email-invalid error-email-is-invalid alert alert-error hidden">
+        {% trans "email-invalid" %}
     </div>
     <div class="error-email-already-exists alert alert-error hidden">
-        {% trans "The given email is already in our database." %}
+        {% trans "email-already-exists" %}
     </div>
-    <!-- NOTE (Edouard): Never shown like that, used to translate this confirmation dialog's texts.
-Need to be inlined. -->
+    <!-- NOTE:  Never shown like that, used to translate this confirmation dialog's texts.
+                Need to be inlined.                                                         -->
     <div class="confirm-admin-lost hidden">{% trans "will lost his administrator status. Continue?" %}</div>
     <div class="confirm-admin-new hidden">{% trans "will become an administrator. Continue?" %}</div>
     <div class="confirm-delete hidden">{% trans "will be deleted. Continue?" %}</div>
 
-    <div class="addUserContainer">
+    <form action="/admin/users" method="GET" class="pull-right form-horizontal">
+        <input type="text" name="q" value="{{ q }}" placeholder="Seach by email" /> <input type="submit" class="btn" value="Search" />
+    </form>
+    <p>Below you find the complete list of users. You can search by email.</p>
+
+    <a href="#" class="btn do when-not-addUserForm" data-action="showAddUserForm">{% trans "Add a user"%}</a>
+    <div class="addUser when-addUserForm">
         <form action="#" method="post" class="form-inline">
             <fieldset>
                 <legend>{% trans "Add a user" %}</legend>
@@ -70,24 +76,18 @@ Need to be inlined. -->
                 </div>
                 <div class="input-prepend">
                     <span class="add-on"><i class="icon-tag"></i></span>
-                    <select name="status"
+                    <select name="status">
                         <option value="editor">{% trans "Editor" %}</option>
                         <option value="admin">{% trans "Administrator" %}</option>
+                        <option value="graphic-editor">{% trans "Graphic Editor" %}</option>
+                        {% if user.isSysAdmin %}<option value="sysadmin">{% trans "System Administrator" %}</option>{% endif %}
                     </select>
                 </div>
-                
-                <input type="submit" name="addUser" value="{% trans "Add" %}" class="btn btn-danger do" data-action="addUserAction" />
+                <input type="submit" name="addUser" value="{% trans "Create" %}" class="btn btn-danger do" data-action="addUserAction" />
             </fieldset>
             <p class="loading hidden">{% trans "Loading ..." %}</p>
         </form>
     </div>
-    <a href="#" class="do btn" data-action="getUsers"><i class="icon-refresh"></i>{% trans "Refresh" %}</a> #}
-
-    <form action="/admin/users" method="GET" class="pull-right form-horizontal">
-        <input type="text" name="q" value="{{ q }}" placeholder="Seach by email" /> <input type="submit" class="btn" value="Search" />
-    </form>
-    <p>Below you find the complete list of users. You can search by email.</p>
-
     <table class="table users">
         <thead>
             <tr>
@@ -101,7 +101,7 @@ Need to be inlined. -->
         </thead>
         <tbody class="users">
             {% for user in users %}
-                <tr class="user {{ user.role }}">
+                <tr class="user {{ user.role }} {% if user.activateToken %}pending{% endif %}" data-id="{{ user.id }}">
                     <td class="id out">{{ user.id }}</td>
                     <td class="email out">{{ user.email }}</td>
                     <td>
@@ -116,10 +116,31 @@ Need to be inlined. -->
                     <td class="center">
                         <a href="/admin/charts/{{ user.id }}">{{ user.getNbCharts() }}</a></td>
                     <td class="actions">
-                        ..
+                        <a href="#" class="do" data-action="removeAction" data-id="{{user.id}}"><i class="icon-trash" title="{% trans "delete" %}"></i></a>
+                        <a href="#" class="do" data-action="editAction" data-id="{{user.id}}"><i class="icon-pencil" title="{% trans "edit" %}"></i></a>
                     </td>
                 </tr>
             {% endfor %}
+            <!-- Template of a editable row -->
+             <tr class="user edition template">
+                <td class="id out"></td>
+                <td class="email"><input type="text"/></td>
+                <td>
+                    <select name="status">
+                        <option value="editor">{% trans "Editor" %}</option>
+                        <option value="admin">{% trans "Administrator" %}</option>
+                        <option value="graphic-editor">{% trans "Graphic Editor" %}</option>
+                        {% if user.isSysAdmin %}<option value="sysadmin">{% trans "System Administrator" %}</option>{% endif %}
+                    </select>
+                </td>
+                <td class="creation out"></td>
+                <td class="center">
+                    --</td>
+                <td class="actions">
+                    <a href="#" class="do" data-action="saveAction"><i class="icon-ok" title="{% trans "save" %}"></i></a>
+                    <a href="#" class="do" data-action="cancelAction"><i class="icon-remove" title="{% trans "cancel" %}"></i></a>
+                </td>
+            </tr>
         </tbody>
     </table>
     <div class="pull-right">

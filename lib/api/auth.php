@@ -137,3 +137,37 @@ $app->post('/account/resend-activation', function() use($app) {
         error('token-empty', _('You\'re account is probably already activated.'));
     }
 });
+
+/*
+ * endpoint for validating an invitation. The user sends his new password
+ */
+$app->post('/account/invitation/:token', function ($token) use ($app) {
+    $data = json_decode($app->request()->getBody());
+    if (!empty($token)) {
+        $users = UserQuery::create()
+          ->filterByActivateToken($token)
+          ->find();
+        if (count($users) != 1) {
+            error("token-invalid", _("This activation token is invalid. Your email address is probably already activated."));
+        } elseif (empty($data->pwd1)) {
+            error("password-missing", _("You must enter a password."));
+        } elseif ($data->pwd1 != $data->pwd2) {
+            error("password-mismatch", _("Both passwords must be the same."));
+        } else {
+            $user = $users[0];
+            $user->setActivateToken('');
+            $user->setPwd($data->pwd1);
+            $user->save();
+            // NOTE: we don't need a confirmation.
+            # send confirmation email
+            // $name   = $user->getEmail();
+            // $domain = $GLOBALS['dw_config']['domain'];
+            // $from   = $GLOBALS['dw_config']['email'];
+            // $link = 'http://' . $domain;
+            // include('../../lib/templates/confirmation-email.php');
+            // mail($name, _('Confirmation of account creation') . ' ' . $domain, $confirmation_email, 'From: ' . $from);
+            DatawrapperSession::login($user);
+            ok();
+        }
+    }
+});
