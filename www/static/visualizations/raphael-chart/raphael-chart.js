@@ -514,7 +514,6 @@
             $('.chart').off('keyup').on('keyup', function(e) {
                 var i;
                 if (e.keyCode == 39) {
-                    console.log(vis.__lastActiveRow);
                     i = Number(vis.__lastActiveRow)+1;
                     if (i >= ds.rowNames().length) i = 0;
                 } else if (e.keyCode == 37) {
@@ -530,7 +529,7 @@
             });
 
             // count total characters of row labels
-            _.each(rowLabels, function(t) { sumChars += t ? t.length : 0; });
+            _.each(rowLabels, function(t) { sumChars += t ? t.trim().length : 0; });
             function update(cur) {
                 vis.update(cur);
                 if (callback) callback();
