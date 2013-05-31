@@ -217,6 +217,7 @@
                             });
                             el.append(div);
                         } else if (legend.pos == 'top' || legend.pos == 'inside') {
+                            legend.xoffset += c.lpad;
                             lblx = legend.xoffset + 15;
                             lbly = legend.yoffset;
                             div = $('<div></div>');
