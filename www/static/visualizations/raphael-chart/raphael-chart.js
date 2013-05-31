@@ -211,14 +211,14 @@
                     h = attrs.h || lbl.height(),
                     x = attrs.x,
                     y = attrs.y,
-                    rot_w = 60;
+                    rot_w = 100;
                 var css = attrs.rotate == -90 ? {
                     // rotated
                     left: x - rot_w * 0.5,
-                    top: y + 12,
+                    top: attrs.valign == 'top' ? y + rot_w * 0.5 : y - rot_w * 0.5,
                     width: rot_w,
                     height: 20,
-                    'text-align': 'right'
+                    'text-align': attrs.valign == 'top' ? 'right' : 'left'
                 } : {
                     // not rotated
                     left: attrs.align == 'left' ? x : attrs.align == 'center' ? x - w * 0.5 : x - w,
@@ -256,6 +256,11 @@
                 if (_attrs.align != attrs.align) {
                     setTimeout(function() {
                         lbl.css({ 'text-align': _attrs.align });
+                    }, duration ? duration * 0.5 : 10);
+                }
+                if (attrs.rotate && _attrs.valign != attrs.valign) {
+                    setTimeout(function() {
+                        lbl.css({ 'text-align': _attrs.valign == 'top' ? 'right' : 'left' });
                     }, duration ? duration * 0.5 : 10);
                 }
                 if (_attrs.txt != attrs.txt) label.text(_attrs.txt);
