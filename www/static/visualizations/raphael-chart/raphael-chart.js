@@ -546,7 +546,7 @@
                 var select = $('<select />');
                 _.each(rowLabels, function(lbl, i) {
                     lbl = ds.isTimeSeries() ? lfmt(ds.rowDate(i)) : lbl;
-                    select.append('<option value="'+i+'">'+lbl+'</option>');
+                    select.append('<option value="'+i+'">'+lbl.trim()+'</option>');
                 });
                 select.change(function(evt) {
                     var cur = select.val();
@@ -560,7 +560,7 @@
                 div.addClass('filter-ui filter-links');
                 _.each(rowLabels, function(lbl, i) {
                     lbl = ds.isTimeSeries() ? lfmt(ds.rowDate(i)) : lbl;
-                    var a = $('<a href="#'+i+'"'+(i == active ? ' class="active" ': '')+'>'+lbl+'</a>').data('row', i);
+                    var a = $('<a href="#'+i+'"'+(i == active ? ' class="active" ': '')+'>'+lbl.trim()+'</a>').data('row', i);
                     div.append(a);
                 });
                 $('a', div).click(function(e) {
