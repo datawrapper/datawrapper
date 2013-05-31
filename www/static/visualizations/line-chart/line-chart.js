@@ -68,7 +68,6 @@
                 legend.xoffset += c.lpad;
             }
 
-
             c.lpad2 = me.yAxisWidth(h);
 
             if (thumb) {
