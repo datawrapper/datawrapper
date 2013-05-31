@@ -32,7 +32,7 @@ if ($user) {
 // create test user
 $user = new User();
 $user->setEmail('test');
-$pwd = !empty($cfg['testuser_pwd']) ? $cfg['testuser_pwd'] : 'test';
+$pwd = !empty($dw_config['testuser_pwd']) ? $dw_config['testuser_pwd'] : 'test';
 $user->setPwd(hash_hmac('sha256', $pwd, DW_AUTH_SALT));
 $user->setRole('editor');
 $user->setCreatedAt(time());
