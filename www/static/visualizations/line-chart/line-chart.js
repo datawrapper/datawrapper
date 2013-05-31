@@ -65,7 +65,9 @@
             if (!directLabeling && legend.pos != 'right') {
                 // some more space for last x-label
                 c.rpad += 0.25 * me.labelWidth(me.chart.rowLabel(me.numRows-1));
+                legend.xoffset += c.lpad;
             }
+
 
             c.lpad2 = me.yAxisWidth(h);
 
@@ -217,7 +219,6 @@
                             });
                             el.append(div);
                         } else if (legend.pos == 'top' || legend.pos == 'inside') {
-                            legend.xoffset += c.lpad;
                             lblx = legend.xoffset + 15;
                             lbly = legend.yoffset;
                             div = $('<div></div>');
