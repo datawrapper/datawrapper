@@ -551,6 +551,7 @@
                 var select = $('<select />');
                 _.each(rowLabels, function(lbl, i) {
                     lbl = ds.isTimeSeries() ? lfmt(ds.rowDate(i)) : lbl;
+                    if (!lbl) return;
                     select.append('<option value="'+i+'">'+lbl.trim()+'</option>');
                 });
                 select.change(function(evt) {
@@ -565,6 +566,7 @@
                 div.addClass('filter-ui filter-links');
                 _.each(rowLabels, function(lbl, i) {
                     lbl = ds.isTimeSeries() ? lfmt(ds.rowDate(i)) : lbl;
+                    if (!lbl) return;
                     var a = $('<a href="#'+i+'"'+(i == active ? ' class="active" ': '')+'>'+lbl.trim()+'</a>').data('row', i);
                     div.append(a);
                 });
