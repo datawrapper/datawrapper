@@ -541,7 +541,7 @@
                 return vis.getDateSelector(active, update);
             }
 
-            if (sumChars > 30) {
+            if (sumChars > 40) {
                 // use <select>
                 var select = $('<select />');
                 _.each(rowLabels, function(lbl, i) {
