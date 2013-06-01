@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Datawrapper\n"
 "POT-Creation-Date: June 1st 2013\n"
 "PO-Revision-Date: \n"
-"Last-Translator: CUI Anyong <ayay412@gmail.com>\n"
+"Last-Translator: gka <mail@driven-by-data.net>\n"
 "Language-Team:  <ayay412@gmail.com>\n"
 "Language: cn_CN\n"
 "MIME-Version: 1.0\n"
@@ -65,8 +65,7 @@ msgstr "设置新的密码"
 msgid ""
 "Congrats! Your password has been changed. You can log in with your new "
 "password now."
-msgstr ""
-"恭喜！您的密码更改成功。您现在可以用您的新密码登陆。"
+msgstr "恭喜！您的密码更改成功。您现在可以用您的新密码登陆。"
 
 #: ../scripts/tmpl_cache/account-reset-password.twig.php:118
 #: ../scripts/tmpl_cache/login.twig.php:67
@@ -195,8 +194,8 @@ msgid ""
 "individual data points or an entire series. This information will be "
 "displayed in the visualisations."
 msgstr ""
-"为了使数据更便于读者理解，请您给您的数据添加更细节的描述，比如给每一个数据点或者"
-"整个序列添加注释。这些信息都会在最后的可视化图表中呈现。"
+"为了使数据更便于读者理解，请您给您的数据添加更细节的描述，比如给每一个数据点"
+"或者整个序列添加注释。这些信息都会在最后的可视化图表中呈现。"
 
 #: ../scripts/tmpl_cache/chart-describe.twig.php:440
 msgid "Learn more"
@@ -231,8 +230,8 @@ msgid ""
 "a>. Great power comes with great responsibility, so be careful with what "
 "you're doing!"
 msgstr ""
-"<b>注意!</b> 这个图表属于 <a href='/admin/charts/%uid'>%email</a>。" 
-"能力越大，责任越大，请注意您现在的所作所为！"
+"<b>注意!</b> 这个图表属于 <a href='/admin/charts/%uid'>%email</a>。能力越大，"
+"责任越大，请注意您现在的所作所为！"
 
 #: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:280
 msgid "Publishing chart..."
@@ -242,8 +241,7 @@ msgstr "发布图表..."
 msgid ""
 "Please hold on a second while your chart is being published. Try not to "
 "close this page.."
-msgstr ""
-"请您稍候，您的图表正在发布中。请不要关闭此页.."
+msgstr "请您稍候，您的图表正在发布中。请不要关闭此页.."
 
 #: ../scripts/tmpl_cache/chart-generate-thumbnails.twig.php:294
 msgid "Finished."
@@ -357,8 +355,8 @@ msgid ""
 "You can show some love to Datawrapper by agreeing to show your visualisation "
 "in our <a href='%GALLERY_URL%'>public gallery</a>"
 msgstr ""
-"向Datawrapper表达谢意的最好方式就是同意将您的可视化作品在我们的"
-"<a href='%GALLERY_URL%'>案例展览</a>中展示"
+"向Datawrapper表达谢意的最好方式就是同意将您的可视化作品在我们的<a "
+"href='%GALLERY_URL%'>案例展览</a>中展示"
 
 #: ../scripts/tmpl_cache/chart-publish.twig.php:280
 msgid "This is absolutely optional."
@@ -378,8 +376,9 @@ msgid ""
 "free and all you need is a valid email address. The chart you just created "
 "will be transfered to your new account."
 msgstr ""
-"现在，为了能够让您在其他网站中嵌入图表，我们要求您创建一个帐户。这全都是免费的，而且您"
-"只需提供一个有效的邮箱地址即可注册成功。您创建的图表会转到您的新帐户下。"
+"现在，为了能够让您在其他网站中嵌入图表，我们要求您创建一个帐户。这全都是免费"
+"的，而且您只需提供一个有效的邮箱地址即可注册成功。您创建的图表会转到您的新帐"
+"户下。"
 
 #: ../scripts/tmpl_cache/chart-publish.twig.php:305
 #: ../scripts/tmpl_cache/login.twig.php:132
@@ -403,33 +402,30 @@ msgid ""
 "Now, to be able to publish and embed this chart into other websites, you "
 "need to activate the email address you entered during sign up process."
 msgstr ""
-"现在，为了能让您发布并且把此图表嵌入到其他网站中，您需要激活您注册时键入的电子邮箱地址。"
+"现在，为了能让您发布并且把此图表嵌入到其他网站中，您需要激活您注册时键入的电"
+"子邮箱地址。"
 
 #: ../scripts/tmpl_cache/chart-publish.twig.php:356
 msgid ""
 "If you did not get any email within 5 minutes, here's the trouble shooting "
 "guide:"
-msgstr ""
-"如果您在五分钟内没有收到激活邮件，请参阅如下问题解决向导："
+msgstr "如果您在五分钟内没有收到激活邮件，请参阅如下问题解决向导："
 
 #: ../scripts/tmpl_cache/chart-publish.twig.php:361
 msgid "At first, don't worry. Everything you created will wait patiently"
-msgstr ""
-"首先，不必担心。您创建的所有内容只需要耐心等待"
+msgstr "首先，不必担心。您创建的所有内容只需要耐心等待"
 
 #: ../scripts/tmpl_cache/chart-publish.twig.php:365
 msgid ""
 "Make sure that your spam filter didn't catch our activation email. They are "
 "sent from"
-msgstr ""
-"确保我们的激活邮件不在您的垃圾邮件中。它们发送自"
+msgstr "确保我们的激活邮件不在您的垃圾邮件中。它们发送自"
 
 #: ../scripts/tmpl_cache/chart-publish.twig.php:372
 msgid ""
 "Of course, you can also let us <a href='#resend'>resend the activation "
 "email</a>."
-msgstr ""
-"当然，你也可以让我们重新发送<a href='#resend'>激活邮件</a>。"
+msgstr "当然，你也可以让我们重新发送<a href='#resend'>激活邮件</a>。"
 
 #: ../scripts/tmpl_cache/chart-publish.twig.php:376
 msgid "If that didn't work either, please contact our support"
@@ -445,8 +441,7 @@ msgstr "您的图表现在正在发布和上传当中，请稍候一分钟。"
 msgid ""
 "You have changed the chart after its last publication. To make you changes "
 "visible, please re-publish the chart."
-msgstr ""
-"自上次发布之后您更改过此图表。请重新发布图表以让更改可见。"
+msgstr "自上次发布之后您更改过此图表。请重新发布图表以让更改可见。"
 
 #: ../scripts/tmpl_cache/chart-publish.twig.php:433
 msgid "Re-publish chart!"
@@ -465,7 +460,8 @@ msgstr ""
 msgid ""
 "It may take a while until the republished chart. You can force reloading of "
 "the chart by right-clicking it and selecting 'Reload Iframe'. "
-msgstr "重新发布图表需要一些时间。您可以通过右键点击图表选择'刷新框架'来强制刷新。"
+msgstr ""
+"重新发布图表需要一些时间。您可以通过右键点击图表选择'刷新框架'来强制刷新。"
 
 #: ../scripts/tmpl_cache/chart-publish.twig.php:508
 msgid "Create another graphic"
@@ -517,7 +513,8 @@ msgstr "方形"
 msgid ""
 "The exported chart will be send to your email address <b>%e</b> once it has "
 "been created. This will take approximately <b>%n</b> minute(s)."
-msgstr "导出的图表一创建好就会发送到您的邮箱<b>%e</b>。大约会花<b>%n</b>分钟时间。"
+msgstr ""
+"导出的图表一创建好就会发送到您的邮箱<b>%e</b>。大约会花<b>%n</b>分钟时间。"
 
 #: ../scripts/tmpl_cache/chart-publish.twig.php:665
 msgid "Cancel"
@@ -538,8 +535,7 @@ msgstr "发布图表中"
 msgid ""
 "Please hold on a few seconds while we're making your chart ready for the "
 "world."
-msgstr ""
-"请稍等几秒，我们正在制作中，您的图表马上问世。"
+msgstr "请稍等几秒，我们正在制作中，您的图表马上问世。"
 
 #: ../scripts/tmpl_cache/chart-publishing.twig.php:120
 msgid "You are automatically redirected once this is finished."
@@ -575,8 +571,9 @@ msgid ""
 "in Excel or OpenOffice, just select your data (including header row/column) "
 "and paste it in the following text field."
 msgstr ""
-"我们尽可能的把数据放入Datawrapper过程做的简单。如果您的数据在Excel或OpenOffice中，那"
-"只要选中您的数据（包括行/列表头）然后富之道下面的文本框里即可。"
+"我们尽可能的把数据放入Datawrapper过程做的简单。如果您的数据在Excel或"
+"OpenOffice中，那只要选中您的数据（包括行/列表头）然后富之道下面的文本框里即"
+"可。"
 
 #: ../scripts/tmpl_cache/chart-upload.twig.php:167
 msgid "Learn more about how to upload your data"
@@ -590,8 +587,7 @@ msgstr "案例数据"
 msgid ""
 "If you simply want to play around with Datawrapper, here's a list of some "
 "example datasets:"
-msgstr ""
-"如果你想先玩玩看Datawrapper，可以参照这个案例数据集列表："
+msgstr "如果你想先玩玩看Datawrapper，可以参照这个案例数据集列表："
 
 #: ../scripts/tmpl_cache/chart-visualize.twig.php:470
 msgid "Resize to: "
@@ -622,8 +618,9 @@ msgid ""
 "<a href='#' id='btn-transpose'><i class='icon-rotate'></i> transpose the "
 "data</a>."
 msgstr ""
-"万一可视效果不是您想要的，您可以尝试<a href='#' id='btn-transpose'><i class='icon-rotate'></i>"
-"<a href='#' id='btn-transpose'><i class='icon-rotate'></i>转置数据的行列</a>."
+"万一可视效果不是您想要的，您可以尝试<a href='#' id='btn-transpose'><i "
+"class='icon-rotate'></i><a href='#' id='btn-transpose'><i class='icon-"
+"rotate'></i>转置数据的行列</a>."
 
 #: ../scripts/tmpl_cache/chart-visualize.twig.php:590
 #, fuzzy
@@ -680,8 +677,8 @@ msgid ""
 "of the following browsers instead. Note that this only applies to the chart "
 "editor. The charts itself can be viewed with any major browser."
 msgstr ""
-"您现在使用的浏览器暂不被支持。请使用下列浏览器来替代。注意这限制只适用于图表编辑器。图表"
-"本身可以在任何主流浏览器上顺利显示。"
+"您现在使用的浏览器暂不被支持。请使用下列浏览器来替代。注意这限制只适用于图表"
+"编辑器。图表本身可以在任何主流浏览器上顺利显示。"
 
 #: ../scripts/tmpl_cache/core.twig.php:183
 msgid "Back to top"
@@ -693,24 +690,22 @@ msgid ""
 "source</a> project by <a href=\"http://abzv.de\">ABZV</a> - a German "
 "training institution for newspaper journalists."
 msgstr ""
-"Datawapper是一个<a href=\"http://github.com/datawrapper/"
-"datawrapper\">开源</a>项目<a href=\"http://abzv.de\">由ABZV</a> - "
-"一家针对报纸记者的德国培训机构赞助。"
+"Datawapper是一个<a href=\"http://github.com/datawrapper/datawrapper\">开源</"
+"a>项目<a href=\"http://abzv.de\">由ABZV</a> - 一家针对报纸记者的德国培训机构"
+"赞助。"
 
 #: ../scripts/tmpl_cache/custom__abzv-home.twig.php:339
 #, fuzzy
 msgid ""
 "An open source tool helping anyone to create simple, correct and embeddable "
 "charts in minutes."
-msgstr ""
-"一个能帮助任何人在几分钟内能够简单、正确地创建可嵌入图表地开源工具。"
+msgstr "一个能帮助任何人在几分钟内能够简单、正确地创建可嵌入图表地开源工具。"
 
 #: ../scripts/tmpl_cache/custom__abzv-home.twig.php:366
 msgid ""
 "An open source tool helping everyone to create simple, correct and "
 "embeddable charts in minutes."
-msgstr ""
-"一个能帮助任何人在几分钟内能够简单、正确地创建可嵌入图表地开源工具。"
+msgstr "一个能帮助任何人在几分钟内能够简单、正确地创建可嵌入图表地开源工具。"
 
 #: ../scripts/tmpl_cache/custom__abzv-home.twig.php:382
 msgid "Easy to use"
@@ -722,8 +717,8 @@ msgid ""
 "it into any website from hours to seconds. It makes charting easy, and helps "
 "you avoiding common pitfalls."
 msgstr ""
-"这个小工具能够把创建一个合适的图表并嵌入到其他网站中所需的时间从几小时缩短到几秒钟。它使制"
-"图变的非常简单，帮助你避开不必要的麻烦。"
+"这个小工具能够把创建一个合适的图表并嵌入到其他网站中所需的时间从几小时缩短到"
+"几秒钟。它使制图变的非常简单，帮助你避开不必要的麻烦。"
 
 #: ../scripts/tmpl_cache/custom__abzv-home.twig.php:392
 msgid "Full control"
@@ -736,9 +731,9 @@ msgid ""
 "or <a href='#URL'>install it on your own server</a> for maximum control. "
 "Written in PHP, Datawrapper is easy to install, modify and extend."
 msgstr ""
-"Datawrapper完全免费。您可以使用我们的免费主机服务，或者安装在<a href='/docs/howtouse#server'>"
-"您自己的服务器上以最大程度的进行控制。</a>Datawrapper用PHP编写，非常易于安装"
-"、修改和拓展。"
+"Datawrapper完全免费。您可以使用我们的免费主机服务，或者安装在<a href='/docs/"
+"howtouse#server'>您自己的服务器上以最大程度的进行控制。</a>Datawrapper用PHP编"
+"写，非常易于安装、修改和拓展。"
 
 #: ../scripts/tmpl_cache/custom__abzv-home.twig.php:403
 msgid "Customizable"
@@ -751,8 +746,8 @@ msgid ""
 "and colors to make them integrate nicely in your website. Strengthen your "
 "own brand, not ours."
 msgstr ""
-"我们顾您您去<a href='/docs/howtouse#customize'>自定义您的图表布局</a>、字体"
-"和颜色，以能够让图表能更好的整合进您的网站。强化您的品牌，而不是我们的。"
+"我们顾您您去<a href='/docs/howtouse#customize'>自定义您的图表布局</a>、字体和"
+"颜色，以能够让图表能更好的整合进您的网站。强化您的品牌，而不是我们的。"
 
 #: ../scripts/tmpl_cache/custom__abzv-home.twig.php:417
 msgid "Created with Datawrapper"
@@ -762,8 +757,7 @@ msgstr "通过Datawrapper创建"
 msgid ""
 "Need some inspiration? See what others have created <a href='/gallery/'>in "
 "our gallery</a>."
-msgstr ""
-"想要一些启发？在<a href='/gallery/'>案例展示</a>里看看其他人的作品。"
+msgstr "想要一些启发？在<a href='/gallery/'>案例展示</a>里看看其他人的作品。"
 
 #: ../scripts/tmpl_cache/custom__abzv-home.twig.php:469
 msgid "Want to learn more?"
@@ -785,8 +779,7 @@ msgstr "循序渐进"
 msgid ""
 "This tutorial guides you through the entire charting process, from finding "
 "data to embedding your chart."
-msgstr ""
-"这个教程指引您从找到数据到嵌入图表整个制图过程。"
+msgstr "这个教程指引您从找到数据到嵌入图表整个制图过程。"
 
 #: ../scripts/tmpl_cache/custom__abzv-home.twig.php:505
 msgid "Motivation"
@@ -798,8 +791,8 @@ msgid ""
 "Learn more about <a href='#URL'>why we created Datawrapper</a>, and why we "
 "chose this approach."
 msgstr ""
-"了解更多<a href='/docs/motivation'>我们为何要创建Datawrapper</a>，"
-"以及我们为什么选取这种方式。"
+"了解更多<a href='/docs/motivation'>我们为何要创建Datawrapper</a>，以及我们为"
+"什么选取这种方式。"
 
 #: ../scripts/tmpl_cache/custom__abzv-home.twig.php:517
 msgid "Find it on Github"
@@ -809,8 +802,7 @@ msgstr "在Github中查看"
 msgid ""
 "You can find and fork the Datawrapper source code on Github. It is licensed "
 "under the MIT license."
-msgstr ""
-"您可以在Github上找到并分支Datawrapper的源代码。它受MIT协议下的许可"
+msgstr "您可以在Github上找到并分支Datawrapper的源代码。它受MIT协议下的许可"
 
 #: ../scripts/tmpl_cache/docs.twig.php:87
 msgid "Navigation"
@@ -838,8 +830,8 @@ msgid ""
 "nice charts that other users have created recently. Click on the charts to "
 "see the interactive version."
 msgstr ""
-"欢迎来到Datawrappers的公开图表案例展示。这里您能够看到其他用户最近创建的表格。点击图表"
-"以查看交互版本。"
+"欢迎来到Datawrappers的公开图表案例展示。这里您能够看到其他用户最近创建的表"
+"格。点击图表以查看交互版本。"
 
 #: ../scripts/tmpl_cache/gallery.twig.php:71
 #: ../scripts/tmpl_cache/mycharts.twig.php:142
@@ -868,9 +860,9 @@ msgid ""
 "                <dd>...</dd>"
 msgstr ""
 "<dt>水平表头</dt>\n"
-"                <dd>查看您数据表的第一行是否包含 "
-"每列数据的名称。如果没有设置，Datawrapper将会自动为您生成列名，但在图表中不会呈现。"
-"通常来说，您最好能提供列名。</dd>\n"
+"                <dd>查看您数据表的第一行是否包含 每列数据的名称。如果没有设"
+"置，Datawrapper将会自动为您生成列名，但在图表中不会呈现。通常来说，您最好能提"
+"供列名。</dd>\n"
 "                <dt>垂直表头</dt>\n"
 "                <dd>...</dd>\n"
 "                <dt>转置行列</dt>\n"
@@ -885,8 +877,8 @@ msgid ""
 "Looking for the old beta version of Datawrapper?<br />It's still available "
 "at <a href='http://beta.datawrapper.de'>beta.datawrapper.de</a>"
 msgstr ""
-"在找旧版本的Datawrapper？<br />在这里仍然可用"
-"<a href='http://beta.datawrapper.de'>beta.datawrapper.de</a>"
+"在找旧版本的Datawrapper？<br />在这里仍然可用<a href='http://beta."
+"datawrapper.de'>beta.datawrapper.de</a>"
 
 #: ../scripts/tmpl_cache/home-login.twig.php:51
 msgid "Welcome back!"
@@ -931,8 +923,7 @@ msgstr "欢迎来到Datawrapper"
 msgid ""
 "We're glad to see you again. Login to access your charts, and create new "
 "ones."
-msgstr ""
-"很高兴能再见到您。登入以查看您的图表，并创建新的图表。"
+msgstr "很高兴能再见到您。登入以查看您的图表，并创建新的图表。"
 
 #: ../scripts/tmpl_cache/login.twig.php:55
 #: ../scripts/tmpl_cache/login.twig.php:115
@@ -969,7 +960,8 @@ msgid ""
 "Datawrapper is 100&#37; free and creating an account takes less than a "
 "minute. Just enter your email and pick a password, and you're done!"
 msgstr ""
-"Datawrapper 100%免费，不到一分钟您就可以创建您的个人帐户。只要输入您的邮箱设置一个密码就完成了！"
+"Datawrapper 100%免费，不到一分钟您就可以创建您的个人帐户。只要输入您的邮箱设"
+"置一个密码就完成了！"
 
 #: ../scripts/tmpl_cache/login.twig.php:127
 msgid "repeat password"
@@ -984,8 +976,7 @@ msgstr "出于安全考虑，请提供您现在的密码。"
 msgid ""
 "Your password doesn\\'t meet our security guidelines. Please provide at "
 "least 4 characters."
-msgstr ""
-"您的密码不符合我们的安全指南。您的密码至少需要4个字符。"
+msgstr "您的密码不符合我们的安全指南。您的密码至少需要4个字符。"
 
 #: ../scripts/tmpl_cache/messages.twig.php:41
 msgid "The password and the repeated password must not differ."
@@ -1014,7 +1005,8 @@ msgid ""
 "Want to see what other users created using Datawrapper? Take a look in the "
 "<a href='%GALLERY%'>Gallery</a>!"
 msgstr ""
-"想看看其他用户使用Datawrapper创建的图表？到<a href='%GALLERY%'>案例展示</a>中来看一看！"
+"想看看其他用户使用Datawrapper创建的图表？到<a href='%GALLERY%'>案例展示</a>中"
+"来看一看！"
 
 #: ../scripts/tmpl_cache/mycharts.twig.php:270
 msgid "Switch User"
@@ -1044,8 +1036,7 @@ msgstr "为什么不<a href='/chart/create'>立马创建一个新的图表</a>?"
 msgid ""
 "Do you really want to delete the chart? Note that after deleting this chart "
 "won't be embedable any more."
-msgstr ""
-"您真的想删除该图表吗？请注意删除之后就不能嵌入其他网站中。"
+msgstr "您真的想删除该图表吗？请注意删除之后就不能嵌入其他网站中。"
 
 #: ../scripts/tmpl_cache/settings.twig.php:36
 #: ../scripts/tmpl_cache/settings.twig.php:63
@@ -1094,7 +1085,8 @@ msgid ""
 "Your account is pending because your email address has not been activated, "
 "yet. You can create charts, but they will not be visible for anybody else."
 msgstr ""
-"您的帐户处于等候状态因为您的邮箱地址还未被激活。您可以创建图表但是任何人都看不到您的图表"
+"您的帐户处于等候状态因为您的邮箱地址还未被激活。您可以创建图表但是任何人都看"
+"不到您的图表"
 
 #: ../scripts/tmpl_cache/settings.twig.php:104
 msgid "Having trouble with the account activation?"
@@ -1106,8 +1098,8 @@ msgid ""
 "check the spam folder for the last activation email we sent on <strong>%DATE"
 "%</strong>."
 msgstr ""
-"可能您输入的邮箱被垃圾邮件系统过滤。请检查激活邮件是否在垃圾邮件文件夹中，发送时间为"
-"<strong>%DATE"%</strong>。"
+"可能您输入的邮箱被垃圾邮件系统过滤。请检查激活邮件是否在垃圾邮件文件夹中，发"
+"送时间为<strong>%DATE\"%</strong>"
 
 #: ../scripts/tmpl_cache/settings.twig.php:116
 msgid "Re-send activation link"
@@ -1125,7 +1117,8 @@ msgid ""
 "Filling out your profile is optional. If you do, you can display these "
 "information below the charts you publish."
 msgstr ""
-"个人资料可选择填写。如果你填写了的话，您可以把这些信息显示在您发布图表的下方。"
+"个人资料可选择填写。如果你填写了的话，您可以把这些信息显示在您发布图表的下"
+"方。"
 
 #: ../scripts/tmpl_cache/settings.twig.php:154
 msgid "E-Mail"
@@ -1133,8 +1126,7 @@ msgstr "邮箱"
 
 #: ../scripts/tmpl_cache/settings.twig.php:164
 msgid "This is the email address which you used to sign up."
-msgstr ""
-"这是您用于注册的邮箱地址"
+msgstr "这是您用于注册的邮箱地址"
 
 #: ../scripts/tmpl_cache/settings.twig.php:172
 msgid "Name"
@@ -1149,8 +1141,8 @@ msgid ""
 "Add a website that contains more information about you (e.g. your blog). "
 "Optionally you can display these information below you published charts."
 msgstr ""
-"添加一个能包括您更多个人信息的网站（比如你的博客）。"
-"您可以选择是否要把这些信息附在您的图表下方。"
+"添加一个能包括您更多个人信息的网站（比如你的博客）。您可以选择是否要把这些信"
+"息附在您的图表下方。"
 
 #: ../scripts/tmpl_cache/settings.twig.php:203
 msgid "Twitter/Facebook/etc"
@@ -1158,8 +1150,7 @@ msgstr "Twitter/Facebook/etc"
 
 #: ../scripts/tmpl_cache/settings.twig.php:213
 msgid "Enter the link to your favorite social media profile (e.g. Twitter)."
-msgstr ""
-"输入您喜爱的社交媒体帐户链接（如推特）"
+msgstr "输入您喜爱的社交媒体帐户链接（如推特）"
 
 #: ../scripts/tmpl_cache/settings.twig.php:221
 msgid "Save changes"
@@ -1169,8 +1160,7 @@ msgstr "保存更改"
 msgid ""
 "For security reasons we ask you to provide your current password. Please "
 "make sure you use a strong password."
-msgstr ""
-"由于安全原因我们要求您提供您当前的密码。请确保您使用安全性强的密码。"
+msgstr "由于安全原因我们要求您提供您当前的密码。请确保您使用安全性强的密码。"
 
 #: ../scripts/tmpl_cache/settings.twig.php:247
 msgid "Current Password"
@@ -1197,7 +1187,8 @@ msgid ""
 "This will remove your Datawrapper account. The charts you created so far "
 "will remain visible in places where you embedded them."
 msgstr ""
-"这会删除您的Datawrapper帐户。您创建过的图表在您当时嵌入过的地方仍然能够正常显示。"
+"这会删除您的Datawrapper帐户。您创建过的图表在您当时嵌入过的地方仍然能够正常显"
+"示。"
 
 #: ../scripts/tmpl_cache/settings.twig.php:318
 msgid "Are you sure?"
@@ -1238,7 +1229,8 @@ msgid ""
 "Note that this will only delete your account. Your charts will not be "
 "removed. If you want to remove your charts, please do it manually."
 msgstr ""
-"注意这只会删除您的帐户。您的图表并不会同时被移除。如果您想要同时删除您的图表，请手动删除。"
+"注意这只会删除您的帐户。您的图表并不会同时被移除。如果您想要同时删除您的图"
+"表，请手动删除。"
 
 #: ../scripts/tmpl_cache/settings.twig.php:366
 msgid "Please enter your password to confirm the deletion request:"
@@ -1323,7 +1315,9 @@ msgstr "自定义图表颜色"
 msgid ""
 "Please use custom colors only if it is absolutely necessary, for instance to "
 "identify political parties. If possible please use the palette colors."
-msgstr "请仅在特别必要之时再使用自定义颜色，比如标识政治派别。尽可能的使用调色板中的颜色。"
+msgstr ""
+"请仅在特别必要之时再使用自定义颜色，比如标识政治派别。尽可能的使用调色板中的"
+"颜色。"
 
 #: ../scripts/tmpl_cache/vis-options.twig.php:257
 #, fuzzy
@@ -1390,7 +1384,9 @@ msgstr "该邮箱地址还没有被注册。"
 msgid ""
 "The password reset email has already been sent. Please contact an <a href="
 "\"mailto:hello@datawrapper.de\">administrator</a>."
-msgstr "重置密码邮件已经发送。请您联系<a href=\"mailto:hello@datawrapper.de\">管理员</a>."
+msgstr ""
+"重置密码邮件已经发送。请您联系<a href=\"mailto:hello@datawrapper.de\">管理员"
+"</a>."
 
 #: ../lib/api/auth.php:82
 msgid ""
@@ -1398,8 +1394,8 @@ msgid ""
 "emails to it. Please contact an <a href=\"mailto:hello@datawrapper.de"
 "\">administrator</a>."
 msgstr ""
-"您还没有激活您的邮箱地址，所以我们不能安全的发送邮件到您的邮箱。请联系"
-"<a href=\"mailto:hello@datawrapper.de\">管理员</a>."
+"您还没有激活您的邮箱地址，所以我们不能安全的发送邮件到您的邮箱。请联系<a "
+"href=\"mailto:hello@datawrapper.de\">管理员</a>."
 
 #: ../lib/api/auth.php:97
 msgid "You should soon receive an email with further instructions."
@@ -1411,13 +1407,12 @@ msgid ""
 "\"mailto:%ADMINEMAIL%\">contact an administrator</a> to proceed with your "
 "account activation."
 msgstr ""
-"您已经重复发送了三次激活邮件。 请联系 <a href=\"mailto:%ADMINEMAIL%\">管理员</a>"
-"处理您的帐户激活。"
+"您已经重复发送了三次激活邮件。 请联系 <a href=\"mailto:%ADMINEMAIL%\">管理员"
+"</a>处理您的帐户激活。"
 
 #: ../lib/api/auth.php:136
 msgid "The activation email has been send to your email address, again."
-msgstr ""
-"激活邮件已经重新发送至您的邮箱。"
+msgstr "激活邮件已经重新发送至您的邮箱。"
 
 #: ../lib/api/auth.php:139
 msgid "You're account is probably already activated."
@@ -1551,8 +1546,7 @@ msgstr "超时"
 msgid ""
 "Sorry, but it seems that the chart you want to see has already passed away "
 "because its author decided to delete it."
-msgstr ""
-"对不起，看起来您所要看的图表已经被其作者删除。"
+msgstr "对不起，看起来您所要看的图表已经被其作者删除。"
 
 #: ../lib/utils/errors.php:48
 msgid "Whoops! You're not allowed to publish charts, yet"
@@ -1561,8 +1555,7 @@ msgstr "哦哟！您暂时还不被允许发布图表。"
 #: ../lib/utils/errors.php:49
 msgid ""
 "Sorry, but it seems that your account is not ready to publish charts, yet."
-msgstr ""
-"对不起，您的帐户看起来还暂时不能发布图表。"
+msgstr "对不起，您的帐户看起来还暂时不能发布图表。"
 
 #: ../lib/utils/errors.php:51
 msgid ""
@@ -1571,8 +1564,9 @@ msgid ""
 "need to activate you e-mail address by clicking on that activation link we "
 "sent you."
 msgstr ""
-"如果您是以访客身份创建的图表，您现在应该 <a href=\"#login\">注册一个免费帐户</a>。" 
-"如果您已经注册过，您可能需要通过点击我们发送给您的激活链接激活您的邮箱地址。"
+"如果您是以访客身份创建的图表，您现在应该 <a href=\"#login\">注册一个免费帐户"
+"</a>。如果您已经注册过，您可能需要通过点击我们发送给您的激活链接激活您的邮箱"
+"地址。"
 
 #: ../lib/utils/errors.php:60
 msgid "Whoops! We couldn't find that chart.."
@@ -1600,8 +1594,7 @@ msgstr "哦哟！您需要登陆。"
 
 #: ../lib/utils/errors.php:80
 msgid "Good news is, sign up is free and takes less than 20 seconds."
-msgstr ""
-"好消息是，注册不仅免费而且20秒内就可以完成。"
+msgstr "好消息是，注册不仅免费而且20秒内就可以完成。"
 
 #: ../lib/utils/errors.php:86
 msgid "Access denied."
@@ -1616,8 +1609,7 @@ msgstr "哦哟！您需要登陆。"
 msgid ""
 "Guess what, in order to edit your user profile, you need to either login or "
 "create yourself an account."
-msgstr ""
-"猜猜怎么着，为了能编辑您的用户资料，您需要登陆或者创建您的帐户。"
+msgstr "猜猜怎么着，为了能编辑您的用户资料，您需要登陆或者创建您的帐户。"
 
 #: ../lib/utils/errors.php:100
 msgid "Something went horribly wrong"
@@ -1625,23 +1617,21 @@ msgstr "发生严重错误"
 
 #: ../lib/utils/errors.php:101
 msgid "The password reset link you entered is invalid."
-msgstr ""
-"您输入的密码重置链接无效"
+msgstr "您输入的密码重置链接无效"
 
 #: ../lib/utils/errors.php:103
 msgid ""
 "Re-check the link you received in our email. Make sure you copied the full "
 "link and try again."
-msgstr ""
-"重新检查您邮件中收到的链接。确保您复制了完整链接，然后再试一次。"
+msgstr "重新检查您邮件中收到的链接。确保您复制了完整链接，然后再试一次。"
 
 #: ../lib/utils/errors.php:104
 msgid ""
 "Contact someone of our friendly <a href=\"mailto:hello@datawrapper.de"
 "\">administrators</a> and ask for help with the password reset process."
 msgstr ""
-"联系我们热情的<a href=\"mailto:hello@datawrapper.de\">管理员们</a>，让他们"
-"帮助你完成密码重置过程。"
+"联系我们热情的<a href=\"mailto:hello@datawrapper.de\">管理员们</a>，让他们帮"
+"助你完成密码重置过程。"
 
 #: ../lib/utils/errors.php:111
 #, fuzzy
@@ -1657,8 +1647,8 @@ msgstr "该用户ID不存在"
 #~ "<a data-toggle='modal' href='%LINK%'>help Datawrapper to understand your "
 #~ "data</a>."
 #~ msgstr ""
-#~ "请检查数据格式是否被正确识别。如果没有，请<a data-toggle='modal' href='%LINK%'>"
-#~ "帮助Datawrapper去理解您的数据</a>。"
+#~ "请检查数据格式是否被正确识别。如果没有，请<a data-toggle='modal' "
+#~ "href='%LINK%'>帮助Datawrapper去理解您的数据</a>。"
 
 #~ msgid "Tutorial"
 #~ msgstr "教程"
