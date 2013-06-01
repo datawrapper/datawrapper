@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Datawrapper\n"
-"POT-Creation-Date: \n"
+"POT-Creation-Date: June 1st 2013\n"
 "PO-Revision-Date: \n"
 "Last-Translator: CUI Anyong <ayay412@gmail.com>\n"
 "Language-Team:  <ayay412@gmail.com>\n"
