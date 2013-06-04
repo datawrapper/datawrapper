@@ -252,12 +252,10 @@ $(function() {
 
             $.getJSON('/api/auth/salt', function(res) {
                 if (res.status == 'ok') {
-                    var salt = res.data.salt, time = res.data.time,
+                    var salt = res.data.salt
                         hmac = CryptoJS.HmacSHA256,
-                        hash = hmac(hmac(curPwd, salt).toString(), String(time)).toString(),
                         payload = {
-                            oldpwhash: hash,
-                            time: time,
+                            oldpwhash: hmac(curPwd, salt).toString(),
                             pwd: CryptoJS.HmacSHA256(pwd, salt).toString()
                         };
 
@@ -273,7 +271,11 @@ $(function() {
                         success: function(data) {
                             submit.removeClass('loading');
                             if (data.status == 'ok') {
-                                DW.logMessage('{% trans "Congrats! Your password has been changed." %}', parent);
+                                if (data.data.updated.indexOf('password') >= 0) {
+                                    DW.logMessage('{% trans "Congrats! Your password has been changed." %}', parent);
+                                } else {
+                                    DW.logError('{% trans "Could not change your password. Please double check your current password." %}', parent);
+                                }
                             } else {
                                 DW.logError(data.message, parent);
                             }

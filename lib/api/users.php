@@ -106,12 +106,11 @@ $app->put('/users/:id', function($user_id) use ($app) {
             $changed = array();
             $errors = array();
 
-            if (!empty($payload->pwd)) {
+            if (!empty($payload->pwd)) {;
                 // update password
-                $hash = hash_hmac('sha256', $user->getPwd(), $payload->time);
                 $chk = false;
                 if (!empty($payload->oldpwhash)) {
-                    $chk = $hash === $payload->oldpwhash;
+                    $chk = $user->getPwd() === secure_password($payload->oldpwhash);
                 }
                 if ($chk || $curUser->isAdmin()) {
                     $user->setPwd($payload->pwd);
