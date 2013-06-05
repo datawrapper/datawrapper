@@ -1,6 +1,14 @@
 CHANGELOG
 ---------
 
+### 1.3.3
+* trimming row labels in filter UI
+* increased character limit to 40 chars
+* trimming labels before counting characters
+* fixed column chart label positions
+* fixed line chart legend position
+* bugfix: change password in settings
+
 ### 1.3.2
 * added (optional) higher security for passwords, [read more](https://github.com/datawrapper/datawrapper/wiki/Enabling-secure-auth-key).
 * added page for setting up admin account after fresh install

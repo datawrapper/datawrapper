@@ -211,14 +211,14 @@
                     h = attrs.h || lbl.height(),
                     x = attrs.x,
                     y = attrs.y,
-                    rot_w = 60;
+                    rot_w = 100;
                 var css = attrs.rotate == -90 ? {
                     // rotated
                     left: x - rot_w * 0.5,
-                    top: y + 12,
+                    top: attrs.valign == 'top' ? y + rot_w * 0.5 : y - rot_w * 0.5,
                     width: rot_w,
                     height: 20,
-                    'text-align': 'right'
+                    'text-align': attrs.valign == 'top' ? 'right' : 'left'
                 } : {
                     // not rotated
                     left: attrs.align == 'left' ? x : attrs.align == 'center' ? x - w * 0.5 : x - w,
@@ -256,6 +256,11 @@
                 if (_attrs.align != attrs.align) {
                     setTimeout(function() {
                         lbl.css({ 'text-align': _attrs.align });
+                    }, duration ? duration * 0.5 : 10);
+                }
+                if (attrs.rotate && _attrs.valign != attrs.valign) {
+                    setTimeout(function() {
+                        lbl.css({ 'text-align': _attrs.valign == 'top' ? 'right' : 'left' });
                     }, duration ? duration * 0.5 : 10);
                 }
                 if (_attrs.txt != attrs.txt) label.text(_attrs.txt);
@@ -514,7 +519,6 @@
             $('.chart').off('keyup').on('keyup', function(e) {
                 var i;
                 if (e.keyCode == 39) {
-                    console.log(vis.__lastActiveRow);
                     i = Number(vis.__lastActiveRow)+1;
                     if (i >= ds.rowNames().length) i = 0;
                 } else if (e.keyCode == 37) {
@@ -530,7 +534,7 @@
             });
 
             // count total characters of row labels
-            _.each(rowLabels, function(t) { sumChars += t ? t.length : 0; });
+            _.each(rowLabels, function(t) { sumChars += t ? t.trim().length : 0; });
             function update(cur) {
                 vis.update(cur);
                 if (callback) callback();
@@ -542,12 +546,13 @@
                 return vis.getDateSelector(active, update);
             }
 
-            if (sumChars > 30) {
+            if (sumChars > 40) {
                 // use <select>
                 var select = $('<select />');
                 _.each(rowLabels, function(lbl, i) {
                     lbl = ds.isTimeSeries() ? lfmt(ds.rowDate(i)) : lbl;
-                    select.append('<option value="'+i+'">'+lbl+'</option>');
+                    if (!lbl) return;
+                    select.append('<option value="'+i+'">'+lbl.trim()+'</option>');
                 });
                 select.change(function(evt) {
                     var cur = select.val();
@@ -561,7 +566,8 @@
                 div.addClass('filter-ui filter-links');
                 _.each(rowLabels, function(lbl, i) {
                     lbl = ds.isTimeSeries() ? lfmt(ds.rowDate(i)) : lbl;
-                    var a = $('<a href="#'+i+'"'+(i == active ? ' class="active" ': '')+'>'+lbl+'</a>').data('row', i);
+                    if (!lbl) return;
+                    var a = $('<a href="#'+i+'"'+(i == active ? ' class="active" ': '')+'>'+lbl.trim()+'</a>').data('row', i);
                     div.append(a);
                 });
                 $('a', div).click(function(e) {

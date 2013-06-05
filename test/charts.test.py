@@ -177,8 +177,7 @@ def login():
     if 'testuser_pwd' in config:
         pwd = config['testuser_pwd']
     pwd = hmac.new(AUTH_SALT, msg=pwd, digestmod=sha256).hexdigest()
-    pwd = hmac.new('123', msg=pwd, digestmod=sha256).hexdigest()
-    payload = dict(pwhash=pwd, time='123', email='test', keeplogin=False)
+    payload = dict(pwhash=pwd, email='test', keeplogin=False)
     r = session.post(domain + '/api/auth/login', data=json.dumps(payload))
     assert r.json()['status'] == 'ok'
 

@@ -7,7 +7,7 @@
 
 
 
-define('DATAWRAPPER_VERSION', '1.3.2');  // must be the same as in package.json
+define('DATAWRAPPER_VERSION', '1.3.3');  // must be the same as in package.json
 
 define('ROOT_PATH', '../');
 
@@ -165,10 +165,12 @@ function add_header_vars(&$page, $active = null) {
     }
 
     if ($config['debug']) {
-        // parse git branch
-        $head = file_get_contents('../.git/HEAD');
-        $parts = explode("/", $head);
-        $page['BRANCH'] = ' ('.trim($parts[count($parts)-1]).')';
+        if (file_exists('../.git')) {
+            // parse git branch
+            $head = file_get_contents('../.git/HEAD');
+            $parts = explode("/", $head);
+            $page['BRANCH'] = ' ('.trim($parts[count($parts)-1]).')';
+        }
     }
 }
 

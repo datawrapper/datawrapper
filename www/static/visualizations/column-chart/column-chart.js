@@ -44,12 +44,19 @@
 
             // compute maximum x-label height
             var lh = 0,
+                mm = ds.minMax(),
+                mm_r = mm[0] >= 0 ? 1 : mm[1] <= 0 ? 0 : mm[1] / (mm[1] - mm[0]),
                 n = me.chart.dataSeries().length;
             _.each(me.chart.dataSeries(), function(series, s) {
-                lh = Math.max(lh, me.labelHeight(series.name, 'series', c.w / (n)));
-            });
-            c.bpad = lh+10;
 
+                lh = Math.max(lh,
+                    chart_width /(n + (n-1) * 0.35) > 31 ?
+                      me.labelHeight(series.name, 'series', c.w / (n))
+                    : me.labelWidth(series.name, 'series')
+                );
+            });
+            c.bpad = lh * mm_r + 10;
+            c.tpad += lh * (1-mm_r);
 
             me.initDimensions();
 
@@ -270,20 +277,21 @@
                 halign = 'center',
                 lbl_w = c.w / (me.chart.dataSeries().length+2),
                 val_y = lbl_top ? d.y - 10 : d.y + d.height + 10,
-                lbl_y = !lbl_top ? d.y - 10 : d.y + d.height + 5;
+                lbl_y = !lbl_top ? d.y - 5 : d.y + d.height + 5;
 
             if (type == "value") {
                 return { left: d.x + d.width * 0.5, top: val_y, width: d.width };
             } else if (type == "series") {
                 if (d.bw < 30) {
                     //lblcl.push('rotate90');
-                    lbl_y += 5;
+                    lbl_y -= 10;  // move towards zero axis
                     lbl_w = 100;
                     halign = 'right'; // lbl_top ? 'right' : 'left';
                 }
                 if (d.bw < 20) {
                     lbl_w = 90;
                 }
+                //console.log(series.name, { left: d.bx + d.bw * 0.5, top: lbl_y, width: lbl_w, halign: halign, valign: valign });
                 return { left: d.bx + d.bw * 0.5, top: lbl_y, width: lbl_w, halign: halign, valign: valign };
             }
         },
