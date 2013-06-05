@@ -166,8 +166,8 @@ class admin_users.AdminUsers extends Widget
 				if data.data.errors?
 					@uis.msgError.filter(".error-#{data.data.errors[0]}").removeClass('hidden')
 				else
-					# window.location.reload()
-			# error   : => window.location.reload()
+					window.location.reload()
+			error   : => window.location.reload()
 		})
 
 # -----------------------------------------------------------------------------
