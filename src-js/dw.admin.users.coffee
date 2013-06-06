@@ -38,7 +38,14 @@ class admin_users.AdminUsers extends Widget
 			editionTmpl       : '.user.edition.template'
 			msgError          : '.alert-error'
 		}
-		@ACTIONS = ['showAddUserForm', 'addUserAction', 'removeAction', 'editAction', 'saveAction', 'cancelAction']
+		@ACTIONS = [
+			'showAddUserForm'
+			'addUserAction'
+			'removeAction'
+			'editAction'
+			'saveEditAction'
+			'cancelEditAction'
+			'resendAction']
 
 		@cache = {
 			editedUser : null
@@ -49,7 +56,7 @@ class admin_users.AdminUsers extends Widget
 		States.set('addUserForm', false)
 
 	editUser: (id) =>
-		this.cancelAction()
+		this.cancelEditAction()
 		@cache.editedUser = this.__getUserById(id) # save edtied user
 		nui = this.cloneTemplate(@uis.editionTmpl, {
 			id       : @cache.editedUser.Id
@@ -91,7 +98,7 @@ class admin_users.AdminUsers extends Widget
 		this.hideMessages()
 		this.editUser($(evnt.currentTarget).data('id'))
 
-	saveAction: (evnt) =>
+	saveEditAction: (evnt) =>
 		this.hideMessages()
 		### Prepare the new user object and call the update method ###
 		$row   = @uis.usersList.find(".user.edition.actual")
@@ -102,7 +109,7 @@ class admin_users.AdminUsers extends Widget
 		@cache.editedUser.Email = email
 		this.updateUser(@cache.editedUser)
 
-	cancelAction: (evnt) =>
+	cancelEditAction: (evnt) =>
 		this.hideMessages()
 		### Cancel the edition mode, reset the orginal row ###
 		if @cache.editedUser?
@@ -111,8 +118,12 @@ class admin_users.AdminUsers extends Widget
 			$edited_row.remove()
 			@cache.editedUser = null
 
+	resendAction: (evnt) =>
+		this.hideMessages()
+		this.resetPassword($(evnt.currentTarget).data('id'))
+
 	# -----------------------------------------------------------------------------
-	#    CRUD
+	#    API
 	#       After each operation, the page is reloaded
 	# -----------------------------------------------------------------------------
 	__getUserById: (id) =>
@@ -170,6 +181,18 @@ class admin_users.AdminUsers extends Widget
 			error   : => window.location.reload()
 		})
 
+	resetPassword: (id) =>
+		user = this.__getUserById(id)
+		$.ajax('/api/account/reset-password', {
+			dataType : "json"
+			type     : "POST"
+			data     : JSON.stringify({email:user.Email})
+			success  : (data) =>
+				if data.status == "ok"
+					console.log("cool", data)
+				else
+					console.log("pas cool", data)
+		})
 # -----------------------------------------------------------------------------
 #
 #    MAIN FUNCTION

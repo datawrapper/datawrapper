@@ -23,6 +23,8 @@ admin_users.AdminUsers = (function(_super) {
   __extends(AdminUsers, _super);
 
   function AdminUsers() {
+    this.resetPassword = __bind(this.resetPassword, this);
+
     this.updateUser = __bind(this.updateUser, this);
 
     this.removeUser = __bind(this.removeUser, this);
@@ -31,9 +33,11 @@ admin_users.AdminUsers = (function(_super) {
 
     this.__getUserById = __bind(this.__getUserById, this);
 
-    this.cancelAction = __bind(this.cancelAction, this);
+    this.resendAction = __bind(this.resendAction, this);
 
-    this.saveAction = __bind(this.saveAction, this);
+    this.cancelEditAction = __bind(this.cancelEditAction, this);
+
+    this.saveEditAction = __bind(this.saveEditAction, this);
 
     this.editAction = __bind(this.editAction, this);
 
@@ -62,7 +66,7 @@ admin_users.AdminUsers = (function(_super) {
       editionTmpl: '.user.edition.template',
       msgError: '.alert-error'
     };
-    this.ACTIONS = ['showAddUserForm', 'addUserAction', 'removeAction', 'editAction', 'saveAction', 'cancelAction'];
+    this.ACTIONS = ['showAddUserForm', 'addUserAction', 'removeAction', 'editAction', 'saveEditAction', 'cancelEditAction', 'resendAction'];
     this.cache = {
       editedUser: null
     };
@@ -75,7 +79,7 @@ admin_users.AdminUsers = (function(_super) {
 
   AdminUsers.prototype.editUser = function(id) {
     var current_line, nui;
-    this.cancelAction();
+    this.cancelEditAction();
     this.cache.editedUser = this.__getUserById(id);
     nui = this.cloneTemplate(this.uis.editionTmpl, {
       id: this.cache.editedUser.Id,
@@ -124,7 +128,7 @@ admin_users.AdminUsers = (function(_super) {
     return this.editUser($(evnt.currentTarget).data('id'));
   };
 
-  AdminUsers.prototype.saveAction = function(evnt) {
+  AdminUsers.prototype.saveEditAction = function(evnt) {
     var $row, email, status, user;
     this.hideMessages();
     /* Prepare the new user object and call the update method
@@ -139,7 +143,7 @@ admin_users.AdminUsers = (function(_super) {
     return this.updateUser(this.cache.editedUser);
   };
 
-  AdminUsers.prototype.cancelAction = function(evnt) {
+  AdminUsers.prototype.cancelEditAction = function(evnt) {
     var $edited_row;
     this.hideMessages();
     /* Cancel the edition mode, reset the orginal row
@@ -151,6 +155,11 @@ admin_users.AdminUsers = (function(_super) {
       $edited_row.remove();
       return this.cache.editedUser = null;
     }
+  };
+
+  AdminUsers.prototype.resendAction = function(evnt) {
+    this.hideMessages();
+    return this.resetPassword($(evnt.currentTarget).data('id'));
   };
 
   AdminUsers.prototype.__getUserById = function(id) {
@@ -229,7 +238,30 @@ admin_users.AdminUsers = (function(_super) {
         if (data.data.errors != null) {
           return _this.uis.msgError.filter(".error-" + data.data.errors[0]).removeClass('hidden');
         } else {
+          return window.location.reload();
+        }
+      },
+      error: function() {
+        return window.location.reload();
+      }
+    });
+  };
 
+  AdminUsers.prototype.resetPassword = function(id) {
+    var user,
+      _this = this;
+    user = this.__getUserById(id);
+    return $.ajax('/api/account/reset-password', {
+      dataType: "json",
+      type: "POST",
+      data: JSON.stringify({
+        email: user.Email
+      }),
+      success: function(data) {
+        if (data.status === "ok") {
+          return console.log("cool", data);
+        } else {
+          return console.log("pas cool", data);
         }
       }
     });
