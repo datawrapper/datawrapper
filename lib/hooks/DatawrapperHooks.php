@@ -54,7 +54,7 @@ class DatawrapperHooks {
      * @param $hookName - the name of hook to register (see Core::Hooks)
      * @param $params   - parameters that will be passed to plugin functions 
      */ 
-    public static function execute($hookName, $params = null){
+    public static function execute($hookName, $params = array()){
         $me = self::getInstance();
         if(!isset($me->hooks[$hookName])){
             return false;
