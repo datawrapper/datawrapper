@@ -63,4 +63,4 @@ if (!defined('NO_SLIM')) {
 
 
 require ROOT_PATH . 'lib/session/database.php';
-require ROOT_PATH . 'lib/session/Datawrapper.php';
+require ROOT_PATH . 'lib/session/DatawrapperSession.php';
