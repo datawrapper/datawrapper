@@ -58,15 +58,21 @@ class DatawrapperHooks {
      * @param $hookName - the name of hook to register (see Core::Hooks)
      * @param $params   - parameters that will be passed to plugin functions
      */
-    public static function execute($hookName, $params = array()){
+    public static function execute($hookName){
         $me = self::getInstance();
         if(!isset($me->hooks[$hookName])){
             return false;
         }
         foreach ($me->hooks[$hookName] as $key => $func) {
-            call_user_func_array($func, $params);
+            call_user_func_array($func, array_slice(func_get_args(), 1));
         }
     }
+
+    /*
+     * print something below a charts HTML body
+     */
+    const AFTER_CHART_BODY = 'after_chart_body';
+
 }
 
 
