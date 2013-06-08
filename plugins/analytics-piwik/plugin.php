@@ -11,13 +11,14 @@ class DatawrapperPlugin_AnalyticsPiwik extends DatawrapperPlugin {
         DatawrapperHooks::register(DatawrapperHooks::AFTER_CHART_BODY, array($this, 'getTrackingCode'));
     }
 
-  	protected function getTrackingCode($chart = null) {
-        if ($GLOBALS['dw_config']['analytics']) {
-            $cfg = $GLOBALS['dw_config']['analytics']['config'];
-            $url = $cfg['url'];
-            $idSite = $cfg['idSite'];
+  	public function getTrackingCode($chart = null) {
+        $config = $this->getConfig();
+        if (empty($config)) return false;
 
-            print '<!-- Piwik -->
+        $url = $config['url'];
+        $idSite = $config['idSite'];
+
+        print '<!-- Piwik -->
 <script type="text/javascript">
   var _paq = _paq || [];
   _paq.push(["setDocumentTitle", document.domain + "/" + document.title]);
@@ -39,7 +40,6 @@ class DatawrapperPlugin_AnalyticsPiwik extends DatawrapperPlugin {
   })();
 </script>
 <!-- End Piwik Code -->';
-        }
     }
 
 }
