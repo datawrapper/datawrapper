@@ -3,6 +3,7 @@ CHANGELOG
 
 ### 1.4.0
 * added table plugin
+* added plugins system
 * created datawrapper hook system (lib/hooks)
 
 ### 1.3.3
