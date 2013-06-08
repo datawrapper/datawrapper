@@ -43,6 +43,9 @@ function str_purify($dirty_html) {
     return $_HTMLPurifier->purify($dirty_html);
 }
 
+$twig->addGlobal('hooks', DatawrapperHooks::getInstance());
+
+
 // loae I18n extension for Twig
 $twig->addExtension(new Twig_Extension_I18n());
 
