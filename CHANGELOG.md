@@ -1,6 +1,9 @@
 CHANGELOG
 ---------
 
+### 1.4.0
+* added table plugin
+
 ### 1.3.3
 * trimming row labels in filter UI
 * increased character limit to 40 chars
