@@ -212,7 +212,6 @@ $app->put('/account/reset-password', function() use ($app) {
         if (!empty($user)) {
             if (!empty($payload->pwd)) {
                 // update password
-                $hash = hash_hmac('sha256', $user->getPwd(), $payload->time);
                 $user->setPwd($payload->pwd);
                 $user->setResetPasswordToken('');
                 $user->save();
