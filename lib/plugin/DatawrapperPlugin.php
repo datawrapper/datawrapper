@@ -25,7 +25,7 @@ class DatawrapperPlugin {
 	}
 
 	/** register events */
-	public function bind($params) {
+	public function init($params) {
 		throw new Exception("need to be implemented");
 	}
 
