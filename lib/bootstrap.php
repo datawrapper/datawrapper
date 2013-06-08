@@ -64,6 +64,5 @@ if (!defined('NO_SLIM')) {
 
 require ROOT_PATH . 'lib/session/database.php';
 require ROOT_PATH . 'lib/session/DatawrapperSession.php';
-
-require ROOT_PATH . 'lib/hooks/hooks.php';
 require ROOT_PATH . 'lib/hooks/DatawrapperHooks.php';
+
