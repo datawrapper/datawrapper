@@ -15,4 +15,16 @@
  */
 class Plugin extends BasePlugin {
 
+    public function getName() {
+        return $this->getId();
+    }
+
+    public function getClassName() {
+        return 'DatawrapperPlugin_' . str_replace(' ', '', ucwords(str_replace('-', ' ', $this->getName())));
+    }
+
+    public function getPath() {
+        return ROOT_PATH . 'plugins/' . $this->getName() . '/plugin.php';
+    }
+
 } // Plugin
