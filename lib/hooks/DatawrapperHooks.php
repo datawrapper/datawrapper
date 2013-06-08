@@ -1,4 +1,4 @@
-<?php 
+<?php
 // class DemoPlugin {
 //     function init(){
 //         $this->foo = 'bar';
@@ -25,9 +25,10 @@
 // }
 
 /**
- * This singleton handle hooks registration for plugins 
+ * This singleton handle hooks registration for plugins
  */
 class DatawrapperHooks {
+
     private static $instance;
 
     public static function getInstance(){
@@ -36,12 +37,14 @@ class DatawrapperHooks {
         }
         return self::$instance;
     }
+
     public $hooks = array();
+
     /**
      * Register a plugin hook
      * @param $hookName - the name of hook to register (see Core::Hooks)
-     * @param $pluginFunc  - the plugin function that will be called on hook execution (see DatawrapperPlugins::executeHook) 
-     */ 
+     * @param $pluginFunc  - the plugin function that will be called on hook execution (see DatawrapperPlugins::executeHook)
+     */
     public static function register($hookName, $pluginFunc){
         $me = self::getInstance();
         if(!isset($me->hooks[$hookName])){
@@ -49,11 +52,12 @@ class DatawrapperHooks {
         }
         $me->hooks[$hookName][] = $pluginFunc;
     }
+
     /**
      * Execute a core hook - will call every plugin function registred for a hook
      * @param $hookName - the name of hook to register (see Core::Hooks)
-     * @param $params   - parameters that will be passed to plugin functions 
-     */ 
+     * @param $params   - parameters that will be passed to plugin functions
+     */
     public static function execute($hookName, $params = array()){
         $me = self::getInstance();
         if(!isset($me->hooks[$hookName])){
