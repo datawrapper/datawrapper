@@ -35,6 +35,7 @@ function check_config() {
     return '';
 }
 
+
 function check_database() {
     if (!file_exists('../lib/core/build/conf/datawrapper-conf.php')) {
         return '<h2>No database configuration found!</h2>'
@@ -71,12 +72,27 @@ function check_database() {
     return '';
 }
 
+function check_plugins() {
+    $res = mysql_query('SELECT id FROM plugin WHERE enabled = 1');
+    while ($row = mysql_fetch_assoc($res)) {
+        if (!file_exists(ROOT_PATH . 'plugins/' . $row['id'] . '/plugin.php')) {
+            $missing[] = $row['id'];
+        }
+    }
+    if (count($missing) > 0) {
+        return '<h2>Some plugins are missing</h2>'
+            . '<p>The following plugins are activated in the database but the corresponding '
+            . 'files could not be found:</p>'
+            . '<ul><li><code>'. join('</li></code><li><code>', $missing) . '</code></li></ul>';
+    }
+}
 
 function check_server() {
     $check = array();
     $check[] = 'check_config';
     $check[] = 'check_path_permissions';
     $check[] = 'check_database';
+    $check[] = 'check_plugins';
 
     foreach ($check as $func) {
         $msg = call_user_func($func);
