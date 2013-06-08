@@ -10,17 +10,22 @@
 define('ROOT_PATH', '../');
 define('NO_SLIM', 1);
 
+date_default_timezone_set('Europe/Berlin');
+
 require_once ROOT_PATH . 'lib/bootstrap.php';
 
 $cmd = $argv[1];
 $plugin_id = $argv[2];
 
 if ($cmd == 'enable' || $cmd == 'disable') {
-    $plugin_path = ROOT_PATH . 'plugins/' . $plugin_id . '/plugin.php';
-    if (file_exists($plugin_path)) {
 
-        require_once $plugin_path;
-        $className = 'DatawrapperPlugin_' . str_replace(ucwords(str_replace($plugin_id, '-', ' ')), ' ', '');
+    $plugin = new Plugin();
+    $plugin->setId($plugin_id);
+
+    if (file_exists($plugin->getPath())) {
+        print $plugin->getClassName();
+        require_once $plugin->getPath();
+        $className = $plugin->getClassName();
         $plugin = new $className();
         if ($cmd == 'enable') $plugin->install();
         else $plugin->uninstall();
