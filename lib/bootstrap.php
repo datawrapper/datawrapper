@@ -64,5 +64,16 @@ if (!defined('NO_SLIM')) {
 
 require ROOT_PATH . 'lib/session/database.php';
 require ROOT_PATH . 'lib/session/DatawrapperSession.php';
+require ROOT_PATH . 'lib/plugin/DatawrapperPlugin.php';
 require ROOT_PATH . 'lib/hooks/DatawrapperHooks.php';
+
+// load plugins
+$plugins = PluginQuery::create()->filterByEnabled(true)->find();
+foreach ($plugins as $plugin) {
+    $plugin_path = ROOT_PATH . 'plugins/' . $plugin->getName() . '/plugin.php';
+    require_once $plugin_path;
+    $className = $plugin->getClassName();
+    $plugin = new $className();
+    $plugin->init();
+}
 
