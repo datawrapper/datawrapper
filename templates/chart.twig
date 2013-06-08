@@ -307,6 +307,6 @@
     {% set title = chart.title %}{% set intro = chart.metadata.describe.intro %}{% set source = chart.metadata.describe['source-name'] %}{% set sourceURL = chart.metadata.describe['source-url'] %}
 
     {% include theme.template ? 'themes/' ~ theme.template ~ '.twig' : 'themes/default.twig' %}
-    {{ trackingCode | raw }}
+    {{ hooks.execute('after_chart_body', chart) }}
 </body>
 </html>
