@@ -135,5 +135,19 @@ CREATE TABLE `job`
 		REFERENCES `chart` (`id`)
 ) ENGINE=InnoDB;
 
+-- ---------------------------------------------------------------------
+-- plugin
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `plugin`;
+
+CREATE TABLE `plugin`
+(
+	`id` VARCHAR(128) NOT NULL,
+	`installed_at` DATETIME NOT NULL,
+	`enabled` TINYINT(1) DEFAULT 0,
+	PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
+
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;
