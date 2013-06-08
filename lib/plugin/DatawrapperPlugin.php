@@ -14,6 +14,7 @@ class DatawrapperPlugin {
 			$plugin->setId($this->getName());
 		}
 		$plugin->setEnabled(true);
+		$plugin->setInstalledAt(time());
 		$plugin->save();
 	}
 
@@ -38,6 +39,9 @@ class DatawrapperPlugin {
 		$plugin->save();
 	}
 
+	/*
+	 * returns the version of the plugin
+	 */
 	public function getVersion() {
 		$reflector = new ReflectionClass(get_class($this));
 		$dirname   = dirname($reflector->getFileName());
@@ -45,10 +49,23 @@ class DatawrapperPlugin {
 		return $meta['version'];
 	}
 
+	/*
+	 * returns the name (id) of this plugin
+	 */
 	public function getName() {
 		$reflector = new ReflectionClass(get_class($this));
 		$dirname   = dirname($reflector->getFileName());
 		return substr($dirname, strrpos($dirname, DIRECTORY_SEPARATOR)+1);
+	}
+
+	/*
+	 * returns the plugin specific configuration (from config.yaml)
+	 */
+	public function getConfig() {
+		if (isset($GLOBALS['dw_config']['plugins'][$this->getName()])) {
+			return $GLOBALS['dw_config']['plugins'][$this->getName()];
+		}
+		return array();
 	}
 }
 
