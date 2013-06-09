@@ -43,7 +43,11 @@ function str_purify($dirty_html) {
     return $_HTMLPurifier->purify($dirty_html);
 }
 
-$twig->addGlobal('hooks', DatawrapperHooks::getInstance());
+function call_hook() {
+    call_user_func_array(array(DatawrapperHooks::getInstance(), 'execute'), func_get_args());
+    //DatawrapperHooks::execute();
+}
+$twig->addFunction('hook', new Twig_Function_Function('call_hook'));
 
 
 // loae I18n extension for Twig
@@ -51,13 +55,6 @@ $twig->addExtension(new Twig_Extension_I18n());
 
 require_once '../lib/utils/i18n.php';
 require_once '../lib/utils/disable_cache.php';
-
-// Load CDN publishing class
-if (!empty($dw_config['publish']) && !empty($dw_config['publish']['requires'])) {
-    foreach($dw_config['publish']['requires'] as $lib) {
-        require_once '../' . $lib;
-    }
-}
 
 
 function add_header_vars(&$page, $active = null) {
@@ -156,9 +153,6 @@ function add_header_vars(&$page, $active = null) {
     $page['config'] = $config;
     $page['invert_navbar'] = substr($config['domain'], -4) == '.pro';
 
-    $analyticsMod = get_module('analytics', '../lib/');
-    $page['trackingCode'] = !empty($analyticsMod) ? $analyticsMod->getTrackingCode() : '';
-
     if (isset($config['piwik'])) {
         $page['PIWIK_URL'] = $config['piwik']['url'];
         $page['PIWIK_IDSITE'] = $config['piwik']['idSite'];
@@ -194,7 +188,6 @@ function add_editor_nav(&$page, $step) {
 
 require_once '../lib/utils/errors.php';
 require_once '../lib/utils/check_chart.php';
-require_once '../lib/utils/get_module.php';
 require_once '../controller/home.php';
 require_once '../controller/login.php';
 require_once '../controller/account-settings.php';
