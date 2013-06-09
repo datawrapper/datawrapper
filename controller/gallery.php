@@ -1,7 +1,6 @@
 <?php
 
 require_once '../lib/utils/themes.php';
-require_once '../lib/utils/visualizations.php';
 
 function gal_nbChartsByMonth() {
     $con = Propel::getConnection();
@@ -27,7 +26,7 @@ function gal_nbChartsByType() {
 
     $max = 0;
     foreach ($rs as $r) {
-        $vis = get_visualization_meta($r['type']);
+        $vis = DatawrapperVisualization::get($r['type']);
         $lang = substr(DatawrapperSession::getLanguage(), 0, 2);
         if (empty($vis['title'][$lang])) $lang = 'en';
         $res[] = array('count' => $r['c'], 'id' => $r['type'], 'name' => $vis['title'][$lang]);

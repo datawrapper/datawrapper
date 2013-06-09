@@ -52,7 +52,7 @@ function get_chart_content($chart, $user, $minified = false, $path = '') {
     $vis_locale = array();  // visualizations may define localized strings, e.g. "other"
 
     while (!empty($next_vis_id)) {
-        $vis = get_visualization_meta($next_vis_id, $path);
+        $vis = DatawrapperVisualization::get($next_vis_id, $path);
         $vjs = array();
         if (!empty($vis['libraries'])) {
             foreach ($vis['libraries'] as $url) {
@@ -79,7 +79,7 @@ function get_chart_content($chart, $user, $minified = false, $path = '') {
 
     $styles = array_merge($vis_css, array_reverse($theme_css));
 
-    $the_vis = get_visualization_meta($chart->getType(), $path);
+    $the_vis = DatawrapperVisualization::get($chart->getType(), $path);
     $the_vis['locale'] = $vis_locale;
     $the_theme = get_theme_meta($chart->getTheme(), $path);
 
