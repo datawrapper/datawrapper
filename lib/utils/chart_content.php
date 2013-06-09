@@ -104,14 +104,12 @@ function get_chart_content($chart, $user, $minified = false, $path = '') {
         );
     }
 
-    $analyticsMod = get_module('analytics', $path . '../lib/');
-
     $cfg = $GLOBALS['dw_config'];
-    if (empty($cfg['publish'])) {
+    $published_urls = DatawrapperHooks::execute(DatawrapperHooks::GET_PUBLISHED_URL, $chart);
+    if (empty($published_urls)) {
         $chart_url = 'http://' . $cfg['chart_domain'] . '/' . $chart->getID() . '/';
     } else {
-        $pub = get_module('publish',  $path . '../lib/');
-        $chart_url = $pub->getUrl($chart);
+        $chart_url = $published_urls[0];  // ignore urls except from the first one
     }
 
     $page = array(
@@ -127,19 +125,14 @@ function get_chart_content($chart, $user, $minified = false, $path = '') {
         'themeJS' => array_reverse($theme_js),
         'visJS' => array_merge(array_reverse($vis_js), $vis_libs),
         'origin' => !empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '',
-        'DW_DOMAIN' => 'http://' . $GLOBALS['dw_config']['domain'] . '/',
-        'DW_CHART_DATA' => 'http://' . $GLOBALS['dw_config']['domain'] . '/chart/' . $chart->getID() . '/data',
+        'DW_DOMAIN' => 'http://' . $cfg['domain'] . '/',
+        'DW_CHART_DATA' => 'http://' . $cfg['domain'] . '/chart/' . $chart->getID() . '/data',
         'ASSET_PATH' => $minified ? '' : '/static/themes/'.$the_theme['id'].'/',
         'trackingCode' => !empty($analyticsMod) ? $analyticsMod->getTrackingCode($chart) : '',
         'chartUrl' => $chart_url,
         'embedCode' => '<iframe src="' .$chart_url. '" frameborder="0" allowtransparency="true" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen width="'.$chart->getMetadata('publish.embed-width') . '" height="'. $chart->getMetadata('publish.embed-height') .'"></iframe>',
         'chartUrlFs' => strpos($chart_url, '.html') > 0 ? str_replace('index.html', 'fs.html', $chart_url) : $chart_url . '?fs=1'
     );
-
-    if (isset($GLOBALS['dw_config']['piwik'])) {
-        $page['PIWIK_URL'] = $GLOBALS['dw_config']['piwik']['url'];
-        $page['PIWIK_IDSITE'] = $GLOBALS['dw_config']['piwik']['idSite'];
-    }
 
     return $page;
 }
