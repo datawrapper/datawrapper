@@ -79,4 +79,3 @@ foreach ($plugins as $plugin) {
     }
     $plugin->init();
 }
-
