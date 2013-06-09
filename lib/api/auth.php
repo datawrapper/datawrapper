@@ -91,7 +91,7 @@ $app->post('/account/reset-password', function() use($app) {
         $passwordResetLink = 'http://' . $GLOBALS['dw_config']['domain'] . '/account/reset-password/' . $token;
         $from = 'password-reset@' . $GLOBALS['dw_config']['domain'];
         include('../../lib/templates/password-reset-email.php');
-        mail($user->getEmail(), 'Datawrapper Password Reset', $password_reset_mail, 'From: ' . $from);
+        DatawrapperHooks::execute(DatawrapperHooks::SEND_EMAIL, $user->getEmail(), 'Datawrapper Password Reset', $password_reset_mail, 'From: ' . $from);
         ok(_('You should soon receive an email with further instructions.'));
 
     } else {
@@ -129,7 +129,7 @@ $app->post('/account/resend-activation', function() use($app) {
 
         include('../../lib/templates/activation-email.php');
 
-        mail($user->getEmail(), 'Datawrapper Email Activation', $activation_mail, 'From: ' . $from);
+        DatawrapperHooks::execute(DatawrapperHooks::SEND_EMAIL, $user->getEmail(), 'Datawrapper Email Activation', $activation_mail, 'From: ' . $from);
 
         ok(_('The activation email has been send to your email address, again.'));
 

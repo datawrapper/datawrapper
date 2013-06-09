@@ -82,6 +82,9 @@ class DatawrapperHooks {
     // returns the URL of a published chart (args: chart)
     const GET_PUBLISHED_URL = 'get_pulished_url';
 
+    // Send an email (args: to, subject, body)
+    const SEND_EMAIL = 'send_email';
+
 }
 
 
