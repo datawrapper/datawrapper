@@ -21,11 +21,11 @@ function nbChartsByType($user) {
     $res = array();
 
     foreach ($rs as $r) {
-        $vis = DatawrapperVisualize::get($r['type']);
+        $vis = DatawrapperVisualization::get($r['type']);
         $lang = substr(DatawrapperSession::getLanguage(), 0, 2);
         if (!isset($vis['title'])) continue;
         if (empty($vis['title'][$lang])) $lang = 'en';
-        $res[] = array('count' => $r['c'], 'id' => $r['type'], 'name' => $vis['title'][$lang]);
+        $res[] = array('count' => $r['c'], 'id' => $r['type'], 'name' => $vis['title']);
     }
     return $res;
 }
