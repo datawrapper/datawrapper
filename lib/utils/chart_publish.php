@@ -2,7 +2,6 @@
 
 require_once '../../vendor/cssmin/cssmin.php';
 require_once '../../lib/utils/themes.php';
-require_once '../../lib/utils/visualizations.php';
 require_once '../../lib/utils/chart_content.php';
 require_once '../../vendor/jsmin/jsmin.php';
 

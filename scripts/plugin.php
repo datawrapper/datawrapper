@@ -23,7 +23,7 @@ if ($cmd == 'enable' || $cmd == 'disable') {
     $plugin->setId($plugin_id);
 
     if (file_exists($plugin->getPath())) {
-        print $plugin->getClassName();
+        print $plugin->getClassName() . "\n";
         require_once $plugin->getPath();
         $className = $plugin->getClassName();
         $plugin = new $className();
