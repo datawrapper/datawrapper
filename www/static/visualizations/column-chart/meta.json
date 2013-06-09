@@ -12,7 +12,7 @@
         "sort-values": {
             "type": "checkbox",
             "label": {
-                "en": "Autmatically sort bars",
+                "en": "Automatically sort bars",
                 "de": "Balken sortieren",
                 "fr": "Trier les barres"
             }
