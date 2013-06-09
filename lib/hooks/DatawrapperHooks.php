@@ -63,9 +63,11 @@ class DatawrapperHooks {
         if(!isset($me->hooks[$hookName])){
             return false;
         }
+        $results = array();
         foreach ($me->hooks[$hookName] as $key => $func) {
-            call_user_func_array($func, array_slice(func_get_args(), 1));
+            $results[] = call_user_func_array($func, array_slice(func_get_args(), 1));
         }
+        return $results;
     }
 
     /*
