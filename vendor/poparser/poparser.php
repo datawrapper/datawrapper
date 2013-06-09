@@ -210,9 +210,11 @@ class PO_Parser
 				}
 			}
 
-			$id = is_array($entry['msgid'])? implode('',$entry['msgid']):$entry['msgid'];
-			
-			$this->entries[ $id ] = $entry;
+			if (isset($entry['msgid'])) {
+				$id = is_array($entry['msgid'])? implode('',$entry['msgid']):$entry['msgid'];
+				
+				$this->entries[ $id ] = $entry;	
+			}
 		}
 
 		return $this->entries;
