@@ -45,7 +45,7 @@ class DatawrapperPlugin {
 	public function getVersion() {
 		$reflector = new ReflectionClass(get_class($this));
 		$dirname   = dirname($reflector->getFileName());
-		$meta      = json_decode(file_get_contents($dirname . "/meta.json"),true);
+		$meta      = json_decode(file_get_contents($dirname . "/package.json"),true);
 		return $meta['version'];
 	}
 
