@@ -57,7 +57,7 @@ function get_chart_content($chart, $user, $minified = false, $path = '') {
         if (!empty($vis['libraries'])) {
             foreach ($vis['libraries'] as $url) {
                 // at first we check if the library lives in ./lib of the vis module
-                if (file_exists(ROOT_PATH . 'www/static/visualizations/' . $vis['id'] . '/lib/' . $url)) {
+                if (file_exists($vis['__static_path'] . '/lib/' . $url)) {
                     $vis_libs[] = '/static/visualizations/'.$vis['id'].'/lib/'.$url;
                 } else if (file_exists(ROOT_PATH . 'www/static/vendor/' . $url)) {
                     $vis_libs[] = '/static/vendor/' . $url;
@@ -69,10 +69,10 @@ function get_chart_content($chart, $user, $minified = false, $path = '') {
                 if (!isset($vis_locale[$term])) $vis_locale[$term] = $translations;
             }
         }
-        $vjs[] = '/static/visualizations/' . $vis['id'] . '/' . $vis['id'] . '.js';
+        $vjs[] = '/static/plugins/'. $vis['_plugin_']->getName() .'/' . $vis['id'] . '.js';
         $vis_js = array_merge($vis_js, array_reverse($vjs));
         if ($vis['hasCSS']) {
-            $vis_css[] = '/static/visualizations/' . $vis['id'] . '/style.css';
+            $vis_css[] = '/static/plugins/' . $vis['_plugin_']->getName() . '/' . $vis['id'] . '.css';
         }
         $next_vis_id = !empty($vis['extends']) ? $vis['extends'] : null;
     }
