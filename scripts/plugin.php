@@ -23,7 +23,7 @@ $plugin->setId($plugin_id);
 
 if (file_exists($plugin->getPath())) {
     if (file_exists($plugin->getPath() . 'plugin.php')) {
-        require_once $plugin->getPath();
+        require_once $plugin->getPath() . 'plugin.php';
         $className = $plugin->getClassName();
         $pluginClass = new $className();
     } else {
