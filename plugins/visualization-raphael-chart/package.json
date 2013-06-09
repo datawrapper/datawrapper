@@ -1,6 +1,6 @@
 {
     "version": "1.3.0",
     "dependencies": {
-        "visualization-raphael-chart": "*"
+        "visualization": "*"
     }
 }
