@@ -23,7 +23,7 @@
             "label": {
                 "en": "Reverse order",
                 "de": "Umgekehrte Reihenfolge",
-                "fr": "inverser l&#39;ordre"
+                "fr": "Inverser l&#39;ordre"
             }
         },
         "normalize": {
@@ -31,7 +31,7 @@
             "label": {
                 "en": "Stack percentages",
                 "de": "Prozentwerte stapeln",
-                "fr": "Normalize to 100%"
+                "fr": "Pourcentages empilés"
             },
             "default": false
         },
@@ -40,7 +40,7 @@
             "label": {
                 "en": "Let user switch mode",
                 "de": "Nutzer kann umschalten",
-                "fr": "Let user switch mode"
+                "fr": "L'utilisateur peut changer de mode"
             },
             "depends-on": {
                 "normalize": true
