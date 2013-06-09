@@ -196,6 +196,7 @@ require_once '../controller/home.php';
 require_once '../controller/login.php';
 require_once '../controller/account-settings.php';
 require_once '../controller/account-activate.php';
+require_once '../controller/account-set-password.php';
 require_once '../controller/account-reset-password.php';
 require_once '../controller/chart-create.php';
 require_once '../controller/chart-edit.php';

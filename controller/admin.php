@@ -114,7 +114,7 @@ $app->get('/admin/users/?', function() use ($app) {
             global $app;
             $sort = $app->request()->params('sort', '');
             $query = UserQuery::create()
-                ->join('User.Chart')
+                ->leftJoin('User.Chart')
                 ->withColumn('COUNT(Chart.Id)', 'NbCharts')
                 ->groupBy('User.Id')
                 ->filterByDeleted(false);
