@@ -9,9 +9,14 @@ class DatawrapperVisualization {
         return self::$instance;
     }
 
+    /*
+     * registers a new visualization, should be called by plugins
+     */
     public static function register($meta) { return self::getInstance()->_register($meta); }
+
     public static function all() { return self::getInstance()->_all(); }
     public static function get($id) { return self::getInstance()->_get($id); }
+
 
     // non-static definitions below
 

@@ -1,7 +1,6 @@
 <?php
 
 require_once '../lib/utils/themes.php';
-require_once '../lib/utils/visualizations.php';
 require_once '../lib/utils/pagination.php';
 
 function nbChartsByMonth($user) {
@@ -22,7 +21,7 @@ function nbChartsByType($user) {
     $res = array();
 
     foreach ($rs as $r) {
-        $vis = get_visualization_meta($r['type']);
+        $vis = DatawrapperVisualize::get($r['type']);
         $lang = substr(DatawrapperSession::getLanguage(), 0, 2);
         if (!isset($vis['title'])) continue;
         if (empty($vis['title'][$lang])) $lang = 'en';
