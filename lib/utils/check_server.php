@@ -76,7 +76,7 @@ function check_plugins() {
     $res = mysql_query('SELECT id FROM plugin WHERE enabled = 1');
     $missing = array();
     while ($row = mysql_fetch_assoc($res)) {
-        if (!file_exists(ROOT_PATH . 'plugins/' . $row['id'] . '/plugin.php')) {
+        if (!file_exists(ROOT_PATH . 'plugins/' . $row['id'] . '/package.json')) {
             $missing[] = $row['id'];
         }
     }
