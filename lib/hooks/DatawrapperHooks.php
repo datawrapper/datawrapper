@@ -70,10 +70,17 @@ class DatawrapperHooks {
         return $results;
     }
 
-    /*
-     * print something below a charts HTML body
-     */
+    // print something below a charts HTML body
     const AFTER_CHART_BODY = 'after_chart_body';
+
+    // publishes a set of files to some CDN (args: files)
+    const PUBLISH_FILES = 'publish_files';
+
+    // unpublishes (removes) a set of files from some CDN (args: files)
+    const UNPUBLISH_FILES = 'unpublish_files';
+
+    // returns the URL of a published chart (args: chart)
+    const GET_PUBLISHED_URL = 'get_pulished_url';
 
 }
 
