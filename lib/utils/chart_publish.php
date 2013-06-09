@@ -129,8 +129,5 @@ function publish_data($user, $chart) {
 
 
 function publish_push_to_cdn($cdn_files, $chart) {
-    if ($pub = get_module('publish')) {
-        // $pub->unpublish(array($chart->getID() . '/index.html'));
-        $pub->publish($cdn_files);
-    }
+    DatawrapperHooks::execute(DatawrapperHooks::PUBLISH_FILES, $cdn_files);
 }
