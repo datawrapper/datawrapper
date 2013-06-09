@@ -74,6 +74,9 @@ foreach ($plugins as $plugin) {
     require_once $plugin_path;
     $className = $plugin->getClassName();
     $plugin = new $className();
+    foreach ($plugin->getRequiredLibraries() as $lib) {
+        require_once ROOT_PATH . 'plugins/' . $plugin->getName() . '/' . $lib;
+    }
     $plugin->init();
 }
 

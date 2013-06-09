@@ -18,13 +18,6 @@ class DatawrapperPlugin {
 		$plugin->save();
 	}
 
-	/**
-	* Publish static files (CDN...)
-	*/
-	public function publish() {
-		throw new Exception("need to be implemented");
-	}
-
 	/** register events */
 	public function init() {
 		throw new Exception("need to be implemented");
@@ -65,6 +58,13 @@ class DatawrapperPlugin {
 		if (isset($GLOBALS['dw_config']['plugins'][$this->getName()])) {
 			return $GLOBALS['dw_config']['plugins'][$this->getName()];
 		}
+		return array();
+	}
+
+	/*
+	 * returns a list of PHP files that needs to be included
+	 */
+	public function getRequiredLibraries() {
 		return array();
 	}
 }
