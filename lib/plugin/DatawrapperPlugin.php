@@ -16,6 +16,31 @@ class DatawrapperPlugin {
 		$plugin->setEnabled(true);
 		$plugin->setInstalledAt(time());
 		$plugin->save();
+
+		$this->copyStaticFiles();
+	}
+
+	private function copyStaticFiles() {
+		// check if there's a /static in plugin directory
+		$source_path = ROOT_PATH . 'plugins/' . $this->getName() . '/static';
+		if (!file_exists($source_path)) return;
+
+		// create directory in www/static/plugins/ if not exists
+		$plugin_static_path = ROOT_PATH . 'www/static/plugins/' . $this->getName();
+		if (!file_exists($plugin_static_path)) {
+			mkdir($plugin_static_path);
+		}
+		// copy static files to that directory
+		$iterator = new RecursiveIteratorIterator(
+		 	new RecursiveDirectoryIterator($source_path, RecursiveDirectoryIterator::SKIP_DOTS),
+		  	RecursiveIteratorIterator::SELF_FIRST);
+		foreach ($iterator as $item) {
+			if ($item->isDir()) {
+				mkdir($plugin_static_path . '/' . $iterator->getSubPathName());
+			} else {
+				copy($item, $plugin_static_path . '/' . $iterator->getSubPathName());
+			}
+		}
 	}
 
 	/** register events */
