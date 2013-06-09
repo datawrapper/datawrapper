@@ -5,7 +5,7 @@ class DatawrapperVisualization {
     private static $instance;
 
     public static function getInstance() {
-        if (!isset(self::$datawrapper)) self::$instance = new DatawrapperVisualization();
+        if (!isset(self::$instance)) self::$instance = new DatawrapperVisualization();
         return self::$instance;
     }
 
@@ -15,13 +15,13 @@ class DatawrapperVisualization {
 
     // non-static definitions below
 
-    private $visualizations;
+    private $visualizations = array();
 
     public function _register($meta) {
         $this->visualizations[$meta['id']] = $meta;
     }
 
-    public function _all($foo) {
+    public function _all() {
         $res = array_values($this->visualizations);
         // sort by something
         usort($res, function ($a, $b) {
@@ -29,6 +29,7 @@ class DatawrapperVisualization {
             if (!isset($b['order'])) $b['order'] = 99999;
             return $a['order'] - $b['order'];
         });
+        print 'all = '.count($res);
         return $res;
     }
 
