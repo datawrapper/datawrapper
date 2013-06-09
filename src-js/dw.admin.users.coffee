@@ -6,14 +6,17 @@
 # License : MIT Licence
 # -----------------------------------------------------------------------------
 # Creation : 29-May-2013
-# Last mod : 05-Jun-2013
+# Last mod : 09-Jun-2013
 # -----------------------------------------------------------------------------
+# 
+# USERS ADMIN
+#
+# To compile this file, run `$ ./src-js/make` with coffee installed
+# For developement, use `$ coffee -w -b -c -o www/static/js/ src-js/dw.admin.users.coffee`
+
 window.admin_users = {}
 
 Widget   = window.serious.Widget
-# URL      = new window.serious.URL()
-# Format   = window.serious.format
-# Utils    = window.serious.Utils
 States   = new window.serious.States()
 
 AJAX_USERS          = '/api/users'
@@ -37,6 +40,7 @@ class admin_users.AdminUsers extends Widget
 			confirmDeleteUser : '.confirm-delete'
 			editionTmpl       : '.user.edition.template'
 			msgError          : '.alert-error'
+			msgSuccess        : '.alert-success'
 		}
 		@ACTIONS = [
 			'showAddUserForm'
@@ -124,7 +128,6 @@ class admin_users.AdminUsers extends Widget
 
 	# -----------------------------------------------------------------------------
 	#    API
-	#       After each operation, the page is reloaded
 	# -----------------------------------------------------------------------------
 	__getUserById: (id) =>
 		res = $.ajax("#{AJAX_USERS}/#{id}", {async : false}).responseText
@@ -189,9 +192,9 @@ class admin_users.AdminUsers extends Widget
 			data     : JSON.stringify({email:user.Email})
 			success  : (data) =>
 				if data.status == "ok"
-					console.log("cool", data)
+					@uis.msgSuccess.html(data.data).removeClass('hidden')
 				else
-					console.log("pas cool", data)
+					@uis.msgError.filter(".error-#{data.code}").removeClass('hidden')
 		})
 # -----------------------------------------------------------------------------
 #

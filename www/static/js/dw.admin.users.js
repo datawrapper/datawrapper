@@ -64,7 +64,8 @@ admin_users.AdminUsers = (function(_super) {
       addButton: 'input[name=addUser]',
       confirmDeleteUser: '.confirm-delete',
       editionTmpl: '.user.edition.template',
-      msgError: '.alert-error'
+      msgError: '.alert-error',
+      msgSuccess: '.alert-success'
     };
     this.ACTIONS = ['showAddUserForm', 'addUserAction', 'removeAction', 'editAction', 'saveEditAction', 'cancelEditAction', 'resendAction'];
     this.cache = {
@@ -259,9 +260,9 @@ admin_users.AdminUsers = (function(_super) {
       }),
       success: function(data) {
         if (data.status === "ok") {
-          return console.log("cool", data);
+          return _this.uis.msgSuccess.html(data.data).removeClass('hidden');
         } else {
-          return console.log("pas cool", data);
+          return _this.uis.msgError.filter(".error-" + data.code).removeClass('hidden');
         }
       }
     });
