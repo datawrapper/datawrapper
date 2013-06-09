@@ -70,4 +70,3 @@ require ROOT_PATH . 'lib/hooks/DatawrapperHooks.php';
 require ROOT_PATH . 'lib/plugin/load_plugins.php';
 
 load_plugins();
-

@@ -75,7 +75,7 @@ $app->post('/users', function() use ($app) {
 
     include('../../lib/templates/activation-email.php');
 
-    mail($data->email, 'Datawrapper Email Activation', $activation_mail, 'From: ' . $from);
+    DatawrapperHooks::execute(DatawrapperHooks::SEND_EMAIL, $data->email, 'Datawrapper Email Activation', $activation_mail, 'From: ' . $from);
 
 
     // we don't need to annoy the user with a login form now,
