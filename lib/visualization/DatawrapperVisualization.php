@@ -14,7 +14,14 @@ class DatawrapperVisualization {
      */
     public static function register($meta) { return self::getInstance()->_register($meta); }
 
+    /*
+     * returns a list of all visualization meta arrays
+     */
     public static function all() { return self::getInstance()->_all(); }
+
+    /*
+     * returns one specific visualization meta array
+     */
     public static function get($id) { return self::getInstance()->_get($id); }
 
 
