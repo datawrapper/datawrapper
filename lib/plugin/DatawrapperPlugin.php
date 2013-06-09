@@ -2,6 +2,17 @@
 
 class DatawrapperPlugin {
 
+	private $name;
+
+	function __construct($name = null) {
+		if (isset($name)) $this->name = $name;
+	}
+
+	/** register events */
+	public function init() {
+		return true;
+	}
+
 	/**
 	* Enable the plugin,
 	* Check if there is a static folder,
@@ -43,11 +54,6 @@ class DatawrapperPlugin {
 		}
 	}
 
-	/** register events */
-	public function init() {
-		throw new Exception("need to be implemented");
-	}
-
 	/**
 	* Disable the plugin
 	*/
@@ -71,9 +77,12 @@ class DatawrapperPlugin {
 	 * returns the name (id) of this plugin
 	 */
 	public function getName() {
-		$reflector = new ReflectionClass(get_class($this));
-		$dirname   = dirname($reflector->getFileName());
-		return substr($dirname, strrpos($dirname, DIRECTORY_SEPARATOR)+1);
+		if (!isset($this->name)) {
+			$reflector = new ReflectionClass(get_class($this));
+			$dirname   = dirname($reflector->getFileName());
+			$this->name = substr($dirname, strrpos($dirname, DIRECTORY_SEPARATOR)+1);
+		}
+		return $this->name;
 	}
 
 	/*

@@ -32,19 +32,22 @@ function load_plugins() {
         $plugin = $data[$parent_id];
         // require plugin class
         $plugin_path = ROOT_PATH . 'plugins/' . $plugin->getName() . '/plugin.php';
-        require_once $plugin_path;
-        // init plugin class
-        $className = $plugin->getClassName();
-        $plugin = new $className();
+        if (file_exists($plugin_path)) {
+            require_once $plugin_path;
+            // init plugin class
+            $className = $plugin->getClassName();
+            $pluginClass = new $className();
+        } else {
+            $pluginClass = new DatawrapperPlugin($plugin->getName());
+        }
         // but before we load the required libraries
-        foreach ($plugin->getRequiredLibraries() as $lib) {
+        foreach ($pluginClass->getRequiredLibraries() as $lib) {
             require_once ROOT_PATH . 'plugins/' . $plugin->getName() . '/' . $lib;
         }
-        $plugin->init();
+        $pluginClass->init();
 
         if (isset($index[$parent_id])) {
             foreach ($index[$parent_id] as $id) {
-
                 load_child_plugins($data, $index, $id, $level + 1);
             }
         }
