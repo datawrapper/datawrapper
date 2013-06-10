@@ -39,7 +39,7 @@ class Twig_Extension_Node_Trans extends Twig_Node
             $vars = array_merge($vars, $vars1);
         }
 
-        $function = null === $this->getNode('plural') ? 'gettext' : 'ngettext';
+        $function = null === $this->getNode('plural') ? '__' : '__';
 
         if ($vars) {
             $compiler

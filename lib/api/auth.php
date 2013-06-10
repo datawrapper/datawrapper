@@ -34,10 +34,10 @@ $app->post('/auth/login', function() use($app) {
             ok();
         } else {
             Action::logAction($user, 'wrong-password', json_encode(get_user_ips()));
-            error('login-invalid', _('The password is incorrect.'));
+            error('login-invalid', __('The password is incorrect.'));
         }
     } else {
-        error('login-email-unknown', _('The email is not registered yet.'));
+        error('login-email-unknown', __('The email is not registered yet.'));
     }
 });
 
@@ -72,12 +72,12 @@ $app->post('/account/reset-password', function() use($app) {
 
         $curToken = $user->getResetPasswordToken();
         if (!empty($curToken)) {
-            error('password-already-reset', _('The password reset email has already been sent. Please contact an <a href="mailto:hello@datawrapper.de">administrator</a>.'));
+            error('password-already-reset', __('The password reset email has already been sent. Please contact an <a href="mailto:hello@datawrapper.de">administrator</a>.'));
             return;
         }
 
         if ($user->getRole() == 'pending') {
-            error('account-not-activated', _('You haven\'t activated this email address yet, so we cannot safely send emails to it. Please contact an <a href="mailto:hello@datawrapper.de">administrator</a>.'));
+            error('account-not-activated', __('You haven\'t activated this email address yet, so we cannot safely send emails to it. Please contact an <a href="mailto:hello@datawrapper.de">administrator</a>.'));
             return;
         }
 
@@ -92,10 +92,10 @@ $app->post('/account/reset-password', function() use($app) {
         $from = 'password-reset@' . $GLOBALS['dw_config']['domain'];
         include('../../lib/templates/password-reset-email.php');
         DatawrapperHooks::execute(DatawrapperHooks::SEND_EMAIL, $user->getEmail(), 'Datawrapper Password Reset', $password_reset_mail, 'From: ' . $from);
-        ok(_('You should soon receive an email with further instructions.'));
+        ok(__('You should soon receive an email with further instructions.'));
 
     } else {
-        error('login-email-unknown', _('The email is not registered yet.'));
+        error('login-email-unknown', __('The email is not registered yet.'));
     }
 });
 
@@ -114,7 +114,7 @@ $app->post('/account/resend-activation', function() use($app) {
             ->filterByKey('resend-activation')
             ->find();
         if (count($r) > 2) {
-            error('avoid-spam', str_replace('%ADMINEMAIL%', $GLOBALS['dw_config']['admin_email'], _('You already resent the activation mail three times, now. Please <a href="mailto:%ADMINEMAIL%">contact an administrator</a> to proceed with your account activation.')));
+            error('avoid-spam', str_replace('%ADMINEMAIL%', $GLOBALS['dw_config']['admin_email'], __('You already resent the activation mail three times, now. Please <a href="mailto:%ADMINEMAIL%">contact an administrator</a> to proceed with your account activation.')));
             return false;
         }
 
@@ -131,13 +131,12 @@ $app->post('/account/resend-activation', function() use($app) {
 
         DatawrapperHooks::execute(DatawrapperHooks::SEND_EMAIL, $user->getEmail(), 'Datawrapper Email Activation', $activation_mail, 'From: ' . $from);
 
-        ok(_('The activation email has been send to your email address, again.'));
+        ok(__('The activation email has been send to your email address, again.'));
 
     } else {
-        error('token-empty', _('You\'re account is probably already activated.'));
+        error('token-empty', __('You\'re account is probably already activated.'));
     }
 });
-
 /*
  * endpoint for validating an invitation. The user sends his new password
  */

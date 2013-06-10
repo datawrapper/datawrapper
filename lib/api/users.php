@@ -233,7 +233,7 @@ $app->delete('/users/:id', function($user_id) use ($app) {
                 ok();
             } else {
                 Action::logAction($user, 'delete-request-wrong-password', json_encode(get_user_ips()));
-                error('wrong-password', _('The password you entered is not correct.'));
+                error('wrong-password', __('The password you entered is not correct.'));
             }
         } else {
             error('user-not-found', 'no user found with that id');
@@ -256,10 +256,10 @@ $app->put('/account/reset-password', function() use ($app) {
                 $user->save();
                 ok();
             } else {
-                error('empty-password', _('The password must not be empty.'));
+                error('empty-password', __('The password must not be empty.'));
             }
         } else {
-            error('invalid-token', _('The supplied token for password resetting is invalid.'));
+            error('invalid-token', __('The supplied token for password resetting is invalid.'));
         }
     }
 });

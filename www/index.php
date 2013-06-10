@@ -71,19 +71,19 @@ function add_header_vars(&$page, $active = null) {
         $headlinks[] = array(
             'url' => '/chart/create',
             'id' => 'chart',
-            'title' => _('Create Chart'),
+            'title' => __('Create Chart'),
             'icon' => 'pencil'
         );
     }
 
     if ($user->isLoggedIn() && $user->hasCharts()) {
-        $headlinks[] = array('url' => '/mycharts/', 'id' => 'mycharts', 'title' => _('My Charts'), 'icon' => 'signal');
+        $headlinks[] = array('url' => '/mycharts/', 'id' => 'mycharts', 'title' => __('My Charts'), 'icon' => 'signal');
     } else {
-        $headlinks[] = array('url' => '/gallery/', 'id' => 'gallery', 'title' => _('Gallery'), 'icon' => 'signal');
+        $headlinks[] = array('url' => '/gallery/', 'id' => 'gallery', 'title' => __('Gallery'), 'icon' => 'signal');
     }
 
     if (isset($config['navigation'])) foreach ($config['navigation'] as $item) {
-        $link = array('url' => str_replace('%lang%', substr(DatawrapperSession::getLanguage(), 0, 2), $item['url']), 'id' => $item['id'], 'title' => _($item['title']));
+        $link = array('url' => str_replace('%lang%', substr(DatawrapperSession::getLanguage(), 0, 2), $item['url']), 'id' => $item['id'], 'title' => __($item['title']));
         if (!empty($item['icon'])) $link['icon'] = $item['icon'];
         $headlinks[] = $link;
     }
@@ -93,7 +93,7 @@ function add_header_vars(&$page, $active = null) {
             'url' => '',
             'id' => 'lang',
             'dropdown' => array(),
-            'title' => _('Language'),
+            'title' => __('Language'),
             'icon' => 'font'
         );
         foreach ($config['languages'] as $lang) {
@@ -115,11 +115,11 @@ function add_header_vars(&$page, $active = null) {
             'dropdown' => array(array(
                 'url' => '/account/settings',
                 'icon' => 'wrench',
-                'title' => _('Settings')
+                'title' => __('Settings')
             ), array(
                 'url' => '#logout',
                 'icon' => 'off',
-                'title' => _('Logout')
+                'title' => __('Logout')
             ))
         );
         if ($user->isAdmin()) {
@@ -127,14 +127,14 @@ function add_header_vars(&$page, $active = null) {
                 'url' => '/admin',
                 'id' => 'admin',
                 'icon' => 'fire',
-                'title' => _('Admin')
+                'title' => __('Admin')
             );
         }
     } else {
         $headlinks[] = array(
             'url' => '#login',
             'id' => 'login',
-            'title' => _('Login / Sign Up'),
+            'title' => __('Login / Sign Up'),
             'icon' => 'user'
         );
     }
@@ -174,10 +174,10 @@ function add_header_vars(&$page, $active = null) {
 function add_editor_nav(&$page, $step) {
     // define 4 step navigation
     $steps = array();
-    $steps[] = array('index'=>1, 'id'=>'upload', 'title'=>_('Upload Data'));
-    $steps[] = array('index'=>2, 'id'=>'describe', 'title'=>_('Check & Describe'));
-    $steps[] = array('index'=>3, 'id'=>'visualize', 'title'=>_('Visualize'));
-    $steps[] = array('index'=>4, 'id'=>'publish', 'title'=>_('Publish & Embed'));
+    $steps[] = array('index'=>1, 'id'=>'upload', 'title'=>__('Upload Data'));
+    $steps[] = array('index'=>2, 'id'=>'describe', 'title'=>__('Check & Describe'));
+    $steps[] = array('index'=>3, 'id'=>'visualize', 'title'=>__('Visualize'));
+    $steps[] = array('index'=>4, 'id'=>'publish', 'title'=>__('Publish & Embed'));
     $page['steps'] = $steps;
     $page['chartLocale'] = $page['locale'];
     $page['metricPrefix'] = get_metric_prefix($page['chartLocale']);

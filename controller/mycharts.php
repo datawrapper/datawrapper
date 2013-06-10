@@ -47,8 +47,8 @@ function nbChartsByStatus($user) {
     $published = ChartQuery::create()->filterByUser($user)->filterByDeleted(false)->filterByLastEditStep(array('min'=>4))->count();
     $draft = ChartQuery::create()->filterByUser($user)->filterByDeleted(false)->filterByLastEditStep(array('max'=>3))->count();
     return array(
-        array('id'=>'published', 'name' => _('Published'), 'count' => $published),
-        array('id'=>'draft', 'name' => _('Draft'), 'count' => $draft)
+        array('id'=>'published', 'name' => __('Published'), 'count' => $published),
+        array('id'=>'draft', 'name' => __('Draft'), 'count' => $draft)
     );
 }
 

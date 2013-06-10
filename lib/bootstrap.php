@@ -42,6 +42,10 @@ function secure_password($pwd) {
     }
 }
 
+require ROOT_PATH . 'lib/session/database.php';
+require ROOT_PATH . 'lib/session/DatawrapperSession.php';
+require ROOT_PATH . 'lib/l10n.php';
+
 if (!defined('NO_SLIM')) {
     // Initialize Slim app..
     if (ROOT_PATH == '../') {
@@ -62,8 +66,6 @@ if (!defined('NO_SLIM')) {
 }
 
 
-require ROOT_PATH . 'lib/session/database.php';
-require ROOT_PATH . 'lib/session/DatawrapperSession.php';
 require ROOT_PATH . 'lib/visualization/DatawrapperVisualization.php';
 require ROOT_PATH . 'lib/plugin/DatawrapperPlugin.php';
 require ROOT_PATH . 'lib/hooks/DatawrapperHooks.php';
