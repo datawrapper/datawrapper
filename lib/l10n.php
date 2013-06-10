@@ -25,10 +25,10 @@ function load_messages($locale) {
         }
         return array();
     }
-    $messages['core'] = parse(ROOT_PATH . 'locale/' . $locale . '/messages.json');
+    $messages['core'] = parse(ROOT_PATH . 'locale/' . $locale . '.json');
     $plugins = PluginQuery::create()->filterByEnabled(true)->find();
     foreach ($plugins as $plugin) {
-        $messages[$plugin->getName()] = parse($plugin->getPath() . 'locale/' . $locale . '/messages.json');
+        $messages[$plugin->getName()] = parse($plugin->getPath() . 'locale/' . $locale . '.json');
     }
     if (isset($_GLOBALS['dw-config']['memcache'])) {
         // store translation in memcache
