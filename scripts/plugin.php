@@ -7,7 +7,9 @@
  * php plugin.php enable|disable PLUGIN_NAME
  */
 
+
 define('ROOT_PATH', dirname(dirname(__FILE__)) . '/');
+
 define('NO_SLIM', 1);
 
 date_default_timezone_set('Europe/Berlin');
@@ -30,7 +32,6 @@ if (file_exists($plugin->getPath())) {
         // no plugin.php
         $pluginClass = new DatawrapperPlugin($plugin->getName());
     }
-
 
     switch ($cmd) {
         case 'enable':

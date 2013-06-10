@@ -92,6 +92,7 @@ $app->post('/account/reset-password', function() use($app) {
         $from = 'password-reset@' . $GLOBALS['dw_config']['domain'];
         include('../../lib/templates/password-reset-email.php');
         DatawrapperHooks::execute(DatawrapperHooks::SEND_EMAIL, $user->getEmail(), 'Datawrapper Password Reset', $password_reset_mail, 'From: ' . $from);
+
         ok(__('You should soon receive an email with further instructions.'));
 
     } else {
