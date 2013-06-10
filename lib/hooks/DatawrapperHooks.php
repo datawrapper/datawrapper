@@ -85,6 +85,8 @@ class DatawrapperHooks {
     // Send an email (args: to, subject, body)
     const SEND_EMAIL = 'send_email';
 
+    // Runs once a day via cronjob
+    const CRON_DAILY = 'cron_daily';
 }
 
 
