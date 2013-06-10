@@ -1,4 +1,7 @@
 {
-	"other":"other",
-	"Donut chart":"Donut chart"
+	"other":"andere",
+	"Donut chart":"Donut-Diagramm",
+	"Show total value in center":"Zeige Summe im Zentrum",
+	"Use custom total value instead of sum":"Abweichender Gesamtwert statt Summe",
+	"Custom total value":"Abweichender Gesamtwert"
 }
