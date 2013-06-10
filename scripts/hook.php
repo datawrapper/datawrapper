@@ -11,5 +11,9 @@ define('NO_SLIM', 1);
 require_once ROOT_PATH . 'lib/bootstrap.php';
 date_default_timezone_set('Europe/Berlin');
 
+$hook = $argv[1];
 
-DatawrapperHooks::execute(DatawrapperHooks::CRON_DAILY);
+if (!empty($hook)) {
+    DatawrapperHooks::execute($argv[1]);
+}
+
