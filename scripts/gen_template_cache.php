@@ -1,5 +1,13 @@
 <?php
 
+define('ROOT_PATH', dirname(dirname(__FILE__)) . '/');
+define('NO_SLIM', 1);
+
+require_once ROOT_PATH . 'lib/bootstrap.php';
+require_once ROOT_PATH . 'lib/utils/themes.php';
+
+date_default_timezone_set('Europe/Berlin');
+
 // taken from http://twig.sensiolabs.org/doc/extensions/i18n.html#extracting-template-strings
 
 require_once dirname(__FILE__) . '/../vendor/Twig/Autoloader.php';
@@ -36,6 +44,11 @@ function str_purify($dirty_html) {
     global $_HTMLPurifier;
     return $_HTMLPurifier->purify($dirty_html);
 }
+
+function call_hook() {
+    call_user_func_array(array(DatawrapperHooks::getInstance(), 'execute'), func_get_args());
+}
+$twig->addFunction('hook', new Twig_Function_Function('call_hook'));
 
 
 // loae I18n extension for Twig
