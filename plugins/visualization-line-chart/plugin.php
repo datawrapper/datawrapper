@@ -63,7 +63,7 @@ class DatawrapperPlugin_VisualizationLineChart extends DatawrapperPlugin_Visuali
             ),
             "rotate-x-labels" => array(
                 "type" => "checkbox",
-                "label" => _("Rotate labels 45°"),
+                "label" => _("Rotate labels 45 degrees"),
                 "default" => false
             ),
             "baseline-zero" => array(
@@ -82,7 +82,7 @@ class DatawrapperPlugin_VisualizationLineChart extends DatawrapperPlugin_Visuali
             "force-banking" => array(
                 "type" => "checkbox",
                 "hidden" => true,
-                "label" => _("Bank the lines to 45°")
+                "label" => _("Bank the lines to 45 degrees")
             ),
             "show-grid" => array(
                 "type" => "checkbox",
