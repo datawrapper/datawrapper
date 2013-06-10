@@ -12,7 +12,9 @@ class DatawrapperVisualization {
     /*
      * registers a new visualization, should be called by plugins
      */
-    public static function register($meta) { return self::getInstance()->_register($meta); }
+    public static function register($plugin, $meta) {
+        return self::getInstance()->_register($plugin, $meta);
+    }
 
     /*
      * returns a list of all visualization meta arrays
@@ -24,12 +26,15 @@ class DatawrapperVisualization {
      */
     public static function get($id) { return self::getInstance()->_get($id); }
 
-
+    //
     // non-static definitions below
+    //
 
     private $visualizations = array();
 
-    public function _register($meta) {
+    public function _register($plugin, $meta) {
+        // we save the path to the static files of the visualization
+        $meta['__static_path'] =  '/static/plugins/' . $plugin->getName() . '/';
         $this->visualizations[$meta['id']] = $meta;
     }
 

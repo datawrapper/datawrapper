@@ -28,8 +28,7 @@ function gal_nbChartsByType() {
     foreach ($rs as $r) {
         $vis = DatawrapperVisualization::get($r['type']);
         $lang = substr(DatawrapperSession::getLanguage(), 0, 2);
-        if (empty($vis['title'][$lang])) $lang = 'en';
-        $res[] = array('count' => $r['c'], 'id' => $r['type'], 'name' => $vis['title'][$lang]);
+        $res[] = array('count' => $r['c'], 'id' => $r['type'], 'name' => $vis['title']);
         $max = max($max, $r['c']);
     }
     foreach ($res as $c => $r) {

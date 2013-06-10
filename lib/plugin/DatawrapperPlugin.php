@@ -2,6 +2,17 @@
 
 class DatawrapperPlugin {
 
+	private $name;
+
+	function __construct($name = null) {
+		if (isset($name)) $this->name = $name;
+	}
+
+	/** register events */
+	public function init() {
+		return true;
+	}
+
 	/**
 	* Enable the plugin,
 	* Check if there is a static folder,
@@ -16,11 +27,31 @@ class DatawrapperPlugin {
 		$plugin->setEnabled(true);
 		$plugin->setInstalledAt(time());
 		$plugin->save();
+
+		$this->copyStaticFiles();
 	}
 
-	/** register events */
-	public function init() {
-		throw new Exception("need to be implemented");
+	private function copyStaticFiles() {
+		// check if there's a /static in plugin directory
+		$source_path = ROOT_PATH . 'plugins/' . $this->getName() . '/static';
+		if (!file_exists($source_path)) return;
+
+		// create directory in www/static/plugins/ if not exists
+		$plugin_static_path = ROOT_PATH . 'www/static/plugins/' . $this->getName();
+		if (!file_exists($plugin_static_path)) {
+			mkdir($plugin_static_path);
+		}
+		// copy static files to that directory
+		$iterator = new RecursiveIteratorIterator(
+		 	new RecursiveDirectoryIterator($source_path, RecursiveDirectoryIterator::SKIP_DOTS),
+		  	RecursiveIteratorIterator::SELF_FIRST);
+		foreach ($iterator as $item) {
+			if ($item->isDir()) {
+				mkdir($plugin_static_path . '/' . $iterator->getSubPathName());
+			} else {
+				copy($item, $plugin_static_path . '/' . $iterator->getSubPathName());
+			}
+		}
 	}
 
 	/**
@@ -46,9 +77,12 @@ class DatawrapperPlugin {
 	 * returns the name (id) of this plugin
 	 */
 	public function getName() {
-		$reflector = new ReflectionClass(get_class($this));
-		$dirname   = dirname($reflector->getFileName());
-		return substr($dirname, strrpos($dirname, DIRECTORY_SEPARATOR)+1);
+		if (!isset($this->name)) {
+			$reflector = new ReflectionClass(get_class($this));
+			$dirname   = dirname($reflector->getFileName());
+			$this->name = substr($dirname, strrpos($dirname, DIRECTORY_SEPARATOR)+1);
+		}
+		return $this->name;
 	}
 
 	/*

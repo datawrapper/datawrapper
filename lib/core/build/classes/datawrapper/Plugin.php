@@ -24,7 +24,7 @@ class Plugin extends BasePlugin {
     }
 
     public function getPath() {
-        return ROOT_PATH . 'plugins/' . $this->getName() . '/plugin.php';
+        return ROOT_PATH . 'plugins/' . $this->getName() . '/';
     }
 
     private $packageInfo;
@@ -32,7 +32,7 @@ class Plugin extends BasePlugin {
     public function getInfo() {
         if (!isset($this->packageInfo)) {
             $this->packageInfo = json_decode(
-                file_get_contents(ROOT_PATH . 'plugins/' . $this->getName() . '/package.json')
+                file_get_contents($this->getPath() . 'package.json')
             , true);
             if (!isset($this->packageInfo['dependencies'])) $this->packageInfo['dependencies'] = array();
         }

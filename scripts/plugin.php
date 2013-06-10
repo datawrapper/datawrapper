@@ -17,21 +17,36 @@ require_once ROOT_PATH . 'lib/bootstrap.php';
 $cmd = $argv[1];
 $plugin_id = $argv[2];
 
-if ($cmd == 'enable' || $cmd == 'disable') {
 
-    $plugin = new Plugin();
-    $plugin->setId($plugin_id);
+$plugin = new Plugin();
+$plugin->setId($plugin_id);
 
-    if (file_exists($plugin->getPath())) {
-        print $plugin->getClassName();
-        require_once $plugin->getPath();
+if (file_exists($plugin->getPath())) {
+    if (file_exists($plugin->getPath() . 'plugin.php')) {
+        require_once $plugin->getPath() . 'plugin.php';
         $className = $plugin->getClassName();
-        $plugin = new $className();
-        if ($cmd == 'enable') $plugin->install();
-        else $plugin->uninstall();
-
+        $pluginClass = new $className();
     } else {
-        print 'Warning: Plugin not found: '.$plugin_id."\n";
-        exit(1);
+        // no plugin.php
+        $pluginClass = new DatawrapperPlugin($plugin->getName());
     }
+
+
+    switch ($cmd) {
+        case 'enable':
+        case 'install':
+            print "Installing " . $pluginClass->getName() . "\n";
+            $pluginClass->install();
+            break;
+        case 'disable':
+        case 'uninstall':
+            print "Uninstalling " . $pluginClass->getName() . "\n";
+            $pluginClass->uninstall();
+            break;
+    }
+
+} else {
+    print 'Warning: Plugin not found: '.$plugin_id."\n";
+    exit(1);
 }
+
