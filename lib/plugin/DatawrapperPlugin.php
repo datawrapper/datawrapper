@@ -31,6 +31,10 @@ class DatawrapperPlugin {
 		$this->copyStaticFiles();
 	}
 
+	/*
+	 * copys all files from a plugins "static" directory to
+	 * the publicly visible /www/static/plugins/%PLUGIN%/
+	 */
 	private function copyStaticFiles() {
 		// check if there's a /static in plugin directory
 		$source_path = ROOT_PATH . 'plugins/' . $this->getName() . '/static';
@@ -46,10 +50,11 @@ class DatawrapperPlugin {
 		 	new RecursiveDirectoryIterator($source_path, RecursiveDirectoryIterator::SKIP_DOTS),
 		  	RecursiveIteratorIterator::SELF_FIRST);
 		foreach ($iterator as $item) {
+			$path = $plugin_static_path . '/' . $iterator->getSubPathName();
 			if ($item->isDir()) {
-				mkdir($plugin_static_path . '/' . $iterator->getSubPathName());
+				if (!file_exists($path)) mkdir($path);
 			} else {
-				copy($item, $plugin_static_path . '/' . $iterator->getSubPathName());
+				copy($item, $path);
 			}
 		}
 	}
