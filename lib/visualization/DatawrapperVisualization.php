@@ -46,7 +46,6 @@ class DatawrapperVisualization {
             if (!isset($b['order'])) $b['order'] = 99999;
             return $a['order'] - $b['order'];
         });
-        print 'all = '.count($res);
         return $res;
     }
 
