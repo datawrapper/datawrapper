@@ -6,6 +6,14 @@ msgstr ""
 msgid "Not found"
 msgstr ""
 
+#: ../controller/mycharts.php:50
+msgid "Published"
+msgstr ""
+
+#: ../controller/mycharts.php:51
+msgid "Draft"
+msgstr ""
+
 #: ../scripts/tmpl_cache/account-reset-password.twig.php:37
 msgid "Reset Your Password"
 msgstr ""
@@ -96,7 +104,7 @@ msgid "Please check if the data format was recognized correctly."
 msgstr ""
 
 #: ../scripts/tmpl_cache/chart-describe.twig.php:276
-msgid "You can hide columns by clicking the table header. "
+msgid "You can hide columns by clicking the table header."
 msgstr ""
 
 #: ../scripts/tmpl_cache/chart-describe.twig.php:297
@@ -190,7 +198,7 @@ msgstr ""
 msgid "Annotate data point"
 msgstr ""
 
-#: ../scripts/tmpl_cache/chart-describe.twig.php:452 ../www/index.php:180
+#: ../scripts/tmpl_cache/chart-describe.twig.php:452 ../www/index.php:179
 msgid "Visualize"
 msgstr ""
 
@@ -617,26 +625,26 @@ msgstr ""
 msgid "Publish"
 msgstr ""
 
-#: ../scripts/tmpl_cache/core.twig.php:120
+#: ../scripts/tmpl_cache/core.twig.php:131
 msgid "Open Source Data Visualization"
 msgstr ""
 
-#: ../scripts/tmpl_cache/core.twig.php:148
+#: ../scripts/tmpl_cache/core.twig.php:159
 msgid "Your browser is not supported"
 msgstr ""
 
-#: ../scripts/tmpl_cache/core.twig.php:152
+#: ../scripts/tmpl_cache/core.twig.php:163
 msgid ""
 "You are using a browser that is not supported at the moment. Please use one "
 "of the following browsers instead. Note that this only applies to the chart "
 "editor. The charts itself can be viewed with any major browser."
 msgstr ""
 
-#: ../scripts/tmpl_cache/core.twig.php:183
+#: ../scripts/tmpl_cache/core.twig.php:194
 msgid "Back to top"
 msgstr ""
 
-#: ../scripts/tmpl_cache/core.twig.php:200
+#: ../scripts/tmpl_cache/core.twig.php:211
 msgid ""
 "Datawrapper is an <a href=\"http://github.com/datawrapper/datawrapper\">open "
 "source</a> project by <a href=\"http://abzv.de\">ABZV</a> - a German "
@@ -740,6 +748,18 @@ msgid ""
 "under the MIT license."
 msgstr ""
 
+#: ../scripts/tmpl_cache/custom__pro-home.twig.php:126
+msgid "Create a new chart"
+msgstr ""
+
+#: ../scripts/tmpl_cache/custom__pro-home.twig.php:130
+msgid "Recent drafts"
+msgstr ""
+
+#: ../scripts/tmpl_cache/custom__pro-home.twig.php:134
+msgid "All charts"
+msgstr ""
+
 #: ../scripts/tmpl_cache/docs.twig.php:87
 msgid "Navigation"
 msgstr ""
@@ -768,12 +788,12 @@ msgid ""
 msgstr ""
 
 #: ../scripts/tmpl_cache/gallery.twig.php:71
-#: ../scripts/tmpl_cache/mycharts.twig.php:142
+#: ../scripts/tmpl_cache/mycharts.twig.php:147
 msgid "By Visualisation"
 msgstr ""
 
 #: ../scripts/tmpl_cache/gallery.twig.php:137
-#: ../scripts/tmpl_cache/mycharts.twig.php:86
+#: ../scripts/tmpl_cache/mycharts.twig.php:91
 msgid "By Month"
 msgstr ""
 
@@ -818,7 +838,7 @@ msgstr ""
 
 #: ../scripts/tmpl_cache/home-login.twig.php:66
 #: ../scripts/tmpl_cache/mycharts.twig.php:64
-#: ../scripts/tmpl_cache/utils.twig.php:257 ../www/index.php:81
+#: ../scripts/tmpl_cache/utils.twig.php:257 ../www/index.php:80
 msgid "My Charts"
 msgstr ""
 
@@ -826,7 +846,7 @@ msgstr ""
 msgid "See what you created so far."
 msgstr ""
 
-#: ../scripts/tmpl_cache/home-login.twig.php:74 ../www/index.php:119
+#: ../scripts/tmpl_cache/home-login.twig.php:74 ../www/index.php:118
 msgid "Settings"
 msgstr ""
 
@@ -834,11 +854,11 @@ msgstr ""
 msgid "Edit your personal information."
 msgstr ""
 
-#: ../scripts/tmpl_cache/home-login.twig.php:80 ../www/index.php:123
+#: ../scripts/tmpl_cache/home-login.twig.php:80 ../www/index.php:122
 msgid "Logout"
 msgstr ""
 
-#: ../scripts/tmpl_cache/login-page.twig.php:111
+#: ../scripts/tmpl_cache/login-page.twig.php:120
 msgid "Welcome to Datawrapper"
 msgstr ""
 
@@ -850,11 +870,13 @@ msgstr ""
 
 #: ../scripts/tmpl_cache/login.twig.php:55
 #: ../scripts/tmpl_cache/login.twig.php:115
+#: ../scripts/tmpl_cache/setup.twig.php:132
 msgid "email"
 msgstr ""
 
 #: ../scripts/tmpl_cache/login.twig.php:59
 #: ../scripts/tmpl_cache/login.twig.php:121
+#: ../scripts/tmpl_cache/setup.twig.php:138
 msgid "password"
 msgstr ""
 
@@ -913,45 +935,49 @@ msgstr ""
 msgid "Charts by %s"
 msgstr ""
 
-#: ../scripts/tmpl_cache/mycharts.twig.php:77
+#: ../scripts/tmpl_cache/mycharts.twig.php:82
 msgid "Search"
 msgstr ""
 
-#: ../scripts/tmpl_cache/mycharts.twig.php:198
+#: ../scripts/tmpl_cache/mycharts.twig.php:203
 msgid "By Layout"
 msgstr ""
 
-#: ../scripts/tmpl_cache/mycharts.twig.php:261
+#: ../scripts/tmpl_cache/mycharts.twig.php:260
+msgid "By Status"
+msgstr ""
+
+#: ../scripts/tmpl_cache/mycharts.twig.php:322
 msgid ""
 "Want to see what other users created using Datawrapper? Take a look in the "
 "<a href='%GALLERY%'>Gallery</a>!"
 msgstr ""
 
-#: ../scripts/tmpl_cache/mycharts.twig.php:270
+#: ../scripts/tmpl_cache/mycharts.twig.php:331
 msgid "Switch User"
 msgstr ""
 
-#: ../scripts/tmpl_cache/mycharts.twig.php:391
+#: ../scripts/tmpl_cache/mycharts.twig.php:452
 msgid "Edit"
 msgstr ""
 
-#: ../scripts/tmpl_cache/mycharts.twig.php:397
+#: ../scripts/tmpl_cache/mycharts.twig.php:458
 msgid "Duplicate"
 msgstr ""
 
-#: ../scripts/tmpl_cache/mycharts.twig.php:402
+#: ../scripts/tmpl_cache/mycharts.twig.php:463
 msgid "Delete"
 msgstr ""
 
-#: ../scripts/tmpl_cache/mycharts.twig.php:424
+#: ../scripts/tmpl_cache/mycharts.twig.php:485
 msgid "No charts here, yet"
 msgstr ""
 
-#: ../scripts/tmpl_cache/mycharts.twig.php:428
+#: ../scripts/tmpl_cache/mycharts.twig.php:489
 msgid "Why not <a href='/chart/create'>create a new chart now</a>?"
 msgstr ""
 
-#: ../scripts/tmpl_cache/mycharts.twig.php:475
+#: ../scripts/tmpl_cache/mycharts.twig.php:536
 msgid ""
 "Do you really want to delete the chart? Note that after deleting this chart "
 "won't be embedable any more."
@@ -1166,8 +1192,17 @@ msgstr ""
 msgid "This just worked fine. Your profile has been updated."
 msgstr ""
 
-#: ../scripts/tmpl_cache/settings.twig.php:490
+#: ../scripts/tmpl_cache/settings.twig.php:489
 msgid "Congrats! Your password has been changed."
+msgstr ""
+
+#: ../scripts/tmpl_cache/settings.twig.php:494
+msgid ""
+"Could not change your password. Please double check your current password."
+msgstr ""
+
+#: ../scripts/tmpl_cache/setup.twig.php:126
+msgid "Create Admin Account"
 msgstr ""
 
 #: ../scripts/tmpl_cache/themes__avenir.twig.php:67
@@ -1187,7 +1222,7 @@ msgstr ""
 msgid "Created with"
 msgstr ""
 
-#: ../scripts/tmpl_cache/utils.twig.php:240 ../www/index.php:138
+#: ../scripts/tmpl_cache/utils.twig.php:240 ../www/index.php:137
 msgid "Login / Sign Up"
 msgstr ""
 
@@ -1245,71 +1280,71 @@ msgstr ""
 msgid "Reset all colors"
 msgstr ""
 
-#: ../www/index.php:75
+#: ../www/index.php:74
 msgid "Create Chart"
 msgstr ""
 
-#: ../www/index.php:83
+#: ../www/index.php:82
 msgid "Gallery"
 msgstr ""
 
-#: ../www/index.php:97
+#: ../www/index.php:96
 msgid "Language"
 msgstr ""
 
-#: ../www/index.php:131
+#: ../www/index.php:130
 msgid "Admin"
 msgstr ""
 
-#: ../www/index.php:178
+#: ../www/index.php:177
 msgid "Upload Data"
 msgstr ""
 
-#: ../www/index.php:179
+#: ../www/index.php:178
 msgid "Check & Describe"
 msgstr ""
 
-#: ../www/index.php:181
+#: ../www/index.php:180
 msgid "Publish & Embed"
 msgstr ""
 
-#: ../lib/api/auth.php:38
+#: ../lib/api/auth.php:37
 msgid "The password is incorrect."
 msgstr ""
 
-#: ../lib/api/auth.php:41 ../lib/api/auth.php:100
+#: ../lib/api/auth.php:40 ../lib/api/auth.php:98
 msgid "The email is not registered yet."
 msgstr ""
 
-#: ../lib/api/auth.php:77
+#: ../lib/api/auth.php:75
 msgid ""
 "The password reset email has already been sent. Please contact an <a href="
 "\"mailto:hello@datawrapper.de\">administrator</a>."
 msgstr ""
 
-#: ../lib/api/auth.php:82
+#: ../lib/api/auth.php:80
 msgid ""
 "You haven't activated this email address yet, so we cannot safely send "
 "emails to it. Please contact an <a href=\"mailto:hello@datawrapper.de"
 "\">administrator</a>."
 msgstr ""
 
-#: ../lib/api/auth.php:97
+#: ../lib/api/auth.php:95
 msgid "You should soon receive an email with further instructions."
 msgstr ""
 
-#: ../lib/api/auth.php:119
+#: ../lib/api/auth.php:117
 msgid ""
 "You already resent the activation mail three times, now. Please <a href="
 "\"mailto:%ADMINEMAIL%\">contact an administrator</a> to proceed with your "
 "account activation."
 msgstr ""
 
-#: ../lib/api/auth.php:136
+#: ../lib/api/auth.php:134
 msgid "The activation email has been send to your email address, again."
 msgstr ""
 
-#: ../lib/api/auth.php:139
+#: ../lib/api/auth.php:137
 msgid "You're account is probably already activated."
 msgstr ""
 
@@ -1317,19 +1352,19 @@ msgstr ""
 msgid "The password you entered is not correct."
 msgstr ""
 
-#: ../lib/api/users.php:221
+#: ../lib/api/users.php:220
 msgid "The password must not be empty."
 msgstr ""
 
-#: ../lib/api/users.php:224
+#: ../lib/api/users.php:223
 msgid "The supplied token for password resetting is invalid."
 msgstr ""
 
-#: ../lib/core/build/classes/datawrapper/ChartQuery.php:34
+#: ../lib/core/build/classes/datawrapper/ChartQuery.php:37
 msgid "Untitled"
 msgstr ""
 
-#: ../lib/core/build/classes/datawrapper/ChartQuery.php:72
+#: ../lib/core/build/classes/datawrapper/ChartQuery.php:76
 msgid "Copy"
 msgstr ""
 
