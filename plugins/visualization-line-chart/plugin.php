@@ -3,7 +3,7 @@
 class DatawrapperPlugin_VisualizationLineChart extends DatawrapperPlugin_Visualization {
     public function getMeta(){
         $meta = array(
-            "title" => _("Line Chart"),
+            "title" => __("Line Chart", $this->getName()),
             "id" => "line-chart",
             "version" => "1.3.1",
             "extends" => "raphael-chart",
@@ -14,10 +14,11 @@ class DatawrapperPlugin_VisualizationLineChart extends DatawrapperPlugin_Visuali
         return $meta;
     }
     public function getOptions(){
+        $id = $this->getName();
         $options = array(
             "direct-labeling" => array(
                 "type" => "checkbox",
-                "label" => _("Direct labeling"),
+                "label" => __("Direct labeling", $id),
                 "default" => false,
                 "depends-on" => array(
                     "chart.min_series_num" => 2
@@ -25,7 +26,7 @@ class DatawrapperPlugin_VisualizationLineChart extends DatawrapperPlugin_Visuali
             ),
             "legend-position" => array(
                 "type" => "radio",
-                "label" => _("Legend position"),
+                "label" => __("Legend position", $id),
                 "default" => "right",
                 "depends-on" => array(
                     "direct-labeling" => false,
@@ -34,21 +35,21 @@ class DatawrapperPlugin_VisualizationLineChart extends DatawrapperPlugin_Visuali
                 "options" => array(
                     array(
                         "value" => "right",
-                        "label" => _("right")
+                        "label" => __("right", $id)
                     ),
                     array(
                         "value" => "top",
-                        "label" => _("top"),
+                        "label" => __("top", $id),
                     ),
                     array(
                         "value" => "inside",
-                        "label" => _("inside"),
+                        "label" => __("inside", $id),
                     )
                 )
             ),
             "fill-between" => array(
                 "type" => "checkbox",
-                "label" => _("Fill between lines"),
+                "label" => __("Fill between lines", $id),
                 "default" => false,
                 "depends-on" => array(
                     "chart.min_series_num" => 2,
@@ -57,41 +58,40 @@ class DatawrapperPlugin_VisualizationLineChart extends DatawrapperPlugin_Visuali
             ),
             "smooth-lines" => array(
                 "type" => "checkbox",
-                "label" => _("Smooth lines"),
+                "label" => __("Smooth lines", $id),
                 "default" => false,
                 "expert" => false
             ),
             "rotate-x-labels" => array(
                 "type" => "checkbox",
-                "label" => _("Rotate labels 45 degrees"),
+                "label" => __("Rotate labels 45 degrees", $id),
                 "default" => false
             ),
             "baseline-zero" => array(
                 "type" => "checkbox",
-                "label" => _("Force a baseline at zero"),
+                "label" => __("Force a baseline at zero", $id),
             ),
             "connect-missing-values" => array(
                 "type" => "checkbox",
-                "label" => _("Connect lines between missing values"),
+                "label" => __("Connect lines between missing values", $id),
                 "depends-on" => array("chart.missing_values" => true)
             ),
             "extend-range" => array(
                 "type" => "checkbox",
-                "label" => _("Extend y-range to nice axis ticks")
+                "label" => __("Extend y-range to nice axis ticks", $id)
             ),
             "force-banking" => array(
                 "type" => "checkbox",
                 "hidden" => true,
-                "label" => _("Bank the lines to 45 degrees")
+                "label" => __("Bank the lines to 45 degrees", $id)
             ),
             "show-grid" => array(
                 "type" => "checkbox",
                 "hidden" => true,
-                "label" => _("Show grid"),
+                "label" => __("Show grid", $id),
                 "default" => false
             )
         );
         return $options;
     }
-}    
-    
+}

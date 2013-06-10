@@ -8,9 +8,10 @@ class DatawrapperPlugin_VisualizationPieChart extends DatawrapperPlugin_Visualiz
     }
 
     function getMeta_PieChart() {
+        $id = $this->getName();
         return array(
             "id" => 'pie-chart',
-            "title" => _("Pie chart"),
+            "title" => __("Pie chart", $id),
             "version" => "1.3.0",
             "extends" => "raphael-chart",
             "author" => array(
@@ -22,16 +23,17 @@ class DatawrapperPlugin_VisualizationPieChart extends DatawrapperPlugin_Visualiz
             "options" => array(
             ),
             "locale" => array(
-                "other" => _("other")
+                "other" => __("other", $id)
             ),
             "libraries" => array()
         );
     }
 
     function getMeta_DonutChart() {
+        $id = $this->getName();
         return array(
             'id' => 'donut-chart',
-            "title" => _("Donut chart"),
+            "title" => __("Donut chart", $id),
             "version" => "1.3.0",
             "extends" => "pie-chart",
             "author" => array(
@@ -43,20 +45,12 @@ class DatawrapperPlugin_VisualizationPieChart extends DatawrapperPlugin_Visualiz
             "options" => array(
                 "show-total" => array(
                     "type" => "checkbox",
-                    "label" => array(
-                        "en" => "Show total value in center",
-                        "de" => "Zeige Summe in der Mitte",
-                        "fr" => "Afficher la somme au centre"
-                    ),
+                    "label" => __("Show total value in center", $id),
                     "default" => true
                 ),
                 "custom-total" => array(
                     "type" => "checkbox",
-                    "label" => array(
-                        "en" => "Use custom total value instead of sum",
-                        "de" => "Eigenen Wert anstelle der Summe verwenden",
-                        "fr" => "Afficher une autre valeur au centre"
-                    ),
+                    "label" => __("Use custom total value instead of sum", $id),
                     "default" => false,
                     "depends-on" => array(
                         "show-total" => true,
@@ -65,11 +59,7 @@ class DatawrapperPlugin_VisualizationPieChart extends DatawrapperPlugin_Visualiz
                 ),
                 "custom-total-value" => array(
                     "type" => "text",
-                    "label" => array(
-                        "en" => "Custom total value",
-                        "de" => "Eigener Wert",
-                        "fr" => "Valeur personnalisée"
-                    ),
+                    "label" => __("Custom total value", $id),
                     "depends-on" => array(
                         "show-total" => true,
                         "custom-total" => true
