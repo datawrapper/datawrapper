@@ -4,7 +4,7 @@
         "de": "Balken (vertikal, gestapelt)",
         "fr": "Diagramme à bandes verticales"
     },
-    "version": "1.3.0",
+    "version": "1.3.1",
     "dimensions": 2,
     "extends": "grouped-column-chart",
     "order": 20,
@@ -40,7 +40,7 @@
             "label": {
                 "en": "Let user switch mode",
                 "de": "Nutzer kann umschalten",
-                "fr": "L'utilisateur peut changer de mode"
+                "fr": "L\u2019utilisateur peut changer de mode"
             },
             "depends-on": {
                 "normalize": true
