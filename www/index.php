@@ -45,7 +45,6 @@ function str_purify($dirty_html) {
 
 function call_hook() {
     call_user_func_array(array(DatawrapperHooks::getInstance(), 'execute'), func_get_args());
-    //DatawrapperHooks::execute();
 }
 $twig->addFunction('hook', new Twig_Function_Function('call_hook'));
 
