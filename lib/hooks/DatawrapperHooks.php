@@ -87,6 +87,9 @@ class DatawrapperHooks {
 
     // Runs once a day via cronjob
     const CRON_DAILY = 'cron_daily';
+
+    // executed after messages have been parsed via xgettext
+    const POST_MESSAGE_PARSING = 'post_message_parsing';
 }
 
 

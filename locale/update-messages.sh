@@ -7,3 +7,4 @@ do
     mkdir -p "../plugins/$PLUGIN/locale"
     xgettext --default-domain="plugin-$PLUGIN" -o "../plugins/$PLUGIN/locale/messages.pot" --from-code=UTF-8 -n --omit-header -L PHP `echo ../plugins/$PLUGIN/*.php`
 done
+php ../scripts/hook.php post_message_parsing
