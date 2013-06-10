@@ -31,6 +31,10 @@ class DatawrapperPlugin {
 		$this->copyStaticFiles();
 	}
 
+	/*
+	 * copys all files from a plugins "static" directory to
+	 * the publicly visible /www/static/plugins/%PLUGIN%/
+	 */
 	private function copyStaticFiles() {
 		// check if there's a /static in plugin directory
 		$source_path = ROOT_PATH . 'plugins/' . $this->getName() . '/static';
