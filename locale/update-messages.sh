@@ -1,7 +1,7 @@
 #!/bin/sh
 php ../scripts/gen_template_cache.php
 xgettext --default-domain=core -o messages.pot --from-code=UTF-8 -n --omit-header -k__ -L PHP ../controller/*.php ../scripts/tmpl_cache/*.php ../www/index.php ../www/api/index.php ../lib/api/*.php ../lib/api/*/*.php ../lib/core/build/classes/datawrapper/*.php ../lib/session/*.php ../lib/templates/*.php ../lib/utils/*.php
-php ../scripts/po2json.php -i messages.pot -o m.json
+php ../scripts/po2json.php -i messages.pot -o messages.json
 rm messages.pot
 
 for dir in $(find ../plugins -type d -depth 1)
