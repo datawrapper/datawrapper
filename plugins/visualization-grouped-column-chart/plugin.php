@@ -1,9 +1,12 @@
-<?php 
+<?php
+
 class DatawrapperPlugin_VisualizationGroupedColumnChart extends DatawrapperPlugin_Visualization{
+
     public function getMeta(){
-        $meta = array( 
+        $id = $this->getName();
+        $meta = array(
             "id" => "grouped-column-chart",
-            "title" => _("Grouped Column Chart"),
+            "title" => __("Grouped Column Chart", $id),
             "version" => "1.3.2",
             "dimensions" => 2,
             "extends" => "raphael-chart",
@@ -12,15 +15,15 @@ class DatawrapperPlugin_VisualizationGroupedColumnChart extends DatawrapperPlugi
             "options" => array(
                 "sort-values" => array(
                     "type" => "checkbox",
-                    "label" => _("Automatically sort bars")
+                    "label" => __("Automatically sort bars", $id)
                 ),
                 "reverse-order" => array(
                     "type" => "checkbox",
-                    "label" => _("Reverse order")
+                    "label" => __("Reverse order", $id)
                 ),
                 "negative-color" => array(
                     "type" => "checkbox",
-                    "label" => _("Use different color for negative values")
+                    "label" => __("Use different color for negative values", $id)
                 )
             ),
             "libraries" => array()
