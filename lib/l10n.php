@@ -31,8 +31,9 @@ function load_messages($locale) {
         $messages[$plugin->getName()] = parse($plugin->getPath() . 'locale/' . $locale . '.json');
     }
     if (isset($_GLOBALS['dw-config']['memcache'])) {
-        // store translation in memcache
-        $memcache->set($mkey, $messages);
+        // store translation in memcache for one minute to prevent
+        // us from loading the JSON for every request
+        $memcache->set($mkey, $messages, 60);
     }
     return $messages;
 }
