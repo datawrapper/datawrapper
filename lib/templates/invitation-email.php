@@ -5,7 +5,7 @@
  */
 
 
-$invitation_mail = sprintf(_('Hello %s,
+$invitation_mail = sprintf(__('Hello %s,
 
 Your account has just created on Datawrapper.
 
