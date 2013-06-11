@@ -64,7 +64,7 @@ class DatawrapperPlugin {
 	* Disable the plugin
 	*/
 	public function uninstall() {
-		$plugin = PluginQuery::create()->findPK(getName());
+		$plugin = PluginQuery::create()->findPK($this->getName());
 		$plugin->setEnabled(false);
 		$plugin->save();
 	}
