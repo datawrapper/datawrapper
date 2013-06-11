@@ -148,7 +148,7 @@ function add_header_vars(&$page, $active = null) {
     $page['DW_DOMAIN'] = $config['domain'];
     $page['DW_VERSION'] = DATAWRAPPER_VERSION;
     $page['DW_CHART_CACHE_DOMAIN'] = $config['chart_domain'];
-    $page['ADMIN_EMAIL'] = $config['admin_email'];
+    $page['ADMIN_EMAIL'] = $config['email']['admin'];
     $page['config'] = $config;
     $page['invert_navbar'] = substr($config['domain'], -4) == '.pro';
 

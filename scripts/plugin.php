@@ -21,10 +21,14 @@ $pattern = $argv[2];
 
 $plugin_ids = array();
 
-foreach (glob(ROOT_PATH . "plugins/" . $pattern . "/package.json") as $filename) {
-    $d = dirname($filename);
-    $d = substr($d, strrpos($d, DIRECTORY_SEPARATOR)+1);
-    $plugin_ids[] = $d;
+if (strpos($pattern, '*') > -1) {
+    foreach (glob(ROOT_PATH . "plugins/" . $pattern . "/package.json") as $filename) {
+        $d = dirname($filename);
+        $d = substr($d, strrpos($d, DIRECTORY_SEPARATOR)+1);
+        $plugin_ids[] = $d;
+    }
+} else {
+    $plugin_ids[] = $pattern;
 }
 
 if (empty($plugin_ids)) {
@@ -60,6 +64,10 @@ foreach ($plugin_ids as $plugin_id) {
         }
 
     } else {
+        if ($cmd == 'uninstall' || $cmd == 'disable') {
+            $pluPluginQuery::create()->filterById($plugin_id)->findOne();
+            i
+        }
         print 'Warning: Plugin not found: '.$plugin_id."\n";
         exit(1);
     }

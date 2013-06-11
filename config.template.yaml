@@ -31,9 +31,12 @@ thumbnails:
     s: [150, 150]
     m: [260, 170]
 
-## email address for admin
-admin_email: hello@datawrapper.de
-log_email: debug@datawrapper.de
+## email addresses
+email:
+  # users with problems will be shown the admin email
+  admin: hello@datawrapper.de
+  # error messages will go here
+  log: debug@datawrapper.de
 
 ## prevent guest from creating charts
 prevent_guest_charts: false

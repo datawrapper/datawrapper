@@ -115,7 +115,7 @@ $app->post('/account/resend-activation', function() use($app) {
             ->filterByKey('resend-activation')
             ->find();
         if (count($r) > 2) {
-            error('avoid-spam', str_replace('%ADMINEMAIL%', $GLOBALS['dw_config']['admin_email'], __('You already resent the activation mail three times, now. Please <a href="mailto:%ADMINEMAIL%">contact an administrator</a> to proceed with your account activation.')));
+            error('avoid-spam', str_replace('%ADMINEMAIL%', $GLOBALS['dw_config']['email']['admin'], __('You already resent the activation mail three times, now. Please <a href="mailto:%ADMINEMAIL%">contact an administrator</a> to proceed with your account activation.')));
             return false;
         }
 
@@ -130,7 +130,12 @@ $app->post('/account/resend-activation', function() use($app) {
 
         include('../../lib/templates/activation-email.php');
 
-        DatawrapperHooks::execute(DatawrapperHooks::SEND_EMAIL, $user->getEmail(), 'Datawrapper Email Activation', $activation_mail, 'From: ' . $from);
+        DatawrapperHooks::execute(
+            DatawrapperHooks::SEND_EMAIL,
+            $user->getEmail(), 'Datawrapper Email Activation',
+            $activation_mail,
+            'From: ' . $from
+        );
 
         ok(__('The activation email has been send to your email address, again.'));
 

@@ -37,7 +37,7 @@ $app->post('/github', function() use ($app) {
                 $body .= '<p>Cheers, <br/>The friendly Datawrapper bot</p>';
 
                 mail();
-                DatawrapperHooks::execute(DatawrapperHooks::SEND_EMAIL, $GLOBALS['dw_config']['log_email'], 'Datawrapper has been updated', $body, $headers);
+                DatawrapperHooks::execute(DatawrapperHooks::SEND_EMAIL, $GLOBALS['dw_config']['email']['log'], 'Datawrapper has been updated', $body, $headers);
 
                 $cmd = dirname(dirname(dirname(__FILE__))) . '/scripts/deploy.sh';
                 exec($cmd);
