@@ -3,6 +3,7 @@
 class DatawrapperPlugin {
 
 	private $__name;
+	private $__packageJson;
 
 	function __construct($name = null) {
 		if (isset($name)) $this->__name = $name;
@@ -79,7 +80,6 @@ class DatawrapperPlugin {
 		$this->__packageJson = $meta;
 		return $meta['version'];
 	}
-	private $__packageJson;
 
 	/*
 	 * returns the name (id) of this plugin
