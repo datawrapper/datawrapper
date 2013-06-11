@@ -17,7 +17,9 @@ function parse_config() {
     if (!isset($cfg['email']['pwd_reset']))
         $cfg['email']['pwd_reset'] = 'password-reset@' . $cfg['domain'];
     if (!isset($cfg['email']['activate']))
-        $cfg['email']['activate'] = 'activate-reset@' . $cfg['domain'];
+        $cfg['email']['activate'] = 'activate@' . $cfg['domain'];
+    if (!isset($cfg['email']['invite']))
+        $cfg['email']['invite'] = 'invite@' . $cfg['domain'];
 
     $GLOBALS['dw_config'] = $cfg;
 }
