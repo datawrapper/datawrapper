@@ -2,10 +2,10 @@
 
 class DatawrapperPlugin {
 
-	private $name;
+	private $__name;
 
 	function __construct($name = null) {
-		if (isset($name)) $this->name = $name;
+		if (isset($name)) $this->__name = $name;
 	}
 
 	/** register events */
@@ -85,12 +85,12 @@ class DatawrapperPlugin {
 	 * returns the name (id) of this plugin
 	 */
 	public function getName() {
-		if (!isset($this->name)) {
+		if (!isset($this->__name)) {
 			$reflector = new ReflectionClass(get_class($this));
 			$dirname   = dirname($reflector->getFileName());
-			$this->name = substr($dirname, strrpos($dirname, DIRECTORY_SEPARATOR)+1);
+			$this->__name = substr($dirname, strrpos($dirname, DIRECTORY_SEPARATOR)+1);
 		}
-		return $this->name;
+		return $this->__name;
 	}
 
 	/*
