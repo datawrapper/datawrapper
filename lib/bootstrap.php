@@ -45,6 +45,9 @@ function secure_password($pwd) {
 require ROOT_PATH . 'lib/session/database.php';
 require ROOT_PATH . 'lib/session/DatawrapperSession.php';
 require ROOT_PATH . 'lib/l10n.php';
+require ROOT_PATH . 'lib/utils/parse_config.php';
+
+parse_config();
 
 if (!defined('NO_SLIM')) {
     // Initialize Slim app..
