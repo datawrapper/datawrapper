@@ -83,7 +83,6 @@ $app->post('/users', function() use ($app) {
             }
         }
         $user->SetRole($data->role);
-        
     }
     $user->setLanguage(DatawrapperSession::getLanguage());
     $user->setActivateToken(hash_hmac('sha256', $data->email.'/'.time(), DW_TOKEN_SALT));
@@ -94,20 +93,29 @@ $app->post('/users', function() use ($app) {
     $name   = $data->email;
     $domain = $GLOBALS['dw_config']['domain'];
 
-    $activationLink = 'http://' . $domain . '/account/activate/' . $user->getActivateToken();
-    $from = 'activate@' . $domain;
+    if ($invitation) {
+        $activationLink = 'http://' . $domain . '/account/activate/' . $user->getActivateToken();
+        $from = $GLOBALS['dw_config']['email']['invite'];
+        include(ROOT_PATH . 'lib/templates/invitation-email.php');
+        DatawrapperHooks::execute(
+            DatawrapperHooks::SEND_EMAIL,
+            $data->email, sprintf(__('Invitation to %s'), $domain), $invitation_mail, 'From: ' . $from
+        );
+    } else {
+        $activationLink = 'http://' . $domain . '/account/activate/' . $user->getActivateToken();
+        $from = $GLOBALS['dw_config']['email']['activate'];
+        include(ROOT_PATH . 'lib/templates/activation-email.php');
+        DatawrapperHooks::execute(
+            DatawrapperHooks::SEND_EMAIL,
+            $data->email, __('Datawrapper Email Activation'), $activation_mail, 'From: ' . $from
+        );
 
-    include('../../lib/templates/activation-email.php');
-
-    DatawrapperHooks::execute(DatawrapperHooks::SEND_EMAIL, $data->email, 'Datawrapper Email Activation', $activation_mail, 'From: ' . $from);
-
-
-    // we don't need to annoy the user with a login form now,
-    // so just log in..
-    DatawrapperSession::login($user);
+        // we don't need to annoy the user with a login form now,
+        // so just log in..
+        DatawrapperSession::login($user);
+    }
 
     ok($result);
-
 });
 
 
