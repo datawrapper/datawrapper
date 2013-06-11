@@ -32,6 +32,23 @@ require_once ROOT_PATH . 'lib/bootstrap.php';
 $cmd = $argv[1];
 
 /*
+ * list installed plugins
+ */
+function list_plugins() {
+    $plugins = PluginQuery::create()->find();
+    foreach ($plugins as $plugin) {
+        print $plugin->getName().":  ";
+        print $plugin->getEnabled() ? "ENABLED" : "DISABLED";
+        print "\n";
+    }
+    _apply("*", function($id) {
+        $plugin = PluginQuery::create()->findPk($id);
+        if (!$plugin) print "$id:  NOT INSTALLED\n";
+    });
+    exit();
+}
+
+/*
  * removes plugins from db that have no files installed anymore
  */
 function clean() {
@@ -144,6 +161,7 @@ function disable($pattern) {
 }
 
 switch ($cmd) {
+    case 'list': list_plugins();
     case 'clean': clean();
     case 'install': install($argv[2]);
     case 'uninstall': uninstall($argv[2]);
