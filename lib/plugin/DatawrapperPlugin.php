@@ -72,11 +72,14 @@ class DatawrapperPlugin {
 	 * returns the version of the plugin
 	 */
 	public function getVersion() {
+		if (!empty($this->__packageJson)) return $this->__packageJson['version'];
 		$reflector = new ReflectionClass(get_class($this));
 		$dirname   = dirname($reflector->getFileName());
 		$meta      = json_decode(file_get_contents($dirname . "/package.json"),true);
+		$this->__packageJson = $meta;
 		return $meta['version'];
 	}
+	private $__packageJson;
 
 	/*
 	 * returns the name (id) of this plugin
