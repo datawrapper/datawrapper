@@ -1,10 +1,23 @@
 <?php
 
 /*
- * enables/disables a plugin
+ * Datawrapper Plugin Manager
+ * --------------------------
  *
- * usage:
- * php plugin.php enable|disable PLUGIN_NAME
+ * Examples:
+ *
+ * Install all available plugins
+ *    php plugin.php install "*"
+ *
+ * Disable a plugins
+ *    php plugin.php diable foo
+ *
+ * Uninstall a plugin
+ *    php plugin.php uninstall foo
+ *
+ * Batch enable some plugins
+ *    php plugin.php enable "visualization-*"
+ *
  */
 
 
