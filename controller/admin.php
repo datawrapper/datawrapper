@@ -69,7 +69,7 @@ $app->get('/admin/?', function() use ($app) {
             'title' => 'Dashboard',
             'user_csv' => $user_csv,
             'chart_csv' => $chart_csv,
-            'linechart' => get_visualization_meta('line-chart'),
+            'linechart' => DatawrapperVisualization::get('line-chart'),
             'chartLocale' => 'en-US'
         );
         add_header_vars($page, 'admin');
