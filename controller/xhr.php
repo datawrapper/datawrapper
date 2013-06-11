@@ -32,7 +32,6 @@ $app->get('/xhr/home-login', function() use ($app) {
  * reloads visualization specific options after the user
  * changed the visualization type
  */
-require_once '../lib/utils/visualizations.php';
 require_once '../lib/utils/themes.php';
 
 $app->get('/xhr/:chartid/vis-options', function($id) use ($app) {
@@ -40,7 +39,7 @@ $app->get('/xhr/:chartid/vis-options', function($id) use ($app) {
 
     check_chart_writable($id, function($user, $chart) use ($app) {
         $page = array(
-            'vis' => get_visualization_meta($chart->getType()),
+            'vis' => DatawrapperVisualization::get($chart->getType()),
             'theme' => get_theme_meta($chart->getTheme()),
             'language' => substr(DatawrapperSession::getLanguage(), 0, 2)
         );

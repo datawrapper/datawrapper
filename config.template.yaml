@@ -31,15 +31,22 @@ thumbnails:
     s: [150, 150]
     m: [260, 170]
 
-## email address for admin
-admin_email: hello@datawrapper.de
-log_email: debug@datawrapper.de
+## email addresses
+email:
+  # users with problems will be shown the admin email
+  admin: hello@datawrapper.de
+  # error messages will go here
+  log: debug@datawrapper.de
+  # email shown as sender for activation emails
+  activate: no-reply@datawrapper.de
+  # email shown as sender for password reset emails
+  pwd_reset: no-reply@datawrapper.de
 
 ## prevent guest from creating charts
 prevent_guest_charts: false
 
 ## prevent guests from creating accounts
-## (an admin need to create the account)
+## (admin needs to create any accounts)
 prevent_guest_access: false
 
 ## the following links are shown in the footer
@@ -78,25 +85,16 @@ footer_links:
 #     icon: tag
 
 
-## ANALYTICS (optional)
-## configure analytics module, e.g. Piwik
-# analytics:
-#     type: Piwik
-#     config:
-#         url: piwik.datawrapper.de  # without http:// and trailing slash
-#         idSite: 5
+plugins:
 
+  # analytics-piwik:
+  #   url: piwik.datawrapper.de  # without http:// and trailing slash
+  #   idSite: 5
 
-## PUBLISH (optional)
-## configure CDN publication module, e.g. Amazon S3
-# publish:
-#     type: S3
-#     requires:
-#       - vendor/s3/S3.php
-#     config:
-#         accesskey: YOUR_ACCESS_KEY
-#         secretkey: YOUR_SECRET_KEY
-#         bucket: your-bucket
+  # publish-s3:
+  #   accesskey: YOUR_ACCESS_KEY
+  #   secretkey: YOUR_SECRET_KEY
+  #   bucket: your-bucket
 
 
 ## PHANTOMJS (optional)

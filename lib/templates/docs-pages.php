@@ -2,7 +2,7 @@
 
 
 $docs = array(
-    '/docs/about' => _('About'),
+    '/docs/about' => __('About'),
     '/docs/motivation' => 'Motivation',
     '/docs/quickstart' => 'Quickstart',
     '/docs/tutorial' => 'Tutorial',

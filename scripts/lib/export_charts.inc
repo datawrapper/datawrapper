@@ -35,7 +35,7 @@ function _log($msg = "", $job=null, $type='LOG') {
         if ($type == 'ERROR') {
             $url = $job['chart_url'];
             unset($job['chart_url']);
-            @mail(
+            DatawrapperHooks::execute(DatawrapperHooks::SEND_EMAIL, 
                 $cfg['log_email'],
                 'export-charts / error / '.substr($msg, 0, 60).'...',
                 'Bug found in '.$url."\n\n".$msg."\n\n".print_r($job, true),
@@ -151,7 +151,7 @@ function run($job) {
             $mbody .= "\r\n\r\n" . $attachment;
             $mbody .= "\r\n--PHP-mixed-$random_hash\r\n";
 
-            $mail_sent = @mail($to, $subject, $mbody, $headers);
+            $mail_sent = DatawrapperHooks::execute(DatawrapperHooks::SEND_EMAIL, $to, $subject, $mbody, $headers);
             if (!$mail_sent) _log("ERROR: could not send mail");
             else {
                 mysql_query('UPDATE job SET status = 1, done_at = NOW() WHERE id = '.$job['job_id']);

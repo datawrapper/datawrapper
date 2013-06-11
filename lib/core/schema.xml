@@ -103,4 +103,14 @@
     <column name="parameter" type="varchar" size="4096" required="true" />
     <column name="fail_reason" type="varchar" size="4096" required="true" />
   </table>
+
+  <!-- plugin -->
+  <table name="plugin" phpName="Plugin">
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+    <column name="id" type="varchar" size="128" required="true" primaryKey="true" />
+    <column name="installed_at" type="timestamp" required="true" />
+    <column name="enabled" type="boolean" default="false" />
+  </table>
 </database>

@@ -1,7 +1,5 @@
 <?php
 
-
-require_once '../lib/utils/visualizations.php';
 require_once '../lib/utils/themes.php';
 
 /*

@@ -1,0 +1,11 @@
+{
+    "version": "0.1",
+    "author": "Gregor Aisch",
+    "dependencies": {
+<<<<<<< HEAD
+        "visualization": "*"
+=======
+        "visualization-raphael-chart": "*"
+>>>>>>> cf80e3e793c6f25236f0d6e584caf6d1ad65edc4
+    }
+}

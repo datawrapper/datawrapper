@@ -1,7 +1,6 @@
 <?php
 
 require_once '../lib/utils/themes.php';
-require_once '../lib/utils/visualizations.php';
 require_once '../lib/utils/pagination.php';
 
 function nbChartsByMonth($user) {
@@ -22,11 +21,11 @@ function nbChartsByType($user) {
     $res = array();
 
     foreach ($rs as $r) {
-        $vis = get_visualization_meta($r['type']);
+        $vis = DatawrapperVisualization::get($r['type']);
         $lang = substr(DatawrapperSession::getLanguage(), 0, 2);
         if (!isset($vis['title'])) continue;
         if (empty($vis['title'][$lang])) $lang = 'en';
-        $res[] = array('count' => $r['c'], 'id' => $r['type'], 'name' => $vis['title'][$lang]);
+        $res[] = array('count' => $r['c'], 'id' => $r['type'], 'name' => $vis['title']);
     }
     return $res;
 }
@@ -48,8 +47,8 @@ function nbChartsByStatus($user) {
     $published = ChartQuery::create()->filterByUser($user)->filterByDeleted(false)->filterByLastEditStep(array('min'=>4))->count();
     $draft = ChartQuery::create()->filterByUser($user)->filterByDeleted(false)->filterByLastEditStep(array('max'=>3))->count();
     return array(
-        array('id'=>'published', 'name' => _('Published'), 'count' => $published),
-        array('id'=>'draft', 'name' => _('Draft'), 'count' => $draft)
+        array('id'=>'published', 'name' => __('Published'), 'count' => $published),
+        array('id'=>'draft', 'name' => __('Draft'), 'count' => $draft)
     );
 }
 

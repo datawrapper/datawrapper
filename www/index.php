@@ -7,7 +7,7 @@
 
 
 
-define('DATAWRAPPER_VERSION', '1.3.3');  // must be the same as in package.json
+define('DATAWRAPPER_VERSION', '1.4.0');  // must be the same as in package.json
 
 define('ROOT_PATH', '../');
 
@@ -43,18 +43,17 @@ function str_purify($dirty_html) {
     return $_HTMLPurifier->purify($dirty_html);
 }
 
+function call_hook() {
+    call_user_func_array(array(DatawrapperHooks::getInstance(), 'execute'), func_get_args());
+}
+$twig->addFunction('hook', new Twig_Function_Function('call_hook'));
+
+
 // loae I18n extension for Twig
 $twig->addExtension(new Twig_Extension_I18n());
 
 require_once '../lib/utils/i18n.php';
 require_once '../lib/utils/disable_cache.php';
-
-// Load CDN publishing class
-if (!empty($dw_config['publish']) && !empty($dw_config['publish']['requires'])) {
-    foreach($dw_config['publish']['requires'] as $lib) {
-        require_once '../' . $lib;
-    }
-}
 
 
 function add_header_vars(&$page, $active = null) {
@@ -72,19 +71,19 @@ function add_header_vars(&$page, $active = null) {
         $headlinks[] = array(
             'url' => '/chart/create',
             'id' => 'chart',
-            'title' => _('Create Chart'),
+            'title' => __('Create Chart'),
             'icon' => 'pencil'
         );
     }
 
     if ($user->isLoggedIn() && $user->hasCharts()) {
-        $headlinks[] = array('url' => '/mycharts/', 'id' => 'mycharts', 'title' => _('My Charts'), 'icon' => 'signal');
+        $headlinks[] = array('url' => '/mycharts/', 'id' => 'mycharts', 'title' => __('My Charts'), 'icon' => 'signal');
     } else {
-        $headlinks[] = array('url' => '/gallery/', 'id' => 'gallery', 'title' => _('Gallery'), 'icon' => 'signal');
+        $headlinks[] = array('url' => '/gallery/', 'id' => 'gallery', 'title' => __('Gallery'), 'icon' => 'signal');
     }
 
     if (isset($config['navigation'])) foreach ($config['navigation'] as $item) {
-        $link = array('url' => str_replace('%lang%', substr(DatawrapperSession::getLanguage(), 0, 2), $item['url']), 'id' => $item['id'], 'title' => _($item['title']));
+        $link = array('url' => str_replace('%lang%', substr(DatawrapperSession::getLanguage(), 0, 2), $item['url']), 'id' => $item['id'], 'title' => __($item['title']));
         if (!empty($item['icon'])) $link['icon'] = $item['icon'];
         $headlinks[] = $link;
     }
@@ -94,7 +93,7 @@ function add_header_vars(&$page, $active = null) {
             'url' => '',
             'id' => 'lang',
             'dropdown' => array(),
-            'title' => _('Language'),
+            'title' => __('Language'),
             'icon' => 'font'
         );
         foreach ($config['languages'] as $lang) {
@@ -116,11 +115,11 @@ function add_header_vars(&$page, $active = null) {
             'dropdown' => array(array(
                 'url' => '/account/settings',
                 'icon' => 'wrench',
-                'title' => _('Settings')
+                'title' => __('Settings')
             ), array(
                 'url' => '#logout',
                 'icon' => 'off',
-                'title' => _('Logout')
+                'title' => __('Logout')
             ))
         );
         if ($user->isAdmin()) {
@@ -128,14 +127,14 @@ function add_header_vars(&$page, $active = null) {
                 'url' => '/admin',
                 'id' => 'admin',
                 'icon' => 'fire',
-                'title' => _('Admin')
+                'title' => __('Admin')
             );
         }
     } else {
         $headlinks[] = array(
             'url' => '#login',
             'id' => 'login',
-            'title' => _('Login / Sign Up'),
+            'title' => __('Login / Sign Up'),
             'icon' => 'user'
         );
     }
@@ -149,12 +148,9 @@ function add_header_vars(&$page, $active = null) {
     $page['DW_DOMAIN'] = $config['domain'];
     $page['DW_VERSION'] = DATAWRAPPER_VERSION;
     $page['DW_CHART_CACHE_DOMAIN'] = $config['chart_domain'];
-    $page['ADMIN_EMAIL'] = $config['admin_email'];
+    $page['ADMIN_EMAIL'] = $config['email']['admin'];
     $page['config'] = $config;
     $page['invert_navbar'] = substr($config['domain'], -4) == '.pro';
-
-    $analyticsMod = get_module('analytics', '../lib/');
-    $page['trackingCode'] = !empty($analyticsMod) ? $analyticsMod->getTrackingCode() : '';
 
     if (isset($config['piwik'])) {
         $page['PIWIK_URL'] = $config['piwik']['url'];
@@ -178,10 +174,10 @@ function add_header_vars(&$page, $active = null) {
 function add_editor_nav(&$page, $step) {
     // define 4 step navigation
     $steps = array();
-    $steps[] = array('index'=>1, 'id'=>'upload', 'title'=>_('Upload Data'));
-    $steps[] = array('index'=>2, 'id'=>'describe', 'title'=>_('Check & Describe'));
-    $steps[] = array('index'=>3, 'id'=>'visualize', 'title'=>_('Visualize'));
-    $steps[] = array('index'=>4, 'id'=>'publish', 'title'=>_('Publish & Embed'));
+    $steps[] = array('index'=>1, 'id'=>'upload', 'title'=>__('Upload Data'));
+    $steps[] = array('index'=>2, 'id'=>'describe', 'title'=>__('Check & Describe'));
+    $steps[] = array('index'=>3, 'id'=>'visualize', 'title'=>__('Visualize'));
+    $steps[] = array('index'=>4, 'id'=>'publish', 'title'=>__('Publish & Embed'));
     $page['steps'] = $steps;
     $page['chartLocale'] = $page['locale'];
     $page['metricPrefix'] = get_metric_prefix($page['chartLocale']);
@@ -191,7 +187,6 @@ function add_editor_nav(&$page, $step) {
 
 require_once '../lib/utils/errors.php';
 require_once '../lib/utils/check_chart.php';
-require_once '../lib/utils/get_module.php';
 require_once '../controller/home.php';
 require_once '../controller/login.php';
 require_once '../controller/account-settings.php';

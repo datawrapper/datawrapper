@@ -1,6 +1,14 @@
 CHANGELOG
 ---------
 
+### 1.4.0
+* added table plugin
+* added plugins system
+* created datawrapper hook system (lib/hooks)
+* refactored visualizations to plugins
+* replaced gettext translation with generic JSON files
+* simplified plugin localization
+
 ### 1.3.3
 * trimming row labels in filter UI
 * increased character limit to 40 chars

@@ -1,7 +1,6 @@
 <?php
 
 
-require_once '../lib/utils/visualizations.php';
 require_once '../lib/utils/themes.php';
 require_once '../vendor/jsmin/jsmin.php';
 
@@ -25,8 +24,8 @@ $app->get('/chart/:id/publish', function ($id) use ($app) {
         $page = array(
             'chartData' => $chart->loadData(),
             'chart' => $chart,
-            'visualizations' => get_visualizations_meta('', true),
-            'vis' => get_visualization_meta($chart->getType()),
+            'visualizations' => DatawrapperVisualization::all(),
+            'vis' => DatawrapperVisualization::get($chart->getType()),
             'chartUrl' => $public_url,
             'chartUrlLocal' => '/chart/' . $chart->getID() . '/preview',
             'themes' => get_themes_meta(),
@@ -39,10 +38,10 @@ $app->get('/chart/:id/publish', function ($id) use ($app) {
         if ($user->isAbleToPublish()
             && ($chart->getLastEditStep() == 3 || $app->request()->get('republish') == 1)) {
 
-            if ($pub = get_module('publish', '../lib/')) {
-                $url = $pub->getUrl($chart);
-                $chart->setPublicUrl($url);
-                $page['chartUrl'] = $url;
+            $published_urls = DatawrapperHooks::execute(DatawrapperHooks::GET_PUBLISHED_URL, $chart);
+            if (!empty($published_urls)) {
+                $chart->setPublicUrl($published_urls[0]);
+                $page['chartUrl'] = $published_urls[0];
             } else {
                 $chart->setPublicUrl($local_url);
             }

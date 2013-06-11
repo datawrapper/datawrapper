@@ -2,7 +2,6 @@
 
 require_once '../../vendor/cssmin/cssmin.php';
 require_once '../../lib/utils/themes.php';
-require_once '../../lib/utils/visualizations.php';
 require_once '../../lib/utils/chart_content.php';
 require_once '../../vendor/jsmin/jsmin.php';
 
@@ -129,8 +128,5 @@ function publish_data($user, $chart) {
 
 
 function publish_push_to_cdn($cdn_files, $chart) {
-    if ($pub = get_module('publish')) {
-        // $pub->unpublish(array($chart->getID() . '/index.html'));
-        $pub->publish($cdn_files);
-    }
+    DatawrapperHooks::execute(DatawrapperHooks::PUBLISH_FILES, $cdn_files);
 }

@@ -325,7 +325,7 @@ $(function() {
         if (!thumb.hasClass('vis-thumb')) thumb = thumb.parents('.vis-thumb');
         thumbs.removeClass('active');
         thumb.addClass('active');
-        selVis.html('<img src="/static/visualizations/'+thumb.data('id')+'/thumb.png" width="24" />' + thumb.data('title'));
+        selVis.html('<img src="'+thumb.data('static-path')+thumb.data('id')+'.png" width="24" />' + thumb.data('title'));
         setTimeout(function() {
             folded.show();
             unfolded.animate({ height: 0 }, 300, 'easeOutExpo', function() {
@@ -418,12 +418,12 @@ $(function() {
                 <h3>{% trans "Select visualization" %}</h3>
                     <div class="vis-thumbs">
                         {% for vis in visualizations %}{% if vis.title %}
-                        <div class="vis-thumb{% if vis.id == chart.type %} active{% endif %}" data-id="{{ vis.id }}" data-title="{{ vis.title[language] }}"><img title="{{ vis.title[language] }}" src="/static/visualizations/{{ vis.id }}/thumb.png" /></div>
+                        <div class="vis-thumb{% if vis.id == chart.type %} active{% endif %}" data-id="{{ vis.id }}" data-title="{{ vis.title }}" data-static-path="{{ vis.__static_path }}"><img title="{{ vis.title }}" src="{{ vis.__static_path }}{{ vis.id }}.png" /></div>
                         {% endif %}{% endfor %}
                     </div>
                 </div>
                 <div class="vis-selector-folded">
-                    <h3><u>{% trans "Visualization:" %}</u> <span class="vis-selected"><img src="/static/visualizations/{{ chart.type }}/thumb.png" width="24" /> {{ vis.title[language] }}</span></h3>
+                    <h3><u>{% trans "Visualization:" %}</u> <span class="vis-selected"><img src="{{ vis.__static_path }}{{ vis.id }}.png" width="24" /> {{ vis.title[language] }}</span></h3>
                 </div>
 
                 <div style="margin-top:10px;margin-bottom:20px">

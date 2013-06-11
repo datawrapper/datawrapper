@@ -1,0 +1,9 @@
+/*
+ * special styles for bar charts
+ */
+
+html body #footer {
+    position: relative;
+    top: auto;
+    left: auto;
+}

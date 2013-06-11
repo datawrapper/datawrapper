@@ -42,6 +42,13 @@ function secure_password($pwd) {
     }
 }
 
+require ROOT_PATH . 'lib/session/database.php';
+require ROOT_PATH . 'lib/session/DatawrapperSession.php';
+require ROOT_PATH . 'lib/l10n.php';
+require ROOT_PATH . 'lib/utils/parse_config.php';
+
+parse_config();
+
 if (!defined('NO_SLIM')) {
     // Initialize Slim app..
     if (ROOT_PATH == '../') {
@@ -61,6 +68,9 @@ if (!defined('NO_SLIM')) {
     }
 }
 
+require ROOT_PATH . 'lib/visualization/DatawrapperVisualization.php';
+require ROOT_PATH . 'lib/plugin/DatawrapperPlugin.php';
+require ROOT_PATH . 'lib/hooks/DatawrapperHooks.php';
+require ROOT_PATH . 'lib/plugin/load_plugins.php';
 
-require ROOT_PATH . 'lib/session/database.php';
-require ROOT_PATH . 'lib/session/Datawrapper.php';
+load_plugins();

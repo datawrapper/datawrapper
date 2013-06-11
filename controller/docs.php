@@ -38,7 +38,7 @@ foreach ($urls as $url) {
                 if ($l != $lang && !empty($docs_pages[$l]) && !empty($docs_pages[$l][$url])) {
                     $page['alert'] = array(
                         'type' => 'info',
-                        'message' => _('Sorry, but this content is not available in your language, yet.')
+                        'message' => __('Sorry, but this content is not available in your language, yet.')
                     );
                     $lang = $page['language'] = $l;
                     break;
@@ -54,7 +54,7 @@ foreach ($urls as $url) {
             add_docs_vars($page, $url);
             $app->render($tpl_path, $page);
         } else {
-            error_page('about', _('Not found'), _('Sorry, but this content is not available in your language, yet.'));
+            error_page('about', __('Not found'), __('Sorry, but this content is not available in your language, yet.'));
         }
     });
 }

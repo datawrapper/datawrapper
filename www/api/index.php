@@ -10,12 +10,6 @@ define('ROOT_PATH', '../../');
 require_once ROOT_PATH . 'lib/bootstrap.php';
 
 $config = $GLOBALS['dw_config'];
-// Load CDN publishing class
-if (!empty($config['publish']) && !empty($config['publish']['requires'])) {
-    foreach($config['publish']['requires'] as $lib) {
-        require_once '../../' . $lib;
-    }
-}
 
 require '../../lib/utils/i18n.php';
 require '../../lib/utils/disable_cache.php';
@@ -74,7 +68,6 @@ function if_is_admin($callback) {
     }
 }
 
-require_once '../../lib/utils/get_module.php';
 require_once '../../lib/api/users.php';
 require_once '../../lib/api/auth.php';
 require_once '../../lib/api/charts.php';

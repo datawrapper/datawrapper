@@ -93,19 +93,18 @@ $app->post('/users', function() use ($app) {
     // send an email
     $name   = $data->email;
     $domain = $GLOBALS['dw_config']['domain'];
-    $from   = $GLOBALS['dw_config']['email'];
-    if ($invitation) {
-    // send email with invitation
-        $activationLink = 'http://' . $domain . '/account/set-password/' . $user->getActivateToken();
-        include('../../lib/templates/invitation-email.php');
-        mail($data->email, 'Invitation '. $domain, $invitation_mail, 'From: '.$from);
-    } else {
-        // send email with activation key
-        $activationLink = 'http://' . $domain . '/account/activate/' . $user->getActivateToken();
-        include('../../lib/templates/activation-email.php');
-        mail($data->email, 'Activation ' . $domain, $activation_mail, 'From: '.$from);
-        DatawrapperSession::login($user);
-    }
+
+    $activationLink = 'http://' . $domain . '/account/activate/' . $user->getActivateToken();
+    $from = 'activate@' . $domain;
+
+    include('../../lib/templates/activation-email.php');
+
+    DatawrapperHooks::execute(DatawrapperHooks::SEND_EMAIL, $data->email, 'Datawrapper Email Activation', $activation_mail, 'From: ' . $from);
+
+
+    // we don't need to annoy the user with a login form now,
+    // so just log in..
+    DatawrapperSession::login($user);
 
     ok($result);
 
@@ -234,7 +233,7 @@ $app->delete('/users/:id', function($user_id) use ($app) {
                 ok();
             } else {
                 Action::logAction($user, 'delete-request-wrong-password', json_encode(get_user_ips()));
-                error('wrong-password', _('The password you entered is not correct.'));
+                error('wrong-password', __('The password you entered is not correct.'));
             }
         } else {
             error('user-not-found', 'no user found with that id');
@@ -257,10 +256,10 @@ $app->put('/account/reset-password', function() use ($app) {
                 $user->save();
                 ok();
             } else {
-                error('empty-password', _('The password must not be empty.'));
+                error('empty-password', __('The password must not be empty.'));
             }
         } else {
-            error('invalid-token', _('The supplied token for password resetting is invalid.'));
+            error('invalid-token', __('The supplied token for password resetting is invalid.'));
         }
     }
 });

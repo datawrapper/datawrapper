@@ -1,0 +1,42 @@
+
+
+.label span {
+    background-color: #fff;
+}
+
+html .label.tooltip span {
+    background: none;
+}
+
+.label.highlighted {
+    z-index: 100;
+}
+
+.label.highlighted span, .label.axis span {
+    background-color: #fff;
+}
+
+.label.rotate45 {
+    -moz-transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+}
+
+.label.x-axis {
+    font-weight: bold;
+}
+
+.label.x-axis.h span {
+    padding: 2px 5px 5px;
+}
+
+html, body {
+    overflow: hidden!important;
+}
+
+.line-chart .tooltip {
+    padding: 2px 0px;
+    text-align: center;
+    z-index: 100;
+}

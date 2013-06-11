@@ -34,7 +34,7 @@ class ChartQuery extends BaseChartQuery {
             $chart->setGuestSession(session_id());
         }
         // find a nice, more or less unique title
-        $untitled = _('Untitled');
+        $untitled = __('Untitled');
         $title = '[' . $untitled;
         $untitledCharts = $this->filterByAuthorId($user->getId())
             ->filterByTitle('['.$untitled.'%')
@@ -73,7 +73,7 @@ class ChartQuery extends BaseChartQuery {
         $chart->setId($this->getUnusedRandomId());
         // but the rest remains the same
         $chart->setUser($src->getUser());
-        $chart->setTitle($src->getTitle().' ('._('Copy').')');
+        $chart->setTitle($src->getTitle().' ('.__('Copy').')');
         $chart->setMetadata(json_encode($src->getMetadata()));
         $chart->setTheme($src->getTheme());
         $chart->setLocale($src->getLocale());

@@ -9,7 +9,6 @@
  * used carefully anyway. never call this in embedded charts
  */
 
-require_once ROOT_PATH . 'lib/utils/visualizations.php';
 
 $app->get('/visualizations', function() {
     if (false && isset($_SESSION['dw-visualizations'])) {
@@ -18,7 +17,7 @@ $app->get('/visualizations', function() {
         $res = $_SESSION['dw-visualizations'];
     } else {
         // read from file system
-        $res = get_visualizations_meta();
+        $res = DatawrapperVisualization::all();
         // store in cache
         $_SESSION['dw-visualizations'] = $res;
     }
@@ -32,7 +31,7 @@ $app->get('/visualizations/:visid', function($visid) {
         $res = $_SESSION['dw-visualizations-'.$visid];
     } else {
         // read from file system
-        $res = get_visualization_meta($visid);
+        $res = DatawrapperVisualization::get($visid);
         // store in cache
         $_SESSION['dw-visualizations-'.$visid] = $res;
     }
