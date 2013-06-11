@@ -65,8 +65,13 @@ foreach ($plugin_ids as $plugin_id) {
 
     } else {
         if ($cmd == 'uninstall' || $cmd == 'disable') {
-            $pluPluginQuery::create()->filterById($plugin_id)->findOne();
-            i
+            $plugin = PluginQuery::create()->findPk($plugin_id);
+            if ($plugin) {
+                $plugin->setEnabled(false);
+                if ($cmd == 'uninstall') $plugin->delete();
+                else $plugin->save();
+                continue;
+            }
         }
         print 'Warning: Plugin not found: '.$plugin_id."\n";
         exit(1);
