@@ -17,63 +17,149 @@ date_default_timezone_set('Europe/Berlin');
 require_once ROOT_PATH . 'lib/bootstrap.php';
 
 $cmd = $argv[1];
-$pattern = $argv[2];
 
-$plugin_ids = array();
-
-if (strpos($pattern, '*') > -1) {
-    foreach (glob(ROOT_PATH . "plugins/" . $pattern . "/package.json") as $filename) {
-        $d = dirname($filename);
-        $d = substr($d, strrpos($d, DIRECTORY_SEPARATOR)+1);
-        $plugin_ids[] = $d;
+/*
+ * removes plugins from db that have no files installed anymore
+ */
+function clean() {
+    $plugins = PluginQuery::create()->find();
+    foreach ($plugins as $plugin) {
+        if (!file_exists($plugin->getPath() . 'package.json')) {
+            $plugin->delete();
+        }
     }
-} else {
-    $plugin_ids[] = $pattern;
+    exit();
 }
 
-if (empty($plugin_ids)) {
-    print "No matching plugin found.\n";
-    exit(1);
-}
+/*
+ * installs plugins
+ */
+function install($pattern) {
+    _apply($pattern, function($id) {
+        $tmp = new Plugin();
+        $tmp->setId($id);
 
-foreach ($plugin_ids as $plugin_id) {
-    $plugin = new Plugin();
-    $plugin->setId($plugin_id);
-
-    if (file_exists($plugin->getPath())) {
-        if (file_exists($plugin->getPath() . 'plugin.php')) {
-            require_once $plugin->getPath() . 'plugin.php';
-            $className = $plugin->getClassName();
-            $pluginClass = new $className();
+        // check if plugin files exist
+        if (!file_exists($tmp->getPath())) {
+            print "No plugin found with that name. Skipping.\n";
+            return false;
+        }
+        if (!file_exists($tmp->getPath() . 'package.json')) {
+            print "Path exists, but no package.json found. Skipping.\n";
+            return false;
+        }
+        // check if plugin is already installed
+        $plugin = PluginQuery::create()->findPk($id);
+        if ($plugin) {
+            _loadPluginClass($plugin)->install();
+            print "Re-installed plugin $id.\n";
         } else {
-            // no plugin.php
-            $pluginClass = new DatawrapperPlugin($plugin->getName());
+            $plugin = new Plugin();
+            $plugin->setId($id);
+            $plugin->save();
+            _loadPluginClass($plugin)->install();
+            print "Installed plugin $id.\n";
+        }
+    });
+    exit();
+}
+
+/*
+ * uninstalls plugins
+ */
+function uninstall($pattern) {
+    _apply($pattern, function($id) {
+        $tmp = new Plugin();
+        $tmp->setId($id);
+
+        $plugin = PluginQuery::create()->findPk($id);
+        if (!$plugin || $plugin && !file_exists($plugin->getPath())) {
+            print "Plugin $id not found. Skipping.\n";
+            return false;
         }
 
-        switch ($cmd) {
-            case 'enable':
-            case 'install':
-                print "Installing " . $pluginClass->getName() . "\n";
-                $pluginClass->install();
-                break;
-            case 'disable':
-            case 'uninstall':
-                print "Uninstalling " . $pluginClass->getName() . "\n";
-                $pluginClass->uninstall();
-                break;
+        if (!$plugin) {
+            $plugin = new Plugin();
+            $plugin->setId($id);
         }
+        _loadPluginClass($plugin)->uninstall();
+        print "Uninstalled plugin $id.\n";
+    });
+    exit();
+}
 
+/*
+ * enable plugins
+ */
+function enable($pattern) {
+    _apply($pattern, function($id) {
+        $plugin = PluginQuery::create()->findPk($id);
+        if (!$plugin) {
+            print "Plugin $id is not installed. Skipping.\n";
+            return false;
+        }
+        if (!$plugin->getEnabled()) {
+            $plugin->setEnabled(true);
+            $plugin->save();
+            print "Enabled plugin $id.\n";
+        } else {
+            print "Plugin $id is already enabled. Skipping.\n";
+        }
+    });
+    exit();
+}
+
+/*
+ * disable plugins
+ */
+function disable($pattern) {
+    _apply($pattern, function($id) {
+        $plugin = PluginQuery::create()->findPk($id);
+        if (!$plugin) {
+            print "Plugin $id is not installed. Skipping.\n";
+            return false;
+        }
+        if ($plugin->getEnabled()) {
+            $plugin->setEnabled(false);
+            $plugin->save();
+            print "Disabled plugin $id.\n";
+        } else {
+            print "Plugin $id is already disabled. Skipping.\n";
+        }
+    });
+    exit();
+}
+
+switch ($cmd) {
+    case 'clean': clean();
+    case 'install': install($argv[2]);
+    case 'uninstall': uninstall($argv[2]);
+    case 'enable': enable($argv[2]);
+    case 'disable': disable($argv[2]);
+}
+
+
+function _apply($pattern, $func) {
+    if (strpos($pattern, '*') > -1) {
+        foreach (glob(ROOT_PATH . "plugins/" . $pattern . "/package.json") as $filename) {
+            $d = dirname($filename);
+            $d = substr($d, strrpos($d, DIRECTORY_SEPARATOR)+1);
+            $plugin_ids[] = $d;
+        }
     } else {
-        if ($cmd == 'uninstall' || $cmd == 'disable') {
-            $plugin = PluginQuery::create()->findPk($plugin_id);
-            if ($plugin) {
-                $plugin->setEnabled(false);
-                if ($cmd == 'uninstall') $plugin->delete();
-                else $plugin->save();
-                continue;
-            }
-        }
-        print 'Warning: Plugin not found: '.$plugin_id."\n";
-        exit(1);
+        $plugin_ids[] = $pattern;
     }
+    foreach ($plugin_ids as $plugin_id) {
+        $func($plugin_id);
+    }
+}
+
+function _loadPluginClass($plugin) {
+    if (file_exists($plugin->getPath() . 'plugin.php')) {
+        require_once $plugin->getPath() . 'plugin.php';
+        $className = $plugin->getClassName();
+        return new $className();
+    }
+    // no plugin.php
+    return new DatawrapperPlugin($plugin->getName());
 }

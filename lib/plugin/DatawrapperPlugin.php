@@ -65,8 +65,18 @@ class DatawrapperPlugin {
 	*/
 	public function uninstall() {
 		$plugin = PluginQuery::create()->findPK($this->getName());
-		$plugin->setEnabled(false);
-		$plugin->save();
+		if ($plugin) {
+			$plugin->delete();
+			// remove static files
+		}
+	}
+
+	public function disable() {
+		$plugin = PluginQuery::create()->findPK($this->getName());
+		if ($plugin) {
+			$plugin->setEnabled(false);
+			$plugin->save();
+		}
 	}
 
 	/*
