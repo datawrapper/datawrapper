@@ -154,17 +154,19 @@ function add_header_vars(&$page, $active = null) {
 
     $uri = $app->request()->getResourceUri();
     $plugin_assets = DatawrapperHooks::execute(DatawrapperHooks::GET_PLUGIN_ASSETS, $uri);
-    $plugin_js_files = array();
-    $plugin_css_files = array();
-    foreach ($plugin_assets as $files) {
-        if (!is_array($files)) $files = array($files);
-        foreach ($files as $file) {
-            if (substr($file, -3) == '.js') $plugin_js_files[] = $file;
-            if (substr($file, -4) == '.css') $plugin_css_files[] = $file;
+    if (!empty($plugin_assets)) {
+        $plugin_js_files = array();
+        $plugin_css_files = array();
+        foreach ($plugin_assets as $files) {
+            if (!is_array($files)) $files = array($files);
+            foreach ($files as $file) {
+                if (substr($file, -3) == '.js') $plugin_js_files[] = $file;
+                if (substr($file, -4) == '.css') $plugin_css_files[] = $file;
+            }
         }
+        $page['plugin_js'] = $plugin_js_files;
+        $page['plugin_css'] = $plugin_css_files;
     }
-    $page['plugin_js'] = $plugin_js_files;
-    $page['plugin_css'] = $plugin_css_files;
 
     if (isset($config['piwik'])) {
         $page['PIWIK_URL'] = $config['piwik']['url'];
@@ -222,6 +224,7 @@ require_once '../controller/xhr.php';
 require_once '../controller/docs.php';
 require_once '../controller/gallery.php';
 require_once '../controller/admin.php';
+require_once '../controller/plugin-templates.php';
 
 
 $app->notFound(function() {
