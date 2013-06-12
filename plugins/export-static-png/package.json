@@ -1,0 +1,7 @@
+{
+    "version": "1.0.0",
+    "dependencies": {
+        "phantomjs": "*"
+    },
+    "description": "Creates a static PNG snapshot of every chart soon after publication"
+}

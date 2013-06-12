@@ -10,14 +10,13 @@ if (system.args.length < 3 || system.args.length > 5) {
     phantom.exit(1);
 
 } else {
-    chart_id = system.args[2];
-    address = system.args[1].replace('%s', chart_id);
-    output = phantom.libraryPath + '/../charts/static/' + chart_id + '/static';
+    url = system.args[1];
+    output = system.args[2];
 
     page.zoomFactor = 1;
     page.viewportSize = { width: system.args[3], height: system.args[4] };
 
-    page.open(address, function (status) {
+    page.open(url, function (status) {
         if (status !== 'success') {
             console.log('Unable to load the address!');
             phantom.exit();
@@ -59,14 +58,14 @@ if (system.args.length < 3 || system.args.length > 5) {
 
             // render chart as PNG
             window.setTimeout(function () {
-                page.render(output+'.png');
+                page.render(output + 'static.png');
                 phantom.exit();
             }, 200);
 
             try {
-                fs.write(output + '.html', html, 'w');
+                fs.write(output + 'static.html', html, 'w');
             } catch (e) {
-                console.log(output + '.html' + ' is not writable!');
+                console.log(output + 'static.html' + ' is not writable!');
                 //console.log(e);
                 phantom.exit();
             }
