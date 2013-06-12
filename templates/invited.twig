@@ -1,0 +1,119 @@
+{% extends "core.twig" %}
+{% set noHeader = true %}
+{% set noFooter = true %}
+{% block content %}
+
+<script type="text/javascript">
+
+$(function() {
+    // set password and login
+    $('button.login').click(function() {
+        $.ajax({
+            url: location.href,
+            type: 'POST',
+            data: JSON.stringify({
+                pwd: CryptoJS.HmacSHA256($('.login-pwd').val(), "{{ auth_salt }}").toString()
+            }),
+            dataType: 'json',
+            success: function(res) {
+                $('.login-pwd').val('');
+                if (res.result == "ok") {
+                    location.href = "/";
+                }
+            }
+        });
+    });
+    // show password in clear text
+    $('.pwd-clear').change(function() {
+        $('.login-pwd').get(0).type = $('.pwd-clear').attr('checked') ? 'text': 'password';
+    });
+});
+</script>
+
+<div class="modal">
+    <div class="modal-body">
+        <h3>{% trans "Welcome to Datawrapper!" %}</h3>
+        <p>{% trans "Hi, good to see you. Now please pick a password to complete the sign up." %}</p>
+        <div class="login-form form-vertical">
+            <div class="control-group">
+                <div class="controls">
+                    <input class="login-pwd input-xlarge span3" type="password" value="" placeholder="{% trans "password" %}" />
+
+                    <label class="checkbox">
+                        <input type="checkbox" class="pwd-clear" /> {% trans "Show password in clear text" %}
+                    </label>
+                </div>
+            </div>
+            <div class="control-group login-help">
+                {{ "By the way, your login is %s." | trans | replace({ '%s': '<span class="email">' ~ email ~ '</span>'}) | raw }}
+            </div>
+        </div>
+
+        <button class="btn btn-primary btn-large login">
+            Set password <span class="amp">&amp;</span> login
+        </button>
+
+
+    </div>
+</div>
+
+    <style type="text/css">
+
+.foot {
+    position:absolute;
+    left:130px;
+    right:130px;
+    top:430px;
+    text-align:center;
+    padding-top: 10px;
+    font-size: 12px;
+    opacity: 0.5;
+}
+
+body {
+    background: #eee url(/static/img/bg/wavegrid.png);
+}
+
+.modal h3 {
+    margin-top: 0;
+    font-size: 26px;
+    font-weight: 300;
+    margin-bottom: 20px;
+}
+body .modal {
+    width: 420px;
+    margin-left: -210px;
+    box-shadow: 0 0 20px rgba(0,0,0, 0.3);
+    border: 0;
+    position: relative;
+}
+.modal-body {
+    padding: 30px;
+}
+body.login .row-login {
+    width: 370px;
+}
+
+body.login .modal .close {
+    display: none;
+}
+
+body.login .modal h3 {
+    margin-top: 0;
+    font-size: 26px;
+    font-weight: 300;
+    margin-bottom: 20px;
+}
+
+.amp {
+    font-family: Baskerville, Georgia;
+    font-style: italic;
+}
+.login-help { color: #999; }
+span.email {
+    color: #222;
+}
+    </style>
+
+
+{% endblock %}

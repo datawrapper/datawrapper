@@ -68,10 +68,8 @@ $app->post('/users', function() use ($app) {
     $user = new User();
     $user->setCreatedAt(time());
     $user->setEmail($data->email);
-    // set password, HACK for invitation mode
-    if ($invitation) {
-        $user->setPwd("__IS_INVITED__");
-    } else {
+
+    if (!$invitation) {
         $user->setPwd($data->pwd);
     }
     if ($currUser->isAdmin() && !empty($data->role)) {
@@ -94,12 +92,12 @@ $app->post('/users', function() use ($app) {
     $domain = $GLOBALS['dw_config']['domain'];
 
     if ($invitation) {
-        $activationLink = 'http://' . $domain . '/account/activate/' . $user->getActivateToken();
+        $invitationLink = 'http://' . $domain . '/account/invite/' . $user->getActivateToken();
         $from = $GLOBALS['dw_config']['email']['invite'];
         include(ROOT_PATH . 'lib/templates/invitation-email.php');
         DatawrapperHooks::execute(
             DatawrapperHooks::SEND_EMAIL,
-            $data->email, sprintf(__('Invitation to %s'), $domain), $invitation_mail, 'From: ' . $from
+            $data->email, sprintf(__('You have been invited to %s'), $domain), $invitation_mail, 'From: ' . $from
         );
     } else {
         $activationLink = 'http://' . $domain . '/account/activate/' . $user->getActivateToken();

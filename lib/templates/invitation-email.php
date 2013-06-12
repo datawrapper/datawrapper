@@ -7,10 +7,10 @@
 
 $invitation_mail = sprintf(__('Hello %s,
 
-Your account has just created on Datawrapper.
+Your account on Datawrapper has just been created.
 
 To choose your password and to activate your account please click on this link.
 
 %s
 
-See you soon'), $name, $activationLink);
+See you soon'), $name, $invitationLink);
