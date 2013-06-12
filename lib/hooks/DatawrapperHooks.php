@@ -97,6 +97,9 @@ class DatawrapperHooks {
     // a hook for providing new api actions
     const PROVIDE_API = 'provide_api';
 
+    // a hook for providing new api actions
+    const GET_PLUGIN_ASSETS = 'get_plugin_assets';
+
 }
 
 
