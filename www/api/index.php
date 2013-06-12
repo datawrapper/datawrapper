@@ -75,6 +75,7 @@ require_once '../../lib/api/jobs.php';
 require_once '../../lib/api/visualizations.php';
 require_once '../../lib/api/github-deployment.php';
 require_once '../../lib/api/wordpress-deployment.php';
+require_once '../../lib/api/plugin-hooks.php';
 
 
 /**
