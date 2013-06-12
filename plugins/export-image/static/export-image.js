@@ -23,7 +23,7 @@ $(function() {
         $('.btn-export-chart').click(function(e) {
             e.preventDefault();
             $.ajax({
-                url: '/api/jobs/export/'+DW.currentChart.get('id'),
+                url: '/api/jobs/export_image/'+DW.currentChart.get('id'),
                 type: 'post',
                 dataType: 'json',
                 data: JSON.stringify({
