@@ -1,0 +1,6 @@
+#!/usr/bin/php
+<?php
+
+require_once 'lib/execute_jobs.head.inc';
+
+require_once 'lib/execute_jobs.body.inc';

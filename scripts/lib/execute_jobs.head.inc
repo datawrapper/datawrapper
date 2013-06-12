@@ -1,7 +1,11 @@
-#!/usr/bin/php
 <?php
 
-define('LOCKFILE', dirname(__FILE__) + '/export_charts.lock');
+/*
+ * This is a daemon that runs permamently on the Datawrapper server.
+ * It's purpose is to execute queued jobs one after another.
+ */
+
+define('LOCKFILE', dirname(__FILE__) + '/execute_jobs.lock');
 
 if (!isset($argv[1]) || !in_array($argv[1], array('start', 'stop', 'restart'))) {
     print "Usage: ".basename($argv[0])." start|stop|restart\n";
@@ -16,7 +20,7 @@ if (file_exists(LOCKFILE)) {
         unlink(LOCKFILE);
         if ($argv[1] == 'stop') exit();
     } else {
-        print "Chart exporter already running as [" . file_get_contents(LOCKFILE). "]\n";
+        print "Job execution already running as [" . file_get_contents(LOCKFILE). "]\n";
         exit();
     }
 } else {
@@ -26,6 +30,7 @@ if (file_exists(LOCKFILE)) {
     }
 }
 
+print "Started job execution daemon...\n";
 
 // Daemonize
 $pid = pcntl_fork(); // parent gets the child PID, child gets 0
@@ -38,6 +43,3 @@ if($pid){
 
 $pid = getmypid();
 
-print "Started chart export daemon... ($pid)\n";
-
-require_once "lib/export_charts.inc";
