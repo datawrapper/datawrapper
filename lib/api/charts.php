@@ -354,12 +354,10 @@ $app->post('/charts/:id/publish', function($chart_id) use ($app) {
         _setPublishStatus($chart, 1);
         _clearPublishStatus($chart);
 
-        // queue a job for thumbnail generation
-        $params = array(
-            'width' => $chart->getMetadata('publish.embed-width'),
-            'height' => $chart->getMetadata('publish.embed-height')
+        DatawrapperHooks::execute(
+            DatawrapperHooks::POST_CHART_PUBLISH,
+            $chart, $user
         );
-        $job = JobQuery::create()->createJob("static", $chart, $user, $params);
 
         ok();
 

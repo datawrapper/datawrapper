@@ -15,4 +15,8 @@
  */
 class Job extends BaseJob {
 
+    public function getParameter() {
+        return json_decode(parent::getParameter(), true);
+    }
+
 } // Job
