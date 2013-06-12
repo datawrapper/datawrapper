@@ -16,6 +16,7 @@ Twig_Autoloader::register();
 
 $tplDir = ROOT_PATH . 'templates';
 $tmpDir = ROOT_PATH . 'scripts/tmpl_cache/';
+$tmpDirPlugins = ROOT_PATH . 'scripts/tmpl_cache/plugins/';
 $loader = new Twig_Loader_Filesystem($tplDir);
 
 // force auto-reload to always have the latest version of the template
@@ -23,6 +24,8 @@ $twig = new Twig_Environment($loader, array(
     'cache' => $tmpDir,
     'auto_reload' => true
 ));
+
+if (!file_exists($tmpDirPlugins)) mkdir($tmpDirPlugins);
 
 // Twig Extension to convert strings to nice JavaScript class names, e.g. bar-chart --> BarChart
 $twig->addFilter('classify', new Twig_Filter_Function('str_classify'));
@@ -64,6 +67,9 @@ foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($tplDir), 
         $cacheFile = $twig->getCacheFilename($tmplPath);
         $compiled = file_get_contents($cacheFile);
         $outPath = $tmpDir . str_replace("/", "__", $tmplPath).".php";
+        if (substr($tmplPath, 0, 8) == 'plugins/') {
+            $outPath = $tmpDirPlugins . str_replace("/", "__", substr($tmplPath, 8)).".php";
+        }
         file_put_contents($outPath, $compiled);
         unlink($cacheFile);
     }
