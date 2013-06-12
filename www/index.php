@@ -152,6 +152,21 @@ function add_header_vars(&$page, $active = null) {
     $page['config'] = $config;
     $page['invert_navbar'] = substr($config['domain'], -4) == '.pro';
 
+    $uri = $app->request()->getResourceUri();
+    $plugin_js = DatawrapperHooks::execute(DatawrapperHooks::GET_PLUGIN_JS, $uri);
+    $plugin_js_files = array();
+    foreach ($plugin_js as $files) {
+        $plugin_js_files += $files;
+    }
+    $page['plugin_js'] = $plugin_js_files;
+
+    $plugin_css = DatawrapperHooks::execute(DatawrapperHooks::GET_PLUGIN_CSS, $uri);
+    $plugin_css_files = array();
+    foreach ($plugin_css as $files) {
+        $plugin_css_files += $files;
+    }
+    $page['plugin_css'] = $plugin_css_files;
+
     if (isset($config['piwik'])) {
         $page['PIWIK_URL'] = $config['piwik']['url'];
         $page['PIWIK_IDSITE'] = $config['piwik']['idSite'];
