@@ -38,7 +38,7 @@ class DatawrapperVisualization {
         $this->visualizations[$meta['id']] = $meta;
     }
 
-    public function _all() {
+    private function _all() {
         $res = array_values($this->visualizations);
         // sort by something
         usort($res, function ($a, $b) {
@@ -49,10 +49,10 @@ class DatawrapperVisualization {
         return $res;
     }
 
-    public function _get($id) {
+    private function _get($id) {
         if (!isset($this->visualizations[$id])) return false;
         $meta = $this->visualizations[$id];
-        $meta['hasCSS'] = file_exists(ROOT_PATH . 'www/static/visualizations/' . $id . '/style.css');
+        $meta['hasCSS'] = file_exists(ROOT_PATH . 'www' . $meta['__static_path'] . $id. '.css');
         return $meta;
     }
 }
