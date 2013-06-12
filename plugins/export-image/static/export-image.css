@@ -1,0 +1,35 @@
+.ratio-select .option {
+    display: inline-block;
+    width: 80px;
+    height: 80px;
+    position: relative;
+    cursor: pointer;
+    border-radius: 8px;
+}
+.ratio-select .option.selected {DW.currentChart;
+    background-color: rgba(82, 168, 236, 0.3);
+}
+.ratio-select .option .img {
+    position: absolute;
+    left: 10px;
+    height: 60px;
+    width: 60px;
+    background: url(img/export-ratio.png) top left no-repeat;
+    top: 0;
+}
+.ratio-select .option label {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+}
+.ratio-select .option[data-value=landscape] .img {
+    background-position: 0 0;
+}
+.ratio-select .option[data-value=portrait] .img {
+    background-position: -60px 0;
+}
+.ratio-select .option[data-value=square] .img {
+    background-position: -120px 0;
+}

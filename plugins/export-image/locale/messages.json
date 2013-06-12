@@ -1,0 +1,13 @@
+{
+	"Please select an image format and aspect ratio for your exported chart.": "Please select an image format and aspect ratio for your exported chart.",
+	"Select image type": "Select image type",
+	"bitmap (PNG)": "bitmap (PNG)",
+	"vector (PDF)": "vector (PDF)",
+	"Select aspect ratio": "Select aspect ratio",
+	"landscape": "landscape",
+	"portrait": "portrait",
+	"square": "square",
+	"": "",
+	"Cancel": "Cancel",
+	"Export chart": "Export chart"
+}

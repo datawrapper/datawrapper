@@ -1,0 +1,43 @@
+<div class="modal hide"  tabindex="-1" role="dialog" id="dwExportChart" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <p class="lead" style="margin:0">{% trans "Export to static image for printing" %}</p>
+    </div>
+    <div class="modal-body">
+        <p>{% trans "Please select an image format and aspect ratio for your exported chart." %}</p>
+        <div class="form-horizontal">
+            <div class="control-group">
+                <label for="format" class="control-label">{% trans "Select image type" %}</label>
+                <div class="controls">
+                    <label class="radio"><input name="format" checked="checked" value="png" type="radio" /> {% trans "bitmap (PNG)" %}</label>
+                    <label class="radio"><input name="format" value="pdf" type="radio" /> {% trans "vector (PDF)" %}</label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label for="ratio" class="control-label">{% trans "Select aspect ratio" %}</label>
+                <div class="controls">
+                    <div class="ratio-select" data-value="landscape">
+                        <div class="option selected" data-value="landscape">
+                            <div class="img"></div>
+                            <label>{% trans "landscape" %}</label>
+                        </div>
+                        <div class="option" data-value="portrait">
+                            <div class="img"></div>
+                            <label>{% trans "portrait" %}</label>
+                        </div>
+                        <div class="option" data-value="square">
+                            <div class="img"></div>
+                            <label>{% trans "square" %}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p>{{ "The exported chart will be send to your email address <b>%e</b> once it has been created. This will take approximately <b>%n</b> minute(s)." | trans | replace({'%n': estExportTime, '%e': user.email }) | raw }}</p>
+
+    </div>
+    <div class="modal-footer">
+       <button class="btn" data-dismiss="modal" aria-hidden="true">{% trans "Cancel" %}</button>
+       <button class="btn-export-chart btn btn-primary"><i class="icon-print icon-white"></i> {% trans "Export chart" %}</button>
+    </div>
+</div>
