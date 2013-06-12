@@ -45,7 +45,7 @@ class DatawrapperPlugin_ExportStaticPng extends DatawrapperPlugin {
             // error message received, send log email
             dw_send_error_mail(
                 sprintf('Generation of static fallback for chart [%s] failed', $chart->getId()),
-                $res[0]
+                print_r($job->toArray()) .  "\n\nError:\n" . $res[0]
             );
             $job->setStatus('failed');
             $job->setFailReason($res[0]);
