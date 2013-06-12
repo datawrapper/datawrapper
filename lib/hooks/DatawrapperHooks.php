@@ -91,6 +91,12 @@ class DatawrapperHooks {
     // Executed after a chart has been published (args: chart, user)
     const POST_CHART_PUBLISH = 'post_chart_publish';
 
+    // returns a list of actions to be displayed in publish step
+    const GET_CHART_ACTIONS = 'get_chart_actions';
+
+    // a hook for providing new api actions
+    const PROVIDE_API = 'provide_api';
+
 }
 
 

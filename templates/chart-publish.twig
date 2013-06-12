@@ -154,13 +154,13 @@ p.lead {
 
             <p class="lead">{%trans "Other things to do" %}</p>
 
-            {% if exportStaticImage %}
+            {% for action in chartActions %}
             <p>
-                <a role="button" href="#export">
-                    <i class="icon-print"></i>&nbsp;&nbsp;{% trans "Export to static image for printing" %}
+                <a role="button" href="#{{ action.id }}">
+                    <i class="icon-{{ action.icon }}"></i>&nbsp;&nbsp;{{ action.title }}
                 </a>
             </p>
-            {% endif %}
+            {% endfor %}
 
             <p>
                 <a class="duplicate" role="button">
