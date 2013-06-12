@@ -8,6 +8,7 @@ CHANGELOG
 * refactored visualizations to plugins
 * replaced gettext translation with generic JSON files
 * simplified plugin localization
+* refactored static image export into plugin
 
 ### 1.3.3
 * trimming row labels in filter UI
