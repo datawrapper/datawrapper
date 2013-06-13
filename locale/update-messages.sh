@@ -17,4 +17,8 @@ do
         php ../scripts/po2json.php -i "$POFILE" -o "$JSONFILE"
         rm "$POFILE"
     fi
+    if [ ! -f "$JSONFILE" ]
+    then
+        rmdir "../plugins/$PLUGIN/locale"
+    fi
 done
