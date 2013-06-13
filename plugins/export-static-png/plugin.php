@@ -24,6 +24,7 @@ class DatawrapperPlugin_ExportStaticPng extends DatawrapperPlugin {
     public function exportStaticPng($job) {
         $chart = $job->getChart();
         $params = $job->getParameter();
+        $static_path = ROOT_PATH . 'charts/static/' . $chart->getId() . '/';
         // execute hook provided by phantomjs plugin
         // this calls phantomjs with the provided arguments
         $res = DatawrapperHooks::execute(
@@ -33,7 +34,7 @@ class DatawrapperPlugin_ExportStaticPng extends DatawrapperPlugin {
             // url of the chart
             'http://' . $GLOBALS['dw_config']['domain'] . '/chart/'. $chart->getId() .'/',
             // path to the image
-            ROOT_PATH . 'charts/static/' . $chart->getId() . '/',
+            $static_path,
             // output width
             $params['width'],
             // output height
@@ -41,6 +42,11 @@ class DatawrapperPlugin_ExportStaticPng extends DatawrapperPlugin {
         );
         if (empty($res[0])) {
             $job->setStatus('done');
+            // upload to CDN if possible
+            DatawrapperHooks::execute(DatawrapperHooks::PUBLISH_FILES, array(
+                array($static_path.'static.html', $chart->getId().'/static.html', 'text/html'),
+                array($static_path.'static.png', $chart->getId().'/static.png', 'image/png')
+            ));
         } else {
             // error message received, send log email
             dw_send_error_mail(
