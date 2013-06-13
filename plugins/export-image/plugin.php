@@ -29,7 +29,15 @@ class DatawrapperPlugin_ExportImage extends DatawrapperPlugin {
     }
 
     public function exportImage($job) {
+        // since this job is run outside of a session we need
+        // to manually set the language to the one of the
+        // user who created the job (otherwise the mail won't
+        // be translated right)
+        global $__messages;
+        $__messages = load_messages($job->getUser()->getLanguage());
+
         $chart = $job->getChart();
+
         $params = $job->getParameter();
         $imgFile = ROOT_PATH . 'charts/exports/' . $chart->getId() . '-' . $params['ratio'] . '.' . $params['format'];
         // execute hook provided by phantomjs plugin
