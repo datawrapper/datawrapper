@@ -22,7 +22,15 @@ function load_messages($locale) {
     $messages = array();
     function parse($fn) {
         if (file_exists($fn)) {
-            return json_decode(file_get_contents($fn), true);
+            $msg = json_decode(file_get_contents($fn), true);
+            $msgids = array_keys($msg);
+            foreach ($msgids as $msgid) {
+                $cleaned = _l10n_clean_msgid($msgid);
+                if ($cleaned != $msgid) {
+                    $msg[$cleaned] = $msg[$msgid];
+                }
+            }
+            return $msg;
         }
         return array();
     }
@@ -44,11 +52,16 @@ function load_messages($locale) {
  */
 function __($text, $domain = 'core', $fallback = '') {
     global $__messages;
+    $text = _l10n_clean_msgid($text);
     if (!isset($__messages[$domain]) || !isset($__messages[$domain][$text])) {
         // no translation found
         return !empty($fallback) ? $fallback : $text;
     }
     return $__messages[$domain][$text];
+}
+
+function _l10n_clean_msgid($msgid) {
+    return trim(str_replace("\n", "", $msgid));
 }
 
 $__messages = load_messages($locale);
