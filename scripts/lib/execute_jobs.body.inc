@@ -16,6 +16,7 @@ define('NO_SESSION', 1);
 require_once ROOT_PATH . 'lib/bootstrap.php';
 date_default_timezone_set('Europe/Berlin');
 
+define('VERBOSE', $config['debug']);
 
 function run() {
     // if the daemon is sleeping it will check the db for
@@ -30,8 +31,10 @@ function run() {
             ->orderByCreatedAt('desc')
             ->findOne();
         if ($job) {
-            _log("found one ".$job->getType()."\n", $job);
+            _log("found one ".$job->getType(), $job);
+            ob_start();
             DatawrapperHooks::execute($job->getType(), $job);
+            $res = ob_get_contents();
         } else {
             if (!$is_sleeping) {
                 _log("no new jobs found, going into sleep mode", null, 'DEBUG');
