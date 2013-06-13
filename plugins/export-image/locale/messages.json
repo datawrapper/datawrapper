@@ -1,4 +1,5 @@
 {
+  "Export to static image for printing": "Export to static image for printing",
   "The image of your chart is ready": "The image of your chart is ready",
   "Hello,\n\nHere is the requested static image of your chart \"%title$s\" on %domain$s.\n\nAll the best,\nDatawrapper": "Hello,\n\nHere is the requested static image of your chart \"%title$s\" on %domain$s.\n\nAll the best,\nDatawrapper",
   "Please select an image format and aspect ratio for your exported chart.": "Please select an image format and aspect ratio for your exported chart.",
