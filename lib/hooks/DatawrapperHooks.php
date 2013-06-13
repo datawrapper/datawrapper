@@ -70,6 +70,16 @@ class DatawrapperHooks {
         return $results;
     }
 
+    /*
+     * Checks whether a hook has been registered or if executing
+     * that hook would lead to no action.
+     * @param $hookName - the name of hook to register (see Core::Hooks)
+     */
+    public static function hookRegistered($hookName) {
+        $me = self::getInstance();
+        return isset($me->hooks[$hookName]);
+    }
+
     // print something below a charts HTML body
     const AFTER_CHART_BODY = 'after_chart_body';
 
