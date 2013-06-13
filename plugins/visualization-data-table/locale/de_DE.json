@@ -1,0 +1,23 @@
+{
+	"Data Table": "Tableau",
+	"No data available in table": "Keine Einträge vorhanden.",
+	"Showing _START_ to _END_ of _TOTAL_ entries": "_START_ bis _END_ von _TOTAL_ Einträgen angezeigt",
+	"Showing 0 to 0 of 0 entries": "0 bis 0 von 0 Einträgen angezeigt",
+	"(filtered from _MAX_ total entries)": "(gefiltert von _MAX_  Einträgen)",
+	"_empty_": "",
+	",": ",",
+	"Show _MENU_ entries": "Anzeige von _MENU_ Einträgen",
+	"Loading...": "Chargement en cours...",
+	"Processing...": "Bitte warten...",
+	"Search:": "Suchen",
+	"No matching records found": "Aucun élément à afficher",
+	"First": "Erster",
+	"Last": "Letzter",
+	"Next": "Weiter",
+	"Previous": "Zurück",
+	": activate to sort column ascending": ": activer pour trier la colonne par ordre croissant",
+	": activate to sort column descending": ": activer pour trier la colonne par ordre décroissant",
+	"Make columns sortable": "Rendre les colonnes triables",
+	"Display content over multiple pages": "Display content over multiple pages",
+	"Show filter": "Afficher un filtre"
+}
