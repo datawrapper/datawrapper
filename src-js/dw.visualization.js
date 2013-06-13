@@ -93,7 +93,7 @@
 
         translate: function(str) {
             var locale = this.meta.locale, lang = this.lang;
-            return locale[str] ? locale[str][lang] || str : str;
+            return locale[str] ? locale[str][lang] || locale[str] : str;
         }
 
     });
