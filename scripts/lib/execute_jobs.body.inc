@@ -25,16 +25,14 @@ function run() {
     print "running\n";
 
     while (1) {  // run forever
-        print "checking for job\n";
         $job = JobQuery::create()
             ->filterByStatus('queued')
             ->orderByCreatedAt('desc')
             ->findOne();
         if ($job) {
-            print "found one ".$job->getType()."\n";
+            _log("found one ".$job->getType()."\n", $job);
             DatawrapperHooks::execute($job->getType(), $job);
         } else {
-            print "nothing found\n";
             if (!$is_sleeping) {
                 _log("no new jobs found, going into sleep mode", null, 'DEBUG');
                 $is_sleeping = true;
@@ -56,7 +54,7 @@ function _log($msg = "", $job=null, $type='LOG') {
     if (!empty($msg)) {
         $prefix = date('Y-m-d H:i:s').",".$type.",";
         if ($job) {
-            $prefix .= $job['job_id'].",";
+            $prefix .= $job->getId().",";
         } else {
             $prefix .= ",";
         }
