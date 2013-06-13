@@ -32,7 +32,7 @@ $(function() {
                 })
             }).done(function(resp) {
                 $('#dwExportChart').modal('hide');
-                var msg = '{% trans "You will receive an email with the exported chart in about %d minute(s)." %}';
+                var msg = $('#dwExportChart').data('mail-sent-message');
                 msg = msg.replace('%d', '<b>'+resp.data+'</b>');
                 DW.logMessage(msg, '.messages');
             });

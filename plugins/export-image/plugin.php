@@ -48,7 +48,6 @@ class DatawrapperPlugin_ExportImage extends DatawrapperPlugin {
         if (empty($res[0])) {
             $job->setStatus('done');
 
-
             // now send email to the user who is waiting for the image!
             dw_send_mail_attachment(
                 $job->getUser()->getEmail(),
