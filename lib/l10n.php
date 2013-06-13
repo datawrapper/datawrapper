@@ -11,6 +11,7 @@ $__messages = array();
  * load messages
  */
 function load_messages($locale) {
+    global $memcache;
     $mkey = 'l10n-messages-' . $locale;
     if (isset($_GLOBALS['dw-config']['memcache'])) {
         // pull translation from memcache
