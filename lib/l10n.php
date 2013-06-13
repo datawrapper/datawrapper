@@ -12,6 +12,7 @@ $__messages = array();
  */
 function load_messages($locale) {
     global $memcache;
+    $locale = str_replace('-', '_', $locale);
     $mkey = 'l10n-messages-' . $locale;
     if (isset($_GLOBALS['dw-config']['memcache'])) {
         // pull translation from memcache
@@ -52,12 +53,12 @@ function load_messages($locale) {
  */
 function __($text, $domain = 'core', $fallback = '') {
     global $__messages;
-    $text = _l10n_clean_msgid($text);
-    if (!isset($__messages[$domain]) || !isset($__messages[$domain][$text])) {
+    $text_cleaned = _l10n_clean_msgid($text);
+    if (!isset($__messages[$domain]) || !isset($__messages[$domain][$text_cleaned])) {
         // no translation found
         return !empty($fallback) ? $fallback : $text;
     }
-    return $__messages[$domain][$text];
+    return $__messages[$domain][$text_cleaned];
 }
 
 function _l10n_clean_msgid($msgid) {
