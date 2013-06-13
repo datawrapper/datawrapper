@@ -41,11 +41,11 @@ function load_messages($locale) {
 /*
  * translate function
  */
-function __($text, $domain = 'core') {
+function __($text, $domain = 'core', $fallback = '') {
     global $__messages;
     if (!isset($__messages[$domain]) || !isset($__messages[$domain][$text])) {
         // no translation found
-        return $text;
+        return !empty($fallback) ? $fallback : $text;
     }
     return $__messages[$domain][$text];
 }
