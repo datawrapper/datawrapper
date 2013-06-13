@@ -1,7 +1,7 @@
 {
-	"other":"other",
-	"Donut chart":"Donut chart",
-	"Show total value in center":"Show total value in center",
-	"Use custom total value instead of sum":"Use custom total value instead of sum",
-	"Custom total value":"Custom total value"
+	"other":"altro",
+	"Donut chart":"Grafico a ciambella",
+	"Show total value in center":"Visualizza il totale al centro",
+	"Use custom total value instead of sum":"Utilizza un totale personalizzato invece della somma",
+	"Custom total value":"Totale personalizzato"
 }

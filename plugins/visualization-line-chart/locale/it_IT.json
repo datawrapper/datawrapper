@@ -1,15 +1,15 @@
 {
 	"Direct labeling":"Direct labeling",
-	"Legend position":"Legend position",
-	"right":"right",
-	"top":"top",
-	"inside":"inside",
-	"Fill between lines":"Fill between lines",
-	"Smooth lines":"Smooth lines",
-	"Rotate labels 45 degrees":"Rotate labels 45 degrees",
-	"Force a baseline at zero":"Force a baseline at zero",
-	"Connect lines between missing values":"Connect lines between missing values",
-	"Extend y-range to nice axis ticks":"Extend y-range to nice axis ticks",
-	"Bank the lines to 45 degrees":"Bank the lines to 45 degrees",
-	"Show grid":"Show grid"
+	"Legend position":"Posizione della legenda",
+	"right":"destra",
+	"top":"in alto",
+	"inside":"all'interno",
+	"Fill between lines":"Riempimento tra le linee",
+	"Smooth lines":"Linee morbide",
+	"Rotate labels 45 degrees":"Etichette ruotate di 45 gradi",
+	"Force a baseline at zero":"Imposta la linea di base a zero",
+	"Connect lines between missing values":"Completa le linee tra valori mancanti",
+	"Extend y-range to nice axis ticks":"Arrotonda gli estremi dell'asse y",
+	"Bank the lines to 45 degrees":"Inclina le linee a 45 gradi",
+	"Show grid":"Visualizza griglia"
 }

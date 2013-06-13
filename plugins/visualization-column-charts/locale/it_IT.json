@@ -1,10 +1,10 @@
 {
-	"Automatically sort bars":"Automatically sort bars",
-	"Reverse order":"Reverse order",
-	"Use different color for negative values":"Use different color for negative values",
-	"Grouped Column Chart":"Grouped Column Chart",
-	"Stacked Column Chart":"Stacked Column Chart",
-	"Stack percentages":"Stack percentages",
-	"Let user switch mode":"Let user switch mode",
-	"stack percentages":"stack percentages"
+	"Automatically sort bars":"Barre ordinate automaticamente",
+	"Reverse order":"Ordine inverso",
+	"Use different color for negative values":"Utilizza colori diversi per i valori negativi",
+	"Grouped Column Chart":"Istogramma raggruppato",
+	"Stacked Column Chart":"Istogramma in pila",
+	"Stack percentages":"Percentuali in pila",
+	"Let user switch mode":"Permetti all'utente di cambiare modalità",
+	"stack percentages":"percentuali in pila"
 }
