@@ -13,7 +13,6 @@ class DatawrapperPlugin_Phantomjs extends DatawrapperPlugin {
 
     private function exec($cmd, &$error=null) {
         $cfg = $this->getConfig();
-        print $cfg['path'] . ' ' . $cmd. "\n";
         ob_start();  // grab output
         passthru($cfg['path'] . ' ' . $cmd, $error);
         $output = ob_get_contents();
