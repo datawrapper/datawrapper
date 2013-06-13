@@ -48,12 +48,8 @@ class PoeditParser {
 
     public function parse() {
         $contents = file_get_contents($this->file);
-        $parts = preg_split('#(\r\n|\n){2}#', $contents, -1, PREG_SPLIT_NO_EMPTY);
-        $this->header = array_shift($parts);
-
-        if (strpos('export-image', $parts[0]) > 0) {
-            var_dump($parts);
-        }
+        $parts = preg_split('/(\r\n|\n){2}/', $contents, -1);
+        $this->header = $parts[0];
 
         foreach ($parts as $part) {
 

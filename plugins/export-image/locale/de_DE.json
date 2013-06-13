@@ -1,5 +1,6 @@
 {
-	"The image of your chart is ready":"The image of your chart is ready",
+	"Export to static image for printing":"Statische Grafik zum Drucken exportieren",
+	"The image of your chart is ready":"Dein Diagramm wurde erfolgreich exportiert!",
 	"Hello,\n\nHere is the requested static image of your chart \"%title$s\" on %domain$s.\n\nAll the best,\nDatawrapper":"Hallo,\n\nHier ist das angeforderte statische Bild deines Diagramms mit dem Titel \"%title$s\" auf %domain$s.\n\nBeste Grüße,\nDatawrapper",
 	"Please select an image format and aspect ratio for your exported chart.":"Bitte wähle Bildformat und Seitenverhältnis für das zu exportierenden Diagramm.",
 	"Select image type":"Bildformat wählen",

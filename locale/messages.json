@@ -1,4 +1,5 @@
 {
+  "This activation token is invalid. Your email address is probably already \nactivated.": "This activation token is invalid. Your email address is probably already \nactivated.",
   "Your email address %s has been successfully activated!": "Your email address %s has been successfully activated!",
   "The invitation token is invalid.": "The invitation token is invalid.",
   "Sorry, but this content is not available in your language, yet.": "Sorry, but this content is not available in your language, yet.",
