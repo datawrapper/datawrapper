@@ -6,7 +6,7 @@ class DatawrapperPlugin_VisualizationDataTable extends DatawrapperPlugin_Visuali
         $meta = array(
             "title"      => __("Data Table", $this->getName()),
             "id"         => "data-table",
-            "version"    => "3.0",
+            "version"    => "3.1",
             // "extends" => "raphael-chart",
             "dimensions" => 2,
             "order"      => 70,

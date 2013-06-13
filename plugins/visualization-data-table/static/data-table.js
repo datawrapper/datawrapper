@@ -21,7 +21,6 @@
                 isHighlighted = function(series) {
                     return me.chart.hasHighlight() && me.chart.isHighlighted(series);
                 };
-                console.log(me);
             table = $('<table id="datatable"><thead /><tbody /></table>');
             tr = $('<tr />');
             if (me.chart.hasRowHeader()) {
@@ -118,7 +117,6 @@
             jQuery.extend( jQuery.fn.dataTableExt.oSort, {
                 "formatted-num-pre": function ( a ) {
                     a = (a === "—" || a === "") ? -1 : a.replace( /[^\d\-\.,]/g, "" ).replace(',', '.');
-                    console.log(a, parseFloat(a));
                     return parseFloat(a);
                 },
                 "formatted-num-asc": function ( a, b ) {return a - b;},
