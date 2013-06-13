@@ -207,7 +207,7 @@ $(function() {
     };
 
     // initial visualization meta
-    var vis = JSON.parse('{{ vis|json|raw }}');
+    var vis = JSON.parse('{{ vis|json| escape("js") }}');
 
     chart.datasetLoaded(function(chart) {
 
