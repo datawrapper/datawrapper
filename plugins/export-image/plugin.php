@@ -48,12 +48,21 @@ class DatawrapperPlugin_ExportImage extends DatawrapperPlugin {
         if (empty($res[0])) {
             $job->setStatus('done');
 
+
             // now send email to the user who is waiting for the image!
             dw_send_mail_attachment(
                 $job->getUser()->getEmail(),
                 'noreply@'.$GLOBALS['dw_config']['domain'],
-                __('Your chart is ready', $this->getName()),
-                $body,
+                __('The image of your chart is ready', $this->getName()),
+                vksprintf(__('Hello,
+
+Here is the requested static image of your chart "%title$s" on %domain$s.
+
+All the best,
+Datawrapper', $this->getName()), array(
+                    'title' => $chart->getTitle(),
+                    'domain' => $GLOBALS['dw_config']['domain']
+                )),
                 array(
                     basename($imgFile) => $imgFile,
                 )
