@@ -32,9 +32,11 @@ function run() {
             ->findOne();
         if ($job) {
             _log("found one ".$job->getType(), $job);
-            ob_start();
-            DatawrapperHooks::execute($job->getType(), $job);
-            $res = ob_get_contents();
+            if (DatawrapperHooks::hookRegistered($job->getType())) {
+                DatawrapperHooks::execute($job->getType(), $job);
+            } else {
+                _log("no action registered for hook ".$job->getType(), $job, 'WARNING');
+            }
         } else {
             if (!$is_sleeping) {
                 _log("no new jobs found, going into sleep mode", null, 'DEBUG');
