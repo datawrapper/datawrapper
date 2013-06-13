@@ -39,7 +39,7 @@ class PoeditParser {
     protected $strings = array();
 
     protected function _fixQuotes($str) {
-        return stripslashes($str);
+        return stripslashes(str_replace('\n','', $str));
     }
 
     public function __construct($file) {
@@ -51,6 +51,10 @@ class PoeditParser {
         $parts = preg_split('#(\r\n|\n){2}#', $contents, -1, PREG_SPLIT_NO_EMPTY);
         $this->header = array_shift($parts);
 
+        if (strpos('export-image', $parts[0]) > 0) {
+            var_dump($parts);
+        }
+
         foreach ($parts as $part) {
 
             // parse comments
@@ -60,15 +64,27 @@ class PoeditParser {
 
             $isFuzzy = preg_match('#^\\#, fuzzy$#im', $part) ? true : false;
 
-            preg_match_all('# ^ (msgid|msgstr)\ " ( (?: (?>[^"\\\\]++) | \\\\\\\\ | (?<!\\\\)\\\\(?!\\\\) | \\\\" )* ) (?<!\\\\)" $ #ixm', $part, $matches2, PREG_SET_ORDER);
+            /*preg_match_all('# ^ (msgid|msgstr)\ " ( (?: (?>[^"\\\\]++) | \\\\\\\\ | (?<!\\\\)\\\\(?!\\\\) | \\\\" )* ) (?<!\\\\)" $ #ixm', $part, $matches2, PREG_SET_ORDER);
             $k = NULL;
             if(isset($matches2[0][2])){
-                $k = $this->_fixQuotes($matches2[0][2]);    
+                $k = $this->_fixQuotes($matches2[0][2]);
             }
-            
-            $v = !empty($matches2[1][2]) ? $this->_fixQuotes($matches2[1][2]) : '';
 
-            $this->strings[$k] = new PoeditString($k, $v, $isFuzzy, $comments);
+            $v = !empty($matches2[1][2]) ? $this->_fixQuotes($matches2[1][2]) : '';*/
+
+            preg_match_all('# *(msgid|msgstr) *(".*"(?:\\n".*")*)#', $part, $matches2, PREG_SET_ORDER);
+
+            $lines = explode("\n", $this->_fixQuotes($matches2[0][2]));
+            $msgid = "";
+            foreach ($lines as $l) {
+                $l = preg_replace('/"(.*)"/', '\1', $l);
+                $msgid .= $l . "\n";
+            }
+            $msgid = trim($msgid);
+            # print $msgid."\n---\n";
+            $msgstr = '';
+
+            $this->strings[$msgid] = new PoeditString($msgid, $msgstr, $isFuzzy, $comments);
         }
 
     }
@@ -98,7 +114,7 @@ class PoeditParser {
             $str[$s->key] = $s->key;
             }
         }
-        return json_readable_encode($str);
+        return json_format(json_encode($str));
     }
 
     public function toJSON($outputFilename, $varName = 'l10n') {
@@ -115,60 +131,71 @@ class PoeditParser {
     }
 }
 
-function json_readable_encode($in, $indent = 0, $from_array = false)
-{
-    $_myself = __FUNCTION__;
-    $_escape = function ($str)
-    {
-        return preg_replace("!([\b\t\n\r\f\"])!", "\\\\\\1", $str);
-    };
+function json_format($json) {
+    $tab = "  ";
+    $new_json = "";
+    $indent_level = 0;
+    $in_string = false;
 
-    $out = '';
+    $json_obj = json_decode($json);
 
-    foreach ($in as $key=>$value)
-    {
-        $out .= str_repeat("\t", $indent + 1);
-        $out .= "\"".$_escape((string)$key)."\": ";
+    if($json_obj === false)
+        return false;
 
-        if (is_object($value) || is_array($value))
-        {
-            $out .= "\n";
-            $out .= $_myself($value, $indent + 1);
-        }
-        elseif (is_bool($value))
-        {
-            $out .= $value ? 'true' : 'false';
-        }
-        elseif (is_null($value))
-        {
-            $out .= 'null';
-        }
-        elseif (is_string($value))
-        {
-            $out .= "\"" . $_escape($value) ."\"";
-        }
-        else
-        {
-            $out .= $value;
-        }
+    $json = json_encode($json_obj);
+    $len = strlen($json);
 
-        $out .= ",\n";
+    for($c = 0; $c < $len; $c++) {
+        $char = $json[$c];
+        switch($char) {
+            case '{':
+            case '[':
+                if(!$in_string) {
+                    $new_json .= $char . "\n" . str_repeat($tab, $indent_level+1);
+                    $indent_level++;
+                } else {
+                    $new_json .= $char;
+                }
+                break;
+            case '}':
+            case ']':
+                if(!$in_string) {
+                    $indent_level--;
+                    $new_json .= "\n" . str_repeat($tab, $indent_level) . $char;
+                } else {
+                    $new_json .= $char;
+                }
+                break;
+            case ',':
+                if(!$in_string) {
+                    $new_json .= ",\n" . str_repeat($tab, $indent_level);
+                } else {
+                    $new_json .= $char;
+                }
+                break;
+            case ':':
+                if(!$in_string) {
+                    $new_json .= ": ";
+                } else {
+                    $new_json .= $char;
+                }
+                break;
+            case '"':
+                if($c > 0 && $json[$c-1] != '\\') {
+                    $in_string = !$in_string;
+                }
+            default:
+                $new_json .= $char;
+                break;
+        }
     }
 
-    if (!empty($out))
-    {
-        $out = substr($out, 0, -2);
-    }
-
-    $out = str_repeat("  ", $indent) . "{\n" . $out;
-    $out .= "\n" . str_repeat("  ", $indent) . "}";
-
-    return $out;
+    return $new_json;
 }
 
 
 /**
- * 
+ *
  * @param unknown_type $args
  */
 function buildOptions($args) {
@@ -194,11 +221,11 @@ function buildOptions($args) {
 
 /**
  * Script entry point
- * 
+ *
  * Usage :
- * ======= 
+ * =======
  * php po2json -i <path/to/file.po> -o <path/to/file.json> {optional} -n <variable name (default is l10n)>
- * 
+ *
  * This script is based on the project jsgettext : http://code.google.com/p/jsgettext/
  * I've updated it slightly to meet my need
  */

@@ -70,6 +70,16 @@ class DatawrapperHooks {
         return $results;
     }
 
+    /*
+     * Checks whether a hook has been registered or if executing
+     * that hook would lead to no action.
+     * @param $hookName - the name of hook to register (see Core::Hooks)
+     */
+    public static function hookRegistered($hookName) {
+        $me = self::getInstance();
+        return isset($me->hooks[$hookName]);
+    }
+
     // print something below a charts HTML body
     const AFTER_CHART_BODY = 'after_chart_body';
 
@@ -90,6 +100,15 @@ class DatawrapperHooks {
 
     // Executed after a chart has been published (args: chart, user)
     const POST_CHART_PUBLISH = 'post_chart_publish';
+
+    // returns a list of actions to be displayed in publish step
+    const GET_CHART_ACTIONS = 'get_chart_actions';
+
+    // a hook for providing new api actions
+    const PROVIDE_API = 'provide_api';
+
+    // a hook for providing new api actions
+    const GET_PLUGIN_ASSETS = 'get_plugin_assets';
 
 }
 

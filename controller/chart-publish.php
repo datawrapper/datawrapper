@@ -30,6 +30,7 @@ $app->get('/chart/:id/publish', function ($id) use ($app) {
             'chartUrlLocal' => '/chart/' . $chart->getID() . '/preview',
             'themes' => get_themes_meta(),
             'exportStaticImage' => !empty($cfg['phantomjs']),
+            'chartActions' => DatawrapperHooks::execute(DatawrapperHooks::GET_CHART_ACTIONS, $chart),
             'estExportTime' => ceil(JobQuery::create()->estimatedTime('export') / 60)
         );
         add_header_vars($page, 'chart');

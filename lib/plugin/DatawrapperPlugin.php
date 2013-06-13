@@ -30,6 +30,7 @@ class DatawrapperPlugin {
 		$plugin->save();
 
 		$this->copyStaticFiles();
+		$this->copyTemplates();
 	}
 
 	/*
@@ -60,6 +61,33 @@ class DatawrapperPlugin {
 		}
 	}
 
+	/*
+	 * copys all plugin templates to /templates/plugin/%PLUGIN%/
+	 */
+	private function copyTemplates() {
+		// check if there's a /templates in plugin directory
+		$source_path = ROOT_PATH . 'plugins/' . $this->getName() . '/templates';
+		if (!file_exists($source_path)) return;
+
+		// create directory in /templates/plugins/ if not exists
+		$plugin_template_path = ROOT_PATH . 'templates/plugins/' . $this->getName();
+		if (!file_exists($plugin_template_path)) {
+			mkdir($plugin_template_path);
+		}
+		// copy static files to that directory
+		$iterator = new RecursiveIteratorIterator(
+		 	new RecursiveDirectoryIterator($source_path, RecursiveDirectoryIterator::SKIP_DOTS),
+		  	RecursiveIteratorIterator::SELF_FIRST);
+		foreach ($iterator as $item) {
+			$path = $plugin_template_path . '/' . $iterator->getSubPathName();
+			if ($item->isDir()) {
+				if (!file_exists($path)) mkdir($path);
+			} else {
+				copy($item, $path);
+			}
+		}
+	}
+
 	/**
 	* Disable the plugin
 	*/
@@ -67,7 +95,9 @@ class DatawrapperPlugin {
 		$plugin = PluginQuery::create()->findPK($this->getName());
 		if ($plugin) {
 			$plugin->delete();
-			// remove static files
+			// TODO:
+			// $this->removeStaticFiles();
+			// $this->removeTemplates();
 		}
 	}
 

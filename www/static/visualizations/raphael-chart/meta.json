@@ -1,7 +1,0 @@
-{
-    "libraries": [
-        "d3js/d3-light.min.js",
-        "chromajs/chroma.min.js",
-        "raphaeljs/raphael-2.1.0.min.js"
-    ]
-}

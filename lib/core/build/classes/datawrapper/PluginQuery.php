@@ -15,4 +15,8 @@
  */
 class PluginQuery extends BasePluginQuery {
 
+    public function isInstalled($plugin_id) {
+        return count($this->filterByEnabled(true)->filterById($plugin_id)->find()) > 0;
+    }
+
 } // PluginQuery

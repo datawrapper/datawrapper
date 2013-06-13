@@ -322,13 +322,6 @@ $app->post('/charts/:id/publish', function($chart_id) use ($app) {
     disable_cache($app);
     if_chart_is_writable($chart_id, function($user, $chart) use ($app) {
 
-        if (isset($_GLOBALS['dw-config']['memcache'])) {
-            $memcfg = $_GLOBALS['dw-config']['memcache'];
-            global $memcache;
-            $memcache = new Memcache;
-            $memcache->connect($memcfg['host'], $memcfg['port']) or die ("Could not connect");
-        }
-
         $files = array();
         _setPublishStatus($chart, 0);
 
