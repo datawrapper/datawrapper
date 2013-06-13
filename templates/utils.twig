@@ -24,7 +24,7 @@
 {% block alert %}
 
     {% if alert %}
-        <div class="alert alert-{{ alert.type }}">
+        <div class="alert alert-{{ alert.type }}" style="position: absolute;z-index: 100;left: 9%;right: 9%;">
             <a class="close" data-dismiss="alert" href="#">&times;</a>
             <div>{{ alert.message }}</div>
         </div>
