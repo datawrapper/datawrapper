@@ -319,7 +319,7 @@ $(function() {
         folded = $('.vis-selector-folded'),
         thumbs = $('.vis-thumb'),
         selVis = $('.vis-selected');
-    unfolded.data('h', unfolded.height());
+    unfolded.show().data('h', unfolded.height()).hide();
     thumbs.click(function(e) {
         var thumb = $(e.target);
         if (!thumb.hasClass('vis-thumb')) thumb = thumb.parents('.vis-thumb');
