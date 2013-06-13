@@ -16,7 +16,7 @@ define('NO_SESSION', 1);
 require_once ROOT_PATH . 'lib/bootstrap.php';
 date_default_timezone_set('Europe/Berlin');
 
-define('VERBOSE', $config['debug']);
+define('VERBOSE', $dw_config['debug']);
 
 function run() {
     // if the daemon is sleeping it will check the db for
