@@ -2,20 +2,22 @@
 
 <fieldset>
 
-    <div class="control-group select-color">
-        <label class="control-label" for="select-color">{% trans "Choose a base color" %}</label>
-        <div class="controls">
-            <div id="select-color"></div>
+    {% if not vis.options['select-color'] or vis.options['select-color']["default"]  %}
+        <div class="control-group select-color">
+            <label class="control-label" for="select-color">{% trans "Choose a base color" %}</label>
+            <div class="controls">
+                <div id="select-color"></div>
+            </div>
         </div>
-    </div>
-
-    <div class="control-group">
-        <label class="control-label"></label>
-        <div class="controls">
-            <a class="btn btn-small" role="button" href="#customColors">{% trans "or define custom colors" %}</a>
+    {% endif %}
+    {% if not vis.options['custom-color'] or vis.options['custom-color']["default"]  %}
+        <div class="control-group">
+            <label class="control-label"></label>
+            <div class="controls">
+                <a class="btn btn-small" role="button" href="#customColors">{% trans "or define custom colors" %}</a>
+            </div>
         </div>
-    </div>
-
+    {% endif %}
     {% if vis.dimensions == 1 %}
     <div class="control-group select-row">
         <label class="control-label" for="text-title">{% trans "Initial row to display" %}</label>
@@ -64,8 +66,6 @@
                 <input type="text" style="width:auto" id="{{ key }}" value="" />
             </div>
 
-        {% else %}
-            <p>Unhandled option type {{ option.type }}</p>
         {% endif %}
     </div>
     {% endif %}{% endfor %}
