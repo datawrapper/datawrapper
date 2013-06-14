@@ -104,10 +104,9 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                 )
             ),
             "locale" => array(
-                "stack percentages" => __("stack percentages")
+                "stack percentages" => __("stack percentages", $id)
             )
         );
         return $meta;
     }
-
 }
