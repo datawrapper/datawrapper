@@ -64,7 +64,7 @@ function get_chart_content($chart, $user, $minified = false, $path = '') {
                 }
             }
         }
-        if (!empty($vis['locale'])) {
+        if (!empty($vis['locale']) && is_array($vis['locale'])) {
             foreach ($vis['locale'] as $term => $translations) {
                 if (!isset($vis_locale[$term])) $vis_locale[$term] = $translations;
             }
