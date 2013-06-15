@@ -1,31 +1,13 @@
 <?php
-// class DemoPlugin {
-//     function init(){
-//         $this->foo = 'bar';
-//         DatawrapperHooks::register(Hooks::TEST, array($this, 'test'));
-//     }
-//     function test(){
-//         print "test called\n" . $this->foo;
-//     }
-// }
-
-// $test = function($params){
-//     print "test2 called";
-//     print "params: " . var_dump($params);
-// };
-
-// // little hooks test
-// DatawrapperHooks::register(Hooks::TEST, $test);
-
-// $demo  = new DemoPlugin();
-// $demo->init();
-
-// function testHooks(){
-//     DatawrapperHooks::execute(Hooks::TEST, array('param1' => 'test'));
-// }
 
 /**
  * This singleton handle hooks registration for plugins
+ *
+ * DatawrapperHooks::register('my_hook', 'hookFunction')
+ * DatawrapperHooks::register('my_hook', array($this, 'hookFunction'))
+ *
+ * To execute a hook function:
+ * DatawrapperHooks::execute('my_hook', $parameter, ...)
  */
 class DatawrapperHooks {
 
