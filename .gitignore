@@ -1,5 +1,6 @@
 .project
 .DS_Store
+.idea
 *.sublime-workspace
 *.sublime-project
 lib/core/build/conf/datawrapper-conf.php
