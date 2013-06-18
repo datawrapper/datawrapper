@@ -552,7 +552,7 @@
                 _.each(rowLabels, function(lbl, i) {
                     lbl = ds.isTimeSeries() ? lfmt(ds.rowDate(i)) : lbl;
                     if (!lbl) return;
-                    select.append('<option value="'+i+'">'+lbl.trim()+'</option>');
+                    select.append('<option value="'+i+'">'+(_.isString(lbl) ? lbl.trim() : lbl)+'</option>');
                 });
                 select.change(function(evt) {
                     var cur = select.val();
