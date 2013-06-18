@@ -110,6 +110,10 @@ class DatawrapperHooks {
     // a hook for providing new api actions
     const GET_PLUGIN_ASSETS = 'get_plugin_assets';
 
+    // a hook for prividing new demo datasets
+    const GET_DEMO_DATASETS = 'get_demo_assets';
+
+
 }
 
 
