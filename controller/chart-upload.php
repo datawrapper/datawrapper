@@ -1,7 +1,5 @@
 <?php
 
-require_once '../lib/templates/demo_datasets.php';
-
 /*
  * UPLOAD STEP
  */
@@ -12,7 +10,7 @@ $app->get('/chart/:id/upload', function ($id) use ($app) {
         $page = array(
             'chartData' => $chart->loadData(),
             'chart' => $chart,
-            'datasets' => getDemoDatasets()
+            'datasets' => DatawrapperHooks::execute(DatawrapperHooks::GET_DEMO_DATASETS)
         );
         add_header_vars($page, 'chart');
         add_editor_nav($page, 1);
