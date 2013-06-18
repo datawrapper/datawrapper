@@ -1,6 +1,10 @@
 CHANGELOG
 ---------
 
+### 1.4.1
+* refactored demo datasets into plugins
+* minor bugfixes
+
 ### 1.4.0
 * added table plugin
 * added plugins system
