@@ -65,7 +65,10 @@ class TestDatawrapperAPI(unittest.TestCase):
         url = endpoint + 'charts/%s' % ns['chartId']
         r = ns['session'].get(url)
         self.checkRes(r)
-        self.assertEqual(r.json()['data']['showInGallery'], False)
+        gallery_default = False
+        if 'defaults' in config and 'show_in_gallery' in config['defaults']:
+            gallery_default = config['defaults']['show_in_gallery']
+        self.assertEqual(r.json()['data']['showInGallery'], gallery_default)
 
     def test_05_saveMetadata(self):
         url = endpoint + 'charts/%s' % ns['chartId']
