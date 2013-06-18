@@ -534,7 +534,7 @@
             });
 
             // count total characters of row labels
-            _.each(rowLabels, function(t) { sumChars += t ? t.trim().length : 0; });
+            _.each(rowLabels, function(t) { sumChars += t ? $.trim(t).length : 0; });
             function update(cur) {
                 vis.update(cur);
                 if (callback) callback();
@@ -552,7 +552,7 @@
                 _.each(rowLabels, function(lbl, i) {
                     lbl = ds.isTimeSeries() ? lfmt(ds.rowDate(i)) : lbl;
                     if (!lbl) return;
-                    select.append('<option value="'+i+'">'+(_.isString(lbl) ? lbl.trim() : lbl)+'</option>');
+                    select.append('<option value="'+i+'">'+(_.isString(lbl) ? $.trim(lbl) : lbl)+'</option>');
                 });
                 select.change(function(evt) {
                     var cur = select.val();
@@ -567,7 +567,7 @@
                 _.each(rowLabels, function(lbl, i) {
                     lbl = ds.isTimeSeries() ? lfmt(ds.rowDate(i)) : lbl;
                     if (!lbl) return;
-                    var a = $('<a href="#'+i+'"'+(i == active ? ' class="active" ': '')+'>'+lbl.trim()+'</a>').data('row', i);
+                    var a = $('<a href="#'+i+'"'+(i == active ? ' class="active" ': '')+'>'+(_.isString(lbl) ? $.trim(lbl) : lbl)+'</a>').data('row', i);
                     div.append(a);
                 });
                 $('a', div).click(function(e) {
