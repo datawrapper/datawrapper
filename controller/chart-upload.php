@@ -1,7 +1,5 @@
 <?php
 
-require_once '../lib/templates/demo_datasets.php';
-
 /*
  * UPLOAD STEP
  */
