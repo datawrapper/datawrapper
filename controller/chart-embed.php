@@ -15,6 +15,8 @@ $app->get('/chart/:id/', function ($id) use ($app) {
         $page['innersvg'] = $app->request()->get('innersvg') == 1;
         $page['plain'] = $app->request()->get('plain') == 1;
         $page['fullscreen'] = $app->request()->get('fs') == 1;
+        $theme = DatawrapperTheme::get($chart->getTheme());
+        $page['l10n__domain'] = $theme['__static_path'];
         $app->render('chart.twig', $page);
     });
 });
