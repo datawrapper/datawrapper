@@ -48,11 +48,42 @@ function load_messages($locale) {
     return $messages;
 }
 
+
+/*
+ * this function tries to automatically detect the localization domain
+ * by looking at the current backtrace. This way we can automatically
+ * detect the right domain in templates, and also 
+ */
+function __get_domain() {
+    $domain = false;
+    $backtrace = debug_backtrace();
+    foreach ($backtrace as $b) {
+        if (isset($b['function']) && $b['function'] == 'doDisplay') {
+            if (isset($b['args'][0]['l10n__domain'])) {
+                $domain = $b['args'][0]['l10n__domain'];
+                break;
+            }
+        }
+    }
+    if (!$domain && isset($backtrace[1]['file'])) {
+        $domain = $backtrace[1]['file'];
+    }
+    if ($domain) {
+        if (preg_match('#/plugins/([^/]+)/#', $domain, $m)) {
+            return $m[1];
+        }
+    }
+    return 'core';
+}
+
 /*
  * translate function
  */
-function __($text, $domain = 'core', $fallback = '') {
+function __($text, $domain = false, $fallback = '') {
     global $__messages;
+
+    if (!$domain) $domain = __get_domain();
+
     $text_cleaned = _l10n_clean_msgid($text);
     if (!isset($__messages[$domain]) || !isset($__messages[$domain][$text_cleaned])) {
         // no translation found
