@@ -2,7 +2,7 @@
 #
 
 domain: datawrapper.de
-chart_domain: c.datawrapper.de
+chart_domain: charts.datawrapper.de
 
 ## the following keys are used to hash passwords.
 ##
