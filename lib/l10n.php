@@ -52,12 +52,15 @@ function load_messages($locale) {
 /*
  * this function tries to automatically detect the localization domain
  * by looking at the current backtrace. This way we can automatically
- * detect the right domain in templates, and also 
+ * detect the right domain in templates
  */
 function __get_domain() {
     $domain = false;
     $backtrace = debug_backtrace();
     foreach ($backtrace as $b) {
+        // if called within a template, the __ function has a call
+        // to TwigTemplate::doDisplay() in its backtrace
+        // from there we get the var l10n__domain
         if (isset($b['function']) && $b['function'] == 'doDisplay') {
             if (isset($b['args'][0]['l10n__domain'])) {
                 $domain = $b['args'][0]['l10n__domain'];
@@ -65,14 +68,19 @@ function __get_domain() {
             }
         }
     }
+    // if called in plain PHP code we take the filename
+    // of the calling file as domain
     if (!$domain && isset($backtrace[1]['file'])) {
         $domain = $backtrace[1]['file'];
     }
     if ($domain) {
+        // finally we check if the domain matches the format
+        // /plugins/$1/, and take the plugin id as domain
         if (preg_match('#/plugins/([^/]+)/#', $domain, $m)) {
             return $m[1];
         }
     }
+    // fallback is core
     return 'core';
 }
 
