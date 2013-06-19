@@ -306,7 +306,7 @@
     {# some convenient short cuts for theme templates #}
     {% set title = chart.title %}{% set intro = chart.metadata.describe.intro %}{% set source = chart.metadata.describe['source-name'] %}{% set sourceURL = chart.metadata.describe['source-url'] %}
 
-    {% include theme.template ? theme.template : 'themes/default.twig' %}
+    {% include theme.template ? theme.template : 'plugins/theme-default/default.twig' %}
     {{ hook('after_chart_body', chart) }}
 </body>
 </html>
