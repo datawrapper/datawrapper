@@ -87,7 +87,7 @@ $app->get('/admin/themes/?', function() use ($app) {
     if ($user->isAdmin()) {
         $page = array(
             'title' => 'Themes',
-            'themes' => get_themes_meta(),
+            'themes' => DatawrapperTheme::all(),
             'count' => count_charts_per_themes()
         );
         add_header_vars($page, 'admin');

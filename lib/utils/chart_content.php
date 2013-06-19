@@ -10,10 +10,10 @@ function get_chart_content($chart, $user, $minified = false, $path = '') {
     $locale = DatawrapperSession::getLanguage();
 
     while (!empty($next_theme_id)) {
-        $theme = get_theme_meta($next_theme_id, $path);
-        $theme_js[] = '/static/themes/' . $next_theme_id . '/theme.js';
+        $theme = DatawrapperTheme::get($next_theme_id);
+        $theme_js[] = $theme['__static_path'] . $next_theme_id . '.js';
         if ($theme['hasStyles']) {
-            $theme_css[] = '/static/themes/' . $next_theme_id . '/theme.css';
+            $theme_css[] =  $theme['__static_path'] . $next_theme_id . '.css';
         }
         $next_theme_id = $theme['extends'];
     }
@@ -81,7 +81,7 @@ function get_chart_content($chart, $user, $minified = false, $path = '') {
 
     $the_vis = DatawrapperVisualization::get($chart->getType(), $path);
     $the_vis['locale'] = $vis_locale;
-    $the_theme = get_theme_meta($chart->getTheme(), $path);
+    $the_theme = DatawrapperTheme::get($chart->getTheme(), $path);
 
     if ($minified) {
         $scripts = array_merge(

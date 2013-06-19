@@ -40,7 +40,7 @@ $app->get('/xhr/:chartid/vis-options', function($id) use ($app) {
     check_chart_writable($id, function($user, $chart) use ($app) {
         $page = array(
             'vis' => DatawrapperVisualization::get($chart->getType()),
-            'theme' => get_theme_meta($chart->getTheme()),
+            'theme' => DatawrapperTheme::get($chart->getTheme()),
             'language' => substr(DatawrapperSession::getLanguage(), 0, 2)
         );
         $app->render('vis-options.twig', $page);
