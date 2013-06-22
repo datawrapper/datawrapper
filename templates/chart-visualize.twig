@@ -85,7 +85,10 @@ $(function() {
         themes = {{ themes | json | raw }},
         themesById = {};
 
-    $.each(themes, function(i, theme) { themesById[theme.id] = theme; themesById[theme.id].__loaded = false });
+    _.each(themes, function(theme) {
+        themesById[theme.id] = theme;
+        themesById[theme.id].__loaded = false;
+    });
 
     function loadThemeColors() {
         var picker = $('#select-color'),
@@ -102,7 +105,7 @@ $(function() {
                 var next = themesById[needed.shift()];
                 if (!next.__loaded) {
                     next.__loaded = true;
-                    $.getScript('/static/themes/' + next.id + '/theme.js', loadNext);
+                    $.getScript(next.__static_path + '/' + next.id + '.js', loadNext);
                 } else {
                     loadNext();
                 }
