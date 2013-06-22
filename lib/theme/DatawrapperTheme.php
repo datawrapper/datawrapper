@@ -67,7 +67,7 @@ class DatawrapperTheme {
 
         if (isset($meta['extends'])) {
             $parent = $this->themes[$meta['extends']];
-            $parent_tpl_file = $parent['__template_path'] . $meta['id'] . '.twig';
+            $parent_tpl_file = $parent['__template_path'] . $parent['id'] . '.twig';
         } else {
             $meta['extends'] = false;
         }
