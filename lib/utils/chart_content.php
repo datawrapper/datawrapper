@@ -79,9 +79,9 @@ function get_chart_content($chart, $user, $minified = false, $path = '') {
 
     $styles = array_merge($vis_css, array_reverse($theme_css));
 
-    $the_vis = DatawrapperVisualization::get($chart->getType(), $path);
+    $the_vis = DatawrapperVisualization::get($chart->getType());
     $the_vis['locale'] = $vis_locale;
-    $the_theme = DatawrapperTheme::get($chart->getTheme(), $path);
+    $the_theme = DatawrapperTheme::get($chart->getTheme());
 
     if ($minified) {
         $scripts = array_merge(
@@ -119,6 +119,7 @@ function get_chart_content($chart, $user, $minified = false, $path = '') {
         'lang' => strtolower(substr($locale, 0, 2)),
         'metricPrefix' => get_metric_prefix($locale),
         'theme' => $the_theme,
+        'l10n__domain' => $the_theme['__static_path'],
         'visualization' => $the_vis,
         'stylesheets' => $styles,
         'scripts' => $scripts,
