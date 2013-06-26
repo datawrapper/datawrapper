@@ -31,6 +31,9 @@ h1 {
 h1 span {
 }
 
+/* NOTE: On IE, there is a border around each image which is a link */
+a img { border:0px; }
+
 .chart p { margin: 5px 0 10px!important; line-height: 19px;}
 
 #chart {
@@ -112,7 +115,6 @@ h1 span {
     font-size: 11px;
     color: #888;
 }
-
 
 .clearfix:after {
     content: ".";
