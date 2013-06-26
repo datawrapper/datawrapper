@@ -1,7 +1,7 @@
 <?php
 
 
-function get_chart_content($chart, $user, $minified = false, $path = '') {
+function get_chart_content($chart, $user, $published = false, $path = '') {
     $theme_css = array();
     $theme_js = array();
 
@@ -22,7 +22,7 @@ function get_chart_content($chart, $user, $minified = false, $path = '') {
 
     $debug = $GLOBALS['dw_config']['debug'] == true;
 
-    if ($minified && !$debug) {
+    if ($published && !$debug) {
         $base_js = array(
             '//assets-datawrapper.s3.amazonaws.com/globalize.min.js',
             '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.2/underscore-min.js',
@@ -83,7 +83,7 @@ function get_chart_content($chart, $user, $minified = false, $path = '') {
     $the_vis['locale'] = $vis_locale;
     $the_theme = DatawrapperTheme::get($chart->getTheme());
 
-    if ($minified) {
+    if ($published) {
         $scripts = array_merge(
             $base_js,
             array(
@@ -130,7 +130,7 @@ function get_chart_content($chart, $user, $minified = false, $path = '') {
         'origin' => !empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '',
         'DW_DOMAIN' => 'http://' . $cfg['domain'] . '/',
         'DW_CHART_DATA' => 'http://' . $cfg['domain'] . '/chart/' . $chart->getID() . '/data',
-        'ASSET_PATH' => $minified ? '' : $the_theme['__static_path'],
+        'ASSET_PATH' => $published ? '' : $the_theme['__static_path'],
         'trackingCode' => !empty($analyticsMod) ? $analyticsMod->getTrackingCode($chart) : '',
         'chartUrl' => $chart_url,
         'embedCode' => '<iframe src="' .$chart_url. '" frameborder="0" allowtransparency="true" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen width="'.$chart->getMetadata('publish.embed-width') . '" height="'. $chart->getMetadata('publish.embed-height') .'"></iframe>',
