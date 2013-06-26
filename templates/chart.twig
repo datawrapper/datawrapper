@@ -174,8 +174,6 @@
 
     <script type="text/javascript">
     window.__locale = '{{ chartLocale }}';
-    window.__vis_assets_path = '{{ VIS_ASSET_PATH }}';
-    window.__theme_assets_path = '{{ THEME_ASSET_PATH }}';
     </script>
 
 {% for src in scripts %}
@@ -242,6 +240,7 @@
             var vis = new Datawrapper.Visualizations.{{ visualization.id | classify }}();
             vis.meta = JSON.parse("{{ visualization | json | escape('js') }}");
             vis.lang = '{{ lang }}';
+            vis.meta.__static_path = '{{ VIS_STATIC_PATH }}';
 
             // compute chart dimensions
             var w = $('#chart').innerWidth(),
