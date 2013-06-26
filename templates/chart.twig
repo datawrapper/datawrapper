@@ -228,7 +228,6 @@
             var vis = new Datawrapper.Visualizations.{{ visualization.id | classify }}();
             vis.meta = JSON.parse("{{ visualization | json | escape('js') }}");
             vis.lang = '{{ lang }}';
-            vis.meta.__static_path = '{{ VIS_STATIC_PATH }}';
 
             // compute chart dimensions
             var w = $('#chart').innerWidth(),

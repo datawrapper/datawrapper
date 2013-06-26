@@ -92,6 +92,8 @@ function get_chart_content($chart, $user, $minified = false, $path = '') {
             )
         );
         $styles = array($chart->getID().'.min.css');
+        $the_vis['__static_path'] = '';
+        $the_theme['__static_path'] = '';
     } else {
         $scripts = array_unique(
             array_merge(
@@ -129,7 +131,6 @@ function get_chart_content($chart, $user, $minified = false, $path = '') {
         'DW_DOMAIN' => 'http://' . $cfg['domain'] . '/',
         'DW_CHART_DATA' => 'http://' . $cfg['domain'] . '/chart/' . $chart->getID() . '/data',
         'ASSET_PATH' => $minified ? '' : $the_theme['__static_path'],
-        'VIS_STATIC_PATH' => $minified ? '' : $the_vis['__static_path'],
         'trackingCode' => !empty($analyticsMod) ? $analyticsMod->getTrackingCode($chart) : '',
         'chartUrl' => $chart_url,
         'embedCode' => '<iframe src="' .$chart_url. '" frameborder="0" allowtransparency="true" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen width="'.$chart->getMetadata('publish.embed-width') . '" height="'. $chart->getMetadata('publish.embed-height') .'"></iframe>',
