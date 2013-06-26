@@ -113,6 +113,18 @@ function publish_css($user, $chart) {
             }
         }
     }
+
+    // copy visualization assets
+    $vis  = $data['visualization'];
+    $src  = '..'.$vis['__static_path'];
+    $dest = '../../charts/static/' . $chart->getID();
+    if (isset($vis['assets'])) {
+        foreach ($vis['assets'] as $asset) {
+            copy( $src.DIRECTORY_SEPARATOR.$asset, $dest.DIRECTORY_SEPARATOR.$asset );
+            $cdn_files[] = array($dest.DIRECTORY_SEPARATOR.$asset, $chart->getID() . '/' . $asset);
+        }
+    }
+
     return $cdn_files;
 }
 
