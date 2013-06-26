@@ -9,7 +9,8 @@ class DatawrapperPlugin_ThemeDefault extends DatawrapperPlugin {
     private function getMeta() {
         return array(
             'id' => 'default',
-            'title' => 'Datawrapper'
+            'title' => 'Datawrapper',
+            'version' => '1.4.2'
         );
     }
 
