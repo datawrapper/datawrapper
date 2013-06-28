@@ -14,7 +14,7 @@ $dbname = $m[2];
 $dbuser = $dbconn['user'];
 $dbpwd = $dbconn['password'];
 
-mysql_connect($dbhost, $dbuser, $dbpwd);
+@mysql_connect($dbhost, $dbuser, $dbpwd);
 mysql_select_db($dbname);
 
 
