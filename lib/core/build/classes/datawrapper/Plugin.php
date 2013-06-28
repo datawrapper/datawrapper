@@ -31,6 +31,9 @@ class Plugin extends BasePlugin {
 
     public function getInfo() {
         if (!isset($this->packageInfo)) {
+            if (!file_exists($this->getPath() . 'package.json')) {
+                return false;
+            }
             $this->packageInfo = json_decode(
                 file_get_contents($this->getPath() . 'package.json')
             , true);
@@ -41,7 +44,21 @@ class Plugin extends BasePlugin {
 
     public function getDependencies() {
         $info = $this->getInfo();
-        return $info['dependencies'];
+        if (isset($info['repository'])) {
+            return $info['dependencies'];
+        }
+        return false;
+    }
+
+    /*
+     * return plugin repository
+     */
+    public function getRepository() {
+        $meta = $this->getInfo();
+        if (isset($meta['repository'])) {
+            return $meta['repository'];
+        }
+        return false;
     }
 
 } // Plugin
