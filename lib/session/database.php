@@ -31,7 +31,7 @@ class DatabaseSessionHandler
     function read($sess_id) {
         $result = mysql_query("SELECT session_data FROM session WHERE session_id = '$sess_id';");
         if (!mysql_num_rows($result)) {
-            mysql_query("INSERT INTO session (session_id, date_created, last_updated) VALUES ('$sess_id', NOW(), NOW());");
+            mysql_query("INSERT INTO session (session_id, date_created, last_updated, session_data) VALUES ('$sess_id', NOW(), NOW(), '');");
             return '';
         } else {
             $res = mysql_fetch_array($result);
