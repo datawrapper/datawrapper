@@ -1,6 +1,9 @@
 CHANGELOG
 ---------
 
+### 1.4.2
+* refactored themes into plugin
+
 ### 1.4.1
 * refactored demo datasets into plugins
 * minor bugfixes
