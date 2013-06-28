@@ -36,6 +36,7 @@ class DatawrapperTheme {
         // we save the path to the static files of the visualization
         $meta['__static_path'] =  '/static/plugins/' . $plugin->getName() . '/';
         $meta['__template_path'] =  '/plugins/' . $plugin->getName() . '/';
+        $meta['version'] = $plugin->getVersion();
         $this->themes[$meta['id']] = $meta;
     }
 
