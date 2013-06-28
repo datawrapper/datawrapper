@@ -1,6 +1,6 @@
 {
-	"Line Chart":"Line Chart",
-	"Direct labeling":"Direct labeling",
+	"Line Chart":"Grafico a linee",
+	"Direct labeling":"Etichettatura diretta",
 	"Legend position":"Posizione della legenda",
 	"right":"destra",
 	"top":"in alto",
@@ -12,5 +12,11 @@
 	"Connect lines between missing values":"Completa le linee tra valori mancanti",
 	"Extend y-range to nice axis ticks":"Arrotonda gli estremi dell'asse y",
 	"Bank the lines to 45 degrees":"Inclina le linee a 45 gradi",
-	"Show grid":"Visualizza griglia"
+	"Show grid":"Visualizza griglia",
+	"Youth Unemployment in Europe":"Youth Unemployment in Europe",
+	"Line chart":"Line chart",
+	"US Trade with United Kingdom":"US Trade with United Kingdom",
+	"Marriages in Germany":"Marriages in Germany",
+	"Year":"Year",
+	"Marriages":"Marriages"
 }

@@ -61,7 +61,7 @@
 
         datasetLoaded: function(callback) {
             var me = this;
-            if (me.__dataset.__loaded) {
+            if (me.__dataset && me.__dataset.__loaded) {
                 // run now
                 callback(me);
             } else {

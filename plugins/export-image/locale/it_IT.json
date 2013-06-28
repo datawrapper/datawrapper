@@ -1,7 +1,8 @@
 {
-	"Export to static image for printing":"Export to static image for printing",
+	"Export to static image for printing":"Esportazione in immagine statica per la stampa",
 	"The image of your chart is ready":"L'immagine del grafico è pronta",
 	"Hello,\n\nHere is the requested static image of your chart \"%title$s\" on %domain$s.\n\nAll the best,\nDatawrapper":"Ciao,\n\necco l'immagine statica del tuo grafico \"%title$s\" prodotta su %domain$s.\n\nA presto,\nDatawrapper",
+	"You will receive an email with the exported chart in about %d minute(s)":"You will receive an email with the exported chart in about %d minute(s)",
 	"Please select an image format and aspect ratio for your exported chart.":"Si prega di selezionare formato e proporzioni dell'immagine per il tuo grafico esportato.",
 	"Select image type":"Seleziona il tipo di immagine",
 	"bitmap (PNG)":"bitmap (PNG)",

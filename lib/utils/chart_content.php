@@ -1,7 +1,7 @@
 <?php
 
 
-function get_chart_content($chart, $user, $minified = false, $path = '') {
+function get_chart_content($chart, $user, $published = false, $path = '') {
     $theme_css = array();
     $theme_js = array();
 
@@ -10,10 +10,10 @@ function get_chart_content($chart, $user, $minified = false, $path = '') {
     $locale = DatawrapperSession::getLanguage();
 
     while (!empty($next_theme_id)) {
-        $theme = get_theme_meta($next_theme_id, $path);
-        $theme_js[] = '/static/themes/' . $next_theme_id . '/theme.js';
+        $theme = DatawrapperTheme::get($next_theme_id);
+        $theme_js[] = $theme['__static_path'] . $next_theme_id . '.js';
         if ($theme['hasStyles']) {
-            $theme_css[] = '/static/themes/' . $next_theme_id . '/theme.css';
+            $theme_css[] =  $theme['__static_path'] . $next_theme_id . '.css';
         }
         $next_theme_id = $theme['extends'];
     }
@@ -22,7 +22,7 @@ function get_chart_content($chart, $user, $minified = false, $path = '') {
 
     $debug = $GLOBALS['dw_config']['debug'] == true;
 
-    if ($minified && !$debug) {
+    if ($published && !$debug) {
         $base_js = array(
             '//assets-datawrapper.s3.amazonaws.com/globalize.min.js',
             '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.2/underscore-min.js',
@@ -79,11 +79,11 @@ function get_chart_content($chart, $user, $minified = false, $path = '') {
 
     $styles = array_merge($vis_css, array_reverse($theme_css));
 
-    $the_vis = DatawrapperVisualization::get($chart->getType(), $path);
+    $the_vis = DatawrapperVisualization::get($chart->getType());
     $the_vis['locale'] = $vis_locale;
-    $the_theme = get_theme_meta($chart->getTheme(), $path);
+    $the_theme = DatawrapperTheme::get($chart->getTheme());
 
-    if ($minified) {
+    if ($published) {
         $scripts = array_merge(
             $base_js,
             array(
@@ -92,6 +92,8 @@ function get_chart_content($chart, $user, $minified = false, $path = '') {
             )
         );
         $styles = array($chart->getID().'.min.css');
+        $the_vis['__static_path'] = '';
+        $the_theme['__static_path'] = '';
     } else {
         $scripts = array_unique(
             array_merge(
@@ -119,6 +121,7 @@ function get_chart_content($chart, $user, $minified = false, $path = '') {
         'lang' => strtolower(substr($locale, 0, 2)),
         'metricPrefix' => get_metric_prefix($locale),
         'theme' => $the_theme,
+        'l10n__domain' => $the_theme['__static_path'],
         'visualization' => $the_vis,
         'stylesheets' => $styles,
         'scripts' => $scripts,
@@ -127,7 +130,7 @@ function get_chart_content($chart, $user, $minified = false, $path = '') {
         'origin' => !empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '',
         'DW_DOMAIN' => 'http://' . $cfg['domain'] . '/',
         'DW_CHART_DATA' => 'http://' . $cfg['domain'] . '/chart/' . $chart->getID() . '/data',
-        'ASSET_PATH' => $minified ? '' : '/static/themes/'.$the_theme['id'].'/',
+        'ASSET_PATH' => $published ? '' : $the_theme['__static_path'],
         'trackingCode' => !empty($analyticsMod) ? $analyticsMod->getTrackingCode($chart) : '',
         'chartUrl' => $chart_url,
         'embedCode' => '<iframe src="' .$chart_url. '" frameborder="0" allowtransparency="true" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen width="'.$chart->getMetadata('publish.embed-width') . '" height="'. $chart->getMetadata('publish.embed-height') .'"></iframe>',

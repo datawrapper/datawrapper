@@ -1,7 +1,0 @@
-{
-    "title": "Deutsche Welle",
-    "link": "http://www.dw.de",
-    "restrict": "@dw.de",
-    "extends": "default",
-    "version": "1.3.0"
-}

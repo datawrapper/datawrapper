@@ -220,23 +220,11 @@
             $('#chart').html('').off('click').off('mousemove').off('mouseenter').off('mouseover');
             $('#header .legend').remove();
             //$('.container').height($(window).height());
-            // initialize theme
-            var theme = Datawrapper.Themes.{{ theme.id | classify }},
-                thumb = false;
-            {% if thumb %}
-            theme.padding.bottom = 0;
-            theme.padding.top = 0;
-            theme.padding.left = 0;
-            theme.padding.left = 0;
-            theme.vpadding = 0;
-            theme.hpadding = 0;
-            thumb = true;
-            {% endif %}
-            // initialize chart
+
+            var theme = Datawrapper.Themes.{{ theme.id | classify }};
             var chart = new Datawrapper.Chart(JSON.parse('{{ chart.toJSON | raw }}'));
             chart.setLocale('{{ chartLocale }}', {{ metricPrefix | json | raw }});
 
-            // initliaze visualization
             var vis = new Datawrapper.Visualizations.{{ visualization.id | classify }}();
             vis.meta = JSON.parse("{{ visualization | json | escape('js') }}");
             vis.lang = '{{ lang }}';
@@ -253,10 +241,7 @@
                 .setSize(w - theme.hpadding*2, h - theme.vpadding);
 
             vis.load(chart, function() {
-                vis.render('#chart', thumb);
-                if (thumb) {
-                   $('.label').remove();
-                }
+                vis.render('#chart');
             });
             window.vis = vis;
         }
@@ -306,7 +291,7 @@
     {# some convenient short cuts for theme templates #}
     {% set title = chart.title %}{% set intro = chart.metadata.describe.intro %}{% set source = chart.metadata.describe['source-name'] %}{% set sourceURL = chart.metadata.describe['source-url'] %}
 
-    {% include theme.template ? 'themes/' ~ theme.template ~ '.twig' : 'themes/default.twig' %}
+    {% include theme.template ? theme.template : 'plugins/theme-default/default.twig' %}
     {{ hook('after_chart_body', chart) }}
 </body>
 </html>

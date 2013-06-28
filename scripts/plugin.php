@@ -160,6 +160,38 @@ function disable($pattern) {
     exit();
 }
 
+/*
+ * update plugins from git repository
+ */
+function update($pattern) {
+    _apply($pattern, function($id) {
+        $plugin = new Plugin();
+        $plugin->setId($id);
+        $repo = $plugin->getRepository();
+        if ($repo) {
+            if ($repo['type'] == 'git') {
+                if (file_exists($plugin->getPath() . '.git/config')) {
+                    $ret = array();
+                    exec('cd '.$plugin->getPath().'; git pull 2>&1', $ret, $err);
+                    if ($ret[count($ret)-1] == 'Already up-to-date.') {
+                        print "Plugin $id is up-to-date.\n";
+                    } else {
+                        print "Updated plugin $id.\n";
+                    }
+                } else {
+                    print "Skipping $id: Not a valid Git repository.\n";
+                }
+            } else {
+                print "Skipping $id: Unhandled repository type ".$repo['type'].".\n";
+            }
+        } else {
+            print "Skipping $id: No repository information found in package.json.\n";
+        }
+    });
+    exit();
+}
+
+
 switch ($cmd) {
     case 'list': list_plugins();
     case 'clean': clean();
@@ -167,6 +199,11 @@ switch ($cmd) {
     case 'uninstall': uninstall($argv[2]);
     case 'enable': enable($argv[2]);
     case 'disable': disable($argv[2]);
+    case 'update': update($argv[2]);
+    default:
+        print 'Unknown command '.$cmd."\n";
+        exit();
+
 }
 
 

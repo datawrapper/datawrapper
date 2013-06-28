@@ -71,6 +71,7 @@ if (!defined('NO_SLIM')) {
 }
 
 require ROOT_PATH . 'lib/visualization/DatawrapperVisualization.php';
+require ROOT_PATH . 'lib/theme/DatawrapperTheme.php';
 require ROOT_PATH . 'lib/plugin/DatawrapperPlugin.php';
 require ROOT_PATH . 'lib/hooks/DatawrapperHooks.php';
 require ROOT_PATH . 'lib/mail.php';

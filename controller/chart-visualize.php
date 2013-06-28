@@ -15,8 +15,8 @@ $app->get('/chart/:id/visualize', function ($id) use ($app) {
             'chart' => $chart,
             'visualizations' => DatawrapperVisualization::all(),
             'vis' => DatawrapperVisualization::get($chart->getType()),
-            'themes' => get_themes_meta(),
-            'theme' => get_theme_meta($chart->getTheme()),
+            'themes' => DatawrapperTheme::all(),
+            'theme' => DatawrapperTheme::get($chart->getTheme()),
             'debug' => !empty($GLOBALS['dw_config']['debug_export_test_cases']) ? '1' : '0'
         );
         add_header_vars($page, 'chart');

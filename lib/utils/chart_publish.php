@@ -105,7 +105,7 @@ function publish_css($user, $chart) {
     $theme = $data['theme'];
     if (isset($theme['assets'])) {
         foreach ($theme['assets'] as $asset) {
-            $asset_src = '../../www/static/themes/' . $theme['id'] . '/' . $asset;
+            $asset_src = '../../www/' . $theme['__static_path'] . '/' . $asset;
             $asset_tgt = $static_path . "/" . $asset;
             if (file_exists($asset_src)) {
                 file_put_contents($asset_tgt, file_get_contents($asset_src));
@@ -113,6 +113,18 @@ function publish_css($user, $chart) {
             }
         }
     }
+
+    // copy visualization assets
+    $vis  = $data['visualization'];
+    $src  = '..'.$vis['__static_path'];
+    $dest = '../../charts/static/' . $chart->getID();
+    if (isset($vis['assets'])) {
+        foreach ($vis['assets'] as $asset) {
+            copy( $src.DIRECTORY_SEPARATOR.$asset, $dest.DIRECTORY_SEPARATOR.$asset );
+            $cdn_files[] = array($dest.DIRECTORY_SEPARATOR.$asset, $chart->getID() . '/' . $asset);
+        }
+    }
+
     return $cdn_files;
 }
 
