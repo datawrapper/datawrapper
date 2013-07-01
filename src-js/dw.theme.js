@@ -10,7 +10,7 @@
 
     Datawrapper.Themes = {};
 
-    Datawrapper.Themes.Base = _.extend({}, {
+    Datawrapper.Themes.Base = {
 
         /*
          * colors used in the theme
@@ -155,6 +155,6 @@
          */
          easing: 'expoInOut'
 
-    });
+    };
 
 }).call(this);
