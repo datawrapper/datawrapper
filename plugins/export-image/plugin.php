@@ -39,7 +39,8 @@ class DatawrapperPlugin_ExportImage extends DatawrapperPlugin {
         $chart = $job->getChart();
 
         $params = $job->getParameter();
-        $imgFile = ROOT_PATH . 'charts/exports/' . $chart->getId() . '-' . $params['ratio'] . '.' . $params['format'];
+        $format = $params['format'];
+        $imgFile = ROOT_PATH . 'charts/exports/' . $chart->getId() . '-' . $params['ratio'] . '.' . $format;
         // execute hook provided by phantomjs plugin
         // this calls phantomjs with the provided arguments
         $res = DatawrapperHooks::execute(
@@ -71,7 +72,10 @@ Datawrapper', $this->getName()), array(
                     'domain' => $GLOBALS['dw_config']['domain']
                 )),
                 array(
-                    basename($imgFile) => $imgFile,
+                    basename($imgFile) => array(
+                        'path' => $imgFile,
+                        'format' => "image/$format"
+                    )
                 )
             );
         } else {
