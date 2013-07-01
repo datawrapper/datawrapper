@@ -28,7 +28,7 @@ function dw_send_mail_attachment($to, $from, $subject, $body, $files) {
     $random_hash = '-----=' . md5(uniqid(mt_rand())); 
 
     // headers 
-    $headers = 'From: "Export Service" <'.$from.'>'."\n"; 
+    $headers =  'From: '.$from."\n"; 
     // $headers .= 'Return-Path: <'.$email_reply.'>'."\n"; 
     $headers .= 'MIME-Version: 1.0'."\n"; 
     $headers .= 'Content-Type: multipart/mixed; boundary="'.$random_hash.'"'; 
