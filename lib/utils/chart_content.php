@@ -1,7 +1,7 @@
 <?php
 
 
-function get_chart_content($chart, $user, $published = false, $path = '') {
+function get_chart_content($chart, $user, $published = false, $debug = false) {
     $theme_css = array();
     $theme_js = array();
 
@@ -20,7 +20,7 @@ function get_chart_content($chart, $user, $published = false, $path = '') {
 
     $abs = 'http://' . $GLOBALS['dw_config']['domain'];
 
-    $debug = $GLOBALS['dw_config']['debug'] == true;
+    $debug = $GLOBALS['dw_config']['debug'] == true || $debug;
 
     if ($published && !$debug) {
         $base_js = array(
@@ -52,7 +52,7 @@ function get_chart_content($chart, $user, $published = false, $path = '') {
     $vis_locale = array();  // visualizations may define localized strings, e.g. "other"
 
     while (!empty($next_vis_id)) {
-        $vis = DatawrapperVisualization::get($next_vis_id, $path);
+        $vis = DatawrapperVisualization::get($next_vis_id);
         $vjs = array();
         if (!empty($vis['libraries'])) {
             foreach ($vis['libraries'] as $url) {
@@ -98,7 +98,7 @@ function get_chart_content($chart, $user, $published = false, $path = '') {
         $scripts = array_unique(
             array_merge(
                 $base_js,
-                array('/static/js/datawrapper.min.js'),
+                array('/static/js/datawrapper'.($debug ? '' : '.min').'.js'),
                 array_reverse($theme_js),
                 array_reverse($vis_js),
                 $vis_libs
