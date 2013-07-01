@@ -8,7 +8,7 @@
     // of them. Also, every theme can extend any other
     // existing theme.
 
-    Datawrapper.Themes.Default = $.extend(true, {}, Datawrapper.Themes.Base, {
+    Datawrapper.Themes.Default = $.extend(true, Datawrapper.Themes.Base, {
 
         colors: {
             // primary colors

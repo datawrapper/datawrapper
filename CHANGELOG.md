@@ -1,6 +1,9 @@
 CHANGELOG
 ---------
 
+### 1.4.3
+* fixed severe bug in base theme (hotfix)
+
 ### 1.4.2
 * refactored themes into plugin
 * refactored l10n into a class
