@@ -3,6 +3,7 @@ CHANGELOG
 
 ### 1.4.2
 * refactored themes into plugin
+* refactored l10n into a class
 
 ### 1.4.1
 * refactored demo datasets into plugins
