@@ -9,7 +9,7 @@ uglifyjs tmp.js > ../www/static/js/datawrapper-backend-$VERSION.min.js
 # generate js that's packed with each chart
 cat dw.core.js dw.dataset.js dw.chart.js dw.theme.js dw.parsers.delimited.js dw.visualization.js > tmp.js
 uglifyjs tmp.js > ../www/static/js/datawrapper.min.js
-rm tmp.js
+mv tmp.js ../www/static/js/datawrapper.js
 
 # if coffeescript is installed, generate javascript for user's administration
 if type "coffee" >/dev/null 2>&1; then

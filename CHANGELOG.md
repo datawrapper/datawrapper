@@ -3,6 +3,7 @@ CHANGELOG
 
 ### 1.4.3
 * fixed severe bug in base theme (hotfix)
+* allowed using uncompressed JS in chart preview
 
 ### 1.4.2
 * refactored themes into plugin
