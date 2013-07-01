@@ -33,8 +33,8 @@ class DatawrapperPlugin_ExportImage extends DatawrapperPlugin {
         // to manually set the language to the one of the
         // user who created the job (otherwise the mail won't
         // be translated right)
-        global $__messages;
-        $__messages = load_messages($job->getUser()->getLanguage());
+        global $__l10n;
+        $__l10n->loadMessages($job->getUser()->getLanguage());
 
         $chart = $job->getChart();
 
