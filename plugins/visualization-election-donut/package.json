@@ -1,5 +1,5 @@
 {
-   "version": "1.4.0",
+   "version": "1.4.3",
    "author": "Gregor Aisch <gregor@datawrapper.de>",
    "dependencies": {
       "visualization-pie-chart": "*"
