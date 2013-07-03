@@ -90,6 +90,11 @@ class DatawrapperPlugin_VisualizationLineChart extends DatawrapperPlugin_Visuali
                 "hidden" => true,
                 "label" => __("Show grid", $id),
                 "default" => false
+            ),
+            "invert-y-axis" => array(
+                "type" => "checkbox",
+                "label" => __("Invert y axis", $id),
+                "default" => false
             )
         );
         return $options;
