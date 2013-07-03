@@ -54,6 +54,7 @@ class ChartTableMap extends TableMap
 		$this->addColumn('LAST_EDIT_STEP', 'LastEditStep', 'INTEGER', false, null, 0);
 		$this->addColumn('PUBLISHED_AT', 'PublishedAt', 'TIMESTAMP', false, null, null);
 		$this->addColumn('PUBLIC_URL', 'PublicUrl', 'VARCHAR', false, 255, null);
+		$this->addColumn('PUBLIC_VERSION', 'PublicVersion', 'INTEGER', false, null, 0);
 		// validators
 	} // initialize()
 

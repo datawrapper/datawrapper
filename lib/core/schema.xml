@@ -24,6 +24,7 @@
     <column name="last_edit_step" type="integer" default="0" />
     <column name="published_at" type="timestamp" />
     <column name="public_url" type="varchar" />
+    <column name="public_version" type="integer" default="0" />
   </table>
 
   <table name="user" phpName="User">
