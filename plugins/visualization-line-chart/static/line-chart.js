@@ -681,9 +681,9 @@
                     c_bbox[0] = best_y;
                 }
             } else {
-                var ch =(c.h - c.bpad); 
-                if(y2 > ch){
-                    best_y -= y2 - (ch);
+                var ch =(c.h - c.bpad + c.tpad); 
+                if(y > ch){
+                    best_y -= y - (ch);
                 }
                 y2 = best_y + height; 
                 // no overlap, the original y is the best one
