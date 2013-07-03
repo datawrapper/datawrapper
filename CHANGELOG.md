@@ -5,6 +5,7 @@ CHANGELOG
 * fixed severe bug in base theme (hotfix)
 * allowed using uncompressed JS in chart preview
 * allowed inverting of y axis in line charts
+* fixed analytics in core
 
 ### 1.4.2
 * refactored themes into plugin
