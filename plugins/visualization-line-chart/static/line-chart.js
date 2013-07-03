@@ -96,7 +96,7 @@
             }
 
             scales.x = scales.x.range([c.lpad + c.lpad2, c.w-c.rpad]);
-            scales.y = scales.y.range([c.h-c.bpad, c.tpad]);
+            scales.y = scales.y.range(me.get('invert-y-axis', false) ? [c.tpad, c.h-c.bpad] : [c.h-c.bpad, c.tpad]);
 
             me.yAxis();
             me.xAxis();
