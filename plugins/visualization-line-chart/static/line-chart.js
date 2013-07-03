@@ -246,7 +246,7 @@
                     me.registerSeriesLabel(lbl, col);
                 } // */
             });
-            me.initValueLabels();
+            me.initValueLabelsPositions();
             if (true || me.theme.tooltips) {
                 el.mousemove(_.bind(me.onMouseMove, me));
             }
@@ -633,44 +633,26 @@
         eachRow: function(func){
             this.dataset.eachRow(func);
         },
-        initValueLabels: function(){
+        initValueLabelsPositions: function(){
             var me = this;
-            var spaghetti = me.chart.dataSeries().length > 9;
+            // var spaghetti = me.chart.dataSeries().length > 9;
             me.eachRow(function(row){
-                var set = [];
-                me.dataset.eachSeries(function(s){
-                    set.push(s);
-                });
-                set.sort(function(a,b){
-                    return b.data[row] >= a.data[row] ? -1 : 1;
-                });
-                var lx = me.__scales.x(me.useDateFormat() ? me.dataset.rowDate(row) : row);
-                _.each(set, function(s){
-                    var serie_labels = s.__labels = s.__labels || {};
+                _.each(me.chart.dataSeries(true, false), function(s){
+                // _.each(set, function(s){
+                    var labels_pos = s.__labelsPositions = s.__labelsPositions || {}; 
+
                     var lbl_cl = 'tooltip'+(me.getSeriesColor(s) ? ' inverted' : ''),
-                        lbl = serie_labels[String(row)] = serie_labels[String(row)] || 
-                        me.label(0, 0, '0', {
-                            cl: lbl_cl,
-                            align: 'center',
-                            valign: 'middle',
-                            css: {
-                                background: me.getLineColor(s)
-                            }
-                        }),
-                        val = me.chart.formatValue(s.data[row]);
-                    lbl.data('series', s);
-                    lbl.data('row', 0);
-                    lbl.text(val);
-                    var label_y = me.__scales.y(s.data[row]),
+                        val = s.data[row],
+                        label_y = me.__scales.y(val),
                         label_w = me.labelWidth(val)+10,
                         label_h = me.labelHeight(val, label_w),
                         best_y  = me.getLabelYPosition(row, label_y, label_h);
-                    lbl.attr({
-                        x: lx,
+
+                    labels_pos[String(row)] = labels_pos[String(row)] || {
                         y: best_y,
-                        w: label_w
-                    });
-                    lbl.hide();
+                        w: label_w,
+                        cl: lbl_cl
+                    };
                 });
             });
         },
@@ -787,21 +769,33 @@
             });
 
             var spaghetti = me.chart.dataSeries().length > 9;
-            me.eachRow(function(_row){
-                me.dataset.eachSeries(function(s) {
-                        // we add every value label 
-                    var lbl = s.__labels[String(_row)];
-                    // if the current value is NaN we cannot show it
-                    if (isNaN(s.data[_row])) {
-                        lbl.hide();
-                    } else {
-                        if(_row === row){
-                            lbl.show();
-                        } else {
-                            lbl.hide();
+            me.dataset.eachSeries(function(s) {
+                    // we add every value label 
+                var lbl_pos = s.__labelsPositions[String(row)];
+                var lbl = s.__label = s.__label ||
+                    me.label(0, 0, '0', {
+                        cl: lbl_pos.cl,
+                        align: 'center',
+                        valign: 'middle',
+                        css: {
+                            background: me.getLineColor(s)
                         }
-                    }
+                    }),
+                val = me.chart.formatValue(s.data[row]);
+                lbl.data('series', s);
+                lbl.data('row', 0);
+                lbl.text(val);
+                lbl.attr({
+                    x: lx,
+                    y: lbl_pos.y,
+                    w: lbl_pos.w
                 });
+                // if the current value is NaN we cannot show it
+                if (isNaN(s.data[row])) {
+                    lbl.hide();
+                } else {
+                    lbl.show();
+                }
                 
 
                 // if (spaghetti) {  // special treatment for spaghetti charts
