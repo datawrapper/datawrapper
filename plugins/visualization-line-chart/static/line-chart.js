@@ -246,7 +246,7 @@
                     me.registerSeriesLabel(lbl, col);
                 } // */
             });
-
+            me.initValueLabels();
             if (true || me.theme.tooltips) {
                 el.mousemove(_.bind(me.onMouseMove, me));
             }
@@ -629,6 +629,131 @@
                 last_year = date.getFullYear();
             });
         },
+        // alias to dataset.eachRow
+        eachRow: function(func){
+            this.dataset.eachRow(func);
+        },
+        initValueLabels: function(){
+            var me = this;
+            var spaghetti = me.chart.dataSeries().length > 9;
+            me.eachRow(function(row){
+                var set = [];
+                me.dataset.eachSeries(function(s){
+                    set.push(s);
+                });
+                set.sort(function(a,b){
+                    return b.data[row] >= a.data[row] ? -1 : 1;
+                });
+                var lx = me.__scales.x(me.useDateFormat() ? me.dataset.rowDate(row) : row);
+                _.each(set, function(s){
+                    var serie_labels = s.__labels = s.__labels || {};
+                    var lbl_cl = 'tooltip'+(me.getSeriesColor(s) ? ' inverted' : ''),
+                        lbl = serie_labels[String(row)] = serie_labels[String(row)] || 
+                        me.label(0, 0, '0', {
+                            cl: lbl_cl,
+                            align: 'center',
+                            valign: 'middle',
+                            css: {
+                                background: me.getLineColor(s)
+                            }
+                        }),
+                        val = me.chart.formatValue(s.data[row]);
+                    lbl.data('series', s);
+                    lbl.data('row', 0);
+                    lbl.text(val);
+                    var label_y = me.__scales.y(s.data[row]),
+                        label_w = me.labelWidth(val)+10,
+                        label_h = me.labelHeight(val, label_w),
+                        best_y  = me.getLabelYPosition(row, label_y, label_h);
+                    lbl.attr({
+                        x: lx,
+                        y: best_y,
+                        w: label_w
+                    });
+                    lbl.hide();
+                });
+            });
+        },
+        getLabelYPosition:function(row, y, height){
+            var me = this,
+                c = me.__canvas,
+                best_y  = y,
+                y2 = y + height,
+                bboxs = me.__bboxs = me.__bboxs || {},
+                row_bboxs = bboxs[String(row)] = bboxs[String(row)] || [];
+
+            var bbox_position = me.getYBBoxPosition(row, y, y2);
+
+            
+            // if conflict exists we have to guess if we insert the label 
+            // before or after the conflict position 
+            if(bbox_position.overlap){
+
+                var c_bbox = row_bboxs[bbox_position.index];
+                var append_after = (c_bbox[0] < y);
+                if(append_after){
+                    best_y = c_bbox[1];
+                    c_bbox[1] = c_bbox[1] + height; 
+                } else {
+                    best_y = c_bbox[0] - height;
+                    c_bbox[0] = best_y;
+                }
+            } else {
+                var ch =(c.h - c.bpad); 
+                if(y2 > c.h){
+                    console.log('c.h - c.bpad ', ch );
+                    console.log('y2 > c.h - c.bpad');
+                    console.log('height outside : ', y2 - c.h);
+                    best_y -= y2 - (c.h);
+                }
+                y2 = best_y + height; 
+                // no overlap, the original y is the best one
+                row_bboxs.splice(bbox_position.index, 0, [best_y, y2]);
+            }
+            return best_y; 
+        },
+        /**
+         * Will insert to the best position the given label's bbox. 
+         * @param lbl  
+         */
+        getYBBoxPosition: function(row, y, y2){
+            var me = this, 
+                bbox_position = {
+                    index: -1,
+                    overlap: false
+                },
+                row_bboxs = me.__bboxs[String(row)];
+            if(row_bboxs.length > 0){
+                // first loop, we check if it exists a conflict/overlaping 
+                for(var i = 0; i < row_bboxs.length; i++){
+                    var bbox     = row_bboxs[i];
+                    var yInBBox  = (y  >= bbox[0]) && (y  <= bbox[1]);
+                    var y2inBBox = (y2 >= bbox[0]) && (y2 <= bbox[1]);
+ 
+                    if(yInBBox || y2inBBox){
+                        bbox_position.index = i;
+                        bbox_position.overlap = true;
+                        break;
+                    }
+                }
+                // if no overlaping is detected then we search the best position 
+                // for this new bbox 
+                if(bbox_position.overlap === false){
+                    var nearest_index_before = -1;
+                    var min_diff = Number.MAX_VALUE;
+                    for(var i = 0; i < row_bboxs.length; i++){
+                        var bbox = row_bboxs[i];
+                        var diff = bbox.y2 - y; 
+                        min_diff = Math.min(min_diff, diff);
+                        if(diff === min_diff){
+                            nearest_index_before = i;
+                        }
+                    }
+                    bbox_position.index = nearest_index_before + 1;
+                }
+            }
+            return bbox_position;
+        },
 
         onMouseMove: function(e) {
             var me = this,
@@ -662,56 +787,45 @@
             });
 
             var spaghetti = me.chart.dataSeries().length > 9;
-
-            me.dataset.eachSeries(function(s) {
-                var lbl = s._label = s._label ||
-                    me.label(0, 0, '0', {
-                        cl: 'tooltip'+(me.getSeriesColor(s) ? ' inverted' : ''),
-                        align: 'center',
-                        valign: 'middle',
-                        css: {
-                            background: me.getLineColor(s)
-                        }
-                    }),
-                    val = me.chart.formatValue(s.data[row]);
-                lbl.data('series', s);
-                lbl.data('row', 0);
-                lbl.text(val);
-                lbl.attr({
-                    x: lx,
-                    y: me.__scales.y(s.data[row]),
-                    w: me.labelWidth(val)+10
-                });
-
-                // if the current value is NaN we cannot show it
-                if (isNaN(s.data[row])) {
-                    lbl.hide();
-                } else {
-                    lbl.show();
-                }
-
-                if (spaghetti) {  // special treatment for spaghetti charts
-                    // only show series label if the line is highlighted or hovered
-                    var hide_label = me.chart.hasHighlight() && !me.chart.isHighlighted(s) && (s != series);
-                    if (me.get('direct-labeling')) {
-                        if (hide_label) {
-                            $.each(me.__seriesLabels[s.name], function(i, l) { l.hide(); });
-                        } else {
-                            $.each(me.__seriesLabels[s.name], function(i, l) { l.show(); });
-                        }
+            me.eachRow(function(_row){
+                me.dataset.eachSeries(function(s) {
+                        // we add every value label 
+                    var lbl = s.__labels[String(_row)];
+                    // if the current value is NaN we cannot show it
+                    if (isNaN(s.data[_row])) {
+                        lbl.hide();
                     } else {
-                        if (hide_label) {
-                            $.each(me.__seriesLabels[s.name], function(i, l) { l.el.css('text-decoration', 'none'); });
+                        if(_row === row){
+                            lbl.show();
                         } else {
-                            if (!me.chart.isHighlighted(s)) $.each(me.__seriesLabels[s.name], function(i, l) { l.el.css('text-decoration', 'underline'); });
+                            lbl.hide();
                         }
                     }
-                }
+                });
+                
+
+                // if (spaghetti) {  // special treatment for spaghetti charts
+                //     // only show series label if the line is highlighted or hovered
+                //     var hide_label = me.chart.hasHighlight() && !me.chart.isHighlighted(s) && (s != series);
+                //     if (me.get('direct-labeling')) {
+                //         if (hide_label) {
+                //             $.each(me.__seriesLabels[s.name], function(i, l) { l.hide(); });
+                //         } else {
+                //             $.each(me.__seriesLabels[s.name], function(i, l) { l.show(); });
+                //         }
+                //     } else {
+                //         if (hide_label) {
+                //             $.each(me.__seriesLabels[s.name], function(i, l) { l.el.css('text-decoration', 'none'); });
+                //         } else {
+                //             if (!me.chart.isHighlighted(s)) $.each(me.__seriesLabels[s.name], function(i, l) { l.el.css('text-decoration', 'underline'); });
+                //         }
+                //     }
+                // }
             });
 
             return;
         },
-
+        
         hoverSeries: function(series) { },
 
         useDateFormat: function() {
