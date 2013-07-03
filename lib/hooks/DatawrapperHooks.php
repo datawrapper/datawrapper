@@ -95,6 +95,8 @@ class DatawrapperHooks {
     // a hook for providing new demo datasets
     const GET_DEMO_DATASETS = 'get_demo_assets';
 
+    // a hook for providing visualization options
+    const VIS_OPTION_CONTROLS = 'vis_option_controls';
 
 }
 

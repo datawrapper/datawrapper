@@ -33,40 +33,9 @@
     {% for key, option in vis.options %}
         {% if theme['option-filter'][vis.id][key] or (not option.hidden and not option.expert)  %}
     <div class="control-group" style="margin-bottom:0px" id="vis-options-{{ key }}">
-        {% if option.type == 'checkbox' %}
-            <label class="control-label" for="{{ key }}">{{ option.label|raw }}</label>
-            <div class="controls">
-                <input type="checkbox" id="{{ key }}" />
-            </div>
 
-        {% elseif option.type == 'select' %}
+        {{ hook('vis_option_controls', option, key) }}
 
-            <label class="control-label" for="{{ key }}">{{ option.label|raw }}</label>
-            <div class="controls">
-                <select id="{{ key }}">
-                    {% for opt in option.options %}
-                    <option value="{{ opt.value }}">{{ opt.label }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-
-        {% elseif option.type == 'radio' %}
-
-            <label class="control-label"  for="{{ key }}">{{ option.label|raw }}</label>
-            <div class="controls form-inline">
-                {% for opt in option.options %}
-                <div><label class="radio"><input type="radio" name="{{ key }}" value="{{ opt.value }}" {% if opt.default %}checked="checked" {% endif %}/>&nbsp;{{ opt.label }}</label></div>
-                {% endfor %}
-            </div>
-
-        {% elseif option.type == 'text' %}
-
-            <label class="control-label"  for="{{ key }}">{{ option.label|raw }}</label>
-            <div class="controls form-inline">
-                <input type="text" style="width:auto" id="{{ key }}" value="" />
-            </div>
-
-        {% endif %}
     </div>
     {% endif %}{% endfor %}
 </fieldset>
@@ -166,11 +135,12 @@ $(function() {
             if (chart.get('metadata.visualize.'+key) == undefined){
                 chart.set('metadata.visualize.'+key, opt.default);
             }
-            if (opt.type == 'radio') {
-                chart.sync('input[name='+key+']', 'metadata.visualize.'+key);
-            } else {
-                chart.sync('#'+key, 'metadata.visualize.'+key);
-            }
+            // fire custom event so hooked vis options can sync
+            $('body').trigger('dw:sync_vis_option:'+opt.type, {
+                chart: chart,
+                key: key,
+                option: opt
+            });
         });
         // check visibility of each option (evaluate "depends-on" property)
         function checkDepends() {
