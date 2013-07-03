@@ -221,6 +221,15 @@ class Chart extends BaseChart {
         );
     }
 
+    /*
+     * increment the public version of a chart, which is used
+     * in chart public urls to deal with cdn caches
+     */
+    public function publish() {
+        $this->setPublicVersion($this->getPublicVersion() + 1);
+        $this->save();
+    }
+
     public function unpublish() {
         $path = $this->getStaticPath();
         if (file_exists($path)) {
