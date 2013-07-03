@@ -682,11 +682,8 @@
                 }
             } else {
                 var ch =(c.h - c.bpad); 
-                if(y2 > c.h){
-                    console.log('c.h - c.bpad ', ch );
-                    console.log('y2 > c.h - c.bpad');
-                    console.log('height outside : ', y2 - c.h);
-                    best_y -= y2 - (c.h);
+                if(y2 > ch){
+                    best_y -= y2 - (ch);
                 }
                 y2 = best_y + height; 
                 // no overlap, the original y is the best one
