@@ -60,9 +60,9 @@ class DatawrapperPlugin_PublishS3 extends DatawrapperPlugin {
     public function getUrl($chart) {
         $cfg = $this->getConfig();
         if (!empty($cfg['alias'])) {
-            return $cfg['alias'] . '/' . $chart->getID() . '/';
+            return $cfg['alias'] . '/' . $chart->getID() . '/' . $chart->getPublicVersion() . '/';
         }
-        return '//' . $cfg['bucket'] . '.s3.amazonaws.com/' . $chart->getID() . '/index.html';
+        return '//' . $cfg['bucket'] . '.s3.amazonaws.com/' . $chart->getID() . '/' . $chart->getPublicVersion() . '/index.html';
     }
 
         /**
