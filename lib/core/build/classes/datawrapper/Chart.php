@@ -211,8 +211,9 @@ class Chart extends BaseChart {
                 'source-url' => '',
                 'number-format' => '-',
                 'number-divisor' => 0,
-                'number-currency' => 'EUR|€',
-                'number-unit' => ''
+                'number-append' => '',
+                'number-prepend' => '',
+                'intro' => ''
             ),
             'publish' => array(
                 'embed-width' => 600,
@@ -260,11 +261,15 @@ class Chart extends BaseChart {
     }
 
     public function thumbUrl() {
-        return dirname($this->getPublicUrl() . '_') . '/m.png';
+        return$this->assetUrl('m.png');
     }
 
     public function plainUrl() {
-        return dirname($this->getPublicUrl() . '_') . '/plain.html';
+        return $this->assetUrl('plain.html');
+    }
+
+    public function assetUrl($file) {
+        return dirname($this->getPublicUrl() . '_') . '/' . $file;
     }
 
 } // Chart
