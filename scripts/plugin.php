@@ -177,6 +177,7 @@ function update($pattern) {
                         print "Plugin $id is up-to-date.\n";
                     } else {
                         print "Updated plugin $id.\n";
+                        install($id);
                     }
                 } else {
                     print "Skipping $id: Not a valid Git repository.\n";
