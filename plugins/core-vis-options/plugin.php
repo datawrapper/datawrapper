@@ -14,8 +14,8 @@ class DatawrapperPlugin_CoreVisOptions extends DatawrapperPlugin {
             }
         );
 
-        DatawrapperHooks::register(DatawrapperHooks::GET_PLUGIN_ASSETS, function() {
-            return array('sync-controls.js');
+        DatawrapperHooks::register(DatawrapperHooks::GET_PLUGIN_ASSETS, function() use ($plugin) {
+            return array($plugin->getName() . '/sync-controls.js');
         });
     }
 }
