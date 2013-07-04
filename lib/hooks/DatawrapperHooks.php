@@ -65,9 +65,6 @@ class DatawrapperHooks {
     // print something below a charts HTML body
     const CHART_AFTER_BODY = 'chart_after_body';
 
-    // print something below a charts HTML body
-    const CHART_AFTER_BODY = 'chart_after_body';
-
     // print something in <head> section of a chart
     const CHART_HTML_HEAD = 'chart_html_head';
 
