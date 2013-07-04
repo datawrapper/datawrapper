@@ -44,8 +44,16 @@ class DatawrapperPlugin_ExportStaticPng extends DatawrapperPlugin {
             $job->setStatus('done');
             // upload to CDN if possible
             DatawrapperHooks::execute(DatawrapperHooks::PUBLISH_FILES, array(
-                array($static_path.'static.html', $chart->getId().'/static.html', 'text/html'),
-                array($static_path.'static.png', $chart->getId().'/static.png', 'image/png')
+                array(
+                    $static_path . 'static.html',
+                    $chart->getId() . '/' . $chart->getPublicVersion() . '/static.html',
+                    'text/html'
+                ),
+                array(
+                    $static_path . 'static.png',
+                    $chart->getId() . '/' . $chart->getPublicVersion() . '/static.png',
+                    'image/png'
+                )
             ));
         } else {
             // error message received, send log email
