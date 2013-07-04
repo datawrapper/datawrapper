@@ -5,7 +5,7 @@ class DatawrapperPlugin_VisualizationLineChart extends DatawrapperPlugin_Visuali
         $meta = array(
             "title" => __("Line Chart", $this->getName()),
             "id" => "line-chart",
-            "version" => "1.3.1",
+            "version" => "1.3.2",
             "extends" => "raphael-chart",
             "dimensions" => 2,
             "order" => 40,
