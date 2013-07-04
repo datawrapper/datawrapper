@@ -135,6 +135,6 @@ $(function() {
     {% use "messages.twig" %}
     {{ block('messages') }}
 
-    {{ trackingCode | raw }}
+    {{ hook('after_core_body') }}
   </body>
 </html>
