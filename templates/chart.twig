@@ -217,8 +217,16 @@
             chart.setLocale('{{ chartLocale }}', {{ metricPrefix | json | raw }});
 
             var vis = new Datawrapper.Visualizations.{{ visualization.id | classify }}();
+
+
+            if(!vis.checkBrowserCompatibility()){
+                // redirect to the static version if not compatible with user's browser
+                window.location.href = 'static.html';
+            }
             vis.meta = JSON.parse("{{ visualization | json | escape('js') }}");
             vis.lang = '{{ lang }}';
+
+
 
             // compute chart dimensions
             var w = $('#chart').innerWidth(),
@@ -252,9 +260,7 @@
 
 
         var isFullScreen = false;
-
         $(window).bind('resize', function() {
-
             if (isFullScreen != fullScreenApi.isFullScreen()) { // video fullscreen mode has changed
                 isFullScreen = fullScreenApi.isFullScreen();
 

@@ -7,13 +7,11 @@
     // It provides the basic API between the chart template
     // page and the visualization class.
 
-    Datawrapper.Visualizations = {};
-
-    var Base = function() {
-
+    Datawrapper.Visualizations = {
+        Base: (function() {}).prototype
     };
 
-    _.extend(Base.prototype, {
+    _.extend(Datawrapper.Visualizations.Base, {
 
         render: function(el) {
             $(el).html('implement me!');
@@ -94,10 +92,12 @@
         translate: function(str) {
             var locale = this.meta.locale, lang = this.lang;
             return locale[str] ? locale[str][lang] || locale[str] : str;
+        },
+
+        checkBrowserCompatibility: function(){
+            return true;
         }
 
     });
-
-    Datawrapper.Visualizations.Base = Base.prototype;
 
 }).call(this);
