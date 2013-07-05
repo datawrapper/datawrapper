@@ -217,9 +217,9 @@
             chart.setLocale('{{ chartLocale }}', {{ metricPrefix | json | raw }});
 
             var vis = new Datawrapper.Visualizations.{{ visualization.id | classify }}();
-            
+
             if(!vis.checkBrowserCompatibility()){
-                loadStaticFallback();
+                window.location.href = 'static.html';
             }
             vis.meta = JSON.parse("{{ visualization | json | escape('js') }}");
             vis.lang = '{{ lang }}';
