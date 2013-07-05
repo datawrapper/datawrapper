@@ -35,6 +35,7 @@ class DatawrapperVisualization {
     public function _register($plugin, $meta) {
         // we save the path to the static files of the visualization
         $meta['__static_path'] =  '/static/plugins/' . $plugin->getName() . '/';
+        $meta['version'] = $plugin->getVersion();
         $this->visualizations[$meta['id']] = $meta;
     }
 
