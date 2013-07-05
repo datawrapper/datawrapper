@@ -95,7 +95,7 @@
         },
 
         checkBrowserCompatibility: function(){
-            throw new Error('checkBrowserCompatibility has not been implemented in the current visualization class !'); 
+            return true;
         }
 
     });

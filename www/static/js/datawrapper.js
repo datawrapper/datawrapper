@@ -1081,13 +1081,11 @@
     // It provides the basic API between the chart template
     // page and the visualization class.
 
-    Datawrapper.Visualizations = {};
-
-    var Base = function() {
-
+    Datawrapper.Visualizations = {
+        Base: (function() {}).prototype
     };
 
-    _.extend(Base.prototype, {
+    _.extend(Datawrapper.Visualizations.Base, {
 
         render: function(el) {
             $(el).html('implement me!');
@@ -1171,11 +1169,9 @@
         },
 
         checkBrowserCompatibility: function(){
-            throw new Error('checkBrowserCompatibility has not been implemented in the current visualization class !'); 
+            return true;
         }
 
     });
-
-    Datawrapper.Visualizations.Base = Base.prototype;
 
 }).call(this);
