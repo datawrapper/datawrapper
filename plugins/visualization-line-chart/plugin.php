@@ -77,7 +77,6 @@ class DatawrapperPlugin_VisualizationLineChart extends DatawrapperPlugin_Visuali
             "connect-missing-values" => array(
                 "type" => "checkbox",
                 "label" => __("Connect lines between missing values", $id),
-                "label" => __("Force a baseline at zero"),
             ),
             "extend-range" => array(
                 "type" => "checkbox",
