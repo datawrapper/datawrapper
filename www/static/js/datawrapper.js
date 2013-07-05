@@ -1168,6 +1168,10 @@
         translate: function(str) {
             var locale = this.meta.locale, lang = this.lang;
             return locale[str] ? locale[str][lang] || locale[str] : str;
+        },
+
+        checkBrowserCompatibility: function(){
+            throw new Error('checkBrowserCompatibility has not been implemented in the current visualization class !'); 
         }
 
     });
