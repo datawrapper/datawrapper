@@ -136,7 +136,7 @@ $(function() {
                 chart.set('metadata.visualize.'+key, opt.default);
             }
             // fire custom event so hooked vis options can sync
-            $('body').trigger('dw:sync_vis_option:'+opt.type, {
+            $('#vis-options').trigger('dw:vis-option:' + $.trim(opt.type), {
                 chart: chart,
                 key: key,
                 option: opt

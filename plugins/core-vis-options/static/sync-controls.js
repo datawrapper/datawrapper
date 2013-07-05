@@ -1,8 +1,5 @@
 
-(function($) {
-
-    $('body').on('dw:sync_vis_option:select', syncValue);
-    $('body').on('dw:sync_vis_option:text', syncValue);
+$(function() {
 
     function syncValue(evt, args) {
         var el = $('#' + args.key);
@@ -12,9 +9,6 @@
         }
         el.change(save).keyup(save);
     }
-
-
-    $('body').on('dw:sync_vis_option:checkbox', syncCheckbox);
 
     function syncCheckbox(evt, args) {
         var el = $('#'+args.key);
@@ -27,16 +21,13 @@
         });
     }
 
-
-    $('body').on('dw:sync_vis_option:radio', syncRadio);
-
     function syncRadio(evt, args) {
         var curVal = args.chart.get('metadata.visualize.'+args.key);
         if (_.isBoolean(curVal)) {
             curVal = curVal ? 'yes' : 'no';
         }
         $('input:radio[name='+args.key+'][value='+curVal+']').attr('checked', 'checked');
-        el.change(function() {
+        $('input:radio[name='+args.key+']').change(function() {
             var val = $('input:radio[name='+args.key+']:checked').val();
             if (val === 'yes') val = true;
             else if (val === 'no') val = false;
@@ -44,6 +35,10 @@
         });
     }
 
+    $('#vis-options').on('dw:vis-option:select', syncValue);
+    $('#vis-options').on('dw:vis-option:text', syncValue);
+    $('#vis-options').on('dw:vis-option:checkbox', syncCheckbox);
+    $('#vis-options').on('dw:vis-option:radio', syncRadio);
 
-})(jQuery);
+});
 
