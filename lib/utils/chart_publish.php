@@ -119,14 +119,12 @@ function publish_css($user, $chart) {
     }
 
     // copy visualization assets
-    $vis  = $data['visualization'];
-    $src  = '..'.$vis['__static_path'];
-    $dest = '../../charts/static/' . $chart->getID();
-    if (isset($vis['assets'])) {
-        foreach ($vis['assets'] as $asset) {
-            copy( $src.DIRECTORY_SEPARATOR.$asset, $dest.DIRECTORY_SEPARATOR.$asset );
-            $cdn_files[] = array($dest.DIRECTORY_SEPARATOR.$asset, __cdn_path($chart) . $asset);
-        }
+    $vis           = $data['visualization'];
+    $asset_src     = '../../www' . $vis['__static_path'];
+    $asset_tgt     = $static_path;
+    $assets_copied = copy_recursively($asset_src, $asset_tgt);
+    foreach ($assets_copied as $asset) {
+        $cdn_files[] = array($asset_src . $asset, __cdn_path($chart) . $asset);
     }
 
     return $cdn_files;
