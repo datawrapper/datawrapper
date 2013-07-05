@@ -110,6 +110,8 @@
                 all_series = all_series.sort(function(a, b) {
                     return b.data[ds.numRows()-1] -a.data[ds.numRows()-1];
                 });
+                // inverse order if y axis is inverted
+                if (me.get('invert-y-axis', false)) all_series.reverse();
                 //
                 if (legend.pos == "inside") {
                     legend.xoffset = me.yAxisWidth(h);
