@@ -48,17 +48,7 @@ class DatawrapperPlugin {
 			mkdir($plugin_static_path);
 		}
 		// copy static files to that directory
-		$iterator = new RecursiveIteratorIterator(
-		 	new RecursiveDirectoryIterator($source_path, RecursiveDirectoryIterator::SKIP_DOTS),
-		  	RecursiveIteratorIterator::SELF_FIRST);
-		foreach ($iterator as $item) {
-			$path = $plugin_static_path . '/' . $iterator->getSubPathName();
-			if ($item->isDir()) {
-				if (!file_exists($path)) mkdir($path);
-			} else {
-				copy($item, $path);
-			}
-		}
+		copy_recursively($source_path, $plugin_static_path);
 	}
 
 	/*
@@ -74,18 +64,7 @@ class DatawrapperPlugin {
 		if (!file_exists($plugin_template_path)) {
 			mkdir($plugin_template_path);
 		}
-		// copy static files to that directory
-		$iterator = new RecursiveIteratorIterator(
-		 	new RecursiveDirectoryIterator($source_path, RecursiveDirectoryIterator::SKIP_DOTS),
-		  	RecursiveIteratorIterator::SELF_FIRST);
-		foreach ($iterator as $item) {
-			$path = $plugin_template_path . '/' . $iterator->getSubPathName();
-			if ($item->isDir()) {
-				if (!file_exists($path)) mkdir($path);
-			} else {
-				copy($item, $path);
-			}
-		}
+		copy_recursively($source_path, $plugin_template_path);
 	}
 
 	/**

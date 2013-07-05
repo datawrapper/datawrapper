@@ -77,6 +77,7 @@ require ROOT_PATH . 'lib/hooks/DatawrapperHooks.php';
 require ROOT_PATH . 'lib/mail.php';
 require ROOT_PATH . 'lib/utils/memcache.php';
 require ROOT_PATH . 'lib/utils/vksprintf.php';
+require ROOT_PATH . 'lib/utils/copy_recursively.php';
 require ROOT_PATH . 'lib/plugin/load_plugins.php';
 
 
