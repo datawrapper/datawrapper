@@ -16,7 +16,6 @@
             var
             ds = me.dataset,
             bpad = me.theme.padding.bottom,
-            directLabeling = me.get('direct-labeling'),
             baseCol = Math.max(0, me.get('base-color', 0)),
             scales = me.__scales = {
                 x: me.xScale(),
@@ -25,10 +24,12 @@
             legend = {
                 pos: me.get('legend-position', 'right'),
                 xoffset: 0,
-                yoffset: -5
+                yoffset: -10
             },
             h = me.get('force-banking') ? el.width() / me.computeAspectRatio() : me.getSize()[1],
             c;
+
+            if (me.get('direct-labeling')) legend.pos = 'direct';
 
             me.__extendRange = me.get('extend-range', false) || (me.theme.frame && me.get('show-grid', false));
 
@@ -43,12 +44,12 @@
                 c.lpad = 5;
                 c.bpad = 5;
             }
-            if (!directLabeling && me.lineLabelsVisible() && legend.pos != 'right') {
+            if (me.lineLabelsVisible() && legend.pos != 'direct' && legend.pos != 'right') {
                 c.tpad += 20;
                 c.rpad = 0;
             }
 
-            if (me.lineLabelsVisible() && (directLabeling || legend.pos == 'right')) {
+            if (me.lineLabelsVisible() && (legend.pos == 'direct' || legend.pos == 'right')) {
                 c.labelWidth = 0;
                 _.each(me.chart.dataSeries(), function(col) {
                     c.labelWidth = Math.max(c.labelWidth, me.labelWidth(col.name, 'series'));
@@ -57,12 +58,12 @@
                     c.labelWidth = me.theme.lineChart.maxLabelWidth;
                 }
                 c.rpad += c.labelWidth + 20;
-                if (!directLabeling) c.rpad += 15;
+                if (legend.pos == 'right') c.rpad += 15;
             } else {
                 c.rpad += 5;
             }
 
-            if (!directLabeling && legend.pos != 'right') {
+            if (legend.pos != 'direct' && legend.pos != 'right') {
                 // some more space for last x-label
                 c.rpad += 0.25 * me.labelWidth(me.chart.rowLabel(me.numRows-1));
                 legend.xoffset += c.lpad;
@@ -102,16 +103,17 @@
             me.xAxis();
 
             var all_series = me.chart.dataSeries(),
-                seriesLines = this.__seriesLines = {},
-                legend_y_offset = 0;
+                seriesLines = this.__seriesLines = {};
 
-            if (!directLabeling) {
+            if (legend.pos != 'direct') {
                 // sort lines by last data point
                 all_series = all_series.sort(function(a, b) {
                     return b.data[ds.numRows()-1] -a.data[ds.numRows()-1];
                 });
+                // inverse order if y axis is inverted
+                if (me.get('invert-y-axis', false)) all_series.reverse();
                 //
-                if (legend.pos == "inside") {
+                if (legend.pos.substr(0, 6) == "inside") {
                     legend.xoffset = me.yAxisWidth(h);
                     legend.yoffset = 40;
                 }
@@ -125,7 +127,13 @@
             highlightedSeriesCount = highlightedSeriesCount || all_series.length;
 
             // draw series lines
-            var all_paths = [];
+            var all_paths = [],
+                legend_labels = [];  // we keep a reference to legend labels
+            legend.cont = $('<div />')
+                            .addClass('legend')
+                            .appendTo(el)
+                            .css({ position: 'absolute', top: 0, left: 0 });
+
             _.each(all_series, function(col, index) {
                 var paths = [],
                     pts_ = [],
@@ -199,14 +207,17 @@
                 }
 
                 if (me.lineLabelsVisible()) {
-                    var visible = all_series.length < 10 || me.chart.isHighlighted(col);
-                    var div, lbl, lblx = x + 10, lbly = last_valid_y, valign = 'middle';
-                    if (!directLabeling && visible) {
+                    var visible = all_series.length < 10 || me.chart.isHighlighted(col),
+                        div, lbl,
+                        lblx = x + 10,
+                        lbly = last_valid_y,
+                        valign = 'top';
+
+                    if (visible) {
                         // legend
                         if (legend.pos == 'right') {
                             lblx += 15;
-                            valign = 'top';
-                            lbly = legend_y_offset;
+                            lbly = legend.yoffset;
                             div = $('<div></div>');
                             div.css({
                                 background: strokeColor,
@@ -216,8 +227,8 @@
                                 left: x+10,
                                 top: lbly+3
                             });
-                            el.append(div);
-                        } else if (legend.pos == 'top' || legend.pos == 'inside') {
+                            legend.cont.append(div);
+                        } else if (legend.pos == 'top' || legend.pos.substr(0, 6) == 'inside') {
                             lblx = legend.xoffset + 15;
                             lbly = legend.yoffset;
                             div = $('<div></div>');
@@ -227,26 +238,34 @@
                                 height: 10,
                                 position: 'absolute',
                                 left: legend.xoffset,
-                                top: lbly-5
+                                top: lbly+3
                             });
-                            el.append(div);
+                            legend.cont.append(div);
                             legend.xoffset += me.labelWidth(col.name, 'series')+30;
                         }
                     }
                     lbl = me.label(lblx, lbly, col.name, {
                         cl: me.chart.isHighlighted(col) ? 'highlighted series' : 'series',
                         w: c.labelWidth,
-                        valign: valign
+                        valign: valign,
+                        root: legend.cont
                     });
+                    legend_labels.push(lbl);
                     if (!visible) lbl.hide();
-                    if (!directLabeling) {
-                        legend_y_offset += lbl.height()+15;
+                    if (legend.pos == 'right') {
+                        legend.yoffset += lbl.height('auto').height()+5;
                     }
                     lbl.data('highlighted', me.chart.isHighlighted(col));
                     me.registerSeriesLabel(lbl, col);
                 } // */
-            });
+            });  // _.each(all_series,
 
+            if (legend.pos == 'direct') {
+                me.optimizeLabelPositions(legend_labels, 3, 'top');
+            } else if (legend.pos == 'inside-right') {
+                legend.cont.css({ left: c.w - legend.xoffset - c.rpad });
+            }
+            //me.initValueLabelsPositions();
             if (true || me.theme.tooltips) {
                 el.mousemove(_.bind(me.onMouseMove, me));
             }
@@ -362,6 +381,11 @@
                 if (me.__xlab) me.__xlab.remove();
                 me.__xlab = null;
                 $('.label.tooltip').hide();
+                _.each(me.__seriesLabels, function(labels) {
+                    _.each(labels, function(l) {
+                        l.show();
+                    });
+                });
             });
 
             if (me.theme.frameStrokeOnTop) {
@@ -629,6 +653,10 @@
                 last_year = date.getFullYear();
             });
         },
+        // alias to dataset.eachRow
+        eachRow: function(func){
+            this.dataset.eachRow(func);
+        },
 
         onMouseMove: function(e) {
             var me = this,
@@ -661,10 +689,13 @@
                 w: lw
             });
 
-            var spaghetti = me.chart.dataSeries().length > 9;
+            var spaghetti = me.chart.dataSeries().length > 3;
+
+            var valueLabels = [];
 
             me.dataset.eachSeries(function(s) {
-                var lbl = s._label = s._label ||
+                // we add every value label
+                var lbl = s.__label = s.__label ||
                     me.label(0, 0, '0', {
                         cl: 'tooltip'+(me.getSeriesColor(s) ? ' inverted' : ''),
                         align: 'center',
@@ -673,24 +704,27 @@
                             background: me.getLineColor(s)
                         }
                     }),
-                    val = me.chart.formatValue(s.data[row]);
+                val = me.chart.formatValue(s.data[row]);
                 lbl.data('series', s);
                 lbl.data('row', 0);
                 lbl.text(val);
+
                 lbl.attr({
                     x: lx,
                     y: me.__scales.y(s.data[row]),
                     w: me.labelWidth(val)+10
                 });
-
                 // if the current value is NaN we cannot show it
                 if (isNaN(s.data[row])) {
                     lbl.hide();
                 } else {
                     lbl.show();
                 }
+                valueLabels.push(lbl);
 
                 if (spaghetti) {  // special treatment for spaghetti charts
+                    // only show value label if the line is highlighted or hovered
+                    if (!(s == series || me.chart.hasHighlight() && me.chart.isHighlighted(s))) lbl.hide();
                     // only show series label if the line is highlighted or hovered
                     var hide_label = me.chart.hasHighlight() && !me.chart.isHighlighted(s) && (s != series);
                     if (me.get('direct-labeling')) {
@@ -708,7 +742,7 @@
                     }
                 }
             });
-
+            me.optimizeLabelPositions(valueLabels, 3, 'middle');
             return;
         },
 
@@ -716,8 +750,51 @@
 
         useDateFormat: function() {
             return this.dataset.isTimeSeries();
-        }
+        },
 
+        optimizeLabelPositions: function(labels, pad, valign) {
+            var i = 1, c = valign == 'top' ? 0 : valign == 'middle' ? 0.5 : 1;
+            labels = _.filter(labels, function(lbl) { return lbl.el.is(":visible"); });
+            _.each(labels, function(lbl) {
+                lbl.__noverlap = {
+                    otop: lbl.top(),
+                    top: lbl.top(),
+                    dy: 0
+                };
+                lbl.height('auto');
+            });
+            (function loop() {
+                var overlap = false;
+                _.each(labels, function(lbl0, p) {
+                    _.each(labels, function(lbl1, q) {
+                        if (q > p) {
+                            var l0 = lbl0.left(), l1 = lbl1.left(),
+                                r0 = l0 + lbl0.width(), r1 = l1 + lbl1.width(),
+                                t0 = lbl0.__noverlap.top - pad, t1 = lbl1.__noverlap.top - pad,
+                                b0 = t0 + lbl0.height() + pad * 2, b1 = t1 + lbl1.height() + pad * 2,
+                                dy, l0up;
+                            if (!(l1 > r0 || r1 < l0 || t1 > b0 || b1 < t0)) {
+                                overlap = true;
+                                dy = Math.min(b0, b1) - Math.max(t0, t1);
+                                l0up = t0 + (b0 - t0) * c < t1 + (b1 - t1) * c;
+                                lbl0.__noverlap.dy += dy * 0.5 * (l0up ? -1 : 1);
+                                lbl1.__noverlap.dy += dy * 0.5 * (l0up ? 1 : -1);
+                            }
+                        }
+                    });
+                });
+                if (overlap) {
+                    _.each(labels, function(lbl) {
+                        lbl.__noverlap.top += lbl.__noverlap.dy * (1/i);
+                        lbl.__noverlap.dy = 0;
+                    });
+                }
+                if (overlap && ++i < 4) loop();
+            })();  // end loop()
+            _.each(labels, function(lbl) {
+                lbl.el.css({ top: lbl.__noverlap.top - lbl.el.parent().offset().top });  // apply new label pos
+            });
+        }
     });
 
 }).call(this);
