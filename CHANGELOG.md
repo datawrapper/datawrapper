@@ -6,6 +6,8 @@ CHANGELOG
 * incrementing public_version on every publication
 * appended public_version to public chart urls
 * showing big warning that the chart url has changed after republication
+* fixed overlapping labels in line charts
+* added legend position inside right in line charts
 
 ### 1.4.3
 * fixed severe bug in base theme (hotfix)
