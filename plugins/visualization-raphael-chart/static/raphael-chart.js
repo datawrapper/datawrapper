@@ -275,6 +275,8 @@
             label.show = function() { return lbl.show.apply(lbl, arguments); };
             label.width = function() { return lbl.width.apply(lbl, arguments); };
             label.height = function() { return lbl.height.apply(lbl, arguments); };
+            label.left = function() { return lbl.offset().left; };
+            label.top = function() { return lbl.offset().top; };
             label.on = function() { return lbl.on.apply(lbl, arguments); };
             label.hasClass = function() { return lbl.hasClass.apply(lbl, arguments); };
             label.addClass = function() { return lbl.addClass.apply(lbl, arguments); };
