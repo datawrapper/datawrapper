@@ -836,6 +836,10 @@
               [d3.time.format(":%S"), function(d) { return d.getSeconds(); }],
               [d3.time.format(".%L"), function(d) { return d.getMilliseconds(); }]
             ]);
+        },
+
+        checkBrowserCompatibility: function(){
+            return Raphael.type !== "";
         }
 
     });
