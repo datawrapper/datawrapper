@@ -178,18 +178,6 @@
     </script>
     <script type="text/javascript">
     $(function() {
-        var chart_url = window.location.href; 
-        function isEmbeded(){
-            return chart_url.match(/\/chart\//) === null;
-        }
-
-        function loadStaticFallback(){
-            var static_url = chart_url + 'static.html';
-            if(chart_url.indexOf('index.html') !== -1){
-                static_url = chart_url.replace('index.html', 'static.html');
-            }
-            window.location.href = static_url;
-        }
 
         function getMaxChartHeight (el) {
             function margin(el, type) {
@@ -229,11 +217,9 @@
             chart.setLocale('{{ chartLocale }}', {{ metricPrefix | json | raw }});
 
             var vis = new Datawrapper.Visualizations.{{ visualization.id | classify }}();
-            if(isEmbeded()){
-                var compatible = vis.checkBrowserCompatibility();
-                if(!compatible){
-                    loadStaticFallback();
-                }
+            
+            if(!vis.checkBrowserCompatibility()){
+                loadStaticFallback();
             }
             vis.meta = JSON.parse("{{ visualization | json | escape('js') }}");
             vis.lang = '{{ lang }}';
