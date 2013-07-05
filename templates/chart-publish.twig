@@ -82,6 +82,7 @@ $(function() {
                 $('.publishing').hide();
                 $('.published').fadeIn();
                 $('#iframe-vis').attr('src', '{{ chartUrl }}');
+                window.history.pushState("post_republish", "Datawrapper", "/chart/{{ chart.id }}/publish");
             } else {
                 console.warn(res);
             }
@@ -95,6 +96,13 @@ $(function() {
         });
     }, 1000);
 
+    {% if republish %}
+
+    setTimeout(function() {
+        $('#chart-url-change-warning').fadeIn();
+    }, 1000);
+
+    {% endif %}
 
     {% endif %}
 });
@@ -135,6 +143,18 @@ p.lead {
             <p class="lead" style="margin-top:0">{% trans "Link to this visualisation" %}</p>
             <p><a href="{{ chartUrl }}">{{ chartUrl }}</a></p>
 
+            {% if republish %}
+
+            <div id="chart-url-change-warning" class="alert alert-warning" style="display:none">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <div style="font-size:45px;line-height:55px;margin-left:-7px" class="pull-left">☝</div>
+                <div style="margin-left: 40px">
+                    <h4>{% trans "Chart URL has changed!" %}</h4>
+                    <div>{% trans "Please note that the chart URL has changed due to the republication. If you want the changes to take effect you probably need to update the embed code on your website." %}</div>
+                </div>
+            </div>
+
+            {% endif %}
 
             <p class="lead">{% trans "Embed into your website" %}</p>
             <p>{% trans "Just copy &amp; paste the following code into your website." %}</p>

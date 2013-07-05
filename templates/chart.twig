@@ -16,16 +16,7 @@
     <script type="text/javascript" src="/static/vendor/innersvg/innersvg.js"></script>
     {% endif %}
 
-{# markup for twitter cards #}
-    <meta name="twitter:card" content="player">
-    <meta name="twitter:site" content="@datawrapper">
-    <meta name="twitter:url" content="{{ chart.publicUrl }}">
-    <meta name="twitter:title" content="{{ chart.title }}">
-    <meta name="twitter:description" content="{{ chart.metadata.describe.intro }}">
-    <meta name="twitter:image" content="{{ chart.thumbUrl }}">
-    <meta name="twitter:player" content="{{ chart.plainUrl }}">
-    <meta name="twitter:player:width" content="435">
-    <meta name="twitter:player:height" content="251">
+    {{ hook('chart_html_head', chart) }}
 
 {% for src in stylesheets %}
     <link rel="stylesheet" type="text/css" href="{{ src }}"></link>
@@ -310,6 +301,6 @@
     {% set title = chart.title %}{% set intro = chart.metadata.describe.intro %}{% set source = chart.metadata.describe['source-name'] %}{% set sourceURL = chart.metadata.describe['source-url'] %}
 
     {% include theme.template ? theme.template : 'plugins/theme-default/default.twig' %}
-    {{ hook('after_chart_body', chart) }}
+    {{ hook('chart_after_body', chart) }}
 </body>
 </html>

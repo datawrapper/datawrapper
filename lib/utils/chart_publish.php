@@ -6,6 +6,10 @@ require_once '../../lib/utils/chart_content.php';
 require_once '../../vendor/jsmin/jsmin.php';
 
 
+function __cdn_path($chart) {
+    return $chart->getID() . '/' . $chart->getPublicVersion() . '/';
+}
+
 function publish_html($user, $chart) {
     $cdn_files = array();
 
@@ -20,9 +24,9 @@ function publish_html($user, $chart) {
     $chart->setLastEditStep(5);
     $chart->save();
 
-    $cdn_files[] = array($outf, $chart->getID() . '/index.html', 'text/html');
-    $cdn_files[] = array($static_path . '/plain.html', $chart->getID() . '/plain.html', 'text/html');
-    $cdn_files[] = array($static_path . '/fs.html', $chart->getID() . '/fs.html', 'text/html');
+    $cdn_files[] = array($outf, __cdn_path($chart) . 'index.html', 'text/html');
+    $cdn_files[] = array($static_path . '/plain.html', __cdn_path($chart) . 'plain.html', 'text/html');
+    $cdn_files[] = array($static_path . '/fs.html', __cdn_path($chart) . 'fs.html', 'text/html');
 
     return $cdn_files;
 }
@@ -98,7 +102,7 @@ function publish_css($user, $chart) {
 
     $cdn_files[] = array(
         $static_path."/".$chart->getID().'.min.css',
-        $chart->getID().'/'.$chart->getID().'.min.css', 'text/css'
+        __cdn_path($chart) . $chart->getID().'.min.css', 'text/css'
     );
 
     // copy themes assets
@@ -109,7 +113,7 @@ function publish_css($user, $chart) {
             $asset_tgt = $static_path . "/" . $asset;
             if (file_exists($asset_src)) {
                 file_put_contents($asset_tgt, file_get_contents($asset_src));
-                $cdn_files[] = array($asset_src, $chart->getID() . '/' . $asset);
+                $cdn_files[] = array($asset_src, __cdn_path($chart) . '' . $asset);
             }
         }
     }
@@ -121,7 +125,7 @@ function publish_css($user, $chart) {
     if (isset($vis['assets'])) {
         foreach ($vis['assets'] as $asset) {
             copy( $src.DIRECTORY_SEPARATOR.$asset, $dest.DIRECTORY_SEPARATOR.$asset );
-            $cdn_files[] = array($dest.DIRECTORY_SEPARATOR.$asset, $chart->getID() . '/' . $asset);
+            $cdn_files[] = array($dest.DIRECTORY_SEPARATOR.$asset, __cdn_path($chart) . $asset);
         }
     }
 
@@ -133,7 +137,7 @@ function publish_data($user, $chart) {
     $cdn_files = array();
     $static_path = get_static_path($chart);
     file_put_contents($static_path . "/data", $chart->loadData());
-    $cdn_files[] = array($static_path . "/data", $chart->getID() . '/data', 'text/plain');
+    $cdn_files[] = array($static_path . "/data", __cdn_path($chart) . 'data', 'text/plain');
 
     return $cdn_files;
 }

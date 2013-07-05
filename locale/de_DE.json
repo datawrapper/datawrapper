@@ -78,6 +78,8 @@
 	"Share this chart":"Diagramm mit anderen teilen",
 	"Share":"Teilen",
 	"Link to this visualisation":"Link zum Diagramm",
+	"Chart URL has changed!":"Diagramm-URL hat sich geändert!",
+	"Please note that the chart URL has changed due to the republication. If you \nwant the changes to take effect you probably need to update the embed code \non your website.":"Bitte beachte dass die URL des Diagramms sich aufgrund der erneuten Veröffentlichung geändert hat. Der Einbett-Code muss möglicherweise aktualisiert werden.",
 	"Embed into your website":"In Webseite einbetten",
 	"Just copy &amp; paste the following code into your website.":"Einfach den folgenden Code in deine Webseite einfügen.",
 	"Width":"Breite",

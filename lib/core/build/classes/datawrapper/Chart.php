@@ -211,14 +211,24 @@ class Chart extends BaseChart {
                 'source-url' => '',
                 'number-format' => '-',
                 'number-divisor' => 0,
-                'number-currency' => 'EUR|€',
-                'number-unit' => ''
+                'number-append' => '',
+                'number-prepend' => '',
+                'intro' => ''
             ),
             'publish' => array(
                 'embed-width' => 600,
                 'embed-height' => 400
             )
         );
+    }
+
+    /*
+     * increment the public version of a chart, which is used
+     * in chart public urls to deal with cdn caches
+     */
+    public function publish() {
+        $this->setPublicVersion($this->getPublicVersion() + 1);
+        $this->save();
     }
 
     public function unpublish() {
@@ -251,11 +261,15 @@ class Chart extends BaseChart {
     }
 
     public function thumbUrl() {
-        return dirname($this->getPublicUrl() . '_') . '/m.png';
+        return$this->assetUrl('m.png');
     }
 
     public function plainUrl() {
-        return dirname($this->getPublicUrl() . '_') . '/plain.html';
+        return $this->assetUrl('plain.html');
+    }
+
+    public function assetUrl($file) {
+        return dirname($this->getPublicUrl() . '_') . '/' . $file;
     }
 
 } // Chart

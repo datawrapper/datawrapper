@@ -101,6 +101,7 @@
                 <th>{% trans "Status" %}</th>
                 <th>{% trans "Created at" %}</th>
                 <th class="center"><a href="?sort=charts">{% trans "Charts" %}</a></th>
+                <th class="center"><a href="?sort=charts">{% trans "Published" %}</a></th>
                 <th>{% trans "Actions" %}</th>
             </tr>
         </thead>
@@ -119,7 +120,9 @@
                     </td>
                     <td class="creation out">{{ user.createdAt }}</td>
                     <td class="center">
-                        <a href="/admin/charts/{{ user.id }}">{{ user.getNbCharts() }}</a></td>
+                        <a href="/admin/charts/{{ user.id }}">{{ user.chartCount() }}</a></td>
+                    <td class="center">
+                        <a href="/admin/charts/{{ user.id }}">{{ user.publicChartCount() }}</a></td>
                     <td class="actions">
                         <a href="#" class="do" data-action="removeAction" data-id="{{user.id}}"><i class="icon-trash" title="{% trans "delete" %}"></i></a>
                         <a href="#" class="do" data-action="editAction" data-id="{{user.id}}"><i class="icon-pencil" title="{% trans "edit" %}"></i></a>

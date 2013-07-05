@@ -63,10 +63,13 @@ class DatawrapperHooks {
     }
 
     // print something below a charts HTML body
-    const AFTER_CHART_BODY = 'after_chart_body';
+    const CHART_AFTER_BODY = 'chart_after_body';
+
+    // print something in <head> section of a chart
+    const CHART_HTML_HEAD = 'chart_html_head';
 
     // print something below the Datawrapper HTML body
-    const AFTER_CORE_BODY = 'after_core_body';
+    const CORE_AFTER_BODY = 'core_after_body';
 
     // publishes a set of files to some CDN (args: files)
     const PUBLISH_FILES = 'publish_files';

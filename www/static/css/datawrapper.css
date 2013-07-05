@@ -804,7 +804,7 @@ form.well form {
 }
 
 .well .nav-tabs > li.active > a:hover {
-    border-bottom-color: transparent;;
+    border-bottom-color: transparent;
 }
 
 .well .nav-tabs > li > a:hover {
@@ -1117,3 +1117,7 @@ form.well form {
     top: -60px!important;
 }
 
+.alert-warning h4 {
+    color: #A0711F;
+    margin: 2px 0 5px;
+}

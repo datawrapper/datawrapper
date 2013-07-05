@@ -1,6 +1,12 @@
 CHANGELOG
 ---------
 
+### 1.4.4
+* added column public_version to chart table
+* incrementing public_version on every publication
+* appended public_version to public chart urls
+* showing big warning that the chart url has changed after republication
+
 ### 1.4.3
 * fixed severe bug in base theme (hotfix)
 * allowed using uncompressed JS in chart preview
