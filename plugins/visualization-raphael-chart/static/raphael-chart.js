@@ -837,7 +837,7 @@
         },
 
         checkBrowserCompatibility: function(){
-            return Raphael.type;
+            return Raphael.type !== "";
         }
 
     });
