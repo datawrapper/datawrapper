@@ -18,7 +18,7 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
         $next_theme_id = $theme['extends'];
     }
 
-    $abs = 'http://' . $GLOBALS['dw_config']['domain'];
+    $abs = '//' . $GLOBALS['dw_config']['domain'];
 
     $debug = $GLOBALS['dw_config']['debug'] == true || $debug;
 
@@ -109,7 +109,7 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
     $cfg = $GLOBALS['dw_config'];
     $published_urls = DatawrapperHooks::execute(DatawrapperHooks::GET_PUBLISHED_URL, $chart);
     if (empty($published_urls)) {
-        $chart_url = 'http://' . $cfg['chart_domain'] . '/' . $chart->getID() . '/';
+        $chart_url = '//' . $cfg['chart_domain'] . '/' . $chart->getID() . '/';
     } else {
         $chart_url = $published_urls[0];  // ignore urls except from the first one
     }
@@ -128,8 +128,8 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
         'themeJS' => array_reverse($theme_js),
         'visJS' => array_merge(array_reverse($vis_js), $vis_libs),
         'origin' => !empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '',
-        'DW_DOMAIN' => 'http://' . $cfg['domain'] . '/',
-        'DW_CHART_DATA' => 'http://' . $cfg['domain'] . '/chart/' . $chart->getID() . '/data',
+        'DW_DOMAIN' => '//' . $cfg['domain'] . '/',
+        'DW_CHART_DATA' => '//' . $cfg['domain'] . '/chart/' . $chart->getID() . '/data',
         'ASSET_PATH' => $published ? '' : $the_theme['__static_path'],
         'trackingCode' => !empty($analyticsMod) ? $analyticsMod->getTrackingCode($chart) : '',
         'chartUrl' => $chart_url,

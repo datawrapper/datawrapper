@@ -15,7 +15,7 @@ $app->get('/chart/:id/publish', function ($id) use ($app) {
     check_chart_writable($id, function($user, $chart) use ($app) {
 
         $cfg = $GLOBALS['dw_config'];
-        $local_url = 'http://' . $cfg['chart_domain'] . '/' . $chart->getID() . '/index.html';
+        $local_url = '//' . $cfg['chart_domain'] . '/' . $chart->getID() . '/index.html';
         $public_url = $chart->getPublicUrl();
 
         if (empty($public_url)) $public_url = $local_url;

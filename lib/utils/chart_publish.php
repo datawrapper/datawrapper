@@ -14,7 +14,7 @@ function publish_html($user, $chart) {
     $cdn_files = array();
 
     $static_path = get_static_path($chart);
-    $url = 'http://'.$GLOBALS['dw_config']['domain'].'/chart/'.$chart->getID().'/preview?minify=1';
+    $url = '//'.$GLOBALS['dw_config']['domain'].'/chart/'.$chart->getID().'/preview?minify=1';
     $outf = $static_path . '/index.html';
     download($url, $outf);
     download($url . '&plain=1', $static_path . '/plain.html');
