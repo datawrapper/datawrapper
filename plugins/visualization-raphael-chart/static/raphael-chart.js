@@ -837,14 +837,7 @@
         },
 
         checkBrowserCompatibility: function(){
-            try {
-                return Raphael.type;
-            } catch(e) {
-                // if Raphael has not been loaded for strange reason it 
-                // will return false here without having exception on checking
-                // compatibility 
-                return false;
-            }
+            return window['Raphael'] && Raphael.type;
         }
 
     });
