@@ -837,7 +837,19 @@
         },
 
         checkBrowserCompatibility: function(){
-            return Raphael.type !== "";
+            var result = true; 
+            try {
+                // we check if Raphael.type is an empty string / false 
+                if(!Raphael.type){
+                   result = false;
+                }
+            } catch(e) {
+                // if Raphael has not been loaded for strange reason it 
+                // will return false here without having exception on checking
+                // compatibility 
+                result = false;
+            }
+            return result;
         }
 
     });
