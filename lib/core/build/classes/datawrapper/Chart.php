@@ -227,7 +227,16 @@ class Chart extends BaseChart {
      * in chart public urls to deal with cdn caches
      */
     public function publish() {
+        // increment public version
         $this->setPublicVersion($this->getPublicVersion() + 1);
+        $published_urls = DatawrapperHooks::execute(DatawrapperHooks::GET_PUBLISHED_URL, $this);
+        if (!empty($published_urls)) {
+            // store public url from first publish module
+            $this->setPublicUrl($published_urls[0]);
+        } else {
+            // fallback to local url
+            $this->setPublicUrl($this->getLocalUrl());
+        }
         $this->save();
     }
 
@@ -270,6 +279,18 @@ class Chart extends BaseChart {
 
     public function assetUrl($file) {
         return dirname($this->getPublicUrl() . '_') . '/' . $file;
+    }
+
+    /*
+     * return URL of this chart on Datawrapper
+     */
+    public function getLocalUrl() {
+        return 'http://' . $GLOBALS['dw_config']['chart_domain'] . '/' . $this->getID() . '/index.html';
+    }
+
+    public function getCDNPath($version = null) {
+        if ($version == null) $version = $this->getPublicVersion();
+        return $this->getID() . '/' . $version . '/';
     }
 
 } // Chart
