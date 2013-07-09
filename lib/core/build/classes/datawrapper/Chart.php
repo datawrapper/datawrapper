@@ -240,6 +240,21 @@ class Chart extends BaseChart {
         $this->save();
     }
 
+    /*
+     * redirect previous chart versions to the most current one
+     */
+    public function redirectPreviousVersions() {
+        $current_target = $this->getCDNPath();
+        $redirect_html = '<html><head><meta http-equiv="REFRESH" content="0; url=/'.$current_target.'"></head></html>';
+        $redirect_file = ROOT_PATH . 'charts/static/' . $this->getID() . '/redirect.html';
+        file_put_contents($redirect_file, $redirect_html);
+        $files = array();
+        for ($v=1; $v < $this->getPublicVersion(); $v++) {
+            $files[] = array($redirect_file, $this->getCDNPath($v) . 'index.html', 'text/html');
+        }
+        DatawrapperHooks::execute(DatawrapperHooks::PUBLISH_FILES, $files);
+    }
+
     public function unpublish() {
         $path = $this->getStaticPath();
         if (file_exists($path)) {
@@ -290,7 +305,7 @@ class Chart extends BaseChart {
 
     public function getCDNPath($version = null) {
         if ($version == null) $version = $this->getPublicVersion();
-        return $this->getID() . '/' . $version . '/';
+        return $this->getID() . '/' . ($version > 0 ? $version . '/' : '');
     }
 
 } // Chart
