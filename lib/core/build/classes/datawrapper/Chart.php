@@ -249,7 +249,7 @@ class Chart extends BaseChart {
         $redirect_file = ROOT_PATH . 'charts/static/' . $this->getID() . '/redirect.html';
         file_put_contents($redirect_file, $redirect_html);
         $files = array();
-        for ($v=1; $v < $this->getPublicVersion(); $v++) {
+        for ($v=0; $v < $this->getPublicVersion(); $v++) {
             $files[] = array($redirect_file, $this->getCDNPath($v) . 'index.html', 'text/html');
         }
         DatawrapperHooks::execute(DatawrapperHooks::PUBLISH_FILES, $files);
