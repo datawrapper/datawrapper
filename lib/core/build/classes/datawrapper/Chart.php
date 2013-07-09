@@ -304,7 +304,7 @@ class Chart extends BaseChart {
     }
 
     public function getCDNPath($version = null) {
-        if ($version == null) $version = $this->getPublicVersion();
+        if ($version === null) $version = $this->getPublicVersion();
         return $this->getID() . '/' . ($version > 0 ? $version . '/' : '');
     }
 
