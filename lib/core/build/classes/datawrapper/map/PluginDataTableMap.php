@@ -3,7 +3,7 @@
 
 
 /**
- * This class defines the structure of the 'plugin' table.
+ * This class defines the structure of the 'plugin_data' table.
  *
  *
  *
@@ -14,13 +14,13 @@
  *
  * @package    propel.generator.datawrapper.map
  */
-class PluginTableMap extends TableMap
+class PluginDataTableMap extends TableMap
 {
 
 	/**
 	 * The (dot-path) name of this class
 	 */
-	const CLASS_NAME = 'datawrapper.map.PluginTableMap';
+	const CLASS_NAME = 'datawrapper.map.PluginDataTableMap';
 
 	/**
 	 * Initialize the table attributes, columns and validators
@@ -32,15 +32,17 @@ class PluginTableMap extends TableMap
 	public function initialize()
 	{
 		// attributes
-		$this->setName('plugin');
-		$this->setPhpName('Plugin');
-		$this->setClassname('Plugin');
+		$this->setName('plugin_data');
+		$this->setPhpName('PluginData');
+		$this->setClassname('PluginData');
 		$this->setPackage('datawrapper');
-		$this->setUseIdGenerator(false);
+		$this->setUseIdGenerator(true);
 		// columns
-		$this->addPrimaryKey('ID', 'Id', 'VARCHAR', true, 128, null);
-		$this->addColumn('INSTALLED_AT', 'InstalledAt', 'TIMESTAMP', true, null, null);
-		$this->addColumn('ENABLED', 'Enabled', 'BOOLEAN', false, 1, false);
+		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
+		$this->addForeignKey('PLUGIN_ID', 'PluginId', 'VARCHAR', 'plugin', 'ID', true, 128, null);
+		$this->addColumn('STORED_AT', 'StoredAt', 'TIMESTAMP', true, null, null);
+		$this->addColumn('KEY', 'Key', 'VARCHAR', true, 128, null);
+		$this->addColumn('DATA', 'Data', 'VARCHAR', false, 4096, null);
 		// validators
 	} // initialize()
 
@@ -49,7 +51,7 @@ class PluginTableMap extends TableMap
 	 */
 	public function buildRelations()
 	{
-		$this->addRelation('PluginData', 'PluginData', RelationMap::ONE_TO_MANY, array('id' => 'plugin_id', ), null, null, 'PluginDatas');
+		$this->addRelation('Plugin', 'Plugin', RelationMap::MANY_TO_ONE, array('plugin_id' => 'id', ), null, null);
 	} // buildRelations()
 
-} // PluginTableMap
+} // PluginDataTableMap
