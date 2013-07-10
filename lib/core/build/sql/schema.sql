@@ -150,5 +150,25 @@ CREATE TABLE `plugin`
 	PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 
+-- ---------------------------------------------------------------------
+-- plugin_data
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `plugin_data`;
+
+CREATE TABLE `plugin_data`
+(
+	`id` VARCHAR(128) NOT NULL,
+	`plugin_id` VARCHAR(128) NOT NULL,
+	`stored_at` DATETIME NOT NULL,
+	`key` VARCHAR(128) NOT NULL,
+	`data` VARCHAR(4096),
+	PRIMARY KEY (`id`),
+	INDEX `plugin_data_FI_1` (`plugin_id`),
+	CONSTRAINT `plugin_data_FK_1`
+		FOREIGN KEY (`plugin_id`)
+		REFERENCES `plugin` (`id`)
+) ENGINE=InnoDB;
+
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;

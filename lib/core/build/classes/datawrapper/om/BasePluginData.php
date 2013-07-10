@@ -2,25 +2,25 @@
 
 
 /**
- * Base class that represents a row from the 'plugin' table.
+ * Base class that represents a row from the 'plugin_data' table.
  *
  * 
  *
  * @package    propel.generator.datawrapper.om
  */
-abstract class BasePlugin extends BaseObject  implements Persistent
+abstract class BasePluginData extends BaseObject  implements Persistent
 {
 
 	/**
 	 * Peer class name
 	 */
-	const PEER = 'PluginPeer';
+	const PEER = 'PluginDataPeer';
 
 	/**
 	 * The Peer class.
 	 * Instance provides a convenient way of calling static methods on a class
 	 * that calling code may not be able to identify.
-	 * @var        PluginPeer
+	 * @var        PluginDataPeer
 	 */
 	protected static $peer;
 
@@ -37,22 +37,33 @@ abstract class BasePlugin extends BaseObject  implements Persistent
 	protected $id;
 
 	/**
-	 * The value for the installed_at field.
+	 * The value for the plugin_id field.
 	 * @var        string
 	 */
-	protected $installed_at;
+	protected $plugin_id;
 
 	/**
-	 * The value for the enabled field.
-	 * Note: this column has a database default value of: false
-	 * @var        boolean
+	 * The value for the stored_at field.
+	 * @var        string
 	 */
-	protected $enabled;
+	protected $stored_at;
 
 	/**
-	 * @var        array PluginData[] Collection to store aggregation of PluginData objects.
+	 * The value for the key field.
+	 * @var        string
 	 */
-	protected $collPluginDatas;
+	protected $key;
+
+	/**
+	 * The value for the data field.
+	 * @var        string
+	 */
+	protected $data;
+
+	/**
+	 * @var        Plugin
+	 */
+	protected $aPlugin;
 
 	/**
 	 * Flag to prevent endless save loop, if this object is referenced
@@ -69,33 +80,6 @@ abstract class BasePlugin extends BaseObject  implements Persistent
 	protected $alreadyInValidation = false;
 
 	/**
-	 * An array of objects scheduled for deletion.
-	 * @var		array
-	 */
-	protected $pluginDatasScheduledForDeletion = null;
-
-	/**
-	 * Applies default values to this object.
-	 * This method should be called from the object's constructor (or
-	 * equivalent initialization method).
-	 * @see        __construct()
-	 */
-	public function applyDefaultValues()
-	{
-		$this->enabled = false;
-	}
-
-	/**
-	 * Initializes internal state of BasePlugin object.
-	 * @see        applyDefaults()
-	 */
-	public function __construct()
-	{
-		parent::__construct();
-		$this->applyDefaultValues();
-	}
-
-	/**
 	 * Get the [id] column value.
 	 * 
 	 * @return     string
@@ -106,7 +90,17 @@ abstract class BasePlugin extends BaseObject  implements Persistent
 	}
 
 	/**
-	 * Get the [optionally formatted] temporal [installed_at] column value.
+	 * Get the [plugin_id] column value.
+	 * 
+	 * @return     string
+	 */
+	public function getPluginId()
+	{
+		return $this->plugin_id;
+	}
+
+	/**
+	 * Get the [optionally formatted] temporal [stored_at] column value.
 	 * 
 	 *
 	 * @param      string $format The date/time format string (either date()-style or strftime()-style).
@@ -114,22 +108,22 @@ abstract class BasePlugin extends BaseObject  implements Persistent
 	 * @return     mixed Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00 00:00:00
 	 * @throws     PropelException - if unable to parse/validate the date/time value.
 	 */
-	public function getInstalledAt($format = 'Y-m-d H:i:s')
+	public function getStoredAt($format = 'Y-m-d H:i:s')
 	{
-		if ($this->installed_at === null) {
+		if ($this->stored_at === null) {
 			return null;
 		}
 
 
-		if ($this->installed_at === '0000-00-00 00:00:00') {
+		if ($this->stored_at === '0000-00-00 00:00:00') {
 			// while technically this is not a default value of NULL,
 			// this seems to be closest in meaning.
 			return null;
 		} else {
 			try {
-				$dt = new DateTime($this->installed_at);
+				$dt = new DateTime($this->stored_at);
 			} catch (Exception $x) {
-				throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->installed_at, true), $x);
+				throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->stored_at, true), $x);
 			}
 		}
 
@@ -144,20 +138,30 @@ abstract class BasePlugin extends BaseObject  implements Persistent
 	}
 
 	/**
-	 * Get the [enabled] column value.
+	 * Get the [key] column value.
 	 * 
-	 * @return     boolean
+	 * @return     string
 	 */
-	public function getEnabled()
+	public function getKey()
 	{
-		return $this->enabled;
+		return $this->key;
+	}
+
+	/**
+	 * Get the [data] column value.
+	 * 
+	 * @return     string
+	 */
+	public function getData()
+	{
+		return $this->data;
 	}
 
 	/**
 	 * Set the value of [id] column.
 	 * 
 	 * @param      string $v new value
-	 * @return     Plugin The current object (for fluent API support)
+	 * @return     PluginData The current object (for fluent API support)
 	 */
 	public function setId($v)
 	{
@@ -167,61 +171,97 @@ abstract class BasePlugin extends BaseObject  implements Persistent
 
 		if ($this->id !== $v) {
 			$this->id = $v;
-			$this->modifiedColumns[] = PluginPeer::ID;
+			$this->modifiedColumns[] = PluginDataPeer::ID;
 		}
 
 		return $this;
 	} // setId()
 
 	/**
-	 * Sets the value of [installed_at] column to a normalized version of the date/time value specified.
+	 * Set the value of [plugin_id] column.
+	 * 
+	 * @param      string $v new value
+	 * @return     PluginData The current object (for fluent API support)
+	 */
+	public function setPluginId($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->plugin_id !== $v) {
+			$this->plugin_id = $v;
+			$this->modifiedColumns[] = PluginDataPeer::PLUGIN_ID;
+		}
+
+		if ($this->aPlugin !== null && $this->aPlugin->getId() !== $v) {
+			$this->aPlugin = null;
+		}
+
+		return $this;
+	} // setPluginId()
+
+	/**
+	 * Sets the value of [stored_at] column to a normalized version of the date/time value specified.
 	 * 
 	 * @param      mixed $v string, integer (timestamp), or DateTime value.
 	 *               Empty strings are treated as NULL.
-	 * @return     Plugin The current object (for fluent API support)
+	 * @return     PluginData The current object (for fluent API support)
 	 */
-	public function setInstalledAt($v)
+	public function setStoredAt($v)
 	{
 		$dt = PropelDateTime::newInstance($v, null, 'DateTime');
-		if ($this->installed_at !== null || $dt !== null) {
-			$currentDateAsString = ($this->installed_at !== null && $tmpDt = new DateTime($this->installed_at)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+		if ($this->stored_at !== null || $dt !== null) {
+			$currentDateAsString = ($this->stored_at !== null && $tmpDt = new DateTime($this->stored_at)) ? $tmpDt->format('Y-m-d H:i:s') : null;
 			$newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
 			if ($currentDateAsString !== $newDateAsString) {
-				$this->installed_at = $newDateAsString;
-				$this->modifiedColumns[] = PluginPeer::INSTALLED_AT;
+				$this->stored_at = $newDateAsString;
+				$this->modifiedColumns[] = PluginDataPeer::STORED_AT;
 			}
 		} // if either are not null
 
 		return $this;
-	} // setInstalledAt()
+	} // setStoredAt()
 
 	/**
-	 * Sets the value of the [enabled] column.
-	 * Non-boolean arguments are converted using the following rules:
-	 *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
-	 *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
-	 * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+	 * Set the value of [key] column.
 	 * 
-	 * @param      boolean|integer|string $v The new value
-	 * @return     Plugin The current object (for fluent API support)
+	 * @param      string $v new value
+	 * @return     PluginData The current object (for fluent API support)
 	 */
-	public function setEnabled($v)
+	public function setKey($v)
 	{
 		if ($v !== null) {
-			if (is_string($v)) {
-				$v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
-			} else {
-				$v = (boolean) $v;
-			}
+			$v = (string) $v;
 		}
 
-		if ($this->enabled !== $v) {
-			$this->enabled = $v;
-			$this->modifiedColumns[] = PluginPeer::ENABLED;
+		if ($this->key !== $v) {
+			$this->key = $v;
+			$this->modifiedColumns[] = PluginDataPeer::KEY;
 		}
 
 		return $this;
-	} // setEnabled()
+	} // setKey()
+
+	/**
+	 * Set the value of [data] column.
+	 * 
+	 * @param      string $v new value
+	 * @return     PluginData The current object (for fluent API support)
+	 */
+	public function setData($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->data !== $v) {
+			$this->data = $v;
+			$this->modifiedColumns[] = PluginDataPeer::DATA;
+		}
+
+		return $this;
+	} // setData()
 
 	/**
 	 * Indicates whether the columns in this object are only set to default values.
@@ -233,10 +273,6 @@ abstract class BasePlugin extends BaseObject  implements Persistent
 	 */
 	public function hasOnlyDefaultValues()
 	{
-			if ($this->enabled !== false) {
-				return false;
-			}
-
 		// otherwise, everything was equal, so return TRUE
 		return true;
 	} // hasOnlyDefaultValues()
@@ -260,8 +296,10 @@ abstract class BasePlugin extends BaseObject  implements Persistent
 		try {
 
 			$this->id = ($row[$startcol + 0] !== null) ? (string) $row[$startcol + 0] : null;
-			$this->installed_at = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
-			$this->enabled = ($row[$startcol + 2] !== null) ? (boolean) $row[$startcol + 2] : null;
+			$this->plugin_id = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
+			$this->stored_at = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
+			$this->key = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+			$this->data = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -270,10 +308,10 @@ abstract class BasePlugin extends BaseObject  implements Persistent
 				$this->ensureConsistency();
 			}
 
-			return $startcol + 3; // 3 = PluginPeer::NUM_HYDRATE_COLUMNS.
+			return $startcol + 5; // 5 = PluginDataPeer::NUM_HYDRATE_COLUMNS.
 
 		} catch (Exception $e) {
-			throw new PropelException("Error populating Plugin object", $e);
+			throw new PropelException("Error populating PluginData object", $e);
 		}
 	}
 
@@ -293,6 +331,9 @@ abstract class BasePlugin extends BaseObject  implements Persistent
 	public function ensureConsistency()
 	{
 
+		if ($this->aPlugin !== null && $this->plugin_id !== $this->aPlugin->getId()) {
+			$this->aPlugin = null;
+		}
 	} // ensureConsistency
 
 	/**
@@ -316,13 +357,13 @@ abstract class BasePlugin extends BaseObject  implements Persistent
 		}
 
 		if ($con === null) {
-			$con = Propel::getConnection(PluginPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+			$con = Propel::getConnection(PluginDataPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
 		// We don't need to alter the object instance pool; we're just modifying this instance
 		// already in the pool.
 
-		$stmt = PluginPeer::doSelectStmt($this->buildPkeyCriteria(), $con);
+		$stmt = PluginDataPeer::doSelectStmt($this->buildPkeyCriteria(), $con);
 		$row = $stmt->fetch(PDO::FETCH_NUM);
 		$stmt->closeCursor();
 		if (!$row) {
@@ -332,8 +373,7 @@ abstract class BasePlugin extends BaseObject  implements Persistent
 
 		if ($deep) {  // also de-associate any related objects?
 
-			$this->collPluginDatas = null;
-
+			$this->aPlugin = null;
 		} // if (deep)
 	}
 
@@ -353,12 +393,12 @@ abstract class BasePlugin extends BaseObject  implements Persistent
 		}
 
 		if ($con === null) {
-			$con = Propel::getConnection(PluginPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+			$con = Propel::getConnection(PluginDataPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
 
 		$con->beginTransaction();
 		try {
-			$deleteQuery = PluginQuery::create()
+			$deleteQuery = PluginDataQuery::create()
 				->filterByPrimaryKey($this->getPrimaryKey());
 			$ret = $this->preDelete($con);
 			if ($ret) {
@@ -395,7 +435,7 @@ abstract class BasePlugin extends BaseObject  implements Persistent
 		}
 
 		if ($con === null) {
-			$con = Propel::getConnection(PluginPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+			$con = Propel::getConnection(PluginDataPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
 
 		$con->beginTransaction();
@@ -415,7 +455,7 @@ abstract class BasePlugin extends BaseObject  implements Persistent
 					$this->postUpdate($con);
 				}
 				$this->postSave($con);
-				PluginPeer::addInstanceToPool($this);
+				PluginDataPeer::addInstanceToPool($this);
 			} else {
 				$affectedRows = 0;
 			}
@@ -444,6 +484,18 @@ abstract class BasePlugin extends BaseObject  implements Persistent
 		if (!$this->alreadyInSave) {
 			$this->alreadyInSave = true;
 
+			// We call the save method on the following object(s) if they
+			// were passed to this object by their coresponding set
+			// method.  This object relates to these object(s) by a
+			// foreign key reference.
+
+			if ($this->aPlugin !== null) {
+				if ($this->aPlugin->isModified() || $this->aPlugin->isNew()) {
+					$affectedRows += $this->aPlugin->save($con);
+				}
+				$this->setPlugin($this->aPlugin);
+			}
+
 			if ($this->isNew() || $this->isModified()) {
 				// persist changes
 				if ($this->isNew()) {
@@ -453,23 +505,6 @@ abstract class BasePlugin extends BaseObject  implements Persistent
 				}
 				$affectedRows += 1;
 				$this->resetModified();
-			}
-
-			if ($this->pluginDatasScheduledForDeletion !== null) {
-				if (!$this->pluginDatasScheduledForDeletion->isEmpty()) {
-					PluginDataQuery::create()
-						->filterByPrimaryKeys($this->pluginDatasScheduledForDeletion->getPrimaryKeys(false))
-						->delete($con);
-					$this->pluginDatasScheduledForDeletion = null;
-				}
-			}
-
-			if ($this->collPluginDatas !== null) {
-				foreach ($this->collPluginDatas as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
 			}
 
 			$this->alreadyInSave = false;
@@ -493,18 +528,24 @@ abstract class BasePlugin extends BaseObject  implements Persistent
 
 
 		 // check the columns in natural order for more readable SQL queries
-		if ($this->isColumnModified(PluginPeer::ID)) {
+		if ($this->isColumnModified(PluginDataPeer::ID)) {
 			$modifiedColumns[':p' . $index++]  = '`ID`';
 		}
-		if ($this->isColumnModified(PluginPeer::INSTALLED_AT)) {
-			$modifiedColumns[':p' . $index++]  = '`INSTALLED_AT`';
+		if ($this->isColumnModified(PluginDataPeer::PLUGIN_ID)) {
+			$modifiedColumns[':p' . $index++]  = '`PLUGIN_ID`';
 		}
-		if ($this->isColumnModified(PluginPeer::ENABLED)) {
-			$modifiedColumns[':p' . $index++]  = '`ENABLED`';
+		if ($this->isColumnModified(PluginDataPeer::STORED_AT)) {
+			$modifiedColumns[':p' . $index++]  = '`STORED_AT`';
+		}
+		if ($this->isColumnModified(PluginDataPeer::KEY)) {
+			$modifiedColumns[':p' . $index++]  = '`KEY`';
+		}
+		if ($this->isColumnModified(PluginDataPeer::DATA)) {
+			$modifiedColumns[':p' . $index++]  = '`DATA`';
 		}
 
 		$sql = sprintf(
-			'INSERT INTO `plugin` (%s) VALUES (%s)',
+			'INSERT INTO `plugin_data` (%s) VALUES (%s)',
 			implode(', ', $modifiedColumns),
 			implode(', ', array_keys($modifiedColumns))
 		);
@@ -516,11 +557,17 @@ abstract class BasePlugin extends BaseObject  implements Persistent
 					case '`ID`':
 						$stmt->bindValue($identifier, $this->id, PDO::PARAM_STR);
 						break;
-					case '`INSTALLED_AT`':
-						$stmt->bindValue($identifier, $this->installed_at, PDO::PARAM_STR);
+					case '`PLUGIN_ID`':
+						$stmt->bindValue($identifier, $this->plugin_id, PDO::PARAM_STR);
 						break;
-					case '`ENABLED`':
-						$stmt->bindValue($identifier, (int) $this->enabled, PDO::PARAM_INT);
+					case '`STORED_AT`':
+						$stmt->bindValue($identifier, $this->stored_at, PDO::PARAM_STR);
+						break;
+					case '`KEY`':
+						$stmt->bindValue($identifier, $this->key, PDO::PARAM_STR);
+						break;
+					case '`DATA`':
+						$stmt->bindValue($identifier, $this->data, PDO::PARAM_STR);
 						break;
 				}
 			}
@@ -607,18 +654,22 @@ abstract class BasePlugin extends BaseObject  implements Persistent
 			$failureMap = array();
 
 
-			if (($retval = PluginPeer::doValidate($this, $columns)) !== true) {
-				$failureMap = array_merge($failureMap, $retval);
+			// We call the validate method on the following object(s) if they
+			// were passed to this object by their coresponding set
+			// method.  This object relates to these object(s) by a
+			// foreign key reference.
+
+			if ($this->aPlugin !== null) {
+				if (!$this->aPlugin->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aPlugin->getValidationFailures());
+				}
 			}
 
 
-				if ($this->collPluginDatas !== null) {
-					foreach ($this->collPluginDatas as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
+			if (($retval = PluginDataPeer::doValidate($this, $columns)) !== true) {
+				$failureMap = array_merge($failureMap, $retval);
+			}
+
 
 
 			$this->alreadyInValidation = false;
@@ -638,7 +689,7 @@ abstract class BasePlugin extends BaseObject  implements Persistent
 	 */
 	public function getByName($name, $type = BasePeer::TYPE_PHPNAME)
 	{
-		$pos = PluginPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+		$pos = PluginDataPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
 		$field = $this->getByPosition($pos);
 		return $field;
 	}
@@ -657,10 +708,16 @@ abstract class BasePlugin extends BaseObject  implements Persistent
 				return $this->getId();
 				break;
 			case 1:
-				return $this->getInstalledAt();
+				return $this->getPluginId();
 				break;
 			case 2:
-				return $this->getEnabled();
+				return $this->getStoredAt();
+				break;
+			case 3:
+				return $this->getKey();
+				break;
+			case 4:
+				return $this->getData();
 				break;
 			default:
 				return null;
@@ -685,19 +742,21 @@ abstract class BasePlugin extends BaseObject  implements Persistent
 	 */
 	public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
 	{
-		if (isset($alreadyDumpedObjects['Plugin'][$this->getPrimaryKey()])) {
+		if (isset($alreadyDumpedObjects['PluginData'][$this->getPrimaryKey()])) {
 			return '*RECURSION*';
 		}
-		$alreadyDumpedObjects['Plugin'][$this->getPrimaryKey()] = true;
-		$keys = PluginPeer::getFieldNames($keyType);
+		$alreadyDumpedObjects['PluginData'][$this->getPrimaryKey()] = true;
+		$keys = PluginDataPeer::getFieldNames($keyType);
 		$result = array(
 			$keys[0] => $this->getId(),
-			$keys[1] => $this->getInstalledAt(),
-			$keys[2] => $this->getEnabled(),
+			$keys[1] => $this->getPluginId(),
+			$keys[2] => $this->getStoredAt(),
+			$keys[3] => $this->getKey(),
+			$keys[4] => $this->getData(),
 		);
 		if ($includeForeignObjects) {
-			if (null !== $this->collPluginDatas) {
-				$result['PluginDatas'] = $this->collPluginDatas->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+			if (null !== $this->aPlugin) {
+				$result['Plugin'] = $this->aPlugin->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
 			}
 		}
 		return $result;
@@ -715,7 +774,7 @@ abstract class BasePlugin extends BaseObject  implements Persistent
 	 */
 	public function setByName($name, $value, $type = BasePeer::TYPE_PHPNAME)
 	{
-		$pos = PluginPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+		$pos = PluginDataPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
 		return $this->setByPosition($pos, $value);
 	}
 
@@ -734,10 +793,16 @@ abstract class BasePlugin extends BaseObject  implements Persistent
 				$this->setId($value);
 				break;
 			case 1:
-				$this->setInstalledAt($value);
+				$this->setPluginId($value);
 				break;
 			case 2:
-				$this->setEnabled($value);
+				$this->setStoredAt($value);
+				break;
+			case 3:
+				$this->setKey($value);
+				break;
+			case 4:
+				$this->setData($value);
 				break;
 		} // switch()
 	}
@@ -761,11 +826,13 @@ abstract class BasePlugin extends BaseObject  implements Persistent
 	 */
 	public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
 	{
-		$keys = PluginPeer::getFieldNames($keyType);
+		$keys = PluginDataPeer::getFieldNames($keyType);
 
 		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-		if (array_key_exists($keys[1], $arr)) $this->setInstalledAt($arr[$keys[1]]);
-		if (array_key_exists($keys[2], $arr)) $this->setEnabled($arr[$keys[2]]);
+		if (array_key_exists($keys[1], $arr)) $this->setPluginId($arr[$keys[1]]);
+		if (array_key_exists($keys[2], $arr)) $this->setStoredAt($arr[$keys[2]]);
+		if (array_key_exists($keys[3], $arr)) $this->setKey($arr[$keys[3]]);
+		if (array_key_exists($keys[4], $arr)) $this->setData($arr[$keys[4]]);
 	}
 
 	/**
@@ -775,11 +842,13 @@ abstract class BasePlugin extends BaseObject  implements Persistent
 	 */
 	public function buildCriteria()
 	{
-		$criteria = new Criteria(PluginPeer::DATABASE_NAME);
+		$criteria = new Criteria(PluginDataPeer::DATABASE_NAME);
 
-		if ($this->isColumnModified(PluginPeer::ID)) $criteria->add(PluginPeer::ID, $this->id);
-		if ($this->isColumnModified(PluginPeer::INSTALLED_AT)) $criteria->add(PluginPeer::INSTALLED_AT, $this->installed_at);
-		if ($this->isColumnModified(PluginPeer::ENABLED)) $criteria->add(PluginPeer::ENABLED, $this->enabled);
+		if ($this->isColumnModified(PluginDataPeer::ID)) $criteria->add(PluginDataPeer::ID, $this->id);
+		if ($this->isColumnModified(PluginDataPeer::PLUGIN_ID)) $criteria->add(PluginDataPeer::PLUGIN_ID, $this->plugin_id);
+		if ($this->isColumnModified(PluginDataPeer::STORED_AT)) $criteria->add(PluginDataPeer::STORED_AT, $this->stored_at);
+		if ($this->isColumnModified(PluginDataPeer::KEY)) $criteria->add(PluginDataPeer::KEY, $this->key);
+		if ($this->isColumnModified(PluginDataPeer::DATA)) $criteria->add(PluginDataPeer::DATA, $this->data);
 
 		return $criteria;
 	}
@@ -794,8 +863,8 @@ abstract class BasePlugin extends BaseObject  implements Persistent
 	 */
 	public function buildPkeyCriteria()
 	{
-		$criteria = new Criteria(PluginPeer::DATABASE_NAME);
-		$criteria->add(PluginPeer::ID, $this->id);
+		$criteria = new Criteria(PluginDataPeer::DATABASE_NAME);
+		$criteria->add(PluginDataPeer::ID, $this->id);
 
 		return $criteria;
 	}
@@ -835,15 +904,17 @@ abstract class BasePlugin extends BaseObject  implements Persistent
 	 * If desired, this method can also make copies of all associated (fkey referrers)
 	 * objects.
 	 *
-	 * @param      object $copyObj An object of Plugin (or compatible) type.
+	 * @param      object $copyObj An object of PluginData (or compatible) type.
 	 * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
 	 * @param      boolean $makeNew Whether to reset autoincrement PKs and make the object new.
 	 * @throws     PropelException
 	 */
 	public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
 	{
-		$copyObj->setInstalledAt($this->getInstalledAt());
-		$copyObj->setEnabled($this->getEnabled());
+		$copyObj->setPluginId($this->getPluginId());
+		$copyObj->setStoredAt($this->getStoredAt());
+		$copyObj->setKey($this->getKey());
+		$copyObj->setData($this->getData());
 
 		if ($deepCopy && !$this->startCopy) {
 			// important: temporarily setNew(false) because this affects the behavior of
@@ -851,12 +922,6 @@ abstract class BasePlugin extends BaseObject  implements Persistent
 			$copyObj->setNew(false);
 			// store object hash to prevent cycle
 			$this->startCopy = true;
-
-			foreach ($this->getPluginDatas() as $relObj) {
-				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-					$copyObj->addPluginData($relObj->copy($deepCopy));
-				}
-			}
 
 			//unflag object copy
 			$this->startCopy = false;
@@ -877,7 +942,7 @@ abstract class BasePlugin extends BaseObject  implements Persistent
 	 * objects.
 	 *
 	 * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-	 * @return     Plugin Clone of current object.
+	 * @return     PluginData Clone of current object.
 	 * @throws     PropelException
 	 */
 	public function copy($deepCopy = false)
@@ -896,178 +961,63 @@ abstract class BasePlugin extends BaseObject  implements Persistent
 	 * same instance for all member of this class. The method could therefore
 	 * be static, but this would prevent one from overriding the behavior.
 	 *
-	 * @return     PluginPeer
+	 * @return     PluginDataPeer
 	 */
 	public function getPeer()
 	{
 		if (self::$peer === null) {
-			self::$peer = new PluginPeer();
+			self::$peer = new PluginDataPeer();
 		}
 		return self::$peer;
 	}
 
-
 	/**
-	 * Initializes a collection based on the name of a relation.
-	 * Avoids crafting an 'init[$relationName]s' method name
-	 * that wouldn't work when StandardEnglishPluralizer is used.
+	 * Declares an association between this object and a Plugin object.
 	 *
-	 * @param      string $relationName The name of the relation to initialize
-	 * @return     void
-	 */
-	public function initRelation($relationName)
-	{
-		if ('PluginData' == $relationName) {
-			return $this->initPluginDatas();
-		}
-	}
-
-	/**
-	 * Clears out the collPluginDatas collection
-	 *
-	 * This does not modify the database; however, it will remove any associated objects, causing
-	 * them to be refetched by subsequent calls to accessor method.
-	 *
-	 * @return     void
-	 * @see        addPluginDatas()
-	 */
-	public function clearPluginDatas()
-	{
-		$this->collPluginDatas = null; // important to set this to NULL since that means it is uninitialized
-	}
-
-	/**
-	 * Initializes the collPluginDatas collection.
-	 *
-	 * By default this just sets the collPluginDatas collection to an empty array (like clearcollPluginDatas());
-	 * however, you may wish to override this method in your stub class to provide setting appropriate
-	 * to your application -- for example, setting the initial array to the values stored in database.
-	 *
-	 * @param      boolean $overrideExisting If set to true, the method call initializes
-	 *                                        the collection even if it is not empty
-	 *
-	 * @return     void
-	 */
-	public function initPluginDatas($overrideExisting = true)
-	{
-		if (null !== $this->collPluginDatas && !$overrideExisting) {
-			return;
-		}
-		$this->collPluginDatas = new PropelObjectCollection();
-		$this->collPluginDatas->setModel('PluginData');
-	}
-
-	/**
-	 * Gets an array of PluginData objects which contain a foreign key that references this object.
-	 *
-	 * If the $criteria is not null, it is used to always fetch the results from the database.
-	 * Otherwise the results are fetched from the database the first time, then cached.
-	 * Next time the same method is called without $criteria, the cached collection is returned.
-	 * If this Plugin is new, it will return
-	 * an empty collection or the current collection; the criteria is ignored on a new object.
-	 *
-	 * @param      Criteria $criteria optional Criteria object to narrow the query
-	 * @param      PropelPDO $con optional connection object
-	 * @return     PropelCollection|array PluginData[] List of PluginData objects
+	 * @param      Plugin $v
+	 * @return     PluginData The current object (for fluent API support)
 	 * @throws     PropelException
 	 */
-	public function getPluginDatas($criteria = null, PropelPDO $con = null)
+	public function setPlugin(Plugin $v = null)
 	{
-		if(null === $this->collPluginDatas || null !== $criteria) {
-			if ($this->isNew() && null === $this->collPluginDatas) {
-				// return empty collection
-				$this->initPluginDatas();
-			} else {
-				$collPluginDatas = PluginDataQuery::create(null, $criteria)
-					->filterByPlugin($this)
-					->find($con);
-				if (null !== $criteria) {
-					return $collPluginDatas;
-				}
-				$this->collPluginDatas = $collPluginDatas;
-			}
-		}
-		return $this->collPluginDatas;
-	}
-
-	/**
-	 * Sets a collection of PluginData objects related by a one-to-many relationship
-	 * to the current object.
-	 * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-	 * and new objects from the given Propel collection.
-	 *
-	 * @param      PropelCollection $pluginDatas A Propel collection.
-	 * @param      PropelPDO $con Optional connection object
-	 */
-	public function setPluginDatas(PropelCollection $pluginDatas, PropelPDO $con = null)
-	{
-		$this->pluginDatasScheduledForDeletion = $this->getPluginDatas(new Criteria(), $con)->diff($pluginDatas);
-
-		foreach ($pluginDatas as $pluginData) {
-			// Fix issue with collection modified by reference
-			if ($pluginData->isNew()) {
-				$pluginData->setPlugin($this);
-			}
-			$this->addPluginData($pluginData);
-		}
-
-		$this->collPluginDatas = $pluginDatas;
-	}
-
-	/**
-	 * Returns the number of related PluginData objects.
-	 *
-	 * @param      Criteria $criteria
-	 * @param      boolean $distinct
-	 * @param      PropelPDO $con
-	 * @return     int Count of related PluginData objects.
-	 * @throws     PropelException
-	 */
-	public function countPluginDatas(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
-	{
-		if(null === $this->collPluginDatas || null !== $criteria) {
-			if ($this->isNew() && null === $this->collPluginDatas) {
-				return 0;
-			} else {
-				$query = PluginDataQuery::create(null, $criteria);
-				if($distinct) {
-					$query->distinct();
-				}
-				return $query
-					->filterByPlugin($this)
-					->count($con);
-			}
+		if ($v === null) {
+			$this->setPluginId(NULL);
 		} else {
-			return count($this->collPluginDatas);
+			$this->setPluginId($v->getId());
 		}
-	}
 
-	/**
-	 * Method called to associate a PluginData object to this object
-	 * through the PluginData foreign key attribute.
-	 *
-	 * @param      PluginData $l PluginData
-	 * @return     Plugin The current object (for fluent API support)
-	 */
-	public function addPluginData(PluginData $l)
-	{
-		if ($this->collPluginDatas === null) {
-			$this->initPluginDatas();
-		}
-		if (!$this->collPluginDatas->contains($l)) { // only add it if the **same** object is not already associated
-			$this->doAddPluginData($l);
+		$this->aPlugin = $v;
+
+		// Add binding for other direction of this n:n relationship.
+		// If this object has already been added to the Plugin object, it will not be re-added.
+		if ($v !== null) {
+			$v->addPluginData($this);
 		}
 
 		return $this;
 	}
 
+
 	/**
-	 * @param	PluginData $pluginData The pluginData object to add.
+	 * Get the associated Plugin object
+	 *
+	 * @param      PropelPDO Optional Connection object.
+	 * @return     Plugin The associated Plugin object.
+	 * @throws     PropelException
 	 */
-	protected function doAddPluginData($pluginData)
+	public function getPlugin(PropelPDO $con = null)
 	{
-		$this->collPluginDatas[]= $pluginData;
-		$pluginData->setPlugin($this);
+		if ($this->aPlugin === null && (($this->plugin_id !== "" && $this->plugin_id !== null))) {
+			$this->aPlugin = PluginQuery::create()->findPk($this->plugin_id, $con);
+			/* The following can be used additionally to
+				guarantee the related object contains a reference
+				to this object.  This level of coupling may, however, be
+				undesirable since it could result in an only partially populated collection
+				in the referenced object.
+				$this->aPlugin->addPluginDatas($this);
+			 */
+		}
+		return $this->aPlugin;
 	}
 
 	/**
@@ -1076,12 +1026,13 @@ abstract class BasePlugin extends BaseObject  implements Persistent
 	public function clear()
 	{
 		$this->id = null;
-		$this->installed_at = null;
-		$this->enabled = null;
+		$this->plugin_id = null;
+		$this->stored_at = null;
+		$this->key = null;
+		$this->data = null;
 		$this->alreadyInSave = false;
 		$this->alreadyInValidation = false;
 		$this->clearAllReferences();
-		$this->applyDefaultValues();
 		$this->resetModified();
 		$this->setNew(true);
 		$this->setDeleted(false);
@@ -1099,17 +1050,9 @@ abstract class BasePlugin extends BaseObject  implements Persistent
 	public function clearAllReferences($deep = false)
 	{
 		if ($deep) {
-			if ($this->collPluginDatas) {
-				foreach ($this->collPluginDatas as $o) {
-					$o->clearAllReferences($deep);
-				}
-			}
 		} // if ($deep)
 
-		if ($this->collPluginDatas instanceof PropelCollection) {
-			$this->collPluginDatas->clearIterator();
-		}
-		$this->collPluginDatas = null;
+		$this->aPlugin = null;
 	}
 
 	/**
@@ -1119,7 +1062,7 @@ abstract class BasePlugin extends BaseObject  implements Persistent
 	 */
 	public function __toString()
 	{
-		return (string) $this->exportTo(PluginPeer::DEFAULT_STRING_FORMAT);
+		return (string) $this->exportTo(PluginDataPeer::DEFAULT_STRING_FORMAT);
 	}
 
-} // BasePlugin
+} // BasePluginData
