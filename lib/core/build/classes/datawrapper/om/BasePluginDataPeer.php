@@ -393,7 +393,7 @@ abstract class BasePluginDataPeer {
 	 */
 	public static function getPrimaryKeyFromRow($row, $startcol = 0)
 	{
-		return (string) $row[$startcol];
+		return (int) $row[$startcol];
 	}
 	
 	/**
@@ -743,6 +743,10 @@ abstract class BasePluginDataPeer {
 			$criteria = $values->buildCriteria(); // build Criteria from PluginData object
 		}
 
+		if ($criteria->containsKey(PluginDataPeer::ID) && $criteria->keyContainsValue(PluginDataPeer::ID) ) {
+			throw new PropelException('Cannot insert a value for auto-increment primary key ('.PluginDataPeer::ID.')');
+		}
+
 
 		// Set the correct dbName
 		$criteria->setDbName(self::DATABASE_NAME);
@@ -928,7 +932,7 @@ abstract class BasePluginDataPeer {
 	/**
 	 * Retrieve a single object by pkey.
 	 *
-	 * @param      string $pk the primary key.
+	 * @param      int $pk the primary key.
 	 * @param      PropelPDO $con the connection to use
 	 * @return     PluginData
 	 */

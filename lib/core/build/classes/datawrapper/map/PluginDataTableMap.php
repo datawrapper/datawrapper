@@ -36,9 +36,9 @@ class PluginDataTableMap extends TableMap
 		$this->setPhpName('PluginData');
 		$this->setClassname('PluginData');
 		$this->setPackage('datawrapper');
-		$this->setUseIdGenerator(false);
+		$this->setUseIdGenerator(true);
 		// columns
-		$this->addPrimaryKey('ID', 'Id', 'VARCHAR', true, 128, null);
+		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
 		$this->addForeignKey('PLUGIN_ID', 'PluginId', 'VARCHAR', 'plugin', 'ID', true, 128, null);
 		$this->addColumn('STORED_AT', 'StoredAt', 'TIMESTAMP', true, null, null);
 		$this->addColumn('KEY', 'Key', 'VARCHAR', true, 128, null);

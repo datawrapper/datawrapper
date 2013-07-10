@@ -120,7 +120,7 @@
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
-    <column name="id" type="varchar" size="128" required="true" primaryKey="true" />
+    <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
     <column name="plugin_id" type="varchar" size="128" required="true" />
     <foreign-key foreignTable="plugin">
       <reference local="plugin_id" foreign="id"/>

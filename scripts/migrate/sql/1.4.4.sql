@@ -2,7 +2,7 @@ ALTER TABLE chart ADD COLUMN `public_version` INTEGER DEFAULT 0;
 
 CREATE TABLE `plugin_data`
 (
-    `id` VARCHAR(128) NOT NULL,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
     `plugin_id` VARCHAR(128) NOT NULL,
     `stored_at` DATETIME NOT NULL,
     `key` VARCHAR(128) NOT NULL,

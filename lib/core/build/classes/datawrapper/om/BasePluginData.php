@@ -32,7 +32,7 @@ abstract class BasePluginData extends BaseObject  implements Persistent
 
 	/**
 	 * The value for the id field.
-	 * @var        string
+	 * @var        int
 	 */
 	protected $id;
 
@@ -82,7 +82,7 @@ abstract class BasePluginData extends BaseObject  implements Persistent
 	/**
 	 * Get the [id] column value.
 	 * 
-	 * @return     string
+	 * @return     int
 	 */
 	public function getId()
 	{
@@ -160,13 +160,13 @@ abstract class BasePluginData extends BaseObject  implements Persistent
 	/**
 	 * Set the value of [id] column.
 	 * 
-	 * @param      string $v new value
+	 * @param      int $v new value
 	 * @return     PluginData The current object (for fluent API support)
 	 */
 	public function setId($v)
 	{
 		if ($v !== null) {
-			$v = (string) $v;
+			$v = (int) $v;
 		}
 
 		if ($this->id !== $v) {
@@ -295,7 +295,7 @@ abstract class BasePluginData extends BaseObject  implements Persistent
 	{
 		try {
 
-			$this->id = ($row[$startcol + 0] !== null) ? (string) $row[$startcol + 0] : null;
+			$this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
 			$this->plugin_id = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
 			$this->stored_at = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
 			$this->key = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
@@ -526,6 +526,10 @@ abstract class BasePluginData extends BaseObject  implements Persistent
 		$modifiedColumns = array();
 		$index = 0;
 
+		$this->modifiedColumns[] = PluginDataPeer::ID;
+		if (null !== $this->id) {
+			throw new PropelException('Cannot insert a value for auto-increment primary key (' . PluginDataPeer::ID . ')');
+		}
 
 		 // check the columns in natural order for more readable SQL queries
 		if ($this->isColumnModified(PluginDataPeer::ID)) {
@@ -555,7 +559,7 @@ abstract class BasePluginData extends BaseObject  implements Persistent
 			foreach ($modifiedColumns as $identifier => $columnName) {
 				switch ($columnName) {
 					case '`ID`':
-						$stmt->bindValue($identifier, $this->id, PDO::PARAM_STR);
+						$stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
 						break;
 					case '`PLUGIN_ID`':
 						$stmt->bindValue($identifier, $this->plugin_id, PDO::PARAM_STR);
@@ -576,6 +580,13 @@ abstract class BasePluginData extends BaseObject  implements Persistent
 			Propel::log($e->getMessage(), Propel::LOG_ERR);
 			throw new PropelException(sprintf('Unable to execute INSERT statement [%s]', $sql), $e);
 		}
+
+		try {
+			$pk = $con->lastInsertId();
+		} catch (Exception $e) {
+			throw new PropelException('Unable to get autoincrement id.', $e);
+		}
+		$this->setId($pk);
 
 		$this->setNew(false);
 	}
@@ -871,7 +882,7 @@ abstract class BasePluginData extends BaseObject  implements Persistent
 
 	/**
 	 * Returns the primary key for this object (row).
-	 * @return     string
+	 * @return     int
 	 */
 	public function getPrimaryKey()
 	{
@@ -881,7 +892,7 @@ abstract class BasePluginData extends BaseObject  implements Persistent
 	/**
 	 * Generic method to set the primary key (id column).
 	 *
-	 * @param      string $key Primary key.
+	 * @param      int $key Primary key.
 	 * @return     void
 	 */
 	public function setPrimaryKey($key)

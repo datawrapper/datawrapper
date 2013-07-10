@@ -158,7 +158,7 @@ DROP TABLE IF EXISTS `plugin_data`;
 
 CREATE TABLE `plugin_data`
 (
-	`id` VARCHAR(128) NOT NULL,
+	`id` INTEGER NOT NULL AUTO_INCREMENT,
 	`plugin_id` VARCHAR(128) NOT NULL,
 	`stored_at` DATETIME NOT NULL,
 	`key` VARCHAR(128) NOT NULL,

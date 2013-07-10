@@ -15,4 +15,13 @@
  */
 class PluginData extends BasePluginData {
 
+    public function getData() {
+        $data = parent::getData();
+        return json_decode($data, true);
+    }
+
+    public function setData($data) {
+        parent::setData(json_encode($data));
+    }
+
 } // PluginData

@@ -29,13 +29,13 @@
  * @method     PluginData findOne(PropelPDO $con = null) Return the first PluginData matching the query
  * @method     PluginData findOneOrCreate(PropelPDO $con = null) Return the first PluginData matching the query, or a new PluginData object populated from the query conditions when no match is found
  *
- * @method     PluginData findOneById(string $id) Return the first PluginData filtered by the id column
+ * @method     PluginData findOneById(int $id) Return the first PluginData filtered by the id column
  * @method     PluginData findOneByPluginId(string $plugin_id) Return the first PluginData filtered by the plugin_id column
  * @method     PluginData findOneByStoredAt(string $stored_at) Return the first PluginData filtered by the stored_at column
  * @method     PluginData findOneByKey(string $key) Return the first PluginData filtered by the key column
  * @method     PluginData findOneByData(string $data) Return the first PluginData filtered by the data column
  *
- * @method     array findById(string $id) Return PluginData objects filtered by the id column
+ * @method     array findById(int $id) Return PluginData objects filtered by the id column
  * @method     array findByPluginId(string $plugin_id) Return PluginData objects filtered by the plugin_id column
  * @method     array findByStoredAt(string $stored_at) Return PluginData objects filtered by the stored_at column
  * @method     array findByKey(string $key) Return PluginData objects filtered by the key column
@@ -131,7 +131,7 @@ abstract class BasePluginDataQuery extends ModelCriteria
 		$sql = 'SELECT `ID`, `PLUGIN_ID`, `STORED_AT`, `KEY`, `DATA` FROM `plugin_data` WHERE `ID` = :p0';
 		try {
 			$stmt = $con->prepare($sql);
-			$stmt->bindValue(':p0', $key, PDO::PARAM_STR);
+			$stmt->bindValue(':p0', $key, PDO::PARAM_INT);
 			$stmt->execute();
 		} catch (Exception $e) {
 			Propel::log($e->getMessage(), Propel::LOG_ERR);
@@ -218,25 +218,23 @@ abstract class BasePluginDataQuery extends ModelCriteria
 	 *
 	 * Example usage:
 	 * <code>
-	 * $query->filterById('fooValue');   // WHERE id = 'fooValue'
-	 * $query->filterById('%fooValue%'); // WHERE id LIKE '%fooValue%'
+	 * $query->filterById(1234); // WHERE id = 1234
+	 * $query->filterById(array(12, 34)); // WHERE id IN (12, 34)
+	 * $query->filterById(array('min' => 12)); // WHERE id > 12
 	 * </code>
 	 *
-	 * @param     string $id The value to use as filter.
-	 *              Accepts wildcards (* and % trigger a LIKE)
+	 * @param     mixed $id The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    PluginDataQuery The current query, for fluid interface
 	 */
 	public function filterById($id = null, $comparison = null)
 	{
-		if (null === $comparison) {
-			if (is_array($id)) {
-				$comparison = Criteria::IN;
-			} elseif (preg_match('/[\%\*]/', $id)) {
-				$id = str_replace('*', '%', $id);
-				$comparison = Criteria::LIKE;
-			}
+		if (is_array($id) && null === $comparison) {
+			$comparison = Criteria::IN;
 		}
 		return $this->addUsingAlias(PluginDataPeer::ID, $id, $comparison);
 	}
