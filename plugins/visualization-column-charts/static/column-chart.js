@@ -277,19 +277,21 @@
         },
 
         labelPosition: function(series, s, r, type) {
-            var me = this, d = me.barDimensions(series, s, r),
+            var me = this, d = me.barDimensions(series, s, r), lbl_w,
                 val = series.data[r],
                 c = me.__canvas,
                 lbl_top = val >= 0 || isNaN(val),
                 valign = lbl_top ? 'top' : 'bottom',
                 halign = 'center',
-                lbl_w = c.w / (me.chart.dataSeries().length+2),
                 val_y = lbl_top ? d.y - 10 : d.y + d.height + 10,
                 lbl_y = !lbl_top ? d.y - 5 : d.y + d.height + 5;
 
             if (type == "value") {
-                return { left: d.x + d.width * 0.5, top: val_y, width: d.width };
+                lbl_w = me.labelWidth(me.chart.formatValue(val,true), 'value outline hover'); 
+                console.log('bw: ', d.bw, ' - bx: ', d.x, ' - lbl_w: ', lbl_w);
+                return { left: d.x + d.width * 0.5, top: val_y, width: lbl_w };
             } else if (type == "series") {
+                lbl_w = c.w / (me.chart.dataSeries().length+2);
                 if (d.bw < 30) {
                     //lblcl.push('rotate90');
                     lbl_y -= 10;  // move towards zero axis
