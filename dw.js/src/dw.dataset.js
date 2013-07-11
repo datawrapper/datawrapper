@@ -64,7 +64,9 @@ dw.dataset = function(columns, opts) {
             return opts.firstRowAsLabel;
         },
 
-
+        /*
+         * DEPREACTED
+         */
         eachSeries: function(func) {
             _.each(columns, func);
         },
@@ -80,10 +82,15 @@ dw.dataset = function(columns, opts) {
             return columns[0].raw();
         },
 
+        /*
+         * DEPRECATED
+         *
+         * This function emulates the old rowName API by returning
+         * the raw value of the first column.
+         */
         rowName: function(i) {
-            if (!me.hasRowNames()) return '';
-            var k = dataset.numRows;
-            return columns[0].raw()[(i + k) % k];
+            if (i < 0) i += dataset.numRows();
+            return columns[0].raw()[i];
         },
 
         // return the name of the first column
