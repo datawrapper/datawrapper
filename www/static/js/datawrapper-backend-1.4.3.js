@@ -819,7 +819,8 @@
 
     // -- now run datawrapper user interface
     $(function() {
-        window.DW = new Datawrapper.Utils();
+        //window.DW = new Datawrapper.Utils();
+        window.DW = {};
     });
 
 
