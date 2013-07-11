@@ -1,0 +1,12 @@
+#!/bin/sh
+# read version from package.json
+VERSION=$(python -c 'import json;print json.loads(open("../package.json").read())["version"]')
+
+# remove old javascript
+rm ../www/static/js/dw*.js
+
+# generate js that's packed with each chart
+cat src/dw.start.js src/dw.dataset.js src/dw.column.js src/dw.column.types.js src/dw.datasource.js src/dw.datasource.delimited.js src/dw.end.js > dw-2.0.js
+cp dw-2.0.js ../www/static/js/
+uglifyjs dw-2.0.js > ../www/static/js/dw-2.0.min.js
+
