@@ -154,7 +154,8 @@ dw.column.types.date = function(sample) {
         toNum: function(d) { return d.getTime(); },
         fromNum: function(i) { return new Date(i); },
         errors: function() { return errors; },
-        name: function() { return 'date'; }
+        name: function() { return 'date'; },
+        format: function() { return format; }
     };
     return type;
 };
