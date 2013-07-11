@@ -97,11 +97,12 @@
             });
             if (sortByFirstValue === true) {
                 ds = ds.sort(function(a,b) {
-                    return b.data[0] > a.data[0] ? 1 : -1;
+                    return b.val(0) > a.val(0) ? 1 : -1;
                 });
             } else if ($.type(sortByFirstValue) == "number") {
+                var row = sortByFirstValue;
                 ds = ds.sort(function(a,b) {
-                    return b.origdata[sortByFirstValue] > a.origdata[sortByFirstValue] ? 1 : -1;
+                    return b.val(row, true) > a.val(row, true) ? 1 : -1;
                 });
             }
             if (reverseOrder) ds.reverse();
@@ -109,7 +110,7 @@
         },
 
         seriesByName: function(name) {
-            return this.__dataset.series(name);
+            return this.__dataset.column(name);
         },
 
         numRows: function() {
@@ -163,7 +164,7 @@
         isHighlighted: function(col) {
             if (col === undefined) return false;
             var hl = this.get('metadata.visualize.highlighted-series');
-            return !_.isArray(hl) || hl.length === 0 || _.indexOf(hl, col.name) >= 0;
+            return !_.isArray(hl) || hl.length === 0 || _.indexOf(hl, col.name()) >= 0;
         },
 
         setLocale: function(locale, metric_prefix) {
