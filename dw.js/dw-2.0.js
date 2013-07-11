@@ -78,7 +78,9 @@ dw.dataset = function(columns, opts) {
             return opts.firstRowAsLabel;
         },
 
-
+        /*
+         * DEPREACTED
+         */
         eachSeries: function(func) {
             _.each(columns, func);
         },
@@ -94,10 +96,15 @@ dw.dataset = function(columns, opts) {
             return columns[0].raw();
         },
 
+        /*
+         * DEPRECATED
+         *
+         * This function emulates the old rowName API by returning
+         * the raw value of the first column.
+         */
         rowName: function(i) {
-            if (!me.hasRowNames()) return '';
-            var k = dataset.numRows;
-            return columns[0].raw()[(i + k) % k];
+            if (i < 0) i += dataset.numRows();
+            return columns[0].raw()[i];
         },
 
         // return the name of the first column
@@ -659,22 +666,37 @@ dw.column = function(name, rows, type) {
             }
             return name;
         },
-        // number of rows
+
+        /**
+         * number of rows
+         */
         length: rows.length,
-        // column.val(i) .. returns ith row of the col, parsed
-        val: function(i) {
-            return type.parse(rows[i]);
+
+        /**
+         * returns ith row of the col, parsed
+         *
+         * @param i
+         * @param unfiltered  if set to true, precedent calls of filterRows are ignored
+         */
+        val: function(i, unfiltered) {
+            var r = unfiltered ? origRows : rows;
+            if (i < 0) i += r.length;
+            return type.parse(r[i]);
         },
-        // each
+
+        /**
+         * apply function to each value
+         */
         each: function(f) {
             for (i=0; i<rows.length; i++) {
                 f(column.val(i), i);
             }
         },
+
         // access to raw values
         raw: function() { return rows; },
         // column type
-        type: function() { return type.name(); },
+        type: function(o) { return o ? type : type.name(); },
         // [min,max] range
         range: function() {
             if (!type.toNum) return false;
@@ -819,28 +841,58 @@ dw.column.types.date = function(sample) {
         matches = {},
         bestMatch = ['', 0],
         knownFormats = {
-            'YYYY': /^ *([12][0-9]{3}) *$/,
-            'YYYY-H': /^ *([12][0-9]{3})[ \-\/]?H([12]) *$/,
-            'H-YYYY': /^ *H([12])[ \-\/]([12][0-9]{3}) *$/,
-            'YYYY-Q': /^ *([12][0-9]{3})[ \-\/]?Q([1234]) *$/,
-            'Q-YYYY': /^ *Q([1234])[ \-\/]([12][0-9]{3}) *$/,
-            'YYYY-M': /^ *([12][0-9]{3}) ?[ -\/\.](0?[1-9]|1[0-2]) *$/,
-            'M-YYYY': /^ *(0?[1-9]|1[0-2]) ?[ -\/\.]([12][0-9]{3}) *$/,
-            'MM/DD/YYYY': /^ *(0?[1-9]|1[0-2])([-\/] ?)(0?[1-9]|[1-2][0-9]|3[01])\2([12][0-9]{3})(?: (0?[0-9]|1[0-9]|2[0-3]):([0-5][0-9])(?::([0-5][0-9]))?)? *$/,
-            'DD.MM.YYYY': /^ *(0?[1-9]|[1-2][0-9]|3[01])([-\.\/ ?])(0?[1-9]|1[0-2])\2([12][0-9]{3})(?: (0?[0-9]|1[0-9]|2[0-3]):([0-5][0-9])(?::([0-5][0-9]))?)? *$/,
-            'YYYY-MM-DD': /^ *([12][0-9]{3})([-\/\. ?])(0?[1-9]|1[0-2])\2(0?[1-9]|[1-2][0-9]|3[01])(?: (0?[0-9]|1[0-9]|2[0-3]):([0-5][0-9])(?::([0-5][0-9]))?)? *$/
+            'YYYY': {
+                regex: /^ *([12][0-9]{3}) *$/,
+                precision: 'year'
+            },
+            'YYYY-H': {
+                regex: /^ *([12][0-9]{3})[ \-\/]?H([12]) *$/,
+                precision: 'month'
+            },
+            'H-YYYY': {
+                regex: /^ *H([12])[ \-\/]([12][0-9]{3}) *$/,
+                precision: 'month'
+            },
+            'YYYY-Q': {
+                regex: /^ *([12][0-9]{3})[ \-\/]?Q([1234]) *$/,
+                precision: 'quarter'
+            },
+            'Q-YYYY': {
+                regex: /^ *Q([1234])[ \-\/]([12][0-9]{3}) *$/,
+                precision: 'quarter'
+            },
+            'YYYY-M': {
+                regex: /^ *([12][0-9]{3}) ?[ -\/\.](0?[1-9]|1[0-2]) *$/,
+                precision: 'month'
+            },
+            'M-YYYY': {
+                regex: /^ *(0?[1-9]|1[0-2]) ?[ -\/\.]([12][0-9]{3}) *$/,
+                precision: 'month'
+            },
+            'MM/DD/YYYY': {
+                regex: /^ *(0?[1-9]|1[0-2])([-\/] ?)(0?[1-9]|[1-2][0-9]|3[01])\2([12][0-9]{3})(?: (0?[0-9]|1[0-9]|2[0-3]):([0-5][0-9])(?::([0-5][0-9]))?)? *$/,
+                precision: 'day'
+            },
+            'DD.MM.YYYY': {
+                regex: /^ *(0?[1-9]|[1-2][0-9]|3[01])([-\.\/ ?])(0?[1-9]|1[0-2])\2([12][0-9]{3})(?: (0?[0-9]|1[0-9]|2[0-3]):([0-5][0-9])(?::([0-5][0-9]))?)? *$/,
+                precision: 'day'
+            },
+            'YYYY-MM-DD': {
+                regex: /^ *([12][0-9]{3})([-\/\. ?])(0?[1-9]|1[0-2])\2(0?[1-9]|[1-2][0-9]|3[01])(?: (0?[0-9]|1[0-9]|2[0-3]):([0-5][0-9])(?::([0-5][0-9]))?)? *$/,
+                precision: 'day'
+            }
         };
 
     sample = sample || [];
 
     _.each(sample, function(n) {
-        _.each(knownFormats, function(regex, fmt) {
-            if (matches[fmt] === undefined) matches[fmt] = 0;
-            if (regex.test(n)) {
-                matches[fmt] += 1;
-                if (matches[fmt] > bestMatch[1]) {
-                    bestMatch[0] = fmt;
-                    bestMatch[1] = matches[fmt];
+        _.each(knownFormats, function(format, key) {
+            if (matches[key] === undefined) matches[key] = 0;
+            if (format.regex.test(n)) {
+                matches[key] += 1;
+                if (matches[key] > bestMatch[1]) {
+                    bestMatch[0] = key;
+                    bestMatch[1] = matches[key];
                 }
             }
         });
@@ -851,11 +903,11 @@ dw.column.types.date = function(sample) {
     var type = {
         parse: function(raw) {
             if (_.isDate(raw)) return raw;
-            if (format === false || !_.isString(raw)) {
+            if (!format || !_.isString(raw)) {
                 errors++;
                 return raw;
             }
-            var regex = knownFormats[format],
+            var regex = knownFormats[format].regex,
                 m = raw.match(regex);
 
             if (!m) {
@@ -881,7 +933,9 @@ dw.column.types.date = function(sample) {
         toNum: function(d) { return d.getTime(); },
         fromNum: function(i) { return new Date(i); },
         errors: function() { return errors; },
-        name: function() { return 'date'; }
+        name: function() { return 'date'; },
+        format: function() { return format; },
+        precision: function() { return knownFormats[format].precision; }
     };
     return type;
 };
