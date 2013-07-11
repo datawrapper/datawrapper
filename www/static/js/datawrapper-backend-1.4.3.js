@@ -49,6 +49,8 @@
 
     // Datawrapper.Dataset
     // -------------------
+    // DEPRECATED!
+    return;
 
     //
     var Dataset = Datawrapper.Dataset = function(options) {
@@ -851,6 +853,23 @@
 
         // loads the dataset of this chart
         dataset: function(callback, ignoreTranspose) {
+            var datasource, me = this;
+
+            datasource = dw.datasource.delimited({
+                url: 'data'
+            });
+
+            datasource.dataset().done(function(ds) {
+                me.__dataset = ds;
+                callback(ds);
+                if (me.__datasetLoadedCallbacks) {
+                    for (var i=0; i<me.__datasetLoadedCallbacks.length; i++) {
+                        me.__datasetLoadedCallbacks[i](me);
+                    }
+                }
+            });
+            return; /***
+
             var me = this, ds, dsOpts = {
                 delimiter: 'auto',
                 url: 'data',
@@ -870,6 +889,8 @@
                 }
             });
             return ds;
+
+            ***/
         },
 
         rawData: function(rawData) {
