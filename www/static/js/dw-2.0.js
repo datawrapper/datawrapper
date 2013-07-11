@@ -120,9 +120,8 @@ dw.dataset = function(columns, opts) {
          * removes ignored series from dataset
          */
         filterSeries: function(ignore) {
-            var me = this;
-            me.__data.series = me.__data.series.filter(function(s) {
-                return !ignore[s.name];
+            columns = columns.filter(function(c) {
+                return !ignore[c.name()];
             });
         },
 
@@ -604,6 +603,16 @@ dw.dataset = function(columns, opts) {
 /*
  * DataColumn abstracts the functionality of each column
  * of a dataset. A column has a type (text|number|date).
+ *
+ * API:
+ *
+ * column.name() ... returns the name (string)
+ * column.type() ... return column type (string)
+ * column.length ... number of rows (number)
+ * column.val(i) ... parsed value in row i
+ * column.each(func) ... apply function to each value
+ * column.raw() ... access raw, unparsed values
+ *
  */
 dw.column = function(name, rows, type) {
 
