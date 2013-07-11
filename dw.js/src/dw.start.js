@@ -1,6 +1,4 @@
 
-var Datawrapper = {}; // backward compat
-
 (function(){
 
     var root = this,
@@ -12,5 +10,5 @@ var Datawrapper = {}; // backward compat
         }
         exports.dw = dw;
     } else {
-        root.dw = dw;
+        window.dw = dw;
     }
