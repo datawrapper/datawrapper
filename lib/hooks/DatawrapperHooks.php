@@ -86,6 +86,21 @@ class DatawrapperHooks {
     // Runs once a day via cronjob
     const CRON_DAILY = 'cron_daily';
 
+    // Runs every hour via cronjob
+    const CRON_HOURLY = 'cron_hourly';
+
+    // Runs every half hour via cronjob
+    const CRON_HALF_HOURLY = 'cron_half_hourly';
+
+    // Runs every 15 minutes via cronjob
+    const CRON_QUARTER_HOURLY = 'cron_quarter_hourly';
+
+    // Runs every 15 minutes via cronjob
+    const CRON_FIVE_MINUTELY = 'cron_five_minutely';
+
+    // Runs every minute via cronjob
+    const CRON_MINUTELY = 'cron_minutely';
+
     // Executed after a chart has been published (args: chart, user)
     const POST_CHART_PUBLISH = 'post_chart_publish';
 

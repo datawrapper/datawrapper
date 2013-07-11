@@ -9,6 +9,8 @@ CHANGELOG
 * fixed overlapping labels in line charts
 * added legend position inside right in line charts
 * visualizations can now check browser compatibility
+* added table plugin_data
+* added plugin interface for storing and reading persistent data
 
 ### 1.4.3
 * fixed severe bug in base theme (hotfix)

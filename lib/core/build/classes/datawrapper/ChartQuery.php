@@ -47,6 +47,7 @@ class ChartQuery extends BaseChartQuery {
         $chart->setTheme(isset($defaults['theme']) ? $defaults['theme'] : 'default');
         $chart->setLocale(''); // no default locale
         $chart->setType(isset($defaults['vis']) ? $defaults['vis'] : 'bar-chart');
+        $chart->setPublicUrl($chart->getLocalUrl());
 
         $defaultMeta = Chart::defaultMetaData();
 
