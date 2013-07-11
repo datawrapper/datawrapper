@@ -486,8 +486,8 @@
             // find min/max value of each data series
             domain = [Number.MAX_VALUE, Number.MAX_VALUE * -1];
             _.each(me.chart.dataSeries(), function(col) {
-                domain[0] = Math.min(domain[0], col._min());
-                domain[1] = Math.max(domain[1], col._max());
+                domain[0] = Math.min(domain[0], col.range()[0]);
+                domain[1] = Math.max(domain[1], col.range()[1]);
             });
             me.__domain = domain;
             if (me.get('baseline-zero')) {
