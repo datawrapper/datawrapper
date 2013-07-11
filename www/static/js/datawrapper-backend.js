@@ -1,5 +1,6 @@
 /*
- *
+ * new version of most of the stuff used in dw.utils.js
+ * core will be refactored to use this later...
  */
 
 var dw = dw || {};
