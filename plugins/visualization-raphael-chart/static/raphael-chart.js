@@ -457,11 +457,10 @@
             me.__customRowColors[row] = color;
         },
 
-        getYTicks: function(h, noDomain) {
+        getYTicks: function(yscale, h, noDomain) {
             var me = this,
-                yscale = me.__scales.y,
                 ticks = yscale.ticks(h / 80),
-                domain = me.__domain,
+                domain = yscale.domain(),
                 bt = yscale(ticks[0]),
                 tt = yscale(ticks[ticks.length-1]);
 
@@ -753,16 +752,15 @@
          * returns a function for formating a date based on the
          * input format of the dates in the dataset
          */
-        longDateFormat: function() {
-            var me = this,
-                ds = me.dataset;
+        longDateFormat: function(column) {
+            var me = this;
             return function(d) {
-                if (ds.__dateFormat) {
-                    switch (ds.__dateFormat) {
+                if (column.type() == 'date') {
+                    switch (column.type(true).precision()) {
                         case 'year': return d.getFullYear();
                         case 'quarter': return d.getFullYear() + ' Q'+(d.getMonth()/3 + 1);
                         case 'month': return Globalize.format(d, 'MMM yy');
-                        case 'date': return Globalize.format(d, 'd');
+                        case 'day': return Globalize.format(d, 'd');
                     }
                 }
             };
