@@ -3,6 +3,7 @@
     // Datawrapper.Dataset
     // -------------------
     // DEPRECATED!
+    return;
 
     //
     var Dataset = Datawrapper.Dataset = function(options) {
