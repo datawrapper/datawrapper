@@ -92,28 +92,58 @@ dw.column.types.date = function(sample) {
         matches = {},
         bestMatch = ['', 0],
         knownFormats = {
-            'YYYY': /^ *([12][0-9]{3}) *$/,
-            'YYYY-H': /^ *([12][0-9]{3})[ \-\/]?H([12]) *$/,
-            'H-YYYY': /^ *H([12])[ \-\/]([12][0-9]{3}) *$/,
-            'YYYY-Q': /^ *([12][0-9]{3})[ \-\/]?Q([1234]) *$/,
-            'Q-YYYY': /^ *Q([1234])[ \-\/]([12][0-9]{3}) *$/,
-            'YYYY-M': /^ *([12][0-9]{3}) ?[ -\/\.](0?[1-9]|1[0-2]) *$/,
-            'M-YYYY': /^ *(0?[1-9]|1[0-2]) ?[ -\/\.]([12][0-9]{3}) *$/,
-            'MM/DD/YYYY': /^ *(0?[1-9]|1[0-2])([-\/] ?)(0?[1-9]|[1-2][0-9]|3[01])\2([12][0-9]{3})(?: (0?[0-9]|1[0-9]|2[0-3]):([0-5][0-9])(?::([0-5][0-9]))?)? *$/,
-            'DD.MM.YYYY': /^ *(0?[1-9]|[1-2][0-9]|3[01])([-\.\/ ?])(0?[1-9]|1[0-2])\2([12][0-9]{3})(?: (0?[0-9]|1[0-9]|2[0-3]):([0-5][0-9])(?::([0-5][0-9]))?)? *$/,
-            'YYYY-MM-DD': /^ *([12][0-9]{3})([-\/\. ?])(0?[1-9]|1[0-2])\2(0?[1-9]|[1-2][0-9]|3[01])(?: (0?[0-9]|1[0-9]|2[0-3]):([0-5][0-9])(?::([0-5][0-9]))?)? *$/
+            'YYYY': {
+                regex: /^ *([12][0-9]{3}) *$/,
+                precision: 'year'
+            },
+            'YYYY-H': {
+                regex: /^ *([12][0-9]{3})[ \-\/]?H([12]) *$/,
+                precision: 'month'
+            },
+            'H-YYYY': {
+                regex: /^ *H([12])[ \-\/]([12][0-9]{3}) *$/,
+                precision: 'month'
+            },
+            'YYYY-Q': {
+                regex: /^ *([12][0-9]{3})[ \-\/]?Q([1234]) *$/,
+                precision: 'quarter'
+            },
+            'Q-YYYY': {
+                regex: /^ *Q([1234])[ \-\/]([12][0-9]{3}) *$/,
+                precision: 'quarter'
+            },
+            'YYYY-M': {
+                regex: /^ *([12][0-9]{3}) ?[ -\/\.](0?[1-9]|1[0-2]) *$/,
+                precision: 'month'
+            },
+            'M-YYYY': {
+                regex: /^ *(0?[1-9]|1[0-2]) ?[ -\/\.]([12][0-9]{3}) *$/,
+                precision: 'month'
+            },
+            'MM/DD/YYYY': {
+                regex: /^ *(0?[1-9]|1[0-2])([-\/] ?)(0?[1-9]|[1-2][0-9]|3[01])\2([12][0-9]{3})(?: (0?[0-9]|1[0-9]|2[0-3]):([0-5][0-9])(?::([0-5][0-9]))?)? *$/,
+                precision: 'day'
+            },
+            'DD.MM.YYYY': {
+                regex: /^ *(0?[1-9]|[1-2][0-9]|3[01])([-\.\/ ?])(0?[1-9]|1[0-2])\2([12][0-9]{3})(?: (0?[0-9]|1[0-9]|2[0-3]):([0-5][0-9])(?::([0-5][0-9]))?)? *$/,
+                precision: 'day'
+            },
+            'YYYY-MM-DD': {
+                regex: /^ *([12][0-9]{3})([-\/\. ?])(0?[1-9]|1[0-2])\2(0?[1-9]|[1-2][0-9]|3[01])(?: (0?[0-9]|1[0-9]|2[0-3]):([0-5][0-9])(?::([0-5][0-9]))?)? *$/,
+                precision: 'day'
+            }
         };
 
     sample = sample || [];
 
     _.each(sample, function(n) {
-        _.each(knownFormats, function(regex, fmt) {
-            if (matches[fmt] === undefined) matches[fmt] = 0;
-            if (regex.test(n)) {
-                matches[fmt] += 1;
-                if (matches[fmt] > bestMatch[1]) {
-                    bestMatch[0] = fmt;
-                    bestMatch[1] = matches[fmt];
+        _.each(knownFormats, function(format, key) {
+            if (matches[key] === undefined) matches[key] = 0;
+            if (format.regex.test(n)) {
+                matches[key] += 1;
+                if (matches[key] > bestMatch[1]) {
+                    bestMatch[0] = key;
+                    bestMatch[1] = matches[key];
                 }
             }
         });
@@ -124,11 +154,11 @@ dw.column.types.date = function(sample) {
     var type = {
         parse: function(raw) {
             if (_.isDate(raw)) return raw;
-            if (format === false || !_.isString(raw)) {
+            if (!format || !_.isString(raw)) {
                 errors++;
                 return raw;
             }
-            var regex = knownFormats[format],
+            var regex = knownFormats[format].regex,
                 m = raw.match(regex);
 
             if (!m) {
@@ -155,7 +185,8 @@ dw.column.types.date = function(sample) {
         fromNum: function(i) { return new Date(i); },
         errors: function() { return errors; },
         name: function() { return 'date'; },
-        format: function() { return format; }
+        format: function() { return format; },
+        precision: function() { return knownFormats[format].precision; }
     };
     return type;
 };
