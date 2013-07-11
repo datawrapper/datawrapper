@@ -58,22 +58,37 @@ dw.column = function(name, rows, type) {
             }
             return name;
         },
-        // number of rows
+
+        /**
+         * number of rows
+         */
         length: rows.length,
-        // column.val(i) .. returns ith row of the col, parsed
-        val: function(i) {
-            return type.parse(rows[i]);
+
+        /**
+         * returns ith row of the col, parsed
+         *
+         * @param i
+         * @param unfiltered  if set to true, precedent calls of filterRows are ignored
+         */
+        val: function(i, unfiltered) {
+            var r = unfiltered ? origRows : rows;
+            if (i < 0) i += r.length;
+            return type.parse(r[i]);
         },
-        // each
+
+        /**
+         * apply function to each value
+         */
         each: function(f) {
             for (i=0; i<rows.length; i++) {
                 f(column.val(i), i);
             }
         },
+
         // access to raw values
         raw: function() { return rows; },
         // column type
-        type: function() { return type.name(); },
+        type: function(o) { return o ? type : type.name(); },
         // [min,max] range
         range: function() {
             if (!type.toNum) return false;
