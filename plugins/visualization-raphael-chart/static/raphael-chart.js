@@ -117,25 +117,27 @@
             }
         },
 
-        registerSeriesElement: function(el, series, row) {
-            el.data('series', series);
+        registerSeriesElement: function(el, column, row) {
+            el.data('series', column);
             el.data('row', row);
-            if (!this.__seriesElements[series.name]) {
-                this.__seriesElements[series.name] = [];
+            if (!this.__seriesElements[column.name()]) {
+                this.__seriesElements[column.name()] = [];
             }
-            this.__seriesElements[series.name].push(el);
+            this.__seriesElements[column.name()].push(el);
             return el;
         },
 
-        registerSeriesLabel: function(lbl, series) {
+        registerSeriesLabel: function(lbl, column) {
             var me = this;
-            lbl.data('series', series);
+            lbl.data('series', column);
 
-            if (!this.__seriesLabels[series.name]) {
-                this.__seriesLabels[series.name] = [];
+            console.log('reg series label:', column.name(), lbl.text());
+
+            if (!me.__seriesLabels[column.name()]) {
+                me.__seriesLabels[column.name()] = [];
             }
 
-            this.__seriesLabels[series.name].push(lbl);
+            me.__seriesLabels[column.name()].push(lbl);
             lbl.on('mouseenter', function(e) {
                 me.__hoveredSeriesLabel = e.target;
                 clearTimeout(me.__mouseLeaveTimer);
@@ -149,10 +151,14 @@
             return lbl;
         },
 
+        getSeriesLabels: function(column) {
+            return this.__seriesLabels[column.name()] || [];
+        },
+
         hoverSeries: function(series) {
             var seriesElements = this.__seriesElements;
             _.each(seriesElements, function(elements, key) {
-                var h = !series || key == series.name;
+                var h = !series || key == series.name();
                 _.each(elements, function(el) {
                     el.attr({ opacity: h ? 1 : 0.5 });
                 });
@@ -160,7 +166,7 @@
 
             var seriesLabels = this.__seriesLabels;
             _.each(seriesLabels, function(labels, key) {
-                var h = !series || key == series.name;
+                var h = !series || key == series.name();
                 _.each(labels, function(lbl) {
                     lbl.css({ opacity: h ? 1 : 0.5 });
                     if (h) lbl.addClass('highlighted');
@@ -312,9 +318,9 @@
         orderSeriesElements: function() {
             // put highlighted lines on top
             var me = this;
-            _.each(me.chart.dataSeries(), function(series) {
-                if (me.chart.isHighlighted(series)) {
-                    _.each(me.__seriesElements[series.name], function(el) {
+            _.each(me.dataset.columns(), function(column) {
+                if (me.chart.isHighlighted(column)) {
+                    _.each(me.__seriesElements[column.name()], function(el) {
                         el.toFront();
                     });
                 }
@@ -355,7 +361,7 @@
                 if (me.meta['color-by'] == 'row') {
                     key = me.chart.rowLabels()[row];
                 } else {
-                    key = series.name;
+                    key = series.name();
                 }
             }
             // check if user has selected a custom color for this key
@@ -410,7 +416,7 @@
                 palette = me.theme.colors.palette,
                 color,
                 colorByRow = me.meta['color-by'] == 'row',
-                colorKey = colorByRow ? me.chart.rowLabels()[row] : series.name;
+                colorKey = colorByRow ? me.chart.rowLabels()[row] : series.name();
 
             var userCustomColors = me.get('custom-colors', {});
 
@@ -423,8 +429,8 @@
                 color = me.theme.colors[series.data[row] < 0 ? 'negative' : 'positive'];
             } else {
                 // if the visualization has defined custom series colors, let's use them
-                if (series && me.__customSeriesColors && me.__customSeriesColors[series.name])
-                    color = me.__customSeriesColors[series.name];
+                if (series && me.__customSeriesColors && me.__customSeriesColors[series.name()])
+                    color = me.__customSeriesColors[series.name()];
                 else if (colorByRow && colorful)
                     color = palette[(Math.min(me.get('base-color', 0), palette.length-1) + row) % palette.length];
                 else if (me.__customRowColors && me.__customRowColors[row])
@@ -448,7 +454,7 @@
         setSeriesColor: function(series, color) {
             var me = this;
             if (!me.__customSeriesColors) me.__customSeriesColors = {};
-            me.__customSeriesColors[series.name] = color;
+            me.__customSeriesColors[series.name()] = color;
         },
 
         setRowColor: function(row, color) {

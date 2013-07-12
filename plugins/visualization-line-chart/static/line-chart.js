@@ -214,7 +214,7 @@
             // computes width of a given column, respecting highlights
             function lineWidth(column) {
                 var fs_scale = $('body').hasClass('fullscreen') ? 1.5 : 1,
-                    scale = chart.hasHighlight() ? chart.isHighlighted(series) ? 1 : 0.65 : 1;
+                    scale = chart.hasHighlight() ? chart.isHighlighted(column) ? 1 : 0.65 : 1;
                 return theme.lineChart.strokeWidth * fs_scale * scale;
             }
 
@@ -302,15 +302,15 @@
                         var hide_label = chart.hasHighlight() && !chart.isHighlighted(column) && (column != moColumn);
                         if (vis.get('direct-labeling')) {
                             if (hide_label) {
-                                $.each(vis.__seriesLabels[column.name()], function(i, l) { l.hide(); });
+                                $.each(vis.getSeriesLabels(column), function(i, l) { l.hide(); });
                             } else {
-                                $.each(vis.__seriesLabels[column.name()], function(i, l) { l.show(); });
+                                $.each(vis.getSeriesLabels(column), function(i, l) { l.show(); });
                             }
                         } else {
                             if (hide_label) {
-                                $.each(vis.__seriesLabels[column.name()], function(i, l) { l.el.css('text-decoration', 'none'); });
+                                $.each(vis.getSeriesLabels(column), function(i, l) { l.el.css('text-decoration', 'none'); });
                             } else {
-                                if (!chart.isHighlighted(s)) $.each(vis.__seriesLabels[column.name()], function(i, l) { l.el.css('text-decoration', 'underline'); });
+                                if (!chart.isHighlighted(s)) $.each(vis.getSeriesLabels(column), function(i, l) { l.el.css('text-decoration', 'underline'); });
                             }
                         }
                     }
@@ -438,7 +438,7 @@
             drawYAxis();
             drawXAxis();
 
-            var all_series = dataset.columns().slice(0),
+            var all_series = _.map(axesDef.y1, function(i) { return dataset.column(i); }),
                 seriesLines = this.__seriesLines = {};
 
             if (legend.pos != 'direct') {
@@ -479,6 +479,8 @@
                     last_valid_y; // keep the last non-NaN y for direct label position
 
                 col.each(function(val, i) {
+                    //console.log(col.name(), val);
+
                     x = scales.x(useDateFormat() ? rowDate(i) : i);
                     y = scales.y(val);
 
