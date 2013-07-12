@@ -93,19 +93,25 @@
                         bar.attr(me.theme.columnChart.barAttrs);
                     }
 
-                    var val_y = val > 0 ? d.y - 10 : d.y + d.height + 10,
-                        lbl_y = val <= 0 ? d.y - 10 : d.y + d.height + 5,
-                        lblcl = ['series'],
-                        lbl_w = c.w / (n+2),
+                    var val_y  = val > 0 ? d.y - 10 : d.y + d.height + 10,
+                        lbl_y  = val <= 0 ? d.y - 10 : d.y + d.height + 5,
+                        f_val  = me.chart.formatValue(val, true),
+                        vlbl_w = me.labelWidth(f_val, 'value'),
+                        bw     = (d.width + d.width * d.pad)
+                        lblcl  = ['series'],
+                        lbl_w  = c.w / (n+2),
                         valign = val > 0 ? 'top' : 'bottom',
                         halign = 'center',
-                        alwaysShow = (me.chart.hasHighlight() && me.chart.isHighlighted(series)) || (d.width > 40);
-
+                        alwaysShow = (me.chart.hasHighlight() && 
+                            me.chart.isHighlighted(series)) || 
+                            (bw > vlbl_w);
                     var lpos = me.labelPosition(series, s, r, 'value'),
                         spos = me.labelPosition(series, s, r, 'series');
 
+
+
                     // add value labels
-                    me.registerSeriesLabel(me.label(lpos.left, lpos.top, me.chart.formatValue(series.data[r]),{
+                    me.registerSeriesLabel(me.label(lpos.left, lpos.top, me.chart.formatValue(series.data[r], true),{
                         w: lpos.width,
                         align: 'center',
                         cl: 'value outline ' + (alwaysShow ? '' : ' showOnHover')
@@ -185,6 +191,8 @@
             // update axis and grid
             me.horzGrid();
 
+            var n  = me.chart.dataSeries().length;
+
             // update bar heights and labels
             _.each(me.chart.dataSeries(), function(series, s) {
                 _.each(me.__seriesElements[series.name], function(rect) {
@@ -196,7 +204,7 @@
                     var lpos;
                     if (lbl.hasClass('value')) {
                         // update value
-                        lbl.text(me.chart.formatValue(series.data[0]));
+                        lbl.text(me.chart.formatValue(series.data[0], true));
                         lpos = me.labelPosition(series, s, 0, 'value');
                     } else if (lbl.hasClass('series')) {
                         // update series label position
@@ -265,23 +273,25 @@
             }
             if (h !== 0) h = Math.max(1, h);
             x = Math.round((c.w - c.lpad - c.rpad) * vspace + c.lpad + s * (bw + bw * pad));
-            return { width: w, height: h, x: x + Math.floor((w+1)*r), y: y, bx: x, bw: bw };
+            return { width: w, height: h, x: x + Math.floor((w+1)*r), y: y, bx: x, bw: bw, pad: pad };
         },
 
         labelPosition: function(series, s, r, type) {
-            var me = this, d = me.barDimensions(series, s, r),
+            var me = this, d = me.barDimensions(series, s, r), lbl_w,
                 val = series.data[r],
                 c = me.__canvas,
                 lbl_top = val >= 0 || isNaN(val),
                 valign = lbl_top ? 'top' : 'bottom',
                 halign = 'center',
-                lbl_w = c.w / (me.chart.dataSeries().length+2),
                 val_y = lbl_top ? d.y - 10 : d.y + d.height + 10,
                 lbl_y = !lbl_top ? d.y - 5 : d.y + d.height + 5;
 
             if (type == "value") {
-                return { left: d.x + d.width * 0.5, top: val_y, width: d.width };
+                lbl_w = me.labelWidth(me.chart.formatValue(val,true), 'value outline hover'); 
+                console.log('bw: ', d.bw, ' - bx: ', d.x, ' - lbl_w: ', lbl_w);
+                return { left: d.x + d.width * 0.5, top: val_y, width: lbl_w };
             } else if (type == "series") {
+                lbl_w = c.w / (me.chart.dataSeries().length+2);
                 if (d.bw < 30) {
                     //lblcl.push('rotate90');
                     lbl_y -= 10;  // move towards zero axis
