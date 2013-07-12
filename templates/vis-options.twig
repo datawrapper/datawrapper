@@ -146,13 +146,14 @@ $(function() {
         function checkDepends() {
             _.each(vis.options, function(opt, key) {
                 if (opt['depends-on'] !== undefined) {
-                    var visible = true;
+                    var visible = true,
+                        numSeries = chart.__dataset.numColumns() - (chart.hasRowHeader() ? 1 : 0);
                     // special conditions:
                     _.each(opt['depends-on'], function(val, key) {
                         if (key == 'chart.min_series_num') {
-                            visible = visible && chart.dataSeries().length >= +val;
+                            visible = visible && numSeries >= +val;
                         } else if (key == 'chart.max_series_num') {
-                            visible = visible && chart.dataSeries().length <= +val;
+                            visible = visible && numSeries <= +val;
                         } else if (key == 'chart.missing_values') {
                             visible = visible && chart.hasMissingValues() == val;
                         } else if (key == 'chart.min_row_num') {
