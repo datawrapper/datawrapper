@@ -31,6 +31,13 @@ dw.column.types.number = function(sample) {
             // excel sometimes produces a strange white-space:
             ' .': /^ *-?[0-9]{1,3}( [0-9]{3})*(\.[0-9]+)? *$/,
             ' ,': /^ *-?[0-9]{1,3}( [0-9]{3})*(,[0-9]+)? *$/
+        },
+        // a list of strings that are recognized as 'not available'
+        naStrings = {
+            'na': 1,
+            'n/a': 1,
+            '-': 1,
+            ':': 1
         };
 
     var matches = {},
@@ -66,12 +73,12 @@ dw.column.types.number = function(sample) {
                 // replace decimal char w/ point
                 number = number.replace(format[1], '.');
             }
-            number = Number(number);
+
             if (isNaN(number)) {
-                errors++;
+                if (!naStrings[number]) errors++;
                 return raw;
             }
-            return number;
+            return Number(number);
         },
         toNum: function(i) { return i; },
         fromNum: function(i) { return i; },
@@ -113,7 +120,7 @@ dw.column.types.date = function(sample) {
                 precision: 'quarter'
             },
             'YYYY-M': {
-                regex: /^ *([12][0-9]{3}) ?[ -\/\.](0?[1-9]|1[0-2]) *$/,
+                regex: /^ *([12][0-9]{3}) ?[ -\/\.M](0?[1-9]|1[0-2]) *$/,
                 precision: 'month'
             },
             'M-YYYY': {
@@ -163,7 +170,6 @@ dw.column.types.date = function(sample) {
 
             if (!m) {
                 errors++;
-                console.log('err', raw, regex);
                 return raw;
             }
             switch (format) {
