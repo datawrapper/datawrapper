@@ -35,9 +35,7 @@ dw.datasource.delimited = function(opts) {
     }
 
     var delimited = {
-        dataset: function() {
-            return loadAndParseCsv();
-        }
+        dataset: loadAndParseCsv
     };
     return delimited;
 };
