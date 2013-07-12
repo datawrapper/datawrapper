@@ -843,7 +843,7 @@
         },
 
         checkBrowserCompatibility: function(){
-            return Raphael.type;
+            return window['Raphael'] && Raphael.type;
         }
 
     });
