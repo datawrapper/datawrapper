@@ -28,19 +28,21 @@
             var datasource, me = this;
 
             datasource = dw.datasource.delimited({
-                url: 'data'
+                url: 'data',
+                transpose: ignoreTranspose ? false : this.get('metadata.data.transpose', false)
             });
 
-            datasource.dataset().done(function(ds) {
+            return datasource.dataset().done(function(ds) {
                 me.__dataset = ds;
-                callback(ds);
+                if ($.isFunction(callback)) callback(ds);
                 if (me.__datasetLoadedCallbacks) {
-                    for (var i=0; i<me.__datasetLoadedCallbacks.length; i++) {
-                        me.__datasetLoadedCallbacks[i](me);
-                    }
+                    $.each(me.__datasetLoadedCallbacks, function(i, f) {
+                        if ($.isFunction(f)) f(me);
+                    });
                 }
             });
-            return; /***
+
+            /***
 
             var me = this, ds, dsOpts = {
                 delimiter: 'auto',
