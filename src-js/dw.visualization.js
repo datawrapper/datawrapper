@@ -45,7 +45,7 @@
         load: function(chart, callback) {
             var me = this;
             this.chart = chart;
-            chart.dataset(function(ds) {
+            return chart.dataset().done(function(ds) {
                 me.dataset = ds;
                 me.dataset.filterSeries(chart.get('metadata.data.ignore-series', {}));
                 callback.call(me, me);
