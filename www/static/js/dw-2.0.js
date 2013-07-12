@@ -623,15 +623,15 @@ dw.dataset = function(columns, opts) {
  */
 dw.column = function(name, rows, type) {
 
-    function guessType() {
+    function guessType(sample) {
 
         if (_.every(rows, _.isNumber)) return dw.column.types.number();
         if (_.every(rows, _.isDate)) return dw.column.types.date();
         // guessing column type by counting parsing errors
         // for every known type
         var types = [
-                dw.column.types.date(rows.slice(0, 20)),
-                dw.column.types.number(rows.slice(0, 20)),
+                dw.column.types.date(sample),
+                dw.column.types.number(sample),
                 dw.column.types.text()
             ],
             type,
@@ -650,7 +650,10 @@ dw.column = function(name, rows, type) {
         return type;
     }
 
-    type = type ? dw.column.types[type](rows.slice(0, 50)) : guessType();
+    // we pick random 100 values for column type testing
+    var sample = _.map(_.shuffle(_.range(rows.length)).slice(0, 200), function(i) { return rows[i]; });
+
+    type = type ? dw.column.types[type](sample) : guessType(sample);
 
     var range,
         total,
@@ -780,6 +783,13 @@ dw.column.types.number = function(sample) {
             // excel sometimes produces a strange white-space:
             ' .': /^ *-?[0-9]{1,3}( [0-9]{3})*(\.[0-9]+)? *$/,
             ' ,': /^ *-?[0-9]{1,3}( [0-9]{3})*(,[0-9]+)? *$/
+        },
+        // a list of strings that are recognized as 'not available'
+        naStrings = {
+            'na': 1,
+            'n/a': 1,
+            '-': 1,
+            ':': 1
         };
 
     var matches = {},
@@ -815,12 +825,12 @@ dw.column.types.number = function(sample) {
                 // replace decimal char w/ point
                 number = number.replace(format[1], '.');
             }
-            number = Number(number);
+
             if (isNaN(number)) {
-                errors++;
+                if (!naStrings[number]) errors++;
                 return raw;
             }
-            return number;
+            return Number(number);
         },
         toNum: function(i) { return i; },
         fromNum: function(i) { return i; },
@@ -862,7 +872,7 @@ dw.column.types.date = function(sample) {
                 precision: 'quarter'
             },
             'YYYY-M': {
-                regex: /^ *([12][0-9]{3}) ?[ -\/\.](0?[1-9]|1[0-2]) *$/,
+                regex: /^ *([12][0-9]{3}) ?[ -\/\.M](0?[1-9]|1[0-2]) *$/,
                 precision: 'month'
             },
             'M-YYYY': {
@@ -912,7 +922,6 @@ dw.column.types.date = function(sample) {
 
             if (!m) {
                 errors++;
-                console.log('err', raw, regex);
                 return raw;
             }
             switch (format) {
@@ -984,9 +993,7 @@ dw.datasource.delimited = function(opts) {
     }
 
     var delimited = {
-        dataset: function() {
-            return loadAndParseCsv();
-        }
+        dataset: loadAndParseCsv
     };
     return delimited;
 };
