@@ -13,11 +13,11 @@ $(function() {
     function syncCheckbox(evt, args) {
         var el = $('#'+args.key);
         if (args.chart.get('metadata.visualize.'+args.key))
-            el.attr('checked', 'checked');
+            el.prop('checked', 'checked');
         else
             el.removeAttr('checked');
         el.change(function() {
-            args.chart.set('metadata.visualize.'+args.key, el.attr('checked') == 'checked');
+            args.chart.set('metadata.visualize.'+args.key, el.is(':checked'));
         });
     }
 
@@ -26,7 +26,7 @@ $(function() {
         if (_.isBoolean(curVal)) {
             curVal = curVal ? 'yes' : 'no';
         }
-        $('input:radio[name='+args.key+'][value='+curVal+']').attr('checked', 'checked');
+        $('input:radio[name='+args.key+'][value='+curVal+']').prop('checked', 'checked');
         $('input:radio[name='+args.key+']').change(function() {
             var val = $('input:radio[name='+args.key+']:checked').val();
             if (val === 'yes') val = true;
