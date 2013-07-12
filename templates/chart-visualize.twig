@@ -176,7 +176,7 @@ $(function() {
         clearTimeout(_thumbTimer);
         _thumbTimer = setTimeout(function() {
             //console.log('snapshot', $('#iframe-wrapper iframe'), '{{ chart.id }}', 'm', 260, 160);
-            DW.snapshot($('#iframe-vis'), '{{ chart.id }}', 'm', 260, 160);
+            dw.backend.snapshot($('#iframe-vis'), '{{ chart.id }}', 'm', 260, 160);
         }, 500);
     }
 
@@ -214,8 +214,8 @@ $(function() {
     function onDatasetLoaded(ds) {
         var s = $('#highlight-series'), s2 = $('.highlighted-series');
         s.find("option[value!='---']").remove();
-        _.each(chart.dataSeries(), function(col) {
-            s.append('<option>'+col.name+'</option>');
+        _.each(ds.columns(), function(col) {
+            s.append('<option>'+col.name()+'</option>');
         });
         s.change(function() {
             if (s.val() != "---") {
@@ -247,7 +247,8 @@ $(function() {
         loadThemeColors();
     }
 
-    chart.dataset(onDatasetLoaded);
+
+    chart.dataset().done(onDatasetLoaded);
 
     $('.collapse').on('shown', function(e) {
         var tgl = $('[data-toggle=collapse][data-target=#'+e.target.id+']');
@@ -311,7 +312,7 @@ $(function() {
     $('#btn-transpose').click(function(e) {
         e.preventDefault();
         chart.set('metadata.data.transpose', !chart.get('metadata.data.transpose'));
-        chart.dataset(onDatasetLoaded);
+        chart.dataset().done(onDatasetLoaded);
         setTimeout(function() {
             loadOptions();
         }, 2000);
