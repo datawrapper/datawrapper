@@ -15,15 +15,15 @@
  */
 dw.column = function(name, rows, type) {
 
-    function guessType() {
+    function guessType(sample) {
 
         if (_.every(rows, _.isNumber)) return dw.column.types.number();
         if (_.every(rows, _.isDate)) return dw.column.types.date();
         // guessing column type by counting parsing errors
         // for every known type
         var types = [
-                dw.column.types.date(rows.slice(0, 20)),
-                dw.column.types.number(rows.slice(0, 20)),
+                dw.column.types.date(sample),
+                dw.column.types.number(sample),
                 dw.column.types.text()
             ],
             type,
@@ -42,7 +42,10 @@ dw.column = function(name, rows, type) {
         return type;
     }
 
-    type = type ? dw.column.types[type](rows.slice(0, 50)) : guessType();
+    // we pick random 100 values for column type testing
+    var sample = _.map(_.shuffle(_.range(rows.length)).slice(0, 200), function(i) { return rows[i]; });
+
+    type = type ? dw.column.types[type](sample) : guessType(sample);
 
     var range,
         total,
