@@ -62,6 +62,10 @@ dw.dataset = function(columns, opts) {
             return columns[0].length;
         },
 
+        eachColumn: function(func) {
+            _.each(columns, func);
+        },
+
         // -----------------------------------------
         // everything below this line is kept for
         // backward compatibility only
@@ -827,7 +831,7 @@ dw.column.types.number = function(sample) {
             }
 
             if (isNaN(number)) {
-                if (!naStrings[number]) errors++;
+                if (!naStrings[number] && number !== "") errors++;
                 return raw;
             }
             return Number(number);

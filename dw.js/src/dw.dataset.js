@@ -50,7 +50,7 @@ dw.dataset = function(columns, opts) {
 
         eachColumn: function(func) {
             _.each(columns, func);
-        }
+        },
 
         // -----------------------------------------
         // everything below this line is kept for
