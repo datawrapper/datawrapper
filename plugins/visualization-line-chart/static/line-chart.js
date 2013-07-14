@@ -278,7 +278,7 @@
                             }
                         }),
                     val = chart.formatValue(column.val(row));
-                    lbl.data('column', column);
+                    lbl.data('series', column);
                     lbl.data('row', 0);
                     lbl.text(val);
 
@@ -734,10 +734,6 @@
             }
         },
 
-        
-
-
-
         computeAspectRatio: function() {
             var vis = this, slopes = [], M, Rx, Ry;
             _.each(me.chart.dataSeries(), function(col) {
@@ -754,9 +750,6 @@
             Ry = me.__domain[1] - me.__domain[0];
             return M*Rx/Ry;
         },
-
-
-
 
         // alias to dataset.eachRow
         eachRow: function(func){
