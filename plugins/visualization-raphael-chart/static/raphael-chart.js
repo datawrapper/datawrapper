@@ -131,8 +131,6 @@
             var me = this;
             lbl.data('series', column);
 
-            console.log('reg series label:', column.name(), lbl.text());
-
             if (!me.__seriesLabels[column.name()]) {
                 me.__seriesLabels[column.name()] = [];
             }
