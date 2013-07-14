@@ -48,6 +48,10 @@ dw.dataset = function(columns, opts) {
             return columns[0].length;
         },
 
+        eachColumn: function(func) {
+            _.each(columns, func);
+        }
+
         // -----------------------------------------
         // everything below this line is kept for
         // backward compatibility only
