@@ -4,9 +4,7 @@
     // Pie chart
     // ---------
 
-    var PieChart = Datawrapper.Visualizations.PieChart = function() {
-
-    };
+    var PieChart = Datawrapper.Visualizations.PieChart = function() {};
 
     var TWO_PI = Math.PI * 2, HALF_PI = Math.PI * 0.5;
 
@@ -95,6 +93,8 @@
                 donut = me.isDonut(),
                 row = 0;
 
+            me.axesDef = { rowLabel: [0], wedges: _.range(1, me.dataset.numColumns()) };
+
             // 2d -> 1d
             if (!_.isUndefined(me.get('selected-row'))) {
                 row = me.get('selected-row', 0);
@@ -142,21 +142,23 @@
 
             me.chart.filterRow(row);
 
-            var series = me.chart.dataSeries(me.get('sort-values', true) ? me.__initialRow : false),
+            var series = me.axesDef.wedges.map(function(i) { return me.dataset.column(i); }),
                 total = 0, min = Number.MAX_VALUE, max = 0,
                 reverse, oseries, others = 0, ocnt = 0, hasNegativeValues = false;
+
+             if (me.get('sort-values', true)) series = series.sort(function(c0, c1) { return c1.val(me.__initialRow) - c0.val(me.__initialRow); });
 
             // now group small series into one big chunk named 'others'
             oseries = [];
             _.each(series, function(s, i) {
-                if (s.data[0] < 0) {
+                if (s.val(0) < 0) {
                     hasNegativeValues = true;
                     return;
                 }
                 if (i < groupAfter) oseries.push(s);
                 else {
                     ocnt += 1;
-                    others += s.data[0];
+                    others += s.val(0);
                 }
             });
 
@@ -164,22 +166,19 @@
                 me.warn('<b>Warning:</b> Pie charts are not suitable for displaying negative values.');
             }
             if (ocnt > 0) {
-                var _others = {
-                    name: me.translate('other'),
-                    data: [others]
-                };
+                var _others = d3.column(me.translate('other'), [others]);
                 oseries.push(_others);
-                me.chart.__dataset.__seriesByName[_others.name] = _others;
+                me.chart.__dataset.__seriesByName[_others.name()] = _others;
             }
 
             _.each(oseries, function(s) {
-                total += s.data[0];
-                min = Math.min(min, s.data[0]);
-                max = Math.max(max, s.data[0]);
+                total += s.val(0);
+                min = Math.min(min, s.val(0));
+                max = Math.max(max, s.val(0));
             });
             reverse = min < total / series.length * 0.66 || max > total/series.length * 1.5;
             sa = -HALF_PI;
-            if (reverse) sa += FA * (series[0].data[0] / total);
+            if (reverse) sa += FA * (series[0].val(0) / total);
 
             if (FA < TWO_PI) {
                 reverse = false;
@@ -200,37 +199,37 @@
 
             _.each(oseries, function(s) {
 
-                var da = s.data[0] / total * FA,
+                var da = s.val(0) / total * FA,
                     fill = me.getSeriesColor(s, 0),
                     stroke = chroma.color(fill).darken(15).hex(),
                     a0 = reverse ? sa - da : sa,
                     a1 = reverse ? sa : sa + da,
-                    value = showTotal ? Math.round(s.data[0] / total * 100)+'%' : me.chart.formatValue(s.data[0], true);
+                    value = showTotal ? Math.round(s.val(0) / total * 100)+'%' : me.chart.formatValue(s.val(0), true);
 
-                if (s.data[0] === 0) return;
+                if (s.val(0) === 0) return;
 
-                if (!slices[s.name]) {
+                if (!slices[s.name()]) {
                     var lblcl = me.chart.hasHighlight() && me.chart.isHighlighted(s) ? 'series highlighted' : 'series';
                     if (me.invertLabel(fill)) lblcl += ' inverted';
 
-                    var lbl = me.registerSeriesLabel(me.label(0, 0, '<b>'+s.name+'</b><br />'+value, {
+                    var lbl = me.registerSeriesLabel(me.label(0, 0, '<b>'+s.name()+'</b><br />'+value, {
                         w: 80, cl: lblcl, align: 'center', valign: 'middle'
                     }), s);
 
-                    slice = slices[s.name] = Slice(c.paper, c.cx, c.cy, c.or, c.ir, a0, a1, lbl, me.theme);
+                    slice = slices[s.name()] = Slice(c.paper, c.cx, c.cy, c.or, c.ir, a0, a1, lbl, me.theme);
                     slice.path.attr({
                         'stroke': me.theme.colors.background,
                         'stroke-width': 2,
                         'fill': fill
                     });
                 } else {
-                    slice = slices[s.name];
-                    slice.label.text('<b>'+s.name+'</b><br />'+value);
+                    slice = slices[s.name()];
+                    slice.label.text('<b>'+s.name()+'</b><br />'+value);
                     slice.animate(c.cx, c.cy, c.or, c.ir, a0, a1, me.theme.duration, me.theme.easing);
 
                 }
 
-                me.__seriesAngles[s.name] = normalize(a0, a1);
+                me.__seriesAngles[s.name()] = normalize(a0, a1);
                 sa += reverse ? -da : da;
 
             });
@@ -265,7 +264,7 @@
                     return false;
                 }
             });
-            return me.chart.seriesByName(match);
+            return me.dataset.column(match);
         },
 
         getDataRowByPoint: function(x, y) {
@@ -284,14 +283,14 @@
             var me = this,
                 bg = chroma.color(me.theme.colors.background);
             _.each(me.chart.dataSeries(), function(s) {
-                _.each(me.__seriesLabels[s.name], function(lbl) {
-                    if (series !== undefined && s.name == series.name) {
+                _.each(me.__seriesLabels[s.name()], function(lbl) {
+                    if (series !== undefined && s.name() == series.name()) {
                         lbl.addClass('hover');
                     } else {
                         lbl.removeClass('hover');
                     }
-                    _.each(me.__seriesElements[s.name], function(el) {
-                        var fill = me.getSeriesColor(s, 0), stroke, hover = series !== undefined && s.name == series.name;
+                    _.each(me.__seriesElements[s.name()], function(el) {
+                        var fill = me.getSeriesColor(s, 0), stroke, hover = series !== undefined && s.name() == series.name();
                         if (hover) fill = chroma.lch(fill).darken(bg.hcl()[2] > 60 ? 14 : -14).hex();
                         if (el.attrs.fill != fill)
                             el.animate({ fill: fill }, 50);
