@@ -44,6 +44,7 @@ function publish_js($user, $chart) {
         }
         $all = JSMin::minify($all);
         $all = file_get_contents('../static/js/datawrapper.min.js') . "\n\n" . $all;
+        $all = file_get_contents('../static/js/dw-2.0.min.js') . "\n\n" . $all;
         file_put_contents($static_path . $vis_path, $all);
         $cdn_files[] = array(
             $static_path . $vis_path,
