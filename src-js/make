@@ -8,7 +8,7 @@ cat dw.core.js dw.dataset.js dw.utils.js dw.chart.js dw.chart.editable.js dw.the
 cp tmp.js ../www/static/js/datawrapper-backend-$VERSION.js
 uglifyjs tmp.js > ../www/static/js/datawrapper-backend-$VERSION.min.js
 # generate js that's packed with each chart
-cat dw.core.js dw.dataset.js dw.chart.js dw.theme.js dw.parsers.delimited.js dw.visualization.js > tmp.js
+cat dw.core.js dw.chart.js dw.theme.js dw.visualization.js > tmp.js
 uglifyjs tmp.js > ../www/static/js/datawrapper.min.js
 mv tmp.js ../www/static/js/datawrapper.js
 
