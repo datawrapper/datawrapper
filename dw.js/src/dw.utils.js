@@ -1,45 +1,20 @@
 
-    // Require Underscore, if we're on the server, and it's not already present.
-    var root = this;
-    var _ = root._;
-    var $ = root.jQuery || root.Zepto || root.ender;
 
+dw.utils = {
 
-    // Datawrapper.Utils
-    // -----------------
+    /*
+     * returns the min/max range of a set of columns
+     */
+    minMax: function (columns) {
+        var minmax = [Number.MAX_VALUE, -Number.MAX_VALUE];
+            _.each(columns, function(column) {
+                minmax[0] = Math.min(minmax[0], column.range()[0]);
+                minmax[1] = Math.max(minmax[1], column.range()[1]);
+            });
+        return minmax;
+    }
 
-    var Utils = Datawrapper.Utils = function() {
-
-        this.initialize();
-
-    };
-
-    _.extend(Utils.prototype, {
-
-        initialize: function() {
-            this.initializeSignUp();
-            this.initializeLogout();
-
-            
-            this.Errors = {};
-        },
-
-        checkPasswordStrength: function(pwd) {
-            //return $.trim(pwd).length > 7;
-            return true;
-        },
-
-
-    ,
-
-        refreshHeader: function() {
-            location.reload();
-            return;
-        },
-
-
-
-    });
+};
 
 
 
