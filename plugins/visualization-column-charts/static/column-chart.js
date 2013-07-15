@@ -10,7 +10,13 @@
     _.extend(ColumnChart.prototype, Datawrapper.Visualizations.RaphaelChart.prototype, {
 
         render: function(el) {
-            var me = this, filterUI, sortBars, reverse, c, ds, chart_width, series_gap, row_gap, row;
+            var me = this, filterUI, sortBars, reverse, c, dataset = me.dataset,
+                chart_width, column_gap, row_gap, row, columns;
+
+            me.axesDef = {
+                labels: 0,
+                bars: _.range(1, me.dataset.numColumns())
+            };
 
             el = $(el);
 
@@ -29,10 +35,13 @@
 
             sortBars = me.get('sort-values');
             reverse = me.get('reverse-order');
+
+            columns = me.getBarColumns();
+
             c = me.initCanvas({}, 0, filterUI ? filterUI.height() + 10 : 0);
-            ds = me.chart.__dataset;
+
             chart_width = c.w - c.lpad - c.rpad;
-            series_gap = 0.05; // pull from theme
+            column_gap = 0.05; // pull from theme
             row_gap = 0.01;
 
             // 2d -> 1d
@@ -44,17 +53,18 @@
 
             // compute maximum x-label height
             var lh = 0,
-                mm = ds.minMax(),
+                mm = dw.utils.minMax(columns),
                 mm_r = mm[0] >= 0 ? 1 : mm[1] <= 0 ? 0 : mm[1] / (mm[1] - mm[0]),
-                n = me.chart.dataSeries().length;
-            _.each(me.chart.dataSeries(), function(series, s) {
+                n = me.axesDef.bars.length;
 
+            _.each(columns, function(column, s) {
                 lh = Math.max(lh,
                     chart_width /(n + (n-1) * 0.35) > 31 ?
-                      me.labelHeight(series.name, 'series', c.w / (n))
-                    : me.labelWidth(series.name, 'series')
+                      me.labelHeight(column.name(), 'series', c.w / (n))
+                    : me.labelWidth(column.name(), 'series')
                 );
             });
+            console.log(mm, mm_r);
             c.bpad = lh * mm_r + 10;
             c.tpad += lh * (1-mm_r);
 
@@ -74,20 +84,21 @@
                 return chroma.lch(l, bLch.c, bLch.h).hex();
             }).reverse();
 
-            ds.eachRow(function(i) {
+            dataset.eachRow(function(i) {
                 me.setRowColor(i, colors[i % colors.length]);
             });
 
-            _.each(me.chart.dataSeries(sortBars, reverse), function(series, s) {
-                _.each(series.data, function(val, r) {
-                    var d = me.barDimensions(series, s, r);
-                    var fill = me.getBarColor(series, r, me.get('negative-color', false)),
+            _.each(me.getBarColumns(sortBars, reverse), function(column, s) {
+                column.each(function(val, r) {
+                    var d = me.barDimensions(column, s, r);
+                    console.log('bar dim', d);
+                    var fill = me.getBarColor(column, r, me.get('negative-color', false)),
                         stroke = chroma.color(fill).darken(14).hex(),
                     // create bar
                     bar = me.registerSeriesElement(c.paper.rect().attr(d).attr({
                         'stroke': stroke,
                         'fill': fill
-                    }).data('strokeCol', stroke), series, r);
+                    }).data('strokeCol', stroke), column, r);
 
                     if (me.theme.columnChart.barAttrs) {
                         bar.attr(me.theme.columnChart.barAttrs);
@@ -97,27 +108,25 @@
                         lbl_y  = val <= 0 ? d.y - 10 : d.y + d.height + 5,
                         f_val  = me.chart.formatValue(val, true),
                         vlbl_w = me.labelWidth(f_val, 'value'),
-                        bw     = (d.width + d.width * d.pad)
+                        bw     = (d.width + d.width * d.pad),
                         lblcl  = ['series'],
                         lbl_w  = c.w / (n+2),
                         valign = val > 0 ? 'top' : 'bottom',
                         halign = 'center',
-                        alwaysShow = (me.chart.hasHighlight() && 
-                            me.chart.isHighlighted(series)) || 
+                        alwaysShow = (me.chart.hasHighlight() &&
+                            me.chart.isHighlighted(column)) ||
                             (bw > vlbl_w);
-                    var lpos = me.labelPosition(series, s, r, 'value'),
-                        spos = me.labelPosition(series, s, r, 'series');
-
-
+                    var lpos = me.labelPosition(column, s, r, 'value'),
+                        spos = me.labelPosition(column, s, r, 'series');
 
                     // add value labels
-                    me.registerSeriesLabel(me.label(lpos.left, lpos.top, me.chart.formatValue(series.data[r], true),{
+                    me.registerSeriesLabel(me.label(lpos.left, lpos.top, me.chart.formatValue(column.val(r), true),{
                         w: lpos.width,
                         align: 'center',
                         cl: 'value outline ' + (alwaysShow ? '' : ' showOnHover')
-                    }), series);
+                    }), column);
 
-                    if (me.chart.hasHighlight() && me.chart.isHighlighted(series)) {
+                    if (me.chart.hasHighlight() && me.chart.isHighlighted(column)) {
                         lblcl.push('highlighted');
                     }
                     if (d.bw < 30) {
@@ -126,15 +135,15 @@
                     if (d.bw < 20) {
                         lblcl.push('smaller');
                     }
-                    // add series label
-                    if (!/^X\.\d+$/.test(series.name) && r === 0) {
-                        me.registerSeriesLabel(me.label(spos.left, spos.top, series.name, {
+                    // add column label
+                    if (!/^X\.\d+$/.test(column.name()) && r === 0) {
+                        me.registerSeriesLabel(me.label(spos.left, spos.top, column.name(), {
                             w: spos.width,
                             align: spos.halign,
                             valign: spos.valign,
                             cl: lblcl.join(' '),
                             rotate: d.bw < 30 ? -90 : 0
-                        }), series);
+                        }), column);
                     }
 
                 });
@@ -180,6 +189,19 @@
             if (me.__gridLines && me.__gridLines['0']) me.__gridLines['0'].toFront();
         },
 
+        getBarColumns: function(sortBars, reverse) {
+            var me = this,
+                columns = _.map(me.axesDef.bars, function(i) { return me.dataset.column(i); });
+            if (sortBars) {
+                columns.sort(function(a, b) {
+                    var aType = a.type(true);
+                    return aType.toNum ? aType.toNum(a.val(0)) - aType.toNum(b.val(0)) : a.val() > b.val() ? 1 : a.val() == b.val() ? 0 : -1;
+                });
+            }
+            if (reverse) columns.reverse();
+            return columns;
+        },
+
         update: function(row) {
             var me = this;
             // re-filter dataset
@@ -191,24 +213,24 @@
             // update axis and grid
             me.horzGrid();
 
-            var n  = me.chart.dataSeries().length;
+            var n  = me.getBarColumns().length;
 
             // update bar heights and labels
-            _.each(me.chart.dataSeries(), function(series, s) {
-                _.each(me.__seriesElements[series.name], function(rect) {
-                    var dim = me.barDimensions(series, s, 0);
+            _.each(me.getBarColumns(), function(column, s) {
+                _.each(me.__seriesElements[column.name()], function(rect) {
+                    var dim = me.barDimensions(column, s, 0);
                     rect.animate(dim, me.theme.duration, me.theme.easing);
                 });
 
-                _.each(me.__seriesLabels[series.name], function(lbl) {
+                _.each(me.__seriesLabels[column.name()], function(lbl) {
                     var lpos;
                     if (lbl.hasClass('value')) {
                         // update value
-                        lbl.text(me.chart.formatValue(series.data[0], true));
-                        lpos = me.labelPosition(series, s, 0, 'value');
+                        lbl.text(me.chart.formatValue(column.val(0), true));
+                        lpos = me.labelPosition(column, s, 0, 'value');
                     } else if (lbl.hasClass('series')) {
-                        // update series label position
-                        lpos = me.labelPosition(series, s, 0, 'series');
+                        // update column label position
+                        lpos = me.labelPosition(column, s, 0, 'series');
                     }
                     if (lpos) {
                         lbl.animate({
@@ -223,39 +245,36 @@
             if (me.__gridLines['0']) me.__gridLines['0'].toFront();
         },
 
-        getBarColor: function(series, row, useNegativeColor, colorful) {
+        getBarColor: function(column, row, useNegativeColor, colorful) {
             var me = this,
-                main = series && useNegativeColor && series.data[row] < 0 ? 'negative' : 'main',
-                hl = series && me.chart.hasHighlight() && me.chart.isHighlighted(series);
+                main = column && useNegativeColor && column.val(row) < 0 ? 'negative' : 'main',
+                hl = column && me.chart.hasHighlight() && me.chart.isHighlighted(column);
 
-            return me.getSeriesColor(series, row, useNegativeColor);
+            return me.getSeriesColor(column, row, useNegativeColor);
         },
 
         initDimensions: function(r) {
             //
-            var me = this, c = me.__canvas,
-                dMin = 0, dMax = 0;
-            _.each(me.chart.dataSeries(), function(series) {
-                if (!isNaN(series.min)) dMin = Math.min(dMin, series.min);
-                if (!isNaN(series.max)) dMax = Math.max(dMax, series.max);
-            });
-            me.__domain = [dMin, dMax];
-            me.__scales = {
-                y: d3.scale.linear().domain([dMin, dMax])
-            };
+            var me = this,
+                c = me.__canvas,
+                domain = dw.utils.minMax(me.getBarColumns());
 
+            me.__domain = domain;
+            me.__scales = {
+                y: d3.scale.linear().domain(domain)
+            };
             me.__scales.y.rangeRound([0, c.h - c.bpad - c.tpad]);
         },
 
-        barDimensions: function(series, s, r) {
+        barDimensions: function(column, s, r) {
             var me = this,
                 sc = me.__scales,
                 c = me.__canvas,
-                n = me.chart.dataSeries().length,
+                n = me.axesDef.bars.length,
                 w, h, x, y, i, cw, bw,
                 pad = 0.35,
                 vspace = 0.1,
-                val = series.data[r];
+                val = column.val(r);
 
             if (isNaN(val)) val = 0;
 
@@ -264,7 +283,7 @@
             cw = (c.w - c.lpad - c.rpad) * (1 - vspace - vspace);
             bw = cw / (n + (n-1) * pad);
             h = sc.y(val) - sc.y(0);
-            w = Math.round(bw / series.data.length);
+            w = Math.round(bw / column.length);
             if (h >= 0) {
                 y = c.h - c.bpad - sc.y(0) - h;
             } else {
@@ -276,9 +295,9 @@
             return { width: w, height: h, x: x + Math.floor((w+1)*r), y: y, bx: x, bw: bw, pad: pad };
         },
 
-        labelPosition: function(series, s, r, type) {
-            var me = this, d = me.barDimensions(series, s, r), lbl_w,
-                val = series.data[r],
+        labelPosition: function(column, s, r, type) {
+            var me = this, d = me.barDimensions(column, s, r), lbl_w,
+                val = column.val(r),
                 c = me.__canvas,
                 lbl_top = val >= 0 || isNaN(val),
                 valign = lbl_top ? 'top' : 'bottom',
@@ -287,11 +306,11 @@
                 lbl_y = !lbl_top ? d.y - 5 : d.y + d.height + 5;
 
             if (type == "value") {
-                lbl_w = me.labelWidth(me.chart.formatValue(val,true), 'value outline hover'); 
+                lbl_w = me.labelWidth(me.chart.formatValue(val,true), 'value outline hover');
                 console.log('bw: ', d.bw, ' - bx: ', d.x, ' - lbl_w: ', lbl_w);
                 return { left: d.x + d.width * 0.5, top: val_y, width: lbl_w };
             } else if (type == "series") {
-                lbl_w = c.w / (me.chart.dataSeries().length+2);
+                lbl_w = c.w / (me.axesDef.bars.length+2);
                 if (d.bw < 30) {
                     //lblcl.push('rotate90');
                     lbl_y -= 10;  // move towards zero axis
@@ -301,7 +320,7 @@
                 if (d.bw < 20) {
                     lbl_w = 90;
                 }
-                //console.log(series.name, { left: d.bx + d.bw * 0.5, top: lbl_y, width: lbl_w, halign: halign, valign: valign });
+                //console.log(column.name(), { left: d.bx + d.bw * 0.5, top: lbl_y, width: lbl_w, halign: halign, valign: valign });
                 return { left: d.bx + d.bw * 0.5, top: lbl_y, width: lbl_w, halign: halign, valign: valign };
             }
         },
@@ -325,7 +344,7 @@
                 c = me.__canvas,
                 domain = me.__domain,
                 styles = me.__styles,
-                ticks = me.getYTicks(c.h, true),
+                ticks = me.getYTicks(yscale, c.h, true),
                 tickLabels = me.__tickLabels = me.__tickLabels || {},
                 gridLines = me.__gridLines = me.__gridLines || {};
 
@@ -388,20 +407,20 @@
             });
         },
 
-        hoverSeries: function(series) {
+        hoverSeries: function(column) {
             var me = this;
-            _.each(me.chart.dataSeries(), function(s) {
-                _.each(me.__seriesLabels[s.name], function(lbl) {
-                    if (series !== undefined && s.name == series.name) {
+            _.each(me.getBarColumns(), function(col) {
+                _.each(me.__seriesLabels[col.name()], function(lbl) {
+                    if (column !== undefined && col.name() == column.name()) {
                         lbl.addClass('hover');
                         if (lbl.hasClass('showOnHover')) lbl.show(0.5);
                     } else {
                         lbl.removeClass('hover');
                         if (lbl.hasClass('showOnHover')) lbl.hide(0.5);
                     }
-                    _.each(me.__seriesElements[s.name], function(el) {
-                        var fill = me.getBarColor(s, el.data('row'), me.get('negative-color', false)), stroke;
-                        if (series !== undefined && s.name == series.name) fill = chroma.color(fill).darken(14).hex();
+                    _.each(me.__seriesElements[col.name()], function(el) {
+                        var fill = me.getBarColor(col, el.data('row'), me.get('negative-color', false)), stroke;
+                        if (column !== undefined && col.name() == column.name()) fill = chroma.color(fill).darken(14).hex();
                         stroke = chroma.color(fill).darken(18).hex();
                         if (el.attrs.fill != fill || el.attrs.stroke != stroke)
                             el.animate({ fill: fill, stroke: stroke }, 50);
