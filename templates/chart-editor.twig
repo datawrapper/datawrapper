@@ -42,35 +42,20 @@
 
 <script type="text/javascript">
 
-(function($) {
+$(function() {
 
     _.templateSettings = {
         interpolate : /\{\{(.+?)\}\}/g
     };
 
-    $(function() {
-        var chart = DW.currentChart = new Datawrapper.EditableChart(JSON.parse('{{ chart.toJSON|raw }}'));
+    var chart = DW.currentChart = new Datawrapper.EditableChart(JSON.parse('{{ chart.toJSON|raw }}'));
 
-        chart.setLocale('{{ chartLocale }}', {{ metricPrefix | json | raw }});
+    chart.setLocale('{{ chartLocale }}', {{ metricPrefix | json | raw }});
 
-        if (chart.get('lastEditStep') < {{ createstep }}) {
-            DW.__firstTime = true;
-            chart.set('lastEditStep', {{ createstep }});
-        }
-
-        /*var saveMsg = $('#msg-changes-saved');
-        chart.onSave(function() {
-            setTimeout(function() {
-                saveMsg.css({ top: 65 }).animate({ opacity: 1 }, 100);
-                setTimeout(function() {
-                    saveMsg.animate({ opacity: 0 }, 700, function() {
-                        saveMsg.css({ top: -45 });
-                    });
-                }, 1000);
-            }, 500);
-        });*/
-    });
-
+    if (chart.get('lastEditStep') < {{ createstep }}) {
+        DW.__firstTime = true;
+        chart.set('lastEditStep', {{ createstep }});
+    }
 
     $('.chart-editor').on('click', '.submit', function(e) {
         var a = $(e.target);
@@ -83,7 +68,7 @@
         }
     });
 
-})(jQuery);
+});
 
 
 </script>

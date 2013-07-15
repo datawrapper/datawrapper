@@ -32,7 +32,8 @@ table.htCore tr td {
 <script type="text/javascript">
 $(function() {
 
-    var chart = DW.currentChart;
+    var chart = DW.currentChart,
+        dataset;
 
     chart.onChange(reload);
 
@@ -75,10 +76,10 @@ $(function() {
 
     // update data table after format changes
     $('.number-format').change(function() {
-        updateTable(DW.dataset, chart);
+        updateTable(dataset, chart);
     });
 
-    function updateTable(dataset, chart) {
+    function updateTable() {
 
         function isNone(val) {
             return val === null || val === undefined || (_.isNumber(val) && isNaN(val));
@@ -94,24 +95,18 @@ $(function() {
 
         dataset.ignoreIgnores = true;
 
-        //if (horzHeaders) {
-            var tr = [];
-            if (vertHeaders) tr.push('');
-            _.each(dataset.series(), function(s) {
-                tr.push((!isNone(s.name) ? s.name : ''));
-            });
-            data.push(tr);
-        //}
+        var tr = [];
+        dataset.eachColumn(function(column) {
+            tr.push((!isNone(column.name()) ? column.name() : ''));
+        });
+        data.push(tr);
 
         dataset.eachRow(function(row) {
             var tr = [];
-            if (dataset.hasRowNames()) {
-                tr.push(!isNone(dataset.rowName(row)) ? dataset.rowName(row) : '');
-            }
-            dataset.eachSeries(function(s, i) {
-                var val = s.data[row];
+            dataset.eachColumn(function(column) {
+                var val = column.val(row);
                 val = chart.formatValue(val, true);
-                tr.push((!isNone(s.data[row]) ? $("<div />").html(val).text() : ''));
+                tr.push((!isNone(column.val(row)) ? $("<div />").html(val).text() : ''));
             });
             data.push(tr);
         });
@@ -192,15 +187,15 @@ $(function() {
     }
 
     function reload(f) {
-        chart.dataset(function(ds) {
+        chart.dataset().done(function(ds) {
             if (f === undefined) {
                 if (chart.get('metadata.data.vertical-header') === undefined) {
                     chart.set('metadata.data.vertical-header', isNaN(ds.series(0).data[0]));
                 }
                 chart.sync('#has-vertical-headers', 'metadata.data.vertical-header');
             }
-            DW.dataset = ds;
-            updateTable(ds, chart);
+            dataset = ds;
+            updateTable();
         });
     }
 
