@@ -20,7 +20,9 @@
             var me = this, table, tr, td, th, r,
                 isHighlighted = function(series) {
                     return me.chart.hasHighlight() && me.chart.isHighlighted(series);
-                };
+                },
+                dataset = me.dataset;
+
             table = $('<table id="datatable"><thead /><tbody /></table>');
             tr = $('<tr />');
             if (me.chart.hasRowHeader()) {
@@ -29,16 +31,16 @@
                 tr.append('<th>'+h+'</th>');
             }
             var colType = [];
-            _.each(me.chart.dataSeries(), function(series) {
-                th = $('<th>'+series.name+'</th>');
-                if (isHighlighted(series)) {
+            dataset.eachColumn(function(column) {
+                th = $('<th>'+column.name()+'</th>');
+                if (isHighlighted(column)) {
                     th.addClass('highlight');
                 }
                 var number_count = 0;
-                _.each(series.data, function(val) {
-                    if (_.isNumber(val)){number_count ++;}
+                column.each(function(val) {
+                    if (_.isNumber(val)) number_count ++;
                 });
-                if (number_count > series.data.length/2) {
+                if (number_count > column.length / 2) {
                     colType.push('number');
                     th.addClass('number');
                 } else {
@@ -47,7 +49,7 @@
                 tr.append(th);
             });
             $('thead', table).append(tr);
-            for (r = 0; r < me.chart.numRows(); r++) {
+            _.each(_.range(dataset.numRows()), function(r) {
                 tr = $('<tr />');
                 var highlighted_rows = me.get('highlighted-rows');
                 if (me.chart.hasRowHeader()) {
@@ -63,26 +65,26 @@
                         tr.addClass('highlight');
                     }
                 }
-                _.each(me.chart.dataSeries(), function(series, s) {
-                    var cell_content = me.chart.formatValue(series.data[r], true);
+                dataset.eachColumn(function(column, s) {
+                    var cell_content = me.chart.formatValue(column.val(r), true);
                     if (cell_content == "n/a") {
                         cell_content = "&mdash;";
                     }
                     td = $('<td>'+cell_content+'</td>');
-                    if (isHighlighted(series)) {
+                    if (isHighlighted(column)) {
                         td.addClass('highlight');
                     }
                     // set a type as classe
-                    if (_.isNumber(series.data[r]))
+                    if (_.isNumber(column.val(r)))
                         td.addClass("number");
                     else if (cell_content == "&mdash;")
                         td.addClass("not-available");
                     else if (cell_content == "&mdash;")
-                    td.attr('title', series.name);
+                    td.attr('title', column.name());
                     tr.append(td);
                 });
                 $('tbody', table).append(tr);
-            }
+            });
             el.append(table);
 
             if (me.get('table-responsive')) {
