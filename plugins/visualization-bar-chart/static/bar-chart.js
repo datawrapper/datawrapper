@@ -19,6 +19,11 @@
             reverse = me.get('reverse-order'),
             useNegativeColor = me.get('negative-color', false);
 
+            me.axesDef = {
+                labels: [0],
+                bars: _.range(1, me.dataset.numColumns())
+            };
+
             if (!_.isUndefined(me.get('selected-row'))) {
                 row = me.get('selected-row', 0);
                 row = row > me.chart.numRows() ? 0 : row;
@@ -30,7 +35,7 @@
             var c = me.initCanvas({
                 h: Math.max(
                     me.getSize()[1] - me.theme.padding.top - me.theme.padding.bottom - me.theme.vpadding,
-                    18 * 1.35 * me.chart.dataSeries().length + 5
+                    18 * 1.35 * me.getBarColumns().length + 5
                 )
             });
 
@@ -49,11 +54,11 @@
 
             c.lastBarY = 0;
 
-            _.each(me.chart.dataSeries(sortBars, reverse), function(series, s) {
-                _.each(series.data, function(val, r) {
-                    var d = me.barDimensions(series, s, r),
-                        lpos = me.labelPosition(series, s, r),
-                        fill = me.getSeriesColor(series, r, useNegativeColor),
+            _.each(me.getBarColumns(sortBars, reverse), function(column, s) {
+                column.each(function(val, r) {
+                    var d = me.barDimensions(column, s, r),
+                        lpos = me.labelPosition(column, s, r),
+                        fill = me.getSeriesColor(column, r, useNegativeColor),
                         stroke = chroma.color(fill).darken(14).hex();
 
                     if (labelsInsideBars) d.x -= 10;
@@ -62,25 +67,25 @@
                     var bar = me.registerSeriesElement(c.paper.rect(d.x, d.y, d.width, d.height).attr({
                         'stroke': stroke,
                         'fill': fill
-                    }).data('strokeCol', stroke), series);
+                    }).data('strokeCol', stroke), column);
                     if (me.theme.barChart.barAttrs) {
                         bar.attr(me.theme.barChart.barAttrs);
                     }
 
                     if (lpos.show_val) {
-                        me.registerSeriesLabel(me.label(lpos.val_x, lpos.top, me.chart.formatValue(series.data[r], true),{
+                        me.registerSeriesLabel(me.label(lpos.val_x, lpos.top, me.chart.formatValue(column.val(r), true),{
                             // w: 40,
                             align: lpos.val_align,
                             cl: 'value' + lpos.lblClass
-                        }), series);
+                        }), column);
                     }
 
                     if (lpos.show_lbl) {
-                        me.registerSeriesLabel(me.label(lpos.lbl_x , lpos.top, series.name,{
+                        me.registerSeriesLabel(me.label(lpos.lbl_x , lpos.top, column.name(), {
                             w: 160,
                             align: lpos.lbl_align,
                             cl: 'series' + lpos.lblClass
-                        }), series);
+                        }), column);
                     }
 
                     c.lastBarY = Math.max(c.lastBarY, d.y + d.height);
@@ -100,6 +105,19 @@
 
         },
 
+        getBarColumns: function(sortBars, reverse) {
+            var me = this,
+                columns = _.map(me.axesDef.bars, function(i) { return me.dataset.column(i); });
+            if (sortBars) {
+                columns.sort(function(a, b) {
+                    var aType = a.type(true);
+                    return aType.toNum ? aType.toNum(a.val(0)) - aType.toNum(b.val(0)) : a.val() > b.val() ? 1 : a.val() == b.val() ? 0 : -1;
+                });
+            }
+            if (reverse) columns.reverse();
+            return columns;
+        },
+
         update: function(row) {
             var me = this;
             // re-filter dataset
@@ -109,17 +127,17 @@
             me.initDimensions(0);
 
             // update bar heights and labels
-            _.each(me.chart.dataSeries(me.get('sort-values', false)), function(series, s) {
-                _.each(me.__seriesElements[series.name], function(rect) {
-                    var dim = me.barDimensions(series, s, 0);
+            _.each(me.getBarColumns(me.get('sort-values', false)), function(column, s) {
+                _.each(me.__seriesElements[column.name()], function(rect) {
+                    var dim = me.barDimensions(column, s, 0);
                     rect.animate(dim, me.theme.duration, me.theme.easing);
                 });
 
-                _.each(me.__seriesLabels[series.name], function(lbl) {
-                    var pos = me.labelPosition(series, s, 0), lpos;
+                _.each(me.__seriesLabels[column.name()], function(lbl) {
+                    var pos = me.labelPosition(column, s, 0), lpos;
                     if (lbl.hasClass('value')) {
                         // update value
-                        lbl.text(me.chart.formatValue(series.data[0]));
+                        lbl.text(me.chart.formatValue(column.val(0)));
                         lpos = { halign: pos.val_align, left: pos.val_x, top: pos.top };
                     } else if (lbl.hasClass('series')) {
                         // update series label position
@@ -152,10 +170,11 @@
         initDimensions: function(r) {
             //
             var me = this, c = me.__canvas,
-                dMin = 0, dMax = 0, w = c.w - c.lpad - c.rpad - 30;
-            _.each(me.chart.dataSeries(), function(series) {
-                if (!isNaN(series.min)) dMin = Math.min(dMin, series.min);
-                if (!isNaN(series.max)) dMax = Math.max(dMax, series.max);
+                dMin = 0, dMax = 0, w = c.w - c.lpad - c.rpad - 30,
+                columns = me.getBarColumns();
+            _.each(columns, function(column) {
+                if (!isNaN(column.range()[0])) dMin = Math.min(dMin, column.range()[0]);
+                if (!isNaN(column.range()[1])) dMax = Math.max(dMax, column.range()[1]);
             });
             me.__domain = [dMin, dMax];
             me.__scales = {
@@ -171,20 +190,20 @@
              * largestVal[1] .. max absolute value               /
              */
             var maxw = [0, 0, 0, 0], ratio, largestVal = [0, 0];
-            _.each(me.chart.dataSeries(), function(series, s) {
-                if (isNaN(series.data[r])) return;
-                var neg = series.data[r] < 0;
-                largestVal[neg ? 1 : 0] = Math.max(largestVal[neg ? 1 : 0], Math.abs(series.data[r]));
+            _.each(columns, function(column, s) {
+                if (isNaN(column.val(r))) return;
+                var neg = column.val(r) < 0;
+                largestVal[neg ? 1 : 0] = Math.max(largestVal[neg ? 1 : 0], Math.abs(column.val(r)));
             });
-            _.each(me.chart.dataSeries(), function(series, s) {
-                if (isNaN(series.data[r])) return;
-                var val = series.data[r],
+            _.each(columns, function(column, s) {
+                if (isNaN(column.val(r))) return;
+                var val = column.val(r),
                     neg = val < 0,
                     t = neg ? 2 : 0,
                     bw;
                 bw = Math.abs(val) / (largestVal[0] + largestVal[1]) * w;
-                maxw[t] = Math.max(maxw[t], me.labelWidth(series.name, 'series') + 20);
-                maxw[t+1] = Math.max(maxw[t+1], me.labelWidth(me.chart.formatValue(series.data[r], true), 'value') + 20 + bw);
+                maxw[t] = Math.max(maxw[t], me.labelWidth(column.name(), 'series') + 20);
+                maxw[t+1] = Math.max(maxw[t+1], me.labelWidth(me.chart.formatValue(column.val(r), true), 'value') + 20 + bw);
             });
 
             c.left = 0;
@@ -212,9 +231,9 @@
         },
 
         barDimensions: function(series, s, r) {
-            var me = this, w, h, x, y, i, cw, n = me.chart.dataSeries().length,
+            var me = this, w, h, x, y, i, cw, n = me.getBarColumns().length,
                 sc = me.__scales, c = me.__canvas, bw, pad = 0.35, vspace = 0.1,
-                val = series.data[r];
+                val = series.val(r);
 
             if (isNaN(val)) val = 0;
             //
@@ -238,7 +257,7 @@
             var me = this,
                 d = me.barDimensions(series, s, r),
                 c = me.__canvas,
-                val = series.data[r],
+                val = series.val(r),
                 lbl_left = val >= 0 || isNaN(val),
                 lbl_x = lbl_left ?
                     c.zero - 10
@@ -288,7 +307,7 @@
 
         hoverSeries: function(series) {
             var me = this;
-            _.each(me.chart.dataSeries(), function(s) {
+            _.each(me.getBarColumns(), function(s) {
                 _.each(me.__seriesLabels[s.name], function(lbl) {
                     if (series !== undefined && s.name == series.name) {
                         lbl.addClass('hover');
