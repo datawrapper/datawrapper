@@ -64,7 +64,6 @@
                     : me.labelWidth(column.name(), 'series')
                 );
             });
-            console.log(mm, mm_r);
             c.bpad = lh * mm_r + 10;
             c.tpad += lh * (1-mm_r);
 
@@ -91,7 +90,6 @@
             _.each(me.getBarColumns(sortBars, reverse), function(column, s) {
                 column.each(function(val, r) {
                     var d = me.barDimensions(column, s, r);
-                    console.log('bar dim', d);
                     var fill = me.getBarColor(column, r, me.get('negative-color', false)),
                         stroke = chroma.color(fill).darken(14).hex(),
                     // create bar
@@ -307,7 +305,6 @@
 
             if (type == "value") {
                 lbl_w = me.labelWidth(me.chart.formatValue(val,true), 'value outline hover');
-                console.log('bw: ', d.bw, ' - bx: ', d.x, ' - lbl_w: ', lbl_w);
                 return { left: d.x + d.width * 0.5, top: val_y, width: lbl_w };
             } else if (type == "series") {
                 lbl_w = c.w / (me.axesDef.bars.length+2);
