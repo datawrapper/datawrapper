@@ -35,9 +35,10 @@ $(function() {
     }
 
     $.fn.colorpicker = function(props) {
-        var rt = $(this),
-            colors = rt.data('colors').toLowerCase().split(','),
-            active = (rt.data('color') || "").toLowerCase();
+        var rt = $(this), colors, active;
+        if (!rt.data('colors')) return;
+        colors = rt.data('colors').toLowerCase().split(','),
+        ctive = (rt.data('color') || "").toLowerCase();
         // clean up html at first
         rt.html('');
         rt.css({
