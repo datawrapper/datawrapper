@@ -1,6 +1,12 @@
 CHANGELOG
 ---------
 
+### 1.5.0
+* refactored javascript core
+* refactored core visualizations to new javascript core
+* refactored custom color feature
+* allow sorting visualizations by dependencies
+
 ### 1.4.4
 * added column public_version to chart table
 * incrementing public_version on every publication
