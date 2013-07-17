@@ -14,7 +14,7 @@
                 theme = vis.theme,
                 chart = vis.chart,
                 y1Domain,
-                axesDef = me.axes();
+                axesDef = vis.axes();
 
             // returns true if the x axis is of type date
             function useDateFormat() {
@@ -216,7 +216,7 @@
             function lineColor(column) {
                 var bgcol = chroma.hex(theme.colors.background),
                     bglum = bgcol.luminance(),
-                    col = chroma.hex(vis.getSeriesColor(column)),
+                    col = chroma.hex(vis.getKeyColor(column.name())),
                     min_contrast = chart.hasHighlight() ? (chart.isHighlighted(column) ? 4.5 : 1.45) : 1.7,
                     i = 0;
 
@@ -231,7 +231,8 @@
             function onMouseMove(e) {
                 var x = e.pageX,
                     y = e.pageY,
-                    moColumn = vis.getSeriesByPoint(x, y, e),
+                    moKey = vis.getKeyByPoint(x, y, e),
+                    moColumn = moKey ? dataset.column(moKey) : null,
                     row = dataRowByPoint(x, y, e),
                     hoveredNode = moColumn !== null,
                     xLabelTop = c.h - c.bpad + theme.lineChart.xLabelOffset,
@@ -265,7 +266,7 @@
                     // we add every value label
                     var lbl = column.__label = column.__label ||
                         vis.label(0, 0, '0', {
-                            cl: 'tooltip'+(vis.getSeriesColor(column) ? ' inverted' : ''),
+                            cl: 'tooltip'+(vis.getKeyColor(column.name()) ? ' inverted' : ''),
                             align: 'center',
                             valign: 'middle',
                             css: {
@@ -273,7 +274,7 @@
                             }
                         }),
                     val = chart.formatValue(column.val(row));
-                    lbl.data('series', column);
+                    lbl.data('key', column.name());
                     lbl.data('row', 0);
                     lbl.text(val);
 
@@ -297,15 +298,15 @@
                         var hide_label = chart.hasHighlight() && !chart.isHighlighted(column) && (column != moColumn);
                         if (vis.get('direct-labeling')) {
                             if (hide_label) {
-                                $.each(vis.getSeriesLabels(column), function(i, l) { l.hide(); });
+                                $.each(vis.getLabels(column.name()), function(i, l) { l.hide(); });
                             } else {
-                                $.each(vis.getSeriesLabels(column), function(i, l) { l.show(); });
+                                $.each(vis.getLabels(column.name()), function(i, l) { l.show(); });
                             }
                         } else {
                             if (hide_label) {
-                                $.each(vis.getSeriesLabels(column), function(i, l) { l.el.css('text-decoration', 'none'); });
+                                $.each(vis.getLabels(column.name()), function(i, l) { l.el.css('text-decoration', 'none'); });
                             } else {
-                                if (!chart.isHighlighted(s)) $.each(vis.getSeriesLabels(column), function(i, l) { l.el.css('text-decoration', 'underline'); });
+                                if (!chart.isHighlighted(column.name())) $.each(vis.getLabels(column.name()), function(i, l) { l.el.css('text-decoration', 'underline'); });
                             }
                         }
                     }
@@ -499,11 +500,12 @@
                 sw = lineWidth(col);
                 var palette = theme.colors.palette.slice();
 
-                if (highlightedSeriesCount < 5) {
-                    if (chart.isHighlighted(col)) {
-                        vis.setSeriesColor(col, palette[(seriesColIndex + baseCol) % palette.length]);
-                        seriesColIndex++;
-                    }
+                //if (highlightedSeriesCount < 5) {
+                //    if (chart.isHighlighted(col)) {
+                if (legend.pos != 'direct' && all_series.length > 1) {
+                    //if (highlightedSeriesCount)
+                    vis.setKeyColor(col.name(), palette[(seriesColIndex + baseCol) % palette.length]);
+                    seriesColIndex++;
                 }
 
                 var strokeColor = lineColor(col);
@@ -511,27 +513,27 @@
                 all_paths.push(paths);
 
                 _.each(paths, function(path) {
-                    vis.registerSeriesElement(c.paper.path(path).attr({
+                    vis.registerElement(c.paper.path(path).attr({
                         'stroke-width': sw,
                         'stroke-linecap': 'round',
                         'stroke-linejoin': 'round',
                         'stroke-opacity': 1,
                         'stroke': strokeColor
-                    }), col);
+                    }), col.name());
 
                     // add invisible line on top to make selection easier
-                    vis.registerSeriesElement(c.paper.path(path).attr({
+                    vis.registerElement(c.paper.path(path).attr({
                         'stroke-width': sw*4,
                         'opacity': 0
-                    }), col);
+                    }), col.name());
                 });
 
                 if (vis.get('connect-missing-values', false)) {
-                    vis.registerSeriesElement(c.paper.path(connectMissingValuePath).attr({
+                    vis.registerElement(c.paper.path(connectMissingValuePath).attr({
                         'stroke-width': sw*0.35,
                         'stroke-dasharray': '- ',
                         stroke: strokeColor
-                    }), col);
+                    }), col.name());
                 }
 
                 if (lineLabelsVisible()) {
@@ -584,7 +586,7 @@
                         legend.yoffset += lbl.height('auto').height()+5;
                     }
                     lbl.data('highlighted', chart.isHighlighted(col));
-                    vis.registerSeriesLabel(lbl, col);
+                    vis.registerLabel(lbl, col.name());
                 } // */
             });  // _.each(all_series,
 
@@ -746,7 +748,13 @@
             this.dataset.eachRow(func);
         },
 
-        hoverSeries: function(series) { },
+        hover: function(series) { },
+
+        keys: function() {
+            var vis = this,
+                axes = vis.axes();
+            return [].concat(axes.y1, axes.y2 || []);
+        },
 
         optimizeLabelPositions: function(labels, pad, valign) {
             var i = 1, c = valign == 'top' ? 0 : valign == 'middle' ? 0.5 : 1;
