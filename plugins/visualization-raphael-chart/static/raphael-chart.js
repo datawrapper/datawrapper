@@ -164,7 +164,7 @@
             _.each(keyElements, function(elements, key) {
                 var h = !hover_key || key == hover_key;
                 _.each(elements, function(el) {
-                    el.attr({ opacity: h ? 1 : 0.5 });
+                    el.animate({ opacity: h ? 1 : 0.5 }, 80);
                 });
             });
 
@@ -173,7 +173,8 @@
                 var h = !hover_key || key == hover_key;
                 _.each(labels, function(lbl) {
                     //lbl.el.css({ opacity: h ? 1 : 0.5 });
-                    if (h) lbl.addClass('highlighted');
+                    if (key == hover_key) lbl.addClass('highlighted');
+                    else lbl.removeClass('highlighted');
                 });
             });
         },
