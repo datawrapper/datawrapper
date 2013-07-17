@@ -18,6 +18,15 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
             "dimensions" => 1,
             "extends" => "raphael-chart",
             "order" => 0,
+            "axes" => array(
+                "labels" => array(
+                    "accepts" => array("text", "date")
+                ),
+                "columns" => array(
+                    "accepts" => array("number"),
+                    "multiple" => true
+                )
+            ),
             "options" => array(
                 "sort-values" => array(
                     "type" => "checkbox",
@@ -47,6 +56,15 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
             "extends" => "raphael-chart",
             "color-by" => "row",
             "order" => 10,
+            "axes" => array(
+                "labels" => array(
+                    "accepts" => array("text", "date")
+                ),
+                "columns" => array(
+                    "accepts" => array("number"),
+                    "multiple" => true
+                )
+            ),
             "options" => array(
                 "sort-values" => array(
                     "type" => "checkbox",
@@ -77,6 +95,15 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
             "extends" => "grouped-column-chart",
             "color-by" => "row",
             "order" => 10,
+            "axes" => array(
+                "labels" => array(
+                    "accepts" => array("text", "date")
+                ),
+                "columns" => array(
+                    "accepts" => array("number"),
+                    "multiple" => true
+                )
+            ),
             "options" => array(
                 "sort-values" => array(
                     "type" => "checkbox",
