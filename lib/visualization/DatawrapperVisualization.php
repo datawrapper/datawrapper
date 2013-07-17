@@ -19,7 +19,7 @@ class DatawrapperVisualization {
     /*
      * returns a list of all visualization meta arrays
      */
-    public static function all() { return self::getInstance()->_all(); }
+    public static function all($sort = 'order') { return self::getInstance()->_all($sort); }
 
     /*
      * returns one specific visualization meta array
@@ -39,14 +39,61 @@ class DatawrapperVisualization {
         $this->visualizations[$meta['id']] = $meta;
     }
 
-    private function _all() {
+    private function _all($sort = 'order') {
         $res = array_values($this->visualizations);
-        // sort by something
-        usort($res, function ($a, $b) {
-            if (!isset($a['order'])) $a['order'] = 99999;
-            if (!isset($b['order'])) $b['order'] = 99999;
-            return $a['order'] - $b['order'];
-        });
+        if ($sort == 'order') {
+            // sort by something
+            usort($res, function ($a, $b) {
+                if (!isset($a['order'])) $a['order'] = 99999;
+                if (!isset($b['order'])) $b['order'] = 99999;
+                return $a['order'] - $b['order'];
+            });
+        } else if ($sort == 'dependencies') {
+            // sorting visualizations so that dependencies are coming fists
+            $mysort = function ($a, $b) {
+                if (isset($a['extends']) && $a['extends'] == $b['id']) {
+                    return 1;
+                }
+                if (isset($b['extends']) && $b['extends'] == $a['id']) {
+                    return -1;
+                }
+                return 0;
+            };
+            //TODO: we should probably use a dependency tree instead of this sort hack
+            usort($res, $mysort);
+            usort($res, $mysort);
+            usort($res, $mysort);
+            usort($res, $mysort);
+
+            // build plugin dependency tree
+            $data = array();
+            $index = array();
+            $roots = array();
+            foreach ($res as $vis) {
+                $data[$vis['id']] = $vis;
+                if (!empty($vis['extends'])) {
+                    $index[$vis['extends']][] = $vis['id'];
+                } else {
+                    $roots[] = $vis['id'];
+                }
+            }
+            // sort visualizations by dep tree
+            $res = array();
+            function add_vis(&$res, $data, $index, $parent_id, $level) {
+                $parent_id = $parent_id === NULL ? "NULL" : $parent_id;
+                // load this plugin
+                $vis = $data[$parent_id];
+                // require plugin class
+                $res[] = $vis;
+
+                if (isset($index[$parent_id])) {
+                    foreach ($index[$parent_id] as $id) {
+                        add_vis($res, $data, $index, $id, $level + 1);
+                    }
+                }
+            }
+            foreach ($roots as $id) add_vis($res, $data, $index, $id, 0);
+        }
         return $res;
     }
 
