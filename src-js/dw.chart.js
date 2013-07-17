@@ -165,8 +165,9 @@
 
         isHighlighted: function(col) {
             if (col === undefined) return false;
-            var hl = this.get('metadata.visualize.highlighted-series');
-            return !_.isArray(hl) || hl.length === 0 || _.indexOf(hl, col.name()) >= 0;
+            var hl = this.get('metadata.visualize.highlighted-series'),
+                col_name = dw.utils.name(col);
+            return !_.isArray(hl) || hl.length === 0 || _.indexOf(hl, col_name) >= 0;
         },
 
         setLocale: function(locale, metric_prefix) {
