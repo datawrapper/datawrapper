@@ -22,7 +22,7 @@ class DatawrapperPlugin_VisualizationPieChart extends DatawrapperPlugin_Visualiz
             "dimensions" => 1,
             "axes" => array(
                 "labels" => array(
-                    "accepts" => array("date")
+                    "accepts" => array("text")
                 ),
                 "slices" => array(
                     "accepts" => array("number"),

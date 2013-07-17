@@ -89,11 +89,10 @@
             this.setRoot(el);
 
             var me = this,
+                dataset = me.dataset,
                 sort = true,
                 donut = me.isDonut(),
                 row = 0;
-
-            me.axesDef = { rowLabel: [0], wedges: _.range(1, me.dataset.numColumns()) };
 
             // 2d -> 1d
             if (!_.isUndefined(me.get('selected-row'))) {
@@ -101,8 +100,19 @@
                 if (row > me.chart.numRows() || row === undefined) row = 0;
             }
 
-            var filterUI = me.getFilterUI(row);
-            if (filterUI) $('#header').append(filterUI);
+            me.axesDef = me.axes();
+            if (!me.axesDef) return;
+
+            var sliceColumns = _.map(me.axesDef.slices, function(i) { return dataset.column(i); });
+                filter = dw.utils.filter(dw.utils.columnNameColumn(sliceColumns), row),
+                filterUI = filter.ui(me);
+
+            if (filterUI) {
+                $('#header').append(filterUI);
+                filter.change(function(val, i) {
+                    me.update(i);
+                });
+            }
 
             var c = me.initCanvas({}, 0, filterUI ? filterUI.height()+10 : 0),
                 chart_width = c.w,
@@ -115,7 +125,6 @@
             c.ir = donut ? c.or * 0.3 : 0;
             c.or_sq = c.or * c.or;
             c.ir_sq = c.ir * c.ir;
-
 
             me.init();
 
@@ -133,6 +142,7 @@
          */
         update: function(row) {
             var me = this,
+                dataset = me.dataset,
                 groupAfter = me.groupAfter(),
                 c = me.__canvas,
                 donut = me.isDonut(),
@@ -140,25 +150,40 @@
                 FA = me.getFullArc(),
                 slices = me.__slices = me.__slices ? me.__slices : {};
 
-            me.chart.filterRow(row);
-
-            var series = me.axesDef.wedges.map(function(i) { return me.dataset.column(i); }),
+            var column = dataset.column(me.axesDef.slices[row]),
+                labels = dataset.column(me.axesDef.labels),
                 total = 0, min = Number.MAX_VALUE, max = 0,
-                reverse, oseries, others = 0, ocnt = 0, hasNegativeValues = false;
+                reverse,
+                ovalues,
+                others = 0,
+                ocnt = 0,
+                hasNegativeValues = column.range()[0] < 0,
+                values = [];
 
-             if (me.get('sort-values', true)) series = series.sort(function(c0, c1) { return c1.val(me.__initialRow) - c0.val(me.__initialRow); });
+            // pull values and labels from columns
+            column.each(function(val, i) {
+                values.push({
+                    name: labels.val(i),
+                    value: val,
+                    index: i
+                });
+            });
+
+            // sort values by first slice column
+            if (me.get('sort-values', true)) {
+                values.sort(function(a, b) {
+                    return dataset.column(me.axesDef.slices[0]).val(b.index) -
+                        dataset.column(me.axesDef.slices[0]).val(a.index);
+                });
+            }
 
             // now group small series into one big chunk named 'others'
-            oseries = [];
-            _.each(series, function(s, i) {
-                if (s.val(0) < 0) {
-                    hasNegativeValues = true;
-                    return;
-                }
-                if (i < groupAfter) oseries.push(s);
+            ovalues = me.__values = [];
+            _.each(values, function(o, i) {
+                if (i < groupAfter) ovalues.push(o);
                 else {
                     ocnt += 1;
-                    others += s.val(0);
+                    others += o.value;
                 }
             });
 
@@ -166,19 +191,17 @@
                 me.warn('<b>Warning:</b> Pie charts are not suitable for displaying negative values.');
             }
             if (ocnt > 0) {
-                var _others = d3.column(me.translate('other'), [others]);
-                oseries.push(_others);
-                me.chart.__dataset.__seriesByName[_others.name()] = _others;
+                ovalues.push({ label: me.translate('other'), value: others });
             }
 
-            _.each(oseries, function(s) {
-                total += s.val(0);
-                min = Math.min(min, s.val(0));
-                max = Math.max(max, s.val(0));
+            _.each(ovalues, function(s) {
+                total += s.value;
+                min = Math.min(min, s.value);
+                max = Math.max(max, s.value);
             });
-            reverse = min < total / series.length * 0.66 || max > total/series.length * 1.5;
+            reverse = min < total / ovalues.length * 0.66 || max > total/ovalues.length * 1.5;
             sa = -HALF_PI;
-            if (reverse) sa += FA * (series[0].val(0) / total);
+            if (reverse) sa += FA * (ovalues[0].value / total);
 
             if (FA < TWO_PI) {
                 reverse = false;
@@ -197,39 +220,40 @@
                 return [a0, a1];
             }
 
-            _.each(oseries, function(s) {
+            _.each(ovalues, function(o) {
 
-                var da = s.val(0) / total * FA,
-                    fill = me.getSeriesColor(s, 0),
+                var da = o.value / total * FA,
+                    fill = me.getKeyColor(o.name, 0),
                     stroke = chroma.color(fill).darken(15).hex(),
                     a0 = reverse ? sa - da : sa,
                     a1 = reverse ? sa : sa + da,
-                    value = showTotal ? Math.round(s.val(0) / total * 100)+'%' : me.chart.formatValue(s.val(0), true);
+                    value = showTotal ? Math.round(o.value / total * 100)+'%' : me.chart.formatValue(o.value, true);
 
-                if (s.val(0) === 0) return;
+                if (o.value === 0) return;
 
-                if (!slices[s.name()]) {
-                    var lblcl = me.chart.hasHighlight() && me.chart.isHighlighted(s) ? 'series highlighted' : 'series';
+                if (!slices[o.name]) {
+                    var lblcl = me.chart.hasHighlight() && me.chart.isHighlighted(o.name) ? 'series highlighted' : 'series';
                     if (me.invertLabel(fill)) lblcl += ' inverted';
 
-                    var lbl = me.registerSeriesLabel(me.label(0, 0, '<b>'+s.name()+'</b><br />'+value, {
+                    var lbl = me.registerLabel(me.label(0, 0, '<b>'+o.name+'</b><br />'+value, {
                         w: 80, cl: lblcl, align: 'center', valign: 'middle'
-                    }), s);
+                    }), o.name);
 
-                    slice = slices[s.name()] = Slice(c.paper, c.cx, c.cy, c.or, c.ir, a0, a1, lbl, me.theme);
+                    slice = slices[o.name] = Slice(c.paper, c.cx, c.cy, c.or, c.ir, a0, a1, lbl, me.theme);
                     slice.path.attr({
                         'stroke': me.theme.colors.background,
                         'stroke-width': 2,
                         'fill': fill
                     });
+                    slice.path.data('slice', slice);
+                    me.registerElement(slice.path, o.name);
                 } else {
-                    slice = slices[s.name()];
-                    slice.label.text('<b>'+s.name()+'</b><br />'+value);
+                    slice = slices[o.name];
+                    slice.label.text('<b>'+o.name+'</b><br />'+value);
                     slice.animate(c.cx, c.cy, c.or, c.ir, a0, a1, me.theme.duration, me.theme.easing);
-
                 }
 
-                me.__seriesAngles[s.name()] = normalize(a0, a1);
+                me.__seriesAngles[o.name] = normalize(a0, a1);
                 sa += reverse ? -da : da;
 
             });
@@ -264,7 +288,7 @@
                     return false;
                 }
             });
-            return me.dataset.column(match);
+            return _.find(me.__values, function(v) { return v.name() == match });
         },
 
         getDataRowByPoint: function(x, y) {
@@ -279,23 +303,20 @@
             
         },
 
-        hoverSeries: function(series) {
+        hover: function(hovered_key) {
             var me = this,
                 bg = chroma.color(me.theme.colors.background);
-            _.each(me.chart.dataSeries(), function(s) {
-                _.each(me.__seriesLabels[s.name()], function(lbl) {
-                    if (series !== undefined && s.name() == series.name()) {
+            _.each(me.keys(), function(key) {
+                _.each(me.__labels[key], function(lbl) {
+                    if (hovered_key !== undefined && key == hovered_key) {
                         lbl.addClass('hover');
                     } else {
                         lbl.removeClass('hover');
                     }
-                    _.each(me.__seriesElements[s.name()], function(el) {
-                        var fill = me.getSeriesColor(s, 0), stroke, hover = series !== undefined && s.name() == series.name();
-                        if (hover) fill = chroma.lch(fill).darken(bg.hcl()[2] > 60 ? 14 : -14).hex();
-                        if (el.attrs.fill != fill)
-                            el.animate({ fill: fill }, 50);
-                        if (hover) el.toFront();
-                    });
+                });
+                _.each(me.__elements[key], function(el) {
+                    var h = !hovered_key || key == hovered_key;
+                    el.stop().animate({ opacity: h ? 1 : 0.5 }, 100);
                 });
             });
         },
@@ -303,6 +324,7 @@
         unhoverSeries: function() {
             this.hoverSeries();
         }
+
     });
 
 }).call(this);

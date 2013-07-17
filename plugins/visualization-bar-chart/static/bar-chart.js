@@ -65,7 +65,7 @@
             _.each(me.getBarValues(sortBars, reverse), function(barv, s) {
                 var d = me.barDimensions(barv, s, row),
                     lpos = me.labelPosition(barv, s, row),
-                    fill = me.getSeriesColor(barv, row, useNegativeColor),
+                    fill = me.getKeyColor(barv.name, barv.value, useNegativeColor),
                     stroke = chroma.color(fill).darken(14).hex();
 
                 if (labelsInsideBars) d.x -= 10;
@@ -144,7 +144,7 @@
             me.initDimensions();
 
             // update bar heights and labels
-            _.each(me.getBarValues(row, me.get('sort-values', false)), function(bar, s) {
+            _.each(me.getBarValues(me.get('sort-values', false)), function(bar, s) {
                 _.each(me.__elements[bar.name], function(rect) {
                     var dim = me.barDimensions(bar, s, row);
                     rect.animate(dim, me.theme.duration, me.theme.easing);
@@ -248,7 +248,7 @@
         },
 
         barDimensions: function(bar, s, r) {
-            var me = this, w, h, x, y, i, cw, n = me.getBarValues(r).length,
+            var me = this, w, h, x, y, i, cw, n = me.getBarValues().length,
                 sc = me.__scales, c = me.__canvas, bw, pad = 0.35, vspace = 0.1,
                 val = bar.value;
 
@@ -297,7 +297,7 @@
                 // check if the label is bigger than the bar
                 var slblw = me.labelWidth(bar.name, 'series')+10,
                     vlblw = me.labelWidth(me.chart.formatValue(val, true), 'value')+20,
-                    fill = me.getSeriesColor(bar, r, me.get('negative-color', false));
+                    fill = me.getKeyColor(bar.name, bar.value, me.get('negative-color', false));
                 if (slblw + vlblw > d.width) {
                     show_val = false;
                     if (slblw > d.width) show_lbl = false;
@@ -333,7 +333,7 @@
                     }
                 });
                  _.each(me.__elements[bar.name], function(el) {
-                    var fill = me.getSeriesColor(s, 0, me.get('negative-color', false)), stroke;
+                    var fill = me.getKeyColor(bar.name, bar.value, me.get('negative-color', false)), stroke;
                     if (hover_key !== undefined && bar.name == hover_key) fill = chroma.color(fill).darken(14).hex();
                     stroke = chroma.color(fill).darken(14).hex();
                     if (el.attrs.fill != fill || el.attrs.stroke != stroke)
@@ -344,18 +344,6 @@
 
         unhoverSeries: function() {
             this.hoverSeries();
-        },
-
-        colorKeys: function() {
-            var me = this,
-                axesDef = me.axes(),
-                lblCol = me.dataset.column(axesDef.labels),
-                fmt = dw.utils.longDateFormat(lblCol),
-                keys = [];
-            lblCol.each(function(val) {
-                keys.push(fmt(val));
-            });
-            return keys;
         }
 
     });
