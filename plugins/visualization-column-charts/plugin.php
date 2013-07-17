@@ -39,6 +39,10 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                 "negative-color" => array(
                     "type" => "checkbox",
                     "label" => __("Use different color for negative values", $id)
+                ),
+                "absolute-scale" => array(
+                    "type" => "checkbox",
+                    "label" => __("Use the same scale for all columns")
                 )
             )
         );
