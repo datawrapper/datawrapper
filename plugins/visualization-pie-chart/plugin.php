@@ -20,6 +20,16 @@ class DatawrapperPlugin_VisualizationPieChart extends DatawrapperPlugin_Visualiz
             ),
             "order" => 50,
             "dimensions" => 1,
+            "axes" => array(
+                "labels" => array(
+                    "accepts" => array("date")
+                ),
+                "slices" => array(
+                    "accepts" => array("number"),
+                    "multiple" => true
+                )
+            ),
+            "color-by" => "row",
             "options" => array(
             ),
             "locale" => array(
@@ -42,6 +52,15 @@ class DatawrapperPlugin_VisualizationPieChart extends DatawrapperPlugin_Visualiz
             ),
             "order" => 60,
             "dimensions" => 1,
+            "axes" => array(
+                "labels" => array(
+                    "accepts" => array("text")
+                ),
+                "slices" => array(
+                    "accepts" => array("number"),
+                    "multiple" => true
+                )
+            ),
             "options" => array(
                 "show-total" => array(
                     "type" => "checkbox",
