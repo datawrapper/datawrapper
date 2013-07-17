@@ -190,21 +190,21 @@
             var n = me.getBarValues().length;
 
             // update bar heights and labels
-            _.each(me.getBarValues(), function(column, s) {
-                _.each(me.__seriesElements[column.name()], function(rect) {
-                    var dim = me.barDimensions(column, s, 0);
+            _.each(me.getBarValues(), function(bar, s) {
+                _.each(me.__elements[bar.name], function(rect) {
+                    var dim = me.barDimensions(bar, s, 0);
                     rect.animate(dim, me.theme.duration, me.theme.easing);
                 });
 
-                _.each(me.__seriesLabels[column.name()], function(lbl) {
+                _.each(me.__labels[bar.name], function(lbl) {
                     var lpos;
                     if (lbl.hasClass('value')) {
                         // update value
-                        lbl.text(me.chart.formatValue(column.val(0), true));
-                        lpos = me.labelPosition(column, s, 0, 'value');
+                        lbl.text(me.chart.formatValue(bar.value, true));
+                        lpos = me.labelPosition(bar, s, 'value');
                     } else if (lbl.hasClass('series')) {
                         // update column label position
-                        lpos = me.labelPosition(column, s, 0, 'series');
+                        lpos = me.labelPosition(bar, s, 'series');
                     }
                     if (lpos) {
                         lbl.animate({
@@ -229,6 +229,10 @@
             var me = this,
                 c = me.__canvas,
                 domain = me.getBarColumn().range();
+
+            if (me.get('absolute-scale', false)) {
+                domain = dw.utils.minMax(_.map(me.axesDef.columns, function(c) { return me.dataset.column(c); }));
+            }
 
             if (domain[0] > 0) domain[0] = 0;
             if (domain[1] < 0) domain[1] = 0;
@@ -346,21 +350,31 @@
                         l = gridLines[key] = gridLines[key] || me.path(lattrs.path, 'grid');
                     l.toBack();
                     if (val === 0) {
-                        lattrs = $.extend(me.theme.xAxis, lattrs);
+                        $.extend(lattrs, me.theme.xAxis);
                         l.toFront();
                     } else {
                         l.attr(me.theme.horizontalGrid);
-                        lattrs = $.extend(me.theme.horizontalGrid, lattrs);
+                        $.extend(lattrs, me.theme.horizontalGrid);
+                    }
+                    if (!me.__lastTicks || _.indexOf(me.__lastTicks, Number(val)) < 0) {
+                        var old_path = lattrs.path;
+                        if (me.__lastDomain) {
+                            yscale.domain(me.__lastDomain);
+                            y = c.h - c.bpad - yscale(val);
+                            yscale.domain(domain);
+                            old_path = [['M', c.lpad, y], ['L', c.w - c.rpad,y]];
+                        }
+                        l.attr({ opacity: 0, path: old_path });
                     }
                     if (val !== 0 && me.theme.columnChart.cutGridLines) lattrs.stroke = me.theme.colors.background;
-                    l.animate(lattrs, me.theme.duration, me.theme.easing);
+                    l.animate(lattrs, me.theme.duration * (me.__lastTicks ? 1 : 0.2), me.theme.easing);
                 }
             });
             // hide invisible grid lines
             $.each(gridLines, function(val, line) {
-                if (_.indexOf(ticks, Number(val)) < 0) {
-                    var y = c.h - c.bpad - yscale(val), props;
-                    props = $.extend(me.theme.horizontalGrid, { path: [['M', c.lpad, y], ['L', c.w - c.rpad, y]], opacity: 0 });
+                if (_.indexOf(ticks, +val) < 0) {
+                    var y = c.h - c.bpad - yscale(val), props = {};
+                    $.extend(props, me.theme.horizontalGrid, { path: [['M', c.lpad, y], ['L', c.w - c.rpad, y]], opacity: 0 });
                     line.animate(props, me.theme.duration, me.theme.easing);
                     if (tickLabels[val]) {
                         var lbl = tickLabels[val];
@@ -372,13 +386,12 @@
                                 opacity: 0
                             }
                         }, me.theme.duration, me.theme.easing );
-
-                        
-                        // lattrs.top = Math.min(lattrs.top, c.h);
-                        // tickLabels[val].animate(lattrs, { duration: me.theme.duration, easing: me.theme.easing });
                     }
                 }
             });
+
+            me.__lastTicks = ticks;
+            me.__lastDomain = domain.slice(0);
         },
 
         hovers: function(column) {
