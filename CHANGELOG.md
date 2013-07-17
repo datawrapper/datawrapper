@@ -6,6 +6,7 @@ CHANGELOG
 * refactored core visualizations to new javascript core
 * refactored custom color feature
 * allow sorting visualizations by dependencies
+* one-dimensional visualizations (pie,bars,...) now showing single column (instead of single row)
 
 ### 1.4.4
 * added column public_version to chart table
