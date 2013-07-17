@@ -9,17 +9,12 @@
 
         render: function(el) {
 
-            var axesDef = {
-                    x: 0,   // x-axis
-                    y1: [], // primary y-axis
-                    y2: []  // secondary y-axis
-                };
-
             var vis = this,
                 dataset = vis.dataset,
                 theme = vis.theme,
                 chart = vis.chart,
-                y1Domain;
+                y1Domain,
+                axesDef = me.axes();
 
             // returns true if the x axis is of type date
             function useDateFormat() {
@@ -178,7 +173,7 @@
                     ticks = scales.x.ticks(tickCount),
                     fmt = dataset.column(axesDef.x).type(true).format(), // get parsed date format
                     daysDelta = Math.round((rowDate(-1).getTime() - rowDate(0).getTime()) / 86400000),
-                    tickFormat = vis.getDateTickFormat(daysDelta),
+                    tickFormat = dw.utils.dateFormat(daysDelta),
                     last_month = -1, new_month,
                     last_year = -1, new_year,
                     new_decade, new_quarter;
@@ -253,7 +248,7 @@
                 // update x-label
                 var lx = scales.x(useDateFormat() ? rowDate(row) : row),
                     lw = vis.labelWidth(dataset.rowName(row), 'axis x-axis'),
-                    lfmt = vis.longDateFormat(dataset.column(axesDef.x));
+                    lfmt = dw.utils.longDateFormat(dataset.column(axesDef.x));
 
                 xlabel.text(useDateFormat() ? lfmt(rowDate(row)) : dataset.rowName(row));
                 xlabel.attr({
@@ -342,11 +337,6 @@
                     Math.max(0, Math.round(scales.x.invert(x)))
                 );
             }
-
-            // populate axesDef.y1
-            $.each(dataset.columns(), function(i) {
-                if (i > 0) axesDef.y1.push(i);
-            });
 
             // init canvas
             el = $(el);
