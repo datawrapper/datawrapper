@@ -238,8 +238,8 @@ $(function() {
     function onDatasetLoaded(ds) {
         var s = $('#highlight-series'), s2 = $('.highlighted-series');
         s.find("option[value!='---']").remove();
-        _.each(ds.columns(), function(col) {
-            s.append('<option>'+col.name()+'</option>');
+        _.each(DW.currentVis.keys(), function(key) {
+            s.append('<option>'+key+'</option>');
         });
         s.change(function() {
             if (s.val() != "---") {
