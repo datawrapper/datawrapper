@@ -12,10 +12,10 @@
 
         colors: {
             // primary colors
-            palette: ["#1f77b4","#ff7f0e","#2ca02c","#d62728","#9467bd"],
+            palette: ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd"],
             // secondary colors, used in custom color dialog
             // this should contain colors that might be useful
-            secondary: ["#000000", '#777777', '#cccccc', '#ffd500', '#6FAA12'],
+            secondary: ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd"],
             context: '#aaa',
             axis: '#000000',
             positive: '#1f77b4',
