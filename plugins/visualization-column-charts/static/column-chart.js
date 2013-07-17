@@ -13,10 +13,8 @@
             var me = this, filterUI, sortBars, reverse, c, dataset = me.dataset,
                 chart_width, column_gap, row_gap, row, columns;
 
-            me.axesDef = {
-                labels: 0,
-                bars: _.range(1, me.dataset.numColumns())
-            };
+            me.axesDef = me.axes();
+            if (!me.axesDef) return;
 
             el = $(el);
 

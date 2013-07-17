@@ -24,10 +24,8 @@
                 series_gap = 0.05, // pull from theme
                 row_gap = 0.01;
 
-             me.axesDef = {
-                labels: 0,
-                bars: _.range(1, dataset.numColumns())
-            };
+            me.axesDef = me.axes();
+            if (!me.axesDef) return;
 
             if (!_.isUndefined(me.get('selected-row'))) {
                 row = me.get('selected-row');
