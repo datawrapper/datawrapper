@@ -44,7 +44,8 @@
 
         load: function(chart, callback) {
             var me = this;
-            this.chart = chart;
+            me.chart = chart;
+            chart.vis = me;
             return chart.dataset().done(function(ds) {
                 me.dataset = ds;
                 me.dataset.filterSeries(chart.get('metadata.data.ignore-series', {}));
@@ -53,7 +54,7 @@
         },
 
         /**
-         * short-cut for this.chart.get('metadata.visualizes.*')
+         * short-cut for this.chart.get('metadata.visualize.*')
          */
         get: function(str, _default) {
             return this.chart.get('metadata.visualize.'+str, _default);
@@ -96,6 +97,53 @@
 
         checkBrowserCompatibility: function(){
             return true;
+        },
+
+        axes: function() {
+            var me = this,
+                dataset = me.dataset,
+                usedColumns = {},
+                defAxes = {},
+                errors = [];
+            _.each(me.meta.axes, function(axisDef, key) {
+                function checkColumn(col) {
+                    return !usedColumns[col.name()] &&
+                        _.indexOf(axisDef.accepts, col.type()) >= 0;
+                }
+                if (!axisDef.optional) {
+                    if (!axisDef.multiple) {
+                        // find first colulmn accepted by axis
+                        var c = _.find(dataset.columns(), checkColumn);
+                        if (c) {
+                            usedColumns[c.name()] = true; // mark column as used
+                            defAxes[key] = c.name();
+                        } else {
+                            errors.push('Error: Could not populate axis <b>'+key+'</b> a data column of the type '+axisDef.accepts);
+                            return;
+                        }
+                    } else {
+                        defAxes[key] = [];
+                        dataset.eachColumn(function(c) {
+                            if (checkColumn(c)) {
+                                usedColumns[c.name()] = true;
+                                defAxes[key].push(c.name());
+                            }
+                        });
+                        if (!defAxes[key].length) {
+                            errors.push('Error: Could not populate axis <b>'+key+'</b> with a column of the type '+axisDef.accepts);
+                        }
+                    }
+                }
+            });
+            if (errors.length) {
+                me.warn(errors.join('<br/>'));
+                return false;
+            }
+            return me.chart.get('metadata.axes', defAxes);
+        },
+
+        colorKeys: function() {
+            return [];
         }
 
     });
