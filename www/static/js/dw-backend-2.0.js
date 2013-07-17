@@ -330,7 +330,6 @@ var dw = dw || {};
 
     dw.backend = {
         init: function() {
-            console.log('init');
             initLanguageLinks();
             initializeSignUp();
             initializeLogout();
