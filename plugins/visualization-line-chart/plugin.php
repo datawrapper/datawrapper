@@ -1,6 +1,7 @@
-<?php 
+ <?php
 
 class DatawrapperPlugin_VisualizationLineChart extends DatawrapperPlugin_Visualization {
+
     public function getMeta(){
         $meta = array(
             "title" => __("Line Chart", $this->getName()),
@@ -8,10 +9,25 @@ class DatawrapperPlugin_VisualizationLineChart extends DatawrapperPlugin_Visuali
             "extends" => "raphael-chart",
             "dimensions" => 2,
             "order" => 40,
+            "axes" => array(
+                "x" => array(
+                    "accepts" => array("text", "date"),
+                ),
+                "y1" => array(
+                    "accepts" => array("number"),
+                    "multiple" => true
+                ),
+                "y2" => array(
+                    "accepts" => array("number"),
+                    "multiple" => true,
+                    "optional" => true
+                )
+            ),
             "options" => $this->getOptions()
         );
         return $meta;
     }
+
     public function getOptions(){
         $id = $this->getName();
         $options = array(
@@ -101,6 +117,7 @@ class DatawrapperPlugin_VisualizationLineChart extends DatawrapperPlugin_Visuali
         );
         return $options;
     }
+
     public function getDemoDataSets(){
         $id = $this->getName();
         $datasets = array();
