@@ -142,7 +142,19 @@
             return me.chart.get('metadata.axes', defAxes);
         },
 
-        colorKeys: function() {
+        keys: function() {
+            var me = this,
+                axesDef = me.axes();
+            if (axesDef.labels) {
+                var lblCol = me.dataset.column(axesDef.labels),
+                    fmt = dw.utils.longDateFormat(lblCol),
+                    keys = [];
+                lblCol.each(function(val) {
+                    keys.push(fmt(val));
+                });
+
+                return keys;
+            }
             return [];
         }
 
