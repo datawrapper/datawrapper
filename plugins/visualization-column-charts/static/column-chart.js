@@ -146,33 +146,6 @@
             // enable mouse events
             el.mousemove(_.bind(me.onMouseMove, me));
 
-            if (me.chart.numRows() > 1) {
-                // add legend
-                var l = $('<div class="legend"></div>'),
-                    xo = 0;
-
-                me.chart.__dataset.eachRow(function(r) {
-                    div = $('<div></div>');
-                    div.css({
-                        background: me.getBarColor(null, r),
-                        width: 12,
-                        height: 12,
-                        position: 'absolute',
-                        left: xo,
-                        top: 1
-                    });
-                    l.append(div);
-                    lbl = me.label(xo + 15, 0, me.chart.__dataset.rowName(r), {
-                        valign: 'left',
-                        root: l
-                    });
-                    xo += me.labelWidth(me.chart.__dataset.rowName(r))+30;
-                });
-                l.css({
-                    position: 'relative'
-                });
-                $('#header', c.root.parent()).append(l);
-            }
             $('.showOnHover').hide();
 
             if (me.theme.columnChart.cutGridLines) me.horzGrid();
@@ -293,7 +266,7 @@
             }
             if (h !== 0) h = Math.max(1, h);
             x = Math.round((c.w - c.lpad - c.rpad) * vspace + c.lpad + s * (bw + bw * pad));
-            return { width: w, height: h, x: x + Math.floor((w+1)), y: y, bx: x, bw: bw, pad: pad };
+            return { width: w, height: h, x: x, y: y, bx: x, bw: bw, pad: pad };
         },
 
         labelPosition: function(bar, s, type) {
@@ -408,7 +381,7 @@
             });
         },
 
-        hoverSeries: function(column) {
+        hovers: function(column) {
             var me = this;
             _.each(me.getBarColumns(), function(col) {
                 _.each(me.__seriesLabels[col.name()], function(lbl) {
