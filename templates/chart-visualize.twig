@@ -9,6 +9,10 @@
 <script type="text/javascript" src="/static/vendor/canvg/canvg.js"></script>
 <script type="text/javascript" src="/static/vendor/chromajs/chroma.min.js"></script>
 
+{% for vis in visualizations %}
+    <script type="text/javascript" src="{{ vis.__static_path }}/{{ vis.id }}.js"></script>
+{% endfor %}
+
 <script type="text/javascript">
 
 $.extend($.easing, {
@@ -80,11 +84,17 @@ $(function() {
         });
     };
 
+
     var _typeHasChanged = false,
         _themeHasChanged = false,
         chart = DW.currentChart,
         themes = {{ themes | json | raw }},
-        themesById = {};
+        themesById = {},
+        visMetas = {};
+
+    {% for vis in visualizations %}
+        visMetas['{{ vis.id }}'] = JSON.parse('{{ vis|json| escape("js") }}');
+    {% endfor %}
 
     _.each(themes, function(theme) {
         themesById[theme.id] = theme;
@@ -143,6 +153,15 @@ $(function() {
         });
     }
 
+    function loadVis() {
+        DW.currentVis = new Datawrapper.Visualizations[classify(chart.get('type'))]();
+        DW.currentVis.chart = chart;
+        DW.currentVis.dataset = chart.__dataset;
+        DW.currentVis.meta = visMetas[chart.get('type')];
+    }
+
+    loadVis();
+
     chart.onSave(function(chart) {
 
         var iframe = $('#iframe-vis');
@@ -158,6 +177,10 @@ $(function() {
                     return false;
                 }
             });
+        }
+
+        if (_typeHasChanged) {
+            loadVis();
         }
 
         if (_typeHasChanged || _themeHasChanged) {
@@ -247,7 +270,6 @@ $(function() {
         });
         loadThemeColors();
     }
-
 
     chart.dataset().done(onDatasetLoaded);
 
@@ -378,7 +400,7 @@ $(function() {
         $('#resize-h').val(dim[1]);
         updateSize();
     });
-    
+
     var cw = chart.get('metadata.publish.embed-width', $('#iframe-wrapper').width()),
         ch = chart.get('metadata.publish.embed-height', $('#iframe-wrapper').height());
     $('#resize-w').val(cw);
