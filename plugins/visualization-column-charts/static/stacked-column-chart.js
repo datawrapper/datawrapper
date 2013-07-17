@@ -66,7 +66,7 @@
                 sc = me.__scales,
                 yo = me.__yoffset || 0,
                 c = me.__canvas,
-                n = me.axesDef.bars.length,
+                n = me.axesDef.columns.length,
                 w, h, x, y, i, cw, bw,
                 pad = 0.35,
                 vspace = 0.1;

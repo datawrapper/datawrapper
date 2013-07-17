@@ -47,11 +47,12 @@
 
             // compute maximum x-label height
             var lh = 0,
-                n = me.chart.dataSeries().length;
-            _.each(me.chart.dataSeries(), function(series, s) {
-                lh = Math.max(lh, me.labelHeight(series.name, 'series', c.w / (n)));
+                barColumns = me.getBarColumns(),
+                n = barColumns.length;
+            _.each(barColumns, function(column, s) {
+                lh = Math.max(lh, me.labelHeight(column.name(), 'series', c.w / (n)));
             });
-            c.bpad = lh+10;
+            c.bpad += lh;
 
 
             me.initDimensions();
@@ -90,7 +91,7 @@
         update: function() {
             var me = this,
                 c = me.__canvas,
-                n = me.axesDef.bars.length;
+                n = me.axesDef.columns.length;
 
             // draw bars
             _.each(me.getBarColumns(me.get('sort-values'), me.get('reverse-order')), function(column, s) {
@@ -108,12 +109,12 @@
                             fill: fill
                         };
 
-                    me.__bars[key] = me.__bars[key] || me.registerSeriesElement(c.paper.rect().attr(bar_attrs), column, r);
+                    me.__bars[key] = me.__bars[key] || me.registerElement(c.paper.rect().attr(bar_attrs), column.name(), r);
                     if (me.theme.columnChart.barAttrs) {
                         me.__bars[key].attr(me.theme.columnChart.barAttrs);
                     }
 
-                    me.__barLbls[key] = me.__barLbls[key] || me.registerSeriesLabel(me.label(0,0,'X', { align: 'center', cl: 'value' }), column);
+                    me.__barLbls[key] = me.__barLbls[key] || me.registerLabel(me.label(0,0,'X', { align: 'center', cl: 'value' }), column.name());
                     me.__barLbls[key].animate({
                         x: d.x + d.w * 0.5,
                         y: d.y + d.h * 0.5,
@@ -130,18 +131,18 @@
                         lbl_w = c.w / (n+2),
                         valign = val >= 0 ? 'top' : 'bottom',
                         halign = 'center',
-                        alwaysShow = (me.chart.hasHighlight() && me.chart.isHighlighted(column)) || (d.w > 40);
+                        alwaysShow = (me.chart.hasHighlight() && me.chart.isHighlighted(column.name())) || (d.w > 40);
 
                     if (false && me._showValueLabels()) {
                         // add value labels
-                        me.registerSeriesLabel(me.label(d.x + d.w * 0.5, val_y, me.formatValue(column.val(r)),{
+                        me.registerLabel(me.label(d.x + d.w * 0.5, val_y, me.formatValue(column.val(r)),{
                             w: d.w,
                             align: 'center',
                             cl: 'value' + (alwaysShow ? '' : ' showOnHover')
-                        }), column);
+                        }), column.name());
                     }
 
-                    if (me.chart.hasHighlight() && me.chart.isHighlighted(column)) {
+                    if (me.chart.hasHighlight() && me.chart.isHighlighted(column.name())) {
                         lblcl.push('highlighted');
                     }
                     if (d.bw < 30) {
@@ -167,7 +168,7 @@
                                 rotate: d.bw < 30 ? -90 : 0
                             },
                             sl = me.__series_names[column.name()] = me.__series_names[column.name()] ||
-                                me.registerSeriesLabel(me.label(la.x, la.y, column.name(), la), column);
+                                me.registerLabel(me.label(la.x, la.y, column.name(), la), column.name());
 
                         sl.animate(la, me.theme.duration, me.theme.easing);
                     }
@@ -188,7 +189,7 @@
         // hack to be able to overload in stacked-column-charts.js
         _getBarColumns: function(sortBars, reverse) {
             var me = this,
-                columns = _.map(me.axesDef.bars, function(i) { return me.dataset.column(i); });
+                columns = _.map(me.axesDef.columns, function(i) { return me.dataset.column(i); });
             if (sortBars) {
                 columns.sort(function(a, b) {
                     var aType = a.type(true);
@@ -215,7 +216,7 @@
             var me = this,
                 sc = me.__scales,
                 c = me.__canvas,
-                n = me.axesDef.bars.length,
+                n = me.axesDef.columns.length,
                 w, h, x, y, i, cw, bw,
                 pad = 0.35,
                 vspace = 0.1,
