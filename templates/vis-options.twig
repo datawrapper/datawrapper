@@ -203,22 +203,18 @@ $(function() {
 
     function initCustomColors(chart) {
 
+        DW.currentVis.chart = chart;
+        DW.currentVis.dataset = chart.__dataset;
+
         var customColors = $('#customColors'),
             sel = chart.get('metadata.visualize.custom-colors', {});
-            labels = [];
+            labels = DW.currentVis.keys();
 
-        if (vis['color-by'] && vis['color-by'] == 'row') {
-            $.each(chart.rowLabels(), function(i, n) { labels.push(n); });
-        } else if (vis['color-by'] && vis['color-by'] == 'hierarchy') {
-            var tree = chart.__dataset.parseTree(0);
-            function visitNode(n) {
-                if (n.name) labels.push([n.name, $.trim(_.range(n.depth-1).map(function() { return '...'; }).join('')+' '+n.name)]);
-                _.each(n.children, visitNode);
-            }
-            visitNode(tree);
-        } else {
-            $.each(chart.dataSeries(), function(i, ds) { labels.push(ds.name); });
+        if (_.isEmpty(labels)) {
+            $('a[href=#customColors]').hide();
+            return;
         }
+        $('a[href=#customColors]').show();
 
         // populate custom color selector
         $.each(labels, function(i, lbl) {
