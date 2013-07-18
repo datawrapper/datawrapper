@@ -74,6 +74,7 @@ dw.column = function(name, rows, type) {
          * @param unfiltered  if set to true, precedent calls of filterRows are ignored
          */
         val: function(i, unfiltered) {
+            if (!arguments.length) return undefined;
             var r = unfiltered ? origRows : rows;
             if (i < 0) i += r.length;
             return type.parse(r[i]);
