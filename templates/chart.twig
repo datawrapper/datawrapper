@@ -177,111 +177,93 @@
 
     </script>
     <script type="text/javascript">
-    $(function() {
 
-        function getMaxChartHeight (el) {
-            function margin(el, type) {
-                if ($(el).css('margin-' + type) == 'auto') return 0;
-                return +$(el).css('margin-' + type).replace('px', '');
-            }
-            var ch = 0, bottom = 0; // summed height of children, 10px for top & bottom margin
-            $('body > *').each(function(i, el) {
-                var t = el.tagName.toLowerCase();
-                if (t != 'script' && el.id != 'chart' && !$(el).hasClass('tooltip') && !$(el).hasClass('container')) {
-                    ch += $(el).outerHeight(false); // element height
-                }
-                ch += Math.max(margin(el, 'top'), bottom);
-                bottom = margin(el, 'bottom');
-            });
-            ch += bottom;
-            // subtract body padding
-            //ch += $('body').innerHeight() - $('body').height();
-            var mt = $('#chart').css('margin-top').replace('px', ''),
-                mb = $('#chart').css('margin-bottom').replace('px', ''),
-                maxH = $(window).height() - ch - 2;
-            // IE Fix
-            if (!$.support.leadingWhitespace) maxH -= 15;
-            maxH -= $('body').css('padding-top').replace('px', '');
-            maxH -= $('body').css('padding-bottom').replace('px', '');
-            return maxH;
+    (function() {
+
+        var chart,
+            vis = initVisualization();
+
+        if(!vis.checkBrowserCompatibility()){
+            window.location.href = 'static.html';
+            return;
         }
 
-        function loadChart() {
+        $.when($.ready(), chartLoaded()).done(function() {
             // clean chart
             $('#chart').html('').off('click').off('mousemove').off('mouseenter').off('mouseover');
             $('#header .legend').remove();
-            //$('.container').height($(window).height());
-
-            var theme = Datawrapper.Themes.{{ theme.id | classify }};
-            var chart = new Datawrapper.Chart(JSON.parse('{{ chart.toJSON | raw }}'));
-            chart.setLocale('{{ chartLocale }}', {{ metricPrefix | json | raw }});
-
-            var vis = new Datawrapper.Visualizations.{{ visualization.id | classify }}();
-
-
-            if(!vis.checkBrowserCompatibility()){
-                // redirect to the static version if not compatible with user's browser
-                window.location.href = 'static.html';
-            }
-            vis.meta = JSON.parse("{{ visualization | json | escape('js') }}");
-            vis.lang = '{{ lang }}';
-
-
 
             // compute chart dimensions
             var w = $('#chart').innerWidth(),
-                h = getMaxChartHeight($('#chart'));
+                h = dw.utils.getMaxChartHeight($('#chart'));
 
             if (!$.support.leadingWhitespace) w -= 10; // IE Fix
             w -= $('body').css('padding-left').replace('px', '');
             w -= $('body').css('padding-right').replace('px', '');
+            vis.setSize(w, h);
 
-            vis.setTheme(theme)
-                .setSize(w - theme.hpadding*2, h - theme.vpadding);
+            initResizeHandler();
+            initFullscreen();
 
-            vis.load(chart, function() {
-                vis.render('#chart');
-            });
+            chart.render($('#chart'));
+        });
+
+        function chartLoaded() {
+            chart = dw.chart(JSON.parse('{{ chart.toJSON | raw }}'))
+                    .locale('{{ chartLocale }}')
+                    .metricPrefix({{ metricPrefix | json | raw }})
+                    .vis(vis)
+                    .theme(Datawrapper.Themes.{{ theme.id | classify }});
+            return chart.load();
+        }
+
+        function initVisualization() {
+            var vis = new Datawrapper.Visualizations.{{ visualization.id | classify }}();
+            vis.meta = JSON.parse("{{ visualization | json | escape('js') }}");
+            vis.lang = '{{ lang }}';
             window.vis = vis;
+            return vis;
         }
 
-        loadChart();
+        function initResizeHandler() {
+            var reload_timer;
+            if (navigator.userAgent.match(/iPad|msie/i) == null) {
+                // IE continuosly reloads the chart for some strange reasons
+                $(window).resize(function() {
+                    if (reload_timer) clearTimeout(reload_timer);
+                    reload_timer = setTimeout(function() {
+                        loadChart();
+                    }, 300);
+                });
+            }
+        }
 
-        var reload_timer;
-        if (navigator.userAgent.match(/iPad|msie/i) == null) {
-            // IE continuosly reloads the chart for some strange reasons
-            $(window).resize(function() {
-                if (reload_timer) clearTimeout(reload_timer);
-                reload_timer = setTimeout(function() {
-                    loadChart();
-                }, 300);
+        function initFullscreen() {
+            var isFullScreen = false;
+            $(window).bind('resize', function() {
+                if (isFullScreen != fullScreenApi.isFullScreen()) { // video fullscreen mode has changed
+                    isFullScreen = fullScreenApi.isFullScreen();
+
+                    if (isFullScreen) {
+                        $('.chart').addClass('fullscreen');
+                        // you have just ENTERED full screen video
+                    } else {
+                        $('.chart').removeClass('fullscreen');
+                        // you have just EXITED full screen video
+                    }
+                }
+            });
+
+            $("a[data-toggle='fullscreen']").click(function(e) {
+                if (fullScreenApi.supportsFullScreen) {
+                    e.preventDefault();
+                    $('html').requestFullScreen();
+                }
             });
         }
 
+    })();
 
-        var isFullScreen = false;
-        $(window).bind('resize', function() {
-            if (isFullScreen != fullScreenApi.isFullScreen()) { // video fullscreen mode has changed
-                isFullScreen = fullScreenApi.isFullScreen();
-
-                if (isFullScreen) {
-                    $('.chart').addClass('fullscreen');
-                    // you have just ENTERED full screen video
-                } else {
-                    $('.chart').removeClass('fullscreen');
-                    // you have just EXITED full screen video
-                }
-            }
-        });
-
-        $("a[data-toggle='fullscreen']").click(function(e) {
-            if (fullScreenApi.supportsFullScreen) {
-                e.preventDefault();
-                $('html').requestFullScreen();
-            }
-        });
-
-    });
     </script>
 </head>
 <body class="chart{% if fullscreen %} fullscreen{% endif %}{% if plain %} plain{% endif %}">
