@@ -352,19 +352,73 @@ var dw = dw || {};
                 }
             });
         }
-        chart.onSave = function() {
+
+        chart.onSave = function(callback) {
             saveCallbacks.push(callback);
         };
+
+        chart.hasUnsavedChanges = function() {
+            return unsavedChanges;
+        };
+
+        chart.sync = function(el, attribute, _default) {
+          if (_.isString(el)) el = $(el);
+            el.data('sync-attribute', attribute);
+
+            // initialize current state in UI
+            var curVal = chart.get(attribute, _default);
+            if (el.is('input[type=checkbox]')) {
+                if (curVal) el.attr('checked', 'checked');
+                else el.removeAttr('checked');
+            } else if (el.is('input[type=text]') || el.is('textarea') || el.is('select')) {
+                el.val(curVal);
+            } else if (el.is('input[type=radio]')) {
+                if (_.isBoolean(curVal)) {
+                    curVal = curVal ? 'yes' : 'no';
+                }
+                $('input:radio[name='+el.attr('name')+'][value='+curVal+']').attr('checked', 'checked');
+            }
+
+            function storeElementValue(el) {
+                var attr, val;
+                // Resolve attribute string to a pointer to the attribute
+                attr = el.data('sync-attribute');
+
+                if (el.is('input[type=checkbox]')) {
+                    val = el.attr('checked') == 'checked';
+                } else if (el.is('input[type=text]') || el.is('textarea') || el.is('select')) {
+                    val = el.val();
+                } else if (el.is('input[type=radio]')) {
+                    val = $('input:radio[name='+el.attr('name')+']:checked').val();
+                    if (val === 'yes') val = true;
+                    else if (val === 'no') val = false;
+                }
+                if (val !== undefined) {
+                    chart.set(attr, val);
+                }
+            }
+
+            el.change(function(evt) {
+                storeElementValue($(evt.target));
+            });
+
+            if (el.is('input[type=text]') || el.is('textarea')) {
+                el.keyup(function(evt) {
+                    storeElementValue($(evt.target));
+                });
+            }
+        };
+
         chart.onChange(function() {
             unsavedChanges = true;
             clearTimeout(saveTimeout);
             saveTimeout = setTimeout(save, 800);
         });
+
         window.onbeforeunload = function(e) {
             if (unsavedChanges) return 'Caution: unsaved changes';
         };
     }
-
 
     dw.backend = {
         init: function() {
