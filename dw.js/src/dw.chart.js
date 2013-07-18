@@ -74,7 +74,7 @@ dw.chart = function(attributes) {
 
             return datasource.dataset().done(function(ds) {
                 dataset = ds;
-                _.each(load_callbacks, function(db) {
+                _.each(load_callbacks, function(cb) {
                     if (_.isFunction(cb)) cb(chart);
                 });
                 load_callbacks = [];
