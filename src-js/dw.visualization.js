@@ -42,17 +42,6 @@
             return me;
         },
 
-        load: function(chart, callback) {
-            var me = this;
-            me.chart = chart;
-            chart.vis = me;
-            return chart.dataset().done(function(ds) {
-                me.dataset = ds;
-                me.dataset.filterSeries(chart.get('metadata.data.ignore-series', {}));
-                callback.call(me, me);
-            });
-        },
-
         /**
          * short-cut for this.chart.get('metadata.visualize.*')
          */
@@ -97,6 +86,15 @@
 
         checkBrowserCompatibility: function(){
             return true;
+        },
+
+        setChart: function(chart) {
+            console.log('vis::init', chart, chart.dataset());
+            var me = this;
+            me.dataset = chart.dataset();
+            me.theme = chart.theme();
+            me.chart = chart;
+            me.dataset.filterSeries(chart.get('metadata.data.ignore-series', {}));
         },
 
         axes: function() {
