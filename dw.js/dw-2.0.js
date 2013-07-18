@@ -681,6 +681,7 @@ dw.column = function(name, rows, type) {
          * @param unfiltered  if set to true, precedent calls of filterRows are ignored
          */
         val: function(i, unfiltered) {
+            if (!arguments.length) return undefined;
             var r = unfiltered ? origRows : rows;
             if (i < 0) i += r.length;
             return type.parse(r[i]);
@@ -813,7 +814,7 @@ dw.column.types.number = function(sample) {
     // public interface
     var type = {
         parse: function(raw) {
-            if (_.isNumber(raw)) return raw;
+            if (_.isNumber(raw) || _.isUndefined(raw)) return raw;
             var number = raw;
             // normalize number
             if (format[0] != '-') {
@@ -824,7 +825,6 @@ dw.column.types.number = function(sample) {
                 // replace decimal char w/ point
                 number = number.replace(format[1], '.');
             }
-
             if (isNaN(number)) {
                 if (!naStrings[number] && number !== "") errors++;
                 return raw;

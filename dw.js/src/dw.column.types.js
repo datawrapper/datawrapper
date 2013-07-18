@@ -62,7 +62,7 @@ dw.column.types.number = function(sample) {
     // public interface
     var type = {
         parse: function(raw) {
-            if (_.isNumber(raw)) return raw;
+            if (_.isNumber(raw) || _.isUndefined(raw)) return raw;
             var number = raw;
             // normalize number
             if (format[0] != '-') {
@@ -160,7 +160,7 @@ dw.column.types.date = function(sample) {
     // public interface
     var type = {
         parse: function(raw) {
-            if (_.isDate(raw)) return raw;
+            if (_.isDate(raw) || _.isUndefined(date)) return raw;
             if (!format || !_.isString(raw)) {
                 errors++;
                 return raw;
