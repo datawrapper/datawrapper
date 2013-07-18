@@ -80,6 +80,13 @@ dw.column = function(name, rows, type) {
             return type.parse(r[i]);
         },
 
+        /*
+         * returns an array of parsed values
+         */
+        values: function(unfiltered) {
+            return _.map(unfiltered ? origRows : rows, type.parse);
+        },
+
         /**
          * apply function to each value
          */

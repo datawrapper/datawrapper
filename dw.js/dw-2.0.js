@@ -687,6 +687,13 @@ dw.column = function(name, rows, type) {
             return type.parse(r[i]);
         },
 
+        /*
+         * returns an array of parsed values
+         */
+        values: function(unfiltered) {
+            return _.map(unfiltered ? origRows : rows, type.parse);
+        },
+
         /**
          * apply function to each value
          */
@@ -825,6 +832,7 @@ dw.column.types.number = function(sample) {
                 // replace decimal char w/ point
                 number = number.replace(format[1], '.');
             }
+
             if (isNaN(number)) {
                 if (!naStrings[number] && number !== "") errors++;
                 return raw;
@@ -911,7 +919,7 @@ dw.column.types.date = function(sample) {
     // public interface
     var type = {
         parse: function(raw) {
-            if (_.isDate(raw)) return raw;
+            if (_.isDate(raw) || _.isUndefined(date)) return raw;
             if (!format || !_.isString(raw)) {
                 errors++;
                 return raw;
