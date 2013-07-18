@@ -97,7 +97,7 @@
             // 2d -> 1d
             if (!_.isUndefined(me.get('selected-row'))) {
                 row = me.get('selected-row', 0);
-                if (row > me.chart.numRows() || row === undefined) row = 0;
+                if (row > dataset.numRows() || row === undefined) row = 0;
             }
 
             me.axesDef = me.axes();

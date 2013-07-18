@@ -363,11 +363,7 @@
                 key = opts.key;
 
             if (!key) {
-                if (me.meta['color-by'] == 'row') {
-                    key = me.chart.rowLabels()[row];
-                } else {
-                    key = series.name();
-                }
+                key = series.name();
             }
             // check if user has selected a custom color for this key
             var customColors = me.get('custom-colors', {});
@@ -396,7 +392,7 @@
                 var lab = chroma.color(baseColor).lab(),
                     minL = Math.min(lab[0], 50),
                     maxL = 91,
-                    f = row / (me.chart.numRows()-1);
+                    f = row / (me.dataset.numRows()-1);
                 return chroma.lab(minL + f * (maxL - minL), lab[1], lab[2]).hex();
             }
 

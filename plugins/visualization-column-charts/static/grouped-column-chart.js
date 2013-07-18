@@ -71,7 +71,7 @@
             // enable mouse events
             el.mousemove(_.bind(me.onMouseMove, me));
 
-            if (me.chart.numRows() > 1) {
+            if (dataset.numRows() > 1) {
                 var items = [];
                 dataset.eachRow(function(r) {
                     items.push({

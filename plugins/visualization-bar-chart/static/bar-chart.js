@@ -53,8 +53,6 @@
                 row_gap = 0.01,
                 labelsInsideBars = me.get('labels-inside-bars', false);
 
-            // if (me.chart.numRows() > 1) me.chart.filterRow(row);
-
             me.init();
             me.initDimensions();
 
