@@ -235,7 +235,7 @@ $(function() {
     }
     $('.highlighted-series .badge').click(highlightSeriesClick);
 
-    function onDatasetLoaded(ds) {
+    function onDatasetLoaded() {
         var s = $('#highlight-series'), s2 = $('.highlighted-series');
         s.find("option[value!='---']").remove();
         _.each(DW.currentVis.keys(), function(key) {
@@ -271,7 +271,7 @@ $(function() {
         loadThemeColors();
     }
 
-    chart.dataset().done(onDatasetLoaded);
+    chart.load().done(onDatasetLoaded);
 
     $('.collapse').on('shown', function(e) {
         var tgl = $('[data-toggle=collapse][data-target=#'+e.target.id+']');
@@ -335,7 +335,7 @@ $(function() {
     $('#btn-transpose').click(function(e) {
         e.preventDefault();
         chart.set('metadata.data.transpose', !chart.get('metadata.data.transpose'));
-        chart.dataset().done(onDatasetLoaded);
+        chart.load().done(onDatasetLoaded);
         setTimeout(function() {
             loadOptions();
         }, 2000);

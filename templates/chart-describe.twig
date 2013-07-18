@@ -187,14 +187,14 @@ $(function() {
     }
 
     function reload(f) {
-        chart.dataset().done(function(ds) {
+        chart.load().done(function() {
             if (f === undefined) {
                 if (chart.get('metadata.data.vertical-header') === undefined) {
-                    chart.set('metadata.data.vertical-header', isNaN(ds.series(0).data[0]));
+                    chart.set('metadata.data.vertical-header', isNaN(chart.dataset().column(0).val(0)));
                 }
                 chart.sync('#has-vertical-headers', 'metadata.data.vertical-header');
             }
-            dataset = ds;
+            dataset = chart.dataset();
             updateTable();
         });
     }

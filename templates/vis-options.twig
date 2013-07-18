@@ -180,22 +180,23 @@ $(function() {
     // initial visualization meta
     var vis = JSON.parse('{{ vis|json| escape("js") }}');
 
-    chart.datasetLoaded(function(chart) {
+    chart.loaded(function(chart) {
 
         syncVisOptions(vis);
 
         // populate select-row
-        if (vis.dimensions == 1) {
-            if (chart.numRows() > 1) {
+        /*if (vis.dimensions == 1) {
+            if (chart.dataset().numRows() > 1) {
                 var selRows = $('#select-row');
-                for (var r=0; r<chart.numRows(); r++) {
+                for (var r=0; r<chart.dataset().numRows(); r++) {
                     selRows.append('<option value="'+r+'">'+chart.rowLabel(r)+'</option>');
                 }
                 chart.sync('#select-row', 'metadata.visualize.selected-row');
             } else {
                 $('.select-row').hide();
             }
-        }
+        }*/
+        $('.select-row').hide();
 
         initCustomColors(chart);
 
