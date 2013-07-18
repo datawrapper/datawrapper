@@ -1,3 +1,11 @@
+//
+// NOTE: This file is auto-generated using /dw.js/make
+// from the source files /dw.js/src/*.js.
+//
+// If you want to change anything you need to change it
+// in the source files and then re-run /dw.js/make, or
+// otherwise your changes will be lost on the make.
+//
 
 (function(){
 
@@ -821,7 +829,7 @@ dw.column.types.number = function(sample) {
     // public interface
     var type = {
         parse: function(raw) {
-            if (_.isNumber(raw) || _.isUndefined(raw) || _.isNull(raw)) return raw;
+            if (_.isNumber(raw) || _.isUndefined(raw)) return raw;
             var number = raw;
             // normalize number
             if (format[0] != '-') {
