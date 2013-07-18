@@ -327,6 +327,44 @@ var dw = dw || {};
         });
     }
 
+    function syncChart(chart) {
+        var saveTimeout,
+            unsavedChanges = false,
+            saveCallbacks = [];
+        function save() {
+            $.ajax({
+                url: '/api/charts/'+chart.get('id'),
+                type: 'PUT',
+                dataType: 'json',
+                data: JSON.stringify(chart.attributes()),
+                processData: false,
+                success: function(data) {
+                    //console.debug('save completed');
+                    if (data.status == "ok") {
+                        // run callbacks
+                        unsavedChanges = false;
+                        _.each(saveCallbacks, function(cb) {
+                            cb(chart);
+                        });
+                    } else {
+                        console.warn('could not save the chart', data);
+                    }
+                }
+            });
+        }
+        chart.onSave = function() {
+            saveCallbacks.push(callback);
+        };
+        chart.onChange(function() {
+            unsavedChanges = true;
+            clearTimeout(saveTimeout);
+            saveTimeout = setTimeout(save, 800);
+        });
+        window.onbeforeunload = function(e) {
+            if (unsavedChanges) return 'Caution: unsaved changes';
+        };
+    }
+
 
     dw.backend = {
         init: function() {
@@ -346,7 +384,8 @@ var dw = dw || {};
         snapshot: snapshot,
         popupChart: popupChart,
         checkPassword: checkPassword,
-        clearAlerts: clearAlerts
+        clearAlerts: clearAlerts,
+        syncChart: syncChart
     }; // end dw.backend
 
     // initialize backend on page load
