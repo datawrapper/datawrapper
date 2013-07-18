@@ -18,18 +18,20 @@
             el = $(el);
             // add table
             var me = this, table, tr, td, th, r,
+                css_class = me.theme.datatable && me.theme.datatable.class ?
+                    me.theme.datatable.class : 'datatable-default',
                 isHighlighted = function(series) {
                     return me.chart.hasHighlight() && me.chart.isHighlighted(series);
                 },
                 dataset = me.dataset;
 
-            table = $('<table id="datatable"><thead /><tbody /></table>');
+            table = $('<table class="'+css_class+'" id="datatable"><thead /><tbody /></table>');
             tr = $('<tr />');
-            if (me.chart.hasRowHeader()) {
+            /*if (me.chart.hasRowHeader()) {
                 var h = me.dataset.rowNameLabel();
                 if (/^X\.\d+$/.test(h)) h = '';
                 tr.append('<th>'+h+'</th>');
-            }
+            }*/
             var colType = [];
             dataset.eachColumn(function(column) {
                 th = $('<th>'+column.name()+'</th>');
@@ -40,33 +42,23 @@
                 column.each(function(val) {
                     if (_.isNumber(val)) number_count ++;
                 });
-                if (number_count > column.length / 2) {
-                    colType.push('number');
-                    th.addClass('number');
-                } else {
-                    colType.push('string');
-                }
+                colType.push(column.type());
                 tr.append(th);
             });
             $('thead', table).append(tr);
             _.each(_.range(dataset.numRows()), function(r) {
                 tr = $('<tr />');
                 var highlighted_rows = me.get('highlighted-rows');
-                if (me.chart.hasRowHeader()) {
-                    tr.append('<th>'+me.chart.rowLabel(r)+'</th>');
-                    // Highlight the row
-                    if (_.isArray(highlighted_rows) && _.indexOf(highlighted_rows, trim(me.chart.rowLabel(r))) >= 0) {
-                        tr.addClass('highlight');
-                    }
-                } else { // Highlight the row
-                         // In this case, the chart has not row header, the value of me.get('table-highlight-row')
-                         // is like "Row <line number starting from 1>" (see rowLabels's definition in dw.chart.js)
-                    if (_.isArray(highlighted_rows) && _.indexOf(highlighted_rows, "Row "+(me.chart.rowLabel(r)+1)) >= 0) {
-                        tr.addClass('highlight');
-                    }
+                if (_.isArray(highlighted_rows) && _.indexOf(highlighted_rows, "Row "+(me.chart.rowLabel(r)+1)) >= 0) {
+                    tr.addClass('highlight');
                 }
                 dataset.eachColumn(function(column, s) {
-                    var cell_content = me.chart.formatValue(column.val(r), true);
+                    var cell_content = column.val(r);
+                    if (column.type() == 'number') {
+                        cell_content = me.chart.formatValue(column.val(r), true);
+                    } else if (column.type() == 'date') {
+                        cell_content = dw.utils.longDateFormat(column)(column.val(r));
+                    }
                     if (cell_content == "n/a") {
                         cell_content = "&mdash;";
                     }
@@ -122,16 +114,22 @@
                     return parseFloat(a);
                 },
                 "formatted-num-asc": function ( a, b ) {return a - b;},
-                "formatted-num-desc": function ( a, b ) {return b - a;}
+                "formatted-num-desc": function ( a, b ) {return b - a;},
+                "formatted-date-pre": function ( a ) {
+                    return Globalize.parseDate(a);
+                },
+                "formatted-date-asc": function ( a, b ) {return a.getTime() - b.getTime();},
+                "formatted-date-desc": function ( a, b ) {return b.getTime() - a.getTime();}
             });
 
             // set a list of column types for datatable.js (in order to support ordering)
             var colum_types = [];
-            if (me.chart.hasRowHeader()) {colum_types.push(null);}
             _.each(colType, function(type, s) {
-                if (type == "number"){
+                if (type == "number") {
                     colum_types.push({ "sType": "formatted-num" });
-                }else {
+                } else if (type == "date") {
+                    colum_types.push({ "sType": "formatted-date" });
+                } else {
                     colum_types.push({ "sType": null });
                 }
 
@@ -147,6 +145,10 @@
             });
 
             el.append('<br style="clear:both"/>');
+        },
+
+        keys: function() {
+            return _.map(this.dataset.columns(), function(c) { return c.name(); });
         }
 
     });
