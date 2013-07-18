@@ -89,10 +89,9 @@
         },
 
         setChart: function(chart) {
-            console.log('vis::init', chart, chart.dataset());
             var me = this;
             me.dataset = chart.dataset();
-            me.theme = chart.theme();
+            me.setTheme(chart.theme());
             me.chart = chart;
             me.dataset.filterSeries(chart.get('metadata.data.ignore-series', {}));
         },
