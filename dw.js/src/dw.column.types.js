@@ -160,7 +160,7 @@ dw.column.types.date = function(sample) {
     // public interface
     var type = {
         parse: function(raw) {
-            if (_.isDate(raw) || _.isUndefined(date)) return raw;
+            if (_.isDate(raw) || _.isUndefined(raw)) return raw;
             if (!format || !_.isString(raw)) {
                 errors++;
                 return raw;
