@@ -9,5 +9,5 @@ rm ../www/static/js/dw-2.0.min.js
 # generate js that's packed with each chart
 cat src/dw.start.js src/dw.dataset.js src/dw.column.js src/dw.column.types.js src/dw.datasource.js src/dw.datasource.delimited.js src/dw.utils.js src/dw.utils.filter.js src/dw.chart.js src/dw.end.js > dw-2.0.js
 cp dw-2.0.js ../www/static/js/
-uglifyjs dw-2.0.js > ../www/static/js/dw-2.0.min.js
+uglifyjs -m -o ../www/static/js/dw-2.0.min.js dw-2.0.js
 
