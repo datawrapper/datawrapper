@@ -62,7 +62,7 @@ dw.column.types.number = function(sample) {
     // public interface
     var type = {
         parse: function(raw) {
-            if (_.isNumber(raw) || _.isUndefined(raw)) return raw;
+            if (_.isNumber(raw) || _.isUndefined(raw) || _.isNull(raw)) return raw;
             var number = raw;
             // normalize number
             if (format[0] != '-') {

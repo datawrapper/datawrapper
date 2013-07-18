@@ -295,7 +295,6 @@
         },
 
         setChart: function(chart) {
-            console.log('vis::init', chart, chart.dataset());
             var me = this;
             me.dataset = chart.dataset();
             me.theme = chart.theme();
