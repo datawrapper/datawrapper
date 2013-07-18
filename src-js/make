@@ -4,11 +4,11 @@ VERSION=$(python -c 'import json;print json.loads(open("../package.json").read()
 # remove old javascript
 rm ../www/static/js/datawrapper*.js
 # generate javascript to be included on datawrapper
-cat dw.core.js dw.dataset.js dw.utils.js dw.chart.js dw.chart.editable.js dw.theme.js dw.parsers.delimited.js dw.visualization.js > tmp.js
+cat dw.core.js dw.dataset.js dw.utils.js dw.theme.js dw.parsers.delimited.js dw.visualization.js > tmp.js
 cp tmp.js ../www/static/js/datawrapper-backend-$VERSION.js
 uglifyjs tmp.js > ../www/static/js/datawrapper-backend-$VERSION.min.js
 # generate js that's packed with each chart
-cat dw.core.js dw.chart.js dw.theme.js dw.visualization.js > tmp.js
+cat dw.core.js dw.theme.js dw.visualization.js > tmp.js
 uglifyjs tmp.js > ../www/static/js/datawrapper.min.js
 mv tmp.js ../www/static/js/datawrapper.js
 
