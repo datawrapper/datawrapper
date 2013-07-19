@@ -92,7 +92,9 @@ dw.utils = {
         //ch += $('body').innerHeight() - $('body').height();
         var mt = $('#chart').css('margin-top').replace('px', ''),
             mb = $('#chart').css('margin-bottom').replace('px', ''),
-            maxH = $(window).height() - ch - 2;
+            // FIXME: -8 instead of -2 because when `introduction` is filled, a scrollbar appears.
+            // Should be dynamic.
+            maxH = $(window).height() - ch - 8;
         // IE Fix
         if (!$.support.leadingWhitespace) maxH -= 15;
         maxH -= $('body').css('padding-top').replace('px', '');
