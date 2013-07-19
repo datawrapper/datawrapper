@@ -362,15 +362,18 @@
             var me = this,
                 key = opts.key;
 
-            if (!key) {
+            if (!key && series) {
                 key = series.name();
             }
-            // check if user has selected a custom color for this key
-            var customColors = me.get('custom-colors', {});
-            if (customColors[key]) return customColors[key];
+
+            if (key) {
+                // check if user has selected a custom color for this key
+                var customColors = me.get('custom-colors', {});
+                if (customColors[key]) return customColors[key];
+            }
 
             // check if we have a color scale
-            if (opts.byValue) {
+            if (opts.byValue && series) {
                 return opts.byValue(series.data[row]);
             }
 
