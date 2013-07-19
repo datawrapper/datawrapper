@@ -103,9 +103,9 @@ $(function() {
 
         dataset.eachRow(function(row) {
             var tr = [];
-            dataset.eachColumn(function(column) {
+            dataset.eachColumn(function(column, i) {
                 var val = column.val(row);
-                val = chart.formatValue(val, true);
+                val = vertHeaders && i == 0 ? val : chart.formatValue(val, true);
                 tr.push((!isNone(column.val(row)) ? $("<div />").html(val).text() : ''));
             });
             data.push(tr);
