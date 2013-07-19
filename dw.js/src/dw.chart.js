@@ -69,6 +69,7 @@ dw.chart = function(attributes) {
 
             datasource = dw.datasource.delimited({
                 url: 'data',
+                firstRowIsHeader: me.get('metadata.data.horizontal-header', true),
                 transpose: chart.get('metadata.data.transpose', false)
             });
 
