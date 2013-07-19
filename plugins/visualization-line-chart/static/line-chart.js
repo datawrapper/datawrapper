@@ -117,10 +117,8 @@
             // draws the x-axis
             function drawXAxis() {
                 // draw x scale labels
-                if (!chart.hasRowHeader()) return;
-
                 var rotate45 = vis.get('rotate-x-labels'),
-                    labels = chart.rowLabels(),
+                    labels = dataset.column(axesDef.x).values(),
                     k = labels.length-1;
 
                 if (useDateFormat()) return drawDateAxis(); // draw date axis instead
@@ -382,7 +380,7 @@
 
             if (lineLabelsVisible() && (legend.pos == 'direct' || legend.pos == 'right')) {
                 c.labelWidth = 0;
-                _.each(chart.dataSeries(), function(col) {
+                dataset.eachColumn(function(col) {
                     c.labelWidth = Math.max(c.labelWidth, vis.labelWidth(col.name(), 'series'));
                 });
                 if (c.labelWidth > theme.lineChart.maxLabelWidth) {
@@ -726,9 +724,15 @@
             }
         },
 
+        lineColumns: function() {
+            return this.axes().y1.map(function(c) {
+                return this.dataset.column(c);
+            });
+        },
+
         computeAspectRatio: function() {
             var vis = this, slopes = [], M, Rx, Ry;
-            _.each(me.chart.dataSeries(), function(col) {
+            vis.lineColumns().each(function(col) {
                 var lval;
                 _.each(col.data, function(val, i) {
                     if (i > 0 && val != lval) {
@@ -741,11 +745,6 @@
             Rx = slopes.length;
             Ry = me.__domain[1] - me.__domain[0];
             return M*Rx/Ry;
-        },
-
-        // alias to dataset.eachRow
-        eachRow: function(func){
-            this.dataset.eachRow(func);
         },
 
         hover: function(series) { },

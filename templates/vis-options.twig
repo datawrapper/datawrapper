@@ -128,7 +128,7 @@
 
 $(function() {
     var chart = DW.currentChart,
-        dataset = chart.__dataset;
+        dataset = chart.dataset();
 
     function syncVisOptions(vis) {
         _.each(vis.options, function(opt, key) {
@@ -147,7 +147,7 @@ $(function() {
             _.each(vis.options, function(opt, key) {
                 if (opt['depends-on'] !== undefined) {
                     var visible = true,
-                        numSeries = chart.__dataset.numColumns() - (chart.hasRowHeader() ? 1 : 0);
+                        numSeries = chart.dataset().numColumns();
                     // special conditions:
                     _.each(opt['depends-on'], function(val, key) {
                         if (key == 'chart.min_series_num') {
@@ -205,7 +205,7 @@ $(function() {
     function initCustomColors(chart) {
 
         DW.currentVis.chart = chart;
-        DW.currentVis.dataset = chart.__dataset;
+        DW.currentVis.dataset = chart.dataset();
 
         var customColors = $('#customColors'),
             sel = chart.get('metadata.visualize.custom-colors', {});
