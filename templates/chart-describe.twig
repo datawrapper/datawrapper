@@ -88,7 +88,6 @@ $(function() {
         var data = [];
 
         var horzHeaders = chart.get('metadata.data.horizontal-header'),
-            vertHeaders = chart.get('metadata.data.vertical-header'),
             transpose = chart.get('metadata.data.transpose'),
             colCnt = dataset.series().length + (dataset.hasRowNames() ? 1 : 0),
             i;
@@ -105,7 +104,9 @@ $(function() {
             var tr = [];
             dataset.eachColumn(function(column, i) {
                 var val = column.val(row);
-                val = vertHeaders && i == 0 ? val : chart.formatValue(val, true);
+                val = column.type() == 'number' ? chart.formatValue(val, true) :
+                        column.type() == 'date' ? dw.utils.longDateFormat(column)(val) :
+                        val;
                 tr.push((!isNone(column.val(row)) ? $("<div />").html(val).text() : ''));
             });
             data.push(tr);
@@ -123,14 +124,19 @@ $(function() {
             if (row === 0) {
                 td.style.borderBottom = '1px solid #000';
                 td.style.fontWeight = 'bold';
-                td.style.background = '#eef4ff';
-            }
-            if (vertHeaders && col === 0) {
-                if (horzHeaders && row === 0) td.style.background = '#dde4ef';
-                else td.style.background = row % 2 ? '#f3f8ff': '#eef4ff' ;
-                td.style.borderRight = '1px solid #000';
-                td.style.fontWeight = 'bold';
-            } else if (row > horzHeaders ? 1 : 0) {
+                td.style.background = '#f0f0f0';
+            } else {
+                if (dataset.column(col).type() == 'text') {
+                    td.style.color = '#000000';
+                    td.style.fontFamily = 'Georgia';
+                } else if (dataset.column(col).type() == 'date') {
+                    td.style.color = '#39A832';
+                    td.style.fontStyle = 'italic';
+                    td.style.textAlign = 'center';
+                } else { // number
+                    td.style.color = '#297EA8';
+                    td.style.textAlign = 'right';
+                }
                 td.style.background = row % 2 ? '#FFF' : '#f9f9f9';
             }
 
@@ -149,7 +155,6 @@ $(function() {
             width: $("#data-preview").width(),
             height: 400,
             fixedRowsTop: horzHeaders ? 1: 0,
-            fixedColumnsLeft: vertHeaders ? 1: 0,
             rowHeaders: true,
             colHeaders: true,
             fillHandle: false,
@@ -169,7 +174,7 @@ $(function() {
         // add event handler for ignoring data series
         $('.colHeader').each(function(i, el) {
             var th = $(el).parents('th');
-            if (i === 0 && vertHeaders) return;
+            
             var sn = data[0][i];
             th.data('series', sn);
             if (ignoreSeries[sn]) th.addClass('ignored');
