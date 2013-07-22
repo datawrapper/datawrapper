@@ -326,6 +326,8 @@
                 tickLabels = me.__tickLabels = me.__tickLabels || {},
                 gridLines = me.__gridLines = me.__gridLines || {};
 
+            if (c.w / me.getBarValues().length > 50) ticks = [0];
+
             ticks = ticks.filter(function(val, t) {
                 return val >= domain[0] && val <= domain[1];
             });
