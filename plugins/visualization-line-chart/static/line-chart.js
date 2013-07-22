@@ -394,7 +394,7 @@
 
             if (legend.pos != 'direct' && legend.pos != 'right') {
                 // some more space for last x-label
-                c.rpad += 0.25 * vis.labelWidth(chart.rowLabel(vis.numRows-1));
+                c.rpad += 0.25 * vis.labelWidth(vis.axes(true).x.val(-1));
                 legend.xoffset += c.lpad;
             }
 
@@ -725,9 +725,7 @@
         },
 
         lineColumns: function() {
-            return this.axes().y1.map(function(c) {
-                return this.dataset.column(c);
-            });
+            return this.axes(true).y1;
         },
 
         computeAspectRatio: function() {
