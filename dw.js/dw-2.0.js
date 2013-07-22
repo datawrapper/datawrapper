@@ -746,9 +746,9 @@ _.extend(DelimitedParser.prototype, {
                 columnNames[col + suffix] = true;
             }
 
-            _.each(_.range(1, rowCount), function(rowIndex) {
+            _.each(_.range(rowIndex, rowCount), function(row) {
                 _.each(columns, function(c, i) {
-                    c.data.push(arrData[rowIndex][i] !== '' ? arrData[rowIndex][i] : opts.emptyValue);
+                    c.data.push(arrData[row][i] !== '' ? arrData[row][i] : opts.emptyValue);
                 });
             });
 
