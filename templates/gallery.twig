@@ -79,12 +79,12 @@ $(function(){
 
     if (location.hash.length == 7) {
         // try to find the chart
-        DW.popupChart(location.hash.substr(2));
+        dw.backend.popupChart(location.hash.substr(2));
     }
 
     $(window).bind('hashchange', function() {
         if (location.hash.length == 7) {
-            DW.popupChart(location.hash.substr(2));
+            dw.backend.popupChart(location.hash.substr(2));
         }
     });
 

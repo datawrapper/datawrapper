@@ -130,7 +130,7 @@
                         $('#upload-data-text').val(a.data('data'));
                         if (a.data('presets')) {
                             $.each(a.data('presets'), function(key, val) {
-                                DW.currentChart.set(key, val);
+                                dw.backend.currentChart.set(key, val);
                             });
                         }
                     });

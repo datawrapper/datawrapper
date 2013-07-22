@@ -204,7 +204,7 @@ $(function() {
 
     $('#resend-activation-link').click(function(e) {
         e.preventDefault();
-        DW.resendActivationMail($(e.target).parent());
+        dw.backend.resendActivationMail($(e.target).parent());
     });
 
     // save profile

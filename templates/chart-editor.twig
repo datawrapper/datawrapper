@@ -57,7 +57,7 @@ $(function() {
     dw.backend.syncChart(chart);
 
     if (chart.get('lastEditStep') < {{ createstep }}) {
-        DW.__firstTime = true;
+        dw.backend.__firstTime = true;
         chart.set('lastEditStep', {{ createstep }});
     }
 

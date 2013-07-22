@@ -88,13 +88,13 @@ var dw = dw || {};
                             // If the registration went well, clear sign up form
                             $('.signup-form input').val('');
                             // and close popup. User should be logged in now.
-                            DW.logMessage('Yeah, sign up went well! You are logged in now...', '.signup-form');
+                            dw.backend.logMessage('Yeah, sign up went well! You are logged in now...', '.signup-form');
                             setTimeout(function() {
                                 $('#dwLoginForm').modal('hide');
-                                DW.refreshHeader();
+                                dw.backend.refreshHeader();
                             }, 1000);
                         } else {
-                            DW.logError(data.code, '.signup-form');
+                            dw.backend.logError(data.code, '.signup-form');
                         }
                     }
                  });
@@ -143,7 +143,7 @@ var dw = dw || {};
                         } else if (data.code == 'login-email-unknown') {
                             $('.login-email', loginForm).parent().addClass('error');
                         }
-                        DW.logError(data.message, loginForm);
+                        dw.backend.logError(data.message, loginForm);
                     }
                 }
             });
@@ -166,7 +166,6 @@ var dw = dw || {};
                 url: '/api/auth/logout',
                 type: 'POST',
                 success: function(data) {
-                    // DW.refreshHeader();
                     // sometimes it's a good idea to redirect
                     location.href = '/';
                 }
@@ -190,7 +189,7 @@ var dw = dw || {};
             msg = Datawrapper.Messages.pwdMismatch;
         }
         if (msg) {
-            DW.logError(
+            dw.backend.logError(
                 msg, $(errFields.split(',')[0]).parents('.control-group')
             );
             $(errFields).parents('.control-group').addClass('error');
@@ -300,8 +299,8 @@ var dw = dw || {};
         $.getJSON('/api/charts/'+id, function(res) {
             if (res.status == "ok") {
                 var chart = res.data,
-                    chartUrl = preview ? 'http://' + DW.__domain + '/chart/' + chart.id + '/preview' :
-                        'http://' + DW.__chartCacheDomain + '/' + chart.id + '/index.html';
+                    chartUrl = preview ? 'http://' + dw.backend.__domain + '/chart/' + chart.id + '/preview' :
+                        'http://' + dw.backend.__chartCacheDomain + '/' + chart.id + '/index.html';
                     chartIframe = $('<iframe src="'+chartUrl+'" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>'),
                     wrapper = $('<div></div>'),
                     overlay = wrapper.overlay({
