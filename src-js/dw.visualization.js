@@ -117,7 +117,6 @@
                             defAxes[key] = c.name();
                         } else {
                             errors.push('Error: Could not populate axis <b>'+key+'</b> a data column of the type '+axisDef.accepts);
-                            return;
                         }
                     } else {
                         defAxes[key] = [];
@@ -131,6 +130,8 @@
                             errors.push('Error: Could not populate axis <b>'+key+'</b> with a column of the type '+axisDef.accepts);
                         }
                     }
+                } else {
+                    defAxes[key] = false;
                 }
             });
             if (errors.length) {
