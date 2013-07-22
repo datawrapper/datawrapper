@@ -97,7 +97,10 @@ dw.column = function(name, rows, type) {
         },
 
         // access to raw values
-        raw: function() { return rows; },
+        raw: function(i) {
+            if (!arguments.length) return rows;
+            return rows[i];
+        },
         // column type
         type: function(o) { return o ? type : type.name(); },
         // [min,max] range
