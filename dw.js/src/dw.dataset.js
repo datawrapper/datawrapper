@@ -18,9 +18,7 @@ dw.dataset = function(columns, opts) {
         columnsByName[colName] = col;
     });
 
-    opts = _.extend(opts, {
-        firstColumnAsLabel: true
-    });
+    opts = _.extend(opts, {  });
 
     // public interface
     var dataset = {
@@ -62,10 +60,6 @@ dw.dataset = function(columns, opts) {
                 return dataset.column(x);
             }
             return dataset.columns();
-        },
-
-        hasRowNames: function() {
-            return opts.firstRowAsLabel;
         },
 
         /*

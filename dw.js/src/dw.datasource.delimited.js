@@ -49,8 +49,7 @@ var DelimitedParser = function(opts) {
         skipRows: 0,
         emptyValue: null,
         transpose: false,
-        firstRowIsHeader: true,
-        firstColumnIsHeader: true
+        firstRowIsHeader: true
     }, opts);
 
     this.__delimiterPatterns = getDelimiterPatterns(opts.delimiter, opts.quoteChar);
@@ -182,16 +181,16 @@ _.extend(DelimitedParser.prototype, {
             return t;
         }
 
-        function makeDataset(arrData, skipRows, emptyValue, firstRowIsHeader, firstColIsHeader) {
+        function makeDataset(arrData) {
             var columns = [],
                 columnNames = {},
                 rowCount = arrData.length,
                 columnCount = arrData[0].length,
-                rowIndex = skipRows;
+                rowIndex = opts.skipRows;
 
             // compute series
             var srcColumns = [];
-            if (firstRowIsHeader) {
+            if (opts.firstRowIsHeader) {
                 srcColumns = arrData[rowIndex];
                 rowIndex++;
             }
@@ -214,23 +213,19 @@ _.extend(DelimitedParser.prototype, {
 
             _.each(_.range(1, rowCount), function(rowIndex) {
                 _.each(columns, function(c, i) {
-                    c.data.push(arrData[rowIndex][i] !== '' ? arrData[rowIndex][i] : emptyValue);
+                    c.data.push(arrData[rowIndex][i] !== '' ? arrData[rowIndex][i] : opts.emptyValue);
                 });
             });
 
             columns = _.map(columns, function(c) { return dw.column(c.name, c.data); });
-            return dw.dataset(columns, { firstColumnAsLabel: firstColIsHeader });
+            return dw.dataset(columns);
         } // end makeDataset
 
         arrData = parseCSV(this.__delimiterPatterns, data, opts.delimiter);
         if (opts.transpose) {
             arrData = transpose(arrData);
-            // swap row/column header setting
-            var t = opts.firstRowIsHeader;
-            opts.firstRowIsHeader = opts.firstColumnIsHeader;
-            opts.firstColumnIsHeader = t;
         }
-        return makeDataset(arrData, opts.skipRows, opts.emptyValue, opts.firstRowIsHeader, opts.firstColumnIsHeader);
+        return makeDataset(arrData);
     }, // end parse
 
 

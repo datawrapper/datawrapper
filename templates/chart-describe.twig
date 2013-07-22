@@ -89,7 +89,7 @@ $(function() {
 
         var horzHeaders = chart.get('metadata.data.horizontal-header'),
             transpose = chart.get('metadata.data.transpose'),
-            colCnt = dataset.series().length + (dataset.hasRowNames() ? 1 : 0),
+            colCnt = dataset.numColumns(),
             i;
 
         dataset.ignoreIgnores = true;
@@ -128,7 +128,6 @@ $(function() {
             } else {
                 if (dataset.column(col).type() == 'text') {
                     td.style.color = '#000000';
-                    td.style.fontFamily = 'Georgia';
                 } else if (dataset.column(col).type() == 'date') {
                     td.style.color = '#39A832';
                     td.style.fontStyle = 'italic';
