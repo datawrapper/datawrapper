@@ -151,18 +151,18 @@ $(function() {
             _.each(DW.currentVis.axes(), function(columns, key) {
                 columnsPerAxis[key] = _.isArray(columns) ? columns.length : columns ? 1 : 0;
             });
+
             _.each(vis.options, function(opt, key) {
                 if (opt['depends-on'] !== undefined) {
                     var visible = true;
-
                     // special conditions:
                     _.each(opt['depends-on'], function(val, key) {
                         if (minColsRegex.test(key)) {
                             key = key.match(minColsRegex)[1];
-                            visible = visible && _.isDefined(columnsPerAxis[key]) && columnsPerAxis[key] >= +val;
+                            visible = visible && !_.isUndefined(columnsPerAxis[key]) && columnsPerAxis[key] >= +val;
                         } else if (maxColsRegex.test(key)) {
                             key = key.match(maxColsRegex)[1];
-                            visible = visible && _.isDefined(columnsPerAxis[key]) && columnsPerAxis[key] <= +val;
+                            visible = visible && !_.isUndefined(columnsPerAxis[key]) && columnsPerAxis[key] <= +val;
                         } else if (key == 'chart.missing_values') {
                             visible = visible && chart.hasMissingValues() == val;
                         } else if (key == 'chart.min_row_num') {
