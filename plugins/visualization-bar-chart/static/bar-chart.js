@@ -132,7 +132,7 @@
             var me = this,
                 filter = me.__lastRow;
             if (_.isUndefined(filter)) throw 'filter must not be undefined';
-            return me.dataset.column(me.axesDef.bars[filter]);
+            return me.axes(true).bars[filter];
         },
 
         update: function(row) {
