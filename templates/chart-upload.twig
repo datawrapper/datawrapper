@@ -19,9 +19,9 @@
             }
 
             function uploadData(url) {
-                DW.currentChart.set('metadata.data.source', 'clipboard');
+                dw.backend.currentChart.set('metadata.data.source', 'clipboard');
                 $.ajax({
-                    url: '/api/charts/' + DW.currentChart.get('id') + '/data',
+                    url: '/api/charts/' + dw.backend.currentChart.get('id') + '/data',
                     type: 'PUT',
                     data: $('#upload-data-text').val(),
                     processData: false,
@@ -47,7 +47,7 @@
 
             new qq.FileUploader({
                 element: $('#upload')[0],
-                action: '/api/charts/' + DW.currentChart.get('id') + '/data',
+                action: '/api/charts/' + dw.backend.currentChart.get('id') + '/data',
                 allowedExtensions: ['txt', 'csv', 'tsv'],
                 template: '<div class="upload-drop">{% trans "drop your csv file here" %}</div><div class="btn upload-button" id="pick-file-from-disk"><span><i class="icon-upload"></i> {% trans "..or upload a CSV file" %}</span></div><ul class="qq-upload-list" style="display:none"></ul>',
                 classes: {
@@ -64,7 +64,7 @@
                 onComplete: function(code, filename, res) {
                     if (res.status == "ok") nextPage('describe');
                     else {
-                        DW.logError(res.message, txtarea.parent().parent());
+                        dw.backend.logError(res.message, txtarea.parent().parent());
                     }
                 }
             });

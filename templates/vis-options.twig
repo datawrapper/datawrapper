@@ -127,7 +127,7 @@
 <script type="text/javascript">
 
 $(function() {
-    var chart = DW.currentChart,
+    var chart = dw.backend.currentChart,
         dataset = chart.dataset();
 
     function syncVisOptions(vis) {
@@ -148,7 +148,7 @@ $(function() {
                 minColsRegex = /chart\.min_columns\[([^\]]+)\]/,
                 maxColsRegex = /chart\.max_columns\[([^\]]+)\]/;
 
-            _.each(DW.currentVis.axes(), function(columns, key) {
+            _.each(dw.backend.currentVis.axes(), function(columns, key) {
                 columnsPerAxis[key] = _.isArray(columns) ? columns.length : columns ? 1 : 0;
             });
 
@@ -191,7 +191,7 @@ $(function() {
 
     chart.loaded(function(chart) {
 
-        DW.currentVis.setChart(chart);
+        dw.backend.currentVis.setChart(chart);
         syncVisOptions(vis);
 
         // populate select-row
@@ -214,12 +214,12 @@ $(function() {
 
     function initCustomColors(chart) {
 
-        DW.currentVis.chart = chart;
-        DW.currentVis.dataset = chart.dataset();
+        dw.backend.currentVis.chart = chart;
+        dw.backend.currentVis.dataset = chart.dataset();
 
         var customColors = $('#customColors'),
             sel = chart.get('metadata.visualize.custom-colors', {});
-            labels = DW.currentVis.keys();
+            labels = dw.backend.currentVis.keys();
 
         if (_.isEmpty(labels)) {
             $('a[href=#customColors]').hide();

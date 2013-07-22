@@ -32,13 +32,11 @@ table.htCore tr td {
 <script type="text/javascript">
 $(function() {
 
-    var chart = DW.currentChart,
+    var chart = dw.backend.currentChart,
         dataset;
 
     chart.onChange(reload);
 
-    chart.sync('#has-horizontal-headers', 'metadata.data.horizontal-header');
-    // vertical header setting will be synched after data has loaded
     chart.sync('#describe-source-name', 'metadata.describe.source-name');
     chart.sync('#describe-source-url', 'metadata.describe.source-url');
     chart.sync('input:radio[name=transpose]', 'metadata.data.transpose');
@@ -47,6 +45,8 @@ $(function() {
     chart.sync('#number-divisor', 'metadata.describe.number-divisor');
     chart.sync('#number-append', 'metadata.describe.number-append');
     chart.sync('#number-prepend', 'metadata.describe.number-prepend');
+
+    chart.sync('#has-headers', 'metadata.data.horizontal-header');
 
     // swap between currency and unit
     function swapUnitAndCurrency() {
@@ -174,7 +174,6 @@ $(function() {
         // add event handler for ignoring data series
         $('.colHeader').each(function(i, el) {
             var th = $(el).parents('th');
-            
             var sn = data[0][i];
             th.data('series', sn);
             if (ignoreSeries[sn]) th.addClass('ignored');
@@ -192,12 +191,11 @@ $(function() {
     }
 
     function reload(f) {
+        console.log('chart reloaded');
         chart.load().done(function() {
-            if (f === undefined) {
-                if (chart.get('metadata.data.vertical-header') === undefined) {
-                    chart.set('metadata.data.vertical-header', isNaN(chart.dataset().column(0).val(0)));
-                }
-                chart.sync('#has-vertical-headers', 'metadata.data.vertical-header');
+            if (_.isUndefined(f)) {
+                console.log('synchronizing header settings', $('#has-headers'));
+                
             }
             dataset = chart.dataset();
             updateTable();
@@ -262,7 +260,7 @@ $(function() {
 
                 </div><div class="half">
                     <p>
-                        <label class="checkbox"><input id="has-horizontal-headers" type="checkbox" checked="checked"> {% trans "First row as label" %}</label>
+                        <label class="checkbox"><input id="has-headers" type="checkbox" checked="checked"> {% trans "First row as label" %}</label>
                     </p>
                 </div>
                 <div class="clearfix"></div>

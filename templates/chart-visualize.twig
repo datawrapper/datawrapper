@@ -87,7 +87,7 @@ $(function() {
 
     var _typeHasChanged = false,
         _themeHasChanged = false,
-        chart = DW.currentChart,
+        chart = dw.backend.currentChart,
         themes = {{ themes | json | raw }},
         themesById = {},
         visMetas = {};
@@ -154,10 +154,10 @@ $(function() {
     }
 
     function loadVis() {
-        DW.currentVis = new Datawrapper.Visualizations[classify(chart.get('type'))]();
-        DW.currentVis.chart = chart;
-        DW.currentVis.dataset = chart.dataset();
-        DW.currentVis.meta = visMetas[chart.get('type')];
+        dw.backend.currentVis = new Datawrapper.Visualizations[classify(chart.get('type'))]();
+        dw.backend.currentVis.chart = chart;
+        dw.backend.currentVis.dataset = chart.dataset();
+        dw.backend.currentVis.meta = visMetas[chart.get('type')];
     }
 
     loadVis();
@@ -238,7 +238,7 @@ $(function() {
     function onDatasetLoaded() {
         var s = $('#highlight-series'), s2 = $('.highlighted-series');
         s.find("option[value!='---']").remove();
-        _.each(DW.currentVis.keys(), function(key) {
+        _.each(dw.backend.currentVis.keys(), function(key) {
             s.append('<option>'+key+'</option>');
         });
         s.change(function() {
@@ -291,7 +291,7 @@ $(function() {
             white = bgcol == 'rgb(255, 255, 255)' || bgcol == '#ffffff' || bgcol == 'white' || bgcol == 'transparent',
             border = white ? '#ffffff' : '#bbb';
 
-        bgcol = DW.currentChart.get('metadata.publish.contextBg') || DW.currentChart.get('metadata.publish.background');
+        bgcol = dw.backend.currentChart.get('metadata.publish.contextBg') || dw.backend.currentChart.get('metadata.publish.background');
 
         $('#iframe-wrapper').css({
             'background-color': white ? '#ffffff' : bgcol,
@@ -302,7 +302,7 @@ $(function() {
             iframe_h = $('#iframe-vis').height();
 
         if (vis_h > iframe_h+5) {
-            DW.logMessage('Watch out: Your chart needs more space. To get rid of the scrollbars just <a href="#" id="resize-iframe">resize iFrame to chart</a> ', $('.resize-chart-wrap'), 'warning');
+            dw.backend.logMessage('Watch out: Your chart needs more space. To get rid of the scrollbars just <a href="#" id="resize-iframe">resize iFrame to chart</a> ', $('.resize-chart-wrap'), 'warning');
             $('#resize-iframe').click(function(e) {
                 e.preventDefault();
                 //$('#iframe-wrapper').height(vis_h);
@@ -556,7 +556,7 @@ $(function() {
             <script type="text/javascript">
 
             $(function() {
-                var testId = DW.currentChart.get('metadata.describe.__test_id', null);
+                var testId = dw.backend.currentChart.get('metadata.describe.__test_id', null);
                 if (!testId) $('.snapshot.update').hide();
 
                 $('.snapshot').click(function(e) {
@@ -573,7 +573,7 @@ $(function() {
                         dataType: 'json'
                     }).done(function(res) {
                         if (res.status == "ok") {
-                            DW.logMessage("The test case <b>"+id+"</b> has been "+(testId && $(e.target).hasClass('update') ? 'updated.' : 'created.'), '.visconfig');
+                            dw.backend.logMessage("The test case <b>"+id+"</b> has been "+(testId && $(e.target).hasClass('update') ? 'updated.' : 'created.'), '.visconfig');
                         }
                     });
                 });

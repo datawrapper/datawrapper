@@ -48,7 +48,7 @@ $(function() {
         interpolate : /\{\{(.+?)\}\}/g
     };
 
-    var chart = DW.currentChart = dw.chart(JSON.parse('{{ chart.toJSON|raw }}'));
+    var chart = dw.backend.currentChart = dw.chart(JSON.parse('{{ chart.toJSON|raw }}'));
 
     chart
         .locale('{{ chartLocale }}')
