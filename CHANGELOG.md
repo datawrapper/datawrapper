@@ -5,8 +5,10 @@ CHANGELOG
 * refactored javascript core
 * refactored core visualizations to new javascript core
 * refactored custom color feature
+* added axes definitions to visualizations
 * allow sorting visualizations by dependencies
 * one-dimensional visualizations (pie,bars,...) now showing single column (instead of single row)
+* removed bar chart setting 'labels inside bars'
 
 ### 1.4.4
 * added column public_version to chart table
