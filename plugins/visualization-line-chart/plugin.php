@@ -36,8 +36,8 @@ class DatawrapperPlugin_VisualizationLineChart extends DatawrapperPlugin_Visuali
                 "label" => __("Direct labeling", $id),
                 "default" => false,
                 "depends-on" => array(
-                    "chart.min_colums[y1]" => 2,
-                    "chart.max_colums[y2]" => 0  // direct labeling not possible with second axis
+                    "chart.min_columns[y1]" => 2,
+                    "chart.max_columns[y2]" => 0  // direct labeling not possible with second axis
                 )
             ),
             "legend-position" => array(
@@ -46,7 +46,7 @@ class DatawrapperPlugin_VisualizationLineChart extends DatawrapperPlugin_Visuali
                 "default" => "right",
                 "depends-on" => array(
                     "direct-labeling" => false,
-                    "chart.min_colums[y1]" => 2
+                    "chart.min_columns[y1]" => 2
                 ),
                 "options" => array(
                     array(
@@ -72,9 +72,9 @@ class DatawrapperPlugin_VisualizationLineChart extends DatawrapperPlugin_Visuali
                 "label" => __("Fill between lines", $id),
                 "default" => false,
                 "depends-on" => array(
-                    "chart.min_colums[y1]" => 2,
-                    "chart.max_colums[y1]" => 2,
-                    "chart.max_colums[y2]" => 0  // direct labeling not possible with second axis
+                    "chart.min_columns[y1]" => 2,
+                    "chart.max_columns[y1]" => 2,
+                    "chart.max_columns[y2]" => 0  // direct labeling not possible with second axis
                 )
             ),
             "smooth-lines" => array(
