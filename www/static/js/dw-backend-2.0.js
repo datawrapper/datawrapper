@@ -366,16 +366,15 @@ var dw = dw || {};
 
             // initialize current state in UI
             var curVal = chart.get(attribute, _default);
-            if (el.is('input[type=checkbox]')) {
-                if (curVal) el.attr('checked', 'checked');
-                else el.removeAttr('checked');
+            if (el.is('input[type=checkbox]'))  {
+                el.prop('checked', curVal);
             } else if (el.is('input[type=text]') || el.is('textarea') || el.is('select')) {
                 el.val(curVal);
             } else if (el.is('input[type=radio]')) {
                 if (_.isBoolean(curVal)) {
                     curVal = curVal ? 'yes' : 'no';
                 }
-                $('input:radio[name='+el.attr('name')+'][value='+curVal+']').attr('checked', 'checked');
+                $('input:radio[name='+el.attr('name')+'][value='+curVal+']').prop('checked', 'checked');
             }
 
             function storeElementValue(el) {
@@ -384,7 +383,7 @@ var dw = dw || {};
                 attr = el.data('sync-attribute');
 
                 if (el.is('input[type=checkbox]')) {
-                    val = el.attr('checked') == 'checked';
+                    val = el.prop('checked');
                 } else if (el.is('input[type=text]') || el.is('textarea') || el.is('select')) {
                     val = el.val();
                 } else if (el.is('input[type=radio]')) {
