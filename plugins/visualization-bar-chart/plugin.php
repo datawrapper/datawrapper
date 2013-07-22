@@ -29,10 +29,10 @@ class DatawrapperPlugin_VisualizationBarChart extends DatawrapperPlugin_Visualiz
                     "type" => "checkbox",
                     "label" => __("Reverse order", $id),
                 ),
-                "labels-inside-bars" => array(
+                /*"labels-inside-bars" => array(
                     "type" => "checkbox",
                     "label" => __("Display labels inside bars", $id)
-                ),
+                ),*/
                 "negative-color" => array(
                     "type" => "checkbox",
                     "label" => __("Use different color for negative values", $id)
