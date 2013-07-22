@@ -1204,11 +1204,11 @@ dw.chart = function(attributes) {
 
         // loads the dataset and returns a deferred
         load: function() {
-            var datasource, me = this;
+            var datasource;
 
             datasource = dw.datasource.delimited({
                 url: 'data',
-                firstRowIsHeader: me.get('metadata.data.horizontal-header', true),
+                firstRowIsHeader: chart.get('metadata.data.horizontal-header', true),
                 transpose: chart.get('metadata.data.transpose', false)
             });
 
@@ -1222,10 +1222,9 @@ dw.chart = function(attributes) {
         },
 
         loaded: function(callback) {
-            var me = this;
             if (dataset) {
                 // run now
-                callback(me);
+                callback(chart);
             } else {
                 load_callbacks.push(callback);
             }
