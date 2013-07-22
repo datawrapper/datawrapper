@@ -347,7 +347,6 @@
             defAxes = me.chart.get('metadata.axes', defAxes);
             if (returnAsColumns) {
                 _.each(defAxes, function(columns, key) {
-                    console.log(key, columns);
                     if (!_.isArray(columns)) {
                         defAxes[key] = columns !== false ? me.dataset.column(columns) : null;
                     } else {
