@@ -112,7 +112,7 @@ $(function() {
             data.push(tr);
         });
 
-        var ignoreSeries = _.clone(chart.get('metadata.data.ignore-series', {}));
+        var ignoreSeries = _.clone(chart.get('metadata.data.ignore-columns', {}));
 
         function myRenderer(instance, td, row, col, prop, value, cellProperties) {
             Handsontable.TextCell.renderer.apply(this, arguments);
@@ -186,7 +186,7 @@ $(function() {
                     ignoreSeries[sn] = true;
                     th.addClass('ignored');
                 }
-                chart.set('metadata.data.ignore-series', _.clone(ignoreSeries));
+                chart.set('metadata.data.ignore-columns', _.clone(ignoreSeries));
             });
         });
     }

@@ -18,6 +18,7 @@
         },
 
         setTheme: function(theme) {
+            if (!theme) return this;
             this.theme = theme;
             var attr_properties = ['horizontalGrid', 'verticalGrid', 'yAxis', 'xAxis'];
             _.each(attr_properties, function(prop) {
@@ -93,7 +94,7 @@
             me.dataset = chart.dataset();
             me.setTheme(chart.theme());
             me.chart = chart;
-            me.dataset.filterSeries(chart.get('metadata.data.ignore-series', {}));
+            me.dataset.filterSeries(chart.get('metadata.data.ignore-columns', {}));
         },
 
         axes: function() {
