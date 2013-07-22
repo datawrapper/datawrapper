@@ -150,7 +150,7 @@ p.lead {
                 <div style="font-size:45px;line-height:55px;margin-left:-7px" class="pull-left">☝</div>
                 <div style="margin-left: 40px">
                     <h4>{% trans "Chart URL has changed!" %}</h4>
-                    <div>{% trans "Please note that the chart URL has changed due to the republication. Please update the embed code on your website. The old URLs are being redirected in a few minutes." %}</div>
+                    <div>{% trans "Please note that the chart URL has changed due to the republication. Please update the embed code on your website. The old URLs will soon redirect to the current version." %}</div>
                 </div>
             </div>
 
@@ -260,7 +260,7 @@ p.lead {
 
             <iframe src="{% if publish %}{{ chartUrlLocal }}{% else %}{{ chartUrl }}{% endif %}" id="iframe-vis" style="width:{{ chart.metadata.publish['embed-width'] }}px;height:{{ chart.metadata.publish['embed-height'] }}px" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>
 
-            <div style="color: #999;margin-top:20px"><b>{% trans "Note" %}:</b> {% trans "It may take a while until the republished chart. You can force reloading of the chart by right-clicking it and selecting 'Reload Iframe'. " %}</div>
+            <div style="color: #999;margin-top:20px"><b>{% trans "Note" %}:</b> {% trans "It may take a couple of minutes until the re-direction from old chart urls to the newest version takes effect." %}</div>
 
             {% else %}
 
