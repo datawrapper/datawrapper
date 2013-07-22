@@ -851,7 +851,7 @@ dw.utils = {
 
     columnNameColumn: function(columns) {
         var names = _.map(columns, function(col) { return col.name(); });
-        return dw.column('', names, 'text');
+        return dw.column('', names);
     },
 
     name: function(obj) {
@@ -979,7 +979,7 @@ dw.utils.filter = function (column, active, type, format) {
                 ticks = timescale.ticks(nticks),
                 daysDelta = Math.round((column.val(-1).getTime() - column.val(0).getTime()) / 86400000),
                 fmt = dw.utils.dateFormat(daysDelta),
-                lfmt = dw.utils.longDateFormat(),
+                lfmt = dw.utils.longDateFormat(column),
                 dots = timescale.ticks(w / 8),
                 lbl_x = function(i) { return Math.max(-18, timescale(column.val(i)) - 40); };
 
@@ -1065,7 +1065,7 @@ dw.utils.filter = function (column, active, type, format) {
                     min_dist = Number.MAX_VALUE,
                     nearest_row = 0;
                 // find nearest date
-                _.each(vis.dataset.rowDates(), function(date, i) {
+                column.each(function(date, i) {
                     var dist = Math.abs(date.getTime() - x_date.getTime());
                     if (dist < min_dist) {
                         min_dist = dist;
