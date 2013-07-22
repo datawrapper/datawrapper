@@ -35,6 +35,8 @@ dw.utils.filter = function (column, active, type, format) {
     function getFilterUI(type) {
         var f;
 
+        if (column.length < 2) return function() { return false; };
+
         if (type == 'select') f = function(vis) {
             // use <select>
             var select = $('<select />');
