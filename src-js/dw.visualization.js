@@ -97,7 +97,7 @@
             me.dataset.filterSeries(chart.get('metadata.data.ignore-columns', {}));
         },
 
-        axes: function() {
+        axes: function(returnAsColumns) {
             var me = this,
                 dataset = me.dataset,
                 usedColumns = {},
@@ -138,7 +138,19 @@
                 me.warn(errors.join('<br/>'));
                 return false;
             }
-            return me.chart.get('metadata.axes', defAxes);
+            defAxes = me.chart.get('metadata.axes', defAxes);
+            if (returnAsColumns) {
+                _.each(defAxes, function(columns, key) {
+                    if (!_.isArray(columns)) {
+                        defAxes[key] = columns !== false ? me.dataset.column(columns) : null;
+                    } else {
+                        _.each(columns, function(column, i) {
+                            defAxes[key][i] = column !== false ? me.dataset.column(column) : null;
+                        });
+                    }
+                });
+            }
+            return defAxes;
         },
 
         keys: function() {
