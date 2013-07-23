@@ -1121,3 +1121,16 @@ form.well form {
     color: #A0711F;
     margin: 2px 0 5px;
 }
+
+.visualize-nav-tabs {
+
+}
+
+.visualize-nav-tabs li a {
+
+}
+
+.visualize-nav-tabs .active a {
+    color: #000;
+    font-weight: bold;
+}
