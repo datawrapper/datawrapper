@@ -209,7 +209,7 @@
         }
 
         function chartLoaded() {
-            chart = dw.chart(JSON.parse('{{ chart.toJSON | raw }}'))
+            chart = dw.chart(old_chart_attributes)
                     .locale('{{ chartLocale }}')
                     .metricPrefix({{ metricPrefix | json | raw }})
                     .theme(Datawrapper.Themes.{{ theme.id | classify }});
@@ -260,10 +260,45 @@
             });
         }
 
+        var old_chart_attributes = JSON.parse('{{ chart.toJSON | raw }}'),
+            needReload = false;
+
         window.__dw = {
             attributes: function(attrs) {
-                window.__dw.vis.chart.attributes(attrs);
-                renderChart();
+                function changed(key) {
+                    var p0 = old_chart_attributes,
+                        p1 = attrs;
+                    key = key.split('.');
+                    _.each(key, function(k) {
+                        p0 = p0[k];
+                        p1 = p1[k];
+                    });
+                    return JSON.stringify(p0) != JSON.stringify(p1);
+                }
+                function heightChanged(el, html) {
+                    var old_h = el.height();
+                    el.html(html);
+                    return el.height() != old_h;
+                }
+                // check if we need to update chart
+                if (changed('metadata.visualize')) {
+                    __dw.vis.chart.attributes(attrs);
+                    renderChart();
+                }
+                if (changed('title')) {
+                    if (heightChanged($('.chart-title'), attrs.title)) renderChart();
+                }
+                if (changed('metadata.describe.intro')) {
+                    if (attrs.metadata.describe.intro && !$('.chart-intro').length) needReload = true;
+                    if (!attrs.metadata.describe.intro && $('.chart-intro').length) needReload = true;
+                    if (!needReload) {
+                        if (heightChanged($('.chart-intro'), attrs.metadata.describe.intro)) renderChart();
+                    }
+                }
+                old_chart_attributes = $.extend(true, {}, attrs);
+            },
+            saved: function() {
+                if (needReload) location.reload();
             }
         };
 

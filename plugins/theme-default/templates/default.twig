@@ -2,11 +2,11 @@
 
 <div id="header">
     {% if not plain %}
-    <h1><span>{{ title|purify }}</span></h1>
+    <h1><span class="chart-title">{{ title|purify }}</span></h1>
 
-        {% if intro %}
-        <p>{{ intro|purify|raw }}</p>
-        {% endif %}
+    {% if intro %}
+    <p class="chart-intro">{{ intro|purify|raw }}</p>
+    {% endif %}
 
     {% endif %}
     <a href="{{ chartUrlFs }}" target="_blank" class="fs-btn top-right" title="{% trans "Fullscreen" %}" data-toggle="fullscreen"></a>
