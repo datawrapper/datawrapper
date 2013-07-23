@@ -117,7 +117,7 @@
                 <p>{% trans "If you simply want to play around with Datawrapper, here's a list of some example datasets:" %}</p>
                 <ul id="demo-datasets" class="">
                     {% for dataset in datasets %}
-                    <li>{{ dataset.type }}: <a href="#{{ dataset.id }}" class="demo-dataset" data-data="{{ dataset.data }}" data-presets='{{ dataset.presets | json | raw }}'>{{ dataset.title }}</a></li>
+                    <li>{{ dataset.type }}: <a href="#{{ dataset.id }}" class="demo-dataset" data-data="{{ dataset.data | escape('html') }}" data-presets='{{ dataset.presets | json | escape('html')  }}'>{{ dataset.title }}</a></li>
                     {% endfor %}
                 </ul>
                 <script type="text/javascript">
