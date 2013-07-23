@@ -75,8 +75,8 @@
                 var items = [];
                 dataset.eachRow(function(r) {
                     items.push({
-                        label: dataset.rowName(r),
-                        color: me.getColor(null, r, { varyLightness: true })
+                        label: me.axes(true).labels.val(r),
+                        color: me.getColor(null, r, { varyLightness: true, key: me.axes(true).labels.val(r) })
                     });
                 });
                 me.addLegend(items, $('#header', c.root.parent()));
@@ -96,9 +96,10 @@
             // draw bars
             _.each(me.getBarColumns(me.get('sort-values'), me.get('reverse-order')), function(column, s) {
                 column.each(function(val, r) {
+                    me._color_opts.key = me.axes(true).labels.val(r);
                     var d = me.barDimensions(column, s, r),
                         fill = me.getColor(column, r, me._color_opts),
-                        stroke = chroma.color(fill).darken(15).hex(),
+                        stroke = chroma.color(fill).darken(10).hex(),
                         key = column.name()+'-'+r,
                         bar_attrs = {
                             x: d.x,
@@ -337,7 +338,7 @@
                 });
                  _.each(me.__seriesElements[column.name()], function(el) {
                     fill = getFill(column, el);
-                    stroke = chroma.color(fill).darken(15).hex();
+                    stroke = chroma.color(fill).darken(10).hex();
                     if (el.attrs.fill != fill || el.attrs.stroke != stroke)
                         el.animate({ fill: fill, stroke: stroke }, 50);
                 });
