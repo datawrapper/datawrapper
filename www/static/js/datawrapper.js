@@ -354,7 +354,8 @@
         reset: function() {
             this.clear();
             $('#chart').html('').off('click').off('mousemove').off('mouseenter').off('mouseover');
-            $('#header .legend').remove();
+            $('.chart .filter-ui').remove();
+            $('.chart .legend').remove();
         },
 
         clear: function() {
