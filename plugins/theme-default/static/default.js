@@ -31,7 +31,11 @@
 
         frame: false,
 
-        verticalGrid: false
+        verticalGrid: false,
+
+        columnChart: {
+            darkenStroke: 5
+        }
 
     });
 

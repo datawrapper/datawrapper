@@ -77,7 +77,9 @@
             // you can customize bar attributes
             barAttrs: {
                 'stroke-width': 1
-            }
+            },
+            // make strokes a little darker than the fill
+            darkenStroke: 18
         },
 
         /*

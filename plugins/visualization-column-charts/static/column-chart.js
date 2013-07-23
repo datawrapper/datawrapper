@@ -64,7 +64,7 @@
 
             _.each(bars, function(bar, s) {
                 lh = Math.max(lh,
-                    chart_width /(n + (n-1) * 0.35) > 31 ?
+                    chart_width /(n + (n-1) * 0.35) > 38 ?
                       me.labelHeight(bar.name, 'series', c.w / (n)) :
                       me.labelWidth(bar.name, 'series')
                 );
@@ -82,7 +82,7 @@
                 var d = me.barDimensions(barv, s),
                     val = barv.value,
                     fill = me.getBarColor(barv, me.get('negative-color', false)),
-                    stroke = chroma.color(fill).darken(14).hex(),
+                    stroke = chroma.color(fill).darken(me.theme.columnChart.darkenStroke).hex(),
                     bar;
 
                 // create bar
@@ -258,6 +258,8 @@
 
             if (c.w / n < 30) vspace = 0.05;
 
+            if (me.get('hide-grid', false)) vspace = 0.02;
+
             cw = (c.w - c.lpad - c.rpad) * (1 - vspace - vspace);
             bw = cw / (n + (n-1) * pad);
             h = sc.y(val) - sc.y(0);
@@ -326,7 +328,7 @@
                 tickLabels = me.__tickLabels = me.__tickLabels || {},
                 gridLines = me.__gridLines = me.__gridLines || {};
 
-            if (c.w / me.getBarValues().length > 50) ticks = [0];
+            if (me.get('hide-grid', false)) ticks = [];
 
             ticks = ticks.filter(function(val, t) {
                 return val >= domain[0] && val <= domain[1];
@@ -397,7 +399,8 @@
         },
 
         hovers: function(column) {
-            var me = this;
+            var me = this,
+                theme = me.theme;
             _.each(me.getBarColumns(), function(col) {
                 _.each(me.__seriesLabels[col.name()], function(lbl) {
                     if (column !== undefined && col.name() == column.name()) {
@@ -410,7 +413,7 @@
                     _.each(me.__seriesElements[col.name()], function(el) {
                         var fill = me.getBarColor(col, el.data('row'), me.get('negative-color', false)), stroke;
                         if (column !== undefined && col.name() == column.name()) fill = chroma.color(fill).darken(14).hex();
-                        stroke = chroma.color(fill).darken(18).hex();
+                        stroke = chroma.color(fill).darken(theme.columnChart.darkenStroke).hex();
                         if (el.attrs.fill != fill || el.attrs.stroke != stroke)
                             el.animate({ fill: fill, stroke: stroke }, 50);
                     });
