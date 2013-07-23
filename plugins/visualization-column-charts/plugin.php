@@ -43,6 +43,11 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                 "absolute-scale" => array(
                     "type" => "checkbox",
                     "label" => __("Use the same scale for all columns")
+                ),
+                "hide-grid" => array(
+                    "type" => "checkbox",
+                    "label" => __("Hide grid lines"),
+                    "default" => false
                 )
             )
         );
