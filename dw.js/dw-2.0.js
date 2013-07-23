@@ -1301,7 +1301,11 @@ dw.chart = function(attributes) {
             vis.render(container);
         },
 
-        attributes: function() {
+        attributes: function(attrs) {
+            if (arguments.length) {
+                attributes = attrs;
+                return chart;
+            }
             return attributes;
         },
 

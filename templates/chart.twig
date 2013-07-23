@@ -180,19 +180,14 @@
 
     (function() {
 
-        var chart,
-            vis = initVisualization();
+        var chart;
 
-        if(!vis.checkBrowserCompatibility()){
+        if(!getVis().checkBrowserCompatibility()){
             window.location.href = 'static.html';
             return;
         }
 
-        $.when($.ready(), chartLoaded()).done(function() {
-            // clean chart
-            $('#chart').html('').off('click').off('mousemove').off('mouseenter').off('mouseover');
-            $('#header .legend').remove();
-
+        function renderChart() {
             // compute chart dimensions
             var w = $('#chart').innerWidth(),
                 h = dw.utils.getMaxChartHeight($('#chart'));
@@ -200,28 +195,31 @@
             if (!$.support.leadingWhitespace) w -= 10; // IE Fix
             w -= $('body').css('padding-left').replace('px', '');
             w -= $('body').css('padding-right').replace('px', '');
+
+            if (__dw.vis) __dw.vis.reset();
+
+            var vis = __dw.vis = getVis();
+            chart.vis(vis);
             vis.setSize(w, h);
 
             initResizeHandler();
             initFullscreen();
 
             chart.render($('#chart'));
-        });
+        }
 
         function chartLoaded() {
             chart = dw.chart(JSON.parse('{{ chart.toJSON | raw }}'))
                     .locale('{{ chartLocale }}')
                     .metricPrefix({{ metricPrefix | json | raw }})
-                    .vis(vis)
                     .theme(Datawrapper.Themes.{{ theme.id | classify }});
             return chart.load();
         }
 
-        function initVisualization() {
+        function getVis() {
             var vis = new Datawrapper.Visualizations.{{ visualization.id | classify }}();
             vis.meta = JSON.parse("{{ visualization | json | escape('js') }}");
             vis.lang = '{{ lang }}';
-            window.vis = vis;
             return vis;
         }
 
@@ -232,7 +230,7 @@
                 $(window).resize(function() {
                     if (reload_timer) clearTimeout(reload_timer);
                     reload_timer = setTimeout(function() {
-                        loadChart();
+                        renderChart();
                     }, 300);
                 });
             }
@@ -261,6 +259,15 @@
                 }
             });
         }
+
+        window.__dw = {
+            attributes: function(attrs) {
+                window.__dw.vis.chart.attributes(attrs);
+                renderChart();
+            }
+        };
+
+        $.when($.ready(), chartLoaded()).done(renderChart);
 
     })();
 

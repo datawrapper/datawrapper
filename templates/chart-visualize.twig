@@ -90,7 +90,8 @@ $(function() {
         chart = dw.backend.currentChart,
         themes = {{ themes | json | raw }},
         themesById = {},
-        visMetas = {};
+        visMetas = {},
+        iframe = $('#iframe-vis');
 
     {% for vis in visualizations %}
         visMetas['{{ vis.id }}'] = JSON.parse('{{ vis|json| escape("js") }}');
@@ -163,11 +164,9 @@ $(function() {
     loadVis();
 
     chart.onSave(function(chart) {
-
-        var iframe = $('#iframe-vis');
-        iframe.attr('src', '/chart/{{ chart.id }}/preview?innersvg=1&nocache='+Math.random());
-
+        var iframeNeedReload = false;
         if (_themeHasChanged) {
+            iframeNeedReload = true;
             iframe.one('load', updateVisBackground);
             _.each(themes, function(theme) {
                 if (theme.id == chart.get('theme')) {
@@ -180,6 +179,7 @@ $(function() {
         }
 
         if (_typeHasChanged) {
+            iframeNeedReload = true;
             loadVis();
         }
 
@@ -191,7 +191,10 @@ $(function() {
         _themeHasChanged = false;
         _typeHasChanged = false;
 
-        iframe.one('load', scheduleThumbnail);
+        if (iframeNeedReload) {
+            iframe.attr('src', '/chart/{{ chart.id }}/preview?innersvg=1&nocache='+Math.random());
+            iframe.one('load', scheduleThumbnail);
+        }
     });
 
     var _thumbTimer;
@@ -200,7 +203,7 @@ $(function() {
         clearTimeout(_thumbTimer);
         _thumbTimer = setTimeout(function() {
             //console.log('snapshot', $('#iframe-wrapper iframe'), '{{ chart.id }}', 'm', 260, 160);
-            dw.backend.snapshot($('#iframe-vis'), '{{ chart.id }}', 'm', 260, 160);
+            dw.backend.snapshot(iframe, '{{ chart.id }}', 'm', 260, 160);
         }, 500);
     }
 
@@ -214,6 +217,9 @@ $(function() {
             _typeHasChanged = true;
         } else if (key == 'theme') {
             _themeHasChanged = true;
+        }
+        if (!_typeHasChanged && !_themeHasChanged) {
+            dw.backend.updateChartInIframe(iframe, chart.attributes());
         }
     });
 
@@ -313,7 +319,7 @@ $(function() {
         }
     }
 
-    $('#iframe-vis').load(updateVisBackground);
+    iframe.load(updateVisBackground);
 
     $('.nav-tabs').each(function(i, el) {
         var navTabs = $(el);

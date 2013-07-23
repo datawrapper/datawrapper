@@ -345,6 +345,20 @@
                 return keys;
             }
             return [];
+        },
+
+        /*
+         * called by the core whenever the chart is re-drawn
+         * without reloading the page
+         */
+        reset: function() {
+            this.clear();
+            $('#chart').html('').off('click').off('mousemove').off('mouseenter').off('mouseover');
+            $('#header .legend').remove();
+        },
+
+        clear: function() {
+
         }
 
     });

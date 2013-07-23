@@ -234,7 +234,7 @@ var dw = dw || {};
         if ($('svg', body).get(0) === undefined) return false;
 
         var svg = $('svg', body),
-            c = win.vis.__canvas,
+            c = win.__dw.vis.__canvas,
             x = c.lpad + (c.lpad2 || 0),
             y = 0,
             w = c.w - x - c.rpad,
@@ -272,6 +272,17 @@ var dw = dw || {};
                 else console.error(res);
             }
         });
+    }
+
+    /*
+     * updates the chart attributes of a rendered visualization
+     * so that is doesn't have to be reloaded.
+     */
+    function updateChartInIframe(iframe, attributes) {
+        var win = iframe.get(0).contentWindow;
+        if (win.__dw) {
+            win.__dw.attributes(attributes);
+        }
     }
 
     /*
@@ -434,6 +445,7 @@ var dw = dw || {};
         logMessage: logMessage,
         logError: logError,
         snapshot: snapshot,
+        updateChartInIframe: updateChartInIframe,
         popupChart: popupChart,
         checkPassword: checkPassword,
         clearAlerts: clearAlerts,

@@ -109,6 +109,7 @@ dw.chart = function(attributes) {
         vis: function(_vis) {
             if (arguments.length) {
                 vis = _vis;
+                vis.setChart(chart);
                 return chart;
             }
             return vis;
@@ -168,7 +169,11 @@ dw.chart = function(attributes) {
             vis.render(container);
         },
 
-        attributes: function() {
+        attributes: function(attrs) {
+            if (arguments.length) {
+                attributes = attrs;
+                return chart;
+            }
             return attributes;
         },
 

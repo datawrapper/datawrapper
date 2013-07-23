@@ -532,6 +532,18 @@
 
         checkBrowserCompatibility: function(){
             return window['Raphael'] && Raphael.type;
+        },
+
+        clear: function() {
+            var me = this;
+            _.each(me.__elements, function(elements) {
+                _.each(elements, function(el) { el.remove(); });
+            });
+            _.each(me.__labels, function(elements) {
+                _.each(elements, function(el) { el.remove(); });
+            });
+            me.__elements = {};
+            me.__labels = {};
         }
 
     });
