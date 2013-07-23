@@ -14,7 +14,7 @@
     <column name="metadata" type="varchar" size="4096" required="true" />
     <column name="deleted" type="boolean" default="false" />
     <column name="deleted_at" type="timestamp" />
-    <column name="author_id" type="integer" required="true"/>
+    <column name="author_id" type="integer" required="false"/>
     <foreign-key foreignTable="user">
       <reference local="author_id" foreign="id"/>
     </foreign-key>

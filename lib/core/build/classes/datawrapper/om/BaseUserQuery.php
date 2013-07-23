@@ -630,7 +630,7 @@ abstract class BaseUserQuery extends ModelCriteria
 	 *
 	 * @return    UserQuery The current query, for fluid interface
 	 */
-	public function joinChart($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+	public function joinChart($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
 	{
 		$tableMap = $this->getTableMap();
 		$relationMap = $tableMap->getRelation('Chart');
@@ -665,7 +665,7 @@ abstract class BaseUserQuery extends ModelCriteria
 	 *
 	 * @return    ChartQuery A secondary query class using the current class as primary query
 	 */
-	public function useChartQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+	public function useChartQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
 	{
 		return $this
 			->joinChart($relationAlias, $joinType)

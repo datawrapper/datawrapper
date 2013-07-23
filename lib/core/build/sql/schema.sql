@@ -20,7 +20,7 @@ CREATE TABLE `chart`
 	`metadata` VARCHAR(4096) NOT NULL,
 	`deleted` TINYINT(1) DEFAULT 0,
 	`deleted_at` DATETIME,
-	`author_id` INTEGER NOT NULL,
+	`author_id` INTEGER,
 	`show_in_gallery` TINYINT(1) DEFAULT 0,
 	`language` VARCHAR(5) DEFAULT '',
 	`guest_session` VARCHAR(255),

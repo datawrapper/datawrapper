@@ -47,7 +47,7 @@ class ChartTableMap extends TableMap
 		$this->addColumn('METADATA', 'Metadata', 'VARCHAR', true, 4096, null);
 		$this->addColumn('DELETED', 'Deleted', 'BOOLEAN', false, 1, false);
 		$this->addColumn('DELETED_AT', 'DeletedAt', 'TIMESTAMP', false, null, null);
-		$this->addForeignKey('AUTHOR_ID', 'AuthorId', 'INTEGER', 'user', 'ID', true, null, null);
+		$this->addForeignKey('AUTHOR_ID', 'AuthorId', 'INTEGER', 'user', 'ID', false, null, null);
 		$this->addColumn('SHOW_IN_GALLERY', 'ShowInGallery', 'BOOLEAN', false, 1, false);
 		$this->addColumn('LANGUAGE', 'Language', 'VARCHAR', false, 5, '');
 		$this->addColumn('GUEST_SESSION', 'GuestSession', 'VARCHAR', false, 255, null);
