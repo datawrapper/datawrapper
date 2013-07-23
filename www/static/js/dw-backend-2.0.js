@@ -274,6 +274,61 @@ var dw = dw || {};
         });
     }
 
+    function initLiveUpdates(iframe) {
+        var chart_window = iframe.get(0).contentWindow,
+            chart_body = iframe.get(0).contentDocument,
+            __dw = chart_window.__dw,
+            needReload = false;
+
+        function $$(sel) {
+            return $(sel, chart_body);
+        }
+
+        _.extend(__dw, {
+            attributes: function(attrs) {
+                if (changed('type') || changed('theme') || changed('metadata.data.transpose')) {
+                    needReload = true;
+                    return;
+                }
+                // check if we need to update chart
+                if (changed('metadata.visualize')) {
+                    __dw.vis.chart.attributes(attrs);
+                    __dw.render();
+                }
+                if (changed('title')) {
+                    if (heightChanged($$('.chart-title'), attrs.title)) __dw.render();
+                }
+                if (changed('metadata.describe.intro')) {
+                    if (attrs.metadata.describe.intro && !$$('.chart-intro').length) needReload = true;
+                    if (!attrs.metadata.describe.intro && $$('.chart-intro').length) needReload = true;
+                    if (!needReload) {
+                        if (heightChanged($$('.chart-intro'), attrs.metadata.describe.intro)) __dw.render();
+                    }
+                }
+                __dw.old_attrs = $.extend(true, {}, attrs);
+
+                function changed(key) {
+                    var p0 = __dw.old_attrs,
+                        p1 = attrs;
+                    key = key.split('.');
+                    _.each(key, function(k) {
+                        p0 = p0[k];
+                        p1 = p1[k];
+                    });
+                    return JSON.stringify(p0) != JSON.stringify(p1);
+                }
+                function heightChanged(el, html) {
+                    var old_h = el.height();
+                    el.html(html);
+                    return el.height() != old_h;
+                }
+            },
+            saved: function() {
+                if (needReload) iframe.attr('src', iframe.attr('src'));
+            }
+        });
+    }
+
     /*
      * updates the chart attributes of a rendered visualization
      * so that is doesn't have to be reloaded.
@@ -445,6 +500,7 @@ var dw = dw || {};
         logMessage: logMessage,
         logError: logError,
         snapshot: snapshot,
+        initLiveUpdates: initLiveUpdates,
         updateChartInIframe: updateChartInIframe,
         popupChart: popupChart,
         checkPassword: checkPassword,

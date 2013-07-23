@@ -164,9 +164,7 @@ $(function() {
     loadVis();
 
     chart.onSave(function(chart) {
-        var iframeNeedReload = false;
         if (_themeHasChanged) {
-            iframeNeedReload = true;
             iframe.one('load', updateVisBackground);
             _.each(themes, function(theme) {
                 if (theme.id == chart.get('theme')) {
@@ -179,7 +177,6 @@ $(function() {
         }
 
         if (_typeHasChanged) {
-            iframeNeedReload = true;
             loadVis();
         }
 
@@ -191,11 +188,13 @@ $(function() {
         _themeHasChanged = false;
         _typeHasChanged = false;
 
-        if (iframeNeedReload) {
+        /*if (iframeNeedReload) {
             iframe.attr('src', '/chart/{{ chart.id }}/preview?innersvg=1&nocache='+Math.random());
             iframe.one('load', scheduleThumbnail);
-        }
+        }*/
         iframe.get(0).contentWindow.__dw.saved();
+
+        scheduleThumbnail();
     });
 
     var _thumbTimer;
@@ -214,14 +213,7 @@ $(function() {
     chart.sync('#text-intro', 'metadata.describe.intro');
 
     chart.onChange(function(chart, key, value) {
-        if (key == 'type') {
-            _typeHasChanged = true;
-        } else if (key == 'theme') {
-            _themeHasChanged = true;
-        }
-        if (!_typeHasChanged && !_themeHasChanged) {
-            dw.backend.updateChartInIframe(iframe, chart.attributes());
-        }
+        dw.backend.updateChartInIframe(iframe, chart.attributes());
     });
 
     // load dataset
@@ -321,6 +313,9 @@ $(function() {
     }
 
     iframe.load(updateVisBackground);
+    iframe.load(function() {
+        dw.backend.initLiveUpdates(iframe);
+    });
 
     $('.nav-tabs').each(function(i, el) {
         var navTabs = $(el);
