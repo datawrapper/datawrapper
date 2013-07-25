@@ -143,6 +143,36 @@ $app->post('/account/resend-activation', function() use($app) {
         error('token-empty', __('You\'re account is probably already activated.'));
     }
 });
+
+/*
+ * endpoint for sending a new invitation to a user
+ *
+ * expects payload { "email": "validemail@domain.tld" }
+ */
+$app->post('/account/resend-invitation', function() use($app) {
+    $payload = json_decode($app->request()->getBody());
+    $user    = UserQuery::create()->findOneByEmail($payload->email);
+    $token   = $user->getActivateToken();
+    if (!empty($user)) {
+        if (empty($token)) {
+            error("token-invalid", _("This activation token is invalid. Your email address is probably already activated."));
+        }
+        // variables for `templates/invitation-email.php` 
+        $domain         = $GLOBALS['dw_config']['domain'];
+        $invitationLink = 'http://' . $domain . '/account/invite/' . $token;
+        $name           = $user->getEmail();
+        include('../../lib/templates/invitation-email.php');
+        $from           = $GLOBALS['dw_config']['email']['invite'];
+        DatawrapperHooks::execute(
+            DatawrapperHooks::SEND_EMAIL,
+            $user->getEmail(), sprintf(__('You have been invited to %s'), $domain), $invitation_mail, 'From: ' . $from
+        );
+        ok(__('You should soon receive an email with further instructions.'));
+    } else {
+        error('login-email-unknown', __('The email is not registered yet.'));
+    }
+});
+
 /*
  * endpoint for validating an invitation. The user sends his new password
  */

@@ -127,7 +127,11 @@
                         <a href="/admin/charts/{{ user.id }}">{{ user.publicChartCount() }}</a></td>
                     <td class="actions">
                         <a href="#" class="do" data-action="editAction" data-id="{{user.id}}"><i class="icon-pencil" title="{% trans "edit" %}"></i></a>
-                        <a href="#" class="do" data-action="resendAction" data-id="{{user.id}}"><i class="icon-envelope" title="{% trans "resend an invitation" %}"></i></a>
+                        {% if user.activateToken %}
+                            <a href="#" class="do" data-action="resendAction" data-id="{{user.id}}"><i class="icon-envelope" title="{% trans "resend an invitation" %}"></i></a>
+                        {% else %}
+                            <a href="#" class="do" data-action="resetAction" data-id="{{user.id}}"><i class="icon-envelope" title="{% trans "reset the password and send a mail" %}"></i></a>
+                        {% endif %}
                         {% if current_user != user %}
                             <a href="#" class="do" data-action="removeAction" data-id="{{user.id}}"><i class="icon-trash" title="{% trans "delete" %}"></i></a>
                         {% endif %}

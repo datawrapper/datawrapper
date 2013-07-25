@@ -49,7 +49,8 @@ class admin_users.AdminUsers extends Widget
 			'editAction'
 			'saveEditAction'
 			'cancelEditAction'
-			'resendAction']
+			'resendAction',
+			'resetAction']
 
 		@cache = {
 			editedUser : null
@@ -124,6 +125,10 @@ class admin_users.AdminUsers extends Widget
 
 	resendAction: (evnt) =>
 		this.hideMessages()
+		this.resendInvitation($(evnt.currentTarget).data('id'))
+
+	resetAction: (evnt) =>
+		this.hideMessages()
 		this.resetPassword($(evnt.currentTarget).data('id'))
 
 	# -----------------------------------------------------------------------------
@@ -188,6 +193,19 @@ class admin_users.AdminUsers extends Widget
 	resetPassword: (id) =>
 		user = this.__getUserById(id)
 		$.ajax('/api/account/reset-password', {
+			dataType : "json"
+			type     : "POST"
+			data     : JSON.stringify({email:user.Email})
+			success  : (data) =>
+				if data.status == "ok"
+					@uis.msgSuccess.html(data.data).removeClass('hidden')
+				else
+					@uis.msgError.filter(".error-#{data.code}").removeClass('hidden')
+		})
+
+	resendInvitation: (id) =>
+		user = this.__getUserById(id)
+		$.ajax('/api/account/resend-invitation', {
 			dataType : "json"
 			type     : "POST"
 			data     : JSON.stringify({email:user.Email})
