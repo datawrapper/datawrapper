@@ -3,6 +3,8 @@
 {% block title %}Admin / Users{% endblock %}
 {% block adminpage %}
 
+{% set current_user = user %}
+
 <script type="text/javascript" src="/static/vendor/serious-toolkit/serious-widget.js"></script>
 <script type="text/javascript" src="/static/js/dw.admin.users.js"></script>
 
@@ -124,9 +126,11 @@
                     <td class="center">
                         <a href="/admin/charts/{{ user.id }}">{{ user.publicChartCount() }}</a></td>
                     <td class="actions">
-                        <a href="#" class="do" data-action="removeAction" data-id="{{user.id}}"><i class="icon-trash" title="{% trans "delete" %}"></i></a>
                         <a href="#" class="do" data-action="editAction" data-id="{{user.id}}"><i class="icon-pencil" title="{% trans "edit" %}"></i></a>
                         <a href="#" class="do" data-action="resendAction" data-id="{{user.id}}"><i class="icon-envelope" title="{% trans "resend an invitation" %}"></i></a>
+                        {% if current_user != user %}
+                            <a href="#" class="do" data-action="removeAction" data-id="{{user.id}}"><i class="icon-trash" title="{% trans "delete" %}"></i></a>
+                        {% endif %}
                     </td>
                 </tr>
             {% endfor %}
@@ -143,8 +147,8 @@
                     </select>
                 </td>
                 <td class="creation out"></td>
-                <td class="center">
-                    --</td>
+                <td class="center">--</td>
+                <td class="center">--</td>
                 <td class="actions">
                     <a href="#" class="do" data-action="saveEditAction"><i class="icon-ok" title="{% trans "save" %}"></i></a>
                     <a href="#" class="do" data-action="cancelEditAction"><i class="icon-remove" title="{% trans "cancel" %}"></i></a>
