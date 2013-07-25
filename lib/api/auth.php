@@ -155,7 +155,7 @@ $app->post('/account/resend-invitation', function() use($app) {
     $token   = $user->getActivateToken();
     if (!empty($user)) {
         if (empty($token)) {
-            error("token-invalid", _("This activation token is invalid. Your email address is probably already activated."));
+            return error("token-invalid", _("This activation token is invalid. Your email address is probably already activated."));
         }
         // variables for `templates/invitation-email.php` 
         $domain         = $GLOBALS['dw_config']['domain'];
