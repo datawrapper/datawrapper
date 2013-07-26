@@ -36,14 +36,15 @@ $cmd = $argv[1];
  */
 function list_plugins() {
     $plugins = PluginQuery::create()->find();
+    print "\n";
     foreach ($plugins as $plugin) {
-        print $plugin->getName().":  ";
+        print $plugin->getName()." :  ";
         print $plugin->getEnabled() ? "ENABLED" : "DISABLED";
         print "\n";
     }
     _apply("*", function($id) {
         $plugin = PluginQuery::create()->findPk($id);
-        if (!$plugin) print "$id:  NOT INSTALLED\n";
+        if (!$plugin) print "$id :  NOT INSTALLED\n";
     });
     exit();
 }
