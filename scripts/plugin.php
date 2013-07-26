@@ -194,10 +194,27 @@ function update($pattern) {
     exit();
 }
 
+/*
+ * Reinstall all installed plugins. Usefull for development
+ */
+function reload() {
+    $plugins = PluginQuery::create()->find();
+    foreach ($plugins as $plugin) {
+
+        if (file_exists($plugin->getPath() . 'package.json')) {
+            if ($plugin->getEnabled()) {
+                _loadPluginClass($plugin)->install();
+                print $plugin->getId()." reinstalled\n";
+            }
+        }
+    }
+    exit();
+}
 
 switch ($cmd) {
     case 'list': list_plugins();
     case 'clean': clean();
+    case 'reload': reload();
     case 'install': install($argv[2]);
     case 'uninstall': uninstall($argv[2]);
     case 'enable': enable($argv[2]);
