@@ -2,7 +2,7 @@
 
 //GET route
 $app->get('/', function () use ($app) {
-    //disable_cache($app);
+    disable_cache($app);
 
     if ($app->request()->get('c')) {
         // found link to a legacy chart
