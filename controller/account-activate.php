@@ -35,6 +35,7 @@ $app->get('/account/activate/:token', function ($token) use ($app) {
  * check invitation token and show invited page
  */
 $app->get('/account/invite/:token', function($token) use ($app) {
+    disable_cache($app);
     _checkInviteTokenAndExec($token, function($user) use ($app) {
         $page = array(
             'email' => $user->getEmail(),
