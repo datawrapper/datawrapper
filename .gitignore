@@ -21,3 +21,5 @@ www/static/custom/*
 test/result/*
 crowdin.yaml
 
+
+log.txt
