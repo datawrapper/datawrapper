@@ -56,6 +56,7 @@ function clean() {
     foreach ($plugins as $plugin) {
         if (!file_exists($plugin->getPath() . 'package.json')) {
             $plugin->delete();
+            print $plugin->getId()." deleted from database.\n";
         }
     }
     exit();
