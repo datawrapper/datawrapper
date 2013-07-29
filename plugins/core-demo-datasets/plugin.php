@@ -104,7 +104,7 @@ Germany\t:\t:\t:\t:\t:\t:\t:\t:\t:\t:\t:\t:\t:\t:\t:\t:\t:\t:\t:\t:\t:\t:\t:\t:\
 
 
         $datasets[] = array(
-            'id' => 'debt-per-person',
+            'id' => 'felix',
             'title' => __('Fearless Felix: How far did he fall'),
             'type' => __('Bar chart'),
             'presets' => array(
@@ -136,12 +136,11 @@ Burj Khalifa\t830
                 'type' => 'column-chart',
                 'metadata.describe.source-name' => 'BMF, Haushaltsausschuss',
                 'metadata.describe.source-url' => 'http://www.bundesfinanzministerium.de/bundeshaushalt2012/pdf/finanzplan.pdf',
-                'metadata.data.transpose' => false
+                'metadata.data.transpose' => true
             ),
             'title' => __('Net borrowing of Germany'),
-            'data' => '"","2007","2008","2009","2010","2011","2012","2013","2014","2015","2016"
-    "'.__('New debt in Bio.').'","14.3","11.5","34.1","44","17.3","34.8","19.6","14.6","10.3","1.1"
-    '
+            'data' => '"","2007","2008","2009","2010","2011","2012","2013","2014","2015","2016"'."\n".
+            '"'.__('New debt in Bio.').'","14.3","11.5","34.1","44","17.3","34.8","19.6","14.6","10.3","1.1"'
         );
 
 
