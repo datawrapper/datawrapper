@@ -38,11 +38,18 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                 ),
                 "negative-color" => array(
                     "type" => "checkbox",
-                    "label" => __("Use different color for negative values")
+                    "label" => __("Use different color for negative values"),
+                    "depends-on" => array(
+                        "chart.min_value[columns]" => '<0',
+                        "chart.max_value[columns]" => '>0'
+                    )
                 ),
                 "absolute-scale" => array(
                     "type" => "checkbox",
-                    "label" => __("Use the same scale for all columns")
+                    "label" => __("Use the same scale for all columns"),
+                    "depends-on" => array(
+                        "chart.min_columns[columns]" => 2
+                    )
                 ),
                 "grid-lines" => array(
                     "type" => "radio",

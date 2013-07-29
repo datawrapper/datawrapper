@@ -144,12 +144,15 @@ $(function() {
         });
         // check visibility of each option (evaluate "depends-on" property)
         function checkDepends() {
-            var columnsPerAxis = {},
+            var axesColumns = {},
+                compRegex = /(>=?|<=?)([0-9]+(?:\.[0-9])?)/,
                 minColsRegex = /chart\.min_columns\[([^\]]+)\]/,
-                maxColsRegex = /chart\.max_columns\[([^\]]+)\]/;
+                maxColsRegex = /chart\.max_columns\[([^\]]+)\]/,
+                minValueRegex = /chart\.min_value\[([^\]]+)\]/,
+                maxValueRegex = /chart\.max_value\[([^\]]+)\]/;
 
-            _.each(dw.backend.currentVis.axes(), function(columns, key) {
-                columnsPerAxis[key] = _.isArray(columns) ? columns.length : columns ? 1 : 0;
+            _.each(dw.backend.currentVis.axes(true), function(columns, key) {
+                axesColumns[key] = _.isArray(columns) ? columns : columns ? [columns] : [];
             });
 
             _.each(vis.options, function(opt, key) {
@@ -159,22 +162,37 @@ $(function() {
                     _.each(opt['depends-on'], function(val, key) {
                         if (minColsRegex.test(key)) {
                             key = key.match(minColsRegex)[1];
-                            visible = visible && !_.isUndefined(columnsPerAxis[key]) && columnsPerAxis[key] >= +val;
+                            visible = visible && !_.isUndefined(axesColumns[key]) && axesColumns[key].length >= +val;
                         } else if (maxColsRegex.test(key)) {
                             key = key.match(maxColsRegex)[1];
-                            visible = visible && !_.isUndefined(columnsPerAxis[key]) && columnsPerAxis[key] <= +val;
+                            visible = visible && !_.isUndefined(axesColumns[key]) && axesColumns[key].length <= +val;
                         } else if (key == 'chart.missing_values') {
                             visible = visible && chart.hasMissingValues() == val;
                         } else if (key == 'chart.min_row_num') {
                             visible = visible && chart.numRows() >= +val;
                         }  else if (key == 'chart.max_row_num') {
                             visible = visible && chart.numRows() <= +val;
-                        } else if (key == 'chart.min_value') {
-                            visible = visible && dataset.minMax()[0] >= +val;
-                        } else if (key == 'chart.max_value') {
-                            visible = visible && dataset.minMax()[1] <= +val;
+                        } else if (minValueRegex.test(key)) {
+                            key = key.match(minValueRegex)[1];
+                            visible = visible && !_.isUndefined(axesColumns[key])
+                                        && compare(dw.utils.minMax(axesColumns[key])[0]);
+                        } else if (maxValueRegex.test(key)) {
+                            key = key.match(maxValueRegex)[1];
+                            visible = visible && !_.isUndefined(axesColumns[key])
+                                        && compare(dw.utils.minMax(axesColumns[key])[1]);
                         } else {
                             visible = visible && chart.get('metadata.visualize.'+key) == val;
+                        }
+
+                        function compare(v) {
+                            if (_.isNumber(val)) return v == val;
+                            if (compRegex.test(val)) {
+                                var m = val.match(compRegex);
+                                if (m[1] == '<') return +v < +m[2];
+                                if (m[1] == '<=') return +v <= +m[2];
+                                if (m[1] == '>') return +v > +m[2];
+                                if (m[1] == '>=') return +v >= +m[2];
+                            }
                         }
                     });
                     if (visible) $('#vis-options-'+key).show();
