@@ -67,39 +67,13 @@ class DatawrapperPlugin_VisualizationLineChart extends DatawrapperPlugin_Visuali
                     )
                 )
             ),
-            "fill-between" => array(
-                "type" => "checkbox",
-                "label" => __("Fill between lines", $id),
-                "default" => false,
-                "depends-on" => array(
-                    "chart.min_columns[y1]" => 2,
-                    "chart.max_columns[y1]" => 2,
-                    "chart.max_columns[y2]" => 0  // direct labeling not possible with second axis
-                )
-            ),
-            "smooth-lines" => array(
-                "type" => "checkbox",
-                "label" => __("Smooth lines", $id),
-                "default" => false,
-                "expert" => false
-            ),
+
             "rotate-x-labels" => array(
                 "type" => "checkbox",
                 "label" => __("Rotate labels 45 degrees", $id),
                 "default" => false
             ),
-            "baseline-zero" => array(
-                "type" => "checkbox",
-                "label" => __("Force a baseline at zero", $id),
-            ),
-            "connect-missing-values" => array(
-                "type" => "checkbox",
-                "label" => __("Connect lines between missing values", $id),
-            ),
-            "extend-range" => array(
-                "type" => "checkbox",
-                "label" => __("Extend y-range to nice axis ticks", $id)
-            ),
+
             "force-banking" => array(
                 "type" => "checkbox",
                 "hidden" => true,
@@ -111,9 +85,47 @@ class DatawrapperPlugin_VisualizationLineChart extends DatawrapperPlugin_Visuali
                 "label" => __("Show grid", $id),
                 "default" => false
             ),
+
+            "sep-lines" => array(
+                "type" => "separator",
+                "label" => __("lines")
+            ),
+            "connect-missing-values" => array(
+                "type" => "checkbox",
+                "label" => __("Connect lines between missing values", $id),
+            ),
+            "smooth-lines" => array(
+                "type" => "checkbox",
+                "label" => __("Smooth lines", $id),
+                "default" => false,
+                "expert" => false
+            ),
+            "fill-between" => array(
+                "type" => "checkbox",
+                "label" => __("Fill between lines", $id),
+                "default" => false,
+                "depends-on" => array(
+                    "chart.min_columns[y1]" => 2,
+                    "chart.max_columns[y1]" => 2,
+                    "chart.max_columns[y2]" => 0  // direct labeling not possible with second axis
+                )
+            ),
+
+            "sep-y-axis" => array(
+                "type" => "separator",
+                "label" => __("y-Axis")
+            ),
+            "baseline-zero" => array(
+                "type" => "checkbox",
+                "label" => __("Extend to zero", $id),
+            ),
+            "extend-range" => array(
+                "type" => "checkbox",
+                "label" => __("Extend to nice axis ticks", $id)
+            ),
             "invert-y-axis" => array(
                 "type" => "checkbox",
-                "label" => __("Invert y axis", $id),
+                "label" => __("Invert direction", $id),
                 "default" => false
             )
         );

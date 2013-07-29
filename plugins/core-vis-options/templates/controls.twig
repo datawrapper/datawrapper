@@ -38,4 +38,9 @@
         <input type="text" style="width:auto" id="{{ key }}" value="" />
     </div>
 
+{% elseif option.type == 'separator' %}
+
+    <label class="separator">{{ option.label|raw }}</label>
+
+
 {% endif %}
