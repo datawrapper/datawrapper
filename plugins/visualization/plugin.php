@@ -11,8 +11,4 @@ class DatawrapperPlugin_Visualization extends DatawrapperPlugin {
         return array();
     }
 
-    public function getDemoDataSets() {
-    	return array();
-    }
-
 }
