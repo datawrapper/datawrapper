@@ -105,7 +105,7 @@
                     valign = val > 0 ? 'top' : 'bottom',
                     halign = 'center',
                     alwaysShow = (me.chart.hasHighlight() &&
-                        me.chart.isHighlighted(column)) ||
+                        me.chart.isHighlighted(barv.name)) ||
                         (bw > vlbl_w);
                 var lpos = me.labelPosition(barv, s, 'value'),
                     spos = me.labelPosition(barv, s, 'series');
