@@ -112,7 +112,7 @@ Germany\t:\t:\t:\t:\t:\t:\t:\t:\t:\t:\t:\t:\t:\t:\t:\t:\t:\t:\t:\t:\t:\t:\t:\t:\
                 'metadata.describe.source-name' => 'DataRemixed',
                 'metadata.describe.source-url' => 'http://dataremixed.com/2012/10/a-tribute-to-fearless-felix/',
                 'metadata.data.vertical-header' => true,
-                'metadata.data.transpose' => true
+                'metadata.data.transpose' => false
             ),
             'data' => "\tHeight
 SpaceShipOne\t367500
@@ -121,7 +121,7 @@ Joe Kittinger (1960)\t108200
 Weather balloons\t100000
 Commercial airliners\t33000
 Mt. Everest\t29029
-Burj Khalifa (tallest building Dubai)\t2723
+Burj Khalifa\t2723
     "
         );
 
