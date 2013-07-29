@@ -190,7 +190,7 @@
 
     {% include theme.template ? theme.template : 'plugins/theme-default/default.twig' %}
 
-    <div class="noscript">
+    <div class="noscript" style="position: absolute;top: 0;left: 0;z-index: -10;">
         <a href="static.html"><img src="static.png" alt="{% trans "Please activate JavaScript to see the interactive chart." %}" /></a>
     </div>
     <div class="noscript" style="height:95%;position:absolute;top:0;z-index:10;overflow:hidden">
