@@ -421,6 +421,8 @@
                 color,
                 colorByRow = me.meta['color-by'] == 'row';
 
+            key = String(key);
+
             var userCustomColors = me.get('custom-colors', {});
 
             // user has defined a colors for this key
