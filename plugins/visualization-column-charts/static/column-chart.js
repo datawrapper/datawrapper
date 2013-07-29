@@ -258,7 +258,7 @@
 
             if (c.w / n < 30) vspace = 0.05;
 
-            if (me.get('hide-grid', false)) vspace = 0.02;
+            if (!me.gridVisible()) vspace = 0.02;
 
             cw = (c.w - c.lpad - c.rpad) * (1 - vspace - vspace);
             bw = cw / (n + (n-1) * pad);
@@ -328,7 +328,7 @@
                 tickLabels = me.__tickLabels = me.__tickLabels || {},
                 gridLines = me.__gridLines = me.__gridLines || {};
 
-            if (me.get('hide-grid', false)) ticks = [];
+            if (!me.gridVisible()) ticks = [];
 
             ticks = ticks.filter(function(val, t) {
                 return val >= domain[0] && val <= domain[1];
@@ -423,6 +423,14 @@
 
         unhoverSeries: function() {
             this.hoverSeries();
+        },
+
+        gridVisible: function() {
+            var me = this;
+            console.log(me.__canvas.w, me.getBarValues().length);
+            return me.get('grid-lines', 'show') == 'show' ? true :
+                me.get('grid-lines') == 'hide' ? false :
+                (me.__canvas.w / me.getBarValues().length) < 50 || me.getBarValues().length > 8;
         }
     });
 

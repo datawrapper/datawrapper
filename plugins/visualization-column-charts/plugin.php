@@ -30,23 +30,28 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
             "options" => array(
                 "sort-values" => array(
                     "type" => "checkbox",
-                    "label" => __("Automatically sort bars", $id)
+                    "label" => __("Automatically sort bars")
                 ),
                 "reverse-order" => array(
                     "type" => "checkbox",
-                    "label" => __("Reverse order", $id)
+                    "label" => __("Reverse order")
                 ),
                 "negative-color" => array(
                     "type" => "checkbox",
-                    "label" => __("Use different color for negative values", $id)
+                    "label" => __("Use different color for negative values")
                 ),
                 "absolute-scale" => array(
                     "type" => "checkbox",
                     "label" => __("Use the same scale for all columns")
                 ),
-                "hide-grid" => array(
-                    "type" => "checkbox",
-                    "label" => __("Hide grid lines"),
+                "grid-lines" => array(
+                    "type" => "radio",
+                    "label" => __("Grid lines"),
+                    "options" => array(
+                        array("value" => "auto", "label" => __("Automatic")),
+                        array("value" => "show", "label" => __("Show")),
+                        array("value" => "hide", "label" => __("Hide"))
+                    ),
                     "default" => false
                 )
             )
