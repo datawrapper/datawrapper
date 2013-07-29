@@ -81,7 +81,7 @@ dw.utils = {
         var ch = 0, bottom = 0; // summed height of children, 10px for top & bottom margin
         $('body > *').each(function(i, el) {
             var t = el.tagName.toLowerCase();
-            if (t != 'script' && el.id != 'chart' && !$(el).hasClass('tooltip') && !$(el).hasClass('container')) {
+            if (t != 'script' && el.id != 'chart' && !$(el).hasClass('tooltip') && !$(el).hasClass('container') && !$(el).hasClass('noscript')) {
                 ch += $(el).outerHeight(false); // element height
             }
             ch += Math.max(margin(el, 'top'), bottom);

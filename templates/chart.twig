@@ -161,6 +161,10 @@
             height: 10px;
         }
 
+        body.js .noscript {
+            display: none;
+        }
+
     </style>
 
     <script type="text/javascript">
@@ -176,7 +180,25 @@
 (function(){var a={supportsFullScreen:!1,nonNativeSupportsFullScreen:!1,isFullScreen:function(){return!1},requestFullScreen:function(){},cancelFullScreen:function(){},fullScreenEventName:"",prefix:""},b="webkit moz o ms khtml".split(" ");if(typeof document.cancelFullScreen!="undefined")a.supportsFullScreen=!0;else for(var c=0,d=b.length;c<d;c++){a.prefix=b[c];if(typeof document[a.prefix+"CancelFullScreen"]!="undefined"){a.supportsFullScreen=!0;break}}a.supportsFullScreen?(a.fullScreenEventName=a.prefix+"fullscreenchange",a.isFullScreen=function(){switch(this.prefix){case"":return document.fullScreen;case"webkit":return document.webkitIsFullScreen;default:return document[this.prefix+"FullScreen"]}},a.requestFullScreen=function(a){return this.prefix===""?a.requestFullScreen():a[this.prefix+"RequestFullScreen"]()},a.cancelFullScreen=function(a){return this.prefix===""?document.cancelFullScreen():document[this.prefix+"CancelFullScreen"]()}):typeof window.ActiveXObject!="undefined"&&(a.nonNativeSupportsFullScreen=!0,a.requestFullScreen=a.requestFullScreen=function(a){var b=new ActiveXObject("WScript.Shell");b!==null&&b.SendKeys("{F11}")},a.isFullScreen=function(){return document.body.clientHeight==screen.height&&document.body.clientWidth==screen.width}),typeof jQuery!="undefined"&&(jQuery.fn.requestFullScreen=function(){return this.each(function(){a.supportsFullScreen&&a.requestFullScreen(this)})}),window.fullScreenApi=a})()
 
     </script>
+
+</head>
+<body class="chart{% if fullscreen %} fullscreen{% endif %}{% if plain %} plain{% endif %}">
+
+    {# some convenient short cuts for theme templates #}
+    {% set title = chart.title %}{% set intro = chart.metadata.describe.intro %}{% set source = chart.metadata.describe['source-name'] %}{% set sourceURL = chart.metadata.describe['source-url'] %}
+
+
+    {% include theme.template ? theme.template : 'plugins/theme-default/default.twig' %}
+
+    <div class="noscript">
+        <a href="static.html"><img src="static.png" alt="{% trans "Please activate JavaScript to see the interactive chart." %}" /></a>
+    </div>
+    <div class="noscript" style="height:80%;z-index:10;overflow:hidden">
+        <div style="position:relative;top:40%;text-align:center;font-size:18px"><a href="static.html" >{% trans "Please activate JavaScript to see the interactive chart." %}</a></div>
+    </div>
     <script type="text/javascript">
+
+    if (document.getElementsByTagName('script').length > 0) document.body.className = "chart js";
 
     (function() {
 
@@ -275,12 +297,7 @@
     })();
 
     </script>
-</head>
-<body class="chart{% if fullscreen %} fullscreen{% endif %}{% if plain %} plain{% endif %}">
-    {# some convenient short cuts for theme templates #}
-    {% set title = chart.title %}{% set intro = chart.metadata.describe.intro %}{% set source = chart.metadata.describe['source-name'] %}{% set sourceURL = chart.metadata.describe['source-url'] %}
 
-    {% include theme.template ? theme.template : 'plugins/theme-default/default.twig' %}
     {{ hook('chart_after_body', chart) }}
 </body>
 </html>
