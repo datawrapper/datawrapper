@@ -112,16 +112,19 @@ Germany\t:\t:\t:\t:\t:\t:\t:\t:\t:\t:\t:\t:\t:\t:\t:\t:\t:\t:\t:\t:\t:\t:\t:\t:\
                 'metadata.describe.source-name' => 'DataRemixed',
                 'metadata.describe.source-url' => 'http://dataremixed.com/2012/10/a-tribute-to-fearless-felix/',
                 'metadata.data.vertical-header' => true,
+                'metadata.describe.number-format' => 'n1',
+                'metadata.describe.number-append' => ' km',
+                'metadata.describe.number-divisor' => '3',
                 'metadata.data.transpose' => false
             ),
             'data' => "\tHeight
-SpaceShipOne\t367500
-Felix Baumgartner (2012)\t128100
-Joe Kittinger (1960)\t108200
-Weather balloons\t100000
-Commercial airliners\t33000
-Mt. Everest\t29029
-Burj Khalifa\t2723
+SpaceShipOne\t112000
+Felix Baumgartner (2012)\t39000
+Joe Kittinger (1960)\t31000
+Weather balloons\t30000
+Commercial airliners\t10000
+Mt. Everest\t8848
+Burj Khalifa\t830
     "
         );
 
