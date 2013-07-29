@@ -158,7 +158,7 @@
                 filter = me.__lastRow,
                 labels = me.dataset.column(me.axesDef.labels),
                 column = me.getBarColumn(filter),
-                fmt = dw.utils.longDateFormat(column);
+                fmt = dw.utils.longDateFormat(labels);
 
             column.each(function(val, i) {
                 values.push({
