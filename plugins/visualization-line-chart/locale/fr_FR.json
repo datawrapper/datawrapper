@@ -4,7 +4,8 @@
 	"Legend position":"Position de la légende",
 	"right":"à droit",
 	"top":"en haut",
-	"inside":"dedans",
+	"inside left":"inside left",
+	"inside right":"inside right",
 	"Fill between lines":"Remplissez entre les lignes",
 	"Smooth lines":"Lisser les lignes",
 	"Rotate labels 45 degrees":"Pivoter les étiquettes de 45°",
@@ -13,10 +14,5 @@
 	"Extend y-range to nice axis ticks":"Extend y-range to nice axis ticks",
 	"Bank the lines to 45 degrees":"Limiter à 45° les lignes",
 	"Show grid":"Afficher la grille",
-	"Youth Unemployment in Europe":"Youth Unemployment in Europe",
-	"Line chart":"Line chart",
-	"US Trade with United Kingdom":"US Trade with United Kingdom",
-	"Marriages in Germany":"Marriages in Germany",
-	"Year":"Year",
-	"Marriages":"Marriages"
+	"Invert y axis":"Invert y axis"
 }

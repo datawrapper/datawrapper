@@ -3,6 +3,8 @@
 	"Automatically sort bars":"Automatically sort bars",
 	"Reverse order":"Reverse order",
 	"Use different color for negative values":"Use different color for negative values",
+	"Use the same scale for all columns":"Use the same scale for all columns",
+	"Hide grid lines":"Hide grid lines",
 	"Grouped Column Chart":"Grouped Column Chart",
 	"Stacked Column Chart":"Stacked Column Chart",
 	"Stack percentages":"Stack percentages",
