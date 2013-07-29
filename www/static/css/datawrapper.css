@@ -1061,6 +1061,19 @@ form.well form {
         padding-right: 8px;
         font-size: 13px;
     }
+
+    .visualize-nav-tabs.nav-tabs {
+        font-size: 13px;
+        margin-left: 20px;
+    }
+
+    .visualize-nav-tabs.nav-tabs > li a,
+    .visualize-nav-tabs.nav-tabs > li a:hover,
+    .visualize-nav-tabs.nav-tabs > li.active a
+     {
+        padding: 4px 8px;
+        line-height: 24px;
+    }
 }
 
 @media (max-width: 976px) {
@@ -1075,6 +1088,7 @@ form.well form {
         left: 5px;
         top: 5px;
     }
+
 }
 
 .resize-chart-wrap {
@@ -1127,6 +1141,19 @@ form.well form {
     z-index: 4;
     position: relative;
     background: #fff;
+}
+
+.visualize-nav-tabs li {
+    max-width: 30%;
+}
+.visualize-nav-tabs li.active {
+    max-width: 50%;
+}
+
+.visualize-nav-tabs li a {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .visualize-nav-tabs .active a {
