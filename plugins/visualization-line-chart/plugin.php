@@ -88,7 +88,7 @@ class DatawrapperPlugin_VisualizationLineChart extends DatawrapperPlugin_Visuali
 
             "sep-lines" => array(
                 "type" => "separator",
-                "label" => __("lines")
+                "label" => __("Customize lines")
             ),
             "connect-missing-values" => array(
                 "type" => "checkbox",
@@ -113,7 +113,7 @@ class DatawrapperPlugin_VisualizationLineChart extends DatawrapperPlugin_Visuali
 
             "sep-y-axis" => array(
                 "type" => "separator",
-                "label" => __("y-Axis")
+                "label" => __("Customize y-Axis")
             ),
             "baseline-zero" => array(
                 "type" => "checkbox",
@@ -121,7 +121,7 @@ class DatawrapperPlugin_VisualizationLineChart extends DatawrapperPlugin_Visuali
             ),
             "extend-range" => array(
                 "type" => "checkbox",
-                "label" => __("Extend to nice axis ticks", $id)
+                "label" => __("Extend to nice ticks", $id)
             ),
             "invert-y-axis" => array(
                 "type" => "checkbox",
