@@ -395,6 +395,7 @@ var dw = dw || {};
     function syncChart(chart) {
         var saveTimeout,
             unsavedChanges = false,
+            nextSaveDeferred = $.Deferred(),
             saveCallbacks = [];
         function save() {
             $.ajax({
@@ -411,6 +412,9 @@ var dw = dw || {};
                         _.each(saveCallbacks, function(cb) {
                             cb(chart);
                         });
+                        nextSaveDeferred.resolve(data);
+                        // create new deferred
+                        nextSaveDeferred = $.Deferred();
                     } else {
                         console.warn('could not save the chart', data);
                     }
@@ -424,6 +428,10 @@ var dw = dw || {};
 
         chart.hasUnsavedChanges = function() {
             return unsavedChanges;
+        };
+
+        chart.nextSavePromise = function() {
+            return nextSaveDeferred.promise();
         };
 
         chart.sync = function(el, attribute, _default) {

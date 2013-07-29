@@ -10,31 +10,34 @@
 
         $(function() {
 
-            function init() {
-                
-            }
+            var chart = dw.backend.currentChart;
 
             function nextPage(url) {
                 location.href = url;
             }
 
             function uploadData(url) {
-                dw.backend.currentChart.set('metadata.data.source', 'clipboard');
-                $.ajax({
-                    url: '/api/charts/' + dw.backend.currentChart.get('id') + '/data',
+                function proceed(res) {
+                    if (_.isArray(res)) res = res[0];
+                    if (res.status == "ok") {
+                        // data is saved correctly, so proceed
+                        nextPage(url);
+                    } else {
+                        alert('error: '+res.message);
+                    }
+                }
+                var uploadReady = $.ajax({
+                    url: '/api/charts/' + chart.get('id') + '/data',
                     type: 'PUT',
                     data: $('#upload-data-text').val(),
                     processData: false,
-                    dataType: 'json',
-                    success: function(result) {
-                        if (result.status == "ok") {
-                            // data is saved correctly, so proceed
-                            nextPage(url);
-                        } else {
-                            alert(result.message);
-                        }
-                    }
+                    dataType: 'json'
                 });
+                if (chart.hasUnsavedChanges()) {
+                    $.when(uploadReady, chart.nextSavePromise()).done(proceed);
+                } else {
+                    $.when(uploadReady).done(proceed);
+                }
                 return false;
             }
 
@@ -43,7 +46,6 @@
             });
 
             var txtarea = $('#upload-data-text');
-
 
             new qq.FileUploader({
                 element: $('#upload')[0],
