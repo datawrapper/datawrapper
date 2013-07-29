@@ -1144,10 +1144,10 @@ form.well form {
 }
 
 .visualize-nav-tabs li {
-    max-width: 30%;
+    max-width: 33%;
 }
 .visualize-nav-tabs li.active {
-    max-width: 50%;
+    max-width: 40%;
 }
 
 .visualize-nav-tabs li a {
