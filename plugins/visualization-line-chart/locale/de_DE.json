@@ -6,13 +6,15 @@
 	"top":"oben",
 	"inside left":"innen links",
 	"inside right":"innen rechts",
-	"Fill between lines":"Flächen ausfüllen",
-	"Smooth lines":"Linien glätten",
 	"Rotate labels 45 degrees":"Beschriftungen um 45° drehen",
-	"Force a baseline at zero":"Erweitere die Achse bis zur Null",
-	"Connect lines between missing values":"Linien zwischen fehlenden Werten verbinden",
-	"Extend y-range to nice axis ticks":"Erweiterte y-Achse",
 	"Bank the lines to 45 degrees":"Anstiege auf 45° ausrichten",
 	"Show grid":"Hilfslinien zeigen",
-	"Invert y axis":"y-Achse umkehren"
+	"Customize lines":"Linien anpassen",
+	"Connect lines between missing values":"Linien zwischen fehlenden Werten verbinden",
+	"Smooth lines":"Linien glätten",
+	"Fill between lines":"Flächen ausfüllen",
+	"Customize y-Axis":"y-Achse anpassen",
+	"Extend to zero":"Zur Null-Linie erweitern",
+	"Extend to nice ticks":"Auf runde Werte erweitern",
+	"Invert direction":"Richtung umkehren"
 }

@@ -6,13 +6,15 @@
 	"top":"en haut",
 	"inside left":"inside left",
 	"inside right":"inside right",
-	"Fill between lines":"Remplissez entre les lignes",
-	"Smooth lines":"Lisser les lignes",
 	"Rotate labels 45 degrees":"Pivoter les étiquettes de 45°",
-	"Force a baseline at zero":"Échelle à zero",
-	"Connect lines between missing values":"Joindre les lignes pour les valeurs manquantes",
-	"Extend y-range to nice axis ticks":"Extend y-range to nice axis ticks",
 	"Bank the lines to 45 degrees":"Limiter à 45° les lignes",
 	"Show grid":"Afficher la grille",
-	"Invert y axis":"Invert y axis"
+	"Customize lines":"Customize lines",
+	"Connect lines between missing values":"Joindre les lignes pour les valeurs manquantes",
+	"Smooth lines":"Lisser les lignes",
+	"Fill between lines":"Remplissez entre les lignes",
+	"Customize y-Axis":"Customize y-Axis",
+	"Extend to zero":"Extend to zero",
+	"Extend to nice ticks":"Extend to nice ticks",
+	"Invert direction":"Invert direction"
 }
