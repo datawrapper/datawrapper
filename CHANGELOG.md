@@ -9,6 +9,9 @@ CHANGELOG
 * allow sorting visualizations by dependencies
 * one-dimensional visualizations (pie,bars,...) now showing single column (instead of single row)
 * removed bar chart setting 'labels inside bars'
+* added separators in vis options
+* added new conditions for vis options
+* added nicer fallback message when JS is disabled
 
 ### 1.4.4
 * added column public_version to chart table
