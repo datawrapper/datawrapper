@@ -450,10 +450,7 @@ $(function() {
 
             <script type="text/javascript">
             $(function() {
-                $('.publish-btn').hide();
-                $('.proceed-btn').click(function() {
-                    var li = $('.visualize-nav-tabs li.active');
-                    var a = $('a', li.next());
+                function show(a) {
                     a.tab('show');
                     $('.tab-container > *').hide();
                     $('.tab-container .'+a.data('target')).show();
@@ -461,10 +458,19 @@ $(function() {
                         $('.proceed-btn').hide();
                         $('.publish-btn').show();
                     }
+                }
+                $('.publish-btn').hide();
+                $('.proceed-btn').click(function() {
+                    var li = $('.visualize-nav-tabs li.active');
+                    var a = $('a', li.next());
+                    location.hash = '#'+a.data('target');
+                    show(a);
                 });
 
                 $('.visualize-nav-tabs a').on('click', function (e) {
-                    if ($(e.target).attr('href') == '#story') {
+                    var a = $(e.target);
+                    location.hash = '#'+a.data('target');
+                    if (a.attr('href') == '#story') {
                         $('.proceed-btn').hide();
                         $('.publish-btn').show();
                     } else {
@@ -472,7 +478,16 @@ $(function() {
                         $('.publish-btn').hide();
                     }
                 });
+
+                $(window).on('hashchange', function() {
+                    show($('a[data-target='+location.hash.substr(1)+']'));
+                });
+
+                if (window.location.hash) {
+                    show($('a[data-target='+location.hash.substr(1)+']'));
+                }
             });
+
             </script>
 
             <div class="tab-container">
