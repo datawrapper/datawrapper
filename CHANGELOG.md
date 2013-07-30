@@ -12,6 +12,8 @@ CHANGELOG
 * added separators in vis options
 * added new conditions for vis options
 * added nicer fallback message when JS is disabled
+* redesigned custom color picker
+* enabled multi-selection in custom color picker
 
 ### 1.4.4
 * added column public_version to chart table
