@@ -39,7 +39,7 @@ $(function() {
     }
 
     $.fn.colorpicker = function(props) {
-        var rt = $(this), colors, active;
+        var rt = $(this), colors, active, maxW = props.maxW || $(rt).parent().width();
         if (!rt.data('colors')) return;
         colors = rt.data('colors').toLowerCase().split(','),
         ctive = (rt.data('color') || "").toLowerCase();
@@ -52,7 +52,7 @@ $(function() {
         $.each(colors, function(i, col) {
             if (!col) return;
             var d = $('<div />');
-            if ((c+1)*28 > $('.tab-container').width()) {
+            if ((c+1)*28 > maxW) {
                 c = 0;
                 r+=1;
                 rt.css('height', (r+1)*28+4);
@@ -132,6 +132,7 @@ $(function() {
             picker.data('colors', theTheme.colors.palette.join(','));
             picker.data('color', theTheme.colors.palette[chart.get('metadata.visualize.base-color', 0)]);
             picker.colorpicker({
+                maxW: $('.tab-container').width()*0.5,
                 change: function(color) {
                     var colIndex = theTheme.colors.palette.join(',').toLowerCase().split(',').indexOf(color.toLowerCase());
                     chart.set('metadata.visualize.base-color', colIndex);

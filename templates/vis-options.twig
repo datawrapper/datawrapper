@@ -1,6 +1,6 @@
 {% block visoptions %}
 
-<fieldset>
+<fieldset id="visOptions">
 
     {% if not vis.options['select-color'] or vis.options['select-color']["default"]  %}
         <div class="control-group select-color">
@@ -14,10 +14,11 @@
         <div class="control-group">
             <label class="control-label"></label>
             <div class="controls">
-                <a class="btn btn-small" role="button" href="#customColors">{% trans "or define custom colors" %}</a>
+                <a class="btn btn-small" role="button" onclick="$('#customColors').show();$('#visOptions').hide();">{% trans "or define custom colors" %}</a>
             </div>
         </div>
     {% endif %}
+
     {% if vis.dimensions == 1 %}
     <div class="control-group select-row">
         <label class="control-label" for="text-title">{% trans "Initial row to display" %}</label>
@@ -38,59 +39,49 @@
 
     </div>
     {% endif %}{% endfor %}
+
+</fieldset>
+
+<fieldset id="customColors" style="display:none">
+    <button onclick="$('#customColors').hide();$('#visOptions').show();" class="btn pull-right btn-small" data-dismiss="modal">{% trans "Return" %}</button>
+    <h3>{% trans "Customize chart colors" %}</h3>
+    <p style="margin-bottom:20px">{% trans "Please use custom colors only if it is absolutely necessary, for instance to identify political parties. If possible please use the palette colors." %}</p>
+    <div class="row">
+        <div class="span2" style="width:43%">
+            <h4>{% trans "Select element(s):" %}</h4>
+            <ul class="dataseries unstyled">
+            </ul>
+            <div style="font-size:12px;text-align:center;margin-bottom:10px;">
+                {% trans "Select:" %} &nbsp;
+                <a onclick="$('.dataseries li').addClass('selected')">{% trans "all" %}</a> &nbsp;
+                <a onclick="$('.dataseries li').removeClass('selected')">{% trans "none" %}</a> &nbsp;
+                <a onclick="$('.dataseries li').toggleClass('selected')">{% trans "invert" %}</a>
+            </div>
+
+        </div>
+        <div class="span2" style="width:42%">
+             <h4>{% trans "Choose a color:" %}</h4>
+             <label>{% trans "Pick from palette..." %}</label>
+             <div id="palette-colors"></div>
+
+             <label>{% trans "...or enter a custom color" %}</label>
+            <div class="control-group">
+                <input id="user-color" type="text" class="text input-small" placeholder="FF0000" />
+            </div>
+            <button id="reset-color-choice" class="btn">{% trans "Reset color (use default)" %}</button>
+        </div>
+    </div>
 </fieldset>
 
 {#
     modal for picking custom colors
 #}
-<div class="modal hide" id="customColors" style="width:620px;margin-left:-310px" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-body">
-        <button type="button" class="close" data-dismiss="modal">×</button>
-        <p class="lead">{% trans "Customize chart colors" %}</p>
-        <p style="border-bottom:1px solid #ccc;padding-bottom:20px;margin-bottom:20px">{% trans "Please use custom colors only if it is absolutely necessary, for instance to identify political parties. If possible please use the palette colors." %}</p>
 
-        <div class="row">
-            <div class="span2">
-                <div>
-                    <h4>{% trans "1. Select data series" %}</h4>
-                    <ul class="dataseries unstyled">
-                    </ul>
-                </div>
-            </div>
-            <div class="span4">
-                <div>
-                    <h4>{% trans "2. Choose a color for" %} "<span class="selected-series-name"></span>"</h4>
-                </div>
-                <div class="row">
-                    <div class="span2">
-                        <label>{% trans "Pick from palette..." %}</label>
-                        <div id="palette-colors"></div>
-                    </div>
-                    <div class="span2">
-                        <label>{% trans "...or enter a custom color" %}</label>
-                        <div class="control-group">
-                            <input id="user-color" type="text" class="text input-small" placeholder="FF0000" />
-                        </div>
-                    </div>
-                </div>
-                <div style="margin-top:20px">
-                    <button id="reset-color-choice" class="btn">{% trans "Reset color (use default)" %}</button>
-                </div>
-            </div>
-        </div>
-
-    </div>
-    <div class="modal-footer">
-        <button id="reset-all-colors" class="btn pull-left">{% trans "Reset all colors" %}</button>
-        <button class="btn btn-primary" data-dismiss="modal">{% trans "Close" %}</button>
-    </div>
-</div>
 <style type="text/css">
 
 #customColors h4 {
-    margin: 0 0 20px;
-    font-size: 15px;
-    font-weight: normal;
+    margin: 0 0 10px;
+    font-size: 16px;
 }
 
 #customColors .color {
@@ -105,10 +96,27 @@
     font-weight: bold;
 }
 
+#customColors .dataseries {
+    border-radius: 5px;
+    max-height: 250px;
+    overflow:auto;
+    padding: 3px 0;
+    margin-bottom: 4px;
+    background:#fff;
+    border-top:1px solid #aaa;
+    border-left:1px solid #aaa;
+    border-bottom:1px solid #ccc;
+    border-right:1px solid #ccc;
+    box-shadow:inset 1px 1px 4px rgba(0,0,0,.2);
+}
+
 #customColors .dataseries li {
-    padding-left: 5px;
-    padding-bottom: 3px;
+    padding: 5px 5px 1px 8px;
     cursor: pointer;
+}
+
+#customColors .dataseries li:nth-child(2n) {
+    background: rgba(0,0,0,.075);
 }
 
 #customColors .dataseries label {
@@ -261,16 +269,28 @@ $(function() {
             $('#customColors .dataseries').append(li);
         });
         // auto-select first series
-        $('#customColors .dataseries li:first-child').addClass('selected');
-        $('#customColors .selected-series-name').html(_.isArray(labels[0]) ? labels[0][1] : labels[0]);
+        //$('#customColors .dataseries li:first-child').addClass('selected');
+        //$('#customColors .selected-series-name').html(_.isArray(labels[0]) ? labels[0][1] : labels[0]);
 
         // define select event handler
         $('#customColors .dataseries li').click(function(e) {
             var li = e.target.nodeName.toLowerCase() == 'li' ? $(e.target) : $(e.target).parents('li');
-            $('#customColors .dataseries li').removeClass('selected');
-            $('#customColors .selected-series-name').html(li.data('series'));
-            li.addClass('selected');
+            if (!e.shiftKey) $('#customColors .dataseries li').removeClass('selected');
+            if (e.shiftKey && li.hasClass('selected')) li.removeClass('selected');
+            else li.addClass('selected');
             customColorSelectSeries();
+
+            if (e.shiftKey) { // clear selection
+                if (window.getSelection) {
+                    if (window.getSelection().empty) {  // Chrome
+                        window.getSelection().empty();
+                    } else if (window.getSelection().removeAllRanges) {  // Firefox
+                        window.getSelection().removeAllRanges();
+                    }
+                } else if (document.selection) {  // IE?
+                    document.selection.empty();
+                }
+            }
         });
 
     }
@@ -283,7 +303,9 @@ $(function() {
             .css('background', '')
             .html('×');
         var sel = $.extend({}, chart.get('metadata.visualize.custom-colors', {}));
-        sel[li.data('series')] = '';
+        li.each(function(i, li) {
+            sel[$(li).data('series')] = '';
+        });
         chart.set('metadata.visualize.custom-colors', sel);
     });
 
@@ -312,7 +334,9 @@ $(function() {
             .css('background', color)
             .html('');
         li.data('color', color);
-        sel[li.data('series')] = color;
+        li.each(function(i, el) {
+            sel[$(el).data('series')] = color;
+        });
         chart.set('metadata.visualize.custom-colors', sel);
     }
 
