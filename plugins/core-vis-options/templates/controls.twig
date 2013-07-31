@@ -1,15 +1,14 @@
 
 {% if option.type == 'checkbox' %}
 
-    <label class="control-label" for="{{ key }}">{{ option.label|raw }}</label>
-    <div class="controls">
-        <input type="checkbox" id="{{ key }}" />
+    <div class="cotrols">
+        <label class="checkbox" style="text-align:left;width:100%;position:relative;left:0" for="{{ key }}"><input type="checkbox" id="{{ key }}" /> {{ option.label|raw }}</label>
     </div>
 
 {% elseif option.type == 'radio' %}
 
-    <label class="control-label"  for="{{ key }}">{{ option.label|raw }}</label>
-    <div class="controls form-inline">
+    <label class="separator" for="{{ key }}">{{ option.label|raw }}</label>
+    <div class="form-inline">
         {% for opt in option.options %}
         <div>
             <label class="radio">
