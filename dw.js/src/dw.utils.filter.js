@@ -71,6 +71,11 @@ dw.utils.filter = function (column, active, type, format) {
                 a.addClass('active');
                 update(a.data('row'));
             });
+            div.appendTo('body');
+            var fy = $('a:first', div).offset().top,
+                ly = $('a:last', div).offset().top;
+            div.remove();
+            if (fy != ly) return getFilterUI('select')(vis); // fall back to select
             return div;
         };
 

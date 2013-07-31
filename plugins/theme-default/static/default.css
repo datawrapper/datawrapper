@@ -155,7 +155,8 @@ svg .axis, svg .tick, svg .grid, svg rect {
 }
 
 .filter-links {
-    height: 28px;
+    height: 30px;
+    overflow: hidden;
 }
 
 .filter-links a {
