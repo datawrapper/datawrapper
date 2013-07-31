@@ -427,7 +427,6 @@
 
         gridVisible: function() {
             var me = this;
-            console.log(me.__canvas.w, me.getBarValues().length);
             return me.get('grid-lines', 'show') == 'show' ? true :
                 me.get('grid-lines') == 'hide' ? false :
                 (me.__canvas.w / me.getBarValues().length) < 50 || me.getBarValues().length > 8;
