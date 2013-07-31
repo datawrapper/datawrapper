@@ -25,7 +25,7 @@
     <div class="controls">
         <select id="{{ key }}">
             {% for opt in option.options %}
-            <option value="{{ opt.value }}">{{ opt.label }}</option>
+            <option value="{{ opt.value }}" {% if opt.default %}selected="selected" {% endif %}>{{ opt.label }}</option>
             {% endfor %}
         </select>
     </div>
