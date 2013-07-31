@@ -134,15 +134,6 @@
                         halign = 'center',
                         alwaysShow = (me.chart.hasHighlight() && me.chart.isHighlighted(column.name())) || (d.w > 40);
 
-                    if (false && me._showValueLabels()) {
-                        // add value labels
-                        me.registerLabel(me.label(d.x + d.w * 0.5, val_y, me.formatValue(column.val(r)),{
-                            w: d.w,
-                            align: 'center',
-                            cl: 'value' + (alwaysShow ? '' : ' showOnHover')
-                        }), column.name());
-                    }
-
                     if (me.chart.hasHighlight() && me.chart.isHighlighted(column.name())) {
                         lblcl.push('highlighted');
                     }
@@ -213,6 +204,9 @@
             me.__scales.y.rangeRound([0, c.h - c.bpad - c.tpad - 30]);
         },
 
+        /*
+         * computes x,y,w,h for each bar
+         */
         barDimensions: function(column, s, r) {
             var me = this,
                 sc = me.__scales,
@@ -252,6 +246,9 @@
             
         },
 
+        /*
+         * renders the horizontal grid
+         */
         horzGrid: function() {
             // draw tick marks and labels
             var me = this,
@@ -304,13 +301,17 @@
             });
         },
 
-        hoverSeries: function(hoveredSeries) {
+        /*
+         * highlights hovered bars and displays value labels
+         */
+        hover: function(hoveredSeries) {
             var me = this,
                 whitishBg = chroma.color(me.theme.colors.background).lch()[0] > 60;
 
+            // compute fill color, depending on hoveredSeries
             function getFill(col, el) {
                 var fill = me.getColor(col, el.data('row'), me._color_opts);
-                if (hoveredSeries !== undefined && col.name() == hoveredSeries.name()) {
+                if (hoveredSeries !== undefined && col.name() == dw.utils.name(hoveredSeries)) {
                     fill = chroma.color(fill).darken(whitishBg ? 15 : -25).hex();
                 }
                 return fill;
@@ -320,8 +321,9 @@
 
                 var fill, stroke;
 
-                _.each(me.__seriesLabels[column.name()], function(lbl) {
-                    if (hoveredSeries !== undefined && column.name() == hoveredSeries.name()) {
+                // highlight/invert the column title
+                _.each(me.__labels[column.name()], function(lbl) {
+                    if (hoveredSeries !== undefined && column.name() == dw.utils.name(hoveredSeries)) {
                         lbl.addClass('hover');
                         if (lbl.hasClass('showOnHover')) lbl.show(0.5);
                     } else {
@@ -336,7 +338,8 @@
                         //}
                     }
                 });
-                 _.each(me.__seriesElements[column.name()], function(el) {
+                // animate the bar fill & stroke
+                 _.each(me.__elements[column.name()], function(el) {
                     fill = getFill(column, el);
                     stroke = chroma.color(fill).darken(10).hex();
                     if (el.attrs.fill != fill || el.attrs.stroke != stroke)
@@ -344,8 +347,9 @@
                 });
             });
 
+            // show/hide the labels that show values on top of the bars
             _.each(me.__barLbls, function(lbl, key) {
-                if (hoveredSeries && lbl.data('series').name() == hoveredSeries.name()) lbl.show();
+                if (hoveredSeries && lbl.data('key') == dw.utils.name(hoveredSeries)) lbl.show();
                 else lbl.hide();
             });
         },
