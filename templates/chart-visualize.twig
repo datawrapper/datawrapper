@@ -189,12 +189,7 @@ $(function() {
         _themeHasChanged = false;
         _typeHasChanged = false;
 
-        /*if (iframeNeedReload) {
-            iframe.attr('src', '/chart/{{ chart.id }}/preview?innersvg=1&nocache='+Math.random());
-            iframe.one('load', scheduleThumbnail);
-        }*/
         iframe.get(0).contentWindow.__dw.saved();
-
         scheduleThumbnail();
     });
 
@@ -203,7 +198,6 @@ $(function() {
     function scheduleThumbnail() {
         clearTimeout(_thumbTimer);
         _thumbTimer = setTimeout(function() {
-            //console.log('snapshot', $('#iframe-wrapper iframe'), '{{ chart.id }}', 'm', 260, 160);
             dw.backend.snapshot(iframe, '{{ chart.id }}', 'm', 260, 160);
         }, 500);
     }
@@ -214,6 +208,8 @@ $(function() {
     chart.sync('#text-intro', 'metadata.describe.intro');
 
     chart.onChange(function(chart, key, value) {
+        if (key == 'type') _typeHasChanged = true;
+        if (key == 'theme') _themeHasChanged = true;
         dw.backend.updateChartInIframe(iframe, chart.attributes());
     });
 
