@@ -50,7 +50,7 @@ class DatawrapperPlugin_VisualizationLineChart extends DatawrapperPlugin_Visuali
                 "default" => false
             ),
             "legend-position" => array(
-                "type" => "radio",
+                "type" => "radio-left",
                 "label" => __("Legend position", $id),
                 "default" => "right",
                 "depends-on" => array(
