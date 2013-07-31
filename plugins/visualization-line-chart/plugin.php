@@ -31,6 +31,10 @@ class DatawrapperPlugin_VisualizationLineChart extends DatawrapperPlugin_Visuali
     public function getOptions(){
         $id = $this->getName();
         $options = array(
+            "sep-labeling" => array(
+                "type" => "separator",
+                "label" => __("Customize labeling", $id)
+            ),
             "direct-labeling" => array(
                 "type" => "checkbox",
                 "label" => __("Direct labeling", $id),
@@ -39,6 +43,11 @@ class DatawrapperPlugin_VisualizationLineChart extends DatawrapperPlugin_Visuali
                     "chart.min_columns[y1]" => 2,
                     "chart.max_columns[y2]" => 0  // direct labeling not possible with second axis
                 )
+            ),
+            "rotate-x-labels" => array(
+                "type" => "checkbox",
+                "label" => __("Rotate labels 45 degrees", $id),
+                "default" => false
             ),
             "legend-position" => array(
                 "type" => "radio",
@@ -68,12 +77,10 @@ class DatawrapperPlugin_VisualizationLineChart extends DatawrapperPlugin_Visuali
                 )
             ),
 
-            "rotate-x-labels" => array(
-                "type" => "checkbox",
-                "label" => __("Rotate labels 45 degrees", $id),
-                "default" => false
+            "sep-lines" => array(
+                "type" => "separator",
+                "label" => __("Customize lines", $id)
             ),
-
             "force-banking" => array(
                 "type" => "checkbox",
                 "hidden" => true,
@@ -84,11 +91,6 @@ class DatawrapperPlugin_VisualizationLineChart extends DatawrapperPlugin_Visuali
                 "hidden" => true,
                 "label" => __("Show grid", $id),
                 "default" => false
-            ),
-
-            "sep-lines" => array(
-                "type" => "separator",
-                "label" => __("Customize lines", $id)
             ),
             "connect-missing-values" => array(
                 "type" => "checkbox",
