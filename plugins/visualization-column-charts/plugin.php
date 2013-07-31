@@ -30,15 +30,15 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
             "options" => array(
                 "sort-values" => array(
                     "type" => "checkbox",
-                    "label" => __("Automatically sort bars")
+                    "label" => __("Automatically sort bars", $id)
                 ),
                 "reverse-order" => array(
                     "type" => "checkbox",
-                    "label" => __("Reverse order")
+                    "label" => __("Reverse order", $id)
                 ),
                 "negative-color" => array(
                     "type" => "checkbox",
-                    "label" => __("Use different color for negative values"),
+                    "label" => __("Use different color for negative values", $id),
                     "depends-on" => array(
                         "chart.min_value[columns]" => '<0',
                         "chart.max_value[columns]" => '>0'
@@ -46,18 +46,18 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                 ),
                 "absolute-scale" => array(
                     "type" => "checkbox",
-                    "label" => __("Use the same scale for all columns"),
+                    "label" => __("Use the same scale for all columns", $id),
                     "depends-on" => array(
                         "chart.min_columns[columns]" => 2
                     )
                 ),
                 "grid-lines" => array(
                     "type" => "radio",
-                    "label" => __("Grid lines"),
+                    "label" => __("Grid lines", $id),
                     "options" => array(
-                        array("value" => "auto", "label" => __("Automatic")),
-                        array("value" => "show", "label" => __("Show")),
-                        array("value" => "hide", "label" => __("Hide"))
+                        array("value" => "auto", "label" => __("Automatic", $id)),
+                        array("value" => "show", "label" => __("Show", $id)),
+                        array("value" => "hide", "label" => __("Hide", $id))
                     ),
                     "default" => false
                 )
