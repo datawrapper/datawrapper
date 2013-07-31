@@ -146,7 +146,7 @@ $(function() {
             // fire custom event so hooked vis options can sync
             $('#vis-options').trigger('dw:vis-option:' + $.trim(opt.type), {
                 chart: chart,
-                vis: vis,
+                vis: dw.backend.currentVis,
                 key: key,
                 option: opt
             });
