@@ -1,13 +1,7 @@
 
 (function(){
-    // Simple vertical bar chart
-    // -------------------------
 
-    var GroupedColumnChart = Datawrapper.Visualizations.GroupedColumnChart = function() {
-
-    };
-
-    _.extend(GroupedColumnChart.prototype, Datawrapper.Visualizations.RaphaelChart.prototype, {
+    dw.visualization.register('grouped-column-chart', 'raphael-chart', {
 
         // some config
         _showValueLabels: function() { return true; },

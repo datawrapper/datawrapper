@@ -1,11 +1,6 @@
 (function(){
 
-    // Simple line chart
-    // -----------------
-
-    var LineChart = Datawrapper.Visualizations.LineChart = function() {};
-
-    _.extend(LineChart.prototype, Datawrapper.Visualizations.RaphaelChart.prototype, {
+    dw.visualization.register('line-chart', 'raphael-chart', {
 
         render: function(el) {
 

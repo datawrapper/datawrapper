@@ -1,13 +1,7 @@
 
 (function(){
-    // Simple bar chart
-    // ----------------
 
-    var BarChart = Datawrapper.Visualizations.BarChart = function() {
-
-    };
-
-    _.extend(BarChart.prototype, Datawrapper.Visualizations.RaphaelChart.prototype, {
+    dw.visualization.register('bar-chart', 'raphael-chart', {
 
         render: function(el) {
             el = $(el);

@@ -1,13 +1,7 @@
 
 (function(){
-    // Stacked Vertical Bar Chart
-    // --------------------------
 
-    var StackedColumnChart = Datawrapper.Visualizations.StackedColumnChart = function() {
-
-    };
-
-    _.extend(StackedColumnChart.prototype, Datawrapper.Visualizations.GroupedColumnChart.prototype, {
+    dw.visualization.register('stacked-column-chart', 'grouped-column-chart', {
 
         // some config
         _showValueLabels: function() { return false; },

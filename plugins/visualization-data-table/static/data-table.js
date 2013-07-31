@@ -1,18 +1,11 @@
 
 (function(){
 
-    // Simple perfect table chart
-    // --------------------------
-
     var trim = function (myString) {
         return myString.replace(/^\s+/g,'').replace(/\s+$/g,'');
-    } 
-
-    var DataTable = Datawrapper.Visualizations.DataTable = function() {
-
     };
 
-    _.extend(DataTable.prototype, Datawrapper.Visualizations.Base, {
+    dw.visualization.register('data-table', {
 
         render: function(el) {
             el = $(el);

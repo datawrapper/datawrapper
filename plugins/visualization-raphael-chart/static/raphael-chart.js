@@ -3,9 +3,7 @@
     // Base class for Raphael charts
     // -----------------------------
 
-    var RaphaelChart = Datawrapper.Visualizations.RaphaelChart = function() {};
-
-    _.extend(RaphaelChart.prototype, Datawrapper.Visualizations.Base, {
+    dw.visualization.register('raphael-chart', {
 
         init: function() {
             this.__elements = {};

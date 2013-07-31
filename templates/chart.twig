@@ -239,7 +239,7 @@
         }
 
         function getVis() {
-            var vis = new Datawrapper.Visualizations.{{ visualization.id | classify }}();
+            var vis = dw.visualization.create('{{ visualization.id }}');
             vis.meta = JSON.parse("{{ visualization | json | escape('js') }}");
             vis.lang = '{{ lang }}';
             return vis;

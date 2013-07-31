@@ -156,7 +156,7 @@ $(function() {
     }
 
     function loadVis() {
-        dw.backend.currentVis = new Datawrapper.Visualizations[classify(chart.get('type'))]();
+        dw.backend.currentVis = dw.visualization.create(chart.get('type'));
         dw.backend.currentVis.chart = chart;
         dw.backend.currentVis.dataset = chart.dataset();
         dw.backend.currentVis.meta = visMetas[chart.get('type')];
