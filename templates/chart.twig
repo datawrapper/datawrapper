@@ -239,7 +239,7 @@
         }
 
         function getVis() {
-            var vis = dw.visualization.create('{{ visualization.id }}');
+            var vis = dw.visualization('{{ visualization.id }}');
             vis.meta = JSON.parse("{{ visualization | json | escape('js') }}");
             vis.lang = '{{ lang }}';
             return vis;
