@@ -1,75 +1,8 @@
 
 (function(){
 
-    // Pie chart
-    // ---------
 
-    var PieChart = Datawrapper.Visualizations.PieChart = function() {};
-
-    var TWO_PI = Math.PI * 2, HALF_PI = Math.PI * 0.5;
-
-    var Slice = function(paper, cx, cy, or, ir, startAngle, endAngle, label) {
-        var me = {
-            cx: cx,
-            cy: cy,
-            or: or,
-            ir: ir,
-            startAngle: startAngle,
-            endAngle: endAngle
-        };
-
-        function arcPath() {
-            var cx = me.cx, cy = me.cy, ir = me.ir, or = me.or,
-                startAngle = me.startAngle, endAngle = me.endAngle;
-
-            var x0 = cx+Math.cos(startAngle)*ir,
-                y0 = cy+Math.sin(startAngle)*ir,
-                x1 = cx+Math.cos(endAngle)*ir,
-                y1 = cy+Math.sin(endAngle)*ir,
-                x2 = cx+Math.cos(endAngle)*or,
-                y2 = cy+Math.sin(endAngle)*or,
-                x3 = cx+Math.cos(startAngle)*or,
-                y3 = cy+Math.sin(startAngle)*or,
-                largeArc = endAngle - startAngle > Math.PI ? 1 : 0;
-
-            if (ir > 0)
-                return "M"+x0+" "+y0+" A"+ir+","+ir+" 0 "+largeArc+",1 "+x1+","+y1+" L"+x2+" "+y2+" A"+or+","+or+" 0 "+largeArc+",0 "+x3+" "+y3+" Z";
-            else
-                return "M"+cx+" "+cy+" L"+x2+" "+y2+" A"+or+","+or+" 0 "+largeArc+",0 "+x3+" "+y3+" Z";
-        }
-
-        function updateLabelPos() {
-            lx = me.cx + Math.cos((me.startAngle + me.endAngle) * 0.5) * me.or * 0.7,
-            ly = me.cy + Math.sin((me.startAngle + me.endAngle) * 0.5) * me.or * 0.7;
-            label.attr({ x: lx, y: ly });
-        }
-
-        var running;
-        function frame() {
-            path.attr({ path: arcPath() });
-            updateLabelPos();
-            if (running) requestAnimationFrame(frame);
-        }
-
-        var path = paper.path(arcPath());
-        updateLabelPos();
-
-        var slice = { path: path, label: label };
-        slice.animate = function(cx, cy, or, ir, sa, ea, duration, easing) {
-            running = true;
-            $(me).animate(
-                { cx: cx, cy: cy, or: or, ir: ir, startAngle: sa, endAngle: ea },
-                { easing: easing, duration: duration, complete: function() {
-                    running = false;
-                    frame();
-                }
-            });
-            requestAnimationFrame(frame);
-        };
-        return slice;
-    };
-
-    _.extend(PieChart.prototype, Datawrapper.Visualizations.RaphaelChart.prototype, {
+    dw.visualization.register('pie-chart', 'raphael-chart', {
 
         isDonut: function() {
             return false;
@@ -288,7 +221,7 @@
                     return false;
                 }
             });
-            return _.find(me.__values, function(v) { return v.name() == match });
+            return _.find(me.__values, function(v) { return v.name() == match; });
         },
 
         getDataRowByPoint: function(x, y) {
@@ -300,7 +233,7 @@
         },
 
         hideTooltip: function() {
-            
+
         },
 
         hover: function(hovered_key) {
@@ -326,5 +259,68 @@
         }
 
     });
+
+    var TWO_PI = Math.PI * 2, HALF_PI = Math.PI * 0.5;
+
+    var Slice = function(paper, cx, cy, or, ir, startAngle, endAngle, label) {
+        var me = {
+            cx: cx,
+            cy: cy,
+            or: or,
+            ir: ir,
+            startAngle: startAngle,
+            endAngle: endAngle
+        };
+
+        function arcPath() {
+            var cx = me.cx, cy = me.cy, ir = me.ir, or = me.or,
+                startAngle = me.startAngle, endAngle = me.endAngle;
+
+            var x0 = cx+Math.cos(startAngle)*ir,
+                y0 = cy+Math.sin(startAngle)*ir,
+                x1 = cx+Math.cos(endAngle)*ir,
+                y1 = cy+Math.sin(endAngle)*ir,
+                x2 = cx+Math.cos(endAngle)*or,
+                y2 = cy+Math.sin(endAngle)*or,
+                x3 = cx+Math.cos(startAngle)*or,
+                y3 = cy+Math.sin(startAngle)*or,
+                largeArc = endAngle - startAngle > Math.PI ? 1 : 0;
+
+            if (ir > 0)
+                return "M"+x0+" "+y0+" A"+ir+","+ir+" 0 "+largeArc+",1 "+x1+","+y1+" L"+x2+" "+y2+" A"+or+","+or+" 0 "+largeArc+",0 "+x3+" "+y3+" Z";
+            else
+                return "M"+cx+" "+cy+" L"+x2+" "+y2+" A"+or+","+or+" 0 "+largeArc+",0 "+x3+" "+y3+" Z";
+        }
+
+        function updateLabelPos() {
+            lx = me.cx + Math.cos((me.startAngle + me.endAngle) * 0.5) * me.or * 0.7,
+            ly = me.cy + Math.sin((me.startAngle + me.endAngle) * 0.5) * me.or * 0.7;
+            label.attr({ x: lx, y: ly });
+        }
+
+        var running;
+        function frame() {
+            path.attr({ path: arcPath() });
+            updateLabelPos();
+            if (running) requestAnimationFrame(frame);
+        }
+
+        var path = paper.path(arcPath());
+        updateLabelPos();
+
+        var slice = { path: path, label: label };
+        slice.animate = function(cx, cy, or, ir, sa, ea, duration, easing) {
+            running = true;
+            $(me).animate(
+                { cx: cx, cy: cy, or: or, ir: ir, startAngle: sa, endAngle: ea },
+                { easing: easing, duration: duration, complete: function() {
+                    running = false;
+                    frame();
+                }
+            });
+            requestAnimationFrame(frame);
+        };
+        return slice;
+    };
 
 }).call(this);
