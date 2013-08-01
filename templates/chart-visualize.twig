@@ -126,8 +126,7 @@ $(function() {
             }
         }
         function allLoaded() {
-            var themeClass = classify(themeid),
-                theTheme = Datawrapper.Themes[themeClass];
+            var theTheme = dw.theme.get(themeid);
 
             picker.data('colors', theTheme.colors.palette.join(','));
             picker.data('color', theTheme.colors.palette[chart.get('metadata.visualize.base-color', 0)]);

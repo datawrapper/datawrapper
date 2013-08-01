@@ -234,7 +234,7 @@
             chart = dw.chart(old_chart_attributes)
                     .locale('{{ chartLocale }}')
                     .metricPrefix({{ metricPrefix | json | raw }})
-                    .theme(Datawrapper.Themes.{{ theme.id | classify }});
+                    .theme(dw.theme.get('{{ theme.id }}'));
             return chart.load();
         }
 

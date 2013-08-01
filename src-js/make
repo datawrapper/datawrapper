@@ -5,7 +5,7 @@ VERSION=$(python -c 'import json;print json.loads(open("../package.json").read()
 rm ../www/static/js/datawrapper*.js
 
 # generate js that's packed with each chart
-cat dw.core.js dw.theme.js > tmp.js
+cat dw.core.js > tmp.js
 uglifyjs tmp.js > ../www/static/js/datawrapper.min.js
 mv tmp.js ../www/static/js/datawrapper.js
 
