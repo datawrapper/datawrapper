@@ -57,7 +57,7 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                     )
                 ),
                 "grid-lines" => array(
-                    "type" => "radio",
+                    "type" => "radio-left",
                     "label" => __("Grid lines", $id),
                     "options" => array(
                         array("value" => "auto", "label" => __("Automatic", $id)),

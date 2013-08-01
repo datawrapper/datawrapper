@@ -39,6 +39,7 @@ $(function() {
     $('#vis-options').on('dw:vis-option:text', syncValue);
     $('#vis-options').on('dw:vis-option:checkbox', syncCheckbox);
     $('#vis-options').on('dw:vis-option:radio', syncRadio);
+    $('#vis-options').on('dw:vis-option:radio-left', syncRadio);
 
 });
 
