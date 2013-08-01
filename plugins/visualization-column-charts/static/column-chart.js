@@ -60,7 +60,7 @@
                 lh = Math.max(lh,
                     chart_width /(n + (n-1) * 0.35) > 38 ?
                       me.labelHeight(bar.name, 'series', c.w / (n)) :
-                      me.labelWidth(bar.name, 'series')
+                      Math.min(80, me.labelWidth(bar.name, 'series'))
                 );
             });
             c.bpad = lh * mm_r + 10;
