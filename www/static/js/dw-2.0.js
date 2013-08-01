@@ -1510,7 +1510,7 @@ _.extend(dw.visualization.base, {
                 fmt = dw.utils.longDateFormat(lblCol),
                 keys = [];
             lblCol.each(function(val) {
-                keys.push(fmt(val));
+                keys.push(String(fmt(val)));
             });
 
             return keys;
@@ -1549,19 +1549,15 @@ dw.theme = (function(){
 
     var __themes = {};
 
-    var theme = {
+    var theme = function(id) {
+        return __themes[id];
+    };
 
-        register: function(id) {
-            var parent = arguments.length == 3 ? __themes[arguments[1]] : dw.theme.base,
-                props = arguments[arguments.length - 1];
+    theme.register = function(id) {
+        var parent = arguments.length == 3 ? __themes[arguments[1]] : dw.theme.base,
+            props = arguments[arguments.length - 1];
 
-            __themes[id] = $.extend(true, {}, parent, props);
-        },
-
-        get: function(id) {
-            return __themes[id];
-        }
-
+        __themes[id] = $.extend(true, {}, parent, props);
     };
 
     return theme;
