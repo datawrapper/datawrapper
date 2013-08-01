@@ -191,6 +191,7 @@ $(function() {
 
         iframe.get(0).contentWindow.__dw.saved();
         scheduleThumbnail();
+        checkChartHeight();
     });
 
     var _thumbTimer;
@@ -295,6 +296,8 @@ $(function() {
                 updateSize();
                 $('.alert').remove();
             });
+        } else {
+            $('.alert').remove();
         }
     }
 
