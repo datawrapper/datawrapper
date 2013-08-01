@@ -166,7 +166,7 @@ dw.chart = function(attributes) {
                 throw 'cannot render the chart!';
             }
             vis.setChart(chart);
-            vis.init();
+            vis.__init();
             vis.render($(container));
         },
 

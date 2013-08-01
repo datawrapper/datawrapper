@@ -8,7 +8,7 @@ dw.visualization.base = (function() {}).prototype;
 _.extend(dw.visualization.base, {
 
     // called before rendering
-    init: function() {
+    __init: function() {
         this.__renderedDfd = $.Deferred();
     },
 
