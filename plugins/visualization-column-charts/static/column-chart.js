@@ -1,13 +1,7 @@
 
 (function(){
-    // Simple vertical bar chart
-    // -------------------------
 
-    var ColumnChart = Datawrapper.Visualizations.ColumnChart = function() {
-
-    };
-
-    _.extend(ColumnChart.prototype, Datawrapper.Visualizations.RaphaelChart.prototype, {
+    dw.visualization.register('column-chart', 'raphael-chart', {
 
         render: function(el) {
             var me = this, filter, filterUI, sortBars, reverse, c, dataset = me.dataset,
@@ -60,7 +54,7 @@
             var lh = 0,
                 mm = column.range(),
                 mm_r = mm[0] >= 0 ? 1 : mm[1] <= 0 ? 0 : mm[1] / (mm[1] - mm[0]),
-                n = bars.length;
+                n = me.__n = bars.length;
 
             _.each(bars, function(bar, s) {
                 lh = Math.max(lh,
@@ -78,66 +72,7 @@
 
             if (!me.theme.columnChart.cutGridLines) me.horzGrid();
 
-            _.each(me.getBarValues(sortBars, reverse), function(barv, s) {
-                var d = me.barDimensions(barv, s),
-                    val = barv.value,
-                    fill = me.getBarColor(barv, me.get('negative-color', false)),
-                    stroke = chroma.color(fill).darken(me.theme.columnChart.darkenStroke).hex(),
-                    bar;
-
-                // create bar
-                bar = me.registerElement(c.paper.rect().attr(d).attr({
-                    'stroke': stroke,
-                    'fill': fill
-                }).data('strokeCol', stroke), barv.name);
-
-                if (me.theme.columnChart.barAttrs) {
-                    bar.attr(me.theme.columnChart.barAttrs);
-                }
-
-                var val_y  = val > 0 ? d.y - 10 : d.y + d.height + 10,
-                    lbl_y  = val <= 0 ? d.y - 10 : d.y + d.height + 5,
-                    f_val  = me.chart.formatValue(val, true),
-                    vlbl_w = me.labelWidth(f_val, 'value'),
-                    bw     = (d.width + d.width * d.pad),
-                    lblcl  = ['series'],
-                    lbl_w  = c.w / (n+2),
-                    valign = val > 0 ? 'top' : 'bottom',
-                    halign = 'center',
-                    alwaysShow = (me.chart.hasHighlight() &&
-                        me.chart.isHighlighted(barv.name)) ||
-                        (bw > vlbl_w);
-                var lpos = me.labelPosition(barv, s, 'value'),
-                    spos = me.labelPosition(barv, s, 'series');
-
-                // add value labels
-                me.registerLabel(me.label(lpos.left, lpos.top, me.chart.formatValue(barv.value, true),{
-                    w: lpos.width,
-                    align: 'center',
-                    cl: 'value outline ' + (alwaysShow ? '' : ' showOnHover')
-                }), barv.name);
-
-                if (me.chart.hasHighlight() && me.chart.isHighlighted(barv.name)) {
-                    lblcl.push('highlighted');
-                }
-                if (d.bw < 30) {
-                    halign = 'right';
-                }
-                if (d.bw < 20) {
-                    lblcl.push('smaller');
-                }
-                // add column label
-                if (!/^X\.\d+$/.test(barv.name)) {
-                    me.registerLabel(me.label(spos.left, spos.top, barv.name, {
-                        w: spos.width,
-                        align: spos.halign,
-                        valign: spos.valign,
-                        cl: lblcl.join(' '),
-                        rotate: d.bw < 30 ? -90 : 0
-                    }), barv.name);
-                }
-
-            });
+            _.each(me.getBarValues(sortBars, reverse), _.bind(me.__barEnter, me));
 
             var y = c.h - me.__scales.y(0) - c.bpad;
             /*me.path([['M', c.lpad, y], ['L', c.w - c.rpad, y]], 'axis')
@@ -152,6 +87,82 @@
             if (me.__gridLines && me.__gridLines['0']) me.__gridLines['0'].toFront();
         },
 
+        __barEnter: function(barv, s) {
+            var me = this,
+                c = me.__canvas,
+                d = me.barDimensions(barv, s),
+                n = me.__n,
+                val = barv.value,
+                fill = me.getBarColor(barv, me.get('negative-color', false)),
+                stroke = chroma.color(fill).darken(me.theme.columnChart.darkenStroke).hex(),
+                bar;
+
+            // create bar
+            bar = me.registerElement(c.paper.rect().attr(d).attr({
+                'stroke': stroke,
+                'fill': fill
+            }).data('strokeCol', stroke), barv.name);
+
+            if (me.theme.columnChart.barAttrs) {
+                bar.attr(me.theme.columnChart.barAttrs);
+            }
+
+            var val_y  = val > 0 ? d.y - 10 : d.y + d.height + 10,
+                lbl_y  = val <= 0 ? d.y - 10 : d.y + d.height + 5,
+                f_val  = me.chart.formatValue(val, true),
+                vlbl_w = me.labelWidth(f_val, 'value'),
+                bw     = (d.width + d.width * d.pad),
+                lblcl  = ['series'],
+                lbl_w  = c.w / (n+2),
+                valign = val > 0 ? 'top' : 'bottom',
+                halign = 'center',
+                alwaysShow = (me.chart.hasHighlight() &&
+                    me.chart.isHighlighted(barv.name)) ||
+                    (bw > vlbl_w);
+            var lpos = me.labelPosition(barv, s, 'value'),
+                spos = me.labelPosition(barv, s, 'series');
+
+            // add value labels
+            me.registerLabel(me.label(lpos.left, lpos.top, me.chart.formatValue(barv.value, true),{
+                w: lpos.width,
+                align: 'center',
+                cl: 'value outline ' + (alwaysShow ? '' : ' showOnHover')
+            }), barv.name);
+
+            if (me.chart.hasHighlight() && me.chart.isHighlighted(barv.name)) {
+                lblcl.push('highlighted');
+            }
+            if (d.bw < 30) {
+                halign = 'right';
+            }
+            if (d.bw < 20) {
+                lblcl.push('smaller');
+            }
+            // add column label
+            if (!/^X\.\d+$/.test(barv.name)) {
+                me.registerLabel(me.label(spos.left, spos.top, barv.name, {
+                    w: spos.width,
+                    align: spos.halign,
+                    valign: spos.valign,
+                    cl: lblcl.join(' '),
+                    rotate: d.bw < 30 ? -90 : 0
+                }), barv.name);
+            }
+        },
+
+        __barExit: function(bar_name, s) {
+            var me = this;
+            console.log('bar exit', bar_name);
+            _.each(me.__elements[bar_name], function(el) {
+                el.remove();
+            });
+            _.each(me.__labels[bar_name], function(el) {
+                el.remove();
+            });
+            me.__elements[bar_name] = undefined;
+            me.__labels[bar_name] = undefined;
+        },
+
         getBarValues: function(sortBars, reverse) {
             var me = this,
                 values = [],
@@ -161,10 +172,12 @@
                 fmt = dw.utils.longDateFormat(labels);
 
             column.each(function(val, i) {
-                values.push({
-                    name: fmt(labels.val(i)),
-                    value: val
-                });
+                if (!isNaN(val) || !me.get('ignore-missing-values', false)) {
+                    values.push({
+                        name: fmt(labels.val(i)),
+                        value: val
+                    });
+                }
             });
             if (sortBars) values.sort(function(a,b) { return b.value - a.value; });
             if (reverse) values.reverse();
@@ -187,10 +200,14 @@
             // update axis and grid
             me.horzGrid();
 
-            var n = me.getBarValues().length;
+            var n = me.__n = me.getBarValues().length,
+                updated_bars = {};
 
             // update bar heights and labels
-            _.each(me.getBarValues(), function(bar, s) {
+            _.each(me.getBarValues(me.get('sort-values'), me.get('reverse-order')), function(bar, s) {
+                // enter new bar
+                if (!me.__elements[bar.name]) me.__barEnter(bar, s);
+
                 _.each(me.__elements[bar.name], function(rect) {
                     var dim = me.barDimensions(bar, s, 0);
                     rect.animate(dim, me.theme.duration, me.theme.easing);
@@ -215,6 +232,13 @@
                         }, me.theme.duration, me.theme.easing);
                     }
                 });
+                updated_bars[bar.name] = true;
+            });
+            // exit old bars
+            _.each(me.__elements, function(elements, key) {
+                if (!updated_bars[key]) {
+                    me.__barExit(key);
+                }
             });
             if (me.__gridLines['0']) me.__gridLines['0'].toFront();
         },

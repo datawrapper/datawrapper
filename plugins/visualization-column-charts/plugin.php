@@ -44,6 +44,11 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                         "chart.max_value[columns]" => '>0'
                     )
                 ),
+                "ignore-missing-values" => array(
+                    "type" => "checkbox",
+                    "label" => __("Ignore missing values", $id),
+                    "default" => false
+                ),
                 "absolute-scale" => array(
                     "type" => "checkbox",
                     "label" => __("Use the same scale for all columns", $id),
