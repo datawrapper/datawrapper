@@ -8,10 +8,9 @@ dw.theme = (function(){
 
         register: function(id) {
             var parent = arguments.length == 3 ? __themes[arguments[1]] : dw.theme.base,
-                props = arguments[arguments.length - 1],
-                theme = __themes[id] = {};
+                props = arguments[arguments.length - 1];
 
-            _.extend(theme, parent, props);
+            __themes[id] = $.extend(true, {}, parent, props);
         },
 
         get: function(id) {

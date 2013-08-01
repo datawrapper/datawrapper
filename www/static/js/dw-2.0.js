@@ -1304,7 +1304,7 @@ dw.chart = function(attributes) {
                 throw 'cannot render the chart!';
             }
             vis.setChart(chart);
-            vis.init();
+            vis.__init();
             vis.render($(container));
         },
 
@@ -1358,7 +1358,7 @@ dw.visualization.base = (function() {}).prototype;
 _.extend(dw.visualization.base, {
 
     // called before rendering
-    init: function() {
+    __init: function() {
         this.__renderedDfd = $.Deferred();
     },
 
@@ -1553,10 +1553,9 @@ dw.theme = (function(){
 
         register: function(id) {
             var parent = arguments.length == 3 ? __themes[arguments[1]] : dw.theme.base,
-                props = arguments[arguments.length - 1],
-                theme = __themes[id] = {};
+                props = arguments[arguments.length - 1];
 
-            _.extend(theme, parent, props);
+            __themes[id] = $.extend(true, {}, parent, props);
         },
 
         get: function(id) {
