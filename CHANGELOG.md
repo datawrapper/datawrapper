@@ -2,20 +2,19 @@ CHANGELOG
 ---------
 
 ### 1.5.0
-* refactored javascript core
-* refactored core visualizations to new javascript core
-* refactored custom color feature
-* added axes definitions to visualizations
-* allow sorting visualizations by dependencies
+* simplified visualization api
+* column chart allows ignoring of missing values
+* redesigned custom color picker
+* enabled multi-selection in custom color picker
 * one-dimensional visualizations (pie,bars,...) now showing single column (instead of single row)
 * removed bar chart setting 'labels inside bars'
 * added separators in vis options
 * added new conditions for vis options
-* added nicer fallback message when JS is disabled
-* redesigned custom color picker
-* enabled multi-selection in custom color picker
-
-### 1.4.4
+* added fallback message when JS is disabled
+* refactored javascript core
+* refactored core visualizations to new javascript core
+* refactored custom color feature
+* added axes definitions to visualizations
 * added column public_version to chart table
 * incrementing public_version on every publication
 * appended public_version to public chart urls
