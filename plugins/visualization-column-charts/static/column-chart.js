@@ -85,6 +85,7 @@
 
             if (me.theme.columnChart.cutGridLines) me.horzGrid();
             if (me.__gridLines && me.__gridLines['0']) me.__gridLines['0'].toFront();
+            me.renderingComplete();
         },
 
         __barEnter: function(barv, s) {

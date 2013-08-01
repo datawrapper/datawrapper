@@ -7,6 +7,11 @@ dw.visualization.base = (function() {}).prototype;
 
 _.extend(dw.visualization.base, {
 
+    // called before rendering
+    init: function() {
+        this.__renderedDfd = $.Deferred();
+    },
+
     render: function(el) {
         $(el).html('implement me!');
     },
@@ -176,6 +181,14 @@ _.extend(dw.visualization.base, {
 
     clear: function() {
 
+    },
+
+    renderingComplete: function() {
+        this.__renderedDfd.resolve();
+    },
+
+    rendered: function() {
+        return this.__renderedDfd.promise();
     }
 
 });

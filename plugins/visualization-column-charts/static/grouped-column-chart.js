@@ -80,6 +80,7 @@
             if (me.theme.columnChart.cutGridLines) me.horzGrid();
 
             me.post_render();
+            me.renderingComplete();
         },
 
         update: function() {

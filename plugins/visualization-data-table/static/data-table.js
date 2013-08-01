@@ -138,6 +138,7 @@
             });
 
             el.append('<br style="clear:both"/>');
+            me.renderingComplete();
         },
 
         keys: function() {

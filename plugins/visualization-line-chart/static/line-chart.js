@@ -717,6 +717,7 @@
                     frame().attr({ fill: false });
                 }
             }
+            vis.renderingComplete();
         },
 
         lineColumns: function() {

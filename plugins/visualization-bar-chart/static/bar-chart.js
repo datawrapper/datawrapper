@@ -100,7 +100,7 @@
 
             // enable mouse events
             el.mousemove(_.bind(me.onMouseMove, me));
-
+            me.renderingComplete();
         },
 
         getBarValues: function(sortBars, reverse) {
