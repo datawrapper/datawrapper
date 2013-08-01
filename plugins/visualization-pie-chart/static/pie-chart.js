@@ -92,12 +92,13 @@
                 others = 0,
                 ocnt = 0,
                 hasNegativeValues = column.range()[0] < 0,
-                values = [];
+                values = [],
+                fmt = labels.type() == 'date' ? dw.utils.longDateFormat(labels) : _.identity;
 
             // pull values and labels from columns
             column.each(function(val, i) {
                 values.push({
-                    name: labels.val(i),
+                    name: String(fmt(labels.val(i))),
                     value: val,
                     index: i
                 });
@@ -125,7 +126,7 @@
                 me.warn('<b>Warning:</b> Pie charts are not suitable for displaying negative values.');
             }
             if (ocnt > 0) {
-                ovalues.push({ label: me.translate('other'), value: others });
+                ovalues.push({ name: me.translate('other'), value: others });
             }
 
             _.each(ovalues, function(s) {
@@ -154,6 +155,8 @@
                 return [a0, a1];
             }
 
+            me.__sliceKeys = [];
+
             _.each(ovalues, function(o) {
 
                 var da = o.value / total * FA,
@@ -164,6 +167,8 @@
                     value = showTotal ? Math.round(o.value / total * 100)+'%' : me.chart.formatValue(o.value, true);
 
                 if (o.value === 0) return;
+
+                me.__sliceKeys.push(o.name);
 
                 if (!slices[o.name]) {
                     var lblcl = me.chart.hasHighlight() && me.chart.isHighlighted(o.name) ? 'series highlighted' : 'series';
@@ -240,7 +245,7 @@
         hover: function(hovered_key) {
             var me = this,
                 bg = chroma.color(me.theme.colors.background);
-            _.each(me.keys(), function(key) {
+            _.each(me.__sliceKeys, function(key) {
                 _.each(me.__labels[key], function(lbl) {
                     if (hovered_key !== undefined && key == hovered_key) {
                         lbl.addClass('hover');

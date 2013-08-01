@@ -160,7 +160,7 @@ _.extend(dw.visualization.base, {
                 fmt = dw.utils.longDateFormat(lblCol),
                 keys = [];
             lblCol.each(function(val) {
-                keys.push(fmt(val));
+                keys.push(String(fmt(val)));
             });
 
             return keys;
