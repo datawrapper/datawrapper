@@ -12,7 +12,7 @@ class DatawrapperPlugin_VisualizationElectionDonut extends DatawrapperPlugin_Vis
             "order" => 60,
             "axes" => array(
                 "labels" => array(
-                    "accepts" => array("text")
+                    "accepts" => array("text", "date")
                 ),
                 "slices" => array(
                     "accepts" => array("number"),
