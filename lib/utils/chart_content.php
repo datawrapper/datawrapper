@@ -99,7 +99,6 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
             array_merge(
                 $base_js,
                 array('/static/js/dw-2.0'.($debug ? '' : '.min').'.js'),
-                array('/static/js/datawrapper'.($debug ? '' : '.min').'.js'),
                 array_reverse($theme_js),
                 array_reverse($vis_js),
                 $vis_libs
