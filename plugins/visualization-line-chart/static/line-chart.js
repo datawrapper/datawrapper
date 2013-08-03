@@ -476,18 +476,21 @@
                         }
                         return;
                     }
-                    last_valid_y = y;
                     if (pts.length === 0 && pts_.length > 0) {
                         // first valid point after NaNs
                         var lp = pts_[pts_.length-1], s = lp.length-2;
                         connectMissingValuePath.push('M'+[lp[s], lp[s+1]]+'L'+[ x, y]);
                     }
+                    if (vis.get('line-mode') == 'stepped' && last_valid_y !== undefined) {
+                        pts.push(x, last_valid_y);
+                    }
                     pts.push(x, y); // store current point
+                    last_valid_y = y;
                 });
                 // store the last line
                 if (pts.length > 0) pts_.push(pts);
                 _.each(pts_, function(pts) {
-                    paths.push("M" + [pts.shift(), pts.shift()] + (vis.get('smooth-lines') ? "R" : "L") + pts);
+                    paths.push("M" + [pts.shift(), pts.shift()] + (vis.get('line-mode') == 'curved' ? "R" : "L") + pts);
                 });
 
                 sw = lineWidth(col);
@@ -617,7 +620,7 @@
                             s1 = 0, s2 = 0,
                             next;
 
-                        if (vis.get('smooth-lines', false) === false) {
+                        if (vis.get('line-mode') != 'curved') {
                             // straight line fills
                             $.each(pts, function(i, pt) {
                                 while (s1 < pt.segment1) {
@@ -652,7 +655,7 @@
                             });
 
                         } else {
-                            // smooth line fills
+                            // curved line fills
                             var pts1 = [].concat(path1[0].slice(1), path1[1].slice(1)),
                                 pts2 = [].concat(path2[0].slice(1), path2[1].slice(1));
 
