@@ -230,7 +230,7 @@ switch ($cmd) {
 function _apply($pattern, $func) {
     $plugin_ids = array();
     if (strpos($pattern, '*') > -1) {
-        foreach (glob(ROOT_PATH . "plugins/" . $pattern . "/package.json") as $filename) {
+        foreach (glob(ROOT_PATH . "plugins" . DIRECTORY_SEPARATOR . $pattern . DIRECTORY_SEPARATOR . "package.json") as $filename) {
             $d = dirname($filename);
             $d = substr($d, strrpos($d, DIRECTORY_SEPARATOR)+1);
             $plugin_ids[] = $d;
