@@ -24,7 +24,10 @@ table.htCore tr td {
     color: #999 !important;
     text-decoration: line-through
 }
-
+.table td.htDimmed { /*revert default HOT style for readOnly cells*/
+    font-style: normal;
+    color: inherit;
+}
 </style>
 <link rel="stylesheet" type="text/css" href="/static/vendor/handsontable/jquery.handsontable.full.css">
 <link rel="stylesheet" type="text/css" href="/static/vendor/handsontable/jquery.handsontable.bootstrap.css">
@@ -117,9 +120,7 @@ $(function() {
         function myRenderer(instance, td, row, col, prop, value, cellProperties) {
             Handsontable.TextCell.renderer.apply(this, arguments);
             if (parseInt(value, 10) < 0) { //if row contains negative number
-                td.className = 'negative'; //add class "negative"
-            } else {
-                td.className = '';
+                td.classList.add('negative'); //add class "negative"
             }
             if (row === 0) {
                 td.style.borderBottom = '1px solid #000';
@@ -140,9 +141,7 @@ $(function() {
             }
 
             if (ignoreSeries[data[0][col]]) {
-                td.className = 'ignored';
-            } else {
-                td.className = '';
+                td.classList.add('ignored');
             }
         }
 
@@ -190,7 +189,8 @@ $(function() {
 
     function getThOfIndex(index) {
         var offsetCol = $dataPreview.handsontable('getInstance').view.wt.getSetting('offsetColumn');
-        return $('#data-preview thead th').eq(index + 1 * hasCorner() - offsetCol);
+        var thIndex = index + 1 * hasCorner() - offsetCol;
+        return document.querySelectorAll('#data-preview thead th')[thIndex];
     }
 
     function getSeriesOfIndex(index) {
@@ -249,7 +249,7 @@ $(function() {
     function renderSelectedTh() {
         $("#data-preview thead th.selected").removeClass('selected');
         selectedColumns.forEach(function(i){
-            getThOfIndex(i).addClass('selected');
+            getThOfIndex(i).classList.add('selected');
         });
     }
 
