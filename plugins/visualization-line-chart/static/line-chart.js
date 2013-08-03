@@ -256,17 +256,27 @@
                 var valueLabels = [];
 
                 _.each(dataset.columns(), function(column) {
-                    // we add every value label
-                    var lbl = column.__label = column.__label ||
-                        vis.label(0, 0, '0', {
+
+                    // Checks that the column's label doesn't exist yet.
+                    // If it exists, it should have a parent
+                    // do be attached to dom
+                    if(column.__label && column.__label.el.parent().length ) {
+                        var lbl = column.__label;
+                    } else {
+                        // Avoid memory leak
+                        if(column.__label) delete column.__label;
+
+                        var lbl = column.__label = vis.label(0, 0, '0', {
                             cl: 'tooltip'+(vis.getKeyColor(column.name()) ? ' inverted' : ''),
                             align: 'center',
                             valign: 'middle',
                             css: {
                                 background: lineColor(column)
                             }
-                        }),
-                    val = chart.formatValue(column.val(row));
+                        });
+                    }                
+
+                    var val = chart.formatValue(column.val(row));
                     lbl.data('key', column.name());
                     lbl.data('row', 0);
                     lbl.text(val);

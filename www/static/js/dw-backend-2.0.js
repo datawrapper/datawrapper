@@ -335,8 +335,12 @@ var dw = dw || {};
      */
     function updateChartInIframe(iframe, attributes) {
         var win = iframe.get(0).contentWindow;
-        if (win.__dw) {
+        if (win.__dw && win.__dw.attributes) {
             win.__dw.attributes(attributes);
+        } else {
+            setTimeout(function() {
+                updateChartInIframe(iframe, attributes);
+            }, 100);
         }
     }
 
