@@ -36,7 +36,7 @@
             }
             var c = me.initCanvas({
                 h: Math.max(
-                    me.getSize()[1] - me.theme.padding.top - me.theme.padding.bottom - me.theme.vpadding,
+                    me.getSize()[1],
                     18 * 1.35 * me.getBarColumn(row).length + 5
                 )
             });
