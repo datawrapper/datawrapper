@@ -21,7 +21,7 @@ table.htCore tr td {
     background: #b99;
 }
 .table td.ignored {
-    color: #999;
+    color: #999 !important;
     text-decoration: line-through
 }
 
@@ -168,24 +168,58 @@ $(function() {
 
         $('#data-preview table').addClass('table table-bordered');
 
-        // add event handler for ignoring data series
-        $('.colHeader').each(function(i, el) {
-            var th = $(el).parents('th');
+        // attach series data to a column header
+        $('th:has(.colHeader)').each(function(i, el) {
+            var $th = $(this);
             var sn = data[0][i];
-            th.data('series', sn);
-            if (ignoreSeries[sn]) th.addClass('ignored');
-            th.click(function() {
-                if (ignoreSeries[sn]) {
-                    ignoreSeries[sn] = false;
-                    th.removeClass('ignored');
-                } else {
-                    ignoreSeries[sn] = true;
-                    th.addClass('ignored');
-                }
-                chart.set('metadata.data.ignore-columns', _.clone(ignoreSeries));
-            });
+            $th.data('series', sn);
         });
     }
+
+    // add event handler for ignoring data series
+    $("#data-preview").on('mousedown', 'th:has(.colHeader)', function (i, el) {
+        var $th = $(this);
+        $th.toggleClass("ignored");
+        showColumnSettings();
+    });
+
+    function showColumnSettings() {
+        var selectedColumns = $('th.ignored');
+        if(selectedColumns.length) {
+            var $th = selectedColumns.eq(0);
+            var series = $th.data('series');
+            var ignoreSeries = _.clone(chart.get('metadata.data.ignore-columns', {}));
+            $('#column-options-hide')[0].checked = ignoreSeries[series];
+
+            $('#table-options').hide();
+            $('#column-options').show();
+        }
+        else {
+            $('#column-options').hide();
+            $('#table-options').show();
+        }
+    }
+
+    $('#column-options').hide();
+
+    $('#column-options').mousedown(function(event){
+        console.log('column-options');
+        event.stopPropagation()
+    });
+
+    $('#column-options-hide').on('change', function(event){
+        var checked = this.checked;
+        var selectedColumns = $('th.ignored');
+        var ignoreSeries = _.clone(chart.get('metadata.data.ignore-columns', {}));
+        selectedColumns.each(function(i, el){
+            var series = $(el).data('series');
+            console.log(">>>>", series, el);
+            ignoreSeries[series] = checked;
+        });
+        console.log("selectedColumns", selectedColumns);
+        console.log("ignoreSeries", ignoreSeries);
+        chart.set('metadata.data.ignore-columns', _.clone(ignoreSeries));
+    });
 
     function reload(f) {
         console.log('chart reloaded');
@@ -243,85 +277,123 @@ $(function() {
             <div id="data-preview"></div>
         </div>
 
-        <div class="span4"><div class="well">
+        <div class="span4">
+            <div class="well">
 
-            <h3>{% trans "Describe your data" %}</h3>
-            
-            <div style="margin-bottom:15px;">
-                
-                <div class="half">
+                <div id="table-options">
+
+                    <h3>{% trans "Describe your data" %}</h3>
+
+                    <div style="margin-bottom:15px;">
+
+                        <div class="half">
+                            <p>
+                                <label class="radio"><input type="radio" name="transpose" value="yes" /> {% trans "Data series in rows" %}</label>
+                                <label class="radio"><input type="radio" name="transpose" value="no" /> {% trans "Data series in columns" %}</label>
+                            </p>
+
+                        </div><div class="half">
+                            <p>
+                                <label class="checkbox"><input id="has-headers" type="checkbox" checked="checked"> {% trans "First row as label" %}</label>
+                            </p>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+
+                    <h3>{% trans "Credit the source" %}</h3>
+
                     <p>
-                        <label class="radio"><input type="radio" name="transpose" value="yes" /> {% trans "Data series in rows" %}</label>
-                        <label class="radio"><input type="radio" name="transpose" value="no" /> {% trans "Data series in columns" %}</label>
+                        <label>{% trans "Who published the data in the first place?" %}</label>
+                        <input id="describe-source-name" type="text" placeholder="name of the organisation">
                     </p>
 
-                </div><div class="half">
                     <p>
-                        <label class="checkbox"><input id="has-headers" type="checkbox" checked="checked"> {% trans "First row as label" %}</label>
+                        <label>{% trans "If possible, please provide a link the source data" %}</label>
+                        <input id="describe-source-url" type="text" placeholder="http://">
                     </p>
+
+                    <!--<h3>{% trans "Annotate data" %}</h3>
+                    <p>{% trans "To make the data more useful for your readers you can add details to individual data points or an entire series. This information will be displayed in the visualisations." %} <a href="#">{% trans "Learn more" %}</a></p>
+                    <button class="btn"><i class="icon-th-list"></i> {% trans "Annotate series" %}</button> <button class="btn"><i class="icon-th"></i> {% trans "Annotate data point" %}</button>
+                    -->
+
+                    <a href="visualize" class="submit pull-right btn btn-primary" id="describe-proceed">{% trans "Visualize" %} <i class="icon-chevron-right icon-white"></i></a>
+                    <a class="btn submit" href="upload"><i class="icon-chevron-left"></i> {% trans "Back" %}</a>
+                    <div class="clearfix"></div>
                 </div>
-                <div class="clearfix"></div>
+
+                <div id="column-options">
+                    <h3>{% trans "Column options" %}</h3>
+
+                    {#<div class="form-horizontal compact">
+                        <div class="control-group">
+                            <label class="control-label" for="text-title">{% trans "Column type" %}</label>
+
+                            <div class="controls">
+                                <select id="column-options-type" class="select" style="width:90%">
+                                    {% for id, type in columntypes %}
+                                        <option value="{{ id }}">{{ type }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>#}
+
+                    <h3>{% trans "Output number format" %}</h3>
+
+                    <div class="form-horizontal compact">
+                        <div class="control-group">
+                            <label class="control-label" for="text-title">{% trans "Decimals after point" %}</label>
+
+                            <div class="controls">
+                                <select id="number-format" class="select number-format" style="width:90%">
+                                    <option value="-">{% trans "keep original" %}</option>
+                                    {% for id, format in numberformats %}
+                                        <option value="{{ id }}">{{ format }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <div class="control-group">
+                            <label class="control-label" for="text-title">{% trans "Prepend/Append" %}</label>
+
+                            <div class="controls">
+                                <input type="text" id="number-prepend" style="width:2em;text-align:right"/> # <input type="text" id="number-append" style="width:5em"/>
+                            </div>
+                        </div>
+
+
+                        <div class="control-group">
+                            <label class="control-label" for="text-title">{% trans "Devide numbers by" %}</label>
+
+                            <div class="controls">
+                                <select class="number-format" id="number-divisor" style="width:90%">
+                                    <option value="0">-</option>
+                                    <option value="3">{% trans "1000" %}</option>
+                                    <option value="6">{% trans "1 million" %}</option>
+                                    <option value="9">{% trans "1 billion" %}</option>
+                                    <optgroup label="⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯"></optgroup>
+                                    <option value="-2">{% trans "One Percent" %}</option>
+
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div style="margin-bottom:15px;">
+                        <p>
+                            <label class="checkbox"><input id="column-options-hide" type="checkbox"> {% trans "Hide column" %}</label>
+                        </p>
+                    </div>
+
+                    <div class="clearfix"></div>
+                </div>
+
             </div>
-
-            <h3>{% trans "Output number format" %}</h3>
-
-            <div class="form-horizontal compact">
-                <div class="control-group">
-                    <label class="control-label" for="text-title">{% trans "Decimals after point" %}</label>
-                    <div class="controls">
-                       <select id="number-format" class="select number-format" style="width:90%">
-                            <option value="-">{% trans "keep original" %}</option>
-                            {% for id, format in numberformats %}
-                                <option value="{{ id }}">{{ format }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                </div>
-
-
-                <div class="control-group">
-                    <label class="control-label" for="text-title">{% trans "Prepend/Append" %}</label>
-                    <div class="controls">
-                        <input type="text" id="number-prepend" style="width:2em;text-align:right" /> # <input type="text" id="number-append" style="width:5em" />
-                    </div>
-                </div>
-
-
-                <div class="control-group">
-                    <label class="control-label" for="text-title">{% trans "Devide numbers by" %}</label>
-                    <div class="controls">
-                        <select class="number-format" id="number-divisor"  style="width:90%">
-                            <option value="0">-</option>
-                            <option value="3">{% trans "1000" %}</option>
-                            <option value="6">{% trans "1 million" %}</option>
-                            <option value="9">{% trans "1 billion" %}</option>
-                            <optgroup label="⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯"></optgroup>
-                            <option value="-2">{% trans "One Percent" %}</option>
-
-                        </select>
-                    </div>
-                </div>
-
-            </div>
-
-            <h3>{% trans "Credit the source" %}</h3>
-            <p>
-                <label>{% trans "Who published the data in the first place?" %}</label>
-                <input id="describe-source-name" type="text" placeholder="name of the organisation">
-            </p>
-            <p>
-                <label>{% trans "If possible, please provide a link the source data" %}</label>
-                <input id="describe-source-url" type="text" placeholder="http://">
-            </p>
-            <!--<h3>{% trans "Annotate data" %}</h3>
-            <p>{% trans "To make the data more useful for your readers you can add details to individual data points or an entire series. This information will be displayed in the visualisations." %} <a href="#">{% trans "Learn more" %}</a></p>
-            <button class="btn"><i class="icon-th-list"></i> {% trans "Annotate series" %}</button> <button class="btn"><i class="icon-th"></i> {% trans "Annotate data point" %}</button>
-            -->
-
-                <a href="visualize" class="submit pull-right btn btn-primary" id="describe-proceed">{% trans "Visualize" %} <i class="icon-chevron-right icon-white"></i></a>
-                <a class="btn submit" href="upload"><i class="icon-chevron-left"></i> {% trans "Back" %}</a>
-                <div class="clearfix"></div>
-        </div></div>
+        </div>
     </div>
 
     <div class="row">
