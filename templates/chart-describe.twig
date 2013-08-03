@@ -6,6 +6,10 @@
 
 <style type="text/css">
 
+.sidebar #column-options {
+    display: none;
+}
+
 table.htCore tr td {
     font-size: 1.1em;
     font-family: Helvetica;
@@ -288,10 +292,8 @@ $(function() {
         }
     }
 
-    $('#column-options').hide();
-
-    $('#column-options').mousedown(function(event){
-        event.stopPropagation(); //stop propagation so clicking in #column-options won't deselect column selection
+    $('.sidebar').mousedown(function(event){
+        event.stopPropagation(); //stop sidebar event propagation so clicking in #column-options won't deselect column selection
     });
 
     $('#column-options-hide').on('change', function(){
@@ -360,7 +362,7 @@ $(function() {
         </div>
 
         <div class="span4">
-            <div class="well">
+            <div class="well sidebar">
 
                 <div id="table-options">
 
