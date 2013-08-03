@@ -178,15 +178,15 @@ var dw = dw || {};
         var msg, errFields;
         if (curPwd === '') {
             errFields = '#cur-pwd';
-            msg = Datawrapper.Messages.provideCurPwd;
+            msg = dw.backend.messages.provideCurPwd;
         }
         else if (pwd.length < 4) {
             errFields = '#pwd';
-            msg = dw.Messages.pwdTooShort;
+            msg = dw.backend.messages.pwdTooShort;
         }
         else if (pwd != pwd2) {
             errFields = '#pwd,#pwd2';
-            msg = Datawrapper.Messages.pwdMismatch;
+            msg = dw.backend.messages.pwdMismatch;
         }
         if (msg) {
             dw.backend.logError(
