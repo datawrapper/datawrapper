@@ -17,8 +17,8 @@ table.htCore tr td {
     cursor: pointer;
 }
 
-.table thead th.ignored {
-    background: #b99;
+.table thead th.selected {
+    background: #ccc;
 }
 .table td.ignored {
     color: #999 !important;
@@ -163,31 +163,99 @@ $(function() {
                     renderer: myRenderer,
                     readOnly: true
                 };
+            },
+            beforeRender: function(){
+                //HOT 0.9.11 has a bug: beforeRender is called when table is scrolled, but afterRender is not
+                setTimeout(function(){
+                    renderSelectedTh(); //if HOT was scrolled horizontally, we need to rerender th.selected
+                }, 0);
             }
         });
 
         $('#data-preview table').addClass('table table-bordered');
-
-        // attach series data to a column header
-        $('th:has(.colHeader)').each(function(i, el) {
-            var $th = $(this);
-            var sn = data[0][i];
-            $th.data('series', sn);
-        });
     }
 
     // add event handler for ignoring data series
-    $("#data-preview").on('mousedown', 'th:has(.colHeader)', function (i, el) {
-        var $th = $(this);
-        $th.toggleClass("ignored");
-        showColumnSettings();
+    var start;
+    var $dataPreview = $("#data-preview");
+
+    function hasCorner() {
+        return !!$('#data-preview tbody th').length;
+    }
+
+    function getIndexOfTh(th) {
+        var col = $dataPreview.handsontable('getInstance').view.wt.wtTable.getCoords(th)[1];
+        return col;
+    }
+
+    function getThOfIndex(index) {
+        var offsetCol = $dataPreview.handsontable('getInstance').view.wt.getSetting('offsetColumn');
+        return $('#data-preview thead th').eq(index + 1 * hasCorner() - offsetCol);
+    }
+
+    function getSeriesOfIndex(index) {
+        return $dataPreview.handsontable('getDataAtCell', 0, index);
+    }
+
+    $('body').on('mousedown', function () {
+        if(selectedColumns.length) {
+            deselectColumns();
+            renderSelectedTh();
+            showColumnSettings();
+        }
     });
 
+    $dataPreview.on('mousedown', 'th:has(.colHeader)', function () {
+        start = getIndexOfTh(this);
+        selectColumns(start);
+        event.stopPropagation();
+        $dataPreview.handsontable('deselectCell');
+    });
+
+    $dataPreview.on('mouseup', 'th:has(.colHeader)', function () {
+        start = void 0;
+    });
+
+    $dataPreview.on('mouseenter', 'th:has(.colHeader)', function () {
+        if(start !== void 0) {
+            var current = getIndexOfTh(this);
+            selectColumns(start, current);
+        }
+    });
+
+    var selectedColumns = [];
+
+    function deselectColumns() {
+        selectedColumns.length = 0;
+    }
+
+    function selectColumns(from, to) {
+        deselectColumns();
+        if(to === void 0) {
+            selectedColumns.push(from);
+        }
+        else {
+            var min = Math.min(from, to);
+            var max = Math.max(from, to);
+            while(min <= max) {
+                selectedColumns.push(min);
+                min++;
+            }
+        }
+        renderSelectedTh();
+        showColumnSettings();
+    }
+
+    function renderSelectedTh() {
+        $("#data-preview thead th.selected").removeClass('selected');
+        selectedColumns.forEach(function(i){
+            getThOfIndex(i).addClass('selected');
+        });
+    }
+
     function showColumnSettings() {
-        var selectedColumns = $('th.ignored');
         if(selectedColumns.length) {
-            var $th = selectedColumns.eq(0);
-            var series = $th.data('series');
+            var series = getSeriesOfIndex(selectedColumns[0]);
             var ignoreSeries = _.clone(chart.get('metadata.data.ignore-columns', {}));
             $('#column-options-hide')[0].checked = ignoreSeries[series];
 
@@ -203,22 +271,16 @@ $(function() {
     $('#column-options').hide();
 
     $('#column-options').mousedown(function(event){
-        console.log('column-options');
-        event.stopPropagation()
+        event.stopPropagation(); //stop propagation so clicking in #column-options won't deselect column selection
     });
 
     $('#column-options-hide').on('change', function(event){
         var checked = this.checked;
-        var selectedColumns = $('th.ignored');
         var ignoreSeries = _.clone(chart.get('metadata.data.ignore-columns', {}));
-        selectedColumns.each(function(i, el){
-            var series = $(el).data('series');
-            console.log(">>>>", series, el);
-            ignoreSeries[series] = checked;
+        selectedColumns.forEach(function(i){
+            ignoreSeries[getSeriesOfIndex(i)] = checked;
         });
-        console.log("selectedColumns", selectedColumns);
-        console.log("ignoreSeries", ignoreSeries);
-        chart.set('metadata.data.ignore-columns', _.clone(ignoreSeries));
+        chart.set('metadata.data.ignore-columns', ignoreSeries);
     });
 
     function reload(f) {
