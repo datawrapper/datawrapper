@@ -114,6 +114,142 @@ a img { border:0px; }
 #footer {
     font-size: 11px;
     color: #888;
+    background:inherit;
+    /* The footer must now cover the chart to allow 
+    the toggleable panel to "go up" */
+    z-index: 1100;
+    /* Sets the background here to propagate it to its children */
+    background:#fff;
+}
+
+
+#footer .footer-left { 
+    bottom:0;
+    /* Vertical text align */
+    height:25px;
+    line-height:25px;    
+}
+
+/* We have to break to absolute positionof the footer 
+to allow absolute positioning related to the #footer 
+within the .toggleable-panel */
+#footer .footer-right {
+    position:static;
+    float:right;
+    text-align:right;
+    right:0;
+    bottom:0;
+    /* Vertical text align */
+    height:25px;
+    line-height:25px;
+    padding:0 5px;
+    /* Hides toggleable panel */
+    overflow:visible;
+}
+
+
+.footer-right .toggle-panel { 
+    display:none;    
+}
+
+.footer-right .toggle-panel:after {
+    content:" ▲";
+}
+
+/* Add a comma after the source block */
+.toggleable-panel .source-block:after {
+    content:","
+}
+
+/* This oiverlay cover the body when the toggleable panel is open */
+.toggleable-panel-overlay {
+    position:absolute;
+    bottom:0;
+    left:0;
+    right:0;        
+    opacity:0;
+    filter: ~"alpha(opacity=0)";
+    background:#fff;
+    /* Bellow the stacking context to avoid overlap toggle link */
+    z-index:-1;    
+        
+    -moz-transition: opacity 0.7s;
+    -webkit-transition: opacity 0.7s;
+    -ms-transition: opacity 0.7s;
+    -o-transition: opacity 0.7s;    
+}
+
+/* Target screens under 400px */
+@media all and (max-width: 400px) {    
+    /* We must compensate the right offset 
+    that we just removed by adding this distances to
+    the .toggle-panel element (that toggles the about panel).
+    We choose to user padding to enlarge the touchable area.  */
+    .footer-right .toggle-panel {
+        position:absolute;
+        right:0;
+        bottom:0;
+        display:block;        
+        /* Vertical text align */
+        height:25px;
+        line-height:25px;
+        padding:0 5px;
+        width:100%;
+    }
+
+    /* Removes vertical align.
+    We use #footer prefix to level up properties' priority */
+    #footer .footer-right, 
+    #footer .footer-right .toggleable-panel {
+        height:auto;
+        line-height:inherit;            
+    }
+
+    .footer-right .toggleable-panel {
+        background:#eee;
+        position:absolute;
+        left:0;
+        right:0;
+        bottom:-200%;
+        padding:5px;     
+        /* Ensures that the toggleable panel is beside the stack context 
+        to allow the mouse to reach .footer-left */
+        z-index:1110;
+        text-align:left;
+        
+        -moz-transition: bottom 0.7s;
+        -webkit-transition: bottom 0.7s;
+        -ms-transition: bottom 0.7s;
+        -o-transition: bottom 0.7s;
+    }
+
+    .toggleable-panel .source-block { 
+        display:block;
+        white-space:nowrap;
+        padding-bottom:5px;
+    }
+
+    .toggleable-panel .source-block:after {
+        /* Removes the comma after the source */
+        content:""
+    }
+
+    .footer-right:hover .toggleable-panel  {
+        bottom:0;
+    }
+
+    #footer .footer-right:hover  {
+        /* Avoids to loose the 'hover' when the mouse
+         go through the toggleable-panel links  */
+        height:25px;
+        overflow:visible;
+    }
+
+    #footer .footer-right:hover + .toggleable-panel-overlay {        
+        top:-10000%;
+        opacity:0.8;
+        filter: ~"alpha(opacity=80)";
+    }
 }
 
 .clearfix:after {
@@ -212,3 +348,4 @@ svg .axis, svg .tick, svg .grid, svg rect {
 .line-chart .tooltip {
     border-radius: 5px;
 }
+
