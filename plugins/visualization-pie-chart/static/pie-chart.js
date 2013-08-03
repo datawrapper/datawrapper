@@ -143,6 +143,9 @@
                 sa = -HALF_PI - FA * 0.5;
             }
 
+            sa = -HALF_PI*0.7;
+            reverse = true;
+
             me.__seriesAngles = {};
 
             function normalize(a0, a1) {
