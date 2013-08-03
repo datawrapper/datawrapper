@@ -160,10 +160,8 @@ $(function() {
             stretchH: 'all',
             cells: function (row, col, prop) {
                 return {
-                    type: {
-                        renderer: myRenderer,
-                        readOnly: true
-                    }
+                    renderer: myRenderer,
+                    readOnly: true
                 };
             }
         });
