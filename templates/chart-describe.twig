@@ -114,9 +114,7 @@ $(function() {
         var data = [];
 
         var horzHeaders = chart.get('metadata.data.horizontal-header'),
-            transpose = chart.get('metadata.data.transpose'),
-            colCnt = dataset.numColumns(),
-            i;
+            transpose = chart.get('metadata.data.transpose');
 
         dataset.ignoreIgnores = true;
 
@@ -296,7 +294,7 @@ $(function() {
         event.stopPropagation(); //stop propagation so clicking in #column-options won't deselect column selection
     });
 
-    $('#column-options-hide').on('change', function(event){
+    $('#column-options-hide').on('change', function(){
         var checked = this.checked;
         var ignoreSeries = _.clone(chart.get('metadata.data.ignore-columns', {}));
         selectedColumns.forEach(function(i){
@@ -327,7 +325,7 @@ $(function() {
 
     reload();
 
-    $('#describe-proceed').click(function(e) {
+    $('#describe-proceed').click(function() {
         chart.save();
     });
 
