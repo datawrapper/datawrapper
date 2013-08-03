@@ -3,10 +3,10 @@
 
     dw.backend.messages = {};
 
-    dw.backend.messages.provideCurPwd = "{{ 'For security reasons, please provide your current password.'|trans|escape }}";
+    dw.backend.messages.provideCurPwd = "{{ 'For security reasons, please provide your current password.'|trans|escape('js') }}";
 
-    dw.backend.messages.pwdTooShort = "{{ 'Your password doesn\'t meet our security guidelines. Please provide at least 4 characters.'|trans|escape }}";
-    dw.backend.messages.pwdMismatch = "{{ 'The password and the repeated password must not differ.'|trans|escape }}";
+    dw.backend.messages.pwdTooShort = "{{ 'Your password doesn\'t meet our security guidelines. Please provide at least 4 characters.'|trans|escape('js') }}";
+    dw.backend.messages.pwdMismatch = "{{ 'The password and the repeated password must not differ.'|trans|escape('js') }}";
 
 </script>
 {% endblock %}
