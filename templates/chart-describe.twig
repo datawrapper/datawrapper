@@ -28,6 +28,29 @@ table.htCore tr td {
     font-style: normal;
     color: inherit;
 }
+.table td.firstRow {
+    border-bottom: 1px solid #000;
+    font-weight: bold;
+    background: #f0f0f0;
+}
+.table td.textType {
+    color: #000000;
+}
+.table td.dateType {
+    color: #39A832;
+    font-style: italic;
+    text-align: center;
+}
+.table td.numberType {
+    color: #297EA8;
+    text-align: right;
+}
+.table td.oddRow {
+    background-color: #fff;
+}
+.table td.evenRow {
+    background-color: #f9f9f9;
+}
 </style>
 <link rel="stylesheet" type="text/css" href="/static/vendor/handsontable/jquery.handsontable.full.css">
 <link rel="stylesheet" type="text/css" href="/static/vendor/handsontable/jquery.handsontable.bootstrap.css">
@@ -120,28 +143,27 @@ $(function() {
         function myRenderer(instance, td, row, col, prop, value, cellProperties) {
             Handsontable.TextCell.renderer.apply(this, arguments);
             if (parseInt(value, 10) < 0) { //if row contains negative number
-                td.classList.add('negative'); //add class "negative"
+                td.classList.add('negative');
             }
             if (row === 0) {
-                td.style.borderBottom = '1px solid #000';
-                td.style.fontWeight = 'bold';
-                td.style.background = '#f0f0f0';
+                td.classList.add('firstRow');
             } else {
                 if (dataset.column(col).type() == 'text') {
-                    td.style.color = '#000000';
+                    td.classList.add('textType');
                 } else if (dataset.column(col).type() == 'date') {
-                    td.style.color = '#39A832';
-                    td.style.fontStyle = 'italic';
-                    td.style.textAlign = 'center';
+                    td.classList.add('dateType');
                 } else { // number
-                    td.style.color = '#297EA8';
-                    td.style.textAlign = 'right';
+                    td.classList.add('numberType');
                 }
-                td.style.background = row % 2 ? '#FFF' : '#f9f9f9';
+                td.classList.add(row % 2 ? 'oddRow' : 'evenRow');
             }
 
             if (ignoreSeries[data[0][col]]) {
                 td.classList.add('ignored');
+            }
+
+            if(selectedColumns.indexOf(col) > -1) {
+                td.classList.add('area'); //add blue area background if this cell is in selected column
             }
         }
 
@@ -200,9 +222,13 @@ $(function() {
     $('body').on('mousedown', function () {
         if(selectedColumns.length) {
             deselectColumns();
-            renderSelectedTh();
+            $dataPreview.handsontable('render'); //refresh all cells and column headers
             showColumnSettings();
         }
+    });
+
+    $('body').on('mouseup', function () {
+        start = void 0;
     });
 
     $dataPreview.on('mousedown', 'th:has(.colHeader)', function () {
@@ -210,10 +236,6 @@ $(function() {
         selectColumns(start);
         event.stopPropagation();
         $dataPreview.handsontable('deselectCell');
-    });
-
-    $dataPreview.on('mouseup', 'th:has(.colHeader)', function () {
-        start = void 0;
     });
 
     $dataPreview.on('mouseenter', 'th:has(.colHeader)', function () {
@@ -242,7 +264,7 @@ $(function() {
                 min++;
             }
         }
-        renderSelectedTh();
+        $dataPreview.handsontable('render');
         showColumnSettings();
     }
 
