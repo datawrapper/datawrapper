@@ -180,7 +180,7 @@ within the .toggleable-panel */
 }
 
 /* Target screens under 400px */
-@media all and (max-width: 400px) {    
+@media all and (max-device-width: 480px) {    
     /* We must compensate the right offset 
     that we just removed by adding this distances to
     the .toggle-panel element (that toggles the about panel).
