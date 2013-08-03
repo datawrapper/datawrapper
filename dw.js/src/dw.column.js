@@ -97,8 +97,12 @@ dw.column = function(name, rows, type) {
         },
 
         // access to raw values
-        raw: function(i) {
+        raw: function(i, val) {
             if (!arguments.length) return rows;
+            if (arguments.length == 2) {
+                rows[i] = val;
+                return column;
+            }
             return rows[i];
         },
         // column type

@@ -96,12 +96,6 @@ class DatawrapperPlugin_VisualizationLineChart extends DatawrapperPlugin_Visuali
                 "type" => "checkbox",
                 "label" => __("Connect lines between missing values", $id),
             ),
-            "smooth-lines" => array(
-                "type" => "checkbox",
-                "label" => __("Smooth lines", $id),
-                "default" => false,
-                "expert" => false
-            ),
             "fill-between" => array(
                 "type" => "checkbox",
                 "label" => __("Fill between lines", $id),
@@ -112,7 +106,16 @@ class DatawrapperPlugin_VisualizationLineChart extends DatawrapperPlugin_Visuali
                     "chart.max_columns[y2]" => 0  // direct labeling not possible with second axis
                 )
             ),
-
+            "line-mode" => array(
+                "type" => "radio-left",
+                "label" => __("Line mode", $id),
+                "options" => array(
+                    array("label" => __("Straight"), "value" => "straight"),
+                    array("label" => __("Curved"), "value" => "curved"),
+                    array("label" => __("Stepped"), "value" => "stepped")
+                ),
+                "default" => "straight"
+            ),
             "sep-y-axis" => array(
                 "type" => "separator",
                 "label" => __("Customize y-Axis", $id)

@@ -198,7 +198,7 @@ class Chart extends BaseChart {
     public static function defaultMetaData() {
         return array(
             'data' => array(
-                'transpose' => true,
+                'transpose' => false,
                 'vertical-header' => true,
                 'horizontal-header' => true,
             ),
