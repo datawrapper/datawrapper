@@ -114,12 +114,11 @@ a img { border:0px; }
 #footer {
     font-size: 11px;
     color: #888;
-    background:inherit;
     /* The footer must now cover the chart to allow 
     the toggleable panel to "go up" */
     z-index: 1100;
     /* Sets the background here to propagate it to its children */
-    background:#fff;
+    background:inherit;
 }
 
 
@@ -143,14 +142,13 @@ within the .toggleable-panel */
     height:25px;
     line-height:25px;
     padding:0 5px;
-    /* Hides toggleable panel */
-    overflow:visible;
+    overflow:hidden;          
 }
-
 
 .footer-right .toggle-panel { 
     display:none;    
 }
+
 
 .footer-right .toggle-panel:after {
     content:" ▲";
@@ -168,7 +166,6 @@ within the .toggleable-panel */
     left:0;
     right:0;        
     opacity:0;
-    filter: ~"alpha(opacity=0)";
     background:#fff;
     /* Bellow the stacking context to avoid overlap toggle link */
     z-index:-1;    
@@ -180,7 +177,7 @@ within the .toggleable-panel */
 }
 
 /* Target screens under 400px */
-@media all and (max-device-width: 480px) {    
+@media all and (max-width: 400px) {    
     /* We must compensate the right offset 
     that we just removed by adding this distances to
     the .toggle-panel element (that toggles the about panel).
@@ -192,17 +189,16 @@ within the .toggleable-panel */
         display:block;        
         /* Vertical text align */
         height:25px;
-        line-height:25px;
         padding:0 5px;
+        line-height:25px;
         width:100%;
     }
 
     /* Removes vertical align.
     We use #footer prefix to level up properties' priority */
-    #footer .footer-right, 
-    #footer .footer-right .toggleable-panel {
+    #footer .footer-right {
         height:auto;
-        line-height:inherit;            
+        line-height:inherit;  
     }
 
     .footer-right .toggleable-panel {
@@ -210,17 +206,21 @@ within the .toggleable-panel */
         position:absolute;
         left:0;
         right:0;
-        bottom:-200%;
-        padding:5px;     
+        bottom:0;
         /* Ensures that the toggleable panel is beside the stack context 
         to allow the mouse to reach .footer-left */
         z-index:1110;
         text-align:left;
+        overflow:hidden;
+        line-height:inherit;         
         
-        -moz-transition: bottom 0.7s;
-        -webkit-transition: bottom 0.7s;
-        -ms-transition: bottom 0.7s;
-        -o-transition: bottom 0.7s;
+        padding:0 5px;
+        max-height:0;   
+        
+        -moz-transition: max-height 0.7s;
+        -webkit-transition: max-height 0.7s;
+        -ms-transition: max-height 0.7s;
+        -o-transition: max-height 0.7s;
     }
 
     .toggleable-panel .source-block { 
@@ -234,21 +234,20 @@ within the .toggleable-panel */
         content:""
     }
 
-    .footer-right:hover .toggleable-panel  {
-        bottom:0;
+    #footer .footer-right:hover .toggleable-panel  {
+        padding:5px;  
+        max-height:90px;           
     }
 
     #footer .footer-right:hover  {
         /* Avoids to loose the 'hover' when the mouse
          go through the toggleable-panel links  */
         height:25px;
-        overflow:visible;
     }
 
     #footer .footer-right:hover + .toggleable-panel-overlay {        
-        top:-10000%;
+        top:-1000000%;
         opacity:0.8;
-        filter: ~"alpha(opacity=80)";
     }
 }
 
