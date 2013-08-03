@@ -47,7 +47,7 @@ dw.chart = function(attributes) {
 
             // resolve property until the parent dict
             _.each(keys, function(key) {
-                if (_.isArray(pt[key]) && pt[key].length === 0) {
+                if (_.isUndefined(pt[key])) {
                     pt[key] = {};
                 }
                 pt = pt[key];
