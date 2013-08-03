@@ -1,12 +1,12 @@
 {% block messages %}
 <script type="text/javascript">
 
-    Datawrapper.Messages = {};
+    dw.Messages = {};
 
-    Datawrapper.Messages.provideCurPwd = "{{ 'For security reasons, please provide your current password.'|trans|escape }}";
+    dw.Messages.provideCurPwd = "{{ 'For security reasons, please provide your current password.'|trans|escape('js') }}";
 
-    Datawrapper.Messages.pwdTooShort = "{{ 'Your password doesn\'t meet our security guidelines. Please provide at least 4 characters.'|trans|escape }}";
-    Datawrapper.Messages.pwdMismatch = "{{ 'The password and the repeated password must not differ.'|trans|escape }}";
+    dw.Messages.pwdTooShort = "{{ 'Your password doesn\'t meet our security guidelines. Please provide at least 4 characters.'|trans|escape('js') }}";
+    dw.Messages.pwdMismatch = "{{ 'The password and the repeated password must not differ.'|trans|escape('js') }}";
 
 </script>
 {% endblock %}

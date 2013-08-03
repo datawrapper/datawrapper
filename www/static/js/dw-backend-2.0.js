@@ -182,7 +182,7 @@ var dw = dw || {};
         }
         else if (pwd.length < 4) {
             errFields = '#pwd';
-            msg = Datawrapper.Messages.pwdTooShort;
+            msg = dw.Messages.pwdTooShort;
         }
         else if (pwd != pwd2) {
             errFields = '#pwd,#pwd2';
