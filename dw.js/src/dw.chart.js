@@ -20,8 +20,8 @@ dw.chart = function(attributes) {
         theme,
         visualization,
         metric_prefix,
-        load_callbacks = [],
-        change_callbacks = [],
+        load_callbacks = $.Callbacks(),
+        change_callbacks = $.Callbacks(),
         locale;
 
     // public interface
@@ -56,9 +56,7 @@ dw.chart = function(attributes) {
             // check if new value is set
             if (!_.isEqual(pt[lastKey], value)) {
                 pt[lastKey] = value;
-                _.each(change_callbacks, function(cb) {
-                    if (_.isFunction(cb)) cb(chart, key, value);
-                });
+                change_callbacks.fire(chart, key, value);
             }
             return this;
         },
@@ -75,10 +73,7 @@ dw.chart = function(attributes) {
 
             return datasource.dataset().done(function(ds) {
                 dataset = ds;
-                _.each(load_callbacks, function(cb) {
-                    if (_.isFunction(cb)) cb(chart);
-                });
-                load_callbacks = [];
+                load_callbacks.fire(chart);
             });
         },
 
@@ -87,12 +82,13 @@ dw.chart = function(attributes) {
                 // run now
                 callback(chart);
             } else {
-                load_callbacks.push(callback);
+                load_callbacks.add(callback);
             }
         },
 
         // returns the dataset
         dataset: function() {
+            console.log(dataset.column(0).name());
             return dataset;
         },
 
@@ -178,9 +174,8 @@ dw.chart = function(attributes) {
             return attributes;
         },
 
-        onChange: function(cb) {
-            change_callbacks.push(cb);
-        }
+        onChange: change_callbacks.add
+
     };
 
     return chart;
