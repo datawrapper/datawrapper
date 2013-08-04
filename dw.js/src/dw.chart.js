@@ -86,8 +86,12 @@ dw.chart = function(attributes) {
             }
         },
 
-        // returns the dataset
+        // applies the data changes and returns the dataset
         dataset: function() {
+            var dataChanges = chart.get('metadata.data.data-changes', []);
+            _.each(dataChanges, function(change){
+              dataset.column(change.column).raw(change.row, change.value);
+            });
             return dataset;
         },
 
