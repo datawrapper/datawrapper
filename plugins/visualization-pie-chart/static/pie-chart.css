@@ -1,0 +1,10 @@
+
+div.label.outside {
+    text-align: left!important;
+    width: 50%!important;
+}
+
+div.label.outside span {
+    color: #000;
+    text-shadow: none;
+}
