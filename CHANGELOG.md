@@ -24,6 +24,9 @@ CHANGELOG
 * visualizations can now check browser compatibility
 * added table plugin_data
 * added plugin interface for storing and reading persistent data
+* removed setting 'labels-inside-bars' from bar chart
+* fixed bar chart bug (too much white-space for long labels)
+* output formatting of values now handled by columns (45998931)
 
 ### 1.4.3
 * fixed severe bug in base theme (hotfix)
