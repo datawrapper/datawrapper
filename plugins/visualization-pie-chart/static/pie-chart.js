@@ -13,7 +13,7 @@
         },
 
         groupAfter: function() {
-            return 5;
+            return 4;
         },
 
         render: function(el) {
@@ -115,7 +115,7 @@
             // now group small series into one big chunk named 'others'
             slices = me.__values = [];
             _.each(values, function(o, i) {
-                if (i < groupAfter) slices.push(o);
+                if (i < groupAfter || values.length < groupAfter+1) slices.push(o);
                 else {
                     ocnt += 1;
                     others += o.value;
