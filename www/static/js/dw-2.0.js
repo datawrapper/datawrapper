@@ -271,8 +271,12 @@ dw.column = function(name, rows, type) {
         },
 
         // access to raw values
-        raw: function(i) {
+        raw: function(i, val) {
             if (!arguments.length) return rows;
+            if (arguments.length == 2) {
+                rows[i] = val;
+                return column;
+            }
             return rows[i];
         },
         // column type
@@ -404,7 +408,7 @@ dw.column.types.number = function(sample) {
             }
 
             if (isNaN(number)) {
-                if (!naStrings[number] && number !== "") errors++;
+                if (!naStrings[number.toLowerCase()] && number !== "") errors++;
                 return raw;
             }
             return Number(number);
@@ -1185,7 +1189,7 @@ dw.chart = function(attributes) {
 
             // resolve property until the parent dict
             _.each(keys, function(key) {
-                if (_.isArray(pt[key]) && pt[key].length === 0) {
+                if (_.isUndefined(pt[key])) {
                     pt[key] = {};
                 }
                 pt = pt[key];
