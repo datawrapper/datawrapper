@@ -388,8 +388,9 @@
                 dataset.eachColumn(function(col) {
                     c.labelWidth = Math.max(c.labelWidth, vis.labelWidth(col.name(), 'series'));
                 });
-                if (c.labelWidth > theme.lineChart.maxLabelWidth) {
-                    c.labelWidth = theme.lineChart.maxLabelWidth;
+                // we limit the label width to the 1/4 of the entire width
+                if (c.labelWidth > this.__w * 0.25) {
+                    c.labelWidth = this.__w * 0.25;
                 }
                 c.rpad += c.labelWidth + 20;
                 if (legend.pos == 'right') c.rpad += 15;
