@@ -337,9 +337,10 @@ dw.column.types = {};
 
 dw.column.types.text = function() {
     return {
-        parse: function(v) { return v; },
+        parse: _.identity,
         errors: function() { return 0; },
-        name: function() { return 'text'; }
+        name: function() { return 'text'; },
+        formatter: function() { return _.identity; }
     };
 };
 
@@ -416,7 +417,26 @@ dw.column.types.number = function(sample) {
         toNum: function(i) { return i; },
         fromNum: function(i) { return i; },
         errors: function() { return errors; },
-        name: function() { return 'number'; }
+        name: function() { return 'number'; },
+
+        // returns a function for formatting numbers
+        formatter: function(config) {
+            var format = config['number-format'] || '-',
+                div = Number(config['number-divisor'] || 0),
+                append = (config['number-append'] || '').replace(' ', '&nbsp;'),
+                prepend = (config['number-prepend'] || '').replace(' ', '&nbsp;');
+
+            return function(val) {
+                if (div !== 0) val = Number(val) / Math.pow(10, div);
+                if (format != '-') {
+                    if (round || val == Math.round(val)) format = format.substr(0,1)+'0';
+                    val = Globalize.format(val, format);
+                } else if (div !== 0) {
+                    val = val.toFixed(1);
+                }
+                return full ? prepend + val + append : val;
+            };
+        }
     };
     return type;
 };
@@ -525,7 +545,17 @@ dw.column.types.date = function(sample) {
         errors: function() { return errors; },
         name: function() { return 'date'; },
         format: function() { return format; },
-        precision: function() { return knownFormats[format].precision; }
+        precision: function() { return knownFormats[format].precision; },
+
+        // returns a function for formatting numbers
+        formatter: function(config) {
+            switch (knownFormats[format].precision) {
+                case 'year': return function(d) { return d.getFullYear(); };
+                case 'quarter': return function(d) { return d.getFullYear() + ' Q'+(d.getMonth()/3 + 1); };
+                case 'month': return function(d) { return Globalize.format(d, 'MMM yy'); };
+                case 'day': return function(d) { return Globalize.format(d, 'd'); };
+            }
+        }
     };
     return type;
 };
@@ -1161,8 +1191,8 @@ dw.chart = function(attributes) {
         theme,
         visualization,
         metric_prefix,
-        load_callbacks = [],
-        change_callbacks = [],
+        load_callbacks = $.Callbacks(),
+        change_callbacks = $.Callbacks(),
         locale;
 
     // public interface
@@ -1197,9 +1227,7 @@ dw.chart = function(attributes) {
             // check if new value is set
             if (!_.isEqual(pt[lastKey], value)) {
                 pt[lastKey] = value;
-                _.each(change_callbacks, function(cb) {
-                    if (_.isFunction(cb)) cb(chart, key, value);
-                });
+                change_callbacks.fire(chart, key, value);
             }
             return this;
         },
@@ -1216,10 +1244,7 @@ dw.chart = function(attributes) {
 
             return datasource.dataset().done(function(ds) {
                 dataset = ds;
-                _.each(load_callbacks, function(cb) {
-                    if (_.isFunction(cb)) cb(chart);
-                });
-                load_callbacks = [];
+                load_callbacks.fire(chart);
             });
         },
 
@@ -1228,12 +1253,13 @@ dw.chart = function(attributes) {
                 // run now
                 callback(chart);
             } else {
-                load_callbacks.push(callback);
+                load_callbacks.add(callback);
             }
         },
 
         // returns the dataset
         dataset: function() {
+            console.log(dataset.column(0).name());
             return dataset;
         },
 
@@ -1319,9 +1345,15 @@ dw.chart = function(attributes) {
             return attributes;
         },
 
-        onChange: function(cb) {
-            change_callbacks.push(cb);
+        onChange: change_callbacks.add,
+
+        columnFormatter: function(column) {
+            // pull output config from metadata
+            // return column.formatter(config);
+            var colFormat = chart.get('metadata.describe.column-format', {});
+            return column.type(true).formatter(colFormat[column.name()] || {});
         }
+
     };
 
     return chart;

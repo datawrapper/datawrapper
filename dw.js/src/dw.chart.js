@@ -174,7 +174,14 @@ dw.chart = function(attributes) {
             return attributes;
         },
 
-        onChange: change_callbacks.add
+        onChange: change_callbacks.add,
+
+        columnFormatter: function(column) {
+            // pull output config from metadata
+            // return column.formatter(config);
+            var colFormat = chart.get('metadata.describe.column-format', {});
+            return column.type(true).formatter(colFormat[column.name()] || {});
+        }
 
     };
 
