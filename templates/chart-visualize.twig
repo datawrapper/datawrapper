@@ -161,8 +161,6 @@ $(function() {
         dw.backend.currentVis.meta = visMetas[chart.get('type')];
     }
 
-    loadVis();
-
     chart.onSave(function(chart) {
         if (_themeHasChanged) {
             iframe.one('load', updateVisBackground);
@@ -265,6 +263,7 @@ $(function() {
             }
         });
         loadThemeColors();
+        loadVis();
     }
 
     chart.load().done(onDatasetLoaded);
