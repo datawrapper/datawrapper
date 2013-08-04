@@ -1,6 +1,8 @@
 
 (function(){
 
+    var MAX_LABEL_WIDTH = 160;
+
     dw.visualization.register('bar-chart', 'raphael-chart', {
 
         render: function(el) {
@@ -23,7 +25,7 @@
             }
             me.__lastRow = row;
 
-            var sliceColumns = _.map(me.axesDef.bars, function(i) { return dataset.column(i); });
+            var sliceColumns = _.map(me.axesDef.bars, function(i) { return dataset.column(i); }),
                 filter = dw.utils.filter(dw.utils.columnNameColumn(sliceColumns), row),
                 filterUI = filter.ui(me);
 
@@ -82,7 +84,7 @@
 
                 if (lpos.show_lbl) {
                     me.registerLabel(me.label(lpos.lbl_x , lpos.top, barv.name, {
-                        w: 160,
+                        w: MAX_LABEL_WIDTH,
                         align: lpos.lbl_align,
                         cl: 'series' + lpos.lblClass
                     }), barv.name);
@@ -215,17 +217,17 @@
                     t = neg ? 2 : 0,
                     bw;
                 bw = Math.abs(bar.value) / (largestVal[0] + largestVal[1]) * w;
-                maxw[t] = Math.max(maxw[t], me.labelWidth(bar.name, 'series') + 20);
-                maxw[t+1] = Math.max(maxw[t+1], me.labelWidth(formatValue(bar.value, true), 'value') + 20 + bw);
+                maxw[t] = Math.max(maxw[t], MAX_LABEL_WIDTH + 20);
+                maxw[t+1] = Math.max(maxw[t+1], me.labelWidth(me.chart.formatValue(bar.value, true), 'value') + 20 + bw);
+
             });
 
             c.left = 0;
             c.right = 0;
             c.zero = largestVal[1] / (largestVal[0] + largestVal[1]) * w;
-
             if (!me.get('labels-inside-bars', false) && w > 300) {
                 var maxNegBar = c.zero;
-                //console.log('c.left', );
+
                 c.left = Math.max(maxw[0], maxw[3]) - c.zero;
                 c.right = Math.max(maxw[1], maxw[2]) - (w - c.zero); // Math.max((maxw[2] + maxw[1]) - (w - c.zero), 0);
 
@@ -273,9 +275,9 @@
                 val = bar.value,
                 lbl_left = val >= 0 || isNaN(val),
                 lbl_x = lbl_left ?
-                    c.zero - 10
+                    c.zero - MAX_LABEL_WIDTH - 10
                     : c.zero + 10,
-                lbl_align = lbl_left ? 'right' : 'left',
+                lbl_align = lbl_left ? 'left' : 'right',
                 val_x = lbl_left ?
                     d.x + d.width + 10
                     : d.x - 10,
