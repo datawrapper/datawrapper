@@ -37,7 +37,7 @@
             var c = me.initCanvas({
                 h: Math.max(
                     me.getSize()[1],
-                    18 * 1.35 * me.getBarColumn(row).length + 5
+                    18 * 1.35 * me.getBarColumn().length + 5
                 )
             });
 
@@ -45,7 +45,8 @@
                 chart_width = c.w - c.lpad - c.rpad,
                 series_gap = 0.05, // pull from theme
                 row_gap = 0.01,
-                labelsInsideBars = me.get('labels-inside-bars', false);
+                labelsInsideBars = me.get('labels-inside-bars', false),
+                formatValue = me.chart.columnFormatter(me.getBarColumn());
 
             me.init();
             me.initDimensions();
@@ -72,7 +73,7 @@
                 }
 
                 if (lpos.show_val) {
-                    me.registerLabel(me.label(lpos.val_x, lpos.top, me.chart.formatValue(barv.value, true),{
+                    me.registerLabel(me.label(lpos.val_x, lpos.top, formatValue(barv.value, true),{
                         // w: 40,
                         align: lpos.val_align,
                         cl: 'value' + lpos.lblClass
@@ -107,9 +108,9 @@
             var me = this,
                 values = [],
                 filter = me.__lastRow,
-                labels = me.dataset.column(me.axesDef.labels),
+                labels = me.axes(true).labels,
                 column = me.getBarColumn(filter),
-                fmt = dw.utils.longDateFormat(column);
+                fmt = me.chart.columnFormatter(labels);
 
             column.each(function(val, i) {
                 values.push({
@@ -130,7 +131,8 @@
         },
 
         update: function(row) {
-            var me = this;
+            var me = this,
+                formatValue = me.chart.columnFormatter(me.getBarColumn());
 
             // update scales
             me.initDimensions();
@@ -146,7 +148,7 @@
                     var pos = me.labelPosition(bar, s, row), lpos;
                     if (lbl.hasClass('value')) {
                         // update value
-                        lbl.text(me.chart.formatValue(bar.value));
+                        lbl.text(formatValue(bar.value));
                         lpos = { halign: pos.val_align, left: pos.val_x, top: pos.top };
                     } else if (lbl.hasClass('series')) {
                         // update series label position
@@ -182,6 +184,7 @@
                 w = c.w - c.lpad - c.rpad - 30,
                 column = me.getBarColumn(),
                 bars = me.getBarValues(),
+                formatValue = me.chart.columnFormatter(column),
                 domain = me.get('absolute-scale', false) ? dw.utils.minMax(_.map(me.axesDef.bars, function(c) { return me.dataset.column(c); })) : column.range();
 
             if (domain[0] > 0) domain[0] = 0;
@@ -213,7 +216,7 @@
                     bw;
                 bw = Math.abs(bar.value) / (largestVal[0] + largestVal[1]) * w;
                 maxw[t] = Math.max(maxw[t], me.labelWidth(bar.name, 'series') + 20);
-                maxw[t+1] = Math.max(maxw[t+1], me.labelWidth(me.chart.formatValue(bar.value, true), 'value') + 20 + bw);
+                maxw[t+1] = Math.max(maxw[t+1], me.labelWidth(formatValue(bar.value, true), 'value') + 20 + bw);
             });
 
             c.left = 0;
@@ -265,6 +268,7 @@
         labelPosition: function(bar, s, r) {
             var me = this,
                 d = me.barDimensions(bar, s, r),
+                formatValue = me.chart.columnFormatter(me.getBarColumn()),
                 c = me.__canvas,
                 val = bar.value,
                 lbl_left = val >= 0 || isNaN(val),
@@ -288,7 +292,7 @@
 
                 // check if the label is bigger than the bar
                 var slblw = me.labelWidth(bar.name, 'series')+10,
-                    vlblw = me.labelWidth(me.chart.formatValue(val, true), 'value')+20,
+                    vlblw = me.labelWidth(formatValue(val, true), 'value')+20,
                     fill = me.getKeyColor(bar.name, bar.value, me.get('negative-color', false));
                 if (slblw + vlblw > d.width) {
                     show_val = false;
