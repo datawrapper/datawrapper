@@ -84,8 +84,9 @@
 
                 if (lpos.show_lbl) {
                     me.registerLabel(me.label(lpos.lbl_x , lpos.top, barv.name, {
-                        w: MAX_LABEL_WIDTH,
+                        w: Math.min(me.labelWidth(barv.name, 'series')+20, MAX_LABEL_WIDTH),
                         align: lpos.lbl_align,
+                        valign: 'middle',
                         cl: 'series' + lpos.lblClass
                     }), barv.name);
                 }
@@ -205,19 +206,22 @@
              * maxw[3] .. max formatted value label width   } negative
              * largestVal[1] .. max absolute value               /
              */
-            var maxw = [0, 0, 0, 0], ratio, largestVal = [0, 0];
+            var maxw = [0, 0, 0, 0], ratio, largestVal = [0, 0], lw;
             _.each(bars, function(bar) {
                 if (isNaN(bar.value)) return;
                 var neg = bar.value < 0;
                 largestVal[neg ? 1 : 0] = Math.max(largestVal[neg ? 1 : 0], Math.abs(bar.value));
             });
+            me.__longLabels = false;
             _.each(bars, function(bar) {
                 if (isNaN(bar.value)) return;
                 var neg = bar.value < 0,
                     t = neg ? 2 : 0,
                     bw;
                 bw = Math.abs(bar.value) / (largestVal[0] + largestVal[1]) * w;
-                maxw[t] = Math.max(maxw[t], MAX_LABEL_WIDTH + 20);
+                lw = me.labelWidth(bar.name, 'series');
+                if (lw > MAX_LABEL_WIDTH) me.__longLabels = true;
+                maxw[t] = Math.max(maxw[t], Math.min(lw, MAX_LABEL_WIDTH) + 20);
                 maxw[t+1] = Math.max(maxw[t+1], me.labelWidth(me.chart.formatValue(bar.value, true), 'value') + 20 + bw);
 
             });
@@ -274,10 +278,8 @@
                 c = me.__canvas,
                 val = bar.value,
                 lbl_left = val >= 0 || isNaN(val),
-                lbl_x = lbl_left ?
-                    c.zero - MAX_LABEL_WIDTH - 10
-                    : c.zero + 10,
-                lbl_align = lbl_left ? 'left' : 'right',
+                lbl_x = lbl_left ? c.zero - 10 : c.zero + 10,
+                lbl_align = lbl_left ? 'right' : 'left',
                 val_x = lbl_left ?
                     d.x + d.width + 10
                     : d.x - 10,
@@ -285,6 +287,11 @@
                 show_lbl = true,
                 show_val = true,
                 lblClass = me.chart.hasHighlight() && me.chart.isHighlighted(bar) ? ' highlighted' : '';
+
+            if (me.__longLabels && me.__domain[0] >= 0) {
+                lbl_align = lbl_left ? 'left' : 'right';
+                lbl_x = 0;
+            }
 
             if (me.get('labels-inside-bars', false)) {
                 lbl_x = lbl_left ? d.x + 10 : d.x + d.width - 10;
