@@ -88,7 +88,7 @@
                 labels = dataset.column(me.axesDef.labels),
                 total = 0, min = Number.MAX_VALUE, max = 0,
                 reverse,
-                ovalues,
+                slices,
                 others = 0,
                 ocnt = 0,
                 hasNegativeValues = column.range()[0] < 0,
@@ -113,9 +113,9 @@
             }
 
             // now group small series into one big chunk named 'others'
-            ovalues = me.__values = [];
+            slices = me.__values = [];
             _.each(values, function(o, i) {
-                if (i < groupAfter) ovalues.push(o);
+                if (i < groupAfter) slices.push(o);
                 else {
                     ocnt += 1;
                     others += o.value;
@@ -125,18 +125,20 @@
             if (hasNegativeValues) {
                 me.warn('<b>Warning:</b> Pie charts are not suitable for displaying negative values.');
             }
+
+            // add slice 'others' to the slices array
             if (ocnt > 0) {
-                ovalues.push({ name: me.translate('other'), value: others });
+                slices.push({ name: me.translate('other'), value: others });
             }
 
-            _.each(ovalues, function(s) {
+            _.each(slices, function(s) {
                 total += s.value;
                 min = Math.min(min, s.value);
                 max = Math.max(max, s.value);
             });
-            reverse = min < total / ovalues.length * 0.66 || max > total/ovalues.length * 1.5;
+            reverse = min < total / slices.length * 0.66 || max > total/slices.length * 1.5;
             sa = -HALF_PI;
-            if (reverse) sa += FA * (ovalues[0].value / total);
+            if (reverse) sa += FA * (slices[0].value / total);
 
             if (FA < TWO_PI) {
                 reverse = false;
@@ -160,7 +162,7 @@
 
             me.__sliceKeys = [];
 
-            _.each(ovalues, function(o) {
+            _.each(slices, function(o) {
 
                 var da = o.value / total * FA,
                     fill = me.getKeyColor(o.name, 0),
