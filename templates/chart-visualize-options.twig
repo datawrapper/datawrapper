@@ -135,8 +135,7 @@
 <script type="text/javascript">
 
 $(function() {
-    var chart = dw.backend.currentChart,
-        dataset = chart.dataset();
+    var chart = dw.backend.currentChart;
 
     function syncVisOptions(vis) {
         _.each(vis.options, function(opt, key) {
@@ -216,7 +215,7 @@ $(function() {
     // initial visualization meta
     var vis = JSON.parse('{{ vis|json| escape("js") }}');
 
-    chart.loaded(function(chart) {
+    dw.backend.__currentVisLoaded.done(function() {
 
         dw.backend.currentVis.setChart(chart);
         syncVisOptions(vis);

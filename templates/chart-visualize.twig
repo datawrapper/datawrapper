@@ -154,14 +154,16 @@ $(function() {
         });
     }
 
+    var loadVisDeferred = $.Deferred();
+    dw.backend.__currentVisLoaded = loadVisDeferred.promise();
+
     function loadVis() {
         dw.backend.currentVis = dw.visualization(chart.get('type'));
         dw.backend.currentVis.chart = chart;
         dw.backend.currentVis.dataset = chart.dataset();
         dw.backend.currentVis.meta = visMetas[chart.get('type')];
+        loadVisDeferred.resolve();
     }
-
-    loadVis();
 
     chart.onSave(function(chart) {
         if (_themeHasChanged) {
@@ -232,6 +234,7 @@ $(function() {
     $('.highlighted-series .badge').click(highlightSeriesClick);
 
     function onDatasetLoaded() {
+        loadVis();
         var s = $('#highlight-series'), s2 = $('.highlighted-series');
         s.find("option[value!='---']").remove();
         _.each(dw.backend.currentVis.keys(), function(key) {

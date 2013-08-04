@@ -4,9 +4,10 @@ dw.column.types = {};
 
 dw.column.types.text = function() {
     return {
-        parse: function(v) { return v; },
+        parse: _.identity,
         errors: function() { return 0; },
-        name: function() { return 'text'; }
+        name: function() { return 'text'; },
+        formatter: function() { return _.identity; }
     };
 };
 
@@ -83,7 +84,26 @@ dw.column.types.number = function(sample) {
         toNum: function(i) { return i; },
         fromNum: function(i) { return i; },
         errors: function() { return errors; },
-        name: function() { return 'number'; }
+        name: function() { return 'number'; },
+
+        // returns a function for formatting numbers
+        formatter: function(config) {
+            var format = config['number-format'] || '-',
+                div = Number(config['number-divisor'] || 0),
+                append = (config['number-append'] || '').replace(' ', '&nbsp;'),
+                prepend = (config['number-prepend'] || '').replace(' ', '&nbsp;');
+
+            return function(val, full, round) {
+                if (div !== 0) val = Number(val) / Math.pow(10, div);
+                if (format != '-') {
+                    if (round || val == Math.round(val)) format = format.substr(0,1)+'0';
+                    val = Globalize.format(val, format);
+                } else if (div !== 0) {
+                    val = val.toFixed(1);
+                }
+                return full ? prepend + val + append : val;
+            };
+        }
     };
     return type;
 };
@@ -192,7 +212,17 @@ dw.column.types.date = function(sample) {
         errors: function() { return errors; },
         name: function() { return 'date'; },
         format: function() { return format; },
-        precision: function() { return knownFormats[format].precision; }
+        precision: function() { return knownFormats[format].precision; },
+
+        // returns a function for formatting numbers
+        formatter: function(config) {
+            switch (knownFormats[format].precision) {
+                case 'year': return function(d) { return d.getFullYear(); };
+                case 'quarter': return function(d) { return d.getFullYear() + ' Q'+(d.getMonth()/3 + 1); };
+                case 'month': return function(d) { return Globalize.format(d, 'MMM yy'); };
+                case 'day': return function(d) { return Globalize.format(d, 'd'); };
+            }
+        }
     };
     return type;
 };
