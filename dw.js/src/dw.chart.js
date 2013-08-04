@@ -88,7 +88,6 @@ dw.chart = function(attributes) {
 
         // returns the dataset
         dataset: function() {
-            console.log(dataset.column(0).name());
             return dataset;
         },
 
