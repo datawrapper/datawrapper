@@ -76,11 +76,6 @@ $(function() {
     chart.sync('#describe-source-url', 'metadata.describe.source-url');
     chart.sync('input:radio[name=transpose]', 'metadata.data.transpose');
 
-    chart.sync('#number-format', 'metadata.describe.number-format');
-    chart.sync('#number-divisor', 'metadata.describe.number-divisor');
-    chart.sync('#number-append', 'metadata.describe.number-append');
-    chart.sync('#number-prepend', 'metadata.describe.number-prepend');
-
     chart.sync('#has-headers', 'metadata.data.horizontal-header');
 
     // swap between currency and unit
@@ -135,14 +130,20 @@ $(function() {
         });
         data.push(tr);
 
+        var DIV = document.createElement('DIV');
+        function stripHtmlTags(val) {
+            DIV.innerHTML = val;
+            return DIV.textContent;
+        }
+
         dataset.eachRow(function(row) {
             var tr = [];
             dataset.eachColumn(function(column, i) {
-                var val = column.val(row);
+                var val = column.raw(row);
                 val = column.type() == 'number' ? chart.formatValue(val, true) :
                         column.type() == 'date' ? dw.utils.longDateFormat(column)(val) :
                         val;
-                tr.push((!isNone(column.val(row)) ? $("<div />").html(val).text() : ''));
+                tr.push((!isNone(column.raw(row)) ? stripHtmlTags(val) : ''));
             });
             data.push(tr);
         });
@@ -150,6 +151,11 @@ $(function() {
         ignoreSeries = _.clone(chart.get('metadata.data.ignore-columns', {}));
 
         function myRenderer(instance, td, row, col, prop, value, cellProperties) {
+            if (row > 0) {
+                var column = dataset.column(col);
+                var formatter = chart.columnFormatter(column);
+                value = formatter(column.val(row - 1));
+            }
             Handsontable.TextCell.renderer.apply(this, arguments);
             if (parseInt(value, 10) < 0) { //if row contains negative number
                 td.classList.add('negative');
@@ -206,7 +212,7 @@ $(function() {
                 },
                 afterChange: function(changes, source) {
                     if (source !== 'loadData') {
-                        var dataChanges = chart.get('metadata.data.data-changes', []);
+                        var dataChanges = _.clone(chart.get('metadata.data.data-changes', [])); //clone is needed, otherwise chart.set does not detect this as change
                         changes.forEach(function(change) {
                             dataChanges.push({row: change[0] - 1, column: change[1], value: change[3]});
                         });
@@ -301,8 +307,13 @@ $(function() {
     function showColumnSettings() {
         if(selectedColumns.length) {
             var series = getSeriesOfIndex(selectedColumns[0]);
-            var ignoreSeries = _.clone(chart.get('metadata.data.ignore-columns', {}));
+            var ignoreSeries = chart.get('metadata.data.ignore-columns', {});
             $('#column-options-hide')[0].checked = ignoreSeries[series];
+            var columnFormats = chart.get('metadata.describe.column-format', {});
+            $('#number-format')[0].value = columnFormats[series]['number-format'];
+            $('#number-divisor')[0].value = columnFormats[series]['number-divisor'];
+            $('#number-append')[0].value = columnFormats[series]['number-append'];
+            $('#number-prepend')[0].value = columnFormats[series]['number-prepend'];
 
             $('#table-options').hide();
             $('#column-options').show();
@@ -317,7 +328,7 @@ $(function() {
         event.stopPropagation(); //stop sidebar event propagation so clicking in #column-options won't deselect column selection
     });
 
-    $('#column-options-hide').on('change', function(){
+    $('#column-options-hide').change(function(){
         var checked = this.checked;
         var ignoreSeries = _.clone(chart.get('metadata.data.ignore-columns', {}));
         selectedColumns.forEach(function(i){
@@ -326,12 +337,32 @@ $(function() {
         chart.set('metadata.data.ignore-columns', ignoreSeries);
     });
 
+    function syncColumnFormat(selector, property) {
+        $(selector).change(function(){
+            var value = this.value;
+            var columnFormats = $.extend(true, {}, chart.get('metadata.describe.column-format', {})); //deep clone (_.clone is insufficient because it does a shallow clone)
+            selectedColumns.forEach(function(i) {
+                var series = getSeriesOfIndex(i);
+                if (!columnFormats[series]) {
+                    columnFormats[series] = {};
+                }
+                columnFormats[series][property] = value;
+            });
+            chart.set('metadata.describe.column-format', columnFormats);
+        });
+    }
+
+    syncColumnFormat('#number-format', 'number-format');
+    syncColumnFormat('#number-divisor', 'number-divisor');
+    syncColumnFormat('#number-append', 'number-append');
+    syncColumnFormat('#number-prepend', 'number-prepend');
+
     function reload(f) {
         console.log('chart reloaded');
         chart.load().done(function() {
             if (_.isUndefined(f)) {
                 console.log('synchronizing header settings', $('#has-headers'));
-                
+
             }
             dataset = chart.dataset();
             updateTable();
