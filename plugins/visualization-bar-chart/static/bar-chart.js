@@ -47,7 +47,6 @@
                 chart_width = c.w - c.lpad - c.rpad,
                 series_gap = 0.05, // pull from theme
                 row_gap = 0.01,
-                labelsInsideBars = me.get('labels-inside-bars', false),
                 formatValue = me.chart.columnFormatter(me.getBarColumn());
 
             me.init();
@@ -62,8 +61,6 @@
                     lpos = me.labelPosition(barv, s, row),
                     fill = me.getKeyColor(barv.name, barv.value, useNegativeColor),
                     stroke = chroma.color(fill).darken(14).hex();
-
-                if (labelsInsideBars) d.x -= 10;
 
                 // draw bar
                 var bar = me.registerElement(c.paper.rect(d.x, d.y, d.width, d.height).attr({
@@ -96,7 +93,6 @@
 
             if (me.__domain[0] < 0) {
                 var x = c.lpad + c.zero ;
-                if (labelsInsideBars) x -= 10;
                 // add y-axis
                 me.__yaxis = me.path('M' + [x, c.tpad] + 'V' + c.lastBarY, 'axis')
                     .attr(me.theme.yAxis);
@@ -168,7 +164,7 @@
             });
             if (me.__domain[0] < 0) {
                 var c = me.__canvas,
-                    x = c.lpad + c.zero - (me.get('labels-inside-bars', false) ? 10 : 0),
+                    x = c.lpad + c.zero,
                     p = 'M' + [x, c.tpad] + 'V' + c.lastBarY;
                 // add y-axis
                 if (me.__yaxis) {
@@ -229,7 +225,7 @@
             c.left = 0;
             c.right = 0;
             c.zero = largestVal[1] / (largestVal[0] + largestVal[1]) * w;
-            if (!me.get('labels-inside-bars', false) && w > 300) {
+            if (w > 300) {
                 var maxNegBar = c.zero;
 
                 c.left = Math.max(maxw[0], maxw[3]) - c.zero;
@@ -291,23 +287,6 @@
             if (me.__longLabels && me.__domain[0] >= 0) {
                 lbl_align = lbl_left ? 'left' : 'right';
                 lbl_x = 0;
-            }
-
-            if (me.get('labels-inside-bars', false)) {
-                lbl_x = lbl_left ? d.x + 10 : d.x + d.width - 10;
-                val_x = lbl_left ? d.x + d.width - 10 : d.x + 10;
-                lbl_align = lbl_left ? 'left' : 'right';
-                val_align = lbl_left ? 'right' : 'left';
-
-                // check if the label is bigger than the bar
-                var slblw = me.labelWidth(bar.name, 'series')+10,
-                    vlblw = me.labelWidth(formatValue(val, true), 'value')+20,
-                    fill = me.getKeyColor(bar.name, bar.value, me.get('negative-color', false));
-                if (slblw + vlblw > d.width) {
-                    show_val = false;
-                    if (slblw > d.width) show_lbl = false;
-                }
-                if (me.invertLabel(fill)) lblClass += ' inverted';
             }
 
             return { lblClass: lblClass, val_align: val_align, show_lbl: show_lbl,
