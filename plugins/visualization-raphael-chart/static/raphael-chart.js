@@ -200,7 +200,8 @@
                     cl: '',
                     rotate: 0,
                     css: {
-                        position: 'absolute'
+                        position: 'absolute',
+                        width: _attrs.w ? _attrs.w : 'auto'
                     },
                     x: x,
                     y: y,
