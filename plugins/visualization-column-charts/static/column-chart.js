@@ -23,8 +23,8 @@
             me.__lastRow = row;
 
             var barColumns = _.map(me.axesDef.columns, function(i) { return dataset.column(i); });
-                filter = dw.utils.filter(dw.utils.columnNameColumn(barColumns), row),
-                filterUI = filter.ui(me);
+            filter = dw.utils.filter(dw.utils.columnNameColumn(barColumns), row);
+            filterUI = filter.ui(me);
 
             if (filterUI) {
                 $('#header').append(filterUI);
