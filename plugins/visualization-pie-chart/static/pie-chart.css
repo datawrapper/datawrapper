@@ -1,10 +1,13 @@
 
-div.label.outside {
-    text-align: left!important;
-    width: 50%!important;
+
+div.label.series span b {
+    display: block;
 }
 
-div.label.outside span {
-    color: #000;
-    text-shadow: none;
+div.label.series.outside span b {
+    display: none;
+}
+
+.label.series.out {
+    font-weight: bold;
 }
