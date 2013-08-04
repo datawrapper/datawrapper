@@ -10,6 +10,15 @@
     display: none;
 }
 
+.sidebar #column-options .unresolved {
+    background: #FDFFBA;
+}
+
+.sidebar #column-options .unresolved option,
+.sidebar #column-options .unresolved optgroup {
+    background: #fff;
+}
+
 table.htCore tr td {
     font-size: 1.1em;
     font-family: Helvetica;
@@ -267,11 +276,16 @@ $(function() {
         $dataPreview.handsontable('deselectCell');
     });
 
+    var last;
     $dataPreview.on('mouseenter', 'th:has(.colHeader)', function () {
+        if(last === this) {
+            return;
+        }
         if(start !== void 0) {
             var current = getIndexOfTh(this);
             selectColumns(start, current);
         }
+        last = this;
     });
 
     var selectedColumns = [];
@@ -304,16 +318,53 @@ $(function() {
         });
     }
 
+    function selectedSeries() {
+        var out = [];
+        selectedColumns.forEach(function(i){
+            out.push(getSeriesOfIndex(i));
+        });
+        return out;
+    }
+
+    function allEqual(formats, series, property) {
+        if (series.length > 1) {
+            for (var i = 1; i < series.length; i++) {
+                var a = formats[series[i]] && formats[series[i]][property];
+                var b = formats[series[i - 1]] && formats[series[i - 1]][property];
+                if (a !== b) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    function fillInField(selector, property) {
+        var series = selectedSeries();
+        var formats = chart.get('metadata.describe.column-format', {});
+        var $input = $(selector);
+        if(allEqual(formats, series, property)) {
+            var val = formats[series[0]] && formats[series[0]][property];
+            $input.val(val).removeClass('unresolved');
+        }
+        else {
+            $input.val('').addClass('unresolved');
+            $input.change(function() {
+                fillInField(selector, property);
+            });
+        }
+    }
+
     function showColumnSettings() {
         if(selectedColumns.length) {
-            var series = getSeriesOfIndex(selectedColumns[0]);
+            var serie = getSeriesOfIndex(selectedColumns[0]);
             var ignoreSeries = chart.get('metadata.data.ignore-columns', {});
-            $('#column-options-hide')[0].checked = ignoreSeries[series];
-            var columnFormats = chart.get('metadata.describe.column-format', {});
-            $('#number-format')[0].value = columnFormats[series]['number-format'];
-            $('#number-divisor')[0].value = columnFormats[series]['number-divisor'];
-            $('#number-append')[0].value = columnFormats[series]['number-append'];
-            $('#number-prepend')[0].value = columnFormats[series]['number-prepend'];
+            $('#column-options-hide')[0].checked = ignoreSeries[serie];
+
+            fillInField('#number-format', 'number-format');
+            fillInField('#number-divisor', 'number-divisor');
+            fillInField('#number-append', 'number-append');
+            fillInField('#number-prepend', 'number-prepend');
 
             $('#table-options').hide();
             $('#column-options').show();
