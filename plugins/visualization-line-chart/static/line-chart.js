@@ -9,7 +9,11 @@
                 theme = vis.theme,
                 chart = vis.chart,
                 y1Domain,
-                axesDef = vis.axes(true);
+                axesDef = vis.axes(true),
+                formatter = {
+                    x: chart.columnFormatter(axesDef.x),
+                    y1: chart.columnFormatter(axesDef.y1[0]) // use format of first column for all!
+                };
 
             // returns true if the x axis is of type date
             function useDateFormat() {
@@ -63,7 +67,7 @@
                 if (c.w <= theme.minWidth) return 4;
 
                 _.each(ticks, function(val, t) {
-                    val = chart.formatValue(val, false);
+                    val = formatter.y1(val, false);
                     maxw = Math.max(maxw, vis.labelWidth(val));
                 });
                 return maxw+20;
@@ -88,7 +92,7 @@
                         // c.paper.text(x, y, val).attr(styles.labels).attr({ 'text-anchor': 'end' });
 
                         // axis label
-                        vis.label(x+2, y-10, chart.formatValue(val, t == ticks.length-1), { align: 'left', cl: 'axis' });
+                        vis.label(x+2, y-10, formatter.y1(val, t == ticks.length-1), { align: 'left', cl: 'axis' });
                         // axis ticks
                         if (theme.yTicks) {
                             vis.path([['M', c.lpad-25, y], ['L', c.lpad-20,y]], 'tick');
@@ -242,7 +246,7 @@
                 // update x-label
                 var lx = scales.x(useDateFormat() ? rowDate(row) : row),
                     lw = vis.labelWidth(dataset.rowName(row), 'axis x-axis'),
-                    lfmt = dw.utils.longDateFormat(axesDef.x);
+                    lfmt = formatter.x;
 
                 xlabel.text(useDateFormat() ? lfmt(rowDate(row)) : dataset.rowName(row));
                 xlabel.attr({
@@ -256,17 +260,18 @@
                 var valueLabels = [];
 
                 _.each(dataset.columns(), function(column) {
+                    var lbl;
 
                     // Checks that the column's label doesn't exist yet.
                     // If it exists, it should have a parent
                     // do be attached to dom
                     if(column.__label && column.__label.el.parent().length ) {
-                        var lbl = column.__label;
+                        lbl = column.__label;
                     } else {
                         // Avoid memory leak
                         if(column.__label) delete column.__label;
 
-                        var lbl = column.__label = vis.label(0, 0, '0', {
+                        lbl = column.__label = vis.label(0, 0, '0', {
                             cl: 'tooltip'+(vis.getKeyColor(column.name()) ? ' inverted' : ''),
                             align: 'center',
                             valign: 'middle',
@@ -274,9 +279,9 @@
                                 background: lineColor(column)
                             }
                         });
-                    }                
+                    }
 
-                    var val = chart.formatValue(column.val(row));
+                    var val = formatter.y1(column.val(row));
                     lbl.data('key', column.name());
                     lbl.data('row', 0);
                     lbl.text(val);
