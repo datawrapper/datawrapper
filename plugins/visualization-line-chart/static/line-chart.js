@@ -9,16 +9,16 @@
                 theme = vis.theme,
                 chart = vis.chart,
                 y1Domain,
-                axesDef = vis.axes();
+                axesDef = vis.axes(true);
 
             // returns true if the x axis is of type date
             function useDateFormat() {
-                return dataset.column(axesDef.x).type() == 'date';
+                return axesDef.x.type() == 'date';
             }
 
             // returns date obj assigned to row r
             function rowDate(r) {
-                return dataset.column(axesDef.x).val(r);
+                return axesDef.x.val(r);
             }
 
             // returns the d3.scale for x axis
@@ -35,9 +35,9 @@
                 var scale,
                 // find min/max value of each data series
                     domain = [Number.MAX_VALUE, Number.MAX_VALUE * -1];
-                _.each(axesDef.y1, function(c) {
-                    domain[0] = Math.min(domain[0], dataset.column(c).range()[0]);
-                    domain[1] = Math.max(domain[1], dataset.column(c).range()[1]);
+                _.each(axesDef.y1, function(col) {
+                    domain[0] = Math.min(domain[0], col.range()[0]);
+                    domain[1] = Math.max(domain[1], col.range()[1]);
                 });
                 y1Domain = domain;  // store for later, replaces me.__domain
                 if (vis.get('baseline-zero')) {
@@ -113,7 +113,7 @@
             function drawXAxis() {
                 // draw x scale labels
                 var rotate45 = vis.get('rotate-x-labels'),
-                    labels = dataset.column(axesDef.x).values(),
+                    labels = axesDef.x.values(),
                     k = labels.length-1;
 
                 if (useDateFormat()) return drawDateAxis(); // draw date axis instead
@@ -121,7 +121,7 @@
                 var last_label_x = -100,
                     min_label_distance = rotate45 ? 30 : 0;
 
-                dataset.column(axesDef.x).each(function(val, i) {
+                axesDef.x.each(function(val, i) {
                     min_label_distance = Math.max(min_label_distance, vis.labelWidth(val));
                 });
 
@@ -164,7 +164,7 @@
             function drawDateAxis() {
                 var tickCount = Math.round(c.w / 75),
                     ticks = scales.x.ticks(tickCount),
-                    fmt = dataset.column(axesDef.x).type(true).format(), // get parsed date format
+                    fmt = axesDef.x.type(true).format(), // get parsed date format
                     daysDelta = Math.round((rowDate(-1).getTime() - rowDate(0).getTime()) / 86400000),
                     tickFormat = dw.utils.dateFormat(daysDelta),
                     last_month = -1, new_month,
@@ -242,7 +242,7 @@
                 // update x-label
                 var lx = scales.x(useDateFormat() ? rowDate(row) : row),
                     lw = vis.labelWidth(dataset.rowName(row), 'axis x-axis'),
-                    lfmt = dw.utils.longDateFormat(dataset.column(axesDef.x));
+                    lfmt = dw.utils.longDateFormat(axesDef.x);
 
                 xlabel.text(useDateFormat() ? lfmt(rowDate(row)) : dataset.rowName(row));
                 xlabel.attr({
@@ -327,7 +327,7 @@
                         min_dist = Number.MAX_VALUE,
                         closest_row = 0;
                     // find closest date
-                    dataset.column(axesDef.x).each(function(date, i) {
+                    axesDef.x.each(function(date, i) {
                         var dist = Math.abs(date.getTime() - mouse_date.getTime());
                         if (dist < min_dist) {
                             min_dist = dist;
@@ -433,7 +433,7 @@
             drawYAxis();
             drawXAxis();
 
-            var all_series = _.map(axesDef.y1, function(i) { return dataset.column(i); }),
+            var all_series = axesDef.y1,
                 seriesLines = this.__seriesLines = {};
 
             if (legend.pos != 'direct') {
