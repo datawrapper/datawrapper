@@ -146,10 +146,10 @@
             if (FA < TWO_PI) {
                 reverse = false;
                 sa = -HALF_PI - FA * 0.5;
+            } else {
+                sa = -QUARTER_PI*0.8 - (slices[slices.length-1].value / total * Math.PI);
+                reverse = true;
             }
-
-            sa = -QUARTER_PI*0.8 - (slices[slices.length-1].value / total * Math.PI);
-            reverse = true;
 
             me.__seriesAngles = {};
 
@@ -186,6 +186,8 @@
                 out_label_w = 0;
 
             function lblOutside(o) {
+                // not available for election donuts (yet)
+                if (me.getFullArc() < TWO_PI) return false;
                 // this is a rough guess
                 return o.name.length > 10 ? o.value / total < 0.2
                     : o.name.length > 5 ? o.value / total < 0.1 : false;
