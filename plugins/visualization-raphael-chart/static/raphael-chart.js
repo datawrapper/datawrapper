@@ -531,6 +531,55 @@
             container.append(l);
         },
 
+
+        optimizeLabelPositions: function(labels, pad, valign) {
+            var i = 1,
+                c = valign == 'top' ? 0 : valign == 'middle' ? 0.5 : 1,
+                min_y = labels[0].el.parent().offset().top,
+                max_y = min_y + labels[0].el.parent().height();
+
+            labels = _.filter(labels, function(lbl) { return lbl.el.is(":visible"); });
+            _.each(labels, function(lbl) {
+                lbl.__noverlap = {
+                    otop: lbl.top(),
+                    top: lbl.top(),
+                    dy: 0
+                };
+                lbl.height('auto');
+            });
+            (function loop() {
+                var overlap = false;
+                _.each(labels, function(lbl0, p) {
+                    _.each(labels, function(lbl1, q) {
+                        if (q > p) {
+                            var l0 = lbl0.left(), l1 = lbl1.left(),
+                                r0 = l0 + lbl0.width(), r1 = l1 + lbl1.width(),
+                                t0 = lbl0.__noverlap.top - pad, t1 = lbl1.__noverlap.top - pad,
+                                b0 = t0 + lbl0.height() + pad * 2, b1 = t1 + lbl1.height() + pad * 2,
+                                dy, l0up;
+                            if (!(l1 > r0 || r1 < l0 || t1 > b0 || b1 < t0)) {
+                                overlap = true;
+                                dy = Math.min(b0, b1) - Math.max(t0, t1);
+                                l0up = t0 + (b0 - t0) * c < t1 + (b1 - t1) * c;
+                                lbl0.__noverlap.dy += dy * 0.5 * (l0up ? -1 : 1);
+                                lbl1.__noverlap.dy += dy * 0.5 * (l0up ? 1 : -1);
+                            }
+                        }
+                    });
+                });
+                if (overlap) {
+                    _.each(labels, function(lbl) {
+                        lbl.__noverlap.top = Math.max(min_y, lbl.__noverlap.top + lbl.__noverlap.dy);
+                        lbl.__noverlap.dy = 0;
+                    });
+                }
+                if (overlap && ++i < 10) loop();
+            })();  // end loop()
+            _.each(labels, function(lbl) {
+                lbl.el.css({ top: lbl.__noverlap.top - lbl.el.parent().offset().top });  // apply new label pos
+            });
+        },
+
         checkBrowserCompatibility: function(){
             return window['Raphael'] && Raphael.type;
         },

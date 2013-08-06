@@ -1,0 +1,13 @@
+
+
+div.label.series span b {
+    display: block;
+}
+
+div.label.series.outside span b {
+    display: none;
+}
+
+.label.series.out {
+    font-weight: bold;
+}

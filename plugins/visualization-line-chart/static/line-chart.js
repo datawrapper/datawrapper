@@ -761,51 +761,8 @@
             var vis = this,
                 axes = vis.axes();
             return [].concat(axes.y1, axes.y2 || []);
-        },
-
-        optimizeLabelPositions: function(labels, pad, valign) {
-            var i = 1, c = valign == 'top' ? 0 : valign == 'middle' ? 0.5 : 1;
-            labels = _.filter(labels, function(lbl) { return lbl.el.is(":visible"); });
-            _.each(labels, function(lbl) {
-                lbl.__noverlap = {
-                    otop: lbl.top(),
-                    top: lbl.top(),
-                    dy: 0
-                };
-                lbl.height('auto');
-            });
-            (function loop() {
-                var overlap = false;
-                _.each(labels, function(lbl0, p) {
-                    _.each(labels, function(lbl1, q) {
-                        if (q > p) {
-                            var l0 = lbl0.left(), l1 = lbl1.left(),
-                                r0 = l0 + lbl0.width(), r1 = l1 + lbl1.width(),
-                                t0 = lbl0.__noverlap.top - pad, t1 = lbl1.__noverlap.top - pad,
-                                b0 = t0 + lbl0.height() + pad * 2, b1 = t1 + lbl1.height() + pad * 2,
-                                dy, l0up;
-                            if (!(l1 > r0 || r1 < l0 || t1 > b0 || b1 < t0)) {
-                                overlap = true;
-                                dy = Math.min(b0, b1) - Math.max(t0, t1);
-                                l0up = t0 + (b0 - t0) * c < t1 + (b1 - t1) * c;
-                                lbl0.__noverlap.dy += dy * 0.5 * (l0up ? -1 : 1);
-                                lbl1.__noverlap.dy += dy * 0.5 * (l0up ? 1 : -1);
-                            }
-                        }
-                    });
-                });
-                if (overlap) {
-                    _.each(labels, function(lbl) {
-                        lbl.__noverlap.top += lbl.__noverlap.dy * (1/i);
-                        lbl.__noverlap.dy = 0;
-                    });
-                }
-                if (overlap && ++i < 4) loop();
-            })();  // end loop()
-            _.each(labels, function(lbl) {
-                lbl.el.css({ top: lbl.__noverlap.top - lbl.el.parent().offset().top });  // apply new label pos
-            });
         }
+
     });
 
 }).call(this);

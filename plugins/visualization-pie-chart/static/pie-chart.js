@@ -13,7 +13,7 @@
         },
 
         groupAfter: function() {
-            return 5;
+            return 4;
         },
 
         render: function(el) {
@@ -48,13 +48,11 @@
             }
 
             var c = me.initCanvas({}, 0, filterUI ? filterUI.height()+10 : 0),
-                chart_width = c.w,
-                chart_height = c.h,
                 FA = me.getFullArc(); // full arc
 
-            c.cx = chart_width * 0.5;
-            c.cy = chart_height * (FA < TWO_PI ? 0.69 : 0.5); // 1:1 1.5:1
-            c.or = Math.min(FA == TWO_PI ? chart_height * 0.5 : chart_height * 0.66, chart_width * 0.5) - 3;
+            c.cx = c.w * 0.5;
+            c.cy = c.h * (FA < TWO_PI ? 0.69 : 0.5); // 1:1 1.5:1
+            c.or = Math.min(FA == TWO_PI ? c.h * 0.5 : c.h * 0.66, c.w * 0.5) - 3;
             c.ir = donut ? c.or * 0.3 : 0;
             c.or_sq = c.or * c.or;
             c.ir_sq = c.ir * c.ir;
@@ -81,14 +79,15 @@
                 c = me.__canvas,
                 donut = me.isDonut(),
                 showTotal = donut && me.get('show-total', false),
-                FA = me.getFullArc(),
-                slices = me.__slices = me.__slices ? me.__slices : {};
+                FA = me.getFullArc();
+
+            me.__slices = me.__slices ? me.__slices : {};
 
             var column = dataset.column(me.axesDef.slices[row]),
                 labels = dataset.column(me.axesDef.labels),
                 total = 0, min = Number.MAX_VALUE, max = 0,
                 reverse,
-                ovalues,
+                slices,
                 others = 0,
                 ocnt = 0,
                 hasNegativeValues = column.range()[0] < 0,
@@ -113,9 +112,9 @@
             }
 
             // now group small series into one big chunk named 'others'
-            ovalues = me.__values = [];
+            slices = me.__values = [];
             _.each(values, function(o, i) {
-                if (i < groupAfter) ovalues.push(o);
+                if (i < groupAfter || values.length <= groupAfter+1) slices.push(o);
                 else {
                     ocnt += 1;
                     others += o.value;
@@ -125,22 +124,31 @@
             if (hasNegativeValues) {
                 me.warn('<b>Warning:</b> Pie charts are not suitable for displaying negative values.');
             }
+
+            // add slice 'others' to the slices array
             if (ocnt > 0) {
-                ovalues.push({ name: me.translate('other'), value: others });
+                slices.push({ name: me.translate('other'), value: others });
             }
 
-            _.each(ovalues, function(s) {
+            if (me.get('sort-values', true)) {
+                slices.sort(function(a,b) { return b.value - a.value; });
+            }
+
+            _.each(slices, function(s) {
                 total += s.value;
                 min = Math.min(min, s.value);
                 max = Math.max(max, s.value);
             });
-            reverse = min < total / ovalues.length * 0.66 || max > total/ovalues.length * 1.5;
+            reverse = min < total / slices.length * 0.66 || max > total/slices.length * 1.5;
             sa = -HALF_PI;
-            if (reverse) sa += FA * (ovalues[0].value / total);
+            if (reverse) sa += FA * (slices[0].value / total);
 
             if (FA < TWO_PI) {
                 reverse = false;
                 sa = -HALF_PI - FA * 0.5;
+            } else {
+                sa = -QUARTER_PI*0.8 - (slices[slices.length-1].value / total * Math.PI);
+                reverse = true;
             }
 
             me.__seriesAngles = {};
@@ -156,8 +164,52 @@
             }
 
             me.__sliceKeys = [];
+            me.__sliceSet = c.paper.set();
 
-            _.each(ovalues, function(o) {
+            // remove old labels
+            if (me.__out_labels) {
+                _.each(me.__out_labels, function(lbl) {
+                    lbl.el.animate({ opacity: 0 }, 200, function() {
+                        if (lbl.data('line')) {
+                            lbl.data('line').remove();
+                        }
+                        lbl.el.remove();
+                    });
+                });
+            }
+            me.__out_labels = [];
+
+            var all_labels_inside = true,
+                out_labels_max_width = c.w - c.or*2.3 - 60,
+                out_labels_total_height = -20,
+                num_labels_outside = 0,
+                out_label_w = 0;
+
+            function lblOutside(o) {
+                // not available for election donuts (yet)
+                if (me.getFullArc() < TWO_PI) return false;
+                // this is a rough guess
+                return o.name.length > 10 ? o.value / total < 0.2
+                    : o.name.length > 5 ? o.value / total < 0.1 : false;
+            }
+
+            _.each(slices, function(o) {
+                if (lblOutside(o)) {
+                    all_labels_inside = false;
+                    out_label_w = Math.max(
+                        out_label_w,
+                        Math.min(out_labels_max_width, me.labelWidth(o.name, 'series out'))
+                    );
+                    o.__lbl_h = me.labelHeight(o.name, 'series out', out_labels_max_width);
+                    out_labels_total_height += o.__lbl_h + 20;
+                    num_labels_outside++;
+                }
+            });
+
+            var cx = c.cx - (all_labels_inside ? 0 : (out_label_w+50)*0.5),
+                lbl_duration = _.keys(me.__slices).length > 0 ? me.theme.duration : 100;
+
+            _.each(slices, function(o, index) {
 
                 var da = o.value / total * FA,
                     fill = me.getKeyColor(o.name, 0),
@@ -170,32 +222,86 @@
 
                 me.__sliceKeys.push(o.name);
 
-                if (!slices[o.name]) {
+                if (!me.__slices[o.name]) {
+                    // create new label
                     var lblcl = me.chart.hasHighlight() && me.chart.isHighlighted(o.name) ? 'series highlighted' : 'series';
                     if (me.invertLabel(fill)) lblcl += ' inverted';
+                    if (lblOutside(o)) lblcl += ' outside';
 
-                    var lbl = me.registerLabel(me.label(0, 0, '<b>'+o.name+'</b><br />'+value, {
+                    var lbl = me.registerLabel(me.label(0, 0, '<b>'+o.name+'</b>'+value, {
                         w: 80, cl: lblcl, align: 'center', valign: 'middle'
                     }), o.name);
 
-                    slice = slices[o.name] = Slice(c.paper, c.cx, c.cy, c.or, c.ir, a0, a1, lbl, me.theme);
+                    slice = me.__slices[o.name] = Slice(c.paper, cx, c.cy, c.or, c.ir, a0, a1, lbl, me.theme);
                     slice.path.attr({
                         'stroke': me.theme.colors.background,
                         'stroke-width': 2,
                         'fill': fill
                     });
                     slice.path.data('slice', slice);
+                    me.__sliceSet.push(slice.path);
                     me.registerElement(slice.path, o.name);
                 } else {
-                    slice = slices[o.name];
-                    slice.label.text('<b>'+o.name+'</b><br />'+value);
-                    slice.animate(c.cx, c.cy, c.or, c.ir, a0, a1, me.theme.duration, me.theme.easing);
+                    // update existing label
+                    slice = me.__slices[o.name];
+                    slice.label.text('<b>'+o.name+'</b>'+value);
+                    slice.label[lblOutside(o) ? 'addClass' : 'removeClass']('outside');
+                    slice.animate(cx, c.cy, c.or, c.ir, a0, a1, me.theme.duration, me.theme.easing);
                 }
 
                 me.__seriesAngles[o.name] = normalize(a0, a1);
                 sa += reverse ? -da : da;
 
+                if (lblOutside(o)) {
+                    // add additional label
+                    var lx = cx + c.or + 30,
+                        ca = (me.__seriesAngles[o.name][0] + me.__seriesAngles[o.name][1]) * 0.5 - HALF_PI,
+                        ly = c.cy + Math.sin(ca) * (c.or + 30),
+                        out_lbl;
+
+                    out_lbl = me.registerLabel(me.label(lx, ly, o.name, {
+                        cl: 'series out',
+                        w: out_label_w
+                    }), o.name);
+
+                    out_lbl.data('oy', ly)
+                        .data('ca', ca)
+                        .data('key', o.name)
+                        .data('index', num_labels_outside - index)
+                        .css({ opacity: 0 });
+
+                    slice.label[o.value / total <= 0.02 ? 'hide' : 'show']();
+
+                  me.__out_labels.push(out_lbl);
+                }
             });
+
+            if (me.__out_labels.length > 0) {
+                me.optimizeLabelPositions(me.__out_labels, 5, 'top');
+                // draw connecting lines
+                _.each(me.__out_labels, function(lbl) {
+                    var ly = +lbl.el.css('top').replace('px',''),
+                        lx = +lbl.el.css('left').replace('px',''),
+                        ca = lbl.data('ca'),
+                        h = lbl.el.height(),
+                        line;
+                    function cxy(r) { return [cx + Math.cos(ca)*r, c.cy + Math.sin(ca)*r]; }
+                    if (lbl.data('oy') > ly && lbl.data('oy') < h) {
+                        line = c.paper.path('M'+cxy(c.or+4)+'L'+cxy(c.or+30)+'H'+(lx-5));
+                    } else {
+                        line = c.paper.path('M'+cxy(c.or+4)+'L'+cxy(c.or+8)+'L'+[lx-5, ly + h*0.5]);
+                    }
+                    me.registerElement(line, lbl.data('key'));
+                    line.attr('opacity', 0);
+                    lbl.el.data('line', line);
+
+                    setTimeout(function() {
+                        lbl.el.animate({ opacity: 1 }, 200);
+                        line.animate({ opacity: 1 }, 200);
+                    }, lbl_duration+lbl.data('index')*50);
+
+                });
+            }
 
             if (showTotal) {
                 if (me.get('custom-total')) {
@@ -204,7 +310,7 @@
                     total = me.chart.formatValue(total, true);
                 }
                 if (me.__labelTotal) me.__labelTotal.remove();
-                me.__labelTotal = me.label(c.cx, c.cy, '<strong>Total:</strong><br />'+total, {
+                me.__labelTotal = me.label(cx, c.cy, '<strong>Total:</strong><br />'+total, {
                     w: 50,
                     align: 'center',
                     valign: 'middle'
@@ -247,6 +353,7 @@
                 bg = chroma.color(me.theme.colors.background);
             _.each(me.__sliceKeys, function(key) {
                 _.each(me.__labels[key], function(lbl) {
+                    if (!lbl) return;
                     if (hovered_key !== undefined && key == hovered_key) {
                         lbl.addClass('hover');
                     } else {
@@ -255,7 +362,7 @@
                 });
                 _.each(me.__elements[key], function(el) {
                     var h = !hovered_key || key == hovered_key;
-                    el.stop().animate({ opacity: h ? 1 : 0.5 }, 100);
+                    if (el.animate) el.animate({ opacity: h ? 1 : 0.5 }, 100);
                 });
             });
         },
@@ -266,9 +373,12 @@
 
     });
 
-    var TWO_PI = Math.PI * 2, HALF_PI = Math.PI * 0.5;
+    var TWO_PI = Math.PI * 2,
+        HALF_PI = Math.PI * 0.5,
+        QUARTER_PI = Math.PI * 0.25;
 
     var Slice = function(paper, cx, cy, or, ir, startAngle, endAngle, label) {
+
         var me = {
             cx: cx,
             cy: cy,
@@ -299,14 +409,15 @@
         }
 
         function updateLabelPos() {
-            lx = me.cx + Math.cos((me.startAngle + me.endAngle) * 0.5) * me.or * 0.7,
-            ly = me.cy + Math.sin((me.startAngle + me.endAngle) * 0.5) * me.or * 0.7;
+            var r = label.hasClass('outside') ? 0.8 : 0.65;
+            lx = me.cx + Math.cos((me.startAngle + me.endAngle) * 0.5) * me.or * r,
+            ly = me.cy + Math.sin((me.startAngle + me.endAngle) * 0.5) * me.or * r;
             label.attr({ x: lx, y: ly });
         }
 
         var running;
         function frame() {
-            path.attr({ path: arcPath() });
+            path.attr({ path: arcPath() }).attr('stroke-linejoin', 'round');
             updateLabelPos();
             if (running) requestAnimationFrame(frame);
         }
@@ -314,19 +425,28 @@
         var path = paper.path(arcPath());
         updateLabelPos();
 
-        var slice = { path: path, label: label };
-        slice.animate = function(cx, cy, or, ir, sa, ea, duration, easing) {
-            running = true;
-            $(me).animate(
-                { cx: cx, cy: cy, or: or, ir: ir, startAngle: sa, endAngle: ea },
-                { easing: easing, duration: duration, complete: function() {
-                    running = false;
-                    frame();
-                }
-            });
-            requestAnimationFrame(frame);
+        return {
+            // slice arc path
+            path: path,
+            // html label element
+            label: label,
+            // a function to animate slice to new state
+            animate: function(cx, cy, or, ir, sa, ea, duration, easing) {
+                running = true;
+                $(me).animate(
+                    { cx: cx, cy: cy, or: or, ir: ir, startAngle: sa, endAngle: ea },
+                    { easing: easing, duration: duration, complete: function() {
+                        running = false;
+                        frame();
+                    }
+                });
+                requestAnimationFrame(frame);
+            },
+
+            startAngle: function() { return me.startAngle; },
+            endAngle: function() { return me.endAngle; },
+            midAngle: function() { return (me.startAngle + me.endAngle) * 0.5; }
         };
-        return slice;
     };
 
 }).call(this);
