@@ -238,6 +238,7 @@ function _apply($pattern, $func) {
     } else {
         $plugin_ids[] = $pattern;
     }
+    sort($plugin_ids);
     foreach ($plugin_ids as $plugin_id) {
         $func($plugin_id);
     }
