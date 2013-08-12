@@ -91,7 +91,13 @@ function check_plugins() {
     if ($cnt == 0) {
         return '<h2>Please install some plugins</h2>'
             . '<p>In order to use Datawrapper you need to install some plugins, such as '
-            . 'the default theme and the core visualizations.</p> ';
+            . 'the default theme and the core visualizations. To do so you need to utilize '
+            . 'the plugin install script which can be found in <code>/scripts/plugin.php</code> '
+            . 'inside the Datawrapper folder. </p><pre><code>'
+            . '$ php scripts/plugin.php install theme-default'. "\n"
+            . '$ php scripts/plugin.php install visualization'. "\n"
+            . '$ php scripts/plugin.php install "visualization-*"'
+            . ' </code></pre>';
         }
 }
 
