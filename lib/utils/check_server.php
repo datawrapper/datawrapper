@@ -95,8 +95,7 @@ function check_plugins() {
             . 'the plugin install script which can be found in <code>/scripts/plugin.php</code> '
             . 'inside the Datawrapper folder. </p><pre><code>'
             . '$ php scripts/plugin.php install theme-default'. "\n"
-            . '$ php scripts/plugin.php install visualization'. "\n"
-            . '$ php scripts/plugin.php install "visualization-*"'
+            . '$ php scripts/plugin.php install "visualization*"'. "\n"
             . ' </code></pre>';
         }
 }
