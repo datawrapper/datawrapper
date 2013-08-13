@@ -384,10 +384,16 @@ $(function() {
             var ignoreSeries = chart.get('metadata.data.ignore-columns', {});
             $('#column-options-hide')[0].checked = ignoreSeries[serie];
 
-            fillInField('#number-format', 'number-format');
-            fillInField('#number-divisor', 'number-divisor');
-            fillInField('#number-append', 'number-append');
-            fillInField('#number-prepend', 'number-prepend');
+            if(dataset.column(serie).type() == 'number') {
+                fillInField('#number-format', 'number-format');
+                fillInField('#number-divisor', 'number-divisor');
+                fillInField('#number-append', 'number-append');
+                fillInField('#number-prepend', 'number-prepend');
+                $('#number-column-options').show();
+            }
+            else {
+                $('#number-column-options').hide();
+            }
 
             $('#table-options').hide();
             $('#column-options').show();
@@ -545,9 +551,9 @@ $(function() {
                         </div>
                     </div>#}
 
-                    <h3>{% trans "Output number format" %}</h3>
+                    <div id="number-column-options" class="form-horizontal compact">
+                        <h3>{% trans "Output number format" %}</h3>
 
-                    <div class="form-horizontal compact">
                         <div class="control-group">
                             <label class="control-label" for="text-title">{% trans "Decimals after point" %}</label>
 
