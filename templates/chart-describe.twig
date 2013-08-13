@@ -76,6 +76,22 @@ table.htCore tr td {
 <script type="text/javascript">
 $(function() {
 
+    var datachanges = {
+        exist: function() {
+            return !!chart.get('metadata.data.data-changes', []).length;
+        },
+        add: function(changes) {
+            var dataChanges = _.clone(chart.get('metadata.data.data-changes', [])); //clone is needed, otherwise chart.set does not detect this as change
+            changes.forEach(function(change) {
+                dataChanges.push({row: change[0] - 1, column: change[1], value: change[3]});
+            });
+            chart.set('metadata.data.data-changes', dataChanges);
+        },
+        revert: function() {
+            chart.set('metadata.data.data-changes', []);
+        }
+    }
+
     var chart = dw.backend.currentChart,
         dataset;
 
@@ -221,18 +237,25 @@ $(function() {
                 },
                 afterChange: function(changes, source) {
                     if (source !== 'loadData') {
-                        var dataChanges = _.clone(chart.get('metadata.data.data-changes', [])); //clone is needed, otherwise chart.set does not detect this as change
-                        changes.forEach(function(change) {
-                            dataChanges.push({row: change[0] - 1, column: change[1], value: change[3]});
-                        });
-                        chart.set('metadata.data.data-changes', dataChanges);
+                        datachanges.add(changes);
                     }
                 }
             });
 
             $('#data-preview table').addClass('table table-bordered');
         }
+
+        if(datachanges.exist()) {
+            $('#reset-data-changes').removeClass('disabled');
+        }
+        else {
+            $('#reset-data-changes').addClass('disabled');
+        }
     }
+
+    $('#reset-data-changes').click(function(){
+        datachanges.revert();
+    });
 
     // add event handler for ignoring data series
     var start;
@@ -577,6 +600,7 @@ $(function() {
 
                 <a href="visualize" class="submit pull-right btn btn-primary" id="describe-proceed">{% trans "Visualize" %} <i class="icon-chevron-right icon-white"></i></a>
                 <a class="btn submit" href="upload"><i class="icon-chevron-left"></i> {% trans "Back" %}</a>
+                <button class="btn disabled" id="reset-data-changes" title="{% trans "Revert data changes" %}">{% trans "Revert" %}</button>
                 <div class="clearfix"></div>
             </div>
         </div>
