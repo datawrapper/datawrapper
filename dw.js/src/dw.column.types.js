@@ -94,7 +94,6 @@ dw.column.types.number = function(sample) {
                 prepend = (config['number-prepend'] || '').replace(' ', '&nbsp;');
 
             return function(val, full, round) {
-                if (arguments.length < 2) full = true;
                 if (div !== 0) val = Number(val) / Math.pow(10, div);
                 if (format != '-') {
                     if (round || val == Math.round(val)) format = format.substr(0,1)+'0';
