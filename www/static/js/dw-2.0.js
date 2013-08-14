@@ -427,6 +427,7 @@ dw.column.types.number = function(sample) {
                 prepend = (config['number-prepend'] || '').replace(' ', '&nbsp;');
 
             return function(val, full, round) {
+                if (isNaN(val)) return val;
                 if (div !== 0) val = Number(val) / Math.pow(10, div);
                 if (format != '-') {
                     if (round || val == Math.round(val)) format = format.substr(0,1)+'0';
@@ -550,10 +551,10 @@ dw.column.types.date = function(sample) {
         // returns a function for formatting numbers
         formatter: function(config) {
             switch (knownFormats[format].precision) {
-                case 'year': return function(d) { return d.getFullYear(); };
-                case 'quarter': return function(d) { return d.getFullYear() + ' Q'+(d.getMonth()/3 + 1); };
-                case 'month': return function(d) { return Globalize.format(d, 'MMM yy'); };
-                case 'day': return function(d) { return Globalize.format(d, 'd'); };
+                case 'year': return function(d) { return !_.isDate(d) ? d : d.getFullYear(); };
+                case 'quarter': return function(d) { return !_.isDate(d) ? d : d.getFullYear() + ' Q'+(d.getMonth()/3 + 1); };
+                case 'month': return function(d) { return !_.isDate(d) ? d : Globalize.format(d, 'MMM yy'); };
+                case 'day': return function(d) { return !_.isDate(d) ? d : Globalize.format(d, 'd'); };
             }
         }
     };
