@@ -83,7 +83,7 @@ $(function() {
         add: function(changes) {
             var dataChanges = _.clone(chart.get('metadata.data.data-changes', [])); //clone is needed, otherwise chart.set does not detect this as change
             changes.forEach(function(change) {
-                dataChanges.push({row: change[0] - 1, column: change[1], value: change[3]});
+                dataChanges.push({row: change[0] - 1, column: getSeriesOfIndex(change[1]), value: change[3]});
             });
             chart.set('metadata.data.data-changes', dataChanges);
         },
@@ -151,7 +151,7 @@ $(function() {
 
         var tr = [];
         dataset.eachColumn(function(column) {
-            tr.push((!isNone(column.name()) ? column.name() : ''));
+            tr.push(column.title());
         });
         data.push(tr);
 
@@ -277,7 +277,7 @@ $(function() {
     }
 
     function getSeriesOfIndex(index) {
-        return $dataPreview.handsontable('getDataAtCell', 0, index);
+        return dataset.column(index).name();
     }
 
     $('body').on('mousedown', function () {

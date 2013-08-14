@@ -223,17 +223,27 @@ dw.column = function(name, rows, type) {
 
     var range,
         total,
-        origRows = rows.slice(0);
+        origRows = rows.slice(0),
+        title;
 
     // public interface
     var column = {
-        // column label
+        // column name (used for reference in chart metadata)
         name: function() {
             if (arguments.length) {
                 name = arguments[0];
                 return column;
             }
             return name;
+        },
+
+        // column title (used for presentation)
+        title: function() {
+            if (arguments.length) {
+              title = arguments[0];
+              return column;
+            }
+            return title || name;
         },
 
         /**
@@ -1261,7 +1271,12 @@ dw.chart = function(attributes) {
         dataset: function() {
             var dataChanges = chart.get('metadata.data.data-changes', []);
             _.each(dataChanges, function(change){
-              dataset.column(change.column).raw(change.row, change.value);
+              if(change.row === -1) { //column title
+                dataset.column(change.column).title(change.value);
+              }
+              else {
+                dataset.column(change.column).raw(change.row, change.value);
+              }
             });
             return dataset;
         },

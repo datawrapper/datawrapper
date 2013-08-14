@@ -90,7 +90,12 @@ dw.chart = function(attributes) {
         dataset: function() {
             var dataChanges = chart.get('metadata.data.data-changes', []);
             _.each(dataChanges, function(change){
-              dataset.column(change.column).raw(change.row, change.value);
+              if(change.row === -1) { //column title
+                dataset.column(change.column).title(change.value);
+              }
+              else {
+                dataset.column(change.column).raw(change.row, change.value);
+              }
             });
             return dataset;
         },

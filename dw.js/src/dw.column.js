@@ -49,17 +49,27 @@ dw.column = function(name, rows, type) {
 
     var range,
         total,
-        origRows = rows.slice(0);
+        origRows = rows.slice(0),
+        title;
 
     // public interface
     var column = {
-        // column label
+        // column name (used for reference in chart metadata)
         name: function() {
             if (arguments.length) {
                 name = arguments[0];
                 return column;
             }
             return name;
+        },
+
+        // column title (used for presentation)
+        title: function() {
+            if (arguments.length) {
+              title = arguments[0];
+              return column;
+            }
+            return title || name;
         },
 
         /**
