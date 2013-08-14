@@ -179,7 +179,7 @@ $(function() {
             if (row > 0) {
                 var column = dataset.column(col);
                 var formatter = chart.columnFormatter(column);
-                value = formatter(column.val(row - 1));
+                value = formatter(column.val(row - 1), true);
             }
             Handsontable.TextCell.renderer.apply(this, arguments);
             if (parseInt(value, 10) < 0) { //if row contains negative number
