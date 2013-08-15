@@ -9,7 +9,9 @@
 
         pwdMismatch: "{{ 'The password and the repeated password must not differ.'|trans|escape('js') }}",
 
-        noData: "{{ 'Awesome charts need awesome data. If you just want to try out things you can select one of our sample datasets.'|trans|escape('js') }}"
+        noData: "{{ 'Awesome charts need awesome data. If you just want to try out things you can select one of our sample datasets.'|trans|escape('js') }}",
+
+        insufficientData: "{{ '<h4>Insufficient data</h4>The visualization needs at least one column of the type <b>%type</b> to populate axis <i>%key</i>.'|trans|escape('js')}}"
 
     };
 

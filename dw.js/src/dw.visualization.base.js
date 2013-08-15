@@ -107,6 +107,10 @@ _.extend(dw.visualization.base, {
                 return !usedColumns[col.name()] &&
                     _.indexOf(axisDef.accepts, col.type()) >= 0;
             }
+            function errMissingColumn() {
+                var msg = dw.backend ? dw.backend.messages.insufficientData : 'The visualization needs at least one column of the type %type to populate axis %key';
+                errors.push(msg.replace('%type', axisDef.accepts).replace('%key', key));
+            }
             if (!axisDef.optional) {
                 if (!axisDef.multiple) {
                     // find first colulmn accepted by axis
@@ -115,7 +119,7 @@ _.extend(dw.visualization.base, {
                         usedColumns[c.name()] = true; // mark column as used
                         defAxes[key] = c.name();
                     } else {
-                        errors.push('Error: Could not populate axis <b>'+key+'</b> a data column of the type '+axisDef.accepts);
+                        errMissingColumn();
                     }
                 } else {
                     defAxes[key] = [];
@@ -126,7 +130,7 @@ _.extend(dw.visualization.base, {
                         }
                     });
                     if (!defAxes[key].length) {
-                        errors.push('Error: Could not populate axis <b>'+key+'</b> with a column of the type '+axisDef.accepts);
+                        errMissingColumn();
                     }
                 }
             } else {
@@ -134,7 +138,8 @@ _.extend(dw.visualization.base, {
             }
         });
         if (errors.length) {
-            me.warn(errors.join('<br/>'));
+            if (dw.backend) dw.backend.alert(errors.join('<br/>'));
+            else throw errors.join('<br/>');
             return false;
         }
         defAxes = me.chart.get('metadata.axes', defAxes);
