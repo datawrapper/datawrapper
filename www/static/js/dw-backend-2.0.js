@@ -496,6 +496,11 @@ var dw = dw || {};
         };
     }
 
+    function customAlert(msg) {
+        $('#alertModal p').html(msg);
+        $('#alertModal').modal();
+    }
+
     dw.backend = {
         init: function() {
             initLanguageLinks();
@@ -517,7 +522,8 @@ var dw = dw || {};
         popupChart: popupChart,
         checkPassword: checkPassword,
         clearAlerts: clearAlerts,
-        syncChart: syncChart
+        syncChart: syncChart,
+        alert: customAlert
     }; // end dw.backend
 
     // initialize backend on page load

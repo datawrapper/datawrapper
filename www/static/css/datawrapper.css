@@ -823,8 +823,7 @@ form.well form {
 }
 
 .dw .modal-backdrop {
-    background-color: #888;
-    background-image: url(../img/modal-backdrop.png);
+    background-color: #555;
 }
 
 .dw .modal-header h1 {
@@ -1166,4 +1165,22 @@ label.separator {
     text-align: left;
     margin-top: 10px;
     line-height: 20px;
+}
+
+#alertModal {
+    width: 400px;
+    margin-left: -200px;
+    border: none;
+    top:30%;
+    border-radius: 20px;
+    text-align: center;
+    background: rgb(255,255,255);
+    background: -moz-linear-gradient(top,  rgba(225,225,225,1) 8%, rgba(246,246,246,1) 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(8%,rgba(225,225,225,1)), color-stop(100%,rgba(246,246,246,1)));
+    background: -webkit-linear-gradient(top,  rgba(225,225,225,1) 8%,rgba(246,246,246,1) 100%);
+    background: -o-linear-gradient(top,  rgba(225,225,225,1) 8%,rgba(246,246,246,1) 100%);
+    background: -ms-linear-gradient(top,  rgba(225,225,225,1) 8%,rgba(246,246,246,1) 100%);
+    background: linear-gradient(to bottom,  rgba(225,225,225,1) 8%,rgba(246,246,246,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f6f6f6',GradientType=0 );
+
 }
