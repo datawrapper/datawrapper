@@ -229,11 +229,8 @@ $(function() {
                         renderer: myRenderer
                     };
                 },
-                beforeRender: function() {
-                    //HOT 0.9.11 has a bug: beforeRender is called when table is scrolled, but afterRender is not
-                    setTimeout(function() {
-                        renderSelectedTh(); //if HOT was scrolled horizontally, we need to rerender th.selected
-                    }, 0);
+                afterRender: function() {
+                    renderSelectedTh(); //if HOT was scrolled horizontally, we need to rerender th.selected
                 },
                 afterChange: function(changes, source) {
                     if (source !== 'loadData') {
