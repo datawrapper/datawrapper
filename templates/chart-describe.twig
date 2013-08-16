@@ -171,9 +171,7 @@ $(function() {
             var tr = [];
             dataset.eachColumn(function(column, i) {
                 var val = column.raw(row);
-                val = column.type() == 'number' ? chart.formatValue(val, true) :
-                        column.type() == 'date' ? dw.utils.longDateFormat(column)(val) :
-                        val;
+                val = chart.columnFormatter(column)(val, true);
                 tr.push((!isNone(column.raw(row)) ? stripHtmlTags(val) : ''));
             });
             data.push(tr);
