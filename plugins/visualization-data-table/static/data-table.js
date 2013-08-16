@@ -46,7 +46,7 @@
                     tr.addClass('highlight');
                 }
                 dataset.eachColumn(function(column, s) {
-                    var cell_content = column.type(true).formatter()(column.val(r), true);
+                    var cell_content = me.chart.columnFormatter(column)(column.val(r), true);
                     if (cell_content == "n/a") {
                         cell_content = "&mdash;";
                     }

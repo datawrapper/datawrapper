@@ -162,12 +162,11 @@ _.extend(dw.visualization.base, {
             axesDef = me.axes();
         if (axesDef.labels) {
             var lblCol = me.dataset.column(axesDef.labels),
-                fmt = lblCol.type(true).formatter(),
+                fmt = me.chart.columnFormatter(lblCol),
                 keys = [];
             lblCol.each(function(val) {
                 keys.push(String(fmt(val)));
             });
-
             return keys;
         }
         return [];
