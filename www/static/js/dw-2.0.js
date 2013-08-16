@@ -1020,7 +1020,7 @@ dw.utils.filter = function (column, active, type, format) {
                 ticks = timescale.ticks(nticks),
                 daysDelta = Math.round((column.val(-1).getTime() - column.val(0).getTime()) / 86400000),
                 fmt = dw.utils.dateFormat(daysDelta),
-                lfmt = dw.utils.longDateFormat(column),
+                lfmt = column.type(true).formatter(),
                 dots = timescale.ticks(w / 8),
                 lbl_x = function(i) { return Math.max(-18, timescale(column.val(i)) - 40); };
 
@@ -1543,7 +1543,7 @@ _.extend(dw.visualization.base, {
             axesDef = me.axes();
         if (axesDef.labels) {
             var lblCol = me.dataset.column(axesDef.labels),
-                fmt = dw.utils.longDateFormat(lblCol),
+                fmt = lblCol.type(true).formatter(),
                 keys = [];
             lblCol.each(function(val) {
                 keys.push(String(fmt(val)));
