@@ -162,7 +162,7 @@ _.extend(dw.visualization.base, {
             axesDef = me.axes();
         if (axesDef.labels) {
             var lblCol = me.dataset.column(axesDef.labels),
-                fmt = dw.utils.longDateFormat(lblCol),
+                fmt = lblCol.type(true).formatter(),
                 keys = [];
             lblCol.each(function(val) {
                 keys.push(String(fmt(val)));

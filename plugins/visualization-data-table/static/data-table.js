@@ -46,12 +46,7 @@
                     tr.addClass('highlight');
                 }
                 dataset.eachColumn(function(column, s) {
-                    var cell_content = column.val(r);
-                    if (column.type() == 'number') {
-                        cell_content = me.chart.formatValue(column.val(r), true);
-                    } else if (column.type() == 'date') {
-                        cell_content = dw.utils.longDateFormat(column)(column.val(r));
-                    }
+                    var cell_content = column.type(true).formatter()(column.val(r), true);
                     if (cell_content == "n/a") {
                         cell_content = "&mdash;";
                     }
@@ -60,11 +55,8 @@
                         td.addClass('highlight');
                     }
                     // set a type as classe
-                    if (_.isNumber(column.val(r)))
-                        td.addClass("number");
-                    else if (cell_content == "&mdash;")
-                        td.addClass("not-available");
-                    else if (cell_content == "&mdash;")
+                    td.addClass(column.type());
+                    if (cell_content == "&mdash;") td.addClass("not-available");
                     td.attr('title', column.name());
                     tr.append(td);
                 });
