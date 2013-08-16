@@ -290,6 +290,9 @@ $(function() {
     });
 
     $dataPreview.on('mousedown', 'th:has(.colHeader)', function () {
+        if(document.activeElement.nodeName === 'INPUT') {
+            document.activeElement.blur(); //save changes from currently edited field
+        }
         start = getIndexOfTh(this);
         selectColumns(start);
         event.stopPropagation();
