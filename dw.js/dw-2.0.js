@@ -875,6 +875,7 @@ dw.utils = {
     },
 
     /**
+     * DEPRECATED
      * returns a function for formating a date based on the
      * input format of the dates in the dataset
      */
@@ -1030,7 +1031,7 @@ dw.utils.filter = function (column, active, type, format) {
                 ticks = timescale.ticks(nticks),
                 daysDelta = Math.round((column.val(-1).getTime() - column.val(0).getTime()) / 86400000),
                 fmt = dw.utils.dateFormat(daysDelta),
-                lfmt = dw.utils.longDateFormat(column),
+                lfmt = column.type(true).formatter(),
                 dots = timescale.ticks(w / 8),
                 lbl_x = function(i) { return Math.max(-18, timescale(column.val(i)) - 40); };
 
@@ -1507,6 +1508,10 @@ _.extend(dw.visualization.base, {
                 return !usedColumns[col.name()] &&
                     _.indexOf(axisDef.accepts, col.type()) >= 0;
             }
+            function errMissingColumn() {
+                var msg = dw.backend ? dw.backend.messages.insufficientData : 'The visualization needs at least one column of the type %type to populate axis %key';
+                errors.push(msg.replace('%type', axisDef.accepts).replace('%key', key));
+            }
             if (!axisDef.optional) {
                 if (!axisDef.multiple) {
                     // find first colulmn accepted by axis
@@ -1515,7 +1520,7 @@ _.extend(dw.visualization.base, {
                         usedColumns[c.name()] = true; // mark column as used
                         defAxes[key] = c.name();
                     } else {
-                        errors.push('Error: Could not populate axis <b>'+key+'</b> a data column of the type '+axisDef.accepts);
+                        errMissingColumn();
                     }
                 } else {
                     defAxes[key] = [];
@@ -1526,7 +1531,7 @@ _.extend(dw.visualization.base, {
                         }
                     });
                     if (!defAxes[key].length) {
-                        errors.push('Error: Could not populate axis <b>'+key+'</b> with a column of the type '+axisDef.accepts);
+                        errMissingColumn();
                     }
                 }
             } else {
@@ -1534,7 +1539,8 @@ _.extend(dw.visualization.base, {
             }
         });
         if (errors.length) {
-            me.warn(errors.join('<br/>'));
+            if (dw.backend) dw.backend.alert(errors.join('<br/>'));
+            else throw errors.join('<br/>');
             return false;
         }
         defAxes = me.chart.get('metadata.axes', defAxes);
@@ -1557,12 +1563,11 @@ _.extend(dw.visualization.base, {
             axesDef = me.axes();
         if (axesDef.labels) {
             var lblCol = me.dataset.column(axesDef.labels),
-                fmt = dw.utils.longDateFormat(lblCol),
+                fmt = me.chart.columnFormatter(lblCol),
                 keys = [];
             lblCol.each(function(val) {
                 keys.push(String(fmt(val)));
             });
-
             return keys;
         }
         return [];

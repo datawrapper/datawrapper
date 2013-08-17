@@ -45,6 +45,7 @@ dw.utils = {
     },
 
     /**
+     * DEPRECATED
      * returns a function for formating a date based on the
      * input format of the dates in the dataset
      */

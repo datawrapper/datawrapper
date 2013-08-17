@@ -170,7 +170,7 @@
                 filter = me.__lastRow,
                 labels = me.dataset.column(me.axesDef.labels),
                 column = me.getBarColumn(filter),
-                fmt = dw.utils.longDateFormat(labels);
+                fmt = labels.type(true).formatter();
 
             column.each(function(val, i) {
                 if (!isNaN(val) || !me.get('ignore-missing-values', false)) {

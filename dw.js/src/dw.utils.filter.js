@@ -92,7 +92,7 @@ dw.utils.filter = function (column, active, type, format) {
                 ticks = timescale.ticks(nticks),
                 daysDelta = Math.round((column.val(-1).getTime() - column.val(0).getTime()) / 86400000),
                 fmt = dw.utils.dateFormat(daysDelta),
-                lfmt = dw.utils.longDateFormat(column),
+                lfmt = column.type(true).formatter(),
                 dots = timescale.ticks(w / 8),
                 lbl_x = function(i) { return Math.max(-18, timescale(column.val(i)) - 40); };
 

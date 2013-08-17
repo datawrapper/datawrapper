@@ -92,7 +92,7 @@
                 ocnt = 0,
                 hasNegativeValues = column.range()[0] < 0,
                 values = [],
-                fmt = labels.type() == 'date' ? dw.utils.longDateFormat(labels) : _.identity;
+                fmt = labels.type(true).formatter();
 
             // pull values and labels from columns
             column.each(function(val, i) {
