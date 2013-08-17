@@ -82,21 +82,51 @@ table.htCore tr td {
 <script type="text/javascript">
 $(function() {
 
-    var datachanges = {
-        exist: function() {
-            return !!chart.get('metadata.data.data-changes', []).length;
+    var metadata = {
+        changes: {
+            exist: function() {
+                return !!chart.get('metadata.data.changes', []).length;
+            },
+            add: function(columnName, row, value) {
+                var dataChanges = _.clone(chart.get('metadata.data.changes', [])); //clone is needed, otherwise chart.set does not detect this as change
+                dataChanges.push({row: row, column: columnName, value: value});
+                chart.set('metadata.data.changes', dataChanges);
+            },
+            revert: function() {
+                chart.set('metadata.data.changes', []);
+            }
         },
-        add: function(changes) {
-            var dataChanges = _.clone(chart.get('metadata.data.data-changes', [])); //clone is needed, otherwise chart.set does not detect this as change
-            changes.forEach(function(change) {
-                dataChanges.push({row: change[0] - 1, column: getSeriesOfIndex(change[1]), value: change[3]});
-            });
-            chart.set('metadata.data.data-changes', dataChanges);
+
+        title: {
+            add: function(columnName, title) {
+                var titles = _.clone(chart.get('metadata.data.title', {})); //clone is needed, otherwise chart.set does not detect this as change
+                titles[columnName] = title;
+                chart.set('metadata.data.title', titles);
+            }
         },
-        revert: function() {
-            chart.set('metadata.data.data-changes', []);
+
+        columnFormat: {
+            add: function(columnNames, property, value) {
+                var columnFormats = $.extend(true, {}, chart.get('metadata.data.column-format', {})); //deep clone (_.clone is insufficient because it does a shallow clone)
+                columnNames.forEach(function(name) {
+                    if (!columnFormats[name]) {
+                        columnFormats[name] = {};
+                    }
+                    columnFormats[name][property] = value;
+                });
+                chart.set('metadata.data.column-format', columnFormats);
+            },
+            get: function(columnName) {
+                var columnFormat = chart.get('metadata.data.column-format', {});
+                if (columnName) {
+                    return columnFormat[columnName] || {};
+                }
+                else {
+                    columnFormat;
+                }
+            }
         }
-    }
+    };
 
     var chart = dw.backend.currentChart,
         dataset;
@@ -140,8 +170,6 @@ $(function() {
         updateTable(dataset, chart);
     });
 
-    var ignoreSeries;
-
     function updateTable() {
 
         function isNone(val) {
@@ -177,11 +205,9 @@ $(function() {
             data.push(tr);
         });
 
-        ignoreSeries = _.clone(chart.get('metadata.data.ignore-columns', {}));
-
         function myRenderer(instance, td, row, col, prop, value, cellProperties) {
+            var column = dataset.column(col);
             if (row > 0) {
-                var column = dataset.column(col);
                 var formatter = chart.columnFormatter(column);
                 value = formatter(column.val(row - 1), true);
             }
@@ -202,7 +228,7 @@ $(function() {
                 td.classList.add(row % 2 ? 'oddRow' : 'evenRow');
             }
 
-            if (ignoreSeries[data[0][col]]) {
+            if (metadata.columnFormat.get(column.name()).ignore) {
                 td.classList.add('ignored');
             }
 
@@ -238,7 +264,16 @@ $(function() {
                 },
                 afterChange: function(changes, source) {
                     if (source !== 'loadData') {
-                        datachanges.add(changes);
+                        changes.forEach(function(change) {
+                            var serie = getSeriesOfIndex(change[1]);
+                            if (change[0] === 0) { //first row is column title
+                                metadata.title.add(serie, change[3]);
+                            }
+                            else {
+                                metadata.changes.add(serie, change[0] - 1, change[3]);
+                            }
+                        });
+
                     }
                 }
             });
@@ -246,7 +281,7 @@ $(function() {
             $('#data-preview table').addClass('table table-bordered');
         }
 
-        if(datachanges.exist()) {
+        if(metadata.changes.exist()) {
             $('#reset-data-changes').removeClass('disabled');
         }
         else {
@@ -255,7 +290,7 @@ $(function() {
     }
 
     $('#reset-data-changes').click(function(){
-        datachanges.revert();
+        metadata.changes.revert();
     });
 
     // add event handler for ignoring data series
@@ -368,7 +403,7 @@ $(function() {
 
     function fillInField(selector, property) {
         var series = selectedSeries();
-        var formats = chart.get('metadata.describe.column-format', {});
+        var formats = chart.get('metadata.data.column-format', {});
         var $input = $(selector);
         if(allEqual(formats, series, property)) {
             var val = formats[series[0]] && formats[series[0]][property];
@@ -385,8 +420,12 @@ $(function() {
     function showColumnSettings() {
         if(selectedColumns.length) {
             var serie = getSeriesOfIndex(selectedColumns[0]);
-            var ignoreSeries = chart.get('metadata.data.ignore-columns', {});
-            $('#column-options-hide')[0].checked = ignoreSeries[serie];
+            if(metadata.columnFormat.get(serie).ignore) {
+                $('#column-options-hide')[0].checked = true;
+            }
+            else {
+                $('#column-options-hide')[0].checked = false;
+            }
 
             if(dataset.column(serie).type() == 'number') {
                 fillInField('#number-format', 'number-format');
@@ -413,28 +452,24 @@ $(function() {
     });
 
     $('#column-options-hide').change(function(){
-        var checked = this.checked;
-        var ignoreSeries = _.clone(chart.get('metadata.data.ignore-columns', {}));
-        selectedColumns.forEach(function(i){
-            ignoreSeries[getSeriesOfIndex(i)] = checked;
+        var columnNames = [];
+        selectedColumns.forEach(function(i) {
+            columnNames.push(getSeriesOfIndex(i));
         });
-        chart.set('metadata.data.ignore-columns', ignoreSeries);
+        metadata.columnFormat.add(columnNames, 'ignore', this.checked);
     });
 
     function syncColumnFormat(selector, property) {
         $(selector).change(function(){
-            var value = this.value;
-            var columnFormats = $.extend(true, {}, chart.get('metadata.describe.column-format', {})); //deep clone (_.clone is insufficient because it does a shallow clone)
+            var columnNames = [];
             selectedColumns.forEach(function(i) {
-                var series = getSeriesOfIndex(i);
-                if (!columnFormats[series]) {
-                    columnFormats[series] = {};
-                }
-                columnFormats[series][property] = value;
+                columnNames.push(getSeriesOfIndex(i));
             });
-            chart.set('metadata.describe.column-format', columnFormats);
+            metadata.columnFormat.add(columnNames, property, this.value);
         });
     }
+
+    console.log("$$", chart.get('metadata', {}));
 
     syncColumnFormat('#number-format', 'number-format');
     syncColumnFormat('#number-divisor', 'number-divisor');

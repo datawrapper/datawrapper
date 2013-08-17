@@ -1271,14 +1271,19 @@ dw.chart = function(attributes) {
 
         // applies the data changes and returns the dataset
         dataset: function() {
-            var dataChanges = chart.get('metadata.data.data-changes', []);
-            _.each(dataChanges, function(change){
-              if(change.row === -1) { //column title
-                dataset.column(change.column).title(change.value);
-              }
-              else {
-                dataset.column(change.column).raw(change.row, change.value);
-              }
+            var changes = chart.get('metadata.data.changes', []);
+            _.each(changes, function(change) {
+                var column = dataset.column(change.column);
+                if (column) {
+                    column.raw(change.row, change.value);
+                }
+            });
+            var titles = chart.get('metadata.data.title', []);
+            _.each(titles, function(title, key) {
+                var column = dataset.column(key);
+                if (column) {
+                    column.title(title);
+                }
             });
             return dataset;
         },
@@ -1370,7 +1375,7 @@ dw.chart = function(attributes) {
         columnFormatter: function(column) {
             // pull output config from metadata
             // return column.formatter(config);
-            var colFormat = chart.get('metadata.describe.column-format', {});
+            var colFormat = chart.get('metadata.data.column-format', {});
             return column.type(true).formatter(colFormat[column.name()] || {});
         }
 
@@ -1494,7 +1499,12 @@ _.extend(dw.visualization.base, {
         me.dataset = chart.dataset();
         me.setTheme(chart.theme());
         me.chart = chart;
-        me.dataset.filterSeries(chart.get('metadata.data.ignore-columns', {}));
+        var columnFormat = chart.get('metadata.data.column-format', {});
+        var ignore = {};
+        _.each(columnFormat, function(format, key) {
+            ignore[key] = !!format.ignore;
+        });
+        me.dataset.filterSeries(ignore);
     },
 
     axes: function(returnAsColumns) {
