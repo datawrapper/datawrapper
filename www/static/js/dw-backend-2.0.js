@@ -496,13 +496,16 @@ var dw = dw || {};
     }
 
     var alertOpen = false,
-        messageQueue = [];
+        messageQueue = [],
+        lastMessage = false;
 
     function customAlert(msg) {
+        if (msg == lastMessage) return;
         if (!alertOpen) {
             $('#alertModal .message').html(msg);
             $('#alertModal').modal();
             alertOpen = true;
+            lastMessage = msg;
         } else {
             messageQueue.push(msg);
         }
