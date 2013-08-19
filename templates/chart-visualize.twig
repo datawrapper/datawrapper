@@ -163,6 +163,7 @@ $(function() {
         dw.backend.currentVis.dataset = chart.dataset();
         dw.backend.currentVis.meta = visMetas[chart.get('type')];
         loadVisDeferred.resolve();
+        $('#notifications').html('');
     }
 
     chart.onSave(function(chart) {
@@ -435,6 +436,15 @@ $(function() {
     $('.resize-chart input').change(_updateSize);
     $('#iframe-wrapper').width(cw);
     $('#iframe-wrapper').height(ch);
+
+    dw.backend.notify = function(msg) {
+        $('<div />').addClass('notification')
+            .html('<div class="bg">'+$('#alertModal .bg').html()+'</div><div class="message">'+msg+'</div>')
+            .appendTo('#notifications')
+            .hide()
+            .fadeIn();
+    };
+
 });
 
 
@@ -463,6 +473,11 @@ $(function() {
                     </div>
                 </div>
             </div>
+
+            <div id="notifications">
+
+            </div>
+
         </div>
 
         <ul class="span5 nav nav-tabs visualize-nav-tabs" data-target="tab-container">

@@ -10,6 +10,7 @@ _.extend(dw.visualization.base, {
     // called before rendering
     __init: function() {
         this.__renderedDfd = $.Deferred();
+        parent.$('body').trigger('datawrapper:vis:init');
     },
 
     render: function(el) {
@@ -50,24 +51,7 @@ _.extend(dw.visualization.base, {
     },
 
     warn: function(str) {
-        var warning = $('<div>' + str + '</div>');
-        warning.css({
-            'background-color': '#FCF8E3',
-            'border': '1px solid #FBEED5',
-            'border-radius': '4px 4px 4px 4px',
-            'color': '#a07833',
-            'margin-bottom': '18px',
-            'padding': '8px 35px 8px 14px',
-            'text-shadow': '0 1px 0 rgba(255, 255, 255, 0.5)',
-            'left': '10%',
-            'right': '10%',
-            'z-index': 1000,
-            'text-align': 'center',
-            position: 'absolute'
-        });
-        $('body').prepend(warning);
-        warning.hide();
-        warning.fadeIn();
+        if (dw.backend && _.isFunction(dw.backend.notify)) dw.backend.notify(str);
     },
 
     /**
@@ -108,7 +92,9 @@ _.extend(dw.visualization.base, {
                     _.indexOf(axisDef.accepts, col.type()) >= 0;
             }
             function errMissingColumn() {
-                var msg = dw.backend ? dw.backend.messages.insufficientData : 'The visualization needs at least one column of the type %type to populate axis %key';
+                var msg = dw.backend ?
+                        dw.backend.messages.insufficientData :
+                        'The visualization needs at least one column of the type %type to populate axis %key';
                 errors.push(msg.replace('%type', axisDef.accepts).replace('%key', key));
             }
             if (!axisDef.optional) {
@@ -138,8 +124,7 @@ _.extend(dw.visualization.base, {
             }
         });
         if (errors.length) {
-            if (dw.backend) dw.backend.alert(errors.join('<br/>'));
-            else throw errors.join('<br/>');
+            if (dw.backend) me.warn(errors.join('<br />'));
             return false;
         }
         defAxes = me.chart.get('metadata.axes', defAxes);
