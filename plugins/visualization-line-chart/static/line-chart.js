@@ -60,6 +60,10 @@
                     c.w >= theme.minWidth;
             }
 
+            if (axesDef.y1.length > 1 && !lineLabelsVisible()) {
+                vis.warn(vis.translate('tooManyLinesToLabel'));
+            }
+
             // compute width of primary y axis by measuring label widths
             function yAxisWidth(h) {
                 var ticks = vis.getYTicks(scales.y, h, extendRange),

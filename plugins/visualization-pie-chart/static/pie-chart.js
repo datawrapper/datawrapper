@@ -122,13 +122,13 @@
             });
 
             if (hasNegativeValues) {
-                me.warn(me.translate('cannotShowNegativeValues'));
+                me.notify(me.translate('cannotShowNegativeValues'));
             }
 
             // add slice 'others' to the slices array
             if (ocnt > 0) {
                 slices.push({ name: me.translate('other'), value: others });
-                me.warn(me.translate('noMoreThanFiveSlices').replace('%count', ocnt));
+                me.notify(me.translate('noMoreThanFiveSlices').replace('%count', ocnt));
             }
 
             if (me.get('sort-values', true)) {

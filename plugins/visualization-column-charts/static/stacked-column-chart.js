@@ -121,7 +121,7 @@
                 if (!allPositive) return false;
             });
             if (!allPositive) {
-                me.warn(me.translate('cannotShowNegativeValues'));
+                me.notify(me.translate('cannotShowNegativeValues'));
             }
         }
 
