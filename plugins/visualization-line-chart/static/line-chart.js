@@ -45,7 +45,8 @@
                 });
                 y1Domain = domain;  // store for later, replaces me.__domain
                 if (vis.get('baseline-zero')) {
-                    domain[0] = 0;
+                    if (domain[0] > 0) domain[0] = 0;
+                    if (domain[1] < 0) domain[1] = 0;
                 }
                 scale = vis.get('scale') || 'linear';
                 if (scale == 'log' && domain[0] === 0) domain[0] = 0.03;  // log scales don't like zero!
