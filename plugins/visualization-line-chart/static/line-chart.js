@@ -173,7 +173,13 @@
                     tickFormat = dw.utils.dateFormat(daysDelta),
                     last_month = -1, new_month,
                     last_year = -1, new_year,
-                    new_decade, new_quarter;
+                    new_decade, new_quarter,
+                    real_data_as_ticks = false;
+
+                if (ticks.length > axesDef.x.length) {
+                    ticks = axesDef.x.values();
+                    real_data_as_ticks = true;
+                }
 
                 _.each(ticks, function(date, i) {
                     new_month = date.getMonth() != last_month;
@@ -191,7 +197,8 @@
                         ((daysDelta <= 90 && new_month) ||
                         (daysDelta > 90 && daysDelta <= 500 && new_quarter) ||
                         (daysDelta > 500 && daysDelta < 3650 && new_year) ||  // less between two and ten years
-                        (daysDelta >= 3650 && new_decade))  // less between two and ten years
+                        (daysDelta >= 3650 && new_decade)) ||  // less between two and ten years
+                        real_data_as_ticks
                     ) {
                         if (theme.horizontalGrid) {
                             vis.path('M'+[x, c.h - c.bpad] + 'V' + c.tpad, 'grid')
