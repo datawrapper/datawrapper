@@ -38,10 +38,7 @@ table.htCore tr td {
 .table thead th.selected {
     background: #ccc;
 }
-.table td.ignored {
-    color: #999 !important;
-    text-decoration: line-through
-}
+
 .table td.htDimmed { /*revert default HOT style for readOnly cells*/
     font-style: normal;
     color: inherit;
@@ -71,6 +68,17 @@ table.htCore tr td {
 .table td.evenRow {
     background-color: #f9f9f9;
 }
+
+.table th.ignored,
+.table td.ignored {
+    color: #aaa !important;
+    text-decoration: line-through
+}
+.table th.ignored { background-color: #e2e2e2; }
+.table td.ignored.firstRow { background-color: #e2e2e2; }
+.table td.ignored.oddRow { background-color: #e9e9e9; }
+.table td.ignored.evenRow { background-color: #e2e2e2; }
+
 .table td.firstRow.area { background: #d4ddee; }
 .table td.oddRow.area { background-color: #e1ebfd; }
 .table td.evenRow.area { background-color: #dce5f7; }
@@ -377,6 +385,18 @@ $(function() {
         $("#data-preview thead th.selected").removeClass('selected');
         selectedColumns.forEach(function(i){
             getThOfIndex(i).classList.add('selected');
+        });
+        $("#data-preview thead th").each(function(i){
+            if(i > 0) {
+                var index = getIndexOfTh(this);
+                var serie = getSeriesOfIndex(index);
+                if(metadata.columnFormat.get(serie).ignore) {
+                    this.classList.add('ignored');
+                }
+                else {
+                    this.classList.remove('ignored');
+                }
+            }
         });
     }
 
