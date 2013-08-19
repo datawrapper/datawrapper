@@ -287,6 +287,11 @@
 
             cw = (c.w - c.lpad - c.rpad) * (1 - vspace - vspace);
             bw = cw / (n + (n-1) * pad);
+            if (bw < 10) {
+                bw = 2;
+                pad = ((cw / bw) - n) / (n-1);
+            }
+
             h = sc.y(val) - sc.y(0);
             w = Math.round(bw);
             if (h >= 0) {
