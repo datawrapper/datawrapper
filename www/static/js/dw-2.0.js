@@ -1432,7 +1432,7 @@ _.extend(dw.visualization.base, {
         return this.chart.get('metadata.visualize.'+str, _default);
     },
 
-    warn: function(str) {
+    notify: function(str) {
         if (dw.backend && _.isFunction(dw.backend.notify)) dw.backend.notify(str);
     },
 
@@ -1506,7 +1506,7 @@ _.extend(dw.visualization.base, {
             }
         });
         if (errors.length) {
-            if (dw.backend) me.warn(errors.join('<br />'));
+            if (dw.backend) dw.backend.alert(errors.join('<br />'));
             return false;
         }
         defAxes = me.chart.get('metadata.axes', defAxes);
