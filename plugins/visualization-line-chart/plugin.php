@@ -1,4 +1,4 @@
- <?php
+     <?php
 
 class DatawrapperPlugin_VisualizationLineChart extends DatawrapperPlugin_Visualization {
 
@@ -104,6 +104,15 @@ class DatawrapperPlugin_VisualizationLineChart extends DatawrapperPlugin_Visuali
                     "chart.min_columns[y1]" => 2,
                     "chart.max_columns[y1]" => 2,
                     "chart.max_columns[y2]" => 0  // direct labeling not possible with second axis
+                )
+            ),
+            "fill-below" => array(
+                "type" => "checkbox",
+                "label" => __("Fill below line", $id),
+                "defaut" => false,
+                "depends-on" => array(
+                    "chart.max_columns[y1]" => 1,
+                    "chart.max_columns[y2]" => 0
                 )
             ),
             "line-mode" => array(

@@ -44,7 +44,7 @@
                     domain[1] = Math.max(domain[1], col.range()[1]);
                 });
                 y1Domain = domain;  // store for later, replaces me.__domain
-                if (vis.get('baseline-zero')) {
+                if (vis.get('baseline-zero', false) || vis.get('fill-below', false)) {
                     if (domain[0] > 0) domain[0] = 0;
                     if (domain[1] < 0) domain[1] = 0;
                 }
@@ -610,10 +610,12 @@
                 } // */
             });  // _.each(all_series,
 
-            if (legend.pos == 'direct') {
-                vis.optimizeLabelPositions(legend_labels, 3, 'top');
-            } else if (legend.pos == 'inside-right') {
-                legend.cont.css({ left: c.w - legend.xoffset - c.rpad });
+            if (axesDef.y1.length > 1) {
+                if (legend.pos == 'direct') {
+                    vis.optimizeLabelPositions(legend_labels, 3, 'top');
+                } else if (legend.pos == 'inside-right') {
+                    legend.cont.css({ left: c.w - legend.xoffset - c.rpad });
+                }
             }
             //me.initValueLabelsPositions();
             if (true || theme.tooltips) {
@@ -632,7 +634,7 @@
                     });
             }
             // fill space between lines
-            if (vis.get('fill-between', false)) {
+            if (vis.get('fill-between', false) && all_series.length == 2) {
                 // compute intersections
                 if (all_paths.length == 2) {
                     if (all_paths[0].length == 1 && all_paths[1].length == 1) {
@@ -719,6 +721,12 @@
 
                     } else vis.warn('<b>Warning:</b> Area filling is not supported for lines with missing values.');
                 } else vis.warn('<b>Warning:</b> Filling is only supported for exactly two lines.');
+            }
+
+            if (vis.get('fill-below', false) && all_paths.length == 1 && all_paths[0].length == 1) {
+                if (all_paths[0].length == 1) {
+                    addFill(all_series[0], all_paths[0][0] + 'V'+scales.y(0)+'H'+scales.x(axesDef.x.val(0)));
+                }
             }
 
             vis.orderSeriesElements();
