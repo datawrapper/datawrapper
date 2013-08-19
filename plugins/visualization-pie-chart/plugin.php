@@ -33,7 +33,9 @@ class DatawrapperPlugin_VisualizationPieChart extends DatawrapperPlugin_Visualiz
             "options" => array(
             ),
             "locale" => array(
-                "other" => __("other", $id)
+                "other" => __("other", $id),
+                "cannotShowNegativeValues" => __("Pie charts are intended to show part-of-whole relations, and thus they <b>cannot be used to display negative numbers</b>. Please consider using a different chart type instead (eg. a bar chart).", $id),
+                "noMoreThanFiveSlices" => __("Pie charts work best with only a small number of slices shown. Therefor we grouped %count slices into the slice named <i>'others'</i>. If you intended to allow comparing values you might consider using a bar chart instead.", $id)
             ),
             "libraries" => array()
         );
