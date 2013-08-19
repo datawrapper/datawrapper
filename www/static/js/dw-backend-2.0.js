@@ -257,7 +257,6 @@ var dw = dw || {};
         tempCanvas.width = width;
         tempCanvas.height = height;
 
-        //console.log( * scale);
         tCtx.drawImage(canvas, -x + (width - c.w * scale) * 0.5, -y);
 
         var imgData = tempCanvas.toDataURL("image/png");
@@ -496,9 +495,25 @@ var dw = dw || {};
         };
     }
 
+    var alertOpen = false,
+        messageQueue = [];
+
     function customAlert(msg) {
-        $('#alertModal p').html(msg);
-        $('#alertModal').modal();
+        if (!alertOpen) {
+            $('#alertModal .message').html(msg);
+            $('#alertModal').modal();
+            alertOpen = true;
+        } else {
+            messageQueue.push(msg);
+        }
+        $('#alertModal').off('hidden').on('hidden', function() {
+            alertOpen = false;
+            if (messageQueue.length) {
+                setTimeout(function() {
+                    customAlert(messageQueue.pop());
+                }, 500);
+            }
+        });
     }
 
     dw.backend = {
