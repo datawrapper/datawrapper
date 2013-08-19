@@ -266,7 +266,7 @@
 
                 var valueLabels = [];
 
-                _.each(dataset.columns(), function(column) {
+                _.each(axesDef.y1, function(column) {
                     var lbl;
 
                     // Checks that the column's label doesn't exist yet.
