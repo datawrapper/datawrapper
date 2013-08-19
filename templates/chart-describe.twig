@@ -489,20 +489,13 @@ $(function() {
         });
     }
 
-    console.log("$$", chart.get('metadata', {}));
-
     syncColumnFormat('#number-format', 'number-format');
     syncColumnFormat('#number-divisor', 'number-divisor');
     syncColumnFormat('#number-append', 'number-append');
     syncColumnFormat('#number-prepend', 'number-prepend');
 
     function reload(f) {
-        console.log('chart reloaded');
         chart.load().done(function() {
-            if (_.isUndefined(f)) {
-                console.log('synchronizing header settings', $('#has-headers'));
-
-            }
             dataset = chart.dataset();
             updateTable();
         });
