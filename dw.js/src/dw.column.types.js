@@ -217,6 +217,7 @@ dw.column.types.date = function(sample) {
 
         // returns a function for formatting numbers
         formatter: function(config) {
+            if (!format) return _.identity;
             switch (knownFormats[format].precision) {
                 case 'year': return function(d) { return !_.isDate(d) ? d : d.getFullYear(); };
                 case 'quarter': return function(d) { return !_.isDate(d) ? d : d.getFullYear() + ' Q'+(d.getMonth()/3 + 1); };
