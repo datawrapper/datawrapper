@@ -111,7 +111,7 @@ dw.dataset = function(columns, opts) {
          * removes ignored series from dataset
          */
         filterSeries: function(ignore) {
-            columns = columns.filter(function(c) {
+            columns = _.filter(columns, function(c) {
                 return !ignore[c.name()];
             });
         },
