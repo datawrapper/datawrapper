@@ -44,8 +44,9 @@
                     domain[1] = Math.max(domain[1], col.range()[1]);
                 });
                 y1Domain = domain;  // store for later, replaces me.__domain
-                if (vis.get('baseline-zero')) {
-                    domain[0] = 0;
+                if (vis.get('baseline-zero', false) || vis.get('fill-below', false)) {
+                    if (domain[0] > 0) domain[0] = 0;
+                    if (domain[1] < 0) domain[1] = 0;
                 }
                 scale = vis.get('scale') || 'linear';
                 if (scale == 'log' && domain[0] === 0) domain[0] = 0.03;  // log scales don't like zero!
@@ -173,7 +174,13 @@
                     tickFormat = dw.utils.dateFormat(daysDelta),
                     last_month = -1, new_month,
                     last_year = -1, new_year,
-                    new_decade, new_quarter;
+                    new_decade, new_quarter,
+                    real_data_as_ticks = false;
+
+                if (ticks.length > axesDef.x.length) {
+                    ticks = axesDef.x.values();
+                    real_data_as_ticks = true;
+                }
 
                 _.each(ticks, function(date, i) {
                     new_month = date.getMonth() != last_month;
@@ -191,7 +198,8 @@
                         ((daysDelta <= 90 && new_month) ||
                         (daysDelta > 90 && daysDelta <= 500 && new_quarter) ||
                         (daysDelta > 500 && daysDelta < 3650 && new_year) ||  // less between two and ten years
-                        (daysDelta >= 3650 && new_decade))  // less between two and ten years
+                        (daysDelta >= 3650 && new_decade)) ||  // less between two and ten years
+                        real_data_as_ticks
                     ) {
                         if (theme.horizontalGrid) {
                             vis.path('M'+[x, c.h - c.bpad] + 'V' + c.tpad, 'grid')
@@ -259,7 +267,7 @@
 
                 var valueLabels = [];
 
-                _.each(dataset.columns(), function(column) {
+                _.each(axesDef.y1, function(column) {
                     var lbl;
 
                     // Checks that the column's label doesn't exist yet.
@@ -602,10 +610,12 @@
                 } // */
             });  // _.each(all_series,
 
-            if (legend.pos == 'direct') {
-                vis.optimizeLabelPositions(legend_labels, 3, 'top');
-            } else if (legend.pos == 'inside-right') {
-                legend.cont.css({ left: c.w - legend.xoffset - c.rpad });
+            if (axesDef.y1.length > 1) {
+                if (legend.pos == 'direct') {
+                    vis.optimizeLabelPositions(legend_labels, 3, 'top');
+                } else if (legend.pos == 'inside-right') {
+                    legend.cont.css({ left: c.w - legend.xoffset - c.rpad });
+                }
             }
             //me.initValueLabelsPositions();
             if (true || theme.tooltips) {
@@ -624,7 +634,7 @@
                     });
             }
             // fill space between lines
-            if (vis.get('fill-between', false)) {
+            if (vis.get('fill-between', false) && all_series.length == 2) {
                 // compute intersections
                 if (all_paths.length == 2) {
                     if (all_paths[0].length == 1 && all_paths[1].length == 1) {
@@ -713,6 +723,12 @@
                 } else vis.warn('<b>Warning:</b> Filling is only supported for exactly two lines.');
             }
 
+            if (vis.get('fill-below', false) && all_paths.length == 1 && all_paths[0].length == 1) {
+                if (all_paths[0].length == 1) {
+                    addFill(all_series[0], all_paths[0][0] + 'V'+scales.y(0)+'H'+scales.x(axesDef.x.val(0)));
+                }
+            }
+
             vis.orderSeriesElements();
 
             $('.chart').mouseenter(function() {
@@ -737,6 +753,10 @@
                 }
             }
             vis.renderingComplete();
+
+            if (axesDef.y1.length > 1 && !lineLabelsVisible()) {
+                vis.notify(vis.translate('tooManyLinesToLabel'));
+            }
         },
 
         lineColumns: function() {

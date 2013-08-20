@@ -121,7 +121,7 @@
                 if (!allPositive) return false;
             });
             if (!allPositive) {
-                me.warn('<b>Warning:</b> Stacked column charts cannot display negative values!');
+                me.notify(me.translate('cannotShowNegativeValues'));
             }
         }
 

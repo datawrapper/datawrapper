@@ -163,6 +163,7 @@ $(function() {
         dw.backend.currentVis.dataset = chart.dataset();
         dw.backend.currentVis.meta = visMetas[chart.get('type')];
         loadVisDeferred.resolve();
+        $('#notifications').html('');
     }
 
     chart.onSave(function(chart) {
@@ -320,13 +321,27 @@ $(function() {
     iframe.load(function() {
         updateVisBackground();
         dw.backend.initLiveUpdates(iframe);
-        var w = $('#iframe-vis').get(0).contentWindow;
+        var win = $('#iframe-vis').get(0).contentWindow;
+
         setTimeout(function() {  // wait a little more
-            w.vis.rendered().done(function() {
+            win.vis.rendered().done(function() {
                 checkChartHeight();
             });
         }, 300);
+
+        $(win).unload(function() {
+            iframe.ready(iframeReady);
+        });
     });
+
+    function iframeReady() {
+        $('body').on('datawrapper:vis:init', function() {
+            $('#iframe-vis').get(0).contentWindow.dw_alert = dw.backend.alert;
+            $('#iframe-vis').get(0).contentWindow.dw.backend = dw.backend;
+        });
+    }
+
+    iframe.ready(iframeReady);
 
     $('.nav-tabs').each(function(i, el) {
         var navTabs = $(el);
@@ -421,6 +436,15 @@ $(function() {
     $('.resize-chart input').change(_updateSize);
     $('#iframe-wrapper').width(cw);
     $('#iframe-wrapper').height(ch);
+
+    dw.backend.notify = function(msg) {
+        $('<div />').addClass('notification')
+            .html('<div class="bg">'+$('#alertModal .bg').html()+'</div><div class="message">'+msg+'</div>')
+            .appendTo('#notifications')
+            .hide()
+            .fadeIn();
+    };
+
 });
 
 
@@ -449,6 +473,11 @@ $(function() {
                     </div>
                 </div>
             </div>
+
+            <div id="notifications">
+
+            </div>
+
         </div>
 
         <ul class="span5 nav nav-tabs visualize-nav-tabs" data-target="tab-container">

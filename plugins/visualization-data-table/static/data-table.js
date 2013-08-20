@@ -11,8 +11,8 @@
             el = $(el);
             // add table
             var me = this, table, tr, td, th, r,
-                css_class = me.theme.datatable && me.theme.datatable.class ?
-                    me.theme.datatable.class : 'datatable-default',
+                css_class = me.theme.datatable && me.theme.datatable['class'] ?
+                    me.theme.datatable['class'] : 'datatable-default',
                 isHighlighted = function(series) {
                     return me.chart.hasHighlight() && me.chart.isHighlighted(series);
                 },

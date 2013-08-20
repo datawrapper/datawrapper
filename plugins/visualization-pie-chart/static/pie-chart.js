@@ -122,12 +122,13 @@
             });
 
             if (hasNegativeValues) {
-                me.warn('<b>Warning:</b> Pie charts are not suitable for displaying negative values.');
+                me.notify(me.translate('cannotShowNegativeValues'));
             }
 
             // add slice 'others' to the slices array
             if (ocnt > 0) {
                 slices.push({ name: me.translate('other'), value: others });
+                me.notify(me.translate('noMoreThanFiveSlices').replace('%count', ocnt));
             }
 
             if (me.get('sort-values', true)) {
@@ -270,7 +271,12 @@
                         .data('index', num_labels_outside - index)
                         .css({ opacity: 0 });
 
-                    slice.label[o.value / total <= 0.02 ? 'hide' : 'show']();
+                    if (o.value / total <= 0.02) {
+                        slice.label.hide();
+                        out_lbl.text(out_lbl.text() + '&nbsp;(' + value +')');
+                    } else {
+                        slice.label.show();
+                    }
 
                   me.__out_labels.push(out_lbl);
                 }

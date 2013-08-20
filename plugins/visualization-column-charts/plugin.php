@@ -157,7 +157,8 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                 )
             ),
             "locale" => array(
-                "stack percentages" => __("stack percentages", $id)
+                "stack percentages" => __("stack percentages", $id),
+                "cannotShowNegativeValues" => __("Negative values, as contained in your dataset, cannot be stacked on top of each other in a stacked column chart. Please consider using a different chart type instead (eg. a grouped column chart).", $id)
             )
         );
         return $meta;

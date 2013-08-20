@@ -257,8 +257,11 @@
             var label = { el: lbl };
             // update label text
             label.text = function(txt) {
-                $('span', lbl).html(txt);
-                return label;
+                if (arguments.length) {
+                    $('span', lbl).html(txt);
+                    return label;
+                }
+                return $('span', lbl).html();
             };
             // animate label attributes
             label.animate = function(_attrs, duration, easing) {
