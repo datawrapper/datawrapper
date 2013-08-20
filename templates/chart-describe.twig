@@ -612,9 +612,12 @@ $(function() {
                                 <select id="column-type" class="select" style="width:90%">
                                     <option value="-">{% trans "keep default" %}</option>
                                     {% for type, typeLabel in columntypes %}
-                                        <option value="{{ type }}">{{ typeLabel }}</option>
+                                        <option value="{{ type }}">{% trans typeLabel %}</option>
                                     {% endfor %}
                                 </select>
+                                {# the following line ensures that the column type names are detected
+                                   by the xgettext parser, triggered by update-messages.sh #}
+                                <!--{% trans 'Text' %} {% trans 'Number' %}{% trans 'Date' %} -->
                             </div>
                         </div>
                     </div>
