@@ -289,8 +289,25 @@ dw.column = function(name, rows, type) {
             }
             return rows[i];
         },
-        // column type
-        type: function(o) { return o ? type : type.name(); },
+
+        /**
+         * if called with no arguments, this returns the column type name
+         * if called with true as argument, this returns the column type (as object)
+         * if called with a string as argument, this sets a new column type
+         */
+        type: function(o) {
+            if (o === true) return type;
+            if (_.isString(o)) {
+                if (dw.column.types[o]) {
+                    type = dw.column.types[o](sample);
+                    return column;
+                } else {
+                    throw 'unknown column type: '+o;
+                }
+            }
+            return type.name();
+        },
+
         // [min,max] range
         range: function() {
             if (!type.toNum) return false;
@@ -1278,11 +1295,20 @@ dw.chart = function(attributes) {
                     column.raw(change.row, change.value);
                 }
             });
-            var titles = chart.get('metadata.data.title', []);
+            var titles = chart.get('metadata.data.title', {});
             _.each(titles, function(title, key) {
                 var column = dataset.column(key);
                 if (column) {
                     column.title(title);
+                }
+            });
+            var columnFormats = chart.get('metadata.data.column-format', {});
+            _.each(columnFormats, function(columnFormat, key) {
+                if (columnFormat.type) {
+                    var column = dataset.column(key);
+                    if (column) {
+                        column.type(columnFormat.type);
+                    }
                 }
             });
             return dataset;

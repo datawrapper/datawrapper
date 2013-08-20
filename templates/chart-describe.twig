@@ -121,6 +121,9 @@ $(function() {
                         columnFormats[name] = {};
                     }
                     columnFormats[name][property] = value;
+                    if (property === 'type') {
+                        dataset.column(name).type(value);
+                    }
                 });
                 chart.set('metadata.data.column-format', columnFormats);
             },
@@ -226,9 +229,9 @@ $(function() {
             if (row === 0) {
                 td.classList.add('firstRow');
             } else {
-                if (dataset.column(col).type() == 'text') {
+                if (column.type() == 'text') {
                     td.classList.add('textType');
-                } else if (dataset.column(col).type() == 'date') {
+                } else if (column.type() == 'date') {
                     td.classList.add('dateType');
                 } else { // number
                     td.classList.add('numberType');
@@ -447,6 +450,13 @@ $(function() {
                 $('#column-options-hide')[0].checked = false;
             }
 
+            if(metadata.columnFormat.get(serie).type) {
+                $('#column-type').val(metadata.columnFormat.get(serie).type);
+            }
+            else {
+                $('#column-type').val('-');
+            }
+
             if(dataset.column(serie).type() == 'number') {
                 fillInField('#number-format', 'number-format');
                 fillInField('#number-divisor', 'number-divisor');
@@ -485,10 +495,15 @@ $(function() {
             selectedColumns.forEach(function(i) {
                 columnNames.push(getSeriesOfIndex(i));
             });
-            metadata.columnFormat.add(columnNames, property, this.value);
+            metadata.columnFormat.add(columnNames, property, this.value === '-' ? undefined : this.value);
+
+            if(property === 'type') {
+               showColumnSettings();
+            }
         });
     }
 
+    syncColumnFormat('#column-type', 'type');
     syncColumnFormat('#number-format', 'number-format');
     syncColumnFormat('#number-divisor', 'number-divisor');
     syncColumnFormat('#number-append', 'number-append');
@@ -589,19 +604,20 @@ $(function() {
                 <div id="column-options">
                     <h3>{% trans "Column options" %}</h3>
 
-                    {#<div class="form-horizontal compact">
+                    <div class="form-horizontal compact">
                         <div class="control-group">
                             <label class="control-label" for="text-title">{% trans "Column type" %}</label>
 
                             <div class="controls">
-                                <select id="column-options-type" class="select" style="width:90%">
-                                    {% for id, type in columntypes %}
-                                        <option value="{{ id }}">{{ type }}</option>
+                                <select id="column-type" class="select" style="width:90%">
+                                    <option value="-">{% trans "keep default" %}</option>
+                                    {% for type, typeLabel in columntypes %}
+                                        <option value="{{ type }}">{{ typeLabel }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
                         </div>
-                    </div>#}
+                    </div>
 
                     <div id="number-column-options" class="form-horizontal compact">
                         <h3>{% trans "Output number format" %}</h3>

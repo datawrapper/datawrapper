@@ -95,11 +95,20 @@ dw.chart = function(attributes) {
                     column.raw(change.row, change.value);
                 }
             });
-            var titles = chart.get('metadata.data.title', []);
+            var titles = chart.get('metadata.data.title', {});
             _.each(titles, function(title, key) {
                 var column = dataset.column(key);
                 if (column) {
                     column.title(title);
+                }
+            });
+            var columnFormats = chart.get('metadata.data.column-format', {});
+            _.each(columnFormats, function(columnFormat, key) {
+                if (columnFormat.type) {
+                    var column = dataset.column(key);
+                    if (column) {
+                        column.type(columnFormat.type);
+                    }
                 }
             });
             return dataset;
