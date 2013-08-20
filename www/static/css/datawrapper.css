@@ -1204,9 +1204,9 @@ label.separator {
 }
 
 #alertModal h4 {
-    font-weight: 300;
     margin: 3px 0 15px;
-    font-size: 24px;
+    font-size: 18px;
+    font-weight: 500;
 }
 
 #alertModal .btn {
@@ -1257,4 +1257,13 @@ label.separator {
 #notifications .notification .message {
     margin-left: 70px;
     color: #614A0D;
+}
+
+#notifications .notification .message ul {
+    margin-top: 5px;
+    margin-bottom: 0;
+}
+#notifications .notification .message p {
+    margin-top: 5px;
+    margin-bottom: 0;
 }
