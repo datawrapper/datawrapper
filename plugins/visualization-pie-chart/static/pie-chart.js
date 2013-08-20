@@ -271,7 +271,12 @@
                         .data('index', num_labels_outside - index)
                         .css({ opacity: 0 });
 
-                    slice.label[o.value / total <= 0.02 ? 'hide' : 'show']();
+                    if (o.value / total <= 0.02) {
+                        slice.label.hide();
+                        out_lbl.text(out_lbl.text() + '&nbsp;(' + value +')');
+                    } else {
+                        slice.label.show();
+                    }
 
                   me.__out_labels.push(out_lbl);
                 }
