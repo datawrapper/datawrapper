@@ -20,6 +20,5 @@ www/static/vendor/d3js/d3.scale.js
 www/static/custom/*
 test/result/*
 crowdin.yaml
-
-
+www/static/js/dw-2.0.min.js 
 log.txt
