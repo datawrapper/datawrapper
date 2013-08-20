@@ -27,6 +27,9 @@ CHANGELOG
 * removed setting 'labels-inside-bars' from bar chart
 * fixed bar chart bug (too much white-space for long labels)
 * output formatting of values now handled by columns (45998931)
+* line chart: allow filling below lines
+* column chart: show bars as thin lines if too many bars are displayed
+* chart notifications
 
 ### 1.4.3
 * fixed severe bug in base theme (hotfix)
