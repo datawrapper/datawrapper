@@ -594,7 +594,7 @@
                             legend.xoffset += vis.labelWidth(col.name(), 'series')+30;
                         }
                     }
-                    lbl = vis.label(lblx, lbly, col.name(), {
+                    lbl = vis.label(lblx, lbly, col.title(), {
                         cl: chart.isHighlighted(col) ? 'highlighted series' : 'series',
                         w: c.labelWidth,
                         valign: valign,

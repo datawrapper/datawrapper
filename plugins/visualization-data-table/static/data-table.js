@@ -27,7 +27,7 @@
             }*/
             var colType = [];
             dataset.eachColumn(function(column) {
-                th = $('<th>'+column.name()+'</th>');
+                th = $('<th>'+column.title()+'</th>');
                 if (isHighlighted(column)) {
                     th.addClass('highlight');
                 }
@@ -57,7 +57,7 @@
                     // set a type as classe
                     td.addClass(column.type());
                     if (cell_content == "&mdash;") td.addClass("not-available");
-                    td.attr('title', column.name());
+                    td.attr('title', column.title());
                     tr.append(td);
                 });
                 $('tbody', table).append(tr);
