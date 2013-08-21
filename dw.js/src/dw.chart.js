@@ -91,14 +91,10 @@ dw.chart = function(attributes) {
             var changes = chart.get('metadata.data.changes', []);
             var transpose = chart.get('metadata.data.transpose', false);
             _.each(changes, function(change) {
-                var row, column;
+                var row = "row", column = "column";
                 if (transpose) {
                     row = "column";
                     column = "row";
-                }
-                else {
-                    row = "row";
-                    column = "column";
                 }
 
                 if (dataset.hasColumn(change[column])) {

@@ -223,16 +223,10 @@ $(function() {
             if (parseInt(value, 10) < 0) { //if row contains negative number
                 td.classList.add('negative');
             }
+            td.classList.add(column.type()+'Type');
             if (row === 0) {
                 td.classList.add('firstRow');
             } else {
-                if (column.type() == 'text') {
-                    td.classList.add('textType');
-                } else if (column.type() == 'date') {
-                    td.classList.add('dateType');
-                } else { // number
-                    td.classList.add('numberType');
-                }
                 td.classList.add(row % 2 ? 'oddRow' : 'evenRow');
             }
 
