@@ -95,21 +95,18 @@ $(function() {
             exist: function() {
                 return !!chart.get('metadata.data.changes', []).length;
             },
-            add: function(columnName, row, value) {
+            add: function(row, column, value) {
                 var dataChanges = _.clone(chart.get('metadata.data.changes', [])); //clone is needed, otherwise chart.set does not detect this as change
-                dataChanges.push({row: row, column: columnName, value: value});
+                if (chart.get('metadata.data.transpose')) {
+                    dataChanges.push({row: column, column: row, value: value});
+                }
+                else {
+                    dataChanges.push({row: row, column: column, value: value});
+                }
                 chart.set('metadata.data.changes', dataChanges);
             },
             revert: function() {
                 chart.set('metadata.data.changes', []);
-            }
-        },
-
-        title: {
-            add: function(columnName, title) {
-                var titles = _.clone(chart.get('metadata.data.title', {})); //clone is needed, otherwise chart.set does not detect this as change
-                titles[columnName] = title;
-                chart.set('metadata.data.title', titles);
             }
         },
 
@@ -276,15 +273,8 @@ $(function() {
                 afterChange: function(changes, source) {
                     if (source !== 'loadData') {
                         changes.forEach(function(change) {
-                            var serie = getSeriesOfIndex(change[1]);
-                            if (change[0] === 0) { //first row is column title
-                                metadata.title.add(serie, change[3]);
-                            }
-                            else {
-                                metadata.changes.add(serie, change[0] - 1, change[3]);
-                            }
+                            metadata.changes.add(change[0], change[1], change[3]);
                         });
-
                     }
                 }
             });

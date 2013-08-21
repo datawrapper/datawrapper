@@ -1294,24 +1294,33 @@ dw.chart = function(attributes) {
         // applies the data changes and returns the dataset
         dataset: function() {
             var changes = chart.get('metadata.data.changes', []);
+            var transpose = chart.get('metadata.data.transpose', false);
             _.each(changes, function(change) {
-                var column = dataset.column(change.column);
-                if (column) {
-                    column.raw(change.row, change.value);
+                var row, column;
+                if (transpose) {
+                    row = "column";
+                    column = "row";
+                }
+                else {
+                    row = "row";
+                    column = "column";
+                }
+
+                if (dataset.hasColumn(change[column])) {
+                    if (change[row] === 0) {
+                        dataset.column(change[column]).title(change.value);
+                    }
+                    else {
+                        dataset.column(change[column]).raw(change[row] - 1, change.value);
+                    }
                 }
             });
-            var titles = chart.get('metadata.data.title', {});
-            _.each(titles, function(title, key) {
-                if (dataset.hasColumn(key)) {
-                    dataset.column(key).title(title);
-                }
-            });
+
             var columnFormats = chart.get('metadata.data.column-format', {});
             _.each(columnFormats, function(columnFormat, key) {
                 if (columnFormat.type) {
-                    var column = dataset.column(key);
-                    if (column) {
-                        column.type(columnFormat.type);
+                    if (dataset.hasColumn(key)) {
+                        dataset.column(key).type(columnFormat.type);
                     }
                 }
             });
