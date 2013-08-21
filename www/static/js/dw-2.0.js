@@ -1173,19 +1173,9 @@ dw.utils.filter = function (column, active, type, format) {
 };
 
 /*
- * DataColumn abstracts the functionality of each column
- * of a dataset. A column has a type (text|number|date).
- *
- * API:
- *
- * column.name() ... returns the name (string)
- * column.type() ... return column type (string)
- * column.length ... number of rows (number)
- * column.val(i) ... parsed value in row i
- * column.each(func) ... apply function to each value
- * column.raw() ... access raw, unparsed values
  *
  */
+
 dw.chart = function(attributes) {
 
     // private methods and properties
