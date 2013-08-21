@@ -97,9 +97,8 @@ dw.chart = function(attributes) {
             });
             var titles = chart.get('metadata.data.title', {});
             _.each(titles, function(title, key) {
-                var column = dataset.column(key);
-                if (column) {
-                    column.title(title);
+                if (dataset.hasColumn(key)) {
+                    dataset.column(key).title(title);
                 }
             });
             var columnFormats = chart.get('metadata.data.column-format', {});
