@@ -455,6 +455,18 @@ $(function() {
                 $('#number-column-options').hide();
             }
 
+            // fill in default column type
+            var defOpt = $('#column-type option[value=-]'),
+                type = dataset.column(selectedColumns[0]).type();
+            _.each(selectedColumns, function(i) {
+                type = type == dataset.column(i).type() ? type : undefined;
+            });
+            defOpt.html(defOpt.data('label'));
+            if (type) {
+                // all selected columns have the same type
+                defOpt.html(defOpt.html()+' ('+$('#column-type option[value='+type+']').html()+')');
+            }
+
             $('#table-options').hide();
             $('#column-options').show();
         }
@@ -603,7 +615,7 @@ $(function() {
 
                             <div class="controls">
                                 <select id="column-type" class="select" style="width:90%">
-                                    <option value="-">{% trans "keep default" %}</option>
+                                    <option data-label="{% trans "keep default" %}" value="-"></option>
                                     {% for type, typeLabel in columntypes %}
                                         <option value="{{ type }}">{% trans typeLabel %}</option>
                                     {% endfor %}
