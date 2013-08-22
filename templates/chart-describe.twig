@@ -205,18 +205,11 @@ $(function() {
         });
         data.push(tr);
 
-        var DIV = document.createElement('DIV');
-        function stripHtmlTags(val) {
-            DIV.innerHTML = val;
-            return DIV.textContent;
-        }
-
         dataset.eachRow(function(row) {
             var tr = [];
             dataset.eachColumn(function(column, i) {
                 var val = column.raw(row);
-                val = chart.columnFormatter(column)(val, true);
-                tr.push((!isNone(column.raw(row)) ? stripHtmlTags(val) : ''));
+                tr.push(isNone(val) ? '' : val);
             });
             data.push(tr);
         });

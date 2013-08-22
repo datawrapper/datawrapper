@@ -406,8 +406,8 @@ dw.column.types.number = function(sample) {
         formatter: function(config) {
             var format = config['number-format'] || '-',
                 div = Number(config['number-divisor'] || 0),
-                append = (config['number-append'] || '').replace(' ', '&nbsp;'),
-                prepend = (config['number-prepend'] || '').replace(' ', '&nbsp;');
+                append = (config['number-append'] || '').replace(/ /g, '\u00A0'),
+                prepend = (config['number-prepend'] || '').replace(/ /g, '\u00A0');
 
             return function(val, full, round) {
                 if (isNaN(val)) return val;
