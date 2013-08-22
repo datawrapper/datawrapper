@@ -107,6 +107,9 @@ dw.dataset = function(columns, opts) {
             columns = _.filter(columns, function(c) {
                 return !ignore[c.name()];
             });
+            _.each(ignore, function(ign, key) {
+                if (ign && columnsByName[key]) delete columnsByName[key];
+            });
             return dataset;
         },
 
