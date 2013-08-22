@@ -27,9 +27,12 @@ vows
             'getting column by name': (topic) -> assert.deepEqual topic.column('Women'), columns[1]
             'getting unknown column': (topic) -> assert.throws () -> topic.column('Foo')
 
-            'checking existing column': (topic) -> assert topic.hasColumn('Party')
+            'checking existing column': (topic) -> assert topic.hasColumn('Men')
             'checking non-existing column': (topic) -> assert.isFalse topic.hasColumn('Foo')
 
             'exporting as csv': (topic) -> assert.equal topic.toCSV(), "Party,Women,Men,Total\nCDU/CSU,45,192,237\nSPD,57,89,146\nFDP,24,69,93\nLINKE,42,34,76\nGRÜNE,36,32,68"
+
+            'filtering columns': (topic) -> assert.equal topic.filterColumns({ Men: true }), topic
+            'column was removed': (topic) -> assert.isFalse topic.hasColumn 'Men'
 
     .export module
