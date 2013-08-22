@@ -100,6 +100,15 @@ dw.dataset = function(columns, opts) {
             return csv;
         },
 
+        /*
+         * removes ignored columns from dataset
+         */
+        filterColumns: function(ignore) {
+            columns = _.filter(columns, function(c) {
+                return !ignore[c.name()];
+            });
+            return dataset;
+        },
 
 
         // -----------------------------------------
@@ -156,15 +165,6 @@ dw.dataset = function(columns, opts) {
             _.each(columns, function(col) {
                 if (rows) col.filterRows(rows);
                 else col.filterRows();
-            });
-        },
-
-        /*
-         * removes ignored series from dataset
-         */
-        filterSeries: function(ignore) {
-            columns = _.filter(columns, function(c) {
-                return !ignore[c.name()];
             });
         },
 
@@ -1548,7 +1548,7 @@ _.extend(dw.visualization.base, {
         _.each(columnFormat, function(format, key) {
             ignore[key] = !!format.ignore;
         });
-        me.dataset.filterSeries(ignore);
+        me.dataset.filterColumns(ignore);
     },
 
     axes: function(returnAsColumns) {
