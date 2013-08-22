@@ -49,17 +49,27 @@ dw.column = function(name, rows, type) {
 
     var range,
         total,
-        origRows = rows.slice(0);
+        origRows = rows.slice(0),
+        title;
 
     // public interface
     var column = {
-        // column label
+        // column name (used for reference in chart metadata)
         name: function() {
             if (arguments.length) {
                 name = arguments[0];
                 return column;
             }
             return name;
+        },
+
+        // column title (used for presentation)
+        title: function() {
+            if (arguments.length) {
+              title = arguments[0];
+              return column;
+            }
+            return title || name;
         },
 
         /**
@@ -105,8 +115,25 @@ dw.column = function(name, rows, type) {
             }
             return rows[i];
         },
-        // column type
-        type: function(o) { return o ? type : type.name(); },
+
+        /**
+         * if called with no arguments, this returns the column type name
+         * if called with true as argument, this returns the column type (as object)
+         * if called with a string as argument, this sets a new column type
+         */
+        type: function(o) {
+            if (o === true) return type;
+            if (_.isString(o)) {
+                if (dw.column.types[o]) {
+                    type = dw.column.types[o](sample);
+                    return column;
+                } else {
+                    throw 'unknown column type: '+o;
+                }
+            }
+            return type.name();
+        },
+
         // [min,max] range
         range: function() {
             if (!type.toNum) return false;

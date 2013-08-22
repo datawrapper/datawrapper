@@ -76,8 +76,35 @@ dw.chart = function(attributes) {
             }
         },
 
-        // returns the dataset
+        // applies the data changes and returns the dataset
         dataset: function() {
+            var changes = chart.get('metadata.data.changes', []);
+            var transpose = chart.get('metadata.data.transpose', false);
+            _.each(changes, function(change) {
+                var row = "row", column = "column";
+                if (transpose) {
+                    row = "column";
+                    column = "row";
+                }
+
+                if (dataset.hasColumn(change[column])) {
+                    if (change[row] === 0) {
+                        dataset.column(change[column]).title(change.value);
+                    }
+                    else {
+                        dataset.column(change[column]).raw(change[row] - 1, change.value);
+                    }
+                }
+            });
+
+            var columnFormats = chart.get('metadata.data.column-format', {});
+            _.each(columnFormats, function(columnFormat, key) {
+                if (columnFormat.type) {
+                    if (dataset.hasColumn(key)) {
+                        dataset.column(key).type(columnFormat.type);
+                    }
+                }
+            });
             return dataset;
         },
 
@@ -168,7 +195,7 @@ dw.chart = function(attributes) {
         columnFormatter: function(column) {
             // pull output config from metadata
             // return column.formatter(config);
-            var colFormat = chart.get('metadata.describe.column-format', {});
+            var colFormat = chart.get('metadata.data.column-format', {});
             return column.type(true).formatter(colFormat[column.name()] || {});
         }
 

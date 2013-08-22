@@ -51,13 +51,13 @@ dw.dataset = function(columns, opts) {
 
         column: function(x) {
             if (_.isString(x)) {
-                // single series by name
+                // single column by name
                 if (columnsByName[x] !== undefined) return columnsByName[x];
                 throw 'No column found with that name: "'+x+'"';
             }
-            // single series by index
+            // single column by index
             if (columns[x] !== undefined) return columns[x];
-            throw 'No series found with that index: '+x;
+            throw 'No column found with that index: '+x;
         },
 
         numColumns: function() {
@@ -70,6 +70,10 @@ dw.dataset = function(columns, opts) {
 
         eachColumn: function(func) {
             _.each(columns, func);
+        },
+
+        hasColumn: function(x) {
+            return (_.isString(x) ? columnsByName[x] : columns[x]) !== undefined;
         },
 
         // -----------------------------------------
@@ -223,17 +227,27 @@ dw.column = function(name, rows, type) {
 
     var range,
         total,
-        origRows = rows.slice(0);
+        origRows = rows.slice(0),
+        title;
 
     // public interface
     var column = {
-        // column label
+        // column name (used for reference in chart metadata)
         name: function() {
             if (arguments.length) {
                 name = arguments[0];
                 return column;
             }
             return name;
+        },
+
+        // column title (used for presentation)
+        title: function() {
+            if (arguments.length) {
+              title = arguments[0];
+              return column;
+            }
+            return title || name;
         },
 
         /**
@@ -279,8 +293,25 @@ dw.column = function(name, rows, type) {
             }
             return rows[i];
         },
-        // column type
-        type: function(o) { return o ? type : type.name(); },
+
+        /**
+         * if called with no arguments, this returns the column type name
+         * if called with true as argument, this returns the column type (as object)
+         * if called with a string as argument, this sets a new column type
+         */
+        type: function(o) {
+            if (o === true) return type;
+            if (_.isString(o)) {
+                if (dw.column.types[o]) {
+                    type = dw.column.types[o](sample);
+                    return column;
+                } else {
+                    throw 'unknown column type: '+o;
+                }
+            }
+            return type.name();
+        },
+
         // [min,max] range
         range: function() {
             if (!type.toNum) return false;
@@ -550,6 +581,7 @@ dw.column.types.date = function(sample) {
 
         // returns a function for formatting numbers
         formatter: function(config) {
+            if (!format) return _.identity;
             switch (knownFormats[format].precision) {
                 case 'year': return function(d) { return !_.isDate(d) ? d : d.getFullYear(); };
                 case 'quarter': return function(d) { return !_.isDate(d) ? d : d.getFullYear() + ' Q'+(d.getMonth()/3 + 1); };
@@ -886,7 +918,7 @@ dw.utils = {
     },
 
     columnNameColumn: function(columns) {
-        var names = _.map(columns, function(col) { return col.name(); });
+        var names = _.map(columns, function(col) { return col.title(); });
         return dw.column('', names);
     },
 
@@ -1249,8 +1281,35 @@ dw.chart = function(attributes) {
             }
         },
 
-        // returns the dataset
+        // applies the data changes and returns the dataset
         dataset: function() {
+            var changes = chart.get('metadata.data.changes', []);
+            var transpose = chart.get('metadata.data.transpose', false);
+            _.each(changes, function(change) {
+                var row = "row", column = "column";
+                if (transpose) {
+                    row = "column";
+                    column = "row";
+                }
+
+                if (dataset.hasColumn(change[column])) {
+                    if (change[row] === 0) {
+                        dataset.column(change[column]).title(change.value);
+                    }
+                    else {
+                        dataset.column(change[column]).raw(change[row] - 1, change.value);
+                    }
+                }
+            });
+
+            var columnFormats = chart.get('metadata.data.column-format', {});
+            _.each(columnFormats, function(columnFormat, key) {
+                if (columnFormat.type) {
+                    if (dataset.hasColumn(key)) {
+                        dataset.column(key).type(columnFormat.type);
+                    }
+                }
+            });
             return dataset;
         },
 
@@ -1341,7 +1400,7 @@ dw.chart = function(attributes) {
         columnFormatter: function(column) {
             // pull output config from metadata
             // return column.formatter(config);
-            var colFormat = chart.get('metadata.describe.column-format', {});
+            var colFormat = chart.get('metadata.data.column-format', {});
             return column.type(true).formatter(colFormat[column.name()] || {});
         }
 
@@ -1449,7 +1508,12 @@ _.extend(dw.visualization.base, {
         me.dataset = chart.dataset();
         me.setTheme(chart.theme());
         me.chart = chart;
-        me.dataset.filterSeries(chart.get('metadata.data.ignore-columns', {}));
+        var columnFormat = chart.get('metadata.data.column-format', {});
+        var ignore = {};
+        _.each(columnFormat, function(format, key) {
+            ignore[key] = !!format.ignore;
+        });
+        me.dataset.filterSeries(ignore);
     },
 
     axes: function(returnAsColumns) {

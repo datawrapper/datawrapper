@@ -400,6 +400,7 @@ var dw = dw || {};
             unsavedChanges = false,
             nextSaveDeferred = $.Deferred(),
             saveCallbacks = [];
+
         function save() {
             $.ajax({
                 url: '/api/charts/'+chart.get('id'),
@@ -424,6 +425,8 @@ var dw = dw || {};
                 }
             });
         }
+
+        chart.save = save;
 
         chart.onSave = function(callback) {
             saveCallbacks.push(callback);

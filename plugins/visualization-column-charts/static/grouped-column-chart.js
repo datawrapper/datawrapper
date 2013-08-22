@@ -44,7 +44,7 @@
                 barColumns = me.getBarColumns(),
                 n = barColumns.length;
             _.each(barColumns, function(column, s) {
-                lh = Math.max(lh, me.labelHeight(column.name(), 'series', c.w / (n)));
+                lh = Math.max(lh, me.labelHeight(column.title(), 'series', c.w / (n)));
             });
             c.bpad += lh;
 
@@ -143,7 +143,7 @@
                         lbl_w = 90;
                     }
                     // add series label
-                    if (!/^X\.\d+$/.test(column.name()) && r === 0) {
+                    if (!/^X\.\d+$/.test(column.title()) && r === 0) {
 
                         var la = {
                                 x: d.bx + d.bw * 0.5,
@@ -155,7 +155,7 @@
                                 rotate: d.bw < 30 ? -90 : 0
                             },
                             sl = me.__series_names[column.name()] = me.__series_names[column.name()] ||
-                                me.registerLabel(me.label(la.x, la.y, column.name(), la), column.name());
+                                me.registerLabel(me.label(la.x, la.y, column.title(), la), column.name());
 
                         sl.animate(la, me.theme.duration, me.theme.easing);
                     }

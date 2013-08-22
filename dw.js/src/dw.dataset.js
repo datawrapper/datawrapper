@@ -29,13 +29,13 @@ dw.dataset = function(columns, opts) {
 
         column: function(x) {
             if (_.isString(x)) {
-                // single series by name
+                // single column by name
                 if (columnsByName[x] !== undefined) return columnsByName[x];
                 throw 'No column found with that name: "'+x+'"';
             }
-            // single series by index
+            // single column by index
             if (columns[x] !== undefined) return columns[x];
-            throw 'No series found with that index: '+x;
+            throw 'No column found with that index: '+x;
         },
 
         numColumns: function() {
@@ -48,6 +48,10 @@ dw.dataset = function(columns, opts) {
 
         eachColumn: function(func) {
             _.each(columns, func);
+        },
+
+        hasColumn: function(x) {
+            return (_.isString(x) ? columnsByName[x] : columns[x]) !== undefined;
         },
 
         // -----------------------------------------

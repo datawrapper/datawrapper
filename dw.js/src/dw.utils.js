@@ -66,7 +66,7 @@ dw.utils = {
     },
 
     columnNameColumn: function(columns) {
-        var names = _.map(columns, function(col) { return col.name(); });
+        var names = _.map(columns, function(col) { return col.title(); });
         return dw.column('', names);
     },
 

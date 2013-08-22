@@ -77,7 +77,12 @@ _.extend(dw.visualization.base, {
         me.dataset = chart.dataset();
         me.setTheme(chart.theme());
         me.chart = chart;
-        me.dataset.filterSeries(chart.get('metadata.data.ignore-columns', {}));
+        var columnFormat = chart.get('metadata.data.column-format', {});
+        var ignore = {};
+        _.each(columnFormat, function(format, key) {
+            ignore[key] = !!format.ignore;
+        });
+        me.dataset.filterSeries(ignore);
     },
 
     axes: function(returnAsColumns) {

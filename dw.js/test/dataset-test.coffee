@@ -27,4 +27,7 @@ vows
             'getting column by name': (topic) -> assert.deepEqual topic.column('Women'), columns[1]
             'getting unknown column': (topic) -> assert.throws () -> topic.column('Foo')
 
+            'checking existing column': (topic) -> assert topic.hasColumn('Party')
+            'checking non-existing column': (topic) -> assert.isFalse topic.hasColumn('Foo')
+
     .export module
