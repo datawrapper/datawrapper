@@ -467,6 +467,11 @@ $(function() {
                 defOpt.html(defOpt.html()+' ('+$('#column-type option[value='+type+']').html()+')');
             }
 
+            // update title
+            $('.selected-columns').text(_.map(selectedColumns.slice(0,3), function(c) {
+                return dataset.column(c).title();
+            }).join(', ') + (selectedColumns.length > 3 ? ', …' : ''));
+
             $('#table-options').hide();
             $('#column-options').show();
         }
@@ -545,12 +550,7 @@ $(function() {
 
         <div class="span8">
 
-            <h2>{% trans "Check and Describe Your Data" %}</h2>
-
-            <p>
-                {% trans "Please check if the data format was recognized correctly." %}
-                {% trans "You can hide columns by clicking the table header." %}
-            </p>
+            <!--<h2>{% trans "Check and Describe Your Data" %}</h2>-->
 
             <form class="form-inline">
                 <div id="csv-parse-options" class="row">
@@ -563,6 +563,8 @@ $(function() {
             </form>
 
             <div id="data-preview"></div>
+
+            
         </div>
 
         <div class="span4">
@@ -572,14 +574,12 @@ $(function() {
 
                     <h3>{% trans "Describe your data" %}</h3>
 
-                    <div style="margin-bottom:15px;">
-
+                    <div style="margin-bottom:5px;">
                         <div class="half">
                             <p>
                                 <label class="radio"><input type="radio" name="transpose" value="yes" /> {% trans "Data series in rows" %}</label>
                                 <label class="radio"><input type="radio" name="transpose" value="no" /> {% trans "Data series in columns" %}</label>
                             </p>
-
                         </div><div class="half">
                             <p>
                                 <label class="checkbox"><input id="has-headers" type="checkbox" checked="checked"> {% trans "First row as label" %}</label>
@@ -588,8 +588,9 @@ $(function() {
                         <div class="clearfix"></div>
                     </div>
 
-                    <h3>{% trans "Credit the source" %}</h3>
+                    <p><b>{% trans "Hint:" %}</b> {% trans "You can customize the column formatting after selecting columns in the table header." %}</p>
 
+                    <h3>{% trans "Credit the source" %}</h3>
                     <p>
                         <label>{% trans "Who published the data in the first place?" %}</label>
                         <input id="describe-source-name" type="text" placeholder="name of the organisation">
@@ -607,7 +608,7 @@ $(function() {
                 </div>
 
                 <div id="column-options">
-                    <h3>{% trans "Column options" %}</h3>
+                    <h3>{% trans "Column options" %} for <span class="selected-columns"></span></h3>
 
                     <div class="form-horizontal compact">
                         <div class="control-group">
@@ -615,7 +616,7 @@ $(function() {
 
                             <div class="controls">
                                 <select id="column-type" class="select" style="width:90%">
-                                    <option data-label="{% trans "keep default" %}" value="-"></option>
+                                    <option data-label="{% trans "auto" %}" value="-"></option>
                                     {% for type, typeLabel in columntypes %}
                                         <option value="{{ type }}">{% trans typeLabel %}</option>
                                     {% endfor %}
@@ -628,7 +629,7 @@ $(function() {
                     </div>
 
                     <div id="number-column-options" class="form-horizontal compact">
-                        <h3>{% trans "Output number format" %}</h3>
+                        <label class="separator">{% trans "Output number format" %}</label>
 
                         <div class="control-group">
                             <label class="control-label" for="text-title">{% trans "Decimals after point" %}</label>
@@ -672,7 +673,7 @@ $(function() {
                     </div>
 
                     <div style="margin-bottom:15px;">
-                        <h3>{% trans "Hide column" %}</h3>
+                        <label class="separator">{% trans "Hide column" %}</label>
 
                         <p>
                             <label class="checkbox"><input id="column-options-hide" type="checkbox"> {% trans "Hide column from visualization" %}</label>
