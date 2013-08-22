@@ -5158,7 +5158,20 @@ Handsontable.PluginHooks = new Handsontable.PluginHookClass();
         var renderer = Handsontable.helper.getCellMethod('renderer', cellProperties.renderer);
         renderer(instance, tmp.rendererTd, 0, col, instance.colToProp(col), str, cellProperties);
 
-        width += instance.view.wt.wtDom.outerWidth(tmp.renderer) - instance.view.wt.wtDom.outerWidth(tmp.noRenderer); //add renderer overhead to the calculated width
+        var sample1 = instance.view.wt.wtDom.outerWidth(tmp.renderer) - instance.view.wt.wtDom.outerWidth(tmp.noRenderer); //add renderer overhead to the calculated width
+
+        //a hack to sample from 2 rows
+        instance.view.wt.wtDom.empty(tmp.rendererTd);
+        instance.view.wt.wtDom.empty(tmp.noRendererTd);
+
+        var str = instance.getDataAtCell(1, col);
+
+        tmp.noRendererTd.appendChild(document.createTextNode(str));
+        var renderer = Handsontable.helper.getCellMethod('renderer', cellProperties.renderer);
+        renderer(instance, tmp.rendererTd, 1, col, instance.colToProp(col), str, cellProperties);
+        var sample2 = instance.view.wt.wtDom.outerWidth(tmp.renderer) - instance.view.wt.wtDom.outerWidth(tmp.noRenderer); //add renderer overhead to the calculated width
+
+        width += Math.max(sample1, sample2);
       }
 
       var maxWidth = instance.view.wt.wtViewport.getViewportWidth() - 2; //2 is some overhead for cell border
