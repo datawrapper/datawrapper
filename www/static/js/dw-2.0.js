@@ -1520,8 +1520,20 @@ _.extend(dw.visualization.base, {
         var me = this,
             dataset = me.dataset,
             usedColumns = {},
-            defAxes = {},
+            axes = {},
+            axesAsColumns = {},
             errors = [];
+
+        // get user preference
+        axes =  me.chart.get('metadata.axes', {});
+        _.each(axes, function(columns) {
+            if (!_.isArray(columns)) columns = [columns];
+            _.each(columns, function(column) {
+                usedColumns[column.name()] = true; // mark as used
+            });
+        });
+
+        // auto-populate remaining axes
         _.each(me.meta.axes, function(axisDef, key) {
             function checkColumn(col) {
                 return !usedColumns[col.name()] &&
@@ -1533,49 +1545,55 @@ _.extend(dw.visualization.base, {
                         'The visualization needs at least one column of the type %type to populate axis %key';
                 errors.push(msg.replace('%type', axisDef.accepts).replace('%key', key));
             }
+            if (axes[key]) return;  // user has defined this axis already
             if (!axisDef.optional) {
                 if (!axisDef.multiple) {
                     // find first colulmn accepted by axis
                     var c = _.find(dataset.columns(), checkColumn);
                     if (c) {
                         usedColumns[c.name()] = true; // mark column as used
-                        defAxes[key] = c.name();
+                        axes[key] = c.name();
                     } else {
                         errMissingColumn();
                     }
                 } else {
-                    defAxes[key] = [];
+                    axes[key] = [];
                     dataset.eachColumn(function(c) {
                         if (checkColumn(c)) {
                             usedColumns[c.name()] = true;
-                            defAxes[key].push(c.name());
+                            axes[key].push(c.name());
                         }
                     });
-                    if (!defAxes[key].length) {
+                    if (!axes[key].length) {
                         errMissingColumn();
                     }
                 }
             } else {
-                defAxes[key] = false;
+                axes[key] = false;
             }
         });
+
         if (errors.length) {
             if (dw.backend) dw.backend.alert(errors.join('<br />'));
             return false;
         }
-        defAxes = me.chart.get('metadata.axes', defAxes);
-        if (returnAsColumns) {
-            _.each(defAxes, function(columns, key) {
-                if (!_.isArray(columns)) {
-                    defAxes[key] = columns !== false ? me.dataset.column(columns) : null;
-                } else {
-                    _.each(columns, function(column, i) {
-                        defAxes[key][i] = column !== false ? me.dataset.column(column) : null;
-                    });
-                }
-            });
-        }
-        return defAxes;
+
+        _.each(axes, function(columns, key) {
+            if (!_.isArray(columns)) {
+                axesAsColumns[key] = columns !== false ? me.dataset.column(columns) : null;
+            } else {
+                axesAsColumns[key] = [];
+                _.each(columns, function(column, i) {
+                    axesAsColumns[key][i] = column !== false ? me.dataset.column(column) : null;
+                });
+            }
+        });
+
+        me.axes = function(returnAsColumns) {
+            return returnAsColumns ? axesAsColumns : axes;
+        };
+
+        return me.axes(returnAsColumns);
     },
 
     keys: function() {
