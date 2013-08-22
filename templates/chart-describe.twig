@@ -574,18 +574,13 @@ $(function() {
 
                     <h3>{% trans "Describe your data" %}</h3>
 
-                    <div style="margin-bottom:5px;">
-                        <div class="half">
-                            <p>
-                                <label class="radio"><input type="radio" name="transpose" value="yes" /> {% trans "Data series in rows" %}</label>
-                                <label class="radio"><input type="radio" name="transpose" value="no" /> {% trans "Data series in columns" %}</label>
-                            </p>
-                        </div><div class="half">
-                            <p>
-                                <label class="checkbox"><input id="has-headers" type="checkbox" checked="checked"> {% trans "First row as label" %}</label>
-                            </p>
-                        </div>
-                        <div class="clearfix"></div>
+                    <div>
+                        <p>
+                            <label class="checkbox" style="margin-bottom:10px"><input id="has-headers" type="checkbox" checked="checked"> {% trans "First row as label" %}</label>
+                            <label class="radio"><input type="radio" name="transpose" value="no" /> {% trans "Data series in columns" %}</label>
+                             <label class="radio"><input type="radio" name="transpose" value="yes" /> {% trans "Data series in rows" %}</label>
+                            
+                        </p>
                     </div>
 
                     <p><b>{% trans "Hint:" %}</b> {% trans "You can customize the column formatting after selecting columns in the table header." %}</p>
