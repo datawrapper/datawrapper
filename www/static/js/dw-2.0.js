@@ -76,6 +76,32 @@ dw.dataset = function(columns, opts) {
             return (_.isString(x) ? columnsByName[x] : columns[x]) !== undefined;
         },
 
+        toCSV: function() {
+            var csv = "",
+                sep = ",",
+                quote = "\"";
+            // add header
+            _.each(columns, function(col, i) {
+                var t = col.title();
+                if (t.indexOf(quote) > -1) t.replace(quote, '\\'+quote);
+                if (t.indexOf(sep) > -1) t = quote + t + quote;
+                csv += (i > 0 ? sep : '') + t;
+            });
+            // add values
+            _.each(_.range(dataset.numRows()), function(row) {
+                csv += '\n';
+                _.each(columns, function(col, i) {
+                    var t = ''+col.val(row);
+                    if (t.indexOf(quote) > -1) t.replace(quote, '\\'+quote);
+                    if (t.indexOf(sep) > -1) t = quote + t + quote;
+                    csv += (i > 0 ? sep : '') + t;
+                });
+            });
+            return csv;
+        },
+
+
+
         // -----------------------------------------
         // everything below this line is kept for
         // backward compatibility only

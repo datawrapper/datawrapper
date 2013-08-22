@@ -30,4 +30,6 @@ vows
             'checking existing column': (topic) -> assert topic.hasColumn('Party')
             'checking non-existing column': (topic) -> assert.isFalse topic.hasColumn('Foo')
 
+            'exporting as csv': (topic) -> assert.equal topic.toCSV(), "Party,Women,Men,Total\nCDU/CSU,45,192,237\nSPD,57,89,146\nFDP,24,69,93\nLINKE,42,34,76\nGRÜNE,36,32,68"
+
     .export module
