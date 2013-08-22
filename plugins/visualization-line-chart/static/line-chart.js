@@ -21,14 +21,12 @@
             }
 
             // returns date obj assigned to row r
-            function rowDate(r) {
-                return axesDef.x.val(r);
-            }
+            function rowName(r) { return axesDef.x.val(r); }
 
             // returns the d3.scale for x axis
             function xScale() {
                 if (useDateFormat()) {
-                    return d3.time.scale().domain([rowDate(0), rowDate(-1)]);
+                    return d3.time.scale().domain([rowName(0), rowName(-1)]);
                 } else {
                     return d3.scale.linear().domain([0, dataset.numRows()-1]);
                 }
@@ -170,7 +168,7 @@
                 var tickCount = Math.round(c.w / 75),
                     ticks = scales.x.ticks(tickCount),
                     fmt = axesDef.x.type(true).format(), // get parsed date format
-                    daysDelta = Math.round((rowDate(-1).getTime() - rowDate(0).getTime()) / 86400000),
+                    daysDelta = Math.round((rowName(-1).getTime() - rowName(0).getTime()) / 86400000),
                     tickFormat = dw.utils.dateFormat(daysDelta),
                     last_month = -1, new_month,
                     last_year = -1, new_year,
@@ -252,11 +250,11 @@
                         });
 
                 // update x-label
-                var lx = scales.x(useDateFormat() ? rowDate(row) : row),
-                    lw = vis.labelWidth(dataset.rowName(row), 'axis x-axis'),
+                var lx = scales.x(useDateFormat() ? rowName(row) : row),
+                    lw = vis.labelWidth(rowName(row), 'axis x-axis'),
                     lfmt = formatter.x;
 
-                xlabel.text(useDateFormat() ? lfmt(rowDate(row)) : dataset.rowName(row));
+                xlabel.text(lfmt(rowName(row)));
                 xlabel.attr({
                     x: lx,
                     y: xLabelTop,
@@ -489,7 +487,7 @@
                 col.each(function(val, i) {
                     //console.log(col.name(), val);
 
-                    x = scales.x(useDateFormat() ? rowDate(i) : i);
+                    x = scales.x(useDateFormat() ? rowName(i) : i);
                     y = scales.y(val);
 
                     if (isNaN(y)) {

@@ -20,11 +20,6 @@
 
             table = $('<table class="'+css_class+'" id="datatable"><thead /><tbody /></table>');
             tr = $('<tr />');
-            /*if (me.chart.hasRowHeader()) {
-                var h = me.dataset.rowNameLabel();
-                if (/^X\.\d+$/.test(h)) h = '';
-                tr.append('<th>'+h+'</th>');
-            }*/
             var colType = [];
             dataset.eachColumn(function(column) {
                 th = $('<th>'+column.title()+'</th>');
