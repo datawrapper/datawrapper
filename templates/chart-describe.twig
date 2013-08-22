@@ -513,8 +513,14 @@ $(function() {
 
     reload();
 
-    $('#describe-proceed').click(function() {
-        chart.save();
+    $('a[href=visualize]').click(function(evt) {
+        if (chart.hasUnsavedChanges()) {
+            evt.preventDefault();
+            chart.onSave(function() {
+                location.href = 'visualize';
+            });
+            chart.save();
+        }
     });
 
 });
