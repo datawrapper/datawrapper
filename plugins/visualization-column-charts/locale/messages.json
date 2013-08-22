@@ -13,5 +13,6 @@
   "Stacked Column Chart": "Stacked Column Chart",
   "Stack percentages": "Stack percentages",
   "Let user switch mode": "Let user switch mode",
-  "stack percentages": "stack percentages"
+  "stack percentages": "stack percentages",
+  "Negative values, as contained in your dataset, cannot be stacked on top of \neach other in a stacked column chart. Please consider using a different \nchart type instead (eg. a grouped column chart).": "Negative values, as contained in your dataset, cannot be stacked on top of \neach other in a stacked column chart. Please consider using a different \nchart type instead (eg. a grouped column chart)."
 }
