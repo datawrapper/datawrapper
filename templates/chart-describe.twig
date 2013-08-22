@@ -243,7 +243,7 @@ $(function() {
             if(selectedColumns.indexOf(col) > -1) {
                 td.classList.add('area'); //add blue area background if this cell is in selected column
             }
-            if (!column.type(true).isValid(column.val(row-1))) {
+            if (row > 0 && !column.type(true).isValid(column.val(row-1))) {
                 td.classList.add('parsingError');
             }
         }
