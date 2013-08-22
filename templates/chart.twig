@@ -10,6 +10,7 @@
     <!--[if lt IE 9]>
     <script src="{{ DW_DOMAIN }}/static/vendor/json-js/json2.min.js"></script>
     <script type="text/javascript">
+        window.__ltie9 = true;
     </script>
     <![endif]-->
     {% if innersvg %}
@@ -226,6 +227,14 @@
 
             initResizeHandler();
             initFullscreen();
+
+            // update data link to point to edited dataset
+            if (!window['__ltie9']) {
+                $('a[href=data]')
+                    .attr('download', 'data-'+chart.get('id')+'.csv')
+                    .attr('href', 'data:application/octet-stream;charset=utf-8,' +
+                        encodeURIComponent(chart.dataset().toCSV()));
+            }
 
             chart.render($('#chart'));
         }
