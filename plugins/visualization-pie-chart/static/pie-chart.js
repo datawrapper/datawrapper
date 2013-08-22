@@ -83,8 +83,8 @@
 
             me.__slices = me.__slices ? me.__slices : {};
 
-            var column = dataset.column(me.axesDef.slices[row]),
-                labels = dataset.column(me.axesDef.labels),
+            var column = me.axes(true).slices[row],
+                labels = me.axes(true).labels,
                 total = 0, min = Number.MAX_VALUE, max = 0,
                 reverse,
                 slices,
@@ -92,12 +92,14 @@
                 ocnt = 0,
                 hasNegativeValues = column.range()[0] < 0,
                 values = [],
-                fmt = labels.type(true).formatter();
+                formatValue = me.chart.columnFormatter(column),
+                formatLabel = me.chart.columnFormatter(labels);
 
             // pull values and labels from columns
             column.each(function(val, i) {
                 values.push({
-                    name: String(fmt(labels.val(i))),
+                    name: labels.val(i),
+                    label: formatLabel(labels.val(i)),
                     value: val,
                     index: i
                 });
@@ -106,8 +108,8 @@
             // sort values by first slice column
             if (me.get('sort-values', true)) {
                 values.sort(function(a, b) {
-                    return dataset.column(me.axesDef.slices[0]).val(b.index) -
-                        dataset.column(me.axesDef.slices[0]).val(a.index);
+                    return me.axes(true).slices[0].val(b.index) -
+                        me.axes(true).slices[0].val(a.index);
                 });
             }
 
@@ -217,7 +219,7 @@
                     stroke = chroma.color(fill).darken(15).hex(),
                     a0 = reverse ? sa - da : sa,
                     a1 = reverse ? sa : sa + da,
-                    value = showTotal ? Math.round(o.value / total * 100)+'%' : me.chart.formatValue(o.value, true);
+                    value = showTotal ? Math.round(o.value / total * 100)+'%' : formatValue(o.value, true);
 
                 if (o.value === 0) return;
 
@@ -313,7 +315,7 @@
                 if (me.get('custom-total')) {
                     total = me.get('custom-total-value', '');
                 } else {
-                    total = me.chart.formatValue(total, true);
+                    total = formatValue(total, true);
                 }
                 if (me.__labelTotal) me.__labelTotal.remove();
                 me.__labelTotal = me.label(cx, c.cy, '<strong>Total:</strong><br />'+total, {
@@ -375,7 +377,13 @@
 
         unhoverSeries: function() {
             this.hoverSeries();
-        }
+        },
+
+        formatValue: function() {
+            var me = this;
+            return me.chart.columnFormatter(me.axes(true).slices);
+            return me.formatValue.apply(me, arguments);
+        },
 
     });
 

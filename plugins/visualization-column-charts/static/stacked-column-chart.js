@@ -84,9 +84,15 @@
             return { w: w, h: h, x: x, y: y, bx: x, bw: bw };
         },
 
-        formatValue: function(v) {
-            var me = this;
-            return me.is_normalized() ? Math.round(v * 100)+'%' : me.chart.formatValue.apply(me.chart, arguments);
+        formatValue: function() {
+            var me = this,
+                formatter = me.chart.columnFormatter(me.axes(true).columns[0]);
+            // we're overwriting this function with the actual column formatter
+            // when it is first called (lazy evaluation)
+            me.formatValue = function(v, b, c) {
+                return me.is_normalized() ? Math.round(v * 100)+'%' : formatter(v,b,c);
+            };
+            return me.formatValue.apply(me, arguments);
         },
 
         is_normalized: function() {

@@ -354,7 +354,11 @@
         },
 
         formatValue: function() {
-            return this.chart.formatValue.apply(this.chart, arguments);
+            var me = this;
+            // we're overwriting this function with the actual column formatter
+            // when it is first called (lazy evaluation)
+            me.formatValue = me.chart.columnFormatter(me.axes(true).columns[0]);
+            return me.formatValue.apply(me, arguments);
         },
 
         post_render: function() {

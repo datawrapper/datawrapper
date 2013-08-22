@@ -96,7 +96,8 @@
                 val = barv.value,
                 fill = me.getBarColor(barv, me.get('negative-color', false)),
                 stroke = chroma.color(fill).darken(me.theme.columnChart.darkenStroke).hex(),
-                bar;
+                bar,
+                formatter = me.chart.columnFormatter(me.getBarColumn());
 
             // create bar
             bar = me.registerElement(c.paper.rect().attr(d).attr({
@@ -110,7 +111,7 @@
 
             var val_y  = val > 0 ? d.y - 10 : d.y + d.height + 10,
                 lbl_y  = val <= 0 ? d.y - 10 : d.y + d.height + 5,
-                f_val  = me.chart.formatValue(val, true),
+                f_val  = formatter(val, true),
                 vlbl_w = me.labelWidth(f_val, 'value'),
                 bw     = (d.width + d.width * d.pad),
                 lblcl  = ['series'],
@@ -124,7 +125,7 @@
                 spos = me.labelPosition(barv, s, 'series');
 
             // add value labels
-            me.registerLabel(me.label(lpos.left, lpos.top, me.chart.formatValue(barv.value, true),{
+            me.registerLabel(me.label(lpos.left, lpos.top, formatter(barv.value, true),{
                 w: lpos.width,
                 align: 'center',
                 cl: 'value outline ' + (alwaysShow ? '' : ' showOnHover')
@@ -193,7 +194,8 @@
         },
 
         update: function(row) {
-            var me = this;
+            var me = this,
+                formatter = me.chart.columnFormatter(me.getBarColumn());
 
             // update scales
             me.initDimensions();
@@ -218,7 +220,7 @@
                     var lpos;
                     if (lbl.hasClass('value')) {
                         // update value
-                        lbl.text(me.chart.formatValue(bar.value, true));
+                        lbl.text(formatter(bar.value, true));
                         lpos = me.labelPosition(bar, s, 'value');
                     } else if (lbl.hasClass('series')) {
                         // update column label position
@@ -314,10 +316,12 @@
                 valign = lbl_top ? 'top' : 'bottom',
                 halign = 'center',
                 val_y = lbl_top ? d.y - 10 : d.y + d.height + 10,
-                lbl_y = !lbl_top ? d.y - 5 : d.y + d.height + 5;
+                lbl_y = !lbl_top ? d.y - 5 : d.y + d.height + 5,
+                formatter = me.chart.columnFormatter(me.getBarColumn());
+
 
             if (type == "value") {
-                lbl_w = me.labelWidth(me.chart.formatValue(val, true), 'value outline hover');
+                lbl_w = me.labelWidth(formatter(val, true), 'value outline hover');
                 return { left: d.x + d.width * 0.5, top: val_y, width: lbl_w };
             } else if (type == "series") {
                 lbl_w = c.w / (me.getBarValues().length+2);
@@ -356,7 +360,8 @@
                 styles = me.__styles,
                 ticks = me.getYTicks(yscale, c.h, true),
                 tickLabels = me.__tickLabels = me.__tickLabels || {},
-                gridLines = me.__gridLines = me.__gridLines || {};
+                gridLines = me.__gridLines = me.__gridLines || {},
+                formatter = me.chart.columnFormatter(me.getBarColumn());
 
             if (!me.gridVisible()) ticks = [];
 
@@ -372,7 +377,7 @@
                 // show or update label
                 if (val !== 0) {
                     var lbl = tickLabels[key] = tickLabels[key] ||
-                        me.label(x+2, ly, me.chart.formatValue(val, t == ticks.length-1, true),
+                        me.label(x+2, ly, formatter(val, t == ticks.length-1, true),
                             { align: 'left', cl: 'axis', css: { opacity: 0 } });
                     lbl.animate({ x: c.lpad+2, y: ly, css: { opacity: 1 } }, me.theme.duration, me.theme.easing);
                 }
