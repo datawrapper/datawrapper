@@ -7,7 +7,8 @@ dw.column.types.text = function() {
         parse: _.identity,
         errors: function() { return 0; },
         name: function() { return 'text'; },
-        formatter: function() { return _.identity; }
+        formatter: function() { return _.identity; },
+        isValid: function() { return true; }
     };
 };
 
@@ -104,6 +105,10 @@ dw.column.types.number = function(sample) {
                 }
                 return full ? prepend + val + append : val;
             };
+        },
+
+        isValid: function(val) {
+            return val === "" || naStrings[String(val).toLowerCase()] || _.isNumber(type.parse(val));
         }
     };
     return type;
@@ -224,6 +229,10 @@ dw.column.types.date = function(sample) {
                 case 'month': return function(d) { return !_.isDate(d) ? d : Globalize.format(d, 'MMM yy'); };
                 case 'day': return function(d) { return !_.isDate(d) ? d : Globalize.format(d, 'd'); };
             }
+        },
+
+        isValid: function(val) {
+            return _.isDate(type.parse(val));
         }
     };
     return type;

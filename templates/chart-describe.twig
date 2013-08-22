@@ -86,6 +86,11 @@ table.htCore tr td {
 .table td.firstRow.dateType { color: #1E8118; }
 .table td.firstRow.numberType { color: #1B668B; }
 
+.table td.parsingError {
+    color: #d00;
+    background: #fee;
+}
+
 </style>
 <link rel="stylesheet" type="text/css" href="/static/vendor/handsontable/jquery.handsontable.full.css">
 <link rel="stylesheet" type="text/css" href="/static/vendor/handsontable/jquery.handsontable.bootstrap.css">
@@ -232,13 +237,14 @@ $(function() {
             } else {
                 td.classList.add(row % 2 ? 'oddRow' : 'evenRow');
             }
-
             if (metadata.columnFormat.get(column.name()).ignore) {
                 td.classList.add('ignored');
             }
-
             if(selectedColumns.indexOf(col) > -1) {
                 td.classList.add('area'); //add blue area background if this cell is in selected column
+            }
+            if (!column.type(true).isValid(column.val(row-1))) {
+                td.classList.add('parsingError');
             }
         }
 
@@ -564,7 +570,6 @@ $(function() {
 
             <div id="data-preview"></div>
 
-            
         </div>
 
         <div class="span4">
@@ -579,7 +584,7 @@ $(function() {
                             <label class="checkbox" style="margin-bottom:10px"><input id="has-headers" type="checkbox" checked="checked"> {% trans "First row as label" %}</label>
                             <label class="radio"><input type="radio" name="transpose" value="no" /> {% trans "Data series in columns" %}</label>
                              <label class="radio"><input type="radio" name="transpose" value="yes" /> {% trans "Data series in rows" %}</label>
-                            
+
                         </p>
                     </div>
 
