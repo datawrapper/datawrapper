@@ -2,6 +2,7 @@
    "version": "1.5.0",
    "author": "Gregor Aisch <gregor@datawrapper.de>",
    "dependencies": {
-      "visualization-pie-chart": "*"
+        "core": "1.5.0",
+        "visualization-pie-chart": "*"
    }
 }
