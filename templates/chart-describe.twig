@@ -151,7 +151,7 @@ $(function() {
 
     chart.sync('#describe-source-name', 'metadata.describe.source-name');
     chart.sync('#describe-source-url', 'metadata.describe.source-url');
-    chart.sync('input:radio[name=transpose]', 'metadata.data.transpose');
+    chart.sync('#transpose', 'metadata.data.transpose');
 
     chart.sync('#has-headers', 'metadata.data.horizontal-header');
 
@@ -577,20 +577,18 @@ $(function() {
 
                 <div id="table-options">
 
-                    <h3>{% trans "Describe your data" %}</h3>
+                    <h3 style="margin-top:0">{% trans "Describe your data" %}</h3>
 
                     <div>
                         <p>
-                            <label class="checkbox" style="margin-bottom:10px"><input id="has-headers" type="checkbox" checked="checked"> {% trans "First row as label" %}</label>
-                            <label class="radio"><input type="radio" name="transpose" value="no" /> {% trans "Data series in columns" %}</label>
-                             <label class="radio"><input type="radio" name="transpose" value="yes" /> {% trans "Data series in rows" %}</label>
-
+                            <label class="checkbox"><input id="has-headers" type="checkbox" checked="checked"> {% trans "First row as label" %}</label>
+                            <label class="checkbox"><input id="transpose" type="checkbox"> {% trans "Transpose data table" %}</label>
                         </p>
                     </div>
 
                     <p><b>{% trans "Hint:" %}</b> {% trans "You can customize the column formatting after selecting columns in the table header." %}</p>
 
-                    <h3>{% trans "Credit the source" %}</h3>
+                    <h3 style="margin-top:20px">{% trans "Credit the source" %}</h3>
                     <p>
                         <label>{% trans "Who published the data in the first place?" %}</label>
                         <input id="describe-source-name" type="text" placeholder="name of the organisation">
@@ -601,10 +599,6 @@ $(function() {
                         <input id="describe-source-url" type="text" placeholder="http://">
                     </p>
 
-                    <!--<h3>{% trans "Annotate data" %}</h3>
-                    <p>{% trans "To make the data more useful for your readers you can add details to individual data points or an entire series. This information will be displayed in the visualisations." %} <a href="#">{% trans "Learn more" %}</a></p>
-                    <button class="btn"><i class="icon-th-list"></i> {% trans "Annotate series" %}</button> <button class="btn"><i class="icon-th"></i> {% trans "Annotate data point" %}</button>
-                    -->
                 </div>
 
                 <div id="column-options">
