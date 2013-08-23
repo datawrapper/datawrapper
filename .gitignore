@@ -7,7 +7,7 @@ lib/datawrapper/build/conf/datawrapper-conf.php
 charts/data/*
 charts/images/*
 charts/static/*
-push
+charts/exports/*
 config.php
 config.yaml
 scripts/history.php
