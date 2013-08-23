@@ -316,6 +316,9 @@ $(function() {
     }
 
     $('body').on('mousedown', function () {
+        if(document.activeElement.nodeName === 'INPUT') {
+            document.activeElement.blur(); //save changes from currently edited sidebar field
+        }
         if(selectedColumns.length) {
             deselectColumns();
             $dataPreview.handsontable('render'); //refresh all cells and column headers
@@ -327,14 +330,13 @@ $(function() {
         start = void 0;
     });
 
-    $dataPreview.on('mousedown', 'th:has(.colHeader)', function () {
-        if(document.activeElement.nodeName === 'INPUT') {
-            document.activeElement.blur(); //save changes from currently edited field
-        }
+    $dataPreview.on('mousedown', 'th:has(.colHeader)', function (event) {
         start = getIndexOfTh(this);
-        selectColumns(start);
         event.stopPropagation();
         $dataPreview.handsontable('deselectCell');
+        setTimeout(function(){ //do it in timeout, so input blur has chance to run
+            selectColumns(start);
+        }, 0);
     });
 
     var last;
