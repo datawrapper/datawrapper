@@ -277,7 +277,8 @@ $(function() {
                 }
             });
 
-            $('#data-preview table').addClass('table table-bordered');
+            $('#data-preview table').addClass('table table-bordered'); //Bootstrap class names
+            $("#data-preview").handsontable('render'); //consider Bootstrap class names in auto column size
         }
 
         if(metadata.changes.exist()) {

@@ -6,7 +6,7 @@
  * Licensed under the MIT license.
  * http://handsontable.com/
  *
- * Date: Tue Aug 20 2013 14:50:33 GMT+0200 (CEST)
+ * Date: Fri Aug 23 2013 12:42:43 GMT+0200 (Central European Daylight Time)
  */
 
 .handsontable {
@@ -18,6 +18,7 @@
 
 .handsontable.hidden {
   display: none;
+  visibility: hidden;
   left: 0;
   position: absolute;
   top: 0;
