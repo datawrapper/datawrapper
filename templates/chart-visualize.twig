@@ -191,7 +191,9 @@ $(function() {
         _themeHasChanged = false;
         _typeHasChanged = false;
 
-        iframe.get(0).contentWindow.__dw.saved();
+        if (iframe.get(0).contentWindow.__dw) {
+            iframe.get(0).contentWindow.__dw.saved();
+        }
         scheduleThumbnail();
         checkChartHeight();
     });
