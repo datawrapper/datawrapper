@@ -13,7 +13,7 @@ class DatawrapperPlugin_ThemeAutumn extends DatawrapperPlugin {
           'link' => 'http://www.datawrapper.de',
           'extends' => 'default',
           'restricted' => NULL,
-          'version' => '1.3.0',
+          'version' => '1.5.0',
           'option-filter' => 
           array (
             'line-chart' => 
