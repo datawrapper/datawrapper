@@ -159,7 +159,7 @@ $(function() {
 
     function loadVis() {
         dw.backend.currentVis = dw.visualization(chart.get('type'));
-        dw.backend.currentVis.chart = chart;
+        dw.backend.currentVis.chart(chart);
         dw.backend.currentVis.dataset = chart.dataset();
         dw.backend.currentVis.meta = visMetas[chart.get('type')];
         loadVisDeferred.resolve();

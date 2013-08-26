@@ -247,7 +247,7 @@ var dw = dw || {};
         canvas.width = c.w * scale;
         canvas.height = c.h * scale;
 
-        ctx.fillStyle = win.vis.theme.colors.background;
+        ctx.fillStyle = win.vis.theme().colors.background;
         ctx.fillRect(0, 0, c.w * scale, c.h * scale);
         ctx.drawSvg(svg.get(0).innerSVG, 0, 0, c.w * scale, c.h * scale);
 
@@ -291,7 +291,7 @@ var dw = dw || {};
                 }
                 // check if we need to update chart
                 if (changed('metadata.visualize')) {
-                    __dw.vis.chart.attributes(attrs);
+                    __dw.vis.chart().attributes(attrs);
                     __dw.render();
                 }
                 if (changed('title')) {

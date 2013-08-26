@@ -86,7 +86,7 @@
 
         formatValue: function() {
             var me = this,
-                formatter = me.chart.columnFormatter(me.axes(true).columns[0]);
+                formatter = me.chart().columnFormatter(me.axes(true).columns[0]);
             // we're overwriting this function with the actual column formatter
             // when it is first called (lazy evaluation)
             me.formatValue = function(v, b, c) {

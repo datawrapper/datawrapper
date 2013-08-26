@@ -11,10 +11,10 @@
             el = $(el);
             // add table
             var me = this, table, tr, td, th, r,
-                css_class = me.theme.datatable && me.theme.datatable['class'] ?
-                    me.theme.datatable['class'] : 'datatable-default',
+                css_class = me.theme().datatable && me.theme().datatable['class'] ?
+                    me.theme().datatable['class'] : 'datatable-default',
                 isHighlighted = function(series) {
-                    return me.chart.hasHighlight() && me.chart.isHighlighted(series);
+                    return me.chart().hasHighlight() && me.chart().isHighlighted(series);
                 },
                 dataset = me.dataset;
 
@@ -37,11 +37,11 @@
             _.each(_.range(dataset.numRows()), function(r) {
                 tr = $('<tr />');
                 var highlighted_rows = me.get('highlighted-rows');
-                if (_.isArray(highlighted_rows) && _.indexOf(highlighted_rows, "Row "+(me.chart.rowLabel(r)+1)) >= 0) {
+                if (_.isArray(highlighted_rows) && _.indexOf(highlighted_rows, "Row "+(me.chart().rowLabel(r)+1)) >= 0) {
                     tr.addClass('highlight');
                 }
                 dataset.eachColumn(function(column, s) {
-                    var cell_content = me.chart.columnFormatter(column)(column.val(r), true);
+                    var cell_content = me.chart().columnFormatter(column)(column.val(r), true);
                     if (cell_content == "n/a") {
                         cell_content = "&mdash;";
                     }

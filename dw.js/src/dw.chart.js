@@ -118,7 +118,7 @@ dw.chart = function(attributes) {
                 theme = _theme;
                 return chart;
             }
-            return theme;
+            return theme || {};
         },
 
         // sets or gets the visualization
@@ -181,7 +181,7 @@ dw.chart = function(attributes) {
             if (!vis || !theme || !dataset) {
                 throw 'cannot render the chart!';
             }
-            vis.setChart(chart);
+            vis.chart(chart);
             vis.__init();
             vis.render($(container));
         },

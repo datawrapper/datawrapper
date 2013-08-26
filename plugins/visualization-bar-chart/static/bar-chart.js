@@ -47,7 +47,7 @@
                 chart_width = c.w - c.lpad - c.rpad,
                 series_gap = 0.05, // pull from theme
                 row_gap = 0.01,
-                formatValue = me.chart.columnFormatter(me.getBarColumn());
+                formatValue = me.chart().columnFormatter(me.getBarColumn());
 
             me.init();
             me.initDimensions();
@@ -67,8 +67,8 @@
                     'stroke': stroke,
                     'fill': fill
                 }).data('strokeCol', stroke), barv.name);
-                if (me.theme.barChart.barAttrs) {
-                    bar.attr(me.theme.barChart.barAttrs);
+                if (me.theme().barChart.barAttrs) {
+                    bar.attr(me.theme().barChart.barAttrs);
                 }
 
                 if (lpos.show_val) {
@@ -95,7 +95,7 @@
                 var x = c.lpad + c.zero ;
                 // add y-axis
                 me.__yaxis = me.path('M' + [x, c.tpad] + 'V' + c.lastBarY, 'axis')
-                    .attr(me.theme.yAxis);
+                    .attr(me.theme().yAxis);
             }
 
             // enable mouse events
@@ -109,7 +109,7 @@
                 filter = me.__lastRow,
                 labels = me.axes(true).labels,
                 column = me.getBarColumn(filter),
-                fmt = me.chart.columnFormatter(labels);
+                fmt = me.chart().columnFormatter(labels);
 
             column.each(function(val, i) {
                 values.push({
@@ -131,7 +131,7 @@
 
         update: function(row) {
             var me = this,
-                formatValue = me.chart.columnFormatter(me.getBarColumn());
+                formatValue = me.chart().columnFormatter(me.getBarColumn());
 
             // update scales
             me.initDimensions();
@@ -140,7 +140,7 @@
             _.each(me.getBarValues(me.get('sort-values', false)), function(bar, s) {
                 _.each(me.__elements[bar.name], function(rect) {
                     var dim = me.barDimensions(bar, s, row);
-                    rect.animate(dim, me.theme.duration, me.theme.easing);
+                    rect.animate(dim, me.theme().duration, me.theme().easing);
                 });
 
                 _.each(me.__labels[bar.name], function(lbl) {
@@ -158,7 +158,7 @@
                             align: lpos.halign,
                             x: lpos.left,
                             y: lpos.top
-                        }, me.theme.duration, me.theme.easing);
+                        }, me.theme().duration, me.theme().easing);
                     }
                 });
             });
@@ -168,12 +168,12 @@
                     p = 'M' + [x, c.tpad] + 'V' + c.lastBarY;
                 // add y-axis
                 if (me.__yaxis) {
-                    me.__yaxis.animate({ path: p, opacity: 1 }, me.theme.duration, me.theme.easing);
+                    me.__yaxis.animate({ path: p, opacity: 1 }, me.theme().duration, me.theme().easing);
                 } else {
-                    me.__yaxis = me.path(p, 'axis').attr(me.theme.yAxis);
+                    me.__yaxis = me.path(p, 'axis').attr(me.theme().yAxis);
                 }
             } else if (me.__yaxis) {
-                me.__yaxis.animate({ opacity: 0 }, me.theme.duration * 0.5, me.theme.easing);
+                me.__yaxis.animate({ opacity: 0 }, me.theme().duration * 0.5, me.theme().easing);
             }
         },
 
@@ -183,7 +183,7 @@
                 w = c.w - c.lpad - c.rpad - 30,
                 column = me.getBarColumn(),
                 bars = me.getBarValues(),
-                formatValue = me.chart.columnFormatter(column),
+                formatValue = me.chart().columnFormatter(column),
                 domain = me.get('absolute-scale', false) ? dw.utils.minMax(_.map(me.axesDef.bars, function(c) { return me.dataset.column(c); })) : column.range();
 
             if (domain[0] > 0) domain[0] = 0;
@@ -218,7 +218,7 @@
                 lw = me.labelWidth(bar.name, 'series');
                 if (lw > MAX_LABEL_WIDTH) me.__longLabels = true;
                 maxw[t] = Math.max(maxw[t], Math.min(lw, MAX_LABEL_WIDTH) + 20);
-                maxw[t+1] = Math.max(maxw[t+1], me.labelWidth(me.chart.formatValue(bar.value, true), 'value') + 20 + bw);
+                maxw[t+1] = Math.max(maxw[t+1], me.labelWidth(me.chart().formatValue(bar.value, true), 'value') + 20 + bw);
 
             });
 
@@ -270,7 +270,7 @@
         labelPosition: function(bar, s, r) {
             var me = this,
                 d = me.barDimensions(bar, s, r),
-                formatValue = me.chart.columnFormatter(me.getBarColumn()),
+                formatValue = me.chart().columnFormatter(me.getBarColumn()),
                 c = me.__canvas,
                 val = bar.value,
                 lbl_left = val >= 0 || isNaN(val),
@@ -282,7 +282,7 @@
                 val_align = lbl_left ? 'left' : 'right',
                 show_lbl = true,
                 show_val = true,
-                lblClass = me.chart.hasHighlight() && me.chart.isHighlighted(bar) ? ' highlighted' : '';
+                lblClass = me.chart().hasHighlight() && me.chart().isHighlighted(bar) ? ' highlighted' : '';
 
             if (me.__longLabels && me.__domain[0] >= 0) {
                 lbl_align = lbl_left ? 'left' : 'right';
