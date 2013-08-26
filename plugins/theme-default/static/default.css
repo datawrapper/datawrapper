@@ -125,8 +125,6 @@ a img { border:0px; }
 #footer .footer-left { 
     bottom:0;
     /* Vertical text align */
-    height:25px;
-    line-height:25px;    
 }
 
 /* We have to break to absolute positionof the footer 
@@ -142,7 +140,8 @@ within the .toggleable-panel */
     height:25px;
     line-height:25px;
     padding:0 5px;
-    overflow:hidden;          
+    overflow:hidden;
+    padding-top: 5px;
 }
 
 .footer-right .toggle-panel { 
