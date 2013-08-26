@@ -6,8 +6,8 @@
 
             var vis = this,
                 dataset = vis.dataset,
-                theme = vis.theme,
-                chart = vis.chart,
+                theme = vis.theme(),
+                chart = vis.chart(),
                 y1Domain,
                 axesDef = vis.axes(true),
                 formatter = {
