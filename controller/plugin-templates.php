@@ -4,6 +4,7 @@
  * render templates provided by plugins
  */
 $app->get('/plugins/:plugin/:template', function ($plugin_id, $template) use ($app) {
+    disable_cache($app);
 
     if (PluginQuery::create()->isInstalled($plugin_id)) {
         if (file_exists(ROOT_PATH . 'templates/plugins/' . $plugin_id . '/' . $template)) {

@@ -46,6 +46,12 @@ require ROOT_PATH . 'lib/session/database.php';
 require ROOT_PATH . 'lib/session/DatawrapperSession.php';
 if (!defined('NO_SESSION'))  DatawrapperSession::initSession();
 
+function debug_log($txt) {
+    $h = fopen(ROOT_PATH . 'log.txt', 'a+');
+    fwrite($h, microtime(true).': '.$txt."\n");
+    fclose($h);
+}
+
 require ROOT_PATH . 'lib/l10n.php';
 require ROOT_PATH . 'lib/utils/parse_config.php';
 
@@ -77,6 +83,7 @@ require ROOT_PATH . 'lib/hooks/DatawrapperHooks.php';
 require ROOT_PATH . 'lib/mail.php';
 require ROOT_PATH . 'lib/utils/memcache.php';
 require ROOT_PATH . 'lib/utils/vksprintf.php';
+require ROOT_PATH . 'lib/utils/copy_recursively.php';
 require ROOT_PATH . 'lib/plugin/load_plugins.php';
 
 

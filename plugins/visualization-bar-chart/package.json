@@ -1,7 +1,10 @@
 {
-    "version": "1.4.3",
+    "version": "1.5.0",
     "author": "Gregor Aisch",
     "dependencies": {
-        "visualization": "*"
+        "core": "1.5.0",
+        "visualization": "*",
+        "visualization-raphael-chart": "*"
     }
+
 }

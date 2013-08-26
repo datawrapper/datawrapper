@@ -1,13 +1,7 @@
 
 (function(){
-    // Election Donut
-    // -------------------------
 
-    var ElectionDonutChart = Datawrapper.Visualizations.ElectionDonutChart = function() {
-
-    };
-
-    _.extend(ElectionDonutChart.prototype, Datawrapper.Visualizations.DonutChart.prototype, {
+    dw.visualization.register('election-donut-chart', 'donut-chart', {
 
         getFullArc: function() {
             return Math.PI * 1.2;

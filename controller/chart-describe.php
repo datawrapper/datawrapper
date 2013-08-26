@@ -28,6 +28,12 @@ $app->get('/chart/:id/describe', function ($id) use ($app) {
                 $d = '.';
         }
 
+        $page['columntypes'] = array(
+            'text' => 'Text',
+            'number' => 'Number',
+            'date' => 'Date',
+        );
+
         $page['numberformats'] = array(
             'n3' => '3 ('.number_format(1234.56789, 3, $d, $k).')',
             'n2' => '2 ('.number_format(1234.56789, 2, $d, $k).')',

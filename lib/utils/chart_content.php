@@ -25,8 +25,8 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
     if ($published && !$debug) {
         $base_js = array(
             '//assets-datawrapper.s3.amazonaws.com/globalize.min.js',
-            '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.2/underscore-min.js',
-            '//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js'
+            '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.1/underscore-min.js',
+            '//cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.min.js'
         );
         if (substr($locale, 0, 2) != 'en') {
             $base_js[] = '//assets-datawrapper.s3.amazonaws.com/cultures/globalize.culture.' . str_replace('_', '-', $locale) . '.js';
@@ -35,8 +35,8 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
         // use local assets
         $base_js = array(
             $abs . '/static/vendor/globalize/globalize.min.js',
-            $abs . '/static/vendor/underscore/underscore-min.js',
-            $abs . '/static/vendor/jquery/jquery-1.9.1'.($debug ? '' : '.min').'.js'
+            $abs . '/static/vendor/underscore/underscore-1.5.1.min.js',
+            $abs . '/static/vendor/jquery/jquery-1.10.2'.($debug ? '' : '.min').'.js'
         );
         if (substr($locale, 0, 2) != 'en') {
             $base_js[] = $abs . '/static/vendor/globalize/cultures/globalize.culture.' . str_replace('_', '-', $locale) . '.js';
@@ -48,6 +48,8 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
     $next_vis_id = $chart->getType();
 
     $vis_libs = array();
+    $vis_libs_cdn = array();
+    $vis_libs_local = array();
 
     $vis_locale = array();  // visualizations may define localized strings, e.g. "other"
 
@@ -56,12 +58,21 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
         $vjs = array();
         if (!empty($vis['libraries'])) {
             foreach ($vis['libraries'] as $url) {
-                // at first we check if the library lives in ./lib of the vis module
-                if (file_exists(ROOT_PATH . 'www/' . $vis['__static_path'] . $url)) {
-                    $vis_libs[] = $vis['__static_path'] . $url;
-                } else if (file_exists(ROOT_PATH . 'www/static/vendor/' . $url)) {
-                    $vis_libs[] = '/static/vendor/' . $url;
+                if (!is_array($url)) {
+                    $url = array("local" => $url, "cdn" => false);
                 }
+                if ($url['cdn']) $vis_libs_cdn[] = $url['cdn'];
+
+                // at first we check if the library lives in ./lib of the vis module
+                if (file_exists(ROOT_PATH . 'www/' . $vis['__static_path'] . $url['local'])) {
+                    $u = $vis['__static_path'] . $url['local'];
+                } else if (file_exists(ROOT_PATH . 'www/static/vendor/' . $url['local'])) {
+                    $u = '/static/vendor/' . $url['local'];
+                } else {
+                    die("could not find required library ".$url["local"]);
+                }
+                $vis_libs[] = $u;
+                if (!$url['cdn']) $vis_libs_local[] = $u;
             }
         }
         if (!empty($vis['locale']) && is_array($vis['locale'])) {
@@ -83,11 +94,14 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
     $the_vis['locale'] = $vis_locale;
     $the_theme = DatawrapperTheme::get($chart->getTheme());
 
+    $the_vis_js = get_vis_js($the_vis, array_merge(array_reverse($vis_js), $vis_libs_local));
+
     if ($published) {
         $scripts = array_merge(
             $base_js,
+            $vis_libs_cdn,
             array(
-                '/lib/vis/' . $the_vis['id'] . '-' . $the_vis['version'] . '.min.js',
+                '/lib/' . $the_vis_js[0],
                 '/lib/theme/' . $the_theme['id'] . '-' . $the_theme['version'] . '.min.js',
             )
         );
@@ -98,7 +112,7 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
         $scripts = array_unique(
             array_merge(
                 $base_js,
-                array('/static/js/datawrapper'.($debug ? '' : '.min').'.js'),
+                array('/static/js/dw-2.0'.($debug ? '' : '.min').'.js'),
                 array_reverse($theme_js),
                 array_reverse($vis_js),
                 $vis_libs
@@ -117,25 +131,51 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
     $page = array(
         'chartData' => $chart->loadData(),
         'chart' => $chart,
-        'chartLocale' => str_replace('_', '-', $locale),
         'lang' => strtolower(substr($locale, 0, 2)),
         'metricPrefix' => get_metric_prefix($locale),
-        'theme' => $the_theme,
         'l10n__domain' => $the_theme['__static_path'],
-        'visualization' => $the_vis,
-        'stylesheets' => $styles,
-        'scripts' => $scripts,
-        'themeJS' => array_reverse($theme_js),
-        'visJS' => array_merge(array_reverse($vis_js), $vis_libs),
         'origin' => !empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '',
         'DW_DOMAIN' => 'http://' . $cfg['domain'] . '/',
         'DW_CHART_DATA' => 'http://' . $cfg['domain'] . '/chart/' . $chart->getID() . '/data',
         'ASSET_PATH' => $published ? '' : $the_theme['__static_path'],
-        'trackingCode' => !empty($analyticsMod) ? $analyticsMod->getTrackingCode($chart) : '',
         'chartUrl' => $chart_url,
         'embedCode' => '<iframe src="' .$chart_url. '" frameborder="0" allowtransparency="true" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen width="'.$chart->getMetadata('publish.embed-width') . '" height="'. $chart->getMetadata('publish.embed-height') .'"></iframe>',
-        'chartUrlFs' => strpos($chart_url, '.html') > 0 ? str_replace('index.html', 'fs.html', $chart_url) : $chart_url . '?fs=1'
+        'chartUrlFs' => strpos($chart_url, '.html') > 0 ? str_replace('index.html', 'fs.html', $chart_url) : $chart_url . '?fs=1',
+
+        // used in chart.twig
+        'stylesheets' => $styles,
+        'scripts' => $scripts,
+        'visualization' => $the_vis,
+        'theme' => $the_theme,
+        'chartLocale' => str_replace('_', '-', $locale),
+
+        // the following is used by chart_publish.php
+        'vis_js' => $the_vis_js,
+        'themeJS' => array_reverse($theme_js),
+
     );
 
     return $page;
+}
+
+/*
+ * returns an array
+ *   [0] filename of the vis js class, eg, column-chart-7266c4ee39b3d19f007f01be8853ac87.min.js
+ *   [1] minified source code
+ */
+function get_vis_js($vis, $visJS) {
+    $vis_path = 'vis/' . $vis['id'] . '-' . $vis['version'] . '.min.js';
+    // merge vis js into a single file
+    $all = '';
+    foreach ($visJS as $js) {
+        if (substr($js, 0, 7) != 'http://' && substr($js, 0, 2) != '//') {
+            $all .= "\n\n\n" . file_get_contents(ROOT_PATH . 'www' . $js);
+        }
+    }
+    $all = JSMin::minify($all);
+    $all = file_get_contents(ROOT_PATH . 'www/static/js/dw-2.0.min.js') . "\n\n" . $all;
+    // generate md5 hash of this file to get filename
+    $vis_js_md5 = md5($all);
+    $vis_path = 'vis/' . $vis['id'] . '-' . $vis_js_md5 . '.min.js';
+    return array($vis_path, $all);
 }

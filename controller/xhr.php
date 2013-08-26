@@ -21,6 +21,7 @@ $app->get('/xhr/header/:page', function($active) use ($app) {
  * reloads the header menu after login/logout
  */
 $app->get('/xhr/home-login', function() use ($app) {
+    disable_cache($app);
     $page = array();
     add_header_vars($page);
     $res = $app->response();
@@ -43,7 +44,7 @@ $app->get('/xhr/:chartid/vis-options', function($id) use ($app) {
             'theme' => DatawrapperTheme::get($chart->getTheme()),
             'language' => substr(DatawrapperSession::getLanguage(), 0, 2)
         );
-        $app->render('vis-options.twig', $page);
+        $app->render('chart-visualize-options.twig', $page);
     });
 });
 

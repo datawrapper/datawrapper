@@ -1,4 +1,4 @@
-
+s
 /*
  * basic styles for data tables
  *
@@ -22,7 +22,7 @@ html body.chart.fullscreen {
 #datatable_wrapper {
     margin: 10px 0px 10px;
 }
-#datatable {
+.datatable-default {
     width: 100%;
     border: 0;
     border-spacing:0;
@@ -31,64 +31,64 @@ html body.chart.fullscreen {
     clear: both;
 }
 
-#datatable td, #datatable th {
+.datatable-default td, .datatable-default th {
     text-align: left;
     padding-left: 10px;
     padding-right: 10px;
     border: 0;
 }
 
-#datatable thead tr {
+.datatable-default thead tr {
     border-bottom: 2px solid #000;
 }
 
-#datatable tr.highlight {
+.datatable-default tr.highlight {
     background: #E3E7F6;
 }
 
-#datatable th.highlight {
+.datatable-default th.highlight {
     background: #CFD9EF;
 }
 
-#datatable tr td.highlight {
+.datatable-default tr td.highlight {
     background: #E3E7F6;
 }
 
-#datatable tr.odd td.highlight {
+.datatable-default tr.odd td.highlight {
     /* background: #E3E7F6; */
 }
 
-#datatable tr.odd td {
+.datatable-default tr.odd td {
     /* background: #f9f9f9; */
 }
 
-#datatable thead th {
+.datatable-default thead th {
     padding: 6px 20px 6px;
     border-left: 1px solid #fff;
     font-weight: normal;
 }
 
-#datatable tbody th {
+.datatable-default tbody th {
     background: none;
     font-weight: normal;
 }
 
-#datatable tbody td {
+.datatable-default tbody td {
     text-align: left;
     padding: 3px 20px;
     border-left: 1px solid gray;
 }
 
-#datatable tbody tr:last-child
+.datatable-default tbody tr:last-child
  {
     border-bottom: 1px solid #aaa;
 }
 
-#datatable tbody tr:hover {
+.datatable-default tbody tr:hover {
     background: #eee;
 }
 
-#datatable tbody tr:hover td.highlight {
+.datatable-default tbody tr:hover td.highlight {
     background: #CFD9EF;
 }
 
@@ -126,48 +126,48 @@ html body.chart.fullscreen {
     cursor: default;
 }
 
-#datatable th.sorting,
-#datatable th.sorting_desc,
-#datatable th.sorting_asc
+.datatable-default th.sorting,
+.datatable-default th.sorting_desc,
+.datatable-default th.sorting_asc
 {
     cursor: pointer;
 }
 
-#datatable th.sorting:hover,
-#datatable th.sorting_desc:hover,
-#datatable th.sorting_asc:hover
+.datatable-default th.sorting:hover,
+.datatable-default th.sorting_desc:hover,
+.datatable-default th.sorting_asc:hover
 {
     text-decoration: underline;
 }
 
-#datatable th.sorting_asc:after {
+.datatable-default th.sorting_asc:after {
     content: '▼';
     color: #777;
     white-space: nowrap;
 }
 
-#datatable th.sorting_desc:after {
+.datatable-default th.sorting_desc:after {
     content: '▲';
     white-space: nowrap;
     color: #777;
 }
 
-#datatable tbody tr .unit {
+.datatable-default tbody tr .unit {
     opacity: 0;
 }
 
-#datatable tbody tr:first-child .unit {
+.datatable-default tbody tr:first-child .unit {
     opacity: 1;
 }
 
-#datatable td {
+.datatable-default td {
     text-align: left;
 }
 
-#datatable td.not-available,
-#datatable td.number,
-#datatable td.number-decimal,
-#datatable td.number-small {
+.datatable-default td.not-available,
+.datatable-default td.number,
+.datatable-default td.number-decimal,
+.datatable-default td.number-small {
     text-align: right;
     padding-left: 10px;
     padding-right: 10px;

@@ -198,7 +198,7 @@ class Chart extends BaseChart {
     public static function defaultMetaData() {
         return array(
             'data' => array(
-                'transpose' => true,
+                'transpose' => false,
                 'vertical-header' => true,
                 'horizontal-header' => true,
             ),
@@ -211,14 +211,48 @@ class Chart extends BaseChart {
                 'source-url' => '',
                 'number-format' => '-',
                 'number-divisor' => 0,
-                'number-currency' => 'EUR|€',
-                'number-unit' => ''
+                'number-append' => '',
+                'number-prepend' => '',
+                'intro' => ''
             ),
             'publish' => array(
                 'embed-width' => 600,
                 'embed-height' => 400
             )
         );
+    }
+
+    /*
+     * increment the public version of a chart, which is used
+     * in chart public urls to deal with cdn caches
+     */
+    public function publish() {
+        // increment public version
+        $this->setPublicVersion($this->getPublicVersion() + 1);
+        $published_urls = DatawrapperHooks::execute(DatawrapperHooks::GET_PUBLISHED_URL, $this);
+        if (!empty($published_urls)) {
+            // store public url from first publish module
+            $this->setPublicUrl($published_urls[0]);
+        } else {
+            // fallback to local url
+            $this->setPublicUrl($this->getLocalUrl());
+        }
+        $this->save();
+    }
+
+    /*
+     * redirect previous chart versions to the most current one
+     */
+    public function redirectPreviousVersions() {
+        $current_target = $this->getCDNPath();
+        $redirect_html = '<html><head><meta http-equiv="REFRESH" content="0; url=/'.$current_target.'"></head></html>';
+        $redirect_file = ROOT_PATH . 'charts/static/' . $this->getID() . '/redirect.html';
+        file_put_contents($redirect_file, $redirect_html);
+        $files = array();
+        for ($v=0; $v < $this->getPublicVersion(); $v++) {
+            $files[] = array($redirect_file, $this->getCDNPath($v) . 'index.html', 'text/html');
+        }
+        DatawrapperHooks::execute(DatawrapperHooks::PUBLISH_FILES, $files);
     }
 
     public function unpublish() {
@@ -251,11 +285,27 @@ class Chart extends BaseChart {
     }
 
     public function thumbUrl() {
-        return dirname($this->getPublicUrl() . '_') . '/m.png';
+        return$this->assetUrl('m.png');
     }
 
     public function plainUrl() {
-        return dirname($this->getPublicUrl() . '_') . '/plain.html';
+        return $this->assetUrl('plain.html');
+    }
+
+    public function assetUrl($file) {
+        return dirname($this->getPublicUrl() . '_') . '/' . $file;
+    }
+
+    /*
+     * return URL of this chart on Datawrapper
+     */
+    public function getLocalUrl() {
+        return 'http://' . $GLOBALS['dw_config']['chart_domain'] . '/' . $this->getID() . '/index.html';
+    }
+
+    public function getCDNPath($version = null) {
+        if ($version === null) $version = $this->getPublicVersion();
+        return $this->getID() . '/' . ($version > 0 ? $version . '/' : '');
     }
 
 } // Chart

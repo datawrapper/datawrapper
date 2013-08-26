@@ -8,24 +8,16 @@
     <meta http-equiv="refresh" content="0;URL='static.html'">
     <![endif]-->
     <!--[if lt IE 9]>
-    <script src="/static/vendor/json-js/json2.min.js"></script>
+    <script src="{{ DW_DOMAIN }}/static/vendor/json-js/json2.min.js"></script>
     <script type="text/javascript">
+        window.__ltie9 = true;
     </script>
     <![endif]-->
     {% if innersvg %}
-    <script type="text/javascript" src="/static/vendor/innersvg/innersvg.js"></script>
+    <script type="text/javascript" src="{{ DW_DOMAIN }}/static/vendor/innersvg/innersvg.js"></script>
     {% endif %}
 
-{# markup for twitter cards #}
-    <meta name="twitter:card" content="player">
-    <meta name="twitter:site" content="@datawrapper">
-    <meta name="twitter:url" content="{{ chart.publicUrl }}">
-    <meta name="twitter:title" content="{{ chart.title }}">
-    <meta name="twitter:description" content="{{ chart.metadata.describe.intro }}">
-    <meta name="twitter:image" content="{{ chart.thumbUrl }}">
-    <meta name="twitter:player" content="{{ chart.plainUrl }}">
-    <meta name="twitter:player:width" content="435">
-    <meta name="twitter:player:height" content="251">
+    {{ hook('chart_html_head', chart) }}
 
 {% for src in stylesheets %}
     <link rel="stylesheet" type="text/css" href="{{ src }}"></link>
@@ -170,6 +162,10 @@
             height: 10px;
         }
 
+        body.js .noscript {
+            display: none;
+        }
+
     </style>
 
     <script type="text/javascript">
@@ -185,113 +181,132 @@
 (function(){var a={supportsFullScreen:!1,nonNativeSupportsFullScreen:!1,isFullScreen:function(){return!1},requestFullScreen:function(){},cancelFullScreen:function(){},fullScreenEventName:"",prefix:""},b="webkit moz o ms khtml".split(" ");if(typeof document.cancelFullScreen!="undefined")a.supportsFullScreen=!0;else for(var c=0,d=b.length;c<d;c++){a.prefix=b[c];if(typeof document[a.prefix+"CancelFullScreen"]!="undefined"){a.supportsFullScreen=!0;break}}a.supportsFullScreen?(a.fullScreenEventName=a.prefix+"fullscreenchange",a.isFullScreen=function(){switch(this.prefix){case"":return document.fullScreen;case"webkit":return document.webkitIsFullScreen;default:return document[this.prefix+"FullScreen"]}},a.requestFullScreen=function(a){return this.prefix===""?a.requestFullScreen():a[this.prefix+"RequestFullScreen"]()},a.cancelFullScreen=function(a){return this.prefix===""?document.cancelFullScreen():document[this.prefix+"CancelFullScreen"]()}):typeof window.ActiveXObject!="undefined"&&(a.nonNativeSupportsFullScreen=!0,a.requestFullScreen=a.requestFullScreen=function(a){var b=new ActiveXObject("WScript.Shell");b!==null&&b.SendKeys("{F11}")},a.isFullScreen=function(){return document.body.clientHeight==screen.height&&document.body.clientWidth==screen.width}),typeof jQuery!="undefined"&&(jQuery.fn.requestFullScreen=function(){return this.each(function(){a.supportsFullScreen&&a.requestFullScreen(this)})}),window.fullScreenApi=a})()
 
     </script>
-    <script type="text/javascript">
-    $(function() {
 
-        function getMaxChartHeight (el) {
-            function margin(el, type) {
-                if ($(el).css('margin-' + type) == 'auto') return 0;
-                return +$(el).css('margin-' + type).replace('px', '');
-            }
-            var ch = 0, bottom = 0; // summed height of children, 10px for top & bottom margin
-            $('body > *').each(function(i, el) {
-                var t = el.tagName.toLowerCase();
-                if (t != 'script' && el.id != 'chart' && !$(el).hasClass('tooltip') && !$(el).hasClass('container')) {
-                    ch += $(el).outerHeight(false); // element height
-                }
-                ch += Math.max(margin(el, 'top'), bottom);
-                bottom = margin(el, 'bottom');
-            });
-            ch += bottom;
-            // subtract body padding
-            //ch += $('body').innerHeight() - $('body').height();
-            var mt = $('#chart').css('margin-top').replace('px', ''),
-                mb = $('#chart').css('margin-bottom').replace('px', ''),
-                maxH = $(window).height() - ch - 2;
-            // IE Fix
-            if (!$.support.leadingWhitespace) maxH -= 15;
-            maxH -= $('body').css('padding-top').replace('px', '');
-            maxH -= $('body').css('padding-bottom').replace('px', '');
-            return maxH;
+</head>
+<body class="chart{% if fullscreen %} fullscreen{% endif %}{% if plain %} plain{% endif %}">
+
+    {# some convenient short cuts for theme templates #}
+    {% set title = chart.title %}{% set intro = chart.metadata.describe.intro %}{% set source = chart.metadata.describe['source-name'] %}{% set sourceURL = chart.metadata.describe['source-url'] %}
+
+
+    {% include theme.template ? theme.template : 'plugins/theme-default/default.twig' %}
+
+    <div class="noscript" style="position: absolute;top: 0;left: 0;z-index: -10;">
+        <a href="static.html"><img src="static.png" alt="{% trans "Please activate JavaScript to see the interactive chart." %}" /></a>
+    </div>
+    <div class="noscript" style="height:95%;position:absolute;top:0;width:98%;z-index:10;overflow:hidden">
+        <div style="position:relative;top:50%;text-align:center;font-size:18px;padding:0 20px"><a style="color: rgba(0,0,0,.2); text-shadow: 0 0 7px #fff, 0 0 7px #fff, 0 0 7px #fff, 0 0 7px #fff, 0 0 7px #fff, 0 0 7px #fff, 0 0 7px #fff, 0 0 7px #fff, 0 0 7px #fff, 0 0 7px #fff, 0 0 7px #fff; text-decoration: none;" href="static.html" >{% trans "Please activate JavaScript to see the interactive chart." %}</a></div>
+    </div>
+    <script type="text/javascript">
+
+    if (document.getElementsByTagName('script').length > 0) document.body.className = "chart js";
+
+    (function() {
+
+        var chart;
+
+        if(!getVis().checkBrowserCompatibility()){
+            window.location.href = 'static.html';
+            return;
         }
 
-        function loadChart() {
-            // clean chart
-            $('#chart').html('').off('click').off('mousemove').off('mouseenter').off('mouseover');
-            $('#header .legend').remove();
-            //$('.container').height($(window).height());
-
-            var theme = Datawrapper.Themes.{{ theme.id | classify }};
-            var chart = new Datawrapper.Chart(JSON.parse('{{ chart.toJSON | raw }}'));
-            chart.setLocale('{{ chartLocale }}', {{ metricPrefix | json | raw }});
-
-            var vis = new Datawrapper.Visualizations.{{ visualization.id | classify }}();
-            vis.meta = JSON.parse("{{ visualization | json | escape('js') }}");
-            vis.lang = '{{ lang }}';
-
+        function renderChart() {
             // compute chart dimensions
             var w = $('#chart').innerWidth(),
-                h = getMaxChartHeight($('#chart'));
+                h = dw.utils.getMaxChartHeight($('#chart'));
 
             if (!$.support.leadingWhitespace) w -= 10; // IE Fix
             w -= $('body').css('padding-left').replace('px', '');
             w -= $('body').css('padding-right').replace('px', '');
 
-            vis.setTheme(theme)
-                .setSize(w - theme.hpadding*2, h - theme.vpadding);
+            if (__dw.vis) __dw.vis.reset();
 
-            vis.load(chart, function() {
-                vis.render('#chart');
-            });
-            window.vis = vis;
+            var vis = __dw.vis = getVis();
+            chart.vis(vis);
+            vis.setSize(w, h);
+
+            initResizeHandler();
+            initFullscreen();
+
+            // update data link to point to edited dataset
+            if (!window['__ltie9']) {
+                $('a[href=data]')
+                    .attr('download', 'data-'+chart.get('id')+'.csv')
+                    .attr('href', 'data:application/octet-stream;charset=utf-8,' +
+                        encodeURIComponent(chart.dataset().toCSV()));
+            }
+
+            chart.render($('#chart'));
         }
 
-        loadChart();
-
-        var reload_timer;
-        if (navigator.userAgent.match(/iPad|msie/i) == null) {
-            // IE continuosly reloads the chart for some strange reasons
-            $(window).resize(function() {
-                if (reload_timer) clearTimeout(reload_timer);
-                reload_timer = setTimeout(function() {
-                    loadChart();
-                }, 300);
-            });
+        function chartLoaded() {
+            chart = dw.chart(old_chart_attributes)
+                    .locale('{{ chartLocale }}')
+                    .metricPrefix({{ metricPrefix | json | raw }})
+                    .theme(dw.theme('{{ theme.id }}'));
+            return chart.load();
         }
 
+        function getVis() {
+            var vis = dw.visualization('{{ visualization.id }}');
+            vis.meta = JSON.parse("{{ visualization | json | escape('js') }}");
+            vis.lang = '{{ lang }}';
+            return vis;
+        }
 
-        var isFullScreen = false;
+        function initResizeHandler() {
+            var reload_timer;
+            if (navigator.userAgent.match(/iPad|msie/i) == null) {
+                // IE continuosly reloads the chart for some strange reasons
+                $(window).resize(function() {
+                    if (reload_timer) clearTimeout(reload_timer);
+                    reload_timer = setTimeout(function() {
+                        renderChart();
+                    }, 300);
+                });
+            }
+        }
 
-        $(window).bind('resize', function() {
+        function initFullscreen() {
+            var isFullScreen = false;
+            $(window).bind('resize', function() {
+                if (isFullScreen != fullScreenApi.isFullScreen()) { // video fullscreen mode has changed
+                    isFullScreen = fullScreenApi.isFullScreen();
 
-            if (isFullScreen != fullScreenApi.isFullScreen()) { // video fullscreen mode has changed
-                isFullScreen = fullScreenApi.isFullScreen();
-
-                if (isFullScreen) {
-                    $('.chart').addClass('fullscreen');
-                    // you have just ENTERED full screen video
-                } else {
-                    $('.chart').removeClass('fullscreen');
-                    // you have just EXITED full screen video
+                    if (isFullScreen) {
+                        $('.chart').addClass('fullscreen');
+                        // you have just ENTERED full screen video
+                    } else {
+                        $('.chart').removeClass('fullscreen');
+                        // you have just EXITED full screen video
+                    }
                 }
-            }
-        });
+            });
 
-        $("a[data-toggle='fullscreen']").click(function(e) {
-            if (fullScreenApi.supportsFullScreen) {
-                e.preventDefault();
-                $('html').requestFullScreen();
-            }
-        });
+            $("a[data-toggle='fullscreen']").click(function(e) {
+                if (fullScreenApi.supportsFullScreen) {
+                    e.preventDefault();
+                    $('html').requestFullScreen();
+                }
+            });
+        }
 
-    });
+        var old_chart_attributes = JSON.parse('{{ chart.toJSON | raw }}'),
+            needReload = false;
+
+        window.__dw = {
+            old_attrs: old_chart_attributes,
+            render: function() {
+                renderChart();
+            }
+        };
+
+        $.when($.ready(), chartLoaded()).done(renderChart);
+
+    })();
+
     </script>
-</head>
-<body class="chart{% if fullscreen %} fullscreen{% endif %}{% if plain %} plain{% endif %}">
-    {# some convenient short cuts for theme templates #}
-    {% set title = chart.title %}{% set intro = chart.metadata.describe.intro %}{% set source = chart.metadata.describe['source-name'] %}{% set sourceURL = chart.metadata.describe['source-url'] %}
 
-    {% include theme.template ? theme.template : 'plugins/theme-default/default.twig' %}
-    {{ hook('after_chart_body', chart) }}
+    {{ hook('chart_after_body', chart) }}
 </body>
 </html>

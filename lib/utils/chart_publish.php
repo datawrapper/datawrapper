@@ -20,34 +20,30 @@ function publish_html($user, $chart) {
     $chart->setLastEditStep(5);
     $chart->save();
 
-    $cdn_files[] = array($outf, $chart->getID() . '/index.html', 'text/html');
-    $cdn_files[] = array($static_path . '/plain.html', $chart->getID() . '/plain.html', 'text/html');
-    $cdn_files[] = array($static_path . '/fs.html', $chart->getID() . '/fs.html', 'text/html');
+    $cdn_files[] = array($outf, $chart->getCDNPath() . 'index.html', 'text/html');
+    $cdn_files[] = array($static_path . '/plain.html', $chart->getCDNPath() . 'plain.html', 'text/html');
+    $cdn_files[] = array($static_path . '/fs.html', $chart->getCDNPath() . 'fs.html', 'text/html');
 
     return $cdn_files;
 }
 
 function publish_js($user, $chart) {
     $cdn_files = array();
-    $static_path = $static_path = '../../charts/static/lib/';
+    $static_path = '../../charts/static/lib/';
     $data = get_chart_content($chart, $user, false, '../');
 
     // generate visualization script
     $vis = $data['visualization'];
-    $vis_path = 'vis/' . $vis['id'] . '-' . $vis['version'] . '.min.js';
-    if (!file_exists($static_path . $vis_path)) {
-        $all = '';
-        foreach ($data['visJS'] as $js) {
-            if (substr($js, 0, 7) != 'http://' && substr($js, 0, 2) != '//') {
-                $all .= "\n\n\n" . file_get_contents('..' . $js);
-            }
-        }
-        $all = JSMin::minify($all);
-        $all = file_get_contents('../static/js/datawrapper.min.js') . "\n\n" . $all;
-        file_put_contents($static_path . $vis_path, $all);
+    $vis_js = $data['vis_js'];
+    if (!file_exists($static_path . $vis_js[0])) {
+        // add comment
+        $vis_js[1] = "/*\n * datawrapper/{$vis['id']} v{$vis['version']}\n"
+                   . " * generated on ".date('c')."\n */\n"
+                   . $vis_js[1];
+        file_put_contents($static_path . $vis_js[0], $vis_js[1]);
         $cdn_files[] = array(
-            $static_path . $vis_path,
-            'lib/' . $vis_path,
+            $static_path . $vis_js[0],
+            'lib/' . $vis_js[0],
             'application/javascript'
         );
     }
@@ -98,7 +94,7 @@ function publish_css($user, $chart) {
 
     $cdn_files[] = array(
         $static_path."/".$chart->getID().'.min.css',
-        $chart->getID().'/'.$chart->getID().'.min.css', 'text/css'
+        $chart->getCDNPath() . $chart->getID().'.min.css', 'text/css'
     );
 
     // copy themes assets
@@ -109,20 +105,18 @@ function publish_css($user, $chart) {
             $asset_tgt = $static_path . "/" . $asset;
             if (file_exists($asset_src)) {
                 file_put_contents($asset_tgt, file_get_contents($asset_src));
-                $cdn_files[] = array($asset_src, $chart->getID() . '/' . $asset);
+                $cdn_files[] = array($asset_src, $chart->getCDNPath() . $asset);
             }
         }
     }
 
     // copy visualization assets
-    $vis  = $data['visualization'];
-    $src  = '..'.$vis['__static_path'];
-    $dest = '../../charts/static/' . $chart->getID();
-    if (isset($vis['assets'])) {
-        foreach ($vis['assets'] as $asset) {
-            copy( $src.DIRECTORY_SEPARATOR.$asset, $dest.DIRECTORY_SEPARATOR.$asset );
-            $cdn_files[] = array($dest.DIRECTORY_SEPARATOR.$asset, $chart->getID() . '/' . $asset);
-        }
+    $vis           = $data['visualization'];
+    $asset_src     = '../../www' . $vis['__static_path'];
+    $asset_tgt     = $static_path;
+    $assets_copied = copy_recursively($asset_src, $asset_tgt);
+    foreach ($assets_copied as $asset) {
+        $cdn_files[] = array($asset_src . $asset, $chart->getCDNPath() . $asset);
     }
 
     return $cdn_files;
@@ -133,7 +127,7 @@ function publish_data($user, $chart) {
     $cdn_files = array();
     $static_path = get_static_path($chart);
     file_put_contents($static_path . "/data", $chart->loadData());
-    $cdn_files[] = array($static_path . "/data", $chart->getID() . '/data', 'text/plain');
+    $cdn_files[] = array($static_path . "/data", $chart->getCDNPath() . 'data', 'text/plain');
 
     return $cdn_files;
 }

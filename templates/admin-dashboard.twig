@@ -28,7 +28,7 @@
 
         function lineChart(cont, data) {
         // initialize theme
-            var theme = Datawrapper.Themes.Default;
+            var theme = dw.theme('default');
             // initialize chart
             var chart = new Datawrapper.Chart({
                 type: "line-chart",
@@ -60,7 +60,7 @@
             });
 
             // initliaze visualization
-            var vis = new Datawrapper.Visualizations.LineChart();
+            var vis = dw.visualization('line-chart');
 
             vis.setTheme(theme);
             vis.chart = chart;

@@ -4,7 +4,7 @@
     // -------------
     //
 
-    Datawrapper.Themes.Slate = $.extend(true, {}, Datawrapper.Themes.Base, {
+    dw.theme.register('slate', {
 
         colors: {
             palette: ['#9ab', '#cde', '#678', '#d34', '#bcd'], // monochrome!

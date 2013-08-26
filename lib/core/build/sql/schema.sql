@@ -20,13 +20,14 @@ CREATE TABLE `chart`
 	`metadata` VARCHAR(4096) NOT NULL,
 	`deleted` TINYINT(1) DEFAULT 0,
 	`deleted_at` DATETIME,
-	`author_id` INTEGER NOT NULL,
+	`author_id` INTEGER,
 	`show_in_gallery` TINYINT(1) DEFAULT 0,
 	`language` VARCHAR(5) DEFAULT '',
 	`guest_session` VARCHAR(255),
 	`last_edit_step` INTEGER DEFAULT 0,
 	`published_at` DATETIME,
 	`public_url` VARCHAR(255),
+	`public_version` INTEGER DEFAULT 0,
 	PRIMARY KEY (`id`),
 	INDEX `chart_FI_1` (`author_id`),
 	CONSTRAINT `chart_FK_1`
@@ -147,6 +148,26 @@ CREATE TABLE `plugin`
 	`installed_at` DATETIME NOT NULL,
 	`enabled` TINYINT(1) DEFAULT 0,
 	PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- plugin_data
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `plugin_data`;
+
+CREATE TABLE `plugin_data`
+(
+	`id` INTEGER NOT NULL AUTO_INCREMENT,
+	`plugin_id` VARCHAR(128) NOT NULL,
+	`stored_at` DATETIME NOT NULL,
+	`key` VARCHAR(128) NOT NULL,
+	`data` VARCHAR(4096),
+	PRIMARY KEY (`id`),
+	INDEX `plugin_data_FI_1` (`plugin_id`),
+	CONSTRAINT `plugin_data_FK_1`
+		FOREIGN KEY (`plugin_id`)
+		REFERENCES `plugin` (`id`)
 ) ENGINE=InnoDB;
 
 # This restores the fkey checks, after having unset them earlier

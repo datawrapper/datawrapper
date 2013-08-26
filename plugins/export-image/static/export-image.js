@@ -23,7 +23,7 @@ $(function() {
         $('.btn-export-chart').click(function(e) {
             e.preventDefault();
             $.ajax({
-                url: '/api/jobs/export_image/'+DW.currentChart.get('id'),
+                url: '/api/jobs/export_image/'+dw.backend.currentChart.get('id'),
                 type: 'post',
                 dataType: 'json',
                 data: JSON.stringify({
@@ -34,7 +34,7 @@ $(function() {
                 $('#dwExportChart').modal('hide');
                 var msg = $('#dwExportChart').data('mail-sent-message');
                 msg = msg.replace('%d', '<b>'+resp.data+'</b>');
-                DW.logMessage(msg, '.messages');
+                dw.backend.logMessage(msg, '.messages');
             });
         });
     });

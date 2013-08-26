@@ -1,11 +1,7 @@
 
 (function(){
 
-    var DonutChart = Datawrapper.Visualizations.DonutChart = function() {
-
-    };
-
-    _.extend(DonutChart.prototype, Datawrapper.Visualizations.PieChart.prototype, {
+    dw.visualization.register('donut-chart', 'pie-chart', {
 
         isDonut: function() {
             return true;

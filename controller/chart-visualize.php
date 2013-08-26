@@ -13,7 +13,7 @@ $app->get('/chart/:id/visualize', function ($id) use ($app) {
         $page = array(
             'chartData' => $chart->loadData(),
             'chart' => $chart,
-            'visualizations' => DatawrapperVisualization::all(),
+            'visualizations' => DatawrapperVisualization::all('dependencies'),
             'vis' => DatawrapperVisualization::get($chart->getType()),
             'themes' => DatawrapperTheme::all(),
             'theme' => DatawrapperTheme::get($chart->getTheme()),

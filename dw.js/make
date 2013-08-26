@@ -1,0 +1,40 @@
+#!/bin/bash
+# read version from package.json
+CUR_DIR="$( pwd )"
+SCRIPT_DIR="$( dirname "${BASH_SOURCE[0]}" )"
+cd $SCRIPT_DIR
+
+VERSION=$(python -c 'import json;print json.loads(open("../package.json").read())["version"]')
+
+# remove old javascript
+rm ../www/static/js/dw-2.0.js
+rm ../www/static/js/dw-2.0.min.js
+
+# generate js that's packed with each chart
+cat src/dw.start.js src/dw.dataset.js src/dw.column.js src/dw.column.types.js src/dw.datasource.js src/dw.datasource.delimited.js src/dw.utils.js src/dw.utils.filter.js src/dw.chart.js src/dw.visualization.js src/dw.visualization.base.js src/dw.theme.js src/dw.theme.base.js src/dw.end.js > dw-2.0.js
+cp dw-2.0.js ../www/static/js/
+
+# check if uglifyjs is available as local command
+if [ -n "$(command -v uglifyjs)" ]
+then
+	uglifyjs -o ../www/static/js/dw-2.0.min.js dw-2.0.js
+elif [ -n "$(command -v wget)" ]
+then
+	# if uglifyjs is not present we will use a web api to minfify the js.
+	# at first we use php to urlencode the code...
+	jscode=$(php -r "echo rawurlencode(file_get_contents('dw-2.0.js'));")
+	if [[ "$1" != "uglifyjs" ]]
+	then
+		# the default behaviour is to use google closure (more trustworthy)
+		wget --post-data="compilation_level=SIMPLE_OPTIMIZATIONS&js_externs=dw&output_info=compiled_code&js_code=$jscode" -O ../www/static/js/dw-2.0.min.js http://closure-compiler.appspot.com/compile
+	else
+		# alternatively you can also use the uglifyjs web service kindly
+		# hosted by Marijn Haverbeke, using "make uglifyjs"
+		wget --post-data="js_code=$jscode" -O ../www/static/js/dw-2.0.min.js http://marijnhaverbeke.nl/uglifyjs
+	fi
+else
+	echo "Neither uglifyjs nor wget was found, so you need to minify the dw-2.0.js yourself."
+fi
+
+cd $CUR_DIR
+

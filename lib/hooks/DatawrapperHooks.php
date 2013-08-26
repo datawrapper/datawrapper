@@ -63,10 +63,13 @@ class DatawrapperHooks {
     }
 
     // print something below a charts HTML body
-    const AFTER_CHART_BODY = 'after_chart_body';
+    const CHART_AFTER_BODY = 'chart_after_body';
+
+    // print something in <head> section of a chart
+    const CHART_HTML_HEAD = 'chart_html_head';
 
     // print something below the Datawrapper HTML body
-    const AFTER_CORE_BODY = 'after_core_body';
+    const CORE_AFTER_BODY = 'core_after_body';
 
     // publishes a set of files to some CDN (args: files)
     const PUBLISH_FILES = 'publish_files';
@@ -83,6 +86,21 @@ class DatawrapperHooks {
     // Runs once a day via cronjob
     const CRON_DAILY = 'cron_daily';
 
+    // Runs every hour via cronjob
+    const CRON_HOURLY = 'cron_hourly';
+
+    // Runs every half hour via cronjob
+    const CRON_HALF_HOURLY = 'cron_half_hourly';
+
+    // Runs every 15 minutes via cronjob
+    const CRON_QUARTER_HOURLY = 'cron_quarter_hourly';
+
+    // Runs every 15 minutes via cronjob
+    const CRON_FIVE_MINUTELY = 'cron_five_minutely';
+
+    // Runs every minute via cronjob
+    const CRON_MINUTELY = 'cron_minutely';
+
     // Executed after a chart has been published (args: chart, user)
     const POST_CHART_PUBLISH = 'post_chart_publish';
 
@@ -98,6 +116,8 @@ class DatawrapperHooks {
     // a hook for providing new demo datasets
     const GET_DEMO_DATASETS = 'get_demo_assets';
 
+    // a hook for providing visualization options
+    const VIS_OPTION_CONTROLS = 'vis_option_controls';
 
 }
 

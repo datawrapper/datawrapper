@@ -102,12 +102,12 @@
                     }),
                     success: function(res) {
                         if (res.status == 'ok') {
-                            DW.logMessage(res.data, $(e.target).parent());
+                            dw.backend.logMessage(res.data, $(e.target).parent());
                         } else {
                             if (res.code == 'login-email-unknown') {
                                 $('.login-email').parent().addClass('error');
                             }
-                            DW.logError(res.message, $(e.target).parent());
+                            dw.backend.logError(res.message, $(e.target).parent());
                         }
                     }
                 });

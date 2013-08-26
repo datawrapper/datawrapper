@@ -36,14 +36,15 @@ $cmd = $argv[1];
  */
 function list_plugins() {
     $plugins = PluginQuery::create()->find();
+    print "\n";
     foreach ($plugins as $plugin) {
-        print $plugin->getName().":  ";
+        print $plugin->getName()." :  ";
         print $plugin->getEnabled() ? "ENABLED" : "DISABLED";
         print "\n";
     }
     _apply("*", function($id) {
         $plugin = PluginQuery::create()->findPk($id);
-        if (!$plugin) print "$id:  NOT INSTALLED\n";
+        if (!$plugin) print "$id :  NOT INSTALLED\n";
     });
     exit();
 }
@@ -56,6 +57,7 @@ function clean() {
     foreach ($plugins as $plugin) {
         if (!file_exists($plugin->getPath() . 'package.json')) {
             $plugin->delete();
+            print $plugin->getId()." deleted from database.\n";
         }
     }
     exit();
@@ -177,6 +179,7 @@ function update($pattern) {
                         print "Plugin $id is up-to-date.\n";
                     } else {
                         print "Updated plugin $id.\n";
+                        install($id);
                     }
                 } else {
                     print "Skipping $id: Not a valid Git repository.\n";
@@ -191,10 +194,27 @@ function update($pattern) {
     exit();
 }
 
+/*
+ * Reinstall all installed plugins. Usefull for development
+ */
+function reload() {
+    $plugins = PluginQuery::create()->find();
+    foreach ($plugins as $plugin) {
+
+        if (file_exists($plugin->getPath() . 'package.json')) {
+            if ($plugin->getEnabled()) {
+                _loadPluginClass($plugin)->install();
+                print $plugin->getId()." reinstalled\n";
+            }
+        }
+    }
+    exit();
+}
 
 switch ($cmd) {
     case 'list': list_plugins();
     case 'clean': clean();
+    case 'reload': reload();
     case 'install': install($argv[2]);
     case 'uninstall': uninstall($argv[2]);
     case 'enable': enable($argv[2]);
@@ -210,7 +230,7 @@ switch ($cmd) {
 function _apply($pattern, $func) {
     $plugin_ids = array();
     if (strpos($pattern, '*') > -1) {
-        foreach (glob(ROOT_PATH . "plugins/" . $pattern . "/package.json") as $filename) {
+        foreach (glob(ROOT_PATH . "plugins" . DIRECTORY_SEPARATOR . $pattern . DIRECTORY_SEPARATOR . "package.json") as $filename) {
             $d = dirname($filename);
             $d = substr($d, strrpos($d, DIRECTORY_SEPARATOR)+1);
             $plugin_ids[] = $d;
@@ -218,6 +238,7 @@ function _apply($pattern, $func) {
     } else {
         $plugin_ids[] = $pattern;
     }
+    sort($plugin_ids);
     foreach ($plugin_ids as $plugin_id) {
         $func($plugin_id);
     }

@@ -48,17 +48,7 @@ class DatawrapperPlugin {
 			mkdir($plugin_static_path);
 		}
 		// copy static files to that directory
-		$iterator = new RecursiveIteratorIterator(
-		 	new RecursiveDirectoryIterator($source_path, RecursiveDirectoryIterator::SKIP_DOTS),
-		  	RecursiveIteratorIterator::SELF_FIRST);
-		foreach ($iterator as $item) {
-			$path = $plugin_static_path . '/' . $iterator->getSubPathName();
-			if ($item->isDir()) {
-				if (!file_exists($path)) mkdir($path);
-			} else {
-				copy($item, $path);
-			}
-		}
+		copy_recursively($source_path, $plugin_static_path);
 	}
 
 	/*
@@ -74,25 +64,18 @@ class DatawrapperPlugin {
 		if (!file_exists($plugin_template_path)) {
 			mkdir($plugin_template_path);
 		}
-		// copy static files to that directory
-		$iterator = new RecursiveIteratorIterator(
-		 	new RecursiveDirectoryIterator($source_path, RecursiveDirectoryIterator::SKIP_DOTS),
-		  	RecursiveIteratorIterator::SELF_FIRST);
-		foreach ($iterator as $item) {
-			$path = $plugin_template_path . '/' . $iterator->getSubPathName();
-			if ($item->isDir()) {
-				if (!file_exists($path)) mkdir($path);
-			} else {
-				copy($item, $path);
-			}
-		}
+		copy_recursively($source_path, $plugin_template_path);
+	}
+
+	private function getPluginOM() {
+		return PluginQuery::create()->findPK($this->getName());
 	}
 
 	/**
 	* Disable the plugin
 	*/
 	public function uninstall() {
-		$plugin = PluginQuery::create()->findPK($this->getName());
+		$plugin = $this->getPluginOM();
 		if ($plugin) {
 			$plugin->delete();
 			// TODO:
@@ -156,6 +139,73 @@ class DatawrapperPlugin {
 	 */
 	public function getRequiredLibraries() {
 		return array();
+	}
+
+	/**
+	 * allows the plugin to persistently store arbitrary data
+     *
+	 * @param key     string           a key
+	 * @param data    json_seriazable  the data thats being stored. must be json serializable
+	 * @param single  boolean          if set, any existing value with the same key will be overwritten
+	 */
+	public function storeData($key, $data, $single = true) {
+		$pd = PluginDataQuery::create()
+			->filterByPlugin($this->getPluginOM())
+			->filterByKey($key)
+			->find();
+
+		if ($single) {
+			// remove any existing value
+			PluginDataQuery::create()
+			  ->filterByPlugin($this->getPluginOM())
+			  ->filterByKey($key)
+			  ->delete();
+		}
+		$pd = new PluginData();
+		$pd->setPlugin($this->getPluginOM());
+		$pd->setKey($key);
+		$pd->setData($data);
+		$pd->setStoredAt(time());
+		$pd->save();
+	}
+
+	/**
+	 * Read data from persistant plugin data store
+	 *
+	 * @param key   string   the key
+	 * @param single  boolean   if set true readData will only return the last inserted first row
+	 */
+	public function readData($key, $single=true) {
+		$q = PluginDataQuery::create()
+			->filterByPlugin($this->getPluginOM())
+			->filterByKey($key)
+			->orderByStoredAt('desc')
+			->find();
+
+		if (empty($q)) return null;
+		if (!$single) {
+			$res = array();
+			foreach ($q as $pd) {
+				$res[] = $pd->getData();
+			}
+		} else $res = $q[0]->getData();
+		return $res;
+	}
+
+	/**
+	 * Remove data from persistant plugin data store
+	 *
+	 * @param key   string   the key
+	 * @param data  json_seriazable   if set only matching items will be removed
+	 */
+	public function deleteData($key, $data = null) {
+		$q = PluginDataQuery::create()
+		  ->filterByPlugin($this->getPluginOM())
+		  ->filterByKey($key);
+		if ($data !== null) {
+			$q->filterByData(json_encode($data));
+		}
+		$q->delete();
 	}
 }
 

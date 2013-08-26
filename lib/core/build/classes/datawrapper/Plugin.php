@@ -44,7 +44,7 @@ class Plugin extends BasePlugin {
 
     public function getDependencies() {
         $info = $this->getInfo();
-        if (isset($info['repository'])) {
+        if (isset($info['dependencies'])) {
             return $info['dependencies'];
         }
         return false;
@@ -60,5 +60,5 @@ class Plugin extends BasePlugin {
         }
         return false;
     }
-
+    
 } // Plugin

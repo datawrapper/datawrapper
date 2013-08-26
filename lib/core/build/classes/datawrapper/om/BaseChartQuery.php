@@ -22,6 +22,7 @@
  * @method     ChartQuery orderByLastEditStep($order = Criteria::ASC) Order by the last_edit_step column
  * @method     ChartQuery orderByPublishedAt($order = Criteria::ASC) Order by the published_at column
  * @method     ChartQuery orderByPublicUrl($order = Criteria::ASC) Order by the public_url column
+ * @method     ChartQuery orderByPublicVersion($order = Criteria::ASC) Order by the public_version column
  *
  * @method     ChartQuery groupById() Group by the id column
  * @method     ChartQuery groupByTitle() Group by the title column
@@ -39,6 +40,7 @@
  * @method     ChartQuery groupByLastEditStep() Group by the last_edit_step column
  * @method     ChartQuery groupByPublishedAt() Group by the published_at column
  * @method     ChartQuery groupByPublicUrl() Group by the public_url column
+ * @method     ChartQuery groupByPublicVersion() Group by the public_version column
  *
  * @method     ChartQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChartQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -71,6 +73,7 @@
  * @method     Chart findOneByLastEditStep(int $last_edit_step) Return the first Chart filtered by the last_edit_step column
  * @method     Chart findOneByPublishedAt(string $published_at) Return the first Chart filtered by the published_at column
  * @method     Chart findOneByPublicUrl(string $public_url) Return the first Chart filtered by the public_url column
+ * @method     Chart findOneByPublicVersion(int $public_version) Return the first Chart filtered by the public_version column
  *
  * @method     array findById(string $id) Return Chart objects filtered by the id column
  * @method     array findByTitle(string $title) Return Chart objects filtered by the title column
@@ -88,6 +91,7 @@
  * @method     array findByLastEditStep(int $last_edit_step) Return Chart objects filtered by the last_edit_step column
  * @method     array findByPublishedAt(string $published_at) Return Chart objects filtered by the published_at column
  * @method     array findByPublicUrl(string $public_url) Return Chart objects filtered by the public_url column
+ * @method     array findByPublicVersion(int $public_version) Return Chart objects filtered by the public_version column
  *
  * @package    propel.generator.datawrapper.om
  */
@@ -176,7 +180,7 @@ abstract class BaseChartQuery extends ModelCriteria
 	 */
 	protected function findPkSimple($key, $con)
 	{
-		$sql = 'SELECT `ID`, `TITLE`, `THEME`, `CREATED_AT`, `LAST_MODIFIED_AT`, `TYPE`, `METADATA`, `DELETED`, `DELETED_AT`, `AUTHOR_ID`, `SHOW_IN_GALLERY`, `LANGUAGE`, `GUEST_SESSION`, `LAST_EDIT_STEP`, `PUBLISHED_AT`, `PUBLIC_URL` FROM `chart` WHERE `ID` = :p0';
+		$sql = 'SELECT `ID`, `TITLE`, `THEME`, `CREATED_AT`, `LAST_MODIFIED_AT`, `TYPE`, `METADATA`, `DELETED`, `DELETED_AT`, `AUTHOR_ID`, `SHOW_IN_GALLERY`, `LANGUAGE`, `GUEST_SESSION`, `LAST_EDIT_STEP`, `PUBLISHED_AT`, `PUBLIC_URL`, `PUBLIC_VERSION` FROM `chart` WHERE `ID` = :p0';
 		try {
 			$stmt = $con->prepare($sql);
 			$stmt->bindValue(':p0', $key, PDO::PARAM_STR);
@@ -788,6 +792,46 @@ abstract class BaseChartQuery extends ModelCriteria
 	}
 
 	/**
+	 * Filter the query on the public_version column
+	 *
+	 * Example usage:
+	 * <code>
+	 * $query->filterByPublicVersion(1234); // WHERE public_version = 1234
+	 * $query->filterByPublicVersion(array(12, 34)); // WHERE public_version IN (12, 34)
+	 * $query->filterByPublicVersion(array('min' => 12)); // WHERE public_version > 12
+	 * </code>
+	 *
+	 * @param     mixed $publicVersion The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    ChartQuery The current query, for fluid interface
+	 */
+	public function filterByPublicVersion($publicVersion = null, $comparison = null)
+	{
+		if (is_array($publicVersion)) {
+			$useMinMax = false;
+			if (isset($publicVersion['min'])) {
+				$this->addUsingAlias(ChartPeer::PUBLIC_VERSION, $publicVersion['min'], Criteria::GREATER_EQUAL);
+				$useMinMax = true;
+			}
+			if (isset($publicVersion['max'])) {
+				$this->addUsingAlias(ChartPeer::PUBLIC_VERSION, $publicVersion['max'], Criteria::LESS_EQUAL);
+				$useMinMax = true;
+			}
+			if ($useMinMax) {
+				return $this;
+			}
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+		}
+		return $this->addUsingAlias(ChartPeer::PUBLIC_VERSION, $publicVersion, $comparison);
+	}
+
+	/**
 	 * Filter the query by a related User object
 	 *
 	 * @param     User|PropelCollection $user The related object(s) to use as filter
@@ -819,7 +863,7 @@ abstract class BaseChartQuery extends ModelCriteria
 	 *
 	 * @return    ChartQuery The current query, for fluid interface
 	 */
-	public function joinUser($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+	public function joinUser($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
 	{
 		$tableMap = $this->getTableMap();
 		$relationMap = $tableMap->getRelation('User');
@@ -854,7 +898,7 @@ abstract class BaseChartQuery extends ModelCriteria
 	 *
 	 * @return    UserQuery A secondary query class using the current class as primary query
 	 */
-	public function useUserQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+	public function useUserQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
 	{
 		return $this
 			->joinUser($relationAlias, $joinType)

@@ -10,31 +10,41 @@
 
         $(function() {
 
-            function init() {
-                
-            }
+            var chart = dw.backend.currentChart;
 
             function nextPage(url) {
                 location.href = url;
             }
 
             function uploadData(url) {
-                DW.currentChart.set('metadata.data.source', 'clipboard');
-                $.ajax({
-                    url: '/api/charts/' + DW.currentChart.get('id') + '/data',
+                var uploadReady,
+                    theData = $('#upload-data-text').val();
+                if ($.trim(theData) == "") {
+                    dw.backend.alert(dw.backend.messages.noData);
+                    $('.upload-form .control-group').addClass('warning');
+                    return false;
+                }
+                uploadReady = $.ajax({
+                    url: '/api/charts/' + chart.get('id') + '/data',
                     type: 'PUT',
-                    data: $('#upload-data-text').val(),
+                    data: theData,
                     processData: false,
-                    dataType: 'json',
-                    success: function(result) {
-                        if (result.status == "ok") {
-                            // data is saved correctly, so proceed
-                            nextPage(url);
-                        } else {
-                            alert(result.message);
-                        }
-                    }
+                    dataType: 'json'
                 });
+                if (chart.hasUnsavedChanges()) {
+                    $.when(uploadReady, chart.nextSavePromise()).done(proceed);
+                } else {
+                    $.when(uploadReady).done(proceed);
+                }
+                function proceed(res) {
+                    if (_.isArray(res)) res = res[0];
+                    if (res.status == "ok") {
+                        // data is saved correctly, so proceed
+                        nextPage(url);
+                    } else {
+                        alert('error: '+res.message);
+                    }
+                }
                 return false;
             }
 
@@ -44,10 +54,9 @@
 
             var txtarea = $('#upload-data-text');
 
-
             new qq.FileUploader({
                 element: $('#upload')[0],
-                action: '/api/charts/' + DW.currentChart.get('id') + '/data',
+                action: '/api/charts/' + dw.backend.currentChart.get('id') + '/data',
                 allowedExtensions: ['txt', 'csv', 'tsv'],
                 template: '<div class="upload-drop">{% trans "drop your csv file here" %}</div><div class="btn upload-button" id="pick-file-from-disk"><span><i class="icon-upload"></i> {% trans "..or upload a CSV file" %}</span></div><ul class="qq-upload-list" style="display:none"></ul>',
                 classes: {
@@ -64,7 +73,7 @@
                 onComplete: function(code, filename, res) {
                     if (res.status == "ok") nextPage('describe');
                     else {
-                        DW.logError(res.message, txtarea.parent().parent());
+                        dw.backend.logError(res.message, txtarea.parent().parent());
                     }
                 }
             });
@@ -97,7 +106,9 @@
             <h2 style="margin-bottom:10px">{% trans "Upload Your Data" %}</h2>
 
              <form class="well upload-form">
-                <textarea id="upload-data-text" style="resize:none" placeholder="{% trans "Copy &amp; paste your data here" %}">{{ chartData }}</textarea>
+                <div class="control-group">
+                    <textarea id="upload-data-text" style="resize:none" placeholder="{% trans "Copy &amp; paste your data here" %}">{{ chartData }}</textarea>
+                </div>
 
                 <div id="upload-data" class="btn btn-primary pull-right">{% trans "Upload and continue" %} <i class="icon-chevron-right icon-white"></i></div>
 
@@ -117,7 +128,7 @@
                 <p>{% trans "If you simply want to play around with Datawrapper, here's a list of some example datasets:" %}</p>
                 <ul id="demo-datasets" class="">
                     {% for dataset in datasets %}
-                    <li>{{ dataset.type }}: <a href="#{{ dataset.id }}" class="demo-dataset" data-data="{{ dataset.data }}" data-presets='{{ dataset.presets | json | raw }}'>{{ dataset.title }}</a></li>
+                    <li>{{ dataset.type }}: <a href="#{{ dataset.id }}" class="demo-dataset" data-data="{{ dataset.data | escape('html') }}" data-presets='{{ dataset.presets | json | escape('html')  }}'>{{ dataset.title }}</a></li>
                     {% endfor %}
                 </ul>
                 <script type="text/javascript">
@@ -130,7 +141,7 @@
                         $('#upload-data-text').val(a.data('data'));
                         if (a.data('presets')) {
                             $.each(a.data('presets'), function(key, val) {
-                                DW.currentChart.set(key, val);
+                                dw.backend.currentChart.set(key, val);
                             });
                         }
                     });

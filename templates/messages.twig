@@ -1,12 +1,19 @@
 {% block messages %}
 <script type="text/javascript">
 
-    Datawrapper.Messages = {};
+    dw.backend.messages = {
 
-    Datawrapper.Messages.provideCurPwd = '{% trans %}For security reasons, please provide your current password.{% endtrans %}';
+        provideCurPwd: "{{ 'For security reasons, please provide your current password.'|trans|escape('js') }}",
 
-    Datawrapper.Messages.pwdTooShort = '{% trans %}Your password doesn\'t meet our security guidelines. Please provide at least 4 characters.{% endtrans %}';
-    Datawrapper.Messages.pwdMismatch = '{% trans %}The password and the repeated password must not differ.{% endtrans %}';
+        pwdTooShort: "{{ 'Your password doesn\'t meet our security guidelines. Please provide at least 4 characters.'|trans|escape('js') }}",
+
+        pwdMismatch: "{{ 'The password and the repeated password must not differ.'|trans|escape('js') }}",
+
+        noData: "{{ 'Awesome charts need awesome data. If you just want to try out things you can select one of our sample datasets.'|trans|escape('js') }}",
+
+        insufficientData: "{{ '<h4>Insufficient data</h4>The visualization needs at least one column of the type <b>%type</b> to populate axis <i>%key</i>.'|trans|escape('js')}}"
+
+    };
 
 </script>
 {% endblock %}

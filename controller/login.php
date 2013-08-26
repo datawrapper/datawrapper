@@ -2,7 +2,7 @@
 
 //GET route
 $app->get('/login', function () use ($app) {
-    //disable_cache($app);
+    disable_cache($app);
     if (DatawrapperSession::getUser()->isLoggedIn()) $app->redirect('/');
 
     $page = array(
@@ -20,7 +20,7 @@ $app->get('/login', function () use ($app) {
 //GET route
 $app->get('/setup', function () use ($app) {
 
-    //disable_cache($app);
+    disable_cache($app);
     if (DatawrapperSession::getUser()->isLoggedIn()
         || UserQuery::create()->count() > 0) $app->redirect('/');
 

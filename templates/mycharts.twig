@@ -157,7 +157,7 @@ $(function(){
    {% if user2 %}
     $('.thumbnail > a').click(function(e) {
         e.preventDefault();
-        DW.popupChart($(e.target).parents('.chart').data('id'), true);
+        dw.backend.popupChart($(e.target).parents('.chart').data('id'), true);
     });
 
     $('a.edit').click(function(e) {

@@ -19,6 +19,7 @@ function load_plugins() {
         $deps = $plugin->getDependencies();
         if (!empty($deps)) {
             foreach ($deps as $parent_id => $parent_version) {
+                if ($parent_id == "core") continue;  // ignore core dependency
                 $index[$parent_id][] = $id;
             }
         } else {

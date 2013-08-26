@@ -47,13 +47,14 @@ class ChartTableMap extends TableMap
 		$this->addColumn('METADATA', 'Metadata', 'VARCHAR', true, 4096, null);
 		$this->addColumn('DELETED', 'Deleted', 'BOOLEAN', false, 1, false);
 		$this->addColumn('DELETED_AT', 'DeletedAt', 'TIMESTAMP', false, null, null);
-		$this->addForeignKey('AUTHOR_ID', 'AuthorId', 'INTEGER', 'user', 'ID', true, null, null);
+		$this->addForeignKey('AUTHOR_ID', 'AuthorId', 'INTEGER', 'user', 'ID', false, null, null);
 		$this->addColumn('SHOW_IN_GALLERY', 'ShowInGallery', 'BOOLEAN', false, 1, false);
 		$this->addColumn('LANGUAGE', 'Language', 'VARCHAR', false, 5, '');
 		$this->addColumn('GUEST_SESSION', 'GuestSession', 'VARCHAR', false, 255, null);
 		$this->addColumn('LAST_EDIT_STEP', 'LastEditStep', 'INTEGER', false, null, 0);
 		$this->addColumn('PUBLISHED_AT', 'PublishedAt', 'TIMESTAMP', false, null, null);
 		$this->addColumn('PUBLIC_URL', 'PublicUrl', 'VARCHAR', false, 255, null);
+		$this->addColumn('PUBLIC_VERSION', 'PublicVersion', 'INTEGER', false, null, 0);
 		// validators
 	} // initialize()
 

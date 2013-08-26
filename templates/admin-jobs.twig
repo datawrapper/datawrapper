@@ -39,7 +39,7 @@ $(function() {
             dataType: 'json',
             data: JSON.stringify({ status: status }),
             success: function() {
-                DW.logMessage('Status of job <b>'+job_id+'</b> has been changed to <b>'+status+'</b>.', $('table').parent());
+                dw.backend.logMessage('Status of job <b>'+job_id+'</b> has been changed to <b>'+status+'</b>.', $('table').parent());
                 var tr = $('tr[data-id='+job_id+']');
                 tr.fadeOut(1000, '', function() {
                     tr.remove();
@@ -47,7 +47,7 @@ $(function() {
                 });
             },
             error: function(error, res, f, b) {
-                DW.logError('Error:' + f, $('table').parent());
+                dw.backend.logError('Error:' + f, $('table').parent());
             }
         });
     }

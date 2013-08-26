@@ -204,7 +204,7 @@ $(function() {
 
     $('#resend-activation-link').click(function(e) {
         e.preventDefault();
-        DW.resendActivationMail($(e.target).parent());
+        dw.backend.resendActivationMail($(e.target).parent());
     });
 
     // save profile
@@ -225,10 +225,10 @@ $(function() {
             success: function(data) {
                 submit.removeClass('loading');
                 if (data.status == 'ok') {
-                    DW.logMessage('{% trans "This just worked fine. Your profile has been updated." %}', $('.settings.profile .control-group')[0]);
+                    dw.backend.logMessage('{% trans "This just worked fine. Your profile has been updated." %}', $('.settings.profile .control-group')[0]);
                     $('.profile .reset').attr('disabled', true);
                 } else {
-                    DW.logError(data.message, $('.settings.profile .control-group')[0]);
+                    dw.backend.logError(data.message, $('.settings.profile .control-group')[0]);
                 }
             }
          });
@@ -243,9 +243,9 @@ $(function() {
             pwd2 = $.trim($('#pwd2').val()),
             check;
 
-        DW.clearAlerts()
+        dw.backend.clearAlerts()
 
-        check = DW.checkPassword(curPwd, pwd, pwd2);
+        check = dw.backend.checkPassword(curPwd, pwd, pwd2);
         if (check === true) {
             // at first we req
             submit.addClass('loading');
@@ -272,12 +272,12 @@ $(function() {
                             submit.removeClass('loading');
                             if (data.status == 'ok') {
                                 if (data.data.updated.indexOf('password') >= 0) {
-                                    DW.logMessage('{% trans "Congrats! Your password has been changed." %}', parent);
+                                    dw.backend.logMessage('{% trans "Congrats! Your password has been changed." %}', parent);
                                 } else {
-                                    DW.logError('{% trans "Could not change your password. Please double check your current password." %}', parent);
+                                    dw.backend.logError('{% trans "Could not change your password. Please double check your current password." %}', parent);
                                 }
                             } else {
-                                DW.logError(data.message, parent);
+                                dw.backend.logError(data.message, parent);
                             }
                         }
                     });
@@ -324,13 +324,13 @@ $(function() {
                         $('#confirmDeletion .post-delete').addClass('modal-body');
                         $('#confirmDeletion .post-delete').show();
                     } else {
-                        DW.logError(res.message, $('#confirm-pwd').parent());
+                        dw.backend.logError(res.message, $('#confirm-pwd').parent());
                     }
                 }).fail(function(res) {
-                    DW.logError('could not delete user: ' + JSON.stringify(res), $('#confirm-pwd').parent());
+                    dw.backend.logError('could not delete user: ' + JSON.stringify(res), $('#confirm-pwd').parent());
                 });
             } else {
-                DW.logError('could not load salt', $('#confirm-pwd').parent());
+                dw.backend.logError('could not load salt', $('#confirm-pwd').parent());
             }
         });
     });

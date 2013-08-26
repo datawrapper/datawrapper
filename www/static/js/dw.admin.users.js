@@ -22,11 +22,13 @@ admin_users.AdminUsers = (function(_super) {
   __extends(AdminUsers, _super);
 
   function AdminUsers() {
+    this.resendInvitation = __bind(this.resendInvitation, this);
     this.resetPassword = __bind(this.resetPassword, this);
     this.updateUser = __bind(this.updateUser, this);
     this.removeUser = __bind(this.removeUser, this);
     this.addUser = __bind(this.addUser, this);
     this.__getUserById = __bind(this.__getUserById, this);
+    this.resetAction = __bind(this.resetAction, this);
     this.resendAction = __bind(this.resendAction, this);
     this.cancelEditAction = __bind(this.cancelEditAction, this);
     this.saveEditAction = __bind(this.saveEditAction, this);
@@ -49,7 +51,7 @@ admin_users.AdminUsers = (function(_super) {
       msgError: '.alert-error',
       msgSuccess: '.alert-success'
     };
-    this.ACTIONS = ['showAddUserForm', 'addUserAction', 'removeAction', 'editAction', 'saveEditAction', 'cancelEditAction', 'resendAction'];
+    this.ACTIONS = ['showAddUserForm', 'addUserAction', 'removeAction', 'editAction', 'saveEditAction', 'cancelEditAction', 'resendAction', 'resetAction'];
     this.cache = {
       editedUser: null
     };
@@ -145,6 +147,11 @@ admin_users.AdminUsers = (function(_super) {
   };
 
   AdminUsers.prototype.resendAction = function(evnt) {
+    this.hideMessages();
+    return this.resendInvitation($(evnt.currentTarget).data('id'));
+  };
+
+  AdminUsers.prototype.resetAction = function(evnt) {
     this.hideMessages();
     return this.resetPassword($(evnt.currentTarget).data('id'));
   };
@@ -245,6 +252,27 @@ admin_users.AdminUsers = (function(_super) {
 
     user = this.__getUserById(id);
     return $.ajax('/api/account/reset-password', {
+      dataType: "json",
+      type: "POST",
+      data: JSON.stringify({
+        email: user.Email
+      }),
+      success: function(data) {
+        if (data.status === "ok") {
+          return _this.uis.msgSuccess.html(data.data).removeClass('hidden');
+        } else {
+          return _this.uis.msgError.filter(".error-" + data.code).removeClass('hidden');
+        }
+      }
+    });
+  };
+
+  AdminUsers.prototype.resendInvitation = function(id) {
+    var user,
+      _this = this;
+
+    user = this.__getUserById(id);
+    return $.ajax('/api/account/resend-invitation', {
       dataType: "json",
       type: "POST",
       data: JSON.stringify({

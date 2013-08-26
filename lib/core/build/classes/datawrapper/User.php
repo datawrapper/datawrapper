@@ -53,7 +53,19 @@ class User extends BaseUser {
     }
 
     public function chartCount() {
-        return count(ChartQuery::create()->getPublicChartsByUser($this));
+        return ChartQuery::create()
+            ->filterByAuthorId($this->getId())
+            ->filterByDeleted(false)
+            ->filterByLastEditStep(array('min' => 2))
+            ->count();
+    }
+
+    public function publicChartCount() {
+        return ChartQuery::create()
+            ->filterByAuthorId($this->getId())
+            ->filterByDeleted(false)
+            ->filterByLastEditStep(array('min' => 4))
+            ->count();
     }
 
     public function setPwd($pwd) {
