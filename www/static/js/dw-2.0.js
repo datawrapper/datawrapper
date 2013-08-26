@@ -1401,7 +1401,9 @@ _.extend(dw.visualization.base, {
     // called before rendering
     __init: function() {
         this.__renderedDfd = $.Deferred();
-        parent.$('body').trigger('datawrapper:vis:init');
+        if (dw.backend) {
+            parent.$('body').trigger('datawrapper:vis:init');
+        }
     },
 
     render: function(el) {
