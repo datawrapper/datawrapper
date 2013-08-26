@@ -491,7 +491,7 @@
          */
         invertLabel: function(col) {
             var c = chroma.color(col),
-                bg = chroma.color(this.theme.colors.background);
+                bg = chroma.color(this.theme().colors.background);
             return bg.lab()[0] > 60 ?  // check if background is whitish
                 c.lab()[0] < 80 :  //
                 c.lab()[0] > 60;
