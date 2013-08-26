@@ -40,8 +40,8 @@ _.extend(dw.visualization.base, {
     },
 
     size: function(width, height) {
-        if (!arguments.length) return [me.__w, me.__h];
         var me = this;
+        if (!arguments.length) return [me.__w, me.__h];
         me.__w = width;
         me.__h = height;
         return me;
@@ -51,7 +51,7 @@ _.extend(dw.visualization.base, {
      * short-cut for this.chart.get('metadata.visualize.*')
      */
     get: function(str, _default) {
-        return this.chart.get('metadata.visualize.'+str, _default);
+        return this.chart().get('metadata.visualize.'+str, _default);
     },
 
     notify: function(str) {
@@ -100,7 +100,7 @@ _.extend(dw.visualization.base, {
             errors = [];
 
         // get user preference
-        axes =  me.chart.get('metadata.axes', {});
+        axes =  me.chart().get('metadata.axes', {});
         _.each(axes, function(columns) {
             if (!_.isArray(columns)) columns = [columns];
             _.each(columns, function(column) {

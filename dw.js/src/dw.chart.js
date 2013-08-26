@@ -118,7 +118,7 @@ dw.chart = function(attributes) {
                 theme = _theme;
                 return chart;
             }
-            return theme;
+            return theme || {};
         },
 
         // sets or gets the visualization
