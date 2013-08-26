@@ -1,5 +1,9 @@
 #!/bin/sh
 # read version from package.json
+CUR_DIR="$( pwd )"
+SCRIPT_DIR="$( dirname "${BASH_SOURCE[0]}" )"
+cd $SCRIPT_DIR
+
 VERSION=$(python -c 'import json;print json.loads(open("../package.json").read())["version"]')
 
 # remove old javascript
@@ -31,3 +35,6 @@ then
 else
 	echo "Neither uglifyjs nor wget was found, so you need to minify the dw-2.0.js yourself."
 fi
+
+cd $CUR_DIR
+
