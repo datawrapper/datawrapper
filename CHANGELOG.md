@@ -1,6 +1,10 @@
 CHANGELOG
 ---------
 
+### 1.5.1
+* automatically creating a new hashed url for theme javascript
+
+
 ### 1.5.0
 * simplified visualization api
 * column chart allows ignoring of missing values

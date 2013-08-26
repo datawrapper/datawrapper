@@ -95,6 +95,7 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
     $the_theme = DatawrapperTheme::get($chart->getTheme());
 
     $the_vis_js = get_vis_js($the_vis, array_merge(array_reverse($vis_js), $vis_libs_local));
+    $the_theme_js = get_theme_js($the_theme, array_reverse($theme_js));
 
     if ($published) {
         $scripts = array_merge(
@@ -102,7 +103,7 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
             $vis_libs_cdn,
             array(
                 '/lib/' . $the_vis_js[0],
-                '/lib/theme/' . $the_theme['id'] . '-' . $the_theme['version'] . '.min.js',
+                '/lib/' . $the_theme_js[0],
             )
         );
         $styles = array($chart->getID().'.min.css');
@@ -151,7 +152,7 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
 
         // the following is used by chart_publish.php
         'vis_js' => $the_vis_js,
-        'themeJS' => array_reverse($theme_js),
+        'theme_js' => $the_theme_js,
 
     );
 
@@ -160,11 +161,10 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
 
 /*
  * returns an array
- *   [0] filename of the vis js class, eg, column-chart-7266c4ee39b3d19f007f01be8853ac87.min.js
+ *   [0] filename of the vis js class, eg, vis/column-chart-7266c4ee39b3d19f007f01be8853ac87.min.js
  *   [1] minified source code
  */
 function get_vis_js($vis, $visJS) {
-    $vis_path = 'vis/' . $vis['id'] . '-' . $vis['version'] . '.min.js';
     // merge vis js into a single file
     $all = '';
     foreach ($visJS as $js) {
@@ -178,4 +178,22 @@ function get_vis_js($vis, $visJS) {
     $vis_js_md5 = md5($all);
     $vis_path = 'vis/' . $vis['id'] . '-' . $vis_js_md5 . '.min.js';
     return array($vis_path, $all);
+}
+
+/*
+ * returns an array
+ *   [0] filename of the theme js class, eg, theme/default-7266c4ee39b3d19f007f01be8853ac87.min.js
+ *   [1] minified source code
+ */
+function get_theme_js($theme, $themeJS) {
+    $all = '';
+    foreach ($themeJS as $js) {
+        if (substr($js, 0, 7) != 'http://' && substr($js, 0, 2) != '//') {
+            $all .= "\n\n\n" . file_get_contents(ROOT_PATH . 'www' . $js);
+        }
+    }
+    $all = JSMin::minify($all);
+    $theme_js_md5 = md5($all);
+    $theme_path = 'theme/' . $theme['id'] . '-' . $theme_js_md5 . '.min.js';
+    return array($theme_path, $all);
 }
