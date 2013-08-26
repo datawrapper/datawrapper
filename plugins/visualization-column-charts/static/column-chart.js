@@ -5,7 +5,7 @@
 
         render: function(el) {
             var me = this, filter, filterUI, sortBars, reverse, c, dataset = me.dataset,
-                chart_width, column_gap, row_gap, row, column, bars;
+                chart_width, column_gap, row_gap, row, column, bars, theme = me.theme();
 
             me.axesDef = me.axes();
             if (!me.axesDef) return;
@@ -70,7 +70,7 @@
 
             $('.tooltip').hide();
 
-            if (!me.theme.columnChart.cutGridLines) me.horzGrid();
+            if (!theme.columnChart.cutGridLines) me.horzGrid();
 
             _.each(me.getBarValues(sortBars, reverse), _.bind(me.__barEnter, me));
 
@@ -83,7 +83,7 @@
 
             $('.showOnHover').hide();
 
-            if (me.theme.columnChart.cutGridLines) me.horzGrid();
+            if (theme.columnChart.cutGridLines) me.horzGrid();
             if (me.__gridLines && me.__gridLines['0']) me.__gridLines['0'].toFront();
             me.renderingComplete();
         },
@@ -93,11 +93,13 @@
                 c = me.__canvas,
                 d = me.barDimensions(barv, s),
                 n = me.__n,
+                chart = me.chart(),
+                theme = me.theme(),
                 val = barv.value,
                 fill = me.getBarColor(barv, me.get('negative-color', false)),
-                stroke = chroma.color(fill).darken(me.theme.columnChart.darkenStroke).hex(),
+                stroke = chroma.color(fill).darken(theme.columnChart.darkenStroke).hex(),
                 bar,
-                formatter = me.chart.columnFormatter(me.getBarColumn());
+                formatter = chart.columnFormatter(me.getBarColumn());
 
             // create bar
             bar = me.registerElement(c.paper.rect().attr(d).attr({
@@ -105,8 +107,8 @@
                 'fill': fill
             }).data('strokeCol', stroke), barv.name);
 
-            if (me.theme.columnChart.barAttrs) {
-                bar.attr(me.theme.columnChart.barAttrs);
+            if (theme.columnChart.barAttrs) {
+                bar.attr(theme.columnChart.barAttrs);
             }
 
             var val_y  = val > 0 ? d.y - 10 : d.y + d.height + 10,
@@ -118,8 +120,8 @@
                 lbl_w  = c.w / (n+2),
                 valign = val > 0 ? 'top' : 'bottom',
                 halign = 'center',
-                alwaysShow = (me.chart.hasHighlight() &&
-                    me.chart.isHighlighted(barv.name)) ||
+                alwaysShow = (chart.hasHighlight() &&
+                    chart.isHighlighted(barv.name)) ||
                     (bw > vlbl_w);
             var lpos = me.labelPosition(barv, s, 'value'),
                 spos = me.labelPosition(barv, s, 'series');
@@ -131,7 +133,7 @@
                 cl: 'value outline ' + (alwaysShow ? '' : ' showOnHover')
             }), barv.name);
 
-            if (me.chart.hasHighlight() && me.chart.isHighlighted(barv.name)) {
+            if (chart.hasHighlight() && chart.isHighlighted(barv.name)) {
                 lblcl.push('highlighted');
             }
             if (d.bw < 30) {
@@ -195,7 +197,8 @@
 
         update: function(row) {
             var me = this,
-                formatter = me.chart.columnFormatter(me.getBarColumn());
+                theme = me.theme(),
+                formatter = me.chart().columnFormatter(me.getBarColumn());
 
             // update scales
             me.initDimensions();
@@ -213,7 +216,7 @@
 
                 _.each(me.__elements[bar.name], function(rect) {
                     var dim = me.barDimensions(bar, s, 0);
-                    rect.animate(dim, me.theme.duration, me.theme.easing);
+                    rect.animate(dim, theme.duration, theme.easing);
                 });
 
                 _.each(me.__labels[bar.name], function(lbl) {
@@ -232,7 +235,7 @@
                             y: lpos.top,
                             align: lpos.halign,
                             valign: lpos.valign
-                        }, me.theme.duration, me.theme.easing);
+                        }, theme.duration, theme.easing);
                     }
                 });
                 updated_bars[bar.name] = true;
@@ -317,7 +320,7 @@
                 halign = 'center',
                 val_y = lbl_top ? d.y - 10 : d.y + d.height + 10,
                 lbl_y = !lbl_top ? d.y - 5 : d.y + d.height + 5,
-                formatter = me.chart.columnFormatter(me.getBarColumn());
+                formatter = me.chart().columnFormatter(me.getBarColumn());
 
 
             if (type == "value") {
@@ -358,10 +361,11 @@
                 c = me.__canvas,
                 domain = me.__domain,
                 styles = me.__styles,
+                theme = me.theme(),
                 ticks = me.getYTicks(yscale, c.h, true),
                 tickLabels = me.__tickLabels = me.__tickLabels || {},
                 gridLines = me.__gridLines = me.__gridLines || {},
-                formatter = me.chart.columnFormatter(me.getBarColumn());
+                formatter = me.chart().columnFormatter(me.getBarColumn());
 
             if (!me.gridVisible()) ticks = [];
 
@@ -372,28 +376,28 @@
             _.each(ticks, function(val, t) {
                 var y = c.h - c.bpad - yscale(val), x = c.lpad, ly = y-10;
                 // c.paper.text(x, y, val).attr(styles.labels).attr({ 'text-anchor': 'end' });
-                if (me.theme.columnChart.cutGridLines) ly += 10;
+                if (theme.columnChart.cutGridLines) ly += 10;
                 var key = String(val);
                 // show or update label
                 if (val !== 0) {
                     var lbl = tickLabels[key] = tickLabels[key] ||
                         me.label(x+2, ly, formatter(val, t == ticks.length-1, true),
                             { align: 'left', cl: 'axis', css: { opacity: 0 } });
-                    lbl.animate({ x: c.lpad+2, y: ly, css: { opacity: 1 } }, me.theme.duration, me.theme.easing);
+                    lbl.animate({ x: c.lpad+2, y: ly, css: { opacity: 1 } }, theme.duration, theme.easing);
                 }
-                if (me.theme.yTicks) {
+                if (theme.yTicks) {
                     me.path([['M', c.lpad-25, y], ['L', c.lpad-20,y]], 'tick');
                 }
-                if (me.theme.horizontalGrid) {
+                if (theme.horizontalGrid) {
                     var lattrs = { path: [['M', c.lpad, y], ['L', c.w - c.rpad,y]], opacity: 1 },
                         l = gridLines[key] = gridLines[key] || me.path(lattrs.path, 'grid');
                     l.toBack();
                     if (val === 0) {
-                        $.extend(lattrs, me.theme.xAxis);
+                        $.extend(lattrs, theme.xAxis);
                         l.toFront();
                     } else {
-                        l.attr(me.theme.horizontalGrid);
-                        $.extend(lattrs, me.theme.horizontalGrid);
+                        l.attr(theme.horizontalGrid);
+                        $.extend(lattrs, theme.horizontalGrid);
                     }
                     if (!me.__lastTicks || _.indexOf(me.__lastTicks, Number(val)) < 0) {
                         var old_path = lattrs.path;
@@ -405,26 +409,26 @@
                         }
                         l.attr({ opacity: 0, path: old_path });
                     }
-                    if (val !== 0 && me.theme.columnChart.cutGridLines) lattrs.stroke = me.theme.colors.background;
-                    l.animate(lattrs, me.theme.duration * (me.__lastTicks ? 1 : 0.2), me.theme.easing);
+                    if (val !== 0 && theme.columnChart.cutGridLines) lattrs.stroke = theme.colors.background;
+                    l.animate(lattrs, theme.duration * (me.__lastTicks ? 1 : 0.2), theme.easing);
                 }
             });
             // hide invisible grid lines
             $.each(gridLines, function(val, line) {
                 if (_.indexOf(ticks, +val) < 0) {
                     var y = c.h - c.bpad - yscale(val), props = {};
-                    $.extend(props, me.theme.horizontalGrid, { path: [['M', c.lpad, y], ['L', c.w - c.rpad, y]], opacity: 0 });
-                    line.animate(props, me.theme.duration, me.theme.easing);
+                    $.extend(props, theme.horizontalGrid, { path: [['M', c.lpad, y], ['L', c.w - c.rpad, y]], opacity: 0 });
+                    line.animate(props, theme.duration, theme.easing);
                     if (tickLabels[val]) {
                         var lbl = tickLabels[val];
 
                         tickLabels[val].animate({
                             x: c.lpad+2,
-                            y: y + (me.theme.columnChart.cutGridLines ? -10 : 0),
+                            y: y + (theme.columnChart.cutGridLines ? -10 : 0),
                             css: {
                                 opacity: 0
                             }
-                        }, me.theme.duration, me.theme.easing );
+                        }, theme.duration, theme.easing );
                     }
                 }
             });
@@ -435,7 +439,7 @@
 
         hovers: function(column) {
             var me = this,
-                theme = me.theme;
+                theme = me.theme();
             _.each(me.getBarColumns(), function(col) {
                 _.each(me.__seriesLabels[col.name()], function(lbl) {
                     if (column !== undefined && col.name() == column.name()) {

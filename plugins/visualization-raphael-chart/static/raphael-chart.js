@@ -20,7 +20,7 @@
             el.css({
                 position: 'relative'
             });
-            el.addClass(me.chart.get('type'));
+            el.addClass(me.chart().get('type'));
         },
 
         getSize: function() {
@@ -35,14 +35,17 @@
          * @param h_sub   reduces the height of the chart area
          */
         initCanvas: function(canvas, w_sub, h_sub) {
-            var me = this, el = me.__root, size = me.getSize();
+            var me = this,
+                el = me.__root,
+                size = me.size(),
+                theme = me.theme();
             canvas = _.extend({
                 w: size[0] - (w_sub || 0),
                 h: size[1] - (h_sub || 0),
-                rpad: me.theme.padding.right,
-                lpad: me.theme.padding.left,
-                bpad: me.theme.padding.bottom,
-                tpad: me.theme.padding.top
+                rpad: theme.padding.right,
+                lpad: theme.padding.left,
+                bpad: theme.padding.bottom,
+                tpad: theme.padding.top
             }, canvas);
 
             if (size[0] <= 400) {
@@ -91,6 +94,7 @@
                 y = e.pageY,
                 hovered_key = this.getKeyByPoint(x, y, e),
                 row = this.getDataRowByPoint(x, y),
+                theme = me.theme(),
                 hoveredNode = hovered_key !== null;
 
             if (!hovered_key) hovered_key = me.getKeyByLabel();
@@ -101,16 +105,16 @@
                 me.__mouseOutTimer = setTimeout(function() {
                     clearTimeout(me.__mouseOverTimer);
                     clearTimeout(me.__mouseOutTimer);
-                    if (me.theme.hover) me.hover();
-                    if (me.theme.tooltip) me.hideTooltip();
+                    if (theme.hover) me.hover();
+                    if (theme.tooltip) me.hideTooltip();
                 }, 200);
             } else {
                 if (me.__mouseOutTimer) clearTimeout(me.__mouseOutTimer);
                 me.__mouseOverTimer = setTimeout(function() {
                     clearTimeout(me.__mouseOverTimer);
                     clearTimeout(me.__mouseOutTimer);
-                    if (me.theme.hover) me.hover(hovered_key);
-                    //if (me.theme.tooltip && hoveredNode) me.showTooltip(series, row, x, y);
+                    if (theme.hover) me.hover(hovered_key);
+                    //if (theme.tooltip && hoveredNode) me.showTooltip(series, row, x, y);
                 }, 100);
             }
         },
@@ -326,7 +330,7 @@
             // put highlighted lines on top
             var me = this;
             _.each(me.dataset.columns(), function(column) {
-                if (me.chart.isHighlighted(column)) {
+                if (me.chart().isHighlighted(column)) {
                     _.each(me.__elements[column.name()], function(el) {
                         el.toFront();
                     });
@@ -385,7 +389,7 @@
             }
 
             // cycle through palette opts.usePalette is true
-            var palette = me.theme.colors.palette;
+            var palette = me.theme().colors.palette;
             if (opts.usePalette) {
                 return palette[(Math.min(me.get('base-color', 0), palette.length-1) + row) % palette.length];
             }
@@ -407,19 +411,20 @@
 
         getColor: function(series, row, opts) {
             var me = this,
+                chart = me.chart(),
                 color = me._getColor(series, row, opts);
 
             // modify colors to indicate highlighting
-            if (series && me.chart.hasHighlight() && !me.chart.isHighlighted(series)) {
+            if (series && chart.hasHighlight() && !chart.isHighlighted(series)) {
                 // mix color with background
-                return chroma.interpolate(color, me.theme.colors.background, 0.65, 'rgb').hex();
+                return chroma.interpolate(color, me.theme().colors.background, 0.65, 'rgb').hex();
             }
             return color;
         },
 
         getKeyColor: function(key, value, useNegativeColor, colorful) {
             var me = this,
-                palette = me.theme.colors.palette,
+                palette = me.theme().colors.palette,
                 color,
                 colorByRow = me.meta['color-by'] == 'row';
 
@@ -433,7 +438,7 @@
 
             } else if (value && useNegativeColor) {
                 // if requested we display negative values in different color
-                color = me.theme.colors[value < 0 ? 'negative' : 'positive'];
+                color = me.theme().colors[value < 0 ? 'negative' : 'positive'];
             } else {
                 // if the visualization has defined custom series colors, let's use them
                 if (key && me.__customColors && me.__customColors[key])
@@ -443,10 +448,10 @@
             }
 
             var key_color = chroma.hex(color),
-                bg_color = chroma.hex(me.theme.colors.background),
+                bg_color = chroma.hex(me.theme().colors.background),
                 bg_lch = bg_color.lch();
 
-            if (key && !me.chart.isHighlighted(key)) {
+            if (key && !me.chart().isHighlighted(key)) {
                 key_color = chroma.interpolate(key_color, bg_color, bg_lch[0] < 60 ? 0.7 : 0.63);
             }
 
