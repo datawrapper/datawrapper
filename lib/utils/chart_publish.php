@@ -37,7 +37,7 @@ function publish_js($user, $chart) {
     $vis_js = $data['vis_js'];
     if (!file_exists($static_path . $vis_js[0])) {
         // add comment
-        $vis_js[1] = "/*\n * datawrapper/{$vis['id']} v{$vis['version']}\n"
+        $vis_js[1] = "/*\n * datawrapper / vis / {$vis['id']} v{$vis['version']}\n"
                    . " * generated on ".date('c')."\n */\n"
                    . $vis_js[1];
         file_put_contents($static_path . $vis_js[0], $vis_js[1]);
@@ -50,19 +50,15 @@ function publish_js($user, $chart) {
 
     // generate theme script
     $theme = $data['theme'];
-    $theme_path = 'theme/' . $theme['id'] . '-' . $theme['version'] . '.min.js';
+    $theme_js = $data['theme_js'];
 
-    if (!file_exists($static_path . $theme_path)) {
-        $all = '';
-        foreach ($data['themeJS'] as $js) {
-            if (substr($js, 0, 7) != 'http://' && substr($js, 0, 2) != '//') {
-                $all .= "\n\n\n" . file_get_contents('..' . $js);
-            }
-        }
-        $minified = JSMin::minify($all);
-        file_put_contents($static_path . $theme_path, $minified);
+    if (!file_exists($static_path . $theme_js[0])) {
+        $theme_js[1] = "/*\n * datawrapper / theme / {$theme['id']} v{$theme['version']}\n"
+                     . " * generated on ".date('c')."\n */\n"
+                     . $theme_js[1];
+        file_put_contents($static_path . $theme_js[0], $theme_js[1]);
     }
-    $cdn_files[] = array($static_path . $theme_path, 'lib/' . $theme_path, 'application/javascript');
+    $cdn_files[] = array($static_path . $theme_js[0], 'lib/' . $theme_js[0], 'application/javascript');
     return $cdn_files;
 }
 

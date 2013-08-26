@@ -8,20 +8,20 @@
         window.__locale = '{{ chartLocale }}';
     </script>
 
-    <link rel="stylesheet" type="text/css" href="/static/visualizations/line-chart/style.css"></link>
+    <link rel="stylesheet" type="text/css" href="/static/plugins/visualization-line-chart/line-chart.css"></link>
     <link rel="stylesheet" type="text/css" href="/static/plugins/theme-default/default.css"></link>
 
     <script type="text/javascript" src="/static/vendor/globalize/globalize.js"></script>
 
-    <script type="text/javascript" src="/static/js/datawrapper-backend-{{ DW_VERSION }}.min.js"></script>
+    <script type="text/javascript" src="/static/js/dw-2.0.js"></script>
+    <script type="text/javascript" src="/static/js/dw-backend-2.0.js"></script>
 
     <script type="text/javascript" src="/static/plugins/theme-default/default.js"></script>
     <script type="text/javascript" src="/static/vendor/d3js/d3-light.js"></script>
     <script type="text/javascript" src="/static/vendor/raphaeljs/raphael-2.1.0.min.js"></script>
     <script type="text/javascript" src="/static/vendor/chromajs/chroma.min.js"></script>
-    <script type="text/javascript" src="/static/visualizations/raphael-chart/raphael-chart.js"></script>
-    <script type="text/javascript" src="/static/visualizations/line-chart/line-chart.js"></script>  
-
+    <script type="text/javascript" src="/static/plugins/visualization-raphael-chart/raphael-chart.js"></script>
+    <script type="text/javascript" src="/static/plugins/visualization-line-chart/line-chart.js"></script>
 
     <script type="text/javascript">
     $(function() {
@@ -30,7 +30,7 @@
         // initialize theme
             var theme = dw.theme('default');
             // initialize chart
-            var chart = new Datawrapper.Chart({
+            var chart = dw.chart({
                 type: "line-chart",
                 metadata: {
                     data: {
@@ -61,15 +61,20 @@
 
             // initliaze visualization
             var vis = dw.visualization('line-chart');
+            vis.meta = {{ linechart | json | raw }};
 
-            vis.setTheme(theme);
-            vis.chart = chart;
-            vis.meta = JSON.parse('{{ linechart | json | raw }}');
-            chart.setLocale('en-US', {"3":"k","6":"m","9":"b","12":"t"});
-            chart.rawData(data);
-            vis.dataset = chart.__dataset;
-            vis.getSize = function() { return [$('.span5').width(),200] };
-            vis.render(cont);
+            dw.datasource.delimited({ csv: data }).dataset().done(function(ds) {
+
+                chart.dataset(ds)
+                    .locale('en-US', {"3":"k","6":"m","9":"b","12":"t"})
+                    .theme(theme)
+                    .vis(vis);
+
+                vis.size($('.span5').width(),200)
+                   .__init()
+                   .render(cont);
+            });
+
         }
 
         lineChart('#user-stats', '{{ user_csv | raw }}');

@@ -1,6 +1,13 @@
 CHANGELOG
 ---------
 
+### 1.5.1
+* automatically creating a new hashed url for theme javascript
+* visualization throws exception if data is insufficient
+* chart.dataset() can now take a new dataset
+* renamed vis.setX to vis.x()
+* fixed charts in admin dashboard
+
 ### 1.5.0
 * simplified visualization api
 * column chart allows ignoring of missing values

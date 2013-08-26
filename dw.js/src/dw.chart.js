@@ -77,7 +77,11 @@ dw.chart = function(attributes) {
         },
 
         // applies the data changes and returns the dataset
-        dataset: function() {
+        dataset: function(ds) {
+            if (arguments.length) {
+                dataset = ds;
+                return chart;
+            }
             var changes = chart.get('metadata.data.changes', []);
             var transpose = chart.get('metadata.data.transpose', false);
             _.each(changes, function(change) {
@@ -121,7 +125,7 @@ dw.chart = function(attributes) {
         vis: function(_vis) {
             if (arguments.length) {
                 vis = _vis;
-                vis.setChart(chart);
+                vis.chart(chart);
                 return chart;
             }
             return vis;

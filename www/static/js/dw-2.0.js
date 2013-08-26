@@ -1242,7 +1242,11 @@ dw.chart = function(attributes) {
         },
 
         // applies the data changes and returns the dataset
-        dataset: function() {
+        dataset: function(ds) {
+            if (arguments.length) {
+                dataset = ds;
+                return chart;
+            }
             var changes = chart.get('metadata.data.changes', []);
             var transpose = chart.get('metadata.data.transpose', false);
             _.each(changes, function(change) {
@@ -1286,7 +1290,7 @@ dw.chart = function(attributes) {
         vis: function(_vis) {
             if (arguments.length) {
                 vis = _vis;
-                vis.setChart(chart);
+                vis.chart(chart);
                 return chart;
             }
             return vis;
@@ -1404,14 +1408,15 @@ _.extend(dw.visualization.base, {
         if (dw.backend) {
             parent.$('body').trigger('datawrapper:vis:init');
         }
+        return this;
     },
 
     render: function(el) {
         $(el).html('implement me!');
     },
 
-    setTheme: function(theme) {
-        if (!theme) return this;
+    theme: function(theme) {
+        if (!arguments.length) return this.theme;
         this.theme = theme;
         var attr_properties = ['horizontalGrid', 'verticalGrid', 'yAxis', 'xAxis'];
         _.each(attr_properties, function(prop) {
@@ -1429,7 +1434,8 @@ _.extend(dw.visualization.base, {
         return this;
     },
 
-    setSize: function(width, height) {
+    size: function(width, height) {
+        if (!arguments.length) return [me.__w, me.__h];
         var me = this;
         me.__w = width;
         me.__h = height;
@@ -1465,10 +1471,11 @@ _.extend(dw.visualization.base, {
         return true;
     },
 
-    setChart: function(chart) {
+    chart: function(chart) {
         var me = this;
+        if (!arguments.length) return me.chart;
         me.dataset = chart.dataset();
-        me.setTheme(chart.theme());
+        me.theme(chart.theme());
         me.chart = chart;
         var columnFormat = chart.get('metadata.data.column-format', {});
         var ignore = {};
@@ -1476,6 +1483,7 @@ _.extend(dw.visualization.base, {
             ignore[key] = !!format.ignore;
         });
         me.dataset.filterColumns(ignore);
+        return me;
     },
 
     axes: function(returnAsColumns) {
@@ -1537,7 +1545,9 @@ _.extend(dw.visualization.base, {
 
         if (errors.length) {
             if (dw.backend) dw.backend.alert(errors.join('<br />'));
-            return false;
+            else {
+                throw errors.join('\n');
+            }
         }
 
         _.each(axes, function(columns, key) {
