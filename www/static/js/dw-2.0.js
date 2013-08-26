@@ -1290,7 +1290,7 @@ dw.chart = function(attributes) {
         vis: function(_vis) {
             if (arguments.length) {
                 vis = _vis;
-                vis.setChart(chart);
+                vis.chart(chart);
                 return chart;
             }
             return vis;
@@ -1474,7 +1474,7 @@ _.extend(dw.visualization.base, {
         var me = this;
         if (!arguments.length) return me.chart;
         me.dataset = chart.dataset();
-        me.setTheme(chart.theme());
+        me.theme(chart.theme());
         me.chart = chart;
         var columnFormat = chart.get('metadata.data.column-format', {});
         var ignore = {};

@@ -125,7 +125,7 @@ dw.chart = function(attributes) {
         vis: function(_vis) {
             if (arguments.length) {
                 vis = _vis;
-                vis.setChart(chart);
+                vis.chart(chart);
                 return chart;
             }
             return vis;
