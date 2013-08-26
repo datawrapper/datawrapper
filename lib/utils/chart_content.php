@@ -48,6 +48,8 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
     $next_vis_id = $chart->getType();
 
     $vis_libs = array();
+    $vis_libs_cdn = array();
+    $vis_libs_local = array();
 
     $vis_locale = array();  // visualizations may define localized strings, e.g. "other"
 
@@ -56,12 +58,21 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
         $vjs = array();
         if (!empty($vis['libraries'])) {
             foreach ($vis['libraries'] as $url) {
-                // at first we check if the library lives in ./lib of the vis module
-                if (file_exists(ROOT_PATH . 'www/' . $vis['__static_path'] . $url)) {
-                    $vis_libs[] = $vis['__static_path'] . $url;
-                } else if (file_exists(ROOT_PATH . 'www/static/vendor/' . $url)) {
-                    $vis_libs[] = '/static/vendor/' . $url;
+                if (!is_array($url)) {
+                    $url = array("local" => $url, "cdn" => false);
                 }
+                if ($url['cdn']) $vis_libs_cdn[] = $url['cdn'];
+
+                // at first we check if the library lives in ./lib of the vis module
+                if (file_exists(ROOT_PATH . 'www/' . $vis['__static_path'] . $url['local'])) {
+                    $u = $vis['__static_path'] . $url['local'];
+                } else if (file_exists(ROOT_PATH . 'www/static/vendor/' . $url['local'])) {
+                    $u = '/static/vendor/' . $url['local'];
+                } else {
+                    die("could not find required library ".$url["local"]);
+                }
+                $vis_libs[] = $u;
+                if (!$url['cdn']) $vis_libs_local[] = $u;
             }
         }
         if (!empty($vis['locale']) && is_array($vis['locale'])) {
@@ -86,6 +97,7 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
     if ($published) {
         $scripts = array_merge(
             $base_js,
+            $vis_libs_cdn,
             array(
                 '/lib/vis/' . $the_vis['id'] . '-' . $the_vis['version'] . '.min.js',
                 '/lib/theme/' . $the_theme['id'] . '-' . $the_theme['version'] . '.min.js',
@@ -117,24 +129,28 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
     $page = array(
         'chartData' => $chart->loadData(),
         'chart' => $chart,
-        'chartLocale' => str_replace('_', '-', $locale),
         'lang' => strtolower(substr($locale, 0, 2)),
         'metricPrefix' => get_metric_prefix($locale),
-        'theme' => $the_theme,
         'l10n__domain' => $the_theme['__static_path'],
-        'visualization' => $the_vis,
-        'stylesheets' => $styles,
-        'scripts' => $scripts,
-        'themeJS' => array_reverse($theme_js),
-        'visJS' => array_merge(array_reverse($vis_js), $vis_libs),
         'origin' => !empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '',
         'DW_DOMAIN' => 'http://' . $cfg['domain'] . '/',
         'DW_CHART_DATA' => 'http://' . $cfg['domain'] . '/chart/' . $chart->getID() . '/data',
         'ASSET_PATH' => $published ? '' : $the_theme['__static_path'],
-        'trackingCode' => !empty($analyticsMod) ? $analyticsMod->getTrackingCode($chart) : '',
         'chartUrl' => $chart_url,
         'embedCode' => '<iframe src="' .$chart_url. '" frameborder="0" allowtransparency="true" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen width="'.$chart->getMetadata('publish.embed-width') . '" height="'. $chart->getMetadata('publish.embed-height') .'"></iframe>',
-        'chartUrlFs' => strpos($chart_url, '.html') > 0 ? str_replace('index.html', 'fs.html', $chart_url) : $chart_url . '?fs=1'
+        'chartUrlFs' => strpos($chart_url, '.html') > 0 ? str_replace('index.html', 'fs.html', $chart_url) : $chart_url . '?fs=1',
+
+        // used in chart.twig
+        'stylesheets' => $styles,
+        'scripts' => $scripts,
+        'visualization' => $the_vis,
+        'theme' => $the_theme,
+        'chartLocale' => str_replace('_', '-', $locale),
+
+        // the following is used by chart_publish.php
+        'visJS' => array_merge(array_reverse($vis_js), $vis_libs_local),
+        'themeJS' => array_reverse($theme_js),
+
     );
 
     return $page;
