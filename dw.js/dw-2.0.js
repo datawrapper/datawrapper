@@ -1408,6 +1408,7 @@ _.extend(dw.visualization.base, {
         if (dw.backend) {
             parent.$('body').trigger('datawrapper:vis:init');
         }
+        return this;
     },
 
     render: function(el) {
