@@ -21,8 +21,8 @@ _.extend(dw.visualization.base, {
     },
 
     theme: function(theme) {
-        if (!arguments.length) return this.theme;
-        this.theme = theme;
+        if (!arguments.length) return this.__theme;
+        this.__theme = theme;
         var attr_properties = ['horizontalGrid', 'verticalGrid', 'yAxis', 'xAxis'];
         _.each(attr_properties, function(prop) {
             // convert camel-case to dashes
