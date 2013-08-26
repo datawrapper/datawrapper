@@ -29,25 +29,21 @@ function publish_html($user, $chart) {
 
 function publish_js($user, $chart) {
     $cdn_files = array();
-    $static_path = $static_path = '../../charts/static/lib/';
+    $static_path = '../../charts/static/lib/';
     $data = get_chart_content($chart, $user, false, '../');
 
     // generate visualization script
     $vis = $data['visualization'];
-    $vis_path = 'vis/' . $vis['id'] . '-' . $vis['version'] . '.min.js';
-    if (!file_exists($static_path . $vis_path)) {
-        $all = '';
-        foreach ($data['visJS'] as $js) {
-            if (substr($js, 0, 7) != 'http://' && substr($js, 0, 2) != '//') {
-                $all .= "\n\n\n" . file_get_contents('..' . $js);
-            }
-        }
-        $all = JSMin::minify($all);
-        $all = file_get_contents('../static/js/dw-2.0.min.js') . "\n\n" . $all;
-        file_put_contents($static_path . $vis_path, $all);
+    $vis_js = $data['vis_js'];
+    if (!file_exists($static_path . $vis_js[0])) {
+        // add comment
+        $vis_js[1] = "/*\n * datawrapper/{$vis['id']} v{$vis['version']}\n"
+                   . " * generated on ".date('c')."\n */\n"
+                   . $vis_js[1];
+        file_put_contents($static_path . $vis_js[0], $vis_js[1]);
         $cdn_files[] = array(
-            $static_path . $vis_path,
-            'lib/' . $vis_path,
+            $static_path . $vis_js[0],
+            'lib/' . $vis_js[0],
             'application/javascript'
         );
     }

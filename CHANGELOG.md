@@ -30,6 +30,8 @@ CHANGELOG
 * line chart: allow filling below lines
 * column chart: show bars as thin lines if too many bars are displayed
 * chart notifications
+* vendor libs used by vis plugins are now loaded from external CDN
+* automatically creating a new hashed url for vis javascript
 
 ### 1.4.3
 * fixed severe bug in base theme (hotfix)

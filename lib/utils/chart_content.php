@@ -94,12 +94,14 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
     $the_vis['locale'] = $vis_locale;
     $the_theme = DatawrapperTheme::get($chart->getTheme());
 
+    $the_vis_js = get_vis_js($the_vis, array_merge(array_reverse($vis_js), $vis_libs_local));
+
     if ($published) {
         $scripts = array_merge(
             $base_js,
             $vis_libs_cdn,
             array(
-                '/lib/vis/' . $the_vis['id'] . '-' . $the_vis['version'] . '.min.js',
+                '/lib/' . $the_vis_js[0],
                 '/lib/theme/' . $the_theme['id'] . '-' . $the_theme['version'] . '.min.js',
             )
         );
@@ -148,10 +150,32 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
         'chartLocale' => str_replace('_', '-', $locale),
 
         // the following is used by chart_publish.php
-        'visJS' => array_merge(array_reverse($vis_js), $vis_libs_local),
+        'vis_js' => $the_vis_js,
         'themeJS' => array_reverse($theme_js),
 
     );
 
     return $page;
+}
+
+/*
+ * returns an array
+ *   [0] filename of the vis js class, eg, column-chart-7266c4ee39b3d19f007f01be8853ac87.min.js
+ *   [1] minified source code
+ */
+function get_vis_js($vis, $visJS) {
+    $vis_path = 'vis/' . $vis['id'] . '-' . $vis['version'] . '.min.js';
+    // merge vis js into a single file
+    $all = '';
+    foreach ($visJS as $js) {
+        if (substr($js, 0, 7) != 'http://' && substr($js, 0, 2) != '//') {
+            $all .= "\n\n\n" . file_get_contents(ROOT_PATH . 'www' . $js);
+        }
+    }
+    $all = JSMin::minify($all);
+    $all = file_get_contents(ROOT_PATH . 'www/static/js/dw-2.0.min.js') . "\n\n" . $all;
+    // generate md5 hash of this file to get filename
+    $vis_js_md5 = md5($all);
+    $vis_path = 'vis/' . $vis['id'] . '-' . $vis_js_md5 . '.min.js';
+    return array($vis_path, $all);
 }
