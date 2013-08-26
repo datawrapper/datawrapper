@@ -6,6 +6,7 @@ CHANGELOG
 * visualization throws exception if data is insufficient
 * chart.dataset() can now take a new dataset
 * renamed vis.setX to vis.x()
+* fixed charts in admin dashboard
 
 ### 1.5.0
 * simplified visualization api
