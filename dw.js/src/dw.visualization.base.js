@@ -78,10 +78,10 @@ _.extend(dw.visualization.base, {
 
     chart: function(chart) {
         var me = this;
-        if (!arguments.length) return me.chart;
+        if (!arguments.length) return me.__chart;
         me.dataset = chart.dataset();
         me.theme(chart.theme());
-        me.chart = chart;
+        me.__chart = chart;
         var columnFormat = chart.get('metadata.data.column-format', {});
         var ignore = {};
         _.each(columnFormat, function(format, key) {

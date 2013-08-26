@@ -1346,7 +1346,7 @@ dw.chart = function(attributes) {
             if (!vis || !theme || !dataset) {
                 throw 'cannot render the chart!';
             }
-            vis.setChart(chart);
+            vis.chart(chart);
             vis.__init();
             vis.render($(container));
         },
