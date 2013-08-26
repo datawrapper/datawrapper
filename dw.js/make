@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # read version from package.json
 CUR_DIR="$( pwd )"
 SCRIPT_DIR="$( dirname "${BASH_SOURCE[0]}" )"
