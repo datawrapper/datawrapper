@@ -31,7 +31,7 @@
 
             if (me.get('negative-color', false)) {
                 me._color_opts.byValue = function(v) {
-                    return me.theme.colors[v < 0 ? 'negative' : 'positive'];
+                    return me.theme().colors[v < 0 ? 'negative' : 'positive'];
                 };
             } else {
                 me._color_opts.varyLightness = true;
@@ -58,7 +58,7 @@
             me.__gridlabels = {};
             me.__series_names = {};
 
-            if (!me.theme.columnChart.cutGridLines) me.horzGrid();
+            if (!me.theme().columnChart.cutGridLines) me.horzGrid();
 
             me.update();
 
@@ -77,7 +77,7 @@
             }
             $('.showOnHover').hide();
 
-            if (me.theme.columnChart.cutGridLines) me.horzGrid();
+            if (me.theme().columnChart.cutGridLines) me.horzGrid();
 
             me.post_render();
             me.renderingComplete();
@@ -106,8 +106,8 @@
                         };
 
                     me.__bars[key] = me.__bars[key] || me.registerElement(c.paper.rect().attr(bar_attrs), column.name(), r);
-                    if (me.theme.columnChart.barAttrs) {
-                        me.__bars[key].attr(me.theme.columnChart.barAttrs);
+                    if (me.theme().columnChart.barAttrs) {
+                        me.__bars[key].attr(me.theme().columnChart.barAttrs);
                     }
 
                     me.__barLbls[key] = me.__barLbls[key] || me.registerLabel(me.label(0,0,'X', { align: 'center', cl: 'value' }), column.name());
@@ -119,7 +119,7 @@
                     me.__barLbls[key].data('row', r);
                     me.__barLbls[key].hide();
 
-                    me.__bars[key].animate(bar_attrs, me.theme.duration, me.theme.easing).data('strokeCol', stroke);
+                    me.__bars[key].animate(bar_attrs, me.theme().duration, me.theme().easing).data('strokeCol', stroke);
 
                     var val_y = val >= 0 ? d.y - 10 : d.y + d.h + 10,
                         lbl_y = val < 0 ? d.y - 10 : d.y + d.h + 5,
@@ -127,9 +127,9 @@
                         lbl_w = c.w / (n+2),
                         valign = val >= 0 ? 'top' : 'bottom',
                         halign = 'center',
-                        alwaysShow = (me.chart.hasHighlight() && me.chart.isHighlighted(column.name())) || (d.w > 40);
+                        alwaysShow = (me.chart().hasHighlight() && me.chart().isHighlighted(column.name())) || (d.w > 40);
 
-                    if (me.chart.hasHighlight() && me.chart.isHighlighted(column.name())) {
+                    if (me.chart().hasHighlight() && me.chart().isHighlighted(column.name())) {
                         lblcl.push('highlighted');
                     }
                     if (d.bw < 30) {
@@ -157,7 +157,7 @@
                             sl = me.__series_names[column.name()] = me.__series_names[column.name()] ||
                                 me.registerLabel(me.label(la.x, la.y, column.title(), la), column.name());
 
-                        sl.animate(la, me.theme.duration, me.theme.easing);
+                        sl.animate(la, me.theme().duration, me.theme().easing);
                     }
 
                 });
@@ -166,7 +166,7 @@
             // draw baseline
             var y = c.h - me.__scales.y(0) - c.bpad;
             me.path([['M', c.lpad, y], ['L', c.w - c.rpad, y]], 'axis')
-                .attr(me.theme.yAxis);
+                .attr(me.theme().yAxis);
         },
 
         getBarColumns: function(sortBars, reverse) {
@@ -262,36 +262,36 @@
                     x = c.lpad, ly = y-10, lbl,
                     txt = me.formatValue(val, t == ticks.length-1, true);
                 // c.paper.text(x, y, val).attr(styles.labels).attr({ 'text-anchor': 'end' });
-                if (me.theme.columnChart.cutGridLines) ly += 10;
+                if (me.theme().columnChart.cutGridLines) ly += 10;
 
                 if (val !== 0) {
                     lbl = me.__gridlabels[val] = me.__gridlabels[val] || me.label(x+2, ly, txt, { align: 'left', cl: 'axis', css: { opacity: 0 } });
-                    lbl.animate({ x: x+2, y: ly, css: { opacity: 1 } }, me.theme.duration, me.theme.easing);
+                    lbl.animate({ x: x+2, y: ly, css: { opacity: 1 } }, me.theme().duration, me.theme().easing);
                 }
 
-                if (me.theme.yTicks) {
+                if (me.theme().yTicks) {
                     me.path([['M', c.lpad-25, y], ['L', c.lpad-20,y]], 'tick');
                 }
-                if (me.theme.horizontalGrid) {
+                if (me.theme().horizontalGrid) {
                     var p = 'M' + [c.lpad, y] + 'H' + c.w,
-                        l = me.__gridlines[val] = me.__gridlines[val] || me.path(p, 'grid').attr(me.theme.horizontalGrid).attr('opacity', 0);
+                        l = me.__gridlines[val] = me.__gridlines[val] || me.path(p, 'grid').attr(me.theme().horizontalGrid).attr('opacity', 0);
 
-                    if (val === 0) l.attr(me.theme.xAxis);
-                    else if (me.theme.columnChart.cutGridLines) l.attr('stroke', me.theme.colors.background);
+                    if (val === 0) l.attr(me.theme().xAxis);
+                    else if (me.theme().columnChart.cutGridLines) l.attr('stroke', me.theme().colors.background);
 
-                    l.animate({ path: p, opacity: 1 }, me.theme.duration, me.theme.easing);
+                    l.animate({ path: p, opacity: 1 }, me.theme().duration, me.theme().easing);
                     l.toBack();
                 }
             });
 
             _.each(me.__gridlabels, function(lbl, val) {
                 if (_.indexOf(ticks, +val) < 0) {
-                    lbl.animate({ css: { opacity: 0 } }, me.theme.duration, me.theme.easing);
+                    lbl.animate({ css: { opacity: 0 } }, me.theme().duration, me.theme().easing);
                 }
             });
             _.each(me.__gridlines, function(line, val) {
                 if (_.indexOf(ticks, +val) < 0) {
-                    line.animate({ opacity: 0 }, me.theme.duration, me.theme.easing);
+                    line.animate({ opacity: 0 }, me.theme().duration, me.theme().easing);
                 }
             });
         },
@@ -301,7 +301,7 @@
          */
         hover: function(hoveredSeries) {
             var me = this,
-                whitishBg = chroma.color(me.theme.colors.background).lch()[0] > 60;
+                whitishBg = chroma.color(me.theme().colors.background).lch()[0] > 60;
 
             // compute fill color, depending on hoveredSeries
             function getFill(col, el) {
@@ -357,7 +357,7 @@
             var me = this;
             // we're overwriting this function with the actual column formatter
             // when it is first called (lazy evaluation)
-            me.formatValue = me.chart.columnFormatter(me.axes(true).columns[0]);
+            me.formatValue = me.chart().columnFormatter(me.axes(true).columns[0]);
             return me.formatValue.apply(me, arguments);
         },
 

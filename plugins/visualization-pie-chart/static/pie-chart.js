@@ -92,8 +92,8 @@
                 ocnt = 0,
                 hasNegativeValues = column.range()[0] < 0,
                 values = [],
-                formatValue = me.chart.columnFormatter(column),
-                formatLabel = me.chart.columnFormatter(labels);
+                formatValue = me.chart().columnFormatter(column),
+                formatLabel = me.chart().columnFormatter(labels);
 
             // pull values and labels from columns
             column.each(function(val, i) {
@@ -210,7 +210,7 @@
             });
 
             var cx = c.cx - (all_labels_inside ? 0 : (out_label_w+50)*0.5),
-                lbl_duration = _.keys(me.__slices).length > 0 ? me.theme.duration : 100;
+                lbl_duration = _.keys(me.__slices).length > 0 ? me.theme().duration : 100;
 
             _.each(slices, function(o, index) {
 
@@ -227,7 +227,7 @@
 
                 if (!me.__slices[o.name]) {
                     // create new label
-                    var lblcl = me.chart.hasHighlight() && me.chart.isHighlighted(o.name) ? 'series highlighted' : 'series';
+                    var lblcl = me.chart().hasHighlight() && me.chart().isHighlighted(o.name) ? 'series highlighted' : 'series';
                     if (me.invertLabel(fill)) lblcl += ' inverted';
                     if (lblOutside(o)) lblcl += ' outside';
 
@@ -237,7 +237,7 @@
 
                     slice = me.__slices[o.name] = Slice(c.paper, cx, c.cy, c.or, c.ir, a0, a1, lbl, me.theme);
                     slice.path.attr({
-                        'stroke': me.theme.colors.background,
+                        'stroke': me.theme().colors.background,
                         'stroke-width': 2,
                         'fill': fill
                     });
@@ -249,7 +249,7 @@
                     slice = me.__slices[o.name];
                     slice.label.text('<b>'+o.name+'</b>'+value);
                     slice.label[lblOutside(o) ? 'addClass' : 'removeClass']('outside');
-                    slice.animate(cx, c.cy, c.or, c.ir, a0, a1, me.theme.duration, me.theme.easing);
+                    slice.animate(cx, c.cy, c.or, c.ir, a0, a1, me.theme().duration, me.theme().easing);
                 }
 
                 me.__seriesAngles[o.name] = normalize(a0, a1);
@@ -358,7 +358,7 @@
 
         hover: function(hovered_key) {
             var me = this,
-                bg = chroma.color(me.theme.colors.background);
+                bg = chroma.color(me.theme().colors.background);
             _.each(me.__sliceKeys, function(key) {
                 _.each(me.__labels[key], function(lbl) {
                     if (!lbl) return;
@@ -381,7 +381,7 @@
 
         formatValue: function() {
             var me = this;
-            return me.chart.columnFormatter(me.axes(true).slices);
+            return me.chart().columnFormatter(me.axes(true).slices);
             return me.formatValue.apply(me, arguments);
         },
 

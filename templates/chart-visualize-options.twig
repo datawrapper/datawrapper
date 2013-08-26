@@ -153,6 +153,7 @@ $(function() {
         // check visibility of each option (evaluate "depends-on" property)
         function checkDepends() {
             var axesColumns = {},
+                dataset = chart.dataset(),
                 compRegex = /(>=?|<=?)([0-9]+(?:\.[0-9])?)/,
                 minColsRegex = /chart\.min_columns\[([^\]]+)\]/,
                 maxColsRegex = /chart\.max_columns\[([^\]]+)\]/,
@@ -177,9 +178,9 @@ $(function() {
                         } else if (key == 'chart.missing_values') {
                             visible = visible && chart.hasMissingValues() == val;
                         } else if (key == 'chart.min_row_num') {
-                            visible = visible && chart.numRows() >= +val;
+                            visible = visible && dataset.numRows() >= +val;
                         }  else if (key == 'chart.max_row_num') {
-                            visible = visible && chart.numRows() <= +val;
+                            visible = visible && dataset.numRows() <= +val;
                         } else if (minValueRegex.test(key)) {
                             key = key.match(minValueRegex)[1];
                             visible = visible && !_.isUndefined(axesColumns[key])
