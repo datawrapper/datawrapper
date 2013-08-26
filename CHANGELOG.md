@@ -3,7 +3,7 @@ CHANGELOG
 
 ### 1.5.1
 * automatically creating a new hashed url for theme javascript
-
+* visualization throws exception if data is insufficient
 
 ### 1.5.0
 * simplified visualization api
