@@ -1414,8 +1414,8 @@ _.extend(dw.visualization.base, {
         $(el).html('implement me!');
     },
 
-    setTheme: function(theme) {
-        if (!theme) return this;
+    theme: function(theme) {
+        if (!arguments.length) return this.theme;
         this.theme = theme;
         var attr_properties = ['horizontalGrid', 'verticalGrid', 'yAxis', 'xAxis'];
         _.each(attr_properties, function(prop) {
@@ -1433,7 +1433,8 @@ _.extend(dw.visualization.base, {
         return this;
     },
 
-    setSize: function(width, height) {
+    size: function(width, height) {
+        if (!arguments.length) return [me.__w, me.__h];
         var me = this;
         me.__w = width;
         me.__h = height;
@@ -1469,8 +1470,9 @@ _.extend(dw.visualization.base, {
         return true;
     },
 
-    setChart: function(chart) {
+    chart: function(chart) {
         var me = this;
+        if (!arguments.length) return me.chart;
         me.dataset = chart.dataset();
         me.setTheme(chart.theme());
         me.chart = chart;
@@ -1480,6 +1482,7 @@ _.extend(dw.visualization.base, {
             ignore[key] = !!format.ignore;
         });
         me.dataset.filterColumns(ignore);
+        return me;
     },
 
     axes: function(returnAsColumns) {
