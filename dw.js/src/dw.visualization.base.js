@@ -146,7 +146,9 @@ _.extend(dw.visualization.base, {
 
         if (errors.length) {
             if (dw.backend) dw.backend.alert(errors.join('<br />'));
-            return false;
+            else {
+                throw errors.join('\n');
+            }
         }
 
         _.each(axes, function(columns, key) {
