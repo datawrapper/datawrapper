@@ -293,7 +293,7 @@ $(function() {
             iframe_h = $('#iframe-vis').height();
 
         if (vis_h > iframe_h+5) {
-            dw.backend.logMessage('{% trans "Watch out: Your chart needs more space. To get rid of the scrollbars just [resize iFrame to chart]" %}'.replace('[', '<a href="#" id="resize-iframe">').replace(']', '</a>'), $('.resize-chart-wrap'), 'warning');
+            dw.backend.logMessage('{{ "Watch out: Your chart needs more space. To get rid of the scrollbars just [resize iFrame to chart]" | trans | escape('js') }}'.replace('[', '<a href="#" id="resize-iframe">').replace(']', '</a>'), $('.resize-chart-wrap'), 'warning');
             $('#resize-iframe').click(function(e) {
                 e.preventDefault();
                 //$('#iframe-wrapper').height(vis_h);
