@@ -583,12 +583,12 @@ dw.datasource.delimited = function(opts) {
                 method: 'GET',
                 dataType: "text" // NOTE (edouard): Without that jquery try to parse the content and return a Document
             }).then(function(raw) {
-                return new DelimitedParser(opts).parse(raw);
+                return new DelimitedParser(opts).parse(dw.utils.purifyHtml(raw));
             });
         } else if (opts.csv) {
             var dfd = $.Deferred(),
                 parsed = dfd.then(function(raw) {
-                return new DelimitedParser(opts).parse(raw);
+                return new DelimitedParser(opts).parse(dw.utils.purifyHtml(raw));
             });
             dfd.resolve(opts.csv);
             return parsed;
@@ -913,6 +913,14 @@ dw.utils = {
         maxH -= $('body').css('padding-top').replace('px', '');
         maxH -= $('body').css('padding-bottom').replace('px', '');
         return maxH;
+    },
+
+    /** Remove all html tags from the given string */
+    purifyHtml: function(str) {
+        if (typeof(str) == "string") {
+            str = str.replace(/(<([^>]+)>)/ig,"");
+        }
+        return str;
     }
 
 };

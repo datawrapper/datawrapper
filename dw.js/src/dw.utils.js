@@ -101,6 +101,14 @@ dw.utils = {
         maxH -= $('body').css('padding-top').replace('px', '');
         maxH -= $('body').css('padding-bottom').replace('px', '');
         return maxH;
+    },
+
+    /** Remove all html tags from the given string */
+    purifyHtml: function(str) {
+        if (typeof(str) == "string") {
+            str = str.replace(/(<([^>]+)>)/ig,"");
+        }
+        return str;
     }
 
 };
