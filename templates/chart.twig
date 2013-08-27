@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
-    <title>{{ chart.title }}</title>
+    <title>{{ chart.title | replace({'<br/>': ' - '}) | striptags }}</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <!--[if lt IE 7]>
     <meta http-equiv="refresh" content="0;URL='static.html'">
