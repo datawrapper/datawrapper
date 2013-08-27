@@ -248,7 +248,7 @@ $app->hook('slim.before.router', function () use ($app, $dw_config) {
     if (!$user->isLoggedIn() && !empty($dw_config['prevent_guest_access'])) {
         $req = $app->request();
 
-        if (UserQuery::create()->filterByRole('admin')->count() > 0) {
+        if (UserQuery::create()->filterByRole(['admin', 'sysadmin'])->count() > 0) {
             if ($req->getResourceUri() != '/login' &&
                 strncmp($req->getResourceUri(), '/account/invite/', 16)) { // or starts with '/account/invite/'
                 $app->redirect('/login');
