@@ -22,7 +22,7 @@ $app->get('/setup', function () use ($app) {
 
     disable_cache($app);
     if (DatawrapperSession::getUser()->isLoggedIn()
-        || UserQuery::create()->filterByRole(['admin', 'sysadmin'])->count() > 0) $app->redirect('/');
+        || UserQuery::create()->filterByRole(array('admin', 'sysadmin'))->count() > 0) $app->redirect('/');
 
     $page = array(
         'title' => 'Datawrapper',
