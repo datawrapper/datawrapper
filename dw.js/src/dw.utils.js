@@ -104,14 +104,15 @@ dw.utils = {
     },
 
     /** Remove all html tags from the given string */
-    purifyHtml: function(str) {
-        if (typeof(str) == "string") {
-            str = str.replace(/(<([^>]+)>)/ig,"");
-        }
-        return str;
+    purifyHtml: function(input, allowed) {
+        if (typeof(input) != "string") { return input; }
+        if (allowed === undefined) { allowed = "<b><br><br/><i><strong>"; }
+        allowed  = (((allowed || "") + "").toLowerCase().match(/<[a-z][a-z0-9]*>/g) || []).join(''); // making sure the allowed arg is a string containing only tags in lowercase (<a><b><c>)
+        var tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>/gi,
+            commentsAndPhpTags = /<!--[\s\S]*?-->|<\?(?:php)?[\s\S]*?\?>/gi;
+        return input.replace(commentsAndPhpTags, '').replace(tags, function ($0, $1) {
+            return allowed.indexOf('<' + $1.toLowerCase() + '>') > -1 ? $0 : '';
+        });
     }
 
 };
-
-
-

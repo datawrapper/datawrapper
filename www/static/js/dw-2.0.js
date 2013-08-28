@@ -189,7 +189,7 @@ dw.column = function(name, rows, type) {
                 name = arguments[0];
                 return column;
             }
-            return name;
+            return dw.utils.purifyHtml(name);
         },
 
         // column title (used for presentation)
@@ -198,7 +198,7 @@ dw.column = function(name, rows, type) {
               title = arguments[0];
               return column;
             }
-            return title || name;
+            return dw.utils.purifyHtml(title || name);
         },
 
         /**
@@ -216,14 +216,15 @@ dw.column = function(name, rows, type) {
             if (!arguments.length) return undefined;
             var r = unfiltered ? origRows : rows;
             if (i < 0) i += r.length;
-            return type.parse(r[i]);
+            return type.parse(dw.utils.purifyHtml(r[i]));
         },
 
         /*
          * returns an array of parsed values
          */
         values: function(unfiltered) {
-            return _.map(unfiltered ? origRows : rows, type.parse);
+            var rows = _.map(unfiltered ? origRows : rows, dw.utils.purifyHtml);
+            return _.map(rows, type.parse);
         },
 
         /**
@@ -242,7 +243,7 @@ dw.column = function(name, rows, type) {
                 rows[i] = val;
                 return column;
             }
-            return rows[i];
+            return dw.utils.purifyHtml(rows[i]);
         },
 
         /**
@@ -583,12 +584,12 @@ dw.datasource.delimited = function(opts) {
                 method: 'GET',
                 dataType: "text" // NOTE (edouard): Without that jquery try to parse the content and return a Document
             }).then(function(raw) {
-                return new DelimitedParser(opts).parse(dw.utils.purifyHtml(raw));
+                return new DelimitedParser(opts).parse(raw);
             });
         } else if (opts.csv) {
             var dfd = $.Deferred(),
                 parsed = dfd.then(function(raw) {
-                return new DelimitedParser(opts).parse(dw.utils.purifyHtml(raw));
+                return new DelimitedParser(opts).parse(raw);
             });
             dfd.resolve(opts.csv);
             return parsed;
@@ -916,17 +917,18 @@ dw.utils = {
     },
 
     /** Remove all html tags from the given string */
-    purifyHtml: function(str) {
-        if (typeof(str) == "string") {
-            str = str.replace(/(<([^>]+)>)/ig,"");
-        }
-        return str;
+    purifyHtml: function(input, allowed) {
+        if (typeof(input) != "string") { return input; }
+        if (allowed === undefined) { allowed = "<b><br><br/><i><strong>"; }
+        allowed  = (((allowed || "") + "").toLowerCase().match(/<[a-z][a-z0-9]*>/g) || []).join(''); // making sure the allowed arg is a string containing only tags in lowercase (<a><b><c>)
+        var tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>/gi,
+            commentsAndPhpTags = /<!--[\s\S]*?-->|<\?(?:php)?[\s\S]*?\?>/gi;
+        return input.replace(commentsAndPhpTags, '').replace(tags, function ($0, $1) {
+            return allowed.indexOf('<' + $1.toLowerCase() + '>') > -1 ? $0 : '';
+        });
     }
 
 };
-
-
-
 
 /**
  * @param column  the values that can be selected

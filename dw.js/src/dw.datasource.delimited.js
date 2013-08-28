@@ -21,12 +21,12 @@ dw.datasource.delimited = function(opts) {
                 method: 'GET',
                 dataType: "text" // NOTE (edouard): Without that jquery try to parse the content and return a Document
             }).then(function(raw) {
-                return new DelimitedParser(opts).parse(dw.utils.purifyHtml(raw));
+                return new DelimitedParser(opts).parse(raw);
             });
         } else if (opts.csv) {
             var dfd = $.Deferred(),
                 parsed = dfd.then(function(raw) {
-                return new DelimitedParser(opts).parse(dw.utils.purifyHtml(raw));
+                return new DelimitedParser(opts).parse(raw);
             });
             dfd.resolve(opts.csv);
             return parsed;

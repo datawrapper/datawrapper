@@ -60,7 +60,7 @@ dw.column = function(name, rows, type) {
                 name = arguments[0];
                 return column;
             }
-            return name;
+            return dw.utils.purifyHtml(name);
         },
 
         // column title (used for presentation)
@@ -69,7 +69,7 @@ dw.column = function(name, rows, type) {
               title = arguments[0];
               return column;
             }
-            return title || name;
+            return dw.utils.purifyHtml(title || name);
         },
 
         /**
@@ -87,14 +87,15 @@ dw.column = function(name, rows, type) {
             if (!arguments.length) return undefined;
             var r = unfiltered ? origRows : rows;
             if (i < 0) i += r.length;
-            return type.parse(r[i]);
+            return type.parse(dw.utils.purifyHtml(r[i]));
         },
 
         /*
          * returns an array of parsed values
          */
         values: function(unfiltered) {
-            return _.map(unfiltered ? origRows : rows, type.parse);
+            var rows = _.map(unfiltered ? origRows : rows, dw.utils.purifyHtml);
+            return _.map(rows, type.parse);
         },
 
         /**
@@ -113,7 +114,7 @@ dw.column = function(name, rows, type) {
                 rows[i] = val;
                 return column;
             }
-            return rows[i];
+            return dw.utils.purifyHtml(rows[i]);
         },
 
         /**
