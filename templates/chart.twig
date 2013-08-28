@@ -235,8 +235,9 @@
                 // we have to create a new vis
                 vis = __dw.vis = getVis();
                 chart.vis(vis);
-                vis.size(w, h);
             }
+
+            vis.size(w, h);
 
             initResizeHandler();
             initFullscreen();
