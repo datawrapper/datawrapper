@@ -12,7 +12,6 @@ class DatawrapperPlugin_VisualizationPieChart extends DatawrapperPlugin_Visualiz
         return array(
             "id" => 'pie-chart',
             "title" => __("Pie chart", $id),
-            "version" => "1.3.0",
             "extends" => "raphael-chart",
             "author" => array(
                 "name" => "gka",
