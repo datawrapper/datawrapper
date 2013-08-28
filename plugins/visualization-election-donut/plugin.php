@@ -10,6 +10,15 @@ class DatawrapperPlugin_VisualizationElectionDonut extends DatawrapperPlugin_Vis
             "extends" => "donut-chart",
             "dimensions" => 1,
             "order" => 60,
+            "axes" => array(
+                "labels" => array(
+                    "accepts" => array("text", "date")
+                ),
+                "slices" => array(
+                    "accepts" => array("number"),
+                    "multiple" => true
+                )
+            ),
             "options" => array(
                 "sort-values" => array(
                     "type" => "checkbox",

@@ -1,7 +1,27 @@
 CHANGELOG
 ---------
 
-### 1.4.4
+### 1.5.1
+* automatically creating a new hashed url for theme javascript
+* visualization throws exception if data is insufficient
+* chart.dataset() can now take a new dataset
+* renamed vis.setX to vis.x()
+* fixed charts in admin dashboard
+
+### 1.5.0
+* simplified visualization api
+* column chart allows ignoring of missing values
+* redesigned custom color picker
+* enabled multi-selection in custom color picker
+* one-dimensional visualizations (pie,bars,...) now showing single column (instead of single row)
+* removed bar chart setting 'labels inside bars'
+* added separators in vis options
+* added new conditions for vis options
+* added fallback message when JS is disabled
+* refactored javascript core
+* refactored core visualizations to new javascript core
+* refactored custom color feature
+* added axes definitions to visualizations
 * added column public_version to chart table
 * incrementing public_version on every publication
 * appended public_version to public chart urls
@@ -9,6 +29,16 @@ CHANGELOG
 * fixed overlapping labels in line charts
 * added legend position inside right in line charts
 * visualizations can now check browser compatibility
+* added table plugin_data
+* added plugin interface for storing and reading persistent data
+* removed setting 'labels-inside-bars' from bar chart
+* fixed bar chart bug (too much white-space for long labels)
+* output formatting of values now handled by columns (45998931)
+* line chart: allow filling below lines
+* column chart: show bars as thin lines if too many bars are displayed
+* chart notifications
+* vendor libs used by vis plugins are now loaded from external CDN
+* automatically creating a new hashed url for vis javascript
 
 ### 1.4.3
 * fixed severe bug in base theme (hotfix)

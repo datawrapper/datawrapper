@@ -15,18 +15,13 @@ $app->get('/chart/:id/publish', function ($id) use ($app) {
     check_chart_writable($id, function($user, $chart) use ($app) {
 
         $cfg = $GLOBALS['dw_config'];
-        $local_url = '//' . $cfg['chart_domain'] . '/' . $chart->getID() . '/index.html';
-        $public_url = $chart->getPublicUrl();
-
-        if (empty($public_url)) $public_url = $local_url;
-
 
         $page = array(
             'chartData' => $chart->loadData(),
             'chart' => $chart,
             'visualizations' => DatawrapperVisualization::all(),
             'vis' => DatawrapperVisualization::get($chart->getType()),
-            'chartUrl' => $public_url,
+            'chartUrl' => $chart->getPublicUrl(),
             'chartUrlLocal' => '/chart/' . $chart->getID() . '/preview',
             'themes' => DatawrapperTheme::all(),
             'exportStaticImage' => !empty($cfg['phantomjs']),
@@ -40,14 +35,7 @@ $app->get('/chart/:id/publish', function ($id) use ($app) {
             && ($chart->getLastEditStep() == 3 || $app->request()->get('republish') == 1)) {
             // actual publish process
             $chart->publish();
-            $published_urls = DatawrapperHooks::execute(DatawrapperHooks::GET_PUBLISHED_URL, $chart);
-            if (!empty($published_urls)) {
-                $chart->setPublicUrl($published_urls[0]);
-                $page['chartUrl'] = $published_urls[0];
-            } else {
-                $chart->setPublicUrl($local_url);
-            }
-            $chart->save();
+            $page['chartUrl'] = $chart->getPublicUrl();
 
             // generate thumbnails
             $page['publish'] = true;

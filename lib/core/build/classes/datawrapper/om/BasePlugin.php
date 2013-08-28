@@ -50,6 +50,11 @@ abstract class BasePlugin extends BaseObject  implements Persistent
 	protected $enabled;
 
 	/**
+	 * @var        array PluginData[] Collection to store aggregation of PluginData objects.
+	 */
+	protected $collPluginDatas;
+
+	/**
 	 * Flag to prevent endless save loop, if this object is referenced
 	 * by another object which falls in this transaction.
 	 * @var        boolean
@@ -62,6 +67,12 @@ abstract class BasePlugin extends BaseObject  implements Persistent
 	 * @var        boolean
 	 */
 	protected $alreadyInValidation = false;
+
+	/**
+	 * An array of objects scheduled for deletion.
+	 * @var		array
+	 */
+	protected $pluginDatasScheduledForDeletion = null;
 
 	/**
 	 * Applies default values to this object.
@@ -321,6 +332,8 @@ abstract class BasePlugin extends BaseObject  implements Persistent
 
 		if ($deep) {  // also de-associate any related objects?
 
+			$this->collPluginDatas = null;
+
 		} // if (deep)
 	}
 
@@ -440,6 +453,23 @@ abstract class BasePlugin extends BaseObject  implements Persistent
 				}
 				$affectedRows += 1;
 				$this->resetModified();
+			}
+
+			if ($this->pluginDatasScheduledForDeletion !== null) {
+				if (!$this->pluginDatasScheduledForDeletion->isEmpty()) {
+					PluginDataQuery::create()
+						->filterByPrimaryKeys($this->pluginDatasScheduledForDeletion->getPrimaryKeys(false))
+						->delete($con);
+					$this->pluginDatasScheduledForDeletion = null;
+				}
+			}
+
+			if ($this->collPluginDatas !== null) {
+				foreach ($this->collPluginDatas as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
 			}
 
 			$this->alreadyInSave = false;
@@ -582,6 +612,14 @@ abstract class BasePlugin extends BaseObject  implements Persistent
 			}
 
 
+				if ($this->collPluginDatas !== null) {
+					foreach ($this->collPluginDatas as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
 
 			$this->alreadyInValidation = false;
 		}
@@ -641,10 +679,11 @@ abstract class BasePlugin extends BaseObject  implements Persistent
 	 *                    Defaults to BasePeer::TYPE_PHPNAME.
 	 * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
 	 * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
+	 * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
 	 *
 	 * @return    array an associative array containing the field names (as keys) and field values
 	 */
-	public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array())
+	public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
 	{
 		if (isset($alreadyDumpedObjects['Plugin'][$this->getPrimaryKey()])) {
 			return '*RECURSION*';
@@ -656,6 +695,11 @@ abstract class BasePlugin extends BaseObject  implements Persistent
 			$keys[1] => $this->getInstalledAt(),
 			$keys[2] => $this->getEnabled(),
 		);
+		if ($includeForeignObjects) {
+			if (null !== $this->collPluginDatas) {
+				$result['PluginDatas'] = $this->collPluginDatas->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+			}
+		}
 		return $result;
 	}
 
@@ -800,6 +844,24 @@ abstract class BasePlugin extends BaseObject  implements Persistent
 	{
 		$copyObj->setInstalledAt($this->getInstalledAt());
 		$copyObj->setEnabled($this->getEnabled());
+
+		if ($deepCopy && !$this->startCopy) {
+			// important: temporarily setNew(false) because this affects the behavior of
+			// the getter/setter methods for fkey referrer objects.
+			$copyObj->setNew(false);
+			// store object hash to prevent cycle
+			$this->startCopy = true;
+
+			foreach ($this->getPluginDatas() as $relObj) {
+				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+					$copyObj->addPluginData($relObj->copy($deepCopy));
+				}
+			}
+
+			//unflag object copy
+			$this->startCopy = false;
+		} // if ($deepCopy)
+
 		if ($makeNew) {
 			$copyObj->setNew(true);
 			$copyObj->setId(NULL); // this is a auto-increment column, so set to default value
@@ -844,6 +906,170 @@ abstract class BasePlugin extends BaseObject  implements Persistent
 		return self::$peer;
 	}
 
+
+	/**
+	 * Initializes a collection based on the name of a relation.
+	 * Avoids crafting an 'init[$relationName]s' method name
+	 * that wouldn't work when StandardEnglishPluralizer is used.
+	 *
+	 * @param      string $relationName The name of the relation to initialize
+	 * @return     void
+	 */
+	public function initRelation($relationName)
+	{
+		if ('PluginData' == $relationName) {
+			return $this->initPluginDatas();
+		}
+	}
+
+	/**
+	 * Clears out the collPluginDatas collection
+	 *
+	 * This does not modify the database; however, it will remove any associated objects, causing
+	 * them to be refetched by subsequent calls to accessor method.
+	 *
+	 * @return     void
+	 * @see        addPluginDatas()
+	 */
+	public function clearPluginDatas()
+	{
+		$this->collPluginDatas = null; // important to set this to NULL since that means it is uninitialized
+	}
+
+	/**
+	 * Initializes the collPluginDatas collection.
+	 *
+	 * By default this just sets the collPluginDatas collection to an empty array (like clearcollPluginDatas());
+	 * however, you may wish to override this method in your stub class to provide setting appropriate
+	 * to your application -- for example, setting the initial array to the values stored in database.
+	 *
+	 * @param      boolean $overrideExisting If set to true, the method call initializes
+	 *                                        the collection even if it is not empty
+	 *
+	 * @return     void
+	 */
+	public function initPluginDatas($overrideExisting = true)
+	{
+		if (null !== $this->collPluginDatas && !$overrideExisting) {
+			return;
+		}
+		$this->collPluginDatas = new PropelObjectCollection();
+		$this->collPluginDatas->setModel('PluginData');
+	}
+
+	/**
+	 * Gets an array of PluginData objects which contain a foreign key that references this object.
+	 *
+	 * If the $criteria is not null, it is used to always fetch the results from the database.
+	 * Otherwise the results are fetched from the database the first time, then cached.
+	 * Next time the same method is called without $criteria, the cached collection is returned.
+	 * If this Plugin is new, it will return
+	 * an empty collection or the current collection; the criteria is ignored on a new object.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @return     PropelCollection|array PluginData[] List of PluginData objects
+	 * @throws     PropelException
+	 */
+	public function getPluginDatas($criteria = null, PropelPDO $con = null)
+	{
+		if(null === $this->collPluginDatas || null !== $criteria) {
+			if ($this->isNew() && null === $this->collPluginDatas) {
+				// return empty collection
+				$this->initPluginDatas();
+			} else {
+				$collPluginDatas = PluginDataQuery::create(null, $criteria)
+					->filterByPlugin($this)
+					->find($con);
+				if (null !== $criteria) {
+					return $collPluginDatas;
+				}
+				$this->collPluginDatas = $collPluginDatas;
+			}
+		}
+		return $this->collPluginDatas;
+	}
+
+	/**
+	 * Sets a collection of PluginData objects related by a one-to-many relationship
+	 * to the current object.
+	 * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+	 * and new objects from the given Propel collection.
+	 *
+	 * @param      PropelCollection $pluginDatas A Propel collection.
+	 * @param      PropelPDO $con Optional connection object
+	 */
+	public function setPluginDatas(PropelCollection $pluginDatas, PropelPDO $con = null)
+	{
+		$this->pluginDatasScheduledForDeletion = $this->getPluginDatas(new Criteria(), $con)->diff($pluginDatas);
+
+		foreach ($pluginDatas as $pluginData) {
+			// Fix issue with collection modified by reference
+			if ($pluginData->isNew()) {
+				$pluginData->setPlugin($this);
+			}
+			$this->addPluginData($pluginData);
+		}
+
+		$this->collPluginDatas = $pluginDatas;
+	}
+
+	/**
+	 * Returns the number of related PluginData objects.
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct
+	 * @param      PropelPDO $con
+	 * @return     int Count of related PluginData objects.
+	 * @throws     PropelException
+	 */
+	public function countPluginDatas(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+	{
+		if(null === $this->collPluginDatas || null !== $criteria) {
+			if ($this->isNew() && null === $this->collPluginDatas) {
+				return 0;
+			} else {
+				$query = PluginDataQuery::create(null, $criteria);
+				if($distinct) {
+					$query->distinct();
+				}
+				return $query
+					->filterByPlugin($this)
+					->count($con);
+			}
+		} else {
+			return count($this->collPluginDatas);
+		}
+	}
+
+	/**
+	 * Method called to associate a PluginData object to this object
+	 * through the PluginData foreign key attribute.
+	 *
+	 * @param      PluginData $l PluginData
+	 * @return     Plugin The current object (for fluent API support)
+	 */
+	public function addPluginData(PluginData $l)
+	{
+		if ($this->collPluginDatas === null) {
+			$this->initPluginDatas();
+		}
+		if (!$this->collPluginDatas->contains($l)) { // only add it if the **same** object is not already associated
+			$this->doAddPluginData($l);
+		}
+
+		return $this;
+	}
+
+	/**
+	 * @param	PluginData $pluginData The pluginData object to add.
+	 */
+	protected function doAddPluginData($pluginData)
+	{
+		$this->collPluginDatas[]= $pluginData;
+		$pluginData->setPlugin($this);
+	}
+
 	/**
 	 * Clears the current object and sets all attributes to their default values
 	 */
@@ -873,8 +1099,17 @@ abstract class BasePlugin extends BaseObject  implements Persistent
 	public function clearAllReferences($deep = false)
 	{
 		if ($deep) {
+			if ($this->collPluginDatas) {
+				foreach ($this->collPluginDatas as $o) {
+					$o->clearAllReferences($deep);
+				}
+			}
 		} // if ($deep)
 
+		if ($this->collPluginDatas instanceof PropelCollection) {
+			$this->collPluginDatas->clearIterator();
+		}
+		$this->collPluginDatas = null;
 	}
 
 	/**

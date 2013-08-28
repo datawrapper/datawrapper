@@ -347,6 +347,8 @@ $app->post('/charts/:id/publish', function($chart_id) use ($app) {
         _setPublishStatus($chart, 1);
         _clearPublishStatus($chart);
 
+        $chart->redirectPreviousVersions();
+
         DatawrapperHooks::execute(
             DatawrapperHooks::POST_CHART_PUBLISH,
             $chart, $user

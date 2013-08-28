@@ -1,8 +1,8 @@
 # Datawrapper configuration
 #
 
-domain: datawrapper.de
-chart_domain: c.datawrapper.de
+domain: datawrapper
+chart_domain: c.datawrapper
 
 ## the following keys are used to hash passwords.
 ##

@@ -3,12 +3,10 @@
     // Playfair Theme
     // --------------
 
-    // Every theme will inherit the properties of this
-    // theme. They can override everything or just a bit
-    // of them. Also, every theme can extend any other
-    // existing theme.
+    // note: this theme was originally named 'autumn'. That id
+    // is still used because we didn't want to break old charts.
 
-    Datawrapper.Themes.Autumn = $.extend(true, {}, Datawrapper.Themes.Default, {
+    dw.theme.register('autumn', 'default', {
 
         colors: {
             palette: ["#B75364", "#D9A255", "#96685C","#6FAF5F", "#9A718A"],

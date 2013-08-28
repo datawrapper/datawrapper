@@ -1,0 +1,379 @@
+{% block visoptions %}
+
+<fieldset id="visOptions">
+
+    {% if not vis.options['select-color'] or vis.options['select-color']["default"]  %}
+        <div class="control-group select-color">
+            <label class="control-label" for="select-color">{% trans "Choose a base color" %}</label>
+            <div class="controls">
+                <div id="select-color"></div>
+            </div>
+        </div>
+    {% endif %}
+    {% if not vis.options['custom-color'] or vis.options['custom-color']["default"]  %}
+        <div class="control-group">
+            <label class="control-label"></label>
+            <div class="controls">
+                <a class="btn btn-small" role="button" onclick="$('#customColors').show();$('#visOptions').hide();">{% trans "or define custom colors" %}</a>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if vis.dimensions == 1 %}
+    <div class="control-group select-row">
+        <label class="control-label" for="text-title">{% trans "Initial row to display" %}</label>
+        <div class="controls">
+            <select id="select-row" style="width:100%">
+            </select>
+        </div>
+    </div>
+    {% endif %}
+
+
+
+    {% for key, option in vis.options %}
+        {% if theme['option-filter'][vis.id][key] or (not option.hidden and not option.expert)  %}
+    <div class="control-group" style="margin-bottom:0px" id="vis-options-{{ key }}">
+
+        {{ hook('vis_option_controls', option, key) }}
+
+    </div>
+    {% endif %}{% endfor %}
+
+</fieldset>
+
+<fieldset id="customColors" style="display:none">
+    <button onclick="$('#customColors').hide();$('#visOptions').show();" class="btn pull-right btn-small" data-dismiss="modal">{% trans "Return" %}</button>
+    <h3>{% trans "Customize chart colors" %}</h3>
+    <p style="margin-bottom:20px">{% trans "Please use custom colors only if it is absolutely necessary, for instance to identify political parties. If possible please use the palette colors." %}</p>
+    <div class="row">
+        <div class="span2" style="width:43%">
+            <h4>{% trans "Select element(s):" %}</h4>
+            <ul class="dataseries unstyled">
+            </ul>
+            <div style="font-size:12px;text-align:center;margin-bottom:10px;">
+                {% trans "Select:" %} &nbsp;
+                <a onclick="$('.dataseries li').addClass('selected')">{% trans "all" %}</a> &nbsp;
+                <a onclick="$('.dataseries li').removeClass('selected')">{% trans "none" %}</a> &nbsp;
+                <a onclick="$('.dataseries li').toggleClass('selected')">{% trans "invert" %}</a>
+            </div>
+
+        </div>
+        <div class="span2" style="width:42%">
+             <h4>{% trans "Choose a color:" %}</h4>
+             <label>{% trans "Pick from palette..." %}</label>
+             <div id="palette-colors"></div>
+
+             <label>{% trans "...or enter a custom color" %}</label>
+            <div class="control-group">
+                <input id="user-color" type="text" class="text input-small" placeholder="FF0000" />
+            </div>
+            <button id="reset-color-choice" class="btn">{% trans "Reset color (use default)" %}</button>
+        </div>
+    </div>
+</fieldset>
+
+{#
+    modal for picking custom colors
+#}
+
+<style type="text/css">
+
+#customColors h4 {
+    margin: 0 0 10px;
+    font-size: 16px;
+}
+
+#customColors .color {
+    width: 17px;
+    height: 17px;
+    float: left;
+    background: #ccc;
+    text-align: center;
+    line-height: 14px;
+    color: #fff;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+#customColors .dataseries {
+    border-radius: 5px;
+    max-height: 250px;
+    overflow:auto;
+    padding: 3px 0;
+    margin-bottom: 4px;
+    background:#fff;
+    border-top:1px solid #aaa;
+    border-left:1px solid #aaa;
+    border-bottom:1px solid #ccc;
+    border-right:1px solid #ccc;
+    box-shadow:inset 1px 1px 4px rgba(0,0,0,.2);
+}
+
+#customColors .dataseries li {
+    padding: 5px 5px 1px 8px;
+    cursor: pointer;
+}
+
+#customColors .dataseries li:nth-child(2n) {
+    background: rgba(0,0,0,.075);
+}
+
+#customColors .dataseries label {
+    padding-left: 25px;
+    line-height: 17px;
+    color: #555;
+}
+
+#customColors .dataseries .selected label {
+    font-weight: bold;
+    color: #000;
+}
+
+
+</style>
+<script type="text/javascript">
+
+$(function() {
+    var chart = dw.backend.currentChart;
+
+    function syncVisOptions(vis) {
+        _.each(vis.options, function(opt, key) {
+            if (chart.get('metadata.visualize.'+key) == undefined){
+                chart.set('metadata.visualize.'+key, opt.default);
+            }
+            // fire custom event so hooked vis options can sync
+            $('#vis-options').trigger('dw:vis-option:' + $.trim(opt.type), {
+                chart: chart,
+                vis: dw.backend.currentVis,
+                key: key,
+                option: opt
+            });
+        });
+        // check visibility of each option (evaluate "depends-on" property)
+        function checkDepends() {
+            var axesColumns = {},
+                dataset = chart.dataset(),
+                compRegex = /(>=?|<=?)([0-9]+(?:\.[0-9])?)/,
+                minColsRegex = /chart\.min_columns\[([^\]]+)\]/,
+                maxColsRegex = /chart\.max_columns\[([^\]]+)\]/,
+                minValueRegex = /chart\.min_value\[([^\]]+)\]/,
+                maxValueRegex = /chart\.max_value\[([^\]]+)\]/;
+
+            _.each(dw.backend.currentVis.axes(true), function(columns, key) {
+                axesColumns[key] = _.isArray(columns) ? columns : columns ? [columns] : [];
+            });
+
+            _.each(vis.options, function(opt, key) {
+                if (opt['depends-on'] !== undefined) {
+                    var visible = true;
+                    // special conditions:
+                    _.each(opt['depends-on'], function(val, key) {
+                        if (minColsRegex.test(key)) {
+                            key = key.match(minColsRegex)[1];
+                            visible = visible && !_.isUndefined(axesColumns[key]) && axesColumns[key].length >= +val;
+                        } else if (maxColsRegex.test(key)) {
+                            key = key.match(maxColsRegex)[1];
+                            visible = visible && !_.isUndefined(axesColumns[key]) && axesColumns[key].length <= +val;
+                        } else if (key == 'chart.missing_values') {
+                            visible = visible && chart.hasMissingValues() == val;
+                        } else if (key == 'chart.min_row_num') {
+                            visible = visible && dataset.numRows() >= +val;
+                        }  else if (key == 'chart.max_row_num') {
+                            visible = visible && dataset.numRows() <= +val;
+                        } else if (minValueRegex.test(key)) {
+                            key = key.match(minValueRegex)[1];
+                            visible = visible && !_.isUndefined(axesColumns[key])
+                                        && compare(dw.utils.minMax(axesColumns[key])[0]);
+                        } else if (maxValueRegex.test(key)) {
+                            key = key.match(maxValueRegex)[1];
+                            visible = visible && !_.isUndefined(axesColumns[key])
+                                        && compare(dw.utils.minMax(axesColumns[key])[1]);
+                        } else {
+                            visible = visible && chart.get('metadata.visualize.'+key) == val;
+                        }
+
+                        function compare(v) {
+                            if (_.isNumber(val)) return v == val;
+                            if (compRegex.test(val)) {
+                                var m = val.match(compRegex);
+                                if (m[1] == '<') return +v < +m[2];
+                                if (m[1] == '<=') return +v <= +m[2];
+                                if (m[1] == '>') return +v > +m[2];
+                                if (m[1] == '>=') return +v >= +m[2];
+                            }
+                        }
+                    });
+                    if (visible) $('#vis-options-'+key).show();
+                    else $('#vis-options-'+key).hide()
+                }
+            });
+        }
+        checkDepends();
+        chart.onChange(checkDepends);
+    };
+
+    // initial visualization meta
+    var vis = JSON.parse('{{ vis|json| escape("js") }}');
+
+    dw.backend.__currentVisLoaded.done(function() {
+
+        dw.backend.currentVis.chart(chart);
+        syncVisOptions(vis);
+
+        // populate select-row
+        /*if (vis.dimensions == 1) {
+            if (chart.dataset().numRows() > 1) {
+                var selRows = $('#select-row');
+                for (var r=0; r<chart.dataset().numRows(); r++) {
+                    selRows.append('<option value="'+r+'">'+chart.rowLabel(r)+'</option>');
+                }
+                chart.sync('#select-row', 'metadata.visualize.selected-row');
+            } else {
+                $('.select-row').hide();
+            }
+        }*/
+        $('.select-row').hide();
+
+        initCustomColors(chart);
+
+    });
+
+    function initCustomColors(chart) {
+
+        dw.backend.currentVis.chart = chart;
+        dw.backend.currentVis.dataset = chart.dataset();
+
+        var customColors = $('#customColors'),
+            sel = chart.get('metadata.visualize.custom-colors', {});
+            labels = dw.backend.currentVis.keys();
+
+        if (_.isEmpty(labels)) {
+            $('a[href=#customColors]').hide();
+            return;
+        }
+        $('a[href=#customColors]').show();
+
+        // populate custom color selector
+        $.each(labels, function(i, lbl) {
+            var s = lbl;
+            if (_.isArray(lbl)) {
+                s = lbl[0];
+                lbl = lbl[1];
+            }
+            var li = $('<li data-series="'+s+'"></li>');
+            li.append('<div class="color">×</div><label>'+lbl+'</label>');
+            if (sel[s]) {
+                $('.color', li).html('').css('background', sel[s]);
+                li.data('color', sel[s]);
+            }
+            $('#customColors .dataseries').append(li);
+        });
+        // auto-select first series
+        //$('#customColors .dataseries li:first-child').addClass('selected');
+        //$('#customColors .selected-series-name').html(_.isArray(labels[0]) ? labels[0][1] : labels[0]);
+
+        // define select event handler
+        $('#customColors .dataseries li').click(function(e) {
+            var li = e.target.nodeName.toLowerCase() == 'li' ? $(e.target) : $(e.target).parents('li');
+            if (!e.shiftKey) $('#customColors .dataseries li').removeClass('selected');
+            if (e.shiftKey && li.hasClass('selected')) li.removeClass('selected');
+            else li.addClass('selected');
+            customColorSelectSeries();
+
+            if (e.shiftKey) { // clear selection
+                if (window.getSelection) {
+                    if (window.getSelection().empty) {  // Chrome
+                        window.getSelection().empty();
+                    } else if (window.getSelection().removeAllRanges) {  // Firefox
+                        window.getSelection().removeAllRanges();
+                    }
+                } else if (document.selection) {  // IE?
+                    document.selection.empty();
+                }
+            }
+        });
+
+    }
+
+    // action for "reset all colors" button
+    $('#reset-color-choice').click(function(e) {
+        var li = $('#customColors .dataseries li.selected');
+        li.data('color', '');
+        $('.color', li)
+            .css('background', '')
+            .html('×');
+        var sel = $.extend({}, chart.get('metadata.visualize.custom-colors', {}));
+        li.each(function(i, li) {
+            sel[$(li).data('series')] = '';
+        });
+        chart.set('metadata.visualize.custom-colors', sel);
+    });
+
+    // called whenever the user selects a new series
+    function customColorSelectSeries() {
+        var li = $('#customColors .dataseries li.selected');
+        var palette = $('#palette-colors').data('colors').split(',');
+        if (palette.indexOf(li.data('color')) < 0) $('#user-color').val(li.data('color'));
+        else $('#user-color').val('');
+
+        $('#palette-colors')
+          .data('color', li.data('color'))
+          .colorpicker({
+            change: function(color) {
+                $('#user-color').val('');
+                setNewColorForCurrentSeries(color);
+            }
+        });
+    }
+
+    // set a new color and save
+    function setNewColorForCurrentSeries(color) {
+        var sel = $.extend({}, chart.get('metadata.visualize.custom-colors', {})),
+            li = $('#customColors .dataseries li.selected');
+        $('.color', li)
+            .css('background', color)
+            .html('');
+        li.data('color', color);
+        li.each(function(i, el) {
+            sel[$(el).data('series')] = color;
+        });
+        chart.set('metadata.visualize.custom-colors', sel);
+    }
+
+    // init custom colors button
+    $('a[href=#customColors]').click(function(e) {
+        e.preventDefault();
+        $('#customColors').modal();
+        customColorSelectSeries();
+    });
+
+    $('#reset-all-colors').click(function(e) {
+        $('#customColors .dataseries li .color').html('×').css('background', '');
+        $('#customColors .dataseries li').data('color', '');
+        chart.set('metadata.visualize.custom-colors', {});
+    });
+
+    // user-defined hex-color
+    var usercolor = $('#user-color');
+    usercolor.keyup(function() {
+        var col = usercolor.val();
+        if (col.trim() == '') {
+            usercolor.parent().removeClass('error').removeClass('success');
+        } else {
+            try {
+                var color = chroma.color(col.trim());
+                usercolor.parent().removeClass('error').addClass('success');
+                setNewColorForCurrentSeries(color.hex());
+            } catch (e) {
+                usercolor.parent().removeClass('success').addClass('error');
+            }
+        }
+    });
+
+});
+
+</script>
+
+
+{% endblock %}

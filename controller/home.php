@@ -2,7 +2,7 @@
 
 //GET route
 $app->get('/', function () use ($app) {
-    //disable_cache($app);
+    disable_cache($app);
 
     if ($app->request()->get('c')) {
         // found link to a legacy chart
@@ -24,6 +24,7 @@ $app->get('/', function () use ($app) {
 });
 
 $app->get('/legacy/actions/export.php', function() use ($app) {
+    disable_cache($app);
     $c = $app->request()->get('c');
     $app->redirect('/legacy/data/'.$c.'.csv');
 });

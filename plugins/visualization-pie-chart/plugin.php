@@ -20,10 +20,22 @@ class DatawrapperPlugin_VisualizationPieChart extends DatawrapperPlugin_Visualiz
             ),
             "order" => 50,
             "dimensions" => 1,
+            "axes" => array(
+                "labels" => array(
+                    "accepts" => array("text", "date")
+                ),
+                "slices" => array(
+                    "accepts" => array("number"),
+                    "multiple" => true
+                )
+            ),
+            "color-by" => "row",
             "options" => array(
             ),
             "locale" => array(
-                "other" => __("other", $id)
+                "other" => __("other", $id),
+                "cannotShowNegativeValues" => __("Pie charts are intended to show part-of-whole relations, and thus they <b>cannot be used to display negative numbers</b>. Please consider using a different chart type instead (eg. a bar chart).", $id),
+                "noMoreThanFiveSlices" => __("Your data contains <b>more values than can be shown in a pie chart</b>, so we grouped %count slices into the slice named <i>'others'</i>.<p>Why not use a bar chart to allow better comparison of values?</p>", $id)
             ),
             "libraries" => array()
         );
@@ -42,6 +54,15 @@ class DatawrapperPlugin_VisualizationPieChart extends DatawrapperPlugin_Visualiz
             ),
             "order" => 60,
             "dimensions" => 1,
+            "axes" => array(
+                "labels" => array(
+                    "accepts" => array("text", "date")
+                ),
+                "slices" => array(
+                    "accepts" => array("number"),
+                    "multiple" => true
+                )
+            ),
             "options" => array(
                 "show-total" => array(
                     "type" => "checkbox",

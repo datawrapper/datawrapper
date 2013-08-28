@@ -14,7 +14,7 @@
     <column name="metadata" type="varchar" size="4096" required="true" />
     <column name="deleted" type="boolean" default="false" />
     <column name="deleted_at" type="timestamp" />
-    <column name="author_id" type="integer" required="true"/>
+    <column name="author_id" type="integer" required="false"/>
     <foreign-key foreignTable="user">
       <reference local="author_id" foreign="id"/>
     </foreign-key>
@@ -113,5 +113,20 @@
     <column name="id" type="varchar" size="128" required="true" primaryKey="true" />
     <column name="installed_at" type="timestamp" required="true" />
     <column name="enabled" type="boolean" default="false" />
+  </table>
+
+  <!-- plugin data -->
+  <table name="plugin_data" phpName="PluginData">
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+    <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+    <column name="plugin_id" type="varchar" size="128" required="true" />
+    <foreign-key foreignTable="plugin">
+      <reference local="plugin_id" foreign="id"/>
+    </foreign-key>
+    <column name="stored_at" type="timestamp" required="true" />
+    <column name="key" type="varchar" size="128" required="true" />
+    <column name="data" type="varchar" size="4096" />
   </table>
 </database>

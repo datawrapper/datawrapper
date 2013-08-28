@@ -42,40 +42,29 @@
 
 <script type="text/javascript">
 
-(function($) {
+$(function() {
 
     _.templateSettings = {
         interpolate : /\{\{(.+?)\}\}/g
     };
 
-    $(function() {
-        var chart = DW.currentChart = new Datawrapper.EditableChart(JSON.parse('{{ chart.toJSON|raw }}'));
+    var chart = dw.backend.currentChart = dw.chart(JSON.parse('{{ chart.toJSON|raw }}'));
 
-        chart.setLocale('{{ chartLocale }}', {{ metricPrefix | json | raw }});
+    chart
+        .locale('{{ chartLocale }}')
+        .metricPrefix({{ metricPrefix | json | raw }});
 
-        if (chart.get('lastEditStep') < {{ createstep }}) {
-            DW.__firstTime = true;
-            chart.set('lastEditStep', {{ createstep }});
-        }
+    dw.backend.syncChart(chart);
 
-        /*var saveMsg = $('#msg-changes-saved');
-        chart.onSave(function() {
-            setTimeout(function() {
-                saveMsg.css({ top: 65 }).animate({ opacity: 1 }, 100);
-                setTimeout(function() {
-                    saveMsg.animate({ opacity: 0 }, 700, function() {
-                        saveMsg.css({ top: -45 });
-                    });
-                }, 1000);
-            }, 500);
-        });*/
-    });
-
+    if (chart.get('lastEditStep') < {{ createstep }}) {
+        dw.backend.__firstTime = true;
+        chart.set('lastEditStep', {{ createstep }});
+    }
 
     $('.chart-editor').on('click', '.submit', function(e) {
         var a = $(e.target);
         if (e.target.nodeName.toLowerCase() != 'a') a = a.parents('a');
-        if (chart.__changed) {
+        if (chart.hasUnsavedChanges()) {
             e.preventDefault();
             chart.onSave(function() {
                 location.href = a.attr('href');
@@ -83,7 +72,7 @@
         }
     });
 
-})(jQuery);
+});
 
 
 </script>

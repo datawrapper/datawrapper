@@ -12,7 +12,7 @@ class DatawrapperPlugin_ThemeSlate extends DatawrapperPlugin {
           'title' => 'Noir',
           'link' => 'http://bootswatch.com/slate/',
           'restricted' => NULL,
-          'version' => '1.3.0',
+          'version' => '1.5.0',
         );
     }
 

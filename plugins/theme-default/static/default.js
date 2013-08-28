@@ -3,16 +3,11 @@
     // Default Theme
     // -------------
 
-    // Every theme will inherit the properties of this
-    // theme. They can override everything or just a bit
-    // of them. Also, every theme can extend any other
-    // existing theme.
-
-    Datawrapper.Themes.Default = $.extend(true, Datawrapper.Themes.Base, {
+    dw.theme.register('default', {
 
         colors: {
             // primary colors
-            palette: ["#1f77b4","#ff7f0e","#2ca02c","#d62728","#9467bd"],
+            palette: ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd"],
             // secondary colors, used in custom color dialog
             // this should contain colors that might be useful
             secondary: ["#000000", '#777777', '#cccccc', '#ffd500', '#6FAA12'],
@@ -31,7 +26,11 @@
 
         frame: false,
 
-        verticalGrid: false
+        verticalGrid: false,
+
+        columnChart: {
+            darkenStroke: 5
+        }
 
     });
 

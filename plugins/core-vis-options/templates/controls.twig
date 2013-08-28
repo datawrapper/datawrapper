@@ -1,24 +1,33 @@
 
 {% if option.type == 'checkbox' %}
 
-    <label class="control-label" for="{{ key }}">{{ option.label|raw }}</label>
-    <div class="controls">
-        <input type="checkbox" id="{{ key }}" />
+    <div class="cotrols">
+        <label class="checkbox" style="text-align:left;width:100%;position:relative;left:0" for="{{ key }}"><input type="checkbox" id="{{ key }}" /> {{ option.label|raw }}</label>
     </div>
 
 {% elseif option.type == 'radio' %}
 
-    <label class="control-label"  for="{{ key }}">{{ option.label|raw }}</label>
-    <div class="controls form-inline">
+    <div class="control-group">
+        <label class="control-label" for="{{ key }}">{{ option.label|raw }}</label>
         {% for opt in option.options %}
-        <div>
+        <div class="controls form-inline">
             <label class="radio">
                 <input type="radio" name="{{ key }}" value="{{ opt.value }}" {% if opt.default %}checked="checked" {% endif %}/>&nbsp;{{ opt.label }}
             </label>
         </div>
         {% endfor %}
-    </div>
+     </div>
 
+{% elseif option.type == 'radio-left' %}
+
+    <label class="separator" for="{{ key }}">{{ option.label|raw }}</label>
+    <div class="form-inline">
+        {% for opt in option.options %}
+            <label class="radio" style="padding-right:1em">
+                <input type="radio" name="{{ key }}" value="{{ opt.value }}" {% if opt.default %}checked="checked" {% endif %}/>&nbsp;{{ opt.label }}
+            </label>
+        {% endfor %}
+    </div>
 
 {% elseif option.type == 'select' %}
 
@@ -26,7 +35,7 @@
     <div class="controls">
         <select id="{{ key }}">
             {% for opt in option.options %}
-            <option value="{{ opt.value }}">{{ opt.label }}</option>
+            <option value="{{ opt.value }}" {% if opt.default %}selected="selected" {% endif %}>{{ opt.label }}</option>
             {% endfor %}
         </select>
     </div>
@@ -37,5 +46,10 @@
     <div class="controls form-inline">
         <input type="text" style="width:auto" id="{{ key }}" value="" />
     </div>
+
+{% elseif option.type == 'separator' %}
+
+    <label class="separator">{{ option.label|raw }}</label>
+
 
 {% endif %}

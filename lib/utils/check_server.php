@@ -75,10 +75,12 @@ function check_database() {
 function check_plugins() {
     $res = mysql_query('SELECT id FROM plugin WHERE enabled = 1');
     $missing = array();
+    $cnt = 0;
     while ($row = mysql_fetch_assoc($res)) {
         if (!file_exists(ROOT_PATH . 'plugins/' . $row['id'] . '/package.json')) {
             $missing[] = $row['id'];
         }
+        $cnt++;
     }
     if (count($missing) > 0) {
         return '<h2>Some plugins are missing</h2>'
@@ -86,6 +88,16 @@ function check_plugins() {
             . 'files could not be found:</p>'
             . '<ul><li><code>'. join('</li></code><li><code>', $missing) . '</code></li></ul>';
     }
+    if ($cnt == 0) {
+        return '<h2>Please install some plugins</h2>'
+            . '<p>In order to use Datawrapper you need to install some plugins, such as '
+            . 'the default theme and the core visualizations. To do so you need to utilize '
+            . 'the plugin install script which can be found in <code>/scripts/plugin.php</code> '
+            . 'inside the Datawrapper folder. </p><pre><code>'
+            . '$ php scripts/plugin.php install theme-default'. "\n"
+            . '$ php scripts/plugin.php install "visualization*"'. "\n"
+            . ' </code></pre>';
+        }
 }
 
 function check_server() {

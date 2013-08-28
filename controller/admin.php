@@ -83,6 +83,7 @@ $app->get('/admin/?', function() use ($app) {
 
 
 $app->get('/admin/themes/?', function() use ($app) {
+    disable_cache($app);
     $user = DatawrapperSession::getUser();
     if ($user->isAdmin()) {
         $page = array(
@@ -100,6 +101,7 @@ $app->get('/admin/themes/?', function() use ($app) {
 
 
 $app->get('/admin/users/?', function() use ($app) {
+    disable_cache($app);
     $user = DatawrapperSession::getUser();
     if ($user->isAdmin()) {
         $page = array(
@@ -149,6 +151,7 @@ $app->get('/admin/users/?', function() use ($app) {
 
 
 $app->get('/admin/jobs', function() use ($app) {
+    disable_cache($app);
     $user = DatawrapperSession::getUser();
     if ($user->isAdmin()) {
         // get untranslated strings from all the meta.jsons

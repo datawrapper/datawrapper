@@ -6,7 +6,7 @@
     cursor: pointer;
     border-radius: 8px;
 }
-.ratio-select .option.selected {DW.currentChart;
+.ratio-select .option.selected {
     background-color: rgba(82, 168, 236, 0.3);
 }
 .ratio-select .option .img {

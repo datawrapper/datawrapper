@@ -9,6 +9,10 @@
 <script type="text/javascript" src="/static/vendor/canvg/canvg.js"></script>
 <script type="text/javascript" src="/static/vendor/chromajs/chroma.min.js"></script>
 
+{% for vis in visualizations %}
+    <script type="text/javascript" src="{{ vis.__static_path }}/{{ vis.id }}.js"></script>
+{% endfor %}
+
 <script type="text/javascript">
 
 $.extend($.easing, {
@@ -35,9 +39,10 @@ $(function() {
     }
 
     $.fn.colorpicker = function(props) {
-        var rt = $(this),
-            colors = rt.data('colors').toLowerCase().split(','),
-            active = (rt.data('color') || "").toLowerCase();
+        var rt = $(this), colors, active, maxW = props.maxW || $(rt).parent().width();
+        if (!rt.data('colors')) return;
+        colors = rt.data('colors').toLowerCase().split(','),
+        ctive = (rt.data('color') || "").toLowerCase();
         // clean up html at first
         rt.html('');
         rt.css({
@@ -47,7 +52,7 @@ $(function() {
         $.each(colors, function(i, col) {
             if (!col) return;
             var d = $('<div />');
-            if ((c+1)*28 > rt.parent().width()) {
+            if ((c+1)*28 > maxW) {
                 c = 0;
                 r+=1;
                 rt.css('height', (r+1)*28+4);
@@ -79,11 +84,18 @@ $(function() {
         });
     };
 
+
     var _typeHasChanged = false,
         _themeHasChanged = false,
-        chart = DW.currentChart,
+        chart = dw.backend.currentChart,
         themes = {{ themes | json | raw }},
-        themesById = {};
+        themesById = {},
+        visMetas = {},
+        iframe = $('#iframe-vis');
+
+    {% for vis in visualizations %}
+        visMetas['{{ vis.id }}'] = JSON.parse('{{ vis|json| escape("js") }}');
+    {% endfor %}
 
     _.each(themes, function(theme) {
         themesById[theme.id] = theme;
@@ -114,12 +126,12 @@ $(function() {
             }
         }
         function allLoaded() {
-            var themeClass = classify(themeid),
-                theTheme = Datawrapper.Themes[themeClass];
+            var theTheme = dw.theme(themeid);
 
             picker.data('colors', theTheme.colors.palette.join(','));
             picker.data('color', theTheme.colors.palette[chart.get('metadata.visualize.base-color', 0)]);
             picker.colorpicker({
+                maxW: $('.tab-container').width()*0.5,
                 change: function(color) {
                     var colIndex = theTheme.colors.palette.join(',').toLowerCase().split(',').indexOf(color.toLowerCase());
                     chart.set('metadata.visualize.base-color', colIndex);
@@ -142,11 +154,19 @@ $(function() {
         });
     }
 
+    var loadVisDeferred = $.Deferred();
+    dw.backend.__currentVisLoaded = loadVisDeferred.promise();
+
+    function loadVis() {
+        dw.backend.currentVis = dw.visualization(chart.get('type'));
+        dw.backend.currentVis.chart(chart);
+        dw.backend.currentVis.dataset = chart.dataset();
+        dw.backend.currentVis.meta = visMetas[chart.get('type')];
+        loadVisDeferred.resolve();
+        $('#notifications').html('');
+    }
+
     chart.onSave(function(chart) {
-
-        var iframe = $('#iframe-vis');
-        iframe.attr('src', '/chart/{{ chart.id }}/preview?innersvg=1&nocache='+Math.random());
-
         if (_themeHasChanged) {
             iframe.one('load', updateVisBackground);
             _.each(themes, function(theme) {
@@ -159,6 +179,10 @@ $(function() {
             });
         }
 
+        if (_typeHasChanged) {
+            loadVis();
+        }
+
         if (_typeHasChanged || _themeHasChanged) {
             // load new visualization options
             loadOptions();
@@ -167,7 +191,11 @@ $(function() {
         _themeHasChanged = false;
         _typeHasChanged = false;
 
-        iframe.one('load', scheduleThumbnail);
+        if (iframe.get(0).contentWindow.__dw) {
+            iframe.get(0).contentWindow.__dw.saved();
+        }
+        scheduleThumbnail();
+        checkChartHeight();
     });
 
     var _thumbTimer;
@@ -175,8 +203,7 @@ $(function() {
     function scheduleThumbnail() {
         clearTimeout(_thumbTimer);
         _thumbTimer = setTimeout(function() {
-            //console.log('snapshot', $('#iframe-wrapper iframe'), '{{ chart.id }}', 'm', 260, 160);
-            DW.snapshot($('#iframe-vis'), '{{ chart.id }}', 'm', 260, 160);
+            dw.backend.snapshot(iframe, '{{ chart.id }}', 'm', 260, 160);
         }, 500);
     }
 
@@ -186,11 +213,9 @@ $(function() {
     chart.sync('#text-intro', 'metadata.describe.intro');
 
     chart.onChange(function(chart, key, value) {
-        if (key == 'type') {
-            _typeHasChanged = true;
-        } else if (key == 'theme') {
-            _themeHasChanged = true;
-        }
+        if (key == 'type') _typeHasChanged = true;
+        if (key == 'theme') _themeHasChanged = true;
+        dw.backend.updateChartInIframe(iframe, chart.attributes());
     });
 
     // load dataset
@@ -211,11 +236,12 @@ $(function() {
     }
     $('.highlighted-series .badge').click(highlightSeriesClick);
 
-    function onDatasetLoaded(ds) {
+    function onDatasetLoaded() {
+        loadVis();
         var s = $('#highlight-series'), s2 = $('.highlighted-series');
         s.find("option[value!='---']").remove();
-        _.each(chart.dataSeries(), function(col) {
-            s.append('<option>'+col.name+'</option>');
+        _.each(dw.backend.currentVis.keys(), function(key) {
+            s.append('<option>'+key+'</option>');
         });
         s.change(function() {
             if (s.val() != "---") {
@@ -247,7 +273,7 @@ $(function() {
         loadThemeColors();
     }
 
-    chart.dataset(onDatasetLoaded);
+    chart.load().done(onDatasetLoaded);
 
     $('.collapse').on('shown', function(e) {
         var tgl = $('[data-toggle=collapse][data-target=#'+e.target.id+']');
@@ -261,24 +287,13 @@ $(function() {
         tgl.removeClass('collapse-shown');
     });
 
-    function updateVisBackground() {  // and show msg if chart needs more space
-        var iframe = $('#iframe-vis').contents(),
-            bgcol =  $('body', iframe).css('background-color'),
-            white = bgcol == 'rgb(255, 255, 255)' || bgcol == '#ffffff' || bgcol == 'white' || bgcol == 'transparent',
-            border = white ? '#ffffff' : '#bbb';
-
-        bgcol = DW.currentChart.get('metadata.publish.contextBg') || DW.currentChart.get('metadata.publish.background');
-
-        $('#iframe-wrapper').css({
-            'background-color': white ? '#ffffff' : bgcol,
-            'border-color': border
-        });
-
+    function checkChartHeight() {
+        var iframe = $('#iframe-vis').contents();
         var vis_h = iframe.height(),
             iframe_h = $('#iframe-vis').height();
 
         if (vis_h > iframe_h+5) {
-            DW.logMessage('Watch out: Your chart needs more space. To get rid of the scrollbars just <a href="#" id="resize-iframe">resize iFrame to chart</a> ', $('.resize-chart-wrap'), 'warning');
+            dw.backend.logMessage('{{ "Watch out: Your chart needs more space. To get rid of the scrollbars just [resize iFrame to chart]" | trans | escape('js') }}'.replace('[', '<a href="#" id="resize-iframe">').replace(']', '</a>'), $('.resize-chart-wrap'), 'warning');
             $('#resize-iframe').click(function(e) {
                 e.preventDefault();
                 //$('#iframe-wrapper').height(vis_h);
@@ -286,10 +301,49 @@ $(function() {
                 updateSize();
                 $('.alert').remove();
             });
+        } else {
+            $('.alert').remove();
         }
     }
 
-    $('#iframe-vis').load(updateVisBackground);
+    function updateVisBackground() {  // and show msg if chart needs more space
+        var iframe = $('#iframe-vis').contents(),
+            bgcol =  $('body', iframe).css('background-color'),
+            white = bgcol == 'rgb(255, 255, 255)' || bgcol == '#ffffff' || bgcol == 'white' || bgcol == 'transparent',
+            border = white ? '#ffffff' : '#bbb';
+
+        bgcol = dw.backend.currentChart.get('metadata.publish.contextBg') || dw.backend.currentChart.get('metadata.publish.background');
+
+        $('#iframe-wrapper').css({
+            'background-color': white ? '#ffffff' : bgcol,
+            'border-color': border
+        });
+    }
+
+    iframe.load(function() {
+        updateVisBackground();
+        dw.backend.initLiveUpdates(iframe);
+        var win = $('#iframe-vis').get(0).contentWindow;
+
+        setTimeout(function() {  // wait a little more
+            win.vis.rendered().done(function() {
+                checkChartHeight();
+            });
+        }, 300);
+
+        $(win).unload(function() {
+            iframe.ready(iframeReady);
+        });
+    });
+
+    function iframeReady() {
+        $('body').on('datawrapper:vis:init', function() {
+            $('#iframe-vis').get(0).contentWindow.dw_alert = dw.backend.alert;
+            $('#iframe-vis').get(0).contentWindow.dw.backend = dw.backend;
+        });
+    }
+
+    iframe.ready(iframeReady);
 
     $('.nav-tabs').each(function(i, el) {
         var navTabs = $(el);
@@ -311,7 +365,7 @@ $(function() {
     $('#btn-transpose').click(function(e) {
         e.preventDefault();
         chart.set('metadata.data.transpose', !chart.get('metadata.data.transpose'));
-        chart.dataset(onDatasetLoaded);
+        chart.load().done(onDatasetLoaded);
         setTimeout(function() {
             loadOptions();
         }, 2000);
@@ -330,10 +384,10 @@ $(function() {
         thumb.addClass('active');
         selVis.html('<img src="'+thumb.data('static-path')+thumb.data('id')+'.png" width="24" />' + thumb.data('title'));
         setTimeout(function() {
-            folded.show();
+            /*folded.show();
             unfolded.animate({ height: 0 }, 300, 'easeOutExpo', function() {
                 unfolded.hide();
-            });
+            });*/
             chart.set('type', thumb.data('id'));
         }, 100);
     });
@@ -343,10 +397,10 @@ $(function() {
         unfolded.height(0).show().animate({ height: unfolded.data('h') }, 300);
     });
 
-    if (DW.__firstTime) {
+    //if (dw.backend.__firstTime) {
         unfolded.show();
         folded.hide();
-    }
+    //}
 
     // chart resizing
     var __timer;
@@ -376,7 +430,7 @@ $(function() {
         $('#resize-h').val(dim[1]);
         updateSize();
     });
-    
+
     var cw = chart.get('metadata.publish.embed-width', $('#iframe-wrapper').width()),
         ch = chart.get('metadata.publish.embed-height', $('#iframe-wrapper').height());
     $('#resize-w').val(cw);
@@ -384,6 +438,15 @@ $(function() {
     $('.resize-chart input').change(_updateSize);
     $('#iframe-wrapper').width(cw);
     $('#iframe-wrapper').height(ch);
+
+    dw.backend.notify = function(msg) {
+        $('<div />').addClass('notification')
+            .html('<div class="bg">'+$('#alertModal .bg').html()+'</div><div class="message">'+msg+'</div>')
+            .appendTo('#notifications')
+            .hide()
+            .fadeIn();
+    };
+
 });
 
 
@@ -412,107 +475,163 @@ $(function() {
                     </div>
                 </div>
             </div>
+
+            <div id="notifications">
+
+            </div>
+
         </div>
 
+        <ul class="span5 nav nav-tabs visualize-nav-tabs" data-target="tab-container">
+            <li class="active"><a href="#vis" data-target="select-visualization">{% trans "Select chart" %}</a></li>
+            <li><a href="#refine" data-target="refine-the-chart">{% trans "Refine the chart" %}</a></li>
+            <li ><a href="#story" data-target="tell-the-story">{% trans "Tell the story" %}</a></li>
+        </ul>
 
         <div class="span5 visconfig"><div class="well">
-            <div class="section">
-                <div class="vis-selector-unfolded">
-                <h3>{% trans "Select visualization" %}</h3>
-                    <div class="vis-thumbs">
-                        {% for vis in visualizations %}{% if vis.title %}
-                        <div class="vis-thumb{% if vis.id == chart.type %} active{% endif %}" data-id="{{ vis.id }}" data-title="{{ vis.title }}" data-static-path="{{ vis.__static_path }}"><img title="{{ vis.title }}" src="{{ vis.__static_path }}{{ vis.id }}.png" /></div>
-                        {% endif %}{% endfor %}
-                    </div>
-                </div>
-                <div class="vis-selector-folded">
-                    <h3><u>{% trans "Visualization:" %}</u> <span class="vis-selected"><img src="{{ vis.__static_path }}{{ vis.id }}.png" width="24" /> {{ vis.title }}</span></h3>
-                </div>
 
-                <div style="margin-top:10px;margin-bottom:20px">
-                    <label class="pull-left" style="line-height:28px;color:#000;font-size:18px;padding-right:1ex;font-weight:bold" for="select-theme">{% trans "Layout:" %}</label>
-                    <select id="select-theme" class="span2">
-                        {% for theme in themes %}{% if not theme.hidden %}
-                        <option value="{{ theme.id }}">{{ theme.title }}</option>
-                        {% endif %}{% endfor %}
-                    </select>
-                </div>
-                    <p>
-                        <b>{% trans "Hint" %}:</b> {% trans "In case the visualization doesn't look like you expected, you should try to <a href='#' id='btn-transpose'><i class='icon-rotate'></i> transpose the data</a>." %}
-                    </p>
-             </div>
+            <script type="text/javascript">
+            $(function() {
+                function show(a) {
+                    a.tab('show');
+                    $('.tab-container > *').hide();
+                    $('.tab-container .'+a.data('target')).show();
+                    if (a.attr('href') == '#story') {
+                        $('.proceed-btn').hide();
+                        $('.publish-btn').show();
+                    }
+                }
+                $('.publish-btn').hide();
+                $('.proceed-btn').click(function() {
+                    var li = $('.visualize-nav-tabs li.active');
+                    var a = $('a', li.next());
+                    location.hash = '#'+a.data('target');
+                    show(a);
+                });
 
-            <div class="section">
-                <h3>{% trans "Tell the story" %}</h3>
+                $('.visualize-nav-tabs a').on('click', function (e) {
+                    var a = $(e.target);
+                    location.hash = '#'+a.data('target');
+                    if (a.attr('href') == '#story') {
+                        $('.proceed-btn').hide();
+                        $('.publish-btn').show();
+                    } else {
+                        $('.proceed-btn').show();
+                        $('.publish-btn').hide();
+                    }
+                });
 
-                <ul class="nav nav-tabs" data-target="story">
-                    <li class="active"><a href="#" data-target="story-title">{% trans "Title" %}</a></li>
-                    <li><a href="#" data-target="story-intro">{% trans "Introduction" %}</a></li>
-                    <li><a href="#" data-target="story-highlight">{% trans "Highlight" %}</a></li>
-                </ul>
+                $(window).on('hashchange', function() {
+                    show($('a[data-target='+location.hash.substr(1)+']'));
+                });
 
-                <div class="story">
-                    <div class="story-title">
-                        <label for="text-title">{% trans "Tell the story in five words" %}:</label>
-                        <input type="text" id="text-title" class="input-xlarge span4" />
-                    </div>
+                if (window.location.hash) {
+                    show($('a[data-target='+location.hash.substr(1)+']'));
+                }
+            });
 
-                    <div class="story-intro">
-                        <label for="text-intro">{% trans "Guide the audience to read the chart" %}:</label>
-                        <textarea type="text" id="text-intro" class="input-xlarge span4"></textarea>
-                    </div>
+            </script>
 
-                    <div class="story-highlight">
-                        <label>{% trans "Highlight the most import data series:" %}</label>
-                        <div>
-                            <select id="highlight-series" class="span2">
-                                <option value="---">- {% trans "select a data series" %} -</option>
-                            </select>
+            <div class="tab-container">
+
+                <div class="section select-visualization">
+                    <div class="vis-selector-unfolded">
+                    {# <h3>{% trans "Select visualization" %}</h3> #}
+                        <div class="vis-thumbs">
+                            {% for vis in visualizations %}{% if vis.title %}
+                            <div class="vis-thumb{% if vis.id == chart.type %} active{% endif %}" data-id="{{ vis.id }}" data-title="{{ vis.title }}" data-static-path="{{ vis.__static_path }}"><img title="{{ vis.title }}" src="{{ vis.__static_path }}{{ vis.id }}.png" /></div>
+                            {% endif %}{% endfor %}
                         </div>
-                        <p class="highlighted-series">
-                            {% for series in vismeta['highlighted-series'] %}
-                            <span data-series="{{ series }}" class="badge badge-info"><i class="icon-remove icon-white"></i>{{ series }}</span>
-                            {% endfor %}
+
+                    </div>
+                    <div class="vis-selector-folded">
+                        <h3><u>{% trans "Visualization:" %}</u> <span class="vis-selected"><img src="{{ vis.__static_path }}{{ vis.id }}.png" width="24" /> {{ vis.title }}</span></h3>
+
+                    </div>
+
+                        <p>
+                            <b>{% trans "Hint" %}:</b> {% trans "In case the visualization doesn't look like you expected, you should try to <a href='#' id='btn-transpose'><i class='icon-rotate'></i> transpose the data</a>." %}
                         </p>
+
+
+                    <div style="margin-top:20px;">
+                        <label class="pull-left" style="padding-right:1ex;line-height:28px" for="select-theme">{% trans "Select layout:" %}</label>
+                        <select id="select-theme" class="span2">
+                            {% for theme in themes %}{% if not theme.hidden %}
+                            <option value="{{ theme.id }}">{{ theme.title }}</option>
+                            {% endif %}{% endfor %}
+                        </select>
                     </div>
+
+                 </div>
+
+                <div class="section tell-the-story">
+                    {# <h3>{% trans "Tell the story" %}</h3> #}
+
+                    <div class="story">
+                        <div class="story-title">
+                            <label for="text-title">{% trans "Tell the story in five words" %}:</label>
+                            <input type="text" id="text-title" class="input-xlarge span4" />
+                        </div>
+
+                        <div class="story-intro">
+                            <label for="text-intro">{% trans "Guide the audience to read the chart" %}:</label>
+                            <textarea type="text" id="text-intro" class="input-xlarge span4"></textarea>
+                        </div>
+
+                        <div class="story-highlight">
+                            <label>{% trans "Highlight the most import data series:" %}</label>
+                            <div>
+                                <select id="highlight-series" class="span2">
+                                    <option value="---">- {% trans "select a data series" %} -</option>
+                                </select>
+                            </div>
+                            <p class="highlighted-series">
+                                {% for series in vismeta['highlighted-series'] %}
+                                <span data-series="{{ series }}" class="badge badge-info"><i class="icon-remove icon-white"></i>{{ series }}</span>
+                                {% endfor %}
+                            </p>
+                        </div>
+                    </div>
+
+                    {# highlight values }
+
+                    <label>
+                        <a data-toggle="collapse" data-target="#c-highlight-values" class="collapse-{% if vismeta.highlighted-values %}shown{% else %}hidden{% endif %}">Highlight values</a>
+                    </label>
+                    <div class="collapse{% if vismeta.highlighted-values %} in{% endif %}" id="c-highlight-values">
+                        <div class="form-horizontal">
+                            <label>Value: <input type="text" class="span1" /> <input type="text" class="span2" placeholder="comment" /></label>
+                        </div>
+                    </div>
+
+                    {# customize tooltips }
+
+                    <label><a data-toggle="collapse" data-target="#c-tooltips">{% trans "Customize Tooltips" %}</a></label>
+                    <div class="collapse" id="c-tooltips">
+                        <label class="control-label">{% trans "Tooltip content" %}</label>
+                        <div class="controls">
+                            <textarea style="width:100%" placeholder="not implemented yet"></textarea>
+                        </div>
+                    </div>
+
+                    #}
                 </div>
 
-                {# highlight values }
+                {# visualization specific options #}
 
-                <label>
-                    <a data-toggle="collapse" data-target="#c-highlight-values" class="collapse-{% if vismeta.highlighted-values %}shown{% else %}hidden{% endif %}">Highlight values</a>
-                </label>
-                <div class="collapse{% if vismeta.highlighted-values %} in{% endif %}" id="c-highlight-values">
-                    <div class="form-horizontal">
-                        <label>Value: <input type="text" class="span1" /> <input type="text" class="span2" placeholder="comment" /></label>
+                <div class="section refine-the-chart">
+                    {# <h3>{% trans "Refine the chart" %}</h3> #}
+
+                    <div id="vis-options" class="form-horizontal">
+                        {% use 'chart-visualize-options.twig' %}
+                        {{ block('visoptions') }}
                     </div>
                 </div>
-
-                {# customize tooltips }
-
-                <label><a data-toggle="collapse" data-target="#c-tooltips">{% trans "Customize Tooltips" %}</a></label>
-                <div class="collapse" id="c-tooltips">
-                    <label class="control-label">{% trans "Tooltip content" %}</label>
-                    <div class="controls">
-                        <textarea style="width:100%" placeholder="not implemented yet"></textarea>
-                    </div>
-                </div>
-
-                #}
             </div>
 
-            {# visualization specific options #}
-
-            <div class="section">
-                <h3>{% trans "Refine the chart" %}</h3>
-
-                <div id="vis-options" class="form-horizontal">
-                    {% use 'vis-options.twig' %}
-                    {{ block('visoptions') }}
-                </div>
-            </div>
-
-            <a href="publish" class="submit pull-right btn btn-primary btn-lrge" id="visualize-proceed">{% trans "Publish" %} <i class="icon-chevron-right icon-white"></i></a>
+            <a href="#proceed" class="pull-right btn btn proceed-btn">{% trans "Proceed" %} <i class="icon-chevron-right"></i></a>
+            <a href="publish" class="submit pull-right btn btn-primary btn-lrge publish-btn" id="visualize-proceed">{% trans "Publish" %} <i class="icon-chevron-right icon-white"></i></a>
 
             {% if debug %}
 
@@ -532,7 +651,7 @@ $(function() {
             <script type="text/javascript">
 
             $(function() {
-                var testId = DW.currentChart.get('metadata.describe.__test_id', null);
+                var testId = dw.backend.currentChart.get('metadata.describe.__test_id', null);
                 if (!testId) $('.snapshot.update').hide();
 
                 $('.snapshot').click(function(e) {
@@ -549,7 +668,7 @@ $(function() {
                         dataType: 'json'
                     }).done(function(res) {
                         if (res.status == "ok") {
-                            DW.logMessage("The test case <b>"+id+"</b> has been "+(testId && $(e.target).hasClass('update') ? 'updated.' : 'created.'), '.visconfig');
+                            dw.backend.logMessage("The test case <b>"+id+"</b> has been "+(testId && $(e.target).hasClass('update') ? 'updated.' : 'created.'), '.visconfig');
                         }
                     });
                 });

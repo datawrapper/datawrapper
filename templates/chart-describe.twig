@@ -6,23 +6,89 @@
 
 <style type="text/css">
 
-table.htCore tr td {
+.sidebar #column-options {
+    display: none;
+}
+
+.sidebar #column-options .unresolved {
+    background: #FDFFBA;
+}
+
+.sidebar #column-options .unresolved option,
+.sidebar #column-options .unresolved optgroup {
+    background: #fff;
+}
+
+.handsontable tr td {
     font-size: 1.1em;
     font-family: Helvetica;
     font-weight: 400;
     padding: 3px 6px;
 }
 
-.table thead th {
+.chart-editor textarea.handsontableInput {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.handsontable thead th {
     cursor: pointer;
 }
 
-.table thead th.ignored {
-    background: #b99;
+.handsontable thead th.selected {
+    background: #ccc;
 }
-.table td.ignored {
-    color: #999;
+
+.handsontable td.htDimmed { /*revert default HOT style for readOnly cells*/
+    font-style: normal;
+    color: inherit;
+}
+.handsontable td.firstRow {
+    border-bottom: 1px solid #aaa;
+    font-weight: bold;
+    background: #f0f0f0;
+}
+
+.handsontable td.textType {
+    color: #000000;
+}
+.handsontable td.dateType {
+    color: #39A832;
+    font-style: italic;
+    text-align: center;
+}
+.handsontable td.numberType {
+    color: #297EA8;
+    text-align: right;
+}
+.handsontable td.oddRow {
+    background-color: #fff;
+}
+
+.handsontable td.evenRow {
+    background-color: #f9f9f9;
+}
+
+.handsontable th.ignored,
+.handsontable td.ignored {
+    color: #aaa !important;
     text-decoration: line-through
+}
+.handsontable th.ignored { background-color: #e2e2e2; }
+.handsontable td.ignored.firstRow { background-color: #e2e2e2; }
+.handsontable td.ignored.oddRow { background-color: #e9e9e9; }
+.handsontable td.ignored.evenRow { background-color: #e2e2e2; }
+
+.handsontable td.firstRow.area { background: #d4ddee; }
+.handsontable td.oddRow.area { background-color: #e1ebfd; }
+.handsontable td.evenRow.area { background-color: #dce5f7; }
+
+.handsontable td.firstRow.dateType { color: #1E8118; }
+.handsontable td.firstRow.numberType { color: #1B668B; }
+
+.handsontable td.parsingError {
+    color: #d00;
+    background: #fee;
 }
 
 </style>
@@ -32,20 +98,62 @@ table.htCore tr td {
 <script type="text/javascript">
 $(function() {
 
-    var chart = DW.currentChart;
+    var metadata = {
+        changes: {
+            exist: function() {
+                return !!chart.get('metadata.data.changes', []).length;
+            },
+            add: function(row, column, value) {
+                var dataChanges = _.clone(chart.get('metadata.data.changes', [])); //clone is needed, otherwise chart.set does not detect this as change
+                if (chart.get('metadata.data.transpose')) {
+                    dataChanges.push({row: column, column: row, value: value});
+                }
+                else {
+                    dataChanges.push({row: row, column: column, value: value});
+                }
+                chart.set('metadata.data.changes', dataChanges);
+            },
+            revert: function() {
+                chart.set('metadata.data.changes', []);
+            }
+        },
+
+        columnFormat: {
+            add: function(columnNames, property, value) {
+                var columnFormats = $.extend(true, {}, chart.get('metadata.data.column-format', {})); //deep clone (_.clone is insufficient because it does a shallow clone)
+                columnNames.forEach(function(name) {
+                    if (!columnFormats[name]) {
+                        columnFormats[name] = {};
+                    }
+                    columnFormats[name][property] = value;
+                    if (property === 'type') {
+                        dataset.column(name).type(value);
+                    }
+                });
+                chart.set('metadata.data.column-format', columnFormats);
+            },
+            get: function(columnName) {
+                var columnFormat = chart.get('metadata.data.column-format', {});
+                if (columnName) {
+                    return columnFormat[columnName] || {};
+                }
+                else {
+                    columnFormat;
+                }
+            }
+        }
+    };
+
+    var chart = dw.backend.currentChart,
+        dataset;
 
     chart.onChange(reload);
 
-    chart.sync('#has-horizontal-headers', 'metadata.data.horizontal-header');
-    // vertical header setting will be synched after data has loaded
     chart.sync('#describe-source-name', 'metadata.describe.source-name');
     chart.sync('#describe-source-url', 'metadata.describe.source-url');
-    chart.sync('input:radio[name=transpose]', 'metadata.data.transpose');
+    chart.sync('#transpose', 'metadata.data.transpose');
 
-    chart.sync('#number-format', 'metadata.describe.number-format');
-    chart.sync('#number-divisor', 'metadata.describe.number-divisor');
-    chart.sync('#number-append', 'metadata.describe.number-append');
-    chart.sync('#number-prepend', 'metadata.describe.number-prepend');
+    chart.sync('#has-headers', 'metadata.data.horizontal-header');
 
     // swap between currency and unit
     function swapUnitAndCurrency() {
@@ -75,10 +183,10 @@ $(function() {
 
     // update data table after format changes
     $('.number-format').change(function() {
-        updateTable(DW.dataset, chart);
+        updateTable(dataset, chart);
     });
 
-    function updateTable(dataset, chart) {
+    function updateTable() {
 
         function isNone(val) {
             return val === null || val === undefined || (_.isNumber(val) && isNaN(val));
@@ -87,120 +195,332 @@ $(function() {
         var data = [];
 
         var horzHeaders = chart.get('metadata.data.horizontal-header'),
-            vertHeaders = chart.get('metadata.data.vertical-header'),
-            transpose = chart.get('metadata.data.transpose'),
-            colCnt = dataset.series().length + (dataset.hasRowNames() ? 1 : 0),
-            i;
+            transpose = chart.get('metadata.data.transpose');
 
         dataset.ignoreIgnores = true;
 
-        //if (horzHeaders) {
-            var tr = [];
-            if (vertHeaders) tr.push('');
-            _.each(dataset.series(), function(s) {
-                tr.push((!isNone(s.name) ? s.name : ''));
-            });
-            data.push(tr);
-        //}
+        var tr = [];
+        dataset.eachColumn(function(column) {
+            tr.push(column.title());
+        });
+        data.push(tr);
 
         dataset.eachRow(function(row) {
             var tr = [];
-            if (dataset.hasRowNames()) {
-                tr.push(!isNone(dataset.rowName(row)) ? dataset.rowName(row) : '');
-            }
-            dataset.eachSeries(function(s, i) {
-                var val = s.data[row];
-                val = chart.formatValue(val, true);
-                tr.push((!isNone(s.data[row]) ? $("<div />").html(val).text() : ''));
+            dataset.eachColumn(function(column, i) {
+                var val = column.raw(row);
+                tr.push(isNone(val) ? '' : val);
             });
             data.push(tr);
         });
 
-        var ignoreSeries = _.clone(chart.get('metadata.data.ignore-series', {}));
-
         function myRenderer(instance, td, row, col, prop, value, cellProperties) {
+            var column = dataset.column(col);
+            if (row > 0) {
+                var formatter = chart.columnFormatter(column);
+                value = formatter(column.val(row - 1), true);
+            }
             Handsontable.TextCell.renderer.apply(this, arguments);
             if (parseInt(value, 10) < 0) { //if row contains negative number
-                td.className = 'negative'; //add class "negative"
-            } else {
-                td.className = '';
+                td.classList.add('negative');
             }
+            td.classList.add(column.type()+'Type');
             if (row === 0) {
-                td.style.borderBottom = '1px solid #000';
-                td.style.fontWeight = 'bold';
-                td.style.background = '#eef4ff';
-            }
-            if (vertHeaders && col === 0) {
-                if (horzHeaders && row === 0) td.style.background = '#dde4ef';
-                else td.style.background = row % 2 ? '#f3f8ff': '#eef4ff' ;
-                td.style.borderRight = '1px solid #000';
-                td.style.fontWeight = 'bold';
-            } else if (row > horzHeaders ? 1 : 0) {
-                td.style.background = row % 2 ? '#FFF' : '#f9f9f9';
-            }
-
-            if (ignoreSeries[data[0][col]]) {
-                td.className = 'ignored';
+                td.classList.add('firstRow');
             } else {
-                td.className = '';
+                td.classList.add(row % 2 ? 'oddRow' : 'evenRow');
+            }
+            if (metadata.columnFormat.get(column.name()).ignore) {
+                td.classList.add('ignored');
+            }
+            if(selectedColumns.indexOf(col) > -1) {
+                td.classList.add('area'); //add blue area background if this cell is in selected column
+            }
+            if (row > 0 && !column.type(true).isValid(column.val(row-1))) {
+                td.classList.add('parsingError');
             }
         }
 
-        $("#data-preview").handsontable({
-            data: data,
-            allowHtml: true,
-            startRows: 6,
-            startCols: 8,
-            width: $("#data-preview").width(),
-            height: 400,
-            fixedRowsTop: horzHeaders ? 1: 0,
-            fixedColumnsLeft: vertHeaders ? 1: 0,
-            rowHeaders: true,
-            colHeaders: true,
-            fillHandle: false,
-            stretchH: 'all',
-            cells: function (row, col, prop) {
-                return {
-                    type: {
-                        renderer: myRenderer,
-                        readOnly: true
+        if($("#data-preview").handsontable('getInstance')) {
+            $("#data-preview").handsontable('loadData', data);
+            $("#data-preview").handsontable('render');
+        }
+        else {
+            $("#data-preview").handsontable({
+                data: data,
+                allowHtml: true,
+                startRows: 6,
+                startCols: 8,
+                width: $("#data-preview").width(),
+                height: 400,
+                fixedRowsTop: horzHeaders ? 1: 0,
+                rowHeaders: true,
+                colHeaders: true,
+                fillHandle: false,
+                stretchH: 'all',
+                cells: function (row, col, prop) {
+                    return {
+                        renderer: myRenderer
+                    };
+                },
+                afterRender: function() {
+                    renderSelectedTh(); //if HOT was scrolled horizontally, we need to rerender th.selected
+                },
+                afterChange: function(changes, source) {
+                    if (source !== 'loadData') {
+                        changes.forEach(function(change) {
+                            if (change[2] != change[3]) {
+                                metadata.changes.add(change[0], change[1], change[3]);
+                            }
+                        });
                     }
-                };
-            }
-        });
-
-        $('#data-preview table').addClass('table table-bordered');
-
-        // add event handler for ignoring data series
-        $('.colHeader').each(function(i, el) {
-            var th = $(el).parents('th');
-            if (i === 0 && vertHeaders) return;
-            var sn = data[0][i];
-            th.data('series', sn);
-            if (ignoreSeries[sn]) th.addClass('ignored');
-            th.click(function() {
-                if (ignoreSeries[sn]) {
-                    ignoreSeries[sn] = false;
-                    th.removeClass('ignored');
-                } else {
-                    ignoreSeries[sn] = true;
-                    th.addClass('ignored');
                 }
-                chart.set('metadata.data.ignore-series', _.clone(ignoreSeries));
             });
+
+            $('#data-preview table').addClass('table table-bordered'); //Bootstrap class names
+            $("#data-preview").handsontable('render'); //consider Bootstrap class names in auto column size
+        }
+
+        if(metadata.changes.exist()) {
+            $('#reset-data-changes').removeClass('disabled');
+        }
+        else {
+            $('#reset-data-changes').addClass('disabled');
+        }
+    }
+
+    $('#reset-data-changes').click(function(){
+        metadata.changes.revert();
+    });
+
+    // add event handler for ignoring data series
+    var start;
+    var $dataPreview = $("#data-preview");
+
+    function hasCorner() {
+        return !!$('#data-preview tbody th').length;
+    }
+
+    function getIndexOfTh(th) {
+        var col = $dataPreview.handsontable('getInstance').view.wt.wtTable.getCoords(th)[1];
+        return col;
+    }
+
+    function getThOfIndex(index) {
+        var offsetCol = $dataPreview.handsontable('getInstance').view.wt.getSetting('offsetColumn');
+        var thIndex = index + 1 * hasCorner() - offsetCol;
+        return document.querySelectorAll('#data-preview thead th')[thIndex];
+    }
+
+    function getSeriesOfIndex(index) {
+        return dataset.column(index).name();
+    }
+
+    $('body').on('mousedown', function () {
+        if(document.activeElement.nodeName === 'INPUT') {
+            document.activeElement.blur(); //save changes from currently edited sidebar field
+        }
+        if(selectedColumns.length) {
+            deselectColumns();
+            $dataPreview.handsontable('render'); //refresh all cells and column headers
+            showColumnSettings();
+        }
+    });
+
+    $('body').on('mouseup', function () {
+        start = void 0;
+    });
+
+    $dataPreview.on('mousedown', 'th:has(.colHeader)', function (event) {
+        start = getIndexOfTh(this);
+        event.stopPropagation();
+        $dataPreview.handsontable('deselectCell');
+        setTimeout(function(){ //do it in timeout, so input blur has chance to run
+            selectColumns(start);
+        }, 0);
+    });
+
+    var last;
+    $dataPreview.on('mouseenter', 'th:has(.colHeader)', function () {
+        if(last === this) {
+            return;
+        }
+        if(start !== void 0) {
+            var current = getIndexOfTh(this);
+            selectColumns(start, current);
+        }
+        last = this;
+    });
+
+    var selectedColumns = [];
+
+    function deselectColumns() {
+        selectedColumns.length = 0;
+    }
+
+    function selectColumns(from, to) {
+        deselectColumns();
+        if(to === void 0) {
+            selectedColumns.push(from);
+        }
+        else {
+            var min = Math.min(from, to);
+            var max = Math.max(from, to);
+            while(min <= max) {
+                selectedColumns.push(min);
+                min++;
+            }
+        }
+        $dataPreview.handsontable('render');
+        showColumnSettings();
+    }
+
+    function renderSelectedTh() {
+        $("#data-preview thead th.selected").removeClass('selected');
+        selectedColumns.forEach(function(i){
+            getThOfIndex(i).classList.add('selected');
+        });
+        $("#data-preview thead th").each(function(i){
+            if(i > 0) {
+                var index = getIndexOfTh(this);
+                var serie = getSeriesOfIndex(index);
+                if(metadata.columnFormat.get(serie).ignore) {
+                    this.classList.add('ignored');
+                }
+                else {
+                    this.classList.remove('ignored');
+                }
+            }
         });
     }
 
-    function reload(f) {
-        chart.dataset(function(ds) {
-            if (f === undefined) {
-                if (chart.get('metadata.data.vertical-header') === undefined) {
-                    chart.set('metadata.data.vertical-header', isNaN(ds.series(0).data[0]));
+    function selectedSeries() {
+        var out = [];
+        selectedColumns.forEach(function(i){
+            out.push(getSeriesOfIndex(i));
+        });
+        return out;
+    }
+
+    function allEqual(formats, series, property) {
+        if (series.length > 1) {
+            for (var i = 1; i < series.length; i++) {
+                var a = formats[series[i]] && formats[series[i]][property];
+                var b = formats[series[i - 1]] && formats[series[i - 1]][property];
+                if (a !== b) {
+                    return false;
                 }
-                chart.sync('#has-vertical-headers', 'metadata.data.vertical-header');
             }
-            DW.dataset = ds;
-            updateTable(ds, chart);
+        }
+        return true;
+    }
+
+    function fillInField(selector, property) {
+        var series = selectedSeries();
+        var formats = chart.get('metadata.data.column-format', {});
+        var $input = $(selector);
+        if(allEqual(formats, series, property)) {
+            var val = formats[series[0]] && formats[series[0]][property];
+            $input.val(val).removeClass('unresolved');
+        }
+        else {
+            $input.val('').addClass('unresolved');
+            $input.change(function() {
+                fillInField(selector, property);
+            });
+        }
+    }
+
+    function showColumnSettings() {
+        if(selectedColumns.length) {
+            var serie = getSeriesOfIndex(selectedColumns[0]);
+            if(metadata.columnFormat.get(serie).ignore) {
+                $('#column-options-hide')[0].checked = true;
+            }
+            else {
+                $('#column-options-hide')[0].checked = false;
+            }
+
+            if(metadata.columnFormat.get(serie).type) {
+                $('#column-type').val(metadata.columnFormat.get(serie).type);
+            }
+            else {
+                $('#column-type').val('-');
+            }
+
+            if(dataset.column(serie).type() == 'number') {
+                fillInField('#number-format', 'number-format');
+                fillInField('#number-divisor', 'number-divisor');
+                fillInField('#number-append', 'number-append');
+                fillInField('#number-prepend', 'number-prepend');
+                $('#number-column-options').show();
+            }
+            else {
+                $('#number-column-options').hide();
+            }
+
+            // fill in default column type
+            var defOpt = $('#column-type option[value=-]'),
+                type = dataset.column(selectedColumns[0]).type();
+            _.each(selectedColumns, function(i) {
+                type = type == dataset.column(i).type() ? type : undefined;
+            });
+            defOpt.html(defOpt.data('label'));
+            if (type) {
+                // all selected columns have the same type
+                defOpt.html(defOpt.html()+' ('+$('#column-type option[value='+type+']').html()+')');
+            }
+
+            // update title
+            $('.selected-columns').text(_.map(selectedColumns.slice(0,3), function(c) {
+                return dataset.column(c).title();
+            }).join(', ') + (selectedColumns.length > 3 ? ', …' : ''));
+
+            $('#table-options').hide();
+            $('#column-options').show();
+        }
+        else {
+            $('#column-options').hide();
+            $('#table-options').show();
+        }
+    }
+
+    $('.sidebar').mousedown(function(event){
+        event.stopPropagation(); //stop sidebar event propagation so clicking in #column-options won't deselect column selection
+    });
+
+    $('#column-options-hide').change(function(){
+        var columnNames = [];
+        selectedColumns.forEach(function(i) {
+            columnNames.push(getSeriesOfIndex(i));
+        });
+        metadata.columnFormat.add(columnNames, 'ignore', this.checked);
+    });
+
+    function syncColumnFormat(selector, property) {
+        $(selector).change(function(){
+            var columnNames = [];
+            selectedColumns.forEach(function(i) {
+                columnNames.push(getSeriesOfIndex(i));
+            });
+            metadata.columnFormat.add(columnNames, property, this.value === '-' ? undefined : this.value);
+
+            if(property === 'type') {
+               showColumnSettings();
+            }
+        });
+    }
+
+    syncColumnFormat('#column-type', 'type');
+    syncColumnFormat('#number-format', 'number-format');
+    syncColumnFormat('#number-divisor', 'number-divisor');
+    syncColumnFormat('#number-append', 'number-append');
+    syncColumnFormat('#number-prepend', 'number-prepend');
+
+    function reload(f) {
+        chart.load().done(function() {
+            dataset = chart.dataset();
+            updateTable();
         });
     }
 
@@ -214,8 +534,14 @@ $(function() {
 
     reload();
 
-    $('#describe-proceed').click(function(e) {
-        chart.save();
+    $('a[href=visualize]').click(function(evt) {
+        if (chart.hasUnsavedChanges()) {
+            evt.preventDefault();
+            chart.onSave(function() {
+                location.href = 'visualize';
+            });
+            chart.save();
+        }
     });
 
 });
@@ -228,12 +554,7 @@ $(function() {
 
         <div class="span8">
 
-            <h2>{% trans "Check and Describe Your Data" %}</h2>
-
-            <p>
-                {% trans "Please check if the data format was recognized correctly." %}
-                {% trans "You can hide columns by clicking the table header." %}
-            </p>
+            <!--<h2>{% trans "Check and Describe Your Data" %}</h2>-->
 
             <form class="form-inline">
                 <div id="csv-parse-options" class="row">
@@ -246,88 +567,120 @@ $(function() {
             </form>
 
             <div id="data-preview"></div>
+
         </div>
 
-        <div class="span4"><div class="well">
+        <div class="span4">
+            <div class="well sidebar">
 
-            <h3>{% trans "Describe your data" %}</h3>
-            
-            <div style="margin-bottom:15px;">
-                
-                <div class="half">
+                <div id="table-options">
+
+                    <h3 style="margin-top:0">{% trans "Describe your data" %}</h3>
+
+                    <div>
+                        <p>
+                            <label class="checkbox"><input id="has-headers" type="checkbox" checked="checked"> {% trans "First row as label" %}</label>
+                            <label class="checkbox"><input id="transpose" type="checkbox"> {% trans "Transpose data table" %}</label>
+                        </p>
+                    </div>
+
+                    <p><b>{% trans "Hint:" %}</b> {% trans "You can customize the column formatting after selecting columns in the table header." %}</p>
+
+                    <h3 style="margin-top:20px">{% trans "Credit the source" %}</h3>
                     <p>
-                        <label class="radio"><input type="radio" name="transpose" value="yes" /> {% trans "Data series in rows" %}</label>
-                        <label class="radio"><input type="radio" name="transpose" value="no" /> {% trans "Data series in columns" %}</label>
+                        <label>{% trans "Who published the data in the first place?" %}</label>
+                        <input id="describe-source-name" type="text" placeholder="name of the organisation">
                     </p>
 
-                </div><div class="half">
                     <p>
-                        <label class="checkbox"><input id="has-horizontal-headers" type="checkbox" checked="checked"> {% trans "First row as label" %}</label>
-                        <label class="checkbox"><input id="has-vertical-headers" type="checkbox"> {% trans "First column as label" %}</label>
+                        <label>{% trans "If possible, please provide a link the source data" %}</label>
+                        <input id="describe-source-url" type="text" placeholder="http://">
                     </p>
+
                 </div>
-                <div class="clearfix"></div>
-            </div>
 
-            <h3>{% trans "Output number format" %}</h3>
+                <div id="column-options">
+                    <h3>{% trans "Column options" %} for <span class="selected-columns"></span></h3>
 
-            <div class="form-horizontal compact">
-                <div class="control-group">
-                    <label class="control-label" for="text-title">{% trans "Decimals after point" %}</label>
-                    <div class="controls">
-                       <select id="number-format" class="select number-format" style="width:90%">
-                            <option value="-">{% trans "keep original" %}</option>
-                            {% for id, format in numberformats %}
-                                <option value="{{ id }}">{{ format }}</option>
-                            {% endfor %}
-                        </select>
+                    <div class="form-horizontal compact">
+                        <div class="control-group">
+                            <label class="control-label" for="text-title">{% trans "Column type" %}</label>
+
+                            <div class="controls">
+                                <select id="column-type" class="select" style="width:90%">
+                                    <option data-label="{% trans "auto" %}" value="-"></option>
+                                    {% for type, typeLabel in columntypes %}
+                                        <option value="{{ type }}">{% trans typeLabel %}</option>
+                                    {% endfor %}
+                                </select>
+                                {# the following line ensures that the column type names are detected
+                                   by the xgettext parser, triggered by update-messages.sh #}
+                                <!--{% trans 'Text' %} {% trans 'Number' %}{% trans 'Date' %} -->
+                            </div>
+                        </div>
                     </div>
-                </div>
+
+                    <div id="number-column-options" class="form-horizontal compact">
+                        <label class="separator">{% trans "Output number format" %}</label>
+
+                        <div class="control-group">
+                            <label class="control-label" for="text-title">{% trans "Decimals after point" %}</label>
+
+                            <div class="controls">
+                                <select id="number-format" class="select number-format" style="width:90%">
+                                    <option value="-">{% trans "keep original" %}</option>
+                                    {% for id, format in numberformats %}
+                                        <option value="{{ id }}">{{ format }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
 
 
-                <div class="control-group">
-                    <label class="control-label" for="text-title">{% trans "Prepend/Append" %}</label>
-                    <div class="controls">
-                        <input type="text" id="number-prepend" style="width:2em;text-align:right" /> # <input type="text" id="number-append" style="width:5em" />
+                        <div class="control-group">
+                            <label class="control-label" for="text-title">{% trans "Prepend/Append" %}</label>
+
+                            <div class="controls">
+                                <input type="text" id="number-prepend" style="width:2em;text-align:right"/> # <input type="text" id="number-append" style="width:5em"/>
+                            </div>
+                        </div>
+
+
+                        <div class="control-group">
+                            <label class="control-label" for="text-title">{% trans "Divide numbers by" %}</label>
+
+                            <div class="controls">
+                                <select class="number-format" id="number-divisor" style="width:90%">
+                                    <option value="0">-</option>
+                                    <option value="3">{% trans "1000" %}</option>
+                                    <option value="6">{% trans "1 million" %}</option>
+                                    <option value="9">{% trans "1 billion" %}</option>
+                                    <optgroup label="─────────────"></optgroup>
+                                    <option value="-2">{% trans "One Percent" %}</option>
+
+                                </select>
+                            </div>
+                        </div>
+
                     </div>
-                </div>
 
+                    <div style="margin-bottom:15px;">
+                        <label class="separator">{% trans "Hide column" %}</label>
 
-                <div class="control-group">
-                    <label class="control-label" for="text-title">{% trans "Devide numbers by" %}</label>
-                    <div class="controls">
-                        <select class="number-format" id="number-divisor"  style="width:90%">
-                            <option value="0">-</option>
-                            <option value="3">{% trans "1000" %}</option>
-                            <option value="6">{% trans "1 million" %}</option>
-                            <option value="9">{% trans "1 billion" %}</option>
-                            <optgroup label="⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯"></optgroup>
-                            <option value="-2">{% trans "One Percent" %}</option>
-
-                        </select>
+                        <p>
+                            <label class="checkbox"><input id="column-options-hide" type="checkbox"> {% trans "Hide column from visualization" %}</label>
+                        </p>
                     </div>
+
+                    <div class="clearfix"></div>
                 </div>
-
-            </div>
-
-            <h3>{% trans "Credit the source" %}</h3>
-            <p>
-                <label>{% trans "Who published the data in the first place?" %}</label>
-                <input id="describe-source-name" type="text" placeholder="name of the organisation">
-            </p>
-            <p>
-                <label>{% trans "If possible, please provide a link the source data" %}</label>
-                <input id="describe-source-url" type="text" placeholder="http://">
-            </p>
-            <!--<h3>{% trans "Annotate data" %}</h3>
-            <p>{% trans "To make the data more useful for your readers you can add details to individual data points or an entire series. This information will be displayed in the visualisations." %} <a href="#">{% trans "Learn more" %}</a></p>
-            <button class="btn"><i class="icon-th-list"></i> {% trans "Annotate series" %}</button> <button class="btn"><i class="icon-th"></i> {% trans "Annotate data point" %}</button>
-            -->
 
                 <a href="visualize" class="submit pull-right btn btn-primary" id="describe-proceed">{% trans "Visualize" %} <i class="icon-chevron-right icon-white"></i></a>
                 <a class="btn submit" href="upload"><i class="icon-chevron-left"></i> {% trans "Back" %}</a>
+                <button class="btn disabled" id="reset-data-changes" title="{% trans "Revert data changes" %}">{% trans "Revert" %}</button>
                 <div class="clearfix"></div>
-        </div></div>
+            </div>
+        </div>
     </div>
 
     <div class="row">

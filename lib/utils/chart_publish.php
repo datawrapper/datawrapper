@@ -6,10 +6,6 @@ require_once '../../lib/utils/chart_content.php';
 require_once '../../vendor/jsmin/jsmin.php';
 
 
-function __cdn_path($chart) {
-    return $chart->getID() . '/' . $chart->getPublicVersion() . '/';
-}
-
 function publish_html($user, $chart) {
     $cdn_files = array();
 
@@ -24,53 +20,45 @@ function publish_html($user, $chart) {
     $chart->setLastEditStep(5);
     $chart->save();
 
-    $cdn_files[] = array($outf, __cdn_path($chart) . 'index.html', 'text/html');
-    $cdn_files[] = array($static_path . '/plain.html', __cdn_path($chart) . 'plain.html', 'text/html');
-    $cdn_files[] = array($static_path . '/fs.html', __cdn_path($chart) . 'fs.html', 'text/html');
+    $cdn_files[] = array($outf, $chart->getCDNPath() . 'index.html', 'text/html');
+    $cdn_files[] = array($static_path . '/plain.html', $chart->getCDNPath() . 'plain.html', 'text/html');
+    $cdn_files[] = array($static_path . '/fs.html', $chart->getCDNPath() . 'fs.html', 'text/html');
 
     return $cdn_files;
 }
 
 function publish_js($user, $chart) {
     $cdn_files = array();
-    $static_path = $static_path = '../../charts/static/lib/';
+    $static_path = '../../charts/static/lib/';
     $data = get_chart_content($chart, $user, false, '../');
 
     // generate visualization script
     $vis = $data['visualization'];
-    $vis_path = 'vis/' . $vis['id'] . '-' . $vis['version'] . '.min.js';
-    if (!file_exists($static_path . $vis_path)) {
-        $all = '';
-        foreach ($data['visJS'] as $js) {
-            if (substr($js, 0, 7) != 'http://' && substr($js, 0, 2) != '//') {
-                $all .= "\n\n\n" . file_get_contents('..' . $js);
-            }
-        }
-        $all = JSMin::minify($all);
-        $all = file_get_contents('../static/js/datawrapper.min.js') . "\n\n" . $all;
-        file_put_contents($static_path . $vis_path, $all);
+    $vis_js = $data['vis_js'];
+    if (!file_exists($static_path . $vis_js[0])) {
+        // add comment
+        $vis_js[1] = "/*\n * datawrapper / vis / {$vis['id']} v{$vis['version']}\n"
+                   . " * generated on ".date('c')."\n */\n"
+                   . $vis_js[1];
+        file_put_contents($static_path . $vis_js[0], $vis_js[1]);
         $cdn_files[] = array(
-            $static_path . $vis_path,
-            'lib/' . $vis_path,
+            $static_path . $vis_js[0],
+            'lib/' . $vis_js[0],
             'application/javascript'
         );
     }
 
     // generate theme script
     $theme = $data['theme'];
-    $theme_path = 'theme/' . $theme['id'] . '-' . $theme['version'] . '.min.js';
+    $theme_js = $data['theme_js'];
 
-    if (!file_exists($static_path . $theme_path)) {
-        $all = '';
-        foreach ($data['themeJS'] as $js) {
-            if (substr($js, 0, 7) != 'http://' && substr($js, 0, 2) != '//') {
-                $all .= "\n\n\n" . file_get_contents('..' . $js);
-            }
-        }
-        $minified = JSMin::minify($all);
-        file_put_contents($static_path . $theme_path, $minified);
+    if (!file_exists($static_path . $theme_js[0])) {
+        $theme_js[1] = "/*\n * datawrapper / theme / {$theme['id']} v{$theme['version']}\n"
+                     . " * generated on ".date('c')."\n */\n"
+                     . $theme_js[1];
+        file_put_contents($static_path . $theme_js[0], $theme_js[1]);
     }
-    $cdn_files[] = array($static_path . $theme_path, 'lib/' . $theme_path, 'application/javascript');
+    $cdn_files[] = array($static_path . $theme_js[0], 'lib/' . $theme_js[0], 'application/javascript');
     return $cdn_files;
 }
 
@@ -102,7 +90,7 @@ function publish_css($user, $chart) {
 
     $cdn_files[] = array(
         $static_path."/".$chart->getID().'.min.css',
-        __cdn_path($chart) . $chart->getID().'.min.css', 'text/css'
+        $chart->getCDNPath() . $chart->getID().'.min.css', 'text/css'
     );
 
     // copy themes assets
@@ -113,20 +101,18 @@ function publish_css($user, $chart) {
             $asset_tgt = $static_path . "/" . $asset;
             if (file_exists($asset_src)) {
                 file_put_contents($asset_tgt, file_get_contents($asset_src));
-                $cdn_files[] = array($asset_src, __cdn_path($chart) . '' . $asset);
+                $cdn_files[] = array($asset_src, $chart->getCDNPath() . $asset);
             }
         }
     }
 
     // copy visualization assets
-    $vis  = $data['visualization'];
-    $src  = '..'.$vis['__static_path'];
-    $dest = '../../charts/static/' . $chart->getID();
-    if (isset($vis['assets'])) {
-        foreach ($vis['assets'] as $asset) {
-            copy( $src.DIRECTORY_SEPARATOR.$asset, $dest.DIRECTORY_SEPARATOR.$asset );
-            $cdn_files[] = array($dest.DIRECTORY_SEPARATOR.$asset, __cdn_path($chart) . $asset);
-        }
+    $vis           = $data['visualization'];
+    $asset_src     = '../../www' . $vis['__static_path'];
+    $asset_tgt     = $static_path;
+    $assets_copied = copy_recursively($asset_src, $asset_tgt);
+    foreach ($assets_copied as $asset) {
+        $cdn_files[] = array($asset_src . $asset, $chart->getCDNPath() . $asset);
     }
 
     return $cdn_files;
@@ -137,7 +123,7 @@ function publish_data($user, $chart) {
     $cdn_files = array();
     $static_path = get_static_path($chart);
     file_put_contents($static_path . "/data", $chart->loadData());
-    $cdn_files[] = array($static_path . "/data", __cdn_path($chart) . 'data', 'text/plain');
+    $cdn_files[] = array($static_path . "/data", $chart->getCDNPath() . 'data', 'text/plain');
 
     return $cdn_files;
 }
