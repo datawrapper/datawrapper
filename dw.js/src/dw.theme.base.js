@@ -20,6 +20,21 @@ dw.theme.base = {
     },
 
     /*
+     * gradients used by color gradient selectors
+     */
+    gradients: [
+        // sequential
+        ['#f0f9e8', '#08589e'],  // GnBu
+        ['#fef0d9', '#990000'],  // OrRd
+        ['#eff3ff', '#084594'],  // Blues
+        ['#f7f7f7', '#252525'],  // Greys
+        // diverging
+        ['#8c510a', '#f5f5f5', '#01665e'],  // BrBG
+        ['#c51b7d', '#f7f7f7', '#4d9221'],  // PiYG
+        ['#b2182b', '#f7f7f7', '#2166ac'],  // RdBu
+    ],
+
+    /*
      * padding around the chart area
      */
     padding: {
@@ -149,4 +164,5 @@ dw.theme.base = {
      * easing for animated transitions
      */
      easing: 'expoInOut'
+
 };
