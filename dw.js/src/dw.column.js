@@ -94,8 +94,9 @@ dw.column = function(name, rows, type) {
          * returns an array of parsed values
          */
         values: function(unfiltered) {
-            var rows = _.map(unfiltered ? origRows : rows, dw.utils.purifyHtml);
-            return _.map(rows, type.parse);
+            var r = unfiltered ? origRows : rows;
+            r = _.map(r, dw.utils.purifyHtml);
+            return _.map(r, type.parse);
         },
 
         /**

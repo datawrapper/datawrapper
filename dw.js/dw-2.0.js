@@ -223,8 +223,9 @@ dw.column = function(name, rows, type) {
          * returns an array of parsed values
          */
         values: function(unfiltered) {
-            var rows = _.map(unfiltered ? origRows : rows, dw.utils.purifyHtml);
-            return _.map(rows, type.parse);
+            var r = unfiltered ? origRows : rows;
+            r = _.map(r, dw.utils.purifyHtml);
+            return _.map(r, type.parse);
         },
 
         /**
@@ -916,10 +917,19 @@ dw.utils = {
         return maxH;
     },
 
-    /** Remove all html tags from the given string */
+    /*
+     * Remove all html tags from the given string
+     *
+     * written by Kevin van Zonneveld et.al.
+     * taken from https://github.com/kvz/phpjs/blob/master/functions/strings/strip_tags.js
+     */
     purifyHtml: function(input, allowed) {
-        if (typeof(input) != "string") { return input; }
-        if (allowed === undefined) { allowed = "<b><br><br/><i><strong>"; }
+        if (!_.isString(input)) {
+            return input;
+        }
+        if (allowed === undefined) {
+            allowed = "<b><br><br/><i><strong>";
+        }
         allowed  = (((allowed || "") + "").toLowerCase().match(/<[a-z][a-z0-9]*>/g) || []).join(''); // making sure the allowed arg is a string containing only tags in lowercase (<a><b><c>)
         var tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>/gi,
             commentsAndPhpTags = /<!--[\s\S]*?-->|<\?(?:php)?[\s\S]*?\?>/gi;
