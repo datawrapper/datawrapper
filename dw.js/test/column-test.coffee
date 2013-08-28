@@ -42,5 +42,10 @@ vows
             'parsed valid value is a Date': (topic) ->
                 assert _.isDate(topic.val(2))
 
+        'API':
+            'topic': dw.column('', sample_data)
+            'column.raw': (topic) -> assert.deepEqual topic.raw(), sample_data
+            'column.values': (topic) -> assert.equal topic.values().length, sample_data.length
+
 
     .export module
