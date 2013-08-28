@@ -219,11 +219,24 @@
             w -= $('body').css('padding-left').replace('px', '');
             w -= $('body').css('padding-right').replace('px', '');
 
-            if (__dw.vis) __dw.vis.reset();
+            if (__dw.vis && !__dw.vis.supportsSmartRendering()) {
+                // a current visualization exists but it is not smart
+                // enough to re-render itself properly, so we need to
+                // reset and remove it
+                __dw.vis.reset();
+            }
 
-            var vis = __dw.vis = getVis();
-            chart.vis(vis);
-            vis.size(w, h);
+            var vis;
+            if (__dw.vis && __dw.vis.supportsSmartRendering()) {
+                // a current visualization exists and it is smart enough
+                // to re-render itself
+                vis = __dw.vis;
+            } else {
+                // we have to create a new vis
+                vis = __dw.vis = getVis();
+                chart.vis(vis);
+                vis.size(w, h);
+            }
 
             initResizeHandler();
             initFullscreen();

@@ -1614,6 +1614,14 @@ _.extend(dw.visualization.base, {
 
     rendered: function() {
         return this.__renderedDfd.promise();
+    },
+
+    /*
+     * smart rendering means that a visualization is able to
+     * re-render itself without having to instantiate it again
+     */
+    supportsSmartRendering: function() {
+        return false;
     }
 
 });
