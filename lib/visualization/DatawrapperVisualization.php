@@ -12,8 +12,8 @@ class DatawrapperVisualization {
     /*
      * registers a new visualization, should be called by plugins
      */
-    public static function register($plugin, $meta) {
-        return self::getInstance()->_register($plugin, $meta);
+    public static function register($plugin, $meta, $asset_callback = null) {
+        return self::getInstance()->_register($plugin, $meta, $asset_callback);
     }
 
     /*
@@ -26,17 +26,34 @@ class DatawrapperVisualization {
      */
     public static function get($id) { return self::getInstance()->_get($id); }
 
+    /*
+     * returns a list of dynamic assets needed by a visualization
+     * to render a specific chart
+     */
+    public static function assets($vis_id, $chart) { return self::getInstance()->_assets($vis_id, $chart); }
+
     //
     // non-static definitions below
     //
 
     private $visualizations = array();
+    private $vis_asset_callbacks = array();
 
-    public function _register($plugin, $meta) {
+    public function _register($plugin, $meta, $asset_callback = null) {
         // we save the path to the static files of the visualization
         $meta['__static_path'] =  '/static/plugins/' . $plugin->getName() . '/';
         $meta['version'] = $plugin->getVersion();
         $this->visualizations[$meta['id']] = $meta;
+        if ($asset_callback) {
+            $this->vis_asset_callbacks[$meta['id']] = $asset_callback;
+        }
+    }
+
+    public function _assets($vis_id, $chart) {
+        if ($this->vis_asset_callbacks[$vis_id]) {
+            return call_user_func_array($this->vis_asset_callbacks[$vis_id], array($chart));
+        }
+        return array();
     }
 
     private function _all($sort = 'order') {
