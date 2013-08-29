@@ -4,6 +4,7 @@
 function get_chart_content($chart, $user, $published = false, $debug = false) {
     $theme_css = array();
     $theme_js = array();
+    $protocol = !empty($_SERVER['HTTPS']) ? "https" : "http";
 
     $next_theme_id = $chart->getTheme();
 
@@ -18,18 +19,18 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
         $next_theme_id = $theme['extends'];
     }
 
-    $abs = '//' . $GLOBALS['dw_config']['domain'];
+    $abs = $protocol . '://' . $GLOBALS['dw_config']['domain'];
 
     $debug = $GLOBALS['dw_config']['debug'] == true || $debug;
 
     if ($published && !$debug) {
         $base_js = array(
-            '//assets-datawrapper.s3.amazonaws.com/globalize.min.js',
-            '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.1/underscore-min.js',
-            '//cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.min.js'
+            $protocol . '://assets-datawrapper.s3.amazonaws.com/globalize.min.js',
+            $protocol . '://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.1/underscore-min.js',
+            $protocol . '://cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.min.js'
         );
         if (substr($locale, 0, 2) != 'en') {
-            $base_js[] = '//assets-datawrapper.s3.amazonaws.com/cultures/globalize.culture.' . str_replace('_', '-', $locale) . '.js';
+            $base_js[] = $protocol . '://assets-datawrapper.s3.amazonaws.com/cultures/globalize.culture.' . str_replace('_', '-', $locale) . '.js';
         }
     } else {
         // use local assets
@@ -124,7 +125,7 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
     $cfg = $GLOBALS['dw_config'];
     $published_urls = DatawrapperHooks::execute(DatawrapperHooks::GET_PUBLISHED_URL, $chart);
     if (empty($published_urls)) {
-        $chart_url = '//' . $cfg['chart_domain'] . '/' . $chart->getID() . '/';
+        $chart_url = $protocol . '://' . $cfg['chart_domain'] . '/' . $chart->getID() . '/';
     } else {
         $chart_url = $published_urls[0];  // ignore urls except from the first one
     }
@@ -136,8 +137,8 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
         'metricPrefix' => get_metric_prefix($locale),
         'l10n__domain' => $the_theme['__static_path'],
         'origin' => !empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '',
-        'DW_DOMAIN' => '//' . $cfg['domain'] . '/',
-        'DW_CHART_DATA' => '//' . $cfg['domain'] . '/chart/' . $chart->getID() . '/data',
+        'DW_DOMAIN' => $protocol . '://' . $cfg['domain'] . '/',
+        'DW_CHART_DATA' => $protocol . '://' . $cfg['domain'] . '/chart/' . $chart->getID() . '/data',
         'ASSET_PATH' => $published ? '' : $the_theme['__static_path'],
         'chartUrl' => $chart_url,
         'embedCode' => '<iframe src="' .$chart_url. '" frameborder="0" allowtransparency="true" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen width="'.$chart->getMetadata('publish.embed-width') . '" height="'. $chart->getMetadata('publish.embed-height') .'"></iframe>',
@@ -168,7 +169,7 @@ function get_vis_js($vis, $visJS) {
     // merge vis js into a single file
     $all = '';
     foreach ($visJS as $js) {
-        if (substr($js, 0, 7) != 'http://' && substr($js, 0, 2) != '//') {
+        if (substr($js, 0, 7) != "http://" && substr($js, 0, 8) != "https://" && substr($js, 0, 2) != '//') {
             $all .= "\n\n\n" . file_get_contents(ROOT_PATH . 'www' . $js);
         }
     }
@@ -188,7 +189,7 @@ function get_vis_js($vis, $visJS) {
 function get_theme_js($theme, $themeJS) {
     $all = '';
     foreach ($themeJS as $js) {
-        if (substr($js, 0, 7) != 'http://' && substr($js, 0, 2) != '//') {
+        if (substr($js, 0, 7) != "http://" && substr($js, 0, 8) != "https://" && substr($js, 0, 2) != '//') {
             $all .= "\n\n\n" . file_get_contents(ROOT_PATH . 'www' . $js);
         }
     }

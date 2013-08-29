@@ -88,11 +88,11 @@ $app->post('/users', function() use ($app) {
     $result = $user->toArray();
 
     // send an email
-    $name   = $data->email;
-    $domain = $GLOBALS['dw_config']['domain'];
-
+    $name     = $data->email;
+    $domain   = $GLOBALS['dw_config']['domain'];
+    $protocol = !empty($_SERVER['HTTPS']) ? "https" : "http";
     if ($invitation) {
-        $invitationLink = 'http://' . $domain . '/account/invite/' . $user->getActivateToken();
+        $invitationLink = $protocol . '://' . $domain . '/account/invite/' . $user->getActivateToken();
         $from = $GLOBALS['dw_config']['email']['invite'];
         include(ROOT_PATH . 'lib/templates/invitation-email.php');
         DatawrapperHooks::execute(
@@ -100,7 +100,7 @@ $app->post('/users', function() use ($app) {
             $data->email, sprintf(__('You have been invited to %s'), $domain), $invitation_mail, 'From: ' . $from
         );
     } else {
-        $activationLink = 'http://' . $domain . '/account/activate/' . $user->getActivateToken();
+        $activationLink = $protocol . '://' . $domain . '/account/activate/' . $user->getActivateToken();
         $from = $GLOBALS['dw_config']['email']['activate'];
         include(ROOT_PATH . 'lib/templates/activation-email.php');
         DatawrapperHooks::execute(
