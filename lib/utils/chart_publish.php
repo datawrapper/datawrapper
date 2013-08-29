@@ -107,12 +107,12 @@ function publish_css($user, $chart) {
     }
 
     // copy visualization assets
-    $vis           = $data['visualization'];
-    $asset_src     = '../../www' . $vis['__static_path'];
-    $asset_tgt     = $static_path;
-    $assets_copied = copy_recursively($asset_src, $asset_tgt);
-    foreach ($assets_copied as $asset) {
-        $cdn_files[] = array($asset_src . $asset, $chart->getCDNPath() . $asset);
+    $vis = $data['visualization'];
+    $assets = DatawrapperVisualization::assets($vis['id'], $chart);
+    foreach ($assets as $asset) {
+        $asset_src = '../../www/' . $asset;
+        copy($asset_src, $static_path . 'assets/' . $asset);
+        $cdn_files[] = array($asset_src, $chart->getCDNPath() . 'assets/' . $asset);
     }
 
     return $cdn_files;
