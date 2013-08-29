@@ -10,8 +10,8 @@ _.extend(dw.visualization.base, {
     // called before rendering
     __init: function() {
         this.__renderedDfd = $.Deferred();
-        if (dw.backend) {
-            parent.$('body').trigger('datawrapper:vis:init');
+        if (window.parent && window.parent['postMessage']) {
+            window.parent.postMessage('datawrapper:vis:init', '*');
         }
         return this;
     },
@@ -56,6 +56,7 @@ _.extend(dw.visualization.base, {
 
     notify: function(str) {
         if (dw.backend && _.isFunction(dw.backend.notify)) dw.backend.notify(str);
+        else if (window['console']) console.log(str);
     },
 
     /**
