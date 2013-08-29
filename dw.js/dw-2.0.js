@@ -1086,8 +1086,9 @@ dw.utils.filter = function (column, active, type, format) {
             })
              .data('last-txt', lfmt(column.val(active)))
              .data('last-left', lbl_x(active));
+
             $('span', lbl).css({
-                background: vis.theme.colors.background,
+                background: vis.theme().colors.background,
                 'font-weight': 'bold',
                 'padding': '0 1ex'
             }).html(lfmt(column.val(active)));
