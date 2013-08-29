@@ -11,6 +11,7 @@ CHANGELOG
 * removing most HTML from chart data
 * throtteling chart re-rendering in vis editor
 * visualizations can now support smart re-rendering (instead of full reloads)
+* fixed bug in data-table
 * some more bugfixes
 
 ### 1.5.1
