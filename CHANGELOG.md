@@ -1,6 +1,9 @@
 CHANGELOG
 ---------
 
+### 1.5.2
+* allowed visualization to support 'smart re-rendering'
+
 ### 1.5.1
 * automatically creating a new hashed url for theme javascript
 * visualization throws exception if data is insufficient
