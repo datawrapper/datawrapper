@@ -98,8 +98,8 @@
                 "formatted-date-pre": function ( a ) {
                     return Globalize.parseDate(a);
                 },
-                "formatted-date-asc": function ( a, b ) {return a.getTime() - b.getTime();},
-                "formatted-date-desc": function ( a, b ) {return b.getTime() - a.getTime();}
+                "formatted-date-asc": function ( a, b ) {return a & b ? a.getTime() - b.getTime() : 0;},
+                "formatted-date-desc": function ( a, b ) {return a & b ? b.getTime() - a.getTime() : 0;}
             });
 
             // set a list of column types for datatable.js (in order to support ordering)
