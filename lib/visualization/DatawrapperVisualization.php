@@ -50,7 +50,7 @@ class DatawrapperVisualization {
     }
 
     public function _assets($vis_id, $chart) {
-        if ($this->vis_asset_callbacks[$vis_id]) {
+        if (isset($this->vis_asset_callbacks[$vis_id])) {
             return call_user_func_array($this->vis_asset_callbacks[$vis_id], array($chart));
         }
         return array();
