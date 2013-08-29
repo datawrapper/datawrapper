@@ -1427,7 +1427,6 @@ _.extend(dw.visualization.base, {
     __init: function() {
         this.__renderedDfd = $.Deferred();
         if (window.parent && window.parent['postMessage']) {
-            console.log('posting message');
             window.parent.postMessage('datawrapper:vis:init', '*');
         }
         return this;
@@ -1473,11 +1472,7 @@ _.extend(dw.visualization.base, {
 
     notify: function(str) {
         if (dw.backend && _.isFunction(dw.backend.notify)) dw.backend.notify(str);
-        else {
-            if (window['console']) {
-                console.log(str);
-            }
-        }
+        else if (window['console']) console.log(str);
     },
 
     /**
