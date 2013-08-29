@@ -1,4 +1,5 @@
 {
+    "name": "publish-s3",
 	"version": "0.1",
 	"author": "Gregor Aisch",
 	"createdAt": "2013",

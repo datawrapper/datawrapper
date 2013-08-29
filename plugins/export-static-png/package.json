@@ -1,4 +1,5 @@
 {
+    "name": "export-static-png",
     "version": "1.0.0",
     "dependencies": {
         "phantomjs": "*"
