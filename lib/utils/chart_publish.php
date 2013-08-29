@@ -110,8 +110,10 @@ function publish_css($user, $chart) {
     $vis = $data['visualization'];
     $assets = DatawrapperVisualization::assets($vis['id'], $chart);
     foreach ($assets as $asset) {
-        $asset_src = '../../www/' . $asset;
-        copy($asset_src, $static_path . 'assets/' . $asset);
+        $asset_src = ROOT_PATH . 'www/static/' . $asset;
+        $asset_tgt = $static_path . '/assets/' . $asset;
+        create_missing_directories($asset_tgt);
+        copy($asset_src, $asset_tgt);
         $cdn_files[] = array($asset_src, $chart->getCDNPath() . 'assets/' . $asset);
     }
 
