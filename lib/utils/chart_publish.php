@@ -3,7 +3,6 @@
 require_once '../../vendor/cssmin/cssmin.php';
 require_once '../../lib/utils/themes.php';
 require_once '../../lib/utils/chart_content.php';
-require_once '../../vendor/jsmin/jsmin.php';
 
 
 function publish_html($user, $chart) {
@@ -107,12 +106,14 @@ function publish_css($user, $chart) {
     }
 
     // copy visualization assets
-    $vis           = $data['visualization'];
-    $asset_src     = '../../www' . $vis['__static_path'];
-    $asset_tgt     = $static_path;
-    $assets_copied = copy_recursively($asset_src, $asset_tgt);
-    foreach ($assets_copied as $asset) {
-        $cdn_files[] = array($asset_src . $asset, $chart->getCDNPath() . $asset);
+    $vis = $data['visualization'];
+    $assets = DatawrapperVisualization::assets($vis['id'], $chart);
+    foreach ($assets as $asset) {
+        $asset_src = ROOT_PATH . 'www/static/' . $asset;
+        $asset_tgt = $static_path . '/assets/' . $asset;
+        create_missing_directories($asset_tgt);
+        copy($asset_src, $asset_tgt);
+        $cdn_files[] = array($asset_src, $chart->getCDNPath() . 'assets/' . $asset);
     }
 
     return $cdn_files;

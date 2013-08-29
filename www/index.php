@@ -7,7 +7,7 @@
 
 
 
-define('DATAWRAPPER_VERSION', '1.5.1');  // must be the same as in package.json
+define('DATAWRAPPER_VERSION', '1.5.2');  // must be the same as in package.json
 
 define('ROOT_PATH', '../');
 
@@ -34,7 +34,7 @@ function toJSON($arr) {
 // Twig Extension to clean HTML from malicious code
 require_once '../vendor/htmlpurifier/HTMLPurifier.standalone.php';
 $config = HTMLPurifier_Config::createDefault();
-$config->set('HTML.Allowed', 'a[href],p,b,strong,u,i,em,q,blockquote,*[style]');
+$config->set('HTML.Allowed', 'a[href],p,b,strong,u,i,em,q,blockquote,*[style],br,small');
 $_HTMLPurifier = new HTMLPurifier($config);
 $twig->addFilter('purify', new Twig_Filter_Function('str_purify'));
 

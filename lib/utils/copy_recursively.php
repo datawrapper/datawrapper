@@ -24,3 +24,19 @@ function copy_recursively($source_path, $target_path) {
     }
     return $files_copied;
 }
+
+
+/*
+ * takes a given path and creates directories
+ */
+function create_missing_directories($path) {
+    $missing = array();
+    if (!is_dir($path)) $path = dirname($path);
+    while (!file_exists($path)) {
+        $missing[] = $path;
+        $path = dirname($path);
+    }
+    while ($path = array_pop($missing)) {
+        mkdir($path);
+    }
+}

@@ -174,7 +174,7 @@ function update($pattern) {
             if ($repo['type'] == 'git') {
                 if (file_exists($plugin->getPath() . '.git/config')) {
                     $ret = array();
-                    exec('cd '.$plugin->getPath().'; git pull 2>&1', $ret, $err);
+                    exec('cd '.$plugin->getPath().'; git pull origin master 2>&1', $ret, $err);
                     if ($ret[count($ret)-1] == 'Already up-to-date.') {
                         print "Plugin $id is up-to-date.\n";
                     } else {
@@ -188,7 +188,9 @@ function update($pattern) {
                 print "Skipping $id: Unhandled repository type ".$repo['type'].".\n";
             }
         } else {
-            print "Skipping $id: No repository information found in package.json.\n";
+            if (file_exists($plugin->getPath() . '.git/config')) {
+                print "Skipping $id: No repository information found in package.json.\n";
+            }
         }
     });
     exit();

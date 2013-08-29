@@ -2,21 +2,23 @@
 
 <fieldset id="visOptions">
 
-    {% if not vis.options['select-color'] or vis.options['select-color']["default"]  %}
-        <div class="control-group select-color">
-            <label class="control-label" for="select-color">{% trans "Choose a base color" %}</label>
-            <div class="controls">
-                <div id="select-color"></div>
+    {% if not vis['hide-base-color-selector'] %}
+        {% if not vis.options['select-color'] or vis.options['select-color']["default"]  %}
+            <div class="control-group select-color">
+                <label class="control-label" for="select-color">{% trans "Choose a base color" %}</label>
+                <div class="controls">
+                    <div id="select-color"></div>
+                </div>
             </div>
-        </div>
-    {% endif %}
-    {% if not vis.options['custom-color'] or vis.options['custom-color']["default"]  %}
-        <div class="control-group">
-            <label class="control-label"></label>
-            <div class="controls">
-                <a class="btn btn-small" role="button" onclick="$('#customColors').show();$('#visOptions').hide();">{% trans "or define custom colors" %}</a>
+        {% endif %}
+        {% if not vis.options['custom-color'] or vis.options['custom-color']["default"]  %}
+            <div class="control-group">
+                <label class="control-label"></label>
+                <div class="controls">
+                    <a class="btn btn-small" role="button" onclick="$('#customColors').show();$('#visOptions').hide();">{% trans "or define custom colors" %}</a>
+                </div>
             </div>
-        </div>
+        {% endif %}
     {% endif %}
 
     {% if vis.dimensions == 1 %}
