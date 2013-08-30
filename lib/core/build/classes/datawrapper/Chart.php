@@ -178,6 +178,23 @@ class Chart extends BaseChart {
         return $p;
     }
 
+    /*
+     * update a part of the metadata
+     */
+    public function updateMetadata($key, $value) {
+        $meta = $this->getMetadata();
+        $keys = explode('.', $key);
+        $p = &$meta;
+        foreach ($keys as $key) {
+            if (!isset($p[$key])) {
+                $p[$key] = array();
+            }
+            $p = &$p[$key];
+        }
+        $p = $value;
+        $this->setMetadata(json_encode($meta));
+    }
+
     public function isPublic() {
         // 1 = upload, 2 = describe, 3 = visualize, 4 = publish, 5 = published
         return !$this->getDeleted() && $this->getLastEditStep() >= 4;

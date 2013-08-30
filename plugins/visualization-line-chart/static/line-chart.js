@@ -172,6 +172,7 @@
                     tickFormat = dw.utils.dateFormat(daysDelta),
                     last_month = -1, new_month,
                     last_year = -1, new_year,
+                    last_day = -1, new_day,
                     new_decade, new_quarter,
                     real_data_as_ticks = false;
 
@@ -181,6 +182,7 @@
                 }
 
                 _.each(ticks, function(date, i) {
+                    new_day = date.getDate() != last_day;
                     new_month = date.getMonth() != last_month;
                     new_quarter = new_month && (date.getMonth() % 3 === 0);
                     new_year = date.getFullYear() != last_year;
@@ -191,9 +193,10 @@
                     if (fmt == 'YYYY' && i > 0 && i < ticks.length-1) {
                         lbl = '’'+String(date.getFullYear()).substr(2);
                     }
-                    vis.label(x, y, lbl, { align: 'center', cl: 'axis x-axis'});
+                    var l = vis.label(x, y, lbl, { align: 'center', cl: 'axis x-axis'});
                     if (
-                        ((daysDelta <= 90 && new_month) ||
+                        ((daysDelta <= 7 && new_day) ||
+                        (daysDelta <= 90 && new_month) ||
                         (daysDelta > 90 && daysDelta <= 500 && new_quarter) ||
                         (daysDelta > 500 && daysDelta < 3650 && new_year) ||  // less between two and ten years
                         (daysDelta >= 3650 && new_decade)) ||  // less between two and ten years
@@ -203,7 +206,10 @@
                             vis.path('M'+[x, c.h - c.bpad] + 'V' + c.tpad, 'grid')
                                 .attr(theme.horizontalGrid);
                         }
+                    } else {
+                        l.el.addClass('minor-tick');
                     }
+                    last_day = date.getDate();
                     last_month = date.getMonth();
                     last_year = date.getFullYear();
                 });

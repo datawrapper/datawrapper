@@ -1,8 +1,23 @@
 CHANGELOG
 ---------
 
+### 1.5.3
+* allowing external websites to provide data and some chart preset
+* improved parsing of dates
+* improved formatting of dates
+
 ### 1.5.2
-* allowed visualization to support 'smart re-rendering'
+* publishing just the assets needed by visualizations
+* visualizations are now able to specify assets dynamically
+* simplified dw.js/make: using jsmin.php if uglifyjs not available on server
+* allowing some html in chart titles
+* updated chroma.js
+* themes can now define some gradients
+* removing most HTML from chart data
+* throtteling chart re-rendering in vis editor
+* visualizations can now support smart re-rendering (instead of full reloads)
+* fixed bug in data-table
+* some more bugfixes
 
 ### 1.5.1
 * automatically creating a new hashed url for theme javascript

@@ -23,7 +23,7 @@ dw.utils = {
         var new_month = true, last_date = false;
         function timeFormat(formats) {
             return function(date) {
-                new_month = last_date && date.getMonth() != last_date.getMonth();
+                new_month = !last_date || date.getMonth() != last_date.getMonth();
                 last_date = date;
                 var i = formats.length - 1, f = formats[i];
                 while (!f[1](date)) f = formats[--i];
@@ -31,16 +31,36 @@ dw.utils = {
             };
         }
 
+        function time_fmt(fmt) {
+            var format = function(date) {
+                var r = Globalize.format(date, fmt);
+                return fmt != 'htt' ? r : r.toLowerCase();
+            };
+            return format;
+        }
+
+        var fmt = (function(lang) {
+            return {
+                date: lang == 'de' ? "dd." : "dd",
+                hour: lang != 'en' ? "H:00" : "htt",
+                minute: lang == 'de' ? "H:mm" : 'h:mm',
+                mm: lang == 'de' ? 'd.M.' : 'MM/dd',
+                mmm: lang == 'de' ? 'd.MMM' : 'MMM dd',
+                mmmm: lang == 'de' ? 'd. MMMM' : 'MMMM dd'
+            };
+        })(Globalize.culture().language);
+
+        // use globalize instead of d3
         return timeFormat([
-            [d3.time.format("%Y"), function() { return true; }],
-            [d3.time.format(daysDelta > 70 ? "%b" : "%B"), function(d) { return d.getMonth() !== 0; }],  // not January
-            [d3.time.format("%d"), function(d) { return d.getDate() != 1; }],  // not 1st of month
-            [d3.time.format(daysDelta > 70 ? "%b %d" : "%B %d"), function(d) { return d.getDate() != 1 && new_month; }],  // not 1st of month
-            //[d3.time.format("%a %d"), function(d) { return d.getDay() && d.getDate() != 1; }],  // not monday
-            [d3.time.format("%I %p"), function(d) { return d.getHours(); }],
-            [d3.time.format("%I:%M"), function(d) { return d.getMinutes(); }],
-            [d3.time.format(":%S"), function(d) { return d.getSeconds(); }],
-            [d3.time.format(".%L"), function(d) { return d.getMilliseconds(); }]
+            [time_fmt("yyyy"), function() { return true; }],
+            [time_fmt(daysDelta > 70 ? "MMM" : "MMMM"), function(d) { return d.getMonth() !== 0; }],  // not January
+            [time_fmt(fmt.date), function(d) { return d.getDate() != 1; }],  // not 1st of month
+            [time_fmt(daysDelta < 7 ? fmt.mm : daysDelta > 70 ? fmt.mmm : fmt.mmmm), function(d) { return d.getDate() != 1 && new_month; }],  // not 1st of month
+            //[time_fmt("%a %d"), function(d) { return d.getDay() && d.getDate() != 1; }],  // not monday
+            [time_fmt(fmt.hour), function(d) { return d.getHours(); }],
+            [time_fmt(fmt.minute), function(d) { return d.getMinutes(); }],
+            [time_fmt(":ss"), function(d) { return d.getSeconds(); }],
+            [time_fmt(".fff"), function(d) { return d.getMilliseconds(); }]
         ]);
     },
 

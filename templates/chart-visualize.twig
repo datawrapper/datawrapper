@@ -226,7 +226,7 @@ $(function() {
     // load dataset
     function _getHighlights() {
         var sel = chart.get('metadata.visualize.highlighted-series');
-        return _.isArray(sel) ? sel.slice() : [];
+        return _.isArray(sel) ? sel.slice(0) : [];
     }
 
     function highlightSeriesClick(e) {
@@ -298,7 +298,7 @@ $(function() {
             iframe_h = $('#iframe-vis').height();
 
         if (vis_h > iframe_h+5) {
-            dw.backend.logMessage('{{ "Watch out: Your chart needs more space. To get rid of the scrollbars just [resize iFrame to chart]" | trans | escape('js') }}'.replace('[', '<a href="#" id="resize-iframe">').replace(']', '</a>'), $('.resize-chart-wrap'), 'warning');
+            dw.backend.notify('{{ "Watch out: Your chart needs more space. To get rid of the scrollbars just [resize iFrame to chart]" | trans | escape('js') }}'.replace('[', '<a href="#" id="resize-iframe">').replace(']', '</a>'), $('.resize-chart-wrap'), 'warning');
             $('#resize-iframe').click(function(e) {
                 e.preventDefault();
                 //$('#iframe-wrapper').height(vis_h);
@@ -342,9 +342,13 @@ $(function() {
     });
 
     function iframeReady() {
-        $('body').on('datawrapper:vis:init', function() {
-            $('#iframe-vis').get(0).contentWindow.dw_alert = dw.backend.alert;
-            $('#iframe-vis').get(0).contentWindow.dw.backend = dw.backend;
+        var iframe_window = $('#iframe-vis').get(0).contentWindow;
+        $(window).on('message', function(evt) {
+            evt = evt.originalEvent;
+            if (evt.source == iframe_window && evt.data == 'datawrapper:vis:init')  {
+                iframe_window.dw_alert = dw.backend.alert;
+                iframe_window.dw.backend = dw.backend;
+            }
         });
     }
 

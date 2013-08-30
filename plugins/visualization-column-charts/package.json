@@ -1,4 +1,5 @@
 {
+    "name": "visualization-column-charts",
     "version": "1.5.0",
     "author": "Gregor Aisch",
     "dependencies": {

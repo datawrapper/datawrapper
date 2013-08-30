@@ -1,4 +1,5 @@
 {
+    "name": "visualization-pie-chart",
     "version": "1.5.0",
     "dependencies": {
         "core": "1.5.0",

@@ -126,16 +126,16 @@ dw.column.types.date = function(sample) {
         bestMatch = ['', 0],
         knownFormats = {
             'YYYY': {
-                regex: /^ *([12][0-9]{3}) *$/,
+                regex: /^ *((?:1[7-9]|20)[0-9]{2}) *$/,
                 precision: 'year'
             },
             'YYYY-H': {
                 regex: /^ *([12][0-9]{3})[ \-\/]?H([12]) *$/,
-                precision: 'month'
+                precision: 'half'
             },
             'H-YYYY': {
                 regex: /^ *H([12])[ \-\/]([12][0-9]{3}) *$/,
-                precision: 'month'
+                precision: 'half'
             },
             'YYYY-Q': {
                 regex: /^ *([12][0-9]{3})[ \-\/]?Q([1234]) *$/,
@@ -154,16 +154,42 @@ dw.column.types.date = function(sample) {
                 precision: 'month'
             },
             'MM/DD/YYYY': {
-                regex: /^ *(0?[1-9]|1[0-2])([-\/] ?)(0?[1-9]|[1-2][0-9]|3[01])\2([12][0-9]{3})(?: (0?[0-9]|1[0-9]|2[0-3]):([0-5][0-9])(?::([0-5][0-9]))?)? *$/,
+                regex: /^ *(0?[1-9]|1[0-2])([-\/] ?)(0?[1-9]|[1-2][0-9]|3[01])\2([12][0-9]{3})$/,
                 precision: 'day'
             },
             'DD.MM.YYYY': {
-                regex: /^ *(0?[1-9]|[1-2][0-9]|3[01])([-\.\/ ?])(0?[1-9]|1[0-2])\2([12][0-9]{3})(?: (0?[0-9]|1[0-9]|2[0-3]):([0-5][0-9])(?::([0-5][0-9]))?)? *$/,
+                regex: /^ *(0?[1-9]|[1-2][0-9]|3[01])([-\.\/ ?])(0?[1-9]|1[0-2])\2([12][0-9]{3})$/,
                 precision: 'day'
             },
             'YYYY-MM-DD': {
-                regex: /^ *([12][0-9]{3})([-\/\. ?])(0?[1-9]|1[0-2])\2(0?[1-9]|[1-2][0-9]|3[01])(?: (0?[0-9]|1[0-9]|2[0-3]):([0-5][0-9])(?::([0-5][0-9]))?)? *$/,
+                regex: /^ *([12][0-9]{3})([-\/\. ?])(0?[1-9]|1[0-2])\2(0?[1-9]|[1-2][0-9]|3[01])$/,
                 precision: 'day'
+            },
+            // dates with a time
+            'MM/DD/YYYY HH:MM': {
+                regex: /^ *(0?[1-9]|1[0-2])([-\/] ?)(0?[1-9]|[1-2][0-9]|3[01])\2([12][0-9]{3}) *[ \-\|] *(0?[0-9]|1[0-9]|2[0-3]):([0-5][0-9]) *$/,
+                precision: 'day-minutes'
+            },
+            'DD.MM.YYYY HH:MM': {
+                regex: /^ *(0?[1-9]|[1-2][0-9]|3[01])([-\.\/ ?])(0?[1-9]|1[0-2])\2([12][0-9]{3}) *[ \-\|] *(0?[0-9]|1[0-9]|2[0-3]):([0-5][0-9]) *$/,
+                precision: 'day-minutes'
+            },
+            'YYYY-MM-DD HH:MM': {
+                regex: /^ *([12][0-9]{3})([-\/\. ?])(0?[1-9]|1[0-2])\2(0?[1-9]|[1-2][0-9]|3[01]) *[ \-\|] *(0?[0-9]|1[0-9]|2[0-3]):([0-5][0-9]) *$/,
+                precision: 'day-minutes'
+            },
+            // dates with a time
+            'MM/DD/YYYY HH:MM:SS': {
+                regex: /^ *(0?[1-9]|1[0-2])([-\/] ?)(0?[1-9]|[1-2][0-9]|3[01])\2([12][0-9]{3}) *[ \-\|] *(0?[0-9]|1[0-9]|2[0-3]):([0-5][0-9])(?::([0-5][0-9]))? *$/,
+                precision: 'day-seconds'
+            },
+            'DD.MM.YYYY HH:MM:SS': {
+                regex: /^ *(0?[1-9]|[1-2][0-9]|3[01])([-\.\/ ?])(0?[1-9]|1[0-2])\2([12][0-9]{3}) *[ \-\|] *(0?[0-9]|1[0-9]|2[0-3]):([0-5][0-9])(?::([0-5][0-9]))? *$/,
+                precision: 'day-seconds'
+            },
+            'YYYY-MM-DD HH:MM:SS': {
+                regex: /^ *([12][0-9]{3})([-\/\. ?])(0?[1-9]|1[0-2])\2(0?[1-9]|[1-2][0-9]|3[01]) *[ \-\|] *(0?[0-9]|1[0-9]|2[0-3]):([0-5][0-9])(?::([0-5][0-9]))? *$/,
+                precision: 'day-seconds'
             }
         };
 
@@ -206,9 +232,15 @@ dw.column.types.date = function(sample) {
                 case 'Q-YYYY': return new Date(m[2], (m[1]-1) * 3, 1);
                 case 'YYYY-M': return new Date(m[1], (m[2]-1), 1);
                 case 'M-YYYY': return new Date(m[2], (m[1]-1), 1);
-                case 'YYYY-MM-DD': return new Date(m[1], (m[3]-1), m[4], m[5] || 0, m[6] || 0, m[7] || 0);
-                case 'DD.MM.YYYY': return new Date(m[4], (m[3]-1), m[1], m[5] || 0, m[6] || 0, m[7] || 0);
-                case 'MM/DD/YYYY': return new Date(m[4], (m[1]-1), m[3], m[5] || 0, m[6] || 0, m[7] || 0);
+                case 'YYYY-MM-DD': return new Date(m[1], (m[3]-1), m[4]);
+                case 'DD.MM.YYYY': return new Date(m[4], (m[3]-1), m[1]);
+                case 'MM/DD/YYYY': return new Date(m[4], (m[1]-1), m[3]);
+                case 'YYYY-MM-DD HH:MM': return new Date(m[1], (m[3]-1), m[4], m[5] || 0, m[6] || 0, 0);
+                case 'DD.MM.YYYY HH:MM': return new Date(m[4], (m[3]-1), m[1], m[5] || 0, m[6] || 0, 0);
+                case 'MM/DD/YYYY HH:MM': return new Date(m[4], (m[1]-1), m[3], m[5] || 0, m[6] || 0, 0);
+                case 'YYYY-MM-DD HH:MM:SS': return new Date(m[1], (m[3]-1), m[4], m[5] || 0, m[6] || 0, m[7] || 0);
+                case 'DD.MM.YYYY HH:MM:SS': return new Date(m[4], (m[3]-1), m[1], m[5] || 0, m[6] || 0, m[7] || 0);
+                case 'MM/DD/YYYY HH:MM:SS': return new Date(m[4], (m[1]-1), m[3], m[5] || 0, m[6] || 0, m[7] || 0);
             }
             errors++;
             return raw;
@@ -225,9 +257,12 @@ dw.column.types.date = function(sample) {
             if (!format) return _.identity;
             switch (knownFormats[format].precision) {
                 case 'year': return function(d) { return !_.isDate(d) ? d : d.getFullYear(); };
+                case 'half': return function(d) { return !_.isDate(d) ? d : d.getFullYear() + ' H'+(d.getMonth()/6 + 1); };
                 case 'quarter': return function(d) { return !_.isDate(d) ? d : d.getFullYear() + ' Q'+(d.getMonth()/3 + 1); };
                 case 'month': return function(d) { return !_.isDate(d) ? d : Globalize.format(d, 'MMM yy'); };
                 case 'day': return function(d) { return !_.isDate(d) ? d : Globalize.format(d, 'd'); };
+                case 'day-minutes': return function(d) { return !_.isDate(d) ? d : Globalize.format(d, 'M')+' - '+ Globalize.format(d, 't'); };
+                case 'day-seconds': return function(d) { return !_.isDate(d) ? d : Globalize.format(d, 'T'); };
             }
         },
 
