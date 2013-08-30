@@ -491,12 +491,8 @@
                     last_valid_y; // keep the last non-NaN y for direct label position
 
                 col.each(function(val, i) {
-                    //console.log(col.name(), val);
 
-                    x = scales.x(useDateFormat() ? rowName(i) : i);
-                    y = scales.y(val);
-
-                    if (isNaN(y)) {
+                    if (!_.isNumber(val)) {
                         // store the current line
                         if (pts.length > 0) {
                             pts_.push(pts);
@@ -504,6 +500,10 @@
                         }
                         return;
                     }
+
+                    x = scales.x(useDateFormat() ? rowName(i) : i);
+                    y = scales.y(val);
+
                     if (pts.length === 0 && pts_.length > 0) {
                         // first valid point after NaNs
                         var lp = pts_[pts_.length-1], s = lp.length-2;
