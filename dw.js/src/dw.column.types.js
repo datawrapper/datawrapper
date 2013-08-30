@@ -76,7 +76,7 @@ dw.column.types.number = function(sample) {
                 number = number.replace(format[1], '.');
             }
 
-            if (isNaN(number)) {
+            if (isNaN(number) || number === "") {
                 if (!naStrings[number.toLowerCase()] && number !== "") errors++;
                 return raw;
             }
