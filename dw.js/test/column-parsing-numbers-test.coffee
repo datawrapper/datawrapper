@@ -1,7 +1,9 @@
 
 _ = require 'underscore'
+root.Globalize = require 'globalize'
 vows = require 'vows'
 assert = require 'assert'
+Globalize = require 'globalize'
 dw = require '../dw-2.0.js'
 
 

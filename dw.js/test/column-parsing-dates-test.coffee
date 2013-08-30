@@ -1,9 +1,12 @@
 
 root._ = require 'underscore'
+root.Globalize = require 'globalize'
 vows = require 'vows'
 assert = require 'assert'
 dw = require '../dw-2.0.js'
 
+
+Globalize.culture "de"
 
 formats =
     'dates':
@@ -66,6 +69,9 @@ formats =
     'date-us-time':
         '1st': new Date(1999, 11, 31, 23, 59, 45)
         'values': ['12/31/1999 23:59:45', '12/31/1999 23:59:50', '12/31/1999 23:59:55', '01/01/2000 00:00:00', '01/01/2000 00:00:05', '01/01/2000 00:00:10', '01/01/2000 00:00:15', '01/01/2000 00:00:20']
+    'english month names':
+        '1st': new Date(2010, 11, 1)
+        'values': ['2010 December', '2011 January', '2011 February', '2011 March', '2011 April']
 
 batch = {}
 for k of formats
