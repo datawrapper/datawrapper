@@ -6,6 +6,8 @@ CHANGELOG
 * improved parsing of dates
 * improved formatting of dates
 * made Datawrapper ready for HTTPS
+* don't show the resize iframe notification more than one time
+* fixed display of missing values in line-charts
 
 ### 1.5.2
 * publishing just the assets needed by visualizations
