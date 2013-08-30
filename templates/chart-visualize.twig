@@ -226,7 +226,7 @@ $(function() {
     // load dataset
     function _getHighlights() {
         var sel = chart.get('metadata.visualize.highlighted-series');
-        return _.isArray(sel) ? sel.slice() : [];
+        return _.isArray(sel) ? sel.slice(0) : [];
     }
 
     function highlightSeriesClick(e) {
