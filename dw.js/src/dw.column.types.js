@@ -190,6 +190,13 @@ dw.column.types.date = function(sample) {
             'YYYY-MM-DD HH:MM:SS': {
                 regex: /^ *([12][0-9]{3})([-\/\. ?])(0?[1-9]|1[0-2])\2(0?[1-9]|[1-2][0-9]|3[01]) *[ \-\|] *(0?[0-9]|1[0-9]|2[0-3]):([0-5][0-9])(?::([0-5][0-9]))? *$/,
                 precision: 'day-seconds'
+            },
+            // globalize
+            'Globalize': {
+                test: function(s) {
+                    return _.isDate(Globalize.parseDate(s));
+                },
+                precision: 'unknown'
             }
         };
 
@@ -198,7 +205,7 @@ dw.column.types.date = function(sample) {
     _.each(sample, function(n) {
         _.each(knownFormats, function(format, key) {
             if (matches[key] === undefined) matches[key] = 0;
-            if (format.regex.test(n)) {
+            if ((format.regex && format.regex.test(n)) || (format.test && format.test(n))) {
                 matches[key] += 1;
                 if (matches[key] > bestMatch[1]) {
                     bestMatch[0] = key;
@@ -217,8 +224,13 @@ dw.column.types.date = function(sample) {
                 errors++;
                 return raw;
             }
-            var regex = knownFormats[format].regex,
-                m = raw.match(regex);
+
+            var m;
+            if (knownFormats[format].regex) {
+                m = raw.match(knownFormats[format].regex);
+            } else {
+                m = knownFormats[format].test(raw);
+            }
 
             if (!m) {
                 errors++;
@@ -241,6 +253,7 @@ dw.column.types.date = function(sample) {
                 case 'YYYY-MM-DD HH:MM:SS': return new Date(m[1], (m[3]-1), m[4], m[5] || 0, m[6] || 0, m[7] || 0);
                 case 'DD.MM.YYYY HH:MM:SS': return new Date(m[4], (m[3]-1), m[1], m[5] || 0, m[6] || 0, m[7] || 0);
                 case 'MM/DD/YYYY HH:MM:SS': return new Date(m[4], (m[1]-1), m[3], m[5] || 0, m[6] || 0, m[7] || 0);
+                case 'Globalize': return m ? Globalize.parseDate(raw) : raw;
             }
             errors++;
             return raw;
