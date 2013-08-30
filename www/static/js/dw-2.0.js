@@ -443,16 +443,16 @@ dw.column.types.date = function(sample) {
         bestMatch = ['', 0],
         knownFormats = {
             'YYYY': {
-                regex: /^ *([12][0-9]{3}) *$/,
+                regex: /^ *((?:1[7-9]|20)[0-9]{2}) *$/,
                 precision: 'year'
             },
             'YYYY-H': {
                 regex: /^ *([12][0-9]{3})[ \-\/]?H([12]) *$/,
-                precision: 'month'
+                precision: 'half'
             },
             'H-YYYY': {
                 regex: /^ *H([12])[ \-\/]([12][0-9]{3}) *$/,
-                precision: 'month'
+                precision: 'half'
             },
             'YYYY-Q': {
                 regex: /^ *([12][0-9]{3})[ \-\/]?Q([1234]) *$/,
@@ -471,16 +471,42 @@ dw.column.types.date = function(sample) {
                 precision: 'month'
             },
             'MM/DD/YYYY': {
-                regex: /^ *(0?[1-9]|1[0-2])([-\/] ?)(0?[1-9]|[1-2][0-9]|3[01])\2([12][0-9]{3})(?: (0?[0-9]|1[0-9]|2[0-3]):([0-5][0-9])(?::([0-5][0-9]))?)? *$/,
+                regex: /^ *(0?[1-9]|1[0-2])([-\/] ?)(0?[1-9]|[1-2][0-9]|3[01])\2([12][0-9]{3})$/,
                 precision: 'day'
             },
             'DD.MM.YYYY': {
-                regex: /^ *(0?[1-9]|[1-2][0-9]|3[01])([-\.\/ ?])(0?[1-9]|1[0-2])\2([12][0-9]{3})(?: (0?[0-9]|1[0-9]|2[0-3]):([0-5][0-9])(?::([0-5][0-9]))?)? *$/,
+                regex: /^ *(0?[1-9]|[1-2][0-9]|3[01])([-\.\/ ?])(0?[1-9]|1[0-2])\2([12][0-9]{3})$/,
                 precision: 'day'
             },
             'YYYY-MM-DD': {
-                regex: /^ *([12][0-9]{3})([-\/\. ?])(0?[1-9]|1[0-2])\2(0?[1-9]|[1-2][0-9]|3[01])(?: (0?[0-9]|1[0-9]|2[0-3]):([0-5][0-9])(?::([0-5][0-9]))?)? *$/,
+                regex: /^ *([12][0-9]{3})([-\/\. ?])(0?[1-9]|1[0-2])\2(0?[1-9]|[1-2][0-9]|3[01])$/,
                 precision: 'day'
+            },
+            // dates with a time
+            'MM/DD/YYYY HH:MM': {
+                regex: /^ *(0?[1-9]|1[0-2])([-\/] ?)(0?[1-9]|[1-2][0-9]|3[01])\2([12][0-9]{3}) *[ \-\|] *(0?[0-9]|1[0-9]|2[0-3]):([0-5][0-9]) *$/,
+                precision: 'day-minutes'
+            },
+            'DD.MM.YYYY HH:MM': {
+                regex: /^ *(0?[1-9]|[1-2][0-9]|3[01])([-\.\/ ?])(0?[1-9]|1[0-2])\2([12][0-9]{3}) *[ \-\|] *(0?[0-9]|1[0-9]|2[0-3]):([0-5][0-9]) *$/,
+                precision: 'day-minutes'
+            },
+            'YYYY-MM-DD HH:MM': {
+                regex: /^ *([12][0-9]{3})([-\/\. ?])(0?[1-9]|1[0-2])\2(0?[1-9]|[1-2][0-9]|3[01]) *[ \-\|] *(0?[0-9]|1[0-9]|2[0-3]):([0-5][0-9]) *$/,
+                precision: 'day-minutes'
+            },
+            // dates with a time
+            'MM/DD/YYYY HH:MM:SS': {
+                regex: /^ *(0?[1-9]|1[0-2])([-\/] ?)(0?[1-9]|[1-2][0-9]|3[01])\2([12][0-9]{3}) *[ \-\|] *(0?[0-9]|1[0-9]|2[0-3]):([0-5][0-9])(?::([0-5][0-9]))? *$/,
+                precision: 'day-seconds'
+            },
+            'DD.MM.YYYY HH:MM:SS': {
+                regex: /^ *(0?[1-9]|[1-2][0-9]|3[01])([-\.\/ ?])(0?[1-9]|1[0-2])\2([12][0-9]{3}) *[ \-\|] *(0?[0-9]|1[0-9]|2[0-3]):([0-5][0-9])(?::([0-5][0-9]))? *$/,
+                precision: 'day-seconds'
+            },
+            'YYYY-MM-DD HH:MM:SS': {
+                regex: /^ *([12][0-9]{3})([-\/\. ?])(0?[1-9]|1[0-2])\2(0?[1-9]|[1-2][0-9]|3[01]) *[ \-\|] *(0?[0-9]|1[0-9]|2[0-3]):([0-5][0-9])(?::([0-5][0-9]))? *$/,
+                precision: 'day-seconds'
             }
         };
 
@@ -523,9 +549,15 @@ dw.column.types.date = function(sample) {
                 case 'Q-YYYY': return new Date(m[2], (m[1]-1) * 3, 1);
                 case 'YYYY-M': return new Date(m[1], (m[2]-1), 1);
                 case 'M-YYYY': return new Date(m[2], (m[1]-1), 1);
-                case 'YYYY-MM-DD': return new Date(m[1], (m[3]-1), m[4], m[5] || 0, m[6] || 0, m[7] || 0);
-                case 'DD.MM.YYYY': return new Date(m[4], (m[3]-1), m[1], m[5] || 0, m[6] || 0, m[7] || 0);
-                case 'MM/DD/YYYY': return new Date(m[4], (m[1]-1), m[3], m[5] || 0, m[6] || 0, m[7] || 0);
+                case 'YYYY-MM-DD': return new Date(m[1], (m[3]-1), m[4]);
+                case 'DD.MM.YYYY': return new Date(m[4], (m[3]-1), m[1]);
+                case 'MM/DD/YYYY': return new Date(m[4], (m[1]-1), m[3]);
+                case 'YYYY-MM-DD HH:MM': return new Date(m[1], (m[3]-1), m[4], m[5] || 0, m[6] || 0, 0);
+                case 'DD.MM.YYYY HH:MM': return new Date(m[4], (m[3]-1), m[1], m[5] || 0, m[6] || 0, 0);
+                case 'MM/DD/YYYY HH:MM': return new Date(m[4], (m[1]-1), m[3], m[5] || 0, m[6] || 0, 0);
+                case 'YYYY-MM-DD HH:MM:SS': return new Date(m[1], (m[3]-1), m[4], m[5] || 0, m[6] || 0, m[7] || 0);
+                case 'DD.MM.YYYY HH:MM:SS': return new Date(m[4], (m[3]-1), m[1], m[5] || 0, m[6] || 0, m[7] || 0);
+                case 'MM/DD/YYYY HH:MM:SS': return new Date(m[4], (m[1]-1), m[3], m[5] || 0, m[6] || 0, m[7] || 0);
             }
             errors++;
             return raw;
@@ -542,9 +574,12 @@ dw.column.types.date = function(sample) {
             if (!format) return _.identity;
             switch (knownFormats[format].precision) {
                 case 'year': return function(d) { return !_.isDate(d) ? d : d.getFullYear(); };
+                case 'half': return function(d) { return !_.isDate(d) ? d : d.getFullYear() + ' H'+(d.getMonth()/6 + 1); };
                 case 'quarter': return function(d) { return !_.isDate(d) ? d : d.getFullYear() + ' Q'+(d.getMonth()/3 + 1); };
                 case 'month': return function(d) { return !_.isDate(d) ? d : Globalize.format(d, 'MMM yy'); };
                 case 'day': return function(d) { return !_.isDate(d) ? d : Globalize.format(d, 'd'); };
+                case 'day-minutes': return function(d) { return !_.isDate(d) ? d : Globalize.format(d, 'M')+' - '+ Globalize.format(d, 't'); };
+                case 'day-seconds': return function(d) { return !_.isDate(d) ? d : Globalize.format(d, 'T'); };
             }
         },
 
@@ -837,7 +872,7 @@ dw.utils = {
         var new_month = true, last_date = false;
         function timeFormat(formats) {
             return function(date) {
-                new_month = last_date && date.getMonth() != last_date.getMonth();
+                new_month = !last_date || date.getMonth() != last_date.getMonth();
                 last_date = date;
                 var i = formats.length - 1, f = formats[i];
                 while (!f[1](date)) f = formats[--i];
@@ -845,16 +880,36 @@ dw.utils = {
             };
         }
 
+        function time_fmt(fmt) {
+            var format = function(date) {
+                var r = Globalize.format(date, fmt);
+                return fmt != 'htt' ? r : r.toLowerCase();
+            };
+            return format;
+        }
+
+        var fmt = (function(lang) {
+            return {
+                date: lang == 'de' ? "dd." : "dd",
+                hour: lang != 'en' ? "H:00" : "htt",
+                minute: lang == 'de' ? "H:mm" : 'h:mm',
+                mm: lang == 'de' ? 'd.M.' : 'MM/dd',
+                mmm: lang == 'de' ? 'd.MMM' : 'MMM dd',
+                mmmm: lang == 'de' ? 'd. MMMM' : 'MMMM dd'
+            };
+        })(Globalize.culture().language);
+
+        // use globalize instead of d3
         return timeFormat([
-            [d3.time.format("%Y"), function() { return true; }],
-            [d3.time.format(daysDelta > 70 ? "%b" : "%B"), function(d) { return d.getMonth() !== 0; }],  // not January
-            [d3.time.format("%d"), function(d) { return d.getDate() != 1; }],  // not 1st of month
-            [d3.time.format(daysDelta > 70 ? "%b %d" : "%B %d"), function(d) { return d.getDate() != 1 && new_month; }],  // not 1st of month
-            //[d3.time.format("%a %d"), function(d) { return d.getDay() && d.getDate() != 1; }],  // not monday
-            [d3.time.format("%I %p"), function(d) { return d.getHours(); }],
-            [d3.time.format("%I:%M"), function(d) { return d.getMinutes(); }],
-            [d3.time.format(":%S"), function(d) { return d.getSeconds(); }],
-            [d3.time.format(".%L"), function(d) { return d.getMilliseconds(); }]
+            [time_fmt("yyyy"), function() { return true; }],
+            [time_fmt(daysDelta > 70 ? "MMM" : "MMMM"), function(d) { return d.getMonth() !== 0; }],  // not January
+            [time_fmt(fmt.date), function(d) { return d.getDate() != 1; }],  // not 1st of month
+            [time_fmt(daysDelta < 7 ? fmt.mm : daysDelta > 70 ? fmt.mmm : fmt.mmmm), function(d) { return d.getDate() != 1 && new_month; }],  // not 1st of month
+            //[time_fmt("%a %d"), function(d) { return d.getDay() && d.getDate() != 1; }],  // not monday
+            [time_fmt(fmt.hour), function(d) { return d.getHours(); }],
+            [time_fmt(fmt.minute), function(d) { return d.getMinutes(); }],
+            [time_fmt(":ss"), function(d) { return d.getSeconds(); }],
+            [time_fmt(".fff"), function(d) { return d.getMilliseconds(); }]
         ]);
     },
 
