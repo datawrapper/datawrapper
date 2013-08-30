@@ -1,6 +1,11 @@
 CHANGELOG
 ---------
 
+### 1.5.3
+* allowing external websites to provide data and some chart preset
+* improved parsing of dates
+* improved formatting of dates
+
 ### 1.5.2
 * publishing just the assets needed by visualizations
 * visualizations are now able to specify assets dynamically
