@@ -5,6 +5,7 @@ CHANGELOG
 * allowing external websites to provide data and some chart preset
 * improved parsing of dates
 * improved formatting of dates
+* made Datawrapper ready for HTTPS
 
 ### 1.5.2
 * publishing just the assets needed by visualizations
