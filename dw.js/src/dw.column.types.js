@@ -192,20 +192,30 @@ dw.column.types.date = function(sample) {
                 precision: 'day-seconds'
             },
             // globalize
-            'Globalize': {
-                test: function(s) {
-                    return _.isDate(Globalize.parseDate(s));
-                },
-                precision: 'unknown'
+            'globalize-MMMM': { test: testGlobalize, precision: 'month' },
+            'globalize-MMM': { test: testGlobalize, precision: 'month' },
+            'globalize-MMM yyyy': { test: testGlobalize, precision: 'month' },
+            'globalize-MMM yy': { test: testGlobalize, precision: 'month' },
+            'globalize-MMMM yy': { test: testGlobalize, precision: 'month' },
+            'globalize-dddd': { test: testGlobalize, precision: 'day' },
+            'globalize-ddd': { test: testGlobalize, precision: 'day' },
+            'globalize': {
+                test: function(s) { return _.isDate(Globalize.parseDate(s)); },
+                precision: 'day'
             }
         };
+
+    function testGlobalize(raw, fmt) {
+        return _.isDate(Globalize.parseDate(raw, fmt.substr(10)));
+    }
+
 
     sample = sample || [];
 
     _.each(sample, function(n) {
         _.each(knownFormats, function(format, key) {
             if (matches[key] === undefined) matches[key] = 0;
-            if ((format.regex && format.regex.test(n)) || (format.test && format.test(n))) {
+            if ((format.regex && format.regex.test(n)) || (format.test && format.test(n, key))) {
                 matches[key] += 1;
                 if (matches[key] > bestMatch[1]) {
                     bestMatch[0] = key;
@@ -229,7 +239,7 @@ dw.column.types.date = function(sample) {
             if (knownFormats[format].regex) {
                 m = raw.match(knownFormats[format].regex);
             } else {
-                m = knownFormats[format].test(raw);
+                m = knownFormats[format].test(raw, format);
             }
 
             if (!m) {
@@ -253,7 +263,11 @@ dw.column.types.date = function(sample) {
                 case 'YYYY-MM-DD HH:MM:SS': return new Date(m[1], (m[3]-1), m[4], m[5] || 0, m[6] || 0, m[7] || 0);
                 case 'DD.MM.YYYY HH:MM:SS': return new Date(m[4], (m[3]-1), m[1], m[5] || 0, m[6] || 0, m[7] || 0);
                 case 'MM/DD/YYYY HH:MM:SS': return new Date(m[4], (m[1]-1), m[3], m[5] || 0, m[6] || 0, m[7] || 0);
-                case 'Globalize': return m ? Globalize.parseDate(raw) : raw;
+                case 'globalize': return m ? Globalize.parseDate(raw) : raw;
+            }
+            if (format.substr(0, 10) == 'globalize-') {
+                m = Globalize.parseDate(raw, format.substr(10));
+                if (_.isDate(m)) return m;
             }
             errors++;
             return raw;

@@ -6,8 +6,6 @@ assert = require 'assert'
 dw = require '../dw-2.0.js'
 
 
-Globalize.culture "de"
-
 formats =
     'dates':
         '1st': new Date(1990, 0, 1)
@@ -72,6 +70,18 @@ formats =
     'english month names':
         '1st': new Date(2010, 11, 1)
         'values': ['2010 December', '2011 January', '2011 February', '2011 March', '2011 April']
+    'month-year':
+        '1st': new Date(2010, 11, 1)
+        'values': ['Dec 2010', 'Jan 2011', 'Feb 2011', 'Mar 2011', 'Apr 2011']
+    'month-short-year':
+        '1st': new Date(2010, 11, 1)
+        'values': ['Dec 10', 'Jan 11', 'Feb 11', 'Mar 11', 'Apr 11']
+    'lmonth-short-year':
+        '1st': new Date(2010, 11, 1)
+        'values': ['December 10', 'January 11', 'February 11', 'March 11', 'April 11']
+    'short month names':
+        '1st': new Date(2013, 0, 1)
+        'values': ['Jan','Feb','Mar','Apr']
 
 batch = {}
 for k of formats
