@@ -1604,7 +1604,7 @@ _.extend(dw.visualization.base, {
         _.each(axes, function(columns) {
             if (!_.isArray(columns)) columns = [columns];
             _.each(columns, function(column) {
-                usedColumns[column.name()] = true; // mark as used
+                usedColumns[column] = true; // mark as used
             });
         });
 
