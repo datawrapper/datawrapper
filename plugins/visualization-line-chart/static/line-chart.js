@@ -195,9 +195,10 @@
                     }
                     var l = vis.label(x, y, lbl, { align: 'center', cl: 'axis x-axis'});
                     if (
-                        ((daysDelta <= 7 && new_day) ||
-                        (daysDelta <= 90 && new_month) ||
-                        (daysDelta > 90 && daysDelta <= 500 && new_quarter) ||
+                        ((daysDelta <= 7 && new_day) || // if the data spans about a week, tick for every day
+                        (daysDelta > 7 && daysDelta <= 35 && date.getDay() == Globalize.culture().calendar.firstDay) || // tick for every week
+                        (daysDelta > 35 && daysDelta <= 180 && new_month) ||  // if the data spans for more less than 6 month, tick every month
+                        (daysDelta > 180 && daysDelta <= 500 && new_quarter) ||  // tick every 3 month
                         (daysDelta > 500 && daysDelta < 3650 && new_year) ||  // less between two and ten years
                         (daysDelta >= 3650 && new_decade)) ||  // less between two and ten years
                         real_data_as_ticks
