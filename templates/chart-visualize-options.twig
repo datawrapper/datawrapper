@@ -180,7 +180,6 @@ $(function() {
                     var visible = true;
                     // special conditions:
                     _.each(opt['depends-on'], function(val, key) {
-                        console.log('fpoo', key, columnTypeRegex.test(key));
                         if (minColsRegex.test(key)) {
                             key = key.match(minColsRegex)[1];
                             visible = visible && !_.isUndefined(axesColumns[key]) && axesColumns[key].length >= +val;
