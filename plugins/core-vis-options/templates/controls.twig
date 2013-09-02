@@ -51,5 +51,13 @@
 
     <label class="separator">{{ option.label|raw }}</label>
 
+{% elseif option.type == 'select-axis-column' %}
+
+    <label class="control-label" for="{{ key }}">{{ option.label|raw }}</label>
+    <div class="controls">
+        <select id="{{ key }}" data-axis="{{ option.axis }}">
+            {# will be populated by javascript #}
+        </select>
+    </div>
 
 {% endif %}
