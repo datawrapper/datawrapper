@@ -58,8 +58,6 @@ $(function() {
             axes[axisKey] = select.val();
             chart.set('metadata.axes', axes);
         });
-
-        console.log(axisMeta, select.data('axis'), select);
     }
 
     $('#vis-options').on('dw:vis-option:select', syncValue);
