@@ -10,6 +10,7 @@ CHANGELOG
 * fixed display of missing values in line-charts
 * improved grid lines in line charts with date axis
 * removed label rotation in line charts
+* fixed bug in grouped column charts
 
 ### 1.5.2
 * publishing just the assets needed by visualizations
