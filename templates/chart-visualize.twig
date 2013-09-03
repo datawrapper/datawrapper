@@ -331,27 +331,27 @@ $(function() {
     });
 
     var checkChartHeight = (function() {
-        var warningShowed = false;
-
         return function() {
             var iframe = $('#iframe-vis').contents(),
                 vis_h = iframe.height(),
-                iframe_h = $('#iframe-vis').height();
+                vis_w = iframe.width(),
+                iframe_h = $('#iframe-vis').height(),
+                iframe_w = $('#iframe-vis').width();
 
-            if (vis_h > iframe_h+5) {
+            if (vis_h > iframe_h+5 || vis_w > iframe_w) {
+
+                dw.backend.notify('{{ "Watch out: Your chart needs more space. To get rid of the scrollbars just [resize iFrame to chart]" | trans | escape('js') }}'.replace('[', '<a href="#" id="resize-iframe">').replace(']', '</a>'));
+
                 $('#resize-iframe').click(function(e) {
                     e.preventDefault();
-                    $('#resize-h').val(vis_h);
+                    if (vis_h > iframe_h) $('#resize-h').val(vis_h);
+                    if (vis_w > iframe_w) $('#resize-w').val(vis_w);
                     updateSize();
                     $('.alert').remove();
                     warningShowed = false;
                 });
-                if (warningShowed) return;
-                dw.backend.notify('{{ "Watch out: Your chart needs more space. To get rid of the scrollbars just [resize iFrame to chart]" | trans | escape('js') }}'.replace('[', '<a href="#" id="resize-iframe">').replace(']', '</a>'));
-                warningShowed = true;
             } else {
                 $('.alert').remove();
-                warningShowed = false;
             }
         };
     })();
