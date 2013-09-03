@@ -543,9 +543,9 @@ var dw = dw || {};
                     })
                     .appendTo('body'),
                 palette = $('<div />').addClass('palette').appendTo(popup),
-                lightness = $('<div />').addClass('color-axis').addClass('lightness').appendTo(popup),
-                saturation = $('<div />').addClass('color-axis').addClass('saturation').appendTo(popup),
-                hue = $('<div />').addClass('color-axis').addClass('hue').appendTo(popup),
+                lightness = $('<div />').addClass('color-axis lightness').appendTo(popup),
+                saturation = $('<div />').addClass('color-axis saturation').appendTo(popup),
+                hue = $('<div />').addClass('color-axis hue').appendTo(popup),
                 bottom = $('<div />').addClass('footer').appendTo(popup),
                 hexTf = $('<input type="text" />').addClass('hex').appendTo(bottom),
                 okBtn = $('<button />').html('<i class="icon-ok"></i>').addClass('btn btn-small ok').appendTo(bottom);
@@ -558,6 +558,16 @@ var dw = dw || {};
             });
 
             setColor(opts.color);
+
+            hexTf.change(function() { setColor(hexTf.val()); });
+            okBtn.click(function() {
+                popup.remove();
+                if (_.isFunction(opts.change)) opts.change(opts.color);
+            });
+
+            setTimeout(function() {
+                $('body').one('click', body_click);
+            }, 300);
 
             function setColor(hex) {
                 var lch = chroma.color(hex).lch();
@@ -605,13 +615,17 @@ var dw = dw || {};
             function col_click(evt) {
                 var c = $(evt.target);
                 setColor(c.data('color'));
+                evt.stopPropagation();
             }
 
-            hexTf.change(function() { setColor(hexTf.val()); });
-            okBtn.click(function() {
-                popup.remove();
-                if (_.isFunction(opts.change)) opts.change(opts.color);
-            });
+            function body_click(evt) {
+                var el = $(evt.target);
+                if (!el.is('.color-selector') && el.parents('.color-selector').length === 0) {
+                    popup.remove();
+                } else {
+                    $('body').one('click', body_click);
+                }
+            }
         };
     }
 
