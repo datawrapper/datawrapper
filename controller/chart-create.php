@@ -12,18 +12,22 @@ $app->map('/chart/create', function() use ($app) {
         $chart = ChartQuery::create()->createEmptyChart($user);
         $req = $app->request();
         $step = 'upload';
-        if ($req->params('data') != null) {
-            $chart->writeData($req->params('data'));
+        if ($req->post('data') != null) {
+            $chart->writeData($req->post('data'));
             $step = 'describe';
-            if ($req->params('source-name') != null) {
-                $chart->updateMetadata('describe.source-name', $req->params('source-name'));
-            }
-            if ($req->params('source-url') != null) {
-                $chart->updateMetadata('describe.source-url', $req->params('source-url'));
-            }
-            if ($req->params('type') != null) {
-                $chart->setType($req->params('type'));
+            if ($req->post('source-name') != null) {
+                $chart->updateMetadata('describe.source-name', $req->post('source-name'));
                 $step = 'visualize';
+            }
+            if ($req->post('source-url') != null) {
+                $chart->updateMetadata('describe.source-url', $req->post('source-url'));
+                $step = 'visualize';
+            }
+            if ($req->post('type') != null) {
+                $chart->setType($req->post('type'));
+            }
+            if ($req->post('title') != null) {
+                $chart->setTitle($req->post('title'));
             }
         }
         $chart->save();
