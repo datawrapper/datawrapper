@@ -313,7 +313,7 @@ $(function() {
                 return false;
             }
         });
-        loadThemes();
+        loadThemes().done(showThemeColors);
     }
 
     chart.load().done(onDatasetLoaded);
@@ -501,7 +501,6 @@ $(function() {
         var msg_history = {};
         return function(msg) {
             if (msg_history[msg]) {
-                console.log('already notified about this: ', msg);
                 return;
             }
             msg_history[msg] = new Date();
