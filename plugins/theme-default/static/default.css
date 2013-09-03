@@ -131,17 +131,9 @@ a img { border:0px; }
 to allow absolute positioning related to the #footer
 within the .toggleable-panel */
 #footer .footer-right {
-    position:static;
-    float:right;
-    text-align:right;
-    right:0;
-    bottom:0;
-    /* Vertical text align */
-    height:25px;
-    line-height:25px;
-    padding:0 5px;
-    overflow:hidden;
-    padding-top: 5px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
 }
 
 .footer-right .toggle-panel {
@@ -181,23 +173,26 @@ within the .toggleable-panel */
     that we just removed by adding this distances to
     the .toggle-panel element (that toggles the about panel).
     We choose to user padding to enlarge the touchable area.  */
+
+   #footer .footer-right {
+        position:static;
+        float:right;
+        text-align:right;
+        right:0;
+        bottom:0;
+        /* Vertical text align */
+        padding:0 5px;
+        overflow:hidden;
+        padding-top: 5px;
+    }
+
     .footer-right .toggle-panel {
         position:absolute;
         right:0;
         bottom:0;
         display:block;
         /* Vertical text align */
-        height:25px;
-        padding:0 5px;
-        line-height:25px;
         width:100%;
-    }
-
-    /* Removes vertical align.
-    We use #footer prefix to level up properties' priority */
-    #footer .footer-right {
-        height:auto;
-        line-height:inherit;
     }
 
     .footer-right .toggleable-panel {
@@ -241,7 +236,7 @@ within the .toggleable-panel */
     #footer .footer-right:hover  {
         /* Avoids to loose the 'hover' when the mouse
          go through the toggleable-panel links  */
-        height:25px;
+        height:20px;
     }
 
     #footer .footer-right:hover + .toggleable-panel-overlay {
