@@ -163,6 +163,7 @@ $(function() {
             function() {
                 setTimeout(function() {
                     loaded.resolve();
+                    showThemeColors();
                 }, 500);
             }
         );
@@ -219,7 +220,6 @@ $(function() {
             loadThemes().done(function() {
                 loadOptions().done(function() {
                     loadVis();
-                    showThemeColors();
                 });
             });
         }
@@ -377,7 +377,7 @@ $(function() {
             chk;
 
         chk = setInterval(function() {  // wait a little more
-            if (_.isFunction(win.vis.rendered)) {
+            if (win.vis) {
                 clearInterval(chk);
                 win.vis.rendered().done(function() {
                     checkChartHeight();
