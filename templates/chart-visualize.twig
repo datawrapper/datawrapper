@@ -125,7 +125,7 @@ $(function() {
         customColors.data('colors', colors.join(','));
     }
     // show the theme colors as soon as the theme has been loaded
-    $('body').on('dw:themes-loaded', showThemeColors);
+    //$('body').on('dw:themes-loaded', showThemeColors);
 
 
     function loadThemes() {
@@ -217,7 +217,10 @@ $(function() {
         if (_themeHasChanged) {
             // load new visualization options
             loadThemes().done(function() {
-                loadOptions().done(loadVis);
+                loadOptions().done(function() {
+                    loadVis();
+                    showThemeColors();
+                });
             });
         }
 
