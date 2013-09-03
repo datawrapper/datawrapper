@@ -285,7 +285,7 @@ var dw = dw || {};
 
         _.extend(__dw, {
             attributes: function(attrs) {
-                if (changed('type') || changed('theme') || changed('metadata.data.transpose')) {
+                if (changed('type') || changed('theme') || changed('metadata.data.transpose') || changed('metadata.axes')) {
                     needReload = true;
                     return;
                 }

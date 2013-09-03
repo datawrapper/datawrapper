@@ -272,6 +272,7 @@ dw.column = function(name, rows, type) {
                 range = [Number.MAX_VALUE, -Number.MAX_VALUE];
                 column.each(function(v) {
                     v = type.toNum(v);
+                    if (!_.isNumber(v)) return;
                     if (v < range[0]) range[0] = v;
                     if (v > range[1]) range[1] = v;
                 });
@@ -393,7 +394,7 @@ dw.column.types.number = function(sample) {
                 number = number.replace(format[1], '.');
             }
 
-            if (isNaN(number)) {
+            if (isNaN(number) || number === "") {
                 if (!naStrings[number.toLowerCase()] && number !== "") errors++;
                 return raw;
             }
@@ -507,15 +508,32 @@ dw.column.types.date = function(sample) {
             'YYYY-MM-DD HH:MM:SS': {
                 regex: /^ *([12][0-9]{3})([-\/\. ?])(0?[1-9]|1[0-2])\2(0?[1-9]|[1-2][0-9]|3[01]) *[ \-\|] *(0?[0-9]|1[0-9]|2[0-3]):([0-5][0-9])(?::([0-5][0-9]))? *$/,
                 precision: 'day-seconds'
+            },
+            // globalize
+            'globalize-MMMM': { test: testGlobalize, precision: 'month' },
+            'globalize-MMM': { test: testGlobalize, precision: 'month' },
+            'globalize-MMM yyyy': { test: testGlobalize, precision: 'month' },
+            'globalize-MMM yy': { test: testGlobalize, precision: 'month' },
+            'globalize-MMMM yy': { test: testGlobalize, precision: 'month' },
+            'globalize-dddd': { test: testGlobalize, precision: 'day' },
+            'globalize-ddd': { test: testGlobalize, precision: 'day' },
+            'globalize': {
+                test: function(s) { return _.isDate(Globalize.parseDate(s)); },
+                precision: 'day'
             }
         };
+
+    function testGlobalize(raw, fmt) {
+        return _.isDate(Globalize.parseDate(raw, fmt.substr(10)));
+    }
+
 
     sample = sample || [];
 
     _.each(sample, function(n) {
         _.each(knownFormats, function(format, key) {
             if (matches[key] === undefined) matches[key] = 0;
-            if (format.regex.test(n)) {
+            if ((format.regex && format.regex.test(n)) || (format.test && format.test(n, key))) {
                 matches[key] += 1;
                 if (matches[key] > bestMatch[1]) {
                     bestMatch[0] = key;
@@ -534,8 +552,13 @@ dw.column.types.date = function(sample) {
                 errors++;
                 return raw;
             }
-            var regex = knownFormats[format].regex,
-                m = raw.match(regex);
+
+            var m;
+            if (knownFormats[format].regex) {
+                m = raw.match(knownFormats[format].regex);
+            } else {
+                m = knownFormats[format].test(raw, format);
+            }
 
             if (!m) {
                 errors++;
@@ -558,6 +581,11 @@ dw.column.types.date = function(sample) {
                 case 'YYYY-MM-DD HH:MM:SS': return new Date(m[1], (m[3]-1), m[4], m[5] || 0, m[6] || 0, m[7] || 0);
                 case 'DD.MM.YYYY HH:MM:SS': return new Date(m[4], (m[3]-1), m[1], m[5] || 0, m[6] || 0, m[7] || 0);
                 case 'MM/DD/YYYY HH:MM:SS': return new Date(m[4], (m[1]-1), m[3], m[5] || 0, m[6] || 0, m[7] || 0);
+                case 'globalize': return m ? Globalize.parseDate(raw) : raw;
+            }
+            if (format.substr(0, 10) == 'globalize-') {
+                m = Globalize.parseDate(raw, format.substr(10));
+                if (_.isDate(m)) return m;
             }
             errors++;
             return raw;
@@ -1576,7 +1604,7 @@ _.extend(dw.visualization.base, {
         _.each(axes, function(columns) {
             if (!_.isArray(columns)) columns = [columns];
             _.each(columns, function(column) {
-                usedColumns[column.name()] = true; // mark as used
+                usedColumns[column] = true; // mark as used
             });
         });
 
@@ -1736,15 +1764,19 @@ dw.theme.base = {
     },
 
     /*
-     * gradients used by color gradient selectors
+     * gradients that might be used by color gradient selectors
+     *
+     * Colors from www.ColorBrewer2.org by Cynthia A. Brewer,
+     * Geography, Pennsylvania State University.
      */
     gradients: [
-        // sequential
+        // sequential (even number of colors)
         ['#ffffcc','#c7e9b4','#7fcdbb','#41b6c4','#2c7fb8','#253494'],  // YlGnbu
         ['#feebe2','#fcc5c0','#fa9fb5','#f768a1','#c51b8a','#7a0177'],  // RdPu
         ['#f0f9e8','#ccebc5','#a8ddb5','#7bccc4','#43a2ca','#0868ac'],  // GnBu
         //['#fef0d9','#fdd49e','#fdbb84','#fc8d59','#e34a33','#b30000'],  // OrRd
-        // diverging
+
+        // diverging (odd number of colors)
         ['#8c510a','#d8b365','#f6e8c3','#f5f5f5','#c7eae5','#5ab4ac','#01665e'],  // BrBG
         ['#c51b7d','#e9a3c9','#fde0ef','#f7f7f7','#e6f5d0','#a1d76a','#4d9221'],  // PiYG
         ['#b2182b','#ef8a62','#fddbc7','#f7f7f7','#d1e5f0','#67a9cf','#2166ac'],  // RdBu
