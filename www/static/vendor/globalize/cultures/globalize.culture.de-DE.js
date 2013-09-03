@@ -71,7 +71,7 @@ Globalize.addCultureInfo( "de-DE", "default", {
 				T: "HH:mm:ss",
 				f: "dddd, d. MMMM yyyy HH:mm",
 				F: "dddd, d. MMMM yyyy HH:mm:ss",
-				M: "dd MMMM",
+				M: "d. MMMM",
 				Y: "MMMM yyyy"
 			}
 		}

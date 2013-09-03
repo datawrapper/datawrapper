@@ -52,7 +52,7 @@
 
             c.cx = c.w * 0.5;
             c.cy = c.h * (FA < TWO_PI ? 0.69 : 0.5); // 1:1 1.5:1
-            c.or = Math.min(FA == TWO_PI ? c.h * 0.5 : c.h * 0.66, c.w * 0.5) - 3;
+            c.or = Math.min(FA == TWO_PI ? c.h * 0.5 : c.h * 0.66, c.w * 0.35) - 3;
             c.ir = donut ? c.or * 0.3 : 0;
             c.or_sq = c.or * c.or;
             c.ir_sq = c.ir * c.ir;
@@ -192,7 +192,7 @@
                 // not available for election donuts (yet)
                 if (me.getFullArc() < TWO_PI) return false;
                 // this is a rough guess
-                return o.name.length > 10 ? o.value / total < 0.2
+                return o.name.length > 10 ? o.value / total < 0.15
                     : o.name.length > 5 ? o.value / total < 0.1 : false;
             }
 

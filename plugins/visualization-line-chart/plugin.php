@@ -36,7 +36,10 @@ class DatawrapperPlugin_VisualizationLineChart extends DatawrapperPlugin_Visuali
         $options = array(
             "sep-labeling" => array(
                 "type" => "separator",
-                "label" => __("Customize labeling", $id)
+                "label" => __("Customize labeling", $id),
+                "depends-on" => array(
+                    "chart.min_columns[y1]" => 2,
+                )
             ),
             "direct-labeling" => array(
                 "type" => "checkbox",
@@ -46,11 +49,6 @@ class DatawrapperPlugin_VisualizationLineChart extends DatawrapperPlugin_Visuali
                     "chart.min_columns[y1]" => 2,
                     "chart.max_columns[y2]" => 0  // direct labeling not possible with second axis
                 )
-            ),
-            "rotate-x-labels" => array(
-                "type" => "checkbox",
-                "label" => __("Rotate labels 45 degrees", $id),
-                "default" => false
             ),
             "legend-position" => array(
                 "type" => "radio-left",

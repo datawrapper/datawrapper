@@ -285,7 +285,7 @@ var dw = dw || {};
 
         _.extend(__dw, {
             attributes: function(attrs) {
-                if (changed('type') || changed('theme') || changed('metadata.data.transpose')) {
+                if (changed('type') || changed('theme') || changed('metadata.data.transpose') || changed('metadata.axes')) {
                     needReload = true;
                     return;
                 }
@@ -522,6 +522,113 @@ var dw = dw || {};
         });
     }
 
+    function initColorSelector() {
+        /*
+         * API-draft:
+         *
+         * $('button').colorselector({
+              color: '#ff0000'  // current selection
+         *    palette: ['#fe8843', '#48cd45', ...],  // theme palette
+         *    change: function(new_color) { }  // called after user closed popup
+         * });
+         */
+        $.fn.colorselector = function(opts) {
+            $('.color-selector').remove();
+            var btn = $(this),
+                popup = $('<div />')
+                    .addClass('color-selector')
+                    .css({
+                        left: btn.offset().left,
+                        top: btn.offset().top - 60 // 30px = body.padding-top
+                    })
+                    .appendTo('body'),
+                palette = $('<div />').addClass('palette').appendTo(popup),
+                lightness = $('<div />').addClass('color-axis lightness').appendTo(popup),
+                saturation = $('<div />').addClass('color-axis saturation').appendTo(popup),
+                hue = $('<div />').addClass('color-axis hue').appendTo(popup),
+                bottom = $('<div />').addClass('footer').appendTo(popup),
+                hexTf = $('<input type="text" />').addClass('hex').appendTo(bottom),
+                okBtn = $('<button />').html('<i class="icon-ok"></i>').addClass('btn btn-small ok').appendTo(bottom);
+
+            addcol(opts.color, bottom);
+
+            // initialize palette colors
+            $.each(opts.palette, function(i, color) {
+                addcol(color, palette);
+            });
+
+            setColor(opts.color);
+
+            hexTf.change(function() { setColor(hexTf.val()); });
+            okBtn.click(function() {
+                popup.remove();
+                if (_.isFunction(opts.change)) opts.change(opts.color);
+            });
+
+            setTimeout(function() {
+                $('body').one('click', body_click);
+            }, 300);
+
+            function setColor(hex) {
+                var lch = chroma.color(hex).lch();
+                opts.color = hex;
+                $('.color-axis', popup).html('');
+                _.each(spread(lch[0], 40, 3), function(l) {
+                    addcol(chroma.lch(l, lch[1], lch[2]).hex(), lightness);
+                });
+                _.each(spread(50, 50, 3), function(s) {
+                    addcol(chroma.lch(lch[0], s, lch[2]).hex(), saturation);
+                });
+                _.each(spread(lch[2], 90, 3), function(h) {
+                    addcol(chroma.lch(lch[0], 60, h).hex(), hue);
+                });
+                hexTf.val(hex).css({
+                    background: hex,
+                    'border-color': chroma.color(hex).darker().hex(),
+                    color: chroma.luminance(hex) > 0.45 ? '#000' : '#fff'
+                });
+                $('.color', popup).removeClass('selected');
+                $('.color', popup)
+                    .filter(function(i,e) { return $(e).data('color') == hex; })
+                    .addClass('selected');
+            }
+
+            function spread(center, width, num) {
+                var r = [center], s = width / num, a = 0;
+                while (num-- > 0) {
+                    a += s;
+                    r.unshift(center - a);
+                    r.push(center + a);
+                }
+                return r;
+            }
+
+            function addcol(color, cont) {
+                $('<div />')
+                    .addClass('color')
+                    .data('color', color)
+                    .css('background', color)
+                    .click(col_click)
+                    .appendTo(cont);
+            }
+
+            function col_click(evt) {
+                var c = $(evt.target);
+                setColor(c.data('color'));
+                evt.stopPropagation();
+            }
+
+            function body_click(evt) {
+                var el = $(evt.target);
+                if (!el.is('.color-selector') && el.parents('.color-selector').length === 0) {
+                    popup.remove();
+                } else {
+                    $('body').one('click', body_click);
+                }
+            }
+        };
+    }
+
     dw.backend = {
         init: function() {
             initLanguageLinks();
@@ -533,6 +640,8 @@ var dw = dw || {};
                     tgt = $(a.data('target'));
                 tgt.modal();
             });
+
+            initColorSelector();
         },
 
         logMessage: logMessage,

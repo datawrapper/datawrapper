@@ -41,8 +41,8 @@ $(function() {
     $.fn.colorpicker = function(props) {
         var rt = $(this), colors, active, maxW = props.maxW || $(rt).parent().width();
         if (!rt.data('colors')) return;
-        colors = rt.data('colors').toLowerCase().split(','),
-        ctive = (rt.data('color') || "").toLowerCase();
+        colors = rt.data('colors').toLowerCase().split(',');
+        active = (rt.data('color') || "").toLowerCase();
         // clean up html at first
         rt.html('');
         rt.css({
@@ -87,6 +87,7 @@ $(function() {
 
     var _typeHasChanged = false,
         _themeHasChanged = false,
+        _axesHaveChanged = false,
         chart = dw.backend.currentChart,
         themes = {{ themes | json | raw }},
         themesById = {},
@@ -124,11 +125,12 @@ $(function() {
         customColors.data('colors', colors.join(','));
     }
     // show the theme colors as soon as the theme has been loaded
-    $('body').on('dw:themes-loaded', showThemeColors);
+    //$('body').on('dw:themes-loaded', showThemeColors);
 
 
     function loadThemes() {
-        var themeid = $('#select-theme').val(),
+        var dfd = $.Deferred(),
+            themeid = $('#select-theme').val(),
             theme = themesById[themeid],
             needed = [themeid];
 
@@ -146,28 +148,51 @@ $(function() {
                     loadNext();
                 }
             } else {
+                dfd.resolve();
                 $('body').trigger('dw:themes-loaded');
             }
         }
         loadNext();
+        return dfd.promise();
     } // end loadThemes()
 
     function loadOptions() {
-        $('#vis-options').load('/xhr/'+chart.get('id')+'/vis-options?nocache='+Math.random(), function() {
-            // update colors
-            loadThemes();
-        });
+        var loaded = $.Deferred();
+        $('#vis-options').load(
+            '/xhr/'+chart.get('id')+'/vis-options?nocache='+Math.random(),
+            function() {
+                setTimeout(function() {
+                    loaded.resolve();
+                }, 500);
+            }
+        );
+        return loaded.promise();
     }
 
-    var loadVisDeferred = $.Deferred();
-    dw.backend.__currentVisLoaded = loadVisDeferred.promise();
+    var loadVisDfd = (function() {
+        var callbacks = $.Callbacks();
+        return {
+            promise: function() {
+                return {
+                    done: function(cb) {
+                        callbacks.add(cb);
+                    }
+                };
+            },
+            resolve: function() {
+                callbacks.fire();
+                callbacks = $.Callbacks();
+            }
+        };
+    })();
+    dw.backend.__currentVisLoaded = loadVisDfd.promise();
 
     function loadVis() {
         dw.backend.currentVis = dw.visualization(chart.get('type'));
         dw.backend.currentVis.chart(chart);
         dw.backend.currentVis.dataset = chart.dataset();
         dw.backend.currentVis.meta = visMetas[chart.get('type')];
-        loadVisDeferred.resolve();
+        loadVisDfd.resolve();
         $('#notifications').html('');
     }
 
@@ -186,18 +211,30 @@ $(function() {
 
         if (_typeHasChanged) {
             loadVis();
+            loadOptions();
         }
 
-        if (_typeHasChanged || _themeHasChanged) {
+        if (_themeHasChanged) {
             // load new visualization options
-            loadOptions();
+            loadThemes().done(function() {
+                loadOptions().done(function() {
+                    loadVis();
+                    showThemeColors();
+                });
+            });
+        }
+
+        if (_axesHaveChanged) {
+            loadOptions().done(loadVis);
         }
 
         _themeHasChanged = false;
         _typeHasChanged = false;
+        _axesHaveChanged = false;
 
-        if (iframe.get(0).contentWindow.__dw) {
-            iframe.get(0).contentWindow.__dw.saved();
+        var iframeWin = iframe.get(0).contentWindow;
+        if (iframeWin.__dw && iframeWin.__dw.saved) {
+            iframeWin.__dw.saved();
         }
         scheduleThumbnail();
         checkChartHeight();
@@ -220,13 +257,14 @@ $(function() {
     chart.onChange(function(chart, key, value) {
         if (key == 'type') _typeHasChanged = true;
         if (key == 'theme') _themeHasChanged = true;
+        if (key.substr(0, 13) == 'metadata.axes') _axesHaveChanged = true;
         dw.backend.updateChartInIframe(iframe, chart.attributes());
     });
 
     // load dataset
     function _getHighlights() {
         var sel = chart.get('metadata.visualize.highlighted-series');
-        return _.isArray(sel) ? sel.slice() : [];
+        return _.isArray(sel) ? sel.slice(0) : [];
     }
 
     function highlightSeriesClick(e) {
@@ -292,24 +330,31 @@ $(function() {
         tgl.removeClass('collapse-shown');
     });
 
-    function checkChartHeight() {
-        var iframe = $('#iframe-vis').contents();
-        var vis_h = iframe.height(),
-            iframe_h = $('#iframe-vis').height();
+    var checkChartHeight = (function() {
+        return function() {
+            var iframe = $('#iframe-vis').contents(),
+                vis_h = iframe.height(),
+                vis_w = iframe.width(),
+                iframe_h = $('#iframe-vis').height(),
+                iframe_w = $('#iframe-vis').width();
 
-        if (vis_h > iframe_h+5) {
-            dw.backend.logMessage('{{ "Watch out: Your chart needs more space. To get rid of the scrollbars just [resize iFrame to chart]" | trans | escape('js') }}'.replace('[', '<a href="#" id="resize-iframe">').replace(']', '</a>'), $('.resize-chart-wrap'), 'warning');
-            $('#resize-iframe').click(function(e) {
-                e.preventDefault();
-                //$('#iframe-wrapper').height(vis_h);
-                $('#resize-h').val(vis_h);
-                updateSize();
+            if (vis_h > iframe_h+5 || vis_w > iframe_w) {
+
+                dw.backend.notify('{{ "Watch out: Your chart needs more space. To get rid of the scrollbars just [resize iFrame to chart]" | trans | escape('js') }}'.replace('[', '<a href="#" id="resize-iframe">').replace(']', '</a>'));
+
+                $('#resize-iframe').click(function(e) {
+                    e.preventDefault();
+                    if (vis_h > iframe_h) $('#resize-h').val(vis_h);
+                    if (vis_w > iframe_w) $('#resize-w').val(vis_w);
+                    updateSize();
+                    $('.alert').remove();
+                    warningShowed = false;
+                });
+            } else {
                 $('.alert').remove();
-            });
-        } else {
-            $('.alert').remove();
-        }
-    }
+            }
+        };
+    })();
 
     function updateVisBackground() {  // and show msg if chart needs more space
         var iframe = $('#iframe-vis').contents(),
@@ -342,9 +387,13 @@ $(function() {
     });
 
     function iframeReady() {
-        $('body').on('datawrapper:vis:init', function() {
-            $('#iframe-vis').get(0).contentWindow.dw_alert = dw.backend.alert;
-            $('#iframe-vis').get(0).contentWindow.dw.backend = dw.backend;
+        var iframe_window = $('#iframe-vis').get(0).contentWindow;
+        $(window).on('message', function(evt) {
+            evt = evt.originalEvent;
+            if (evt.source == iframe_window && evt.data == 'datawrapper:vis:init')  {
+                iframe_window.dw_alert = dw.backend.alert;
+                iframe_window.dw.backend = dw.backend;
+            }
         });
     }
 
@@ -444,13 +493,21 @@ $(function() {
     $('#iframe-wrapper').width(cw);
     $('#iframe-wrapper').height(ch);
 
-    dw.backend.notify = function(msg) {
-        $('<div />').addClass('notification')
-            .html('<div class="bg">'+$('#alertModal .bg').html()+'</div><div class="message">'+msg+'</div>')
-            .appendTo('#notifications')
-            .hide()
-            .fadeIn();
-    };
+    dw.backend.notify = (function() {
+        var msg_history = {};
+        return function(msg) {
+            if (msg_history[msg]) {
+                console.log('already notified about this: ', msg);
+                return;
+            }
+            msg_history[msg] = new Date();
+            $('<div />').addClass('notification')
+                .html('<div class="bg">'+$('#alertModal .bg').html()+'</div><div class="message">'+msg+'</div>')
+                .appendTo('#notifications')
+                .hide()
+                .fadeIn();
+        };
+    })();
 
 });
 

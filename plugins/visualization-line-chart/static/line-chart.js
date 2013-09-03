@@ -172,6 +172,7 @@
                     tickFormat = dw.utils.dateFormat(daysDelta),
                     last_month = -1, new_month,
                     last_year = -1, new_year,
+                    last_day = -1, new_day,
                     new_decade, new_quarter,
                     real_data_as_ticks = false;
 
@@ -181,6 +182,7 @@
                 }
 
                 _.each(ticks, function(date, i) {
+                    new_day = date.getDate() != last_day;
                     new_month = date.getMonth() != last_month;
                     new_quarter = new_month && (date.getMonth() % 3 === 0);
                     new_year = date.getFullYear() != last_year;
@@ -191,10 +193,12 @@
                     if (fmt == 'YYYY' && i > 0 && i < ticks.length-1) {
                         lbl = '’'+String(date.getFullYear()).substr(2);
                     }
-                    vis.label(x, y, lbl, { align: 'center', cl: 'axis x-axis'});
+                    var l = vis.label(x, y, lbl, { align: 'center', cl: 'axis x-axis'});
                     if (
-                        ((daysDelta <= 90 && new_month) ||
-                        (daysDelta > 90 && daysDelta <= 500 && new_quarter) ||
+                        ((daysDelta <= 7 && new_day) || // if the data spans about a week, tick for every day
+                        (daysDelta > 7 && daysDelta <= 35 && date.getDay() == Globalize.culture().calendar.firstDay) || // tick for every week
+                        (daysDelta > 35 && daysDelta <= 180 && new_month) ||  // if the data spans for more less than 6 month, tick every month
+                        (daysDelta > 180 && daysDelta <= 500 && new_quarter) ||  // tick every 3 month
                         (daysDelta > 500 && daysDelta < 3650 && new_year) ||  // less between two and ten years
                         (daysDelta >= 3650 && new_decade)) ||  // less between two and ten years
                         real_data_as_ticks
@@ -203,7 +207,10 @@
                             vis.path('M'+[x, c.h - c.bpad] + 'V' + c.tpad, 'grid')
                                 .attr(theme.horizontalGrid);
                         }
+                    } else {
+                        l.el.addClass('minor-tick');
                     }
+                    last_day = date.getDate();
                     last_month = date.getMonth();
                     last_year = date.getFullYear();
                 });
@@ -485,12 +492,8 @@
                     last_valid_y; // keep the last non-NaN y for direct label position
 
                 col.each(function(val, i) {
-                    //console.log(col.name(), val);
 
-                    x = scales.x(useDateFormat() ? rowName(i) : i);
-                    y = scales.y(val);
-
-                    if (isNaN(y)) {
+                    if (!_.isNumber(val)) {
                         // store the current line
                         if (pts.length > 0) {
                             pts_.push(pts);
@@ -498,6 +501,10 @@
                         }
                         return;
                     }
+
+                    x = scales.x(useDateFormat() ? rowName(i) : i);
+                    y = scales.y(val);
+
                     if (pts.length === 0 && pts_.length > 0) {
                         // first valid point after NaNs
                         var lp = pts_[pts_.length-1], s = lp.length-2;

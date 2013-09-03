@@ -66,10 +66,11 @@
             el.mousemove(_.bind(me.onMouseMove, me));
 
             if (dataset.numRows() > 1) {
-                var items = [];
+                var items = [],
+                    lblFmt = me.chart().columnFormatter(me.axes(true).labels);
                 dataset.eachRow(function(r) {
                     items.push({
-                        label: me.axes(true).labels.val(r),
+                        label: lblFmt(me.axes(true).labels.val(r)),
                         color: me.getColor(null, r, { varyLightness: true, key: me.axes(true).labels.val(r) })
                     });
                 });
@@ -192,6 +193,8 @@
             var me = this, c = me.__canvas;
 
             me.__domain = dw.utils.minMax(me.getBarColumns());
+            if (me.__domain[0] > 0) me.__domain[0] = 0;
+            if (me.__domain[1] < 0) me.__domain[1] = 0;
             me.__scales = {
                 y: d3.scale.linear().domain(me.__domain)
             };

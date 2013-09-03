@@ -87,8 +87,9 @@ $app->post('/account/reset-password', function() use($app) {
         $user->setResetPasswordToken($token);
         $user->save();
 
-        $name = $user->getEmail();
-        $passwordResetLink = 'http://' . $GLOBALS['dw_config']['domain'] . '/account/reset-password/' . $token;
+        $name     = $user->getEmail();
+        $protocol = !empty($_SERVER['HTTPS']) ? "https" : "http";
+        $passwordResetLink = $protocol . '://' . $GLOBALS['dw_config']['domain'] . '/account/reset-password/' . $token;
         $from = 'password-reset@' . $GLOBALS['dw_config']['domain'];
         include('../../lib/templates/password-reset-email.php');
         DatawrapperHooks::execute(DatawrapperHooks::SEND_EMAIL, $user->getEmail(), 'Datawrapper Password Reset', $password_reset_mail, 'From: ' . $from);
@@ -123,9 +124,10 @@ $app->post('/account/resend-activation', function() use($app) {
         Action::logAction($user, 'resend-activation', $token);
 
         // send email with activation key
-        $name = $user->getEmail();
-        $domain = $GLOBALS['dw_config']['domain'];
-        $activationLink = 'http://' . $domain . '/account/activate/' . $token;
+        $name     = $user->getEmail();
+        $domain   = $GLOBALS['dw_config']['domain'];
+        $protocol = !empty($_SERVER['HTTPS']) ? "https" : "http";
+        $activationLink = $protocol . '://' . $domain . '/account/activate/' . $token;
         $from = 'activate@' . $domain;
 
         include('../../lib/templates/activation-email.php');
@@ -159,7 +161,8 @@ $app->post('/account/resend-invitation', function() use($app) {
         }
         // variables for `templates/invitation-email.php` 
         $domain         = $GLOBALS['dw_config']['domain'];
-        $invitationLink = 'http://' . $domain . '/account/invite/' . $token;
+        $protocol       = !empty($_SERVER['HTTPS']) ? "https" : "http";
+        $invitationLink = $protocol . '://' . $domain . '/account/invite/' . $token;
         $name           = $user->getEmail();
         include('../../lib/templates/invitation-email.php');
         $from           = $GLOBALS['dw_config']['email']['invite'];

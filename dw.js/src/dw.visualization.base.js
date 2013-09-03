@@ -10,8 +10,8 @@ _.extend(dw.visualization.base, {
     // called before rendering
     __init: function() {
         this.__renderedDfd = $.Deferred();
-        if (dw.backend) {
-            parent.$('body').trigger('datawrapper:vis:init');
+        if (window.parent && window.parent['postMessage']) {
+            window.parent.postMessage('datawrapper:vis:init', '*');
         }
         return this;
     },
@@ -56,6 +56,7 @@ _.extend(dw.visualization.base, {
 
     notify: function(str) {
         if (dw.backend && _.isFunction(dw.backend.notify)) dw.backend.notify(str);
+        else if (window['console']) console.log(str);
     },
 
     /**
@@ -104,7 +105,7 @@ _.extend(dw.visualization.base, {
         _.each(axes, function(columns) {
             if (!_.isArray(columns)) columns = [columns];
             _.each(columns, function(column) {
-                usedColumns[column.name()] = true; // mark as used
+                usedColumns[column] = true; // mark as used
             });
         });
 
@@ -178,7 +179,7 @@ _.extend(dw.visualization.base, {
             axesDef = me.axes();
         if (axesDef.labels) {
             var lblCol = me.dataset.column(axesDef.labels),
-                fmt = me.chart.columnFormatter(lblCol),
+                fmt = me.chart().columnFormatter(lblCol),
                 keys = [];
             lblCol.each(function(val) {
                 keys.push(String(fmt(val)));

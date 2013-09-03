@@ -1,6 +1,17 @@
 CHANGELOG
 ---------
 
+### 1.5.3
+* allowing external websites to provide data and some chart preset
+* improved parsing of dates
+* improved formatting of dates
+* made Datawrapper ready for HTTPS
+* don't show the resize iframe notification more than one time
+* fixed display of missing values in line-charts
+* improved grid lines in line charts with date axis
+* removed label rotation in line charts
+* fixed bug in grouped column charts
+
 ### 1.5.2
 * publishing just the assets needed by visualizations
 * visualizations are now able to specify assets dynamically

@@ -7,7 +7,7 @@
 
 
 
-define('DATAWRAPPER_VERSION', '1.5.2');  // must be the same as in package.json
+define('DATAWRAPPER_VERSION', '1.5.3');  // must be the same as in package.json
 
 define('ROOT_PATH', '../');
 
@@ -249,7 +249,8 @@ $app->hook('slim.before.router', function () use ($app, $dw_config) {
         $req = $app->request();
         if (UserQuery::create()->filterByRole(array('admin', 'sysadmin'))->count() > 0) {
             if ($req->getResourceUri() != '/login' &&
-                strncmp($req->getResourceUri(), '/account/invite/', 16)) { // or starts with '/account/invite/'
+                strncmp($req->getResourceUri(), '/account/invite/', 16) && // and doesn't start with '/account/invite/'
+                strncmp($req->getResourceUri(), '/account/reset-password/', 24)) { // and doesn't start with '/account/reset-password/'
                 $app->redirect('/login');
             }
         } else {
