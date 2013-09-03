@@ -1267,3 +1267,82 @@ label.separator {
     margin-top: 5px;
     margin-bottom: 0;
 }
+
+.color-selector {
+    position: absolute;
+    background: #fff;
+    z-index: 9999;
+    width: 157px;
+    padding: 10px;
+    padding-right: 8px;
+    border-radius: 5px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.35);
+}
+
+.color-selector .palette {
+    line-height: 5px;
+    margin-bottom: 10px;
+}
+
+.color-selector .palette .color {
+    display: inline-block;
+    width: 24px;
+    height: 23px;
+    margin: 0 2px 2px 0;
+    border-radius: 1px;
+}
+
+.color-selector .palette .color.selected {
+    border: 2px solid #000;
+    width: 20px;
+    height: 19px;
+}
+
+.color-selector .color-axis {
+    height: 22px;
+    margin-bottom: 2px;
+}
+
+.color-selector .color-axis .color {
+    width: 22px;
+    height: 22px;
+    display: inline-block;
+}
+
+.color-selector .color-axis .color.selected {
+    border: 2px solid #000;
+    width: 18px;
+    height: 18px;
+}
+
+.color-selector .hex {
+    border-radius: 0;
+    font-size: 12px;
+    width: 60px;
+    padding: 2px 4px;
+    text-transform: lowercase;
+    position: absolute;
+    left: 25px;
+    bottom: 0px;
+    margin: 0;
+    text-align: center;
+}
+
+.color-selector .btn.ok {
+    position: absolute;
+    bottom: 0px;
+    right: 3px;
+}
+
+.color-selector .footer {
+    height: 40px;
+    position: relative;
+}
+
+.color-selector .footer .color {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 25px;
+    height: 26px;
+}
