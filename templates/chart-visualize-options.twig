@@ -83,7 +83,8 @@
 
 #customColors h4 {
     margin: 0 0 10px;
-    font-size: 16px;
+    font-size: 14px;
+    color: #444;
 }
 
 #customColors .color {
@@ -202,7 +203,6 @@ $(function() {
                                         && compare(dw.utils.minMax(axesColumns[key])[1]);
                         } else if (columnTypeRegex.test(key)) {
                             key = key.match(columnTypeRegex)[1];
-                            console.log(key, axesColumns[key], axesColumns[key][0], val);
                             visible = visible && !_.isUndefined(axesColumns[key])
                                         && axesColumns[key][0].type() == val;
                         } else {
