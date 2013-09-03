@@ -380,7 +380,7 @@
 
             // check if we have a color scale
             if (opts.byValue && series) {
-                return opts.byValue(series.data[row]);
+                return opts.byValue(series.val(row));
             }
 
             // eventually the visualization has requested colors
