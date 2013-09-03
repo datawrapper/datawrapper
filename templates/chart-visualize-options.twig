@@ -31,8 +31,6 @@
     </div>
     {% endif %}
 
-
-
     {% for key, option in vis.options %}
         {% if theme['option-filter'][vis.id][key] or (not option.hidden and not option.expert)  %}
     <div class="control-group" style="margin-bottom:0" id="vis-options-{{ key }}">
@@ -140,11 +138,23 @@
 $(function() {
     var chart = dw.backend.currentChart;
 
+    // initial visualization meta
+    var vis = JSON.parse('{{ vis|json| escape("js") }}');
+
+    // synchronize vis options as soon the vis has been loaded
+    dw.backend.__currentVisLoaded.done(function() {
+        console.log('vis options: __currentVisLoaded');
+        dw.backend.currentVis.chart(chart);
+        syncVisOptions(vis);
+        $('.select-row').hide();
+        initCustomColors(chart);
+    });
+
     function syncVisOptions(vis) {
         checkDepends();
         // trigger vis option synchronization
         _.each(vis.options, function(opt, key) {
-            if ($('#vis-options-'+key).is(':visible')) {
+            if (!$('#vis-options-'+key).hasClass('hidden')) {
                 if (chart.get('metadata.visualize.'+key) == undefined) {
                     chart.set('metadata.visualize.'+key, opt.default);
                 }
@@ -209,8 +219,6 @@ $(function() {
                             visible = visible && chart.get('metadata.visualize.'+key) == val;
                         }
 
-
-
                         function compare(v) {
                             if (_.isNumber(val)) return v == val;
                             if (compRegex.test(val)) {
@@ -222,41 +230,17 @@ $(function() {
                             }
                         }
                     });
-                    if (visible) $('#vis-options-'+key).show();
-                    else $('#vis-options-'+key).hide()
+                    if (visible) $('#vis-options-'+key).removeClass('hidden');
+                    else $('#vis-options-'+key).addClass('hidden')
                 }
             });
         }
-    };
+    }
 
-    // initial visualization meta
-    var vis = JSON.parse('{{ vis|json| escape("js") }}');
-
-    dw.backend.__currentVisLoaded.done(function() {
-
-        dw.backend.currentVis.chart(chart);
-        syncVisOptions(vis);
-
-        // populate select-row
-        /*if (vis.dimensions == 1) {
-            if (chart.dataset().numRows() > 1) {
-                var selRows = $('#select-row');
-                for (var r=0; r<chart.dataset().numRows(); r++) {
-                    selRows.append('<option value="'+r+'">'+chart.rowLabel(r)+'</option>');
-                }
-                chart.sync('#select-row', 'metadata.visualize.selected-row');
-            } else {
-                $('.select-row').hide();
-            }
-        }*/
-        $('.select-row').hide();
-
-        initCustomColors(chart);
-
-    });
-
+    /*
+     * initialize the custom color dialog
+     */
     function initCustomColors(chart) {
-
         dw.backend.currentVis.chart = chart;
         dw.backend.currentVis.dataset = chart.dataset();
 
@@ -310,21 +294,51 @@ $(function() {
             }
         });
 
-    }
-
-    // action for "reset all colors" button
-    $('#reset-color-choice').click(function(e) {
-        var li = $('#customColors .dataseries li.selected');
-        li.data('color', '');
-        $('.color', li)
-            .css('background', '')
-            .html('×');
-        var sel = $.extend({}, chart.get('metadata.visualize.custom-colors', {}));
-        li.each(function(i, li) {
-            sel[$(li).data('series')] = '';
+        // action for "reset all colors" button
+        $('#reset-color-choice').click(function(e) {
+            var li = $('#customColors .dataseries li.selected');
+            li.data('color', '');
+            $('.color', li)
+                .css('background', '')
+                .html('×');
+            var sel = $.extend({}, chart.get('metadata.visualize.custom-colors', {}));
+            li.each(function(i, li) {
+                sel[$(li).data('series')] = '';
+            });
+            chart.set('metadata.visualize.custom-colors', sel);
         });
-        chart.set('metadata.visualize.custom-colors', sel);
-    });
+
+        // init custom colors button
+        $('a[href=#customColors]').click(function(e) {
+            e.preventDefault();
+            $('#customColors').modal();
+            customColorSelectSeries();
+        });
+
+        $('#reset-all-colors').click(function(e) {
+            $('#customColors .dataseries li .color').html('×').css('background', '');
+            $('#customColors .dataseries li').data('color', '');
+            chart.set('metadata.visualize.custom-colors', {});
+        });
+
+        // user-defined hex-color
+        var usercolor = $('#user-color');
+        usercolor.keyup(function() {
+            var col = usercolor.val();
+            if (col.trim() == '') {
+                usercolor.parent().removeClass('error').removeClass('success');
+            } else {
+                try {
+                    var color = chroma.color(col.trim());
+                    usercolor.parent().removeClass('error').addClass('success');
+                    setNewColorForCurrentSeries(color.hex());
+                } catch (e) {
+                    usercolor.parent().removeClass('success').addClass('error');
+                }
+            }
+        });
+
+    }
 
     // called whenever the user selects a new series
     function customColorSelectSeries() {
@@ -356,36 +370,6 @@ $(function() {
         });
         chart.set('metadata.visualize.custom-colors', sel);
     }
-
-    // init custom colors button
-    $('a[href=#customColors]').click(function(e) {
-        e.preventDefault();
-        $('#customColors').modal();
-        customColorSelectSeries();
-    });
-
-    $('#reset-all-colors').click(function(e) {
-        $('#customColors .dataseries li .color').html('×').css('background', '');
-        $('#customColors .dataseries li').data('color', '');
-        chart.set('metadata.visualize.custom-colors', {});
-    });
-
-    // user-defined hex-color
-    var usercolor = $('#user-color');
-    usercolor.keyup(function() {
-        var col = usercolor.val();
-        if (col.trim() == '') {
-            usercolor.parent().removeClass('error').removeClass('success');
-        } else {
-            try {
-                var color = chroma.color(col.trim());
-                usercolor.parent().removeClass('error').addClass('success');
-                setNewColorForCurrentSeries(color.hex());
-            } catch (e) {
-                usercolor.parent().removeClass('success').addClass('error');
-            }
-        }
-    });
 
 });
 

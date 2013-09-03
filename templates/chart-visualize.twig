@@ -129,7 +129,8 @@ $(function() {
 
 
     function loadThemes() {
-        var themeid = $('#select-theme').val(),
+        var dfd = $.Deferred(),
+            themeid = $('#select-theme').val(),
             theme = themesById[themeid],
             needed = [themeid];
 
@@ -147,10 +148,12 @@ $(function() {
                     loadNext();
                 }
             } else {
+                dfd.resolve();
                 $('body').trigger('dw:themes-loaded');
             }
         }
         loadNext();
+        return dfd.promise();
     } // end loadThemes()
 
     function loadOptions() {
@@ -213,7 +216,9 @@ $(function() {
 
         if (_themeHasChanged) {
             // load new visualization options
-            loadOptions().done(loadThemes);
+            loadThemes().done(function() {
+                loadOptions().done(loadVis);
+            });
         }
 
         if (_axesHaveChanged) {
