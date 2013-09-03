@@ -313,7 +313,7 @@ $(function() {
                 return false;
             }
         });
-        loadThemes();
+        loadThemes().done(showThemeColors);
     }
 
     chart.load().done(onDatasetLoaded);
@@ -501,7 +501,6 @@ $(function() {
         var msg_history = {};
         return function(msg) {
             if (msg_history[msg]) {
-                console.log('already notified about this: ', msg);
                 return;
             }
             msg_history[msg] = new Date();
@@ -587,13 +586,19 @@ $(function() {
                     }
                 });
 
-                $(window).on('hashchange', function() {
-                    show($('a[data-target='+location.hash.substr(1)+']'));
-                });
-
-                if (window.location.hash) {
-                    show($('a[data-target='+location.hash.substr(1)+']'));
+                function loadTab(evt) {
+                    if (location.hash) {
+                        var a = location.hash.substr(1);
+                        if (a != 'select-visualization' && a != 'refine-the-chart' && a != 'tell-the-story') {
+                            return;
+                        }
+                        show($('a[data-target='+a+']'));
+                        if (evt) evt.preventDefault();
+                    }
                 }
+
+                $(window).on('hashchange', loadTab);
+                loadTab();
             });
 
             </script>

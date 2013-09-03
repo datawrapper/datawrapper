@@ -143,7 +143,6 @@ $(function() {
 
     // synchronize vis options as soon the vis has been loaded
     dw.backend.__currentVisLoaded.done(function() {
-        console.log('vis options: __currentVisLoaded');
         dw.backend.currentVis.chart(chart);
         syncVisOptions(vis);
         $('.select-row').hide();
@@ -244,8 +243,6 @@ $(function() {
         var customColors = $('#customColors'),
             sel = chart.get('metadata.visualize.custom-colors', {});
             labels = dw.backend.currentVis.keys();
-
-        console.log('initCustomColors()', chart);
 
         if (_.isEmpty(labels)) {
             $('a[href=#customColors]').hide();

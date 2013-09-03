@@ -156,7 +156,6 @@
 
         __barExit: function(bar_name, s) {
             var me = this;
-            console.log('bar exit', bar_name);
             _.each(me.__elements[bar_name], function(el) {
                 el.remove();
             });
