@@ -41,8 +41,8 @@ $(function() {
     $.fn.colorpicker = function(props) {
         var rt = $(this), colors, active, maxW = props.maxW || $(rt).parent().width();
         if (!rt.data('colors')) return;
-        colors = rt.data('colors').toLowerCase().split(','),
-        ctive = (rt.data('color') || "").toLowerCase();
+        colors = rt.data('colors').toLowerCase().split(',');
+        active = (rt.data('color') || "").toLowerCase();
         // clean up html at first
         rt.html('');
         rt.css({
