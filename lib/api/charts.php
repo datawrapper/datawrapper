@@ -50,6 +50,7 @@ $app->get('/gallery', function() use ($app) {
     $result = array();
     $q = ChartQuery::create()
         ->filterByShowInGallery(true)
+        ->filterByLastEditStep(array('min' => 4))
         ->orderByCreatedAt('desc');
     if ($app->request()->get('type')) {
         $q->filterByType($app->request()->get('type'));

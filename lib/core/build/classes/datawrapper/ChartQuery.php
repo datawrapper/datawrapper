@@ -166,6 +166,7 @@ class ChartQuery extends BaseChartQuery {
 
     private function galleryChartsQuery($filter) {
         $query = $this->filterByShowInGallery(true)
+            ->filterByLastEditStep(array('min' => 4))
             ->filterByDeleted(false)
             ->orderByCreatedAt('desc');
         foreach ($filter as $key => $val) {
