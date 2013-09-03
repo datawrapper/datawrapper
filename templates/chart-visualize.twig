@@ -373,13 +373,17 @@ $(function() {
     iframe.load(function() {
         updateVisBackground();
         dw.backend.initLiveUpdates(iframe);
-        var win = $('#iframe-vis').get(0).contentWindow;
+        var win = $('#iframe-vis').get(0).contentWindow,
+            chk;
 
-        setTimeout(function() {  // wait a little more
-            win.vis.rendered().done(function() {
-                checkChartHeight();
-            });
-        }, 300);
+        chk = setInterval(function() {  // wait a little more
+            if (_.isFunction(win.vis.rendered)) {
+                clearInterval(chk);
+                win.vis.rendered().done(function() {
+                    checkChartHeight();
+                });
+            }
+        }, 100);
 
         $(win).unload(function() {
             iframe.ready(iframeReady);
