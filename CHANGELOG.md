@@ -1,6 +1,9 @@
 CHANGELOG
 ---------
 
+### 1.5.4
+* added dw.utils.smartRound
+
 ### 1.5.3
 * allowing external websites to provide data and some chart preset
 * improved parsing of dates
