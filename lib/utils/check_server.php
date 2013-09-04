@@ -72,13 +72,20 @@ function check_database() {
     return '';
 }
 
+/*
+ * checks that the current plugin setup is correct
+ * - all activated plugins need to have a valid package.json
+ */
 function check_plugins() {
     $res = mysql_query('SELECT id FROM plugin WHERE enabled = 1');
     $missing = array();
+    $need_newer_version = array();
     $package_json_parse_error = array();
+    $missing_dep = array();
     $cnt = 0;
 
-    $dependencies = array();
+    $depends = array();
+    $installed = array();
 
     while ($row = mysql_fetch_assoc($res)) {
         $package_json = ROOT_PATH . 'plugins/' . $row['id'] . '/package.json';
@@ -87,21 +94,59 @@ function check_plugins() {
         } else {
             $info = file_get_contents($package_json);
             $info = json_decode($info, true);
-            if (empty($info)) $package_json_parse_error[] = $row['id'];
+            if (empty($info)) {
+                $package_json_parse_error[] = $row['id'];
+            } else {
+                $installed[$row['id']] = $info['version'];
+                if (!empty($info['dependencies'])) {
+                    $depends[$row['id']] = $info['dependencies'];
+                }
+            }
         }
         $cnt++;
     }
-    if (count($missing) > 0) {
-        return '<h2>Some plugins are missing</h2>'
-            . '<p>The following plugins are activated in the database but the corresponding '
-            . 'files could not be found:</p>'
-            . '<ul><li><code>'. join('</li></code><li><code>', $missing) . '</code></li></ul>';
+    // check dependencies
+    foreach ($depends as $id => $deps) {
+        foreach ($deps as $dep_id => $dep_ver) {
+            if (!isset($installed[$dep_id]) && $dep_id != 'core') {
+                $missing_dep[] = $dep_id;
+            } else {
+                if ($dep_id != 'core') {
+                    if (version_compare($installed[$dep_id], $dep_ver) < 0) {
+                        $need_newer_version[] = $dep_id.' (>='.$dep_ver.')';
+                    }
+                } else {
+                    if (version_compare(DATAWRAPPER_VERSION, $dep_ver) < 0) {
+                        $need_newer_version[] = $id.' needs Datawrapper >= '.$dep_ver;
+                    }
+                }
+            }
+        }
     }
     if (count($package_json_parse_error) > 0) {
         return '<h2>Some plugins have bad package descriptors</h2>'
             . '<p>For the following plugins the descriptor stored in package.json could '
             . 'not be parsed correctly. Please make sure that they are valid JSON files.'
             . '<ul><li><code>'. join('</li></code><li><code>', $package_json_parse_error) . '</code></li></ul>';
+    }
+    if (count($need_newer_version) > 0) {
+        return '<h2>Some required plugins need to be updated</h2>'
+            . '<p>The following plugins are installed but some plugins need a newer '
+            . 'version of them:</p>'
+            . '<ul><li><code>'. join('</li></code><li><code>', $need_newer_version) . '</code></li></ul>';
+    }
+    $missing = array_unique($missing);
+    if (count($missing) > 0) {
+        return '<h2>Some plugins are missing</h2>'
+            . '<p>The following plugins are activated in the database but the corresponding '
+            . 'files could not be found:</p>'
+            . '<ul><li><code>'. join('</li></code><li><code>', $missing) . '</code></li></ul>';
+    }
+    $missing_dep = array_unique($missing_dep);
+    if (count($missing_dep) > 0) {
+        return '<h2>Some plugins are missing</h2>'
+            . '<p>The following plugins are declared as dependencies by other plugins:</p>'
+            . '<ul><li><code>'. join('</li></code><li><code>', $missing_dep) . '</code></li></ul>';
     }
     if ($cnt == 0) {
         return '<h2>Please install some plugins</h2>'
