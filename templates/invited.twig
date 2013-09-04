@@ -25,7 +25,7 @@ $(function() {
     });
     // show password in clear text
     $('.pwd-clear').change(function() {
-        $('.login-pwd').get(0).type = $('.pwd-clear').attr('checked') ? 'text': 'password';
+        $('.login-pwd').get(0).type = $('.pwd-clear').is(':checked') ? 'text': 'password';
     });
 });
 </script>
