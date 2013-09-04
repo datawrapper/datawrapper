@@ -32,7 +32,12 @@ $(function() {
 
 <div class="modal">
     <div class="modal-body">
-        <h3>{% trans "Welcome to Datawrapper!" %}</h3>
+        <h3>{% if config.custom_logo %}<!--[if IE ]>
+            <img src="/static/custom/{{ config.custom_logo | replace({'.svg':'.png'})}}">
+            <![endif]-->
+            <img class="hide-from-ie" src="/static/custom/{{ config.custom_logo }}"/>
+        {% endif %}
+        {% trans "Welcome to Datawrapper!" %}</h3>
         <p>{% trans "Hi, good to see you. Now please pick a password to complete the sign up." %}</p>
         <div class="login-form form-vertical">
             <div class="control-group">
@@ -79,6 +84,9 @@ body {
     font-size: 26px;
     font-weight: 300;
     margin-bottom: 20px;
+}
+.modal h3 img {
+    vertical-align: bottom;
 }
 body .modal {
     width: 420px;
