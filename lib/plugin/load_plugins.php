@@ -27,34 +27,48 @@ function load_plugins() {
         }
     }
 
-    function load_child_plugins($data, $index, $parent_id, $level) {
-        $parent_id = $parent_id === NULL ? "NULL" : $parent_id;
-        // load this plugin
-        $plugin = $data[$parent_id];
-        // require plugin class
-        $plugin_path = ROOT_PATH . 'plugins/' . $plugin->getName() . '/plugin.php';
-        if (file_exists($plugin_path)) {
-            require_once $plugin_path;
-            // init plugin class
-            $className = $plugin->getClassName();
-            $pluginClass = new $className();
-        } else {
-            $pluginClass = new DatawrapperPlugin($plugin->getName());
-        }
-        // but before we load the required libraries
-        foreach ($pluginClass->getRequiredLibraries() as $lib) {
-            require_once ROOT_PATH . 'plugins/' . $plugin->getName() . '/' . $lib;
-        }
-        $pluginClass->init();
+    $installed = array();
 
-        if (isset($index[$parent_id])) {
+    function load_child_plugins($data, $index, $parent_id, $level, $recursive=false) {
+        $parent_id = $parent_id === NULL ? "NULL" : $parent_id;
+        if (!isset($installed[$parent_id])) {
+            // load this plugin
+            $plugin = $data[$parent_id];
+            // require plugin class
+            $plugin_path = ROOT_PATH . 'plugins/' . $plugin->getName() . '/plugin.php';
+            if (file_exists($plugin_path)) {
+                require_once $plugin_path;
+                // init plugin class
+                $className = $plugin->getClassName();
+                $pluginClass = new $className();
+            } else {
+                $pluginClass = new DatawrapperPlugin($plugin->getName());
+            }
+            $installed[$parent_id] = true;
+            // but before we load the libraries required by this lib
+            foreach ($pluginClass->getRequiredLibraries() as $lib) {
+                require_once ROOT_PATH . 'plugins/' . $plugin->getName() . '/' . $lib;
+            }
+            $pluginClass->init();
+        }
+        // now we can proceed loading plugins that
+        if ($recursive && isset($index[$parent_id])) {
             foreach ($index[$parent_id] as $id) {
-                load_child_plugins($data, $index, $id, $level + 1);
+                load_child_plugins($data, $index, $id, $level + 1, $recursive);
             }
         }
     }
 
+    // first load all root plugins
     foreach ($roots as $id) {
         load_child_plugins($data, $index, $id, 0);
+    }
+    // then load plugins that depend on root plugins
+    foreach ($roots as $id) {
+        if (isset($index[$id])) {
+            foreach ($index[$parent_id] as $id) {
+                load_child_plugins($data, $index, $id, 1, true);
+            }
+        }
     }
 }
