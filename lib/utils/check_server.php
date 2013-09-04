@@ -75,10 +75,19 @@ function check_database() {
 function check_plugins() {
     $res = mysql_query('SELECT id FROM plugin WHERE enabled = 1');
     $missing = array();
+    $package_json_parse_error = array();
     $cnt = 0;
+
+    $dependencies = array();
+
     while ($row = mysql_fetch_assoc($res)) {
-        if (!file_exists(ROOT_PATH . 'plugins/' . $row['id'] . '/package.json')) {
+        $package_json = ROOT_PATH . 'plugins/' . $row['id'] . '/package.json';
+        if (!file_exists($package_json)) {
             $missing[] = $row['id'];
+        } else {
+            $info = file_get_contents($package_json);
+            $info = json_decode($info, true);
+            if (empty($info)) $package_json_parse_error[] = $row['id'];
         }
         $cnt++;
     }
@@ -87,6 +96,12 @@ function check_plugins() {
             . '<p>The following plugins are activated in the database but the corresponding '
             . 'files could not be found:</p>'
             . '<ul><li><code>'. join('</li></code><li><code>', $missing) . '</code></li></ul>';
+    }
+    if (count($package_json_parse_error) > 0) {
+        return '<h2>Some plugins have bad package descriptors</h2>'
+            . '<p>For the following plugins the descriptor stored in package.json could '
+            . 'not be parsed correctly. Please make sure that they are valid JSON files.'
+            . '<ul><li><code>'. join('</li></code><li><code>', $package_json_parse_error) . '</code></li></ul>';
     }
     if ($cnt == 0) {
         return '<h2>Please install some plugins</h2>'
