@@ -3,6 +3,8 @@ CHANGELOG
 
 ### 1.5.4
 * added dw.utils.smartRound
+* plugin install script performs health checks
+* checking for plugin dependencies
 
 ### 1.5.3
 * allowing external websites to provide data and some chart preset
