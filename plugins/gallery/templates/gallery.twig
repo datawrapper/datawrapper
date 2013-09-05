@@ -1,0 +1,96 @@
+{% use "utils.twig" %}
+{% extends "core.twig" %}
+
+{% block content %}
+
+<div class="docs">
+
+
+    <div class="pull-right" style="position:relative;top:-16px">
+        {{ block('pagination') }}
+    </div>
+
+    <h1 class="title">{% trans "Chart Gallery" %} <small>{% trans "See what others created with Datawrapper recently" %}</small></h1>
+</div>
+<div class="row">
+    <div class="span3">
+        <p>{% trans "Welcome to the public gallery of Datawrapper charts. Here you can see the nice charts that other users have created recently. Click on the charts to see the interactive version." %}</p>
+
+        <div class="gallery-filter">
+            <h3>{% trans "By Visualisation" %}</h3>
+
+            <ul class="unstyled">
+                {% for vis in byvis %}
+                {% if key == 'vis' and val == vis.id %}
+                    <li class="active">
+                        <a href="/gallery/">{{ vis.name }} </a> ({{ vis.count }})
+                        <div class="bar" style="width:{{ vis.bar }}%"></div>
+                    </li>
+                {% else %}
+                    <li>
+                        <a href="/gallery/by/vis/{{ vis.id }}">{{ vis.name }}</a> ({{ vis.count }})
+                        <div class="bar" style="width:{{ vis.bar }}%"></div>
+                    </li>
+                {% endif %}
+                {% endfor %}
+            </ul>
+
+            <h3>{% trans "By Month" %}</h3>
+
+            <ul class="unstyled">
+                {% for month in bymonth %}
+                {% if key == 'month' and val == month.id %}
+                    <li class="active"><a href="/gallery/">{{ month.name }} </a> ({{ month.count }})
+                        <div class="bar" style="width:{{ month.bar }}%"></div>
+                    </li>
+                {% else %}
+                    <li>
+                        <a href="/gallery/by/month/{{ month.id }}">{{ month.name }}</a> ({{ month.count }})
+                        <div class="bar" style="width:{{ month.bar }}%"></div>
+                    </li>
+                {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+
+
+    </div>
+    <div class="span9 gallery">
+
+        <ul class="thumbnails">
+            {% for chart in charts %}
+
+            {{ block('gallerythumb')}}
+
+            {% endfor %}
+        </ul>
+
+    </div>
+    <div class="pull-right">
+        {{ block('pagination') }}
+    </div>
+
+</div>
+
+
+<script type="text/javascript" src="/static/vendor/overlay/ender.overlay.js"></script>
+<script type="text/javascript">
+$(function(){
+
+    if (location.hash.length == 7) {
+        // try to find the chart
+        dw.backend.popupChart(location.hash.substr(2));
+    }
+
+    $(window).bind('hashchange', function() {
+        if (location.hash.length == 7) {
+            dw.backend.popupChart(location.hash.substr(2));
+        }
+    });
+
+});
+
+</script>
+
+{{ parent() }}
+{% endblock %}
