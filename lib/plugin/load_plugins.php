@@ -17,9 +17,9 @@ function load_plugins() {
         $id = $plugin->getId();
         $data[$id] = $plugin;
         $deps = $plugin->getDependencies();
+        unset($deps['core']);  // ignore core dependency
         if (!empty($deps)) {
             foreach ($deps as $parent_id => $parent_version) {
-                if ($parent_id == "core") continue;  // ignore core dependency
                 $index[$parent_id][] = $id;
             }
         } else {
@@ -31,6 +31,7 @@ function load_plugins() {
 
     function load_child_plugins($data, $index, $parent_id, $level, $recursive=false) {
         $parent_id = $parent_id === NULL ? "NULL" : $parent_id;
+        global $installed;
         if (!isset($installed[$parent_id])) {
             // load this plugin
             $plugin = $data[$parent_id];
