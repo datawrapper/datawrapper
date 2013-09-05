@@ -96,6 +96,7 @@ html h3 {
     float: left;
     margin-right: 7px;
     margin-left: 4px;
+    height: 32px;
     position:relative;
     top:-4px;
 }
