@@ -107,6 +107,9 @@ class DatawrapperHooks {
     // returns a list of actions to be displayed in publish step
     const GET_CHART_ACTIONS = 'get_chart_actions';
 
+    // render something beneath the chart actions
+    const PUBLISH_AFTER_CHART_ACTIONS = 'publish_after_chart_actions';
+
     // a hook for providing new api actions
     const PROVIDE_API = 'provide_api';
 
