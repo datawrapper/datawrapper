@@ -119,6 +119,9 @@ class DatawrapperHooks {
     // a hook for providing visualization options
     const VIS_OPTION_CONTROLS = 'vis_option_controls';
 
+    // a hook for defining new controller
+    const GET_PLUGIN_CONTROLLER = 'get_plugin_controller';
+
 }
 
 

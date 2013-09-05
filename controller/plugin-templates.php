@@ -16,3 +16,7 @@ $app->get('/plugins/:plugin/:template', function ($plugin_id, $template) use ($a
     }
     $app->notFound();
 });
+
+// also execute plugin controller
+
+DatawrapperHooks::execute(DatawrapperHooks::GET_PLUGIN_CONTROLLER, $app);
