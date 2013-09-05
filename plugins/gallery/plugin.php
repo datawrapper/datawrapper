@@ -11,6 +11,15 @@ class DatawrapperPlugin_Gallery extends DatawrapperPlugin {
             DatawrapperHooks::GET_PLUGIN_CONTROLLER,
             array($this, 'controller')
         );
+
+        // show link 'show in gallery'
+        DatawrapperHooks::register(
+            DatawrapperHooks::PUBLISH_AFTER_CHART_ACTIONS,
+            function() {
+                global $app;
+                $app->render('plugins/gallery/show-in-gallery.twig');
+            }
+        );
     }
 
     public function controller($app) {

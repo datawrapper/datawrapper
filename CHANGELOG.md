@@ -5,6 +5,7 @@ CHANGELOG
 * added dw.utils.smartRound
 * plugin install script performs health checks
 * checking for plugin dependencies
+* refactored gallery as plugin
 
 ### 1.5.3
 * allowing external websites to provide data and some chart preset
