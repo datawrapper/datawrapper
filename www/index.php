@@ -134,7 +134,7 @@ function add_header_vars(&$page, $active = null) {
         $headlinks[] = array(
             'url' => '#login',
             'id' => 'login',
-            'title' => __('Login / Sign Up'),
+            'title' => $config['prevent_guest_access'] ? __('Login') : __('Login / Sign Up'),
             'icon' => 'user'
         );
     }
@@ -151,6 +151,7 @@ function add_header_vars(&$page, $active = null) {
     $page['ADMIN_EMAIL'] = $config['email']['admin'];
     $page['config'] = $config;
     $page['invert_navbar'] = substr($config['domain'], -4) == '.pro';
+    $page['noSignup'] = $config['prevent_guest_access'];
 
     $uri = $app->request()->getResourceUri();
     $plugin_assets = DatawrapperHooks::execute(DatawrapperHooks::GET_PLUGIN_ASSETS, $uri);
