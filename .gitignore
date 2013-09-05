@@ -14,6 +14,7 @@ scripts/history.php
 fabfile.py*
 archive.tar
 *.log
+templates/plugins/*
 www/static/vendor/d3js/d3.scale.js
 www/static/custom/*
 test/result/*
