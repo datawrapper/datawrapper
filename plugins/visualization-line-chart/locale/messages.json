@@ -3,7 +3,6 @@
   "Your chart contains <b>more lines than we can label<\/b>, so automatic \nlabeling is turned off. To fix this <ul><li>filter some columns in the data \ntable in the previous step, or<\/li><li>use direct labeling and the highlight \nfeature to label the lines that are important to your story.<\/li><\/ul>": "Your chart contains <b>more lines than we can label<\/b>, so automatic \nlabeling is turned off. To fix this <ul><li>filter some columns in the data \ntable in the previous step, or<\/li><li>use direct labeling and the highlight \nfeature to label the lines that are important to your story.<\/li><\/ul>",
   "Customize labeling": "Customize labeling",
   "Direct labeling": "Direct labeling",
-  "Rotate labels 45 degrees": "Rotate labels 45 degrees",
   "Legend position": "Legend position",
   "right": "right",
   "top": "top",
