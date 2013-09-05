@@ -203,6 +203,7 @@ function add_editor_nav(&$page, $step) {
 
 require_once '../lib/utils/errors.php';
 require_once '../lib/utils/check_chart.php';
+require_once '../controller/plugin-templates.php';
 require_once '../controller/home.php';
 require_once '../controller/login.php';
 require_once '../controller/account-settings.php';
@@ -223,7 +224,6 @@ require_once '../controller/mycharts.php';
 require_once '../controller/xhr.php';
 require_once '../controller/docs.php';
 require_once '../controller/admin.php';
-require_once '../controller/plugin-templates.php';
 
 
 $app->notFound(function() {
