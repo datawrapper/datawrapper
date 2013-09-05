@@ -222,7 +222,6 @@ require_once '../controller/chart-static.php';
 require_once '../controller/mycharts.php';
 require_once '../controller/xhr.php';
 require_once '../controller/docs.php';
-require_once '../controller/gallery.php';
 require_once '../controller/admin.php';
 require_once '../controller/plugin-templates.php';
 
