@@ -20,6 +20,15 @@ class DatawrapperPlugin_Gallery extends DatawrapperPlugin {
                 $app->render('plugins/gallery/show-in-gallery.twig');
             }
         );
+
+        // show link to gallery in mycharts page
+        DatawrapperHooks::register(
+            DatawrapperHooks::MYCHARTS_AFTER_SIDEBAR,
+            function($chart, $user) {
+                global $app;
+                $app->render('plugins/gallery/take-a-look.twig');
+            }
+        );
     }
 
     public function controller($app) {

@@ -110,6 +110,9 @@ class DatawrapperHooks {
     // render something beneath the chart actions
     const PUBLISH_AFTER_CHART_ACTIONS = 'publish_after_chart_actions';
 
+    // render something after sidebar on mycharts page
+    const MYCHARTS_AFTER_SIDEBAR = 'mycharts_after_sidebar';
+
     // a hook for providing new api actions
     const PROVIDE_API = 'provide_api';
 
