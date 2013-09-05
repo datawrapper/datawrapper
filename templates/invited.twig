@@ -29,15 +29,12 @@ $(function() {
     });
 });
 </script>
-
+ <div class="brand">
+    {% if config.custom_logo %}<img src="/static/custom/{{ config.custom_logo }}" style="height:50px;" />{% endif %}
+</div>
 <div class="modal">
     <div class="modal-body">
-        <h3>{% if config.custom_logo %}<!--[if IE ]>
-            <img src="/static/custom/{{ config.custom_logo | replace({'.svg':'.png'})}}">
-            <![endif]-->
-            <img class="hide-from-ie" src="/static/custom/{{ config.custom_logo }}"/>
-        {% endif %}
-        {% trans "Welcome to Datawrapper!" %}</h3>
+        <h3>{% trans "Welcome to Datawrapper!" %}</h3>
         <p>{% trans "Hi, good to see you. Now please pick a password to complete the sign up." %}</p>
         <div class="login-form form-vertical">
             <div class="control-group">
@@ -75,6 +72,11 @@ $(function() {
     opacity: 0.5;
 }
 
+.brand {
+    text-align: center;
+    position: relative;
+    top: -30px;
+}
 body {
     background: #eee url(/static/img/bg/wavegrid.png);
 }
