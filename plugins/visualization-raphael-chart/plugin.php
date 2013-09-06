@@ -12,7 +12,7 @@ class DatawrapperPlugin_VisualizationRaphaelChart extends DatawrapperPlugin_Visu
                 ),
                 array(
                     "local" => "vendor/chroma.min.js",
-                    "cdn" => "//assets-datawrapper.s3.amazonaws.com/vendor/chroma-js/0.4.14/chroma.min.js"
+                    "cdn" => "//assets-datawrapper.s3.amazonaws.com/vendor/chroma-js/0.5.1/chroma.min.js"
                 ),
                 array(
                     "local" => "vendor/raphael-2.1.0.min.js",
