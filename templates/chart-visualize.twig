@@ -123,6 +123,8 @@ $(function() {
 
         var colors = theTheme.colors.palette.slice().concat(theTheme.colors.secondary || []);
         customColors.data('colors', colors.join(','));
+
+        $('body').trigger('dw:themes-loaded');
     }
     // show the theme colors as soon as the theme has been loaded
     //$('body').on('dw:themes-loaded', showThemeColors);
