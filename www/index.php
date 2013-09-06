@@ -65,6 +65,13 @@ function add_header_vars(&$page, $active = null) {
         $active = $active[1];
     }
 
+    if (!isset($config['prevent_guest_charts'])) {
+        $config['prevent_guest_charts'] = false;
+    }
+    if (!isset($config['prevent_guest_access'])) {
+        $config['prevent_guest_access'] = false;
+    }
+
     $user = DatawrapperSession::getUser();
     $headlinks = array();
     if ($user->isLoggedIn() || empty($config['prevent_guest_charts'])) {
