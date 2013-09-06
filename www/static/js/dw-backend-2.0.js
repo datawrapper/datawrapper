@@ -559,11 +559,13 @@ var dw = dw || {};
 
             setColor(opts.color);
 
-            hexTf.change(function() { setColor(hexTf.val()); });
-            okBtn.click(function() {
+            function closePopup() {
                 popup.remove();
                 if (_.isFunction(opts.change)) opts.change(opts.color);
-            });
+            }
+
+            hexTf.change(function() { setColor(hexTf.val()); });
+            okBtn.click(closePopup);
 
             setTimeout(function() {
                 $('body').one('click', body_click);
@@ -626,6 +628,11 @@ var dw = dw || {};
                         setColor(c.data('color'), cont);
                         // stop propagation so body.click won't fire
                         evt.stopPropagation();
+                    })
+                    .dblclick(function(evt) {
+                        var c = $(evt.target);
+                        opts.color = c.data('color');
+                        closePopup();
                     })
                     .appendTo(cont);
             }
