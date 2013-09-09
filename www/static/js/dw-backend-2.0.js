@@ -290,7 +290,7 @@ var dw = dw || {};
                     return;
                 }
                 // check if we need to update chart
-                if (changed('metadata.visualize')) {
+                if (changed('metadata.visualize') && __dw.vis) {
                     __dw.vis.chart().attributes(attrs);
                     __dw.render();
                 }
