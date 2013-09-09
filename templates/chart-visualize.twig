@@ -376,13 +376,13 @@ $(function() {
 
     iframe.load(function() {
         updateVisBackground();
-        dw.backend.initLiveUpdates(iframe);
         var win = $('#iframe-vis').get(0).contentWindow,
             chk;
 
         chk = setInterval(function() {  // wait a little more
             if (win.vis) {
                 clearInterval(chk);
+                dw.backend.initLiveUpdates(iframe);
                 win.vis.rendered().done(function() {
                     checkChartHeight();
                 });
