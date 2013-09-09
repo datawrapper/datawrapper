@@ -272,12 +272,7 @@
             var reload_timer;
             if (navigator.userAgent.match(/iPad|msie/i) == null) {
                 // IE continuosly reloads the chart for some strange reasons
-                $(window).resize(function() {
-                    if (reload_timer) clearTimeout(reload_timer);
-                    reload_timer = setTimeout(function() {
-                        renderChart();
-                    }, 300);
-                });
+                $(window).resize(renderChart);
             }
         }
 
