@@ -305,7 +305,15 @@
 
         window.__dw = {
             old_attrs: old_chart_attributes,
-            render: renderChart
+            render: (function() {
+                var timeout;
+                return function() {
+                    clearTimeout(timeout);
+                    timeout = setTimeout(function() {
+                        renderChart();
+                    }, 200);
+                };
+            })()
         };
 
         $.when($.ready(), chartLoaded()).done(renderChart);
