@@ -190,6 +190,7 @@ $(function() {
     })();
     dw.backend.__currentVisLoaded = loadVisDfd.promise();
 
+    /** Set into `dw.backend.currentVis` the edited visualization (editor side) */
     function loadVis() {
         dw.backend.currentVis = dw.visualization(chart.get('type'));
         dw.backend.currentVis.chart(chart);
@@ -213,8 +214,9 @@ $(function() {
         }
 
         if (_typeHasChanged) {
-            loadVis();
-            loadOptions();
+            loadOptions().done(function() {
+                loadVis();
+            });
         }
 
         if (_themeHasChanged) {
