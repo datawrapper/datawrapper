@@ -58,6 +58,16 @@ vows
             'parsed valid value is a Date': (topic) ->
                 assert _.isDate(topic.val(2))
 
+        'force column type date':
+            'topic': dw.column('', ['1365','1458','1235','1382','1443','1581','1334','1794','3757','1801'])
+            'auto-detected as numbers': (column) ->
+                assert.equal column.type(), 'number'
+            'hard-set type to date': (column) ->
+                column.type('date')
+                assert.equal column.type(), 'date'
+            'values parsed as dates': (column) ->
+                assert.deepEqual column.val(0), new Date(1365, 0, 1)
+
         'API':
             'topic': dw.column('', sample_data)
             'column.raw': (topic) -> assert.deepEqual topic.raw(), sample_data
