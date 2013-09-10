@@ -9,6 +9,7 @@
     </script>
 
     <link rel="stylesheet" type="text/css" href="/static/plugins/visualization-line-chart/line-chart.css"></link>
+    <link rel="stylesheet" type="text/css" href="/static/plugins/visualization-pie-chart/pie-chart.css"></link>
     <link rel="stylesheet" type="text/css" href="/static/plugins/theme-default/default.css"></link>
 
     <script type="text/javascript" src="/static/vendor/globalize/globalize.js"></script>
@@ -22,6 +23,8 @@
     <script type="text/javascript" src="/static/vendor/chromajs/chroma.min.js"></script>
     <script type="text/javascript" src="/static/plugins/visualization-raphael-chart/raphael-chart.js"></script>
     <script type="text/javascript" src="/static/plugins/visualization-line-chart/line-chart.js"></script>
+    <script type="text/javascript" src="/static/plugins/visualization-pie-chart/pie-chart.js"></script>
+    <script type="text/javascript" src="/static/plugins/visualization-pie-chart/donut-chart.js"></script>
 
     <script type="text/javascript">
     $(function() {
@@ -79,6 +82,55 @@
 
         }
 
+
+        function donutChart(cont, data) {
+        // initialize theme
+            var theme = dw.theme('default');
+            // initialize chart
+            var chart = dw.chart({
+                type: "donut-chart",
+                metadata: {
+                    data: {
+                        transpose: false,
+                        'horizontal-header': true,
+                        'vertical-header': true
+                    },
+                    visualize: {
+                        'show-total': true
+                    },
+                    describe: {
+                        'number-format': 'n0',
+                        'number-divisor': 0,
+                        'number-currency': '',
+                        'number-unit': '',
+                        'number-append': '',
+                        'number-prepend': ''
+                    }
+                }
+            });
+
+            // initliaze visualization
+            var vis = dw.visualization('donut-chart');
+            vis.meta = {{ donutchart | json | raw }};
+            vis.meta.locale = { other: 'others' };
+
+            dw.datasource.delimited({ csv: data }).dataset().done(function(ds) {
+
+                chart.dataset(ds)
+                    .locale('en-US', {"3":"k","6":"m","9":"b","12":"t"})
+                    .theme(theme)
+                    .vis(vis);
+
+                vis.size($(cont).width(),240)
+                   .__init()
+                   .render(cont);
+            });
+
+        }
+
+        donutChart("#user-types", '{{ users_csv | raw }}');
+        donutChart("#chart-last-edit", '{{ charts_edit_step_csv | raw }}');
+        donutChart("#chart-type", '{{ charts_by_type_csv | raw }}');
         lineChart('#user-stats', '{{ user_signups_csv | raw }}');
         lineChart('#charts-created-stats', '{{ created_csv | raw }}');
         lineChart('#charts-published-stats', '{{ published_csv | raw }}');
@@ -104,15 +156,30 @@ body {
     position: relative;
 }
 
-h2 { margin-bottom: 30px!important; }
+.donut-chart .label, .line-chart .label {
+    background: 0;
+    padding: 0;
+    font-weight: normal;
+}
+
+h2 { margin-bottom: 10px; }
     </style>
 
 
-    <h2>Generic stats</h2>
-    <ul class="unstyled">
-        <li>Users: {{ num_users }}, activated: {{ num_users_activated }} ({{ num_users_activated/num_users*100 // 1 }}%)</li>
-        <li>Charts: {{ num_charts }}, published: {{ num_charts_published }} ({{ num_charts_published/num_charts*100 // 1 }}%)</li>
-    </ul>
+    <div class="row">
+        <div class="span3">
+            <h2>User statistics</h2>
+            <div id="user-types"></div>
+        </div>
+        <div class="span3">
+            <h2>Charts by type</h2>
+            <div id="chart-type"></div>
+        </div>
+        <div class="span3">
+            <h2>..and last edit step</h2>
+            <div id="chart-last-edit"></div>
+        </div>
+    </div>
 
     <h2>User signed up per day <small>(last 90 days)</small></h2>
     <div id="user-stats" class="linechart"></div>
@@ -150,7 +217,7 @@ h2 { margin-bottom: 30px!important; }
             });
         });
         </script>
-        
+
     </div> -->
 
 {% endblock %}
