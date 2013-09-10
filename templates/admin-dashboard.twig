@@ -31,7 +31,7 @@
     <script type="text/javascript">
     $(function() {
 
-        function lineChart(cont, data) {
+        function lineChart(cont, data, smooth) {
         // initialize theme
             var theme = dw.theme('default');
             // initialize chart
@@ -50,7 +50,8 @@
                         'baseline-zero': true,
                         'force-banking': false,
 
-                        'fill-below': true,
+                        'fill-below': !smooth,
+                        'line-mode': smooth ? 'curved' : 'straight',
                         'connect-missing-values': true,
                         'highlighted-values': [],
                         'highlighted-series': []
@@ -176,6 +177,7 @@
         columnChart("#chart-type", '{{ charts_by_type_csv | raw }}');
         lineChart('#user-stats', '{{ user_signups_csv | raw }}');
         lineChart('#charts-created-stats', '{{ created_csv | raw }}');
+        lineChart('#charts-created-week-stats', '{{ created_weekly_csv | raw }}', true);
         lineChart('#charts-published-stats', '{{ published_csv | raw }}');
 
     });
@@ -233,6 +235,9 @@ h2 { margin-bottom: 10px; }
 
     <h2>Charts created per day <small>(last 90 days)</small></h2>
     <div id="charts-created-stats" class="linechart"></div>
+
+    <h2>Charts created per week <small>(last 26 weeks)</small></h2>
+    <div id="charts-created-week-stats" class="linechart"></div>
 
     <h2>Charts published per day <small>(last 90 days)</small></h2>
     <div id="charts-published-stats" class="linechart"></div>
