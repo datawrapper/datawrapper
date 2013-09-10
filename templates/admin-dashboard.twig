@@ -70,7 +70,7 @@
                     .theme(theme)
                     .vis(vis);
 
-                vis.size($('.span5').width(),200)
+                vis.size($(cont).width(),200)
                    .__init()
                    .render(cont);
             });
@@ -86,6 +86,10 @@
 
     <style type="text/css">
 
+body {
+    overflow: scroll!important;
+}
+
 .linechart .label {
     background: none;
     font-weight: inherit;
@@ -94,34 +98,28 @@
 
 .linechart {
     height: 230px!important;
+    width: 970px!important;
     position: relative;
 }
 
 h2 { margin-bottom: 30px!important; }
     </style>
 
-    <div class="row">
-        <div class="span5">
-            <h2>Generic stats</h2>
-            <ul class="unstyled">
-                <li>Users: {{ num_users }}, activated: {{ num_users_activated }} ({{ num_users_activated/num_users*100 // 1 }}%)</li>
-                <li>Charts: {{ num_charts }}, published: {{ num_charts_published }} ({{ num_charts_published/num_charts*100 // 1 }}%)</li>
-            </ul>
-        </div>
-        <div class="span5">
-            <h2>User signed up per day <small>(last 90 days)</small></h2>
-            <div id="user-stats" class="linechart"></div>
-        </div>
-        
-        <div class="span5">
-            <h2>Charts created per day <small>(last 90 days)</small></h2>
-            <div id="charts-created-stats" class="linechart"></div>
-        </div>
-        <div class="span5">
-            <h2>Charts published per day <small>(last 90 days)</small></h2>
-            <div id="charts-published-stats" class="linechart"></div>
-        </div>
-    </div>
+
+    <h2>Generic stats</h2>
+    <ul class="unstyled">
+        <li>Users: {{ num_users }}, activated: {{ num_users_activated }} ({{ num_users_activated/num_users*100 // 1 }}%)</li>
+        <li>Charts: {{ num_charts }}, published: {{ num_charts_published }} ({{ num_charts_published/num_charts*100 // 1 }}%)</li>
+    </ul>
+
+    <h2>User signed up per day <small>(last 90 days)</small></h2>
+    <div id="user-stats" class="linechart"></div>
+
+    <h2>Charts created per day <small>(last 90 days)</small></h2>
+    <div id="charts-created-stats" class="linechart"></div>
+
+    <h2>Charts published per day <small>(last 90 days)</small></h2>
+    <div id="charts-published-stats" class="linechart"></div>
 
 <!--     <h2>Chart Gallery <small>(the last 10 charts)</small></h2>
     <div class="row" id="gallery">
