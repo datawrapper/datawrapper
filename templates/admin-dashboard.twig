@@ -10,6 +10,7 @@
 
     <link rel="stylesheet" type="text/css" href="/static/plugins/visualization-line-chart/line-chart.css"></link>
     <link rel="stylesheet" type="text/css" href="/static/plugins/visualization-pie-chart/pie-chart.css"></link>
+    <link rel="stylesheet" type="text/css" href="/static/plugins/visualization-column-charts/column-chart.css"></link>
     <link rel="stylesheet" type="text/css" href="/static/plugins/theme-default/default.css"></link>
 
     <script type="text/javascript" src="/static/vendor/globalize/globalize.js"></script>
@@ -25,6 +26,7 @@
     <script type="text/javascript" src="/static/plugins/visualization-line-chart/line-chart.js"></script>
     <script type="text/javascript" src="/static/plugins/visualization-pie-chart/pie-chart.js"></script>
     <script type="text/javascript" src="/static/plugins/visualization-pie-chart/donut-chart.js"></script>
+    <script type="text/javascript" src="/static/plugins/visualization-column-charts/column-chart.js"></script>
 
     <script type="text/javascript">
     $(function() {
@@ -83,7 +85,7 @@
         }
 
 
-        function donutChart(cont, data) {
+        function donutChart(cont, data, hl) {
         // initialize theme
             var theme = dw.theme('default');
             // initialize chart
@@ -96,7 +98,8 @@
                         'vertical-header': true
                     },
                     visualize: {
-                        'show-total': true
+                        'show-total': true,
+                        'highlighted-series': hl
                     },
                     describe: {
                         'number-format': 'n0',
@@ -113,9 +116,7 @@
             var vis = dw.visualization('donut-chart');
             vis.meta = {{ donutchart | json | raw }};
             vis.meta.locale = { other: 'others' };
-
             dw.datasource.delimited({ csv: data }).dataset().done(function(ds) {
-
                 chart.dataset(ds)
                     .locale('en-US', {"3":"k","6":"m","9":"b","12":"t"})
                     .theme(theme)
@@ -125,12 +126,54 @@
                    .__init()
                    .render(cont);
             });
-
         }
 
-        donutChart("#user-types", '{{ users_csv | raw }}');
-        donutChart("#chart-last-edit", '{{ charts_edit_step_csv | raw }}');
-        donutChart("#chart-type", '{{ charts_by_type_csv | raw }}');
+        function columnChart(cont, data) {
+        // initialize theme
+            var theme = dw.theme('default');
+            // initialize chart
+            var chart = dw.chart({
+                type: "donut-chart",
+                metadata: {
+                    data: {
+                        transpose: false,
+                        'horizontal-header': true,
+                        'vertical-header': true
+                    },
+                    visualize: {
+                        'grid-lines': 'hide',
+                        'sort-values': true
+                    },
+                    describe: {
+                        'number-format': 'n0',
+                        'number-divisor': 0,
+                        'number-currency': '',
+                        'number-unit': '',
+                        'number-append': '',
+                        'number-prepend': ''
+                    }
+                }
+            });
+
+            // initliaze visualization
+            var vis = dw.visualization('column-chart');
+            vis.meta = {{ columnchart | json | raw }};
+            vis.meta.locale = { other: 'others' };
+            dw.datasource.delimited({ csv: data }).dataset().done(function(ds) {
+                chart.dataset(ds)
+                    .locale('en-US', {"3":"k","6":"m","9":"b","12":"t"})
+                    .theme(theme)
+                    .vis(vis);
+
+                vis.size($(cont).width(),240)
+                   .__init()
+                   .render(cont);
+            });
+        }
+
+        donutChart("#user-types", '{{ users_csv | raw }}', ['Activated']);
+        donutChart("#chart-last-edit", '{{ charts_edit_step_csv | raw }}', ['Publish']);
+        columnChart("#chart-type", '{{ charts_by_type_csv | raw }}');
         lineChart('#user-stats', '{{ user_signups_csv | raw }}');
         lineChart('#charts-created-stats', '{{ created_csv | raw }}');
         lineChart('#charts-published-stats', '{{ published_csv | raw }}');
@@ -162,6 +205,10 @@ body {
     font-weight: normal;
 }
 
+.donut-chart {
+    overflow: hidden;
+}
+
 h2 { margin-bottom: 10px; }
     </style>
 
@@ -171,8 +218,8 @@ h2 { margin-bottom: 10px; }
             <h2>User statistics</h2>
             <div id="user-types"></div>
         </div>
-        <div class="span3">
-            <h2>Charts by type</h2>
+        <div class="span4">
+            <h2>Charts by type..</h2>
             <div id="chart-type"></div>
         </div>
         <div class="span3">

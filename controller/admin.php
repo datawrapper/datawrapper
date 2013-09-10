@@ -65,13 +65,14 @@ $app->get('/admin/?', function() use ($app) {
         $users_csv = "Type;Count\\nPending;$numUsersPending\\nActivated;$numUsersActivated\\nDeleted;$numUsersDeleted";
 
         $numCharts = ChartQuery::create()->filterByDeleted(false)->count();
-        $numChartsUpload = ChartQuery::create()->filterByLastEditStep(1)->filterByDeleted(false)->count();
+        $numChartsUpload = ChartQuery::create()->filterByLastEditStep(array('max' => 1))->filterByDeleted(false)->count();
         $numChartsDescribe = ChartQuery::create()->filterByLastEditStep(2)->filterByDeleted(false)->count();
         $numChartsVisualize = ChartQuery::create()->filterByLastEditStep(3)->filterByDeleted(false)->count();
         $numChartsPublished = ChartQuery::create()->filterByLastEditStep(array('min' => 4))->filterByDeleted(false)->count();
         $charts_csv = "LastEditStep;Count\\nUpload;$numChartsUpload\\nDescribe;$numChartsDescribe\\nVisualize;$numChartsVisualize\\nPublish;$numChartsPublished\\n";
 
-        $charts_by_type_csv = res2csv($con->query('SELECT type, COUNT(*) FROM chart GROUP BY type;'));
+        $charts_by_type_csv = res2csv($con->query('SELECT type, COUNT(*) FROM chart WHERE deleted = 0 GROUP BY type;'));
+        $charts_by_type_csv = str_replace('-chart', '', $charts_by_type_csv);
 
         $page = array(
             'title' => 'Dashboard',
@@ -86,6 +87,7 @@ $app->get('/admin/?', function() use ($app) {
             'created_csv' => res2csv($con->query($created_sql)),
             'user_signups_csv' => res2csv($con->query($user_signups_sql)),
             'linechart' => DatawrapperVisualization::get('line-chart'),
+            'columnchart' => DatawrapperVisualization::get('column-chart'),
             'donutchart' => DatawrapperVisualization::get('donut-chart'),
             'chartLocale' => 'en-US'
         );
