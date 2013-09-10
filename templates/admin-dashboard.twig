@@ -42,7 +42,7 @@
                         'direct-labeling': false,
                         'legend-position': 'top',
                         'rotate-x-labels': false,
-                        'baseline-zero': false,
+                        'baseline-zero': true,
                         'force-banking': false,
                         'connect-missing-values': true,
                         'highlighted-values': [],
@@ -77,8 +77,10 @@
 
         }
 
-        lineChart('#user-stats', '{{ user_csv | raw }}');
-        lineChart('#chart-stats', '{{ chart_csv | raw }}');
+        lineChart('#user-stats', '{{ user_signups_csv | raw }}');
+        lineChart('#charts-created-stats', '{{ created_csv | raw }}');
+        lineChart('#charts-published-stats', '{{ published_csv | raw }}');
+
     });
     </script>
 
@@ -100,14 +102,24 @@ h2 { margin-bottom: 30px!important; }
 
     <div class="row">
         <div class="span5">
-            <h2>User Statistics <small>(last 90 days)</small></h2>
-
-            <div id="user-stats" class="linechart"></div>
+            <h2>Generic stats</h2>
+            <ul class="unstyled">
+                <li>Users: {{ num_users }}, activated: {{ num_users_activated }} ({{ num_users_activated/num_users*100 // 1 }}%)</li>
+                <li>Charts: {{ num_charts }}, published: {{ num_charts_published }} ({{ num_charts_published/num_charts*100 // 1 }}%)</li>
+            </ul>
         </div>
         <div class="span5">
-            <h2>Chart Statistics <small>(last 30 days)</small></h2>
-            <div id="chart-stats" class="linechart"></div>
-
+            <h2>User signed up per day <small>(last 90 days)</small></h2>
+            <div id="user-stats" class="linechart"></div>
+        </div>
+        
+        <div class="span5">
+            <h2>Charts created per day <small>(last 90 days)</small></h2>
+            <div id="charts-created-stats" class="linechart"></div>
+        </div>
+        <div class="span5">
+            <h2>Charts published per day <small>(last 90 days)</small></h2>
+            <div id="charts-published-stats" class="linechart"></div>
         </div>
     </div>
 

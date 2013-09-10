@@ -21,53 +21,52 @@ function add_adminpage_vars(&$page, $active) {
 $app->get('/admin/?', function() use ($app) {
     disable_cache($app);
 
+    // returns a CSV from a MySQL resultset
+    function res2csv($rs) {
+        $csv = "";
+        $keys = array();
+        $results = array();
+        foreach ($rs as $r) {
+            if (count($keys) == 0) {
+                foreach ($r as $key => $val) {
+                    if (is_string($key)) $keys[] = $key;
+                }
+                $csv = implode(";", $keys)."\\n";
+            }
+            $results[] = $r;
+        }
+        $results = array_reverse($results);
+        foreach ($results as $r) {
+            $values = array();
+            foreach ($keys as $key) {
+                $values[] = $r[$key];
+            }
+            $csv .=  implode(";", $values)."\\n";
+        }
+        return $csv;
+    }
+
     $user = DatawrapperSession::getUser();
     if ($user->isAdmin()) {
-
-        $metrics = array('users_signed', 'users_activated', 'charts_visualized', 'charts_published');
 
         $con = Propel::getConnection();
         $data = array();
 
-        foreach ($metrics as $metric) {
-            $data[$metric] = array();
-            $sql = 'SELECT MONTH(time) m, DAYOFMONTH(time) d, value FROM `stats` WHERE metric = "'.$metric.'" GROUP BY m, d ORDER BY `time` DESC LIMIT 90';
-            $rs = $con->query($sql);
-            $res = array();
-            foreach ($rs as $r) {
-                $lbl = $r['d'].'/'.$r['m'];
-                $val = $r['value'];
-                $data[$metric][$lbl] = $val;
-            }
-        }
+        $publised_sql = 'SELECT DATE_FORMAT(published_at, \'%Y-%m-%d\') pub_date, COUNT(*) pub_count FROM `chart` WHERE last_edit_step = 5 GROUP BY pub_date ORDER BY `pub_date` DESC LIMIT 90';
 
-        $user_csv = "Date;Activated;Signed\\n";
-        $chart_csv = "Date;Visualized;Published\\n";
+        $created_sql = 'SELECT DATE_FORMAT(created_at, \'%Y-%m-%d\') pub_date, COUNT(*) pub_count FROM `chart` GROUP BY pub_date ORDER BY `pub_date` DESC LIMIT 90';
 
-        for ($ago = 90; $ago >= 0; $ago--) {
-            $key = date('j/n', time() - $ago*86400);
-            $lbl = date('Y-m-d', time() - $ago*86400);
-            $user_csv .= $lbl.';';
-            $user_csv .= isset($data['users_activated'][$key]) ? $data['users_activated'][$key] : '-';
-            $user_csv .= ';';
-            $user_csv .= isset($data['users_signed'][$key]) ? $data['users_signed'][$key] : '-';
-            $user_csv .= "\\n";
-
-            $chart_csv .= $lbl.';';
-            // $chart_csv .= isset($data['charts_uploaded'][$lbl]) ? $data['charts_uploaded'][$lbl] : '-';
-            // $chart_csv .= ';';
-            // $chart_csv .= isset($data['charts_described'][$lbl]) ? $data['charts_described'][$lbl] : '-';
-            // $chart_csv .= ';';
-            $chart_csv .= isset($data['charts_visualized'][$key]) ? $data['charts_visualized'][$key] : '-';
-            $chart_csv .= ';';
-            $chart_csv .= isset($data['charts_published'][$key]) ? $data['charts_published'][$key] : '-';
-            $chart_csv .= "\\n";
-        }
+        $user_signups_sql = 'SELECT DATE_FORMAT(created_at, \'%Y-%m-%d\') create_date, COUNT(*) user_count FROM `user` GROUP BY create_date ORDER BY `create_date` DESC LIMIT 90';
 
         $page = array(
             'title' => 'Dashboard',
-            'user_csv' => $user_csv,
-            'chart_csv' => $chart_csv,
+            'num_users' => UserQuery::create()->filterByDeleted(false)->count(),
+            'num_users_activated' => UserQuery::create()->filterByDeleted(false)->filterByRole(UserPeer::ROLE_EDITOR)->count(),
+            'num_charts' => ChartQuery::create()->filterByDeleted(false)->count(),
+            'num_charts_published' => ChartQuery::create()->filterByLastEditStep(5)->filterByDeleted(false)->count(),
+            'published_csv' => res2csv($con->query($publised_sql)),
+            'created_csv' => res2csv($con->query($created_sql)),
+            'user_signups_csv' => res2csv($con->query($user_signups_sql)),
             'linechart' => DatawrapperVisualization::get('line-chart'),
             'chartLocale' => 'en-US'
         );
