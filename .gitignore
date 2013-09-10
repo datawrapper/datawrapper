@@ -21,3 +21,5 @@ test/result/*
 crowdin.yaml
 log.txt
 www/static/js/dw-2.0.min.js
+
+scripts/lib/execute_jobs.lock
