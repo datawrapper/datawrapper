@@ -675,6 +675,21 @@ var dw = dw || {};
         alert: customAlert
     }; // end dw.backend
 
+    dw.backend.notify = (function() {
+        var msg_history = {};
+        return function(msg) {
+            if (msg_history[msg]) {
+                return;
+            }
+            msg_history[msg] = new Date();
+            $('<div />').addClass('notification')
+                .html('<div class="bg">'+$('#alertModal .bg').html()+'</div><div class="message">'+msg+'</div>')
+                .appendTo('#notifications')
+                .hide()
+                .fadeIn();
+        };
+    })();
+
     // initialize backend on page load
     $(dw.backend.init);
 

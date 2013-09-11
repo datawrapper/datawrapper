@@ -55,8 +55,15 @@ _.extend(dw.visualization.base, {
     },
 
     notify: function(str) {
-        if (dw.backend && _.isFunction(dw.backend.notify)) dw.backend.notify(str);
-        else if (window['console']) console.log(str);
+        if (dw.backend && _.isFunction(dw.backend.notify)) {
+            dw.backend.notify(str);
+        } else {
+            if (window.parent && window.parent['postMessage']) {
+                window.parent.postMessage('notify:'+str, '*');
+            } else if (window['console']) {
+                console.log(str);
+            }
+        }
     },
 
     /**
@@ -121,6 +128,12 @@ _.extend(dw.visualization.base, {
                         'The visualization needs at least one column of the type %type to populate axis %key';
                 errors.push(msg.replace('%type', axisDef.accepts).replace('%key', key));
             }
+            function errAutoPopulatedColumn() {
+                var msg = dw.backend && dw.backend.messages.autopopulatedAxis ?
+                    dw.backend.messages.autopopulatedAxis :
+                    'To label the visualization properly a text column with the values "A","B","C",etc was added automatically.';
+                errors.push(msg);
+            }
             if (axes[key]) return;  // user has defined this axis already
             if (!axisDef.optional) {
                 if (!axisDef.multiple) {
@@ -130,7 +143,18 @@ _.extend(dw.visualization.base, {
                         usedColumns[c.name()] = true; // mark column as used
                         axes[key] = c.name();
                     } else {
-                        errMissingColumn();
+                        // try to auto-populate missing text column
+                        if (_.indexOf(axisDef.accepts, 'text') >= 0) {
+                            var col = dw.column(key, _.map(_.range(dataset.numRows()), function(i) {
+                                return (i > 25 ? String.fromCharCode(64+i/26) : '') + String.fromCharCode(65+(i%26));
+                            }), 'text');
+                            dataset.add(col);
+                            usedColumns[col.name()] = true;
+                            axes[key] = col.name();
+                            errAutoPopulatedColumn();
+                        } else {
+                            errMissingColumn();
+                        }
                     }
                 } else {
                     axes[key] = [];
@@ -150,10 +174,7 @@ _.extend(dw.visualization.base, {
         });
 
         if (errors.length) {
-            if (dw.backend) dw.backend.alert(errors.join('<br />'));
-            else {
-                throw errors.join('\n');
-            }
+            me.notify(errors.join('<br />'));
         }
 
         _.each(axes, function(columns, key) {

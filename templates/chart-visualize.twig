@@ -197,7 +197,7 @@ $(function() {
         dw.backend.currentVis.dataset = chart.dataset();
         dw.backend.currentVis.meta = visMetas[chart.get('type')];
         loadVisDfd.resolve();
-        $('#notifications').html('');
+        //$('#notifications').html('');
     }
 
     chart.onSave(function(chart) {
@@ -398,9 +398,14 @@ $(function() {
         var iframe_window = $('#iframe-vis').get(0).contentWindow;
         $(window).on('message', function(evt) {
             evt = evt.originalEvent;
-            if (evt.source == iframe_window && evt.data == 'datawrapper:vis:init')  {
-                iframe_window.dw_alert = dw.backend.alert;
-                iframe_window.dw.backend = dw.backend;
+            if (evt.source == iframe_window) {
+                if (evt.data == 'datawrapper:vis:init') {
+                    iframe_window.dw_alert = dw.backend.alert;
+                    iframe_window.dw.backend = dw.backend;
+                }
+                if (evt.data.slice(0, 7) == 'notify:') {
+                    dw.backend.notify(evt.data.slice(7));
+                }
             }
         });
     }
@@ -500,21 +505,6 @@ $(function() {
     $('.resize-chart input').change(_updateSize);
     $('#iframe-wrapper').width(cw);
     $('#iframe-wrapper').height(ch);
-
-    dw.backend.notify = (function() {
-        var msg_history = {};
-        return function(msg) {
-            if (msg_history[msg]) {
-                return;
-            }
-            msg_history[msg] = new Date();
-            $('<div />').addClass('notification')
-                .html('<div class="bg">'+$('#alertModal .bg').html()+'</div><div class="message">'+msg+'</div>')
-                .appendTo('#notifications')
-                .hide()
-                .fadeIn();
-        };
-    })();
 
 });
 
