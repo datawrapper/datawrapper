@@ -277,7 +277,7 @@ dw.column.types.date = function(sample) {
 
     function dateFromIsoWeek(year, week, day) {
         var d = new Date(Date.UTC(year, 0, 3));
-        d.setUTCDate(3 - d.getUTCDay() + (week-1)*7 + day);
+        d.setUTCDate(3 - d.getUTCDay() + (week-1)*7 + parseInt(day,10));
         return d;
     }
 
