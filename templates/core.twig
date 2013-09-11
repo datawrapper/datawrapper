@@ -99,9 +99,16 @@
           <span class="version">version <a href="https://github.com/datawrapper/datawrapper/blob/master/CHANGELOG.md#{{ DW_VERSION | replace({ '.': '' }) }}">{{ DW_VERSION }}</a> {{ BRANCH }}</span>
         </p>
 
-        <p>{% trans %}
-          Datawrapper is an <a href="http://github.com/datawrapper/datawrapper">open source</a> project by <a href="http://abzv.de">ABZV</a> - a German training institution for newspaper journalists.
-          {% endtrans %}
+        <p>
+          {% if footer %}
+            {% for line in footer %}
+              {{ line }}
+            {% endfor %}
+          {% else %}
+            {% trans %}
+            Datawrapper is an <a href="http://github.com/datawrapper/datawrapper">open source</a> project by <a href="http://abzv.de">ABZV</a> - a German training institution for newspaper journalists.
+            {% endtrans %}
+          {% endif %}
         </p>
         {% if config.footer_links %}
         <div class="footer-links">
