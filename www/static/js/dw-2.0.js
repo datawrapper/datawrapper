@@ -1753,12 +1753,6 @@ _.extend(dw.visualization.base, {
                         'The visualization needs at least one column of the type %type to populate axis %key';
                 errors.push(msg.replace('%type', axisDef.accepts).replace('%key', key));
             }
-            function errAutoPopulatedColumn() {
-                var msg = dw.backend && dw.backend.messages.autopopulatedAxis ?
-                    dw.backend.messages.autopopulatedAxis :
-                    'To label the visualization properly a text column with the values "A","B","C",etc was added automatically.';
-                errors.push(msg);
-            }
             if (axes[key]) return;  // user has defined this axis already
             if (!axisDef.optional) {
                 if (!axisDef.multiple) {
@@ -1777,7 +1771,6 @@ _.extend(dw.visualization.base, {
                             me.chart().applyChanges(dataset);
                             usedColumns[col.name()] = true;
                             axes[key] = col.name();
-                            errAutoPopulatedColumn();
                         } else {
                             errMissingColumn();
                         }
