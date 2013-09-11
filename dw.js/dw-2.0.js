@@ -1451,6 +1451,11 @@ dw.chart = function(attributes) {
                 dataset = ds;
                 return chart;
             }
+            chart.applyChanges(dataset);
+            return dataset;
+        },
+
+        applyChanges: function(ds) {
             var changes = chart.get('metadata.data.changes', []);
             var transpose = chart.get('metadata.data.transpose', false);
             _.each(changes, function(change) {
@@ -1748,6 +1753,7 @@ _.extend(dw.visualization.base, {
                                 return (i > 25 ? String.fromCharCode(64+i/26) : '') + String.fromCharCode(65+(i%26));
                             }), 'text');
                             dataset.add(col);
+                            me.chart().applyChanges(dataset);
                             usedColumns[col.name()] = true;
                             axes[key] = col.name();
                             errAutoPopulatedColumn();

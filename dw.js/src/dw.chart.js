@@ -82,6 +82,11 @@ dw.chart = function(attributes) {
                 dataset = ds;
                 return chart;
             }
+            chart.applyChanges(dataset);
+            return dataset;
+        },
+
+        applyChanges: function(ds) {
             var changes = chart.get('metadata.data.changes', []);
             var transpose = chart.get('metadata.data.transpose', false);
             _.each(changes, function(change) {
