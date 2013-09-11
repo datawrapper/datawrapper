@@ -8,6 +8,7 @@ CHANGELOG
 * auto-populating missing text columns
 * added experimental live-editing features
 * added new API: dataset.reset, dataset.indexOf, dataset.add, column.indexOf
+* refactored admin pages into separate plugins
 
 ### 1.5.4
 * added dw.utils.smartRound
