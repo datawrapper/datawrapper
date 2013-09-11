@@ -3,10 +3,12 @@
 // pull admin pages from plugins
 $__dw_admin_pages = DatawrapperHooks::execute(DatawrapperHooks::GET_ADMIN_PAGES);
 
-// order admin pages by index "order"
-usort($__dw_admin_pages, function($a, $b) {
+function __dw_admin_pages_sort($a, $b) {
     return (isset($a['order']) ? $a['order'] : 9999) - (isset($b['order']) ? $b['order'] : 9999);
-});
+}
+
+// order admin pages by index "order"
+usort($__dw_admin_pages, '__dw_admin_pages_sort');
 
 
 foreach ($__dw_admin_pages as $admin_page) {
