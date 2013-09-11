@@ -4,103 +4,44 @@ require_once '../lib/utils/themes.php';
 
 
 function add_adminpage_vars(&$page, $active) {
-    $page['adminmenu'] = array(
+    $page['adminmenu'] = array();
+    global $__dw_admin_pages;
+    foreach ($__dw_admin_pages as $admin_page) {
+        $page['adminmenu'][$admin_page['url']] = $admin_page['title'];
+    }
+    /*$page['adminmenu'] = array(
         '/admin' => 'Dashboard',
         '/admin/users' => 'Users',
         '/admin/themes' => 'Themes',
         '/admin/jobs' => 'Jobs',
-    );
-    $q = JobQuery::create()->filterByStatus('queued')->count();
+    );*/
+    /*$q = JobQuery::create()->filterByStatus('queued')->count();
     if ($q > 0) $page['adminmenu']['/admin/jobs'] .= ' <span class="badge badge-info">'.$q.'</span>';
     $f = JobQuery::create()->filterByStatus('failed')->count();
-    if ($f > 0) $page['adminmenu']['/admin/jobs'] .= ' <span class="badge badge-important">'.$f.'</span>';
+    if ($f > 0) $page['adminmenu']['/admin/jobs'] .= ' <span class="badge badge-important">'.$f.'</span>';*/
     $page['adminactive'] = $active;
 }
 
-
-$app->get('/admin/?', function() use ($app) {
-    disable_cache($app);
-
-    // returns a CSV from a MySQL resultset
-    function res2csv($rs) {
-        $csv = "";
-        $keys = array();
-        $results = array();
-        foreach ($rs as $r) {
-            if (count($keys) == 0) {
-                foreach ($r as $key => $val) {
-                    if (is_string($key)) $keys[] = $key;
-                }
-                $csv = implode(";", $keys)."\\n";
-            }
-            $results[] = $r;
-        }
-        $results = array_reverse($results);
-        foreach ($results as $r) {
-            $values = array();
-            foreach ($keys as $key) {
-                $values[] = $r[$key];
-            }
-            $csv .=  implode(";", $values)."\\n";
-        }
-        return $csv;
-    }
-
-    $user = DatawrapperSession::getUser();
-    if ($user->isAdmin()) {
-
-        $con = Propel::getConnection();
-        $data = array();
-
-        $publised_sql = 'SELECT DATE_FORMAT(published_at, \'%Y-%m-%d\') pub_date, COUNT(*) pub_count FROM `chart` WHERE last_edit_step = 5 GROUP BY pub_date ORDER BY `pub_date` DESC LIMIT 1,90';
-
-        $publised_week_sql = 'SELECT DATE_FORMAT(published_at, \'%Y-w%u\') pub_date, COUNT(*) pub_count FROM `chart` WHERE last_edit_step = 5 GROUP BY pub_date ORDER BY `pub_date` DESC LIMIT 1,26';
-
-        $user_signups_sql = 'SELECT DATE_FORMAT(created_at, \'%Y-%m-%d\') create_date, COUNT(*) user_count FROM `user` GROUP BY create_date ORDER BY `create_date` DESC LIMIT 1,90';
-
-        $numUsers = UserQuery::create()->filterByDeleted(false)->count();
-        $numUsersPending = UserQuery::create()->filterByDeleted(false)->filterByRole(UserPeer::ROLE_PENDING)->count();
-        $numUsersActivated = UserQuery::create()->filterByDeleted(false)->filterByRole(UserPeer::ROLE_EDITOR)->count();
-        $numUsersDeleted = UserQuery::create()->filterByDeleted(true)->count();
-        $users_csv = "Type;Count\\nPending;$numUsersPending\\nActivated;$numUsersActivated\\nDeleted;$numUsersDeleted";
-
-        $numCharts = ChartQuery::create()->filterByDeleted(false)->count();
-        $numChartsUpload = ChartQuery::create()->filterByLastEditStep(array('max' => 1))->filterByDeleted(false)->count();
-        $numChartsDescribe = ChartQuery::create()->filterByLastEditStep(2)->filterByDeleted(false)->count();
-        $numChartsVisualize = ChartQuery::create()->filterByLastEditStep(3)->filterByDeleted(false)->count();
-        $numChartsPublished = ChartQuery::create()->filterByLastEditStep(array('min' => 4))->filterByDeleted(false)->count();
-        $charts_csv = "LastEditStep;Count\\nUpload;$numChartsUpload\\nDescribe;$numChartsDescribe\\nVisualize;$numChartsVisualize\\nPublish;$numChartsPublished\\n";
-
-        $charts_by_type_csv = res2csv($con->query('SELECT type, COUNT(*) FROM chart WHERE deleted = 0 GROUP BY type;'));
-        $charts_by_type_csv = str_replace('-chart', '', $charts_by_type_csv);
-
-        $page = array(
-            'title' => 'Dashboard',
-            'num_users' => $numUsers,
-            'num_users_activated' => $numUsersActivated,
-            'num_charts' => $numCharts,
-            'num_charts_published' => $numChartsPublished,
-            'published_csv' => res2csv($con->query($publised_sql)),
-            'published_week_csv' => res2csv($con->query($publised_week_sql)),
-            'users_csv' => $users_csv,
-            'charts_edit_step_csv' => $charts_csv,
-            'charts_by_type_csv' => $charts_by_type_csv,
-            'created_csv' => res2csv($con->query('SELECT DATE_FORMAT(created_at, \'%Y-%m-%d\') pub_date, COUNT(*) pub_count FROM `chart` GROUP BY pub_date ORDER BY `pub_date` DESC LIMIT 1,90')),
-            'created_weekly_csv' => res2csv($con->query('SELECT DATE_FORMAT(created_at, \'%Y-w%u\') pub_date, COUNT(*) pub_count FROM `chart` GROUP BY pub_date ORDER BY `pub_date` DESC LIMIT 1,26')),
-            'user_signups_csv' => res2csv($con->query($user_signups_sql)),
-            'linechart' => DatawrapperVisualization::get('line-chart'),
-            'columnchart' => DatawrapperVisualization::get('column-chart'),
-            'donutchart' => DatawrapperVisualization::get('donut-chart'),
-            'chartLocale' => 'en-US'
-        );
-        add_header_vars($page, 'admin');
-        add_adminpage_vars($page, '/admin');
-        $app->render('admin-dashboard.twig', $page);
-    } else {
-        $app->notFound();
-    }
+$__dw_admin_pages = DatawrapperHooks::execute(DatawrapperHooks::GET_ADMIN_PAGES);
+  // order by index "order"
+usort($__dw_admin_pages, function($a, $b) {
+    return (isset($a['order']) ? $a['order'] : 9999) - (isset($b['order']) ? $b['order'] : 9999);
 });
 
+foreach ($__dw_admin_pages as $admin_page) {
+    $app->get('/admin' . $admin_page['url'], function() use ($app, $admin_page) {
+        disable_cache($app);
+        $user = DatawrapperSession::getUser();
+        if ($user->isAdmin()) {
+            $page_vars = array('title' => $admin_page['title']);
+            add_header_vars($page_vars, 'admin');
+            add_adminpage_vars($page_vars, $admin_page['url']);
+            call_user_func_array($admin_page['controller'], array($app, $page_vars));
+        } else {
+            $app->notFound();
+        }
+    });
+}
 
 
 
