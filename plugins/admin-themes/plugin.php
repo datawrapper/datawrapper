@@ -1,6 +1,6 @@
 <?php
 
-require_once '../lib/utils/themes.php';
+require_once ROOT_PATH . 'lib/utils/themes.php';
 
 class DatawrapperPlugin_AdminThemes extends DatawrapperPlugin {
 
@@ -14,7 +14,7 @@ class DatawrapperPlugin_AdminThemes extends DatawrapperPlugin {
                     'url' => '/themes',
                     'title' => __('Themes', $plugin->getName()),
                     'controller' => array($plugin, 'themesAdmin'),
-                    'order' => '2'
+                    'order' => '3'
                 );
             }
         );
