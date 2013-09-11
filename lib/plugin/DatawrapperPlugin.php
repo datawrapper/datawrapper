@@ -213,6 +213,7 @@ class DatawrapperPlugin {
 	 */
 	public function declareAssets($assets, $regex = null) {
 		$plugin = $this;
+		if (is_string($assets)) $assets = array($assets);
 		DatawrapperHooks::register(DatawrapperHooks::GET_PLUGIN_ASSETS, function($uri) use ($assets, $regex, $plugin) {
             if (empty($regex) || preg_match($regex, $uri)) {
             	$plugin_assets = array();
