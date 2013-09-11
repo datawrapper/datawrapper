@@ -1,7 +1,11 @@
 CHANGELOG
 ---------
 
-### 1.5.5
+### 1.5.4
+* added dw.utils.smartRound
+* plugin install script performs health checks
+* checking for plugin dependencies
+* refactored gallery as plugin
 * date columns now support ISO week format (eg 2013-W37 or 2013-W37-3)
 * improved admin dashboard
 * dataset allows adding columns at run-time
@@ -9,12 +13,6 @@ CHANGELOG
 * added experimental live-editing features
 * added new API: dataset.reset, dataset.indexOf, dataset.add, column.indexOf
 * refactored admin pages into separate plugins
-
-### 1.5.4
-* added dw.utils.smartRound
-* plugin install script performs health checks
-* checking for plugin dependencies
-* refactored gallery as plugin
 
 ### 1.5.3
 * allowing external websites to provide data and some chart preset
