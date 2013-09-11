@@ -163,8 +163,8 @@ dw.column.types.date = function(sample) {
                 precision: 'month'
             },
             'YYYY-WW': {
-                test: /^ *[12]\d{3}[ -]?[wW]([0?[1-9]|[1-4]\d|5[0-3]) *$/,
-                parse: /^ *(\d{4})[ -]?[wW]([0?[1-9]|[1-4]\d|5[0-3]) *$/,
+                test: /^ *[12]\d{3}[ -]?[wW](0?[1-9]|[1-4]\d|5[0-3]) *$/,
+                parse: /^ *(\d{4})[ -]?[wW](0?[1-9]|[1-4]\d|5[0-3]) *$/,
                 precision: 'week'
             },
             'MM/DD/YYYY': {
@@ -183,8 +183,8 @@ dw.column.types.date = function(sample) {
                 precision: 'day'
             },
             'YYYY-WW-d': { // year + ISO week + [day]
-                test: /^ *[12]\d{3}[ \-]?[wW]([0?[1-9]|[1-4]\d|5[0-3])(?:[ \-]?[1-7]) *$/,
-                parse: /^ *(\d{4})[ \-]?[wW]([0?[1-9]|[1-4]\d|5[0-3])(?:[ \-]?([1-7])) *$/,
+                test: /^ *[12]\d{3}[ \-]?[wW](0?[1-9]|[1-4]\d|5[0-3])(?:[ \-]?[1-7]) *$/,
+                parse: /^ *(\d{4})[ \-]?[wW](0?[1-9]|[1-4]\d|5[0-3])(?:[ \-]?([1-7])) *$/,
                 precision: 'day'
             },
             // dates with a time

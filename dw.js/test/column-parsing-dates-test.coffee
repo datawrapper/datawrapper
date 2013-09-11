@@ -88,6 +88,9 @@ formats =
     'ISO week numbers':
         '1st': new Date(Date.UTC(2011, 6, 25))
         'values': ['2011W30','2011W31','2011W32','2011W33']
+    'ISO week numbers2':
+        '1st': new Date(Date.UTC(2013, 1, 11))
+        'values': ['2013-w07','2013-w08','2013-w09','2013-w10','2013-w11']
     'ISO week dates':
         '1st': new Date(Date.UTC(2011, 6, 27))
         'values': ['2011-W30-3','2011-W30-4','2011-W30-5','2011-W30-6']
