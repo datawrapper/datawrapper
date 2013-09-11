@@ -83,7 +83,7 @@ $app->get('/admin/?', function() use ($app) {
             'charts_edit_step_csv' => $charts_csv,
             'charts_by_type_csv' => $charts_by_type_csv,
             'created_csv' => res2csv($con->query('SELECT DATE_FORMAT(created_at, \'%Y-%m-%d\') pub_date, COUNT(*) pub_count FROM `chart` GROUP BY pub_date ORDER BY `pub_date` DESC LIMIT 90')),
-            'created_weekly_csv' => res2csv($con->query('SELECT DATE_FORMAT(created_at, \'%Y-%m-%d\') pub_date, COUNT(*) pub_count FROM `chart` GROUP BY DATE_FORMAT(created_at, \'%Y-%u\') ORDER BY `pub_date` DESC LIMIT 26')),
+            'created_weekly_csv' => res2csv($con->query('SELECT DATE_FORMAT(created_at, \'%Y-w%u\') pub_date, COUNT(*) pub_count FROM `chart` GROUP BY pub_date ORDER BY `pub_date` DESC LIMIT 26')),
             'user_signups_csv' => res2csv($con->query($user_signups_sql)),
             'linechart' => DatawrapperVisualization::get('line-chart'),
             'columnchart' => DatawrapperVisualization::get('column-chart'),
