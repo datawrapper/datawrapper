@@ -33,6 +33,8 @@ vows
             'exporting as csv': (topic) -> assert.equal topic.toCSV(), "Party,Women,Men,Total\nCDU/CSU,45,192,237\nSPD,57,89,146\nFDP,24,69,93\nLINKE,42,34,76\nGRÜNE,36,32,68"
 
             'filtering columns': (topic) -> assert.equal topic.filterColumns({ Men: true }), topic
-            'column was removed': (topic) -> assert.isFalse topic.hasColumn 'Men'
+            'column was removed': (topic) -> assert.isFalse topic.hasColumn 'Men',
+
+            'indexOf': (topic) -> assert.equal topic.indexOf('Women'), 1
 
     .export module

@@ -82,6 +82,11 @@ dw.dataset = function(columns, opts) {
             return (_.isString(x) ? columnsByName[x] : columns[x]) !== undefined;
         },
 
+        indexOf: function(column_name) {
+            if (!dataset.hasColumn(column_name)) return -1;
+            return _.indexOf(columns, columnsByName[column_name]);
+        },
+
         toCSV: function() {
             var csv = "",
                 sep = ",",
@@ -329,6 +334,12 @@ dw.column = function(name, rows, type) {
 
         toString: function() {
             return name + ' ('+type.name()+')';
+        },
+
+        indexOf: function(val) {
+            return _.find(_.range(rows.length), function(i) {
+                return column.val(i) == val;
+            });
         }
     };
     return column;

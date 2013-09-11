@@ -60,6 +60,11 @@ dw.dataset = function(columns, opts) {
             return (_.isString(x) ? columnsByName[x] : columns[x]) !== undefined;
         },
 
+        indexOf: function(column_name) {
+            if (!dataset.hasColumn(column_name)) return -1;
+            return _.indexOf(columns, columnsByName[column_name]);
+        },
+
         toCSV: function() {
             var csv = "",
                 sep = ",",

@@ -183,6 +183,12 @@ dw.column = function(name, rows, type) {
 
         toString: function() {
             return name + ' ('+type.name()+')';
+        },
+
+        indexOf: function(val) {
+            return _.find(_.range(rows.length), function(i) {
+                return column.val(i) == val;
+            });
         }
     };
     return column;
