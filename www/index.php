@@ -129,7 +129,7 @@ function add_header_vars(&$page, $active = null) {
                 'title' => __('Logout')
             ))
         );
-        if ($user->isAdmin()) {
+        if ($user->isAdmin() && DatawrapperHooks::hookRegistered(DatawrapperHooks::GET_ADMIN_PAGES)) {
             $headlinks[] = array(
                 'url' => '/admin',
                 'id' => 'admin',

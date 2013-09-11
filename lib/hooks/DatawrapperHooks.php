@@ -131,6 +131,8 @@ class DatawrapperHooks {
     // overwrite the default footer
     const GET_FOOTER = 'get_footer';
 
+    // allow plugins to add new admin pages
+    const GET_ADMIN_PAGES = 'get_admin_pages';
 }
 
 
