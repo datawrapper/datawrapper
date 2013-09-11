@@ -5,6 +5,8 @@ CHANGELOG
 * date columns now support ISO week format (eg 2013-W37 or 2013-W37-3)
 * improved admin dashboard
 * dataset allows adding columns at run-time
+* auto-populating missing text columns
+* added experimental live-editing features
 
 ### 1.5.4
 * added dw.utils.smartRound
