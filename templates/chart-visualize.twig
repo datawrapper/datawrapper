@@ -423,10 +423,10 @@ $(function() {
                     column = label.data('column'),
                     row = label.data('row');
                 if (val != '' && val != chart.dataset().column(column).val(row)) {
-                    console.log('new value for '+column+' is '+val);
                     var changes = chart.get('metadata.data.changes', []).slice(0);
                     changes.push({ column: column, row: row+1, value: val });
                     chart.set('metadata.data.changes', changes);
+                    dw.backend.notify('{{ "Your changes have been saved. In the [Check & Describe] step you can restore the original dataset using the <b>revert</b> button." | trans | raw }}'.replace('[', '<a href="describe">').replace(']', '</a>'));
                 }
             });
 
