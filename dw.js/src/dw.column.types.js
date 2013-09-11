@@ -153,28 +153,38 @@ dw.column.types.date = function(sample) {
                 precision: 'quarter'
             },
             'YYYY-M': {
-                test: /^ *([12]\d{3}) ?[ -\/\.mM](0?[1-9]|1[0-2]) *$/,
-                parse: /^ *(\d{4}) ?[ -\/\.mM](0?[1-9]|1[0-2]) *$/,
+                test: /^ *([12]\d{3}) ?[ \-\/\.mM](0?[1-9]|1[0-2]) *$/,
+                parse: /^ *(\d{4}) ?[ \-\/\.mM](0?[1-9]|1[0-2]) *$/,
                 precision: 'month'
             },
             'M-YYYY': {
-                test: /^ *(0?[1-9]|1[0-2]) ?[ -\/\.][12]\d{3} *$/,
-                parse: /^ *(0?[1-9]|1[0-2]) ?[ -\/\.](\d{4}) *$/,
+                test: /^ *(0?[1-9]|1[0-2]) ?[ \-\/\.][12]\d{3} *$/,
+                parse: /^ *(0?[1-9]|1[0-2]) ?[ \-\/\.](\d{4}) *$/,
                 precision: 'month'
             },
+            'YYYY-WW': {
+                test: /^ *[12]\d{3}[ -]?[wW]([0?[1-9]|[1-4]\d|5[0-3]) *$/,
+                parse: /^ *(\d{4})[ -]?[wW]([0?[1-9]|[1-4]\d|5[0-3]) *$/,
+                precision: 'week'
+            },
             'MM/DD/YYYY': {
-                test: /^ *(0?[1-9]|1[0-2])([-\/] ?)(0?[1-9]|[1-2]\d|3[01])\2([12]\d{3})$/,
-                parse: /^ *(0?[1-9]|1[0-2])([-\/] ?)(0?[1-9]|[1-2]\d|3[01])\2(\d{4})$/,
+                test: /^ *(0?[1-9]|1[0-2])([\-\/] ?)(0?[1-9]|[1-2]\d|3[01])\2([12]\d{3})$/,
+                parse: /^ *(0?[1-9]|1[0-2])([\-\/] ?)(0?[1-9]|[1-2]\d|3[01])\2(\d{4})$/,
                 precision: 'day'
             },
             'DD.MM.YYYY': {
-                test: /^ *(0?[1-9]|[1-2]\d|3[01])([-\.\/ ?])(0?[1-9]|1[0-2])\2([12]\d{3})$/,
-                parse: /^ *(0?[1-9]|[1-2]\d|3[01])([-\.\/ ?])(0?[1-9]|1[0-2])\2(\d{4})$/,
+                test: /^ *(0?[1-9]|[1-2]\d|3[01])([\-\.\/ ?])(0?[1-9]|1[0-2])\2([12]\d{3})$/,
+                parse: /^ *(0?[1-9]|[1-2]\d|3[01])([\-\.\/ ?])(0?[1-9]|1[0-2])\2(\d{4})$/,
                 precision: 'day'
             },
             'YYYY-MM-DD': {
-                test: /^ *([12]\d{3})([-\/\. ?])(0?[1-9]|1[0-2])\2(0?[1-9]|[1-2]\d|3[01])$/,
-                parse: /^ *(\d{4})([-\/\. ?])(0?[1-9]|1[0-2])\2(0?[1-9]|[1-2]\d|3[01])$/,
+                test: /^ *([12]\d{3})([\-\/\. ?])(0?[1-9]|1[0-2])\2(0?[1-9]|[1-2]\d|3[01])$/,
+                parse: /^ *(\d{4})([\-\/\. ?])(0?[1-9]|1[0-2])\2(0?[1-9]|[1-2]\d|3[01])$/,
+                precision: 'day'
+            },
+            'YYYY-WW-d': { // year + ISO week + [day]
+                test: /^ *[12]\d{3}[ \-]?[wW]([0?[1-9]|[1-4]\d|5[0-3])(?:[ \-]?[1-7]) *$/,
+                parse: /^ *(\d{4})[ \-]?[wW]([0?[1-9]|[1-4]\d|5[0-3])(?:[ \-]?([1-7])) *$/,
                 precision: 'day'
             },
             // dates with a time
@@ -265,6 +275,21 @@ dw.column.types.date = function(sample) {
     });
     format = bestMatch[0];
 
+    function dateFromIsoWeek(year, week, day) {
+        var d = new Date(Date.UTC(year, 0, 3));
+        d.setUTCDate(3 - d.getUTCDay() + (week-1)*7 + day);
+        return d;
+    }
+
+    function dateToIsoWeek(date) {
+        var d = date.getUTCDay(),
+            t = new Date(date.valueOf());
+        t.setDate(t.getDate() - ((d + 6) % 7) + 3);
+        var iso_year = t.getUTCFullYear(),
+            w = Math.floor( (t.getTime() - new Date(iso_year, 0, 1, -6)) / 864e5);
+        return [ iso_year, 1+Math.floor(w/7), d > 0 ? d : 7 ];
+    }
+
     // public interface
     var type = {
         parse: function(raw) {
@@ -291,7 +316,8 @@ dw.column.types.date = function(sample) {
                 case 'Q-YYYY': return new Date(m[2], (m[1]-1) * 3, 1);
                 case 'YYYY-M': return new Date(m[1], (m[2]-1), 1);
                 case 'M-YYYY': return new Date(m[2], (m[1]-1), 1);
-                case 'YYYY-W': return getDateFromWeek(m[0], m[1]);
+                case 'YYYY-WW': return dateFromIsoWeek(m[1], m[2], 1);
+                case 'YYYY-WW-d': return dateFromIsoWeek(m[1], m[2], m[3]);
                 case 'YYYY-MM-DD': return new Date(m[1], (m[3]-1), m[4]);
                 case 'DD.MM.YYYY': return new Date(m[4], (m[3]-1), m[1]);
                 case 'MM/DD/YYYY': return new Date(m[4], (m[1]-1), m[3]);
@@ -317,7 +343,7 @@ dw.column.types.date = function(sample) {
         format: function() { return format; },
         precision: function() { return knownFormats[format].precision; },
 
-        // returns a function for formatting numbers
+        // returns a function for formatting dates
         formatter: function(config) {
             if (!format) return _.identity;
             switch (knownFormats[format].precision) {
@@ -325,6 +351,7 @@ dw.column.types.date = function(sample) {
                 case 'half': return function(d) { return !_.isDate(d) ? d : d.getFullYear() + ' H'+(d.getMonth()/6 + 1); };
                 case 'quarter': return function(d) { return !_.isDate(d) ? d : d.getFullYear() + ' Q'+(d.getMonth()/3 + 1); };
                 case 'month': return function(d) { return !_.isDate(d) ? d : Globalize.format(d, 'MMM yy'); };
+                case 'week': return function(d) { return !_.isDate(d) ? d : dateToIsoWeek(d).slice(0,2).join(' W'); };
                 case 'day': return function(d) { return !_.isDate(d) ? d : Globalize.format(d, 'd'); };
                 case 'day-minutes': return function(d) { return !_.isDate(d) ? d : Globalize.format(d, 'M')+' - '+ Globalize.format(d, 't'); };
                 case 'day-seconds': return function(d) { return !_.isDate(d) ? d : Globalize.format(d, 'T'); };
