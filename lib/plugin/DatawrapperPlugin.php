@@ -207,5 +207,22 @@ class DatawrapperPlugin {
 		}
 		$q->delete();
 	}
+
+	/*
+	 * convenience wrapper around DatawrapperHOOK::GET_PLUGIN_ASSETS
+	 */
+	public function declareAssets($assets, $regex = null) {
+		$plugin = $this;
+		DatawrapperHooks::register(DatawrapperHooks::GET_PLUGIN_ASSETS, function($uri) use ($assets, $regex, $plugin) {
+            if (empty($regex) || preg_match($regex, $uri)) {
+            	$plugin_assets = array();
+            	foreach ($assets as $file) {
+            		$plugin_assets[] = $plugin->getName() . '/' . $file;
+            	}
+                return $plugin_assets;
+            }
+            return array();
+        });
+	}
 }
 
