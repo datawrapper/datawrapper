@@ -7,6 +7,14 @@ dw.dataset = function(columns, opts) {
     // make column names unique
     var columnsByName = {};
     _.each(columns, function(col) {
+        uniqueName(col);
+        columnsByName[col.name()] = col;
+    });
+
+    opts = _.extend(opts, {  });
+
+    // sets a unique name for a column
+    function uniqueName(col) {
         var origColName = col.name(),
             colName = origColName,
             appendix = 1;
@@ -15,10 +23,8 @@ dw.dataset = function(columns, opts) {
             colName = origColName+'.'+(appendix++);
         }
         if (colName != origColName) col.name(colName); // rename column
-        columnsByName[colName] = col;
-    });
+    }
 
-    opts = _.extend(opts, {  });
 
     // public interface
     var dataset = {
@@ -99,6 +105,17 @@ dw.dataset = function(columns, opts) {
             for (i=0; i<dataset.numRows(); i++) {
                 func(i);
             }
+            return dataset;
+        },
+
+        /*
+         * adds a new column to the dataset
+         */
+        add: function(column) {
+            uniqueName(column);
+            columns.push(column);
+            columnsByName[column.name()] = column;
+            return dataset;
         }
 
     };

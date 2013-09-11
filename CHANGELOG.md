@@ -4,6 +4,7 @@ CHANGELOG
 ### 1.5.5
 * date columns now support ISO week format (eg 2013-W37 or 2013-W37-3)
 * improved admin dashboard
+* dataset allows adding columns at run-time
 
 ### 1.5.4
 * added dw.utils.smartRound
