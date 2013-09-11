@@ -179,6 +179,7 @@
         lineChart('#charts-created-stats', '{{ created_csv | raw }}');
         lineChart('#charts-created-week-stats', '{{ created_weekly_csv | raw }}', true);
         lineChart('#charts-published-stats', '{{ published_csv | raw }}');
+        lineChart('#charts-published-week-stats', '{{ published_week_csv | raw }}', true);
 
     });
     </script>
@@ -241,6 +242,9 @@ h2 { margin-bottom: 10px; }
 
     <h2>Charts published per day <small>(last 90 days)</small></h2>
     <div id="charts-published-stats" class="linechart"></div>
+
+    <h2>Charts published per week <small>(last 26 weeks)</small></h2>
+    <div id="charts-published-week-stats" class="linechart"></div>
 
 <!--     <h2>Chart Gallery <small>(the last 10 charts)</small></h2>
     <div class="row" id="gallery">
