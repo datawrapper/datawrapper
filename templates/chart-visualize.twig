@@ -414,7 +414,8 @@ $(function() {
     function initLiveEditing() {
         var doc = $('#iframe-vis').get(0).contentDocument;
 
-        $('.label[data-column][data-row] span', doc)
+        $.fn.initLiveEditing = function() {
+            return $(this)
             .attr('contenteditable', true)
             .off('focus').on('focus', function(evt) {
                 $(evt.target).data('old-value', $(evt.target).html());
@@ -428,7 +429,11 @@ $(function() {
                     $(evt.target).blur();
                     evt.preventDefault();
                 }
-            })
+            });
+        }
+
+        $('.label[data-column][data-row] span', doc)
+            .initLiveEditing()
             .off('blur').on('blur', function(evt) {
                 var span = $(evt.target),
                     val = $.trim(span.text()),
@@ -450,14 +455,14 @@ $(function() {
             });
 
         $('.chart-title', doc)
-            .attr('contenteditable', true)
+            .initLiveEditing()
             .off('blur').on('blur', function() {
                 chart.set('title', $('.chart-title', doc).text());
                 $('#text-title').val($('.chart-title', doc).text());
             });
 
         $('.chart-intro', doc)
-            .attr('contenteditable', true)
+            .initLiveEditing()
             .off('blur').on('blur', function() {
                 chart.set('metadata.describe.intro', $('.chart-intro', doc).text());
                 $('#text-intro').val($('.chart-intro', doc).text());
