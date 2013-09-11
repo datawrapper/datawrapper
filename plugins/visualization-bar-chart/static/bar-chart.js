@@ -85,7 +85,7 @@
                         align: lpos.lbl_align,
                         valign: 'middle',
                         cl: 'series' + lpos.lblClass
-                    }), barv.name);
+                    }), barv.name, me.axes().labels, barv.row);
                 }
 
                 c.lastBarY = Math.max(c.lastBarY, d.y + d.height);
@@ -114,7 +114,8 @@
             column.each(function(val, i) {
                 values.push({
                     name: fmt(labels.val(i)),
-                    value: val
+                    value: val,
+                    row: i
                 });
             });
             if (sortBars) values.sort(function(a,b) { return b.value - a.value; });

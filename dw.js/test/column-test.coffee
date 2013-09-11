@@ -72,6 +72,7 @@ vows
             'topic': dw.column('', sample_data)
             'column.raw': (topic) -> assert.deepEqual topic.raw(), sample_data
             'column.values': (topic) -> assert.equal topic.values().length, sample_data.length
+            'column.indexOf': (topic) -> assert.equal topic.indexOf(45181), 4
 
 
     .export module

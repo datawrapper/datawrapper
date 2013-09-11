@@ -611,7 +611,7 @@
                         legend.yoffset += lbl.height('auto').height()+5;
                     }
                     lbl.data('highlighted', chart.isHighlighted(col));
-                    vis.registerLabel(lbl, col.name());
+                    vis.registerLabel(lbl, col.name(), col.name(), -1);
                 } // */
             });  // _.each(all_series,
 

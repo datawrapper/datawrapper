@@ -35,4 +35,12 @@ vows
             'filtering columns': (topic) -> assert.equal topic.filterColumns({ Men: true }), topic
             'column was removed': (topic) -> assert.isFalse topic.hasColumn 'Men'
 
+            'indexOf': (topic) -> assert.equal topic.indexOf('Women'), 1
+
+            'add column': (topic) -> assert.equal topic.add(dw.column('Foo', _.range(5))), topic
+            'check new column': (topic) -> assert topic.hasColumn 'Foo'
+            'reset dataset': (topic) -> assert.equal topic.reset(), topic
+            'removed column is back': (topic) -> assert topic.hasColumn 'Men'
+            'added column is gone': (topic) -> assert.isFalse topic.hasColumn 'Foo'
+
     .export module

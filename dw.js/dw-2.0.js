@@ -27,7 +27,8 @@
 dw.dataset = function(columns, opts) {
 
     // make column names unique
-    var columnsByName = {};
+    var columnsByName = {},
+        origColumns = columns.slice(0);
     _.each(columns, function(col) {
         uniqueName(col);
         columnsByName[col.name()] = col;
@@ -80,6 +81,11 @@ dw.dataset = function(columns, opts) {
 
         hasColumn: function(x) {
             return (_.isString(x) ? columnsByName[x] : columns[x]) !== undefined;
+        },
+
+        indexOf: function(column_name) {
+            if (!dataset.hasColumn(column_name)) return -1;
+            return _.indexOf(columns, columnsByName[column_name]);
         },
 
         toCSV: function() {
@@ -137,6 +143,15 @@ dw.dataset = function(columns, opts) {
             uniqueName(column);
             columns.push(column);
             columnsByName[column.name()] = column;
+            return dataset;
+        },
+
+        reset: function() {
+            columns = origColumns.slice(0);
+            columnsByName = {};
+            _.each(columns, function(col) {
+                columnsByName[col.name()] = col;
+            });
             return dataset;
         }
 
@@ -329,6 +344,12 @@ dw.column = function(name, rows, type) {
 
         toString: function() {
             return name + ' ('+type.name()+')';
+        },
+
+        indexOf: function(val) {
+            return _.find(_.range(rows.length), function(i) {
+                return column.val(i) == val;
+            });
         }
     };
     return column;
@@ -1451,6 +1472,11 @@ dw.chart = function(attributes) {
                 dataset = ds;
                 return chart;
             }
+            chart.applyChanges(dataset);
+            return dataset;
+        },
+
+        applyChanges: function(ds) {
             var changes = chart.get('metadata.data.changes', []);
             var transpose = chart.get('metadata.data.transpose', false);
             _.each(changes, function(change) {
@@ -1748,6 +1774,7 @@ _.extend(dw.visualization.base, {
                                 return (i > 25 ? String.fromCharCode(64+i/26) : '') + String.fromCharCode(65+(i%26));
                             }), 'text');
                             dataset.add(col);
+                            me.chart().applyChanges(dataset);
                             usedColumns[col.name()] = true;
                             axes[key] = col.name();
                             errAutoPopulatedColumn();
