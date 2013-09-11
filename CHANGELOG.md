@@ -7,6 +7,7 @@ CHANGELOG
 * dataset allows adding columns at run-time
 * auto-populating missing text columns
 * added experimental live-editing features
+* added new API: dataset.reset, dataset.indexOf, dataset.add, column.indexOf
 
 ### 1.5.4
 * added dw.utils.smartRound
