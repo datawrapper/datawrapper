@@ -159,6 +159,7 @@ function add_header_vars(&$page, $active = null) {
     $page['config'] = $config;
     $page['invert_navbar'] = substr($config['domain'], -4) == '.pro';
     $page['noSignup'] = $config['prevent_guest_access'];
+    $page['footer'] = DatawrapperHooks::execute(DatawrapperHooks::GET_FOOTER);
 
     $uri = $app->request()->getResourceUri();
     $plugin_assets = DatawrapperHooks::execute(DatawrapperHooks::GET_PLUGIN_ASSETS, $uri);
