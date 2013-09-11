@@ -5,7 +5,8 @@
 dw.dataset = function(columns, opts) {
 
     // make column names unique
-    var columnsByName = {};
+    var columnsByName = {},
+        origColumns = columns.slice(0);
     _.each(columns, function(col) {
         uniqueName(col);
         columnsByName[col.name()] = col;
@@ -120,6 +121,15 @@ dw.dataset = function(columns, opts) {
             uniqueName(column);
             columns.push(column);
             columnsByName[column.name()] = column;
+            return dataset;
+        },
+
+        reset: function() {
+            columns = origColumns.slice(0);
+            columnsByName = {};
+            _.each(columns, function(col) {
+                columnsByName[col.name()] = col;
+            });
             return dataset;
         }
 
