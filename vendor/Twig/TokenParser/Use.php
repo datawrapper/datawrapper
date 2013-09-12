@@ -35,12 +35,11 @@ class Twig_TokenParser_Use extends Twig_TokenParser
     public function parse(Twig_Token $token)
     {
         $template = $this->parser->getExpressionParser()->parseExpression();
+        $stream = $this->parser->getStream();
 
         if (!$template instanceof Twig_Node_Expression_Constant) {
-            throw new Twig_Error_Syntax('The template references in a "use" statement must be a string.', $token->getLine());
+            throw new Twig_Error_Syntax('The template references in a "use" statement must be a string.', $stream->getCurrent()->getLine(), $stream->getFilename());
         }
-
-        $stream = $this->parser->getStream();
 
         $targets = array();
         if ($stream->test('with')) {
@@ -69,8 +68,6 @@ class Twig_TokenParser_Use extends Twig_TokenParser
         $stream->expect(Twig_Token::BLOCK_END_TYPE);
 
         $this->parser->addTrait(new Twig_Node(array('template' => $template, 'targets' => new Twig_Node($targets))));
-
-        return null;
     }
 
     /**

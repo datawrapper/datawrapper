@@ -12,8 +12,10 @@
 /**
  * Represents a template filter.
  *
- * @package    twig
- * @author     Fabien Potencier <fabien@symfony.com>
+ * Use Twig_SimpleFilter instead.
+ *
+ * @author Fabien Potencier <fabien@symfony.com>
+ * @deprecated since 1.12 (to be removed in 2.0)
  */
 interface Twig_FilterInterface
 {
@@ -22,19 +24,19 @@ interface Twig_FilterInterface
      *
      * @return string The PHP code for the filter
      */
-    function compile();
+    public function compile();
 
-    function needsEnvironment();
+    public function needsEnvironment();
 
-    function needsContext();
+    public function needsContext();
 
-    function getSafe(Twig_Node $filterArgs);
+    public function getSafe(Twig_Node $filterArgs);
 
-    function getPreservesSafety();
+    public function getPreservesSafety();
 
-    function getPreEscape();
+    public function getPreEscape();
 
-    function setArguments($arguments);
+    public function setArguments($arguments);
 
-    function getArguments();
+    public function getArguments();
 }

@@ -13,8 +13,7 @@
 /**
  * Represents a module node.
  *
- * @package    twig
- * @author     Fabien Potencier <fabien@symfony.com>
+ * @author Fabien Potencier <fabien@symfony.com>
  */
 class Twig_Node_SandboxedModule extends Twig_Node_Module
 {
@@ -45,7 +44,7 @@ class Twig_Node_SandboxedModule extends Twig_Node_Module
         parent::compileDisplayFooter($compiler);
 
         $compiler
-            ->write("protected function checkSecurity() {\n")
+            ->write("protected function checkSecurity()\n", "{\n")
             ->indent()
             ->write("\$this->env->getExtension('sandbox')->checkSecurity(\n")
             ->indent()

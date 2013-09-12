@@ -102,7 +102,7 @@
         <p>
           {% if footer %}
             {% for line in footer %}
-              {{ line }}
+              {{ include(line) }}
             {% endfor %}
           {% else %}
             {% trans %}

@@ -50,7 +50,7 @@ $twig->addFunction('hook', new Twig_Function_Function('call_hook'));
 
 
 // loae I18n extension for Twig
-$twig->addExtension(new Twig_Extension_I18n());
+$twig->addExtension(new Twig_Extensions_Extension_I18n());
 
 require_once '../lib/utils/i18n.php';
 require_once '../lib/utils/disable_cache.php';

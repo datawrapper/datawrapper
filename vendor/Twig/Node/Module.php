@@ -13,8 +13,7 @@
 /**
  * Represents a module node.
  *
- * @package    twig
- * @author     Fabien Potencier <fabien@symfony.com>
+ * @author Fabien Potencier <fabien@symfony.com>
  */
 class Twig_Node_Module extends Twig_Node
 {
@@ -236,9 +235,41 @@ class Twig_Node_Module extends Twig_Node
 
         $compiler
             ->outdent()
-            ->write(");\n")
+            ->write(");\n\n")
+        ;
+
+        // macro information
+        $compiler
+            ->write("\$this->macros = array(\n")
+            ->indent()
+        ;
+
+        foreach ($this->getNode('macros') as $name => $node) {
+            $compiler
+                ->addIndentation()->repr($name)->raw(" => array(\n")
+                ->indent()
+                ->write("'method' => ")->repr($node->getAttribute('method'))->raw(",\n")
+                ->write("'arguments' => array(\n")
+                ->indent()
+            ;
+            foreach ($node->getNode('arguments') as $argument => $value) {
+                $compiler->addIndentation()->repr($argument)->raw (' => ')->subcompile($value)->raw(",\n");
+            }
+            $compiler
+                ->outdent()
+                ->write("),\n")
+                ->outdent()
+                ->write("),\n")
+            ;
+        }
+        $compiler
             ->outdent()
-            ->write("}\n\n");
+            ->write(");\n")
+        ;
+
+        $compiler
+            ->outdent()
+            ->write("}\n\n")
         ;
     }
 

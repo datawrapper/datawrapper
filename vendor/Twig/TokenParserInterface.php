@@ -12,8 +12,7 @@
 /**
  * Interface implemented by token parsers.
  *
- * @package twig
- * @author  Fabien Potencier <fabien@symfony.com>
+ * @author Fabien Potencier <fabien@symfony.com>
  */
 interface Twig_TokenParserInterface
 {
@@ -22,7 +21,7 @@ interface Twig_TokenParserInterface
      *
      * @param $parser A Twig_Parser instance
      */
-    function setParser(Twig_Parser $parser);
+    public function setParser(Twig_Parser $parser);
 
     /**
      * Parses a token and returns a node.
@@ -31,12 +30,12 @@ interface Twig_TokenParserInterface
      *
      * @return Twig_NodeInterface A Twig_NodeInterface instance
      */
-    function parse(Twig_Token $token);
+    public function parse(Twig_Token $token);
 
     /**
      * Gets the tag name associated with this token parser.
      *
      * @return string The tag name
      */
-    function getTag();
+    public function getTag();
 }
