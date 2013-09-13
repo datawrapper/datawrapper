@@ -436,7 +436,7 @@ $(function() {
             .initLiveEditing()
             .off('blur').on('blur', function(evt) {
                 var span = $(evt.target),
-                    val = $.trim(span.text()),
+                    val = $.trim(span.html()),
                     label = span.parent(),
                     transpose = chart.get('metadata.data.transpose', false),
                     dataset = chart.dataset(),
@@ -457,15 +457,15 @@ $(function() {
         $('.chart-title', doc)
             .initLiveEditing()
             .off('blur').on('blur', function() {
-                chart.set('title', $('.chart-title', doc).text());
-                $('#text-title').val($('.chart-title', doc).text());
+                chart.set('title', $('.chart-title', doc).html());
+                $('#text-title').val($('.chart-title', doc).html());
             });
 
         $('.chart-intro', doc)
             .initLiveEditing()
             .off('blur').on('blur', function() {
-                chart.set('metadata.describe.intro', $('.chart-intro', doc).text());
-                $('#text-intro').val($('.chart-intro', doc).text());
+                chart.set('metadata.describe.intro', $('.chart-intro', doc).html());
+                $('#text-intro').val($('.chart-intro', doc).html());
             });
     }
 
