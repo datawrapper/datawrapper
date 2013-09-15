@@ -270,9 +270,15 @@
 
         function initResizeHandler() {
             var reload_timer;
+            // IE continuosly reloads the chart for some strange reasons
             if (navigator.userAgent.match(/iPad|msie/i) == null) {
-                // IE continuosly reloads the chart for some strange reasons
-                $(window).resize(renderChart);
+                $(window).resize(function() {
+                    // IMPORTANT: throttle resize events, do not remover timeout
+                    if (reload_timer) clearTimeout(reload_timer);
+                    reload_timer = setTimeout(function() {
+                        renderChart();
+                    }, 300);
+                });
             }
         }
 
