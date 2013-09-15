@@ -190,7 +190,11 @@ function add_header_vars(&$page, $active = null) {
             // parse git branch
             $head = file_get_contents('../.git/HEAD');
             $parts = explode("/", $head);
-            $page['BRANCH'] = ' ('.trim($parts[count($parts)-1]).')';
+            $branch = trim($parts[count($parts)-1]);
+            $output = array();
+            exec('git rev-parse HEAD', $output);
+            $commit = $output[0];
+            $page['BRANCH'] = ' (<a href="https://github.com/datawrapper/datawrapper/tree/'.$commit.'">'.$branch.'</a>)';
         }
     }
 }
