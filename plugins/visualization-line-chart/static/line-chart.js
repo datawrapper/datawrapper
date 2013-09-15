@@ -63,8 +63,6 @@
                 var ticks = vis.getYTicks(scales.y, h, extendRange),
                     maxw = 0;
 
-                if (c.w <= theme.minWidth) return 4;
-
                 _.each(ticks, function(val, t) {
                     val = formatter.y1(val, false);
                     maxw = Math.max(maxw, vis.labelWidth(val));
@@ -390,12 +388,6 @@
                 bpad: vis.get('rotate-x-labels') ? bpad + 20 : bpad
             });
 
-            if (c.w <= theme.minWidth) {
-                c.tpad = 15;
-                c.rpad = 9;
-                c.lpad = 5;
-                c.bpad = 5;
-            }
             if (lineLabelsVisible() && legend.pos != 'direct' && legend.pos != 'right') {
                 c.tpad += 20;
                 c.rpad = 0;
