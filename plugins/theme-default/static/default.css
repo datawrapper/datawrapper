@@ -118,7 +118,7 @@ a img { border:0px; }
     the toggleable panel to "go up" */
     z-index: 1100;
     /* Sets the background here to propagate it to its children */
-    background:inherit;
+    background:transparent;
 }
 
 
