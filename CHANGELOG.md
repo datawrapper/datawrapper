@@ -13,6 +13,7 @@ CHANGELOG
 * added experimental live-editing features
 * added new API: dataset.reset, dataset.indexOf, dataset.add, column.indexOf
 * refactored admin pages into separate plugins
+* template engine Twig updated (1.14.0)
 
 ### 1.5.3
 * allowing external websites to provide data and some chart preset

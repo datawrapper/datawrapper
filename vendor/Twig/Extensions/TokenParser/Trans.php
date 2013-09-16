@@ -8,7 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-class Twig_Extension_TokenParser_Trans extends Twig_TokenParser
+class Twig_Extensions_TokenParser_Trans extends Twig_TokenParser
 {
     /**
      * Parses a token and returns a node.
@@ -40,15 +40,15 @@ class Twig_Extension_TokenParser_Trans extends Twig_TokenParser
 
         $this->checkTransString($body, $lineno);
 
-        return new Twig_Extension_Node_Trans($body, $plural, $count, $lineno, $this->getTag());
+        return new Twig_Extensions_Node_Trans($body, $plural, $count, $lineno, $this->getTag());
     }
 
-    public function decideForFork($token)
+    public function decideForFork(Twig_Token $token)
     {
         return $token->test(array('plural', 'endtrans'));
     }
 
-    public function decideForEnd($token)
+    public function decideForEnd(Twig_Token $token)
     {
         return $token->test('endtrans');
     }

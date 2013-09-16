@@ -12,28 +12,30 @@
 /**
  * Autoloads Twig classes.
  *
- * @package twig
- * @author  Fabien Potencier <fabien@symfony.com>
+ * @author Fabien Potencier <fabien@symfony.com>
  */
 class Twig_Autoloader
 {
     /**
      * Registers Twig_Autoloader as an SPL autoloader.
+     *
+     * @param Boolean $prepend Whether to prepend the autoloader or not.
      */
-    static public function register()
+    public static function register($prepend = false)
     {
-        ini_set('unserialize_callback_func', 'spl_autoload_call');
-        spl_autoload_register(array(new self, 'autoload'));
+        if (version_compare(phpversion(), '5.3.0', '>=')) {
+            spl_autoload_register(array(new self, 'autoload'), true, $prepend);
+        } else {
+            spl_autoload_register(array(new self, 'autoload'));
+        }
     }
 
     /**
      * Handles autoloading of classes.
      *
-     * @param  string  $class  A class name.
-     *
-     * @return boolean Returns true if the class has been loaded
+     * @param string $class A class name.
      */
-    static public function autoload($class)
+    public static function autoload($class)
     {
         if (0 !== strpos($class, 'Twig')) {
             return;

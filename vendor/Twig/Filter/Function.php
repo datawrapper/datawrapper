@@ -12,8 +12,10 @@
 /**
  * Represents a function template filter.
  *
- * @package    twig
- * @author     Fabien Potencier <fabien@symfony.com>
+ * Use Twig_SimpleFilter instead.
+ *
+ * @author Fabien Potencier <fabien@symfony.com>
+ * @deprecated since 1.12 (to be removed in 2.0)
  */
 class Twig_Filter_Function extends Twig_Filter
 {
@@ -21,6 +23,8 @@ class Twig_Filter_Function extends Twig_Filter
 
     public function __construct($function, array $options = array())
     {
+        $options['callable'] = $function;
+
         parent::__construct($options);
 
         $this->function = $function;

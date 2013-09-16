@@ -15,7 +15,7 @@
  * @package    twig
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  */
-class Twig_Extension_Node_Trans extends Twig_Node
+class Twig_Extensions_Node_Trans extends Twig_Node
 {
     public function __construct(Twig_NodeInterface $body, Twig_NodeInterface $plural = null, Twig_Node_Expression $count = null, $lineno, $tag = null)
     {
@@ -39,7 +39,7 @@ class Twig_Extension_Node_Trans extends Twig_Node
             $vars = array_merge($vars, $vars1);
         }
 
-        $function = null === $this->getNode('plural') ? '__' : '__';
+        $function = null === $this->getNode('plural') ? 'gettext' : 'ngettext';
 
         if ($vars) {
             $compiler

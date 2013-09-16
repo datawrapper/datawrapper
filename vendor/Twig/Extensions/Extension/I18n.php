@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of Twig.
  *
@@ -7,7 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-class Twig_Extension_I18n extends Twig_Extension
+class Twig_Extensions_Extension_I18n extends Twig_Extension
 {
     /**
      * Returns the token parser instances to add to the existing list.
@@ -16,7 +17,7 @@ class Twig_Extension_I18n extends Twig_Extension
      */
     public function getTokenParsers()
     {
-        return array(new Twig_Extension_TokenParser_Trans());
+        return array(new Twig_Extensions_TokenParser_Trans());
     }
 
     /**
@@ -27,7 +28,7 @@ class Twig_Extension_I18n extends Twig_Extension
     public function getFilters()
     {
         return array(
-            'trans' => new Twig_Filter_Function('__')
+            'trans' => new Twig_Filter_Function('gettext'),
         );
     }
 
