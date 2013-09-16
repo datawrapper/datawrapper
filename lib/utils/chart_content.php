@@ -110,7 +110,14 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
             )
         );
         $styles = array($chart->getID().'.min.css');
-        $the_vis['__static_path'] = '';
+        // NOTE: replace `/static/` by `assets/` in the `__static_path` value,
+        //       since vis assets are handle by DatawrapperVisualization
+        $replace_in = $the_vis['__static_path']; $replace_by = 'assets/'; $replace = '/static/';
+        $the_vis['__static_path'] = substr_replace(
+            $replace_in,                    // subject
+            $replace_by,                    // replace by
+            strrpos($replace_in, $replace), // position
+            strlen($replace));              // length
         $the_theme['__static_path'] = '';
     } else {
         $scripts = array_unique(
