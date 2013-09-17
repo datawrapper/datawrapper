@@ -192,8 +192,6 @@ $(function() {
 
     /** Set into `dw.backend.currentVis` the edited visualization (editor side) */
     function loadVis() {
-        // remove all notifications
-        $("#notifications .notification").each(function(){this._controller.remove();})
         dw.backend.currentVis = dw.visualization(chart.get('type'));
         dw.backend.currentVis.chart(chart);
         dw.backend.currentVis.dataset = chart.dataset().reset();
@@ -216,6 +214,8 @@ $(function() {
         }
 
         if (_typeHasChanged) {
+            // remove all notifications
+            $("#notifications .notification").each(function(){this._controller.remove();})
             loadOptions().done(function() {
                 loadVis();
             });
