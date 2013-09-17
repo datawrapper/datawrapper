@@ -682,16 +682,23 @@ var dw = dw || {};
                 return;
             }
             msg_history[msg] = new Date();
-            var $container  = $('<div />');
+            var $container   = $('<div />');
+            // add the notification
             $container.addClass('notification')
-                .html('<div class="bg">'+$('#alertModal .bg').html()+'</div><div class="message">'+msg+'</div>')
+                .html('<div class="action close">✕</div><div class="bg">'+$('#alertModal .bg').html()+'</div><div class="message">'+msg+'</div>')
                 .appendTo('#notifications')
                 .hide()
                 .fadeIn(400);
             // return an object in order to allow caller to remove the notification
-            return {
-                remove : function() {delete msg_history[msg]; $container.fadeOut(400, function(){$(this).remove();});}
+            var controller = {
+                remove : function() {
+                    delete msg_history[msg];
+                    $container.fadeOut(400, function(){$(this).remove();});
+                }
             };
+            // bind event on close button click
+            $container.find(".action.close").click(controller.remove);
+            return controller;
         };
     })();
 
