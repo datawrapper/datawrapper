@@ -308,7 +308,7 @@
 
             // compute fill color, depending on hoveredSeries
             function getFill(col, el) {
-                var fill = me.getColor(col, el.data('row'), me._color_opts);
+                var fill = me.getColor(null, el.data('row'), { varyLightness: true, key: me.axes(true).labels.val(el.data('row')) });
                 if (hoveredSeries !== undefined && col.name() == dw.utils.name(hoveredSeries)) {
                     fill = chroma.color(fill).darken(whitishBg ? 15 : -25).hex();
                 }
@@ -331,13 +331,12 @@
                     if (lbl.hasClass('value')) {
                         lbl.removeClass('hover');
                         fill = getFill(column, lbl);
-                        //if (me.invertLabel(fill)) {
                             lbl.addClass('inverted');
                         //}
                     }
                 });
                 // animate the bar fill & stroke
-                 _.each(me.__elements[column.name()], function(el) {
+                _.each(me.__elements[column.name()], function(el) {
                     fill = getFill(column, el);
                     stroke = chroma.color(fill).darken(10).hex();
                     if (el.attrs.fill != fill || el.attrs.stroke != stroke)
