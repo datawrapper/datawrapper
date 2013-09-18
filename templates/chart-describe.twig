@@ -251,7 +251,7 @@ $(function() {
                 allowHtml: true,
                 startRows: 6,
                 startCols: 8,
-                width: $("#data-preview").width(),
+                width: function() {return $("#data-preview").width();},
                 // max-height is 13 rows (400px) otherwise it's the number of rows plus the table header height
                 height: function(){
                     var cell_height = $('#data-preview td').outerHeight(true) + 1;
