@@ -140,6 +140,8 @@
             _.each(me.getBarValues(me.get('sort-values', false)), function(bar, s) {
                 _.each(me.__elements[bar.name], function(rect) {
                     var dim = me.barDimensions(bar, s, row);
+                    dim.fill = me.getKeyColor(bar.name, bar.value, me.get('negative-color', false));
+                    dim.stroke = chroma.color(dim.fill).darken(14).hex();
                     rect.animate(dim, me.theme().duration, me.theme().easing);
                 });
 
