@@ -676,6 +676,12 @@ var dw = dw || {};
     }; // end dw.backend
 
     dw.backend.notify = (function() {
+        $.fn.fadeOutAndRemove = function() {
+            var me = $(this);
+            me.fadeOut(400, function() {
+               me.unbind().remove();
+            });
+        };
         var msg_history = {};
         return function(msg) {
             if (msg_history[msg]) {
@@ -688,21 +694,11 @@ var dw = dw || {};
                 .appendTo('#notifications')
                 .hide()
                 .fadeIn(400);
-            // return an object in order to allow caller to remove the notification
-            var controller = {
-                get    : function() {return $container;},
-                remove : function() {
-                    delete msg_history[msg];
-                    $container.fadeOut(400, function(){$(this).unbind().remove();});
-                }
-            };
-            // bind controller into the notification element
-            $container.get(0)._controller = controller;
             // bind event on close button click
-            $container.find(".action.close").click(controller.remove);
-            // save this controller into history
-            msg_history[msg] = controller;
-            return controller;
+            $container.find(".action.close").click(function(){$container.fadeOutAndRemove();});
+            // save this notification into history
+            msg_history[msg] = $container;
+            return $container;
         };
     })();
 

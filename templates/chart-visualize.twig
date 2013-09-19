@@ -215,7 +215,7 @@ $(function() {
 
         if (_typeHasChanged) {
             // remove all notifications
-            $("#notifications .notification").each(function(){this._controller.remove();})
+            $("#notifications .notification").fadeOutAndRemove();
             loadOptions().done(function() {
                 loadVis();
             });
@@ -346,18 +346,18 @@ $(function() {
 
             if (vis_h > iframe_h+5 || vis_w > iframe_w) {
 
-                var notification = dw.backend.notify('{{ "Watch out: Your chart needs more space. To get rid of the scrollbars just [resize iFrame to chart]" | trans | escape('js') }}'.replace('[', '<a href="#" id="resize-iframe">').replace(']', '</a>'));
+                var $notification = dw.backend.notify('{{ "Watch out: Your chart needs more space. To get rid of the scrollbars just [resize iFrame to chart]" | trans | escape('js') }}'.replace('[', '<a href="#" id="resize-iframe">').replace(']', '</a>'));
 
                 $('#resize-iframe').click(function(e) {
                     e.preventDefault();
                     if (vis_h > iframe_h) $('#resize-h').val(vis_h);
                     if (vis_w > iframe_w) $('#resize-w').val(vis_w);
                     updateSize();
-                    if (notification) notification.remove();
+                    if ($notification) $notification.fadeOutAndRemove();
                     warningShowed = false;
                 });
             } else {
-                if (notification) notification.remove();
+                if ($notification) $notification.fadeOutAndRemove();
             }
         };
     })();
