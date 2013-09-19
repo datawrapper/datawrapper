@@ -676,13 +676,18 @@ var dw = dw || {};
     }; // end dw.backend
 
     dw.backend.notify = (function() {
+        var msg_history = [];
         $.fn.fadeOutAndRemove = function() {
             var me = $(this);
+            // remove from history
+            me.each(function(i, element){
+                delete msg_history[$(element).find('.message').html()];
+            });
+            // remove from DOM
             me.fadeOut(400, function() {
                me.unbind().remove();
             });
         };
-        var msg_history = {};
         return function(msg) {
             if (msg_history[msg]) {
                 return msg_history[msg];
