@@ -1180,6 +1180,11 @@ dw.utils.filter = function (column, active, type, format) {
     function getFilterUI(type) {
         var f;
 
+        if (type == 'auto') {
+            type = column.type() == 'date' ? 'timescale' :
+                column.length < 6 ? 'buttons' : 'select';
+        }
+
         if (column.length < 2) return function() { return false; };
 
         if (type == 'select') f = function(vis) {
