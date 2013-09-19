@@ -1686,7 +1686,7 @@ _.extend(dw.visualization.base, {
 
     notify: function(str) {
         if (dw.backend && _.isFunction(dw.backend.notify)) {
-            dw.backend.notify(str);
+            return dw.backend.notify(str);
         } else {
             if (window.parent && window.parent['postMessage']) {
                 window.parent.postMessage('notify:'+str, '*');

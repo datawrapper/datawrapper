@@ -676,17 +676,29 @@ var dw = dw || {};
     }; // end dw.backend
 
     dw.backend.notify = (function() {
+        $.fn.fadeOutAndRemove = function() {
+            var me = $(this);
+            me.fadeOut(400, function() {
+               me.unbind().remove();
+            });
+        };
         var msg_history = {};
         return function(msg) {
             if (msg_history[msg]) {
-                return;
+                return msg_history[msg];
             }
-            msg_history[msg] = new Date();
-            $('<div />').addClass('notification')
-                .html('<div class="bg">'+$('#alertModal .bg').html()+'</div><div class="message">'+msg+'</div>')
+            var $container   = $('<div />');
+            // add the notification
+            $container.addClass('notification')
+                .html('<div class="action close">✕</div><div class="bg">'+$('#alertModal .bg').html()+'</div><div class="message">'+msg+'</div>')
                 .appendTo('#notifications')
                 .hide()
-                .fadeIn();
+                .fadeIn(400);
+            // bind event on close button click
+            $container.find(".action.close").click(function(){$container.fadeOutAndRemove();});
+            // save this notification into history
+            msg_history[msg] = $container;
+            return $container;
         };
     })();
 
