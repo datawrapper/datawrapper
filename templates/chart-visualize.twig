@@ -452,7 +452,7 @@ $(function() {
                         change = { row: r, column: c, value: val };
                     changes.push(change);
                     chart.set('metadata.data.changes', changes);
-                    dw.backend.notify('{{ "Your changes have been saved. In the [Check & Describe] step you can restore the original dataset using the <b>revert</b> button." | trans | raw }}'.replace('[', '<a href="describe">').replace(']', '</a>'));
+                    dw.backend.notify('{{ "Your changes have been saved. In the [Check & Describe] step you can restore the original dataset using the <b>revert</b> button." | trans | e('js') }}'.replace('[', '<a href="describe">').replace(']', '</a>'));
                 }
             });
 
