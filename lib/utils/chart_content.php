@@ -27,12 +27,12 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
 
     if ($published && !$debug) {
         $base_js = array(
-            $protocol . '://assets-datawrapper.s3.amazonaws.com/globalize.min.js',
-            $protocol . '://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.1/underscore-min.js',
-            $protocol . '://cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.min.js'
+            '//assets-datawrapper.s3.amazonaws.com/globalize.min.js',
+            '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.1/underscore-min.js',
+            '//cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.min.js'
         );
         if (substr($locale, 0, 2) != 'en') {
-            $base_js[] = $protocol . '://assets-datawrapper.s3.amazonaws.com/cultures/globalize.culture.' . str_replace('_', '-', $locale) . '.js';
+            $base_js[] = '//assets-datawrapper.s3.amazonaws.com/cultures/globalize.culture.' . str_replace('_', '-', $locale) . '.js';
         }
     } else {
         // use local assets
