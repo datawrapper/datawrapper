@@ -290,7 +290,7 @@
 
             if (me.__longLabels && me.__domain[0] >= 0) {
                 lbl_align = lbl_left ? 'left' : 'right';
-                lbl_x = 0;
+                lbl_x = c.lpad;
             }
 
             return { lblClass: lblClass, val_align: val_align, show_lbl: show_lbl,
