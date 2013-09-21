@@ -26,7 +26,7 @@ $(function() {
         if (_.isBoolean(curVal)) {
             curVal = curVal ? 'yes' : 'no';
         }
-        $('input:radio[name='+args.key+'][value='+curVal+']').prop('checked', 'checked');
+        $('input:radio[name='+args.key+'][value='+curVal+']').prop('checked', true);
         $('input:radio[name='+args.key+']').change(function() {
             var val = $('input:radio[name='+args.key+']:checked').val();
             if (val === 'yes') val = true;

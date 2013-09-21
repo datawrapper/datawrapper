@@ -135,9 +135,14 @@
         /*
          * register a label under the specified key
          */
-        registerLabel: function(lbl, key) {
+        registerLabel: function(lbl, key, column, row) {
             var me = this;
+
             lbl.data('key', key);
+            if (column && !_.isUndefined(row)) {
+                lbl.el.attr('data-column', column);
+                lbl.el.attr('data-row', row);
+            }
 
             if (!me.__labels[key]) {
                 me.__labels[key] = [];

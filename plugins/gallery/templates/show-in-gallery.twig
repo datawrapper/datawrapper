@@ -1,0 +1,15 @@
+
+<p class="lead">{% trans "Show in Gallery" %}</p>
+
+<p>{{ "You can show some love to Datawrapper by agreeing to show your visualisation in our <a href='%GALLERY_URL%'>public gallery</a>" | trans | replace({ '%GALLERY_URL%': '/gallery/' }) | raw }}. {% trans "This is absolutely optional." %}</p>
+
+<label class="checkbox">
+    <input type="checkbox" id="make-public" />
+     {% trans "Yes, show this chart in the gallery" %}
+</label>
+
+<script type="text/javascript">
+$(function() {
+    dw.backend.currentChart.sync('#make-public', 'showInGallery');
+});
+</script>

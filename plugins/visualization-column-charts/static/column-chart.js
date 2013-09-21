@@ -156,7 +156,7 @@
                     valign: spos.valign,
                     cl: lblcl.join(' '),
                     rotate: d.bw < 30 ? -90 : 0
-                }), barv.name);
+                }), barv.name, me.axes().labels, barv.row);
             }
         },
 
@@ -184,7 +184,8 @@
                 if (!isNaN(val) || !me.get('ignore-missing-values', false)) {
                     values.push({
                         name: fmt(labels.val(i)),
-                        value: val
+                        value: val,
+                        row: i
                     });
                 }
             });

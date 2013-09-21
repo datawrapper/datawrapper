@@ -1,33 +1,34 @@
 
 
-.label span {
+.line-chart .label span {
     background-color: #fff;
 }
 
-html .label.tooltip span {
+html .line-chart  .label.tooltip span {
     background: none;
 }
 
-.label.highlighted {
+.line-chart .label.highlighted {
     z-index: 100;
 }
 
-.label.highlighted span, .label.axis span {
+.line-chart .label.highlighted span,
+.line-chart .label.axis span {
     background-color: #fff;
 }
 
-.label.rotate45 {
+.line-chart .label.rotate45 {
     -moz-transform: rotate(-45deg);
     -webkit-transform: rotate(-45deg);
     -ms-transform: rotate(-45deg);
     -o-transform: rotate(-45deg);
 }
 
-.label.x-axis {
+.line-chart .label.x-axis {
     font-weight: bold;
 }
 
-.label.x-axis.h span {
+.line-chart .label.x-axis.h span {
     padding: 2px 5px 5px;
 }
 

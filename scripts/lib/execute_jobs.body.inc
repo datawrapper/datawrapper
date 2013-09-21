@@ -32,10 +32,19 @@ function run() {
             ->findOne();
         if ($job) {
             _log("found one ".$job->getType(), $job);
+
             if (DatawrapperHooks::hookRegistered($job->getType())) {
-                DatawrapperHooks::execute($job->getType(), $job);
+                try {
+                    DatawrapperHooks::execute($job->getType(), $job);
+                } catch (Exception $e) {
+                    _log("job ".$job->getType()." threw exception:  ".$e->getMessage(), $job, 'WARNING');
+                    $job->setStatus('failed');
+                    $job->save();
+                }
             } else {
                 _log("no action registered for hook ".$job->getType(), $job, 'WARNING');
+                $job->setStatus('failed');
+                $job->save();
             }
         } else {
             if (!$is_sleeping) {

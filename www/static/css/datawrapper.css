@@ -96,6 +96,7 @@ html h3 {
     float: left;
     margin-right: 7px;
     margin-left: 4px;
+    height: 32px;
     position:relative;
     top:-4px;
 }
@@ -1144,7 +1145,7 @@ form.well form {
     max-width: 33%;
 }
 .visualize-nav-tabs li.active {
-    max-width: 40%;
+    max-width: 47%;
 }
 
 .visualize-nav-tabs li a {
@@ -1275,8 +1276,8 @@ label.separator {
     width: 157px;
     padding: 10px;
     padding-right: 8px;
-    border-radius: 5px;
-    box-shadow: 0 0 15px rgba(0,0,0,0.35);
+    border-radius: 3px;
+    box-shadow: 0 0 25px rgba(0,0,0,0.35),0 0 25px rgba(0,0,0,0.35),5px 5px 3px rgba(0,0,0,0.15);
 }
 
 .color-selector .palette {
@@ -1292,8 +1293,19 @@ label.separator {
     border-radius: 1px;
 }
 
-.color-selector .palette .color.selected {
+.color-selector .color {
+    cursor: pointer;
+}
+
+.color-selector .color.selected {
     border: 2px solid #000;
+}
+
+.color-selector .color.selected.inverted {
+    border-color:#ddd;
+}
+
+.color-selector .palette .color.selected {
     width: 20px;
     height: 19px;
 }
@@ -1310,9 +1322,21 @@ label.separator {
 }
 
 .color-selector .color-axis .color.selected {
-    border: 2px solid #000;
     width: 18px;
     height: 18px;
+}
+
+.color-selector .color-axis.hue .color {
+    width: 11px;
+}
+
+.color-selector .color-axis.hue .color:last-child {
+    margin-right: 0;
+    width: 11px;
+}
+
+.color-selector .color-axis.hue .color.selected {
+    width: 7px;
 }
 
 .color-selector .hex {
@@ -1345,4 +1369,8 @@ label.separator {
     bottom: 0;
     width: 25px;
     height: 26px;
+}
+
+.color-selector .footer .color.selected {
+    border: 0;
 }

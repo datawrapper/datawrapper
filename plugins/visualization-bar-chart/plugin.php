@@ -35,7 +35,7 @@ class DatawrapperPlugin_VisualizationBarChart extends DatawrapperPlugin_Visualiz
                 ),
                 "absolute-scale" => array(
                     "type" => "checkbox",
-                    "label" => __("Use the same scale for all columns")
+                    "label" => __("Use the same scale for all columns", $id)
                 )
             ),
             "libraries" => array()

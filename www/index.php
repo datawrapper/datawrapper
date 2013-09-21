@@ -7,7 +7,7 @@
 
 
 
-define('DATAWRAPPER_VERSION', '1.5.3');  // must be the same as in package.json
+define('DATAWRAPPER_VERSION', '1.5.4');  // must be the same as in package.json
 
 define('ROOT_PATH', '../');
 
@@ -34,7 +34,7 @@ function toJSON($arr) {
 // Twig Extension to clean HTML from malicious code
 require_once '../vendor/htmlpurifier/HTMLPurifier.standalone.php';
 $config = HTMLPurifier_Config::createDefault();
-$config->set('HTML.Allowed', 'a[href],p,b,strong,u,i,em,q,blockquote,*[style],br,small');
+$config->set('HTML.Allowed', 'a[href],p,b,div,span,strong,u,i,em,q,blockquote,*[style],br,small');
 $_HTMLPurifier = new HTMLPurifier($config);
 $twig->addFilter('purify', new Twig_Filter_Function('str_purify'));
 
@@ -63,6 +63,13 @@ function add_header_vars(&$page, $active = null) {
     if (!isset($active)) {
         $active = explode('/', $app->request()->getResourceUri());
         $active = $active[1];
+    }
+
+    if (!isset($config['prevent_guest_charts'])) {
+        $config['prevent_guest_charts'] = false;
+    }
+    if (!isset($config['prevent_guest_access'])) {
+        $config['prevent_guest_access'] = false;
     }
 
     $user = DatawrapperSession::getUser();
@@ -122,7 +129,7 @@ function add_header_vars(&$page, $active = null) {
                 'title' => __('Logout')
             ))
         );
-        if ($user->isAdmin()) {
+        if ($user->isAdmin() && DatawrapperHooks::hookRegistered(DatawrapperHooks::GET_ADMIN_PAGES)) {
             $headlinks[] = array(
                 'url' => '/admin',
                 'id' => 'admin',
@@ -134,7 +141,7 @@ function add_header_vars(&$page, $active = null) {
         $headlinks[] = array(
             'url' => '#login',
             'id' => 'login',
-            'title' => __('Login / Sign Up'),
+            'title' => $config['prevent_guest_access'] ? __('Login') : __('Login / Sign Up'),
             'icon' => 'user'
         );
     }
@@ -151,6 +158,8 @@ function add_header_vars(&$page, $active = null) {
     $page['ADMIN_EMAIL'] = $config['email']['admin'];
     $page['config'] = $config;
     $page['invert_navbar'] = substr($config['domain'], -4) == '.pro';
+    $page['noSignup'] = $config['prevent_guest_access'];
+    $page['footer'] = DatawrapperHooks::execute(DatawrapperHooks::GET_FOOTER);
 
     $uri = $app->request()->getResourceUri();
     $plugin_assets = DatawrapperHooks::execute(DatawrapperHooks::GET_PLUGIN_ASSETS, $uri);
@@ -181,7 +190,11 @@ function add_header_vars(&$page, $active = null) {
             // parse git branch
             $head = file_get_contents('../.git/HEAD');
             $parts = explode("/", $head);
-            $page['BRANCH'] = ' ('.trim($parts[count($parts)-1]).')';
+            $branch = trim($parts[count($parts)-1]);
+            $output = array();
+            exec('git rev-parse HEAD', $output);
+            $commit = $output[0];
+            $page['BRANCH'] = ' (<a href="https://github.com/datawrapper/datawrapper/tree/'.$commit.'">'.$branch.'</a>)';
         }
     }
 }
@@ -203,6 +216,7 @@ function add_editor_nav(&$page, $step) {
 
 require_once '../lib/utils/errors.php';
 require_once '../lib/utils/check_chart.php';
+require_once '../controller/plugin-templates.php';
 require_once '../controller/home.php';
 require_once '../controller/login.php';
 require_once '../controller/account-settings.php';
@@ -222,9 +236,7 @@ require_once '../controller/chart-static.php';
 require_once '../controller/mycharts.php';
 require_once '../controller/xhr.php';
 require_once '../controller/docs.php';
-require_once '../controller/gallery.php';
 require_once '../controller/admin.php';
-require_once '../controller/plugin-templates.php';
 
 
 $app->notFound(function() {

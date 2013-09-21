@@ -55,6 +55,16 @@
                         <a id="btn-register" class="btn btn-large"><i class="icon-pencil"></i> {% trans "Sign Up" %}</a>
                     </div>
                 </div>
+                {% else %}
+                <style>
+                #dwLoginForm {
+                    width: 420px;
+                    margin-left: -210px;
+                    box-shadow: 0 0 20px rgba(0,0,0, 0.3);
+                    border: 0;
+                    position: relative;
+                }
+                </style>
                 {% endif %}
             </div>
         </div>

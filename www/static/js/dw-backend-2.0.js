@@ -559,46 +559,61 @@ var dw = dw || {};
 
             setColor(opts.color);
 
-            hexTf.change(function() { setColor(hexTf.val()); });
-            okBtn.click(function() {
+            function closePopup() {
                 popup.remove();
                 if (_.isFunction(opts.change)) opts.change(opts.color);
-            });
+            }
+
+            hexTf.change(function() { setColor(hexTf.val()); });
+            okBtn.click(closePopup);
 
             setTimeout(function() {
                 $('body').one('click', body_click);
             }, 300);
 
-            function setColor(hex) {
-                var lch = chroma.color(hex).lch();
+            function setColor(hex, cont) {
+                var lch = chroma.color(hex).lch(),
+                    center = [50, 50, lch[2]],
+                    spread_ = [50, 50, 60],
+                    steps = [3, 3, 7],
+                    steps2 = [undefined, undefined, 6];
+
                 opts.color = hex;
-                $('.color-axis', popup).html('');
-                _.each(spread(lch[0], 40, 3), function(l) {
-                    addcol(chroma.lch(l, lch[1], lch[2]).hex(), lightness);
-                });
-                _.each(spread(50, 50, 3), function(s) {
-                    addcol(chroma.lch(lch[0], s, lch[2]).hex(), saturation);
-                });
-                _.each(spread(lch[2], 90, 3), function(h) {
-                    addcol(chroma.lch(lch[0], 60, h).hex(), hue);
+                _.each([lightness, saturation, hue], function(cnt, i) {
+                    if (cont != cnt || cont == hue) {
+                        cnt.html('');
+                        _.each(spread(center[i], spread_[i], steps[i], steps2[i]), function(x) {
+                            var lch_ = lch.slice(0);
+                            lch_[i] = x;
+                            addcol(chroma.lch(lch_).hex(), cnt);
+                        });
+                    }
                 });
                 hexTf.val(hex).css({
                     background: hex,
                     'border-color': chroma.color(hex).darker().hex(),
                     color: chroma.luminance(hex) > 0.45 ? '#000' : '#fff'
                 });
-                $('.color', popup).removeClass('selected');
+                $('.color', popup).removeClass('selected').removeClass('inverted');
                 $('.color', popup)
                     .filter(function(i,e) { return $(e).data('color') == hex; })
                     .addClass('selected');
+                if ($('.color.selected', hue).length > 2) {
+                    $('.color.selected', hue).removeClass('selected');
+                }
+                $('.color.selected', popup)
+                    .filter(function(i,e) {
+                        return chroma.luminance($(e).data('color')) < 0.05;
+                    }).addClass('inverted');
             }
 
-            function spread(center, width, num) {
+            function spread(center, width, num, num2) {
                 var r = [center], s = width / num, a = 0;
+                num2 = _.isUndefined(num2) ? num : num2;
                 while (num-- > 0) {
                     a += s;
                     r.unshift(center - a);
-                    r.push(center + a);
+                    if (num2-- > 0) r.push(center + a);
                 }
                 return r;
             }
@@ -608,14 +623,18 @@ var dw = dw || {};
                     .addClass('color')
                     .data('color', color)
                     .css('background', color)
-                    .click(col_click)
+                    .click(function(evt) {
+                        var c = $(evt.target);
+                        setColor(c.data('color'), cont);
+                        // stop propagation so body.click won't fire
+                        evt.stopPropagation();
+                    })
+                    .dblclick(function(evt) {
+                        var c = $(evt.target);
+                        opts.color = c.data('color');
+                        closePopup();
+                    })
                     .appendTo(cont);
-            }
-
-            function col_click(evt) {
-                var c = $(evt.target);
-                setColor(c.data('color'));
-                evt.stopPropagation();
             }
 
             function body_click(evt) {
@@ -655,6 +674,36 @@ var dw = dw || {};
         syncChart: syncChart,
         alert: customAlert
     }; // end dw.backend
+
+    dw.backend.notify = (function() {
+        $.fn.fadeOutAndRemove = function() {
+            var me = $(this);
+            // remove from DOM
+            me.fadeOut(400, function() {
+               me.unbind().remove();
+            });
+        };
+        return function(msg) {
+            // search for previous similar notification and return it if found
+            var $notifications = $('#notifications .notification');
+            for(var i=0; i<$notifications.length; i++) {
+                var $notification = $($notifications.get(i));
+                if($notification.find('.message').html() == msg) {
+                    return $notification;
+                }
+            }
+            var $container = $('<div />');
+            // add the notification
+            $container.addClass('notification')
+                .html('<div class="action close">✕</div><div class="bg">'+$('#alertModal .bg').html()+'</div><div class="message">'+msg+'</div>')
+                .appendTo('#notifications')
+                .hide()
+                .fadeIn(400);
+            // bind event on close button click
+            $container.find(".action.close").click(function(){$container.fadeOutAndRemove();});
+            return $container;
+        };
+    })();
 
     // initialize backend on page load
     $(dw.backend.init);

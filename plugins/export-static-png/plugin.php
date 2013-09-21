@@ -53,6 +53,11 @@ class DatawrapperPlugin_ExportStaticPng extends DatawrapperPlugin {
                     $static_path . 'static.png',
                     $chart->getId() . '/' . $chart->getPublicVersion() . '/static.png',
                     'image/png'
+                ),
+                array(
+                    $static_path . 'nojs.png',
+                    $chart->getId() . '/' . $chart->getPublicVersion() . '/nojs.png',
+                    'image/png'
                 )
             ));
         } else {

@@ -1,7 +1,7 @@
 {
-	"Bar Chart":"Graphique en barres",
-	"Autmatically sort bars":"Trier les barres automatiquement",
-	"Reverse order":"Inverser l'ordre",
-	"Use different color for negative values":"Utiliser une couleur différente pour les valeurs négatives",
-	"Use the same scale for all columns":"Utiliser la même échelle pour toutes les colonnes"
+  "Bar Chart":"Graphique en barres",
+  "Autmatically sort bars":"Trier les barres automatiquement",
+  "Reverse order":"Inverser l'ordre",
+  "Use different color for negative values":"Utiliser une couleur différente pour les valeurs négatives",
+  "Use the same scale for all columns":"Utiliser la même échelle pour toutes les colonnes"
 }

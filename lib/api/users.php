@@ -136,7 +136,7 @@ $app->put('/users/:id', function($user_id) use ($app) {
             $changed = array();
             $errors = array();
 
-            if (!empty($payload->pwd)) {;
+            if (!empty($payload->pwd)) {
                 // update password
                 $chk = false;
                 if (!empty($payload->oldpwhash)) {

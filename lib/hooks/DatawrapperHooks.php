@@ -107,6 +107,12 @@ class DatawrapperHooks {
     // returns a list of actions to be displayed in publish step
     const GET_CHART_ACTIONS = 'get_chart_actions';
 
+    // render something beneath the chart actions
+    const PUBLISH_AFTER_CHART_ACTIONS = 'publish_after_chart_actions';
+
+    // render something after sidebar on mycharts page
+    const MYCHARTS_AFTER_SIDEBAR = 'mycharts_after_sidebar';
+
     // a hook for providing new api actions
     const PROVIDE_API = 'provide_api';
 
@@ -119,6 +125,14 @@ class DatawrapperHooks {
     // a hook for providing visualization options
     const VIS_OPTION_CONTROLS = 'vis_option_controls';
 
+    // a hook for defining new controller
+    const GET_PLUGIN_CONTROLLER = 'get_plugin_controller';
+
+    // overwrite the default footer
+    const GET_FOOTER = 'get_footer';
+
+    // allow plugins to add new admin pages
+    const GET_ADMIN_PAGES = 'get_admin_pages';
 }
 
 

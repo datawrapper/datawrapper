@@ -14,9 +14,12 @@ scripts/history.php
 fabfile.py*
 archive.tar
 *.log
+templates/plugins/*
 www/static/vendor/d3js/d3.scale.js
 www/static/custom/*
 test/result/*
 crowdin.yaml
 log.txt
 www/static/js/dw-2.0.min.js
+
+scripts/lib/execute_jobs.lock

@@ -5,9 +5,10 @@ xgettext --default-domain=core -o messages.pot --from-code=UTF-8 -n --omit-heade
 php ../scripts/po2json.php -i messages.pot -o messages.json
 rm messages.pot
 
-for dir in $(ls -1 ../plugins)
+for dir in $(ls -1d ../plugins/*/)
 do
-    PLUGIN=$dir
+    PLUGIN=${dir:11}
+    PLUGIN=${PLUGIN:0:${#PLUGIN}-1}
     mkdir -p "../plugins/$PLUGIN/locale"
     POFILE="../plugins/$PLUGIN/locale/messages.pot"
     JSONFILE="../plugins/$PLUGIN/locale/messages.json"

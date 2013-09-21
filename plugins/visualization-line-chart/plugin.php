@@ -120,9 +120,9 @@ class DatawrapperPlugin_VisualizationLineChart extends DatawrapperPlugin_Visuali
                 "type" => "radio-left",
                 "label" => __("Line mode", $id),
                 "options" => array(
-                    array("label" => __("Straight"), "value" => "straight"),
-                    array("label" => __("Curved"), "value" => "curved"),
-                    array("label" => __("Stepped"), "value" => "stepped")
+                    array("label" => __("Straight", $id), "value" => "straight"),
+                    array("label" => __("Curved", $id), "value" => "curved"),
+                    array("label" => __("Stepped", $id), "value" => "stepped")
                 ),
                 "default" => "straight"
             ),

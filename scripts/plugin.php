@@ -38,15 +38,13 @@ function list_plugins() {
     $plugins = PluginQuery::create()->find();
     print "\n";
     foreach ($plugins as $plugin) {
-        print $plugin->getName()." :  ";
-        print $plugin->getEnabled() ? "ENABLED" : "DISABLED";
-        print "\n";
+        print $plugin->getEnabled() ? "\033[1;32mENABLED" : "\033[1;31mDISABLED";
+        print "\033[m ".$plugin->getName()."\n";
     }
     _apply("*", function($id) {
         $plugin = PluginQuery::create()->findPk($id);
         if (!$plugin) print "$id :  NOT INSTALLED\n";
     });
-    exit();
 }
 
 /*
@@ -60,7 +58,6 @@ function clean() {
             print $plugin->getId()." deleted from database.\n";
         }
     }
-    exit();
 }
 
 /*
@@ -93,7 +90,6 @@ function install($pattern) {
             print "Installed plugin $id.\n";
         }
     });
-    exit();
 }
 
 /*
@@ -117,7 +113,6 @@ function uninstall($pattern) {
         _loadPluginClass($plugin)->uninstall();
         print "Uninstalled plugin $id.\n";
     });
-    exit();
 }
 
 /*
@@ -138,7 +133,6 @@ function enable($pattern) {
             print "Plugin $id is already enabled. Skipping.\n";
         }
     });
-    exit();
 }
 
 /*
@@ -159,7 +153,6 @@ function disable($pattern) {
             print "Plugin $id is already disabled. Skipping.\n";
         }
     });
-    exit();
 }
 
 /*
@@ -193,7 +186,6 @@ function update($pattern) {
             }
         }
     });
-    exit();
 }
 
 /*
@@ -210,23 +202,69 @@ function reload() {
             }
         }
     }
-    exit();
+}
+
+function health_check() {
+    $plugins = PluginQuery::create()->find();
+    $core_info = json_decode(file_get_contents(ROOT_PATH . 'package.json'), true);
+    $installed = array('core' => $core_info['version']);
+    $dependencies = array();
+    $WARN = "\033[1;31mWARNING:\033[1;33m";
+    ob_start();
+    foreach ($plugins as $plugin) {
+        if (file_exists($plugin->getPath() . 'package.json')) {
+            $info = json_decode(file_get_contents($plugin->getPath() . 'package.json'), true);
+            if (empty($info)) {
+                print $WARN.' package.json could not be read: '.$plugin->getId()."\n";
+            } else {
+                if (empty($info['version'])) {
+                    print $WARN.' plugin has no version: '.$plugin->getId()."\n";
+                    $info['version'] = true;
+                } else {
+                    $installed[$plugin->getId()] = $info['version'];
+                }
+                if (!empty($info['dependencies'])) {
+                    $dependencies[$plugin->getId()] = $info['dependencies'];
+                }
+            }
+        }
+    }
+    foreach ($dependencies as $id => $deps) {
+        foreach ($deps as $dep_id => $dep_ver) {
+            if (empty($installed[$dep_id]) && $dep_id != 'core') {
+                print $WARN.' '.$id.' depends on a missing plugin: '.$dep_id."\n";
+            } else {
+                if (version_compare($installed[$dep_id], $dep_ver) < 0) {
+                    print $WARN.' we need at least version '.$dep_ver.' of '.$dep_id."\n";
+                }
+            }
+        }
+    }
+    $out = ob_get_contents();
+    ob_end_clean();
+    if (!empty($out)) {
+        print $out;
+        print "\007\033[m";
+    }
 }
 
 switch ($cmd) {
-    case 'list': list_plugins();
-    case 'clean': clean();
-    case 'reload': reload();
-    case 'install': install($argv[2]);
-    case 'uninstall': uninstall($argv[2]);
-    case 'enable': enable($argv[2]);
-    case 'disable': disable($argv[2]);
-    case 'update': update($argv[2]);
+    case 'list': list_plugins(); break;
+    case 'clean': clean(); break;
+    case 'reload': reload(); break;
+    case 'install': install($argv[2]); break;
+    case 'uninstall': uninstall($argv[2]); break;
+    case 'enable': enable($argv[2]); break;
+    case 'disable': disable($argv[2]); break;
+    case 'update': update($argv[2]); break;
+    case 'check': break;
     default:
         print 'Unknown command '.$cmd."\n";
-        exit();
-
 }
+
+health_check();
+
+exit();
 
 
 function _apply($pattern, $func) {

@@ -6,12 +6,19 @@ var fs = require('fs');
 
 
 if (system.args.length < 3 || system.args.length > 5) {
-    console.log('Usage: make_thumb.js url chart_id width height');
+    console.log('Usage: make_thumb.js url file width height');
     phantom.exit(1);
 
 } else {
     url = system.args[1];
     output = system.args[2];
+
+    if (output.substr(output.length-1) != '/') output += '/';
+
+    if (!fs.isWritable(output)) {
+        console.log('Cannot write to '+output);
+        phantom.exit();
+    }
 
     page.zoomFactor = 1;
     page.viewportSize = { width: system.args[3], height: system.args[4] };
@@ -22,8 +29,8 @@ if (system.args.length < 3 || system.args.length > 5) {
             phantom.exit();
         } else {
             var texts = page.evaluate(function() {
-                r = [], title = "";
-                $('.label, h1, .footer-left, .footer-right, .chart-intro').css('opacity', 0).each(function(i, el) {
+                var r = [], title = "";
+                $('h1, .footer-left, .footer-right, p').css('opacity', 0).each(function(i, el) {
                     el = $(el);
                     if (el.css('opacity') === 0 || el.is(':hidden')) return;
                     r.push({
@@ -55,20 +62,19 @@ if (system.args.length < 3 || system.args.length > 5) {
             }
             html += "</body></html>";
 
-
             // render chart as PNG
             window.setTimeout(function () {
+                // render static.png
                 page.render(output + 'static.png');
-                phantom.exit();
-            }, 200);
-
-            try {
+                // render nojs.png
+                page.evaluate(function() {
+                    $('h1, #footer, p').remove();
+                });
+                page.render(output + 'nojs.png');
                 fs.write(output + 'static.html', html, 'w');
-            } catch (e) {
-                console.log(output + 'static.html' + ' is not writable!');
-                //console.log(e);
+
                 phantom.exit();
-            }
+            }, 500);
 
         }
     });

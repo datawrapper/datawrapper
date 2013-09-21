@@ -27,8 +27,17 @@
 dw.dataset = function(columns, opts) {
 
     // make column names unique
-    var columnsByName = {};
+    var columnsByName = {},
+        origColumns = columns.slice(0);
     _.each(columns, function(col) {
+        uniqueName(col);
+        columnsByName[col.name()] = col;
+    });
+
+    opts = _.extend(opts, {  });
+
+    // sets a unique name for a column
+    function uniqueName(col) {
         var origColName = col.name(),
             colName = origColName,
             appendix = 1;
@@ -37,10 +46,8 @@ dw.dataset = function(columns, opts) {
             colName = origColName+'.'+(appendix++);
         }
         if (colName != origColName) col.name(colName); // rename column
-        columnsByName[colName] = col;
-    });
+    }
 
-    opts = _.extend(opts, {  });
 
     // public interface
     var dataset = {
@@ -74,6 +81,11 @@ dw.dataset = function(columns, opts) {
 
         hasColumn: function(x) {
             return (_.isString(x) ? columnsByName[x] : columns[x]) !== undefined;
+        },
+
+        indexOf: function(column_name) {
+            if (!dataset.hasColumn(column_name)) return -1;
+            return _.indexOf(columns, columnsByName[column_name]);
         },
 
         toCSV: function() {
@@ -121,6 +133,26 @@ dw.dataset = function(columns, opts) {
             for (i=0; i<dataset.numRows(); i++) {
                 func(i);
             }
+            return dataset;
+        },
+
+        /*
+         * adds a new column to the dataset
+         */
+        add: function(column) {
+            uniqueName(column);
+            columns.push(column);
+            columnsByName[column.name()] = column;
+            return dataset;
+        },
+
+        reset: function() {
+            columns = origColumns.slice(0);
+            columnsByName = {};
+            _.each(columns, function(col) {
+                columnsByName[col.name()] = col;
+            });
+            return dataset;
         }
 
     };
@@ -312,6 +344,12 @@ dw.column = function(name, rows, type) {
 
         toString: function() {
             return name + ' ('+type.name()+')';
+        },
+
+        indexOf: function(val) {
+            return _.find(_.range(rows.length), function(i) {
+                return column.val(i) == val;
+            });
         }
     };
     return column;
@@ -443,97 +481,146 @@ dw.column.types.date = function(sample) {
         matches = {},
         bestMatch = ['', 0],
         knownFormats = {
+            // each format has two regex, a strict one for testing and a lazy one for parsing
             'YYYY': {
-                regex: /^ *((?:1[7-9]|20)[0-9]{2}) *$/,
+                test: /^ *(?:1[7-9]|20)\d{2} *$/,
+                //parse: /^ *((?:1[7-9]|20)\d{2}) *$/,
+                parse: /^ *(\d{4}) *$/,
                 precision: 'year'
             },
             'YYYY-H': {
-                regex: /^ *([12][0-9]{3})[ \-\/]?H([12]) *$/,
+                test: /^ *[12]\d{3}[ \-\/]?[hH][12] *$/,
+                parse: /^ *(\d{4})[ \-\/]?[hH]([12]) *$/,
                 precision: 'half'
             },
             'H-YYYY': {
-                regex: /^ *H([12])[ \-\/]([12][0-9]{3}) *$/,
+                test: /^ *[hH][12][ \-\/][12]\d{3} *$/,
+                parse: /^ *[hH]([12])[ \-\/](\d{4}) *$/,
                 precision: 'half'
             },
             'YYYY-Q': {
-                regex: /^ *([12][0-9]{3})[ \-\/]?Q([1234]) *$/,
+                test: /^ *[12]\d{3}[ \-\/]?[qQ][1234] *$/,
+                parse: /^ *(\d{4})[ \-\/]?[qQ]([1234]) *$/,
                 precision: 'quarter'
             },
             'Q-YYYY': {
-                regex: /^ *Q([1234])[ \-\/]([12][0-9]{3}) *$/,
+                test: /^ *[qQ]([1234])[ \-\/][12]\d{3} *$/,
+                parse: /^ *[qQ]([1234])[ \-\/](\d{4}) *$/,
                 precision: 'quarter'
             },
             'YYYY-M': {
-                regex: /^ *([12][0-9]{3}) ?[ -\/\.M](0?[1-9]|1[0-2]) *$/,
+                test: /^ *([12]\d{3}) ?[ \-\/\.mM](0?[1-9]|1[0-2]) *$/,
+                parse: /^ *(\d{4}) ?[ \-\/\.mM](0?[1-9]|1[0-2]) *$/,
                 precision: 'month'
             },
             'M-YYYY': {
-                regex: /^ *(0?[1-9]|1[0-2]) ?[ -\/\.]([12][0-9]{3}) *$/,
+                test: /^ *(0?[1-9]|1[0-2]) ?[ \-\/\.][12]\d{3} *$/,
+                parse: /^ *(0?[1-9]|1[0-2]) ?[ \-\/\.](\d{4}) *$/,
                 precision: 'month'
             },
+            'YYYY-WW': {
+                test: /^ *[12]\d{3}[ -]?[wW](0?[1-9]|[1-4]\d|5[0-3]) *$/,
+                parse: /^ *(\d{4})[ -]?[wW](0?[1-9]|[1-4]\d|5[0-3]) *$/,
+                precision: 'week'
+            },
             'MM/DD/YYYY': {
-                regex: /^ *(0?[1-9]|1[0-2])([-\/] ?)(0?[1-9]|[1-2][0-9]|3[01])\2([12][0-9]{3})$/,
+                test: /^ *(0?[1-9]|1[0-2])([\-\/] ?)(0?[1-9]|[1-2]\d|3[01])\2([12]\d{3})$/,
+                parse: /^ *(0?[1-9]|1[0-2])([\-\/] ?)(0?[1-9]|[1-2]\d|3[01])\2(\d{4})$/,
                 precision: 'day'
             },
             'DD.MM.YYYY': {
-                regex: /^ *(0?[1-9]|[1-2][0-9]|3[01])([-\.\/ ?])(0?[1-9]|1[0-2])\2([12][0-9]{3})$/,
+                test: /^ *(0?[1-9]|[1-2]\d|3[01])([\-\.\/ ?])(0?[1-9]|1[0-2])\2([12]\d{3})$/,
+                parse: /^ *(0?[1-9]|[1-2]\d|3[01])([\-\.\/ ?])(0?[1-9]|1[0-2])\2(\d{4})$/,
                 precision: 'day'
             },
             'YYYY-MM-DD': {
-                regex: /^ *([12][0-9]{3})([-\/\. ?])(0?[1-9]|1[0-2])\2(0?[1-9]|[1-2][0-9]|3[01])$/,
+                test: /^ *([12]\d{3})([\-\/\. ?])(0?[1-9]|1[0-2])\2(0?[1-9]|[1-2]\d|3[01])$/,
+                parse: /^ *(\d{4})([\-\/\. ?])(0?[1-9]|1[0-2])\2(0?[1-9]|[1-2]\d|3[01])$/,
+                precision: 'day'
+            },
+            'YYYY-WW-d': { // year + ISO week + [day]
+                test: /^ *[12]\d{3}[ \-]?[wW](0?[1-9]|[1-4]\d|5[0-3])(?:[ \-]?[1-7]) *$/,
+                parse: /^ *(\d{4})[ \-]?[wW](0?[1-9]|[1-4]\d|5[0-3])(?:[ \-]?([1-7])) *$/,
                 precision: 'day'
             },
             // dates with a time
             'MM/DD/YYYY HH:MM': {
-                regex: /^ *(0?[1-9]|1[0-2])([-\/] ?)(0?[1-9]|[1-2][0-9]|3[01])\2([12][0-9]{3}) *[ \-\|] *(0?[0-9]|1[0-9]|2[0-3]):([0-5][0-9]) *$/,
+                test: /^ *(0?[1-9]|1[0-2])([-\/] ?)(0?[1-9]|[1-2]\d|3[01])\2([12]\d{3}) *[ \-\|] *(0?\d|1\d|2[0-3]):([0-5]\d) *$/,
+                parse: /^ *(0?[1-9]|1[0-2])([-\/] ?)(0?[1-9]|[1-2]\d|3[01])\2(\d{4}) *[ \-\|] *(0?\d|1\d|2[0-3]):([0-5]\d) *$/,
                 precision: 'day-minutes'
             },
             'DD.MM.YYYY HH:MM': {
-                regex: /^ *(0?[1-9]|[1-2][0-9]|3[01])([-\.\/ ?])(0?[1-9]|1[0-2])\2([12][0-9]{3}) *[ \-\|] *(0?[0-9]|1[0-9]|2[0-3]):([0-5][0-9]) *$/,
+                test: /^ *(0?[1-9]|[1-2]\d|3[01])([-\.\/ ?])(0?[1-9]|1[0-2])\2([12]\d{3}) *[ \-\|] *(0?\d|1\d|2[0-3]):([0-5]\d) *$/,
+                parse: /^ *(0?[1-9]|[1-2]\d|3[01])([-\.\/ ?])(0?[1-9]|1[0-2])\2(\d{4}) *[ \-\|] *(0?\d|1\d|2[0-3]):([0-5]\d) *$/,
                 precision: 'day-minutes'
             },
             'YYYY-MM-DD HH:MM': {
-                regex: /^ *([12][0-9]{3})([-\/\. ?])(0?[1-9]|1[0-2])\2(0?[1-9]|[1-2][0-9]|3[01]) *[ \-\|] *(0?[0-9]|1[0-9]|2[0-3]):([0-5][0-9]) *$/,
+                test: /^ *([12]\d{3})([-\/\. ?])(0?[1-9]|1[0-2])\2(0?[1-9]|[1-2]\d|3[01]) *[ \-\|] *(0?\d|1\d|2[0-3]):([0-5]\d) *$/,
+                parse: /^ *(\d{4})([-\/\. ?])(0?[1-9]|1[0-2])\2(0?[1-9]|[1-2]\d|3[01]) *[ \-\|] *(0?\d|1\d|2[0-3]):([0-5]\d) *$/,
                 precision: 'day-minutes'
             },
             // dates with a time
             'MM/DD/YYYY HH:MM:SS': {
-                regex: /^ *(0?[1-9]|1[0-2])([-\/] ?)(0?[1-9]|[1-2][0-9]|3[01])\2([12][0-9]{3}) *[ \-\|] *(0?[0-9]|1[0-9]|2[0-3]):([0-5][0-9])(?::([0-5][0-9]))? *$/,
+                test: /^ *(0?[1-9]|1[0-2])([-\/] ?)(0?[1-9]|[1-2]\d|3[01])\2([12]\d{3}) *[ \-\|] *(0?\d|1\d|2[0-3]):([0-5]\d)(?::([0-5]\d))? *$/,
+                parse: /^ *(0?[1-9]|1[0-2])([-\/] ?)(0?[1-9]|[1-2]\d|3[01])\2(\d{4}) *[ \-\|] *(0?\d|1\d|2[0-3]):([0-5]\d)(?::([0-5]\d))? *$/,
                 precision: 'day-seconds'
             },
             'DD.MM.YYYY HH:MM:SS': {
-                regex: /^ *(0?[1-9]|[1-2][0-9]|3[01])([-\.\/ ?])(0?[1-9]|1[0-2])\2([12][0-9]{3}) *[ \-\|] *(0?[0-9]|1[0-9]|2[0-3]):([0-5][0-9])(?::([0-5][0-9]))? *$/,
+                test: /^ *(0?[1-9]|[1-2]\d|3[01])([-\.\/ ?])(0?[1-9]|1[0-2])\2([12]\d{3}) *[ \-\|] *(0?\d|1\d|2[0-3]):([0-5]\d)(?::([0-5]\d))? *$/,
+                parse: /^ *(0?[1-9]|[1-2]\d|3[01])([-\.\/ ?])(0?[1-9]|1[0-2])\2(\d{4}) *[ \-\|] *(0?\d|1\d|2[0-3]):([0-5]\d)(?::([0-5]\d))? *$/,
                 precision: 'day-seconds'
             },
             'YYYY-MM-DD HH:MM:SS': {
-                regex: /^ *([12][0-9]{3})([-\/\. ?])(0?[1-9]|1[0-2])\2(0?[1-9]|[1-2][0-9]|3[01]) *[ \-\|] *(0?[0-9]|1[0-9]|2[0-3]):([0-5][0-9])(?::([0-5][0-9]))? *$/,
+                test: /^ *([12]\d{3})([-\/\. ?])(0?[1-9]|1[0-2])\2(0?[1-9]|[1-2]\d|3[01]) *[ \-\|] *(0?\d|1\d|2[0-3]):([0-5]\d)(?::([0-5]\d))? *$/,
+                parse: /^ *(\d{4})([-\/\. ?])(0?[1-9]|1[0-2])\2(0?[1-9]|[1-2]\d|3[01]) *[ \-\|] *(0?\d|1\d|2[0-3]):([0-5]\d)(?::([0-5]\d))? *$/,
                 precision: 'day-seconds'
             },
             // globalize
-            'globalize-MMMM': { test: testGlobalize, precision: 'month' },
-            'globalize-MMM': { test: testGlobalize, precision: 'month' },
-            'globalize-MMM yyyy': { test: testGlobalize, precision: 'month' },
-            'globalize-MMM yy': { test: testGlobalize, precision: 'month' },
-            'globalize-MMMM yy': { test: testGlobalize, precision: 'month' },
-            'globalize-dddd': { test: testGlobalize, precision: 'day' },
-            'globalize-ddd': { test: testGlobalize, precision: 'day' },
+            'globalize-MMMM': { test: testGlobalize, parse: parseGlobalize, precision: 'month' },
+            'globalize-MMM': { test: testGlobalize, parse: parseGlobalize, precision: 'month' },
+            'globalize-MMM yyyy': { test: testGlobalize, parse: parseGlobalize, precision: 'month' },
+            'globalize-MMM yy': { test: testGlobalize, parse: parseGlobalize, precision: 'month' },
+            'globalize-MMMM yy': { test: testGlobalize, parse: parseGlobalize, precision: 'month' },
+            'globalize-dddd': { test: testGlobalize, parse: parseGlobalize, precision: 'day' },
+            'globalize-ddd': { test: testGlobalize, parse: parseGlobalize, precision: 'day' },
             'globalize': {
                 test: function(s) { return _.isDate(Globalize.parseDate(s)); },
+                parse: function(s) { return Globalize.parseDate(s); },
                 precision: 'day'
             }
         };
 
+    function parseGlobalize(raw, fmt) {
+        return Globalize.parseDate(raw, fmt.substr(10));
+    }
     function testGlobalize(raw, fmt) {
-        return _.isDate(Globalize.parseDate(raw, fmt.substr(10)));
+        return _.isDate(parseGlobalize(raw, fmt));
     }
 
+    function test(str, key) {
+        var fmt = knownFormats[key];
+        if (_.isRegExp(fmt.test)) {
+            return fmt.test.test(str);
+        } else {
+            return fmt.test(str, key);
+        }
+    }
+
+    function parse(str, key) {
+        var fmt = knownFormats[key];
+        if (_.isRegExp(fmt.parse)) {
+            return str.match(fmt.parse);
+        } else {
+            return fmt.parse(str, key);
+        }
+    }
 
     sample = sample || [];
 
     _.each(sample, function(n) {
         _.each(knownFormats, function(format, key) {
             if (matches[key] === undefined) matches[key] = 0;
-            if ((format.regex && format.regex.test(n)) || (format.test && format.test(n, key))) {
+            if (test(n, key)) {
                 matches[key] += 1;
                 if (matches[key] > bestMatch[1]) {
                     bestMatch[0] = key;
@@ -544,6 +631,21 @@ dw.column.types.date = function(sample) {
     });
     format = bestMatch[0];
 
+    function dateFromIsoWeek(year, week, day) {
+        var d = new Date(Date.UTC(year, 0, 3));
+        d.setUTCDate(3 - d.getUTCDay() + (week-1)*7 + parseInt(day,10));
+        return d;
+    }
+
+    function dateToIsoWeek(date) {
+        var d = date.getUTCDay(),
+            t = new Date(date.valueOf());
+        t.setDate(t.getDate() - ((d + 6) % 7) + 3);
+        var iso_year = t.getUTCFullYear(),
+            w = Math.floor( (t.getTime() - new Date(iso_year, 0, 1, -6)) / 864e5);
+        return [ iso_year, 1+Math.floor(w/7), d > 0 ? d : 7 ];
+    }
+
     // public interface
     var type = {
         parse: function(raw) {
@@ -553,16 +655,14 @@ dw.column.types.date = function(sample) {
                 return raw;
             }
 
-            var m;
-            if (knownFormats[format].regex) {
-                m = raw.match(knownFormats[format].regex);
-            } else {
-                m = knownFormats[format].test(raw, format);
-            }
+            var m = parse(raw, format);
 
             if (!m) {
                 errors++;
                 return raw;
+            } else {
+                // increment errors anyway if string doesn't match strict format
+                if (!test(raw, format)) errors++;
             }
             switch (format) {
                 case 'YYYY': return new Date(m[1], 0, 1);
@@ -572,6 +672,8 @@ dw.column.types.date = function(sample) {
                 case 'Q-YYYY': return new Date(m[2], (m[1]-1) * 3, 1);
                 case 'YYYY-M': return new Date(m[1], (m[2]-1), 1);
                 case 'M-YYYY': return new Date(m[2], (m[1]-1), 1);
+                case 'YYYY-WW': return dateFromIsoWeek(m[1], m[2], 1);
+                case 'YYYY-WW-d': return dateFromIsoWeek(m[1], m[2], m[3]);
                 case 'YYYY-MM-DD': return new Date(m[1], (m[3]-1), m[4]);
                 case 'DD.MM.YYYY': return new Date(m[4], (m[3]-1), m[1]);
                 case 'MM/DD/YYYY': return new Date(m[4], (m[1]-1), m[3]);
@@ -597,7 +699,7 @@ dw.column.types.date = function(sample) {
         format: function() { return format; },
         precision: function() { return knownFormats[format].precision; },
 
-        // returns a function for formatting numbers
+        // returns a function for formatting dates
         formatter: function(config) {
             if (!format) return _.identity;
             switch (knownFormats[format].precision) {
@@ -605,6 +707,7 @@ dw.column.types.date = function(sample) {
                 case 'half': return function(d) { return !_.isDate(d) ? d : d.getFullYear() + ' H'+(d.getMonth()/6 + 1); };
                 case 'quarter': return function(d) { return !_.isDate(d) ? d : d.getFullYear() + ' Q'+(d.getMonth()/3 + 1); };
                 case 'month': return function(d) { return !_.isDate(d) ? d : Globalize.format(d, 'MMM yy'); };
+                case 'week': return function(d) { return !_.isDate(d) ? d : dateToIsoWeek(d).slice(0,2).join(' W'); };
                 case 'day': return function(d) { return !_.isDate(d) ? d : Globalize.format(d, 'd'); };
                 case 'day-minutes': return function(d) { return !_.isDate(d) ? d : Globalize.format(d, 'M')+' - '+ Globalize.format(d, 't'); };
                 case 'day-seconds': return function(d) { return !_.isDate(d) ? d : Globalize.format(d, 'T'); };
@@ -1019,7 +1122,25 @@ dw.utils = {
         return input.replace(commentsAndPhpTags, '').replace(tags, function ($0, $1) {
             return allowed.indexOf('<' + $1.toLowerCase() + '>') > -1 ? $0 : '';
         });
-    }
+    },
+
+    /*
+     * Rounds a set of unique numbers to the lowest
+     * precision where the values remain unique
+     */
+    smartRound: function(values, add_precision) {
+            var result = [], precision = 0, nonEqual = true;
+            do {
+                result = _.map(values, round);
+                precision++;
+            } while (_.uniq(result, true).length < values.length);
+            if (add_precision) {
+                precision += add_precision - 1;
+                result = _.map(values, round);
+            }
+            function round(b) { return +(b.toFixed(precision)); }
+            return result;
+        }
 
 };
 
@@ -1295,11 +1416,10 @@ dw.chart = function(attributes) {
             var keys = key.split('.'),
                 pt = attributes;
 
-            _.each(keys, function(key) {
-                if (pt === undefined) {
-                    return _default;
-                }
+            _.some(keys, function(key) {
+                if (_.isUndefined(pt)) return true; // break out of the loop
                 pt = pt[key];
+                return false;
             });
             return _.isUndefined(pt) || _.isNull(pt) ? _default : pt;
         },
@@ -1356,6 +1476,11 @@ dw.chart = function(attributes) {
                 dataset = ds;
                 return chart;
             }
+            chart.applyChanges(dataset);
+            return dataset;
+        },
+
+        applyChanges: function(ds) {
             var changes = chart.get('metadata.data.changes', []);
             var transpose = chart.get('metadata.data.transpose', false);
             _.each(changes, function(change) {
@@ -1559,8 +1684,15 @@ _.extend(dw.visualization.base, {
     },
 
     notify: function(str) {
-        if (dw.backend && _.isFunction(dw.backend.notify)) dw.backend.notify(str);
-        else if (window['console']) console.log(str);
+        if (dw.backend && _.isFunction(dw.backend.notify)) {
+            return dw.backend.notify(str);
+        } else {
+            if (window.parent && window.parent['postMessage']) {
+                window.parent.postMessage('notify:'+str, '*');
+            } else if (window['console']) {
+                console.log(str);
+            }
+        }
     },
 
     /**
@@ -1634,7 +1766,18 @@ _.extend(dw.visualization.base, {
                         usedColumns[c.name()] = true; // mark column as used
                         axes[key] = c.name();
                     } else {
-                        errMissingColumn();
+                        // try to auto-populate missing text column
+                        if (_.indexOf(axisDef.accepts, 'text') >= 0) {
+                            var col = dw.column(key, _.map(_.range(dataset.numRows()), function(i) {
+                                return (i > 25 ? String.fromCharCode(64+i/26) : '') + String.fromCharCode(65+(i%26));
+                            }), 'text');
+                            dataset.add(col);
+                            me.chart().applyChanges(dataset);
+                            usedColumns[col.name()] = true;
+                            axes[key] = col.name();
+                        } else {
+                            errMissingColumn();
+                        }
                     }
                 } else {
                     axes[key] = [];
@@ -1654,10 +1797,7 @@ _.extend(dw.visualization.base, {
         });
 
         if (errors.length) {
-            if (dw.backend) dw.backend.alert(errors.join('<br />'));
-            else {
-                throw errors.join('\n');
-            }
+            me.notify(errors.join('<br />'));
         }
 
         _.each(axes, function(columns, key) {
@@ -1787,7 +1927,17 @@ dw.theme.base = {
             //['#b35806','#f1a340','#fee0b6','#f7f7f7','#d8daeb','#998ec3','#542788'],  // PuOr
         ],
 
-        categories: ["#7fc97f", "#beaed4", "#fdc086", "#ffff99", "#386cb0", "#f0027f", "#bf5b17", "#666666"]// Accent
+        /*
+         * presets for category colors
+         *
+         * Colors from www.ColorBrewer2.org by Cynthia A. Brewer,
+         * Geography, Pennsylvania State University.
+         */
+        categories: [
+            ["#7fc97f", "#beaed4", "#fdc086", "#ffff99", "#386cb0", "#f0027f", "#bf5b17", "#666666"], // Accent
+            ["#fbb4ae", "#b3cde3", "#ccebc5", "#decbe4", "#fed9a6", "#ffffcc", "#e5d8bd", "#fddaec", "#f2f2f2"], // Pastel1
+            ["#a6cee3", "#1f78b4", "#b2df8a", "#33a02c", "#fb9a99", "#e31a1c", "#fdbf6f", "#ff7f00", "#cab2d6", "#6a3d9a", "#ffff99", "#b15928"] // Paired
+        ]
     },
 
     /*

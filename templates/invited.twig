@@ -25,11 +25,13 @@ $(function() {
     });
     // show password in clear text
     $('.pwd-clear').change(function() {
-        $('.login-pwd').get(0).type = $('.pwd-clear').attr('checked') ? 'text': 'password';
+        $('.login-pwd').get(0).type = $('.pwd-clear').is(':checked') ? 'text': 'password';
     });
 });
 </script>
-
+ <div class="brand">
+    {% if config.custom_logo %}<img src="/static/custom/{{ config.custom_logo }}" style="height:50px;" />{% endif %}
+</div>
 <div class="modal">
     <div class="modal-body">
         <h3>{% trans "Welcome to Datawrapper!" %}</h3>
@@ -70,6 +72,11 @@ $(function() {
     opacity: 0.5;
 }
 
+.brand {
+    text-align: center;
+    position: relative;
+    top: -30px;
+}
 body {
     background: #eee url(/static/img/bg/wavegrid.png);
 }
@@ -79,6 +86,9 @@ body {
     font-size: 26px;
     font-weight: 300;
     margin-bottom: 20px;
+}
+.modal h3 img {
+    vertical-align: bottom;
 }
 body .modal {
     width: 420px;
