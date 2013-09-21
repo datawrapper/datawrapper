@@ -21,11 +21,10 @@ dw.chart = function(attributes) {
             var keys = key.split('.'),
                 pt = attributes;
 
-            _.each(keys, function(key) {
-                if (pt === undefined) {
-                    return _default;
-                }
+            _.some(keys, function(key) {
+                if (_.isUndefined(pt)) return true; // break out of the loop
                 pt = pt[key];
+                return false;
             });
             return _.isUndefined(pt) || _.isNull(pt) ? _default : pt;
         },
