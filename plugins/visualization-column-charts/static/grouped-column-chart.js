@@ -8,8 +8,9 @@
 
         render: function(el) {
             el = $(el);
-
             this.setRoot(el);
+            // NOTE: because labels takes a lot of white space at the bottom, a scrollbar appears.
+            el.css('overflow', 'hidden');
 
             var me = this,
                 c = me.initCanvas({}),

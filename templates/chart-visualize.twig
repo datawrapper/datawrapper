@@ -165,6 +165,8 @@ $(function() {
             function() {
                 setTimeout(function() {
                     loaded.resolve();
+                    // trigger event in order to resync options
+                    loadVisDfd.resolve();
                     showThemeColors();
                 }, 500);
             }
