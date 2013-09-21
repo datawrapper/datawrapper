@@ -541,12 +541,14 @@
 
 
         optimizeLabelPositions: function(labels, pad, valign) {
+            if (!labels.length) return;
             var i = 1,
                 c = valign == 'top' ? 0 : valign == 'middle' ? 0.5 : 1,
                 min_y = labels[0].el.parent().offset().top,
                 max_y = min_y + labels[0].el.parent().height();
 
             labels = _.filter(labels, function(lbl) { return lbl.el.is(":visible"); });
+            if (!labels.length) return;
             _.each(labels, function(lbl) {
                 lbl.__noverlap = {
                     otop: lbl.top(),
