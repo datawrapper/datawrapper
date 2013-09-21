@@ -38,16 +38,20 @@
 
             var sliceColumns = _.map(me.axesDef.slices, function(i) { return dataset.column(i); });
                 filter = dw.utils.filter(dw.utils.columnNameColumn(sliceColumns), row),
-                filterUI = filter.ui(me);
+                filterUI = filter.ui(me),
+                filterH = 0;
 
-            if (filterUI) {
-                $('#header').append(filterUI);
+            if (filterUI) (function() {
+                var $h = $('#header'),
+                    oldHeaderHeight = $h.height();
+                $h.append(filterUI);
+                filterH = $h.height() - oldHeaderHeight;
                 filter.change(function(val, i) {
                     me.update(i);
                 });
-            }
+            })();
 
-            var c = me.initCanvas({}, 0, filterUI ? filterUI.height()+10 : 0),
+            var c = me.initCanvas({}, 0, filterH),
                 FA = me.getFullArc(); // full arc
 
             c.cx = c.w * 0.5;

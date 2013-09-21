@@ -23,21 +23,27 @@
             me.__lastRow = row;
 
             var barColumns = _.map(me.axesDef.columns, function(i) { return dataset.column(i); });
+
             filter = dw.utils.filter(dw.utils.columnNameColumn(barColumns), row);
             filterUI = filter.ui(me);
 
-            if (filterUI) {
-                $('#header').append(filterUI);
+            var filterH = 0;
+
+            if (filterUI) (function() {
+                var $h = $('#header'),
+                    oldHeaderHeight = $h.height();
+                $h.append(filterUI);
+                filterH = $h.height() - oldHeaderHeight;
                 filter.change(function(val, i) {
                     me.__lastRow = i;
                     me.update(i);
                 });
-            }
+            })();
 
             sortBars = me.get('sort-values');
             reverse = me.get('reverse-order');
 
-            c = me.initCanvas({}, 0, filterUI ? filterUI.height() + 10 : 0);
+            c = me.initCanvas({}, 0, filterH);
 
             chart_width = c.w - c.lpad - c.rpad;
             column_gap = 0.05; // pull from theme
