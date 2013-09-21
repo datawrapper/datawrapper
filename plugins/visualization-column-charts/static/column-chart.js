@@ -49,7 +49,7 @@
             column_gap = 0.05; // pull from theme
             row_gap = 0.01;
 
-            if (filterUI) c.tpad += 10;
+            if (filterUI) c.tpad += 5;
 
             me.init();
 
@@ -69,7 +69,7 @@
                       Math.min(80, me.labelWidth(bar.name, 'series'))
                 );
             });
-            c.bpad = lh * mm_r + 10;
+            c.bpad = c.bpad - 30 + lh * mm_r + 10;
             c.tpad += lh * (1-mm_r);
 
             me.initDimensions();

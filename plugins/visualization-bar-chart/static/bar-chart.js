@@ -27,23 +27,19 @@
 
             var sliceColumns = _.map(me.axesDef.bars, function(i) { return dataset.column(i); }),
                 filter = dw.utils.filter(dw.utils.columnNameColumn(sliceColumns), row),
-                filterUI = filter.ui(me),
-                maxH = me.getSize()[1];
+                filterUI = filter.ui(me);
 
-            if (filterUI) (function() {
-                var $h = $('#header'),
-                    oldHeaderHeight = $h.height();
-                $h.append(filterUI);
-                maxH -= $h.height() - oldHeaderHeight;
+            if (filterUI) {
+                $('#header').append(filterUI);
                 filter.change(function(val, i) {
                     me.__lastRow = i;
                     me.update(i);
                 });
-            })();
+            }
 
             var c = me.initCanvas({
                 h: Math.max(
-                    maxH,
+                    dw.utils.getMaxChartHeight(el)+5,
                     18 * 1.35 * me.getBarColumn().length + 5
                 )
             });
