@@ -55,8 +55,8 @@
                 FA = me.getFullArc(); // full arc
 
             c.cx = c.w * 0.5;
-            c.cy = c.h * (FA < TWO_PI ? 0.69 : 0.5); // 1:1 1.5:1
-            c.or = Math.min(FA == TWO_PI ? c.h * 0.5 : c.h * 0.66, c.w * 0.35) - 3;
+            c.cy = (c.h-c.bpad+30) * (FA < TWO_PI ? 0.69 : 0.5); // 1:1 1.5:1
+            c.or = Math.min(FA == TWO_PI ? (c.h-c.bpad+30) * 0.5 : c.h * 0.66, c.w * 0.35) - 3;
             c.ir = donut ? c.or * 0.3 : 0;
             c.or_sq = c.or * c.or;
             c.ir_sq = c.ir * c.ir;
