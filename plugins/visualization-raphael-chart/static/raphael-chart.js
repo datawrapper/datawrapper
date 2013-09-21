@@ -519,7 +519,7 @@
             // add legend
             var me = this,
                 l = $('<div class="legend"></div>'),
-                xo = 0;
+                xo = me.__canvas.lpad;
 
             _.each(items, function(item) {
                 div = $('<div></div>');
