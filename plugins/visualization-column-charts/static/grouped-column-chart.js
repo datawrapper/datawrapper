@@ -346,10 +346,14 @@
             });
 
             // show/hide the labels that show values on top of the bars
+            var visibleLbls = [];
             _.each(me.__barLbls, function(lbl, key) {
-                if (hoveredSeries && lbl.data('key') == dw.utils.name(hoveredSeries)) lbl.show();
-                else lbl.hide();
+                if (hoveredSeries && lbl.data('key') == dw.utils.name(hoveredSeries)) {
+                    lbl.show();
+                    visibleLbls.push(lbl.data('label'));
+                } else lbl.hide();
             });
+            me.optimizeLabelPositions(visibleLbls, 5);
         },
 
         unhoverSeries: function() {
