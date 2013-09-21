@@ -406,7 +406,8 @@ $(function() {
                 if (evt.data == 'datawrapper:vis:init') {
                     iframe_window.dw_alert = dw.backend.alert;
                     iframe_window.dw.backend = dw.backend;
-                    initLiveEditing();
+                    // disabled in 1.5.4, will be released later
+                    // initLiveEditing();
                 }
                 if (evt.data.slice(0, 7) == 'notify:') {
                     dw.backend.notify(evt.data.slice(7));
