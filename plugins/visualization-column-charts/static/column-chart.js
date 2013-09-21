@@ -69,7 +69,7 @@
                       Math.min(80, me.labelWidth(bar.name, 'series'))
                 );
             });
-            c.bpad = c.bpad - 30 + lh * mm_r + 10;
+            c.bpad = c.bpad - 30 + lh * mm_r + 15;
             c.tpad += lh * (1-mm_r);
 
             me.initDimensions();
