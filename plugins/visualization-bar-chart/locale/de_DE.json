@@ -1,7 +1,7 @@
 {
-	"Bar Chart":"Balkendiagramm",
-	"Autmatically sort bars":"Balken sortieren",
-	"Reverse order":"Reihenfolge umkehren",
-	"Use different color for negative values":"Alternative Farbe für negative Werte verwenden",
-	"Use the same scale for all columns":"Gleiche Achsen für alle Säulen"
+  "Bar Chart":"Balkendiagramm",
+  "Autmatically sort bars":"Balken sortieren",
+  "Reverse order":"Reihenfolge umkehren",
+  "Use different color for negative values":"Alternative Farbe für negative Werte verwenden",
+  "Use the same scale for all columns":"Gleiche Achsen für alle Säulen"
 }
