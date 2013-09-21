@@ -10,9 +10,10 @@ CHANGELOG
 * improved admin dashboard
 * dataset allows adding columns at run-time
 * auto-populating missing text columns
-* added experimental live-editing features
+* added experimental live-editing features (disabled for now)
 * added new API: dataset.reset, dataset.indexOf, dataset.add, column.indexOf
 * refactored admin pages into separate plugins
+* several hotfixes for 1.5.3
 
 ### 1.5.3
 * allowing external websites to provide data and some chart preset
