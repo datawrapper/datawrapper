@@ -211,6 +211,13 @@
         }
 
         function renderChart() {
+            if (__dw.vis && !__dw.vis.supportsSmartRendering()) {
+                // a current visualization exists but it is not smart
+                // enough to re-render itself properly, so we need to
+                // reset and remove it
+                __dw.vis.reset();
+            }
+
             // compute chart dimensions
             var w = $('#chart').innerWidth(),
                 h = dw.utils.getMaxChartHeight($('#chart'));
@@ -218,13 +225,6 @@
             if (!$.support.leadingWhitespace) w -= 10; // IE Fix
             w -= $('body').css('padding-left').replace('px', '');
             w -= $('body').css('padding-right').replace('px', '');
-
-            if (__dw.vis && !__dw.vis.supportsSmartRendering()) {
-                // a current visualization exists but it is not smart
-                // enough to re-render itself properly, so we need to
-                // reset and remove it
-                __dw.vis.reset();
-            }
 
             var vis;
             if (__dw.vis && __dw.vis.supportsSmartRendering()) {
