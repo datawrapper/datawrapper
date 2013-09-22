@@ -668,6 +668,7 @@ var dw = dw || {};
         snapshot: snapshot,
         initLiveUpdates: initLiveUpdates,
         updateChartInIframe: updateChartInIframe,
+        resendActivationMail: resendActivationMail,
         popupChart: popupChart,
         checkPassword: checkPassword,
         clearAlerts: clearAlerts,
