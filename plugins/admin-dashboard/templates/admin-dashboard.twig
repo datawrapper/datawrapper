@@ -31,7 +31,8 @@
     $(function() {
 
         function lineChart(cont, data, smooth) {
-        // initialize theme
+            cont = $(cont);
+            // initialize theme
             var theme = dw.theme('default');
             // initialize chart
             var chart = dw.chart({
@@ -77,7 +78,7 @@
                     .theme(theme)
                     .vis(vis);
 
-                vis.size($(cont).width(),200)
+                vis.size(cont.width(),200)
                    .__init()
                    .render(cont);
             });
@@ -86,6 +87,7 @@
 
 
         function donutChart(cont, data, hl) {
+            cont = $(cont);
         // initialize theme
             var theme = dw.theme('default');
             // initialize chart
@@ -122,14 +124,15 @@
                     .theme(theme)
                     .vis(vis);
 
-                vis.size($(cont).width(),240)
+                vis.size(cont.width(),240)
                    .__init()
                    .render(cont);
             });
         }
 
         function columnChart(cont, data) {
-        // initialize theme
+            cont = $(cont);
+            // initialize theme
             var theme = dw.theme('default');
             // initialize chart
             var chart = dw.chart({
@@ -165,7 +168,7 @@
                     .theme(theme)
                     .vis(vis);
 
-                vis.size($(cont).width(),240)
+                vis.size(cont.width(),240)
                    .__init()
                    .render(cont);
             });
