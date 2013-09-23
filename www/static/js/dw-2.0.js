@@ -1596,10 +1596,12 @@ dw.chart = function(attributes) {
         onChange: change_callbacks.add,
 
         columnFormatter: function(column) {
-            // pull output config from metadata
-            // return column.formatter(config);
-            var colFormat = chart.get('metadata.data.column-format', {});
-            return column.type(true).formatter(colFormat[column.name()] || {});
+            // take config from `metadata.data.column-format[<column-name>]` otherwhise `metadata.describe`
+            var colFormat = $.extend({},
+                chart.get('metadata.describe'),
+                chart.get('metadata.data.column-format', {})[column.name()] || {}
+            );
+            return column.type(true).formatter(colFormat || {});
         }
 
     };
