@@ -128,11 +128,11 @@ dw.chart = function(attributes) {
         // sets or gets the visualization
         vis: function(_vis) {
             if (arguments.length) {
-                vis = _vis;
-                vis.chart(chart);
+                visualization = _vis;
+                visualization.chart(chart);
                 return chart;
             }
-            return vis;
+            return visualization;
         },
 
         // returns true if the user has set any highlights
@@ -182,12 +182,17 @@ dw.chart = function(attributes) {
         },
 
         render: function(container) {
-            if (!vis || !theme || !dataset) {
+            if (!visualization || !theme || !dataset) {
                 throw 'cannot render the chart!';
             }
-            vis.chart(chart);
-            vis.__init();
-            vis.render($(container));
+            visualization.chart(chart);
+            visualization.__init();
+            var $cont = $(container);
+            $cont
+                .parent()
+                .addClass('vis-'+visualization.id)
+                .addClass('theme-'+theme.id);
+            visualization.render($cont);
         },
 
         attributes: function(attrs) {
