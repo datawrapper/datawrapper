@@ -1523,11 +1523,11 @@ dw.chart = function(attributes) {
         // sets or gets the visualization
         vis: function(_vis) {
             if (arguments.length) {
-                vis = _vis;
-                vis.chart(chart);
+                visualization = _vis;
+                visualization.chart(chart);
                 return chart;
             }
-            return vis;
+            return visualization;
         },
 
         // returns true if the user has set any highlights
@@ -1577,12 +1577,17 @@ dw.chart = function(attributes) {
         },
 
         render: function(container) {
-            if (!vis || !theme || !dataset) {
+            if (!visualization || !theme || !dataset) {
                 throw 'cannot render the chart!';
             }
-            vis.chart(chart);
-            vis.__init();
-            vis.render($(container));
+            visualization.chart(chart);
+            visualization.__init();
+            var $cont = $(container);
+            $cont
+                .parent()
+                .addClass('vis-'+visualization.id)
+                .addClass('theme-'+theme.id);
+            visualization.render($cont);
         },
 
         attributes: function(attrs) {
@@ -1620,7 +1625,7 @@ dw.visualization = (function(){
             props = arguments[arguments.length - 1],
             vis = __vis[id] = function() {};
 
-        _.extend(vis.prototype, parent, props);
+        _.extend(vis.prototype, parent, { id: id }, props);
     };
 
     return visualization;
@@ -1880,7 +1885,7 @@ dw.theme = (function(){
         var parent = arguments.length == 3 ? __themes[arguments[1]] : dw.theme.base,
             props = arguments[arguments.length - 1];
 
-        __themes[id] = $.extend(true, {}, parent, props);
+        __themes[id] = $.extend(true, parent, { id: id }, props);
     };
 
     return theme;

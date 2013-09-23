@@ -384,10 +384,10 @@ $(function() {
             chk;
 
         chk = setInterval(function() {  // wait a little more
-            if (win.vis) {
+            if (win.__dw.vis) {
                 clearInterval(chk);
                 dw.backend.initLiveUpdates(iframe);
-                win.vis.rendered().done(function() {
+                win.__dw.vis.rendered().done(function() {
                     checkChartHeight();
                 });
             }

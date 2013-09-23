@@ -10,8 +10,6 @@
             me.axesDef = me.axes();
             if (!me.axesDef) return;
 
-            el = $(el);
-
             this.setRoot(el);
 
             row = 0;
