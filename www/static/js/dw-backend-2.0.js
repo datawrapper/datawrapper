@@ -247,7 +247,7 @@ var dw = dw || {};
         canvas.width = c.w * scale;
         canvas.height = c.h * scale;
 
-        ctx.fillStyle = win.vis.theme().colors.background;
+        ctx.fillStyle = win.__dw.vis.theme().colors.background;
         ctx.fillRect(0, 0, c.w * scale, c.h * scale);
         ctx.drawSvg(svg.get(0).innerSVG, 0, 0, c.w * scale, c.h * scale);
 
