@@ -44,6 +44,6 @@ vows
                 assert.equal dw.theme('B').margin.bottom, 5
 
             'check colors in B': () ->
-                assert.deepEqual dw.theme('A').colors.palette, ['white','blue']
+                assert.deepEqual dw.theme('B').colors.palette, ['white','blue']
 
     .export module
