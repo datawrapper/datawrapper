@@ -11,5 +11,8 @@ vows
     .addBatch
 
         'check utils.purifyHtml':
-            'topic': dw.utils.purifyHtml('Evil<script>alert("foo")</script> data')
-            'removed script': (topic) -> assert.equal topic, 'Evil data'
+            'topic': dw.utils.purifyHtml 'Evil<script>alert("foo")</script> data'
+            'removed script': (topic) ->
+                assert.equal topic, 'Evilalert("foo") data'
+
+    .export module
