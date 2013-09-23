@@ -17,8 +17,6 @@ body.chart {
     font-size: 12px;
     margin: 0 5px;
     background: #fff;
-    overflow: visible;
-    overflow-x:hidden;
 }
 
 h1 {
