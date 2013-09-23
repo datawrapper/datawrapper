@@ -139,7 +139,7 @@ $(function() {
     var chart = dw.backend.currentChart;
 
     // initial visualization meta
-    var vis = JSON.parse('{{ vis|json| escape("js") }}');
+    var vis = JSON.parse('{{ vis | json | escape("js") }}');
 
     // synchronize vis options as soon the vis has been loaded
     dw.backend.__currentVisLoaded.done(function() {
@@ -193,8 +193,8 @@ $(function() {
             });
 
             _.each(vis.options, function(opt, key) {
+                var visible = true;
                 if (opt['depends-on'] !== undefined) {
-                    var visible = true;
                     // special conditions:
                     _.each(opt['depends-on'], function(val, key) {
                         if (minColsRegex.test(key)) {
@@ -236,9 +236,9 @@ $(function() {
                             }
                         }
                     });
-                    if (visible) $('#vis-options-'+key).removeClass('hidden');
-                    else $('#vis-options-'+key).addClass('hidden')
                 }
+                if (visible) $('#vis-options-'+key).removeClass('hidden');
+                else $('#vis-options-'+key).addClass('hidden')
             });
         }
     }
