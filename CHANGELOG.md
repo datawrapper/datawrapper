@@ -1,6 +1,9 @@
 CHANGELOG
 ---------
 
+### 1.5.5
+* fixed theme inheritance, no more deep-copying of arrays
+
 ### 1.5.4
 * added dw.utils.smartRound
 * plugin install script performs health checks
