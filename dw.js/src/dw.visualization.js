@@ -13,7 +13,7 @@ dw.visualization = (function(){
             props = arguments[arguments.length - 1],
             vis = __vis[id] = function() {};
 
-        _.extend(vis.prototype, parent, props);
+        _.extend(vis.prototype, parent, { id: id }, props);
     };
 
     return visualization;
