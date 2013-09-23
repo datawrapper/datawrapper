@@ -23,6 +23,14 @@ $app->map('/chart/create', function() use ($app) {
                 $chart->updateMetadata('describe.source-url', $req->post('source-url'));
                 $step = 'visualize';
             }
+            if ($req->post('number-prepend') != null) {
+                $chart->updateMetadata('describe.number-prepend', $req->post('number-prepend'));
+                $step = 'visualize';
+            }
+            if ($req->post('number-append') != null) {
+                $chart->updateMetadata('describe.number-append', $req->post('number-append'));
+                $step = 'visualize';
+            }
             if ($req->post('type') != null) {
                 $chart->setType($req->post('type'));
             }
