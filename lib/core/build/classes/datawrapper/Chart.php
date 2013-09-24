@@ -122,7 +122,7 @@ class Chart extends BaseChart {
     public function writeData($csvdata) {
         $path = $this->getDataPath();
         if (!file_exists($path)) {
-            mkdir($path, 0777);
+            mkdir($path, 0775);
         }
         $filename = $path . '/' . $this->getDataFilename();
         file_put_contents($filename, $csvdata);
