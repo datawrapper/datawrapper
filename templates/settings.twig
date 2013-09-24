@@ -60,12 +60,19 @@
             <div class="form-horizontal settings profile">
                 <fieldset>
 
-                    <div class="control-group">
+                    <div class="email control-group{% if new_email_confirmed %} success{% endif %}">
                         <label class="control-label" for="email">{% trans "E-Mail" %}</label>
                         <div class="controls">
                             <input type="text" class="input-xlarge" id="email" value="{{ user.email }}">
-                            <p class="help-block">{% trans "This is the email address which you used to sign up." %}</p>
+                            <p class="help-block">
+                                {% if new_email_confirmed %}
+                                    {% trans "Your email address has been updated!" %}
+                                {% else %}
+                                    {% trans "This is the email address which you use as login and to which we send notification emails." %}
+                                {% endif %}
+                            </p>
                         </div>
+
                     </div>
 
                     <div class="control-group">
@@ -225,7 +232,12 @@ $(function() {
             success: function(data) {
                 submit.removeClass('loading');
                 if (data.status == 'ok') {
-                    dw.backend.logMessage('{% trans "This just worked fine. Your profile has been updated." %}', $('.settings.profile .control-group')[0]);
+                    _.each(data.data.messages, function(msg) {
+                        dw.backend.logMessage(msg, $('.settings.profile .control-group')[0], 'info');
+                    });
+                    _.each(data.data.errors, function(msg) {
+                        dw.backend.logMessage(msg, $('.settings.profile .control-group')[0], 'warning');
+                    });
                     $('.profile .reset').attr('disabled', true);
                 } else {
                     dw.backend.logError(data.message, $('.settings.profile .control-group')[0]);

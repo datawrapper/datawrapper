@@ -133,7 +133,7 @@ $app->put('/users/:id', function($user_id) use ($app) {
         }
 
         if (!empty($user)) {
-            $changed = array();
+            $messages = array();
             $errors = array();
 
             if (!empty($payload->pwd)) {
@@ -144,28 +144,48 @@ $app->put('/users/:id', function($user_id) use ($app) {
                 }
                 if ($chk || $curUser->isAdmin()) {
                     $user->setPwd($payload->pwd);
-                    $changed[] = 'password';
                 } else {
-                    $errors[] = 'password-or-token-invalid';
+                    $errors[] = __('The password could not be changed because your old password was not entered correctly.');
                 }
             }
 
             if (!empty($payload->email)) {
                 if (check_email($payload->email)) {
                     if (!email_exists($payload->email)) {
-                        $user->setEmail($payload->email);
-                        $changed[] = 'email';
+                        if ($curUser->isAdmin()) {
+                            $user->setEmail($payload->email);
+                        } else {
+                            // non-admins need to confirm new emails addresses
+                            $token = hash_hmac('sha256', $user->getEmail().'/'.$payload->email.'/'.time(), DW_TOKEN_SALT);
+                            $token_link = 'http://' . $GLOBALS['dw_config']['domain'] . '/account/settings?token='.$token;
+                            // send email with token
+                            require(ROOT_PATH . 'lib/templates/email-change-email.php');
+                            DatawrapperHooks::execute(
+                                DatawrapperHooks::SEND_EMAIL,
+                                $payload->email,
+                                __('Please confirm your new email address'),
+                                str_replace('%email_change_token_link%', $token_link, $email_change_mail),
+                                'From: ' . $GLOBALS['dw_config']['email']['activate']
+                            );
+                            // log action for later confirmation
+                            Action::logAction($curUser, 'email-change-request', array(
+                                'old-email' => $user->getEmail(),
+                                'new-email' => $payload->email,
+                                'token' => $token
+                            ));
+                            $messages[] = __('To complete the change of your email address, you need to confirm that you have access to it. Therefor we sent an email with the confirmation link to your new address. Your new email will be set right after you clicked that link.');
+                        }
                     } else {
-                        $errors[] = 'email-already-exists';
+                        $errors[] = sprintf(__('The email address <b>%s</b> already exists.'), $payload->email);
                     }
                 } else {
-                    $errors[] = 'email-is-invalid';
+                    $errors[] = sprintf(__('The email address <b>%s</b> is invalid.'), $payload->email);
                 }
             }
 
             if (!empty($payload->name)) {
                 $user->setName($payload->name);
-                $changed[] = 'name';
+
             }
 
             if ($curUser->isAdmin() && !empty($payload->role)) {
@@ -177,24 +197,22 @@ $app->put('/users/:id', function($user_id) use ($app) {
                     }
                 }
                 $user->setRole($payload->role);
-                $changed[] = 'role';
             }
 
             if (!empty($payload->website)) {
                 $user->setWebsite($payload->website);
-                $changed[] = 'website';
             }
 
             if (!empty($payload->profile)) {
                 $user->setSmProfile($payload->profile);
-                $changed[] = 'sm_profile';
             }
 
-            if (!empty($changed)) {
+            if ($user->isModified()) {
                 $user->save();
+                $messages[] = __('This just worked fine. Your profile has been updated.');
             }
 
-            ok(array('updated' => $changed, 'errors' => $errors));
+            ok(array('messages' => $messages, 'errors' => $errors));
         } else {
             error('user-not-found', 'no user found with that id');
         }
