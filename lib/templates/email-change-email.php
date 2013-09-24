@@ -8,7 +8,7 @@ $email_change_mail = <<<MAIL
 
 Hello,
 
-Please confirm your new Datawrapper email address by opening the following link:
+Please confirm your new Datawrapper email address by visiting the following link:
 
 %email_change_token_link%
 
