@@ -145,7 +145,7 @@ $app->put('/users/:id', function($user_id) use ($app) {
                 if ($chk || $curUser->isAdmin()) {
                     $user->setPwd($payload->pwd);
                 } else {
-                    $errors[] = 'password-or-token-invalid';
+                    $errors[] = __('The password could not be changed because your old password was not entered correctly.');
                 }
             }
 
@@ -176,15 +176,16 @@ $app->put('/users/:id', function($user_id) use ($app) {
                             $messages[] = __('To complete the change of your email address, you need to confirm that you have access to it. Therefor we sent an email with the confirmation link to your new address. Your new email will be set right after you clicked that link.');
                         }
                     } else {
-                        $errors[] = 'email-already-exists';
+                        $errors[] = sprintf(__('The email address <b>%s</b> already exists.'), $payload->email);
                     }
                 } else {
-                    $errors[] = 'email-is-invalid';
+                    $errors[] = sprintf(__('The email address <b>%s</b> is invalid.'), $payload->email);
                 }
             }
 
             if (!empty($payload->name)) {
                 $user->setName($payload->name);
+
             }
 
             if ($curUser->isAdmin() && !empty($payload->role)) {
@@ -206,8 +207,9 @@ $app->put('/users/:id', function($user_id) use ($app) {
                 $user->setSmProfile($payload->profile);
             }
 
-            if (!empty($changed)) {
+            if ($user->isModified()) {
                 $user->save();
+                $messages[] = __('This just worked fine. Your profile has been updated.');
             }
 
             ok(array('messages' => $messages, 'errors' => $errors));

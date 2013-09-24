@@ -232,10 +232,11 @@ $(function() {
             success: function(data) {
                 submit.removeClass('loading');
                 if (data.status == 'ok') {
-                    dw.backend.logMessage('{% trans "This just worked fine. Your profile has been updated." %}',
-                        $('.settings.profile .control-group')[0]);
                     _.each(data.data.messages, function(msg) {
                         dw.backend.logMessage(msg, $('.settings.profile .control-group')[0], 'info');
+                    });
+                    _.each(data.data.errors, function(msg) {
+                        dw.backend.logMessage(msg, $('.settings.profile .control-group')[0], 'warning');
                     });
                     $('.profile .reset').attr('disabled', true);
                 } else {
