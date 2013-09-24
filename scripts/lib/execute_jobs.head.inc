@@ -5,7 +5,7 @@
  * It's purpose is to execute queued jobs one after another.
  */
 
-define('LOCKFILE', dirname(__FILE__) . '/execute_jobs.lock');
+define('LOCKFILE', dirname(__FILE__) . '/../execute_jobs.lock');
 
 if (!isset($argv[1]) || !in_array($argv[1], array('start', 'stop', 'restart'))) {
     print "Usage: ".basename($argv[0])." start|stop|restart\n";
