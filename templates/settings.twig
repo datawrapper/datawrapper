@@ -40,7 +40,7 @@
 
                         <li><i class="icon-chevron-right"></i> <a class="btn" href="#" id="resend-activation-link">{% trans "Re-send activation link" %}</a></li>
 
-                        <li><i class="icon-chevron-right"></i> {{ "Or, <a href='mailto:%ADMINMAIL%'>contact us</a> to find other ways to activate your account." | trans | replace({'%ADMINMAIL%': ADMIN_EMAIL }) | raw }}</li>
+                        <li><i class="icon-chevron-right"></i> {{ "Or, <a href='mailto:%support_email%'>contact us</a> to find other ways to activate your account." | trans | replace({'%support_email%': SUPPORT_EMAIL }) | raw }}</li>
                     </ul>
 
                 {% endif %}

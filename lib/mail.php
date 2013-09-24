@@ -46,7 +46,6 @@ function dw_send_mail_attachment($to, $from, $subject, $body, $files) {
         $path   = $file["path"];
         $format = $file["format"];
         $attachment = chunk_split(base64_encode(file_get_contents($path)));
-        
         $message .= '--'.$random_hash."\n"; 
         $message .= 'Content-Type: '. $format .'; name="'. $fn .'"'."\n"; 
         $message .= 'Content-Transfer-Encoding: base64'."\n"; 
@@ -57,4 +56,20 @@ function dw_send_mail_attachment($to, $from, $subject, $body, $files) {
     DatawrapperHooks::execute(DatawrapperHooks::SEND_EMAIL,
         $to, $subject, $message, $headers
     );
+}
+
+/*
+ * replaces %keys% in strings with the provided replacement
+ *
+ * e.g. dw_email_replace("Hello %name%!", array('name' => $user->getName()))
+ */
+function dw_email_replace($body, $replacements) {
+    // auto-replace email addresses
+    if (empty($replacements['support_email'])) {
+        $replacements['support_email'] = $GLOBALS['dw_config']['email']['support'];
+    }
+    foreach ($replacements as $key => $value) {
+        $body = str_replace('%'.$key.'%', $value, $body);
+    }
+    return $body;
 }

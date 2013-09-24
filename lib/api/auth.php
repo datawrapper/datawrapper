@@ -116,7 +116,7 @@ $app->post('/account/resend-activation', function() use($app) {
             ->filterByKey('resend-activation')
             ->find();
         if (count($r) > 2) {
-            error('avoid-spam', str_replace('%ADMINEMAIL%', $GLOBALS['dw_config']['email']['admin'], __('You already resent the activation mail three times, now. Please <a href="mailto:%ADMINEMAIL%">contact an administrator</a> to proceed with your account activation.')));
+            error('avoid-spam', str_replace('%support_email%', $GLOBALS['dw_config']['email']['support'], __('You already resent the activation mail three times, now. Please <a href="mailto:%support_email%">contact an administrator</a> to proceed with your account activation.')));
             return false;
         }
 

@@ -16,7 +16,7 @@ class DatawrapperPlugin_EmailNative extends DatawrapperPlugin {
     */
     function sendMail($to, $subject, $body, $headers = '') {
         if (empty($headers)) {
-            $headers = 'From: '.$GLOBALS['dw_config']['email']['admin'];
+            $headers = 'From: noreply@'.$GLOBALS['dw_config']['domain'];
         }
         return mail($to, $subject, $body, $headers);
     }

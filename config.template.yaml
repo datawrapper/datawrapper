@@ -33,8 +33,8 @@ thumbnails:
 
 ## email addresses
 email:
-  # users with problems will be shown the admin email
-  admin: hello@datawrapper.de
+  # users with problems will be shown the support email
+  support: hello@datawrapper.de
   # error messages will go here
   log: debug@datawrapper.de
   # email shown as sender for activation emails

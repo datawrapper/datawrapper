@@ -97,7 +97,10 @@ $app->post('/users', function() use ($app) {
         include(ROOT_PATH . 'lib/templates/invitation-email.php');
         DatawrapperHooks::execute(
             DatawrapperHooks::SEND_EMAIL,
-            $data->email, sprintf(__('You have been invited to %s'), $domain), $invitation_mail, 'From: ' . $from
+            $data->email,
+            sprintf(__('You have been invited to %s'), $domain),
+            dw_email_replace($invitation_mail, array('name' => $user->getName())),
+            'From: ' . $from
         );
     } else {
         $activationLink = $protocol . '://' . $domain . '/account/activate/' . $user->getActivateToken();
@@ -105,7 +108,9 @@ $app->post('/users', function() use ($app) {
         include(ROOT_PATH . 'lib/templates/activation-email.php');
         DatawrapperHooks::execute(
             DatawrapperHooks::SEND_EMAIL,
-            $data->email, __('Datawrapper Email Activation'), $activation_mail, 'From: ' . $from
+            $data->email, __('Datawrapper: Please activate your email address'),
+            $activation_mail,
+            'From: ' . $from
         );
 
         // we don't need to annoy the user with a login form now,
@@ -163,7 +168,7 @@ $app->put('/users/:id', function($user_id) use ($app) {
                             DatawrapperHooks::execute(
                                 DatawrapperHooks::SEND_EMAIL,
                                 $payload->email,
-                                __('Please confirm your new email address'),
+                                __('Datawrapper: You requested a change of your email address'),
                                 str_replace('%email_change_token_link%', $token_link, $email_change_mail),
                                 'From: ' . $GLOBALS['dw_config']['email']['activate']
                             );

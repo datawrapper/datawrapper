@@ -11,8 +11,8 @@ function parse_config() {
     if (!isset($cfg['email']))
         $cfg['email'] = array();
 
-    if (!isset($cfg['email']['admin']))
-        $cfg['email']['admin'] = 'admin@' . $cfg['domain'];
+    if (!isset($cfg['email']['support']))
+        $cfg['email']['support'] = 'support@' . $cfg['domain'];
 
     if (!isset($cfg['email']['log']))
         $cfg['email']['log'] = 'admin@' . $cfg['domain'];
