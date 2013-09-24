@@ -97,9 +97,10 @@ dw.column.types.number = function(sample) {
             return function(val, full, round) {
                 if (isNaN(val)) return val;
                 if (div !== 0) val = Number(val) / Math.pow(10, div);
-                if (format != '-') {
-                    if (round || val == Math.round(val)) format = format.substr(0,1)+'0';
-                    val = Globalize.format(val, format);
+                var _fmt = format;
+                if (_fmt != '-') {
+                    if (round || val == Math.round(val)) _fmt = format.substr(0,1)+'0';
+                    val = Globalize.format(val, _fmt);
                 } else if (div !== 0) {
                     val = val.toFixed(1);
                 }
