@@ -17,15 +17,6 @@ function parse_config() {
     if (!isset($cfg['email']['log']))
         $cfg['email']['log'] = 'admin@' . $cfg['domain'];
 
-    if (!isset($cfg['email']['pwd_reset']))
-        $cfg['email']['pwd_reset'] = 'password-reset@' . $cfg['domain'];
-
-    if (!isset($cfg['email']['activate']))
-        $cfg['email']['activate'] = 'activate@' . $cfg['domain'];
-
-    if (!isset($cfg['email']['invite']))
-        $cfg['email']['invite'] = 'invite@' . $cfg['domain'];
-
     if (!isset($cfg['email']['error']))
         $cfg['email']['error'] = 'error@' . $cfg['domain'];
 
