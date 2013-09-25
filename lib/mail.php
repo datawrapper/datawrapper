@@ -1,6 +1,29 @@
 <?php
 
 /*
+ * use this to send email to our users
+ */
+function dw_send_support_email($to, $subject, $message, $replacements = array()) {
+    // auto-replace support email address and domain
+    if (empty($replacements['support_email'])) {
+        $replacements['support_email'] = $GLOBALS['dw_config']['email']['support'];
+    }
+    $replacements['domain'] = $GLOBALS['dw_config']['domain'];
+
+    $subject = dw_email_replace($subject, $replacements);
+    $message = dw_email_replace($message, $replacements);
+
+    DatawrapperHooks::execute(DatawrapperHooks::SEND_EMAIL,
+        $to,
+        $subject,
+        $message,
+        'From: noreply@'.$GLOBALS['dw_config']['domain']. "\r\n" .
+        'Reply-To: '.$GLOBALS['dw_config']['email']['support'] . "\r\n" .
+        'X-Mailer: PHP/' . phpversion()
+    );
+}
+
+/*
  * send error message
  */
 function dw_send_error_mail($subject, $message) {
@@ -64,10 +87,6 @@ function dw_send_mail_attachment($to, $from, $subject, $body, $files) {
  * e.g. dw_email_replace("Hello %name%!", array('name' => $user->getName()))
  */
 function dw_email_replace($body, $replacements) {
-    // auto-replace email addresses
-    if (empty($replacements['support_email'])) {
-        $replacements['support_email'] = $GLOBALS['dw_config']['email']['support'];
-    }
     foreach ($replacements as $key => $value) {
         $body = str_replace('%'.$key.'%', $value, $body);
     }
