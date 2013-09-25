@@ -48,6 +48,10 @@ class Datawrapper_L10N {
         $text_cleaned = $this->clean_msgid($text);
         if (!isset($this->__messages[$domain]) || !isset($this->__messages[$domain][$text_cleaned])) {
             // no translation found
+            if ($domain != 'core') {
+                // fallback to core translation if exists
+                return $this->translate($text, 'core', $fallback);
+            }
             return !empty($fallback) ? $fallback : $text;
         }
         return $this->__messages[$domain][$text_cleaned];
@@ -76,30 +80,14 @@ class Datawrapper_L10N {
     private function __get_domain() {
         $domain = false;
         $backtrace = debug_backtrace();
+        // check the entire backtrace for a plugin path
+        $from_template = false;
         foreach ($backtrace as $b) {
-            // if called within a template, the __ function has a call
-            // to TwigTemplate::doDisplay() in its backtrace
-            // from there we get the var l10n__domain
-            if (isset($b['function']) && $b['function'] == 'doDisplay') {
-                if (isset($b['args'][0]['l10n__domain'])) {
-                    $domain = $b['args'][0]['l10n__domain'];
-                    break;
-                }
-            }
-        }
-        // if called in plain PHP code we take the filename
-        // of the calling file as domain
-        if (!$domain && isset($backtrace[1]['file'])) {
-            $domain = $backtrace[1]['file'];
-        }
-        if ($domain) {
-            // finally we check if the domain matches the format
-            // /plugins/$1/, and take the plugin id as domain
-            if (preg_match('#/plugins/([^/]+)/#', $domain, $m)) {
+            if (isset($b['file']) && preg_match('#/plugins/([^/]+)/#', $b['file'], $m)) {
                 return $m[1];
             }
         }
-        // fallback is core
+        // if no plugin is found in backtrace, use core
         return 'core';
     }
 
