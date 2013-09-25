@@ -52,6 +52,7 @@ function call_hook() {
     call_user_func_array(array(DatawrapperHooks::getInstance(), 'execute'), func_get_args());
 }
 $twig->addFunction('hook', new Twig_Function_Function('call_hook'));
+$twig->addFunction('has_hook', new Twig_Function_Function('call_hook'));
 
 
 // loae I18n extension for Twig

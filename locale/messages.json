@@ -155,8 +155,6 @@
   "All charts": "All charts",
   "So, what can I do now?": "So, what can I do now?",
   "Resturn to the Datawrapper <a href='\/'>homepage<\/a>.": "Resturn to the Datawrapper <a href='\/'>homepage<\/a>.",
-  "Help Datawrapper to Read your Data": "Help Datawrapper to Read your Data",
-  "<dt>Horizontal Headers<\/dt>\n                <dd>Check this if the first row of your data table contain \nthe names of the data columns. If not set, Datawrapper will auto-generate \ncolumn names and will try not to use them in the charts. In general, it is a \ngood advice to provide column names.<\/dd>\n                <dt>Vertical Headers<\/dt>\n                <dd>...<\/dd>\n                <dt>Transpose Data<\/dt>\n                <dd>...<\/dd>": "<dt>Horizontal Headers<\/dt>\n                <dd>Check this if the first row of your data table contain \nthe names of the data columns. If not set, Datawrapper will auto-generate \ncolumn names and will try not to use them in the charts. In general, it is a \ngood advice to provide column names.<\/dd>\n                <dt>Vertical Headers<\/dt>\n                <dd>...<\/dd>\n                <dt>Transpose Data<\/dt>\n                <dd>...<\/dd>",
   "Try Datawrapper now!": "Try Datawrapper now!",
   "Looking for the old beta version of Datawrapper?<br \/>It's still available \nat <a href='http:\/\/beta.datawrapper.de'>beta.datawrapper.de<\/a>": "Looking for the old beta version of Datawrapper?<br \/>It's still available \nat <a href='http:\/\/beta.datawrapper.de'>beta.datawrapper.de<\/a>",
   "Welcome back!": "Welcome back!",
