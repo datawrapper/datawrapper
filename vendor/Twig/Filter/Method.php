@@ -12,8 +12,10 @@
 /**
  * Represents a method template filter.
  *
- * @package    twig
- * @author     Fabien Potencier <fabien@symfony.com>
+ * Use Twig_SimpleFilter instead.
+ *
+ * @author Fabien Potencier <fabien@symfony.com>
+ * @deprecated since 1.12 (to be removed in 2.0)
  */
 class Twig_Filter_Method extends Twig_Filter
 {
@@ -22,6 +24,8 @@ class Twig_Filter_Method extends Twig_Filter
 
     public function __construct(Twig_ExtensionInterface $extension, $method, array $options = array())
     {
+        $options['callable'] = array($extension, $method);
+
         parent::__construct($options);
 
         $this->extension = $extension;
