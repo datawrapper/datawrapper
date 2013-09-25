@@ -4,13 +4,20 @@
  * template for the Datawrapper invitation email
  */
 
+$invitation_mail = <<<MAIL
 
-$invitation_mail = sprintf(__('Hello %s,
+Hello %name%,
 
-Your account on Datawrapper has just been created.
+Someone created an account for you on %domain% has just been created.
 
-To choose your password and to activate your account please click on this link.
+To activate the account and choose a password please click on the following link:
+%invitation_link%
 
-%s
+Your new account won't be activated until you click the link above.
 
-See you soon'), $name, $invitationLink);
+If you're not able to click the link above, copy it and paste it into your web browser. If you have trouble with this please FORWARD this email to %support_email% and state that you had problems activating your account.
+
+Best regards,
+The Datawrapper Team
+
+MAIL;
