@@ -92,6 +92,8 @@ class User extends BaseUser {
     public function guessName() {
         $n = $this->getName();
         if (empty($n)) $n = $this->getEmail();
+        if (empty($n)) $n = $this->getOAuthSignIn();
+        if (!empty($n) && strpos($n, '::') > 0) $n = substr($n, strpos($n, '::')+2);
         if (empty($n)) $n = __('User').' '.$this->getId();
         return $n;
     }
