@@ -17,39 +17,39 @@
 class PluginTableMap extends TableMap
 {
 
-	/**
-	 * The (dot-path) name of this class
-	 */
-	const CLASS_NAME = 'datawrapper.map.PluginTableMap';
+    /**
+     * The (dot-path) name of this class
+     */
+    const CLASS_NAME = 'datawrapper.map.PluginTableMap';
 
-	/**
-	 * Initialize the table attributes, columns and validators
-	 * Relations are not initialized by this method since they are lazy loaded
-	 *
-	 * @return     void
-	 * @throws     PropelException
-	 */
-	public function initialize()
-	{
-		// attributes
-		$this->setName('plugin');
-		$this->setPhpName('Plugin');
-		$this->setClassname('Plugin');
-		$this->setPackage('datawrapper');
-		$this->setUseIdGenerator(false);
-		// columns
-		$this->addPrimaryKey('ID', 'Id', 'VARCHAR', true, 128, null);
-		$this->addColumn('INSTALLED_AT', 'InstalledAt', 'TIMESTAMP', true, null, null);
-		$this->addColumn('ENABLED', 'Enabled', 'BOOLEAN', false, 1, false);
-		// validators
-	} // initialize()
+    /**
+     * Initialize the table attributes, columns and validators
+     * Relations are not initialized by this method since they are lazy loaded
+     *
+     * @return void
+     * @throws PropelException
+     */
+    public function initialize()
+    {
+        // attributes
+        $this->setName('plugin');
+        $this->setPhpName('Plugin');
+        $this->setClassname('Plugin');
+        $this->setPackage('datawrapper');
+        $this->setUseIdGenerator(false);
+        // columns
+        $this->addPrimaryKey('id', 'Id', 'VARCHAR', true, 128, null);
+        $this->addColumn('installed_at', 'InstalledAt', 'TIMESTAMP', true, null, null);
+        $this->addColumn('enabled', 'Enabled', 'BOOLEAN', false, 1, false);
+        // validators
+    } // initialize()
 
-	/**
-	 * Build the RelationMap objects for this table relationships
-	 */
-	public function buildRelations()
-	{
-		$this->addRelation('PluginData', 'PluginData', RelationMap::ONE_TO_MANY, array('id' => 'plugin_id', ), null, null, 'PluginDatas');
-	} // buildRelations()
+    /**
+     * Build the RelationMap objects for this table relationships
+     */
+    public function buildRelations()
+    {
+        $this->addRelation('PluginData', 'PluginData', RelationMap::ONE_TO_MANY, array('id' => 'plugin_id', ), null, null, 'PluginDatas');
+    } // buildRelations()
 
 } // PluginTableMap
