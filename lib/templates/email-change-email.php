@@ -4,8 +4,7 @@
  * template for the Datawrapper activation email
  */
 
-$email_change_mail = <<<MAIL
-
+$email_change_mail = __("
 Hello %name%,
 
 You have recently asked for a change of your email address for your Datawrapper account from %old_email% to %new_email%.
@@ -20,9 +19,8 @@ If you're not able to click the link above, copy it and paste it into your web b
 Best regards,
 The Datawrapper Team
 
-(Please ignore this email if you received it by accident)
+Please ignore this email if you received it by accident.
 
 Please do not share this email. The activation link is secret.
 
-
-MAIL;
+");

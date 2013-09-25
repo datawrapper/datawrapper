@@ -4,11 +4,10 @@
  * template for the Datawrapper invitation email
  */
 
-$invitation_mail = <<<MAIL
-
+$invitation_mail = __("
 Hello %name%,
 
-Someone created an account for you on %domain% has just been created.
+Someone just created an account for you on %domain%.
 
 To activate the account and choose a password please click on the following link:
 %invitation_link%
@@ -20,4 +19,5 @@ If you're not able to click the link above, copy it and paste it into your web b
 Best regards,
 The Datawrapper Team
 
-MAIL;
+");
+

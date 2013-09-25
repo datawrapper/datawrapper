@@ -4,11 +4,10 @@
  * template for the Datawrapper activation email
  */
 
-$activation_mail = <<<MAIL
-
+$activation_mail = __("
 Hello %name%,
 
-Thank you for signing up at Datawrapper on $domain!
+Thank you for signing up at Datawrapper on %domain%!
 
 Please click on the following link to activate your email address.
 %activation_link%
@@ -20,4 +19,4 @@ If you're not able to click the link above, copy it and paste it into your web b
 Best regards,
 The Datawrapper Team
 
-MAIL;
+");
