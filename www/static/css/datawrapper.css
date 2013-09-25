@@ -1008,6 +1008,9 @@ form.well form {
     border: 1px solid #1981DD;
     box-shadow: 0 0 10px rgba(25, 129, 221, .6);
 }
+.vis-thumb.active img {
+    opacity: 1;
+}
 
 .vis-thumb:hover {
     border: 1px solid #777;
