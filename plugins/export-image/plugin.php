@@ -6,6 +6,9 @@ class DatawrapperPlugin_ExportImage extends DatawrapperPlugin {
         $plugin = $this;
         // hook into chart publication
         DatawrapperHooks::register(DatawrapperHooks::GET_CHART_ACTIONS, function() use ($plugin) {
+            // no export possible without email
+            $user = DatawrapperSession::getUser();
+            if ($user->getEmail() == '') return array();
             return array(
                 'id' => 'export-image',
                 'title' => __("Export to static image for printing", $plugin->getName()),

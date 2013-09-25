@@ -1,4 +1,6 @@
 #!/bin/bash
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd $DIR
 rm -Rf ../scripts/tmpl_cache/*
 php ../scripts/gen_template_cache.php
 xgettext --default-domain=core -o messages.pot --from-code=UTF-8 -n --omit-header -k__ -L PHP ../controller/*.php ../scripts/tmpl_cache/*.php ../www/index.php ../www/api/index.php ../lib/api/*.php ../lib/api/*/*.php ../lib/core/build/classes/datawrapper/*.php ../lib/session/*.php ../lib/templates/*.php ../lib/utils/*.php

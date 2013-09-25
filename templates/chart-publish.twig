@@ -166,11 +166,13 @@ p.lead {
             <p class="lead">{%trans "Other things to do" %}</p>
 
             {% for action in chartActions %}
+            {% if action %}
             <p>
                 <a role="button" href="#{{ action.id }}">
                     <i class="icon-{{ action.icon }}"></i>&nbsp;&nbsp;{{ action.title }}
                 </a>
             </p>
+            {% endif %}
             {% endfor %}
 
             <p>
