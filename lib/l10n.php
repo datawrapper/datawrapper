@@ -4,6 +4,7 @@ $locale = str_replace('-', '_', DatawrapperSession::getLanguage());
 $domain = 'messages';
 putenv('LANGUAGE=' . $locale);
 setlocale(LC_ALL, $locale);
+setlocale(LC_TIME, $locale.'.utf8');
 
 
 class Datawrapper_L10N {
