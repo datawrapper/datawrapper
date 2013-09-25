@@ -4,6 +4,7 @@ CHANGELOG
 ### 1.5.5
 * fixed theme inheritance, no more deep-copying of arrays
 * improved email communication
+* updated Propel to 1.6.8
 
 ### 1.5.4
 * added dw.utils.smartRound
