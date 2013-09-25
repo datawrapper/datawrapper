@@ -89,4 +89,11 @@ class User extends BaseUser {
         $u->save();
     }
 
+    public function guessName() {
+        $n = $this->getName();
+        if (empty($n)) $n = $this->getEmail();
+        if (empty($n)) $n = __('User').' '.$this->getId();
+        return $n;
+    }
+
 } // User
