@@ -48,6 +48,11 @@ function call_hook() {
 }
 $twig->addFunction('hook', new Twig_Function_Function('call_hook'));
 
+function has_hook($hook) {
+    return DatawrapperHooks::getInstance()->hookRegistered($hook);
+}
+$twig->addFunction('has_hook', new Twig_Function_Function('has_hook'));
+
 
 // loae I18n extension for Twig
 $twig->addExtension(new Twig_Extension_I18n());
