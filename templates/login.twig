@@ -67,6 +67,11 @@
                 </style>
                 {% endif %}
             </div>
+            {% if has_hook('after_login_form') %}
+            <div style="padding:10px 13px; text-align:center">
+                {{ hook('after_login_form') }}
+            </div>
+            {% endif %}
         </div>
 
     </div>

@@ -356,6 +356,15 @@ h1, h2, h3, h4, h5, h6 {
     margin-left: -338px;
 }
 
+#dwLoginForm h3 {
+    margin-top: 0;
+}
+
+#dwLoginForm .modal-body {
+    max-height: 450px;
+}
+
+
 #dwLoginForm div.span3, #dwLoginForm div.span4 {
     padding: 15px;
 }
