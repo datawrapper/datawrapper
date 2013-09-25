@@ -55,6 +55,7 @@ CREATE TABLE `user`
 	`name` VARCHAR(512),
 	`website` VARCHAR(512),
 	`sm_profile` VARCHAR(512),
+	`oauth_signin` VARCHAR(512),
 	PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 

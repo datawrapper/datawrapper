@@ -58,6 +58,7 @@ class UserTableMap extends TableMap
 		$this->addColumn('NAME', 'Name', 'VARCHAR', false, 512, null);
 		$this->addColumn('WEBSITE', 'Website', 'VARCHAR', false, 512, null);
 		$this->addColumn('SM_PROFILE', 'SmProfile', 'VARCHAR', false, 512, null);
+		$this->addColumn('OAUTH_SIGNIN', 'OAuthSignIn', 'VARCHAR', false, 512, null);
 		// validators
 	} // initialize()
 

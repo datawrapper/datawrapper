@@ -18,6 +18,7 @@
  * @method     UserQuery orderByName($order = Criteria::ASC) Order by the name column
  * @method     UserQuery orderByWebsite($order = Criteria::ASC) Order by the website column
  * @method     UserQuery orderBySmProfile($order = Criteria::ASC) Order by the sm_profile column
+ * @method     UserQuery orderByOAuthSignIn($order = Criteria::ASC) Order by the oauth_signin column
  *
  * @method     UserQuery groupById() Group by the id column
  * @method     UserQuery groupByEmail() Group by the email column
@@ -31,6 +32,7 @@
  * @method     UserQuery groupByName() Group by the name column
  * @method     UserQuery groupByWebsite() Group by the website column
  * @method     UserQuery groupBySmProfile() Group by the sm_profile column
+ * @method     UserQuery groupByOAuthSignIn() Group by the oauth_signin column
  *
  * @method     UserQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     UserQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -63,6 +65,7 @@
  * @method     User findOneByName(string $name) Return the first User filtered by the name column
  * @method     User findOneByWebsite(string $website) Return the first User filtered by the website column
  * @method     User findOneBySmProfile(string $sm_profile) Return the first User filtered by the sm_profile column
+ * @method     User findOneByOAuthSignIn(string $oauth_signin) Return the first User filtered by the oauth_signin column
  *
  * @method     array findById(int $id) Return User objects filtered by the id column
  * @method     array findByEmail(string $email) Return User objects filtered by the email column
@@ -76,6 +79,7 @@
  * @method     array findByName(string $name) Return User objects filtered by the name column
  * @method     array findByWebsite(string $website) Return User objects filtered by the website column
  * @method     array findBySmProfile(string $sm_profile) Return User objects filtered by the sm_profile column
+ * @method     array findByOAuthSignIn(string $oauth_signin) Return User objects filtered by the oauth_signin column
  *
  * @package    propel.generator.datawrapper.om
  */
@@ -164,7 +168,7 @@ abstract class BaseUserQuery extends ModelCriteria
 	 */
 	protected function findPkSimple($key, $con)
 	{
-		$sql = 'SELECT `ID`, `EMAIL`, `PWD`, `ACTIVATE_TOKEN`, `RESET_PASSWORD_TOKEN`, `ROLE`, `DELETED`, `LANGUAGE`, `CREATED_AT`, `NAME`, `WEBSITE`, `SM_PROFILE` FROM `user` WHERE `ID` = :p0';
+		$sql = 'SELECT `ID`, `EMAIL`, `PWD`, `ACTIVATE_TOKEN`, `RESET_PASSWORD_TOKEN`, `ROLE`, `DELETED`, `LANGUAGE`, `CREATED_AT`, `NAME`, `WEBSITE`, `SM_PROFILE`, `OAUTH_SIGNIN` FROM `user` WHERE `ID` = :p0';
 		try {
 			$stmt = $con->prepare($sql);
 			$stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -597,6 +601,34 @@ abstract class BaseUserQuery extends ModelCriteria
 			}
 		}
 		return $this->addUsingAlias(UserPeer::SM_PROFILE, $smProfile, $comparison);
+	}
+
+	/**
+	 * Filter the query on the oauth_signin column
+	 *
+	 * Example usage:
+	 * <code>
+	 * $query->filterByOAuthSignIn('fooValue');   // WHERE oauth_signin = 'fooValue'
+	 * $query->filterByOAuthSignIn('%fooValue%'); // WHERE oauth_signin LIKE '%fooValue%'
+	 * </code>
+	 *
+	 * @param     string $oAuthSignIn The value to use as filter.
+	 *              Accepts wildcards (* and % trigger a LIKE)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    UserQuery The current query, for fluid interface
+	 */
+	public function filterByOAuthSignIn($oAuthSignIn = null, $comparison = null)
+	{
+		if (null === $comparison) {
+			if (is_array($oAuthSignIn)) {
+				$comparison = Criteria::IN;
+			} elseif (preg_match('/[\%\*]/', $oAuthSignIn)) {
+				$oAuthSignIn = str_replace('*', '%', $oAuthSignIn);
+				$comparison = Criteria::LIKE;
+			}
+		}
+		return $this->addUsingAlias(UserPeer::OAUTH_SIGNIN, $oAuthSignIn, $comparison);
 	}
 
 	/**

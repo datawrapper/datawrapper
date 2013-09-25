@@ -106,6 +106,12 @@ abstract class BaseUser extends BaseObject  implements Persistent
 	protected $sm_profile;
 
 	/**
+	 * The value for the oauth_signin field.
+	 * @var        string
+	 */
+	protected $oauth_signin;
+
+	/**
 	 * @var        array Chart[] Collection to store aggregation of Chart objects.
 	 */
 	protected $collCharts;
@@ -328,6 +334,16 @@ abstract class BaseUser extends BaseObject  implements Persistent
 	public function getSmProfile()
 	{
 		return $this->sm_profile;
+	}
+
+	/**
+	 * Get the [oauth_signin] column value.
+	 * 
+	 * @return     string
+	 */
+	public function getOAuthSignIn()
+	{
+		return $this->oauth_signin;
 	}
 
 	/**
@@ -585,6 +601,26 @@ abstract class BaseUser extends BaseObject  implements Persistent
 	} // setSmProfile()
 
 	/**
+	 * Set the value of [oauth_signin] column.
+	 * 
+	 * @param      string $v new value
+	 * @return     User The current object (for fluent API support)
+	 */
+	public function setOAuthSignIn($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->oauth_signin !== $v) {
+			$this->oauth_signin = $v;
+			$this->modifiedColumns[] = UserPeer::OAUTH_SIGNIN;
+		}
+
+		return $this;
+	} // setOAuthSignIn()
+
+	/**
 	 * Indicates whether the columns in this object are only set to default values.
 	 *
 	 * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -640,6 +676,7 @@ abstract class BaseUser extends BaseObject  implements Persistent
 			$this->name = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
 			$this->website = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
 			$this->sm_profile = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
+			$this->oauth_signin = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -648,7 +685,7 @@ abstract class BaseUser extends BaseObject  implements Persistent
 				$this->ensureConsistency();
 			}
 
-			return $startcol + 12; // 12 = UserPeer::NUM_HYDRATE_COLUMNS.
+			return $startcol + 13; // 13 = UserPeer::NUM_HYDRATE_COLUMNS.
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating User object", $e);
@@ -949,6 +986,9 @@ abstract class BaseUser extends BaseObject  implements Persistent
 		if ($this->isColumnModified(UserPeer::SM_PROFILE)) {
 			$modifiedColumns[':p' . $index++]  = '`SM_PROFILE`';
 		}
+		if ($this->isColumnModified(UserPeer::OAUTH_SIGNIN)) {
+			$modifiedColumns[':p' . $index++]  = '`OAUTH_SIGNIN`';
+		}
 
 		$sql = sprintf(
 			'INSERT INTO `user` (%s) VALUES (%s)',
@@ -995,6 +1035,9 @@ abstract class BaseUser extends BaseObject  implements Persistent
 						break;
 					case '`SM_PROFILE`':
 						$stmt->bindValue($identifier, $this->sm_profile, PDO::PARAM_STR);
+						break;
+					case '`OAUTH_SIGNIN`':
+						$stmt->bindValue($identifier, $this->oauth_signin, PDO::PARAM_STR);
 						break;
 				}
 			}
@@ -1186,6 +1229,9 @@ abstract class BaseUser extends BaseObject  implements Persistent
 			case 11:
 				return $this->getSmProfile();
 				break;
+			case 12:
+				return $this->getOAuthSignIn();
+				break;
 			default:
 				return null;
 				break;
@@ -1227,6 +1273,7 @@ abstract class BaseUser extends BaseObject  implements Persistent
 			$keys[9] => $this->getName(),
 			$keys[10] => $this->getWebsite(),
 			$keys[11] => $this->getSmProfile(),
+			$keys[12] => $this->getOAuthSignIn(),
 		);
 		if ($includeForeignObjects) {
 			if (null !== $this->collCharts) {
@@ -1309,6 +1356,9 @@ abstract class BaseUser extends BaseObject  implements Persistent
 			case 11:
 				$this->setSmProfile($value);
 				break;
+			case 12:
+				$this->setOAuthSignIn($value);
+				break;
 		} // switch()
 	}
 
@@ -1345,6 +1395,7 @@ abstract class BaseUser extends BaseObject  implements Persistent
 		if (array_key_exists($keys[9], $arr)) $this->setName($arr[$keys[9]]);
 		if (array_key_exists($keys[10], $arr)) $this->setWebsite($arr[$keys[10]]);
 		if (array_key_exists($keys[11], $arr)) $this->setSmProfile($arr[$keys[11]]);
+		if (array_key_exists($keys[12], $arr)) $this->setOAuthSignIn($arr[$keys[12]]);
 	}
 
 	/**
@@ -1368,6 +1419,7 @@ abstract class BaseUser extends BaseObject  implements Persistent
 		if ($this->isColumnModified(UserPeer::NAME)) $criteria->add(UserPeer::NAME, $this->name);
 		if ($this->isColumnModified(UserPeer::WEBSITE)) $criteria->add(UserPeer::WEBSITE, $this->website);
 		if ($this->isColumnModified(UserPeer::SM_PROFILE)) $criteria->add(UserPeer::SM_PROFILE, $this->sm_profile);
+		if ($this->isColumnModified(UserPeer::OAUTH_SIGNIN)) $criteria->add(UserPeer::OAUTH_SIGNIN, $this->oauth_signin);
 
 		return $criteria;
 	}
@@ -1441,6 +1493,7 @@ abstract class BaseUser extends BaseObject  implements Persistent
 		$copyObj->setName($this->getName());
 		$copyObj->setWebsite($this->getWebsite());
 		$copyObj->setSmProfile($this->getSmProfile());
+		$copyObj->setOAuthSignIn($this->getOAuthSignIn());
 
 		if ($deepCopy && !$this->startCopy) {
 			// important: temporarily setNew(false) because this affects the behavior of
@@ -2023,6 +2076,7 @@ abstract class BaseUser extends BaseObject  implements Persistent
 		$this->name = null;
 		$this->website = null;
 		$this->sm_profile = null;
+		$this->oauth_signin = null;
 		$this->alreadyInSave = false;
 		$this->alreadyInValidation = false;
 		$this->clearAllReferences();
