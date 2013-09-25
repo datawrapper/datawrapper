@@ -10,8 +10,9 @@
  */
 public function joinI18n($locale = '<?php echo $defaultLocale ?>', $relationAlias = null, $joinType = Criteria::LEFT_JOIN)
 {
-	$relationName = $relationAlias ? $relationAlias : '<?php echo $i18nRelationName ?>';
-	return $this
-		->join<?php echo $i18nRelationName ?>($relationAlias, $joinType)
-		->addJoinCondition($relationName, $relationName . '.<?php echo $localeColumn ?> = ?', $locale);
+    $relationName = $relationAlias ? $relationAlias : '<?php echo $i18nRelationName ?>';
+
+    return $this
+        ->join<?php echo $i18nRelationName ?>($relationAlias, $joinType)
+        ->addJoinCondition($relationName, $relationName . '.<?php echo $localeColumn ?> = ?', $locale);
 }

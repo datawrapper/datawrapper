@@ -18,63 +18,79 @@ require_once dirname(__FILE__) . '/../../../../../runtime/lib/Propel.php';
  */
 class GeneratedObjectLazyLoadTest extends PHPUnit_Framework_TestCase
 {
-	public function setUp()
-	{
-		if (!class_exists('LazyLoadActiveRecord')) {
-			$schema = <<<EOF
+    public function setUp()
+    {
+        if (!class_exists('LazyLoadActiveRecord')) {
+            $schema = <<<EOF
 <database name="lazy_load_active_record_1">
-	<table name="lazy_load_active_record">
-		<column name="id" primaryKey="true" type="INTEGER" autoIncrement="true" />
-		<column name="foo" type="VARCHAR" size="100" />
-		<column name="bar" type="VARCHAR" size="100" lazyLoad="true" />
-		<column name="baz" type="VARCHAR" size="100" defaultValue="world" lazyLoad="true" />
-	</table>
+    <table name="lazy_load_active_record">
+        <column name="id" primaryKey="true" type="INTEGER" autoIncrement="true" />
+        <column name="foo" type="VARCHAR" size="100" />
+        <column name="bar" type="VARCHAR" size="100" lazyLoad="true" />
+        <column name="baz" type="VARCHAR" size="100" defaultValue="world" lazyLoad="true" />
+    </table>
 </database>
 EOF;
-			//PropelQuickBuilder::debugClassesForTable($schema, 'lazy_load_active_record');
-			PropelQuickBuilder::buildSchema($schema);
-		}
-	}
+            //PropelQuickBuilder::debugClassesForTable($schema, 'lazy_load_active_record');
+            PropelQuickBuilder::buildSchema($schema);
+        }
+    }
 
-	public function testNormalColumnsRequireNoQueryOnGetter()
-	{
-		$con = Propel::getconnection(LazyLoadActiveRecordPeer::DATABASE_NAME);
-		$con->useDebug(true);
-		$obj = new LazyLoadActiveRecord();
-		$obj->setFoo('hello');
-		$obj->save($con);
-		LazyLoadActiveRecordPeer::clearInstancePool();
-		$obj2 = LazyLoadActiveRecordQuery::create()->findPk($obj->getId(), $con);
-		$count = $con->getQueryCount();
-		$this->assertEquals('hello', $obj2->getFoo());
-		$this->assertEquals($count, $con->getQueryCount());
-	}
+    public function testNormalColumnsRequireNoQueryOnGetter()
+    {
+        $con = Propel::getconnection(LazyLoadActiveRecordPeer::DATABASE_NAME);
+        $con->useDebug(true);
+        $obj = new LazyLoadActiveRecord();
+        $obj->setFoo('hello');
+        $obj->save($con);
+        LazyLoadActiveRecordPeer::clearInstancePool();
+        $obj2 = LazyLoadActiveRecordQuery::create()->findPk($obj->getId(), $con);
+        $count = $con->getQueryCount();
+        $this->assertEquals('hello', $obj2->getFoo());
+        $this->assertEquals($count, $con->getQueryCount());
+    }
 
-	public function testLazyLoadedColumnsRequireAnAdditionalQueryOnGetter()
-	{
-		$con = Propel::getconnection(LazyLoadActiveRecordPeer::DATABASE_NAME);
-		$con->useDebug(true);
-		$obj = new LazyLoadActiveRecord();
-		$obj->setBar('hello');
-		$obj->save($con);
-		LazyLoadActiveRecordPeer::clearInstancePool();
-		$obj2 = LazyLoadActiveRecordQuery::create()->findPk($obj->getId(), $con);
-		$count = $con->getQueryCount();
-		$this->assertEquals('hello', $obj2->getBar($con));
-		$this->assertEquals($count + 1, $con->getQueryCount());
-	}
+    public function testLazyLoadedColumnsRequireAnAdditionalQueryOnGetter()
+    {
+        $con = Propel::getconnection(LazyLoadActiveRecordPeer::DATABASE_NAME);
+        $con->useDebug(true);
+        $obj = new LazyLoadActiveRecord();
+        $obj->setBar('hello');
+        $obj->save($con);
+        LazyLoadActiveRecordPeer::clearInstancePool();
+        $obj2 = LazyLoadActiveRecordQuery::create()->findPk($obj->getId(), $con);
+        $count = $con->getQueryCount();
+        $this->assertEquals('hello', $obj2->getBar($con));
+        $this->assertEquals($count + 1, $con->getQueryCount());
+    }
 
-	public function testLazyLoadedColumnsWithDefaultRequireAnAdditionalQueryOnGetter()
-	{
-		$con = Propel::getconnection(LazyLoadActiveRecordPeer::DATABASE_NAME);
-		$con->useDebug(true);
-		$obj = new LazyLoadActiveRecord();
-		$obj->setBaz('hello');
-		$obj->save($con);
-		LazyLoadActiveRecordPeer::clearInstancePool();
-		$obj2 = LazyLoadActiveRecordQuery::create()->findPk($obj->getId(), $con);
-		$count = $con->getQueryCount();
-		$this->assertEquals('hello', $obj2->getBaz($con));
-		$this->assertEquals($count + 1, $con->getQueryCount());
-	}
+    public function testLazyLoadedColumnsWithDefaultRequireAnAdditionalQueryOnGetter()
+    {
+        $con = Propel::getconnection(LazyLoadActiveRecordPeer::DATABASE_NAME);
+        $con->useDebug(true);
+        $obj = new LazyLoadActiveRecord();
+        $obj->setBaz('hello');
+        $obj->save($con);
+        LazyLoadActiveRecordPeer::clearInstancePool();
+        $obj2 = LazyLoadActiveRecordQuery::create()->findPk($obj->getId(), $con);
+        $count = $con->getQueryCount();
+        $this->assertEquals('hello', $obj2->getBaz($con));
+        $this->assertEquals($count + 1, $con->getQueryCount());
+    }
+
+    public function testLazyLoadedColumnsMayBeUnsetWithoutLoading()
+    {
+        $con = Propel::getconnection(LazyLoadActiveRecordPeer::DATABASE_NAME);
+        $con->useDebug(true);
+        $obj = new LazyLoadActiveRecord();
+        $obj->setBar('hello');
+        $obj->save($con);
+        LazyLoadActiveRecordPeer::clearInstancePool();
+        $obj2 = LazyLoadActiveRecordQuery::create()->findPk($obj->getId(), $con);
+        $obj2->setBar(null);
+        $obj2->save();
+        LazyLoadActiveRecordPeer::clearInstancePool();
+        $obj3 = LazyLoadActiveRecordQuery::create()->findPk($obj->getId(), $con);
+        $this->assertNull($obj3->getBar());
+    }
 }

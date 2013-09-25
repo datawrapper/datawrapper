@@ -15,5 +15,5 @@
  */
 class MssqlDebugPDO extends MssqlPropelPDO
 {
-	public $useDebug = true;
+    public $useDebug = true;
 }

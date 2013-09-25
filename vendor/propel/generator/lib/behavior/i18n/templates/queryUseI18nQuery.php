@@ -12,7 +12,7 @@
  */
 public function useI18nQuery($locale = '<?php echo $defaultLocale ?>', $relationAlias = null, $joinType = Criteria::LEFT_JOIN)
 {
-	return $this
-		->joinI18n($locale, $relationAlias, $joinType)
-		->useQuery($relationAlias ? $relationAlias : '<?php echo $i18nRelationName ?>', '<?php echo $namespacedQueryClass ?>');
+    return $this
+        ->joinI18n($locale, $relationAlias, $joinType)
+        ->useQuery($relationAlias ? $relationAlias : '<?php echo $i18nRelationName ?>', '<?php echo $namespacedQueryClass ?>');
 }

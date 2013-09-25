@@ -6,5 +6,5 @@
  */
 public function getLocale()
 {
-	return $this->currentLocale;
+    return $this->currentLocale;
 }

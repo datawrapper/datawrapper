@@ -23,91 +23,88 @@ require_once 'util/PropelDotGenerator.php';
 class PropelGraphvizTask extends AbstractPropelDataModelTask
 {
 
-	/**
-	 * The properties file that maps an SQL file to a particular database.
-	 * @var        PhingFile
-	 */
-	private $sqldbmap;
+    /**
+     * The properties file that maps an SQL file to a particular database.
+     * @var        PhingFile
+     */
+    private $sqldbmap;
 
-	/**
-	 * Name of the database.
-	 */
-	private $database;
+    /**
+     * Name of the database.
+     */
+    private $database;
 
-	/**
-	 * Name of the output directory.
-	 */
-	private $outDir;
+    /**
+     * Name of the output directory.
+     */
+    private $outDir;
 
+    /**
+     * Set the sqldbmap.
+     * @param PhingFile $sqldbmap The db map.
+     */
+    public function setOutputDirectory(PhingFile $out)
+    {
+        if (!$out->exists()) {
+            $out->mkdirs();
+        }
+        $this->outDir = $out;
+    }
 
-	/**
-	 * Set the sqldbmap.
-	 * @param      PhingFile $sqldbmap The db map.
-	 */
-	public function setOutputDirectory(PhingFile $out)
-	{
-		if (!$out->exists()) {
-			$out->mkdirs();
-		}
-		$this->outDir = $out;
-	}
+    /**
+     * Set the sqldbmap.
+     * @param PhingFile $sqldbmap The db map.
+     */
+    public function setSqlDbMap(PhingFile $sqldbmap)
+    {
+        $this->sqldbmap = $sqldbmap;
+    }
 
+    /**
+     * Get the sqldbmap.
+     * @return PhingFile $sqldbmap.
+     */
+    public function getSqlDbMap()
+    {
+        return $this->sqldbmap;
+    }
 
-	/**
-	 * Set the sqldbmap.
-	 * @param      PhingFile $sqldbmap The db map.
-	 */
-	public function setSqlDbMap(PhingFile $sqldbmap)
-	{
-		$this->sqldbmap = $sqldbmap;
-	}
+    /**
+     * Set the database name.
+     * @param string $database
+     */
+    public function setDatabase($database)
+    {
+        $this->database = $database;
+    }
 
-	/**
-	 * Get the sqldbmap.
-	 * @return     PhingFile $sqldbmap.
-	 */
-	public function getSqlDbMap()
-	{
-		return $this->sqldbmap;
-	}
+    /**
+     * Get the database name.
+     * @return string
+     */
+    public function getDatabase()
+    {
+        return $this->database;
+    }
 
-	/**
-	 * Set the database name.
-	 * @param      string $database
-	 */
-	public function setDatabase($database)
-	{
-		$this->database = $database;
-	}
-
-	/**
-	 * Get the database name.
-	 * @return     string
-	 */
-	public function getDatabase()
-	{
-		return $this->database;
-	}
-
-
-	public function main()
-	{
-		foreach ($this->getDataModels() as $dataModel) {
+    public function main()
+    {
+        foreach ($this->getDataModels() as $dataModel) {
             foreach ($dataModel->getDatabases() as $database) {
                  $this->log("db: " . $database->getName());
                  $this->writeDot(PropelDotGenerator::create($database), $this->outDir, $database->getName());
             }
-		}
-	}
+        }
+    }
 
-
-	/**
-	 * probably insecure
-	 */
-	function writeDot($dotSyntax, PhingFile $outputDir, $baseFilename) {
-		$file = new PhingFile($outputDir, $baseFilename . '.schema.dot');
-		$this->log("Writing dot file to " . $file->getAbsolutePath());
-		file_put_contents($file->getAbsolutePath(), $dotSyntax);
-	}
+    /**
+     * probably insecure
+     */
+    public function writeDot($dotSyntax, PhingFile $outputDir, $baseFilename)
+    {
+        $file = new PhingFile($outputDir, $baseFilename . '.schema.dot');
+        $this->log("Writing dot file to " . $file->getAbsolutePath());
+        file_put_contents($file->getAbsolutePath(), $dotSyntax);
+    }
 
 }

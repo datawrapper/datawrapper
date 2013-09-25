@@ -19,41 +19,41 @@ require_once dirname(__FILE__) . '/../../../tools/helpers/bookstore/BookstoreEmp
  */
 class PropelOnDemandIteratorTest extends BookstoreEmptyTestBase
 {
-	protected function setUp()
-	{
-		parent::setUp();
-		BookstoreDataPopulator::populate($this->con);
-	}
+    protected function setUp()
+    {
+        parent::setUp();
+        BookstoreDataPopulator::populate($this->con);
+    }
 
-	public function testInstancePoolingDisabled()
-	{
-		Propel::enableInstancePooling();
-		$books = PropelQuery::from('Book')
-			->setFormatter(ModelCriteria::FORMAT_ON_DEMAND)
-			->find($this->con);
-		foreach ($books as $book) {
-			$this->assertFalse(Propel::isInstancePoolingEnabled());
-		}
-	}
+    public function testInstancePoolingDisabled()
+    {
+        Propel::enableInstancePooling();
+        $books = PropelQuery::from('Book')
+            ->setFormatter(ModelCriteria::FORMAT_ON_DEMAND)
+            ->find($this->con);
+        foreach ($books as $book) {
+            $this->assertFalse(Propel::isInstancePoolingEnabled());
+        }
+    }
 
-	public function testInstancePoolingReenabled()
-	{
-		Propel::enableInstancePooling();
-		$books = PropelQuery::from('Book')
-			->setFormatter(ModelCriteria::FORMAT_ON_DEMAND)
-			->find($this->con);
-		foreach ($books as $book) {
-		}
-		$this->assertTrue(Propel::isInstancePoolingEnabled());
+    public function testInstancePoolingReenabled()
+    {
+        Propel::enableInstancePooling();
+        $books = PropelQuery::from('Book')
+            ->setFormatter(ModelCriteria::FORMAT_ON_DEMAND)
+            ->find($this->con);
+        foreach ($books as $book) {
+        }
+        $this->assertTrue(Propel::isInstancePoolingEnabled());
 
-		Propel::disableInstancePooling();
-		$books = PropelQuery::from('Book')
-			->setFormatter(ModelCriteria::FORMAT_ON_DEMAND)
-			->find($this->con);
-		foreach ($books as $book) {
-		}
-		$this->assertFalse(Propel::isInstancePoolingEnabled());
-		Propel::enableInstancePooling();
-	}
+        Propel::disableInstancePooling();
+        $books = PropelQuery::from('Book')
+            ->setFormatter(ModelCriteria::FORMAT_ON_DEMAND)
+            ->find($this->con);
+        foreach ($books as $book) {
+        }
+        $this->assertFalse(Propel::isInstancePoolingEnabled());
+        Propel::enableInstancePooling();
+    }
 
 }

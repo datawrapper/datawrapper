@@ -23,37 +23,37 @@ require_once dirname(__FILE__) . '/../../../../generator/lib/behavior/AutoAddPkB
 class ColumnTest extends PHPUnit_Framework_TestCase
 {
 
-	/**
-	 * Tests static Column::makeList() method.
-	 * @deprecated - Column::makeList() is deprecated and set to be removed in 1.3
-	 */
-	public function testMakeList()
-	{
-		$expected = 'Column0, Column1, Column2, Column3, Column4';
-		$objArray = array();
-		for ($i=0; $i<5; $i++) {
-			$c = new Column();
-			$c->setName("Column" . $i);
-			$objArray[] = $c;
-		}
+    /**
+     * Tests static Column::makeList() method.
+     * @deprecated - Column::makeList() is deprecated and set to be removed in 1.3
+     */
+    public function testMakeList()
+    {
+        $expected = '"Column0", "Column1", "Column2", "Column3", "Column4"';
+        $objArray = array();
+        for ($i=0; $i<5; $i++) {
+            $c = new Column();
+            $c->setName("Column" . $i);
+            $objArray[] = $c;
+        }
 
-		$list = Column::makeList($objArray, new DefaultPlatform());
-		$this->assertEquals($expected, $list, sprintf("Expected '%s' match, got '%s' ", var_export($expected, true), var_export($list,true)));
+        $list = Column::makeList($objArray, new DefaultPlatform());
+        $this->assertEquals($expected, $list, sprintf("Expected '%s' match, got '%s' ", var_export($expected, true), var_export($list,true)));
 
-		$strArray = array();
-		for ($i=0; $i<5; $i++) {
-			$strArray[] = "Column" . $i;
-		}
+        $strArray = array();
+        for ($i=0; $i<5; $i++) {
+            $strArray[] = "Column" . $i;
+        }
 
-		$list = Column::makeList($strArray, new DefaultPlatform());
-		$this->assertEquals($expected, $list, sprintf("Expected '%s' match, got '%s' ", var_export($expected, true), var_export($list,true)));
+        $list = Column::makeList($strArray, new DefaultPlatform());
+        $this->assertEquals($expected, $list, sprintf("Expected '%s' match, got '%s' ", var_export($expected, true), var_export($list,true)));
 
-	}
+    }
 
-	public function testPhpNamingMethod()
-	{
-		$xmlToAppData = new XmlToAppData(new DefaultPlatform());
-		$schema = <<<EOF
+    public function testPhpNamingMethod()
+    {
+        $xmlToAppData = new XmlToAppData(new DefaultPlatform());
+        $schema = <<<EOF
 <database name="test1">
   <behavior name="auto_add_pk" />
   <table name="table1">
@@ -63,17 +63,17 @@ class ColumnTest extends PHPUnit_Framework_TestCase
   </table>
 </database>
 EOF;
-		$appData = $xmlToAppData->parseString($schema);
-		$column = $appData->getDatabase('test1')->getTable('table1')->getColumn('author_id');
-	  $this->assertEquals('AuthorId', $column->getPhpName(), 'setPhpName() uses the default phpNamingMethod');
-		$column = $appData->getDatabase('test1')->getTable('table1')->getColumn('editor_id');
-	  $this->assertEquals('editor_id', $column->getPhpName(), 'setPhpName() uses the column phpNamingMethod if given');
+        $appData = $xmlToAppData->parseString($schema);
+        $column = $appData->getDatabase('test1')->getTable('table1')->getColumn('author_id');
+      $this->assertEquals('AuthorId', $column->getPhpName(), 'setPhpName() uses the default phpNamingMethod');
+        $column = $appData->getDatabase('test1')->getTable('table1')->getColumn('editor_id');
+      $this->assertEquals('editor_id', $column->getPhpName(), 'setPhpName() uses the column phpNamingMethod if given');
   }
 
-	public function testDefaultPhpNamingMethod()
-	{
-		$xmlToAppData = new XmlToAppData(new DefaultPlatform());
-		$schema = <<<EOF
+    public function testDefaultPhpNamingMethod()
+    {
+        $xmlToAppData = new XmlToAppData(new DefaultPlatform());
+        $schema = <<<EOF
 <database name="test2" defaultPhpNamingMethod="nochange">
   <behavior name="auto_add_pk" />
   <table name="table1">
@@ -82,15 +82,15 @@ EOF;
   </table>
 </database>
 EOF;
-		$appData = $xmlToAppData->parseString($schema);
-		$column = $appData->getDatabase('test2')->getTable('table1')->getColumn('author_id');
-	  $this->assertEquals('author_id', $column->getPhpName(), 'setPhpName() uses the database defaultPhpNamingMethod if given');
-	}
+        $appData = $xmlToAppData->parseString($schema);
+        $column = $appData->getDatabase('test2')->getTable('table1')->getColumn('author_id');
+      $this->assertEquals('author_id', $column->getPhpName(), 'setPhpName() uses the database defaultPhpNamingMethod if given');
+    }
 
-	public function testGetConstantName()
-	{
-		$xmlToAppData = new XmlToAppData(new DefaultPlatform());
-		$schema = <<<EOF
+    public function testGetConstantName()
+    {
+        $xmlToAppData = new XmlToAppData(new DefaultPlatform());
+        $schema = <<<EOF
 <database name="test">
   <table name="table1">
     <column name="id" primaryKey="true" />
@@ -101,12 +101,12 @@ EOF;
     $appData = $xmlToAppData->parseString($schema);
     $column = $appData->getDatabase('test')->getTable('table1')->getColumn('title');
     $this->assertEquals('Table1Peer::TITLE', $column->getConstantName(), 'getConstantName() returns the complete constant name by default');
-	}
+    }
 
-	public function testIsLocalColumnsRequired()
-	{
-		$xmlToAppData = new XmlToAppData(new DefaultPlatform());
-		$schema = <<<EOF
+    public function testIsLocalColumnsRequired()
+    {
+        $xmlToAppData = new XmlToAppData(new DefaultPlatform());
+        $schema = <<<EOF
 <database name="test">
   <table name="table1">
     <column name="id" primaryKey="true" />
@@ -126,37 +126,37 @@ EOF;
   </table>
 </database>
 EOF;
-		$appData = $xmlToAppData->parseString($schema);
-		$fk = $appData->getDatabase('test')->getTable('table1')->getColumnForeignKeys('table2_foo');
-		$this->assertFalse($fk[0]->isLocalColumnsRequired());
-		$fk = $appData->getDatabase('test')->getTable('table1')->getColumnForeignKeys('table2_bar');
-		$this->assertTrue($fk[0]->isLocalColumnsRequired());
-	}
+        $appData = $xmlToAppData->parseString($schema);
+        $fk = $appData->getDatabase('test')->getTable('table1')->getColumnForeignKeys('table2_foo');
+        $this->assertFalse($fk[0]->isLocalColumnsRequired());
+        $fk = $appData->getDatabase('test')->getTable('table1')->getColumnForeignKeys('table2_bar');
+        $this->assertTrue($fk[0]->isLocalColumnsRequired());
+    }
 
-	public function testIsNamePlural()
-	{
-		$column = new Column('foo');
-		$this->assertFalse($column->isNamePlural());
-		$column = new Column('foos');
-		$this->assertTrue($column->isNamePlural());
-		$column = new Column('foso');
-		$this->assertFalse($column->isNamePlural());
-	}
+    public function testIsNamePlural()
+    {
+        $column = new Column('foo');
+        $this->assertFalse($column->isNamePlural());
+        $column = new Column('foos');
+        $this->assertTrue($column->isNamePlural());
+        $column = new Column('foso');
+        $this->assertFalse($column->isNamePlural());
+    }
 
-	public function testGetSingularName()
-	{
-		$column = new Column('foo');
-		$this->assertEquals('foo', $column->getSingularName());
-		$column = new Column('foos');
-		$this->assertEquals('foo', $column->getSingularName());
-		$column = new Column('foso');
-		$this->assertEquals('foso', $column->getSingularName());
-	}
+    public function testGetSingularName()
+    {
+        $column = new Column('foo');
+        $this->assertEquals('foo', $column->getSingularName());
+        $column = new Column('foos');
+        $this->assertEquals('foo', $column->getSingularName());
+        $column = new Column('foso');
+        $this->assertEquals('foso', $column->getSingularName());
+    }
 
-	public function testGetValidator()
-	{
-		$xmlToAppData = new XmlToAppData(new DefaultPlatform());
-		$schema = <<<EOF
+    public function testGetValidator()
+    {
+        $xmlToAppData = new XmlToAppData(new DefaultPlatform());
+        $schema = <<<EOF
 <database name="test">
   <table name="table1">
     <column name="id" primaryKey="true" />
@@ -172,32 +172,60 @@ EOF;
   </table>
 </database>
 EOF;
-		$appData = $xmlToAppData->parseString($schema);
-		$table1 = $appData->getDatabase('test')->getTable('table1');
-		$this->assertNull($table1->getColumn('id')->getValidator());
-		$title1Column = $table1->getColumn('title1');
-		$title1Validator = $title1Column->getValidator();
-		$this->assertInstanceOf('Validator', $title1Validator);
-		$this->assertEquals(1, count($title1Validator->getRules()));
-		$title2Column = $table1->getColumn('title2');
-		$title2Validator = $title2Column->getValidator();
-		$this->assertInstanceOf('Validator', $title2Validator);
-		$this->assertEquals(2, count($title2Validator->getRules()));
-	}
+        $appData = $xmlToAppData->parseString($schema);
+        $table1 = $appData->getDatabase('test')->getTable('table1');
+        $this->assertNull($table1->getColumn('id')->getValidator());
+        $title1Column = $table1->getColumn('title1');
+        $title1Validator = $title1Column->getValidator();
+        $this->assertInstanceOf('Validator', $title1Validator);
+        $this->assertEquals(1, count($title1Validator->getRules()));
+        $title2Column = $table1->getColumn('title2');
+        $title2Validator = $title2Column->getValidator();
+        $this->assertInstanceOf('Validator', $title2Validator);
+        $this->assertEquals(2, count($title2Validator->getRules()));
+    }
 
-	public function testHasPlatform()
-	{
-		$column = new Column();
-		$this->assertFalse($column->hasPlatform());
-		$table = new Table();
-		$table->addColumn($column);
-		$this->assertFalse($column->hasPlatform());
-		$database = new Database();
-		$database->addTable($table);
-		$this->assertFalse($column->hasPlatform());
-		$platform = new DefaultPlatform();
-		$database->setPlatform($platform);
-		$this->assertTrue($column->hasPlatform());
-	}
+    public function testHasPlatform()
+    {
+        $column = new Column();
+        $this->assertFalse($column->hasPlatform());
+        $table = new Table();
+        $table->addColumn($column);
+        $this->assertFalse($column->hasPlatform());
+        $database = new Database();
+        $database->addTable($table);
+        $this->assertFalse($column->hasPlatform());
+        $platform = new DefaultPlatform();
+        $database->setPlatform($platform);
+        $this->assertTrue($column->hasPlatform());
+    }
 
+    public function testIsPhpArrayType()
+    {
+        $column = new Column();
+        $this->assertFalse($column->isPhpArrayType());
+
+        $column->setType(PropelTypes::PHP_ARRAY);
+        $this->assertTrue($column->isPhpArrayType());
+    }
+
+    public function testCommaInEnumValueSet()
+    {
+        $column     = new Column();
+        $table      = new Table();
+        $database   = new Database();
+        $platform   = new DefaultPlatform();
+
+        $table->addColumn($column);
+        $database->addTable($table);
+        $database->setPlatform($platform);
+
+        $column->loadFromXML(array('valueSet' => 'Foo, Bar, "Foo, Bar"'));
+        $valueSet = $column->getValueSet();
+
+        $this->assertCount(3, $valueSet);
+        $this->assertEquals('Foo', $valueSet[0]);
+        $this->assertEquals('Bar', $valueSet[1]);
+        $this->assertEquals('Foo, Bar', $valueSet[2]);
+    }
 }

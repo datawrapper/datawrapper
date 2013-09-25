@@ -12,6 +12,7 @@ require_once dirname(__FILE__) . '/PlatformMigrationTestProvider.php';
 require_once dirname(__FILE__) . '/../../../../generator/lib/platform/MysqlPlatform.php';
 require_once dirname(__FILE__) . '/../../../../generator/lib/model/Column.php';
 require_once dirname(__FILE__) . '/../../../../generator/lib/model/VendorInfo.php';
+require_once dirname(__FILE__) . '/../../../../generator/lib/config/GeneratorConfig.php';
 
 /**
  *
@@ -19,22 +20,32 @@ require_once dirname(__FILE__) . '/../../../../generator/lib/model/VendorInfo.ph
  */
 class MysqlPlatformMigrationTest extends PlatformMigrationTestProvider
 {
-	/**
-	 * Get the Platform object for this class
-	 *
-	 * @return     Platform
-	 */
-	protected function getPlatform()
-	{
-		return new MysqlPlatform();
-	}
+    /**
+     * Get the Platform object for this class
+     *
+     * @return Platform
+     */
+    protected function getPlatform()
+    {
+        static $platform;
 
-	/**
-	 * @dataProvider providerForTestGetModifyDatabaseDDL
-	 */
-	public function testGetModifyDatabaseDDL($databaseDiff)
-	{
-		$expected = "
+        if (!$platform) {
+            $platform = new MysqlPlatform();
+            $config   = new GeneratorConfig();
+            $config->setBuildProperties(array(
+                 'propel.mysql.tableType' => 'InnoDB'
+            ));
+            $platform->setGeneratorConfig($config);
+        }
+        return $platform;
+    }
+
+    /**
+     * @dataProvider providerForTestGetModifyDatabaseDDL
+     */
+    public function testGetModifyDatabaseDDL($databaseDiff)
+    {
+        $expected = "
 # This is a fix for InnoDB in MySQL >= 4.1.x
 # It \"suspends judgement\" for fkey relationships until are tables are set.
 SET FOREIGN_KEY_CHECKS = 0;
@@ -47,42 +58,40 @@ ALTER TABLE `foo2` CHANGE `bar` `bar1` INTEGER;
 
 ALTER TABLE `foo2` CHANGE `baz` `baz` VARCHAR(12);
 
-ALTER TABLE `foo2` ADD
-(
-	`baz3` TEXT
-);
+ALTER TABLE `foo2`
+    ADD `baz3` TEXT AFTER `baz`;
 
 CREATE TABLE `foo5`
 (
-	`id` INTEGER NOT NULL AUTO_INCREMENT,
-	`lkdjfsh` INTEGER,
-	`dfgdsgf` TEXT,
-	PRIMARY KEY (`id`)
-) ENGINE=MyISAM;
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `lkdjfsh` INTEGER,
+    `dfgdsgf` TEXT,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;
 ";
-		$this->assertEquals($expected, $this->getPlatform()->getModifyDatabaseDDL($databaseDiff));
-	}
+        $this->assertEquals($expected, $this->getPlatform()->getModifyDatabaseDDL($databaseDiff));
+    }
 
-	/**
-	 * @dataProvider providerForTestGetRenameTableDDL
-	 */
-	public function testGetRenameTableDDL($fromName, $toName)
-	{
-		$expected = "
+    /**
+     * @dataProvider providerForTestGetRenameTableDDL
+     */
+    public function testGetRenameTableDDL($fromName, $toName)
+    {
+        $expected = "
 RENAME TABLE `foo1` TO `foo2`;
 ";
-		$this->assertEquals($expected, $this->getPlatform()->getRenameTableDDL($fromName, $toName));
-	}
+        $this->assertEquals($expected, $this->getPlatform()->getRenameTableDDL($fromName, $toName));
+    }
 
-	/**
-	 * @dataProvider providerForTestGetModifyTableDDL
-	 */
-	public function testGetModifyTableDDL($tableDiff)
-	{
-		$expected = "
+    /**
+     * @dataProvider providerForTestGetModifyTableDDL
+     */
+    public function testGetModifyTableDDL($tableDiff)
+    {
+        $expected = "
 ALTER TABLE `foo` DROP FOREIGN KEY `foo1_FK_2`;
 
 ALTER TABLE `foo` DROP FOREIGN KEY `foo1_FK_1`;
@@ -97,59 +106,55 @@ ALTER TABLE `foo` CHANGE `bar` `bar1` INTEGER;
 
 ALTER TABLE `foo` CHANGE `baz` `baz` VARCHAR(12);
 
-ALTER TABLE `foo` ADD
-(
-	`baz3` TEXT
-);
+ALTER TABLE `foo`
+    ADD `baz3` TEXT AFTER `baz`;
 
 CREATE INDEX `bar_FK` ON `foo` (`bar1`);
 
 CREATE INDEX `baz_FK` ON `foo` (`baz3`);
 
 ALTER TABLE `foo` ADD CONSTRAINT `foo1_FK_1`
-	FOREIGN KEY (`bar1`)
-	REFERENCES `foo2` (`bar`);
+    FOREIGN KEY (`bar1`)
+    REFERENCES `foo2` (`bar`);
 ";
-		$this->assertEquals($expected, $this->getPlatform()->getModifyTableDDL($tableDiff));
-	}
+        $this->assertEquals($expected, $this->getPlatform()->getModifyTableDDL($tableDiff));
+    }
 
-	/**
-	 * @dataProvider providerForTestGetModifyTableColumnsDDL
-	 */
-	public function testGetModifyTableColumnsDDL($tableDiff)
-	{
-		$expected = "
+    /**
+     * @dataProvider providerForTestGetModifyTableColumnsDDL
+     */
+    public function testGetModifyTableColumnsDDL($tableDiff)
+    {
+        $expected = "
 ALTER TABLE `foo` CHANGE `bar` `bar1` INTEGER;
 
 ALTER TABLE `foo` CHANGE `baz` `baz` VARCHAR(12);
 
-ALTER TABLE `foo` ADD
-(
-	`baz3` TEXT
-);
+ALTER TABLE `foo`
+    ADD `baz3` TEXT AFTER `baz`;
 ";
-		$this->assertEquals($expected, $this->getPlatform()->getModifyTableColumnsDDL($tableDiff));
-	}
+        $this->assertEquals($expected, $this->getPlatform()->getModifyTableColumnsDDL($tableDiff));
+    }
 
-	/**
-	 * @dataProvider providerForTestGetModifyTablePrimaryKeysDDL
-	 */
-	public function testGetModifyTablePrimaryKeysDDL($tableDiff)
-	{
-		$expected = "
+    /**
+     * @dataProvider providerForTestGetModifyTablePrimaryKeysDDL
+     */
+    public function testGetModifyTablePrimaryKeysDDL($tableDiff)
+    {
+        $expected = "
 ALTER TABLE `foo` DROP PRIMARY KEY;
 
 ALTER TABLE `foo` ADD PRIMARY KEY (`id`,`bar`);
 ";
-		$this->assertEquals($expected, $this->getPlatform()->getModifyTablePrimaryKeyDDL($tableDiff));
-	}
+        $this->assertEquals($expected, $this->getPlatform()->getModifyTablePrimaryKeyDDL($tableDiff));
+    }
 
-	/**
-	 * @dataProvider providerForTestGetModifyTableIndicesDDL
-	 */
-	public function testGetModifyTableIndicesDDL($tableDiff)
-	{
-		$expected = "
+    /**
+     * @dataProvider providerForTestGetModifyTableIndicesDDL
+     */
+    public function testGetModifyTableIndicesDDL($tableDiff)
+    {
+        $expected = "
 DROP INDEX `bar_FK` ON `foo`;
 
 CREATE INDEX `baz_FK` ON `foo` (`baz`);
@@ -158,127 +163,125 @@ DROP INDEX `bar_baz_FK` ON `foo`;
 
 CREATE INDEX `bar_baz_FK` ON `foo` (`id`,`bar`,`baz`);
 ";
-		$this->assertEquals($expected, $this->getPlatform()->getModifyTableIndicesDDL($tableDiff));
-	}
+        $this->assertEquals($expected, $this->getPlatform()->getModifyTableIndicesDDL($tableDiff));
+    }
 
-	/**
-	 * @dataProvider providerForTestGetModifyTableForeignKeysDDL
-	 */
-	public function testGetModifyTableForeignKeysDDL($tableDiff)
-	{
-		$expected = "
+    /**
+     * @dataProvider providerForTestGetModifyTableForeignKeysDDL
+     */
+    public function testGetModifyTableForeignKeysDDL($tableDiff)
+    {
+        $expected = "
 ALTER TABLE `foo1` DROP FOREIGN KEY `foo1_FK_1`;
 
 ALTER TABLE `foo1` ADD CONSTRAINT `foo1_FK_3`
-	FOREIGN KEY (`baz`)
-	REFERENCES `foo2` (`baz`);
+    FOREIGN KEY (`baz`)
+    REFERENCES `foo2` (`baz`);
 
 ALTER TABLE `foo1` DROP FOREIGN KEY `foo1_FK_2`;
 
 ALTER TABLE `foo1` ADD CONSTRAINT `foo1_FK_2`
-	FOREIGN KEY (`bar`,`id`)
-	REFERENCES `foo2` (`bar`,`id`);
+    FOREIGN KEY (`bar`,`id`)
+    REFERENCES `foo2` (`bar`,`id`);
 ";
-		$this->assertEquals($expected, $this->getPlatform()->getModifyTableForeignKeysDDL($tableDiff));
-	}
+        $this->assertEquals($expected, $this->getPlatform()->getModifyTableForeignKeysDDL($tableDiff));
+    }
 
-	/**
-	 * @dataProvider providerForTestGetModifyTableForeignKeysSkipSqlDDL
-	 */
-	public function testGetModifyTableForeignKeysSkipSqlDDL($tableDiff)
-	{
-		$expected = "
+    /**
+     * @dataProvider providerForTestGetModifyTableForeignKeysSkipSqlDDL
+     */
+    public function testGetModifyTableForeignKeysSkipSqlDDL($tableDiff)
+    {
+        $expected = "
 ALTER TABLE `foo1` DROP FOREIGN KEY `foo1_FK_1`;
 ";
-		$this->assertEquals($expected, $this->getPlatform()->getModifyTableForeignKeysDDL($tableDiff));
-		$expected = "
+        $this->assertEquals($expected, $this->getPlatform()->getModifyTableForeignKeysDDL($tableDiff));
+        $expected = "
 ALTER TABLE `foo1` ADD CONSTRAINT `foo1_FK_1`
-	FOREIGN KEY (`bar`)
-	REFERENCES `foo2` (`bar`);
+    FOREIGN KEY (`bar`)
+    REFERENCES `foo2` (`bar`);
 ";
-		$this->assertEquals($expected, $this->getPlatform()->getModifyTableForeignKeysDDL($tableDiff->getReverseDiff()));
-	}
+        $this->assertEquals($expected, $this->getPlatform()->getModifyTableForeignKeysDDL($tableDiff->getReverseDiff()));
+    }
 
-	/**
-	 * @dataProvider providerForTestGetModifyTableForeignKeysSkipSql2DDL
-	 */
-	public function testGetModifyTableForeignKeysSkipSql2DDL($tableDiff)
-	{
-		$expected = '';
-		$this->assertEquals($expected, $this->getPlatform()->getModifyTableForeignKeysDDL($tableDiff));
-		$expected = '';
-		$this->assertEquals($expected, $this->getPlatform()->getModifyTableForeignKeysDDL($tableDiff->getReverseDiff()));
-	}
+    /**
+     * @dataProvider providerForTestGetModifyTableForeignKeysSkipSql2DDL
+     */
+    public function testGetModifyTableForeignKeysSkipSql2DDL($tableDiff)
+    {
+        $expected = '';
+        $this->assertEquals($expected, $this->getPlatform()->getModifyTableForeignKeysDDL($tableDiff));
+        $expected = '';
+        $this->assertEquals($expected, $this->getPlatform()->getModifyTableForeignKeysDDL($tableDiff->getReverseDiff()));
+    }
 
-	/**
-	 * @dataProvider providerForTestGetRemoveColumnDDL
-	 */
-	public function testGetRemoveColumnDDL($column)
-	{
-		$expected = "
+    /**
+     * @dataProvider providerForTestGetRemoveColumnDDL
+     */
+    public function testGetRemoveColumnDDL($column)
+    {
+        $expected = "
 ALTER TABLE `foo` DROP `bar`;
 ";
-		$this->assertEquals($expected, $this->getPlatform()->getRemoveColumnDDL($column));
-	}
+        $this->assertEquals($expected, $this->getPlatform()->getRemoveColumnDDL($column));
+    }
 
-	/**
-	 * @dataProvider providerForTestGetRenameColumnDDL
-	 */
-	public function testGetRenameColumnDDL($fromColumn, $toColumn)
-	{
-		$expected = "
+    /**
+     * @dataProvider providerForTestGetRenameColumnDDL
+     */
+    public function testGetRenameColumnDDL($fromColumn, $toColumn)
+    {
+        $expected = "
 ALTER TABLE `foo` CHANGE `bar1` `bar2` DOUBLE(2);
 ";
-		$this->assertEquals($expected, $this->getPlatform()->getRenameColumnDDL($fromColumn, $toColumn));
-	}
+        $this->assertEquals($expected, $this->getPlatform()->getRenameColumnDDL($fromColumn, $toColumn));
+    }
 
-	/**
-	 * @dataProvider providerForTestGetModifyColumnDDL
-	 */
-	public function testGetModifyColumnDDL($columnDiff)
-	{
-		$expected = "
+    /**
+     * @dataProvider providerForTestGetModifyColumnDDL
+     */
+    public function testGetModifyColumnDDL($columnDiff)
+    {
+        $expected = "
 ALTER TABLE `foo` CHANGE `bar` `bar` DOUBLE(3);
 ";
-		$this->assertEquals($expected, $this->getPlatform()->getModifyColumnDDL($columnDiff));
-	}
+        $this->assertEquals($expected, $this->getPlatform()->getModifyColumnDDL($columnDiff));
+    }
 
-	/**
-	 * @dataProvider providerForTestGetModifyColumnsDDL
-	 */
-	public function testGetModifyColumnsDDL($columnDiffs)
-	{
-		$expected = "
+    /**
+     * @dataProvider providerForTestGetModifyColumnsDDL
+     */
+    public function testGetModifyColumnsDDL($columnDiffs)
+    {
+        $expected = "
 ALTER TABLE `foo` CHANGE `bar1` `bar1` DOUBLE(3);
 
 ALTER TABLE `foo` CHANGE `bar2` `bar2` INTEGER NOT NULL;
 ";
-		$this->assertEquals($expected, $this->getPlatform()->getModifyColumnsDDL($columnDiffs));
-	}
+        $this->assertEquals($expected, $this->getPlatform()->getModifyColumnsDDL($columnDiffs));
+    }
 
-	/**
-	 * @dataProvider providerForTestGetAddColumnDDL
-	 */
-	public function testGetAddColumnDDL($column)
-	{
-		$expected = "
+    /**
+     * @dataProvider providerForTestGetAddColumnDDL
+     */
+    public function testGetAddColumnDDL($column)
+    {
+        $expected = "
 ALTER TABLE `foo` ADD `bar` INTEGER;
 ";
-		$this->assertEquals($expected, $this->getPlatform()->getAddColumnDDL($column));
-	}
+        $this->assertEquals($expected, $this->getPlatform()->getAddColumnDDL($column));
+    }
 
-	/**
-	 * @dataProvider providerForTestGetAddColumnsDDL
-	 */
-	public function testGetAddColumnsDDL($columns)
-	{
-		$expected = "
-ALTER TABLE `foo` ADD
-(
-	`bar1` INTEGER,
-	`bar2` DOUBLE(3,2) DEFAULT -1 NOT NULL
-);
+    /**
+     * @dataProvider providerForTestGetAddColumnsDDL
+     */
+    public function testGetAddColumnsDDL($columns)
+    {
+        $expected = "
+ALTER TABLE `foo`
+    ADD `bar1` INTEGER AFTER `id`,
+    ADD `bar2` DOUBLE(3,2) DEFAULT -1 NOT NULL AFTER `bar1`;
 ";
-		$this->assertEquals($expected, $this->getPlatform()->getAddColumnsDDL($columns));
-	}
+        $this->assertEquals($expected, $this->getPlatform()->getAddColumnsDDL($columns));
+    }
 }

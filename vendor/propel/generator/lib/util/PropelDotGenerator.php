@@ -46,7 +46,7 @@ class PropelDotGenerator
                 $columnsSyntax .= sprintf('%s (%s)%s\l', $column->getName(), $column->getType(), $attributes);
             }
 
-            $nodeSyntax = sprintf('node%s [label="{<table>%s|<cols>%s}", shape=record];', $table->getName(), $table->getName(), $columnsSyntax);
+            $nodeSyntax = sprintf('"%s" [label="{<table>%s|<cols>%s}", shape=record];', $table->getName(), $table->getName(), $columnsSyntax);
             $dotSyntax .= "$nodeSyntax\n";
         }
 
@@ -54,7 +54,7 @@ class PropelDotGenerator
         foreach ($database->getTables() as $table) {
             foreach ($table->getColumns() as $column) {
                 foreach ($column->getForeignKeys() as $fk) {
-                    $relationSyntax = sprintf('node%s:cols -> node%s:table [label="%s=%s"];', $table->getName(), $fk->getForeignTableName(), $column->getName(), implode(',', $fk->getForeignColumns()));
+                    $relationSyntax = sprintf('"%s":cols -> "%s":table [label="%s=%s"];', $table->getName(), $fk->getForeignTableName(), $column->getName(), implode(',', $fk->getForeignColumns()));
                     $dotSyntax .= "$relationSyntax\n";
                 }
             }

@@ -19,101 +19,101 @@ require_once dirname(__FILE__) . '/../../../tools/helpers/bookstore/BookstoreTes
  */
 class CriteriaFluidOperatorTest extends BookstoreTestBase
 {
-	public function testDefault()
-	{
-		$c = new Criteria();
-		$c->addUsingOperator('foo', 'bar');
-		$expected = 'SELECT  FROM  WHERE foo=:p1';
+    public function testDefault()
+    {
+        $c = new Criteria();
+        $c->addUsingOperator('foo', 'bar');
+        $expected = 'SELECT  FROM  WHERE foo=:p1';
 
-		$params = array();
-		$result = BasePeer::createSelectSql($c, $params);
+        $params = array();
+        $result = BasePeer::createSelectSql($c, $params);
 
-		$this->assertEquals($expected, $result);
-	}
+        $this->assertEquals($expected, $result);
+    }
 
-	public function testDefaultOperatorIsAnd()
-	{
-		$c = new Criteria();
-		$c->addUsingOperator('foo1', 'bar1');
-		$c->addUsingOperator('foo2', 'bar2');
-		$expected = 'SELECT  FROM  WHERE foo1=:p1 AND foo2=:p2';
+    public function testDefaultOperatorIsAnd()
+    {
+        $c = new Criteria();
+        $c->addUsingOperator('foo1', 'bar1');
+        $c->addUsingOperator('foo2', 'bar2');
+        $expected = 'SELECT  FROM  WHERE foo1=:p1 AND foo2=:p2';
 
-		$params = array();
-		$result = BasePeer::createSelectSql($c, $params);
+        $params = array();
+        $result = BasePeer::createSelectSql($c, $params);
 
-		$this->assertEquals($expected, $result);
-	}
+        $this->assertEquals($expected, $result);
+    }
 
-	public function testOrOverridesDefaultOperator()
-	{
-		$c = new Criteria();
-		$c->addUsingOperator('foo1', 'bar1');
-		$c->_or();
-		$c->addUsingOperator('foo2', 'bar2');
-		$expected = 'SELECT  FROM  WHERE (foo1=:p1 OR foo2=:p2)';
+    public function testOrOverridesDefaultOperator()
+    {
+        $c = new Criteria();
+        $c->addUsingOperator('foo1', 'bar1');
+        $c->_or();
+        $c->addUsingOperator('foo2', 'bar2');
+        $expected = 'SELECT  FROM  WHERE (foo1=:p1 OR foo2=:p2)';
 
-		$params = array();
-		$result = BasePeer::createSelectSql($c, $params);
+        $params = array();
+        $result = BasePeer::createSelectSql($c, $params);
 
-		$this->assertEquals($expected, $result);
-	}
+        $this->assertEquals($expected, $result);
+    }
 
-	public function testOrWithNoExistingCriterionIsAnd()
-	{
-		$c = new Criteria();
-		$c->_or();
-		$c->addUsingOperator('foo', 'bar');
-		$expected = 'SELECT  FROM  WHERE foo=:p1';
+    public function testOrWithNoExistingCriterionIsAnd()
+    {
+        $c = new Criteria();
+        $c->_or();
+        $c->addUsingOperator('foo', 'bar');
+        $expected = 'SELECT  FROM  WHERE foo=:p1';
 
-		$params = array();
-		$result = BasePeer::createSelectSql($c, $params);
+        $params = array();
+        $result = BasePeer::createSelectSql($c, $params);
 
-		$this->assertEquals($expected, $result);
-	}
+        $this->assertEquals($expected, $result);
+    }
 
-	public function testOrWithNoExistingCriterionIsAnd2()
-	{
-		$c = new Criteria();
-		$c->_or();
-		$c->addUsingOperator('foo1', 'bar');
-		$c->addUsingOperator('foo2', 'bar2');
-		$expected = 'SELECT  FROM  WHERE foo1=:p1 AND foo2=:p2';
+    public function testOrWithNoExistingCriterionIsAnd2()
+    {
+        $c = new Criteria();
+        $c->_or();
+        $c->addUsingOperator('foo1', 'bar');
+        $c->addUsingOperator('foo2', 'bar2');
+        $expected = 'SELECT  FROM  WHERE foo1=:p1 AND foo2=:p2';
 
-		$params = array();
-		$result = BasePeer::createSelectSql($c, $params);
+        $params = array();
+        $result = BasePeer::createSelectSql($c, $params);
 
-		$this->assertEquals($expected, $result);
-	}
+        $this->assertEquals($expected, $result);
+    }
 
-	public function testOrCanBeCalledSeveralTimes()
-	{
-		$c = new Criteria();
-		$c->addUsingOperator('foo1', 'bar1');
-		$c->_or();
-		$c->addUsingOperator('foo2', 'bar2');
-		$c->_or();
-		$c->addUsingOperator('foo3', 'bar3');
-		$expected = 'SELECT  FROM  WHERE ((foo1=:p1 OR foo2=:p2) OR foo3=:p3)';
+    public function testOrCanBeCalledSeveralTimes()
+    {
+        $c = new Criteria();
+        $c->addUsingOperator('foo1', 'bar1');
+        $c->_or();
+        $c->addUsingOperator('foo2', 'bar2');
+        $c->_or();
+        $c->addUsingOperator('foo3', 'bar3');
+        $expected = 'SELECT  FROM  WHERE ((foo1=:p1 OR foo2=:p2) OR foo3=:p3)';
 
-		$params = array();
-		$result = BasePeer::createSelectSql($c, $params);
+        $params = array();
+        $result = BasePeer::createSelectSql($c, $params);
 
-		$this->assertEquals($expected, $result);
-	}
+        $this->assertEquals($expected, $result);
+    }
 
-	public function testaddUsingOperatorResetsDefaultOperator()
-	{
-		$c = new Criteria();
-		$c->addUsingOperator('foo1', 'bar1');
-		$c->_or();
-		$c->addUsingOperator('foo2', 'bar2');
-		$c->addUsingOperator('foo3', 'bar3');
-		$expected = 'SELECT  FROM  WHERE (foo1=:p1 OR foo2=:p2) AND foo3=:p3';
+    public function testaddUsingOperatorResetsDefaultOperator()
+    {
+        $c = new Criteria();
+        $c->addUsingOperator('foo1', 'bar1');
+        $c->_or();
+        $c->addUsingOperator('foo2', 'bar2');
+        $c->addUsingOperator('foo3', 'bar3');
+        $expected = 'SELECT  FROM  WHERE (foo1=:p1 OR foo2=:p2) AND foo3=:p3';
 
-		$params = array();
-		$result = BasePeer::createSelectSql($c, $params);
+        $params = array();
+        $result = BasePeer::createSelectSql($c, $params);
 
-		$this->assertEquals($expected, $result);
-	}
+        $this->assertEquals($expected, $result);
+    }
 
 }

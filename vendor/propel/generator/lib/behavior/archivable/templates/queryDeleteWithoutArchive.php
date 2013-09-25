@@ -8,9 +8,9 @@
  */
 public function deleteWithoutArchive($con = null)
 {
-	$this->archiveOnDelete = false;
+    $this->archiveOnDelete = false;
 
-	return $this->delete($con);
+    return $this->delete($con);
 }
 
 /**
@@ -22,7 +22,7 @@ public function deleteWithoutArchive($con = null)
  */
 public function deleteAllWithoutArchive($con = null)
 {
-	$this->archiveOnDelete = false;
+    $this->archiveOnDelete = false;
 
-	return $this->deleteAll($con);
+    return $this->deleteAll($con);
 }

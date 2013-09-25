@@ -16,29 +16,29 @@
  */
 class VersionableBehaviorPeerBuilderModifier
 {
-	public function staticAttributes()
-	{
-		return "
+    public function staticAttributes()
+    {
+        return "
 /**
  * Whether the versioning is enabled
  */
 static \$isVersioningEnabled = true;
 ";
-	}
+    }
 
-	public function staticMethods()
-	{
-		$script = '';
-		$this->addIsVersioningEnabled($script);
-		$this->addEnableVersioning($script);
-		$this->addDisableVersioning($script);
+    public function staticMethods()
+    {
+        $script = '';
+        $this->addIsVersioningEnabled($script);
+        $this->addEnableVersioning($script);
+        $this->addDisableVersioning($script);
 
-		return $script;
-	}
+        return $script;
+    }
 
-	public function addIsVersioningEnabled(&$script)
-	{
-		$script .= "
+    public function addIsVersioningEnabled(&$script)
+    {
+        $script .= "
 /**
  * Checks whether versioning is enabled
  *
@@ -46,34 +46,34 @@ static \$isVersioningEnabled = true;
  */
 public static function isVersioningEnabled()
 {
-	return self::\$isVersioningEnabled;
+    return self::\$isVersioningEnabled;
 }
 ";
-	}
+    }
 
-	public function addEnableVersioning(&$script)
-	{
-		$script .= "
+    public function addEnableVersioning(&$script)
+    {
+        $script .= "
 /**
  * Enables versioning
  */
 public static function enableVersioning()
 {
-	self::\$isVersioningEnabled = true;
+    self::\$isVersioningEnabled = true;
 }
 ";
-	}
+    }
 
-	public function addDisableVersioning(&$script)
-	{
-		$script .= "
+    public function addDisableVersioning(&$script)
+    {
+        $script .= "
 /**
  * Disables versioning
  */
 public static function disableVersioning()
 {
-	self::\$isVersioningEnabled = false;
+    self::\$isVersioningEnabled = false;
 }
 ";
-	}
+    }
 }

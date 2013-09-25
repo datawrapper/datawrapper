@@ -8,6 +8,7 @@
  */
 public function deleteWithoutArchive(PropelPDO $con = null)
 {
-	$this->archiveOnDelete = false;
-	return $this->delete($con);
+    $this->archiveOnDelete = false;
+
+    return $this->delete($con);
 }

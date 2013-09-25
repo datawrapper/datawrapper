@@ -27,94 +27,94 @@ require_once dirname(__FILE__) . '/../../../../tools/helpers/cms/CmsTestBase.php
  */
 class GeneratedNestedSetTest extends CmsTestBase
 {
-	/**
-	 * A convenience method to dump the page rows.
-	 */
-	private function showPageItems()
-	{
-		$tree = PagePeer::retrieveTree();
-		$iterator = new RecursiveIteratorIterator($tree, RecursiveIteratorIterator::SELF_FIRST);
+    /**
+     * A convenience method to dump the page rows.
+     */
+    private function showPageItems()
+    {
+        $tree = PagePeer::retrieveTree();
+        $iterator = new RecursiveIteratorIterator($tree, RecursiveIteratorIterator::SELF_FIRST);
 
-		foreach ($iterator as $item) { /* @var        $item Page */
-			echo str_repeat('- ', $iterator->getDepth())
-			, $item->getId() , ': '
-			, $item->getTitle()
-			, ' [', $item->getLeftValue(), ':', $item->getRightValue() , ']'
-			. "\n";
-		}
-	}
+        foreach ($iterator as $item) { /* @var        $item Page */
+            echo str_repeat('- ', $iterator->getDepth())
+            , $item->getId() , ': '
+            , $item->getTitle()
+            , ' [', $item->getLeftValue(), ':', $item->getRightValue() , ']'
+            . "\n";
+        }
+    }
 
-	/**
-	 * Adds a new Page row with specified parent Id.
-	 *
-	 * @param      int $parentId
-	 */
-	protected function addNewChildPage($parentId)
-	{
-		$db = Propel::getConnection(PagePeer::DATABASE_NAME);
+    /**
+     * Adds a new Page row with specified parent Id.
+     *
+     * @param int $parentId
+     */
+    protected function addNewChildPage($parentId)
+    {
+        $db = Propel::getConnection(PagePeer::DATABASE_NAME);
 
-		//$db->beginTransaction();
+        //$db->beginTransaction();
 
-		$parent = PagePeer::retrieveByPK($parentId);
-		$page = new Page();
-		$page->setTitle('new page '.time());
-		$page->insertAsLastChildOf($parent);
-		$page->save();
+        $parent = PagePeer::retrieveByPK($parentId);
+        $page = new Page();
+        $page->setTitle('new page '.time());
+        $page->insertAsLastChildOf($parent);
+        $page->save();
 
-		//$db->commit();
-	}
+        //$db->commit();
+    }
 
-	/**
-	 * Asserts that the Page table tree integrity is intact.
-	 */
-	protected function assertPageTreeIntegrity()
-	{
-		$db = Propel::getConnection(PagePeer::DATABASE_NAME);
+    /**
+     * Asserts that the Page table tree integrity is intact.
+     */
+    protected function assertPageTreeIntegrity()
+    {
+        $db = Propel::getConnection(PagePeer::DATABASE_NAME);
 
-		$values = array();
-		$log = '';
+        $values = array();
+        $log = '';
 
-		foreach ($db->query('SELECT Id, LeftChild, RightChild, Title FROM Page', PDO::FETCH_NUM) as $row) {
+        foreach ($db->query('SELECT Id, LeftChild, RightChild, Title FROM Page', PDO::FETCH_NUM) as $row) {
 
-			list($id, $leftChild, $rightChild, $title) = $row;
+            list($id, $leftChild, $rightChild, $title) = $row;
 
-			if (!in_array($leftChild, $values)) {
-				$values[] = (int) $leftChild;
-			} else {
-				$this->fail('Duplicate LeftChild value '.$leftChild);
-			}
+            if (!in_array($leftChild, $values)) {
+                $values[] = (int) $leftChild;
+            } else {
+                $this->fail('Duplicate LeftChild value '.$leftChild);
+            }
 
-			if (!in_array($rightChild, $values)) {
-				$values[] = (int) $rightChild;
-			} else {
-				$this->fail('Duplicate RightChild value '.$rightChild);
-			}
+            if (!in_array($rightChild, $values)) {
+                $values[] = (int) $rightChild;
+            } else {
+                $this->fail('Duplicate RightChild value '.$rightChild);
+            }
 
-			$log .= "[$id($leftChild:$rightChild)]";
-		}
+            $log .= "[$id($leftChild:$rightChild)]";
+        }
 
-		sort($values);
+        sort($values);
 
-		if ($values[count($values)-1] != count($values)) {
-			$message = sprintf("Tree integrity NOT ok (%s)\n", $log);
-			$message .= sprintf('Integrity error: value count: %d, high value: %d', count($values), $values[count($values)-1]);
-			$this->fail($message);
-		}
+        if ($values[count($values)-1] != count($values)) {
+            $message = sprintf("Tree integrity NOT ok (%s)\n", $log);
+            $message .= sprintf('Integrity error: value count: %d, high value: %d', count($values), $values[count($values)-1]);
+            $this->fail($message);
+        }
 
-	}
+    }
 
-	/**
-	 * Tests adding a node to the Page tree.
-	 */
-	public function testAdd()
-	{
-		$db = Propel::getConnection(PagePeer::DATABASE_NAME);
+    /**
+     * Tests adding a node to the Page tree.
+     */
+    public function testAdd()
+    {
+        $db = Propel::getConnection(PagePeer::DATABASE_NAME);
 
-		// I'm not sure if the specific ID matters, but this should match original
-		// code.  The ID will change with subsequent runs (e.g. the first time it will be 11)
-		$startId = $db->query('SELECT MIN(Id) FROM Page')->fetchColumn();
-		$this->addNewChildPage($startId + 10);
-		$this->assertPageTreeIntegrity();
-	}
+        // I'm not sure if the specific ID matters, but this should match original
+        // code.  The ID will change with subsequent runs (e.g. the first time it will be 11)
+        $startId = $db->query('SELECT MIN(Id) FROM Page')->fetchColumn();
+        $this->addNewChildPage($startId + 10);
+        $this->assertPageTreeIntegrity();
+    }
 
 }

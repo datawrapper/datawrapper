@@ -19,18 +19,19 @@ require_once 'builder/sql/DataSQLBuilder.php';
 class SqliteDataSQLBuilder extends DataSQLBuilder
 {
 
-	/**
-	 * Returns string processed by sqlite_udf_encode_binary() to ensure that binary contents will be handled correctly by sqlite.
-	 * @param      mixed $blob Blob or string
-	 * @return     string encoded text
-	 */
-	protected function getBlobSql($blob)
-	{
-		// they took magic __toString() out of PHP5.0.0; this sucks
-		if (is_object($blob)) {
-			$blob = $blob->__toString();
-		}
-		return "'" . sqlite_udf_encode_binary($blob) . "'";
-	}
+    /**
+     * Returns string processed by sqlite_udf_encode_binary() to ensure that binary contents will be handled correctly by sqlite.
+     * @param  mixed  $blob Blob or string
+     * @return string encoded text
+     */
+    protected function getBlobSql($blob)
+    {
+        // they took magic __toString() out of PHP5.0.0; this sucks
+        if (is_object($blob)) {
+            $blob = $blob->__toString();
+        }
+
+        return "'" . sqlite_udf_encode_binary($blob) . "'";
+    }
 
 }

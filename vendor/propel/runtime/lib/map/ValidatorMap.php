@@ -24,69 +24,69 @@
  */
 class ValidatorMap
 {
-	/** rule name of this validator */
-	private $name;
-	/** the dot-path to class to use for validator */
-	private $classname;
-	/** value to check against */
-	private $value;
-	/** execption message thrown on invalid input */
-	private $message;
-	/** related column */
-	private $column;
+    /** rule name of this validator */
+    private $name;
+    /** the dot-path to class to use for validator */
+    private $classname;
+    /** value to check against */
+    private $value;
+    /** execption message thrown on invalid input */
+    private $message;
+    /** related column */
+    private $column;
 
-	public function __construct($containingColumn)
-	{
-		$this->column = $containingColumn;
-	}
+    public function __construct($containingColumn)
+    {
+        $this->column = $containingColumn;
+    }
 
-	public function getColumn()
-	{
-		return $this->column;
-	}
+    public function getColumn()
+    {
+        return $this->column;
+    }
 
-	public function getColumnName()
-	{
-		return $this->column->getColumnName();
-	}
+    public function getColumnName()
+    {
+        return $this->column->getColumnName();
+    }
 
-	public function setName($name)
-	{
-		$this->name = $name;
-	}
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
 
-	public function setClass($classname)
-	{
-		$this->classname = $classname;
-	}
+    public function setClass($classname)
+    {
+        $this->classname = $classname;
+    }
 
-	public function setValue($value)
-	{
-		$this->value = $value;
-	}
+    public function setValue($value)
+    {
+        $this->value = $value;
+    }
 
-	public function setMessage($message)
-	{
-		$this->message = $message;
-	}
+    public function setMessage($message)
+    {
+        $this->message = $message;
+    }
 
-	public function getName()
-	{
-		return $this->name;
-	}
+    public function getName()
+    {
+        return $this->name;
+    }
 
-	public function getClass()
-	{
-		return $this->classname;
-	}
+    public function getClass()
+    {
+        return $this->classname;
+    }
 
-	public function getValue()
-	{
-		return $this->value;
-	}
+    public function getValue()
+    {
+        return $this->value;
+    }
 
-	public function getMessage()
-	{
-		return $this->message;
-	}
+    public function getMessage()
+    {
+        return $this->message;
+    }
 }

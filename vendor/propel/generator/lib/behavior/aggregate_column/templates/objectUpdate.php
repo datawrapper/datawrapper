@@ -6,6 +6,6 @@
  */
 public function update<?php echo $column->getPhpName() ?>(PropelPDO $con)
 {
-	$this->set<?php echo $column->getPhpName() ?>($this->compute<?php echo $column->getPhpName() ?>($con));
-	$this->save($con);
+    $this->set<?php echo $column->getPhpName() ?>($this->compute<?php echo $column->getPhpName() ?>($con));
+    $this->save($con);
 }

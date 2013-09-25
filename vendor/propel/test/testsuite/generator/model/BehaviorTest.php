@@ -20,8 +20,8 @@ require_once dirname(__FILE__) . '/../../../../generator/lib/behavior/Timestampa
  * @version    $Revision$
  * @package    generator.model
  */
-class BehaviorTest extends PHPUnit_Framework_TestCase {
-
+class BehaviorTest extends PHPUnit_Framework_TestCase
+{
   private $xmlToAppData;
   private $appData;
 
@@ -65,14 +65,14 @@ class BehaviorTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals($b->getParameters(), array('foo3' => 'bar3', 'foo4' => 'bar4'), 'setParameters() changes the whole parameter array');
   }
 
-	/**
-	 * test if the tables get the package name from the properties file
-	 *
-	 */
-	public function testXmlToAppData()
-	{
-		$xmlToAppData = new XmlToAppData();
-		$schema = <<<EOF
+    /**
+     * test if the tables get the package name from the properties file
+     *
+     */
+    public function testXmlToAppData()
+    {
+        $xmlToAppData = new XmlToAppData();
+        $schema = <<<EOF
 <database name="test1">
   <table name="table1">
     <column name="id" type="INTEGER" primaryKey="true" />
@@ -86,22 +86,22 @@ class BehaviorTest extends PHPUnit_Framework_TestCase {
   </table>
 </database>
 EOF;
-		$appData = $xmlToAppData->parseString($schema);
-		$table = $appData->getDatabase('test1')->getTable('table1');
-		$behaviors = $table->getBehaviors();
-		$this->assertEquals(1, count($behaviors), 'XmlToAppData ads as many behaviors as there are behaviors tags');
-		$behavior = $table->getBehavior('timestampable');
-		$this->assertEquals('table1', $behavior->getTable()->getName(), 'XmlToAppData sets the behavior table correctly');
-		$this->assertEquals(array('create_column' => 'created_on', 'update_column' => 'updated_on'), $behavior->getParameters(), 'XmlToAppData sets the behavior parameters correctly');
-	}
+        $appData = $xmlToAppData->parseString($schema);
+        $table = $appData->getDatabase('test1')->getTable('table1');
+        $behaviors = $table->getBehaviors();
+        $this->assertEquals(1, count($behaviors), 'XmlToAppData ads as many behaviors as there are behaviors tags');
+        $behavior = $table->getBehavior('timestampable');
+        $this->assertEquals('table1', $behavior->getTable()->getName(), 'XmlToAppData sets the behavior table correctly');
+        $this->assertEquals(array('create_column' => 'created_on', 'update_column' => 'updated_on', 'disable_updated_at' => 'false'), $behavior->getParameters(), 'XmlToAppData sets the behavior parameters correctly');
+    }
 
   /**
    * @expectedException InvalidArgumentException
    */
-	public function testUnknownBehavior()
-	{
-		$xmlToAppData = new XmlToAppData();
-		$schema = <<<EOF
+    public function testUnknownBehavior()
+    {
+        $xmlToAppData = new XmlToAppData();
+        $schema = <<<EOF
 <database name="test1">
   <table name="table1">
     <column name="id" type="INTEGER" primaryKey="true" />
@@ -109,13 +109,13 @@ EOF;
   </table>
 </database>
 EOF;
-		$appData = $xmlToAppData->parseString($schema);
-	}
+        $appData = $xmlToAppData->parseString($schema);
+    }
 
-	public function testModifyTable()
-	{
-		$xmlToAppData = new XmlToAppData();
-		$schema = <<<EOF
+    public function testModifyTable()
+    {
+        $xmlToAppData = new XmlToAppData();
+        $schema = <<<EOF
 <database name="test1">
   <table name="table2">
     <column name="id" type="INTEGER" primaryKey="true" />
@@ -124,15 +124,15 @@ EOF;
   </table>
 </database>
 EOF;
-		$appData = $xmlToAppData->parseString($schema);
-		$table = $appData->getDatabase('test1')->getTable('table2');
-		$this->assertEquals(count($table->getColumns()), 4, 'A behavior can modify its table by implementing modifyTable()');
-	}
+        $appData = $xmlToAppData->parseString($schema);
+        $table = $appData->getDatabase('test1')->getTable('table2');
+        $this->assertEquals(count($table->getColumns()), 4, 'A behavior can modify its table by implementing modifyTable()');
+    }
 
   public function testModifyDatabase()
   {
-		$xmlToAppData = new XmlToAppData();
-		$schema = <<<EOF
+        $xmlToAppData = new XmlToAppData();
+        $schema = <<<EOF
 <database name="test1">
   <behavior name="timestampable" />
   <table name="table1">
@@ -140,15 +140,15 @@ EOF;
   </table>
 </database>
 EOF;
-		$appData = $xmlToAppData->parseString($schema);
-		$table = $appData->getDatabase('test1')->getTable('table1');
-		$this->assertTrue(array_key_exists('timestampable', $table->getBehaviors()), 'A database behavior is automatically copied to all its table');
-	}
+        $appData = $xmlToAppData->parseString($schema);
+        $table = $appData->getDatabase('test1')->getTable('table1');
+        $this->assertTrue(array_key_exists('timestampable', $table->getBehaviors()), 'A database behavior is automatically copied to all its table');
+    }
 
   public function testGetColumnForParameter()
   {
-		$xmlToAppData = new XmlToAppData();
-		$schema = <<<EOF
+        $xmlToAppData = new XmlToAppData();
+        $schema = <<<EOF
 <database name="test1">
   <table name="table1">
     <column name="id" type="INTEGER" primaryKey="true" />
@@ -162,9 +162,9 @@ EOF;
   </table>
 </database>
 EOF;
-		$appData = $xmlToAppData->parseString($schema);
-		$table = $appData->getDatabase('test1')->getTable('table1');
-		$behavior = $table->getBehavior('timestampable');
-		$this->assertEquals($table->getColumn('created_on'), $behavior->getColumnForParameter('create_column'), 'getColumnForParameter() returns the configured column for behavior based on a parameter name');
+        $appData = $xmlToAppData->parseString($schema);
+        $table = $appData->getDatabase('test1')->getTable('table1');
+        $behavior = $table->getBehavior('timestampable');
+        $this->assertEquals($table->getColumn('created_on'), $behavior->getColumnForParameter('create_column'), 'getColumnForParameter() returns the configured column for behavior based on a parameter name');
   }
 }

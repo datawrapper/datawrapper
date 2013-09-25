@@ -11,10 +11,10 @@
  */
 public function restoreFromArchive(PropelPDO $con = null)
 {
-	if (!$archive = $this->getArchive($con)) {
-		throw new PropelException('The current object has never been archived and cannot be restored');
-	}
-	$this->populateFromArchive($archive);
+    if (!$archive = $this->getArchive($con)) {
+        throw new PropelException('The current object has never been archived and cannot be restored');
+    }
+    $this->populateFromArchive($archive);
 
-	return $this;
+    return $this;
 }

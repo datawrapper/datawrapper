@@ -10,7 +10,7 @@
  */
 public function updateWithoutArchive($values, $con = null, $forceIndividualSaves = false)
 {
-	$this->archiveOnUpdate = false;
+    $this->archiveOnUpdate = false;
 
-	return $this->update($values, $con, $forceIndividualSaves);
+    return $this->update($values, $con, $forceIndividualSaves);
 }

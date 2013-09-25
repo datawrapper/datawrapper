@@ -20,55 +20,55 @@ require_once dirname(__FILE__) . '/../../../tools/helpers/schemas/SchemasTestBas
 class ModelCriteriaWithSchemaTest extends SchemasTestBase
 {
 
-	protected function assertCriteriaTranslation($criteria, $expectedSql, $expectedParams, $message = '')
-	{
-		$params = array();
-		$result = BasePeer::createSelectSql($criteria, $params);
+    protected function assertCriteriaTranslation($criteria, $expectedSql, $expectedParams, $message = '')
+    {
+        $params = array();
+        $result = BasePeer::createSelectSql($criteria, $params);
 
-		$this->assertEquals($expectedSql, $result, $message);
-		$this->assertEquals($expectedParams, $params, $message);
-	}
+        $this->assertEquals($expectedSql, $result, $message);
+        $this->assertEquals($expectedParams, $params, $message);
+    }
 
-	public static function conditionsForTestReplaceNamesWithSchemas()
-	{
-		return array(
-			array('ContestBookstoreContest.PrizeBookId = ?', 'PrizeBookId', 'contest.bookstore_contest.PRIZE_BOOK_ID = ?'), // basic case
-			array('ContestBookstoreContest.PrizeBookId=?', 'PrizeBookId', 'contest.bookstore_contest.PRIZE_BOOK_ID=?'), // without spaces
-			array('ContestBookstoreContest.Id<= ?', 'Id', 'contest.bookstore_contest.ID<= ?'), // with non-equal comparator
-			array('ContestBookstoreContest.BookstoreId LIKE ?', 'BookstoreId', 'contest.bookstore_contest.BOOKSTORE_ID LIKE ?'), // with SQL keyword separator
-			array('(ContestBookstoreContest.BookstoreId) LIKE ?', 'BookstoreId', '(contest.bookstore_contest.BOOKSTORE_ID) LIKE ?'), // with parenthesis
-			array('(ContestBookstoreContest.Id*1.5)=1', 'Id', '(contest.bookstore_contest.ID*1.5)=1') // ignore numbers
-		);
-	}
+    public static function conditionsForTestReplaceNamesWithSchemas()
+    {
+        return array(
+            array('ContestBookstoreContest.PrizeBookId = ?', 'PrizeBookId', 'contest.bookstore_contest.prize_book_id = ?'), // basic case
+            array('ContestBookstoreContest.PrizeBookId=?', 'PrizeBookId', 'contest.bookstore_contest.prize_book_id=?'), // without spaces
+            array('ContestBookstoreContest.Id<= ?', 'Id', 'contest.bookstore_contest.id<= ?'), // with non-equal comparator
+            array('ContestBookstoreContest.BookstoreId LIKE ?', 'BookstoreId', 'contest.bookstore_contest.bookstore_id LIKE ?'), // with SQL keyword separator
+            array('(ContestBookstoreContest.BookstoreId) LIKE ?', 'BookstoreId', '(contest.bookstore_contest.bookstore_id) LIKE ?'), // with parenthesis
+            array('(ContestBookstoreContest.Id*1.5)=1', 'Id', '(contest.bookstore_contest.id*1.5)=1') // ignore numbers
+        );
+    }
 
-	/**
-	 * @dataProvider conditionsForTestReplaceNamesWithSchemas
-	 */
-	public function testReplaceNamesWithSchemas($origClause, $columnPhpName = false, $modifiedClause)
-	{
-		$c = new TestableModelCriteriaWithSchema('bookstore-schemas', 'ContestBookstoreContest');
-		$this->doTestReplaceNames($c, ContestBookstoreContestPeer::getTableMap(),  $origClause, $columnPhpName = false, $modifiedClause);
-	}
+    /**
+     * @dataProvider conditionsForTestReplaceNamesWithSchemas
+     */
+    public function testReplaceNamesWithSchemas($origClause, $columnPhpName = false, $modifiedClause)
+    {
+        $c = new TestableModelCriteriaWithSchema('bookstore-schemas', 'ContestBookstoreContest');
+        $this->doTestReplaceNames($c, ContestBookstoreContestPeer::getTableMap(),  $origClause, $columnPhpName = false, $modifiedClause);
+    }
 
-	public function doTestReplaceNames($c, $tableMap, $origClause, $columnPhpName = false, $modifiedClause)
-	{
-		$c->replaceNames($origClause);
-		$columns = $c->replacedColumns;
-		if ($columnPhpName) {
-			$this->assertEquals(array($tableMap->getColumnByPhpName($columnPhpName)), $columns);
-		}
-		$this->assertEquals($modifiedClause, $origClause);
-	}
+    public function doTestReplaceNames($c, $tableMap, $origClause, $columnPhpName = false, $modifiedClause)
+    {
+        $c->replaceNames($origClause);
+        $columns = $c->replacedColumns;
+        if ($columnPhpName) {
+            $this->assertEquals(array($tableMap->getColumnByPhpName($columnPhpName)), $columns);
+        }
+        $this->assertEquals($modifiedClause, $origClause);
+    }
 
 }
 
 class TestableModelCriteriaWithSchema extends ModelCriteria
 {
-	public $joins = array();
+    public $joins = array();
 
-	public function replaceNames(&$clause)
-	{
-		return parent::replaceNames($clause);
-	}
+    public function replaceNames(&$clause)
+    {
+        return parent::replaceNames($clause);
+    }
 
 }

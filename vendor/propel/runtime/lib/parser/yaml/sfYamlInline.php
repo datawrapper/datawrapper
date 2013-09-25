@@ -29,23 +29,20 @@ class sfYamlInline
    *
    * @return array A PHP array representing the YAML string
    */
-  static public function load($value)
+  public static function load($value)
   {
     $value = trim($value);
 
-    if (0 == strlen($value))
-    {
+    if (0 == strlen($value)) {
       return '';
     }
 
-    if (function_exists('mb_internal_encoding') && ((int) ini_get('mbstring.func_overload')) & 2)
-    {
+    if (function_exists('mb_internal_encoding') && ((int) ini_get('mbstring.func_overload')) & 2) {
       $mbEncoding = mb_internal_encoding();
       mb_internal_encoding('ASCII');
     }
 
-    switch ($value[0])
-    {
+    switch ($value[0]) {
       case '[':
         $result = self::parseSequence($value);
         break;
@@ -56,8 +53,7 @@ class sfYamlInline
         $result = self::parseScalar($value);
     }
 
-    if (isset($mbEncoding))
-    {
+    if (isset($mbEncoding)) {
       mb_internal_encoding($mbEncoding);
     }
 
@@ -71,21 +67,17 @@ class sfYamlInline
    *
    * @return string The YAML string representing the PHP array
    */
-  static public function dump($value)
+  public static function dump($value)
   {
-    if ('1.1' === sfYaml::getSpecVersion())
-    {
+    if ('1.1' === sfYaml::getSpecVersion()) {
       $trueValues = array('true', 'on', '+', 'yes', 'y');
       $falseValues = array('false', 'off', '-', 'no', 'n');
-    }
-    else
-    {
+    } else {
       $trueValues = array('true');
       $falseValues = array('false');
     }
 
-    switch (true)
-    {
+    switch (true) {
       case is_resource($value):
         throw new InvalidArgumentException('Unable to dump PHP resources in a YAML file.');
       case is_object($value):
@@ -128,7 +120,7 @@ class sfYamlInline
    *
    * @return string The YAML string representing the PHP array
    */
-  static protected function dumpArray($value)
+  protected static function dumpArray($value)
   {
     // array
     $keys = array_keys($value);
@@ -138,8 +130,7 @@ class sfYamlInline
       (count($keys) > 1 && array_reduce($keys, create_function('$v,$w', 'return (integer) $v + $w;'), 0) == count($keys) * (count($keys) - 1) / 2))
     {
       $output = array();
-      foreach ($value as $val)
-      {
+      foreach ($value as $val) {
         $output[] = self::dump($val);
       }
 
@@ -148,8 +139,7 @@ class sfYamlInline
 
     // mapping
     $output = array();
-    foreach ($value as $key => $val)
-    {
+    foreach ($value as $key => $val) {
       $output[] = sprintf('%s: %s', self::dump($key), self::dump($val));
     }
 
@@ -167,34 +157,25 @@ class sfYamlInline
    *
    * @return string A YAML string
    */
-  static public function parseScalar($scalar, $delimiters = null, $stringDelimiters = array('"', "'"), &$i = 0, $evaluate = true)
+  public static function parseScalar($scalar, $delimiters = null, $stringDelimiters = array('"', "'"), &$i = 0, $evaluate = true)
   {
-    if (in_array($scalar[$i], $stringDelimiters))
-    {
+    if (in_array($scalar[$i], $stringDelimiters)) {
       // quoted scalar
       $output = self::parseQuotedScalar($scalar, $i);
-    }
-    else
-    {
+    } else {
       // "normal" string
-      if (!$delimiters)
-      {
+      if (!$delimiters) {
         $output = substr($scalar, $i);
         $i += strlen($output);
 
         // remove comments
-        if (false !== $strpos = strpos($output, ' #'))
-        {
+        if (false !== $strpos = strpos($output, ' #')) {
           $output = rtrim(substr($output, 0, $strpos));
         }
-      }
-      else if (preg_match('/^(.+?)('.implode('|', $delimiters).')/', substr($scalar, $i), $match))
-      {
+      } elseif (preg_match('/^(.+?)('.implode('|', $delimiters).')/', substr($scalar, $i), $match)) {
         $output = $match[1];
         $i += strlen($output);
-      }
-      else
-      {
+      } else {
         throw new InvalidArgumentException(sprintf('Malformed inline YAML string (%s).', $scalar));
       }
 
@@ -212,22 +193,18 @@ class sfYamlInline
    *
    * @return string A YAML string
    */
-  static protected function parseQuotedScalar($scalar, &$i)
+  protected static function parseQuotedScalar($scalar, &$i)
   {
-    if (!preg_match('/'.self::REGEX_QUOTED_STRING.'/Au', substr($scalar, $i), $match))
-    {
+    if (!preg_match('/'.self::REGEX_QUOTED_STRING.'/Au', substr($scalar, $i), $match)) {
       throw new InvalidArgumentException(sprintf('Malformed inline YAML string (%s).', substr($scalar, $i)));
     }
 
     $output = substr($match[0], 1, strlen($match[0]) - 2);
 
-    if ('"' == $scalar[$i])
-    {
+    if ('"' == $scalar[$i]) {
       // evaluate the string
       $output = str_replace(array('\\"', '\\n', '\\r'), array('"', "\n", "\r"), $output);
-    }
-    else
-    {
+    } else {
       // unescape '
       $output = str_replace('\'\'', '\'', $output);
     }
@@ -245,17 +222,15 @@ class sfYamlInline
    *
    * @return string A YAML string
    */
-  static protected function parseSequence($sequence, &$i = 0)
+  protected static function parseSequence($sequence, &$i = 0)
   {
     $output = array();
     $len = strlen($sequence);
     $i += 1;
 
     // [foo, bar, ...]
-    while ($i < $len)
-    {
-      switch ($sequence[$i])
-      {
+    while ($i < $len) {
+      switch ($sequence[$i]) {
         case '[':
           // nested sequence
           $output[] = self::parseSequence($sequence, $i);
@@ -273,15 +248,11 @@ class sfYamlInline
           $isQuoted = in_array($sequence[$i], array('"', "'"));
           $value = self::parseScalar($sequence, array(',', ']'), array('"', "'"), $i);
 
-          if (!$isQuoted && false !== strpos($value, ': '))
-          {
+          if (!$isQuoted && false !== strpos($value, ': ')) {
             // embedded mapping?
-            try
-            {
+            try {
               $value = self::parseMapping('{'.$value.'}');
-            }
-            catch (InvalidArgumentException $e)
-            {
+            } catch (InvalidArgumentException $e) {
               // no, it's not
             }
           }
@@ -305,17 +276,15 @@ class sfYamlInline
    *
    * @return string A YAML string
    */
-  static protected function parseMapping($mapping, &$i = 0)
+  protected static function parseMapping($mapping, &$i = 0)
   {
     $output = array();
     $len = strlen($mapping);
     $i += 1;
 
     // {foo: bar, bar:foo, ...}
-    while ($i < $len)
-    {
-      switch ($mapping[$i])
-      {
+    while ($i < $len) {
+      switch ($mapping[$i]) {
         case ' ':
         case ',':
           ++$i;
@@ -329,10 +298,8 @@ class sfYamlInline
 
       // value
       $done = false;
-      while ($i < $len)
-      {
-        switch ($mapping[$i])
-        {
+      while ($i < $len) {
+        switch ($mapping[$i]) {
           case '[':
             // nested sequence
             $output[$key] = self::parseSequence($mapping, $i);
@@ -354,8 +321,7 @@ class sfYamlInline
 
         ++$i;
 
-        if ($done)
-        {
+        if ($done) {
           continue 2;
         }
       }
@@ -371,23 +337,19 @@ class sfYamlInline
    *
    * @return string A YAML string
    */
-  static protected function evaluateScalar($scalar)
+  protected static function evaluateScalar($scalar)
   {
     $scalar = trim($scalar);
 
-    if ('1.1' === sfYaml::getSpecVersion())
-    {
+    if ('1.1' === sfYaml::getSpecVersion()) {
       $trueValues = array('true', 'on', '+', 'yes', 'y');
       $falseValues = array('false', 'off', '-', 'no', 'n');
-    }
-    else
-    {
+    } else {
       $trueValues = array('true');
       $falseValues = array('false');
     }
 
-    switch (true)
-    {
+    switch (true) {
       case 'null' == strtolower($scalar):
       case '' == $scalar:
       case '~' == $scalar:
@@ -401,6 +363,7 @@ class sfYamlInline
       case ctype_digit($scalar):
         $raw = $scalar;
         $cast = intval($scalar);
+
         return '0' == $scalar[0] ? octdec($scalar) : (((string) $raw == (string) $cast) ? $cast : $raw);
       case in_array(strtolower($scalar), $trueValues):
         return true;
@@ -422,7 +385,7 @@ class sfYamlInline
     }
   }
 
-  static protected function getTimestampRegex()
+  protected static function getTimestampRegex()
   {
     return <<<EOF
     ~^

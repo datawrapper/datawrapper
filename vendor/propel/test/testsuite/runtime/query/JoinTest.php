@@ -102,13 +102,13 @@ class JoinTest extends BaseTestCase
     $this->assertEquals(1, $j->countConditions());
   }
 
-	public function testAddExplicitconditionWithOneAlias()
-	{
-		$j = new Join();
-		$j->setJoinType(Criteria::LEFT_JOIN);
-		$j->addExplicitCondition('book', 'AUTHOR_ID', null, 'author', 'ID', 'a', Join::EQUAL);
-		$params = array();
-		$this->assertEquals($j->getClause($params), 'LEFT JOIN author a ON (book.AUTHOR_ID=a.ID)');
+    public function testAddExplicitconditionWithOneAlias()
+    {
+        $j = new Join();
+        $j->setJoinType(Criteria::LEFT_JOIN);
+        $j->addExplicitCondition('book', 'AUTHOR_ID', null, 'author', 'ID', 'a', Join::EQUAL);
+        $params = array();
+        $this->assertEquals($j->getClause($params), 'LEFT JOIN author a ON (book.AUTHOR_ID=a.ID)');
   }
 
   public function testAddExplicitConditionWithAlias()

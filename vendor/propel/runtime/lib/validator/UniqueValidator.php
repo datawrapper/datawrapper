@@ -25,28 +25,28 @@
  */
 class UniqueValidator implements BasicValidator
 {
-	/**
-	 * @see       BasicValidator::isValid()
-	 *
-	 * @param     ValidatorMap  $map
-	 * @param     string        $str
-	 *
-	 * @return    boolean
-	 */
-	public function isValid(ValidatorMap $map, $str)
-	{
-		$column = $map->getColumn();
+    /**
+     * @see       BasicValidator::isValid()
+     *
+     * @param ValidatorMap $map
+     * @param string       $str
+     *
+     * @return boolean
+     */
+    public function isValid(ValidatorMap $map, $str)
+    {
+        $column = $map->getColumn();
 
-		$c = new Criteria();
-		$c->add($column->getFullyQualifiedName(), $str, Criteria::EQUAL);
+        $c = new Criteria();
+        $c->add($column->getFullyQualifiedName(), $str, Criteria::EQUAL);
 
-		$table = $column->getTable()->getClassName();
+        $table = $column->getTable()->getClassName();
 
-		$clazz = $table . 'Peer';
-		$count = call_user_func(array($clazz, 'doCount'), $c);
+        $clazz = $table . 'Peer';
+        $count = call_user_func(array($clazz, 'doCount'), $c);
 
-		$isValid = ($count === 0);
+        $isValid = ($count === 0);
 
-		return $isValid;
-	}
+        return $isValid;
+    }
 }

@@ -9,5 +9,5 @@
  */
 public function set<?php echo $alias ?>($locale = '<?php echo $defaultLocale ?>')
 {
-	return $this->setLocale($locale);
+    return $this->setLocale($locale);
 }

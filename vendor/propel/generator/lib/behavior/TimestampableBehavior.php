@@ -18,77 +18,90 @@
  */
 class TimestampableBehavior extends Behavior
 {
-	// default parameters value
-	protected $parameters = array(
-		'create_column' => 'created_at',
-		'update_column' => 'updated_at'
-	);
+    // default parameters value
+    protected $parameters = array(
+        'create_column'      => 'created_at',
+        'update_column'      => 'updated_at',
+        'disable_updated_at' => 'false',
+    );
 
-	/**
-	 * Add the create_column and update_columns to the current table
-	 */
-	public function modifyTable()
-	{
-		if(!$this->getTable()->containsColumn($this->getParameter('create_column'))) {
-			$this->getTable()->addColumn(array(
-				'name' => $this->getParameter('create_column'),
-				'type' => 'TIMESTAMP'
-			));
-		}
-		if(!$this->getTable()->containsColumn($this->getParameter('update_column'))) {
-			$this->getTable()->addColumn(array(
-				'name' => $this->getParameter('update_column'),
-				'type' => 'TIMESTAMP'
-			));
-		}
-	}
+    /**
+     * Add the create_column and update_columns to the current table
+     */
+    public function modifyTable()
+    {
+        if (!$this->getTable()->containsColumn($this->getParameter('create_column'))) {
+            $this->getTable()->addColumn(array(
+                'name' => $this->getParameter('create_column'),
+                'type' => 'TIMESTAMP'
+            ));
+        }
 
-	/**
-	 * Get the setter of one of the columns of the behavior
-	 *
-	 * @param     string $column One of the behavior colums, 'create_column' or 'update_column'
-	 * @return    string The related setter, 'setCreatedOn' or 'setUpdatedOn'
-	 */
-	protected function getColumnSetter($column)
-	{
-		return 'set' . $this->getColumnForParameter($column)->getPhpName();
-	}
+        if ($this->withUpdatedAt()) {
+            if (!$this->getTable()->containsColumn($this->getParameter('update_column'))) {
+                $this->getTable()->addColumn(array(
+                    'name' => $this->getParameter('update_column'),
+                    'type' => 'TIMESTAMP'
+                ));
+            }
+        }
+    }
 
-	protected function getColumnConstant($columnName, $builder)
-	{
-		return $builder->getColumnConstant($this->getColumnForParameter($columnName));
-	}
+    /**
+     * Get the setter of one of the columns of the behavior
+     *
+     * @param  string $column One of the behavior colums, 'create_column' or 'update_column'
+     * @return string The related setter, 'setCreatedOn' or 'setUpdatedOn'
+     */
+    protected function getColumnSetter($column)
+    {
+        return 'set' . $this->getColumnForParameter($column)->getPhpName();
+    }
 
-	/**
-	 * Add code in ObjectBuilder::preUpdate
-	 *
-	 * @return    string The code to put at the hook
-	 */
-	public function preUpdate($builder)
-	{
-		return "if (\$this->isModified() && !\$this->isColumnModified(" . $this->getColumnConstant('update_column', $builder) . ")) {
-	\$this->" . $this->getColumnSetter('update_column') . "(time());
+    protected function getColumnConstant($columnName, $builder)
+    {
+        return $builder->getColumnConstant($this->getColumnForParameter($columnName));
+    }
+
+    /**
+     * Add code in ObjectBuilder::preUpdate
+     *
+     * @return string The code to put at the hook
+     */
+    public function preUpdate($builder)
+    {
+        if ($this->withUpdatedAt()) {
+            return "if (\$this->isModified() && !\$this->isColumnModified(" . $this->getColumnConstant('update_column', $builder) . ")) {
+    \$this->" . $this->getColumnSetter('update_column') . "(time());
 }";
-	}
+        }
+    }
 
-	/**
-	 * Add code in ObjectBuilder::preInsert
-	 *
-	 * @return    string The code to put at the hook
-	 */
-	public function preInsert($builder)
-	{
-		return "if (!\$this->isColumnModified(" . $this->getColumnConstant('create_column', $builder) . ")) {
-	\$this->" . $this->getColumnSetter('create_column') . "(time());
-}
+    /**
+     * Add code in ObjectBuilder::preInsert
+     *
+     * @return string The code to put at the hook
+     */
+    public function preInsert($builder)
+    {
+        $script = "if (!\$this->isColumnModified(" . $this->getColumnConstant('create_column', $builder) . ")) {
+    \$this->" . $this->getColumnSetter('create_column') . "(time());
+}";
+
+        if ($this->withUpdatedAt()) {
+            $script .= "
 if (!\$this->isColumnModified(" . $this->getColumnConstant('update_column', $builder) . ")) {
-	\$this->" . $this->getColumnSetter('update_column') . "(time());
+    \$this->" . $this->getColumnSetter('update_column') . "(time());
 }";
-	}
+        }
 
-	public function objectMethods($builder)
-	{
-		return "
+        return $script;
+    }
+
+    public function objectMethods($builder)
+    {
+        if ($this->withUpdatedAt()) {
+            return "
 /**
  * Mark the current object so that the update date doesn't get updated during next save
  *
@@ -96,18 +109,25 @@ if (!\$this->isColumnModified(" . $this->getColumnConstant('update_column', $bui
  */
 public function keepUpdateDateUnchanged()
 {
-	\$this->modifiedColumns[] = " . $this->getColumnConstant('update_column', $builder) . ";
-	return \$this;
+    \$this->modifiedColumns[] = " . $this->getColumnConstant('update_column', $builder) . ";
+
+    return \$this;
 }
 ";
-	}
+        }
+    }
 
-	public function queryMethods($builder)
-	{
-		$queryClassName = $builder->getStubQueryBuilder()->getClassname();
-		$updateColumnConstant = $this->getColumnConstant('update_column', $builder);
-		$createColumnConstant = $this->getColumnConstant('create_column', $builder);
-		return "
+    public function queryMethods($builder)
+    {
+        $script = '';
+
+        $queryClassName		  = $builder->getStubQueryBuilder()->getClassname();
+        $createColumnConstant = $this->getColumnConstant('create_column', $builder);
+
+        if ($this->withUpdatedAt()) {
+            $updateColumnConstant = $this->getColumnConstant('update_column', $builder);
+
+            $script .= "
 /**
  * Filter by the latest updated
  *
@@ -117,19 +137,7 @@ public function keepUpdateDateUnchanged()
  */
 public function recentlyUpdated(\$nbDays = 7)
 {
-	return \$this->addUsingAlias($updateColumnConstant, time() - \$nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
-}
-
-/**
- * Filter by the latest created
- *
- * @param      int \$nbDays Maximum age of in days
- *
- * @return     $queryClassName The current query, for fluid interface
- */
-public function recentlyCreated(\$nbDays = 7)
-{
-	return \$this->addUsingAlias($createColumnConstant, time() - \$nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+    return \$this->addUsingAlias($updateColumnConstant, time() - \$nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
 }
 
 /**
@@ -139,7 +147,7 @@ public function recentlyCreated(\$nbDays = 7)
  */
 public function lastUpdatedFirst()
 {
-	return \$this->addDescendingOrderByColumn($updateColumnConstant);
+    return \$this->addDescendingOrderByColumn($updateColumnConstant);
 }
 
 /**
@@ -149,7 +157,22 @@ public function lastUpdatedFirst()
  */
 public function firstUpdatedFirst()
 {
-	return \$this->addAscendingOrderByColumn($updateColumnConstant);
+    return \$this->addAscendingOrderByColumn($updateColumnConstant);
+}
+";
+        }
+
+        $script .= "
+/**
+ * Filter by the latest created
+ *
+ * @param      int \$nbDays Maximum age of in days
+ *
+ * @return     $queryClassName The current query, for fluid interface
+ */
+public function recentlyCreated(\$nbDays = 7)
+{
+    return \$this->addUsingAlias($createColumnConstant, time() - \$nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
 }
 
 /**
@@ -159,7 +182,7 @@ public function firstUpdatedFirst()
  */
 public function lastCreatedFirst()
 {
-	return \$this->addDescendingOrderByColumn($createColumnConstant);
+    return \$this->addDescendingOrderByColumn($createColumnConstant);
 }
 
 /**
@@ -169,8 +192,14 @@ public function lastCreatedFirst()
  */
 public function firstCreatedFirst()
 {
-	return \$this->addAscendingOrderByColumn($createColumnConstant);
-}
-";
-	}
+    return \$this->addAscendingOrderByColumn($createColumnConstant);
+}";
+
+        return $script;
+    }
+
+    protected function withUpdatedAt()
+    {
+        return 'true' !== $this->getParameter('disable_updated_at');
+    }
 }
