@@ -19,19 +19,20 @@ require_once 'builder/sql/DataSQLBuilder.php';
 class MssqlDataSQLBuilder extends DataSQLBuilder
 {
 
-	/**
-	 *
-	 * @param      mixed $blob Blob object or string containing data.
-	 * @return     string
-	 */
-	protected function getBlobSql($blob)
-	{
-		// they took magic __toString() out of PHP5.0.0; this sucks
-		if (is_object($blob)) {
-			$blob = $blob->__toString();
-		}
-		$data = unpack("H*hex", $blob);
-		return '0x'.$data['hex']; // no surrounding quotes!
-	}
+    /**
+     *
+     * @param  mixed  $blob Blob object or string containing data.
+     * @return string
+     */
+    protected function getBlobSql($blob)
+    {
+        // they took magic __toString() out of PHP5.0.0; this sucks
+        if (is_object($blob)) {
+            $blob = $blob->__toString();
+        }
+        $data = unpack("H*hex", $blob);
+
+        return '0x'.$data['hex']; // no surrounding quotes!
+    }
 
 }

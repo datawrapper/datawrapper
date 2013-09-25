@@ -212,6 +212,16 @@ class ColumnMap
   }
 
   /**
+   * Whether this column is an integer
+   *
+   * @return boolean
+   */
+  public function isInteger()
+  {
+    return $this->getPdoType() === PDO::PARAM_INT;
+  }
+
+  /**
    * Whether this column is a text column (varchar, char, longvarchar).
    * @return     boolean
    */
@@ -336,14 +346,14 @@ class ColumnMap
 
   /**
    * Get the RelationMap object for this foreign key
+   *
+   * @return RelationMap|null
    */
   public function getRelation()
   {
     if(!$this->relatedTableName) return null;
-    foreach ($this->getTable()->getRelations() as $name => $relation)
-    {
-      if($relation->getType() == RelationMap::MANY_TO_ONE)
-      {
+    foreach ($this->getTable()->getRelations() as $name => $relation) {
+      if ($relation->getType() == RelationMap::MANY_TO_ONE) {
         if ($relation->getForeignTable()->getName() == $this->getRelatedTableName()
          && array_key_exists($this->getFullyQualifiedName(), $relation->getColumnMappings()))
         {
@@ -458,6 +468,7 @@ class ColumnMap
    * Performs DB-specific ignore case, but only if the column type necessitates it.
    * @param      string $str The expression we want to apply the ignore case formatting to (e.g. the column name).
    * @param      DBAdapter $db
+   * @return string
    */
   public function ignoreCase($str, DBAdapter $db)
   {
@@ -471,7 +482,7 @@ class ColumnMap
   /**
    * Normalizes the column name, removing table prefix and uppercasing.
    *
-   * article.first_name becomes FIRST_NAME
+   * article.first_name becomes first_name
    *
    * @param      string $name
    * @return     string Normalized column name.
@@ -481,7 +492,7 @@ class ColumnMap
     if (false !== ($pos = strrpos($name, '.'))) {
       $name = substr($name, $pos + 1);
     }
-    $name = strtoupper($name);
+
     return $name;
   }
 

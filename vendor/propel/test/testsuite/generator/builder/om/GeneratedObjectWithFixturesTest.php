@@ -30,7 +30,6 @@ class GeneratedObjectWithFixturesTest extends BookstoreEmptyTestBase
         require_once dirname(__FILE__) . '/../../../../tools/helpers/bookstore/behavior/TestAuthor.php';
     }
 
-
     /**
      * Test the reload() method.
      */

@@ -11,24 +11,33 @@
 // Set any INI options for PHP
 // ---------------------------
 
-if (file_exists($file = dirname(__FILE__) . '/../../vendor/.composer/autoload.php')) {
-    set_include_path(get_include_path() . PATH_SEPARATOR . dirname(__FILE__) . '/../../vendor/phing/phing/classes');
+$dirname = dirname(__FILE__);
+$autolaoded = false;
+foreach (array($dirname . '/../../', $dirname . '/../../../../../') as $dir) {
+    if (file_exists($file = realpath($dir) . '/vendor/autoload.php')) {
+        set_include_path($dir . '/vendor/phing/phing/classes' . PATH_SEPARATOR . get_include_path() );
+        include_once $file;
 
-    require_once $file;
+        $autoloaded = true;
+        break;
+    }
 }
 
 /* set classpath */
 if (getenv('PHP_CLASSPATH')) {
-    if (!defined('PHP_CLASSPATH')) { define('PHP_CLASSPATH',  getenv('PHP_CLASSPATH') . PATH_SEPARATOR . get_include_path()); }
-        ini_set('include_path', PHP_CLASSPATH);
+    if (!defined('PHP_CLASSPATH')) {
+        define('PHP_CLASSPATH',  getenv('PHP_CLASSPATH') . PATH_SEPARATOR . get_include_path());
+    }
+    ini_set('include_path', PHP_CLASSPATH);
 } else {
-    if (!defined('PHP_CLASSPATH')) { define('PHP_CLASSPATH',  get_include_path()); }
+    if (!defined('PHP_CLASSPATH')) {
+        define('PHP_CLASSPATH',  get_include_path());
+    }
 }
 
 require_once 'phing/Phing.php';
 
 try {
-
     /* Setup Phing environment */
     Phing::startup();
 
@@ -45,18 +54,12 @@ try {
 
     // Invoke any shutdown routines.
     Phing::shutdown();
-
 } catch (ConfigurationException $x) {
-
     Phing::printMessage($x);
     exit(-1); // This was convention previously for configuration errors.
-
 } catch (Exception $x) {
-
     // Assume the message was already printed as part of the build and
     // exit with non-0 error code.
-
     exit(1);
-
 }
 

@@ -20,267 +20,274 @@ require_once dirname(__FILE__) . '/../util/PropelSQLParser.php';
  */
 class PropelSqlManager
 {
-	/**
-	 * @var array
-	 */
-	protected $connections;
-	/**
-	 * @var GeneratorConfigInterface
-	 */
-	protected $generatorConfig;
-	/**
-	 * @var array
-	 */
-	protected $dataModels;
-	/**
-	 * @var array
-	 */
-	protected $databases = null;
-	/**
-	 * @var string
-	 */
-	protected $workingDirectory;
+    /**
+     * @var array
+     */
+    protected $connections;
+    /**
+     * @var GeneratorConfigInterface
+     */
+    protected $generatorConfig;
+    /**
+     * @var array
+     */
+    protected $dataModels;
+    /**
+     * @var array
+     */
+    protected $databases = null;
+    /**
+     * @var string
+     */
+    protected $workingDirectory;
 
-	/**
-	 * Set the database connection settings
-	 *
-	 * @param array $connections
-	 */
-	public function setConnections($connections)
-	{
-		$this->connections = $connections;
-	}
+    /**
+     * Set the database connection settings
+     *
+     * @param array $connections
+     */
+    public function setConnections($connections)
+    {
+        $this->connections = $connections;
+    }
 
-	/**
-	 * Get the database connection settings
-	 *
-	 * @return array
-	 */
-	public function getConnections()
-	{
-		return $this->connections;
-	}
+    /**
+     * Get the database connection settings
+     *
+     * @return array
+     */
+    public function getConnections()
+    {
+        return $this->connections;
+    }
 
-	public function hasConnection($connection)
-	{
-		return isset($this->connections[$connection]);
-	}
+    public function hasConnection($connection)
+    {
+        return isset($this->connections[$connection]);
+    }
 
-	public function getConnection($datasource)
-	{
-		if (!$this->hasConnection($datasource)) {
-			throw new InvalidArgumentException(sprintf('Unknown datasource "%s"', $datasource));
-		}
-		return $this->connections[$datasource];
-	}
+    public function getConnection($datasource)
+    {
+        if (!$this->hasConnection($datasource)) {
+            throw new InvalidArgumentException(sprintf('Unknown datasource "%s"', $datasource));
+        }
 
-	/**
-	 * @param GeneratorConfigInterface $generatorConfig
-	 */
-	public function setGeneratorConfig(GeneratorConfigInterface $generatorConfig)
-	{
-		$this->generatorConfig = $generatorConfig;
-	}
+        return $this->connections[$datasource];
+    }
 
-	/**
-	 * @return GeneratorConfigInterface
-	 */
-	public function getGeneratorConfig()
-	{
-		return $this->generatorConfig;
-	}
+    /**
+     * @param GeneratorConfigInterface $generatorConfig
+     */
+    public function setGeneratorConfig(GeneratorConfigInterface $generatorConfig)
+    {
+        $this->generatorConfig = $generatorConfig;
+    }
 
-	/**
-	 * @param array $dataModels
-	 */
-	public function setDataModels($dataModels)
-	{
-		$this->dataModels = $dataModels;
-	}
+    /**
+     * @return GeneratorConfigInterface
+     */
+    public function getGeneratorConfig()
+    {
+        return $this->generatorConfig;
+    }
 
-	/**
-	 * @return array
-	 */
-	public function getDataModels()
-	{
-		return $this->dataModels;
-	}
+    /**
+     * @param array $dataModels
+     */
+    public function setDataModels($dataModels)
+    {
+        $this->dataModels = $dataModels;
+    }
 
-	/**
-	 * @param string $workingDirectory
-	 */
-	public function setWorkingDirectory($workingDirectory)
-	{
-		$this->workingDirectory = $workingDirectory;
-	}
+    /**
+     * @return array
+     */
+    public function getDataModels()
+    {
+        return $this->dataModels;
+    }
 
-	/**
-	 * return string
-	 */
-	public function getWorkingDirectory()
-	{
-		return $this->workingDirectory;
-	}
+    /**
+     * @param string $workingDirectory
+     */
+    public function setWorkingDirectory($workingDirectory)
+    {
+        $this->workingDirectory = $workingDirectory;
+    }
 
-	/**
-	 * @return array
-	 */
-	public function getDatabases()
-	{
-		if (null === $this->databases) {
-			$databases = array();
-			foreach ($this->getDataModels() as $package => $dataModel) {
-				foreach ($dataModel->getDatabases() as $database) {
-					if (!isset($databases[$database->getName()])) {
-						$databases[$database->getName()] = $database;
-					} else {
-						$tables = $database->getTables();
-						// Merge tables from different schema.xml to the same database
-						foreach ($tables as $table) {
-							if (!$databases[$database->getName()]->hasTable($table->getName(), true)) {
-								$databases[$database->getName()]->addTable($table);
-							}
-						}
-					}
-				}
-			}
-			$this->databases = $databases;
-		}
-		return $this->databases;
-	}
+    /**
+     * return string
+     */
+    public function getWorkingDirectory()
+    {
+        return $this->workingDirectory;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getSqlDbMapFilename()
-	{
-		return $this->getWorkingDirectory() . DIRECTORY_SEPARATOR . 'sqldb.map';
-	}
+    /**
+     * @return array
+     */
+    public function getDatabases()
+    {
+        if (null === $this->databases) {
+            $databases = array();
+            foreach ($this->getDataModels() as $package => $dataModel) {
+                foreach ($dataModel->getDatabases() as $database) {
+                    if (!isset($databases[$database->getName()])) {
+                        $databases[$database->getName()] = $database;
+                    } else {
+                        $tables = $database->getTables();
+                        // Merge tables from different schema.xml to the same database
+                        foreach ($tables as $table) {
+                            if (!$databases[$database->getName()]->hasTable($table->getName(), true)) {
+                                $databases[$database->getName()]->addTable($table);
+                            }
+                        }
+                    }
+                }
+            }
+            $this->databases = $databases;
+        }
 
-	/**
-	 * Build SQL files.
-	 */
-	public function buildSql()
-	{
-		$sqlDbMapContent = "# Sqlfile -> Database map\n";
-		foreach ($this->getDatabases() as $datasource => $database) {
-			$platform = $database->getPlatform();
-			$filename = $database->getName() . '.sql';
+        return $this->databases;
+    }
 
-			if ($this->getGeneratorConfig()->getBuildProperty('disableIdentifierQuoting')) {
-				$platform->setIdentifierQuoting(false);
-			}
+    /**
+     * @return string
+     */
+    public function getSqlDbMapFilename()
+    {
+        return $this->getWorkingDirectory() . DIRECTORY_SEPARATOR . 'sqldb.map';
+    }
 
-			$ddl = $platform->getAddTablesDDL($database);
+    /**
+     * Build SQL files.
+     */
+    public function buildSql()
+    {
+        $sqlDbMapContent = "# Sqlfile -> Database map\n";
+        foreach ($this->getDatabases() as $datasource => $database) {
+            $platform = $database->getPlatform();
+            $filename = $database->getName() . '.sql';
 
-			$file = $this->getWorkingDirectory() . DIRECTORY_SEPARATOR . $filename;
-			if (file_exists($file) && $ddl == file_get_contents($file)) {
-				// Unchanged
-			} else {
-				file_put_contents($file, $ddl);
-			}
+            if ($this->getGeneratorConfig()->getBuildProperty('disableIdentifierQuoting')) {
+                $platform->setIdentifierQuoting(false);
+            }
 
-			$sqlDbMapContent .= sprintf("%s=%s\n", $filename, $datasource);
-		}
+            $ddl = $platform->getAddTablesDDL($database);
 
-		file_put_contents ($this->getSqlDbMapFilename(), $sqlDbMapContent);
-	}
+            $file = $this->getWorkingDirectory() . DIRECTORY_SEPARATOR . $filename;
+            if (file_exists($file) && $ddl == file_get_contents($file)) {
+                // Unchanged
+            } else {
+                file_put_contents($file, $ddl);
+            }
 
-	/**
-	 * @param string $datasource	A datasource name.
-	 */
-	public function insertSql($datasource = null)
-	{
-		$statementsToInsert = array();
-		foreach ($this->getProperties($this->getSqlDbMapFilename()) as $sqlFile => $database) {
-			if (null !== $datasource && $database !== $datasource) {
-				// skip
-				continue;
-			}
+            $sqlDbMapContent .= sprintf("%s=%s\n", $filename, $datasource);
+        }
 
-			if (!isset($statementsToInsert[$database])) {
-				$statementsToInsert[$database] = array();
-			}
-			if (null === $database || (null !== $database && $database === $datasource)) {
-				$filename = $this->getWorkingDirectory() . DIRECTORY_SEPARATOR . $sqlFile;
+        file_put_contents ($this->getSqlDbMapFilename(), $sqlDbMapContent);
+    }
 
-				if (file_exists($filename)) {
-					foreach (PropelSQLParser::parseFile($filename) as $sql) {
-						$statementsToInsert[$database][] = $sql;
-					}
-				}
-			}
-		}
+    /**
+     * @param string $datasource A datasource name.
+     *
+     * @return bool
+     *
+     * @throws PDOException
+     */
+    public function insertSql($datasource = null)
+    {
+        $statementsToInsert = array();
+        foreach ($this->getProperties($this->getSqlDbMapFilename()) as $sqlFile => $database) {
+            if (null !== $datasource && $database !== $datasource) {
+                // skip
+                continue;
+            }
 
-		foreach ($statementsToInsert as $database => $sqls) {
-			if (!$this->hasConnection($database)) {
-				continue;
-			}
+            if (!isset($statementsToInsert[$database])) {
+                $statementsToInsert[$database] = array();
+            }
+            if (null === $database || (null !== $database && $database === $datasource)) {
+                $filename = $this->getWorkingDirectory() . DIRECTORY_SEPARATOR . $sqlFile;
 
-			$pdo = $this->getPdoConnection($database);
-			$pdo->beginTransaction();
+                if (file_exists($filename)) {
+                    foreach (PropelSQLParser::parseFile($filename) as $sql) {
+                        $statementsToInsert[$database][] = $sql;
+                    }
+                }
+            }
+        }
 
-			try {
-				foreach ($sqls as $sql) {
-					$stmt = $pdo->prepare($sql);
-					$stmt->execute();
-				}
+        foreach ($statementsToInsert as $database => $sqls) {
+            if (!$this->hasConnection($database)) {
+                continue;
+            }
 
-				$pdo->commit();
-			} catch (PDOException $e) {
-				$pdo->rollback();
-				throw $e;
-			}
-		}
+            $pdo = $this->getPdoConnection($database);
+            $pdo->beginTransaction();
 
-		return true;
-	}
+            try {
+                foreach ($sqls as $sql) {
+                    $stmt = $pdo->prepare($sql);
+                    $stmt->execute();
+                }
 
-	/**
-	 * Gets a PDO connection for a given datasource.
-	 *
-	 * @return PDO
-	 */
-	protected function getPdoConnection($datasource)
-	{
-		$buildConnection = $this->getConnection($datasource);
-		$dsn = str_replace("@DB@", $datasource, $buildConnection['dsn']);
+                $pdo->commit();
+            } catch (PDOException $e) {
+                $pdo->rollback();
+                throw $e;
+            }
+        }
 
-		// Set user + password to null if they are empty strings or missing
-		$username = isset($buildConnection['user']) && $buildConnection['user'] ? $buildConnection['user'] : null;
-		$password = isset($buildConnection['password']) && $buildConnection['password'] ? $buildConnection['password'] : null;
+        return true;
+    }
 
-		$pdo = new PDO($dsn, $username, $password);
-		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    /**
+     * Gets a PDO connection for a given datasource.
+     *
+     * @return PDO
+     */
+    protected function getPdoConnection($datasource)
+    {
+        $buildConnection = $this->getConnection($datasource);
+        $dsn = str_replace("@DB@", $datasource, $buildConnection['dsn']);
 
-		return $pdo;
-	}
+        // Set user + password to null if they are empty strings or missing
+        $username = isset($buildConnection['user']) && $buildConnection['user'] ? $buildConnection['user'] : null;
+        $password = isset($buildConnection['password']) && $buildConnection['password'] ? $buildConnection['password'] : null;
 
-	/**
-	 * Returns an array of properties as key/value pairs from an input file.
-	 *
-	 * @param string $file  A file properties.
-	 * @return array        An array of properties as key/value pairs.
-	 */
-	protected function getProperties($file)
-	{
-		$properties = array();
+        $pdo = new PDO($dsn, $username, $password);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-		if (false === $lines = @file($file)) {
-			throw new Exception(sprintf('Unable to parse contents of "%s".', $file));
-		}
+        return $pdo;
+    }
 
-		foreach ($lines as $line) {
-			$line = trim($line);
+    /**
+     * Returns an array of properties as key/value pairs from an input file.
+     *
+     * @param  string    $file A file properties.
+     * @return array     An array of properties as key/value pairs.
+     * @throws Exception
+     */
+    protected function getProperties($file)
+    {
+        $properties = array();
 
-			if ('' == $line || in_array($line[0], array('#', ';'))) {
-				continue;
-			}
+        if (false === $lines = @file($file)) {
+            throw new Exception(sprintf('Unable to parse contents of "%s".', $file));
+        }
 
-			$pos = strpos($line, '=');
-			$properties[trim(substr($line, 0, $pos))] = trim(substr($line, $pos + 1));
-		}
+        foreach ($lines as $line) {
+            $line = trim($line);
 
-		return $properties;
-	}
+            if ('' == $line || in_array($line[0], array('#', ';'))) {
+                continue;
+            }
+
+            $pos = strpos($line, '=');
+            $properties[trim(substr($line, 0, $pos))] = trim(substr($line, $pos + 1));
+        }
+
+        return $properties;
+    }
 }

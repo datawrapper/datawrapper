@@ -14,8 +14,8 @@ function rebuild
         rm -rf "$dir/build"
     fi
 
-    $ROOT/generator/bin/propel-gen $FIXTURES_DIR/$dir main
-    $ROOT/generator/bin/propel-gen $FIXTURES_DIR/$dir insert-sql
+    $ROOT/generator/bin/propel-gen $FIXTURES_DIR/$dir main > /dev/null
+    $ROOT/generator/bin/propel-gen $FIXTURES_DIR/$dir insert-sql > /dev/null
 }
 
 ROOT_DIR=""
@@ -45,6 +45,6 @@ REVERSE_DIRS=`ls $FIXTURES_DIR/reverse`
 for dir in $REVERSE_DIRS ; do
     if [ -f "$FIXTURES_DIR/reverse/$dir/build.properties" ] ; then
         echo "[ $dir ]"
-        $ROOT/generator/bin/propel-gen $FIXTURES_DIR/reverse/$dir insert-sql
+        $ROOT/generator/bin/propel-gen $FIXTURES_DIR/reverse/$dir insert-sql > /dev/null
     fi
 done

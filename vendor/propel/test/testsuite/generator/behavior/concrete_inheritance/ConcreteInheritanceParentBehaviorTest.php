@@ -20,34 +20,34 @@ require_once dirname(__FILE__) . '/../../../../tools/helpers/bookstore/Bookstore
  */
 class ConcreteInheritanceParentBehaviorTest extends BookstoreTestBase
 {
-	public function testHasChildObject()
-	{
-		ConcreteArticleQuery::create()->deleteAll();
-		ConcreteQuizzQuery::create()->deleteAll();
-		ConcreteContentQuery::create()->deleteAll();
-		$content = new ConcreteContent();
-		$content->save();
-		$this->assertFalse($content->hasChildObject());
+    public function testHasChildObject()
+    {
+        ConcreteArticleQuery::create()->deleteAll();
+        ConcreteQuizzQuery::create()->deleteAll();
+        ConcreteContentQuery::create()->deleteAll();
+        $content = new ConcreteContent();
+        $content->save();
+        $this->assertFalse($content->hasChildObject());
 
-		$article = new ConcreteArticle();
-		$article->save();
-		$content = $article->getConcreteContent();
-		$this->assertTrue($content->hasChildObject());
-	}
+        $article = new ConcreteArticle();
+        $article->save();
+        $content = $article->getConcreteContent();
+        $this->assertTrue($content->hasChildObject());
+    }
 
-	public function testGetChildObject()
-	{
-		ConcreteArticleQuery::create()->deleteAll();
-		ConcreteQuizzQuery::create()->deleteAll();
-		ConcreteContentQuery::create()->deleteAll();
-		$content = new ConcreteContent();
-		$content->save();
-		$this->assertNull($content->getChildObject());
+    public function testGetChildObject()
+    {
+        ConcreteArticleQuery::create()->deleteAll();
+        ConcreteQuizzQuery::create()->deleteAll();
+        ConcreteContentQuery::create()->deleteAll();
+        $content = new ConcreteContent();
+        $content->save();
+        $this->assertNull($content->getChildObject());
 
-		$article = new ConcreteArticle();
-		$article->save();
-		$content = $article->getConcreteContent();
-		$this->assertEquals($article, $content->getChildObject());
-	}
+        $article = new ConcreteArticle();
+        $article->save();
+        $content = $article->getConcreteContent();
+        $this->assertEquals($article, $content->getChildObject());
+    }
 
 }

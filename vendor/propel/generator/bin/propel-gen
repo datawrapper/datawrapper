@@ -1,74 +1,51 @@
-#!/bin/sh
-# Shell wrapper for Propel generator
-# $Id$
-#
-# This script will do the following:
-# - check for PHING_COMMAND env, if found, use it.
-#   - if not found assume php is on the path
-# - check for PROPEL_GEN_HOME env, if found use it
-#   - if not look for it
+#!/usr/bin/env bash
 
 if [ -z "$PROPEL_GEN_HOME" ] ; then
-
-  # try to find Propel
-  if [ -d /opt/propel/generator ] ; then
-    PROPEL_GEN_HOME=/opt/propel/generator
-  fi
-
-  if [ -d "${HOME}/opt/propel/generator" ] ; then
-    PROPEL_GEN_HOME="${HOME}/opt/propel/generator"
-  fi
-
-  if [ -d "/usr/local/propel/generator" ] ; then
-    PROPEL_GEN_HOME="/usr/local/propel/generator"
-  fi
-
-  if [ -d "${HOME}/usr/propel/generator" ] ; then
-    PROPEL_GEN_HOME="${HOME}/usr/propel/generator"
-  fi
-
-  ## resolve links - the script name may be a link to phing's home
-  PRG="$0"
-  progname=`basename "$0"`
-  saveddir=`pwd`
-
-  # need this for relative symlinks
-  dirname_prg=`dirname "$PRG"`
-  cd "$dirname_prg"
-
-  while [ -h "$PRG" ] ; do
-    ls=`ls -ld "$PRG"`
-    link=`expr "$ls" : '.*-> \(.*\)$'`
-    if expr "$link" : '/.*' > /dev/null; then
-      PRG="$link"
-    else
-      PRG=`dirname "$PRG"`"/$link"
+    # try to find Propel
+    if [ -d /opt/propel/generator ] ; then
+        PROPEL_GEN_HOME=/opt/propel/generator
     fi
-  done
 
-  cd "$saveddir"
+    if [ -d "${HOME}/opt/propel/generator" ] ; then
+        PROPEL_GEN_HOME="${HOME}/opt/propel/generator"
+    fi
 
-  PROPEL_GEN_HOME=`dirname "$PRG"`/..
+    if [ -d "/usr/local/propel/generator" ] ; then
+        PROPEL_GEN_HOME="/usr/local/propel/generator"
+    fi
 
-  # make it fully qualified
-  PROPEL_GEN_HOME=`cd "$PROPEL_GEN_HOME" && pwd`
+    if [ -d "${HOME}/usr/propel/generator" ] ; then
+        PROPEL_GEN_HOME="${HOME}/usr/propel/generator"
+    fi
 
-  # make it available in PHP via getenv("PROPEL_GEN_HOME")
-  export PROPEL_GEN_HOME
+    ## resolve links - the script name may be a link to phing's home
+    SOURCE="${BASH_SOURCE[0]}"
+    PRG="$( dirname "$SOURCE" )"
+    while [ -h "$SOURCE" ]
+    do
+        SOURCE="$(readlink "$SOURCE")"
+        [[ $SOURCE != /* ]] && SOURCE="$PRG/$SOURCE"
+        PRG="$( cd -P "$( dirname "$SOURCE"  )" && pwd )"
+    done
+    PRG="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
+    if [ -d "`dirname $PRG`" ] ; then
+        PROPEL_GEN_HOME="`dirname $PRG`"
+    fi
+
+    export PROPEL_GEN_HOME
 fi
 
-if [ -d "vendor/phing/phing" ] ; then
+if [ -f "$PROPEL_GEN_HOME/bin/phing.php" ] ; then
     export PHING_COMMAND="$PROPEL_GEN_HOME/bin/phing.php"
 fi
 
 if [ -z "$PHING_COMMAND" ] ; then
-  # echo "WARNING: PHING_COMMAND environment not set. (Assuming phing on PATH)"
-  export PHING_COMMAND="phing"
+    export PHING_COMMAND="phing"
 fi
 
 if [ $# = 1 ] ; then
-  $PHING_COMMAND -f "$PROPEL_GEN_HOME/build.xml" -Dusing.propel-gen=true -Dproject.dir=$saveddir $*
+    "$PHING_COMMAND" -f "$PROPEL_GEN_HOME/build.xml" -Dusing.propel-gen=true -Dproject.dir=$saveddir $*
 else
-  $PHING_COMMAND -f "$PROPEL_GEN_HOME/build.xml" -Dusing.propel-gen=true -Dproject.dir=$*
+    "$PHING_COMMAND" -f "$PROPEL_GEN_HOME/build.xml" -Dusing.propel-gen=true -Dproject.dir=$*
 fi

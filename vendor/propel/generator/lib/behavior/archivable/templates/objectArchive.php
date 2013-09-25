@@ -12,18 +12,18 @@
  */
 public function archive(PropelPDO $con = null)
 {
-	if ($this->isNew()) {
-		throw new PropelException('New objects cannot be archived. You must save the current object before calling archive().');
-	}
-	if (!$archive = $this->getArchive(<?php if(!$hasArchiveClass): ?>$con<?php endif; ?>)) {
-		$archive = new <?php echo $archiveTablePhpName ?>();
-		$archive->setPrimaryKey($this->getPrimaryKey());
-	}
-	$this->copyInto($archive, $deepCopy = false, $makeNew = false);
+    if ($this->isNew()) {
+        throw new PropelException('New objects cannot be archived. You must save the current object before calling archive().');
+    }
+    if (!$archive = $this->getArchive(<?php if(!$hasArchiveClass): ?>$con<?php endif; ?>)) {
+        $archive = new <?php echo $archiveTablePhpName ?>();
+        $archive->setPrimaryKey($this->getPrimaryKey());
+    }
+    $this->copyInto($archive, $deepCopy = false, $makeNew = false);
 <?php if ($archivedAtColumn): ?>
-	$archive->set<?php echo $archivedAtColumn->getPhpName() ?>(time());
+    $archive->set<?php echo $archivedAtColumn->getPhpName() ?>(time());
 <?php endif; ?>
-	$archive->save(<?php if(!$hasArchiveClass): ?>$con<?php endif; ?>);
+    $archive->save(<?php if(!$hasArchiveClass): ?>$con<?php endif; ?>);
 
-	return $archive;
+    return $archive;
 }

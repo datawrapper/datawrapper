@@ -26,33 +26,32 @@ require_once dirname(__FILE__) . '/Index.php';
 class Unique extends Index
 {
 
-	/**
-	 * Returns <code>true</code>.
-	 */
-	public function isUnique()
-	{
-		return true;
-	}
+    /**
+     * Returns <code>true</code>.
+     */
+    public function isUnique()
+    {
+        return true;
+    }
 
-	/**
-	 * @see        XMLElement::appendXml(DOMNode)
-	 */
-	public function appendXml(DOMNode $node)
-	{
-		$doc = ($node instanceof DOMDocument) ? $node : $node->ownerDocument;
+    /**
+     * @see        XMLElement::appendXml(DOMNode)
+     */
+    public function appendXml(DOMNode $node)
+    {
+        $doc = ($node instanceof DOMDocument) ? $node : $node->ownerDocument;
 
-		$uniqueNode = $node->appendChild($doc->createElement('unique'));
-		$uniqueNode->setAttribute('name', $this->getName());
-		$columns = $this->getColumns();
-		foreach ($this->getColumns() as $colname) {
-			$uniqueColNode = $uniqueNode->appendChild($doc->createElement('unique-column'));
-			$uniqueColNode->setAttribute('name', $colname);
-		}
+        $uniqueNode = $node->appendChild($doc->createElement('unique'));
+        $uniqueNode->setAttribute('name', $this->getName());
+        $columns = $this->getColumns();
+        foreach ($this->getColumns() as $colname) {
+            $uniqueColNode = $uniqueNode->appendChild($doc->createElement('unique-column'));
+            $uniqueColNode->setAttribute('name', $colname);
+        }
 
-		foreach ($this->vendorInfos as $vi) {
-			$vi->appendXml($uniqueNode);
-		}
-	}
-
+        foreach ($this->vendorInfos as $vi) {
+            $vi->appendXml($uniqueNode);
+        }
+    }
 
 }

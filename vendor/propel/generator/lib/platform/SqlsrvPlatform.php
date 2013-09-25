@@ -19,11 +19,11 @@ require_once dirname(__FILE__) . '/MssqlPlatform.php';
  */
 class SqlsrvPlatform extends MssqlPlatform
 {
-	/**
-	 * @see        Platform#getMaxColumnNameLength()
-	 */
-	public function getMaxColumnNameLength()
-	{
-		return 128;
-	}
+    /**
+     * @see        Platform#getMaxColumnNameLength()
+     */
+    public function getMaxColumnNameLength()
+    {
+        return 128;
+    }
 }

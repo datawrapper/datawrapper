@@ -18,28 +18,28 @@
  */
 class PropelStatementFormatter extends PropelFormatter
 {
-	public function format(PDOStatement $stmt)
-	{
-		return $stmt;
-	}
+    public function format(PDOStatement $stmt)
+    {
+        return $stmt;
+    }
 
-	public function formatOne(PDOStatement $stmt)
-	{
-		if ($stmt->rowCount() == 0) {
-			return null;
-		} else {
-			return $stmt;
-		}
-	}
+    public function formatOne(PDOStatement $stmt)
+    {
+        if ($stmt->rowCount() == 0) {
+            return null;
+        } else {
+            return $stmt;
+        }
+    }
 
-	public function formatRecord($record = null)
-	{
-		throw new PropelException('The Statement formatter cannot transform a record into a statement');
-	}
+    public function formatRecord($record = null)
+    {
+        throw new PropelException('The Statement formatter cannot transform a record into a statement');
+    }
 
-	public function isObjectFormatter()
-	{
-		return false;
-	}
+    public function isObjectFormatter()
+    {
+        return false;
+    }
 
 }

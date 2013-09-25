@@ -84,7 +84,7 @@ propel.home = .
 #   or php4 (experimental).
 #
 # packageObjectModel
-#   Sets whether Propel is packaging ObjectModel fro several
+#   Sets whether Propel is packaging ObjectModel for several
 #   [package].schema.xml files. The <database package="packageName">
 #   attribute has to be set then. (warning: this is experimental!)
 #

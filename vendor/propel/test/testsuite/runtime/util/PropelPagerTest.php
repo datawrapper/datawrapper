@@ -25,7 +25,7 @@ class PropelPagerTest extends BookstoreEmptyTestBase
   protected function setUp()
   {
     parent::setUp();
-		BookstoreDataPopulator::populate();
+        BookstoreDataPopulator::populate();
 
     $cr = new Criteria();
     $cr->add(AuthorPeer::LAST_NAME, "Rowling");
@@ -139,7 +139,7 @@ class PropelPagerTest extends BookstoreEmptyTestBase
     $cr->addAscendingOrderByColumn(BookPeer::TITLE);
     $pager = new PropelPager($cr, "BookPeer", "doSelect");
     $books = array();
-    foreach($pager as $book) {
+    foreach ($pager as $book) {
       $books[] = $book;
     }
     $this->assertEquals("Harry Potter and the Goblet of Fire", $books[2]->getTitle());
@@ -152,10 +152,10 @@ class PropelPagerTest extends BookstoreEmptyTestBase
     $cr->addAscendingOrderByColumn(BookPeer::TITLE);
     $pager = new PropelPager($cr, "BookPeer", "doSelect");
     $i = 0;
-    foreach($pager as $book) {
+    foreach ($pager as $book) {
       $i++;
     }
-    foreach($pager as $book) {
+    foreach ($pager as $book) {
       $i++;
     }
     $this->assertEquals(14, $i);

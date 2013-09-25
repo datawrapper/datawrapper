@@ -17,54 +17,54 @@
 class ChartTableMap extends TableMap
 {
 
-	/**
-	 * The (dot-path) name of this class
-	 */
-	const CLASS_NAME = 'datawrapper.map.ChartTableMap';
+    /**
+     * The (dot-path) name of this class
+     */
+    const CLASS_NAME = 'datawrapper.map.ChartTableMap';
 
-	/**
-	 * Initialize the table attributes, columns and validators
-	 * Relations are not initialized by this method since they are lazy loaded
-	 *
-	 * @return     void
-	 * @throws     PropelException
-	 */
-	public function initialize()
-	{
-		// attributes
-		$this->setName('chart');
-		$this->setPhpName('Chart');
-		$this->setClassname('Chart');
-		$this->setPackage('datawrapper');
-		$this->setUseIdGenerator(false);
-		// columns
-		$this->addPrimaryKey('ID', 'Id', 'VARCHAR', true, 5, null);
-		$this->addColumn('TITLE', 'Title', 'VARCHAR', true, 255, null);
-		$this->addColumn('THEME', 'Theme', 'VARCHAR', true, 255, null);
-		$this->addColumn('CREATED_AT', 'CreatedAt', 'TIMESTAMP', true, null, null);
-		$this->addColumn('LAST_MODIFIED_AT', 'LastModifiedAt', 'TIMESTAMP', true, null, null);
-		$this->addColumn('TYPE', 'Type', 'VARCHAR', true, 200, null);
-		$this->addColumn('METADATA', 'Metadata', 'VARCHAR', true, 4096, null);
-		$this->addColumn('DELETED', 'Deleted', 'BOOLEAN', false, 1, false);
-		$this->addColumn('DELETED_AT', 'DeletedAt', 'TIMESTAMP', false, null, null);
-		$this->addForeignKey('AUTHOR_ID', 'AuthorId', 'INTEGER', 'user', 'ID', false, null, null);
-		$this->addColumn('SHOW_IN_GALLERY', 'ShowInGallery', 'BOOLEAN', false, 1, false);
-		$this->addColumn('LANGUAGE', 'Language', 'VARCHAR', false, 5, '');
-		$this->addColumn('GUEST_SESSION', 'GuestSession', 'VARCHAR', false, 255, null);
-		$this->addColumn('LAST_EDIT_STEP', 'LastEditStep', 'INTEGER', false, null, 0);
-		$this->addColumn('PUBLISHED_AT', 'PublishedAt', 'TIMESTAMP', false, null, null);
-		$this->addColumn('PUBLIC_URL', 'PublicUrl', 'VARCHAR', false, 255, null);
-		$this->addColumn('PUBLIC_VERSION', 'PublicVersion', 'INTEGER', false, null, 0);
-		// validators
-	} // initialize()
+    /**
+     * Initialize the table attributes, columns and validators
+     * Relations are not initialized by this method since they are lazy loaded
+     *
+     * @return void
+     * @throws PropelException
+     */
+    public function initialize()
+    {
+        // attributes
+        $this->setName('chart');
+        $this->setPhpName('Chart');
+        $this->setClassname('Chart');
+        $this->setPackage('datawrapper');
+        $this->setUseIdGenerator(false);
+        // columns
+        $this->addPrimaryKey('id', 'Id', 'VARCHAR', true, 5, null);
+        $this->addColumn('title', 'Title', 'VARCHAR', true, 255, null);
+        $this->addColumn('theme', 'Theme', 'VARCHAR', true, 255, null);
+        $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', true, null, null);
+        $this->addColumn('last_modified_at', 'LastModifiedAt', 'TIMESTAMP', true, null, null);
+        $this->addColumn('type', 'Type', 'VARCHAR', true, 200, null);
+        $this->addColumn('metadata', 'Metadata', 'VARCHAR', true, 4096, null);
+        $this->addColumn('deleted', 'Deleted', 'BOOLEAN', false, 1, false);
+        $this->addColumn('deleted_at', 'DeletedAt', 'TIMESTAMP', false, null, null);
+        $this->addForeignKey('author_id', 'AuthorId', 'INTEGER', 'user', 'id', false, null, null);
+        $this->addColumn('show_in_gallery', 'ShowInGallery', 'BOOLEAN', false, 1, false);
+        $this->addColumn('language', 'Language', 'VARCHAR', false, 5, '');
+        $this->addColumn('guest_session', 'GuestSession', 'VARCHAR', false, 255, null);
+        $this->addColumn('last_edit_step', 'LastEditStep', 'INTEGER', false, null, 0);
+        $this->addColumn('published_at', 'PublishedAt', 'TIMESTAMP', false, null, null);
+        $this->addColumn('public_url', 'PublicUrl', 'VARCHAR', false, 255, null);
+        $this->addColumn('public_version', 'PublicVersion', 'INTEGER', false, null, 0);
+        // validators
+    } // initialize()
 
-	/**
-	 * Build the RelationMap objects for this table relationships
-	 */
-	public function buildRelations()
-	{
-		$this->addRelation('User', 'User', RelationMap::MANY_TO_ONE, array('author_id' => 'id', ), null, null);
-		$this->addRelation('Job', 'Job', RelationMap::ONE_TO_MANY, array('id' => 'chart_id', ), null, null, 'Jobs');
-	} // buildRelations()
+    /**
+     * Build the RelationMap objects for this table relationships
+     */
+    public function buildRelations()
+    {
+        $this->addRelation('User', 'User', RelationMap::MANY_TO_ONE, array('author_id' => 'id', ), null, null);
+        $this->addRelation('Job', 'Job', RelationMap::ONE_TO_MANY, array('id' => 'chart_id', ), null, null, 'Jobs');
+    } // buildRelations()
 
 } // ChartTableMap

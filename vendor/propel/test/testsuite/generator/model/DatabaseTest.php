@@ -20,111 +20,127 @@ require_once dirname(__FILE__) . '/../../../tools/helpers/DummyPlatforms.php';
  */
 class DatabaseTest extends PHPUnit_Framework_TestCase
 {
-	public function providerForTestHasTable()
-	{
-		$database = new Database();
-		$table = new Table('Foo');
-		$database->addTable($table);
-		return array(
-			array($database, $table)
-		);
-	}
+    public function providerForTestHasTable()
+    {
+        $database = new Database();
+        $table = new Table('Foo');
+        $database->addTable($table);
 
-	public function testTableInheritsSchema()
-	{
-		$database = new Database();
-		$database->setPlatform(new SchemaPlatform());
-		$database->setSchema("Foo");
-		$table = new Table("Bar");
-		$database->addTable($table);
-		$this->assertTrue($database->hasTable("Foo.Bar"));
-		$this->assertFalse($database->hasTable("Bar"));
+        return array(
+            array($database, $table)
+        );
+    }
 
-		$database = new Database();
-		$database->setPlatform(new NoSchemaPlatform());
-		$database->addTable($table);
-		$this->assertFalse($database->hasTable("Foo.Bar"));
-		$this->assertTrue($database->hasTable("Bar"));
-	}
+    public function testTableInheritsSchema()
+    {
+        $database = new Database();
+        $database->setPlatform(new SchemaPlatform());
+        $database->setSchema("Foo");
+        $table = new Table("Bar");
+        $database->addTable($table);
+        $this->assertTrue($database->hasTable("Foo.Bar"));
+        $this->assertFalse($database->hasTable("Bar"));
 
-	/**
-	 * @dataProvider providerForTestHasTable
-	 */
-	public function testHasTable($database, $table)
-	{
-		$this->assertTrue($database->hasTable('Foo'));
-		$this->assertFalse($database->hasTable('foo'));
-		$this->assertFalse($database->hasTable('FOO'));
-	}
+        $database = new Database();
+        $database->setPlatform(new NoSchemaPlatform());
+        $database->addTable($table);
+        $this->assertFalse($database->hasTable("Foo.Bar"));
+        $this->assertTrue($database->hasTable("Bar"));
+    }
 
-	/**
-	 * @dataProvider providerForTestHasTable
-	 */
-	public function testHasTableCaseInsensitive($database, $table)
-	{
-		$this->assertTrue($database->hasTable('Foo', true));
-		$this->assertTrue($database->hasTable('foo', true));
-		$this->assertTrue($database->hasTable('FOO', true));
-	}
+    /**
+     * @dataProvider providerForTestHasTable
+     */
+    public function testHasTable($database, $table)
+    {
+        $this->assertTrue($database->hasTable('Foo'));
+        $this->assertFalse($database->hasTable('foo'));
+        $this->assertFalse($database->hasTable('FOO'));
+    }
 
-	/**
-	 * @dataProvider providerForTestHasTable
-	 */
-	public function testGetTable($database, $table)
-	{
-		$this->assertEquals($table, $database->getTable('Foo'));
-		$this->assertNull($database->getTable('foo'));
-		$this->assertNull($database->getTable('FOO'));
-	}
+    /**
+     * @dataProvider providerForTestHasTable
+     */
+    public function testHasTableCaseInsensitive($database, $table)
+    {
+        $this->assertTrue($database->hasTable('Foo', true));
+        $this->assertTrue($database->hasTable('foo', true));
+        $this->assertTrue($database->hasTable('FOO', true));
+    }
 
-	/**
-	 * @dataProvider providerForTestHasTable
-	 */
-	public function testGetTableCaseInsensitive($database, $table)
-	{
-		$this->assertEquals($table, $database->getTable('Foo', true));
-		$this->assertEquals($table, $database->getTable('foo', true));
-		$this->assertEquals($table, $database->getTable('FOO', true));
-	}
+    /**
+     * @dataProvider providerForTestHasTable
+     */
+    public function testGetTable($database, $table)
+    {
+        $this->assertEquals($table, $database->getTable('Foo'));
+        $this->assertNull($database->getTable('foo'));
+        $this->assertNull($database->getTable('FOO'));
+    }
 
-	public function testAddTableDoesNotModifyTableNamespaceWhenDatabaseHasNoNamespace()
-	{
-		$db = new Database();
+    /**
+     * @dataProvider providerForTestHasTable
+     */
+    public function testGetTableCaseInsensitive($database, $table)
+    {
+        $this->assertEquals($table, $database->getTable('Foo', true));
+        $this->assertEquals($table, $database->getTable('foo', true));
+        $this->assertEquals($table, $database->getTable('FOO', true));
+    }
 
-		$t1 = new Table('t1');
-		$db->addTable($t1);
-		$this->assertEquals('', $t1->getNamespace());
+    public function testAddTableDoesNotModifyTableNamespaceWhenDatabaseHasNoNamespace()
+    {
+        $db = new Database();
 
-		$t2 = new Table('t2');
-		$t2->setNamespace('Bar');
-		$db->addTable($t2);
-		$this->assertEquals('Bar', $t2->getNamespace());
-	}
+        $t1 = new Table('t1');
+        $db->addTable($t1);
+        $this->assertEquals('', $t1->getNamespace());
 
-	public function testAddTableAddsDatabaseNamespaceToTheTable()
-	{
-		$db = new Database();
-		$db->setNamespace('Foo');
+        $t2 = new Table('t2');
+        $t2->setNamespace('Bar');
+        $db->addTable($t2);
+        $this->assertEquals('Bar', $t2->getNamespace());
+    }
 
-		$t1 = new Table('t1');
-		$db->addTable($t1);
-		$this->assertEquals('Foo', $t1->getNamespace());
+    public function testAddTableAddsDatabaseNamespaceToTheTable()
+    {
+        $db = new Database();
+        $db->setNamespace('Foo');
 
-		$t2 = new Table('t2');
-		$t2->setNamespace('Bar');
-		$db->addTable($t2);
-		$this->assertEquals('Foo\\Bar', $t2->getNamespace());
-	}
+        $t1 = new Table('t1');
+        $db->addTable($t1);
+        $this->assertEquals('Foo', $t1->getNamespace());
 
-	public function testAddTableSkipsDatabaseNamespaceWhenTableNamespaceIsAbsolute()
-	{
-		$db = new Database();
-		$db->setNamespace('Foo');
+        $t2 = new Table('t2');
+        $t2->setNamespace('Bar');
+        $db->addTable($t2);
+        $this->assertEquals('Foo\\Bar', $t2->getNamespace());
+    }
 
-		$t1 = new Table('t1');
-		$t1->setNamespace('\\Bar');
-		$db->addTable($t1);
-		$this->assertEquals('Bar', $t1->getNamespace());
-	}
+    public function testAddTableSkipsDatabaseNamespaceWhenTableNamespaceIsAbsolute()
+    {
+        $db = new Database();
+        $db->setNamespace('Foo');
+
+        $t1 = new Table('t1');
+        $t1->setNamespace('\\Bar');
+        $db->addTable($t1);
+        $this->assertEquals('Bar', $t1->getNamespace());
+    }
+
+    public function testAddTableWithSameNameOnDifferentSchema()
+    {
+        $db = new Database();
+        $db->setPlatform(new SchemaPlatform());
+
+        $t1 = new Table('t1');
+        $db->addTable($t1);
+        $this->assertEquals('t1', $t1->getName());
+
+        $t1b = new Table('t1');
+        $t1b->setSchema('bis');
+        $db->addTable($t1b);
+        $this->assertEquals('bis.t1', $t1b->getName());
+    }
 
 }

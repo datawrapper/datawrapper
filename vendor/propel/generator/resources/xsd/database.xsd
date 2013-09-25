@@ -12,8 +12,8 @@
 
 	<xs:simpleType name="file">
 		<xs:restriction base="xs:string">
-			<!-- Match any relative or absolute path and file containing letters, numbers and _ -->
-			<xs:pattern value="((\.{1,2}|[\w_]*)/)*([\w_]*\.?)+"/>
+			<!-- Match any relative or absolute path and file containing letters, numbers, - and _ -->
+			<xs:pattern value="((\.{1,2}|[\w_-]*)/)*([\w_-]*\.?)+"/>
 		</xs:restriction>
 	</xs:simpleType>
 
@@ -188,7 +188,7 @@
 	<!-- Restrict php class name to letters (upper- and lowercase), numbers and the _. Dot seperated -->
 	<xs:simpleType name="php_class">
 		<xs:restriction base="xs:string">
-			<xs:pattern value="([\w_]+.?)+"/>
+            <xs:pattern value="(\\?[\w_]+\.?)+"/>
 		</xs:restriction>
 	</xs:simpleType>
 
@@ -383,7 +383,7 @@
 		<xs:attribute name="phpType" type="php_type" use="optional">
 			<xs:annotation>
 				<xs:documentation xml:lang="en">
-					PHP type for te column in PHP code. This column's setter uses type casting with the set php_type; besides, generated phpDoc in the model classes use this attribute for code completion.
+					PHP type for the column in PHP code. This column's setter uses type casting with the set php_type; besides, generated phpDoc in the model classes use this attribute for code completion.
 				</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
@@ -851,7 +851,7 @@
 				</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
-		<xs:attribute name="package" type="php_class" use="optional">
+		<xs:attribute name="package" type="file" use="optional">
 			<xs:annotation>
 				<xs:documentation xml:lang="en">
 					Specifies the "package" for the generated classes. Classes are created in subdirectories according to the package attribute value.

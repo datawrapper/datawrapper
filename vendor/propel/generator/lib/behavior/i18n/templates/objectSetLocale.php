@@ -8,7 +8,7 @@
  */
 public function setLocale($locale = '<?php echo $defaultLocale ?>')
 {
-	$this->currentLocale = $locale;
+    $this->currentLocale = $locale;
 
-	return $this;
+    return $this;
 }

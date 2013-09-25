@@ -20,213 +20,218 @@ require_once dirname(__FILE__) . '/SchemaParser.php';
 abstract class BaseSchemaParser implements SchemaParser
 {
 
-	/**
-	 * The database connection.
-	 * @var        PDO
-	 */
-	protected $dbh;
+    /**
+     * The database connection.
+     * @var        PDO
+     */
+    protected $dbh;
 
-	/**
-	 * Stack of warnings.
-	 *
-	 * @var        array string[]
-	 */
-	protected $warnings = array();
+    /**
+     * Stack of warnings.
+     *
+     * @var        array string[]
+     */
+    protected $warnings = array();
 
-	/**
-	 * GeneratorConfig object holding build properties.
-	 *
-	 * @var        GeneratorConfig
-	 */
-	private $generatorConfig;
+    /**
+     * GeneratorConfig object holding build properties.
+     *
+     * @var        GeneratorConfig
+     */
+    private $generatorConfig;
 
-	/**
-	 * Map native DB types to Propel types.
-	 * (Override in subclasses.)
-	 * @var        array
-	 */
-	protected $nativeToPropelTypeMap;
+    /**
+     * Map native DB types to Propel types.
+     * (Override in subclasses.)
+     * @var        array
+     */
+    protected $nativeToPropelTypeMap;
 
-	/**
-	 * Map to hold reverse type mapping (initialized on-demand).
-	 *
-	 * @var        array
-	 */
-	protected $reverseTypeMap;
+    /**
+     * Map to hold reverse type mapping (initialized on-demand).
+     *
+     * @var        array
+     */
+    protected $reverseTypeMap;
 
-	/**
-	 * Name of the propel migration table - to be ignored in reverse
-	 *
-	 * @var string
-	 */
-	protected $migrationTable = 'propel_migration';
+    /**
+     * Name of the propel migration table - to be ignored in reverse
+     *
+     * @var string
+     */
+    protected $migrationTable = 'propel_migration';
 
-	protected $platform;
+    protected $platform;
 
-	/**
-	 * @param      PDO $dbh Optional database connection
-	 */
-	public function __construct(PDO $dbh = null)
-	{
-		if ($dbh) $this->setConnection($dbh);
-	}
+    /**
+     * @param PDO $dbh Optional database connection
+     */
+    public function __construct(PDO $dbh = null)
+    {
+        if ($dbh) $this->setConnection($dbh);
+    }
 
-	/**
-	 * Sets the database connection.
-	 *
-	 * @param      PDO $dbh
-	 */
-	public function setConnection(PDO $dbh)
-	{
-		$this->dbh = $dbh;
-	}
+    /**
+     * Sets the database connection.
+     *
+     * @param PDO $dbh
+     */
+    public function setConnection(PDO $dbh)
+    {
+        $this->dbh = $dbh;
+    }
 
-	/**
-	 * Gets the database connection.
-	 * @return     PDO
-	 */
-	public function getConnection()
-	{
-		return $this->dbh;
-	}
+    /**
+     * Gets the database connection.
+     * @return PDO
+     */
+    public function getConnection()
+    {
+        return $this->dbh;
+    }
 
-	/**
-	 * Setter for the migrationTable property
-	 *
-	 * @param string $migrationTable
-	 */
-	public function setMigrationTable($migrationTable)
-	{
-		$this->migrationTable = $migrationTable;
-	}
+    /**
+     * Setter for the migrationTable property
+     *
+     * @param string $migrationTable
+     */
+    public function setMigrationTable($migrationTable)
+    {
+        $this->migrationTable = $migrationTable;
+    }
 
-	/**
-	 * Getter for the migrationTable property
-	 *
-	 * @return string
-	 */
-	public function getMigrationTable()
-	{
-		return $this->migrationTable;
-	}
+    /**
+     * Getter for the migrationTable property
+     *
+     * @return string
+     */
+    public function getMigrationTable()
+    {
+        return $this->migrationTable;
+    }
 
+    /**
+     * Pushes a message onto the stack of warnings.
+     *
+     * @param string $msg The warning message.
+     */
+    protected function warn($msg)
+    {
+        $this->warnings[] = $msg;
+    }
 
-	/**
-	 * Pushes a message onto the stack of warnings.
-	 *
-	 * @param      string $msg The warning message.
-	 */
-	protected function warn($msg)
-	{
-		$this->warnings[] = $msg;
-	}
+    /**
+     * Gets array of warning messages.
+     *
+     * @return array string[]
+     */
+    public function getWarnings()
+    {
+        return $this->warnings;
+    }
 
-	/**
-	 * Gets array of warning messages.
-	 *
-	 * @return     array string[]
-	 */
-	public function getWarnings()
-	{
-		return $this->warnings;
-	}
+    /**
+     * Sets the GeneratorConfig to use in the parsing.
+     *
+     * @param GeneratorConfigInterface $config
+     */
+    public function setGeneratorConfig(GeneratorConfigInterface $config)
+    {
+        $this->generatorConfig = $config;
+    }
 
-	/**
-	 * Sets the GeneratorConfig to use in the parsing.
-	 *
-	 * @param      GeneratorConfigInterface $config
-	 */
-	public function setGeneratorConfig(GeneratorConfigInterface $config)
-	{
-		$this->generatorConfig = $config;
-	}
+    /**
+     * Gets the GeneratorConfig option.
+     *
+     * @return GeneratorConfig
+     */
+    public function getGeneratorConfig()
+    {
+        return $this->generatorConfig;
+    }
 
-	/**
-	 * Gets the GeneratorConfig option.
-	 *
-	 * @return     GeneratorConfig
-	 */
-	public function getGeneratorConfig()
-	{
-		return $this->generatorConfig;
-	}
+    /**
+     * Gets a specific propel (renamed) property from the build.
+     *
+     * @param  string $name
+     * @return mixed
+     */
+    public function getBuildProperty($name)
+    {
+        if ($this->generatorConfig !== null) {
+            return $this->generatorConfig->getBuildProperty($name);
+        }
 
-	/**
-	 * Gets a specific propel (renamed) property from the build.
-	 *
-	 * @param      string $name
-	 * @return     mixed
-	 */
-	public function getBuildProperty($name)
-	{
-		if ($this->generatorConfig !== null) {
-			return $this->generatorConfig->getBuildProperty($name);
-		}
-		return null;
-	}
+        return null;
+    }
 
-	/**
-	 * Gets a type mapping from native type to Propel type.
-	 *
-	 * @return     array The mapped Propel type.
-	 */
-	abstract protected function getTypeMapping();
+    /**
+     * Gets a type mapping from native type to Propel type.
+     *
+     * @return array The mapped Propel type.
+     */
+    abstract protected function getTypeMapping();
 
-	/**
-	 * Gets a mapped Propel type for specified native type.
-	 *
-	 * @param      string $nativeType
-	 * @return     string The mapped Propel type.
-	 */
-	protected function getMappedPropelType($nativeType)
-	{
-		if ($this->nativeToPropelTypeMap === null) {
-			$this->nativeToPropelTypeMap = $this->getTypeMapping();
-		}
-		if (isset($this->nativeToPropelTypeMap[$nativeType])) {
-			return $this->nativeToPropelTypeMap[$nativeType];
-		}
-		return null;
-	}
+    /**
+     * Gets a mapped Propel type for specified native type.
+     *
+     * @param  string $nativeType
+     * @return string The mapped Propel type.
+     */
+    protected function getMappedPropelType($nativeType)
+    {
+        if ($this->nativeToPropelTypeMap === null) {
+            $this->nativeToPropelTypeMap = $this->getTypeMapping();
+        }
+        if (isset($this->nativeToPropelTypeMap[$nativeType])) {
+            return $this->nativeToPropelTypeMap[$nativeType];
+        }
 
-	/**
-	 * Give a best guess at the native type.
-	 *
-	 * @param      string $propelType
-	 * @return     string The native SQL type that best matches the specified Propel type.
-	 */
-	protected function getMappedNativeType($propelType)
-	{
-		if ($this->reverseTypeMap === null) {
-			$this->reverseTypeMap = array_flip($this->getTypeMapping());
-		}
-		return isset($this->reverseTypeMap[$propelType]) ? $this->reverseTypeMap[$propelType] : null;
-	}
+        return null;
+    }
 
-	/**
-	 * Gets a new VendorInfo object for this platform with specified params.
-	 *
-	 * @param      array $params
-	 */
-	protected function getNewVendorInfoObject(array $params)
-	{
-		$type = $this->getPlatform()->getDatabaseType();
-		$vi = new VendorInfo($type);
-		$vi->setParameters($params);
-		return $vi;
-	}
+    /**
+     * Give a best guess at the native type.
+     *
+     * @param  string $propelType
+     * @return string The native SQL type that best matches the specified Propel type.
+     */
+    protected function getMappedNativeType($propelType)
+    {
+        if ($this->reverseTypeMap === null) {
+            $this->reverseTypeMap = array_flip($this->getTypeMapping());
+        }
 
-	public function setPlatform($platform)
-	{
-	  $this->platform = $platform;
-	}
+        return isset($this->reverseTypeMap[$propelType]) ? $this->reverseTypeMap[$propelType] : null;
+    }
 
-	public function getPlatform()
-	{
-	  if (null === $this->platform)
-	  {
-	    $this->platform = $this->getGeneratorConfig()->getConfiguredPlatform();
-	  }
-	  return $this->platform;
-	}
+    /**
+     * Gets a new VendorInfo object for this platform with specified params.
+     *
+     * @param array $params
+     *
+     * @return VendorInfo
+     */
+    protected function getNewVendorInfoObject(array $params)
+    {
+        $type = $this->getPlatform()->getDatabaseType();
+        $vi = new VendorInfo($type);
+        $vi->setParameters($params);
+
+        return $vi;
+    }
+
+    public function setPlatform($platform)
+    {
+      $this->platform = $platform;
+    }
+
+    public function getPlatform()
+    {
+      if (null === $this->platform) {
+        $this->platform = $this->getGeneratorConfig()->getConfiguredPlatform();
+      }
+
+      return $this->platform;
+    }
 }

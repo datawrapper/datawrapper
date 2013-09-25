@@ -8,12 +8,12 @@
  */
 public function getArchive(PropelPDO $con = null)
 {
-	if ($this->isNew()) {
-		return null;
-	}
-	$archive = <?php echo $archiveTableQueryName ?>::create()
-		->filterByPrimaryKey($this->getPrimaryKey())
-		->findOne($con);
+    if ($this->isNew()) {
+        return null;
+    }
+    $archive = <?php echo $archiveTableQueryName ?>::create()
+        ->filterByPrimaryKey($this->getPrimaryKey())
+        ->findOne($con);
 
-	return $archive;
+    return $archive;
 }

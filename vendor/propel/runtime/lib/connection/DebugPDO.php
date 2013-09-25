@@ -107,8 +107,8 @@
  */
 class DebugPDO extends PropelPDO
 {
-	/**
-	 * @var       boolean
-	 */
-	public $useDebug = true;
+    /**
+     * @var       boolean
+     */
+    public $useDebug = true;
 }
