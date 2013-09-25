@@ -117,12 +117,16 @@ function add_header_vars(&$page, $active = null) {
         if (count($langDropdown['dropdown']) > 1) $headlinks[] = $langDropdown;
     }
     if ($user->isLoggedIn()) {
-        $shortenedMail = $user->getEmail();
-        $shortenedMail = strlen($shortenedMail) > 18 ? substr($shortenedMail, 0, 9).'...'.substr($shortenedMail, strlen($shortenedMail)-9) : $shortenedMail;
+        $username = $user->guessName();
+        if ($username == $user->getEmail()) {
+            $username = strlen($username) > 18 ? substr($username, 0, 9).'…'.substr($username, strlen($username)-9) : $username;
+        } else {
+            if (strlen($username) > 18) $username = substr($username, 0, 16).'…';
+        }
         $headlinks[] = array(
             'url' => '#user',
             'id' => 'user',
-            'title' => $shortenedMail,
+            'title' => $username,
             'icon' => 'user',
             'dropdown' => array(array(
                 'url' => '/account/settings',
