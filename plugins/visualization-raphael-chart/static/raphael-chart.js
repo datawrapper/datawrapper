@@ -310,14 +310,36 @@
             return label;
         },
 
-        labelWidth: function(txt, className, fontSize) {
-            // returns the width of a label
-            var l = $('<div class="label'+(className ? ' '+className : '')+'"><span>'+txt+'</span></div>');
-            if (fontSize) $('span', l).css('font-size', fontSize);
-            this.__root.append(l);
-            var w = $('span', l).outerWidth();
-            l.remove();
-            return w;
+        labelWidth: function(txt, className, fontSize) { // lazy evaluation
+            var lbl,
+                span,
+                $span,
+                ow,
+                root = this.__root.get(0);
+
+            lbl = document.createElement('div');
+            lbl.style.position = 'absolute';
+            lbl.style.left = '-10000px';
+            span = document.createElement('span');
+            lbl.appendChild(span);
+            $span = $(span);
+
+            root.appendChild(lbl);
+
+            ow = !_.isUndefined(span.offsetWidth) ?
+                function() { return span.offsetWidth; } :
+                function() { return $span.outerWidth(); };
+
+            function labelWidth(txt, className, fontSize) {
+                // returns the width of a label
+                lbl.setAttribute('class', 'label '+(className ? ' '+className : ''));
+                span.style.fontSize = fontSize ? fontSize : null;
+                span.innerHTML = txt;
+                var w = ow();
+                return w;
+            }
+            this.labelWidth = labelWidth;
+            return labelWidth(txt, className, fontSize);
         },
 
         labelHeight: function(txt, className, width, fontSize) {
