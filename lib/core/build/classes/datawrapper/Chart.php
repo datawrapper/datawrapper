@@ -298,11 +298,13 @@ class Chart extends BaseChart {
     }
 
     public function hasPreview() {
-        return $this->getLastEditStep() >= 3 && file_exists($this->getStaticPath() . '/m.png');
+        return file_exists($this->getStaticPath() . '/m.png');
     }
 
-    public function thumbUrl() {
-        return$this->assetUrl('m.png');
+    public function thumbUrl($forceLocal = false) {
+        return $forceLocal ?
+            'http://' . $GLOBALS['dw_config']['chart_domain'] . '/' . $this->getID() . '/m.png' :
+            $this->assetUrl('m.png');
     }
 
     public function plainUrl() {
