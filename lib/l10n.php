@@ -81,7 +81,6 @@ class Datawrapper_L10N {
         $domain = false;
         $backtrace = debug_backtrace();
         // check the entire backtrace for a plugin path
-        $from_template = false;
         foreach ($backtrace as $b) {
             if (isset($b['file']) && preg_match('#/plugins/([^/]+)/#', $b['file'], $m)) {
                 return $m[1];
