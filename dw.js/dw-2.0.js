@@ -304,7 +304,7 @@ dw.column = function(name, rows, type) {
                 range = [Number.MAX_VALUE, -Number.MAX_VALUE];
                 column.each(function(v) {
                     v = type.toNum(v);
-                    if (!_.isNumber(v)) return;
+                    if (!_.isNumber(v) || _.isNaN(v)) return;
                     if (v < range[0]) range[0] = v;
                     if (v > range[1]) range[1] = v;
                 });
@@ -1855,6 +1855,9 @@ _.extend(dw.visualization.base, {
     },
 
     renderingComplete: function() {
+        if (window.parent && window.parent['postMessage']) {
+            window.parent.postMessage('datawrapper:vis:rendered', '*');
+        }
         this.__renderedDfd.resolve();
     },
 
