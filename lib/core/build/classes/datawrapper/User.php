@@ -98,4 +98,13 @@ class User extends BaseUser {
         return $n;
     }
 
+    public function getRecentCharts($count=10) {
+        return ChartQuery::create()
+            ->filterByUser($this)
+            ->filterByDeleted(false)
+            ->orderByLastModifiedAt('desc')
+            ->limit($count)
+            ->find();
+    }
+
 } // User
