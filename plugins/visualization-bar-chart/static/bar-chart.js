@@ -331,8 +331,11 @@
         },
 
         hover: function(hover_key) {
-            var me = this;
-            _.each(me.getBarValues(), function(bar) {
+            var me = this,
+                barvalues = me.getBarValues(),
+                l = barvalues.length;
+
+            _.each(barvalues, function(bar) {
                 _.each(me.__labels[bar.name], function(lbl) {
                     if (hover_key !== undefined && bar.name == hover_key) {
                         lbl.addClass('hover');
@@ -340,7 +343,8 @@
                         lbl.removeClass('hover');
                     }
                 });
-                 _.each(me.__elements[bar.name], function(el) {
+                if (l > 50) return; // no color animation for big data
+                _.each(me.__elements[bar.name], function(el) {
                     var fill = me.getKeyColor(bar.name, bar.value, me.get('negative-color', false)), stroke;
                     if (hover_key !== undefined && bar.name == hover_key) fill = chroma.color(fill).darken(14).hex();
                     stroke = chroma.color(fill).darken(14).hex();
