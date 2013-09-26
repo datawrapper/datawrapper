@@ -335,22 +335,41 @@
                 lbl.setAttribute('class', 'label '+(className ? ' '+className : ''));
                 span.style.fontSize = fontSize ? fontSize : null;
                 span.innerHTML = txt;
-                var w = ow();
-                return w;
+                return ow();
             }
             this.labelWidth = labelWidth;
             return labelWidth(txt, className, fontSize);
         },
 
         labelHeight: function(txt, className, width, fontSize) {
-            // returns the width of a label
-            var l = $('<div class="label'+(className ? ' '+className : '')+'"><span>'+txt+'</span></div>');
-            if (fontSize) $('span', l).css('font-size', fontSize);
-            l.width(width);
-            this.__root.append(l);
-            var w = $('span', l).height();
-            l.remove();
-            return w;
+            var lbl,
+                span,
+                $span,
+                oh,
+                root = this.__root.get(0);
+
+            lbl = document.createElement('div');
+            lbl.style.position = 'absolute';
+            lbl.style.left = '-10000px';
+            span = document.createElement('span');
+            lbl.appendChild(span);
+            $span = $(span);
+
+            root.appendChild(lbl);
+
+            oh = !_.isUndefined(span.offsetHeight) ?
+                function() { return span.offsetHeight; } :
+                function() { return $span.height(); };
+
+            function labelHeight(txt, className, width, fontSize) {
+                // returns the width of a label
+                lbl.setAttribute('class', 'label '+(className ? ' '+className : ''));
+                span.style.fontSize = fontSize ? fontSize : null;
+                span.innerHTML = txt;
+                return oh();
+            }
+            this.labelHeight = labelHeight;
+            return labelHeight(txt, className, width, fontSize);
         },
 
         orderSeriesElements: function() {
