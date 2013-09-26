@@ -220,6 +220,9 @@ _.extend(dw.visualization.base, {
     },
 
     renderingComplete: function() {
+        if (window.parent && window.parent['postMessage']) {
+            window.parent.postMessage('datawrapper:vis:rendered', '*');
+        }
         this.__renderedDfd.resolve();
     },
 
