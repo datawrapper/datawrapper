@@ -1111,18 +1111,30 @@ dw.utils = {
      * taken from https://github.com/kvz/phpjs/blob/master/functions/strings/strip_tags.js
      */
     purifyHtml: function(input, allowed) {
-        if (!_.isString(input)) {
-            return input;
-        }
-        if (allowed === undefined) {
-            allowed = "<b><br><br/><i><strong>";
-        }
-        allowed  = (((allowed || "") + "").toLowerCase().match(/<[a-z][a-z0-9]*>/g) || []).join(''); // making sure the allowed arg is a string containing only tags in lowercase (<a><b><c>)
         var tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>/gi,
-            commentsAndPhpTags = /<!--[\s\S]*?-->|<\?(?:php)?[\s\S]*?\?>/gi;
-        return input.replace(commentsAndPhpTags, '').replace(tags, function ($0, $1) {
-            return allowed.indexOf('<' + $1.toLowerCase() + '>') > -1 ? $0 : '';
-        });
+            commentsAndPhpTags = /<!--[\s\S]*?-->|<\?(?:php)?[\s\S]*?\?>/gi,
+            default_allowed = "<b><br><br/><i><strong>",
+            allowed_split = {};
+
+        if (allowed === undefined) allowed = default_allowed;
+        allowed_split[allowed] = (((allowed || "") + "").toLowerCase().match(/<[a-z][a-z0-9]*>/g) || []).join(''); // making sure the allowed arg is a string containing only tags in lowercase (<a><b><c>)
+
+        function purifyHtml(input, allowed) {
+            if (!_.isString(input) || input.indexOf("<") < 0) {
+                return input;
+            }
+            if (allowed === undefined) {
+                allowed = default_allowed;
+            }
+            if (!allowed_split[allowed]) {
+                allowed_split[allowed] = (((allowed || "") + "").toLowerCase().match(/<[a-z][a-z0-9]*>/g) || []).join(''); // making sure the allowed arg is a string containing only tags in lowercase (<a><b><c>)
+            }
+            return input.replace(commentsAndPhpTags, '').replace(tags, function ($0, $1) {
+                return allowed_split[allowed].indexOf('<' + $1.toLowerCase() + '>') > -1 ? $0 : '';
+            });
+        }
+        dw.utils.purifyHtml = purifyHtml;
+        return purifyHtml(input, allowed);
     },
 
     /*
