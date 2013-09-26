@@ -18,7 +18,6 @@ class DatawrapperPlugin_CoreVisOptions extends DatawrapperPlugin {
             if (preg_match("|/chart/[^/]+/visualize|", $uri)) {
                 return array(
                     $plugin->getName() . '/sync-controls.js',
-                    $plugin->getName() . '/styles.css'
                 );
             }
             return array();
