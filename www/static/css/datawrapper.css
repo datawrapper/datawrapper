@@ -155,6 +155,31 @@ body .navbar-inverse .nav li.dropdown.active > .dropdown-toggle:hover
     color: #fff!important;
 }
 
+.navbar .mycharts.dropdown li {
+
+}
+.navbar .mycharts.dropdown li img.icon {
+    height: 20px!important;
+    width: 30px!important;
+    position: absolute;
+    left: 10px;
+    top: 4px;
+}
+.navbar .mycharts.dropdown li {
+    position: relative;
+    max-width: 240px;
+}
+.navbar .mycharts.dropdown li a {
+    padding-left: 45px;
+}
+.navbar .mycharts.dropdown li a span {
+    overflow: hidden;
+    display: block;
+    width: 100%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
 .navbar .nav li.dropdown .dropdown-toggle .caret, .navbar .nav li.dropdown.open .caret,
 .nav li.dropdown.open .caret, .nav li.dropdown.open.active .caret, .nav li.dropdown.open a:hover .caret {
     border-bottom-color: #000;

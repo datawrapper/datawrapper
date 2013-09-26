@@ -89,7 +89,24 @@ function add_header_vars(&$page, $active = null) {
     }
 
     if ($user->isLoggedIn() && $user->hasCharts()) {
-        $headlinks[] = array('url' => '/mycharts/', 'id' => 'mycharts', 'title' => __('My Charts'), 'icon' => 'signal');
+        // mycharts
+        $mycharts = array(
+            'url' => '/mycharts/',
+            'id' => 'mycharts',
+            'title' => __('My Charts'),
+            'icon' => 'signal',
+            'dropdown' => array()
+        );
+        foreach ($user->getRecentCharts(9) as $chart) {
+            $mycharts['dropdown'][] = array(
+                'url' => '/chart/'.$chart->getId().'/visualize',
+                'title' => '<img width="30" src="'.($chart->hasPreview() ? $chart->thumbUrl(true) : '').'" class="icon" /> '
+                    . '<span>' . $chart->getTitle() . '</span>'
+            );
+        }
+        $mycharts['dropdown'][] = 'divider';
+        $mycharts['dropdown'][] = array('url' => '/mycharts/', 'title' => __('All charts'));
+        $headlinks[] = $mycharts;
     } else {
         $headlinks[] = array('url' => '/gallery/', 'id' => 'gallery', 'title' => __('Gallery'), 'icon' => 'signal');
     }
@@ -132,6 +149,10 @@ function add_header_vars(&$page, $active = null) {
                 'url' => '/account/settings',
                 'icon' => 'wrench',
                 'title' => __('Settings')
+            ), array(
+                'url' => '/mycharts',
+                'icon' => 'signal',
+                'title' => __('My Charts')
             ), array(
                 'url' => '#logout',
                 'icon' => 'off',
