@@ -7,3 +7,7 @@ html body #footer {
     top: auto;
     left: auto;
 }
+
+.chart.vis-bar-chart {
+    overflow-x: hidden;
+}
