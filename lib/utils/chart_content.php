@@ -28,7 +28,7 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
     if ($published && !$debug) {
         $base_js = array(
             '//assets-datawrapper.s3.amazonaws.com/globalize.min.js',
-            '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.1/underscore-min.js',
+            '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js',
             '//cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.min.js'
         );
         if (substr($locale, 0, 2) != 'en') {
@@ -38,7 +38,7 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
         // use local assets
         $base_js = array(
             $abs . '/static/vendor/globalize/globalize.min.js',
-            $abs . '/static/vendor/underscore/underscore-1.5.1.min.js',
+            $abs . '/static/vendor/underscore/underscore-1.5.2.min.js',
             $abs . '/static/vendor/jquery/jquery-1.10.2'.($debug ? '' : '.min').'.js'
         );
         if (substr($locale, 0, 2) != 'en') {
