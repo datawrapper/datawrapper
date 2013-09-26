@@ -6,8 +6,6 @@
     dw.visualization.register('bar-chart', 'raphael-chart', {
 
         render: function(el) {
-            el = $(el);
-
             this.setRoot(el);
 
             var me = this, row = 0,
