@@ -452,37 +452,46 @@
         getKeyColor: function(key, value, useNegativeColor, colorful) {
             var me = this,
                 palette = me.theme().colors.palette,
-                color,
-                colorByRow = me.meta['color-by'] == 'row';
+                colorByRow = me.meta['color-by'] == 'row',
+                colorCache = {};
 
-            key = String(key);
+            function keyColor(key, value, useNegativeColor, colorful) {
+                var color;
 
-            var userCustomColors = me.get('custom-colors', {});
+                key = String(key);
 
-            // user has defined a colors for this key
-            if (userCustomColors[key]) {
-                color = userCustomColors[key];
+                var userCustomColors = me.get('custom-colors', {});
 
-            } else if (value && useNegativeColor) {
-                // if requested we display negative values in different color
-                color = me.theme().colors[value < 0 ? 'negative' : 'positive'];
-            } else {
-                // if the visualization has defined custom series colors, let's use them
-                if (key && me.__customColors && me.__customColors[key])
-                    color = me.__customColors[key];
-                // use base color
-                else color = palette[Math.min(me.get('base-color', 0), palette.length-1)];
+                // user has defined a colors for this key
+                if (userCustomColors[key]) {
+                    color = userCustomColors[key];
+
+                } else if (value && useNegativeColor) {
+                    // if requested we display negative values in different color
+                    color = me.theme().colors[value < 0 ? 'negative' : 'positive'];
+                } else {
+                    // if the visualization has defined custom series colors, let's use them
+                    if (key && me.__customColors && me.__customColors[key])
+                        color = me.__customColors[key];
+                    // use base color
+                    else color = palette[Math.min(me.get('base-color', 0), palette.length-1)];
+                }
+
+                if (colorCache[color]) return colorCache[color];
+
+                var key_color = chroma.hex(color),
+                    bg_color = chroma.hex(me.theme().colors.background),
+                    bg_lch = bg_color.lch();
+
+                if (key && !me.chart().isHighlighted(key)) {
+                    key_color = chroma.interpolate(key_color, bg_color, bg_lch[0] < 60 ? 0.7 : 0.63);
+                }
+
+                colorCache[color] = key_color.hex();
+                return colorCache[color];
             }
-
-            var key_color = chroma.hex(color),
-                bg_color = chroma.hex(me.theme().colors.background),
-                bg_lch = bg_color.lch();
-
-            if (key && !me.chart().isHighlighted(key)) {
-                key_color = chroma.interpolate(key_color, bg_color, bg_lch[0] < 60 ? 0.7 : 0.63);
-            }
-
-            return key_color.hex();
+            me.getKeyColor = keyColor;
+            return keyColor(key, value, useNegativeColor, colorful);
         },
 
         setKeyColor: function(key, color) {
