@@ -574,9 +574,9 @@ var dw = dw || {};
             function setColor(hex, cont) {
                 var lch = chroma.color(hex).lch(),
                     center = [50, 50, lch[2]],
-                    spread_ = [50, 50, 60],
-                    steps = [3, 3, 7],
-                    steps2 = [undefined, undefined, 6];
+                    spread_ = [55, 50, 70],
+                    steps = [7, 7, 7],
+                    steps2 = [6, 6, 6];
 
                 opts.color = hex;
                 _.each([lightness, saturation, hue], function(cnt, i) {

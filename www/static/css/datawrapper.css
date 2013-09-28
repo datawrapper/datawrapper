@@ -1365,13 +1365,13 @@ label.separator {
 }
 
 .color-selector .color-axis .color {
-    width: 22px;
+    width: 11px;
     height: 22px;
     display: inline-block;
 }
 
 .color-selector .color-axis .color.selected {
-    width: 18px;
+    width: 7px;
     height: 18px;
 }
 
@@ -1422,4 +1422,17 @@ label.separator {
 
 .color-selector .footer .color.selected {
     border: 0;
+}
+
+
+.dw-create-visualize .control-group .pull-left {
+    margin-right: 20px;
+}
+
+.dw-create-visualize .control-group .pull-left label {
+    font-size: 11px;
+    color: #777;
+    text-transform: uppercase;
+    margin: 0 0 3px;
+    font-weight: bold;
 }
