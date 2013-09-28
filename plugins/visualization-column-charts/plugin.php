@@ -17,7 +17,7 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
             "version" => $this->getVersion(),
             "dimensions" => 1,
             "extends" => "raphael-chart",
-            "order" => 0,
+            "order" => 9,
             "axes" => array(
                 "labels" => array(
                     "accepts" => array("text", "date")
@@ -120,7 +120,7 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
             "dimensions" => 2,
             "extends" => "grouped-column-chart",
             "color-by" => "row",
-            "order" => 10,
+            "order" => 11,
             "axes" => array(
                 "labels" => array(
                     "accepts" => array("text", "date")
