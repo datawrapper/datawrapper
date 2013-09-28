@@ -187,7 +187,7 @@ function add_header_vars(&$page, $active = null) {
     $page['DW_CHART_CACHE_DOMAIN'] = $config['chart_domain'];
     $page['SUPPORT_EMAIL'] = $config['email']['support'];
     $page['config'] = $config;
-    $page['invert_navbar'] = substr($config['domain'], -4) == '.pro';
+    $page['invert_navbar'] = isset($config['invert_header']) && $config['invert_header'] || substr($config['domain'], -4) == '.pro';
     $page['noSignup'] = $config['prevent_guest_access'];
     $page['footer'] = DatawrapperHooks::execute(DatawrapperHooks::GET_FOOTER);
 
