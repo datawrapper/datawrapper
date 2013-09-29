@@ -36,27 +36,30 @@ $(function() {
     }
 
     function syncSelectAxisColumn(evt, args) {
-        var select = $('select#'+args.key),
-            chart = args.chart,
-            dataset = chart.dataset(),
-            axisKey = select.data('axis'),
-            axisMeta = args.vis.meta.axes[axisKey];
+        _.each(args.option.axes, function(axis) {
+            var select = $('select#'+args.key+'-'+axis.id),
+                chart = args.chart,
+                dataset = chart.dataset(),
+                axisMeta = args.vis.meta.axes[axis.id],
+                defCol = args.vis.axes()[axis.id];
 
-        // populate select with columns that match accepted types for axis
-        dataset.eachColumn(function(column) {
-            if (_.indexOf(axisMeta.accepts, column.type()) > -1) {
-                $('<option />')
-                    .attr('value', column.name())
-                    .html(column.title())
-                    .attr('selected', column.name() == args.vis.axes().color)
-                    .appendTo(select);
-            }
-        });
+            // populate select with columns that match accepted types for axis
+            dataset.eachColumn(function(column) {
+                if (_.indexOf(axisMeta.accepts, column.type()) > -1) {
+                    $('<option />')
+                        .attr('value', column.name())
+                        .html(column.title())
+                        .prop('selected', column.name() == defCol)
+                        .appendTo(select);
+                }
+            });
 
-        select.change(function() {
-            var axes = _.clone(chart.get('metadata.axes', {}));
-            axes[axisKey] = select.val();
-            chart.set('metadata.axes', axes);
+            select.change(function() {
+                var axes = _.clone(chart.get('metadata.axes', {}));
+                axes[axis.id] = select.val();
+                chart.set('metadata.axes', axes);
+            });
+
         });
     }
 
