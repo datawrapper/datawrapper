@@ -44,6 +44,12 @@ class DatawrapperPlugin {
 
 		// create directory in www/static/plugins/ if not exists
 		$plugin_static_path = ROOT_PATH . 'www/static/plugins/' . $this->getName();
+
+		// try sym-linking first
+		if (is_link($plugin_static_path)) return;
+		exec('ln -s '.$source_path.' '.$plugin_static_path);
+		if (is_link($plugin_static_path)) return;
+
 		if (!file_exists($plugin_static_path)) {
 			mkdir($plugin_static_path);
 		}
@@ -61,6 +67,12 @@ class DatawrapperPlugin {
 
 		// create directory in /templates/plugins/ if not exists
 		$plugin_template_path = ROOT_PATH . 'templates/plugins/' . $this->getName();
+
+		// try sym-linking first
+		if (is_link($plugin_template_path)) return;
+		exec('ln -s '.$source_path.' '.$plugin_template_path);
+		if (is_link($plugin_template_path)) return;
+
 		if (!file_exists($plugin_template_path)) {
 			mkdir($plugin_template_path);
 		}
