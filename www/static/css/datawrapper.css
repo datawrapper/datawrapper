@@ -1433,6 +1433,6 @@ label.separator {
     font-size: 11px;
     color: #777;
     text-transform: uppercase;
-    margin: 0 0 3px;
+    margin: 0 0 3px 2px;
     font-weight: bold;
 }
