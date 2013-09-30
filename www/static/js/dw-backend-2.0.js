@@ -249,7 +249,11 @@ var dw = dw || {};
 
         ctx.fillStyle = win.__dw.vis.theme().colors.background;
         ctx.fillRect(0, 0, c.w * scale, c.h * scale);
-        ctx.drawSvg(svg.get(0).innerSVG, 0, 0, c.w * scale, c.h * scale);
+        var svg_src = svg.get(0).innerSVG;
+        // remove url fills
+        svg_src = svg_src.replace(/fill="url\([^\)]+\)"/g, 'fill="#cccccc"')
+                    .replace(/<pattern.*<\/pattern>/g, '');
+        ctx.drawSvg(svg_src, 0, 0, c.w * scale, c.h * scale);
 
         var tempCanvas = document.createElement("canvas"),
             tCtx = tempCanvas.getContext("2d");
