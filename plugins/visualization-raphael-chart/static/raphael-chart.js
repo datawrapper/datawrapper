@@ -659,6 +659,10 @@
             });
             me.__elements = {};
             me.__labels = {};
+        },
+
+        _svgCanvas: function() {
+            return this.__canvas.paper.canvas;
         }
 
     });

@@ -240,6 +240,15 @@ _.extend(dw.visualization.base, {
      */
     supportsSmartRendering: function() {
         return false;
+    },
+
+    /*
+     * this hook is used for optimizing the thumbnails on Datawrapper
+     * the function is expected to return the svg element that contains
+     * the elements to be rendered in the thumbnails
+     */
+    _svgCanvas: function() {
+        return false;
     }
 
 });
