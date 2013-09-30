@@ -47,10 +47,11 @@ class DatawrapperPlugin {
 
 		// try sym-linking first
 		if (is_link($plugin_static_path)) return;
-		exec('ln -s '.$source_path.' '.$plugin_static_path);
-		if (is_link($plugin_static_path)) return;
 
 		if (!file_exists($plugin_static_path)) {
+			exec('ln -s '.$source_path.' '.$plugin_static_path);
+			if (is_link($plugin_static_path)) return;
+
 			mkdir($plugin_static_path);
 		}
 		// copy static files to that directory
@@ -70,10 +71,11 @@ class DatawrapperPlugin {
 
 		// try sym-linking first
 		if (is_link($plugin_template_path)) return;
-		exec('ln -s '.$source_path.' '.$plugin_template_path);
-		if (is_link($plugin_template_path)) return;
 
 		if (!file_exists($plugin_template_path)) {
+			exec('ln -s '.$source_path.' '.$plugin_template_path);
+			if (is_link($plugin_template_path)) return;
+
 			mkdir($plugin_template_path);
 		}
 		copy_recursively($source_path, $plugin_template_path);
