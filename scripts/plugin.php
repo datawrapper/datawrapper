@@ -39,7 +39,35 @@ function list_plugins() {
     print "\n";
     foreach ($plugins as $plugin) {
         print $plugin->getEnabled() ? "\033[1;32mENABLED" : "\033[1;31mDISABLED";
-        print "\033[m ".$plugin->getName()."\n";
+        print "\033[m ".$plugin->getName();
+        // check for un-committed changes
+        $info = $plugin->getInfo();
+        if (!empty($info['repository']) &&
+            $info['repository']['type'] == 'git' &&
+            file_exists($plugin->getPath() . '.git/config')) {
+
+            $ret = array();
+            exec('cd '.$plugin->getPath().'; git fetch 2>&1', $ret, $err);
+            $ret = array();
+            exec('cd '.$plugin->getPath().'; git status -bs 2>&1', $ret, $err);
+            $outdated = strpos($ret[0], '[behind') > -1;
+            $modified = $deleted = $new = $added = false;
+            foreach ($ret as $line) {
+                # code...
+                if (substr($line, 0, 2) == '??') $new = true;
+                if ($line[1] == 'M') $modified = true;
+                if ($line[0] == 'A') $added = true;
+                if ($line[1] == 'D') $deleted = true;
+            }
+            print " ";
+            if ($new) print "\033[0;34m✭ ";
+            if ($added) print "\033[0;32m✚ ";
+            if ($modified) print "\033[1;34m✹ ";
+            if ($deleted) print "\033[0;31m✖ ";
+            if ($outdated) print "\033[1;32m➤ ";
+
+        }
+        print "\033[m\n";
     }
     _apply("*", function($id) {
         $plugin = PluginQuery::create()->findPk($id);
