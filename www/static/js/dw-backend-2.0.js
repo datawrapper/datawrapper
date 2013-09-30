@@ -522,6 +522,68 @@ var dw = dw || {};
         });
     }
 
+    dw.backend = {
+        init: function() {
+            initLanguageLinks();
+            initializeSignUp();
+            initializeLogout();
+
+            $('a[data-toggle=modal]').click(function(e) {
+                var a = $(e.target),
+                    tgt = $(a.data('target'));
+                tgt.modal();
+            });
+
+            initColorSelector();
+            initNumberStepper();
+        },
+
+        logMessage: logMessage,
+        logError: logError,
+        snapshot: snapshot,
+        initLiveUpdates: initLiveUpdates,
+        updateChartInIframe: updateChartInIframe,
+        resendActivationMail: resendActivationMail,
+        popupChart: popupChart,
+        checkPassword: checkPassword,
+        clearAlerts: clearAlerts,
+        syncChart: syncChart,
+        alert: customAlert
+    }; // end dw.backend
+
+    dw.backend.notify = (function() {
+        $.fn.fadeOutAndRemove = function() {
+            var me = $(this);
+            // remove from DOM
+            me.fadeOut(400, function() {
+               me.unbind().remove();
+            });
+        };
+        return function(msg) {
+            // search for previous similar notification and return it if found
+            var $notifications = $('#notifications .notification');
+            for(var i=0; i<$notifications.length; i++) {
+                var $notification = $($notifications.get(i));
+                if($notification.find('.message').html() == msg) {
+                    return $notification;
+                }
+            }
+            var $container = $('<div />');
+            // add the notification
+            $container.addClass('notification')
+                .html('<div class="action close">✕</div><div class="bg">'+$('#alertModal .bg').html()+'</div><div class="message">'+msg+'</div>')
+                .appendTo('#notifications')
+                .hide()
+                .fadeIn(400);
+            // bind event on close button click
+            $container.find(".action.close").click(function(){$container.fadeOutAndRemove();});
+            return $container;
+        };
+    })();
+
+    // initialize backend on page load
+    $(dw.backend.init);
+
     function initColorSelector() {
         /*
          * API-draft:
@@ -538,8 +600,8 @@ var dw = dw || {};
                 popup = $('<div />')
                     .addClass('color-selector')
                     .css({
-                        left: btn.offset().left,
-                        top: btn.offset().top - 60 // 30px = body.padding-top
+                        left: btn.offset().left - 70,
+                        top: btn.offset().top - 40 // 30px = body.padding-top
                     })
                     .appendTo('body'),
                 palette = $('<div />').addClass('palette').appendTo(popup),
@@ -582,6 +644,9 @@ var dw = dw || {};
                 _.each([lightness, saturation, hue], function(cnt, i) {
                     if (cont != cnt || cont == hue) {
                         cnt.html('');
+                        var values = spread(center[i], spread_[i], steps[i], steps2[i]);
+                        // shift center to match color
+                        center[i] += lch[i] - dw.utils.nearest(values, lch[i]);
                         _.each(spread(center[i], spread_[i], steps[i], steps2[i]), function(x) {
                             var lch_ = lch.slice(0);
                             lch_[i] = x;
@@ -648,65 +713,57 @@ var dw = dw || {};
         };
     }
 
-    dw.backend = {
-        init: function() {
-            initLanguageLinks();
-            initializeSignUp();
-            initializeLogout();
+    function initNumberStepper() {
+        $.fn.numberstepper = function(opts) {
 
-            $('a[data-toggle=modal]').click(function(e) {
-                var a = $(e.target),
-                    tgt = $(a.data('target'));
-                tgt.modal();
-            });
+            var ct = $(this), options;
 
-            initColorSelector();
-        },
+            if (ct.data('number-stepper-options')) {
+                // already initialized
+                var o = $.extend(ct.data('number-stepper-options'), opts);
+                change(o.value);
+                $('input', ct).val(o.value);
 
-        logMessage: logMessage,
-        logError: logError,
-        snapshot: snapshot,
-        initLiveUpdates: initLiveUpdates,
-        updateChartInIframe: updateChartInIframe,
-        resendActivationMail: resendActivationMail,
-        popupChart: popupChart,
-        checkPassword: checkPassword,
-        clearAlerts: clearAlerts,
-        syncChart: syncChart,
-        alert: customAlert
-    }; // end dw.backend
+            } else {
+                // init
+                options = $.extend({
+                    min: ct.data('min') || 0,
+                    max: ct.data('max') || 10,
+                    value: ct.data('value') || 5
+                }, opts);
+                ct.data('number-stepper-options', options);
+                initUI();
+            }
 
-    dw.backend.notify = (function() {
-        $.fn.fadeOutAndRemove = function() {
-            var me = $(this);
-            // remove from DOM
-            me.fadeOut(400, function() {
-               me.unbind().remove();
-            });
-        };
-        return function(msg) {
-            // search for previous similar notification and return it if found
-            var $notifications = $('#notifications .notification');
-            for(var i=0; i<$notifications.length; i++) {
-                var $notification = $($notifications.get(i));
-                if($notification.find('.message').html() == msg) {
-                    return $notification;
+            function initUI() {
+                ct.html(''); // clean ui
+
+                // construct ui
+                var bg = $('<div />').addClass('btn-group number-stepper').appendTo(ct),
+                    minus = $('<button />').addClass('btn btn-minus').text('-').appendTo(bg),
+                    tf = $('<input type="text" />').addClass('input-small').val(options.value).appendTo(bg),
+                    plus = $('<button />').addClass('btn btn-plus').text('+').appendTo(bg);
+
+                // add events
+                minus.click(function() { change(options.value-1); });
+                tf.change(function() { change(+tf.val()); });
+                plus.click(function() { change(options.value+1); });
+            }
+
+            function change(new_value) {
+                var options = ct.data('number-stepper-options'),
+                    newv = Math.min(options.max, Math.max(options.min, new_value)),
+                    tf = $('input', ct);
+                if (newv != options.value) {
+                    tf.val(newv);
+                    options.value = newv;
+                    if ($.isFunction(options.changed)) {
+                        _.defer(options.changed, newv);
+                    }
                 }
             }
-            var $container = $('<div />');
-            // add the notification
-            $container.addClass('notification')
-                .html('<div class="action close">✕</div><div class="bg">'+$('#alertModal .bg').html()+'</div><div class="message">'+msg+'</div>')
-                .appendTo('#notifications')
-                .hide()
-                .fadeIn(400);
-            // bind event on close button click
-            $container.find(".action.close").click(function(){$container.fadeOutAndRemove();});
-            return $container;
         };
-    })();
+    }
 
-    // initialize backend on page load
-    $(dw.backend.init);
 
 }).call(this);

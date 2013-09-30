@@ -1427,6 +1427,7 @@ label.separator {
 
 .dw-create-visualize .control-group .pull-left {
     margin-right: 20px;
+    margin-bottom: 10px;
 }
 
 .dw-create-visualize .control-group .pull-left label {
@@ -1435,4 +1436,22 @@ label.separator {
     text-transform: uppercase;
     margin: 0 0 3px 2px;
     font-weight: bold;
+}
+
+
+.number-stepper input {
+    width: 4ex;
+    text-align: center;
+    border-radius: 0;
+    border-right: 0;
+    border-left: 0;
+}
+
+.number-stepper .btn-minus {
+    padding-left: 8px;
+    padding-right: 8px;
+}
+.number-stepper .btn-plus {
+    padding-left: 7px;
+    padding-right: 7px;
 }
