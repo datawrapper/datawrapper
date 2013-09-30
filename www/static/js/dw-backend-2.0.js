@@ -639,7 +639,7 @@ var dw = dw || {};
 
             function setColor(hex, cont) {
                 var lch = chroma.color(hex).lch(),
-                    center = [50, 50, lch[2]],
+                    center = [60, 50, lch[2]],
                     spread_ = [55, 50, 70],
                     steps = [7, 7, 7],
                     steps2 = [6, 6, 6];
@@ -676,9 +676,10 @@ var dw = dw || {};
                     }).addClass('inverted');
             }
 
-            function spread(center, width, num, num2) {
+            function spread(center, width, num, num2, exp) {
                 var r = [center], s = width / num, a = 0;
                 num2 = _.isUndefined(num2) ? num : num2;
+                exp = exp || 1;
                 while (num-- > 0) {
                     a += s;
                     r.unshift(center - a);
