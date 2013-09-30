@@ -287,32 +287,38 @@ $(function() {
     }
     $('.highlighted-series .badge').click(highlightSeriesClick);
 
-    function onDatasetLoaded() {
-        loadVis();
-        var s = $('#highlight-series'), s2 = $('.highlighted-series');
+    function initHighlightSeries() {
+        var vis = $('iframe').get(0).contentWindow.__dw ?
+                  $('iframe').get(0).contentWindow.__dw.vis :
+                  dw.backend.currentVis;
+            s = $('#highlight-series').html(''),
+            s2 = $('.highlighted-series');
         s.find("option[value!='---']").remove();
-        _.each(dw.backend.currentVis.keys(), function(key) {
-            s.append('<option>'+key+'</option>');
+        _.each(vis.keys(), function(key) {
+            s.append('<option value="'+key+'">'+key+(vis.keyLabel(key) != key ? ' ('+vis.keyLabel(key)+')' : '')+'</option>');
         });
-        s.change(function() {
+        s.off('change').change(function() {
             if (s.val() != "---") {
                 var selected = _getHighlights();
                 if (_.indexOf(selected, s.val()) >= 0) {
                     s.val('---');
                     return;
                 }
-
-                var span = $('<span data-series="'+s.val()+'" class="badge badge-info"><i class="icon-remove icon-white"></i>'+s.val()+'</span>');
-
+                var span = $('<span><i class="icon-remove icon-white"></i>'+$('option:selected', s).text().substr(0, 20)+'</span>')
+                            .addClass('badge badge-info')
+                            .data('series', s.val());
                 selected.push(s.val());
-
                 chart.set('metadata.visualize.highlighted-series', selected);
-
                 s2.append(span);
                 span.click(highlightSeriesClick);
                 s.val('---');
             }
         });
+    }
+
+    function onDatasetLoaded() {
+        loadVis();
+        initHighlightSeries();
         _.each(themes, function(theme) {
             if (theme.id == chart.get('theme')) {
                 var w = chart.get('metadata.publish.embed-width', theme.default_width || 560),
@@ -409,6 +415,7 @@ $(function() {
                 }
                 if (evt.data == 'datawrapper:vis:rendered') {
                     initLiveEditing();
+                    initHighlightSeries();
                 }
                 if (evt.data.slice(0, 7) == 'notify:') {
                     dw.backend.notify(evt.data.slice(7));
