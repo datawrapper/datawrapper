@@ -59,7 +59,7 @@ $twig->addFunction('has_hook', new Twig_Function_Function('call_hook'));
 $twig->addExtension(new Twig_Extension_I18n());
 
 // iterate over all your templates
-foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($tplDir), RecursiveIteratorIterator::LEAVES_ONLY) as $file)
+foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($tplDir, RecursiveDirectoryIterator::FOLLOW_SYMLINKS), RecursiveIteratorIterator::LEAVES_ONLY) as $file)
 {
     if (substr($file, -5) == ".twig") {
         // force compilation
