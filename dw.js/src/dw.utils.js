@@ -163,17 +163,29 @@ dw.utils = {
      * precision where the values remain unique
      */
     smartRound: function(values, add_precision) {
-            var result = [], precision = 0, nonEqual = true;
-            do {
-                result = _.map(values, round);
-                precision++;
-            } while (_.uniq(result, true).length < values.length);
-            if (add_precision) {
-                precision += add_precision - 1;
-                result = _.map(values, round);
-            }
-            function round(b) { return +(b.toFixed(precision)); }
-            return result;
+        var result = [], precision = 0, nonEqual = true;
+        do {
+            result = _.map(values, round);
+            precision++;
+        } while (_.uniq(result, true).length < values.length);
+        if (add_precision) {
+            precision += add_precision - 1;
+            result = _.map(values, round);
         }
+        function round(b) { return +(b.toFixed(precision)); }
+        return result;
+    },
+
+    nearest: function(array, val) {
+        var min_diff = Number.MAX_VALUE, min_diff_val;
+        _.each(array, function(v) {
+            var d = Math.abs(v - val);
+            if (d < min_diff) {
+                min_diff = d;
+                min_diff_val = v;
+            }
+        });
+        return min_diff_val;
+    }
 
 };
