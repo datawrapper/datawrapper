@@ -229,12 +229,12 @@ var dw = dw || {};
         function px(s) { return Math.floor(Number(s.substr(0, s.length-2))); }
 
         var body = iframe.get(0).contentDocument,
-            win = iframe.get(0).contentWindow;
+            win = iframe.get(0).contentWindow,
+            vis = win.__dw.vis;
 
-        if ($('svg', body).get(0) === undefined) return false;
+        if (!vis._svgCanvas()) return false;
 
-        var svg = $('svg', body),
-            c = win.__dw.vis.__canvas,
+        var c = win.__dw.vis.__canvas,
             x = c.lpad + (c.lpad2 || 0),
             y = 0,
             w = c.w - x - c.rpad,
@@ -249,7 +249,8 @@ var dw = dw || {};
 
         ctx.fillStyle = win.__dw.vis.theme().colors.background;
         ctx.fillRect(0, 0, c.w * scale, c.h * scale);
-        var svg_src = svg.get(0).innerSVG;
+        var svg_src = vis._svgCanvas().innerSVG;
+        console.log(svg_src);
         // remove url fills
         svg_src = svg_src.replace(/fill="url\([^\)]+\)"/g, 'fill="#cccccc"')
                     .replace(/<pattern.*<\/pattern>/g, '');
