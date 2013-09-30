@@ -204,6 +204,10 @@ _.extend(dw.visualization.base, {
         return [];
     },
 
+    keyLabel: function(key) {
+        return key;
+    },
+
     /*
      * called by the core whenever the chart is re-drawn
      * without reloading the page
