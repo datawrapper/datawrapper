@@ -230,9 +230,9 @@ var dw = dw || {};
 
         var body = iframe.get(0).contentDocument,
             win = iframe.get(0).contentWindow,
-            vis = win.__dw.vis;
+            vis = win.__dw ? win.__dw.vis : false;
 
-        if (!vis._svgCanvas()) return false;
+        if (!vis || !vis._svgCanvas()) return false;
 
         var c = win.__dw.vis.__canvas,
             x = c.lpad + (c.lpad2 || 0),
@@ -538,6 +538,67 @@ var dw = dw || {};
         });
     }
 
+
+    function initLiveEditing() {
+        $.fn.initLiveEditing = function() {
+            return $(this)
+            .attr('contenteditable', true)
+            .off('focus').on('focus', function(evt) {
+                $(evt.target).data('old-value', $(evt.target).html());
+            })
+            .off('keydown').on('keydown', function(evt) {
+                if (evt.keyCode == 27) {
+                    $(evt.target).html($(evt.target).data('old-value')).blur();
+                    return;
+                }
+                if (evt.keyCode == 13) {
+                    $(evt.target).blur();
+                    evt.preventDefault();
+                }
+            });
+        };
+    }
+
+    function enableLiveEditing(iframe) {
+        var doc = iframe.get(0).contentDocument;
+
+        $('.label[data-column][data-row] span', doc)
+            .initLiveEditing()
+            .off('blur').on('blur', function(evt) {
+                var span = $(evt.target),
+                    val = $.trim(span.html()),
+                    label = span.parent(),
+                    transpose = chart.get('metadata.data.transpose', false),
+                    dataset = chart.dataset(),
+                    column = label.data('column'),
+                    row = label.data('row'),
+                    c = !transpose ? dataset.indexOf(column) : 0,
+                    r = !transpose ? row+1 : dataset.indexOf(column);
+
+                if (val !== '' && val != $.trim($(evt.target).data('old-value'))) {
+                    var changes = chart.get('metadata.data.changes', []).slice(0),
+                        change = { row: r, column: c, value: val };
+                    changes.push(change);
+                    chart.set('metadata.data.changes', changes);
+                    dw.backend.notify(dw.backend.messages.initLiveEditSuccess.replace('[', '<a href="describe">').replace(']', '</a>'));
+                }
+            });
+
+        $('.chart-title', doc)
+            .initLiveEditing()
+            .off('blur').on('blur', function() {
+                chart.set('title', $('.chart-title', doc).html());
+                $('#text-title').val($('.chart-title', doc).html());
+            });
+
+        $('.chart-intro', doc)
+            .initLiveEditing()
+            .off('blur').on('blur', function() {
+                chart.set('metadata.describe.intro', $('.chart-intro', doc).html());
+                $('#text-intro').val($('.chart-intro', doc).html());
+            });
+    }
+
     dw.backend = {
         init: function() {
             initLanguageLinks();
@@ -552,12 +613,14 @@ var dw = dw || {};
 
             initColorSelector();
             initNumberStepper();
+            initLiveEditing();
         },
 
         logMessage: logMessage,
         logError: logError,
         snapshot: snapshot,
         initLiveUpdates: initLiveUpdates,
+        enableLiveEditing: enableLiveEditing,
         updateChartInIframe: updateChartInIframe,
         resendActivationMail: resendActivationMail,
         popupChart: popupChart,
