@@ -94,11 +94,11 @@ $app->post('/users', function() use ($app) {
     if ($invitation) {
         // send account invitation link
         $invitationLink = $protocol . '://' . $domain . '/account/invite/' . $user->getActivateToken();
-
+        include(ROOT_PATH . 'lib/templates/invitation-email.php');
         dw_send_support_email(
             $data->email,
             sprintf(__('You have been invited to Datawrapper on %s'), $domain),
-            $password_reset_mail,
+            $invitation_mail,
             array(
                 'name' => $user->guessName(),
                 'invitation_link' => $invitationLink
@@ -109,7 +109,6 @@ $app->post('/users', function() use ($app) {
         // send account activation link
         $activationLink = $protocol . '://' . $domain . '/account/activate/' . $user->getActivateToken();
         include(ROOT_PATH . 'lib/templates/activation-email.php');
-
         dw_send_support_email(
             $data->email,
             __('Datawrapper: Please activate your email address'),
