@@ -2,6 +2,7 @@ CHANGELOG
 ---------
 
 ### 1.5.5
+* added automatic number formatting
 * fixed theme inheritance, no more deep-copying of arrays
 * improved email communication
 * updated Propel to 1.6.8
