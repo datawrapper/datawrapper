@@ -1,7 +1,7 @@
 CHANGELOG
 ---------
 
-### 1.5.5
+### 1.6
 * fixed theme inheritance, no more deep-copying of arrays
 * improved language in email communication
 * updated Propel to 1.6.8
