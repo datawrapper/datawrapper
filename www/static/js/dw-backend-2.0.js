@@ -339,7 +339,9 @@ var dw = dw || {};
                 }
             },
             saved: function() {
-                if (needReload) iframe.attr('src', iframe.attr('src'));
+                if (needReload) {
+                    iframe.attr('src', iframe.attr('src').replace(/&random=\d+/, '&random='+_.random(100000)));
+                }
             }
         });
     }
