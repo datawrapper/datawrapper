@@ -27,6 +27,6 @@ vows
                 formatted = []
                 for v in col.values()
                     formatted.push fmt(v)
-                assert.deepEqual formatted, ['5.4', '4.2', '4', '3.6', '3.4']
+                assert.deepEqual formatted, ['5.4', '4.2', '4.0', '3.6', '3.4']
 
     .export module
