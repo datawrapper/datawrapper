@@ -19,14 +19,16 @@ class DatawrapperPlugin_AnalyticsPiwik extends DatawrapperPlugin {
         $url = $config['url'];
         $idSite = $config['idSite'];
 
+        $user = $chart->getUser();
+
         print '<!-- Piwik -->
 <script type="text/javascript">
   var _paq = _paq || [];
   _paq.push(["setDocumentTitle", document.domain + "/" + document.title]);
   _paq.push(["setCookieDomain", "*.www.datawrapper.de"]);
-  '.(is_a($chart, 'Chart') && $chart->isPublic() ?
+  '.(is_a($chart, 'Chart') && $user ?
  '_paq.push(["setCustomVariable", 1, "Layout", "'.$chart->getTheme().'", "page"]);
-  _paq.push(["setCustomVariable", 2, "Author", "'.$chart->getUser()->getId().'", "page"]);
+  _paq.push(["setCustomVariable", 2, "Author", "'.$user->getId().'", "page"]);
   _paq.push(["setCustomVariable", 3, "Visualization", "'.$chart->getType().'", "page"]);
   ' : '').'
   _paq.push(["trackPageView"]);
