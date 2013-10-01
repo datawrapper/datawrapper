@@ -468,7 +468,7 @@
             return color;
         },
 
-        getKeyColor: function(key, value, useNegativeColor, colorful) {
+        getKeyColor: function(_key, _value, _useNegativeColor, _colorful) {
             var me = this,
                 palette = me.theme().colors.palette,
                 colorByRow = me.meta['color-by'] == 'row',
@@ -496,21 +496,21 @@
                     else color = palette[Math.min(me.get('base-color', 0), palette.length-1)];
                 }
 
-                if (colorCache[color]) return colorCache[color];
-
                 var key_color = chroma.hex(color),
                     bg_color = chroma.hex(me.theme().colors.background),
                     bg_lch = bg_color.lch();
 
                 if (key && !me.chart().isHighlighted(key)) {
-                    key_color = chroma.interpolate(key_color, bg_color, bg_lch[0] < 60 ? 0.7 : 0.63);
+                    if (!colorCache[color+'-hl']) {
+                        colorCache[color+'-hl'] = chroma.interpolate(key_color, bg_color, bg_lch[0] < 60 ? 0.7 : 0.63);
+                    }
+                    return colorCache[color+'-hl'];
                 }
-
-                colorCache[color] = key_color.hex();
-                return colorCache[color];
+                return color;
             }
+
             me.getKeyColor = keyColor;
-            return keyColor(key, value, useNegativeColor, colorful);
+            return keyColor(_key, _value, _useNegativeColor, _colorful);
         },
 
         setKeyColor: function(key, color) {
