@@ -48,8 +48,9 @@
                 return false;
             }
 
-            $('#upload-data').click(function() {
+            $('#upload-data, .create-nav .submit').click(function(e) {
                 uploadData('describe');
+                e.preventDefault();
             });
 
             var txtarea = $('#upload-data-text');
