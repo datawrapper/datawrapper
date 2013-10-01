@@ -63,6 +63,10 @@ a img { border:0px; }
         1px 2px 0px #FFFFFF, 2px 1px 0px #FFFFFF, 1px -2px 0px #FFFFFF, -2px 1px 0px #FFFFFF;
 }
 
+.label.outline span sup {
+    text-shadow: none;
+}
+
 .label.highlighted, .label.axis {
     font-size: 12px;
     z-index: 100;
