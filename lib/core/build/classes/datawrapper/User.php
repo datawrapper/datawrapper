@@ -102,6 +102,7 @@ class User extends BaseUser {
         return ChartQuery::create()
             ->filterByUser($this)
             ->filterByDeleted(false)
+            ->filterByLastEditStep(array("min", 4))
             ->orderByLastModifiedAt('desc')
             ->limit($count)
             ->find();
