@@ -303,7 +303,7 @@ class Chart extends BaseChart {
 
     public function thumbUrl($forceLocal = false) {
         return $forceLocal ?
-            'http://' . $GLOBALS['dw_config']['chart_domain'] . '/' . $this->getID() . '/m.png' :
+            '//' . $GLOBALS['dw_config']['chart_domain'] . '/' . $this->getID() . '/m.png' :
             $this->assetUrl('m.png');
     }
 
