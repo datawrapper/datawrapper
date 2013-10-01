@@ -11,268 +11,47 @@ define('DATAWRAPPER_VERSION', '1.5.4');  // must be the same as in package.json
 
 define('ROOT_PATH', '../');
 
-require_once '../lib/utils/check_server.php';
+require_once ROOT_PATH . 'lib/utils/check_server.php';
+
 check_server();
 
-require '../lib/bootstrap.php';
+require ROOT_PATH . 'lib/bootstrap.php';
 
-// Load twig instance
-$twig = $app->view()->getEnvironment();
+require ROOT_PATH . 'lib/utils/twig-init.php';
 
-// Twig Extension to convert strings to nice JavaScript class names, e.g. bar-chart --> BarChart
-$twig->addFilter('classify', new Twig_Filter_Function('str_classify'));
-function str_classify($s) {
-    return preg_replace('/\s/', '', ucwords(preg_replace('/[_\-\.]/', ' ', $s)));
-}
+require_once ROOT_PATH . 'lib/utils/i18n.php';
+require_once ROOT_PATH . 'lib/utils/disable_cache.php';
+require_once ROOT_PATH . 'lib/utils/add_header_vars.php';
+require_once ROOT_PATH . 'lib/utils/add_editor_nav.php';
 
-// Twig Extension to jsonify objects
-$twig->addFilter('json', new Twig_Filter_Function('toJSON'));
-function toJSON($arr) {
-    return json_encode($arr);
-}
-
-// Twig Extension to clean HTML from malicious code
-require_once '../vendor/htmlpurifier/HTMLPurifier.standalone.php';
-$config = HTMLPurifier_Config::createDefault();
-$config->set('HTML.Allowed', 'a[href],p,b,div,span,strong,u,i,em,q,blockquote,*[style],br,small');
-$_HTMLPurifier = new HTMLPurifier($config);
-$twig->addFilter('purify', new Twig_Filter_Function('str_purify'));
-
-function str_purify($dirty_html) {
-    global $_HTMLPurifier;
-    return $_HTMLPurifier->purify($dirty_html);
-}
-
-function call_hook() {
-    call_user_func_array(array(DatawrapperHooks::getInstance(), 'execute'), func_get_args());
-}
-$twig->addFunction('hook', new Twig_Function_Function('call_hook'));
-
-function has_hook($hook) {
-    return DatawrapperHooks::getInstance()->hookRegistered($hook);
-}
-$twig->addFunction('has_hook', new Twig_Function_Function('has_hook'));
-
-
-// loae I18n extension for Twig
-$twig->addExtension(new Twig_Extension_I18n());
-
-require_once '../lib/utils/i18n.php';
-require_once '../lib/utils/disable_cache.php';
-
-
-function add_header_vars(&$page, $active = null) {
-    // define the header links
-    global $app;
-    $config = $GLOBALS['dw_config'];
-    if (!isset($active)) {
-        $active = explode('/', $app->request()->getResourceUri());
-        $active = $active[1];
-    }
-
-    if (!isset($config['prevent_guest_charts'])) {
-        $config['prevent_guest_charts'] = false;
-    }
-    if (!isset($config['prevent_guest_access'])) {
-        $config['prevent_guest_access'] = false;
-    }
-
-    $user = DatawrapperSession::getUser();
-    $headlinks = array();
-    if ($user->isLoggedIn() || empty($config['prevent_guest_charts'])) {
-        $headlinks[] = array(
-            'url' => '/chart/create',
-            'id' => 'chart',
-            'title' => __('Create Chart'),
-            'icon' => 'pencil'
-        );
-    }
-
-    if ($user->isLoggedIn() && $user->hasCharts()) {
-        // mycharts
-        $mycharts = array(
-            'url' => '/mycharts/',
-            'id' => 'mycharts',
-            'title' => __('My Charts'),
-            'icon' => 'signal',
-            'dropdown' => array()
-        );
-        foreach ($user->getRecentCharts(9) as $chart) {
-            $mycharts['dropdown'][] = array(
-                'url' => '/chart/'.$chart->getId().'/visualize',
-                'title' => '<img width="30" src="'.($chart->hasPreview() ? $chart->thumbUrl(true) : '').'" class="icon" /> '
-                    . '<span>' . $chart->getTitle() . '</span>'
-            );
-        }
-        $mycharts['dropdown'][] = 'divider';
-        $mycharts['dropdown'][] = array('url' => '/mycharts/', 'title' => __('All charts'));
-        $headlinks[] = $mycharts;
-    } else {
-        $headlinks[] = array('url' => '/gallery/', 'id' => 'gallery', 'title' => __('Gallery'), 'icon' => 'signal');
-    }
-
-    if (isset($config['navigation'])) foreach ($config['navigation'] as $item) {
-        $link = array('url' => str_replace('%lang%', substr(DatawrapperSession::getLanguage(), 0, 2), $item['url']), 'id' => $item['id'], 'title' => __($item['title']));
-        if (!empty($item['icon'])) $link['icon'] = $item['icon'];
-        $headlinks[] = $link;
-    }
-    // language dropdown
-    if (!empty($config['languages'])) {
-        $langDropdown = array(
-            'url' => '',
-            'id' => 'lang',
-            'dropdown' => array(),
-            'title' => __('Language'),
-            'icon' => 'font'
-        );
-        foreach ($config['languages'] as $lang) {
-            $langDropdown['dropdown'][] = array(
-                'url' => '#lang-'.$lang['id'],
-                'title' => $lang['title']
-            );
-        }
-        if (count($langDropdown['dropdown']) > 1) $headlinks[] = $langDropdown;
-    }
-    if ($user->isLoggedIn()) {
-        $username = $user->guessName();
-        if ($username == $user->getEmail()) {
-            $username = strlen($username) > 18 ? substr($username, 0, 9).'…'.substr($username, strlen($username)-9) : $username;
-        } else {
-            if (strlen($username) > 18) $username = substr($username, 0, 16).'…';
-        }
-        $headlinks[] = array(
-            'url' => '#user',
-            'id' => 'user',
-            'title' => $username,
-            'icon' => 'user',
-            'dropdown' => array(array(
-                'url' => '/account/settings',
-                'icon' => 'wrench',
-                'title' => __('Settings')
-            ), array(
-                'url' => '/mycharts',
-                'icon' => 'signal',
-                'title' => __('My Charts')
-            ), array(
-                'url' => '#logout',
-                'icon' => 'off',
-                'title' => __('Logout')
-            ))
-        );
-        if ($user->isAdmin() && DatawrapperHooks::hookRegistered(DatawrapperHooks::GET_ADMIN_PAGES)) {
-            $headlinks[] = array(
-                'url' => '/admin',
-                'id' => 'admin',
-                'icon' => 'fire',
-                'title' => __('Admin')
-            );
-        }
-    } else {
-        $headlinks[] = array(
-            'url' => '#login',
-            'id' => 'login',
-            'title' => $config['prevent_guest_access'] ? __('Login') : __('Login / Sign Up'),
-            'icon' => 'user'
-        );
-    }
-    foreach ($headlinks as $i => $link) {
-        $headlinks[$i]['active'] = $headlinks[$i]['id'] == $active;
-    }
-    $page['headlinks'] = $headlinks;
-    $page['user'] = DatawrapperSession::getUser();
-    $page['language'] = substr(DatawrapperSession::getLanguage(), 0, 2);
-    $page['locale'] = DatawrapperSession::getLanguage();
-    $page['DW_DOMAIN'] = $config['domain'];
-    $page['DW_VERSION'] = DATAWRAPPER_VERSION;
-    $page['DW_CHART_CACHE_DOMAIN'] = $config['chart_domain'];
-    $page['SUPPORT_EMAIL'] = $config['email']['support'];
-    $page['config'] = $config;
-    $page['invert_navbar'] = isset($config['invert_header']) && $config['invert_header'] || substr($config['domain'], -4) == '.pro';
-    $page['noSignup'] = $config['prevent_guest_access'];
-    $page['footer'] = DatawrapperHooks::execute(DatawrapperHooks::GET_FOOTER);
-
-    $uri = $app->request()->getResourceUri();
-    $plugin_assets = DatawrapperHooks::execute(DatawrapperHooks::GET_PLUGIN_ASSETS, $uri);
-    if (!empty($plugin_assets)) {
-        $plugin_js_files = array();
-        $plugin_css_files = array();
-        foreach ($plugin_assets as $files) {
-            if (!is_array($files)) $files = array($files);
-            foreach ($files as $file) {
-                if (substr($file, -3) == '.js') $plugin_js_files[] = $file;
-                if (substr($file, -4) == '.css') $plugin_css_files[] = $file;
-            }
-        }
-        $page['plugin_js'] = $plugin_js_files;
-        $page['plugin_css'] = $plugin_css_files;
-    }
-
-    if (isset($config['piwik'])) {
-        $page['PIWIK_URL'] = $config['piwik']['url'];
-        $page['PIWIK_IDSITE'] = $config['piwik']['idSite'];
-        if (isset($config['piwik']['idSiteNoCharts'])) {
-            $page['PIWIK_IDSITE_NO_CHARTS'] = $config['piwik']['idSiteNoCharts'];
-        }
-    }
-
-    if ($config['debug']) {
-        if (file_exists('../.git')) {
-            // parse git branch
-            $head = file_get_contents('../.git/HEAD');
-            $parts = explode("/", $head);
-            $branch = trim($parts[count($parts)-1]);
-            $output = array();
-            exec('git rev-parse HEAD', $output);
-            $commit = $output[0];
-            $page['BRANCH'] = ' (<a href="https://github.com/datawrapper/datawrapper/tree/'.$commit.'">'.$branch.'</a>)';
-        }
-    }
-}
-
-
-function add_editor_nav(&$page, $step) {
-    // define 4 step navigation
-    $steps = array();
-    $steps[] = array('index'=>1, 'id'=>'upload', 'title'=>__('Upload Data'));
-    $steps[] = array('index'=>2, 'id'=>'describe', 'title'=>__('Check & Describe'));
-    $steps[] = array('index'=>3, 'id'=>'visualize', 'title'=>__('Visualize'));
-    $steps[] = array('index'=>4, 'id'=>'publish', 'title'=>__('Publish & Embed'));
-    $page['steps'] = $steps;
-    $page['chartLocale'] = $page['locale'];
-    $page['metricPrefix'] = get_metric_prefix($page['chartLocale']);
-    $page['createstep'] = $step;
-}
-
-
-require_once '../lib/utils/errors.php';
-require_once '../lib/utils/check_chart.php';
-require_once '../controller/plugin-templates.php';
-require_once '../controller/home.php';
-require_once '../controller/login.php';
-require_once '../controller/account-settings.php';
-require_once '../controller/account-activate.php';
-require_once '../controller/account-set-password.php';
-require_once '../controller/account-reset-password.php';
-require_once '../controller/chart-create.php';
-require_once '../controller/chart-edit.php';
-require_once '../controller/chart-upload.php';
-require_once '../controller/chart-describe.php';
-require_once '../controller/chart-visualize.php';
-require_once '../controller/chart-data.php';
-require_once '../controller/chart-preview.php';
-require_once '../controller/chart-embed.php';
-require_once '../controller/chart-publish.php';
-require_once '../controller/chart-static.php';
-require_once '../controller/mycharts.php';
-require_once '../controller/xhr.php';
-require_once '../controller/docs.php';
-require_once '../controller/admin.php';
+require_once ROOT_PATH . 'lib/utils/errors.php';
+require_once ROOT_PATH . 'lib/utils/check_chart.php';
+require_once ROOT_PATH . 'controller/plugin-templates.php';
+require_once ROOT_PATH . 'controller/home.php';
+require_once ROOT_PATH . 'controller/login.php';
+require_once ROOT_PATH . 'controller/account-settings.php';
+require_once ROOT_PATH . 'controller/account-activate.php';
+require_once ROOT_PATH . 'controller/account-set-password.php';
+require_once ROOT_PATH . 'controller/account-reset-password.php';
+require_once ROOT_PATH . 'controller/chart-create.php';
+require_once ROOT_PATH . 'controller/chart-edit.php';
+require_once ROOT_PATH . 'controller/chart-upload.php';
+require_once ROOT_PATH . 'controller/chart-describe.php';
+require_once ROOT_PATH . 'controller/chart-visualize.php';
+require_once ROOT_PATH . 'controller/chart-data.php';
+require_once ROOT_PATH . 'controller/chart-preview.php';
+require_once ROOT_PATH . 'controller/chart-embed.php';
+require_once ROOT_PATH . 'controller/chart-publish.php';
+require_once ROOT_PATH . 'controller/chart-static.php';
+require_once ROOT_PATH . 'controller/mycharts.php';
+require_once ROOT_PATH . 'controller/xhr.php';
+require_once ROOT_PATH . 'controller/docs.php';
+require_once ROOT_PATH . 'controller/admin.php';
 
 
 $app->notFound(function() {
     error_not_found();
 });
-
 
 if ($dw_config['debug']) {
     $app->get('/phpinfo', function() use ($app) {
