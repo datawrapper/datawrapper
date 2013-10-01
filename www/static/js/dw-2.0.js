@@ -1119,18 +1119,18 @@ dw.utils = {
      */
     significantDimension: function(values) {
         var result = [], dimension = 0, nonEqual = true,
-            uniqValues = _.uniq(values, true),
+            uniqValues = _.uniq(values),
             check, diff;
 
-        if (_.uniq(_.map(values, round)).length == uniqValues.length) {
-            check = function() { return _.uniq(result, true).length == uniqValues.length; };
+        if (_.uniq(_.map(uniqValues, round)).length == uniqValues.length) {
+            check = function() { return _.uniq(result).length == uniqValues.length; };
             diff = -1;
         } else {
-            check = function() { return _.uniq(result, true).length < uniqValues.length; };
+            check = function() { return _.uniq(result).length < uniqValues.length; };
             diff = +1;
         }
         do {
-            result = _.map(values, round);
+            result = _.map(uniqValues, round);
             dimension += diff;
         } while (check());
         if (diff < 0) dimension += 2; else dimension--;
@@ -1174,7 +1174,9 @@ dw.utils = {
     metricSuffix: function(locale) {
         switch (locale.substr(0, 2).toLowerCase()) {
             case 'de': return { 3: ' Tsd.', 6: ' Mio.', 9: ' Mrd.', 12: ' Bio.' };
-            default: return { 3: 'k', 6: 'M', 9: 'b', 12: 'Mrd' };
+            case 'fr': return { 3: ' mil', 6: ' Mio', 9: ' Mrd' };
+            case 'es': return { 3: ' Mil', 6: ' millón' };
+            default: return { 3: 'k', 6: 'M', 9: ' bil' };
         }
     }
 

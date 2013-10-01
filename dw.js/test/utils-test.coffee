@@ -12,8 +12,9 @@ checkSignDim = (values, dim) ->
         assert.equal dw.utils.significantDimension(values), dim
     chk_uniq: (topic) ->
         dim = dw.utils.significantDimension(values)
+        uvalues = _.uniq topic
         uniq = _.uniq topic, (v) -> dw.utils.round(v, dim)
-        assert.equal uniq.length, topic.length
+        assert.equal uniq.length, uvalues.length
 
 vows
     .describe('Some basic tests for dw.utils')
@@ -31,6 +32,8 @@ vows
         'significantDimension #5': checkSignDim [9,10.57,12.14,13.71,15.28,16.85,18.42], 0
         'significantDimension #6': checkSignDim [9,10.57,12.14,12.31,15.28,16.85,18.42], 1
         'significantDimension #7': checkSignDim [9,10.57,12.14,12.134,15.28,16.85,18.42], 2
+        'significantDimension #8': checkSignDim [13000,18000,9000,17000,20000,11000,10000,12000,14000], -3
+        'significantDimension #9': checkSignDim [13000,18000,9000,13000,17000,18000,20000,20000,13000,18000,11000,20000,20000,13000,13000,13000,10000,11000,12000,12000,12000,13000,12000,14000,10000], -3
 
 
         'smartRound simple':
