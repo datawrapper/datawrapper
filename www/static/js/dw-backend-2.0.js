@@ -313,7 +313,7 @@ var dw = dw || {};
                     if (!attrs.metadata.describe['source-name'] && $$('.source-block').length) needReload = true;
                     if (!needReload) {
                         $$('.source-block').html(
-                            ($$('.source-block').data('src') || 'Source: ') +
+                            ($$('.source-block').data('src') || 'Source:')+' '+
                             (attrs.metadata.describe['source-url'] ?
                             '<a href="'+attrs.metadata.describe['source-url']+'">'+attrs.metadata.describe['source-name']+'</a>' :
                             attrs.metadata.describe['source-name'])
