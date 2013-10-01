@@ -306,8 +306,7 @@
             });
         }
 
-        var old_chart_attributes = JSON.parse('{{ chart.toJSON | raw }}'),
-            needReload = false;
+        var old_chart_attributes = JSON.parse('{{ chart.toJSON | raw }}');
 
         window.__dw = {
             old_attrs: old_chart_attributes,
