@@ -99,7 +99,7 @@ dw.column.types.number = function(sample) {
                 if (div !== 0) val = Number(val) / Math.pow(10, div);
                 var _fmt = format;
                 if (_fmt != '-') {
-                    if (round || val == Math.round(val)) _fmt = format.substr(0,1)+'0';
+                    if (round) _fmt = format.substr(0,1)+'0';
                     val = Globalize.format(val, _fmt);
                 } else if (div !== 0) {
                     val = val.toFixed(1);
