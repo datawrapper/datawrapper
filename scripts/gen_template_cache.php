@@ -6,7 +6,7 @@ define('NO_SLIM', 1);
 require_once ROOT_PATH . 'lib/bootstrap.php';
 require_once ROOT_PATH . 'lib/utils/themes.php';
 require_once ROOT_PATH . 'vendor/Twig/Autoloader.php';
-require_once  ROOT_PATH . 'vendor/htmlpurifier/HTMLPurifier.standalone.php';
+require_once ROOT_PATH . 'vendor/htmlpurifier/HTMLPurifier.standalone.php';
 
 date_default_timezone_set('Europe/Berlin');
 
@@ -27,36 +27,8 @@ $twig = new Twig_Environment($loader, array(
 
 if (!file_exists($tmpDirPlugins)) mkdir($tmpDirPlugins);
 
-// Twig Extension to convert strings to nice JavaScript class names, e.g. bar-chart --> BarChart
-$twig->addFilter('classify', new Twig_Filter_Function('str_classify'));
-function str_classify($s) {
-    return preg_replace('/\s/', '', ucwords(preg_replace('/[_\-\.]/', ' ', $s)));
-}
-$twig->addFilter('json', new Twig_Filter_Function('toJSON'));
-function toJSON($arr) {
-    return json_encode($arr);
-}
+require_once ROOT_PATH . 'lib/utils/twig-init.php';
 
-// Twig Extension to clean HTML from malicious code
-$config = HTMLPurifier_Config::createDefault();
-$config->set('HTML.Allowed', 'a[href],p,b,strong,u,i,em,q,blockquote,*[style]');
-$_HTMLPurifier = new HTMLPurifier($config);
-$twig->addFilter('purify', new Twig_Filter_Function('str_purify'));
-
-function str_purify($dirty_html) {
-    global $_HTMLPurifier;
-    return $_HTMLPurifier->purify($dirty_html);
-}
-
-function call_hook() {
-    call_user_func_array(array(DatawrapperHooks::getInstance(), 'execute'), func_get_args());
-}
-$twig->addFunction('hook', new Twig_Function_Function('call_hook'));
-$twig->addFunction('has_hook', new Twig_Function_Function('call_hook'));
-
-
-// loae I18n extension for Twig
-$twig->addExtension(new Twig_Extension_I18n());
 
 // iterate over all your templates
 foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($tplDir, RecursiveDirectoryIterator::FOLLOW_SYMLINKS), RecursiveIteratorIterator::LEAVES_ONLY) as $file)

@@ -4,15 +4,6 @@
  * init Twig extensions and hooks
  */
 
-// Load twig instance
-$twig = $app->view()->getEnvironment();
-
-// Twig Extension to convert strings to nice JavaScript class names, e.g. bar-chart --> BarChart
-$twig->addFilter('classify', new Twig_Filter_Function('str_classify'));
-function str_classify($s) {
-    return preg_replace('/\s/', '', ucwords(preg_replace('/[_\-\.]/', ' ', $s)));
-}
-
 // Twig Extension to jsonify objects
 $twig->addFilter('json', new Twig_Filter_Function('toJSON'));
 function toJSON($arr) {
@@ -41,7 +32,6 @@ function has_hook($hook) {
     return DatawrapperHooks::getInstance()->hookRegistered($hook);
 }
 $twig->addFunction('has_hook', new Twig_Function_Function('has_hook'));
-
 
 // loae I18n extension for Twig
 $twig->addExtension(new Twig_Extension_I18n());

@@ -17,6 +17,8 @@ check_server();
 
 require ROOT_PATH . 'lib/bootstrap.php';
 
+$twig = $app->view()->getEnvironment();
+
 require ROOT_PATH . 'lib/utils/twig-init.php';
 
 require_once ROOT_PATH . 'lib/utils/i18n.php';
