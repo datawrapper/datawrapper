@@ -209,7 +209,23 @@ dw.chart = function(attributes) {
             // pull output config from metadata
             // return column.formatter(config);
             var colFormat = chart.get('metadata.data.column-format', {});
-            return column.type(true).formatter(colFormat[column.name()] || {});
+            colFormat = colFormat[column.name()] || {};
+            if (column.type() == 'number' && _.isEqual(colFormat, {})) {
+                var mtrSuf = dw.utils.metricSuffix(chart.locale()),
+                    values = column.values(),
+                    dim = dw.utils.significantDimension(values),
+                    div = Math.round((dim*-1+1)/3)*3,
+                    ndim = dw.utils.significantDimension(_.map(values, function(v) {
+                        return v / Math.pow(10, div);
+                    }));
+
+                colFormat = {
+                    'number-divisor': div,
+                    'number-append': div ? mtrSuf[div] || ' × 10<sup>'+div+'</sup>' : '',
+                    'number-format': 'n'+Math.max(0, ndim)
+                };
+            }
+            return column.type(true).formatter(colFormat);
         }
 
     };
