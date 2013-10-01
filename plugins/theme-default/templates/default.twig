@@ -23,7 +23,7 @@
             <div class="toggleable-panel">
                 {% if source %}
 
-                    <span class="source-block">{% trans "Source: " %}
+                    <span data-src="{% trans "Source: " %}" class="source-block">{% trans "Source: " %}
                     {% if sourceURL %}<a target="_blank" class="source" href="{{ sourceURL }}">{% endif %}{{ source }}{% if sourceURL %}</a>{% endif %}</span>
 
                 {% endif %}
