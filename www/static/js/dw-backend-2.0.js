@@ -308,6 +308,18 @@ var dw = dw || {};
                         if (heightChanged($$('.chart-intro'), attrs.metadata.describe.intro)) __dw.render();
                     }
                 }
+                if (changed('metadata.describe.source-name') || changed('metadata.describe.source-url')) {
+                    if (attrs.metadata.describe['source-name'] && !$$('.source-block').length) needReload = true;
+                    if (!attrs.metadata.describe['source-name'] && $$('.source-block').length) needReload = true;
+                    if (!needReload) {
+                        $$('.source-block').html(
+                            ($$('.source-block').data('src') || 'Source: ') +
+                            (attrs.metadata.describe['source-url'] ?
+                            '<a href="'+attrs.metadata.describe['source-url']+'">'+attrs.metadata.describe['source-name']+'</a>' :
+                            attrs.metadata.describe['source-name'])
+                        );
+                    }
+                }
                 __dw.old_attrs = $.extend(true, {}, attrs);
 
                 function changed(key) {
