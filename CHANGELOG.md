@@ -2,12 +2,13 @@ CHANGELOG
 ---------
 
 ### 1.5.5
-* added automatic number formatting
 * fixed theme inheritance, no more deep-copying of arrays
-* improved email communication
+* improved language in email communication
 * updated Propel to 1.6.8
 * updated Twig to 1.13.2
 * showing recent charts in dropdown nav
+* enabled data attribution in visualize step
+* added automatic number formatting
 
 ### 1.5.4
 * added dw.utils.smartRound
