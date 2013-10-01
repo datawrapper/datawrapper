@@ -455,7 +455,7 @@ dw.column.types.number = function(sample) {
                 if (div !== 0) val = Number(val) / Math.pow(10, div);
                 var _fmt = format;
                 if (_fmt != '-') {
-                    if (round || val == Math.round(val)) _fmt = format.substr(0,1)+'0';
+                    if (round) _fmt = format.substr(0,1)+'0';
                     val = Globalize.format(val, _fmt);
                 } else if (div !== 0) {
                     val = val.toFixed(1);
@@ -1090,7 +1090,7 @@ dw.utils = {
     purifyHtml: function(input, allowed) {
         var tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>/gi,
             commentsAndPhpTags = /<!--[\s\S]*?-->|<\?(?:php)?[\s\S]*?\?>/gi,
-            default_allowed = "<b><br><br/><i><strong>",
+            default_allowed = "<b><br><br/><i><strong><sup><sub><strike><u><em><tt>",
             allowed_split = {};
 
         if (allowed === undefined) allowed = default_allowed;
@@ -1115,33 +1115,67 @@ dw.utils = {
     },
 
     /*
+     *
+     */
+    significantDimension: function(values) {
+        var result = [], dimension = 0, nonEqual = true,
+            uniqValues = _.uniq(values, true),
+            check, diff;
+
+        if (_.uniq(_.map(values, round)).length == uniqValues.length) {
+            check = function() { return _.uniq(result, true).length == uniqValues.length; };
+            diff = -1;
+        } else {
+            check = function() { return _.uniq(result, true).length < uniqValues.length; };
+            diff = +1;
+        }
+        do {
+            result = _.map(values, round);
+            dimension += diff;
+        } while (check());
+        if (diff < 0) dimension += 2; else dimension--;
+        function round(v) {
+            return dw.utils.round(v, dimension);
+        }
+        return dimension;
+    },
+
+    round: function(value, dimension) {
+        var base = Math.pow(10, dimension);
+        return Math.round(value * base) / base;
+    },
+
+    /*
      * Rounds a set of unique numbers to the lowest
      * precision where the values remain unique
      */
     smartRound: function(values, add_precision) {
-        var result = [], precision = 0, nonEqual = true;
-        do {
-            result = _.map(values, round);
-            precision++;
-        } while (_.uniq(result, true).length < values.length);
-        if (add_precision) {
-            precision += add_precision - 1;
-            result = _.map(values, round);
-        }
-        function round(b) { return +(b.toFixed(precision)); }
-        return result;
+        var dim = dw.utils.significantDimension(values);
+        dim += add_precision || 0;
+        return _.map(values, function(v) { return dw.utils.round(v, dim); });
     },
 
-    nearest: function(array, val) {
+    /*
+     * returns the number in array that is closest
+     * to the given value
+     */
+    nearest: function(array, value) {
         var min_diff = Number.MAX_VALUE, min_diff_val;
         _.each(array, function(v) {
-            var d = Math.abs(v - val);
+            var d = Math.abs(v - value);
             if (d < min_diff) {
                 min_diff = d;
                 min_diff_val = v;
             }
         });
         return min_diff_val;
+    },
+
+    metricSuffix: function(locale) {
+        switch (locale.substr(0, 2).toLowerCase()) {
+            case 'de': return { 3: ' Tsd.', 6: ' Mio.', 9: ' Mrd.', 12: ' Bio.' };
+            default: return { 3: 'k', 6: 'M', 9: 'b', 12: 'Mrd' };
+        }
     }
 
 };
@@ -1606,7 +1640,23 @@ dw.chart = function(attributes) {
             // pull output config from metadata
             // return column.formatter(config);
             var colFormat = chart.get('metadata.data.column-format', {});
-            return column.type(true).formatter(colFormat[column.name()] || {});
+            colFormat = colFormat[column.name()] || {};
+            if (column.type() == 'number' && _.isEqual(colFormat, {})) {
+                var mtrSuf = dw.utils.metricSuffix(chart.locale()),
+                    values = column.values(),
+                    dim = dw.utils.significantDimension(values),
+                    div = Math.round((dim*-1+1)/3)*3,
+                    ndim = dw.utils.significantDimension(_.map(values, function(v) {
+                        return v / Math.pow(10, div);
+                    }));
+
+                colFormat = {
+                    'number-divisor': div,
+                    'number-append': div ? mtrSuf[div] || ' × 10<sup>'+div+'</sup>' : '',
+                    'number-format': 'n'+Math.max(0, ndim)
+                };
+            }
+            return column.type(true).formatter(colFormat);
         }
 
     };

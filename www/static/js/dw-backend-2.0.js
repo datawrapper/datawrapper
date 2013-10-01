@@ -250,7 +250,6 @@ var dw = dw || {};
         ctx.fillStyle = win.__dw.vis.theme().colors.background;
         ctx.fillRect(0, 0, c.w * scale, c.h * scale);
         var svg_src = vis._svgCanvas().innerSVG;
-        console.log(svg_src);
         // remove url fills
         svg_src = svg_src.replace(/fill="url\([^\)]+\)"/g, 'fill="#cccccc"')
                     .replace(/<pattern.*<\/pattern>/g, '');
