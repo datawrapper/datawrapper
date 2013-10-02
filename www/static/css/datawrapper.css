@@ -708,6 +708,10 @@ dl.dl-horizontal dd {
     top: 32px;
 }
 
+#vis-options .vis-option-group.vis-option-type-separator .vis-option-help {
+    top: 32px;
+}
+
 #vis-options .vis-option-group .vis-option-help:hover {
     text-decoration: none;
 }
