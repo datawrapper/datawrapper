@@ -13,7 +13,321 @@
                 formatter = {
                     x: chart.columnFormatter(axesDef.x),
                     y1: chart.columnFormatter(axesDef.y1[0]) // use format of first column for all!
-                };
+                }
+
+            // init canvas
+            el = $(el);
+            vis.setRoot(el);
+
+            var
+            bpad = theme.padding.bottom,
+            baseCol = Math.max(0, vis.get('base-color', 0)),
+            scales = vis.__scales = {
+                x: xScale(),
+                y: yScale()
+            },
+            legend = {
+                pos: vis.get('legend-position', 'right'),
+                xoffset: 0,
+                yoffset: -10
+            },
+            h = vis.get('force-banking') ? el.width() / vis.computeAspectRatio() : vis.getSize()[1],
+            c;
+
+            if (vis.get('direct-labeling')) legend.pos = 'direct';
+
+            var extendRange = vis.get('extend-range', false) || (theme.frame && vis.get('show-grid', false));
+
+            vis.init();
+
+            initMargins();
+
+            if (theme.frame && vis.get('show-grid', false)) {
+                if (theme.frameStrokeOnTop) {
+                    // draw frame fill, but without stroke
+                    frame().attr({ stroke: false });
+                } else {
+                    frame();
+                }
+            }
+            if (extendRange) {
+                scales.y = scales.y.nice();
+            }
+
+            scales.x = scales.x.range([c.lpad + c.lpad2, c.w-c.rpad]);
+            scales.y = scales.y.range(vis.get('invert-y-axis', false) ? [c.tpad, c.h-c.bpad] : [c.h-c.bpad, c.tpad]);
+
+            drawYAxis();
+            drawXAxis();
+
+            var all_series = axesDef.y1,
+                seriesLines = this.__seriesLines = {};
+
+            if (legend.pos != 'direct') {
+                // sort lines by last data point
+                all_series = all_series.sort(function(a, b) {
+                    return b.val(-1) - a.val(-1);
+                });
+                // inverse order if y axis is inverted
+                if (vis.get('invert-y-axis', false)) all_series.reverse();
+                //
+                if (legend.pos.substr(0, 6) == "inside") {
+                    legend.xoffset = yAxisWidth(h);
+                    legend.yoffset = 40;
+                }
+            }
+
+            // get number of 'highlighted' series (or all if none)
+            var highlightedSeriesCount = 0, seriesColIndex = 0;
+            $.each(all_series, function(i, column) {
+                if (chart.hasHighlight() && chart.isHighlighted(column)) highlightedSeriesCount++;
+            });
+            highlightedSeriesCount = highlightedSeriesCount || all_series.length;
+
+            // draw series lines
+            var all_paths = [],
+                legend_labels = [];  // we keep a reference to legend labels
+            legend.cont = $('<div />')
+                            .addClass('legend')
+                            .appendTo(el)
+                            .css({ position: 'absolute', top: 0, left: 0 });
+
+            _.each(all_series, renderLine);  // _.each(all_series,
+
+            if (axesDef.y1.length > 1) {
+                if (legend.pos == 'direct') {
+                    vis.optimizeLabelPositions(legend_labels, 3, 'top');
+                } else if (legend.pos == 'inside-right') {
+                    legend.cont.css({ left: c.w - legend.xoffset - c.rpad });
+                }
+            }
+
+            addAreaFills();
+
+            vis.orderSeriesElements();
+
+            initMouseActions();
+
+            if (theme.frameStrokeOnTop) {
+                // add frame stroke on top
+                if (theme.frame && vis.get('show-grid', false)) {
+                    frame().attr({ fill: false });
+                }
+            }
+
+            vis.renderingComplete();
+
+            if (axesDef.y1.length > 1 && !lineLabelsVisible()) {
+                vis.notify(vis.translate('tooManyLinesToLabel'));
+            }
+
+            function initMargins() {
+                c = vis.initCanvas({
+                    h: h,
+                    bpad: vis.get('rotate-x-labels') ? bpad + 20 : bpad
+                });
+
+                if (lineLabelsVisible() && legend.pos != 'direct' && legend.pos != 'right') {
+                    c.tpad += 20;
+                    c.rpad = 0;
+                }
+
+                if (lineLabelsVisible() && (legend.pos == 'direct' || legend.pos == 'right')) {
+                    c.labelWidth = 0;
+                    dataset.eachColumn(function(col) {
+                        c.labelWidth = Math.max(c.labelWidth, vis.labelWidth(col.name(), 'series'));
+                    });
+                    // we limit the label width to the 1/4 of the entire width
+                    if (c.labelWidth > this.__w * 0.25) {
+                        c.labelWidth = this.__w * 0.25;
+                    }
+                    c.rpad += c.labelWidth + 20;
+                    if (legend.pos == 'right') c.rpad += 15;
+                } else {
+                    c.rpad += 5;
+                }
+
+                if (legend.pos != 'direct' && legend.pos != 'right') {
+                    // some more space for last x-label
+                    c.rpad += 0.25 * vis.labelWidth(vis.axes(true).x.val(-1));
+                    legend.xoffset += c.lpad;
+                }
+
+                c.lpad2 = yAxisWidth(h);
+            }
+
+            function frame() {
+                return c.paper.rect(
+                    c.lpad + c.lpad2,
+                    c.tpad,
+                    c.w - c.rpad - c.lpad - c.lpad2,
+                    c.h - c.bpad - c.tpad
+                ).attr(theme.frame);
+            }
+
+            function renderLine(col, index) {
+                var paths = [],
+                    pts_ = [],
+                    pts = [],
+                    x, y, sw,
+                    connectMissingValuePath = [],
+                    last_valid_y; // keep the last non-NaN y for direct label position
+
+                col.each(buildPathPoints);
+                // store the last line
+                if (pts.length > 0) pts_.push(pts);
+
+                _.each(pts_, function(pts) {
+                    paths.push("M" + [pts.shift(), pts.shift()] + (vis.get('line-mode') == 'curved' ? "R" : "L") + pts);
+                });
+
+                sw = lineWidth(col);
+                var palette = theme.colors.palette.slice();
+
+                //if (highlightedSeriesCount < 5) {
+                //    if (chart.isHighlighted(col)) {
+                if (legend.pos != 'direct' && all_series.length > 1) {
+                    //if (highlightedSeriesCount)
+                    vis.setKeyColor(col.name(), palette[(seriesColIndex + baseCol) % palette.length]);
+                    seriesColIndex++;
+                }
+
+                var strokeColor = lineColor(col);
+                all_paths.push(paths);
+
+                _.each(paths, renderPath);
+
+                renderMissingValueConnections();
+
+                if (lineLabelsVisible()) renderLabels();
+
+                function buildPathPoints(val, i) {
+                    if (!_.isNumber(val)) {
+                        // store the current line
+                        if (pts.length > 0) {
+                            pts_.push(pts);
+                            pts = [];
+                        }
+                        return;
+                    }
+
+                    x = scales.x(useDateFormat() ? rowName(i) : i);
+                    y = scales.y(val);
+
+                    if (pts.length === 0 && pts_.length > 0) {
+                        // first valid point after NaNs
+                        var lp = pts_[pts_.length-1], s = lp.length-2;
+                        connectMissingValuePath.push('M'+[lp[s], lp[s+1]]+'L'+[ x, y]);
+                    }
+                    if (vis.get('line-mode') == 'stepped' && last_valid_y !== undefined) {
+                        pts.push(x, last_valid_y);
+                    }
+                    pts.push(x, y); // store current point
+                    last_valid_y = y;
+                }
+
+                function renderPath(path) {
+                    vis.registerElement(c.paper.path(path).attr({
+                        'stroke-width': sw,
+                        'stroke-linecap': 'round',
+                        'stroke-linejoin': 'round',
+                        'stroke-opacity': 1,
+                        'stroke': strokeColor
+                    }), col.name());
+
+                    // add invisible line on top to make selection easier
+                    vis.registerElement(c.paper.path(path).attr({
+                        'stroke-width': sw*4,
+                        'opacity': 0
+                    }), col.name());
+                }
+
+                function renderMissingValueConnections() {
+                    if (vis.get('connect-missing-values', false)) {
+                        vis.registerElement(c.paper.path(connectMissingValuePath).attr({
+                            'stroke-width': sw*0.35,
+                            'stroke-dasharray': '- ',
+                            stroke: strokeColor
+                        }), col.name());
+                    }
+                }
+
+                function renderLabels() {
+                    var visible = all_series.length < 10 || chart.isHighlighted(col),
+                        div, lbl,
+                        lblx = x + 10,
+                        lbly = last_valid_y,
+                        valign = 'top';
+
+                    if (visible) {
+                        // legend
+                        if (legend.pos == 'right') {
+                            lblx += 15;
+                            lbly = legend.yoffset;
+                            div = $('<div></div>');
+                            div.css({
+                                background: strokeColor,
+                                width: 10,
+                                height: 10,
+                                position: 'absolute',
+                                left: x+10,
+                                top: lbly+3
+                            });
+                            legend.cont.append(div);
+                        } else if (legend.pos == 'top' || legend.pos.substr(0, 6) == 'inside') {
+                            lblx = legend.xoffset + 15;
+                            lbly = legend.yoffset;
+                            div = $('<div></div>');
+                            div.css({
+                                background: strokeColor,
+                                width: 10,
+                                height: 10,
+                                position: 'absolute',
+                                left: legend.xoffset,
+                                top: lbly+3
+                            });
+                            legend.cont.append(div);
+                            legend.xoffset += vis.labelWidth(col.name(), 'series')+30;
+                        }
+                    }
+                    lbl = vis.label(lblx, lbly, col.title(), {
+                        cl: chart.isHighlighted(col) ? 'highlighted series' : 'series',
+                        w: c.labelWidth,
+                        valign: valign,
+                        root: legend.cont
+                    });
+                    legend_labels.push(lbl);
+                    if (!visible) lbl.hide();
+                    if (legend.pos == 'right') {
+                        legend.yoffset += lbl.height('auto').height()+5;
+                    }
+                    lbl.data('highlighted', chart.isHighlighted(col));
+                    vis.registerLabel(lbl, col.name(), col.name(), -1);
+
+                }
+            }
+
+            function initMouseActions() {
+
+                //me.initValueLabelsPositions();
+                el.mousemove(onMouseMove);
+
+                $('.chart').mouseenter(function() {
+                    $('.label.x-axis').css({ opacity: 0.4 });
+                    $('.label.tooltip').show();
+                }).mouseleave(function() {
+                    $('.label.x-axis').css({ opacity: 1});
+                    if (vis.__xlab) vis.__xlab.remove();
+                    vis.__xlab = null;
+                    $('.label.tooltip').hide();
+                    _.each(vis.__seriesLabels, function(labels) {
+                        _.each(labels, function(l) {
+                            l.show();
+                        });
+                    });
+                });
+
+            }
 
             // returns true if the x axis is of type date
             function useDateFormat() {
@@ -358,402 +672,118 @@
                 );
             }
 
-            // init canvas
-            el = $(el);
-            vis.setRoot(el);
-
-            var
-            bpad = theme.padding.bottom,
-            baseCol = Math.max(0, vis.get('base-color', 0)),
-            scales = vis.__scales = {
-                x: xScale(),
-                y: yScale()
-            },
-            legend = {
-                pos: vis.get('legend-position', 'right'),
-                xoffset: 0,
-                yoffset: -10
-            },
-            h = vis.get('force-banking') ? el.width() / vis.computeAspectRatio() : vis.getSize()[1],
-            c;
-
-            if (vis.get('direct-labeling')) legend.pos = 'direct';
-
-            var extendRange = vis.get('extend-range', false) || (theme.frame && vis.get('show-grid', false));
-
-            vis.init();
-
-            c = vis.initCanvas({
-                h: h,
-                bpad: vis.get('rotate-x-labels') ? bpad + 20 : bpad
-            });
-
-            if (lineLabelsVisible() && legend.pos != 'direct' && legend.pos != 'right') {
-                c.tpad += 20;
-                c.rpad = 0;
-            }
-
-            if (lineLabelsVisible() && (legend.pos == 'direct' || legend.pos == 'right')) {
-                c.labelWidth = 0;
-                dataset.eachColumn(function(col) {
-                    c.labelWidth = Math.max(c.labelWidth, vis.labelWidth(col.name(), 'series'));
-                });
-                // we limit the label width to the 1/4 of the entire width
-                if (c.labelWidth > this.__w * 0.25) {
-                    c.labelWidth = this.__w * 0.25;
+            function addAreaFills() {
+                // fill space between lines
+                if (vis.get('fill-between', false) && all_series.length == 2) {
+                    fillBetweenLines();
                 }
-                c.rpad += c.labelWidth + 20;
-                if (legend.pos == 'right') c.rpad += 15;
-            } else {
-                c.rpad += 5;
-            }
 
-            if (legend.pos != 'direct' && legend.pos != 'right') {
-                // some more space for last x-label
-                c.rpad += 0.25 * vis.labelWidth(vis.axes(true).x.val(-1));
-                legend.xoffset += c.lpad;
-            }
-
-            c.lpad2 = yAxisWidth(h);
-
-            function frame() {
-                return c.paper.rect(
-                    c.lpad + c.lpad2,
-                    c.tpad,
-                    c.w - c.rpad - c.lpad - c.lpad2,
-                    c.h - c.bpad - c.tpad
-                ).attr(theme.frame);
-            }
-
-            if (theme.frame && vis.get('show-grid', false)) {
-                if (theme.frameStrokeOnTop) {
-                    // draw frame fill, but without stroke
-                    frame().attr({ stroke: false });
-                } else {
-                    frame();
-                }
-            }
-            if (extendRange) {
-                scales.y = scales.y.nice();
-            }
-
-            scales.x = scales.x.range([c.lpad + c.lpad2, c.w-c.rpad]);
-            scales.y = scales.y.range(vis.get('invert-y-axis', false) ? [c.tpad, c.h-c.bpad] : [c.h-c.bpad, c.tpad]);
-
-            drawYAxis();
-            drawXAxis();
-
-            var all_series = axesDef.y1,
-                seriesLines = this.__seriesLines = {};
-
-            if (legend.pos != 'direct') {
-                // sort lines by last data point
-                all_series = all_series.sort(function(a, b) {
-                    return b.val(-1) - a.val(-1);
-                });
-                // inverse order if y axis is inverted
-                if (vis.get('invert-y-axis', false)) all_series.reverse();
-                //
-                if (legend.pos.substr(0, 6) == "inside") {
-                    legend.xoffset = yAxisWidth(h);
-                    legend.yoffset = 40;
-                }
-            }
-
-            // get number of 'highlighted' series (or all if none)
-            var highlightedSeriesCount = 0, seriesColIndex = 0;
-            $.each(all_series, function(i, column) {
-                if (chart.hasHighlight() && chart.isHighlighted(column)) highlightedSeriesCount++;
-            });
-            highlightedSeriesCount = highlightedSeriesCount || all_series.length;
-
-            // draw series lines
-            var all_paths = [],
-                legend_labels = [];  // we keep a reference to legend labels
-            legend.cont = $('<div />')
-                            .addClass('legend')
-                            .appendTo(el)
-                            .css({ position: 'absolute', top: 0, left: 0 });
-
-            _.each(all_series, function(col, index) {
-                var paths = [],
-                    pts_ = [],
-                    pts = [],
-                    x, y, sw,
-                    connectMissingValuePath = [],
-                    last_valid_y; // keep the last non-NaN y for direct label position
-
-                col.each(function(val, i) {
-
-                    if (!_.isNumber(val)) {
-                        // store the current line
-                        if (pts.length > 0) {
-                            pts_.push(pts);
-                            pts = [];
-                        }
-                        return;
+                if (vis.get('fill-below', false) && all_paths.length == 1 && all_paths[0].length == 1) {
+                    if (all_paths[0].length == 1) {
+                        // fill area below lines
+                        addFill(all_series[0], all_paths[0][0] + 'V'+scales.y(0)+'H'+scales.x(axesDef.x.val(0)));
                     }
-
-                    x = scales.x(useDateFormat() ? rowName(i) : i);
-                    y = scales.y(val);
-
-                    if (pts.length === 0 && pts_.length > 0) {
-                        // first valid point after NaNs
-                        var lp = pts_[pts_.length-1], s = lp.length-2;
-                        connectMissingValuePath.push('M'+[lp[s], lp[s+1]]+'L'+[ x, y]);
-                    }
-                    if (vis.get('line-mode') == 'stepped' && last_valid_y !== undefined) {
-                        pts.push(x, last_valid_y);
-                    }
-                    pts.push(x, y); // store current point
-                    last_valid_y = y;
-                });
-                // store the last line
-                if (pts.length > 0) pts_.push(pts);
-                _.each(pts_, function(pts) {
-                    paths.push("M" + [pts.shift(), pts.shift()] + (vis.get('line-mode') == 'curved' ? "R" : "L") + pts);
-                });
-
-                sw = lineWidth(col);
-                var palette = theme.colors.palette.slice();
-
-                //if (highlightedSeriesCount < 5) {
-                //    if (chart.isHighlighted(col)) {
-                if (legend.pos != 'direct' && all_series.length > 1) {
-                    //if (highlightedSeriesCount)
-                    vis.setKeyColor(col.name(), palette[(seriesColIndex + baseCol) % palette.length]);
-                    seriesColIndex++;
                 }
 
-                var strokeColor = lineColor(col);
+                function fillBetweenLines() {
+                    if (all_paths.length == 2) {
+                        if (all_paths[0].length == 1 && all_paths[1].length == 1) {
+                            var path1 = Raphael.parsePathString(all_paths[0][0]),
+                                path2 = Raphael.parsePathString(all_paths[1][0]),
+                                pts = Raphael.pathIntersection(path1, path2),
+                                h1 = [], h2 = [],  // points for fill polygons
+                                f1 = [], f2 = [],  // paths for fill polygons
+                                s1 = 0, s2 = 0,
+                                next;
 
-                all_paths.push(paths);
-
-                _.each(paths, function(path) {
-                    vis.registerElement(c.paper.path(path).attr({
-                        'stroke-width': sw,
-                        'stroke-linecap': 'round',
-                        'stroke-linejoin': 'round',
-                        'stroke-opacity': 1,
-                        'stroke': strokeColor
-                    }), col.name());
-
-                    // add invisible line on top to make selection easier
-                    vis.registerElement(c.paper.path(path).attr({
-                        'stroke-width': sw*4,
-                        'opacity': 0
-                    }), col.name());
-                });
-
-                if (vis.get('connect-missing-values', false)) {
-                    vis.registerElement(c.paper.path(connectMissingValuePath).attr({
-                        'stroke-width': sw*0.35,
-                        'stroke-dasharray': '- ',
-                        stroke: strokeColor
-                    }), col.name());
-                }
-
-                if (lineLabelsVisible()) {
-                    var visible = all_series.length < 10 || chart.isHighlighted(col),
-                        div, lbl,
-                        lblx = x + 10,
-                        lbly = last_valid_y,
-                        valign = 'top';
-
-                    if (visible) {
-                        // legend
-                        if (legend.pos == 'right') {
-                            lblx += 15;
-                            lbly = legend.yoffset;
-                            div = $('<div></div>');
-                            div.css({
-                                background: strokeColor,
-                                width: 10,
-                                height: 10,
-                                position: 'absolute',
-                                left: x+10,
-                                top: lbly+3
-                            });
-                            legend.cont.append(div);
-                        } else if (legend.pos == 'top' || legend.pos.substr(0, 6) == 'inside') {
-                            lblx = legend.xoffset + 15;
-                            lbly = legend.yoffset;
-                            div = $('<div></div>');
-                            div.css({
-                                background: strokeColor,
-                                width: 10,
-                                height: 10,
-                                position: 'absolute',
-                                left: legend.xoffset,
-                                top: lbly+3
-                            });
-                            legend.cont.append(div);
-                            legend.xoffset += vis.labelWidth(col.name(), 'series')+30;
-                        }
-                    }
-                    lbl = vis.label(lblx, lbly, col.title(), {
-                        cl: chart.isHighlighted(col) ? 'highlighted series' : 'series',
-                        w: c.labelWidth,
-                        valign: valign,
-                        root: legend.cont
-                    });
-                    legend_labels.push(lbl);
-                    if (!visible) lbl.hide();
-                    if (legend.pos == 'right') {
-                        legend.yoffset += lbl.height('auto').height()+5;
-                    }
-                    lbl.data('highlighted', chart.isHighlighted(col));
-                    vis.registerLabel(lbl, col.name(), col.name(), -1);
-                } // */
-            });  // _.each(all_series,
-
-            if (axesDef.y1.length > 1) {
-                if (legend.pos == 'direct') {
-                    vis.optimizeLabelPositions(legend_labels, 3, 'top');
-                } else if (legend.pos == 'inside-right') {
-                    legend.cont.css({ left: c.w - legend.xoffset - c.rpad });
-                }
-            }
-            //me.initValueLabelsPositions();
-            if (true || theme.tooltips) {
-                el.mousemove(onMouseMove);
-            }
-
-            window.ds = vis.dataset;
-            window.vis = vis;
-
-            function addFill(series, path) {
-                c.paper.path(path)
-                    .attr({
-                        fill: lineColor(series),
-                        'fill-opacity': theme.lineChart.fillOpacity,
-                        stroke: false
-                    });
-            }
-            // fill space between lines
-            if (vis.get('fill-between', false) && all_series.length == 2) {
-                // compute intersections
-                if (all_paths.length == 2) {
-                    if (all_paths[0].length == 1 && all_paths[1].length == 1) {
-                        var path1 = Raphael.parsePathString(all_paths[0][0]),
-                            path2 = Raphael.parsePathString(all_paths[1][0]),
-                            pts = Raphael.pathIntersection(path1, path2),
-                            h1 = [], h2 = [],  // points for fill polygons
-                            f1 = [], f2 = [],  // paths for fill polygons
-                            s1 = 0, s2 = 0,
-                            next;
-
-                        if (vis.get('line-mode') != 'curved') {
-                            // straight line fills
-                            $.each(pts, function(i, pt) {
-                                while (s1 < pt.segment1) {
+                            if (vis.get('line-mode') != 'curved') {
+                                // straight line fills
+                                $.each(pts, function(i, pt) {
+                                    while (s1 < pt.segment1) {
+                                        h1.push(path1[s1][1], path1[s1][2]);
+                                        s1++;
+                                    }
+                                    h1.push([pt.x, pt.y]);
+                                    while (s2 < pt.segment2) {
+                                        h2.unshift(path2[s2][1], path2[s2][2]);
+                                        s2++;
+                                    }
+                                    (h1[1] < h2[h2.length-1] ? f1 : f2).push([].concat(h1, h2));
+                                    h1 = [pt.x, pt.y];
+                                    h2 = [];
+                                });
+                                while (s1 < path1.length) {
                                     h1.push(path1[s1][1], path1[s1][2]);
                                     s1++;
                                 }
-                                h1.push([pt.x, pt.y]);
-                                while (s2 < pt.segment2) {
+                                while (s2 < path2.length) {
                                     h2.unshift(path2[s2][1], path2[s2][2]);
                                     s2++;
                                 }
                                 (h1[1] < h2[h2.length-1] ? f1 : f2).push([].concat(h1, h2));
-                                h1 = [pt.x, pt.y];
-                                h2 = [];
-                            });
-                            while (s1 < path1.length) {
-                                h1.push(path1[s1][1], path1[s1][2]);
-                                s1++;
-                            }
-                            while (s2 < path2.length) {
-                                h2.unshift(path2[s2][1], path2[s2][2]);
-                                s2++;
-                            }
-                            (h1[1] < h2[h2.length-1] ? f1 : f2).push([].concat(h1, h2));
 
-                            $.each([f1, f2], function(i, fills) {
-                                var path = [];
-                                _.each(fills, function(pts) {
-                                    path.push("M" + [pts.shift(), pts.shift()] + "L" + pts);
+                                $.each([f1, f2], function(i, fills) {
+                                    var path = [];
+                                    _.each(fills, function(pts) {
+                                        path.push("M" + [pts.shift(), pts.shift()] + "L" + pts);
+                                    });
+                                    addFill(all_series[i], path);
                                 });
-                                addFill(all_series[i], path);
-                            });
 
-                        } else {
-                            // curved line fills
-                            var pts1 = [].concat(path1[0].slice(1), path1[1].slice(1)),
-                                pts2 = [].concat(path2[0].slice(1), path2[1].slice(1));
+                            } else {
+                                // curved line fills
+                                var pts1 = [].concat(path1[0].slice(1), path1[1].slice(1)),
+                                    pts2 = [].concat(path2[0].slice(1), path2[1].slice(1));
 
-                            $.each(pts, function(i, pt) {
-                                while (s1 < pt.segment1) {
+                                $.each(pts, function(i, pt) {
+                                    while (s1 < pt.segment1) {
+                                        h1.push(pts1[s1*2], pts1[s1*2+1]);
+                                        s1++;
+                                    }
+                                    h1.push(pt.x, pt.y);
+                                    while (s2 < pt.segment2) {
+                                        h2.unshift(pts2[s2*2], pts2[s2*2+1]);
+                                        s2++;
+                                    }
+                                    var f = h1[1] < h2[h2.length-(i === 0 ? 1 : 3)] ? f1 : f2;
+                                    f.push('M' + [h1.shift(), h1.shift()] + (h1.length > 2 ? 'R' + h1 + /*'L' + [h2.shift(), h2.shift()] +*/ 'R' + h2 : 'L' + h1 +'L'+ h2));
+
+                                    h1 = [pt.x, pt.y];
+                                    h2 = [pt.x, pt.y];
+                                });
+                                while (s1*2 < pts1.length) {
                                     h1.push(pts1[s1*2], pts1[s1*2+1]);
                                     s1++;
                                 }
-                                h1.push(pt.x, pt.y);
-                                while (s2 < pt.segment2) {
+                                while (s2*2 < pts2.length) {
                                     h2.unshift(pts2[s2*2], pts2[s2*2+1]);
                                     s2++;
                                 }
-                                var f = h1[1] < h2[h2.length-(i === 0 ? 1 : 3)] ? f1 : f2;
-                                f.push('M' + [h1.shift(), h1.shift()] + (h1.length > 2 ? 'R' + h1 + /*'L' + [h2.shift(), h2.shift()] +*/ 'R' + h2 : 'L' + h1 +'L'+ h2));
+                                var f = h1[1] < h2[h2.length-3] ? f1 : f2;
+                                f.push('M' + [h1.shift(), h1.shift()] + (h1.length > 2 ? 'R' + h1 + 'L' + [h2.shift(), h2.shift()] + 'R' + h2 : 'L' + h1 +'L'+ h2));
 
-                                h1 = [pt.x, pt.y];
-                                h2 = [pt.x, pt.y];
-                            });
-                            while (s1*2 < pts1.length) {
-                                h1.push(pts1[s1*2], pts1[s1*2+1]);
-                                s1++;
-                            }
-                            while (s2*2 < pts2.length) {
-                                h2.unshift(pts2[s2*2], pts2[s2*2+1]);
-                                s2++;
-                            }
-                            var f = h1[1] < h2[h2.length-3] ? f1 : f2;
-                            f.push('M' + [h1.shift(), h1.shift()] + (h1.length > 2 ? 'R' + h1 + 'L' + [h2.shift(), h2.shift()] + 'R' + h2 : 'L' + h1 +'L'+ h2));
-
-                            $.each([f1, f2], function(i, fills) {
-                                _.each(fills, function(path) {
-                                    addFill(all_series[i], path);
+                                $.each([f1, f2], function(i, fills) {
+                                    _.each(fills, function(path) {
+                                        addFill(all_series[i], path);
+                                    });
                                 });
-                            });
-                        }
+                            }
 
-                    } else vis.warn('<b>Warning:</b> Area filling is not supported for lines with missing values.');
-                } else vis.warn('<b>Warning:</b> Filling is only supported for exactly two lines.');
-            }
+                        } else vis.warn('<b>Warning:</b> Area filling is not supported for lines with missing values.');
+                    } else vis.warn('<b>Warning:</b> Filling is only supported for exactly two lines.');
 
-            if (vis.get('fill-below', false) && all_paths.length == 1 && all_paths[0].length == 1) {
-                if (all_paths[0].length == 1) {
-                    addFill(all_series[0], all_paths[0][0] + 'V'+scales.y(0)+'H'+scales.x(axesDef.x.val(0)));
+                }
+
+                function addFill(series, path) {
+                    c.paper.path(path)
+                        .attr({
+                            fill: lineColor(series),
+                            'fill-opacity': theme.lineChart.fillOpacity,
+                            stroke: false
+                        });
                 }
             }
 
-            vis.orderSeriesElements();
-
-            $('.chart').mouseenter(function() {
-                $('.label.x-axis').css({ opacity: 0.4 });
-                $('.label.tooltip').show();
-            }).mouseleave(function() {
-                $('.label.x-axis').css({ opacity: 1});
-                if (vis.__xlab) vis.__xlab.remove();
-                vis.__xlab = null;
-                $('.label.tooltip').hide();
-                _.each(vis.__seriesLabels, function(labels) {
-                    _.each(labels, function(l) {
-                        l.show();
-                    });
-                });
-            });
-
-            if (theme.frameStrokeOnTop) {
-                // add frame stroke on top
-                if (theme.frame && vis.get('show-grid', false)) {
-                    frame().attr({ fill: false });
-                }
-            }
-            vis.renderingComplete();
-
-            if (axesDef.y1.length > 1 && !lineLabelsVisible()) {
-                vis.notify(vis.translate('tooManyLinesToLabel'));
-            }
         },
 
         lineColumns: function() {
