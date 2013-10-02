@@ -32,27 +32,27 @@ class DatawrapperPlugin_VisualizationLineChart extends DatawrapperPlugin_Visuali
     }
 
     public function getOptions(){
-        $id = $this->getName();
         $options = array(
             "sep-labeling" => array(
                 "type" => "separator",
-                "label" => __("Customize labeling", $id),
+                "label" => __("Customize labeling"),
                 "depends-on" => array(
                     "chart.min_columns[y1]" => 2,
                 )
             ),
             "direct-labeling" => array(
                 "type" => "checkbox",
-                "label" => __("Direct labeling", $id),
+                "label" => __("Direct labeling"),
                 "default" => false,
                 "depends-on" => array(
                     "chart.min_columns[y1]" => 2,
                     "chart.max_columns[y2]" => 0  // direct labeling not possible with second axis
-                )
+                ),
+                "help" => __("Show the labels right nearby the line ends instead of a separate legend")
             ),
             "legend-position" => array(
                 "type" => "radio-left",
-                "label" => __("Legend position", $id),
+                "label" => __("Legend position"),
                 "default" => "right",
                 "depends-on" => array(
                     "direct-labeling" => false,
@@ -61,45 +61,45 @@ class DatawrapperPlugin_VisualizationLineChart extends DatawrapperPlugin_Visuali
                 "options" => array(
                     array(
                         "value" => "right",
-                        "label" => __("right", $id)
+                        "label" => __("right")
                     ),
                     array(
                         "value" => "top",
-                        "label" => __("top", $id),
+                        "label" => __("top"),
                     ),
                     array(
                         "value" => "inside",
-                        "label" => __("inside left", $id),
+                        "label" => __("inside left"),
                     ),
                     array(
                         "value" => "inside-right",
-                        "label" => __("inside right", $id),
+                        "label" => __("inside right"),
                     )
                 )
             ),
 
             "sep-lines" => array(
                 "type" => "separator",
-                "label" => __("Customize lines", $id)
+                "label" => __("Customize lines")
             ),
             "force-banking" => array(
                 "type" => "checkbox",
                 "hidden" => true,
-                "label" => __("Bank the lines to 45 degrees", $id)
+                "label" => __("Bank the lines to 45 degrees")
             ),
             "show-grid" => array(
                 "type" => "checkbox",
                 "hidden" => true,
-                "label" => __("Show grid", $id),
+                "label" => __("Show grid"),
                 "default" => false
             ),
             "connect-missing-values" => array(
                 "type" => "checkbox",
-                "label" => __("Connect lines between missing values", $id),
+                "label" => __("Connect lines between missing values"),
             ),
             "fill-between" => array(
                 "type" => "checkbox",
-                "label" => __("Fill between lines", $id),
+                "label" => __("Fill area between lines"),
                 "default" => false,
                 "depends-on" => array(
                     "chart.min_columns[y1]" => 2,
@@ -109,7 +109,7 @@ class DatawrapperPlugin_VisualizationLineChart extends DatawrapperPlugin_Visuali
             ),
             "fill-below" => array(
                 "type" => "checkbox",
-                "label" => __("Fill below line", $id),
+                "label" => __("Fill area below line"),
                 "defaut" => false,
                 "depends-on" => array(
                     "chart.max_columns[y1]" => 1,
@@ -118,29 +118,30 @@ class DatawrapperPlugin_VisualizationLineChart extends DatawrapperPlugin_Visuali
             ),
             "line-mode" => array(
                 "type" => "radio-left",
-                "label" => __("Line mode", $id),
+                "label" => __("Line interpolation"),
                 "options" => array(
-                    array("label" => __("Straight", $id), "value" => "straight"),
-                    array("label" => __("Curved", $id), "value" => "curved"),
-                    array("label" => __("Stepped", $id), "value" => "stepped")
+                    array("label" => __("Straight"), "value" => "straight"),
+                    array("label" => __("Curved"), "value" => "curved"),
+                    array("label" => __("Stepped"), "value" => "stepped")
                 ),
                 "default" => "straight"
             ),
             "sep-y-axis" => array(
                 "type" => "separator",
-                "label" => __("Customize y-Axis", $id)
+                "label" => __("Customize y-Axis")
             ),
             "baseline-zero" => array(
                 "type" => "checkbox",
-                "label" => __("Extend to zero", $id),
+                "label" => __("Extend to zero"),
             ),
             "extend-range" => array(
                 "type" => "checkbox",
-                "label" => __("Extend to nice ticks", $id)
+                "label" => __("Extend to nice ticks"),
+                "help" => __("Extend the y-axis range to nice, rounded values instead of the default range from the minimum to maximum value.")
             ),
             "invert-y-axis" => array(
                 "type" => "checkbox",
-                "label" => __("Invert direction", $id),
+                "label" => __("Invert direction"),
                 "default" => false
             )
         );
