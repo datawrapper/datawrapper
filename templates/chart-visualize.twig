@@ -428,20 +428,22 @@ $(function() {
 
     iframe.ready(iframeReady);
 
+
+
     $('.nav-tabs').each(function(i, el) {
         var navTabs = $(el);
         $('li a', navTabs).each(function(i, el) {
-            $('.'+$(el).data('target')).hide();
+            $('.'+$(el).data('target')).css({ position: 'absolute', left: -10000 }); // hide
             $(el).click(function(e) {
                 e.preventDefault();
-                $('.' + navTabs.data('target') + ' > div').hide();
-                $('.' + $(e.target).data('target')).show();
+                $('.' + navTabs.data('target')+' > div').css({ position: 'absolute', left: -10000 }); // hide
+                $('.' + $(e.target).data('target')).css({ position: 'static' });  // show
                 $('li', navTabs).removeClass('active');
                 $(e.target).parents('li').addClass('active');
             });
         });
         $('li.active a', navTabs).each(function(i, el) {
-            $('.'+$(el).data('target')).show();
+            $('.'+$(el).data('target')).show().css({ position: 'static' }); // show
         });
     });
 
@@ -569,17 +571,34 @@ $(function() {
             $(function() {
                 function show(a) {
                     a.tab('show');
-                    $('.tab-container > *').hide();
-                    $('.tab-container .'+a.data('target')).show();
+                    $('.tab-container > *').css({ position: 'absolute', left: -10000 });
+                    $('.tab-container .'+a.data('target')).css({ position: 'static' });
                     if (a.attr('href') == '#story') {
                         $('.proceed-btn').hide();
                         $('.publish-btn').show();
+                    } else {
+                        $('.proceed-btn').show();
+                        $('.publish-btn').hide();
+                    }
+                    if (a.attr('href') == '#vis') {
+                        $('.btn-stepback').show();
+                        $('.btn-tabback').hide();
+                    } else {
+                        $('.btn-stepback').hide();
+                        $('.btn-tabback').show();
                     }
                 }
                 $('.publish-btn').hide();
+                $('.btn-stepback').hide();
                 $('.proceed-btn').click(function() {
                     var li = $('.visualize-nav-tabs li.active');
                     var a = $('a', li.next());
+                    location.hash = '#'+a.data('target');
+                    show(a);
+                });
+                $('.btn-tabback').click(function() {
+                    var li = $('.visualize-nav-tabs li.active');
+                    var a = $('a', li.prev());
                     location.hash = '#'+a.data('target');
                     show(a);
                 });
@@ -593,6 +612,13 @@ $(function() {
                     } else {
                         $('.proceed-btn').show();
                         $('.publish-btn').hide();
+                    }
+                    if (a.attr('href') == '#vis') {
+                        $('.btn-stepback').show();
+                        $('.btn-tabback').hide();
+                    } else {
+                        $('.btn-stepback').hide();
+                        $('.btn-tabback').show();
                     }
                 });
 
@@ -767,7 +793,8 @@ $(function() {
 
             {% endif %}
 
-            <a class="btn submit" href="describe"><i class="icon-chevron-left"></i> {% trans "Back" %}</a>
+            <a class="btn submit btn-stepback" href="describe"><i class="icon-chevron-left"></i> {% trans "Back" %}</a>
+            <a class="btn btn-tabback" href="#"><i class="icon-chevron-left"></i> {% trans "Back" %}</a>
 
             <div class="clearfix"></div>
         </div>
