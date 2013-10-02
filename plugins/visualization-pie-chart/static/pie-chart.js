@@ -17,7 +17,6 @@
         },
 
         render: function(el) {
-            el = $(el);
 
             this.setRoot(el);
 
