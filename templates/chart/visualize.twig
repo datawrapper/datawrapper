@@ -1,4 +1,4 @@
-{% extends "chart-editor.twig" %}
+{% extends "chart/base.twig" %}
 {% block content %}
 
 {{ parent() }}
@@ -160,12 +160,12 @@ $(function() {
 
     //    chart.sync('#select-vis', 'type');
         chart.sync('#select-theme', 'theme');
-        chart.sync('#text-title', 'title');
-        chart.sync('#text-intro', 'metadata.describe.intro');
-        chart.sync('#describe-source-name', 'metadata.describe.source-name');
+        chart.sync('#text-title', 'titleame', 'metadata.describe.source-name');
         chart.sync('#describe-source-url', 'metadata.describe.source-url');
 
-        chart.onChange(function(chart, key, value) {
+        chart.onChange(function(cha');
+        chart.sync('#text-intro', 'metadata.describe.intro');
+        chart.sync('#describe-source-nrt, key, value) {
             if (key == 'type') _typeHasChanged = true;
             if (key == 'theme') _themeHasChanged = true;
             if (key.substr(0, 13) == 'metadata.axes') _axesHaveChanged = true;
@@ -551,7 +551,7 @@ $(function() {
 
                         {% include "chart/visualize/highlight.twig" %}
 
-                        {% include "chart/visualize/annotate.twig" %}
+                        {# {% include "chart/visualize/annotate.twig" %} #}
 
                         {# repeat data source attribution one more time #}
                         <div class="data-source control-group" style="clear:both">

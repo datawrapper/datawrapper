@@ -16,6 +16,6 @@ $app->get('/chart/:id/upload', function ($id) use ($app) {
         add_editor_nav($page, 1);
         $res = $app->response();
         $res['Cache-Control'] = 'max-age=0';
-        $app->render('chart-upload.twig', $page);
+        $app->render('chart/upload.twig', $page);
     });
 });

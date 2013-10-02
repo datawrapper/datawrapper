@@ -41,6 +41,6 @@ $app->get('/chart/:id/describe', function ($id) use ($app) {
             'n0' => '0 ('.number_format(1234.56789, 0, $d, $k).')'
         );
 
-        $app->render('chart-describe.twig', $page);
+        $app->render('chart/describe.twig', $page);
     });
 });

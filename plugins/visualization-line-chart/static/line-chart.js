@@ -784,7 +784,7 @@
                 }
             }
 
-            function annotate(annotation) {
+            /*function annotate(annotation) {
                 if (annotation.type == 'area') {
                     annotateArea();
                 }
@@ -830,7 +830,7 @@
                             .toBack();
                     }
                 }
-            }
+            }*/
         },
 
         lineColumns: function() {
