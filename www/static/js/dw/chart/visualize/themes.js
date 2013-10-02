@@ -4,7 +4,8 @@
 define(function() {
 
     var themesById = {},
-        themes;
+        themes,
+        chart = dw.backend.currentChart;
 
     function init(_themes) {
         _.each(_themes, function(theme) {
@@ -36,16 +37,40 @@ define(function() {
             } else {
                 dfd.resolve();
                 $('body').trigger('dw:themes-loaded');
+                showThemeColors();
             }
         }
         loadNext();
         return dfd.promise();
     }
 
+    function showThemeColors() {
+        var themeid = $('#select-theme').val(),
+            customColors = $('#palette-colors'),
+            theTheme = dw.theme(themeid),
+            picker = $('#select-color');
+        picker.data('colors', theTheme.colors.palette.join(','));
+        picker.data('color', theTheme.colors.palette[chart.get('metadata.visualize.base-color', 0)]);
+        picker.colorpicker({
+            maxW: $('.tab-container').width()*0.5,
+            change: function(color) {
+                var colIndex = theTheme.colors.palette.join(',').toLowerCase().split(',').indexOf(color.toLowerCase());
+                chart.set('metadata.visualize.base-color', colIndex);
+            }
+        });
+        chart.set('metadata.publish.background', theTheme.colors.background);
+        chart.set('metadata.publish.contextBg', theTheme.colors.contextBackground);
+        chart.set('metadata.publish.text', theTheme.colors.text);
+
+        var colors = theTheme.colors.palette.slice().concat(theTheme.colors.secondary || []);
+        customColors.data('colors', colors.join(','));
+    }
+
     return {
         init: init,
         load: load,
-        all: function() { return themes; }
+        all: function() { return themes; },
+        updateUI: showThemeColors
     };
 
 });

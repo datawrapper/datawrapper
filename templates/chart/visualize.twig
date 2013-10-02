@@ -56,32 +56,6 @@ $(function() {
             visMetas['{{ vis.id }}'] = JSON.parse('{{ vis|json| escape("js") }}');
         {% endfor %}
 
-        function showThemeColors() {
-            var themeid = $('#select-theme').val(),
-                customColors = $('#palette-colors'),
-                theTheme = dw.theme(themeid),
-                picker = $('#select-color');
-            picker.data('colors', theTheme.colors.palette.join(','));
-            picker.data('color', theTheme.colors.palette[chart.get('metadata.visualize.base-color', 0)]);
-            picker.colorpicker({
-                maxW: $('.tab-container').width()*0.5,
-                change: function(color) {
-                    var colIndex = theTheme.colors.palette.join(',').toLowerCase().split(',').indexOf(color.toLowerCase());
-                    chart.set('metadata.visualize.base-color', colIndex);
-                }
-            });
-            chart.set('metadata.publish.background', theTheme.colors.background);
-            chart.set('metadata.publish.contextBg', theTheme.colors.contextBackground);
-            chart.set('metadata.publish.text', theTheme.colors.text);
-
-            var colors = theTheme.colors.palette.slice().concat(theTheme.colors.secondary || []);
-            customColors.data('colors', colors.join(','));
-
-            $('body').trigger('dw:themes-loaded');
-        }
-        // show the theme colors as soon as the theme has been loaded
-        //$('body').on('dw:themes-loaded', showThemeColors);
-
 
         function loadOptions() {
             var loaded = $.Deferred();
@@ -92,7 +66,7 @@ $(function() {
                         loaded.resolve();
                         // trigger event in order to resync options
                         loadVisDfd.resolve();
-                        showThemeColors();
+                        themes.updateUI();
                     }, 500);
                 }
             );
@@ -130,12 +104,12 @@ $(function() {
         chart.onSave(function(chart) {
             if (_themeHasChanged) {
                 iframe.one('load', updateVisBackground);
-                _.each(themes.all(), function(theme) {
+                _.some(themes.all(), function(theme) {
                     if (theme.id == chart.get('theme')) {
                         var w = theme.default_width || chart.get('metadata.publish.embed-width'),
                             h = theme.default_height || chart.get('metadata.publish.embed-height');
                         updateSize(w, h);
-                        return false;
+                        return true;
                     }
                 });
             }
@@ -153,6 +127,7 @@ $(function() {
                 themes.load().done(function() {
                     loadOptions().done(function() {
                         loadVis();
+                        themes.updateUI();
                     });
                 });
             }
@@ -209,7 +184,7 @@ $(function() {
                     return false;
                 }
             });
-            themes.load().done(showThemeColors);
+            themes.load();
         }
 
         chart.load().done(onDatasetLoaded);
