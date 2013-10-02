@@ -416,7 +416,7 @@ $(function() {
                     iframe_window.dw.backend = dw.backend;
                 }
                 if (evt.data == 'datawrapper:vis:rendered') {
-                    dw.backend.enableLiveEditing($('#iframe-vis'));
+                    dw.backend.enableLiveEditing($('#iframe-vis'), chart);
                     initHighlightSeries();
                 }
                 if (evt.data.slice(0, 7) == 'notify:') {

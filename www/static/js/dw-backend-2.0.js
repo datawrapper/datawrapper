@@ -561,7 +561,7 @@ var dw = dw || {};
         };
     }
 
-    function enableLiveEditing(iframe) {
+    function enableLiveEditing(iframe, chart) {
         var doc = iframe.get(0).contentDocument;
 
         $('.label[data-column][data-row] span', doc)
@@ -572,7 +572,7 @@ var dw = dw || {};
                     label = span.parent(),
                     transpose = chart.get('metadata.data.transpose', false),
                     dataset = chart.dataset(),
-                    column = label.data('column'),
+                    column = String(label.data('column')),
                     row = label.data('row'),
                     c = !transpose ? dataset.indexOf(column) : 0,
                     r = !transpose ? row+1 : dataset.indexOf(column);
@@ -582,15 +582,17 @@ var dw = dw || {};
                         change = { row: r, column: c, value: val };
                     changes.push(change);
                     chart.set('metadata.data.changes', changes);
-                    dw.backend.notify(dw.backend.messages.initLiveEditSuccess.replace('[', '<a href="describe">').replace(']', '</a>'));
+                    dw.backend.notify(dw.backend.messages.liveEditSuccess.replace('[', '<a href="describe">').replace(']', '</a>'));
                 }
             });
 
         $('.chart-title', doc)
             .initLiveEditing()
             .off('blur').on('blur', function() {
-                chart.set('title', $('.chart-title', doc).html());
-                $('#text-title').val($('.chart-title', doc).html());
+                var new_val = $('.chart-title', doc).html();
+                                console.log(new_val);
+                chart.set('title', new_val);
+                $('#text-title').val(new_val);
             });
 
         $('.chart-intro', doc)
