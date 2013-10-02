@@ -9,6 +9,7 @@ CHANGELOG
 * showing recent charts in dropdown nav
 * enabled data attribution in visualize step
 * added automatic number formatting
+* added column oauth_signin to user table (see migrate sql)
 
 ### 1.5.4
 * added dw.utils.smartRound
