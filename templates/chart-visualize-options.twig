@@ -33,12 +33,27 @@
 
     {% for key, option in vis.options %}
         {% if theme['option-filter'][vis.id][key] or (not option.hidden and not option.expert)  %}
-    <div class="control-group" style="margin-bottom:0" id="vis-options-{{ key }}">
+    <div class="control-group vis-option-group vis-option-type-{{ option.type }}" style="margin-bottom:0" id="vis-options-{{ key }}">
+
+        {% if option.help %}
+            <a title="{{ option.help }}" class="vis-option-help"><span>?</span></a>
+        {% endif %}
 
         {{ hook('vis_option_controls', option, key) }}
 
     </div>
     {% endif %}{% endfor %}
+
+    <script type="text/javascript">
+    $(function() {
+        $('.vis-option-help').tooltip({
+            placement: 'left',
+            html: true,
+            trigger: 'hover focus click',
+            container: 'body'
+        });
+    });
+    </script>
 
 </fieldset>
 

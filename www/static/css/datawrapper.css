@@ -690,8 +690,52 @@ dl.dl-horizontal dd {
     margin-bottom: 10px;
 }
 
-#vis-options .control-group {
+#vis-options .vis-option-group {
     margin-bottom: 9px;
+    position: relative;
+}
+
+#vis-options .vis-option-group .vis-option-help {
+    position: absolute;
+    top: -3px;
+    right: 0px;
+    cursor: default;
+    padding-left: 15px;
+    z-index: 100;
+}
+
+#vis-options .vis-option-group.vis-option-type-radio-left .vis-option-help {
+    top: 32px;
+}
+
+#vis-options .vis-option-group .vis-option-help:hover {
+    text-decoration: none;
+}
+
+#vis-options .vis-option-group .vis-option-help span {
+    display: block;
+    width: 22px;
+    height: 22px;
+    line-height: 22px;
+    text-align: center;
+    border-radius: 11px;
+    background: #d6d6d6;
+    color: #fff;
+    font-weight: bold;
+}
+
+.tooltip {
+    opacity: 1!important;
+}
+
+.tooltip .tooltip-inner {
+    background: #fff;
+    color: #000;
+    box-shadow: 0 0 14px rgba(0,0,0,.1);
+    font-size: 13px;
+    border: 1px solid #ddd;
+    line-height: 18px;
+    text-align: left;
 }
 
 #vis-options legend + .control-group {
@@ -1201,6 +1245,9 @@ form.well form {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    box-shadow: inset 0px -5px 12px rgba(0,0,0,0.05);
+    border: 1px solid #e5e5e5;
+    border-bottom: 0;
 }
 
 .visualize-nav-tabs .active a {
