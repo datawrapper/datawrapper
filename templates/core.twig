@@ -30,9 +30,11 @@
     <script type="text/javascript" src="/static/vendor/require-js/require-2.1.8.min.js"></script>
     <script type="text/javascript">
         require.config({
-            baseUrl: '/static/js',
+            baseUrl: '/static',
             paths: {
-                visualize: 'dw/chart/visualize'
+                dw: 'js/dw',
+                visualize: 'dw/chart/visualize',
+                handsontable: 'vendor/handsontable/jquery.handsontable.full'
             }
         });
     </script>

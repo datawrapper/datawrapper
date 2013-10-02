@@ -1,0 +1,529 @@
+
+define(['handsontable'], function(handsontable) {
+
+    var glob = {},
+        metadata = {
+            changes: {
+                exist: function() {
+                    return !!chart.get('metadata.data.changes', []).length;
+                },
+                add: function(row, column, value) {
+                    var dataChanges = _.clone(chart.get('metadata.data.changes', [])); //clone is needed, otherwise chart.set does not detect this as change
+                    if (chart.get('metadata.data.transpose')) {
+                        dataChanges.push({row: column, column: row, value: value});
+                    }
+                    else {
+                        dataChanges.push({row: row, column: column, value: value});
+                    }
+                    chart.set('metadata.data.changes', dataChanges);
+                },
+                revert: function() {
+                    chart.set('metadata.data.changes', []);
+                }
+            },
+
+            columnFormat: {
+                add: function(columnNames, property, value) {
+                    var columnFormats = $.extend(true, {}, chart.get('metadata.data.column-format', {})); //deep clone (_.clone is insufficient because it does a shallow clone)
+                    _.each(columnNames, function(name) {
+                        if (!columnFormats[name]) {
+                            columnFormats[name] = {};
+                        }
+                        if (property) {
+                            columnFormats[name][property] = value;
+                            if (property === 'type') {
+                                dataset.column(name).type(value);
+                            }
+                        } else {
+                            if (value === undefined) delete columnFormats[name];
+                            else columnFormats[name] = value;
+                        }
+                    });
+                    chart.set('metadata.data.column-format', columnFormats);
+                },
+                get: function(columnName) {
+                    var columnFormat = chart.get('metadata.data.column-format', {});
+                    if (columnName) {
+                        return columnFormat[columnName] || {};
+                    }
+                    else {
+                        columnFormat;
+                    }
+                }
+            }
+        };
+
+    var chart = dw.backend.currentChart,
+        dataset;
+
+    chart.onChange(reload);
+
+    chart.sync('#describe-source-name', 'metadata.describe.source-name');
+    chart.sync('#describe-source-url', 'metadata.describe.source-url');
+    chart.sync('#transpose', 'metadata.data.transpose');
+
+    chart.sync('#has-headers', 'metadata.data.horizontal-header');
+
+    // swap between currency and unit
+    function swapUnitAndCurrency() {
+        if ($('#number-format').val()[0] == 'c') {
+            $('#number-currency').show();
+            $('#number-unit').hide();
+        } else {
+            $('#number-currency').hide();
+            $('#number-unit').show();
+        }
+       //$('#number-currency, #number-unit, #number-divisor').attr('disabled', $('#number-format').val() == '-');
+    }
+    $('#number-format').change(swapUnitAndCurrency);
+    swapUnitAndCurrency();
+
+    updateCurrencyInNumberFormat();
+    $('#number-currency').change(updateCurrencyInNumberFormat);
+
+    // update data table after format changes
+    $('.number-format').change(function() {
+        updateTable(dataset, chart);
+    });
+
+    $('#reset-data-changes').click(function(){
+        metadata.changes.revert();
+    });
+
+    // add event handler for ignoring data series
+    var start;
+    var $dataPreview = $("#data-preview");
+
+
+    $('body').on('mousedown', function () {
+        if(document.activeElement.nodeName === 'INPUT') {
+            document.activeElement.blur(); //save changes from currently edited sidebar field
+        }
+        if(selectedColumns.length) {
+            deselectColumns();
+            $dataPreview.handsontable('render'); //refresh all cells and column headers
+            showColumnSettings();
+        }
+    });
+
+    $('body').on('mouseup', function () {
+        start = void 0;
+    });
+
+    $dataPreview.on('mousedown', 'th:has(.colHeader)', function (event) {
+        start = getIndexOfTh(this);
+        event.stopPropagation();
+        $dataPreview.handsontable('deselectCell');
+        setTimeout(function(){ //do it in timeout, so input blur has chance to run
+            selectColumns(start);
+        }, 0);
+    });
+
+    var last;
+    $dataPreview.on('mouseenter', 'th:has(.colHeader)', function () {
+        if(last === this) {
+            return;
+        }
+        if(start !== void 0) {
+            var current = getIndexOfTh(this);
+            selectColumns(start, current);
+        }
+        last = this;
+    });
+
+    var selectedColumns = [];
+
+
+
+    $('.sidebar').mousedown(function(event){
+        event.stopPropagation(); //stop sidebar event propagation so clicking in #column-options won't deselect column selection
+    });
+
+    $('#column-options-hide').change(function(){
+        var columnNames = [];
+        selectedColumns.forEach(function(i) {
+            columnNames.push(getSeriesOfIndex(i));
+        });
+        metadata.columnFormat.add(columnNames, 'ignore', this.checked);
+    });
+
+
+    syncColumnFormat('#column-type', 'type');
+    syncColumnFormat('#number-format', 'number-format');
+    syncColumnFormat('#number-divisor', 'number-divisor');
+    syncColumnFormat('#number-append', 'number-append');
+    syncColumnFormat('#number-prepend', 'number-prepend');
+
+    $('#describe-source-url').blur(function() {
+        var v = $(this).val();
+        if (v.substr(0,2) != '//' && v.substr(0,7) != 'http://' &&  v.substr(0,8) != 'https://') {
+            $(this).val('//'+v);
+            chart.set('metadata.describe.source-url', $(this).val());
+        }
+    });
+
+    reload();
+
+    $('a[href=visualize]').click(function(evt) {
+        if (chart.hasUnsavedChanges()) {
+            evt.preventDefault();
+            chart.onSave(function() {
+                location.href = 'visualize';
+            });
+            chart.save();
+        }
+    });
+
+    // update currency in number-format select
+    function updateCurrencyInNumberFormat() {
+        var curOpt = $('#number-format option[value=c], #number-format option[value=c0]');
+        Globalize.culture(glob.chartLocale).numberFormat.currency.symbol = $('#number-currency option:selected').data('symbol');
+        curOpt.each(function(i, el) {
+            el = $(el);
+            el.html(Globalize.format(1234.567, el.val()));
+        });
+    }
+
+    function updateTable() {
+
+        function isNone(val) {
+            return val === null || val === undefined || (_.isNumber(val) && isNaN(val));
+        }
+
+        var data = [];
+
+        var horzHeaders = chart.get('metadata.data.horizontal-header'),
+            transpose = chart.get('metadata.data.transpose');
+
+        dataset.ignoreIgnores = true;
+
+        var tr = [];
+        dataset.eachColumn(function(column) {
+            tr.push(column.title());
+        });
+        data.push(tr);
+
+        dataset.eachRow(function(row) {
+            var tr = [];
+            dataset.eachColumn(function(column, i) {
+                var val = column.raw(row);
+                tr.push(isNone(val) ? '' : val);
+            });
+            data.push(tr);
+        });
+
+        function HtmlCellRender(instance, TD, row, col, prop, value, cellProperties) {
+          var escaped = dw.utils.purifyHtml(Handsontable.helper.stringify(value));
+          TD.innerHTML = escaped; //this is faster than innerHTML. See: https://github.com/warpech/jquery-handsontable/wiki/JavaScript-&-DOM-performance-tips
+          if (cellProperties.readOnly) {
+            instance.view.wt.wtDom.addClass(TD, 'htDimmed');
+          }
+          if (cellProperties.valid === false && cellProperties.invalidCellClassName) {
+            instance.view.wt.wtDom.addClass(TD, cellProperties.invalidCellClassName);
+          }
+        }
+
+        function myRenderer(instance, td, row, col, prop, value, cellProperties) {
+            var column = dataset.column(col);
+            if (row > 0) {
+                var formatter = chart.columnFormatter(column);
+                value = formatter(column.val(row - 1), true);
+            }
+            HtmlCellRender.apply(this, arguments);
+            if (parseInt(value, 10) < 0) { //if row contains negative number
+                td.classList.add('negative');
+            }
+            td.classList.add(column.type()+'Type');
+            if (row === 0) {
+                td.classList.add('firstRow');
+            } else {
+                td.classList.add(row % 2 ? 'oddRow' : 'evenRow');
+            }
+            if (metadata.columnFormat.get(column.name()).ignore) {
+                td.classList.add('ignored');
+            }
+            if(selectedColumns.indexOf(col) > -1) {
+                td.classList.add('area'); //add blue area background if this cell is in selected column
+            }
+            if (row > 0 && !column.type(true).isValid(column.val(row-1))) {
+                td.classList.add('parsingError');
+            }
+        }
+
+        if($("#data-preview").handsontable('getInstance')) {
+            $("#data-preview").handsontable('loadData', data);
+            $("#data-preview").handsontable('render');
+        }
+        else {
+            $("#data-preview").handsontable({
+                data: data,
+                allowHtml: true,
+                startRows: 6,
+                startCols: 8,
+                width: function() {return $("#data-preview").width();},
+                // max-height is 13 rows (400px) otherwise it's the number of rows plus the table header height
+                height: function(){
+                    var cell_height = $('#data-preview td').outerHeight(true) + 1;
+                    return dataset.numRows() <= 13 ? dataset.numRows() * cell_height + cell_height * 2  : 400;
+                },
+                fixedRowsTop: function(){return horzHeaders ? 1: 0},
+                rowHeaders: true,
+                colHeaders: true,
+                fillHandle: false,
+                stretchH: 'all',
+                cells: function (row, col, prop) {
+                    return {
+                        renderer: myRenderer
+                    };
+                },
+                afterRender: function() {
+                    renderSelectedTh(); //if HOT was scrolled horizontally, we need to rerender th.selected
+                },
+                afterChange: function(changes, source) {
+                    if (source !== 'loadData') {
+                        changes.forEach(function(change) {
+                            if (change[2] != change[3]) {
+                                metadata.changes.add(change[0], change[1], change[3]);
+                            }
+                        });
+                    }
+                }
+            });
+
+            $('#data-preview table').addClass('table table-bordered'); //Bootstrap class names
+            $("#data-preview").handsontable('render'); //consider Bootstrap class names in auto column size
+        }
+
+        if(metadata.changes.exist()) {
+            $('#reset-data-changes').removeClass('disabled');
+        }
+        else {
+            $('#reset-data-changes').addClass('disabled');
+        }
+        if (selectedColumns.length) {
+            // update automatic-format checkbox
+            if (dataset.column(selectedColumns[0]).type() == 'number') {
+                updateAutomaticFormat();
+            }
+        }
+    }
+
+
+    function reload(f) {
+        chart.load().done(function() {
+            dataset = chart.dataset();
+            updateTable();
+        });
+    }
+
+    function hasCorner() {
+        return !!$('#data-preview tbody th').length;
+    }
+
+    function getIndexOfTh(th) {
+        var col = $dataPreview.handsontable('getInstance').view.wt.wtTable.getCoords(th)[1];
+        return col;
+    }
+
+    function getThOfIndex(index) {
+        var offsetCol = $dataPreview.handsontable('getInstance').view.wt.getSetting('offsetColumn');
+        var thIndex = index + 1 * hasCorner() - offsetCol;
+        return document.querySelectorAll('#data-preview thead th')[thIndex];
+    }
+
+    function getSeriesOfIndex(index) {
+        return dataset.column(index).name();
+    }
+
+    function deselectColumns() {
+        selectedColumns.length = 0;
+    }
+
+    function selectColumns(from, to) {
+        deselectColumns();
+        if(to === void 0) {
+            selectedColumns.push(from);
+        }
+        else {
+            var min = Math.min(from, to);
+            var max = Math.max(from, to);
+            while(min <= max) {
+                selectedColumns.push(min);
+                min++;
+            }
+        }
+        $dataPreview.handsontable('render');
+        showColumnSettings();
+    }
+
+    function renderSelectedTh() {
+        $("#data-preview thead th.selected").removeClass('selected');
+        selectedColumns.forEach(function(i){
+            getThOfIndex(i).classList.add('selected');
+        });
+        $("#data-preview thead th").each(function(i){
+            if(i > 0) {
+                var index = getIndexOfTh(this);
+                var serie = getSeriesOfIndex(index);
+                if(metadata.columnFormat.get(serie).ignore) {
+                    this.classList.add('ignored');
+                }
+                else {
+                    this.classList.remove('ignored');
+                }
+            }
+        });
+    }
+
+
+    function selectedSeries() {
+        var out = [];
+        selectedColumns.forEach(function(i){
+            out.push(getSeriesOfIndex(i));
+        });
+        return out;
+    }
+
+    function allEqual(formats, series, property) {
+        if (series.length > 1) {
+            for (var i = 1; i < series.length; i++) {
+                var a = formats[series[i]] && formats[series[i]][property];
+                var b = formats[series[i - 1]] && formats[series[i - 1]][property];
+                if (a !== b) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+
+
+    function fillInField(selector, property) {
+        var series = selectedSeries();
+        var formats = chart.get('metadata.data.column-format', {});
+        var $input = $(selector);
+        if(allEqual(formats, series, property)) {
+            var val = formats[series[0]] && formats[series[0]][property];
+            $input.val(val).removeClass('unresolved');
+        }
+        else {
+            $input.val('').addClass('unresolved');
+            $input.change(function() {
+                fillInField(selector, property);
+            });
+        }
+    }
+
+
+    function syncColumnFormat(selector, property) {
+        $(selector).change(function(){
+            var columnNames = [];
+            selectedColumns.forEach(function(i) {
+                columnNames.push(getSeriesOfIndex(i));
+            });
+            metadata.columnFormat.add(columnNames, property, this.value === '-' ? undefined : this.value);
+
+            if(property === 'type') {
+               showColumnSettings();
+            }
+        });
+    }
+
+    function showColumnSettings() {
+        if(selectedColumns.length) {
+            var serie = getSeriesOfIndex(selectedColumns[0]);
+            if(metadata.columnFormat.get(serie).ignore) {
+                $('#column-options-hide')[0].checked = true;
+            }
+            else {
+                $('#column-options-hide')[0].checked = false;
+            }
+
+            if(metadata.columnFormat.get(serie).type) {
+                $('#column-type').val(metadata.columnFormat.get(serie).type);
+            }
+            else {
+                $('#column-type').val('-');
+            }
+
+            if(dataset.column(serie).type() == 'number') {
+                fillInField('#number-format', 'number-format');
+                fillInField('#number-divisor', 'number-divisor');
+                fillInField('#number-append', 'number-append');
+                fillInField('#number-prepend', 'number-prepend');
+                $('#number-column-options').show();
+
+                updateAutomaticFormat();
+            }
+            else {
+                $('#number-column-options').hide();
+            }
+
+            // fill in default column type
+            var defOpt = $('#column-type option[value=-]'),
+                type = dataset.column(selectedColumns[0]).type();
+            _.each(selectedColumns, function(i) {
+                type = type == dataset.column(i).type() ? type : undefined;
+            });
+            defOpt.html(defOpt.data('label'));
+            if (type) {
+                // all selected columns have the same type
+                defOpt.html(defOpt.html()+' ('+$('#column-type option[value='+type+']').html()+')');
+            }
+
+            // update title
+            $('.selected-columns').text(_.map(selectedColumns.slice(0,3), function(c) {
+                return dataset.column(c).title();
+            }).join(', ') + (selectedColumns.length > 3 ? ', …' : ''));
+
+            $('#table-options').hide();
+            $('#column-options').show();
+        }
+        else {
+            $('#column-options').hide();
+            $('#table-options').show();
+        }
+    }
+
+
+    function updateAutomaticFormat() {
+        $('#automatic-format')
+            .prop('checked', _.isEqual(metadata.columnFormat.get(getSeriesOfIndex(selectedColumns[0])), {}))
+            .off('change')
+            .on('change', function() {
+                if ($('#automatic-format').prop('checked')) {
+                    metadata.columnFormat.add(_.map(selectedColumns, getSeriesOfIndex), null, undefined);
+                } else {
+                    console.log('resetting format');
+                    metadata.columnFormat.add(_.map(selectedColumns, getSeriesOfIndex), null, {
+                        'number-divisor': 0,
+                        'number-format': '-',
+                    });
+                }
+                updateUI(true);
+            });
+        function updateUI(reset) {
+            var ctrls = $('#number-format, #number-divisor, #number-append, #number-prepend');
+            if ($('#automatic-format').prop('checked')) {
+                ctrls.parent().parent().hide();
+            } else {
+                ctrls.parent().parent().show();
+                if (reset) {
+                    fillInField('#number-format', 'number-format');
+                    fillInField('#number-divisor', 'number-divisor');
+                    fillInField('#number-append', 'number-append');
+                    fillInField('#number-prepend', 'number-prepend');
+                }
+            }
+        }
+        updateUI();
+    }
+
+    return {
+        init: function(chartLocale) {
+            glob.chartLocale = chartLocale;
+        }
+    };
+
+});
