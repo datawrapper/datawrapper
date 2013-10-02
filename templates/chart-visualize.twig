@@ -293,7 +293,7 @@ $(function() {
         var vis = $('iframe').get(0).contentWindow.__dw ?
                   $('iframe').get(0).contentWindow.__dw.vis :
                   dw.backend.currentVis;
-            s = $('#highlight-series').html(''),
+            s = $('#highlight-series'),
             s2 = $('.highlighted-series');
         s.find("option[value!='---']").remove();
         _.each(vis.keys(), function(key) {
