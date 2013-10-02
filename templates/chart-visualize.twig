@@ -560,9 +560,9 @@ $(function() {
         </div>
 
         <ul class="span5 nav nav-tabs visualize-nav-tabs" data-target="tab-container">
-            <li class="active"><a href="#vis" data-target="select-visualization">{% trans "Select chart" %}</a></li>
-            <li><a href="#refine" data-target="refine-the-chart">{% trans "Refine the chart" %}</a></li>
-            <li ><a href="#story" data-target="tell-the-story">{% trans "Tell the story" %}</a></li>
+            <li class="active"><a href="#vis" data-target="select-visualization"><b>1</b> {% trans "Select chart" %}</a></li>
+            <li><a href="#refine" data-target="refine-the-chart"><b>2</b> {% trans "Refine the chart" %}</a></li>
+            <li ><a href="#story" data-target="tell-the-story"><b>3</b> {% trans "Tell the story" %}</a></li>
         </ul>
 
         <div class="span5 visconfig"><div class="well">
@@ -676,21 +676,21 @@ $(function() {
                     {# <h3>{% trans "Tell the story" %}</h3> #}
 
                     <div class="story">
-                        <div class="story-title">
-                            <label for="text-title">{% trans "Tell the story in five words" %}:</label>
-                            <input type="text" id="text-title" class="input-xlarge span4" />
-                        </div>
+                        <div class="story-title control-group">
+                            <label class="separator">{% trans "Guide the audience to read the chart" %}</label>
+                            <div class="pull-left">
+                                <label for="text-title">{% trans "Title" %}</label>
+                                <input type="text" id="text-title" class="input-xlarge span4" />
 
-                        <div class="story-intro">
-                            <label for="text-intro">{% trans "Guide the audience to read the chart" %}:</label>
-                            <textarea type="text" id="text-intro" class="input-xlarge span4"></textarea>
+                                <label for="text-intro">{% trans "Description" %}</label>
+                                <textarea type="text" id="text-intro" class="input-xlarge span4"></textarea>
+                            </div>
                         </div>
-
-                        <div class="story-highlight">
-                            <label>{% trans "Highlight the most import data series:" %}</label>
+                        <div class="story-highlight control-group" style="clear:both">
+                            <label class="separator">{% trans "Highlight the most import elements (optional)" %}</label>
                             <div>
                                 <select id="highlight-series" class="span2">
-                                    <option value="---">- {% trans "select a data series" %} -</option>
+                                    <option value="---">- {% trans "select element" %} -</option>
                                 </select>
                             </div>
                             <p class="highlighted-series">
@@ -701,10 +701,16 @@ $(function() {
                         </div>
 
                         {# repeat data source attribution one more time #}
-                        <div class="data-source">
-                            <label>{% trans "Where did you get the data from?" %}</label>
-                            <input id="describe-source-name" type="text" placeholder="{% trans "name of the organisation" %}">
-                            <input id="describe-source-url" type="text" placeholder="{% trans "URL of the dataset" %}">
+                        <div class="data-source control-group">
+                            <label class="separator">{% trans "Where did you get the data from?" %}</label>
+                            <div class="pull-left">
+                                <label>{% trans "Source name" %}</label>
+                                <input id="describe-source-name" type="text" class="span2" placeholder="{% trans "name of the organisation" %}">
+                            </div>
+                            <div class="pull-left">
+                                <label>{% trans "Source URL" %}</label>
+                                <input id="describe-source-url" type="text" class="span2" placeholder="{% trans "URL of the dataset" %}">
+                            </div>
                         </div>
 
                     </div>
@@ -745,7 +751,7 @@ $(function() {
                 </div>
             </div>
 
-            <a href="#proceed" class="pull-right btn btn proceed-btn">{% trans "Proceed" %} <i class="icon-chevron-right"></i></a>
+            <a href="#proceed" class="pull-right btn btn-primary proceed-btn">{% trans "Proceed" %} <i class="icon-chevron-right icon-white"></i></a>
             <a href="publish" class="submit pull-right btn btn-primary btn-lrge publish-btn" id="visualize-proceed">{% trans "Publish" %} <i class="icon-chevron-right icon-white"></i></a>
 
             {% if debug %}
