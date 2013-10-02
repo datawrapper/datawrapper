@@ -39,7 +39,7 @@ function add_header_vars(&$page, $active = null) {
         );
         foreach ($user->getRecentCharts(9) as $chart) {
             $mycharts['dropdown'][] = array(
-                'url' => '/chart/'.$chart->getId().'/visualize',
+                'url' => '/chart/'.$chart->getId().'/visualize#tell-the-story',
                 'title' => '<img width="30" src="'.($chart->hasPreview() ? $chart->thumbUrl(true) : '').'" class="icon" /> '
                     . '<span>' . $chart->getTitle() . '</span>'
             );
