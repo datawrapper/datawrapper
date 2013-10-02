@@ -1,0 +1,15 @@
+
+
+<div class="story-highlight control-group" style="clear:both">
+    <label class="separator">{% trans "Highlight the most import elements (optional)" %}</label>
+    <div>
+        <select id="highlight-series" class="span2">
+            <option value="---">- {% trans "select element" %} -</option>
+        </select>
+    </div>
+    <p class="highlighted-series">
+        {% for series in vismeta['highlighted-series'] %}
+        <span data-series="{{ series }}" class="badge badge-info"><i class="icon-remove icon-white"></i>{{ series }}</span>
+        {% endfor %}
+    </p>
+</div>

@@ -27,6 +27,15 @@
 
     {% if config.custom_css %}<link href="/static/custom/{{ config.custom_css }}" rel="stylesheet">{% endif %}
 
+    <script type="text/javascript" src="/static/vendor/require-js/require-2.1.8.min.js"></script>
+    <script type="text/javascript">
+        require.config({
+            baseUrl: '/static/js',
+            paths: {
+                visualize: 'dw/chart/visualize'
+            }
+        });
+    </script>
     <script type="text/javascript" src="/static/vendor/jquery/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="/static/vendor/underscore/underscore-1.5.2.min.js"></script>
     <script type="text/javascript" src="/static/vendor/cryptojs/hmac-sha256.js"></script>

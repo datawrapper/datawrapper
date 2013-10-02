@@ -26,6 +26,13 @@ class DatawrapperPlugin_VisualizationLineChart extends DatawrapperPlugin_Visuali
             "options" => $this->getOptions(),
             "locale" => array(
                 "tooManyLinesToLabel" => __("Your chart contains <b>more lines than we can label</b>, so automatic labeling is turned off. To fix this <ul><li>filter some columns in the data table in the previous step, or</li><li>use direct labeling and the highlight feature to label the lines that are important to your story.</li></ul>", $this->getName())
+            ),
+            "annotations" => array(
+                array('type' => 'axis-range', 'axis' => 'x'),
+                array('type' => 'axis-point', 'axis' => 'x'),
+                array('type' => 'axis-range', 'axis' => 'y'),
+                array('type' => 'axis-point', 'axis' => 'y'),
+                array('type' => 'data-point')
             )
         );
         return $meta;

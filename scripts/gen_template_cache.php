@@ -47,3 +47,5 @@ foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($tplDir, R
         unlink($cacheFile);
     }
 }
+// clean up
+exec('rm -Rf ??');

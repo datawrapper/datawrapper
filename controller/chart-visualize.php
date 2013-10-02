@@ -23,7 +23,7 @@ $app->get('/chart/:id/visualize', function ($id) use ($app) {
         add_header_vars($page, 'chart');
         add_editor_nav($page, 3);
 
-        $app->render('chart-visualize.twig', $page);
+        $app->render('chart/visualize.twig', $page);
     });
 });
 

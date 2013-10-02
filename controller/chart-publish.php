@@ -41,7 +41,7 @@ $app->get('/chart/:id/publish', function ($id) use ($app) {
             $page['publish'] = true;
             $page['republish'] = $app->request()->get('republish') == 1;
         }
-        $app->render('chart-publish.twig', $page);
+        $app->render('chart/publish.twig', $page);
 
     });
 });
