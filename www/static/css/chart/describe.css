@@ -1,0 +1,84 @@
+.sidebar #column-options {
+    display: none;
+}
+
+.sidebar #column-options .unresolved {
+    background: #FDFFBA;
+}
+
+.sidebar #column-options .unresolved option,
+.sidebar #column-options .unresolved optgroup {
+    background: #fff;
+}
+
+.handsontable tr td {
+    font-size: 1.1em;
+    font-family: Helvetica;
+    font-weight: 400;
+    padding: 3px 6px;
+}
+
+.chart-editor textarea.handsontableInput {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.handsontable thead th {
+    cursor: pointer;
+}
+
+.handsontable thead th.selected {
+    background: #ccc;
+}
+
+.handsontable td.htDimmed { /*revert default HOT style for readOnly cells*/
+    font-style: normal;
+    color: inherit;
+}
+.handsontable td.firstRow {
+    border-bottom: 1px solid #aaa;
+    font-weight: bold;
+    background: #f0f0f0;
+}
+
+.handsontable td.textType {
+    color: #000000;
+}
+.handsontable td.dateType {
+    color: #39A832;
+    font-style: italic;
+    text-align: center;
+}
+.handsontable td.numberType {
+    color: #297EA8;
+    text-align: right;
+}
+.handsontable td.oddRow {
+    background-color: #fff;
+}
+
+.handsontable td.evenRow {
+    background-color: #f9f9f9;
+}
+
+.handsontable th.ignored,
+.handsontable td.ignored {
+    color: #aaa !important;
+    text-decoration: line-through
+}
+.handsontable th.ignored { background-color: #e2e2e2; }
+.handsontable td.ignored.firstRow { background-color: #e2e2e2; }
+.handsontable td.ignored.oddRow { background-color: #e9e9e9; }
+.handsontable td.ignored.evenRow { background-color: #e2e2e2; }
+
+.handsontable td.firstRow.area { background: #d4ddee; }
+.handsontable td.oddRow.area { background-color: #e1ebfd; }
+.handsontable td.evenRow.area { background-color: #dce5f7; }
+
+.handsontable td.firstRow.dateType { color: #1E8118; }
+.handsontable td.firstRow.numberType { color: #1B668B; }
+
+.handsontable td.parsingError {
+    color: #d00;
+    background: #fee;
+}
