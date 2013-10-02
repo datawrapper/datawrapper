@@ -784,6 +784,53 @@
                 }
             }
 
+            function annotate(annotation) {
+                if (annotation.type == 'area') {
+                    annotateArea();
+                }
+
+                function annotateArea() {
+
+                    var path;
+                    if (annotation.left && annotation.right) {
+                        x_range();
+                    } else if (annotation.low && annotation.high) {
+                        y_range();
+                    }
+
+
+                    function x_range() {
+                        var x1 = scales.x(annotation.left),
+                            x2 = scales.x(annotation.right),
+                            y1 = scales.y.range()[0],
+                            y2 = scales.y.range()[1];
+                        // draw rect
+                        area(c.paper.rect(x1, Math.min(y1,y2), x2-x1, Math.abs(y2-y1)));
+                        if (annotation.label) {
+                            vis.label((x1 + x2)*0.5, Math.min(y1, y2)-3, annotation.label, {
+                                valign: 'bottom',
+                                align: 'center',
+                                width: 100,
+                                cl: 'annotation'
+                            });
+                        }
+                    }
+
+                    function y_range() {
+                        var x1 = scales.x.range()[0],
+                            x2 = scales.x.range()[1],
+                            y1 = scales.y(annotation.low),
+                            y2 = scales.y(annotation.high);
+                        // draw rect
+                        area(c.paper.rect(x1, Math.min(y1,y2), x2-x1, Math.abs(y2-y1)));
+                    }
+
+                    function area(path) {
+                        path.attr({ stroke: false, fill: '#eed', opacity: 0.5 })
+                            .toBack();
+                    }
+                }
+            }
         },
 
         lineColumns: function() {

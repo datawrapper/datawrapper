@@ -1,0 +1,149 @@
+
+<fieldset id="visOptions">
+
+    {% if not vis['hide-base-color-selector'] %}
+        {% if not vis.options['select-color'] or vis.options['select-color']["default"]  %}
+            <div class="control-group select-color">
+                <label class="control-label" for="select-color">{% trans "Choose a base color" %}</label>
+                <div class="controls">
+                    <div id="select-color"></div>
+                </div>
+            </div>
+        {% endif %}
+        {% if not vis.options['custom-color'] or vis.options['custom-color']["default"]  %}
+            <div class="control-group">
+                <label class="control-label"></label>
+                <div class="controls">
+                    <a class="btn btn-small" role="button" onclick="$('#customColors').show();$('#visOptions').hide();">{% trans "or define custom colors" %}</a>
+                </div>
+            </div>
+        {% endif %}
+    {% endif %}
+
+    {% if vis.dimensions == 1 %}
+    <div class="control-group select-row">
+        <label class="control-label" for="text-title">{% trans "Initial row to display" %}</label>
+        <div class="controls">
+            <select id="select-row" style="width:100%">
+            </select>
+        </div>
+    </div>
+    {% endif %}
+
+    {% for key, option in vis.options %}
+        {% if theme['option-filter'][vis.id][key] or (not option.hidden and not option.expert)  %}
+    <div class="control-group vis-option-group vis-option-type-{{ option.type }}" style="margin-bottom:0" id="vis-options-{{ key }}">
+
+        {% if option.help %}
+            <a title="{{ option.help }}" class="vis-option-help"><span>?</span></a>
+        {% endif %}
+
+        {{ hook('vis_option_controls', option, key) }}
+
+    </div>
+    {% endif %}{% endfor %}
+
+    <script type="text/javascript">
+    $(function() {
+        $('.vis-option-help').tooltip({
+            placement: 'left',
+            html: true,
+            trigger: 'hover focus click',
+            container: 'body'
+        });
+    });
+    </script>
+
+</fieldset>
+
+<fieldset id="customColors" style="display:none">
+    <button onclick="$('#customColors').hide();$('#visOptions').show();" class="btn pull-right btn-small" data-dismiss="modal">{% trans "Return" %}</button>
+    <h3>{% trans "Customize chart colors" %}</h3>
+    <p style="margin-bottom:20px">{% trans "Please use custom colors only if it is absolutely necessary, for instance to identify political parties. If possible please use the palette colors." %}</p>
+    <div class="row">
+        <div class="span2" style="width:43%">
+            <h4>{% trans "Select element(s):" %}</h4>
+            <ul class="dataseries unstyled">
+            </ul>
+            <div style="font-size:12px;text-align:center;margin-bottom:10px;">
+                {% trans "Select:" %} &nbsp;
+                <a onclick="$('.dataseries li').addClass('selected')">{% trans "all" %}</a> &nbsp;
+                <a onclick="$('.dataseries li').removeClass('selected')">{% trans "none" %}</a> &nbsp;
+                <a onclick="$('.dataseries li').toggleClass('selected')">{% trans "invert" %}</a>
+            </div>
+
+        </div>
+        <div class="span2" style="width:42%">
+             <h4>{% trans "Choose a color:" %}</h4>
+             <label>{% trans "Pick from palette..." %}</label>
+             <div id="palette-colors"></div>
+
+             <label>{% trans "...or enter a custom color" %}</label>
+            <div class="control-group">
+                <input id="user-color" type="text" class="text input-small" placeholder="FF0000" />
+            </div>
+            <button id="reset-color-choice" class="btn">{% trans "Reset color (use default)" %}</button>
+        </div>
+    </div>
+</fieldset>
+
+{#
+    modal for picking custom colors
+#}
+
+<style type="text/css">
+
+#customColors h4 {
+    margin: 0 0 10px;
+    font-size: 14px;
+    color: #444;
+}
+
+#customColors .color {
+    width: 17px;
+    height: 17px;
+    float: left;
+    background: #ccc;
+    text-align: center;
+    line-height: 14px;
+    color: #fff;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+#customColors .dataseries {
+    border-radius: 5px;
+    max-height: 250px;
+    overflow:auto;
+    padding: 3px 0;
+    margin-bottom: 4px;
+    background:#fff;
+    border-top:1px solid #aaa;
+    border-left:1px solid #aaa;
+    border-bottom:1px solid #ccc;
+    border-right:1px solid #ccc;
+    box-shadow:inset 1px 1px 4px rgba(0,0,0,.2);
+}
+
+#customColors .dataseries li {
+    padding: 5px 5px 1px 8px;
+    cursor: pointer;
+}
+
+#customColors .dataseries li:nth-child(2n) {
+    background: rgba(0,0,0,.075);
+}
+
+#customColors .dataseries label {
+    padding-left: 25px;
+    line-height: 17px;
+    color: #555;
+}
+
+#customColors .dataseries .selected label {
+    font-weight: bold;
+    color: #000;
+}
+
+
+</style>
