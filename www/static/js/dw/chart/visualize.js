@@ -5,11 +5,12 @@ define([
     './visualize/themes',
     './visualize/checkChartHeight',
     './visualize/loadVisDeferred',
+    './visualize/initTabNav',
     'js/misc/classify',
     './visualize/colorpicker',
     'js/misc/jquery.easing'],
 
-function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd, classify) {
+function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd, initTabNav, classify) {
 
     var _typeHasChanged = false,
         _themeHasChanged = false,
@@ -169,25 +170,6 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd, 
             }
         );
         return loaded.promise();
-    }
-
-    function initTabNav() {
-        $('.nav-tabs').each(function(i, el) {
-            var navTabs = $(el);
-            $('li a', navTabs).each(function(i, el) {
-                $('.'+$(el).data('target')).css({ position: 'absolute', left: -10000 }); // hide
-                $(el).click(function(e) {
-                    e.preventDefault();
-                    $('.' + navTabs.data('target')+' > div').css({ position: 'absolute', left: -10000 }); // hide
-                    $('.' + $(e.target).data('target')).css({ position: 'static' });  // show
-                    $('li', navTabs).removeClass('active');
-                    $(e.target).parents('li').addClass('active');
-                });
-            });
-            $('li.active a', navTabs).each(function(i, el) {
-                $('.'+$(el).data('target')).show().css({ position: 'static' }); // show
-            });
-        });
     }
 
     function initTransposeLink() {
