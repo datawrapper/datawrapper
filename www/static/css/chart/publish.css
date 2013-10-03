@@ -1,0 +1,23 @@
+
+#iframe-vis {
+    box-shadow: 2px 2px 11px rgba(0,0,0,.2);
+
+-webkit-transition: all 800ms cubic-bezier(0.190, 1.000, 0.220, 1.000);
+   -moz-transition: all 800ms cubic-bezier(0.190, 1.000, 0.220, 1.000);
+    -ms-transition: all 800ms cubic-bezier(0.190, 1.000, 0.220, 1.000);
+     -o-transition: all 800ms cubic-bezier(0.190, 1.000, 0.220, 1.000);
+        transition: all 800ms cubic-bezier(0.190, 1.000, 0.220, 1.000); /* easeOutExpo */
+
+-webkit-transition-timing-function: cubic-bezier(0.190, 1.000, 0.220, 1.000);
+   -moz-transition-timing-function: cubic-bezier(0.190, 1.000, 0.220, 1.000);
+    -ms-transition-timing-function: cubic-bezier(0.190, 1.000, 0.220, 1.000);
+     -o-transition-timing-function: cubic-bezier(0.190, 1.000, 0.220, 1.000);
+        transition-timing-function: cubic-bezier(0.190, 1.000, 0.220, 1.000); /* easeOutExpo */
+}
+
+p.lead {
+    margin-top: 30px;
+}
+.publishing .progress {
+    height: 10px;
+}
