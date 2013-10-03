@@ -1,9 +1,7 @@
 
 define(function() {
 
-    var chart = dw.backend.currentChart;
-
-    function syncVisOptions(vis) {
+    return function(vis, chart) {
         // at first set default values
         _.each(vis.options, function(opt, key) {
             if (_.isUndefined(chart.get('metadata.visualize.'+key)) && !_.isUndefined(opt.default)) {
@@ -12,10 +10,11 @@ define(function() {
         });
         // now check dependencies
         checkDepends();
+
         // trigger vis option synchronization
         _.each(vis.options, function(opt, key) {
             if (!$('#vis-options-'+key).hasClass('hidden')) {
-                if (chart.get('metadata.visualize.'+key) == undefined && opt.default) {
+                if (chart.get('metadata.visualize.'+key) === undefined && opt.default) {
                     chart.set('metadata.visualize.'+key, opt.default);
                 }
                 // fire custom event so hooked vis options can sync
@@ -96,7 +95,5 @@ define(function() {
             });
         }
     }
-
-    return syncVisOptions;
 
 });

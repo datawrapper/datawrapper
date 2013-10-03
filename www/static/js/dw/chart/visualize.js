@@ -48,7 +48,7 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd, 
         initChartSize();
 
         // init visualization options
-        require(['visualize/options'], function(options) {
+        require(['dw/chart/visualize/options'], function(options) {
             options.init(chart, visJSON);
         });
 
