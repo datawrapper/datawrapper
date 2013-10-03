@@ -33,10 +33,7 @@ define(function() {
             element: $('#upload')[0],
             action: '/api/charts/' + dw.backend.currentChart.get('id') + '/data',
             allowedExtensions: ['txt', 'csv', 'tsv'],
-            template: '<div class="upload-drop">'+dropCSVHereMsg+'</div>'+
-                '<div class="btn upload-button" id="pick-file-from-disk"><span>'+
-                '<i class="icon-upload"></i> '+uploadCSVFileMsg+'</span></div>'+
-                '<ul class="qq-upload-list" style="display:none"></ul>',
+            template: $('.upload-template').html(),
             classes: {
                 button: 'upload-button',
                 drop: 'upload-drop',
