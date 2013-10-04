@@ -6,11 +6,13 @@ define([
     './visualize/checkChartHeight',
     './visualize/loadVisDeferred',
     './visualize/initTabNav',
+    './visualize/enableLiveEditing',
     'js/misc/classify',
     './visualize/colorpicker',
     'js/misc/jquery.easing'],
 
-function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd, initTabNav, classify) {
+function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
+    initTabNav, enableLiveEditing, classify) {
 
     var _typeHasChanged = false,
         _themeHasChanged = false,
@@ -146,7 +148,7 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd, 
                     iframe_window.dw.backend = dw.backend;
                 }
                 if (evt.data == 'datawrapper:vis:rendered') {
-                    dw.backend.enableLiveEditing($('#iframe-vis'), chart);
+                    enableLiveEditing($('#iframe-vis'), chart);
                     if (initHighlightSeries) initHighlightSeries();
                 }
                 if (evt.data.slice(0, 7) == 'notify:') {
