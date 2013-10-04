@@ -562,7 +562,8 @@ var dw = dw || {};
     }
 
     function enableLiveEditing(iframe, chart) {
-        var doc = iframe.get(0).contentDocument;
+        var doc = iframe.get(0).contentDocument,
+            lastNotification;
 
         $('.label[data-column][data-row] span', doc)
             .initLiveEditing()
@@ -582,7 +583,7 @@ var dw = dw || {};
                         change = { row: r, column: c, value: val };
                     changes.push(change);
                     chart.set('metadata.data.changes', changes);
-                    dw.backend.notify(dw.backend.messages.liveEditSuccess.replace('[', '<a href="describe">').replace(']', '</a>'));
+                    if (!lastNotification) lastNotification = dw.backend.notify(dw.backend.messages.liveEditSuccess.replace('[', '<a href="describe">').replace(']', '</a>'));
                 }
             });
 

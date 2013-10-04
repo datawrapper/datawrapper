@@ -241,7 +241,6 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd, 
         dw.backend.currentVis.dataset = chart.dataset().reset();
         dw.backend.currentVis.meta = visMetas[chart.get('type')];
         loadVisDfd.resolve();
-        //$('#notifications').html('');
     }
 
     function scheduleThumbnail() {
