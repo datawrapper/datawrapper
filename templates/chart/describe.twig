@@ -9,11 +9,12 @@
 <link rel="stylesheet" type="text/css" href="/static/css/chart/describe.css">
 
 <script type="text/javascript">
-$(function() {
-    require(['dw/chart/describe', 'dw/backend'], function(describe) {
+dw.backend.ready(function() {
+    require(['dw/chart/describe'], function(describe) {
         describe.init("{{ chartLocale }}");
     });
 });
+
 </script>
 
 <div class="dw-create-describe chart-editor">

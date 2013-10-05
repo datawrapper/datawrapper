@@ -4,8 +4,8 @@
 {{ parent() }}
 
 <script type="text/javascript">
-$(function() {
-    require(['dw/chart/publish', 'dw/backend'], function(publish) {
+dw.backend.ready(function() {
+    require(['dw/chart/publish'], function(publish) {
         publish.init({% if publish %}true{% if republish %}, true{% endif %}{% endif %});
     });
 });

@@ -7,12 +7,13 @@ define([
     './visualize/loadVisDeferred',
     './visualize/initTabNav',
     './visualize/enableLiveEditing',
+    './visualize/liveUpdate',
     'js/misc/classify',
     './visualize/colorpicker',
     'js/misc/jquery.easing'],
 
 function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
-    initTabNav, enableLiveEditing, classify) {
+    initTabNav, enableLiveEditing, liveUpdate, classify) {
 
     var _typeHasChanged = false,
         _themeHasChanged = false,
@@ -114,7 +115,7 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
             if (key == 'type') _typeHasChanged = true;
             if (key == 'theme') _themeHasChanged = true;
             if (key.substr(0, 13) == 'metadata.axes') _axesHaveChanged = true;
-            dw.backend.updateChartInIframe(iframe, chart.attributes());
+            liveUpdate.update(iframe, chart.attributes());
         });
     }
 
@@ -126,7 +127,7 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
         chk = setInterval(function() {  // wait a little more
             if (win.__dw.vis) {
                 clearInterval(chk);
-                dw.backend.initLiveUpdates(iframe);
+                liveUpdate.init(iframe);
                 win.__dw.vis.rendered().done(function() {
                     checkChartHeight();
                 });

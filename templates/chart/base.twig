@@ -6,7 +6,6 @@
   {% trans "Your changes have been saved." %}
 </div>
 
-
 <div class="row create-nav">
     {% for step in steps %}
         {% if createstep > step.index or createstep != step.index and chart.lastEditStep >= step.index %}

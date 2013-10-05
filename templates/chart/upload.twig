@@ -4,21 +4,16 @@
 
 {{ parent() }}
 
+
+<script type="text/javascript">
+dw.backend.ready(function() {
+    require(['dw/chart/upload'], function(upload) {
+        upload.init();
+    });
+});
+</script>
+
 <div class="dw-create-upload chart-editor">
-
-    <script type="text/javascript">
-
-        $(function() {
-
-            require(['dw/chart/upload', 'dw/backend'], function(upload) {
-
-                upload.init();
-
-            });
-
-        });
-    </script>
-
     <div class="row">
         <div class="span7">
             <h2 style="margin-bottom:10px">{% trans "Upload Your Data" %}</h2>
@@ -33,8 +28,6 @@
                 <div id="upload"></div>
 
             </form>
-
-
         </div>
 
         <div class="span5">
