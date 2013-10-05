@@ -1,0 +1,63 @@
+
+.foot {
+    position:absolute;
+    left:130px;
+    right:130px;
+    top:430px;
+    text-align:center;
+    padding-top: 10px;
+    font-size: 12px;
+    opacity: 0.5;
+}
+
+.brand {
+    text-align: center;
+    position: relative;
+    top: -30px;
+}
+body {
+    background: #eee url(/static/img/bg/wavegrid.png);
+}
+
+.modal h3 {
+    margin-top: 0;
+    font-size: 26px;
+    font-weight: 300;
+    margin-bottom: 20px;
+}
+.modal h3 img {
+    vertical-align: bottom;
+}
+body .modal {
+    width: 420px;
+    margin-left: -210px;
+    box-shadow: 0 0 20px rgba(0,0,0, 0.3);
+    border: 0;
+    position: relative;
+}
+.modal-body {
+    padding: 30px;
+}
+body.login .row-login {
+    width: 370px;
+}
+
+body.login .modal .close {
+    display: none;
+}
+
+body.login .modal h3 {
+    margin-top: 0;
+    font-size: 26px;
+    font-weight: 300;
+    margin-bottom: 20px;
+}
+
+.amp {
+    font-family: Baskerville, Georgia;
+    font-style: italic;
+}
+.login-help { color: #999; }
+span.email {
+    color: #222;
+}
