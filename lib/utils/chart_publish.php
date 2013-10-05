@@ -85,12 +85,12 @@ function publish_css($user, $chart) {
     $all = implode("\n", $imports) . "\n\n" . $body;
 
     $cssmin = new CSSmin();
-    $minified = $all; //$cssmin->run($all);
-    file_put_contents($static_path . "/" . $chart->getID() . '.min.css', $minified);
+    $minified = $all; //$cssmin->run($all); disabled minification
+    file_put_contents($static_path . "/" . $chart->getID() . '.all.css', $minified);
 
     $cdn_files[] = array(
-        $static_path."/".$chart->getID().'.min.css',
-        $chart->getCDNPath() . $chart->getID().'.min.css', 'text/css'
+        $static_path."/".$chart->getID().'.all.css',
+        $chart->getCDNPath() . $chart->getID().'.all.css', 'text/css'
     );
 
     // copy themes assets

@@ -91,7 +91,11 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
         $next_vis_id = !empty($vis['extends']) ? $vis['extends'] : null;
     }
 
-    $styles = array_merge($vis_css, array_reverse($theme_css));
+    $stylesheets = array_merge(
+        array('/static/css/chart.base.css'),
+        $vis_css,
+        array_reverse($theme_css)
+    );
 
     $the_vis = DatawrapperVisualization::get($chart->getType());
     $the_vis['locale'] = $vis_locale;
@@ -109,7 +113,7 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
                 '/lib/' . $the_theme_js[0],
             )
         );
-        $styles = array($chart->getID().'.min.css');
+        $stylesheets = array($chart->getID().'.all.css');
         // NOTE: replace `/static/` by `assets/` in the `__static_path` value,
         //       since vis assets are handle by DatawrapperVisualization
         $replace_in = $the_vis['__static_path']; $replace_by = 'assets/'; $replace = '/static/';
@@ -154,7 +158,7 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
         'chartUrlFs' => strpos($chart_url, '.html') > 0 ? str_replace('index.html', 'fs.html', $chart_url) : $chart_url . '?fs=1',
 
         // used in chart.twig
-        'stylesheets' => $styles,
+        'stylesheets' => $stylesheets,
         'scripts' => $scripts,
         'visualization' => $the_vis,
         'theme' => $the_theme,
