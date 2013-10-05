@@ -8,9 +8,12 @@
 class DatawrapperPlugin_PublishS3 extends DatawrapperPlugin {
 
     public function init() {
-        DatawrapperHooks::register(DatawrapperHooks::PUBLISH_FILES, array($this, 'publish'));
-        DatawrapperHooks::register(DatawrapperHooks::UNPUBLISH_FILES, array($this, 'unpublish'));
-        DatawrapperHooks::register(DatawrapperHooks::GET_PUBLISHED_URL, array($this, 'getUrl'));
+        $cfg = $this->getConfig();
+        if ($cfg) {
+            DatawrapperHooks::register(DatawrapperHooks::PUBLISH_FILES, array($this, 'publish'));
+            DatawrapperHooks::register(DatawrapperHooks::UNPUBLISH_FILES, array($this, 'unpublish'));
+            DatawrapperHooks::register(DatawrapperHooks::GET_PUBLISHED_URL, array($this, 'getUrl'));
+        }
     }
 
     public function getRequiredLibraries() {
