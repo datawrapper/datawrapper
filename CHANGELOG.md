@@ -10,6 +10,7 @@ CHANGELOG
 * enabled data attribution in visualize step
 * added automatic number formatting
 * added column oauth_signin to user table (see migrate sql)
+* refactored JavaScript and CSS out of Twig templates
 
 ### 1.5.4
 * added dw.utils.smartRound
