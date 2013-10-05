@@ -53,7 +53,9 @@
         chart.set('lastEditStep', {{ createstep }});
     }
 
-$(function() {
+dw.backend.ready(function() {
+
+    dw.backend.syncChart(chart);
 
     _.templateSettings = {
         interpolate : /\{\{(.+?)\}\}/g
