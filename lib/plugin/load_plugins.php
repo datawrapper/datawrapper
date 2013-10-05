@@ -40,10 +40,12 @@ function load_plugins() {
             $deps = $plugin->getDependencies();
             unset($deps['core']);  // ignore core dependency
             $can_load = true;
-            foreach ($deps as $dep => $version) {
-                if (!isset($loaded[$dep])) {  // dependency not loaded
-                    $can_load = false;
-                    break;
+            if (is_array($deps)) {
+                foreach ($deps as $dep => $version) {
+                    if (!isset($loaded[$dep])) {  // dependency not loaded
+                        $can_load = false;
+                        break;
+                    }
                 }
             }
             if ($can_load) {
