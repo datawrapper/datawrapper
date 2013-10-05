@@ -15,7 +15,7 @@
 <script type="text/javascript">
 
 $(function() {
-    require(['dw/chart/visualize'], function(visualize) {
+    require(['dw/chart/visualize', 'dw/backend'], function(visualize) {
         var themesJSON = {{ themes | json | raw }},
             visJSON = {{ vis | json | raw }},
             visMetas = {};

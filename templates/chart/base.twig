@@ -42,24 +42,23 @@
 
 <script type="text/javascript">
 
-$(function() {
-
-    _.templateSettings = {
-        interpolate : /\{\{(.+?)\}\}/g
-    };
-
-    var chart = dw.backend.currentChart = dw.chart(JSON.parse('{{ chart.toJSON|raw }}'));
+    // initialize current chart
+    var chart = dw.backend.currentChart = dw.chart(JSON.parse("{{ chart.toJSON | raw }}"));
 
     chart
         .locale('{{ chartLocale }}')
         .metricPrefix({{ metricPrefix | json | raw }});
 
-    dw.backend.syncChart(chart);
-
     if (chart.get('lastEditStep') < {{ createstep }}) {
         dw.backend.__firstTime = true;
         chart.set('lastEditStep', {{ createstep }});
     }
+
+$(function() {
+
+    _.templateSettings = {
+        interpolate : /\{\{(.+?)\}\}/g
+    };
 
     $('.chart-editor').on('click', '.submit', function(e) {
         var a = $(e.target);
