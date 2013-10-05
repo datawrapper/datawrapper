@@ -34,7 +34,7 @@ define(function() {
 
             var checkStatus;
             $.ajax({
-                url: '/api/charts/{{ chart.id }}/publish',
+                url: '/api/charts/'+chart.get('id')+'/publish',
                 type: 'post',
                 dataType: 'json',
                 success: function(res) {
