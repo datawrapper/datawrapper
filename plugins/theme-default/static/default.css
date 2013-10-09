@@ -32,7 +32,7 @@ h1 span {
 /* NOTE: On IE, there is a border around each image which is a link */
 a img { border:0px; }
 
-.chart p { margin: 5px 0 10px!important; line-height: 19px;}
+.chart p { margin: 5px 0 10px!important; line-height: 17px;}
 
 #chart {
     margin-top: 10px;
