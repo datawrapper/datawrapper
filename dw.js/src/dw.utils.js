@@ -52,15 +52,23 @@ dw.utils = {
 
         // use globalize instead of d3
         return timeFormat([
-            [time_fmt("yyyy"), function() { return true; }],
-            [time_fmt(daysDelta > 70 ? "MMM" : "MMMM"), function(d) { return d.getMonth() !== 0; }],  // not January
-            [time_fmt(fmt.date), function(d) { return d.getDate() != 1; }],  // not 1st of month
-            [time_fmt(daysDelta < 7 ? fmt.mm : daysDelta > 70 ? fmt.mmm : fmt.mmmm), function(d) { return d.getDate() != 1 && new_month; }],  // not 1st of month
+            [time_fmt("yyyy"),
+                function() { return true; }],
+            [time_fmt(daysDelta > 70 ? "MMM" : "MMM"),
+                function(d) { return d.getMonth() !== 0; }],  // not January
+            [time_fmt(fmt.date),
+                function(d) { return d.getDate() != 1; }],  // not 1st of month
+            [time_fmt(daysDelta < 7 ? fmt.mm : daysDelta > 70 ? fmt.mmm : fmt.mmm),
+                function(d) { return d.getDate() != 1 && new_month; }],  // not 1st of month
             //[time_fmt("%a %d"), function(d) { return d.getDay() && d.getDate() != 1; }],  // not monday
-            [time_fmt(fmt.hour), function(d) { return d.getHours(); }],
-            [time_fmt(fmt.minute), function(d) { return d.getMinutes(); }],
-            [time_fmt(":ss"), function(d) { return d.getSeconds(); }],
-            [time_fmt(".fff"), function(d) { return d.getMilliseconds(); }]
+            [time_fmt(fmt.hour),
+                function(d) { return d.getHours(); }],
+            [time_fmt(fmt.minute),
+                function(d) { return d.getMinutes(); }],
+            [time_fmt(":ss"),
+                function(d) { return d.getSeconds(); }],
+            [time_fmt(".fff"),
+                function(d) { return d.getMilliseconds(); }]
         ]);
     },
 
@@ -77,7 +85,9 @@ dw.utils = {
                     case 'year': return d.getFullYear();
                     case 'quarter': return d.getFullYear() + ' Q'+(d.getMonth()/3 + 1);
                     case 'month': return Globalize.format(d, 'MMM yy');
-                    case 'day': return Globalize.format(d, 'd');
+                    case 'day': return Globalize.format(d, 'MMM d');
+                    case 'minute': return Globalize.format(d, 't');
+                    case 'second': return Globalize.format(d, 'T');
                 }
             } else {
                 return d;
@@ -222,6 +232,18 @@ dw.utils = {
             case 'es': return { 3: ' Mil', 6: ' millón' };
             default: return { 3: 'k', 6: 'M', 9: ' bil' };
         }
+    },
+
+    magnitudeRange: function(minmax) {
+        var e0 = Math.round(Math.log(minmax[0]) / Math.LN10),
+            e1 = Math.round(Math.log(minmax[1]) / Math.LN10);
+        return e1 - e0;
+    },
+
+    logTicks: function(min, max) {
+        var e0 = Math.round(Math.log(min) / Math.LN10),
+            e1 = Math.round(Math.log(max) / Math.LN10);
+        return _.map(_.range(e0, e1), function(exp) { return Math.pow(10, exp); });
     }
 
 };
