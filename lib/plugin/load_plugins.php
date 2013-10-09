@@ -13,6 +13,7 @@ function load_plugins() {
     }
 
     $loaded = array();
+    $could_not_install = array();
 
     function load_plugin($plugin) {
         $plugin_path = ROOT_PATH . 'plugins/' . $plugin->getName() . '/plugin.php';
@@ -44,6 +45,10 @@ function load_plugins() {
                 foreach ($deps as $dep => $version) {
                     if (!isset($loaded[$dep])) {  // dependency not loaded
                         $can_load = false;
+                        if (!file_exists(ROOT_PATH . 'plugins/' . $dep) || isset($could_not_install[$dep])) {
+                            // dependency does not exists, not good
+                            $could_not_install[$id] = true;
+                        }
                         break;
                     }
                 }
@@ -53,7 +58,9 @@ function load_plugins() {
                 load_plugin($plugin);
                 $loaded[$id] = true;
             } else {
-                $not_loaded_yet[] = $plugin; // so try next time
+                if (!isset($could_not_install[$id])) {
+                    $not_loaded_yet[] = $plugin; // so try next time
+                }
             }
         }
     }
