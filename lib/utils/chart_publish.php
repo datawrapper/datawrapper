@@ -124,8 +124,8 @@ function publish_css($user, $chart) {
 function publish_data($user, $chart) {
     $cdn_files = array();
     $static_path = get_static_path($chart);
-    file_put_contents($static_path . "/data", $chart->loadData());
-    $cdn_files[] = array($static_path . "/data", $chart->getCDNPath() . 'data', 'text/plain');
+    file_put_contents($static_path . "/data.csv", $chart->loadData());
+    $cdn_files[] = array($static_path . "/data.csv", $chart->getCDNPath() . 'data.csv', 'text/plain');
 
     return $cdn_files;
 }

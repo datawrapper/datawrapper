@@ -55,7 +55,7 @@ dw.chart = function(attributes) {
             var datasource;
 
             datasource = dw.datasource.delimited({
-                url: 'data',
+                url: 'data.csv',
                 firstRowIsHeader: chart.get('metadata.data.horizontal-header', true),
                 transpose: chart.get('metadata.data.transpose', false)
             });
