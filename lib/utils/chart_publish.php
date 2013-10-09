@@ -58,7 +58,26 @@ function publish_js($user, $chart) {
                      . $theme_js[1];
         file_put_contents($static_path . $theme_js[0], $theme_js[1]);
     }
-    $cdn_files[] = array($static_path . $theme_js[0], 'lib/' . $theme_js[0], 'application/javascript');
+    $cdn_files[] = array(
+        $static_path . $theme_js[0],
+        'lib/' . $theme_js[0],
+        'application/javascript'
+    );
+
+    // generate chart script
+    $chart_js = $data['chart_js'];
+    if (!file_exists($static_path . $chart_js[0])) {
+        $chart_js[1] = "/*\n * datawrapper / chart \n"
+                     . " * generated on ".date('c')."\n */\n"
+                     . $chart_js[1];
+        file_put_contents($static_path . $chart_js[0], $chart_js[1]);
+    }
+    $cdn_files[] = array(
+        $static_path . $chart_js[0],
+        'lib/' . $chart_js[0],
+        'application/javascript'
+    );
+
     return $cdn_files;
 }
 

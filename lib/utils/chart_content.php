@@ -103,6 +103,7 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
 
     $the_vis_js = get_vis_js($the_vis, array_merge(array_reverse($vis_js), $vis_libs_local));
     $the_theme_js = get_theme_js($the_theme, array_reverse($theme_js));
+    $the_chart_js = get_chart_js();
 
     if ($published) {
         $scripts = array_merge(
@@ -111,6 +112,7 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
             array(
                 '/lib/' . $the_vis_js[0],
                 '/lib/' . $the_theme_js[0],
+                '/lib/' . $the_chart_js[0]
             )
         );
         $stylesheets = array($chart->getID().'.all.css');
@@ -130,7 +132,8 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
                 array('/static/js/dw-2.0'.($debug ? '' : '.min').'.js'),
                 array_reverse($theme_js),
                 array_reverse($vis_js),
-                $vis_libs
+                $vis_libs,
+                array('/static/js/dw/chart.base.js')
             )
         );
     }
@@ -167,6 +170,7 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
         // the following is used by chart_publish.php
         'vis_js' => $the_vis_js,
         'theme_js' => $the_theme_js,
+        'chart_js' => $the_chart_js
 
     );
 
@@ -210,4 +214,11 @@ function get_theme_js($theme, $themeJS) {
     $theme_js_md5 = md5($all);
     $theme_path = 'theme/' . $theme['id'] . '-' . $theme_js_md5 . '.min.js';
     return array($theme_path, $all);
+}
+
+function get_chart_js() {
+    $js = file_get_contents(ROOT_PATH . 'www/static/js/dw/chart.base.js');
+    $min = JSMin::minify($js);
+    $md5 = md5($min);
+    return array('chart-'.$md5.'.min.js', $min);
 }
