@@ -2,7 +2,9 @@
 
 <div id="header">
     {% if not plain %}
+    {% if title %}
     <h1><span class="chart-title">{{ title|purify|raw }}</span></h1>
+    {% endif %}
 
     {% if intro %}
     <p class="chart-intro">{{ intro|purify|raw }}</p>
