@@ -322,6 +322,7 @@ dw.column.types.date = function(sample) {
         // returns a function for formatting dates
         formatter: function(config) {
             if (!format) return _.identity;
+            var M_pattern = Globalize.culture().calendar.patterns.M.replace('MMMM','MMM');
             switch (knownFormats[format].precision) {
                 case 'year': return function(d) { return !_.isDate(d) ? d : d.getFullYear(); };
                 case 'half': return function(d) { return !_.isDate(d) ? d : d.getFullYear() + ' H'+(d.getMonth()/6 + 1); };
@@ -329,8 +330,8 @@ dw.column.types.date = function(sample) {
                 case 'month': return function(d) { return !_.isDate(d) ? d : Globalize.format(d, 'MMM yy'); };
                 case 'week': return function(d) { return !_.isDate(d) ? d : dateToIsoWeek(d).slice(0,2).join(' W'); };
                 case 'day': return function(d) { return !_.isDate(d) ? d : Globalize.format(d, 'd'); };
-                case 'day-minutes': return function(d) { return !_.isDate(d) ? d : Globalize.format(d, 'M')+' - '+ Globalize.format(d, 't'); };
-                case 'day-seconds': return function(d) { return !_.isDate(d) ? d : Globalize.format(d, 'T'); };
+                case 'day-minutes': return function(d) { return !_.isDate(d) ? d : Globalize.format(d, M_pattern).replace(' ', '&nbsp;')+' - '+ Globalize.format(d, 't').replace(' ', '&nbsp;'); };
+                case 'day-seconds': return function(d) { return !_.isDate(d) ? d : Globalize.format(d, 'T').replace(' ', '&nbsp;'); };
             }
         },
 
