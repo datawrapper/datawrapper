@@ -147,7 +147,7 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
             if (evt.source == iframe_window) {
                 if (evt.data == 'datawrapper:vis:init') {
                     iframe_window.dw_alert = dw.backend.alert;
-                    iframe_window.dw.backend = dw.backend;
+                    iframe_window.__dw.backend = dw.backend;
                 }
                 if (evt.data == 'datawrapper:vis:rendered') {
                     enableLiveEditing($('#iframe-vis'), chart);
