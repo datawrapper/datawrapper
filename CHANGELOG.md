@@ -13,6 +13,8 @@ CHANGELOG
 * refactored JavaScript and CSS out of Twig templates
 * renamed chart data file to data.csv
 * plugin.php can now install plugins from git urls
+* display chart id in gallery/mycharts if there's no title
+* using [insert title here] as default chart title
 
 ### 1.5.4
 * added dw.utils.smartRound
