@@ -3,7 +3,7 @@ define(function() {
 
     var chart = dw.backend.currentChart;
 
-    function init(publish, republish) {
+    function init(chartUrl, publish, republish) {
         chart.sync('#embed-width', 'metadata.publish.embed-width');
         chart.sync('#embed-height', 'metadata.publish.embed-height');
 
@@ -42,8 +42,8 @@ define(function() {
                     if (res.status == "ok") {
                         $('.publishing').hide();
                         $('.published').fadeIn();
-                        $('#iframe-vis').attr('src', '{{ chartUrl }}');
-                        window.history.pushState("post_republish", "Datawrapper", "/chart/{{ chart.id }}/publish");
+                        $('#iframe-vis').attr('src', chartUrl);
+                        window.history.pushState("post_republish", "Datawrapper", "/chart/"+chart.get('id')+"/publish");
                     } else {
                         console.warn(res);
                     }
