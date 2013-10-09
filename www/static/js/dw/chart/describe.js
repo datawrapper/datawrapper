@@ -156,7 +156,6 @@ define(['handsontable'], function(handsontable) {
             }
         });
 
-
         // update currency in number-format select
         function updateCurrencyInNumberFormat() {
             var curOpt = $('#number-format option[value=c], #number-format option[value=c0]');
