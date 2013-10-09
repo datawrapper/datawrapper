@@ -12,6 +12,7 @@ CHANGELOG
 * added column oauth_signin to user table (see migrate sql)
 * refactored JavaScript and CSS out of Twig templates
 * renamed chart data file to data.csv
+* plugin.php can now install plugins from git urls
 
 ### 1.5.4
 * added dw.utils.smartRound
