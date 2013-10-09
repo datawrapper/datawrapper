@@ -15,6 +15,7 @@ CHANGELOG
 * plugin.php can now install plugins from git urls
 * display chart id in gallery/mycharts if there's no title
 * using [insert title here] as default chart title
+* refactored core chart javascript into /js/dw/chart.base.js
 
 ### 1.5.4
 * added dw.utils.smartRound
