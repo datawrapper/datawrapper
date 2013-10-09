@@ -8,12 +8,13 @@ define([
     './visualize/initTabNav',
     './visualize/enableLiveEditing',
     './visualize/liveUpdate',
+    './visualize/updateSize',
     'js/misc/classify',
     './visualize/colorpicker',
     'js/misc/jquery.easing'],
 
 function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
-    initTabNav, enableLiveEditing, liveUpdate, classify) {
+    initTabNav, enableLiveEditing, liveUpdate, updateSize, classify) {
 
     var _typeHasChanged = false,
         _themeHasChanged = false,
@@ -286,23 +287,6 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
         clearTimeout(__updateSizeTimer);
         __updateSizeTimer = setTimeout(updateSize, 300);
     }
-
-    function updateSize(_w, _h) {
-        var maxW = $('#iframe-wrapper').parent().parent().width()-22,
-            w = _w || Math.min(Number($('#resize-w').val()) || 580, maxW),
-            h = _h || Number($('#resize-h').val()) || 400;
-        $('#resize-w').val(w);
-        $('#resize-h').val(h);
-        $('#iframe-wrapper').animate({
-            width: w,
-            height: h,
-            'margin-left': (maxW - w) * 0.5
-        }, 400, 'easeOutExpo');
-
-        chart.set('metadata.publish.embed-width', w);
-        chart.set('metadata.publish.embed-height', h);
-    }
-
 
     return {
         init: init

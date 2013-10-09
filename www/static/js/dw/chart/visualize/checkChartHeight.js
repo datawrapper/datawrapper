@@ -1,6 +1,6 @@
 
 
-define(function() {
+define(['./updateSize'], function(updateSize) {
 
     return function() {
         var iframe = $('#iframe-vis').contents(),
