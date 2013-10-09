@@ -519,10 +519,10 @@
             me.__customColors[key] = color;
         },
 
-        getYTicks: function(yscale, h, noDomain) {
+        getYTicks: function(yscale, h, noDomain, useLogScale) {
             var me = this,
-                ticks = yscale.ticks(h / 80),
                 domain = yscale.domain(),
+                ticks = useLogScale ? dw.utils.logTicks(domain[0], domain[1]) : yscale.ticks(h / 80),
                 bt = yscale(ticks[0]),
                 tt = yscale(ticks[ticks.length-1]);
 
@@ -533,8 +533,6 @@
                 ticks.unshift(domain[0]);
                 ticks.push(domain[1]);
             }
-
-
             return ticks;
         },
 
