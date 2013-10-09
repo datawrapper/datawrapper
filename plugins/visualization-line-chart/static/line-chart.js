@@ -513,7 +513,6 @@
                     if (fmt == 'YYYY' && i > 0 && i < ticks.length-1) {
                         lbl = '’'+String(date.getFullYear()).substr(2);
                     }
-                    console.log(lbl, daysDelta > 7 && daysDelta <= 35 && date.getDay() == Globalize.culture().calendar.firstDay);
                     var l = vis.label(x, y, lbl, { align: 'center', cl: 'axis x-axis'});
                     if (
                         ((daysDelta <= 9 && new_day) || // if the data spans about a week, tick for every day
