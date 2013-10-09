@@ -26,7 +26,9 @@ define(function() {
                     __dw.render();
                 }
                 if (changed('title')) {
-                    if (heightChanged($$('.chart-title'), attrs.title)) __dw.render();
+                    if (attrs.title && !$$('.chart-title').length) needReload = true;
+                    if (!attrs.title && $$('.chart-title').length) needReload = true;
+                    if (!needReload && heightChanged($$('.chart-title'), attrs.title)) __dw.render();
                 }
                 if (changed('metadata.describe.intro')) {
                     if (attrs.metadata.describe.intro && !$$('.chart-intro').length) needReload = true;
