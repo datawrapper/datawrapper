@@ -13,10 +13,10 @@
                 formatter = {
                     x: chart.columnFormatter(axesDef.x),
                     y1: chart.columnFormatter(axesDef.y1[0]) // use format of first column for all!
-                }
+                },
+                useLogScale = vis.get('scale-y1') == 'log';
 
             // init canvas
-            el = $(el);
             vis.setRoot(el);
 
             var
@@ -115,6 +115,8 @@
                 }
             }
 
+            if (vis.get('user-change-scale', false)) addScaleChangeUI();
+
             vis.renderingComplete();
 
             if (axesDef.y1.length > 1 && !lineLabelsVisible()) {
@@ -128,11 +130,17 @@
                 });
 
                 if (lineLabelsVisible() && legend.pos != 'direct' && legend.pos != 'right') {
+                    // some additional top padding since for the legend
                     c.tpad += 20;
                     c.rpad = 0;
                 }
+                if (vis.get('user-change-scale', false)) {
+                    // even more addition space for the scale mode UI
+                    c.bpad += 25;
+                }
 
                 if (lineLabelsVisible() && (legend.pos == 'direct' || legend.pos == 'right')) {
+                    // we need to add some right padding for the labels
                     c.labelWidth = 0;
                     dataset.eachColumn(function(col) {
                         c.labelWidth = Math.max(c.labelWidth, vis.labelWidth(col.name(), 'series'));
@@ -148,7 +156,7 @@
                 }
 
                 if (legend.pos != 'direct' && legend.pos != 'right') {
-                    // some more space for last x-label
+                    // a little more space for last x-label if no right legend
                     c.rpad += 0.25 * vis.labelWidth(vis.axes(true).x.val(-1));
                     legend.xoffset += c.lpad;
                 }
@@ -360,7 +368,7 @@
                     if (domain[0] > 0) domain[0] = 0;
                     if (domain[1] < 0) domain[1] = 0;
                 }
-                scale = vis.get('scale') || 'linear';
+                scale = useLogScale ? 'log' : 'linear';
                 if (scale == 'log' && domain[0] === 0) domain[0] = 0.03;  // log scales don't like zero!
                 return d3.scale[scale]().domain(domain);
             }
@@ -374,7 +382,7 @@
 
             // compute width of primary y axis by measuring label widths
             function yAxisWidth(h) {
-                var ticks = vis.getYTicks(scales.y, h, extendRange),
+                var ticks = vis.getYTicks(scales.y, h, extendRange, useLogScale),
                     maxw = 0;
 
                 _.each(ticks, function(val, t) {
@@ -389,7 +397,7 @@
                 // draw tick marks and labels
                 var domain = y1Domain,
                     styles = vis.__styles,
-                    ticks = vis.getYTicks(scales.y, c.h, extendRange);
+                    ticks = vis.getYTicks(scales.y, c.h, extendRange, useLogScale);
 
                 if (!extendRange && ticks[ticks.length-1] != domain[1]) ticks.push(domain[1]);
 
@@ -505,10 +513,11 @@
                     if (fmt == 'YYYY' && i > 0 && i < ticks.length-1) {
                         lbl = '’'+String(date.getFullYear()).substr(2);
                     }
+                    console.log(lbl, daysDelta > 7 && daysDelta <= 35 && date.getDay() == Globalize.culture().calendar.firstDay);
                     var l = vis.label(x, y, lbl, { align: 'center', cl: 'axis x-axis'});
                     if (
-                        ((daysDelta <= 7 && new_day) || // if the data spans about a week, tick for every day
-                        (daysDelta > 7 && daysDelta <= 35 && date.getDay() == Globalize.culture().calendar.firstDay) || // tick for every week
+                        ((daysDelta <= 9 && new_day) || // if the data spans about a week, tick for every day
+                        (daysDelta > 9 && daysDelta <= 35 && date.getDay() == Globalize.culture().calendar.firstDay) || // tick for every week
                         (daysDelta > 35 && daysDelta <= 180 && new_month) ||  // if the data spans for more less than 6 month, tick every month
                         (daysDelta > 180 && daysDelta <= 500 && new_quarter) ||  // tick every 3 month
                         (daysDelta > 500 && daysDelta < 3650 && new_year) ||  // less between two and ten years
@@ -570,9 +579,8 @@
 
                 // update x-label
                 var lx = scales.x(useDateFormat() ? rowName(row) : row),
-                    lw = vis.labelWidth(rowName(row), 'axis x-axis'),
-                    lfmt = formatter.x;
-
+                    lfmt = formatter.x,
+                    lw = vis.labelWidth(lfmt(rowName(row)), 'axis x-axis')+10;
                 xlabel.text(lfmt(rowName(row)));
                 xlabel.attr({
                     x: lx,
@@ -613,7 +621,7 @@
 
                     lbl.attr({
                         x: lx,
-                        y: scales.y(column.val(row)),
+                        y: scales.y(column.val(row))-21,
                         w: vis.labelWidth(val)+10
                     });
                     // if the current value is NaN we cannot show it
@@ -782,6 +790,27 @@
                             stroke: false
                         });
                 }
+            }
+
+            function addScaleChangeUI() {
+                var div = $('<div />').addClass('filter-ui')
+                            .appendTo($('#header')),
+                    id = "use-log-"+_.random(10000),
+                    chk = $('<input type="checkbox" />')
+                            .attr('id', id)
+                            .prop('checked', useLogScale)
+                            .appendTo(div),
+                    lbl = $('<label />')
+                            .attr('for', id)
+                            .text(vis.translate('useLogarithmicScale'))
+                            .appendTo(div);
+                chk.change(function() {
+                    var s = chk.prop('checked') ? 'log' : 'linear',
+                        attrs = vis.chart().attributes();
+                    attrs.metadata.visualize['scale-y1'] = s;
+                    vis.chart().attributes(attrs);
+                    __dw.render();
+                });
             }
 
             /*function annotate(annotation) {

@@ -25,7 +25,8 @@ class DatawrapperPlugin_VisualizationLineChart extends DatawrapperPlugin_Visuali
             ),
             "options" => $this->getOptions(),
             "locale" => array(
-                "tooManyLinesToLabel" => __("Your chart contains <b>more lines than we can label</b>, so automatic labeling is turned off. To fix this <ul><li>filter some columns in the data table in the previous step, or</li><li>use direct labeling and the highlight feature to label the lines that are important to your story.</li></ul>", $this->getName())
+                "tooManyLinesToLabel" => __("Your chart contains <b>more lines than we can label</b>, so automatic labeling is turned off. To fix this <ul><li>filter some columns in the data table in the previous step, or</li><li>use direct labeling and the highlight feature to label the lines that are important to your story.</li></ul>"),
+                "useLogarithmicScale" => __("Use logarithmic scale")
             ),
             "annotations" => array(
                 array('type' => 'axis-range', 'axis' => 'x'),
@@ -150,6 +151,29 @@ class DatawrapperPlugin_VisualizationLineChart extends DatawrapperPlugin_Visuali
                 "type" => "checkbox",
                 "label" => __("Invert direction"),
                 "default" => false
+            ),
+            "scale-y1" => array(
+                "type" => "radio-left",
+                "label" => __("Scale (y-axis)"),
+                "options" => array(
+                    array("label" => __("linear"), "value" => "linear"),
+                    array("label" => __("logarithmic"), "value" => "log")
+                ),
+                "default" => "linear",
+                "depends-on" => array(
+                    "chart.min_value[y1]" => ">0",
+                    "chart.magnitude_range[y1]" => ">3"
+                )
+            ),
+            "user-change-scale" => array(
+                "type" => "checkbox",
+                "label" => __("Let user change scale"),
+                "default" => false,
+                // same dependencies as scale b/c otherwise there is nothing to change
+                "depends-on" => array(
+                    "chart.min_value[y1]" => ">0",
+                    "chart.magnitude_range[y1]" => ">3"
+                )
             )
         );
         return $options;

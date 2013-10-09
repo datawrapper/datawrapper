@@ -16,6 +16,7 @@ CHANGELOG
 * display chart id in gallery/mycharts if there's no title
 * using [insert title here] as default chart title
 * refactored core chart javascript into /js/dw/chart.base.js
+* added log scale mode to line chart
 
 ### 1.5.4
 * added dw.utils.smartRound
