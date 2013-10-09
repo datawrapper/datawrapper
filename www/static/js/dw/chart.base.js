@@ -1,4 +1,9 @@
 
+/*
+ * This piece of code is inserted at the bottom of every Datawrapper
+ * chart. It's main purpose is to trigger the chart rendering.
+ */
+
 // fullscreen
 (function(){var a={supportsFullScreen:!1,nonNativeSupportsFullScreen:!1,isFullScreen:function(){return!1},requestFullScreen:function(){},cancelFullScreen:function(){},fullScreenEventName:"",prefix:""},b="webkit moz o ms khtml".split(" ");if(typeof document.cancelFullScreen!="undefined")a.supportsFullScreen=!0;else for(var c=0,d=b.length;c<d;c++){a.prefix=b[c];if(typeof document[a.prefix+"CancelFullScreen"]!="undefined"){a.supportsFullScreen=!0;break}}a.supportsFullScreen?(a.fullScreenEventName=a.prefix+"fullscreenchange",a.isFullScreen=function(){switch(this.prefix){case"":return document.fullScreen;case"webkit":return document.webkitIsFullScreen;default:return document[this.prefix+"FullScreen"]}},a.requestFullScreen=function(a){return this.prefix===""?a.requestFullScreen():a[this.prefix+"RequestFullScreen"]()},a.cancelFullScreen=function(a){return this.prefix===""?document.cancelFullScreen():document[this.prefix+"CancelFullScreen"]()}):typeof window.ActiveXObject!="undefined"&&(a.nonNativeSupportsFullScreen=!0,a.requestFullScreen=a.requestFullScreen=function(a){var b=new ActiveXObject("WScript.Shell");b!==null&&b.SendKeys("{F11}")},a.isFullScreen=function(){return document.body.clientHeight==screen.height&&document.body.clientWidth==screen.width}),typeof jQuery!="undefined"&&(jQuery.fn.requestFullScreen=function(){return this.each(function(){a.supportsFullScreen&&a.requestFullScreen(this)})}),window.fullScreenApi=a})();
 
