@@ -31,6 +31,19 @@ require_once ROOT_PATH . 'lib/bootstrap.php';
 
 $cmd = $argv[1];
 
+// eventually load plugins.json
+$plugin_urls = false;
+$env_dw_plugins = getenv('DATAWRAPPER_PLUGINS');
+
+if ($env_dw_plugins) {
+    try {  // to load and decode the json
+        $plugin_urls = json_decode(file_get_contents($env_dw_plugins), true);
+    } catch (Error $e) {
+        // didn't work, ignoring env
+        print "NOTICE: Could not read plugins.json from ".$_ENV['DATAWRAPPER_PLUGINS'].". Ignoring...\n";
+    }
+}
+
 /*
  * list installed plugins
  */
@@ -47,7 +60,7 @@ function list_plugins() {
             file_exists($plugin->getPath() . '.git/config')) {
 
             $ret = array();
-            exec('cd '.$plugin->getPath().'; git fetch 2>&1', $ret, $err);
+            exec('cd '.$plugin->getPath().'; git fetch origin 2>&1', $ret, $err);
             $ret = array();
             exec('cd '.$plugin->getPath().'; git status -bs 2>&1', $ret, $err);
             $outdated = strpos($ret[0], '[behind') > -1;
@@ -95,6 +108,7 @@ function install($pattern) {
     if (is_git_url($pattern)) {
         // checkout git repository into tmp directory
         // ROOT_PATH . "plugins" . DIRECTORY_SEPARATOR
+        print "Try loading the plugin from ".$pattern."... \n";
         $tmp_name = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'tmp-'.time();
         exec('git clone '.$pattern.' '.$tmp_name.' 2>&1', $ret, $err);
         $pkg_info = $tmp_name . DIRECTORY_SEPARATOR . 'package.json';
@@ -103,7 +117,7 @@ function install($pattern) {
                 $pkg_info = json_decode(file_get_contents($pkg_info), true);
             } catch (Error $e) {
                 print 'Not a valid plugin: package.json could not be read.';
-                return;
+                return true;
             }
             if (!empty($pkg_info['name'])) {
                 $plugin_path = ROOT_PATH . 'plugins' . DIRECTORY_SEPARATOR . $pkg_info['name'];
@@ -112,14 +126,15 @@ function install($pattern) {
                     $pattern = $pkg_info['name']; // proceed with this id
                 } else {
                     print 'Plugin '.$pkg_info['name'].' is already installed';
-                    return;
+                    return true;
                 }
             } else {
-                print 'No package name specified in package.json.';
-                return;
+                print 'No name specified in package.json.';
+                return true;
             }
         } else {
-            print 'No package.json found';
+            print 'No package.json found in repository';
+            return true;
         }
     }
     _apply($pattern, function($id) {
@@ -128,12 +143,20 @@ function install($pattern) {
 
         // check if plugin files exist
         if (!file_exists($tmp->getPath())) {
+            global $plugin_urls;
+            if ($plugin_urls) {
+                if (isset($plugin_urls[$id])) {
+                    print "Found ".$id." in plugins.json.\n";
+                    install($plugin_urls[$id]); // try installing from git repository
+                    return true;  // cancel apply loop
+                }
+            }
             print "No plugin found with that name. Skipping.\n";
-            return false;
+            return true; // cancel apply loop
         }
         if (!file_exists($tmp->getPath() . 'package.json')) {
             print "Path exists, but no package.json found. Skipping.\n";
-            return false;
+            return true; // cancel apply loop
         }
         // check if plugin is already installed
         $plugin = PluginQuery::create()->findPk($id);
@@ -310,6 +333,7 @@ function is_git_url($url) {
     return substr($url, -4) == ".git" || substr($url, 4) == 'git@';
 }
 
+
 switch ($cmd) {
     case 'list': list_plugins(); break;
     case 'clean': clean(); break;
@@ -342,7 +366,8 @@ function _apply($pattern, $func) {
     }
     sort($plugin_ids);
     foreach ($plugin_ids as $plugin_id) {
-        $func($plugin_id);
+        $res = $func($plugin_id);
+        if ($res === true) return;
     }
 }
 
