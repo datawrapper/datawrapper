@@ -302,11 +302,9 @@ define(['handsontable'], function(handsontable) {
         } // end updateTable()
 
         function reload(f) {
-            showColumnSettings();
             chart.load().done(function(ds) {
                 dataset = ds;
                 updateTable();
-                showColumnSettings();
             });
         }
 

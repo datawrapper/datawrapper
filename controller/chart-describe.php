@@ -11,7 +11,7 @@ $app->get('/chart/:id/describe', function ($id) use ($app) {
             'chartData' => $chart->loadData(),
             'chart' => $chart
         );
-        add_header_vars($page, 'chart');
+        add_header_vars($page, 'chart', 'chart-editor/describe.css');
         add_editor_nav($page, 2);
 
         switch(substr(DatawrapperSession::getLanguage(), 0, 2)) {
