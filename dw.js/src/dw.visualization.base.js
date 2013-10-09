@@ -104,16 +104,24 @@ _.extend(dw.visualization.base, {
             dataset = me.dataset,
             usedColumns = {},
             axes = {},
+            axesDef,
             axesAsColumns = {},
             errors = [];
 
         // get user preference
-        axes =  me.chart().get('metadata.axes', {});
-        _.each(axes, function(columns) {
-            if (!_.isArray(columns)) columns = [columns];
-            _.each(columns, function(column) {
-                usedColumns[column] = true; // mark as used
-            });
+        axesDef = me.chart().get('metadata.axes', {});
+        _.each(me.meta.axes, function(o, key) {
+            if (axesDef[key]) {
+                var columns = axesDef[key];
+                if (columnExists(columns)) {
+                    axes[key] = columns;
+                    // mark columns as used
+                    if (!_.isArray(columns)) columns = [columns];
+                    _.each(columns, function(column) {
+                        usedColumns[column] = true;
+                    });
+                }
+            }
         });
 
         // auto-populate remaining axes
@@ -185,6 +193,14 @@ _.extend(dw.visualization.base, {
         me.axes = function(returnAsColumns) {
             return returnAsColumns ? axesAsColumns : axes;
         };
+
+        function columnExists(columns) {
+            if (!_.isArray(columns)) columns = [columns];
+            for (var i=0; i<columns.length; i++) {
+                if (!dataset.hasColumn(columns[i])) return false;
+            }
+            return true;
+        }
 
         return me.axes(returnAsColumns);
     },

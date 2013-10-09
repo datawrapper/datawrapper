@@ -39,9 +39,11 @@ define(function() {
                 maxColsRegex = /chart\.max_columns\[([^\]]+)\]/,
                 minValueRegex = /chart\.min_value\[([^\]]+)\]/,
                 maxValueRegex = /chart\.max_value\[([^\]]+)\]/,
-                columnTypeRegex = /chart\.column_type\[([^\]]+)\]/;
+                columnTypeRegex = /chart\.column_type\[([^\]]+)\]/,
+                _vis = dw.backend.currentVis;
 
-            _.each(dw.backend.currentVis.axes(true), function(columns, key) {
+            _.each(_vis.meta.axes, function(opts, key) {
+                var columns = _vis.axes(true)[key];
                 axesColumns[key] = _.isArray(columns) ? columns : columns ? [columns] : [];
             });
 
