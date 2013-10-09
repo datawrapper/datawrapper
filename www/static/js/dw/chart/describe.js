@@ -96,6 +96,13 @@ define(['handsontable'], function(handsontable) {
             start = getIndexOfTh(this);
             event.stopPropagation();
             $dataPreview.handsontable('deselectCell');
+            if (selectedColumns.length == 1 && selectedColumns[0] == start) {
+                // proceeding click on selected column header will unselect
+                deselectColumns();
+                $dataPreview.handsontable('render'); // refresh all cells and column headers
+                showColumnSettings();
+                return;
+            }
             setTimeout(function() { //do it in timeout, so input blur has chance to run
                 selectColumns(start);
             }, 0);
