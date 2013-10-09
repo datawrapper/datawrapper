@@ -40,6 +40,7 @@ define(function() {
                 minValueRegex = /chart\.min_value\[([^\]]+)\]/,
                 maxValueRegex = /chart\.max_value\[([^\]]+)\]/,
                 columnTypeRegex = /chart\.column_type\[([^\]]+)\]/,
+                magnitudeRangeRegex = /chart\.magnitude_range\[([^\]]+)\]/,
                 _vis = dw.backend.currentVis;
 
             _.each(_vis.meta.axes, function(opts, key) {
@@ -66,16 +67,20 @@ define(function() {
                             visible = visible && dataset.numRows() <= +val;
                         } else if (minValueRegex.test(key)) {
                             key = key.match(minValueRegex)[1];
-                            visible = visible && !_.isUndefined(axesColumns[key])
-                                        && compare(dw.utils.minMax(axesColumns[key])[0]);
+                            visible = visible && !_.isUndefined(axesColumns[key]) &&
+                                        compare(dw.utils.minMax(axesColumns[key])[0]);
                         } else if (maxValueRegex.test(key)) {
                             key = key.match(maxValueRegex)[1];
-                            visible = visible && !_.isUndefined(axesColumns[key])
-                                        && compare(dw.utils.minMax(axesColumns[key])[1]);
+                            visible = visible && !_.isUndefined(axesColumns[key]) &&
+                                        compare(dw.utils.minMax(axesColumns[key])[1]);
+                        } else if (magnitudeRangeRegex.test(key)) {
+                            key = key.match(magnitudeRangeRegex)[1];
+                            visible = visible && !_.isUndefined(axesColumns[key]) &&
+                                compare(dw.utils.magnitudeRange(dw.utils.minMax(axesColumns[key])));
                         } else if (columnTypeRegex.test(key)) {
                             key = key.match(columnTypeRegex)[1];
-                            visible = visible && !_.isUndefined(axesColumns[key])
-                                        && axesColumns[key][0].type() == val;
+                            visible = visible && !_.isUndefined(axesColumns[key]) &&
+                                        axesColumns[key][0].type() == val;
                         } else {
                             visible = visible && chart.get('metadata.visualize.'+key) == val;
                         }
