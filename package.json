@@ -1,6 +1,6 @@
 {
     "name": "datawrapper",
-    "version": "1.5.4",
+    "version": "1.6-pre",
     "repository": {
         "type": "git",
         "url": "https://github.com/datawrapper/datawrapper.git"
