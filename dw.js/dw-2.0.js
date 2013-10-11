@@ -1469,7 +1469,6 @@ dw.chart = function(attributes) {
         theme,
         visualization,
         metric_prefix,
-        load_callbacks = $.Callbacks(),
         change_callbacks = $.Callbacks(),
         locale;
 
@@ -1519,59 +1518,19 @@ dw.chart = function(attributes) {
                 transpose: chart.get('metadata.data.transpose', false)
             });
 
-            return datasource.dataset().done(function(ds) {
-                dataset = ds;
-                load_callbacks.fire(chart);
+
+            return datasource.dataset().pipe(function(ds) {
+                chart.dataset(ds);
+                return ds;
             });
         },
 
-        loaded: function(callback) {
-            if (dataset) {
-                // run now
-                callback(chart);
-            } else {
-                load_callbacks.add(callback);
-            }
-        },
-
-        // applies the data changes and returns the dataset
+        // returns the dataset
         dataset: function(ds) {
             if (arguments.length) {
-                dataset = ds;
+                dataset = applyChanges(ds);
                 return chart;
             }
-            chart.applyChanges(dataset);
-            return dataset;
-        },
-
-        applyChanges: function(ds) {
-            var changes = chart.get('metadata.data.changes', []);
-            var transpose = chart.get('metadata.data.transpose', false);
-            _.each(changes, function(change) {
-                var row = "row", column = "column";
-                if (transpose) {
-                    row = "column";
-                    column = "row";
-                }
-
-                if (dataset.hasColumn(change[column])) {
-                    if (change[row] === 0) {
-                        dataset.column(change[column]).title(change.value);
-                    }
-                    else {
-                        dataset.column(change[column]).raw(change[row] - 1, change.value);
-                    }
-                }
-            });
-
-            var columnFormats = chart.get('metadata.data.column-format', {});
-            _.each(columnFormats, function(columnFormat, key) {
-                if (columnFormat.type) {
-                    if (dataset.hasColumn(key)) {
-                        dataset.column(key).type(columnFormat.type);
-                    }
-                }
-            });
             return dataset;
         },
 
@@ -1688,6 +1647,37 @@ dw.chart = function(attributes) {
         }
 
     };
+
+    function applyChanges(dataset) {
+        var changes = chart.get('metadata.data.changes', []);
+        var transpose = chart.get('metadata.data.transpose', false);
+        _.each(changes, function(change) {
+            var row = "row", column = "column";
+            if (transpose) {
+                row = "column";
+                column = "row";
+            }
+
+            if (dataset.hasColumn(change[column])) {
+                if (change[row] === 0) {
+                    dataset.column(change[column]).title(change.value);
+                }
+                else {
+                    dataset.column(change[column]).raw(change[row] - 1, change.value);
+                }
+            }
+        });
+
+        var columnFormats = chart.get('metadata.data.column-format', {});
+        _.each(columnFormats, function(columnFormat, key) {
+            if (columnFormat.type) {
+                if (dataset.hasColumn(key)) {
+                    dataset.column(key).type(columnFormat.type);
+                }
+            }
+        });
+        return dataset;
+    }
 
     return chart;
 };
