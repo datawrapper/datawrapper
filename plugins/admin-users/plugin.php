@@ -21,7 +21,8 @@ class DatawrapperPlugin_AdminUsers extends DatawrapperPlugin {
         $this->declareAssets(
             array(
                 'vendor/serious-toolkit/serious-widget.js',
-                'dw.admin.users.js'
+                'dw.admin.users.js',
+                'users.css'
             ),
             "|/admin/users|"
         );
@@ -54,6 +55,7 @@ class DatawrapperPlugin_AdminUsers extends DatawrapperPlugin {
             switch ($sort) {
                 case 'email': $query->orderByEmail('asc'); break;
                 case 'charts': $query->orderBy('NbCharts', 'desc'); break;
+                case 'created_at': $query->orderBy('createdAt', 'desc'); break;
             }
             return $query;
         }
