@@ -1,12 +1,12 @@
 /**
- * Handsontable 0.9.14
+ * Handsontable 0.9.19
  * Handsontable is a simple jQuery plugin for editable tables with basic copy-paste compatibility with Excel and Google Docs
  *
  * Copyright 2012, Marcin Warpechowski
  * Licensed under the MIT license.
  * http://handsontable.com/
  *
- * Date: Fri Aug 23 2013 12:42:43 GMT+0200 (Central European Daylight Time)
+ * Date: Tue Oct 01 2013 13:17:18 GMT+0200 (Central European Daylight Time)
  */
 
 .handsontable {
@@ -16,8 +16,7 @@
   font-size: 13px;
 }
 
-.handsontable.hidden {
-  display: none;
+.handsontable.htAutoColumnSize {
   visibility: hidden;
   left: 0;
   position: absolute;
@@ -83,9 +82,6 @@
 
 .handsontable td.htInvalid {
   -webkit-transition: background 0.75s ease;
-  -moz-transition: background 0.75s ease;
-  -ms-transition: background 0.75s ease;
-  -o-transition: background 0.75s ease;
   transition: background 0.75s ease;
   background-color: #ff4c42;
 }
@@ -225,8 +221,7 @@
   height: 1px;
 }
 
-/* textarea border color */
-textarea.handsontableInput {
+.handsontableInput {
   border: 2px solid #5292F7;
   outline-width: 0;
   margin: 0;
@@ -234,6 +229,7 @@ textarea.handsontableInput {
   font-family: Arial, Helvetica, sans-serif; /*repeat from .handsontable (inherit doesn't work with IE<8) */
   line-height: 1.3em; /*repeat from .handsontable (inherit doesn't work with IE<8) */
   font-size: 13px;
+  -webkit-box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.4);
   box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.4);
   resize: none;
 
@@ -241,8 +237,6 @@ textarea.handsontableInput {
   display: inline-block;
   font-size: 13px;
   color: #000;
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
   border-radius: 0;
 }
 
@@ -320,12 +314,9 @@ NumericRenderer
   border-style: solid;
   border-width: 1px;
   -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-  -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
   -webkit-background-clip: padding-box;
   background-clip: padding-box;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
   border-radius: 4px;
 }
 
