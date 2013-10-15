@@ -13,7 +13,6 @@ define(function() {
             },
             resolve: function() {
                 callbacks.fire();
-                callbacks = $.Callbacks();
             }
         };
     })();
