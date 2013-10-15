@@ -283,11 +283,7 @@ $(function() {
                         success: function(data) {
                             submit.removeClass('loading');
                             if (data.status == 'ok') {
-                                if (data.data.updated.indexOf('password') >= 0) {
-                                    dw.backend.logMessage('{% trans "Congrats! Your password has been changed." %}', parent);
-                                } else {
-                                    dw.backend.logError('{% trans "Could not change your password. Please double check your current password." %}', parent);
-                                }
+                                dw.backend.logMessage('{% trans "Congrats! Your password has been changed." %}', parent);
                             } else {
                                 dw.backend.logError(data.message, parent);
                             }
