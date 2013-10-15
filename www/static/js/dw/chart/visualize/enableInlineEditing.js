@@ -1,7 +1,7 @@
 
 define(function() {
 
-    $.fn.initLiveEditing = function() {
+    $.fn.initInlineEditing = function() {
         return $(this)
         .attr('contenteditable', true)
         .off('focus').on('focus', function(evt) {
@@ -24,7 +24,7 @@ define(function() {
             lastNotification;
 
         $('.label[data-column][data-row] span', doc)
-            .initLiveEditing()
+            .initInlineEditing()
             .off('blur').on('blur', function(evt) {
                 var span = $(evt.target),
                     val = $.trim(span.html()),
@@ -46,7 +46,7 @@ define(function() {
             });
 
         $('.chart-title', doc)
-            .initLiveEditing()
+            .initInlineEditing()
             .off('blur').on('blur', function() {
                 var new_val = $('.chart-title', doc).html();
                 chart.set('title', new_val);
@@ -54,7 +54,7 @@ define(function() {
             });
 
         $('.chart-intro', doc)
-            .initLiveEditing()
+            .initInlineEditing()
             .off('blur').on('blur', function() {
                 chart.set('metadata.describe.intro', $('.chart-intro', doc).html());
                 $('#text-intro').val($('.chart-intro', doc).html());
