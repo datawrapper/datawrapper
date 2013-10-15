@@ -60,5 +60,10 @@
         {% endif %}
 {% endblock %}
 
-
+{% block chart_head %}
+    <h1 {% if not title %}class="hidden"{% endif %}>
+        <span class="chart-title">{{ title|purify }}</span>
+    </h1>
+    <p class="chart-intro{% if not intro %} hidden{% endif %}">{{ intro|purify|raw }}</p>
+{% endblock %}
 

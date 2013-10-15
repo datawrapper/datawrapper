@@ -1,18 +1,9 @@
 
 
-<div id="header">
-    {% if not plain %}
-    {% if title %}
-    <h1><span class="chart-title">{{ title|purify|raw }}</span></h1>
-    {% endif %}
+{% use "theme-core.twig" %}
 
-    {% if intro %}
-    <p class="chart-intro">{{ intro|purify|raw }}</p>
-    {% endif %}
+{{ block('chart_head') }}
 
-    {% endif %}
-    <a href="{{ chartUrlFs }}" target="_blank" class="fs-btn top-right" title="{% trans "Fullscreen" %}" data-toggle="fullscreen"></a>
-</div>
 
 <div id="chart"></div>
 

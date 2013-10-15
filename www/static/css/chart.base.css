@@ -143,3 +143,7 @@ html .chart.plain #footer {
 body.js .noscript {
     display: none;
 }
+
+.chart .hidden {
+    display: none;
+}
