@@ -19,6 +19,7 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
     var _typeHasChanged = false,
         _themeHasChanged = false,
         _axesHaveChanged = false,
+        _transposed = false,
         __thumbTimer,
         __updateSizeTimer,
         chart = dw.backend.currentChart,
@@ -89,13 +90,16 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
             });
         }
 
-        if (_axesHaveChanged) {
-            loadOptions().done(loadVis);
+        if (_axesHaveChanged || _transposed) {
+            loadOptions().done(function() {
+                loadVis();
+            });
         }
 
         _themeHasChanged = false;
         _typeHasChanged = false;
         _axesHaveChanged = false;
+        _transposed = false;
 
         var iframeWin = iframe.get(0).contentWindow;
         if (iframeWin.__dw && iframeWin.__dw.saved) {
@@ -116,6 +120,7 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
             if (key == 'type') _typeHasChanged = true;
             if (key == 'theme') _themeHasChanged = true;
             if (key.substr(0, 13) == 'metadata.axes') _axesHaveChanged = true;
+            if (key == 'metadata.data.transpose') _transposed = true;
             liveUpdate.update(iframe, chart.attributes());
         });
     }
