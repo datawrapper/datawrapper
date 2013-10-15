@@ -1,0 +1,40 @@
+
+
+{% block chart_head %}
+<div id="header">
+    {% if not plain %}
+
+    {{ block('chart_title') }}
+    {{ block('chart_intro') }}
+    {{ block('chart_fullscreen') }}
+
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block chart_head_no_fs %}
+<div id="header">
+    {% if not plain %}
+
+    {{ block('chart_title') }}
+    {{ block('chart_intro') }}
+
+    {% endif %}
+</div>
+{% endblock %}
+
+
+{% block chart_title %}
+    <h1 {% if not title %}class="hidden"{% endif %}>
+        <span class="chart-title">{{ title|purify }}</span>
+    </h1>
+{% endblock %}
+
+
+{% block chart_intro %}
+    <p class="chart-intro{% if not intro %} hidden{% endif %}">{{ intro|purify|raw }}</p>
+{% endblock %}
+
+{% block chart_fullscreen %}
+    <a href="{{ chartUrlFs }}" target="_blank" class="fs-btn top-right" title="{% trans "Fullscreen" %}" data-toggle="fullscreen"></a>
+{% endblock %}
