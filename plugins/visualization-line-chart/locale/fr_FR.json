@@ -1,6 +1,7 @@
 {
   "Line Chart":"Graphique en ligne",
   "Your chart contains <b>more lines than we can label<\/b>, so automatic \nlabeling is turned off. To fix this <ul><li>filter some columns in the data \ntable in the previous step, or<\/li><li>use direct labeling and the highlight \nfeature to label the lines that are important to your story.<\/li><\/ul>":"Votre graphique contient <b>plus de lignes que nous ne pouvons étiqueter<\/b>: l'étiquetage automatique est désactivé. Pour résoudre ce problème: <ul><li>filtrez certaines colonnes de la table de données à l'étape précédente, ou<\/li> <li>utiliser l'étiquetage direct ou la mise en avant d'une série de données.<\/li><\/ul>",
+  "Use logarithmic scale":"Use logarithmic scale",
   "Customize labeling":"Personnaliser l'étiquetage",
   "Direct labeling":"Étiquetage direct",
   "Show the labels right nearby the line ends instead of a separate legend":"Show the labels right nearby the line ends instead of a separate legend",
@@ -23,5 +24,9 @@
   "Extend to zero":"Étendre à zéro",
   "Extend to nice ticks":"Etendre à des nombres entiers",
   "Extend the y-axis range to nice, rounded values instead of the default range \nfrom the minimum to maximum value.":"Extend the y-axis range to nice, rounded values instead of the default range \nfrom the minimum to maximum value.",
-  "Invert direction":"Inverser la direction"
+  "Invert direction":"Inverser la direction",
+  "Scale (y-axis)":"Scale (y-axis)",
+  "linear":"linear",
+  "logarithmic":"logarithmic",
+  "Let user change scale":"Let user change scale"
 }
