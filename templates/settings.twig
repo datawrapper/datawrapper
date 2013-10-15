@@ -300,7 +300,7 @@ $(function() {
 
     // show password in clear text
     $('#show-passwords').change(function() {
-        var t = $('#show-passwords').attr('checked') ? 'text' : 'password';
+        var t = $('#show-passwords').prop('checked') ? 'text' : 'password';
         $('#pwd')[0].type = t;
         $('#pwd2')[0].type = t;
     });
