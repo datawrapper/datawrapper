@@ -1,6 +1,7 @@
 {
   "Line Chart": "Line Chart",
   "Your chart contains <b>more lines than we can label<\/b>, so automatic \nlabeling is turned off. To fix this <ul><li>filter some columns in the data \ntable in the previous step, or<\/li><li>use direct labeling and the highlight \nfeature to label the lines that are important to your story.<\/li><\/ul>": "Your chart contains <b>more lines than we can label<\/b>, so automatic \nlabeling is turned off. To fix this <ul><li>filter some columns in the data \ntable in the previous step, or<\/li><li>use direct labeling and the highlight \nfeature to label the lines that are important to your story.<\/li><\/ul>",
+  "Use logarithmic scale": "Use logarithmic scale",
   "Customize labeling": "Customize labeling",
   "Direct labeling": "Direct labeling",
   "Show the labels right nearby the line ends instead of a separate legend": "Show the labels right nearby the line ends instead of a separate legend",
@@ -23,5 +24,9 @@
   "Extend to zero": "Extend to zero",
   "Extend to nice ticks": "Extend to nice ticks",
   "Extend the y-axis range to nice, rounded values instead of the default range \nfrom the minimum to maximum value.": "Extend the y-axis range to nice, rounded values instead of the default range \nfrom the minimum to maximum value.",
-  "Invert direction": "Invert direction"
+  "Invert direction": "Invert direction",
+  "Scale (y-axis)": "Scale (y-axis)",
+  "linear": "linear",
+  "logarithmic": "logarithmic",
+  "Let user change scale": "Let user change scale"
 }
