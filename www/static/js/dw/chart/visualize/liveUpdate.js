@@ -16,6 +16,7 @@ define(function() {
 
         _.extend(__dw, {
             attributes: function(attrs) {
+                var render = false;
                 if (changed('type') || changed('theme') || changed('metadata.data.transpose') || changed('metadata.axes')) {
                     needReload = true;
                     return;
@@ -23,18 +24,41 @@ define(function() {
                 // check if we need to update chart
                 if (changed('metadata.visualize')) {
                     __dw.vis.chart().attributes(attrs);
-                    __dw.render();
+                    render = true;
                 }
                 if (changed('title')) {
-                    if (attrs.title && !$$('.chart-title').length) needReload = true;
-                    if (!attrs.title && $$('.chart-title').length) needReload = true;
-                    if (!needReload && heightChanged($$('.chart-title'), attrs.title)) __dw.render();
+                    var $title = $$('.chart-title'),
+                        $h1 = $title.parent();
+                    if (attrs.title) {
+                        if (!$title.length) needReload = true; // no title found, reload chart
+                        else if ($h1.hasClass('hidden')) {
+                            $h1.removeClass('hidden');
+                            render = true;
+                        }
+                    } else {
+                        if (!$h1.hasClass('hidden')) {
+                            $h1.addClass('hidden');
+                            render = true;
+                        }
+                    }
+                    if (!needReload && heightChanged($$('.chart-title'), attrs.title)) render = true;
                 }
                 if (changed('metadata.describe.intro')) {
-                    if (attrs.metadata.describe.intro && !$$('.chart-intro').length) needReload = true;
-                    if (!attrs.metadata.describe.intro && $$('.chart-intro').length) needReload = true;
+                    var $desc = $$('.chart-intro');
+                    if (attrs.metadata.describe.intro) {
+                        if (!$desc.length) needReload = true; // no title found, reload chart
+                        else if ($desc.hasClass('hidden')) {
+                            $desc.removeClass('hidden');
+                            render = true;
+                        }
+                    } else {
+                        if (!$desc.hasClass('hidden')) {
+                            $desc.addClass('hidden');
+                            render = true;
+                        }
+                    }
                     if (!needReload) {
-                        if (heightChanged($$('.chart-intro'), attrs.metadata.describe.intro)) __dw.render();
+                        if (heightChanged($$('.chart-intro'), attrs.metadata.describe.intro)) render = true;
                     }
                 }
                 if (changed('metadata.describe.source-name') || changed('metadata.describe.source-url')) {
@@ -50,6 +74,8 @@ define(function() {
                     }
                 }
                 __dw.old_attrs = $.extend(true, {}, attrs);
+
+                if (render) __dw.render();
 
                 function changed(key) {
                     var p0 = __dw.old_attrs,
