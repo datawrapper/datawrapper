@@ -34,6 +34,8 @@ dw.backend.ready(function() {
             </form>
 
             <div id="data-preview"></div>
+
+            <p style="margin-top:30px"><b>{% trans "Hint:" %}</b> {% trans "You can customize the number formatting and add units after selecting columns in the table header." %}</p>
         </div>
 
         <div class="span4">
@@ -49,8 +51,6 @@ dw.backend.ready(function() {
                             <label class="checkbox"><input id="transpose" type="checkbox"> {% trans "Transpose data table" %}</label>
                         </p>
                     </div>
-
-                    <p><b>{% trans "Hint:" %}</b> {% trans "You can customize the column formatting after selecting columns in the table header." %}</p>
 
                     <h3 style="margin-top:20px">{% trans "Credit the source" %}</h3>
                     <p>
@@ -89,12 +89,9 @@ dw.backend.ready(function() {
                     <div id="number-column-options" class="form-horizontal compact">
                         <label class="separator">{% trans "Output number format" %}</label>
 
-                        <div class="control-group">
-                            <label class="control-label" for="automatic-format">{% trans "Automatic format" %}</label>
-                            <div class="controls">
-                                <input id="automatic-format" type="checkbox" />
-                            </div>
-                        </div>
+                        <p>
+                            <label class="checkbox" for="automatic-format"><input id="automatic-format" type="checkbox"> {% trans "Automatic number formatting" %}</label>
+                        </p>
 
                         <div class="control-group">
                             <label class="control-label" for="text-title">{% trans "Decimals after point" %}</label>

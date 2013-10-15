@@ -79,6 +79,62 @@
 .handsontable td.firstRow.numberType { color: #1B668B; }
 
 .handsontable td.parsingError {
-    color: #d00;
     background: #fee;
+}
+
+.handsontable .colHeader {
+    
+}
+
+.handsontable thead th:first-child {
+    box-shadow: none;
+    background: #eee;
+}
+
+.handsontable tbody th {
+    
+}
+
+.handsontable thead th {
+    background: #fff;
+    background-image: -webkit-linear-gradient(top, hsla(0,0%,60%,.1), hsla(210,0%,90%,1));
+    background-image:    -moz-linear-gradient(top, hsla(0,0%,60%,.1), hsla(210,0%,90%,1));
+    background-image:     -ms-linear-gradient(top, hsla(0,0%,60%,.1), hsla(210,0%,90%,1));
+    background-image:      -o-linear-gradient(top, hsla(0,0%,60%,.1), hsla(210,0%,90%,1));
+    background-image:         linear-gradient(top, hsla(0,0%,60%,.1), hsla(210,0%,90%,1));
+    box-shadow: inset 0px 2px 1px hsla(0,0%,100%,1);
+    border-right: 1px solid hsl(210,0%,70%);
+}
+
+.handsontable thead th.selected {
+    background: #fff;
+    background-image: -webkit-linear-gradient(top, hsla(210,30%,97%,.5), hsla(210,30%,80%,1));
+    background-image:    -moz-linear-gradient(top, hsla(210,30%,97%,.5), hsla(210,30%,80%,1));
+    background-image:     -ms-linear-gradient(top, hsla(210,30%,97%,.5), hsla(210,30%,80%,1));
+    background-image:      -o-linear-gradient(top, hsla(210,30%,97%,.5), hsla(210,30%,80%,1));
+    background-image:         linear-gradient(top, hsla(210,30%,97%,.5), hsla(210,30%,80%,1));
+    box-shadow: inset 0px 1px 2px hsla(0,0%,100%,1);
+}
+
+.handsontable tr:first-child td {
+    border-top: 1px solid hsl(210,00%,80%)!important;
+}
+
+.handsontable tr:first-child td.firstRow.area {
+    border-top: 1px solid hsl(210,20%,60%)!important;
+}
+
+.handsontable .colHeader:after {
+    content: " "url(selection-off.png);
+    vertical-align: bottom;
+    position: relative;
+    top: 1px;
+    float:right;
+    opacity: 1;
+    color: #08c;
+}
+
+.handsontable th.selected .colHeader:after {
+    opacity: 1;
+    content: " "url(selection.png);
 }
