@@ -1133,6 +1133,10 @@ dw.utils = {
             uniqValues = _.uniq(values),
             check, diff;
 
+        if (uniqValues.length == 1) {
+            return Math.floor(Math.log(uniqValues[0])/Math.LN10);
+        }
+
         if (_.uniq(_.map(uniqValues, round)).length == uniqValues.length) {
             check = function() { return _.uniq(result).length == uniqValues.length; };
             diff = -1;
@@ -1140,10 +1144,14 @@ dw.utils = {
             check = function() { return _.uniq(result).length < uniqValues.length; };
             diff = +1;
         }
+        var max_iter = 100;
         do {
             result = _.map(uniqValues, round);
             dimension += diff;
-        } while (check());
+        } while (check() && max_iter-- > 0);
+        if (max_iter < 10) {
+            console.warn('maximum iteration reached', values, result, dimension);
+        }
         if (diff < 0) dimension += 2; else dimension--;
         function round(v) {
             return dw.utils.round(v, dimension);
