@@ -1134,7 +1134,7 @@ dw.utils = {
             check, diff;
 
         if (uniqValues.length == 1) {
-            return Math.floor(Math.log(uniqValues[0])/Math.LN10);
+            return -1 * Math.floor(Math.log(uniqValues[0])/Math.LN10);
         }
 
         if (_.uniq(_.map(uniqValues, round)).length == uniqValues.length) {
