@@ -492,9 +492,13 @@ define(['handsontable'], function(handsontable) {
             function updateUI(reset) {
                 var ctrls = $('#number-format, #number-divisor, #number-append, #number-prepend');
                 if ($('#automatic-format').prop('checked')) {
-                    ctrls.parent().parent().hide();
+                    //ctrls.parent().parent().hide();
+                    $('.number-format input, .number-format select').prop('disabled', true);
+                    $('.number-format label').css('opacity', 0.5);
                 } else {
-                    ctrls.parent().parent().show();
+                    //ctrls.parent().parent().show();
+                    $('.number-format input, .number-format select').prop('disabled', false);
+                    $('.number-format label').css('opacity', 1);
                     if (reset) {
                         fillInField('#number-format', 'number-format');
                         fillInField('#number-divisor', 'number-divisor');
