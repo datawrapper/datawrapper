@@ -4,7 +4,7 @@
   "email-invalid":"email non valida",
   "email-already-exists":"email già esistente",
   "password-already-reset":"password già resettata",
-  "will lost his administrator status. Continue?":"verrà perso il suo status di amministratore. Continuare?",
+  "will lose his administrator status. Continue?":"will lose his administrator status. Continue?",
   "will become an administrator. Continue?":"diventerà un amministratore. Continuare?",
   "will be deleted. Continue?":"sarà cancellato. Continua?",
   "Add a user":"Aggiungere un utente",
