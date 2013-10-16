@@ -178,7 +178,9 @@ $app->put('/users/:id', function($user_id) use ($app) {
                                 $email_change_mail,
                                 array(
                                     'name' => $user->guessName(),
-                                    'email_change_token_link' => $token_link
+                                    'email_change_token_link' => $token_link,
+                                    'old_email' => $user->getEmail(),
+                                    'new_email' => $payload->email
                                 )
                             );
                             // log action for later confirmation
