@@ -169,7 +169,8 @@ dw.chart = function(attributes) {
             // return column.formatter(config);
             var colFormat = chart.get('metadata.data.column-format', {});
             colFormat = colFormat[column.name()] || {};
-            if (column.type() == 'number' && _.isEqual(colFormat, {})) {
+
+            if (column.type() == 'number' && colFormat == 'auto') {
                 var mtrSuf = dw.utils.metricSuffix(chart.locale()),
                     values = column.values(),
                     dim = dw.utils.significantDimension(values),

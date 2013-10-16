@@ -97,8 +97,7 @@ dw.column.types.number = function(sample) {
             var format = config['number-format'] || '-',
                 div = Number(config['number-divisor'] || 0),
                 append = (config['number-append'] || '').replace(/ /g, '\u00A0'),
-                prepend = (config['number-prepend'] || '').replace(/ /g, '\u00A0'),
-                metsuf = config['metrix-suffix'];
+                prepend = (config['number-prepend'] || '').replace(/ /g, '\u00A0');
 
             return function(val, full, round) {
                 if (isNaN(val)) return val;

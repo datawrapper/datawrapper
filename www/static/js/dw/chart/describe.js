@@ -476,11 +476,11 @@ define(['handsontable'], function(handsontable) {
 
         function updateAutomaticFormat() {
             $('#automatic-format')
-                .prop('checked', _.isEqual(metadata.columnFormat.get(getSeriesOfIndex(selectedColumns[0])), {}))
+                .prop('checked', _.isEqual(metadata.columnFormat.get(getSeriesOfIndex(selectedColumns[0])), 'auto'))
                 .off('change')
                 .on('change', function() {
                     if ($('#automatic-format').prop('checked')) {
-                        metadata.columnFormat.add(_.map(selectedColumns, getSeriesOfIndex), null, undefined);
+                        metadata.columnFormat.add(_.map(selectedColumns, getSeriesOfIndex), null, 'auto');
                     } else {
                         metadata.columnFormat.add(_.map(selectedColumns, getSeriesOfIndex), null, {
                             'number-divisor': 0,

@@ -377,6 +377,11 @@ dw.column.types.text = function() {
  */
 dw.column.types.number = function(sample) {
 
+    function signDigitsDecimalPlaces(num, sig) {
+        if (num === 0) return 0;
+        return Math.round( sig - Math.ceil( Math.log( Math.abs( num ) ) / Math.LN10 ) );
+    }
+
     var format,
         errors = 0,
         knownFormats = {
@@ -452,14 +457,25 @@ dw.column.types.number = function(sample) {
 
             return function(val, full, round) {
                 if (isNaN(val)) return val;
-                if (div !== 0) val = Number(val) / Math.pow(10, div);
                 var _fmt = format;
+                if (div !== 0 && _fmt == '-') _fmt = 'n1';
+                if (_fmt == '-') {
+                    var s = String(val).split('.');
+                    if (s[1]) _fmt = 'n'+s[1].length;
+                    else _fmt = 'n0';
+                }
+                if (div !== 0) val = Number(val) / Math.pow(10, div);
+                if (_fmt.substr(0,1) == 's') {
+                    // significant figures
+                    var sig = +_fmt.substr(1);
+                    _fmt = 'n'+Math.max(0, signDigitsDecimalPlaces(val, sig));
+                }
                 if (_fmt != '-') {
                     if (round) _fmt = format.substr(0,1)+'0';
                     val = Globalize.format(val, _fmt);
-                } else if (div !== 0) {
+                }/* else if (div !== 0) {
                     val = val.toFixed(1);
-                }
+                }*/
                 return full ? prepend + val + append : val;
             };
         },
@@ -1636,7 +1652,8 @@ dw.chart = function(attributes) {
             // return column.formatter(config);
             var colFormat = chart.get('metadata.data.column-format', {});
             colFormat = colFormat[column.name()] || {};
-            if (column.type() == 'number' && _.isEqual(colFormat, {})) {
+
+            if (column.type() == 'number' && colFormat == 'auto') {
                 var mtrSuf = dw.utils.metricSuffix(chart.locale()),
                     values = column.values(),
                     dim = dw.utils.significantDimension(values),
