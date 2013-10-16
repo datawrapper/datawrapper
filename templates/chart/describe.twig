@@ -89,30 +89,9 @@ dw.backend.ready(function() {
                     <div id="number-column-options" class="form-horizontal compact">
                         <label class="separator">{% trans "Output number format" %}</label>
 
-                        <p>
+                        {# <p>
                             <label class="checkbox" for="automatic-format"><input id="automatic-format" type="checkbox"> {% trans "Automatic number formatting" %}</label>
-                        </p>
-
-                        <div class="control-group number-format">
-                            <label class="control-label" for="text-title">{% trans "Decimals after point" %}</label>
-
-                            <div class="controls">
-                                <select id="number-format" class="select number-format" style="width:90%">
-                                    <option value="-">{% trans "keep original" %}</option>
-                                    {% for id, format in numberformats %}
-                                        <option value="{{ id }}">{{ format }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="control-group number-format">
-                            <label class="control-label" for="text-title">{% trans "Prepend/Append" %}</label>
-
-                            <div class="controls">
-                                <input type="text" id="number-prepend" style="width:2em;text-align:right"/> # <input type="text" id="number-append" style="width:5em"/>
-                            </div>
-                        </div>
+                        </p> #}
 
                         <div class="control-group number-format">
                             <label class="control-label" for="text-title">{% trans "Divide numbers by" %}</label>
@@ -129,6 +108,34 @@ dw.backend.ready(function() {
                                     <option value="-6">{% trans "1 millionth (micro)" %}</option>
 
                                 </select>
+                            </div>
+                        </div>
+
+                        <div class="control-group number-format">
+                            <label class="control-label" for="text-title">{% trans "Round to" %}</label>
+
+                            <div class="controls">
+                                <select id="number-format" class="select number-format" style="width:90%">
+                                    <option value="-">{% trans "keep original" %}</option>
+                                    <optgroup label="{% trans "Decimal places" %}">
+                                    {% for id, format in numberformats %}
+                                        <option value="{{ id }}">{{ format }}</option>
+                                    {% endfor %}
+                                    </optgroup>
+                                    <optgroup label="{% trans "Significant digits" %}">
+                                    {% for id, format in significantdigits %}
+                                        <option value="{{ id }}">{{ format }}</option>
+                                    {% endfor %}
+                                    </optgroup>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="control-group number-format">
+                            <label class="control-label" for="text-title">{% trans "Prepend/Append" %}</label>
+
+                            <div class="controls">
+                                <input type="text" id="number-prepend" style="width:3em;text-align:right"/> # <input type="text" id="number-append" style="width:3em"/>
                             </div>
                         </div>
 

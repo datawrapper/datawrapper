@@ -41,6 +41,15 @@ $app->get('/chart/:id/describe', function ($id) use ($app) {
             'n0' => '0 ('.number_format(1234.56789, 0, $d, $k).')'
         );
 
+        $page['significantdigits'] = array(
+            's6' => '6 ('.number_format(1234.56789, 2, $d, $k).')',
+            's5' => '5 ('.number_format(123.456789, 2, $d, $k).')',
+            's4' => '4 ('.number_format(12.34, 2, $d, $k).')',
+            's3' => '3 ('.number_format(1.23, 2, $d, $k).')',
+            's2' => '2 ('.number_format(0.12, 2, $d, $k).')',
+            's1' => '1 ('.number_format(0.01, 2, $d, $k).')'
+        );
+
         $app->render('chart/describe.twig', $page);
     });
 });
