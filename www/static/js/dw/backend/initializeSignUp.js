@@ -9,7 +9,7 @@ define(function() {
         function refreshSalt() {
             $.getJSON('/api/auth/salt', function(res) {
                if (res.status == 'ok') {
-                  $('#btn-register, .btn-login').data('salt', res.data.salt);
+                  $('.btn-register, .btn-login').data('salt', res.data.salt);
                }
             });
         }
@@ -41,15 +41,16 @@ define(function() {
 
         refreshSalt();
 
-        $('#btn-register').click(function() {
-           var pwd = $.trim($('#register-pwd').val()),
-               pwd2 = $.trim($('#register-pwd-2').val()),
-               auth_salt = $('#btn-register').data('salt');
+        $('.btn-register').click(function(evt) {
+            var form = $(evt.target).parents('.signup-form'),
+                pwd = $.trim($('.register-pwd', form).val()),
+                pwd2 = $.trim($('.register-pwd-2', form).val()),
+                auth_salt = $('.btn-register', form).data('salt');
 
            if (pwd == pwd2) {
               if (true) {
                  var payload = {
-                    email: $('#register-email').val(),
+                    email: $('.register-email', form).val(),
                     pwd: CryptoJS.HmacSHA256(pwd, auth_salt).toString(),
                     pwd2: CryptoJS.HmacSHA256(pwd2, auth_salt).toString()
                  };
@@ -62,12 +63,12 @@ define(function() {
                     success: function(data) {
                         if (data.status == 'ok') {
                             // If the registration went well, clear sign up form
-                            $('.signup-form input').val('');
+                            $('.signup-form input', form).val('');
                             // and close popup. User should be logged in now.
                             dw.backend.logMessage('Yeah, sign up went well! You are logged in now...', '.signup-form');
                             setTimeout(function() {
                                 $('#dwLoginForm').modal('hide');
-                                dw.backend.refreshHeader();
+                                reload();
                             }, 1000);
                         } else {
                             dw.backend.logError(data.code, '.signup-form');
