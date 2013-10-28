@@ -44,15 +44,15 @@
                     <p>{% trans "Datawrapper is 100&#37; free and creating an account takes less than a minute. Just enter your email and pick a password, and you're done!" %}</p>
                     <div class="signup-form form-vertcal">
                         <div class="control-group">
-                            <input id="register-email" type="text" class="input-xlarge span2" placeholder="{% trans "email" %}" />
+                            <input type="text" class="input-xlarge span2 register-email" placeholder="{% trans "email" %}" />
                         </div>
                         <div class="control-group">
-                            <input id="register-pwd" type="password" class="input-xlarge span2" placeholder="{% trans "password" %}" />
+                            <input type="password" class="input-xlarge span2 register-pwd" placeholder="{% trans "password" %}" />
                         </div>
                         <div class="control-group">
-                            <input id="register-pwd-2" type="password" class="input-xlarge span2" placeholder="{% trans "repeat password" %}" />
+                            <input type="password" class="input-xlarge span2 register-pwd-2" placeholder="{% trans "repeat password" %}" />
                         </div>
-                        <a id="btn-register" class="btn btn-large"><i class="icon-pencil"></i> {% trans "Sign Up" %}</a>
+                        <a class="btn-register btn btn-large"><i class="icon-pencil"></i> {% trans "Sign Up" %}</a>
                     </div>
                 </div>
                 {% else %}
@@ -67,9 +67,9 @@
                 </style>
                 {% endif %}
             </div>
-            {% if has_hook('after_login_form') %}
-            <div style="padding:10px 13px; text-align:center">
-                {{ hook('after_login_form') }}
+            {% if has_hook('alternative_signin') %}
+            <div style="padding:10px 13px;border-top:1px solid #eee">
+               {% trans "Alternatively you can sign in via: " %} {{ hook('alternative_signin') }}
             </div>
             {% endif %}
         </div>

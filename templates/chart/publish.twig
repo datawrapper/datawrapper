@@ -67,35 +67,48 @@ dw.backend.ready(function() {
 
             <p>{% trans "Now, to be able to embed the chart, we ask you to create an account. It's free and all you need is a valid email address. The chart you just created will be transfered to your new account." %}</p>
 
-            <h3>{% trans "Sign Up" %}</h3>
+            <div class="row">
+                <div class="span2">
 
-            <div class="signup-form form-vertcal">
-                <div class="control-group">
-                    <input id="register-email" type="text" class="input-xlarge span2" placeholder="email" />
+                    <h3>{% trans "Sign Up" %}</h3>
+
+                    <div class="signup-form form-vertcal">
+                        <div class="control-group">
+                            <input type="text" class="register-email input-xlarge span2" placeholder="email" />
+                        </div>
+                        <div class="control-group">
+                            <input type="password" class="register-pwd input-xlarge span2" placeholder="password" />
+                        </div>
+                        <div class="control-group">
+                            <input type="password" class="register-pwd-2 input-xlarge span2" placeholder="repeat password" />
+                        </div>
+                        <a class="btn btn-large btn-register"><i class="icon-pencil"></i> Sign Up</a>
+                    </div>
                 </div>
-                <div class="control-group">
-                    <input id="register-pwd" type="password" class="input-xlarge span2" placeholder="password" />
+                <div class="span2">
+                    {% if has_hook('alternative_signin') %}
+                    <h3>{% trans "..or sign in with " %}</h3>
+
+                        {{ hook('alternative_signin') }}
+
+                    {% endif %}
                 </div>
-                <div class="control-group">
-                    <input id="register-pwd-2" type="password" class="input-xlarge span2" placeholder="repeat password" />
-                </div>
-                <a id="btn-register" class="btn btn-large"><i class="icon-pencil"></i> Sign Up</a>
             </div>
 
             {% elseif user.role == 'pending' %}
 
             <h3>{% trans "Congrats, you created a chart!" %}</h3>
 
-            <p>{% trans "The chart is accessible under" %} <a href="{{ DW_DOMAIN }}/chart/{{ chart.id }}/edit">{{ DW_DOMAIN }}/chart/{{ chart.id }}/edit</a> {% trans "or via your <a href='/mycharts'>My Charts</a> page." %}
+            <p>{% trans "The chart is accessible under" %} <a href="http://{{ DW_DOMAIN }}/chart/{{ chart.id }}/edit">{{ DW_DOMAIN }}/chart/{{ chart.id }}/edit</a> {% trans "or via your <a href='/mycharts'>My Charts</a> page." %}
 
             <p>{% trans "Now, to be able to publish and embed this chart into other websites, you need to activate the email address you entered during sign up process." %}</p>
 
             <p>{% trans "If you did not get any email within 5 minutes, here's the trouble shooting guide:" %}</p>
             <ol>
-                <li>{% trans "At first, don't worry. Everything you created will wait patiently" %}</li>
+                <li>{% trans "At first, don't worry. Everything you created will wait patiently." %}</li>
                 <li>{% trans "Make sure that your spam filter didn't catch our activation email. They are sent from" %} activate@{{ DW_DOMAIN }}.</li>
                 <li>{% trans "Of course, you can also let us <a href='#resend'>resend the activation email</a>." %}</li>
-                <li>{% trans "If that didn't work either, please contact our support" %}</li>
+                <li>{{ "If that didn't work either, please contact our support via %support_mail." | replace({'%support_mail': '<a href="mailto:' ~ SUPPORT_EMAIL ~ '">' ~ SUPPORT_EMAIL ~ '</a>' }) | raw }}</li>
             </ol>
 
             {% else %}
