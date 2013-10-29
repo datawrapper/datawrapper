@@ -21,21 +21,10 @@ dw.backend.ready(function() {
     <div class="row">
         <div class="span8">
 
-            <!--<h2>{% trans "Check and Describe Your Data" %}</h2>-->
-
-            <form class="form-inline">
-                <div id="csv-parse-options" class="row">
-                    <div class="span4">
-                    </div>
-                    <div class="span4">
-
-                    </div>
-                </div>
-            </form>
-
+            <div class="transpose-help help">⤹ <span>{% trans "Transpose data table" %}</span></div>
+            <div class="customize-help help"><span>{% trans "Customize column format" %}</span> ⤵︎</div>
             <div id="data-preview"></div>
 
-            <p style="margin-top:30px"><b>{% trans "Hint:" %}</b> {% trans "You can customize the number formatting and add units after selecting columns in the table header." %}</p>
         </div>
 
         <div class="span4">
@@ -48,7 +37,6 @@ dw.backend.ready(function() {
                     <div>
                         <p>
                             <label class="checkbox"><input id="has-headers" type="checkbox" checked="checked"> {% trans "First row as label" %}</label>
-                            <label class="checkbox"><input id="transpose" type="checkbox"> {% trans "Transpose data table" %}</label>
                         </p>
                     </div>
 

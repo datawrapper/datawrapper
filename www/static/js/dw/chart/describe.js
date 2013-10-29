@@ -257,6 +257,10 @@ define(['handsontable'], function(handsontable) {
                 }
             }
 
+            $('#data-preview thead tr:first-child').off('click').on('click', function() {
+                chart.set('metadata.data.transpose', !chart.get('metadata.data.transpose', false));
+            });
+
             function isNone(val) {
                 return val === null || val === undefined || (_.isNumber(val) && isNaN(val));
             }

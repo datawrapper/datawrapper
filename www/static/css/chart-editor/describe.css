@@ -86,9 +86,27 @@
     
 }
 
-.handsontable thead th:first-child {
-    
+.handsontable thead th:first-child:after {
+    content: url(transpose.png);
+    position: relative;
+    top: 3px;
 }
+
+.handsontable thead th:hover {
+    background-image: -webkit-linear-gradient(top, hsla(0,0%,55%,.1), hsla(210,0%,85%,1));
+    background-image:    -moz-linear-gradient(top, hsla(0,0%,55%,.1), hsla(210,0%,85%,1));
+    background-image:     -ms-linear-gradient(top, hsla(0,0%,55%,.1), hsla(210,0%,85%,1));
+    background-image:      -o-linear-gradient(top, hsla(0,0%,55%,.1), hsla(210,0%,85%,1));
+    background-image:         linear-gradient(top, hsla(0,0%,55%,.1), hsla(210,0%,85%,1));
+}
+.handsontable thead th:first-child:active {
+    background-image: -webkit-linear-gradient(top, hsla(210,0%,85%,1), hsla(0,0%,55%,.1));
+    background-image:    -moz-linear-gradient(top, hsla(210,0%,85%,1), hsla(0,0%,55%,.1));
+    background-image:     -ms-linear-gradient(top, hsla(210,0%,85%,1), hsla(0,0%,55%,.1));
+    background-image:      -o-linear-gradient(top, hsla(210,0%,85%,1), hsla(0,0%,55%,.1));
+    background-image:         linear-gradient(top, hsla(210,0%,85%,1), hsla(0,0%,55%,.1));
+}
+
 
 .handsontable tbody th {
     
@@ -142,3 +160,23 @@
     content: " "url(selection.png);
 }
 
+.help {
+    font-family: "Desyrel", "Comic Sans";
+    color: #bbb;
+    font-size: 15px;
+}
+
+.transpose-help {
+    margin-left: 20px;
+    float: left;
+}
+
+.help span {
+    position: relative;
+    top: -6px;
+}
+
+.customize-help {
+    float: right;
+    margin-right: 10px;
+}
