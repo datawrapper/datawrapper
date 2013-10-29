@@ -17,6 +17,7 @@ CHANGELOG
 * using [insert title here] as default chart title
 * refactored core chart javascript into /js/dw/chart.base.js
 * added log scale mode to line chart
+* moved transpose button into first table header cell
 * bugfixes
 
 ### 1.5.4
