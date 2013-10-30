@@ -139,7 +139,7 @@ $app->put('/users/:id', function($user_id) use ($app) {
     if ($curUser->isLoggedIn()) {
         if ($user_id == 'current' || $curUser->getId() === $user_id) {
             $user = $curUser;
-        } else if ($curUser->isAdmin()) {
+        } else if ($curUser->isSysAdmin()) {
             $user = UserQuery::create()->findPK($user_id);
         }
 
@@ -153,9 +153,11 @@ $app->put('/users/:id', function($user_id) use ($app) {
                 if (!empty($payload->oldpwhash)) {
                     $chk = $user->getPwd() === secure_password($payload->oldpwhash);
                 }
-                if ($chk || $curUser->isAdmin()) {
+                if ($chk || $curUser->isSysAdmin()) {
                     $user->setPwd($payload->pwd);
+                    Action::logAction($curUser, 'change-password', array('user' => $user->getId()));
                 } else {
+                    Action::logAction($curUser, 'change-password-failed', array('user' => $user->getId(), 'reason' => 'old password is wrong'));
                     $errors[] = __('The password could not be changed because your old password was not entered correctly.');
                 }
             }
