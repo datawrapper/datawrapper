@@ -283,9 +283,15 @@ $(function() {
                         success: function(data) {
                             submit.removeClass('loading');
                             if (data.status == 'ok') {
-                                dw.backend.logMessage('{% trans "Congrats! Your password has been changed." %}', parent);
-                            } else {
-                                dw.backend.logError(data.message, parent);
+                                _.each(data.data.messages, function(msg) {
+                                    dw.backend.logMessage(msg, $('.settings.password .control-group')[0], 'info');
+                                });
+                                _.each(data.data.errors, function(msg) {
+                                    dw.backend.logMessage(msg, $('.settings.password .control-group')[0], 'warning');
+                                });
+                                if (!data.data.errors.length) {
+                                    dw.backend.logMessage('{% trans "Congrats! Your password has been changed." %}', parent);
+                                }
                             }
                         }
                     });
