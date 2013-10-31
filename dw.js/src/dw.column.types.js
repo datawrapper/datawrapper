@@ -115,7 +115,7 @@ dw.column.types.number = function(sample) {
                     _fmt = 'n'+Math.max(0, signDigitsDecimalPlaces(val, sig));
                 }
                 if (_fmt != '-') {
-                    if (round) _fmt = format.substr(0,1)+'0';
+                    if (round) _fmt = 'n0';
                     val = Globalize.format(val, _fmt);
                 }/* else if (div !== 0) {
                     val = val.toFixed(1);
