@@ -7,5 +7,5 @@
  */
 public function get<?php echo $alias ?>()
 {
-	return $this->getLocale();
+    return $this->getLocale();
 }

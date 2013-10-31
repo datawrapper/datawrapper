@@ -44,15 +44,15 @@
                     <p>{% trans "Datawrapper is 100&#37; free and creating an account takes less than a minute. Just enter your email and pick a password, and you're done!" %}</p>
                     <div class="signup-form form-vertcal">
                         <div class="control-group">
-                            <input id="register-email" type="text" class="input-xlarge span2" placeholder="{% trans "email" %}" />
+                            <input type="text" class="input-xlarge span2 register-email" placeholder="{% trans "email" %}" />
                         </div>
                         <div class="control-group">
-                            <input id="register-pwd" type="password" class="input-xlarge span2" placeholder="{% trans "password" %}" />
+                            <input type="password" class="input-xlarge span2 register-pwd" placeholder="{% trans "password" %}" />
                         </div>
                         <div class="control-group">
-                            <input id="register-pwd-2" type="password" class="input-xlarge span2" placeholder="{% trans "repeat password" %}" />
+                            <input type="password" class="input-xlarge span2 register-pwd-2" placeholder="{% trans "repeat password" %}" />
                         </div>
-                        <a id="btn-register" class="btn btn-large"><i class="icon-pencil"></i> {% trans "Sign Up" %}</a>
+                        <a class="btn-register btn btn-large"><i class="icon-pencil"></i> {% trans "Sign Up" %}</a>
                     </div>
                 </div>
                 {% else %}
@@ -67,6 +67,14 @@
                 </style>
                 {% endif %}
             </div>
+            {% if has_hook('alternative_signin') %}
+            <div style="padding:10px 13px 0;border-top:1px solid #eee;text-align:center">
+               {% trans "Alternatively you can sign in via: " %}
+                <div style="margin-top:4px">
+                    {{ hook('alternative_signin') }}
+                </div>
+            </div>
+            {% endif %}
         </div>
 
     </div>

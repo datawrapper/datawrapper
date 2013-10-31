@@ -1,16 +1,9 @@
 
 
-<div id="header">
-    {% if not plain %}
-    <h1><span class="chart-title">{{ title|purify|raw }}</span></h1>
+{% use "theme-core.twig" %}
 
-    {% if intro %}
-    <p class="chart-intro">{{ intro|purify|raw }}</p>
-    {% endif %}
+{{ block('chart_head') }}
 
-    {% endif %}
-    <a href="{{ chartUrlFs }}" target="_blank" class="fs-btn top-right" title="{% trans "Fullscreen" %}" data-toggle="fullscreen"></a>
-</div>
 
 <div id="chart"></div>
 
@@ -23,7 +16,7 @@
             <div class="toggleable-panel">
                 {% if source %}
 
-                    <span class="source-block">{% trans "Source: " %}
+                    <span data-src="{% trans "Source: " %}" class="source-block">{% trans "Source: " %}
                     {% if sourceURL %}<a target="_blank" class="source" href="{{ sourceURL }}">{% endif %}{{ source }}{% if sourceURL %}</a>{% endif %}</span>
 
                 {% endif %}

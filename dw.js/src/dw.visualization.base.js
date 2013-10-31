@@ -104,16 +104,24 @@ _.extend(dw.visualization.base, {
             dataset = me.dataset,
             usedColumns = {},
             axes = {},
+            axesDef,
             axesAsColumns = {},
             errors = [];
 
         // get user preference
-        axes =  me.chart().get('metadata.axes', {});
-        _.each(axes, function(columns) {
-            if (!_.isArray(columns)) columns = [columns];
-            _.each(columns, function(column) {
-                usedColumns[column] = true; // mark as used
-            });
+        axesDef = me.chart().get('metadata.axes', {});
+        _.each(me.meta.axes, function(o, key) {
+            if (axesDef[key]) {
+                var columns = axesDef[key];
+                if (columnExists(columns)) {
+                    axes[key] = columns;
+                    // mark columns as used
+                    if (!_.isArray(columns)) columns = [columns];
+                    _.each(columns, function(column) {
+                        usedColumns[column] = true;
+                    });
+                }
+            }
         });
 
         // auto-populate remaining axes
@@ -186,6 +194,14 @@ _.extend(dw.visualization.base, {
             return returnAsColumns ? axesAsColumns : axes;
         };
 
+        function columnExists(columns) {
+            if (!_.isArray(columns)) columns = [columns];
+            for (var i=0; i<columns.length; i++) {
+                if (!dataset.hasColumn(columns[i])) return false;
+            }
+            return true;
+        }
+
         return me.axes(returnAsColumns);
     },
 
@@ -204,6 +220,10 @@ _.extend(dw.visualization.base, {
         return [];
     },
 
+    keyLabel: function(key) {
+        return key;
+    },
+
     /*
      * called by the core whenever the chart is re-drawn
      * without reloading the page
@@ -220,6 +240,9 @@ _.extend(dw.visualization.base, {
     },
 
     renderingComplete: function() {
+        if (window.parent && window.parent['postMessage']) {
+            window.parent.postMessage('datawrapper:vis:rendered', '*');
+        }
         this.__renderedDfd.resolve();
     },
 
@@ -232,6 +255,15 @@ _.extend(dw.visualization.base, {
      * re-render itself without having to instantiate it again
      */
     supportsSmartRendering: function() {
+        return false;
+    },
+
+    /*
+     * this hook is used for optimizing the thumbnails on Datawrapper
+     * the function is expected to return the svg element that contains
+     * the elements to be rendered in the thumbnails
+     */
+    _svgCanvas: function() {
         return false;
     }
 

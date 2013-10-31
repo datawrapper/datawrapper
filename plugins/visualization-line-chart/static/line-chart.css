@@ -41,3 +41,17 @@ html, body {
     text-align: center;
     z-index: 100;
 }
+
+.line-chart .tooltip:after {
+    content: "⎮";
+    position: absolute;
+    bottom: -10px;
+    left: 20%;
+    right: 20%;
+    color: rgba(0,0,0,.8);
+    font-size: 10px;
+    line-height: 10px;
+    font-family: Arial;
+    z-index: -1;
+    text-align: center;
+}

@@ -33,14 +33,10 @@ thumbnails:
 
 ## email addresses
 email:
-  # users with problems will be shown the admin email
-  admin: hello@datawrapper.de
+  # users with problems will be shown the support email
+  support: hello@datawrapper.de
   # error messages will go here
   log: debug@datawrapper.de
-  # email shown as sender for activation emails
-  activate: no-reply@datawrapper.de
-  # email shown as sender for password reset emails
-  pwd_reset: no-reply@datawrapper.de
 
 ## prevent guest from creating charts
 prevent_guest_charts: false

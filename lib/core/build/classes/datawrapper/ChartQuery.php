@@ -34,14 +34,9 @@ class ChartQuery extends BaseChartQuery {
             $chart->setGuestSession(session_id());
         }
         // find a nice, more or less unique title
-        $untitled = __('Untitled');
-        $title = '[' . $untitled;
-        $untitledCharts = $this->filterByAuthorId($user->getId())
-            ->filterByTitle('['.$untitled.'%')
-            ->filterByDeleted(false)
-            ->find();
-        if (count($untitledCharts) > 0) $title .= '-'.count($untitledCharts);
-        $chart->setTitle($title . ']');
+        $untitled = __('Insert title here');
+        $title = '[ ' . $untitled . ' ]';
+        $chart->setTitle($title);
 
         // todo: use global default theme
         $chart->setTheme(isset($defaults['theme']) ? $defaults['theme'] : 'default');

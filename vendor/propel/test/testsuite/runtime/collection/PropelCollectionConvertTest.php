@@ -19,33 +19,33 @@ require_once dirname(__FILE__) . '/../../../tools/helpers/bookstore/BookstoreTes
  */
 class PropelCollectionConvertTest extends BookstoreTestBase
 {
-	protected function setUp()
-	{
-		parent::setUp();
-		$book1 = new Book();
-		$book1->setId(9012);
-		$book1->setTitle('Don Juan');
-		$book1->setISBN('0140422161');
-		$book1->setPrice(12.99);
-		$book1->setAuthorId(5678);
-		$book1->setPublisherId(1234);
-		$book1->resetModified();
-		$book2 = new Book();
-		$book2->setId(58);
-		$book2->setTitle('Harry Potter and the Order of the Phoenix');
-		$book2->setISBN('043935806X');
-		$book2->setPrice(10.99);
-		$book2->resetModified();
+    protected function setUp()
+    {
+        parent::setUp();
+        $book1 = new Book();
+        $book1->setId(9012);
+        $book1->setTitle('Don Juan');
+        $book1->setISBN('0140422161');
+        $book1->setPrice(12.99);
+        $book1->setAuthorId(5678);
+        $book1->setPublisherId(1234);
+        $book1->resetModified();
+        $book2 = new Book();
+        $book2->setId(58);
+        $book2->setTitle('Harry Potter and the Order of the Phoenix');
+        $book2->setISBN('043935806X');
+        $book2->setPrice(10.99);
+        $book2->resetModified();
 
-		$this->coll = new PropelObjectCollection();
-		$this->coll->setModel('Book');
-		$this->coll[]= $book1;
-		$this->coll[]= $book2;
-	}
+        $this->coll = new PropelObjectCollection();
+        $this->coll->setModel('Book');
+        $this->coll[]= $book1;
+        $this->coll[]= $book2;
+    }
 
-	public function toXmlDataProvider()
-	{
-		$expected = <<<EOF
+    public function toXmlDataProvider()
+    {
+        $expected = <<<EOF
 <?xml version="1.0" encoding="UTF-8"?>
 <data>
   <Book>
@@ -67,36 +67,37 @@ class PropelCollectionConvertTest extends BookstoreTestBase
 </data>
 
 EOF;
-		return array(array($expected));
-	}
 
-	/**
-	 * @dataProvider toXmlDataProvider
-	 */
-	public function testToXML($expected)
-	{
-		$this->assertEquals($expected, $this->coll->toXML());
-	}
+        return array(array($expected));
+    }
 
-	/**
-	 * @dataProvider toXmlDataProvider
-	 */
-	public function testFromXML($expected)
-	{
-		$coll = new PropelObjectCollection();
-		$coll->setModel('Book');
-		$coll->fromXML($expected);
-		// fix modified columns order
-		foreach ($coll as $book) {
-			$book->resetModified();
-		}
+    /**
+     * @dataProvider toXmlDataProvider
+     */
+    public function testToXML($expected)
+    {
+        $this->assertEquals($expected, $this->coll->toXML());
+    }
 
-		$this->assertEquals($this->coll, $coll);
-	}
+    /**
+     * @dataProvider toXmlDataProvider
+     */
+    public function testFromXML($expected)
+    {
+        $coll = new PropelObjectCollection();
+        $coll->setModel('Book');
+        $coll->fromXML($expected);
+        // fix modified columns order
+        foreach ($coll as $book) {
+            $book->resetModified();
+        }
 
-	public function toYamlDataProvider()
-	{
-		$expected = <<<EOF
+        $this->assertEquals($this->coll, $coll);
+    }
+
+    public function toYamlDataProvider()
+    {
+        $expected = <<<EOF
 Book_0:
   Id: 9012
   Title: 'Don Juan'
@@ -113,112 +114,115 @@ Book_1:
   AuthorId: null
 
 EOF;
-		return array(array($expected));
-	}
 
-	/**
-	 * @dataProvider toYamlDataProvider
-	 */
-	public function testToYAML($expected)
-	{
-		$this->assertEquals($expected, $this->coll->toYAML());
-	}
+        return array(array($expected));
+    }
 
-	/**
-	 * @dataProvider toYamlDataProvider
-	 */
-	public function testFromYAML($expected)
-	{
-		$coll = new PropelObjectCollection();
-		$coll->setModel('Book');
-		$coll->fromYAML($expected);
-		// fix modified columns order
-		foreach ($coll as $book) {
-			$book->resetModified();
-		}
+    /**
+     * @dataProvider toYamlDataProvider
+     */
+    public function testToYAML($expected)
+    {
+        $this->assertEquals($expected, $this->coll->toYAML());
+    }
 
-		$this->assertEquals($this->coll, $coll);
-	}
+    /**
+     * @dataProvider toYamlDataProvider
+     */
+    public function testFromYAML($expected)
+    {
+        $coll = new PropelObjectCollection();
+        $coll->setModel('Book');
+        $coll->fromYAML($expected);
+        // fix modified columns order
+        foreach ($coll as $book) {
+            $book->resetModified();
+        }
 
-	public function toJsonDataProvider()
-	{
-		$expected = <<<EOF
+        $this->assertEquals($this->coll, $coll);
+    }
+
+    public function toJsonDataProvider()
+    {
+        $expected = <<<EOF
 {"Book_0":{"Id":9012,"Title":"Don Juan","ISBN":"0140422161","Price":12.99,"PublisherId":1234,"AuthorId":5678},"Book_1":{"Id":58,"Title":"Harry Potter and the Order of the Phoenix","ISBN":"043935806X","Price":10.99,"PublisherId":null,"AuthorId":null}}
 EOF;
-		return array(array($expected));
-	}
 
-	/**
-	 * @dataProvider toJsonDataProvider
-	 */
-	public function testToJSON($expected)
-	{
-		$this->assertEquals($expected, $this->coll->toJSON());
-	}
+        return array(array($expected));
+    }
 
-	/**
-	 * @dataProvider toJsonDataProvider
-	 */
-	public function testfromJSON($expected)
-	{
-		$coll = new PropelObjectCollection();
-		$coll->setModel('Book');
-		$coll->fromJSON($expected);
-		// fix modified columns order
-		foreach ($coll as $book) {
-			$book->resetModified();
-		}
+    /**
+     * @dataProvider toJsonDataProvider
+     */
+    public function testToJSON($expected)
+    {
+        $this->assertEquals($expected, $this->coll->toJSON());
+    }
 
-		$this->assertEquals($this->coll, $coll);
-	}
+    /**
+     * @dataProvider toJsonDataProvider
+     */
+    public function testfromJSON($expected)
+    {
+        $coll = new PropelObjectCollection();
+        $coll->setModel('Book');
+        $coll->fromJSON($expected);
+        // fix modified columns order
+        foreach ($coll as $book) {
+            $book->resetModified();
+        }
 
-	public function toCsvDataProvider()
-	{
-		$expected = "Id,Title,ISBN,Price,PublisherId,AuthorId\r\n9012,Don Juan,0140422161,12.99,1234,5678\r\n58,Harry Potter and the Order of the Phoenix,043935806X,10.99,N;,N;\r\n";
-		return array(array($expected));
-	}
+        $this->assertEquals($this->coll, $coll);
+    }
 
-	/**
-	 * @dataProvider toCsvDataProvider
-	 */
-	public function testToCSV($expected)
-	{
-		$this->assertEquals($expected, $this->coll->toCSV());
-	}
+    public function toCsvDataProvider()
+    {
+        $expected = "Id,Title,ISBN,Price,PublisherId,AuthorId\r\n9012,Don Juan,0140422161,12.99,1234,5678\r\n58,Harry Potter and the Order of the Phoenix,043935806X,10.99,N;,N;\r\n";
 
-	/**
-	 * @dataProvider toCsvDataProvider
-	 */
-	public function testfromCSV($expected)
-	{
-		$coll = new PropelObjectCollection();
-		$coll->setModel('Book');
-		$coll->fromCSV($expected);
-		// fix modified columns order
-		foreach ($coll as $book) {
-			$book->resetModified();
-		}
+        return array(array($expected));
+    }
 
-		$this->assertEquals($this->coll, $coll);
-	}
+    /**
+     * @dataProvider toCsvDataProvider
+     */
+    public function testToCSV($expected)
+    {
+        $this->assertEquals($expected, $this->coll->toCSV());
+    }
 
-	/**
-	 * @dataProvider toYamlDataProvider
-	 */
-	public function testToStringUsesDefaultStringFormat($expected)
-	{
-		$this->assertEquals($expected, (string) $this->coll, 'PropelCollection::__toString() uses the YAML representation by default');
-	}
+    /**
+     * @dataProvider toCsvDataProvider
+     */
+    public function testfromCSV($expected)
+    {
+        $coll = new PropelObjectCollection();
+        $coll->setModel('Book');
+        $coll->fromCSV($expected);
+        // fix modified columns order
+        foreach ($coll as $book) {
+            $book->resetModified();
+        }
 
-	public function testToStringUsesCustomStringFormat()
-	{
-		$coll = new PropelObjectCollection();
-		$coll->setModel('Publisher');
-		$publisher = new Publisher();
-		$publisher->setId(12345);
-		$publisher->setName('Penguinoo');
-		$coll[]= $publisher;
-		$expected = <<<EOF
+        $this->assertEquals($this->coll, $coll);
+    }
+
+    /**
+     * @dataProvider toYamlDataProvider
+     */
+    public function testToStringUsesDefaultStringFormat($expected)
+    {
+        $this->assertEquals($expected, (string) $this->coll, 'PropelCollection::__toString() uses the YAML representation by default');
+    }
+
+    public function testToStringUsesCustomStringFormat()
+    {
+        $coll = new PropelObjectCollection();
+        $coll->setModel('Publisher');
+        $publisher = new Publisher();
+        $publisher->setId(12345);
+        $publisher->setName('Penguinoo');
+        $coll[]= $publisher;
+        $expected = <<<EOF
 <?xml version="1.0" encoding="UTF-8"?>
 <data>
   <Publisher>
@@ -228,7 +232,7 @@ EOF;
 </data>
 
 EOF;
-		$this->assertEquals($expected, (string) $coll);
-	}
+        $this->assertEquals($expected, (string) $coll);
+    }
 
 }

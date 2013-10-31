@@ -9,26 +9,27 @@
  */
 public function getTranslation($locale = '<?php echo $defaultLocale ?>', PropelPDO $con = null)
 {
-	if (!isset($this->currentTranslations[$locale])) {
-		if (null !== $this-><?php echo $i18nListVariable ?>) {
-			foreach ($this-><?php echo $i18nListVariable ?> as $translation) {
-				if ($translation->get<?php echo $localeColumnName ?>() == $locale) {
-					$this->currentTranslations[$locale] = $translation;
-					return $translation;
-				}
-			}
-		}
-		if ($this->isNew()) {
-			$translation = new <?php echo $i18nTablePhpName ?>();
-			$translation->set<?php echo $localeColumnName ?>($locale);
-		} else {
-			$translation = <?php echo $i18nQueryName ?>::create()
-				->filterByPrimaryKey(array($this->getPrimaryKey(), $locale))
-				->findOneOrCreate($con);
-			$this->currentTranslations[$locale] = $translation;
-		}
-		$this->add<?php echo $i18nSetterMethod ?>($translation);
-	}
+    if (!isset($this->currentTranslations[$locale])) {
+        if (null !== $this-><?php echo $i18nListVariable ?>) {
+            foreach ($this-><?php echo $i18nListVariable ?> as $translation) {
+                if ($translation->get<?php echo $localeColumnName ?>() == $locale) {
+                    $this->currentTranslations[$locale] = $translation;
 
-	return $this->currentTranslations[$locale];
+                    return $translation;
+                }
+            }
+        }
+        if ($this->isNew()) {
+            $translation = new <?php echo $i18nTablePhpName ?>();
+            $translation->set<?php echo $localeColumnName ?>($locale);
+        } else {
+            $translation = <?php echo $i18nQueryName ?>::create()
+                ->filterByPrimaryKey(array($this->getPrimaryKey(), $locale))
+                ->findOneOrCreate($con);
+            $this->currentTranslations[$locale] = $translation;
+        }
+        $this->add<?php echo $i18nSetterMethod ?>($translation);
+    }
+
+    return $this->currentTranslations[$locale];
 }

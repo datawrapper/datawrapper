@@ -310,25 +310,66 @@
             return label;
         },
 
-        labelWidth: function(txt, className, fontSize) {
-            // returns the width of a label
-            var l = $('<div class="label'+(className ? ' '+className : '')+'"><span>'+txt+'</span></div>');
-            if (fontSize) $('span', l).css('font-size', fontSize);
-            this.__root.append(l);
-            var w = $('span', l).outerWidth();
-            l.remove();
-            return w;
+        labelWidth: function(txt, className, fontSize) { // lazy evaluation
+            var lbl,
+                span,
+                $span,
+                ow,
+                root = this.__root.get(0);
+
+            lbl = document.createElement('div');
+            lbl.style.position = 'absolute';
+            lbl.style.left = '-10000px';
+            span = document.createElement('span');
+            lbl.appendChild(span);
+            $span = $(span);
+
+            root.appendChild(lbl);
+
+            ow = !_.isUndefined(span.offsetWidth) ?
+                function() { return span.offsetWidth; } :
+                function() { return $span.outerWidth(); };
+
+            function labelWidth(txt, className, fontSize) {
+                // returns the width of a label
+                lbl.setAttribute('class', 'label '+(className ? ' '+className : ''));
+                span.style.fontSize = fontSize ? fontSize : null;
+                span.innerHTML = txt;
+                return ow();
+            }
+            this.labelWidth = labelWidth;
+            return labelWidth(txt, className, fontSize);
         },
 
         labelHeight: function(txt, className, width, fontSize) {
-            // returns the width of a label
-            var l = $('<div class="label'+(className ? ' '+className : '')+'"><span>'+txt+'</span></div>');
-            if (fontSize) $('span', l).css('font-size', fontSize);
-            l.width(width);
-            this.__root.append(l);
-            var w = $('span', l).height();
-            l.remove();
-            return w;
+            var lbl,
+                span,
+                $span,
+                oh,
+                root = this.__root.get(0);
+
+            lbl = document.createElement('div');
+            lbl.style.position = 'absolute';
+            lbl.style.left = '-10000px';
+            span = document.createElement('span');
+            lbl.appendChild(span);
+            $span = $(span);
+
+            root.appendChild(lbl);
+
+            oh = !_.isUndefined(span.offsetHeight) ?
+                function() { return span.offsetHeight; } :
+                function() { return $span.height(); };
+
+            function labelHeight(txt, className, width, fontSize) {
+                // returns the width of a label
+                lbl.setAttribute('class', 'label '+(className ? ' '+className : ''));
+                span.style.fontSize = fontSize ? fontSize : null;
+                span.innerHTML = txt;
+                return oh();
+            }
+            this.labelHeight = labelHeight;
+            return labelHeight(txt, className, width, fontSize);
         },
 
         orderSeriesElements: function() {
@@ -427,40 +468,49 @@
             return color;
         },
 
-        getKeyColor: function(key, value, useNegativeColor, colorful) {
+        getKeyColor: function(_key, _value, _useNegativeColor, _colorful) {
             var me = this,
                 palette = me.theme().colors.palette,
-                color,
-                colorByRow = me.meta['color-by'] == 'row';
+                colorByRow = me.meta['color-by'] == 'row',
+                colorCache = {};
 
-            key = String(key);
+            function keyColor(key, value, useNegativeColor, colorful) {
+                var color;
 
-            var userCustomColors = me.get('custom-colors', {});
+                key = String(key);
 
-            // user has defined a colors for this key
-            if (userCustomColors[key]) {
-                color = userCustomColors[key];
+                var userCustomColors = me.get('custom-colors', {});
 
-            } else if (value && useNegativeColor) {
-                // if requested we display negative values in different color
-                color = me.theme().colors[value < 0 ? 'negative' : 'positive'];
-            } else {
-                // if the visualization has defined custom series colors, let's use them
-                if (key && me.__customColors && me.__customColors[key])
-                    color = me.__customColors[key];
-                // use base color
-                else color = palette[Math.min(me.get('base-color', 0), palette.length-1)];
+                // user has defined a colors for this key
+                if (userCustomColors[key]) {
+                    color = userCustomColors[key];
+
+                } else if (value && useNegativeColor) {
+                    // if requested we display negative values in different color
+                    color = me.theme().colors[value < 0 ? 'negative' : 'positive'];
+                } else {
+                    // if the visualization has defined custom series colors, let's use them
+                    if (key && me.__customColors && me.__customColors[key])
+                        color = me.__customColors[key];
+                    // use base color
+                    else color = palette[Math.min(me.get('base-color', 0), palette.length-1)];
+                }
+
+                var key_color = chroma.hex(color),
+                    bg_color = chroma.hex(me.theme().colors.background),
+                    bg_lch = bg_color.lch();
+
+                if (key && !me.chart().isHighlighted(key)) {
+                    if (!colorCache[color+'-hl']) {
+                        colorCache[color+'-hl'] = chroma.interpolate(key_color, bg_color, bg_lch[0] < 60 ? 0.7 : 0.63);
+                    }
+                    return colorCache[color+'-hl'];
+                }
+                return color;
             }
 
-            var key_color = chroma.hex(color),
-                bg_color = chroma.hex(me.theme().colors.background),
-                bg_lch = bg_color.lch();
-
-            if (key && !me.chart().isHighlighted(key)) {
-                key_color = chroma.interpolate(key_color, bg_color, bg_lch[0] < 60 ? 0.7 : 0.63);
-            }
-
-            return key_color.hex();
+            me.getKeyColor = keyColor;
+            return keyColor(_key, _value, _useNegativeColor, _colorful);
         },
 
         setKeyColor: function(key, color) {
@@ -469,10 +519,10 @@
             me.__customColors[key] = color;
         },
 
-        getYTicks: function(yscale, h, noDomain) {
+        getYTicks: function(yscale, h, noDomain, useLogScale) {
             var me = this,
-                ticks = yscale.ticks(h / 80),
                 domain = yscale.domain(),
+                ticks = useLogScale ? dw.utils.logTicks(domain[0], domain[1]) : yscale.ticks(h / 80),
                 bt = yscale(ticks[0]),
                 tt = yscale(ticks[ticks.length-1]);
 
@@ -483,8 +533,6 @@
                 ticks.unshift(domain[0]);
                 ticks.push(domain[1]);
             }
-
-
             return ticks;
         },
 
@@ -609,6 +657,10 @@
             });
             me.__elements = {};
             me.__labels = {};
+        },
+
+        _svgCanvas: function() {
+            return this.__canvas.paper.canvas;
         }
 
     });

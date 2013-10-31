@@ -10,15 +10,17 @@
     "homepage": "http://www.willdurand.fr"
   }],
   "autoload": {
-    "classmap": ["runtime/lib/"]
+      "classmap": ["runtime/lib", "generator/lib"]
   },
+  "include-path": ["runtime/lib", "generator/lib"],
   "require": {
     "php": ">=5.2.4",
-    "phing/phing": "2.4.*"
+    "phing/phing": "~2.4"
   },
   "extra": {
     "branch-alias": {
       "dev-master": "1.6-dev"
     }
-  }
+  },
+  "bin": ["generator/bin/propel-gen", "generator/bin/propel-gen.bat"]
 }

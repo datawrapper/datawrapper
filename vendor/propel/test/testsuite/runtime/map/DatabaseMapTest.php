@@ -42,11 +42,10 @@ class DatabaseMapTest extends BookstoreTestBase
   public function testAddTable()
   {
     $this->assertFalse($this->databaseMap->hasTable('foo'), 'tables are empty by default');
-    try
-    {
+    try {
       $this->databaseMap->getTable('foo');
       $this->fail('getTable() throws an exception when called on an inexistent table');
-    } catch(PropelException $e) {
+    } catch (PropelException $e) {
       $this->assertTrue(true, 'getTable() throws an exception when called on an inexistent table');
     }
     $tmap = $this->databaseMap->addTable('foo');
@@ -57,11 +56,10 @@ class DatabaseMapTest extends BookstoreTestBase
   public function testAddTableObject()
   {
     $this->assertFalse($this->databaseMap->hasTable('foo2'), 'tables are empty by default');
-    try
-    {
+    try {
       $this->databaseMap->getTable('foo2');
       $this->fail('getTable() throws an exception when called on a table with no builder');
-    } catch(PropelException $e) {
+    } catch (PropelException $e) {
       $this->assertTrue(true, 'getTable() throws an exception when called on a table with no builder');
     }
     $tmap = new TableMap('foo2');
@@ -73,30 +71,27 @@ class DatabaseMapTest extends BookstoreTestBase
   public function testAddTableFromMapClass()
   {
     $table1 = $this->databaseMap->addTableFromMapClass('BazTableMap');
-    try
-    {
+    try {
       $table2 = $this->databaseMap->getTable('baz');
       $this->assertEquals($table1, $table2, 'addTableFromMapClass() adds a table from a map class');
-    } catch(PropelException $e) {
+    } catch (PropelException $e) {
       $this->fail('addTableFromMapClass() adds a table from a map class');
     }
   }
 
   public function testGetColumn()
   {
-    try
-    {
+    try {
       $this->databaseMap->getColumn('foo.BAR');
       $this->fail('getColumn() throws an exception when called on column of an inexistent table');
-    } catch(PropelException $e) {
+    } catch (PropelException $e) {
       $this->assertTrue(true, 'getColumn() throws an exception when called on column of an inexistent table');
     }
     $tmap = $this->databaseMap->addTable('foo');
-    try
-    {
+    try {
       $this->databaseMap->getColumn('foo.BAR');
       $this->fail('getColumn() throws an exception when called on an inexistent column of an existent table');
-    } catch(PropelException $e) {
+    } catch (PropelException $e) {
       $this->assertTrue(true, 'getColumn() throws an exception when called on an inexistent column of an existent table');
     }
     $column = $tmap->addColumn('BAR', 'Bar', 'INTEGER');
@@ -105,19 +100,17 @@ class DatabaseMapTest extends BookstoreTestBase
 
   public function testGetTableByPhpName()
   {
-    try
-    {
+    try {
       $this->databaseMap->getTableByPhpName('Foo1');
       $this->fail('getTableByPhpName() throws an exception when called on an inexistent table');
-    } catch(PropelException $e) {
+    } catch (PropelException $e) {
       $this->assertTrue(true, 'getTableByPhpName() throws an exception when called on an inexistent table');
     }
     $tmap = $this->databaseMap->addTable('foo1');
-    try
-    {
+    try {
       $this->databaseMap->getTableByPhpName('Foo1');
       $this->fail('getTableByPhpName() throws an exception when called on a table with no phpName');
-    } catch(PropelException $e) {
+    } catch (PropelException $e) {
       $this->assertTrue(true, 'getTableByPhpName() throws an exception when called on a table with no phpName');
     }
     $tmap2 = new TableMap('foo2');
@@ -128,7 +121,7 @@ class DatabaseMapTest extends BookstoreTestBase
 
   public function testGetTableByPhpNameNotLoaded()
   {
-		$this->assertEquals('book', Propel::getDatabaseMap('bookstore')->getTableByPhpName('Book')->getName(), 'getTableByPhpName() can autoload a TableMap when the Peer class is generated and autoloaded');
+        $this->assertEquals('book', Propel::getDatabaseMap('bookstore')->getTableByPhpName('Book')->getName(), 'getTableByPhpName() can autoload a TableMap when the Peer class is generated and autoloaded');
   }
 
 }
@@ -142,6 +135,7 @@ class TestDatabaseBuilder
     if (is_null(self::$dmap)) {
         self::$dmap = new DatabaseMap('foodb');
     }
+
     return self::$dmap;
   }
   public static function setTmap($tmap)

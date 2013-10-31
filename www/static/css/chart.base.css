@@ -1,0 +1,149 @@
+
+/*
+ * base stylesheets included in every chart
+ */
+
+html body.chart.fullscreen {
+    margin: 0;
+    padding: 50px 100px;
+    width: 100%;
+    background: #fff;
+    overflow: hidden;
+}
+
+#header {
+    min-height: 1px;
+    position: relative;
+}
+
+#header .header-right {
+    position: absolute;
+    right: 10px;
+    z-index: 20;
+}
+
+.fullscreen #header .header-right {
+    right: 200px;
+}
+
+#footer {
+    min-height: 1px;
+    position: absolute;
+    bottom: 0;
+    left:0;
+    right:0;
+    height: 25px;
+}
+
+.fullscreen h1 {
+    font-size: 36px;
+    margin: 0 200px 30px 0
+}
+
+.fullscreen p {
+    font-size: 15px;
+    margin-right: 200px!important;
+}
+
+.fullscreen #header label {
+    font-size: 15px;
+}
+
+.fullscreen .logo {
+    right: 100px;
+}
+
+.fullscreen .label {
+    font-size: 15px;
+}
+
+.fullscreen #footer {
+    font-size: 13px;
+    line-height: 20px;
+    height: 40px;
+    margin: 0 0px 20px 100px;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+}
+
+.footer-left, .footer-right {
+    position: absolute;
+    bottom: 5px;
+    z-index: 1000;
+}
+
+.footer-left {
+    left: 5px;
+}
+
+.footer-right {
+    right: 5px;
+}
+
+.fullscreen .footer-right {
+    right: 100px;
+}
+
+.logo {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
+.fullscreen .fs-btn {
+    display: none!important;
+}
+
+.fs-btn {
+    width: 24px;
+    height: 24px;
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYAQMAAADaua+7AAAAA3NCSVQICAjb4U/gAAAABlBMVEWxsbH////8JldWAAAAAnRSTlP/AOW3MEoAAAAJcEhZcwAACxIAAAsSAdLdfvwAAAAYdEVYdENyZWF0aW9uIFRpbWUAMTMuMTIuMjAxMnLzWo0AAAAcdEVYdFNvZnR3YXJlAEFkb2JlIEZpcmV3b3JrcyBDUzVxteM2AAAANklEQVQImWNgqGNgYPjPwMD4vwFMg/lQMcX/LQzF/88x/P//Hysu/v8OqOYIUC1Qbz1CH5JZACUFJoZujXhwAAAAAElFTkSuQmCC);
+    opacity: 0.5;
+    cursor: pointer;
+    display: none;
+}
+
+.fs-btn.small {
+    width: 18px;
+    height: 18px;
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASAQMAAABsABwUAAAAA3NCSVQICAjb4U/gAAAABlBMVEWxsbH////8JldWAAAAAnRSTlP/AOW3MEoAAAAJcEhZcwAACxIAAAsSAdLdfvwAAAAYdEVYdENyZWF0aW9uIFRpbWUAMTMuMTIuMjAxMnLzWo0AAAAcdEVYdFNvZnR3YXJlAEFkb2JlIEZpcmV3b3JrcyBDUzVxteM2AAAAKUlEQVQImWNgfMDAwPwBgmFs9h8MDO//NjD8/38ABef/PQCWQ1YLZQMAx8MaxZ/JdpAAAAAASUVORK5CYII=);
+}
+
+.chart:hover .fs-btn {
+    display: block;
+}
+
+.fs-btn:hover {
+    opacity: 1;
+}
+
+.fs-btn.top-right {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+}
+
+.logo .big {
+    display: none;
+}
+
+.fullscreen .logo .big {
+    display: inline;
+}
+
+.fullscreen .logo .small {
+    display: none;
+}
+
+html .chart.plain #footer {
+    height: 10px;
+}
+
+body.js .noscript {
+    display: none;
+}
+
+.chart .hidden {
+    display: none;
+}

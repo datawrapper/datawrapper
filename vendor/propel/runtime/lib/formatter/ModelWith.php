@@ -17,164 +17,176 @@
  */
 class ModelWith
 {
-	protected $modelName = '';
-	protected $modelPeerName = '';
-	protected $isSingleTableInheritance = false;
-	protected $isAdd = false;
-	protected $isWithOneToMany = false;
-	protected $relationName = '';
-	protected $relationMethod = '';
-	protected $initMethod = '';
-	protected $leftPhpName;
-	protected $rightPhpName;
+    protected $modelName = '';
+    protected $modelPeerName = '';
+    protected $isSingleTableInheritance = false;
+    protected $isAdd = false;
+    protected $isWithOneToMany = false;
+    protected $relationName = '';
+    protected $relationMethod = '';
+    protected $initMethod = '';
+    protected $resetPartialMethod = '';
+    protected $leftPhpName;
+    protected $rightPhpName;
 
-	public function __construct(ModelJoin $join = null)
-	{
-		if (null !== $join) {
-			$this->init($join);
-		}
-	}
+    public function __construct(ModelJoin $join = null)
+    {
+        if (null !== $join) {
+            $this->init($join);
+        }
+    }
 
-	/**
-	 * Define the joined hydration schema based on a join object.
-	 * Fills the ModelWith properties using a ModelJoin as source
-	 *
-	 * @param ModelJoin $join
-	 */
-	public function init(ModelJoin $join)
-	{
-		$tableMap = $join->getTableMap();
-		$this->modelName = $tableMap->getClassname();
-		$this->modelPeerName = $tableMap->getPeerClassname();
-		$this->isSingleTableInheritance = $tableMap->isSingleTableInheritance();
-		$relation = $join->getRelationMap();
-		$relationName = $relation->getName();
-		if ($relation->getType() == RelationMap::ONE_TO_MANY) {
-			$this->isAdd = $this->isWithOneToMany = true;
-			$this->relationName = $relation->getPluralName();
-			$this->relationMethod = 'add' . $relationName;
-			$this->initMethod = 'init' . $this->relationName;
-		} else {
-			$this->relationName = $relationName;
-			$this->relationMethod = 'set' . $relationName;
-		}
-		$this->rightPhpName = $join->hasRelationAlias() ? $join->getRelationAlias() : $relationName;
-		if (!$join->isPrimary()) {
-			$this->leftPhpName = $join->hasLeftTableAlias() ? $join->getLeftTableAlias() : $join->getPreviousJoin()->getRelationMap()->getName();
-		}
-	}
+    /**
+     * Define the joined hydration schema based on a join object.
+     * Fills the ModelWith properties using a ModelJoin as source
+     *
+     * @param ModelJoin $join
+     */
+    public function init(ModelJoin $join)
+    {
+        $tableMap = $join->getTableMap();
+        $this->modelName = $tableMap->getClassname();
+        $this->modelPeerName = $tableMap->getPeerClassname();
+        $this->isSingleTableInheritance = $tableMap->isSingleTableInheritance();
+        $relation = $join->getRelationMap();
+        $relationName = $relation->getName();
+        if ($relation->getType() == RelationMap::ONE_TO_MANY) {
+            $this->isAdd = $this->isWithOneToMany = true;
+            $this->relationName = $relation->getPluralName();
+            $this->relationMethod = 'add' . $relationName;
+            $this->initMethod = 'init' . $this->relationName;
+            $this->resetPartialMethod = 'resetPartial' . $this->relationName;
+        } else {
+            $this->relationName = $relationName;
+            $this->relationMethod = 'set' . $relationName;
+        }
+        $this->rightPhpName = $join->hasRelationAlias() ? $join->getRelationAlias() : $relationName;
+        if (!$join->isPrimary()) {
+            $this->leftPhpName = $join->hasLeftTableAlias() ? $join->getLeftTableAlias() : $join->getPreviousJoin()->getRelationMap()->getName();
+        }
+    }
 
-	// DataObject getters & setters
+    // DataObject getters & setters
 
-	public function setModelName($modelName)
-	{
-		$this->modelName = $modelName;
-	}
+    public function setModelName($modelName)
+    {
+        $this->modelName = $modelName;
+    }
 
-	public function getModelName()
-	{
-		return $this->modelName;
-	}
+    public function getModelName()
+    {
+        return $this->modelName;
+    }
 
-	public function setModelPeerName($modelPeerName)
-	{
-		$this->modelPeerName = $modelPeerName;
-	}
+    public function setModelPeerName($modelPeerName)
+    {
+        $this->modelPeerName = $modelPeerName;
+    }
 
-	public function getModelPeerName()
-	{
-		return $this->modelPeerName;
-	}
+    public function getModelPeerName()
+    {
+        return $this->modelPeerName;
+    }
 
-	public function setIsSingleTableInheritance($isSingleTableInheritance)
-	{
-		$this->isSingleTableInheritance = $isSingleTableInheritance;
-	}
+    public function setIsSingleTableInheritance($isSingleTableInheritance)
+    {
+        $this->isSingleTableInheritance = $isSingleTableInheritance;
+    }
 
-	public function isSingleTableInheritance()
-	{
-		return $this->isSingleTableInheritance;
-	}
+    public function isSingleTableInheritance()
+    {
+        return $this->isSingleTableInheritance;
+    }
 
-	public function setIsAdd($isAdd)
-	{
-		$this->isAdd = $isAdd;
-	}
+    public function setIsAdd($isAdd)
+    {
+        $this->isAdd = $isAdd;
+    }
 
-	public function isAdd()
-	{
-		return $this->isAdd;
-	}
+    public function isAdd()
+    {
+        return $this->isAdd;
+    }
 
-	public function setIsWithOneToMany($isWithOneToMany)
-	{
-		$this->isWithOneToMany = $isWithOneToMany;
-	}
+    public function setIsWithOneToMany($isWithOneToMany)
+    {
+        $this->isWithOneToMany = $isWithOneToMany;
+    }
 
-	public function isWithOneToMany()
-	{
-		return $this->isWithOneToMany;
-	}
+    public function isWithOneToMany()
+    {
+        return $this->isWithOneToMany;
+    }
 
-	public function setRelationName($relationName)
-	{
-		$this->relationName = $relationName;
-	}
+    public function setRelationName($relationName)
+    {
+        $this->relationName = $relationName;
+    }
 
-	public function getRelationName()
-	{
-		return $this->relationName;
-	}
+    public function getRelationName()
+    {
+        return $this->relationName;
+    }
 
-	public function setRelationMethod($relationMethod)
-	{
-		$this->relationMethod = $relationMethod;
-	}
+    public function setRelationMethod($relationMethod)
+    {
+        $this->relationMethod = $relationMethod;
+    }
 
-	public function getRelationMethod()
-	{
-		return $this->relationMethod;
-	}
+    public function getRelationMethod()
+    {
+        return $this->relationMethod;
+    }
 
-	public function setInitMethod($initMethod)
-	{
-		$this->initMethod = $initMethod;
-	}
+    public function setInitMethod($initMethod)
+    {
+        $this->initMethod = $initMethod;
+    }
 
-	public function getInitMethod()
-	{
-		return $this->initMethod;
-	}
+    public function getInitMethod()
+    {
+        return $this->initMethod;
+    }
 
-	public function setLeftPhpName($leftPhpName)
-	{
-		$this->leftPhpName = $leftPhpName;
-	}
+    public function setResetPartialMethod($resetPartialMethod)
+    {
+        $this->resetPartialMethod = $resetPartialMethod;
+    }
 
-	public function getLeftPhpName()
-	{
-		return $this->leftPhpName;
-	}
+    public function getResetPartialMethod()
+    {
+        return $this->resetPartialMethod;
+    }
 
-	public function setRightPhpName($rightPhpName)
-	{
-		$this->rightPhpName = $rightPhpName;
-	}
+    public function setLeftPhpName($leftPhpName)
+    {
+        $this->leftPhpName = $leftPhpName;
+    }
 
-	public function getRightPhpName()
-	{
-		return $this->rightPhpName;
-	}
+    public function getLeftPhpName()
+    {
+        return $this->leftPhpName;
+    }
 
-	// Utility methods
+    public function setRightPhpName($rightPhpName)
+    {
+        $this->rightPhpName = $rightPhpName;
+    }
 
-	public function isPrimary()
-	{
-		return null === $this->leftPhpName;
-	}
+    public function getRightPhpName()
+    {
+        return $this->rightPhpName;
+    }
 
-	public function __toString()
-	{
-		return sprintf("modelName: %s, relationName: %s, relationMethod: %s, leftPhpName: %s, rightPhpName: %s", $this->modelName, $this->relationName, $this->relationMethod, $this->leftPhpName, $this->rightPhpName);
-	}
+    // Utility methods
+
+    public function isPrimary()
+    {
+        return null === $this->leftPhpName;
+    }
+
+    public function __toString()
+    {
+        return sprintf("modelName: %s, relationName: %s, relationMethod: %s, leftPhpName: %s, rightPhpName: %s", $this->modelName, $this->relationName, $this->relationMethod, $this->leftPhpName, $this->rightPhpName);
+    }
 }

@@ -1,9 +1,11 @@
 <?php
 
-class SchemaPlatform {
-	public function supportsSchemas() {return true;}
+class SchemaPlatform
+{
+    public function supportsSchemas() {return true;}
 }
 
-class NoSchemaPlatform {
-	public function supportsSchemas() {return false;}
+class NoSchemaPlatform
+{
+    public function supportsSchemas() {return false;}
 }

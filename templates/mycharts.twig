@@ -113,7 +113,7 @@
                         <a href="#delete" class="delete" data-chart="{{ chart.id }}"><i class="icon-remove"></i></a>
                     </p> #}
 
-                     <h3 style="color:{% if chart.metadata.publish.text %}{{ chart.metadata.publish.text }}{% else %}#000{% endif %};text-shadow:1px 1px 3px {% if chart.metadata.publish.background %}{{ chart.metadata.publish.background }}{% else %}#fff{% endif %};">{{ chart.title | replace({'<br/>': ' - '})| striptags }}</h3></a>
+                     <h3 style="color:{% if chart.metadata.publish.text %}{{ chart.metadata.publish.text }}{% else %}#000{% endif %};text-shadow:1px 1px 3px {% if chart.metadata.publish.background %}{{ chart.metadata.publish.background }}{% else %}#fff{% endif %};">{% if chart.title != '' %}{{ chart.title | replace({'<br/>': ' - '}) | striptags }}{% else %}{{ chart.id }}{% endif %}</h3></a>
                      <div class="btn-group">
                         <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
                           <i class="icon-wrench"></i>

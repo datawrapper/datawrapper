@@ -1,6 +1,7 @@
 
 root._ = require 'underscore'
 root.$ = require 'jquery'
+root.Globalize = require 'globalize'
 vows = require 'vows'
 assert = require 'assert'
 

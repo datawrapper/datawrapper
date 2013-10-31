@@ -28,7 +28,7 @@ $app->get('/chart/:id/publish', function ($id) use ($app) {
             'chartActions' => DatawrapperHooks::execute(DatawrapperHooks::GET_CHART_ACTIONS, $chart),
             'estExportTime' => ceil(JobQuery::create()->estimatedTime('export') / 60)
         );
-        add_header_vars($page, 'chart');
+        add_header_vars($page, 'chart', 'chart-editor/publish.css');
         add_editor_nav($page, 4);
 
         if ($user->isAbleToPublish()
@@ -41,7 +41,7 @@ $app->get('/chart/:id/publish', function ($id) use ($app) {
             $page['publish'] = true;
             $page['republish'] = $app->request()->get('republish') == 1;
         }
-        $app->render('chart-publish.twig', $page);
+        $app->render('chart/publish.twig', $page);
 
     });
 });

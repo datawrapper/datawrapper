@@ -9,9 +9,9 @@
  */
 public function setTranslation($translation, $locale = '<?php echo $defaultLocale ?>')
 {
-	$translation->set<?php echo $localeColumnName ?>($locale);
-	$this->add<?php echo $i18nTablePhpName ?>($translation);
-	$this->currentTranslations[$locale] = $translation;
+    $translation->set<?php echo $localeColumnName ?>($locale);
+    $this->add<?php echo $i18nTablePhpName ?>($translation);
+    $this->currentTranslations[$locale] = $translation;
 
-	return $this;
+    return $this;
 }

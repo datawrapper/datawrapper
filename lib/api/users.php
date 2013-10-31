@@ -92,20 +92,31 @@ $app->post('/users', function() use ($app) {
     $domain   = $GLOBALS['dw_config']['domain'];
     $protocol = !empty($_SERVER['HTTPS']) ? "https" : "http";
     if ($invitation) {
+        // send account invitation link
         $invitationLink = $protocol . '://' . $domain . '/account/invite/' . $user->getActivateToken();
-        $from = $GLOBALS['dw_config']['email']['invite'];
         include(ROOT_PATH . 'lib/templates/invitation-email.php');
-        DatawrapperHooks::execute(
-            DatawrapperHooks::SEND_EMAIL,
-            $data->email, sprintf(__('You have been invited to %s'), $domain), $invitation_mail, 'From: ' . $from
+        dw_send_support_email(
+            $data->email,
+            sprintf(__('You have been invited to Datawrapper on %s'), $domain),
+            $invitation_mail,
+            array(
+                'name' => $user->guessName(),
+                'invitation_link' => $invitationLink
+            )
         );
+
     } else {
+        // send account activation link
         $activationLink = $protocol . '://' . $domain . '/account/activate/' . $user->getActivateToken();
-        $from = $GLOBALS['dw_config']['email']['activate'];
         include(ROOT_PATH . 'lib/templates/activation-email.php');
-        DatawrapperHooks::execute(
-            DatawrapperHooks::SEND_EMAIL,
-            $data->email, __('Datawrapper Email Activation'), $activation_mail, 'From: ' . $from
+        dw_send_support_email(
+            $data->email,
+            __('Datawrapper: Please activate your email address'),
+            $activation_mail,
+            array(
+                'name' => $user->guessName(),
+                'activation_link' => $activationLink
+            )
         );
 
         // we don't need to annoy the user with a login form now,
@@ -128,7 +139,7 @@ $app->put('/users/:id', function($user_id) use ($app) {
     if ($curUser->isLoggedIn()) {
         if ($user_id == 'current' || $curUser->getId() === $user_id) {
             $user = $curUser;
-        } else if ($curUser->isAdmin()) {
+        } else if ($curUser->isSysAdmin()) {
             $user = UserQuery::create()->findPK($user_id);
         }
 
@@ -142,9 +153,11 @@ $app->put('/users/:id', function($user_id) use ($app) {
                 if (!empty($payload->oldpwhash)) {
                     $chk = $user->getPwd() === secure_password($payload->oldpwhash);
                 }
-                if ($chk || $curUser->isAdmin()) {
+                if ($chk || $curUser->isSysAdmin()) {
                     $user->setPwd($payload->pwd);
+                    Action::logAction($curUser, 'change-password', array('user' => $user->getId()));
                 } else {
+                    Action::logAction($curUser, 'change-password-failed', array('user' => $user->getId(), 'reason' => 'old password is wrong'));
                     $errors[] = __('The password could not be changed because your old password was not entered correctly.');
                 }
             }
@@ -160,12 +173,17 @@ $app->put('/users/:id', function($user_id) use ($app) {
                             $token_link = 'http://' . $GLOBALS['dw_config']['domain'] . '/account/settings?token='.$token;
                             // send email with token
                             require(ROOT_PATH . 'lib/templates/email-change-email.php');
-                            DatawrapperHooks::execute(
-                                DatawrapperHooks::SEND_EMAIL,
+
+                            dw_send_support_email(
                                 $payload->email,
-                                __('Please confirm your new email address'),
-                                str_replace('%email_change_token_link%', $token_link, $email_change_mail),
-                                'From: ' . $GLOBALS['dw_config']['email']['activate']
+                                __('Datawrapper: You requested a change of your email address'),
+                                $email_change_mail,
+                                array(
+                                    'name' => $user->guessName(),
+                                    'email_change_token_link' => $token_link,
+                                    'old_email' => $user->getEmail(),
+                                    'new_email' => $payload->email
+                                )
                             );
                             // log action for later confirmation
                             Action::logAction($curUser, 'email-change-request', array(

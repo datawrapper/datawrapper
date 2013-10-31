@@ -1,0 +1,81 @@
+{% extends "core.twig" %}
+
+{% block content %}
+
+<div id="msg-changes-saved" class="alert alert-info" style="text-align:center;position:fixed;top:-45px;z-index:9999;left: 30%;right:30%;opacity:0">
+  {% trans "Your changes have been saved." %}
+</div>
+
+<div class="row create-nav">
+    {% for step in steps %}
+        {% if createstep > step.index or createstep != step.index and chart.lastEditStep >= step.index %}
+            <a href="{{ step.id }}" class="submit span3{% if createstep == step.index %} active{% else %}{% if createstep > step.index %} passed{% endif %}{% endif %}">
+                <span class="step">{{ step.index }}</span>
+                <span class="title">{{ step.title }}</span>
+                <i class="icon-ok"></i>
+                 <div class="corner"></div>
+            </a>
+        {% elseif createstep == step.index-1 %}
+            <a href="{{ step.id }}" class="submit span3{% if createstep == step.index %} active{% else %}{% if createstep > step.index %} passed{% else %} unseen{% endif %}{% endif %}">
+                <span class="step">{{ step.index }}</span>
+                {{ step.title }}
+                <div class="corner"></div>
+            </a>
+        {% else %}
+            <div class="span3{% if createstep == step.index %} active{% else %}{% if createstep > step.index %} passed{% else %} unseen{% endif %}{% endif %}">
+                <span class="step">{{ step.index }}</span>
+                {{ step.title }}
+                <div class="corner"></div>
+            </div>
+        {% endif %}
+
+    {% endfor %}
+</div>
+
+{% if user != chart.user and user.isAdmin() %}
+<div class="alert alert-danger" style="text-align:center">
+ {{ "<b>CAUTION!</b> This chart belongs to <a href='/admin/charts/%uid'>%email</a>. Great power comes with great responsibility, so be careful with what you're doing!" | trans
+    | replace({"%email": chart.user.email, "%uid": chart.user.id }) | raw }}
+</div>
+{% endif %}
+
+<script type="text/javascript">
+
+    // initialize current chart
+    var chart = dw.backend.currentChart = dw.chart(JSON.parse("{{ chart.toJSON | raw }}"));
+
+    chart
+        .locale('{{ chartLocale }}')
+        .metricPrefix({{ metricPrefix | json | raw }});
+
+    if (chart.get('lastEditStep') < {{ createstep }}) {
+        dw.backend.__firstTime = true;
+        chart.set('lastEditStep', {{ createstep }});
+    }
+
+dw.backend.ready(function() {
+
+    dw.backend.syncChart(chart);
+
+    _.templateSettings = {
+        interpolate : /\{\{(.+?)\}\}/g
+    };
+
+    $('.chart-editor').on('click', '.submit', function(e) {
+        var a = $(e.target);
+        if (e.target.nodeName.toLowerCase() != 'a') a = a.parents('a');
+        if (chart.hasUnsavedChanges()) {
+            e.preventDefault();
+            chart.onSave(function() {
+                location.href = a.attr('href');
+            });
+        }
+    });
+
+});
+
+
+</script>
+
+
+{% endblock %}

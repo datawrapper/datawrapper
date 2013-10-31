@@ -12,8 +12,10 @@
 /**
  * Represents a template filter as a node.
  *
- * @package    twig
- * @author     Fabien Potencier <fabien@symfony.com>
+ * Use Twig_SimpleFilter instead.
+ *
+ * @author Fabien Potencier <fabien@symfony.com>
+ * @deprecated since 1.12 (to be removed in 2.0)
  */
 class Twig_Filter_Node extends Twig_Filter
 {

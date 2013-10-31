@@ -45,7 +45,7 @@ class Twig_Extension_Escaper extends Twig_Extension
     public function getFilters()
     {
         return array(
-            'raw' => new Twig_Filter_Function('twig_raw_filter', array('is_safe' => array('all'))),
+            new Twig_SimpleFilter('raw', 'twig_raw_filter', array('is_safe' => array('all'))),
         );
     }
 
@@ -76,7 +76,9 @@ class Twig_Extension_Escaper extends Twig_Extension
      */
     public function getDefaultStrategy($filename)
     {
-        if (is_callable($this->defaultStrategy)) {
+        // disable string callables to avoid calling a function named html or js,
+        // or any other upcoming escaping strategy
+        if (!is_string($this->defaultStrategy) && is_callable($this->defaultStrategy)) {
             return call_user_func($this->defaultStrategy, $filename);
         }
 
@@ -103,4 +105,3 @@ function twig_raw_filter($string)
 {
     return $string;
 }
-

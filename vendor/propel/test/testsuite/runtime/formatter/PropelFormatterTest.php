@@ -19,47 +19,47 @@ require_once dirname(__FILE__) . '/../../../tools/helpers/bookstore/BookstoreEmp
  */
 class PropelFormatterTest extends BookstoreEmptyTestBase
 {
-	protected function setUp()
-	{
-		parent::setUp();
-		BookstoreDataPopulator::populate();
-	}
+    protected function setUp()
+    {
+        parent::setUp();
+        BookstoreDataPopulator::populate();
+    }
 
-	public function testGetWorkerObjectReturnsRightClass()
-	{
-		$formatter = $this->getMockForAbstractClass('PropelFormatter');
+    public function testGetWorkerObjectReturnsRightClass()
+    {
+        $formatter = $this->getMockForAbstractClass('PropelFormatter');
 
-		$method = new ReflectionMethod('PropelFormatter', 'getWorkerObject');
-		$method->setAccessible(true);
+        $method = new ReflectionMethod('PropelFormatter', 'getWorkerObject');
+        $method->setAccessible(true);
 
-		$classNames = array(
-			'Bookstore',
-			'BookReader',
-			'BookClubList',
-		);
+        $classNames = array(
+            'Bookstore',
+            'BookReader',
+            'BookClubList',
+        );
 
-		$col = 0;
-		foreach ($classNames as $className) {
-			// getWorkerObject() should always return an instance of the requested class, regardless of the value of $col
-			$result = $method->invoke($formatter, $col, $className);
+        $col = 0;
+        foreach ($classNames as $className) {
+            // getWorkerObject() should always return an instance of the requested class, regardless of the value of $col
+            $result = $method->invoke($formatter, $col, $className);
 
-			$this->assertEquals($className, get_class($result), 'getWorkerObject did not return an instance of the requested class');
-		}
-	}
+            $this->assertEquals($className, get_class($result), 'getWorkerObject did not return an instance of the requested class');
+        }
+    }
 
-	public function testGetWorkerObjectCachedInstance()
-	{
-		$formatter = $this->getMockForAbstractClass('PropelFormatter');
+    public function testGetWorkerObjectCachedInstance()
+    {
+        $formatter = $this->getMockForAbstractClass('PropelFormatter');
 
-		$method = new ReflectionMethod('PropelFormatter', 'getWorkerObject');
-		$method->setAccessible(true);
+        $method = new ReflectionMethod('PropelFormatter', 'getWorkerObject');
+        $method->setAccessible(true);
 
-		$className = 'Bookstore';
-		$col = 0;
+        $className = 'Bookstore';
+        $col = 0;
 
-		$result1 = $method->invoke($formatter, $col, $className);
-		$result2 = $method->invoke($formatter, $col, $className);
+        $result1 = $method->invoke($formatter, $col, $className);
+        $result2 = $method->invoke($formatter, $col, $className);
 
-		$this->assertEquals(spl_object_hash($result1), spl_object_hash($result2), 'getWorkerObject should return a cached instance of a class at the same col index');
-	}
+        $this->assertEquals(spl_object_hash($result1), spl_object_hash($result2), 'getWorkerObject should return a cached instance of a class at the same col index');
+    }
 }

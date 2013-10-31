@@ -14,14 +14,9 @@ class DatawrapperPlugin_CoreVisOptions extends DatawrapperPlugin {
             }
         );
 
-        DatawrapperHooks::register(DatawrapperHooks::GET_PLUGIN_ASSETS, function($uri) use ($plugin) {
-            if (preg_match("|/chart/[^/]+/visualize|", $uri)) {
-                return array(
-                    $plugin->getName() . '/sync-controls.js',
-                    $plugin->getName() . '/styles.css'
-                );
-            }
-            return array();
-        });
+        $this->declareAssets(array(
+            'sync-controls.js'
+        ), "|/chart/[^/]+/visualize|");
+
     }
 }

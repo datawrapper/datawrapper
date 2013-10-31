@@ -133,6 +133,9 @@ class DatawrapperHooks {
 
     // allow plugins to add new admin pages
     const GET_ADMIN_PAGES = 'get_admin_pages';
+
+    // allow plugins to add new admin pages
+    const ALTERNATIVE_SIGNIN = 'alternative_signin';
 }
 
 

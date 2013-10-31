@@ -60,7 +60,7 @@ class DatawrapperPlugin_Gallery extends DatawrapperPlugin {
 
     public function nbChartsByMonth() {
         $con = Propel::getConnection();
-        $sql = "SELECT DATE_FORMAT(created_at, '%Y-%m') ym, COUNT(*) c FROM chart WHERE show_in_gallery = 1 AND deleted = 0 GROUP BY ym ORDER BY ym DESC ;";
+        $sql = "SELECT DATE_FORMAT(created_at, '%Y-%m') ym, COUNT(*) c FROM chart WHERE show_in_gallery = 1 AND last_edit_step >= 4 and deleted = 0 GROUP BY ym ORDER BY ym DESC ;";
         $rs = $con->query($sql);
         $res = array();
         $max = 0;
@@ -76,7 +76,7 @@ class DatawrapperPlugin_Gallery extends DatawrapperPlugin {
 
     public function nbChartsByType() {
         $con = Propel::getConnection();
-        $sql = "SELECT type, COUNT(*) c FROM chart WHERE show_in_gallery = 1 AND deleted = 0 GROUP BY type ORDER BY c DESC ;";
+        $sql = "SELECT type, COUNT(*) c FROM chart WHERE show_in_gallery = 1 AND last_edit_step >= 4 and deleted = 0 GROUP BY type ORDER BY c DESC ;";
         $rs = $con->query($sql);
         $res = array();
 

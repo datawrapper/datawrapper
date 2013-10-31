@@ -31,6 +31,19 @@ require_once ROOT_PATH . 'lib/bootstrap.php';
 
 $cmd = $argv[1];
 
+// eventually load plugins.json
+$plugin_urls = false;
+$env_dw_plugins = getenv('DATAWRAPPER_PLUGINS');
+
+if ($env_dw_plugins) {
+    try {  // to load and decode the json
+        $plugin_urls = json_decode(file_get_contents($env_dw_plugins), true);
+    } catch (Error $e) {
+        // didn't work, ignoring env
+        print "NOTICE: Could not read plugins.json from ".$_ENV['DATAWRAPPER_PLUGINS'].". Ignoring...\n";
+    }
+}
+
 /*
  * list installed plugins
  */
@@ -39,7 +52,35 @@ function list_plugins() {
     print "\n";
     foreach ($plugins as $plugin) {
         print $plugin->getEnabled() ? "\033[1;32mENABLED" : "\033[1;31mDISABLED";
-        print "\033[m ".$plugin->getName()."\n";
+        print "\033[m ".$plugin->getName();
+        // check for un-committed changes
+        $info = $plugin->getInfo();
+        if (!empty($info['repository']) &&
+            $info['repository']['type'] == 'git' &&
+            file_exists($plugin->getPath() . '.git/config')) {
+
+            $ret = array();
+            exec('cd '.$plugin->getPath().'; git fetch origin 2>&1', $ret, $err);
+            $ret = array();
+            exec('cd '.$plugin->getPath().'; git status -bs 2>&1', $ret, $err);
+            $outdated = strpos($ret[0], '[behind') > -1;
+            $modified = $deleted = $new = $added = false;
+            foreach ($ret as $line) {
+                # code...
+                if (substr($line, 0, 2) == '??') $new = true;
+                if ($line[1] == 'M') $modified = true;
+                if ($line[0] == 'A') $added = true;
+                if ($line[1] == 'D') $deleted = true;
+            }
+            print " ";
+            if ($new) print "\033[0;34m✭ ";
+            if ($added) print "\033[0;32m✚ ";
+            if ($modified) print "\033[1;34m✹ ";
+            if ($deleted) print "\033[0;31m✖ ";
+            if ($outdated) print "\033[1;32m➤ ";
+
+        }
+        print "\033[m\n";
     }
     _apply("*", function($id) {
         $plugin = PluginQuery::create()->findPk($id);
@@ -64,18 +105,58 @@ function clean() {
  * installs plugins
  */
 function install($pattern) {
+    if (is_git_url($pattern)) {
+        // checkout git repository into tmp directory
+        // ROOT_PATH . "plugins" . DIRECTORY_SEPARATOR
+        print "Try loading the plugin from ".$pattern."... \n";
+        $tmp_name = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'tmp-'.time();
+        exec('git clone '.$pattern.' '.$tmp_name.' 2>&1', $ret, $err);
+        $pkg_info = $tmp_name . DIRECTORY_SEPARATOR . 'package.json';
+        if (file_exists($pkg_info)) {
+            try {
+                $pkg_info = json_decode(file_get_contents($pkg_info), true);
+            } catch (Error $e) {
+                print 'Not a valid plugin: package.json could not be read.';
+                return true;
+            }
+            if (!empty($pkg_info['name'])) {
+                $plugin_path = ROOT_PATH . 'plugins' . DIRECTORY_SEPARATOR . $pkg_info['name'];
+                if (!file_exists($plugin_path)) {
+                    rename($tmp_name, $plugin_path);
+                    $pattern = $pkg_info['name']; // proceed with this id
+                } else {
+                    print 'Plugin '.$pkg_info['name'].' is already installed';
+                    return true;
+                }
+            } else {
+                print 'No name specified in package.json.';
+                return true;
+            }
+        } else {
+            print 'No package.json found in repository';
+            return true;
+        }
+    }
     _apply($pattern, function($id) {
         $tmp = new Plugin();
         $tmp->setId($id);
 
         // check if plugin files exist
         if (!file_exists($tmp->getPath())) {
+            global $plugin_urls;
+            if ($plugin_urls) {
+                if (isset($plugin_urls[$id])) {
+                    print "Found ".$id." in plugins.json.\n";
+                    install($plugin_urls[$id]); // try installing from git repository
+                    return true;  // cancel apply loop
+                }
+            }
             print "No plugin found with that name. Skipping.\n";
-            return false;
+            return true; // cancel apply loop
         }
         if (!file_exists($tmp->getPath() . 'package.json')) {
             print "Path exists, but no package.json found. Skipping.\n";
-            return false;
+            return true; // cancel apply loop
         }
         // check if plugin is already installed
         $plugin = PluginQuery::create()->findPk($id);
@@ -248,6 +329,11 @@ function health_check() {
     }
 }
 
+function is_git_url($url) {
+    return substr($url, -4) == ".git" || substr($url, 4) == 'git@';
+}
+
+
 switch ($cmd) {
     case 'list': list_plugins(); break;
     case 'clean': clean(); break;
@@ -280,7 +366,8 @@ function _apply($pattern, $func) {
     }
     sort($plugin_ids);
     foreach ($plugin_ids as $plugin_id) {
-        $func($plugin_id);
+        $res = $func($plugin_id);
+        if ($res === true) return;
     }
 }
 

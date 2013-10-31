@@ -21,6 +21,11 @@ dw.column.types.text = function() {
  */
 dw.column.types.number = function(sample) {
 
+    function signDigitsDecimalPlaces(num, sig) {
+        if (num === 0) return 0;
+        return Math.round( sig - Math.ceil( Math.log( Math.abs( num ) ) / Math.LN10 ) );
+    }
+
     var format,
         errors = 0,
         knownFormats = {
@@ -96,14 +101,25 @@ dw.column.types.number = function(sample) {
 
             return function(val, full, round) {
                 if (isNaN(val)) return val;
-                if (div !== 0) val = Number(val) / Math.pow(10, div);
                 var _fmt = format;
-                if (_fmt != '-') {
-                    if (round || val == Math.round(val)) _fmt = format.substr(0,1)+'0';
-                    val = Globalize.format(val, _fmt);
-                } else if (div !== 0) {
-                    val = val.toFixed(1);
+                if (div !== 0 && _fmt == '-') _fmt = 'n1';
+                if (_fmt == '-') {
+                    var s = String(val).split('.');
+                    if (s[1]) _fmt = 'n'+s[1].length;
+                    else _fmt = 'n0';
                 }
+                if (div !== 0) val = Number(val) / Math.pow(10, div);
+                if (_fmt.substr(0,1) == 's') {
+                    // significant figures
+                    var sig = +_fmt.substr(1);
+                    _fmt = 'n'+Math.max(0, signDigitsDecimalPlaces(val, sig));
+                }
+                if (_fmt != '-') {
+                    if (round) _fmt = format.substr(0,1)+'0';
+                    val = Globalize.format(val, _fmt);
+                }/* else if (div !== 0) {
+                    val = val.toFixed(1);
+                }*/
                 return full ? prepend + val + append : val;
             };
         },
@@ -219,28 +235,8 @@ dw.column.types.date = function(sample) {
                 test: /^ *([12]\d{3})([-\/\. ?])(0?[1-9]|1[0-2])\2(0?[1-9]|[1-2]\d|3[01]) *[ \-\|] *(0?\d|1\d|2[0-3]):([0-5]\d)(?::([0-5]\d))? *$/,
                 parse: /^ *(\d{4})([-\/\. ?])(0?[1-9]|1[0-2])\2(0?[1-9]|[1-2]\d|3[01]) *[ \-\|] *(0?\d|1\d|2[0-3]):([0-5]\d)(?::([0-5]\d))? *$/,
                 precision: 'day-seconds'
-            },
-            // globalize
-            'globalize-MMMM': { test: testGlobalize, parse: parseGlobalize, precision: 'month' },
-            'globalize-MMM': { test: testGlobalize, parse: parseGlobalize, precision: 'month' },
-            'globalize-MMM yyyy': { test: testGlobalize, parse: parseGlobalize, precision: 'month' },
-            'globalize-MMM yy': { test: testGlobalize, parse: parseGlobalize, precision: 'month' },
-            'globalize-MMMM yy': { test: testGlobalize, parse: parseGlobalize, precision: 'month' },
-            'globalize-dddd': { test: testGlobalize, parse: parseGlobalize, precision: 'day' },
-            'globalize-ddd': { test: testGlobalize, parse: parseGlobalize, precision: 'day' },
-            'globalize': {
-                test: function(s) { return _.isDate(Globalize.parseDate(s)); },
-                parse: function(s) { return Globalize.parseDate(s); },
-                precision: 'day'
             }
         };
-
-    function parseGlobalize(raw, fmt) {
-        return Globalize.parseDate(raw, fmt.substr(10));
-    }
-    function testGlobalize(raw, fmt) {
-        return _.isDate(parseGlobalize(raw, fmt));
-    }
 
     function test(str, key) {
         var fmt = knownFormats[key];
@@ -262,8 +258,8 @@ dw.column.types.date = function(sample) {
 
     sample = sample || [];
 
-    _.each(sample, function(n) {
-        _.each(knownFormats, function(format, key) {
+    _.each(knownFormats, function(format, key) {
+        _.each(sample, function(n) {
             if (matches[key] === undefined) matches[key] = 0;
             if (test(n, key)) {
                 matches[key] += 1;
@@ -328,11 +324,6 @@ dw.column.types.date = function(sample) {
                 case 'YYYY-MM-DD HH:MM:SS': return new Date(m[1], (m[3]-1), m[4], m[5] || 0, m[6] || 0, m[7] || 0);
                 case 'DD.MM.YYYY HH:MM:SS': return new Date(m[4], (m[3]-1), m[1], m[5] || 0, m[6] || 0, m[7] || 0);
                 case 'MM/DD/YYYY HH:MM:SS': return new Date(m[4], (m[1]-1), m[3], m[5] || 0, m[6] || 0, m[7] || 0);
-                case 'globalize': return m ? Globalize.parseDate(raw) : raw;
-            }
-            if (format.substr(0, 10) == 'globalize-') {
-                m = Globalize.parseDate(raw, format.substr(10));
-                if (_.isDate(m)) return m;
             }
             errors++;
             return raw;
@@ -347,6 +338,7 @@ dw.column.types.date = function(sample) {
         // returns a function for formatting dates
         formatter: function(config) {
             if (!format) return _.identity;
+            var M_pattern = Globalize.culture().calendar.patterns.M.replace('MMMM','MMM');
             switch (knownFormats[format].precision) {
                 case 'year': return function(d) { return !_.isDate(d) ? d : d.getFullYear(); };
                 case 'half': return function(d) { return !_.isDate(d) ? d : d.getFullYear() + ' H'+(d.getMonth()/6 + 1); };
@@ -354,8 +346,8 @@ dw.column.types.date = function(sample) {
                 case 'month': return function(d) { return !_.isDate(d) ? d : Globalize.format(d, 'MMM yy'); };
                 case 'week': return function(d) { return !_.isDate(d) ? d : dateToIsoWeek(d).slice(0,2).join(' W'); };
                 case 'day': return function(d) { return !_.isDate(d) ? d : Globalize.format(d, 'd'); };
-                case 'day-minutes': return function(d) { return !_.isDate(d) ? d : Globalize.format(d, 'M')+' - '+ Globalize.format(d, 't'); };
-                case 'day-seconds': return function(d) { return !_.isDate(d) ? d : Globalize.format(d, 'T'); };
+                case 'day-minutes': return function(d) { return !_.isDate(d) ? d : Globalize.format(d, M_pattern).replace(' ', '&nbsp;')+' - '+ Globalize.format(d, 't').replace(' ', '&nbsp;'); };
+                case 'day-seconds': return function(d) { return !_.isDate(d) ? d : Globalize.format(d, 'T').replace(' ', '&nbsp;'); };
             }
         },
 

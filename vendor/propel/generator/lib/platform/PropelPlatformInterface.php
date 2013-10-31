@@ -19,207 +19,207 @@
 interface PropelPlatformInterface
 {
 
-	/**
-	 * Constant for auto-increment id method.
-	 */
-	const IDENTITY = "identity";
+    /**
+     * Constant for auto-increment id method.
+     */
+    const IDENTITY = "identity";
 
-	/**
-	 * Constant for sequence id method.
-	 */
-	const SEQUENCE = "sequence";
+    /**
+     * Constant for sequence id method.
+     */
+    const SEQUENCE = "sequence";
 
-	/**
-	 * Constant for serial id method (postgresql).
-	 */
-	const SERIAL = "serial";
+    /**
+     * Constant for serial id method (postgresql).
+     */
+    const SERIAL = "serial";
 
-	/**
-	 * Sets a database connection to use (for quoting, etc.).
-	 * @param      PDO $con The database connection to use in this Platform class.
-	 */
-	public function setConnection(PDO $con = null);
+    /**
+     * Sets a database connection to use (for quoting, etc.).
+     * @param PDO $con The database connection to use in this Platform class.
+     */
+    public function setConnection(PDO $con = null);
 
-	/**
-	 * Returns the database connection to use for this Platform class.
-	 * @return     PDO The database connection or NULL if none has been set.
-	 */
-	public function getConnection();
+    /**
+     * Returns the database connection to use for this Platform class.
+     * @return PDO The database connection or NULL if none has been set.
+     */
+    public function getConnection();
 
-	/**
-	 * Sets the GeneratorConfig which contains any generator build properties.
-	 *
-	 * @param      GeneratorConfig $config
-	 */
-	public function setGeneratorConfig(GeneratorConfig $config);
+    /**
+     * Sets the GeneratorConfigInterface which contains any generator build properties.
+     *
+     * @param GeneratorConfigInterface $config
+     */
+    public function setGeneratorConfig(GeneratorConfigInterface $config);
 
-	/**
-	 * Returns the short name of the database type that this platform represents.
-	 * For example MysqlPlatform->getDatabaseType() returns 'mysql'.
-	 * @return     string
-	 */
-	public function getDatabaseType();
+    /**
+     * Returns the short name of the database type that this platform represents.
+     * For example MysqlPlatform->getDatabaseType() returns 'mysql'.
+     * @return string
+     */
+    public function getDatabaseType();
 
-	/**
-	 * Returns the native IdMethod (sequence|identity)
-	 *
-	 * @return     string The native IdMethod (PropelPlatformInterface:IDENTITY, PropelPlatformInterface::SEQUENCE).
-	 */
-	public function getNativeIdMethod();
+    /**
+     * Returns the native IdMethod (sequence|identity)
+     *
+     * @return string The native IdMethod (PropelPlatformInterface:IDENTITY, PropelPlatformInterface::SEQUENCE).
+     */
+    public function getNativeIdMethod();
 
-	/**
-	 * Returns the max column length supported by the db.
-	 *
-	 * @return     int The max column length
-	 */
-	public function getMaxColumnNameLength();
+    /**
+     * Returns the max column length supported by the db.
+     *
+     * @return int The max column length
+     */
+    public function getMaxColumnNameLength();
 
-	/**
-	 * Returns the db specific domain for a propelType.
-	 *
-	 * @param      string $propelType the Propel type name.
-	 * @return     Domain The db specific domain.
-	 */
-	public function getDomainForType($propelType);
+    /**
+     * Returns the db specific domain for a propelType.
+     *
+     * @param  string $propelType the Propel type name.
+     * @return Domain The db specific domain.
+     */
+    public function getDomainForType($propelType);
 
-	/**
-	 * @return     string The RDBMS-specific SQL fragment for <code>NULL</code>
-	 * or <code>NOT NULL</code>.
-	 */
-	public function getNullString($notNull);
+    /**
+     * @return string The RDBMS-specific SQL fragment for <code>NULL</code>
+     * or <code>NOT NULL</code>.
+     */
+    public function getNullString($notNull);
 
-	/**
-	 * @return     The RDBMS-specific SQL fragment for autoincrement.
-	 */
-	public function getAutoIncrement();
+    /**
+     * @return The RDBMS-specific SQL fragment for autoincrement.
+     */
+    public function getAutoIncrement();
 
-	/**
-	 * Returns the DDL SQL for a Column object.
-	 * @return     string
-	 */
-	public function getColumnDDL(Column $col);
+    /**
+     * Returns the DDL SQL for a Column object.
+     * @return string
+     */
+    public function getColumnDDL(Column $col);
 
-	/**
-	 * Returns the SQL for the default value of a Column object.
-	 * @return     string
-	 */
-	public function getColumnDefaultValueDDL(Column $col);
+    /**
+     * Returns the SQL for the default value of a Column object.
+     * @return string
+     */
+    public function getColumnDefaultValueDDL(Column $col);
 
-	/**
-	 * Creates a delimiter-delimited string list of column names, quoted using quoteIdentifier().
-	 * @example
-	 * <code>
-	 * echo $platform->getColumnListDDL(array('foo', 'bar');
-	 * // '"foo","bar"'
-	 * </code>
-	 * @param      array Column[] or string[]
-	 * @param      string $delim The delimiter to use in separating the column names.
-	 *
-	 * @return     string
-	 */
-	public function getColumnListDDL($columns, $delimiter = ',');
+    /**
+     * Creates a delimiter-delimited string list of column names, quoted using quoteIdentifier().
+     * @example
+     * <code>
+     * echo $platform->getColumnListDDL(array('foo', 'bar');
+     * // '"foo","bar"'
+     * </code>
+     * @param      array Column[] or string[]
+     * @param string $delim The delimiter to use in separating the column names.
+     *
+     * @return string
+     */
+    public function getColumnListDDL($columns, $delimiter = ',');
 
-	/**
-	 * Returns the SQL for the primary key of a Table object
-	 * @return     string
-	 */
-	public function getPrimaryKeyDDL(Table $table);
+    /**
+     * Returns the SQL for the primary key of a Table object
+     * @return string
+     */
+    public function getPrimaryKeyDDL(Table $table);
 
-	/**
-	 * Returns if the RDBMS-specific SQL type has a size attribute.
-	 *
-	 * @param      string $sqlType the SQL type
-	 * @return     boolean True if the type has a size attribute
-	 */
-	public function hasSize($sqlType);
+    /**
+     * Returns if the RDBMS-specific SQL type has a size attribute.
+     *
+     * @param  string  $sqlType the SQL type
+     * @return boolean True if the type has a size attribute
+     */
+    public function hasSize($sqlType);
 
-	/**
-	 * Returns if the RDBMS-specific SQL type has a scale attribute.
-	 *
-	 * @param      string $sqlType the SQL type
-	 * @return     boolean True if the type has a scale attribute
-	 */
-	public function hasScale($sqlType);
+    /**
+     * Returns if the RDBMS-specific SQL type has a scale attribute.
+     *
+     * @param  string  $sqlType the SQL type
+     * @return boolean True if the type has a scale attribute
+     */
+    public function hasScale($sqlType);
 
-	/**
-	 * Quote and escape needed characters in the string for unerlying RDBMS.
-	 * @param      string $text
-	 * @return     string
-	 */
-	public function quote($text);
+    /**
+     * Quote and escape needed characters in the string for unerlying RDBMS.
+     * @param  string $text
+     * @return string
+     */
+    public function quote($text);
 
-	/**
-	 * Quotes identifiers used in database SQL.
-	 * @param      string $text
-	 * @return     string Quoted identifier.
-	 */
-	public function quoteIdentifier($text);
+    /**
+     * Quotes identifiers used in database SQL.
+     * @param  string $text
+     * @return string Quoted identifier.
+     */
+    public function quoteIdentifier($text);
 
-	/**
-	 * Whether RDBMS supports native ON DELETE triggers (e.g. ON DELETE CASCADE).
-	 * @return     boolean
-	 */
-	public function supportsNativeDeleteTrigger();
+    /**
+     * Whether RDBMS supports native ON DELETE triggers (e.g. ON DELETE CASCADE).
+     * @return boolean
+     */
+    public function supportsNativeDeleteTrigger();
 
-	/**
-	 * Whether RDBMS supports INSERT null values in autoincremented primary keys
-	 * @return     boolean
-	 */
-	public function supportsInsertNullPk();
+    /**
+     * Whether RDBMS supports INSERT null values in autoincremented primary keys
+     * @return boolean
+     */
+    public function supportsInsertNullPk();
 
-	/**
-	 * Whether RDBMS supports native schemas for table layout.
-	 * @return boolean
-	 */
-	public function supportsSchemas();
+    /**
+     * Whether RDBMS supports native schemas for table layout.
+     * @return boolean
+     */
+    public function supportsSchemas();
 
-	/**
-	 * Whether RDBMS supports migrations.
-	 * @return boolean
-	 */
-	public function supportsMigrations();
+    /**
+     * Whether RDBMS supports migrations.
+     * @return boolean
+     */
+    public function supportsMigrations();
 
-	/**
-	 * Wether RDBMS supports VARCHAR without explicit size
-	 * @return boolean
-	 */
-	public function supportsVarcharWithoutSize();
-	
-	/**
-	 * Returns the boolean value for the RDBMS.
-	 *
-	 * This value should match the boolean value that is set
-	 * when using Propel's PreparedStatement::setBoolean().
-	 *
-	 * This function is used to set default column values when building
-	 * SQL.
-	 *
-	 * @param      mixed $tf A boolean or string representation of boolean ('y', 'true').
-	 * @return     mixed
-	 */
-	public function getBooleanString($tf);
+    /**
+     * Wether RDBMS supports VARCHAR without explicit size
+     * @return boolean
+     */
+    public function supportsVarcharWithoutSize();
 
-	/**
-	 * Whether the underlying PDO driver for this platform returns BLOB columns as streams (instead of strings).
-	 * @return     boolean
-	 */
-	public function hasStreamBlobImpl();
+    /**
+     * Returns the boolean value for the RDBMS.
+     *
+     * This value should match the boolean value that is set
+     * when using Propel's PreparedStatement::setBoolean().
+     *
+     * This function is used to set default column values when building
+     * SQL.
+     *
+     * @param  mixed $tf A boolean or string representation of boolean ('y', 'true').
+     * @return mixed
+     */
+    public function getBooleanString($tf);
 
-	/**
-	 * Gets the preferred timestamp formatter for setting date/time values.
-	 * @return     string
-	 */
-	public function getTimestampFormatter();
+    /**
+     * Whether the underlying PDO driver for this platform returns BLOB columns as streams (instead of strings).
+     * @return boolean
+     */
+    public function hasStreamBlobImpl();
 
-	/**
-	 * Gets the preferred date formatter for setting time values.
-	 * @return     string
-	 */
-	public function getDateFormatter();
+    /**
+     * Gets the preferred timestamp formatter for setting date/time values.
+     * @return string
+     */
+    public function getTimestampFormatter();
 
-	/**
-	 * Gets the preferred time formatter for setting time values.
-	 * @return     string
-	 */
-	public function getTimeFormatter();
+    /**
+     * Gets the preferred date formatter for setting time values.
+     * @return string
+     */
+    public function getDateFormatter();
+
+    /**
+     * Gets the preferred time formatter for setting time values.
+     * @return string
+     */
+    public function getTimeFormatter();
 }

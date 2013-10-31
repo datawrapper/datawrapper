@@ -13,7 +13,8 @@ $app->get('/chart/:id/visualize', function ($id) use ($app) {
         $page = array(
             'chartData' => $chart->loadData(),
             'chart' => $chart,
-            'visualizations' => DatawrapperVisualization::all('dependencies'),
+            'visualizations_deps' => DatawrapperVisualization::all('dependencies'),
+            'visualizations' => DatawrapperVisualization::all(),
             'vis' => DatawrapperVisualization::get($chart->getType()),
             'themes' => DatawrapperTheme::all(),
             'theme' => DatawrapperTheme::get($chart->getTheme()),
@@ -22,7 +23,7 @@ $app->get('/chart/:id/visualize', function ($id) use ($app) {
         add_header_vars($page, 'chart');
         add_editor_nav($page, 3);
 
-        $app->render('chart-visualize.twig', $page);
+        $app->render('chart/visualize.twig', $page);
     });
 });
 

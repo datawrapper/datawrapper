@@ -6,8 +6,6 @@
     dw.visualization.register('bar-chart', 'raphael-chart', {
 
         render: function(el) {
-            el = $(el);
-
             this.setRoot(el);
 
             var me = this, row = 0,
@@ -48,7 +46,8 @@
                 chart_width = c.w - c.lpad - c.rpad,
                 series_gap = 0.05, // pull from theme
                 row_gap = 0.01,
-                formatValue = me.chart().columnFormatter(me.getBarColumn());
+                formatValue = me.chart().columnFormatter(me.getBarColumn()),
+                barvalues = me.getBarValues(sortBars, reverse);
 
             me.init();
             me.initDimensions();
@@ -57,7 +56,7 @@
 
             c.lastBarY = 0;
 
-            _.each(me.getBarValues(sortBars, reverse), function(barv, s) {
+            function render(barv) {
                 var d = me.barDimensions(barv, s, row),
                     lpos = me.labelPosition(barv, s, row),
                     fill = me.getKeyColor(barv.name, barv.value, useNegativeColor),
@@ -90,18 +89,34 @@
                 }
 
                 c.lastBarY = Math.max(c.lastBarY, d.y + d.height);
-            });
-
-            if (me.__domain[0] < 0) {
-                var x = c.lpad + c.zero ;
-                // add y-axis
-                me.__yaxis = me.path('M' + [x, c.tpad] + 'V' + c.lastBarY, 'axis')
-                    .attr(me.theme().yAxis);
+                if (s == barvalues.length-1) complete();
+                s++;
             }
 
-            // enable mouse events
-            el.mousemove(_.bind(me.onMouseMove, me));
-            me.renderingComplete();
+            var barGroups = _.groupBy(barvalues, function(bar, i) {
+                return Math.floor(i/10);
+            });
+            var s = 0;
+            _.each(barGroups, function(bars) {
+                // defer rendering if we got plenty of bars
+                // to prevent UI blocking
+                _.defer(function() {
+                    _.each(bars, render);
+                });
+            });
+
+            // complete is called as soon all bars are rendered
+            function complete() {
+                if (me.__domain[0] < 0) {
+                    var x = c.lpad + c.zero ;
+                    // add y-axis
+                    me.__yaxis = me.path('M' + [x, c.tpad] + 'V' + c.lastBarY, 'axis')
+                        .attr(me.theme().yAxis);
+                }
+                // enable mouse events
+                el.mousemove(_.bind(me.onMouseMove, me));
+                me.renderingComplete();
+            }
         },
 
         getBarValues: function(sortBars, reverse) {
@@ -188,7 +203,9 @@
                 column = me.getBarColumn(),
                 bars = me.getBarValues(),
                 formatValue = me.chart().columnFormatter(column),
-                domain = me.get('absolute-scale', false) ? dw.utils.minMax(_.map(me.axesDef.bars, function(c) { return me.dataset.column(c); })) : column.range();
+                domain = me.get('absolute-scale', false) ?
+                    dw.utils.minMax(_.map(me.axesDef.bars, function(c) { return me.dataset.column(c); })) :
+                    column.range();
 
             if (domain[0] > 0) domain[0] = 0;
             if (domain[1] < 0) domain[1] = 0;
@@ -201,10 +218,10 @@
              *
              * maxw[0] .. max series name label width      \
              * maxw[1] .. max formatted value label width   } positive
-             * largestVal[0] .. max absolute value               /
+             * largestVal[0] .. max absolute value         /
              * maxw[2] .. max series name label width      \
              * maxw[3] .. max formatted value label width   } negative
-             * largestVal[1] .. max absolute value               /
+             * largestVal[1] .. max absolute value         /
              */
             var maxw = [0, 0, 0, 0], ratio, largestVal = [0, 0], lw;
             _.each(bars, function(bar) {
@@ -213,7 +230,9 @@
                 largestVal[neg ? 1 : 0] = Math.max(largestVal[neg ? 1 : 0], Math.abs(bar.value));
             });
             me.__longLabels = false;
-            _.each(bars, function(bar) {
+            // instead of measuring all bars (slow!) we just
+            // look at a random sample of 50 bars
+            _.each(_.first(bars, 50), function(bar) {
                 if (isNaN(bar.value)) return;
                 var neg = bar.value < 0,
                     t = neg ? 2 : 0,
@@ -223,7 +242,6 @@
                 if (lw > MAX_LABEL_WIDTH) me.__longLabels = true;
                 maxw[t] = Math.max(maxw[t], Math.min(lw, MAX_LABEL_WIDTH) + 20);
                 maxw[t+1] = Math.max(maxw[t+1], me.labelWidth(me.chart().formatValue(bar.value, true), 'value') + 20 + bw);
-
             });
 
             c.left = 0;
@@ -311,8 +329,11 @@
         },
 
         hover: function(hover_key) {
-            var me = this;
-            _.each(me.getBarValues(), function(bar) {
+            var me = this,
+                barvalues = me.getBarValues(),
+                l = barvalues.length;
+
+            _.each(barvalues, function(bar) {
                 _.each(me.__labels[bar.name], function(lbl) {
                     if (hover_key !== undefined && bar.name == hover_key) {
                         lbl.addClass('hover');
@@ -320,7 +341,8 @@
                         lbl.removeClass('hover');
                     }
                 });
-                 _.each(me.__elements[bar.name], function(el) {
+                if (l > 50) return; // no color animation for big data
+                _.each(me.__elements[bar.name], function(el) {
                     var fill = me.getKeyColor(bar.name, bar.value, me.get('negative-color', false)), stroke;
                     if (hover_key !== undefined && bar.name == hover_key) fill = chroma.color(fill).darken(14).hex();
                     stroke = chroma.color(fill).darken(14).hex();

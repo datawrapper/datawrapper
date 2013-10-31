@@ -304,7 +304,7 @@ dw.column = function(name, rows, type) {
                 range = [Number.MAX_VALUE, -Number.MAX_VALUE];
                 column.each(function(v) {
                     v = type.toNum(v);
-                    if (!_.isNumber(v)) return;
+                    if (!_.isNumber(v) || _.isNaN(v)) return;
                     if (v < range[0]) range[0] = v;
                     if (v > range[1]) range[1] = v;
                 });
@@ -376,6 +376,11 @@ dw.column.types.text = function() {
  * parse()
  */
 dw.column.types.number = function(sample) {
+
+    function signDigitsDecimalPlaces(num, sig) {
+        if (num === 0) return 0;
+        return Math.round( sig - Math.ceil( Math.log( Math.abs( num ) ) / Math.LN10 ) );
+    }
 
     var format,
         errors = 0,
@@ -452,14 +457,25 @@ dw.column.types.number = function(sample) {
 
             return function(val, full, round) {
                 if (isNaN(val)) return val;
-                if (div !== 0) val = Number(val) / Math.pow(10, div);
                 var _fmt = format;
-                if (_fmt != '-') {
-                    if (round || val == Math.round(val)) _fmt = format.substr(0,1)+'0';
-                    val = Globalize.format(val, _fmt);
-                } else if (div !== 0) {
-                    val = val.toFixed(1);
+                if (div !== 0 && _fmt == '-') _fmt = 'n1';
+                if (_fmt == '-') {
+                    var s = String(val).split('.');
+                    if (s[1]) _fmt = 'n'+s[1].length;
+                    else _fmt = 'n0';
                 }
+                if (div !== 0) val = Number(val) / Math.pow(10, div);
+                if (_fmt.substr(0,1) == 's') {
+                    // significant figures
+                    var sig = +_fmt.substr(1);
+                    _fmt = 'n'+Math.max(0, signDigitsDecimalPlaces(val, sig));
+                }
+                if (_fmt != '-') {
+                    if (round) _fmt = format.substr(0,1)+'0';
+                    val = Globalize.format(val, _fmt);
+                }/* else if (div !== 0) {
+                    val = val.toFixed(1);
+                }*/
                 return full ? prepend + val + append : val;
             };
         },
@@ -575,28 +591,8 @@ dw.column.types.date = function(sample) {
                 test: /^ *([12]\d{3})([-\/\. ?])(0?[1-9]|1[0-2])\2(0?[1-9]|[1-2]\d|3[01]) *[ \-\|] *(0?\d|1\d|2[0-3]):([0-5]\d)(?::([0-5]\d))? *$/,
                 parse: /^ *(\d{4})([-\/\. ?])(0?[1-9]|1[0-2])\2(0?[1-9]|[1-2]\d|3[01]) *[ \-\|] *(0?\d|1\d|2[0-3]):([0-5]\d)(?::([0-5]\d))? *$/,
                 precision: 'day-seconds'
-            },
-            // globalize
-            'globalize-MMMM': { test: testGlobalize, parse: parseGlobalize, precision: 'month' },
-            'globalize-MMM': { test: testGlobalize, parse: parseGlobalize, precision: 'month' },
-            'globalize-MMM yyyy': { test: testGlobalize, parse: parseGlobalize, precision: 'month' },
-            'globalize-MMM yy': { test: testGlobalize, parse: parseGlobalize, precision: 'month' },
-            'globalize-MMMM yy': { test: testGlobalize, parse: parseGlobalize, precision: 'month' },
-            'globalize-dddd': { test: testGlobalize, parse: parseGlobalize, precision: 'day' },
-            'globalize-ddd': { test: testGlobalize, parse: parseGlobalize, precision: 'day' },
-            'globalize': {
-                test: function(s) { return _.isDate(Globalize.parseDate(s)); },
-                parse: function(s) { return Globalize.parseDate(s); },
-                precision: 'day'
             }
         };
-
-    function parseGlobalize(raw, fmt) {
-        return Globalize.parseDate(raw, fmt.substr(10));
-    }
-    function testGlobalize(raw, fmt) {
-        return _.isDate(parseGlobalize(raw, fmt));
-    }
 
     function test(str, key) {
         var fmt = knownFormats[key];
@@ -618,8 +614,8 @@ dw.column.types.date = function(sample) {
 
     sample = sample || [];
 
-    _.each(sample, function(n) {
-        _.each(knownFormats, function(format, key) {
+    _.each(knownFormats, function(format, key) {
+        _.each(sample, function(n) {
             if (matches[key] === undefined) matches[key] = 0;
             if (test(n, key)) {
                 matches[key] += 1;
@@ -684,11 +680,6 @@ dw.column.types.date = function(sample) {
                 case 'YYYY-MM-DD HH:MM:SS': return new Date(m[1], (m[3]-1), m[4], m[5] || 0, m[6] || 0, m[7] || 0);
                 case 'DD.MM.YYYY HH:MM:SS': return new Date(m[4], (m[3]-1), m[1], m[5] || 0, m[6] || 0, m[7] || 0);
                 case 'MM/DD/YYYY HH:MM:SS': return new Date(m[4], (m[1]-1), m[3], m[5] || 0, m[6] || 0, m[7] || 0);
-                case 'globalize': return m ? Globalize.parseDate(raw) : raw;
-            }
-            if (format.substr(0, 10) == 'globalize-') {
-                m = Globalize.parseDate(raw, format.substr(10));
-                if (_.isDate(m)) return m;
             }
             errors++;
             return raw;
@@ -703,6 +694,7 @@ dw.column.types.date = function(sample) {
         // returns a function for formatting dates
         formatter: function(config) {
             if (!format) return _.identity;
+            var M_pattern = Globalize.culture().calendar.patterns.M.replace('MMMM','MMM');
             switch (knownFormats[format].precision) {
                 case 'year': return function(d) { return !_.isDate(d) ? d : d.getFullYear(); };
                 case 'half': return function(d) { return !_.isDate(d) ? d : d.getFullYear() + ' H'+(d.getMonth()/6 + 1); };
@@ -710,8 +702,8 @@ dw.column.types.date = function(sample) {
                 case 'month': return function(d) { return !_.isDate(d) ? d : Globalize.format(d, 'MMM yy'); };
                 case 'week': return function(d) { return !_.isDate(d) ? d : dateToIsoWeek(d).slice(0,2).join(' W'); };
                 case 'day': return function(d) { return !_.isDate(d) ? d : Globalize.format(d, 'd'); };
-                case 'day-minutes': return function(d) { return !_.isDate(d) ? d : Globalize.format(d, 'M')+' - '+ Globalize.format(d, 't'); };
-                case 'day-seconds': return function(d) { return !_.isDate(d) ? d : Globalize.format(d, 'T'); };
+                case 'day-minutes': return function(d) { return !_.isDate(d) ? d : Globalize.format(d, M_pattern).replace(' ', '&nbsp;')+' - '+ Globalize.format(d, 't').replace(' ', '&nbsp;'); };
+                case 'day-seconds': return function(d) { return !_.isDate(d) ? d : Globalize.format(d, 'T').replace(' ', '&nbsp;'); };
             }
         },
 
@@ -1033,15 +1025,23 @@ dw.utils = {
 
         // use globalize instead of d3
         return timeFormat([
-            [time_fmt("yyyy"), function() { return true; }],
-            [time_fmt(daysDelta > 70 ? "MMM" : "MMMM"), function(d) { return d.getMonth() !== 0; }],  // not January
-            [time_fmt(fmt.date), function(d) { return d.getDate() != 1; }],  // not 1st of month
-            [time_fmt(daysDelta < 7 ? fmt.mm : daysDelta > 70 ? fmt.mmm : fmt.mmmm), function(d) { return d.getDate() != 1 && new_month; }],  // not 1st of month
+            [time_fmt("yyyy"),
+                function() { return true; }],
+            [time_fmt(daysDelta > 70 ? "MMM" : "MMM"),
+                function(d) { return d.getMonth() !== 0; }],  // not January
+            [time_fmt(fmt.date),
+                function(d) { return d.getDate() != 1; }],  // not 1st of month
+            [time_fmt(daysDelta < 7 ? fmt.mm : daysDelta > 70 ? fmt.mmm : fmt.mmm),
+                function(d) { return d.getDate() != 1 && new_month; }],  // not 1st of month
             //[time_fmt("%a %d"), function(d) { return d.getDay() && d.getDate() != 1; }],  // not monday
-            [time_fmt(fmt.hour), function(d) { return d.getHours(); }],
-            [time_fmt(fmt.minute), function(d) { return d.getMinutes(); }],
-            [time_fmt(":ss"), function(d) { return d.getSeconds(); }],
-            [time_fmt(".fff"), function(d) { return d.getMilliseconds(); }]
+            [time_fmt(fmt.hour),
+                function(d) { return d.getHours(); }],
+            [time_fmt(fmt.minute),
+                function(d) { return d.getMinutes(); }],
+            [time_fmt(":ss"),
+                function(d) { return d.getSeconds(); }],
+            [time_fmt(".fff"),
+                function(d) { return d.getMilliseconds(); }]
         ]);
     },
 
@@ -1058,7 +1058,9 @@ dw.utils = {
                     case 'year': return d.getFullYear();
                     case 'quarter': return d.getFullYear() + ' Q'+(d.getMonth()/3 + 1);
                     case 'month': return Globalize.format(d, 'MMM yy');
-                    case 'day': return Globalize.format(d, 'd');
+                    case 'day': return Globalize.format(d, 'MMM d');
+                    case 'minute': return Globalize.format(d, 't');
+                    case 'second': return Globalize.format(d, 'T');
                 }
             } else {
                 return d;
@@ -1083,7 +1085,9 @@ dw.utils = {
         var ch = 0, bottom = 0; // summed height of children, 10px for top & bottom margin
         $('body > *').each(function(i, el) {
             var t = el.tagName.toLowerCase();
-            if (t != 'script' && el.id != 'chart' && !$(el).hasClass('tooltip') && !$(el).hasClass('container') && !$(el).hasClass('noscript')) {
+            if (t != 'script' && el.id != 'chart' && !$(el).hasClass('tooltip') &&
+                !$(el).hasClass('qtip') && !$(el).hasClass('container') &&
+                !$(el).hasClass('noscript')) {
                 ch += $(el).outerHeight(false); // element height
             }
             ch += Math.max(margin(el, 'top'), bottom);
@@ -1111,18 +1115,69 @@ dw.utils = {
      * taken from https://github.com/kvz/phpjs/blob/master/functions/strings/strip_tags.js
      */
     purifyHtml: function(input, allowed) {
-        if (!_.isString(input)) {
-            return input;
-        }
-        if (allowed === undefined) {
-            allowed = "<b><br><br/><i><strong>";
-        }
-        allowed  = (((allowed || "") + "").toLowerCase().match(/<[a-z][a-z0-9]*>/g) || []).join(''); // making sure the allowed arg is a string containing only tags in lowercase (<a><b><c>)
         var tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>/gi,
-            commentsAndPhpTags = /<!--[\s\S]*?-->|<\?(?:php)?[\s\S]*?\?>/gi;
-        return input.replace(commentsAndPhpTags, '').replace(tags, function ($0, $1) {
-            return allowed.indexOf('<' + $1.toLowerCase() + '>') > -1 ? $0 : '';
-        });
+            commentsAndPhpTags = /<!--[\s\S]*?-->|<\?(?:php)?[\s\S]*?\?>/gi,
+            default_allowed = "<b><br><br/><i><strong><sup><sub><strike><u><em><tt>",
+            allowed_split = {};
+
+        if (allowed === undefined) allowed = default_allowed;
+        allowed_split[allowed] = (((allowed || "") + "").toLowerCase().match(/<[a-z][a-z0-9]*>/g) || []).join(''); // making sure the allowed arg is a string containing only tags in lowercase (<a><b><c>)
+
+        function purifyHtml(input, allowed) {
+            if (!_.isString(input) || input.indexOf("<") < 0) {
+                return input;
+            }
+            if (allowed === undefined) {
+                allowed = default_allowed;
+            }
+            if (!allowed_split[allowed]) {
+                allowed_split[allowed] = (((allowed || "") + "").toLowerCase().match(/<[a-z][a-z0-9]*>/g) || []).join(''); // making sure the allowed arg is a string containing only tags in lowercase (<a><b><c>)
+            }
+            return input.replace(commentsAndPhpTags, '').replace(tags, function ($0, $1) {
+                return allowed_split[allowed].indexOf('<' + $1.toLowerCase() + '>') > -1 ? $0 : '';
+            });
+        }
+        dw.utils.purifyHtml = purifyHtml;
+        return purifyHtml(input, allowed);
+    },
+
+    /*
+     *
+     */
+    significantDimension: function(values) {
+        var result = [], dimension = 0, nonEqual = true,
+            uniqValues = _.uniq(values),
+            check, diff;
+
+        if (uniqValues.length == 1) {
+            return -1 * Math.floor(Math.log(uniqValues[0])/Math.LN10);
+        }
+
+        if (_.uniq(_.map(uniqValues, round)).length == uniqValues.length) {
+            check = function() { return _.uniq(result).length == uniqValues.length; };
+            diff = -1;
+        } else {
+            check = function() { return _.uniq(result).length < uniqValues.length; };
+            diff = +1;
+        }
+        var max_iter = 100;
+        do {
+            result = _.map(uniqValues, round);
+            dimension += diff;
+        } while (check() && max_iter-- > 0);
+        if (max_iter < 10) {
+            console.warn('maximum iteration reached', values, result, dimension);
+        }
+        if (diff < 0) dimension += 2; else dimension--;
+        function round(v) {
+            return dw.utils.round(v, dimension);
+        }
+        return dimension;
+    },
+
+    round: function(value, dimension) {
+        var base = Math.pow(10, dimension);
+        return Math.round(value * base) / base;
     },
 
     /*
@@ -1130,18 +1185,47 @@ dw.utils = {
      * precision where the values remain unique
      */
     smartRound: function(values, add_precision) {
-            var result = [], precision = 0, nonEqual = true;
-            do {
-                result = _.map(values, round);
-                precision++;
-            } while (_.uniq(result, true).length < values.length);
-            if (add_precision) {
-                precision += add_precision - 1;
-                result = _.map(values, round);
+        var dim = dw.utils.significantDimension(values);
+        dim += add_precision || 0;
+        return _.map(values, function(v) { return dw.utils.round(v, dim); });
+    },
+
+    /*
+     * returns the number in array that is closest
+     * to the given value
+     */
+    nearest: function(array, value) {
+        var min_diff = Number.MAX_VALUE, min_diff_val;
+        _.each(array, function(v) {
+            var d = Math.abs(v - value);
+            if (d < min_diff) {
+                min_diff = d;
+                min_diff_val = v;
             }
-            function round(b) { return +(b.toFixed(precision)); }
-            return result;
+        });
+        return min_diff_val;
+    },
+
+    metricSuffix: function(locale) {
+        switch (locale.substr(0, 2).toLowerCase()) {
+            case 'de': return { 3: ' Tsd.', 6: ' Mio.', 9: ' Mrd.', 12: ' Bio.' };
+            case 'fr': return { 3: ' mil', 6: ' Mio', 9: ' Mrd' };
+            case 'es': return { 3: ' Mil', 6: ' millón' };
+            default: return { 3: 'k', 6: 'M', 9: ' bil' };
         }
+    },
+
+    magnitudeRange: function(minmax) {
+        var e0 = Math.round(Math.log(minmax[0]) / Math.LN10),
+            e1 = Math.round(Math.log(minmax[1]) / Math.LN10);
+        return e1 - e0;
+    },
+
+    logTicks: function(min, max) {
+        var e0 = Math.round(Math.log(min) / Math.LN10),
+            e1 = Math.round(Math.log(max) / Math.LN10);
+        return _.map(_.range(e0, e1), function(exp) { return Math.pow(10, exp); });
+    }
 
 };
 
@@ -1225,7 +1309,10 @@ dw.utils.filter = function (column, active, type, format) {
             div.appendTo('body');
             var fy = $('a:first', div).offset().top,
                 ly = $('a:last', div).offset().top;
-            if (fy != ly) return getFilterUI('select')(vis); // fall back to select
+            if (fy != ly) {
+                div.remove();
+                return getFilterUI('select')(vis); // fall back to select
+            }
             return div;
         };
 
@@ -1406,7 +1493,6 @@ dw.chart = function(attributes) {
         theme,
         visualization,
         metric_prefix,
-        load_callbacks = $.Callbacks(),
         change_callbacks = $.Callbacks(),
         locale;
 
@@ -1451,64 +1537,24 @@ dw.chart = function(attributes) {
             var datasource;
 
             datasource = dw.datasource.delimited({
-                url: 'data',
+                url: 'data.csv',
                 firstRowIsHeader: chart.get('metadata.data.horizontal-header', true),
                 transpose: chart.get('metadata.data.transpose', false)
             });
 
-            return datasource.dataset().done(function(ds) {
-                dataset = ds;
-                load_callbacks.fire(chart);
+
+            return datasource.dataset().pipe(function(ds) {
+                chart.dataset(ds);
+                return ds;
             });
         },
 
-        loaded: function(callback) {
-            if (dataset) {
-                // run now
-                callback(chart);
-            } else {
-                load_callbacks.add(callback);
-            }
-        },
-
-        // applies the data changes and returns the dataset
+        // returns the dataset
         dataset: function(ds) {
             if (arguments.length) {
-                dataset = ds;
+                dataset = applyChanges(ds);
                 return chart;
             }
-            chart.applyChanges(dataset);
-            return dataset;
-        },
-
-        applyChanges: function(ds) {
-            var changes = chart.get('metadata.data.changes', []);
-            var transpose = chart.get('metadata.data.transpose', false);
-            _.each(changes, function(change) {
-                var row = "row", column = "column";
-                if (transpose) {
-                    row = "column";
-                    column = "row";
-                }
-
-                if (dataset.hasColumn(change[column])) {
-                    if (change[row] === 0) {
-                        dataset.column(change[column]).title(change.value);
-                    }
-                    else {
-                        dataset.column(change[column]).raw(change[row] - 1, change.value);
-                    }
-                }
-            });
-
-            var columnFormats = chart.get('metadata.data.column-format', {});
-            _.each(columnFormats, function(columnFormat, key) {
-                if (columnFormat.type) {
-                    if (dataset.hasColumn(key)) {
-                        dataset.column(key).type(columnFormat.type);
-                    }
-                }
-            });
             return dataset;
         },
 
@@ -1605,10 +1651,59 @@ dw.chart = function(attributes) {
             // pull output config from metadata
             // return column.formatter(config);
             var colFormat = chart.get('metadata.data.column-format', {});
-            return column.type(true).formatter(colFormat[column.name()] || {});
+            colFormat = colFormat[column.name()] || {};
+
+            if (column.type() == 'number' && colFormat == 'auto') {
+                var mtrSuf = dw.utils.metricSuffix(chart.locale()),
+                    values = column.values(),
+                    dim = dw.utils.significantDimension(values),
+                    div = dim < -2 ? Math.round((dim*-1) / 3) * 3 :
+                            dim > 2 ? dim*-1 : 0;
+                    ndim = dw.utils.significantDimension(_.map(values, function(v) {
+                        return v / Math.pow(10, div);
+                    }));
+
+                colFormat = {
+                    'number-divisor': div,
+                    'number-append': div ? mtrSuf[div] || ' × 10<sup>'+div+'</sup>' : '',
+                    'number-format': 'n'+Math.max(0, ndim)
+                };
+            }
+            return column.type(true).formatter(colFormat);
         }
 
     };
+
+    function applyChanges(dataset) {
+        var changes = chart.get('metadata.data.changes', []);
+        var transpose = chart.get('metadata.data.transpose', false);
+        _.each(changes, function(change) {
+            var row = "row", column = "column";
+            if (transpose) {
+                row = "column";
+                column = "row";
+            }
+
+            if (dataset.hasColumn(change[column])) {
+                if (change[row] === 0) {
+                    dataset.column(change[column]).title(change.value);
+                }
+                else {
+                    dataset.column(change[column]).raw(change[row] - 1, change.value);
+                }
+            }
+        });
+
+        var columnFormats = chart.get('metadata.data.column-format', {});
+        _.each(columnFormats, function(columnFormat, key) {
+            if (columnFormat.type) {
+                if (dataset.hasColumn(key)) {
+                    dataset.column(key).type(columnFormat.type);
+                }
+            }
+        });
+        return dataset;
+    }
 
     return chart;
 };
@@ -1739,16 +1834,24 @@ _.extend(dw.visualization.base, {
             dataset = me.dataset,
             usedColumns = {},
             axes = {},
+            axesDef,
             axesAsColumns = {},
             errors = [];
 
         // get user preference
-        axes =  me.chart().get('metadata.axes', {});
-        _.each(axes, function(columns) {
-            if (!_.isArray(columns)) columns = [columns];
-            _.each(columns, function(column) {
-                usedColumns[column] = true; // mark as used
-            });
+        axesDef = me.chart().get('metadata.axes', {});
+        _.each(me.meta.axes, function(o, key) {
+            if (axesDef[key]) {
+                var columns = axesDef[key];
+                if (columnExists(columns)) {
+                    axes[key] = columns;
+                    // mark columns as used
+                    if (!_.isArray(columns)) columns = [columns];
+                    _.each(columns, function(column) {
+                        usedColumns[column] = true;
+                    });
+                }
+            }
         });
 
         // auto-populate remaining axes
@@ -1821,6 +1924,14 @@ _.extend(dw.visualization.base, {
             return returnAsColumns ? axesAsColumns : axes;
         };
 
+        function columnExists(columns) {
+            if (!_.isArray(columns)) columns = [columns];
+            for (var i=0; i<columns.length; i++) {
+                if (!dataset.hasColumn(columns[i])) return false;
+            }
+            return true;
+        }
+
         return me.axes(returnAsColumns);
     },
 
@@ -1839,6 +1950,10 @@ _.extend(dw.visualization.base, {
         return [];
     },
 
+    keyLabel: function(key) {
+        return key;
+    },
+
     /*
      * called by the core whenever the chart is re-drawn
      * without reloading the page
@@ -1855,6 +1970,9 @@ _.extend(dw.visualization.base, {
     },
 
     renderingComplete: function() {
+        if (window.parent && window.parent['postMessage']) {
+            window.parent.postMessage('datawrapper:vis:rendered', '*');
+        }
         this.__renderedDfd.resolve();
     },
 
@@ -1867,6 +1985,15 @@ _.extend(dw.visualization.base, {
      * re-render itself without having to instantiate it again
      */
     supportsSmartRendering: function() {
+        return false;
+    },
+
+    /*
+     * this hook is used for optimizing the thumbnails on Datawrapper
+     * the function is expected to return the svg element that contains
+     * the elements to be rendered in the thumbnails
+     */
+    _svgCanvas: function() {
         return false;
     }
 
@@ -1886,8 +2013,58 @@ dw.theme = (function(){
         var parent = arguments.length == 3 ? __themes[arguments[1]] : dw.theme.base,
             props = arguments[arguments.length - 1];
 
-        __themes[id] = $.extend(true, parent, { id: id }, props);
+        __themes[id] = extend(parent, { id: id }, props);
     };
+
+    /*
+     * taken from jQuery 1.10.2 $.extend, but changed a little
+     * so that arrays are not deep-copied. also deep-coping
+     * cannot be turned off anymore.
+     */
+    function extend() {
+        var options, name, src, copy, copyIsArray, clone,
+            target = arguments[0] || {},
+            i = 1,
+            length = arguments.length;
+
+        // Handle case when target is a string or something (possible in deep copy)
+        if ( typeof target !== "object" && !_.isFunction(target) ) {
+            target = {};
+        }
+
+        for ( ; i < length; i++ ) {
+            // Only deal with non-null/undefined values
+            if ( (options = arguments[ i ]) != null ) {
+                // Extend the base object
+                for ( name in options ) {
+                    src = target[ name ];
+                    copy = options[ name ];
+
+                    // Prevent never-ending loop
+                    if ( target === copy ) {
+                        continue;
+                    }
+
+                    // Recurse if we're merging plain objects or arrays
+                    if ( copy && isPlainObject(copy) ) {
+                        clone = src && isPlainObject(src) ? src : {};
+
+                        // Never move original objects, clone them
+                        target[ name ] = extend( clone, copy );
+                    // Don't bring in undefined values
+                    } else if ( copy !== undefined ) {
+                        target[ name ] = copy;
+                    }
+                }
+            }
+        }
+        // Return the modified object
+        return target;
+    }
+
+    function isPlainObject(o) {
+        return _.isObject(o) && !_.isArray(o) && !_.isFunction(o);
+    }
 
     return theme;
 
@@ -1920,13 +2097,11 @@ dw.theme.base = {
          * Geography, Pennsylvania State University.
          */
         gradients: [
-            // sequential (even number of colors)
-            ['#ffffcc','#c7e9b4','#7fcdbb','#41b6c4','#2c7fb8','#253494'],  // YlGnbu
-            ['#feebe2','#fcc5c0','#fa9fb5','#f768a1','#c51b8a','#7a0177'],  // RdPu
+            ['#fefaca', '#008b15'], // simple yellow to green
             ['#f0f9e8','#ccebc5','#a8ddb5','#7bccc4','#43a2ca','#0868ac'],  // GnBu
-            //['#fef0d9','#fdd49e','#fdbb84','#fc8d59','#e34a33','#b30000'],  // OrRd
+            ['#feebe2','#fcc5c0','#fa9fb5','#f768a1','#c51b8a','#7a0177'],  // RdPu
+            ['#ffffcc','#c7e9b4','#7fcdbb','#41b6c4','#2c7fb8','#253494'],  // YlGnbu
 
-            // diverging (odd number of colors)
             ['#8c510a','#d8b365','#f6e8c3','#f5f5f5','#c7eae5','#5ab4ac','#01665e'],  // BrBG
             ['#c51b7d','#e9a3c9','#fde0ef','#f7f7f7','#e6f5d0','#a1d76a','#4d9221'],  // PiYG
             ['#b2182b','#ef8a62','#fddbc7','#f7f7f7','#d1e5f0','#67a9cf','#2166ac'],  // RdBu

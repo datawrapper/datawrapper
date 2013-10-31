@@ -28,12 +28,19 @@
                             <li class="{{ link.id }} dropdown{% if link.active %} active{% endif %}">
                                 <a id="dw-header-link-{{ link.id }}" href="{{ link.url }}" class="dropdown-toggle" data-toggle="dropdown">
                                     <i class="icon-{{ link.icon }} icon-whte"></i>
-                                    {{ link.title }}
+                                    {{ link.title |raw }}
                                     <b class="caret"></b>
                                 </a>
                                 <ul class="dropdown-menu">
                                     {% for slink in link.dropdown %}
-                                    <li><a href="{{ slink.url }}">{%if slink.icon %}<i class="icon-{{ slink.icon }}"></i> {% endif %}{{ slink.title }}</a></li>
+                                        {% if slink == 'divider' %}
+                                        <li class="divider"></li>
+                                        {% else %}
+                                        <li>
+                                            <a href="{{ slink.url }}">{%if slink.icon %}<i class="icon-{{ slink.icon }}"></i>
+                                             {% endif %}{{ slink.title | raw }}</a>
+                                        </li>
+                                        {% endif %}
                                     {% endfor %}
                                 </ul>
                             </li>

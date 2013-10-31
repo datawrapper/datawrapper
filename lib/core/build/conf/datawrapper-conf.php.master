@@ -16,7 +16,7 @@ $conf = array (
     ),
     'default' => 'datawrapper',
   ),
-  'generator_version' => '1.6.5',
+  'generator_version' => '1.6.8',
 );
 $conf['classmap'] = include(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'classmap-datawrapper-conf.php');
 return $conf;

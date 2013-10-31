@@ -1,0 +1,173 @@
+{% extends "chart/base.twig" %}
+{% block content %}
+
+{{ parent() }}
+
+<script type="text/javascript">
+dw.backend.ready(function() {
+    require(['dw/chart/publish'], function(publish) {
+        publish.init('{{ chartUrl }}'{% if publish %}, true{% if republish %}, true{% endif %}{% endif %});
+    });
+});
+</script>
+<div class="dw-create-publish chart-editor">
+    <div class="row">
+        <div class="span4">
+
+            {% if user.isAbleToPublish %}
+
+            <p class="lead" style="margin-top:0">{% trans "Link to this visualisation" %}</p>
+            <p><a href="{{ chartUrl }}">{{ chartUrl }}</a></p>
+
+            {% if republish %}
+
+            <div id="chart-url-change-warning" class="alert alert-warning" style="display:none">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <div style="font-size:45px;line-height:55px;margin-left:-7px" class="pull-left">☝</div>
+                <div style="margin-left: 40px">
+                    <h4>{% trans "Chart URL has changed!" %}</h4>
+                    <div>{% trans "The chart URL has changed due to the republication. The old versions will be redirected automatically within the next 24 hours." %}</div>
+                </div>
+            </div>
+
+            {% endif %}
+
+            <p class="lead">{% trans "Embed into your website" %}</p>
+            <p>{% trans "Just copy &amp; paste the following code into your website." %}</p>
+            <form class="form-inline">
+                <label>{% trans "Width" %}: <input type="text" id="embed-width" class="input-small" style="width:4ex" value="600" /> px</label>&nbsp;&nbsp;
+                <label>{% trans "Height" %}: <input type="text" id="embed-height" class="input-small" style="width:4ex" value="400" /> px</label>
+
+            <textarea style="font-size: 13px;padding:5px" id="iframe-code" class="well span4" rows="5"><iframe src="{{ chartUrl }}" frameborder="0" allowtransparency="true" allowfullscreen="allowfullscreen" webkitallowfullscreen="webkitallowfullscreen" mozallowfullscreen="mozallowfullscreen" oallowfullscreen="oallowfullscreen" msallowfullscreen="msallowfullscreen" width="{{ chart.metadata.publish['embed-width'] }}" height="{{ chart.metadata.publish['embed-height'] }}"></iframe></textarea>
+
+
+            <p class="lead">{%trans "Other things to do" %}</p>
+
+            {% for action in chartActions %}
+            {% if action %}
+            <p>
+                <a role="button" href="#{{ action.id }}">
+                    <i class="icon-{{ action.icon }}"></i>&nbsp;&nbsp;{{ action.title }}
+                </a>
+            </p>
+            {% endif %}
+            {% endfor %}
+
+            <p>
+                <a class="duplicate" role="button">
+                    <i class="icon-plus"></i>&nbsp;&nbsp;{% trans "Duplicate this chart" %}
+                </a>
+            </p>
+
+            {{ hook('publish_after_chart_actions', chart, user) }}
+
+            {% elseif user.role == 'guest' %}
+
+            <h3>{% trans "Congrats, you created your first chart!" %}</h3>
+
+            <p>{% trans "Now, to be able to embed the chart, we ask you to create an account. It's free and all you need is a valid email address. The chart you just created will be transfered to your new account." %}</p>
+
+            <div class="row">
+                <div class="span2">
+
+                    <h3>{% trans "Sign Up" %}</h3>
+
+                    <div class="signup-form form-vertcal">
+                        <div class="control-group">
+                            <input type="text" class="register-email input-xlarge span2" placeholder="email" />
+                        </div>
+                        <div class="control-group">
+                            <input type="password" class="register-pwd input-xlarge span2" placeholder="password" />
+                        </div>
+                        <div class="control-group">
+                            <input type="password" class="register-pwd-2 input-xlarge span2" placeholder="repeat password" />
+                        </div>
+                        <a class="btn btn-large btn-register"><i class="icon-pencil"></i> Sign Up</a>
+                    </div>
+                </div>
+                <div class="span2">
+                    {% if has_hook('alternative_signin') %}
+                    <h3>{% trans "..or sign in with " %}</h3>
+
+                        {{ hook('alternative_signin') }}
+
+                    {% endif %}
+                </div>
+            </div>
+
+            {% elseif user.role == 'pending' %}
+
+            <h3>{% trans "Congrats, you created a chart!" %}</h3>
+
+            <p>{% trans "The chart is accessible under" %} <a href="http://{{ DW_DOMAIN }}/chart/{{ chart.id }}/edit">{{ DW_DOMAIN }}/chart/{{ chart.id }}/edit</a> {% trans "or via your <a href='/mycharts'>My Charts</a> page." %}
+
+            <p>{% trans "Now, to be able to publish and embed this chart into other websites, you need to activate the email address you entered during sign up process." %}</p>
+
+            <p>{% trans "If you did not get any email within 5 minutes, here's the trouble shooting guide:" %}</p>
+            <ol>
+                <li>{% trans "At first, don't worry. Everything you created will wait patiently." %}</li>
+                <li>{% trans "Make sure that your spam filter didn't catch our activation email. They are sent from" %} activate@{{ DW_DOMAIN }}.</li>
+                <li>{% trans "Of course, you can also let us <a href='#resend'>resend the activation email</a>." %}</li>
+                <li>{{ "If that didn't work either, please contact our support via %support_mail." | replace({'%support_mail': '<a href="mailto:' ~ SUPPORT_EMAIL ~ '">' ~ SUPPORT_EMAIL ~ '</a>' }) | raw }}</li>
+            </ol>
+
+            {% else %}
+
+            {{ user.role }}
+
+            {% endif %}
+        </div>
+        <div class="span7">
+            {% if user.isAbleToPublish %}
+
+            <div class="messages"></div>
+
+            {% if publish %}
+                <div class="publishing alert alert-info">
+                    <p>
+                        {% trans "Your chart is now being published and uploaded, and should be ready in a minute." %} <img src="/static/img/ajax-loader.gif" />
+                        <div class="progress progress-striped active">
+                            <div class="bar" style="width: 0%;"></div>
+                        </div>
+                    </p>
+                </div>
+            {% else %}
+                {% if chart.publishedAt < chart.lastModifiedAt %}
+                    <div class="alert alert-warning">
+                        <p>{% trans "You have changed the chart after its last publication. To make you changes visible, please re-publish the chart." %}</p>
+                        <a href="?republish=1" class="btn"><i class="icon-refresh"></i> {% trans "Re-publish chart!" %}</a>
+                    </div>
+                {% endif %}
+            {% endif %}
+
+            {% if chart.lastEditStep == 5 %}
+                <p class="published alert alert-success">{% trans "Congrats, your chart has been published." %}</p>
+            {% endif %}
+
+            <iframe src="{% if publish %}{{ chartUrlLocal }}{% else %}{{ chartUrl }}{% endif %}" id="iframe-vis" style="width:{{ chart.metadata.publish['embed-width'] }}px;height:{{ chart.metadata.publish['embed-height'] }}px" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>
+
+            <div style="color: #999;margin-top:20px"><b>{% trans "Note" %}:</b> {% trans "It may take a couple of minutes until the re-direction from old chart urls to the newest version takes effect." %}</div>
+
+            {% else %}
+
+            <iframe src="/chart/{{ chart.id }}/preview" id="iframe-vis" style="width:{{ chart.metadata.publish['embed-width'] }}px;height:{{ chart.metadata.publish['embed-height'] }}px" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>
+
+
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="span12">
+            <div class="form-actions">
+                <a class="submit pull-right btn" href="/chart/create"><i class="icon-pencil"></i> {% trans "Create another graphic" %}</a>
+
+                <a class="submit btn" href="visualize"><i class="icon-chevron-left"></i> {% trans "Return to visualise step" %}</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+{% endblock %}

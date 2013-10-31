@@ -21,143 +21,156 @@ require_once dirname(__FILE__) . '/../../../../tools/helpers/bookstore/Bookstore
 class QueryBuilderInheritanceTest extends BookstoreTestBase
 {
 
-	public function testConstruct()
-	{
-		$query = BookstoreCashierQuery::create();
-		$this->assertTrue($query instanceof BookstoreCashierQuery, 'the create() factory returns an instance of the correct class');
-	}
+    public function testConstruct()
+    {
+        $query = BookstoreCashierQuery::create();
+        $this->assertTrue($query instanceof BookstoreCashierQuery, 'the create() factory returns an instance of the correct class');
+    }
 
-	public function testFindFilter()
-	{
-		BookstoreDataPopulator::depopulate($this->con);
-		$employee = new BookstoreEmployee();
-		$employee->save($this->con);
-		$manager = new BookstoreManager();
-		$manager->save($this->con);
-		$cashier1 = new BookstoreCashier();
-		$cashier1->save($this->con);
-		$cashier2 = new BookstoreCashier();
-		$cashier2->save($this->con);
-		$nbEmp = BookstoreEmployeeQuery::create()->count($this->con);
-		$this->assertEquals(4, $nbEmp, 'find() in main query returns all results');
-		$nbMan = BookstoreManagerQuery::create()->count($this->con);
-		$this->assertEquals(1, $nbMan, 'find() in sub query returns only child results');
-		$nbCash = BookstoreCashierQuery::create()->count($this->con);
-		$this->assertEquals(2, $nbCash, 'find() in sub query returns only child results');
-	}
+    public function testFindFilter()
+    {
+        BookstoreDataPopulator::depopulate($this->con);
+        $employee = new BookstoreEmployee();
+        $employee->save($this->con);
+        $manager = new BookstoreManager();
+        $manager->save($this->con);
+        $cashier1 = new BookstoreCashier();
+        $cashier1->save($this->con);
+        $cashier2 = new BookstoreCashier();
+        $cashier2->save($this->con);
+        $nbEmp = BookstoreEmployeeQuery::create()->count($this->con);
+        $this->assertEquals(4, $nbEmp, 'find() in main query returns all results');
+        $nbMan = BookstoreManagerQuery::create()->count($this->con);
+        $this->assertEquals(1, $nbMan, 'find() in sub query returns only child results');
+        $nbCash = BookstoreCashierQuery::create()->count($this->con);
+        $this->assertEquals(2, $nbCash, 'find() in sub query returns only child results');
+    }
 
-	public function testUpdateFilter()
-	{
-		BookstoreDataPopulator::depopulate($this->con);
-		$manager = new BookstoreManager();
-		$manager->save($this->con);
-		$cashier1 = new BookstoreCashier();
-		$cashier1->save($this->con);
-		$cashier2 = new BookstoreCashier();
-		$cashier2->save($this->con);
-		BookstoreManagerQuery::create()->update(array('Name' => 'foo'), $this->con);
-		$nbMan = BookstoreEmployeeQuery::create()
-			->filterByName('foo')
-			->count($this->con);
-		$this->assertEquals(1, $nbMan, 'Update in sub query affects only child results');
-	}
+    public function testUpdateFilter()
+    {
+        BookstoreDataPopulator::depopulate($this->con);
+        $manager = new BookstoreManager();
+        $manager->save($this->con);
+        $cashier1 = new BookstoreCashier();
+        $cashier1->save($this->con);
+        $cashier2 = new BookstoreCashier();
+        $cashier2->save($this->con);
+        BookstoreManagerQuery::create()->update(array('Name' => 'foo'), $this->con);
+        $nbMan = BookstoreEmployeeQuery::create()
+            ->filterByName('foo')
+            ->count($this->con);
+        $this->assertEquals(1, $nbMan, 'Update in sub query affects only child results');
+    }
 
-	public function testDeleteFilter()
-	{
-		BookstoreDataPopulator::depopulate($this->con);
-		$manager = new BookstoreManager();
-		$manager->save($this->con);
-		$cashier1 = new BookstoreCashier();
-		$cashier1->save($this->con);
-		$cashier2 = new BookstoreCashier();
-		$cashier2->save($this->con);
-		BookstoreManagerQuery::create()
-			->filterByName()
-			->delete();
-		$nbCash = BookstoreEmployeeQuery::create()->count();
-		$this->assertEquals(2, $nbCash, 'Delete in sub query affects only child results');
-	}
+    public function testDeleteFilter()
+    {
+        BookstoreDataPopulator::depopulate($this->con);
+        $manager = new BookstoreManager();
+        $manager->save($this->con);
+        $cashier1 = new BookstoreCashier();
+        $cashier1->save($this->con);
+        $cashier2 = new BookstoreCashier();
+        $cashier2->save($this->con);
+        BookstoreManagerQuery::create()
+            ->filterByName()
+            ->delete();
+        $nbCash = BookstoreEmployeeQuery::create()->count();
+        $this->assertEquals(2, $nbCash, 'Delete in sub query affects only child results');
+    }
 
-	public function testDeleteAllFilter()
-	{
-		BookstoreDataPopulator::depopulate($this->con);
-		$manager = new BookstoreManager();
-		$manager->save($this->con);
-		$cashier1 = new BookstoreCashier();
-		$cashier1->save($this->con);
-		$cashier2 = new BookstoreCashier();
-		$cashier2->save($this->con);
-		BookstoreManagerQuery::create()->deleteAll();
-		$nbCash = BookstoreEmployeeQuery::create()->count();
-		$this->assertEquals(2, $nbCash, 'Delete in sub query affects only child results');
-	}
+    public function testDeleteAllFilter()
+    {
+        BookstoreDataPopulator::depopulate($this->con);
+        $manager = new BookstoreManager();
+        $manager->save($this->con);
+        $cashier1 = new BookstoreCashier();
+        $cashier1->save($this->con);
+        $cashier2 = new BookstoreCashier();
+        $cashier2->save($this->con);
+        BookstoreManagerQuery::create()->deleteAll();
+        $nbCash = BookstoreEmployeeQuery::create()->count();
+        $this->assertEquals(2, $nbCash, 'Delete in sub query affects only child results');
+    }
 
-	public function testFindPkSimpleWithSingleTableInheritanceReturnCorrectClass()
-	{
-		Propel::disableInstancePooling();
+    public function testFindPkSimpleWithSingleTableInheritanceReturnCorrectClass()
+    {
+        Propel::disableInstancePooling();
 
-		$employee = new BookstoreEmployee();
-		$employee->save($this->con);
-		$manager = new BookstoreManager();
-		$manager->save($this->con);
-		$cashier1 = new BookstoreCashier();
-		$cashier1->save($this->con);
-		$cashier2 = new BookstoreCashier();
-		$cashier2->save($this->con);
+        $employee = new BookstoreEmployee();
+        $employee->save($this->con);
+        $manager = new BookstoreManager();
+        $manager->save($this->con);
+        $cashier1 = new BookstoreCashier();
+        $cashier1->save($this->con);
+        $cashier2 = new BookstoreCashier();
+        $cashier2->save($this->con);
 
-		$this->assertInstanceOf('BookstoreEmployee', BookstoreEmployeeQuery::create()->findPk($employee->getId()),
-			'findPk() return right object : BookstoreEmployee');
-		$this->assertInstanceOf('BookstoreManager', BookstoreEmployeeQuery::create()->findPk($manager->getId()),
-			'findPk() return right object : BookstoreManager');
-		$this->assertInstanceOf('BookstoreCashier', BookstoreEmployeeQuery::create()->findPk($cashier1->getId()),
-			'findPk() return right object : BookstoreCashier');
-		$this->assertInstanceOf('BookstoreCashier', BookstoreEmployeeQuery::create()->findPk($cashier2->getId()),
-			'findPk() return right object : BookstoreCashier');
+        $this->assertInstanceOf('BookstoreEmployee', BookstoreEmployeeQuery::create()->findPk($employee->getId()),
+            'findPk() return right object : BookstoreEmployee');
+        $this->assertInstanceOf('BookstoreManager', BookstoreEmployeeQuery::create()->findPk($manager->getId()),
+            'findPk() return right object : BookstoreManager');
+        $this->assertInstanceOf('BookstoreCashier', BookstoreEmployeeQuery::create()->findPk($cashier1->getId()),
+            'findPk() return right object : BookstoreCashier');
+        $this->assertInstanceOf('BookstoreCashier', BookstoreEmployeeQuery::create()->findPk($cashier2->getId()),
+            'findPk() return right object : BookstoreCashier');
 
-		Propel::enableInstancePooling();
-	}
+        Propel::enableInstancePooling();
+    }
 
-	public function testGetCorrectTableMapClassWithAbstractSingleTableInheritance()
-	{
-		Propel::initialize();
-		$this->assertInstanceOf('DistributionTableMap', DistributionPeer::getTableMap(), 'getTableMap should return the right table map');
-	}
+    public function testGetCorrectTableMapClassWithAbstractSingleTableInheritance()
+    {
+        Propel::initialize();
+        $this->assertInstanceOf('DistributionTableMap', DistributionPeer::getTableMap(), 'getTableMap should return the right table map');
+    }
 
-	/**
-	 * This test prove failure with propel.emulateForeignKeyConstraints = true
-	 */
-	public function testDeleteCascadeWithAbstractSingleTableInheritance()
-	{
-		$manager = new DistributionManager();
-		$manager->setName('test');
-		$manager->save();
-		$manager->delete();
-	}
+    /**
+     * This test prove failure with propel.emulateForeignKeyConstraints = true
+     */
+    public function testDeleteCascadeWithAbstractSingleTableInheritance()
+    {
+        $manager = new DistributionManager();
+        $manager->setName('test');
+        $manager->save();
+        $manager->delete();
+    }
 
-	public function  testFindPkSimpleWithAbstractSingleTableInheritanceReturnCorrectClass()
-	{
-		Propel::disableInstancePooling();
+    public function  testFindPkSimpleWithAbstractSingleTableInheritanceReturnCorrectClass()
+    {
+        Propel::disableInstancePooling();
 
-		$manager = new DistributionManager();
-		$manager->setName('manager1');
-		$manager->save();
+        $manager = new DistributionManager();
+        $manager->setName('manager1');
+        $manager->save();
 
-		$distributionStore = new DistributionStore();
-		$distributionStore->setName('my store 1');
-		$distributionStore->setDistributionManager($manager);
-		$distributionStore->save();
+        $distributionStore = new DistributionStore();
+        $distributionStore->setName('my store 1');
+        $distributionStore->setDistributionManager($manager);
+        $distributionStore->save();
 
-		$distributionVirtualStore = new DistributionVirtualStore();
-		$distributionVirtualStore->setName('my VirtualStore 1');
-		$distributionVirtualStore->setDistributionManager($manager);
-		$distributionVirtualStore->save();
+        $distributionVirtualStore = new DistributionVirtualStore();
+        $distributionVirtualStore->setName('my VirtualStore 1');
+        $distributionVirtualStore->setDistributionManager($manager);
+        $distributionVirtualStore->save();
 
-		$this->assertInstanceOf('DistributionStore', DistributionQuery::create()->findPk($distributionStore->getId()),
-			'findPk() return right object : DistributionStore');
-		$this->assertInstanceOf('DistributionVirtualStore', DistributionQuery::create()->findPk($distributionVirtualStore->getId()),
-			'findPk() return right object : DistributionVirtualStore');
+        $this->assertInstanceOf('DistributionStore', DistributionQuery::create()->findPk($distributionStore->getId()),
+            'findPk() return right object : DistributionStore');
+        $this->assertInstanceOf('DistributionVirtualStore', DistributionQuery::create()->findPk($distributionVirtualStore->getId()),
+            'findPk() return right object : DistributionVirtualStore');
 
-		Propel::enableInstancePooling();
-	}
+        Propel::enableInstancePooling();
+    }
+
+    public function testFindOneOrCreateFunction()
+    {
+        $cashier1 = new BookstoreCashier();
+        $cashier1->save($this->con);
+
+        $cashier2 = BookstoreCashierQuery::create()->findOneOrCreate($this->con);
+        $this->assertInstanceOf('BookstoreCashier', $cashier2, 'findOneOrCreate return right object when find one : BookstoreCashier');
+
+        BookstoreCashierQuery::create()->deleteAll($this->con);
+
+        $cashier3 = BookstoreCashierQuery::create()->findOneOrCreate($this->con);
+        $this->assertInstanceOf('BookstoreCashier', $cashier3, 'findOneOrCreate return right object when create one : BookstoreCashier');
+    }
 }
-

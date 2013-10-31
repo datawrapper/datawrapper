@@ -81,10 +81,15 @@ class Datawrapper_L10N {
         $domain = false;
         $backtrace = debug_backtrace();
         // check the entire backtrace for a plugin path
-        $from_template = false;
         foreach ($backtrace as $b) {
             if (isset($b['file']) && preg_match('#/plugins/([^/]+)/#', $b['file'], $m)) {
                 return $m[1];
+            }
+            if (isset($b['function']) && $b['function'] == 'doDisplay') {
+                if (isset($b['args'][0]['l10n__domain']) &&
+                    preg_match('#/plugins/([^/]+)/#', $b['args'][0]['l10n__domain'], $m)) {
+                    return $m[1];
+                }
             }
         }
         // if no plugin is found in backtrace, use core

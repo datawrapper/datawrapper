@@ -1,0 +1,158 @@
+{% extends "chart/base.twig" %}
+
+{% block content %}
+
+{{ parent() }}
+
+<link rel="stylesheet" type="text/css" href="/static/vendor/handsontable/jquery.handsontable.full.css">
+<link rel="stylesheet" type="text/css" href="/static/vendor/handsontable/jquery.handsontable.bootstrap.css">
+
+<script type="text/javascript">
+dw.backend.ready(function() {
+    require(['dw/chart/describe'], function(describe) {
+        describe.init("{{ chartLocale }}");
+    });
+});
+
+</script>
+
+<div class="dw-create-describe chart-editor">
+
+    <div class="row">
+        <div class="span8">
+
+            <div class="transpose-help help">⤹ <span>{% trans "Transpose data table" %}</span></div>
+            <div class="customize-help help"><span>{% trans "Customize column format" %}</span> ⤵︎</div>
+            <div id="data-preview"></div>
+
+        </div>
+
+        <div class="span4">
+            <div class="well sidebar">
+
+                <div id="table-options">
+
+                    <h3 style="margin-top:0">{% trans "Describe your data" %}</h3>
+
+                    <div>
+                        <p>
+                            <label class="checkbox"><input id="has-headers" type="checkbox" checked="checked"> {% trans "First row as label" %}</label>
+                        </p>
+                    </div>
+
+                    <h3 style="margin-top:20px">{% trans "Credit the source" %}</h3>
+                    <p>
+                        <label>{% trans "Who published the data in the first place?" %}</label>
+                        <input id="describe-source-name" type="text" placeholder="name of the organisation">
+                    </p>
+
+                    <p>
+                        <label>{% trans "If possible, please provide a link the source data" %}</label>
+                        <input id="describe-source-url" type="text" placeholder="http://">
+                    </p>
+
+                </div>
+
+                <div id="column-options">
+                    <h3>{% trans "Column options for" %} <span class="selected-columns"></span></h3>
+
+                    <div class="form-horizontal compact">
+                        <div class="control-group">
+                            <label class="control-label" for="text-title">{% trans "Column type" %}</label>
+
+                            <div class="controls">
+                                <select id="column-type" class="select" style="width:90%">
+                                    <option data-label="{% trans "auto" %}" value="-"></option>
+                                    {% for type, typeLabel in columntypes %}
+                                        <option value="{{ type }}">{% trans typeLabel %}</option>
+                                    {% endfor %}
+                                </select>
+                                {# the following line ensures that the column type names are detected
+                                   by the xgettext parser, triggered by update-messages.sh #}
+                                <!--{% trans 'Text' %} {% trans 'Number' %}{% trans 'Date' %} -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="number-column-options" class="form-horizontal compact">
+                        <label class="separator">{% trans "Output number format" %}</label>
+
+                        {# <p>
+                            <label class="checkbox" for="automatic-format"><input id="automatic-format" type="checkbox"> {% trans "Automatic number formatting" %}</label>
+                        </p> #}
+
+                        <div class="control-group number-format">
+                            <label class="control-label" for="text-title">{% trans "Divide numbers by" %}</label>
+
+                            <div class="controls">
+                                <select class="number-format" id="number-divisor" style="width:90%">
+                                    <option value="0">-</option>
+                                    <option value="3">{% trans "1000" %}</option>
+                                    <option value="6">{% trans "1 million" %}</option>
+                                    <option value="9">{% trans "1 billion" %}</option>
+                                    <optgroup label="─────────────"></optgroup>
+                                    <option value="-2">{% trans "1 hundredth (deci)" %}</option>
+                                    <option value="-3">{% trans "1 thousandth (milli)" %}</option>
+                                    <option value="-6">{% trans "1 millionth (micro)" %}</option>
+
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="control-group number-format">
+                            <label class="control-label" for="text-title">{% trans "Round numbers to" %}</label>
+
+                            <div class="controls">
+                                <select id="number-format" class="select number-format" style="width:90%">
+                                    <option value="-">{% trans "keep original" %}</option>
+                                    <optgroup label="{% trans "Decimal places" %}">
+                                    {% for id, format in numberformats %}
+                                        <option value="{{ id }}">{{ format }}</option>
+                                    {% endfor %}
+                                    </optgroup>
+                                    <optgroup label="{% trans "Significant digits" %}">
+                                    {% for id, format in significantdigits %}
+                                        <option value="{{ id }}">{{ format }}</option>
+                                    {% endfor %}
+                                    </optgroup>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="control-group number-format">
+                            <label class="control-label" for="text-title">{% trans "Prepend/Append" %}</label>
+
+                            <div class="controls">
+                                <input type="text" id="number-prepend" style="width:3em;text-align:right"/> # <input type="text" id="number-append" style="width:3em"/>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div style="margin-bottom:15px;">
+                        <label class="separator">{% trans "Hide column" %}</label>
+
+                        <p>
+                            <label class="checkbox"><input id="column-options-hide" type="checkbox"> {% trans "Hide column from visualization" %}</label>
+                        </p>
+                    </div>
+
+                    <div class="clearfix"></div>
+                </div>
+
+                <a href="visualize" class="submit pull-right btn btn-primary" id="describe-proceed">{% trans "Visualize" %} <i class="icon-chevron-right icon-white"></i></a>
+                <a class="btn submit" href="upload"><i class="icon-chevron-left"></i> {% trans "Back" %}</a>
+                <button class="btn disabled" id="reset-data-changes" title="{% trans "Revert data changes" %}">{% trans "Revert" %}</button>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="span12">
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

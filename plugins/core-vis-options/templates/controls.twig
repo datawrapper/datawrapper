@@ -53,11 +53,13 @@
 
 {% elseif option.type == 'select-axis-column' %}
 
-    <label class="control-label" for="{{ key }}">{{ option.label|raw }}</label>
-    <div class="controls">
-        <select id="{{ key }}" data-axis="{{ option.axis }}">
+    {% for axis in option.axes %}
+    <div class="pull-left">
+        <label for="{{ key }}-{{ axis.id }}">{{ axis.label|raw }}</label>
+        <select id="{{ key }}-{{ axis.id }}" data-axis="{{ axis.id }}" class="span2">
             {# will be populated by javascript #}
         </select>
     </div>
+    {% endfor %}
 
 {% endif %}

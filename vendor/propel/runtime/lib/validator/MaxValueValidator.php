@@ -28,20 +28,20 @@
  */
 class MaxValueValidator implements BasicValidator
 {
-	/**
-	 * @see       BasicValidator::isValid()
-	 *
-	 * @param     ValidatorMap  $map
-	 * @param     mixed         $value
-	 *
-	 * @return    boolean
-	 */
-	public function isValid(ValidatorMap $map, $value)
-	{
-		if (is_null($value) == false && is_numeric($value) == true) {
-			return intval($value) <= intval($map->getValue());
-		}
+    /**
+     * @see       BasicValidator::isValid()
+     *
+     * @param ValidatorMap $map
+     * @param mixed        $value
+     *
+     * @return boolean
+     */
+    public function isValid(ValidatorMap $map, $value)
+    {
+        if (is_null($value) == false && is_numeric($value) == true) {
+            return intval($value) <= intval($map->getValue());
+        }
 
-		return false;
-	}
+        return false;
+    }
 }

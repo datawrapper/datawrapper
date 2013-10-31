@@ -58,7 +58,26 @@ function publish_js($user, $chart) {
                      . $theme_js[1];
         file_put_contents($static_path . $theme_js[0], $theme_js[1]);
     }
-    $cdn_files[] = array($static_path . $theme_js[0], 'lib/' . $theme_js[0], 'application/javascript');
+    $cdn_files[] = array(
+        $static_path . $theme_js[0],
+        'lib/' . $theme_js[0],
+        'application/javascript'
+    );
+
+    // generate chart script
+    $chart_js = $data['chart_js'];
+    if (!file_exists($static_path . $chart_js[0])) {
+        $chart_js[1] = "/*\n * datawrapper / chart \n"
+                     . " * generated on ".date('c')."\n */\n"
+                     . $chart_js[1];
+        file_put_contents($static_path . $chart_js[0], $chart_js[1]);
+    }
+    $cdn_files[] = array(
+        $static_path . $chart_js[0],
+        'lib/' . $chart_js[0],
+        'application/javascript'
+    );
+
     return $cdn_files;
 }
 
@@ -85,12 +104,12 @@ function publish_css($user, $chart) {
     $all = implode("\n", $imports) . "\n\n" . $body;
 
     $cssmin = new CSSmin();
-    $minified = $all; //$cssmin->run($all);
-    file_put_contents($static_path . "/" . $chart->getID() . '.min.css', $minified);
+    $minified = $all; //$cssmin->run($all); disabled minification
+    file_put_contents($static_path . "/" . $chart->getID() . '.all.css', $minified);
 
     $cdn_files[] = array(
-        $static_path."/".$chart->getID().'.min.css',
-        $chart->getCDNPath() . $chart->getID().'.min.css', 'text/css'
+        $static_path."/".$chart->getID().'.all.css',
+        $chart->getCDNPath() . $chart->getID().'.all.css', 'text/css'
     );
 
     // copy themes assets
@@ -124,8 +143,8 @@ function publish_css($user, $chart) {
 function publish_data($user, $chart) {
     $cdn_files = array();
     $static_path = get_static_path($chart);
-    file_put_contents($static_path . "/data", $chart->loadData());
-    $cdn_files[] = array($static_path . "/data", $chart->getCDNPath() . 'data', 'text/plain');
+    file_put_contents($static_path . "/data.csv", $chart->loadData());
+    $cdn_files[] = array($static_path . "/data.csv", $chart->getCDNPath() . 'data.csv', 'text/plain');
 
     return $cdn_files;
 }

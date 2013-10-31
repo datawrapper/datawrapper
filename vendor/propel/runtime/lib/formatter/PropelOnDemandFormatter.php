@@ -19,87 +19,89 @@
  */
 class PropelOnDemandFormatter extends PropelObjectFormatter
 {
-	protected $collectionName = 'PropelOnDemandCollection';
-	protected $isSingleTableInheritance = false;
+    protected $collectionName = 'PropelOnDemandCollection';
 
-	public function init(ModelCriteria $criteria)
-	{
-		parent::init($criteria);
-		$this->isSingleTableInheritance = $criteria->getTableMap()->isSingleTableInheritance();
+    protected $isSingleTableInheritance = false;
 
-		return $this;
-	}
+    public function init(ModelCriteria $criteria)
+    {
+        parent::init($criteria);
+        $this->isSingleTableInheritance = $criteria->getTableMap()->isSingleTableInheritance();
 
-	public function format(PDOStatement $stmt)
-	{
-		$this->checkInit();
-		if ($this->isWithOneToMany()) {
-			throw new PropelException('PropelOnDemandFormatter cannot hydrate related objects using a one-to-many relationship. Try removing with() from your query.');
-		}
-		$class = $this->collectionName;
-		$collection = new $class();
-		$collection->setModel($this->class);
-		$collection->initIterator($this, $stmt);
+        return $this;
+    }
 
-		return $collection;
-	}
+    public function format(PDOStatement $stmt)
+    {
+        $this->checkInit();
+        if ($this->isWithOneToMany()) {
+            throw new PropelException('PropelOnDemandFormatter cannot hydrate related objects using a one-to-many relationship. Try removing with() from your query.');
+        }
+        $class = $this->collectionName;
+        $collection = new $class();
+        $collection->setModel($this->class);
+        $collection->initIterator($this, $stmt);
 
-	/**
-	 * Hydrates a series of objects from a result row
-	 * The first object to hydrate is the model of the Criteria
-	 * The following objects (the ones added by way of ModelCriteria::with()) are linked to the first one
-	 *
-	 *  @param    array  $row associative array indexed by column number,
-	 *                   as returned by PDOStatement::fetch(PDO::FETCH_NUM)
-	 *
-	 * @return    BaseObject
-	 */
-	public function getAllObjectsFromRow($row)
-	{
-		$col = 0;
-		// main object
-		$class = $this->isSingleTableInheritance ? call_user_func(array($this->peer, 'getOMClass'), $row, $col) : $this->class;
-		$obj = $this->getSingleObjectFromRow($row, $class, $col);
-		// related objects using 'with'
-		foreach ($this->getWith() as $modelWith) {
-			if ($modelWith->isSingleTableInheritance()) {
-				$class = call_user_func(array($modelWith->getModelPeerName(), 'getOMClass'), $row, $col);
-				$refl = new ReflectionClass($class);
-				if ($refl->isAbstract()) {
-					$col += constant($class . 'Peer::NUM_COLUMNS');
-					continue;
-				}
-			} else {
-				$class = $modelWith->getModelName();
-			}
-			$endObject = $this->getSingleObjectFromRow($row, $class, $col);
-			if ($modelWith->isPrimary()) {
-				$startObject = $obj;
-			} elseif (isset($hydrationChain)) {
-				$startObject = $hydrationChain[$modelWith->getLeftPhpName()];
-			} else {
-				continue;
-			}
-			// as we may be in a left join, the endObject may be empty
-			// in which case it should not be related to the previous object
-			if (null === $endObject || $endObject->isPrimaryKeyNull()) {
-				if ($modelWith->isAdd()) {
-					call_user_func(array($startObject, $modelWith->getInitMethod()), false);
-				}
-				continue;
-			}
-			if (isset($hydrationChain)) {
-				$hydrationChain[$modelWith->getRightPhpName()] = $endObject;
-			} else {
-				$hydrationChain = array($modelWith->getRightPhpName() => $endObject);
-			}
-			call_user_func(array($startObject, $modelWith->getRelationMethod()), $endObject);
-		}
-		foreach ($this->getAsColumns() as $alias => $clause) {
-			$obj->setVirtualColumn($alias, $row[$col]);
-			$col++;
-		}
-		return $obj;
-	}
+        return $collection;
+    }
+
+    /**
+     * Hydrates a series of objects from a result row
+     * The first object to hydrate is the model of the Criteria
+     * The following objects (the ones added by way of ModelCriteria::with()) are linked to the first one
+     *
+     *  @param    array  $row associative array indexed by column number,
+     *                   as returned by PDOStatement::fetch(PDO::FETCH_NUM)
+     *
+     * @return BaseObject
+     */
+    public function getAllObjectsFromRow($row)
+    {
+        $col = 0;
+        // main object
+        $class = $this->isSingleTableInheritance ? call_user_func(array($this->peer, 'getOMClass'), $row, $col) : $this->class;
+        $obj = $this->getSingleObjectFromRow($row, $class, $col);
+        // related objects using 'with'
+        foreach ($this->getWith() as $modelWith) {
+            if ($modelWith->isSingleTableInheritance()) {
+                $class = call_user_func(array($modelWith->getModelPeerName(), 'getOMClass'), $row, $col);
+                $refl = new ReflectionClass($class);
+                if ($refl->isAbstract()) {
+                    $col += constant($class . 'Peer::NUM_COLUMNS');
+                    continue;
+                }
+            } else {
+                $class = $modelWith->getModelName();
+            }
+            $endObject = $this->getSingleObjectFromRow($row, $class, $col);
+            if ($modelWith->isPrimary()) {
+                $startObject = $obj;
+            } elseif (isset($hydrationChain)) {
+                $startObject = $hydrationChain[$modelWith->getLeftPhpName()];
+            } else {
+                continue;
+            }
+            // as we may be in a left join, the endObject may be empty
+            // in which case it should not be related to the previous object
+            if (null === $endObject || $endObject->isPrimaryKeyNull()) {
+                if ($modelWith->isAdd()) {
+                    call_user_func(array($startObject, $modelWith->getInitMethod()), false);
+                }
+                continue;
+            }
+            if (isset($hydrationChain)) {
+                $hydrationChain[$modelWith->getRightPhpName()] = $endObject;
+            } else {
+                $hydrationChain = array($modelWith->getRightPhpName() => $endObject);
+            }
+            call_user_func(array($startObject, $modelWith->getRelationMethod()), $endObject);
+        }
+        foreach ($this->getAsColumns() as $alias => $clause) {
+            $obj->setVirtualColumn($alias, $row[$col]);
+            $col++;
+        }
+
+        return $obj;
+    }
 
 }

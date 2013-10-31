@@ -19,52 +19,76 @@ require_once dirname(__FILE__) . '/../../../../../runtime/lib/Propel.php';
  */
 class GeneratedPeerEnumColumnTypeTest extends PHPUnit_Framework_TestCase
 {
-	public function setUp()
-	{
-		if (!class_exists('ComplexColumnTypeEntity103Peer')) {
-			$schema = <<<EOF
+    public function setUp()
+    {
+        if (!class_exists('ComplexColumnTypeEntity103Peer')) {
+            $schema = <<<EOF
 <database name="generated_object_complex_type_test_103">
-	<table name="complex_column_type_entity_103">
-		<column name="id" primaryKey="true" type="INTEGER" autoIncrement="true" />
-		<column name="bar" type="ENUM" valueSet="foo, bar, baz, 1, 4,(, foo bar " />
-	</table>
+    <table name="complex_column_type_entity_103">
+        <column name="id" primaryKey="true" type="INTEGER" autoIncrement="true" />
+        <column name="bar" type="ENUM" valueSet="foo, bar, baz, 1, 4,(, foo bar " />
+    </table>
 </database>
 EOF;
-			PropelQuickBuilder::buildSchema($schema);
-		}
-	}
+            PropelQuickBuilder::buildSchema($schema);
+        }
+    }
 
-	public function valueSetConstantProvider()
-	{
-		return array(
-			array('ComplexColumnTypeEntity103Peer::BAR_FOO', 'foo'),
-			array('ComplexColumnTypeEntity103Peer::BAR_BAR', 'bar'),
-			array('ComplexColumnTypeEntity103Peer::BAR_BAZ', 'baz'),
-			array('ComplexColumnTypeEntity103Peer::BAR_1', '1'),
-			array('ComplexColumnTypeEntity103Peer::BAR_4', '4'),
-			array('ComplexColumnTypeEntity103Peer::BAR__', '('),
-			array('ComplexColumnTypeEntity103Peer::BAR_FOO_BAR', 'foo bar'),
-		);
-	}
+    public function valueSetConstantProvider()
+    {
+        return array(
+            array('ComplexColumnTypeEntity103Peer::BAR_FOO', 'foo'),
+            array('ComplexColumnTypeEntity103Peer::BAR_BAR', 'bar'),
+            array('ComplexColumnTypeEntity103Peer::BAR_BAZ', 'baz'),
+            array('ComplexColumnTypeEntity103Peer::BAR_1', '1'),
+            array('ComplexColumnTypeEntity103Peer::BAR_4', '4'),
+            array('ComplexColumnTypeEntity103Peer::BAR__', '('),
+            array('ComplexColumnTypeEntity103Peer::BAR_FOO_BAR', 'foo bar'),
+        );
+    }
 
-	/**
-	 * @dataProvider valueSetConstantProvider
-	 */
-	public function testValueSetConstants($constantName, $value)
-	{
-		$this->assertTrue(defined($constantName));
-		$this->assertEquals($value, constant($constantName));
-	}
+    /**
+     * @dataProvider valueSetConstantProvider
+     */
+    public function testValueSetConstants($constantName, $value)
+    {
+        $this->assertTrue(defined($constantName));
+        $this->assertEquals($value, constant($constantName));
+    }
 
-	public function testGetValueSets()
-	{
-		$expected = array(ComplexColumnTypeEntity103Peer::BAR => array('foo', 'bar', 'baz', '1', '4', '(', 'foo bar'));
-		$this->assertEquals($expected, ComplexColumnTypeEntity103Peer::getValueSets());
-	}
+    public function testGetValueSets()
+    {
+        $expected = array(ComplexColumnTypeEntity103Peer::BAR => array('foo', 'bar', 'baz', '1', '4', '(', 'foo bar'));
+        $this->assertEquals($expected, ComplexColumnTypeEntity103Peer::getValueSets());
+    }
 
-	public function testGetValueSet()
-	{
-		$expected = array('foo', 'bar', 'baz', '1', '4', '(', 'foo bar');
-		$this->assertEquals($expected, ComplexColumnTypeEntity103Peer::getValueSet(ComplexColumnTypeEntity103Peer::BAR));
-	}
+    public function testGetValueSet()
+    {
+        $expected = array('foo', 'bar', 'baz', '1', '4', '(', 'foo bar');
+        $this->assertEquals($expected, ComplexColumnTypeEntity103Peer::getValueSet(ComplexColumnTypeEntity103Peer::BAR));
+    }
+
+    /**
+     * @expectedException PropelException
+     */
+    public function testGetValueSetInvalidColumn()
+    {
+        ComplexColumnTypeEntity103Peer::getValueSet(ComplexColumnTypeEntity103Peer::ID);
+    }
+
+    public function testGetSqlValueForEnum()
+    {
+        $this->assertEquals(0, ComplexColumnTypeEntity103Peer::getSqlValueForEnum(ComplexColumnTypeEntity103Peer::BAR, ComplexColumnTypeEntity103Peer::BAR_FOO));
+        $this->assertEquals(1, ComplexColumnTypeEntity103Peer::getSqlValueForEnum(ComplexColumnTypeEntity103Peer::BAR, ComplexColumnTypeEntity103Peer::BAR_BAR));
+        $this->assertEquals(2, ComplexColumnTypeEntity103Peer::getSqlValueForEnum(ComplexColumnTypeEntity103Peer::BAR, ComplexColumnTypeEntity103Peer::BAR_BAZ));
+        $this->assertEquals(6, ComplexColumnTypeEntity103Peer::getSqlValueForEnum(ComplexColumnTypeEntity103Peer::BAR, ComplexColumnTypeEntity103Peer::BAR_FOO_BAR));
+    }
+
+    public function testEnumSqlGetters()
+    {
+        $this->assertEquals(0, ComplexColumnTypeEntity103Peer::getBarSqlValue(ComplexColumnTypeEntity103Peer::BAR_FOO));
+        $this->assertEquals(1, ComplexColumnTypeEntity103Peer::getBarSqlValue(ComplexColumnTypeEntity103Peer::BAR_BAR));
+        $this->assertEquals(2, ComplexColumnTypeEntity103Peer::getBarSqlValue(ComplexColumnTypeEntity103Peer::BAR_BAZ));
+        $this->assertEquals(6, ComplexColumnTypeEntity103Peer::getBarSqlValue(ComplexColumnTypeEntity103Peer::BAR_FOO_BAR));
+    }
 }

@@ -2,6 +2,17 @@
  * le styles for datawrapper
  */
 
+@font-face {
+    font-family: 'Desyrel';
+    src: url('fonts/desyrel-webfont.eot');
+    src: url('fonts/desyrel-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/desyrel-webfont.woff') format('woff'),
+         url('fonts/desyrel-webfont.ttf') format('truetype'),
+         url('fonts/desyrel-webfont.svg#Desyrel') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
 body {
     background: #fff;
     color: #444;
@@ -42,6 +53,14 @@ html h3 {
     body .docs h1.title {
         font-size: 36px;
         margin-bottom: 10px;
+    }
+
+    body h1.title small {
+        white-space: normal;
+        display: block;
+        line-height: 1.1;
+        font-size: 20px;
+        margin-bottom: 20px;
     }
 
     body .docs h2 {
@@ -145,6 +164,31 @@ body .navbar-inverse .nav li.dropdown.active > .dropdown-toggle:hover
     background: #111111;
     font-weight: bold;
     color: #fff!important;
+}
+
+.navbar .mycharts.dropdown li {
+
+}
+.navbar .mycharts.dropdown li img.icon {
+    height: 20px!important;
+    width: 30px!important;
+    position: absolute;
+    left: 10px;
+    top: 4px;
+}
+.navbar .mycharts.dropdown li {
+    position: relative;
+    max-width: 240px;
+}
+.navbar .mycharts.dropdown li a {
+    padding-left: 45px;
+}
+.navbar .mycharts.dropdown li a span {
+    overflow: hidden;
+    display: block;
+    width: 100%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .navbar .nav li.dropdown .dropdown-toggle .caret, .navbar .nav li.dropdown.open .caret,
@@ -355,6 +399,15 @@ h1, h2, h3, h4, h5, h6 {
     width: 676px;
     margin-left: -338px;
 }
+
+#dwLoginForm h3 {
+    margin-top: 0;
+}
+
+#dwLoginForm .modal-body {
+    max-height: 450px;
+}
+
 
 #dwLoginForm div.span3, #dwLoginForm div.span4 {
     padding: 15px;
@@ -648,8 +701,56 @@ dl.dl-horizontal dd {
     margin-bottom: 10px;
 }
 
-#vis-options .control-group {
+#vis-options .vis-option-group {
     margin-bottom: 9px;
+    position: relative;
+}
+
+#vis-options .vis-option-group .vis-option-help {
+    position: absolute;
+    top: -3px;
+    right: 0px;
+    cursor: default;
+    padding-left: 15px;
+    z-index: 100;
+}
+
+#vis-options .vis-option-group.vis-option-type-radio-left .vis-option-help {
+    top: 32px;
+}
+
+#vis-options .vis-option-group.vis-option-type-separator .vis-option-help {
+    top: 32px;
+}
+
+#vis-options .vis-option-group .vis-option-help:hover {
+    text-decoration: none;
+}
+
+#vis-options .vis-option-group .vis-option-help span {
+    display: block;
+    width: 22px;
+    height: 22px;
+    line-height: 22px;
+    text-align: center;
+    border-radius: 11px;
+    background: #d6d6d6;
+    color: #fff;
+    font-weight: bold;
+}
+
+.tooltip {
+    opacity: 1!important;
+}
+
+.tooltip .tooltip-inner {
+    background: #fff;
+    color: #000;
+    box-shadow: 0 0 14px rgba(0,0,0,.1);
+    font-size: 13px;
+    border: 1px solid #ddd;
+    line-height: 18px;
+    text-align: left;
 }
 
 #vis-options legend + .control-group {
@@ -701,6 +802,10 @@ dl.dl-horizontal dd {
     margin: 0px 0 48px;
     font-weight: 300;
     letter-spacing: -1px;
+}
+
+h1.title small {
+    white-space: nowrap;
 }
 
 .docs h2, .docs h3 {
@@ -999,6 +1104,9 @@ form.well form {
     border: 1px solid #1981DD;
     box-shadow: 0 0 10px rgba(25, 129, 221, .6);
 }
+.vis-thumb.active img {
+    opacity: 1;
+}
 
 .vis-thumb:hover {
     border: 1px solid #777;
@@ -1152,6 +1260,9 @@ form.well form {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    box-shadow: inset 0px -5px 12px rgba(0,0,0,0.05);
+    border: 1px solid #e5e5e5;
+    border-bottom: 0;
 }
 
 .visualize-nav-tabs .active a {
@@ -1316,13 +1427,13 @@ label.separator {
 }
 
 .color-selector .color-axis .color {
-    width: 22px;
+    width: 11px;
     height: 22px;
     display: inline-block;
 }
 
 .color-selector .color-axis .color.selected {
-    width: 18px;
+    width: 7px;
     height: 18px;
 }
 
@@ -1373,4 +1484,36 @@ label.separator {
 
 .color-selector .footer .color.selected {
     border: 0;
+}
+
+
+.dw-create-visualize .control-group .pull-left {
+    margin-right: 20px;
+    margin-bottom: 10px;
+}
+
+.dw-create-visualize .control-group .pull-left label {
+    font-size: 11px;
+    color: #777;
+    text-transform: uppercase;
+    margin: 0 0 3px 2px;
+    font-weight: bold;
+}
+
+
+.number-stepper input {
+    width: 4ex;
+    text-align: center;
+    border-radius: 0;
+    border-right: 0;
+    border-left: 0;
+}
+
+.number-stepper .btn-minus {
+    padding-left: 8px;
+    padding-right: 8px;
+}
+.number-stepper .btn-plus {
+    padding-left: 7px;
+    padding-right: 7px;
 }

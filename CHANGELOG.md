@@ -1,6 +1,25 @@
 CHANGELOG
 ---------
 
+### 1.6
+* fixed theme inheritance, no more deep-copying of arrays
+* improved language in email communication
+* updated Propel to 1.6.8
+* updated Twig to 1.13.2
+* showing recent charts in dropdown nav
+* enabled data attribution in visualize step
+* added automatic number formatting
+* added column oauth_signin to user table (see migrate sql)
+* refactored JavaScript and CSS out of Twig templates
+* renamed chart data file to data.csv
+* plugin.php can now install plugins from git urls
+* display chart id in gallery/mycharts if there's no title
+* using [insert title here] as default chart title
+* refactored core chart javascript into /js/dw/chart.base.js
+* added log scale mode to line chart
+* moved transpose button into first table header cell
+* bugfixes
+
 ### 1.5.4
 * added dw.utils.smartRound
 * plugin install script performs health checks

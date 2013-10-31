@@ -87,12 +87,20 @@ $app->post('/account/reset-password', function() use($app) {
         $user->setResetPasswordToken($token);
         $user->save();
 
-        $name     = $user->getEmail();
         $protocol = !empty($_SERVER['HTTPS']) ? "https" : "http";
         $passwordResetLink = $protocol . '://' . $GLOBALS['dw_config']['domain'] . '/account/reset-password/' . $token;
-        $from = 'password-reset@' . $GLOBALS['dw_config']['domain'];
-        include('../../lib/templates/password-reset-email.php');
-        DatawrapperHooks::execute(DatawrapperHooks::SEND_EMAIL, $user->getEmail(), 'Datawrapper Password Reset', $password_reset_mail, 'From: ' . $from);
+
+        include(ROOT_PATH . 'lib/templates/password-reset-email.php');
+
+        dw_send_support_email(
+            $user->getEmail(),
+            __('Datawrapper: You requested a reset of your password'),
+            $password_reset_mail,
+            array(
+                'name' => $user->guessName(),
+                'password_reset_link' => $passwordResetLink
+            )
+        );
 
         ok(__('You should soon receive an email with further instructions.'));
 
@@ -116,7 +124,7 @@ $app->post('/account/resend-activation', function() use($app) {
             ->filterByKey('resend-activation')
             ->find();
         if (count($r) > 2) {
-            error('avoid-spam', str_replace('%ADMINEMAIL%', $GLOBALS['dw_config']['email']['admin'], __('You already resent the activation mail three times, now. Please <a href="mailto:%ADMINEMAIL%">contact an administrator</a> to proceed with your account activation.')));
+            error('avoid-spam', str_replace('%support_email%', $GLOBALS['dw_config']['email']['support'], __('You already resent the activation mail three times, now. Please <a href="mailto:%support_email%">contact an administrator</a> to proceed with your account activation.')));
             return false;
         }
 
@@ -124,19 +132,20 @@ $app->post('/account/resend-activation', function() use($app) {
         Action::logAction($user, 'resend-activation', $token);
 
         // send email with activation key
-        $name     = $user->getEmail();
         $domain   = $GLOBALS['dw_config']['domain'];
         $protocol = !empty($_SERVER['HTTPS']) ? "https" : "http";
         $activationLink = $protocol . '://' . $domain . '/account/activate/' . $token;
-        $from = 'activate@' . $domain;
 
-        include('../../lib/templates/activation-email.php');
+        include(ROOT_PATH . 'lib/templates/activation-email.php');
 
-        DatawrapperHooks::execute(
-            DatawrapperHooks::SEND_EMAIL,
-            $user->getEmail(), 'Datawrapper Email Activation',
+        dw_send_support_email(
+            $user->getEmail(),
+            __('Datawrapper: Please activate your email address'),
             $activation_mail,
-            'From: ' . $from
+            array(
+                'name' => $user->guessName(),
+                'activation_link' => $activationLink
+            )
         );
 
         ok(__('The activation email has been send to your email address, again.'));
@@ -166,9 +175,15 @@ $app->post('/account/resend-invitation', function() use($app) {
         $name           = $user->getEmail();
         include('../../lib/templates/invitation-email.php');
         $from           = $GLOBALS['dw_config']['email']['invite'];
-        DatawrapperHooks::execute(
-            DatawrapperHooks::SEND_EMAIL,
-            $user->getEmail(), sprintf(__('You have been invited to %s'), $domain), $invitation_mail, 'From: ' . $from
+
+        dw_send_support_email(
+            $user->getEmail(),
+            __('You have been invited to Datawrapper!'),
+            $invitation_mail,
+            array(
+                'name' => $user->guessName(),
+                'invitation_link' => $invitationLink
+            )
         );
         ok(__('You should soon receive an email with further instructions.'));
     } else {

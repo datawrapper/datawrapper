@@ -19,91 +19,91 @@ require_once dirname(__FILE__) . '/../../../tools/helpers/bookstore/BookstoreTes
  */
 class DBMySQLTest extends BookstoreTestBase
 {
-	public static function getConParams()
-	{
-		return array(
-			array(
-				array(
-					'dsn' => 'dsn=my_dsn',
-					'settings' => array(
-						'charset' => array(
-							'value' => 'foobar'
-						)
-					)
-				)
-			)
-		);
-	}
+    public static function getConParams()
+    {
+        return array(
+            array(
+                array(
+                    'dsn' => 'dsn=my_dsn',
+                    'settings' => array(
+                        'charset' => array(
+                            'value' => 'foobar'
+                        )
+                    )
+                )
+            )
+        );
+    }
 
-	/**
-	 * @dataProvider getConParams
-	 * @expectedException PropelException
-	 */
-	public function testPrepareParamsThrowsException($conparams)
-	{
-		if (version_compare(PHP_VERSION, '5.3.6', '>=')) {
-			$this->markTestSkipped('PHP_VERSION >= 5.3.6, no need to throw an exception.');
-		}
+    /**
+     * @dataProvider getConParams
+     * @expectedException PropelException
+     */
+    public function testPrepareParamsThrowsException($conparams)
+    {
+        if (version_compare(PHP_VERSION, '5.3.6', '>=')) {
+            $this->markTestSkipped('PHP_VERSION >= 5.3.6, no need to throw an exception.');
+        }
 
-		$db = new DBMySQL();
-		$db->prepareParams($conparams);
-	}
+        $db = new DBMySQL();
+        $db->prepareParams($conparams);
+    }
 
-	/**
-	 * @dataProvider getConParams
-	 */
-	public function testPrepareParams($conparams)
-	{
-		if (version_compare(PHP_VERSION, '5.3.6', '<')) {
-			$this->markTestSkipped('PHP_VERSION < 5.3.6 will throw an exception.');
-		}
+    /**
+     * @dataProvider getConParams
+     */
+    public function testPrepareParams($conparams)
+    {
+        if (version_compare(PHP_VERSION, '5.3.6', '<')) {
+            $this->markTestSkipped('PHP_VERSION < 5.3.6 will throw an exception.');
+        }
 
-		$db = new DBMySQL();
-		$params = $db->prepareParams($conparams);
+        $db = new DBMySQL();
+        $params = $db->prepareParams($conparams);
 
-		$this->assertTrue(is_array($params));
-		$this->assertEquals('dsn=my_dsn;charset=foobar', $params['dsn'], 'The given charset is in the DSN string');
-		$this->assertArrayNotHasKey('charset', $params['settings'], 'The charset should be removed');
-	}
+        $this->assertTrue(is_array($params));
+        $this->assertEquals('dsn=my_dsn;charset=foobar', $params['dsn'], 'The given charset is in the DSN string');
+        $this->assertArrayNotHasKey('charset', $params['settings'], 'The charset should be removed');
+    }
 
-	/**
-	 * @dataProvider getConParams
-	 */
-	public function testNoSetNameQueryExecuted($conparams)
-	{
-		if (version_compare(PHP_VERSION, '5.3.6', '<')) {
-			$this->markTestSkipped('PHP_VERSION < 5.3.6 will throw an exception.');
-		}
+    /**
+     * @dataProvider getConParams
+     */
+    public function testNoSetNameQueryExecuted($conparams)
+    {
+        if (version_compare(PHP_VERSION, '5.3.6', '<')) {
+            $this->markTestSkipped('PHP_VERSION < 5.3.6 will throw an exception.');
+        }
 
-		$db = new DBMySQL();
-		$params = $db->prepareParams($conparams);
+        $db = new DBMySQL();
+        $params = $db->prepareParams($conparams);
 
-		$settings = array();
-		if (isset($params['settings'])) {
-			$settings = $params['settings'];
-		}
+        $settings = array();
+        if (isset($params['settings'])) {
+            $settings = $params['settings'];
+        }
 
-		$db->initConnection($this->getPdoMock(), $settings);
-	}
+        $db->initConnection($this->getPdoMock(), $settings);
+    }
 
-	protected function getPdoMock()
-	{
-		$con = $this
-			->getMockBuilder('mockPDO')
-			->getMock();
+    protected function getPdoMock()
+    {
+        $con = $this
+            ->getMockBuilder('mockPDO')
+            ->getMock();
 
-		$con
-			->expects($this->never())
-			->method('exec');
+        $con
+            ->expects($this->never())
+            ->method('exec');
 
-		return $con;
-	}
+        return $con;
+    }
 }
 
 // See: http://stackoverflow.com/questions/3138946/mocking-the-pdo-object-using-phpunit
 class mockPDO extends PDO
 {
-	public function __construct()
-	{
-	}
+    public function __construct()
+    {
+    }
 }

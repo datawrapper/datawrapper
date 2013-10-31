@@ -20,35 +20,41 @@
 class CriterionIterator implements Iterator
 {
 
-	private $idx = 0;
-	private $criteria;
-	private $criteriaKeys;
-	private $criteriaSize;
+    private $idx = 0;
+    private $criteria;
+    private $criteriaKeys;
+    private $criteriaSize;
 
-	public function __construct(Criteria $criteria) {
-		$this->criteria = $criteria;
-		$this->criteriaKeys = $criteria->keys();
-		$this->criteriaSize = count($this->criteriaKeys);
-	}
+    public function __construct(Criteria $criteria)
+    {
+        $this->criteria = $criteria;
+        $this->criteriaKeys = $criteria->keys();
+        $this->criteriaSize = count($this->criteriaKeys);
+    }
 
-	public function rewind() {
-		$this->idx = 0;
-	}
+    public function rewind()
+    {
+        $this->idx = 0;
+    }
 
-	public function valid() {
-		return $this->idx < $this->criteriaSize;
-	}
+    public function valid()
+    {
+        return $this->idx < $this->criteriaSize;
+    }
 
-	public function key() {
-		return $this->criteriaKeys[$this->idx];
-	}
+    public function key()
+    {
+        return $this->criteriaKeys[$this->idx];
+    }
 
-	public function current() {
-		return $this->criteria->getCriterion($this->criteriaKeys[$this->idx]);
-	}
+    public function current()
+    {
+        return $this->criteria->getCriterion($this->criteriaKeys[$this->idx]);
+    }
 
-	public function next() {
-		$this->idx++;
-	}
+    public function next()
+    {
+        $this->idx++;
+    }
 
 }

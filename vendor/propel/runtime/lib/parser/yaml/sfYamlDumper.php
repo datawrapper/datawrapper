@@ -34,16 +34,12 @@ class sfYamlDumper
     $output = '';
     $prefix = $indent ? str_repeat(' ', $indent) : '';
 
-    if ($inline <= 0 || !is_array($input) || empty($input))
-    {
+    if ($inline <= 0 || !is_array($input) || empty($input)) {
       $output .= $prefix.sfYamlInline::dump($input);
-    }
-    else
-    {
+    } else {
       $isAHash = array_keys($input) !== range(0, count($input) - 1);
 
-      foreach ($input as $key => $value)
-      {
+      foreach ($input as $key => $value) {
         $willBeInlined = $inline - 1 <= 0 || !is_array($value) || empty($value);
 
         $output .= sprintf('%s%s%s%s',

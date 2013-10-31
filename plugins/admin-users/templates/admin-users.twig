@@ -5,44 +5,6 @@
 
 {% set current_user = user %}
 
-<style>
-    /* Basic style */
-    .widget .template{
-        display: none !important;
-    }
-    /* Admin-Users Widget*/
-    .widget.Admin-Users table tr.pending td {
-        background-color: beige;
-    }
-    .widget.Admin-Users table .action {
-        margin-left: 10px;
-    }
-    /* show the correct icon for the given type of profile */
-    .widget.Admin-Users table tr.admin .normal {
-        display: none !important;
-    }
-    .widget.Admin-Users table tr:not(.admin) .admin {
-        display: none !important;
-    }
-
-    table.users .center {
-        text-align: center;
-    }
-
-    .users .user.admin td,
-    .users .user.sysadmin td {
-        color: #c00;
-    }
-
-    .widget.Admin-Users table .actions a {
-        margin-right: 20px;
-    }
-
-    table th a {
-        color: #000;
-    }
-</style>
-
 <div class="Admin-Users widget docs" data-widget="admin_users.AdminUsers">
     <div class="error-email-missing alert alert-error hidden">
         {% trans "email-missing" %}
@@ -60,7 +22,7 @@
     </div>
     <!-- NOTE:  Never shown like that, used to translate this confirmation dialog's texts.
                 Need to be inlined.                                                         -->
-    <div class="confirm-admin-lost hidden">{% trans "will lost his administrator status. Continue?" %}</div>
+    <div class="confirm-admin-lost hidden">{% trans "will lose his administrator status. Continue?" %}</div>
     <div class="confirm-admin-new hidden">{% trans "will become an administrator. Continue?" %}</div>
     <div class="confirm-delete hidden">{% trans "will be deleted. Continue?" %}</div>
 
@@ -98,7 +60,7 @@
                 <th><a href="?sort=id">#</a></th>
                 <th><a href="?sort=email">{% trans "Email" %}</a></th>
                 <th>{% trans "Status" %}</th>
-                <th>{% trans "Created at" %}</th>
+                <th><a href="?sort=created_at">{% trans "Created at" %}</a></th>
                 <th class="center"><a href="?sort=charts">{% trans "Charts" %}</a></th>
                 <th class="center"><a href="?sort=charts">{% trans "Published" %}</a></th>
                 <th>{% trans "Actions" %}</th>

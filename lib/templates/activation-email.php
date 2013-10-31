@@ -4,15 +4,19 @@
  * template for the Datawrapper activation email
  */
 
-$activation_mail = <<<MAIL
+$activation_mail = __("
+Hello %name%,
 
-Hello $name,
+Thank you for signing up at Datawrapper on %domain%!
 
-Thank you for signing up at Datawrapper on $domain!
+Please click on the following link to activate your email address.
+%activation_link%
 
-Please click on this link to activate your email address.
+You're account won't be activated until you click the link above.
 
-$activationLink
+If you're not able to click the link above, copy it and paste it into your web browser. If you have trouble with this please FORWARD this email to %support_email% and state that you had problems activating your account.
 
-Cheers!
-MAIL;
+Best regards,
+The Datawrapper Team
+
+");

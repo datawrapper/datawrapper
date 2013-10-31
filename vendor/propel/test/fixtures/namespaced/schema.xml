@@ -84,5 +84,16 @@
 			<reference local="supervisor_id" foreign="id" />
 		</foreign-key>
 	</table>
+        
+        <table name="ns_concrete_content" phpName="NamespacedConcreteContent" namespace="Foo\Bar">
+		<column name="id" required="true" primaryKey="true" type="INTEGER" />
+		<column name="title" type="VARCHAR" size="100" primaryString="true" />
+	</table>
 
+	<table name="ns_concrete_article" phpName="NamespacedConcreteArticle" namespace="Foo\Bar">
+		<column name="body" type="longvarchar" />
+		<behavior name="concrete_inheritance">
+			<parameter name="extends" value="ns_concrete_content" />
+		</behavior>
+	</table>
 </database>

@@ -19,41 +19,41 @@
  */
 class ConcreteInheritanceParentBehavior extends Behavior
 {
-	// default parameters value
-	protected $parameters = array(
-		'descendant_column' => 'descendant_class'
-	);
+    // default parameters value
+    protected $parameters = array(
+        'descendant_column' => 'descendant_class'
+    );
 
-	public function modifyTable()
-	{
-		$table = $this->getTable();
-		if (!$table->containsColumn($this->getParameter('descendant_column'))) {
-			$table->addColumn(array(
-				'name' => $this->getParameter('descendant_column'),
-				'type' => 'VARCHAR',
-				'size' => 100
-			));
-		}
-	}
+    public function modifyTable()
+    {
+        $table = $this->getTable();
+        if (!$table->containsColumn($this->getParameter('descendant_column'))) {
+            $table->addColumn(array(
+                'name' => $this->getParameter('descendant_column'),
+                'type' => 'VARCHAR',
+                'size' => 100
+            ));
+        }
+    }
 
-	protected function getColumnGetter()
-	{
-		return 'get' . $this->getColumnForParameter('descendant_column')->getPhpName();
-	}
+    protected function getColumnGetter()
+    {
+        return 'get' . $this->getColumnForParameter('descendant_column')->getPhpName();
+    }
 
-	public function objectMethods($builder)
-	{
-		$this->builder = $builder;
-		$script = '';
-		$this->addHasChildObject($script);
-		$this->addGetChildObject($script);
+    public function objectMethods($builder)
+    {
+        $this->builder = $builder;
+        $script = '';
+        $this->addHasChildObject($script);
+        $this->addGetChildObject($script);
 
-		return $script;
-	}
+        return $script;
+    }
 
-	protected function addHasChildObject(&$script)
-	{
-		$script .= "
+    protected function addHasChildObject(&$script)
+    {
+        $script .= "
 /**
  * Whether or not this object is the parent of a child object
  *
@@ -61,14 +61,14 @@ class ConcreteInheritanceParentBehavior extends Behavior
  */
 public function hasChildObject()
 {
-	return \$this->" . $this->getColumnGetter() . "() !== null;
+    return \$this->" . $this->getColumnGetter() . "() !== null;
 }
 ";
-	}
+    }
 
-	protected function addGetChildObject(&$script)
-	{
-		$script .= "
+    protected function addGetChildObject(&$script)
+    {
+        $script .= "
 /**
  * Get the child object of this object
  *
@@ -76,14 +76,15 @@ public function hasChildObject()
  */
 public function getChildObject()
 {
-	if (!\$this->hasChildObject()) {
-		return null;
-	}
-	\$childObjectClass = \$this->" . $this->getColumnGetter() . "();
-	\$childObject = PropelQuery::from(\$childObjectClass)->findPk(\$this->getPrimaryKey());
-	return \$childObject->hasChildObject() ? \$childObject->getChildObject() : \$childObject;
+    if (!\$this->hasChildObject()) {
+        return null;
+    }
+    \$childObjectClass = \$this->" . $this->getColumnGetter() . "();
+    \$childObject = PropelQuery::from(\$childObjectClass)->findPk(\$this->getPrimaryKey());
+
+    return \$childObject->hasChildObject() ? \$childObject->getChildObject() : \$childObject;
 }
 ";
-	}
+    }
 
 }

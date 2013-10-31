@@ -39,6 +39,7 @@ class PropelDotGeneratorTest extends PHPUnit_Framework_TestCase
         $column->setType('integer');
 
         $table = new Table();
+        $table->setCommonName("t");
         $table->addColumn($column);
 
         $db = new Database();
@@ -47,7 +48,7 @@ class PropelDotGeneratorTest extends PHPUnit_Framework_TestCase
 
         $expected = implode("\n", array(
             'digraph G {',
-                'node [label="{<table>|<cols>id (integer) [PK]\l}", shape=record];',
+                '"t" [label="{<table>t|<cols>id (integer) [PK]\l}", shape=record];',
             '}',
             '',
         ));
@@ -83,8 +84,8 @@ class PropelDotGeneratorTest extends PHPUnit_Framework_TestCase
 
         $expected = implode("\n", array(
             'digraph G {',
-                'nodetable_one [label="{<table>table_one|<cols>id (integer) [PK]\l}", shape=record];',
-                'nodetable_two [label="{<table>table_two|<cols>id (integer) [PK]\l}", shape=record];',
+                '"table_one" [label="{<table>table_one|<cols>id (integer) [PK]\l}", shape=record];',
+                '"table_two" [label="{<table>table_two|<cols>id (integer) [PK]\l}", shape=record];',
             '}',
             '',
         ));
@@ -133,9 +134,9 @@ class PropelDotGeneratorTest extends PHPUnit_Framework_TestCase
 
         $expected = implode("\n", array(
             'digraph G {',
-                'nodetable_one [label="{<table>table_one|<cols>id (integer) [PK]\l}", shape=record];',
-                'nodetable_two [label="{<table>table_two|<cols>id (integer) [PK]\lforeign_id (integer) [FK]\l}", shape=record];',
-                'nodetable_two:cols -> nodetable_one:table [label="foreign_id=id"];',
+                '"table_one" [label="{<table>table_one|<cols>id (integer) [PK]\l}", shape=record];',
+                '"table_two" [label="{<table>table_two|<cols>id (integer) [PK]\lforeign_id (integer) [FK]\l}", shape=record];',
+                '"table_two":cols -> "table_one":table [label="foreign_id=id"];',
             '}',
             '',
         ));
@@ -185,9 +186,9 @@ class PropelDotGeneratorTest extends PHPUnit_Framework_TestCase
 
         $expected = implode("\n", array(
             'digraph G {',
-                'nodetable_one [label="{<table>table_one|<cols>id (integer) [PK]\l}", shape=record];',
-                'nodetable_two [label="{<table>table_two|<cols>id (integer) [PK]\lforeign_id (integer) [FK] [PK]\l}", shape=record];',
-                'nodetable_two:cols -> nodetable_one:table [label="foreign_id=id"];',
+                '"table_one" [label="{<table>table_one|<cols>id (integer) [PK]\l}", shape=record];',
+                '"table_two" [label="{<table>table_two|<cols>id (integer) [PK]\lforeign_id (integer) [FK] [PK]\l}", shape=record];',
+                '"table_two":cols -> "table_one":table [label="foreign_id=id"];',
             '}',
             '',
         ));

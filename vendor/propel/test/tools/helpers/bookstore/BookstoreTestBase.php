@@ -17,31 +17,31 @@ Propel::init(dirname(__FILE__) . '/../../../fixtures/bookstore/build/conf/bookst
  */
 abstract class BookstoreTestBase extends PHPUnit_Framework_TestCase
 {
-	protected $con;
+    protected $con;
 
-	/**
-	 * This is run before each unit test; it populates the database.
-	 */
-	protected function setUp()
-	{
-		parent::setUp();
-		$this->con = Propel::getConnection(BookPeer::DATABASE_NAME);
-		$this->con->beginTransaction();
-	}
+    /**
+     * This is run before each unit test; it populates the database.
+     */
+    protected function setUp()
+    {
+        parent::setUp();
+        $this->con = Propel::getConnection(BookPeer::DATABASE_NAME);
+        $this->con->beginTransaction();
+    }
 
-	/**
-	 * This is run after each unit test. It empties the database.
-	 */
-	protected function tearDown()
-	{
-		parent::tearDown();
-		// Only commit if the transaction hasn't failed.
-		// This is because tearDown() is also executed on a failed tests,
-		// and we don't want to call PropelPDO::commit() in that case
-		// since it will trigger an exception on its own
-		// ('Cannot commit because a nested transaction was rolled back')
-		if ($this->con->isCommitable()) {
-			$this->con->commit();
-		}
-	}
+    /**
+     * This is run after each unit test. It empties the database.
+     */
+    protected function tearDown()
+    {
+        parent::tearDown();
+        // Only commit if the transaction hasn't failed.
+        // This is because tearDown() is also executed on a failed tests,
+        // and we don't want to call PropelPDO::commit() in that case
+        // since it will trigger an exception on its own
+        // ('Cannot commit because a nested transaction was rolled back')
+        if ($this->con->isCommitable()) {
+            $this->con->commit();
+        }
+    }
 }

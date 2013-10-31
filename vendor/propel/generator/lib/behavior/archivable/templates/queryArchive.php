@@ -12,31 +12,32 @@
  *               Set to true (default) to use less memory.
  *
  * @return     int the number of archived objects
+ * @throws     PropelException
  */
 public function archive($con = null, $useLittleMemory = true)
 {
-	$totalArchivedObjects = 0;
-	$criteria = clone $this;
-	// prepare the query
-	$criteria->setWith(array());
-	if ($useLittleMemory) {
-		$criteria->setFormatter(ModelCriteria::FORMAT_ON_DEMAND);
-	}
-	if ($con === null) {
-		$con = Propel::getConnection(<?php echo $modelPeerName ?>::DATABASE_NAME, Propel::CONNECTION_WRITE);
-	}
-	$con->beginTransaction();
-	try {
-		// archive all results one by one
-		foreach ($criteria->find($con) as $object) {
-			$object->archive($con);
-			$totalArchivedObjects++;
-		}
-		$con->commit();
-	} catch (PropelException $e) {
-		$con->rollBack();
-		throw $e;
-	}
+    $totalArchivedObjects = 0;
+    $criteria = clone $this;
+    // prepare the query
+    $criteria->setWith(array());
+    if ($useLittleMemory) {
+        $criteria->setFormatter(ModelCriteria::FORMAT_ON_DEMAND);
+    }
+    if ($con === null) {
+        $con = Propel::getConnection(<?php echo $modelPeerName ?>::DATABASE_NAME, Propel::CONNECTION_WRITE);
+    }
+    $con->beginTransaction();
+    try {
+        // archive all results one by one
+        foreach ($criteria->find($con) as $object) {
+            $object->archive($con);
+            $totalArchivedObjects++;
+        }
+        $con->commit();
+    } catch (PropelException $e) {
+        $con->rollBack();
+        throw $e;
+    }
 
-	return $totalArchivedObjects;
+    return $totalArchivedObjects;
 }

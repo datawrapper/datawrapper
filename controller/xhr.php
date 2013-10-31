@@ -44,7 +44,7 @@ $app->get('/xhr/:chartid/vis-options', function($id) use ($app) {
             'theme' => DatawrapperTheme::get($chart->getTheme()),
             'language' => substr(DatawrapperSession::getLanguage(), 0, 2)
         );
-        $app->render('chart-visualize-options.twig', $page);
+        $app->render('chart/visualize/options.twig', $page);
     });
 });
 

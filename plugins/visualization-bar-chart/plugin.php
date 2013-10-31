@@ -9,7 +9,7 @@ class DatawrapperPlugin_VisualizationBarChart extends DatawrapperPlugin_Visualiz
             "title" =>  __("Bar Chart", $id),
             "version" => "1.3.2",
             "extends" => "raphael-chart",
-            "order" => 30,
+            "order" => 5,
             "dimensions" => 1,
             "axes" => array(
                 "labels" => array(

@@ -12,8 +12,8 @@
 /**
  * Represents a template test.
  *
- * @package    twig
- * @author     Fabien Potencier <fabien@symfony.com>
+ * @author Fabien Potencier <fabien@symfony.com>
+ * @deprecated since 1.12 (to be removed in 2.0)
  */
 interface Twig_TestInterface
 {
@@ -22,5 +22,5 @@ interface Twig_TestInterface
      *
      * @return string The PHP code for the test
      */
-    function compile();
+    public function compile();
 }

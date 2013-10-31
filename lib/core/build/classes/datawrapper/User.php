@@ -89,4 +89,23 @@ class User extends BaseUser {
         $u->save();
     }
 
+    public function guessName() {
+        $n = $this->getName();
+        if (empty($n)) $n = $this->getEmail();
+        if (empty($n)) $n = $this->getOAuthSignIn();
+        if (!empty($n) && strpos($n, '::') > 0) $n = substr($n, strpos($n, '::')+2);
+        if (empty($n)) $n = __('User').' '.$this->getId();
+        return $n;
+    }
+
+    public function getRecentCharts($count=10) {
+        return ChartQuery::create()
+            ->filterByUser($this)
+            ->filterByDeleted(false)
+            ->filterByLastEditStep(array("min" => 3))
+            ->orderByLastModifiedAt('desc')
+            ->limit($count)
+            ->find();
+    }
+
 } // User

@@ -40,7 +40,7 @@
 
                         <li><i class="icon-chevron-right"></i> <a class="btn" href="#" id="resend-activation-link">{% trans "Re-send activation link" %}</a></li>
 
-                        <li><i class="icon-chevron-right"></i> {{ "Or, <a href='mailto:%ADMINMAIL%'>contact us</a> to find other ways to activate your account." | trans | replace({'%ADMINMAIL%': ADMIN_EMAIL }) | raw }}</li>
+                        <li><i class="icon-chevron-right"></i> {{ "Or, <a href='mailto:%support_email%'>contact us</a> to find other ways to activate your account." | trans | replace({'%support_email%': SUPPORT_EMAIL }) | raw }}</li>
                     </ul>
 
                 {% endif %}
@@ -283,13 +283,15 @@ $(function() {
                         success: function(data) {
                             submit.removeClass('loading');
                             if (data.status == 'ok') {
-                                if (data.data.updated.indexOf('password') >= 0) {
+                                _.each(data.data.messages, function(msg) {
+                                    dw.backend.logMessage(msg, $('.settings.password .control-group')[0], 'info');
+                                });
+                                _.each(data.data.errors, function(msg) {
+                                    dw.backend.logMessage(msg, $('.settings.password .control-group')[0], 'warning');
+                                });
+                                if (!data.data.errors.length) {
                                     dw.backend.logMessage('{% trans "Congrats! Your password has been changed." %}', parent);
-                                } else {
-                                    dw.backend.logError('{% trans "Could not change your password. Please double check your current password." %}', parent);
                                 }
-                            } else {
-                                dw.backend.logError(data.message, parent);
                             }
                         }
                     });
@@ -300,7 +302,7 @@ $(function() {
 
     // show password in clear text
     $('#show-passwords').change(function() {
-        var t = $('#show-passwords').attr('checked') ? 'text' : 'password';
+        var t = $('#show-passwords').prop('checked') ? 'text' : 'password';
         $('#pwd')[0].type = t;
         $('#pwd2')[0].type = t;
     });

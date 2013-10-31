@@ -17,39 +17,39 @@
 class SessionTableMap extends TableMap
 {
 
-	/**
-	 * The (dot-path) name of this class
-	 */
-	const CLASS_NAME = 'datawrapper.map.SessionTableMap';
+    /**
+     * The (dot-path) name of this class
+     */
+    const CLASS_NAME = 'datawrapper.map.SessionTableMap';
 
-	/**
-	 * Initialize the table attributes, columns and validators
-	 * Relations are not initialized by this method since they are lazy loaded
-	 *
-	 * @return     void
-	 * @throws     PropelException
-	 */
-	public function initialize()
-	{
-		// attributes
-		$this->setName('session');
-		$this->setPhpName('Session');
-		$this->setClassname('Session');
-		$this->setPackage('datawrapper');
-		$this->setUseIdGenerator(false);
-		// columns
-		$this->addPrimaryKey('SESSION_ID', 'SessionId', 'VARCHAR', true, 32, null);
-		$this->addColumn('DATE_CREATED', 'DateCreated', 'TIMESTAMP', true, null, null);
-		$this->addColumn('LAST_UPDATED', 'LastUpdated', 'TIMESTAMP', true, null, null);
-		$this->addColumn('SESSION_DATA', 'SessionData', 'VARCHAR', true, 4096, null);
-		// validators
-	} // initialize()
+    /**
+     * Initialize the table attributes, columns and validators
+     * Relations are not initialized by this method since they are lazy loaded
+     *
+     * @return void
+     * @throws PropelException
+     */
+    public function initialize()
+    {
+        // attributes
+        $this->setName('session');
+        $this->setPhpName('Session');
+        $this->setClassname('Session');
+        $this->setPackage('datawrapper');
+        $this->setUseIdGenerator(false);
+        // columns
+        $this->addPrimaryKey('session_id', 'SessionId', 'VARCHAR', true, 32, null);
+        $this->addColumn('date_created', 'DateCreated', 'TIMESTAMP', true, null, null);
+        $this->addColumn('last_updated', 'LastUpdated', 'TIMESTAMP', true, null, null);
+        $this->addColumn('session_data', 'SessionData', 'VARCHAR', true, 4096, null);
+        // validators
+    } // initialize()
 
-	/**
-	 * Build the RelationMap objects for this table relationships
-	 */
-	public function buildRelations()
-	{
-	} // buildRelations()
+    /**
+     * Build the RelationMap objects for this table relationships
+     */
+    public function buildRelations()
+    {
+    } // buildRelations()
 
 } // SessionTableMap

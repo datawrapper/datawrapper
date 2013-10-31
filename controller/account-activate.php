@@ -41,8 +41,8 @@ $app->get('/account/invite/:token', function($token) use ($app) {
             'email' => $user->getEmail(),
             'auth_salt' => DW_AUTH_SALT
         );
-        add_header_vars($page, 'about');
-        $app->render('invited.twig', $page);
+        add_header_vars($page, 'about', 'account/invite.css');
+        $app->render('account/invite.twig', $page);
     });
 });
 
