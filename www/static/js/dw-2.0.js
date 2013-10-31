@@ -1881,7 +1881,7 @@ _.extend(dw.visualization.base, {
                                 return (i > 25 ? String.fromCharCode(64+i/26) : '') + String.fromCharCode(65+(i%26));
                             }), 'text');
                             dataset.add(col);
-                            me.chart().applyChanges(dataset);
+                            me.chart().dataset(dataset);
                             usedColumns[col.name()] = true;
                             axes[key] = col.name();
                         } else {
