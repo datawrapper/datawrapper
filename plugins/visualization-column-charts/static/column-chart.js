@@ -453,7 +453,7 @@
                         lbl.removeClass('hover');
                         if (lbl.hasClass('showOnHover')) lbl.hide(0.5);
                     }
-                    _.each(me.__seriesElements[col.name()], function(el) {
+                    _.each(me.__elements[col.name()], function(el) {
                         var fill = me.getBarColor(col, el.data('row'), me.get('negative-color', false)), stroke;
                         if (column !== undefined && col.name() == column.name()) fill = chroma.color(fill).darken(14).hex();
                         stroke = chroma.color(fill).darken(theme.columnChart.darkenStroke).hex();
