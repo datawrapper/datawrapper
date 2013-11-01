@@ -11,6 +11,10 @@
     background: #fff;
 }
 
+.handsontable {
+    clear: both;
+}
+
 .handsontable tr td {
     font-size: 1.1em;
     font-family: Helvetica;
