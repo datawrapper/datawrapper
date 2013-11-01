@@ -328,7 +328,7 @@
                     if (vis.__xlab) vis.__xlab.remove();
                     vis.__xlab = null;
                     $('.label.tooltip').hide();
-                    _.each(vis.__seriesLabels, function(labels) {
+                    _.each(vis.__labels, function(labels) {
                         _.each(labels, function(l) {
                             l.show();
                         });
