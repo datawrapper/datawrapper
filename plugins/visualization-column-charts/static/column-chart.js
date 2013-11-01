@@ -445,7 +445,7 @@
             var me = this,
                 theme = me.theme();
             _.each(me.getBarColumns(), function(col) {
-                _.each(me.__seriesLabels[col.name()], function(lbl) {
+                _.each(me.__labels[col.name()], function(lbl) {
                     if (column !== undefined && col.name() == column.name()) {
                         lbl.addClass('hover');
                         if (lbl.hasClass('showOnHover')) lbl.show(0.5);
