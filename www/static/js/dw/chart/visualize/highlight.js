@@ -20,7 +20,8 @@ define(function() {
     $('.highlighted-series .badge').click(highlightSeriesClick);
 
     function initHighlightSeries() {
-        var vis = $('iframe').get(0).contentWindow.__dw ?
+        var vis = $('iframe').get(0).contentWindow.__dw &&
+                  $('iframe').get(0).contentWindow.__dw.vis ?
                   $('iframe').get(0).contentWindow.__dw.vis :
                   dw.backend.currentVis,
             s = $('#highlight-series'),
