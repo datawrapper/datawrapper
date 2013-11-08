@@ -54,6 +54,7 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
         initChartSize();
 
         options.init(chart, visJSON);
+        iframe.one('load', options.sync);
     }
 
     function onChartSave(chart) {
@@ -170,7 +171,8 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
                 setTimeout(function() {
                     loaded.resolve();
                     // trigger event in order to resync options
-                    loadVisDfd.resolve();
+                    loadVis();
+                    options.sync();
                     themes.updateUI();
                 }, 500);
             }

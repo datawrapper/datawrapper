@@ -4,16 +4,21 @@ define(
 
 function(initCustomColors, syncVisOptions) {
 
+    var _chart, _vis;
+
     return {
         init: function(chart, vis) {
-            // synchronize vis options as soon the vis has been loaded
-            dw.backend.__currentVisLoaded.done(function() {
-                dw.backend.currentVis.chart(chart);
-                syncVisOptions(vis, chart);
-                $('.select-row').hide();
-                initCustomColors(chart);
-            });
+            _chart = chart;
+            _vis = vis;
+        },
+
+        sync: function() {
+            syncVisOptions(_vis, _chart);
+            $('.select-row').hide();
+            initCustomColors(_chart);
         }
+
+
     };
 
 });
