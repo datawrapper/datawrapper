@@ -1,5 +1,5 @@
 {
-  "This activation token is invalid. Your email address is probably already \nactivated.":"Ce token d'activation n'est pas valide. Votre adresse e-mail est probablement déjà activée.",
+  "This activation token is invalid. Your email address is probably already \nactivated.":"Ce jeton d'activation n'est pas valide. Votre adresse e-mail est probablement déjà activée.",
   "Your email address %s has been successfully activated!":"Votre adresse e-mail %s a été activée avec succès !",
   "The invitation token is invalid.":"Le token d'invitation n'est pas valide.",
   "Sorry, but this content is not available in your language, yet.":"Désolé mais ce contenu n'est pas encore disponible dans votre langue.",
@@ -24,7 +24,7 @@
   "By the way, your login is %s.":"Votre identifiant est %s.",
   "Please activate JavaScript to see the interactive chart.":"Activez JavaScript pour voir la visualisation interactive.",
   "Your changes have been saved.":"Votre compte a été supprimé.",
-  "<b>CAUTION!<\/b> This chart belongs to <a href='\/admin\/charts\/%uid'>%email<\/\na>. Great power comes with great responsibility, so be careful with what \nyou're doing!":"<b>Attention!<\/b> Ce tableau appartient à <a href='\/admin\/charts\/%uid'>%email<\/\na>. Le pouvoir vient avec de grandes responsabilités, soyez donc prudent !",
+  "<b>CAUTION!<\/b> This chart belongs to <a href='\/admin\/charts\/%uid'>%email<\/\na>. Great power comes with great responsibility, so be careful with what \nyou're doing!":"<b>Attention !<\/b> Ce tableau appartient à <a href='\/admin\/charts\/%uid'>%email<\/\na>\n. Le pouvoir vient avec de grandes responsabilités, soyez donc prudent !",
   "Transpose data table":"Transposer les données",
   "Customize column format":"Customiser le format de colonne",
   "Describe your data":"Décrivez vos données",
