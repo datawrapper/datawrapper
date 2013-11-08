@@ -9,12 +9,13 @@ define([
     './visualize/enableInlineEditing',
     './visualize/liveUpdate',
     './visualize/updateSize',
+    './visualize/options',
     'js/misc/classify',
     './visualize/colorpicker',
     'js/misc/jquery.easing'],
 
 function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
-    initTabNav, enableInlineEditing, liveUpdate, updateSize, classify) {
+    initTabNav, enableInlineEditing, liveUpdate, updateSize, options, classify) {
 
     var _typeHasChanged = false,
         _themeHasChanged = false,
@@ -52,11 +53,8 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
         //
         initChartSize();
 
-        // init visualization options
-        require(['dw/chart/visualize/options'], function(options) {
-            options.init(chart, visJSON);
-        });
-
+        options.init(chart, visJSON);
+        iframe.one('load', options.sync);
     }
 
     function onChartSave(chart) {
@@ -170,12 +168,11 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
         $('#vis-options').load(
             '/xhr/'+chart.get('id')+'/vis-options?nocache='+Math.random(),
             function() {
-                setTimeout(function() {
-                    loaded.resolve();
-                    // trigger event in order to resync options
-                    loadVisDfd.resolve();
-                    themes.updateUI();
-                }, 500);
+                loaded.resolve();
+                // trigger event in order to resync options
+                loadVis();
+                options.sync();
+                themes.updateUI();
             }
         );
         return loaded.promise();
@@ -249,6 +246,7 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
         dw.backend.currentVis.chart(chart);
         dw.backend.currentVis.dataset = chart.dataset().reset();
         dw.backend.currentVis.meta = visMetas[chart.get('type')];
+        options.init(chart, visMetas[chart.get('type')]);
         loadVisDfd.resolve();
     }
 
