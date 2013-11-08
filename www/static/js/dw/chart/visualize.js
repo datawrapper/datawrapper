@@ -246,6 +246,7 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
         dw.backend.currentVis.chart(chart);
         dw.backend.currentVis.dataset = chart.dataset().reset();
         dw.backend.currentVis.meta = visMetas[chart.get('type')];
+        options.init(chart, visMetas[chart.get('type')]);
         loadVisDfd.resolve();
     }
 
