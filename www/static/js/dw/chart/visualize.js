@@ -168,13 +168,11 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
         $('#vis-options').load(
             '/xhr/'+chart.get('id')+'/vis-options?nocache='+Math.random(),
             function() {
-                setTimeout(function() {
-                    loaded.resolve();
-                    // trigger event in order to resync options
-                    loadVis();
-                    options.sync();
-                    themes.updateUI();
-                }, 500);
+                loaded.resolve();
+                // trigger event in order to resync options
+                loadVis();
+                options.sync();
+                themes.updateUI();
             }
         );
         return loaded.promise();
