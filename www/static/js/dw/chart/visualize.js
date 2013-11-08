@@ -9,12 +9,13 @@ define([
     './visualize/enableInlineEditing',
     './visualize/liveUpdate',
     './visualize/updateSize',
+    './visualize/options',
     'js/misc/classify',
     './visualize/colorpicker',
     'js/misc/jquery.easing'],
 
 function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
-    initTabNav, enableInlineEditing, liveUpdate, updateSize, classify) {
+    initTabNav, enableInlineEditing, liveUpdate, updateSize, options, classify) {
 
     var _typeHasChanged = false,
         _themeHasChanged = false,
@@ -52,11 +53,7 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
         //
         initChartSize();
 
-        // init visualization options
-        require(['dw/chart/visualize/options'], function(options) {
-            options.init(chart, visJSON);
-        });
-
+        options.init(chart, visJSON);
     }
 
     function onChartSave(chart) {
