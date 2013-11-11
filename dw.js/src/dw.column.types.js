@@ -210,12 +210,12 @@ dw.column.types.date = function(sample) {
                 parse: /^ *(0?[1-9]|1[0-2])([\-\/] ?)(0?[1-9]|[1-2]\d|3[01])\2(\d{4})$/,
                 precision: 'day'
             },
-            'DD.MM.YYYY': {
+            'DD/MM/YYYY': {
                 test: /^ *(0?[1-9]|[1-2]\d|3[01])([\-\.\/ ?])(0?[1-9]|1[0-2])\2([12]\d{3})$/,
                 parse: /^ *(0?[1-9]|[1-2]\d|3[01])([\-\.\/ ?])(0?[1-9]|1[0-2])\2(\d{4})$/,
                 precision: 'day'
             },
-            'YYYY-MM-DD': {
+            'YYYY/MM/DD': {
                 test: /^ *([12]\d{3})([\-\/\. ?])(0?[1-9]|1[0-2])\2(0?[1-9]|[1-2]\d|3[01])$/,
                 parse: /^ *(\d{4})([\-\/\. ?])(0?[1-9]|1[0-2])\2(0?[1-9]|[1-2]\d|3[01])$/,
                 precision: 'day'
@@ -337,7 +337,7 @@ dw.column.types.date = function(sample) {
                 case 'YYYY-WW': return dateFromIsoWeek(m[1], m[2], 1);
                 case 'YYYY-WW-d': return dateFromIsoWeek(m[1], m[2], m[3]);
                 case 'YYYY-MM-DD': return new Date(m[1], (m[3]-1), m[4]);
-                case 'DD.MM.YYYY': return new Date(m[4], (m[3]-1), m[1]);
+                case 'DD/MM/YYYY': return new Date(m[4], (m[3]-1), m[1]);
                 case 'MM/DD/YYYY': return new Date(m[4], (m[1]-1), m[3]);
                 case 'YYYY-MM-DD HH:MM': return new Date(m[1], (m[3]-1), m[4], m[5] || 0, m[6] || 0, 0);
                 case 'DD.MM.YYYY HH:MM': return new Date(m[4], (m[3]-1), m[1], m[5] || 0, m[6] || 0, 0);
