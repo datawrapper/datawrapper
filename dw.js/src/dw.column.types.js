@@ -40,6 +40,17 @@ dw.column.types.number = function(sample) {
             ' .': /^ *-?[0-9]{1,3}( [0-9]{3})*(\.[0-9]+)? *$/,
             ' ,': /^ *-?[0-9]{1,3}( [0-9]{3})*(,[0-9]+)? *$/
         },
+        formatLabels = {
+            '-.': '1234.56',
+            '-,': '1234,56',
+            ',.': '1,234.56',
+            '.,': '1.234,56',
+            ' .': '1 234.56',
+            ' ,': '1 234,56',
+            // excel sometimes produces a strange white-space:
+            ' .': '1 234.56',
+            ' ,': '1 234,56'
+        },
         // a list of strings that are recognized as 'not available'
         naStrings = {
             'na': 1,
@@ -118,6 +129,17 @@ dw.column.types.number = function(sample) {
 
         isValid: function(val) {
             return val === "" || naStrings[String(val).toLowerCase()] || _.isNumber(type.parse(val));
+        },
+
+        ambiguousFormats: function() {
+            var candidates = [];
+            _.each(matches, function(cnt, fmt) {
+                if (cnt == bestMatch[1]) {
+                    candidates.push([fmt, formatLabels[fmt]]); // key, label
+                }
+            });
+            return candidates;
+        },
 
         format: function(fmt) {
             if (arguments.length) {
@@ -360,6 +382,16 @@ dw.column.types.date = function(sample) {
 
         isValid: function(val) {
             return _.isDate(type.parse(val));
+        },
+
+        ambiguousFormats: function() {
+            var candidates = [];
+            _.each(matches, function(cnt, fmt) {
+                if (cnt == bestMatch[1]) {
+                    candidates.push([fmt, fmt]); // key, label
+                }
+            });
+            return candidates;
         }
     };
     return type;
