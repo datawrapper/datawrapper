@@ -118,6 +118,13 @@ dw.column.types.number = function(sample) {
 
         isValid: function(val) {
             return val === "" || naStrings[String(val).toLowerCase()] || _.isNumber(type.parse(val));
+
+        format: function(fmt) {
+            if (arguments.length) {
+                format = fmt;
+                return type;
+            }
+            return format;
         }
     };
     return type;
@@ -324,7 +331,15 @@ dw.column.types.date = function(sample) {
         fromNum: function(i) { return new Date(i); },
         errors: function() { return errors; },
         name: function() { return 'date'; },
-        format: function() { return format; },
+
+        format: function(fmt) {
+            if (arguments.length) {
+                format = fmt;
+                return type;
+            }
+            return format;
+        },
+
         precision: function() { return knownFormats[format].precision; },
 
         // returns a function for formatting dates
