@@ -374,7 +374,7 @@ dw.column.types.date = function(sample) {
                 case 'quarter': return function(d) { return !_.isDate(d) ? d : d.getFullYear() + ' Q'+(d.getMonth()/3 + 1); };
                 case 'month': return function(d) { return !_.isDate(d) ? d : Globalize.format(d, 'MMM yy'); };
                 case 'week': return function(d) { return !_.isDate(d) ? d : dateToIsoWeek(d).slice(0,2).join(' W'); };
-                case 'day': return function(d) { return !_.isDate(d) ? d : Globalize.format(d, 'd'); };
+                case 'day': return function(d, verbose) { return !_.isDate(d) ? d : Globalize.format(d, verbose ? 'D' : 'd'); };
                 case 'day-minutes': return function(d) { return !_.isDate(d) ? d : Globalize.format(d, M_pattern).replace(' ', '&nbsp;')+' - '+ Globalize.format(d, 't').replace(' ', '&nbsp;'); };
                 case 'day-seconds': return function(d) { return !_.isDate(d) ? d : Globalize.format(d, 'T').replace(' ', '&nbsp;'); };
             }
