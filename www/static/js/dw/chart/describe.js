@@ -44,6 +44,7 @@ define(['handsontable'], function(handsontable) {
                                 }
                                 if (property === 'type') {
                                     dataset.column(name).type(value);
+                                    showColumnSettings();
                                 }
                             } else {
                                 if (value === undefined) delete columnFormats[name];
@@ -465,6 +466,8 @@ define(['handsontable'], function(handsontable) {
                     } else {
                         inputFmtDiv.hide();
                     }
+                } else {
+                    inputFmtDiv.hide();
                 }
 
                 if(dataset.column(serie).type() == 'number') {
