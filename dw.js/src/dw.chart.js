@@ -59,7 +59,6 @@ dw.chart = function(attributes) {
                 transpose: chart.get('metadata.data.transpose', false)
             });
 
-
             return datasource.dataset().pipe(function(ds) {
                 chart.dataset(ds);
                 return ds;
@@ -213,10 +212,11 @@ dw.chart = function(attributes) {
 
         var columnFormats = chart.get('metadata.data.column-format', {});
         _.each(columnFormats, function(columnFormat, key) {
-            if (columnFormat.type) {
-                if (dataset.hasColumn(key)) {
-                    dataset.column(key).type(columnFormat.type);
-                }
+            if (columnFormat.type && dataset.hasColumn(key)) {
+                dataset.column(key).type(columnFormat.type);
+            }
+            if (columnFormat['input-format'] && dataset.hasColumn(key)) {
+                dataset.column(key).type(true).format(columnFormat['input-format']);
             }
         });
         return dataset;
