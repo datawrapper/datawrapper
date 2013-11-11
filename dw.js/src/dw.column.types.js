@@ -8,7 +8,8 @@ dw.column.types.text = function() {
         errors: function() { return 0; },
         name: function() { return 'text'; },
         formatter: function() { return _.identity; },
-        isValid: function() { return true; }
+        isValid: function() { return true; },
+        format: function() { }
     };
 };
 
