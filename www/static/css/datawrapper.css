@@ -923,6 +923,13 @@ form.well form {
     margin-bottom: 5px;
 }
 
+.form-horizontal.compact .control-label {
+    width: 140px;
+}
+.form-horizontal.compact .controls {
+    margin-left: 150px;
+}
+
 .icon-rotate {
     background: url(../img/icon-rotate.png) no-repeat;
     width: 16px;
