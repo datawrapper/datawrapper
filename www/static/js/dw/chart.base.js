@@ -10,7 +10,8 @@
 (function() {
 
     var chart,
-        old_chart_attributes;
+        old_chart_attributes,
+        reload_timer;
 
     function renderChart() {
         if (__dw.vis && !__dw.vis.supportsSmartRendering()) {
@@ -71,7 +72,6 @@
     }
 
     function initResizeHandler() {
-        var reload_timer;
         // IE continuosly reloads the chart for some strange reasons
         if (navigator.userAgent.match(/iPad|msie/i) == null) {
             $(window).off('resize').on('resize', function() {
@@ -85,20 +85,30 @@
     }
 
     function initFullscreen() {
-        var isFullScreen = false;
-        $(window).bind('resize', function() {
-            if (isFullScreen != fullScreenApi.isFullScreen()) { // video fullscreen mode has changed
-                isFullScreen = fullScreenApi.isFullScreen();
+        var wasFullScreen = fullScreenApi.isFullScreen(),
+            resizeTimer;
 
-                if (isFullScreen) {
-                    $('.chart').addClass('fullscreen');
-                    // you have just ENTERED full screen video
-                } else {
+        $(window).on('resize', function() {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(resized, 100);
+        });
+
+        function resized() {
+            if (wasFullScreen != fullScreenApi.isFullScreen()) { // video fullscreen mode has changed
+                if (wasFullScreen) {
                     $('.chart').removeClass('fullscreen');
                     // you have just EXITED full screen video
+                } else {
+                    $('.chart').addClass('fullscreen');
+                    // you have just ENTERED full screen video
                 }
+                if (reload_timer) clearTimeout(reload_timer);
+                reload_timer = setTimeout(function() {
+                    renderChart();
+                }, 200);
+                wasFullScreen = fullScreenApi.isFullScreen();
             }
-        });
+        }
 
         $("a[data-toggle='fullscreen']").click(function(e) {
             if (fullScreenApi.supportsFullScreen) {
