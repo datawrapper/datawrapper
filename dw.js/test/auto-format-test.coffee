@@ -49,7 +49,7 @@ for t in test_data
     key = 'testing auto-format #'+(i++)
     add_test key, t
 
-vows
-    .describe('Testing number column auto-formatting')
-    .addBatch(batch)
-    .export module
+# vows
+#     .describe('Testing number column auto-formatting')
+#     .addBatch(batch)
+#     .export module
