@@ -3,6 +3,7 @@ CHANGELOG
 
 ### 1.6.1
 * allow users to select column input format (to resolve ambiguous formats)
+* bugfixes
 
 ### 1.6
 * fixed theme inheritance, no more deep-copying of arrays
