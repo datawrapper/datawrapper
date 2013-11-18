@@ -13,14 +13,13 @@
     <link rel="stylesheet" type="text/css" href="/static/plugins/theme-default/default.css"></link>
 
     <script type="text/javascript" src="/static/vendor/globalize/globalize.js"></script>
+    <script type="text/javascript" src="/static/plugins/visualization-raphael-chart/vendor/chroma.min.js"></script>
 
     <script type="text/javascript" src="/static/js/dw-2.0.js"></script>
-    <script type="text/javascript" src="/static/js/dw-backend-2.0.js"></script>
+    <script type="text/javascript" src="/static/js/dw-backend.js"></script>
 
     <script type="text/javascript" src="/static/plugins/theme-default/default.js"></script>
     <script type="text/javascript" src="/static/vendor/d3js/d3-light.js"></script>
-    <script type="text/javascript" src="/static/plugins/visualization-raphael-chart/vendor/raphael-2.1.2.min.js"></script>
-    <script type="text/javascript" src="/static/plugins/visualization-raphael-chart/vendor/chroma.min.js"></script>
     <script type="text/javascript" src="/static/plugins/visualization-raphael-chart/raphael-chart.js"></script>
     <script type="text/javascript" src="/static/plugins/visualization-line-chart/line-chart.js"></script>
     <script type="text/javascript" src="/static/plugins/visualization-pie-chart/pie-chart.js"></script>
@@ -28,7 +27,7 @@
     <script type="text/javascript" src="/static/plugins/visualization-column-charts/column-chart.js"></script>
 
     <script type="text/javascript">
-    $(function() {
+    dw.backend.ready(function() {
 
         function lineChart(cont, data, smooth) {
             cont = $(cont);
