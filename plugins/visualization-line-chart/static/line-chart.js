@@ -688,7 +688,7 @@
                 if (vis.get('fill-below', false) && all_paths.length == 1 && all_paths[0].length == 1) {
                     if (all_paths[0].length == 1) {
                         // fill area below lines
-                        addFill(all_series[0], all_paths[0][0] + 'V'+scales.y(0)+'H'+scales.x(axesDef.x.val(0)));
+                        addFill(all_series[0], all_paths[0][0] + 'V'+scales.y(0)+'H'+scales.x(useDateFormat() ? axesDef.x.val(0) : 0));
                     }
                 }
 
