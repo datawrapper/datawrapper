@@ -14,10 +14,11 @@ var dw = dw || {};
         ready: backendIsReady.add
     };
 
-    require(['dw/backend'], function(backend) {
+    require(['dw/backend', 'raphael'], function(backend, Raphael) {
+        window.Raphael = Raphael;
         _.extend(dw.backend, backend);
         $(function() {
-            dw.backend.init();
+            backend.init();
             backendIsReady.fire();
         });
     });
