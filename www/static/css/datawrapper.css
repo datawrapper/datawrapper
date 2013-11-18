@@ -723,6 +723,10 @@ dl.dl-horizontal dd {
     top: 32px;
 }
 
+#vis-options .vis-option-group.vis-option-type-select-axis-column .vis-option-help {
+    top: 3px;
+}
+
 #vis-options .vis-option-group .vis-option-help:hover {
     text-decoration: none;
 }
@@ -763,6 +767,13 @@ dl.dl-horizontal dd {
 
 #vis-options .controls {
     margin-left: 50%;
+}
+
+#vis-options .vis-option-type-select-axis-column .control-label {
+    width: 30%;
+}
+#vis-options .vis-option-type-select-axis-column .controls {
+    margin-left: 35%;
 }
 
 .highlighted-series li {
@@ -1523,4 +1534,10 @@ label.separator {
 .number-stepper .btn-plus {
     padding-left: 7px;
     padding-right: 7px;
+}
+.hide-smart {
+    position: absolute;
+    left: -10000px;
+    top: 0;
+    width: 100%;
 }
