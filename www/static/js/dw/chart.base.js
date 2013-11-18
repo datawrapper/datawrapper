@@ -71,15 +71,19 @@
         return vis;
     }
 
+    function reloadLater() {
+        clearTimeout(reload_timer);
+        reload_timer = setTimeout(function() {
+            renderChart();
+        }, 300);
+    }
+
     function initResizeHandler() {
         // IE continuosly reloads the chart for some strange reasons
-        if (navigator.userAgent.match(/iPad|msie/i) == null) {
-            $(window).off('resize').on('resize', function() {
+        if (navigator.userAgent.match(/iPad|msie/i) === null) {
+            $(window).on('resize', function() {
                 // IMPORTANT: throttle resize events, do not remover timeout
-                if (reload_timer) clearTimeout(reload_timer);
-                reload_timer = setTimeout(function() {
-                    renderChart();
-                }, 300);
+                reloadLater();
             });
         }
     }
@@ -90,7 +94,7 @@
 
         $(window).on('resize', function() {
             clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(resized, 100);
+            resizeTimer = setTimeout(resized, 300);
         });
 
         function resized() {
@@ -102,10 +106,6 @@
                     $('.chart').addClass('fullscreen');
                     // you have just ENTERED full screen video
                 }
-                if (reload_timer) clearTimeout(reload_timer);
-                reload_timer = setTimeout(function() {
-                    renderChart();
-                }, 200);
                 wasFullScreen = fullScreenApi.isFullScreen();
             }
         }
@@ -128,15 +128,7 @@
             }
             $.when($.ready(), chartLoaded()).done(renderChart);
         },
-        render: (function() {
-            var timeout;
-            return function() {
-                clearTimeout(timeout);
-                timeout = setTimeout(function() {
-                    renderChart();
-                }, 200);
-            };
-        })()
+        render: reloadLater
     };
 
 })();
