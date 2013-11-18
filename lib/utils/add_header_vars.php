@@ -41,7 +41,7 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
             $mycharts['dropdown'][] = array(
                 'url' => '/chart/'.$chart->getId().'/visualize#tell-the-story',
                 'title' => '<img width="30" src="'.($chart->hasPreview() ? $chart->thumbUrl(true) : '').'" class="icon" /> '
-                    . '<span>' . $chart->getTitle() . '</span>'
+                    . '<span>' . strip_tags($chart->getTitle()) . '</span>'
             );
         }
         $mycharts['dropdown'][] = 'divider';
