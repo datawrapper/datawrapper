@@ -22,6 +22,7 @@ define(['handsontable'], function(handsontable) {
                     },
                     revert: function() {
                         chart.set('metadata.data.changes', []);
+                        chart.set('metadata.data.column-format', {});
                     }
                 },
 
@@ -33,9 +34,17 @@ define(['handsontable'], function(handsontable) {
                                 columnFormats[name] = {};
                             }
                             if (property) {
-                                columnFormats[name][property] = value;
+                                if (value === undefined) {
+                                    delete columnFormats[name][property];
+                                    if (!_.keys(columnFormats[name]).length) {
+                                        delete columnFormats[name];
+                                    }
+                                } else {
+                                    columnFormats[name][property] = value;
+                                }
                                 if (property === 'type') {
                                     dataset.column(name).type(value);
+                                    showColumnSettings();
                                 }
                             } else {
                                 if (value === undefined) delete columnFormats[name];
@@ -397,6 +406,7 @@ define(['handsontable'], function(handsontable) {
             var $input = $(selector);
             if(allEqual(formats, series, property)) {
                 var val = formats[series[0]] && formats[series[0]][property];
+                if (val === undefined && $input.is('select')) val = '-';
                 $input.val(val).removeClass('unresolved');
             }
             else {
@@ -436,6 +446,28 @@ define(['handsontable'], function(handsontable) {
                 }
                 else {
                     $('#column-type').val('-');
+                }
+
+                var fstCol = dataset.column(serie),
+                    inputFmtDiv = $('#select-input-format'),
+                    inputFmt = $('#input-format');
+
+                if (fstCol.type() != 'text') {
+                    var fmts = fstCol.type(true).ambiguousFormats();
+                    console.log(fmts);
+                    if (fmts.length > 1) {
+                        $('option[value!=-]', inputFmt).remove();
+                        inputFmtDiv.show();
+                        _.each(fmts, function(fmt) {
+                            $('<option />').attr('value', fmt[0]).html(fmt[1]).appendTo(inputFmt);
+                        });
+                        fillInField('#input-format', 'input-format');
+                        syncColumnFormat('#input-format', 'input-format');
+                    } else {
+                        inputFmtDiv.hide();
+                    }
+                } else {
+                    inputFmtDiv.hide();
                 }
 
                 if(dataset.column(serie).type() == 'number') {

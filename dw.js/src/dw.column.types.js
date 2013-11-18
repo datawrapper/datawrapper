@@ -8,7 +8,8 @@ dw.column.types.text = function() {
         errors: function() { return 0; },
         name: function() { return 'text'; },
         formatter: function() { return _.identity; },
-        isValid: function() { return true; }
+        isValid: function() { return true; },
+        format: function() { }
     };
 };
 
@@ -38,6 +39,17 @@ dw.column.types.number = function(sample) {
             // excel sometimes produces a strange white-space:
             ' .': /^ *-?[0-9]{1,3}( [0-9]{3})*(\.[0-9]+)? *$/,
             ' ,': /^ *-?[0-9]{1,3}( [0-9]{3})*(,[0-9]+)? *$/
+        },
+        formatLabels = {
+            '-.': '1234.56',
+            '-,': '1234,56',
+            ',.': '1,234.56',
+            '.,': '1.234,56',
+            ' .': '1 234.56',
+            ' ,': '1 234,56',
+            // excel sometimes produces a strange white-space:
+            ' .': '1 234.56',
+            ' ,': '1 234,56'
         },
         // a list of strings that are recognized as 'not available'
         naStrings = {
@@ -117,6 +129,24 @@ dw.column.types.number = function(sample) {
 
         isValid: function(val) {
             return val === "" || naStrings[String(val).toLowerCase()] || _.isNumber(type.parse(val));
+        },
+
+        ambiguousFormats: function() {
+            var candidates = [];
+            _.each(matches, function(cnt, fmt) {
+                if (cnt == bestMatch[1]) {
+                    candidates.push([fmt, formatLabels[fmt]]); // key, label
+                }
+            });
+            return candidates;
+        },
+
+        format: function(fmt) {
+            if (arguments.length) {
+                format = fmt;
+                return type;
+            }
+            return format;
         }
     };
     return type;
@@ -180,12 +210,12 @@ dw.column.types.date = function(sample) {
                 parse: /^ *(0?[1-9]|1[0-2])([\-\/] ?)(0?[1-9]|[1-2]\d|3[01])\2(\d{4})$/,
                 precision: 'day'
             },
-            'DD.MM.YYYY': {
+            'DD/MM/YYYY': {
                 test: /^ *(0?[1-9]|[1-2]\d|3[01])([\-\.\/ ?])(0?[1-9]|1[0-2])\2([12]\d{3})$/,
                 parse: /^ *(0?[1-9]|[1-2]\d|3[01])([\-\.\/ ?])(0?[1-9]|1[0-2])\2(\d{4})$/,
                 precision: 'day'
             },
-            'YYYY-MM-DD': {
+            'YYYY/MM/DD': {
                 test: /^ *([12]\d{3})([\-\/\. ?])(0?[1-9]|1[0-2])\2(0?[1-9]|[1-2]\d|3[01])$/,
                 parse: /^ *(\d{4})([\-\/\. ?])(0?[1-9]|1[0-2])\2(0?[1-9]|[1-2]\d|3[01])$/,
                 precision: 'day'
@@ -307,7 +337,7 @@ dw.column.types.date = function(sample) {
                 case 'YYYY-WW': return dateFromIsoWeek(m[1], m[2], 1);
                 case 'YYYY-WW-d': return dateFromIsoWeek(m[1], m[2], m[3]);
                 case 'YYYY-MM-DD': return new Date(m[1], (m[3]-1), m[4]);
-                case 'DD.MM.YYYY': return new Date(m[4], (m[3]-1), m[1]);
+                case 'DD/MM/YYYY': return new Date(m[4], (m[3]-1), m[1]);
                 case 'MM/DD/YYYY': return new Date(m[4], (m[1]-1), m[3]);
                 case 'YYYY-MM-DD HH:MM': return new Date(m[1], (m[3]-1), m[4], m[5] || 0, m[6] || 0, 0);
                 case 'DD.MM.YYYY HH:MM': return new Date(m[4], (m[3]-1), m[1], m[5] || 0, m[6] || 0, 0);
@@ -323,7 +353,15 @@ dw.column.types.date = function(sample) {
         fromNum: function(i) { return new Date(i); },
         errors: function() { return errors; },
         name: function() { return 'date'; },
-        format: function() { return format; },
+
+        format: function(fmt) {
+            if (arguments.length) {
+                format = fmt;
+                return type;
+            }
+            return format;
+        },
+
         precision: function() { return knownFormats[format].precision; },
 
         // returns a function for formatting dates
@@ -336,7 +374,7 @@ dw.column.types.date = function(sample) {
                 case 'quarter': return function(d) { return !_.isDate(d) ? d : d.getFullYear() + ' Q'+(d.getMonth()/3 + 1); };
                 case 'month': return function(d) { return !_.isDate(d) ? d : Globalize.format(d, 'MMM yy'); };
                 case 'week': return function(d) { return !_.isDate(d) ? d : dateToIsoWeek(d).slice(0,2).join(' W'); };
-                case 'day': return function(d) { return !_.isDate(d) ? d : Globalize.format(d, 'd'); };
+                case 'day': return function(d, verbose) { return !_.isDate(d) ? d : Globalize.format(d, verbose ? 'D' : 'd'); };
                 case 'day-minutes': return function(d) { return !_.isDate(d) ? d : Globalize.format(d, M_pattern).replace(' ', '&nbsp;')+' - '+ Globalize.format(d, 't').replace(' ', '&nbsp;'); };
                 case 'day-seconds': return function(d) { return !_.isDate(d) ? d : Globalize.format(d, 'T').replace(' ', '&nbsp;'); };
             }
@@ -344,6 +382,16 @@ dw.column.types.date = function(sample) {
 
         isValid: function(val) {
             return _.isDate(type.parse(val));
+        },
+
+        ambiguousFormats: function() {
+            var candidates = [];
+            _.each(matches, function(cnt, fmt) {
+                if (cnt == bestMatch[1]) {
+                    candidates.push([fmt, fmt]); // key, label
+                }
+            });
+            return candidates;
         }
     };
     return type;

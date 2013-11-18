@@ -72,6 +72,16 @@ dw.backend.ready(function() {
                                 <!--{% trans 'Text' %} {% trans 'Number' %}{% trans 'Date' %} -->
                             </div>
                         </div>
+
+                        <div id="select-input-format" class="control-group">
+                            <label class="control-label" for="input-format">{% trans "Input format" %}</label>
+
+                            <div class="controls">
+                                <select id="input-format" style="width:90%">
+                                    <option value="-">{% trans "auto" %}</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
 
                     <div id="number-column-options" class="form-horizontal compact">
