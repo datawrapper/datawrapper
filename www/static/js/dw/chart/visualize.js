@@ -40,7 +40,6 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
         syncUI();
 
         chart.load().done(onDatasetLoaded);
-
         iframe.load(iframeLoaded);
         iframe.ready(iframeReady);
 
@@ -81,6 +80,7 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
         if (_themeHasChanged) {
             // load new visualization options
             themes.load().done(function() {
+                $('body').trigger('dw:themes-loaded');
                 loadOptions().done(function() {
                     loadVis();
                     themes.updateUI();
