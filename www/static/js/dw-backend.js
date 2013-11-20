@@ -9,9 +9,16 @@ var dw = dw || {};
 
 (function() {
 
-    var backendIsReady = $.Callbacks();
+    var callbacks = {};
+
     dw.backend = {
-        ready: backendIsReady.add
+        on: onEvent,
+        off: offEvent,
+        fire: fireEvent,
+        // short-hand callback
+        ready: function(cb) {
+            dw.backend.on('ready', cb);
+        },
     };
 
     require(['dw/backend', 'raphael'], function(backend, Raphael) {
@@ -19,8 +26,33 @@ var dw = dw || {};
         _.extend(dw.backend, backend);
         $(function() {
             backend.init();
-            backendIsReady.fire();
+            dw.backend.fire('ready');
         });
     });
+
+    function onEvent(evt, func) {
+        if (!callbacks[evt]) callbacks[evt] = $.Callbacks();
+        callbacks[evt].add(func);
+        return dw.backend;
+    }
+
+    function offEvent(evt, func) {
+        if (!callbacks[evt]) return;
+        if (arguments.length == 1) {
+            // remove all listeners
+            callbacks[evt] = $.Callbacks();
+            return;
+        }
+        if ($.isFunction(func)) {
+            // remove one particular listener
+            callbacks[evt].remove(func);
+        }
+        return dw.backend;
+    }
+
+    function fireEvent(evt, params) {
+        if (callbacks[evt]) callbacks[evt].fire(params);
+        return dw.backend;
+    }
 
 }).call(this);
