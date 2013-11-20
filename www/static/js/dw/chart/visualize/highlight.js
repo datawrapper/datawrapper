@@ -27,7 +27,9 @@ define(function() {
             s = $('#highlight-series'),
             s2 = $('.highlighted-series');
         s.find("option[value!='---']").remove();
-        _.each(vis.keys(), function(key) {
+        var keys = vis.keys();
+        keys.sort();
+        _.each(keys, function(key) {
             s.append('<option value="'+key+'">'+key+(vis.keyLabel(key) != key ? ' ('+vis.keyLabel(key)+')' : '')+'</option>');
         });
         s.off('change').change(function() {
