@@ -33,6 +33,7 @@ var dw = dw || {};
     function onEvent(evt, func) {
         if (!callbacks[evt]) callbacks[evt] = $.Callbacks();
         callbacks[evt].add(func);
+        return dw.backend;
     }
 
     function offEvent(evt, func) {
@@ -46,10 +47,12 @@ var dw = dw || {};
             // remove one particular listener
             callbacks[evt].remove(func);
         }
+        return dw.backend;
     }
 
     function fireEvent(evt, params) {
         if (callbacks[evt]) callbacks[evt].fire(params);
+        return dw.backend;
     }
 
 }).call(this);
