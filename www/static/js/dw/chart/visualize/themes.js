@@ -36,7 +36,7 @@ define(function() {
                 }
             } else {
                 dfd.resolve();
-                $('body').trigger('dw:themes-loaded');
+                dw.backend.fire('all-themes-loaded');
                 showThemeColors();
             }
         }

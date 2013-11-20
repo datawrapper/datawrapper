@@ -72,7 +72,9 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
         if (_typeHasChanged) {
             // remove all notifications
             $("#notifications .notification").fadeOutAndRemove();
+            dw.backend.fire('type-changed');
             loadOptions().done(function() {
+                dw.backend.fire('type-changed-and-options-reloaded');
                 loadVis();
             });
         }
@@ -80,7 +82,7 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
         if (_themeHasChanged) {
             // load new visualization options
             themes.load().done(function() {
-                $('body').trigger('dw:themes-loaded');
+                dw.backend.fire('theme-changed-and-loaded');
                 loadOptions().done(function() {
                     loadVis();
                     themes.updateUI();
@@ -89,7 +91,9 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
         }
 
         if (_axesHaveChanged || _transposed) {
+            dw.backend.fire('axes-changed-or-transposed');
             loadOptions().done(function() {
+                dw.backend.fire('axes-changed-or-transposed-and-options-reloaded');
                 loadVis();
             });
         }
