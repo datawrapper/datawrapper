@@ -128,6 +128,7 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
     }
 
     function iframeLoaded() {
+        dw.backend.fire('vis-loaded');
         updateVisBackground();
         var win = $('#iframe-vis').get(0).contentWindow,
             chk;
@@ -137,6 +138,7 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
                 clearInterval(chk);
                 liveUpdate.init(iframe);
                 win.__dw.vis.rendered().done(function() {
+                    dw.backend.fire('vis-loaded-and-rendered');
                     checkChartHeight();
                 });
             }

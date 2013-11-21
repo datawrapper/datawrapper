@@ -13,6 +13,7 @@ var dw = dw || {};
 
     dw.backend = {
         on: onEvent,
+        one: oneEvent,
         off: offEvent,
         fire: fireEvent,
         // short-hand callback
@@ -53,6 +54,16 @@ var dw = dw || {};
     function fireEvent(evt, params) {
         if (callbacks[evt]) callbacks[evt].fire(params);
         return dw.backend;
+    }
+
+    // fires an event only once
+    function oneEvent(evt, func) {
+        function removeListener() {
+            dw.backend.off(evt, func);
+            dw.backend.off(evt, removeListener);
+        }
+        dw.backend.on(evt, func);
+        dw.backend.on(evt, removeListener);
     }
 
 }).call(this);
