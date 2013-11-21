@@ -1,4 +1,11 @@
 #!/bin/bash
+
+#
+# this script parses the Datawrapper source code for
+# translations (using xgettext) and converts the po-files
+# to JSON
+#
+
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR
 rm -Rf tmpl_cache/*
