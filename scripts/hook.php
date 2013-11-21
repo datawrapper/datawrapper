@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Daily cron job
+ * Generic hook script
  */
 
 define('ROOT_PATH', dirname(dirname(__FILE__)) . '/');

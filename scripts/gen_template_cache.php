@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * this scripts re-generates the PHP cache for all Twig templates
+ * this step is needed because xgettext cannot parse Twig templates
+ * (but PHP scripts)
+ */
+
 define('ROOT_PATH', dirname(dirname(__FILE__)) . '/');
 define('NO_SLIM', 1);
 
