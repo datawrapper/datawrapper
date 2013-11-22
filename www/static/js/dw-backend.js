@@ -22,8 +22,8 @@ var dw = dw || {};
         },
     };
 
-    require(['dw/backend', 'raphael'], function(backend, Raphael) {
-        window.Raphael = Raphael;
+    require(['dw/backend'], function(backend) {
+        //window.Raphael = Raphael;
         _.extend(dw.backend, backend);
         $(function() {
             backend.init();

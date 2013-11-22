@@ -15,6 +15,10 @@ define(function() {
         themes = _themes;
     }
 
+    /*
+     * loads the currently selected theme and all its parent themes
+     * returns a promise that is resolved as the loading is complete
+     */
     function load() {
         var dfd = $.Deferred(),
             themeid = $('#select-theme').val(),
@@ -35,8 +39,8 @@ define(function() {
                     loadNext();
                 }
             } else {
+                dw.backend.fire('theme-loaded');
                 dfd.resolve();
-                dw.backend.fire('all-themes-loaded');
                 showThemeColors();
             }
         }

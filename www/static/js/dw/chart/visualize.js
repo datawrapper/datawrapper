@@ -22,6 +22,7 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
         _axesHaveChanged = false,
         _transposed = false,
         __thumbTimer,
+        _optionsSynchronized = false,
         __updateSizeTimer,
         chart = dw.backend.currentChart,
         visMetas = {},
@@ -41,24 +42,20 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
 
         chart.load().done(onDatasetLoaded);
         iframe.load(iframeLoaded);
-        iframe.ready(iframeReady);
 
         // initialize some UI actions
         initTabNav();
         initTransposeLink();
         initVisSelector();
         initResizeChart();
-
-        //
         initChartSize();
-
-        options.init(chart, visJSON);
-        iframe.one('load', options.sync);
     }
 
     function onChartSave(chart) {
         if (_themeHasChanged) {
+            // update the iframe background color after theme changed
             iframe.one('load', updateVisBackground);
+            // update iframe size according to theme default
             _.some(themes.all(), function(theme) {
                 if (theme.id == chart.get('theme')) {
                     var w = theme.default_width || chart.get('metadata.publish.embed-width'),
@@ -67,20 +64,8 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
                     return true;
                 }
             });
-        }
 
-        if (_typeHasChanged) {
-            // remove all notifications
-            $("#notifications .notification").fadeOutAndRemove();
-            dw.backend.fire('type-changed');
-            loadOptions().done(function() {
-                dw.backend.fire('type-changed-and-options-reloaded');
-                loadVis();
-            });
-        }
-
-        if (_themeHasChanged) {
-            // load new visualization options
+            // load themes
             themes.load().done(function() {
                 dw.backend.fire('theme-changed-and-loaded');
                 loadOptions().done(function() {
@@ -90,10 +75,19 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
             });
         }
 
-        if (_axesHaveChanged || _transposed) {
-            dw.backend.fire('axes-changed-or-transposed');
+        if (_typeHasChanged) {
+            dw.backend.fire('type-changed');
+            // remove all notifications
+            $("#notifications .notification").fadeOutAndRemove();
+        }
+
+        if (_axesHaveChanged) dw.backend.fire('axes-changed');
+        if (_transposed) dw.backend.fire('dataset-transposed');
+
+        if (_axesHaveChanged || _transposed || _typeHasChanged) {
+            // reload options
             loadOptions().done(function() {
-                dw.backend.fire('axes-changed-or-transposed-and-options-reloaded');
+                dw.backend.fire('options-reloaded');
                 loadVis();
             });
         }
@@ -130,37 +124,37 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
     function iframeLoaded() {
         dw.backend.fire('vis-loaded');
         updateVisBackground();
-        var win = $('#iframe-vis').get(0).contentWindow,
+        var win = iframe.get(0).contentWindow,
             chk;
 
-        chk = setInterval(function() {  // wait a little more
+        // periodically check if vis is initialized in iframe
+        chk = setInterval(function() {
             if (win.__dw.vis) {
                 clearInterval(chk);
-                liveUpdate.init(iframe);
-                win.__dw.vis.rendered().done(function() {
-                    dw.backend.fire('vis-loaded-and-rendered');
-                    checkChartHeight();
-                });
+                iframeReady();
             }
         }, 100);
-
-        $(win).unload(function() {
-            iframe.ready(iframeReady);
-        });
     }
 
+    /*
+     * called as soon the __dw.vis object is available
+     * inside the reloaded iframe
+     */
     function iframeReady() {
-        var iframe_window = $('#iframe-vis').get(0).contentWindow;
+        dw.backend.fire('vis-ready');
+        var win = iframe.get(0).contentWindow;
+
+        liveUpdate.init(iframe);
+
+        win.__dw.vis.rendered().done(visualizationRendered);
+
         $(window).on('message', function(evt) {
             evt = evt.originalEvent;
-            if (evt.source == iframe_window) {
+            if (evt.source == win) {
                 if (evt.data == 'datawrapper:vis:init') {
-                    iframe_window.dw_alert = dw.backend.alert;
-                    iframe_window.__dw.backend = dw.backend;
-                }
-                if (evt.data == 'datawrapper:vis:rendered') {
-                    enableInlineEditing($('#iframe-vis'), chart);
-                    if (initHighlightSeries) initHighlightSeries();
+                    dw.backend.fire('vis-msg-init');
+                    win.dw_alert = dw.backend.alert;
+                    win.__dw.backend = dw.backend;
                 }
                 if (evt.data.slice(0, 7) == 'notify:') {
                     dw.backend.notify(evt.data.slice(7));
@@ -169,19 +163,36 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
         });
     }
 
+    /*
+     * called as soon the vis is rendered (after iframe reload)
+     */
+    function visualizationRendered() {
+        dw.backend.fire('vis-rendered');
+        checkChartHeight();
+        enableInlineEditing(iframe, chart);
+        if (initHighlightSeries) initHighlightSeries();
+    }
+
+    /*
+     * reload the chart specific options
+     */
     function loadOptions() {
         var loaded = $.Deferred();
+        _optionsSynchronized = false;
         $('#vis-options').load(
             '/xhr/'+chart.get('id')+'/vis-options?nocache='+Math.random(),
             function() {
                 loaded.resolve();
                 // trigger event in order to resync options
-                loadVis();
-                options.sync();
-                themes.updateUI();
+                optionsLoaded();
             }
         );
         return loaded.promise();
+    }
+
+    function optionsLoaded() {
+        loadVis();
+        options.sync();
     }
 
     function initTransposeLink() {
@@ -246,15 +257,6 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
         $('#iframe-wrapper').height(ch);
     }
 
-    /** Set into `dw.backend.currentVis` the edited visualization (editor side) */
-    function loadVis() {
-        dw.backend.currentVis = dw.visualization(chart.get('type'));
-        dw.backend.currentVis.chart(chart);
-        dw.backend.currentVis.dataset = chart.dataset().reset();
-        dw.backend.currentVis.meta = visMetas[chart.get('type')];
-        options.init(chart, visMetas[chart.get('type')]);
-        loadVisDfd.resolve();
-    }
 
     function scheduleThumbnail() {
         clearTimeout(__thumbTimer);
@@ -264,6 +266,7 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
     }
 
     function onDatasetLoaded() {
+        dw.backend.fire('dataset-loaded');
         loadVis();
         if (initHighlightSeries) initHighlightSeries();
         _.each(themes.all(), function(theme) {
@@ -276,6 +279,21 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
         });
         themes.load();
     }
+
+    /** Set into `dw.backend.currentVis` the edited visualization (editor side) */
+    function loadVis() {
+        dw.backend.currentVis = dw.visualization(chart.get('type'));
+        dw.backend.currentVis.chart(chart);
+        dw.backend.currentVis.dataset = chart.dataset().reset();
+        dw.backend.currentVis.meta = visMetas[chart.get('type')];
+        options.init(chart, visMetas[chart.get('type')]);
+        if (!_optionsSynchronized) {
+            _optionsSynchronized = true;
+            options.sync();
+        }
+        loadVisDfd.resolve();
+    }
+
 
     function updateVisBackground() {  // and show msg if chart needs more space
         var iframe = $('#iframe-vis').contents(),
