@@ -1543,7 +1543,7 @@ dw.chart = function(attributes) {
                 pt = attributes;
 
             _.some(keys, function(key) {
-                if (_.isUndefined(pt)) return true; // break out of the loop
+                if (_.isUndefined(pt) || _.isNull(pt)) return true; // break out of the loop
                 pt = pt[key];
                 return false;
             });
@@ -1557,7 +1557,7 @@ dw.chart = function(attributes) {
 
             // resolve property until the parent dict
             _.each(keys, function(key) {
-                if (_.isUndefined(pt[key])) {
+                if (_.isUndefined(pt[key]) || _.isNull(pt[key])) {
                     pt[key] = {};
                 }
                 pt = pt[key];
