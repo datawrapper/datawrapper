@@ -16,6 +16,13 @@ function(initCustomColors, syncVisOptions) {
             syncVisOptions(_vis, _chart);
             $('.select-row').hide();
             initCustomColors(_chart);
+
+            $('.vis-option-help').tooltip({
+                placement: 'left',
+                html: true,
+                trigger: 'hover focus click',
+                container: 'body'
+            });
         }
 
 
