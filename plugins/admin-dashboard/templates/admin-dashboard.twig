@@ -14,6 +14,7 @@
 
     <script type="text/javascript" src="/static/vendor/globalize/globalize.js"></script>
     <script type="text/javascript" src="/static/plugins/visualization-raphael-chart/vendor/chroma.min.js"></script>
+    <script type="text/javascript" src="/static/plugins/visualization-raphael-chart/vendor/raphael-2.1.2.min.js"></script>
 
     <script type="text/javascript" src="/static/js/dw-2.0.js"></script>
     <script type="text/javascript" src="/static/js/dw-backend.js"></script>
@@ -27,7 +28,22 @@
     <script type="text/javascript" src="/static/plugins/visualization-column-charts/column-chart.js"></script>
 
     <script type="text/javascript">
+
     dw.backend.ready(function() {
+
+        require(['plugins/visualization-raphael-chart/vendor/raphael-2.1.2.min'], function(r) {
+            window.Raphael = r;
+
+            donutChart("#user-types", '{{ users_csv | raw }}', ['Activated']);
+            donutChart("#chart-last-edit", '{{ charts_edit_step_csv | raw }}', ['Publish']);
+            columnChart("#chart-type", '{{ charts_by_type_csv | raw }}');
+            lineChart('#user-stats', '{{ user_signups_csv | raw }}');
+            lineChart('#charts-created-stats', '{{ created_csv | raw }}');
+            lineChart('#charts-created-week-stats', '{{ created_weekly_csv | raw }}', true);
+            lineChart('#charts-published-stats', '{{ published_csv | raw }}');
+            lineChart('#charts-published-week-stats', '{{ published_week_csv | raw }}', true);
+
+        });
 
         function lineChart(cont, data, smooth) {
             cont = $(cont);
@@ -87,7 +103,7 @@
 
         function donutChart(cont, data, hl) {
             cont = $(cont);
-        // initialize theme
+             // initialize theme
             var theme = dw.theme('default');
             // initialize chart
             var chart = dw.chart({
@@ -173,16 +189,9 @@
             });
         }
 
-        donutChart("#user-types", '{{ users_csv | raw }}', ['Activated']);
-        donutChart("#chart-last-edit", '{{ charts_edit_step_csv | raw }}', ['Publish']);
-        columnChart("#chart-type", '{{ charts_by_type_csv | raw }}');
-        lineChart('#user-stats', '{{ user_signups_csv | raw }}');
-        lineChart('#charts-created-stats', '{{ created_csv | raw }}');
-        lineChart('#charts-created-week-stats', '{{ created_weekly_csv | raw }}', true);
-        lineChart('#charts-published-stats', '{{ published_csv | raw }}');
-        lineChart('#charts-published-week-stats', '{{ published_week_csv | raw }}', true);
 
     });
+
     </script>
 
     <style type="text/css">
