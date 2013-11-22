@@ -241,7 +241,8 @@
                     slice = me.__slices[o.name] = Slice(c.paper, cx, c.cy, c.or, c.ir, a0, a1, lbl, me.theme);
                     slice.path.attr({
                         'stroke': me.theme().colors.background,
-                        'stroke-width': 2,
+                        'stroke-width': 1.6,
+                        'stroke-linejoin': 'round',
                         'fill': fill
                     });
                     slice.path.data('slice', slice);
