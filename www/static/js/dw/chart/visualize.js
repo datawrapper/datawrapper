@@ -76,6 +76,7 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
         }
 
         if (_typeHasChanged) {
+            iframe.attr('src', '');
             dw.backend.fire('type-changed');
             // remove all notifications
             $("#notifications .notification").fadeOutAndRemove();
@@ -129,7 +130,7 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
 
         // periodically check if vis is initialized in iframe
         chk = setInterval(function() {
-            if (win.__dw.vis) {
+            if (win.__dw && win.__dw.vis) {
                 clearInterval(chk);
                 iframeReady();
             }
@@ -283,6 +284,10 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
 
     /** Set into `dw.backend.currentVis` the edited visualization (editor side) */
     function loadVis() {
+        if (iframe.attr('src') === "") {
+            // load vis in iframe if not done yet
+            iframe.attr('src', '/chart/'+chart.get('id')+'/preview?innersvg=1&random='+Math.floor(Math.random()*100000));
+        }
         dw.backend.currentVis = dw.visualization(chart.get('type'));
         dw.backend.currentVis.chart(chart);
         dw.backend.currentVis.dataset = chart.dataset().reset();
