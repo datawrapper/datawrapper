@@ -1,8 +1,8 @@
 
 define(
-    ['./options/initCustomColors', './options/syncVisOptions'],
+    ['./options/initCustomColors', './options/syncVisOptions', './options/unsyncVisOptions'],
 
-function(initCustomColors, syncVisOptions) {
+function(initCustomColors, syncVisOptions, unsyncVisOptions) {
 
     var _chart, _vis;
 
@@ -23,6 +23,10 @@ function(initCustomColors, syncVisOptions) {
                 trigger: 'hover focus click',
                 container: 'body'
             });
+        },
+
+        reset: function() {
+            unsyncVisOptions(_vis, _chart);
         }
 
 

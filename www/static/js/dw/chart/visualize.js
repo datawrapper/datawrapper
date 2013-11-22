@@ -192,6 +192,7 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
 
     function optionsLoaded() {
         loadVis();
+        options.reset();
         options.sync();
     }
 
