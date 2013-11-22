@@ -37,7 +37,7 @@ $(function() {
 
     function syncSelectAxisColumn(evt, args) {
         _.each(args.option.axes, function(axis) {
-            var select = $('select#'+args.key+'-'+axis.id),
+            var select = $('select#'+args.key+'-'+axis.id).html(''),
                 chart = args.chart,
                 dataset = chart.dataset(),
                 axisMeta = args.vis.meta.axes[axis.id],
