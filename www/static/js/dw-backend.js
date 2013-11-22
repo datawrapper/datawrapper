@@ -14,7 +14,7 @@ var dw = dw || {};
     dw.backend = {
 
         fire: function(evt, param) {
-            console.log('fire:', evt);
+            //console.log('fire:', evt);
             _.each(eventInstances, function(o) {
                 o.trigger(evt, param);
             });
