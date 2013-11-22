@@ -145,21 +145,24 @@
     border-top: 1px solid hsl(210,20%,60%)!important;
 }
 
-.handsontable .colHeader:after {
+.handsontable thead tr th+th div:after {
     content: " "url(selection-off.png);
+    position: absolute;
+    top: 3px;
+    right: 5px;
+}
+
+.handsontable .colHeader:after {
     vertical-align: bottom;
-    position: relative;
-    top: 1px;
-    float:right;
     opacity: 1;
     color: #08c;
 }
 
-.handsontable th:hover .colHeader:after {
+.handsontable thead th+th:hover div:after {
     content: " "url(selection-hover.png);
 }
 
-.handsontable th.selected .colHeader:after {
+.handsontable thead th+th.selected div:after {
     opacity: 1;
     content: " "url(selection.png);
 }
