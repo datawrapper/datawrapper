@@ -52,7 +52,6 @@ var dw = dw || {};
     }
 
     function fireEvent(evt, params) {
-        console.log('event: '+evt);
         if (callbacks[evt]) callbacks[evt].fire(params);
         return dw.backend;
     }
