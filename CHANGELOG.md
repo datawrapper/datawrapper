@@ -1,6 +1,9 @@
 CHANGELOG
 ---------
 
+### 1.6.2
+* revised internal event flow
+
 ### 1.6.1
 * allow users to select column input format (to resolve ambiguous formats)
 * bugfixes
