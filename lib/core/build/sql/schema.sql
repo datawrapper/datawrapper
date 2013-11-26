@@ -105,7 +105,7 @@ CREATE TABLE `session`
     `session_id` VARCHAR(32) NOT NULL,
     `date_created` DATETIME NOT NULL,
     `last_updated` DATETIME NOT NULL,
-    `session_data` VARCHAR(4096) NOT NULL,
+    `session_data` VARCHAR(4096) DEFAULT '',
     PRIMARY KEY (`session_id`)
 ) ENGINE=InnoDB;
 
