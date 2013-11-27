@@ -43,7 +43,8 @@ function(syncChart, initializeSignUp, initLanguageLinks, initializeLogout,
         syncChart: syncChart,
         popupChart: popupChart,
         snapshot: snapshot,
-        checkPassword: checkPassword
+        checkPassword: checkPassword,
+        resendActivationMail: resendActivationMail
 
     }, notification);
 
