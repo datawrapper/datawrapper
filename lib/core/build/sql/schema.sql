@@ -105,7 +105,7 @@ CREATE TABLE `session`
     `session_id` VARCHAR(32) NOT NULL,
     `date_created` DATETIME NOT NULL,
     `last_updated` DATETIME NOT NULL,
-    `session_data` VARCHAR(4096) NOT NULL,
+    `session_data` VARCHAR(4096) DEFAULT '',
     PRIMARY KEY (`session_id`)
 ) ENGINE=InnoDB;
 
@@ -146,7 +146,7 @@ DROP TABLE IF EXISTS `plugin`;
 CREATE TABLE `plugin`
 (
     `id` VARCHAR(128) NOT NULL,
-    `installed_at` DATETIME NOT NULL,
+    `installed_at` DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
     `enabled` TINYINT(1) DEFAULT 0,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
