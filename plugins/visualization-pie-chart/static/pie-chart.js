@@ -137,7 +137,7 @@
             }
 
             if (me.get('sort-values', true)) {
-                slices.sort(function(a,b) { return b.value - a.value; });
+                slices.sort(function(a,b) { return (isNaN(b.value) ? 0 : b.value) - (isNaN(a.value) ? 0 : a.value); });
             }
 
             _.each(slices, function(s) {
