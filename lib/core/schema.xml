@@ -53,7 +53,7 @@
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
     <column name="id" type="varchar" size="512" required="true" primaryKey="true" />
-    <column name="name" type="varchar" size="512" required="true" />x
+    <column name="name" type="varchar" size="512" required="true" />
   </table>
 
   <!-- cross reference user - organization -->
