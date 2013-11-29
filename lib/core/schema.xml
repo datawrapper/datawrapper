@@ -52,14 +52,14 @@
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
-    <column name="id" type="varchar" size="512" required="true" primaryKey="true" />
+    <column name="id" type="varchar" size="128" required="true" primaryKey="true" />
     <column name="name" type="varchar" size="512" required="true" />
   </table>
 
   <!-- cross reference user - organization -->
   <table name="user_organization" isCrossRef="true">
     <column name="user_id" type="integer" primaryKey="true" />
-    <column name="organization_id" type="varchar" size="512" primaryKey="true" />
+    <column name="organization_id" type="varchar" size="128" primaryKey="true" />
     <foreign-key foreignTable="user">
       <reference local="user_id" foreign="id"/>
     </foreign-key>
