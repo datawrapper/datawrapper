@@ -87,4 +87,4 @@ require ROOT_PATH . 'lib/utils/copy_recursively.php';
 require ROOT_PATH . 'lib/plugin/load_plugins.php';
 
 
-load_plugins();
+DatawrapperPluginManager::load();
