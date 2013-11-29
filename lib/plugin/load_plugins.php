@@ -22,11 +22,9 @@ class DatawrapperPluginManager {
 
         $plugins = PluginQuery::create()
             ->filterByEnabled(true)
-            ->filterByIsPrivate(false)
-            ->find();
-
-        $userOrgs = OrganizationQuery::create()
-            ->filterByUser(DatawrapperSession::getUser())
+            ->where('Plugin.Id IN (SELECT plugin_id FROM plugin_organization WHERE organization_id IN (SELECT organization_id FROM user_organization WHERE user_id = ?))', DatawrapperSession::getUser()->getId())
+            ->_or()
+            ->where('Plugin.IsPrivate = FALSE')
             ->find();
 
         $not_loaded_yet = array();
