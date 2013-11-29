@@ -74,6 +74,7 @@ require_once '../../lib/api/charts.php';
 require_once '../../lib/api/jobs.php';
 require_once '../../lib/api/visualizations.php';
 require_once '../../lib/api/plugin-hooks.php';
+require_once '../../lib/api/organizations.php';
 
 
 /**
