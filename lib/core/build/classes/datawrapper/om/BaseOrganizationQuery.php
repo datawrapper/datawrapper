@@ -8,9 +8,13 @@
  *
  * @method OrganizationQuery orderById($order = Criteria::ASC) Order by the id column
  * @method OrganizationQuery orderByName($order = Criteria::ASC) Order by the name column
+ * @method OrganizationQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
+ * @method OrganizationQuery orderByDeleted($order = Criteria::ASC) Order by the deleted column
  *
  * @method OrganizationQuery groupById() Group by the id column
  * @method OrganizationQuery groupByName() Group by the name column
+ * @method OrganizationQuery groupByCreatedAt() Group by the created_at column
+ * @method OrganizationQuery groupByDeleted() Group by the deleted column
  *
  * @method OrganizationQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method OrganizationQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -28,9 +32,13 @@
  * @method Organization findOneOrCreate(PropelPDO $con = null) Return the first Organization matching the query, or a new Organization object populated from the query conditions when no match is found
  *
  * @method Organization findOneByName(string $name) Return the first Organization filtered by the name column
+ * @method Organization findOneByCreatedAt(string $created_at) Return the first Organization filtered by the created_at column
+ * @method Organization findOneByDeleted(boolean $deleted) Return the first Organization filtered by the deleted column
  *
  * @method array findById(string $id) Return Organization objects filtered by the id column
  * @method array findByName(string $name) Return Organization objects filtered by the name column
+ * @method array findByCreatedAt(string $created_at) Return Organization objects filtered by the created_at column
+ * @method array findByDeleted(boolean $deleted) Return Organization objects filtered by the deleted column
  *
  * @package    propel.generator.datawrapper.om
  */
@@ -134,7 +142,7 @@ abstract class BaseOrganizationQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `name` FROM `organization` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `name`, `created_at`, `deleted` FROM `organization` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_STR);
@@ -279,6 +287,76 @@ abstract class BaseOrganizationQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(OrganizationPeer::NAME, $name, $comparison);
+    }
+
+    /**
+     * Filter the query on the created_at column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByCreatedAt('2011-03-14'); // WHERE created_at = '2011-03-14'
+     * $query->filterByCreatedAt('now'); // WHERE created_at = '2011-03-14'
+     * $query->filterByCreatedAt(array('max' => 'yesterday')); // WHERE created_at > '2011-03-13'
+     * </code>
+     *
+     * @param     mixed $createdAt The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return OrganizationQuery The current query, for fluid interface
+     */
+    public function filterByCreatedAt($createdAt = null, $comparison = null)
+    {
+        if (is_array($createdAt)) {
+            $useMinMax = false;
+            if (isset($createdAt['min'])) {
+                $this->addUsingAlias(OrganizationPeer::CREATED_AT, $createdAt['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($createdAt['max'])) {
+                $this->addUsingAlias(OrganizationPeer::CREATED_AT, $createdAt['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(OrganizationPeer::CREATED_AT, $createdAt, $comparison);
+    }
+
+    /**
+     * Filter the query on the deleted column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByDeleted(true); // WHERE deleted = true
+     * $query->filterByDeleted('yes'); // WHERE deleted = true
+     * </code>
+     *
+     * @param     boolean|string $deleted The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return OrganizationQuery The current query, for fluid interface
+     */
+    public function filterByDeleted($deleted = null, $comparison = null)
+    {
+        if (is_string($deleted)) {
+            $deleted = in_array(strtolower($deleted), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(OrganizationPeer::DELETED, $deleted, $comparison);
     }
 
     /**

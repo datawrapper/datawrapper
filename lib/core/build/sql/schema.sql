@@ -69,6 +69,8 @@ CREATE TABLE `organization`
 (
     `id` VARCHAR(128) NOT NULL,
     `name` VARCHAR(512) NOT NULL,
+    `created_at` DATETIME NOT NULL,
+    `deleted` TINYINT(1) DEFAULT 0,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 

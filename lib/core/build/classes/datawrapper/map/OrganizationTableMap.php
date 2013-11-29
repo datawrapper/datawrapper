@@ -40,6 +40,8 @@ class OrganizationTableMap extends TableMap
         // columns
         $this->addPrimaryKey('id', 'Id', 'VARCHAR', true, 128, null);
         $this->addColumn('name', 'Name', 'VARCHAR', true, 512, null);
+        $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', true, null, null);
+        $this->addColumn('deleted', 'Deleted', 'BOOLEAN', false, 1, false);
         // validators
     } // initialize()
 
