@@ -42,6 +42,10 @@
  * @method UserQuery rightJoinChart($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Chart relation
  * @method UserQuery innerJoinChart($relationAlias = null) Adds a INNER JOIN clause to the query using the Chart relation
  *
+ * @method UserQuery leftJoinUserOrganization($relationAlias = null) Adds a LEFT JOIN clause to the query using the UserOrganization relation
+ * @method UserQuery rightJoinUserOrganization($relationAlias = null) Adds a RIGHT JOIN clause to the query using the UserOrganization relation
+ * @method UserQuery innerJoinUserOrganization($relationAlias = null) Adds a INNER JOIN clause to the query using the UserOrganization relation
+ *
  * @method UserQuery leftJoinAction($relationAlias = null) Adds a LEFT JOIN clause to the query using the Action relation
  * @method UserQuery rightJoinAction($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Action relation
  * @method UserQuery innerJoinAction($relationAlias = null) Adds a INNER JOIN clause to the query using the Action relation
@@ -746,6 +750,80 @@ abstract class BaseUserQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query by a related UserOrganization object
+     *
+     * @param   UserOrganization|PropelObjectCollection $userOrganization  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 UserQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByUserOrganization($userOrganization, $comparison = null)
+    {
+        if ($userOrganization instanceof UserOrganization) {
+            return $this
+                ->addUsingAlias(UserPeer::ID, $userOrganization->getUserId(), $comparison);
+        } elseif ($userOrganization instanceof PropelObjectCollection) {
+            return $this
+                ->useUserOrganizationQuery()
+                ->filterByPrimaryKeys($userOrganization->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByUserOrganization() only accepts arguments of type UserOrganization or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the UserOrganization relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return UserQuery The current query, for fluid interface
+     */
+    public function joinUserOrganization($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('UserOrganization');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'UserOrganization');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the UserOrganization relation UserOrganization object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   UserOrganizationQuery A secondary query class using the current class as primary query
+     */
+    public function useUserOrganizationQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinUserOrganization($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'UserOrganization', 'UserOrganizationQuery');
+    }
+
+    /**
      * Filter the query by a related Action object
      *
      * @param   Action|PropelObjectCollection $action  the related object to use as filter
@@ -891,6 +969,23 @@ abstract class BaseUserQuery extends ModelCriteria
         return $this
             ->joinJob($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'Job', 'JobQuery');
+    }
+
+    /**
+     * Filter the query by a related Organization object
+     * using the user_organization table as cross reference
+     *
+     * @param   Organization $organization the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return   UserQuery The current query, for fluid interface
+     */
+    public function filterByOrganization($organization, $comparison = Criteria::EQUAL)
+    {
+        return $this
+            ->useUserOrganizationQuery()
+            ->filterByOrganization($organization, $comparison)
+            ->endUse();
     }
 
     /**

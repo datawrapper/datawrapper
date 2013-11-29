@@ -2,24 +2,24 @@
 
 
 /**
- * Base class that represents a row from the 'plugin' table.
+ * Base class that represents a row from the 'organization' table.
  *
  *
  *
  * @package    propel.generator.datawrapper.om
  */
-abstract class BasePlugin extends BaseObject implements Persistent
+abstract class BaseOrganization extends BaseObject implements Persistent
 {
     /**
      * Peer class name
      */
-    const PEER = 'PluginPeer';
+    const PEER = 'OrganizationPeer';
 
     /**
      * The Peer class.
      * Instance provides a convenient way of calling static methods on a class
      * that calling code may not be able to identify.
-     * @var        PluginPeer
+     * @var        OrganizationPeer
      */
     protected static $peer;
 
@@ -36,24 +36,16 @@ abstract class BasePlugin extends BaseObject implements Persistent
     protected $id;
 
     /**
-     * The value for the installed_at field.
+     * The value for the name field.
      * @var        string
      */
-    protected $installed_at;
+    protected $name;
 
     /**
-     * The value for the enabled field.
-     * Note: this column has a database default value of: false
-     * @var        boolean
+     * @var        PropelObjectCollection|UserOrganization[] Collection to store aggregation of UserOrganization objects.
      */
-    protected $enabled;
-
-    /**
-     * The value for the is_private field.
-     * Note: this column has a database default value of: false
-     * @var        boolean
-     */
-    protected $is_private;
+    protected $collUserOrganizations;
+    protected $collUserOrganizationsPartial;
 
     /**
      * @var        PropelObjectCollection|PluginOrganization[] Collection to store aggregation of PluginOrganization objects.
@@ -62,15 +54,14 @@ abstract class BasePlugin extends BaseObject implements Persistent
     protected $collPluginOrganizationsPartial;
 
     /**
-     * @var        PropelObjectCollection|PluginData[] Collection to store aggregation of PluginData objects.
+     * @var        PropelObjectCollection|User[] Collection to store aggregation of User objects.
      */
-    protected $collPluginDatas;
-    protected $collPluginDatasPartial;
+    protected $collUsers;
 
     /**
-     * @var        PropelObjectCollection|Organization[] Collection to store aggregation of Organization objects.
+     * @var        PropelObjectCollection|Plugin[] Collection to store aggregation of Plugin objects.
      */
-    protected $collOrganizations;
+    protected $collPlugins;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -96,41 +87,25 @@ abstract class BasePlugin extends BaseObject implements Persistent
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
      */
-    protected $organizationsScheduledForDeletion = null;
+    protected $usersScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $pluginsScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $userOrganizationsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
      */
     protected $pluginOrganizationsScheduledForDeletion = null;
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
-     */
-    protected $pluginDatasScheduledForDeletion = null;
-
-    /**
-     * Applies default values to this object.
-     * This method should be called from the object's constructor (or
-     * equivalent initialization method).
-     * @see        __construct()
-     */
-    public function applyDefaultValues()
-    {
-        $this->enabled = false;
-        $this->is_private = false;
-    }
-
-    /**
-     * Initializes internal state of BasePlugin object.
-     * @see        applyDefaults()
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->applyDefaultValues();
-    }
 
     /**
      * Get the [id] column value.
@@ -143,70 +118,20 @@ abstract class BasePlugin extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [optionally formatted] temporal [installed_at] column value.
+     * Get the [name] column value.
      *
-     *
-     * @param string $format The date/time format string (either date()-style or strftime()-style).
-     *				 If format is null, then the raw DateTime object will be returned.
-     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
-     * @throws PropelException - if unable to parse/validate the date/time value.
+     * @return string
      */
-    public function getInstalledAt($format = 'Y-m-d H:i:s')
+    public function getName()
     {
-        if ($this->installed_at === null) {
-            return null;
-        }
-
-        if ($this->installed_at === '0000-00-00 00:00:00') {
-            // while technically this is not a default value of null,
-            // this seems to be closest in meaning.
-            return null;
-        }
-
-        try {
-            $dt = new DateTime($this->installed_at);
-        } catch (Exception $x) {
-            throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->installed_at, true), $x);
-        }
-
-        if ($format === null) {
-            // Because propel.useDateTimeClass is true, we return a DateTime object.
-            return $dt;
-        }
-
-        if (strpos($format, '%') !== false) {
-            return strftime($format, $dt->format('U'));
-        }
-
-        return $dt->format($format);
-
-    }
-
-    /**
-     * Get the [enabled] column value.
-     *
-     * @return boolean
-     */
-    public function getEnabled()
-    {
-        return $this->enabled;
-    }
-
-    /**
-     * Get the [is_private] column value.
-     *
-     * @return boolean
-     */
-    public function getIsPrivate()
-    {
-        return $this->is_private;
+        return $this->name;
     }
 
     /**
      * Set the value of [id] column.
      *
      * @param string $v new value
-     * @return Plugin The current object (for fluent API support)
+     * @return Organization The current object (for fluent API support)
      */
     public function setId($v)
     {
@@ -216,7 +141,7 @@ abstract class BasePlugin extends BaseObject implements Persistent
 
         if ($this->id !== $v) {
             $this->id = $v;
-            $this->modifiedColumns[] = PluginPeer::ID;
+            $this->modifiedColumns[] = OrganizationPeer::ID;
         }
 
 
@@ -224,85 +149,25 @@ abstract class BasePlugin extends BaseObject implements Persistent
     } // setId()
 
     /**
-     * Sets the value of [installed_at] column to a normalized version of the date/time value specified.
+     * Set the value of [name] column.
      *
-     * @param mixed $v string, integer (timestamp), or DateTime value.
-     *               Empty strings are treated as null.
-     * @return Plugin The current object (for fluent API support)
+     * @param string $v new value
+     * @return Organization The current object (for fluent API support)
      */
-    public function setInstalledAt($v)
+    public function setName($v)
     {
-        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
-        if ($this->installed_at !== null || $dt !== null) {
-            $currentDateAsString = ($this->installed_at !== null && $tmpDt = new DateTime($this->installed_at)) ? $tmpDt->format('Y-m-d H:i:s') : null;
-            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
-            if ($currentDateAsString !== $newDateAsString) {
-                $this->installed_at = $newDateAsString;
-                $this->modifiedColumns[] = PluginPeer::INSTALLED_AT;
-            }
-        } // if either are not null
-
-
-        return $this;
-    } // setInstalledAt()
-
-    /**
-     * Sets the value of the [enabled] column.
-     * Non-boolean arguments are converted using the following rules:
-     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
-     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
-     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     *
-     * @param boolean|integer|string $v The new value
-     * @return Plugin The current object (for fluent API support)
-     */
-    public function setEnabled($v)
-    {
-        if ($v !== null) {
-            if (is_string($v)) {
-                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
-            } else {
-                $v = (boolean) $v;
-            }
+        if ($v !== null && is_numeric($v)) {
+            $v = (string) $v;
         }
 
-        if ($this->enabled !== $v) {
-            $this->enabled = $v;
-            $this->modifiedColumns[] = PluginPeer::ENABLED;
+        if ($this->name !== $v) {
+            $this->name = $v;
+            $this->modifiedColumns[] = OrganizationPeer::NAME;
         }
 
 
         return $this;
-    } // setEnabled()
-
-    /**
-     * Sets the value of the [is_private] column.
-     * Non-boolean arguments are converted using the following rules:
-     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
-     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
-     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     *
-     * @param boolean|integer|string $v The new value
-     * @return Plugin The current object (for fluent API support)
-     */
-    public function setIsPrivate($v)
-    {
-        if ($v !== null) {
-            if (is_string($v)) {
-                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
-            } else {
-                $v = (boolean) $v;
-            }
-        }
-
-        if ($this->is_private !== $v) {
-            $this->is_private = $v;
-            $this->modifiedColumns[] = PluginPeer::IS_PRIVATE;
-        }
-
-
-        return $this;
-    } // setIsPrivate()
+    } // setName()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -314,14 +179,6 @@ abstract class BasePlugin extends BaseObject implements Persistent
      */
     public function hasOnlyDefaultValues()
     {
-            if ($this->enabled !== false) {
-                return false;
-            }
-
-            if ($this->is_private !== false) {
-                return false;
-            }
-
         // otherwise, everything was equal, so return true
         return true;
     } // hasOnlyDefaultValues()
@@ -345,9 +202,7 @@ abstract class BasePlugin extends BaseObject implements Persistent
         try {
 
             $this->id = ($row[$startcol + 0] !== null) ? (string) $row[$startcol + 0] : null;
-            $this->installed_at = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
-            $this->enabled = ($row[$startcol + 2] !== null) ? (boolean) $row[$startcol + 2] : null;
-            $this->is_private = ($row[$startcol + 3] !== null) ? (boolean) $row[$startcol + 3] : null;
+            $this->name = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -356,10 +211,10 @@ abstract class BasePlugin extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
             $this->postHydrate($row, $startcol, $rehydrate);
-            return $startcol + 4; // 4 = PluginPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 2; // 2 = OrganizationPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
-            throw new PropelException("Error populating Plugin object", $e);
+            throw new PropelException("Error populating Organization object", $e);
         }
     }
 
@@ -402,13 +257,13 @@ abstract class BasePlugin extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(PluginPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(OrganizationPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         // We don't need to alter the object instance pool; we're just modifying this instance
         // already in the pool.
 
-        $stmt = PluginPeer::doSelectStmt($this->buildPkeyCriteria(), $con);
+        $stmt = OrganizationPeer::doSelectStmt($this->buildPkeyCriteria(), $con);
         $row = $stmt->fetch(PDO::FETCH_NUM);
         $stmt->closeCursor();
         if (!$row) {
@@ -418,11 +273,12 @@ abstract class BasePlugin extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
+            $this->collUserOrganizations = null;
+
             $this->collPluginOrganizations = null;
 
-            $this->collPluginDatas = null;
-
-            $this->collOrganizations = null;
+            $this->collUsers = null;
+            $this->collPlugins = null;
         } // if (deep)
     }
 
@@ -443,12 +299,12 @@ abstract class BasePlugin extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(PluginPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(OrganizationPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         $con->beginTransaction();
         try {
-            $deleteQuery = PluginQuery::create()
+            $deleteQuery = OrganizationQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
             if ($ret) {
@@ -486,7 +342,7 @@ abstract class BasePlugin extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(PluginPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(OrganizationPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         $con->beginTransaction();
@@ -506,7 +362,7 @@ abstract class BasePlugin extends BaseObject implements Persistent
                     $this->postUpdate($con);
                 }
                 $this->postSave($con);
-                PluginPeer::addInstanceToPool($this);
+                OrganizationPeer::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
             }
@@ -547,28 +403,71 @@ abstract class BasePlugin extends BaseObject implements Persistent
                 $this->resetModified();
             }
 
-            if ($this->organizationsScheduledForDeletion !== null) {
-                if (!$this->organizationsScheduledForDeletion->isEmpty()) {
+            if ($this->usersScheduledForDeletion !== null) {
+                if (!$this->usersScheduledForDeletion->isEmpty()) {
                     $pks = array();
                     $pk = $this->getPrimaryKey();
-                    foreach ($this->organizationsScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
-                        $pks[] = array($pk, $remotePk);
+                    foreach ($this->usersScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
+                        $pks[] = array($remotePk, $pk);
+                    }
+                    UserOrganizationQuery::create()
+                        ->filterByPrimaryKeys($pks)
+                        ->delete($con);
+                    $this->usersScheduledForDeletion = null;
+                }
+
+                foreach ($this->getUsers() as $user) {
+                    if ($user->isModified()) {
+                        $user->save($con);
+                    }
+                }
+            } elseif ($this->collUsers) {
+                foreach ($this->collUsers as $user) {
+                    if ($user->isModified()) {
+                        $user->save($con);
+                    }
+                }
+            }
+
+            if ($this->pluginsScheduledForDeletion !== null) {
+                if (!$this->pluginsScheduledForDeletion->isEmpty()) {
+                    $pks = array();
+                    $pk = $this->getPrimaryKey();
+                    foreach ($this->pluginsScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
+                        $pks[] = array($remotePk, $pk);
                     }
                     PluginOrganizationQuery::create()
                         ->filterByPrimaryKeys($pks)
                         ->delete($con);
-                    $this->organizationsScheduledForDeletion = null;
+                    $this->pluginsScheduledForDeletion = null;
                 }
 
-                foreach ($this->getOrganizations() as $organization) {
-                    if ($organization->isModified()) {
-                        $organization->save($con);
+                foreach ($this->getPlugins() as $plugin) {
+                    if ($plugin->isModified()) {
+                        $plugin->save($con);
                     }
                 }
-            } elseif ($this->collOrganizations) {
-                foreach ($this->collOrganizations as $organization) {
-                    if ($organization->isModified()) {
-                        $organization->save($con);
+            } elseif ($this->collPlugins) {
+                foreach ($this->collPlugins as $plugin) {
+                    if ($plugin->isModified()) {
+                        $plugin->save($con);
+                    }
+                }
+            }
+
+            if ($this->userOrganizationsScheduledForDeletion !== null) {
+                if (!$this->userOrganizationsScheduledForDeletion->isEmpty()) {
+                    UserOrganizationQuery::create()
+                        ->filterByPrimaryKeys($this->userOrganizationsScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->userOrganizationsScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collUserOrganizations !== null) {
+                foreach ($this->collUserOrganizations as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
                     }
                 }
             }
@@ -584,23 +483,6 @@ abstract class BasePlugin extends BaseObject implements Persistent
 
             if ($this->collPluginOrganizations !== null) {
                 foreach ($this->collPluginOrganizations as $referrerFK) {
-                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
-            }
-
-            if ($this->pluginDatasScheduledForDeletion !== null) {
-                if (!$this->pluginDatasScheduledForDeletion->isEmpty()) {
-                    PluginDataQuery::create()
-                        ->filterByPrimaryKeys($this->pluginDatasScheduledForDeletion->getPrimaryKeys(false))
-                        ->delete($con);
-                    $this->pluginDatasScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collPluginDatas !== null) {
-                foreach ($this->collPluginDatas as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -629,21 +511,15 @@ abstract class BasePlugin extends BaseObject implements Persistent
 
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(PluginPeer::ID)) {
+        if ($this->isColumnModified(OrganizationPeer::ID)) {
             $modifiedColumns[':p' . $index++]  = '`id`';
         }
-        if ($this->isColumnModified(PluginPeer::INSTALLED_AT)) {
-            $modifiedColumns[':p' . $index++]  = '`installed_at`';
-        }
-        if ($this->isColumnModified(PluginPeer::ENABLED)) {
-            $modifiedColumns[':p' . $index++]  = '`enabled`';
-        }
-        if ($this->isColumnModified(PluginPeer::IS_PRIVATE)) {
-            $modifiedColumns[':p' . $index++]  = '`is_private`';
+        if ($this->isColumnModified(OrganizationPeer::NAME)) {
+            $modifiedColumns[':p' . $index++]  = '`name`';
         }
 
         $sql = sprintf(
-            'INSERT INTO `plugin` (%s) VALUES (%s)',
+            'INSERT INTO `organization` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -655,14 +531,8 @@ abstract class BasePlugin extends BaseObject implements Persistent
                     case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_STR);
                         break;
-                    case '`installed_at`':
-                        $stmt->bindValue($identifier, $this->installed_at, PDO::PARAM_STR);
-                        break;
-                    case '`enabled`':
-                        $stmt->bindValue($identifier, (int) $this->enabled, PDO::PARAM_INT);
-                        break;
-                    case '`is_private`':
-                        $stmt->bindValue($identifier, (int) $this->is_private, PDO::PARAM_INT);
+                    case '`name`':
+                        $stmt->bindValue($identifier, $this->name, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -751,21 +621,21 @@ abstract class BasePlugin extends BaseObject implements Persistent
             $failureMap = array();
 
 
-            if (($retval = PluginPeer::doValidate($this, $columns)) !== true) {
+            if (($retval = OrganizationPeer::doValidate($this, $columns)) !== true) {
                 $failureMap = array_merge($failureMap, $retval);
             }
 
 
-                if ($this->collPluginOrganizations !== null) {
-                    foreach ($this->collPluginOrganizations as $referrerFK) {
+                if ($this->collUserOrganizations !== null) {
+                    foreach ($this->collUserOrganizations as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
                             $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
                         }
                     }
                 }
 
-                if ($this->collPluginDatas !== null) {
-                    foreach ($this->collPluginDatas as $referrerFK) {
+                if ($this->collPluginOrganizations !== null) {
+                    foreach ($this->collPluginOrganizations as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
                             $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
                         }
@@ -791,7 +661,7 @@ abstract class BasePlugin extends BaseObject implements Persistent
      */
     public function getByName($name, $type = BasePeer::TYPE_PHPNAME)
     {
-        $pos = PluginPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+        $pos = OrganizationPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
         $field = $this->getByPosition($pos);
 
         return $field;
@@ -811,13 +681,7 @@ abstract class BasePlugin extends BaseObject implements Persistent
                 return $this->getId();
                 break;
             case 1:
-                return $this->getInstalledAt();
-                break;
-            case 2:
-                return $this->getEnabled();
-                break;
-            case 3:
-                return $this->getIsPrivate();
+                return $this->getName();
                 break;
             default:
                 return null;
@@ -842,23 +706,21 @@ abstract class BasePlugin extends BaseObject implements Persistent
      */
     public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
-        if (isset($alreadyDumpedObjects['Plugin'][$this->getPrimaryKey()])) {
+        if (isset($alreadyDumpedObjects['Organization'][$this->getPrimaryKey()])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['Plugin'][$this->getPrimaryKey()] = true;
-        $keys = PluginPeer::getFieldNames($keyType);
+        $alreadyDumpedObjects['Organization'][$this->getPrimaryKey()] = true;
+        $keys = OrganizationPeer::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
-            $keys[1] => $this->getInstalledAt(),
-            $keys[2] => $this->getEnabled(),
-            $keys[3] => $this->getIsPrivate(),
+            $keys[1] => $this->getName(),
         );
         if ($includeForeignObjects) {
+            if (null !== $this->collUserOrganizations) {
+                $result['UserOrganizations'] = $this->collUserOrganizations->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
             if (null !== $this->collPluginOrganizations) {
                 $result['PluginOrganizations'] = $this->collPluginOrganizations->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
-            }
-            if (null !== $this->collPluginDatas) {
-                $result['PluginDatas'] = $this->collPluginDatas->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -878,7 +740,7 @@ abstract class BasePlugin extends BaseObject implements Persistent
      */
     public function setByName($name, $value, $type = BasePeer::TYPE_PHPNAME)
     {
-        $pos = PluginPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+        $pos = OrganizationPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
 
         $this->setByPosition($pos, $value);
     }
@@ -898,13 +760,7 @@ abstract class BasePlugin extends BaseObject implements Persistent
                 $this->setId($value);
                 break;
             case 1:
-                $this->setInstalledAt($value);
-                break;
-            case 2:
-                $this->setEnabled($value);
-                break;
-            case 3:
-                $this->setIsPrivate($value);
+                $this->setName($value);
                 break;
         } // switch()
     }
@@ -928,12 +784,10 @@ abstract class BasePlugin extends BaseObject implements Persistent
      */
     public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
     {
-        $keys = PluginPeer::getFieldNames($keyType);
+        $keys = OrganizationPeer::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setInstalledAt($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setEnabled($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setIsPrivate($arr[$keys[3]]);
+        if (array_key_exists($keys[1], $arr)) $this->setName($arr[$keys[1]]);
     }
 
     /**
@@ -943,12 +797,10 @@ abstract class BasePlugin extends BaseObject implements Persistent
      */
     public function buildCriteria()
     {
-        $criteria = new Criteria(PluginPeer::DATABASE_NAME);
+        $criteria = new Criteria(OrganizationPeer::DATABASE_NAME);
 
-        if ($this->isColumnModified(PluginPeer::ID)) $criteria->add(PluginPeer::ID, $this->id);
-        if ($this->isColumnModified(PluginPeer::INSTALLED_AT)) $criteria->add(PluginPeer::INSTALLED_AT, $this->installed_at);
-        if ($this->isColumnModified(PluginPeer::ENABLED)) $criteria->add(PluginPeer::ENABLED, $this->enabled);
-        if ($this->isColumnModified(PluginPeer::IS_PRIVATE)) $criteria->add(PluginPeer::IS_PRIVATE, $this->is_private);
+        if ($this->isColumnModified(OrganizationPeer::ID)) $criteria->add(OrganizationPeer::ID, $this->id);
+        if ($this->isColumnModified(OrganizationPeer::NAME)) $criteria->add(OrganizationPeer::NAME, $this->name);
 
         return $criteria;
     }
@@ -963,8 +815,8 @@ abstract class BasePlugin extends BaseObject implements Persistent
      */
     public function buildPkeyCriteria()
     {
-        $criteria = new Criteria(PluginPeer::DATABASE_NAME);
-        $criteria->add(PluginPeer::ID, $this->id);
+        $criteria = new Criteria(OrganizationPeer::DATABASE_NAME);
+        $criteria->add(OrganizationPeer::ID, $this->id);
 
         return $criteria;
     }
@@ -1005,16 +857,14 @@ abstract class BasePlugin extends BaseObject implements Persistent
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param object $copyObj An object of Plugin (or compatible) type.
+     * @param object $copyObj An object of Organization (or compatible) type.
      * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @param boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setInstalledAt($this->getInstalledAt());
-        $copyObj->setEnabled($this->getEnabled());
-        $copyObj->setIsPrivate($this->getIsPrivate());
+        $copyObj->setName($this->getName());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1023,15 +873,15 @@ abstract class BasePlugin extends BaseObject implements Persistent
             // store object hash to prevent cycle
             $this->startCopy = true;
 
-            foreach ($this->getPluginOrganizations() as $relObj) {
+            foreach ($this->getUserOrganizations() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addPluginOrganization($relObj->copy($deepCopy));
+                    $copyObj->addUserOrganization($relObj->copy($deepCopy));
                 }
             }
 
-            foreach ($this->getPluginDatas() as $relObj) {
+            foreach ($this->getPluginOrganizations() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addPluginData($relObj->copy($deepCopy));
+                    $copyObj->addPluginOrganization($relObj->copy($deepCopy));
                 }
             }
 
@@ -1054,7 +904,7 @@ abstract class BasePlugin extends BaseObject implements Persistent
      * objects.
      *
      * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return Plugin Clone of current object.
+     * @return Organization Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -1074,12 +924,12 @@ abstract class BasePlugin extends BaseObject implements Persistent
      * same instance for all member of this class. The method could therefore
      * be static, but this would prevent one from overriding the behavior.
      *
-     * @return PluginPeer
+     * @return OrganizationPeer
      */
     public function getPeer()
     {
         if (self::$peer === null) {
-            self::$peer = new PluginPeer();
+            self::$peer = new OrganizationPeer();
         }
 
         return self::$peer;
@@ -1096,12 +946,255 @@ abstract class BasePlugin extends BaseObject implements Persistent
      */
     public function initRelation($relationName)
     {
+        if ('UserOrganization' == $relationName) {
+            $this->initUserOrganizations();
+        }
         if ('PluginOrganization' == $relationName) {
             $this->initPluginOrganizations();
         }
-        if ('PluginData' == $relationName) {
-            $this->initPluginDatas();
+    }
+
+    /**
+     * Clears out the collUserOrganizations collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return Organization The current object (for fluent API support)
+     * @see        addUserOrganizations()
+     */
+    public function clearUserOrganizations()
+    {
+        $this->collUserOrganizations = null; // important to set this to null since that means it is uninitialized
+        $this->collUserOrganizationsPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collUserOrganizations collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialUserOrganizations($v = true)
+    {
+        $this->collUserOrganizationsPartial = $v;
+    }
+
+    /**
+     * Initializes the collUserOrganizations collection.
+     *
+     * By default this just sets the collUserOrganizations collection to an empty array (like clearcollUserOrganizations());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initUserOrganizations($overrideExisting = true)
+    {
+        if (null !== $this->collUserOrganizations && !$overrideExisting) {
+            return;
         }
+        $this->collUserOrganizations = new PropelObjectCollection();
+        $this->collUserOrganizations->setModel('UserOrganization');
+    }
+
+    /**
+     * Gets an array of UserOrganization objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Organization is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|UserOrganization[] List of UserOrganization objects
+     * @throws PropelException
+     */
+    public function getUserOrganizations($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collUserOrganizationsPartial && !$this->isNew();
+        if (null === $this->collUserOrganizations || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collUserOrganizations) {
+                // return empty collection
+                $this->initUserOrganizations();
+            } else {
+                $collUserOrganizations = UserOrganizationQuery::create(null, $criteria)
+                    ->filterByOrganization($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collUserOrganizationsPartial && count($collUserOrganizations)) {
+                      $this->initUserOrganizations(false);
+
+                      foreach($collUserOrganizations as $obj) {
+                        if (false == $this->collUserOrganizations->contains($obj)) {
+                          $this->collUserOrganizations->append($obj);
+                        }
+                      }
+
+                      $this->collUserOrganizationsPartial = true;
+                    }
+
+                    $collUserOrganizations->getInternalIterator()->rewind();
+                    return $collUserOrganizations;
+                }
+
+                if($partial && $this->collUserOrganizations) {
+                    foreach($this->collUserOrganizations as $obj) {
+                        if($obj->isNew()) {
+                            $collUserOrganizations[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collUserOrganizations = $collUserOrganizations;
+                $this->collUserOrganizationsPartial = false;
+            }
+        }
+
+        return $this->collUserOrganizations;
+    }
+
+    /**
+     * Sets a collection of UserOrganization objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $userOrganizations A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return Organization The current object (for fluent API support)
+     */
+    public function setUserOrganizations(PropelCollection $userOrganizations, PropelPDO $con = null)
+    {
+        $userOrganizationsToDelete = $this->getUserOrganizations(new Criteria(), $con)->diff($userOrganizations);
+
+        $this->userOrganizationsScheduledForDeletion = unserialize(serialize($userOrganizationsToDelete));
+
+        foreach ($userOrganizationsToDelete as $userOrganizationRemoved) {
+            $userOrganizationRemoved->setOrganization(null);
+        }
+
+        $this->collUserOrganizations = null;
+        foreach ($userOrganizations as $userOrganization) {
+            $this->addUserOrganization($userOrganization);
+        }
+
+        $this->collUserOrganizations = $userOrganizations;
+        $this->collUserOrganizationsPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related UserOrganization objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related UserOrganization objects.
+     * @throws PropelException
+     */
+    public function countUserOrganizations(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collUserOrganizationsPartial && !$this->isNew();
+        if (null === $this->collUserOrganizations || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collUserOrganizations) {
+                return 0;
+            }
+
+            if($partial && !$criteria) {
+                return count($this->getUserOrganizations());
+            }
+            $query = UserOrganizationQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByOrganization($this)
+                ->count($con);
+        }
+
+        return count($this->collUserOrganizations);
+    }
+
+    /**
+     * Method called to associate a UserOrganization object to this object
+     * through the UserOrganization foreign key attribute.
+     *
+     * @param    UserOrganization $l UserOrganization
+     * @return Organization The current object (for fluent API support)
+     */
+    public function addUserOrganization(UserOrganization $l)
+    {
+        if ($this->collUserOrganizations === null) {
+            $this->initUserOrganizations();
+            $this->collUserOrganizationsPartial = true;
+        }
+        if (!in_array($l, $this->collUserOrganizations->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddUserOrganization($l);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	UserOrganization $userOrganization The userOrganization object to add.
+     */
+    protected function doAddUserOrganization($userOrganization)
+    {
+        $this->collUserOrganizations[]= $userOrganization;
+        $userOrganization->setOrganization($this);
+    }
+
+    /**
+     * @param	UserOrganization $userOrganization The userOrganization object to remove.
+     * @return Organization The current object (for fluent API support)
+     */
+    public function removeUserOrganization($userOrganization)
+    {
+        if ($this->getUserOrganizations()->contains($userOrganization)) {
+            $this->collUserOrganizations->remove($this->collUserOrganizations->search($userOrganization));
+            if (null === $this->userOrganizationsScheduledForDeletion) {
+                $this->userOrganizationsScheduledForDeletion = clone $this->collUserOrganizations;
+                $this->userOrganizationsScheduledForDeletion->clear();
+            }
+            $this->userOrganizationsScheduledForDeletion[]= clone $userOrganization;
+            $userOrganization->setOrganization(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Organization is new, it will return
+     * an empty collection; or if this Organization has previously
+     * been saved, it will retrieve related UserOrganizations from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Organization.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|UserOrganization[] List of UserOrganization objects
+     */
+    public function getUserOrganizationsJoinUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = UserOrganizationQuery::create(null, $criteria);
+        $query->joinWith('User', $join_behavior);
+
+        return $this->getUserOrganizations($query, $con);
     }
 
     /**
@@ -1110,7 +1203,7 @@ abstract class BasePlugin extends BaseObject implements Persistent
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
-     * @return Plugin The current object (for fluent API support)
+     * @return Organization The current object (for fluent API support)
      * @see        addPluginOrganizations()
      */
     public function clearPluginOrganizations()
@@ -1158,7 +1251,7 @@ abstract class BasePlugin extends BaseObject implements Persistent
      * If the $criteria is not null, it is used to always fetch the results from the database.
      * Otherwise the results are fetched from the database the first time, then cached.
      * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this Plugin is new, it will return
+     * If this Organization is new, it will return
      * an empty collection or the current collection; the criteria is ignored on a new object.
      *
      * @param Criteria $criteria optional Criteria object to narrow the query
@@ -1175,7 +1268,7 @@ abstract class BasePlugin extends BaseObject implements Persistent
                 $this->initPluginOrganizations();
             } else {
                 $collPluginOrganizations = PluginOrganizationQuery::create(null, $criteria)
-                    ->filterByPlugin($this)
+                    ->filterByOrganization($this)
                     ->find($con);
                 if (null !== $criteria) {
                     if (false !== $this->collPluginOrganizationsPartial && count($collPluginOrganizations)) {
@@ -1218,7 +1311,7 @@ abstract class BasePlugin extends BaseObject implements Persistent
      *
      * @param PropelCollection $pluginOrganizations A Propel collection.
      * @param PropelPDO $con Optional connection object
-     * @return Plugin The current object (for fluent API support)
+     * @return Organization The current object (for fluent API support)
      */
     public function setPluginOrganizations(PropelCollection $pluginOrganizations, PropelPDO $con = null)
     {
@@ -1227,7 +1320,7 @@ abstract class BasePlugin extends BaseObject implements Persistent
         $this->pluginOrganizationsScheduledForDeletion = unserialize(serialize($pluginOrganizationsToDelete));
 
         foreach ($pluginOrganizationsToDelete as $pluginOrganizationRemoved) {
-            $pluginOrganizationRemoved->setPlugin(null);
+            $pluginOrganizationRemoved->setOrganization(null);
         }
 
         $this->collPluginOrganizations = null;
@@ -1267,7 +1360,7 @@ abstract class BasePlugin extends BaseObject implements Persistent
             }
 
             return $query
-                ->filterByPlugin($this)
+                ->filterByOrganization($this)
                 ->count($con);
         }
 
@@ -1279,7 +1372,7 @@ abstract class BasePlugin extends BaseObject implements Persistent
      * through the PluginOrganization foreign key attribute.
      *
      * @param    PluginOrganization $l PluginOrganization
-     * @return Plugin The current object (for fluent API support)
+     * @return Organization The current object (for fluent API support)
      */
     public function addPluginOrganization(PluginOrganization $l)
     {
@@ -1300,12 +1393,12 @@ abstract class BasePlugin extends BaseObject implements Persistent
     protected function doAddPluginOrganization($pluginOrganization)
     {
         $this->collPluginOrganizations[]= $pluginOrganization;
-        $pluginOrganization->setPlugin($this);
+        $pluginOrganization->setOrganization($this);
     }
 
     /**
      * @param	PluginOrganization $pluginOrganization The pluginOrganization object to remove.
-     * @return Plugin The current object (for fluent API support)
+     * @return Organization The current object (for fluent API support)
      */
     public function removePluginOrganization($pluginOrganization)
     {
@@ -1316,7 +1409,7 @@ abstract class BasePlugin extends BaseObject implements Persistent
                 $this->pluginOrganizationsScheduledForDeletion->clear();
             }
             $this->pluginOrganizationsScheduledForDeletion[]= clone $pluginOrganization;
-            $pluginOrganization->setPlugin(null);
+            $pluginOrganization->setOrganization(null);
         }
 
         return $this;
@@ -1326,417 +1419,376 @@ abstract class BasePlugin extends BaseObject implements Persistent
     /**
      * If this collection has already been initialized with
      * an identical criteria, it returns the collection.
-     * Otherwise if this Plugin is new, it will return
-     * an empty collection; or if this Plugin has previously
+     * Otherwise if this Organization is new, it will return
+     * an empty collection; or if this Organization has previously
      * been saved, it will retrieve related PluginOrganizations from storage.
      *
      * This method is protected by default in order to keep the public
      * api reasonable.  You can provide public methods for those you
-     * actually need in Plugin.
+     * actually need in Organization.
      *
      * @param Criteria $criteria optional Criteria object to narrow the query
      * @param PropelPDO $con optional connection object
      * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|PluginOrganization[] List of PluginOrganization objects
      */
-    public function getPluginOrganizationsJoinOrganization($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public function getPluginOrganizationsJoinPlugin($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $query = PluginOrganizationQuery::create(null, $criteria);
-        $query->joinWith('Organization', $join_behavior);
+        $query->joinWith('Plugin', $join_behavior);
 
         return $this->getPluginOrganizations($query, $con);
     }
 
     /**
-     * Clears out the collPluginDatas collection
+     * Clears out the collUsers collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
-     * @return Plugin The current object (for fluent API support)
-     * @see        addPluginDatas()
+     * @return Organization The current object (for fluent API support)
+     * @see        addUsers()
      */
-    public function clearPluginDatas()
+    public function clearUsers()
     {
-        $this->collPluginDatas = null; // important to set this to null since that means it is uninitialized
-        $this->collPluginDatasPartial = null;
+        $this->collUsers = null; // important to set this to null since that means it is uninitialized
+        $this->collUsersPartial = null;
 
         return $this;
     }
 
     /**
-     * reset is the collPluginDatas collection loaded partially
+     * Initializes the collUsers collection.
      *
-     * @return void
-     */
-    public function resetPartialPluginDatas($v = true)
-    {
-        $this->collPluginDatasPartial = $v;
-    }
-
-    /**
-     * Initializes the collPluginDatas collection.
-     *
-     * By default this just sets the collPluginDatas collection to an empty array (like clearcollPluginDatas());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initPluginDatas($overrideExisting = true)
-    {
-        if (null !== $this->collPluginDatas && !$overrideExisting) {
-            return;
-        }
-        $this->collPluginDatas = new PropelObjectCollection();
-        $this->collPluginDatas->setModel('PluginData');
-    }
-
-    /**
-     * Gets an array of PluginData objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this Plugin is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|PluginData[] List of PluginData objects
-     * @throws PropelException
-     */
-    public function getPluginDatas($criteria = null, PropelPDO $con = null)
-    {
-        $partial = $this->collPluginDatasPartial && !$this->isNew();
-        if (null === $this->collPluginDatas || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collPluginDatas) {
-                // return empty collection
-                $this->initPluginDatas();
-            } else {
-                $collPluginDatas = PluginDataQuery::create(null, $criteria)
-                    ->filterByPlugin($this)
-                    ->find($con);
-                if (null !== $criteria) {
-                    if (false !== $this->collPluginDatasPartial && count($collPluginDatas)) {
-                      $this->initPluginDatas(false);
-
-                      foreach($collPluginDatas as $obj) {
-                        if (false == $this->collPluginDatas->contains($obj)) {
-                          $this->collPluginDatas->append($obj);
-                        }
-                      }
-
-                      $this->collPluginDatasPartial = true;
-                    }
-
-                    $collPluginDatas->getInternalIterator()->rewind();
-                    return $collPluginDatas;
-                }
-
-                if($partial && $this->collPluginDatas) {
-                    foreach($this->collPluginDatas as $obj) {
-                        if($obj->isNew()) {
-                            $collPluginDatas[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collPluginDatas = $collPluginDatas;
-                $this->collPluginDatasPartial = false;
-            }
-        }
-
-        return $this->collPluginDatas;
-    }
-
-    /**
-     * Sets a collection of PluginData objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param PropelCollection $pluginDatas A Propel collection.
-     * @param PropelPDO $con Optional connection object
-     * @return Plugin The current object (for fluent API support)
-     */
-    public function setPluginDatas(PropelCollection $pluginDatas, PropelPDO $con = null)
-    {
-        $pluginDatasToDelete = $this->getPluginDatas(new Criteria(), $con)->diff($pluginDatas);
-
-        $this->pluginDatasScheduledForDeletion = unserialize(serialize($pluginDatasToDelete));
-
-        foreach ($pluginDatasToDelete as $pluginDataRemoved) {
-            $pluginDataRemoved->setPlugin(null);
-        }
-
-        $this->collPluginDatas = null;
-        foreach ($pluginDatas as $pluginData) {
-            $this->addPluginData($pluginData);
-        }
-
-        $this->collPluginDatas = $pluginDatas;
-        $this->collPluginDatasPartial = false;
-
-        return $this;
-    }
-
-    /**
-     * Returns the number of related PluginData objects.
-     *
-     * @param Criteria $criteria
-     * @param boolean $distinct
-     * @param PropelPDO $con
-     * @return int             Count of related PluginData objects.
-     * @throws PropelException
-     */
-    public function countPluginDatas(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
-    {
-        $partial = $this->collPluginDatasPartial && !$this->isNew();
-        if (null === $this->collPluginDatas || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collPluginDatas) {
-                return 0;
-            }
-
-            if($partial && !$criteria) {
-                return count($this->getPluginDatas());
-            }
-            $query = PluginDataQuery::create(null, $criteria);
-            if ($distinct) {
-                $query->distinct();
-            }
-
-            return $query
-                ->filterByPlugin($this)
-                ->count($con);
-        }
-
-        return count($this->collPluginDatas);
-    }
-
-    /**
-     * Method called to associate a PluginData object to this object
-     * through the PluginData foreign key attribute.
-     *
-     * @param    PluginData $l PluginData
-     * @return Plugin The current object (for fluent API support)
-     */
-    public function addPluginData(PluginData $l)
-    {
-        if ($this->collPluginDatas === null) {
-            $this->initPluginDatas();
-            $this->collPluginDatasPartial = true;
-        }
-        if (!in_array($l, $this->collPluginDatas->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddPluginData($l);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param	PluginData $pluginData The pluginData object to add.
-     */
-    protected function doAddPluginData($pluginData)
-    {
-        $this->collPluginDatas[]= $pluginData;
-        $pluginData->setPlugin($this);
-    }
-
-    /**
-     * @param	PluginData $pluginData The pluginData object to remove.
-     * @return Plugin The current object (for fluent API support)
-     */
-    public function removePluginData($pluginData)
-    {
-        if ($this->getPluginDatas()->contains($pluginData)) {
-            $this->collPluginDatas->remove($this->collPluginDatas->search($pluginData));
-            if (null === $this->pluginDatasScheduledForDeletion) {
-                $this->pluginDatasScheduledForDeletion = clone $this->collPluginDatas;
-                $this->pluginDatasScheduledForDeletion->clear();
-            }
-            $this->pluginDatasScheduledForDeletion[]= clone $pluginData;
-            $pluginData->setPlugin(null);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Clears out the collOrganizations collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return Plugin The current object (for fluent API support)
-     * @see        addOrganizations()
-     */
-    public function clearOrganizations()
-    {
-        $this->collOrganizations = null; // important to set this to null since that means it is uninitialized
-        $this->collOrganizationsPartial = null;
-
-        return $this;
-    }
-
-    /**
-     * Initializes the collOrganizations collection.
-     *
-     * By default this just sets the collOrganizations collection to an empty collection (like clearOrganizations());
+     * By default this just sets the collUsers collection to an empty collection (like clearUsers());
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
      * @return void
      */
-    public function initOrganizations()
+    public function initUsers()
     {
-        $this->collOrganizations = new PropelObjectCollection();
-        $this->collOrganizations->setModel('Organization');
+        $this->collUsers = new PropelObjectCollection();
+        $this->collUsers->setModel('User');
     }
 
     /**
-     * Gets a collection of Organization objects related by a many-to-many relationship
-     * to the current object by way of the plugin_organization cross-reference table.
+     * Gets a collection of User objects related by a many-to-many relationship
+     * to the current object by way of the user_organization cross-reference table.
      *
      * If the $criteria is not null, it is used to always fetch the results from the database.
      * Otherwise the results are fetched from the database the first time, then cached.
      * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this Plugin is new, it will return
+     * If this Organization is new, it will return
      * an empty collection or the current collection; the criteria is ignored on a new object.
      *
      * @param Criteria $criteria Optional query object to filter the query
      * @param PropelPDO $con Optional connection object
      *
-     * @return PropelObjectCollection|Organization[] List of Organization objects
+     * @return PropelObjectCollection|User[] List of User objects
      */
-    public function getOrganizations($criteria = null, PropelPDO $con = null)
+    public function getUsers($criteria = null, PropelPDO $con = null)
     {
-        if (null === $this->collOrganizations || null !== $criteria) {
-            if ($this->isNew() && null === $this->collOrganizations) {
+        if (null === $this->collUsers || null !== $criteria) {
+            if ($this->isNew() && null === $this->collUsers) {
                 // return empty collection
-                $this->initOrganizations();
+                $this->initUsers();
             } else {
-                $collOrganizations = OrganizationQuery::create(null, $criteria)
-                    ->filterByPlugin($this)
+                $collUsers = UserQuery::create(null, $criteria)
+                    ->filterByOrganization($this)
                     ->find($con);
                 if (null !== $criteria) {
-                    return $collOrganizations;
+                    return $collUsers;
                 }
-                $this->collOrganizations = $collOrganizations;
+                $this->collUsers = $collUsers;
             }
         }
 
-        return $this->collOrganizations;
+        return $this->collUsers;
     }
 
     /**
-     * Sets a collection of Organization objects related by a many-to-many relationship
-     * to the current object by way of the plugin_organization cross-reference table.
+     * Sets a collection of User objects related by a many-to-many relationship
+     * to the current object by way of the user_organization cross-reference table.
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param PropelCollection $organizations A Propel collection.
+     * @param PropelCollection $users A Propel collection.
      * @param PropelPDO $con Optional connection object
-     * @return Plugin The current object (for fluent API support)
+     * @return Organization The current object (for fluent API support)
      */
-    public function setOrganizations(PropelCollection $organizations, PropelPDO $con = null)
+    public function setUsers(PropelCollection $users, PropelPDO $con = null)
     {
-        $this->clearOrganizations();
-        $currentOrganizations = $this->getOrganizations();
+        $this->clearUsers();
+        $currentUsers = $this->getUsers();
 
-        $this->organizationsScheduledForDeletion = $currentOrganizations->diff($organizations);
+        $this->usersScheduledForDeletion = $currentUsers->diff($users);
 
-        foreach ($organizations as $organization) {
-            if (!$currentOrganizations->contains($organization)) {
-                $this->doAddOrganization($organization);
+        foreach ($users as $user) {
+            if (!$currentUsers->contains($user)) {
+                $this->doAddUser($user);
             }
         }
 
-        $this->collOrganizations = $organizations;
+        $this->collUsers = $users;
 
         return $this;
     }
 
     /**
-     * Gets the number of Organization objects related by a many-to-many relationship
+     * Gets the number of User objects related by a many-to-many relationship
+     * to the current object by way of the user_organization cross-reference table.
+     *
+     * @param Criteria $criteria Optional query object to filter the query
+     * @param boolean $distinct Set to true to force count distinct
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return int the number of related User objects
+     */
+    public function countUsers($criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        if (null === $this->collUsers || null !== $criteria) {
+            if ($this->isNew() && null === $this->collUsers) {
+                return 0;
+            } else {
+                $query = UserQuery::create(null, $criteria);
+                if ($distinct) {
+                    $query->distinct();
+                }
+
+                return $query
+                    ->filterByOrganization($this)
+                    ->count($con);
+            }
+        } else {
+            return count($this->collUsers);
+        }
+    }
+
+    /**
+     * Associate a User object to this object
+     * through the user_organization cross reference table.
+     *
+     * @param  User $user The UserOrganization object to relate
+     * @return Organization The current object (for fluent API support)
+     */
+    public function addUser(User $user)
+    {
+        if ($this->collUsers === null) {
+            $this->initUsers();
+        }
+        if (!$this->collUsers->contains($user)) { // only add it if the **same** object is not already associated
+            $this->doAddUser($user);
+
+            $this->collUsers[]= $user;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	User $user The user object to add.
+     */
+    protected function doAddUser($user)
+    {
+        $userOrganization = new UserOrganization();
+        $userOrganization->setUser($user);
+        $this->addUserOrganization($userOrganization);
+    }
+
+    /**
+     * Remove a User object to this object
+     * through the user_organization cross reference table.
+     *
+     * @param User $user The UserOrganization object to relate
+     * @return Organization The current object (for fluent API support)
+     */
+    public function removeUser(User $user)
+    {
+        if ($this->getUsers()->contains($user)) {
+            $this->collUsers->remove($this->collUsers->search($user));
+            if (null === $this->usersScheduledForDeletion) {
+                $this->usersScheduledForDeletion = clone $this->collUsers;
+                $this->usersScheduledForDeletion->clear();
+            }
+            $this->usersScheduledForDeletion[]= $user;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Clears out the collPlugins collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return Organization The current object (for fluent API support)
+     * @see        addPlugins()
+     */
+    public function clearPlugins()
+    {
+        $this->collPlugins = null; // important to set this to null since that means it is uninitialized
+        $this->collPluginsPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * Initializes the collPlugins collection.
+     *
+     * By default this just sets the collPlugins collection to an empty collection (like clearPlugins());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @return void
+     */
+    public function initPlugins()
+    {
+        $this->collPlugins = new PropelObjectCollection();
+        $this->collPlugins->setModel('Plugin');
+    }
+
+    /**
+     * Gets a collection of Plugin objects related by a many-to-many relationship
+     * to the current object by way of the plugin_organization cross-reference table.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Organization is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria Optional query object to filter the query
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return PropelObjectCollection|Plugin[] List of Plugin objects
+     */
+    public function getPlugins($criteria = null, PropelPDO $con = null)
+    {
+        if (null === $this->collPlugins || null !== $criteria) {
+            if ($this->isNew() && null === $this->collPlugins) {
+                // return empty collection
+                $this->initPlugins();
+            } else {
+                $collPlugins = PluginQuery::create(null, $criteria)
+                    ->filterByOrganization($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    return $collPlugins;
+                }
+                $this->collPlugins = $collPlugins;
+            }
+        }
+
+        return $this->collPlugins;
+    }
+
+    /**
+     * Sets a collection of Plugin objects related by a many-to-many relationship
+     * to the current object by way of the plugin_organization cross-reference table.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $plugins A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return Organization The current object (for fluent API support)
+     */
+    public function setPlugins(PropelCollection $plugins, PropelPDO $con = null)
+    {
+        $this->clearPlugins();
+        $currentPlugins = $this->getPlugins();
+
+        $this->pluginsScheduledForDeletion = $currentPlugins->diff($plugins);
+
+        foreach ($plugins as $plugin) {
+            if (!$currentPlugins->contains($plugin)) {
+                $this->doAddPlugin($plugin);
+            }
+        }
+
+        $this->collPlugins = $plugins;
+
+        return $this;
+    }
+
+    /**
+     * Gets the number of Plugin objects related by a many-to-many relationship
      * to the current object by way of the plugin_organization cross-reference table.
      *
      * @param Criteria $criteria Optional query object to filter the query
      * @param boolean $distinct Set to true to force count distinct
      * @param PropelPDO $con Optional connection object
      *
-     * @return int the number of related Organization objects
+     * @return int the number of related Plugin objects
      */
-    public function countOrganizations($criteria = null, $distinct = false, PropelPDO $con = null)
+    public function countPlugins($criteria = null, $distinct = false, PropelPDO $con = null)
     {
-        if (null === $this->collOrganizations || null !== $criteria) {
-            if ($this->isNew() && null === $this->collOrganizations) {
+        if (null === $this->collPlugins || null !== $criteria) {
+            if ($this->isNew() && null === $this->collPlugins) {
                 return 0;
             } else {
-                $query = OrganizationQuery::create(null, $criteria);
+                $query = PluginQuery::create(null, $criteria);
                 if ($distinct) {
                     $query->distinct();
                 }
 
                 return $query
-                    ->filterByPlugin($this)
+                    ->filterByOrganization($this)
                     ->count($con);
             }
         } else {
-            return count($this->collOrganizations);
+            return count($this->collPlugins);
         }
     }
 
     /**
-     * Associate a Organization object to this object
+     * Associate a Plugin object to this object
      * through the plugin_organization cross reference table.
      *
-     * @param  Organization $organization The PluginOrganization object to relate
-     * @return Plugin The current object (for fluent API support)
+     * @param  Plugin $plugin The PluginOrganization object to relate
+     * @return Organization The current object (for fluent API support)
      */
-    public function addOrganization(Organization $organization)
+    public function addPlugin(Plugin $plugin)
     {
-        if ($this->collOrganizations === null) {
-            $this->initOrganizations();
+        if ($this->collPlugins === null) {
+            $this->initPlugins();
         }
-        if (!$this->collOrganizations->contains($organization)) { // only add it if the **same** object is not already associated
-            $this->doAddOrganization($organization);
+        if (!$this->collPlugins->contains($plugin)) { // only add it if the **same** object is not already associated
+            $this->doAddPlugin($plugin);
 
-            $this->collOrganizations[]= $organization;
+            $this->collPlugins[]= $plugin;
         }
 
         return $this;
     }
 
     /**
-     * @param	Organization $organization The organization object to add.
+     * @param	Plugin $plugin The plugin object to add.
      */
-    protected function doAddOrganization($organization)
+    protected function doAddPlugin($plugin)
     {
         $pluginOrganization = new PluginOrganization();
-        $pluginOrganization->setOrganization($organization);
+        $pluginOrganization->setPlugin($plugin);
         $this->addPluginOrganization($pluginOrganization);
     }
 
     /**
-     * Remove a Organization object to this object
+     * Remove a Plugin object to this object
      * through the plugin_organization cross reference table.
      *
-     * @param Organization $organization The PluginOrganization object to relate
-     * @return Plugin The current object (for fluent API support)
+     * @param Plugin $plugin The PluginOrganization object to relate
+     * @return Organization The current object (for fluent API support)
      */
-    public function removeOrganization(Organization $organization)
+    public function removePlugin(Plugin $plugin)
     {
-        if ($this->getOrganizations()->contains($organization)) {
-            $this->collOrganizations->remove($this->collOrganizations->search($organization));
-            if (null === $this->organizationsScheduledForDeletion) {
-                $this->organizationsScheduledForDeletion = clone $this->collOrganizations;
-                $this->organizationsScheduledForDeletion->clear();
+        if ($this->getPlugins()->contains($plugin)) {
+            $this->collPlugins->remove($this->collPlugins->search($plugin));
+            if (null === $this->pluginsScheduledForDeletion) {
+                $this->pluginsScheduledForDeletion = clone $this->collPlugins;
+                $this->pluginsScheduledForDeletion->clear();
             }
-            $this->organizationsScheduledForDeletion[]= $organization;
+            $this->pluginsScheduledForDeletion[]= $plugin;
         }
 
         return $this;
@@ -1748,14 +1800,11 @@ abstract class BasePlugin extends BaseObject implements Persistent
     public function clear()
     {
         $this->id = null;
-        $this->installed_at = null;
-        $this->enabled = null;
-        $this->is_private = null;
+        $this->name = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
         $this->clearAllReferences();
-        $this->applyDefaultValues();
         $this->resetModified();
         $this->setNew(true);
         $this->setDeleted(false);
@@ -1774,18 +1823,23 @@ abstract class BasePlugin extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
+            if ($this->collUserOrganizations) {
+                foreach ($this->collUserOrganizations as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collPluginOrganizations) {
                 foreach ($this->collPluginOrganizations as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
-            if ($this->collPluginDatas) {
-                foreach ($this->collPluginDatas as $o) {
+            if ($this->collUsers) {
+                foreach ($this->collUsers as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
-            if ($this->collOrganizations) {
-                foreach ($this->collOrganizations as $o) {
+            if ($this->collPlugins) {
+                foreach ($this->collPlugins as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
@@ -1793,18 +1847,22 @@ abstract class BasePlugin extends BaseObject implements Persistent
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
+        if ($this->collUserOrganizations instanceof PropelCollection) {
+            $this->collUserOrganizations->clearIterator();
+        }
+        $this->collUserOrganizations = null;
         if ($this->collPluginOrganizations instanceof PropelCollection) {
             $this->collPluginOrganizations->clearIterator();
         }
         $this->collPluginOrganizations = null;
-        if ($this->collPluginDatas instanceof PropelCollection) {
-            $this->collPluginDatas->clearIterator();
+        if ($this->collUsers instanceof PropelCollection) {
+            $this->collUsers->clearIterator();
         }
-        $this->collPluginDatas = null;
-        if ($this->collOrganizations instanceof PropelCollection) {
-            $this->collOrganizations->clearIterator();
+        $this->collUsers = null;
+        if ($this->collPlugins instanceof PropelCollection) {
+            $this->collPlugins->clearIterator();
         }
-        $this->collOrganizations = null;
+        $this->collPlugins = null;
     }
 
     /**
@@ -1814,7 +1872,7 @@ abstract class BasePlugin extends BaseObject implements Persistent
      */
     public function __toString()
     {
-        return (string) $this->exportTo(PluginPeer::DEFAULT_STRING_FORMAT);
+        return (string) $this->exportTo(OrganizationPeer::DEFAULT_STRING_FORMAT);
     }
 
     /**

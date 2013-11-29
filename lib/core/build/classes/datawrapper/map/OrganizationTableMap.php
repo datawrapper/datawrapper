@@ -3,7 +3,7 @@
 
 
 /**
- * This class defines the structure of the 'plugin' table.
+ * This class defines the structure of the 'organization' table.
  *
  *
  *
@@ -14,13 +14,13 @@
  *
  * @package    propel.generator.datawrapper.map
  */
-class PluginTableMap extends TableMap
+class OrganizationTableMap extends TableMap
 {
 
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'datawrapper.map.PluginTableMap';
+    const CLASS_NAME = 'datawrapper.map.OrganizationTableMap';
 
     /**
      * Initialize the table attributes, columns and validators
@@ -32,16 +32,14 @@ class PluginTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('plugin');
-        $this->setPhpName('Plugin');
-        $this->setClassname('Plugin');
+        $this->setName('organization');
+        $this->setPhpName('Organization');
+        $this->setClassname('Organization');
         $this->setPackage('datawrapper');
         $this->setUseIdGenerator(false);
         // columns
         $this->addPrimaryKey('id', 'Id', 'VARCHAR', true, 128, null);
-        $this->addColumn('installed_at', 'InstalledAt', 'TIMESTAMP', true, null, null);
-        $this->addColumn('enabled', 'Enabled', 'BOOLEAN', false, 1, false);
-        $this->addColumn('is_private', 'IsPrivate', 'BOOLEAN', false, 1, false);
+        $this->addColumn('name', 'Name', 'VARCHAR', true, 512, null);
         // validators
     } // initialize()
 
@@ -50,9 +48,10 @@ class PluginTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('PluginOrganization', 'PluginOrganization', RelationMap::ONE_TO_MANY, array('id' => 'plugin_id', ), null, null, 'PluginOrganizations');
-        $this->addRelation('PluginData', 'PluginData', RelationMap::ONE_TO_MANY, array('id' => 'plugin_id', ), null, null, 'PluginDatas');
-        $this->addRelation('Organization', 'Organization', RelationMap::MANY_TO_MANY, array(), null, null, 'Organizations');
+        $this->addRelation('UserOrganization', 'UserOrganization', RelationMap::ONE_TO_MANY, array('id' => 'organization_id', ), null, null, 'UserOrganizations');
+        $this->addRelation('PluginOrganization', 'PluginOrganization', RelationMap::ONE_TO_MANY, array('id' => 'organization_id', ), null, null, 'PluginOrganizations');
+        $this->addRelation('User', 'User', RelationMap::MANY_TO_MANY, array(), null, null, 'Users');
+        $this->addRelation('Plugin', 'Plugin', RelationMap::MANY_TO_MANY, array(), null, null, 'Plugins');
     } // buildRelations()
 
-} // PluginTableMap
+} // OrganizationTableMap

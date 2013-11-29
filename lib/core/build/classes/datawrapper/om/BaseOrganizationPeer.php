@@ -2,56 +2,50 @@
 
 
 /**
- * Base static class for performing query and update operations on the 'plugin' table.
+ * Base static class for performing query and update operations on the 'organization' table.
  *
  *
  *
  * @package propel.generator.datawrapper.om
  */
-abstract class BasePluginPeer
+abstract class BaseOrganizationPeer
 {
 
     /** the default database name for this class */
     const DATABASE_NAME = 'datawrapper';
 
     /** the table name for this class */
-    const TABLE_NAME = 'plugin';
+    const TABLE_NAME = 'organization';
 
     /** the related Propel class for this table */
-    const OM_CLASS = 'Plugin';
+    const OM_CLASS = 'Organization';
 
     /** the related TableMap class for this table */
-    const TM_CLASS = 'PluginTableMap';
+    const TM_CLASS = 'OrganizationTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 4;
+    const NUM_COLUMNS = 2;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 4;
+    const NUM_HYDRATE_COLUMNS = 2;
 
     /** the column name for the id field */
-    const ID = 'plugin.id';
+    const ID = 'organization.id';
 
-    /** the column name for the installed_at field */
-    const INSTALLED_AT = 'plugin.installed_at';
-
-    /** the column name for the enabled field */
-    const ENABLED = 'plugin.enabled';
-
-    /** the column name for the is_private field */
-    const IS_PRIVATE = 'plugin.is_private';
+    /** the column name for the name field */
+    const NAME = 'organization.name';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
 
     /**
-     * An identiy map to hold any loaded instances of Plugin objects.
+     * An identiy map to hold any loaded instances of Organization objects.
      * This must be public so that other peer classes can access this when hydrating from JOIN
      * queries.
-     * @var        array Plugin[]
+     * @var        array Organization[]
      */
     public static $instances = array();
 
@@ -60,30 +54,30 @@ abstract class BasePluginPeer
      * holds an array of fieldnames
      *
      * first dimension keys are the type constants
-     * e.g. PluginPeer::$fieldNames[PluginPeer::TYPE_PHPNAME][0] = 'Id'
+     * e.g. OrganizationPeer::$fieldNames[OrganizationPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'InstalledAt', 'Enabled', 'IsPrivate', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'installedAt', 'enabled', 'isPrivate', ),
-        BasePeer::TYPE_COLNAME => array (PluginPeer::ID, PluginPeer::INSTALLED_AT, PluginPeer::ENABLED, PluginPeer::IS_PRIVATE, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'INSTALLED_AT', 'ENABLED', 'IS_PRIVATE', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'installed_at', 'enabled', 'is_private', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Name', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', ),
+        BasePeer::TYPE_COLNAME => array (OrganizationPeer::ID, OrganizationPeer::NAME, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'NAME', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'name', ),
+        BasePeer::TYPE_NUM => array (0, 1, )
     );
 
     /**
      * holds an array of keys for quick access to the fieldnames array
      *
      * first dimension keys are the type constants
-     * e.g. PluginPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
+     * e.g. OrganizationPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'InstalledAt' => 1, 'Enabled' => 2, 'IsPrivate' => 3, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'installedAt' => 1, 'enabled' => 2, 'isPrivate' => 3, ),
-        BasePeer::TYPE_COLNAME => array (PluginPeer::ID => 0, PluginPeer::INSTALLED_AT => 1, PluginPeer::ENABLED => 2, PluginPeer::IS_PRIVATE => 3, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'INSTALLED_AT' => 1, 'ENABLED' => 2, 'IS_PRIVATE' => 3, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'installed_at' => 1, 'enabled' => 2, 'is_private' => 3, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, ),
+        BasePeer::TYPE_COLNAME => array (OrganizationPeer::ID => 0, OrganizationPeer::NAME => 1, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'NAME' => 1, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, ),
+        BasePeer::TYPE_NUM => array (0, 1, )
     );
 
     /**
@@ -98,10 +92,10 @@ abstract class BasePluginPeer
      */
     public static function translateFieldName($name, $fromType, $toType)
     {
-        $toNames = PluginPeer::getFieldNames($toType);
-        $key = isset(PluginPeer::$fieldKeys[$fromType][$name]) ? PluginPeer::$fieldKeys[$fromType][$name] : null;
+        $toNames = OrganizationPeer::getFieldNames($toType);
+        $key = isset(OrganizationPeer::$fieldKeys[$fromType][$name]) ? OrganizationPeer::$fieldKeys[$fromType][$name] : null;
         if ($key === null) {
-            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(PluginPeer::$fieldKeys[$fromType], true));
+            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(OrganizationPeer::$fieldKeys[$fromType], true));
         }
 
         return $toNames[$key];
@@ -118,11 +112,11 @@ abstract class BasePluginPeer
      */
     public static function getFieldNames($type = BasePeer::TYPE_PHPNAME)
     {
-        if (!array_key_exists($type, PluginPeer::$fieldNames)) {
+        if (!array_key_exists($type, OrganizationPeer::$fieldNames)) {
             throw new PropelException('Method getFieldNames() expects the parameter $type to be one of the class constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME, BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. ' . $type . ' was given.');
         }
 
-        return PluginPeer::$fieldNames[$type];
+        return OrganizationPeer::$fieldNames[$type];
     }
 
     /**
@@ -134,12 +128,12 @@ abstract class BasePluginPeer
      *		$c->addJoin(TablePeer::alias("alias1", TablePeer::PRIMARY_KEY_COLUMN), TablePeer::PRIMARY_KEY_COLUMN);
      * </code>
      * @param      string $alias The alias for the current table.
-     * @param      string $column The column name for current table. (i.e. PluginPeer::COLUMN_NAME).
+     * @param      string $column The column name for current table. (i.e. OrganizationPeer::COLUMN_NAME).
      * @return string
      */
     public static function alias($alias, $column)
     {
-        return str_replace(PluginPeer::TABLE_NAME.'.', $alias.'.', $column);
+        return str_replace(OrganizationPeer::TABLE_NAME.'.', $alias.'.', $column);
     }
 
     /**
@@ -157,15 +151,11 @@ abstract class BasePluginPeer
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(PluginPeer::ID);
-            $criteria->addSelectColumn(PluginPeer::INSTALLED_AT);
-            $criteria->addSelectColumn(PluginPeer::ENABLED);
-            $criteria->addSelectColumn(PluginPeer::IS_PRIVATE);
+            $criteria->addSelectColumn(OrganizationPeer::ID);
+            $criteria->addSelectColumn(OrganizationPeer::NAME);
         } else {
             $criteria->addSelectColumn($alias . '.id');
-            $criteria->addSelectColumn($alias . '.installed_at');
-            $criteria->addSelectColumn($alias . '.enabled');
-            $criteria->addSelectColumn($alias . '.is_private');
+            $criteria->addSelectColumn($alias . '.name');
         }
     }
 
@@ -185,21 +175,21 @@ abstract class BasePluginPeer
         // We need to set the primary table name, since in the case that there are no WHERE columns
         // it will be impossible for the BasePeer::createSelectSql() method to determine which
         // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(PluginPeer::TABLE_NAME);
+        $criteria->setPrimaryTableName(OrganizationPeer::TABLE_NAME);
 
         if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
             $criteria->setDistinct();
         }
 
         if (!$criteria->hasSelectClause()) {
-            PluginPeer::addSelectColumns($criteria);
+            OrganizationPeer::addSelectColumns($criteria);
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
-        $criteria->setDbName(PluginPeer::DATABASE_NAME); // Set the correct dbName
+        $criteria->setDbName(OrganizationPeer::DATABASE_NAME); // Set the correct dbName
 
         if ($con === null) {
-            $con = Propel::getConnection(PluginPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(OrganizationPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
         // BasePeer returns a PDOStatement
         $stmt = BasePeer::doCount($criteria, $con);
@@ -218,7 +208,7 @@ abstract class BasePluginPeer
      *
      * @param      Criteria $criteria object used to create the SELECT statement.
      * @param      PropelPDO $con
-     * @return                 Plugin
+     * @return                 Organization
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
@@ -226,7 +216,7 @@ abstract class BasePluginPeer
     {
         $critcopy = clone $criteria;
         $critcopy->setLimit(1);
-        $objects = PluginPeer::doSelect($critcopy, $con);
+        $objects = OrganizationPeer::doSelect($critcopy, $con);
         if ($objects) {
             return $objects[0];
         }
@@ -244,7 +234,7 @@ abstract class BasePluginPeer
      */
     public static function doSelect(Criteria $criteria, PropelPDO $con = null)
     {
-        return PluginPeer::populateObjects(PluginPeer::doSelectStmt($criteria, $con));
+        return OrganizationPeer::populateObjects(OrganizationPeer::doSelectStmt($criteria, $con));
     }
     /**
      * Prepares the Criteria object and uses the parent doSelect() method to execute a PDOStatement.
@@ -262,16 +252,16 @@ abstract class BasePluginPeer
     public static function doSelectStmt(Criteria $criteria, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(PluginPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(OrganizationPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         if (!$criteria->hasSelectClause()) {
             $criteria = clone $criteria;
-            PluginPeer::addSelectColumns($criteria);
+            OrganizationPeer::addSelectColumns($criteria);
         }
 
         // Set the correct dbName
-        $criteria->setDbName(PluginPeer::DATABASE_NAME);
+        $criteria->setDbName(OrganizationPeer::DATABASE_NAME);
 
         // BasePeer returns a PDOStatement
         return BasePeer::doSelect($criteria, $con);
@@ -285,7 +275,7 @@ abstract class BasePluginPeer
      * to the cache in order to ensure that the same objects are always returned by doSelect*()
      * and retrieveByPK*() calls.
      *
-     * @param      Plugin $obj A Plugin object.
+     * @param      Organization $obj A Organization object.
      * @param      string $key (optional) key to use for instance map (for performance boost if key was already calculated externally).
      */
     public static function addInstanceToPool($obj, $key = null)
@@ -294,7 +284,7 @@ abstract class BasePluginPeer
             if ($key === null) {
                 $key = (string) $obj->getId();
             } // if key === null
-            PluginPeer::$instances[$key] = $obj;
+            OrganizationPeer::$instances[$key] = $obj;
         }
     }
 
@@ -306,7 +296,7 @@ abstract class BasePluginPeer
      * methods in your stub classes -- you may need to explicitly remove objects
      * from the cache in order to prevent returning objects that no longer exist.
      *
-     * @param      mixed $value A Plugin object or a primary key value.
+     * @param      mixed $value A Organization object or a primary key value.
      *
      * @return void
      * @throws PropelException - if the value is invalid.
@@ -314,17 +304,17 @@ abstract class BasePluginPeer
     public static function removeInstanceFromPool($value)
     {
         if (Propel::isInstancePoolingEnabled() && $value !== null) {
-            if (is_object($value) && $value instanceof Plugin) {
+            if (is_object($value) && $value instanceof Organization) {
                 $key = (string) $value->getId();
             } elseif (is_scalar($value)) {
                 // assume we've been passed a primary key
                 $key = (string) $value;
             } else {
-                $e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or Plugin object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value,true)));
+                $e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or Organization object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value,true)));
                 throw $e;
             }
 
-            unset(PluginPeer::$instances[$key]);
+            unset(OrganizationPeer::$instances[$key]);
         }
     } // removeInstanceFromPool()
 
@@ -335,14 +325,14 @@ abstract class BasePluginPeer
      * a multi-column primary key, a serialize()d version of the primary key will be returned.
      *
      * @param      string $key The key (@see getPrimaryKeyHash()) for this instance.
-     * @return   Plugin Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
+     * @return   Organization Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
      * @see        getPrimaryKeyHash()
      */
     public static function getInstanceFromPool($key)
     {
         if (Propel::isInstancePoolingEnabled()) {
-            if (isset(PluginPeer::$instances[$key])) {
-                return PluginPeer::$instances[$key];
+            if (isset(OrganizationPeer::$instances[$key])) {
+                return OrganizationPeer::$instances[$key];
             }
         }
 
@@ -358,16 +348,16 @@ abstract class BasePluginPeer
     {
       if ($and_clear_all_references)
       {
-        foreach (PluginPeer::$instances as $instance)
+        foreach (OrganizationPeer::$instances as $instance)
         {
           $instance->clearAllReferences(true);
         }
       }
-        PluginPeer::$instances = array();
+        OrganizationPeer::$instances = array();
     }
 
     /**
-     * Method to invalidate the instance pool of all tables related to plugin
+     * Method to invalidate the instance pool of all tables related to organization
      * by a foreign key with ON DELETE CASCADE
      */
     public static function clearRelatedInstancePool()
@@ -421,11 +411,11 @@ abstract class BasePluginPeer
         $results = array();
 
         // set the class once to avoid overhead in the loop
-        $cls = PluginPeer::getOMClass();
+        $cls = OrganizationPeer::getOMClass();
         // populate the object(s)
         while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key = PluginPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj = PluginPeer::getInstanceFromPool($key))) {
+            $key = OrganizationPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj = OrganizationPeer::getInstanceFromPool($key))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj->hydrate($row, 0, true); // rehydrate
@@ -434,7 +424,7 @@ abstract class BasePluginPeer
                 $obj = new $cls();
                 $obj->hydrate($row);
                 $results[] = $obj;
-                PluginPeer::addInstanceToPool($obj, $key);
+                OrganizationPeer::addInstanceToPool($obj, $key);
             } // if key exists
         }
         $stmt->closeCursor();
@@ -448,21 +438,21 @@ abstract class BasePluginPeer
      * @param      int $startcol The 0-based offset for reading from the resultset row.
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
-     * @return array (Plugin object, last column rank)
+     * @return array (Organization object, last column rank)
      */
     public static function populateObject($row, $startcol = 0)
     {
-        $key = PluginPeer::getPrimaryKeyHashFromRow($row, $startcol);
-        if (null !== ($obj = PluginPeer::getInstanceFromPool($key))) {
+        $key = OrganizationPeer::getPrimaryKeyHashFromRow($row, $startcol);
+        if (null !== ($obj = OrganizationPeer::getInstanceFromPool($key))) {
             // We no longer rehydrate the object, since this can cause data loss.
             // See http://www.propelorm.org/ticket/509
             // $obj->hydrate($row, $startcol, true); // rehydrate
-            $col = $startcol + PluginPeer::NUM_HYDRATE_COLUMNS;
+            $col = $startcol + OrganizationPeer::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = PluginPeer::OM_CLASS;
+            $cls = OrganizationPeer::OM_CLASS;
             $obj = new $cls();
             $col = $obj->hydrate($row, $startcol);
-            PluginPeer::addInstanceToPool($obj, $key);
+            OrganizationPeer::addInstanceToPool($obj, $key);
         }
 
         return array($obj, $col);
@@ -477,7 +467,7 @@ abstract class BasePluginPeer
      */
     public static function getTableMap()
     {
-        return Propel::getDatabaseMap(PluginPeer::DATABASE_NAME)->getTable(PluginPeer::TABLE_NAME);
+        return Propel::getDatabaseMap(OrganizationPeer::DATABASE_NAME)->getTable(OrganizationPeer::TABLE_NAME);
     }
 
     /**
@@ -485,9 +475,9 @@ abstract class BasePluginPeer
      */
     public static function buildTableMap()
     {
-      $dbMap = Propel::getDatabaseMap(BasePluginPeer::DATABASE_NAME);
-      if (!$dbMap->hasTable(BasePluginPeer::TABLE_NAME)) {
-        $dbMap->addTableObject(new PluginTableMap());
+      $dbMap = Propel::getDatabaseMap(BaseOrganizationPeer::DATABASE_NAME);
+      if (!$dbMap->hasTable(BaseOrganizationPeer::TABLE_NAME)) {
+        $dbMap->addTableObject(new OrganizationTableMap());
       }
     }
 
@@ -499,13 +489,13 @@ abstract class BasePluginPeer
      */
     public static function getOMClass($row = 0, $colnum = 0)
     {
-        return PluginPeer::OM_CLASS;
+        return OrganizationPeer::OM_CLASS;
     }
 
     /**
-     * Performs an INSERT on the database, given a Plugin or Criteria object.
+     * Performs an INSERT on the database, given a Organization or Criteria object.
      *
-     * @param      mixed $values Criteria or Plugin object containing data that is used to create the INSERT statement.
+     * @param      mixed $values Criteria or Organization object containing data that is used to create the INSERT statement.
      * @param      PropelPDO $con the PropelPDO connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
@@ -514,18 +504,18 @@ abstract class BasePluginPeer
     public static function doInsert($values, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(PluginPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(OrganizationPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         if ($values instanceof Criteria) {
             $criteria = clone $values; // rename for clarity
         } else {
-            $criteria = $values->buildCriteria(); // build Criteria from Plugin object
+            $criteria = $values->buildCriteria(); // build Criteria from Organization object
         }
 
 
         // Set the correct dbName
-        $criteria->setDbName(PluginPeer::DATABASE_NAME);
+        $criteria->setDbName(OrganizationPeer::DATABASE_NAME);
 
         try {
             // use transaction because $criteria could contain info
@@ -542,9 +532,9 @@ abstract class BasePluginPeer
     }
 
     /**
-     * Performs an UPDATE on the database, given a Plugin or Criteria object.
+     * Performs an UPDATE on the database, given a Organization or Criteria object.
      *
-     * @param      mixed $values Criteria or Plugin object containing data that is used to create the UPDATE statement.
+     * @param      mixed $values Criteria or Organization object containing data that is used to create the UPDATE statement.
      * @param      PropelPDO $con The connection to use (specify PropelPDO connection object to exert more control over transactions).
      * @return int             The number of affected rows (if supported by underlying database driver).
      * @throws PropelException Any exceptions caught during processing will be
@@ -553,35 +543,35 @@ abstract class BasePluginPeer
     public static function doUpdate($values, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(PluginPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(OrganizationPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
-        $selectCriteria = new Criteria(PluginPeer::DATABASE_NAME);
+        $selectCriteria = new Criteria(OrganizationPeer::DATABASE_NAME);
 
         if ($values instanceof Criteria) {
             $criteria = clone $values; // rename for clarity
 
-            $comparison = $criteria->getComparison(PluginPeer::ID);
-            $value = $criteria->remove(PluginPeer::ID);
+            $comparison = $criteria->getComparison(OrganizationPeer::ID);
+            $value = $criteria->remove(OrganizationPeer::ID);
             if ($value) {
-                $selectCriteria->add(PluginPeer::ID, $value, $comparison);
+                $selectCriteria->add(OrganizationPeer::ID, $value, $comparison);
             } else {
-                $selectCriteria->setPrimaryTableName(PluginPeer::TABLE_NAME);
+                $selectCriteria->setPrimaryTableName(OrganizationPeer::TABLE_NAME);
             }
 
-        } else { // $values is Plugin object
+        } else { // $values is Organization object
             $criteria = $values->buildCriteria(); // gets full criteria
             $selectCriteria = $values->buildPkeyCriteria(); // gets criteria w/ primary key(s)
         }
 
         // set the correct dbName
-        $criteria->setDbName(PluginPeer::DATABASE_NAME);
+        $criteria->setDbName(OrganizationPeer::DATABASE_NAME);
 
         return BasePeer::doUpdate($selectCriteria, $criteria, $con);
     }
 
     /**
-     * Deletes all rows from the plugin table.
+     * Deletes all rows from the organization table.
      *
      * @param      PropelPDO $con the connection to use
      * @return int             The number of affected rows (if supported by underlying database driver).
@@ -590,19 +580,19 @@ abstract class BasePluginPeer
     public static function doDeleteAll(PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(PluginPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(OrganizationPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
         $affectedRows = 0; // initialize var to track total num of affected rows
         try {
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-            $affectedRows += BasePeer::doDeleteAll(PluginPeer::TABLE_NAME, $con, PluginPeer::DATABASE_NAME);
+            $affectedRows += BasePeer::doDeleteAll(OrganizationPeer::TABLE_NAME, $con, OrganizationPeer::DATABASE_NAME);
             // Because this db requires some delete cascade/set null emulation, we have to
             // clear the cached instance *after* the emulation has happened (since
             // instances get re-added by the select statement contained therein).
-            PluginPeer::clearInstancePool();
-            PluginPeer::clearRelatedInstancePool();
+            OrganizationPeer::clearInstancePool();
+            OrganizationPeer::clearRelatedInstancePool();
             $con->commit();
 
             return $affectedRows;
@@ -613,9 +603,9 @@ abstract class BasePluginPeer
     }
 
     /**
-     * Performs a DELETE on the database, given a Plugin or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a Organization or Criteria object OR a primary key value.
      *
-     * @param      mixed $values Criteria or Plugin object or primary key or array of primary keys
+     * @param      mixed $values Criteria or Organization object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param      PropelPDO $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -626,32 +616,32 @@ abstract class BasePluginPeer
      public static function doDelete($values, PropelPDO $con = null)
      {
         if ($con === null) {
-            $con = Propel::getConnection(PluginPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(OrganizationPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         if ($values instanceof Criteria) {
             // invalidate the cache for all objects of this type, since we have no
             // way of knowing (without running a query) what objects should be invalidated
             // from the cache based on this Criteria.
-            PluginPeer::clearInstancePool();
+            OrganizationPeer::clearInstancePool();
             // rename for clarity
             $criteria = clone $values;
-        } elseif ($values instanceof Plugin) { // it's a model object
+        } elseif ($values instanceof Organization) { // it's a model object
             // invalidate the cache for this single object
-            PluginPeer::removeInstanceFromPool($values);
+            OrganizationPeer::removeInstanceFromPool($values);
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(PluginPeer::DATABASE_NAME);
-            $criteria->add(PluginPeer::ID, (array) $values, Criteria::IN);
+            $criteria = new Criteria(OrganizationPeer::DATABASE_NAME);
+            $criteria->add(OrganizationPeer::ID, (array) $values, Criteria::IN);
             // invalidate the cache for this object(s)
             foreach ((array) $values as $singleval) {
-                PluginPeer::removeInstanceFromPool($singleval);
+                OrganizationPeer::removeInstanceFromPool($singleval);
             }
         }
 
         // Set the correct dbName
-        $criteria->setDbName(PluginPeer::DATABASE_NAME);
+        $criteria->setDbName(OrganizationPeer::DATABASE_NAME);
 
         $affectedRows = 0; // initialize var to track total num of affected rows
 
@@ -661,7 +651,7 @@ abstract class BasePluginPeer
             $con->beginTransaction();
 
             $affectedRows += BasePeer::doDelete($criteria, $con);
-            PluginPeer::clearRelatedInstancePool();
+            OrganizationPeer::clearRelatedInstancePool();
             $con->commit();
 
             return $affectedRows;
@@ -672,13 +662,13 @@ abstract class BasePluginPeer
     }
 
     /**
-     * Validates all modified columns of given Plugin object.
+     * Validates all modified columns of given Organization object.
      * If parameter $columns is either a single column name or an array of column names
      * than only those columns are validated.
      *
      * NOTICE: This does not apply to primary or foreign keys for now.
      *
-     * @param      Plugin $obj The object to validate.
+     * @param      Organization $obj The object to validate.
      * @param      mixed $cols Column name or array of column names.
      *
      * @return mixed TRUE if all columns are valid or the error message of the first invalid column.
@@ -688,8 +678,8 @@ abstract class BasePluginPeer
         $columns = array();
 
         if ($cols) {
-            $dbMap = Propel::getDatabaseMap(PluginPeer::DATABASE_NAME);
-            $tableMap = $dbMap->getTable(PluginPeer::TABLE_NAME);
+            $dbMap = Propel::getDatabaseMap(OrganizationPeer::DATABASE_NAME);
+            $tableMap = $dbMap->getTable(OrganizationPeer::TABLE_NAME);
 
             if (! is_array($cols)) {
                 $cols = array($cols);
@@ -705,7 +695,7 @@ abstract class BasePluginPeer
 
         }
 
-        return BasePeer::doValidate(PluginPeer::DATABASE_NAME, PluginPeer::TABLE_NAME, $columns);
+        return BasePeer::doValidate(OrganizationPeer::DATABASE_NAME, OrganizationPeer::TABLE_NAME, $columns);
     }
 
     /**
@@ -713,23 +703,23 @@ abstract class BasePluginPeer
      *
      * @param      string $pk the primary key.
      * @param      PropelPDO $con the connection to use
-     * @return Plugin
+     * @return Organization
      */
     public static function retrieveByPK($pk, PropelPDO $con = null)
     {
 
-        if (null !== ($obj = PluginPeer::getInstanceFromPool((string) $pk))) {
+        if (null !== ($obj = OrganizationPeer::getInstanceFromPool((string) $pk))) {
             return $obj;
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(PluginPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(OrganizationPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria = new Criteria(PluginPeer::DATABASE_NAME);
-        $criteria->add(PluginPeer::ID, $pk);
+        $criteria = new Criteria(OrganizationPeer::DATABASE_NAME);
+        $criteria->add(OrganizationPeer::ID, $pk);
 
-        $v = PluginPeer::doSelect($criteria, $con);
+        $v = OrganizationPeer::doSelect($criteria, $con);
 
         return !empty($v) > 0 ? $v[0] : null;
     }
@@ -739,31 +729,31 @@ abstract class BasePluginPeer
      *
      * @param      array $pks List of primary keys
      * @param      PropelPDO $con the connection to use
-     * @return Plugin[]
+     * @return Organization[]
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
     public static function retrieveByPKs($pks, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(PluginPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(OrganizationPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         $objs = null;
         if (empty($pks)) {
             $objs = array();
         } else {
-            $criteria = new Criteria(PluginPeer::DATABASE_NAME);
-            $criteria->add(PluginPeer::ID, $pks, Criteria::IN);
-            $objs = PluginPeer::doSelect($criteria, $con);
+            $criteria = new Criteria(OrganizationPeer::DATABASE_NAME);
+            $criteria->add(OrganizationPeer::ID, $pks, Criteria::IN);
+            $objs = OrganizationPeer::doSelect($criteria, $con);
         }
 
         return $objs;
     }
 
-} // BasePluginPeer
+} // BaseOrganizationPeer
 
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-BasePluginPeer::buildTableMap();
+BaseOrganizationPeer::buildTableMap();
 
