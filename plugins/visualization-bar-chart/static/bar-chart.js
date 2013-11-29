@@ -134,7 +134,7 @@
                     row: i
                 });
             });
-            if (sortBars) values.sort(function(a,b) { return b.value - a.value; });
+            if (sortBars) values.sort(function(a,b) { return (isNaN(b.value) ? 0 : b.value) - (isNaN(a.value) ? 0 : a.value); });
             if (reverse) values.reverse();
             return values;
         },
