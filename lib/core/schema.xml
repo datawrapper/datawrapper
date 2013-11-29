@@ -135,7 +135,7 @@
     <column name="id" type="varchar" size="128" required="true" primaryKey="true" />
     <column name="installed_at" type="timestamp" required="true" />
     <column name="enabled" type="boolean" default="false" />
-    <column name="private" type="boolean" default="false" />
+    <column name="is_private" type="boolean" default="false" />
   </table>
 
   <!-- cross reference table to define plugins available to each organization -->
