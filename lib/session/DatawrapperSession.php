@@ -150,6 +150,10 @@ class DatawrapperSession {
         self::getInstance()->user = $user;
         Action::logAction($user, 'login');
 
+        // reload plugins since there might be new plugins
+        // becoming available after logins
+        DatawrapperPluginManager::load();
+
         $_SESSION['persistent'] = $keepLoggedIn;
         $_SESSION['last_action_time'] = time();
 
