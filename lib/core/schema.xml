@@ -47,6 +47,27 @@
     <column name="oauth_signin" type="varchar" required="false" size="512" phpName="OAuthSignIn" />
   </table>
 
+  <!-- organizations -->
+  <table name="organization" phpName="Organization">
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+    <column name="id" type="varchar" size="512" required="true" primaryKey="true" />
+    <column name="name" type="varchar" size="512" required="true" />x
+  </table>
+
+  <!-- cross reference user - organization -->
+  <table name="user_organization" isCrossRef="true">
+    <column name="user_id" type="integer" primaryKey="true" />
+    <column name="organization_id" type="varchar" size="512" primaryKey="true" />
+    <foreign-key foreignTable="user">
+      <reference local="user_id" foreign="id"/>
+    </foreign-key>
+    <foreign-key foreignTable="organization">
+      <reference local="organization_id" foreign="id"/>
+    </foreign-key>
+  </table>
+
   <!-- store security relevant user actions in this table -->
   <table name="action" phpName="Action">
     <vendor type="mysql">
@@ -115,6 +136,18 @@
     <column name="installed_at" type="timestamp" required="true" />
     <column name="enabled" type="boolean" default="false" />
     <column name="private" type="boolean" default="false" />
+  </table>
+
+  <!-- cross reference table to define plugins available to each organization -->
+  <table name="plugin_organization" isCrossRef="true">
+    <column name="plugin_id" type="varchar" size="128" primaryKey="true" />
+    <column name="organization_id" type="varchar" size="128" primaryKey="true" />
+    <foreign-key foreignTable="plugin">
+      <reference local="plugin_id" foreign="id"/>
+    </foreign-key>
+    <foreign-key foreignTable="organization">
+      <reference local="organization_id" foreign="id"/>
+    </foreign-key>
   </table>
 
   <!-- plugin data -->
