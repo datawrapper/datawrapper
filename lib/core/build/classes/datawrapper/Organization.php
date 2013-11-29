@@ -15,4 +15,12 @@
  */
 class Organization extends BaseOrganization
 {
+
+    public function hasPlugin($plugin) {
+        return OrganizationQuery::create()
+            ->filterById($this->getId())
+            ->filterByPlugin($plugin)
+            ->count() > 0;
+    }
+
 }
