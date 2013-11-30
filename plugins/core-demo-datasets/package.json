@@ -1,4 +1,5 @@
 {
     "name": "core-demo-datasets",
-    "version": "1.0.0"
+    "version": "1.0.0",
+    "description": "The default demo datasets shown in Datawrapper (e.g. Marriages in Germany)"
 }
