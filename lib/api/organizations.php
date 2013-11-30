@@ -110,12 +110,39 @@ $app->put('/organizations/:id/plugins/:op/:plugin_id', function($org_id, $op, $p
         $plugin = PluginQuery::create()->findPk($plugin_id);
         if (!$org) return error('unknown-organization', 'Organization not found');
         if (!$plugin) return error('unknown-plugin', 'Plugin not found');
-        if ($org->hasPlugin($plugin)) {
-            if ($op == 'remove' || $op == 'toggle') $org->removePlugin($plugin);
+        if ($op == 'config') {
+            $data = json_decode($app->request()->getBody(), true);
+            // store custom config value
+            $key = 'custom_config/' . $org->getId() . '/' . $data['key'];
+            $q = PluginDataQuery::create()
+                  ->filterByPlugin($plugin)
+                  ->filterByKey($key)
+                  ->findOne();
+            if (is_null($data['value'])) {
+                // remove value
+                if ($q) $q->delete();
+                ok();
+            } else {
+                // udpate value
+                if (!$q) {
+                    $q = new PluginData();
+                    $q->setPlugin($plugin);
+                    $q->setKey($key);
+                }
+                $q->setData($data['value']);
+                $q->setStoredAt(time());
+                $q->save();
+                ok($q->toArray());
+            }
         } else {
-            if ($op == 'add' || $op == 'toggle') $org->addPlugin($plugin);
+            // change plugin permission
+            if ($org->hasPlugin($plugin)) {
+                if ($op == 'remove' || $op == 'toggle') $org->removePlugin($plugin);
+            } else {
+                if ($op == '' || $op == 'toggle') $org->addPlugin($plugin);
+            }
+            $org->save();
+            ok(array('active' => $org->hasPlugin($plugin)));
         }
-        $org->save();
-        ok(array('active' => $org->hasPlugin($plugin)));
     });
-});
+})->conditions(array('op' => '(remove|add|toggle|config)'));
