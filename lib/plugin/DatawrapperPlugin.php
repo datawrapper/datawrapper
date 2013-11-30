@@ -143,9 +143,26 @@ class DatawrapperPlugin {
 	 */
 	public function getConfig() {
 		if (isset($GLOBALS['dw_config']['plugins'][$this->getName()])) {
-			return $GLOBALS['dw_config']['plugins'][$this->getName()];
+			$cfg = $GLOBALS['dw_config']['plugins'][$this->getName()];
+		} else {
+			$cfg = array();
 		}
-		return array();
+		// apply organization-specific custom configuration
+		foreach (DatawrapperSession::getUser()->getOrganizations() as $org) {
+			$pd = PluginDataQuery::create()
+				->filterByPlugin($this->getPluginOM())
+				->where('PluginData.Key LIKE ?', 'custom_config/'.$org->getId().'/%')
+				->find();
+			foreach ($pd as $c) {
+				$k = explode('/', $c->getKey());
+				$k = explode('.', $k[2]);
+				if (count($k) == 1) $cfg[$k[0]] = $c->getData();
+				else if (count($k) == 2) $cfg[$k[0]][$k[1]] = $c->getData();
+				else if (count($k) == 3) $cfg[$k[0]][$k[1]][$k[2]] = $c->getData();
+				else if (count($k) == 4) $cfg[$k[0]][$k[1]][$k[2]][$k[3]] = $c->getData();
+			}
+		}
+		return $cfg;
 	}
 
 	/*
