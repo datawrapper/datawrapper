@@ -21,11 +21,17 @@ class DatawrapperPluginManager {
     public function _load() {
 
         $plugins = PluginQuery::create()
-            ->filterByEnabled(true)
-            ->where('Plugin.Id IN (SELECT plugin_id FROM plugin_organization WHERE organization_id IN (SELECT organization_id FROM user_organization WHERE user_id = ?))', DatawrapperSession::getUser()->getId())
-            ->_or()
-            ->where('Plugin.IsPrivate = FALSE')
-            ->find();
+            ->filterByEnabled(true);
+
+        if (!defined('NO_SESSION')) {
+            $user_id = DatawrapperSession::getUser()->getId();
+            if (!empty($user_id)) {
+                $plugins->where('Plugin.Id IN (SELECT plugin_id FROM plugin_organization WHERE organization_id IN (SELECT organization_id FROM user_organization WHERE user_id = ?))', $user_id)
+                    ->_or();
+            }
+            $plugins = $plugins->where('Plugin.IsPrivate = FALSE');
+        }
+        $plugins = $plugins->find();
 
         $not_loaded_yet = array();
 
