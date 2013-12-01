@@ -43,23 +43,24 @@ class DatawrapperPluginManager {
 
         $could_not_install = array();
 
-        function load_plugin($plugin) {
-            $plugin_path = ROOT_PATH . 'plugins/' . $plugin->getName() . '/plugin.php';
-            if (file_exists($plugin_path)) {
-                require_once $plugin_path;
-                // init plugin class
-                $className = $plugin->getClassName();
-                $pluginClass = new $className();
-            } else {
-                $pluginClass = new DatawrapperPlugin($plugin->getName());
+        if (!function_exists('load_plugin')) {
+            function load_plugin($plugin) {
+                $plugin_path = ROOT_PATH . 'plugins/' . $plugin->getName() . '/plugin.php';
+                if (file_exists($plugin_path)) {
+                    require_once $plugin_path;
+                    // init plugin class
+                    $className = $plugin->getClassName();
+                    $pluginClass = new $className();
+                } else {
+                    $pluginClass = new DatawrapperPlugin($plugin->getName());
+                }
+                // but before we load the libraries required by this lib
+                foreach ($pluginClass->getRequiredLibraries() as $lib) {
+                    require_once ROOT_PATH . 'plugins/' . $plugin->getName() . '/' . $lib;
+                }
+                $pluginClass->init();
             }
-            // but before we load the libraries required by this lib
-            foreach ($pluginClass->getRequiredLibraries() as $lib) {
-                require_once ROOT_PATH . 'plugins/' . $plugin->getName() . '/' . $lib;
-            }
-            $pluginClass->init();
         }
-
         while (count($not_loaded_yet) > 0) {
             $try = $not_loaded_yet;
             $not_loaded_yet = array();
