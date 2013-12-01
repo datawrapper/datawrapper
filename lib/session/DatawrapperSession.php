@@ -44,8 +44,11 @@ class DatawrapperSession {
      * initializes a new user or creates a guest user if not logged in
      */
     protected function initUser() {
-        if (isset($_SESSION['dw-user-id'])) {
-            if ($_SESSION['persistent'] || time() - $_SESSION['last_action_time'] < 1800) {
+        if (isset($_SESSION['dw-user-id']) &&
+            (isset($_SESSION['persistent']) ||
+             isset($_SESSION['last_action_time']))) {
+            if ((isset($_SESSION['persistent']) && $_SESSION['persistent']) ||
+                (isset($_SESSION['last_action_time']) && time() - $_SESSION['last_action_time'] < 1800)) {
                 $this->user = UserQuery::create()->limit(1)->findPK($_SESSION['dw-user-id']);
                 $_SESSION['last_action_time'] = time();
             }
