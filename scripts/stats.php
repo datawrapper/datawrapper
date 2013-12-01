@@ -21,8 +21,8 @@ $queries = array(
     'charts_uploaded' => "SELECT count(*) FROM chart WHERE last_edit_step <= 1 AND deleted = 0",
     'users_signed' => "SELECT count(*) FROM user WHERE role <= 2 and deleted = 0",
     'users_activated' => "SELECT count(*) FROM user WHERE role <= 1 and deleted = 0",
-    'active_users_day' => "SELECT COUNT(*) FROM session WHERE NOW() - last_updated < 86400",
-    'active_users_week' => "SELECT COUNT(*) FROM session WHERE NOW() - last_updated < 604800"
+    'active_users_day' => "SELECT COUNT(*) FROM session WHERE NOW() - last_updated < 86400 AND session_data != ''",
+    'active_users_week' => "SELECT COUNT(*) FROM session WHERE NOW() - last_updated < 604800 AND session_data != ''"
 );
 
 $values = array();
