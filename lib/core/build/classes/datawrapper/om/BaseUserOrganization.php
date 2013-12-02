@@ -42,6 +42,13 @@ abstract class BaseUserOrganization extends BaseObject implements Persistent
     protected $organization_id;
 
     /**
+     * The value for the organization_role field.
+     * Note: this column has a database default value of: 1
+     * @var        int
+     */
+    protected $organization_role;
+
+    /**
      * @var        User
      */
     protected $aUser;
@@ -72,6 +79,27 @@ abstract class BaseUserOrganization extends BaseObject implements Persistent
     protected $alreadyInClearAllReferencesDeep = false;
 
     /**
+     * Applies default values to this object.
+     * This method should be called from the object's constructor (or
+     * equivalent initialization method).
+     * @see        __construct()
+     */
+    public function applyDefaultValues()
+    {
+        $this->organization_role = 1;
+    }
+
+    /**
+     * Initializes internal state of BaseUserOrganization object.
+     * @see        applyDefaults()
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->applyDefaultValues();
+    }
+
+    /**
      * Get the [user_id] column value.
      *
      * @return int
@@ -89,6 +117,25 @@ abstract class BaseUserOrganization extends BaseObject implements Persistent
     public function getOrganizationId()
     {
         return $this->organization_id;
+    }
+
+    /**
+     * Get the [organization_role] column value.
+     *
+     * @return int
+     * @throws PropelException - if the stored enum key is unknown.
+     */
+    public function getOrganizationRole()
+    {
+        if (null === $this->organization_role) {
+            return null;
+        }
+        $valueSet = UserOrganizationPeer::getValueSet(UserOrganizationPeer::ORGANIZATION_ROLE);
+        if (!isset($valueSet[$this->organization_role])) {
+            throw new PropelException('Unknown stored enum key: ' . $this->organization_role);
+        }
+
+        return $valueSet[$this->organization_role];
     }
 
     /**
@@ -142,6 +189,32 @@ abstract class BaseUserOrganization extends BaseObject implements Persistent
     } // setOrganizationId()
 
     /**
+     * Set the value of [organization_role] column.
+     *
+     * @param int $v new value
+     * @return UserOrganization The current object (for fluent API support)
+     * @throws PropelException - if the value is not accepted by this enum.
+     */
+    public function setOrganizationRole($v)
+    {
+        if ($v !== null) {
+            $valueSet = UserOrganizationPeer::getValueSet(UserOrganizationPeer::ORGANIZATION_ROLE);
+            if (!in_array($v, $valueSet)) {
+                throw new PropelException(sprintf('Value "%s" is not accepted in this enumerated column', $v));
+            }
+            $v = array_search($v, $valueSet);
+        }
+
+        if ($this->organization_role !== $v) {
+            $this->organization_role = $v;
+            $this->modifiedColumns[] = UserOrganizationPeer::ORGANIZATION_ROLE;
+        }
+
+
+        return $this;
+    } // setOrganizationRole()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -151,6 +224,10 @@ abstract class BaseUserOrganization extends BaseObject implements Persistent
      */
     public function hasOnlyDefaultValues()
     {
+            if ($this->organization_role !== 1) {
+                return false;
+            }
+
         // otherwise, everything was equal, so return true
         return true;
     } // hasOnlyDefaultValues()
@@ -175,6 +252,7 @@ abstract class BaseUserOrganization extends BaseObject implements Persistent
 
             $this->user_id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
             $this->organization_id = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
+            $this->organization_role = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -183,7 +261,7 @@ abstract class BaseUserOrganization extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
             $this->postHydrate($row, $startcol, $rehydrate);
-            return $startcol + 2; // 2 = UserOrganizationPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 3; // 3 = UserOrganizationPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating UserOrganization object", $e);
@@ -424,6 +502,9 @@ abstract class BaseUserOrganization extends BaseObject implements Persistent
         if ($this->isColumnModified(UserOrganizationPeer::ORGANIZATION_ID)) {
             $modifiedColumns[':p' . $index++]  = '`organization_id`';
         }
+        if ($this->isColumnModified(UserOrganizationPeer::ORGANIZATION_ROLE)) {
+            $modifiedColumns[':p' . $index++]  = '`organization_role`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `user_organization` (%s) VALUES (%s)',
@@ -440,6 +521,9 @@ abstract class BaseUserOrganization extends BaseObject implements Persistent
                         break;
                     case '`organization_id`':
                         $stmt->bindValue($identifier, $this->organization_id, PDO::PARAM_STR);
+                        break;
+                    case '`organization_role`':
+                        $stmt->bindValue($identifier, $this->organization_role, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -592,6 +676,9 @@ abstract class BaseUserOrganization extends BaseObject implements Persistent
             case 1:
                 return $this->getOrganizationId();
                 break;
+            case 2:
+                return $this->getOrganizationRole();
+                break;
             default:
                 return null;
                 break;
@@ -623,6 +710,7 @@ abstract class BaseUserOrganization extends BaseObject implements Persistent
         $result = array(
             $keys[0] => $this->getUserId(),
             $keys[1] => $this->getOrganizationId(),
+            $keys[2] => $this->getOrganizationRole(),
         );
         if ($includeForeignObjects) {
             if (null !== $this->aUser) {
@@ -671,6 +759,13 @@ abstract class BaseUserOrganization extends BaseObject implements Persistent
             case 1:
                 $this->setOrganizationId($value);
                 break;
+            case 2:
+                $valueSet = UserOrganizationPeer::getValueSet(UserOrganizationPeer::ORGANIZATION_ROLE);
+                if (isset($valueSet[$value])) {
+                    $value = $valueSet[$value];
+                }
+                $this->setOrganizationRole($value);
+                break;
         } // switch()
     }
 
@@ -697,6 +792,7 @@ abstract class BaseUserOrganization extends BaseObject implements Persistent
 
         if (array_key_exists($keys[0], $arr)) $this->setUserId($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setOrganizationId($arr[$keys[1]]);
+        if (array_key_exists($keys[2], $arr)) $this->setOrganizationRole($arr[$keys[2]]);
     }
 
     /**
@@ -710,6 +806,7 @@ abstract class BaseUserOrganization extends BaseObject implements Persistent
 
         if ($this->isColumnModified(UserOrganizationPeer::USER_ID)) $criteria->add(UserOrganizationPeer::USER_ID, $this->user_id);
         if ($this->isColumnModified(UserOrganizationPeer::ORGANIZATION_ID)) $criteria->add(UserOrganizationPeer::ORGANIZATION_ID, $this->organization_id);
+        if ($this->isColumnModified(UserOrganizationPeer::ORGANIZATION_ROLE)) $criteria->add(UserOrganizationPeer::ORGANIZATION_ROLE, $this->organization_role);
 
         return $criteria;
     }
@@ -782,6 +879,7 @@ abstract class BaseUserOrganization extends BaseObject implements Persistent
     {
         $copyObj->setUserId($this->getUserId());
         $copyObj->setOrganizationId($this->getOrganizationId());
+        $copyObj->setOrganizationRole($this->getOrganizationRole());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -950,10 +1048,12 @@ abstract class BaseUserOrganization extends BaseObject implements Persistent
     {
         $this->user_id = null;
         $this->organization_id = null;
+        $this->organization_role = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
         $this->clearAllReferences();
+        $this->applyDefaultValues();
         $this->resetModified();
         $this->setNew(true);
         $this->setDeleted(false);

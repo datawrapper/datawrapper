@@ -26,6 +26,7 @@ CREATE TABLE `user_organization`
 (
     `user_id` INTEGER NOT NULL,
     `organization_id` VARCHAR(128) NOT NULL,
+    `organization_role` TINYINT DEFAULT 1 NOT NULL,
     PRIMARY KEY (`user_id`,`organization_id`),
     INDEX `user_organization_FI_2` (`organization_id`)
 ) ENGINE=MyISAM;

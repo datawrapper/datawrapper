@@ -8,9 +8,11 @@
  *
  * @method UserOrganizationQuery orderByUserId($order = Criteria::ASC) Order by the user_id column
  * @method UserOrganizationQuery orderByOrganizationId($order = Criteria::ASC) Order by the organization_id column
+ * @method UserOrganizationQuery orderByOrganizationRole($order = Criteria::ASC) Order by the organization_role column
  *
  * @method UserOrganizationQuery groupByUserId() Group by the user_id column
  * @method UserOrganizationQuery groupByOrganizationId() Group by the organization_id column
+ * @method UserOrganizationQuery groupByOrganizationRole() Group by the organization_role column
  *
  * @method UserOrganizationQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method UserOrganizationQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -29,9 +31,11 @@
  *
  * @method UserOrganization findOneByUserId(int $user_id) Return the first UserOrganization filtered by the user_id column
  * @method UserOrganization findOneByOrganizationId(string $organization_id) Return the first UserOrganization filtered by the organization_id column
+ * @method UserOrganization findOneByOrganizationRole(int $organization_role) Return the first UserOrganization filtered by the organization_role column
  *
  * @method array findByUserId(int $user_id) Return UserOrganization objects filtered by the user_id column
  * @method array findByOrganizationId(string $organization_id) Return UserOrganization objects filtered by the organization_id column
+ * @method array findByOrganizationRole(int $organization_role) Return UserOrganization objects filtered by the organization_role column
  *
  * @package    propel.generator.datawrapper.om
  */
@@ -122,7 +126,7 @@ abstract class BaseUserOrganizationQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `user_id`, `organization_id` FROM `user_organization` WHERE `user_id` = :p0 AND `organization_id` = :p1';
+        $sql = 'SELECT `user_id`, `organization_id`, `organization_role` FROM `user_organization` WHERE `user_id` = :p0 AND `organization_id` = :p1';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);
@@ -294,6 +298,33 @@ abstract class BaseUserOrganizationQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(UserOrganizationPeer::ORGANIZATION_ID, $organizationId, $comparison);
+    }
+
+    /**
+     * Filter the query on the organization_role column
+     *
+     * @param     mixed $organizationRole The value to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return UserOrganizationQuery The current query, for fluid interface
+     * @throws PropelException - if the value is not accepted by the enum.
+     */
+    public function filterByOrganizationRole($organizationRole = null, $comparison = null)
+    {
+        if (is_scalar($organizationRole)) {
+            $organizationRole = UserOrganizationPeer::getSqlValueForEnum(UserOrganizationPeer::ORGANIZATION_ROLE, $organizationRole);
+        } elseif (is_array($organizationRole)) {
+            $convertedValues = array();
+            foreach ($organizationRole as $value) {
+                $convertedValues[] = UserOrganizationPeer::getSqlValueForEnum(UserOrganizationPeer::ORGANIZATION_ROLE, $value);
+            }
+            $organizationRole = $convertedValues;
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(UserOrganizationPeer::ORGANIZATION_ROLE, $organizationRole, $comparison);
     }
 
     /**

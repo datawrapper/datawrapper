@@ -24,19 +24,26 @@ abstract class BaseUserOrganizationPeer
     const TM_CLASS = 'UserOrganizationTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 2;
+    const NUM_COLUMNS = 3;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 2;
+    const NUM_HYDRATE_COLUMNS = 3;
 
     /** the column name for the user_id field */
     const USER_ID = 'user_organization.user_id';
 
     /** the column name for the organization_id field */
     const ORGANIZATION_ID = 'user_organization.organization_id';
+
+    /** the column name for the organization_role field */
+    const ORGANIZATION_ROLE = 'user_organization.organization_role';
+
+    /** The enumerated values for the organization_role field */
+    const ORGANIZATION_ROLE_ADMIN = 'admin';
+    const ORGANIZATION_ROLE_MEMBER = 'member';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -57,12 +64,12 @@ abstract class BaseUserOrganizationPeer
      * e.g. UserOrganizationPeer::$fieldNames[UserOrganizationPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('UserId', 'OrganizationId', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('userId', 'organizationId', ),
-        BasePeer::TYPE_COLNAME => array (UserOrganizationPeer::USER_ID, UserOrganizationPeer::ORGANIZATION_ID, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('USER_ID', 'ORGANIZATION_ID', ),
-        BasePeer::TYPE_FIELDNAME => array ('user_id', 'organization_id', ),
-        BasePeer::TYPE_NUM => array (0, 1, )
+        BasePeer::TYPE_PHPNAME => array ('UserId', 'OrganizationId', 'OrganizationRole', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('userId', 'organizationId', 'organizationRole', ),
+        BasePeer::TYPE_COLNAME => array (UserOrganizationPeer::USER_ID, UserOrganizationPeer::ORGANIZATION_ID, UserOrganizationPeer::ORGANIZATION_ROLE, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('USER_ID', 'ORGANIZATION_ID', 'ORGANIZATION_ROLE', ),
+        BasePeer::TYPE_FIELDNAME => array ('user_id', 'organization_id', 'organization_role', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, )
     );
 
     /**
@@ -72,12 +79,20 @@ abstract class BaseUserOrganizationPeer
      * e.g. UserOrganizationPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('UserId' => 0, 'OrganizationId' => 1, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('userId' => 0, 'organizationId' => 1, ),
-        BasePeer::TYPE_COLNAME => array (UserOrganizationPeer::USER_ID => 0, UserOrganizationPeer::ORGANIZATION_ID => 1, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('USER_ID' => 0, 'ORGANIZATION_ID' => 1, ),
-        BasePeer::TYPE_FIELDNAME => array ('user_id' => 0, 'organization_id' => 1, ),
-        BasePeer::TYPE_NUM => array (0, 1, )
+        BasePeer::TYPE_PHPNAME => array ('UserId' => 0, 'OrganizationId' => 1, 'OrganizationRole' => 2, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('userId' => 0, 'organizationId' => 1, 'organizationRole' => 2, ),
+        BasePeer::TYPE_COLNAME => array (UserOrganizationPeer::USER_ID => 0, UserOrganizationPeer::ORGANIZATION_ID => 1, UserOrganizationPeer::ORGANIZATION_ROLE => 2, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('USER_ID' => 0, 'ORGANIZATION_ID' => 1, 'ORGANIZATION_ROLE' => 2, ),
+        BasePeer::TYPE_FIELDNAME => array ('user_id' => 0, 'organization_id' => 1, 'organization_role' => 2, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, )
+    );
+
+    /** The enumerated values for this table */
+    protected static $enumValueSets = array(
+        UserOrganizationPeer::ORGANIZATION_ROLE => array(
+            UserOrganizationPeer::ORGANIZATION_ROLE_ADMIN,
+            UserOrganizationPeer::ORGANIZATION_ROLE_MEMBER,
+        ),
     );
 
     /**
@@ -120,6 +135,50 @@ abstract class BaseUserOrganizationPeer
     }
 
     /**
+     * Gets the list of values for all ENUM columns
+     * @return array
+     */
+    public static function getValueSets()
+    {
+      return UserOrganizationPeer::$enumValueSets;
+    }
+
+    /**
+     * Gets the list of values for an ENUM column
+     *
+     * @param string $colname The ENUM column name.
+     *
+     * @return array list of possible values for the column
+     */
+    public static function getValueSet($colname)
+    {
+        $valueSets = UserOrganizationPeer::getValueSets();
+
+        if (!isset($valueSets[$colname])) {
+            throw new PropelException(sprintf('Column "%s" has no ValueSet.', $colname));
+        }
+
+        return $valueSets[$colname];
+    }
+
+    /**
+     * Gets the SQL value for the ENUM column value
+     *
+     * @param string $colname ENUM column name.
+     * @param string $enumVal ENUM value.
+     *
+     * @return int            SQL value
+     */
+    public static function getSqlValueForEnum($colname, $enumVal)
+    {
+        $values = UserOrganizationPeer::getValueSet($colname);
+        if (!in_array($enumVal, $values)) {
+            throw new PropelException(sprintf('Value "%s" is not accepted in this enumerated column', $colname));
+        }
+        return array_search($enumVal, $values);
+    }
+
+    /**
      * Convenience method which changes table.column to alias.column.
      *
      * Using this method you can maintain SQL abstraction while using column aliases.
@@ -153,9 +212,11 @@ abstract class BaseUserOrganizationPeer
         if (null === $alias) {
             $criteria->addSelectColumn(UserOrganizationPeer::USER_ID);
             $criteria->addSelectColumn(UserOrganizationPeer::ORGANIZATION_ID);
+            $criteria->addSelectColumn(UserOrganizationPeer::ORGANIZATION_ROLE);
         } else {
             $criteria->addSelectColumn($alias . '.user_id');
             $criteria->addSelectColumn($alias . '.organization_id');
+            $criteria->addSelectColumn($alias . '.organization_role');
         }
     }
 
@@ -456,6 +517,17 @@ abstract class BaseUserOrganizationPeer
         }
 
         return array($obj, $col);
+    }
+
+    /**
+     * Gets the SQL value for OrganizationRole ENUM value
+     *
+     * @param  string $enumVal ENUM value to get SQL value for
+     * @return int             SQL value
+     */
+    public static function getOrganizationRoleSqlValue($enumVal)
+    {
+        return UserOrganizationPeer::getSqlValueForEnum(UserOrganizationPeer::ORGANIZATION_ROLE, $enumVal);
     }
 
 
