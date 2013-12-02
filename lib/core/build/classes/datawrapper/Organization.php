@@ -23,4 +23,36 @@ class Organization extends BaseOrganization
             ->count() > 0;
     }
 
+    public function hasUser($user) {
+        return UserOrganizationQuery::create()
+            ->filterByOrganization($this)
+            ->filterByUser($user)
+            ->count() > 0;
+    }
+
+    public function getAdmins() {
+        return UserOrganizationQuery::create()
+            ->filterByOrganization($this)
+            ->filterByOrganizationRole(UserOrganizationPeer::ORGANIZATION_ROLE_ADMIN)
+            ->find();
+    }
+
+    public function getRole($user) {
+        return UserOrganizationQuery::create()
+            ->filterByOrganization($this)
+            ->filterByUser($user)
+            ->findOne()
+            ->getOrganizationRole();
+    }
+
+    public function setRole($user, $role) {
+        $uo = UserOrganizationQuery::create()
+            ->filterByOrganization($this)
+            ->filterByUser($user)
+            ->findOne();
+        if ($uo) {
+            $uo->setOrganizationRole($role)->save();
+        }
+    }
+
 }
