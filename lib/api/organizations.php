@@ -73,6 +73,13 @@ $app->post('/organizations/:id/users', function($org_id) use ($app) {
             foreach ($data as $u_id) {
                 $u = UserQuery::create()->findPk($u_id);
                 if ($u) {
+                    // number of organization users
+                    $c = UserOrganizationQuery::create()
+                        ->filterByOrganization($org)
+                        ->count();
+                    if ($c > 0 && $org->hasUser($u)) {
+                        return error('user-already-added','This user has already been added to the organization');
+                    }
                     $org->addUser($u);
                 }
             }
