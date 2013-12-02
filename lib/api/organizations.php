@@ -81,6 +81,11 @@ $app->post('/organizations/:id/users', function($org_id) use ($app) {
                         return error('user-already-added','This user has already been added to the organization');
                     }
                     $org->addUser($u);
+                    // make first user the admin
+                    if ($c == 0) {
+                        $org->save();
+                        $org->setRole($u, 'admin');
+                    }
                 }
             }
             $org->save();
