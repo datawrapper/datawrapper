@@ -2,24 +2,12 @@
 
 class DatawrapperPluginManager {
 
-    protected static $pluginManager;
-
-    public static function getInstance() {
-        if (self::$pluginManager === null) self::$pluginManager = new DatawrapperPluginManager();
-        return self::$pluginManager;
-    }
-
-    public static function load() {
-        self::getInstance()->_load();
-    }
-
-    protected $loaded = array();
+    protected static $loaded = array();
 
     /*
      * loads plugin
      */
-    public function _load() {
-
+    public static function load() {
         $plugins = PluginQuery::create()
             ->filterByEnabled(true);
 
@@ -36,7 +24,7 @@ class DatawrapperPluginManager {
         $not_loaded_yet = array();
 
         foreach ($plugins as $plugin) {
-            if (!isset($this->loaded[$plugin->getId()])) {
+            if (!isset(self::$loaded[$plugin->getId()])) {
                 $not_loaded_yet[] = $plugin;
             }
         }
@@ -72,7 +60,7 @@ class DatawrapperPluginManager {
                 $can_load = true;
                 if (is_array($deps)) {
                     foreach ($deps as $dep => $version) {
-                        if (!isset($this->loaded[$dep])) {  // dependency not loaded
+                        if (!isset(self::$loaded[$dep])) {  // dependency not loaded
                             $can_load = false;
                             if (!file_exists(ROOT_PATH . 'plugins/' . $dep) || isset($could_not_install[$dep])) {
                                 // dependency does not exists, not good
@@ -85,7 +73,7 @@ class DatawrapperPluginManager {
                 if ($can_load) {
                     // load plugin
                     load_plugin($plugin);
-                    $this->loaded[$id] = true;
+                    self::$loaded[$id] = true;
                 } else {
                     if (!isset($could_not_install[$id])) {
                         $not_loaded_yet[] = $plugin; // so try next time
