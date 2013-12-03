@@ -84,5 +84,9 @@ class DatawrapperPluginManager {
 
     }
 
+    public static function loaded($plugin_id) {
+        return isset(self::$loaded[$plugin_id]) && self::$loaded[$plugin_id];
+    }
+
 }
 
