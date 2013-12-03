@@ -2,8 +2,11 @@ CHANGELOG
 ---------
 
 ### 1.6.2
-* revised internal event flow
+* revised event flow in visualize step
 * made pie charts less ugly
+* added placeholder image for nojs.png
+* fixed bar chart labels
+* fixed highlighting of labels with quotes
 
 ### 1.6.1
 * allow users to select column input format (to resolve ambiguous formats)
