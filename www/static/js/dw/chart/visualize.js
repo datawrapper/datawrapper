@@ -147,7 +147,7 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
 
         liveUpdate.init(iframe);
 
-        win.__dw.vis.rendered().done(visualizationRendered);
+        dw.backend.on('vis-rendered', visualizationRendered);
 
         $(window).on('message', function(evt) {
             evt = evt.originalEvent;
@@ -160,6 +160,9 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
                 if (evt.data.slice(0, 7) == 'notify:') {
                     dw.backend.notify(evt.data.slice(7));
                 }
+                if (evt.data == 'datawrapper:vis:rendered') {
+                    dw.backend.fire('vis-rendered');
+                }
             }
         });
     }
@@ -168,7 +171,6 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
      * called as soon the vis is rendered (after iframe reload)
      */
     function visualizationRendered() {
-        dw.backend.fire('vis-rendered');
         checkChartHeight();
         enableInlineEditing(iframe, chart);
         if (initHighlightSeries) initHighlightSeries();
