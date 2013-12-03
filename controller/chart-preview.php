@@ -17,3 +17,7 @@ $app->get('/chart/:id/preview/?', function ($id) use ($app) {
         $app->render('chart.twig', $page);
     });
 });
+
+$app->get('/chart/:id/nojs.png', function ($id) use ($app) {
+    $app->redirect('/static/img/nojs.png');
+});
