@@ -2141,9 +2141,9 @@ dw.theme.base = {
             ['#feebe2','#fcc5c0','#fa9fb5','#f768a1','#c51b8a','#7a0177'],  // RdPu
             ['#ffffcc','#c7e9b4','#7fcdbb','#41b6c4','#2c7fb8','#253494'],  // YlGnbu
 
-            ['#8c510a','#d8b365','#f6e8c3','#f5f5f5','#c7eae5','#5ab4ac','#01665e'],  // BrBG
-            ['#c51b7d','#e9a3c9','#fde0ef','#f7f7f7','#e6f5d0','#a1d76a','#4d9221'],  // PiYG
-            ['#b2182b','#ef8a62','#fddbc7','#f7f7f7','#d1e5f0','#67a9cf','#2166ac'],  // RdBu
+            ['#8c510a','#d8b365','#f6e8c3','#f5f7ea','#c7eae5','#5ab4ac','#01665e'],  // BrBG
+            ['#c51b7d','#e9a3c9','#fde0ef','#f5f7ea','#e6f5d0','#a1d76a','#4d9221'],  // PiYG
+            ['#b2182b','#ef8a62','#fddbc7','#f5f7ea','#d1e5f0','#67a9cf','#2166ac'],  // RdBu
             //['#b35806','#f1a340','#fee0b6','#f7f7f7','#d8daeb','#998ec3','#542788'],  // PuOr
         ],
 
