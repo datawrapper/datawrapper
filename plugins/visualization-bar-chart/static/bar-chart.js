@@ -247,18 +247,12 @@
             c.left = 0;
             c.right = 0;
             c.zero = largestVal[1] / (largestVal[0] + largestVal[1]) * w;
-            if (w > 300) {
-                var maxNegBar = c.zero;
 
-                c.left = Math.max(maxw[0], maxw[3]) - c.zero;
-                c.right = Math.max(maxw[1], maxw[2]) - (w - c.zero); // Math.max((maxw[2] + maxw[1]) - (w - c.zero), 0);
-
-                w -= c.left + c.right;
-
-                c.zero = c.left + largestVal[1] / (largestVal[0] + largestVal[1]) * w;
-            } else {
-                c.zero += 15;
-            }
+            var maxNegBar = c.zero;
+            c.left = Math.max(maxw[0], maxw[3]) - c.zero;
+            c.right = Math.max(maxw[1], maxw[2]) - (w - c.zero); // Math.max((maxw[2] + maxw[1]) - (w - c.zero), 0);
+            w -= c.left + c.right;
+            c.zero = c.left + largestVal[1] / (largestVal[0] + largestVal[1]) * w;
 
             c.maxSeriesLabelWidth = [maxw[0], maxw[2]];
             c.maxValueLabelWidth = [maxw[1], maxw[3]];
