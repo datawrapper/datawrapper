@@ -67,7 +67,7 @@ var dw = dw || {};
                 });
                 return o;
             }
-            if (!callbacks[evt]) return;
+            if (!callbacks[evt]) return o;
             if (arguments.length == 1) {
                 // remove all listeners
                 callbacks[evt] = $.Callbacks();
