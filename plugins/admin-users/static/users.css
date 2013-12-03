@@ -33,3 +33,7 @@ table.users .center {
 table th a {
     color: #000;
 }
+
+td.organizations a+a:before {
+    content: ", ";
+}

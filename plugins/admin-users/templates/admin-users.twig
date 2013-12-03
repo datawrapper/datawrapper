@@ -62,7 +62,7 @@
                 <th>{% trans "Status" %}</th>
                 <th><a href="?sort=created_at">{% trans "Created at" %}</a></th>
                 <th class="center"><a href="?sort=charts">{% trans "Charts" %}</a></th>
-                <th class="center"><a href="?sort=charts">{% trans "Published" %}</a></th>
+                {% if has_plugin('admin-organizations') %}<th class="center">{% trans "Organization" %}</th>{% endif %}
                 <th>{% trans "Actions" %}</th>
             </tr>
         </thead>
@@ -82,8 +82,11 @@
                     <td class="creation out">{{ user.createdAt | date('M jS, Y') }}</td>
                     <td class="center">
                         <a href="/admin/charts/{{ user.id }}">{{ user.chartCount() }}</a></td>
-                    <td class="center">
-                        <a href="/admin/charts/{{ user.id }}">{{ user.publicChartCount() }}</a></td>
+                    {% if has_plugin('admin-organizations') %}
+                    <td class="center organizations">
+                        {% for org in user.organizations %}<a href="/admin/organizations/{{ org.id }}">{{ org.id }}</a>{% endfor %}
+                    </td>
+                    {% endif %}
                     <td class="actions">
                         <a href="#" class="do" data-action="editAction" data-id="{{user.id}}"><i class="icon-pencil" title="{% trans "edit" %}"></i></a>
                         {% if user.activateToken %}
