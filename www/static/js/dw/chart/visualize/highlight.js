@@ -30,7 +30,10 @@ define(function() {
         var keys = vis.keys();
         keys.sort();
         _.each(keys, function(key) {
-            s.append('<option value="'+key+'">'+key+(vis.keyLabel(key) != key ? ' ('+vis.keyLabel(key)+')' : '')+'</option>');
+            $('<option />')
+                .attr('value', key)
+                .html(key+(vis.keyLabel(key) != key ? ' ('+vis.keyLabel(key)+')' : ''))
+                .appendTo(s);
         });
         s.off('change').change(function() {
             if (s.val() != "---") {
