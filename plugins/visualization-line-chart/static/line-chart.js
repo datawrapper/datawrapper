@@ -442,7 +442,7 @@
             function drawXAxis() {
                 // draw x scale labels
                 var rotate45 = vis.get('rotate-x-labels'),
-                    labels = axesDef.x.values(),
+                    labels = axesDef.x.raw(),
                     k = labels.length-1;
 
                 if (useDateFormat()) return drawDateAxis(); // draw date axis instead
