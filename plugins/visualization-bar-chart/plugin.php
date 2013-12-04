@@ -31,7 +31,10 @@ class DatawrapperPlugin_VisualizationBarChart extends DatawrapperPlugin_Visualiz
                 ),
                 "negative-color" => array(
                     "type" => "checkbox",
-                    "label" => __("Use different color for negative values", $id)
+                    "label" => __("Use different color for negative values", $id),
+                    "depends-on" => array(
+                        "chart.min_value[columns]" => '<0'
+                    )
                 ),
                 "absolute-scale" => array(
                     "type" => "checkbox",
