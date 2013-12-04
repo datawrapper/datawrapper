@@ -249,7 +249,7 @@ $app->post('/charts/:id/copy', function($chart_id) use ($app) {
 
 
 function get_static_path($chart) {
-    $static_path = "../../charts/static/" . $chart->getID();
+    $static_path = ROOT_PATH . "charts/static/" . $chart->getID();
     if (!is_dir($static_path)) {
         mkdir($static_path);
     }
