@@ -10,6 +10,7 @@ CHANGELOG
 * line chart: fallback to normal x-axis if not all date values could be parsed
 * line chart: fixed label width calculation
 * line chart: allowing more lines to be labeled
+* removing all related jobs on chart deletion
 
 ### 1.6.1
 * allow users to select column input format (to resolve ambiguous formats)
