@@ -339,7 +339,8 @@
 
             // returns true if the x axis is of type date
             function useDateFormat() {
-                return axesDef.x.type() == 'date';
+                return axesDef.x.type() == 'date' &&
+                    _.filter(axesDef.x.values(), _.isDate).length == axesDef.x.length;
             }
 
             // returns date obj assigned to row r
@@ -350,6 +351,11 @@
                 if (useDateFormat()) {
                     return d3.time.scale().domain([rowName(0), rowName(-1)]);
                 } else {
+                    // notify user if not all dates could be parsed
+                    if (axesDef.x.type() == 'date') {
+                        // notify user if not all dates could be parsed
+                        vis.notify(vis.translate('couldNotParseAllDates'));
+                    }
                     return d3.scale.linear().domain([0, dataset.numRows()-1]);
                 }
             }
