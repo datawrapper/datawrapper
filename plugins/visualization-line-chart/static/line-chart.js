@@ -143,7 +143,7 @@
                     // we need to add some right padding for the labels
                     c.labelWidth = 0;
                     dataset.eachColumn(function(col) {
-                        c.labelWidth = Math.max(c.labelWidth, vis.labelWidth(col.name(), 'series'));
+                        c.labelWidth = Math.max(c.labelWidth, vis.labelWidth(col.name(), 'series highlighted'));
                     });
                     // we limit the label width to the 1/4 of the entire width
                     if (c.labelWidth > this.__w * 0.25) {
