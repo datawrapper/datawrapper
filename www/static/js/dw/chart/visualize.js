@@ -76,6 +76,7 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
         }
 
         if (_typeHasChanged) {
+            iframe.attr('src', '');
             dw.backend.fire('type-changed');
             // remove all notifications
             $("#notifications .notification").fadeOutAndRemove();
@@ -129,7 +130,7 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
 
         // periodically check if vis is initialized in iframe
         chk = setInterval(function() {
-            if (win.__dw.vis) {
+            if (win.__dw && win.__dw.vis) {
                 clearInterval(chk);
                 iframeReady();
             }
@@ -146,7 +147,7 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
 
         liveUpdate.init(iframe);
 
-        win.__dw.vis.rendered().done(visualizationRendered);
+        dw.backend.on('vis-rendered', visualizationRendered);
 
         $(window).on('message', function(evt) {
             evt = evt.originalEvent;
@@ -159,6 +160,9 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
                 if (evt.data.slice(0, 7) == 'notify:') {
                     dw.backend.notify(evt.data.slice(7));
                 }
+                if (evt.data == 'datawrapper:vis:rendered') {
+                    dw.backend.fire('vis-rendered');
+                }
             }
         });
     }
@@ -167,7 +171,6 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
      * called as soon the vis is rendered (after iframe reload)
      */
     function visualizationRendered() {
-        dw.backend.fire('vis-rendered');
         checkChartHeight();
         enableInlineEditing(iframe, chart);
         if (initHighlightSeries) initHighlightSeries();
@@ -192,6 +195,7 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
 
     function optionsLoaded() {
         loadVis();
+        options.reset();
         options.sync();
     }
 
@@ -282,6 +286,10 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
 
     /** Set into `dw.backend.currentVis` the edited visualization (editor side) */
     function loadVis() {
+        if (iframe.attr('src') === "") {
+            // load vis in iframe if not done yet
+            iframe.attr('src', '/chart/'+chart.get('id')+'/preview?innersvg=1&random='+Math.floor(Math.random()*100000));
+        }
         dw.backend.currentVis = dw.visualization(chart.get('type'));
         dw.backend.currentVis.chart(chart);
         dw.backend.currentVis.dataset = chart.dataset().reset();

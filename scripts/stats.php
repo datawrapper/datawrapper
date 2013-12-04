@@ -15,10 +15,10 @@ mysql_connect($m[1], $dbconn['user'], $dbconn['password']);
 mysql_select_db($m[2]);
 
 $queries = array(
-    'charts_published' => "SELECT count(*) FROM chart WHERE last_edit_step = 4",
-    'charts_visualized' => "SELECT count(*) FROM chart WHERE last_edit_step <= 3",
-    'charts_described' => "SELECT count(*) FROM chart WHERE last_edit_step <= 2",
-    'charts_uploaded' => "SELECT count(*) FROM chart WHERE last_edit_step <= 1",
+    'charts_published' => "SELECT count(*) FROM chart WHERE last_edit_step >= 4 AND deleted = 0",
+    'charts_visualized' => "SELECT count(*) FROM chart WHERE last_edit_step <= 3 AND deleted = 0",
+    'charts_described' => "SELECT count(*) FROM chart WHERE last_edit_step <= 2 AND deleted = 0",
+    'charts_uploaded' => "SELECT count(*) FROM chart WHERE last_edit_step <= 1 AND deleted = 0",
     'users_signed' => "SELECT count(*) FROM user WHERE role <= 2 and deleted = 0",
     'users_activated' => "SELECT count(*) FROM user WHERE role <= 1 and deleted = 0",
 );

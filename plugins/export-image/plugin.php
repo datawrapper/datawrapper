@@ -17,14 +17,10 @@ class DatawrapperPlugin_ExportImage extends DatawrapperPlugin {
         });
 
         // provide static assets files
-        DatawrapperHooks::register(DatawrapperHooks::GET_PLUGIN_ASSETS, function($uri) {
-            if (basename($uri) == 'publish') {
-                return array(
-                    'export-image/export-image.js',
-                    'export-image/export-image.css'
-                );
-            }
-        });
+        $this->declareAssets(
+            array('export-image/export-image.js', 'export-image/export-image.css'),
+            "|/chart/[^/]+/publish|"
+        );
 
         // hook into job execution
         DatawrapperHooks::register('export_image',

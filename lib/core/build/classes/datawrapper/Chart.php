@@ -295,6 +295,11 @@ class Chart extends BaseChart {
 
             $pub->unpublish($chart_files);
         }
+
+        // remove all jobs related to this chart
+        JobQuery::create()
+            ->filterByChart($this)
+            ->delete();
     }
 
     public function hasPreview() {

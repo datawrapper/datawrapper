@@ -232,7 +232,7 @@ class DatawrapperPlugin {
             if (empty($regex) || preg_match($regex, $uri)) {
             	$plugin_assets = array();
             	foreach ($assets as $file) {
-            		$plugin_assets[] = $plugin->getName() . '/' . $file;
+            		$plugin_assets[] = array($plugin->getName() . '/' . $file, $plugin);
             	}
                 return $plugin_assets;
             }

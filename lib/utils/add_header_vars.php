@@ -137,11 +137,13 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
     if (!empty($plugin_assets)) {
         $plugin_js_files = array();
         $plugin_css_files = array();
-        foreach ($plugin_assets as $files) {
-            if (!is_array($files)) $files = array($files);
-            foreach ($files as $file) {
-                if (substr($file, -3) == '.js') $plugin_js_files[] = $file;
-                if (substr($file, -4) == '.css') $plugin_css_files[] = $file;
+        foreach ($plugin_assets as $assets) {
+            if (!is_array($assets)) $assets = array($assets);
+            foreach ($assets as $asset) {
+                $file = $asset[0];
+                $plugin = $asset[1];
+                if (substr($file, -3) == '.js') $plugin_js_files[] = $file . '?v=' . $plugin->getVersion();
+                if (substr($file, -4) == '.css') $plugin_css_files[] = $file . '?v=' . $plugin->getVersion();
             }
         }
         $page['plugin_js'] = $plugin_js_files;

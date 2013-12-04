@@ -40,8 +40,7 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                     "type" => "checkbox",
                     "label" => __("Use different color for negative values", $id),
                     "depends-on" => array(
-                        "chart.min_value[columns]" => '<0',
-                        "chart.max_value[columns]" => '>0'
+                        "chart.min_value[columns]" => '<0'
                     )
                 ),
                 "ignore-missing-values" => array(
@@ -102,7 +101,10 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                 ),
                 "negative-color" => array(
                     "type" => "checkbox",
-                    "label" => __("Use different color for negative values", $id)
+                    "label" => __("Use different color for negative values", $id),
+                    "depends-on" => array(
+                        "chart.min_value[columns]" => '<0'
+                    )
                 )
             ),
             "libraries" => array()

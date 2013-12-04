@@ -1,8 +1,8 @@
 <?php
 
-require_once '../../vendor/cssmin/cssmin.php';
-require_once '../../lib/utils/themes.php';
-require_once '../../lib/utils/chart_content.php';
+require_once ROOT_PATH . 'vendor/cssmin/cssmin.php';
+require_once ROOT_PATH . 'lib/utils/themes.php';
+require_once ROOT_PATH . 'lib/utils/chart_content.php';
 
 
 function publish_html($user, $chart) {
@@ -24,6 +24,8 @@ function publish_html($user, $chart) {
     $cdn_files[] = array($static_path . '/plain.html', $chart->getCDNPath() . 'plain.html', 'text/html');
     $cdn_files[] = array($static_path . '/fs.html', $chart->getCDNPath() . 'fs.html', 'text/html');
 
+    // copy empty image as placeholder for nojs.png
+    file_put_contents($static_path . '/nojs.png', file_get_contents(ROOT_PATH . 'www/static/img/nojs.png'));
     return $cdn_files;
 }
 

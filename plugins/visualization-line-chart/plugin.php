@@ -26,7 +26,8 @@ class DatawrapperPlugin_VisualizationLineChart extends DatawrapperPlugin_Visuali
             "options" => $this->getOptions(),
             "locale" => array(
                 "tooManyLinesToLabel" => __("Your chart contains <b>more lines than we can label</b>, so automatic labeling is turned off. To fix this <ul><li>filter some columns in the data table in the previous step, or</li><li>use direct labeling and the highlight feature to label the lines that are important to your story.</li></ul>"),
-                "useLogarithmicScale" => __("Use logarithmic scale")
+                "useLogarithmicScale" => __("Use logarithmic scale"),
+                "couldNotParseAllDates" => str_replace('%s', 'http://blog.datawrapper.de/2013/cleaning-your-data-in-datawrapper/', __("Some of the <b>dates in your x-axis could not be parsed</b>, hence the line chart cannot display a proper date axis. To fix this<ul><li>return to the previous step and clean your date column.</li><li><a href='%s'>Read more about how to do this.</a></li></ul>"))
             ),
             "annotations" => array(
                 array('type' => 'axis-range', 'axis' => 'x'),

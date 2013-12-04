@@ -26,7 +26,7 @@
 
 {% block chart_title %}
     <h1 {% if not title %}class="hidden"{% endif %}>
-        <span class="chart-title">{{ title|purify }}</span>
+        <span class="chart-title">{{ title | purify | raw }}</span>
     </h1>
 {% endblock %}
 

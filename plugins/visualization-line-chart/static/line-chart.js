@@ -143,7 +143,7 @@
                     // we need to add some right padding for the labels
                     c.labelWidth = 0;
                     dataset.eachColumn(function(col) {
-                        c.labelWidth = Math.max(c.labelWidth, vis.labelWidth(col.name(), 'series'));
+                        c.labelWidth = Math.max(c.labelWidth, vis.labelWidth(col.name(), 'series highlighted'));
                     });
                     // we limit the label width to the 1/4 of the entire width
                     if (c.labelWidth > this.__w * 0.25) {
@@ -339,7 +339,8 @@
 
             // returns true if the x axis is of type date
             function useDateFormat() {
-                return axesDef.x.type() == 'date';
+                return axesDef.x.type() == 'date' &&
+                    _.filter(axesDef.x.values(), _.isDate).length == axesDef.x.length;
             }
 
             // returns date obj assigned to row r
@@ -350,6 +351,11 @@
                 if (useDateFormat()) {
                     return d3.time.scale().domain([rowName(0), rowName(-1)]);
                 } else {
+                    // notify user if not all dates could be parsed
+                    if (axesDef.x.type() == 'date') {
+                        // notify user if not all dates could be parsed
+                        vis.notify(vis.translate('couldNotParseAllDates'));
+                    }
                     return d3.scale.linear().domain([0, dataset.numRows()-1]);
                 }
             }
@@ -376,7 +382,7 @@
             // decides whether or not line labels are visible
             function lineLabelsVisible() {
                 return axesDef.y1.length > 1 &&
-                    (axesDef.y1.length < 10 || chart.hasHighlight()) &&
+                    (axesDef.y1.length < 15 || chart.hasHighlight()) &&
                     c.w >= theme.minWidth;
             }
 
@@ -436,7 +442,7 @@
             function drawXAxis() {
                 // draw x scale labels
                 var rotate45 = vis.get('rotate-x-labels'),
-                    labels = axesDef.x.values(),
+                    labels = axesDef.x.raw(),
                     k = labels.length-1;
 
                 if (useDateFormat()) return drawDateAxis(); // draw date axis instead

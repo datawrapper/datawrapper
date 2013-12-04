@@ -221,6 +221,7 @@ $app->post('/charts/:id/data', function($chart_id) use ($app) {
 $app->delete('/charts/:id', function($id) use ($app) {
     if_chart_is_writable($id, function($user, $chart) use ($app) {
         $chart->setDeleted(true);
+        $chart->setDeletedAt(time());
         $chart->setLastEditStep(3);
         $chart->save();
         $chart->unpublish();
@@ -248,7 +249,7 @@ $app->post('/charts/:id/copy', function($chart_id) use ($app) {
 
 
 function get_static_path($chart) {
-    $static_path = "../../charts/static/" . $chart->getID();
+    $static_path = ROOT_PATH . "charts/static/" . $chart->getID();
     if (!is_dir($static_path)) {
         mkdir($static_path);
     }

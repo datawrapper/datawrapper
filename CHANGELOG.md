@@ -2,7 +2,15 @@ CHANGELOG
 ---------
 
 ### 1.6.2
-* revised internal event flow
+* revised event flow in visualize step
+* made pie charts less ugly
+* added placeholder image for nojs.png
+* fixed bar chart labels
+* fixed highlighting of labels with quotes
+* line chart: fallback to normal x-axis if not all date values could be parsed
+* line chart: fixed label width calculation
+* line chart: allowing more lines to be labeled
+* removing all related jobs on chart deletion
 
 ### 1.6.1
 * allow users to select column input format (to resolve ambiguous formats)
