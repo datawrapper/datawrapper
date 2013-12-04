@@ -1,8 +1,8 @@
 <?php
 
-require_once '../../vendor/cssmin/cssmin.php';
-require_once '../../lib/utils/themes.php';
-require_once '../../lib/utils/chart_content.php';
+require_once ROOT_PATH . 'vendor/cssmin/cssmin.php';
+require_once ROOT_PATH . 'lib/utils/themes.php';
+require_once ROOT_PATH . 'lib/utils/chart_content.php';
 
 
 function publish_html($user, $chart) {
