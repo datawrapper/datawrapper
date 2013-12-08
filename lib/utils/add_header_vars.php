@@ -82,14 +82,6 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
                 'title' => __('Logout')
             ))
         );
-        if ($user->isAdmin() && DatawrapperHooks::hookRegistered(DatawrapperHooks::GET_ADMIN_PAGES)) {
-            $headlinks[] = array(
-                'url' => '/admin',
-                'id' => 'admin',
-                'icon' => 'fire',
-                'title' => __('Admin')
-            );
-        }
     } else {
         $headlinks[] = array(
             'url' => '#login',
@@ -114,6 +106,16 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
             );
         }
         if (count($langDropdown['dropdown']) > 1) $headlinks[] = $langDropdown;
+    }
+    // admin link
+    if ($user->isAdmin() && DatawrapperHooks::hookRegistered(DatawrapperHooks::GET_ADMIN_PAGES)) {
+        $headlinks[] = array(
+            'url' => '/admin',
+            'id' => 'admin',
+            'icon' => 'fire',
+            'justicon' => true,
+            'title' => __('Admin')
+        );
     }
     foreach ($headlinks as $i => $link) {
         $headlinks[$i]['active'] = $headlinks[$i]['id'] == $active;
