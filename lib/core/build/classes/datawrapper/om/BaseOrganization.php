@@ -55,6 +55,12 @@ abstract class BaseOrganization extends BaseObject implements Persistent
     protected $deleted;
 
     /**
+     * @var        PropelObjectCollection|Chart[] Collection to store aggregation of Chart objects.
+     */
+    protected $collCharts;
+    protected $collChartsPartial;
+
+    /**
      * @var        PropelObjectCollection|UserOrganization[] Collection to store aggregation of UserOrganization objects.
      */
     protected $collUserOrganizations;
@@ -107,6 +113,12 @@ abstract class BaseOrganization extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $pluginsScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $chartsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -415,6 +427,8 @@ abstract class BaseOrganization extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
+            $this->collCharts = null;
+
             $this->collUserOrganizations = null;
 
             $this->collPluginOrganizations = null;
@@ -593,6 +607,24 @@ abstract class BaseOrganization extends BaseObject implements Persistent
                 foreach ($this->collPlugins as $plugin) {
                     if ($plugin->isModified()) {
                         $plugin->save($con);
+                    }
+                }
+            }
+
+            if ($this->chartsScheduledForDeletion !== null) {
+                if (!$this->chartsScheduledForDeletion->isEmpty()) {
+                    foreach ($this->chartsScheduledForDeletion as $chart) {
+                        // need to save related object because we set the relation to null
+                        $chart->save($con);
+                    }
+                    $this->chartsScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collCharts !== null) {
+                foreach ($this->collCharts as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
                     }
                 }
             }
@@ -780,6 +812,14 @@ abstract class BaseOrganization extends BaseObject implements Persistent
             }
 
 
+                if ($this->collCharts !== null) {
+                    foreach ($this->collCharts as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
                 if ($this->collUserOrganizations !== null) {
                     foreach ($this->collUserOrganizations as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
@@ -878,6 +918,9 @@ abstract class BaseOrganization extends BaseObject implements Persistent
             $keys[3] => $this->getDeleted(),
         );
         if ($includeForeignObjects) {
+            if (null !== $this->collCharts) {
+                $result['Charts'] = $this->collCharts->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
             if (null !== $this->collUserOrganizations) {
                 $result['UserOrganizations'] = $this->collUserOrganizations->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
@@ -1047,6 +1090,12 @@ abstract class BaseOrganization extends BaseObject implements Persistent
             // store object hash to prevent cycle
             $this->startCopy = true;
 
+            foreach ($this->getCharts() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addChart($relObj->copy($deepCopy));
+                }
+            }
+
             foreach ($this->getUserOrganizations() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addUserOrganization($relObj->copy($deepCopy));
@@ -1120,12 +1169,258 @@ abstract class BaseOrganization extends BaseObject implements Persistent
      */
     public function initRelation($relationName)
     {
+        if ('Chart' == $relationName) {
+            $this->initCharts();
+        }
         if ('UserOrganization' == $relationName) {
             $this->initUserOrganizations();
         }
         if ('PluginOrganization' == $relationName) {
             $this->initPluginOrganizations();
         }
+    }
+
+    /**
+     * Clears out the collCharts collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return Organization The current object (for fluent API support)
+     * @see        addCharts()
+     */
+    public function clearCharts()
+    {
+        $this->collCharts = null; // important to set this to null since that means it is uninitialized
+        $this->collChartsPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collCharts collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialCharts($v = true)
+    {
+        $this->collChartsPartial = $v;
+    }
+
+    /**
+     * Initializes the collCharts collection.
+     *
+     * By default this just sets the collCharts collection to an empty array (like clearcollCharts());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initCharts($overrideExisting = true)
+    {
+        if (null !== $this->collCharts && !$overrideExisting) {
+            return;
+        }
+        $this->collCharts = new PropelObjectCollection();
+        $this->collCharts->setModel('Chart');
+    }
+
+    /**
+     * Gets an array of Chart objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Organization is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|Chart[] List of Chart objects
+     * @throws PropelException
+     */
+    public function getCharts($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collChartsPartial && !$this->isNew();
+        if (null === $this->collCharts || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collCharts) {
+                // return empty collection
+                $this->initCharts();
+            } else {
+                $collCharts = ChartQuery::create(null, $criteria)
+                    ->filterByOrganization($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collChartsPartial && count($collCharts)) {
+                      $this->initCharts(false);
+
+                      foreach($collCharts as $obj) {
+                        if (false == $this->collCharts->contains($obj)) {
+                          $this->collCharts->append($obj);
+                        }
+                      }
+
+                      $this->collChartsPartial = true;
+                    }
+
+                    $collCharts->getInternalIterator()->rewind();
+                    return $collCharts;
+                }
+
+                if($partial && $this->collCharts) {
+                    foreach($this->collCharts as $obj) {
+                        if($obj->isNew()) {
+                            $collCharts[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collCharts = $collCharts;
+                $this->collChartsPartial = false;
+            }
+        }
+
+        return $this->collCharts;
+    }
+
+    /**
+     * Sets a collection of Chart objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $charts A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return Organization The current object (for fluent API support)
+     */
+    public function setCharts(PropelCollection $charts, PropelPDO $con = null)
+    {
+        $chartsToDelete = $this->getCharts(new Criteria(), $con)->diff($charts);
+
+        $this->chartsScheduledForDeletion = unserialize(serialize($chartsToDelete));
+
+        foreach ($chartsToDelete as $chartRemoved) {
+            $chartRemoved->setOrganization(null);
+        }
+
+        $this->collCharts = null;
+        foreach ($charts as $chart) {
+            $this->addChart($chart);
+        }
+
+        $this->collCharts = $charts;
+        $this->collChartsPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Chart objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related Chart objects.
+     * @throws PropelException
+     */
+    public function countCharts(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collChartsPartial && !$this->isNew();
+        if (null === $this->collCharts || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collCharts) {
+                return 0;
+            }
+
+            if($partial && !$criteria) {
+                return count($this->getCharts());
+            }
+            $query = ChartQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByOrganization($this)
+                ->count($con);
+        }
+
+        return count($this->collCharts);
+    }
+
+    /**
+     * Method called to associate a Chart object to this object
+     * through the Chart foreign key attribute.
+     *
+     * @param    Chart $l Chart
+     * @return Organization The current object (for fluent API support)
+     */
+    public function addChart(Chart $l)
+    {
+        if ($this->collCharts === null) {
+            $this->initCharts();
+            $this->collChartsPartial = true;
+        }
+        if (!in_array($l, $this->collCharts->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddChart($l);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	Chart $chart The chart object to add.
+     */
+    protected function doAddChart($chart)
+    {
+        $this->collCharts[]= $chart;
+        $chart->setOrganization($this);
+    }
+
+    /**
+     * @param	Chart $chart The chart object to remove.
+     * @return Organization The current object (for fluent API support)
+     */
+    public function removeChart($chart)
+    {
+        if ($this->getCharts()->contains($chart)) {
+            $this->collCharts->remove($this->collCharts->search($chart));
+            if (null === $this->chartsScheduledForDeletion) {
+                $this->chartsScheduledForDeletion = clone $this->collCharts;
+                $this->chartsScheduledForDeletion->clear();
+            }
+            $this->chartsScheduledForDeletion[]= $chart;
+            $chart->setOrganization(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Organization is new, it will return
+     * an empty collection; or if this Organization has previously
+     * been saved, it will retrieve related Charts from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Organization.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Chart[] List of Chart objects
+     */
+    public function getChartsJoinUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChartQuery::create(null, $criteria);
+        $query->joinWith('User', $join_behavior);
+
+        return $this->getCharts($query, $con);
     }
 
     /**
@@ -2000,6 +2295,11 @@ abstract class BaseOrganization extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
+            if ($this->collCharts) {
+                foreach ($this->collCharts as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collUserOrganizations) {
                 foreach ($this->collUserOrganizations as $o) {
                     $o->clearAllReferences($deep);
@@ -2024,6 +2324,10 @@ abstract class BaseOrganization extends BaseObject implements Persistent
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
+        if ($this->collCharts instanceof PropelCollection) {
+            $this->collCharts->clearIterator();
+        }
+        $this->collCharts = null;
         if ($this->collUserOrganizations instanceof PropelCollection) {
             $this->collUserOrganizations->clearIterator();
         }

@@ -1,5 +1,5 @@
 
-ALTER TABLE plugin ADD COLUMN `is_private` TINYINT(1) DEFAULT 0;
+ALTER TABLE `plugin` ADD COLUMN `is_private` TINYINT(1) DEFAULT 0;
 
 -- ---------------------------------------------------------------------
 -- organization
@@ -45,3 +45,14 @@ CREATE TABLE `plugin_organization`
     INDEX `plugin_organization_FI_2` (`organization_id`)
 ) ENGINE=MyISAM;
 
+-- ----------------------------
+-- add row in chart table
+-- ----------------------------
+
+ALTER TABLE `chart` ADD COLUMN `organization_id` VARCHAR(128);
+
+ALTER TABLE `chart` ADD INDEX `chart_FI_2` (`organization_id`);
+
+ALTER TABLE `chart` ADD CONSTRAINT `chart_FK_2`
+    FOREIGN KEY (`organization_id`)
+    REFERENCES `organization` (`id`);

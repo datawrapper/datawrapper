@@ -50,6 +50,7 @@ class OrganizationTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('Chart', 'Chart', RelationMap::ONE_TO_MANY, array('id' => 'organization_id', ), null, null, 'Charts');
         $this->addRelation('UserOrganization', 'UserOrganization', RelationMap::ONE_TO_MANY, array('id' => 'organization_id', ), null, null, 'UserOrganizations');
         $this->addRelation('PluginOrganization', 'PluginOrganization', RelationMap::ONE_TO_MANY, array('id' => 'organization_id', ), null, null, 'PluginOrganizations');
         $this->addRelation('User', 'User', RelationMap::MANY_TO_MANY, array(), null, null, 'Users');

@@ -28,11 +28,16 @@ CREATE TABLE `chart`
     `published_at` DATETIME,
     `public_url` VARCHAR(255),
     `public_version` INTEGER DEFAULT 0,
+    `organization_id` VARCHAR(128),
     PRIMARY KEY (`id`),
     INDEX `chart_FI_1` (`author_id`),
+    INDEX `chart_FI_2` (`organization_id`),
     CONSTRAINT `chart_FK_1`
         FOREIGN KEY (`author_id`)
-        REFERENCES `user` (`id`)
+        REFERENCES `user` (`id`),
+    CONSTRAINT `chart_FK_2`
+        FOREIGN KEY (`organization_id`)
+        REFERENCES `organization` (`id`)
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------

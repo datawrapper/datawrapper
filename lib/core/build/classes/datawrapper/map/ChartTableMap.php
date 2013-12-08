@@ -55,6 +55,7 @@ class ChartTableMap extends TableMap
         $this->addColumn('published_at', 'PublishedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('public_url', 'PublicUrl', 'VARCHAR', false, 255, null);
         $this->addColumn('public_version', 'PublicVersion', 'INTEGER', false, null, 0);
+        $this->addForeignKey('organization_id', 'OrganizationId', 'VARCHAR', 'organization', 'id', false, 128, null);
         // validators
     } // initialize()
 
@@ -64,6 +65,7 @@ class ChartTableMap extends TableMap
     public function buildRelations()
     {
         $this->addRelation('User', 'User', RelationMap::MANY_TO_ONE, array('author_id' => 'id', ), null, null);
+        $this->addRelation('Organization', 'Organization', RelationMap::MANY_TO_ONE, array('organization_id' => 'id', ), null, null);
         $this->addRelation('Job', 'Job', RelationMap::ONE_TO_MANY, array('id' => 'chart_id', ), null, null, 'Jobs');
     } // buildRelations()
 

@@ -23,6 +23,7 @@
  * @method ChartQuery orderByPublishedAt($order = Criteria::ASC) Order by the published_at column
  * @method ChartQuery orderByPublicUrl($order = Criteria::ASC) Order by the public_url column
  * @method ChartQuery orderByPublicVersion($order = Criteria::ASC) Order by the public_version column
+ * @method ChartQuery orderByOrganizationId($order = Criteria::ASC) Order by the organization_id column
  *
  * @method ChartQuery groupById() Group by the id column
  * @method ChartQuery groupByTitle() Group by the title column
@@ -41,6 +42,7 @@
  * @method ChartQuery groupByPublishedAt() Group by the published_at column
  * @method ChartQuery groupByPublicUrl() Group by the public_url column
  * @method ChartQuery groupByPublicVersion() Group by the public_version column
+ * @method ChartQuery groupByOrganizationId() Group by the organization_id column
  *
  * @method ChartQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method ChartQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -49,6 +51,10 @@
  * @method ChartQuery leftJoinUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the User relation
  * @method ChartQuery rightJoinUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the User relation
  * @method ChartQuery innerJoinUser($relationAlias = null) Adds a INNER JOIN clause to the query using the User relation
+ *
+ * @method ChartQuery leftJoinOrganization($relationAlias = null) Adds a LEFT JOIN clause to the query using the Organization relation
+ * @method ChartQuery rightJoinOrganization($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Organization relation
+ * @method ChartQuery innerJoinOrganization($relationAlias = null) Adds a INNER JOIN clause to the query using the Organization relation
  *
  * @method ChartQuery leftJoinJob($relationAlias = null) Adds a LEFT JOIN clause to the query using the Job relation
  * @method ChartQuery rightJoinJob($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Job relation
@@ -73,6 +79,7 @@
  * @method Chart findOneByPublishedAt(string $published_at) Return the first Chart filtered by the published_at column
  * @method Chart findOneByPublicUrl(string $public_url) Return the first Chart filtered by the public_url column
  * @method Chart findOneByPublicVersion(int $public_version) Return the first Chart filtered by the public_version column
+ * @method Chart findOneByOrganizationId(string $organization_id) Return the first Chart filtered by the organization_id column
  *
  * @method array findById(string $id) Return Chart objects filtered by the id column
  * @method array findByTitle(string $title) Return Chart objects filtered by the title column
@@ -91,6 +98,7 @@
  * @method array findByPublishedAt(string $published_at) Return Chart objects filtered by the published_at column
  * @method array findByPublicUrl(string $public_url) Return Chart objects filtered by the public_url column
  * @method array findByPublicVersion(int $public_version) Return Chart objects filtered by the public_version column
+ * @method array findByOrganizationId(string $organization_id) Return Chart objects filtered by the organization_id column
  *
  * @package    propel.generator.datawrapper.om
  */
@@ -194,7 +202,7 @@ abstract class BaseChartQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `title`, `theme`, `created_at`, `last_modified_at`, `type`, `metadata`, `deleted`, `deleted_at`, `author_id`, `show_in_gallery`, `language`, `guest_session`, `last_edit_step`, `published_at`, `public_url`, `public_version` FROM `chart` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `title`, `theme`, `created_at`, `last_modified_at`, `type`, `metadata`, `deleted`, `deleted_at`, `author_id`, `show_in_gallery`, `language`, `guest_session`, `last_edit_step`, `published_at`, `public_url`, `public_version`, `organization_id` FROM `chart` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_STR);
@@ -870,6 +878,35 @@ abstract class BaseChartQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the organization_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByOrganizationId('fooValue');   // WHERE organization_id = 'fooValue'
+     * $query->filterByOrganizationId('%fooValue%'); // WHERE organization_id LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $organizationId The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChartQuery The current query, for fluid interface
+     */
+    public function filterByOrganizationId($organizationId = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($organizationId)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $organizationId)) {
+                $organizationId = str_replace('*', '%', $organizationId);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(ChartPeer::ORGANIZATION_ID, $organizationId, $comparison);
+    }
+
+    /**
      * Filter the query by a related User object
      *
      * @param   User|PropelObjectCollection $user The related object(s) to use as filter
@@ -943,6 +980,82 @@ abstract class BaseChartQuery extends ModelCriteria
         return $this
             ->joinUser($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'User', 'UserQuery');
+    }
+
+    /**
+     * Filter the query by a related Organization object
+     *
+     * @param   Organization|PropelObjectCollection $organization The related object(s) to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 ChartQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByOrganization($organization, $comparison = null)
+    {
+        if ($organization instanceof Organization) {
+            return $this
+                ->addUsingAlias(ChartPeer::ORGANIZATION_ID, $organization->getId(), $comparison);
+        } elseif ($organization instanceof PropelObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(ChartPeer::ORGANIZATION_ID, $organization->toKeyValue('PrimaryKey', 'Id'), $comparison);
+        } else {
+            throw new PropelException('filterByOrganization() only accepts arguments of type Organization or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Organization relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return ChartQuery The current query, for fluid interface
+     */
+    public function joinOrganization($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Organization');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Organization');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Organization relation Organization object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   OrganizationQuery A secondary query class using the current class as primary query
+     */
+    public function useOrganizationQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinOrganization($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Organization', 'OrganizationQuery');
     }
 
     /**

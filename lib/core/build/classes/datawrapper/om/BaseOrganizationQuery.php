@@ -20,6 +20,10 @@
  * @method OrganizationQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method OrganizationQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
+ * @method OrganizationQuery leftJoinChart($relationAlias = null) Adds a LEFT JOIN clause to the query using the Chart relation
+ * @method OrganizationQuery rightJoinChart($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Chart relation
+ * @method OrganizationQuery innerJoinChart($relationAlias = null) Adds a INNER JOIN clause to the query using the Chart relation
+ *
  * @method OrganizationQuery leftJoinUserOrganization($relationAlias = null) Adds a LEFT JOIN clause to the query using the UserOrganization relation
  * @method OrganizationQuery rightJoinUserOrganization($relationAlias = null) Adds a RIGHT JOIN clause to the query using the UserOrganization relation
  * @method OrganizationQuery innerJoinUserOrganization($relationAlias = null) Adds a INNER JOIN clause to the query using the UserOrganization relation
@@ -357,6 +361,80 @@ abstract class BaseOrganizationQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(OrganizationPeer::DELETED, $deleted, $comparison);
+    }
+
+    /**
+     * Filter the query by a related Chart object
+     *
+     * @param   Chart|PropelObjectCollection $chart  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 OrganizationQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByChart($chart, $comparison = null)
+    {
+        if ($chart instanceof Chart) {
+            return $this
+                ->addUsingAlias(OrganizationPeer::ID, $chart->getOrganizationId(), $comparison);
+        } elseif ($chart instanceof PropelObjectCollection) {
+            return $this
+                ->useChartQuery()
+                ->filterByPrimaryKeys($chart->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByChart() only accepts arguments of type Chart or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Chart relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return OrganizationQuery The current query, for fluid interface
+     */
+    public function joinChart($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Chart');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Chart');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Chart relation Chart object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   ChartQuery A secondary query class using the current class as primary query
+     */
+    public function useChartQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinChart($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Chart', 'ChartQuery');
     }
 
     /**

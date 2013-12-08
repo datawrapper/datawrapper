@@ -137,9 +137,20 @@ abstract class BaseChart extends BaseObject implements Persistent
     protected $public_version;
 
     /**
+     * The value for the organization_id field.
+     * @var        string
+     */
+    protected $organization_id;
+
+    /**
      * @var        User
      */
     protected $aUser;
+
+    /**
+     * @var        Organization
+     */
+    protected $aOrganization;
 
     /**
      * @var        PropelObjectCollection|Job[] Collection to store aggregation of Job objects.
@@ -486,6 +497,16 @@ abstract class BaseChart extends BaseObject implements Persistent
     public function getPublicVersion()
     {
         return $this->public_version;
+    }
+
+    /**
+     * Get the [organization_id] column value.
+     *
+     * @return string
+     */
+    public function getOrganizationId()
+    {
+        return $this->organization_id;
     }
 
     /**
@@ -874,6 +895,31 @@ abstract class BaseChart extends BaseObject implements Persistent
     } // setPublicVersion()
 
     /**
+     * Set the value of [organization_id] column.
+     *
+     * @param string $v new value
+     * @return Chart The current object (for fluent API support)
+     */
+    public function setOrganizationId($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (string) $v;
+        }
+
+        if ($this->organization_id !== $v) {
+            $this->organization_id = $v;
+            $this->modifiedColumns[] = ChartPeer::ORGANIZATION_ID;
+        }
+
+        if ($this->aOrganization !== null && $this->aOrganization->getId() !== $v) {
+            $this->aOrganization = null;
+        }
+
+
+        return $this;
+    } // setOrganizationId()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -942,6 +988,7 @@ abstract class BaseChart extends BaseObject implements Persistent
             $this->published_at = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
             $this->public_url = ($row[$startcol + 15] !== null) ? (string) $row[$startcol + 15] : null;
             $this->public_version = ($row[$startcol + 16] !== null) ? (int) $row[$startcol + 16] : null;
+            $this->organization_id = ($row[$startcol + 17] !== null) ? (string) $row[$startcol + 17] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -950,7 +997,7 @@ abstract class BaseChart extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
             $this->postHydrate($row, $startcol, $rehydrate);
-            return $startcol + 17; // 17 = ChartPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 18; // 18 = ChartPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Chart object", $e);
@@ -975,6 +1022,9 @@ abstract class BaseChart extends BaseObject implements Persistent
 
         if ($this->aUser !== null && $this->author_id !== $this->aUser->getId()) {
             $this->aUser = null;
+        }
+        if ($this->aOrganization !== null && $this->organization_id !== $this->aOrganization->getId()) {
+            $this->aOrganization = null;
         }
     } // ensureConsistency
 
@@ -1016,6 +1066,7 @@ abstract class BaseChart extends BaseObject implements Persistent
         if ($deep) {  // also de-associate any related objects?
 
             $this->aUser = null;
+            $this->aOrganization = null;
             $this->collJobs = null;
 
         } // if (deep)
@@ -1143,6 +1194,13 @@ abstract class BaseChart extends BaseObject implements Persistent
                 $this->setUser($this->aUser);
             }
 
+            if ($this->aOrganization !== null) {
+                if ($this->aOrganization->isModified() || $this->aOrganization->isNew()) {
+                    $affectedRows += $this->aOrganization->save($con);
+                }
+                $this->setOrganization($this->aOrganization);
+            }
+
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
                 if ($this->isNew()) {
@@ -1244,6 +1302,9 @@ abstract class BaseChart extends BaseObject implements Persistent
         if ($this->isColumnModified(ChartPeer::PUBLIC_VERSION)) {
             $modifiedColumns[':p' . $index++]  = '`public_version`';
         }
+        if ($this->isColumnModified(ChartPeer::ORGANIZATION_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`organization_id`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `chart` (%s) VALUES (%s)',
@@ -1305,6 +1366,9 @@ abstract class BaseChart extends BaseObject implements Persistent
                         break;
                     case '`public_version`':
                         $stmt->bindValue($identifier, $this->public_version, PDO::PARAM_INT);
+                        break;
+                    case '`organization_id`':
+                        $stmt->bindValue($identifier, $this->organization_id, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -1401,6 +1465,12 @@ abstract class BaseChart extends BaseObject implements Persistent
             if ($this->aUser !== null) {
                 if (!$this->aUser->validate($columns)) {
                     $failureMap = array_merge($failureMap, $this->aUser->getValidationFailures());
+                }
+            }
+
+            if ($this->aOrganization !== null) {
+                if (!$this->aOrganization->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aOrganization->getValidationFailures());
                 }
             }
 
@@ -1504,6 +1574,9 @@ abstract class BaseChart extends BaseObject implements Persistent
             case 16:
                 return $this->getPublicVersion();
                 break;
+            case 17:
+                return $this->getOrganizationId();
+                break;
             default:
                 return null;
                 break;
@@ -1550,10 +1623,14 @@ abstract class BaseChart extends BaseObject implements Persistent
             $keys[14] => $this->getPublishedAt(),
             $keys[15] => $this->getPublicUrl(),
             $keys[16] => $this->getPublicVersion(),
+            $keys[17] => $this->getOrganizationId(),
         );
         if ($includeForeignObjects) {
             if (null !== $this->aUser) {
                 $result['User'] = $this->aUser->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->aOrganization) {
+                $result['Organization'] = $this->aOrganization->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
             if (null !== $this->collJobs) {
                 $result['Jobs'] = $this->collJobs->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -1643,6 +1720,9 @@ abstract class BaseChart extends BaseObject implements Persistent
             case 16:
                 $this->setPublicVersion($value);
                 break;
+            case 17:
+                $this->setOrganizationId($value);
+                break;
         } // switch()
     }
 
@@ -1684,6 +1764,7 @@ abstract class BaseChart extends BaseObject implements Persistent
         if (array_key_exists($keys[14], $arr)) $this->setPublishedAt($arr[$keys[14]]);
         if (array_key_exists($keys[15], $arr)) $this->setPublicUrl($arr[$keys[15]]);
         if (array_key_exists($keys[16], $arr)) $this->setPublicVersion($arr[$keys[16]]);
+        if (array_key_exists($keys[17], $arr)) $this->setOrganizationId($arr[$keys[17]]);
     }
 
     /**
@@ -1712,6 +1793,7 @@ abstract class BaseChart extends BaseObject implements Persistent
         if ($this->isColumnModified(ChartPeer::PUBLISHED_AT)) $criteria->add(ChartPeer::PUBLISHED_AT, $this->published_at);
         if ($this->isColumnModified(ChartPeer::PUBLIC_URL)) $criteria->add(ChartPeer::PUBLIC_URL, $this->public_url);
         if ($this->isColumnModified(ChartPeer::PUBLIC_VERSION)) $criteria->add(ChartPeer::PUBLIC_VERSION, $this->public_version);
+        if ($this->isColumnModified(ChartPeer::ORGANIZATION_ID)) $criteria->add(ChartPeer::ORGANIZATION_ID, $this->organization_id);
 
         return $criteria;
     }
@@ -1791,6 +1873,7 @@ abstract class BaseChart extends BaseObject implements Persistent
         $copyObj->setPublishedAt($this->getPublishedAt());
         $copyObj->setPublicUrl($this->getPublicUrl());
         $copyObj->setPublicVersion($this->getPublicVersion());
+        $copyObj->setOrganizationId($this->getOrganizationId());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1905,6 +1988,58 @@ abstract class BaseChart extends BaseObject implements Persistent
         }
 
         return $this->aUser;
+    }
+
+    /**
+     * Declares an association between this object and a Organization object.
+     *
+     * @param             Organization $v
+     * @return Chart The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setOrganization(Organization $v = null)
+    {
+        if ($v === null) {
+            $this->setOrganizationId(NULL);
+        } else {
+            $this->setOrganizationId($v->getId());
+        }
+
+        $this->aOrganization = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the Organization object, it will not be re-added.
+        if ($v !== null) {
+            $v->addChart($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated Organization object
+     *
+     * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
+     * @return Organization The associated Organization object.
+     * @throws PropelException
+     */
+    public function getOrganization(PropelPDO $con = null, $doQuery = true)
+    {
+        if ($this->aOrganization === null && (($this->organization_id !== "" && $this->organization_id !== null)) && $doQuery) {
+            $this->aOrganization = OrganizationQuery::create()->findPk($this->organization_id, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aOrganization->addCharts($this);
+             */
+        }
+
+        return $this->aOrganization;
     }
 
 
@@ -2188,6 +2323,7 @@ abstract class BaseChart extends BaseObject implements Persistent
         $this->published_at = null;
         $this->public_url = null;
         $this->public_version = null;
+        $this->organization_id = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
@@ -2219,6 +2355,9 @@ abstract class BaseChart extends BaseObject implements Persistent
             if ($this->aUser instanceof Persistent) {
               $this->aUser->clearAllReferences($deep);
             }
+            if ($this->aOrganization instanceof Persistent) {
+              $this->aOrganization->clearAllReferences($deep);
+            }
 
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
@@ -2228,6 +2367,7 @@ abstract class BaseChart extends BaseObject implements Persistent
         }
         $this->collJobs = null;
         $this->aUser = null;
+        $this->aOrganization = null;
     }
 
     /**

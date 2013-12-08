@@ -25,6 +25,10 @@
     <column name="published_at" type="timestamp" />
     <column name="public_url" type="varchar" />
     <column name="public_version" type="integer" default="0" />
+    <column name="organization_id" type="varchar" size="128" required="false" />
+    <foreign-key foreignTable="organization">
+      <reference local="organization_id" foreign="id"/>
+    </foreign-key>
   </table>
 
   <table name="user" phpName="User">
