@@ -28,8 +28,10 @@
                             <li class="{{ link.id }} dropdown{% if link.active %} active{% endif %}">
                                 <a id="dw-header-link-{{ link.id }}" href="{{ link.url }}" class="dropdown-toggle" data-toggle="dropdown">
                                     {% if link.icon %}
-                                    {{ link.title |raw }}
                                     <i title="{{ link.title }}" class="icon-{{ link.icon }} icon-whte"></i>
+                                    {% endif %}
+                                    {% if not link.icon or not link.justicon %}
+                                    {{ link.title | raw }}
                                     {% endif %}
                                     <b class="caret"></b>
                                 </a>
@@ -52,9 +54,11 @@
                             <li class="{{ link.id }}{% if link.active %} active{% endif %}">
                                 <a id="dw-header-link-{{ link.id }}" href="{{ link.url }}"{% if link.modal %} data-toggle="modal"{% endif %}>
                                     {% if link.icon %}
-                                  <i title="{{ link.title }}" class="icon-{{ link.icon }} icon-whie"></i>
+                                    <i title="{{ link.title }}" class="icon-{{ link.icon }} icon-whie"></i>
                                     {% endif %}
-                                   {{ link.title }}
+                                    {% if not link.icon or not link.justicon %}
+                                    {{ link.title }}
+                                    {% endif %}
                                 </a>
                             </li>
 
