@@ -28,8 +28,8 @@
                             <li class="{{ link.id }} dropdown{% if link.active %} active{% endif %}">
                                 <a id="dw-header-link-{{ link.id }}" href="{{ link.url }}" class="dropdown-toggle" data-toggle="dropdown">
                                     {% if link.icon %}
-                                    <i class="icon-{{ link.icon }} icon-whte"></i>
                                     {{ link.title |raw }}
+                                    <i title="{{ link.title }}" class="icon-{{ link.icon }} icon-whte"></i>
                                     {% endif %}
                                     <b class="caret"></b>
                                 </a>
@@ -51,8 +51,8 @@
 
                             <li class="{{ link.id }}{% if link.active %} active{% endif %}">
                                 <a id="dw-header-link-{{ link.id }}" href="{{ link.url }}"{% if link.modal %} data-toggle="modal"{% endif %}>
-                                  <i class="icon-{{ link.icon }} icon-whie"></i>
                                     {% if link.icon %}
+                                  <i title="{{ link.title }}" class="icon-{{ link.icon }} icon-whie"></i>
                                     {% endif %}
                                    {{ link.title }}
                                 </a>
