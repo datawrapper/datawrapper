@@ -56,23 +56,6 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
         if (!empty($item['icon'])) $link['icon'] = $item['icon'];
         $headlinks[] = $link;
     }
-    // language dropdown
-    if (!empty($config['languages'])) {
-        $langDropdown = array(
-            'url' => '',
-            'id' => 'lang',
-            'dropdown' => array(),
-            'title' => __('Language'),
-            'icon' => 'font'
-        );
-        foreach ($config['languages'] as $lang) {
-            $langDropdown['dropdown'][] = array(
-                'url' => '#lang-'.$lang['id'],
-                'title' => $lang['title']
-            );
-        }
-        if (count($langDropdown['dropdown']) > 1) $headlinks[] = $langDropdown;
-    }
     if ($user->isLoggedIn()) {
         $username = $user->guessName();
         if ($username == $user->getEmail()) {
@@ -114,6 +97,23 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
             'title' => $config['prevent_guest_access'] ? __('Login') : __('Login / Sign Up'),
             'icon' => 'user'
         );
+    }
+    // language dropdown
+    if (!empty($config['languages'])) {
+        $langDropdown = array(
+            'url' => '',
+            'id' => 'lang',
+            'dropdown' => array(),
+            'title' => strtoupper(substr(DatawrapperSession::getLanguage(), 0, 2)),
+            'icon' => false
+        );
+        foreach ($config['languages'] as $lang) {
+            $langDropdown['dropdown'][] = array(
+                'url' => '#lang-'.$lang['id'],
+                'title' => $lang['title']
+            );
+        }
+        if (count($langDropdown['dropdown']) > 1) $headlinks[] = $langDropdown;
     }
     foreach ($headlinks as $i => $link) {
         $headlinks[$i]['active'] = $headlinks[$i]['id'] == $active;
