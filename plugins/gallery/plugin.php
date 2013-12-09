@@ -29,6 +29,15 @@ class DatawrapperPlugin_Gallery extends DatawrapperPlugin {
                 $app->render('plugins/gallery/take-a-look.twig');
             }
         );
+
+        if (!DatawrapperSession::getUser()->isLoggedIn()) {
+            $this->addHeaderNav('mycharts', array(
+                'url' => '/gallery/',
+                'id' => 'gallery',
+                'title' => __('Gallery'),
+                'icon' => 'signal'
+            ));
+        }
     }
 
     public function controller($app) {
