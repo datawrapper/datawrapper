@@ -256,5 +256,11 @@ class DatawrapperPlugin {
             return array();
         });
 	}
+
+	public function addHeaderNav($after = 'mycharts', $link) {
+		DatawrapperHooks::register(DatawrapperHooks::HEADER_NAV . $after, function() use ($link) {
+			return $link;
+		});
+	}
 }
 
