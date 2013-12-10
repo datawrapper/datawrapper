@@ -258,9 +258,8 @@ class DatawrapperPlugin {
 	}
 
 	public function addHeaderNav($after = 'mycharts', $link) {
-		DatawrapperHooks::register(DatawrapperHooks::HEADER_NAV . $after, function() use ($link) {
-			return $link;
-		});
+		DatawrapperHooks::register(DatawrapperHooks::HEADER_NAV . $after,
+			function() use ($link) { return $link; });
 	}
 }
 
