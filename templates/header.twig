@@ -1,3 +1,63 @@
+
+{% block header_nav_dropdown_link %}
+
+    {% if slink == 'divider' %}
+        <li class="divider"></li>
+    {% elseif slink.dropdown %}
+        <li class="dropdown-submenu">
+            <a tabindex="-1" href="#">{{ slink.title }}</a>
+            <ul class="dropdown-menu">
+                {% for slink in slink.dropdown %}
+                    {{ block('header_nav_dropdown_link') }}
+                {% endfor %}
+            </ul>
+        </li>
+    {% else %}
+        <li>
+            <a href="{{ slink.url }}">{%if slink.icon %}<i class="icon-{{ slink.icon }}"></i>
+             {% endif %}{{ slink.title | raw }}</a>
+        </li>
+    {% endif %}
+
+{% endblock %}
+
+{% block header_nav_link %}
+    {% if link.dropdown %}
+
+        <li class="{{ link.id }} dropdown{% if link.active %} active{% endif %}">
+            <a id="dw-header-link-{{ link.id }}" href="{{ link.url }}" class="dropdown-toggle" data-toggle="dropdown">
+                {% if link.icon %}
+                <i title="{{ link.title }}" class="icon-{{ link.icon }} icon-whte"></i>
+                {% endif %}
+                {% if not link.icon or not link.justicon %}
+                {{ link.title | raw }}
+                {% endif %}
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+                {% for slink in link.dropdown %}
+                    {{ block('header_nav_dropdown_link') }}
+                {% endfor %}
+            </ul>
+        </li>
+
+    {% else %}
+
+        <li class="{{ link.id }}{% if link.active %} active{% endif %}">
+            <a id="dw-header-link-{{ link.id }}" href="{{ link.url }}"{% if link.modal %} data-toggle="modal"{% endif %}>
+                {% if link.icon %}
+                <i title="{{ link.title }}" class="icon-{{ link.icon }} icon-whie"></i>
+                {% endif %}
+                {% if not link.icon or not link.justicon %}
+                {{ link.title }}
+                {% endif %}
+            </a>
+        </li>
+
+    {% endif %}
+{% endblock %}
+
+
 {% block header %}
 
     <div class="navbar navbar-fixed-top{% if invert_navbar %} navbar-inverse{% endif %}">
@@ -22,48 +82,7 @@
                     <ul class="nav dw-header-nav pull-right">
 
                     {% for link in headlinks %}
-
-                        {% if link.dropdown %}
-
-                            <li class="{{ link.id }} dropdown{% if link.active %} active{% endif %}">
-                                <a id="dw-header-link-{{ link.id }}" href="{{ link.url }}" class="dropdown-toggle" data-toggle="dropdown">
-                                    {% if link.icon %}
-                                    <i title="{{ link.title }}" class="icon-{{ link.icon }} icon-whte"></i>
-                                    {% endif %}
-                                    {% if not link.icon or not link.justicon %}
-                                    {{ link.title | raw }}
-                                    {% endif %}
-                                    <b class="caret"></b>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    {% for slink in link.dropdown %}
-                                        {% if slink == 'divider' %}
-                                        <li class="divider"></li>
-                                        {% else %}
-                                        <li>
-                                            <a href="{{ slink.url }}">{%if slink.icon %}<i class="icon-{{ slink.icon }}"></i>
-                                             {% endif %}{{ slink.title | raw }}</a>
-                                        </li>
-                                        {% endif %}
-                                    {% endfor %}
-                                </ul>
-                            </li>
-
-                        {% else %}
-
-                            <li class="{{ link.id }}{% if link.active %} active{% endif %}">
-                                <a id="dw-header-link-{{ link.id }}" href="{{ link.url }}"{% if link.modal %} data-toggle="modal"{% endif %}>
-                                    {% if link.icon %}
-                                    <i title="{{ link.title }}" class="icon-{{ link.icon }} icon-whie"></i>
-                                    {% endif %}
-                                    {% if not link.icon or not link.justicon %}
-                                    {{ link.title }}
-                                    {% endif %}
-                                </a>
-                            </li>
-
-                        {% endif %}
-
+                        {{ block('header_nav_link') }}
                     {% endfor %}
                     </ul>
                 </div>
