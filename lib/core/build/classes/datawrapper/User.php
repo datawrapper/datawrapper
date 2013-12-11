@@ -108,4 +108,21 @@ class User extends BaseUser {
             ->find();
     }
 
+    /*
+     * returns the currently selected organization
+     * TODO: handle multiple organizations
+     */
+    public function getCurrentOrganization() {
+        $organizations = $this->getOrganizations();
+        if (empty($organizations)) return null;
+        if (!empty($_SESSION['dw-user-organization'])) {
+            foreach ($organizations as $org) {
+                if ($org->getId() == $_SESSION['dw-user-organization']) {
+                    return $org;
+                }
+            }
+        }
+        return $organizations[0];
+    }
+
 } // User
