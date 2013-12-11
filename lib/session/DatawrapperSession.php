@@ -168,6 +168,19 @@ class DatawrapperSession {
             $chart->setGuestSession('');
             $chart->save();
         }
+
+        // restore user organization
+        if (empty($_SESSION['dw-user-organization'])) {
+            // let's check the last chart
+            $lastChart = ChartQuery::create()
+                ->filterByUser($user)
+                ->filterByOrganizationId(null, Criteria::ISNOTNULL)
+                ->orderByLastModifiedAt(Criteria::DESC)
+                ->findOne();
+            if (!empty($lastChart)) {
+                $_SESSION['dw-user-organization'] = $lastChart->getOrganization()->getId();
+            }
+        }
     }
 
     public static function logout() {
