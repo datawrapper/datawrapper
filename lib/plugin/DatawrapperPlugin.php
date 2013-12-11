@@ -148,7 +148,8 @@ class DatawrapperPlugin {
 			$cfg = array();
 		}
 		// apply organization-specific custom configuration
-		foreach (DatawrapperSession::getUser()->getOrganizations() as $org) {
+		$org = DatawrapperSession::getUser()->getCurrentOrganization();
+		if (!empty($org)) {
 			$pd = PluginDataQuery::create()
 				->filterByPlugin($this->getPluginOM())
 				->where('PluginData.Key LIKE ?', 'custom_config/'.$org->getId().'/%')
