@@ -262,5 +262,12 @@ class DatawrapperPlugin {
 		DatawrapperHooks::register(DatawrapperHooks::HEADER_NAV . $after,
 			function() use ($link) { return $link; });
 	}
+
+	public function registerController($obj, $func) {
+		DatawrapperHooks::register(
+            DatawrapperHooks::GET_PLUGIN_CONTROLLER,
+            array($obj, $func)
+        );
+	}
 }
 
