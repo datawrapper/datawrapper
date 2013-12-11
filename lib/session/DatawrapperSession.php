@@ -186,6 +186,7 @@ class DatawrapperSession {
     public static function logout() {
         Action::logAction(self::getInstance()->user, 'logout');
         $_SESSION['dw-user-id'] = null;
+        $_SESSION['dw-user-organization'] = null;
         self::getInstance()->initUser();
         setcookie('DW-SESSION', null, 0, '/');
     }
