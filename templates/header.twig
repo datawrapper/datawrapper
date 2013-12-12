@@ -14,7 +14,7 @@
         </li>
     {% else %}
         <li>
-            <a href="{{ slink.url }}">{%if slink.icon %}<i class="icon-{{ slink.icon }}"></i>
+            <a {% if slink.data %}{% for k,v in slink.data %}data-{{ k }}="{{ v }}" {% endfor %}{% endif %}href="{{ slink.url }}">{%if slink.icon %}<i class="icon-{{ slink.icon }}"></i>
              {% endif %}{{ slink.title | raw }}</a>
         </li>
     {% endif %}
