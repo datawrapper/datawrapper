@@ -230,7 +230,7 @@ $app->delete('/charts/:id', function($id) use ($app) {
 });
 
 /**
- * API: copy a chart
+ * API: copy/duplicate/fork a chart
  *
  * @param chart_id chart id
  */
