@@ -50,9 +50,13 @@ CREATE TABLE `plugin_organization`
 -- ----------------------------
 
 ALTER TABLE `chart` ADD COLUMN `organization_id` VARCHAR(128);
-
 ALTER TABLE `chart` ADD INDEX `chart_FI_2` (`organization_id`);
-
 ALTER TABLE `chart` ADD CONSTRAINT `chart_FK_2`
     FOREIGN KEY (`organization_id`)
     REFERENCES `organization` (`id`);
+
+ALTER TABLE `chart` ADD COLUMN `forked_from` VARCHAR(5);
+ALTER TABLE `chart` ADD INDEX `chart_FI_3` (`forked_from`);
+ALTER TABLE `chart` ADD CONSTRAINT `chart_FK_3`
+    FOREIGN KEY (`forked_from`)
+    REFERENCES `chart` (`id`);

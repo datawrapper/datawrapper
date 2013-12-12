@@ -29,6 +29,10 @@
     <foreign-key foreignTable="organization">
       <reference local="organization_id" foreign="id"/>
     </foreign-key>
+    <column name="forked_from" type="varchar" size="5" required="false" />
+    <foreign-key foreignTable="chart">
+      <reference local="forked_from" foreign="id"/>
+    </foreign-key>
   </table>
 
   <table name="user" phpName="User">

@@ -29,15 +29,20 @@ CREATE TABLE `chart`
     `public_url` VARCHAR(255),
     `public_version` INTEGER DEFAULT 0,
     `organization_id` VARCHAR(128),
+    `forked_from` VARCHAR(5),
     PRIMARY KEY (`id`),
     INDEX `chart_FI_1` (`author_id`),
     INDEX `chart_FI_2` (`organization_id`),
+    INDEX `chart_FI_3` (`forked_from`),
     CONSTRAINT `chart_FK_1`
         FOREIGN KEY (`author_id`)
         REFERENCES `user` (`id`),
     CONSTRAINT `chart_FK_2`
         FOREIGN KEY (`organization_id`)
-        REFERENCES `organization` (`id`)
+        REFERENCES `organization` (`id`),
+    CONSTRAINT `chart_FK_3`
+        FOREIGN KEY (`forked_from`)
+        REFERENCES `chart` (`id`)
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------

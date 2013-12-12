@@ -24,6 +24,7 @@
  * @method ChartQuery orderByPublicUrl($order = Criteria::ASC) Order by the public_url column
  * @method ChartQuery orderByPublicVersion($order = Criteria::ASC) Order by the public_version column
  * @method ChartQuery orderByOrganizationId($order = Criteria::ASC) Order by the organization_id column
+ * @method ChartQuery orderByForkedFrom($order = Criteria::ASC) Order by the forked_from column
  *
  * @method ChartQuery groupById() Group by the id column
  * @method ChartQuery groupByTitle() Group by the title column
@@ -43,6 +44,7 @@
  * @method ChartQuery groupByPublicUrl() Group by the public_url column
  * @method ChartQuery groupByPublicVersion() Group by the public_version column
  * @method ChartQuery groupByOrganizationId() Group by the organization_id column
+ * @method ChartQuery groupByForkedFrom() Group by the forked_from column
  *
  * @method ChartQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method ChartQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -55,6 +57,14 @@
  * @method ChartQuery leftJoinOrganization($relationAlias = null) Adds a LEFT JOIN clause to the query using the Organization relation
  * @method ChartQuery rightJoinOrganization($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Organization relation
  * @method ChartQuery innerJoinOrganization($relationAlias = null) Adds a INNER JOIN clause to the query using the Organization relation
+ *
+ * @method ChartQuery leftJoinChartRelatedByForkedFrom($relationAlias = null) Adds a LEFT JOIN clause to the query using the ChartRelatedByForkedFrom relation
+ * @method ChartQuery rightJoinChartRelatedByForkedFrom($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ChartRelatedByForkedFrom relation
+ * @method ChartQuery innerJoinChartRelatedByForkedFrom($relationAlias = null) Adds a INNER JOIN clause to the query using the ChartRelatedByForkedFrom relation
+ *
+ * @method ChartQuery leftJoinChartRelatedById($relationAlias = null) Adds a LEFT JOIN clause to the query using the ChartRelatedById relation
+ * @method ChartQuery rightJoinChartRelatedById($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ChartRelatedById relation
+ * @method ChartQuery innerJoinChartRelatedById($relationAlias = null) Adds a INNER JOIN clause to the query using the ChartRelatedById relation
  *
  * @method ChartQuery leftJoinJob($relationAlias = null) Adds a LEFT JOIN clause to the query using the Job relation
  * @method ChartQuery rightJoinJob($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Job relation
@@ -80,6 +90,7 @@
  * @method Chart findOneByPublicUrl(string $public_url) Return the first Chart filtered by the public_url column
  * @method Chart findOneByPublicVersion(int $public_version) Return the first Chart filtered by the public_version column
  * @method Chart findOneByOrganizationId(string $organization_id) Return the first Chart filtered by the organization_id column
+ * @method Chart findOneByForkedFrom(string $forked_from) Return the first Chart filtered by the forked_from column
  *
  * @method array findById(string $id) Return Chart objects filtered by the id column
  * @method array findByTitle(string $title) Return Chart objects filtered by the title column
@@ -99,6 +110,7 @@
  * @method array findByPublicUrl(string $public_url) Return Chart objects filtered by the public_url column
  * @method array findByPublicVersion(int $public_version) Return Chart objects filtered by the public_version column
  * @method array findByOrganizationId(string $organization_id) Return Chart objects filtered by the organization_id column
+ * @method array findByForkedFrom(string $forked_from) Return Chart objects filtered by the forked_from column
  *
  * @package    propel.generator.datawrapper.om
  */
@@ -202,7 +214,7 @@ abstract class BaseChartQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `title`, `theme`, `created_at`, `last_modified_at`, `type`, `metadata`, `deleted`, `deleted_at`, `author_id`, `show_in_gallery`, `language`, `guest_session`, `last_edit_step`, `published_at`, `public_url`, `public_version`, `organization_id` FROM `chart` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `title`, `theme`, `created_at`, `last_modified_at`, `type`, `metadata`, `deleted`, `deleted_at`, `author_id`, `show_in_gallery`, `language`, `guest_session`, `last_edit_step`, `published_at`, `public_url`, `public_version`, `organization_id`, `forked_from` FROM `chart` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_STR);
@@ -907,6 +919,35 @@ abstract class BaseChartQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the forked_from column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByForkedFrom('fooValue');   // WHERE forked_from = 'fooValue'
+     * $query->filterByForkedFrom('%fooValue%'); // WHERE forked_from LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $forkedFrom The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChartQuery The current query, for fluid interface
+     */
+    public function filterByForkedFrom($forkedFrom = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($forkedFrom)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $forkedFrom)) {
+                $forkedFrom = str_replace('*', '%', $forkedFrom);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(ChartPeer::FORKED_FROM, $forkedFrom, $comparison);
+    }
+
+    /**
      * Filter the query by a related User object
      *
      * @param   User|PropelObjectCollection $user The related object(s) to use as filter
@@ -1056,6 +1097,156 @@ abstract class BaseChartQuery extends ModelCriteria
         return $this
             ->joinOrganization($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'Organization', 'OrganizationQuery');
+    }
+
+    /**
+     * Filter the query by a related Chart object
+     *
+     * @param   Chart|PropelObjectCollection $chart The related object(s) to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 ChartQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByChartRelatedByForkedFrom($chart, $comparison = null)
+    {
+        if ($chart instanceof Chart) {
+            return $this
+                ->addUsingAlias(ChartPeer::FORKED_FROM, $chart->getId(), $comparison);
+        } elseif ($chart instanceof PropelObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(ChartPeer::FORKED_FROM, $chart->toKeyValue('PrimaryKey', 'Id'), $comparison);
+        } else {
+            throw new PropelException('filterByChartRelatedByForkedFrom() only accepts arguments of type Chart or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the ChartRelatedByForkedFrom relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return ChartQuery The current query, for fluid interface
+     */
+    public function joinChartRelatedByForkedFrom($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('ChartRelatedByForkedFrom');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'ChartRelatedByForkedFrom');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the ChartRelatedByForkedFrom relation Chart object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   ChartQuery A secondary query class using the current class as primary query
+     */
+    public function useChartRelatedByForkedFromQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinChartRelatedByForkedFrom($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'ChartRelatedByForkedFrom', 'ChartQuery');
+    }
+
+    /**
+     * Filter the query by a related Chart object
+     *
+     * @param   Chart|PropelObjectCollection $chart  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 ChartQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByChartRelatedById($chart, $comparison = null)
+    {
+        if ($chart instanceof Chart) {
+            return $this
+                ->addUsingAlias(ChartPeer::ID, $chart->getForkedFrom(), $comparison);
+        } elseif ($chart instanceof PropelObjectCollection) {
+            return $this
+                ->useChartRelatedByIdQuery()
+                ->filterByPrimaryKeys($chart->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByChartRelatedById() only accepts arguments of type Chart or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the ChartRelatedById relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return ChartQuery The current query, for fluid interface
+     */
+    public function joinChartRelatedById($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('ChartRelatedById');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'ChartRelatedById');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the ChartRelatedById relation Chart object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   ChartQuery A secondary query class using the current class as primary query
+     */
+    public function useChartRelatedByIdQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinChartRelatedById($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'ChartRelatedById', 'ChartQuery');
     }
 
     /**
