@@ -76,6 +76,7 @@ class ChartQuery extends BaseChartQuery {
         $chart->setType($src->getType());
         $chart->setCreatedAt(time());
         $chart->setLastModifiedAt(time());
+        $chart->setForkedFrom($chart);
 
         $chart->setLastEditStep(3);
 
