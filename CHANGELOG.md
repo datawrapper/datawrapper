@@ -2,6 +2,11 @@ CHANGELOG
 ---------
 
 ### 1.7.0
+* storing reference to source chart on forking/duplicating
+* data attributes in header nav
+* support hooking into header nav
+* re-arranged header nav
+* showing lang code in header nav
 * added speaking descriptions to core plugins
 * added api for managing organizations
 * allowing organziation specific plugin configuration
