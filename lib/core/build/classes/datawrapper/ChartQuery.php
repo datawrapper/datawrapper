@@ -28,6 +28,8 @@ class ChartQuery extends BaseChartQuery {
         $chart->setLastModifiedAt(time());
         if ($user->isLoggedIn()) {
             $chart->setAuthorId($user->getId());
+            $org = $user->getCurrentOrganization();
+            if (!empty($org)) $chart->setOrganization($org);
         } else {
             // remember session id to be able to assign this chart
             // to a newly registered user
