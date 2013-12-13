@@ -158,3 +158,82 @@ $app->put('/organizations/:id/plugins/:op/:plugin_id', function($org_id, $op, $p
         }
     });
 })->conditions(array('op' => '(remove|add|toggle|config)'));
+
+
+/*
+ * get charts of an organization
+ */
+$app->get('/organizations/:id/charts', function($org_id) use ($app) {
+    $user = DatawrapperSession::getUser();
+    $org = OrganizationQuery::create()->findPk($org_id);
+    if ($org) {
+        if ($org->hasUser($user) || $user->isAdmin()) {
+            $query = ChartQuery::create()
+                ->filterByDeleted(false)
+                ->orderByCreatedAt(Criteria::DESC)
+                ->filterByOrganization($org);
+            // filter by visualization
+            $vis = $app->request()->get('vis');
+            if (isset($vis)) {
+                $vis = explode(',', $vis);
+                $conds = array();
+                foreach ($vis as $v) {
+                    $query->condition($conds[] = 'c'.count($conds), 'Chart.Type = ?', $v);
+                }
+                $query->where($conds, 'or');
+            }
+            // filter by month
+            $months = $app->request()->get('months');
+            if (isset($months)) {
+                $months = explode(',', $months);
+                $conds = array();
+                foreach ($months as $m) {
+                    $query->condition($conds[] = 'c'.count($conds), 'DATE_FORMAT(Chart.CreatedAt, "%Y-%m") = DATE_FORMAT(?, "%Y-%m")', $m.'-01');
+                }
+                $query->where($conds, 'or');
+            }
+            // filter by status
+            $status = $app->request()->get('status');
+            if (isset($status)) {
+                $status = explode(',', $status);
+                $conds = array();
+                foreach ($status as $s) {
+                    $query->condition($conds[] = 'c'.count($conds), 'Chart.LastEditStep ' . ($s == 'published' ? ' >= 4' : '< 4'));
+                }
+                $query->where($conds, 'or');
+            }
+            // filter by search query
+            $q = $app->request()->get('search');
+            if (!empty($q)) {
+                $query->condition('in-title', 'Chart.Title LIKE ?', '%'.$q.'%');
+                $query->condition('in-intro', 'Chart.Metadata LIKE ?', '%"intro":"%'.$q.'%"%');
+                $query->condition('in-source', 'Chart.Metadata LIKE ?', '%"source-name":"%'.$q.'%"%');
+                $query->condition('in-source-url', 'Chart.Metadata LIKE ?', '%"source-url":"%'.$q.'%"%');
+                $query->where(array('in-title', 'in-intro', 'in-source', 'in-source-url'), 'or');
+            }
+
+            $total = $query->count();
+            // pagination
+            $pagesize = 12;
+            $page = $app->request()->get('page');
+            if (!isset($page)) $page = 0;
+            $query->limit($pagesize)->offset($page * $pagesize);
+            // query result
+            $charts = $query->find();
+            // return as json
+            $res = array();
+            foreach ($charts as $chart) {
+                $res[] = $app->request()->get('expand') ? $chart->serialize() : $chart->shortArray();
+            }
+            ok(array(
+                'total' => $total,
+                'charts' => $res,
+                'page' => $page,
+                'numPages' => ceil($total / $pagesize)));
+        } else {
+            return error('access-denied', 'You are not allowed to do this..');
+        }
+    } else {
+        return error('unknown-organization', 'Organization not found');
+    }
+});
