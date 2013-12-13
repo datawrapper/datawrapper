@@ -110,7 +110,6 @@ class User extends BaseUser {
 
     /*
      * returns the currently selected organization
-     * TODO: handle multiple organizations
      */
     public function getCurrentOrganization() {
         $organizations = $this->getOrganizations();
@@ -123,6 +122,20 @@ class User extends BaseUser {
             }
         }
         return $organizations[0];
+    }
+
+    /*
+     * returns an Array serialization with less
+     * sensitive information than $user->toArray()
+     */
+    public function serialize() {
+        return array(
+            'id' => $this->getId(),
+            'email' => $this->getEmail(),
+            'name' => $this->getName(),
+            'website' => $this->getWebsite(),
+            'socialmedia' => $this->getSmProfile()
+        );
     }
 
 } // User
