@@ -9,7 +9,7 @@ require_once '../lib/utils/chart_content.php';
 $app->get('/chart/:id/preview/?', function ($id) use ($app) {
     disable_cache($app);
 
-    check_chart_writable($id, function($user, $chart) use ($app) {
+    check_chart_readable($id, function($user, $chart) use ($app) {
         $page = get_chart_content($chart, $user, $app->request()->get('minify'), $app->request()->get('debug'));
         $page['plain'] = $app->request()->get('plain') == 1;
         $page['fullscreen'] = $app->request()->get('fs') == 1;

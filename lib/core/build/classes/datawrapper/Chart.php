@@ -141,8 +141,25 @@ class Chart extends BaseChart {
         }
     }
 
+    /*
+     * checks if a user has the privilege to access the chart
+     */
+    public function isReadable($user) {
+        if ($user->isLoggedIn()) {
+            $org = $this->getOrganization();
+            if ($this->getAuthorId() == $user->getId() ||
+                $user->isAdmin() ||
+                ($org && $org->hasUser($user))) {
+                return true;
+            } else if ($this->getGuestSession() == session_id()) {
+                return true;
+            }
+        }
+        return 'this is not your chart.';
+    }
+
     /**
-     * checks wether a chart is writeable by a certain user
+     * checks if a chart is writeable by a certain user
      *
      * @param user
      */

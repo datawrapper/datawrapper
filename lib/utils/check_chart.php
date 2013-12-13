@@ -1,5 +1,21 @@
 <?php
 
+function check_chart_readable($id, $callback) {
+    $chart = ChartQuery::create()->findPK($id);
+    if ($chart) {
+        $user = DatawrapperSession::getUser();
+        if ($chart->isReadable($user) === true) {
+            call_user_func($callback, $user, $chart);
+        } else {
+            // no such chart
+            error_chart_not_writable();
+        }
+    } else {
+        // no such chart
+        error_chart_not_found($id);
+    }
+}
+
 function check_chart_writable($id, $callback) {
     $chart = ChartQuery::create()->findPK($id);
     if ($chart) {
