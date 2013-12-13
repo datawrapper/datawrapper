@@ -205,11 +205,14 @@ $app->get('/organizations/:id/charts', function($org_id) use ($app) {
             // filter by search query
             $q = $app->request()->get('search');
             if (!empty($q)) {
-                $query->condition('in-title', 'Chart.Title LIKE ?', '%'.$q.'%');
-                $query->condition('in-intro', 'Chart.Metadata LIKE ?', '%"intro":"%'.$q.'%"%');
-                $query->condition('in-source', 'Chart.Metadata LIKE ?', '%"source-name":"%'.$q.'%"%');
-                $query->condition('in-source-url', 'Chart.Metadata LIKE ?', '%"source-url":"%'.$q.'%"%');
-                $query->where(array('in-title', 'in-intro', 'in-source', 'in-source-url'), 'or');
+                $query->join('Chart.User')
+                    ->condition('c1', 'Chart.Title LIKE ?', '%'.$q.'%')
+                    ->condition('c2', 'Chart.Metadata LIKE ?', '%"intro":"%'.$q.'%"%')
+                    ->condition('c3', 'Chart.Metadata LIKE ?', '%"source-name":"%'.$q.'%"%')
+                    ->condition('c4', 'Chart.Metadata LIKE ?', '%"source-url":"%'.$q.'%"%')
+                    ->condition('c5', 'User.Email LIKE ?', '%'.$q.'%')
+                    ->condition('c6', 'User.Name LIKE ?', '%'.$q.'%')
+                    ->where(array('c1','c2','c3','c4','c5','c6'), 'or');
             }
 
             $total = $query->count();
