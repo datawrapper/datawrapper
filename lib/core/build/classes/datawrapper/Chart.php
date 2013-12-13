@@ -43,6 +43,7 @@ class Chart extends BaseChart {
         $json = $this->lowercaseKeys($json);
         // then decode metadata from json string
         $json['metadata'] = $this->getMetadata();
+        $json['author'] = $this->getUser()->serialize();
         return $json;
     }
 
@@ -146,16 +147,17 @@ class Chart extends BaseChart {
      */
     public function isReadable($user) {
         if ($user->isLoggedIn()) {
+
             $org = $this->getOrganization();
             if ($this->getAuthorId() == $user->getId() ||
                 $user->isAdmin() ||
-                ($org && $org->hasUser($user))) {
+                (!empty($org) && $org->hasUser($user))) {
                 return true;
             } else if ($this->getGuestSession() == session_id()) {
                 return true;
             }
         }
-        return 'this is not your chart.';
+        return false;
     }
 
     /**
@@ -168,14 +170,14 @@ class Chart extends BaseChart {
             if ($this->getAuthorId() == $user->getId() || $user->isAdmin() || $user->isGraphicEditor()) {
                 return true;
             } else {
-                return 'this is not your chart.';
+                return false;
             }
         } else {
             // check if the session matches
             if ($this->getGuestSession() == session_id()) {
                 return true;
             } else {
-                return 'this is not your chart (session doesnt match)';
+                return false;
             }
         }
     }

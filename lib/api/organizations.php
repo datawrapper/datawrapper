@@ -226,11 +226,7 @@ $app->get('/organizations/:id/charts', function($org_id) use ($app) {
             // return as json
             $res = array();
             foreach ($charts as $chart) {
-                $serialized = $app->request()->get('expand') ? $chart->serialize() : $chart->shortArray();
-                if (isset($serialized['authorId'])) {
-                    $serialized['author'] = UserQuery::create()->findPK($serialized['authorId'])->serialize();
-                }
-                $res[] = $serialized;
+                $res[] = $app->request()->get('expand') ? $chart->serialize() : $chart->shortArray();
             }
             ok(array(
                 'total' => $total,
