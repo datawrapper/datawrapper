@@ -1,5 +1,6 @@
 {
     "name": "admin-dashboard",
     "author": "Gregor Aisch",
-    "version": "1.0"
+    "version": "1.0",
+    "description": "Provides the admin dashboard showing metrics such as new visualizations per day"
 }

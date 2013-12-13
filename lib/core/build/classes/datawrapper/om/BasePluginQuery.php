@@ -9,14 +9,20 @@
  * @method PluginQuery orderById($order = Criteria::ASC) Order by the id column
  * @method PluginQuery orderByInstalledAt($order = Criteria::ASC) Order by the installed_at column
  * @method PluginQuery orderByEnabled($order = Criteria::ASC) Order by the enabled column
+ * @method PluginQuery orderByIsPrivate($order = Criteria::ASC) Order by the is_private column
  *
  * @method PluginQuery groupById() Group by the id column
  * @method PluginQuery groupByInstalledAt() Group by the installed_at column
  * @method PluginQuery groupByEnabled() Group by the enabled column
+ * @method PluginQuery groupByIsPrivate() Group by the is_private column
  *
  * @method PluginQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method PluginQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method PluginQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ *
+ * @method PluginQuery leftJoinPluginOrganization($relationAlias = null) Adds a LEFT JOIN clause to the query using the PluginOrganization relation
+ * @method PluginQuery rightJoinPluginOrganization($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PluginOrganization relation
+ * @method PluginQuery innerJoinPluginOrganization($relationAlias = null) Adds a INNER JOIN clause to the query using the PluginOrganization relation
  *
  * @method PluginQuery leftJoinPluginData($relationAlias = null) Adds a LEFT JOIN clause to the query using the PluginData relation
  * @method PluginQuery rightJoinPluginData($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PluginData relation
@@ -27,10 +33,12 @@
  *
  * @method Plugin findOneByInstalledAt(string $installed_at) Return the first Plugin filtered by the installed_at column
  * @method Plugin findOneByEnabled(boolean $enabled) Return the first Plugin filtered by the enabled column
+ * @method Plugin findOneByIsPrivate(boolean $is_private) Return the first Plugin filtered by the is_private column
  *
  * @method array findById(string $id) Return Plugin objects filtered by the id column
  * @method array findByInstalledAt(string $installed_at) Return Plugin objects filtered by the installed_at column
  * @method array findByEnabled(boolean $enabled) Return Plugin objects filtered by the enabled column
+ * @method array findByIsPrivate(boolean $is_private) Return Plugin objects filtered by the is_private column
  *
  * @package    propel.generator.datawrapper.om
  */
@@ -134,7 +142,7 @@ abstract class BasePluginQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `installed_at`, `enabled` FROM `plugin` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `installed_at`, `enabled`, `is_private` FROM `plugin` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_STR);
@@ -323,6 +331,107 @@ abstract class BasePluginQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the is_private column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByIsPrivate(true); // WHERE is_private = true
+     * $query->filterByIsPrivate('yes'); // WHERE is_private = true
+     * </code>
+     *
+     * @param     boolean|string $isPrivate The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PluginQuery The current query, for fluid interface
+     */
+    public function filterByIsPrivate($isPrivate = null, $comparison = null)
+    {
+        if (is_string($isPrivate)) {
+            $isPrivate = in_array(strtolower($isPrivate), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(PluginPeer::IS_PRIVATE, $isPrivate, $comparison);
+    }
+
+    /**
+     * Filter the query by a related PluginOrganization object
+     *
+     * @param   PluginOrganization|PropelObjectCollection $pluginOrganization  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PluginQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPluginOrganization($pluginOrganization, $comparison = null)
+    {
+        if ($pluginOrganization instanceof PluginOrganization) {
+            return $this
+                ->addUsingAlias(PluginPeer::ID, $pluginOrganization->getPluginId(), $comparison);
+        } elseif ($pluginOrganization instanceof PropelObjectCollection) {
+            return $this
+                ->usePluginOrganizationQuery()
+                ->filterByPrimaryKeys($pluginOrganization->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPluginOrganization() only accepts arguments of type PluginOrganization or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PluginOrganization relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PluginQuery The current query, for fluid interface
+     */
+    public function joinPluginOrganization($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PluginOrganization');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PluginOrganization');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PluginOrganization relation PluginOrganization object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   PluginOrganizationQuery A secondary query class using the current class as primary query
+     */
+    public function usePluginOrganizationQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinPluginOrganization($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PluginOrganization', 'PluginOrganizationQuery');
+    }
+
+    /**
      * Filter the query by a related PluginData object
      *
      * @param   PluginData|PropelObjectCollection $pluginData  the related object to use as filter
@@ -394,6 +503,23 @@ abstract class BasePluginQuery extends ModelCriteria
         return $this
             ->joinPluginData($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'PluginData', 'PluginDataQuery');
+    }
+
+    /**
+     * Filter the query by a related Organization object
+     * using the plugin_organization table as cross reference
+     *
+     * @param   Organization $organization the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return   PluginQuery The current query, for fluid interface
+     */
+    public function filterByOrganization($organization, $comparison = Criteria::EQUAL)
+    {
+        return $this
+            ->usePluginOrganizationQuery()
+            ->filterByOrganization($organization, $comparison)
+            ->endUse();
     }
 
     /**

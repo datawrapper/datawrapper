@@ -136,6 +136,10 @@ class DatawrapperHooks {
 
     // allow plugins to add new admin pages
     const ALTERNATIVE_SIGNIN = 'alternative_signin';
+
+    // allow adding links after 'create new chart'
+    const HEADER_NAV = 'header_nav_';
+
 }
 
 

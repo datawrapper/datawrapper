@@ -3,6 +3,17 @@
 {% extends "core.twig" %}
 {% block content %}
 
+<style type="text/css">
+.admin .nav-stacked.nav-tabs li.active a {
+    background: #08c;
+    color: #fff;
+    font-weight: bold;
+}
+.admin .nav-stacked.nav-tabs li.active a .badge-info {
+    background-color: #A9D5EB;
+}
+</style>
+
 <div class="admin">
 
     <h1 class="title">Admin &raquo; {{ title }}</h1>
@@ -11,7 +22,9 @@
         <div class="span2">
             <ul class="nav nav-stacked nav-tabs">
                 {% for url, title in adminmenu %}
-                <li{% if url == adminactive %} class="active" {% endif %}><a href="/admin{{ url }}">{{ title | raw }}</a></li>
+                <li{% if url == adminactive %} class="active" {% endif %}>
+                    <a href="/admin{{ url }}">{{ title | raw }}</a>
+                </li>
                 {% endfor %}
             </ul>
         </div>

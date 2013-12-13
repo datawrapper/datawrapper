@@ -36,3 +36,7 @@ $twig->addFunction('has_hook', new Twig_Function_Function('has_hook'));
 // loae I18n extension for Twig
 $twig->addExtension(new Twig_Extension_I18n());
 
+function has_plugin($plugin) {
+    return DatawrapperPluginManager::loaded($plugin);
+}
+$twig->addFunction('has_plugin', new Twig_Function_Function('has_plugin'));
