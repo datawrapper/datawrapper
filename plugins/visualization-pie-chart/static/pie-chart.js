@@ -86,8 +86,10 @@
 
             me.__slices = me.__slices ? me.__slices : {};
 
-            var column = me.axes(true).slices[row],
-                labels = me.axes(true).labels,
+            var column = me.axes(true).slices[row];
+            if (!column) return;  // stop rendering here
+
+            var labels = me.axes(true).labels,
                 total = 0, min = Number.MAX_VALUE, max = 0,
                 reverse,
                 slices,
