@@ -72,8 +72,8 @@ class DatawrapperPluginManager {
                 }
                 if ($can_load) {
                     // load plugin
-                    load_plugin($plugin);
                     self::$loaded[$id] = true;
+                    load_plugin($plugin);
                 } else {
                     if (!isset($could_not_install[$id])) {
                         $not_loaded_yet[] = $plugin; // so try next time
