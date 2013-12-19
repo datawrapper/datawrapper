@@ -98,9 +98,9 @@ define(function() {
                     });
                 }
                 if (visible) $('#vis-options-'+key).removeClass('hidden');
-                else $('#vis-options-'+key).addClass('hidden')
+                else $('#vis-options-'+key).addClass('hidden');
             });
         }
-    }
+    };
 
 });
