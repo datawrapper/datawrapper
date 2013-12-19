@@ -147,15 +147,14 @@ class Chart extends BaseChart {
      */
     public function isReadable($user) {
         if ($user->isLoggedIn()) {
-
             $org = $this->getOrganization();
             if ($this->getAuthorId() == $user->getId() ||
                 $user->isAdmin() ||
                 (!empty($org) && $org->hasUser($user))) {
                 return true;
-            } else if ($this->getGuestSession() == session_id()) {
-                return true;
             }
+        } else if ($this->getGuestSession() == session_id()) {
+            return true;
         }
         return false;
     }
