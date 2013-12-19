@@ -43,6 +43,12 @@ class DatawrapperVisualization {
         // we save the path to the static files of the visualization
         $meta['__static_path'] =  '/static/plugins/' . $plugin->getName() . '/';
         $meta['version'] = $plugin->getVersion();
+        $icon = $meta['__static_path'] . '/' . $meta['id'];
+        if (file_exists(ROOT_PATH . 'www/' . $icon . '.svg')) {
+            $meta['icon'] = file_get_contents(ROOT_PATH . 'www/' . $icon . '.svg');
+        } else {
+            $meta['icon'] = '<img src="'. $icon . '.png" />';
+        }
         $this->visualizations[$meta['id']] = $meta;
         if ($asset_callback) {
             $this->vis_asset_callbacks[$meta['id']] = $asset_callback;
