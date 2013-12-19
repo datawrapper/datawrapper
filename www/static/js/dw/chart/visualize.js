@@ -11,7 +11,6 @@ define([
     './visualize/updateSize',
     './visualize/options',
     'js/misc/classify',
-    './visualize/colorpicker',
     'js/misc/jquery.easing'],
 
 function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
