@@ -1178,6 +1178,7 @@ form.well form {
 
 .vis-selector-unfolded {
     display: none;
+    margin-bottom: 10px;
 }
 
 .vis-selector-folded h3 {
