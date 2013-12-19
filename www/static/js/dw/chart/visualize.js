@@ -77,8 +77,6 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
         if (_typeHasChanged) {
             iframe.attr('src', '');
             dw.backend.fire('type-changed');
-            // remove all notifications
-            $("#notifications .notification").fadeOutAndRemove();
         }
 
         if (_axesHaveChanged) dw.backend.fire('axes-changed');
@@ -90,6 +88,8 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
                 dw.backend.fire('options-reloaded');
                 loadVis();
             });
+            // remove all notifications
+            $("#notifications .notification").fadeOutAndRemove();
         }
 
         _themeHasChanged = false;
