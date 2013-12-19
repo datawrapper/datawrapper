@@ -13,16 +13,12 @@ $(function() {
             $el = $('#'+args.key),
             $picker = $('.base-color-picker', $el);
 
-        console.log('sync', theme_id);
-
         if (dw.theme(theme_id)) themesAreReady();
         else dw.backend.one('theme-loaded', themesAreReady);
 
         function themesAreReady() {
 
             var theme = dw.theme(theme_id);
-
-            console.log('(theme is loaded)', theme_id, theme);
 
             if (!args.option.hideBaseColorPicker) initBaseColorPicker();
             if (!args.option.hideCustomColorSelector) initCustomColorSelector();
@@ -150,7 +146,6 @@ $(function() {
                                 color: li.data('color'),
                                 palette: [].concat(theme.colors.palette, theme.colors.secondary),
                                 change: function(color) {
-                                    console.log(color);
                                     $colPicker.css('background', color);
                                     update(color);
                                 }
