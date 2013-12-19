@@ -1,6 +1,7 @@
 {
-  "Column Chart":"Säulendiagramm",
-  "Automatically sort bars":"Balken sortieren",
+  "Column Chart":"Säulen",
+  "Base color":"Grundfarbe",
+  "Automatically sort bars":"Säulen sortieren",
   "Reverse order":"Reihenfolge umkehren",
   "Use different color for negative values":"Alternative Farbe für negative Werte verwenden",
   "Ignore missing values":"Fehlende Werte ignorieren",

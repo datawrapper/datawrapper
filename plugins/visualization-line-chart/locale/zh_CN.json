@@ -2,6 +2,8 @@
   "Line Chart":"Line Chart",
   "Your chart contains <b>more lines than we can label<\/b>, so automatic \nlabeling is turned off. To fix this <ul><li>filter some columns in the data \ntable in the previous step, or<\/li><li>use direct labeling and the highlight \nfeature to label the lines that are important to your story.<\/li><\/ul>":"Your chart contains <b>more lines than we can label<\/b>, so automatic \nlabeling is turned off. To fix this <ul><li>filter some columns in the data \ntable in the previous step, or<\/li><li>use direct labeling and the highlight \nfeature to label the lines that are important to your story.<\/li><\/ul>",
   "Use logarithmic scale":"Use logarithmic scale",
+  "Some of the <b>dates in your x-axis could not be parsed<\/b>, hence the line \nchart cannot display a proper date axis. To fix this<ul><li>return to the \nprevious step and clean your date column.<\/li><li><a href='%s'>Read more \nabout how to do this.<\/a><\/li><\/ul>":"Some of the <b>dates in your x-axis could not be parsed<\/b>, hence the line \nchart cannot display a proper date axis. To fix this<ul><li>return to the \nprevious step and clean your date column.<\/li><li><a href='%s'>Read more \nabout how to do this.<\/a><\/li><\/ul>",
+  "Base color":"Base color",
   "Customize labeling":"Customize labeling",
   "Direct labeling":"Direct labeling",
   "Show the labels right nearby the line ends instead of a separate legend":"Show the labels right nearby the line ends instead of a separate legend",
