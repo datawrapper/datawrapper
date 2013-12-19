@@ -1240,6 +1240,14 @@ form.well form {
         padding: 4px 8px;
         line-height: 24px;
     }
+
+    #vis-options .control-label {
+        width: 40%;
+    }
+
+    #vis-options .controls {
+        margin-left: 45%;
+    }
 }
 
 @media (max-width: 976px) {
