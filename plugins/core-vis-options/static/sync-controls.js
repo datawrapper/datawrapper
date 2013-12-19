@@ -1,7 +1,7 @@
 
 $(function() {
 
-    function syncValue(evt, args) {
+    function syncValue(args) {
         var el = $('#' + args.key);
         el.val(args.chart.get('metadata.visualize.'+args.key));
         function save() {
@@ -10,7 +10,7 @@ $(function() {
         el.change(save).keyup(save);
     }
 
-    function syncCheckbox(evt, args) {
+    function syncCheckbox(args) {
         var el = $('#'+args.key);
         if (args.chart.get('metadata.visualize.'+args.key))
             el.prop('checked', 'checked');
@@ -21,7 +21,7 @@ $(function() {
         });
     }
 
-    function syncRadio(evt, args) {
+    function syncRadio(args) {
         var curVal = args.chart.get('metadata.visualize.'+args.key);
         if (_.isBoolean(curVal)) {
             curVal = curVal ? 'yes' : 'no';
@@ -35,7 +35,7 @@ $(function() {
         });
     }
 
-    function syncSelectAxisColumn(evt, args) {
+    function syncSelectAxisColumn(args) {
         _.each(args.option.axes, function(axis) {
             var select = $('select#'+args.key+'-'+axis.id).html(''),
                 chart = args.chart,
@@ -63,14 +63,14 @@ $(function() {
         });
     }
 
-    $('#vis-options').on('dw:vis-option:select', syncValue);
-    $('#vis-options').on('dw:vis-option:text', syncValue);
-    $('#vis-options').on('dw:vis-option:checkbox', syncCheckbox);
-    $('#vis-options').on('dw:vis-option:radio', syncRadio);
-    $('#vis-options').on('dw:vis-option:radio-left', syncRadio);
+    dw.backend.on('sync-option:select', syncValue);
+    dw.backend.on('sync-option:text', syncValue);
+    dw.backend.on('sync-option:checkbox', syncCheckbox);
+    dw.backend.on('sync-option:radio', syncRadio);
+    dw.backend.on('sync-option:radio-left', syncRadio);
 
     // column select
-    $('#vis-options').on('dw:vis-option:select-axis-column', syncSelectAxisColumn);
+    dw.backend.on('sync-option:select-axis-column', syncSelectAxisColumn);
 
 });
 
