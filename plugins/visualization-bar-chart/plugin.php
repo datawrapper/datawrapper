@@ -21,6 +21,10 @@ class DatawrapperPlugin_VisualizationBarChart extends DatawrapperPlugin_Visualiz
                 )
             ),
             "options" => array(
+                "base-color" => array(
+                    "type" => "base-color",
+                    "label" => __("Base color")
+                ),
                 "sort-values" => array(
                     "type" => "checkbox",
                     "label" => __("Autmatically sort bars", $id)

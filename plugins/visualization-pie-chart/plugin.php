@@ -30,6 +30,10 @@ class DatawrapperPlugin_VisualizationPieChart extends DatawrapperPlugin_Visualiz
             ),
             "color-by" => "row",
             "options" => array(
+                "base-color" => array(
+                    "type" => "base-color",
+                    "label" => __("Base color")
+                )
             ),
             "locale" => array(
                 "other" => __("other", $id),

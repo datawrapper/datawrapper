@@ -55,8 +55,6 @@ class DatawrapperPlugin_VisualizationDataTable extends DatawrapperPlugin_Visuali
     public function getOptions(){
         $id = $this->getName();
         $options = array(
-            "custom-color"  => array("default" =>false),
-            "select-color"  => array("default" =>false),
             "table-sortable" => array(
                 "type" => "checkbox",
                 "label" => __("Make columns sortable", $id)

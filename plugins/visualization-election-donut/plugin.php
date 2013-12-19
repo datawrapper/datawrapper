@@ -20,6 +20,10 @@ class DatawrapperPlugin_VisualizationElectionDonut extends DatawrapperPlugin_Vis
                 )
             ),
             "options" => array(
+                "base-color" => array(
+                    "type" => "base-color",
+                    "label" => __("Base color")
+                ),
                 "sort-values" => array(
                     "type" => "checkbox",
                     "label" => __("Sort by size", $this->getName()),
