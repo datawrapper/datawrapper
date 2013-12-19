@@ -49,14 +49,13 @@ define(function() {
     }
 
     function showThemeColors() {
-        var themeid = $('#select-theme').val(),
-            customColors = $('#palette-colors'),
-        chart.set('metadata.publish.background', theTheme.colors.background);
-        chart.set('metadata.publish.contextBg', theTheme.colors.contextBackground);
-        chart.set('metadata.publish.text', theTheme.colors.text);
+        var theme_id = chart.get('theme'),
+            theme = dw.theme(theme_id);
 
-        var colors = theTheme.colors.palette.slice().concat(theTheme.colors.secondary || []);
-        customColors.data('colors', colors.join(','));
+        chart.set('metadata.publish.background', theme.colors.background);
+        chart.set('metadata.publish.contextBg', theme.colors.contextBackground);
+        chart.set('metadata.publish.text', theme.colors.text);
+
     }
 
     return {
