@@ -13,6 +13,8 @@ CHANGELOG
 * allowing users in organization to use private plugins
 * support for making plugins private
 * added organizations
+* svg icons for visualization
+* replaced old color picker
 
 ### 1.6.2
 * revised event flow in visualize step
