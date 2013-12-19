@@ -185,17 +185,10 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
             '/xhr/'+chart.get('id')+'/vis-options?nocache='+Math.random(),
             function() {
                 loaded.resolve();
-                // trigger event in order to resync options
-                optionsLoaded();
+                loadVis();
             }
         );
         return loaded.promise();
-    }
-
-    function optionsLoaded() {
-        loadVis();
-        options.reset();
-        options.sync();
     }
 
     function initTransposeLink() {
