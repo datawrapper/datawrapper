@@ -43,7 +43,7 @@ class Chart extends BaseChart {
         $json = $this->lowercaseKeys($json);
         // then decode metadata from json string
         $json['metadata'] = $this->getMetadata();
-        $json['author'] = $this->getUser()->serialize();
+        if ($this->getUser()) $json['author'] = $this->getUser()->serialize();
         return $json;
     }
 
