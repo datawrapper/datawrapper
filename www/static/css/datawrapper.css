@@ -1210,11 +1210,16 @@ form.well form {
         height: 75px;
     }
 
-    .vis-thumb img {
+    .vis-thumb img, .vis-thumb svg {
         width: 65px;
         height: 65px;
         left: 5px;
         top: 5px;
+    }
+
+    .vis-thumb svg {
+        margin-top: 2px;
+        margin-left: 5px;
     }
 
     .navbar .nav > li > a {
