@@ -1149,8 +1149,8 @@ form.well form {
     color: #000;
 }
 
-.vis-thumb svg path, .vis-thumb svg rect { fill: #bce; }
-.vis-thumb svg line { stroke: #bce; }
+.vis-thumb svg path, .vis-thumb svg rect { fill: #bdcce0; }
+.vis-thumb svg line { stroke: #bdcce0; }
 
 .vis-thumb.active svg path, .vis-thumb.active svg rect { fill: #4482cc; }
 .vis-thumb.active svg line { stroke: #4482cc; }
