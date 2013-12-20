@@ -364,6 +364,7 @@
             function labelHeight(txt, className, width, fontSize) {
                 // returns the width of a label
                 lbl.setAttribute('class', 'label '+(className ? ' '+className : ''));
+                lbl.style.width = width+'px';
                 span.style.fontSize = fontSize ? fontSize : null;
                 span.innerHTML = txt;
                 return oh();
