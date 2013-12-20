@@ -52,6 +52,8 @@
             me.init();
 
             column = me.getBarColumn();
+            if (!column) return; // stop rendering here
+
             bars = me.getBarValues();
 
             // compute maximum x-label height
@@ -196,6 +198,7 @@
             var me = this,
                 filter = me.__lastRow;
             if (_.isUndefined(filter)) throw 'filter must not be undefined';
+            if (_.isUndefined(me.axesDef.columns[filter])) return null;
             return me.dataset.column(me.axesDef.columns[filter]);
         },
 

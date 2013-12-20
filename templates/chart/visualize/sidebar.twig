@@ -14,7 +14,10 @@
             {# <h3>{% trans "Select visualization" %}</h3> #}
                 <div class="vis-thumbs">
                     {% for vis in visualizations %}{% if vis.title %}
-                    <div class="vis-thumb{% if vis.id == chart.type %} active{% endif %}" data-id="{{ vis.id }}" data-title="{{ vis.title }}" data-static-path="{{ vis.__static_path }}"><img title="{{ vis.title }}" src="{{ vis.__static_path }}{{ vis.id }}.png" /></div>
+                    <div class="vis-thumb{% if vis.id == chart.type %} active{% endif %}" data-id="{{ vis.id }}" data-title="{{ vis.title }}" data-static-path="{{ vis.__static_path }}">
+                        {{ vis.icon | raw }}
+                        <div class="title">{{ vis.title }}</div>
+                    </div>
                     {% endif %}{% endfor %}
                 </div>
 

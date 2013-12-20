@@ -24,13 +24,13 @@ abstract class BasePluginPeer
     const TM_CLASS = 'PluginTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 3;
+    const NUM_COLUMNS = 4;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 3;
+    const NUM_HYDRATE_COLUMNS = 4;
 
     /** the column name for the id field */
     const ID = 'plugin.id';
@@ -40,6 +40,9 @@ abstract class BasePluginPeer
 
     /** the column name for the enabled field */
     const ENABLED = 'plugin.enabled';
+
+    /** the column name for the is_private field */
+    const IS_PRIVATE = 'plugin.is_private';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -60,12 +63,12 @@ abstract class BasePluginPeer
      * e.g. PluginPeer::$fieldNames[PluginPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'InstalledAt', 'Enabled', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'installedAt', 'enabled', ),
-        BasePeer::TYPE_COLNAME => array (PluginPeer::ID, PluginPeer::INSTALLED_AT, PluginPeer::ENABLED, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'INSTALLED_AT', 'ENABLED', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'installed_at', 'enabled', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'InstalledAt', 'Enabled', 'IsPrivate', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'installedAt', 'enabled', 'isPrivate', ),
+        BasePeer::TYPE_COLNAME => array (PluginPeer::ID, PluginPeer::INSTALLED_AT, PluginPeer::ENABLED, PluginPeer::IS_PRIVATE, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'INSTALLED_AT', 'ENABLED', 'IS_PRIVATE', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'installed_at', 'enabled', 'is_private', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
     );
 
     /**
@@ -75,12 +78,12 @@ abstract class BasePluginPeer
      * e.g. PluginPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'InstalledAt' => 1, 'Enabled' => 2, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'installedAt' => 1, 'enabled' => 2, ),
-        BasePeer::TYPE_COLNAME => array (PluginPeer::ID => 0, PluginPeer::INSTALLED_AT => 1, PluginPeer::ENABLED => 2, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'INSTALLED_AT' => 1, 'ENABLED' => 2, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'installed_at' => 1, 'enabled' => 2, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'InstalledAt' => 1, 'Enabled' => 2, 'IsPrivate' => 3, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'installedAt' => 1, 'enabled' => 2, 'isPrivate' => 3, ),
+        BasePeer::TYPE_COLNAME => array (PluginPeer::ID => 0, PluginPeer::INSTALLED_AT => 1, PluginPeer::ENABLED => 2, PluginPeer::IS_PRIVATE => 3, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'INSTALLED_AT' => 1, 'ENABLED' => 2, 'IS_PRIVATE' => 3, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'installed_at' => 1, 'enabled' => 2, 'is_private' => 3, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
     );
 
     /**
@@ -157,10 +160,12 @@ abstract class BasePluginPeer
             $criteria->addSelectColumn(PluginPeer::ID);
             $criteria->addSelectColumn(PluginPeer::INSTALLED_AT);
             $criteria->addSelectColumn(PluginPeer::ENABLED);
+            $criteria->addSelectColumn(PluginPeer::IS_PRIVATE);
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.installed_at');
             $criteria->addSelectColumn($alias . '.enabled');
+            $criteria->addSelectColumn($alias . '.is_private');
         }
     }
 

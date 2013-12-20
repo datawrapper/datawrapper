@@ -12,7 +12,7 @@ dw.theme = (function(){
         var parent = arguments.length == 3 ? __themes[arguments[1]] : dw.theme.base,
             props = arguments[arguments.length - 1];
 
-        __themes[id] = extend(parent, { id: id }, props);
+        __themes[id] = extend({}, parent, { id: id }, props);
     };
 
     /*

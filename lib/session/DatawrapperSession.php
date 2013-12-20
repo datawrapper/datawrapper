@@ -44,8 +44,11 @@ class DatawrapperSession {
      * initializes a new user or creates a guest user if not logged in
      */
     protected function initUser() {
-        if (isset($_SESSION['dw-user-id'])) {
-            if ($_SESSION['persistent'] || time() - $_SESSION['last_action_time'] < 1800) {
+        if (isset($_SESSION['dw-user-id']) &&
+            (isset($_SESSION['persistent']) ||
+             isset($_SESSION['last_action_time']))) {
+            if ((isset($_SESSION['persistent']) && $_SESSION['persistent']) ||
+                (isset($_SESSION['last_action_time']) && time() - $_SESSION['last_action_time'] < 1800)) {
                 $this->user = UserQuery::create()->limit(1)->findPK($_SESSION['dw-user-id']);
                 $_SESSION['last_action_time'] = time();
             }
@@ -150,6 +153,10 @@ class DatawrapperSession {
         self::getInstance()->user = $user;
         Action::logAction($user, 'login');
 
+        // reload plugins since there might be new plugins
+        // becoming available after logins
+        DatawrapperPluginManager::load();
+
         $_SESSION['persistent'] = $keepLoggedIn;
         $_SESSION['last_action_time'] = time();
 
@@ -161,11 +168,25 @@ class DatawrapperSession {
             $chart->setGuestSession('');
             $chart->save();
         }
+
+        // restore user organization
+        if (empty($_SESSION['dw-user-organization'])) {
+            // let's check the last chart
+            $lastChart = ChartQuery::create()
+                ->filterByUser($user)
+                ->filterByOrganizationId(null, Criteria::ISNOTNULL)
+                ->orderByLastModifiedAt(Criteria::DESC)
+                ->findOne();
+            if (!empty($lastChart)) {
+                $_SESSION['dw-user-organization'] = $lastChart->getOrganization()->getId();
+            }
+        }
     }
 
     public static function logout() {
         Action::logAction(self::getInstance()->user, 'logout');
         $_SESSION['dw-user-id'] = null;
+        $_SESSION['dw-user-organization'] = null;
         self::getInstance()->initUser();
         setcookie('DW-SESSION', null, 0, '/');
     }

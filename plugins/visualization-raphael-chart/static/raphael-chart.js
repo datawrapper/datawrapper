@@ -364,6 +364,7 @@
             function labelHeight(txt, className, width, fontSize) {
                 // returns the width of a label
                 lbl.setAttribute('class', 'label '+(className ? ' '+className : ''));
+                lbl.style.width = width+'px';
                 span.style.fontSize = fontSize ? fontSize : null;
                 span.innerHTML = txt;
                 return oh();
@@ -410,6 +411,14 @@
             throw 'getDataRowByPoint() needs to be implemented by each visualization';
         },
 
+        _baseColor: function() {
+            var me = this,
+                base = me.get('base-color', 0),
+                palette = me.theme().colors.palette,
+                fromPalette = !_.isString(base);
+            return fromPalette ? palette[base] : base;
+        },
+
         _getColor: function(series, row, opts) {
             var me = this,
                 key = opts.key;
@@ -435,12 +444,12 @@
             }
 
             // cycle through palette opts.usePalette is true
-            var palette = me.theme().colors.palette;
-            if (opts.usePalette) {
-                return palette[(Math.min(me.get('base-color', 0), palette.length-1) + row) % palette.length];
-            }
+            var palette = me.theme().colors.palette,
+                baseColor = me._baseColor();
 
-            var baseColor = palette[Math.min(me.get('base-color', 0), palette.length-1)];
+            if (opts.usePalette) {
+                return palette[(Math.max(0, palette.indexOf(baseColor)) + row) % palette.length];
+            }
 
             // opts.varyLightness for each row
             if (opts.varyLightness) {
@@ -493,7 +502,7 @@
                     if (key && me.__customColors && me.__customColors[key])
                         color = me.__customColors[key];
                     // use base color
-                    else color = palette[Math.min(me.get('base-color', 0), palette.length-1)];
+                    else color = me._baseColor();
                 }
 
                 var key_color = chroma.hex(color),

@@ -17,8 +17,8 @@ class User extends BaseUser {
 
     public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false) {
         $arr = parent::toArray($keyType, $includeLazyLoadColumns, $alreadyDumpedObjects, $includeForeignObjects);
-        unset($arr['Pwd']);  // never transmit passwords
-        unset($arr['Token']);  // never transmit passwords
+        if (isset($arr['Pwd'])) unset($arr['Pwd']);  // never transmit passwords
+        if (isset($arr['Token'])) unset($arr['Token']);  // never transmit passwords
         // unset($arr['Role']);  // never transmit passwords
         return $arr;
     }
@@ -106,6 +106,36 @@ class User extends BaseUser {
             ->orderByLastModifiedAt('desc')
             ->limit($count)
             ->find();
+    }
+
+    /*
+     * returns the currently selected organization
+     */
+    public function getCurrentOrganization() {
+        $organizations = $this->getOrganizations();
+        if (count($organizations) < 1) return null;
+        if (!empty($_SESSION['dw-user-organization'])) {
+            foreach ($organizations as $org) {
+                if ($org->getId() == $_SESSION['dw-user-organization']) {
+                    return $org;
+                }
+            }
+        }
+        return $organizations[0];
+    }
+
+    /*
+     * returns an Array serialization with less
+     * sensitive information than $user->toArray()
+     */
+    public function serialize() {
+        return array(
+            'id' => $this->getId(),
+            'email' => $this->getEmail(),
+            'name' => $this->getName(),
+            'website' => $this->getWebsite(),
+            'socialmedia' => $this->getSmProfile()
+        );
     }
 
 } // User

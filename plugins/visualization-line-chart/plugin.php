@@ -42,6 +42,10 @@ class DatawrapperPlugin_VisualizationLineChart extends DatawrapperPlugin_Visuali
 
     public function getOptions(){
         $options = array(
+            "base-color" => array(
+                "type" => "base-color",
+                "label" => __("Base color")
+            ),
             "sep-labeling" => array(
                 "type" => "separator",
                 "label" => __("Customize labeling"),

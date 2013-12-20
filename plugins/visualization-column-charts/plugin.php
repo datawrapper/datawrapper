@@ -28,6 +28,10 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                 )
             ),
             "options" => array(
+                "base-color" => array(
+                    "type" => "base-color",
+                    "label" => __("Base color")
+                ),
                 "sort-values" => array(
                     "type" => "checkbox",
                     "label" => __("Automatically sort bars", $id)
@@ -91,6 +95,10 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                 )
             ),
             "options" => array(
+                "base-color" => array(
+                    "type" => "base-color",
+                    "label" => __("Base color")
+                ),
                 "sort-values" => array(
                     "type" => "checkbox",
                     "label" => __("Automatically sort bars", $id)
@@ -133,6 +141,10 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                 )
             ),
             "options" => array(
+                "base-color" => array(
+                    "type" => "base-color",
+                    "label" => __("Base color")
+                ),
                 "sort-values" => array(
                     "type" => "checkbox",
                     "label" => __("Automatically sort bars", $id)

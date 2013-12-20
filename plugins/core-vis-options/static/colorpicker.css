@@ -1,0 +1,95 @@
+/*
+ * css for color picker
+ */
+
+.color-picker {
+    width: 2em;
+    height: 24px;
+    border: 2px solid #fff;
+    border-radius: 2px;
+    border-right: 20px solid #fff;
+    box-shadow: 0 0 10px rgba(0,0,0,.2);
+    position: relative;
+    display: inline-block;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+.color-picker .arrow {
+    position: absolute;
+    top: 0;
+    right: -20px;
+    width: 20px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.color-picker .arrow:after {
+    height: 24px;
+    line-height: 24px;
+    content: "▾";
+    color: #555;
+}
+
+.custom-color-selector-head .btn.custom.active {
+    background: #006dcc;
+    color: #fff;
+    text-shadow: 0 1px 1px rgba(55,55,55,0.75);
+}
+
+.custom-color-selector-body h4 {
+    margin: 0 0 10px;
+    font-size: 14px;
+    color: #444;
+}
+
+.custom-color-selector-body .color {
+    width: 17px;
+    height: 17px;
+    float: left;
+    background: #ccc;
+    text-align: center;
+    line-height: 14px;
+    color: #fff;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.custom-color-selector-body .dataseries {
+    border-radius: 5px;
+    max-height: 220px;
+    overflow:auto;
+    padding: 3px 0;
+    margin-bottom: 4px;
+    background:#fff;
+    border-top:1px solid #aaa;
+    border-left:1px solid #aaa;
+    border-bottom:1px solid #ccc;
+    border-right:1px solid #ccc;
+    box-shadow:inset 1px 1px 4px rgba(0,0,0,.2);
+}
+
+.custom-color-selector-body .dataseries li {
+    padding: 5px 5px 1px 8px;
+    cursor: pointer;
+}
+
+.custom-color-selector-body .dataseries li:nth-child(2n) {
+    background: rgba(0,0,0,.075);
+}
+
+.custom-color-selector-body .dataseries label {
+    padding-left: 25px;
+    line-height: 17px;
+    color: #555;
+    font-size: 13px;
+}
+
+.custom-color-selector-body .dataseries .selected label {
+    font-weight: bold;
+    color: #000;
+}
+
+.custom-color-selector-body hr {
+    margin-top: 0;
+}

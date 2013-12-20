@@ -137,9 +137,37 @@ abstract class BaseChart extends BaseObject implements Persistent
     protected $public_version;
 
     /**
+     * The value for the organization_id field.
+     * @var        string
+     */
+    protected $organization_id;
+
+    /**
+     * The value for the forked_from field.
+     * @var        string
+     */
+    protected $forked_from;
+
+    /**
      * @var        User
      */
     protected $aUser;
+
+    /**
+     * @var        Organization
+     */
+    protected $aOrganization;
+
+    /**
+     * @var        Chart
+     */
+    protected $aChartRelatedByForkedFrom;
+
+    /**
+     * @var        PropelObjectCollection|Chart[] Collection to store aggregation of Chart objects.
+     */
+    protected $collChartsRelatedById;
+    protected $collChartsRelatedByIdPartial;
 
     /**
      * @var        PropelObjectCollection|Job[] Collection to store aggregation of Job objects.
@@ -166,6 +194,12 @@ abstract class BaseChart extends BaseObject implements Persistent
      * @var        boolean
      */
     protected $alreadyInClearAllReferencesDeep = false;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $chartsRelatedByIdScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -486,6 +520,26 @@ abstract class BaseChart extends BaseObject implements Persistent
     public function getPublicVersion()
     {
         return $this->public_version;
+    }
+
+    /**
+     * Get the [organization_id] column value.
+     *
+     * @return string
+     */
+    public function getOrganizationId()
+    {
+        return $this->organization_id;
+    }
+
+    /**
+     * Get the [forked_from] column value.
+     *
+     * @return string
+     */
+    public function getForkedFrom()
+    {
+        return $this->forked_from;
     }
 
     /**
@@ -874,6 +928,56 @@ abstract class BaseChart extends BaseObject implements Persistent
     } // setPublicVersion()
 
     /**
+     * Set the value of [organization_id] column.
+     *
+     * @param string $v new value
+     * @return Chart The current object (for fluent API support)
+     */
+    public function setOrganizationId($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (string) $v;
+        }
+
+        if ($this->organization_id !== $v) {
+            $this->organization_id = $v;
+            $this->modifiedColumns[] = ChartPeer::ORGANIZATION_ID;
+        }
+
+        if ($this->aOrganization !== null && $this->aOrganization->getId() !== $v) {
+            $this->aOrganization = null;
+        }
+
+
+        return $this;
+    } // setOrganizationId()
+
+    /**
+     * Set the value of [forked_from] column.
+     *
+     * @param string $v new value
+     * @return Chart The current object (for fluent API support)
+     */
+    public function setForkedFrom($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (string) $v;
+        }
+
+        if ($this->forked_from !== $v) {
+            $this->forked_from = $v;
+            $this->modifiedColumns[] = ChartPeer::FORKED_FROM;
+        }
+
+        if ($this->aChartRelatedByForkedFrom !== null && $this->aChartRelatedByForkedFrom->getId() !== $v) {
+            $this->aChartRelatedByForkedFrom = null;
+        }
+
+
+        return $this;
+    } // setForkedFrom()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -942,6 +1046,8 @@ abstract class BaseChart extends BaseObject implements Persistent
             $this->published_at = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
             $this->public_url = ($row[$startcol + 15] !== null) ? (string) $row[$startcol + 15] : null;
             $this->public_version = ($row[$startcol + 16] !== null) ? (int) $row[$startcol + 16] : null;
+            $this->organization_id = ($row[$startcol + 17] !== null) ? (string) $row[$startcol + 17] : null;
+            $this->forked_from = ($row[$startcol + 18] !== null) ? (string) $row[$startcol + 18] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -950,7 +1056,7 @@ abstract class BaseChart extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
             $this->postHydrate($row, $startcol, $rehydrate);
-            return $startcol + 17; // 17 = ChartPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 19; // 19 = ChartPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Chart object", $e);
@@ -975,6 +1081,12 @@ abstract class BaseChart extends BaseObject implements Persistent
 
         if ($this->aUser !== null && $this->author_id !== $this->aUser->getId()) {
             $this->aUser = null;
+        }
+        if ($this->aOrganization !== null && $this->organization_id !== $this->aOrganization->getId()) {
+            $this->aOrganization = null;
+        }
+        if ($this->aChartRelatedByForkedFrom !== null && $this->forked_from !== $this->aChartRelatedByForkedFrom->getId()) {
+            $this->aChartRelatedByForkedFrom = null;
         }
     } // ensureConsistency
 
@@ -1016,6 +1128,10 @@ abstract class BaseChart extends BaseObject implements Persistent
         if ($deep) {  // also de-associate any related objects?
 
             $this->aUser = null;
+            $this->aOrganization = null;
+            $this->aChartRelatedByForkedFrom = null;
+            $this->collChartsRelatedById = null;
+
             $this->collJobs = null;
 
         } // if (deep)
@@ -1143,6 +1259,20 @@ abstract class BaseChart extends BaseObject implements Persistent
                 $this->setUser($this->aUser);
             }
 
+            if ($this->aOrganization !== null) {
+                if ($this->aOrganization->isModified() || $this->aOrganization->isNew()) {
+                    $affectedRows += $this->aOrganization->save($con);
+                }
+                $this->setOrganization($this->aOrganization);
+            }
+
+            if ($this->aChartRelatedByForkedFrom !== null) {
+                if ($this->aChartRelatedByForkedFrom->isModified() || $this->aChartRelatedByForkedFrom->isNew()) {
+                    $affectedRows += $this->aChartRelatedByForkedFrom->save($con);
+                }
+                $this->setChartRelatedByForkedFrom($this->aChartRelatedByForkedFrom);
+            }
+
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
                 if ($this->isNew()) {
@@ -1152,6 +1282,24 @@ abstract class BaseChart extends BaseObject implements Persistent
                 }
                 $affectedRows += 1;
                 $this->resetModified();
+            }
+
+            if ($this->chartsRelatedByIdScheduledForDeletion !== null) {
+                if (!$this->chartsRelatedByIdScheduledForDeletion->isEmpty()) {
+                    foreach ($this->chartsRelatedByIdScheduledForDeletion as $chartRelatedById) {
+                        // need to save related object because we set the relation to null
+                        $chartRelatedById->save($con);
+                    }
+                    $this->chartsRelatedByIdScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collChartsRelatedById !== null) {
+                foreach ($this->collChartsRelatedById as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
             }
 
             if ($this->jobsScheduledForDeletion !== null) {
@@ -1244,6 +1392,12 @@ abstract class BaseChart extends BaseObject implements Persistent
         if ($this->isColumnModified(ChartPeer::PUBLIC_VERSION)) {
             $modifiedColumns[':p' . $index++]  = '`public_version`';
         }
+        if ($this->isColumnModified(ChartPeer::ORGANIZATION_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`organization_id`';
+        }
+        if ($this->isColumnModified(ChartPeer::FORKED_FROM)) {
+            $modifiedColumns[':p' . $index++]  = '`forked_from`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `chart` (%s) VALUES (%s)',
@@ -1305,6 +1459,12 @@ abstract class BaseChart extends BaseObject implements Persistent
                         break;
                     case '`public_version`':
                         $stmt->bindValue($identifier, $this->public_version, PDO::PARAM_INT);
+                        break;
+                    case '`organization_id`':
+                        $stmt->bindValue($identifier, $this->organization_id, PDO::PARAM_STR);
+                        break;
+                    case '`forked_from`':
+                        $stmt->bindValue($identifier, $this->forked_from, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -1404,11 +1564,31 @@ abstract class BaseChart extends BaseObject implements Persistent
                 }
             }
 
+            if ($this->aOrganization !== null) {
+                if (!$this->aOrganization->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aOrganization->getValidationFailures());
+                }
+            }
+
+            if ($this->aChartRelatedByForkedFrom !== null) {
+                if (!$this->aChartRelatedByForkedFrom->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aChartRelatedByForkedFrom->getValidationFailures());
+                }
+            }
+
 
             if (($retval = ChartPeer::doValidate($this, $columns)) !== true) {
                 $failureMap = array_merge($failureMap, $retval);
             }
 
+
+                if ($this->collChartsRelatedById !== null) {
+                    foreach ($this->collChartsRelatedById as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
 
                 if ($this->collJobs !== null) {
                     foreach ($this->collJobs as $referrerFK) {
@@ -1504,6 +1684,12 @@ abstract class BaseChart extends BaseObject implements Persistent
             case 16:
                 return $this->getPublicVersion();
                 break;
+            case 17:
+                return $this->getOrganizationId();
+                break;
+            case 18:
+                return $this->getForkedFrom();
+                break;
             default:
                 return null;
                 break;
@@ -1550,10 +1736,21 @@ abstract class BaseChart extends BaseObject implements Persistent
             $keys[14] => $this->getPublishedAt(),
             $keys[15] => $this->getPublicUrl(),
             $keys[16] => $this->getPublicVersion(),
+            $keys[17] => $this->getOrganizationId(),
+            $keys[18] => $this->getForkedFrom(),
         );
         if ($includeForeignObjects) {
             if (null !== $this->aUser) {
                 $result['User'] = $this->aUser->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->aOrganization) {
+                $result['Organization'] = $this->aOrganization->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->aChartRelatedByForkedFrom) {
+                $result['ChartRelatedByForkedFrom'] = $this->aChartRelatedByForkedFrom->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->collChartsRelatedById) {
+                $result['ChartsRelatedById'] = $this->collChartsRelatedById->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
             if (null !== $this->collJobs) {
                 $result['Jobs'] = $this->collJobs->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -1643,6 +1840,12 @@ abstract class BaseChart extends BaseObject implements Persistent
             case 16:
                 $this->setPublicVersion($value);
                 break;
+            case 17:
+                $this->setOrganizationId($value);
+                break;
+            case 18:
+                $this->setForkedFrom($value);
+                break;
         } // switch()
     }
 
@@ -1684,6 +1887,8 @@ abstract class BaseChart extends BaseObject implements Persistent
         if (array_key_exists($keys[14], $arr)) $this->setPublishedAt($arr[$keys[14]]);
         if (array_key_exists($keys[15], $arr)) $this->setPublicUrl($arr[$keys[15]]);
         if (array_key_exists($keys[16], $arr)) $this->setPublicVersion($arr[$keys[16]]);
+        if (array_key_exists($keys[17], $arr)) $this->setOrganizationId($arr[$keys[17]]);
+        if (array_key_exists($keys[18], $arr)) $this->setForkedFrom($arr[$keys[18]]);
     }
 
     /**
@@ -1712,6 +1917,8 @@ abstract class BaseChart extends BaseObject implements Persistent
         if ($this->isColumnModified(ChartPeer::PUBLISHED_AT)) $criteria->add(ChartPeer::PUBLISHED_AT, $this->published_at);
         if ($this->isColumnModified(ChartPeer::PUBLIC_URL)) $criteria->add(ChartPeer::PUBLIC_URL, $this->public_url);
         if ($this->isColumnModified(ChartPeer::PUBLIC_VERSION)) $criteria->add(ChartPeer::PUBLIC_VERSION, $this->public_version);
+        if ($this->isColumnModified(ChartPeer::ORGANIZATION_ID)) $criteria->add(ChartPeer::ORGANIZATION_ID, $this->organization_id);
+        if ($this->isColumnModified(ChartPeer::FORKED_FROM)) $criteria->add(ChartPeer::FORKED_FROM, $this->forked_from);
 
         return $criteria;
     }
@@ -1791,6 +1998,8 @@ abstract class BaseChart extends BaseObject implements Persistent
         $copyObj->setPublishedAt($this->getPublishedAt());
         $copyObj->setPublicUrl($this->getPublicUrl());
         $copyObj->setPublicVersion($this->getPublicVersion());
+        $copyObj->setOrganizationId($this->getOrganizationId());
+        $copyObj->setForkedFrom($this->getForkedFrom());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1798,6 +2007,12 @@ abstract class BaseChart extends BaseObject implements Persistent
             $copyObj->setNew(false);
             // store object hash to prevent cycle
             $this->startCopy = true;
+
+            foreach ($this->getChartsRelatedById() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addChartRelatedById($relObj->copy($deepCopy));
+                }
+            }
 
             foreach ($this->getJobs() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
@@ -1907,6 +2122,110 @@ abstract class BaseChart extends BaseObject implements Persistent
         return $this->aUser;
     }
 
+    /**
+     * Declares an association between this object and a Organization object.
+     *
+     * @param             Organization $v
+     * @return Chart The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setOrganization(Organization $v = null)
+    {
+        if ($v === null) {
+            $this->setOrganizationId(NULL);
+        } else {
+            $this->setOrganizationId($v->getId());
+        }
+
+        $this->aOrganization = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the Organization object, it will not be re-added.
+        if ($v !== null) {
+            $v->addChart($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated Organization object
+     *
+     * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
+     * @return Organization The associated Organization object.
+     * @throws PropelException
+     */
+    public function getOrganization(PropelPDO $con = null, $doQuery = true)
+    {
+        if ($this->aOrganization === null && (($this->organization_id !== "" && $this->organization_id !== null)) && $doQuery) {
+            $this->aOrganization = OrganizationQuery::create()->findPk($this->organization_id, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aOrganization->addCharts($this);
+             */
+        }
+
+        return $this->aOrganization;
+    }
+
+    /**
+     * Declares an association between this object and a Chart object.
+     *
+     * @param             Chart $v
+     * @return Chart The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setChartRelatedByForkedFrom(Chart $v = null)
+    {
+        if ($v === null) {
+            $this->setForkedFrom(NULL);
+        } else {
+            $this->setForkedFrom($v->getId());
+        }
+
+        $this->aChartRelatedByForkedFrom = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the Chart object, it will not be re-added.
+        if ($v !== null) {
+            $v->addChartRelatedById($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated Chart object
+     *
+     * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
+     * @return Chart The associated Chart object.
+     * @throws PropelException
+     */
+    public function getChartRelatedByForkedFrom(PropelPDO $con = null, $doQuery = true)
+    {
+        if ($this->aChartRelatedByForkedFrom === null && (($this->forked_from !== "" && $this->forked_from !== null)) && $doQuery) {
+            $this->aChartRelatedByForkedFrom = ChartQuery::create()->findPk($this->forked_from, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aChartRelatedByForkedFrom->addChartsRelatedById($this);
+             */
+        }
+
+        return $this->aChartRelatedByForkedFrom;
+    }
+
 
     /**
      * Initializes a collection based on the name of a relation.
@@ -1918,9 +2237,280 @@ abstract class BaseChart extends BaseObject implements Persistent
      */
     public function initRelation($relationName)
     {
+        if ('ChartRelatedById' == $relationName) {
+            $this->initChartsRelatedById();
+        }
         if ('Job' == $relationName) {
             $this->initJobs();
         }
+    }
+
+    /**
+     * Clears out the collChartsRelatedById collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return Chart The current object (for fluent API support)
+     * @see        addChartsRelatedById()
+     */
+    public function clearChartsRelatedById()
+    {
+        $this->collChartsRelatedById = null; // important to set this to null since that means it is uninitialized
+        $this->collChartsRelatedByIdPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collChartsRelatedById collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialChartsRelatedById($v = true)
+    {
+        $this->collChartsRelatedByIdPartial = $v;
+    }
+
+    /**
+     * Initializes the collChartsRelatedById collection.
+     *
+     * By default this just sets the collChartsRelatedById collection to an empty array (like clearcollChartsRelatedById());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initChartsRelatedById($overrideExisting = true)
+    {
+        if (null !== $this->collChartsRelatedById && !$overrideExisting) {
+            return;
+        }
+        $this->collChartsRelatedById = new PropelObjectCollection();
+        $this->collChartsRelatedById->setModel('Chart');
+    }
+
+    /**
+     * Gets an array of Chart objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Chart is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|Chart[] List of Chart objects
+     * @throws PropelException
+     */
+    public function getChartsRelatedById($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collChartsRelatedByIdPartial && !$this->isNew();
+        if (null === $this->collChartsRelatedById || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collChartsRelatedById) {
+                // return empty collection
+                $this->initChartsRelatedById();
+            } else {
+                $collChartsRelatedById = ChartQuery::create(null, $criteria)
+                    ->filterByChartRelatedByForkedFrom($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collChartsRelatedByIdPartial && count($collChartsRelatedById)) {
+                      $this->initChartsRelatedById(false);
+
+                      foreach($collChartsRelatedById as $obj) {
+                        if (false == $this->collChartsRelatedById->contains($obj)) {
+                          $this->collChartsRelatedById->append($obj);
+                        }
+                      }
+
+                      $this->collChartsRelatedByIdPartial = true;
+                    }
+
+                    $collChartsRelatedById->getInternalIterator()->rewind();
+                    return $collChartsRelatedById;
+                }
+
+                if($partial && $this->collChartsRelatedById) {
+                    foreach($this->collChartsRelatedById as $obj) {
+                        if($obj->isNew()) {
+                            $collChartsRelatedById[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collChartsRelatedById = $collChartsRelatedById;
+                $this->collChartsRelatedByIdPartial = false;
+            }
+        }
+
+        return $this->collChartsRelatedById;
+    }
+
+    /**
+     * Sets a collection of ChartRelatedById objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $chartsRelatedById A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return Chart The current object (for fluent API support)
+     */
+    public function setChartsRelatedById(PropelCollection $chartsRelatedById, PropelPDO $con = null)
+    {
+        $chartsRelatedByIdToDelete = $this->getChartsRelatedById(new Criteria(), $con)->diff($chartsRelatedById);
+
+        $this->chartsRelatedByIdScheduledForDeletion = unserialize(serialize($chartsRelatedByIdToDelete));
+
+        foreach ($chartsRelatedByIdToDelete as $chartRelatedByIdRemoved) {
+            $chartRelatedByIdRemoved->setChartRelatedByForkedFrom(null);
+        }
+
+        $this->collChartsRelatedById = null;
+        foreach ($chartsRelatedById as $chartRelatedById) {
+            $this->addChartRelatedById($chartRelatedById);
+        }
+
+        $this->collChartsRelatedById = $chartsRelatedById;
+        $this->collChartsRelatedByIdPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Chart objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related Chart objects.
+     * @throws PropelException
+     */
+    public function countChartsRelatedById(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collChartsRelatedByIdPartial && !$this->isNew();
+        if (null === $this->collChartsRelatedById || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collChartsRelatedById) {
+                return 0;
+            }
+
+            if($partial && !$criteria) {
+                return count($this->getChartsRelatedById());
+            }
+            $query = ChartQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByChartRelatedByForkedFrom($this)
+                ->count($con);
+        }
+
+        return count($this->collChartsRelatedById);
+    }
+
+    /**
+     * Method called to associate a Chart object to this object
+     * through the Chart foreign key attribute.
+     *
+     * @param    Chart $l Chart
+     * @return Chart The current object (for fluent API support)
+     */
+    public function addChartRelatedById(Chart $l)
+    {
+        if ($this->collChartsRelatedById === null) {
+            $this->initChartsRelatedById();
+            $this->collChartsRelatedByIdPartial = true;
+        }
+        if (!in_array($l, $this->collChartsRelatedById->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddChartRelatedById($l);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	ChartRelatedById $chartRelatedById The chartRelatedById object to add.
+     */
+    protected function doAddChartRelatedById($chartRelatedById)
+    {
+        $this->collChartsRelatedById[]= $chartRelatedById;
+        $chartRelatedById->setChartRelatedByForkedFrom($this);
+    }
+
+    /**
+     * @param	ChartRelatedById $chartRelatedById The chartRelatedById object to remove.
+     * @return Chart The current object (for fluent API support)
+     */
+    public function removeChartRelatedById($chartRelatedById)
+    {
+        if ($this->getChartsRelatedById()->contains($chartRelatedById)) {
+            $this->collChartsRelatedById->remove($this->collChartsRelatedById->search($chartRelatedById));
+            if (null === $this->chartsRelatedByIdScheduledForDeletion) {
+                $this->chartsRelatedByIdScheduledForDeletion = clone $this->collChartsRelatedById;
+                $this->chartsRelatedByIdScheduledForDeletion->clear();
+            }
+            $this->chartsRelatedByIdScheduledForDeletion[]= $chartRelatedById;
+            $chartRelatedById->setChartRelatedByForkedFrom(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Chart is new, it will return
+     * an empty collection; or if this Chart has previously
+     * been saved, it will retrieve related ChartsRelatedById from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Chart.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Chart[] List of Chart objects
+     */
+    public function getChartsRelatedByIdJoinUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChartQuery::create(null, $criteria);
+        $query->joinWith('User', $join_behavior);
+
+        return $this->getChartsRelatedById($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Chart is new, it will return
+     * an empty collection; or if this Chart has previously
+     * been saved, it will retrieve related ChartsRelatedById from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Chart.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Chart[] List of Chart objects
+     */
+    public function getChartsRelatedByIdJoinOrganization($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChartQuery::create(null, $criteria);
+        $query->joinWith('Organization', $join_behavior);
+
+        return $this->getChartsRelatedById($query, $con);
     }
 
     /**
@@ -2188,6 +2778,8 @@ abstract class BaseChart extends BaseObject implements Persistent
         $this->published_at = null;
         $this->public_url = null;
         $this->public_version = null;
+        $this->organization_id = null;
+        $this->forked_from = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
@@ -2211,6 +2803,11 @@ abstract class BaseChart extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
+            if ($this->collChartsRelatedById) {
+                foreach ($this->collChartsRelatedById as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collJobs) {
                 foreach ($this->collJobs as $o) {
                     $o->clearAllReferences($deep);
@@ -2219,15 +2816,27 @@ abstract class BaseChart extends BaseObject implements Persistent
             if ($this->aUser instanceof Persistent) {
               $this->aUser->clearAllReferences($deep);
             }
+            if ($this->aOrganization instanceof Persistent) {
+              $this->aOrganization->clearAllReferences($deep);
+            }
+            if ($this->aChartRelatedByForkedFrom instanceof Persistent) {
+              $this->aChartRelatedByForkedFrom->clearAllReferences($deep);
+            }
 
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
+        if ($this->collChartsRelatedById instanceof PropelCollection) {
+            $this->collChartsRelatedById->clearIterator();
+        }
+        $this->collChartsRelatedById = null;
         if ($this->collJobs instanceof PropelCollection) {
             $this->collJobs->clearIterator();
         }
         $this->collJobs = null;
         $this->aUser = null;
+        $this->aOrganization = null;
+        $this->aChartRelatedByForkedFrom = null;
     }
 
     /**

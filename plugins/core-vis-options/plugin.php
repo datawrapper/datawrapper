@@ -14,8 +14,18 @@ class DatawrapperPlugin_CoreVisOptions extends DatawrapperPlugin {
             }
         );
 
+        DatawrapperHooks::register(
+            DatawrapperHooks::VIS_OPTION_CONTROLS,
+            function($o, $k) use ($app, $plugin) {
+                $env = array('option' => $o, 'key' => $k);
+                $app->render('plugins/' . $plugin->getName() . '/colorselector.twig', $env);
+            }
+        );
+
         $this->declareAssets(array(
-            'sync-controls.js'
+            'sync-controls.js',
+            'sync-colorselector.js',
+            'colorpicker.css'
         ), "|/chart/[^/]+/visualize|");
 
     }

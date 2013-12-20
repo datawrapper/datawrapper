@@ -75,7 +75,8 @@ $app->get('/gallery', function() use ($app) {
  */
 $app->get('/charts/:id', function($id) use ($app) {
     $chart = ChartQuery::create()->findPK($id);
-    if (!empty($chart)) {
+    $user = DatawrapperSession::getUser();
+    if (!empty($chart) && $chart->isReadable($user)) {
         ok($chart->serialize());
     } else {
         error('chart-not-found', 'No chart with that id was found');
@@ -230,7 +231,7 @@ $app->delete('/charts/:id', function($id) use ($app) {
 });
 
 /**
- * API: copy a chart
+ * API: copy/duplicate/fork a chart
  *
  * @param chart_id chart id
  */

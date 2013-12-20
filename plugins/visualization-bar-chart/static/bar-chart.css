@@ -8,6 +8,8 @@ html body #footer {
     left: auto;
 }
 
+html body #footer .footer-left { left: 0;}
+
 .chart.vis-bar-chart {
     overflow-x: hidden;
 }

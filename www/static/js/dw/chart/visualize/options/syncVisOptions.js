@@ -18,7 +18,7 @@ define(function() {
                     chart.set('metadata.visualize.'+key, opt.default);
                 }
                 // fire custom event so hooked vis options can sync
-                $('#vis-options').trigger('dw:vis-option:' + $.trim(opt.type), {
+                dw.backend.fire('sync-option:' + $.trim(opt.type), {
                     chart: chart,
                     vis: dw.backend.currentVis,
                     key: key,
@@ -98,9 +98,9 @@ define(function() {
                     });
                 }
                 if (visible) $('#vis-options-'+key).removeClass('hidden');
-                else $('#vis-options-'+key).addClass('hidden')
+                else $('#vis-options-'+key).addClass('hidden');
             });
         }
-    }
+    };
 
 });

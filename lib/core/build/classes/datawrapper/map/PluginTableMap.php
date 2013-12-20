@@ -41,6 +41,7 @@ class PluginTableMap extends TableMap
         $this->addPrimaryKey('id', 'Id', 'VARCHAR', true, 128, null);
         $this->addColumn('installed_at', 'InstalledAt', 'TIMESTAMP', true, null, null);
         $this->addColumn('enabled', 'Enabled', 'BOOLEAN', false, 1, false);
+        $this->addColumn('is_private', 'IsPrivate', 'BOOLEAN', false, 1, false);
         // validators
     } // initialize()
 
@@ -49,7 +50,9 @@ class PluginTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('PluginOrganization', 'PluginOrganization', RelationMap::ONE_TO_MANY, array('id' => 'plugin_id', ), null, null, 'PluginOrganizations');
         $this->addRelation('PluginData', 'PluginData', RelationMap::ONE_TO_MANY, array('id' => 'plugin_id', ), null, null, 'PluginDatas');
+        $this->addRelation('Organization', 'Organization', RelationMap::MANY_TO_MANY, array(), null, null, 'Organizations');
     } // buildRelations()
 
 } // PluginTableMap

@@ -1,0 +1,71 @@
+
+{% if option.type == 'base-color' %}
+
+    <div id="{{ key }}">
+        {% if not option.hideBaseColorPicker %}
+            <div class="control-group">
+                <label class="control-label" for="select-color">{{ option.label }}</label>
+                <div class="controls">
+                    <div class="base-color-picker color-picker">
+                        <div class="arrow"></div>
+                    </div>
+                    {% if not option.hideCustomColorSelector %}
+                    <span class="custom-color-selector-head">
+                        <a href="#" class="btn btn-small custom" role="button">{% trans "customize colors..." %}</a>
+                    </span>
+                    {% endif %}
+                </div>
+            </div>
+        {% else %}
+
+            {% if not option.hideCustomColorSelector %}
+            <div class="control-group custom-color-selector-head">
+                <label class="control-label"></label>
+                <div class="controls">
+                    <a class="btn btn-small custom" role="button">{% trans "Customize colors..." %}</a>
+                </div>
+            </div>
+            {% endif %}
+
+        {% endif %}
+
+        {% if not option.hideCustomColorSelector %}
+
+            <div class="custom-color-selector-body" style="display:none">
+
+                <div class="row">
+                    <div class="span2" style="width:43%">
+                        <h4>{% trans "Select element(s):" %}</h4>
+                        <ul class="dataseries unstyled">
+                        </ul>
+                        <div style="font-size:12px;text-align:center;margin-bottom:10px;">
+                            {% trans "Select:" %} &nbsp;
+                            <a class="select-all" >{% trans "all" %}</a> &nbsp;
+                            <a class="select-none" onclick="$('.dataseries li').removeClass('selected')">{% trans "none" %}</a> &nbsp;
+                            <a class="select-invert" onclick="$('.dataseries li').toggleClass('selected')">{% trans "invert" %}</a>
+                        </div>
+
+                    </div>
+                    <div class="span2" style="width:42%;">
+                        <h4>{% trans "Choose a color:" %}</h4>
+                        <div class="info">
+                            {% trans "Please select an element on the left to change colors for individual elements..." %}
+                        </div>
+                        <div class="select" style="display:none">
+                             <div class="color-picker">
+                                <div class="arrow"></div>
+                             </div>
+                            <button class="btn reset-color">{% trans "Reset" %}</button>
+                        </div>
+                         <button style="margin-top:20px" class="btn reset-all-colors">{% trans "Reset all colors" %}</button>
+                    </div>
+                </div>
+                <hr />
+            </div>
+
+
+        {% endif %}
+    </div>
+
+
+{% endif %}

@@ -880,6 +880,11 @@ form.well form {
     box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.05) inset;
 }
 
+.well hr {
+    border-top-color: #ccc;
+    border-bottom-color: #fff;
+}
+
 .mysettings .row h2 {
     font-weight: normal;
     line-height: 1.2;
@@ -1118,6 +1123,38 @@ form.well form {
     opacity: 0.6;
 }
 
+.vis-thumb svg {
+    width: 80px;
+    height: 80px;
+    margin-left: 10px;
+    margin-top: 5px;
+}
+
+.vis-thumb .title {
+    position: absolute;
+    bottom: 3px;
+    left: 5px;
+    right: 5px;
+    text-transform: uppercase;
+    font-size: 10px;
+    line-height: 12px;
+    text-align: center;
+    text-shadow: 1px 1px 0px #fff,0px 1px 0px #fff,-1px 1px 0px #fff,
+        1px -1px 0px #fff,0px -1px 0px #fff,-1px -1px 0px #fff,
+        1px 0px 0px #fff,0px 0px 0px #fff,-1px 0px 0px #fff;
+    color: #555;
+}
+
+.vis-thumb.active .title {
+    color: #000;
+}
+
+.vis-thumb svg path, .vis-thumb svg rect { fill: #bdcce0; }
+.vis-thumb svg line { stroke: #bdcce0; }
+
+.vis-thumb.active svg path, .vis-thumb.active svg rect { fill: #4482cc; }
+.vis-thumb.active svg line { stroke: #4482cc; }
+
 .vis-thumb.active {
     border: 1px solid #1981DD;
     box-shadow: 0 0 10px rgba(25, 129, 221, .6);
@@ -1141,6 +1178,7 @@ form.well form {
 
 .vis-selector-unfolded {
     display: none;
+    margin-bottom: 10px;
 }
 
 .vis-selector-folded h3 {
@@ -1173,11 +1211,16 @@ form.well form {
         height: 75px;
     }
 
-    .vis-thumb img {
+    .vis-thumb img, .vis-thumb svg {
         width: 65px;
         height: 65px;
         left: 5px;
         top: 5px;
+    }
+
+    .vis-thumb svg {
+        margin-top: 2px;
+        margin-left: 5px;
     }
 
     .navbar .nav > li > a {
@@ -1197,6 +1240,14 @@ form.well form {
      {
         padding: 4px 8px;
         line-height: 24px;
+    }
+
+    #vis-options .control-label {
+        width: 40%;
+    }
+
+    #vis-options .controls {
+        margin-left: 45%;
     }
 }
 

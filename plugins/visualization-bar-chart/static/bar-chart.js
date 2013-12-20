@@ -15,13 +15,14 @@
                 useNegativeColor = me.get('negative-color', false);
 
             me.axesDef = me.axes();
-            if (!me.axesDef) return;
+            if (!me.axesDef) return;  // stop rendering here
 
             if (!_.isUndefined(me.get('selected-row'))) {
                 row = me.get('selected-row', 0);
                 row = row > me.axesDef.bars.length ? 0 : row;
             }
             me.__lastRow = row;
+            if (!me.getBarColumn()) return;
 
             var sliceColumns = _.map(me.axesDef.bars, function(i) { return dataset.column(i); }),
                 filter = dw.utils.filter(dw.utils.columnNameColumn(sliceColumns), row),

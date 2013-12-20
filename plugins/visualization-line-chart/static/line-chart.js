@@ -9,8 +9,11 @@
                 theme = vis.theme(),
                 chart = vis.chart(),
                 y1Domain,
-                axesDef = vis.axes(true),
-                formatter = {
+                axesDef = vis.axes(true);
+
+            if (!axesDef.x || !axesDef.y1[0]) return;  // stop rendering here
+
+            var formatter = {
                     x: chart.columnFormatter(axesDef.x),
                     y1: chart.columnFormatter(axesDef.y1[0]) // use format of first column for all!
                 },

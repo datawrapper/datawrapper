@@ -2,6 +2,16 @@
 
 
 function add_header_vars(&$page, $active = null, $page_css = null) {
+
+    function header_nav_hook(&$headlinks, $part) {
+        $links = DatawrapperHooks::execute('header_nav_' . $part);
+        if (!empty($links)) {
+            foreach ($links as $link) {
+                $headlinks[] = $link;
+            }
+        }
+    }
+
     // define the header links
     global $app;
     $config = $GLOBALS['dw_config'];
@@ -28,6 +38,8 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
         );
     }
 
+    header_nav_hook($headlinks, 'create');
+
     if ($user->isLoggedIn() && $user->hasCharts()) {
         // mycharts
         $mycharts = array(
@@ -47,32 +59,18 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
         $mycharts['dropdown'][] = 'divider';
         $mycharts['dropdown'][] = array('url' => '/mycharts/', 'title' => __('All charts'));
         $headlinks[] = $mycharts;
-    } else {
-        $headlinks[] = array('url' => '/gallery/', 'id' => 'gallery', 'title' => __('Gallery'), 'icon' => 'signal');
     }
+
+    header_nav_hook($headlinks, 'mycharts');
 
     if (isset($config['navigation'])) foreach ($config['navigation'] as $item) {
         $link = array('url' => str_replace('%lang%', substr(DatawrapperSession::getLanguage(), 0, 2), $item['url']), 'id' => $item['id'], 'title' => __($item['title']));
         if (!empty($item['icon'])) $link['icon'] = $item['icon'];
         $headlinks[] = $link;
     }
-    // language dropdown
-    if (!empty($config['languages'])) {
-        $langDropdown = array(
-            'url' => '',
-            'id' => 'lang',
-            'dropdown' => array(),
-            'title' => __('Language'),
-            'icon' => 'font'
-        );
-        foreach ($config['languages'] as $lang) {
-            $langDropdown['dropdown'][] = array(
-                'url' => '#lang-'.$lang['id'],
-                'title' => $lang['title']
-            );
-        }
-        if (count($langDropdown['dropdown']) > 1) $headlinks[] = $langDropdown;
-    }
+
+    header_nav_hook($headlinks, 'custom_nav');
+
     if ($user->isLoggedIn()) {
         $username = $user->guessName();
         if ($username == $user->getEmail()) {
@@ -99,14 +97,6 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
                 'title' => __('Logout')
             ))
         );
-        if ($user->isAdmin() && DatawrapperHooks::hookRegistered(DatawrapperHooks::GET_ADMIN_PAGES)) {
-            $headlinks[] = array(
-                'url' => '/admin',
-                'id' => 'admin',
-                'icon' => 'fire',
-                'title' => __('Admin')
-            );
-        }
     } else {
         $headlinks[] = array(
             'url' => '#login',
@@ -115,6 +105,42 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
             'icon' => 'user'
         );
     }
+
+    header_nav_hook($headlinks, 'user');
+
+    // language dropdown
+    if (!empty($config['languages'])) {
+        $langDropdown = array(
+            'url' => '',
+            'id' => 'lang',
+            'dropdown' => array(),
+            'title' => strtoupper(substr(DatawrapperSession::getLanguage(), 0, 2)),
+            'icon' => false
+        );
+        foreach ($config['languages'] as $lang) {
+            $langDropdown['dropdown'][] = array(
+                'url' => '#lang-'.$lang['id'],
+                'title' => $lang['title']
+            );
+        }
+        if (count($langDropdown['dropdown']) > 1) $headlinks[] = $langDropdown;
+    }
+
+    header_nav_hook($headlinks, 'languages');
+
+    // admin link
+    if ($user->isAdmin() && DatawrapperHooks::hookRegistered(DatawrapperHooks::GET_ADMIN_PAGES)) {
+        $headlinks[] = array(
+            'url' => '/admin',
+            'id' => 'admin',
+            'icon' => 'fire',
+            'justicon' => true,
+            'title' => __('Admin')
+        );
+    }
+
+    header_nav_hook($headlinks, 'admin');
+
     foreach ($headlinks as $i => $link) {
         $headlinks[$i]['active'] = $headlinks[$i]['id'] == $active;
     }

@@ -49,25 +49,13 @@ define(function() {
     }
 
     function showThemeColors() {
-        var themeid = $('#select-theme').val(),
-            customColors = $('#palette-colors'),
-            theTheme = dw.theme(themeid),
-            picker = $('#select-color');
-        picker.data('colors', theTheme.colors.palette.join(','));
-        picker.data('color', theTheme.colors.palette[chart.get('metadata.visualize.base-color', 0)]);
-        picker.colorpicker({
-            maxW: $('.tab-container').width()*0.5,
-            change: function(color) {
-                var colIndex = theTheme.colors.palette.join(',').toLowerCase().split(',').indexOf(color.toLowerCase());
-                chart.set('metadata.visualize.base-color', colIndex);
-            }
-        });
-        chart.set('metadata.publish.background', theTheme.colors.background);
-        chart.set('metadata.publish.contextBg', theTheme.colors.contextBackground);
-        chart.set('metadata.publish.text', theTheme.colors.text);
+        var theme_id = chart.get('theme'),
+            theme = dw.theme(theme_id);
 
-        var colors = theTheme.colors.palette.slice().concat(theTheme.colors.secondary || []);
-        customColors.data('colors', colors.join(','));
+        chart.set('metadata.publish.background', theme.colors.background);
+        chart.set('metadata.publish.contextBg', theme.colors.contextBackground);
+        chart.set('metadata.publish.text', theme.colors.text);
+
     }
 
     return {

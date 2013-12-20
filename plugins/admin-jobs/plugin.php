@@ -18,7 +18,7 @@ class DatawrapperPlugin_AdminJobs extends DatawrapperPlugin {
                     'url' => '/jobs',
                     'title' => $title,
                     'controller' => array($plugin, 'jobsAdmin'),
-                    'order' => '4'
+                    'order' => '10'
                 );
             }
         );
