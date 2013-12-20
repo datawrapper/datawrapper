@@ -1,5 +1,5 @@
 {
-  "Pie chart":"Tortendiagramm",
+  "Pie chart":"Torten",
   "Base color":"Grundfarbe",
   "other":"andere",
   "Pie charts are intended to show part-of-whole relations, and thus they \n<b>cannot be used to display negative numbers<\/b>. Please consider using a \ndifferent chart type instead (eg. a bar chart).":"Tortendiagramme zeigen Teile-des-Ganzen, und können daher <b>keine negativen Werte darstellen<\/b>. Bitte benutze stattdessen einen anderen Diagrammtyp (z.B. ein Balkendiagramm).",
