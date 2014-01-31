@@ -266,7 +266,7 @@ h2 { margin-bottom: 10px; }
                 dataType: 'json',
                 success: function(res) {
                     $.each(res.data.slice(0,12), function(i, chart) {
-                        var div = $('<div class="span3 pull-left"><div style="padding:3px 3px 10px;display:block;"><a href="//{{ DW_CHART_CACHE_DOMAIN }}/'+chart.Id+'" style="font-weight:bold;font-size:16px">'+chart.Title+'</a> <span style="font-weight:normal">by</span> <span data-id="'+chart.AuthorId+'" class="user" style="border-bottom:1px dotted orange">'+chart.AuthorId+'</span> at '+chart.LastModifiedAt+' (<a href="http://{{ DW_DOMAIN }}/chart/'+chart.Id+'/edit"><i class="icon-pencil"></i></a>)</div><iframe style="border:none" src="//{{ DW_CHART_CACHE_DOMAIN }}/'+chart.Id+'/plain.html" width="100%" height="260"></iframe></div>');
+                        var div = $('<div class="span3 pull-left"><div style="padding:3px 3px 10px;display:block;"><a href="//{{ DW_CHART_CACHE_DOMAIN }}/'+chart.Id+'" style="font-weight:bold;font-size:16px">'+chart.Title+'</a> <span style="font-weight:normal">by</span> <span data-id="'+chart.AuthorId+'" class="user" style="border-bottom:1px dotted orange">'+chart.AuthorId+'</span> at '+chart.LastModifiedAt+' (<a href="http://{{ DW_DOMAIN }}chart/'+chart.Id+'/edit"><i class="icon-pencil"></i></a>)</div><iframe style="border:none" src="//{{ DW_CHART_CACHE_DOMAIN }}/'+chart.Id+'/plain.html" width="100%" height="260"></iframe></div>');
                         $('#gallery').append(div);
                     });
                 }
