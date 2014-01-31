@@ -18,7 +18,7 @@ class DatawrapperPlugin_ExportImage extends DatawrapperPlugin {
 
         // provide static assets files
         $this->declareAssets(
-            array('export-image/export-image.js', 'export-image/export-image.css'),
+            array('export-image.js', 'export-image.css'),
             "|/chart/[^/]+/publish|"
         );
 
