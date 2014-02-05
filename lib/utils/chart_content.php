@@ -22,6 +22,7 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
     }
 
     $abs = $protocol . '://' . $GLOBALS['dw_config']['domain'];
+    $c_abs = $protocol . '://' . $GLOBALS['dw_config']['chart_domain'];
 
     $debug = $GLOBALS['dw_config']['debug'] == true || $debug;
 
@@ -110,12 +111,14 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
             $base_js,
             $vis_libs_cdn,
             array(
-                '/lib/' . $the_vis_js[0],
-                '/lib/' . $the_theme_js[0],
-                '/lib/' . $the_chart_js[0]
+                $c_abs . '/lib/' . $the_vis_js[0],
+                $c_abs . '/lib/' . $the_theme_js[0],
+                $c_abs . '/lib/' . $the_chart_js[0]
             )
         );
-        $stylesheets = array($chart->getID().'.all.css');
+        $stylesheets = array(
+            $c_abs . '/' . $chart->getID() . '/' . $chart->getID() . '.all.css'
+        );
         // NOTE: replace `/static/` by `assets/` in the `__static_path` value,
         //       since vis assets are handle by DatawrapperVisualization
         $replace_in = $the_vis['__static_path']; $replace_by = 'assets/'; $replace = '/static/';
