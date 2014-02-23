@@ -249,116 +249,11 @@ $app->post('/charts/:id/copy', function($chart_id) use ($app) {
 });
 
 
-function get_static_path($chart) {
-    $static_path = ROOT_PATH . "charts/static/" . $chart->getID();
-    if (!is_dir($static_path)) {
-        mkdir($static_path);
-    }
-    return $static_path;
-}
-
-function download($url, $outf) {
-    if (function_exists('curl_init')) {
-        $ch = curl_init($url);
-        $fp = fopen($outf, 'w');
-
-        $strCookie = 'DW-SESSION=' . $_COOKIE['DW-SESSION'] . '; path=/';
-        session_write_close();
-
-        curl_setopt($ch, CURLOPT_FILE, $fp);
-        curl_setopt($ch, CURLOPT_HEADER, 0 );
-        curl_setopt($ch, CURLOPT_COOKIE, $strCookie);
-        if (isset($GLOBALS['dw_config']['http_auth'])) {
-            curl_setopt($ch, CURLOPT_USERPWD, $GLOBALS['dw_config']['http_auth']);
-        }
-        curl_exec($ch);
-        curl_close($ch);
-        fclose($fp);
-
-    } else {
-        $cfg = array(
-            'http' => array(
-                'header' => 'Connection: close\r\n',
-                'method' => 'GET'
-            )
-        );
-        if (isset($GLOBALS['dw_config']['http_auth'])) {
-            $cfg['http']['header'] .=
-                "Authorization: Basic " . base64_encode($GLOBALS['dw_config']['http_auth']) . '\r\n';
-        }
-        $context = stream_context_create($cfg);
-        $html = file_get_contents($url, false, $context);
-        file_put_contents($outf, $html);
-    }
-}
-
-
-function _setPublishStatus($chart, $status) {
-    if (isset($_GLOBALS['dw-config']['memcache'])) {
-        $memcache->set('publish-status-' . $chart->getID(), round($status*100));
-    } else {
-        file_put_contents('../../charts/tmp/publish-status-' . $chart->getID(), round($status*100));
-    }
-}
-
-function _getPublishStatus($chart) {
-    if (isset($_GLOBALS['dw-config']['memcache'])) {
-        return $memcache->get('publish-status-' . $chart->getID());
-    } else {
-        $fn = '../../charts/tmp/publish-status-' . $chart->getID();
-        if (!file_exists($fn)) return false;
-        return file_get_contents($fn);
-    }
-}
-
-function _clearPublishStatus($chart) {
-    if (isset($_GLOBALS['dw-config']['memcache'])) {
-        global $memcache;
-        $memcache->delete('publish-status-' . $chart->getID());
-    } else {
-        unlink('../../charts/tmp/publish-status-' . $chart->getID());
-    }
-}
-
-
 $app->post('/charts/:id/publish', function($chart_id) use ($app) {
     disable_cache($app);
     if_chart_is_writable($chart_id, function($user, $chart) use ($app) {
-
-        $files = array();
-        _setPublishStatus($chart, 0);
-
-        $files = array_merge($files, publish_html($user, $chart));
-        $files = array_merge($files, publish_css($user, $chart));
-        $files = array_merge($files, publish_data($user, $chart));
-        $files = array_merge($files, publish_js($user, $chart));
-
-        _setPublishStatus($chart, 0.3);
-
-        $totalSize = 0;  // total file size
-        foreach ($files as $i => $file) {
-            $totalSize += filesize($file[0]);
-        }
-
-        $done = 0;
-        foreach ($files as $file) {
-            publish_push_to_cdn(array($file), $chart);
-            $done += filesize($file[0]);
-            _setPublishStatus($chart, 0.3 + ($done / $totalSize) * 0.7);
-        }
-
-        _setPublishStatus($chart, 1);
-        _clearPublishStatus($chart);
-
-        $chart->redirectPreviousVersions();
-
-        DatawrapperHooks::execute(
-            DatawrapperHooks::POST_CHART_PUBLISH,
-            $chart, $user
-        );
-
+        publish_chart($user, $chart);
         ok();
-
     });
 });
 

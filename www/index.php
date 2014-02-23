@@ -21,7 +21,6 @@ $twig = $app->view()->getEnvironment();
 
 require ROOT_PATH . 'lib/utils/twig-init.php';
 
-require_once ROOT_PATH . 'lib/utils/i18n.php';
 require_once ROOT_PATH . 'lib/utils/disable_cache.php';
 require_once ROOT_PATH . 'lib/utils/add_header_vars.php';
 require_once ROOT_PATH . 'lib/utils/add_editor_nav.php';

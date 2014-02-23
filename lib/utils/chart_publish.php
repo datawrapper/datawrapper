@@ -5,6 +5,80 @@ require_once ROOT_PATH . 'lib/utils/themes.php';
 require_once ROOT_PATH . 'lib/utils/chart_content.php';
 
 
+function publish_chart($user, $chart, $fromCli = false) {
+    $files = array();
+    if (!$fromCli) _setPublishStatus($chart, 0);
+    else print "Publishing chart ".$chart->getID().".\n";
+
+    $files = array_merge($files, publish_html($user, $chart));
+    $files = array_merge($files, publish_css($user, $chart));
+    $files = array_merge($files, publish_data($user, $chart));
+    $files = array_merge($files, publish_js($user, $chart));
+
+    if (!$fromCli) _setPublishStatus($chart, 0.3);
+    else print "Files stored to static folder (html, css, data, js)\n";
+
+    $totalSize = 0;  // total file size
+    foreach ($files as $i => $file) {
+        $totalSize += filesize($file[0]);
+    }
+
+    $done = 0;
+    foreach ($files as $file) {
+        publish_push_to_cdn(array($file), $chart);
+        $done += filesize($file[0]);
+        _setPublishStatus($chart, 0.3 + ($done / $totalSize) * 0.7);
+    }
+
+    if (!$fromCli) {
+        _setPublishStatus($chart, 1);
+        _clearPublishStatus($chart);
+    } else print "Files pushed to CDN.\n";
+
+    $chart->redirectPreviousVersions();
+
+    DatawrapperHooks::execute(
+        DatawrapperHooks::POST_CHART_PUBLISH,
+        $chart, $user
+    );
+}
+
+
+function _setPublishStatus($chart, $status) {
+    if (isset($_GLOBALS['dw-config']['memcache'])) {
+        $memcache->set('publish-status-' . $chart->getID(), round($status*100));
+    } else {
+        file_put_contents(ROOT_PATH . 'charts/tmp/publish-status-' . $chart->getID(), round($status*100));
+    }
+}
+
+function _getPublishStatus($chart) {
+    if (isset($_GLOBALS['dw-config']['memcache'])) {
+        return $memcache->get('publish-status-' . $chart->getID());
+    } else {
+        $fn = ROOT_PATH . 'charts/tmp/publish-status-' . $chart->getID();
+        if (!file_exists($fn)) return false;
+        return file_get_contents($fn);
+    }
+}
+
+function _clearPublishStatus($chart) {
+    if (isset($_GLOBALS['dw-config']['memcache'])) {
+        global $memcache;
+        $memcache->delete('publish-status-' . $chart->getID());
+    } else {
+        unlink('../../charts/tmp/publish-status-' . $chart->getID());
+    }
+}
+
+function get_static_path($chart) {
+    $static_path = ROOT_PATH . "charts/static/" . $chart->getID();
+    if (!is_dir($static_path)) {
+        mkdir($static_path);
+    }
+    return $static_path;
+}
+
 function publish_html($user, $chart) {
     $cdn_files = array();
 
@@ -31,7 +105,7 @@ function publish_html($user, $chart) {
 
 function publish_js($user, $chart) {
     $cdn_files = array();
-    $static_path = '../../charts/static/lib/';
+    $static_path = ROOT_PATH . 'charts/static/lib/';
     $data = get_chart_content($chart, $user, false, '../');
 
     // generate visualization script
@@ -42,7 +116,7 @@ function publish_js($user, $chart) {
         $vis_js[1] = "/*\n * datawrapper / vis / {$vis['id']} v{$vis['version']}\n"
                    . " * generated on ".date('c')."\n */\n"
                    . $vis_js[1];
-        file_put_contents($static_path . $vis_js[0], $vis_js[1]);
+        file_put_contents(ROOT_PATH . 'www' . $static_path . $vis_js[0], $vis_js[1]);
         $cdn_files[] = array(
             $static_path . $vis_js[0],
             'lib/' . $vis_js[0],
@@ -58,7 +132,7 @@ function publish_js($user, $chart) {
         $theme_js[1] = "/*\n * datawrapper / theme / {$theme['id']} v{$theme['version']}\n"
                      . " * generated on ".date('c')."\n */\n"
                      . $theme_js[1];
-        file_put_contents($static_path . $theme_js[0], $theme_js[1]);
+        file_put_contents(ROOT_PATH . 'www' . $static_path . $theme_js[0], $theme_js[1]);
     }
     $cdn_files[] = array(
         $static_path . $theme_js[0],
@@ -72,7 +146,7 @@ function publish_js($user, $chart) {
         $chart_js[1] = "/*\n * datawrapper / chart \n"
                      . " * generated on ".date('c')."\n */\n"
                      . $chart_js[1];
-        file_put_contents($static_path . $chart_js[0], $chart_js[1]);
+        file_put_contents(ROOT_PATH . 'www' . $static_path . $chart_js[0], $chart_js[1]);
     }
     $cdn_files[] = array(
         $static_path . $chart_js[0],
@@ -92,7 +166,7 @@ function publish_css($user, $chart) {
     $all = '';
 
     foreach ($data['stylesheets'] as $css) {
-        $all .= file_get_contents('..' . $css)."\n\n";
+        $all .= file_get_contents(ROOT_PATH . 'www' . $css)."\n\n";
     }
 
     // move @imports to top of file
@@ -154,4 +228,40 @@ function publish_data($user, $chart) {
 
 function publish_push_to_cdn($cdn_files, $chart) {
     DatawrapperHooks::execute(DatawrapperHooks::PUBLISH_FILES, $cdn_files);
+}
+
+
+function download($url, $outf) {
+    if (function_exists('curl_init')) {
+        $ch = curl_init($url);
+        $fp = fopen($outf, 'w');
+
+        $strCookie = 'DW-SESSION=' . $_COOKIE['DW-SESSION'] . '; path=/';
+        session_write_close();
+
+        curl_setopt($ch, CURLOPT_FILE, $fp);
+        curl_setopt($ch, CURLOPT_HEADER, 0 );
+        curl_setopt($ch, CURLOPT_COOKIE, $strCookie);
+        if (isset($GLOBALS['dw_config']['http_auth'])) {
+            curl_setopt($ch, CURLOPT_USERPWD, $GLOBALS['dw_config']['http_auth']);
+        }
+        curl_exec($ch);
+        curl_close($ch);
+        fclose($fp);
+
+    } else {
+        $cfg = array(
+            'http' => array(
+                'header' => 'Connection: close\r\n',
+                'method' => 'GET'
+            )
+        );
+        if (isset($GLOBALS['dw_config']['http_auth'])) {
+            $cfg['http']['header'] .=
+                "Authorization: Basic " . base64_encode($GLOBALS['dw_config']['http_auth']) . '\r\n';
+        }
+        $context = stream_context_create($cfg);
+        $html = file_get_contents($url, false, $context);
+        file_put_contents($outf, $html);
+    }
 }
