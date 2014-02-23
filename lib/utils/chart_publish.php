@@ -5,16 +5,18 @@ require_once ROOT_PATH . 'lib/utils/themes.php';
 require_once ROOT_PATH . 'lib/utils/chart_content.php';
 
 
-function publish_chart($user, $chart) {
+function publish_chart($user, $chart, $fromCli = false) {
     $files = array();
-    _setPublishStatus($chart, 0);
+    if (!$fromCli) _setPublishStatus($chart, 0);
+    else print "Publishing chart ".$chart->getID().".\n";
 
     $files = array_merge($files, publish_html($user, $chart));
     $files = array_merge($files, publish_css($user, $chart));
     $files = array_merge($files, publish_data($user, $chart));
     $files = array_merge($files, publish_js($user, $chart));
 
-    _setPublishStatus($chart, 0.3);
+    if (!$fromCli) _setPublishStatus($chart, 0.3);
+    else print "Files stored to static folder (html, css, data, js)\n";
 
     $totalSize = 0;  // total file size
     foreach ($files as $i => $file) {
@@ -28,8 +30,10 @@ function publish_chart($user, $chart) {
         _setPublishStatus($chart, 0.3 + ($done / $totalSize) * 0.7);
     }
 
-    _setPublishStatus($chart, 1);
-    _clearPublishStatus($chart);
+    if (!$fromCli) {
+        _setPublishStatus($chart, 1);
+        _clearPublishStatus($chart);
+    } else print "Files pushed to CDN.\n";
 
     $chart->redirectPreviousVersions();
 
@@ -44,7 +48,7 @@ function _setPublishStatus($chart, $status) {
     if (isset($_GLOBALS['dw-config']['memcache'])) {
         $memcache->set('publish-status-' . $chart->getID(), round($status*100));
     } else {
-        file_put_contents('../../charts/tmp/publish-status-' . $chart->getID(), round($status*100));
+        file_put_contents(ROOT_PATH . 'charts/tmp/publish-status-' . $chart->getID(), round($status*100));
     }
 }
 
@@ -52,7 +56,7 @@ function _getPublishStatus($chart) {
     if (isset($_GLOBALS['dw-config']['memcache'])) {
         return $memcache->get('publish-status-' . $chart->getID());
     } else {
-        $fn = '../../charts/tmp/publish-status-' . $chart->getID();
+        $fn = ROOT_PATH . 'charts/tmp/publish-status-' . $chart->getID();
         if (!file_exists($fn)) return false;
         return file_get_contents($fn);
     }
@@ -101,7 +105,7 @@ function publish_html($user, $chart) {
 
 function publish_js($user, $chart) {
     $cdn_files = array();
-    $static_path = '../../charts/static/lib/';
+    $static_path = ROOT_PATH . 'charts/static/lib/';
     $data = get_chart_content($chart, $user, false, '../');
 
     // generate visualization script
@@ -112,7 +116,7 @@ function publish_js($user, $chart) {
         $vis_js[1] = "/*\n * datawrapper / vis / {$vis['id']} v{$vis['version']}\n"
                    . " * generated on ".date('c')."\n */\n"
                    . $vis_js[1];
-        file_put_contents($static_path . $vis_js[0], $vis_js[1]);
+        file_put_contents(ROOT_PATH . 'www' . $static_path . $vis_js[0], $vis_js[1]);
         $cdn_files[] = array(
             $static_path . $vis_js[0],
             'lib/' . $vis_js[0],
@@ -128,7 +132,7 @@ function publish_js($user, $chart) {
         $theme_js[1] = "/*\n * datawrapper / theme / {$theme['id']} v{$theme['version']}\n"
                      . " * generated on ".date('c')."\n */\n"
                      . $theme_js[1];
-        file_put_contents($static_path . $theme_js[0], $theme_js[1]);
+        file_put_contents(ROOT_PATH . 'www' . $static_path . $theme_js[0], $theme_js[1]);
     }
     $cdn_files[] = array(
         $static_path . $theme_js[0],
@@ -142,7 +146,7 @@ function publish_js($user, $chart) {
         $chart_js[1] = "/*\n * datawrapper / chart \n"
                      . " * generated on ".date('c')."\n */\n"
                      . $chart_js[1];
-        file_put_contents($static_path . $chart_js[0], $chart_js[1]);
+        file_put_contents(ROOT_PATH . 'www' . $static_path . $chart_js[0], $chart_js[1]);
     }
     $cdn_files[] = array(
         $static_path . $chart_js[0],
@@ -162,7 +166,7 @@ function publish_css($user, $chart) {
     $all = '';
 
     foreach ($data['stylesheets'] as $css) {
-        $all .= file_get_contents('..' . $css)."\n\n";
+        $all .= file_get_contents(ROOT_PATH . 'www' . $css)."\n\n";
     }
 
     // move @imports to top of file
