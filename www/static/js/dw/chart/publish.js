@@ -51,7 +51,7 @@ define(function() {
             });
             var status = 0;
             checkStatus = setInterval(function() {
-                $.get('/api/charts/{{ chart.id }}/publish/status', function(res) {
+                $.get('/api/charts/'+chart.get('id')+'/publish/status', function(res) {
                     status = Math.max(status, Number(res));
                     $('.publishing .bar').width(status+'%');
                 });
