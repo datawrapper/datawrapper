@@ -293,72 +293,11 @@ function download($url, $outf) {
 }
 
 
-function _setPublishStatus($chart, $status) {
-    if (isset($_GLOBALS['dw-config']['memcache'])) {
-        $memcache->set('publish-status-' . $chart->getID(), round($status*100));
-    } else {
-        file_put_contents('../../charts/tmp/publish-status-' . $chart->getID(), round($status*100));
-    }
-}
-
-function _getPublishStatus($chart) {
-    if (isset($_GLOBALS['dw-config']['memcache'])) {
-        return $memcache->get('publish-status-' . $chart->getID());
-    } else {
-        $fn = '../../charts/tmp/publish-status-' . $chart->getID();
-        if (!file_exists($fn)) return false;
-        return file_get_contents($fn);
-    }
-}
-
-function _clearPublishStatus($chart) {
-    if (isset($_GLOBALS['dw-config']['memcache'])) {
-        global $memcache;
-        $memcache->delete('publish-status-' . $chart->getID());
-    } else {
-        unlink('../../charts/tmp/publish-status-' . $chart->getID());
-    }
-}
-
-
 $app->post('/charts/:id/publish', function($chart_id) use ($app) {
     disable_cache($app);
     if_chart_is_writable($chart_id, function($user, $chart) use ($app) {
-
-        $files = array();
-        _setPublishStatus($chart, 0);
-
-        $files = array_merge($files, publish_html($user, $chart));
-        $files = array_merge($files, publish_css($user, $chart));
-        $files = array_merge($files, publish_data($user, $chart));
-        $files = array_merge($files, publish_js($user, $chart));
-
-        _setPublishStatus($chart, 0.3);
-
-        $totalSize = 0;  // total file size
-        foreach ($files as $i => $file) {
-            $totalSize += filesize($file[0]);
-        }
-
-        $done = 0;
-        foreach ($files as $file) {
-            publish_push_to_cdn(array($file), $chart);
-            $done += filesize($file[0]);
-            _setPublishStatus($chart, 0.3 + ($done / $totalSize) * 0.7);
-        }
-
-        _setPublishStatus($chart, 1);
-        _clearPublishStatus($chart);
-
-        $chart->redirectPreviousVersions();
-
-        DatawrapperHooks::execute(
-            DatawrapperHooks::POST_CHART_PUBLISH,
-            $chart, $user
-        );
-
+        publish_chart($user, $chart);
         ok();
-
     });
 });
 
