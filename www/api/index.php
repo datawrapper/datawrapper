@@ -11,7 +11,6 @@ require_once ROOT_PATH . 'lib/bootstrap.php';
 
 $config = $GLOBALS['dw_config'];
 
-require '../../lib/utils/i18n.php';
 require '../../lib/utils/disable_cache.php';
 
 

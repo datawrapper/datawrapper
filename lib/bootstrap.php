@@ -86,5 +86,6 @@ require ROOT_PATH . 'lib/utils/vksprintf.php';
 require ROOT_PATH . 'lib/utils/copy_recursively.php';
 require ROOT_PATH . 'lib/plugin/load_plugins.php';
 
+require_once ROOT_PATH . 'lib/utils/i18n.php';
 
 DatawrapperPluginManager::load();
