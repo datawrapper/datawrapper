@@ -161,16 +161,6 @@
 
             me.__seriesAngles = {};
 
-            function normalize(a0, a1) {
-                a0 += HALF_PI;
-                a1 += HALF_PI;
-                if (a0 < 0) {
-                    a0 += TWO_PI;
-                    a1 += TWO_PI;
-                }
-                return [a0, a1];
-            }
-
             me.__sliceKeys = [];
             me.__sliceSet = c.paper.set();
 
@@ -192,14 +182,6 @@
                 out_labels_total_height = -20,
                 num_labels_outside = 0,
                 out_label_w = 0;
-
-            function lblOutside(o) {
-                // not available for election donuts (yet)
-                if (me.getFullArc() < TWO_PI) return false;
-                // this is a rough guess
-                return o.name.length > 10 ? o.value / total < 0.15
-                    : o.name.length > 5 ? o.value / total < 0.1 : false;
-            }
 
             _.each(slices, function(o) {
                 if (lblOutside(o)) {
@@ -330,6 +312,25 @@
                     valign: 'middle'
                 });
             }
+
+            function normalize(a0, a1) {
+                a0 += HALF_PI;
+                a1 += HALF_PI;
+                if (a0 < 0) {
+                    a0 += TWO_PI;
+                    a1 += TWO_PI;
+                }
+                return [a0, a1];
+            }
+
+            function lblOutside(o) {
+                // not available for election donuts (yet)
+                if (me.getFullArc() < TWO_PI) return false;
+                // this is a rough guess
+                return o.name.length > 10 ? o.value / total < 0.15
+                    : o.name.length > 5 ? o.value / total < 0.1 : false;
+            }
+
         },
 
         getSeriesByPoint: function(x, y) {
@@ -388,7 +389,6 @@
         formatValue: function() {
             var me = this;
             return me.chart().columnFormatter(me.axes(true).slices);
-            return me.formatValue.apply(me, arguments);
         },
 
     });
