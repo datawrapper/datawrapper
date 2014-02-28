@@ -161,16 +161,6 @@
 
             me.__seriesAngles = {};
 
-            function normalize(a0, a1) {
-                a0 += HALF_PI;
-                a1 += HALF_PI;
-                if (a0 < 0) {
-                    a0 += TWO_PI;
-                    a1 += TWO_PI;
-                }
-                return [a0, a1];
-            }
-
             me.__sliceKeys = [];
             me.__sliceSet = c.paper.set();
 
@@ -192,14 +182,6 @@
                 out_labels_total_height = -20,
                 num_labels_outside = 0,
                 out_label_w = 0;
-
-            function lblOutside(o) {
-                // not available for election donuts (yet)
-                if (me.getFullArc() < TWO_PI) return false;
-                // this is a rough guess
-                return o.name.length > 10 ? o.value / total < 0.15
-                    : o.name.length > 5 ? o.value / total < 0.1 : false;
-            }
 
             _.each(slices, function(o) {
                 if (lblOutside(o)) {
@@ -225,8 +207,6 @@
                     a0 = reverse ? sa - da : sa,
                     a1 = reverse ? sa : sa + da,
                     value = showTotal ? Math.round(o.value / total * 100)+'%' : formatValue(o.value, true);
-
-                if (o.value === 0) return;
 
                 me.__sliceKeys.push(o.name);
 
@@ -255,7 +235,7 @@
                     slice = me.__slices[o.name];
                     slice.label.text('<b>'+o.name+'</b>'+value);
                     slice.label[lblOutside(o) ? 'addClass' : 'removeClass']('outside');
-                    slice.animate(cx, c.cy, c.or, c.ir, a0, a1, me.theme().duration, me.theme().easing);
+                    slice.animate(cx, c.cy, c.or, c.ir, a0, a1, me.theme().duration, me.theme().easing, o.value > 0 ? 1 : 0.5);
                 }
 
                 me.__seriesAngles[o.name] = normalize(a0, a1);
@@ -330,6 +310,25 @@
                     valign: 'middle'
                 });
             }
+
+            function normalize(a0, a1) {
+                a0 += HALF_PI;
+                a1 += HALF_PI;
+                if (a0 < 0) {
+                    a0 += TWO_PI;
+                    a1 += TWO_PI;
+                }
+                return [a0, a1];
+            }
+
+            function lblOutside(o) {
+                // not available for election donuts (yet)
+                if (me.getFullArc() < TWO_PI) return false;
+                // this is a rough guess
+                return o.name.length > 10 ? o.value / total < 0.15
+                    : o.name.length > 5 ? o.value / total < 0.1 : false;
+            }
+
         },
 
         getSeriesByPoint: function(x, y) {
@@ -388,14 +387,15 @@
         formatValue: function() {
             var me = this;
             return me.chart().columnFormatter(me.axes(true).slices);
-            return me.formatValue.apply(me, arguments);
         },
 
     });
 
-    var TWO_PI = Math.PI * 2,
-        HALF_PI = Math.PI * 0.5,
-        QUARTER_PI = Math.PI * 0.25;
+    var PI = Math.PI,
+        TWO_PI = PI * 2,
+        HALF_PI = PI * 0.5,
+        QUARTER_PI = PI * 0.25,
+        EPS = 1e-6;
 
     var Slice = function(paper, cx, cy, or, ir, startAngle, endAngle, label) {
 
@@ -404,45 +404,36 @@
             cy: cy,
             or: or,
             ir: ir,
+            opacity: 1,
             startAngle: startAngle,
             endAngle: endAngle
         };
 
         function arcPath() {
-            var cx = me.cx, cy = me.cy, ir = me.ir, or = me.or,
-                startAngle = me.startAngle, endAngle = me.endAngle;
+            var r0 = me.ir, r1 = me.or, a0 = me.startAngle, a1 = me.endAngle, da = (a1 < a0 && (da = a0,
+                a0 = a1, a1 = da), a1 - a0), df = da < PI ? "0" : "1", c0 = Math.cos(a0), s0 = Math.sin(a0),
+                c1 = Math.cos(a1), s1 = Math.sin(a1);
+              return da >= TWO_PI-EPS ? r0 ? "M0," + r1 + "A" + r1 + "," + r1 + " 0 1,1 0," + -r1 + "A" + r1 + "," + r1 + " 0 1,1 0," + r1 + "M0," + r0 + "A" + r0 + "," + r0 + " 0 1,0 0," + -r0 + "A" + r0 + "," + r0 + " 0 1,0 0," + r0 + "Z" : "M0," + r1 + "A" + r1 + "," + r1 + " 0 1,1 0," + -r1 + "A" + r1 + "," + r1 + " 0 1,1 0," + r1 + "Z" : r0 ? "M" + r1 * c0 + "," + r1 * s0 + "A" + r1 + "," + r1 + " 0 " + df + ",1 " + r1 * c1 + "," + r1 * s1 + "L" + r0 * c1 + "," + r0 * s1 + "A" + r0 + "," + r0 + " 0 " + df + ",0 " + r0 * c0 + "," + r0 * s0 + "Z" : "M" + r1 * c0 + "," + r1 * s0 + "A" + r1 + "," + r1 + " 0 " + df + ",1 " + r1 * c1 + "," + r1 * s1 + "L0,0" + "Z";
 
-            var x0 = cx+Math.cos(startAngle)*ir,
-                y0 = cy+Math.sin(startAngle)*ir,
-                x1 = cx+Math.cos(endAngle)*ir,
-                y1 = cy+Math.sin(endAngle)*ir,
-                x2 = cx+Math.cos(endAngle)*or,
-                y2 = cy+Math.sin(endAngle)*or,
-                x3 = cx+Math.cos(startAngle)*or,
-                y3 = cy+Math.sin(startAngle)*or,
-                largeArc = endAngle - startAngle > Math.PI ? 1 : 0;
-
-            if (ir > 0)
-                return "M"+x0+" "+y0+" A"+ir+","+ir+" 0 "+largeArc+",1 "+x1+","+y1+" L"+x2+" "+y2+" A"+or+","+or+" 0 "+largeArc+",0 "+x3+" "+y3+" Z";
-            else
-                return "M"+cx+" "+cy+" L"+x2+" "+y2+" A"+or+","+or+" 0 "+largeArc+",0 "+x3+" "+y3+" Z";
         }
 
         function updateLabelPos() {
-            var r = label.hasClass('outside') ? 0.8 : 0.65;
-            lx = me.cx + Math.cos((me.startAngle + me.endAngle) * 0.5) * me.or * r,
-            ly = me.cy + Math.sin((me.startAngle + me.endAngle) * 0.5) * me.or * r;
-            label.attr({ x: lx, y: ly });
+            var r = label.hasClass('outside') ? 0.8 : 0.65,
+                lx = me.cx + Math.cos((me.startAngle + me.endAngle) * 0.5) * me.or * r,
+                ly = me.cy + Math.sin((me.startAngle + me.endAngle) * 0.5) * me.or * r;
+            label.attr({ x: lx, y: ly, css: { opacity: me.opacity }});
         }
 
         var running;
         function frame() {
-            path.attr({ path: arcPath() }).attr('stroke-linejoin', 'round');
+            path.attr({ path: arcPath() })
+                .attr('stroke-linejoin', 'round')
+                .transform("t"+[me.cx,me.cy]);
             updateLabelPos();
             if (running) requestAnimationFrame(frame);
         }
 
-        var path = paper.path(arcPath());
+        var path = paper.path(arcPath()).transform("t"+[me.cx,me.cy]);
         updateLabelPos();
 
         return {
@@ -451,10 +442,12 @@
             // html label element
             label: label,
             // a function to animate slice to new state
-            animate: function(cx, cy, or, ir, sa, ea, duration, easing) {
+            animate: function(cx, cy, or, ir, sa, ea, duration, easing, o) {
                 running = true;
+                if (o === undefined) o = 1;
+
                 $(me).animate(
-                    { cx: cx, cy: cy, or: or, ir: ir, startAngle: sa, endAngle: ea },
+                    { cx: cx, cy: cy, or: or, ir: ir, startAngle: sa, endAngle: ea, opacity: o },
                     { easing: easing, duration: duration, complete: function() {
                         running = false;
                         frame();
@@ -467,6 +460,7 @@
             endAngle: function() { return me.endAngle; },
             midAngle: function() { return (me.startAngle + me.endAngle) * 0.5; }
         };
+
     };
 
 }).call(this);
