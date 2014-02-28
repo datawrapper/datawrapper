@@ -185,6 +185,8 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
 function get_vis_js($vis, $visJS) {
     // merge vis js into a single file
     $all = '';
+    $org = DatawrapperSession::getUser()->getCurrentOrganization();
+    if (!empty($org)) $org = '/'.$org->getID(); else $org = '';
     foreach ($visJS as $js) {
         if (substr($js, 0, 7) != "http://" && substr($js, 0, 8) != "https://" && substr($js, 0, 2) != '//') {
             $all .= "\n\n\n" . file_get_contents(ROOT_PATH . 'www' . $js);
@@ -193,7 +195,7 @@ function get_vis_js($vis, $visJS) {
     $all = JSMin::minify($all);
     $all = file_get_contents(ROOT_PATH . 'www/static/js/dw-2.0.min.js') . "\n\n" . $all;
     // generate md5 hash of this file to get filename
-    $vis_js_md5 = md5($all);
+    $vis_js_md5 = md5($all.$org);
     $vis_path = 'vis/' . $vis['id'] . '-' . $vis_js_md5 . '.min.js';
     return array($vis_path, $all);
 }
@@ -205,13 +207,15 @@ function get_vis_js($vis, $visJS) {
  */
 function get_theme_js($theme, $themeJS) {
     $all = '';
+    $org = DatawrapperSession::getUser()->getCurrentOrganization();
+    if (!empty($org)) $org = '/'.$org->getID(); else $org = '';
     foreach ($themeJS as $js) {
         if (substr($js, 0, 7) != "http://" && substr($js, 0, 8) != "https://" && substr($js, 0, 2) != '//') {
             $all .= "\n\n\n" . file_get_contents(ROOT_PATH . 'www' . $js);
         }
     }
     $all = JSMin::minify($all);
-    $theme_js_md5 = md5($all);
+    $theme_js_md5 = md5($all.$org);
     $theme_path = 'theme/' . $theme['id'] . '-' . $theme_js_md5 . '.min.js';
     return array($theme_path, $all);
 }
