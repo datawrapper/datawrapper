@@ -57,6 +57,11 @@ footer_links:
         de: Tutorial
       url: http://docs.datawrapper.de/%lang/tutorial
 
+## base url of shared assets hosted on CDN
+## this URL is where Datawrapper charts will access some third-party
+## libraries such as globalize.js.
+cdn_asset_base_url: //assets-datawrapper.s3.amazonaws.com/
+
 ## to use a custom home page in your installation
 ## uncomment the following setting and create a new
 ## Twig template (e.g. my-home.twig) in /templates/custom/
@@ -113,5 +118,3 @@ plugins:
 ## create_test_charts.php creates a test user who owns
 ## the test charts, and will get the following password:
 # testuser_pwd: '1234'
-
-

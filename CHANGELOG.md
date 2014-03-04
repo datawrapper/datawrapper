@@ -1,6 +1,13 @@
 CHANGELOG
 ---------
 
+### 1.7.1
+* replaced hard-coded CDN path with config value
+* bugfix: duplicating charts within organization
+* bugfix: pie charts with zeros in dataset
+* bugfix: include organization id in md5 hash computation to make sure assets are copied to different S3 buckets
+* bugfix: chart publication progress now shown properly
+
 ### 1.7.0
 * storing reference to source chart on forking/duplicating
 * data attributes in header nav
