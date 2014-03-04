@@ -230,13 +230,38 @@ $app->delete('/charts/:id', function($id) use ($app) {
     });
 });
 
+
+
+/**
+ * checks if a chart is reable by the current user (or guest)
+ *
+ * @param chart_id
+ * @param callback the function to be executed if chart is writable
+ */
+function if_chart_is_readable($chart_id, $callback) {
+    $chart = ChartQuery::create()->findPK($chart_id);
+    if ($chart) {
+        $user = DatawrapperSession::getUser();
+        if ($chart->isReadable($user) === true) {
+            call_user_func($callback, $user, $chart);
+        } else {
+            // no such chart
+            error_chart_not_writable();
+        }
+    } else {
+        // no such chart
+        error_chart_not_found($id);
+    }
+}
+
+
 /**
  * API: copy/duplicate/fork a chart
  *
  * @param chart_id chart id
  */
 $app->post('/charts/:id/copy', function($chart_id) use ($app) {
-    if_chart_is_writable($chart_id, function($user, $chart) use ($app) {
+    if_chart_is_readable($chart_id, function($user, $chart) use ($app) {
         try {
             $copy = ChartQuery::create()->copyChart($chart);
             $copy->setUser(DatawrapperSession::getUser());
