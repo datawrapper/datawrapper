@@ -57,7 +57,9 @@ footer_links:
         de: Tutorial
       url: http://docs.datawrapper.de/%lang/tutorial
 
-# base url of shared assets hosted on CDN
+## base url of shared assets hosted on CDN
+## this URL is where Datawrapper charts will access some third-party
+## libraries such as globalize.js.
 cdn_asset_base_url: //assets-datawrapper.s3.amazonaws.com/
 
 ## to use a custom home page in your installation
