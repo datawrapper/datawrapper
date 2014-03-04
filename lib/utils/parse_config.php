@@ -20,5 +20,8 @@ function parse_config() {
     if (!isset($cfg['email']['error']))
         $cfg['email']['error'] = 'error@' . $cfg['domain'];
 
+    if (!isset($cfg['cdn_asset_base_url']))
+        $cfg['cdn_asset_base_url'] = false;
+
     $GLOBALS['dw_config'] = $cfg;
 }

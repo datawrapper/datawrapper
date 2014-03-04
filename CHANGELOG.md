@@ -1,6 +1,11 @@
 CHANGELOG
 ---------
 
+### 1.7.1
+* bugfix: chart duplication for organization
+* replaced hard-coded CDN path with config value
+* 
+
 ### 1.7.0
 * storing reference to source chart on forking/duplicating
 * data attributes in header nav

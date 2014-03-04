@@ -25,14 +25,14 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
 
     $debug = $GLOBALS['dw_config']['debug'] == true || $debug;
 
-    if ($published && !$debug) {
+    if ($published && !$debug && !empty($GLOBALS['dw_config']['cdn_asset_base_url'])) {
         $base_js = array(
-            '//assets-datawrapper.s3.amazonaws.com/globalize.min.js',
+            $GLOBALS['dw_config']['cdn_asset_base_url'] . 'globalize.min.js',
             '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js',
             '//cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.min.js'
         );
         if (substr($locale, 0, 2) != 'en') {
-            $base_js[] = '//assets-datawrapper.s3.amazonaws.com/cultures/globalize.culture.' . str_replace('_', '-', $locale) . '.js';
+            $base_js[] = $GLOBALS['dw_config']['cdn_asset_base_url'] . 'cultures/globalize.culture.' . str_replace('_', '-', $locale) . '.js';
         }
     } else {
         // use local assets
