@@ -182,7 +182,6 @@ class admin_users.AdminUsers extends Widget
 			data     : JSON.stringify({role : user.Role, email: user.Email})
 			success : (data) =>
 				this.disableLoading()
-				console.log(data.data.updated?, data.data.errors[0], data.data.updated[0])
 				if data.data.errors? and not (data.data.updated? and data.data.errors[0] == "email-already-exists" and data.data.updated[0] == "role")
 					@uis.msgError.filter(".error-#{data.data.errors[0]}").removeClass('hidden')
 				else
