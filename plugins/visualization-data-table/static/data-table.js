@@ -93,8 +93,8 @@
                     a = (a === "—" || a === "") ? -1 : a.replace( /[^\d\-\.,]/g, "" ).replace(',', '.');
                     return parseFloat(a);
                 },
-                "formatted-num-asc": function ( a, b ) {return a - b;},
-                "formatted-num-desc": function ( a, b ) {return b - a;},
+                "formatted-num-asc": function ( a, b ) {return (isNaN(a) ? 0 : a) - (isNaN(b) ? 0 : b); },
+                "formatted-num-desc": function ( b, a ) {return (isNaN(a) ? 0 : a) - (isNaN(b) ? 0 : b);},
                 "formatted-date-pre": function ( a ) {
                     return Globalize.parseDate(a);
                 },
