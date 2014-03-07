@@ -1,6 +1,6 @@
 {
     "name": "visualization-data-table",
-    "version": "1.5.0",
+    "version": "1.5.1",
     "author": "Gregor Aisch & Edouard Richard",
     "dependencies": {
         "core": "1.5.0",
