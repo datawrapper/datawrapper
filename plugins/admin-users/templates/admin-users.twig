@@ -43,9 +43,10 @@
                 <div class="input-prepend">
                     <span class="add-on"><i class="icon-tag"></i></span>
                     <select name="status">
+                        <option value="pending">{% trans "Pending" %}</option>
                         <option value="editor">{% trans "Editor" %}</option>
                         <option value="admin">{% trans "Administrator" %}</option>
-                        <option value="graphic-editor">{% trans "Graphic Editor" %}</option>
+                        <!-- <option value="graphic-editor">{% trans "Graphic Editor" %}</option> -->
                         {% if user.isSysAdmin %}<option value="sysadmin">{% trans "System Administrator" %}</option>{% endif %}
                     </select>
                 </div>
