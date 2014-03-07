@@ -139,7 +139,7 @@ $app->put('/users/:id', function($user_id) use ($app) {
     if ($curUser->isLoggedIn()) {
         if ($user_id == 'current' || $curUser->getId() === $user_id) {
             $user = $curUser;
-        } else if ($curUser->isSysAdmin()) {
+        } else if ($curUser->isAdmin()) {
             $user = UserQuery::create()->findPK($user_id);
         }
 
