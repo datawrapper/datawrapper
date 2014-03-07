@@ -60,7 +60,8 @@ class DatawrapperPlugin_VisualizationDataTable extends DatawrapperPlugin_Visuali
         $options = array(
             "table-sortable" => array(
                 "type" => "checkbox",
-                "label" => __("Make columns sortable", $id)
+                "label" => __("Make columns sortable", $id),
+                "default" => true
             ),
             "table-paginate" => array(
                 "type" => "checkbox",

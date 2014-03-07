@@ -45,6 +45,13 @@
                     if (cell_content == "n/a") {
                         cell_content = "&mdash;";
                     }
+                    if (column.type() == 'number') {
+                        cell_content += '<span class="raw-sortable">'+column.val(r)+'</span>';
+                    } else if (column.type() == 'date') {
+                        cell_content += '<span class="raw-sortable">';
+                        if (_.isDate(column.val(r))) cell_content += column.val(r).getTime();
+                        cell_content += '</span>';
+                    }
                     td = $('<td>'+cell_content+'</td>');
                     if (isHighlighted(column)) {
                         td.addClass('highlight');
@@ -90,16 +97,15 @@
             // Functions to sort formated number
             jQuery.extend( jQuery.fn.dataTableExt.oSort, {
                 "formatted-num-pre": function ( a ) {
-                    a = (a === "—" || a === "") ? -1 : a.replace( /[^\d\-\.,]/g, "" ).replace(',', '.');
-                    return parseFloat(a);
+                    return parseFloat($('span.raw-sortable', '<td>'+a+'</td>').html());
                 },
                 "formatted-num-asc": function ( a, b ) {return (isNaN(a) ? 0 : a) - (isNaN(b) ? 0 : b); },
                 "formatted-num-desc": function ( b, a ) {return (isNaN(a) ? 0 : a) - (isNaN(b) ? 0 : b);},
                 "formatted-date-pre": function ( a ) {
-                    return Globalize.parseDate(a);
+                    return parseInt($('span.raw-sortable', '<td>'+a+'</td>').html(), 10);
                 },
-                "formatted-date-asc": function ( a, b ) {return a & b ? a.getTime() - b.getTime() : 0;},
-                "formatted-date-desc": function ( a, b ) {return a & b ? b.getTime() - a.getTime() : 0;}
+                "formatted-date-asc": function ( a, b ) {return (isNaN(a) ? 0 : a) - (isNaN(b) ? 0 : b); },
+                "formatted-date-desc": function ( b, a ) {return (isNaN(a) ? 0 : a) - (isNaN(b) ? 0 : b);},
             });
 
             // set a list of column types for datatable.js (in order to support ordering)

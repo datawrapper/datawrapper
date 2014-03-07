@@ -53,6 +53,10 @@ html body.chart.fullscreen {
     background: #E6EaF9;
 }
 
+.datatable-default td span.raw-sortable {
+    display: none;
+}
+
 .datatable-default tr.even td.highlight {
     background: #E0E3F3;
 }
