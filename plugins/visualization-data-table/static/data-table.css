@@ -33,8 +33,7 @@ html body.chart.fullscreen {
 
 .datatable-default td, .datatable-default th {
     text-align: left;
-    padding-left: 10px;
-    padding-right: 10px;
+    padding: 6px 11px!important;
     border: 0;
 }
 
@@ -51,11 +50,11 @@ html body.chart.fullscreen {
 }
 
 .datatable-default tr td.highlight {
-    background: #E3E7F6;
+    background: #E6EaF9;
 }
 
-.datatable-default tr.odd td.highlight {
-    /* background: #E3E7F6; */
+.datatable-default tr.even td.highlight {
+    background: #E0E3F3;
 }
 
 .datatable-default tr.odd td {
@@ -65,7 +64,7 @@ html body.chart.fullscreen {
 .datatable-default thead th {
     padding: 6px 20px 6px;
     border-left: 1px solid #fff;
-    font-weight: normal;
+    font-weight: bold;
 }
 
 .datatable-default tbody th {
@@ -75,8 +74,11 @@ html body.chart.fullscreen {
 
 .datatable-default tbody td {
     text-align: left;
-    padding: 3px 20px;
     border-left: 1px solid gray;
+}
+
+.datatable-default tbody td:last-child {
+    border-right: 1px solid gray;
 }
 
 .datatable-default tbody tr:last-child
@@ -87,6 +89,10 @@ html body.chart.fullscreen {
 .datatable-default tbody tr:hover {
     background: #eee;
 }
+.datatable-default tbody tr.even:hover {
+    background: #e9e9e9;
+}
+
 
 .datatable-default tbody tr:hover td.highlight {
     background: #CFD9EF;
@@ -156,6 +162,10 @@ html body.chart.fullscreen {
     opacity: 0;
 }
 
+.datatable-default tbody tr.even {
+    background: #f3f3f3;
+}
+
 .datatable-default tbody tr:first-child .unit {
     opacity: 1;
 }
@@ -169,8 +179,6 @@ html body.chart.fullscreen {
 .datatable-default td.number-decimal,
 .datatable-default td.number-small {
     text-align: right;
-    padding-left: 10px;
-    padding-right: 10px;
 }
 
 /*
