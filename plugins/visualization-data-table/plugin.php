@@ -8,7 +8,10 @@ class DatawrapperPlugin_VisualizationDataTable extends DatawrapperPlugin_Visuali
             "id"         => "data-table",
             "dimensions" => 2,
             "order"      => 70,
-            "libraries"  => array("vendor/jquery.dataTables.min.js"),
+            "libraries"  => array(array(
+                "local" => "vendor/jquery.dataTables.min.js",
+                "cdn" => "//ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js"
+            )),
             "options"    => $this->getOptions(),
             "locale"     => array(
                 // datatable.jquery
