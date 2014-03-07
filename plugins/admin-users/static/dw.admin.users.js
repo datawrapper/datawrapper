@@ -233,10 +233,9 @@ admin_users.AdminUsers = (function(_super) {
       }),
       success: function(data) {
         _this.disableLoading();
-        if ((data.data.errors != null) && !((data.data.updated != null) && data.data.errors[0] === "email-already-exists" && data.data.updated[0] === "role")) {
+        if (data.status == "ok") window.location.reload();
+        else if ((data.data.errors != null) && !((data.data.updated != null) && data.data.errors[0] === "email-already-exists" && data.data.updated[0] === "role")) {
           return _this.uis.msgError.filter(".error-" + data.data.errors[0]).removeClass('hidden');
-        } else {
-          return window.location.reload();
         }
       },
       error: function() {
