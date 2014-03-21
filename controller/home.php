@@ -23,8 +23,3 @@ $app->get('/', function () use ($app) {
     }
 });
 
-$app->get('/legacy/actions/export.php', function() use ($app) {
-    disable_cache($app);
-    $c = $app->request()->get('c');
-    $app->redirect('/legacy/data/'.$c.'.csv');
-});
