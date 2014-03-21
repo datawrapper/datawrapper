@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Datawrapper</title>
+    <title>Datawrapper{% if title and title != 'Datawrapper' %} :: {{ title }}{% endif %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Datawrapper is an open source tool helping everyone to create simple, correct and embeddable charts in minutes.">
     <meta name="author" content="Mirko Lorenz, Nicolas Kayser-Bril, Gregor Aisch">

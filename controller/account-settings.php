@@ -4,7 +4,7 @@
 $app->get('/account/settings', function () use ($app) {
     disable_cache($app);
 
-    $page = array('title' => 'Datawrapper');
+    $page = array('title' => __('Settings'));
     add_header_vars($page, 'user');
 
     $user = DatawrapperSession::getUser();

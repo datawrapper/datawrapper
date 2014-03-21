@@ -8,6 +8,7 @@ $app->get('/chart/:id/describe', function ($id) use ($app) {
 
     check_chart_writable($id, function($user, $chart) use ($app) {
         $page = array(
+            'title' => $chart->getID() . ' :: '.__('Check & Describe'),
             'chartData' => $chart->loadData(),
             'chart' => $chart
         );

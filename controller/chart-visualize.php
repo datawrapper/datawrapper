@@ -11,6 +11,7 @@ $app->get('/chart/:id/visualize', function ($id) use ($app) {
 
     check_chart_writable($id, function($user, $chart) use ($app) {
         $page = array(
+            'title' => $chart->getID() . ' :: '.__('Visualize'),
             'chartData' => $chart->loadData(),
             'chart' => $chart,
             'visualizations_deps' => DatawrapperVisualization::all('dependencies'),

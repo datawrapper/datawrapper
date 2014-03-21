@@ -33,7 +33,7 @@ class DatawrapperPlugin_AdminUsers extends DatawrapperPlugin {
      */
     public function users($app, $page) {
         $page = array_merge($page, array(
-            'title' => 'Users',
+            'title' => __('Users'),
             'q' => $app->request()->params('q', '')
         ));
         $sort = $app->request()->params('sort', '');

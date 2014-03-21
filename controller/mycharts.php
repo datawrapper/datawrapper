@@ -68,6 +68,7 @@ function user_charts($app, $user, $key, $val) {
     $total = ChartQuery::create()->countPublicChartsByUser($user, $filter);
 
     $page = array(
+        'title' => __('My Charts'),
         'charts' => $charts,
         'bymonth' => nbChartsByMonth($user),
         'byvis' => nbChartsByType($user),

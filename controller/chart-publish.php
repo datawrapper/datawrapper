@@ -17,6 +17,7 @@ $app->get('/chart/:id/publish', function ($id) use ($app) {
         $cfg = $GLOBALS['dw_config'];
 
         $page = array(
+            'title' => $chart->getID() . ' :: '.__('Publish'),
             'chartData' => $chart->loadData(),
             'chart' => $chart,
             'visualizations' => DatawrapperVisualization::all(),

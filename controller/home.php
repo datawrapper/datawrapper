@@ -13,7 +13,7 @@ $app->get('/', function () use ($app) {
         $charts = ChartQuery::create()->findPKs($chart_ids);
 
         $page = array(
-            'title' => 'Datawrapper',
+            'title' => '',
             'pageClass' => 'home',
             'recent_charts' => $charts
         );
