@@ -1,6 +1,11 @@
 CHANGELOG
 ---------
 
+### 1.7.2
+* fixed access rights for graphic editors
+* showing more useful page titles
+* removed legacy code
+
 ### 1.7.1
 * replaced hard-coded CDN path with config value
 * bugfix: duplicating charts within organization
