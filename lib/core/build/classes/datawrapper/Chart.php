@@ -160,13 +160,20 @@ class Chart extends BaseChart {
     }
 
     /**
-     * checks if a chart is writeable by a certain user
+     * checks if a chart is writeable by a user
      *
      * @param user
      */
     public function isWritable($user) {
         if ($user->isLoggedIn()) {
-            if ($this->getAuthorId() == $user->getId() || $user->isAdmin() || $user->isGraphicEditor()) {
+            $org = $this->getOrganization();
+            // chart is writable if...
+                // this user is the chart author
+            if ($this->getAuthorId() == $user->getId()
+                // the user is a graphics editor and in the same organization
+                || (!empty($org) && $org->hasUser($user) && $user->isGraphicsEditor())
+                // or the user is an admin
+                || $user->isAdmin()) {
                 return true;
             } else {
                 return false;
