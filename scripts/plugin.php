@@ -170,6 +170,12 @@ function install($pattern) {
             _loadPluginClass($plugin)->install();
             print "Installed plugin $id.\n";
         }
+        global $argv;
+        if ($argv[count($argv)-1] == '--private') {
+            $plugin->setIsPrivate(true);
+            $plugin->save();
+            print "Set plugin $id to private.\n";
+        }
     });
 }
 
