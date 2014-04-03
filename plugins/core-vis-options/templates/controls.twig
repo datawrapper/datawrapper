@@ -1,9 +1,7 @@
 
 {% if option.type == 'checkbox' %}
 
-    <div class="cotrols">
-        <label class="checkbox" style="text-align:left;width:100%;position:relative;left:0" for="{{ key }}"><input type="checkbox" id="{{ key }}" /> {{ option.label|raw }}</label>
-    </div>
+    <label class="checkbox" style="text-align:left;width:100%;position:relative;left:0" for="{{ key }}"><input type="checkbox" id="{{ key }}" /> {{ option.label|raw }}</label>
 
 {% elseif option.type == 'radio' %}
 
