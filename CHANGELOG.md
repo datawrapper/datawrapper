@@ -2,6 +2,7 @@ CHANGELOG
 ---------
 
 ### 1.7.3
+* enabled setting initial sorting of data tables
 * fixed chart display on mobile devices
 
 ### 1.7.2
