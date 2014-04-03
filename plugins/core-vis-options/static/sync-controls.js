@@ -63,6 +63,40 @@ $(function() {
         });
     }
 
+    function syncColumnSelect(args) {
+
+         var select = $('select#'+args.key).html(''),
+            chart = args.chart,
+            opts = args.option,
+            dataset = chart.dataset(),
+            accepts = opts.accepts || ['number', 'text', 'date'],
+            curVal = args.chart.get('metadata.visualize.'+args.key),
+            defCol = curVal ? curVal : (opts.optional ? '{{(none)}}' : dataset.column(0).name());
+
+        if (opts.optional) {
+            // add 'no selection' option
+            $('<option value="{{(none)}}">—</option>')
+                .prop('selected', defCol == '{{(none)}}')
+                .appendTo(select);
+        }
+        // populate select with columns that match accepted types
+        dataset.eachColumn(function(column) {
+            if (_.indexOf(accepts, column.type()) > -1) {
+                $('<option />')
+                    .attr('value', column.name())
+                    .html(column.title())
+                    .prop('selected', column.name() == defCol)
+                    .appendTo(select);
+            }
+        });
+        // listen to user changes to this control
+        select.change(function() {
+            var v = select.val();
+            chart.set('metadata.visualize.'+args.key, v == '{{(none)}}' ? null : v);
+        });
+    }
+
+
     dw.backend.on('sync-option:select', syncValue);
     dw.backend.on('sync-option:text', syncValue);
     dw.backend.on('sync-option:checkbox', syncCheckbox);
@@ -71,6 +105,7 @@ $(function() {
 
     // column select
     dw.backend.on('sync-option:select-axis-column', syncSelectAxisColumn);
+    dw.backend.on('sync-option:column-select', syncColumnSelect);
 
 });
 

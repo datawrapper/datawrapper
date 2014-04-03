@@ -62,4 +62,12 @@
     </div>
     {% endfor %}
 
+{% elseif option.type == 'column-select' %}
+
+    {{ option.label | raw }}:&nbsp;&nbsp;
+     <select id="{{ key }}">
+            {# will be populated by javascript #}
+    </select>
+
+
 {% endif %}
