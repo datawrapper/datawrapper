@@ -122,13 +122,17 @@
             });
 
             table.dataTable({
-                "bPaginate" : me.get('table-paginate', false),
-                "bInfo"     : me.get('table-paginate', false),
-                "bFilter"   : me.get('table-filter', false),
-                "bSort"     : me.get('table-sortable', false),
+                "bPaginate" : me.get('paginate', false),
+                "bInfo"     : me.get('paginate', false),
+                "bFilter"   : me.get('filter', false),
+                "bSort"     : me.get('sortable', false),
                 "oLanguage" : datatable_i18n,
                 "aoColumns": colum_types
             });
+
+            if (me.get('sort-by', false)) {
+                table.fnSort([[dataset.indexOf(me.get('sort-by')), me.get('sort-asc') ? 'asc' : 'desc']]);
+            }
 
             el.append('<br style="clear:both"/>');
             me.renderingComplete();

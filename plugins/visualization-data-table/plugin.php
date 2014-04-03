@@ -58,16 +58,29 @@ class DatawrapperPlugin_VisualizationDataTable extends DatawrapperPlugin_Visuali
     public function getOptions(){
         $id = $this->getName();
         $options = array(
-            "table-sortable" => array(
+            "sort-by" => array(
+                "type" => "column-select",
+                "label" => __("Sort table by"),
+                "optional" => true
+            ),
+            "sort-asc" => array(
                 "type" => "checkbox",
-                "label" => __("Make columns sortable", $id),
+                "label" => __("Sort ascending"),
+                "default" => true,
+                "depends-on" => array(
+                    "isnull(sort-by)" => false
+                )
+            ),
+            "sortable" => array(
+                "type" => "checkbox",
+                "label" => __("Allow re-sorting", $id),
                 "default" => true
             ),
-            "table-paginate" => array(
+            "paginate" => array(
                 "type" => "checkbox",
                 "label" => __("Display content over multiple pages", $id)
             ),
-            "table-filter" => array(
+            "filter" => array(
                 "type" => "checkbox",
                 "label" =>  __("Show filter", $id)
             )
