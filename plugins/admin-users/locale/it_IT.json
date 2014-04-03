@@ -19,12 +19,13 @@
   "Status":"Stato",
   "Created at":"Creato: ",
   "Charts":"Grafici",
-  "Organization":"Organization",
+  "Organization":"organizzazione",
   "Actions":"Azioni",
   "edit":"modifica",
   "resend an invitation":"reinoltra un invito",
   "reset the password and send a mail":"reimpostare la password e inviare una mail",
   "delete":"cancella",
+  "Pending":"Pending",
   "save":"salva",
   "cancel":"Annulla"
 }
