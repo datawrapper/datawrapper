@@ -1,6 +1,9 @@
 CHANGELOG
 ---------
 
+### 1.7.3
+* fixed chart display on mobile devices
+
 ### 1.7.2
 * fixed access rights for graphic editors
 * showing more useful page titles
