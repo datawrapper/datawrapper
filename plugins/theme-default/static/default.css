@@ -344,3 +344,12 @@ svg .axis, svg .tick, svg .grid, svg rect {
     border-radius: 5px;
 }
 
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen
+and (min-device-width : 320px)
+and (max-device-width : 480px) {
+    /* no fullscreen button on smartphones, never */
+    .fs-btn {
+        display: none!important;
+    }
+}
