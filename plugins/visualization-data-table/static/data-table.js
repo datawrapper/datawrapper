@@ -5,6 +5,8 @@
         return myString.replace(/^\s+/g,'').replace(/\s+$/g,'');
     };
 
+    var last_sort;
+
     dw.visualization.register('data-table', {
 
         render: function(el) {
@@ -130,9 +132,17 @@
                 "aoColumns": colum_types
             });
 
-            if (me.get('sort-by', false)) {
-                table.fnSort([[dataset.indexOf(me.get('sort-by')), me.get('sort-asc') ? 'asc' : 'desc']]);
+            if (!last_sort && me.get('sort-by', false)) {
+                last_sort = [dataset.indexOf(me.get('sort-by')), me.get('sort-asc') ? 'asc' : 'desc'];
             }
+
+            if (last_sort) { table.fnSort([last_sort]); }
+
+            $('thead th').click(function() {
+                var th = $('th[aria-sort]', table),
+                    dir = th.attr('aria-sort');
+                last_sort = [th.index(), dir.substr(0, dir.charAt(0) == 'a' ? 3 : 4)];
+            });
 
             el.append('<br style="clear:both"/>');
             me.renderingComplete();
