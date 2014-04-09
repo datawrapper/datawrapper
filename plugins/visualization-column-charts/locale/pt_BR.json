@@ -1,0 +1,19 @@
+{
+  "Column Chart": "Column Chart",
+  "Base color": "Base color",
+  "Automatically sort bars": "Automatically sort bars",
+  "Reverse order": "Reverse order",
+  "Use different color for negative values": "Use different color for negative values",
+  "Ignore missing values": "Ignore missing values",
+  "Use the same scale for all columns": "Use the same scale for all columns",
+  "Grid lines": "Grid lines",
+  "Automatic": "Automatic",
+  "Show": "Show",
+  "Hide": "Hide",
+  "Grouped Column Chart": "Grouped Column Chart",
+  "Stacked Column Chart": "Stacked Column Chart",
+  "Stack percentages": "Stack percentages",
+  "Let user switch mode": "Let user switch mode",
+  "stack percentages": "stack percentages",
+  "Negative values, as contained in your dataset, cannot be stacked on top of \neach other in a stacked column chart. Please consider using a different \nchart type instead (eg. a grouped column chart).": "Negative values, as contained in your dataset, cannot be stacked on top of \neach other in a stacked column chart. Please consider using a different \nchart type instead (eg. a grouped column chart)."
+}
