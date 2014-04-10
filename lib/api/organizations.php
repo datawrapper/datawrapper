@@ -16,7 +16,7 @@ $app->post('/organizations', function() use ($app) {
                 return;
             }
             $org = new Organization();
-            $org->setId($params['id']);
+            $org->setId(strtolower($params['id']));
             $org->setName($params['name']);
             $org->setCreatedAt(time());
             $org->save();
