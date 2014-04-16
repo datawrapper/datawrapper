@@ -72,6 +72,7 @@ require_once '../../lib/api/auth.php';
 require_once '../../lib/api/charts.php';
 require_once '../../lib/api/jobs.php';
 require_once '../../lib/api/visualizations.php';
+require_once '../../lib/api/themes.php';
 require_once '../../lib/api/plugins.php';
 require_once '../../lib/api/organizations.php';
 
