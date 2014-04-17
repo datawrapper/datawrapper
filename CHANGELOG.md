@@ -3,6 +3,7 @@ CHANGELOG
 
 ### 1.7.4
 * added json api for themes
+* forcing lowercase organization ids
 
 ### 1.7.3
 * enabled setting initial sorting of data tables
