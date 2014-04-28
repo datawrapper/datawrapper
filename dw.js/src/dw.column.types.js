@@ -1,4 +1,3 @@
-
 dw.column.types = {};
 
 
@@ -30,15 +29,15 @@ dw.column.types.number = function(sample) {
     var format,
         errors = 0,
         knownFormats = {
-            '-.': /^ *-?[0-9]*(\.[0-9]+)?(e[\+\-][0-9]+) *$/,
-            '-,': /^ *-?[0-9]*(,[0-9]+)? *$/,
-            ',.': /^ *-?[0-9]{1,3}(,[0-9]{3})*(\.[0-9]+)? *$/,
-            '.,': /^ *-?[0-9]{1,3}(\.[0-9]{3})*(,[0-9]+)? *$/,
-            ' .': /^ *-?[0-9]{1,3}( [0-9]{3})*(\.[0-9]+)? *$/,
-            ' ,': /^ *-?[0-9]{1,3}( [0-9]{3})*(,[0-9]+)? *$/,
+            '-.': /^ *[-–—]?[0-9]*(\.[0-9]+)?(e[\+\-][0-9]+)?%? *$/,
+            '-,': /^ *[-–—]?[0-9]*(,[0-9]+)?%? *$/,
+            ',.': /^ *[-–—]?[0-9]{1,3}(,[0-9]{3})*(\.[0-9]+)?%? *$/,
+            '.,': /^ *[-–—]?[0-9]{1,3}(\.[0-9]{3})*(,[0-9]+)?%? *$/,
+            ' .': /^ *[-–—]?[0-9]{1,3}( [0-9]{3})*(\.[0-9]+)?%? *$/,
+            ' ,': /^ *[-–—]?[0-9]{1,3}( [0-9]{3})*(,[0-9]+)?%? *$/,
             // excel sometimes produces a strange white-space:
-            ' .': /^ *-?[0-9]{1,3}( [0-9]{3})*(\.[0-9]+)? *$/,
-            ' ,': /^ *-?[0-9]{1,3}( [0-9]{3})*(,[0-9]+)? *$/
+            ' .': /^ *[-–—]?[0-9]{1,3}( [0-9]{3})*(\.[0-9]+)?%? *$/,
+            ' ,': /^ *[-–—]?[0-9]{1,3}( [0-9]{3})*(,[0-9]+)?%? *$/
         },
         formatLabels = {
             '-.': '1234.56',
@@ -82,7 +81,8 @@ dw.column.types.number = function(sample) {
     var type = {
         parse: function(raw) {
             if (_.isNumber(raw) || _.isUndefined(raw) || _.isNull(raw)) return raw;
-            var number = raw;
+            // replace percent sign, n-dash & m-dash
+            var number = raw.replace("%", "").replace('–', '-').replace('—', '-');
             // normalize number
             if (format[0] != '-') {
                 // remove kilo seperator
@@ -92,7 +92,6 @@ dw.column.types.number = function(sample) {
                 // replace decimal char w/ point
                 number = number.replace(format[1], '.');
             }
-
             if (isNaN(number) || number === "") {
                 if (!naStrings[number.toLowerCase()] && number !== "") errors++;
                 return raw;
