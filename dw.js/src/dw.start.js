@@ -12,7 +12,9 @@
     var root = this,
         dw = {};
 
-    if (typeof exports !== 'undefined') {
+    if (typeof 'define' !== 'undefined' && define.amd) {
+        define(dw);
+    } else if (typeof exports !== 'undefined') {
         if (typeof module !== 'undefined' && module.exports) {
             exports = module.exports = dw;
         }
