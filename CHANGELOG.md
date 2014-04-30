@@ -5,6 +5,9 @@ CHANGELOG
 * user settings: don't complain about existing email if it hasn't been changed
 * linking to user setting from user admin
 * let admins reset a users password
+* replacing n-dashes with normal dashes (increasing tolerance for bad copy & paste input)
+* ignoring percentage signs in data input
+* made dw.js AMD ready
 
 ### 1.7.4
 * added json api for themes
