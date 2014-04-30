@@ -1,6 +1,11 @@
 CHANGELOG
 ---------
 
+### 1.7.5
+* user settings: don't complain about existing email if it hasn't been changed
+* linking to user setting from user admin
+* let admins reset a users password
+
 ### 1.7.4
 * added json api for themes
 * forcing lowercase organization ids
