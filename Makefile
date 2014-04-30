@@ -1,5 +1,5 @@
 
-all: messages dw.js/dw-2.0.js
+all: dw.js/dw-2.0.js
 
 messages:
 	scripts/update-messages.sh
