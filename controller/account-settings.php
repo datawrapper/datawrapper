@@ -1,17 +1,29 @@
 <?php
 
 //GET route
-$app->get('/account/settings', function () use ($app) {
+$app->get('/account/settings/', function () use ($app) {
     disable_cache($app);
 
-    $page = array('title' => __('Settings'));
+    $page = array('title' => __('Settings'), 'api_user' => 'current');
     add_header_vars($page, 'user');
 
     $user = DatawrapperSession::getUser();
 
-    if ($user->getRole() == 'guest') {
+     if ($user->getRole() == 'guest') {
         error_settings_need_login();
         return;
+    }
+
+    if ($user->isAdmin()) {
+        // admins can edit settings for other users
+        $req = $app->request();
+        if ($req->get('uid') != null) {
+            $u = UserQuery::create()->findPk($req->get('uid'));
+            if ($u) {
+                $user = $page['user'] = $u;
+                $page['api_user'] = $user->getId();
+            }
+        }
     }
 
     if ($app->request()->get('token')) {

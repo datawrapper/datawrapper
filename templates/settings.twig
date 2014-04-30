@@ -208,6 +208,7 @@
 
 $(function() {
 
+    var uid = '{{ api_user }}';
 
     $('#resend-activation-link').click(function(e) {
         e.preventDefault();
@@ -225,7 +226,7 @@ $(function() {
         };
         submit.addClass('loading');
         $.ajax({
-            url: '/api/users/current',
+            url: '/api/users/' + uid,
             type: 'PUT',
             dataType: 'json',
             data: JSON.stringify(payload),
@@ -276,7 +277,7 @@ $(function() {
                     $('#cur-pwd').val('');
 
                     $.ajax({
-                        url: '/api/users/current',
+                        url: '/api/users/'+uid,
                         type: 'PUT',
                         data: JSON.stringify(payload),
                         dataType: 'json',
@@ -321,7 +322,7 @@ $(function() {
             if (r.status == 'ok') {
                 var cpwd = CryptoJS.HmacSHA256($('#confirm-pwd').val(), r.data.salt).toString();
                 $.ajax({
-                    url: '/api/users/current?pwd='+cpwd,
+                    url: '/api/users/'+uid+'?pwd='+cpwd,
                     type: 'DELETE',
                     data: JSON.stringify({
                         pwd: cpwd
