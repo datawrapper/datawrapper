@@ -16,10 +16,9 @@
   "Previous":"Zurück",
   ": activate to sort column ascending":": aktivieren, um die Spalte aufsteigend zu sortieren",
   ": activate to sort column descending":": aktivieren, um die Spalte absteigend zu sortieren",
-  "Make columns sortable":"Spalten sortierbar machen",
   "Sort table by":"Tabelle sortieren nach ",
   "Sort ascending":"Aufsteigend sortieren",
-  "Allow re-sorting":"Nutzer können Tabelle umsortieren",
+  "Make column sortable":"Make column sortable",
   "Display content over multiple pages":"Zeilen über mehrere Seiten verteilen",
   "Show filter":"Filter anzeigen"
 }

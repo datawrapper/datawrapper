@@ -16,10 +16,9 @@
   "Previous":"Precedente",
   ": activate to sort column ascending":": attivare per disporre in ordine crescente",
   ": activate to sort column descending":": attivare per disporre in ordine decrescente",
-  "Make columns sortable":"Rendere le colonne ordinabili",
-  "Sort table by":"Sort table by",
-  "Sort ascending":"Sort ascending",
-  "Allow re-sorting":"Allow re-sorting",
+  "Sort table by":"Ordina la tabella in base a",
+  "Sort ascending":"Ordinamento crescente",
+  "Make column sortable":"Make column sortable",
   "Display content over multiple pages":"Visualizzare il contenuto su più pagine",
   "Show filter":"Visualizza il filtro"
 }

@@ -16,10 +16,9 @@
   "Previous":"Previous",
   ": activate to sort column ascending":": activate to sort column ascending",
   ": activate to sort column descending":": activate to sort column descending",
-  "Make columns sortable":"Make columns sortable",
   "Sort table by":"Sort table by",
   "Sort ascending":"Sort ascending",
-  "Allow re-sorting":"Allow re-sorting",
+  "Make column sortable":"Make column sortable",
   "Display content over multiple pages":"Display content over multiple pages",
   "Show filter":"Show filter"
 }
