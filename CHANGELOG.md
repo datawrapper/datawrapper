@@ -7,7 +7,6 @@ CHANGELOG
 * let admins reset a users password
 * replacing n-dashes with normal dashes (increasing tolerance for bad copy & paste input)
 * ignoring percentage signs in data input
-* made dw.js AMD ready
 
 ### 1.7.4
 * added json api for themes
