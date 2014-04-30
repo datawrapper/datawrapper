@@ -69,7 +69,7 @@
         <tbody class="users">
             {% for user in users %}
                 <tr class="user {{ user.role }} {% if user.activateToken %}pending{% endif %}" data-id="{{ user.id }}">
-                    <td class="id out">{{ user.id }}</td>
+                    <td class="id out"><a href="/account/settings/?uid={{ user.id }}">{{ user.id }}</a></td>
                     <td class="email out">{{ user.email }}</td>
                     <td>
                         {% if user.isAdmin %}
