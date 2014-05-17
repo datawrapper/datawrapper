@@ -1,6 +1,12 @@
 CHANGELOG
 ---------
 
+### 1.7.6
+* disabled fullscreen mode in default theme
+* fixed gallery preview
+* allowed disabling of login logging
+* renamed ``cdn_asset_base_url`` config to ``asset_domain``
+
 ### 1.7.5
 * user settings: don't complain about existing email if it hasn't been changed
 * let admins reset a users password
