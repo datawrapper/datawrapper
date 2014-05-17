@@ -5,9 +5,9 @@
     <title>{{ chart.title | replace({'<br/>': ' - '}) | striptags }}</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=0.95, maximum-scale=0.95, user-scalable=0" />
-    <!--[if lt IE 7]>
+    {# <!--[if lt IE 7]>
     <meta http-equiv="refresh" content="0;URL='static.html'">
-    <![endif]-->
+    <![endif]--> #}
     <!--[if lt IE 9]>
     <script src="{{ DW_DOMAIN }}/static/vendor/json-js/json2.min.js"></script>
     <script type="text/javascript">
@@ -41,12 +41,12 @@
 
     {% include theme.template ? theme.template : 'plugins/theme-default/default.twig' %}
 
-    <div class="noscript" style="position: absolute;top: 0;left: 0;z-index: -10;">
+    {# <div class="noscript" style="position: absolute;top: 0;left: 0;z-index: -10;">
         <a href="static.html"><img src="nojs.png" alt="{% trans "Please activate JavaScript to see the interactive chart." %}" /></a>
     </div>
     <div class="noscript" style="height:95%;position:absolute;top:0;width:98%;z-index:10;overflow:hidden">
         <div style="position:relative;top:50%;text-align:center;font-size:18px;padding:0 20px"><a style="color: rgba(0,0,0,.2); text-shadow: 0 0 7px #fff, 0 0 7px #fff, 0 0 7px #fff, 0 0 7px #fff, 0 0 7px #fff, 0 0 7px #fff, 0 0 7px #fff, 0 0 7px #fff, 0 0 7px #fff, 0 0 7px #fff, 0 0 7px #fff; text-decoration: none;" href="static.html" >{% trans "Please activate JavaScript to see the interactive chart." %}</a></div>
-    </div>
+    </div>#}
     <script type="text/javascript">
 
     if (document.getElementsByTagName('script').length > 0) $('body').addClass('js');
