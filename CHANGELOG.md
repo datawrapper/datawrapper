@@ -1,6 +1,11 @@
 CHANGELOG
 ---------
 
+### 1.7.7
+* switched top nav from fixed to static
+* added vis option textarea
+* flattened navbar appearance
+
 ### 1.7.6
 * disabled fullscreen mode in default theme
 * fixed gallery preview
