@@ -14,3 +14,12 @@ It was created by [Mirko Lorenz](http://www.mirkolorenz.com/), [Nicolas Kayser-B
 * IRC: #datawrapper on [freenode.net](https://webchat.freenode.net/)
 * Twitter: [@datawrapper](http://twitter.com/datawrapper)
 * Blog: [blog.datawrapper.de](http://blog.datawrapper.de)
+
+## Translators
+
+* French - [Anne-Lise Bouyer](https://crowdin.net/profile/annelise)
+* Spanish - [Miguel Paz](https://github.com/miguelpaz)
+* Italian - [Alessio Cimarelli](https://crowdin.net/profile/jenkin), [nelsonmau](https://crowdin.net/profile/nelsonmau)
+* Chinese - [CUI Anyong](https://github.com/xiaoyongzi)
+* Portuguese - [Rubens Fernando](https://crowdin.net/profile/rubensfernando)
+
