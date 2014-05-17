@@ -33,7 +33,6 @@ body .chart-editor .visconfig label.checkbox input[type="checkbox"] { margin-lef
 body {
     background: #fff;
     color: #444;
-    margin-top: 60px;
     position: relative;
 }
 
@@ -53,6 +52,10 @@ html h2 {
 html h3 {
     font-size: 18px;
     line-height: 27px;
+}
+
+html .navbar-static-top {
+    margin-bottom: 20px;
 }
 
 #recent-charts {
@@ -115,12 +118,14 @@ html h3 {
     opacity: 1;
 }
 
-.navbar .brand {
+html .navbar .brand {
     padding-top: 14px;
     padding-bottom: 4px;
     color: #556;
     text-shadow: 1px 1px 0 rgba(255, 255, 255, .55);
     white-space: nowrap;
+    padding-left: 0px;
+    margin-left: 0px;
 }
 
 .navbar-inverse .brand {

@@ -10,11 +10,6 @@
 
     <!-- Le styles -->
     <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-      body {
-        padding-top: 30px; /* 60px to make the container go all the way to the bottom of the topbar */
-      }
-    </style>
     <link href="/static/vendor/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
     <link href="/static/css/datawrapper.css" rel="stylesheet">
 
@@ -63,27 +58,21 @@
   <body class="dw {{ pageClass }} {{ language }}" data-locale="{{ locale }}">
 
 
+    {% if not noHeader %}
+
+    <header class="header">
+      {% use "login.twig" %}
+      {{ block('login') }}
+
+      {% use "header.twig" %}
+      {{ block('header') }}
+    </header>
+
+    {% endif %}
+
     <div class="container">
 
-      {% if not noHeader %}
 
-      <header class="header">
-        <div class="row topnav">
-            <!--<div class="span3">
-              <div class="dw-logo-type dw-logo"><i class="wrap">[&nbsp;</i><a href="/">Datawrapper</a><i class="wrap">&nbsp;]</i></div>
-              <div class="dw-logo-sub">{% trans "Open Source Data Visualization" %}</div>
-            </div>-->
-
-            {% use "login.twig" %}
-            {{ block('login') }}
-
-            {% use "header.twig" %}
-            {{ block('header') }}
-        </div>
-
-      </header>
-
-      {% endif %}
 
     <!--[if lt IE 9]>
     <div style="position:relative">
