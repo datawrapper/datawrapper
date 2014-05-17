@@ -45,6 +45,13 @@
         <input type="text" style="width:auto" id="{{ key }}" value="" />
     </div>
 
+{% elseif option.type == 'textarea' %}
+
+    <div class="form-inline">
+        <label for="{{ key }}">{{ option.label|raw }}</label>
+        <textarea placeholder="{{ option.placeholder | raw }}" style="width:auto" id="{{ key }}" />
+    </div>
+
 {% elseif option.type == 'separator' %}
 
     <label class="separator">{{ option.label|raw }}</label>
