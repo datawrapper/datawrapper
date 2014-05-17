@@ -150,7 +150,7 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
     $page['locale'] = DatawrapperSession::getLanguage();
     $page['DW_DOMAIN'] = $config['domain'];
     $page['DW_VERSION'] = DATAWRAPPER_VERSION;
-    $page['ASSET_DOMAIN'] = $config['ASSET_DOMAIN'];
+    $page['ASSET_DOMAIN'] = $config['asset_domain'];
     $page['DW_CHART_CACHE_DOMAIN'] = $config['chart_domain'];
     $page['SUPPORT_EMAIL'] = $config['email']['support'];
     $page['config'] = $config;
