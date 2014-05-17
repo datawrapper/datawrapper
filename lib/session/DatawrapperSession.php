@@ -148,10 +148,10 @@ class DatawrapperSession {
         return self::getInstance()->user;
     }
 
-    public static function login($user, $keepLoggedIn = true) {
+    public static function login($user, $keepLoggedIn = true, $dontLog = false) {
         $_SESSION['dw-user-id'] = $user->getId();
         self::getInstance()->user = $user;
-        Action::logAction($user, 'login');
+        if (!$dontLog) Action::logAction($user, 'login');
 
         // reload plugins since there might be new plugins
         // becoming available after logins
