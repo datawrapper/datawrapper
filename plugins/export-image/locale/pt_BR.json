@@ -1,0 +1,17 @@
+{
+  "Export to static image for printing": "Exportar imagens estátiscas para impressão",
+  "The image of your chart is ready": "A imagem do gráfico está pronta",
+  "Hello,\n\nHere is the requested static image of your chart \"%title$s\" on %domain$s.\n\nAll the best,\nDatawrapper": "Olá,\n\nAqui está o arquivo do gráfico \"%title$s\" do %domain$s.\n\nAtenciosamente,\nDatawrapper",
+  "You will receive an email with the exported chart in about %d minute(s)": "Você vai receber um e-mail com o gráfico exportado em %d minuto(s)",
+  "Please select an image format and aspect ratio for your exported chart.": "Escolha o formato e a proporção do gráfico exportado.",
+  "Select image type": "Escolha o tipo de imagem",
+  "bitmap (PNG)": "bitmap(PNG)",
+  "vector (PDF)": "vetor (PDF)",
+  "Select aspect ratio": "Escolha a proporção",
+  "landscape": "paisagem",
+  "portrait": "retrato",
+  "square": "quadrado",
+  "The exported chart will be send to your email address <b>%e<\/b> once it has \nbeen created. This will take approximately <b>%n<\/b> minute(s).": "O gráfico exportado será enviado para seu endereço de e-mail <b>%e<\/b> após criado. Isso levará <b>%n<\/b> minuto(s).",
+  "Cancel": "Cancelar",
+  "Export chart": "Exportar gráfico"
+}
