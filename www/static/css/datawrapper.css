@@ -547,7 +547,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .form-actions {
-    background: #F2F2F2 url(../img/bg-well.png);
+    background: #F2F2F2;
     border-radius: 0 0 10px 10px;
 }
 
@@ -876,7 +876,7 @@ form.well form {
 }
 
 .well {
-    background: url(../img/bg-well.png);
+    background: #f2f2f2;
     box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.05) inset;
 }
 
@@ -912,7 +912,7 @@ form.well form {
 }
 
 .well .nav-tabs > .active > a, .nav-tabs > .active > a:hover {
-    background: url(../img/bg-well.png);
+    background: #f2f2f2;
     border-left-color: #c0c0c0;
     border-right-color: #c0c0c0;
     border-top-color: #c0c0c0;
@@ -1338,7 +1338,7 @@ form.well form {
     color: #000;
     font-weight: bold;
     box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.05) inset;
-    background: url(../img/bg-well.png);
+    background: #f2f2f2;
 }
 
 label.separator {
