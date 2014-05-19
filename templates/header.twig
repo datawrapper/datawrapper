@@ -29,10 +29,10 @@
 
     {% elseif link.dropdown %}
 
-        <li class="{{ link.id }} dropdown{% if link.active %} active{% endif %}">
-            <a id="dw-header-link-{{ link.id }}" href="{{ link.url }}" class="dropdown-toggle" data-toggle="dropdown">
+        <li class="{{ link.id }} dropdown{% if link.active %} active{% endif %}{% if link.justicon %} icon{% endif %}">
+            <a title="{{ link.title }}" id="dw-header-link-{{ link.id }}" href="{{ link.url }}" class="dropdown-toggle" data-toggle="dropdown">
                 {% if link.icon %}
-                <i title="{{ link.title }}" class="{{ link.icon }} icon-whte"></i>
+                <i class="{{ link.icon }}"></i>
                 {% endif %}
                 {% if not link.icon or not link.justicon %}
                 {{ link.title | raw }}
@@ -49,9 +49,9 @@
     {% else %}
 
         <li class="{{ link.id }}{% if link.active %} active{% endif %}{% if link.justicon %} icon{% endif %}">
-            <a id="dw-header-link-{{ link.id }}" href="{{ link.url }}"{% if link.modal %} data-toggle="modal"{% endif %}>
+            <a title="{{ link.title }}" id="dw-header-link-{{ link.id }}" href="{{ link.url }}"{% if link.modal %} data-toggle="modal"{% endif %}>
                 {% if link.icon %}
-                <i title="{{ link.title }}" class="{{ link.icon }} icon-whie"></i>
+                <i class="{{ link.icon }}"></i>
                 {% endif %}
                 {% if not link.icon or not link.justicon %}
                 {{ link.title | raw }}
@@ -92,6 +92,15 @@
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+    $(function() {
+        $('.navbar li.icon a[title]').tooltip({
+            placement: 'bottom',
+            container: '.navbar-static-top',
+            delay: 20
+        });
+    });
+    </script>
 
 
 {% endblock %}

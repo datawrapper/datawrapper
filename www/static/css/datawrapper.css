@@ -51,13 +51,19 @@ html .navbar .nav > li.icon > a {
 
 
 html .navbar .nav > li .fa {
-    color: #444;
+    color: #222;
+}
+
+html .navbar .nav > li a:hover .fa {
+    color: #08c;
 }
 
 html .navbar .nav > li > a {
   padding-top: 13px;
   padding-bottom: 12px;
 }
+
+html .navbar 
 
 html .navbar .divider-vertical {
     height: 51px;
@@ -792,9 +798,15 @@ dl.dl-horizontal dd {
     color: #000;
     box-shadow: 0 0 14px rgba(0,0,0,.1);
     font-size: 13px;
-    border: 1px solid #ddd;
+    border: 1px solid #000;
     line-height: 18px;
     text-align: left;
+    position: relative;
+}
+
+.navbar-static-top .tooltip .tooltip-inner {
+    background: rgba(0,0,0,.9);
+    color: #fff;
 }
 
 #vis-options legend + .control-group {
