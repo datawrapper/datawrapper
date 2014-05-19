@@ -12,7 +12,7 @@ if (DatawrapperHooks::hookRegistered(DatawrapperHooks::GET_ADMIN_PAGES)) {
 
     foreach ($__dw_admin_pages as $admin_page) {
 
-        $app->get('/admin' . $admin_page['url'], function() use ($app, $admin_page, $__dw_admin_pages) {
+        $app->map('/admin' . $admin_page['url'], function() use ($app, $admin_page, $__dw_admin_pages) {
             disable_cache($app);
 
             $user = DatawrapperSession::getUser();
@@ -31,6 +31,6 @@ if (DatawrapperHooks::hookRegistered(DatawrapperHooks::GET_ADMIN_PAGES)) {
             } else {
                 $app->notFound();
             }
-        });
+        })->via('GET', 'POST');
     }
 }
