@@ -213,8 +213,7 @@ class DatawrapperPlugin {
 			->filterByKey($key)
 			->orderByStoredAt('desc')
 			->find();
-
-		if (empty($q)) return null;
+		if (count($q) == 0) return null;
 		if (!$single) {
 			$res = array();
 			foreach ($q as $pd) {
