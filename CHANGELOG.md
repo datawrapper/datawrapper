@@ -1,6 +1,10 @@
 CHANGELOG
 ---------
 
+### 1.7.8
+* re-structured header navbar
+* added font awesome
+
 ### 1.7.7
 * switched top nav from fixed to static
 * added vis option textarea
