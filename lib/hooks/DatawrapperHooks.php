@@ -140,6 +140,9 @@ class DatawrapperHooks {
     // allow adding links after 'create new chart'
     const HEADER_NAV = 'header_nav_';
 
+    // add a logo to header navbar
+    const CUSTOM_LOGO = 'custom_logo';
+
 }
 
 

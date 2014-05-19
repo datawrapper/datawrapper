@@ -70,10 +70,8 @@
                 </a>
 
                 <a class="brand" href="/">
-                    {% if config.custom_logo %}<!--[if IE ]>
-                        <img src="/static/custom/{{ config.custom_logo | replace({'.svg':'.png'})}}">
-                        <![endif]-->
-                        <img class="hide-from-ie" src="/static/custom/{{ config.custom_logo }}" />
+                    {% if custom_logo %}
+                        <img src="{{ custom_logo }}" />
                     {% endif %}
                     {% if config.custom_title %}{{ config.custom_title }}{% else %}Datawrapper{% endif %}<span class="beta">{{ config.custom_title_tag }}</span>
                 </a>

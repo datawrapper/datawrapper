@@ -141,6 +141,10 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
 
     header_nav_hook($headlinks, 'admin');
 
+    if (DatawrapperHooks::hookRegistered(DatawrapperHooks::CUSTOM_LOGO)) {
+        $page['custom_logo'] = DatawrapperHooks::execute(DatawrapperHooks::CUSTOM_LOGO)[0];
+    }
+
     foreach ($headlinks as $i => $link) {
         $headlinks[$i]['active'] = $headlinks[$i]['id'] == $active;
     }
