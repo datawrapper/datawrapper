@@ -44,9 +44,25 @@ html .navbar li {
   line-height: 26px;
 }
 
+html .navbar .nav > li.icon > a {
+    padding: 10px 9px 10px;
+    line-height: 30px;
+}
+
+
+html .navbar .nav > li .fa {
+    color: #444;
+}
+
 html .navbar .nav > li > a {
   padding-top: 13px;
   padding-bottom: 12px;
+}
+
+html .navbar .divider-vertical {
+    height: 51px;
+    margin: 0 0px;
+    border-left-color: #dedcdb;
 }
 
 html h2 {

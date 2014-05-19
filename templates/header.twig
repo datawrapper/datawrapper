@@ -14,7 +14,7 @@
         </li>
     {% else %}
         <li>
-            <a {% if slink.data %}{% for k,v in slink.data %}data-{{ k }}="{{ v }}" {% endfor %}{% endif %}href="{{ slink.url }}">{%if slink.icon %}<i class="icon-{{ slink.icon }}"></i>
+            <a {% if slink.data %}{% for k,v in slink.data %}data-{{ k }}="{{ v }}" {% endfor %}{% endif %}href="{{ slink.url }}">{%if slink.icon %}<i class="{{ slink.icon }}"></i>
              {% endif %}{{ slink.title | raw }}</a>
         </li>
     {% endif %}
@@ -22,12 +22,17 @@
 {% endblock %}
 
 {% block header_nav_link %}
-    {% if link.dropdown %}
+
+    {% if link == 'divider' %}
+
+        <li class="divider-vertical"></li>
+
+    {% elseif link.dropdown %}
 
         <li class="{{ link.id }} dropdown{% if link.active %} active{% endif %}">
             <a id="dw-header-link-{{ link.id }}" href="{{ link.url }}" class="dropdown-toggle" data-toggle="dropdown">
                 {% if link.icon %}
-                <i title="{{ link.title }}" class="icon-{{ link.icon }} icon-whte"></i>
+                <i title="{{ link.title }}" class="{{ link.icon }} icon-whte"></i>
                 {% endif %}
                 {% if not link.icon or not link.justicon %}
                 {{ link.title | raw }}
@@ -43,13 +48,13 @@
 
     {% else %}
 
-        <li class="{{ link.id }}{% if link.active %} active{% endif %}">
+        <li class="{{ link.id }}{% if link.active %} active{% endif %}{% if link.justicon %} icon{% endif %}">
             <a id="dw-header-link-{{ link.id }}" href="{{ link.url }}"{% if link.modal %} data-toggle="modal"{% endif %}>
                 {% if link.icon %}
-                <i title="{{ link.title }}" class="icon-{{ link.icon }} icon-whie"></i>
+                <i title="{{ link.title }}" class="{{ link.icon }} icon-whie"></i>
                 {% endif %}
                 {% if not link.icon or not link.justicon %}
-                {{ link.title }}
+                {{ link.title | raw }}
                 {% endif %}
             </a>
         </li>

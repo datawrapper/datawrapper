@@ -33,35 +33,12 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
         $headlinks[] = array(
             'url' => '/chart/create',
             'id' => 'chart',
-            'title' => __('Create Chart'),
-            'icon' => 'pencil'
+            'title' => __('New Chart'),
+            'icon' => 'fa fa-plus'
         );
     }
 
     header_nav_hook($headlinks, 'create');
-
-    if ($user->isLoggedIn() && $user->hasCharts()) {
-        // mycharts
-        $mycharts = array(
-            'url' => '/mycharts/',
-            'id' => 'mycharts',
-            'title' => __('My Charts'),
-            'icon' => 'signal',
-            'dropdown' => array()
-        );
-        foreach ($user->getRecentCharts(9) as $chart) {
-            $mycharts['dropdown'][] = array(
-                'url' => '/chart/'.$chart->getId().'/visualize#tell-the-story',
-                'title' => '<img width="30" src="'.($chart->hasPreview() ? $chart->thumbUrl(true) : '').'" class="icon" /> '
-                    . '<span>' . strip_tags($chart->getTitle()) . '</span>'
-            );
-        }
-        $mycharts['dropdown'][] = 'divider';
-        $mycharts['dropdown'][] = array('url' => '/mycharts/', 'title' => __('All charts'));
-        $headlinks[] = $mycharts;
-    }
-
-    header_nav_hook($headlinks, 'mycharts');
 
     if (isset($config['navigation'])) foreach ($config['navigation'] as $item) {
         $link = array('url' => str_replace('%lang%', substr(DatawrapperSession::getLanguage(), 0, 2), $item['url']), 'id' => $item['id'], 'title' => __($item['title']));
@@ -71,43 +48,6 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
 
     header_nav_hook($headlinks, 'custom_nav');
 
-    if ($user->isLoggedIn()) {
-        $username = $user->guessName();
-        if ($username == $user->getEmail()) {
-            $username = strlen($username) > 18 ? substr($username, 0, 9).'…'.substr($username, strlen($username)-9) : $username;
-        } else {
-            if (strlen($username) > 18) $username = substr($username, 0, 16).'…';
-        }
-        $headlinks[] = array(
-            'url' => '#user',
-            'id' => 'user',
-            'title' => $username,
-            'icon' => 'user',
-            'dropdown' => array(array(
-                'url' => '/account/settings',
-                'icon' => 'wrench',
-                'title' => __('Settings')
-            ), array(
-                'url' => '/mycharts',
-                'icon' => 'signal',
-                'title' => __('My Charts')
-            ), array(
-                'url' => '#logout',
-                'icon' => 'off',
-                'title' => __('Logout')
-            ))
-        );
-    } else {
-        $headlinks[] = array(
-            'url' => '#login',
-            'id' => 'login',
-            'title' => $config['prevent_guest_access'] ? __('Login') : __('Login / Sign Up'),
-            'icon' => 'user'
-        );
-    }
-
-    header_nav_hook($headlinks, 'user');
-
     // language dropdown
     if (!empty($config['languages'])) {
         $langDropdown = array(
@@ -115,7 +55,7 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
             'id' => 'lang',
             'dropdown' => array(),
             'title' => strtoupper(substr(DatawrapperSession::getLanguage(), 0, 2)),
-            'icon' => false
+            'icon' => false,
         );
         foreach ($config['languages'] as $lang) {
             $langDropdown['dropdown'][] = array(
@@ -128,12 +68,84 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
 
     header_nav_hook($headlinks, 'languages');
 
+
+    if ($user->isLoggedIn()) {
+
+        $headlinks[] = 'divider';
+
+        $username = $user->guessName();
+        if ($username == $user->getEmail()) {
+            $username = strlen($username) > 18 ? substr($username, 0, 9).'…'.substr($username, strlen($username)-9) : $username;
+        } else {
+            if (strlen($username) > 18) $username = substr($username, 0, 16).'…';
+        }
+        $headlinks[] = array(
+            'url' => '/mycharts/',
+            'id' => 'mycharts',
+            'title' => '<img style="height:22px;border-radius:7px;margin-right:7px" src="http://www.gravatar.com/avatar/' . md5(strtolower(trim($user->getEmail()))) . '?s=44&d=mm" /><b>'.$username.'</b>'
+        );
+
+        if ($user->hasCharts()) {
+            // mycharts
+            $mycharts = array(
+                'url' => '/mycharts/',
+                'id' => 'mycharts',
+                'title' => __('My Charts'),
+                'justicon' => true,
+                'icon' => 'fa fa-bar-chart-o',
+                'dropdown' => array()
+            );
+            foreach ($user->getRecentCharts(9) as $chart) {
+                $mycharts['dropdown'][] = array(
+                    'url' => '/chart/'.$chart->getId().'/visualize#tell-the-story',
+                    'title' => '<img width="30" src="'.($chart->hasPreview() ? $chart->thumbUrl(true) : '').'" class="icon" /> '
+                        . '<span>' . strip_tags($chart->getTitle()) . '</span>'
+                );
+            }
+            $mycharts['dropdown'][] = 'divider';
+            $mycharts['dropdown'][] = array('url' => '/mycharts/', 'title' => __('All charts'));
+            $headlinks[] = $mycharts;
+        }
+
+        header_nav_hook($headlinks, 'mycharts');
+
+
+        $headlinks[] = array(
+            'url' => '/account/settings',
+            'id' => 'signout',
+            'icon' => 'fa fa-wrench',
+            'justicon' => true,
+            'title' => __('Settings')
+        );
+    } else {
+        $headlinks[] = array(
+            'url' => '#login',
+            'id' => 'login',
+            'title' => $config['prevent_guest_access'] ? __('Login') : __('Login / Sign Up'),
+            'icon' => 'fa fa-sign-in'
+        );
+    }
+
+    if ($user->isLoggedIn()) {
+        $headlinks[] = array(
+            'url' => '#logout',
+            'id' => 'signout',
+            'icon' => 'fa fa-sign-out',
+            'justicon' => true,
+            'title' => __('Sign out')
+        );
+    }
+
+    header_nav_hook($headlinks, 'user');
+
     // admin link
-    if ($user->isAdmin() && DatawrapperHooks::hookRegistered(DatawrapperHooks::GET_ADMIN_PAGES)) {
+    if ($user->isLoggedIn() && $user->isAdmin()
+        && DatawrapperHooks::hookRegistered(DatawrapperHooks::GET_ADMIN_PAGES)) {
+        $headlinks[] = 'divider';
         $headlinks[] = array(
             'url' => '/admin',
             'id' => 'admin',
-            'icon' => 'fire',
+            'icon' => 'fa fa-gears',
             'justicon' => true,
             'title' => __('Admin')
         );
@@ -147,6 +159,7 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
     }
 
     foreach ($headlinks as $i => $link) {
+        if ($link == 'divider') continue;
         $headlinks[$i]['active'] = $headlinks[$i]['id'] == $active;
     }
     $page['headlinks'] = $headlinks;
