@@ -5,6 +5,7 @@ CHANGELOG
 * switched top nav from fixed to static
 * added vis option textarea
 * flattened navbar appearance
+* added hook for customizing navbar logo
 
 ### 1.7.6
 * disabled fullscreen mode in default theme
