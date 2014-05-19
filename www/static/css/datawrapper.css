@@ -63,9 +63,7 @@ html .navbar .nav > li > a {
   padding-bottom: 12px;
 }
 
-html .navbar 
-
-html .navbar .divider-vertical {
+html .navbar li.divider-vertical {
     height: 51px;
     margin: 0 0px;
     border-left-color: #dedcdb;
