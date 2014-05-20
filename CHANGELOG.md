@@ -4,6 +4,7 @@ CHANGELOG
 ### 1.7.8
 * re-structured header navbar
 * added font awesome
+* allow filtering of missing values in bar charts
 
 ### 1.7.7
 * switched top nav from fixed to static

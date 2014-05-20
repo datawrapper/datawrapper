@@ -12,7 +12,9 @@
                 dataset = me.dataset,
                 sortBars = me.get('sort-values', false),
                 reverse = me.get('reverse-order'),
-                useNegativeColor = me.get('negative-color', false);
+                useNegativeColor = me.get('negative-color', false),
+                filterMissing = me.get('filter-missing-values', true);
+
 
             me.axesDef = me.axes();
             if (!me.axesDef) return;  // stop rendering here
@@ -39,7 +41,7 @@
             var c = me.initCanvas({
                 h: Math.max(
                     dw.utils.getMaxChartHeight(el)+5,
-                    18 * 1.35 * me.getBarColumn().length + 5
+                    18 * 1.35 * me.getMaxNumberOfBars() + 5
                 )
             });
 
@@ -126,9 +128,11 @@
                 filter = me.__lastRow,
                 labels = me.axes(true).labels,
                 column = me.getBarColumn(filter),
+                filterMissing = me.get('filter-missing-values', true),
                 fmt = me.chart().columnFormatter(labels);
 
             column.each(function(val, i) {
+                if (filterMissing && typeof val != 'number') return;
                 values.push({
                     name: fmt(labels.val(i)),
                     value: val,
@@ -147,6 +151,24 @@
             return me.axes(true).bars[filter];
         },
 
+        getMaxNumberOfBars: function() {
+            var me = this,
+                filterMissing = me.get('filter-missing-values', true);
+                bars = me.axes(true).bars,
+                maxNum = 0;
+            if (!filterMissing) maxNum = bars[0].length;
+            else {
+                _.each(bars, function(bar) {
+                    var notNaN = 0;
+                    bar.each(function(val) {
+                        if (typeof val == 'number') notNaN++;
+                    });
+                    maxNum = Math.max(maxNum, notNaN);
+                });
+            }
+            return maxNum;
+        },
+
         update: function(row) {
             var me = this,
                 formatValue = me.chart().columnFormatter(me.getBarColumn());
@@ -154,8 +176,14 @@
             // update scales
             me.initDimensions();
 
+            // tag for deletion
+            _.each(me.__elements, function(elements, k) {
+                elements.__remove = true;
+            });
+
             // update bar heights and labels
             _.each(me.getBarValues(me.get('sort-values', false)), function(bar, s) {
+                if (me.__elements[bar.name]) me.__elements[bar.name].__remove = false;
                 _.each(me.__elements[bar.name], function(rect) {
                     var dim = me.barDimensions(bar, s, row);
                     dim.fill = me.getKeyColor(bar.name, bar.value, me.get('negative-color', false));
@@ -195,6 +223,24 @@
             } else if (me.__yaxis) {
                 me.__yaxis.animate({ opacity: 0 }, me.theme().duration * 0.5, me.theme().easing);
             }
+
+            _.each(me.__elements, function(elements, k) {
+                if (elements.__remove) {
+                    _.each(elements, function(el) {
+                        if (el && el.hide) el.hide();
+                    });
+                    _.each(me.__labels[k], function(el) {
+                        if (el && el.hide) el.hide();
+                    });
+                } else {
+                   _.each(elements, function(el) {
+                        if (el && el.show) el.show();
+                    });
+                    _.each(me.__labels[k], function(el) {
+                        if (el && el.show) el.show();
+                    });
+                }
+            });
         },
 
         initDimensions: function() {
@@ -262,7 +308,7 @@
         },
 
         barDimensions: function(bar, s, r) {
-            var me = this, w, h, x, y, i, cw, n = me.getBarValues().length,
+            var me = this, w, h, x, y, i, cw, n = me.getMaxNumberOfBars(),
                 sc = me.__scales, c = me.__canvas, bw, pad = 0.35, vspace = 0.1,
                 val = bar.value;
 
@@ -270,7 +316,7 @@
             //
             cw = c.h - c.bpad - c.tpad;
             //
-            bw = Math.max(18, Math.min(50, cw / (n + (n-1) * pad)));
+            bw = Math.max(18, Math.min(23, cw / (n + (n-1) * pad)));
             w = sc.y(val) - sc.y(0);
             h = bw;
             if (w > 0) {

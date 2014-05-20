@@ -1,6 +1,6 @@
 {
     "name": "visualization-bar-chart",
-    "version": "1.5.1",
+    "version": "1.7.8",
     "author": "Gregor Aisch",
     "dependencies": {
         "core": "1.5.0",
