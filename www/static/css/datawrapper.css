@@ -802,10 +802,9 @@ html .tooltip .tooltip-inner {
     box-shadow: 0 0 14px rgba(0,0,0,.1);
     font-size: 11px;
     border: 1px solid #000;
-    line-height: 18px;
+    line-height: 14px;
     text-align: left;
     position: relative;
-    white-space: nowrap;
 }
 
 .navbar-static-top .tooltip .tooltip-inner {
