@@ -7,10 +7,7 @@ class DatawrapperPlugin_Gallery extends DatawrapperPlugin {
 
     public function init() {
         // register plugin controller under /gallery/
-        DatawrapperHooks::register(
-            DatawrapperHooks::GET_PLUGIN_CONTROLLER,
-            array($this, 'controller')
-        );
+        $this->registerController($this, 'controller');
 
         // show link 'show in gallery'
         DatawrapperHooks::register(
