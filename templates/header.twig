@@ -29,7 +29,7 @@
 
     {% elseif link.dropdown %}
 
-        <li class="{{ link.id }} dropdown{% if link.active %} active{% endif %}{% if link.justicon %} icon{% endif %}">
+        <li class="{{ link.id }} dropdown{% if link.active %} active{% endif %}{% if link.justicon %} icon{% endif %}{% if link.class %} {{ link.class }}{% endif %}">
             <a title="{{ link.title }}" id="dw-header-link-{{ link.id }}" href="{{ link.url }}" class="dropdown-toggle" data-toggle="dropdown">
                 {% if link.icon %}
                 <i class="{{ link.icon }}"></i>
@@ -48,7 +48,7 @@
 
     {% else %}
 
-        <li class="{{ link.id }}{% if link.active %} active{% endif %}{% if link.justicon %} icon{% endif %}">
+        <li class="{{ link.id }}{% if link.active %} active{% endif %}{% if link.justicon %} icon{% endif %}{% if link.class %} {{ link.class }}{% endif %}">
             <a title="{{ link.title }}" id="dw-header-link-{{ link.id }}" href="{{ link.url }}"{% if link.modal %} data-toggle="modal"{% endif %}>
                 {% if link.icon %}
                 <i class="{{ link.icon }}"></i>
@@ -94,10 +94,13 @@
     </div>
     <script type="text/javascript">
     $(function() {
+        $('.navbar li.icon a[title]').mouseenter(function() {
+            $('.navbar-static-top .tooltip').hide();
+        });
         $('.navbar li.icon a[title]').tooltip({
             placement: 'bottom',
             container: '.navbar-static-top',
-            delay: 20
+            delay: 0
         });
     });
     </script>
