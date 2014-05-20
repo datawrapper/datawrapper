@@ -176,14 +176,17 @@
             // update scales
             me.initDimensions();
 
-            // tag for deletion
+            // tag for hiding
             _.each(me.__elements, function(elements, k) {
-                elements.__remove = true;
+                elements.__hide = true;
             });
 
             // update bar heights and labels
             _.each(me.getBarValues(me.get('sort-values', false)), function(bar, s) {
-                if (me.__elements[bar.name]) me.__elements[bar.name].__remove = false;
+
+                if (me.__elements[bar.name]) // don't hide this element because we have data for it
+                    me.__elements[bar.name].__hide = false;
+
                 _.each(me.__elements[bar.name], function(rect) {
                     var dim = me.barDimensions(bar, s, row);
                     dim.fill = me.getKeyColor(bar.name, bar.value, me.get('negative-color', false));
@@ -224,21 +227,14 @@
                 me.__yaxis.animate({ opacity: 0 }, me.theme().duration * 0.5, me.theme().easing);
             }
 
+            // hide elements and labels that are marked for hiding
             _.each(me.__elements, function(elements, k) {
-                if (elements.__remove) {
-                    _.each(elements, function(el) {
-                        if (el && el.hide) el.hide();
-                    });
-                    _.each(me.__labels[k], function(el) {
-                        if (el && el.hide) el.hide();
-                    });
+                if (elements.__hide) {
+                    _.each(elements, function(el) { if (el && el.hide) el.hide(); });
+                    _.each(me.__labels[k], function(el) { if (el && el.hide) el.hide(); });
                 } else {
-                   _.each(elements, function(el) {
-                        if (el && el.show) el.show();
-                    });
-                    _.each(me.__labels[k], function(el) {
-                        if (el && el.show) el.show();
-                    });
+                   _.each(elements, function(el) { if (el && el.show) el.show(); });
+                    _.each(me.__labels[k], function(el) { if (el && el.show) el.show(); });
                 }
             });
         },
