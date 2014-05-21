@@ -187,6 +187,9 @@ function get_vis_js($vis, $visJS) {
     $all = '';
     $org = DatawrapperSession::getUser()->getCurrentOrganization();
     if (!empty($org)) $org = '/'.$org->getID(); else $org = '';
+    $cfg = $GLOBALS['dw_config']['plugins'];
+    if (!isset($cfg['publish-s3'])) $org .= '/' . $cfg['publish-s3']['bucket'];
+
     foreach ($visJS as $js) {
         if (substr($js, 0, 7) != "http://" && substr($js, 0, 8) != "https://" && substr($js, 0, 2) != '//') {
             $all .= "\n\n\n" . file_get_contents(ROOT_PATH . 'www' . $js);
@@ -209,6 +212,9 @@ function get_theme_js($theme, $themeJS) {
     $all = '';
     $org = DatawrapperSession::getUser()->getCurrentOrganization();
     if (!empty($org)) $org = '/'.$org->getID(); else $org = '';
+    $cfg = $GLOBALS['dw_config']['plugins'];
+    if (!isset($cfg['publish-s3'])) $org .= '/' . $cfg['publish-s3']['bucket'];
+
     foreach ($themeJS as $js) {
         if (substr($js, 0, 7) != "http://" && substr($js, 0, 8) != "https://" && substr($js, 0, 2) != '//') {
             $all .= "\n\n\n" . file_get_contents(ROOT_PATH . 'www' . $js);
