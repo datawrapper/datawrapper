@@ -96,7 +96,28 @@ html .navbar-static-top {
     background: #fff;
 }
 
+body .navbar li a .tt { display: none; }
+
+
 @media (max-width: 979px) {
+
+    .nav-collapse, .nav-collapse.collapse {
+        height: 0;
+        overflow: hidden;
+        background: #f7f7f7;
+        z-index: 10000;
+    }
+
+    .nav-collapse li {
+        padding: 0px 5px;
+        border-top: 1px solid #fff;
+        border-bottom: 1px solid #ccc;
+    }
+
+    .nav-collapse li i {
+        margin-right: 10px;
+    }
+
     body .docs h1.title {
         font-size: 36px;
         margin-bottom: 10px;
@@ -113,6 +134,8 @@ html .navbar-static-top {
     body .docs h2 {
         font-size: 21px;
     }
+
+    body .navbar li a .tt { display: inline; }
 
 }
 

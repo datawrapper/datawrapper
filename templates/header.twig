@@ -24,6 +24,13 @@
 {% block header_li_a %}
         <li class="{{ link.id }}{% if link.dropdown %} dropdown{% endif %}{% if link.active %} active{% endif %}{% if link.justicon %} icon{% endif %}{% if link.class %} {{ link.class }}{% endif %}">
             <a {% if link.tooltip %}title="{{ link.tooltip }}"{% endif %} id="dw-header-link-{{ link.id }}" href="{{ link.url }}" {% if link.dropdown %}class="dropdown-toggle" data-toggle="dropdown" {% elseif link.modal %} data-toggle="modal"{% endif %}>
+                {% if link.icon %}<i class="{{ link.icon }}"></i> {% endif %}
+                {% if not link.icon or not link.justicon %}
+                {{ link.title | raw }}
+                {% endif %}
+                {% if link.tooltip %}
+                <span class="tt">{{ link.tooltip | raw }}</span>
+                {% endif %}
 {% endblock %}
 
 
@@ -36,12 +43,6 @@
     {% elseif link.dropdown %}
 
         {{ block('header_li_a') }}
-                {% if link.icon %}
-                <i class="{{ link.icon }}"></i>
-                {% endif %}
-                {% if not link.icon or not link.justicon %}
-                {{ link.title | raw }}
-                {% endif %}
                 <b class="caret"></b>
             </a>
             <ul class="dropdown-menu">
@@ -54,12 +55,6 @@
     {% else %}
 
         {{ block('header_li_a') }}
-                {% if link.icon %}
-                <i class="{{ link.icon }}"></i>
-                {% endif %}
-                {% if not link.icon or not link.justicon %}
-                {{ link.title | raw }}
-                {% endif %}
             </a>
         </li>
 
