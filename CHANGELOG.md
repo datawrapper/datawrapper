@@ -5,6 +5,7 @@ CHANGELOG
 * re-structured header navbar
 * added font awesome
 * allow filtering of missing values in bar charts
+* tooltips in header navbar
 
 ### 1.7.7
 * switched top nav from fixed to static
