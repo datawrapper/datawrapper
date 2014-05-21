@@ -56,6 +56,7 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
             'dropdown' => array(),
             'title' => strtoupper(substr(DatawrapperSession::getLanguage(), 0, 2)),
             'icon' => false,
+            'tooltip' => __('Switch language')
         );
         foreach ($config['languages'] as $lang) {
             $langDropdown['dropdown'][] = array(
@@ -91,7 +92,7 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
                 'url' => '/mycharts/',
                 'id' => 'mycharts',
                 'title' => __('My Charts'),
-                'justicon' => true,
+                //'justicon' => true,
                 'icon' => 'fa fa-bar-chart-o',
                 'dropdown' => array()
             );
@@ -115,7 +116,7 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
             'id' => 'signout',
             'icon' => 'fa fa-wrench',
             'justicon' => true,
-            'title' => __('Settings')
+            'tooltip' => __('Settings')
         );
     } else {
         $headlinks[] = array(
@@ -132,7 +133,7 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
             'id' => 'signout',
             'icon' => 'fa fa-sign-out',
             'justicon' => true,
-            'title' => __('Sign out')
+            'tooltip' => __('Sign out')
         );
     }
 

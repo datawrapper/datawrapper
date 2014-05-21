@@ -21,6 +21,12 @@
 
 {% endblock %}
 
+{% block header_li_a %}
+        <li class="{{ link.id }}{% if link.dropdown %} dropdown{% endif %}{% if link.active %} active{% endif %}{% if link.justicon %} icon{% endif %}{% if link.class %} {{ link.class }}{% endif %}">
+            <a {% if link.tooltip %}title="{{ link.tooltip }}"{% endif %} id="dw-header-link-{{ link.id }}" href="{{ link.url }}" {% if link.dropdown %}class="dropdown-toggle" data-toggle="dropdown" {% elseif link.modal %} data-toggle="modal"{% endif %}>
+{% endblock %}
+
+
 {% block header_nav_link %}
 
     {% if link == 'divider' %}
@@ -29,8 +35,7 @@
 
     {% elseif link.dropdown %}
 
-        <li class="{{ link.id }} dropdown{% if link.active %} active{% endif %}{% if link.justicon %} icon{% endif %}{% if link.class %} {{ link.class }}{% endif %}">
-            <a title="{{ link.title }}" id="dw-header-link-{{ link.id }}" href="{{ link.url }}" class="dropdown-toggle" data-toggle="dropdown">
+        {{ block('header_li_a') }}
                 {% if link.icon %}
                 <i class="{{ link.icon }}"></i>
                 {% endif %}
@@ -48,8 +53,7 @@
 
     {% else %}
 
-        <li class="{{ link.id }}{% if link.active %} active{% endif %}{% if link.justicon %} icon{% endif %}{% if link.class %} {{ link.class }}{% endif %}">
-            <a title="{{ link.title }}" id="dw-header-link-{{ link.id }}" href="{{ link.url }}"{% if link.modal %} data-toggle="modal"{% endif %}>
+        {{ block('header_li_a') }}
                 {% if link.icon %}
                 <i class="{{ link.icon }}"></i>
                 {% endif %}
@@ -97,7 +101,7 @@
         $('.navbar li.icon a[title]').mouseenter(function() {
             $('.navbar-static-top .tooltip').hide();
         });
-        $('.navbar li.icon a[title]').tooltip({
+        $('.navbar-static-top li a[title]').tooltip({
             placement: 'bottom',
             container: '.navbar-static-top',
             delay: 0
