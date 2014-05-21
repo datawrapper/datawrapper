@@ -106,12 +106,16 @@ body .navbar li a .tt { display: none; }
         overflow: hidden;
         background: #f7f7f7;
         z-index: 10000;
+        position: absolute;
+        left: -20px;
+        right: -20px;
+        top: 46px;
     }
 
     .nav-collapse li {
         padding: 0px 5px;
         border-top: 1px solid #fff;
-        border-bottom: 1px solid #ccc;
+        border-bottom: 1px solid #ddd;
     }
 
     .nav-collapse li i {
