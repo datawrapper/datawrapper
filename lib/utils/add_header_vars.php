@@ -148,7 +148,7 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
             'id' => 'admin',
             'icon' => 'fa fa-gears',
             'justicon' => true,
-            'title' => __('Admin')
+            'tooltip' => __('Admin')
         );
     }
 
