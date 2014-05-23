@@ -194,7 +194,7 @@
 
                 // register new element if it does not exists yet
                 if (!me.__elements[bar.name]) {
-                    render(bar);
+                    render(bar, s);
                 }
 
                 _.each(me.__elements[bar.name], function(rect) {
