@@ -11,10 +11,9 @@
             var me = this, row = 0,
                 dataset = me.dataset,
                 sortBars = me.get('sort-values', false),
-                reverse = me.get('reverse-order'),
-                useNegativeColor = me.get('negative-color', false),
-                filterMissing = me.get('filter-missing-values', true);
-
+                reverse = me.get('reverse-order');
+                // useNegativeColor = me.get('negative-color', false),
+                // filterMissing = me.get('filter-missing-values', true);
 
             me.axesDef = me.axes();
             if (!me.axesDef) return;  // stop rendering here
@@ -46,10 +45,9 @@
             });
 
             var
-                chart_width = c.w - c.lpad - c.rpad,
-                series_gap = 0.05, // pull from theme
-                row_gap = 0.01,
-                formatValue = me.chart().columnFormatter(me.getBarColumn()),
+                // chart_width = c.w - c.lpad - c.rpad,
+                // series_gap = 0.05, // pull from theme
+                // row_gap = 0.01,
                 barvalues = me.getBarValues(sortBars, reverse);
 
             me.init();
@@ -59,10 +57,42 @@
 
             c.lastBarY = 0;
 
-            function render(barv) {
+            var barGroups = _.groupBy(barvalues, function(bar, i) {
+                return Math.floor(i/10);
+            });
+
+            var render = me.renderBar(row);
+
+            _.each(barGroups, function(bars) {
+                // defer rendering if we got plenty of bars
+                // to prevent UI blocking
+                _.defer(function() {
+                    _.each(bars, render);
+                    complete();
+                });
+            });
+
+            // complete is called as soon all bars are rendered
+            function complete() {
+                if (me.__domain[0] < 0) {
+                    var x = c.lpad + c.zero ;
+                    // add y-axis
+                    me.__yaxis = me.path('M' + [x, c.tpad] + 'V' + c.lastBarY, 'axis')
+                        .attr(me.theme().yAxis);
+                }
+                // enable mouse events
+                el.mousemove(_.bind(me.onMouseMove, me));
+                me.renderingComplete();
+            }
+        },
+
+        renderBar: function(row) {
+            var me = this, c = me.__canvas,
+                formatValue = me.chart().columnFormatter(me.getBarColumn());
+            return function(barv, s) {
                 var d = me.barDimensions(barv, s, row),
                     lpos = me.labelPosition(barv, s, row),
-                    fill = me.getKeyColor(barv.name, barv.value, useNegativeColor),
+                    fill = me.getKeyColor(barv.name, barv.value, me.get('negative-color', false)),
                     stroke = chroma.color(fill).darken(14).hex();
 
                 // draw bar
@@ -92,43 +122,16 @@
                 }
 
                 c.lastBarY = Math.max(c.lastBarY, d.y + d.height);
-                if (s == barvalues.length-1) complete();
-                s++;
-            }
-
-            var barGroups = _.groupBy(barvalues, function(bar, i) {
-                return Math.floor(i/10);
-            });
-            var s = 0;
-            _.each(barGroups, function(bars) {
-                // defer rendering if we got plenty of bars
-                // to prevent UI blocking
-                _.defer(function() {
-                    _.each(bars, render);
-                });
-            });
-
-            // complete is called as soon all bars are rendered
-            function complete() {
-                if (me.__domain[0] < 0) {
-                    var x = c.lpad + c.zero ;
-                    // add y-axis
-                    me.__yaxis = me.path('M' + [x, c.tpad] + 'V' + c.lastBarY, 'axis')
-                        .attr(me.theme().yAxis);
-                }
-                // enable mouse events
-                el.mousemove(_.bind(me.onMouseMove, me));
-                me.renderingComplete();
-            }
+            };
         },
 
-        getBarValues: function(sortBars, reverse) {
+        getBarValues: function(sortBars, reverse, forceAll) {
             var me = this,
                 values = [],
                 filter = me.__lastRow,
                 labels = me.axes(true).labels,
                 column = me.getBarColumn(filter),
-                filterMissing = me.get('filter-missing-values', true),
+                filterMissing = !forceAll && me.get('filter-missing-values', true),
                 fmt = me.chart().columnFormatter(labels);
 
             column.each(function(val, i) {
@@ -153,7 +156,7 @@
 
         getMaxNumberOfBars: function() {
             var me = this,
-                filterMissing = me.get('filter-missing-values', true);
+                filterMissing = me.get('filter-missing-values', true),
                 bars = me.axes(true).bars,
                 maxNum = 0;
             if (!filterMissing) maxNum = bars[0].length;
@@ -177,15 +180,22 @@
             me.initDimensions();
 
             // tag for hiding
-            _.each(me.__elements, function(elements, k) {
+            _.each(me.__elements, function(elements) {
                 elements.__hide = true;
             });
+
+            var render = me.renderBar(row);
 
             // update bar heights and labels
             _.each(me.getBarValues(me.get('sort-values', false)), function(bar, s) {
 
-                if (me.__elements[bar.name]) // don't hide this element because we have data for it
-                    me.__elements[bar.name].__hide = false;
+                // don't hide this element because we have data for it
+                if (me.__elements[bar.name]) me.__elements[bar.name].__hide = false;
+
+                // register new element if it does not exists yet
+                if (!me.__elements[bar.name]) {
+                    render(bar);
+                }
 
                 _.each(me.__elements[bar.name], function(rect) {
                     var dim = me.barDimensions(bar, s, row);
@@ -244,7 +254,7 @@
             var me = this, c = me.__canvas,
                 w = c.w - c.lpad - c.rpad - 30,
                 column = me.getBarColumn(),
-                bars = me.getBarValues(),
+                bars = me.getBarValues(false, false, true),
                 formatValue = me.chart().columnFormatter(column),
                 domain = me.get('absolute-scale', false) ?
                     dw.utils.minMax(_.map(me.axesDef.bars, function(c) { return me.dataset.column(c); })) :
