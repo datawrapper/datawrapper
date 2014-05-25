@@ -157,7 +157,15 @@ html .navbar .nav>.active>a, .navbar .nav>.active>a:hover, .navbar .nav>.active>
 }
 
 .navbar.navbar-inverse .navbar-inner {
-  background: #1b1b1b;
+  background: #000;
+}
+
+.navbar.navbar-inverse .navbar-inner li a i.fa {
+  color: #bbb;
+}
+
+.navbar.navbar-inverse .navbar-inner li a:hover i.fa {
+  color: #08c;
 }
 
 .navbar-inverse .nav li a [class^="icon-"],
