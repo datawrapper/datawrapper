@@ -58,6 +58,7 @@
             c.lastBarY = 0;
 
             var barGroups = _.groupBy(barvalues, function(bar, i) {
+                bar.__i = i;
                 return Math.floor(i/10);
             });
 
@@ -67,7 +68,9 @@
                 // defer rendering if we got plenty of bars
                 // to prevent UI blocking
                 _.defer(function() {
-                    _.each(bars, render);
+                    _.each(bars, function(bar, i) {
+                        render(bar, bar.__i);
+                    });
                     complete();
                 });
             });
