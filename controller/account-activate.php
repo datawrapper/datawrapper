@@ -12,14 +12,14 @@ $app->get('/account/activate/:token', function ($token) use ($app) {
           ->find();
 
         if (count($users) != 1) {
-            $page['alert'] = array(
+            $GLOBALS['__next_alert'] = array(
                 'type' => 'error',
                 'message' => __('This activation token is invalid. Your email address is probably already activated.')
             );
         } else {
             $user = $users[0];
             $user->setRole('editor');
-            $page['alert'] = array(
+            $GLOBALS['__next_alert'] = array(
                 'type' => 'success',
                 'message' => sprintf(__('Your email address %s has been successfully activated!'), $user->getEmail())
             );
@@ -27,7 +27,7 @@ $app->get('/account/activate/:token', function ($token) use ($app) {
             $user->save();
         }
     }
-    $app->render('home.twig', $page);
+    $app->redirect('/');
 });
 
 
