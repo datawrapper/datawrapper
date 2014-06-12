@@ -143,6 +143,9 @@ class DatawrapperHooks {
     // add a logo to header navbar
     const CUSTOM_LOGO = 'custom_logo';
 
+    // a new user as bean created
+    const USER_SIGNUP = 'user_signup';
+
 }
 
 

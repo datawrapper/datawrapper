@@ -87,6 +87,8 @@ $app->post('/users', function() use ($app) {
     $user->save();
     $result = $user->toArray();
 
+    DatawrapperHooks::execute(DatawrapperHooks::USER_SIGNUP, $user);
+
     // send an email
     $name     = $data->email;
     $domain   = $GLOBALS['dw_config']['domain'];
