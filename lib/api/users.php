@@ -164,9 +164,9 @@ $app->put('/users/:id', function($user_id) use ($app) {
                 }
             }
 
-            if (!empty($payload->email)) {
+            if (!empty($payload->email) && $payload->email != $user->getEmail()) {
                 if (check_email($payload->email) || $curUser->isAdmin()) {
-                    if (!email_exists($payload->email) || $payload->email == $user->getEmail()) {
+                    if (!email_exists($payload->email)) {
                         if ($curUser->isAdmin()) {
                             $user->setEmail($payload->email);
                         } else {
