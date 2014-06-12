@@ -35,6 +35,13 @@ function check_config() {
     return '';
 }
 
+function connect_database() {
+    @include '../lib/core/build/conf/datawrapper-conf.php';
+    $dbconn = $conf['datasources']['datawrapper']['connection'];
+
+    return new PDO($dbconn['dsn'], $dbconn['user'], $dbconn['password']);
+}
+
 
 function check_database() {
     if (!file_exists('../lib/core/build/conf/datawrapper-conf.php')) {
@@ -43,24 +50,22 @@ function check_database() {
             . 'lib/core/build/conf/datawrapper-conf.php</code> and update your database settings '
             . 'according to your server configuration</p>';
     }
-    @include '../lib/core/build/conf/datawrapper-conf.php';
-    $dbconn = $conf['datasources']['datawrapper']['connection'];
-    preg_match('/mysql\:host=([^;]+);dbname=(.*)/', $dbconn['dsn'], $m);
-    $link = mysql_connect($m[1], $dbconn['user'], $dbconn['password']);
-    if ($link === false) {
-        return '<h2>Could not access database!</h2><p>'. mysql_error() . '</p>';
+
+    try {
+        $conn = connect_database();
     }
-    $link = mysql_select_db($m[2]);
-    if ($link === false) {
-        return '<h2>Could not access database!</h2><p>'. mysql_error() . '</p>';
+    catch (Exception $e) {
+        return '<h2>Could not access database!</h2><p>'. htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8') . '</p>';
     }
+
     // check if we find the tables
-    $res = mysql_query('SHOW TABLES;');
+    $res = $conn->query('SHOW TABLES');
     $expectedTables = array('action', 'chart', 'job', 'session', 'stats', 'user');
     $foundTables = array();
-    while ($row = mysql_fetch_row($res)) {
-        $foundTables[] = $row[0];
+    foreach ($res as $row) {
+        $foundTables[] = reset($row);
     }
+
     $missingTables = array_diff($expectedTables, $foundTables);
     if (count($missingTables) > 0) {
         return '<h2>Database is not initialized or corrupt</h2>'
@@ -77,7 +82,8 @@ function check_database() {
  * - all activated plugins need to have a valid package.json
  */
 function check_plugins() {
-    $res = mysql_query('SELECT id FROM plugin WHERE enabled = 1');
+    $db = connect_database();
+    $res = $db->query('SELECT id FROM plugin WHERE enabled = 1');
     $missing = array();
     $need_newer_version = array();
     $package_json_parse_error = array();
@@ -87,7 +93,7 @@ function check_plugins() {
     $depends = array();
     $installed = array();
 
-    while ($row = mysql_fetch_assoc($res)) {
+    foreach ($res as $row) {
         $package_json = ROOT_PATH . 'plugins/' . $row['id'] . '/package.json';
         if (!file_exists($package_json)) {
             $missing[] = $row['id'];
