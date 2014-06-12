@@ -3,6 +3,7 @@
 
 domain: datawrapper
 chart_domain: c.datawrapper
+# asset_domain: ...
 
 ## the following keys are used to hash passwords.
 ##
