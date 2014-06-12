@@ -11,9 +11,6 @@ require_once ROOT_PATH . 'lib/bootstrap.php';
 
 $config = $GLOBALS['dw_config'];
 
-require '../../lib/utils/disable_cache.php';
-
-
 /**
  * Step 3: Define the Slim application routes
  *
@@ -31,8 +28,6 @@ require '../../lib/utils/disable_cache.php';
  * The routes below work with PHP >= 5.3.
  */
 
-//GET route
-
 function error($code, $msg) {
     global $app;
     $app->response()->header('Content-Type', 'application/json;charset=utf-8');
@@ -49,7 +44,6 @@ function ok($data = null) {
     if (isset($data)) $result['data'] = $data;
     print json_encode($result);
 }
-
 
 function get_user_ips() {
     $ips = array('remote_addr' => $_SERVER['REMOTE_ADDR']);
@@ -75,7 +69,6 @@ require_once '../../lib/api/visualizations.php';
 require_once '../../lib/api/themes.php';
 require_once '../../lib/api/plugins.php';
 require_once '../../lib/api/organizations.php';
-
 
 /**
  * Step 4: Run the Slim application

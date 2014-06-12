@@ -33,8 +33,6 @@ $app->get('/xhr/home-login', function() use ($app) {
  * reloads visualization specific options after the user
  * changed the visualization type
  */
-require_once ROOT_PATH . 'lib/utils/themes.php';
-
 $app->get('/xhr/:chartid/vis-options', function($id) use ($app) {
     disable_cache($app);
 

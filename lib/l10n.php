@@ -1,12 +1,5 @@
 <?php
 
-$locale = str_replace('-', '_', DatawrapperSession::getLanguage());
-$domain = 'messages';
-putenv('LANGUAGE=' . $locale);
-setlocale(LC_ALL, $locale);
-setlocale(LC_TIME, $locale.'.utf8');
-
-
 class Datawrapper_L10N {
 
     private $__messages = array();
@@ -110,7 +103,3 @@ function __($text, $domain = false, $fallback = '') {
     global $__l10n;
     return $__l10n->translate($text, $domain, $fallback);
 }
-
-
-$__l10n = new Datawrapper_L10N();
-$__l10n->loadMessages($locale);

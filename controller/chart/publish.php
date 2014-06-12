@@ -1,10 +1,5 @@
 <?php
 
-
-require_once ROOT_PATH . 'lib/utils/themes.php';
-require_once ROOT_PATH . 'vendor/jsmin/jsmin.php';
-
-
 /*
  * PUBLISH STEP - shows progress of publishing action and thumbnail generation
  * forwards to /chart/:id/finish

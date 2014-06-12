@@ -10,9 +10,6 @@ define('ROOT_PATH', dirname(dirname(__FILE__)) . '/');
 define('NO_SLIM', 1);
 
 require_once ROOT_PATH . 'lib/bootstrap.php';
-require_once ROOT_PATH . 'lib/utils/themes.php';
-require_once ROOT_PATH . 'vendor/Twig/Autoloader.php';
-require_once ROOT_PATH . 'vendor/htmlpurifier/HTMLPurifier.standalone.php';
 
 date_default_timezone_set('Europe/Berlin');
 

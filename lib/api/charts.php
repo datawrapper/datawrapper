@@ -1,7 +1,5 @@
 <?php
 
-require_once '../../lib/utils/chart_publish.php';
-
 /**
  * API: get list of all charts by the current user
  */
@@ -168,8 +166,6 @@ $app->put('/charts/:id/data', function($chart_id) use ($app) {
 $app->post('/charts/:id/data', function($chart_id) use ($app) {
     disable_cache($app);
     if_chart_is_writable($chart_id, function($user, $chart) use ($app) {
-
-        require_once '../../lib/utils/file-uploader.php';
 
         // list of valid extensions, ex. array("jpeg", "xml", "bmp")
         $allowedExtensions = array('txt', 'csv', 'tsv');
