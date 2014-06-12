@@ -86,6 +86,7 @@ $app->post('/organizations/:id/users', function($org_id) use ($app) {
                         $org->save();
                         $org->setRole($u, 'admin');
                     }
+                    DatawrapperHooks::execute(DatawrapperHooks::USER_ORGANIZATION_ADD, $org, $u);
                 }
             }
             $org->save();
@@ -106,6 +107,7 @@ $app->delete('/organizations/:id/users/:uid', function($org_id, $user_id) use ($
         if ($org && $user) {
             $org->removeUser($user);
             $org->save();
+            DatawrapperHooks::execute(DatawrapperHooks::USER_ORGANIZATION_REMOVE, $org, $user);
             ok();
         } else {
             return error('unknown-organization-or-user', 'Organization or user not found');

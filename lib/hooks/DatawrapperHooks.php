@@ -146,6 +146,10 @@ class DatawrapperHooks {
     // a new user as bean created
     const USER_SIGNUP = 'user_signup';
 
+    const USER_ORGANIZATION_ADD = 'user_organization_add';
+    const USER_ORGANIZATION_REMOVE = 'user_organization_remove';
+
+
 }
 
 
