@@ -61,6 +61,10 @@ function if_is_admin($callback) {
     }
 }
 
+$app->notFound(function() {
+    error('not-found', 'Not Found');
+});
+
 require_once '../../lib/api/users.php';
 require_once '../../lib/api/auth.php';
 require_once '../../lib/api/charts.php';
