@@ -239,7 +239,7 @@ $(function() {
                     _.each(data.data.errors, function(msg) {
                         dw.backend.logMessage(msg, $('.settings.profile .control-group')[0], 'warning');
                     });
-                    $('.profile .reset').attr('disabled', true);
+                    $('.profile .reset').prop('disabled', true);
                 } else {
                     dw.backend.logError(data.message, $('.settings.profile .control-group')[0]);
                 }
@@ -308,9 +308,9 @@ $(function() {
         $('#pwd2')[0].type = t;
     });
 
-    $('#delete-account').attr('disabled', true);
+    $('#delete-account').prop('disabled', true);
     $('#are-you-sure').change(function() {
-        $('#delete-account').attr('disabled', $('#are-you-sure').attr('checked') != 'checked');
+        $('#delete-account').prop('disabled', !$('#are-you-sure').prop('checked'));
     });
     $('#delete-account').click(function() {
         $('#confirmDeletion').modal({
