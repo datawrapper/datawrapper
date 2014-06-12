@@ -26,7 +26,7 @@ $values = array();
 
 foreach ($queries as $key => $sql) {
     $res = $db->query($sql);
-    if ($res->rowCount() > 0) {
+    if ($res) {
         $row = $res->fetch(PDO::FETCH_ASSOC);
         $values[] = '(NOW(), "'.$key.'", '.$row['c'].')';
     }
