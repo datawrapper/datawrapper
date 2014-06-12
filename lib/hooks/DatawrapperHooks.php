@@ -80,6 +80,9 @@ class DatawrapperHooks {
     // returns the URL of a published chart (args: chart)
     const GET_PUBLISHED_URL = 'get_pulished_url';
 
+    // returns a key specifically for the storage (eg the s3 bucket)
+    const GET_PUBLISH_STORAGE_KEY = 'get_publish_storage_key';
+
     // Send an email (args: to, subject, body, headers)
     const SEND_EMAIL = 'send_email';
 
