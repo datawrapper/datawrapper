@@ -23,4 +23,4 @@ It was created by [Mirko Lorenz](http://www.mirkolorenz.com/), [Nicolas Kayser-B
 * Chinese - [CUI Anyong](https://github.com/xiaoyongzi)
 * Portuguese - [Rubens Fernando](https://crowdin.net/profile/rubensfernando)
 
-If you want to contribute translations, contact us via [Crowdin.net](crowdin.net/project/datawrapper).
+If you want to contribute translations, contact us via [Crowdin.net](https://crowdin.net/project/datawrapper).
