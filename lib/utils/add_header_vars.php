@@ -3,11 +3,13 @@
 
 function add_header_vars(&$page, $active = null, $page_css = null) {
 
-    function header_nav_hook(&$headlinks, $part) {
-        $links = DatawrapperHooks::execute('header_nav_' . $part);
-        if (!empty($links)) {
-            foreach ($links as $link) {
-                $headlinks[] = $link;
+    if (!function_exists('header_nav_hook')) {
+        function header_nav_hook(&$headlinks, $part) {
+            $links = DatawrapperHooks::execute('header_nav_' . $part);
+            if (!empty($links)) {
+                foreach ($links as $link) {
+                    $headlinks[] = $link;
+                }
             }
         }
     }
