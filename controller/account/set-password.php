@@ -13,9 +13,9 @@ $app->get('/account/set-password/:token', function ($token) use ($app) {
         if (count($users) != 1) {
             $page['alert'] = array(
                 'type' => 'error',
-                'message' => _('This activation token is invalid. Your email address is probably already activated.')
+                'message' => __('This activation token is invalid. Your email address is probably already activated.')
             );
         }
     }
-    $app->render('set-password.twig', $page);
+    $app->render('account/set-password.twig', $page);
 });
