@@ -78,7 +78,6 @@ dw.utils = {
      * input format of the dates in the dataset
      */
     longDateFormat: function(column) {
-        var me = this;
         return function(d) {
             if (column.type() == 'date') {
                 switch (column.type(true).precision()) {
@@ -172,7 +171,7 @@ dw.utils = {
      *
      */
     significantDimension: function(values) {
-        var result = [], dimension = 0, nonEqual = true,
+        var result = [], dimension = 0,
             uniqValues = _.uniq(values),
             check, diff;
 
