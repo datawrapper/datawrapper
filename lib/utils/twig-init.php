@@ -23,7 +23,7 @@ function dwInitTwigEnvironment(Twig_Environment $twig) {
     $twig->addExtension(new Twig_Extensions_Extension_I18n());
 
     $twig->addFilter(new Twig_SimpleFilter('purify', function($dirty) {
-        return dwGetHTMLPurifier()->purify($dirty_html);
+        return dwGetHTMLPurifier()->purify($dirty);
     }));
 
     $twig->addFilter(new Twig_SimpleFilter('json', function($arr) {
