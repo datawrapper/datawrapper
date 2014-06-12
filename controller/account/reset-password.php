@@ -25,7 +25,7 @@ $app->get('/account/reset-password/:token', function ($token) use ($app) {
             // $user->save();
             $page['token'] = $token;
 
-            $app->render('account-reset-password.twig', $page);
+            $app->render('account/reset-password.twig', $page);
         }
     }
 });
