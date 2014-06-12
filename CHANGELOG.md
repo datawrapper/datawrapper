@@ -3,6 +3,8 @@ CHANGELOG
 
 ### 1.7.9
 * refactored controller code base
+* refactored account templates
+* bugfixes
 
 ### 1.7.8
 * re-structured header navbar
