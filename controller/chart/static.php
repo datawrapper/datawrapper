@@ -1,6 +1,6 @@
 <?php
 
-require_once '../lib/utils/themes.php';
+require_once ROOT_PATH . 'lib/utils/themes.php';
 
 /*
  * VISUALIZE STEP

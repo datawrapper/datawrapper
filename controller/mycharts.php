@@ -1,7 +1,7 @@
 <?php
 
-require_once '../lib/utils/themes.php';
-require_once '../lib/utils/pagination.php';
+require_once ROOT_PATH . 'lib/utils/themes.php';
+require_once ROOT_PATH . 'lib/utils/pagination.php';
 
 function nbChartsByMonth($user) {
     $con = Propel::getConnection();

@@ -1,7 +1,7 @@
 <?php
 
-require_once '../lib/utils/themes.php';
-require_once '../lib/utils/chart_content.php';
+require_once ROOT_PATH . 'lib/utils/themes.php';
+require_once ROOT_PATH . 'lib/utils/chart_content.php';
 
 /*
  * Shows a preview of a chart for display in an iFrame
