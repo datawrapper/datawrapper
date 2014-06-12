@@ -3,6 +3,8 @@
 class DatawrapperPluginManager {
 
     protected static $loaded = array();
+    // instances of all (real) plugin classes
+    protected static $instances = array();
 
     /*
      * loads plugin
@@ -47,6 +49,7 @@ class DatawrapperPluginManager {
                     require_once ROOT_PATH . 'plugins/' . $plugin->getName() . '/' . $lib;
                 }
                 $pluginClass->init();
+                return $pluginClass;
             }
         }
         while (count($not_loaded_yet) > 0) {
@@ -77,7 +80,7 @@ class DatawrapperPluginManager {
                 if ($can_load) {
                     // load plugin
                     self::$loaded[$id] = true;
-                    load_plugin($plugin);
+                    self::$instances[$id] = load_plugin($plugin);
                 } else {
                     if (!isset($could_not_install[$id])) {
                         $not_loaded_yet[] = $plugin; // so try next time
@@ -90,6 +93,13 @@ class DatawrapperPluginManager {
 
     public static function loaded($plugin_id) {
         return isset(self::$loaded[$plugin_id]) && self::$loaded[$plugin_id];
+    }
+
+    public static function getInstance($plugin_id) {
+        if (isset(self::$instances[$plugin_id])) {
+            return self::$instances[$plugin_id];
+        }
+        return null;
     }
 
 }
