@@ -1,7 +1,5 @@
 <?php
 
-require_once ROOT_PATH . 'lib/utils/themes.php';
-
 class DatawrapperPlugin_AdminThemes extends DatawrapperPlugin {
 
     public function init() {
