@@ -63,7 +63,7 @@
                     <div class="email control-group{% if new_email_confirmed %} success{% endif %}">
                         <label class="control-label" for="email">{% trans "E-Mail" %}</label>
                         <div class="controls">
-                            <input type="text" class="input-xlarge" id="email" value="{{ user.email }}">
+                            <input type="email" class="input-xlarge" id="email" value="{{ user.email }}">
                             <p class="help-block">
                                 {% if new_email_confirmed %}
                                     {% trans "Your email address has been updated!" %}
@@ -159,13 +159,13 @@
             <div class="form-horizontal">
                  <fieldset>
                      <div class="control-group">
-                        <label class="control-label" for="pwd2">{% trans "Are you sure?" %}</label>
+                        <label class="control-label" for="are-you-sure">{% trans "Are you sure?" %}</label>
                         <div class="controls">
                             <label class="checkbox" for="are-you-sure"><input type="checkbox" id="are-you-sure" /> {% trans "Yes, I really know what I'm doing" %}</label>
                         </div>
                     </div>
                     <div class="control-group">
-                        <label class="control-label" for="pwd2">{% trans "So then.." %}</label>
+                        <label class="control-label" for="delete-account">{% trans "So then.." %}</label>
                         <div class="controls">
                             <button class="btn btn-danger" id="delete-account">{% trans "Delete my account!" %}</button>
                         </div>
@@ -239,7 +239,7 @@ $(function() {
                     _.each(data.data.errors, function(msg) {
                         dw.backend.logMessage(msg, $('.settings.profile .control-group')[0], 'warning');
                     });
-                    $('.profile .reset').attr('disabled', true);
+                    $('.profile .reset').prop('disabled', true);
                 } else {
                     dw.backend.logError(data.message, $('.settings.profile .control-group')[0]);
                 }
@@ -308,9 +308,9 @@ $(function() {
         $('#pwd2')[0].type = t;
     });
 
-    $('#delete-account').attr('disabled', true);
+    $('#delete-account').prop('disabled', true);
     $('#are-you-sure').change(function() {
-        $('#delete-account').attr('disabled', $('#are-you-sure').attr('checked') != 'checked');
+        $('#delete-account').prop('disabled', !$('#are-you-sure').prop('checked'));
     });
     $('#delete-account').click(function() {
         $('#confirmDeletion').modal({
