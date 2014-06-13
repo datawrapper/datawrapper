@@ -4,22 +4,14 @@
  * Custom save handler for Datawrapper sessions
  */
 
-
-$conf = Propel::getConfiguration(PropelConfiguration::TYPE_ARRAY);
-
-$dbconn = $conf['datasources']['datawrapper']['connection'];
-preg_match('/mysql\:host=([^;]+);dbname=(.*)/', $dbconn['dsn'], $m);
-$dbhost = $m[1];
-$dbname = $m[2];
-$dbuser = $dbconn['user'];
-$dbpwd = $dbconn['password'];
-
-mysql_connect($dbhost, $dbuser, $dbpwd);
-mysql_select_db($dbname);
-
-
 class DatabaseSessionHandler
 {
+    protected $db;
+
+    public function __construct(PDO $conn) {
+        $this->db = $conn;
+    }
+
     function open($sess_path, $sess_name) {
         return true;
     }
@@ -29,37 +21,38 @@ class DatabaseSessionHandler
     }
 
     function read($sess_id) {
-        $result = mysql_query("SELECT session_data FROM session WHERE session_id = '$sess_id';");
-        if (!mysql_num_rows($result)) {
-            mysql_query("INSERT INTO session (session_id, date_created, last_updated) VALUES ('$sess_id', NOW(), NOW());");
+        $result = $this->db->query("SELECT session_data FROM session WHERE session_id = '$sess_id'");
+        if ($result->rowCount() === 0) {
+            $this->db->exec("INSERT INTO session (session_id, date_created, last_updated, session_data) VALUES ('$sess_id', NOW(), NOW(), '')");
             return '';
-        } else {
-            $res = mysql_fetch_array($result);
-            //var_dump(unserialize($res['session_data']));
-            //die();
-            mysql_query("UPDATE session SET last_updated = NOW() WHERE session_id = '$sess_id';");
-            return $res['session_data'];
         }
+
+        $res = $result->fetch(PDO::FETCH_ASSOC);
+        $this->db->exec("UPDATE session SET last_updated = NOW() WHERE session_id = '$sess_id'");
+
+        return $res['session_data'];
     }
 
     function write($sess_id, $data) {
-        mysql_query("UPDATE session SET session_data = '$data', last_updated = NOW() WHERE session_id = '$sess_id';");
+        $this->db->exec("UPDATE session SET session_data = '$data', last_updated = NOW() WHERE session_id = '$sess_id'");
         return true;
     }
 
     function destroy($sess_id) {
-        mysql_query("DELETE FROM session WHERE session_id = '$sess_id';");
+        $this->db->exec("DELETE FROM session WHERE session_id = '$sess_id'");
         return true;
     }
 
     function gc($sess_maxlifetime) {
-        mysql_query("DELETE FROM session WHERE session_data = \"slim.flash|a:0:{}\" AND last_updated < '".date('c', time()-86400*30)."'");
+        $this->db->exec("DELETE FROM session WHERE session_data = \"slim.flash|a:0:{}\" AND last_updated < '".date('c', time()-86400*30)."'");
         return true;
     }
-
 }
 
-$handler = new DatabaseSessionHandler();
+$conf    = Propel::getConfiguration(PropelConfiguration::TYPE_ARRAY);
+$dbconf  = $conf['datasources']['datawrapper']['connection'];
+$pdo     = new PDO($dbconf['dsn'], $dbconf['user'], $dbconf['password']);
+$handler = new DatabaseSessionHandler($pdo);
 
 session_set_save_handler(
     array($handler, 'open'),
