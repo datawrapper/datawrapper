@@ -1,9 +1,0 @@
-class JSONView extends Slim_View {
-
-    public function render( $template ) {
-        // $env = $this->getEnvironment();
-        // $template = $env->loadTemplate($template);
-        return $template->render($this->data);
-    }
-
-}

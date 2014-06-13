@@ -1,8 +1,5 @@
 <?php
 
-require_once ROOT_PATH . 'vendor/jsmin/jsmin.php';
-
-
 function get_chart_content($chart, $user, $published = false, $debug = false) {
     $theme_css = array();
     $theme_js = array();

@@ -11,22 +11,15 @@ define('DATAWRAPPER_VERSION', '1.7.9');  // must match with package.json
 
 define('ROOT_PATH', '../');
 
-require_once ROOT_PATH . 'lib/utils/check_server.php';
+require_once ROOT_PATH . 'vendor/autoload.php';
 
 check_server();
 
 require ROOT_PATH . 'lib/bootstrap.php';
 
 $twig = $app->view()->getEnvironment();
+dwInitTwigEnvironment($twig);
 
-require ROOT_PATH . 'lib/utils/twig-init.php';
-
-require_once ROOT_PATH . 'lib/utils/disable_cache.php';
-require_once ROOT_PATH . 'lib/utils/add_header_vars.php';
-require_once ROOT_PATH . 'lib/utils/add_editor_nav.php';
-
-require_once ROOT_PATH . 'lib/utils/errors.php';
-require_once ROOT_PATH . 'lib/utils/check_chart.php';
 require_once ROOT_PATH . 'controller/plugin-templates.php';
 require_once ROOT_PATH . 'controller/home.php';
 require_once ROOT_PATH . 'controller/login.php';
