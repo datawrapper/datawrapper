@@ -85,7 +85,7 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
         $headlinks[] = array(
             'url' => '/mycharts/',
             'id' => 'mycharts',
-            'title' => '<img style="height:22px;position:relative;top:-2px;border-radius:7px;margin-right:7px" src="http://www.gravatar.com/avatar/' . md5(strtolower(trim($user->getEmail()))) . '?s=44&amp;d=mm" /><b>'.htmlspecialchars($username, ENT_QUOTES, 'UTF-8').'</b>'
+            'title' => '<img style="height:22px;position:relative;top:-2px;border-radius:7px;margin-right:7px" src="//www.gravatar.com/avatar/' . md5(strtolower(trim($user->getEmail()))) . '?s=44&amp;d=mm" /><b>'.htmlspecialchars($username, ENT_QUOTES, 'UTF-8').'</b>'
         );
 
         if ($user->hasCharts()) {
