@@ -20,7 +20,9 @@ function dwGetHTMLPurifier() {
 }
 
 function dwInitTwigEnvironment(Twig_Environment $twig) {
-    $twig->addExtension(new Twig_Extensions_Extension_I18n());
+    $twig->setCache(ROOT_PATH.'/tmp/twig');
+    $twig->enableAutoReload();
+    $twig->addExtension(new Twig_I18n_Extension());
 
     $twig->addFilter(new Twig_SimpleFilter('purify', function($dirty) {
         return dwGetHTMLPurifier()->purify($dirty);
