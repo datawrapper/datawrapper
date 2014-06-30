@@ -166,6 +166,7 @@ function install($pattern) {
         } else {
             $plugin = new Plugin();
             $plugin->setId($id);
+            $plugin->setInstalledAt(time());
             $plugin->save();
             _loadPluginClass($plugin)->install();
             print "Installed plugin $id.\n";
