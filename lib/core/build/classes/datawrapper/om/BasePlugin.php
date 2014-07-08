@@ -68,9 +68,20 @@ abstract class BasePlugin extends BaseObject implements Persistent
     protected $collPluginDatasPartial;
 
     /**
+     * @var        PropelObjectCollection|ProductPlugin[] Collection to store aggregation of ProductPlugin objects.
+     */
+    protected $collProductPlugins;
+    protected $collProductPluginsPartial;
+
+    /**
      * @var        PropelObjectCollection|Organization[] Collection to store aggregation of Organization objects.
      */
     protected $collOrganizations;
+
+    /**
+     * @var        PropelObjectCollection|Product[] Collection to store aggregation of Product objects.
+     */
+    protected $collProducts;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -102,6 +113,12 @@ abstract class BasePlugin extends BaseObject implements Persistent
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
      */
+    protected $productsScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
     protected $pluginOrganizationsScheduledForDeletion = null;
 
     /**
@@ -109,6 +126,12 @@ abstract class BasePlugin extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $pluginDatasScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $productPluginsScheduledForDeletion = null;
 
     /**
      * Applies default values to this object.
@@ -422,7 +445,10 @@ abstract class BasePlugin extends BaseObject implements Persistent
 
             $this->collPluginDatas = null;
 
+            $this->collProductPlugins = null;
+
             $this->collOrganizations = null;
+            $this->collProducts = null;
         } // if (deep)
     }
 
@@ -573,6 +599,32 @@ abstract class BasePlugin extends BaseObject implements Persistent
                 }
             }
 
+            if ($this->productsScheduledForDeletion !== null) {
+                if (!$this->productsScheduledForDeletion->isEmpty()) {
+                    $pks = array();
+                    $pk = $this->getPrimaryKey();
+                    foreach ($this->productsScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
+                        $pks[] = array($remotePk, $pk);
+                    }
+                    ProductPluginQuery::create()
+                        ->filterByPrimaryKeys($pks)
+                        ->delete($con);
+                    $this->productsScheduledForDeletion = null;
+                }
+
+                foreach ($this->getProducts() as $product) {
+                    if ($product->isModified()) {
+                        $product->save($con);
+                    }
+                }
+            } elseif ($this->collProducts) {
+                foreach ($this->collProducts as $product) {
+                    if ($product->isModified()) {
+                        $product->save($con);
+                    }
+                }
+            }
+
             if ($this->pluginOrganizationsScheduledForDeletion !== null) {
                 if (!$this->pluginOrganizationsScheduledForDeletion->isEmpty()) {
                     PluginOrganizationQuery::create()
@@ -601,6 +653,23 @@ abstract class BasePlugin extends BaseObject implements Persistent
 
             if ($this->collPluginDatas !== null) {
                 foreach ($this->collPluginDatas as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->productPluginsScheduledForDeletion !== null) {
+                if (!$this->productPluginsScheduledForDeletion->isEmpty()) {
+                    ProductPluginQuery::create()
+                        ->filterByPrimaryKeys($this->productPluginsScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->productPluginsScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collProductPlugins !== null) {
+                foreach ($this->collProductPlugins as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -772,6 +841,14 @@ abstract class BasePlugin extends BaseObject implements Persistent
                     }
                 }
 
+                if ($this->collProductPlugins !== null) {
+                    foreach ($this->collProductPlugins as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
 
             $this->alreadyInValidation = false;
         }
@@ -859,6 +936,9 @@ abstract class BasePlugin extends BaseObject implements Persistent
             }
             if (null !== $this->collPluginDatas) {
                 $result['PluginDatas'] = $this->collPluginDatas->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collProductPlugins) {
+                $result['ProductPlugins'] = $this->collProductPlugins->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -1035,6 +1115,12 @@ abstract class BasePlugin extends BaseObject implements Persistent
                 }
             }
 
+            foreach ($this->getProductPlugins() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addProductPlugin($relObj->copy($deepCopy));
+                }
+            }
+
             //unflag object copy
             $this->startCopy = false;
         } // if ($deepCopy)
@@ -1101,6 +1187,9 @@ abstract class BasePlugin extends BaseObject implements Persistent
         }
         if ('PluginData' == $relationName) {
             $this->initPluginDatas();
+        }
+        if ('ProductPlugin' == $relationName) {
+            $this->initProductPlugins();
         }
     }
 
@@ -1566,6 +1655,249 @@ abstract class BasePlugin extends BaseObject implements Persistent
     }
 
     /**
+     * Clears out the collProductPlugins collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return Plugin The current object (for fluent API support)
+     * @see        addProductPlugins()
+     */
+    public function clearProductPlugins()
+    {
+        $this->collProductPlugins = null; // important to set this to null since that means it is uninitialized
+        $this->collProductPluginsPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collProductPlugins collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialProductPlugins($v = true)
+    {
+        $this->collProductPluginsPartial = $v;
+    }
+
+    /**
+     * Initializes the collProductPlugins collection.
+     *
+     * By default this just sets the collProductPlugins collection to an empty array (like clearcollProductPlugins());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initProductPlugins($overrideExisting = true)
+    {
+        if (null !== $this->collProductPlugins && !$overrideExisting) {
+            return;
+        }
+        $this->collProductPlugins = new PropelObjectCollection();
+        $this->collProductPlugins->setModel('ProductPlugin');
+    }
+
+    /**
+     * Gets an array of ProductPlugin objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Plugin is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|ProductPlugin[] List of ProductPlugin objects
+     * @throws PropelException
+     */
+    public function getProductPlugins($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collProductPluginsPartial && !$this->isNew();
+        if (null === $this->collProductPlugins || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collProductPlugins) {
+                // return empty collection
+                $this->initProductPlugins();
+            } else {
+                $collProductPlugins = ProductPluginQuery::create(null, $criteria)
+                    ->filterByPlugin($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collProductPluginsPartial && count($collProductPlugins)) {
+                      $this->initProductPlugins(false);
+
+                      foreach($collProductPlugins as $obj) {
+                        if (false == $this->collProductPlugins->contains($obj)) {
+                          $this->collProductPlugins->append($obj);
+                        }
+                      }
+
+                      $this->collProductPluginsPartial = true;
+                    }
+
+                    $collProductPlugins->getInternalIterator()->rewind();
+                    return $collProductPlugins;
+                }
+
+                if($partial && $this->collProductPlugins) {
+                    foreach($this->collProductPlugins as $obj) {
+                        if($obj->isNew()) {
+                            $collProductPlugins[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collProductPlugins = $collProductPlugins;
+                $this->collProductPluginsPartial = false;
+            }
+        }
+
+        return $this->collProductPlugins;
+    }
+
+    /**
+     * Sets a collection of ProductPlugin objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $productPlugins A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return Plugin The current object (for fluent API support)
+     */
+    public function setProductPlugins(PropelCollection $productPlugins, PropelPDO $con = null)
+    {
+        $productPluginsToDelete = $this->getProductPlugins(new Criteria(), $con)->diff($productPlugins);
+
+        $this->productPluginsScheduledForDeletion = unserialize(serialize($productPluginsToDelete));
+
+        foreach ($productPluginsToDelete as $productPluginRemoved) {
+            $productPluginRemoved->setPlugin(null);
+        }
+
+        $this->collProductPlugins = null;
+        foreach ($productPlugins as $productPlugin) {
+            $this->addProductPlugin($productPlugin);
+        }
+
+        $this->collProductPlugins = $productPlugins;
+        $this->collProductPluginsPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related ProductPlugin objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related ProductPlugin objects.
+     * @throws PropelException
+     */
+    public function countProductPlugins(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collProductPluginsPartial && !$this->isNew();
+        if (null === $this->collProductPlugins || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collProductPlugins) {
+                return 0;
+            }
+
+            if($partial && !$criteria) {
+                return count($this->getProductPlugins());
+            }
+            $query = ProductPluginQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByPlugin($this)
+                ->count($con);
+        }
+
+        return count($this->collProductPlugins);
+    }
+
+    /**
+     * Method called to associate a ProductPlugin object to this object
+     * through the ProductPlugin foreign key attribute.
+     *
+     * @param    ProductPlugin $l ProductPlugin
+     * @return Plugin The current object (for fluent API support)
+     */
+    public function addProductPlugin(ProductPlugin $l)
+    {
+        if ($this->collProductPlugins === null) {
+            $this->initProductPlugins();
+            $this->collProductPluginsPartial = true;
+        }
+        if (!in_array($l, $this->collProductPlugins->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddProductPlugin($l);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	ProductPlugin $productPlugin The productPlugin object to add.
+     */
+    protected function doAddProductPlugin($productPlugin)
+    {
+        $this->collProductPlugins[]= $productPlugin;
+        $productPlugin->setPlugin($this);
+    }
+
+    /**
+     * @param	ProductPlugin $productPlugin The productPlugin object to remove.
+     * @return Plugin The current object (for fluent API support)
+     */
+    public function removeProductPlugin($productPlugin)
+    {
+        if ($this->getProductPlugins()->contains($productPlugin)) {
+            $this->collProductPlugins->remove($this->collProductPlugins->search($productPlugin));
+            if (null === $this->productPluginsScheduledForDeletion) {
+                $this->productPluginsScheduledForDeletion = clone $this->collProductPlugins;
+                $this->productPluginsScheduledForDeletion->clear();
+            }
+            $this->productPluginsScheduledForDeletion[]= clone $productPlugin;
+            $productPlugin->setPlugin(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Plugin is new, it will return
+     * an empty collection; or if this Plugin has previously
+     * been saved, it will retrieve related ProductPlugins from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Plugin.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|ProductPlugin[] List of ProductPlugin objects
+     */
+    public function getProductPluginsJoinProduct($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = ProductPluginQuery::create(null, $criteria);
+        $query->joinWith('Product', $join_behavior);
+
+        return $this->getProductPlugins($query, $con);
+    }
+
+    /**
      * Clears out the collOrganizations collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
@@ -1743,6 +2075,183 @@ abstract class BasePlugin extends BaseObject implements Persistent
     }
 
     /**
+     * Clears out the collProducts collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return Plugin The current object (for fluent API support)
+     * @see        addProducts()
+     */
+    public function clearProducts()
+    {
+        $this->collProducts = null; // important to set this to null since that means it is uninitialized
+        $this->collProductsPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * Initializes the collProducts collection.
+     *
+     * By default this just sets the collProducts collection to an empty collection (like clearProducts());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @return void
+     */
+    public function initProducts()
+    {
+        $this->collProducts = new PropelObjectCollection();
+        $this->collProducts->setModel('Product');
+    }
+
+    /**
+     * Gets a collection of Product objects related by a many-to-many relationship
+     * to the current object by way of the product_plugin cross-reference table.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Plugin is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria Optional query object to filter the query
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return PropelObjectCollection|Product[] List of Product objects
+     */
+    public function getProducts($criteria = null, PropelPDO $con = null)
+    {
+        if (null === $this->collProducts || null !== $criteria) {
+            if ($this->isNew() && null === $this->collProducts) {
+                // return empty collection
+                $this->initProducts();
+            } else {
+                $collProducts = ProductQuery::create(null, $criteria)
+                    ->filterByPlugin($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    return $collProducts;
+                }
+                $this->collProducts = $collProducts;
+            }
+        }
+
+        return $this->collProducts;
+    }
+
+    /**
+     * Sets a collection of Product objects related by a many-to-many relationship
+     * to the current object by way of the product_plugin cross-reference table.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $products A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return Plugin The current object (for fluent API support)
+     */
+    public function setProducts(PropelCollection $products, PropelPDO $con = null)
+    {
+        $this->clearProducts();
+        $currentProducts = $this->getProducts();
+
+        $this->productsScheduledForDeletion = $currentProducts->diff($products);
+
+        foreach ($products as $product) {
+            if (!$currentProducts->contains($product)) {
+                $this->doAddProduct($product);
+            }
+        }
+
+        $this->collProducts = $products;
+
+        return $this;
+    }
+
+    /**
+     * Gets the number of Product objects related by a many-to-many relationship
+     * to the current object by way of the product_plugin cross-reference table.
+     *
+     * @param Criteria $criteria Optional query object to filter the query
+     * @param boolean $distinct Set to true to force count distinct
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return int the number of related Product objects
+     */
+    public function countProducts($criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        if (null === $this->collProducts || null !== $criteria) {
+            if ($this->isNew() && null === $this->collProducts) {
+                return 0;
+            } else {
+                $query = ProductQuery::create(null, $criteria);
+                if ($distinct) {
+                    $query->distinct();
+                }
+
+                return $query
+                    ->filterByPlugin($this)
+                    ->count($con);
+            }
+        } else {
+            return count($this->collProducts);
+        }
+    }
+
+    /**
+     * Associate a Product object to this object
+     * through the product_plugin cross reference table.
+     *
+     * @param  Product $product The ProductPlugin object to relate
+     * @return Plugin The current object (for fluent API support)
+     */
+    public function addProduct(Product $product)
+    {
+        if ($this->collProducts === null) {
+            $this->initProducts();
+        }
+        if (!$this->collProducts->contains($product)) { // only add it if the **same** object is not already associated
+            $this->doAddProduct($product);
+
+            $this->collProducts[]= $product;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	Product $product The product object to add.
+     */
+    protected function doAddProduct($product)
+    {
+        $productPlugin = new ProductPlugin();
+        $productPlugin->setProduct($product);
+        $this->addProductPlugin($productPlugin);
+    }
+
+    /**
+     * Remove a Product object to this object
+     * through the product_plugin cross reference table.
+     *
+     * @param Product $product The ProductPlugin object to relate
+     * @return Plugin The current object (for fluent API support)
+     */
+    public function removeProduct(Product $product)
+    {
+        if ($this->getProducts()->contains($product)) {
+            $this->collProducts->remove($this->collProducts->search($product));
+            if (null === $this->productsScheduledForDeletion) {
+                $this->productsScheduledForDeletion = clone $this->collProducts;
+                $this->productsScheduledForDeletion->clear();
+            }
+            $this->productsScheduledForDeletion[]= $product;
+        }
+
+        return $this;
+    }
+
+    /**
      * Clears the current object and sets all attributes to their default values
      */
     public function clear()
@@ -1784,8 +2293,18 @@ abstract class BasePlugin extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collProductPlugins) {
+                foreach ($this->collProductPlugins as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collOrganizations) {
                 foreach ($this->collOrganizations as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collProducts) {
+                foreach ($this->collProducts as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
@@ -1801,10 +2320,18 @@ abstract class BasePlugin extends BaseObject implements Persistent
             $this->collPluginDatas->clearIterator();
         }
         $this->collPluginDatas = null;
+        if ($this->collProductPlugins instanceof PropelCollection) {
+            $this->collProductPlugins->clearIterator();
+        }
+        $this->collProductPlugins = null;
         if ($this->collOrganizations instanceof PropelCollection) {
             $this->collOrganizations->clearIterator();
         }
         $this->collOrganizations = null;
+        if ($this->collProducts instanceof PropelCollection) {
+            $this->collProducts->clearIterator();
+        }
+        $this->collProducts = null;
     }
 
     /**
