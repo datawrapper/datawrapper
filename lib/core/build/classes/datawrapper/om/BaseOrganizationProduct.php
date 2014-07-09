@@ -37,7 +37,7 @@ abstract class BaseOrganizationProduct extends BaseObject implements Persistent
 
     /**
      * The value for the product_id field.
-     * @var        string
+     * @var        int
      */
     protected $product_id;
 
@@ -84,7 +84,7 @@ abstract class BaseOrganizationProduct extends BaseObject implements Persistent
     /**
      * Get the [product_id] column value.
      *
-     * @return string
+     * @return int
      */
     public function getProductId()
     {
@@ -119,13 +119,13 @@ abstract class BaseOrganizationProduct extends BaseObject implements Persistent
     /**
      * Set the value of [product_id] column.
      *
-     * @param string $v new value
+     * @param int $v new value
      * @return OrganizationProduct The current object (for fluent API support)
      */
     public function setProductId($v)
     {
         if ($v !== null && is_numeric($v)) {
-            $v = (string) $v;
+            $v = (int) $v;
         }
 
         if ($this->product_id !== $v) {
@@ -174,7 +174,7 @@ abstract class BaseOrganizationProduct extends BaseObject implements Persistent
         try {
 
             $this->organization_id = ($row[$startcol + 0] !== null) ? (string) $row[$startcol + 0] : null;
-            $this->product_id = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
+            $this->product_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -439,7 +439,7 @@ abstract class BaseOrganizationProduct extends BaseObject implements Persistent
                         $stmt->bindValue($identifier, $this->organization_id, PDO::PARAM_STR);
                         break;
                     case '`product_id`':
-                        $stmt->bindValue($identifier, $this->product_id, PDO::PARAM_STR);
+                        $stmt->bindValue($identifier, $this->product_id, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -929,7 +929,7 @@ abstract class BaseOrganizationProduct extends BaseObject implements Persistent
      */
     public function getProduct(PropelPDO $con = null, $doQuery = true)
     {
-        if ($this->aProduct === null && (($this->product_id !== "" && $this->product_id !== null)) && $doQuery) {
+        if ($this->aProduct === null && ($this->product_id !== null) && $doQuery) {
             $this->aProduct = ProductQuery::create()->findPk($this->product_id, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference

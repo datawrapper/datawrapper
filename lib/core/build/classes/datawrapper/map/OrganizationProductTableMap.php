@@ -40,7 +40,7 @@ class OrganizationProductTableMap extends TableMap
         $this->setIsCrossRef(true);
         // columns
         $this->addForeignPrimaryKey('organization_id', 'OrganizationId', 'VARCHAR' , 'organization', 'id', true, 128, null);
-        $this->addForeignPrimaryKey('product_id', 'ProductId', 'VARCHAR' , 'product', 'id', true, 128, null);
+        $this->addForeignPrimaryKey('product_id', 'ProductId', 'INTEGER' , 'product', 'id', true, null, null);
         // validators
     } // initialize()
 

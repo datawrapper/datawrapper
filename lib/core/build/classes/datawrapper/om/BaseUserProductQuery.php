@@ -27,11 +27,11 @@
  * @method UserProduct findOne(PropelPDO $con = null) Return the first UserProduct matching the query
  * @method UserProduct findOneOrCreate(PropelPDO $con = null) Return the first UserProduct matching the query, or a new UserProduct object populated from the query conditions when no match is found
  *
- * @method UserProduct findOneByUserId(string $user_id) Return the first UserProduct filtered by the user_id column
- * @method UserProduct findOneByProductId(string $product_id) Return the first UserProduct filtered by the product_id column
+ * @method UserProduct findOneByUserId(int $user_id) Return the first UserProduct filtered by the user_id column
+ * @method UserProduct findOneByProductId(int $product_id) Return the first UserProduct filtered by the product_id column
  *
- * @method array findByUserId(string $user_id) Return UserProduct objects filtered by the user_id column
- * @method array findByProductId(string $product_id) Return UserProduct objects filtered by the product_id column
+ * @method array findByUserId(int $user_id) Return UserProduct objects filtered by the user_id column
+ * @method array findByProductId(int $product_id) Return UserProduct objects filtered by the product_id column
  *
  * @package    propel.generator.datawrapper.om
  */
@@ -125,8 +125,8 @@ abstract class BaseUserProductQuery extends ModelCriteria
         $sql = 'SELECT `user_id`, `product_id` FROM `user_product` WHERE `user_id` = :p0 AND `product_id` = :p1';
         try {
             $stmt = $con->prepare($sql);
-            $stmt->bindValue(':p0', $key[0], PDO::PARAM_STR);
-            $stmt->bindValue(':p1', $key[1], PDO::PARAM_STR);
+            $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);
+            $stmt->bindValue(':p1', $key[1], PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
             Propel::log($e->getMessage(), Propel::LOG_ERR);
@@ -228,24 +228,39 @@ abstract class BaseUserProductQuery extends ModelCriteria
      *
      * Example usage:
      * <code>
-     * $query->filterByUserId('fooValue');   // WHERE user_id = 'fooValue'
-     * $query->filterByUserId('%fooValue%'); // WHERE user_id LIKE '%fooValue%'
+     * $query->filterByUserId(1234); // WHERE user_id = 1234
+     * $query->filterByUserId(array(12, 34)); // WHERE user_id IN (12, 34)
+     * $query->filterByUserId(array('min' => 12)); // WHERE user_id >= 12
+     * $query->filterByUserId(array('max' => 12)); // WHERE user_id <= 12
      * </code>
      *
-     * @param     string $userId The value to use as filter.
-     *              Accepts wildcards (* and % trigger a LIKE)
+     * @see       filterByUser()
+     *
+     * @param     mixed $userId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return UserProductQuery The current query, for fluid interface
      */
     public function filterByUserId($userId = null, $comparison = null)
     {
-        if (null === $comparison) {
-            if (is_array($userId)) {
+        if (is_array($userId)) {
+            $useMinMax = false;
+            if (isset($userId['min'])) {
+                $this->addUsingAlias(UserProductPeer::USER_ID, $userId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($userId['max'])) {
+                $this->addUsingAlias(UserProductPeer::USER_ID, $userId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
                 $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $userId)) {
-                $userId = str_replace('*', '%', $userId);
-                $comparison = Criteria::LIKE;
             }
         }
 
@@ -257,24 +272,39 @@ abstract class BaseUserProductQuery extends ModelCriteria
      *
      * Example usage:
      * <code>
-     * $query->filterByProductId('fooValue');   // WHERE product_id = 'fooValue'
-     * $query->filterByProductId('%fooValue%'); // WHERE product_id LIKE '%fooValue%'
+     * $query->filterByProductId(1234); // WHERE product_id = 1234
+     * $query->filterByProductId(array(12, 34)); // WHERE product_id IN (12, 34)
+     * $query->filterByProductId(array('min' => 12)); // WHERE product_id >= 12
+     * $query->filterByProductId(array('max' => 12)); // WHERE product_id <= 12
      * </code>
      *
-     * @param     string $productId The value to use as filter.
-     *              Accepts wildcards (* and % trigger a LIKE)
+     * @see       filterByProduct()
+     *
+     * @param     mixed $productId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return UserProductQuery The current query, for fluid interface
      */
     public function filterByProductId($productId = null, $comparison = null)
     {
-        if (null === $comparison) {
-            if (is_array($productId)) {
+        if (is_array($productId)) {
+            $useMinMax = false;
+            if (isset($productId['min'])) {
+                $this->addUsingAlias(UserProductPeer::PRODUCT_ID, $productId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($productId['max'])) {
+                $this->addUsingAlias(UserProductPeer::PRODUCT_ID, $productId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
                 $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $productId)) {
-                $productId = str_replace('*', '%', $productId);
-                $comparison = Criteria::LIKE;
             }
         }
 
