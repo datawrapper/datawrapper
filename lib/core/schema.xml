@@ -183,6 +183,8 @@
     </vendor>
     <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
     <column name="name" type="varchar" size="512" required="true" />
+	<column name="created_at" type="timestamp" required="true" />
+	<column name="deleted" type="boolean" default="false" />
 	<column name="data" type="clob" />
   </table>
 

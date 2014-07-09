@@ -24,19 +24,25 @@ abstract class BaseProductPeer
     const TM_CLASS = 'ProductTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 3;
+    const NUM_COLUMNS = 5;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 3;
+    const NUM_HYDRATE_COLUMNS = 5;
 
     /** the column name for the id field */
     const ID = 'product.id';
 
     /** the column name for the name field */
     const NAME = 'product.name';
+
+    /** the column name for the created_at field */
+    const CREATED_AT = 'product.created_at';
+
+    /** the column name for the deleted field */
+    const DELETED = 'product.deleted';
 
     /** the column name for the data field */
     const DATA = 'product.data';
@@ -60,12 +66,12 @@ abstract class BaseProductPeer
      * e.g. ProductPeer::$fieldNames[ProductPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'Data', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'data', ),
-        BasePeer::TYPE_COLNAME => array (ProductPeer::ID, ProductPeer::NAME, ProductPeer::DATA, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'NAME', 'DATA', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'data', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'CreatedAt', 'Deleted', 'Data', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'createdAt', 'deleted', 'data', ),
+        BasePeer::TYPE_COLNAME => array (ProductPeer::ID, ProductPeer::NAME, ProductPeer::CREATED_AT, ProductPeer::DELETED, ProductPeer::DATA, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'NAME', 'CREATED_AT', 'DELETED', 'DATA', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'created_at', 'deleted', 'data', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
     );
 
     /**
@@ -75,12 +81,12 @@ abstract class BaseProductPeer
      * e.g. ProductPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'Data' => 2, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'data' => 2, ),
-        BasePeer::TYPE_COLNAME => array (ProductPeer::ID => 0, ProductPeer::NAME => 1, ProductPeer::DATA => 2, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'NAME' => 1, 'DATA' => 2, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'data' => 2, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'CreatedAt' => 2, 'Deleted' => 3, 'Data' => 4, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'createdAt' => 2, 'deleted' => 3, 'data' => 4, ),
+        BasePeer::TYPE_COLNAME => array (ProductPeer::ID => 0, ProductPeer::NAME => 1, ProductPeer::CREATED_AT => 2, ProductPeer::DELETED => 3, ProductPeer::DATA => 4, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'NAME' => 1, 'CREATED_AT' => 2, 'DELETED' => 3, 'DATA' => 4, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'created_at' => 2, 'deleted' => 3, 'data' => 4, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
     );
 
     /**
@@ -156,10 +162,14 @@ abstract class BaseProductPeer
         if (null === $alias) {
             $criteria->addSelectColumn(ProductPeer::ID);
             $criteria->addSelectColumn(ProductPeer::NAME);
+            $criteria->addSelectColumn(ProductPeer::CREATED_AT);
+            $criteria->addSelectColumn(ProductPeer::DELETED);
             $criteria->addSelectColumn(ProductPeer::DATA);
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.name');
+            $criteria->addSelectColumn($alias . '.created_at');
+            $criteria->addSelectColumn($alias . '.deleted');
             $criteria->addSelectColumn($alias . '.data');
         }
     }

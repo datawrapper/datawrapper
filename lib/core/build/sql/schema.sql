@@ -236,6 +236,8 @@ CREATE TABLE `product`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(512) NOT NULL,
+    `created_at` DATETIME NOT NULL,
+    `deleted` TINYINT(1) DEFAULT 0,
     `data` LONGTEXT,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;

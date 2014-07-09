@@ -42,6 +42,19 @@ abstract class BaseProduct extends BaseObject implements Persistent
     protected $name;
 
     /**
+     * The value for the created_at field.
+     * @var        string
+     */
+    protected $created_at;
+
+    /**
+     * The value for the deleted field.
+     * Note: this column has a database default value of: false
+     * @var        boolean
+     */
+    protected $deleted;
+
+    /**
      * The value for the data field.
      * @var        string
      */
@@ -137,6 +150,27 @@ abstract class BaseProduct extends BaseObject implements Persistent
     protected $organizationProductsScheduledForDeletion = null;
 
     /**
+     * Applies default values to this object.
+     * This method should be called from the object's constructor (or
+     * equivalent initialization method).
+     * @see        __construct()
+     */
+    public function applyDefaultValues()
+    {
+        $this->deleted = false;
+    }
+
+    /**
+     * Initializes internal state of BaseProduct object.
+     * @see        applyDefaults()
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->applyDefaultValues();
+    }
+
+    /**
      * Get the [id] column value.
      *
      * @return int
@@ -154,6 +188,56 @@ abstract class BaseProduct extends BaseObject implements Persistent
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Get the [optionally formatted] temporal [created_at] column value.
+     *
+     *
+     * @param string $format The date/time format string (either date()-style or strftime()-style).
+     *				 If format is null, then the raw DateTime object will be returned.
+     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
+     * @throws PropelException - if unable to parse/validate the date/time value.
+     */
+    public function getCreatedAt($format = 'Y-m-d H:i:s')
+    {
+        if ($this->created_at === null) {
+            return null;
+        }
+
+        if ($this->created_at === '0000-00-00 00:00:00') {
+            // while technically this is not a default value of null,
+            // this seems to be closest in meaning.
+            return null;
+        }
+
+        try {
+            $dt = new DateTime($this->created_at);
+        } catch (Exception $x) {
+            throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->created_at, true), $x);
+        }
+
+        if ($format === null) {
+            // Because propel.useDateTimeClass is true, we return a DateTime object.
+            return $dt;
+        }
+
+        if (strpos($format, '%') !== false) {
+            return strftime($format, $dt->format('U'));
+        }
+
+        return $dt->format($format);
+
+    }
+
+    /**
+     * Get the [deleted] column value.
+     *
+     * @return boolean
+     */
+    public function getDeleted()
+    {
+        return $this->deleted;
     }
 
     /**
@@ -209,6 +293,58 @@ abstract class BaseProduct extends BaseObject implements Persistent
     } // setName()
 
     /**
+     * Sets the value of [created_at] column to a normalized version of the date/time value specified.
+     *
+     * @param mixed $v string, integer (timestamp), or DateTime value.
+     *               Empty strings are treated as null.
+     * @return Product The current object (for fluent API support)
+     */
+    public function setCreatedAt($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->created_at !== null || $dt !== null) {
+            $currentDateAsString = ($this->created_at !== null && $tmpDt = new DateTime($this->created_at)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
+            if ($currentDateAsString !== $newDateAsString) {
+                $this->created_at = $newDateAsString;
+                $this->modifiedColumns[] = ProductPeer::CREATED_AT;
+            }
+        } // if either are not null
+
+
+        return $this;
+    } // setCreatedAt()
+
+    /**
+     * Sets the value of the [deleted] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param boolean|integer|string $v The new value
+     * @return Product The current object (for fluent API support)
+     */
+    public function setDeleted($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->deleted !== $v) {
+            $this->deleted = $v;
+            $this->modifiedColumns[] = ProductPeer::DELETED;
+        }
+
+
+        return $this;
+    } // setDeleted()
+
+    /**
      * Set the value of [data] column.
      *
      * @param string $v new value
@@ -239,6 +375,10 @@ abstract class BaseProduct extends BaseObject implements Persistent
      */
     public function hasOnlyDefaultValues()
     {
+            if ($this->deleted !== false) {
+                return false;
+            }
+
         // otherwise, everything was equal, so return true
         return true;
     } // hasOnlyDefaultValues()
@@ -263,7 +403,9 @@ abstract class BaseProduct extends BaseObject implements Persistent
 
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
             $this->name = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
-            $this->data = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
+            $this->created_at = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
+            $this->deleted = ($row[$startcol + 3] !== null) ? (boolean) $row[$startcol + 3] : null;
+            $this->data = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -272,7 +414,7 @@ abstract class BaseProduct extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
             $this->postHydrate($row, $startcol, $rehydrate);
-            return $startcol + 3; // 3 = ProductPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 5; // 5 = ProductPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Product object", $e);
@@ -628,6 +770,12 @@ abstract class BaseProduct extends BaseObject implements Persistent
         if ($this->isColumnModified(ProductPeer::NAME)) {
             $modifiedColumns[':p' . $index++]  = '`name`';
         }
+        if ($this->isColumnModified(ProductPeer::CREATED_AT)) {
+            $modifiedColumns[':p' . $index++]  = '`created_at`';
+        }
+        if ($this->isColumnModified(ProductPeer::DELETED)) {
+            $modifiedColumns[':p' . $index++]  = '`deleted`';
+        }
         if ($this->isColumnModified(ProductPeer::DATA)) {
             $modifiedColumns[':p' . $index++]  = '`data`';
         }
@@ -647,6 +795,12 @@ abstract class BaseProduct extends BaseObject implements Persistent
                         break;
                     case '`name`':
                         $stmt->bindValue($identifier, $this->name, PDO::PARAM_STR);
+                        break;
+                    case '`created_at`':
+                        $stmt->bindValue($identifier, $this->created_at, PDO::PARAM_STR);
+                        break;
+                    case '`deleted`':
+                        $stmt->bindValue($identifier, (int) $this->deleted, PDO::PARAM_INT);
                         break;
                     case '`data`':
                         $stmt->bindValue($identifier, $this->data, PDO::PARAM_STR);
@@ -816,6 +970,12 @@ abstract class BaseProduct extends BaseObject implements Persistent
                 return $this->getName();
                 break;
             case 2:
+                return $this->getCreatedAt();
+                break;
+            case 3:
+                return $this->getDeleted();
+                break;
+            case 4:
                 return $this->getData();
                 break;
             default:
@@ -849,7 +1009,9 @@ abstract class BaseProduct extends BaseObject implements Persistent
         $result = array(
             $keys[0] => $this->getId(),
             $keys[1] => $this->getName(),
-            $keys[2] => $this->getData(),
+            $keys[2] => $this->getCreatedAt(),
+            $keys[3] => $this->getDeleted(),
+            $keys[4] => $this->getData(),
         );
         if ($includeForeignObjects) {
             if (null !== $this->collProductPlugins) {
@@ -902,6 +1064,12 @@ abstract class BaseProduct extends BaseObject implements Persistent
                 $this->setName($value);
                 break;
             case 2:
+                $this->setCreatedAt($value);
+                break;
+            case 3:
+                $this->setDeleted($value);
+                break;
+            case 4:
                 $this->setData($value);
                 break;
         } // switch()
@@ -930,7 +1098,9 @@ abstract class BaseProduct extends BaseObject implements Persistent
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setName($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setData($arr[$keys[2]]);
+        if (array_key_exists($keys[2], $arr)) $this->setCreatedAt($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setDeleted($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setData($arr[$keys[4]]);
     }
 
     /**
@@ -944,6 +1114,8 @@ abstract class BaseProduct extends BaseObject implements Persistent
 
         if ($this->isColumnModified(ProductPeer::ID)) $criteria->add(ProductPeer::ID, $this->id);
         if ($this->isColumnModified(ProductPeer::NAME)) $criteria->add(ProductPeer::NAME, $this->name);
+        if ($this->isColumnModified(ProductPeer::CREATED_AT)) $criteria->add(ProductPeer::CREATED_AT, $this->created_at);
+        if ($this->isColumnModified(ProductPeer::DELETED)) $criteria->add(ProductPeer::DELETED, $this->deleted);
         if ($this->isColumnModified(ProductPeer::DATA)) $criteria->add(ProductPeer::DATA, $this->data);
 
         return $criteria;
@@ -1009,6 +1181,8 @@ abstract class BaseProduct extends BaseObject implements Persistent
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
         $copyObj->setName($this->getName());
+        $copyObj->setCreatedAt($this->getCreatedAt());
+        $copyObj->setDeleted($this->getDeleted());
         $copyObj->setData($this->getData());
 
         if ($deepCopy && !$this->startCopy) {
@@ -2375,11 +2549,14 @@ abstract class BaseProduct extends BaseObject implements Persistent
     {
         $this->id = null;
         $this->name = null;
+        $this->created_at = null;
+        $this->deleted = null;
         $this->data = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
         $this->clearAllReferences();
+        $this->applyDefaultValues();
         $this->resetModified();
         $this->setNew(true);
         $this->setDeleted(false);
