@@ -51,7 +51,7 @@ class ProductTableMap extends TableMap
     {
         $this->addRelation('ProductPlugin', 'ProductPlugin', RelationMap::ONE_TO_MANY, array('id' => 'product_id', ), null, null, 'ProductPlugins');
         $this->addRelation('UserProduct', 'UserProduct', RelationMap::ONE_TO_MANY, array('id' => 'product_id', ), null, null, 'UserProducts');
-        $this->addRelation('OrganisationProduct', 'OrganisationProduct', RelationMap::ONE_TO_MANY, array('id' => 'product_id', ), null, null, 'OrganisationProducts');
+        $this->addRelation('OrganizationProduct', 'OrganizationProduct', RelationMap::ONE_TO_MANY, array('id' => 'product_id', ), null, null, 'OrganizationProducts');
         $this->addRelation('Plugin', 'Plugin', RelationMap::MANY_TO_MANY, array(), null, null, 'Plugins');
         $this->addRelation('User', 'User', RelationMap::MANY_TO_MANY, array(), null, null, 'Users');
         $this->addRelation('Organization', 'Organization', RelationMap::MANY_TO_MANY, array(), null, null, 'Organizations');

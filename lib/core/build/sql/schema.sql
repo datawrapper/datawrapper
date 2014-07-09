@@ -269,17 +269,17 @@ CREATE TABLE `user_product`
 ) ENGINE=MyISAM;
 
 -- ---------------------------------------------------------------------
--- organisation_product
+-- organization_product
 -- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `organisation_product`;
+DROP TABLE IF EXISTS `organization_product`;
 
-CREATE TABLE `organisation_product`
+CREATE TABLE `organization_product`
 (
     `organization_id` VARCHAR(128) NOT NULL,
     `product_id` VARCHAR(128) NOT NULL,
     PRIMARY KEY (`organization_id`,`product_id`),
-    INDEX `organisation_product_FI_2` (`product_id`)
+    INDEX `organization_product_FI_2` (`product_id`)
 ) ENGINE=MyISAM;
 
 # This restores the fkey checks, after having unset them earlier

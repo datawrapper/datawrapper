@@ -210,8 +210,8 @@
     </foreign-key>
   </table>
 
-  <!-- organisation <-> product map -->
-  <table name="organisation_product" isCrossRef="true">
+  <!-- organization <-> product map -->
+  <table name="organization_product" isCrossRef="true">
 	<column name="organization_id" type="varchar" size="128" primaryKey="true" />
     <column name="product_id" type="varchar" size="128" primaryKey="true" />
     <foreign-key foreignTable="organization">
