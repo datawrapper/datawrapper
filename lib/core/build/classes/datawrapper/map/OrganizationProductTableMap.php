@@ -41,6 +41,7 @@ class OrganizationProductTableMap extends TableMap
         // columns
         $this->addForeignPrimaryKey('organization_id', 'OrganizationId', 'VARCHAR' , 'organization', 'id', true, 128, null);
         $this->addForeignPrimaryKey('product_id', 'ProductId', 'INTEGER' , 'product', 'id', true, null, null);
+        $this->addColumn('expires', 'Expires', 'TIMESTAMP', false, null, null);
         // validators
     } // initialize()
 

@@ -138,4 +138,11 @@ class User extends BaseUser {
         );
     }
 
+	public function hasProduct(Product $product) {
+		return UserProductsQuery::create()
+			->filterByProduct($product)
+			->filterByUser($this)
+			->count() > 0;
+    }
+
 } // User

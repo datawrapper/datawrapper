@@ -266,6 +266,7 @@ CREATE TABLE `user_product`
 (
     `user_id` INTEGER NOT NULL,
     `product_id` INTEGER NOT NULL,
+    `expires` DATETIME,
     PRIMARY KEY (`user_id`,`product_id`),
     INDEX `user_product_FI_2` (`product_id`)
 ) ENGINE=MyISAM;
@@ -280,6 +281,7 @@ CREATE TABLE `organization_product`
 (
     `organization_id` VARCHAR(128) NOT NULL,
     `product_id` INTEGER NOT NULL,
+    `expires` DATETIME,
     PRIMARY KEY (`organization_id`,`product_id`),
     INDEX `organization_product_FI_2` (`product_id`)
 ) ENGINE=MyISAM;

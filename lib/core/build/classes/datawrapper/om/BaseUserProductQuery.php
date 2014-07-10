@@ -8,9 +8,11 @@
  *
  * @method UserProductQuery orderByUserId($order = Criteria::ASC) Order by the user_id column
  * @method UserProductQuery orderByProductId($order = Criteria::ASC) Order by the product_id column
+ * @method UserProductQuery orderByExpires($order = Criteria::ASC) Order by the expires column
  *
  * @method UserProductQuery groupByUserId() Group by the user_id column
  * @method UserProductQuery groupByProductId() Group by the product_id column
+ * @method UserProductQuery groupByExpires() Group by the expires column
  *
  * @method UserProductQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method UserProductQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -29,9 +31,11 @@
  *
  * @method UserProduct findOneByUserId(int $user_id) Return the first UserProduct filtered by the user_id column
  * @method UserProduct findOneByProductId(int $product_id) Return the first UserProduct filtered by the product_id column
+ * @method UserProduct findOneByExpires(string $expires) Return the first UserProduct filtered by the expires column
  *
  * @method array findByUserId(int $user_id) Return UserProduct objects filtered by the user_id column
  * @method array findByProductId(int $product_id) Return UserProduct objects filtered by the product_id column
+ * @method array findByExpires(string $expires) Return UserProduct objects filtered by the expires column
  *
  * @package    propel.generator.datawrapper.om
  */
@@ -122,7 +126,7 @@ abstract class BaseUserProductQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `user_id`, `product_id` FROM `user_product` WHERE `user_id` = :p0 AND `product_id` = :p1';
+        $sql = 'SELECT `user_id`, `product_id`, `expires` FROM `user_product` WHERE `user_id` = :p0 AND `product_id` = :p1';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);
@@ -309,6 +313,49 @@ abstract class BaseUserProductQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(UserProductPeer::PRODUCT_ID, $productId, $comparison);
+    }
+
+    /**
+     * Filter the query on the expires column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByExpires('2011-03-14'); // WHERE expires = '2011-03-14'
+     * $query->filterByExpires('now'); // WHERE expires = '2011-03-14'
+     * $query->filterByExpires(array('max' => 'yesterday')); // WHERE expires > '2011-03-13'
+     * </code>
+     *
+     * @param     mixed $expires The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return UserProductQuery The current query, for fluid interface
+     */
+    public function filterByExpires($expires = null, $comparison = null)
+    {
+        if (is_array($expires)) {
+            $useMinMax = false;
+            if (isset($expires['min'])) {
+                $this->addUsingAlias(UserProductPeer::EXPIRES, $expires['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($expires['max'])) {
+                $this->addUsingAlias(UserProductPeer::EXPIRES, $expires['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(UserProductPeer::EXPIRES, $expires, $comparison);
     }
 
     /**

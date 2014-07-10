@@ -15,4 +15,10 @@
  */
 class Product extends BaseProduct
 {
+	public function hasPlugin(Plugin $plugin) {
+		return ProductPluginQuery::create()
+			->filterByProduct($this)
+			->filterByPlugin($plugin)
+			->count() > 0;
+	}
 }

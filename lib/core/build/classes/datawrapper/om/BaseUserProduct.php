@@ -42,6 +42,12 @@ abstract class BaseUserProduct extends BaseObject implements Persistent
     protected $product_id;
 
     /**
+     * The value for the expires field.
+     * @var        string
+     */
+    protected $expires;
+
+    /**
      * @var        User
      */
     protected $aUser;
@@ -89,6 +95,46 @@ abstract class BaseUserProduct extends BaseObject implements Persistent
     public function getProductId()
     {
         return $this->product_id;
+    }
+
+    /**
+     * Get the [optionally formatted] temporal [expires] column value.
+     *
+     *
+     * @param string $format The date/time format string (either date()-style or strftime()-style).
+     *				 If format is null, then the raw DateTime object will be returned.
+     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
+     * @throws PropelException - if unable to parse/validate the date/time value.
+     */
+    public function getExpires($format = 'Y-m-d H:i:s')
+    {
+        if ($this->expires === null) {
+            return null;
+        }
+
+        if ($this->expires === '0000-00-00 00:00:00') {
+            // while technically this is not a default value of null,
+            // this seems to be closest in meaning.
+            return null;
+        }
+
+        try {
+            $dt = new DateTime($this->expires);
+        } catch (Exception $x) {
+            throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->expires, true), $x);
+        }
+
+        if ($format === null) {
+            // Because propel.useDateTimeClass is true, we return a DateTime object.
+            return $dt;
+        }
+
+        if (strpos($format, '%') !== false) {
+            return strftime($format, $dt->format('U'));
+        }
+
+        return $dt->format($format);
+
     }
 
     /**
@@ -142,6 +188,29 @@ abstract class BaseUserProduct extends BaseObject implements Persistent
     } // setProductId()
 
     /**
+     * Sets the value of [expires] column to a normalized version of the date/time value specified.
+     *
+     * @param mixed $v string, integer (timestamp), or DateTime value.
+     *               Empty strings are treated as null.
+     * @return UserProduct The current object (for fluent API support)
+     */
+    public function setExpires($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->expires !== null || $dt !== null) {
+            $currentDateAsString = ($this->expires !== null && $tmpDt = new DateTime($this->expires)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
+            if ($currentDateAsString !== $newDateAsString) {
+                $this->expires = $newDateAsString;
+                $this->modifiedColumns[] = UserProductPeer::EXPIRES;
+            }
+        } // if either are not null
+
+
+        return $this;
+    } // setExpires()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -175,6 +244,7 @@ abstract class BaseUserProduct extends BaseObject implements Persistent
 
             $this->user_id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
             $this->product_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
+            $this->expires = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -183,7 +253,7 @@ abstract class BaseUserProduct extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
             $this->postHydrate($row, $startcol, $rehydrate);
-            return $startcol + 2; // 2 = UserProductPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 3; // 3 = UserProductPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating UserProduct object", $e);
@@ -424,6 +494,9 @@ abstract class BaseUserProduct extends BaseObject implements Persistent
         if ($this->isColumnModified(UserProductPeer::PRODUCT_ID)) {
             $modifiedColumns[':p' . $index++]  = '`product_id`';
         }
+        if ($this->isColumnModified(UserProductPeer::EXPIRES)) {
+            $modifiedColumns[':p' . $index++]  = '`expires`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `user_product` (%s) VALUES (%s)',
@@ -440,6 +513,9 @@ abstract class BaseUserProduct extends BaseObject implements Persistent
                         break;
                     case '`product_id`':
                         $stmt->bindValue($identifier, $this->product_id, PDO::PARAM_INT);
+                        break;
+                    case '`expires`':
+                        $stmt->bindValue($identifier, $this->expires, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -592,6 +668,9 @@ abstract class BaseUserProduct extends BaseObject implements Persistent
             case 1:
                 return $this->getProductId();
                 break;
+            case 2:
+                return $this->getExpires();
+                break;
             default:
                 return null;
                 break;
@@ -623,6 +702,7 @@ abstract class BaseUserProduct extends BaseObject implements Persistent
         $result = array(
             $keys[0] => $this->getUserId(),
             $keys[1] => $this->getProductId(),
+            $keys[2] => $this->getExpires(),
         );
         if ($includeForeignObjects) {
             if (null !== $this->aUser) {
@@ -671,6 +751,9 @@ abstract class BaseUserProduct extends BaseObject implements Persistent
             case 1:
                 $this->setProductId($value);
                 break;
+            case 2:
+                $this->setExpires($value);
+                break;
         } // switch()
     }
 
@@ -697,6 +780,7 @@ abstract class BaseUserProduct extends BaseObject implements Persistent
 
         if (array_key_exists($keys[0], $arr)) $this->setUserId($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setProductId($arr[$keys[1]]);
+        if (array_key_exists($keys[2], $arr)) $this->setExpires($arr[$keys[2]]);
     }
 
     /**
@@ -710,6 +794,7 @@ abstract class BaseUserProduct extends BaseObject implements Persistent
 
         if ($this->isColumnModified(UserProductPeer::USER_ID)) $criteria->add(UserProductPeer::USER_ID, $this->user_id);
         if ($this->isColumnModified(UserProductPeer::PRODUCT_ID)) $criteria->add(UserProductPeer::PRODUCT_ID, $this->product_id);
+        if ($this->isColumnModified(UserProductPeer::EXPIRES)) $criteria->add(UserProductPeer::EXPIRES, $this->expires);
 
         return $criteria;
     }
@@ -782,6 +867,7 @@ abstract class BaseUserProduct extends BaseObject implements Persistent
     {
         $copyObj->setUserId($this->getUserId());
         $copyObj->setProductId($this->getProductId());
+        $copyObj->setExpires($this->getExpires());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -950,6 +1036,7 @@ abstract class BaseUserProduct extends BaseObject implements Persistent
     {
         $this->user_id = null;
         $this->product_id = null;
+        $this->expires = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;

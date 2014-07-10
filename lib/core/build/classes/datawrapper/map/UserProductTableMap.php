@@ -41,6 +41,7 @@ class UserProductTableMap extends TableMap
         // columns
         $this->addForeignPrimaryKey('user_id', 'UserId', 'INTEGER' , 'user', 'id', true, null, null);
         $this->addForeignPrimaryKey('product_id', 'ProductId', 'INTEGER' , 'product', 'id', true, null, null);
+        $this->addColumn('expires', 'Expires', 'TIMESTAMP', false, null, null);
         // validators
     } // initialize()
 

@@ -24,19 +24,22 @@ abstract class BaseOrganizationProductPeer
     const TM_CLASS = 'OrganizationProductTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 2;
+    const NUM_COLUMNS = 3;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 2;
+    const NUM_HYDRATE_COLUMNS = 3;
 
     /** the column name for the organization_id field */
     const ORGANIZATION_ID = 'organization_product.organization_id';
 
     /** the column name for the product_id field */
     const PRODUCT_ID = 'organization_product.product_id';
+
+    /** the column name for the expires field */
+    const EXPIRES = 'organization_product.expires';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -57,12 +60,12 @@ abstract class BaseOrganizationProductPeer
      * e.g. OrganizationProductPeer::$fieldNames[OrganizationProductPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('OrganizationId', 'ProductId', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('organizationId', 'productId', ),
-        BasePeer::TYPE_COLNAME => array (OrganizationProductPeer::ORGANIZATION_ID, OrganizationProductPeer::PRODUCT_ID, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ORGANIZATION_ID', 'PRODUCT_ID', ),
-        BasePeer::TYPE_FIELDNAME => array ('organization_id', 'product_id', ),
-        BasePeer::TYPE_NUM => array (0, 1, )
+        BasePeer::TYPE_PHPNAME => array ('OrganizationId', 'ProductId', 'Expires', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('organizationId', 'productId', 'expires', ),
+        BasePeer::TYPE_COLNAME => array (OrganizationProductPeer::ORGANIZATION_ID, OrganizationProductPeer::PRODUCT_ID, OrganizationProductPeer::EXPIRES, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ORGANIZATION_ID', 'PRODUCT_ID', 'EXPIRES', ),
+        BasePeer::TYPE_FIELDNAME => array ('organization_id', 'product_id', 'expires', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, )
     );
 
     /**
@@ -72,12 +75,12 @@ abstract class BaseOrganizationProductPeer
      * e.g. OrganizationProductPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('OrganizationId' => 0, 'ProductId' => 1, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('organizationId' => 0, 'productId' => 1, ),
-        BasePeer::TYPE_COLNAME => array (OrganizationProductPeer::ORGANIZATION_ID => 0, OrganizationProductPeer::PRODUCT_ID => 1, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ORGANIZATION_ID' => 0, 'PRODUCT_ID' => 1, ),
-        BasePeer::TYPE_FIELDNAME => array ('organization_id' => 0, 'product_id' => 1, ),
-        BasePeer::TYPE_NUM => array (0, 1, )
+        BasePeer::TYPE_PHPNAME => array ('OrganizationId' => 0, 'ProductId' => 1, 'Expires' => 2, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('organizationId' => 0, 'productId' => 1, 'expires' => 2, ),
+        BasePeer::TYPE_COLNAME => array (OrganizationProductPeer::ORGANIZATION_ID => 0, OrganizationProductPeer::PRODUCT_ID => 1, OrganizationProductPeer::EXPIRES => 2, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ORGANIZATION_ID' => 0, 'PRODUCT_ID' => 1, 'EXPIRES' => 2, ),
+        BasePeer::TYPE_FIELDNAME => array ('organization_id' => 0, 'product_id' => 1, 'expires' => 2, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, )
     );
 
     /**
@@ -153,9 +156,11 @@ abstract class BaseOrganizationProductPeer
         if (null === $alias) {
             $criteria->addSelectColumn(OrganizationProductPeer::ORGANIZATION_ID);
             $criteria->addSelectColumn(OrganizationProductPeer::PRODUCT_ID);
+            $criteria->addSelectColumn(OrganizationProductPeer::EXPIRES);
         } else {
             $criteria->addSelectColumn($alias . '.organization_id');
             $criteria->addSelectColumn($alias . '.product_id');
+            $criteria->addSelectColumn($alias . '.expires');
         }
     }
 
