@@ -12,6 +12,8 @@ CHANGELOG
 * fixed XSS vulnerability
 * replaced ext-mysql with PDO in the session handler
 * do not use the mysql extension in the check_server script
+* cleaned up makefile
+* replaces JSMin with JShrink
 
 ### 1.7.9
 * refactored controller code base
