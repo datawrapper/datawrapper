@@ -173,8 +173,8 @@ dw.chart = function(attributes) {
                 var mtrSuf = dw.utils.metricSuffix(chart.locale()),
                     values = column.values(),
                     dim = dw.utils.significantDimension(values),
-                    div = dim < -2 ? Math.round((dim*-1) / 3) * 3 :
-                            dim > 2 ? dim*-1 : 0;
+                    div = dim < -2 ? (Math.round((dim*-1) / 3) * 3) :
+                            (dim > 2 ? dim*-1 : 0),
                     ndim = dw.utils.significantDimension(_.map(values, function(v) {
                         return v / Math.pow(10, div);
                     }));
