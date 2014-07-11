@@ -4,6 +4,8 @@ CHANGELOG
 ### 1.7.10
 * load chart specific locale, if different from UI
 * allow hooking into visualize step sidebar
+* removed vendor libs from repo
+* made Datawrapper Composer-ready
 
 ### 1.7.9
 * refactored controller code base
