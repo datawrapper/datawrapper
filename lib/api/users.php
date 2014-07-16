@@ -306,3 +306,28 @@ $app->put('/account/reset-password', function() use ($app) {
     }
 });
 
+$app->post('/user/:id/products', function($id) use ($app) {
+	if_is_admin(function() use ($app, $id) {
+		$user = UserQuery::create()->findPk($id);
+		if ($user) {
+			$data = json_decode($app->request()->getBody(), true);
+			foreach ($data as $p_id => $expires) {
+				$product = ProductQuery::create()->findPk($p_id);
+				if ($product) {
+					$up = new UserProduct();
+					$up->setProduct($product);
+
+					if ($expires) {
+						$up->setExpires($expires);
+					}
+
+					$user->addUserProduct($up);
+				}
+			}
+			$user->save();
+			ok();
+		} else {
+			 error('user-not-found', 'no user found with that id');
+		}
+	});
+});
