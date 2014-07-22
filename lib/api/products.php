@@ -31,33 +31,12 @@ $app->post('/products', function() use ($app) {
 			$product->setName($params['name']);
 			$product->setCreatedAt(time());
 			$product->save();
-			ok();
+			ok($product->toArray());
 		} catch (Exception $e) {
 			error('io-error', $e->getMessage());
 		}
 	});
 });
-
-/*
- * create new product
- */
-$app->post('/products', function() use ($app) {
-	disable_cache($app);
-	// only admins can create products
-	if_is_admin(function() use ($app) {
-		try {
-			$params  = json_decode($app->request()->getBody(), true);
-			$product = new Product();
-			$product->setName($params['name']);
-			$product->setCreatedAt(time());
-			$product->save();
-			ok();
-		} catch (Exception $e) {
-			error('io-error', $e->getMessage());
-		}
-	});
-});
-
 
 /*
  * change product
@@ -69,7 +48,7 @@ $app->put('/products/:id', function($id) use ($app) {
 			$params = json_decode($app->request()->getBody(), true);
 			$product->setName($params['name']);
 			$product->save();
-			ok();
+			ok($product->toArray());
 		} else {
 			return error('unknown-product', 'Product not found');
 		}
@@ -166,6 +145,32 @@ $app->post('/products/:id/users', function($id) use ($app) {
 					}
 
 					$product->addUserProduct($up);
+				}
+			}
+			$product->save();
+			ok();
+		} else {
+			return error('unknown-product', 'Product not found');
+		}
+	});
+});
+
+$app->post('/products/:id/organizations', function($id) use ($app) {
+	if_is_admin(function() use ($app, $id) {
+		$product = ProductQuery::create()->findPk($id);
+		if ($product) {
+			$data = json_decode($app->request()->getBody(), true);
+			foreach ($data as $o_id => $expires) {
+				$org = OrganizationQuery::create()->findPk($o_id);
+				if ($org) {
+					$op = new OrganizationProduct();
+					$op->setOrganization($org);
+
+					if ($expires) {
+						$op->setExpires($expires);
+					}
+
+					$product->addOrganizationProduct($op);
 				}
 			}
 			$product->save();
