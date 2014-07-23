@@ -157,14 +157,14 @@ class TestDatawrapperAPI(unittest.TestCase):
         r = ns['session'].get(url)
         self.checkRes(r)
 
-    def test_15_oembed_document(self):
-        chart = 'http://' + config['chart_domain'] + '/' + ns['chartId']
-        url = endpoint + 'plugin/oembed?url=' + urllib.pathname2url(chart) + '&format=json'
-        r = ns['session'].get(url)
-        self.assertIsInstance(r.json(), dict)
-        self.assertEqual(r.json()['type'], 'rich')
-        self.assertEqual(r.json()['version'], 1.0)
-        self.assertEqual(r.json()['title'], 'My cool new chart')
+    # def test_15_oembed_document(self):
+    #     chart = 'http://' + config['chart_domain'] + '/' + ns['chartId']
+    #     url = endpoint + 'plugin/oembed?url=' + urllib.pathname2url(chart) + '&format=json'
+    #     r = ns['session'].get(url)
+    #     self.assertIsInstance(r.json(), dict)
+    #     self.assertEqual(r.json()['type'], 'rich')
+    #     self.assertEqual(r.json()['version'], 1.0)
+    #     self.assertEqual(r.json()['title'], 'My cool new chart')
 
     def test_99_delete_chart(self):
         r = ns['session'].delete(endpoint + 'charts/' + str(ns['chartId']))
