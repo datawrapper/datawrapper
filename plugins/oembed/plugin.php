@@ -1,9 +1,9 @@
 <?php
 
 class DatawrapperPlugin_Oembed extends DatawrapperPlugin {
-    // oembed of urls
-    const HOOK_GET_OEMBED = 'get_oembed';
-
+    /*
+     * Register the relevant hooks for this module.
+     */
     public function init() {
         $plugin = $this;
 
@@ -30,53 +30,58 @@ class DatawrapperPlugin_Oembed extends DatawrapperPlugin {
             }
         );
 
-        // Register the oEmbed handler for the standard chart-path
+        // Register the standard URLs for the URL patterns
         DatawrapperHooks::register(
-            DatawrapperPlugin_Oembed::HOOK_GET_OEMBED,
-            function($app, $url) use ($plugin) {
-                return $plugin->oembedUrl($app, $url);
+            DatawrapperHooks::GET_PUBLISHED_URL_PATTERN,
+            function() {
+                return 'http[s]?:\/\/' . $GLOBALS['dw_config']['chart_domain'] . '\/(?<id>.+?)([\/](index\.html)?)?';
             }
         );
     }
 
     /*
-     * Handle requests to /api/oembed
+     * Handle requests to /api/plugin/oembed
      */
     protected function oEmbedEndpoint($app) {
-        // Get the URL from the query-parameters
+        // Load the chart_oembed function
+        require_once dirname(__FILE__) . '/chart_oembed.php';
+
+        // Get the parameters from the query-parameters
         $url = urldecode($app->request()->get('url'));
+        $format = $app->request()->get('format');
 
-        // Call the GET_OEMBED-hook
-        $results = DatawrapperHooks::execute(
-            DatawrapperPlugin_Oembed::HOOK_GET_OEMBED,
-            $app,
-            $url
-        );
+        // Get all the possible patterns for chart urls
+        $results = DatawrapperHooks::execute(DatawrapperHooks::GET_PUBLISHED_URL_PATTERN);
 
-        // See if any of the hooks returned something
-        $success = (bool) array_filter($results);
-        if (!$success) {
+        // Find the first pattern that matches the current url
+        $found = false;
+        foreach ($results AS $pattern) {
+            if (preg_match('/^' . $pattern . '$/', $url, $matches)) {
+                // We have a match.
+
+                // Extract the id. If there is a named capture called 'id', then
+                // use that. Otherwise, assume the id is in the first chapture
+                // group
+                $id = isset($matches['id']) ? $matches['id'] : $matches[1];
+
+                // get the oEmbed response
+                chart_oembed($app, $id, $format);
+
+                // and signal that we found a url
+                $found = true;
+                break;
+            }
+        }
+
+        if (!$found) {
             // No hook returned something, so return a 404!
             $app->response()->status(404);
         }
     }
 
     /*
-     * HOOK_GET_OEMBED-callback. Responsible for handling charts located
-     * on the chart-domain
+     * Print the oEmbed discovery-link in the chart head html.
      */
-    protected function oembedUrl($app, $url) {
-        require_once dirname(__FILE__) . '/chart_oembed.php';
-
-        $url_pattern = 'http[s]?:\/\/' . $GLOBALS['dw_config']['chart_domain'] . '\/(.+?)([\/](index\.html)?)?';
-        if (preg_match('/^' . $url_pattern . '$/', $url, $matches)) {
-            // The URL provided matched the URL of a published chart, so embed
-            // the chart with the found id.
-            chart_oembed($app, $matches[1], $app->request()->get('format'));
-            return true;
-        }
-    }
-
     protected function oembedLink($chart) {
         $content = get_chart_content($chart, $chart->getUser(), false, '../');
 
