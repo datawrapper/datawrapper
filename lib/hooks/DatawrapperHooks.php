@@ -80,9 +80,6 @@ class DatawrapperHooks {
     // returns the URL of a published chart (args: chart)
     const GET_PUBLISHED_URL = 'get_pulished_url';
 
-    // returns a regex that can identify the id of published charts
-    const GET_PUBLISHED_URL_PATTERN = 'get_published_url_pattern';
-
     // returns a key specifically for the storage (eg the s3 bucket)
     const GET_PUBLISH_STORAGE_KEY = 'get_publish_storage_key';
 
