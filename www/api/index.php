@@ -73,7 +73,6 @@ require_once '../../lib/api/visualizations.php';
 require_once '../../lib/api/themes.php';
 require_once '../../lib/api/plugins.php';
 require_once '../../lib/api/organizations.php';
-require_once '../../lib/api/oembed.php';
 
 /**
  * Step 4: Run the Slim application

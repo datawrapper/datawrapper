@@ -159,7 +159,7 @@ class TestDatawrapperAPI(unittest.TestCase):
 
     def test_15_oembed_document(self):
         chart = 'http://' + config['chart_domain'] + '/' + ns['chartId']
-        url = endpoint + 'oembed?url=' + urllib.pathname2url(chart) + '&format=json'
+        url = endpoint + 'plugin/oembed?url=' + urllib.pathname2url(chart) + '&format=json'
         r = ns['session'].get(url)
         self.assertIsInstance(r.json(), dict)
         self.assertEqual(r.json()['type'], 'rich')
