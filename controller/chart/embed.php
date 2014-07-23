@@ -1,15 +1,17 @@
 <?php
 
-require_once ROOT_PATH . 'lib/utils/themes.php';
-require_once ROOT_PATH . 'lib/utils/chart_content.php';
-
 /*
- * Shows a preview of a chart for display in an iFrame
+ * Main controller for chart rendering
  */
 $app->get('/chart/:id/', function ($id) use ($app) {
     disable_cache($app);
 
     check_chart_public($id, function($user, $chart) use ($app) {
+        if ($chart->getLanguage() != '' && $chart->getLanguage() != DatawrapperSession::getLanguage()) {
+            global $__l10n;
+            $__l10n->loadMessages($chart->getLanguage());
+        }
+
         $page = get_chart_content($chart, $user, $app->request()->get('minify') == 1);
         $page['thumb'] = $app->request()->params('t') == 1;
         $page['innersvg'] = $app->request()->get('innersvg') == 1;

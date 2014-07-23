@@ -7,6 +7,7 @@ import os
 import json
 from random import randint
 import yaml
+import urllib
 
 
 config = yaml.load(open('../config.yaml').read())
@@ -35,6 +36,23 @@ class TestDatawrapperAPI(unittest.TestCase):
         self.assertEqual(r.json()['status'], 'ok')
         if r.json()['status'] == 'error':
             print r.json()['message']
+
+    def test_00_create_user(self):
+        url = endpoint + '/users'
+        password = '1234'
+        body = dict(pwd=password, pwd2=password,
+                    email=('test-%d@' + config['domain']) % randint(10000, 99999))
+        r = ns['session'].post(url, data=json.dumps(body))
+        self.checkRes(r)
+        ns['userId'] = r.json()['data']['Id']
+
+        # Active the user
+        r2 = ns['session'].get(domain + '/account/activate/' + r.json()['data']['ActivateToken'])
+
+        # Log in as the user
+        body = dict(email=body['email'], pwhash=password, keeplogin=True)
+        r3 = ns['session'].post(endpoint + '/auth/login', data=json.dumps(body))
+        self.checkRes(r3)
 
     def test_01_create_new_chart(self):
         global ns
@@ -76,70 +94,86 @@ class TestDatawrapperAPI(unittest.TestCase):
         self.checkRes(r)
         data = r.json()['data']
         data['title'] = 'My cool new chart'
+        data['author_id'] = ns['userId']
         data['metadata']['describe']['source-name'] = 'Example Data Source'
         data['metadata']['describe']['source-url'] = 'http://example.org'
         r = ns['session'].put(url, data=json.dumps(data))
         self.checkRes(r)
         # self.assertEqual(r.json()['data']['showInGallery'], False)
 
-    def test_06_gallery(self):
+    def test_06_publish_chart(self):
+        r = ns['session'].post(endpoint + 'charts/' + str(ns['chartId']) + '/publish')
+        self.checkRes(r)
+
+    def test_07_gallery(self):
         url = endpoint + 'gallery'
         r = ns['session'].get(url)
         self.checkRes(r)
 
-    def test_06_visualizations(self):
+    def test_08_visualizations(self):
         url = endpoint + 'visualizations'
         r = ns['session'].get(url)
         self.checkRes(r)
         self.assertIsInstance(r.json()['data'], list)
 
-    def test_07_bar_chart(self):
+    def test_09_bar_chart(self):
         url = endpoint + 'visualizations/bar-chart'
         r = ns['session'].get(url)
         self.checkRes(r)
         self.assertIsInstance(r.json()['data'], dict)
 
-    def test_08_account(self):
+    def test_10_account(self):
         url = endpoint + 'account'
         r = ns['session'].get(url)
         self.checkRes(r)
         self.assertIn('user', r.json()['data'])
         self.assertIsInstance(r.json()['data']['user'], dict)
 
-    def test_09_set_lang_to_fr(self):
+    def test_11_set_lang_to_fr(self):
         url = endpoint + 'account/lang'
         r = ns['session'].put(url, data=json.dumps(dict(lang='fr')))
         self.checkRes(r)
 
-    def test_10_check_lang_is_fr(self):
+    def test_12_check_lang_is_fr(self):
         url = endpoint + 'account/lang'
         r = ns['session'].get(url)
         self.checkRes(r)
         self.assertEqual(r.json()['data'], 'fr')
 
-    def test_11_charts(self):
+    def test_13_charts(self):
         url = endpoint + 'charts'
         r = ns['session'].get(url)
         self.checkRes(r)
         self.assertEqual(len(r.json()['data']), 1)
 
-    def test_11a_charts_sorted(self):
+    def test_13a_charts_sorted(self):
         url = endpoint + 'charts?order=theme'
         r = ns['session'].get(url)
         self.checkRes(r)
         self.assertEqual(len(r.json()['data']), 1)
 
-    def test_12_estimate_job(self):
+    def test_14_estimate_job(self):
         url = endpoint + 'jobs/export/estimate'
         r = ns['session'].get(url)
         self.checkRes(r)
 
-    def test_13_create_user(self):
-        url = endpoint + '/users'
-        password = '1234'
-        body = dict(pwd=password, pwd2=password,
-                    email=('test-%d@' + config['domain']) % randint(10000, 99999))
-        r = ns['session'].post(url, data=json.dumps(body))
+    # def test_15_oembed_document(self):
+    #     chart = 'http://' + config['chart_domain'] + '/' + ns['chartId']
+    #     url = endpoint + 'plugin/oembed?url=' + urllib.pathname2url(chart) + '&format=json'
+    #     r = ns['session'].get(url)
+    #     self.assertIsInstance(r.json(), dict)
+    #     self.assertEqual(r.json()['type'], 'rich')
+    #     self.assertEqual(r.json()['version'], 1.0)
+    #     self.assertEqual(r.json()['title'], 'My cool new chart')
+
+    def test_99_delete_chart(self):
+        r = ns['session'].delete(endpoint + 'charts/' + str(ns['chartId']))
+        self.checkRes(r)
+
+    def test_99a_delete_user(self):
+        body = dict(pwd=1234)
+        print endpoint + 'users/' + str(ns['userId']),
+        r = ns['session'].delete(endpoint + 'users/' + str(ns['userId']), data=json.dumps(body))
         self.checkRes(r)
 
 if __name__ == '__main__':

@@ -5,8 +5,7 @@
  * @param format  a function for formatting the values
  */
 dw.utils.filter = function (column, active, type, format) {
-    var callbacks = [],
-        lastActiveRow;
+    var callbacks = [];
 
     type = type || 'auto';
     format = format || _.identity;
