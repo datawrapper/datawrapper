@@ -4,6 +4,7 @@
  * get list of all products
  */
 $app->get('/products', function() use ($app) {
+    disable_cache($app);
 	if_is_admin(function() use ($app) {
 		try {
 			$products = ProductQuery::create()->filterByDeleted(false)->find();
