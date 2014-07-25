@@ -15,4 +15,7 @@
  */
 class OrganizationProduct extends BaseOrganizationProduct
 {
+    public function isExpired(){
+        return strtotime($this->expires) < time();
+    }
 }
