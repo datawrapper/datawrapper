@@ -23,20 +23,25 @@ $app->get('/products', function() use ($app) {
  * create new product
  */
 $app->post('/products', function() use ($app) {
-	disable_cache($app);
-	// only admins can create products
-	if_is_admin(function() use ($app) {
-		try {
-			$params  = json_decode($app->request()->getBody(), true);
-			$product = new Product();
-			$product->setName($params['name']);
-			$product->setCreatedAt(time());
-			$product->save();
-			ok($product->toArray());
-		} catch (Exception $e) {
-			error('io-error', $e->getMessage());
-		}
-	});
+    disable_cache($app);
+    // only admins can create products
+    if_is_admin(function() use ($app) {
+        try {
+            $params  = json_decode($app->request()->getBody(), true);
+            $product = new Product();
+            $product->setName($params['name']);
+            $product->setCreatedAt(time());
+
+            if (isset($params['data'])) {
+                $product->setData(json_encode($params['data']));
+            }
+
+            $product->save();
+            ok($product->toArray());
+        } catch (Exception $e) {
+            error('io-error', $e->getMessage());
+        }
+    });
 });
 
 /*
@@ -48,6 +53,7 @@ $app->put('/products/:id', function($id) use ($app) {
 		if ($product) {
 			$params = json_decode($app->request()->getBody(), true);
 			$product->setName($params['name']);
+            $product->setData(json_encode($params['data']));
 			$product->save();
 			ok($product->toArray());
 		} else {
