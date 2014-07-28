@@ -21,4 +21,13 @@ class Product extends BaseProduct
 			->filterByPlugin($plugin)
 			->count() > 0;
 	}
+
+    public function getData() {
+        $data = parent::getData();
+        if(is_string($data)) {
+            $data = json_decode($data, true);
+        }
+
+        return $data;
+    }
 }
