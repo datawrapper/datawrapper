@@ -15,6 +15,18 @@
  */
 class Product extends BaseProduct
 {
+    const PERIOD_ONCE   = 'once';
+    const PERIOD_DAYS   = 'day';
+    const PERIOD_MONTHS = 'month';
+    const PERIOD_YEARS  = 'year';
+
+    public static $PERIODS = array(
+        self::PERIOD_ONCE,
+        self::PERIOD_DAYS,
+        self::PERIOD_MONTHS,
+        self::PERIOD_YEARS
+    );
+
 	public function hasPlugin(Plugin $plugin) {
 		return ProductPluginQuery::create()
 			->filterByProduct($this)
@@ -29,5 +41,10 @@ class Product extends BaseProduct
         }
 
         return $data;
+    }
+
+    public function isSubscription() {
+        $data = $this->getData();
+        return isset($data['period']) && $data['period'] !== self::PERIOD_ONCE;
     }
 }
