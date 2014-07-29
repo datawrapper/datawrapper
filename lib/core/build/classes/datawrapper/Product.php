@@ -44,7 +44,36 @@ class Product extends BaseProduct
     }
 
     public function isSubscription() {
+        return $this->getPeriod() !== self::PERIOD_ONCE;
+    }
+
+    public function getFrequency() {
         $data = $this->getData();
-        return isset($data['period']) && $data['period'] !== self::PERIOD_ONCE;
+        return isset($data['frequency']) ? $data['frequency'] : null;
+    }
+
+    public function getPeriod() {
+        $data = $this->getData();
+        return isset($data['period']) ? $data['period'] : null;
+    }
+
+    public function getPeriodName() {
+        $period    = $this->getPeriod();
+        $frequency = $this->getFrequency();
+
+        if ($period === self::PERIOD_ONCE) {
+            return __('one-time');
+        }
+
+        if ($frequency == 1) {
+            switch ($period) {
+                case 'day':   return __('daily');
+                case 'month': return __('monthly');
+                case 'year':  return __('yearly');
+                default:      return $period;
+            }
+        }
+
+        return sprintf(__('every %d %s'), $frequency, __($period.'s'));
     }
 }
