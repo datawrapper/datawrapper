@@ -10,19 +10,39 @@ class DatawrapperPluginManager {
      * loads plugin
      */
     public static function load() {
-        $plugins = PluginQuery::create()
+        $plugins = PluginQuery::create();
+
+        $plugins->distinct()
             ->filterByEnabled(true);
 
         if (!defined('NO_SESSION')) {
+            $plugins->filterByIsPrivate(false);
+
             $user_id = DatawrapperSession::getUser()->getId();
+
             if (!empty($user_id)) {
-                $plugins->where('Plugin.Id IN (SELECT plugin_id FROM plugin_organization WHERE organization_id IN (SELECT organization_id FROM user_organization WHERE user_id = ?))', $user_id)
-                    ->_or();
+                $plugins
+                    ->_or()
+                    ->useProductPluginQuery(null, Criteria::LEFT_JOIN)
+                        ->useProductQuery(null, Criteria::LEFT_JOIN)
+                            ->useOrganizationProductQuery(null, Criteria::LEFT_JOIN)
+                                ->useOrganizationQuery(null, Criteria::LEFT_JOIN)
+                                    ->useUserOrganizationQuery(null, Criteria::LEFT_JOIN)
+                                    ->endUse()
+                                ->endUse()
+                            ->endUse()
+                            ->useUserProductQuery(null, Criteria::LEFT_JOIN)
+                            ->endUse()
+                            ->where(
+                                '((product.deleted=? AND user_product.user_id=? AND user_product.expires >= NOW())
+                                OR (product.deleted=? AND user_organization.user_id=? AND organization_product.expires >= NOW()))',
+                                array(false, $user_id, false, $user_id)
+                            )
+                        ->endUse()
+                    ->endUse();
             }
-            $plugins = $plugins->where('Plugin.IsPrivate = FALSE');
         }
         $plugins = $plugins->find();
-
         $not_loaded_yet = array();
 
         foreach ($plugins as $plugin) {
@@ -33,25 +53,23 @@ class DatawrapperPluginManager {
 
         $could_not_install = array();
 
-        if (!function_exists('load_plugin')) {
-            function load_plugin($plugin) {
-                $plugin_path = ROOT_PATH . 'plugins/' . $plugin->getName() . '/plugin.php';
-                if (file_exists($plugin_path)) {
-                    require $plugin_path;
-                    // init plugin class
-                    $className = $plugin->getClassName();
-                    $pluginClass = new $className();
-                } else {
-                    $pluginClass = new DatawrapperPlugin($plugin->getName());
-                }
-                // but before we load the libraries required by this lib
-                foreach ($pluginClass->getRequiredLibraries() as $lib) {
-                    require_once ROOT_PATH . 'plugins/' . $plugin->getName() . '/' . $lib;
-                }
-                $pluginClass->init();
-                return $pluginClass;
+        $load_plugin = function ($plugin) {
+            $plugin_path = ROOT_PATH . 'plugins/' . $plugin->getName() . '/plugin.php';
+            if (file_exists($plugin_path)) {
+                require $plugin_path;
+                // init plugin class
+                $className = $plugin->getClassName();
+                $pluginClass = new $className();
+            } else {
+                $pluginClass = new DatawrapperPlugin($plugin->getName());
             }
-        }
+            // but before we load the libraries required by this lib
+            foreach ($pluginClass->getRequiredLibraries() as $lib) {
+                require_once ROOT_PATH . 'plugins/' . $plugin->getName() . '/' . $lib;
+            }
+            $pluginClass->init();
+            return $pluginClass;
+        };
         while (count($not_loaded_yet) > 0) {
             $try = $not_loaded_yet;
             $not_loaded_yet = array();
@@ -80,7 +98,7 @@ class DatawrapperPluginManager {
                 if ($can_load) {
                     // load plugin
                     self::$loaded[$id] = true;
-                    self::$instances[$id] = load_plugin($plugin);
+                    self::$instances[$id] = $load_plugin($plugin);
                 } else {
                     if (!isset($could_not_install[$id])) {
                         $not_loaded_yet[] = $plugin; // so try next time
