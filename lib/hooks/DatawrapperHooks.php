@@ -155,7 +155,8 @@ class DatawrapperHooks {
     // extend the settings form
     const USER_SETTINGS = 'user_settings';
 
-
+    // extend the settings navigation
+    const USER_SETTINGS_NAV = 'user_settings_nav';
 }
 
 
