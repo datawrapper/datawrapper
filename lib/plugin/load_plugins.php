@@ -37,7 +37,7 @@ class DatawrapperPluginManager {
             function load_plugin($plugin) {
                 $plugin_path = ROOT_PATH . 'plugins/' . $plugin->getName() . '/plugin.php';
                 if (file_exists($plugin_path)) {
-                    require $plugin_path;
+                    require_once $plugin_path;
                     // init plugin class
                     $className = $plugin->getClassName();
                     $pluginClass = new $className();

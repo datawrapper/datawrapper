@@ -262,10 +262,10 @@ class DatawrapperPlugin {
 			function() use ($link) { return $link; });
 	}
 
-	public function registerController($obj, $func) {
+	public function registerController($obj, $func=null) {
 		DatawrapperHooks::register(
             DatawrapperHooks::GET_PLUGIN_CONTROLLER,
-            array($obj, $func)
+            is_callable($obj) ? $obj : array($obj, $func)
         );
 	}
 }

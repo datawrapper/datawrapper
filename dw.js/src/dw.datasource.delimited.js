@@ -80,8 +80,7 @@ _.extend(DelimitedParser.prototype, {
             opts.delimiter = me.guessDelimiter(data, opts.skipRows);
             me.__delimiterPatterns = getDelimiterPatterns(opts.delimiter, opts.quoteChar);
         }
-        var columns = [],
-            closure = opts.delimiter != '|' ? '|' : '#',
+        var closure = opts.delimiter != '|' ? '|' : '#',
             arrData;
 
         data = closure + data.replace(/\s+$/g, '') + closure;

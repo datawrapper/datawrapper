@@ -21,7 +21,7 @@ dw.theme = (function(){
      * cannot be turned off anymore.
      */
     function extend() {
-        var options, name, src, copy, copyIsArray, clone,
+        var options, name, src, copy, clone,
             target = arguments[0] || {},
             i = 1,
             length = arguments.length;

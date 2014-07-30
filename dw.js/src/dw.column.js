@@ -103,7 +103,7 @@ dw.column = function(name, rows, type) {
          * apply function to each value
          */
         each: function(f) {
-            for (i=0; i<rows.length; i++) {
+            for (var i=0; i<rows.length; i++) {
                 f(column.val(i), i);
             }
         },

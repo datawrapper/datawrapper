@@ -9,7 +9,7 @@ function check_path_permissions() {
     $paths[] = '/charts/data';
     $paths[] = '/charts/images';
     $paths[] = '/charts/data/tmp';
-    $paths[] = '/vendor/htmlpurifier/standalone/HTMLPurifier/DefinitionCache/Serializer';
+    $paths[] = '/tmp';
     $err = array();
     foreach ($paths as $path) {
         if (!is_writable($rel . $path)) $err[] = $path;

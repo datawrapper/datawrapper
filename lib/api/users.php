@@ -29,8 +29,6 @@ $app->get('/users/:id', function($id) use ($app) {
 
 define('DW_TOKEN_SALT', 'aVyyrmc2UpoZGJ3SthaKyGrFzaV3Z37iuFU4x5oLb_aKmhopz5md62UHn25Gf4ti');
 
-require_once('../../lib/utils/check_email.php');
-
 function email_exists($email) {
     $r = UserQuery::create()->findOneByEmail($email);
     return isset($r);
@@ -259,7 +257,7 @@ $app->delete('/users/:id', function($user_id) use ($app) {
         $pwd = $payload->pwd;
     }
     if ($curUser->isLoggedIn()) {
-        if ($user_id == 'current' || $curUser->getId() === $user_id) {
+        if ($user_id == 'current' || $curUser->getId() == $user_id) {
             $user = $curUser;
         } else if ($curUser->isAdmin()) {
             $user = UserQuery::create()->findPK($user_id);

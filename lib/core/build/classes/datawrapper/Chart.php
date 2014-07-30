@@ -1,7 +1,5 @@
 <?php
 
-require_once dirname(__FILE__) . '/../../../../utils/array_merge_recursive_simple.php';
-
 /**
  * Skeleton subclass for representing a row from the 'chart' table.
  *

@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
-<database name="foo">
-	<table name="bar2">
-		<column name="id" primaryKey="true" type="INTEGER" autoIncrement="true"/>
-	</table>
-</database>

@@ -33,7 +33,7 @@
 {% endfor %}
 
 </head>
-<body class="chart{% if fullscreen %} fullscreen{% endif %}{% if plain %} plain{% endif %}">
+<body class="chart{% if fullscreen %} fullscreen{% endif %}{% if plain %} plain{% endif %} theme-{{ chart.theme }} vis-{{ chart.type }}">
 
     {# some convenient short cuts for theme templates #}
     {% set title = chart.title %}{% set intro = chart.metadata.describe.intro %}{% set source = chart.metadata.describe['source-name'] %}{% set sourceURL = chart.metadata.describe['source-url'] %}
