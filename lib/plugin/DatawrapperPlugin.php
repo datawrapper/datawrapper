@@ -49,7 +49,6 @@ class DatawrapperPlugin {
 		if (is_link($plugin_static_path)) return;
 
 		if (!file_exists($plugin_static_path)) {
-			print 'ln -s '.$source_path.' '.$plugin_static_path;
 			exec('ln -s '.$source_path.' '.$plugin_static_path);
 			if (is_link($plugin_static_path)) return;
 
