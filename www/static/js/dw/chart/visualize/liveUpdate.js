@@ -17,7 +17,7 @@ define(function() {
         _.extend(__dw, {
             attributes: function(attrs) {
                 var render = false;
-                if (changed('type') || changed('theme') || changed('metadata.data.transpose') || changed('metadata.axes')) {
+                if (changed('type') || changed('theme') || changed('metadata.data.transpose') || changed('metadata.axes') || changed('language')) {
                     needReload = true;
                     return;
                 }
