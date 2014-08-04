@@ -269,7 +269,7 @@ dw.column = function(name, rows, type) {
          * apply function to each value
          */
         each: function(f) {
-            for (i=0; i<rows.length; i++) {
+            for (var i=0; i<rows.length; i++) {
                 f(column.val(i), i);
             }
         },
@@ -846,8 +846,7 @@ _.extend(DelimitedParser.prototype, {
             opts.delimiter = me.guessDelimiter(data, opts.skipRows);
             me.__delimiterPatterns = getDelimiterPatterns(opts.delimiter, opts.quoteChar);
         }
-        var columns = [],
-            closure = opts.delimiter != '|' ? '|' : '#',
+        var closure = opts.delimiter != '|' ? '|' : '#',
             arrData;
 
         data = closure + data.replace(/\s+$/g, '') + closure;
@@ -1094,7 +1093,6 @@ dw.utils = {
      * input format of the dates in the dataset
      */
     longDateFormat: function(column) {
-        var me = this;
         return function(d) {
             if (column.type() == 'date') {
                 switch (column.type(true).precision()) {
@@ -1188,7 +1186,7 @@ dw.utils = {
      *
      */
     significantDimension: function(values) {
-        var result = [], dimension = 0, nonEqual = true,
+        var result = [], dimension = 0,
             uniqValues = _.uniq(values),
             check, diff;
 
@@ -1278,8 +1276,7 @@ dw.utils = {
  * @param format  a function for formatting the values
  */
 dw.utils.filter = function (column, active, type, format) {
-    var callbacks = [],
-        lastActiveRow;
+    var callbacks = [];
 
     type = type || 'auto';
     format = format || _.identity;
@@ -1699,8 +1696,8 @@ dw.chart = function(attributes) {
                 var mtrSuf = dw.utils.metricSuffix(chart.locale()),
                     values = column.values(),
                     dim = dw.utils.significantDimension(values),
-                    div = dim < -2 ? Math.round((dim*-1) / 3) * 3 :
-                            dim > 2 ? dim*-1 : 0;
+                    div = dim < -2 ? (Math.round((dim*-1) / 3) * 3) :
+                            (dim > 2 ? dim*-1 : 0),
                     ndim = dw.utils.significantDimension(_.map(values, function(v) {
                         return v / Math.pow(10, div);
                     }));
@@ -1750,6 +1747,7 @@ dw.chart = function(attributes) {
 
     return chart;
 };
+
 
 dw.visualization = (function(){
 
@@ -2065,7 +2063,7 @@ dw.theme = (function(){
      * cannot be turned off anymore.
      */
     function extend() {
-        var options, name, src, copy, copyIsArray, clone,
+        var options, name, src, copy, clone,
             target = arguments[0] || {},
             i = 1,
             length = arguments.length;

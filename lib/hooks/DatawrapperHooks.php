@@ -151,6 +151,8 @@ class DatawrapperHooks {
 
     const USER_ORGANIZATION_ADD = 'user_organization_add';
     const USER_ORGANIZATION_REMOVE = 'user_organization_remove';
+	
+	const VISUALIZE_AFTER_THEME_SELECTOR = 'visualize_after_theme_selector';
 
     // extend the settings form
     const USER_SETTINGS = 'user_settings';

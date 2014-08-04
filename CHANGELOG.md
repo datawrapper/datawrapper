@@ -1,6 +1,20 @@
 CHANGELOG
 ---------
 
+### 1.7.10
+* load chart specific locale, if different from UI
+* allow hooking into visualize step sidebar
+* removed vendor libs from repo
+* made Datawrapper Composer-ready
+* do not send email activation mails when the email address has not been altered
+* minor improvements for the account settings
+* fixed delete-account button
+* fixed XSS vulnerability
+* replaced ext-mysql with PDO in the session handler
+* do not use the mysql extension in the check_server script
+* cleaned up makefile
+* replaces JSMin with JShrink
+
 ### 1.7.9
 * refactored controller code base
 * refactored account templates
