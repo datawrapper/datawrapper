@@ -386,12 +386,12 @@
                 if (theme.columnChart.cutGridLines) ly += 10;
                 var key = String(val);
                 // show or update label
+
+                //overriding the columnFormatter implementation of grid labels
+                var txt = me.formatValue(val, t == ticks.length-1, false);
                 if (val !== 0) {
-                    var lbl = tickLabels[key] = tickLabels[key] ||
-                        me.label(x+2, ly, formatter(val, t == ticks.length-1, true),
-                            { align: 'left', cl: 'axis', css: { opacity: 0 } });
-                    lbl.animate({ x: c.lpad+2, y: ly, css: { opacity: 1 } }, theme.duration, theme.easing);
-                }
+                   lbl = me.__tickLabels[val] = me.__tickLabels[val] || me.label(x+2, ly, txt, { align: 'left', cl: 'axis', css: { opacity: 0 } });
+                   lbl.animate({ x: x+2, y: ly, css: { opacity: 1 } }, theme.duration, theme.easing);
                 if (theme.yTicks) {
                     me.path([['M', c.lpad-25, y], ['L', c.lpad-20,y]], 'tick');
                 }
@@ -470,6 +470,15 @@
         unhoverSeries: function() {
             this.hoverSeries();
         },
+
+        formatValue: function() {
+            var me = this;
+            // we're overwriting this function with the actual column formatter
+            // when it is first called (lazy evaluation)
+            me.formatValue = me.chart().columnFormatter(me.axes(true).columns[0]);
+            return me.formatValue.apply(me, arguments);
+        },
+
 
         gridVisible: function() {
             var me = this;

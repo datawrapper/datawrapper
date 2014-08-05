@@ -262,7 +262,7 @@
             _.each(ticks, function(val, t) {
                 var y = c.h - c.bpad - yscale(val),
                     x = c.lpad, ly = y-10, lbl,
-                    txt = me.formatValue(val, t == ticks.length-1, true);
+                    txt = me.formatValue(val, t == ticks.length-1, false);
                 // c.paper.text(x, y, val).attr(styles.labels).attr({ 'text-anchor': 'end' });
                 if (me.theme().columnChart.cutGridLines) ly += 10;
 
