@@ -264,7 +264,7 @@ $app->delete('/users/:id', function($user_id) use ($app) {
             $pwd = $user->getPwd();
         }
         if (!empty($user)) {
-            if ($user->getPwd() == $pwd) {
+            if ($user->getPwd() === secure_password($pwd)) {
 
                 // Delete user
                 if (!$curUser->isAdmin()) {

@@ -4,13 +4,18 @@
 
 import requests
 import os
+from os.path import realpath
+from os.path import dirname
 import json
 from random import randint
 import yaml
-import urllib
+import hashlib
+import hmac
+import base64
 
+BASE_PATH = realpath(dirname(__file__)+'/..')
 
-config = yaml.load(open('../config.yaml').read())
+config = yaml.load(open(BASE_PATH + '/config.yaml').read())
 
 domain = 'http://' + config['domain']
 
@@ -27,6 +32,12 @@ ns = {
     'session': requests.Session()
 }
 
+test_password = '1234'
+
+dig = hmac.new(config['auth_salt'], msg=test_password, digestmod=hashlib.sha256).digest()
+#body = dict(pwd=base64.b64encode(dig).decode())
+print base64.b64encode(dig).decode()
+
 
 # create new chart
 class TestDatawrapperAPI(unittest.TestCase):
@@ -39,18 +50,17 @@ class TestDatawrapperAPI(unittest.TestCase):
 
     def test_00_create_user(self):
         url = endpoint + '/users'
-        password = '1234'
-        body = dict(pwd=password, pwd2=password,
+        body = dict(pwd=test_password, pwd2=test_password,
                     email=('test-%d@' + config['domain']) % randint(10000, 99999))
         r = ns['session'].post(url, data=json.dumps(body))
         self.checkRes(r)
         ns['userId'] = r.json()['data']['Id']
 
         # Active the user
-        r2 = ns['session'].get(domain + '/account/activate/' + r.json()['data']['ActivateToken'])
+        ns['session'].get(domain + '/account/activate/' + r.json()['data']['ActivateToken'])
 
         # Log in as the user
-        body = dict(email=body['email'], pwhash=password, keeplogin=True)
+        body = dict(email=body['email'], pwhash=test_password, keeplogin=True)
         r3 = ns['session'].post(endpoint + '/auth/login', data=json.dumps(body))
         self.checkRes(r3)
 
@@ -171,8 +181,7 @@ class TestDatawrapperAPI(unittest.TestCase):
         self.checkRes(r)
 
     def test_99a_delete_user(self):
-        body = dict(pwd=1234)
-        print endpoint + 'users/' + str(ns['userId']),
+        body = dict(pwd=test_password)
         r = ns['session'].delete(endpoint + 'users/' + str(ns['userId']), data=json.dumps(body))
         self.checkRes(r)
 
