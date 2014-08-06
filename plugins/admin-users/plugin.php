@@ -42,6 +42,8 @@ class DatawrapperPlugin_AdminUsers extends DatawrapperPlugin {
                     }
                     add_header_vars($page, 'admin');
                     $page['the_user'] = $theUser;
+                    $page['userPlugins'] = DatawrapperPluginManager::getUserPlugins($theUser->getId());
+
                     $app->render('plugins/admin-users/admin-user-detail.twig', $page);
                 });
             });

@@ -8,4 +8,13 @@
 {{ the_user }}
 </pre>
 
+<h3>List of plugins accessible to the user </h3>
+<p>According to DatawrapperPluginManager</p>
+<ul class="plugin-list">
+{% for plugin in userPlugins %}
+    <li>{{ plugin.id }}</li>
+{% endfor %}
+</ul>
+
+
 {% endblock %}
