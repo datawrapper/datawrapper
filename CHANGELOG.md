@@ -1,6 +1,11 @@
 CHANGELOG
 ---------
 
+### 1.8.0
+* added product system
+* removed email-based theme restrictions
+* Important: Please run scripts/migrate/1.8.0.sql and composer install after updating.
+
 ### 1.7.11
 * fixed symlink creation in plugin installation
 * reloading chart preview if chart locale changes
