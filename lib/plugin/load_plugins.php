@@ -96,16 +96,15 @@ class DatawrapperPluginManager {
         return null;
     }
 
-    public static function getUserPlugins($user_id) {
+    public static function getUserPlugins($user_id, $include_public=true) {
         $plugins = PluginQuery::create()
                 ->distinct()
                 ->filterByEnabled(true);
 
-        $plugins->filterByIsPrivate(false);
+        if ($include_public) $plugins->filterByIsPrivate(false)->_or();
 
         if (!empty($user_id)) {
             $plugins
-                ->_or()
                 ->useProductPluginQuery(null, Criteria::LEFT_JOIN)
                     ->useProductQuery(null, Criteria::LEFT_JOIN)
                         ->useOrganizationProductQuery(null, Criteria::LEFT_JOIN)
