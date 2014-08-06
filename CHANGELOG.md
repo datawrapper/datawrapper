@@ -5,6 +5,7 @@ CHANGELOG
 * fixed symlink creation in plugin installation
 * reloading chart preview if chart locale changes
 * resolving plugin names from class name, not path
+* fixed user deletion api
 
 ### 1.7.10
 * load chart specific locale, if different from UI
