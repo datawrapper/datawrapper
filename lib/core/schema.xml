@@ -149,7 +149,7 @@
     <column name="is_private" type="boolean" default="false" />
   </table>
 
-  <!-- cross reference table to define plugins available to each organization -->
+  <!-- DEPRECATED: cross reference table to define plugins available to each organization -->
   <table name="plugin_organization" isCrossRef="true">
     <column name="plugin_id" type="varchar" size="128" primaryKey="true" />
     <column name="organization_id" type="varchar" size="128" primaryKey="true" />
