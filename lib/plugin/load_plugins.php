@@ -10,39 +10,15 @@ class DatawrapperPluginManager {
      * loads plugin
      */
     public static function load() {
-        $plugins = PluginQuery::create();
-
-        $plugins->distinct()
-            ->filterByEnabled(true);
-
-        if (!defined('NO_SESSION')) {
-            $plugins->filterByIsPrivate(false);
-
-            $user_id = DatawrapperSession::getUser()->getId();
-
-            if (!empty($user_id)) {
-                $plugins
-                    ->_or()
-                    ->useProductPluginQuery(null, Criteria::LEFT_JOIN)
-                        ->useProductQuery(null, Criteria::LEFT_JOIN)
-                            ->useOrganizationProductQuery(null, Criteria::LEFT_JOIN)
-                                ->useOrganizationQuery(null, Criteria::LEFT_JOIN)
-                                    ->useUserOrganizationQuery(null, Criteria::LEFT_JOIN)
-                                    ->endUse()
-                                ->endUse()
-                            ->endUse()
-                            ->useUserProductQuery(null, Criteria::LEFT_JOIN)
-                            ->endUse()
-                            ->where(
-                                '((product.deleted=? AND user_product.user_id=? AND user_product.expires >= NOW())
-                                OR (product.deleted=? AND user_organization.user_id=? AND organization_product.expires >= NOW()))',
-                                array(false, $user_id, false, $user_id)
-                            )
-                        ->endUse()
-                    ->endUse();
-            }
+        if (defined('NO_SESSION')) {
+            $plugins = PluginQuery::create()
+                ->distinct()
+                ->filterByEnabled(true)
+                ->filterByIsPrivate(false)
+                ->find();
+        } else {
+            $plugins = self::getUserPlugins(DatawrapperSession::getUser()->getId());
         }
-        $plugins = $plugins->find();
         $not_loaded_yet = array();
 
         foreach ($plugins as $plugin) {
@@ -118,6 +94,45 @@ class DatawrapperPluginManager {
             return self::$instances[$plugin_id];
         }
         return null;
+    }
+
+    public static function getUserPlugins($user_id) {
+        $plugins = PluginQuery::create()
+                ->distinct()
+                ->filterByEnabled(true);
+
+        $plugins->filterByIsPrivate(false);
+
+        if (!empty($user_id)) {
+            $plugins
+                ->_or()
+                ->useProductPluginQuery(null, Criteria::LEFT_JOIN)
+                    ->useProductQuery(null, Criteria::LEFT_JOIN)
+                        ->useOrganizationProductQuery(null, Criteria::LEFT_JOIN)
+                            ->useOrganizationQuery(null, Criteria::LEFT_JOIN)
+                                ->useUserOrganizationQuery(null, Criteria::LEFT_JOIN)
+                                ->endUse()
+                            ->endUse()
+                        ->endUse()
+                        ->useUserProductQuery(null, Criteria::LEFT_JOIN)
+                        ->endUse()
+                        ->where(
+                            '((product.deleted=? AND user_product.user_id=? AND user_product.expires >= NOW())
+                            OR (product.deleted=? AND user_organization.user_id=? AND organization_product.expires >= NOW()))',
+                            array(false, $user_id, false, $user_id)
+                        )
+                    ->endUse()
+                ->endUse();
+        }
+        return $plugins->find();
+    }
+
+    public static function listPlugins() {
+        $plugins = array();
+        foreach (self::$loaded as $id => $loaded) {
+            if ($loaded) $plugins[] = array('id' => $id);
+        }
+        return $plugins;
     }
 
 }
