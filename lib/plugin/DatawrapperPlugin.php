@@ -39,11 +39,11 @@ class DatawrapperPlugin {
 	 */
 	private function copyStaticFiles() {
 		// check if there's a /static in plugin directory
-		$source_path = ROOT_PATH . 'plugins/' . $this->getName() . '/static';
+		$source_path = realpath(ROOT_PATH . 'plugins/') . '/' . $this->getName() . '/static';
 		if (!file_exists($source_path)) return;
 
 		// create directory in www/static/plugins/ if not exists
-		$plugin_static_path = ROOT_PATH . 'www/static/plugins/' . $this->getName();
+		$plugin_static_path = realpath(ROOT_PATH . 'www/static/plugins/') . '/' . $this->getName();
 
 		// try sym-linking first
 		if (is_link($plugin_static_path)) return;
@@ -63,11 +63,11 @@ class DatawrapperPlugin {
 	 */
 	private function copyTemplates() {
 		// check if there's a /templates in plugin directory
-		$source_path = ROOT_PATH . 'plugins/' . $this->getName() . '/templates';
+		$source_path = realpath(ROOT_PATH . 'plugins/') . '/' . $this->getName() . '/templates';
 		if (!file_exists($source_path)) return;
 
 		// create directory in /templates/plugins/ if not exists
-		$plugin_template_path = ROOT_PATH . 'templates/plugins/' . $this->getName();
+		$plugin_template_path = realpath(ROOT_PATH . 'templates/plugins/') . '/' . $this->getName();
 
 		// try sym-linking first
 		if (is_link($plugin_template_path)) return;
@@ -132,8 +132,8 @@ class DatawrapperPlugin {
 	public function getName() {
 		if (!isset($this->__name)) {
 			$reflector = new ReflectionClass(get_class($this));
-			$dirname   = dirname($reflector->getFileName());
-			$this->__name = substr($dirname, strrpos($dirname, DIRECTORY_SEPARATOR)+1);
+			$name = substr($reflector->name, 18); // 18 = strlen('DatawrapperPlugin_')
+			$this->__name = strtolower(preg_replace('/([a-zA-Z])(?=[A-Z])/', '$1-', $name));
 		}
 		return $this->__name;
 	}
