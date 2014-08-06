@@ -112,14 +112,16 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
 
         header_nav_hook($headlinks, 'mycharts');
 
-
         $headlinks[] = array(
             'url' => '/account/settings',
-            'id' => 'signout',
+            'id' => 'settings',
             'icon' => 'fa fa-wrench',
             'justicon' => true,
             'tooltip' => __('Settings')
         );
+
+        header_nav_hook($headlinks, 'settings');
+
     } else {
         $headlinks[] = array(
             'url' => '#login',

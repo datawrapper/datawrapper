@@ -7,6 +7,7 @@
         <li><a href="#-status">{% trans "Account Status" %}</a></li>
         <li><a href="#-profile">{% trans "Edit Profile" %}</a></li>
         <li><a href="#-password">{% trans "Change Password" %}</a></li>
+        {{ hook('user_settings_nav', user) }}
         <li><a href="#-delete">{% trans "Delete Account" %}</a></li>
     </ul>
     <h1 class="title">{% trans "User Settings" %}</h1>
@@ -146,6 +147,8 @@
             </div>
         </div>
     </div>
+
+    {{ hook('user_settings', user) }}
 
     <div class="row" id="-delete">
         <div class="span3">

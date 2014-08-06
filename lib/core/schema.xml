@@ -175,4 +175,54 @@
     <column name="key" type="varchar" size="128" required="true" />
     <column name="data" type="varchar" size="4096" />
   </table>
+
+  <!-- product -->
+  <table name="product" phpName="Product">
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+    <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+    <column name="name" type="varchar" size="512" required="true" />
+	<column name="created_at" type="timestamp" required="true" />
+	<column name="deleted" type="boolean" default="false" />
+	<column name="data" type="clob" />
+  </table>
+
+  <!-- product <-> plugin map -->
+  <table name="product_plugin" isCrossRef="true">
+	<column name="product_id" type="varchar" size="128" primaryKey="true" />
+    <column name="plugin_id" type="varchar" size="128" primaryKey="true" />
+    <foreign-key foreignTable="product">
+      <reference local="product_id" foreign="id"/>
+    </foreign-key>
+    <foreign-key foreignTable="plugin">
+      <reference local="plugin_id" foreign="id"/>
+    </foreign-key>
+  </table>
+
+  <!-- user <-> product map -->
+  <table name="user_product" isCrossRef="true">
+	<column name="user_id" type="integer" primaryKey="true" />
+    <column name="product_id" type="integer" primaryKey="true" />
+	<column name="expires" type="timestamp" />
+    <foreign-key foreignTable="user">
+      <reference local="user_id" foreign="id"/>
+    </foreign-key>
+    <foreign-key foreignTable="product">
+      <reference local="product_id" foreign="id"/>
+    </foreign-key>
+  </table>
+
+  <!-- organization <-> product map -->
+  <table name="organization_product" isCrossRef="true">
+	<column name="organization_id" type="varchar" size="128" primaryKey="true" />
+    <column name="product_id" type="integer" primaryKey="true" />
+	<column name="expires" type="timestamp" />
+    <foreign-key foreignTable="organization">
+      <reference local="organization_id" foreign="id"/>
+    </foreign-key>
+    <foreign-key foreignTable="product">
+      <reference local="product_id" foreign="id"/>
+    </foreign-key>
+  </table>
 </database>
