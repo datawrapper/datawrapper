@@ -59,6 +59,18 @@ CREATE TABLE `organization_product`
 ) ENGINE=MyISAM;
 
 -- ---------------------------------------------------------------------
--- organization_product
+-- MIGRATE data
 -- ---------------------------------------------------------------------
 
+-- Create one product per organization
+INSERT `product` (name, created_at, data)
+    SELECT id, created_at, '{}' FROM organization;
+
+-- Assign each new product to the organization with the same name
+INSERT `organization_product` (organization_id, product_id, expires)
+    SELECT name, id, DATE_ADD(NOW(), INTERVAL 5 year) FROM product;
+
+-- Assign the organizations plugins to the new product
+INSERT `product_plugin` (product_id, plugin_id)
+    SELECT product.id, plugin_id FROM plugin_organization LEFT JOIN product
+    ON (product.name = organization_id);
