@@ -1,4 +1,4 @@
-{% extends "core.twig" %}
+{% extends "account.twig" %}
 
 {% block content %}
 
@@ -10,8 +10,6 @@
         {{ hook('user_settings_nav', user) }}
         <li><a href="#-delete">{% trans "Delete Account" %}</a></li>
     </ul>
-    <h1 class="title">{% trans "User Settings" %}</h1>
-
 </div>
 
 <div class="mysettings">
