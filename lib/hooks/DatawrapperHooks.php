@@ -151,7 +151,7 @@ class DatawrapperHooks {
 
     const USER_ORGANIZATION_ADD = 'user_organization_add';
     const USER_ORGANIZATION_REMOVE = 'user_organization_remove';
-	
+
 	const VISUALIZE_AFTER_THEME_SELECTOR = 'visualize_after_theme_selector';
 
     // extend the settings form
@@ -159,6 +159,9 @@ class DatawrapperHooks {
 
     // extend the settings navigation
     const USER_SETTINGS_NAV = 'user_settings_nav';
+
+    // extend account pages
+    const GET_ACCOUNT_PAGES = 'get_account_pages';
 }
 
 
