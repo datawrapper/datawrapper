@@ -166,6 +166,8 @@ $(function() {
     {% use "messages.twig" %}
     {{ block('messages') }}
 
+    {{ hook('core_after_body') }}
+    {# For backwards compatibility, we call the following hook as well. In 2.x, this will be gone and only the above one is used. #}
     {{ hook('after_core_body') }}
   </body>
 </html>
