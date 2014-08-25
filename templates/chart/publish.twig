@@ -12,56 +12,25 @@ dw.backend.ready(function() {
 </script>
 <div class="dw-create-publish chart-editor">
     <div class="row">
-        <div class="span4">
-
-            {% if user.isAbleToPublish %}
-
-            <p class="lead" style="margin-top:0">{% trans "Link to this visualisation" %}</p>
-            <p><a href="{{ chartUrl }}">{{ chartUrl }}</a></p>
-
-            {% if republish %}
-
-            <div id="chart-url-change-warning" class="alert alert-warning" style="display:none">
-                <button type="button" class="close" data-dismiss="alert">&times;</button>
-                <div style="font-size:45px;line-height:55px;margin-left:-7px" class="pull-left">☝</div>
-                <div style="margin-left: 40px">
-                    <h4>{% trans "Chart URL has changed!" %}</h4>
-                    <div>{% trans "The chart URL has changed due to the republication. The old versions will be redirected automatically within the next 24 hours." %}</div>
-                </div>
-            </div>
-
-            {% endif %}
-
-            <p class="lead">{% trans "Embed into your website" %}</p>
-            <p>{% trans "Just copy &amp; paste the following code into your website." %}</p>
-            <form class="form-inline">
-                <label>{% trans "Width" %}: <input type="text" id="embed-width" class="input-small" style="width:4ex" value="600" /> px</label>&nbsp;&nbsp;
-                <label>{% trans "Height" %}: <input type="text" id="embed-height" class="input-small" style="width:4ex" value="400" /> px</label>
-
-            <textarea style="font-size: 13px;padding:5px" id="iframe-code" class="well span4" rows="5"><iframe src="{{ chartUrl }}" frameborder="0" allowtransparency="true" allowfullscreen="allowfullscreen" webkitallowfullscreen="webkitallowfullscreen" mozallowfullscreen="mozallowfullscreen" oallowfullscreen="oallowfullscreen" msallowfullscreen="msallowfullscreen" width="{{ chart.metadata.publish['embed-width'] }}" height="{{ chart.metadata.publish['embed-height'] }}"></iframe></textarea>
+        <div class="span5">
 
 
-            <p class="lead">{%trans "Other things to do" %}</p>
-
+            <h3>{% trans "What do you want to do with this chart?" %}</h3>
+            <ul class="chart-actions">
             {% for action in chartActions %}
-            {% if action %}
-            <p>
-                <a role="button" href="#{{ action.id }}">
-                    <i class="icon-{{ action.icon }}"></i>&nbsp;&nbsp;{{ action.title }}
-                </a>
-            </p>
-            {% endif %}
+                {% if action %}
+                <li class="action action-{{ action.id }}{% if action.class %} {{ action.class }}{% endif %}"{% if action.data %}{% for k,v in action.data %}data-{{ k }}="{{ v }}"{% endfor %}{% endif %}>
+                    <a role="button" href="{% if action.url %}{{ action.url }}{% else %}#{{ action.id }}{% endif %}">
+                        <i class="fa fa-{{ action.icon }}"></i><span class="title">{{ action.title }}</span>
+                    </a>
+                </li>
+                {% endif %}
             {% endfor %}
-
-            <p>
-                <a class="duplicate" role="button">
-                    <i class="icon-plus"></i>&nbsp;&nbsp;{% trans "Duplicate this chart" %}
-                </a>
-            </p>
+            </ul>
 
             {{ hook('publish_after_chart_actions', chart, user) }}
 
-            {% elseif user.role == 'guest' %}
+            {% if user.role == 'guest' %}
 
             <h3>{% trans "Congrats, you created your first chart!" %}</h3>
 
@@ -122,31 +91,7 @@ dw.backend.ready(function() {
 
             <div class="messages"></div>
 
-            {% if publish %}
-                <div class="publishing alert alert-info">
-                    <p>
-                        {% trans "Your chart is now being published and uploaded, and should be ready in a minute." %} <img src="/static/img/ajax-loader.gif" />
-                        <div class="progress progress-striped active">
-                            <div class="bar" style="width: 0%;"></div>
-                        </div>
-                    </p>
-                </div>
-            {% else %}
-                {% if chart.publishedAt < chart.lastModifiedAt %}
-                    <div class="alert alert-warning">
-                        <p>{% trans "You have changed the chart after its last publication. To make you changes visible, please re-publish the chart." %}</p>
-                        <a href="?republish=1" class="btn"><i class="icon-refresh"></i> {% trans "Re-publish chart!" %}</a>
-                    </div>
-                {% endif %}
-            {% endif %}
-
-            {% if chart.lastEditStep == 5 %}
-                <p class="published alert alert-success">{% trans "Congrats, your chart has been published." %}</p>
-            {% endif %}
-
-            <iframe src="{% if publish %}{{ chartUrlLocal }}{% else %}{{ chartUrl }}{% endif %}" id="iframe-vis" style="width:{{ chart.metadata.publish['embed-width'] }}px;height:{{ chart.metadata.publish['embed-height'] }}px" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>
-
-            <div style="color: #999;margin-top:20px"><b>{% trans "Note" %}:</b> {% trans "It may take a couple of minutes until the re-direction from old chart urls to the newest version takes effect." %}</div>
+            <iframe src="{{ chartUrlLocal }}" id="iframe-vis" style="width:{{ chart.metadata.publish['embed-width'] }}px;height:{{ chart.metadata.publish['embed-height'] }}px" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>
 
             {% else %}
 

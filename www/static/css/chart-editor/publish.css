@@ -1,6 +1,7 @@
 
 #iframe-vis {
     box-shadow: 2px 2px 11px rgba(0,0,0,.2);
+    border: 10px solid #fff;
 
 -webkit-transition: all 800ms cubic-bezier(0.190, 1.000, 0.220, 1.000);
    -moz-transition: all 800ms cubic-bezier(0.190, 1.000, 0.220, 1.000);
@@ -15,9 +16,49 @@
         transition-timing-function: cubic-bezier(0.190, 1.000, 0.220, 1.000); /* easeOutExpo */
 }
 
+.dw-create-publish h3 {
+    font-size: 21px;
+    font-weight: 200;
+    line-height: 30px;
+    margin-top: 0;
+}
+
 p.lead {
     margin-top: 30px;
 }
 .publishing .progress {
     height: 10px;
+}
+
+ul.chart-actions {
+    margin: 0;
+    padding: 0;
+}
+
+.chart-actions li {
+    display: inline-block;
+    width: 30%;
+    text-align: center;
+    margin: 0 2% 3% 0;
+    border-radius: 6px;
+    border: 1px solid #eee;
+    padding: 15px 0 15px;
+}
+
+.chart-actions li a:hover {
+    text-decoration: none;
+}
+
+.chart-actions li a .title {
+    display: inline-block;
+    padding: 0 20px;
+}
+
+.chart-actions li a:hover .title {
+    text-decoration: underline;
+}
+
+.chart-actions li i.fa {
+    display: block;
+    font-size: 42px;
 }
