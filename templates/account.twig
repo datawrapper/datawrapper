@@ -17,6 +17,17 @@
     position: absolute;
     bottom: 0;
 }
+.account-nav .nav-tabs > li, .nav-pills > li {
+    float:none;
+    display:inline-block;
+    *display:inline; /* ie7 fix */
+     zoom:1; /* hasLayout ie7 trigger */
+}
+
+.account-nav .nav-tabs, .nav-pills {
+    text-align:center;
+}
+
 .account-nav .nav { margin-bottom: 0; }
 .account-nav .nav-tabs>li>a { background: #ddd; color: #333; padding-right: 20px; padding-left: 20px;}
 .account-nav .nav-tabs>li.active>a { background: #fff; color: #000; font-weight: bold; border-color: #fff; }

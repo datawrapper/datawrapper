@@ -17,7 +17,7 @@ define(function() {
             resizeIFrame();
         });
 
-        $('a.duplicate').click(triggerDuplicate);
+        $('.chart-actions .action-duplicate a').click(triggerDuplicate);
         resizeIFrame();
 
         // send ajax request for re-sending activation email

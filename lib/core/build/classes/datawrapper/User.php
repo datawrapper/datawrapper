@@ -40,12 +40,7 @@ class User extends BaseUser {
     }
 
     public function isAbleToPublish() {
-        return in_array($this->getRole(), array(
-            UserPeer::ROLE_EDITOR,
-            UserPeer::ROLE_GRAPHIC_EDITOR,
-            UserPeer::ROLE_ADMIN,
-            UserPeer::ROLE_SYSADMIN
-        ));
+        return DatawrapperHooks::hookRegistered(DatawrapperHooks::PUBLISH_FILES);
     }
 
     public function hasCharts() {
