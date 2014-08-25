@@ -4,6 +4,8 @@ CHANGELOG
 ### 1.8.0
 * added product system
 * removed email-based theme restrictions
+* removed plugin export-image from core
+* instanciate all plugins first, then run their init() functions
 * Important: Please run scripts/migrate/1.8.0.sql and composer install after updating.
 
 ### 1.7.11
