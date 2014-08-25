@@ -28,8 +28,9 @@ class DatawrapperPluginManager {
         }
 
         $could_not_install = array();
+        $init_queue = array();
 
-        $load_plugin = function ($plugin) {
+        $load_plugin = function ($plugin) use (&$init_queue) {
             $plugin_path = ROOT_PATH . 'plugins/' . $plugin->getName() . '/plugin.php';
             if (file_exists($plugin_path)) {
                 require_once $plugin_path;
@@ -43,7 +44,7 @@ class DatawrapperPluginManager {
             foreach ($pluginClass->getRequiredLibraries() as $lib) {
                 require_once ROOT_PATH . 'plugins/' . $plugin->getName() . '/' . $lib;
             }
-            $pluginClass->init();
+            $init_queue[] = $pluginClass;
             return $pluginClass;
         };
         while (count($not_loaded_yet) > 0) {
@@ -82,7 +83,11 @@ class DatawrapperPluginManager {
                 }
             }
         }
-
+        // now initialize all plugins
+        while (count($init_queue) > 0) {
+            $pluginClass = array_shift($init_queue);
+            $pluginClass->init();
+        }
     }
 
     public static function loaded($plugin_id) {
