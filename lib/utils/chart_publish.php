@@ -2,7 +2,7 @@
 
 function publish_chart($user, $chart, $fromCli = false) {
     $files = array();
-    if (!$fromCli) _setPublishStatus($chart, 0);
+    if (!$fromCli) _setPublishStatus($chart, 0.01);
     else print "Publishing chart ".$chart->getID().".\n";
 
     $files = array_merge($files, publish_html($user, $chart));

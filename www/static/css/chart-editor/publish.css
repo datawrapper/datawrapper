@@ -62,3 +62,20 @@ ul.chart-actions {
     display: block;
     font-size: 42px;
 }
+
+.modal {
+    width: 600px;
+    margin-left: -300px;
+}
+
+.modal-wide {
+    width: 700px;
+    margin-left: -350px;
+}
+
+.modal .span1 .fa.big {
+    font-size:64px;
+    color:#ddd;
+    position: relative;
+    left: 10px;
+}
