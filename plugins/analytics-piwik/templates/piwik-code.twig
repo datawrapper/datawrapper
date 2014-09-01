@@ -1,0 +1,24 @@
+<!-- Piwik -->
+<script type="text/javascript">
+  var _paq = _paq || [];
+  _paq.push(["setDocumentTitle", document.domain + "/" + document.title]);
+  _paq.push(["setCookieDomain", "*.www.datawrapper.de"]);
+{% if chart %}
+  _paq.push(["setCustomVariable", 1, "Layout", "{{ chart.theme }}", "page"]);
+  _paq.push(["setCustomVariable", 3, "Visualization", "{{ chart.type }}", "page"]);
+{% endif %}
+{% if user %}
+  _paq.push(["setCustomVariable", 2, "Author", "{{ user.id }}", "page"]);
+{% endif %}
+  _paq.push(["trackPageView"]);
+  _paq.push(["enableLinkTracking"]);
+
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://{{ url }}/";
+    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+    _paq.push(["setSiteId", "{{ idSite }}"]);
+    var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+    g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<!-- End Piwik Code -->
