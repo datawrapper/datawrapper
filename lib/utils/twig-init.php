@@ -44,5 +44,13 @@ function dwInitTwigEnvironment(Twig_Environment $twig) {
         return DatawrapperPluginManager::loaded($plugin);
     }));
 
+    $twig->addFilter(new Twig_SimpleFilter('lettering', function($text) {
+        $out = '';
+        foreach (str_split($text) as $i => $char) {
+            $out .= '<span class="char'.$i.'">'.$char.'</span>';
+        }
+        return $out;
+    }, array('is_safe' => array('html')) ));
+
     return $twig;
 }
