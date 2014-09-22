@@ -21,7 +21,7 @@ dw.backend.ready(function() {
                 {% if action %}
                 <li class="action action-{{ action.id }}{% if action.class %} {{ action.class }}{% endif %}"{% if action.data %}{% for k,v in action.data %}data-{{ k }}="{{ v }}"{% endfor %}{% endif %}>
                     <a role="button" href="{% if action.url %}{{ action.url }}{% else %}#{{ action.id }}{% endif %}">
-                        <i class="fa fa-{{ action.icon }}"></i><span class="title">{{ action.title }}</span>
+                        <i class="fa fa-{{ action.icon }}"></i><span class="title">{{ action.title | raw }}</span>
                     </a>
                     {% if action.banner %}
                     <div class="banner" style="{{ action.banner.style }}">{{ action.banner.text }}</div>
