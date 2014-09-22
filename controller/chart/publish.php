@@ -11,11 +11,11 @@ $app->get('/chart/:id/publish', function ($id) use ($app) {
         $cfg = $GLOBALS['dw_config'];
 
         $chartActions = DatawrapperHooks::execute(DatawrapperHooks::GET_CHART_ACTIONS, $chart);
-        
+
         // add duplicate action
         $chartActions[] = array(
             'id' => 'duplicate',
-            'icon' => 'plus',
+            'icon' => 'code-fork',
             'title' => __('Duplicate this chart'),
             'order' => 500
         );
