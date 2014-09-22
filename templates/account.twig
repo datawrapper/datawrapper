@@ -4,83 +4,55 @@
 {# header #}
 
 <style type="text/css">
-.account-header {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 46px;
-    height: 160px;
-    background: #bbb;
-}
-
-.account-nav {
-    position: absolute;
-    bottom: 0;
-}
-.account-nav .nav-tabs > li, .nav-pills > li {
-    float:none;
-    display:inline-block;
-    *display:inline; /* ie7 fix */
-     zoom:1; /* hasLayout ie7 trigger */
-}
-
-.account-nav .nav-tabs, .nav-pills {
-    text-align:center;
-}
-
-.account-nav .nav { margin-bottom: 0; }
-.account-nav .nav-tabs>li>a { background: #ddd; color: #333; padding-right: 20px; padding-left: 20px;}
-.account-nav .nav-tabs>li.active>a { background: #fff; color: #000; font-weight: bold; border-color: #fff; }
 
 .account-header .avatar {
-    margin-top: 20px;
-}
-
-body>.container {
-    padding-top: 140px;
-}
-
-body>.container h2 {
-    font-weight: 300;
+    border-radius: 5px;
 }
 
 .user-name {
-    position: absolute;
-    top: 40px;
-    left: 100px;
+    font-size: 24px;
+    line-height: 28px;
     font-weight: 300;
-    font-size: 32px;
+    margin-top: 10px;
+}
+
+.account-body h2 {
+    font-weight: 300;
+}
+.account-menu li i.fa {
+    width: 15px;
+}
+.account-menu li.delete a {
+    color: darkred;
+    background: #f9efef;
 }
 </style>
 
-<div class="account-header">
-    <div class="container">
-        <div class="row">
-            <div class="span8 offset2" style="position:relative">
-                <img class="avatar" src="//www.gravatar.com/avatar/39d3c25fca2f747d927ed355bfca04c?s=84&amp;d=mm" />
-                <div class="user-name">John Doe</div>
-                <div class="alert alert-success pull-right" style="margin-top:30px">
-                    You successfully upgraded your account to <b>Datawrapper Single</b>.
-                </div>
+<div class="container">
+    <div class="row">
+        <div class="span3 offset0">
+            <div class="account-header">
+                <img class="avatar" src="//www.gravatar.com/avatar/{{ gravatar }}?s=230&amp;d=mm" />
+                <div class="user-name">{{ user.guessName() }}</div>
             </div>
-        </div>
-        <div class="account-nav">
-            <div class="row">
-                <div class="span8 offset2">
-                    <ul class="nav nav-tabs">
-                        {% for page in pages %}
-                        <li {% if page.url == active %}class="active"{% endif %}>
-                            <a href="/account/{{ page.url }}">{% if page.icon %}<i class="fa {{ page.icon }}"></i> {% endif %}{{ page.title }}</a>
-                        </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
 
+        </div>
+        <div class="span6">
+            <div class="account-body {{ active | lower }}">
+                {{ block('content_account') }}
+            </div>
+        </div>
+        <div class="span3">
+            <div class="account-menu">
+                <ul class="nav nav-tabs nav-stacked">
+                    {% for page in pages %}
+                    <li class="{{ page.url }}{% if page.url == active %} active{% endif %}">
+                        <a href="/account/{{ page.url }}">{% if page.icon %}<i class="fa {{ page.icon }}"></i> {% endif %}{{ page.title }}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+    </div>
 </div>
-<div class="account-body {{ active | lower }}">
-{{ parent() }}
 
 {% endblock %}
