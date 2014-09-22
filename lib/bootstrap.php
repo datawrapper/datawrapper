@@ -37,6 +37,8 @@ function secure_password($pwd) {
 }
 
 if (!defined('NO_SESSION')) {
+    // forcing require of database session handler
+    require_once ROOT_PATH . 'lib/session/database.php';
     DatawrapperSession::initSession();
 }
 
