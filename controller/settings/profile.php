@@ -1,11 +1,11 @@
 <?php
 
-DatawrapperHooks::register(DatawrapperHooks::GET_ACCOUNT_PAGES, function() {
+DatawrapperHooks::register(DatawrapperHooks::GET_SETTINGS_PAGES, function() {
     return array(
         'title' => __('Settings'),
         'order' => 5,
         'icon' => 'fa-wrench',
-        'url' => 'settings',
+        'url' => 'profile',
         'controller' => function($app, $page) {
             return function() use ($app, $page) {
                 disable_cache($app);
@@ -65,7 +65,7 @@ DatawrapperHooks::register(DatawrapperHooks::GET_ACCOUNT_PAGES, function() {
                     }
                     $page['activation_email_date'] = strftime('%x', $t);
                 }
-                $app->render('settings.twig', $page);
+                $app->render('settings/profile.twig', $page);
             };
         }
     );

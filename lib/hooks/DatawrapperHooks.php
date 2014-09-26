@@ -161,7 +161,10 @@ class DatawrapperHooks {
     const USER_SETTINGS_NAV = 'user_settings_nav';
 
     // extend account pages
-    const GET_ACCOUNT_PAGES = 'get_account_pages';
+    const GET_SETTINGS_PAGES = 'get_settings_pages';
+
+    // GET_ACCOUNT_PAGES kept for backward-compatibility
+    const GET_ACCOUNT_PAGES = 'get_settings_pages';
 }
 
 

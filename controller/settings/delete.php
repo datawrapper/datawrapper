@@ -1,6 +1,6 @@
 <?php
 
-DatawrapperHooks::register(DatawrapperHooks::GET_ACCOUNT_PAGES, function() {
+DatawrapperHooks::register(DatawrapperHooks::GET_SETTINGS_PAGES, function() {
     return array(
         'title' => __('Delete account'),
         'order' => 9999,
@@ -9,7 +9,7 @@ DatawrapperHooks::register(DatawrapperHooks::GET_ACCOUNT_PAGES, function() {
         'controller' => function($app, $context) {
             return function() use ($app, $context) {
                 disable_cache($app);
-                $app->render('account/delete.twig', $context);
+                $app->render('settings/delete.twig', $context);
             };
         }
     );

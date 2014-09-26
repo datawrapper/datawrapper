@@ -1,6 +1,6 @@
 <?php
 
-DatawrapperHooks::register(DatawrapperHooks::GET_ACCOUNT_PAGES, function() {
+DatawrapperHooks::register(DatawrapperHooks::GET_SETTINGS_PAGES, function() {
     return array(
         'title' => __('Change password'),
         'order' => 10,
@@ -9,7 +9,7 @@ DatawrapperHooks::register(DatawrapperHooks::GET_ACCOUNT_PAGES, function() {
         'controller' => function($app, $context) {
             return function() use ($app, $context) {
                 disable_cache($app);
-                $app->render('account/password.twig', $context);
+                $app->render('settings/password.twig', $context);
             };
         }
     );
