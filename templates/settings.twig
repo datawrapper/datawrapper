@@ -5,12 +5,12 @@
 
 <style type="text/css">
 
-.account-header {
+.settings-header {
     margin-bottom: 20px;
     padding-left: 5px;
 }
 
-.account-header .avatar {
+.settings-header .avatar {
     border-radius: 8px;
     width: 32px;
     height: 32px;
@@ -25,13 +25,16 @@
     margin-left: 5px;
 }
 
-.account-body h2 {
+.settings-body h2 {
     font-weight: 300;
 }
-.account-menu li i.fa {
-    width: 15px;
+.settings-menu li i.fa {
+    width: 17px;
+    text-align: center;
+    position: relative;
+    left: -3px;
 }
-.account-menu li.delete a {
+.settings-menu li.delete a {
     color: darkred;
     background: #f9efef;
 }
@@ -40,11 +43,11 @@
 <div class="container">
     <div class="row">
         <div class="span3 offset0">
-            <div class="account-header">
+            <div class="settings-header">
                 <img class="avatar" src="//www.gravatar.com/avatar/{{ gravatar }}?s=64&amp;d=mm" />
                 <div class="user-name">{{ user.guessName() }}</div>
             </div>
-            <div class="account-menu">
+            <div class="settings-menu">
                 <ul class="nav nav-tabs nav-stacked">
                     {% for page in pages %}
                     <li class="{{ page.url }}{% if page.url == active %} active{% endif %}">
@@ -55,7 +58,7 @@
             </div>
         </div>
         <div class="span9">
-            <div class="account-body {{ active | lower }}">
+            <div class="settings-body {{ active | lower }}">
                 {{ block('settings_content') }}
             </div>
         </div>
