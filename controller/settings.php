@@ -21,6 +21,10 @@ call_user_func(function() {
     $app->get('/settings/?', function() use ($app, $pages) {
         $app->redirect('/settings/' . $pages[0]['url']);
     });
+    // redirect to settings
+    $app->get('/account/?', function() use ($app) {
+        $app->redirect('/settings');
+    });
 
     $user = DatawrapperSession::getUser();
 
