@@ -2,7 +2,7 @@
 
 DatawrapperHooks::register(DatawrapperHooks::GET_SETTINGS_PAGES, function() {
     return array(
-        'title' => __('Settings'),
+        'title' => __('Edit profile'),
         'order' => 5,
         'icon' => 'fa-wrench',
         'url' => 'profile',
