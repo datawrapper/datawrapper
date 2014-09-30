@@ -24,7 +24,7 @@ define(function() {
             a.tab('show');
             $('.tab-container > *').css({ position: 'absolute', left: -10000 });
             $('.tab-container .'+a.data('target')).css({ position: 'static' });
-            if (a.attr('href') == '#story') {
+            if (a.attr('href') == '#design') {
                 $('.proceed-btn').hide();
                 $('.publish-btn').show();
             } else {
@@ -58,13 +58,14 @@ define(function() {
         $('.visualize-nav-tabs a').on('click', function (e) {
             var a = $(e.target);
             location.hash = '#'+a.data('target');
-            if (a.attr('href') == '#story') {
+            if (a.attr('href') == '#design') {
                 $('.proceed-btn').hide();
                 $('.publish-btn').show();
             } else {
                 $('.proceed-btn').show();
                 $('.publish-btn').hide();
             }
+
             if (a.attr('href') == '#vis') {
                 $('.btn-stepback').show();
                 $('.btn-tabback').hide();
@@ -77,7 +78,8 @@ define(function() {
         function loadTab(evt) {
             if (location.hash) {
                 var a = location.hash.substr(1);
-                if (a != 'select-visualization' && a != 'refine-the-chart' && a != 'tell-the-story') {
+                if (a != 'select-visualization' && a != 'refine-the-chart' &&
+                    a != 'tell-the-story' && a != 'design') {
                     return;
                 }
                 show($('a[data-target='+a+']'));

@@ -1,6 +1,8 @@
 /*
  * le styles for datawrapper
  */
+@import url(http://fonts.googleapis.com/css?family=Roboto+Condensed:400,300,700);
+
 
 @font-face {
     font-family: 'Desyrel';
@@ -13,16 +15,30 @@
     font-style: normal;
 }
 
+
 .chart-editor {
     margin-top: 20px;
+}
+
+body .chart-editor {
+    font-family: 'Roboto Condensed', sans-serif;
+    font-weight: 300;
+    color: #000;
+}
+
+body .chart-editor input {
+    font-family: 'Roboto Condensed', sans-serif;
+    font-weight: 300;
 }
 
 body .chart-editor .visconfig label,
 body .chart-editor .visconfig select,
 body .chart-editor .visconfig input[type=text],
 body .chart-editor .visconfig textarea {
-    font-size: 12px;
+    font-size: 14px;
     line-height: 16px;
+    font-weight: 300;
+    font-family: 'Roboto Condensed', sans-serif;
 }
 
 body .chart-editor .visconfig input[type="radio"],
@@ -742,10 +758,10 @@ dl.dl-horizontal dd {
  */
 
 #iframe-wrapper {
-    box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.3);
+    box-shadow: 1px 1px 64px rgba(0, 0, 0, 0.13),0px 0px 2px #ccc;
     border: 1px solid #fff;
     padding: 10px;
-    border-radius: 7px;
+    border-radius: 0px;
     overflow: hidden;
     background: #fff;
     max-width: 98%;
@@ -1192,10 +1208,10 @@ form.well form {
 }
 
 .vis-thumb {
-    width: 100px;
-    height: 100px;
-    border-radius: 4px;
-    border: 1px solid #AFAFAF;
+    width: 80px;
+    height: 90px;
+    border-radius: 0px;
+    border: 1px solid #fff;
     background: #fff;
     position: relative;
     display: inline-block;
@@ -1214,8 +1230,8 @@ form.well form {
 }
 
 .vis-thumb svg {
-    width: 80px;
-    height: 80px;
+    width: 60px;
+    height: 60px;
     margin-left: 10px;
     margin-top: 5px;
 }
@@ -1225,9 +1241,8 @@ form.well form {
     bottom: 3px;
     left: 5px;
     right: 5px;
-    text-transform: uppercase;
-    font-size: 10px;
-    line-height: 12px;
+    font-size: 13px;
+    line-height: 15px;
     text-align: center;
     text-shadow: 1px 1px 0px #fff,0px 1px 0px #fff,-1px 1px 0px #fff,
         1px -1px 0px #fff,0px -1px 0px #fff,-1px -1px 0px #fff,
@@ -1239,11 +1254,11 @@ form.well form {
     color: #000;
 }
 
-.vis-thumb svg path, .vis-thumb svg rect { fill: #bdcce0; }
-.vis-thumb svg line { stroke: #bdcce0; }
+.vis-thumb svg path, .vis-thumb svg rect { fill: #93B0D6; }
+.vis-thumb svg line { stroke: #93B0D6; }
 
-.vis-thumb.active svg path, .vis-thumb.active svg rect { fill: #4482cc; }
-.vis-thumb.active svg line { stroke: #4482cc; }
+.vis-thumb.active svg path, .vis-thumb.active svg rect { fill: #000; }
+.vis-thumb.active svg line { stroke: #000; }
 
 .vis-thumb.active {
     border: 1px solid #1981DD;
@@ -1254,7 +1269,7 @@ form.well form {
 }
 
 .vis-thumb:hover {
-    border: 1px solid #777;
+    border: 1px solid #ccc;
 }
 
 .vis-thumb:hover img {
@@ -1363,7 +1378,7 @@ form.well form {
 .resize-chart {
     text-align: center;
     margin-left: 10px;
-    color: #666;
+    color: #000;
     font-size: 13px;
     line-height: 28px;
 }
@@ -1419,8 +1434,9 @@ form.well form {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    box-shadow: inset 0px -5px 12px rgba(0,0,0,0.05);
+    box-shadow: inset 0px -5px 7px rgba(0,0,0,0.05);
     border: 1px solid #e5e5e5;
+    background: #f9f9f9;
     border-bottom: 0;
 }
 
@@ -1428,7 +1444,7 @@ form.well form {
     color: #000;
     font-weight: bold;
     box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.05) inset;
-    background: #f2f2f2;
+    background: #fff;
 }
 
 label.separator {
@@ -1735,4 +1751,12 @@ html .btn-primary {
   color: #ffffff;
   background-color: #0276B0;
   *background-color: #003bb3;
+}
+
+select, textarea, input[type="text"], input[type="password"],
+input[type="datetime"], input[type="datetime-local"], input[type="date"],
+input[type="month"], input[type="time"], input[type="week"],
+input[type="number"], input[type="email"], input[type="url"],
+input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
+    border-radius: 1px;
 }
