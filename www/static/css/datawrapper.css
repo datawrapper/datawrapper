@@ -765,6 +765,7 @@ dl.dl-horizontal dd {
     overflow: hidden;
     background: #fff;
     max-width: 98%;
+    margin-top: 20px;
 }
 
 #iframe-vis {
