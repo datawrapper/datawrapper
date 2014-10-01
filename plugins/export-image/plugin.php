@@ -47,7 +47,7 @@ class DatawrapperPlugin_ExportImage extends DatawrapperPlugin {
             // path to the script
             ROOT_PATH . 'plugins/' . $this->getName() . '/export_chart.js',
             // 1) url of the chart
-            'http://' . $GLOBALS['dw_config']['domain'] . '/chart/'. $chart->getId() .'/',
+            $chart->getPublicUrl(),
             // 2) path to the image
             $imgFile,
             // 3) output width
