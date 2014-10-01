@@ -103,58 +103,58 @@
 
         </div>
 
+
         <div class="buttons">
-            <a href="#proceed" class="pull-right btn btn-primary proceed-btn">{% trans "Proceed" %} <i class="icon-chevron-right icon-white"></i></a>
-            <a href="publish" class="submit pull-right btn btn-primary btn-lrge publish-btn" id="visualize-proceed">{% trans "Publish" %} <i class="icon-chevron-right icon-white"></i></a>
-        </div>
+            <a class="btn submit btn-stepback" href="describe"><i class="icon-chevron-left"></i> {% trans "Back" %}</a>
+            <a class="btn btn-tabback" href="#"><i class="icon-chevron-left"></i> {% trans "Back" %}</a>
+            {% if debug %}
 
-        {% if debug %}
+            {#
 
-        {#
+            The purpose of this section is to show a button labeled "store as test case", which
+            calls the API and stores a kind of snapshot of the current chart configuration including
+            data and a visual signature (or footprint if you like) for testing the chart in
+            different browsers.
 
-        The purpose of this section is to show a button labeled "store as test case", which
-        calls the API and stores a kind of snapshot of the current chart configuration including
-        data and a visual signature (or footprint if you like) for testing the chart in
-        different browsers.
+            It should never be visible on live instances
 
-        It should never be visible on live instances
+            #}
 
-        #}
+            <a href="#" class="snapshot btn btn-info">new test</a>
+            <a href="#" class="snapshot update btn btn-info">update test</a>
+            <script type="text/javascript">
 
-        <a href="#" class="snapshot btn btn-info">new test</a>
-        <a href="#" class="snapshot update btn btn-info">update test</a>
-        <script type="text/javascript">
+            $(function() {
+                var testId = dw.backend.currentChart.get('metadata.describe.__test_id', null);
+                if (!testId) $('.snapshot.update').hide();
 
-        $(function() {
-            var testId = dw.backend.currentChart.get('metadata.describe.__test_id', null);
-            if (!testId) $('.snapshot.update').hide();
-
-            $('.snapshot').click(function(e) {
-                e.preventDefault();
-                var vis = $('#iframe-vis').get(0).contentWindow.vis;
-                var id = testId && $(e.target).hasClass('update') ? testId : prompt("Enter unique name for this test case..");
-                $.ajax({
-                    type: 'POST',
-                    url: '/api/charts/{{ chart.id }}/store_snapshot',
-                    data: JSON.stringify({
-                        id: id,
-                        signature: vis.signature()
-                    }),
-                    dataType: 'json'
-                }).done(function(res) {
-                    if (res.status == "ok") {
-                        dw.backend.logMessage("The test case <b>"+id+"</b> has been "+(testId && $(e.target).hasClass('update') ? 'updated.' : 'created.'), '.visconfig');
-                    }
+                $('.snapshot').click(function(e) {
+                    e.preventDefault();
+                    var vis = $('#iframe-vis').get(0).contentWindow.vis;
+                    var id = testId && $(e.target).hasClass('update') ? testId : prompt("Enter unique name for this test case..");
+                    $.ajax({
+                        type: 'POST',
+                        url: '/api/charts/{{ chart.id }}/store_snapshot',
+                        data: JSON.stringify({
+                            id: id,
+                            signature: vis.signature()
+                        }),
+                        dataType: 'json'
+                    }).done(function(res) {
+                        if (res.status == "ok") {
+                            dw.backend.logMessage("The test case <b>"+id+"</b> has been "+(testId && $(e.target).hasClass('update') ? 'updated.' : 'created.'), '.visconfig');
+                        }
+                    });
                 });
             });
-        });
 
-        </script>
+            </script>
 
-        {% endif %}
+            {% endif %}
 
-        <a class="btn submit btn-stepback" href="describe"><i class="icon-chevron-left"></i> {% trans "Back" %}</a>
-        <a class="btn btn-tabback" href="#"><i class="icon-chevron-left"></i> {% trans "Back" %}</a>
+            <a href="#proceed" class=" btn btn-primary proceed-btn">{% trans "Proceed" %} <i class="icon-chevron-right icon-white"></i></a>
+            <a href="publish" class="submit btn btn-primary btn-lrge publish-btn" id="visualize-proceed">{% trans "Publish" %} <i class="icon-chevron-right icon-white"></i></a>
+        </div>
 
         <div class="clearfix"></div>
     </div>

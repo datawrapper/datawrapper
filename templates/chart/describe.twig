@@ -19,16 +19,9 @@ dw.backend.ready(function() {
 <div class="dw-create-describe chart-editor">
 
     <div class="row">
-        <div class="span8">
-
-            <div class="transpose-help help">⤹ <span>{% trans "Transpose data table" %}</span></div>
-            <div class="customize-help help"><span>{% trans "Customize column format" %}</span> ⤵︎</div>
-            <div id="data-preview"></div>
-
-        </div>
 
         <div class="span4">
-            <div class="well sidebar">
+            <div class="sidebar">
 
                 <div id="table-options">
 
@@ -151,12 +144,20 @@ dw.backend.ready(function() {
                     <div class="clearfix"></div>
                 </div>
 
-                <a href="visualize" class="submit pull-right btn btn-primary" id="describe-proceed">{% trans "Visualize" %} <i class="icon-chevron-right icon-white"></i></a>
                 <a class="btn submit" href="upload"><i class="icon-chevron-left"></i> {% trans "Back" %}</a>
                 <button class="btn disabled" id="reset-data-changes" title="{% trans "Revert data changes" %}">{% trans "Revert" %}</button>
+                <a href="visualize" class="submit btn btn-primary" id="describe-proceed">{% trans "Visualize" %} <i class="icon-chevron-right icon-white"></i></a>
                 <div class="clearfix"></div>
             </div>
         </div>
+        <div class="span8">
+
+            <div class="transpose-help help">⤹ <span>{% trans "Transpose data table" %}</span></div>
+            <div class="customize-help help"><span>{% trans "Customize column format" %}</span> ⤵︎</div>
+            <div id="data-preview"></div>
+
+        </div>
+
     </div>
 
     <div class="row">
