@@ -2,6 +2,7 @@
  * le styles for datawrapper
  */
 @import url(http://fonts.googleapis.com/css?family=Roboto+Condensed:400,300,700);
+@import url(http://fonts.googleapis.com/css?family=Roboto:100,300,500);
 
 
 @font-face {
@@ -20,13 +21,26 @@
     margin-top: 20px;
 }
 
+body {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    color: #000;
+}
 body .chart-editor {
     font-family: 'Roboto Condensed', sans-serif;
     font-weight: 300;
     color: #000;
 }
 
-body .chart-editor input {
+
+body .chart-editor h2,
+body .chart-editor h3,
+body .chart-editor h4,
+body .chart-editor p {
+    font-family: 'Roboto', sans-serif;
+}
+
+body .chart-editor input, body .chart-editor label {
     font-family: 'Roboto Condensed', sans-serif;
     font-weight: 300;
 }
@@ -54,6 +68,10 @@ body {
     background: #fff;
     color: #444;
     position: relative;
+}
+
+html .navbar {
+    font-weight: 300;
 }
 
 html .navbar li {
@@ -407,6 +425,7 @@ body .navbar-inverse .nav li.dropdown.active > .dropdown-toggle:hover
 .dw-create-upload textarea {
     width: 98%;
     height: 200px;
+    margin-top: 20px;
 }
 
 .dw-create-upload p {
@@ -414,8 +433,8 @@ body .navbar-inverse .nav li.dropdown.active > .dropdown-toggle:hover
 }
 
 .dw-create-upload .btn {
-    height: 32px;
-    line-height: 32px;
+    /*height: 32px;
+    line-height: 32px;*/
 }
 
 .dw-create-upload .upload-form ul {
