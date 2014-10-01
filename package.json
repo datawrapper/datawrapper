@@ -1,18 +1,21 @@
 {
-    "name": "datawrapper",
-    "version": "1.8.beta",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/datawrapper/datawrapper.git"
-    },
-    "jshintConfig": {
-        "globalstrict": false,
-        "globals": {
-            "dw": true,
-            "_": true,
-            "$": true,
-            "chroma": true,
-            "d3": true
-        }
+  "name": "datawrapper",
+  "version": "1.8.0-beta",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/datawrapper/datawrapper.git"
+  },
+  "jshintConfig": {
+    "globalstrict": false,
+    "globals": {
+      "dw": true,
+      "_": true,
+      "$": true,
+      "chroma": true,
+      "d3": true
     }
+  },
+  "devDependencies": {
+    "less": "^1.7.5"
+  }
 }

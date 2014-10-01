@@ -22,7 +22,7 @@ crowdin.yaml
 log.txt
 www/static/js/dw-2.0.min.js
 vendor/*
-
+node_modules/*
 scripts/lib/execute_jobs.lock
 
 scripts/execute_jobs.lock
