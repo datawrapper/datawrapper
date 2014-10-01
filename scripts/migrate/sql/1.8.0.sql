@@ -74,3 +74,6 @@ INSERT `organization_product` (organization_id, product_id, expires)
 INSERT `product_plugin` (product_id, plugin_id)
     SELECT product.id, plugin_id FROM plugin_organization LEFT JOIN product
     ON (product.name = organization_id);
+
+-- add default theme for organizations
+ALTER TABLE `organization` ADD COLUMN `default_theme` VARCHAR(128) DEFAULT '';

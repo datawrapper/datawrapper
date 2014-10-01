@@ -36,6 +36,9 @@ $app->post('/organizations', function() use ($app) {
             $org = new Organization();
             $org->setId(strtolower($params['id']));
             $org->setName($params['name']);
+            if (isset($params['default_theme'])) {
+                $org->setDefaultTheme($params['default_theme']);
+            }
             $org->setCreatedAt(time());
             $org->save();
             ok();
@@ -54,7 +57,12 @@ $app->put('/organizations/:id', function($org_id) use ($app) {
         $org = OrganizationQuery::create()->findPk($org_id);
         if ($org) {
             $params = json_decode($app->request()->getBody(), true);
-            $org->setName($params['name']);
+            if (isset($params['name'])) {
+                $org->setName($params['name']);
+            }
+            if (isset($params['default_theme'])) {
+                $org->setDefaultTheme($params['default_theme']);
+            }
             $org->save();
             ok();
         } else {

@@ -10,11 +10,13 @@
  * @method OrganizationQuery orderByName($order = Criteria::ASC) Order by the name column
  * @method OrganizationQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method OrganizationQuery orderByDeleted($order = Criteria::ASC) Order by the deleted column
+ * @method OrganizationQuery orderByDefaultTheme($order = Criteria::ASC) Order by the default_theme column
  *
  * @method OrganizationQuery groupById() Group by the id column
  * @method OrganizationQuery groupByName() Group by the name column
  * @method OrganizationQuery groupByCreatedAt() Group by the created_at column
  * @method OrganizationQuery groupByDeleted() Group by the deleted column
+ * @method OrganizationQuery groupByDefaultTheme() Group by the default_theme column
  *
  * @method OrganizationQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method OrganizationQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -42,11 +44,13 @@
  * @method Organization findOneByName(string $name) Return the first Organization filtered by the name column
  * @method Organization findOneByCreatedAt(string $created_at) Return the first Organization filtered by the created_at column
  * @method Organization findOneByDeleted(boolean $deleted) Return the first Organization filtered by the deleted column
+ * @method Organization findOneByDefaultTheme(string $default_theme) Return the first Organization filtered by the default_theme column
  *
  * @method array findById(string $id) Return Organization objects filtered by the id column
  * @method array findByName(string $name) Return Organization objects filtered by the name column
  * @method array findByCreatedAt(string $created_at) Return Organization objects filtered by the created_at column
  * @method array findByDeleted(boolean $deleted) Return Organization objects filtered by the deleted column
+ * @method array findByDefaultTheme(string $default_theme) Return Organization objects filtered by the default_theme column
  *
  * @package    propel.generator.datawrapper.om
  */
@@ -150,7 +154,7 @@ abstract class BaseOrganizationQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `name`, `created_at`, `deleted` FROM `organization` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `name`, `created_at`, `deleted`, `default_theme` FROM `organization` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_STR);
@@ -365,6 +369,35 @@ abstract class BaseOrganizationQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(OrganizationPeer::DELETED, $deleted, $comparison);
+    }
+
+    /**
+     * Filter the query on the default_theme column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByDefaultTheme('fooValue');   // WHERE default_theme = 'fooValue'
+     * $query->filterByDefaultTheme('%fooValue%'); // WHERE default_theme LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $defaultTheme The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return OrganizationQuery The current query, for fluid interface
+     */
+    public function filterByDefaultTheme($defaultTheme = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($defaultTheme)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $defaultTheme)) {
+                $defaultTheme = str_replace('*', '%', $defaultTheme);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(OrganizationPeer::DEFAULT_THEME, $defaultTheme, $comparison);
     }
 
     /**
