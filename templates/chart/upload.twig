@@ -17,20 +17,20 @@ dw.backend.ready(function() {
     <div class="row">
 
         <div class="span4">
-            <h3>{% trans "How it works.." %}</h3>
-            <p>{% trans "We made getting data into Datawrapper as easy as possible. If you're working in Excel or OpenOffice, just select your data (including header row/column) and paste it in the following text field." %} <a href="http://docs.datawrapper.de/tutorial/" target="_blank">{% trans "Learn more about how to upload your data" %}</a>.</p>
+            <h3>{% trans "It all starts with your data..." %}</h3>
+            <p>{% trans "Select your data (including header row/column) in Excel or OpenOffice and paste it in the text field on the right. You can also upload a CSV file from your computer." %} <a href="http://docs.datawrapper.de/tutorial/" target="_blank">{% trans "Learn more about how to upload your data" %}</a>.</p>
 
-            <div class="buttons">
-
-                <div id="upload-data" class="btn btn-primary">{% trans "Upload and continue" %} <i class="icon-chevron-right icon-white"></i></div>
-            </div>
 
             <div class="demo-datasets">
-                <h3>{% trans "Or use our sample Data" %}</h3>
-                <p>{% trans "If you simply want to play around with Datawrapper, here's a list of some example datasets:" %}</p>
+                <p>{% trans "If you just want to try Datawrapper, here‘s a list of some example datasets you can use:" %}</p>
                 <select id="demo-datasets" class="">
-                    {% for dataset in datasets %}
-                    <option value="{{ dataset.id }}" class="demo-dataset" data-data="{{ dataset.data | escape('html') }}" data-presets='{{ dataset.presets | json | escape('html')  }}'>{{ dataset.type }}: {{ dataset.title }}</option>
+                    <option>{% trans "Select a sample dataset" %}</option>
+                    {% for group in datasets %}
+                    <optgroup label="{{ group.type }}">
+                    {% for dataset in group.datasets %}
+                    <option value="{{ dataset.id }}" class="demo-dataset" data-data="{{ dataset.data | escape('html') }}" data-presets='{{ dataset.presets | json | escape('html')  }}'>{{ dataset.title }}</option>
+                    {% endfor %}
+                    </optgroup>
                     {% endfor %}
                 </select>
             </div>
@@ -41,9 +41,10 @@ dw.backend.ready(function() {
 
             <form class="upload-form">
                 <div class="control-group">
-                    <textarea id="upload-data-text" data-drop-here="{% trans "drop your csv file here " %}" style="resize:none" placeholder="{% trans "Copy &amp; paste your data here" %}">{{ chartData }}</textarea>
+                    <textarea id="upload-data-text" data-drop-here="{% trans "drop your csv file here " %}" style="resize:none" placeholder="{% trans "Paste your copied data here..." %}">{{ chartData }}</textarea>
                 </div>
 
+                <div id="upload-data" class="btn btn-primary pull-right">{% trans "Upload and continue" %} <i class="icon-chevron-right icon-white"></i></div>
                 <div id="upload" style="display:inline-block"></div>
 
             </form>

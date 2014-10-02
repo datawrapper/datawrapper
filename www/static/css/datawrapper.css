@@ -371,7 +371,7 @@ html .btn-primary {
 }
 .dw-create-upload .btn {
   /*height: 32px;
-    line-height: 32px;*/
+        line-height: 32px;*/
 }
 .dw-create-upload .upload-form ul {
   margin: 0;
@@ -383,6 +383,9 @@ html .btn-primary {
   font-size: 26px;
   color: #ccc;
   font-weight: 300;
+}
+.dw-create-upload #demo-datasets {
+  font-family: 'Roboto Condensed', Helvetica, sans-serif;
 }
 #data-preview.table {
   width: auto!important;
