@@ -1,80 +1,129 @@
-@import url(http://fonts.googleapis.com/css?family=Roboto+Condensed:400,300,700);
-@import url(http://fonts.googleapis.com/css?family=Roboto:100,300,500);
 /*
  * le styles for datawrapper
  */
 @font-face {
   font-family: 'Desyrel';
-  src: url('fonts/desyrel-webfont.eot');
-  src: url('fonts/desyrel-webfont.eot?#iefix') format('embedded-opentype'), url('fonts/desyrel-webfont.woff') format('woff'), url('fonts/desyrel-webfont.ttf') format('truetype'), url('fonts/desyrel-webfont.svg#Desyrel') format('svg');
+  src: url('fonts/desyrel/desyrel-webfont.eot');
+  src: url('fonts/desyrel/desyrel-webfont.eot?#iefix') format('embedded-opentype'), url('fonts/desyrel/desyrel-webfont.woff') format('woff'), url('fonts/desyrel/desyrel-webfont.ttf') format('truetype'), url('fonts/desyrel/desyrel-webfont.svg#Desyrel') format('svg');
   font-weight: normal;
   font-style: normal;
 }
-body {
-  font-family: 'Roboto', sans-serif;
+@font-face {
+  font-family: 'Roboto';
+  src: url('fonts/roboto/roboto-thin.eot');
+  src: local('Roboto Thin'), local('Roboto-Thin'), url('fonts/roboto/roboto-thin.eot?#iefix') format('embedded-opentype'), url('fonts/roboto/roboto-thin.woff2') format('woff2'), url('fonts/roboto/roboto-thin.woff') format('woff'), url('fonts/roboto/roboto-thin.ttf') format('truetype');
+  font-weight: 100;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Roboto';
+  src: url('fonts/roboto/roboto-light.eot');
+  src: local('Roboto Light'), local('Roboto-Light'), url('fonts/roboto/roboto-light.eot?#iefix') format('embedded-opentype'), url('fonts/roboto/roboto-light.woff2') format('woff2'), url('fonts/roboto/roboto-light.woff') format('woff'), url('fonts/roboto/roboto-light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Roboto';
+  src: url('fonts/roboto/roboto-regular.eot');
+  src: local('Roboto Regular'), local('Roboto-Regular'), url('fonts/roboto/roboto-regular.eot?#iefix') format('embedded-opentype'), url('fonts/roboto/roboto-regular.woff2') format('woff2'), url('fonts/roboto/roboto-regular.woff') format('woff'), url('fonts/roboto/roboto-regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Roboto';
+  src: url('fonts/roboto/roboto-medium.eot');
+  src: local('Roboto Medium'), local('Roboto-Medium'), url('fonts/roboto/roboto-medium.eot?#iefix') format('embedded-opentype'), url('fonts/roboto/roboto-medium.woff2') format('woff2'), url('fonts/roboto/roboto-medium.woff') format('woff'), url('fonts/roboto/roboto-medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Roboto';
+  src: url('fonts/roboto/roboto-bold.eot');
+  src: local('Roboto Bold'), local('Roboto-Bold'), url('fonts/roboto/roboto-bold.eot?#iefix') format('embedded-opentype'), url('fonts/roboto/roboto-bold.woff2') format('woff2'), url('fonts/roboto/roboto-bold.woff') format('woff'), url('fonts/roboto/roboto-bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Roboto Condensed';
+  src: url('fonts/roboto/robotocondensed-light.eot');
+  src: local('Roboto Condensed Light'), url('fonts/roboto/robotocondensed-light.eot?#iefix') format('embedded-opentype'), url('fonts/roboto/robotocondensed-light.woff2') format('woff2'), url('fonts/roboto/robotocondensed-light.woff') format('woff'), url('fonts/roboto/robotocondensed-light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Roboto Condensed';
+  src: url('fonts/roboto/robotocondensed-regular.eot');
+  src: local('Roboto Condensed'), url('fonts/roboto/robotocondensed-regular.eot?#iefix') format('embedded-opentype'), url('fonts/roboto/robotocondensed-regular.woff2') format('woff2'), url('fonts/roboto/robotocondensed-regular.woff') format('woff'), url('fonts/roboto/robotocondensed-regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Roboto Condensed';
+  src: url('fonts/roboto/robotocondensed-bold.eot');
+  src: local('Roboto Condensed Bold'), url('fonts/roboto/robotocondensed-bold.eot?#iefix') format('embedded-opentype'), url('fonts/roboto/robotocondensed-bold.woff2') format('woff2'), url('fonts/roboto/robotocondensed-bold.woff') format('woff'), url('fonts/roboto/robotocondensed-bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+body,
+input,
+textarea,
+select {
+  font-family: 'Roboto', Helvetica, sans-serif;
   font-weight: 300;
   color: #000;
 }
-html .navbar {
+label {
+  font-weight: 500;
+}
+html .navbar .navbar-inner {
   font-weight: 300;
-}
-html .navbar li {
-  line-height: 26px;
-}
-html .navbar .nav > li.icon > a {
-  padding: 10px 9px 10px;
-  line-height: 26px;
-}
-html .navbar .nav > li .fa {
-  color: #222;
-  font-size: 14px;
-}
-html .navbar .nav > li a:hover .fa {
-  color: #08c;
-}
-html .navbar .nav > li > a {
-  padding-top: 11px;
-  padding-bottom: 10px;
-  font-size: 13px;
-}
-html .navbar li.divider-vertical {
-  height: 45px;
-  margin: 0 0px;
-  border-left-color: #dedcdb;
-}
-.navbar-static-top .navbar-inner,
-.navbar-static-bottom .navbar-inner {
   background: #f5f5f5;
   min-height: 45px;
   border-bottom: 1px solid #e5e5e5;
   box-shadow: none;
   height: 45px;
 }
-html .navbar .nav > .active > a,
-.navbar .nav > .active > a:hover,
-.navbar .nav > .active > a:focus {
-  box-shadow: none;
-  -webkit-box-shadow: none;
+html .navbar .navbar-inner li {
+  line-height: 26px;
 }
-.navbar.navbar-inverse .navbar-inner {
-  background: #000;
+html .navbar .navbar-inner .nav > li.icon > a {
+  padding: 10px 9px 10px;
+  line-height: 26px;
 }
-.navbar.navbar-inverse .navbar-inner li a i.fa {
-  color: #bbb;
+html .navbar .navbar-inner .nav > li .fa {
+  color: #222;
+  font-size: 14px;
 }
-.navbar.navbar-inverse .navbar-inner li a:hover i.fa {
+html .navbar .navbar-inner .nav > li > a {
+  padding-top: 11px;
+  padding-bottom: 10px;
+  font-size: 13px;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.45);
+}
+html .navbar .navbar-inner .nav > li > a:hover {
+  color: #000;
+}
+html .navbar .navbar-inner .nav > li > a:hover .fa {
   color: #08c;
 }
-.navbar-inverse .nav li a [class^="icon-"],
-.navbar-inverse .nav li a [class*=" icon-"] {
-  background-image: url("../vendor/bootstrap/img/glyphicons-halflings-white.png");
-  opacity: 0.8;
+html .navbar .navbar-inner .nav > li > a b {
+  font-weight: 500;
 }
-.navbar-inverse .nav .active a [class^="icon-"],
-.navbar-inverse .nav .active a [class*=" icon-"] {
-  opacity: 1;
+html .navbar .navbar-inner .nav > li.divider-vertical {
+  height: 45px;
+  margin: 0 0px;
+  border-left-color: #dedcdb;
 }
-html .navbar .brand {
+html .navbar .navbar-inner .nav .active > a,
+html .navbar .navbar-inner .nav .active > a:hover,
+html .navbar .navbar-inner .nav li.dropdown.active > .dropdown-toggle:hover {
+  box-shadow: none;
+  -webkit-box-shadow: none;
+  background: transparent;
+  font-weight: 500;
+  color: #222!important;
+}
+html .navbar .navbar-inner .brand {
   padding-top: 14px;
   padding-bottom: 4px;
   color: #556;
@@ -82,13 +131,10 @@ html .navbar .brand {
   white-space: nowrap;
   padding-left: 0px;
   font-size: 18px;
+  font-weight: 300;
   margin-left: 0px;
 }
-html .navbar.navbar-inverse .brand {
-  color: #ddd;
-  text-shadow: none;
-}
-.navbar .brand img {
+html .navbar .navbar-inner .brand img {
   float: left;
   margin-right: 7px;
   margin-left: 4px;
@@ -96,7 +142,7 @@ html .navbar.navbar-inverse .brand {
   position: relative;
   top: -4px;
 }
-.navbar .brand .beta {
+html .navbar .navbar-inner .brand .beta {
   font-size: 10px;
   font-weight: 400;
   position: relative;
@@ -104,58 +150,56 @@ html .navbar.navbar-inverse .brand {
   left: 3px;
   color: #aaa;
 }
-.navbar .nav > li > a {
-  padding-top: 15px;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.45);
-}
-.navbar-inverse .nav > li > a {
-  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.45);
-}
-.navbar .nav > li > a:hover {
-  color: #000;
-}
-.navbar-inverse .nav > li > a:hover {
-  color: #fff;
-}
-body .navbar .nav .active > a,
-body .navbar .nav .active > a:hover,
-body .navbar .nav li.dropdown.active > .dropdown-toggle:hover {
-  background: transparent;
-  font-weight: bold;
-  color: #444!important;
-}
-body .navbar-inverse .nav .active > a,
-body .navbar-inverse .nav .active > a:hover,
-body .navbar-inverse .nav li.dropdown.active > .dropdown-toggle:hover {
-  background: #111111;
-  font-weight: bold;
-  color: #fff!important;
-}
-.navbar .mycharts.dropdown li img.icon {
+html .navbar .navbar-inner .mycharts.dropdown li img.icon {
   height: 20px!important;
   width: 30px!important;
   position: absolute;
   left: 10px;
   top: 4px;
 }
-.navbar .mycharts.dropdown li {
+html .navbar .navbar-inner .mycharts.dropdown li {
   position: relative;
   max-width: 240px;
 }
-.navbar .mycharts.dropdown li a {
+html .navbar .navbar-inner .mycharts.dropdown li a {
   padding-left: 45px;
 }
-.navbar .mycharts.dropdown li a span {
+html .navbar .navbar-inner .mycharts.dropdown li a span {
   overflow: hidden;
   display: block;
   width: 100%;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
-.navbar .nav li.dropdown .dropdown-toggle .caret,
-.navbar .nav li.dropdown.open .caret,
-body .navbar li a .tt {
+html .navbar .navbar-inner .nav li.dropdown .dropdown-toggle .caret,
+html .navbar .navbar-inner .nav li.dropdown.open .caret,
+html .navbar .navbar-inner li a .tt {
   display: none;
+}
+html .navbar.navbar-inverse .navbar-inner {
+  background: #000;
+}
+html .navbar.navbar-inverse .navbar-inner li a i.fa {
+  color: #bbb;
+}
+html .navbar.navbar-inverse .navbar-inner li a:hover i.fa {
+  color: #08c;
+}
+html .navbar.navbar-inverse .navbar-inner .nav > li > a {
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.45);
+}
+html .navbar.navbar-inverse .navbar-inner .nav > li > a:hover {
+  color: #fff;
+}
+html .navbar.navbar-inverse .navbar-inner .nav .active > a,
+html .navbar.navbar-inverse .navbar-inner .nav .active > a:hover,
+html .navbar.navbar-inverse .navbar-inner .nav li.dropdown.active > .dropdown-toggle:hover {
+  background: #111111;
+  color: #fff!important;
+}
+html .navbar.navbar-inverse .navbar-inner .brand {
+  color: #ddd;
+  text-shadow: none;
 }
 footer {
   border-top: 1px solid silver;
@@ -634,6 +678,7 @@ html .btn-primary {
   left: 5px;
   right: 5px;
   font-size: 13px;
+  font-family: 'Roboto Condensed', Helvetica, sans-serif;
   line-height: 15px;
   text-align: center;
   text-shadow: 1px 1px 0px #ffffff, 0px 1px 0px #ffffff, -1px 1px 0px #ffffff, 1px -1px 0px #ffffff, 0px -1px 0px #ffffff, -1px -1px 0px #ffffff, 1px 0px 0px #ffffff, 0px 0px 0px #ffffff, -1px 0px 0px #ffffff;
@@ -827,11 +872,13 @@ label.separator {
   margin-right: 20px;
   margin-bottom: 10px;
 }
-.dw-create-visualize .control-group .pull-left label {
+.dw-create-visualize .control-group .pull-left label,
+.dw-create-visualize .control-group .row label {
   font-size: 11px;
-  color: #777;
+  color: #222;
   text-transform: uppercase;
   margin: 0 0 3px 2px;
+  font-family: 'Roboto', Helvetica, sans-serif;
   font-weight: bold;
 }
 .dw-create-publish h3 {
@@ -842,8 +889,6 @@ label.separator {
   margin-top: 20px;
 }
 body .chart-editor {
-  font-family: 'Roboto Condensed', sans-serif;
-  font-weight: 300;
   color: #000;
 }
 body .chart-editor h2,
@@ -854,7 +899,7 @@ body .chart-editor p {
 }
 body .chart-editor input,
 body .chart-editor label {
-  font-family: 'Roboto Condensed', sans-serif;
+  font-family: 'Roboto Condensed', Helvetica, sans-serif;
   font-weight: 300;
 }
 body .chart-editor .visconfig label,
@@ -864,7 +909,7 @@ body .chart-editor .visconfig textarea {
   font-size: 14px;
   line-height: 16px;
   font-weight: 300;
-  font-family: 'Roboto Condensed', sans-serif;
+  font-family: 'Roboto Condensed', Helvetica, sans-serif;
 }
 body .chart-editor .visconfig input[type="radio"],
 body .chart-editor .visconfig input[type="checkbox"] {
@@ -925,6 +970,9 @@ body .chart-editor .visconfig label.checkbox input[type="checkbox"] {
   margin-right: 5px;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.17);
 }
+.mysettings .row {
+  margin-bottom: 30px;
+}
 .mysettings .row h2 {
   font-weight: normal;
   line-height: 1.2;
@@ -933,9 +981,6 @@ body .chart-editor .visconfig label.checkbox input[type="checkbox"] {
 .mysettings .row .span3 > p {
   color: #999;
   font-style: italic;
-}
-.mysettings .row {
-  margin-bottom: 30px;
 }
 .mysettings .row .span9 {
   padding-top: 10px;
