@@ -15,6 +15,10 @@ if ($dw_config['debug'] == true) {
     ini_set('display_errors', 1);
 }
 
+if ($dw_config['automake'] == true) {
+    @exec('cd ..;make');
+}
+
 // Include the main Propel script
 // Initialize Propel with the runtime configuration
 // Add the generated 'classes' directory to the include path
