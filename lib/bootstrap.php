@@ -10,12 +10,12 @@ require_once ROOT_PATH . 'vendor/autoload.php';
 // load YAML parser and config
 $GLOBALS['dw_config'] = $dw_config = Spyc::YAMLLoad(ROOT_PATH . 'config.yaml');
 
-if ($dw_config['debug'] == true) {
+if (isset($dw_config['debug']) && $dw_config['debug'] == true) {
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
 }
 
-if ($dw_config['automake'] == true) {
+if (isset($dw_config['automake']) && $dw_config['automake'] == true) {
     @exec('cd ..;make');
 }
 
