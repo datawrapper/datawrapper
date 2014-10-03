@@ -51,13 +51,16 @@
                 <ul class="nav nav-tabs nav-stacked">
                     {% for page in pages %}
                     <li class="{{ page.url }}{% if page.url == active %} active{% endif %}">
-                        <a href="/settings/{{ page.url }}">{% if page.icon %}<i class="fa {{ page.icon }}"></i> {% endif %}{{ page.title }}</a>
+                        <a href="/settings/{{ page.url }}/{% if page.params %}{{ page.params }}{% endif %}">{% if page.icon %}<i class="fa {{ page.icon }}"></i> {% endif %}{{ page.title }}</a>
                     </li>
                     {% endfor %}
                 </ul>
             </div>
         </div>
         <div class="span9">
+            {% if notme %}<div class="alert alert-warning">
+                <b>Watch out, sysadmin!</b> You are about to edit someone elses user settings ({{ user.guessName() }}). Find your own settings <a href="/settings">here</a>.
+            </div>{% endif %}
             <div class="settings-body {{ active | lower }}">
                 {{ block('settings_content') }}
             </div>

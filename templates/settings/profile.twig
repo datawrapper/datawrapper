@@ -109,8 +109,6 @@
 
 $(function() {
 
-    var uid = '{{ api_user }}';
-
     $('#resend-activation-link').click(function(e) {
         e.preventDefault();
         dw.backend.resendActivationMail($(e.target).parent());
@@ -127,7 +125,7 @@ $(function() {
         };
         submit.addClass('loading');
         $.ajax({
-            url: '/api/users/' + uid,
+            url: '/api/users/{{ user.id }}',
             type: 'PUT',
             dataType: 'json',
             data: JSON.stringify(payload),

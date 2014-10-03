@@ -9,24 +9,11 @@ DatawrapperHooks::register(DatawrapperHooks::GET_SETTINGS_PAGES, function() {
         'controller' => function($app, $page) {
             return function() use ($app, $page) {
                 disable_cache($app);
-
-                $user = DatawrapperSession::getUser();
+                $user = $page['user'];
 
                 if ($user->getRole() == 'guest') {
                     error_settings_need_login();
                     return;
-                }
-
-                if ($user->isAdmin()) {
-                    // admins can edit settings for other users
-                    $req = $app->request();
-                    if ($req->get('uid') != null) {
-                        $u = UserQuery::create()->findPk($req->get('uid'));
-                        if ($u) {
-                            $user = $page['user'] = $u;
-                            $page['gravatar'] = md5(strtolower(trim($u->getEmail())));
-                        }
-                    }
                 }
 
                 if ($app->request()->get('token')) {
