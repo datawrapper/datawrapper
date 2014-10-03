@@ -11,7 +11,7 @@
         "mustangostang/spyc": "0.5.*",
         "twig/twig": "1.13.*",
         "twig/extensions": "1.0.*",
-        "tubalmartin/cssmin": "2.4.8",
+        "tubalmartin/cssmin": "2.4.8-p4",
         "tedivm/jshrink": "~1.0"
     },
     "autoload": {
