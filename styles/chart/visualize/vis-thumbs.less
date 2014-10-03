@@ -1,0 +1,73 @@
+
+
+.vis-thumbs {
+
+    margin-right: -10px;
+
+    .vis-thumb {
+        width: 80px;
+        height: 90px;
+        border-radius: 0px;
+        border: 1px solid #fff;
+        background: #fff;
+        position: relative;
+        display: inline-block;
+        margin: 0 5px 4px 0;
+        cursor: pointer;
+
+        @media (max-width: 1199px) {
+            width: 65px;
+            height: 75px;
+        }
+
+        svg {
+            width: 55px;
+            height: 60px;
+            margin-left: 10px;
+            margin-top: 5px;
+
+            path, rect { fill: #93B0D6; }
+            line { stroke: #93B0D6; }
+
+            @media (max-width: 1199px) {
+                width: 45px;
+                height: 55px;
+                margin-left: 10px;
+                margin-top: 3px;
+            }
+        }
+
+        .title {
+            position: absolute;
+            bottom: 3px;
+            left: 5px;
+            right: 5px;
+            font-size: 13px;
+            font-family: @base-font-cd;
+            line-height: 15px;
+            text-align: center;
+            text-shadow: 1px 1px 0px #fff,0px 1px 0px #fff,-1px 1px 0px #fff,
+                1px -1px 0px #fff,0px -1px 0px #fff,-1px -1px 0px #fff,
+                1px 0px 0px #fff,0px 0px 0px #fff,-1px 0px 0px #fff;
+            color: #555;
+        }
+
+        &.active {
+            border: 1px solid #1981DD;
+            box-shadow: 0 0 10px rgba(25, 129, 221, .6);
+
+            .title {
+                color: #000;
+            }
+
+            svg {
+                path, rect { fill: #000; }
+                line { stroke: #000; }
+            }
+        }
+
+        &:hover {
+            border: 1px solid #ccc;
+        }
+    }
+}

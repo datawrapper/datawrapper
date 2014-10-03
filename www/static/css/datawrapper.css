@@ -75,6 +75,9 @@ select {
 label {
   font-weight: 500;
 }
+.control-group .control-label {
+  text-align: left;
+}
 html .navbar .navbar-inner {
   font-weight: 300;
   background: #f5f5f5;
@@ -200,6 +203,18 @@ html .navbar.navbar-inverse .navbar-inner .nav li.dropdown.active > .dropdown-to
 html .navbar.navbar-inverse .navbar-inner .brand {
   color: #ddd;
   text-shadow: none;
+}
+.modal .modal-header .lead {
+  font-family: 'Roboto', Helvetica, sans-serif;
+  font-weight: 300;
+}
+.modal .modal-body h4,
+.modal .modal-body b {
+  font-weight: 500;
+}
+.modal .btn {
+  font-family: 'Roboto', Helvetica, sans-serif;
+  font-weight: 300;
 }
 footer {
   border-top: 1px solid silver;
@@ -387,65 +402,178 @@ html .btn-primary {
 .dw-create-upload #demo-datasets {
   font-family: 'Roboto Condensed', Helvetica, sans-serif;
 }
-#data-preview.table {
-  width: auto!important;
+.chart-editor.dw-create-describe .sidebar #column-options {
+  display: none;
 }
-#data-preview.table-striped td {
+.chart-editor.dw-create-describe .sidebar #column-options .unresolved {
+  background: #FDFFBA;
+}
+.chart-editor.dw-create-describe .sidebar #column-options .unresolved option,
+.chart-editor.dw-create-describe .sidebar #column-options .unresolved optgroup {
+  background: #fff;
+}
+.chart-editor.dw-create-describe .sidebar label {
+  font-family: 'Roboto', Helvetica, sans-serif;
+}
+.chart-editor.dw-create-describe .sidebar label.separator {
+  font-weight: 500;
+}
+.chart-editor.dw-create-describe .handsontable {
+  clear: both;
+  font-family: 'Roboto', Helvetica, sans-serif;
+  font-size: 12px;
+}
+.chart-editor.dw-create-describe .handsontable tr td {
+  padding: 3px 6px;
+  font-family: 'Roboto', Helvetica, sans-serif;
+}
+.chart-editor.dw-create-describe .handsontable tr td.htDimmed {
+  /*revert default HOT style for readOnly cells*/
+  font-style: normal;
+  color: inherit;
+}
+.chart-editor.dw-create-describe .handsontable tr td.firstRow {
+  border-bottom: 1px solid #aaa;
+  font-weight: bold;
+  background: #f0f0f0;
+}
+.chart-editor.dw-create-describe .handsontable tr td.firstRow.dateType {
+  color: #1E8118;
+}
+.chart-editor.dw-create-describe .handsontable tr td.firstRow.numberType {
+  color: #1B668B;
+}
+.chart-editor.dw-create-describe .handsontable tr td.firstRow.area {
+  background: #d4ddee;
+}
+.chart-editor.dw-create-describe .handsontable tr td.textType {
+  color: #000000;
+}
+.chart-editor.dw-create-describe .handsontable tr td.dateType {
+  color: #39A832;
   text-align: center;
 }
-#data-preview.table-striped th {
-  text-align: center;
-}
-#data-preview.table-striped.vert-header tr th:first-child {
+.chart-editor.dw-create-describe .handsontable tr td.numberType {
+  color: #297EA8;
   text-align: right;
 }
-#data-preview.table tr th {
-  font-weight: normal;
-  background: none!important;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.chart-editor.dw-create-describe .handsontable tr td.oddRow {
+  background-color: #fff;
 }
-#data-preview.table tr th span {
-  padding: 3px 6px;
-  border-radius: 4px;
+.chart-editor.dw-create-describe .handsontable tr td.oddRow.area {
+  background-color: #e1ebfd;
 }
-#data-preview.table.column-series thead tr th span,
-#data-preview.table.row-series tbody tr th span {
-  background-color: #0063A5;
-  color: #fff;
+.chart-editor.dw-create-describe .handsontable tr td.evenRow {
+  background-color: #f9f9f9;
 }
-#data-preview.table.column-series tbody tr th span,
-#data-preview.table.row-series thead tr th span {
-  background-color: #999;
-  color: #fff;
+.chart-editor.dw-create-describe .handsontable tr td.evenRow.area {
+  background-color: #dce5f7;
 }
-#data-preview.table tbody tr td {
-  background: none;
+.chart-editor.dw-create-describe .handsontable tr td.parsingError {
+  background: #fee;
+  color: #c00;
 }
-#data-preview.table-striped.column-series tbody tr td:nth-child(2n+1) {
-  background-color: #eee;
-}
-#data-preview.table-striped.column-series.vert-header tbody tr td:nth-child(2n) {
+.chart-editor.dw-create-describe .handsontable thead th {
+  cursor: pointer;
   background: #eee;
+  border-right: 1px solid #b3b3b3;
 }
-#data-preview.table-striped.column-series.vert-header tbody tr td:nth-child(2n+1) {
-  background: none;
+.chart-editor.dw-create-describe .handsontable thead th.selected {
+  background: #ccc;
+  background: #cde;
 }
-#data-preview.table-striped.row-series tbody tr:nth-child(2n+1) td {
-  background-color: #eee;
+.chart-editor.dw-create-describe .handsontable thead th:first-child:after {
+  content: url(chart-editor/transpose.png);
+  position: relative;
+  top: 3px;
 }
-#data-preview.table-striped tbody tr:nth-child(2n+1) td,
-.table-striped tbody tr:nth-child(2n+1) th {
-  background: none;
+.chart-editor.dw-create-describe .handsontable thead th:hover {
+  background: #ddd;
 }
-#data-preview.table-striped tbody tr:nth-child(2n+1) th {
-  background-color: #c0c0c0;
+.chart-editor.dw-create-describe .handsontable thead th:first-child:active {
+  background: red;
 }
-#data-preview.table-striped tbody tr:hover td {
-  background: none;
+.chart-editor.dw-create-describe .handsontable thead tr th + th div:after {
+  content: " " url(chart-editor/selection-off.png);
+  position: absolute;
+  top: 3px;
+  right: 5px;
 }
-#data-preview.table tbody tr th {
-  background-color: #ccc;
+.chart-editor.dw-create-describe .handsontable thead th + th:hover div:after {
+  content: " " url(chart-editor/selection-hover.png);
+}
+.chart-editor.dw-create-describe .handsontable thead th + th.selected div:after {
+  opacity: 1;
+  content: " " url(chart-editor/selection.png);
+}
+.chart-editor.dw-create-describe .handsontable td.ignored,
+.chart-editor.dw-create-describe .handsontable th.ignored {
+  color: #aaa;
+  text-decoration: line-through;
+}
+.chart-editor.dw-create-describe .handsontable td.ignored.firstRow,
+.chart-editor.dw-create-describe .handsontable th.ignored.firstRow {
+  background-color: #ddd;
+}
+.chart-editor.dw-create-describe .handsontable td.ignored.firstRow.area,
+.chart-editor.dw-create-describe .handsontable th.ignored.firstRow.area {
+  background: #d4ddee;
+}
+.chart-editor.dw-create-describe .handsontable td.ignored.oddRow,
+.chart-editor.dw-create-describe .handsontable th.ignored.oddRow {
+  background-color: #e9e9e9;
+}
+.chart-editor.dw-create-describe .handsontable td.ignored.oddRow.area,
+.chart-editor.dw-create-describe .handsontable th.ignored.oddRow.area {
+  background: #e1ebfd;
+}
+.chart-editor.dw-create-describe .handsontable td.ignored.evenRow,
+.chart-editor.dw-create-describe .handsontable th.ignored.evenRow {
+  background-color: #e2e2e2;
+}
+.chart-editor.dw-create-describe .handsontable td.ignored.evenRow.area,
+.chart-editor.dw-create-describe .handsontable th.ignored.evenRow.area {
+  background: #dce5f7;
+}
+.chart-editor.dw-create-describe .handsontable th.ignored {
+  background-color: #e2e2e2;
+  color: #aaa;
+  text-decoration: line-through;
+}
+.chart-editor.dw-create-describe .handsontable tr:first-child td {
+  border-top: 1px solid #cccccc !important;
+}
+.chart-editor.dw-create-describe .handsontable tr:first-child td.firstRow.area {
+  border-top: 1px solid #8599ad !important;
+}
+.chart-editor.dw-create-describe .handsontable .colHeader:after {
+  vertical-align: bottom;
+  opacity: 1;
+  color: #08c;
+}
+.chart-editor.dw-create-describe textarea.handsontableInput {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+.chart-editor.dw-create-describe .help {
+  font-family: "Desyrel", "Comic Sans";
+  color: #bbb;
+  font-size: 15px;
+}
+.chart-editor.dw-create-describe .transpose-help {
+  margin-left: 20px;
+  float: left;
+}
+.chart-editor.dw-create-describe .help span {
+  position: relative;
+  top: -6px;
+}
+.chart-editor.dw-create-describe .customize-help {
+  float: right;
+  margin-right: 15px;
+}
+.chart-editor.dw-create-describe .span8 {
+  margin-top: 10px;
 }
 /*
  * visualization styles
@@ -555,32 +683,32 @@ html .btn-primary {
   margin: 0;
   padding: 0;
 }
-.visualization [contenteditable=true]:hover:after {
+.chart-editor.dw-create-visualize .visualization [contenteditable=true]:hover:after {
   content: ' click to edit';
   font-style: italic;
   font-size: 12px;
   font-family: sans-serif;
   color: #ccc;
 }
-.visualization [contenteditable]:hover,
-.visualization [contenteditable]:focus {
+.chart-editor.dw-create-visualize .visualization [contenteditable]:hover,
+.chart-editor.dw-create-visualize .visualization [contenteditable]:focus {
   background: #fff;
   box-shadow: inset 0 0 3px #999;
 }
-.visualization [contenteditable]:hover {
+.chart-editor.dw-create-visualize .visualization [contenteditable]:hover {
   padding: 5px;
 }
-.visualization [contenteditable]:focus:after {
+.chart-editor.dw-create-visualize .visualization [contenteditable]:focus:after {
   content: '';
 }
-#vis-options fieldset legend {
+.chart-editor.dw-create-visualize #vis-options fieldset legend {
   margin-bottom: 10px;
 }
-#vis-options .vis-option-group {
+.chart-editor.dw-create-visualize #vis-options .vis-option-group {
   margin-bottom: 9px;
   position: relative;
 }
-#vis-options .vis-option-group .vis-option-help {
+.chart-editor.dw-create-visualize #vis-options .vis-option-group .vis-option-help {
   position: absolute;
   top: -3px;
   right: 0px;
@@ -588,19 +716,19 @@ html .btn-primary {
   padding-left: 15px;
   z-index: 100;
 }
-#vis-options .vis-option-group.vis-option-type-radio-left .vis-option-help {
+.chart-editor.dw-create-visualize #vis-options .vis-option-group.vis-option-type-radio-left .vis-option-help {
   top: 32px;
 }
-#vis-options .vis-option-group.vis-option-type-separator .vis-option-help {
+.chart-editor.dw-create-visualize #vis-options .vis-option-group.vis-option-type-separator .vis-option-help {
   top: 32px;
 }
-#vis-options .vis-option-group.vis-option-type-select-axis-column .vis-option-help {
+.chart-editor.dw-create-visualize #vis-options .vis-option-group.vis-option-type-select-axis-column .vis-option-help {
   top: 3px;
 }
-#vis-options .vis-option-group .vis-option-help:hover {
+.chart-editor.dw-create-visualize #vis-options .vis-option-group .vis-option-help:hover {
   text-decoration: none;
 }
-#vis-options .vis-option-group .vis-option-help span {
+.chart-editor.dw-create-visualize #vis-options .vis-option-group .vis-option-help span {
   display: block;
   width: 22px;
   height: 22px;
@@ -611,42 +739,42 @@ html .btn-primary {
   color: #fff;
   font-weight: bold;
 }
-#vis-options legend + .control-group {
+.chart-editor.dw-create-visualize #vis-options legend + .control-group {
   margin-top: 0;
 }
-#vis-options .control-label {
+.chart-editor.dw-create-visualize #vis-options .control-label {
   width: 45%;
 }
-#vis-options .controls {
+.chart-editor.dw-create-visualize #vis-options .controls {
   margin-left: 50%;
 }
-#vis-options .vis-option-type-select-axis-column .control-label {
+.chart-editor.dw-create-visualize #vis-options .vis-option-type-select-axis-column .control-label {
   width: 30%;
 }
-#vis-options .vis-option-type-select-axis-column .controls {
+.chart-editor.dw-create-visualize #vis-options .vis-option-type-select-axis-column .controls {
   margin-left: 35%;
 }
-.highlighted-series li {
+.chart-editor.dw-create-visualize .highlighted-series li {
   margin-bottom: 3px;
   margin-right: 10px;
   float: left;
   display: inline;
 }
-.highlighted-series .badge {
+.chart-editor.dw-create-visualize .highlighted-series .badge {
   max-width: 100%;
   display: inline-block;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.highlighted-series .badge .icon-remove {
+.chart-editor.dw-create-visualize .highlighted-series .badge .icon-remove {
   position: relative;
   left: -4px;
   top: 1px;
 }
-.vis-thumbs {
+.chart-editor.dw-create-visualize .vis-thumbs {
   margin-right: -10px;
 }
-.vis-thumb {
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb {
   width: 80px;
   height: 90px;
   border-radius: 0px;
@@ -657,25 +785,34 @@ html .btn-primary {
   margin: 0 5px 4px 0;
   cursor: pointer;
 }
-.vis-thumb img {
-  position: absolute;
-  left: 10px;
-  top: 10px;
-  filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale");
-  /* Firefox 10+ */
-  filter: gray;
-  /* IE6-9 */
-  -webkit-filter: grayscale(100%);
-  /* Chrome 19+ & Safari 6+ */
-  opacity: 0.6;
+@media (max-width: 1199px) {
+  .chart-editor.dw-create-visualize .vis-thumbs .vis-thumb {
+    width: 65px;
+    height: 75px;
+  }
 }
-.vis-thumb svg {
-  width: 60px;
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb svg {
+  width: 55px;
   height: 60px;
   margin-left: 10px;
   margin-top: 5px;
 }
-.vis-thumb .title {
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb svg path,
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb svg rect {
+  fill: #93B0D6;
+}
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb svg line {
+  stroke: #93B0D6;
+}
+@media (max-width: 1199px) {
+  .chart-editor.dw-create-visualize .vis-thumbs .vis-thumb svg {
+    width: 45px;
+    height: 55px;
+    margin-left: 10px;
+    margin-top: 3px;
+  }
+}
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb .title {
   position: absolute;
   bottom: 3px;
   left: 5px;
@@ -687,170 +824,116 @@ html .btn-primary {
   text-shadow: 1px 1px 0px #ffffff, 0px 1px 0px #ffffff, -1px 1px 0px #ffffff, 1px -1px 0px #ffffff, 0px -1px 0px #ffffff, -1px -1px 0px #ffffff, 1px 0px 0px #ffffff, 0px 0px 0px #ffffff, -1px 0px 0px #ffffff;
   color: #555;
 }
-.vis-thumb.active .title {
-  color: #000;
-}
-.vis-thumb svg path,
-.vis-thumb svg rect {
-  fill: #93B0D6;
-}
-.vis-thumb svg line {
-  stroke: #93B0D6;
-}
-.vis-thumb.active svg path,
-.vis-thumb.active svg rect {
-  fill: #000;
-}
-.vis-thumb.active svg line {
-  stroke: #000;
-}
-.vis-thumb.active {
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active {
   border: 1px solid #1981DD;
   box-shadow: 0 0 10px rgba(25, 129, 221, 0.6);
 }
-.vis-thumb.active img {
-  opacity: 1;
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active .title {
+  color: #000;
 }
-.vis-thumb:hover {
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active svg path,
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active svg rect {
+  fill: #000;
+}
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active svg line {
+  stroke: #000;
+}
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb:hover {
   border: 1px solid #ccc;
 }
-.vis-thumb:hover img {
-  opacity: 1;
-}
-.vis-thumb.active img {
-  filter: none;
-  -webkit-filter: none;
-}
-.vis-selector-unfolded {
-  display: none;
-  margin-bottom: 10px;
-}
-.vis-selector-folded h3 {
-  cursor: pointer;
-  margin-bottom: 20px;
-}
-.vis-selector-folded h3 span {
-  font-weight: 300;
-}
-.vis-selector-folded h3 span img {
-  position: relative;
-  top: -2px;
-  filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale");
-  /* Firefox 10+ */
-  filter: gray;
-  /* IE6-9 */
-  -webkit-filter: grayscale(100%);
-  /* Chrome 19+ & Safari 6+ */
-  padding-right: 5px;
-  padding-left: 10px;
-}
-.vis-selector-folded h3 u {
-  text-decoration: none;
-  border-bottom: 1px solid #000;
-}
 @media (max-width: 1199px) {
-  .vis-thumb {
+  .chart-editor.dw-create-visualize .vis-thumb {
     width: 75px;
     height: 75px;
   }
-  .vis-thumb img,
-  .vis-thumb svg {
+  .chart-editor.dw-create-visualize .vis-thumb img,
+  .chart-editor.dw-create-visualize .vis-thumb svg {
     width: 65px;
     height: 65px;
     left: 5px;
     top: 5px;
   }
-  .vis-thumb svg {
+  .chart-editor.dw-create-visualize .vis-thumb svg {
     margin-top: 2px;
     margin-left: 5px;
   }
-  .navbar .nav > li > a {
+  .chart-editor.dw-create-visualize .navbar .nav > li > a {
     padding-left: 8px;
     padding-right: 8px;
     font-size: 13px;
   }
-  .visualize-nav-tabs.nav-tabs {
+  .chart-editor.dw-create-visualize .visualize-nav-tabs.nav-tabs {
     font-size: 13px;
     margin-left: 20px;
   }
-  .visualize-nav-tabs.nav-tabs > li a,
-  .visualize-nav-tabs.nav-tabs > li a:hover,
-  .visualize-nav-tabs.nav-tabs > li.active a {
+  .chart-editor.dw-create-visualize .visualize-nav-tabs.nav-tabs > li a,
+  .chart-editor.dw-create-visualize .visualize-nav-tabs.nav-tabs > li a:hover,
+  .chart-editor.dw-create-visualize .visualize-nav-tabs.nav-tabs > li.active a {
     padding: 4px 8px;
     line-height: 24px;
   }
-  #vis-options .control-label {
+  .chart-editor.dw-create-visualize #vis-options .control-label {
     width: 40%;
   }
-  #vis-options .controls {
+  .chart-editor.dw-create-visualize #vis-options .controls {
     margin-left: 45%;
   }
 }
 @media (max-width: 976px) {
-  .vis-thumb {
+  .chart-editor.dw-create-visualize .vis-thumb {
     width: 55px;
     height: 55px;
   }
-  .vis-thumb img {
+  .chart-editor.dw-create-visualize .vis-thumb img {
     width: 45px;
     height: 45px;
     left: 5px;
     top: 5px;
   }
 }
-.resize-chart-wrap {
+.chart-editor.dw-create-visualize .resize-chart-wrap {
   margin-top: 10px;
 }
-.resize-chart {
+.chart-editor.dw-create-visualize .resize-chart {
   text-align: center;
   margin-left: 10px;
   color: #000;
   font-size: 13px;
   line-height: 28px;
 }
-.resize-chart a {
+.chart-editor.dw-create-visualize .resize-chart a {
   padding-left: 1ex;
   color: #666;
 }
-.resize-chart input[type=text] {
+.chart-editor.dw-create-visualize .resize-chart input[type=text] {
   width: 4ex;
   position: relative;
   top: 3px;
 }
-.resize-chart a.active {
+.chart-editor.dw-create-visualize .resize-chart a.active {
   color: #000;
   font-weight: bold;
 }
-.dw-create-describe .well.affix {
-  top: 70px;
-}
-.dw-create-visualize .affix-cont.affix {
-  top: 70px;
-}
-.dw-create-visualize .affix-cont.affix-bottom {
-  position: absolute;
-  bottom: 100px;
-}
-#ender-overlay-mask {
+.chart-editor.dw-create-visualize #ender-overlay-mask {
   top: -60px !important;
 }
-.alert-warning h4 {
+.chart-editor.dw-create-visualize .alert-warning h4 {
   color: #A0711F;
   margin: 2px 0 5px;
 }
-.visualize-nav-tabs {
+.chart-editor.dw-create-visualize .visualize-nav-tabs {
   margin-bottom: -4px;
   z-index: 4;
   position: relative;
   background: #fff;
 }
-.visualize-nav-tabs li {
+.chart-editor.dw-create-visualize .visualize-nav-tabs li {
   max-width: 33%;
 }
-.visualize-nav-tabs li.active {
+.chart-editor.dw-create-visualize .visualize-nav-tabs li.active {
   max-width: 47%;
 }
-.visualize-nav-tabs li a {
+.chart-editor.dw-create-visualize .visualize-nav-tabs li a {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -859,24 +942,24 @@ html .btn-primary {
   background: #f9f9f9;
   border-bottom: 0;
 }
-.visualize-nav-tabs .active a {
+.chart-editor.dw-create-visualize .visualize-nav-tabs .active a {
   color: #000;
   font-weight: bold;
   box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.05) inset;
   background: #fff;
 }
-label.separator {
-  font-weight: bold;
+.chart-editor.dw-create-visualize label.separator {
+  font-weight: 500!important;
   text-align: left;
   margin-top: 10px;
   line-height: 20px;
 }
-.dw-create-visualize .control-group .pull-left {
+.chart-editor.dw-create-visualize .control-group .pull-left {
   margin-right: 20px;
   margin-bottom: 10px;
 }
-.dw-create-visualize .control-group .pull-left label,
-.dw-create-visualize .control-group .row label {
+.chart-editor.dw-create-visualize .control-group .pull-left label,
+.chart-editor.dw-create-visualize .control-group .row label {
   font-size: 11px;
   color: #222;
   text-transform: uppercase;

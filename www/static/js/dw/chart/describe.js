@@ -3,6 +3,10 @@ define(['handsontable'], function(handsontable) {
 
     var _chartLocale;
 
+    var colTypeIcons = {
+        date: 'fa fa-clock-o'
+    };
+
     function init(chartLocale) {
         _chartLocale = chartLocale; // store in upper scope
         var metadata = {
@@ -222,8 +226,8 @@ define(['handsontable'], function(handsontable) {
                     width: function() {return $("#data-preview").width();},
                     // max-height is 13 rows (400px) otherwise it's the number of rows plus the table header height
                     height: function(){
-                        var cell_height = $('#data-preview td').outerHeight(true) + 1;
-                        return dataset.numRows() <= 13 ? dataset.numRows() * cell_height + cell_height * 2  : 400;
+                        var cell_height = 30, maxRows = 100;
+                        return dataset.numRows() <= maxRows ? dataset.numRows() * cell_height + cell_height * 2  : cell_height * maxRows;
                     },
                     fixedRowsTop: function(){return horzHeaders ? 1: 0;},
                     rowHeaders: true,
@@ -291,13 +295,16 @@ define(['handsontable'], function(handsontable) {
                     var formatter = chart.columnFormatter(column);
                     value = formatter(column.val(row - 1), true);
                 }
-                HtmlCellRender.apply(this, arguments);
                 if (parseInt(value, 10) < 0) { //if row contains negative number
                     td.classList.add('negative');
                 }
                 td.classList.add(column.type()+'Type');
                 if (row === 0) {
                     td.classList.add('firstRow');
+                    if (colTypeIcons[column.type()]) {
+                        console.log(value, column.type(), colTypeIcons[column.type()]);
+                        value = '<i class="'+colTypeIcons[column.type()]+'"></i> ' + value;
+                    }
                 } else {
                     td.classList.add(row % 2 ? 'oddRow' : 'evenRow');
                 }
@@ -310,6 +317,7 @@ define(['handsontable'], function(handsontable) {
                 if (row > 0 && !column.type(true).isValid(column.val(row-1))) {
                     td.classList.add('parsingError');
                 }
+                HtmlCellRender.apply(this, arguments);
             }
         } // end updateTable()
 
