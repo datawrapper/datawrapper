@@ -24,7 +24,7 @@ DatawrapperHooks::register(DatawrapperHooks::GET_SETTINGS_PAGES, function() {
                         $u = UserQuery::create()->findPk($req->get('uid'));
                         if ($u) {
                             $user = $page['user'] = $u;
-                            $page['api_user'] = $user->getId();
+                            $page['gravatar'] = md5(strtolower(trim($u->getEmail())));
                         }
                     }
                 }
