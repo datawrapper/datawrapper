@@ -21,7 +21,7 @@ function(initCustomColors, syncVisOptions, unsyncVisOptions) {
                 placement: 'left',
                 html: true,
                 trigger: 'hover focus click',
-                container: 'body'
+                container: '#vis-options'
             });
         },
 
