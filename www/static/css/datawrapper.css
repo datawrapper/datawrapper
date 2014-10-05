@@ -375,6 +375,27 @@ html .btn-primary {
   background-color: #0276B0;
   *background-color: #003bb3;
 }
+#dwLoginForm {
+  width: 676px;
+  margin-left: -338px;
+  top: 8%;
+}
+#dwLoginForm h3 {
+  margin-top: 0;
+}
+#dwLoginForm .modal-body {
+  max-height: 450px;
+}
+#dwLoginForm div.span3,
+#dwLoginForm div.span4 {
+  padding: 15px;
+}
+#dwLoginForm .close {
+  position: absolute;
+  right: 15px;
+  top: 10px;
+  float: none;
+}
 /** dw-create-upload **/
 .dw-create-upload textarea {
   width: 98%;
@@ -716,6 +737,20 @@ html .btn-primary {
   padding-left: 15px;
   z-index: 100;
 }
+.chart-editor.dw-create-visualize #vis-options .vis-option-group .vis-option-help span {
+  display: block;
+  width: 22px;
+  height: 22px;
+  line-height: 22px;
+  text-align: center;
+  border-radius: 11px;
+  background: #93b0d6;
+  color: #fff;
+  font-weight: bold;
+}
+.chart-editor.dw-create-visualize #vis-options .vis-option-group .vis-option-help:hover {
+  text-decoration: none;
+}
 .chart-editor.dw-create-visualize #vis-options .vis-option-group.vis-option-type-radio-left .vis-option-help {
   top: 32px;
 }
@@ -725,34 +760,27 @@ html .btn-primary {
 .chart-editor.dw-create-visualize #vis-options .vis-option-group.vis-option-type-select-axis-column .vis-option-help {
   top: 3px;
 }
-.chart-editor.dw-create-visualize #vis-options .vis-option-group .vis-option-help:hover {
-  text-decoration: none;
-}
-.chart-editor.dw-create-visualize #vis-options .vis-option-group .vis-option-help span {
-  display: block;
-  width: 22px;
-  height: 22px;
-  line-height: 22px;
-  text-align: center;
-  border-radius: 11px;
-  background: #d6d6d6;
-  color: #fff;
-  font-weight: bold;
-}
-.chart-editor.dw-create-visualize #vis-options legend + .control-group {
+.chart-editor.dw-create-visualize #vis-options .vis-option-group legend + .control-group {
   margin-top: 0;
 }
 .chart-editor.dw-create-visualize #vis-options .control-label {
-  width: 45%;
+  display: inline-block;
+  width: auto;
+  float: none;
+  margin-right: 1em;
 }
 .chart-editor.dw-create-visualize #vis-options .controls {
-  margin-left: 50%;
+  display: inline-block;
+  width: auto;
+  float: none;
+  margin-left: 0;
 }
-.chart-editor.dw-create-visualize #vis-options .vis-option-type-select-axis-column .control-label {
-  width: 30%;
-}
-.chart-editor.dw-create-visualize #vis-options .vis-option-type-select-axis-column .controls {
-  margin-left: 35%;
+.chart-editor.dw-create-visualize #vis-options .tooltip .tooltip-inner {
+  background: #6e95c8;
+  border-color: #6e95c8;
+  font-size: 14px;
+  font-family: 'Roboto Condensed', Helvetica, sans-serif;
+  color: #fff;
 }
 .chart-editor.dw-create-visualize .highlighted-series li {
   margin-bottom: 3px;
@@ -799,10 +827,10 @@ html .btn-primary {
 }
 .chart-editor.dw-create-visualize .vis-thumbs .vis-thumb svg path,
 .chart-editor.dw-create-visualize .vis-thumbs .vis-thumb svg rect {
-  fill: #93B0D6;
+  fill: #93b0d6;
 }
 .chart-editor.dw-create-visualize .vis-thumbs .vis-thumb svg line {
-  stroke: #93B0D6;
+  stroke: #93b0d6;
 }
 @media (max-width: 1199px) {
   .chart-editor.dw-create-visualize .vis-thumbs .vis-thumb svg {
@@ -948,12 +976,6 @@ html .btn-primary {
   box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.05) inset;
   background: #fff;
 }
-.chart-editor.dw-create-visualize label.separator {
-  font-weight: 500!important;
-  text-align: left;
-  margin-top: 10px;
-  line-height: 20px;
-}
 .chart-editor.dw-create-visualize .control-group .pull-left {
   margin-right: 20px;
   margin-bottom: 10px;
@@ -967,45 +989,153 @@ html .btn-primary {
   font-family: 'Roboto', Helvetica, sans-serif;
   font-weight: bold;
 }
-.dw-create-publish h3 {
-  margin-bottom: 1ex;
-  margin-top: 1.5em;
-}
-.chart-editor {
-  margin-top: 20px;
-}
-body .chart-editor {
-  color: #000;
-}
-body .chart-editor h2,
-body .chart-editor h3,
-body .chart-editor h4,
-body .chart-editor p {
-  font-family: 'Roboto', sans-serif;
-}
-body .chart-editor input,
-body .chart-editor label {
+.chart-editor.dw-create-visualize .custom-color-selector-body .btn {
   font-family: 'Roboto Condensed', Helvetica, sans-serif;
   font-weight: 300;
 }
-body .chart-editor .visconfig label,
-body .chart-editor .visconfig select,
-body .chart-editor .visconfig input[type=text],
-body .chart-editor .visconfig textarea {
+.chart-editor.dw-create-visualize .custom-color-selector-body .dataseries li label {
+  font-weight: 400;
+}
+.chart-editor.dw-create-visualize .custom-color-selector-body .dataseries li.selected {
+  background: #e0eaf0;
+}
+.chart-editor.dw-create-visualize .visconfig label,
+.chart-editor.dw-create-visualize .visconfig select,
+.chart-editor.dw-create-visualize .visconfig input[type=text],
+.chart-editor.dw-create-visualize .visconfig textarea {
   font-size: 14px;
   line-height: 16px;
   font-weight: 300;
   font-family: 'Roboto Condensed', Helvetica, sans-serif;
 }
-body .chart-editor .visconfig input[type="radio"],
-body .chart-editor .visconfig input[type="checkbox"] {
+.chart-editor.dw-create-visualize .visconfig label.separator {
+  font-weight: 500!important;
+  text-align: left;
+  margin-top: 10px;
+  line-height: 20px;
+  font-family: 'Roboto', Helvetica, sans-serif;
+}
+.chart-editor.dw-create-visualize .visconfig input[type="radio"],
+.chart-editor.dw-create-visualize .visconfig input[type="checkbox"] {
   margin: 2px 0 0;
 }
-body .chart-editor .visconfig label.checkbox {
+.chart-editor.dw-create-visualize .visconfig label.checkbox {
   padding-left: 17px;
 }
-body .chart-editor .visconfig label.checkbox input[type="checkbox"] {
+.chart-editor.dw-create-visualize .visconfig label.checkbox input[type="checkbox"] {
   margin-left: -17px;
+}
+.chart-editor.dw-create-visualize .visconfig .vis-option-type-custom-range label {
+  display: inline-block;
+}
+.chart-editor.dw-create-visualize .visconfig .vis-option-type-custom-range input.min,
+.chart-editor.dw-create-visualize .visconfig .vis-option-type-custom-range input.max {
+  width: 5ex;
+  text-align: right;
+}
+.dw-create-publish h3 {
+  margin-bottom: 1ex;
+}
+.dw-create-publish #iframe-vis {
+  box-shadow: 2px 2px 11px rgba(0, 0, 0, 0.2);
+  border: 10px solid #fff;
+  -webkit-transition: all 800ms cubic-bezier(0.19, 1, 0.22, 1);
+  -moz-transition: all 800ms cubic-bezier(0.19, 1, 0.22, 1);
+  -ms-transition: all 800ms cubic-bezier(0.19, 1, 0.22, 1);
+  -o-transition: all 800ms cubic-bezier(0.19, 1, 0.22, 1);
+  transition: all 800ms cubic-bezier(0.19, 1, 0.22, 1);
+  /* easeOutExpo */
+  -webkit-transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+  -moz-transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+  -ms-transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+  -o-transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+  transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+  /* easeOutExpo */
+}
+.dw-create-publish p.lead {
+  margin-top: 30px;
+}
+.dw-create-publish .publishing .progress {
+  height: 10px;
+}
+.dw-create-publish .chart-actions {
+  margin: 0;
+  padding: 0;
+}
+.dw-create-publish .chart-actions li {
+  display: inline-block;
+  width: 30%;
+  text-align: center;
+  margin: 0 2% 3% 0;
+  border-radius: 6px;
+  border: 1px solid #eee;
+  overflow: hidden;
+  position: relative;
+  padding: 15px 0 15px;
+  box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.6), inset 0 0 31px rgba(0, 0, 0, 0.05), inset 0 -1px 2px rgba(0, 0, 0, 0.25);
+}
+.dw-create-publish .chart-actions li a .title {
+  display: inline-block;
+  padding: 0 20px;
+}
+.dw-create-publish .chart-actions li a:hover {
+  text-decoration: none;
+}
+.dw-create-publish .chart-actions li a:hover .title {
+  text-decoration: underline;
+}
+.dw-create-publish .chart-actions li i.fa {
+  display: block;
+  font-size: 42px;
+}
+.dw-create-publish .chart-actions li .banner {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.2);
+  color: #fff;
+  display: block;
+  width: 82px;
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 1.4;
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  right: -23px;
+  top: 10px;
+  text-align: center;
+}
+.dw-create-publish .modal {
+  width: 600px;
+  margin-left: -300px;
+}
+.dw-create-publish .modal-wide {
+  width: 700px;
+  margin-left: -350px;
+}
+.dw-create-publish .modal .span1 .fa.big {
+  font-size: 64px;
+  color: #ddd;
+  position: relative;
+  left: 10px;
+}
+.chart-editor {
+  margin-top: 20px;
+  color: #000;
+}
+.chart-editor h2,
+.chart-editor h3,
+.chart-editor h4,
+.chart-editor p {
+  font-family: 'Roboto', Helvetica, sans-serif;
+}
+.chart-editor h3 {
+  font-weight: 300;
+  font-size: 19px;
+}
+.chart-editor input,
+.chart-editor label {
+  font-family: 'Roboto Condensed', Helvetica, sans-serif;
+  font-weight: 300;
 }
 .dw .create-nav > * {
   background: #f2f2f2;

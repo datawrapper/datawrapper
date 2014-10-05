@@ -8,100 +8,97 @@
     padding-right: 8px;
     border-radius: 3px;
     box-shadow: 0 0 25px rgba(0,0,0,0.35),0 0 25px rgba(0,0,0,0.35),5px 5px 3px rgba(0,0,0,0.15);
-}
 
-.color-selector .palette {
-    line-height: 5px;
-    margin-bottom: 10px;
-}
+    .palette {
+        line-height: 5px;
+        margin-bottom: 10px;
 
-.color-selector .palette .color {
-    display: inline-block;
-    width: 24px;
-    height: 23px;
-    margin: 0 2px 2px 0;
-    border-radius: 1px;
-}
+        .color {
+            display: inline-block;
+            width: 24px;
+            height: 23px;
+            margin: 0 2px 2px 0;
+            border-radius: 1px;
+        }
+    }
 
-.color-selector .color {
-    cursor: pointer;
-}
+    .color {
+        cursor: pointer;
+        &.selected {
+            border: 2px solid #000;
+            &.inverted {
+                border-color:#ddd;
+            }
+        }
+    }
 
-.color-selector .color.selected {
-    border: 2px solid #000;
-}
+    .palette .color.selected {
+        width: 20px;
+        height: 19px;
+    }
 
-.color-selector .color.selected.inverted {
-    border-color:#ddd;
-}
+    .color-axis {
+        height: 22px;
+        margin-bottom: 2px;
 
-.color-selector .palette .color.selected {
-    width: 20px;
-    height: 19px;
-}
+        .color {
+            width: 11px;
+            height: 22px;
+            display: inline-block;
 
-.color-selector .color-axis {
-    height: 22px;
-    margin-bottom: 2px;
-}
+            &.selected {
+                width: 7px;
+                height: 18px;
+            }
+        }
 
-.color-selector .color-axis .color {
-    width: 11px;
-    height: 22px;
-    display: inline-block;
-}
+        &.hue {
+            .color {
+                width: 11px;
+                &:last-child {
+                    margin-right: 0;
+                    width: 11px;
+                }
+                &.selected {
+                    width: 7px;
+                }
+            }
+        }
+    }
 
-.color-selector .color-axis .color.selected {
-    width: 7px;
-    height: 18px;
-}
+    .hex {
+        border-radius: 0;
+        font-size: 12px;
+        width: 60px;
+        padding: 2px 4px;
+        text-transform: lowercase;
+        position: absolute;
+        left: 25px;
+        bottom: 0px;
+        margin: 0;
+        text-align: center;
+    }
 
-.color-selector .color-axis.hue .color {
-    width: 11px;
-}
+    .btn.ok {
+        position: absolute;
+        bottom: 0px;
+        right: 3px;
+    }
 
-.color-selector .color-axis.hue .color:last-child {
-    margin-right: 0;
-    width: 11px;
-}
+    .footer {
+        height: 40px;
+        position: relative;
+        .color {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 25px;
+            height: 26px;
+            &.selected {
+                border: 0;
+            }
+        }
+    }
 
-.color-selector .color-axis.hue .color.selected {
-    width: 7px;
-}
-
-.color-selector .hex {
-    border-radius: 0;
-    font-size: 12px;
-    width: 60px;
-    padding: 2px 4px;
-    text-transform: lowercase;
-    position: absolute;
-    left: 25px;
-    bottom: 0px;
-    margin: 0;
-    text-align: center;
-}
-
-.color-selector .btn.ok {
-    position: absolute;
-    bottom: 0px;
-    right: 3px;
-}
-
-.color-selector .footer {
-    height: 40px;
-    position: relative;
-}
-
-.color-selector .footer .color {
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 25px;
-    height: 26px;
-}
-
-.color-selector .footer .color.selected {
-    border: 0;
 }
 

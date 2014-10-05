@@ -5,97 +5,78 @@
 
 .chart-editor {
     margin-top: 20px;
-}
-
-
-body .chart-editor {
     color: #000;
+
+    h2, h3, h4, p {
+        font-family: @base-font;
+    }
+
+    h3 {
+        font-weight: 300;
+        font-size: 19px;
+    }
+
+    input, label {
+        font-family: @base-font-cd;
+        font-weight: 300;
+    }
+
 }
 
+.dw .create-nav {
+    & > * {
+        background: #f2f2f2;
+        position: relative;
+        box-shadow: 2px 2px 2px #e2e2e2 inset;
+        border-radius: 10px 0 0 10px;
+        text-align: left;
+        height: 50px;
+        font-size: 16px;
+        line-height: 50px;
+        font-weight: 300;
+        margin-bottom: 0;
+        white-space: nowrap;
+    }
 
-body .chart-editor h2,
-body .chart-editor h3,
-body .chart-editor h4,
-body .chart-editor p {
-    font-family: 'Roboto', sans-serif;
-}
+    .corner {
+        background: url(../img/create-nav-bg.png) left center no-repeat;
+        width: 25px;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        right: 0;
+        border-radius: 0;
+        box-shadow: none;
+    }
 
-body .chart-editor input, body .chart-editor label {
-    font-family: @base-font-cd;
-    font-weight: 300;
-}
+    & > div.active {
+        background: #cc0000;
+        box-shadow: none;
+        font-weight: normal;
+        color: #fff;
+    }
 
-body .chart-editor .visconfig label,
-body .chart-editor .visconfig select,
-body .chart-editor .visconfig input[type=text],
-body .chart-editor .visconfig textarea {
-    font-size: 14px;
-    line-height: 16px;
-    font-weight: 300;
-    font-family: @base-font-cd;
-}
+    & > div.unseen {
+        color: #999;
+    }
 
-body .chart-editor .visconfig input[type="radio"],
-body .chart-editor .visconfig input[type="checkbox"] {
-    margin: 2px 0 0;
-}
+    & > a:hover {
+        text-decoration: none;
+    }
 
-body .chart-editor .visconfig label.checkbox { padding-left: 17px; }
-body .chart-editor .visconfig label.checkbox input[type="checkbox"] { margin-left: -17px; }
+    & > a.passed {
+        background: #ddd;
+    }
 
-
-.dw .create-nav > * {
-    background: #f2f2f2;
-    position: relative;
-    box-shadow: 2px 2px 2px #e2e2e2 inset;
-    border-radius: 10px 0 0 10px;
-    text-align: left;
-    height: 50px;
-    font-size: 16px;
-    line-height: 50px;
-    font-weight: 300;
-    margin-bottom: 0;
-    white-space: nowrap;
-}
-
-.dw .create-nav .corner {
-    background: url(../img/create-nav-bg.png) left center no-repeat;
-    width: 25px;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    right: 0;
-    border-radius: 0;
-    box-shadow: none;
-}
-
-.dw .create-nav > div.active {
-    background: #cc0000;
-    box-shadow: none;
-    font-weight: normal;
-    color: #fff;
-}
-
-.dw .create-nav > div.unseen {
-    color: #999;
-}
-
-.dw .create-nav > a:hover {
-    text-decoration: none;
-}
-
-.dw .create-nav > a.passed {
-    background: #ddd;
-}
-
-.dw .create-nav > * .step {
-    font-weight: bold;
-    color: #fff;
-    font-size: 26px;
-    line-height: 26px;
-    position: relative;
-    top: 3px;
-    margin-left: 18px;
-    margin-right: 5px;
-    text-shadow: 1px 1px 2px rgba(0,0,0,.17);
+    & > * .step {
+        font-weight: bold;
+        color: #fff;
+        font-size: 26px;
+        line-height: 26px;
+        position: relative;
+        top: 3px;
+        margin-left: 18px;
+        margin-right: 5px;
+        text-shadow: 1px 1px 2px rgba(0,0,0,.17);
+    }
 }

@@ -47,71 +47,82 @@
       content: '';
     }
 
-    #vis-options fieldset legend {
-        margin-bottom: 10px;
-    }
+    #vis-options {
+        fieldset legend {
+            margin-bottom: 10px;
+        }
 
-    #vis-options .vis-option-group {
-        margin-bottom: 9px;
-        position: relative;
-    }
+        .vis-option-group {
+            margin-bottom: 9px;
+            position: relative;
 
-    #vis-options .vis-option-group .vis-option-help {
-        position: absolute;
-        top: -3px;
-        right: 0px;
-        cursor: default;
-        padding-left: 15px;
-        z-index: 100;
-    }
+            .vis-option-help {
+                position: absolute;
+                top: -3px;
+                right: 0px;
+                cursor: default;
+                padding-left: 15px;
+                z-index: 100;
 
-    #vis-options .vis-option-group.vis-option-type-radio-left .vis-option-help {
-        top: 32px;
-    }
+                span {
+                    display: block;
+                    width: 22px;
+                    height: 22px;
+                    line-height: 22px;
+                    text-align: center;
+                    border-radius: 11px;
+                    background: @pale-blue;
+                    color: #fff;
+                    font-weight: bold;
+                }
 
-    #vis-options .vis-option-group.vis-option-type-separator .vis-option-help {
-        top: 32px;
-    }
+                &:hover {
+                    text-decoration: none;
+                }
+            }
 
-    #vis-options .vis-option-group.vis-option-type-select-axis-column .vis-option-help {
-        top: 3px;
-    }
+            &.vis-option-type-radio-left .vis-option-help {
+                top: 32px;
+            }
 
-    #vis-options .vis-option-group .vis-option-help:hover {
-        text-decoration: none;
-    }
+            &.vis-option-type-separator .vis-option-help {
+                top: 32px;
+            }
 
-    #vis-options .vis-option-group .vis-option-help span {
-        display: block;
-        width: 22px;
-        height: 22px;
-        line-height: 22px;
-        text-align: center;
-        border-radius: 11px;
-        background: #d6d6d6;
-        color: #fff;
-        font-weight: bold;
-    }
+            &.vis-option-type-select-axis-column .vis-option-help {
+                top: 3px;
+            }
 
+            legend + .control-group {
+                margin-top: 0;
+            }
+        } // .vis-option-group
 
-    #vis-options legend + .control-group {
-        margin-top: 0;
-    }
+        .control-label {
+            display: inline-block;
+            width: auto;
+            float: none;
+            margin-right: 1em;
+        }
 
-    #vis-options .control-label {
-        width: 45%;
-    }
+        .controls {
+            display: inline-block;
+            width: auto;
+            float: none;
+            margin-left: 0;
+        }
 
-    #vis-options .controls {
-        margin-left: 50%;
-    }
+        .tooltip {
+            .tooltip-inner {
+                background: darken(@pale-blue, 10%);
+                border-color: darken(@pale-blue, 10%);
+                font-size: 14px;
+                font-family: @base-font-cd;
+                color: #fff;
+            }
+        }
 
-    #vis-options .vis-option-type-select-axis-column .control-label {
-        width: 30%;
-    }
-    #vis-options .vis-option-type-select-axis-column .controls {
-        margin-left: 35%;
-    }
+    } // end #vis-options
 
     .highlighted-series li {
         margin-bottom: 3px;
@@ -259,13 +270,6 @@
         background: #fff;
     }
 
-    label.separator {
-        font-weight: 500!important;
-        text-align: left;
-        margin-top: 10px;
-        line-height: 20px;
-    }
-
 
     .control-group .pull-left {
         margin-right: 20px;
@@ -282,6 +286,44 @@
         font-weight: bold;
     }
 
+    .custom-color-selector-body {
+        .btn {
+            font-family: @base-font-cd;
+            font-weight: 300;
+        }
+        .dataseries {
+            li {
+                label { font-weight: 400; }
+                &.selected { background: #e0eaf0; }
+            }
+        }
+    }
 
+    .visconfig {
+        label, select, input[type=text], textarea {
+            font-size: 14px;
+            line-height: 16px;
+            font-weight: 300;
+            font-family: @base-font-cd;
+        }
+
+        label.separator {
+            font-weight: 500!important;
+            text-align: left;
+            margin-top: 10px;
+            line-height: 20px;
+            font-family: @base-font;
+        }
+
+        input[type="radio"],
+        input[type="checkbox"] {
+            margin: 2px 0 0;
+        }
+
+        label.checkbox { padding-left: 17px; }
+        label.checkbox input[type="checkbox"] { margin-left: -17px; }
+
+        @import 'visualize/custom-range';
+    }
 
 }
