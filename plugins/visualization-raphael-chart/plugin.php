@@ -11,7 +11,7 @@ class DatawrapperPlugin_VisualizationRaphaelChart extends DatawrapperPlugin_Visu
                 array(
                     "local" => "vendor/d3-light.min.js",
                     "cdn" => !empty($asset_domain)
-                        ? $asset_url . "vendor/d3-light/3.1.7/d3-light.min.js"
+                        ? $asset_url . "vendor/d3-light/3.1.8/d3-light.min.js"
                         : null
                 ),
                 array(

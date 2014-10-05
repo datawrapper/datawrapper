@@ -15,7 +15,7 @@
   for (var o = 0, a = this.length; a > o; ++o) r.call(t, this[o], o, this);
 });
 
-var d3 = function() {
+d3 = function() {
   var d3 = {
     version: "3.1.7"
   };
@@ -928,7 +928,7 @@ var d3 = function() {
   };
   var d3_requote_re = /[\\\^\$\*\+\?\|\[\]\(\)\.\{\}]/g;
   var d3_time_formatDateTime = "%a %e %b %X %Y", d3_time_formatDate = "%d.%m.%Y", d3_time_formatTime = "%H:%M:%S";
-  var d3_time_days = Globalize.culture(__locale).calendar.days.names, d3_time_dayAbbreviations = Globalize.culture(__locale).calendar.days.namesAbbr, d3_time_months = Globalize.culture(__locale).calendar.months.names, d3_time_monthAbbreviations = Globalize.culture(__locale).calendar.months.namesAbbr;
+  var d3_time_days = Globalize.culture(__locale).calendar.days.names, d3_time_dayAbbreviations = Globalize.culture(__locale).calendar.days.namesAbbr, d3_time_months = Globalize.culture(__locale).calendar.months.names, d3_time_monthAbbreviations = Globalize.culture(__locale).calendar.months.namesAbbr, d3_time_firstDay = Globalize.culture().calendar.firstDay;
   d3_time_daySymbols.forEach(function(day, i) {
     day = day.toLowerCase();
     i = 7 - i;
@@ -948,9 +948,9 @@ var d3 = function() {
       return Math.floor((d3.time.dayOfYear(date) + (day + i) % 7) / 7);
     };
   });
-  d3.time.week = d3.time.sunday;
-  d3.time.weeks = d3.time.sunday.range;
-  d3.time.weeks.utc = d3.time.sunday.utc.range;
+  d3.time.week = d3.time[d3_time_daySymbols[d3_time_firstDay].toLowerCase()];
+  d3.time.weeks = d3.time[d3_time_daySymbols[d3_time_firstDay].toLowerCase()].range;
+  d3.time.weeks.utc = d3.time[d3_time_daySymbols[d3_time_firstDay].toLowerCase()].utc.range;
   d3.time.weekOfYear = d3.time.sundayOfYear;
   d3.time.format = function(template) {
     var n = template.length;
@@ -1297,7 +1297,7 @@ var d3 = function() {
   } ], [ d3.time.format("%b %d"), function(d) {
     return d.getDate() != 1;
   } ], [ d3.time.format("%a %d"), function(d) {
-    return d.getDay() && d.getDate() != 1;
+    return d.getDay() != d3_time_firstDay && d.getDate() != 1;
   } ], [ d3.time.format("%I %p"), function(d) {
     return d.getHours();
   } ], [ d3.time.format("%I:%M"), function(d) {
@@ -1328,6 +1328,54 @@ var d3 = function() {
     if (arguments.length > 1) array = array.map(f);
     array = array.filter(d3_number);
     return array.length ? d3.quantile(array.sort(d3.ascending), .5) : undefined;
+  };
+  d3.extent = function(array, f) {
+    var i = -1, n = array.length, a, b, c;
+    if (arguments.length === 1) {
+      while (++i < n && ((a = c = array[i]) == null || a != a)) a = c = undefined;
+      while (++i < n) if ((b = array[i]) != null) {
+        if (a > b) a = b;
+        if (c < b) c = b;
+      }
+    } else {
+      while (++i < n && ((a = c = f.call(array, array[i], i)) == null || a != a)) a = undefined;
+      while (++i < n) if ((b = f.call(array, array[i], i)) != null) {
+        if (a > b) a = b;
+        if (c < b) c = b;
+      }
+    }
+    return [ a, c ];
+  };
+  d3.min = function(array, f) {
+    var i = -1, n = array.length, a, b;
+    if (arguments.length === 1) {
+      while (++i < n && ((a = array[i]) == null || a != a)) a = undefined;
+      while (++i < n) if ((b = array[i]) != null && a > b) a = b;
+    } else {
+      while (++i < n && ((a = f.call(array, array[i], i)) == null || a != a)) a = undefined;
+      while (++i < n) if ((b = f.call(array, array[i], i)) != null && a > b) a = b;
+    }
+    return a;
+  };
+  d3.max = function(array, f) {
+    var i = -1, n = array.length, a, b;
+    if (arguments.length === 1) {
+      while (++i < n && ((a = array[i]) == null || a != a)) a = undefined;
+      while (++i < n) if ((b = array[i]) != null && b > a) a = b;
+    } else {
+      while (++i < n && ((a = f.call(array, array[i], i)) == null || a != a)) a = undefined;
+      while (++i < n) if ((b = f.call(array, array[i], i)) != null && b > a) a = b;
+    }
+    return a;
+  };
+  d3.sum = function(array, f) {
+    var s = 0, n = array.length, a, i = -1;
+    if (arguments.length === 1) {
+      while (++i < n) if (!isNaN(a = +array[i])) s += a;
+    } else {
+      while (++i < n) if (!isNaN(a = +f.call(array, array[i], i))) s += a;
+    }
+    return s;
   };
   return d3;
 }();
