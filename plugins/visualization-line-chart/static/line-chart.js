@@ -9,6 +9,7 @@
                 theme = vis.theme(),
                 chart = vis.chart(),
                 y1Domain,
+                invertYAxis = false,
                 axesDef = vis.axes(true);
 
             if (!axesDef.x || !axesDef.y1[0]) return;  // stop rendering here
@@ -58,7 +59,7 @@
             }
 
             scales.x = scales.x.range([c.lpad + c.lpad2, c.w-c.rpad]);
-            scales.y = scales.y.range(vis.get('invert-y-axis', false) ? [c.tpad, c.h-c.bpad] : [c.h-c.bpad, c.tpad]);
+            scales.y = scales.y.range(invertYAxis ? [c.tpad, c.h-c.bpad] : [c.h-c.bpad, c.tpad]);
 
             drawYAxis();
             drawXAxis();
@@ -72,7 +73,7 @@
                     return b.val(-1) - a.val(-1);
                 });
                 // inverse order if y axis is inverted
-                if (vis.get('invert-y-axis', false)) all_series.reverse();
+                if (invertYAxis) all_series.reverse();
                 //
                 if (legend.pos.substr(0, 6) == "inside") {
                     legend.xoffset = yAxisWidth(h);
@@ -365,18 +366,24 @@
 
             // returns d3.scale for y axis, usually d3.linear
             function yScale() {
-                var scale,
+                var scale, mustInclude,
                 // find min/max value of each data series
                     domain = [Number.MAX_VALUE, Number.MAX_VALUE * -1];
                 _.each(axesDef.y1, function(col) {
                     domain[0] = Math.min(domain[0], col.range()[0]);
                     domain[1] = Math.max(domain[1], col.range()[1]);
                 });
+                if ((mustInclude = vis.get('custom-range-y'))) {
+                    mustInclude = mustInclude.filter(function(c) {
+                        return c !== '';
+                    });
+                    if (mustInclude.length == 2 && mustInclude[0] > mustInclude[1]) {
+                        invertYAxis = true;
+                    }
+                } else { mustInclude = []; }
+                if (vis.get('fill-below', false)) mustInclude.push(0);
+                domain = d3.extent(domain.concat(mustInclude));
                 y1Domain = domain;  // store for later, replaces me.__domain
-                if (vis.get('baseline-zero', false) || vis.get('fill-below', false)) {
-                    if (domain[0] > 0) domain[0] = 0;
-                    if (domain[1] < 0) domain[1] = 0;
-                }
                 scale = useLogScale ? 'log' : 'linear';
                 if (scale == 'log' && domain[0] === 0) domain[0] = 0.03;  // log scales don't like zero!
                 return d3.scale[scale]().domain(domain);

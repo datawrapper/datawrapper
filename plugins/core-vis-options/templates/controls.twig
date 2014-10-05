@@ -75,4 +75,10 @@
     </select>
 
 
+{% elseif option.type == 'custom-range' %}
+
+    <label>{{ option.label | raw }}:</label>
+    <input type="text" class="min" placeholder="min" /> -
+    <input type="text" class="max" placeholder="max" />
+
 {% endif %}
