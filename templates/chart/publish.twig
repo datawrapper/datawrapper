@@ -14,6 +14,7 @@ dw.backend.ready(function() {
     <div class="row">
         <div class="span5">
 
+            {% if user.role != 'guest' %}
 
             <h3>{% trans "What do you want to do with this chart?" %}</h3>
             <ul class="chart-actions">
@@ -33,39 +34,13 @@ dw.backend.ready(function() {
 
             {{ hook('publish_after_chart_actions', chart, user) }}
 
-            {% if user.role == 'guest' %}
+            {% else %}
 
             <h3>{% trans "Congratulations, you created your first chart!" %}</h3>
 
             <p>{% trans "Now, to be able to embed the chart, we ask you to create an account. It's free and all you need is a valid email address. The chart you just created will be transfered to your new account." %}</p>
 
-            <div class="row">
-                <div class="span2">
-
-                    <h3>{% trans "Sign Up" %}</h3>
-
-                    <div class="signup-form form-vertcal">
-                        <div class="control-group">
-                            <input type="text" class="register-email input-xlarge span2" placeholder="email" />
-                        </div>
-                        <div class="control-group">
-                            <input type="password" class="register-pwd input-xlarge span2" placeholder="password" />
-                        </div>
-                        <div class="control-group">
-                            <input type="password" class="register-pwd-2 input-xlarge span2" placeholder="repeat password" />
-                        </div>
-                        <a class="btn btn-large btn-register"><i class="icon-pencil"></i> Sign Up</a>
-                    </div>
-                </div>
-                <div class="span2">
-                    {% if has_hook('alternative_signin') %}
-                    <h3>{% trans "..or sign in with " %}</h3>
-
-                        {{ hook('alternative_signin') }}
-
-                    {% endif %}
-                </div>
-            </div>
+            <a class="btn btn-primary" href="#login">{% trans "Create an account / sign in" %}</a>
 
             {% endif %}
         </div>
