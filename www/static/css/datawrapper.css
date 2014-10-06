@@ -765,6 +765,7 @@ html .btn-primary {
 }
 .chart-editor.dw-create-visualize #vis-options .control-label {
   display: inline-block;
+  text-align: top;
   width: auto;
   float: none;
   margin-right: 1em;
@@ -1024,6 +1025,13 @@ html .btn-primary {
 }
 .chart-editor.dw-create-visualize .visconfig label.checkbox input[type="checkbox"] {
   margin-left: -17px;
+}
+.chart-editor.dw-create-visualize .visconfig .vis-option-type-textarea {
+  margin-top: 10px;
+}
+.chart-editor.dw-create-visualize .visconfig .vis-option-type-textarea label,
+.chart-editor.dw-create-visualize .visconfig .vis-option-type-textarea textarea {
+  vertical-align: top;
 }
 .chart-editor.dw-create-visualize .visconfig .vis-option-type-custom-range label {
   display: inline-block;
