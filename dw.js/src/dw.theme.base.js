@@ -49,6 +49,11 @@ dw.theme.base = {
         ]
     },
 
+    annotation: {
+        background: '#000',
+        opacity: 0.08
+    },
+
     /*
      * padding around the chart area
      */
