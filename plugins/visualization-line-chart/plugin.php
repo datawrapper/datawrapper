@@ -163,6 +163,11 @@ class DatawrapperPlugin_VisualizationLineChart extends DatawrapperPlugin_Visuali
                     "chart.min_value[y1]" => ">0",
                     "chart.magnitude_range[y1]" => ">3"
                 )
+            ),
+            "annotate-time-axis" => array(
+                "type" => "textarea",
+                "label" => __("Annotate x axis").':',
+                "placeholder" => "from,to,text"
             )
         );
         return $options;

@@ -120,6 +120,7 @@
             }
 
             if (vis.get('user-change-scale', false)) addScaleChangeUI();
+            if (vis.get('annotate-time-axis')) annotateTime(vis.get('annotate-time-axis'));
 
             vis.renderingComplete();
 
@@ -828,53 +829,45 @@
                 });
             }
 
-            /*function annotate(annotation) {
-                if (annotation.type == 'area') {
-                    annotateArea();
-                }
+            function annotateTime(annotations) {
+                // parse annotations
+                annotations = annotations.trim().split('\n')
+                    .map(function(r) { return r.trim().split(',').map(function(c) { return c.trim(); }); });
 
-                function annotateArea() {
+                _.each(annotations, function(annotation) {
+                    var dates = dw.column('', annotation.slice(0,2), 'date').values();
+                    x_range(dates, annotation[2], annotation[3]);
+                });
 
-                    var path;
-                    if (annotation.left && annotation.right) {
-                        x_range();
-                    } else if (annotation.low && annotation.high) {
-                        y_range();
-                    }
-
-
-                    function x_range() {
-                        var x1 = scales.x(annotation.left),
-                            x2 = scales.x(annotation.right),
-                            y1 = scales.y.range()[0],
-                            y2 = scales.y.range()[1];
-                        // draw rect
-                        area(c.paper.rect(x1, Math.min(y1,y2), x2-x1, Math.abs(y2-y1)));
-                        if (annotation.label) {
-                            vis.label((x1 + x2)*0.5, Math.min(y1, y2)-3, annotation.label, {
-                                valign: 'bottom',
-                                align: 'center',
-                                width: 100,
-                                cl: 'annotation'
-                            });
-                        }
-                    }
-
-                    function y_range() {
-                        var x1 = scales.x.range()[0],
-                            x2 = scales.x.range()[1],
-                            y1 = scales.y(annotation.low),
-                            y2 = scales.y(annotation.high);
-                        // draw rect
-                        area(c.paper.rect(x1, Math.min(y1,y2), x2-x1, Math.abs(y2-y1)));
-                    }
-
-                    function area(path) {
-                        path.attr({ stroke: false, fill: '#eed', opacity: 0.5 })
-                            .toBack();
+                function x_range(dates, label, align) {
+                    var x1 = scales.x(dates[0]),
+                        x2 = scales.x(dates[1]),
+                        r = scales.y.range(),
+                        y1 = Math.min(r[0], r[1]),
+                        y2 = Math.max(r[0], r[1]),
+                        l_y = align == 't' ? 0 : +align,
+                        l_yo = align == 't' ? -3 : 0;
+                    // draw rect
+                    area(c.paper.rect(x1, y1, x2-x1, y2-y1));
+                    if (label) {
+                        vis.label((x1 + x2)*0.5, y1 + (y2-y1) * l_y + l_yo, label, {
+                            valign: align == 't' ? 'bottom' : 'middle',
+                            align: 'center',
+                            width: 100,
+                            cl: 'annotation'
+                        });
                     }
                 }
-            }*/
+
+                function area(path) {
+                    path.attr({
+                        stroke: false,
+                        fill: theme.annotation.background,
+                        opacity: theme.annotation.opacity
+                    }).toBack();
+                }
+            }
+
         },
 
         lineColumns: function() {
