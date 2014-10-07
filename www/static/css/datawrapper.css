@@ -1033,6 +1033,10 @@ html .btn-primary {
 .chart-editor.dw-create-visualize .visconfig .vis-option-type-textarea textarea {
   vertical-align: top;
 }
+.chart-editor.dw-create-visualize .visconfig .vis-option-type-textarea textarea {
+  font-size: 13px;
+  line-height: 18px;
+}
 .chart-editor.dw-create-visualize .visconfig .vis-option-type-custom-range label {
   display: inline-block;
 }

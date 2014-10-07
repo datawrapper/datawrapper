@@ -3,6 +3,7 @@ GENERATED_FILES = \
 	dw.js/dw-2.0.js \
 	www/static/js/dw-2.0.js \
 	www/static/css/datawrapper.css \
+	www/static/css/chart.base.css \
 	www/static/js/dw-2.0.min.js
 
 all: $(GENERATED_FILES)
@@ -24,3 +25,6 @@ messages:
 
 www/static/css/datawrapper.css: styles/datawrapper/* styles/datawrapper/**/*
 	node_modules/.bin/lessc styles/datawrapper/main.less > $@
+
+www/static/css/chart.base.css: styles/chart.base/* styles/chart.base/**/*
+	node_modules/.bin/lessc styles/chart.base/main.less > $@
