@@ -49,7 +49,7 @@
 
     <label class="control-label" for="{{ key }}">{{ option.label|raw }}</label>
     <div class="controls">
-        <textarea placeholder="{{ option.placeholder | raw }}" style="width:auto" id="{{ key }}"></textarea>
+        <textarea placeholder="{{ option.placeholder | raw }}" style="width:{% if option.width %}{{ option.width }}{% else %}auto{% endif %};" id="{{ key }}"></textarea>
     </div>
 
 {% elseif option.type == 'separator' %}
