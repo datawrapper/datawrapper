@@ -22,5 +22,5 @@ www/static/js/dw-2.0.min.js: dw.js/dw-2.0.js
 messages:
 	scripts/update-messages.sh
 
-www/static/css/datawrapper.css: styles/* styles/**/*
-	node_modules/.bin/lessc styles/main.less > $@
+www/static/css/datawrapper.css: styles/datawrapper/* styles/datawrapper/**/*
+	node_modules/.bin/lessc styles/datawrapper/main.less > $@
