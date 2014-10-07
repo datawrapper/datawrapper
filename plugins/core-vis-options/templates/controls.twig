@@ -77,8 +77,10 @@
 
 {% elseif option.type == 'custom-range' %}
 
-    <label>{{ option.label | raw }}:</label>
-    <input type="text" class="min" placeholder="min" /> -
-    <input type="text" class="max" placeholder="max" />
+    <label class="control-label">{{ option.label | raw }}:</label>
+    <div class="controls">
+        <input type="text" class="min" placeholder="min" /> -
+        <input type="text" class="max" placeholder="max" />
+    </div>
 
 {% endif %}
