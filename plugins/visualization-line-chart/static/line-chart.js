@@ -830,13 +830,24 @@
             }
 
             function annotateTime(annotations) {
+                var rg = /@(\d+)%/;
                 // parse annotations
                 annotations = annotations.trim().split('\n')
-                    .map(function(r) { return r.trim().split(',').map(function(c) { return c.trim(); }); });
+                    .map(function(r) { return r.trim().split(',').map($.trim); });
 
                 _.each(annotations, function(annotation) {
-                    var dates = dw.column('', annotation.slice(0,2), 'date').values();
-                    x_range(dates, annotation[2], annotation[3]);
+                    var dates = dw.column('', annotation.slice(0,2), 'date').values(),
+                        k = annotation.length;
+                    if (k > 3) {
+                        if (rg.test(annotation[k-1])) {
+                            annotation[2] = annotation.slice(2,k-1).join(',');
+                            annotation[3] = +annotation[k-1].match(rg)[1];
+                        } else {
+                            annotation[2] = annotation.slice(2).join(',');
+                            annotation[3] = null;
+                        }
+                    }
+                    x_range(dates, annotation[2] || '', annotation[3] || 't');
                 });
 
                 function x_range(dates, label, align) {
@@ -845,7 +856,7 @@
                         r = scales.y.range(),
                         y1 = Math.min(r[0], r[1]),
                         y2 = Math.max(r[0], r[1]),
-                        l_y = align == 't' ? 0 : +align,
+                        l_y = align == 't' ? 0 : +align * 0.01,
                         l_yo = align == 't' ? -3 : 0;
                     // draw rect
                     area(c.paper.rect(x1, y1, x2-x1, y2-y1));

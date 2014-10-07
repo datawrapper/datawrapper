@@ -167,7 +167,8 @@ class DatawrapperPlugin_VisualizationLineChart extends DatawrapperPlugin_Visuali
             "annotate-time-axis" => array(
                 "type" => "textarea",
                 "label" => __("Annotate x axis").':',
-                "placeholder" => "from,to,text"
+                "placeholder" => "from,to,text",
+                "width" => "180px"
             )
         );
         return $options;
