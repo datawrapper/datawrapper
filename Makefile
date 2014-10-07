@@ -23,8 +23,8 @@ www/static/js/dw-2.0.min.js: dw.js/dw-2.0.js
 messages:
 	scripts/update-messages.sh
 
-www/static/css/datawrapper.css: styles/datawrapper/* styles/datawrapper/**/*
-	node_modules/.bin/lessc styles/datawrapper/main.less > $@
+www/static/css/datawrapper.css: assets/styles/datawrapper/* assets/styles/datawrapper/**/*
+	node_modules/.bin/lessc assets/styles/datawrapper/main.less > $@
 
-www/static/css/chart.base.css: styles/chart.base/* styles/chart.base/**/*
-	node_modules/.bin/lessc styles/chart.base/main.less > $@
+www/static/css/chart.base.css: assets/styles/chart.base/* assets/styles/chart.base/**/*
+	node_modules/.bin/lessc assets/styles/chart.base/main.less > $@
