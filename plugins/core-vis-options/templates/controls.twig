@@ -61,7 +61,7 @@
     {% for axis in option.axes %}
     <label class="control-label" for="{{ key }}-{{ axis.id }}">{{ axis.label|raw }}</label>
     <div class="controls" style="margin-bottom:10px">
-        <select id="{{ key }}-{{ axis.id }}" data-axis="{{ axis.id }}">
+        <select id="{{ key }}-{{ axis.id }}" {% if axis.style %}style="{{ axis.style | css }}"{% endif %} data-axis="{{ axis.id }}">
             {# will be populated by javascript #}
         </select>
     </div>
@@ -69,11 +69,12 @@
 
 {% elseif option.type == 'column-select' %}
 
-    {{ option.label | raw }}:&nbsp;&nbsp;
-     <select id="{{ key }}">
+    <label class="control-label" for="{{ key }}">{{ option.label | raw }}:</label>
+    <div class="controls">
+        <select {% if option.style %}style="{{ option.style | css }}"{% endif %} id="{{ key }}">
             {# will be populated by javascript #}
-    </select>
-
+        </select>
+    </div>
 
 {% elseif option.type == 'custom-range' %}
 
