@@ -56,6 +56,12 @@
             margin-bottom: 9px;
             position: relative;
 
+            &.inline {
+                display: inline-block;
+                vertical-align: top;
+                margin-right: 20px;
+            }
+
             .vis-option-help {
                 position: absolute;
                 top: -3px;
@@ -95,6 +101,10 @@
 
             legend + .control-group {
                 margin-top: 0;
+            }
+
+            &.vis-option-type-select-axis-column {
+                .controls { margin-right: 20px; }
             }
 
         } // .vis-option-group

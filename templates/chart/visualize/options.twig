@@ -13,7 +13,7 @@
 
     {% for key, option in vis.options %}
         {% if theme['option-filter'][vis.id][key] or (not option.hidden and not option.expert)  %}
-    <div class="control-group vis-option-group vis-option-type-{{ option.type }}" style="margin-bottom:0" id="vis-options-{{ key }}">
+    <div class="control-group vis-option-group vis-option-type-{{ option.type }}{% if option.inline %} inline{% endif %}" id="vis-options-{{ key }}">
 
         {% if option.help %}
             <a title="{{ option.help }}" class="vis-option-help"><span>?</span></a>
