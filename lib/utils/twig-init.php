@@ -32,6 +32,14 @@ function dwInitTwigEnvironment(Twig_Environment $twig) {
         return json_encode($arr);
     }));
 
+    $twig->addFilter(new Twig_SimpleFilter('css', function($arr) {
+        $css = '';
+        foreach ($arr as $prop => $val) {
+            $css .= $prop . ':' . $val . ';';
+        }
+        return $css;
+    }));
+
     $twig->addFunction(new Twig_SimpleFunction('hook', function() {
         call_user_func_array(array(DatawrapperHooks::getInstance(), 'execute'), func_get_args());
     }));
