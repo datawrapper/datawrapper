@@ -93,6 +93,17 @@ dw.dataset = function(columns, opts) {
             return _.indexOf(columns, columnsByName[column_name]);
         },
 
+        /*
+         * returns a D3 friendly list of objects
+         */
+        list: function() {
+            return _.range(columns[0].length).map(function(r) {
+                var o = {};
+                _.each(columns, function(col) { o[col.name()] = col.val(r); });
+                return o;
+            });
+        },
+
         toCSV: function() {
             var csv = "",
                 sep = ",",

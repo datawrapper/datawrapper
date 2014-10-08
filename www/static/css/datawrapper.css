@@ -729,6 +729,11 @@ html .btn-primary {
   margin-bottom: 9px;
   position: relative;
 }
+.chart-editor.dw-create-visualize #vis-options .vis-option-group.inline {
+  display: inline-block;
+  vertical-align: top;
+  margin-right: 20px;
+}
 .chart-editor.dw-create-visualize #vis-options .vis-option-group .vis-option-help {
   position: absolute;
   top: -3px;
@@ -762,6 +767,9 @@ html .btn-primary {
 }
 .chart-editor.dw-create-visualize #vis-options .vis-option-group legend + .control-group {
   margin-top: 0;
+}
+.chart-editor.dw-create-visualize #vis-options .vis-option-group.vis-option-type-select-axis-column .controls {
+  margin-right: 20px;
 }
 .chart-editor.dw-create-visualize #vis-options .control-label {
   display: inline-block;
@@ -827,7 +835,8 @@ html .btn-primary {
   margin-top: 5px;
 }
 .chart-editor.dw-create-visualize .vis-thumbs .vis-thumb svg path,
-.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb svg rect {
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb svg rect,
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb svg circle {
   fill: #93b0d6;
 }
 .chart-editor.dw-create-visualize .vis-thumbs .vis-thumb svg line {
