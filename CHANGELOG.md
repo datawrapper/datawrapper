@@ -9,6 +9,10 @@ CHANGELOG
 * Important: Please run scripts/migrate/1.8.0.sql and composer install after updating.
 * Chart editor design update
 * default theme for organizations
+* added support for class-less plugins
+* automake mode for easier development
+* added twig filter 'css'
+* refactored stylesheets using LESS
 
 ### 1.7.11
 * fixed symlink creation in plugin installation
