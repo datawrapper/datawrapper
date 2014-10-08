@@ -43,6 +43,10 @@ $(function() {
                 axisMeta = args.vis.meta.axes[axis.id],
                 defCol = args.vis.axes()[axis.id];
 
+            if (axisMeta.optional) {
+                $('<option />').text('--').appendTo(select);
+            }
+
             // populate select with columns that match accepted types for axis
             dataset.eachColumn(function(column) {
                 if (_.indexOf(axisMeta.accepts, column.type()) > -1) {
