@@ -52,7 +52,7 @@ $(function() {
                 if (_.indexOf(axisMeta.accepts, column.type()) > -1) {
                     $('<option />')
                         .attr('value', column.name())
-                        .html(column.title())
+                        .text(column.title())
                         .prop('selected', column.name() == defCol)
                         .appendTo(select);
                 }
