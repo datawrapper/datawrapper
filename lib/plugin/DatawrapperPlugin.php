@@ -4,6 +4,7 @@ class DatawrapperPlugin {
 
     private $__name;
     private $__packageJson;
+    private $__initFunc;
 
     function __construct($name = null) {
         if (isset($name)) $this->__name = $name;
@@ -11,6 +12,10 @@ class DatawrapperPlugin {
 
     /** register events */
     public function init() {
+        // if available, call injected init function
+        if (is_callable($this->__initFunc)) {
+            call_user_func_array($this->__initFunc, array($this));
+        }
         return true;
     }
 
@@ -111,12 +116,7 @@ class DatawrapperPlugin {
      */
     private function getPackageJSON() {
         if (!empty($this->__packageJson)) return $this->__packageJson;
-        $reflector = new ReflectionClass(get_class($this));
-        $dirname   = dirname($reflector->getFileName());
-        if (!file_exists($dirname . "/package.json")) {
-            $dirname = dirname($dirname);  // look for package.json in parent directory
-        }
-        $meta      = json_decode(file_get_contents($dirname . "/package.json"),true);
+        $meta = json_decode(file_get_contents(ROOT_PATH . 'plugins/' . $this->getName() . '/package.json'),true);
         $this->__packageJson = $meta;
         return $meta;
     }
@@ -270,6 +270,10 @@ class DatawrapperPlugin {
             DatawrapperHooks::GET_PLUGIN_CONTROLLER,
             is_callable($obj) ? $obj : array($obj, $func)
         );
+    }
+
+    public function injectInitFunction($func) {
+        $this->__initFunc = $func;
     }
 }
 

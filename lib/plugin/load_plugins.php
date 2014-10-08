@@ -31,15 +31,21 @@ class DatawrapperPluginManager {
         $init_queue = array();
 
         $load_plugin = function ($plugin) use (&$init_queue) {
-            $plugin_path = ROOT_PATH . 'plugins/' . $plugin->getName() . '/plugin.php';
-            if (file_exists($plugin_path)) {
-                require_once $plugin_path;
+            $plugin_path = ROOT_PATH . 'plugins/' . $plugin->getName();;
+            if (file_exists($plugin_path . '/plugin.php')) {
+                require_once $plugin_path . '/plugin.php';
                 // init plugin class
                 $className = $plugin->getClassName();
                 $pluginClass = new $className();
             } else {
                 $pluginClass = new DatawrapperPlugin($plugin->getName());
+                if (file_exists($plugin_path . '/init.php')) {
+                    $pluginClass->injectInitFunction(function($plugin) use ($plugin_path) {
+                        include_once($plugin_path . '/init.php');
+                    });
+                }
             }
+
             // but before we load the libraries required by this lib
             foreach ($pluginClass->getRequiredLibraries() as $lib) {
                 require_once ROOT_PATH . 'plugins/' . $plugin->getName() . '/' . $lib;
