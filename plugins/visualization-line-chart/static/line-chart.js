@@ -384,9 +384,7 @@
 
             // decides whether or not line labels are visible
             function lineLabelsVisible() {
-                return axesDef.y1.length > 1 &&
-                    (axesDef.y1.length < 15 || chart.hasHighlight()) &&
-                    c.w >= theme.minWidth;
+                return axesDef.y1.length > 1 && (axesDef.y1.length < 15 || chart.hasHighlight());
             }
 
             // compute width of primary y axis by measuring label widths
