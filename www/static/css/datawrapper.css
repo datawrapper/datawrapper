@@ -870,7 +870,8 @@ html .btn-primary {
   color: #000;
 }
 .chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active svg path,
-.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active svg rect {
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active svg rect,
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active svg circle {
   fill: #000;
 }
 .chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active svg line {
@@ -1125,15 +1126,15 @@ html .btn-primary {
   top: 10px;
   text-align: center;
 }
-.dw-create-publish .modal {
+.publish-chart-action-modal {
   width: 600px;
   margin-left: -300px;
 }
-.dw-create-publish .modal-wide {
+.publish-chart-action-modal.modal-wide {
   width: 700px;
   margin-left: -350px;
 }
-.dw-create-publish .modal .span1 .fa.big {
+.publish-chart-action-modal .span1 .fa.big {
   font-size: 64px;
   color: #ddd;
   position: relative;
