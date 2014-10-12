@@ -13,6 +13,7 @@ CHANGELOG
 * automake mode for easier development
 * added twig filter 'css'
 * refactored stylesheets using LESS
+* simplified plugin system
 
 ### 1.7.11
 * fixed symlink creation in plugin installation
