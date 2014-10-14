@@ -27,12 +27,26 @@ class Product extends BaseProduct
         self::PERIOD_YEARS
     );
 
-	public function hasPlugin(Plugin $plugin) {
-		return ProductPluginQuery::create()
-			->filterByProduct($this)
-			->filterByPlugin($plugin)
-			->count() > 0;
-	}
+    public function hasPlugin(Plugin $plugin) {
+        return ProductPluginQuery::create()
+            ->filterByProduct($this)
+            ->filterByPlugin($plugin)
+            ->count() > 0;
+    }
+
+    public function hasActiveUser() {
+        return UserProductQuery::create()
+                ->filterByProduct($this)
+                ->filterByExpires('now', Criteria::GREATER_EQUAL)
+                ->count() > 0;
+    }
+
+    public function hasActiveOrganization() {
+        return OrganizationProductQuery::create()
+                ->filterByProduct($this)
+                ->filterByExpires('now', Criteria::GREATER_EQUAL)
+                ->count() > 0;
+    }
 
     public function getData() {
         $data = parent::getData();
@@ -77,3 +91,4 @@ class Product extends BaseProduct
         return sprintf(__('every %d %s'), $frequency, __($period.'s'));
     }
 }
+
