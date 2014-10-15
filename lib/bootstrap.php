@@ -16,9 +16,11 @@ if (isset($dw_config['debug']) && $dw_config['debug'] == true) {
 }
 
 if (isset($dw_config['automake']) && $dw_config['automake'] == true && !defined('NO_SESSION')) {
-    @exec('cd ..;make');
+    @exec('cd '.ROOT_PATH.'; make');
     // make plugin assets, too
-    @exec('cd..;for f in plugins/*/Makefile; do; cd $(dirname $f); make -sk assets; cd ../..; done;');
+    foreach (glob(ROOT_PATH . 'plugins/*/Makefile') as $filename) {
+        @exec('cd '.dirname($filename).'; make assets;');
+    }
 }
 
 // Include the main Propel script
