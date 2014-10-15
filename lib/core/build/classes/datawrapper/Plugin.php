@@ -60,5 +60,9 @@ class Plugin extends BasePlugin {
         }
         return false;
     }
-    
+
+    public function __toString() {
+        return $this->getName();
+    }
+
 } // Plugin
