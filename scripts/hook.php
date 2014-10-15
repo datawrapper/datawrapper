@@ -15,6 +15,6 @@ date_default_timezone_set('Europe/Berlin');
 $hook = $argv[1];
 
 if (!empty($hook)) {
-    DatawrapperHooks::execute($argv[1]);
+    DatawrapperHooks::execute($argv[1], isset($argv[2]) ? $argv[2] : null);
 }
 
