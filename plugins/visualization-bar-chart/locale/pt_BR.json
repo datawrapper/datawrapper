@@ -4,5 +4,6 @@
   "Autmatically sort bars":"Classificar as barras automaticamente",
   "Reverse order":"Ordem reversa",
   "Use different color for negative values":"Usar cores diferentes para valores negativos",
-  "Use the same scale for all columns":"Usar a mesma escala para todas as colunas"
+  "Use the same scale for all columns":"Usar a mesma escala para todas as colunas",
+  "Filter missing values":"Filter missing values"
 }

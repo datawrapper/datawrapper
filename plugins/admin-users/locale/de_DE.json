@@ -1,9 +1,9 @@
 {
   "Users":"Nutzer",
-  "email-missing":"email-missing",
-  "email-invalid":"email-invalid",
-  "email-already-exists":"email-already-exists",
-  "password-already-reset":"password-already-reset",
+  "email-missing":"e-Mail fehlt",
+  "email-invalid":"e-Mail ungültig",
+  "email-already-exists":"e-Mail bereits vorhanden",
+  "password-already-reset":"Passwort wurde bereits zurück gesetzt",
   "will lose his administrator status. Continue?":"wird seinen Administratorstatus verlieren. Weiter?",
   "will become an administrator. Continue?":"wird Administrator. Weiter?",
   "will be deleted. Continue?":"wird gelöscht. Weiter?",
