@@ -61,6 +61,17 @@ class Product extends BaseProduct
         return $this->getPeriod() !== self::PERIOD_ONCE;
     }
 
+    public function getInterval() {
+        if (!$this->isSubscription()) {
+            return null;
+        }
+
+        $period    = $this->getPeriod();
+        $frequency = $this->getFrequency();
+
+        return sprintf('+%d %s', $frequency, $period);
+    }
+
     public function getFrequency() {
         $data = $this->getData();
         return isset($data['frequency']) ? $data['frequency'] : null;
