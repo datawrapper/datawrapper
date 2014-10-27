@@ -399,14 +399,24 @@
 
     var Slice = function(paper, cx, cy, or, ir, startAngle, endAngle, label) {
 
-        var me = {
+        // jquery animate hack found here:
+        // http://acko.net/blog/abusing-jquery-animate-for-fun-and-profit-and-bacon/
+        var me = $.extend($('<div>')[0], {
             cx: cx,
             cy: cy,
             or: or,
             ir: ir,
             opacity: 1,
             startAngle: startAngle,
-            endAngle: endAngle
+            endAngle: endAngle,
+            custom: true
+        });
+
+        var $_fx_step_default = $.fx.step._default;
+        $.fx.step._default = function (fx) {
+            if (!fx.elem.custom) return $_fx_step_default(fx);
+            fx.elem[fx.prop] = fx.now;
+            fx.elem.updated = true;
         };
 
         function arcPath() {
