@@ -358,7 +358,7 @@
         },
 
         hideTooltip: function() {
-            
+
         },
 
         horzGrid: function() {
@@ -390,6 +390,7 @@
                     var lbl = tickLabels[key] = tickLabels[key] ||
                         me.label(x+2, ly, formatter(val, t == ticks.length-1, true),
                             { align: 'left', cl: 'axis', css: { opacity: 0 } });
+                    lbl.text(formatter(val, t == ticks.length-1, true));
                     lbl.animate({ x: c.lpad+2, y: ly, css: { opacity: 1 } }, theme.duration, theme.easing);
                 }
                 if (theme.yTicks) {
