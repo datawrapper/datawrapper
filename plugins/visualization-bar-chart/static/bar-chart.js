@@ -211,7 +211,7 @@
                     var pos = me.labelPosition(bar, s, row), lpos;
                     if (lbl.hasClass('value')) {
                         // update value
-                        lbl.text(formatValue(bar.value));
+                        lbl.text(formatValue(bar.value, true));
                         lpos = { halign: pos.val_align, left: pos.val_x, top: pos.top };
                     } else if (lbl.hasClass('series')) {
                         // update series label position
