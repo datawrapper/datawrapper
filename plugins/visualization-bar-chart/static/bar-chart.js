@@ -37,18 +37,14 @@
                 });
             }
 
-            var c = me.initCanvas({
-                h: Math.max(
-                    dw.utils.getMaxChartHeight(el)-5,
-                    18 * 1.35 * me.getMaxNumberOfBars() + 5
-                )
-            });
+            var frameHeight = dw.utils.getMaxChartHeight(el)-5,
+                chartHeight = 18 * 1.35 * me.getMaxNumberOfBars() + 5;
+                c = me.initCanvas({ h: Math.max(frameHeight, chartHeight) });
 
-            var
-                // chart_width = c.w - c.lpad - c.rpad,
-                // series_gap = 0.05, // pull from theme
-                // row_gap = 0.01,
-                barvalues = me.getBarValues(sortBars, reverse);
+            // only do this if in iframe
+            $('body.chart').css('overflow-y', frameHeight > chartHeight ? 'hidden' : 'visible');
+
+            var barvalues = me.getBarValues(sortBars, reverse);
 
             me.init();
             me.initDimensions();
