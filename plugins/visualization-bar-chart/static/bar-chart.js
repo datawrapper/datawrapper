@@ -39,7 +39,7 @@
 
             var c = me.initCanvas({
                 h: Math.max(
-                    dw.utils.getMaxChartHeight(el)+5,
+                    dw.utils.getMaxChartHeight(el)-5,
                     18 * 1.35 * me.getMaxNumberOfBars() + 5
                 )
             });
