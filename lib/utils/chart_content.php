@@ -1,6 +1,19 @@
 <?php
 
 function get_chart_content($chart, $user, $published = false, $debug = false) {
+
+    function unique_scripts($scripts) {
+        $exist = array();
+        $out = array();
+        foreach ($scripts as $s) {
+            $src = is_array($s) ? $s['src'] : $s;
+            if (isset($exist[$src])) continue;
+            $exist[$src] = true;
+            $out[] = is_array($s) ? $s : array('src' => $s);
+        }
+        return $out;
+    }
+
     $theme_css = array();
     $theme_js = array();
     $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https" : "http";
@@ -60,22 +73,26 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
         $vis = DatawrapperVisualization::get($next_vis_id);
         $vjs = array();
         if (!empty($vis['libraries'])) {
-            foreach ($vis['libraries'] as $url) {
-                if (!is_array($url)) {
-                    $url = array("local" => $url, "cdn" => false);
+            foreach ($vis['libraries'] as $script) {
+                if (!is_array($script)) {
+                    $script = array("local" => $script, "cdn" => false);
                 }
-                if ($url['cdn']) $vis_libs_cdn[] = $url['cdn'];
+                if (!empty($script['cdn'])) {
+                    $script['src'] = $script['cdn'];
+                    $vis_libs_cdn[] = $script;
+                }
 
                 // at first we check if the library lives in ./lib of the vis module
-                if (file_exists(ROOT_PATH . 'www/' . $vis['__static_path'] . $url['local'])) {
-                    $u = $vis['__static_path'] . $url['local'];
-                } else if (file_exists(ROOT_PATH . 'www/static/vendor/' . $url['local'])) {
-                    $u = '/static/vendor/' . $url['local'];
+                if (file_exists(ROOT_PATH . 'www/' . $vis['__static_path'] . $script['local'])) {
+                    $u = $vis['__static_path'] . $script['local'];
+                } else if (file_exists(ROOT_PATH . 'www/static/vendor/' . $script['local'])) {
+                    $u = '/static/vendor/' . $script['local'];
                 } else {
-                    die("could not find required library ".$url["local"]);
+                    die("could not find required library ".$script["local"]);
                 }
-                $vis_libs[] = $u;
-                if (!$url['cdn']) $vis_libs_local[] = $u;
+                $script['src'] = $u;
+                $vis_libs[] = $script;
+                if (empty($url['cdn'])) $vis_libs_local[] = $script;
             }
         }
         if (!empty($vis['locale']) && is_array($vis['locale'])) {
@@ -127,7 +144,7 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
             strlen($replace));              // length
         $the_theme['__static_path'] = '';
     } else {
-        $scripts = array_unique(
+        $scripts = unique_scripts(
             array_merge(
                 $base_js,
                 array('/static/js/dw-2.0'.($debug ? '' : '.min').'.js'),
@@ -192,6 +209,7 @@ function get_vis_js($vis, $visJS) {
     $keys = DatawrapperHooks::execute(DatawrapperHooks::GET_PUBLISH_STORAGE_KEY);
     if (is_array($keys)) $org .= '/' . join($keys, '/');
     foreach ($visJS as $js) {
+        if (is_array($js)) $js = $js['src'];
         if (substr($js, 0, 7) != "http://" && substr($js, 0, 8) != "https://" && substr($js, 0, 2) != '//') {
             $all .= "\n\n\n" . file_get_contents(ROOT_PATH . 'www' . $js);
         }
