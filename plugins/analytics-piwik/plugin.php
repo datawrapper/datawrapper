@@ -8,7 +8,7 @@
 class DatawrapperPlugin_AnalyticsPiwik extends DatawrapperPlugin {
 
     public function init() {
-        DatawrapperHooks::register(DatawrapperHooks::CHART_AFTER_BODY, array($this, 'getTrackingCode'));
+        // DatawrapperHooks::register(DatawrapperHooks::CHART_AFTER_BODY, array($this, 'getTrackingCode'));
         DatawrapperHooks::register(DatawrapperHooks::CORE_AFTER_BODY, array($this, 'getTrackingCode'));
     }
 
