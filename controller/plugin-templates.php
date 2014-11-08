@@ -9,7 +9,8 @@ $app->get('/plugins/:plugin/:template', function ($plugin_id, $template) use ($a
     if (PluginQuery::create()->isInstalled($plugin_id)) {
         if (file_exists(ROOT_PATH . 'templates/plugins/' . $plugin_id . '/' . $template)) {
             $app->render('plugins/' . $plugin_id . '/' . $template, array(
-                'l10n__domain' => '/plugins/'.$plugin_id.'/...'
+                'l10n__domain' => '/plugins/'.$plugin_id.'/...',
+                'plugin_config' => DatawrapperPluginManager::getInstance($plugin_id)->getConfig()
             ));
             return;
         }
