@@ -7,7 +7,11 @@
 $app->get('/users', function() use ($app) {
     $user = DatawrapperSession::getUser();
     if ($user->isAdmin()) {
-        $users = UserQuery::create()->filterByDeleted(false)->find();
+        $userQuery = UserQuery::create()->filterByDeleted(false);
+        if ($app->request()->get('email')) {
+            $userQuery->filterByEmail($app->request()->get('email'));
+        }
+        $users = $userQuery->limit(100)->find();
         $res = array();
         foreach ($users as $user) {
             $res[] = $user->toArray();
