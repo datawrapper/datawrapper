@@ -96,6 +96,8 @@ $app->post('/organizations/:id/users', function($org_id) use ($app) {
         $org = OrganizationQuery::create()->findPk($org_id);
         if ($org) {
             $data = json_decode($app->request()->getBody(), true);
+            $alreadyInOrg = array();
+            $added = 0;
             foreach ($data as $u_id) {
                 $u = UserQuery::create()->findPk($u_id);
                 if ($u) {
@@ -104,19 +106,21 @@ $app->post('/organizations/:id/users', function($org_id) use ($app) {
                         ->filterByOrganization($org)
                         ->count();
                     if ($c > 0 && $org->hasUser($u)) {
-                        return error('user-already-added','This user has already been added to the organization');
+                        $alreadyInOrg[] = $u->guessName();
+                    } else {
+                        $org->addUser($u);
+                        $added++;
+                        // make first user the admin
+                        // if ($c == 0) {
+                        //     $org->save();
+                        //     $org->setRole($u, 'admin');
+                        // }
+                        DatawrapperHooks::execute(DatawrapperHooks::USER_ORGANIZATION_ADD, $org, $u);
                     }
-                    $org->addUser($u);
-                    // make first user the admin
-                    if ($c == 0) {
-                        $org->save();
-                        $org->setRole($u, 'admin');
-                    }
-                    DatawrapperHooks::execute(DatawrapperHooks::USER_ORGANIZATION_ADD, $org, $u);
                 }
             }
             $org->save();
-            ok();
+            ok(array('added' => $added));
         } else {
             return error('unknown-organization', 'Organization not found');
         }
