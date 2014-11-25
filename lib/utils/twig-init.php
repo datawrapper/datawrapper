@@ -29,7 +29,11 @@ function dwInitTwigEnvironment(Twig_Environment $twig) {
     }));
 
     $twig->addFilter(new Twig_SimpleFilter('json', function($arr) {
-        return json_encode($arr);
+        $mask = 0;
+        if (!empty($opts)) {
+            if (!empty($opts['pretty'])) $mask = $mask | JSON_PRETTY_PRINT;
+        }
+        return json_encode($arr, $mask);
     }));
 
     $twig->addFilter(new Twig_SimpleFilter('css', function($arr) {
