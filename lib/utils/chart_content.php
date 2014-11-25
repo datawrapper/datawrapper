@@ -2,16 +2,18 @@
 
 function get_chart_content($chart, $user, $published = false, $debug = false) {
 
-    function unique_scripts($scripts) {
-        $exist = array();
-        $out = array();
-        foreach ($scripts as $s) {
-            $src = is_array($s) ? $s['src'] : $s;
-            if (isset($exist[$src])) continue;
-            $exist[$src] = true;
-            $out[] = is_array($s) ? $s : array('src' => $s);
+    if (!function_exists('unique_scripts')) {
+        function unique_scripts($scripts) {
+            $exist = array();
+            $out = array();
+            foreach ($scripts as $s) {
+                $src = is_array($s) ? $s['src'] : $s;
+                if (isset($exist[$src])) continue;
+                $exist[$src] = true;
+                $out[] = is_array($s) ? $s : array('src' => $s);
+            }
+            return $out;
         }
-        return $out;
     }
 
     $theme_css = array();
