@@ -32,6 +32,14 @@ class DatawrapperPluginManager {
 
         $load_plugin = function ($plugin) use (&$init_queue) {
             $plugin_path = ROOT_PATH . 'plugins/' . $plugin->getName();;
+            // first, lets load the libraries required by this lib
+            foreach ($pluginClass->getRequiredLibraries() as $lib) {
+                require_once $plugin_path . '/' . $lib;
+            }
+            // also, if this plugin uses composer, require the autoload
+            if (file_exists($plugin_path . '/vendor/autoload.php')) {
+                require_once $plugin_path . '/vendor/autoload.php';
+            }
             if (file_exists($plugin_path . '/plugin.php')) {
                 require_once $plugin_path . '/plugin.php';
                 // init plugin class
@@ -44,15 +52,6 @@ class DatawrapperPluginManager {
                         include_once($plugin_path . '/init.php');
                     });
                 }
-            }
-
-            // but before we load the libraries required by this lib
-            foreach ($pluginClass->getRequiredLibraries() as $lib) {
-                require_once $plugin_path . '/' . $lib;
-            }
-            // if this plugin uses composer, require the autoload
-            if (file_exists($plugin_path . '/vendor/autoload.php')) {
-                require_once $plugin_path . '/vendor/autoload.php';
             }
             $init_queue[] = $pluginClass;
             return $pluginClass;
