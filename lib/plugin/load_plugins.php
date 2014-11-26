@@ -48,7 +48,11 @@ class DatawrapperPluginManager {
 
             // but before we load the libraries required by this lib
             foreach ($pluginClass->getRequiredLibraries() as $lib) {
-                require_once ROOT_PATH . 'plugins/' . $plugin->getName() . '/' . $lib;
+                require_once $plugin_path . '/' . $lib;
+            }
+            // if this plugin uses composer, require the autoload
+            if (file_exists($plugin_path . '/vendor/autoload.php')) {
+                require_once $plugin_path . '/vendor/autoload.php';
             }
             $init_queue[] = $pluginClass;
             return $pluginClass;
