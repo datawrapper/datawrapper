@@ -1,6 +1,6 @@
-{% extends "settings.twig" %}
+{% extends "account.twig" %}
 
-{% block settings_content %}
+{% block account_content %}
 
 {# <div class="docs">
     <ul class="nav nav-pills pull-right">
@@ -53,7 +53,7 @@
         <h2>{% trans "Edit Profile" %}</h2>
         <p>{% trans "Filling out your profile is optional. If you do, you can display these information below the charts you publish." %}</p>
 
-        <div class="form-horizontal settings profile">
+        <div class="form-horizontal account profile">
             <fieldset>
 
                 <div class="email control-group{% if new_email_confirmed %} success{% endif %}">
@@ -133,14 +133,14 @@ $(function() {
                 submit.removeClass('loading');
                 if (data.status == 'ok') {
                     _.each(data.data.messages, function(msg) {
-                        dw.backend.logMessage(msg, $('.settings.profile .control-group')[0], 'info');
+                        dw.backend.logMessage(msg, $('.account.profile .control-group')[0], 'info');
                     });
                     _.each(data.data.errors, function(msg) {
-                        dw.backend.logMessage(msg, $('.settings.profile .control-group')[0], 'warning');
+                        dw.backend.logMessage(msg, $('.account.profile .control-group')[0], 'warning');
                     });
                     $('.profile .reset').prop('disabled', true);
                 } else {
-                    dw.backend.logError(data.message, $('.settings.profile .control-group')[0]);
+                    dw.backend.logError(data.message, $('.account.profile .control-group')[0]);
                 }
             }
          });
