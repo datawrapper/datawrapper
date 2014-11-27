@@ -141,7 +141,7 @@ $app->put('/users/:id', function($user_id) use ($app) {
     $curUser = DatawrapperSession::getUser();
 
     if ($curUser->isLoggedIn()) {
-        if ($user_id == 'current' || $curUser->getId() === $user_id) {
+        if ($user_id == 'current' || $curUser->getId() === int($user_id)) {
             $user = $curUser;
         } else if ($curUser->isAdmin()) {
             $user = UserQuery::create()->findPK($user_id);
