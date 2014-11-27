@@ -58,7 +58,9 @@ class Product extends BaseProduct
     }
 
     public function isSubscription() {
-        return $this->getPeriod() !== self::PERIOD_ONCE;
+        $period = $this->getPeriod();
+
+        return $period !== self::PERIOD_ONCE && $period !== null;
     }
 
     public function getInterval() {
