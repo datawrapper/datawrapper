@@ -15,7 +15,7 @@ DatawrapperHooks::register(DatawrapperHooks::GET_SETTINGS_PAGES, function() {
                     return;
                 }
 
-                $app->render('settings/delete.twig', $context);
+                $app->render('account/delete.twig', $context);
             };
         }
     );

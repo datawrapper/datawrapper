@@ -24,7 +24,6 @@ require_once ROOT_PATH . 'controller/plugin-templates.php';
 require_once ROOT_PATH . 'controller/home.php';
 require_once ROOT_PATH . 'controller/login.php';
 require_once ROOT_PATH . 'controller/account.php';
-require_once ROOT_PATH . 'controller/settings.php';
 require_once ROOT_PATH . 'controller/chart/create.php';
 require_once ROOT_PATH . 'controller/chart/edit.php';
 require_once ROOT_PATH . 'controller/chart/upload.php';

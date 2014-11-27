@@ -16,7 +16,7 @@ DatawrapperHooks::register(DatawrapperHooks::GET_SETTINGS_PAGES, function() {
                     return;
                 }
 
-                $app->render('settings/password.twig', $context);
+                $app->render('account/password.twig', $context);
             };
         }
     );

@@ -52,7 +52,7 @@ DatawrapperHooks::register(DatawrapperHooks::GET_SETTINGS_PAGES, function() {
                     }
                     $page['activation_email_date'] = strftime('%x', $t);
                 }
-                $app->render('settings/profile.twig', $page);
+                $app->render('account/profile.twig', $page);
             };
         }
     );
