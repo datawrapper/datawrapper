@@ -5,12 +5,12 @@
 
 <style type="text/css">
 
-.settings-header {
+.account-header {
     margin-bottom: 20px;
     padding-left: 5px;
 }
 
-.settings-header .avatar {
+.account-header .avatar {
     border-radius: 8px;
     width: 32px;
     height: 32px;
@@ -25,17 +25,17 @@
     margin-left: 5px;
 }
 
-.settings-body h2 {
+.account-body h2 {
     font-weight: 300;
     margin-top: 0;
 }
-.settings-menu li i.fa {
+.account-menu li i.fa {
     width: 17px;
     text-align: center;
     position: relative;
     left: -3px;
 }
-.settings-menu li.delete a {
+.account-menu li.delete a {
     color: darkred;
 }
 </style>
@@ -43,15 +43,15 @@
 <div class="container">
     <div class="row">
         <div class="span3 offset0">
-            <div class="settings-header">
+            <div class="account-header">
                 <img class="avatar" src="//www.gravatar.com/avatar/{{ gravatar }}?s=64&amp;d=mm" />
                 <div class="user-name">{{ user.guessName() }}</div>
             </div>
-            <div class="settings-menu">
+            <div class="account-menu">
                 <ul class="nav nav-tabs nav-stacked">
                     {% for page in pages %}
                     <li class="{{ page.url }}{% if page.url == active %} active{% endif %}">
-                        <a href="/settings/{{ page.url }}/{% if page.params %}{{ page.params }}{% endif %}">{% if page.icon %}<i class="fa {{ page.icon }}"></i> {% endif %}{{ page.title }}</a>
+                        <a href="/account/{{ page.url }}/{% if page.params %}{{ page.params }}{% endif %}">{% if page.icon %}<i class="fa {{ page.icon }}"></i> {% endif %}{{ page.title }}</a>
                     </li>
                     {% endfor %}
                 </ul>
@@ -59,10 +59,10 @@
         </div>
         <div class="span9">
             {% if notme %}<div class="alert alert-warning">
-                <b>Watch out, sysadmin!</b> You are about to edit someone elses user settings ({{ user.guessName() }}). Find your own settings <a href="/settings">here</a>.
+                <b>Watch out, sysadmin!</b> You are about to edit someone elses user account ({{ user.guessName() }}). Find your own account <a href="/account">here</a>.
             </div>{% endif %}
-            <div class="settings-body {{ active | lower }}">
-                {{ block('settings_content') }}
+            <div class="account-body {{ active | lower }}">
+                {{ block('account_content') }}
             </div>
         </div>
     </div>
