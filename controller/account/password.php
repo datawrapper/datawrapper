@@ -1,6 +1,6 @@
 <?php
 
-DatawrapperHooks::register(DatawrapperHooks::GET_SETTINGS_PAGES, function() {
+DatawrapperHooks::register(DatawrapperHooks::GET_ACCOUNT_PAGES, function() {
     return array(
         'title' => __('Change password'),
         'order' => 10,

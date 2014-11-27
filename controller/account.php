@@ -13,7 +13,7 @@ call_user_func(function() {
     global $app;
 
     $user = DatawrapperSession::getUser();
-    $pages = DatawrapperHooks::execute(DatawrapperHooks::GET_SETTINGS_PAGES, $user);
+    $pages = DatawrapperHooks::execute(DatawrapperHooks::GET_ACCOUNT_PAGES, $user);
 
     foreach ($pages as $page) {
         if (!isset($page['order'])) $page['order'] = 999;
