@@ -164,7 +164,10 @@ class DatawrapperHooks {
     // GET_ACCOUNT_PAGES kept for backward-compatibility
     const GET_ACCOUNT_PAGES = 'get_account_pages';
 
-
+    // certain core events will execute the NOTIFY_USER hook in hope that some
+    // plugin will deliver these messages to the user somehow.
+    // args: $user, $message
+    const NOTIFY_USER = 'notify_user';
 }
 
 
