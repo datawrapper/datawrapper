@@ -4,22 +4,25 @@
  * use this to send email to our users
  */
 function dw_send_support_email($to, $subject, $message, $replacements = array()) {
+    $config = $GLOBALS['dw_config'];
+
     // auto-replace support email address and domain
     if (empty($replacements['support_email'])) {
-        $replacements['support_email'] = $GLOBALS['dw_config']['email']['support'];
+        $replacements['support_email'] = $config['email']['support'];
     }
-    $replacements['domain'] = $GLOBALS['dw_config']['domain'];
+
+    $replacements['domain'] = $config['domain'];
 
     $subject = dw_email_replace($subject, $replacements);
     $message = dw_email_replace($message, $replacements);
+    $from    = isset($config['email']['sender']) ? $config['email']['sender'] : ('noreply@'.$config['domain']);
 
     DatawrapperHooks::execute(DatawrapperHooks::SEND_EMAIL,
         $to,
         $subject,
         $message,
-        'From: noreply@'.$GLOBALS['dw_config']['domain']. "\r\n" .
-        'Reply-To: '.$GLOBALS['dw_config']['email']['support'] . "\r\n" .
-        'X-Mailer: PHP/' . phpversion()
+        'From: ' . $from . "\r\n" .
+        'Reply-To: ' . $config['email']['support']
     );
 }
 
@@ -35,7 +38,7 @@ function dw_send_error_mail($subject, $message) {
 }
 
 /**
- * Send email an email with attachements 
+ * Send email an email with attachements
  * @param $files - array of files to send
  *      ex: array(
  *              "my_image.png" => array(
@@ -48,32 +51,32 @@ function dw_send_error_mail($subject, $message) {
 function dw_send_mail_attachment($to, $from, $subject, $body, $files) {
     $random_hash = md5(date('r', time()));
        // $random_hash = md5(date('r', time()));
-    $random_hash = '-----=' . md5(uniqid(mt_rand())); 
+    $random_hash = '-----=' . md5(uniqid(mt_rand()));
 
-    // headers 
-    $headers =  'From: '.$from."\n"; 
-    // $headers .= 'Return-Path: <'.$email_reply.'>'."\n"; 
-    $headers .= 'MIME-Version: 1.0'."\n"; 
-    $headers .= 'Content-Type: multipart/mixed; boundary="'.$random_hash.'"'; 
+    // headers
+    $headers =  'From: '.$from."\n";
+    // $headers .= 'Return-Path: <'.$email_reply.'>'."\n";
+    $headers .= 'MIME-Version: 1.0'."\n";
+    $headers .= 'Content-Type: multipart/mixed; boundary="'.$random_hash.'"';
 
-    // message 
-    $message = 'This is a multi-part message in MIME format.'."\n\n"; 
+    // message
+    $message = 'This is a multi-part message in MIME format.'."\n\n";
 
-    $message .= '--'.$random_hash."\n"; 
-    $message .= 'Content-Type: text/plain; charset="iso-8859-1"'."\n"; 
-    $message .= 'Content-Transfer-Encoding: 8bit'."\n\n"; 
-    $message .= $body."\n\n"; 
+    $message .= '--'.$random_hash."\n";
+    $message .= 'Content-Type: text/plain; charset="iso-8859-1"'."\n";
+    $message .= 'Content-Transfer-Encoding: 8bit'."\n\n";
+    $message .= $body."\n\n";
 
     // attached files
     foreach ($files as $fn => $file) {
         $path   = $file["path"];
         $format = $file["format"];
         $attachment = chunk_split(base64_encode(file_get_contents($path)));
-        $message .= '--'.$random_hash."\n"; 
-        $message .= 'Content-Type: '. $format .'; name="'. $fn .'"'."\n"; 
-        $message .= 'Content-Transfer-Encoding: base64'."\n"; 
-        $message .= 'Content-Disposition:attachement; filename="'. $fn . '"'."\n\n"; 
-        $message .= $attachment."\n"; 
+        $message .= '--'.$random_hash."\n";
+        $message .= 'Content-Type: '. $format .'; name="'. $fn .'"'."\n";
+        $message .= 'Content-Transfer-Encoding: base64'."\n";
+        $message .= 'Content-Disposition:attachement; filename="'. $fn . '"'."\n\n";
+        $message .= $attachment."\n";
     }
 
     DatawrapperHooks::execute(DatawrapperHooks::SEND_EMAIL,
