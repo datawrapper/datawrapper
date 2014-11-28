@@ -31,7 +31,7 @@
 {% for script in scripts %}
   {% if script.ie %}<!--[if {{ script.ie }}]>
   {% endif %}
-    <script type="text/javascript" src="{{ script.src }}"></script>
+    <script type="text/javascript" src="{% if script.src %}{{ script.src }}{% else %}{{ script }}{% endif %}"></script>
   {% if script.ie %}<![endif]-->
   {% endif %}
 {% endfor %}
