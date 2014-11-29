@@ -122,11 +122,23 @@ $app->post('/users', function() use ($app) {
                 'activation_link' => $activationLink
             )
         );
-
         // we don't need to annoy the user with a login form now,
         // so just log in..
         DatawrapperSession::login($user);
     }
+
+    $welcome_msg = __("Hello %name%,
+
+Welcome to your new Datawrapper account.
+
+Cheers,
+Datawrapper");
+
+    DatawrapperHooks::execute(DatawrapperHooks::NOTIFY_USER, $user,
+        __('Welcome to Datawrapper!'),
+        str_replace('%name%', $user->guessName(), $welcome_msg)
+    );
+
 
     ok($result);
 });
@@ -174,7 +186,7 @@ $app->put('/users/:id', function($user_id) use ($app) {
                         } else {
                             // non-admins need to confirm new emails addresses
                             $token = hash_hmac('sha256', $user->getEmail().'/'.$payload->email.'/'.time(), DW_TOKEN_SALT);
-                            $token_link = 'http://' . $GLOBALS['dw_config']['domain'] . '/account/settings?token='.$token;
+                            $token_link = 'http://' . $GLOBALS['dw_config']['domain'] . '/account/profile?token='.$token;
                             // send email with token
                             require(ROOT_PATH . 'lib/templates/email-change-email.php');
 
