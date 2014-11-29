@@ -272,6 +272,13 @@ class DatawrapperPlugin {
         );
     }
 
+    public function registerAdminPage($obj, $func=null) {
+        DatawrapperHooks::register(
+            DatawrapperHooks::GET_ADMIN_PAGES,
+            is_callable($obj) ? $obj : array($obj, $func)
+        );
+    }
+
     public function injectInitFunction($func) {
         $this->__initFunc = $func;
     }
