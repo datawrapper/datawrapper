@@ -15,6 +15,7 @@ CHANGELOG
 * refactored stylesheets using LESS
 * simplified plugin system, added support for init.php
 * autoloading plugin dependencies if installed using composer
+* allow configuration of mail sender
 
 ### 1.7.11
 * fixed symlink creation in plugin installation
