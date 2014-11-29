@@ -38,6 +38,8 @@ email:
   support: hello@datawrapper.de
   # error messages will go here
   log: debug@datawrapper.de
+  # sender
+  sender: noreply@datawrapper.de
 
 ## prevent guest from creating charts
 prevent_guest_charts: false
