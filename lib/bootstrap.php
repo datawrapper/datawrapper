@@ -44,6 +44,11 @@ function secure_password($pwd) {
     }
 }
 
+/*
+ * delete expired products
+ */
+Propel::getConnection()->exec('DELETE FROM user_product WHERE expires IS NOT NULL AND expires <= NOW()');
+
 if (!defined('NO_SESSION')) {
     // forcing require of database session handler
     require_once ROOT_PATH . 'lib/session/database.php';
