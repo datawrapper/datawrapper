@@ -184,11 +184,6 @@ class DatawrapperPlugin {
      * @param single  boolean          if set, any existing value with the same key will be overwritten
      */
     public function storeData($key, $data, $single = true) {
-        $pd = PluginDataQuery::create()
-            ->filterByPlugin($this->getPluginOM())
-            ->filterByKey($key)
-            ->find();
-
         if ($single) {
             // remove any existing value
             PluginDataQuery::create()
