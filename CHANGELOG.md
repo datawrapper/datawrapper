@@ -16,6 +16,8 @@ CHANGELOG
 * simplified plugin system, added support for init.php
 * autoloading plugin dependencies if installed using composer
 * allow configuration of mail sender
+* line chart: custom range in y axis
+* line chart: x range annotations
 
 ### 1.7.11
 * fixed symlink creation in plugin installation
