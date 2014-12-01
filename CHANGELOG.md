@@ -2,11 +2,11 @@ CHANGELOG
 ---------
 
 ### 1.8.0
-* added product system
+* added product system.
+* important note: Please run scripts/migrate/1.8.0.sql and composer install after updating.
 * removed email-based theme restrictions
 * removed plugin export-image from core
 * instanciate all plugins first, then run their init() functions
-* Important: Please run scripts/migrate/1.8.0.sql and composer install after updating.
 * Chart editor design update
 * default theme for organizations
 * added support for class-less plugins
