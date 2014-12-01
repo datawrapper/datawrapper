@@ -7,7 +7,7 @@ CHANGELOG
 * removed email-based theme restrictions
 * removed plugin export-image from core
 * instanciate all plugins first, then run their init() functions
-* Chart editor design update
+* chart editor redesign
 * default theme for organizations
 * added support for class-less plugins
 * automake mode for easier development
