@@ -24,7 +24,7 @@
             vis.setRoot(el);
 
             var
-            bpad = theme.padding.bottom,
+            bpad = theme.padding.bottom+5,
             baseCol = Math.max(0, vis.get('base-color', 0)),
             scales = vis.__scales = {
                 x: xScale(),
@@ -133,6 +133,8 @@
                     h: h,
                     bpad: vis.get('rotate-x-labels') ? bpad + 20 : bpad
                 });
+
+                c.tpad += 10;
 
                 if (lineLabelsVisible() && legend.pos != 'direct' && legend.pos != 'right') {
                     // some additional top padding since for the legend
