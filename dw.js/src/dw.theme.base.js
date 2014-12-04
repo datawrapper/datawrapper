@@ -168,7 +168,7 @@ dw.theme.base = {
      * some chart types (line chart) go into a 'compact'
      * mode if the chart width is below this value
      */
-    minWidth: 400,
+    minWidth: 100,
 
     /*
      * theme locale, probably unused
