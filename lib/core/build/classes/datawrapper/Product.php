@@ -88,6 +88,8 @@ class Product extends BaseProduct
         $period    = $this->getPeriod();
         $frequency = $this->getFrequency();
 
+        if (empty($period)) return '—';
+
         if ($period === self::PERIOD_ONCE) {
             return __('one-time');
         }
@@ -102,6 +104,31 @@ class Product extends BaseProduct
         }
 
         return sprintf(__('every %d %s'), $frequency, __($period.'s'));
+    }
+
+    public function getFullPrice() {
+        $data = $this->getData();
+        return !empty($data['price']) ? $data['currency']. ' ' . number_format($data['price'], 2) : '—';
+    }
+
+    public function getPrice() {
+        $data = $this->getData();
+        return $data['price'];
+    }
+
+    public function setPrice($price) {
+        $data = $this->getData();
+        $data['price'] = $price;
+    }
+
+    public function getCurrency() {
+        $data = $this->getData();
+        return $data['currency'];
+    }
+
+    public function setCurrency($currency) {
+        $data = $this->getData();
+        $data['currency'] = $currency;
     }
 }
 
