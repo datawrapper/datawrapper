@@ -52,7 +52,9 @@ class PluginTableMap extends TableMap
     {
         $this->addRelation('PluginOrganization', 'PluginOrganization', RelationMap::ONE_TO_MANY, array('id' => 'plugin_id', ), null, null, 'PluginOrganizations');
         $this->addRelation('PluginData', 'PluginData', RelationMap::ONE_TO_MANY, array('id' => 'plugin_id', ), null, null, 'PluginDatas');
+        $this->addRelation('ProductPlugin', 'ProductPlugin', RelationMap::ONE_TO_MANY, array('id' => 'plugin_id', ), null, null, 'ProductPlugins');
         $this->addRelation('Organization', 'Organization', RelationMap::MANY_TO_MANY, array(), null, null, 'Organizations');
+        $this->addRelation('Product', 'Product', RelationMap::MANY_TO_MANY, array(), null, null, 'Products');
     } // buildRelations()
 
 } // PluginTableMap

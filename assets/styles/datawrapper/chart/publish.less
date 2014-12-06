@@ -1,0 +1,103 @@
+
+.dw-create-publish {
+    h3 {
+        margin-bottom: 1ex;
+    }
+
+    #iframe-vis {
+        box-shadow: 2px 2px 11px rgba(0,0,0,.2);
+        border: 10px solid #fff;
+
+    -webkit-transition: all 800ms cubic-bezier(0.190, 1.000, 0.220, 1.000);
+       -moz-transition: all 800ms cubic-bezier(0.190, 1.000, 0.220, 1.000);
+        -ms-transition: all 800ms cubic-bezier(0.190, 1.000, 0.220, 1.000);
+         -o-transition: all 800ms cubic-bezier(0.190, 1.000, 0.220, 1.000);
+            transition: all 800ms cubic-bezier(0.190, 1.000, 0.220, 1.000); /* easeOutExpo */
+
+    -webkit-transition-timing-function: cubic-bezier(0.190, 1.000, 0.220, 1.000);
+       -moz-transition-timing-function: cubic-bezier(0.190, 1.000, 0.220, 1.000);
+        -ms-transition-timing-function: cubic-bezier(0.190, 1.000, 0.220, 1.000);
+         -o-transition-timing-function: cubic-bezier(0.190, 1.000, 0.220, 1.000);
+            transition-timing-function: cubic-bezier(0.190, 1.000, 0.220, 1.000); /* easeOutExpo */
+    }
+
+    p.lead {
+        margin-top: 30px;
+    }
+
+    .publishing .progress {
+        height: 10px;
+    }
+
+    .chart-actions {
+        margin: 0;
+        padding: 0;
+
+        li {
+            display: inline-block;
+            width: 30%;
+            text-align: center;
+            margin: 0 2% 3% 0;
+            border-radius: 6px;
+            border: 1px solid #eee;
+            overflow: hidden;
+            position: relative;
+            padding: 15px 0 15px;
+            box-shadow: inset 0 2px 4px rgba(255,255,255,0.6),inset 0 0 31px rgba(0,0,0,.05), inset 0 -1px 2px rgba(0,0,0,.25);
+
+            a {
+                .title {
+                    display: inline-block;
+                    padding: 0 20px;
+                }
+                &:hover {
+                    text-decoration: none;
+                    .title {
+                        text-decoration: underline;
+                    }
+                }
+            }
+
+            // icons
+            i.fa {
+                display: block;
+                font-size: 42px;
+            }
+
+            .banner {
+                position: absolute;
+                background: rgba(0, 0, 0,0.2);
+                color: #fff;
+                display: block;
+                width: 82px;
+                font-size: 10px;
+                font-weight: 400;
+                line-height: 1.4;
+                transform: rotate(45deg);
+                -webkit-transform: rotate(45deg);
+                -moz-transform: rotate(45deg);
+                right: -23px;
+                top: 10px;
+                text-align: center;
+            }
+        }
+    }
+}
+
+.publish-chart-action-modal {
+    width: 600px;
+    margin-left: -300px;
+
+    &.modal-wide {
+        width: 700px;
+        margin-left: -350px;
+    }
+
+    .span1 .fa.big {
+        font-size:64px;
+        color:#ddd;
+        position: relative;
+        left: 10px;
+    }
+
+}

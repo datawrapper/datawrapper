@@ -28,7 +28,9 @@ dw.backend.ready(function() {
 
 <div class="dw-create-visualize chart-editor">
     <div class="row">
-        <div class="span7">
+        {% include "chart/visualize/sidebar.twig" %}
+
+        <div class="span8">
 
             <div data-offset-top="100" data-offset-bottom="130">
                 <div id="iframe-wrapper" style="height:500px;" >
@@ -41,7 +43,7 @@ dw.backend.ready(function() {
                         <input id="resize-w" class="input-large" type="text" value="" /> ×
                         <input id="resize-h" class="input-large" type="text" value="" />
                         (e.g. <a href="#">480×320</a>
-                        <a href="#">480×480</a>
+                        <a href="#">320×480</a>
                         <a href="#">640×360</a>
                         <a href="#">640×480</a>)
                     </div>
@@ -51,8 +53,6 @@ dw.backend.ready(function() {
             <div id="notifications"></div>
 
         </div>
-
-        {% include "chart/visualize/sidebar.twig" %}
 
     </div>
 </div>

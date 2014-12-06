@@ -103,9 +103,10 @@ define(function() {
     }
 
     function initDemoDatasets() {
-        $('.demo-dataset').click(function(evt) {
+        var sel = $('#demo-datasets');
+        sel.change(function(evt) {
             evt.preventDefault();
-            var a = $(evt.target);
+            var a = $('option:selected', sel);
             $('#upload-data-text').val(a.data('data'));
             if (a.data('presets')) {
                 $.each(a.data('presets'), function(key, val) {

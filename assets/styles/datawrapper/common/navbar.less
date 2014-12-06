@@ -1,0 +1,145 @@
+
+html .navbar .navbar-inner {
+    font-weight: 300;
+    background: #f5f5f5;
+    min-height: 45px;
+    border-bottom: 1px solid #e5e5e5;
+    box-shadow: none;
+    height: 45px;
+
+    li {
+        line-height: 26px;
+    }
+
+    .nav {
+        & > li {
+            &.icon > a {
+                padding: 10px 9px 10px;
+                line-height: 26px;
+            }
+
+            .fa {
+                color: #222;
+                font-size: 14px;
+            }
+
+            & > a {
+                padding-top: 11px;
+                padding-bottom: 10px;
+                font-size: 13px;
+
+                text-shadow: 0 1px 0 rgba(255, 255, 255, 0.45);
+
+                &:hover {
+                    color: #000;
+                    .fa { color: #08c; }
+                }
+                b { font-weight: 500; }
+            }
+
+            &.divider-vertical {
+                height: 45px;
+                margin: 0 0px;
+                border-left-color: #dedcdb;
+            }
+        }
+
+        .active > a,
+        .active > a:hover,
+        li.dropdown.active > .dropdown-toggle:hover {
+            box-shadow: none;
+            -webkit-box-shadow: none;
+            background: transparent;
+            font-weight: 500;
+            color: #222!important;
+        }
+
+    } // end .nav
+
+    .brand {
+        padding-top: 14px;
+        padding-bottom: 4px;
+        color: #556;
+        text-shadow: 1px 1px 0 rgba(255, 255, 255, .55);
+        white-space: nowrap;
+        padding-left: 0px;
+        font-size: 18px;
+        font-weight: 300;
+        margin-left: 0px;
+
+        img {
+            float: left;
+            margin-right: 7px;
+            margin-left: 4px;
+            height: 28px;
+            position:relative;
+            top:-4px;
+        }
+
+        .beta {
+            font-size:10px;
+            font-weight: 400;
+            position:relative;
+            top:-8px;
+            left:3px;
+            color:#aaa;
+        }
+    }
+
+    .mycharts.dropdown li {
+
+    }
+    .mycharts.dropdown li img.icon {
+        height: 20px!important;
+        width: 30px!important;
+        position: absolute;
+        left: 10px;
+        top: 4px;
+    }
+    .mycharts.dropdown li {
+        position: relative;
+        max-width: 240px;
+    }
+    .mycharts.dropdown li a {
+        padding-left: 45px;
+    }
+    .mycharts.dropdown li a span {
+        overflow: hidden;
+        display: block;
+        width: 100%;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    .nav li.dropdown .dropdown-toggle .caret, .nav li.dropdown.open .caret,
+
+    li a .tt { display: none; }
+}
+
+html .navbar.navbar-inverse {
+    .navbar-inner {
+        background: #000;
+
+        li a i.fa { color: #bbb; }
+
+        li a:hover i.fa { color: #08c; }
+
+        .nav {
+            & > li > a {
+                text-shadow: 0 1px 0 rgba(0, 0, 0, 0.45);
+                &:hover { color: #fff; }
+            }
+            .active > a,
+            .active > a:hover,
+            li.dropdown.active > .dropdown-toggle:hover {
+                background: #111111;
+                color: #fff!important;
+            }
+        }
+        .brand {
+            color: #ddd;
+            text-shadow: none;
+        }
+    }
+
+}

@@ -43,12 +43,16 @@ $(function() {
                 axisMeta = args.vis.meta.axes[axis.id],
                 defCol = args.vis.axes()[axis.id];
 
+            if (axisMeta.optional) {
+                $('<option />').text('--').appendTo(select);
+            }
+
             // populate select with columns that match accepted types for axis
             dataset.eachColumn(function(column) {
                 if (_.indexOf(axisMeta.accepts, column.type()) > -1) {
                     $('<option />')
                         .attr('value', column.name())
-                        .html(column.title())
+                        .text(column.title())
                         .prop('selected', column.name() == defCol)
                         .appendTo(select);
                 }
@@ -96,6 +100,25 @@ $(function() {
         });
     }
 
+    function syncCustomRange(args) {
+        var curVal = args.chart.get('metadata.visualize.'+args.key) || ['',''],
+            ui = $('#vis-options-'+args.key),
+            min = $('.min', ui),
+            max = $('.max', ui);
+        // propagate
+        min.val(curVal[0]);
+        max.val(curVal[1]);
+        // listen
+        $('input', ui).change(function() {
+            var v = [tonum(min.val()), tonum(max.val())];
+            if (v[0] === '' && v[1] === '') v = null;
+            args.chart.set('metadata.visualize.'+args.key, v);
+        });
+
+        function tonum(v) {
+            return v.trim() === '' ? '' : +v;
+        }
+    }
 
     dw.backend.on('sync-option:select', syncValue);
     dw.backend.on('sync-option:text', syncValue);
@@ -103,6 +126,7 @@ $(function() {
     dw.backend.on('sync-option:checkbox', syncCheckbox);
     dw.backend.on('sync-option:radio', syncRadio);
     dw.backend.on('sync-option:radio-left', syncRadio);
+    dw.backend.on('sync-option:custom-range', syncCustomRange);
 
     // column select
     dw.backend.on('sync-option:select-axis-column', syncSelectAxisColumn);

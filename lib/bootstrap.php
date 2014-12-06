@@ -10,9 +10,17 @@ require_once ROOT_PATH . 'vendor/autoload.php';
 // load YAML parser and config
 $GLOBALS['dw_config'] = $dw_config = Spyc::YAMLLoad(ROOT_PATH . 'config.yaml');
 
-if ($dw_config['debug'] == true) {
+if (isset($dw_config['debug']) && $dw_config['debug'] == true) {
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
+}
+
+if (isset($dw_config['automake']) && $dw_config['automake'] == true && !defined('NO_SESSION')) {
+    @exec('cd '.ROOT_PATH.'; make');
+    // make plugin assets, too
+    foreach (glob(ROOT_PATH . 'plugins/*/Makefile') as $filename) {
+        @exec('cd '.dirname($filename).'; make assets;');
+    }
 }
 
 // Include the main Propel script
@@ -35,6 +43,11 @@ function secure_password($pwd) {
         return $pwd;
     }
 }
+
+/*
+ * delete expired products
+ */
+Propel::getConnection()->exec('DELETE FROM user_product WHERE expires IS NOT NULL AND expires <= NOW()');
 
 if (!defined('NO_SESSION')) {
     // forcing require of database session handler

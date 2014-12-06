@@ -1,6 +1,26 @@
 CHANGELOG
 ---------
 
+### 1.8.0
+* added product system.
+* important note: Please run scripts/migrate/1.8.0.sql and composer install after updating.
+* removed email-based theme restrictions
+* removed plugin export-image from core
+* instanciate all plugins first, then run their init() functions
+* chart editor redesign
+* default theme for organizations
+* added support for class-less plugins
+* automake mode for easier development
+* added twig filter 'css'
+* refactored stylesheets using LESS
+* simplified plugin system, added support for init.php
+* autoloading plugin dependencies if installed using composer
+* allow configuration of mail sender
+* line chart: custom range in y axis
+* line chart: x range annotations
+* removed fancy toggle-panel footer
+* fixed stupid line chart mobile bug
+
 ### 1.7.11
 * fixed symlink creation in plugin installation
 * reloading chart preview if chart locale changes

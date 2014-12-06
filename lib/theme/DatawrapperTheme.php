@@ -19,7 +19,9 @@ class DatawrapperTheme {
     /*
      * returns a list of all visualization meta arrays
      */
-    public static function all($ignoreRestrictions = false) { return self::getInstance()->_all($ignoreRestrictions); }
+    public static function all($ignoreRestrictions = false) {
+        return self::getInstance()->_all($ignoreRestrictions);
+    }
 
     /*
      * returns one specific visualization meta array
@@ -49,12 +51,7 @@ class DatawrapperTheme {
         $res = array();
 
         foreach ($this->themes as $meta) {
-            if (!isset($meta['restrict'])  // no restriction at all
-                 || $meta['restrict'] == $domain  // check for email domain
-                 || $meta['restrict'] == $email  // check for entire email address
-                 || $ignoreRestrictions === true // we want to test *all* layouts
-                 || $user->isAdmin())  // of course, admins can see all, too
-                $res[] = $meta;
+            $res[] = $meta;
         }
 
         return $res;

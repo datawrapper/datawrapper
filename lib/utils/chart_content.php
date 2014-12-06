@@ -1,6 +1,21 @@
 <?php
 
 function get_chart_content($chart, $user, $published = false, $debug = false) {
+
+    if (!function_exists('unique_scripts')) {
+        function unique_scripts($scripts) {
+            $exist = array();
+            $out = array();
+            foreach ($scripts as $s) {
+                $src = is_array($s) ? $s['src'] : $s;
+                if (isset($exist[$src])) continue;
+                $exist[$src] = true;
+                $out[] = is_array($s) ? $s : array('src' => $s);
+            }
+            return $out;
+        }
+    }
+
     $theme_css = array();
     $theme_js = array();
     $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https" : "http";
@@ -29,7 +44,7 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
         $base_js = array(
             '//' . $GLOBALS['dw_config']['asset_domain'] . '/globalize.min.js',
             '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js',
-            '//cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.min.js'
+            '//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js'
         );
         if (substr($locale, 0, 2) != 'en') {
             $base_js[] = '//' . $GLOBALS['dw_config']['asset_domain'] . '/cultures/globalize.culture.' . str_replace('_', '-', $locale) . '.js';
@@ -39,7 +54,7 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
         $base_js = array(
             $abs . '/static/vendor/globalize/globalize.min.js',
             $abs . '/static/vendor/underscore/underscore-1.5.2.min.js',
-            $abs . '/static/vendor/jquery/jquery-1.10.2'.($debug ? '' : '.min').'.js'
+            $abs . '/static/vendor/jquery/jquery-1.11.1'.($debug ? '' : '.min').'.js'
         );
         if (substr($locale, 0, 2) != 'en') {
             $base_js[] = $abs . '/static/vendor/globalize/cultures/globalize.culture.' . str_replace('_', '-', $locale) . '.js';
@@ -60,22 +75,26 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
         $vis = DatawrapperVisualization::get($next_vis_id);
         $vjs = array();
         if (!empty($vis['libraries'])) {
-            foreach ($vis['libraries'] as $url) {
-                if (!is_array($url)) {
-                    $url = array("local" => $url, "cdn" => false);
+            foreach ($vis['libraries'] as $script) {
+                if (!is_array($script)) {
+                    $script = array("local" => $script, "cdn" => false);
                 }
-                if ($url['cdn']) $vis_libs_cdn[] = $url['cdn'];
+                if (!empty($script['cdn'])) {
+                    $script['src'] = $script['cdn'];
+                    $vis_libs_cdn[] = $script;
+                }
 
                 // at first we check if the library lives in ./lib of the vis module
-                if (file_exists(ROOT_PATH . 'www/' . $vis['__static_path'] . $url['local'])) {
-                    $u = $vis['__static_path'] . $url['local'];
-                } else if (file_exists(ROOT_PATH . 'www/static/vendor/' . $url['local'])) {
-                    $u = '/static/vendor/' . $url['local'];
+                if (file_exists(ROOT_PATH . 'www/' . $vis['__static_path'] . $script['local'])) {
+                    $u = $vis['__static_path'] . $script['local'];
+                } else if (file_exists(ROOT_PATH . 'www/static/vendor/' . $script['local'])) {
+                    $u = '/static/vendor/' . $script['local'];
                 } else {
-                    die("could not find required library ".$url["local"]);
+                    die("could not find required library ".$script["local"]);
                 }
-                $vis_libs[] = $u;
-                if (!$url['cdn']) $vis_libs_local[] = $u;
+                $script['src'] = $u;
+                $vis_libs[] = $script;
+                if (empty($url['cdn'])) $vis_libs_local[] = $script;
             }
         }
         if (!empty($vis['locale']) && is_array($vis['locale'])) {
@@ -127,7 +146,7 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
             strlen($replace));              // length
         $the_theme['__static_path'] = '';
     } else {
-        $scripts = array_unique(
+        $scripts = unique_scripts(
             array_merge(
                 $base_js,
                 array('/static/js/dw-2.0'.($debug ? '' : '.min').'.js'),
@@ -157,6 +176,7 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
         'DW_DOMAIN' => $protocol . '://' . $cfg['domain'] . '/',
         'DW_CHART_DATA' => $protocol . '://' . $cfg['domain'] . '/chart/' . $chart->getID() . '/data.csv',
         'ASSET_PATH' => $published ? '' : $the_theme['__static_path'],
+        'published' => $published,
         'chartUrl' => $chart_url,
         'embedCode' => '<iframe src="' .$chart_url. '" frameborder="0" allowtransparency="true" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen width="'.$chart->getMetadata('publish.embed-width') . '" height="'. $chart->getMetadata('publish.embed-height') .'"></iframe>',
         'chartUrlFs' => strpos($chart_url, '.html') > 0 ? str_replace('index.html', 'fs.html', $chart_url) : $chart_url . '?fs=1',
@@ -191,6 +211,7 @@ function get_vis_js($vis, $visJS) {
     $keys = DatawrapperHooks::execute(DatawrapperHooks::GET_PUBLISH_STORAGE_KEY);
     if (is_array($keys)) $org .= '/' . join($keys, '/');
     foreach ($visJS as $js) {
+        if (is_array($js)) $js = $js['src'];
         if (substr($js, 0, 7) != "http://" && substr($js, 0, 8) != "https://" && substr($js, 0, 2) != '//') {
             $all .= "\n\n\n" . file_get_contents(ROOT_PATH . 'www' . $js);
         }

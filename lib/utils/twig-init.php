@@ -29,7 +29,19 @@ function dwInitTwigEnvironment(Twig_Environment $twig) {
     }));
 
     $twig->addFilter(new Twig_SimpleFilter('json', function($arr) {
-        return json_encode($arr);
+        $mask = 0;
+        if (!empty($opts)) {
+            if (!empty($opts['pretty'])) $mask = $mask | JSON_PRETTY_PRINT;
+        }
+        return json_encode($arr, $mask);
+    }));
+
+    $twig->addFilter(new Twig_SimpleFilter('css', function($arr) {
+        $css = '';
+        foreach ($arr as $prop => $val) {
+            $css .= $prop . ':' . $val . ';';
+        }
+        return $css;
     }));
 
     $twig->addFunction(new Twig_SimpleFunction('hook', function() {
@@ -43,6 +55,14 @@ function dwInitTwigEnvironment(Twig_Environment $twig) {
     $twig->addFunction(new Twig_SimpleFunction('has_plugin', function($plugin) {
         return DatawrapperPluginManager::loaded($plugin);
     }));
+
+    $twig->addFilter(new Twig_SimpleFilter('lettering', function($text) {
+        $out = '';
+        foreach (str_split($text) as $i => $char) {
+            $out .= '<span class="char'.$i.'">'.$char.'</span>';
+        }
+        return $out;
+    }, array('is_safe' => array('html')) ));
 
     return $twig;
 }

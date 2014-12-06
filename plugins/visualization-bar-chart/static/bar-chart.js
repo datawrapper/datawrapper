@@ -321,7 +321,7 @@
             //
             cw = c.h - c.bpad - c.tpad;
             //
-            bw = Math.max(18, Math.min(23, cw / (n + (n-1) * pad)));
+            bw = 18; //Math.max(18, Math.min(23, cw / (n + (n-1) * pad)));
             w = sc.y(val) - sc.y(0);
             h = bw;
             if (w > 0) {
@@ -371,7 +371,7 @@
         },
 
         hideTooltip: function() {
-            
+
         },
 
         hover: function(hover_key) {

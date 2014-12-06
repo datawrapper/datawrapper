@@ -93,6 +93,17 @@ dw.dataset = function(columns, opts) {
             return _.indexOf(columns, columnsByName[column_name]);
         },
 
+        /*
+         * returns a D3 friendly list of objects
+         */
+        list: function() {
+            return _.range(columns[0].length).map(function(r) {
+                var o = {};
+                _.each(columns, function(col) { o[col.name()] = col.val(r); });
+                return o;
+            });
+        },
+
         toCSV: function() {
             var csv = "",
                 sep = ",",
@@ -1131,7 +1142,7 @@ dw.utils = {
         var ch = 0, bottom = 0; // summed height of children, 10px for top & bottom margin
         $('body > *').each(function(i, el) {
             var t = el.tagName.toLowerCase();
-            if (t != 'script' && el.id != 'chart' && !$(el).hasClass('tooltip') &&
+            if (t != 'script' && t != 'style' && el.id != 'chart' && !$(el).hasClass('tooltip') &&
                 !$(el).hasClass('qtip') && !$(el).hasClass('container') &&
                 !$(el).hasClass('noscript')) {
                 ch += $(el).outerHeight(false); // element height
@@ -2167,6 +2178,11 @@ dw.theme.base = {
         ]
     },
 
+    annotation: {
+        background: '#000',
+        opacity: 0.08
+    },
+
     /*
      * padding around the chart area
      */
@@ -2281,7 +2297,7 @@ dw.theme.base = {
      * some chart types (line chart) go into a 'compact'
      * mode if the chart width is below this value
      */
-    minWidth: 400,
+    minWidth: 100,
 
     /*
      * theme locale, probably unused

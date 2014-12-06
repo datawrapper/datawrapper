@@ -1,8 +1,8 @@
 {
     "name": "visualization-pie-chart",
-    "version": "1.5.0",
+    "version": "1.6.0",
     "dependencies": {
-        "core": "1.5.0",
+        "core": "1.8.*",
         "visualization-raphael-chart": "*"
     }
 }

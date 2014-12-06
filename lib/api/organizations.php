@@ -1,5 +1,23 @@
 <?php
 
+/*
+ * get list of all organizations
+ */
+$app->get('/organizations', function() use ($app) {
+    disable_cache($app);
+	if_is_admin(function() use ($app) {
+		try {
+			$organizations = OrganizationQuery::create()->filterByDeleted(false)->find();
+			$res           = array();
+			foreach ($organizations as $organization) {
+				$res[] = $organization->toArray();
+			}
+			ok($res);
+		} catch (Exception $e) {
+			error('io-error', $e->getMessage());
+		}
+	});
+});
 
 /*
  * creates new organization
@@ -18,6 +36,9 @@ $app->post('/organizations', function() use ($app) {
             $org = new Organization();
             $org->setId(strtolower($params['id']));
             $org->setName($params['name']);
+            if (isset($params['default_theme'])) {
+                $org->setDefaultTheme($params['default_theme']);
+            }
             $org->setCreatedAt(time());
             $org->save();
             ok();
@@ -36,7 +57,12 @@ $app->put('/organizations/:id', function($org_id) use ($app) {
         $org = OrganizationQuery::create()->findPk($org_id);
         if ($org) {
             $params = json_decode($app->request()->getBody(), true);
-            $org->setName($params['name']);
+            if (isset($params['name'])) {
+                $org->setName($params['name']);
+            }
+            if (isset($params['default_theme'])) {
+                $org->setDefaultTheme($params['default_theme']);
+            }
             $org->save();
             ok();
         } else {
@@ -70,6 +96,8 @@ $app->post('/organizations/:id/users', function($org_id) use ($app) {
         $org = OrganizationQuery::create()->findPk($org_id);
         if ($org) {
             $data = json_decode($app->request()->getBody(), true);
+            $alreadyInOrg = array();
+            $added = 0;
             foreach ($data as $u_id) {
                 $u = UserQuery::create()->findPk($u_id);
                 if ($u) {
@@ -78,19 +106,21 @@ $app->post('/organizations/:id/users', function($org_id) use ($app) {
                         ->filterByOrganization($org)
                         ->count();
                     if ($c > 0 && $org->hasUser($u)) {
-                        return error('user-already-added','This user has already been added to the organization');
+                        $alreadyInOrg[] = $u->guessName();
+                    } else {
+                        $org->addUser($u);
+                        $added++;
+                        // make first user the admin
+                        // if ($c == 0) {
+                        //     $org->save();
+                        //     $org->setRole($u, 'admin');
+                        // }
+                        DatawrapperHooks::execute(DatawrapperHooks::USER_ORGANIZATION_ADD, $org, $u);
                     }
-                    $org->addUser($u);
-                    // make first user the admin
-                    if ($c == 0) {
-                        $org->save();
-                        $org->setRole($u, 'admin');
-                    }
-                    DatawrapperHooks::execute(DatawrapperHooks::USER_ORGANIZATION_ADD, $org, $u);
                 }
             }
             $org->save();
-            ok();
+            ok(array('added' => $added));
         } else {
             return error('unknown-organization', 'Organization not found');
         }

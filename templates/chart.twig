@@ -28,8 +28,12 @@
     window.__locale = '{{ chartLocale }}';
     </script>
 
-{% for src in scripts %}
-    <script type="text/javascript" src="{{ src }}"></script>
+{% for script in scripts %}
+  {% if script.ie %}<!--[if {{ script.ie }}]>
+  {% endif %}
+    <script type="text/javascript" src="{% if script.src %}{{ script.src }}{% else %}{{ script }}{% endif %}"></script>
+  {% if script.ie %}<![endif]-->
+  {% endif %}
 {% endfor %}
 
 </head>
@@ -63,6 +67,6 @@
 
     </script>
 
-    {{ hook('chart_after_body', chart) }}
+    {{ hook('chart_after_body', chart, published) }}
 </body>
 </html>

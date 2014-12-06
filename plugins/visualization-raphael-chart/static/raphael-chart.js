@@ -48,7 +48,7 @@
                 tpad: theme.padding.top
             }, canvas);
 
-            if (size[0] <= 400) {
+            if (size[0] <= 100) {
                 // no padding if generating thumbnail
                 canvas.bpad = canvas.tpad = canvas.lpad = canvas.rpad = 5;
                 canvas.bpad = canvas.tpad = 15;
@@ -61,7 +61,7 @@
             me.__canvas = canvas;
 
             // add some nice easing
-            Raphael.easing_formulas['expoInOut'] = function (n, time, beg, diff, dur) {
+            Raphael.easing_formulas.expoInOut = function (n, time, beg, diff, dur) {
                 dur = 1000;
                 time = n*1000;
                 beg = 0;

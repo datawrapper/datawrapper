@@ -24,6 +24,7 @@
 define('ROOT_PATH', dirname(dirname(__FILE__)) . '/');
 
 define('NO_SLIM', 1);
+define('NO_SESSION', 1);
 
 date_default_timezone_set('Europe/Berlin');
 

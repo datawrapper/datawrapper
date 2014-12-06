@@ -10,11 +10,13 @@
  * @method OrganizationQuery orderByName($order = Criteria::ASC) Order by the name column
  * @method OrganizationQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method OrganizationQuery orderByDeleted($order = Criteria::ASC) Order by the deleted column
+ * @method OrganizationQuery orderByDefaultTheme($order = Criteria::ASC) Order by the default_theme column
  *
  * @method OrganizationQuery groupById() Group by the id column
  * @method OrganizationQuery groupByName() Group by the name column
  * @method OrganizationQuery groupByCreatedAt() Group by the created_at column
  * @method OrganizationQuery groupByDeleted() Group by the deleted column
+ * @method OrganizationQuery groupByDefaultTheme() Group by the default_theme column
  *
  * @method OrganizationQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method OrganizationQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -32,17 +34,23 @@
  * @method OrganizationQuery rightJoinPluginOrganization($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PluginOrganization relation
  * @method OrganizationQuery innerJoinPluginOrganization($relationAlias = null) Adds a INNER JOIN clause to the query using the PluginOrganization relation
  *
+ * @method OrganizationQuery leftJoinOrganizationProduct($relationAlias = null) Adds a LEFT JOIN clause to the query using the OrganizationProduct relation
+ * @method OrganizationQuery rightJoinOrganizationProduct($relationAlias = null) Adds a RIGHT JOIN clause to the query using the OrganizationProduct relation
+ * @method OrganizationQuery innerJoinOrganizationProduct($relationAlias = null) Adds a INNER JOIN clause to the query using the OrganizationProduct relation
+ *
  * @method Organization findOne(PropelPDO $con = null) Return the first Organization matching the query
  * @method Organization findOneOrCreate(PropelPDO $con = null) Return the first Organization matching the query, or a new Organization object populated from the query conditions when no match is found
  *
  * @method Organization findOneByName(string $name) Return the first Organization filtered by the name column
  * @method Organization findOneByCreatedAt(string $created_at) Return the first Organization filtered by the created_at column
  * @method Organization findOneByDeleted(boolean $deleted) Return the first Organization filtered by the deleted column
+ * @method Organization findOneByDefaultTheme(string $default_theme) Return the first Organization filtered by the default_theme column
  *
  * @method array findById(string $id) Return Organization objects filtered by the id column
  * @method array findByName(string $name) Return Organization objects filtered by the name column
  * @method array findByCreatedAt(string $created_at) Return Organization objects filtered by the created_at column
  * @method array findByDeleted(boolean $deleted) Return Organization objects filtered by the deleted column
+ * @method array findByDefaultTheme(string $default_theme) Return Organization objects filtered by the default_theme column
  *
  * @package    propel.generator.datawrapper.om
  */
@@ -146,7 +154,7 @@ abstract class BaseOrganizationQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `name`, `created_at`, `deleted` FROM `organization` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `name`, `created_at`, `deleted`, `default_theme` FROM `organization` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_STR);
@@ -361,6 +369,35 @@ abstract class BaseOrganizationQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(OrganizationPeer::DELETED, $deleted, $comparison);
+    }
+
+    /**
+     * Filter the query on the default_theme column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByDefaultTheme('fooValue');   // WHERE default_theme = 'fooValue'
+     * $query->filterByDefaultTheme('%fooValue%'); // WHERE default_theme LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $defaultTheme The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return OrganizationQuery The current query, for fluid interface
+     */
+    public function filterByDefaultTheme($defaultTheme = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($defaultTheme)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $defaultTheme)) {
+                $defaultTheme = str_replace('*', '%', $defaultTheme);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(OrganizationPeer::DEFAULT_THEME, $defaultTheme, $comparison);
     }
 
     /**
@@ -586,6 +623,80 @@ abstract class BaseOrganizationQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query by a related OrganizationProduct object
+     *
+     * @param   OrganizationProduct|PropelObjectCollection $organizationProduct  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 OrganizationQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByOrganizationProduct($organizationProduct, $comparison = null)
+    {
+        if ($organizationProduct instanceof OrganizationProduct) {
+            return $this
+                ->addUsingAlias(OrganizationPeer::ID, $organizationProduct->getOrganizationId(), $comparison);
+        } elseif ($organizationProduct instanceof PropelObjectCollection) {
+            return $this
+                ->useOrganizationProductQuery()
+                ->filterByPrimaryKeys($organizationProduct->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByOrganizationProduct() only accepts arguments of type OrganizationProduct or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the OrganizationProduct relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return OrganizationQuery The current query, for fluid interface
+     */
+    public function joinOrganizationProduct($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('OrganizationProduct');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'OrganizationProduct');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the OrganizationProduct relation OrganizationProduct object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   OrganizationProductQuery A secondary query class using the current class as primary query
+     */
+    public function useOrganizationProductQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinOrganizationProduct($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'OrganizationProduct', 'OrganizationProductQuery');
+    }
+
+    /**
      * Filter the query by a related User object
      * using the user_organization table as cross reference
      *
@@ -616,6 +727,23 @@ abstract class BaseOrganizationQuery extends ModelCriteria
         return $this
             ->usePluginOrganizationQuery()
             ->filterByPlugin($plugin, $comparison)
+            ->endUse();
+    }
+
+    /**
+     * Filter the query by a related Product object
+     * using the organization_product table as cross reference
+     *
+     * @param   Product $product the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return   OrganizationQuery The current query, for fluid interface
+     */
+    public function filterByProduct($product, $comparison = Criteria::EQUAL)
+    {
+        return $this
+            ->useOrganizationProductQuery()
+            ->filterByProduct($product, $comparison)
             ->endUse();
     }
 

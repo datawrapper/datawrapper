@@ -54,6 +54,10 @@
  * @method UserQuery rightJoinJob($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Job relation
  * @method UserQuery innerJoinJob($relationAlias = null) Adds a INNER JOIN clause to the query using the Job relation
  *
+ * @method UserQuery leftJoinUserProduct($relationAlias = null) Adds a LEFT JOIN clause to the query using the UserProduct relation
+ * @method UserQuery rightJoinUserProduct($relationAlias = null) Adds a RIGHT JOIN clause to the query using the UserProduct relation
+ * @method UserQuery innerJoinUserProduct($relationAlias = null) Adds a INNER JOIN clause to the query using the UserProduct relation
+ *
  * @method User findOne(PropelPDO $con = null) Return the first User matching the query
  * @method User findOneOrCreate(PropelPDO $con = null) Return the first User matching the query, or a new User object populated from the query conditions when no match is found
  *
@@ -972,6 +976,80 @@ abstract class BaseUserQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query by a related UserProduct object
+     *
+     * @param   UserProduct|PropelObjectCollection $userProduct  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 UserQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByUserProduct($userProduct, $comparison = null)
+    {
+        if ($userProduct instanceof UserProduct) {
+            return $this
+                ->addUsingAlias(UserPeer::ID, $userProduct->getUserId(), $comparison);
+        } elseif ($userProduct instanceof PropelObjectCollection) {
+            return $this
+                ->useUserProductQuery()
+                ->filterByPrimaryKeys($userProduct->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByUserProduct() only accepts arguments of type UserProduct or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the UserProduct relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return UserQuery The current query, for fluid interface
+     */
+    public function joinUserProduct($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('UserProduct');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'UserProduct');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the UserProduct relation UserProduct object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   UserProductQuery A secondary query class using the current class as primary query
+     */
+    public function useUserProductQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinUserProduct($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'UserProduct', 'UserProductQuery');
+    }
+
+    /**
      * Filter the query by a related Organization object
      * using the user_organization table as cross reference
      *
@@ -985,6 +1063,23 @@ abstract class BaseUserQuery extends ModelCriteria
         return $this
             ->useUserOrganizationQuery()
             ->filterByOrganization($organization, $comparison)
+            ->endUse();
+    }
+
+    /**
+     * Filter the query by a related Product object
+     * using the user_product table as cross reference
+     *
+     * @param   Product $product the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return   UserQuery The current query, for fluid interface
+     */
+    public function filterByProduct($product, $comparison = Criteria::EQUAL)
+    {
+        return $this
+            ->useUserProductQuery()
+            ->filterByProduct($product, $comparison)
             ->endUse();
     }
 

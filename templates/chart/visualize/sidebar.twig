@@ -1,150 +1,159 @@
 
-<ul class="span5 nav nav-tabs visualize-nav-tabs" data-target="tab-container">
-    <li class="active"><a href="#vis" data-target="select-visualization"><b>1</b> {% trans "Select chart" %}</a></li>
-    <li><a href="#refine" data-target="refine-the-chart"><b>2</b> {% trans "Refine the chart" %}</a></li>
-    <li ><a href="#story" data-target="tell-the-story"><b>3</b> {% trans "Tell the story" %}</a></li>
-</ul>
 
-<div class="span5 visconfig"><div class="well">
+<div class="span4 visconfig">
 
-    <div class="tab-container">
+    <ul class="nav nav-tabs visualize-nav-tabs" data-target="tab-container">
+        <li class="active"><a href="#vis" data-target="select-visualization">{% trans "Chart type" %}</a></li>
+        <li><a href="#refine" data-target="refine-the-chart">{% trans "Refine" %}</a></li>
+        <li ><a href="#story" data-target="tell-the-story">{% trans "Annotate" %}</a></li>
+        <li ><a href="#design" data-target="design">{% trans "Design" %}</a></li>
+    </ul>
 
-        <div class="section select-visualization">
-            <div class="vis-selector-unfolded">
-            {# <h3>{% trans "Select visualization" %}</h3> #}
-                <div class="vis-thumbs">
-                    {% for vis in visualizations %}{% if vis.title %}
-                    <div class="vis-thumb{% if vis.id == chart.type %} active{% endif %}" data-id="{{ vis.id }}" data-title="{{ vis.title }}" data-static-path="{{ vis.__static_path }}">
-                        {{ vis.icon | raw }}
-                        <div class="title">{{ vis.title }}</div>
+    <div class="" style="padding-top: 20px">
+
+        <div class="tab-container">
+
+            <div class="section select-visualization">
+                <div class="vis-selector-unfolded">
+                {# <h3>{% trans "Select visualization" %}</h3> #}
+                    <div class="vis-thumbs">
+                        {% for vis in visualizations %}{% if vis.title %}
+                        <div class="vis-thumb{% if vis.id == chart.type %} active{% endif %}" data-id="{{ vis.id }}" data-title="{{ vis.title }}" data-static-path="{{ vis.__static_path }}">
+                            {{ vis.icon | raw }}
+                            <div class="title">{{ vis.title }}</div>
+                        </div>
+                        {% endif %}{% endfor %}
                     </div>
-                    {% endif %}{% endfor %}
+
                 </div>
-
-            </div>
-            <div class="vis-selector-folded">
-                <h3><u>{% trans "Visualization:" %}</u> <span class="vis-selected"><img src="{{ vis.__static_path }}{{ vis.id }}.png" width="24" /> {{ vis.title }}</span></h3>
-
-            </div>
 
                 <p>
                     <b>{% trans "Hint" %}:</b> {% trans "In case the visualization doesn't look like you expected, you should try to <a href='#' id='btn-transpose'><img src='/static/css/chart-editor/transpose.png' /> transpose the data</a>." %}
                 </p>
 
-
-            <div style="margin-top:20px;">
-                <label class="pull-left" style="padding-right:1ex;line-height:28px" for="select-theme">{% trans "Select layout:" %}</label>
-                <select id="select-theme" class="span2">
-                    {% for theme in themes %}{% if not theme.hidden %}
-                    <option value="{{ theme.id }}">{{ theme.title }}</option>
-                    {% endif %}{% endfor %}
-                </select>
             </div>
 
-            {{ hook('visualize_after_theme_selector') }}
+            <div class="section tell-the-story">
+                {# <h3>{% trans "Tell the story" %}</h3> #}
 
-         </div>
+                <div class="story">
+                    <div class="story-title control-group">
+                        <div class="pull-left">
+                            <label for="text-title">{% trans "Title" %}</label>
+                            <input type="text" id="text-title" class="input-xlarge span4" />
 
-        <div class="section tell-the-story">
-            {# <h3>{% trans "Tell the story" %}</h3> #}
-
-            <div class="story">
-                <div class="story-title control-group">
-                    <label class="separator">{% trans "Guide the audience to read the chart" %}</label>
-                    <div class="pull-left">
-                        <label for="text-title">{% trans "Title" %}</label>
-                        <input type="text" id="text-title" class="input-xlarge span4" />
-
-                        <label for="text-intro">{% trans "Description" %}</label>
-                        <textarea type="text" id="text-intro" class="input-xlarge span4"></textarea>
+                            <label for="text-intro">{% trans "Description" %}</label>
+                            <textarea type="text" id="text-intro" class="input-xlarge span4"></textarea>
+                        </div>
                     </div>
-                </div>
 
-                {% include "chart/visualize/highlight.twig" %}
+                    {% include "chart/visualize/highlight.twig" %}
 
-                {# {% include "chart/visualize/annotate.twig" %} #}
+                    {# {% include "chart/visualize/annotate.twig" %} #}
 
-                {# repeat data source attribution one more time #}
-                <div class="data-source control-group" style="clear:both">
-                    <label class="separator">{% trans "Where did you get the data from?" %}</label>
-                    <div class="pull-left">
-                        <label>{% trans "Source name" %}</label>
-                        <input id="describe-source-name" type="text" class="span2" placeholder="{% trans "name of the organisation" %}">
+                    {# repeat data source attribution one more time #}
+                    <div class="data-source control-group" style="clear:both">
+                        <label class="separator">{% trans "Where did you get the data?" %}</label>
+                        <div class="row">
+                            <div class="span2">
+                                <label>{% trans "Source name" %}</label>
+                                <input id="describe-source-name" type="text" class="span2" placeholder="{% trans "name of the organisation" %}">
+                            </div>
+                            <div class="span2">
+                                <label>{% trans "Source URL" %}</label>
+                                <input id="describe-source-url" type="text" class="span2" placeholder="{% trans "URL of the dataset" %}">
+                            </div>
+                        </div>
                     </div>
-                    <div class="pull-left">
-                        <label>{% trans "Source URL" %}</label>
-                        <input id="describe-source-url" type="text" class="span2" placeholder="{% trans "URL of the dataset" %}">
-                    </div>
+
                 </div>
 
             </div>
 
+            {# visualization specific options #}
 
-        </div>
+            <div class="section refine-the-chart">
+                {# <h3>{% trans "Refine the chart" %}</h3> #}
 
-        {# visualization specific options #}
+                <div id="vis-options" class="form-horizontal">
 
-        <div class="section refine-the-chart">
-            {# <h3>{% trans "Refine the chart" %}</h3> #}
+                    {% include 'chart/visualize/options.twig' %}
 
-            <div id="vis-options" class="form-horizontal">
+                </div>
+            </div>
 
-                {% include 'chart/visualize/options.twig' %}
+            <div class="section design">
+
+                {{ hook('visualize_before_theme_selector') }}
+
+                <div style="">
+                    <label class="pull-left" style="padding-right:1ex;line-height:28px" for="select-theme">{% trans "Select layout:" %}</label>
+                    <select id="select-theme" class="span2">
+                        {% for theme in themes %}{% if not theme.hidden %}
+                        <option value="{{ theme.id }}">{{ theme.title }}</option>
+                        {% endif %}{% endfor %}
+                    </select>
+                </div>
+
+                {{ hook('visualize_after_theme_selector') }}
 
             </div>
+
         </div>
-    </div>
 
-    <a href="#proceed" class="pull-right btn btn-primary proceed-btn">{% trans "Proceed" %} <i class="icon-chevron-right icon-white"></i></a>
-    <a href="publish" class="submit pull-right btn btn-primary btn-lrge publish-btn" id="visualize-proceed">{% trans "Publish" %} <i class="icon-chevron-right icon-white"></i></a>
 
-    {% if debug %}
+        <div class="buttons">
+            <a class="btn submit btn-stepback" href="describe"><i class="icon-chevron-left"></i> {% trans "Back" %}</a>
+            <a class="btn btn-tabback" href="#"><i class="icon-chevron-left"></i> {% trans "Back" %}</a>
+            {% if debug %}
 
-    {#
+            {#
 
-    The purpose of this section is to show a button labeled "store as test case", which
-    calls the API and stores a kind of snapshot of the current chart configuration including
-    data and a visual signature (or footprint if you like) for testing the chart in
-    different browsers.
+            The purpose of this section is to show a button labeled "store as test case", which
+            calls the API and stores a kind of snapshot of the current chart configuration including
+            data and a visual signature (or footprint if you like) for testing the chart in
+            different browsers.
 
-    It should never be visible on live instances
+            It should never be visible on live instances
 
-    #}
+            #}
 
-    <a href="#" class="snapshot btn btn-info">new test</a>
-    <a href="#" class="snapshot update btn btn-info">update test</a>
-    <script type="text/javascript">
+            <a href="#" class="snapshot btn btn-info">new test</a>
+            <a href="#" class="snapshot update btn btn-info">update test</a>
+            <script type="text/javascript">
 
-    $(function() {
-        var testId = dw.backend.currentChart.get('metadata.describe.__test_id', null);
-        if (!testId) $('.snapshot.update').hide();
+            $(function() {
+                var testId = dw.backend.currentChart.get('metadata.describe.__test_id', null);
+                if (!testId) $('.snapshot.update').hide();
 
-        $('.snapshot').click(function(e) {
-            e.preventDefault();
-            var vis = $('#iframe-vis').get(0).contentWindow.vis;
-            var id = testId && $(e.target).hasClass('update') ? testId : prompt("Enter unique name for this test case..");
-            $.ajax({
-                type: 'POST',
-                url: '/api/charts/{{ chart.id }}/store_snapshot',
-                data: JSON.stringify({
-                    id: id,
-                    signature: vis.signature()
-                }),
-                dataType: 'json'
-            }).done(function(res) {
-                if (res.status == "ok") {
-                    dw.backend.logMessage("The test case <b>"+id+"</b> has been "+(testId && $(e.target).hasClass('update') ? 'updated.' : 'created.'), '.visconfig');
-                }
+                $('.snapshot').click(function(e) {
+                    e.preventDefault();
+                    var vis = $('#iframe-vis').get(0).contentWindow.vis;
+                    var id = testId && $(e.target).hasClass('update') ? testId : prompt("Enter unique name for this test case..");
+                    $.ajax({
+                        type: 'POST',
+                        url: '/api/charts/{{ chart.id }}/store_snapshot',
+                        data: JSON.stringify({
+                            id: id,
+                            signature: vis.signature()
+                        }),
+                        dataType: 'json'
+                    }).done(function(res) {
+                        if (res.status == "ok") {
+                            dw.backend.logMessage("The test case <b>"+id+"</b> has been "+(testId && $(e.target).hasClass('update') ? 'updated.' : 'created.'), '.visconfig');
+                        }
+                    });
+                });
             });
-        });
-    });
 
-    </script>
+            </script>
 
-    {% endif %}
+            {% endif %}
 
-    <a class="btn submit btn-stepback" href="describe"><i class="icon-chevron-left"></i> {% trans "Back" %}</a>
-    <a class="btn btn-tabback" href="#"><i class="icon-chevron-left"></i> {% trans "Back" %}</a>
+            <a href="#proceed" class=" btn btn-primary proceed-btn">{% trans "Proceed" %} <i class="icon-chevron-right icon-white"></i></a>
+            <a href="publish" class="submit btn btn-primary btn-lrge publish-btn" id="visualize-proceed">{% trans "Publish" %} <i class="icon-chevron-right icon-white"></i></a>
+        </div>
 
-    <div class="clearfix"></div>
+        <div class="clearfix"></div>
+    </div>
 </div>

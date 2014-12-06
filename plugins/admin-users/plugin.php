@@ -26,6 +26,28 @@ class DatawrapperPlugin_AdminUsers extends DatawrapperPlugin {
             ),
             "|/admin/users|"
         );
+
+        $user = DatawrapperSession::getUser();
+        if ($user->isAdmin()) {
+            $this->registerController(function($app) use ($plugin) {
+                $app->get('/admin/users/:user_id', function($uid) use ($app, $plugin) {
+                    $theUser = UserQuery::create()->findPk($uid);
+                    $page = array(
+                        'title' => 'Users » '.$theUser->guessName()
+                    );
+                    // manually add the admin nav menu vars
+                    global $__dw_admin_pages;
+                    foreach ($__dw_admin_pages as $adm_pg) {
+                        $page['adminmenu'][$adm_pg['url']] = $adm_pg['title'];
+                    }
+                    add_header_vars($page, 'admin');
+                    $page['the_user'] = $theUser;
+                    $page['userPlugins'] = DatawrapperPluginManager::getUserPlugins($theUser->getId(), false);
+
+                    $app->render('plugins/admin-users/admin-user-detail.twig', $page);
+                });
+            });
+        }
     }
 
     /*

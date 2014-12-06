@@ -1,0 +1,13 @@
+{
+  "Gallery":"Gallery",
+  "Chart Gallery":"Chart Gallery",
+  "See what others created with Datawrapper recently":"See what others created with Datawrapper recently",
+  "Welcome to the public gallery of Datawrapper charts. Here you can see the \nnice charts that other users have created recently. Click on the charts to \nsee the interactive version.":"Welcome to the public gallery of Datawrapper charts. Here you can see the \nnice charts that other users have created recently. Click on the charts to \nsee the interactive version.",
+  "By Visualisation":"By Visualisation",
+  "By Month":"By Month",
+  "Show in Gallery":"Show in Gallery",
+  "You can show some love to Datawrapper by agreeing to show your visualisation \nin our <a href='%GALLERY_URL%'>public gallery<\/a>":"You can show some love to Datawrapper by agreeing to show your visualisation \nin our <a href='%GALLERY_URL%'>public gallery<\/a>",
+  "This is absolutely optional.":"This is absolutely optional.",
+  "Yes, show this chart in the gallery":"Yes, show this chart in the gallery",
+  "Want to see what other users created using Datawrapper? Take a look in the \n<a href='%GALLERY%'>Gallery<\/a>!":"Want to see what other users created using Datawrapper? Take a look in the \n<a href='%GALLERY%'>Gallery<\/a>!"
+}

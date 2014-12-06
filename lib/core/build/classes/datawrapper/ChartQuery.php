@@ -5,7 +5,7 @@
 /**
  * Skeleton subclass for performing query and update operations on the 'chart' table.
  *
- * 
+ *
  *
  * You should add additional methods to this class to meet the
  * application requirements.  This class will only be generated as
@@ -42,6 +42,16 @@ class ChartQuery extends BaseChartQuery {
 
         // todo: use global default theme
         $chart->setTheme(isset($defaults['theme']) ? $defaults['theme'] : 'default');
+        // use organization default theme if possible
+        if ($user->isLoggedIn()) {
+            $org = $user->getCurrentOrganization();
+            if (!empty($org)) {
+                $def_org_theme = $org->getDefaultTheme();
+                if (!empty($def_org_theme) && DatawrapperTheme::get($def_org_theme)) {
+                    $chart->setTheme($def_org_theme);
+                }
+            }
+        }
         $chart->setLocale(''); // no default locale
         $chart->setType(isset($defaults['vis']) ? $defaults['vis'] : 'bar-chart');
         $chart->setPublicUrl($chart->getLocalUrl());

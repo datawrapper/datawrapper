@@ -28,6 +28,10 @@
  * @method PluginQuery rightJoinPluginData($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PluginData relation
  * @method PluginQuery innerJoinPluginData($relationAlias = null) Adds a INNER JOIN clause to the query using the PluginData relation
  *
+ * @method PluginQuery leftJoinProductPlugin($relationAlias = null) Adds a LEFT JOIN clause to the query using the ProductPlugin relation
+ * @method PluginQuery rightJoinProductPlugin($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ProductPlugin relation
+ * @method PluginQuery innerJoinProductPlugin($relationAlias = null) Adds a INNER JOIN clause to the query using the ProductPlugin relation
+ *
  * @method Plugin findOne(PropelPDO $con = null) Return the first Plugin matching the query
  * @method Plugin findOneOrCreate(PropelPDO $con = null) Return the first Plugin matching the query, or a new Plugin object populated from the query conditions when no match is found
  *
@@ -506,6 +510,80 @@ abstract class BasePluginQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query by a related ProductPlugin object
+     *
+     * @param   ProductPlugin|PropelObjectCollection $productPlugin  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PluginQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByProductPlugin($productPlugin, $comparison = null)
+    {
+        if ($productPlugin instanceof ProductPlugin) {
+            return $this
+                ->addUsingAlias(PluginPeer::ID, $productPlugin->getPluginId(), $comparison);
+        } elseif ($productPlugin instanceof PropelObjectCollection) {
+            return $this
+                ->useProductPluginQuery()
+                ->filterByPrimaryKeys($productPlugin->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByProductPlugin() only accepts arguments of type ProductPlugin or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the ProductPlugin relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PluginQuery The current query, for fluid interface
+     */
+    public function joinProductPlugin($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('ProductPlugin');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'ProductPlugin');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the ProductPlugin relation ProductPlugin object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   ProductPluginQuery A secondary query class using the current class as primary query
+     */
+    public function useProductPluginQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinProductPlugin($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'ProductPlugin', 'ProductPluginQuery');
+    }
+
+    /**
      * Filter the query by a related Organization object
      * using the plugin_organization table as cross reference
      *
@@ -519,6 +597,23 @@ abstract class BasePluginQuery extends ModelCriteria
         return $this
             ->usePluginOrganizationQuery()
             ->filterByOrganization($organization, $comparison)
+            ->endUse();
+    }
+
+    /**
+     * Filter the query by a related Product object
+     * using the product_plugin table as cross reference
+     *
+     * @param   Product $product the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return   PluginQuery The current query, for fluid interface
+     */
+    public function filterByProduct($product, $comparison = Criteria::EQUAL)
+    {
+        return $this
+            ->useProductPluginQuery()
+            ->filterByProduct($product, $comparison)
             ->endUse();
     }
 

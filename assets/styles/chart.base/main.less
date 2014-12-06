@@ -1,0 +1,68 @@
+
+/*
+ * base stylesheets included in every chart
+ */
+
+.chart {
+
+    #header {
+        min-height: 1px;
+        position: relative;
+        .header-right {
+            position: absolute;
+            right: 10px;
+            z-index: 20;
+        }
+    }
+
+    #footer {
+        min-height: 1px;
+        position: absolute;
+        bottom: 0;
+        left:0;
+        right:0;
+        height: 25px;
+
+        .footer-left, .footer-right {
+            position: absolute;
+            bottom: 5px;
+            z-index: 1000;
+        }
+
+        .footer-left {
+            left: 5px;
+        }
+
+        .footer-right {
+            right: 5px;
+        }
+
+    }
+
+    .logo {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        .big {
+            display: none;
+        }
+    }
+
+
+    &.plain #footer {
+        height: 10px;
+    }
+
+    &.js .noscript {
+        display: none;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    .label.annotation span {
+        background: transparent;
+    }
+
+}

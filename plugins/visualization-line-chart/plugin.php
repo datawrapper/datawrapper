@@ -28,13 +28,6 @@ class DatawrapperPlugin_VisualizationLineChart extends DatawrapperPlugin_Visuali
                 "tooManyLinesToLabel" => __("Your chart contains <b>more lines than we can label</b>, so automatic labeling is turned off. To fix this <ul><li>filter some columns in the data table in the previous step, or</li><li>use direct labeling and the highlight feature to label the lines that are important to your story.</li></ul>"),
                 "useLogarithmicScale" => __("Use logarithmic scale"),
                 "couldNotParseAllDates" => str_replace('%s', 'http://blog.datawrapper.de/2013/cleaning-your-data-in-datawrapper/', __("Some of the <b>dates in your x-axis could not be parsed</b>, hence the line chart cannot display a proper date axis. To fix this<ul><li>return to the previous step and clean your date column.</li><li><a href='%s'>Read more about how to do this.</a></li></ul>"))
-            ),
-            "annotations" => array(
-                array('type' => 'axis-range', 'axis' => 'x'),
-                array('type' => 'axis-point', 'axis' => 'x'),
-                array('type' => 'axis-range', 'axis' => 'y'),
-                array('type' => 'axis-point', 'axis' => 'y'),
-                array('type' => 'data-point')
             )
         );
         return $meta;
@@ -141,21 +134,12 @@ class DatawrapperPlugin_VisualizationLineChart extends DatawrapperPlugin_Visuali
             ),
             "sep-y-axis" => array(
                 "type" => "separator",
-                "label" => __("Customize y-Axis")
+                "label" => __("Customize y-axis")
             ),
-            "baseline-zero" => array(
-                "type" => "checkbox",
-                "label" => __("Extend to zero"),
-            ),
-            "extend-range" => array(
-                "type" => "checkbox",
-                "label" => __("Extend to nice ticks"),
-                "help" => __("Extend the y-axis range to nice, rounded values instead of the default range from the minimum to maximum value.")
-            ),
-            "invert-y-axis" => array(
-                "type" => "checkbox",
-                "label" => __("Invert direction"),
-                "default" => false
+            "custom-range-y" => array(
+                "type" => "custom-range",
+                "label" => __("Custom range"),
+                "help" => __("This feature allows you to explicitely extend the y axis to custom values. Swap min/max to invert the axis.")
             ),
             "scale-y1" => array(
                 "type" => "radio-left",
@@ -179,6 +163,12 @@ class DatawrapperPlugin_VisualizationLineChart extends DatawrapperPlugin_Visuali
                     "chart.min_value[y1]" => ">0",
                     "chart.magnitude_range[y1]" => ">3"
                 )
+            ),
+            "annotate-time-axis" => array(
+                "type" => "textarea",
+                "label" => __("Annotate x axis").':',
+                "placeholder" => "from,to,text",
+                "width" => "180px"
             )
         );
         return $options;

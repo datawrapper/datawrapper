@@ -1,5 +1,0 @@
-{
-    "name": "phantomjs",
-    "version": "1.0.0",
-    "description": "Integrates PhantomJS into Datawrapper. Provides a hook for executing scripts on PhantomJS"
-}

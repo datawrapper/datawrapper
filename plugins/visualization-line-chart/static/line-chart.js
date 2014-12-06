@@ -9,6 +9,7 @@
                 theme = vis.theme(),
                 chart = vis.chart(),
                 y1Domain,
+                invertYAxis = false,
                 axesDef = vis.axes(true);
 
             if (!axesDef.x || !axesDef.y1[0]) return;  // stop rendering here
@@ -23,7 +24,7 @@
             vis.setRoot(el);
 
             var
-            bpad = theme.padding.bottom,
+            bpad = theme.padding.bottom+5,
             baseCol = Math.max(0, vis.get('base-color', 0)),
             scales = vis.__scales = {
                 x: xScale(),
@@ -58,7 +59,7 @@
             }
 
             scales.x = scales.x.range([c.lpad + c.lpad2, c.w-c.rpad]);
-            scales.y = scales.y.range(vis.get('invert-y-axis', false) ? [c.tpad, c.h-c.bpad] : [c.h-c.bpad, c.tpad]);
+            scales.y = scales.y.range(invertYAxis ? [c.tpad, c.h-c.bpad] : [c.h-c.bpad, c.tpad]);
 
             drawYAxis();
             drawXAxis();
@@ -72,7 +73,7 @@
                     return b.val(-1) - a.val(-1);
                 });
                 // inverse order if y axis is inverted
-                if (vis.get('invert-y-axis', false)) all_series.reverse();
+                if (invertYAxis) all_series.reverse();
                 //
                 if (legend.pos.substr(0, 6) == "inside") {
                     legend.xoffset = yAxisWidth(h);
@@ -119,6 +120,7 @@
             }
 
             if (vis.get('user-change-scale', false)) addScaleChangeUI();
+            if (vis.get('annotate-time-axis')) annotateTime(vis.get('annotate-time-axis'));
 
             vis.renderingComplete();
 
@@ -131,6 +133,8 @@
                     h: h,
                     bpad: vis.get('rotate-x-labels') ? bpad + 20 : bpad
                 });
+
+                c.tpad += 10;
 
                 if (lineLabelsVisible() && legend.pos != 'direct' && legend.pos != 'right') {
                     // some additional top padding since for the legend
@@ -365,18 +369,24 @@
 
             // returns d3.scale for y axis, usually d3.linear
             function yScale() {
-                var scale,
+                var scale, mustInclude,
                 // find min/max value of each data series
                     domain = [Number.MAX_VALUE, Number.MAX_VALUE * -1];
                 _.each(axesDef.y1, function(col) {
                     domain[0] = Math.min(domain[0], col.range()[0]);
                     domain[1] = Math.max(domain[1], col.range()[1]);
                 });
+                if ((mustInclude = vis.get('custom-range-y'))) {
+                    mustInclude = mustInclude.filter(function(c) {
+                        return c !== '';
+                    });
+                    if (mustInclude.length == 2 && mustInclude[0] > mustInclude[1]) {
+                        invertYAxis = true;
+                    }
+                } else { mustInclude = []; }
+                if (vis.get('fill-below', false)) mustInclude.push(0);
+                domain = d3.extent(domain.concat(mustInclude));
                 y1Domain = domain;  // store for later, replaces me.__domain
-                if (vis.get('baseline-zero', false) || vis.get('fill-below', false)) {
-                    if (domain[0] > 0) domain[0] = 0;
-                    if (domain[1] < 0) domain[1] = 0;
-                }
                 scale = useLogScale ? 'log' : 'linear';
                 if (scale == 'log' && domain[0] === 0) domain[0] = 0.03;  // log scales don't like zero!
                 return d3.scale[scale]().domain(domain);
@@ -819,53 +829,56 @@
                 });
             }
 
-            /*function annotate(annotation) {
-                if (annotation.type == 'area') {
-                    annotateArea();
-                }
+            function annotateTime(annotations) {
+                var rg = /@(\d+)%/;
+                // parse annotations
+                annotations = annotations.trim().split('\n')
+                    .map(function(r) { return r.trim().split(',').map($.trim); });
 
-                function annotateArea() {
-
-                    var path;
-                    if (annotation.left && annotation.right) {
-                        x_range();
-                    } else if (annotation.low && annotation.high) {
-                        y_range();
-                    }
-
-
-                    function x_range() {
-                        var x1 = scales.x(annotation.left),
-                            x2 = scales.x(annotation.right),
-                            y1 = scales.y.range()[0],
-                            y2 = scales.y.range()[1];
-                        // draw rect
-                        area(c.paper.rect(x1, Math.min(y1,y2), x2-x1, Math.abs(y2-y1)));
-                        if (annotation.label) {
-                            vis.label((x1 + x2)*0.5, Math.min(y1, y2)-3, annotation.label, {
-                                valign: 'bottom',
-                                align: 'center',
-                                width: 100,
-                                cl: 'annotation'
-                            });
+                _.each(annotations, function(annotation) {
+                    var dates = dw.column('', annotation.slice(0,2), 'date').values(),
+                        k = annotation.length;
+                    if (k > 3) {
+                        if (rg.test(annotation[k-1])) {
+                            annotation[2] = annotation.slice(2,k-1).join(',');
+                            annotation[3] = +annotation[k-1].match(rg)[1];
+                        } else {
+                            annotation[2] = annotation.slice(2).join(',');
+                            annotation[3] = null;
                         }
                     }
+                    x_range(dates, annotation[2] || '', annotation[3] || 't');
+                });
 
-                    function y_range() {
-                        var x1 = scales.x.range()[0],
-                            x2 = scales.x.range()[1],
-                            y1 = scales.y(annotation.low),
-                            y2 = scales.y(annotation.high);
-                        // draw rect
-                        area(c.paper.rect(x1, Math.min(y1,y2), x2-x1, Math.abs(y2-y1)));
-                    }
-
-                    function area(path) {
-                        path.attr({ stroke: false, fill: '#eed', opacity: 0.5 })
-                            .toBack();
+                function x_range(dates, label, align) {
+                    var x1 = scales.x(dates[0]),
+                        x2 = scales.x(dates[1]),
+                        r = scales.y.range(),
+                        y1 = Math.min(r[0], r[1]),
+                        y2 = Math.max(r[0], r[1]),
+                        l_y = align == 't' ? 0 : +align * 0.01,
+                        l_yo = align == 't' ? -3 : 0;
+                    // draw rect
+                    area(c.paper.rect(x1, y1, x2-x1, y2-y1));
+                    if (label) {
+                        vis.label((x1 + x2)*0.5, y1 + (y2-y1) * l_y + l_yo, label, {
+                            valign: align == 't' ? 'bottom' : 'middle',
+                            align: 'center',
+                            width: 100,
+                            cl: 'annotation'
+                        });
                     }
                 }
-            }*/
+
+                function area(path) {
+                    path.attr({
+                        stroke: false,
+                        fill: theme.annotation.background,
+                        opacity: theme.annotation.opacity
+                    }).toBack();
+                }
+            }
+
         },
 
         lineColumns: function() {

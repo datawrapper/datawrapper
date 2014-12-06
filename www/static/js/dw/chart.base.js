@@ -48,6 +48,7 @@
         // update data link to point to edited dataset
         if (!window['__ltie9']) {
             $('a[href=data]')
+                .addClass('dw-data-link')
                 .attr('download', 'data-'+chart.get('id')+'.csv')
                 .attr('href', 'data:application/octet-stream;charset=utf-8,' +
                     encodeURIComponent(chart.dataset().toCSV()));

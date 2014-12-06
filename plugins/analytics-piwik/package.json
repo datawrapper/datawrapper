@@ -1,7 +1,0 @@
-{
-    "name": "analytics-piwik",
-	"version": "0.1",
-	"author": "Gregor Aisch",
-	"createdAt": "2013",
-    "description": "Adds the Piwik tracking code to each published chart."
-}

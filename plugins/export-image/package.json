@@ -1,5 +1,0 @@
-{
-    "name": "export-image",
-    "version": "1.0.0",
-    "description": "This plugin allows users to export their charts as static images (PNG, PDF)."
-}

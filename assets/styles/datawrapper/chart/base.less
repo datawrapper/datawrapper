@@ -1,0 +1,82 @@
+@import 'upload';
+@import 'describe';
+@import 'visualize';
+@import 'publish';
+
+.chart-editor {
+    margin-top: 20px;
+    color: #000;
+
+    h2, h3, h4, p {
+        font-family: @base-font;
+    }
+
+    h3 {
+        font-weight: 300;
+        font-size: 19px;
+    }
+
+    input, label {
+        font-family: @base-font-cd;
+        font-weight: 300;
+    }
+
+}
+
+.dw .create-nav {
+    & > * {
+        background: #f2f2f2;
+        position: relative;
+        box-shadow: 2px 2px 2px #e2e2e2 inset;
+        border-radius: 10px 0 0 10px;
+        text-align: left;
+        height: 50px;
+        font-size: 16px;
+        line-height: 50px;
+        font-weight: 300;
+        margin-bottom: 0;
+        white-space: nowrap;
+    }
+
+    .corner {
+        background: url(../img/create-nav-bg.png) left center no-repeat;
+        width: 25px;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        right: 0;
+        border-radius: 0;
+        box-shadow: none;
+    }
+
+    & > div.active {
+        background: #cc0000;
+        box-shadow: none;
+        font-weight: normal;
+        color: #fff;
+    }
+
+    & > div.unseen {
+        color: #999;
+    }
+
+    & > a:hover {
+        text-decoration: none;
+    }
+
+    & > a.passed {
+        background: #ddd;
+    }
+
+    & > * .step {
+        font-weight: bold;
+        color: #fff;
+        font-size: 26px;
+        line-height: 26px;
+        position: relative;
+        top: 3px;
+        margin-left: 18px;
+        margin-right: 5px;
+        text-shadow: 1px 1px 2px rgba(0,0,0,.17);
+    }
+}

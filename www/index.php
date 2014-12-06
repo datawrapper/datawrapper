@@ -7,7 +7,7 @@
 
 
 
-define('DATAWRAPPER_VERSION', '1.7.11');  // must match with package.json
+define('DATAWRAPPER_VERSION', '1.8.0');  // must match with package.json
 
 define('ROOT_PATH', '../');
 
@@ -23,10 +23,7 @@ dwInitTwigEnvironment($twig);
 require_once ROOT_PATH . 'controller/plugin-templates.php';
 require_once ROOT_PATH . 'controller/home.php';
 require_once ROOT_PATH . 'controller/login.php';
-require_once ROOT_PATH . 'controller/account/settings.php';
-require_once ROOT_PATH . 'controller/account/activate.php';
-require_once ROOT_PATH . 'controller/account/set-password.php';
-require_once ROOT_PATH . 'controller/account/reset-password.php';
+require_once ROOT_PATH . 'controller/account.php';
 require_once ROOT_PATH . 'controller/chart/create.php';
 require_once ROOT_PATH . 'controller/chart/edit.php';
 require_once ROOT_PATH . 'controller/chart/upload.php';

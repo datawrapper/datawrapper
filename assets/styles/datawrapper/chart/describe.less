@@ -1,0 +1,181 @@
+
+.chart-editor.dw-create-describe {
+
+    .sidebar {
+        #column-options {
+            display: none;
+            .unresolved {
+                background: #FDFFBA;
+                option, optgroup {
+                    background: #fff;
+                }
+            }
+        }
+        label {
+            font-family: @base-font;
+            &.separator {
+                font-weight: 500;
+            }
+        }
+    }
+
+    .handsontable {
+        clear: both;
+        font-family: @base-font;
+        font-size: 12px;
+
+        tr td {
+            padding: 3px 6px;
+            font-family: @base-font;
+
+            &.htDimmed { /*revert default HOT style for readOnly cells*/
+                font-style: normal;
+                color: inherit;
+            }
+
+            &.firstRow {
+                border-bottom: 1px solid #aaa;
+                font-weight: bold;
+                background: #f0f0f0;
+                &.dateType { color: #1E8118; }
+                &.numberType { color: #1B668B; }
+                &.area { background: #d4ddee; }
+            }
+
+            &.textType {
+                color: #000000;
+            }
+
+            &.dateType {
+                color: #39A832;
+                text-align: center;
+            }
+
+            &.numberType {
+                color: #297EA8;
+                text-align: right;
+            }
+
+            &.oddRow {
+                background-color: #fff;
+                &.area { background-color: #e1ebfd; }
+            }
+
+            &.evenRow {
+                background-color: #f9f9f9;
+                &.area { background-color: #dce5f7; }
+            }
+
+            &.parsingError {
+                background: #fee;
+                color: #c00;
+            }
+        }
+
+        thead {
+            th {
+                cursor: pointer;
+                background: #eee;
+                border-right: 1px solid hsl(210,0%,70%);
+
+                &.selected {
+                    background: #ccc;
+                    background: #cde;
+                }
+                &:first-child:after {
+                    content: url(chart-editor/transpose.png);
+                    position: relative;
+                    top: 3px;
+                }
+                &:hover {
+                    background: #ddd;
+                }
+                &:first-child:active {
+                    background: red;
+                }
+            }
+            tr th+th div:after {
+                content: " "url(chart-editor/selection-off.png);
+                position: absolute;
+                top: 3px;
+                right: 5px;
+            }
+
+            th+th:hover div:after {
+                content: " "url(chart-editor/selection-hover.png);
+            }
+
+            th+th.selected div:after {
+                opacity: 1;
+                content: " "url(chart-editor/selection.png);
+            }
+        } // end thead
+
+        td.ignored, th.ignored {
+            color: #aaa;
+            text-decoration: line-through;
+            &.firstRow {
+                background-color: #ddd;
+                &.area { background: #d4ddee; }
+            }
+            &.oddRow {
+                background-color: #e9e9e9;
+                &.area { background: #e1ebfd; }
+            }
+            &.evenRow {
+                background-color: #e2e2e2;
+                &.area { background: #dce5f7; }
+            }
+        }
+
+        th.ignored {
+            background-color: #e2e2e2;
+            color: #aaa;
+            text-decoration: line-through
+        }
+
+        tr:first-child td {
+            border-top: 1px solid hsl(210,00%,80%)!important;
+            &.firstRow.area {
+                border-top: 1px solid hsl(210,20%,60%)!important;
+            }
+        }
+
+        .colHeader:after {
+            vertical-align: bottom;
+            opacity: 1;
+            color: #08c;
+        }
+    } // end .handsontable
+
+    textarea.handsontableInput {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+
+    .help {
+        font-family: "Desyrel", "Comic Sans";
+        color: #bbb;
+        font-size: 15px;
+    }
+
+    .transpose-help {
+        margin-left: 20px;
+        float: left;
+    }
+
+    .help span {
+        position: relative;
+        top: -6px;
+    }
+
+    .customize-help {
+        float: right;
+        margin-right: 15px;
+    }
+
+    .span8 {
+        margin-top: 10px;
+    }
+
+}

@@ -17,7 +17,7 @@ define(function() {
             resizeIFrame();
         });
 
-        $('a.duplicate').click(triggerDuplicate);
+        $('.chart-actions .action-duplicate a').click(triggerDuplicate);
         resizeIFrame();
 
         // send ajax request for re-sending activation email
@@ -85,16 +85,11 @@ define(function() {
 
     function resizeIFrame() {
         var iframe = $('#iframe-vis'),
-            w = $('#embed-width').val(),
-            h = $('#embed-height').val(),
+            w = iframe.width(),
+            h = iframe.height(),
             ow = iframe.parent().width();
             oh = $('div.span4').height();
 
-        if (!w) w = 600;
-        if (!h) h = 400;
-
-        iframe.width(w);
-        iframe.height(h);
         iframe.css({ 'margin-left': Math.max(0, (ow - w) * 0.5) + 'px' });
         iframe.css({ 'margin-top':  '10px' });
     }

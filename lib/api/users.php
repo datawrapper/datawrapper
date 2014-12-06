@@ -7,7 +7,11 @@
 $app->get('/users', function() use ($app) {
     $user = DatawrapperSession::getUser();
     if ($user->isAdmin()) {
-        $users = UserQuery::create()->filterByDeleted(false)->find();
+        $userQuery = UserQuery::create()->filterByDeleted(false);
+        if ($app->request()->get('email')) {
+            $userQuery->filterByEmail($app->request()->get('email'));
+        }
+        $users = $userQuery->limit(100)->find();
         $res = array();
         foreach ($users as $user) {
             $res[] = $user->toArray();
@@ -118,11 +122,23 @@ $app->post('/users', function() use ($app) {
                 'activation_link' => $activationLink
             )
         );
-
         // we don't need to annoy the user with a login form now,
         // so just log in..
         DatawrapperSession::login($user);
     }
+
+    $welcome_msg = __("Hello %name%,
+
+Welcome to your new Datawrapper account.
+
+Cheers,
+Datawrapper");
+
+    DatawrapperHooks::execute(DatawrapperHooks::NOTIFY_USER, $user,
+        __('Welcome to Datawrapper!'),
+        str_replace('%name%', $user->guessName(), $welcome_msg)
+    );
+
 
     ok($result);
 });
@@ -137,7 +153,7 @@ $app->put('/users/:id', function($user_id) use ($app) {
     $curUser = DatawrapperSession::getUser();
 
     if ($curUser->isLoggedIn()) {
-        if ($user_id == 'current' || $curUser->getId() === $user_id) {
+        if ($user_id == 'current' || $curUser->getId() === intval($user_id)) {
             $user = $curUser;
         } else if ($curUser->isAdmin()) {
             $user = UserQuery::create()->findPK($user_id);
@@ -170,7 +186,7 @@ $app->put('/users/:id', function($user_id) use ($app) {
                         } else {
                             // non-admins need to confirm new emails addresses
                             $token = hash_hmac('sha256', $user->getEmail().'/'.$payload->email.'/'.time(), DW_TOKEN_SALT);
-                            $token_link = 'http://' . $GLOBALS['dw_config']['domain'] . '/account/settings?token='.$token;
+                            $token_link = 'http://' . $GLOBALS['dw_config']['domain'] . '/account/profile?token='.$token;
                             // send email with token
                             require(ROOT_PATH . 'lib/templates/email-change-email.php');
 
@@ -306,3 +322,28 @@ $app->put('/account/reset-password', function() use ($app) {
     }
 });
 
+$app->post('/user/:id/products', function($id) use ($app) {
+	if_is_admin(function() use ($app, $id) {
+		$user = UserQuery::create()->findPk($id);
+		if ($user) {
+			$data = json_decode($app->request()->getBody(), true);
+			foreach ($data as $p_id => $expires) {
+				$product = ProductQuery::create()->findPk($p_id);
+				if ($product) {
+					$up = new UserProduct();
+					$up->setProduct($product);
+
+					if ($expires) {
+						$up->setExpires($expires);
+					}
+
+					$user->addUserProduct($up);
+				}
+			}
+			$user->save();
+			ok();
+		} else {
+			 error('user-not-found', 'no user found with that id');
+		}
+	});
+});

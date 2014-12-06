@@ -2,7 +2,6 @@
 
 /*
  * PUBLISH STEP - shows progress of publishing action and thumbnail generation
- * forwards to /chart/:id/finish
  */
 $app->get('/chart/:id/publish', function ($id) use ($app) {
     disable_cache($app);
@@ -10,6 +9,21 @@ $app->get('/chart/:id/publish', function ($id) use ($app) {
     check_chart_writable($id, function($user, $chart) use ($app) {
 
         $cfg = $GLOBALS['dw_config'];
+
+        $chartActions = DatawrapperHooks::execute(DatawrapperHooks::GET_CHART_ACTIONS, $chart);
+
+        // add duplicate action
+        $chartActions[] = array(
+            'id' => 'duplicate',
+            'icon' => 'code-fork',
+            'title' => __('Duplicate this chart'),
+            'order' => 500
+        );
+
+        // sort actions
+        usort($chartActions, function($a, $b) {
+            return (isset($a['order']) ? $a['order'] : 999) - (isset($b['order']) ? $b['order'] : 999);
+        });
 
         $page = array(
             'title' => $chart->getID() . ' :: '.__('Publish'),
@@ -21,22 +35,13 @@ $app->get('/chart/:id/publish', function ($id) use ($app) {
             'chartUrlLocal' => '/chart/' . $chart->getID() . '/preview',
             'themes' => DatawrapperTheme::all(),
             'exportStaticImage' => !empty($cfg['phantomjs']),
-            'chartActions' => DatawrapperHooks::execute(DatawrapperHooks::GET_CHART_ACTIONS, $chart),
+            'chartActions' => $chartActions,
             'estExportTime' => ceil(JobQuery::create()->estimatedTime('export') / 60)
         );
+
         add_header_vars($page, 'chart', 'chart-editor/publish.css');
         add_editor_nav($page, 4);
 
-        if ($user->isAbleToPublish()
-            && ($chart->getLastEditStep() == 3 || $app->request()->get('republish') == 1)) {
-            // actual publish process
-            $chart->publish();
-            $page['chartUrl'] = $chart->getPublicUrl();
-
-            // generate thumbnails
-            $page['publish'] = true;
-            $page['republish'] = $app->request()->get('republish') == 1;
-        }
         $app->render('chart/publish.twig', $page);
 
     });
