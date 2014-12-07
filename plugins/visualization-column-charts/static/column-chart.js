@@ -150,7 +150,7 @@
             }
             // add column label
             if (!/^X\.\d+$/.test(barv.name)) {
-                me.registerLabel(me.label(spos.left, spos.top, barv.name, {
+                me.registerLabel(me.label(spos.left, spos.top, d.bw < 10 && s % 2 === 1 ? '' : barv.name, {
                     w: spos.width,
                     align: spos.halign,
                     valign: spos.valign,
@@ -299,8 +299,9 @@
 
             cw = (c.w - c.lpad - c.rpad) * (1 - vspace - vspace);
             bw = cw / (n + (n-1) * pad);
+
             if (bw < 10) {
-                bw = 2;
+                bw = Math.ceil(bw-1);
                 pad = ((cw / bw) - n) / (n-1);
             }
 
