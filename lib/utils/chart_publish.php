@@ -1,13 +1,24 @@
 <?php
 
-function publish_chart($user, $chart, $fromCli = false) {
+/*
+ * Publishes a chart (js and css minification, copying files to static storage)
+ *
+ * @param $user       the user who published the chart
+ * @param $chart      the chart to be published
+ * @param $fromCLI    true if chart publication is not triggered by client
+ * @param $justLocal  true if chart should only be published to local file system
+ */
+function publish_chart($user, $chart, $fromCli = false, $justLocal = false) {
     $files = array();
     if (!$fromCli) _setPublishStatus($chart, 0.01);
     else print "Publishing chart ".$chart->getID().".\n";
 
     $files = array_merge($files, publish_html($user, $chart));
+    if (!$fromCli) _setPublishStatus($chart, 0.05);
     $files = array_merge($files, publish_css($user, $chart));
+    if (!$fromCli) _setPublishStatus($chart, 0.1);
     $files = array_merge($files, publish_data($user, $chart));
+    if (!$fromCli) _setPublishStatus($chart, 0.2);
     $files = array_merge($files, publish_js($user, $chart));
 
     if (!$fromCli) _setPublishStatus($chart, 0.3);
@@ -20,7 +31,7 @@ function publish_chart($user, $chart, $fromCli = false) {
 
     $done = 0;
     foreach ($files as $file) {
-        publish_push_to_cdn(array($file), $chart);
+        if (!$justLocal) publish_push_to_cdn(array($file), $chart);
         $done += filesize($file[0]);
         _setPublishStatus($chart, 0.3 + ($done / $totalSize) * 0.7);
     }

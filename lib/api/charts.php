@@ -273,8 +273,9 @@ $app->post('/charts/:id/copy', function($chart_id) use ($app) {
 $app->post('/charts/:id/publish', function($chart_id) use ($app) {
     disable_cache($app);
     if_chart_is_writable($chart_id, function($user, $chart) use ($app) {
+        $justLocal = $app->request()->get('local') == 1;
         $chart->publish();
-        publish_chart($user, $chart);
+        publish_chart($user, $chart, false, $justLocal);
         ok();
     });
 });
