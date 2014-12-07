@@ -41,7 +41,7 @@
             sortBars = me.get('sort-values');
             reverse = me.get('reverse-order');
 
-            c = me.initCanvas({}, 0, filterH);
+            c = me.initCanvas({ tpad: 20 }, 0, filterH);
 
             chart_width = c.w - c.lpad - c.rpad;
             column_gap = 0.05; // pull from theme
