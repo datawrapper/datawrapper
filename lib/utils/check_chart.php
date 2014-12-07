@@ -34,10 +34,11 @@ function check_chart_writable($id, $callback) {
 
 function check_chart_public($id, $callback) {
     $chart = ChartQuery::create()->findPK($id);
+    $loggedUser = DatawrapperSession::getUser();
     if ($chart) {
         $user = $chart->getUser();
         if ($user->isAbleToPublish()) {
-            if ($chart->isPublic()) {
+            if ($chart->isPublic() || $user == $loggedUser) {
                 call_user_func($callback, $user, $chart);
             } else if ($chart->_isDeleted()) {
                 error_chart_deleted();
