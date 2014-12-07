@@ -6,6 +6,7 @@ require_once ROOT_PATH . 'controller/account/reset-password.php';
 require_once ROOT_PATH . 'controller/account/profile.php';
 require_once ROOT_PATH . 'controller/account/delete.php';
 require_once ROOT_PATH . 'controller/account/password.php';
+require_once ROOT_PATH . 'controller/account/mycharts.php';
 
 
 call_user_func(function() {
