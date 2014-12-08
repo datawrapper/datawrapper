@@ -36,7 +36,7 @@
     <div class="span3">
         <h3 style="margin:30px 0 10px">Products</h3>
         <ul class="plugin-list">
-        {% for product in user.products %}
+        {% for product in the_user.products %}
             <li><a href="/admin/products?id={{ product.id }}">{{ product.name }}</a></li>
         {% endfor %}
         </ul>
@@ -44,7 +44,7 @@
     <div class="span3">
         <h3 style="margin:30px 0 10px">Organizations</h3>
         <ul class="plugin-list">
-        {% for org in user.organizations %}
+        {% for org in the_user.organizations %}
             <li><a href="/admin/organizations/{{ org.id }}">{{ org.name }}</a></li>
         {% endfor %}
         </ul>
