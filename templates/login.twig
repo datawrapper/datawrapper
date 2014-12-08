@@ -68,11 +68,11 @@
                 {% endif %}
             </div>
             {% if has_hook('alternative_signin') %}
-            <div style="padding:10px 13px 0;border-top:1px solid #eee;text-align:center">
+            <div class="alternative-signins">
                {% trans "Alternatively you can sign in via: " %}
-                <div style="margin-top:4px">
-                    {{ hook('alternative_signin') }}
-                </div>
+                {% for signin in alternative_signins %}
+                    <a href="{{ signin.url }}">{% if signin.icon %}<i class="{{ signin.icon }}"></i>{% endif %} {{ signin.label }}</a>
+                {% endfor %}
             </div>
             {% endif %}
         </div>

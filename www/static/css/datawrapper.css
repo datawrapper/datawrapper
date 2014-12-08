@@ -399,6 +399,19 @@ html .btn-inverse {
   top: 10px;
   float: none;
 }
+#dwLoginForm .alternative-signins {
+  padding: 10px 13px 0;
+  border-top: 1px solid #eee;
+  text-align: center;
+}
+#dwLoginForm .alternative-signins a {
+  display: inline-block;
+  margin: 0 1ex;
+}
+#dwLoginForm .alternative-signins a i {
+  color: #222;
+  font-size: 15px;
+}
 /** dw-create-upload **/
 .dw-create-upload textarea {
   width: 98%;
