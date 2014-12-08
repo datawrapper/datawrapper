@@ -33,7 +33,6 @@ require_once ROOT_PATH . 'controller/chart/data.php';
 require_once ROOT_PATH . 'controller/chart/preview.php';
 require_once ROOT_PATH . 'controller/chart/embed.php';
 require_once ROOT_PATH . 'controller/chart/publish.php';
-require_once ROOT_PATH . 'controller/chart/static.php';
 require_once ROOT_PATH . 'controller/mycharts.php';
 require_once ROOT_PATH . 'controller/xhr.php';
 require_once ROOT_PATH . 'controller/admin.php';

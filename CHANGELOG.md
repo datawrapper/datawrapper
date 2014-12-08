@@ -1,6 +1,12 @@
 CHANGELOG
 ---------
 
+### 1.8.1
+* added link to mycharts to account pages menu
+* simplified api for alternative signins
+* prevent chart previews to be rendered in iframes (optional)
+* removed obsolete controller /chart/:chart_id/static
+
 ### 1.8.0
 * added product system.
 * important note: Please run scripts/migrate/1.8.0.sql and composer install after updating.
