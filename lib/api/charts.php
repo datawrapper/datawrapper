@@ -166,39 +166,41 @@ $app->put('/charts/:id/data', function($chart_id) use ($app) {
 $app->post('/charts/:id/data', function($chart_id) use ($app) {
     disable_cache($app);
     if_chart_is_writable($chart_id, function($user, $chart) use ($app) {
-
-        // list of valid extensions, ex. array("jpeg", "xml", "bmp")
         $allowedExtensions = array('txt', 'csv', 'tsv');
-        // max file size in bytes
-        $sizeLimit = 2 * 1024 * 1024;
+        $sizeLimit         = 2 * 1024 * 1024; // byte
 
         $uploader = new qqFileUploader($allowedExtensions, $sizeLimit);
-        $result = $uploader->handleUpload('../../charts/data/tmp/');
-
-        // to pass data through iframe you will need to encode all html tags
-        $data = file_get_contents($uploader->filename);
+        $result   = $uploader->handleUpload('../../charts/data/tmp/');
 
         // check and correct file encoding
-        function detect_encoding($string) {
-            $list = array('utf-8', 'iso-8859-15', 'iso-8859-1', 'iso-8859-3', 'windows-1251');
-            foreach ($list as $item) {
-                $sample = @iconv($item, $item, $string);
-                if (md5($sample) == md5($string))
-                    return $item;
+        $detect_encoding = function($string) {
+            $charsets = array('utf-8', 'iso-8859-15', 'iso-8859-1', 'iso-8859-3', 'windows-1251');
+
+            foreach ($charsets as $charset) {
+                $sample = @iconv($charset, $charset, $string);
+
+                if (md5($sample) == md5($string)) {
+                    return $charset;
+                }
             }
+
             return null;
-        }
-        $enc = detect_encoding($data); // works better than mb_detect_encoding($data);
-        if (strtolower($enc) != "utf-8") {
-            $data = mb_convert_encoding($data, "utf-8", $enc);
-        }
+        };
 
         try {
-            if ($result['success']) {
-                $filename = $chart->writeData($data);
+            if (isset($result['success'])) {
+                $data = file_get_contents($uploader->filename);
+                $enc  = $detect_encoding($data); // works better than mb_detect_encoding($data);
+
+                if (strtolower($enc) != 'utf-8') {
+                    $data = mb_convert_encoding($data, 'utf-8', $enc);
+                }
+
+                $chart->writeData($data);
                 $chart->save();
-                //echo htmlspecialchars(json_encode($result), ENT_NOQUOTES);
+
                 unlink($uploader->filename);
+
                 ok($result);
             } else {
                 error('upload-error', $result['error']);
@@ -206,7 +208,6 @@ $app->post('/charts/:id/data', function($chart_id) use ($app) {
         } catch (Exception $e) {
             error('io-error', $e->getMessage());
         }
-
     });
 });
 
