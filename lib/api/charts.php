@@ -180,15 +180,13 @@ $app->post('/charts/:id/data', function($chart_id) use ($app) {
 
         // check and correct file encoding
         function detect_encoding($string) {
-          $list = array('utf-8', 'iso-8859-15', 'iso-8859-1', 'iso-8859-3', 'windows-1251');
-          foreach ($list as $item) {
-            try {
-                $sample = iconv($item, $item, $string);
+            $list = array('utf-8', 'iso-8859-15', 'iso-8859-1', 'iso-8859-3', 'windows-1251');
+            foreach ($list as $item) {
+                $sample = @iconv($item, $item, $string);
                 if (md5($sample) == md5($string))
                     return $item;
-            } catch (Exception $e) {}
-          }
-          return null;
+            }
+            return null;
         }
         $enc = detect_encoding($data); // works better than mb_detect_encoding($data);
         if (strtolower($enc) != "utf-8") {
