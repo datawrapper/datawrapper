@@ -45,8 +45,15 @@ class DatawrapperPlugin_Gallery extends DatawrapperPlugin {
             $perPage = 12;
             $filter = !empty($key) ? array($key => $val) : array();
 
-            $charts =  ChartQuery::create()->getGalleryCharts($filter, $curPage * $perPage, $perPage);
-            $total = ChartQuery::create()->countGalleryCharts($filter);
+            try {
+                $charts =  ChartQuery::create()->getGalleryCharts($filter, $curPage * $perPage, $perPage);
+                $total = ChartQuery::create()->countGalleryCharts($filter);
+            }
+            catch (Exception $e) {
+                // make sure bogus input for the filter doesn't kill the site
+                $charts = array();
+                $total = 0;
+            }
 
             $page = array(
                 'charts' => $charts,
