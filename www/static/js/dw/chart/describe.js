@@ -229,7 +229,6 @@ define(['handsontable'], function(handsontable) {
                         var cell_height = 30, maxRows = 100;
                         return dataset.numRows() <= maxRows ? dataset.numRows() * cell_height + cell_height * 2  : cell_height * maxRows;
                     },
-                    fixedRowsTop: function(){return horzHeaders ? 1: 0;},
                     rowHeaders: true,
                     colHeaders: true,
                     fillHandle: false,
