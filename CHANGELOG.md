@@ -1,6 +1,12 @@
 CHANGELOG
 ---------
 
+### 1.8.2
+* bugfix with data table in describe step
+* allow hiding of admin controllers in admin menu
+* fixed deleting charts
+* several minor bug fixes
+
 ### 1.8.1
 * added link to mycharts to account pages menu
 * simplified api for alternative signins

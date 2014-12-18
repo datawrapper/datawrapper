@@ -298,7 +298,20 @@ class Chart extends BaseChart {
     public function unpublish() {
         $path = $this->getStaticPath();
         if (file_exists($path)) {
-            array_map('unlink', glob($path . "/*"));
+            $dirIterator = new RecursiveDirectoryIterator($path, FilesystemIterator::SKIP_DOTS);
+            $itIterator  = new RecursiveIteratorIterator($dirIterator, RecursiveIteratorIterator::CHILD_FIRST);
+
+            foreach ($itIterator as $entry) {
+                $file = realpath((string) $entry);
+
+                if (is_dir($file)) {
+                    rmdir($file);
+                }
+                else {
+                    unlink($file);
+                }
+            }
+
             rmdir($path);
         }
 

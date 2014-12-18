@@ -13,6 +13,7 @@ if (DatawrapperHooks::hookRegistered(DatawrapperHooks::GET_ADMIN_PAGES)) {
     foreach ($__dw_admin_pages as $admin_page) {
 
         $app->map('/admin' . $admin_page['url'], function() use ($app, $admin_page, $__dw_admin_pages) {
+            $args = func_get_args();
             disable_cache($app);
 
             $user = DatawrapperSession::getUser();
@@ -24,10 +25,12 @@ if (DatawrapperHooks::hookRegistered(DatawrapperHooks::GET_ADMIN_PAGES)) {
                 );
                 // add admin pages to menu
                 foreach ($__dw_admin_pages as $adm_pg) {
-                    $page_vars['adminmenu'][$adm_pg['url']] = $adm_pg['title'];
+                    if (empty($adm_pg['hide'])) {
+                        $page_vars['adminmenu'][$adm_pg['url']] = $adm_pg['title'];
+                    }
                 }
                 add_header_vars($page_vars, 'admin');
-                call_user_func_array($admin_page['controller'], array($app, $page_vars));
+                call_user_func_array($admin_page['controller'], array($app, $page_vars, $args));
             } else {
                 $app->notFound();
             }
