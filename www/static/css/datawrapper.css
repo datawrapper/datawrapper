@@ -824,6 +824,14 @@ html .btn-inverse {
   left: -4px;
   top: 1px;
 }
+.chart-editor.dw-create-visualize .select-visualization p {
+  margin-top: 15px;
+}
+@media only screen and (max-width: 1199px) {
+  .chart-editor.dw-create-visualize .select-visualization p {
+    font-size: 13px;
+  }
+}
 .chart-editor.dw-create-visualize .vis-thumbs {
   margin-right: -10px;
 }
@@ -896,7 +904,7 @@ html .btn-inverse {
 .chart-editor.dw-create-visualize .vis-thumbs .vis-thumb:hover {
   border: 1px solid #ccc;
 }
-@media (max-width: 1199px) {
+@media only screen and (max-width: 1199px) {
   .chart-editor.dw-create-visualize .vis-thumb {
     width: 75px;
     height: 75px;
@@ -916,10 +924,10 @@ html .btn-inverse {
     padding-left: 8px;
     padding-right: 8px;
     font-size: 13px;
+    line-height: 14px;
   }
   .chart-editor.dw-create-visualize .visualize-nav-tabs.nav-tabs {
     font-size: 13px;
-    margin-left: 20px;
   }
   .chart-editor.dw-create-visualize .visualize-nav-tabs.nav-tabs > li a,
   .chart-editor.dw-create-visualize .visualize-nav-tabs.nav-tabs > li a:hover,
@@ -927,11 +935,11 @@ html .btn-inverse {
     padding: 4px 8px;
     line-height: 24px;
   }
-  .chart-editor.dw-create-visualize #vis-options .control-label {
-    width: 40%;
+  .chart-editor.dw-create-visualize .span4 {
+    width: 350px;
   }
-  .chart-editor.dw-create-visualize #vis-options .controls {
-    margin-left: 45%;
+  .chart-editor.dw-create-visualize .span8 {
+    width: 570px;
   }
 }
 @media (max-width: 976px) {
@@ -1034,6 +1042,15 @@ html .btn-inverse {
   line-height: 16px;
   font-weight: 300;
   font-family: 'Roboto Condensed', Helvetica, sans-serif;
+}
+@media only screen and (max-width: 1199px) {
+  .chart-editor.dw-create-visualize .visconfig label,
+  .chart-editor.dw-create-visualize .visconfig select,
+  .chart-editor.dw-create-visualize .visconfig input[type=text],
+  .chart-editor.dw-create-visualize .visconfig textarea {
+    font-size: 13px;
+    line-height: 15px;
+  }
 }
 .chart-editor.dw-create-visualize .visconfig label.separator {
   font-weight: 500!important;
