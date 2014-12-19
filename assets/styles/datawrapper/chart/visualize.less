@@ -115,6 +115,7 @@
             width: auto;
             float: none;
             margin-right: 1em;
+
         }
 
         .controls {
@@ -122,6 +123,7 @@
             width: auto;
             float: none;
             margin-left: 0;
+
         }
 
         .tooltip {
@@ -158,7 +160,7 @@
 
     @import 'visualize/vis-thumbs';
 
-    @media (max-width: 1199px) {
+    @media @viewport-medium {
         .vis-thumb {
             width: 75px;
             height: 75px;
@@ -180,11 +182,11 @@
             padding-left: 8px;
             padding-right: 8px;
             font-size: 13px;
+            line-height: 14px;
         }
 
         .visualize-nav-tabs.nav-tabs {
             font-size: 13px;
-            margin-left: 20px;
         }
 
         .visualize-nav-tabs.nav-tabs > li a,
@@ -195,13 +197,9 @@
             line-height: 24px;
         }
 
-        #vis-options .control-label {
-            width: 40%;
-        }
+        .span4 { width: 300px + 50; }
+        .span8 { width: 620px - 50; }
 
-        #vis-options .controls {
-            margin-left: 45%;
-        }
     }
 
     @media (max-width: 976px) {
@@ -317,6 +315,8 @@
             line-height: 16px;
             font-weight: 300;
             font-family: @base-font-cd;
+
+            @media @viewport-medium { font-size: 13px; line-height: 15px; }
         }
 
         label.separator {
