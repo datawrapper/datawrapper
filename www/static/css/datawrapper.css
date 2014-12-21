@@ -787,6 +787,49 @@ html .btn-inverse {
 .chart-editor.dw-create-visualize #vis-options .vis-option-group.vis-option-type-select-axis-column .controls {
   margin-right: 20px;
 }
+.chart-editor.dw-create-visualize #vis-options .vis-option-type-group {
+  padding-bottom: 0;
+  border-bottom: 1px solid #ddd;
+}
+.chart-editor.dw-create-visualize #vis-options .vis-option-type-group label.group-title {
+  padding: 8px 0;
+  margin-bottom: 0;
+  font-weight: 500!important;
+  font-family: 'Roboto', Helvetica, sans-serif;
+}
+.chart-editor.dw-create-visualize #vis-options .vis-option-type-group label.group-title:hover {
+  background: #f9f9f9;
+}
+.chart-editor.dw-create-visualize #vis-options .vis-option-type-group label.group-title .fa {
+  font-weight: normal;
+  margin-right: 0.5ex;
+}
+.chart-editor.dw-create-visualize #vis-options .vis-option-type-group label.group-title .collapse-group {
+  display: none;
+}
+.chart-editor.dw-create-visualize #vis-options .vis-option-type-group .option-group-content {
+  position: absolute;
+  visibility: hidden;
+}
+.chart-editor.dw-create-visualize #vis-options .vis-option-type-group.group-open {
+  border-bottom: none;
+}
+.chart-editor.dw-create-visualize #vis-options .vis-option-type-group.group-open label.group-title {
+  margin-bottom: 15px;
+}
+.chart-editor.dw-create-visualize #vis-options .vis-option-type-group.group-open label.group-title .collapse-group {
+  display: inline-block;
+}
+.chart-editor.dw-create-visualize #vis-options .vis-option-type-group.group-open label.group-title .expand-group {
+  display: none;
+}
+.chart-editor.dw-create-visualize #vis-options .vis-option-type-group.group-open label.group-title:hover {
+  background: none;
+}
+.chart-editor.dw-create-visualize #vis-options .vis-option-type-group.group-open .option-group-content {
+  position: static;
+  visibility: visible;
+}
 .chart-editor.dw-create-visualize #vis-options .control-label {
   display: inline-block;
   text-align: top;

@@ -1,6 +1,8 @@
 CHANGELOG
 ---------
 
+* grouping of vis options in chart editor
+
 ### 1.8.2
 * bugfix with data table in describe step
 * allow hiding of admin controllers in admin menu
