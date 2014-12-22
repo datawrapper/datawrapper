@@ -73,7 +73,7 @@ function _clearPublishStatus($chart) {
         global $memcache;
         $memcache->delete('publish-status-' . $chart->getID());
     } else {
-        unlink('../../charts/tmp/publish-status-' . $chart->getID());
+        unlink(ROOT_PATH . 'charts/tmp/publish-status-' . $chart->getID());
     }
 }
 
