@@ -1,7 +1,10 @@
 CHANGELOG
 ---------
 
+### 1.8.3 (unreleased)
 * grouping of vis options in chart editor
+* load js libs in reverse order of vis inheritance
+* bugfixes with cli publishing
 
 ### 1.8.2
 * bugfix with data table in describe step
