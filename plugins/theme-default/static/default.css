@@ -109,6 +109,11 @@ a img { border:0px; }
     content: ": ";
 }
 
+.dw-chart-notes {
+    font-style: italic;
+    margin-bottom: 10px;
+}
+
 #footer {
     font-size: 11px;
     color: #888;

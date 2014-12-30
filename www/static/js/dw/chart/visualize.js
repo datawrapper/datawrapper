@@ -109,6 +109,7 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
         chart.sync('#select-theme', 'theme');
         chart.sync('#text-title', 'title');
         chart.sync('#text-intro', 'metadata.describe.intro');
+        chart.sync('#text-notes', 'metadata.annotate.notes');
         chart.sync('#describe-source-name', 'metadata.describe.source-name');
         chart.sync('#describe-source-url', 'metadata.describe.source-url');
 

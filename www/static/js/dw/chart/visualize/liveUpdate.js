@@ -21,9 +21,9 @@ define(function() {
                     needReload = true;
                     return;
                 }
+                __dw.vis.chart().attributes(attrs);
                 // check if we need to update chart
                 if (changed('metadata.visualize')) {
-                    __dw.vis.chart().attributes(attrs);
                     render = true;
                 }
                 if (changed('title')) {
@@ -59,6 +59,24 @@ define(function() {
                     }
                     if (!needReload) {
                         if (heightChanged($$('.chart-intro'), attrs.metadata.describe.intro)) render = true;
+                    }
+                }
+                if (changed('metadata.annotate.notes')) {
+                    var $notes = $$('.dw-chart-notes');
+
+                    if (attrs.metadata.annotate.notes) {
+                        if ($notes.hasClass('hidden')) {
+                            $notes.removeClass('hidden');
+                            render = true;
+                        }
+                    } else {
+                        if (!$notes.hasClass('hidden')) {
+                            $notes.addClass('hidden');
+                            render = true;
+                        }
+                    }
+                    if (!needReload) {
+                        if (heightChanged($notes, attrs.metadata.annotate.notes)) render = true;
                     }
                 }
                 if (changed('metadata.describe.source-name') || changed('metadata.describe.source-url')) {
