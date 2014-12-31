@@ -21,9 +21,9 @@ define(function() {
                     needReload = true;
                     return;
                 }
-                __dw.vis.chart().attributes(attrs);
                 // check if we need to update chart
                 if (changed('metadata.visualize')) {
+                    __dw.vis.chart().attributes(attrs);
                     render = true;
                 }
                 if (changed('title')) {
@@ -63,7 +63,6 @@ define(function() {
                 }
                 if (changed('metadata.annotate.notes')) {
                     var $notes = $$('.dw-chart-notes');
-
                     if (attrs.metadata.annotate.notes) {
                         if ($notes.hasClass('hidden')) {
                             $notes.removeClass('hidden');
@@ -91,6 +90,7 @@ define(function() {
                         );
                     }
                 }
+                __dw.vis.chart().attributes(attrs);
                 __dw.old_attrs = $.extend(true, {}, attrs);
 
                 if (render) __dw.render();
