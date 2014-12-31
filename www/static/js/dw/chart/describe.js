@@ -301,7 +301,6 @@ define(['handsontable'], function(handsontable) {
                 if (row === 0) {
                     td.classList.add('firstRow');
                     if (colTypeIcons[column.type()]) {
-                        console.log(value, column.type(), colTypeIcons[column.type()]);
                         value = '<i class="'+colTypeIcons[column.type()]+'"></i> ' + value;
                     }
                 } else {
