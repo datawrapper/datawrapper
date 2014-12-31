@@ -123,8 +123,8 @@ dw.column.types.number = function(sample) {
                 if (round) _fmt = 'n0';
                 if (_fmt == '-') {
                     // guess number format
-                    _fmt = val == Math.round(_fmt) ? 'n0' :
-                        val == Math.round(_fmt*10)*0.1 ? 'n1' : 'n2';
+                    _fmt = val == Math.round(val) ? 'n0' :
+                        val == Math.round(val*10)*0.1 ? 'n1' : 'n2';
                 }
                 val = Globalize.format(val, _fmt != '-' ? _fmt : null);
                 return full ? prepend + val + append : val;
