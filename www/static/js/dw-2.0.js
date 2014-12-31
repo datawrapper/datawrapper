@@ -1,4 +1,4 @@
-//
+/*! datawrapper - v1.8.2 - 2014-12-30 *///
 // NOTE: This file is auto-generated using /dw.js/make
 // from the source files /dw.js/src/*.js.
 //
@@ -26,9 +26,6 @@
         window.dw = dw;
     }
 
-/*
- * Dataset class
- */
 dw.dataset = function(columns, opts) {
 
     // make column names unique
@@ -176,20 +173,6 @@ dw.dataset = function(columns, opts) {
 };
 
 
-/*
- * DataColumn abstracts the functionality of each column
- * of a dataset. A column has a type (text|number|date).
- *
- * API:
- *
- * column.name() ... returns the name (string)
- * column.type() ... return column type (string)
- * column.length ... number of rows (number)
- * column.val(i) ... parsed value in row i
- * column.each(func) ... apply function to each value
- * column.raw() ... access raw, unparsed values
- *
- */
 dw.column = function(name, rows, type) {
 
     function guessType(sample) {
@@ -370,6 +353,7 @@ dw.column = function(name, rows, type) {
     };
     return column;
 };
+
 dw.column.types = {};
 
 
@@ -495,8 +479,8 @@ dw.column.types.number = function(sample) {
                 if (round) _fmt = 'n0';
                 if (_fmt == '-') {
                     // guess number format
-                    _fmt = val == Math.round(_fmt) ? 'n0' :
-                        val == Math.round(_fmt*10)*0.1 ? 'n1' : 'n2';
+                    _fmt = val == Math.round(val) ? 'n0' :
+                        val == Math.round(val*10)*0.1 ? 'n1' : 'n2';
                 }
                 val = Globalize.format(val, _fmt != '-' ? _fmt : null);
                 return full ? prepend + val + append : val;
@@ -773,6 +757,7 @@ dw.column.types.date = function(sample) {
     return type;
 };
 
+
 // namespace for dataset sources
 
 // API for sources is
@@ -780,9 +765,6 @@ dw.column.types.date = function(sample) {
 // dw.datasource.delimited(opts).dataset();
 //
 dw.datasource = {};
-/*
-* dataset source for delimited files (CSV, TSV, ...)
-*/
 
 /**
 * Smart delimited data parser.
@@ -1028,6 +1010,7 @@ _.extend(DelimitedParser.prototype, {
     }
 
 }); // end _.extend(DelimitedParser)
+
 
 
 
@@ -1286,11 +1269,6 @@ dw.utils = {
 
 };
 
-/**
- * @param column  the values that can be selected
- * @paran type    type of filter ui: buttons|select|timescale
- * @param format  a function for formatting the values
- */
 dw.utils.filter = function (column, active, type, format) {
     var callbacks = [];
 
@@ -1538,10 +1516,6 @@ dw.utils.filter = function (column, active, type, format) {
     return filter;
 };
 
-/*
- *
- */
-
 dw.chart = function(attributes) {
 
     // private methods and properties
@@ -1765,6 +1739,7 @@ dw.chart = function(attributes) {
 };
 
 
+
 dw.visualization = (function(){
 
     var __vis = {};
@@ -1784,6 +1759,7 @@ dw.visualization = (function(){
     return visualization;
 
 })();
+
 
 
 // Every visualization must extend this class.
@@ -2058,6 +2034,7 @@ _.extend(dw.visualization.base, {
 
 
 
+
 dw.theme = (function(){
 
     var __themes = {};
@@ -2126,6 +2103,7 @@ dw.theme = (function(){
     return theme;
 
 })();
+
 
 
 // Every theme must extend this class.
@@ -2315,4 +2293,5 @@ dw.theme.base = {
      easing: 'expoInOut'
 
 };
+
 }).call(this);
