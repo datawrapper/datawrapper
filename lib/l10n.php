@@ -71,16 +71,22 @@ class Datawrapper_L10N {
      * detect the right domain in templates
      */
     private function __get_domain() {
+        static $evil = null;
+
+        if ($evil === null) {
+            $evil = DIRECTORY_SEPARATOR !== '/';
+        }
+
         $domain = false;
         $backtrace = debug_backtrace();
         // check the entire backtrace for a plugin path
         foreach ($backtrace as $b) {
-            if (isset($b['file']) && preg_match('#/plugins/([^/]+)/#', $b['file'], $m)) {
+            if (isset($b['file']) && preg_match('#/plugins/([^/]+)/#', $evil ? str_replace(DIRECTORY_SEPARATOR, '/', $b['file']) : $b['file'], $m)) {
                 return $m[1];
             }
             if (isset($b['function']) && $b['function'] == 'doDisplay') {
                 if (isset($b['args'][0]['l10n__domain']) &&
-                    preg_match('#/plugins/([^/]+)/#', $b['args'][0]['l10n__domain'], $m)) {
+                    preg_match('#/plugins/([^/]+)/#', $evil ? str_replace(DIRECTORY_SEPARATOR, '/', $b['args'][0]['l10n__domain']) : $b['args'][0]['l10n__domain'], $m)) {
                     return $m[1];
                 }
             }

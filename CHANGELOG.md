@@ -1,6 +1,14 @@
 CHANGELOG
 ---------
 
+### 1.8.3 (unreleased)
+* allow adding of notes below charts
+* grouping of vis options in chart editor
+* load js libs in reverse order of vis inheritance
+* bugfixes with cli publishing
+* fixed automatic number format guessing
+* replaced old dw.js make script with Gruntfile.js
+
 ### 1.8.2
 * bugfix with data table in describe step
 * allow hiding of admin controllers in admin menu

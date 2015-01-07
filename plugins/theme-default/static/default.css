@@ -15,7 +15,7 @@ body.chart {
     font-family: Helvetica Neue, Arial;
     font-weight: 400;
     font-size: 12px;
-    margin: 0 5px;
+    margin: 0 0px;
     background: #fff;
 }
 
@@ -107,6 +107,11 @@ a img { border:0px; }
 
 .tooltip label:after {
     content: ": ";
+}
+
+.dw-chart-notes {
+    font-style: italic;
+    margin-bottom: 10px;
 }
 
 #footer {

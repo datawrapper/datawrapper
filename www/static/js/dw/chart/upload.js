@@ -15,6 +15,7 @@ define(function() {
         initFileUpload();
 
         $('.submit').click(function(e) {
+            var txtarea = $('#upload-data-text');
             if (txtarea.val() != txtarea.data('orig-val')) {
                 e.preventDefault();
                 var a = $(e.target);

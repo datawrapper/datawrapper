@@ -20,14 +20,31 @@
             // reset and remove it
             __dw.vis.reset();
         }
+        var $chart = $('#chart'),
+            $body = $('body'),
+            $notes = $chart.parent().find('.dw-chart-notes');
+
+        if (!$notes.length) {
+            $notes = $('<div />').addClass('dw-chart-notes hidden');
+            $chart.after($notes);
+        }
+
+        if (chart.get('metadata.annotate.notes')) {
+            $notes.removeClass('hidden')
+                .html(chart.get('metadata.annotate.notes'));
+        } else {
+            if ($notes.length) {
+                $notes.addClass('hidden').html('');
+            }
+        }
 
         // compute chart dimensions
-        var w = $('#chart').innerWidth(),
+        var w = $chart.innerWidth(),
             h = dw.utils.getMaxChartHeight($('#chart'));
 
         if (!$.support.leadingWhitespace) w -= 10; // IE Fix
-        w -= $('body').css('padding-left').replace('px', '');
-        w -= $('body').css('padding-right').replace('px', '');
+        w -= $body.css('padding-left').replace('px', '');
+        w -= $body.css('padding-right').replace('px', '');
 
         var vis;
         if (__dw.vis && __dw.vis.supportsSmartRendering()) {
@@ -54,7 +71,7 @@
                     encodeURIComponent(chart.dataset().toCSV()));
         }
 
-        chart.render($('#chart'));
+        chart.render($chart);
     }
 
     function chartLoaded() {
