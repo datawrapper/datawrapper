@@ -74,11 +74,6 @@ DatawrapperVisualization::register($plugin, array(
             'type' => 'separator',
             'label' => __('Customize lines')
         ),
-        'force-banking' => array(
-            'type' => 'checkbox',
-            'hidden' => true,
-            'label' => __('Bank the lines to 45 degrees')
-        ),
         'show-grid' => array(
             'type' => 'checkbox',
             'hidden' => true,
@@ -104,9 +99,15 @@ DatawrapperVisualization::register($plugin, array(
             'label' => __('Fill area below line'),
             'defaut' => false,
             'depends-on' => array(
+                'chart.min_columns[y1]' => 1,
                 'chart.max_columns[y1]' => 1,
                 'chart.max_columns[y2]' => 0
             )
+        ),
+        'banking' => array(
+            'type' => 'linechart-banking',
+            'label' => __('Suggest aspect ratio that banks average line slopes to 45°'),
+            'help' => __('Adjust the chart height so that the lines are banked to 45° (on average). Can help to avoid exaggerating and understating of slopes.')
         ),
         'line-mode' => array(
             'type' => 'radio-left',
@@ -164,3 +165,14 @@ DatawrapperVisualization::register($plugin, array(
     )
 ));
 
+global $app;
+
+DatawrapperHooks::register(
+    DatawrapperHooks::VIS_OPTION_CONTROLS,
+    function($o, $k) use ($app, $plugin) {
+        $env = array('option' => $o, 'key' => $k);
+        $app->render('plugins/' . $plugin->getName() . '/banking.twig', $env);
+    }
+);
+
+$plugin->declareAssets(array('banking.js'), "|/chart/[^/]+/visualize|");
