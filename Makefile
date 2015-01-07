@@ -26,5 +26,5 @@ messages:
 www/static/css/datawrapper.css: assets/styles/datawrapper/* assets/styles/datawrapper/**/*
 	node_modules/.bin/lessc assets/styles/datawrapper/main.less > $@
 
-www/static/css/chart.base.css: assets/styles/chart.base/* assets/styles/chart.base/**/*
+www/static/css/chart.base.css: assets/styles/chart.base/*
 	node_modules/.bin/lessc assets/styles/chart.base/main.less > $@
