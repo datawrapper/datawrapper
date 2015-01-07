@@ -100,8 +100,8 @@ define(function() {
                         p1 = attrs;
                     key = key.split('.');
                     _.each(key, function(k) {
-                        p0 = p0[k];
-                        p1 = p1[k];
+                        p0 = p0[k] || {};
+                        p1 = p1[k] || {};
                     });
                     return JSON.stringify(p0) != JSON.stringify(p1);
                 }
