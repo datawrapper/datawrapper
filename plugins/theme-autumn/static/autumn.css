@@ -8,7 +8,7 @@
 
 body.chart {
     font-weight: 400;
-    margin:5px 10px;
+    margin: 5px 10px;
     font-size: 12px;
     background: #FEFAF2;
     overflow: visible;
@@ -29,7 +29,7 @@ h1 {
     font-family: 'Pinyon Script', serif;
     font-size: 25px;
     font-weight: 300;
-    margin: 0 0 20px;
+    margin: 0 0 10px;
     text-align: center;
     text-shadow: 0px 0px 2px #F28445, 2px 2px 3px rgba(0,0,0,.2);
 }
@@ -130,8 +130,9 @@ h1 span {
     height: 10px;
 }
 
-.footer-left {
+.chart.theme-autumn #footer .footer-left {
     float: left;
+    left: 10px;
 }
 .footer-right {
     float: right;
@@ -202,7 +203,8 @@ html .fs-btn {
     height: 20px;
 }
 
-.dw-chart-notes {
-    margin-left: 5px;
+.chart.theme-autumn .dw-chart-notes {
+    font-size: 12px;
+    margin: 4px 0px 0px;
     font-style: italic;
 }
