@@ -1,7 +1,6 @@
 {
     "name": "admin-themes",
     "author": "Gregor Aisch",
-    "version": "1.0",
+    "version": "1.0.1",
     "description": "Shows a list of all installed themes. This plugin is probably obsolete since we have organizations and the plugin admin."
-
 }
