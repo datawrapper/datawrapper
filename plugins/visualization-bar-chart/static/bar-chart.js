@@ -186,7 +186,7 @@
             var render = me.renderBar(row);
 
             // update bar heights and labels
-            _.each(me.getBarValues(me.get('sort-values', false)), function(bar, s) {
+            _.each(me.getBarValues(me.get('sort-values', false), me.get('reverse-order')), function(bar, s) {
 
                 // don't hide this element because we have data for it
                 if (me.__elements[bar.name]) me.__elements[bar.name].__hide = false;
