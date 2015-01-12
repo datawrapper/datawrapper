@@ -56,7 +56,7 @@
     if (document.getElementsByTagName('script').length > 0) $('body').addClass('js');
 
     __dw.init({
-        chartJSON: JSON.parse('{{ chart.toJSON | raw }}'),
+        chartJSON: JSON.parse('{{ chart.toJSON(true) | raw }}'),
         chartLocale: '{{ chartLocale }}',
         themeId: '{{ theme.id }}',
         visId: '{{ visualization.id }}',
