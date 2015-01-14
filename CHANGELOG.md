@@ -8,6 +8,8 @@ CHANGELOG
 * bugfixes with cli publishing
 * fixed automatic number format guessing
 * replaced old dw.js make script with Gruntfile.js
+* admin-themes now shows when themes have been last used
+* added hook for adding markup below describe step sidebar
 
 ### 1.8.2
 * bugfix with data table in describe step
