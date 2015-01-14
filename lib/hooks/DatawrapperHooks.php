@@ -168,6 +168,9 @@ class DatawrapperHooks {
     // plugin will deliver these messages to the user somehow.
     // args: $user, $message
     const NOTIFY_USER = 'notify_user';
+
+    // add more markup below sidebar in describe step
+    const DESCRIBE_AFTER_SIDEBAR = 'describe_after_sidebar';
 }
 
 
