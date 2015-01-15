@@ -106,38 +106,6 @@ function clean() {
  * installs plugins
  */
 function install($pattern) {
-    if (is_git_url($pattern)) {
-        // checkout git repository into tmp directory
-        // ROOT_PATH . "plugins" . DIRECTORY_SEPARATOR
-        print "Try loading the plugin from ".$pattern."... \n";
-        $tmp_name = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'tmp-'.time();
-        exec('git clone '.$pattern.' '.$tmp_name.' 2>&1', $ret, $err);
-        $pkg_info = $tmp_name . DIRECTORY_SEPARATOR . 'package.json';
-        if (file_exists($pkg_info)) {
-            try {
-                $pkg_info = json_decode(file_get_contents($pkg_info), true);
-            } catch (Error $e) {
-                print 'Not a valid plugin: package.json could not be read.';
-                return true;
-            }
-            if (!empty($pkg_info['name'])) {
-                $plugin_path = ROOT_PATH . 'plugins' . DIRECTORY_SEPARATOR . $pkg_info['name'];
-                if (!file_exists($plugin_path)) {
-                    rename($tmp_name, $plugin_path);
-                    $pattern = $pkg_info['name']; // proceed with this id
-                } else {
-                    print 'Plugin '.$pkg_info['name'].' is already installed';
-                    return true;
-                }
-            } else {
-                print 'No name specified in package.json.';
-                return true;
-            }
-        } else {
-            print 'No package.json found in repository';
-            return true;
-        }
-    }
     _apply($pattern, function($id) {
         $tmp = new Plugin();
         $tmp->setId($id);
@@ -180,6 +148,46 @@ function install($pattern) {
         }
     });
 }
+
+function download_from_git($url) {
+    if (is_git_url($url)) {
+        // checkout git repository into tmp directory
+        // ROOT_PATH . "plugins" . DIRECTORY_SEPARATOR
+        print "Try loading the plugin from git ".$url."... \n";
+        // downlaod zip
+        $tmp_name = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'tmp-'.time();
+        exec('git clone '.$url.' '.$tmp_name.' 2>&1', $ret, $err);
+        $pkg_info = $tmp_name . DIRECTORY_SEPARATOR . 'package.json';
+        if (file_exists($pkg_info)) {
+            try {
+                $pkg_info = json_decode(file_get_contents($pkg_info), true);
+            } catch (Error $e) {
+                print 'Not a valid plugin: package.json could not be read.';
+                return true;
+            }
+            if (!empty($pkg_info['name'])) {
+                $plugin_path = ROOT_PATH . 'plugins' . DIRECTORY_SEPARATOR . $pkg_info['name'];
+                if (!file_exists($plugin_path)) {
+                    rename($tmp_name, $plugin_path);
+                    install($pkg_info['name']);
+                } else {
+                    print 'Plugin '.$pkg_info['name'].' seems to be already installed';
+                    return true;
+                }
+            } else {
+                print 'No name specified in package.json.';
+                return true;
+            }
+        } else {
+            print 'No package.json found in repository';
+            return true;
+        }
+
+    } else {
+        print 'Not a valid git repository url: '.$url;
+    }
+}
+
 
 /*
  * uninstalls plugins
@@ -351,6 +359,7 @@ switch ($cmd) {
     case 'enable': enable($argv[2]); break;
     case 'disable': disable($argv[2]); break;
     case 'update': update($argv[2]); break;
+    case 'download': download_from_git($argv[2]); break;
     case 'check': break;
     default:
         print 'Unknown command '.$cmd."\n";
