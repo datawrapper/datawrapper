@@ -114,6 +114,13 @@ a img { border:0px; }
     margin-bottom: 10px;
 }
 
+.chart.theme-default .dw-chart-notes {
+    font-style: italic;
+    margin-bottom: 5px;
+    position: relative;
+    margin-top: 10px;
+}
+
 #footer {
     font-size: 11px;
     color: #888;
@@ -122,6 +129,10 @@ a img { border:0px; }
     z-index: 1100;
     /* Sets the background here to propagate it to its children */
     background:transparent;
+}
+
+.chart.theme-default #footer .footer-left {
+    left: 0;
 }
 
 
