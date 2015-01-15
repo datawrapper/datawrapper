@@ -117,29 +117,27 @@ function publish_js($user, $chart) {
     // generate visualization script
     $vis = $data['visualization'];
     $vis_js = $data['vis_js'];
-    if (!file_exists($static_path . $vis_js[0])) {
-        // add comment
-        $vis_js[1] = "/*\n * datawrapper / vis / {$vis['id']} v{$vis['version']}\n"
-                   . " * generated on ".date('c')."\n */\n"
-                   . $vis_js[1];
-        file_put_contents($static_path . $vis_js[0], $vis_js[1]);
-        $cdn_files[] = array(
-            $static_path . $vis_js[0],
-            'lib/' . $vis_js[0],
-            'application/javascript'
-        );
-    }
+
+    // add comment
+    $vis_js[1] = "/*\n * datawrapper / vis / {$vis['id']} v{$vis['version']}\n"
+               . " * generated on ".date('c')."\n */\n"
+               . $vis_js[1];
+    file_put_contents($static_path . $vis_js[0], $vis_js[1]);
+    $cdn_files[] = array(
+        $static_path . $vis_js[0],
+        'lib/' . $vis_js[0],
+        'application/javascript'
+    );
 
     // generate theme script
     $theme = $data['theme'];
     $theme_js = $data['theme_js'];
 
-    if (!file_exists($static_path . $theme_js[0])) {
-        $theme_js[1] = "/*\n * datawrapper / theme / {$theme['id']} v{$theme['version']}\n"
-                     . " * generated on ".date('c')."\n */\n"
-                     . $theme_js[1];
-        file_put_contents($static_path . $theme_js[0], $theme_js[1]);
-    }
+    $theme_js[1] = "/*\n * datawrapper / theme / {$theme['id']} v{$theme['version']}\n"
+                 . " * generated on ".date('c')."\n */\n"
+                 . $theme_js[1];
+    file_put_contents($static_path . $theme_js[0], $theme_js[1]);
+
     $cdn_files[] = array(
         $static_path . $theme_js[0],
         'lib/' . $theme_js[0],
@@ -148,12 +146,12 @@ function publish_js($user, $chart) {
 
     // generate chart script
     $chart_js = $data['chart_js'];
-    if (!file_exists($static_path . $chart_js[0])) {
-        $chart_js[1] = "/*\n * datawrapper / chart \n"
-                     . " * generated on ".date('c')."\n */\n"
-                     . $chart_js[1];
-        file_put_contents($static_path . $chart_js[0], $chart_js[1]);
-    }
+
+    $chart_js[1] = "/*\n * datawrapper / chart \n"
+                 . " * generated on ".date('c')."\n */\n"
+                 . $chart_js[1];
+    file_put_contents($static_path . $chart_js[0], $chart_js[1]);
+
     $cdn_files[] = array(
         $static_path . $chart_js[0],
         'lib/' . $chart_js[0],
