@@ -23,6 +23,10 @@ function(initCustomColors, syncVisOptions, unsyncVisOptions) {
                 trigger: 'hover focus click',
                 container: '#vis-options'
             });
+
+            $('.vis-option-type-group label').click(function() {
+                $(this).parents('.vis-option-type-group').toggleClass('group-open');
+            });
         },
 
         reset: function() {

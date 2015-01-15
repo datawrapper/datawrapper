@@ -12,8 +12,29 @@
     {% endif %}
 
     {% for key, option in vis.options %}
-        {% if theme['option-filter'][vis.id][key] or (not option.hidden and not option.expert)  %}
-    <div class="control-group vis-option-group vis-option-type-{{ option.type }}{% if option.inline %} inline{% endif %}" id="vis-options-{{ key }}">
+        {% if option.type == 'group' %}
+        <div class="vis-option-type-group{% if option.open %} group-open{% endif %}">
+            <label class="group-title">
+                <i class="fa fa-angle-double-right expand-group"></i>
+                <i class="fa fa-angle-double-down collapse-group"></i>
+                {{ option.label|raw }}
+            </label>
+            <div class="option-group-content">
+            {% for key, option in option.options %}
+            {{ block('option') }}
+            {% endfor %}
+            </div>
+        </div>
+        {% else %}
+        {{ block('option') }}
+        {% endif %}
+    {% endfor %}
+
+</fieldset>
+
+{% block option %}
+    {% if theme['option-filter'][vis.id][key] or (not option.hidden and not option.expert) %}
+        <div class="control-group vis-option-group vis-option-type-{{ option.type }}{% if option.inline %} inline{% endif %}" id="vis-options-{{ key }}">
 
         {% if option.help %}
             <a title="{{ option.help }}" class="vis-option-help"><span>?</span></a>
@@ -21,8 +42,6 @@
 
         {{ hook('vis_option_controls', option, key) }}
 
-    </div>
-    {% endif %}{% endfor %}
-
-</fieldset>
-
+        </div>
+    {% endif %}
+{% endblock %}

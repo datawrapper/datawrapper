@@ -8,8 +8,8 @@
         <th>ID</th>
         <th>Version</th>
         <th>Parent</th>
-        <th>Restriction</th>
         <th># Charts</th>
+        <th>Last usage</th>
     </tr></thead>
     <tbody>
 
@@ -19,8 +19,8 @@
         <td>{{ theme.id }}</td>
         <td>{{ theme.version }}</td>
         <td>{{ theme.extends }}</td>
-        <td>{{ theme.restrict }}</td>
         <td>{{ count[theme.id] }}</td>
+        <td>{{ theme.last_used }}</td>
     </tr>
 {% endfor %}
     </tbody>

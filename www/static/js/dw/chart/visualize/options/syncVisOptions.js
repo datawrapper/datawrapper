@@ -2,6 +2,16 @@
 define(function() {
 
     return function(vis, chart) {
+        // ungroup groups
+        _.each(vis.options, function(opt, key) {
+            if (opt.type == 'group') {
+                _.each(opt.options, function(o,k) {
+                    vis.options[k] = o;
+                });
+                delete vis.options[key];
+            }
+        });
+
         // at first set default values
         _.each(vis.options, function(opt, key) {
             if (_.isUndefined(chart.get('metadata.visualize.'+key)) && !_.isUndefined(opt.default)) {

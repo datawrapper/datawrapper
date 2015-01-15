@@ -94,7 +94,7 @@ class DatawrapperSession {
     public static function getBrowserLocale() {
         // get list of available locales
         $available_locales = array('en_US');
-        foreach (glob('../locale/*_*.json') as $l) {
+        foreach (glob(ROOT_PATH . 'locale/*_*.json') as $l) {
             $available_locales[] = substr($l, 10, 5);
         }
         // filter out locales that are not defined in

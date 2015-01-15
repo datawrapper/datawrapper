@@ -109,6 +109,47 @@
 
         } // .vis-option-group
 
+        .vis-option-type-group {
+            label.group-title {
+                &:hover {
+                    background: #f9f9f9;
+                }
+                padding: 8px 0;
+                margin-bottom: 0;
+                font-weight: 500!important;
+
+                font-family: @base-font;
+                .fa {
+                    font-weight: normal;
+                    margin-right: 0.5ex;
+                }
+                .collapse-group { display: none }
+            }
+            padding-bottom: 0;
+            border-bottom: 1px solid #ddd;
+
+            .option-group-content {
+                position: absolute;
+                visibility: hidden;
+            }
+            &.group-open {
+                label.group-title {
+                    .collapse-group { display: inline-block; }
+                    .expand-group { display: none; }
+                    margin-bottom: 15px;
+                    &:hover {
+                        background: none;
+                    }
+                }
+                .option-group-content {
+                    position: static;
+                    visibility: visible;
+                }
+                border-bottom: none;
+
+            }
+        }
+
         .control-label {
             display: inline-block;
             text-align: top;

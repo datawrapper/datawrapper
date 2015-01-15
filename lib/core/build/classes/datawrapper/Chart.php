@@ -45,8 +45,13 @@ class Chart extends BaseChart {
         return $json;
     }
 
-    public function toJSON() {
-        return trim(addslashes(json_encode($this->serialize())));
+    public function toJSON($public = false) {
+        $chart = $this->serialize();
+        if ($public) {
+            // remove any sensitive user data
+            unset($chart['author']);
+        }
+        return trim(addslashes(json_encode($chart)));
     }
 
     public function unserialize($json) {

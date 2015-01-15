@@ -61,6 +61,23 @@ define(function() {
                         if (heightChanged($$('.chart-intro'), attrs.metadata.describe.intro)) render = true;
                     }
                 }
+                if (changed('metadata.annotate.notes')) {
+                    var $notes = $$('.dw-chart-notes');
+                    if (attrs.metadata.annotate.notes) {
+                        if ($notes.hasClass('hidden')) {
+                            $notes.removeClass('hidden');
+                            render = true;
+                        }
+                    } else {
+                        if (!$notes.hasClass('hidden')) {
+                            $notes.addClass('hidden');
+                            render = true;
+                        }
+                    }
+                    if (!needReload) {
+                        if (heightChanged($notes, attrs.metadata.annotate.notes)) render = true;
+                    }
+                }
                 if (changed('metadata.describe.source-name') || changed('metadata.describe.source-url')) {
                     if (attrs.metadata.describe['source-name'] && !$$('.source-block').length) needReload = true;
                     if (!attrs.metadata.describe['source-name'] && $$('.source-block').length) needReload = true;
@@ -73,6 +90,7 @@ define(function() {
                         );
                     }
                 }
+                __dw.vis.chart().attributes(attrs);
                 __dw.old_attrs = $.extend(true, {}, attrs);
 
                 if (render) __dw.render();
@@ -82,8 +100,8 @@ define(function() {
                         p1 = attrs;
                     key = key.split('.');
                     _.each(key, function(k) {
-                        p0 = p0[k];
-                        p1 = p1[k];
+                        p0 = p0[k] || {};
+                        p1 = p1[k] || {};
                     });
                     return JSON.stringify(p0) != JSON.stringify(p1);
                 }

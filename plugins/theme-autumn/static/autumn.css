@@ -8,7 +8,7 @@
 
 body.chart {
     font-weight: 400;
-    margin:5px 10px;
+    margin: 5px 10px;
     font-size: 12px;
     background: #FEFAF2;
     overflow: visible;
@@ -29,7 +29,7 @@ h1 {
     font-family: 'Pinyon Script', serif;
     font-size: 25px;
     font-weight: 300;
-    margin: 0 0 20px;
+    margin: 0 0 10px;
     text-align: center;
     text-shadow: 0px 0px 2px #F28445, 2px 2px 3px rgba(0,0,0,.2);
 }
@@ -130,8 +130,9 @@ h1 span {
     height: 10px;
 }
 
-.footer-left {
+.chart.theme-autumn #footer .footer-left {
     float: left;
+    left: 10px;
 }
 .footer-right {
     float: right;
@@ -200,5 +201,10 @@ html .fs-btn {
     background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABcAAAAUBAMAAACUkLs9AAAAA3NCSVQICAjb4U/gAAAAMFBMVEX///97d297d297d297d297d297d297d297d297d297d297d297d297d297d297d280X5C+AAAAEHRSTlMAESIzRFVmd4iZqrvM3e7/dpUBFQAAAAlwSFlzAAALEgAACxIB0t1+/AAAABh0RVh0Q3JlYXRpb24gVGltZQAyMS4xMi4yMDEytzLJCAAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNXG14zYAAACtSURBVBiVYyhnYBRgYGBgcgISDPvfvZ8ApFjP3b2rwBD//wlIjIH9/T8BBv//BWCO/P9/DAx2z7+DOQx5/xUY5CbkgaVYD84vYOAXYAVzvBQ4BRgYIYoYPjGQCYAGmEBYbAwMfgKMS4AszgMMfgwMfA0yCSBX32I4J8DA82U6WJHd9v8MDDz/D4A5zO9Bbvt/C+Q5Btn//w2AnPcfgWzeeyD/sLgYgW1QZmhhAAAbrS+zW6BWbAAAAABJRU5ErkJggg==);
     width: 23px;
     height: 20px;
+}
 
+.chart.theme-autumn .dw-chart-notes {
+    font-size: 12px;
+    margin: 4px 0px 0px;
+    font-style: italic;
 }

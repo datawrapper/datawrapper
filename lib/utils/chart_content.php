@@ -75,7 +75,7 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
         $vis = DatawrapperVisualization::get($next_vis_id);
         $vjs = array();
         if (!empty($vis['libraries'])) {
-            foreach ($vis['libraries'] as $script) {
+            foreach (array_reverse($vis['libraries']) as $script) {
                 if (!is_array($script)) {
                     $script = array("local" => $script, "cdn" => false);
                 }
@@ -128,7 +128,7 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
     if ($published) {
         $scripts = array_merge(
             $base_js,
-            $vis_libs_cdn,
+            array($vis_libs_cdn),
             array(
                 '/lib/' . $the_vis_js[0],
                 '/lib/' . $the_theme_js[0],
@@ -152,7 +152,7 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
                 array('/static/js/dw-2.0'.($debug ? '' : '.min').'.js'),
                 array_reverse($theme_js),
                 array_reverse($vis_js),
-                $vis_libs,
+                array_reverse($vis_libs),
                 array('/static/js/dw/chart.base.js')
             )
         );

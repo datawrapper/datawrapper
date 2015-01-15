@@ -22,7 +22,6 @@ dw.backend.ready(function() {
 
         <div class="span4">
             <div class="sidebar">
-
                 <div id="table-options">
 
                     <h3>{% trans "Make sure the data looks right" %}</h3>
@@ -36,7 +35,6 @@ dw.backend.ready(function() {
                     </div>
 
                     <h3 style="margin-top:20px">{% trans "Where did you get the data?" %}</h3>
-                    <p>{% trans "Make " %}</p>
                     <div>
                         <label>{% trans "Who published the data in the first place?" %}</label>
                         <input id="describe-source-name" type="text" placeholder="name of the organisation">
@@ -152,6 +150,9 @@ dw.backend.ready(function() {
                 <a href="visualize" class="submit btn btn-primary" id="describe-proceed">{% trans "Proceed" %} <i class="icon-chevron-right icon-white"></i></a>
                 <div class="clearfix"></div>
             </div>
+
+            {{ hook('describe_after_sidebar' )}}
+
         </div>
         <div class="span8">
 

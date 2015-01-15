@@ -73,7 +73,7 @@ function _clearPublishStatus($chart) {
         global $memcache;
         $memcache->delete('publish-status-' . $chart->getID());
     } else {
-        unlink('../../charts/tmp/publish-status-' . $chart->getID());
+        unlink(ROOT_PATH . 'charts/tmp/publish-status-' . $chart->getID());
     }
 }
 
@@ -122,7 +122,7 @@ function publish_js($user, $chart) {
         $vis_js[1] = "/*\n * datawrapper / vis / {$vis['id']} v{$vis['version']}\n"
                    . " * generated on ".date('c')."\n */\n"
                    . $vis_js[1];
-        file_put_contents(ROOT_PATH . 'www' . $static_path . $vis_js[0], $vis_js[1]);
+        file_put_contents($static_path . $vis_js[0], $vis_js[1]);
         $cdn_files[] = array(
             $static_path . $vis_js[0],
             'lib/' . $vis_js[0],
@@ -138,7 +138,7 @@ function publish_js($user, $chart) {
         $theme_js[1] = "/*\n * datawrapper / theme / {$theme['id']} v{$theme['version']}\n"
                      . " * generated on ".date('c')."\n */\n"
                      . $theme_js[1];
-        file_put_contents(ROOT_PATH . 'www' . $static_path . $theme_js[0], $theme_js[1]);
+        file_put_contents($static_path . $theme_js[0], $theme_js[1]);
     }
     $cdn_files[] = array(
         $static_path . $theme_js[0],
@@ -152,7 +152,7 @@ function publish_js($user, $chart) {
         $chart_js[1] = "/*\n * datawrapper / chart \n"
                      . " * generated on ".date('c')."\n */\n"
                      . $chart_js[1];
-        file_put_contents(ROOT_PATH . 'www' . $static_path . $chart_js[0], $chart_js[1]);
+        file_put_contents($static_path . $chart_js[0], $chart_js[1]);
     }
     $cdn_files[] = array(
         $static_path . $chart_js[0],

@@ -1,6 +1,17 @@
 CHANGELOG
 ---------
 
+### 1.9.0
+* allow adding of notes below charts
+* grouping of vis options in chart editor
+* load js libs in reverse order of vis inheritance
+* bugfixes with cli publishing
+* fixed automatic number format guessing
+* replaced old dw.js make script with Gruntfile.js
+* admin-themes now shows when themes have been last used
+* added hook for adding markup below describe step sidebar
+* changed syntax to plugin.php download [giturl]
+
 ### 1.8.2
 * bugfix with data table in describe step
 * allow hiding of admin controllers in admin menu

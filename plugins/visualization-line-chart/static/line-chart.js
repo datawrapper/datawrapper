@@ -35,7 +35,7 @@
                 xoffset: 0,
                 yoffset: -10
             },
-            h = vis.get('force-banking') ? el.width() / vis.computeAspectRatio() : vis.getSize()[1],
+            h = vis.getSize()[1],
             c;
 
             if (vis.get('direct-labeling')) legend.pos = 'direct';
@@ -121,6 +121,8 @@
 
             if (vis.get('user-change-scale', false)) addScaleChangeUI();
             if (vis.get('annotate-time-axis')) annotateTime(vis.get('annotate-time-axis'));
+
+            vis.computeAspectRatio = computeAspectRatio;
 
             vis.renderingComplete();
 
@@ -879,27 +881,23 @@
                 }
             }
 
-        },
-
-        lineColumns: function() {
-            return this.axes(true).y1;
-        },
-
-        computeAspectRatio: function() {
-            var vis = this, slopes = [], M, Rx, Ry;
-            vis.lineColumns().each(function(col) {
-                var lval;
-                _.each(col.data, function(val, i) {
-                    if (i > 0 && val != lval) {
-                        slopes.push(Math.abs(val-lval));
-                    }
-                    lval = val;
+            function computeAspectRatio() {
+                var slopes = [], M, Rx, Ry;
+                _.each(axesDef.y1, function(col) {
+                    var lval;
+                    col.each(function(val, i) {
+                        if (i > 0 && val != lval) {
+                            slopes.push(Math.abs(val-lval));
+                        }
+                        lval = val;
+                    });
                 });
-            });
-            M = d3.median(slopes);
-            Rx = slopes.length;
-            Ry = me.__domain[1] - me.__domain[0];
-            return M*Rx/Ry;
+                M = d3.median(slopes);
+                Rx = slopes.length;
+                Ry = y1Domain[1] - y1Domain[0];
+
+                return M*Rx/Ry;
+            }
         },
 
         hover: function(series) { },

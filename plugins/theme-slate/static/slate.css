@@ -1,103 +1,79 @@
-.chart .chartMenu a {
+
+.chart.theme-slate .chartMenu a {
     color: #fff;
 }
 
-/*
- * Noir Theme
- * ----------
- *
- * based on http://bootswatch.com/slate/
- */
-
-body.chart {
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-    font-weight: 400;
-    margin:5px 10px;
-    font-size: 13px;
-    line-height: 18px;
+.chart.theme-slate {
     background: #272B30;
-    overflow: visible;
-    overflow-x:hidden;
+    font-weight: 400;
     color: #9ab;
+
 }
 
-a {
+.chart.theme-slate a {
     color: #fff;
     text-decoration: none;
 }
 
-a:hover {
+.chart.theme-slate a:hover {
     color: #fff;
     text-decoration: underline;
 }
 
-h1 {
-    font-size: 24px;
+.chart.theme-slate h1 {
+    font-size: 16px;
     font-weight: 700;
     margin: 0 0 15px;
     text-align: left;
 }
 
-.chart p { margin: 15px 0; line-height: 19px;}
+.chart.theme-slate p { margin: 15px 0; line-height: 19px;}
 
-#chart {
-    margin-top: 25px;
-}
 
-.label span {
-    font-size: 12px;
-    color: #9ab;
-}
-
-.line-chart .label span {
-    background: #272B30!important;
-}
-
-html .line-chart .label.tooltip span {
+.chart.theme-slate.line-chart .label.tooltip span {
     background: none!important;
 }
 
-html .line-chart .label.tooltip.inverted span {
+.chart.theme-slate.line-chart .label.tooltip.inverted span {
     color: #fff!important;
 }
 
-.label.highlighted, .label.axis {
+.chart.theme-slate .label span {
+    text-shadow: 0 0 2px #272B30;
+}
+.chart.theme-slate .label.inverted span {
+    text-shadow: none;
+}
+
+.chart.theme-slate .label.highlighted, .label.axis {
     font-size: 12px;
     z-index: 100;
 }
 
-.label.hover {
+.chart.theme-slate .line-chart .label.highlighted span,
+.chart.theme-slate .line-chart .label.axis span {
+    background: #272B30;
+    color: #eee;
+}
+.chart.theme-slate .label.hover {
     font-weight: bold;
 }
 
-.pie-chart .label.hover span,
-.donut-chart .label.hover span {
+.chart.theme-slate .pie-chart .label.hover span,
+.chart.theme-slate .donut-chart .label.hover span {
     color: #fff;
 }
 
-.label.inverted span {
+.chart.theme-slate .label.inverted span {
     color: #000!important;
 }
 
-.label.highlighted {
-    font-weight: bold;
+.chart.theme-slate #footer .footer-left {
+    padding-left: 0;
+    left: 0;
 }
 
-.label.value span {
-    font-size: 12px;
-}
-
-.label.series span {
-    font-size: 12px;
-}
-
-
-.tooltip {
-    z-index: 200;
-    padding-bottom: 0px;
-}
-
-.tooltip .content {
+.chart.theme-slate .tooltip .content {
     background-color: #202328;
     border: 1px solid #101214;
     border-radius: 4px 4px 4px 4px;
@@ -105,39 +81,6 @@ html .line-chart .label.tooltip.inverted span {
     padding: 5px 8px;
 }
 
-.tooltip label {
-    font-weight: 700;
-}
-
-.tooltip label:after {
-    content: ": ";
-}
-
-#footer {
-    margin: 10px 0px 0px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-}
-
-.footer-left {
-    float: left;
-}
-.footer-right {
-    float: right;
-}
-
-.clearfix:after {
-    content: ".";
-    display: block;
-    clear: both;
-    visibility: hidden;
-    line-height: 0;
-    height: 0;
-}
-
-.clearfix {
-    display: inline-block;
-}
 
 html[xmlns] .clearfix {
     display: block;
@@ -149,23 +92,6 @@ html[xmlns] .clearfix {
 
 svg .axis, svg .tick, svg .grid, svg rect {
     shape-rendering: crispEdges;
-}
-
-@media screen and (max-width: 400px) {
-    h1, #footer, p, .label {
-        display: none;
-        position: absolute;
-        height: 0;
-        width: 0;
-        padding: 0;
-        margin: 0;
-    }
-
-    #chart {
-        margin: 0;
-    }
-
-    body.chart { margin:0; padding: 0;}
 }
 
 .label.rotate90 {
@@ -192,8 +118,3 @@ svg .axis, svg .tick, svg .grid, svg rect {
 .chart .chartMenu a:hover {
     color: #fff;
 }
-
-
-.chart .icon-fullscreen { background-position: 0 -15px; }
-.chart .icon-share { background-position: -32px -15px; }
-.chart .icon-download { background-position: -17px -15px; }
