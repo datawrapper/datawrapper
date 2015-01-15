@@ -10,6 +10,7 @@ CHANGELOG
 * replaced old dw.js make script with Gruntfile.js
 * admin-themes now shows when themes have been last used
 * added hook for adding markup below describe step sidebar
+* changed syntax to plugin.php download [giturl]
 
 ### 1.8.2
 * bugfix with data table in describe step
