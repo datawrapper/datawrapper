@@ -128,7 +128,7 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
     if ($published) {
         $scripts = array_merge(
             $base_js,
-            array($vis_libs_cdn),
+            $vis_libs_cdn,
             array(
                 '/lib/' . $the_vis_js[0],
                 '/lib/' . $the_theme_js[0],
