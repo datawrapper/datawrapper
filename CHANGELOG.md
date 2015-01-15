@@ -1,7 +1,7 @@
 CHANGELOG
 ---------
 
-### 1.8.3 (unreleased)
+### 1.9.0
 * allow adding of notes below charts
 * grouping of vis options in chart editor
 * load js libs in reverse order of vis inheritance
