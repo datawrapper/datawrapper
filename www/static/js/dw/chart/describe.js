@@ -222,15 +222,8 @@ define(['handsontable'], function(handsontable) {
             else {
                 $dataPreview.handsontable({
                     data: data,
-                    allowHtml: true,
                     startRows: 6,
                     startCols: 8,
-                    width: function() {return $dataPreview.width();},
-                    // max-height is 13 rows (400px) otherwise it's the number of rows plus the table header height
-                    height: function(){
-                        var cell_height = 30, maxRows = 100;
-                        return dataset.numRows() <= maxRows ? dataset.numRows() * cell_height + cell_height * 2  : cell_height * maxRows;
-                    },
                     rowHeaders: true,
                     colHeaders: true,
                     fillHandle: false,
@@ -240,9 +233,6 @@ define(['handsontable'], function(handsontable) {
                             renderer: myRenderer
                         };
                     },
-                    afterRender: function() {
-                        renderSelectedTh(); //if HOT was scrolled horizontally, we need to rerender th.selected
-                    },
                     afterChange: function(changes, source) {
                         if (source !== 'loadData') {
                             changes.forEach(function(change) {
@@ -250,6 +240,19 @@ define(['handsontable'], function(handsontable) {
                                     metadata.changes.add(change[0], change[1], change[3]);
                                 }
                             });
+                        }
+                    },
+                    afterGetColHeader: function (col, TH) {
+                        if (selectedColumns.indexOf(col) !== -1) {
+                            TH.classList.add('selected');
+                        }
+
+                        var serie = getSeriesOfIndex(col);
+                        if(metadata.columnFormat.get(serie).ignore) {
+                            TH.classList.add('ignored');
+                        }
+                        else {
+                            TH.classList.remove('ignored');
                         }
                     }
                 });
@@ -359,6 +362,7 @@ define(['handsontable'], function(handsontable) {
 
         function selectColumns(from, to) {
             deselectColumns();
+
             if(to === void 0) {
                 selectedColumns.push(from);
             }
@@ -372,29 +376,6 @@ define(['handsontable'], function(handsontable) {
             }
             $dataPreview.handsontable('render');
             showColumnSettings();
-        }
-
-        function renderSelectedTh() {
-            $("#data-preview thead th.selected").removeClass('selected');
-
-            selectedColumns.forEach(function(i){
-                getThOfIndex(i).classList.add('selected');
-            });
-            $("#data-preview thead th").each(function(i){
-                if(i > 0) {
-                    var index = getIndexOfTh(this);
-                    if (index === -1) {
-                        return;
-                    }
-                    var serie = getSeriesOfIndex(index);
-                    if(metadata.columnFormat.get(serie).ignore) {
-                        this.classList.add('ignored');
-                    }
-                    else {
-                        this.classList.remove('ignored');
-                    }
-                }
-            });
         }
 
         function selectedSeries() {
