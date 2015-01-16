@@ -519,7 +519,7 @@ html .btn-inverse {
   background: #ccc;
   background: #cde;
 }
-.chart-editor.dw-create-describe .handsontable thead th:first-child:after {
+.chart-editor.dw-create-describe .handsontable thead th:first-child div:after {
   content: url(chart-editor/transpose.png);
   position: relative;
   top: 3px;

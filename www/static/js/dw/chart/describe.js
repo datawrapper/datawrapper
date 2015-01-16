@@ -105,10 +105,11 @@ define(['handsontable'], function(handsontable) {
             start = void 0;
         });
 
-        $dataPreview.on('mousedown', 'th:has(.colHeader)', function (event) {
+        $dataPreview.on('mousedown', '.ht_clone_top.handsontable th:has(.colHeader)', function (event) {
             start = getIndexOfTh(this);
             event.stopPropagation();
             $dataPreview.handsontable('deselectCell');
+
             if (selectedColumns.length == 1 && selectedColumns[0] == start) {
                 // proceeding click on selected column header will unselect
                 deselectColumns();
@@ -122,7 +123,7 @@ define(['handsontable'], function(handsontable) {
         });
 
         var last;
-        $dataPreview.on('mouseenter', 'th:has(.colHeader)', function () {
+        $dataPreview.on('mouseenter', '.ht_clone_top.handsontable th:has(.colHeader)', function () {
             if(last === this) {
                 return;
             }
@@ -191,7 +192,6 @@ define(['handsontable'], function(handsontable) {
         }
 
         function updateTable() {
-
             var data = [],
                 horzHeaders = chart.get('metadata.data.horizontal-header'),
                 transpose = chart.get('metadata.data.transpose'),
@@ -213,17 +213,19 @@ define(['handsontable'], function(handsontable) {
                 data.push(tr);
             });
 
-            if($("#data-preview").handsontable('getInstance')) {
-                $("#data-preview").handsontable('loadData', data);
-                $("#data-preview").handsontable('render');
+            var ht = $dataPreview.handsontable('getInstance');
+
+            if (ht) {
+                ht.loadData(data);
+                ht.render();
             }
             else {
-                $("#data-preview").handsontable({
+                $dataPreview.handsontable({
                     data: data,
                     allowHtml: true,
                     startRows: 6,
                     startCols: 8,
-                    width: function() {return $("#data-preview").width();},
+                    width: function() {return $dataPreview.width();},
                     // max-height is 13 rows (400px) otherwise it's the number of rows plus the table header height
                     height: function(){
                         var cell_height = 30, maxRows = 100;
@@ -253,7 +255,9 @@ define(['handsontable'], function(handsontable) {
                 });
 
                 $('#data-preview table').addClass('table table-bordered'); //Bootstrap class names
-                $("#data-preview").handsontable('render'); //consider Bootstrap class names in auto column size
+
+                ht = $dataPreview.handsontable('getInstance');
+                ht.render(); //consider Bootstrap class names in auto column size
             }
 
             if(metadata.changes.exist()) {
@@ -269,7 +273,7 @@ define(['handsontable'], function(handsontable) {
                 }
             }
 
-            $('#data-preview thead tr:first-child').off('click').on('click', function() {
+            $('#data-preview .ht_clone_corner.handsontable table div').off('click').on('click', function() {
                 chart.set('metadata.data.transpose', !chart.get('metadata.data.transpose', false));
             });
 
@@ -294,6 +298,7 @@ define(['handsontable'], function(handsontable) {
                     var formatter = chart.columnFormatter(column);
                     value = formatter(column.val(row - 1), true);
                 }
+
                 if (parseInt(value, 10) < 0) { //if row contains negative number
                     td.classList.add('negative');
                 }
@@ -331,17 +336,20 @@ define(['handsontable'], function(handsontable) {
         }
 
         function getIndexOfTh(th) {
-            var col = $dataPreview.handsontable('getInstance').view.wt.wtTable.getCoords(th)[1];
-            return col;
+            return $dataPreview.handsontable('getInstance').view.wt.wtTable.getCoords(th).col;
         }
 
         function getThOfIndex(index) {
-            var offsetCol = $dataPreview.handsontable('getInstance').view.wt.getSetting('offsetColumn');
+            var offsetCol = $dataPreview.handsontable('getInstance').view.wt.getSetting('offsetColumn') || 0;
             var thIndex = index + 1 * hasCorner() - offsetCol;
             return document.querySelectorAll('#data-preview thead th')[thIndex];
         }
 
         function getSeriesOfIndex(index) {
+            if (index < 0) {
+                index = 0;
+            }
+
             return dataset.column(index).name();
         }
 
@@ -368,12 +376,16 @@ define(['handsontable'], function(handsontable) {
 
         function renderSelectedTh() {
             $("#data-preview thead th.selected").removeClass('selected');
+
             selectedColumns.forEach(function(i){
                 getThOfIndex(i).classList.add('selected');
             });
             $("#data-preview thead th").each(function(i){
                 if(i > 0) {
                     var index = getIndexOfTh(this);
+                    if (index === -1) {
+                        return;
+                    }
                     var serie = getSeriesOfIndex(index);
                     if(metadata.columnFormat.get(serie).ignore) {
                         this.classList.add('ignored');
@@ -490,8 +502,9 @@ define(['handsontable'], function(handsontable) {
                 }
 
                 // fill in default column type
-                var defOpt = $('#column-type option[value=-]'),
-                    type = dataset.column(selectedColumns[0]).type();
+                var defOpt = $('#column-type option[value=-]');
+                var type = dataset.column(selectedColumns[0]).type();
+
                 _.each(selectedColumns, function(i) {
                     type = type == dataset.column(i).type() ? type : undefined;
                 });
@@ -526,7 +539,7 @@ define(['handsontable'], function(handsontable) {
                     } else {
                         metadata.columnFormat.add(_.map(selectedColumns, getSeriesOfIndex), null, {
                             'number-divisor': 0,
-                            'number-format': '-',
+                            'number-format': '-'
                         });
                     }
                     updateUI(true);
