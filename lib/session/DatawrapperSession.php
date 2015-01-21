@@ -153,6 +153,11 @@ class DatawrapperSession {
         self::getInstance()->user = $user;
         if (!$dontLog) Action::logAction($user, 'login');
 
+        // In case the user sent herself a password reset link, but remembered the password in the
+        // meantime (or someone else triggered the reset link mail), we should reset the password
+        // token now.
+        $user->setResetPasswordToken('')->save();
+
         // reload plugins since there might be new plugins
         // becoming available after logins
         DatawrapperPluginManager::load();
