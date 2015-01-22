@@ -15,7 +15,7 @@ s
 }
 
 .chart.vis-data-table #datatable_wrapper {
-    margin: 10px 0px 10px;
+    margin: 10px 6px 10px 2px;
 }
 
 .chart.vis-data-table .datatable-default {
@@ -35,7 +35,7 @@ s
 }
 
 .chart.vis-data-table .datatable-default thead tr {
-    border-bottom: 2px solid #000;
+    border-bottom: 2px solid #777;
 }
 
 .chart.vis-data-table .datatable-default tr.highlight {
@@ -64,7 +64,7 @@ s
 
 .chart.vis-data-table .datatable-default thead th {
     padding: 6px 20px 6px;
-    border-left: 1px solid #fff;
+    border-left: 1px solid transparent;
     font-weight: bold;
 }
 
@@ -75,11 +75,11 @@ s
 
 .chart.vis-data-table .datatable-default tbody td {
     text-align: left;
-    border-left: 1px solid gray;
+    border-left: 1px solid #bbb;
 }
 
 .chart.vis-data-table .datatable-default tbody td:last-child {
-    border-right: 1px solid gray;
+    border-right: 1px solid #bbb;
 }
 
 .chart.vis-data-table .datatable-default tbody tr:last-child
