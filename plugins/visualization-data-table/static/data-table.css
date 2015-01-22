@@ -4,25 +4,21 @@ s
  *
  */
 
-html body.chart {
+.chart.vis-data-table.chart {
     overflow: visible !important;
 }
 
-html body #footer, html body.chart.fullscreen #footer {
+.chart.vis-data-table #footer {
     position: relative;
     top: auto;
     left: auto;
 }
 
-html body.chart.fullscreen {
-    width    : auto    !important;
-    overflow : visible !important;
-}
-
-#datatable_wrapper {
+.chart.vis-data-table #datatable_wrapper {
     margin: 10px 0px 10px;
 }
-.datatable-default {
+
+.chart.vis-data-table .datatable-default {
     width: 100%;
     border: 0;
     border-spacing:0;
@@ -31,157 +27,158 @@ html body.chart.fullscreen {
     clear: both;
 }
 
-.datatable-default td, .datatable-default th {
+.chart.vis-data-table .datatable-default td,
+.chart.vis-data-table .datatable-default th {
     text-align: left;
     padding: 6px 11px!important;
     border: 0;
 }
 
-.datatable-default thead tr {
+.chart.vis-data-table .datatable-default thead tr {
     border-bottom: 2px solid #000;
 }
 
-.datatable-default tr.highlight {
+.chart.vis-data-table .datatable-default tr.highlight {
     background: #E3E7F6;
 }
 
-.datatable-default th.highlight {
+.chart.vis-data-table .datatable-default th.highlight {
     background: #CFD9EF;
 }
 
-.datatable-default tr td.highlight {
+.chart.vis-data-table .datatable-default tr td.highlight {
     background: #E6EaF9;
 }
 
-.datatable-default td span.raw-sortable {
+.chart.vis-data-table .datatable-default td span.raw-sortable {
     display: none;
 }
 
-.datatable-default tr.even td.highlight {
+.chart.vis-data-table .datatable-default tr.even td.highlight {
     background: #E0E3F3;
 }
 
-.datatable-default tr.odd td {
+.chart.vis-data-table .datatable-default tr.odd td {
     /* background: #f9f9f9; */
 }
 
-.datatable-default thead th {
+.chart.vis-data-table .datatable-default thead th {
     padding: 6px 20px 6px;
     border-left: 1px solid #fff;
     font-weight: bold;
 }
 
-.datatable-default tbody th {
+.chart.vis-data-table .datatable-default tbody th {
     background: none;
     font-weight: normal;
 }
 
-.datatable-default tbody td {
+.chart.vis-data-table .datatable-default tbody td {
     text-align: left;
     border-left: 1px solid gray;
 }
 
-.datatable-default tbody td:last-child {
+.chart.vis-data-table .datatable-default tbody td:last-child {
     border-right: 1px solid gray;
 }
 
-.datatable-default tbody tr:last-child
+.chart.vis-data-table .datatable-default tbody tr:last-child
  {
     border-bottom: 1px solid #aaa;
 }
 
-.datatable-default tbody tr:hover {
+.chart.vis-data-table .datatable-default tbody tr:hover {
     background: #eee;
 }
-.datatable-default tbody tr.even:hover {
+.chart.vis-data-table .datatable-default tbody tr.even:hover {
     background: #e9e9e9;
 }
 
 
-.datatable-default tbody tr:hover td.highlight {
+.chart.vis-data-table .datatable-default tbody tr:hover td.highlight {
     background: #CFD9EF;
 }
 
 
-#datatable_info, #datatable_length {
+.chart.vis-data-table #datatable_info, #datatable_length {
     float: left;
 }
 
-#datatable_length, #datatable_filter {
+.chart.vis-data-table #datatable_length, #datatable_filter {
     margin-bottom: 10px;
 }
 
-#datatable_paginate, #datatable_filter {
+.chart.vis-data-table #datatable_paginate, #datatable_filter {
     float: right;
 }
 
-#datatable_paginate a {
+.chart.vis-data-table #datatable_paginate a {
     padding-left: 20px;
     cursor: pointer;
 }
 
-#datatable_next:after {
+.chart.vis-data-table #datatable_next:after {
     content: ' ►';
     color: #777;
 }
 
-#datatable_previous:before {
+.chart.vis-data-table #datatable_previous:before {
     content: '◀ ';
     color: #777;
 }
 
-.paginate_disabled_next,
-.paginate_disabled_previous {
+.chart.vis-data-table .paginate_disabled_next,
+.chart.vis-data-table .paginate_disabled_previous {
     color: #777;
     cursor: default;
 }
 
-.datatable-default th.sorting,
-.datatable-default th.sorting_desc,
-.datatable-default th.sorting_asc
+.chart.vis-data-table .datatable-default th.sorting,
+.chart.vis-data-table .datatable-default th.sorting_desc,
+.chart.vis-data-table .datatable-default th.sorting_asc
 {
     cursor: pointer;
 }
 
-.datatable-default th.sorting:hover,
-.datatable-default th.sorting_desc:hover,
-.datatable-default th.sorting_asc:hover
+.chart.vis-data-table .datatable-default th.sorting:hover,
+.chart.vis-data-table .datatable-default th.sorting_desc:hover,
+.chart.vis-data-table .datatable-default th.sorting_asc:hover
 {
     text-decoration: underline;
 }
 
-.datatable-default th.sorting_asc:after {
+.chart.vis-data-table .datatable-default th.sorting_asc:after {
     content: '▼';
     color: #777;
     white-space: nowrap;
 }
 
-.datatable-default th.sorting_desc:after {
+.chart.vis-data-table .datatable-default th.sorting_desc:after {
     content: '▲';
     white-space: nowrap;
     color: #777;
 }
 
-.datatable-default tbody tr .unit {
+.chart.vis-data-table .datatable-default tbody tr .unit {
     opacity: 0;
 }
 
-.datatable-default tbody tr.even {
+.chart.vis-data-table .datatable-default tbody tr.even {
     background: #f3f3f3;
 }
 
-.datatable-default tbody tr:first-child .unit {
+.chart.vis-data-table .datatable-default tbody tr:first-child .unit {
     opacity: 1;
 }
 
-.datatable-default td {
+.chart.vis-data-table .datatable-default td {
     text-align: left;
 }
 
-.datatable-default td.not-available,
-.datatable-default td.number,
-.datatable-default td.number-decimal,
-.datatable-default td.number-small {
+.chart.vis-data-table .datatable-default td.not-available,
+.chart.vis-data-table .datatable-default td.number,
+.chart.vis-data-table .datatable-default td.number-decimal,
+.chart.vis-data-table .datatable-default td.number-small {
     text-align: right;
 }
 
@@ -195,38 +192,38 @@ only screen and (max-width: 560px),
 (min-device-width: 768px) and (max-device-width: 1024px)  {
 
     /* Force table to not be like tables anymore */
-    table.responsive, .responsive thead, .responsive tbody, .responsive th, .responsive td, .responsive tr { 
-        display: block; 
+    table.responsive, .responsive thead, .responsive tbody, .responsive th, .responsive td, .responsive tr {
+        display: block;
     }
-    
+
     /* Hide table headers (but not display: none;, for accessibility) */
-    .responsive thead tr { 
+    .responsive thead tr {
         position: absolute;
         top: -9999px;
         left: -9999px;
     }
-    
+
     .responsive tr { border: 1px solid #ccc; }
-    
-    .responsive td { 
+
+    .responsive td {
         /* Behave  like a "row" */
         border: none;
-        border-bottom: 1px solid #eee; 
+        border-bottom: 1px solid #eee;
         position: relative;
-        padding-left: 50%; 
+        padding-left: 50%;
     }
-    
-    .responsive td:before { 
+
+    .responsive td:before {
         /* Now like a table header */
         position: absolute;
         /* Top/left values mimic padding */
         top: 6px;
         left: 6px;
-        width: 45%; 
-        padding-right: 10px; 
+        width: 45%;
+        padding-right: 10px;
         white-space: nowrap;
     }
-    
+
     /*
     Label the data
     */
@@ -248,15 +245,15 @@ only screen and (max-width: 560px),
 @media only screen
 and (min-device-width : 320px)
 and (max-device-width : 480px) {
-    body { 
-        padding: 0; 
-        margin: 0; 
+    body {
+        padding: 0;
+        margin: 0;
         width: 320px; }
     }
 
 /* iPads (portrait and landscape) ----------- */
 @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
-    body { 
-        width: 495px; 
+    body {
+        width: 495px;
     }
 }
