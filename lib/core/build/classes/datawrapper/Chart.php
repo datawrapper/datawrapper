@@ -95,18 +95,12 @@ class Chart extends BaseChart {
      * get the path where this charts data file is stored
      */
     protected function getDataPath() {
-        $path = '../charts/data/' . $this->getCreatedAt('Ym');
-        if (substr(dirname($_SERVER['SCRIPT_FILENAME']), -4) == "/api") {
-            $path = '../' . $path;
-        }
+        $path = ROOT_PATH . 'charts/data/' . $this->getCreatedAt('Ym');
         return $path;
     }
 
     protected function getStaticPath() {
-        $path = '../charts/static/' . $this->getID();
-        if (substr(dirname($_SERVER['SCRIPT_FILENAME']), -4) == "/api") {
-            $path = '../' . $path;
-        }
+        $path = ROOT_PATH . 'charts/static/' . $this->getID();
         return $path;
     }
 
