@@ -70,7 +70,7 @@
             {% for user in users %}
                 <tr class="user {{ user.role }} {% if user.activateToken %}pending{% endif %}" data-id="{{ user.id }}">
                     <td class="id out"><a href="/admin/users/{{ user.id }}">{{ user.id }}</a></td>
-                    <td class="email out">{{ user.email }}</td>
+                    <td class="email out">{{ user.email ? user.email : user.oauthSignin }}</td>
                     <td>
                         {% if user.isAdmin %}
                             <i class="icon-fire" title="{% trans "Administrator" %}"></i>
