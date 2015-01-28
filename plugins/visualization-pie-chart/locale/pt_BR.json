@@ -3,7 +3,7 @@
   "Base color":"Cor de base",
   "other":"outro",
   "Pie charts are intended to show part-of-whole relations, and thus they \n<b>cannot be used to display negative numbers<\/b>. Please consider using a \ndifferent chart type instead (eg. a bar chart).":"O gráfico de pizza destina-se a mostrar as relações das partes com o todo, e portanto eles \n<b>não podem ser usados para mostrar números negativos<\/b>. Por favor, escolha um tipo de gráfico diferente (ex. o gráfico de barras).",
-  "Your data contains <b>more values than can be shown in a pie chart<\/b>, so \nwe grouped %count slices into the slice named <i>'others'<\/i>.<p>Why not use \na bar chart to allow better comparison of values?<\/p>":"Seus dados contém <b>mais valored que podem ser mostrados no gráfico<\/b>, então nós agrupamos %count valores na fatia <i>'outros'<\/i>.<p>Por que você não usa o gráfico de barras para uma melhor comparação dos valores?<\/p>",
+  "Your data contains <b>more values than can be shown in a pie chart<\/b>, so \nwe grouped %count slices into the slice named <i>\"others\"<\/i>.<p>Why not \nuse a bar chart to allow better comparison of values?<\/p>":"Your data contains <b>more values than can be shown in a pie chart<\/b>, so \nwe grouped %count slices into the slice named <i>\"others\"<\/i>.<p>Why not \nuse a bar chart to allow better comparison of values?<\/p>",
   "Donut chart":"Gráfico de rosquinha",
   "Show total value in center":"Mostrar o valor total no centro",
   "Use custom total value instead of sum":"Usar valor personalizado ao invés da soma",

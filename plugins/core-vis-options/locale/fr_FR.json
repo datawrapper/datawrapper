@@ -1,13 +1,13 @@
 {
-  "customize colors...":"customize colors...",
-  "Customize colors...":"Customize colors...",
-  "Select element(s):":"Select element(s):",
-  "Select:":"Select:",
-  "all":"all",
-  "none":"none",
+  "customize colors...":"personnalisez les couleurs...",
+  "Customize colors...":"Personnalisez les couleurs...",
+  "Select element(s):":"Sélectionnez le(s) élément (s) :",
+  "Select:":"Sélectionner :",
+  "all":"tout",
+  "none":"aucun",
   "invert":"invert",
-  "Choose a color:":"Choose a color:",
-  "Please select an element on the left to change colors for individual \nelements...":"Please select an element on the left to change colors for individual \nelements...",
-  "Reset":"Reset",
-  "Reset all colors":"Reset all colors"
+  "Choose a color:":"Choisir une couleur:",
+  "Please select an element on the left to change colors for individual \nelements...":"Sélectionner un élément à gauche pour changer les couleurs des éléments individuels...",
+  "Reset":"Réinitialiser ",
+  "Reset all colors":"Remettre toutes les couleurs par défaut"
 }

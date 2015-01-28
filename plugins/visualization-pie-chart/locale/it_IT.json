@@ -3,7 +3,7 @@
   "Base color":"Colore base",
   "other":"altro",
   "Pie charts are intended to show part-of-whole relations, and thus they \n<b>cannot be used to display negative numbers<\/b>. Please consider using a \ndifferent chart type instead (eg. a bar chart).":"I grafici a torta sono pensati per mostrare le relazioni parte-di-tutto e quindi <b>non possono essere usati per visualizzare i numeri negativi<\/b>. Ti consigliamo di usare invece un tipo di grafico diverso (es. un grafico a barre).",
-  "Your data contains <b>more values than can be shown in a pie chart<\/b>, so \nwe grouped %count slices into the slice named <i>'others'<\/i>.<p>Why not use \na bar chart to allow better comparison of values?<\/p>":"I dati contengono <b>troppi valori rispetto a quelli che possono essere visualizzati in un grafico a torta<\/b>, così ne abbiamo raggruppato alcuni (%count) in un gruppo denominato <i>'altri'<\/i>.<p>Perché non utilizzi un grafico a barre per consentire un migliore confronto dei dati?<\/p>",
+  "Your data contains <b>more values than can be shown in a pie chart<\/b>, so \nwe grouped %count slices into the slice named <i>\"others\"<\/i>.<p>Why not \nuse a bar chart to allow better comparison of values?<\/p>":"Your data contains <b>more values than can be shown in a pie chart<\/b>, so \nwe grouped %count slices into the slice named <i>\"others\"<\/i>.<p>Why not \nuse a bar chart to allow better comparison of values?<\/p>",
   "Donut chart":"Grafico a ciambella",
   "Show total value in center":"Visualizza il totale al centro",
   "Use custom total value instead of sum":"Utilizza un totale personalizzato invece della somma",
