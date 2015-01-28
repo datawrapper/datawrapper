@@ -54,17 +54,16 @@
         </div>
 
     </div>
+
     <div class="span9 gallery">
-
         <ul class="thumbnails">
+            {% set gallerythumb_url = '' %}
             {% for chart in charts %}
-
-            {{ block('gallerythumb')}}
-
+            {{ block('gallerythumb') }}
             {% endfor %}
         </ul>
-
     </div>
+
     <div class="pull-right">
         {{ block('pagination') }}
     </div>

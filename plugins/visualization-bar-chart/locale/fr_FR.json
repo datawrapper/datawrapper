@@ -1,9 +1,9 @@
 {
-  "Bar Chart":"Graphique en barres",
-  "Base color":"Base color",
+  "Bar Chart":"Histogramme",
+  "Base color":"Couleur de base",
   "Autmatically sort bars":"Trier les barres automatiquement",
   "Reverse order":"Inverser l'ordre",
   "Use different color for negative values":"Utiliser une couleur différente pour les valeurs négatives",
   "Use the same scale for all columns":"Utiliser la même échelle pour toutes les colonnes",
-  "Filter missing values":"Filter missing values"
+  "Filter missing values":"Filtrer les valeurs manquantes"
 }

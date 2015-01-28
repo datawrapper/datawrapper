@@ -16,9 +16,9 @@
   "Previous":"Précédent",
   ": activate to sort column ascending":": activer pour trier la colonne par ordre croissant",
   ": activate to sort column descending":": activer pour trier la colonne par ordre décroissant",
-  "Sort table by":"Sort table by",
-  "Sort ascending":"Sort ascending",
-  "Make column sortable":"Make column sortable",
+  "Sort table by":"Tirer la table par",
+  "Sort ascending":"Tri croissant",
+  "Make column sortable":"Rendre la colonne triable",
   "Display content over multiple pages":"Afficher le contenu sur plusieurs pages",
   "Show filter":"Permettre de filtrer"
 }

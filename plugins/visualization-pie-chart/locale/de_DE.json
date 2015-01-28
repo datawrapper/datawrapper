@@ -3,7 +3,7 @@
   "Base color":"Grundfarbe",
   "other":"andere",
   "Pie charts are intended to show part-of-whole relations, and thus they \n<b>cannot be used to display negative numbers<\/b>. Please consider using a \ndifferent chart type instead (eg. a bar chart).":"Tortendiagramme zeigen Teile-des-Ganzen, und können daher <b>keine negativen Werte darstellen<\/b>. Bitte benutze stattdessen einen anderen Diagrammtyp (z.B. ein Balkendiagramm).",
-  "Your data contains <b>more values than can be shown in a pie chart<\/b>, so \nwe grouped %count slices into the slice named <i>'others'<\/i>.<p>Why not use \na bar chart to allow better comparison of values?<\/p>":"Deine Daten enthalten <b>mehr Werte als sich in einem Tortendiagramm anzeigen lassen<\/b>. Deshalb haben wir %count Stücke in dem Stück <i>'andere'<\/i> zusammengefasst. <p>Tipp: Mit einem Balkendiagramm lassen sich Werte besser vergleichen.<\/p>",
+  "Your data contains <b>more values than can be shown in a pie chart<\/b>, so \nwe grouped %count slices into the slice named <i>\"others\"<\/i>.<p>Why not \nuse a bar chart to allow better comparison of values?<\/p>":"Deine Daten enthalten <b>mehr Werte als sich in einem Tortendiagramm anzeigen lassen<\/b>. Deshalb haben wir %count Stücke in dem Stück <i>'andere'<\/i> zusammengefasst. <p>Tipp: Mit einem Balkendiagramm lassen sich Werte besser vergleichen.<\/p>",
   "Donut chart":"Donut-Diagramm",
   "Show total value in center":"Zeige Summe im Zentrum",
   "Use custom total value instead of sum":"Abweichender Gesamtwert statt Summe",

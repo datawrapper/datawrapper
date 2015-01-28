@@ -238,9 +238,16 @@ class DatawrapperPlugin {
     }
 
     /*
-     * convenience wrapper around DatawrapperHOOK::GET_PLUGIN_ASSETS
+     * deprecated, use registerAssets instead
      */
     public function declareAssets($assets, $regex = null) {
+        return $this->registerAssets($assets, $regex);
+    }
+
+    /*
+     * convenience wrapper around DatawrapperHOOK::GET_PLUGIN_ASSETS
+     */
+    public function registerAssets($assets, $regex = null) {
         $plugin = $this;
         if (is_string($assets)) $assets = array($assets);
         DatawrapperHooks::register(DatawrapperHooks::GET_PLUGIN_ASSETS, function($uri) use ($assets, $regex, $plugin) {

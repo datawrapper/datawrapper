@@ -4,8 +4,8 @@
 
 {{ parent() }}
 
-<link rel="stylesheet" type="text/css" href="/static/vendor/handsontable/jquery.handsontable.full.css">
-<link rel="stylesheet" type="text/css" href="/static/vendor/handsontable/jquery.handsontable.bootstrap.css">
+<link rel="stylesheet" type="text/css" href="/static/vendor/handsontable/handsontable.full.css">
+<link rel="stylesheet" type="text/css" href="/static/vendor/handsontable/handsontable.bootstrap.css">
 
 <script type="text/javascript">
 dw.backend.ready(function() {
@@ -67,6 +67,10 @@ dw.backend.ready(function() {
                             </div>
                         </div>
 
+                        {#
+                         # deactivated "input format" because it was irritating more that it helped
+                         #
+
                         <div id="select-input-format" class="control-group">
                             <label class="control-label" for="input-format">{% trans "Input format" %}</label>
 
@@ -75,11 +79,11 @@ dw.backend.ready(function() {
                                     <option value="-">{% trans "auto" %}</option>
                                 </select>
                             </div>
-                        </div>
+                        </div> #}
                     </div>
 
                     <div id="number-column-options" class="form-horizontal compact">
-                        <label class="separator">{% trans "Output number format" %}</label>
+                        <label class="separator">{% trans "Number format" %}</label>
 
                         {# <p>
                             <label class="checkbox" for="automatic-format"><input id="automatic-format" type="checkbox"> {% trans "Automatic number formatting" %}</label>
@@ -158,7 +162,7 @@ dw.backend.ready(function() {
 
             <div class="transpose-help help">⤹ <span>{% trans "Transpose data table" %}</span></div>
             <div class="customize-help help"><span>{% trans "Customize column format" %}</span> ⤵︎</div>
-            <div id="data-preview"></div>
+            <div id="data-preview" style="width: 770px; max-height: 500px; overflow: auto"></div>
 
         </div>
 

@@ -1,9 +1,9 @@
 {
   "Pie chart":"Graphique circulaire",
-  "Base color":"Base color",
+  "Base color":"Couleur de base",
   "other":"autres",
   "Pie charts are intended to show part-of-whole relations, and thus they \n<b>cannot be used to display negative numbers<\/b>. Please consider using a \ndifferent chart type instead (eg. a bar chart).":"Les graphiques circulaires visent à montrer les relations entres les parties d'un tout et donc ils <b>ne peut pas être utilisée pour afficher de nombres négatifs<\/b>. Envisagez d'utiliser un type de graphique différent (par exemple un diagramme en barres).",
-  "Your data contains <b>more values than can be shown in a pie chart<\/b>, so \nwe grouped %count slices into the slice named <i>'others'<\/i>.<p>Why not use \na bar chart to allow better comparison of values?<\/p>":"Vos données contiennent <b>plus de valeurs que ne peuvent être affichées dans un graphique circulaire<\/b>. %count tranches ont été regroupées dans <i>autres<\/i>.<p>Pourquoi ne pas utiliser un graphique en barres pour permettre une meilleure comparaison des valeurs?<\/p>",
+  "Your data contains <b>more values than can be shown in a pie chart<\/b>, so \nwe grouped %count slices into the slice named <i>\"others\"<\/i>.<p>Why not \nuse a bar chart to allow better comparison of values?<\/p>":"Your data contains <b>more values than can be shown in a pie chart<\/b>, so \nwe grouped %count slices into the slice named <i>\"others\"<\/i>.<p>Why not \nuse a bar chart to allow better comparison of values?<\/p>",
   "Donut chart":"Graphique en anneau",
   "Show total value in center":"Afficher le total au centre",
   "Use custom total value instead of sum":"Utiliser une valeur personnalisée au lieu de la somme",

@@ -3,7 +3,7 @@
   "Base color":"Basiskleur",
   "other":"andere",
   "Pie charts are intended to show part-of-whole relations, and thus they \n<b>cannot be used to display negative numbers<\/b>. Please consider using a \ndifferent chart type instead (eg. a bar chart).":"Pie charts are intended to show part-of-whole relations, and thus they \n<b>cannot be used to display negative numbers<\/b>. Please consider using a \ndifferent chart type instead (eg. a bar chart).",
-  "Your data contains <b>more values than can be shown in a pie chart<\/b>, so \nwe grouped %count slices into the slice named <i>'others'<\/i>.<p>Why not use \na bar chart to allow better comparison of values?<\/p>":"Your data contains <b>more values than can be shown in a pie chart<\/b>, so \nwe grouped %count slices into the slice named <i>'others'<\/i>.<p>Why not use \na bar chart to allow better comparison of values?<\/p>",
+  "Your data contains <b>more values than can be shown in a pie chart<\/b>, so \nwe grouped %count slices into the slice named <i>\"others\"<\/i>.<p>Why not \nuse a bar chart to allow better comparison of values?<\/p>":"Your data contains <b>more values than can be shown in a pie chart<\/b>, so \nwe grouped %count slices into the slice named <i>\"others\"<\/i>.<p>Why not \nuse a bar chart to allow better comparison of values?<\/p>",
   "Donut chart":"Donut chart",
   "Show total value in center":"Show total value in center",
   "Use custom total value instead of sum":"Use custom total value instead of sum",

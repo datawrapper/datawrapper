@@ -34,15 +34,15 @@
 
 
 {% block gallerythumb %}
-    <li class="span3 chart" data-id="{{ chart.id }}">
-        <div data-id="{{ chart.id }}" data-bg="{{ chart.metadata.publish.background }}" data-w="{{ chart.metadata.publish['embed-width'] }}" data-h="{{ chart.metadata.publish['embed-height'] }}" class="thumbnail">
-            <h3><a href="/gallery/#/{{ chart.id }}" style="color:{% if  chart.metadata.publish.text %}{{ chart.metadata.publish.text }}{% else %}#000{% endif %};text-shadow:1px 1px 3px {% if  chart.metadata.publish.background %}{{ chart.metadata.publish.background }}{% else %}#fff{% endif %};">{% if chart.title != '' %}{{ chart.title | replace({'<br/>': ' - '}) | striptags }}{% else %}{{ chart.id }}{% endif %}</a></h3>
+<li class="span3 chart" data-id="{{ chart.id }}">
+    <div data-id="{{ chart.id }}" data-bg="{{ chart.metadata.publish.background }}" data-w="{{ chart.metadata.publish['embed-width'] }}" data-h="{{ chart.metadata.publish['embed-height'] }}" class="thumbnail">
+        <h3><a href="/gallery/#/{{ chart.id }}" style="color:{% if  chart.metadata.publish.text %}{{ chart.metadata.publish.text }}{% else %}#000{% endif %};text-shadow:1px 1px 3px {% if  chart.metadata.publish.background %}{{ chart.metadata.publish.background }}{% else %}#fff{% endif %};">{% if chart.title != '' %}{{ chart.title | replace({'<br/>': ' - '}) | striptags }}{% else %}{{ chart.id }}{% endif %}</a></h3>
 
-            <a href="/gallery/#/{{ chart.id }}" >
-                <img src="{% if chart.hasPreview %}//{{ DW_CHART_CACHE_DOMAIN }}/{{ chart.id }}/m.png{% else %}/static/plugins/gallery/nothumb.png{% endif %}" width="260" alt="" style="background:{{ chart.metadata.publish.background }}"></a>
-
-        </div>
-    </li>
+        <a href="{{ gallerythumb_url is defined ? gallerythumb_url : '/gallery' }}#/{{ chart.id }}">
+            <img src="{% if chart.hasPreview %}//{{ DW_CHART_CACHE_DOMAIN }}/{{ chart.id }}/m.png{% else %}/static/plugins/gallery/nothumb.png{% endif %}" width="260" alt="" style="background:{{ chart.metadata.publish.background }}">
+        </a>
+    </div>
+</li>
 {% endblock %}
 
 

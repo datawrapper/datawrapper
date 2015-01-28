@@ -1,6 +1,14 @@
 CHANGELOG
 ---------
 
+### 1.9.2
+* removed 'input format' dropdown in describe step
+* updated handsontable to version 0.12.3
+* bugfixes
+
+### 1.9.1
+* bugfixes
+
 ### 1.9.0
 * allow adding of notes below charts
 * grouping of vis options in chart editor

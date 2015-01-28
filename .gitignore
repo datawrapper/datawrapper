@@ -23,6 +23,7 @@ log.txt
 www/static/js/dw-2.0.min.js
 vendor/*
 node_modules/*
+assets/vendor/*
 scripts/lib/execute_jobs.lock
 
 scripts/execute_jobs.lock

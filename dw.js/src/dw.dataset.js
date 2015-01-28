@@ -39,7 +39,12 @@ dw.dataset = function(columns, opts) {
                 // single column by name
                 if (columnsByName[x] !== undefined) return columnsByName[x];
                 throw 'No column found with that name: "'+x+'"';
+            } else {
+                if (x < 0) {
+                    return;
+                }
             }
+
             // single column by index
             if (columns[x] !== undefined) return columns[x];
             throw 'No column found with that index: '+x;

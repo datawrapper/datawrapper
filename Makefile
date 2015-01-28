@@ -13,6 +13,8 @@ dw.js/dw-2.0.js: dw.js/src/*.js
 	cd dw.js
 	grunt
 
+assets: www/static/css/datawrapper.css www/static/css/chart.base.css
+
 # www/static/js/dw-2.0.js: dw.js/dw-2.0.js
 # 	@cp dw.js/dw-2.0.js www/static/js/
 
