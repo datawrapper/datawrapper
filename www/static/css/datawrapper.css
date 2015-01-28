@@ -439,6 +439,7 @@ html .btn-inverse {
   clear: both;
   font-family: 'Roboto', Helvetica, sans-serif;
   font-size: 12px;
+  padding-bottom: 10px;
 }
 .chart-editor.dw-create-describe .handsontable tr td {
   padding: 3px 6px;
@@ -501,8 +502,9 @@ html .btn-inverse {
 }
 .chart-editor.dw-create-describe .handsontable thead th:first-child:after {
   content: url(chart-editor/transpose.png);
-  position: relative;
-  top: 3px;
+  position: absolute;
+  left: 18px;
+  top: 6px;
 }
 .chart-editor.dw-create-describe .handsontable thead th:hover {
   background: #ddd;
