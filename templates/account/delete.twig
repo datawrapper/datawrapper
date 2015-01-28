@@ -71,7 +71,7 @@
                 if (r.status == 'ok') {
                     var cpwd = CryptoJS.HmacSHA256($('#confirm-pwd').val(), r.data.salt).toString();
                     $.ajax({
-                        url: '/api/users/'+uid+'?pwd='+cpwd,
+                        url: '/api/users/current?pwd='+cpwd,
                         type: 'DELETE',
                         data: JSON.stringify({
                             pwd: cpwd
