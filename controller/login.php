@@ -49,7 +49,7 @@ $app->post('/setup', function() use ($app) {
         $user->setCreatedAt(time());
         $user->setEmail($data->email);
         $user->setRole('admin');
-        $user->setPwd(secure_password($data->pwd));
+        $user->setPwd($data->pwd);
         $user->setLanguage(DatawrapperSession::getLanguage());
         $user->save();
 
