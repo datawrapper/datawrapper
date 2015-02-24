@@ -171,6 +171,9 @@ class DatawrapperHooks {
 
     // add more markup below sidebar in describe step
     const DESCRIBE_AFTER_SIDEBAR = 'describe_after_sidebar';
+
+    // executed whenever a new user is activated, params: $user
+    const USER_ACTIVATED = 'user_activated';
 }
 
 
