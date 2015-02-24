@@ -68,8 +68,9 @@ class DatawrapperPlugin_AdminUsers extends DatawrapperPlugin {
                 ->withColumn('COUNT(Chart.Id)', 'NbCharts')
                 ->groupBy('User.Id')
                 ->filterByDeleted(false);
-            if ($app->request()->params('q')) {
-                $query->filterByEmail('%' . $app->request()->params('q') . '%');
+            $q = $app->request()->params('q');
+            if ($q) {
+                $query->where('email LIKE "%' . $q . '%" OR name LIKE "%' . $q . '%"');
             }
             if (!$user->isSysAdmin()) {
                 $query->filterByRole('sysadmin', Criteria::NOT_EQUAL);
