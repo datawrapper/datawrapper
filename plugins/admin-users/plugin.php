@@ -75,6 +75,7 @@ class DatawrapperPlugin_AdminUsers extends DatawrapperPlugin {
                 $query->filterByRole('sysadmin', Criteria::NOT_EQUAL);
             }
             switch ($sort) {
+                case 'name': $query->orderByName('asc'); break;
                 case 'email': $query->orderByEmail('asc'); break;
                 case 'charts': $query->orderBy('NbCharts', 'desc'); break;
                 case 'created_at': $query->orderBy('createdAt', 'desc'); break;
