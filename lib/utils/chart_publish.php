@@ -90,7 +90,7 @@ function publish_html($user, $chart) {
 
     $static_path = get_static_path($chart);
     $seckey      = sha1($GLOBALS['dw_config']['secure_auth_key']);
-    $protocol    = !empty($_SERVER['HTTPS']) ? "https" : "http";
+    $protocol    = get_current_protocol();
     $url         = $protocol."://".$GLOBALS['dw_config']['domain'].'/chart/'.$chart->getID().'/preview?minify=1&seckey='.$seckey;
     $outf        = $static_path . '/index.html';
 

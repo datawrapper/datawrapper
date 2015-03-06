@@ -87,7 +87,7 @@ $app->post('/account/reset-password', function() use($app) {
         $user->setResetPasswordToken($token);
         $user->save();
 
-        $protocol = !empty($_SERVER['HTTPS']) ? "https" : "http";
+        $protocol = get_current_protocol();
         $passwordResetLink = $protocol . '://' . $GLOBALS['dw_config']['domain'] . '/account/reset-password/' . $token;
 
         include(ROOT_PATH . 'lib/templates/password-reset-email.php');
@@ -133,7 +133,7 @@ $app->post('/account/resend-activation', function() use($app) {
 
         // send email with activation key
         $domain   = $GLOBALS['dw_config']['domain'];
-        $protocol = !empty($_SERVER['HTTPS']) ? "https" : "http";
+        $protocol = get_current_protocol();
         $activationLink = $protocol . '://' . $domain . '/account/activate/' . $token;
 
         include(ROOT_PATH . 'lib/templates/activation-email.php');
@@ -168,9 +168,9 @@ $app->post('/account/resend-invitation', function() use($app) {
         if (empty($token)) {
             return error("token-invalid", _("This activation token is invalid. Your email address is probably already activated."));
         }
-        // variables for `templates/invitation-email.php` 
+        // variables for `templates/invitation-email.php`
         $domain         = $GLOBALS['dw_config']['domain'];
-        $protocol       = !empty($_SERVER['HTTPS']) ? "https" : "http";
+        $protocol       = get_current_protocol();
         $invitationLink = $protocol . '://' . $domain . '/account/invite/' . $token;
         $name           = $user->getEmail();
         include('../../lib/templates/invitation-email.php');
