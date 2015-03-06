@@ -94,13 +94,13 @@ function publish_html($user, $chart) {
     $url         = $protocol."://".$GLOBALS['dw_config']['domain'].'/chart/'.$chart->getID().'/preview?minify=1&seckey='.$seckey;
     $outf        = $static_path . '/index.html';
 
-    download($url,            $outf);
-    download($url.'&plain=1', $static_path.'/plain.html');
-    download($url.'&fs=1',    $static_path.'/fs.html');
-
     $chart->setPublishedAt(time() + 5);
     $chart->setLastEditStep(5);
     $chart->save();
+
+    download($url,            $outf);
+    download($url.'&plain=1', $static_path.'/plain.html');
+    download($url.'&fs=1',    $static_path.'/fs.html');
 
     $cdn_files[] = array($outf, $chart->getCDNPath() . 'index.html', 'text/html');
     $cdn_files[] = array($static_path . '/plain.html', $chart->getCDNPath() . 'plain.html', 'text/html');
