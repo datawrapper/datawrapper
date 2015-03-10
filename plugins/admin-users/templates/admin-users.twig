@@ -27,7 +27,7 @@
     <div class="confirm-delete hidden">{% trans "will be deleted. Continue?" %}</div>
 
     <form action="/admin/users" method="GET" class="pull-right form-horizontal">
-        <input type="text" name="q" value="{{ q }}" placeholder="Seach by email" /> <input type="submit" class="btn" value="Search" />
+        <input type="text" name="q" value="{{ q }}" placeholder="Seach by name or email" /> <input type="submit" class="btn" value="Search" />
     </form>
     <p>Below you find the complete list of users. You can search by email.</p>
 
@@ -58,7 +58,8 @@
         <thead>
             <tr>
                 <th><a href="?sort=id">#</a></th>
-                <th><a href="?sort=email">{% trans "Email" %}</a></th>
+                <th><a href="?sort=name">{% trans "Name" %}</a></th>
+                <th><a href="?sort=email">{% trans "Sign-In" %}</a></th>
                 <th>{% trans "Status" %}</th>
                 <th><a href="?sort=created_at">{% trans "Created at" %}</a></th>
                 <th class="center"><a href="?sort=charts">{% trans "Charts" %}</a></th>
@@ -70,6 +71,7 @@
             {% for user in users %}
                 <tr class="user {{ user.role }} {% if user.activateToken %}pending{% endif %}" data-id="{{ user.id }}">
                     <td class="id out"><a href="/admin/users/{{ user.id }}">{{ user.id }}</a></td>
+                    <td class="name out">{{ user.name ? user.name : '' }}</td>
                     <td class="email out">{{ user.email ? user.email : user.oauthSignin }}</td>
                     <td>
                         {% if user.isAdmin %}

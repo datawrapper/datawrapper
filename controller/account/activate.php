@@ -19,6 +19,8 @@ $app->get('/account/activate/:token', function ($token) use ($app) {
             $user->setRole('editor');
             $user->setActivateToken('');
             $user->save();
+            // notify plugins about the newly activated user
+            DatawrapperHooks::execute(DatawrapperHooks::USER_ACTIVATED, $user);
             $params = '?t=s&m='.urlencode(sprintf(__('Your email address %s has been successfully activated!'), $user->getEmail()));
         }
     }
@@ -50,6 +52,8 @@ $app->post('/account/invite/:token', function($token) use ($app) {
         $user->setPwd($data->pwd);
         $user->setActivateToken('');
         $user->save();
+        // notify plugins about the newly activated user
+        DatawrapperHooks::execute(DatawrapperHooks::USER_ACTIVATED, $user);
         DatawrapperSession::login($user);
         print json_encode(array('result' => 'ok'));
     });

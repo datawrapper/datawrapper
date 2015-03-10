@@ -89,16 +89,18 @@ function publish_html($user, $chart) {
     $cdn_files = array();
 
     $static_path = get_static_path($chart);
-    $protocol = !empty($_SERVER['HTTPS']) ? "https" : "http";
-    $url = $protocol."://".$GLOBALS['dw_config']['domain'].'/chart/'.$chart->getID().'/preview?minify=1';
-    $outf = $static_path . '/index.html';
-    download($url, $outf);
-    download($url . '&plain=1', $static_path . '/plain.html');
-    download($url . '&fs=1', $static_path . '/fs.html');
+    $seckey      = sha1($GLOBALS['dw_config']['secure_auth_key']);
+    $protocol    = get_current_protocol();
+    $url         = $protocol."://".$GLOBALS['dw_config']['domain'].'/chart/'.$chart->getID().'/preview?minify=1&seckey='.$seckey;
+    $outf        = $static_path . '/index.html';
 
     $chart->setPublishedAt(time() + 5);
     $chart->setLastEditStep(5);
     $chart->save();
+
+    download($url,            $outf);
+    download($url.'&plain=1', $static_path.'/plain.html');
+    download($url.'&fs=1',    $static_path.'/fs.html');
 
     $cdn_files[] = array($outf, $chart->getCDNPath() . 'index.html', 'text/html');
     $cdn_files[] = array($static_path . '/plain.html', $chart->getCDNPath() . 'plain.html', 'text/html');

@@ -1,6 +1,10 @@
 CHANGELOG
 ---------
 
+### 1.9.x
+* new hook USER_ACTIVATED
+* showing user names in user admin
+
 ### 1.9.2
 * removed 'input format' dropdown in describe step
 * updated handsontable to version 0.12.3

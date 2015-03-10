@@ -44,6 +44,13 @@ function secure_password($pwd) {
     }
 }
 
+function get_current_protocol() {
+    $ssl = isset($_SERVER['HTTPS']) ? $_SERVER['HTTPS'] : null;
+    $ssl = $ssl == 1 || strtolower($ssl) === 'on';
+
+    return $ssl ? 'https' : 'http';
+}
+
 /*
  * delete expired products
  */

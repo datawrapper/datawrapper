@@ -18,7 +18,7 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
 
     $theme_css = array();
     $theme_js = array();
-    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https" : "http";
+    $protocol = get_current_protocol();
 
     $next_theme_id = $chart->getTheme();
 

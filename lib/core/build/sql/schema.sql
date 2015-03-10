@@ -17,7 +17,7 @@ CREATE TABLE `chart`
     `created_at` DATETIME NOT NULL,
     `last_modified_at` DATETIME NOT NULL,
     `type` VARCHAR(200) NOT NULL,
-    `metadata` VARCHAR(4096) NOT NULL,
+    `metadata` LONGTEXT NOT NULL,
     `deleted` TINYINT(1) DEFAULT 0,
     `deleted_at` DATETIME,
     `author_id` INTEGER,
@@ -146,7 +146,7 @@ CREATE TABLE `session`
     `session_id` VARCHAR(32) NOT NULL,
     `date_created` DATETIME NOT NULL,
     `last_updated` DATETIME NOT NULL,
-    `session_data` VARCHAR(4096) NOT NULL,
+    `session_data` LONGTEXT NOT NULL,
     PRIMARY KEY (`session_id`)
 ) ENGINE=InnoDB;
 

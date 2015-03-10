@@ -94,7 +94,7 @@ $app->post('/users', function() use ($app) {
     // send an email
     $name     = $data->email;
     $domain   = $GLOBALS['dw_config']['domain'];
-    $protocol = !empty($_SERVER['HTTPS']) ? "https" : "http";
+    $protocol = get_current_protocol();
     if ($invitation) {
         // send account invitation link
         $invitationLink = $protocol . '://' . $domain . '/account/invite/' . $user->getActivateToken();
@@ -186,7 +186,7 @@ $app->put('/users/:id', function($user_id) use ($app) {
                         } else {
                             // non-admins need to confirm new emails addresses
                             $token = hash_hmac('sha256', $user->getEmail().'/'.$payload->email.'/'.time(), DW_TOKEN_SALT);
-                            $token_link = 'http://' . $GLOBALS['dw_config']['domain'] . '/account/profile?token='.$token;
+                            $token_link = get_current_protocol() . '://' . $GLOBALS['dw_config']['domain'] . '/account/profile?token='.$token;
                             // send email with token
                             require(ROOT_PATH . 'lib/templates/email-change-email.php');
 
