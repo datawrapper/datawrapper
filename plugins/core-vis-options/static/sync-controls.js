@@ -126,8 +126,9 @@ $(function() {
             formats = [],
             colids = args.vis.axes()[args.option.axis],
             colid = _.isArray(colids) ? colids[0] : colids,
-            axesCol = args.chart.dataset().column(colid);
+            axesCol = colid ? args.chart.dataset().column(colid) : null;
 
+        if (!colid) return;
         if (axesCol.type() == 'number') {
             formats = [
                 { l: '0', f: 'd' },
@@ -151,7 +152,7 @@ $(function() {
             ];
         }
 
-        var select = d3.select('#'+args.key);
+        var select = d3.select('#'+args.key).html('');
 
         select.selectAll('option')
             .data(formats)
@@ -164,7 +165,7 @@ $(function() {
             args.chart.set('metadata.visualize.'+args.key, select.node().value);
         });
 
-        select.node().value = curVal || formats[0].f;
+        select.node().value = curVal || formats.length ? formats[0].f : '';
     }
 
     dw.backend.on('sync-option:select', syncValue);
