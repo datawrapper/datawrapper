@@ -120,6 +120,53 @@ $(function() {
         }
     }
 
+
+    function syncCustomFormat(args) {
+        var curVal = args.chart.get('metadata.visualize.'+args.key),
+            formats = [],
+            colids = args.vis.axes()[args.option.axis],
+            colid = _.isArray(colids) ? colids[0] : colids,
+            axesCol = args.chart.dataset().column(colid);
+
+        if (axesCol.type() == 'number') {
+            formats = [
+                { l: '0', f: 'd' },
+                { l: '0.0', f: '.1f' },
+                { l: '0.00', f: '.2f' },
+                { l: '0.000', f: '.3f' },
+                { l: '1 sign. digit', f: '.1r' },
+                { l: '2 sign. digits', f: '.2r' },
+                { l: '3 sign. digits', f: '.3r' },
+                { l: '0%', f: '%' },
+                { l: '0k', f: '.0s' },
+                { l: '0.0k', f: '.1s' },
+            ];
+        } else if (axesCol.type() == 'date') {
+            formats = [
+                { l: '2015', f: '%Y' },
+                { l: '’15', f: '’%y' },
+                { l: 'April', f: '%B' },
+                { l: 'Apr', f: '%b' },
+                { l: 'Apr ’15', f: '%b ’%y' }
+            ];
+        }
+
+        var select = d3.select('#'+args.key);
+
+        select.selectAll('option')
+            .data(formats)
+            .enter()
+            .append('option')
+            .attr('value', function(d) { return d.f; })
+            .text(function(d) { return d.l; });
+
+        select.on('change', function(d) {
+            args.chart.set('metadata.visualize.'+args.key, select.node().value);
+        });
+
+        select.node().value = curVal || formats[0].f;
+    }
+
     dw.backend.on('sync-option:select', syncValue);
     dw.backend.on('sync-option:text', syncValue);
     dw.backend.on('sync-option:textarea', syncValue);
@@ -127,6 +174,7 @@ $(function() {
     dw.backend.on('sync-option:radio', syncRadio);
     dw.backend.on('sync-option:radio-left', syncRadio);
     dw.backend.on('sync-option:custom-range', syncCustomRange);
+    dw.backend.on('sync-option:custom-format', syncCustomFormat);
 
     // column select
     dw.backend.on('sync-option:select-axis-column', syncSelectAxisColumn);
