@@ -131,7 +131,7 @@ $(function() {
         if (!colid) return;
         if (axesCol.type() == 'number') {
             formats = [
-                { l: '0', f: 'd' },
+                { l: '0', f: 'f' },
                 { l: '0.0', f: '.1f' },
                 { l: '0.00', f: '.2f' },
                 { l: '0.000', f: '.3f' },
@@ -139,8 +139,9 @@ $(function() {
                 { l: '2 sign. digits', f: '.2r' },
                 { l: '3 sign. digits', f: '.3r' },
                 { l: '0%', f: '%' },
-                { l: '0k', f: '.0s' },
-                { l: '0.0k', f: '.1s' },
+                { l: '0k', f: '.1s' },
+                { l: '0.0k', f: '.2s' },
+                { l: '0.00k', f: '.3s' },
             ];
         } else if (axesCol.type() == 'date') {
             formats = [
