@@ -84,11 +84,4 @@
         <input type="text" class="max" placeholder="max" />
     </div>
 
-{% elseif option.type == 'custom-format' %}
-
-    <label class="control-label">{{ option.label | raw }}:</label>
-    <div class="controls">
-        <select id="{{ key }}"></select>
-    </div>
-
 {% endif %}
