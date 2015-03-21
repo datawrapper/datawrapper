@@ -4,6 +4,7 @@ CHANGELOG
 ### 1.9.x
 * new hook USER_ACTIVATED
 * showing user names in user admin
+* fixed chart snapshots with svg charts and external css
 
 ### 1.9.2
 * removed 'input format' dropdown in describe step
