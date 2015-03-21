@@ -1,6 +1,18 @@
 
 define(function() {
 
+
+    var prefix = {
+        xmlns: "http://www.w3.org/2000/xmlns/",
+        xlink: "http://www.w3.org/1999/xlink",
+        svg: "http://www.w3.org/2000/svg"
+    };
+
+    // add empty svg element
+    var emptySvg = window.document.createElementNS(prefix.svg, 'svg');
+    window.document.body.appendChild(emptySvg);
+    var emptySvgDeclarationComputed = getComputedStyle(emptySvg);
+
     /*
      * creates a client-side PNG snapshop of a chart in a given iframe
      * and sends it to the Datawrapper API right after
@@ -25,12 +37,17 @@ define(function() {
         var canvas = document.createElement("canvas"),
             ctx = canvas.getContext("2d");
 
+
         canvas.width = c.w * scale;
         canvas.height = c.h * scale;
 
         ctx.fillStyle = win.__dw.vis.theme().colors.background;
         ctx.fillRect(0, 0, c.w * scale, c.h * scale);
-        var svg_src = vis._svgCanvas().innerSVG;
+        var svg = vis._svgCanvas();
+
+        setInlineStyles(svg);
+
+        var svg_src = svg.innerSVG;
         // remove url fills
         svg_src = svg_src.replace(/fill="url\([^\)]+\)"/g, 'fill="#cccccc"')
                     .replace(/<pattern.*<\/pattern>/g, '');
@@ -50,12 +67,52 @@ define(function() {
             type: 'PUT',
             data: imgData,
             processData: false,
-            dataType: 'json',
             success: function(res) {
                 if (res.status == "ok") (callback || function() {})();
                 else console.error(res);
             }
         });
     };
+
+    function setInlineStyles(svg) {
+
+        function explicitlySetStyle (element) {
+          var cSSStyleDeclarationComputed = getComputedStyle(element);
+          var i, len, key, value;
+          var computedStyleStr = "";
+          for (i=0, len=cSSStyleDeclarationComputed.length; i<len; i++) {
+            key=cSSStyleDeclarationComputed[i];
+            value=cSSStyleDeclarationComputed.getPropertyValue(key);
+            if (value!==emptySvgDeclarationComputed.getPropertyValue(key)) {
+              computedStyleStr+=key+":"+value+";";
+            }
+          }
+          element.setAttribute('style', computedStyleStr);
+        }
+        function traverse(obj){
+          var tree = [];
+          tree.push(obj);
+          visit(obj);
+          function visit(node) {
+            if (node && node.hasChildNodes()) {
+              var child = node.firstChild;
+              while (child) {
+                if (child.nodeType === 1 && child.nodeName != 'SCRIPT'){
+                  tree.push(child);
+                  visit(child);
+                }
+                child = child.nextSibling;
+              }
+            }
+          }
+          return tree;
+        }
+        // hardcode computed css styles inside svg
+        var allElements = traverse(svg);
+        var i = allElements.length;
+        while (i--){
+          explicitlySetStyle(allElements[i]);
+        }
+      }
 
 });
