@@ -278,6 +278,7 @@ define(['handsontable'], function(handsontable) {
 
             $('#data-preview .ht_clone_corner.handsontable table div').off('click').on('click', function() {
                 chart.set('metadata.data.transpose', !chart.get('metadata.data.transpose', false));
+                ht.render();
             });
 
             function isNone(val) {
