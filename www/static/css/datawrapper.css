@@ -1827,7 +1827,7 @@ form.well form {
   background-position: -96px 0;
 }
 .hide-smart {
-  position: absolute;
+  position: absolute!important;
   left: -10000px;
   top: 0;
   width: 100%;
