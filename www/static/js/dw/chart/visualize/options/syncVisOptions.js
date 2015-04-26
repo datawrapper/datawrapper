@@ -112,8 +112,8 @@ define(function() {
                         }
                     });
                 }
-                if (visible) $('#vis-options-'+key).removeClass('hidden');
-                else $('#vis-options-'+key).addClass('hidden');
+                if (visible) $('#vis-options-'+key).removeClass('hide-smart');
+                else $('#vis-options-'+key).addClass('hide-smart');
             });
         }
     };
