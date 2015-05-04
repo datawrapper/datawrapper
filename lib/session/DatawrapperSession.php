@@ -19,7 +19,7 @@ class DatawrapperSession {
     /**
      * creates a new instance
      */
-    function __construct() {
+    public function __construct() {
         $this->initUser();
     }
 
@@ -72,59 +72,92 @@ class DatawrapperSession {
         return self::getInstance()->_toArray();
     }
 
-    private static function getDefaultLanguage() {
+    private static function getDefaultLocale() {
         if (!empty($GLOBALS['dw_config']['languages'])) {
-            return substr($GLOBALS['dw_config']['languages'][0]['id'], 0, 2);
+            return $GLOBALS['dw_config']['languages'][0]['id'];
         }
-        return 'en';
+
+        return 'en_US';
     }
 
-    private static function checkLanguageInConfig($locale) {
+    private static function getConfiguredLocales() {
+        $locales = array('en_US');
+
         if (!empty($GLOBALS['dw_config']['languages'])) {
-            $configured_languages = array();
             foreach ($GLOBALS['dw_config']['languages'] as $loc) {
-                $configured_languages[] = substr($loc['id'], 0, 2);
+                $locales[] = str_replace('-', '_', $loc['id']);
             }
-        } else {
-            $configured_languages = array('en');
+
+            $locales = array_values(array_unique($locales));
         }
-        return in_array(substr($locale, 0, 2), $configured_languages);
+
+        return $locales;
+    }
+
+    private static function getAvailableLocales() {
+        $locales = array('en_US');
+
+        foreach (glob(ROOT_PATH . 'locale/*_*.json') as $l) {
+            $locales[] = substr(basename($l), 0, 5);
+        }
+
+        if (count($locales) > 1) {
+            $locales = array_values(array_unique($locales));
+        }
+
+        return $locales;
     }
 
     public static function getBrowserLocale() {
-        // get list of available locales
-        $available_locales = array('en_US');
-        foreach (glob(ROOT_PATH . 'locale/*_*.json') as $l) {
-            $available_locales[] = substr($l, 10, 5);
-        }
-        // filter out locales that are not defined in
-        // config.languages
+        $configured_locales = self::getConfiguredLocales();
+        $available_locales  = self::getAvailableLocales();
+        $usable_locales     = array_intersect($configured_locales, $available_locales);
 
+        // filter out locales that are not defined in config.languages
         $locales = isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']) : array();
+
         foreach ($locales as $loc) {
-            $parts = explode(';', $loc);
-            $pp = explode('-', $parts[0]);
-            if (count($pp) > 1) $pp[1] = strtoupper($pp[1]);
-            $locale = implode('_', $pp);
-            if (in_array($locale, $available_locales)
-                && self::checkLanguageInConfig($locale)) return $locale;  // match!
+            $parts    = explode(';', $loc, 2);
+            $pp       = explode('-', $parts[0], 2);
+            $language = strtolower($pp[0]);
+
+            if (count($pp) > 1) {
+                $locale = $language.'_'.strtoupper($pp[1]);
+
+                if (in_array($locale, $usable_locales)) {
+                    return $locale;
+                }
+            }
+
+            foreach ($usable_locales as $locale) {
+                if (substr($locale, 0, 2) === $language) {
+                    return $locale;
+                }
+            }
         }
-        return self::getDefaultLanguage();
+
+        return self::getDefaultLocale();
     }
 
     /**
-     * retreive the currently used frontend language
+     * retreive the currently used frontend locale
+     *
+     * For historical reasons, this is named getLanguage(), even though it always returned the
+     * full locale and all places where it's called actually do a substr(_,0,2) themselves.
      */
     public static function getLanguage() {
         // use language set via ?lang=, if set
-        if (!empty($_GET['lang'])) return substr($_GET['lang'],0,2);
+        if (!empty($_GET['lang'])) return str_replace('-', '_', substr($_GET['lang']));
+
         // otherwise use user preference, or browser language
         if (self::getUser()->isLoggedIn()) {
             return self::getUser()->getLanguage();
-        } else {
-            return isset($_SESSION['dw-lang']) ? $_SESSION['dw-lang'] : self::getBrowserLocale();
         }
-        return self::getDefaultLanguage();
+        elseif (isset($_SESSION['dw-lang'])) {
+            return $_SESSION['dw-lang'];
+        }
+
+        return self::getBrowserLocale();
     }
 
     /**
