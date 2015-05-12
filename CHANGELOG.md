@@ -5,6 +5,8 @@ CHANGELOG
 * new hook USER_ACTIVATED
 * showing user names in user admin
 * fixed chart snapshots with svg charts and external css
+* removed admin-dashboard from core
+* always redirecting from /admin to first admin page
 
 ### 1.9.2
 * removed 'input format' dropdown in describe step
