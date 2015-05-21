@@ -247,7 +247,7 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
             var dim = $(e.target).html().split('×');
             $('#resize-w').val(dim[0]);
             $('#resize-h').val(dim[1]);
-            updateSize();
+            updateSize(dim[0], dim[1]);
         });
     }
 
