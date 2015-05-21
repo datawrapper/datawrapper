@@ -2,13 +2,13 @@
  * special styles for bar charts
  */
 
-html body #footer {
+html .chart #footer {
     position: relative;
     top: auto;
     left: auto;
 }
 
-html body #footer .footer-left { left: 0;}
+html .chart #footer .footer-left { left: 0;}
 
 .chart.vis-bar-chart {
     overflow-x: hidden;
