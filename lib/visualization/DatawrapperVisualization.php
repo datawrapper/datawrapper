@@ -43,6 +43,7 @@ class DatawrapperVisualization {
         // we save the path to the static files of the visualization
         $meta['__static_path'] =  '/static/plugins/' . $plugin->getName() . '/';
         $meta['version'] = $plugin->getVersion();
+        if (!isset($meta['id'])) return;
         $icon = $meta['__static_path'] . '/' . $meta['id'];
         if (file_exists(ROOT_PATH . 'www/' . $icon . '.svg')) {
             $meta['icon'] = file_get_contents(ROOT_PATH . 'www/' . $icon . '.svg');

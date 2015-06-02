@@ -64,7 +64,7 @@ $app->hook('slim.before.router', function () use ($app, $dw_config) {
 
     // allow access if a proper secret is given (required for publishing charts
     // (see download()) in private installations)
-    $requiredKey = sha1($dw_config['secure_auth_key']);
+    $requiredKey = sha1(isset($dw_config['secure_auth_key']) ? $dw_config['secure_auth_key'] : '');
     $givenKey    = isset($_REQUEST['seckey']) ? $_REQUEST['seckey'] : null;
 
     if ($requiredKey === $givenKey) return;

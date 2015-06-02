@@ -5,13 +5,10 @@
  *
  */
 
-body, html {
-
-}
 
 a { color: #0088CC; }
 
-body.chart {
+.chart {
     font-family: Helvetica Neue, Arial;
     font-weight: 400;
     font-size: 12px;
@@ -34,7 +31,7 @@ a img { border:0px; }
 
 .chart p { margin: 5px 0 10px!important; line-height: 17px;}
 
-#chart {
+#chart, .dw-chart-body {
     margin-top: 10px;
 }
 
@@ -121,7 +118,7 @@ a img { border:0px; }
     margin-top: 10px;
 }
 
-#footer {
+#footer, .dw-chart-footer {
     font-size: 11px;
     color: #888;
     /* The footer must now cover the chart to allow
@@ -131,20 +128,21 @@ a img { border:0px; }
     background:transparent;
 }
 
-.chart.theme-default #footer .footer-left {
+.chart.theme-default .dw-chart-footer .footer-left {
     left: 0;
 }
 
 
-#footer .footer-left {
+#footer .footer-left,
+.dw-chart-footer .footer-left {
     bottom:0;
     /* Vertical text align */
 }
 
 /* We have to break to absolute positionof the footer
-to allow absolute positioning related to the #footer
+to allow absolute positioning related to the .dw-chart-footer
 within the .toggleable-panel */
-#footer .footer-right {
+.dw-chart-footer .footer-right {
     position: absolute;
     bottom: 0;
     right: 0;
@@ -153,18 +151,17 @@ within the .toggleable-panel */
 
 /* Target screens under 400px */
 @media all and (max-width: 400px) {
-    /* We must compensate the right offset
-    that we just removed by adding this distances to
-    the .toggle-panel element (that toggles the about panel).
-    We choose to user padding to enlarge the touchable area.  */
 
+    .chart .dw-chart-footer,
     .chart #footer { height: auto; }
 
-    .chart #footer .footer-left {
+    .chart #footer .footer-left,
+    .chart .dw-chart-footer .footer-left {
         position: static;
     }
 
-    .chart #footer .footer-right {
+    .chart #footer .footer-right,
+    .chart .dw-chart-footer .footer-right {
         position:static;
         float:none;
         text-align:left;
