@@ -5,16 +5,14 @@
 
 {% elseif option.type == 'radio' %}
 
-    <div class="control-group">
-        <label class="control-label" for="{{ key }}">{{ option.label|raw }}</label>
-        {% for opt in option.options %}
-        <div class="controls form-inline">
-            <label class="radio">
-                <input type="radio" name="{{ key }}" value="{{ opt.value }}" {% if opt.default %}checked="checked" {% endif %}/>&nbsp;{{ opt.label }}
-            </label>
-        </div>
-        {% endfor %}
-     </div>
+    <label class="control-label" for="{{ key }}">{{ option.label|raw }}</label>
+    {% for opt in option.options %}
+    <div class="controls form-inline">
+        <label class="radio">
+            <input type="radio" name="{{ key }}" value="{{ opt.value }}" {% if opt.default %}checked="checked" {% endif %}/>&nbsp;{{ opt.label }}
+        </label>
+    </div>
+    {% endfor %}
 
 {% elseif option.type == 'radio-left' %}
 

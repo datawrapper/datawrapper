@@ -510,7 +510,7 @@ html .btn-inverse {
   background: #ddd;
 }
 .chart-editor.dw-create-describe .handsontable thead th:first-child:active {
-  background: red;
+  background: #999;
 }
 .chart-editor.dw-create-describe .handsontable thead tr th + th div:after {
   content: " " url(chart-editor/selection-off.png);
@@ -1827,7 +1827,7 @@ form.well form {
   background-position: -96px 0;
 }
 .hide-smart {
-  position: absolute;
+  position: absolute!important;
   left: -10000px;
   top: 0;
   width: 100%;

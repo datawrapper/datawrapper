@@ -48,6 +48,13 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
         initVisSelector();
         initResizeChart();
         initChartSize();
+
+        $(window).on('keyup', function(e) {
+            if (e.ctrlKey && e.keyCode == 82) {
+                // reload iframe on ctrl+r
+                iframe.get(0).contentWindow.location.reload();
+            }
+        });
     }
 
     function onChartSave(chart) {
@@ -240,7 +247,7 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
             var dim = $(e.target).html().split('×');
             $('#resize-w').val(dim[0]);
             $('#resize-h').val(dim[1]);
-            updateSize();
+            updateSize(dim[0], dim[1]);
         });
     }
 

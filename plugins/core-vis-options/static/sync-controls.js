@@ -120,6 +120,7 @@ $(function() {
         }
     }
 
+
     dw.backend.on('sync-option:select', syncValue);
     dw.backend.on('sync-option:text', syncValue);
     dw.backend.on('sync-option:textarea', syncValue);

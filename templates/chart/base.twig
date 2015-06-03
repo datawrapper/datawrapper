@@ -33,8 +33,8 @@
 </div>
 
 {% if user != chart.user and user.isAdmin() %}
-<div class="alert alert-danger" style="text-align:center">
- {{ "<b>CAUTION!</b> This chart belongs to <a href='/admin/charts/%uid'>%email</a>. Great power comes with great responsibility, so be careful with what you're doing!" | trans
+<div class="alert alert-warning" style="text-align:center;margin-top:10px;">
+ {{ "This chart belongs to <a href='/admin/charts/%uid'>%email</a>. Great power comes with great responsibility, so be careful with what you're doing!" | trans
     | replace({"%email": chart.user.email, "%uid": chart.user.id }) | raw }}
 </div>
 {% endif %}

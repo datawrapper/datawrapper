@@ -49,14 +49,32 @@ class ChartQuery extends BaseChartQuery {
                 $def_org_theme = $org->getDefaultTheme();
                 if (!empty($def_org_theme) && DatawrapperTheme::get($def_org_theme)) {
                     $chart->setTheme($def_org_theme);
+                    $theme = DatawrapperTheme::get($def_org_theme);
+
+                    if (isset($theme['default_width'])) {
+                        $def_org_theme_default_width = $theme['default_width'];
+                    }
+                    
+                    if (isset($theme['default_height'])) {
+                        $def_org_theme_default_height = $theme['default_height'];
+                    }
                 }
             }
         }
+	
         $chart->setLocale(''); // no default locale
         $chart->setType(isset($defaults['vis']) ? $defaults['vis'] : 'bar-chart');
         $chart->setPublicUrl($chart->getLocalUrl());
 
         $defaultMeta = Chart::defaultMetaData();
+
+        if (isset($def_org_theme_default_width)) {
+            $defaultMeta['publish']['embed-width'] = $def_org_theme_default_width;
+        }
+
+        if (isset($def_org_theme_default_height)) {
+            $defaultMeta['publish']['embed-height'] = $def_org_theme_default_height;
+        }
 
         $chart->setMetadata(json_encode($defaultMeta));
         // $chart->setLanguage($user->getLanguage());  // defaults to user language

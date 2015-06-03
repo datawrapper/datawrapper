@@ -1,9 +1,20 @@
 CHANGELOG
 ---------
 
-### 1.9.x
+### 1.9.4
+* allow setting of relative chart widths (e.g. 100%)
+* reload chart iframe on ctrl-r
+* updated marriages dataset
+* improved chart thumbnail generation
+* removed admin-dashboard from core
+* always redirecting from /admin to first admin page
+* several bugfixes and performance improvements
+
+### 1.9.3
 * new hook USER_ACTIVATED
+* improve SSL support with complex webserver/proxy setups
 * showing user names in user admin
+* a couple of bugfixes
 
 ### 1.9.2
 * removed 'input format' dropdown in describe step
