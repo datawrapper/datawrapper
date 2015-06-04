@@ -3,27 +3,36 @@
 /* health check */
 
 function check_path_permissions() {
-    $paths = array();
-    $rel = '..';
-    $paths[] = '/charts/static';
-    $paths[] = '/charts/data';
-    $paths[] = '/charts/images';
-    $paths[] = '/charts/data/tmp';
-    $paths[] = '/tmp';
+    $paths       = array();
+    $rel         = '..';
+    $publishRoot = chart_publish_directory();
+
+    $paths[] = $publishRoot.'static';
+    $paths[] = $publishRoot.'data';
+    $paths[] = $publishRoot.'images';
+    $paths[] = $publishRoot.'data/tmp';
+    $paths[] = ROOT_PATH.'tmp';
+
     $err = array();
     foreach ($paths as $path) {
-        if (!is_writable($rel . $path)) $err[] = $path;
+        if (!is_writable($path)) {
+            $err[] = $path;
+        }
     }
+
     if (count($err) > 0) {
         $msg = '<h2>The following folders on your server need to be writable:</h2><ul>';
+
         foreach ($paths as $path) {
-            # code...
-            $msg .= '<li><code>'.dirname(dirname(dirname(__FILE__))).$path.'</code></li>';
+            $msg .= '<li><code>'.htmlspecialchars($path, ENT_QUOTES, 'UTF-8').'</code></li>';
         }
+
         $msg .= '</ul>';
         $msg .= 'Read more about <a href="http://codex.wordpress.org/Changing_File_Permissions#Using_an_FTP_Client">how to change file permissions</a>';
+
         return $msg;
     }
+
     return '';
 }
 
@@ -71,7 +80,7 @@ function check_database() {
         return '<h2>Database is not initialized or corrupt</h2>'
             . '<p>The database could be accessed but seems not be initialized correctly. '
             . 'The following tables are missing:</p>'
-            . '<ul><li><code>' . join('</li></code><li><code>', $missingTables) . '</code></li></ul>'
+            . '<ul><li><code>' . implode('</li></code><li><code>', $missingTables) . '</code></li></ul>'
             . '<p>Have you run the DB initialization in <code>lib/core/build/sql/schema.sql</code>?</p>';
     }
     return '';

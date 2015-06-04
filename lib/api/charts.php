@@ -170,7 +170,7 @@ $app->post('/charts/:id/data', function($chart_id) use ($app) {
         $sizeLimit         = 2 * 1024 * 1024; // byte
 
         $uploader = new qqFileUploader($allowedExtensions, $sizeLimit);
-        $result   = $uploader->handleUpload('../../charts/data/tmp/');
+        $result   = $uploader->handleUpload(chart_publish_directory().'data/tmp/');
 
         // check and correct file encoding
         $detect_encoding = function($string) {
