@@ -94,7 +94,7 @@ class Chart extends BaseChart {
     /**
      * get the path where this charts data file is stored
      */
-    protected function getDataPath() {
+    public function getDataPath() {
         $path = ROOT_PATH . 'charts/data/' . $this->getCreatedAt('Ym');
         return $path;
     }
