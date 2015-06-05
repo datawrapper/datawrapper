@@ -3,8 +3,10 @@
 define(['./updateSize'], function(updateSize) {
 
     return function() {
-        var iframe = $('#iframe-vis').contents(),
-            vis_h = iframe.height(),
+        var iframe = $('#iframe-vis').contents();
+        if (!iframe.get(0)) return; // content not loaded yet
+
+        var vis_h = iframe.height(),
             vis_w = iframe.width(),
             iframe_h = $('#iframe-vis').height(),
             iframe_w = $('#iframe-vis').width(),
