@@ -19,6 +19,7 @@ define(function() {
      */
     return function(iframe, chart_id, thumb_id, width, height, callback) {
 
+        return; // disabling snapshots as quick bugfix
         function px(s) { return Math.floor(Number(s.substr(0, s.length-2))); }
 
         var body = iframe.get(0).contentDocument,
