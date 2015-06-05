@@ -99,7 +99,7 @@ class Chart extends BaseChart {
         return $path;
     }
 
-    protected function getStaticPath() {
+    public function getStaticPath() {
         $path = chart_publish_directory() . 'static/' . $this->getID();
         return $path;
     }
