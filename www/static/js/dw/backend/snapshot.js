@@ -69,7 +69,7 @@ define(function() {
             processData: false,
             success: function(res) {
                 if (res.status == "ok") (callback || function() {})();
-                else console.error(res);
+                else console.log('error:', res.message);
             }
         });
     };
