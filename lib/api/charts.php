@@ -298,16 +298,17 @@ $app->put('/charts/:id/thumbnail/:thumb', function($chart_id, $thumb) use ($app)
             $imgdata = base64_decode(substr($imgurl, strpos($imgurl, ",") + 1));
             $static_path = get_static_path($chart);
             file_put_contents($static_path . "/" . $thumb . '.png', $imgdata);
-            DatawrapperHooks::execute(DatawrapperHooks::PUBLISH_FILES, array(
-                array(
-                    $static_path . "/" . $thumb . '.png',
-                    $chart->getID() . '/' . $thumb . '.png',
-                    'image/png'
-                )
-            ));
+            // DatawrapperHooks::execute(DatawrapperHooks::PUBLISH_FILES, array(
+            //     array(
+            //         $static_path . "/" . $thumb . '.png',
+            //         $chart->getID() . '/' . $thumb . '.png',
+            //         'image/png'
+            //     )
+            // ));
             ok();
         } catch (Exception $e) {
-            error('io-error', $e->getMessage());
+            print $e;
+            error('io-error', $e);
         }
     });
 });
