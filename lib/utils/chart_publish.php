@@ -54,7 +54,7 @@ function _setPublishStatus($chart, $status) {
     if (isset($_GLOBALS['dw-config']['memcache'])) {
         $memcache->set('publish-status-' . $chart->getID(), round($status*100));
     } else {
-        file_put_contents(ROOT_PATH . 'charts/tmp/publish-status-' . $chart->getID(), round($status*100));
+        file_put_contents(chart_publish_directory() . 'tmp/publish-status-' . $chart->getID(), round($status*100));
     }
 }
 
@@ -62,7 +62,7 @@ function _getPublishStatus($chart) {
     if (isset($_GLOBALS['dw-config']['memcache'])) {
         return $memcache->get('publish-status-' . $chart->getID());
     } else {
-        $fn = ROOT_PATH . 'charts/tmp/publish-status-' . $chart->getID();
+        $fn = chart_publish_directory() . 'tmp/publish-status-' . $chart->getID();
         if (!file_exists($fn)) return false;
         return file_get_contents($fn);
     }
@@ -73,12 +73,12 @@ function _clearPublishStatus($chart) {
         global $memcache;
         $memcache->delete('publish-status-' . $chart->getID());
     } else {
-        unlink(ROOT_PATH . 'charts/tmp/publish-status-' . $chart->getID());
+        unlink(chart_publish_directory() . 'tmp/publish-status-' . $chart->getID());
     }
 }
 
 function get_static_path($chart) {
-    $static_path = ROOT_PATH . "charts/static/" . $chart->getID();
+    $static_path = $chart->getStaticPath();
     if (!is_dir($static_path)) {
         mkdir($static_path);
     }
@@ -113,7 +113,7 @@ function publish_html($user, $chart) {
 
 function publish_js($user, $chart) {
     $cdn_files = array();
-    $static_path = ROOT_PATH . 'charts/static/lib/';
+    $static_path = chart_publish_directory() . 'static/lib/';
     $data = get_chart_content($chart, $user, false, '../');
 
     // generate visualization script
@@ -270,4 +270,20 @@ function download($url, $outf) {
         $html = file_get_contents($url, false, $context);
         file_put_contents($outf, $html);
     }
+}
+
+function chart_publish_directory() {
+    $dir = ROOT_PATH.'charts';
+
+    if (isset($_GLOBALS['dw-config']['publish_directory'])) {
+        $dir = $_GLOBALS['dw-config']['publish_directory'];
+    }
+
+    if (!is_dir($dir)) {
+        if (!@mkdir($dir, 0755, true)) {
+            throw new RuntimeException('Could not create chart publish directory "'.$dir.'". Please create it manually and make sure PHP can write to it.');
+        }
+    }
+
+    return rtrim(realpath($dir), DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
 }

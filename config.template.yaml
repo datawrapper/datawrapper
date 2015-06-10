@@ -65,6 +65,11 @@ footer_links:
 ## libraries such as globalize.js.
 # asset_domain: assets-datawrapper.s3.amazonaws.com
 
+## This is the directory where locally published files will be stored.
+## If you do not define this, the `charts` directory within datawrapper
+## will be used.
+# publish_directory: /full/path/to/where/charts/should/be/published/
+
 ## to use a custom home page in your installation
 ## uncomment the following setting and create a new
 ## Twig template (e.g. my-home.twig) in /templates/custom/

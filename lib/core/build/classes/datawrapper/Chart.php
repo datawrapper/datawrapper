@@ -95,12 +95,12 @@ class Chart extends BaseChart {
      * get the path where this charts data file is stored
      */
     public function getDataPath() {
-        $path = ROOT_PATH . 'charts/data/' . $this->getCreatedAt('Ym');
+        $path = chart_publish_directory() . 'data/' . $this->getCreatedAt('Ym');
         return $path;
     }
 
     public function getStaticPath() {
-        $path = ROOT_PATH . 'charts/static/' . $this->getID();
+        $path = chart_publish_directory() . 'static/' . $this->getID();
         return $path;
     }
 
@@ -285,7 +285,7 @@ class Chart extends BaseChart {
     public function redirectPreviousVersions() {
         $current_target = $this->getCDNPath();
         $redirect_html = '<html><head><meta http-equiv="REFRESH" content="0; url=/'.$current_target.'"></head></html>';
-        $redirect_file = ROOT_PATH . 'charts/static/' . $this->getID() . '/redirect.html';
+        $redirect_file = chart_publish_directory() . 'static/' . $this->getID() . '/redirect.html';
         file_put_contents($redirect_file, $redirect_html);
         $files = array();
         for ($v=0; $v < $this->getPublicVersion(); $v++) {

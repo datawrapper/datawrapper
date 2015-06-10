@@ -1,6 +1,10 @@
 CHANGELOG
 ---------
 
+### 1.9.5
+* the chart publish directory can now be configured
+* minor bugfixes
+
 ### 1.9.4
 * allow setting of relative chart widths (e.g. 100%)
 * reload chart iframe on ctrl-r
