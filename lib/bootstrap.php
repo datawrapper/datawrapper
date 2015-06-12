@@ -104,3 +104,6 @@ if (isset($dw_config['memcache'])) {
 }
 
 DatawrapperPluginManager::load();
+
+// notify the core that all plugins are loaded
+DatawrapperHooks::execute(DatawrapperHooks::ALL_PLUGINS_LOADED);
