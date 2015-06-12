@@ -10,6 +10,8 @@ define(function() {
 
     // add empty svg element
     var emptySvg = window.document.createElementNS(prefix.svg, 'svg');
+    emptySvg.setAttribute('width', 1);
+    emptySvg.setAttribute('height', 1);
     window.document.body.appendChild(emptySvg);
     var emptySvgDeclarationComputed = getComputedStyle(emptySvg);
 
