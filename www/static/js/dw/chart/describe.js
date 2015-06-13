@@ -329,7 +329,7 @@ define(['handsontable'], function(handsontable) {
         } // end updateTable()
 
         function reload(f) {
-            chart.load().done(function(ds) {
+            chart.load(dw.backend.__currentData).done(function(ds) {
                 dataset = ds;
                 updateTable();
             });

@@ -79,7 +79,7 @@
                 .locale(__dw.params.chartLocale)
                 .metricPrefix(__dw.params.metricPrefix)
                 .theme(dw.theme(__dw.params.themeId));
-        return chart.load();
+        return chart.load(__dw.params.data);
     }
 
     function getVis() {
@@ -144,7 +144,9 @@
                 window.location.href = 'static.html';
                 return;
             }
-            $.when($.ready(), chartLoaded()).done(renderChart);
+            $(function() {
+                chartLoaded().done(renderChart);
+            });
         },
         render: reloadLater
     };

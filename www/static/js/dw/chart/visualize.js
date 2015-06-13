@@ -39,7 +39,7 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
 
         syncUI();
 
-        chart.load().done(onDatasetLoaded);
+        chart.load(dw.backend.__currentData).done(onDatasetLoaded);
         iframe.load(iframeLoaded);
 
         // initialize some UI actions

@@ -1,4 +1,4 @@
-/*! datawrapper - v1.8.2 - 2015-01-14 *///
+/*! datawrapper - v1.9.5 - 2015-06-13 *///
 // NOTE: This file is auto-generated using /dw.js/make
 // from the source files /dw.js/src/*.js.
 //
@@ -1568,14 +1568,17 @@ dw.chart = function(attributes) {
         },
 
         // loads the dataset and returns a deferred
-        load: function() {
-            var datasource;
+        load: function(csv) {
+            var datasource,
+                dsopts = {
+                    firstRowIsHeader: chart.get('metadata.data.horizontal-header', true),
+                    transpose: chart.get('metadata.data.transpose', false)
+                };
 
-            datasource = dw.datasource.delimited({
-                url: 'data.csv',
-                firstRowIsHeader: chart.get('metadata.data.horizontal-header', true),
-                transpose: chart.get('metadata.data.transpose', false)
-            });
+            if (csv) dsopts.csv = csv;
+            else dsopts.url = 'data.csv';
+
+            datasource = dw.datasource.delimited(dsopts);
 
             return datasource.dataset().pipe(function(ds) {
                 chart.dataset(ds);
