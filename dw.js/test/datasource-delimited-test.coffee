@@ -75,4 +75,23 @@ vows
                 'was correctly parsed': (dataset, f) ->
                     assert.equal dataset.column(1).val(0), 14.3
 
+        'Another one':
+            topic: dw.datasource.delimited
+                csv: "ags\tlabel\tshort\tohne.2013.proz\n1001\tFlensburg, Kreisfreie Stadt\tFlensburg\t0.076\n1002\tKiel, Landeshauptstadt, Kreisfreie Stadt\tKiel\t0.077\n1003\tLübeck, Hansestadt, Kreisfreie Stadt\tLübeck\t0.086\n1004\tNeumünster, Kreisfreie Stadt\tNeumünster\t0.088\n1051\tDithmarschen, Landkreis\tDithmarschen\t0.086\n1053\tHerzogtum Lauenburg, Landkreis\tHerzogtum Lauenburg 0.086\n1054\tNordfriesland, Landkreis\tNordfriesland\t0.072\n1055\tOstholstein, Landkreis\tOstholstein 0.087\n1056\tPinneberg, Landkreis\tPinneberg\t0.065\n1057\tPlön, Landkreis\tPlön\t0.081\n1058\tRendsburg-Eckernförde, Landkreis\tRendsburg-Eckernförde\t0.081"
+
+            'when loaded as dataset':
+                topic: (src) ->
+                    src.dataset().done @callback
+                    return
+
+                'has four columns': (dataset, f) ->
+                    assert.equal dataset.numColumns(), 4
+
+                'has five rows': (dataset, f) ->
+                    assert.equal dataset.numRows(), 11
+
+                'has correct column types': (dataset, f) ->
+                    assert.deepEqual _.map(dataset.columns(), _types), ['number', 'text', 'text', 'number']
+
+
     .export module
