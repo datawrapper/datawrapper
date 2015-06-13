@@ -60,6 +60,7 @@ if (!defined('NO_SESSION')) {
     // forcing require of database session handler
     require_once ROOT_PATH . 'lib/session/database.php';
     DatawrapperSession::initSession();
+    ob_start("ob_gzhandler");
 }
 
 function debug_log($txt) {
