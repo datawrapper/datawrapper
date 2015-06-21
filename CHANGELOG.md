@@ -1,6 +1,11 @@
 CHANGELOG
 ---------
 
+* added hook for when all plugins are loaded
+* updated to underscore 1.8.3
+* activating gzip compression
+* embedding chart data in page instead of loading it every time
+
 ### 1.9.5
 * the chart publish directory can now be configured
 * minor bugfixes

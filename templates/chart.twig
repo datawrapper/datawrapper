@@ -62,7 +62,8 @@
         visId: '{{ visualization.id }}',
         visJSON: JSON.parse('{{ visualization | json | e("js") | raw }}'),
         metricPrefix: JSON.parse('{{ metricPrefix | json | e("js") |  raw }}'),
-        lang: '{{ lang }}'
+        lang: '{{ lang }}',
+        data: {{ chart.loadData | json | raw }}
     });
 
     </script>

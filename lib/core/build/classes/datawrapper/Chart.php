@@ -196,7 +196,10 @@ class Chart extends BaseChart {
         if (empty($key)) return $meta;
         $keys = explode('.', $key);
         $p = $meta;
-        foreach ($keys as $key) $p = $p[$key];
+        foreach ($keys as $key) {
+            if (isset($p[$key])) $p = $p[$key];
+            else return null;
+        }
         return $p;
     }
 

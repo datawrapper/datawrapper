@@ -174,6 +174,9 @@ class DatawrapperHooks {
 
     // executed whenever a new user is activated, params: $user
     const USER_ACTIVATED = 'user_activated';
+
+    // executed once all plugins are loaded
+    const ALL_PLUGINS_LOADED = 'all_plugins_loaded';
 }
 
 

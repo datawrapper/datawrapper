@@ -41,6 +41,7 @@
 
 <script type="text/javascript">
 
+    dw.backend.__currentData = {{ chart.loadData | json | raw }};
     // initialize current chart
     var chart = dw.backend.currentChart = dw.chart(JSON.parse("{{ chart.toJSON | raw }}"));
 
