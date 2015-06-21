@@ -11,7 +11,9 @@ if (DatawrapperHooks::hookRegistered(DatawrapperHooks::GET_ADMIN_PAGES)) {
 
     // redirect to first admin page
     $app->get('/admin/', function() use ($app, $__dw_admin_pages) {
-        $app->redirect('/admin'.$__dw_admin_pages[0]['url']);
+        if (!empty($__dw_admin_pages[0]['url'])) {
+            $app->redirect('/admin'.$__dw_admin_pages[0]['url']);
+        }
     });
 
     foreach ($__dw_admin_pages as $admin_page) {
