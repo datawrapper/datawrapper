@@ -68,7 +68,7 @@ define(function() {
                             dw.backend.logMessage('Yeah, sign up went well! You are logged in now...', '.signup-form');
                             setTimeout(function() {
                                 $('#dwLoginForm').modal('hide');
-                                reload();
+                                location.reload();
                             }, 1000);
                         } else {
                             dw.backend.logError(data.code, '.signup-form');
