@@ -113,6 +113,14 @@
             label.group-title {
                 &:hover {
                     background: #f9f9f9;
+                    &:after {
+                        content: 'Click to expand group';
+                        float: right;
+                        font-weight: 300;
+                        padding-right: 10px;
+                        font-size: 12px;
+                        color: #bbb;
+                    }
                 }
                 padding: 8px 0;
                 margin-bottom: 0;
@@ -126,6 +134,7 @@
                 .collapse-group { display: none }
             }
             padding-bottom: 0;
+            margin-bottom: 15px;
             border-bottom: 1px solid #ddd;
 
             .option-group-content {
@@ -139,6 +148,9 @@
                     margin-bottom: 15px;
                     &:hover {
                         background: none;
+                        &:after {
+                            content: 'Click to collapse group';
+                        }
                     }
                 }
                 .option-group-content {
@@ -351,6 +363,10 @@
     }
 
     .visconfig {
+        .btn {
+            font-weight: 300;
+        } 
+
         label, select, input[type=text], textarea {
             font-size: 14px;
             line-height: 16px;

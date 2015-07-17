@@ -771,6 +771,7 @@ html .btn-inverse {
 }
 .chart-editor.dw-create-visualize #vis-options .vis-option-type-group {
   padding-bottom: 0;
+  margin-bottom: 15px;
   border-bottom: 1px solid #ddd;
 }
 .chart-editor.dw-create-visualize #vis-options .vis-option-type-group label.group-title {
@@ -781,6 +782,14 @@ html .btn-inverse {
 }
 .chart-editor.dw-create-visualize #vis-options .vis-option-type-group label.group-title:hover {
   background: #f9f9f9;
+}
+.chart-editor.dw-create-visualize #vis-options .vis-option-type-group label.group-title:hover:after {
+  content: 'Click to expand group';
+  float: right;
+  font-weight: 300;
+  padding-right: 10px;
+  font-size: 12px;
+  color: #bbb;
 }
 .chart-editor.dw-create-visualize #vis-options .vis-option-type-group label.group-title .fa {
   font-weight: normal;
@@ -807,6 +816,9 @@ html .btn-inverse {
 }
 .chart-editor.dw-create-visualize #vis-options .vis-option-type-group.group-open label.group-title:hover {
   background: none;
+}
+.chart-editor.dw-create-visualize #vis-options .vis-option-type-group.group-open label.group-title:hover:after {
+  content: 'Click to collapse group';
 }
 .chart-editor.dw-create-visualize #vis-options .vis-option-type-group.group-open .option-group-content {
   position: static;
@@ -1058,6 +1070,9 @@ html .btn-inverse {
 }
 .chart-editor.dw-create-visualize .custom-color-selector-body .dataseries li.selected {
   background: #e0eaf0;
+}
+.chart-editor.dw-create-visualize .visconfig .btn {
+  font-weight: 300;
 }
 .chart-editor.dw-create-visualize .visconfig label,
 .chart-editor.dw-create-visualize .visconfig select,

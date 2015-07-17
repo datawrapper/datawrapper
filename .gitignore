@@ -27,3 +27,5 @@ assets/vendor/*
 scripts/lib/execute_jobs.lock
 
 scripts/execute_jobs.lock
+node_modules
+*.bts
