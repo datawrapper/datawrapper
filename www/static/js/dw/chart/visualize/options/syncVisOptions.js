@@ -96,8 +96,9 @@ define(function() {
                             key = key.match(isNullRegex)[1];
                             visible = visible && _.isNull(chart.get('metadata.visualize.'+key, null)) === val;
                         } else {
-
-                            visible = visible && chart.get('metadata.visualize.'+key) == val;
+                            visible = visible && (_.isArray(val) ?
+                                val.indexOf(chart.get('metadata.visualize.'+key)) > -1 :
+                                chart.get('metadata.visualize.'+key) == val);                            
                         }
 
                         function compare(v) {
