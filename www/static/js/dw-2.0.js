@@ -1,4 +1,4 @@
-/*! datawrapper - v1.9.5 - 2015-06-21 *///
+/*! datawrapper - v1.9.5 - 2015-07-17 *///
 // NOTE: This file is auto-generated using /dw.js/make
 // from the source files /dw.js/src/*.js.
 //
@@ -2012,7 +2012,9 @@ _.extend(dw.visualization.base, {
 
     renderingComplete: function() {
         if (window.parent && window.parent['postMessage']) {
-            window.parent.postMessage('datawrapper:vis:rendered', '*');
+            setTimeout(function() {
+                window.parent.postMessage('datawrapper:vis:rendered', '*');
+            }, 200);
         }
         this.__renderedDfd.resolve();
     },
