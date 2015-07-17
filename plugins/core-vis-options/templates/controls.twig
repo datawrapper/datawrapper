@@ -40,7 +40,7 @@
 
     <label class="control-label"  for="{{ key }}">{{ option.label|raw }}</label>
     <div class="controls form-inline">
-        <input type="text" style="width:auto" id="{{ key }}" value="" />
+        <input type="text" style="width:{% if option.width %}{{ option.width }}{% else %}auto{% endif %}" id="{{ key }}" value="" />
     </div>
 
 {% elseif option.type == 'textarea' %}
