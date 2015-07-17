@@ -241,7 +241,9 @@ _.extend(dw.visualization.base, {
 
     renderingComplete: function() {
         if (window.parent && window.parent['postMessage']) {
-            window.parent.postMessage('datawrapper:vis:rendered', '*');
+            setTimeout(function() {
+                window.parent.postMessage('datawrapper:vis:rendered', '*');
+            }, 200);
         }
         this.__renderedDfd.resolve();
     },
