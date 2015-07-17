@@ -32,14 +32,19 @@ define(function() {
                     transpose = chart.get('metadata.data.transpose', false),
                     dataset = chart.dataset(),
                     column = String(label.data('column')),
-                    row = label.data('row'),
+                    row = String(label.data('row')).split(','),
                     c = !transpose ? dataset.indexOf(column) : 0,
-                    r = !transpose ? row+1 : dataset.indexOf(column);
+                    r = row.map(function(row) {
+                        return !transpose ? (+row)+1 : dataset.indexOf(column);
+                    });
 
                 if (val !== '' && val != $.trim($(evt.target).data('old-value'))) {
-                    var changes = chart.get('metadata.data.changes', []).slice(0),
+                    var changes = chart.get('metadata.data.changes', []).slice(0);
+                    r.forEach(function(r) {
                         change = { row: r, column: c, value: val };
-                    changes.push(change);
+                        console.log(change);
+                        changes.push(change);
+                    });
                     chart.set('metadata.data.changes', changes);
                     if (!lastNotification) lastNotification = dw.backend.notify(dw.backend.messages.liveEditSuccess.replace('[', '<a href="describe">').replace(']', '</a>'));
                 }
