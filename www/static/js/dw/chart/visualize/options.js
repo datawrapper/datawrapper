@@ -24,7 +24,7 @@ function(initCustomColors, syncVisOptions, unsyncVisOptions) {
                 container: '#vis-options'
             });
 
-            $('.vis-option-type-group label').click(function() {
+            $('.vis-option-type-group > label.group-title').click(function() {
                 $(this).parents('.vis-option-type-group').toggleClass('group-open');
             });
         },
