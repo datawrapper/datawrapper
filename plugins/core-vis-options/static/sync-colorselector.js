@@ -27,7 +27,7 @@ $(function() {
              * initializes the base color dropdown
              */
             function initBaseColorPicker() {
-                var curColor = chart.get('metadata.visualize.base-color', 0);
+                var curColor = chart.get('metadata.visualize.'+args.key, 0);
                 if (!_.isString(curColor)) curColor = theme.colors.palette[curColor];
                 // update base color picker
                 $picker
@@ -47,7 +47,7 @@ $(function() {
                         .split(',')
                         .indexOf(color);
                     chart.set(
-                        'metadata.visualize.base-color',
+                        'metadata.visualize.'+args.key,
                         palIndex < 0 ? color : palIndex
                     );
                     curColor = color;
