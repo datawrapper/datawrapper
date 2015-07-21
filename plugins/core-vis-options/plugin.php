@@ -25,6 +25,7 @@ class DatawrapperPlugin_CoreVisOptions extends DatawrapperPlugin {
         $this->declareAssets(array(
             'sync-controls.js',
             'sync-colorselector.js',
+            'controls.css',
             'colorpicker.css'
         ), "|/chart/[^/]+/visualize|");
 

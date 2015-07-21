@@ -6,14 +6,14 @@
 {% elseif option.type == 'radio' %}
 
     <label class="control-label" for="{{ key }}">{{ option.label|raw }}</label>
-    {% for opt in option.options %}
     <div class="controls form-inline">
+    {% for opt in option.options %}
         <label class="radio">
             <input type="radio" name="{{ key }}" value="{{ opt.value }}" {% if opt.default %}checked="checked" {% endif %}/>&nbsp;{{ opt.label }}
         </label>
-    </div>
     {% endfor %}
-
+    </div>
+    
 {% elseif option.type == 'radio-left' %}
 
     <label class="separator" for="{{ key }}">{{ option.label|raw }}</label>

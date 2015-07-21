@@ -1,0 +1,15 @@
+.vis-option-type-radio .controls.form-inline {
+	vertical-align: top;
+}
+
+.vis-option-type-radio .controls.form-inline label.radio {
+	display: inline-block;
+	vertical-align: bottom; 
+}
+
+.vis-option-type-radio .controls.form-inline label.radio input {
+	margin-right: 3px;
+}
+.vis-option-type-radio .controls.form-inline label.radio + label.radio {
+	padding-left: 6px;
+}
