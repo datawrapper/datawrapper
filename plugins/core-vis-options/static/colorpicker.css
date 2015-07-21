@@ -93,3 +93,7 @@
 .custom-color-selector-body hr {
     margin-top: 0;
 }
+
+.vis-option-type-base-color > div > .control-group {
+    margin-bottom: 10px;
+} 
