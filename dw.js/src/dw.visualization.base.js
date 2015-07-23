@@ -137,13 +137,22 @@ _.extend(dw.visualization.base, {
                 errors.push(msg.replace('%type', axisDef.accepts).replace('%key', key));
             }
             if (axes[key]) return;  // user has defined this axis already
-            if (!axisDef.optional) {
+            if (!axisDef.optional) { // we only populate mandatory axes
                 if (!axisDef.multiple) {
-                    // find first colulmn accepted by axis
-                    var c = _.find(dataset.columns(), checkColumn);
-                    if (c) {
-                        usedColumns[c.name()] = true; // mark column as used
-                        axes[key] = c.name();
+                    var accepted = _.filter(dataset.columns(), checkColumn),
+                        firstMatch;
+                    if (axisDef.preferred) {
+                        // axis defined a regex for testing column names
+                        var regex = new RegExp(axisDef.preferred, 'i');
+                        firstMatch = _.find(accepted, function(col) {
+                            return regex.test(col.name()) || (col.title() != col.name() && regex.test(col.title()));
+                        });
+                    }
+                    // simply use first colulmn accepted by axis
+                    if (!firstMatch) firstMatch = accepted[0];
+                    if (firstMatch) {
+                        usedColumns[firstMatch.name()] = true; // mark column as used
+                        axes[key] = firstMatch.name();
                     } else {
                         // try to auto-populate missing text column
                         if (_.indexOf(axisDef.accepts, 'text') >= 0) {
@@ -159,6 +168,7 @@ _.extend(dw.visualization.base, {
                         }
                     }
                 } else {
+                    // fill axis with all accepted columns
                     axes[key] = [];
                     dataset.eachColumn(function(c) {
                         if (checkColumn(c)) {
