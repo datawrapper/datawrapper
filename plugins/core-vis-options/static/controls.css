@@ -13,3 +13,8 @@
 .vis-option-type-radio .controls.form-inline label.radio + label.radio {
 	padding-left: 6px;
 }
+
+.vis-option-type-select-axis-column .axis-column {
+	display: inline-block;
+	vertical-align: top;
+}
