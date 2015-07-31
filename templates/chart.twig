@@ -56,12 +56,12 @@
     if (document.getElementsByTagName('script').length > 0) $('body').addClass('js');
 
     __dw.init({
-        chartJSON: JSON.parse('{{ chart.toJSON(true) | raw }}'),
+        chartJSON: {{ chart.toStruct(true) | json | raw }},
         chartLocale: '{{ chartLocale }}',
         themeId: '{{ theme.id }}',
         visId: '{{ visualization.id }}',
-        visJSON: JSON.parse('{{ visualization | json | e("js") | raw }}'),
-        metricPrefix: JSON.parse('{{ metricPrefix | json | e("js") |  raw }}'),
+        visJSON: {{ visualization | json | raw }},
+        metricPrefix: {{ metricPrefix | json | raw }},
         lang: '{{ lang }}',
         data: {{ chart.loadData | json | raw }}
     });
