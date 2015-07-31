@@ -338,3 +338,22 @@ $app->post('/charts/:id/store_snapshot', function($chart_id) use ($app) {
     }
 });
 
+$app->get('/charts/:id/vis-data', function ($chart_id) {
+    if_chart_is_readable($chart_id, function($user, $chart) {
+        try {
+            $allVis = array();
+
+            foreach (DatawrapperVisualization::all() as $vis) {
+                $allVis[$vis['id']] = $vis;
+            }
+
+            ok(array(
+                'visualizations' => $allVis,
+                'vis' => DatawrapperVisualization::get($chart->getType()),
+                'themes' => DatawrapperTheme::all(),
+            ));
+        } catch (Exception $e) {
+            error('io-error', $e->getMessage());
+        }
+    });
+});

@@ -15,13 +15,9 @@
 <script type="text/javascript">
 dw.backend.ready(function() {
     require(['dw/chart/visualize'], function(visualize) {
-        var themesJSON = {{ themes | json | raw }},
-            visJSON = {{ vis | json | raw }},
-            visMetas = {};
-        {% for vis in visualizations %}
-            visMetas['{{ vis.id }}'] = {{ vis|json|raw }};
-        {% endfor %}
-        visualize.init(themesJSON, visMetas, visJSON);
+        $.get('/api/charts/{{ chart.id }}/vis-data', function(response) {
+            visualize.init(response.data.themes, response.data.visualizations, response.data.vis);
+        });
     });
 });
 </script>
