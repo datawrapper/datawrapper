@@ -87,6 +87,7 @@ define(function() {
                     .filter(function(i,e) {
                         return chroma.luminance($(e).data('color')) < 0.05;
                     }).addClass('inverted');
+                if (_.isFunction(opts.change)) opts.change(opts.color);
             }
 
             function spread(center, width, num, num2, exp) {
