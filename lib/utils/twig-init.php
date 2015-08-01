@@ -64,5 +64,12 @@ function dwInitTwigEnvironment(Twig_Environment $twig) {
         return $out;
     }, array('is_safe' => array('html')) ));
 
+    \Moment\Moment::setLocale(str_replace('-', '_', DatawrapperSession::getLanguage()));
+
+    $twig->addFilter(new Twig_SimpleFilter('reltime', function($time) {
+        // return $time;
+        return (new \Moment\Moment($time))->fromNow()->getRelative();
+    }));
+
     return $twig;
 }

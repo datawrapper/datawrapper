@@ -65,4 +65,19 @@ class Plugin extends BasePlugin {
         return $this->getName();
     }
 
+    public function getLastModifiedTime($as_timestamp = false) {
+        if (isset($this->__lastModTime)) return $this->__lastModTime;
+        $lastm = 0;
+        $path = ROOT_PATH . 'plugins/' . $this->getId() . '/';
+        $files = array_filter(glob('{'.$path.'*,'.$path.'*/*,'.$path.'*/*/*}', GLOB_BRACE));
+        foreach ($files as $file) {
+            if (strpos($file, '/locale/') > 0) continue; // ignore locales file
+            $lm = filemtime($file);
+            if ($lm > $lastm) $lastm = $lm;
+        }
+        $this->__lastModTime = strftime('%F %H:%M:%S', $lastm);
+        $this->__lastModTimeTS = $lastm;
+        return $as_timestamp ? $this->__lastModTimeTS : $this->__lastModTime;
+    }
+
 } // Plugin
