@@ -809,8 +809,15 @@ html .btn-inverse {
 }
 .chart-editor.dw-create-visualize #vis-options .vis-option-type-group.group-open {
   border-bottom: none;
+  margin-left: -10px;
+  margin-right: -10px;
+  border-radius: 5px;
+  background: #f9f9f9;
 }
 .chart-editor.dw-create-visualize #vis-options .vis-option-type-group.group-open label.group-title {
+  background: #f2f2f2;
+  padding-left: 10px;
+  padding-right: 10px;
   margin-bottom: 15px;
 }
 .chart-editor.dw-create-visualize #vis-options .vis-option-type-group.group-open label.group-title .collapse-group {
@@ -820,7 +827,7 @@ html .btn-inverse {
   display: none;
 }
 .chart-editor.dw-create-visualize #vis-options .vis-option-type-group.group-open label.group-title:hover {
-  background: none;
+  background: #f0f0f0;
 }
 .chart-editor.dw-create-visualize #vis-options .vis-option-type-group.group-open label.group-title:hover:after {
   content: 'Click to collapse group';
@@ -828,6 +835,9 @@ html .btn-inverse {
 .chart-editor.dw-create-visualize #vis-options .vis-option-type-group.group-open .option-group-content {
   position: static;
   visibility: visible;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 5px;
 }
 .chart-editor.dw-create-visualize #vis-options .control-label {
   display: inline-block;

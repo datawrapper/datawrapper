@@ -146,11 +146,14 @@
             }
             &.group-open {
                 label.group-title {
+                    background: #f2f2f2;
+                    padding-left: 10px;
+                    padding-right: 10px;
                     .collapse-group { display: inline-block; }
                     .expand-group { display: none; }
                     margin-bottom: 15px;
                     &:hover {
-                        background: none;
+                        background: #f0f0f0;
                         &:after {
                             content: 'Click to collapse group';
                         }
@@ -159,8 +162,17 @@
                 .option-group-content {
                     position: static;
                     visibility: visible;
+                    padding-left: 10px;
+                    padding-right: 10px;
+                    padding-bottom: 5px;
                 }
                 border-bottom: none;
+                // border: 1px solid #ddd;
+                margin-left: -10px;
+                margin-right: -10px;
+                border-radius: 5px;
+                background: #f9f9f9;
+                // box-shadow: inset 2px 2px 5px #eee;
 
             }
         }
