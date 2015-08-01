@@ -64,7 +64,7 @@
 
             .vis-option-help {
                 position: absolute;
-                top: -3px;
+                top: 0px;
                 right: 0px;
                 cursor: default;
                 padding-left: 15px;
@@ -76,14 +76,17 @@
                     height: 22px;
                     line-height: 22px;
                     text-align: center;
+                    pointer-events: none;
                     border-radius: 11px;
-                    background: @pale-blue;
-                    color: #fff;
-                    font-weight: bold;
+                    background: none;
+                    color: #ccc;
+                    // text-shadow: 1px 1px 0.2px rgba(0,0,0,0.2), 1px -1px 0.2px rgba(0,0,0,0.2), -1px 1px 0.2px rgba(0,0,0,0.2), -1px -1px 0.2px rgba(0,0,0,0.2);
+                    font-weight: 400;
                 }
 
                 &:hover {
                     text-decoration: none;
+                    span { background: @pale-blue; color: #fff; }
                 }
             }
 
