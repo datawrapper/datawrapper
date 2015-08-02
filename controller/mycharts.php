@@ -61,7 +61,7 @@ function user_charts($app, $user, $key, $val) {
     $perPage = 48;
     $filter = !empty($key) ? array($key => $val) : array();
     if (!empty($q)) $filter['q'] = $q;
-    $charts =  ChartQuery::create()->getPublicChartsByUser($user, $filter, $curPage * $perPage, $perPage);
+    $charts =  ChartQuery::create()->getPublicChartsByUser($user, $filter, $curPage * $perPage, $perPage, 'lastUpdated');
     $total = ChartQuery::create()->countPublicChartsByUser($user, $filter);
 
     $page = array(
