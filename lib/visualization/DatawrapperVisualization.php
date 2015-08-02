@@ -42,6 +42,7 @@ class DatawrapperVisualization {
     public function _register($plugin, $meta, $asset_callback = null) {
         // we save the path to the static files of the visualization
         $meta['__static_path'] =  '/static/plugins/' . $plugin->getName() . '/';
+        $meta['__plugin'] =  $plugin->getName();
         $meta['version'] = $plugin->getVersion();
         if (!isset($meta['id'])) return;
         $icon = $meta['__static_path'] . '/' . $meta['id'];
