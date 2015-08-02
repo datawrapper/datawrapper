@@ -4,6 +4,8 @@
 
 
 {% block content %}
+
+
 <div class="docs">
     <div class="pull-right" style="position:relative;top:-16px">
         {{ block('pagination') }}
@@ -18,12 +20,18 @@
 </div>
 
 <style type="text/css">
-.gallery-filter {
-    margin-bottom: 40px;
+
+.gallery-filter { margin-bottom: 40px; }
+
+.gallery-filter form .btn-group { margin-left: 10px; }
+
+.gallery .thumbnails .span3.chart {
+    float: none;
+    min-height: 190px;
 }
 
-.gallery-filter form .btn-group {
-    margin-left: 10px;
+.gallery .thumbnails .span3.chart h3 {
+    position: static;
 }
 </style>
 <div class="gallery-filter">
@@ -116,17 +124,16 @@
 <div class="gallery">
 
     {% if user.hasCharts %}
-    <ul class="thumbnails">
+    <div class="thumbnails js-masonry" data-masonry-options='{ "itemSelector": ".grid-item", "columWidth": 200 }'>
         {% for chart in charts %}
-        <li class="span3 chart" data-id="{{ chart.id }}">
-            <div class="thumbnail">
-                <a href="/chart/{{ chart.id }}/edit"><img src="{% if chart.hasPreview %}//{{ DW_CHART_CACHE_DOMAIN }}/{{ chart.id }}/m.png{% else %}/static/img/nopreview.png{% endif %}" width="260" style="height:160px;background:{{ chart.metadata.publish.background }}">
+        <div class="span3 chart" data-id="{{ chart.id }}">
+            <div class="thumbnail" style="background:{{ chart.metadata.publish.background }}">
+                <a href="/chart/{{ chart.id }}/edit" >
+                    <h3 style="color:{% if chart.metadata.publish.text %}{{ chart.metadata.publish.text }}{% else %}#000{% endif %};text-shadow:1px 1px 3px {% if chart.metadata.publish.background %}{{ chart.metadata.publish.background }}{% else %}#fff{% endif %};">{% if chart.title != '' %}{{ chart.title | replace({'<br/>': ' - '}) | striptags }}{% else %}{{ chart.id }}{% endif %}</h3>
 
-                {# <p class="pull-right">
-                    <a href="#delete" class="delete" data-chart="{{ chart.id }}"><i class="icon-remove"></i></a>
-                </p> #}
+                    <img src="{% if chart.hasPreview %}//{{ DW_CHART_CACHE_DOMAIN }}/{{ chart.id }}/m.png{% else %}/static/img/nopreview.png{% endif %}" width="260" >
+                 </a>
 
-                 <h3 style="color:{% if chart.metadata.publish.text %}{{ chart.metadata.publish.text }}{% else %}#000{% endif %};text-shadow:1px 1px 3px {% if chart.metadata.publish.background %}{{ chart.metadata.publish.background }}{% else %}#fff{% endif %};">{% if chart.title != '' %}{{ chart.title | replace({'<br/>': ' - '}) | striptags }}{% else %}{{ chart.id }}{% endif %}</h3></a>
                  <div class="btn-group">
                     <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
                       <i class="icon-wrench"></i>
@@ -146,9 +153,9 @@
                 {# <p>{% trans "Created" %}: {{ chart.createdAt|date() }}<br/>
                  {% trans "Layout" %}: {{ chart.theme }} </p> #}
             </div>
-        </li>
+        </div>
         {% endfor %}
-    </ul>
+    </div>
     {% else %}
 
         <h2>{% trans "No charts here, yet" %}</h2>
@@ -199,9 +206,26 @@
 <script type="text/javascript" src="/static/vendor/overlay/ender.overlay.js"></script>
 <script type="text/javascript">
 $(function(){
-  //*
 
-   // */
+    require(['masonry', 'imagesloaded'], function(Masonry, imagesLoaded) {
+        
+        var imgLoad = imagesLoaded('.thumbnails');
+
+        imgLoad.on('progress', layout);
+        imgLoad.on('always', layout);
+
+        function layout() {
+            new Masonry('.thumbnails', {
+                itemSelector: '.chart',
+                transitionDuration: 0
+            });
+        }
+
+        
+    });
+
+  //*
+  // */
    {% if user2 %}
     $('.thumbnail > a').click(function(e) {
         e.preventDefault();
