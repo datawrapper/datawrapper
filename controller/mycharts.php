@@ -58,7 +58,7 @@ function user_charts($app, $user, $key, $val) {
     $curPage = $app->request()->params('page');
     $q = $app->request()->params('q');
     if (empty($curPage)) $curPage = 0;
-    $perPage = 12;
+    $perPage = 48;
     $filter = !empty($key) ? array($key => $val) : array();
     if (!empty($q)) $filter['q'] = $q;
     $charts =  ChartQuery::create()->getPublicChartsByUser($user, $filter, $curPage * $perPage, $perPage);

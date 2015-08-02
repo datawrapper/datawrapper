@@ -1321,18 +1321,15 @@ html .btn-inverse {
 }
 .gallery .thumbnail img {
   margin: 0 0 5px 0;
-  padding: 5px;
+  padding: 40px 5px 5px;
   border-radius: 0;
   background: #fff;
-  box-shadow: 2px 1px 10px rgba(0, 0, 0, 0.34);
   transition: box-shadow 0.1s linear;
+  border: 1px solid #eee;
+  box-shadow: 0 0 80px #f5f5f5;
 }
 .gallery .thumbnail:hover img {
-  box-shadow: 2px 1px 15px rgba(40, 0, 0, 0.54);
-}
-.gallery .thumbnail img {
-  padding: 40px 5px 5px;
-  border-radius: 5px;
+  border-color: #08c;
 }
 .gallery .thumbnail .btn-group {
   position: absolute;
