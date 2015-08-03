@@ -98,13 +98,15 @@ class DatawrapperPlugin_Gallery extends DatawrapperPlugin {
                 'count' => $r['c'],
                 'id' => $r['type'],
                 'name' => $vis['title'],
-                'icon' => $vis['icon']
+                'icon' => $vis['icon'],
+                'order' => $vis['order']
             );
             $max = max($max, $r['c']);
         }
         foreach ($res as $c => $r) {
             $res[$c]['bar'] = round($r['count'] / $max * 80);
         }
+        usort($res, function($a, $b) { return $a['order'] - $b['order']; });
         return $res;
     }
 
