@@ -64,7 +64,7 @@
 
             .vis-option-help {
                 position: absolute;
-                top: -3px;
+                top: 0px;
                 right: 0px;
                 cursor: default;
                 padding-left: 15px;
@@ -76,14 +76,17 @@
                     height: 22px;
                     line-height: 22px;
                     text-align: center;
+                    pointer-events: none;
                     border-radius: 11px;
-                    background: @pale-blue;
-                    color: #fff;
-                    font-weight: bold;
+                    background: none;
+                    color: #ccc;
+                    // text-shadow: 1px 1px 0.2px rgba(0,0,0,0.2), 1px -1px 0.2px rgba(0,0,0,0.2), -1px 1px 0.2px rgba(0,0,0,0.2), -1px -1px 0.2px rgba(0,0,0,0.2);
+                    font-weight: 400;
                 }
 
                 &:hover {
                     text-decoration: none;
+                    span { background: @pale-blue; color: #fff; }
                 }
             }
 
@@ -143,11 +146,14 @@
             }
             &.group-open {
                 label.group-title {
+                    background: #f2f2f2;
+                    padding-left: 10px;
+                    padding-right: 10px;
                     .collapse-group { display: inline-block; }
                     .expand-group { display: none; }
                     margin-bottom: 15px;
                     &:hover {
-                        background: none;
+                        background: #f0f0f0;
                         &:after {
                             content: 'Click to collapse group';
                         }
@@ -156,8 +162,17 @@
                 .option-group-content {
                     position: static;
                     visibility: visible;
+                    padding-left: 10px;
+                    padding-right: 10px;
+                    padding-bottom: 5px;
                 }
                 border-bottom: none;
+                // border: 1px solid #ddd;
+                margin-left: -10px;
+                margin-right: -10px;
+                border-radius: 5px;
+                background: #f9f9f9;
+                // box-shadow: inset 2px 2px 5px #eee;
 
             }
         }

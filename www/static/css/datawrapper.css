@@ -734,7 +734,7 @@ html .btn-inverse {
 }
 .chart-editor.dw-create-visualize #vis-options .vis-option-group .vis-option-help {
   position: absolute;
-  top: -3px;
+  top: 0px;
   right: 0px;
   cursor: default;
   padding-left: 15px;
@@ -746,13 +746,18 @@ html .btn-inverse {
   height: 22px;
   line-height: 22px;
   text-align: center;
+  pointer-events: none;
   border-radius: 11px;
-  background: #93b0d6;
-  color: #fff;
-  font-weight: bold;
+  background: none;
+  color: #ccc;
+  font-weight: 400;
 }
 .chart-editor.dw-create-visualize #vis-options .vis-option-group .vis-option-help:hover {
   text-decoration: none;
+}
+.chart-editor.dw-create-visualize #vis-options .vis-option-group .vis-option-help:hover span {
+  background: #93b0d6;
+  color: #fff;
 }
 .chart-editor.dw-create-visualize #vis-options .vis-option-group.vis-option-type-radio-left .vis-option-help {
   top: 32px;
@@ -804,8 +809,15 @@ html .btn-inverse {
 }
 .chart-editor.dw-create-visualize #vis-options .vis-option-type-group.group-open {
   border-bottom: none;
+  margin-left: -10px;
+  margin-right: -10px;
+  border-radius: 5px;
+  background: #f9f9f9;
 }
 .chart-editor.dw-create-visualize #vis-options .vis-option-type-group.group-open label.group-title {
+  background: #f2f2f2;
+  padding-left: 10px;
+  padding-right: 10px;
   margin-bottom: 15px;
 }
 .chart-editor.dw-create-visualize #vis-options .vis-option-type-group.group-open label.group-title .collapse-group {
@@ -815,7 +827,7 @@ html .btn-inverse {
   display: none;
 }
 .chart-editor.dw-create-visualize #vis-options .vis-option-type-group.group-open label.group-title:hover {
-  background: none;
+  background: #f0f0f0;
 }
 .chart-editor.dw-create-visualize #vis-options .vis-option-type-group.group-open label.group-title:hover:after {
   content: 'Click to collapse group';
@@ -823,6 +835,9 @@ html .btn-inverse {
 .chart-editor.dw-create-visualize #vis-options .vis-option-type-group.group-open .option-group-content {
   position: static;
   visibility: visible;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 5px;
 }
 .chart-editor.dw-create-visualize #vis-options .control-label {
   display: inline-block;
@@ -1296,28 +1311,19 @@ html .btn-inverse {
 .mysettings .row .span9 {
   padding-top: 10px;
 }
-.gallery h3 {
-  margin-bottom: 0px;
-}
 .gallery .thumbnail {
   border: 0;
   box-shadow: none;
   position: relative;
-}
-.gallery .thumbnail img {
-  margin: 0 0 5px 0;
-  padding: 5px;
+  border: 1px solid #eee;
   border-radius: 0;
+  padding: 10px;
+  box-shadow: 0 0 80px #f5f5f5;
   background: #fff;
-  box-shadow: 2px 1px 10px rgba(0, 0, 0, 0.34);
-  transition: box-shadow 0.1s linear;
+  margin-bottom: 30px;
 }
-.gallery .thumbnail:hover img {
-  box-shadow: 2px 1px 15px rgba(40, 0, 0, 0.54);
-}
-.gallery .thumbnail img {
-  padding: 40px 5px 5px;
-  border-radius: 5px;
+.gallery .thumbnail:hover {
+  border-color: #08c;
 }
 .gallery .thumbnail .btn-group {
   position: absolute;
@@ -1329,14 +1335,14 @@ html .btn-inverse {
   visibility: visible;
 }
 .gallery .thumbnail h3 {
-  padding: 2px 10px 4px 6px;
   color: #000;
-  position: absolute;
-  top: 10px;
-  left: 10px;
   font-size: 14px;
   line-height: 20px;
-  text-shadow: 0px 0px 2px #fff;
+  margin-top: 0;
+  text-decoration: none;
+}
+.gallery .thumbnail a:hover {
+  text-decoration: none;
 }
 .gallery-filter li.active a {
   font-weight: bold;
@@ -1344,30 +1350,6 @@ html .btn-inverse {
 }
 .gallery-filter li a {
   text-shadow: 1px 1px 0 #fff;
-}
-.gallery-filter ul li div.bar {
-  position: absolute;
-  z-index: -1;
-  top: 0;
-  left: 0;
-  height: 21px;
-  background: #f2f2f4;
-  /* Old browsers */
-  background: -moz-linear-gradient(top, #f2f2f4 29%, #eaebee 55%, #eaebee 99%);
-  /* FF3.6+ */
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(29%, #f2f2f4), color-stop(55%, #eaebee), color-stop(99%, #eaebee));
-  /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(top, #f2f2f4 29%, #eaebee 55%, #eaebee 99%);
-  /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(top, #f2f2f4 29%, #eaebee 55%, #eaebee 99%);
-  /* Opera 11.10+ */
-  background: -ms-linear-gradient(top, #f2f2f4 29%, #eaebee 55%, #eaebee 99%);
-  /* IE10+ */
-  background: linear-gradient(to bottom, #f2f2f4 29%, #eaebee 55%, #eaebee 99%);
-  /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f2f2f4', endColorstr='#eaebee', GradientType=0);
-  /* IE6-9 */
-  border-radius: 0 3px 3px 0;
 }
 .gallery-filter ul li {
   margin-bottom: 5px;

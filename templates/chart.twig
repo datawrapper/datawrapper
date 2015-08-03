@@ -15,7 +15,7 @@
     </script>
     <![endif]-->
     {% if innersvg %}
-    <script type="text/javascript" src="{{ DW_DOMAIN }}/static/vendor/innersvg/innersvg.js"></script>
+    <script type="text/javascript" charset="utf-8" src="{{ DW_DOMAIN }}/static/vendor/innersvg/innersvg.js"></script>
     {% endif %}
 
     {{ hook('chart_html_head', chart) }}
@@ -24,14 +24,14 @@
     <link rel="stylesheet" type="text/css" href="{{ src }}"></link>
 {% endfor %}
 
-    <script type="text/javascript">
+    <script type="text/javascript" charset="utf-8">
     window.__locale = '{{ chartLocale }}';
     </script>
 
 {% for script in scripts %}
   {% if script.ie %}<!--[if {{ script.ie }}]>
   {% endif %}
-    <script type="text/javascript" src="{% if script.src %}{{ script.src }}{% else %}{{ script }}{% endif %}"></script>
+    <script type="text/javascript" charset="utf-8" src="{% if script.src %}{{ script.src }}{% else %}{{ script }}{% endif %}"></script>
   {% if script.ie %}<![endif]-->
   {% endif %}
 {% endfor %}
@@ -51,7 +51,7 @@
     <div class="noscript" style="height:95%;position:absolute;top:0;width:98%;z-index:10;overflow:hidden">
         <div style="position:relative;top:50%;text-align:center;font-size:18px;padding:0 20px"><a style="color: rgba(0,0,0,.2); text-shadow: 0 0 7px #fff, 0 0 7px #fff, 0 0 7px #fff, 0 0 7px #fff, 0 0 7px #fff, 0 0 7px #fff, 0 0 7px #fff, 0 0 7px #fff, 0 0 7px #fff, 0 0 7px #fff, 0 0 7px #fff; text-decoration: none;" href="static.html" >{% trans "Please activate JavaScript to see the interactive chart." %}</a></div>
     </div>#}
-    <script type="text/javascript">
+    <script type="text/javascript" charset="utf-8">
 
     if (document.getElementsByTagName('script').length > 0) $('body').addClass('js');
 

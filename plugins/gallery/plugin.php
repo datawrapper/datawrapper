@@ -42,7 +42,7 @@ class DatawrapperPlugin_Gallery extends DatawrapperPlugin {
             $user = DatawrapperSession::getUser();
             $curPage = $app->request()->params('page');
             if (empty($curPage)) $curPage = 0;
-            $perPage = 12;
+            $perPage = 60;
             $filter = !empty($key) ? array($key => $val) : array();
 
             try {
@@ -94,12 +94,19 @@ class DatawrapperPlugin_Gallery extends DatawrapperPlugin {
         foreach ($rs as $r) {
             $vis = DatawrapperVisualization::get($r['type']);
             $lang = substr(DatawrapperSession::getLanguage(), 0, 2);
-            $res[] = array('count' => $r['c'], 'id' => $r['type'], 'name' => $vis['title']);
+            $res[] = array(
+                'count' => $r['c'],
+                'id' => $r['type'],
+                'name' => $vis['title'],
+                'icon' => $vis['icon'],
+                'order' => $vis['order']
+            );
             $max = max($max, $r['c']);
         }
         foreach ($res as $c => $r) {
             $res[$c]['bar'] = round($r['count'] / $max * 80);
         }
+        usort($res, function($a, $b) { return $a['order'] - $b['order']; });
         return $res;
     }
 

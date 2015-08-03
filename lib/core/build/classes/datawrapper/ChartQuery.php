@@ -141,6 +141,7 @@ class ChartQuery extends BaseChartQuery {
         switch ($order) {
             case 'theme': $query->orderByTheme(); break;
             case 'type': $query->orderByType(); break;
+            case 'lastUpdated': $query->orderByLastModifiedAt('desc'); break;
             default: $query->orderByCreatedAt('desc'); break;
         }
         $query->filterByLastEditStep(array('min' => 2));

@@ -5,11 +5,11 @@
 
 {% set vismeta = chart.metadata.visualize %}
 
-<script type="text/javascript" src="/static/vendor/canvg/rgbcolor.js"></script>
-<script type="text/javascript" src="/static/vendor/canvg/canvg.js"></script>
-<script type="text/javascript" src="/static/vendor/chromajs/chroma.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="/static/vendor/canvg/rgbcolor.js"></script>
+<script type="text/javascript" charset="utf-8" src="/static/vendor/canvg/canvg.js"></script>
+<script type="text/javascript" charset="utf-8" src="/static/vendor/chromajs/chroma.min.js"></script>
 {% for vis in visualizations_deps %}
-<script type="text/javascript" src="{{ vis.__static_path }}/{{ vis.id }}.js"></script>
+<script type="text/javascript" charset="utf-8" src="{{ vis.__static_path }}/{{ vis.id }}.js"></script>
 {% endfor %}
 
 <script type="text/javascript">

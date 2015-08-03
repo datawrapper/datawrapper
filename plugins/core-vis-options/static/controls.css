@@ -18,3 +18,7 @@
 	display: inline-block;
 	vertical-align: top;
 }
+
+.vis-option-group.vis-option-type-select .vis-option-help {
+	top: 5px!important;
+}

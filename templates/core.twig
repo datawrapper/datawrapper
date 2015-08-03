@@ -23,32 +23,35 @@
 
     {% if config.custom_css %}<link href="/static/custom/{{ config.custom_css }}" rel="stylesheet">{% endif %}
 
-    <script type="text/javascript" src="/static/vendor/require-js/require-2.1.8.min.js"></script>
-    <script type="text/javascript">
+    <script type="text/javascript" charset="utf-8" src="/static/vendor/require-js/require-2.1.8.min.js"></script>
+    <script type="text/javascript" charset="utf-8">
         require.config({
             baseUrl: '/static',
             paths: {
                 dw: 'js/dw',
-                handsontable: 'vendor/handsontable/handsontable.full'
+                handsontable: 'vendor/handsontable/handsontable.full',
+                jquery: 'vendor/jquery/jquery-1.11.1.min',
+                masonry: 'vendor/masonry/masonry.min',
+                imagesloaded: 'vendor/masonry/imagesloaded.min'
             },
             urlArgs: 'v={{ DW_VERSION }}'
         });
     </script>
-    <script type="text/javascript" src="/static/vendor/jquery/jquery-1.11.1.min.js"></script>
-    <script type="text/javascript" src="/static/vendor/underscore/underscore-1.8.3.min.js"></script>
-    <script type="text/javascript" src="/static/vendor/cryptojs/hmac-sha256.js"></script>
-    <script type="text/javascript" src="/static/vendor/globalize/globalize.js"></script>
-    <script type="text/javascript" src="/static/vendor/globalize/cultures/globalize.culture.{{ locale | replace({'_':'-'}) }}.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/static/vendor/jquery/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/static/vendor/underscore/underscore-1.8.3.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/static/vendor/cryptojs/hmac-sha256.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/static/vendor/globalize/globalize.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/static/vendor/globalize/cultures/globalize.culture.{{ locale | replace({'_':'-'}) }}.js"></script>
     {# javascript core 2.0 #}
-    <script type="text/javascript" src="/static/js/dw-2.0.js"></script>
-    <script type="text/javascript" src="/static/js/dw-backend.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/static/js/dw-2.0.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/static/js/dw-backend.js"></script>
 
     {% if page_css %}
     <link href="/static/css/{{ page_css }}" rel="stylesheet">
     {% endif %}
 
     {% for js in plugin_js %}
-    <script type="text/javascript" src="/static/plugins/{{ js }}"></script>
+    <script type="text/javascript" charset="utf-8" src="/static/plugins/{{ js }}"></script>
     {% endfor %}{% for css in plugin_css %}
     <link href="/static/plugins/{{ css }}" rel="stylesheet">
     {% endfor %}
