@@ -18,7 +18,7 @@ define(['queue'], function(queue) {
         // count dom nodes
         var numDomNodes = chartBody.querySelectorAll('*').length,
             deferred = numDomNodes > 2000,
-            stop = numDomNodes > 4000;
+            stop = numDomNodes > 1000;
 
         if (stop) return;
 
