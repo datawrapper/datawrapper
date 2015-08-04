@@ -249,7 +249,7 @@ $app->get('/organizations/:id/charts', function($org_id) use ($app) {
 
             $total = $query->count();
             // pagination
-            $pagesize = 12;
+            $pagesize = 48;
             $page = $app->request()->get('page');
             if (!isset($page)) $page = 0;
             $query->limit($pagesize)->offset($page * $pagesize);
