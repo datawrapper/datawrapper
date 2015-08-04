@@ -1,5 +1,5 @@
 
-define(function() {
+define(['queue'], function(queue) {
 
     var prefix = {
         xmlns: "http://www.w3.org/2000/xmlns/",
@@ -11,212 +11,242 @@ define(function() {
 
     return function(iframe, chart_id, thumb_id, width, height, callback) {
         
-        console.log('snapshot.js!');
+        var t0 = (new Date()).getTime();
 
         var chartBody = iframe.get(0).contentDocument.querySelector('.dw-chart-body');
+
+        // count dom nodes
+        var numDomNodes = chartBody.querySelectorAll('*').length,
+            deferred = numDomNodes > 2000,
+            stop = numDomNodes > 4000;
+
+        if (stop) return;
 
         if (!chartBody) {
             console.warn('Please add class dw-chart-body to theme', chart.get('theme'));
             chartBody = iframe.get(0).contentDocument.getElementById('chart');
         }
 
-        var svg = chartToSvg(chartBody);
+        // console.log('snapshot.js - start');
 
-        var bbox = svg.node().getBoundingClientRect();
+        chartToSvg(chartBody, function(svg) {
+            // console.log('snapshot.js - chartToSVG', ((new Date()).getTime() - t0)/1000);
 
-        var canvas = document.createElement("canvas"),
-            ctx = canvas.getContext("2d");
+            var bbox = svg.node().getBoundingClientRect();
 
-        canvas.width = bbox.width * 2;
-        canvas.height = bbox.height * 2;
+            var svg_src = svg.node().innerHTML;
+            // remove url fills
+            svg_src = svg_src.replace(/fill="url\([^\)]+\)"/g, 'fill="#cccccc"')
+                        .replace(/<pattern.*<\/pattern>/g, '');
 
-        var svg_src = svg.node().innerHTML;
-        // remove url fills
-        svg_src = svg_src.replace(/fill="url\([^\)]+\)"/g, 'fill="#cccccc"')
-                    .replace(/<pattern.*<\/pattern>/g, '');
-        ctx.drawSvg(svg_src, 0, 0, bbox.width * 2, bbox.height * 2);
+            var canvas = document.createElement("canvas"),
+                ctx = canvas.getContext("2d");
 
-        // document.body.appendChild(canvas);
+            canvas.width = bbox.width * 2;
+            canvas.height = bbox.height * 2;
 
-        var imgData = canvas.toDataURL("image/png");
+            ctx.drawSvg(svg_src, 0, 0, bbox.width * 2, bbox.height * 2);
 
-        $.ajax({
-            url: '/api/charts/' + chart_id + '/thumbnail/' + thumb_id,
-            type: 'PUT',
-            data: imgData,
-            processData: false,
-            success: function(res) {
-                if (res.status == "ok") (callback || function() {})();
-                else console.log('error:', res.message);
-            }
-        });
+            document.body.appendChild(canvas);
 
-        svg.remove();
+            var imgData = canvas.toDataURL("image/png");
 
-    };
-
-    function chartToSvg(parent_n) {
-
-        var parent = d3.select(parent_n),
-            offsetTop = parent_n.getBoundingClientRect().top - parent_n.parentNode.getBoundingClientRect().top;
-
-        var out_w = parent_n.clientWidth,
-            out_h = parent_n.clientHeight;
-
-        var labels = parent.selectAll('.label span,.chart-title,.chart-intro,.footer-left'),
-            nodes = parent.selectAll('path, line, rect, circle, text'),
-            divs = parent.selectAll('.export-rect,.dw-rect');
-
-        var svgNodes = parent.selectAll('svg');
-
-        d3.select('body').selectAll('.dw-snapshot').remove();
-
-        // 1. create a new svg container of the size of the page
-        var cont = d3.select('body').append('div.dw-snapshot'),
-            out = cont.append('svg');
-
-        // get empty css declaration
-        var emptyCSS = window.getComputedStyle(out.node());
-
-        out.attr({ width: out_w, height: out_h });
-        cont.style({ position: 'absolute', left: '-5020px', top: '20px' });
-
-        var out_g = out.append('g').attr('id', 'graphic');
-
-        nodes.each(function() {
-            var el = this,
-                cur = el,
-                curCSS,
-                bbox,
-                transforms = ['translate(0,'+(-offsetTop)+')'];
-            while (cur) {
-                curCSS = getComputedStyle(cur);
-                if (cur.nodeName == 'defs') return;
-                if (cur.nodeName != 'svg') {
-                    // check node visibility
-                    transforms.push(attr(cur, 'transform'));
-                    cur = cur.parentNode;
-                } else {
-                    bbox = cur.getBoundingClientRect();
-                    transforms.push('translate('+[bbox.left, bbox.top]+')');
-                    cur = null;
+            $.ajax({
+                url: '/api/charts/' + chart_id + '/thumbnail/' + thumb_id,
+                type: 'PUT',
+                data: imgData,
+                processData: false,
+                success: function(res) {
+                    if (res.status == "ok") (callback || function() {})();
+                    else console.log('error:', res.message);
                 }
-                if (isHidden(curCSS)) return;
-            }
-            transforms = _.filter(transforms, _.identity).reverse();
-            var cloned = el.cloneNode(true);
-            cloned.setAttribute('transform', transforms.join(' '));
+            });
 
-            // copy all computed style attributes
-            explicitlySetStyle(el, cloned);
-            out_g.node().appendChild(cloned);
+            svg.remove();
+
+            // console.log('snapshot.js! total', ((new Date()).getTime() - t0)/1000);
         });
 
-        console.log(divs, parent);
+        function chartToSvg(parent_n, callback) {
 
-        divs.each(function() {
-            var el = this,
-                css = getComputedStyle(el),
-                bbox = el.getBoundingClientRect(),
-                stroke = css.borderColor,
-                strokeW = css.borderWidth,
-                fill = css.backgroundColor;
+            var parent = d3.select(parent_n),
+                offsetTop = parent_n.getBoundingClientRect().top - parent_n.parentNode.getBoundingClientRect().top;
 
-            var rect = out_g.append('rect')
-                .style('fill', fill)
-                .style('stroke', stroke)
-                .style('stroke-width', strokeW)
-                .attr({ x: bbox.left, y: bbox.top-offsetTop })
-                .attr({ width: bbox.width, height: bbox.height });
+            var out_w = parent_n.clientWidth,
+                out_h = parent_n.clientHeight;
 
-        });
+            var labels = parent.selectAll('.label span,.chart-title,.chart-intro,.footer-left'),
+                nodes = parent.selectAll('path, line, rect, circle, text'),
+                divs = parent.selectAll('.export-rect,.dw-rect');
 
-        out_g = out.append('g').attr('id', 'text');
+            var svgNodes = parent.selectAll('svg');
 
-        labels.each(function() {
-            // create a text node for each label
-            var el = this,
-                cur = el,
-                bbox = el.getBoundingClientRect(),
-                align = 'left',
-                content = el.innerText,
-                transforms = [];
+            d3.select('body').selectAll('.dw-snapshot').remove();
 
-            var txt = out_g.append('text')
-                .text(content)
-                .attr({ x: bbox.left });
+            // 1. create a new svg container of the size of the page
+            var cont = d3.select('body').append('div.dw-snapshot'),
+                out = cont.append('svg');
 
-            copyTextStyles(el, txt.node());
+            // get empty css declaration
+            var emptyCSS = window.getComputedStyle(out.node());
 
-            txt.attr('y', bbox.top - offsetTop + 2)
-                .style('dominant-baseline', 'hanging');
+            out.attr({ width: out_w, height: out_h });
+            cont.style({ position: 'absolute', left: '-5020px', top: '20px' });
 
-            // bbox = txt.node().getBoundingClientRect();
-            // txt.attr('y', bbox.top+bbox.height-offsetTop).style('dominant-baseline', 'text-after-edge');
-        });
+            var out_g = out.append('g').attr('id', 'graphic');
 
-        return cont;
+            var q = queue(1);
 
-        function isHidden(css) {
-            return css.display == 'none' ||
-                css.visibility == 'hidden' ||
-                +css.opacity === 0 ||
-                    (+css.fillOpacity === 0 || css.fill == 'none') &&
-                    (css.stroke == 'none' || !css.stroke || +css.strokeOpacity === 0);
-        }
+            var out_nodes = out_g.append('g#nodes'),
+                out_text = out.append('g#text');
 
-        function explicitlySetStyle(element, target) {
-            var elCSS = getComputedStyle(element),
-                i, len, key, value,
-                computedStyleStr = "";
-            for (i=0, len=elCSS.length; i<len; i++) {
-                key=elCSS[i];
-                value=elCSS.getPropertyValue(key);
-                if (value!==emptyCSS.getPropertyValue(key)) {
-                    computedStyleStr+=key+":"+value+";";
+            nodes.each(function() { q.defer(addNode, this); });
+            divs.each(function() { q.defer(addDiv, this); });
+            labels.each(function() { q.defer(addLabel, this); });
+
+            console.log(q);
+
+            q.awaitAll(function(err) {
+                console.log('all done', err);
+                callback(cont);
+            });
+
+            function addNode(el, cb) {
+                if (deferred) setTimeout(add, 0); else add();
+                function add() {
+                    var cur = el,
+                        curCSS,
+                        bbox,
+                        transforms = ['translate(0,'+(-offsetTop)+')'];
+                    while (cur) {
+                        curCSS = getComputedStyle(cur);
+                        if (cur.nodeName == 'defs') return cb(null);
+                        if (cur.nodeName != 'svg') {
+                            // check node visibility
+                            transforms.push(attr(cur, 'transform'));
+                            cur = cur.parentNode;
+                        } else {
+                            bbox = cur.getBoundingClientRect();
+                            transforms.push('translate('+[bbox.left, bbox.top]+')');
+                            cur = null;
+                        }
+                        if (isHidden(curCSS)) return cb(null);
+                    }
+                    transforms = _.filter(transforms, _.identity).reverse();
+                    var cloned = el.cloneNode(true);
+                    cloned.setAttribute('transform', transforms.join(' '));
+
+                    // copy all computed style attributes
+                    explicitlySetStyle(el, cloned);
+                    out_nodes.node().appendChild(cloned);
+                    cb(null);
                 }
             }
-            target.setAttribute('style', computedStyleStr);
-        }
 
-        function copyTextStyles(element, target) {
-            var elCSS = getComputedStyle(element),
-                i, len, key, value,
-                computedStyleStr = "";
-            for (i=0, len=elCSS.length; i<len; i++) {
-                key=elCSS[i];
-                if (key.substr(0,4) == 'font' || key.substr(0,4) == 'text' || key == 'color') {
+            function addDiv(el, cb) {
+                if (deferred) setTimeout(add, 0); else add();
+                function add() {
+                    var css = getComputedStyle(el),
+                        bbox = el.getBoundingClientRect(),
+                        stroke = css.borderColor,
+                        strokeW = css.borderWidth,
+                        fill = css.backgroundColor;
+
+                    var rect = out_nodes.append('rect')
+                        .style('fill', fill)
+                        .style('stroke', stroke)
+                        .style('stroke-width', strokeW)
+                        .attr({ x: bbox.left, y: bbox.top-offsetTop })
+                        .attr({ width: bbox.width, height: bbox.height });
+                    cb(null);
+                }
+            }
+
+            function addLabel(el, cb) {
+                if (deferred) setTimeout(add, 0); else add();
+                function add() {
+                    // create a text node for each label
+                    var cur = el,
+                        bbox = el.getBoundingClientRect(),
+                        align = 'left',
+                        content = el.innerText,
+                        transforms = [];
+
+                    var txt = out_text.append('text')
+                        .text(content)
+                        .attr({ x: bbox.left });
+
+                    copyTextStyles(el, txt.node());
+
+                    txt.attr('y', bbox.top - offsetTop + 2)
+                        .style('dominant-baseline', 'hanging');
+                    cb(null);
+                }
+            }
+
+            function isHidden(css) {
+                return css.display == 'none' ||
+                    css.visibility == 'hidden' ||
+                    +css.opacity === 0 ||
+                        (+css.fillOpacity === 0 || css.fill == 'none') &&
+                        (css.stroke == 'none' || !css.stroke || +css.strokeOpacity === 0);
+            }
+
+            function explicitlySetStyle(element, target) {
+                var elCSS = getComputedStyle(element),
+                    i, len, key, value,
+                    computedStyleStr = "";
+                for (i=0, len=elCSS.length; i<len; i++) {
+                    key=elCSS[i];
                     value=elCSS.getPropertyValue(key);
-                    if (key == 'color') key = 'fill';
                     if (value!==emptyCSS.getPropertyValue(key)) {
                         computedStyleStr+=key+":"+value+";";
                     }
                 }
+                target.setAttribute('style', computedStyleStr);
             }
-            target.setAttribute('style', computedStyleStr);
+
+            function copyTextStyles(element, target) {
+                var elCSS = getComputedStyle(element),
+                    i, len, key, value,
+                    computedStyleStr = "";
+                for (i=0, len=elCSS.length; i<len; i++) {
+                    key=elCSS[i];
+                    if (key.substr(0,4) == 'font' || key.substr(0,4) == 'text' || key == 'color') {
+                        value=elCSS.getPropertyValue(key);
+                        if (key == 'color') key = 'fill';
+                        if (value!==emptyCSS.getPropertyValue(key)) {
+                            computedStyleStr+=key+":"+value+";";
+                        }
+                    }
+                }
+                target.setAttribute('style', computedStyleStr);
+            }
+
+            function download(svg, filename) {
+                var source = (new XMLSerializer()).serializeToString(svg);
+                var url = window.URL.createObjectURL(new Blob([doctype + source], { "type" : "text\/xml" }));
+
+                var a = document.createElement("a");
+                document.body.appendChild(a);
+                a.setAttribute("class", "svg-crowbar");
+                a.setAttribute("download", filename + ".svg");
+                a.setAttribute("href", url);
+                a.style.display = "none";
+                a.click();
+
+                setTimeout(function() {
+                    window.URL.revokeObjectURL(url);
+                }, 10);
+            }
+
+
+            function attr(n, v) { return n.getAttribute(v); }
+
         }
-
-        function download(svg, filename) {
-            var source = (new XMLSerializer()).serializeToString(svg);
-            var url = window.URL.createObjectURL(new Blob([doctype + source], { "type" : "text\/xml" }));
-
-            var a = document.createElement("a");
-            document.body.appendChild(a);
-            a.setAttribute("class", "svg-crowbar");
-            a.setAttribute("download", filename + ".svg");
-            a.setAttribute("href", url);
-            a.style.display = "none";
-            a.click();
-
-            setTimeout(function() {
-                window.URL.revokeObjectURL(url);
-            }, 10);
-        }
+    };
 
 
-        function attr(n, v) { return n.getAttribute(v); }
-
-    }
 
 
 
