@@ -265,7 +265,7 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
     function scheduleThumbnail() {
         clearTimeout(__thumbTimer);
         __thumbTimer = setTimeout(function() {
-            dw.backend.snapshot(iframe, dw.backend.currentChart.get('id'), 'm', 260, 160);
+            dw.backend.snapshot(iframe, dw.backend.currentChart.get('id'));
         }, 1500);
     }
 
