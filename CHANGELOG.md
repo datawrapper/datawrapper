@@ -1,6 +1,17 @@
 CHANGELOG
 ---------
 
+### x.x.x
+
+* re-designed mycharts and gallery, now showing more charts in a masonry layout
+* fixed client-side snapshots using canvg. works with html and text. creates double-res fullsiye screenshots instead of tiny thumbnails
+* made sure that snapshots of complex charts are not generated on client-side, but using the new plugin "snapshot" 
+* loading js files as utf-8
+* re-designed option groups in chart editor
+* color changes in color selector popup are now immediately applied to chart
+* vis axes can now specify a regex for better auto-matching based on column names
+* minor css fixes in chart editor
+
 ### 1.9.6
 * added hook for when all plugins are loaded
 * updated to underscore 1.8.3
