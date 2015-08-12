@@ -13,7 +13,7 @@
         },
 
         groupAfter: function() {
-            return 4;
+            return Number(this.get('group-slice-after'))-1;
         },
 
         render: function(el) {

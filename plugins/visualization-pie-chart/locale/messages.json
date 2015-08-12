@@ -7,5 +7,6 @@
   "Donut chart": "Donut chart",
   "Show total value in center": "Show total value in center",
   "Use custom total value instead of sum": "Use custom total value instead of sum",
-  "Custom total value": "Custom total value"
+  "Custom total value": "Custom total value",
+  "Maximum amount of slices":"Maximum amount of slices"
 }

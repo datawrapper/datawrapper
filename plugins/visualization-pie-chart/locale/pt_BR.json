@@ -7,5 +7,6 @@
   "Donut chart":"Gráfico de rosquinha",
   "Show total value in center":"Mostrar o valor total no centro",
   "Use custom total value instead of sum":"Usar valor personalizado ao invés da soma",
-  "Custom total value":"Valor total personalizado"
+  "Custom total value":"Valor total personalizado",
+  "Maximum amount of slices":"Maximum amount of slices"
 }

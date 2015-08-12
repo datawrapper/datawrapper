@@ -7,5 +7,6 @@
   "Donut chart":"Grafico a ciambella",
   "Show total value in center":"Visualizza il totale al centro",
   "Use custom total value instead of sum":"Utilizza un totale personalizzato invece della somma",
-  "Custom total value":"Totale personalizzato"
+  "Custom total value":"Totale personalizzato",
+  "Maximum amount of slices":"Maximum amount of slices"
 }

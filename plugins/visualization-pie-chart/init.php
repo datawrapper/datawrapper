@@ -24,6 +24,16 @@ DatawrapperVisualization::register($plugin, array(
         'base-color' => array(
             'type' => 'base-color',
             'label' => __('Base color')
+        ),
+        'group-slice-after' => array(
+            'type' => 'number',
+            'label' => 'Maximum amount of Slices',
+            'default' => '4',
+            'depends-on' => array(
+                'chart.min_row_num' => 3,
+            ),
+            'min' => 2,
+            'max' => 100
         )
     ),
     'locale' => array(
@@ -56,6 +66,10 @@ DatawrapperVisualization::register($plugin, array(
         )
     ),
     'options' => array(
+	'base-color' => array(
+            'type' => 'base-color',
+            'label' => __('Base color')
+        ),
         'show-total' => array(
             'type' => 'checkbox',
             'label' => __('Show total value in center'),
@@ -77,6 +91,16 @@ DatawrapperVisualization::register($plugin, array(
                 'show-total' => true,
                 'custom-total' => true
             )
+        ),
+        'group-slice-after' => array(
+            'type' => 'number',
+            'label' => 'Maximum amount of Slices',
+            'default' => '4',
+            'depends-on' => array(
+                'chart.min_row_num' => 3,
+            ),
+            'min' => 2,
+            'max' => 100
         )
     )
 ));
