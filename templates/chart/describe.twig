@@ -34,6 +34,8 @@ dw.backend.ready(function() {
                         </p>
                     </div>
 
+                    {{ hook('describe_before_source') }}
+
                     <h3 style="margin-top:20px">{% trans "Where did you get the data?" %}</h3>
                     <div>
                         <label>{% trans "Who published the data in the first place?" %}</label>
@@ -148,6 +150,7 @@ dw.backend.ready(function() {
 
                     <div class="clearfix"></div>
                 </div>
+
 
                 <a class="btn submit" href="upload"><i class="icon-chevron-left"></i> {% trans "Back" %}</a>
                 <button class="btn disabled" id="reset-data-changes" title="{% trans "Revert data changes" %}">{% trans "Revert" %}</button>
