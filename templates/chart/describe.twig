@@ -10,7 +10,7 @@
 <script type="text/javascript">
 dw.backend.ready(function() {
     require(['dw/chart/describe'], function(describe) {
-        describe.init("{{ chartLocale }}");
+        describe.init(dw.backend.currentChart.get('language') || "{{ chartLocale }}");
     });
 });
 

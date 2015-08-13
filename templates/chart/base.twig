@@ -46,7 +46,7 @@
     var chart = dw.backend.currentChart = dw.chart(JSON.parse("{{ chart.toJSON | raw }}"));
 
     chart
-        .locale('{{ chartLocale }}')
+        .locale(dw.backend.currentChart.get('language') || '{{ chartLocale }}')
         .metricPrefix({{ metricPrefix | json | raw }});
 
     if (chart.get('lastEditStep') < {{ createstep }}) {
