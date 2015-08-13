@@ -28,7 +28,7 @@ DatawrapperVisualization::register($plugin, array(
         'group-slice-after' => array(
             'type' => 'number',
             'label' => __('Maximum amount of slices'),
-            'default' => '4',
+            'default' => '5',
             'depends-on' => array(
                 'chart.min_row_num' => 3,
             ),
@@ -95,7 +95,7 @@ DatawrapperVisualization::register($plugin, array(
         'group-slice-after' => array(
             'type' => 'number',
             'label' => __('Maximum amount of slices'),
-            'default' => '4',
+            'default' => '5',
             'depends-on' => array(
                 'chart.min_row_num' => 3,
             ),
