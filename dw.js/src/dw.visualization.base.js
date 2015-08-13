@@ -99,9 +99,15 @@ _.extend(dw.visualization.base, {
         return me;
     },
 
-    axes: function(returnAsColumns) {
-        var me = this,
-            dataset = me.dataset,
+    axes: function(returnAsColumns, noCache) {
+
+        var me = this;
+
+        if (!noCache && me.__axisCache) {
+            return me.__axisCache[returnAsColumns ? 'axesAsColumns' : 'axes'];
+        }
+
+        var dataset = me.dataset,
             usedColumns = {},
             axes = {},
             axesDef,
@@ -200,8 +206,9 @@ _.extend(dw.visualization.base, {
             }
         });
 
-        me.axes = function(returnAsColumns) {
-            return returnAsColumns ? axesAsColumns : axes;
+        me.__axisCache = {
+            axes: axes,
+            axesAsColumns: axesAsColumns
         };
 
         function columnExists(columns) {
