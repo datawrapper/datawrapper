@@ -1,4 +1,4 @@
-/*! datawrapper - v1.9.6 - 2015-08-12 *///
+/*! datawrapper - v1.9.6 - 2015-08-14 *///
 // NOTE: This file is auto-generated using /dw.js/make
 // from the source files /dw.js/src/*.js.
 //
@@ -1627,10 +1627,20 @@ dw.chart = function(attributes) {
             return !_.isArray(hl) || hl.length === 0 || _.indexOf(hl, obj_name) >= 0;
         },
 
-        locale: function(_locale) {
+        locale: function(_locale, callback) {
             if (arguments.length) {
                 locale = _locale;
-                Globalize.culture(locale);
+                if (Globalize.cultures.hasOwnProperty(locale)) {
+                    Globalize.culture(locale);
+                    if (typeof callback == "function") callback();
+                } else {
+                    $.getScript("/static/vendor/globalize/cultures/globalize.culture." +
+                      locale + ".js", function () {
+       
+                        chart.locale(locale);
+                        if (typeof callback == "function") callback();
+                    });
+                }
                 return chart;
             }
             return locale;
