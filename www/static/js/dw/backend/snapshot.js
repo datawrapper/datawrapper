@@ -24,7 +24,7 @@ define(['queue'], function(queue) {
             deferred = numDomNodes > 5000,
             serverSide = numDomNodes > 2000;
 
-        console.log(numDomNodes,'dom nodes', deferred, serverSide);
+        // console.log(numDomNodes,'dom nodes', deferred, serverSide);
 
         // if (stop) return;
 
@@ -35,7 +35,7 @@ define(['queue'], function(queue) {
         // console.log('snapshot.js - start');
 
         chartToSvg(chartBody, function(svg) {
-            console.log('snapshot.js - chartToSVG', ((new Date()).getTime() - t0)/1000);
+            // console.log('snapshot.js - chartToSVG', ((new Date()).getTime() - t0)/1000);
 
             var bbox = svg.node().getBoundingClientRect();
 
@@ -48,7 +48,7 @@ define(['queue'], function(queue) {
 
             (serverSide ? svgToPngServer : svgToPngClient)(svg_src, bbox, function(err) {
                 // console.log('done', serverSide, err);
-                console.log('snapshot.js! total', ((new Date()).getTime() - t0)/1000);
+                // console.log('snapshot.js! total', ((new Date()).getTime() - t0)/1000);
             });
             // 
         });
@@ -67,7 +67,7 @@ define(['queue'], function(queue) {
                 dataType: 'json',
                 processData: false,
                 success: function(res) {
-                    console.log(res);
+                    // console.log(res);
                     if (res.status == "ok") callback(null);
                     else callback(res);
                 }
@@ -136,7 +136,7 @@ define(['queue'], function(queue) {
             labels.each(function() { q.defer(addLabel, this); });
 
             q.awaitAll(function(err) {
-                console.log('all done', err);
+                // console.log('all done', err);
                 callback(cont);
             });
 
