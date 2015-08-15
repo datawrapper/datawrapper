@@ -1,7 +1,7 @@
 CHANGELOG
 ---------
 
-### x.x.x
+### 1.9.7
 
 * re-designed mycharts and gallery, now showing more charts in a masonry layout
 * fixed client-side snapshots using canvg. works with html and text. creates double-res fullsiye screenshots instead of tiny thumbnails
