@@ -13,7 +13,7 @@
 
     {% for key, option in vis.options %}
         {% if option.type == 'group' %}
-        <div class="vis-option-type-group{% if option.open %} group-open{% endif %}">
+        <div id="vis-options-{{ key }}" class="vis-option-type-group{% if option.open %} group-open{% endif %}">
             <label class="group-title">
                 <i class="fa fa-angle-double-right expand-group"></i>
                 <i class="fa fa-angle-double-down collapse-group"></i>

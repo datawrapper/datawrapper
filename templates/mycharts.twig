@@ -209,13 +209,15 @@ $(function(){
 
     require(['masonry', 'imagesloaded'], function(Masonry, imagesLoaded) {
         var imgLoad = imagesLoaded('.thumbnails');
-        imgLoad.on('progress', layout);
+        imgLoad.on('progress', _.debounce(layout, 200));
         imgLoad.on('always', layout);
         function layout() {
-            new Masonry('.thumbnails', {
-                itemSelector: '.chart',
-                transitionDuration: 0
-            });
+            setTimeout(function() {
+                new Masonry('.thumbnails', {
+                    itemSelector: '.chart',
+                    transitionDuration: 0
+                });
+            }, 100);
         }
     });
 
