@@ -20,7 +20,6 @@ www/static/custom/*
 test/result/*
 crowdin.yaml
 log.txt
-www/static/js/dw-2.0.min.js
 vendor/*
 node_modules/*
 assets/vendor/*
