@@ -52,6 +52,7 @@
     if (chart.get('lastEditStep') < {{ createstep }}) {
         dw.backend.__firstTime = true;
         chart.set('lastEditStep', {{ createstep }});
+        chart.save();
     }
 
 dw.backend.ready(function() {
