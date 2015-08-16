@@ -202,7 +202,7 @@ $app->get('/organizations/:id/charts', function($org_id) use ($app) {
         if ($org->hasUser($user) || $user->isAdmin()) {
             $query = ChartQuery::create()
                 ->filterByDeleted(false)
-                ->orderByCreatedAt(Criteria::DESC)
+                ->orderByLastModifiedAt(Criteria::DESC)
                 ->filterByOrganization($org);
             // filter by visualization
             $vis = $app->request()->get('vis');
