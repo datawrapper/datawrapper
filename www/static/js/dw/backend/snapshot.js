@@ -146,7 +146,7 @@ define(['queue'], function(queue) {
                     var cur = el,
                         curCSS,
                         bbox,
-                        transforms = ['translate(0,'+(-offsetTop)+')'];
+                        transforms = [];
                     while (cur) {
                         curCSS = getComputedStyle(cur);
                         if (cur.nodeName == 'defs') return cb(null);
@@ -162,6 +162,7 @@ define(['queue'], function(queue) {
                         if (isHidden(curCSS)) return cb(null);
                     }
                     transforms = _.filter(transforms, _.identity).reverse();
+                    transforms.unshift('translate(0,'+(-offsetTop)+')');
                     var cloned = el.cloneNode(true);
                     cloned.setAttribute('transform', transforms.join(' '));
 
