@@ -13,7 +13,7 @@
         "twig/extensions": "1.0.*",
         "tubalmartin/cssmin": "2.4.8-p4",
         "tedivm/jshrink": "~1.0",
-        "fightbulc/moment": "*"
+        "gka/moment": "*"
     },
     "autoload": {
         "classmap": [
@@ -71,6 +71,17 @@
                 "dist": {
                     "type": "zip",
                     "url": "https://github.com/rgrove/jsmin-php/archive/948d87c203010b0544ecc50cf31ad743d7e02a57.zip"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "gka/moment",
+                "version": "1.0.0",
+                "dist": {
+                    "type": "zip",
+                    "url": "https://github.com/gka/moment.php/archive/patch-1.zip"
                 }
             }
         }
