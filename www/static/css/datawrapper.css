@@ -431,6 +431,7 @@ html .btn-inverse {
 }
 .chart-editor.dw-create-describe .sidebar label {
   font-family: 'Roboto', Helvetica, sans-serif;
+  display: inline-block;
 }
 .chart-editor.dw-create-describe .sidebar label.separator {
   font-weight: 500;
@@ -439,6 +440,9 @@ html .btn-inverse {
   clear: both;
   font-family: 'Roboto', Helvetica, sans-serif;
   font-size: 12px;
+  padding-bottom: 10px;
+}
+.chart-editor.dw-create-describe .handsontable .htContainer {
   padding-bottom: 10px;
 }
 .chart-editor.dw-create-describe .handsontable tr td {
