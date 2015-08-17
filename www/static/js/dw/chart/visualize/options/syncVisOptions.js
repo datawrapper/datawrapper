@@ -54,11 +54,17 @@ define(function() {
                 columnTypeRegex = /chart\.column_type\[([^\]]+)\]/,
                 magnitudeRangeRegex = /chart\.magnitude_range\[([^\]]+)\]/,
                 isNullRegex = /isnull\(([^\)]+)\)/,
+                colFormat = chart.get('metadata.data.column-format', {}),
                 _vis = dw.backend.currentVis;
 
             _.each(_vis.meta.axes, function(opts, key) {
                 var columns = _vis.axes(true)[key];
-                axesColumns[key] = _.isArray(columns) ? columns : columns ? [columns] : [];
+                columns = _.isArray(columns) ? columns : columns ? [columns] : [];
+                axesColumns[key] = columns.filter(function(col) {
+                    // remove ignored columns
+                    if (colFormat[col.name()]) return !colFormat[col.name()].ignore;
+                    return true;
+                });
             });
 
             _.each(vis.options, function(opt, key) {
