@@ -77,7 +77,7 @@
                     {% if custom_logo %}
                         <img src="{{ custom_logo }}" />
                     {% endif %}
-                    {% if config.custom_title %}{{ config.custom_title }}{% else %}Datawrapper{% endif %}<span class="beta">{{ config.custom_title_tag }}</span>
+                    {% if config.custom_title %}{{ config.custom_title }}{% else %}{% trans "Datawrapper" %}{% endif %}<span class="beta">{{ config.custom_title_tag }}</span>
                 </a>
 
                 <div class="nav-collapse">

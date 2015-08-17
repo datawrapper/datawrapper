@@ -2,11 +2,11 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    {% set project_title = config.custom_title | default('Datawrapper') %}
+    {% set project_title = config.custom_title | default('Datawrapper'|trans) %}
     <title>{{ project_title }}{% if title and title != project_title %} :: {{ title }}{% endif %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Datawrapper is an open source tool helping everyone to create simple, correct and embeddable charts in minutes.">
-    <meta name="author" content="Mirko Lorenz, Nicolas Kayser-Bril, Gregor Aisch">
+    <meta name="description" content="{% trans "Datawrapper is an open source tool helping everyone to create simple, correct and embeddable charts in minutes." %}">
+    <meta name="author" content="{% trans "Mirko Lorenz, Nicolas Kayser-Bril, Gregor Aisch" %}">
     <meta http-equiv="X-UA-Compatible" content="IE=8" />
 
     <!-- Le styles -->
