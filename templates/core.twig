@@ -23,6 +23,7 @@
     <![endif]-->
 
     {% if config.custom_css %}<link href="/static/custom/{{ config.custom_css }}" rel="stylesheet">{% endif %}
+    {% if config.custom_favicon %}<link href="{{ config.custom_favicon }}" rel="shortcut icon">{% endif %}
 
     <script type="text/javascript" charset="utf-8" src="/static/vendor/d3js/3.5.5/d3.min.js"></script>
     <script type="text/javascript" charset="utf-8" src="/static/vendor/d3js/d3-jetpack.min.js"></script>
