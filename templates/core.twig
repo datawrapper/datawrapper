@@ -2,7 +2,8 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Datawrapper{% if title and title != 'Datawrapper' %} :: {{ title }}{% endif %}</title>
+    {% set project_title = config.custom_title | default('Datawrapper') %}
+    <title>{{ project_title }}{% if title and title != project_title %} :: {{ title }}{% endif %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Datawrapper is an open source tool helping everyone to create simple, correct and embeddable charts in minutes.">
     <meta name="author" content="Mirko Lorenz, Nicolas Kayser-Bril, Gregor Aisch">
@@ -25,7 +26,7 @@
 
     <script type="text/javascript" charset="utf-8" src="/static/vendor/d3js/3.5.5/d3.min.js"></script>
     <script type="text/javascript" charset="utf-8" src="/static/vendor/d3js/d3-jetpack.min.js"></script>
-    
+
     <script type="text/javascript" charset="utf-8" src="/static/vendor/require-js/require-2.1.8.min.js"></script>
     <script type="text/javascript" charset="utf-8">
         require.config({
