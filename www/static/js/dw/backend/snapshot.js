@@ -103,8 +103,8 @@ define(['queue'], function(queue) {
             var parent = d3.select(parent_n),
                 offsetTop = parent_n.getBoundingClientRect().top - parent_n.parentNode.getBoundingClientRect().top;
 
-            var out_w = parent_n.clientWidth,
-                out_h = parent_n.clientHeight;
+            var out_w = Math.min(parent_n.clientWidth, 700),
+                out_h = Math.min(parent_n.clientHeight, 1000);
 
             var labels = parent.selectAll('.label span,.chart-title,.chart-intro,.footer-left'),
                 nodes = parent.selectAll('path, line, rect, circle, text'),
