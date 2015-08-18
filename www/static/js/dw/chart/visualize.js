@@ -245,8 +245,8 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
         $('.resize-chart a').click(function(e) {
             e.preventDefault();
             var dim = $(e.target).html().split('×');
-            $('#resize-w').val(dim[0]);
-            $('#resize-h').val(dim[1]);
+            if ($('#resize-w').val() != dim[0]) $('#resize-w').val(dim[0]);
+            if ($('#resize-h').val() != dim[1]) $('#resize-h').val(dim[1]);
             updateSize(dim[0], dim[1]);
         });
     }
@@ -254,8 +254,8 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
     function initChartSize() {
         var cw = chart.get('metadata.publish.embed-width', $('#iframe-wrapper').width()),
             ch = chart.get('metadata.publish.embed-height', $('#iframe-wrapper').height());
-        $('#resize-w').val(cw);
-        $('#resize-h').val(ch);
+        if ($('#resize-w').val() != cw) $('#resize-w').val(cw);
+        if ($('#resize-h').val() != ch) $('#resize-h').val(ch);
         $('.resize-chart input').change(_updateSize);
         $('#iframe-wrapper').width(cw);
         $('#iframe-wrapper').height(ch);
