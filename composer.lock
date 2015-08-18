@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c7b7f7d00254a14abcf778b4574e62d2",
+    "hash": "41abc8e3952dd3f9c3e23c36da0ecfaa",
     "packages": [
         {
             "name": "ezyang/htmlpurifier",
@@ -51,7 +51,7 @@
             "time": "2015-08-05 01:03:42"
         },
         {
-            "name": "gka/moment",
+            "name": "fightbulc/moment",
             "version": "1.0.0",
             "dist": {
                 "type": "zip",
@@ -59,7 +59,12 @@
                 "reference": null,
                 "shasum": null
             },
-            "type": "library"
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Moment\\": "src/"
+                }
+            }
         },
         {
             "name": "mustangostang/spyc",
