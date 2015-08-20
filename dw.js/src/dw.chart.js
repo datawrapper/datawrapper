@@ -117,7 +117,7 @@ dw.chart = function(attributes) {
                     if (typeof callback == "function") callback();
                 } else {
                     $.getScript("/static/vendor/globalize/cultures/globalize.culture." +
-                      locale + ".js", function () {
+                      locale.replace('_', '-') + ".js", function () {
        
                         chart.locale(locale);
                         if (typeof callback == "function") callback();
