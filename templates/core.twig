@@ -170,6 +170,7 @@ $(function() {
   dw.backend.__chartCacheDomain = '{{ DW_CHART_CACHE_DOMAIN }}';
   dw.backend.__domain = '{{ DW_DOMAIN }}';
   dw.backend.__asset_domain = '{{ ASSET_DOMAIN }}';
+  dw.backend.__locale = '{{ locale | replace({'_':'-'}) }}';
 
   Globalize.culture('{{ locale | replace({'_':'-'}) }}');
 });
