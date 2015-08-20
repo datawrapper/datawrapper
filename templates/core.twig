@@ -170,6 +170,8 @@ $(function() {
   dw.backend.__chartCacheDomain = '{{ DW_CHART_CACHE_DOMAIN }}';
   dw.backend.__domain = '{{ DW_DOMAIN }}';
   dw.backend.__asset_domain = '{{ ASSET_DOMAIN }}';
+
+  Globalize.culture('{{ locale | replace({'_':'-'}) }}');
 });
     </script>
     {% use "messages.twig" %}
