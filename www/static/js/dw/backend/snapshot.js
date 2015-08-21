@@ -19,6 +19,11 @@ define(['queue'], function(queue) {
         
         var chartBody = iframeDoc.querySelector('.dw-chart-body');
 
+        if (!chartBody) {
+            console.warn('Please add class dw-chart-body to theme', chart.get('theme'));
+            chartBody = iframe.get(0).contentDocument.getElementById('chart');
+        }
+
         // count dom nodes
         var numDomNodes = chartBody.querySelectorAll('*').length,
             deferred = numDomNodes > 5000,
@@ -28,10 +33,6 @@ define(['queue'], function(queue) {
 
         // if (stop) return;
 
-        if (!chartBody) {
-            console.warn('Please add class dw-chart-body to theme', chart.get('theme'));
-            chartBody = iframe.get(0).contentDocument.getElementById('chart');
-        }
         // console.log('snapshot.js - start');
 
         chartToSvg(chartBody, function(svg) {
