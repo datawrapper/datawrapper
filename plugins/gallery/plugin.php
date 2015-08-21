@@ -57,7 +57,7 @@ class DatawrapperPlugin_Gallery extends DatawrapperPlugin {
 
             $page = array(
                 'charts' => $charts,
-                'bymonth' => $plugin->nbChartsByMonth(),
+                // 'bymonth' => $plugin->nbChartsByMonth(),
                 'byvis' => $plugin->nbChartsByType(),
                 'key' => $key,
                 'val' => $val
