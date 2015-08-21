@@ -11,7 +11,9 @@ define(function() {
                     chartIframe = $('<iframe src="'+chartUrl+'" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>'),
                     wrapper = $('<div></div>'),
                     overlay = wrapper.overlay({
-                        onClose: function() { location.hash = ''; if ($.isFunction(closeCb)) closeCb(); }
+                        onClose: function() {
+                            if ($.isFunction(closeCb)) closeCb();
+                        }
                     });
                 wrapper.append('<a class="close close-button">&#9747;</a>');
                 wrapper.append(chartIframe);
@@ -25,9 +27,6 @@ define(function() {
                 });
 
                 overlay.open();
-                if (location.hash != '#/' + chart.id) {
-                    location.hash = '#/' + chart.id;
-                }
             }
         });
     };
