@@ -20,7 +20,7 @@ define(['queue'], function(queue) {
         var chartBody = iframeDoc.querySelector('.dw-chart-body');
 
         if (!chartBody) {
-            console.warn('Please add class dw-chart-body to theme', chart.get('theme'));
+            // console.warn('Please add class dw-chart-body', chart.get('theme'));
             chartBody = iframe.get(0).contentDocument.getElementById('chart');
         }
 
