@@ -1,4 +1,4 @@
-/*! datawrapper - v1.9.6 - 2015-08-14 *///
+/*! datawrapper - v1.9.7 - 2015-08-21 *///
 // NOTE: This file is auto-generated using /dw.js/make
 // from the source files /dw.js/src/*.js.
 //
@@ -1635,7 +1635,7 @@ dw.chart = function(attributes) {
                     if (typeof callback == "function") callback();
                 } else {
                     $.getScript("/static/vendor/globalize/cultures/globalize.culture." +
-                      locale + ".js", function () {
+                      locale.replace('_', '-') + ".js", function () {
        
                         chart.locale(locale);
                         if (typeof callback == "function") callback();
