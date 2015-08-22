@@ -1,6 +1,12 @@
 CHANGELOG
 ---------
 
+* inline editing of notes
+* memorize what vis groups a user had open
+* allowing transparent navbar
+* don't mess with location.hash in chart popups
+* bugfix of chart localization
+
 ### 1.9.7
 
 * re-designed mycharts and gallery, now showing more charts in a masonry layout
