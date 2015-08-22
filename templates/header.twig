@@ -64,7 +64,7 @@
 
 {% block header %}
 
-    <div class="navbar navbar-static-top{% if invert_navbar %} navbar-inverse{% endif %}">
+    <div class="navbar {% if navbar_transparent %}navbar-transparent{% endif %} navbar-static-top{% if invert_navbar %} navbar-inverse{% endif %}">
         <div class="navbar-inner">
             <div class="container" style="position:relative">
                 <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">

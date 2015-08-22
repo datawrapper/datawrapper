@@ -114,7 +114,35 @@ html .navbar .navbar-inner {
     .nav li.dropdown .dropdown-toggle .caret, .nav li.dropdown.open .caret,
 
     li a .tt { display: none; }
+
 }
+
+html .navbar.navbar-transparent .navbar-inner {
+    background: rgba(0,0,0,0.2);
+    border-bottom-color: transparent;
+
+    .nav > li.divider-vertical {
+        border-left-color: transparent;
+        border-right-color: transparent;
+    }
+    .nav > li > a {
+        text-shadow: none;
+        color: white;
+        .fa { color: white }
+    }
+    .nav .active > a {
+        color: white!important;
+    }
+    .brand {
+        color: white;
+        text-shadow: none;
+    }
+    li.notifications {
+        border-left: none;
+        border-right: none;
+    }
+}
+
 
 html .navbar.navbar-inverse {
     .navbar-inner {

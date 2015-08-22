@@ -179,6 +179,32 @@ html .navbar .navbar-inner .nav li.dropdown.open .caret,
 html .navbar .navbar-inner li a .tt {
   display: none;
 }
+html .navbar.navbar-transparent .navbar-inner {
+  background: rgba(0, 0, 0, 0.2);
+  border-bottom-color: transparent;
+}
+html .navbar.navbar-transparent .navbar-inner .nav > li.divider-vertical {
+  border-left-color: transparent;
+  border-right-color: transparent;
+}
+html .navbar.navbar-transparent .navbar-inner .nav > li > a {
+  text-shadow: none;
+  color: white;
+}
+html .navbar.navbar-transparent .navbar-inner .nav > li > a .fa {
+  color: #ffffff;
+}
+html .navbar.navbar-transparent .navbar-inner .nav .active > a {
+  color: white!important;
+}
+html .navbar.navbar-transparent .navbar-inner .brand {
+  color: white;
+  text-shadow: none;
+}
+html .navbar.navbar-transparent .navbar-inner li.notifications {
+  border-left: none;
+  border-right: none;
+}
 html .navbar.navbar-inverse .navbar-inner {
   background: #000;
 }
