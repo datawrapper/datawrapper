@@ -26,7 +26,7 @@ function(initCustomColors, syncVisOptions, unsyncVisOptions) {
 
             var type = _chart.get('type'), usrPref = {};
             try {
-                usrPref = JSON.parse(localStorage.getItem('dw-vis-groups'));
+                usrPref = JSON.parse(localStorage.getItem('dw-vis-groups')) || {};
             } catch (e) {}
             
             if (!usrPref[type]) usrPref[type] = {};
