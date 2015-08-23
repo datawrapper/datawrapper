@@ -24,6 +24,8 @@ define(['queue'], function(queue) {
             chartBody = iframe.get(0).contentDocument.getElementById('chart');
         }
 
+        if (!chartBody) return; // chart probably re-loading at this moment
+
         // count dom nodes
         var numDomNodes = chartBody.querySelectorAll('*').length,
             deferred = numDomNodes > 5000,
