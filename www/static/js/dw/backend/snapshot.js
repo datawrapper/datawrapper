@@ -111,7 +111,8 @@ define(['queue'], function(queue) {
 
             var labels = parent.selectAll('.label span,.chart-title,.chart-intro,.footer-left'),
                 nodes = parent.selectAll('path, line, rect, circle, text'),
-                divs = parent.selectAll('.export-rect,.dw-rect');
+                divs = parent.selectAll('.export-rect,.dw-rect'),
+                circles = parent.selectAll('.dw-circle');
 
             var svgNodes = parent.selectAll('svg');
 
@@ -136,6 +137,7 @@ define(['queue'], function(queue) {
 
             nodes.each(function() { q.defer(addNode, this); });
             divs.each(function() { q.defer(addDiv, this); });
+            circles.each(function() { q.defer(addDivCircle, this); });
             labels.each(function() { q.defer(addLabel, this); });
 
             q.awaitAll(function(err) {
@@ -185,12 +187,32 @@ define(['queue'], function(queue) {
                         strokeW = css.borderWidth,
                         fill = css.backgroundColor;
 
-                    var rect = out_nodes.append('rect')
+                    out_nodes.append('rect')
                         .style('fill', fill)
                         .style('stroke', stroke)
                         .style('stroke-width', strokeW)
                         .attr({ x: bbox.left, y: bbox.top-offsetTop })
                         .attr({ width: bbox.width, height: bbox.height });
+                    cb(null);
+                }
+            }
+
+            function addDivCircle(el, cb) {
+                if (deferred) setTimeout(add, 0); else add();
+                function add() {
+                    var css = getComputedStyle(el),
+                        bbox = el.getBoundingClientRect(),
+                        stroke = css.borderColor,
+                        strokeW = css.borderWidth,
+                        fill = css.backgroundColor,
+                        r = bbox.width * 0.5;
+
+                    out_nodes.append('circle')
+                        .style('fill', fill)
+                        .style('stroke', stroke)
+                        .style('stroke-width', strokeW)
+                        .attr({ cx: bbox.left + r, cy: bbox.top-offsetTop + r })
+                        .attr('r', r);
                     cb(null);
                 }
             }
