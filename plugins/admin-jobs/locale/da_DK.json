@@ -1,3 +1,21 @@
 {
-  "Jobs":"Jobs"
+    "Jobs": "Job",
+    "Background Jobs": "Baggrundsjob",
+    "This page shows you the current state of background jobs in Datawrapper.": "Denne side viser den aktuelle status for Datawrappers baggrundsjob.",
+    "queued jobs": "job i kø",
+    "estimated time to finish": "resterende tid",
+    "minutes": "minutter",
+    "failed jobs": "mislykkede jobs",
+    "completed jobs": "færdige jobs",
+    "Warning!": "Advarsel!",
+    "The following jobs have not been finished properly.": "Følgende job blev ikke afsluttet korrekt.",
+    "Created": "Oprettet",
+    "Type": "Type",
+    "User": "Bruger",
+    "Chart": "Diagram",
+    "Visualization": "Visualisering",
+    "Theme": "Tema",
+    "Fail Reason": "Fejlårsag",
+    "Good news!": "Gode nyheder!",
+    "All jobs have been finished properly.": "Alle job er afsluttet korrekt."
 }

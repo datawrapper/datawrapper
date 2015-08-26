@@ -1,12 +1,12 @@
 {
-  "Pie chart":"Pie chart",
-  "Base color":"Base color",
-  "other":"other",
-  "Pie charts are intended to show part-of-whole relations, and thus they \n<b>cannot be used to display negative numbers<\/b>. Please consider using a \ndifferent chart type instead (eg. a bar chart).":"Pie charts are intended to show part-of-whole relations, and thus they \n<b>cannot be used to display negative numbers<\/b>. Please consider using a \ndifferent chart type instead (eg. a bar chart).",
-  "Your data contains <b>more values than can be shown in a pie chart<\/b>, so \nwe grouped %count slices into the slice named <i>\"others\"<\/i>.<p>Why not \nuse a bar chart to allow better comparison of values?<\/p>":"Your data contains <b>more values than can be shown in a pie chart<\/b>, so \nwe grouped %count slices into the slice named <i>\"others\"<\/i>.<p>Why not \nuse a bar chart to allow better comparison of values?<\/p>",
-  "Donut chart":"Donut chart",
-  "Show total value in center":"Show total value in center",
-  "Use custom total value instead of sum":"Use custom total value instead of sum",
-  "Custom total value":"Custom total value",
-  "Maximum amount of slices":"Maximum amount of slices"
+    "Pie chart": "Lagkagediagram",
+    "Base color": "Basisfarve",
+    "Maximum amount of slices": "Maksimalt antal skiver",
+    "other": "andet",
+    "Pie charts are intended to show part-of-whole relations, and thus they <b>cannot be used to display negative numbers<\/b>. Please consider using a different chart type instead (eg. a bar chart).": "Lagkagediagrammer er beregnet til at vise en-del-af-et-hele relationer, og derfor kan de ikke bruges til at vise negative tal. Du bør overveje at bruge en anden diagramtype (f.eks. et søjlediagram).",
+    "Your data contains <b>more values than can be shown in a pie chart<\/b>, so we grouped %count slices into the slice named <i>\"others\"<\/i>.<p>Why not use a bar chart to allow better comparison of values?<\/p>": "Dine data indeholder flere værdier end der er plads til i et lagkagediagram, så vi har grupperet %count skiver i en skive kaldet \"andet|. Du bør overveje at bruge et søjlediagram så værdierne bliver nemmere at forstå.",
+    "Donut chart": "Donut-diagram",
+    "Show total value in center": "Vis total i midten",
+    "Use custom total value instead of sum": "Vis brugerdefineret total i stedet for summen",
+    "Custom total value": "Brugerdefineret total"
 }
