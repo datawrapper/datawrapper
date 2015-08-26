@@ -27,9 +27,9 @@
     <div class="confirm-delete hidden">{% trans "will be deleted. Continue?" %}</div>
 
     <form action="/admin/users" method="GET" class="pull-right form-horizontal">
-        <input type="text" name="q" value="{{ q }}" placeholder="Seach by name or email" /> <input type="submit" class="btn" value="Search" />
+        <input type="text" name="q" value="{{ q }}" placeholder="{% trans "Search by name or email" %}" /> <input type="submit" class="btn" value="{% trans "Search" %}" />
     </form>
-    <p>Below you find the complete list of users. You can search by email.</p>
+    <p>{% trans "Below you find the complete list of users. You can search by email." %}</p>
 
     <a href="#" class="btn do when-not-addUserForm" data-action="showAddUserForm">{% trans "Add a user"%}</a>
     <div class="addUser when-addUserForm">

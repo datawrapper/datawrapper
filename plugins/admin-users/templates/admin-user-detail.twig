@@ -16,17 +16,17 @@
 
 <div>
     <ul class="unstyled props">
-        <li><b>ID:</b> {{ the_user.id }}</li>
-        <li><b>Name:</b> {{ the_user.name }}</li>
-        <li><b>E-Mail:</b> {{ the_user.email }}</li>
-        <li><b>Created At:</b> {{ the_user.createdAt }}</li>
-        <li><b>Role:</b> {{ the_user.role }}</li>
+        <li><b>{% trans "ID" %}:</b> {{ the_user.id }}</li>
+        <li><b>{% trans "Name" %}:</b> {{ the_user.name }}</li>
+        <li><b>{% trans "E-mail" %}:</b> {{ the_user.email }}</li>
+        <li><b>{% trans "Created at" %}:</b> {{ the_user.createdAt }}</li>
+        <li><b>{% trans "Role" %}:</b> {{ the_user.role }}</li>
     </ul>
 </div>
 
 <div class="row">
     <div class="span3">
-        <h3 style="margin:30px 0 10px">Private Plugins</h3>
+        <h3 style="margin:30px 0 10px">{% trans "Private Plugins" %}</h3>
         <ul class="plugin-list">
         {% for plugin in userPlugins %}
             <li>{{ plugin.id }}</li>
@@ -34,7 +34,7 @@
         </ul>
     </div>
     <div class="span3">
-        <h3 style="margin:30px 0 10px">Products</h3>
+        <h3 style="margin:30px 0 10px">{% trans "Products" %}</h3>
         <ul class="plugin-list">
         {% for product in the_user.products %}
             <li><a href="/admin/products?id={{ product.id }}">{{ product.name }}</a></li>
@@ -42,7 +42,7 @@
         </ul>
     </div>
     <div class="span3">
-        <h3 style="margin:30px 0 10px">Organizations</h3>
+        <h3 style="margin:30px 0 10px">{% trans "Organizations" %}</h3>
         <ul class="plugin-list">
         {% for org in the_user.organizations %}
             <li><a href="/admin/organizations/{{ org.id }}">{{ org.name }}</a></li>
