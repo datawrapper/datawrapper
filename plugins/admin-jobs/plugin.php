@@ -30,7 +30,7 @@ class DatawrapperPlugin_AdminJobs extends DatawrapperPlugin {
     public function jobsAdmin($app, $page) {
         $jobs = JobQuery::create()->filterByStatus('failed')->orderById('desc')->find();
         $page = array_merge($page, array(
-            'title' => 'Background Jobs',
+            'title' => __('Background Jobs'),
             'jobs' => count($jobs) > 0 ? $jobs : false,
             'queued' => JobQuery::create()->filterByStatus('queued')->count(),
             'failed' => JobQuery::create()->filterByStatus('failed')->count(),

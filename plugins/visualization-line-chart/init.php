@@ -106,8 +106,8 @@ DatawrapperVisualization::register($plugin, array(
         ),
         'banking' => array(
             'type' => 'linechart-banking',
-            'label' => __('Suggest aspect ratio that banks average line slopes to 45°'),
-            'help' => __('Adjust the chart height so that the lines are banked to 45° (on average). Can help to avoid exaggerating and understating of slopes.')
+            'label' => __('Suggest aspect ratio that banks average line slopes to 45 degrees'),
+            'help' => __('Adjust the chart height so that the lines are banked to 45 degrees (on average). Can help to avoid exaggerating and understating of slopes.')
         ),
         'line-mode' => array(
             'type' => 'radio-left',
@@ -154,7 +154,7 @@ DatawrapperVisualization::register($plugin, array(
         'annotate-time-axis' => array(
             'type' => 'textarea',
             'label' => __('Annotate x axis').':',
-            'placeholder' => 'from,to,text',
+            'placeholder' => __('from,to,text'),
             'width' => '180px'
         )
     ),

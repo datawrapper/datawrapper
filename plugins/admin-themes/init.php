@@ -49,7 +49,7 @@ DatawrapperHooks::register(
 
                 }
                 $page = array_merge($page, array(
-                    'title' => 'Themes',
+                    'title' => __('Themes'),
                     'themes' => $themes,
                     'count' => count_charts_per_themes()
                 ));
