@@ -224,7 +224,7 @@ define(['queue'], function(queue) {
                     var cur = el,
                         bbox = el.getBoundingClientRect(),
                         align = 'left',
-                        content = el.innerText,
+                        content = el.innerText.replace('&nbsp;', ' '),
                         transforms = [];
 
                     var txt = out_text.append('text')
