@@ -185,10 +185,12 @@ define(['queue'], function(queue) {
                         bbox = el.getBoundingClientRect(),
                         stroke = css.borderColor,
                         strokeW = css.borderWidth,
+                        opacity =  css.opacity,
                         fill = css.backgroundColor;
 
                     out_nodes.append('rect')
                         .style('fill', fill)
+                        .style('opacity', opacity)
                         .style('stroke', stroke)
                         .style('stroke-width', strokeW)
                         .attr({ x: bbox.left, y: bbox.top-offsetTop })
@@ -204,11 +206,13 @@ define(['queue'], function(queue) {
                         bbox = el.getBoundingClientRect(),
                         stroke = css.borderColor,
                         strokeW = css.borderWidth,
+                        opacity =  css.opacity,
                         fill = css.backgroundColor,
                         r = bbox.width * 0.5;
 
                     out_nodes.append('circle')
                         .style('fill', fill)
+                        .style('opacity', opacity)
                         .style('stroke', stroke)
                         .style('stroke-width', strokeW)
                         .attr({ cx: bbox.left + r, cy: bbox.top-offsetTop + r })
