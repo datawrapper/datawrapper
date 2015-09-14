@@ -118,29 +118,10 @@ html .navbar .navbar-inner {
 }
 
 html .navbar.navbar-transparent .navbar-inner {
-    background: rgba(0,0,0,0.2);
+    background: rgba(255,255,255,0.3);
     border-bottom-color: transparent;
-
-    .nav > li.divider-vertical {
-        border-left-color: transparent;
-        border-right-color: transparent;
-    }
-    .nav > li > a {
-        text-shadow: none;
-        color: white;
-        .fa { color: white }
-    }
-    .nav .active > a {
-        color: white!important;
-    }
-    .brand {
-        color: white;
-        text-shadow: none;
-    }
-    li.notifications {
-        border-left: none;
-        border-right: none;
-    }
+    position: relative;
+    z-index: 100000;
 }
 
 

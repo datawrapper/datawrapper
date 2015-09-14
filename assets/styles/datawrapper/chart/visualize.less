@@ -86,7 +86,7 @@
 
                 &:hover {
                     text-decoration: none;
-                    span { background: @pale-blue; color: #fff; }
+                    span { background: #eee; color: #444; }
                 }
             }
 
@@ -200,12 +200,18 @@
 
         .tooltip {
             .tooltip-inner {
-                background: darken(@pale-blue, 10%);
-                border-color: darken(@pale-blue, 10%);
+                background: #eee;
+                border-color: #eee;
                 font-size: 14px;
                 font-family: @base-font-cd;
-                color: #fff;
+                color: #444;
+                line-height: 18px;
+                box-shadow: 3px 3px 6px rgba(0,0,0,0.03);
             }
+        }
+
+        .tooltip.right .tooltip-arrow {
+            border-right-color: #eee;
         }
 
     } // end #vis-options

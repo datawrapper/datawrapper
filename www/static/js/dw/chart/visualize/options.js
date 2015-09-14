@@ -18,9 +18,11 @@ function(initCustomColors, syncVisOptions, unsyncVisOptions) {
             initCustomColors(_chart);
 
             $('.vis-option-help').tooltip({
-                placement: 'left',
+                placement: 'right',
                 html: true,
-                trigger: 'hover focus click',
+                delay: 0,
+                animation: false,
+                trigger: 'hover focus',
                 container: '#vis-options'
             });
 
