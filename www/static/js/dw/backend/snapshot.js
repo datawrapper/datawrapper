@@ -9,23 +9,31 @@ define(['queue'], function(queue) {
 
     var doctype = '<?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">';
 
-    return function(iframe, chart_id, thumb_id, width, height, callback) {
+    return function(iframe, chart_id, callback) {
         
         var t0 = (new Date()).getTime();
+        // console.log('snapshot!');
 
-        var chartBody = iframe.get(0).contentDocument.querySelector('.dw-chart-body');
+        var iframeDoc = iframe.get(0).contentDocument;
+        if (!iframeDoc) return;
+        
+        var chartBody = iframeDoc.querySelector('.dw-chart-body');
+
+        if (!chartBody) {
+            // console.warn('Please add class dw-chart-body', chart.get('theme'));
+            chartBody = iframe.get(0).contentDocument.getElementById('chart');
+        }
+
+        if (!chartBody) return; // chart probably re-loading at this moment
 
         // count dom nodes
         var numDomNodes = chartBody.querySelectorAll('*').length,
-            deferred = numDomNodes > 2000,
-            stop = numDomNodes > 1000;
+            deferred = numDomNodes > 5000,
+            serverSide = numDomNodes > 2000;
 
-        if (stop) return;
+        // console.log(numDomNodes,'dom nodes', deferred, serverSide);
 
-        if (!chartBody) {
-            console.warn('Please add class dw-chart-body to theme', chart.get('theme'));
-            chartBody = iframe.get(0).contentDocument.getElementById('chart');
-        }
+        // if (stop) return;
 
         // console.log('snapshot.js - start');
 
@@ -39,6 +47,37 @@ define(['queue'], function(queue) {
             svg_src = svg_src.replace(/fill="url\([^\)]+\)"/g, 'fill="#cccccc"')
                         .replace(/<pattern.*<\/pattern>/g, '');
 
+            svg.remove();
+
+            (serverSide ? svgToPngServer : svgToPngClient)(svg_src, bbox, function(err) {
+                // console.log('done', serverSide, err);
+                // console.log('snapshot.js! total', ((new Date()).getTime() - t0)/1000);
+            });
+            // 
+        });
+
+        function svgToPngServer(svg_src, bbox, callback) {
+            $.ajax({
+                url: '/api/plugin/snapshot',
+                type: 'POST',
+                data: JSON.stringify({
+                    svg: svg_src,
+                    chart_id: chart_id,
+                    thumb_id: 'm',
+                    width: bbox.width,
+                    height: bbox.height
+                }),
+                dataType: 'json',
+                processData: false,
+                success: function(res) {
+                    // console.log(res);
+                    if (res.status == "ok") callback(null);
+                    else callback(res);
+                }
+            });
+        }
+
+        function svgToPngClient(svg_src, bbox, callback) {
             var canvas = document.createElement("canvas"),
                 ctx = canvas.getContext("2d");
 
@@ -46,38 +85,34 @@ define(['queue'], function(queue) {
             canvas.height = bbox.height * 2;
 
             ctx.drawSvg(svg_src, 0, 0, bbox.width * 2, bbox.height * 2);
-
-            document.body.appendChild(canvas);
+            // document.body.appendChild(canvas);
 
             var imgData = canvas.toDataURL("image/png");
 
             $.ajax({
-                url: '/api/charts/' + chart_id + '/thumbnail/' + thumb_id,
+                url: '/api/charts/' + chart_id + '/thumbnail/m',
                 type: 'PUT',
                 data: imgData,
                 processData: false,
                 success: function(res) {
-                    if (res.status == "ok") (callback || function() {})();
-                    else console.log('error:', res.message);
+                    if (res.status == "ok") callback(null);
+                    else callback(res);
                 }
             });
-
-            svg.remove();
-
-            // console.log('snapshot.js! total', ((new Date()).getTime() - t0)/1000);
-        });
+        }
 
         function chartToSvg(parent_n, callback) {
 
             var parent = d3.select(parent_n),
                 offsetTop = parent_n.getBoundingClientRect().top - parent_n.parentNode.getBoundingClientRect().top;
 
-            var out_w = parent_n.clientWidth,
-                out_h = parent_n.clientHeight;
+            var out_w = Math.min(parent_n.clientWidth, 700),
+                out_h = Math.min(parent_n.clientHeight, 1000);
 
             var labels = parent.selectAll('.label span,.chart-title,.chart-intro,.footer-left'),
                 nodes = parent.selectAll('path, line, rect, circle, text'),
-                divs = parent.selectAll('.export-rect,.dw-rect');
+                divs = parent.selectAll('.export-rect,.dw-rect'),
+                circles = parent.selectAll('.dw-circle');
 
             var svgNodes = parent.selectAll('svg');
 
@@ -95,19 +130,18 @@ define(['queue'], function(queue) {
 
             var out_g = out.append('g').attr('id', 'graphic');
 
-            var q = queue(1);
+            var q = queue(500);
 
             var out_nodes = out_g.append('g#nodes'),
                 out_text = out.append('g#text');
 
             nodes.each(function() { q.defer(addNode, this); });
             divs.each(function() { q.defer(addDiv, this); });
+            circles.each(function() { q.defer(addDivCircle, this); });
             labels.each(function() { q.defer(addLabel, this); });
 
-            console.log(q);
-
             q.awaitAll(function(err) {
-                console.log('all done', err);
+                // console.log('all done', err);
                 callback(cont);
             });
 
@@ -117,7 +151,7 @@ define(['queue'], function(queue) {
                     var cur = el,
                         curCSS,
                         bbox,
-                        transforms = ['translate(0,'+(-offsetTop)+')'];
+                        transforms = [];
                     while (cur) {
                         curCSS = getComputedStyle(cur);
                         if (cur.nodeName == 'defs') return cb(null);
@@ -133,6 +167,7 @@ define(['queue'], function(queue) {
                         if (isHidden(curCSS)) return cb(null);
                     }
                     transforms = _.filter(transforms, _.identity).reverse();
+                    transforms.unshift('translate(0,'+(-offsetTop)+')');
                     var cloned = el.cloneNode(true);
                     cloned.setAttribute('transform', transforms.join(' '));
 
@@ -150,14 +185,38 @@ define(['queue'], function(queue) {
                         bbox = el.getBoundingClientRect(),
                         stroke = css.borderColor,
                         strokeW = css.borderWidth,
+                        opacity =  css.opacity,
                         fill = css.backgroundColor;
 
-                    var rect = out_nodes.append('rect')
+                    out_nodes.append('rect')
                         .style('fill', fill)
+                        .style('opacity', opacity)
                         .style('stroke', stroke)
                         .style('stroke-width', strokeW)
                         .attr({ x: bbox.left, y: bbox.top-offsetTop })
                         .attr({ width: bbox.width, height: bbox.height });
+                    cb(null);
+                }
+            }
+
+            function addDivCircle(el, cb) {
+                if (deferred) setTimeout(add, 0); else add();
+                function add() {
+                    var css = getComputedStyle(el),
+                        bbox = el.getBoundingClientRect(),
+                        stroke = css.borderColor,
+                        strokeW = css.borderWidth,
+                        opacity =  css.opacity,
+                        fill = css.backgroundColor,
+                        r = bbox.width * 0.5;
+
+                    out_nodes.append('circle')
+                        .style('fill', fill)
+                        .style('opacity', opacity)
+                        .style('stroke', stroke)
+                        .style('stroke-width', strokeW)
+                        .attr({ cx: bbox.left + r, cy: bbox.top-offsetTop + r })
+                        .attr('r', r);
                     cb(null);
                 }
             }
@@ -169,7 +228,7 @@ define(['queue'], function(queue) {
                     var cur = el,
                         bbox = el.getBoundingClientRect(),
                         align = 'left',
-                        content = el.innerText,
+                        content = el.innerText.replace('&nbsp;', ' '),
                         transforms = [];
 
                     var txt = out_text.append('text')
@@ -245,110 +304,6 @@ define(['queue'], function(queue) {
 
         }
     };
-
-
-
-
-
-    // /*
-    //  * creates a client-side PNG snapshop of a chart in a given iframe
-    //  * and sends it to the Datawrapper API right after
-    //  */
-    // return function(iframe, chart_id, thumb_id, width, height, callback) {
-
-    //   // add empty svg element
-    //     var emptySvg = window.document.createElementNS(prefix.svg, 'svg');
-    //     emptySvg.setAttribute('width', 1);
-    //     emptySvg.setAttribute('height', 1);
-    //     window.document.body.appendChild(emptySvg);
-    //     var emptySvgDeclarationComputed = getComputedStyle(emptySvg);
-
-    //     function px(s) { return Math.floor(Number(s.substr(0, s.length-2))); }
-
-    //     var body = iframe.get(0).contentDocument,
-    //         win = iframe.get(0).contentWindow,
-    //         vis = win.__dw ? win.__dw.vis : false;
-
-    //     if (!vis || !vis._svgCanvas()) return false;
-
-    //     var c = win.__dw.vis.__canvas,
-    //         x = c.lpad + (c.lpad2 || 0),
-    //         y = 0,
-    //         w = c.w - x - c.rpad,
-    //         h = c.h - y - c.bpad,
-    //         scale = Math.max(width / c.w, height / c.h);
-
-        // var canvas = document.createElement("canvas"),
-        //     ctx = canvas.getContext("2d");
-
-
-        // canvas.width = c.w * scale;
-        // canvas.height = c.h * scale;
-
-    //     ctx.fillStyle = win.__dw.vis.theme().colors.background;
-    //     ctx.fillRect(0, 0, c.w * scale, c.h * scale);
-    //     var svg = vis._svgCanvas();
-
-    //     setInlineStyles(svg);
-
-        // var svg_src = svg.innerSVG;
-        // // remove url fills
-        // svg_src = svg_src.replace(/fill="url\([^\)]+\)"/g, 'fill="#cccccc"')
-        //             .replace(/<pattern.*<\/pattern>/g, '');
-        // ctx.drawSvg(svg_src, 0, 0, c.w * scale, c.h * scale);
-
-    //     var tempCanvas = document.createElement("canvas"),
-    //         tCtx = tempCanvas.getContext("2d");
-
-    //     tempCanvas.width = width;
-    //     tempCanvas.height = height;
-
-    //     tCtx.drawImage(canvas, -x + (width - c.w * scale) * 0.5, -y);
-
-
-    //     window.document.body.removeChild(emptySvg);
-
-    //     function setInlineStyles(svg) {
-    //         function explicitlySetStyle (element) {
-    //             var cSSStyleDeclarationComputed = getComputedStyle(element);
-    //             var i, len, key, value;
-    //             var computedStyleStr = "";
-    //             for (i=0, len=cSSStyleDeclarationComputed.length; i<len; i++) {
-    //                 key=cSSStyleDeclarationComputed[i];
-    //                 value=cSSStyleDeclarationComputed.getPropertyValue(key);
-    //                 if (value!==emptySvgDeclarationComputed.getPropertyValue(key)) {
-    //                     computedStyleStr+=key+":"+value+";";
-    //                 }
-    //             }
-    //             element.setAttribute('style', computedStyleStr);
-    //         }
-    //         function traverse(obj){
-    //             var tree = [];
-    //             tree.push(obj);
-    //             visit(obj);
-    //             function visit(node) {
-    //                 if (node && node.hasChildNodes()) {
-    //                     var child = node.firstChild;
-    //                     while (child) {
-    //                         if (child.nodeType === 1 && child.nodeName != 'SCRIPT'){
-    //                             tree.push(child);
-    //                             visit(child);
-    //                         }
-    //                         child = child.nextSibling;
-    //                     }
-    //                 }
-    //             }
-    //             return tree;
-    //         }
-    //         // hardcode computed css styles inside svg
-    //         var allElements = traverse(svg);
-    //         var i = allElements.length;
-    //         while (i--){
-    //             explicitlySetStyle(allElements[i]);
-    //         }
-    //     }
-    // };
-
 
 
 });

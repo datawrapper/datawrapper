@@ -114,7 +114,16 @@ html .navbar .navbar-inner {
     .nav li.dropdown .dropdown-toggle .caret, .nav li.dropdown.open .caret,
 
     li a .tt { display: none; }
+
 }
+
+html .navbar.navbar-transparent .navbar-inner {
+    background: rgba(255,255,255,0.3);
+    border-bottom-color: transparent;
+    position: relative;
+    z-index: 100000;
+}
+
 
 html .navbar.navbar-inverse {
     .navbar-inner {

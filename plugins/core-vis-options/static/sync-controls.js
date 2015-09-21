@@ -21,6 +21,16 @@ $(function() {
         });
     }
 
+    function syncNumber(args) {
+        var el = $('#'+args.key);
+        
+        el.val(args.chart.get('metadata.visualize.'+args.key));
+        
+        el.change(function() {
+            args.chart.set('metadata.visualize.'+args.key, el.val());
+        });
+    }
+
     function syncRadio(args) {
         var curVal = args.chart.get('metadata.visualize.'+args.key);
         if (_.isBoolean(curVal)) {
@@ -125,6 +135,7 @@ $(function() {
     dw.backend.on('sync-option:text', syncValue);
     dw.backend.on('sync-option:textarea', syncValue);
     dw.backend.on('sync-option:checkbox', syncCheckbox);
+    dw.backend.on('sync-option:number', syncNumber);
     dw.backend.on('sync-option:radio', syncRadio);
     dw.backend.on('sync-option:radio-left', syncRadio);
     dw.backend.on('sync-option:custom-range', syncCustomRange);

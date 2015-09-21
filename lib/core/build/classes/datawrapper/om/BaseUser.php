@@ -75,7 +75,7 @@ abstract class BaseUser extends BaseObject implements Persistent
 
     /**
      * The value for the language field.
-     * Note: this column has a database default value of: 'en'
+     * Note: this column has a database default value of: 'en-US'
      * @var        string
      */
     protected $language;
@@ -222,7 +222,7 @@ abstract class BaseUser extends BaseObject implements Persistent
     {
         $this->role = 2;
         $this->deleted = false;
-        $this->language = 'en';
+        $this->language = 'en-US';
     }
 
     /**
@@ -710,7 +710,7 @@ abstract class BaseUser extends BaseObject implements Persistent
                 return false;
             }
 
-            if ($this->language !== 'en') {
+            if ($this->language !== 'en-US') {
                 return false;
             }
 
