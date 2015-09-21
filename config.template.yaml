@@ -75,6 +75,12 @@ footer_links:
 ## Twig template (e.g. my-home.twig) in /templates/custom/
 # custom_home: my-home
 
+## If you run a white-labelled installation of Datawrapper, you might want
+## to change the document title.
+# custom_title: Datamapper
+
+## use a custom favicon; give the complete URL to the favicon file
+# custom_favicon: /some/where/over/the/rainbow.ico
 
 ## HTTP AUTH (optional)
 ## edit and uncomment if Datawrapper is locked behind HTTP Auth

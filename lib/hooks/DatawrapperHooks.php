@@ -177,6 +177,10 @@ class DatawrapperHooks {
 
     // executed once all plugins are loaded
     const ALL_PLUGINS_LOADED = 'all_plugins_loaded';
+
+    // add more markup in sidebar in describe step
+    const DESCRIBE_BEFORE_SOURCE = 'describe_before_source';
+
 }
 
 

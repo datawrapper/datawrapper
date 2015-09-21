@@ -4,7 +4,7 @@
     <div id="{{ key }}">
         {% if not option.hideBaseColorPicker %}
             <div class="control-group">
-                <label class="control-label" for="select-color">{{ option.label }}</label>
+                <label class="control-label" for="select-color">{{ option.label | raw }}</label>
                 <div class="controls">
                     <div class="base-color-picker color-picker">
                         <div class="arrow"></div>

@@ -29,7 +29,7 @@
 
     <label class="control-label" for="{{ key }}">{{ option.label|raw }}</label>
     <div class="controls">
-        <select id="{{ key }}">
+        <select id="{{ key }}" style="width:{% if option.width %}{{ option.width }}{% else %}auto{% endif %}">
             {% for opt in option.options %}
             <option value="{{ opt.value }}" {% if opt.default %}selected="selected" {% endif %}>{{ opt.label }}</option>
             {% endfor %}
@@ -40,7 +40,7 @@
 
     <label class="control-label"  for="{{ key }}">{{ option.label|raw }}</label>
     <div class="controls form-inline">
-        <input type="text" style="width:{% if option.width %}{{ option.width }}{% else %}auto{% endif %}" id="{{ key }}" value="" />
+        <input type="text" placeholder="{{ option.placeholder }}" style="width:{% if option.width %}{{ option.width }}{% else %}auto{% endif %}" id="{{ key }}" value="" />
     </div>
 
 {% elseif option.type == 'textarea' %}
@@ -83,6 +83,13 @@
     <div class="controls">
         <input type="text" class="min" placeholder="min" /> -
         <input type="text" class="max" placeholder="max" />
+    </div>
+
+{% elseif option.type == 'number' %}
+
+    <label class="control-label">{{ option.label | raw }}:</label>
+    <div class="controls">
+        <input id="{{ key }}" style="width:28px" type="number" min="{{ option.min  }}" max="{{ option.max }}" />
     </div>
 
 {% endif %}

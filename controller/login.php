@@ -6,7 +6,7 @@ $app->get('/login', function () use ($app) {
     if (DatawrapperSession::getUser()->isLoggedIn()) $app->redirect('/');
 
     $page = array(
-        'title' => 'Datawrapper',
+        'title' => __('Datawrapper'),
         'pageClass' => 'login',
         'noHeader' => true,
         'noFooter' => true,
@@ -25,7 +25,7 @@ $app->get('/setup', function () use ($app) {
         || UserQuery::create()->filterByRole(array('admin', 'sysadmin'))->count() > 0) $app->redirect('/');
 
     $page = array(
-        'title' => 'Datawrapper',
+        'title' => __('Datawrapper'),
         'pageClass' => 'setup',
         'noHeader' => true,
         'noFooter' => true,

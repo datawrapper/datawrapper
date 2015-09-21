@@ -60,7 +60,7 @@ CREATE TABLE `user`
     `reset_password_token` VARCHAR(512),
     `role` TINYINT DEFAULT 2 NOT NULL,
     `deleted` TINYINT(1) DEFAULT 0,
-    `language` VARCHAR(5) DEFAULT 'en',
+    `language` VARCHAR(5) DEFAULT 'en-US',
     `created_at` DATETIME NOT NULL,
     `name` VARCHAR(512),
     `website` VARCHAR(512),

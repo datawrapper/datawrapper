@@ -7,6 +7,10 @@
     "grunt-contrib-concat": "^0.5.0",
     "grunt-contrib-copy": "^0.7.0",
     "grunt-contrib-uglify": "^0.7.0",
+    "iconv-lite": "^0.4.11",
+    "js-yaml": "^3.3.1",
+    "nopt": "^3.0.3",
+    "rimraf": "^2.4.2",
     "uglify-js": "2.3.6",
     "vows": "0.7.x"
   }

@@ -73,6 +73,22 @@
                     "url": "https://github.com/rgrove/jsmin-php/archive/948d87c203010b0544ecc50cf31ad743d7e02a57.zip"
                 }
             }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "fightbulc/moment",
+                "version": "1.0.0",
+                "autoload": {
+                    "psr-4": {
+                        "Moment\\": "src/"
+                    }
+                },
+                "dist": {
+                    "type": "zip",
+                    "url": "https://github.com/gka/moment.php/archive/patch-1.zip"
+                }
+            }
         }
     ]
 }

@@ -147,7 +147,7 @@ class DatawrapperSession {
      */
     public static function getLanguage() {
         // use language set via ?lang=, if set
-        if (!empty($_GET['lang'])) return str_replace('-', '_', substr($_GET['lang']));
+        if (!empty($_GET['lang'])) return str_replace('-', '_', $_GET['lang']);
 
         // otherwise use user preference, or browser language
         if (self::getUser()->isLoggedIn()) {

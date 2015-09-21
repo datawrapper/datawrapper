@@ -64,6 +64,13 @@ define(function() {
                 chart.set('metadata.describe.intro', $('.chart-intro', doc).html());
                 $('#text-intro').val($('.chart-intro', doc).html());
             });
+
+        $('.dw-chart-notes', doc)
+            .initInlineEditing()
+            .off('blur').on('blur', function() {
+                chart.set('metadata.annotate.notes', $('.dw-chart-notes', doc).html());
+                $('#text-notes').val($('.dw-chart-notes', doc).html());
+            });
     };
 
 });

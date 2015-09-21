@@ -13,7 +13,7 @@
         },
 
         groupAfter: function() {
-            return 4;
+            return Number(this.get('group-slice-after') || 5)-1;
         },
 
         render: function(el) {
@@ -85,7 +85,7 @@
                 FA = me.getFullArc();
 
             me.__slices = me.__slices ? me.__slices : {};
-
+            
             var column = me.axes(true).slices[row];
             if (!column) return;  // stop rendering here
 

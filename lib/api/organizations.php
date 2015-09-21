@@ -202,7 +202,7 @@ $app->get('/organizations/:id/charts', function($org_id) use ($app) {
         if ($org->hasUser($user) || $user->isAdmin()) {
             $query = ChartQuery::create()
                 ->filterByDeleted(false)
-                ->orderByCreatedAt(Criteria::DESC)
+                ->orderByLastModifiedAt(Criteria::DESC)
                 ->filterByOrganization($org);
             // filter by visualization
             $vis = $app->request()->get('vis');
@@ -230,10 +230,14 @@ $app->get('/organizations/:id/charts', function($org_id) use ($app) {
                 $status = explode(',', $status);
                 $conds = array();
                 foreach ($status as $s) {
-                    $query->condition($conds[] = 'c'.count($conds), 'Chart.LastEditStep ' . ($s == 'published' ? ' >= 4' : '< 4'));
+                    $query->condition($conds[] = 'c'.count($conds), 'Chart.LastEditStep ' .
+                        ($s == 'published' ? ' >= 4' : 
+                         $s == 'visualized' ? ' = 3' : '< 3'));
                 }
                 $query->where($conds, 'or');
             }
+            // generally ignore charts that have no data
+            $query->where('Chart.LastEditStep > 0');
             // filter by search query
             $q = $app->request()->get('search');
             if (!empty($q)) {
@@ -249,7 +253,7 @@ $app->get('/organizations/:id/charts', function($org_id) use ($app) {
 
             $total = $query->count();
             // pagination
-            $pagesize = 12;
+            $pagesize = 48;
             $page = $app->request()->get('page');
             if (!isset($page)) $page = 0;
             $query->limit($pagesize)->offset($page * $pagesize);

@@ -2,12 +2,12 @@
 
 {% block adminpage %}
 
-<p>This page shows you the current state of background jobs in Datawrapper.</p>
+<p>{% trans "This page shows you the current state of background jobs in Datawrapper." %}</p>
 
 <ul class="unstyled" style="padding-left: 10px; border-left: 6px solid #bcd">
-    <li><b>{{ queued }}</b> queued jobs (estimated time to finish: <b>{{ est_time }}</b> minutes) </li>
-    <li><b>{{ failed }}</b> failed jobs </li>
-    <li><b>{{ done }}</b> completed jobs </li>
+    <li><b>{{ queued }}</b> {% trans "queued jobs" %} ({% trans "estimated time to finish" %}: <b>{{ est_time }}</b> {% trans "minutes" %}) </li>
+    <li><b>{{ failed }}</b> {% trans "failed jobs" %} </li>
+    <li><b>{{ done }}</b> {% trans "completed jobs" %} </li>
 </ul>
 
 {% if jobs %}
@@ -63,19 +63,19 @@ $(function() {
 
 <div>
     <div class="alert alert">
-        <h4>Warning!</h4>
-        The following jobs have not been finished properly.
+        <h4>{% trans "Warning!" %}</h4>
+        {% trans "The following jobs have not been finished properly." %}
     </div>
     <table class="table table-striped table-bordered table-hover">
         <thead><tr>
             <th>#</th>
-            <th>Created</th>
-            <th>Type</th>
-            <th>User</th>
-            <th>Chart</th>
-            <th>Visualization</th>
-            <th>Theme</th>
-            <th>Fail Reason</th>
+            <th>{% trans "Created" %}</th>
+            <th>{% trans "Type" %}</th>
+            <th>{% trans "User" %}</th>
+            <th>{% trans "Chart" %}</th>
+            <th>{% trans "Visualization" %}</th>
+            <th>{% trans "Theme" %}</th>
+            <th>{% trans "Fail Reason" %}</th>
             <th>...</th>
         </tr></thead>
         <tbody>
@@ -104,8 +104,8 @@ $(function() {
 {% else %}
 
 <div class="alert alert-success">
-    <h4>Good news!</h4>
-    All jobs have been finished properly.
+    <h4>{% trans "Good news!" %}</h4>
+    {% trans "All jobs have been finished properly." %}
 </div>
 
 {% endif %}

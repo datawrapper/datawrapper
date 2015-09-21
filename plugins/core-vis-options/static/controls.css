@@ -1,24 +1,28 @@
 .vis-option-type-radio .controls.form-inline {
-	vertical-align: top;
+    vertical-align: top;
 }
 
 .vis-option-type-radio .controls.form-inline label.radio {
-	display: inline-block;
-	vertical-align: bottom; 
+    display: inline-block;
+    vertical-align: bottom; 
 }
 
 .vis-option-type-radio .controls.form-inline label.radio input {
-	margin-right: 3px;
+    margin-right: 3px;
 }
 .vis-option-type-radio .controls.form-inline label.radio + label.radio {
-	padding-left: 6px;
+    padding-left: 6px;
 }
 
 .vis-option-type-select-axis-column .axis-column {
-	display: inline-block;
-	vertical-align: top;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.vis-option-type-select-axis-column.inline .controls {
+    margin-right: 0!important;
 }
 
 .vis-option-group.vis-option-type-select .vis-option-help {
-	top: 5px!important;
+    top: 5px!important;
 }

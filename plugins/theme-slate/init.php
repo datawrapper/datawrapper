@@ -2,6 +2,6 @@
 
 DatawrapperTheme::register($plugin, array(
     'id' => 'slate',
-    'title' => 'Datawrapper (dark)',
+    'title' => __('Datawrapper (dark)'),
     'extends' => 'default'
 ));

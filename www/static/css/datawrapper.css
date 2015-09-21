@@ -179,6 +179,12 @@ html .navbar .navbar-inner .nav li.dropdown.open .caret,
 html .navbar .navbar-inner li a .tt {
   display: none;
 }
+html .navbar.navbar-transparent .navbar-inner {
+  background: rgba(255, 255, 255, 0.3);
+  border-bottom-color: transparent;
+  position: relative;
+  z-index: 100000;
+}
 html .navbar.navbar-inverse .navbar-inner {
   background: #000;
 }
@@ -431,6 +437,7 @@ html .btn-inverse {
 }
 .chart-editor.dw-create-describe .sidebar label {
   font-family: 'Roboto', Helvetica, sans-serif;
+  display: inline-block;
 }
 .chart-editor.dw-create-describe .sidebar label.separator {
   font-weight: 500;
@@ -439,6 +446,9 @@ html .btn-inverse {
   clear: both;
   font-family: 'Roboto', Helvetica, sans-serif;
   font-size: 12px;
+  padding-bottom: 10px;
+}
+.chart-editor.dw-create-describe .handsontable .htContainer {
   padding-bottom: 10px;
 }
 .chart-editor.dw-create-describe .handsontable tr td {
@@ -756,8 +766,8 @@ html .btn-inverse {
   text-decoration: none;
 }
 .chart-editor.dw-create-visualize #vis-options .vis-option-group .vis-option-help:hover span {
-  background: #93b0d6;
-  color: #fff;
+  background: #eee;
+  color: #444;
 }
 .chart-editor.dw-create-visualize #vis-options .vis-option-group.vis-option-type-radio-left .vis-option-help {
   top: 32px;
@@ -773,6 +783,9 @@ html .btn-inverse {
 }
 .chart-editor.dw-create-visualize #vis-options .vis-option-group.vis-option-type-select-axis-column .controls {
   margin-right: 20px;
+}
+.chart-editor.dw-create-visualize #vis-options .vis-option-group.vis-option-type-select {
+  margin-bottom: 15px;
 }
 .chart-editor.dw-create-visualize #vis-options .vis-option-type-group {
   padding-bottom: 0;
@@ -853,11 +866,16 @@ html .btn-inverse {
   margin-left: 0;
 }
 .chart-editor.dw-create-visualize #vis-options .tooltip .tooltip-inner {
-  background: #6e95c8;
-  border-color: #6e95c8;
+  background: #eee;
+  border-color: #eee;
   font-size: 14px;
   font-family: 'Roboto Condensed', Helvetica, sans-serif;
-  color: #fff;
+  color: #444;
+  line-height: 18px;
+  box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.03);
+}
+.chart-editor.dw-create-visualize #vis-options .tooltip.right .tooltip-arrow {
+  border-right-color: #eee;
 }
 .chart-editor.dw-create-visualize .highlighted-series li {
   margin-bottom: 3px;

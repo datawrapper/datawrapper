@@ -15,8 +15,8 @@ define(function() {
         var m = String(w).match(/^(\d+(?:\.\d+)?)%$/),
             realW = m ? (+m[1]/100)*maxW : w;
 
-        $('#resize-w').val(w);
-        $('#resize-h').val(h);
+        if ($('#resize-w').val() != w) $('#resize-w').val(w);
+        if ($('#resize-h').val() != h) $('#resize-h').val(h);
 
         $('#iframe-wrapper').animate({
             width: w,
