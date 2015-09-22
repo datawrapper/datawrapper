@@ -18,33 +18,34 @@
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
       <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
-      <script src="/static/vendor/json-js/json2.min.js"></script>
+      <script src="/static/vendor/json-js/json2.js"></script>
       <link href="/static/css/datawrapper-ie.css" rel="stylesheet">
     <![endif]-->
 
     {% if config.custom_css %}<link href="/static/custom/{{ config.custom_css }}" rel="stylesheet">{% endif %}
     {% if config.custom_favicon %}<link href="{{ config.custom_favicon }}" rel="shortcut icon">{% endif %}
 
-    <script type="text/javascript" charset="utf-8" src="/static/vendor/d3js/3.5.5/d3.min.js"></script>
-    <script type="text/javascript" charset="utf-8" src="/static/vendor/d3js/d3-jetpack.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/static/vendor/d3/d3.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/static/vendor/d3-jetpack/d3-jetpack.js"></script>
 
-    <script type="text/javascript" charset="utf-8" src="/static/vendor/require-js/require-2.1.8.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/static/vendor/requirejs/require.js"></script>
     <script type="text/javascript" charset="utf-8">
         require.config({
             baseUrl: '/static',
             paths: {
                 dw: 'js/dw',
                 handsontable: 'vendor/handsontable/handsontable.full',
-                jquery: 'vendor/jquery/jquery-1.11.1.min',
-                queue: 'vendor/queue/queue.min',
-                masonry: 'vendor/masonry/masonry.min',
-                imagesloaded: 'vendor/masonry/imagesloaded.min'
+                jquery:       'vendor/jquery/jquery.min',
+                queue:        'vendor/queue-async/queue.min',
+                masonry:      'vendor/masonry/masonry.pkgd.min',
+                imagesloaded: 'vendor/imagesloaded/imagesloaded.pkgd.min',
+                chroma:       'vendor/chroma-js/chroma.min',
             },
             urlArgs: 'v={{ DW_VERSION }}'
         });
     </script>
-    <script type="text/javascript" charset="utf-8" src="/static/vendor/jquery/jquery-1.11.1.min.js"></script>
-    <script type="text/javascript" charset="utf-8" src="/static/vendor/underscore/underscore-1.8.3.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/static/vendor/jquery/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/static/vendor/underscore/underscore-min.js"></script>
     <script type="text/javascript" charset="utf-8" src="/static/vendor/cryptojs/hmac-sha256.js"></script>
     <script type="text/javascript" charset="utf-8" src="/static/vendor/globalize/globalize.js"></script>
     <script type="text/javascript" charset="utf-8" src="/static/vendor/globalize/cultures/globalize.culture.{{ locale | replace({'_':'-'}) }}.js"></script>

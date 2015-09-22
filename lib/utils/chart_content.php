@@ -53,8 +53,8 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
         // use local assets
         $base_js = array(
             $abs . '/static/vendor/globalize/globalize.min.js',
-            $abs . '/static/vendor/underscore/underscore-1.8.3.min.js',
-            $abs . '/static/vendor/jquery/jquery-1.11.1.min.js'
+            $abs . '/static/vendor/underscore/underscore-min.js',
+            $abs . '/static/vendor/jquery/jquery.min.js'
         );
         if (substr($locale, 0, 2) != 'en') {
             $base_js[] = $abs . '/static/vendor/globalize/cultures/globalize.culture.' . str_replace('_', '-', $locale) . '.js';

@@ -4,8 +4,8 @@
 
 {{ parent() }}
 
-<link rel="stylesheet" type="text/css" href="/static/vendor/handsontable/handsontable.full.css">
-<link rel="stylesheet" type="text/css" href="/static/vendor/handsontable/handsontable.bootstrap.css">
+<link rel="stylesheet" type="text/css" href="/static/vendor/handsontable/handsontable.full.min.css">
+<link rel="stylesheet" type="text/css" href="/static/vendor/handsontable-bootstrap/handsontable.bootstrap.css">
 
 <script type="text/javascript">
 dw.backend.ready(function() {
@@ -35,6 +35,14 @@ dw.backend.ready(function() {
                     </div>
 
                     {{ hook('describe_before_source') }}
+
+                    <h3>{% trans "Add/edit virtual columns" %}</h3>
+                    <p>{% trans "The values for virtual columns are calculated using a formula, similar to how you know from it Excel." %}
+
+                    <div style="margin-bottom:50px">
+                        <a class="btn"><i class="fa fa-plus"></i> Add virtual column</a><br> <br>
+                        <a class="btn btn-danger"><i class="fa fa-remove"></i> Remove</a>
+                    </div>
 
                     {# 
                     <h3 style="margin-top:20px">{% trans "Where did you get the data?" %}</h3>
@@ -71,19 +79,6 @@ dw.backend.ready(function() {
                             </div>
                         </div>
 
-                        {#
-                         # deactivated "input format" because it was irritating more that it helped
-                         #
-
-                        <div id="select-input-format" class="control-group">
-                            <label class="control-label" for="input-format">{% trans "Input format" %}</label>
-
-                            <div class="controls">
-                                <select id="input-format" style="width:90%">
-                                    <option value="-">{% trans "auto" %}</option>
-                                </select>
-                            </div>
-                        </div> #}
                     </div>
 
                     <div id="number-column-options" class="form-horizontal compact">
@@ -161,6 +156,8 @@ dw.backend.ready(function() {
             </div>
 
             {{ hook('describe_after_sidebar' )}}
+
+
 
         </div>
         <div class="span8">
