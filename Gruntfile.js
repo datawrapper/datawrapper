@@ -28,7 +28,7 @@ module.exports = function(grunt) {
                     handsontable: 'handsontable/dist/*',
                     imagesloaded: 'imagesloaded/imagesloaded*.js',
                     jquery: 'jquery/dist/*',
-                    'JSON-js': 'JSON-js/json2.js',
+                    'json-js': 'JSON-js/json2.js',
                     masonry: 'masonry/dist/masonry*.js',
                     'queue-async': 'queue-async/queue*js',
                     requirejs: 'requirejs/require*.js',
