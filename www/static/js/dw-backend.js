@@ -31,7 +31,6 @@ var dw = dw || {};
     initEvents(dw.backend);
 
     require(['dw/backend'], function(backend) {
-        //window.Raphael = Raphael;
         _.extend(dw.backend, backend);
         $(function() {
             backend.init();
