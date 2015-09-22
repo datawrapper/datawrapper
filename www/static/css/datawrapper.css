@@ -447,6 +447,14 @@ html .btn-inverse {
   font-family: 'Roboto', Helvetica, sans-serif;
   font-size: 12px;
   padding-bottom: 10px;
+  box-shadow: none;
+}
+.chart-editor.dw-create-describe .handsontable table {
+  box-shadow: none;
+}
+.chart-editor.dw-create-describe .handsontable th,
+.chart-editor.dw-create-describe .handsontable td {
+  border-radius: 0!important;
 }
 .chart-editor.dw-create-describe .handsontable .htContainer {
   padding-bottom: 10px;
