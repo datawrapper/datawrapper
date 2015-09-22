@@ -9,7 +9,7 @@ $(function() {
         var chart = args.chart,
             vis = args.vis,
             theme_id = chart.get('theme'),
-            labels = vis.keys(),
+            labels = getLabels(),
             $el = $('#'+args.key),
             $picker = $('.base-color-picker', $el);
 
@@ -58,7 +58,7 @@ $(function() {
              * initializes the custom color dialog
              */
             function initCustomColorSelector() {
-                var labels = vis.keys(),
+                var labels = getLabels(),
                     sel = chart.get('metadata.visualize.custom-colors', {}),
                     $head = $('.custom-color-selector-head', $el),
                     $body = $('.custom-color-selector-body', $el),
@@ -192,6 +192,10 @@ $(function() {
                     chart.set('metadata.visualize.custom-colors', {});
                 }
             }
+        }
+
+        function getLabels() {
+            return args.option.axis ? _.unique(vis.axes(true)[args.option.axis].values()) : vis.keys();
         }
 
     }
