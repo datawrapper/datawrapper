@@ -28,3 +28,4 @@ scripts/lib/execute_jobs.lock
 scripts/execute_jobs.lock
 node_modules
 *.bts
+bower_components/
