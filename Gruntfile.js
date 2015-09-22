@@ -16,6 +16,9 @@ module.exports = function(grunt) {
             },
             libs: {
                 files: {
+                    'bootstrap/css': 'bootstrap/docs/assets/css',
+                    'bootstrap/img': 'bootstrap/docs/assets/img/glyphicons*',
+                    'bootstrap/js': 'bootstrap/docs/assets/js/bootstrap.min.js',
                     canvg: 'canvg/dist/*',
                     'chroma-js': 'chroma-js/chroma*.js',
                     'codemirror/addon': 'codemirror/addon',
