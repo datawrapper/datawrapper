@@ -20,7 +20,7 @@
                         {% for vis in visualizations %}{% if vis.title %}
                         <div class="vis-thumb{% if vis.id == chart.type %} active{% endif %}" data-id="{{ vis.id }}" data-title="{{ vis.title }}" data-static-path="{{ vis.__static_path }}">
                             {{ vis.icon | raw }}
-                            <div class="title">{{ vis.title }}</div>
+                            <div class="title">{{ vis.title | raw }}</div>
                         </div>
                         {% endif %}{% endfor %}
                     </div>
