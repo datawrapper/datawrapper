@@ -36,13 +36,7 @@ dw.backend.ready(function() {
 
                     {{ hook('describe_before_source') }}
 
-                    <h3>{% trans "Add/edit virtual columns" %}</h3>
-                    <p>{% trans "The values for virtual columns are calculated using a formula, similar to how you know from it Excel." %}
-
-                    <div style="margin-bottom:50px">
-                        <a class="btn"><i class="fa fa-plus"></i> Add virtual column</a><br> <br>
-                        <a class="btn btn-danger"><i class="fa fa-remove"></i> Remove</a>
-                    </div>
+                    {% include "chart/describe/virtual-columns.twig" %}
 
                     {# 
                     <h3 style="margin-top:20px">{% trans "Where did you get the data?" %}</h3>
@@ -175,6 +169,5 @@ dw.backend.ready(function() {
         </div>
     </div>
 </div>
-
 
 {% endblock %}
