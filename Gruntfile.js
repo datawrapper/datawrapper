@@ -23,7 +23,7 @@ module.exports = function(grunt) {
                     'chroma-js': 'chroma-js/chroma*.js',
                     'codemirror/addon': 'codemirror/addon',
                     'codemirror/lib': 'codemirror/lib',
-                    'codemirror/lib/mode/javascript': 'codemirror/mode/javascript',
+                    'codemirror/mode/javascript': 'codemirror/mode/javascript',
                     d3: 'd3/d3*.js',
                     'd3-jetpack': 'd3-jetpack/d3-jetpack*.js',
                     'font-awesome/css': 'font-awesome/css',
