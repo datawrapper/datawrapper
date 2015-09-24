@@ -6,8 +6,7 @@ module.exports = function(grunt) {
         concat: {
             options: {
                 stripBanners: true,
-                banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
-                    '<%= grunt.template.today("yyyy-mm-dd") %> */',
+                banner: '/*! <%= pkg.name %> - v<%= pkg.version %> */',
             },
             dist: {
                 src: ['src/dw.start.js', 'src/dw.dataset.js', 'src/dw.column.js', 'src/dw.column.types.js',
@@ -27,7 +26,7 @@ module.exports = function(grunt) {
         },
         uglify: {
             options: {
-                banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
+                banner: '/*! <%= pkg.name %> - v<%= pkg.version %> */\n'
             },
             build: {
                 src: '../www/static/js/dw-2.0.js',
