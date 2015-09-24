@@ -28,6 +28,7 @@
             val_preview = $('.value-preview', modal),
             nav = $('ul.nav', modal),
             emptyNote = d3.select($('.empty-note', modal)[0]),
+            hint = $('.hint', modal),
             btnAdd = $('.btn-add-new', modal),
             btnRemove = $('.btn-remove', modal),
             btnClose = $('.btn-close', modal);
@@ -66,8 +67,23 @@
             function initNav() {
                 columns = dw.utils.clone(chart.get('metadata.describe.virtual-columns', {}));
                 if (_.isArray(columns)) columns = {};
+
                 var keys = d3.keys(columns).filter(function(d) { return d; });
+                
                 if (!active && keys.length > 0) activate(keys[0]);
+                if (!keys.length) {
+                    btnRemove.addClass('hide');
+                    hint.addClass('hide');
+                    colname.attr('disabled', true);
+                    cm.setOption('readOnly', true);
+                    code.addClass('disabled');
+                } else {
+                    btnRemove.removeClass('hide');
+                    hint.removeClass('hide');
+                    colname.attr('disabled', false);
+                    cm.setOption('readOnly', false);
+                    code.removeClass('disabled');
+                }
 
                 nav.html('');
                 emptyNote.classed('hide', keys.length);
@@ -104,7 +120,7 @@
                     var cnbase = 'Untitled',
                         i = 1, name = cnbase;
                     while (columnNameExists(name)) name = cnbase + ' ('+(++i)+')';
-                    columns[name] = '/* .. */';
+                    columns[name] = '/* enter formula here */';
                     chart.set('metadata.describe.virtual-columns', columns);
                     chart.save();
                     activate(name);
@@ -239,7 +255,7 @@
                     <div class="col-name-error hide">This column name already exists</div>
                 </div>
                 <div class="control-group">
-                    <label>Forumla (JavaScript)</label>
+                    <label>Formula (JavaScript)</label>
                     <div class="code"></div>
                 </div>
             </div>
@@ -249,13 +265,14 @@
                 <p class="hint">
                     Hint: Use the Tab key to auto-complete column names.
                 </p>
+                <a class="btn-remove"><i class="fa fa-trash"></i> Remove this column</a>
             </div>
         </div>
 
         <a class="btn btn-close btn-primary"><i class="fa fa-check"></i> Close</a> 
         <div class="pull-right">
             <a class="btn btn-add-new"><i class="fa fa-plus"></i> Add new</a> &nbsp;
-            <a class="btn btn-remove"><i class="fa fa-trash"></i> Remove selected</a>
+           
         </div>       
     </div>
 
@@ -341,7 +358,13 @@
     font-size: 13px;
     color: #777;
 }
-
+#virtual-columns .code.disabled {
+    cursor: not-allowed;
+}
+#virtual-columns .code.disabled .CodeMirror {
+    pointer-events: none;
+    background: #eee; 
+}
 #virtual-columns .CodeMirror-focused {
     border-color: rgba(82, 168, 236, 0.8);
     outline: 0;
@@ -350,5 +373,8 @@
     -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
 }
-
+#virtual-columns .btn-remove {
+    color: #b00;
+    cursor: pointer;
+}
 </style>
