@@ -137,6 +137,7 @@ dw.dataset = function(columns, opts) {
             uniqueName(column);
             columns.push(column);
             columnsByName[column.name()] = column;
+            origColumns.push(column);
             return dataset;
         },
 
