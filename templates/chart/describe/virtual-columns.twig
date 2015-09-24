@@ -1,8 +1,8 @@
-<h3>{% trans "Add/edit virtual columns" %}</h3>
-<p>{% trans "The values for virtual columns are calculated using a formula, similar to how you know from it Excel." %}
+<h3>{% trans "Computed columns" %}</h3>
+<p>{% trans "The values for computed columns are calculated using a formula, similar to how you know from it Excel." %}
 
-<div style="margin-bottom:50px">
-    <a class="btn virtual-columns">Add virtual columns...</a><br> <br>
+<div style="margin-bottom:20px">
+    <a class="btn virtual-columns">Add computed columns...</a><br> <br>
 </div>
 <link rel="stylesheet" media="screen" type="text/css" href="/static/vendor/codemirror/lib/codemirror.css" />
 <link rel="stylesheet" media="screen" type="text/css" href="/static/vendor/codemirror/addon/hint/show-hint.css" />
@@ -235,13 +235,13 @@
     <div class="modal-body">
         <button type="button" class="close" data-dismiss="modal">×</button>
 
-        <h3>Manage virtual columns</h3>
+        <h3>Manage computed columns</h3>
 
         <div class="row" style="margin-bottom:20px;">
             <div class="span2">
                 <label>Select/add column</label>
                 <p class="empty-note hint hide">
-                    Click <a class="btn-add-new">Add new</a> to create a new virtual column.
+                    Click <a class="btn-add-new">Add new</a> to create a new computed column.
                 </p>
                 <ul class="nav nav-stacked nav-tabs">
                     <li><a href="#" class="active">Untitled</a></li>
