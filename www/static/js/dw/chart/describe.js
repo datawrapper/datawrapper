@@ -230,6 +230,7 @@ define(['handsontable'], function(handsontable) {
                     stretchH: 'all',
                     cells: function (row, col, prop) {
                         return {
+                            readOnly: dataset.column(col).is_virtual,
                             renderer: myRenderer
                         };
                     },
@@ -286,14 +287,8 @@ define(['handsontable'], function(handsontable) {
             }
 
             function HtmlCellRender(instance, TD, row, col, prop, value, cellProperties) {
-              var escaped = dw.utils.purifyHtml(Handsontable.helper.stringify(value));
-              TD.innerHTML = escaped; //this is faster than innerHTML. See: https://github.com/warpech/jquery-handsontable/wiki/JavaScript-&-DOM-performance-tips
-              if (cellProperties.readOnly) {
-                instance.view.wt.wtDom.addClass(TD, 'htDimmed');
-              }
-              if (cellProperties.valid === false && cellProperties.invalidCellClassName) {
-                instance.view.wt.wtDom.addClass(TD, cellProperties.invalidCellClassName);
-              }
+                var escaped = dw.utils.purifyHtml(Handsontable.helper.stringify(value));
+                TD.innerHTML = escaped; //this is faster than innerHTML. See: https://github.com/warpech/jquery-handsontable/wiki/JavaScript-&-DOM-performance-tips
             }
 
             function myRenderer(instance, td, row, col, prop, value, cellProperties) {
@@ -324,6 +319,7 @@ define(['handsontable'], function(handsontable) {
                 if (row > 0 && !column.type(true).isValid(column.val(row-1))) {
                     td.classList.add('parsingError');
                 }
+                if (cellProperties.readOnly) td.classList.add('readOnly');
                 HtmlCellRender.apply(this, arguments);
             }
         } // end updateTable()

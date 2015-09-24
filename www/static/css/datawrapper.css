@@ -509,6 +509,15 @@ html .btn-inverse {
   background: #fee;
   color: #c00;
 }
+.chart-editor.dw-create-describe .handsontable tr td.readOnly {
+  background: #f8f8f1;
+}
+.chart-editor.dw-create-describe .handsontable tr td.readOnly.evenRow {
+  background: #F1F0E3;
+}
+.chart-editor.dw-create-describe .handsontable tr td.readOnly.firstRow {
+  background: #E2E0C8;
+}
 .chart-editor.dw-create-describe .handsontable thead th {
   cursor: pointer;
   background: #eee;
