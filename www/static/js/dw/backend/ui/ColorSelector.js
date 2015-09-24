@@ -1,5 +1,5 @@
 
-define(function() {
+define(['chroma'], function(chroma) {
 
     return function() {
         /*
@@ -51,7 +51,8 @@ define(function() {
             }, 300);
 
             function setColor(hex, cont) {
-                var lch = chroma.color(hex).lch(),
+                hex = hex || opts.palette[0];
+                var lch = chroma(hex).lch(),
                     center = [60, 50, lch[2]],
                     spread_ = [55, 50, 70],
                     steps = [7, 7, 7],
@@ -73,8 +74,8 @@ define(function() {
                 });
                 hexTf.val(hex).css({
                     background: hex,
-                    'border-color': chroma.color(hex).darker().hex(),
-                    color: chroma.luminance(hex) > 0.45 ? '#000' : '#fff'
+                    'border-color': chroma(hex).darker().hex(),
+                    color: chroma(hex).luminance() > 0.45 ? '#000' : '#fff'
                 });
                 $('.color', popup).removeClass('selected').removeClass('inverted');
                 $('.color', popup)
@@ -85,7 +86,7 @@ define(function() {
                 }
                 $('.color.selected', popup)
                     .filter(function(i,e) {
-                        return chroma.luminance($(e).data('color')) < 0.05;
+                        return chroma($(e).data('color')).luminance() < 0.05;
                     }).addClass('inverted');
                 if (_.isFunction(opts.change)) opts.change(opts.color);
             }
