@@ -1,4 +1,4 @@
-/*! datawrapper - v1.9.7 - 2015-08-26 *///
+/*! datawrapper - v1.9.7 *///
 // NOTE: This file is auto-generated using /dw.js/make
 // from the source files /dw.js/src/*.js.
 //
@@ -161,6 +161,7 @@ dw.dataset = function(columns, opts) {
             uniqueName(column);
             columns.push(column);
             columnsByName[column.name()] = column;
+            origColumns.push(column);
             return dataset;
         },
 
@@ -1270,6 +1271,10 @@ dw.utils = {
         var e0 = Math.round(Math.log(min) / Math.LN10),
             e1 = Math.round(Math.log(max) / Math.LN10);
         return _.map(_.range(e0, e1), function(exp) { return Math.pow(10, exp); });
+    },
+
+    clone: function(obj) {
+        return JSON.parse(JSON.stringify(obj));
     }
 
 };
@@ -1589,7 +1594,7 @@ dw.chart = function(attributes) {
         // returns the dataset
         dataset: function(ds) {
             if (arguments.length) {
-                dataset = applyChanges(ds);
+                dataset = applyChanges(addVirtualColumns(ds));
                 return chart;
             }
             return dataset;
@@ -1751,6 +1756,55 @@ dw.chart = function(attributes) {
             }
         });
         return dataset;
+    }
+
+    function addVirtualColumns(dataset) {
+        var v_columns = chart.get('metadata.describe.virtual-columns', {}),
+            data = dataset.list(),
+            columnNameToVar = {};
+
+        dataset.eachColumn(function(col) {
+            if (col.is_virtual) return;
+            columnNameToVar[col.name()] = column_name_to_var(col.name());
+        });
+
+        _.each(v_columns, add_virtual_column);
+        return dataset;
+
+        function add_virtual_column(formula, name) {
+            var datefmt = d3.time.format('%Y-%m-%d'),
+                values = data.map(function(row) {
+                var context = [];
+                _.each(row, function(val, key) {
+                    if (!columnNameToVar[key]) return;
+                    context.push('var '+columnNameToVar[key]+' = '+JSON.stringify(val)+';');
+                });
+                return (function() {
+                    try {
+                        return eval(this.context.join('\n')+'\n'+formula);                    
+                    } catch (e) {
+                        return 'n/a';
+                    }
+                }).call({ context: context });
+            }).map(function(v) {
+                if (_.isBoolean(v)) return v ? 'yes' : 'no';
+                if (_.isDate(v)) return datefmt(v);
+                if (_.isNumber(v)) return ''+v;
+                return String(v);
+            });
+            var v_col = dw.column(name, values);
+            v_col.is_virtual = true;
+            dataset.add(v_col);
+        }
+
+        function column_name_to_var(name) {
+            return name.toString().toLowerCase()
+                .replace(/\s+/g, '_')           // Replace spaces with _
+                .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+                .replace(/\_\_+/g, '_')         // Replace multiple - with single -
+                .replace(/^_+/, '')             // Trim - from start of text
+                .replace(/_+$/, '');            // Trim - from end of text
+        }
     }
 
     return chart;
