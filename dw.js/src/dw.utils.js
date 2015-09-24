@@ -251,6 +251,10 @@ dw.utils = {
         var e0 = Math.round(Math.log(min) / Math.LN10),
             e1 = Math.round(Math.log(max) / Math.LN10);
         return _.map(_.range(e0, e1), function(exp) { return Math.pow(10, exp); });
+    },
+
+    clone: function(obj) {
+        return JSON.parse(JSON.stringify(obj));
     }
 
 };
