@@ -1,0 +1,111 @@
+#computed-columns {
+    width: 710px;
+    margin-left: -355px;
+    box-shadow: 0 0 20px rgba(0,0,0, 0.3);
+    border: 0;
+
+    .badge {
+        padding-right: 6px;
+        padding-left: 6px;
+        background: #565656;
+    }
+
+    h3 {
+        margin-top: 0;
+    }
+
+    label {
+        display: block;
+        font-weight: 400;
+        /* text-transform: uppercase; */
+        font-size: 13px;
+        color: #777;
+    }
+
+    .col-name-error {
+        color: #D22525;
+        font-size: 12px;
+        position: relative;
+        top: -7px;
+    }
+
+    ul.nav li a {
+        background: #F7F7F7;
+        cursor: pointer;
+    }
+    ul.nav li.active a {
+        font-weight: bold;
+        border-right: 0;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        background: white;
+    }
+    .col-name {
+        font-weight: bold;
+        font-family: Roboto;
+    }
+
+    .well {
+        padding: 10px;
+        width: 80%;
+        background: #f7f7f7;
+    }
+
+    .CodeMirror {
+        border-radius: 1px;
+        width: 263px;
+        height: 130px;
+        padding: 0px 3px;
+        border: 1px solid #cccccc;
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        transition: border linear 0.2s, box-shadow linear 0.2s;
+        background-color: #ffffff;
+
+        .CodeMirror-nonmatchingbracket {
+            color: inherit;
+            background: #fcc;
+        }
+
+        .CodeMirror-matchingbracket {
+            color: inherit;
+            background: #cfc;
+        }
+
+        .CodeMirror-placeholder,
+        .cm-s-default .cm-comment {
+            color: #9C938B;
+        }
+
+        &.CodeMirror-focused {
+            border-color: rgba(82, 168, 236, 0.8);
+            outline: 0;
+            outline: thin dotted \9;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+            -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+        }
+    }
+
+    .hint {
+        font-size: 13px;
+        color: #777;
+    }
+    .code.disabled {
+        cursor: not-allowed;
+    }
+    .code.disabled .CodeMirror {
+        pointer-events: none;
+        background: #eee; 
+    }
+
+    .btn-remove {
+        color: #b00;
+        cursor: pointer;
+    }
+
+}
+
+.CodeMirror-hints {
+    z-index: 10000;
+}
+

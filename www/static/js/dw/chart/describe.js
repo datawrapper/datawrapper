@@ -1,5 +1,5 @@
 
-define(['handsontable'], function(handsontable) {
+define(['handsontable', './describe/computed-columns'], function(handsontable) {
 
     var _chartLocale;
 
@@ -92,6 +92,7 @@ define(['handsontable'], function(handsontable) {
         });
 
         $('#reset-data-changes').click(function(){
+            console.log('revert');
             metadata.changes.revert();
         });
 
@@ -230,7 +231,7 @@ define(['handsontable'], function(handsontable) {
                     stretchH: 'all',
                     cells: function (row, col, prop) {
                         return {
-                            readOnly: dataset.column(col).is_virtual,
+                            readOnly: dataset.column(col).isComputed && row == 0,
                             renderer: myRenderer
                         };
                     },
@@ -277,7 +278,7 @@ define(['handsontable'], function(handsontable) {
                 }
             }
 
-            $('#data-preview .htCore thead tr:first-child th:first-child').off('click').on('click', function() {
+            $('#data-preview .htCore thead tr:first-child th:first-child,a.transpose').off('click').on('click', function() {
                 chart.set('metadata.data.transpose', !chart.get('metadata.data.transpose', false));
                 ht.render();
             });
@@ -297,7 +298,6 @@ define(['handsontable'], function(handsontable) {
                     var formatter = chart.columnFormatter(column);
                     value = formatter(column.val(row - 1), true);
                 }
-
                 if (parseInt(value, 10) < 0) { //if row contains negative number
                     td.classList.add('negative');
                 }
@@ -310,6 +310,7 @@ define(['handsontable'], function(handsontable) {
                 } else {
                     td.classList.add(row % 2 ? 'oddRow' : 'evenRow');
                 }
+
                 if (metadata.columnFormat.get(column.name()).ignore) {
                     td.classList.add('ignored');
                 }
@@ -320,6 +321,10 @@ define(['handsontable'], function(handsontable) {
                     td.classList.add('parsingError');
                 }
                 if (cellProperties.readOnly) td.classList.add('readOnly');
+
+                if (chart.dataCellChanged(col, row)) {
+                    td.classList.add('changed');
+                }
                 HtmlCellRender.apply(this, arguments);
             }
         } // end updateTable()

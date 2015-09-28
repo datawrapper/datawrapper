@@ -1,0 +1,45 @@
+
+<div class="modal hide" id="computed-columns">
+    <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal">×</button>
+
+        <h3>Add/edit computed columns</h3>
+
+        <p>{% trans "The values for computed columns are calculated using a formula, similar to how you know from it Excel." %}
+
+        <div class="row" style="margin-bottom:20px;">
+            <div class="span2">
+                <label><span class="badge">1</span> Select/add column</label>
+                <ul class="nav nav-stacked nav-tabs">
+                    <li><a href="#" class="active">Untitled</a></li>
+                </ul>
+                <p class="empty-note hint hide">
+                    Click "add new" to create a new computed column.
+                </p>
+            </div>
+            <div class="span3">
+                <div class="control-group">
+                    <label><span class="badge">2</span> Set column name</label>
+                    <input class="col-name" type="text" class="span3" />
+                    <div class="col-name-error hide">This column name already exists</div>
+                </div>
+                <div class="control-group">
+                    <label><span class="badge">3</span> Enter JavaScript formula</label>
+                    <div class="code"></div>
+                </div>
+            </div>
+            <div class="span2">
+                <label>Value preview</label>
+                <div class="value-preview well"></div>
+                <p class="hint">
+                    Hint: Use the Tab key to auto-complete column names.
+                </p>
+                <a class="btn-remove"><i class="fa fa-trash"></i> Remove this column</a>
+            </div>
+        </div>
+
+        <a class="btn btn-close btn-primary"><i class="fa fa-check"></i> Close</a> 
+             
+    </div>
+
+</div>

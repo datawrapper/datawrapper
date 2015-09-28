@@ -6,6 +6,9 @@
 
 <link rel="stylesheet" type="text/css" href="/static/vendor/handsontable/handsontable.full.min.css">
 <link rel="stylesheet" type="text/css" href="/static/vendor/handsontable-bootstrap/handsontable.bootstrap.css">
+<link rel="stylesheet" media="screen" type="text/css" href="/static/vendor/codemirror/lib/codemirror.css" />
+<link rel="stylesheet" media="screen" type="text/css" href="/static/vendor/codemirror/addon/hint/show-hint.css" />
+
 
 <script type="text/javascript">
 dw.backend.ready(function() {
@@ -24,7 +27,7 @@ dw.backend.ready(function() {
             <div class="sidebar">
                 <div id="table-options">
 
-                    <h3>{% trans "Make sure the data looks right" %}</h3>
+                    <h3 class="first">{% trans "Make sure the data looks right" %}</h3>
 
                     <p>{% trans "Please make sure that Datawrapper interprets your data correctly. In the table number columns should be shown in blue, dates in green and text in black." %}</p>
 
@@ -36,7 +39,7 @@ dw.backend.ready(function() {
 
                     {{ hook('describe_before_source') }}
 
-                    {% include "chart/describe/virtual-columns.twig" %}
+                    
 
                     {# 
                     <h3 style="margin-top:20px">{% trans "Where did you get the data?" %}</h3>
@@ -141,11 +144,11 @@ dw.backend.ready(function() {
 
                     <div class="clearfix"></div>
                 </div>
-
-
-                <a class="btn submit" href="upload"><i class="icon-chevron-left"></i> {% trans "Back" %}</a>
-                <button class="btn disabled" id="reset-data-changes" title="{% trans "Revert data changes" %}">{% trans "Revert" %}</button>
-                <a href="visualize" class="submit btn btn-primary" id="describe-proceed">{% trans "Proceed" %} <i class="icon-chevron-right icon-white"></i></a>
+                
+                <div class="btn-group">
+                    <a class="btn submit" href="upload"><i class="icon-chevron-left"></i> {% trans "Back" %}</a>
+                    <a href="visualize" class="submit btn btn-primary" id="describe-proceed">{% trans "Proceed" %} <i class="icon-chevron-right icon-white"></i></a>
+                </div>
                 <div class="clearfix"></div>
             </div>
 
@@ -160,6 +163,12 @@ dw.backend.ready(function() {
             <div class="customize-help help"><span>{% trans "Customize column format" %}</span> ⤵︎</div>
             <div id="data-preview" style="width: 770px; max-height: 500px; overflow: auto"></div>
 
+            <div class="buttons pull-right">
+                <a class="btn transpose">{% trans "Transpose dataset" %}</a>
+                <a class="btn computed-columns"><i class="fa fa-calculator"></i> Add computed columns...</a>
+                <a class="btn disabled" id="reset-data-changes"><i class="fa fa-undo"></i> {% trans "Revert changes" %}...</a>
+            </div>
+            
         </div>
 
     </div>
@@ -169,5 +178,7 @@ dw.backend.ready(function() {
         </div>
     </div>
 </div>
+
+{% include "chart/describe/computed-columns.twig" %}</li>
 
 {% endblock %}

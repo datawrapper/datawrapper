@@ -23,7 +23,7 @@ assets: www/static/css/datawrapper.css www/static/css/chart.base.css
 messages:
 	scripts/update-messages.sh
 
-www/static/css/datawrapper.css: assets/styles/datawrapper/* assets/styles/datawrapper/**/*
+www/static/css/datawrapper.css: assets/styles/datawrapper/* assets/styles/datawrapper/**/* assets/styles/datawrapper/**/**/*
 	node_modules/.bin/lessc assets/styles/datawrapper/main.less > $@
 
 www/static/css/chart.base.css: assets/styles/chart.base/*

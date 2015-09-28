@@ -425,6 +425,13 @@ html .btn-inverse {
 .dw-create-upload #demo-datasets {
   font-family: 'Roboto Condensed', Helvetica, sans-serif;
 }
+.chart-editor.dw-create-describe .sidebar h3 {
+  margin-bottom: 10px;
+  margin-top: 30px;
+}
+.chart-editor.dw-create-describe .sidebar h3.first {
+  margin-top: 10px;
+}
 .chart-editor.dw-create-describe .sidebar #column-options {
   display: none;
 }
@@ -434,6 +441,15 @@ html .btn-inverse {
 .chart-editor.dw-create-describe .sidebar #column-options .unresolved option,
 .chart-editor.dw-create-describe .sidebar #column-options .unresolved optgroup {
   background: #fff;
+}
+.chart-editor.dw-create-describe .sidebar ul.fa-ul li {
+  margin-bottom: 10px;
+}
+.chart-editor.dw-create-describe .sidebar ul.fa-ul li a {
+  cursor: pointer;
+}
+.chart-editor.dw-create-describe .sidebar ul.fa-ul li .fa {
+  color: black;
 }
 .chart-editor.dw-create-describe .sidebar label {
   font-family: 'Roboto', Helvetica, sans-serif;
@@ -509,14 +525,24 @@ html .btn-inverse {
   background: #fee;
   color: #c00;
 }
-.chart-editor.dw-create-describe .handsontable tr td.readOnly {
-  background: #f8f8f1;
-}
-.chart-editor.dw-create-describe .handsontable tr td.readOnly.evenRow {
-  background: #F1F0E3;
-}
 .chart-editor.dw-create-describe .handsontable tr td.readOnly.firstRow {
-  background: #E2E0C8;
+  background: #EAEAEA;
+  border-right-color: #aaa;
+  color: #777;
+}
+.chart-editor.dw-create-describe .handsontable tr td.changed {
+  position: relative;
+}
+.chart-editor.dw-create-describe .handsontable tr td.changed:before {
+  content: ' ';
+  width: 0;
+  height: 0;
+  border-top: 7px solid orange;
+  border-right: 7px solid transparent;
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
 }
 .chart-editor.dw-create-describe .handsontable thead th {
   cursor: pointer;
@@ -528,10 +554,15 @@ html .btn-inverse {
   background: #cde;
 }
 .chart-editor.dw-create-describe .handsontable thead th:first-child:after {
-  content: url(chart-editor/transpose.png);
   position: absolute;
   left: 18px;
   top: 6px;
+  background: url(chart-editor/transpose.png) no-repeat !important;
+  background-size: contain!important;
+  content: " ";
+  display: block;
+  width: 16px;
+  height: 16px;
 }
 .chart-editor.dw-create-describe .handsontable thead th:hover {
   background: #ddd;
@@ -620,6 +651,112 @@ html .btn-inverse {
 }
 .chart-editor.dw-create-describe .span8 {
   margin-top: 10px;
+}
+.chart-editor.dw-create-describe .transpose i:before {
+  background: url(chart-editor/transpose.png) no-repeat !important;
+  background-size: contain!important;
+  content: " ";
+  display: block;
+  position: absolute;
+  left: 7px;
+  top: 1px;
+  width: 16px;
+  height: 16px;
+}
+#computed-columns {
+  width: 710px;
+  margin-left: -355px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  border: 0;
+}
+#computed-columns .badge {
+  padding-right: 6px;
+  padding-left: 6px;
+  background: #565656;
+}
+#computed-columns h3 {
+  margin-top: 0;
+}
+#computed-columns label {
+  display: block;
+  font-weight: 400;
+  /* text-transform: uppercase; */
+  font-size: 13px;
+  color: #777;
+}
+#computed-columns .col-name-error {
+  color: #D22525;
+  font-size: 12px;
+  position: relative;
+  top: -7px;
+}
+#computed-columns ul.nav li a {
+  background: #F7F7F7;
+  cursor: pointer;
+}
+#computed-columns ul.nav li.active a {
+  font-weight: bold;
+  border-right: 0;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  background: white;
+}
+#computed-columns .col-name {
+  font-weight: bold;
+  font-family: Roboto;
+}
+#computed-columns .well {
+  padding: 10px;
+  width: 80%;
+  background: #f7f7f7;
+}
+#computed-columns .CodeMirror {
+  border-radius: 1px;
+  width: 263px;
+  height: 130px;
+  padding: 0px 3px;
+  border: 1px solid #cccccc;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  transition: border linear 0.2s, box-shadow linear 0.2s;
+  background-color: #ffffff;
+}
+#computed-columns .CodeMirror .CodeMirror-nonmatchingbracket {
+  color: inherit;
+  background: #fcc;
+}
+#computed-columns .CodeMirror .CodeMirror-matchingbracket {
+  color: inherit;
+  background: #cfc;
+}
+#computed-columns .CodeMirror .CodeMirror-placeholder,
+#computed-columns .CodeMirror .cm-s-default .cm-comment {
+  color: #9C938B;
+}
+#computed-columns .CodeMirror.CodeMirror-focused {
+  border-color: rgba(82, 168, 236, 0.8);
+  outline: 0;
+  outline: thin dotted \9;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+  -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+}
+#computed-columns .hint {
+  font-size: 13px;
+  color: #777;
+}
+#computed-columns .code.disabled {
+  cursor: not-allowed;
+}
+#computed-columns .code.disabled .CodeMirror {
+  pointer-events: none;
+  background: #eee;
+}
+#computed-columns .btn-remove {
+  color: #b00;
+  cursor: pointer;
+}
+.CodeMirror-hints {
+  z-index: 10000;
 }
 /*
  * visualization styles

@@ -71,7 +71,7 @@ dw.chart = function(attributes) {
         // returns the dataset
         dataset: function(ds) {
             if (arguments.length) {
-                dataset = applyChanges(addVirtualColumns(ds));
+                dataset = applyChanges(addComputedColumns(ds));
                 return chart;
             }
             return dataset;
@@ -199,6 +199,24 @@ dw.chart = function(attributes) {
                 };
             }
             return column.type(true).formatter(colFormat);
+        },
+
+        dataCellChanged: function(column, row) {
+            var changes = chart.get('metadata.data.changes', []),
+                transpose = chart.get('metadata.data.transpose', false),
+                changed = false;
+
+            _.each(changes, function(change) {
+                var r = "row", c = "column";
+                if (transpose) {
+                    r = "column";
+                    c = "row";
+                }
+                if (column == change[c] && change[r] == row) {
+                    changed = true;
+                }
+            });
+            return changed;
         }
 
     };
@@ -235,20 +253,20 @@ dw.chart = function(attributes) {
         return dataset;
     }
 
-    function addVirtualColumns(dataset) {
-        var v_columns = chart.get('metadata.describe.virtual-columns', {}),
+    function addComputedColumns(dataset) {
+        var v_columns = chart.get('metadata.describe.computed-columns', {}),
             data = dataset.list(),
             columnNameToVar = {};
 
         dataset.eachColumn(function(col) {
-            if (col.is_virtual) return;
+            if (col.isComputed) return;
             columnNameToVar[col.name()] = column_name_to_var(col.name());
         });
 
-        _.each(v_columns, add_virtual_column);
+        _.each(v_columns, add_computed_column);
         return dataset;
 
-        function add_virtual_column(formula, name) {
+        function add_computed_column(formula, name) {
             var datefmt = d3.time.format('%Y-%m-%d'),
                 values = data.map(function(row) {
                 var context = [];
@@ -270,7 +288,7 @@ dw.chart = function(attributes) {
                 return String(v);
             });
             var v_col = dw.column(name, values);
-            v_col.is_virtual = true;
+            v_col.isComputed = true;
             dataset.add(v_col);
         }
 

@@ -2,6 +2,14 @@
 .chart-editor.dw-create-describe {
 
     .sidebar {
+
+        h3 {
+            margin-bottom: 10px;
+            margin-top: 30px;
+            &.first {
+                margin-top: 10px;
+            }
+        }
         #column-options {
             display: none;
             .unresolved {
@@ -10,6 +18,11 @@
                     background: #fff;
                 }
             }
+        }
+        ul.fa-ul li {
+            margin-bottom: 10px;
+            a { cursor: pointer; }
+            .fa { color: black; }
         }
         label {
             font-family: @base-font;
@@ -20,155 +33,7 @@
         }
     }
 
-    .handsontable {
-        clear: both;
-        font-family: @base-font;
-        font-size: 12px;
-        padding-bottom: 10px;
-        box-shadow: none;
-
-        table { box-shadow: none; }
-        th, td { border-radius: 0!important; }
-
-        .htContainer {
-            padding-bottom: 10px;
-        }
-
-        tr td {
-            padding: 3px 6px;
-            font-family: @base-font;
-
-            &.htDimmed { /*revert default HOT style for readOnly cells*/
-                font-style: normal;
-                color: inherit;
-            }
-
-            &.firstRow {
-                border-bottom: 1px solid #aaa;
-                font-weight: bold;
-                background: #f0f0f0;
-                &.dateType { color: #1E8118; }
-                &.numberType { color: #1B668B; }
-                &.area { background: #d4ddee; }
-            }
-
-            &.textType {
-                color: #000000;
-            }
-
-            &.dateType {
-                color: #39A832;
-                text-align: center;
-            }
-
-            &.numberType {
-                color: #297EA8;
-                text-align: right;
-            }
-
-            &.oddRow {
-                background-color: #fff;
-                &.area { background-color: #e1ebfd; }
-            }
-
-            &.evenRow {
-                background-color: #f9f9f9;
-                &.area { background-color: #dce5f7; }
-            }
-
-            &.parsingError {
-                background: #fee;
-                color: #c00;
-            }
-
-            &.readOnly {
-                background: mix(#F1F0E3, white);
-                &.evenRow { background: #F1F0E3; }
-                &.firstRow { background: #E2E0C8; }
-            }
-        }
-
-        thead {
-            th {
-                cursor: pointer;
-                background: #eee;
-                border-right: 1px solid hsl(210,0%,70%);
-
-                &.selected {
-                    background: #ccc;
-                    background: #cde;
-                }
-                &:first-child:after {
-                    content: url(chart-editor/transpose.png);
-                    position: absolute;
-                    left: 18px;
-                    top: 6px;
-                }
-                &:hover {
-                    background: #ddd;
-                }
-                &:first-child:active {
-                    background: #999;
-                }
-            }
-            tr th+th div:after {
-                content: " "url(chart-editor/selection-off.png);
-                position: absolute;
-                top: 3px;
-                right: 5px;
-            }
-
-            th+th:hover div:after {
-                content: " "url(chart-editor/selection-hover.png);
-            }
-
-            th+th.selected div:after {
-                opacity: 1;
-                content: " "url(chart-editor/selection.png);
-            }
-        } // end thead
-
-        td.ignored, th.ignored {
-            color: #aaa;
-            text-decoration: line-through;
-            &.firstRow {
-                background-color: #ddd;
-                &.area { background: #d4ddee; }
-            }
-            &.oddRow {
-                background-color: #e9e9e9;
-                &.area { background: #e1ebfd; }
-            }
-            &.evenRow {
-                background-color: #e2e2e2;
-                &.area { background: #dce5f7; }
-            }
-        }
-
-        th.ignored {
-            background-color: #e2e2e2;
-            color: #aaa;
-            text-decoration: line-through
-        }
-
-        tr:first-child td {
-            border-top: 1px solid hsl(210,00%,80%)!important;
-            &.firstRow.area {
-                border-top: 1px solid hsl(210,20%,60%)!important;
-            }
-        }
-
-        .colHeader:after {
-            vertical-align: bottom;
-            opacity: 1;
-            color: #08c;
-        }
-    } // end .handsontable
-
-    textarea.handsontableInput {
-        padding-left: 5px;
-        padding-right: 5px;
-    }
+    @import 'describe/handsontable.less';
 
     .help {
         font-family: "Desyrel", "Comic Sans";
@@ -195,4 +60,18 @@
         margin-top: 10px;
     }
 
+    .transpose i:before {
+        background: url(chart-editor/transpose.png) no-repeat!important;
+        background-size: contain!important;
+        content: " ";
+        display: block;
+        position: absolute;
+        left: 7px;
+        top: 1px;
+        width: 16px;
+        height: 16px;
+    }
+
 }
+
+@import 'describe/computed-columns';
