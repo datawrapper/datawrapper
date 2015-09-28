@@ -1,11 +1,17 @@
 CHANGELOG
 ---------
 
+### 1.10.0
+
+* added computed columns
+* in data table: indicating what cells have been changed
 * inline editing of notes
 * memorize what vis groups a user had open
 * allowing transparent navbar
 * don't mess with location.hash in chart popups
 * bugfix of chart localization
+* we're now using grunt and bower instead of bundling 3rd party libs into the repo. please run `grunt` after update.
+* added Python script `parse_translations.py` for parsing plugin translations so we don't need xgettext anymore.
 
 ### 1.9.7
 

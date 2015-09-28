@@ -1,6 +1,6 @@
 {
   "name": "datawrapper",
-  "version": "1.9.7",
+  "version": "1.10.0-rc.1",
   "repository": {
     "type": "git",
     "url": "https://github.com/datawrapper/datawrapper.git"
@@ -20,5 +20,8 @@
     "grunt-bowercopy": "^1.2.3",
     "grunt-subgrunt": "^0.4.5",
     "less": "^1.7.5"
+  },
+  "scripts": {
+    "install": "grunt"
   }
 }
