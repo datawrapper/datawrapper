@@ -91,7 +91,7 @@ define(['jquery'], function($) {
 	                    li.classed('active', function(d, i) { return active == d; });
 	                });
 
-	            var $li_new = nav.append('<li><a class="add_new"><i class="fa fa-plus"></i> Add new</a></li>');
+	            var $li_new = nav.append('<li><a class="add_new"><i class="fa fa-plus"></i> '+nav.data('add-new')+'</a></li>');
 	            $('a.add_new', nav).off('click').click(addNewClick);
 
 	        }
@@ -104,7 +104,7 @@ define(['jquery'], function($) {
 	        }
 
 	        function addNewClick() {
-                var cnbase = 'Untitled',
+                var cnbase = nav.data('untitled'),
                     i = 1, name = cnbase;
                 while (columnNameExists(name)) name = cnbase + ' ('+(++i)+')';
                 columns[name] = '';
