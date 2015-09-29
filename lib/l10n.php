@@ -16,20 +16,30 @@ class Datawrapper_L10N {
             $msg = $memcache->get($mkey);
             if (!empty($msg)) return $msg;
         }
-        // core
-        $messages = array();
-
-        $messages['core'] = $this->parse(ROOT_PATH . 'locale/' . $locale . '.json');
-        $plugins = PluginQuery::create()->filterByEnabled(true)->find();
-        foreach ($plugins as $plugin) {
-            $messages[$plugin->getName()] = $this->parse($plugin->getPath() . 'locale/' . $locale . '.json');
+        $messages = $this->loadMessageJSON($locale);
+        if ($locale != 'en_US') {
+            $fallback = $this->loadMessageJSON('en_US');
+            foreach ($fallback as $scope => $msg) {
+                $messages[$scope] = isset($messages[$scope]) ? array_merge($msg, $messages[$scope]) : $msg;
+            }
         }
+        
         if (isset($_GLOBALS['dw-config']['memcache'])) {
             // store translation in memcache for one minute to prevent
             // us from loading the JSON for every request
             $memcache->set($mkey, $messages, 60);
         }
         $this->__messages = $messages;
+    }
+
+    private function loadMessageJSON($locale) {
+        $messages = array();
+        $messages['core'] = $this->parse(ROOT_PATH . 'locale/' . $locale . '.json');
+        $plugins = PluginQuery::create()->filterByEnabled(true)->find();
+        foreach ($plugins as $plugin) {
+            $messages[$plugin->getName()] = $this->parse($plugin->getPath() . 'locale/' . $locale . '.json');
+        }
+        return $messages;
     }
 
     /*
