@@ -458,6 +458,12 @@ html .btn-inverse {
 .chart-editor.dw-create-describe .sidebar label.separator {
   font-weight: 500;
 }
+.chart-editor.dw-create-describe .buttons.below-table {
+  margin-top: 20px;
+}
+.chart-editor.dw-create-describe .buttons.below-table .btn {
+  margin-left: 10px;
+}
 .chart-editor.dw-create-describe .handsontable {
   clear: both;
   font-family: 'Roboto', Helvetica, sans-serif;
@@ -744,6 +750,10 @@ html .btn-inverse {
   font-size: 13px;
   color: #777;
 }
+#computed-columns .hint.learn-more {
+  margin-bottom: 0;
+  margin-top: 10px;
+}
 #computed-columns .code.disabled {
   cursor: not-allowed;
 }
@@ -756,7 +766,7 @@ html .btn-inverse {
   cursor: pointer;
 }
 .CodeMirror-hints {
-  z-index: 10000;
+  z-index: 10000!important;
 }
 /*
  * visualization styles
