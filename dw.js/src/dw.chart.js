@@ -264,6 +264,7 @@ dw.chart = function(attributes) {
         });
 
         _.each(v_columns, add_computed_column);
+        
         return dataset;
 
         function add_computed_column(formula, name) {
@@ -274,6 +275,8 @@ dw.chart = function(attributes) {
                     if (!columnNameToVar[key]) return;
                     context.push('var '+columnNameToVar[key]+' = '+JSON.stringify(val)+';');
                 });
+                context.push('var round = d3.round, mean = d3.mean, median = d3.median,'+
+                        'sum = d3.sum, max = d3.max, min = d3.min;');
                 return (function() {
                     try {
                         return eval(this.context.join('\n')+'\n'+formula);                    
