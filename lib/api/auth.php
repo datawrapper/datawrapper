@@ -166,7 +166,7 @@ $app->post('/account/resend-invitation', function() use($app) {
     $token   = $user->getActivateToken();
     if (!empty($user)) {
         if (empty($token)) {
-            return error("token-invalid", _("This activation token is invalid. Your email address is probably already activated."));
+            return error("token-invalid", __("This activation token is invalid. Your email address is probably already activated."));
         }
         // variables for `templates/invitation-email.php`
         $domain         = $GLOBALS['dw_config']['domain'];
@@ -201,11 +201,11 @@ $app->post('/account/invitation/:token', function ($token) use ($app) {
           ->filterByActivateToken($token)
           ->find();
         if (count($users) != 1) {
-            error("token-invalid", _("This activation token is invalid. Your email address is probably already activated."));
+            error("token-invalid", __("This activation token is invalid. Your email address is probably already activated."));
         } elseif (empty($data->pwd1)) {
-            error("password-missing", _("You must enter a password."));
+            error("password-missing", __("You must enter a password."));
         } elseif ($data->pwd1 != $data->pwd2) {
-            error("password-mismatch", _("Both passwords must be the same."));
+            error("password-mismatch", __("Both passwords must be the same."));
         } else {
             $user = $users[0];
             $user->setActivateToken('');
@@ -218,7 +218,7 @@ $app->post('/account/invitation/:token', function ($token) use ($app) {
             // $from   = $GLOBALS['dw_config']['email'];
             // $link = 'http://' . $domain;
             // include('../../lib/templates/confirmation-email.php');
-            // mail($name, _('Confirmation of account creation') . ' ' . $domain, $confirmation_email, 'From: ' . $from);
+            // mail($name, __('Confirmation of account creation') . ' ' . $domain, $confirmation_email, 'From: ' . $from);
             DatawrapperSession::login($user);
             ok();
         }
