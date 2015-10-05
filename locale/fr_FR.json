@@ -261,7 +261,7 @@
     "Your email address %s has been successfully activated!": "Your email address %s has been successfully activated!",
     "The invitation token is invalid.": "The invitation token is invalid.",
     "Delete account": "Delete account",
-    "Edit profile": "Edit profile",
+    "Edit profile": "\u00c9diter votre profil",
     "Duplicate this chart": "Duplicate this chart",
     "The password reset email has already been sent. Please contact an <a href=\"mailto:hello@datawrapper.de\">administrator<\/a>.": "L'email de r\u00e9initialisation du mot de passe a d\u00e9j\u00e0 \u00e9t\u00e9 envoy\u00e9. Merci de contacter un <a href=\"mailto:hello@datawrapper.de\">administrateur<\/a>.",
     "You haven't activated this email address yet, so we cannot safely send emails to it. Please contact an <a href=\"mailto:hello@datawrapper.de\">administrator<\/a>.": "Vous n'avez pas encore activ\u00e9 cette adresse email, si bien que nous ne pouvons pas y envoyer de messages. Merci de contacter un <a href=\"mailto:hello@datawrapper.de\">administrateur<\/a>.",
