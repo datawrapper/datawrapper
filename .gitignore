@@ -29,3 +29,5 @@ scripts/execute_jobs.lock
 node_modules
 *.bts
 bower_components/
+
+locale/messages.tsv
