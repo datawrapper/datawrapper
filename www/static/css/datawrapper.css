@@ -779,6 +779,7 @@ html .btn-inverse {
 }
 #computed-columns .col-select label {
   display: inline-block;
+  margin: 0;
 }
 #computed-columns .col-select .column {
   font-family: Roboto condensed;
