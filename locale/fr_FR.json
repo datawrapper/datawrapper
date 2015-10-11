@@ -316,7 +316,7 @@
     "This chart belongs to <a href='\/admin\/charts\/%uid'>%email<\/a>. Great power comes with great responsibility, so be careful with what you're doing!": "This chart belongs to <a href='\/admin\/charts\/%uid'>%email<\/a>. Great power comes with great responsibility, so be careful with what you're doing!",
     "Please make sure that Datawrapper interprets your data correctly. In the table number columns should be shown in blue, dates in green and text in black.": "Please make sure that Datawrapper interprets your data correctly. In the \ntable number columns should be shown in blue, dates in green and text in \nblack.",
     "Automatic number formatting": "Automatic number formatting",
-    "Transpose dataset": "Transpose dataset",
+    "Transpose dataset": "Transposer les donn\u00e9es",
     "Revert changes": "Revert changes",
     "Now, to be able to embed the chart, we ask you to create an account. It's free and all you need is a valid email address. The chart you just created will be transfered to your new account.": "Maintenant, pour pouvoir int\u00e9grer le graphique, nous vous demandons de cr\u00e9er un compte. C'est gratuit et ne n\u00e9cessite qu'une adresse e-mail valide. Le graphique que vous venez de cr\u00e9er sera transf\u00e9r\u00e9 \u00e0 votre nouveau compte.",
     "Select your data (including header row\/column) in Excel or OpenOffice and paste it in the text field on the right. You can also upload a CSV file from your computer.": "Select your data (including header row\/column) in Excel or OpenOffice and \npaste it in the text field on the right. You can also upload a CSV file from \nyour computer.",
@@ -337,5 +337,6 @@
     "Select visualization": "Select visualization",
     "In case the visualization doesn't look like you expected, you should try to <a href='#' id='btn-transpose'><img src='\/static\/css\/chart-editor\/transpose.png' \/> transpose the data<\/a>.": "Dans le cas o\u00f9 la visualisation ne ressemble pas \u00e0 vous attendiez, vous devriez essayer de <a href='#' id='btn-transpose'><img src='\/static\/css\/chart-editor\/transpose.png' \/> transposer les donn\u00e9es<\/a>.",
     "Tell the story": "Tell the story",
-    "Refine the chart": "Refine the chart"
+    "Refine the chart": "Refine the chart",
+    "computed columns \/ add-btn": "Add column"
 }
