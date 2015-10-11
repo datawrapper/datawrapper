@@ -675,6 +675,10 @@ html .btn-inverse {
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
   border: 0;
 }
+#computed-columns .modal-body {
+  overflow-y: hidden;
+  max-height: 420px;
+}
 #computed-columns .badge {
   padding-right: 6px;
   padding-left: 6px;
@@ -682,6 +686,7 @@ html .btn-inverse {
 }
 #computed-columns h3 {
   margin-top: 0;
+  margin-bottom: 10px;
 }
 #computed-columns label {
   display: block;
@@ -764,6 +769,27 @@ html .btn-inverse {
 #computed-columns .btn-remove {
   color: #b00;
   cursor: pointer;
+}
+#computed-columns .col-select {
+  margin-top: 5px;
+  opacity: 0.3;
+}
+#computed-columns .col-select.active {
+  opacity: 1;
+}
+#computed-columns .col-select label {
+  display: inline-block;
+}
+#computed-columns .col-select .column {
+  font-family: Roboto condensed;
+  display: inline-block;
+  color: #0088cc;
+  background: white;
+  cursor: pointer;
+  padding: 0px 3px;
+}
+#computed-columns .col-select .column:hover {
+  background: #e6f3fa;
 }
 .CodeMirror-hints {
   z-index: 10000!important;
