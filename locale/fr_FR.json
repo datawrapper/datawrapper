@@ -339,5 +339,14 @@
     "Tell the story": "Tell the story",
     "Refine the chart": "Refine the chart",
     "computed columns \/ add-btn": "Add column",
-    "computed columns \/ modal \/ available columns": "Available columns"
+    "computed columns \/ modal \/ available columns": "Available columns",
+    "upload \/ headline": "It all starts with your data...",
+    "upload \/ quick help": "Select your data (including header row\/column) in Excel or OpenOffice and \npaste it in the text field on the right. You can also upload a CSV file from \nyour computer.",
+    "upload \/ learn more": "En savoir plus sur l'insertion de vos donn\u00e9es",
+    "upload \/ try a dataset": "If you just want to try Datawrapper, here\u2018s a list of some example datasets you can use:",
+    "upload \/ sample dataset": "Select a sample dataset",
+    "upload \/ drop csv": "d\u00e9posez votre fichier CSV ici",
+    "upload \/ paste here": "Paste your copied data here...",
+    "upload \/ continue button": "T\u00e9l\u00e9chargez et continuez",
+    "upload \/ or upload csv": "... ou uploadez un fichier CSV"
 }

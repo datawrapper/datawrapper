@@ -339,5 +339,14 @@
     "Tell the story": "Tell the story",
     "Refine the chart": "Refine the chart",
     "computed columns \/ add-btn": "Spalte hinzuf\u00fcgen",
-    "computed columns \/ modal \/ available columns": "Verf\u00fcgbare Spalten"
+    "computed columns \/ modal \/ available columns": "Verf\u00fcgbare Spalten",
+    "upload \/ headline": "Alles beginnt mit dem Datensatz...",
+    "upload \/ quick help": "Markiere die Datentabelle in Excel oder OpenOffice (einschlie\u00dflich der ersten Zeile mit den Spaltentiteln), und f\u00fcgen ihn in das nebenstehende Textfeld. Alternativ kannst du auch eine CSV-Datei hochladen.",
+    "upload \/ learn more": "Erfahre mehr \u00fcber das Hochladen von Daten",
+    "upload \/ try a dataset": "Wenn du Datawrapper nur ausprobieren m\u00f6chtest, kannst du eine Beispiel-Datensatz aus dieser Liste ausw\u00e4hlen:",
+    "upload \/ sample dataset": "Beispiel-Datensatz ausw\u00e4hlen",
+    "upload \/ drop csv": "Oder ziehe deine CSV-Datei hier her..",
+    "upload \/ paste here": "Daten hier einf\u00fcgen...",
+    "upload \/ continue button": "Daten hochladen und weiter",
+    "upload \/ or upload csv": "..oder lade eine CSV-Datei hoch"
 }
