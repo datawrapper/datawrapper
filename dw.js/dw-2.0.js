@@ -1787,6 +1787,7 @@ dw.chart = function(attributes) {
         });
 
         _.each(v_columns, add_computed_column);
+        
         return dataset;
 
         function add_computed_column(formula, name) {
