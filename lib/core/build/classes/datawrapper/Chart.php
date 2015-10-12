@@ -173,7 +173,7 @@ class Chart extends BaseChart {
                 // this user is the chart author
             if ($this->getAuthorId() == $user->getId()
                 // the user is a graphics editor and in the same organization
-                || (!empty($org) && $org->hasUser($user) && $user->isGraphicEditor())
+                || (!empty($org) && $org->hasUser($user))
                 // or the user is an admin
                 || $user->isAdmin()) {
                 return true;
