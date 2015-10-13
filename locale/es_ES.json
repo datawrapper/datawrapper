@@ -348,5 +348,6 @@
     "upload \/ drop csv": "suelta tu archivo csv aqu\u00ed",
     "upload \/ paste here": "Paste your copied data here...",
     "upload \/ continue button": "Subir y continuar",
-    "upload \/ or upload csv": "..o sube un archivo CSV"
+    "upload \/ or upload csv": "..o sube un archivo CSV",
+    "visualize \/ transpose-hint": "In case the visualization doesn't look like you expected, you should try to [LINK]transpose the data[\/LINK]."
 }

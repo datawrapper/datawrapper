@@ -348,5 +348,6 @@
     "upload \/ drop csv": "d\u00e9posez votre fichier CSV ici",
     "upload \/ paste here": "Paste your copied data here...",
     "upload \/ continue button": "T\u00e9l\u00e9chargez et continuez",
-    "upload \/ or upload csv": "... ou uploadez un fichier CSV"
+    "upload \/ or upload csv": "... ou uploadez un fichier CSV",
+    "visualize \/ transpose-hint": "Dans le cas o\u00f9 la visualisation ne ressemble pas \u00e0 vous attendiez, vous devriez essayer de [LINK]transposer les donn\u00e9es[\/LINK]."
 }
