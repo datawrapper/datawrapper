@@ -90,8 +90,6 @@ $app->post('/account/reset-password', function() use($app) {
         $protocol = get_current_protocol();
         $passwordResetLink = $protocol . '://' . $GLOBALS['dw_config']['domain'] . '/account/reset-password/' . $token;
 
-        include(ROOT_PATH . 'lib/templates/password-reset-email.php');
-
         DatawrapperHooks::execute(DatawrapperHooks::SEND_RESET_PASSWORD_EMAIL, $user->getEmail(), $user->guessName(), $passwordResetLink);
 
         ok(__('You should soon receive an email with further instructions.'));
@@ -128,8 +126,6 @@ $app->post('/account/resend-activation', function() use($app) {
         $protocol = get_current_protocol();
         $activationLink = $protocol . '://' . $domain . '/account/activate/' . $token;
 
-        include(ROOT_PATH . 'lib/templates/activation-email.php');
- 
         DatawrapperHooks::execute(DatawrapperHooks::SEND_ACTIVATION_EMAIL, $user->getEmail(), 
           $user->guessName(), $activationLink);
 
