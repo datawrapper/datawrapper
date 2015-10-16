@@ -96,32 +96,15 @@ $app->post('/users', function() use ($app) {
     $domain   = $GLOBALS['dw_config']['domain'];
     $protocol = get_current_protocol();
     if ($invitation) {
-        // send account invitation link
+        // send invitation
         $invitationLink = $protocol . '://' . $domain . '/account/invite/' . $user->getActivateToken();
-        include(ROOT_PATH . 'lib/templates/invitation-email.php');
-        dw_send_support_email(
-            $data->email,
-            sprintf(__('You have been invited to Datawrapper on %s'), $domain),
-            $invitation_mail,
-            array(
-                'name' => $user->guessName(),
-                'invitation_link' => $invitationLink
-            )
-        );
-
+        DatawrapperHooks::execute(DatawrapperHooks::SEND_TEAM_INVITE_EMAIL_TO_NEW_USER, 
+            $data->email, $user->guessName(), $teamName, $invitationLink);
     } else {
         // send account activation link
         $activationLink = $protocol . '://' . $domain . '/account/activate/' . $user->getActivateToken();
-        include(ROOT_PATH . 'lib/templates/activation-email.php');
-        dw_send_support_email(
-            $data->email,
-            __('Datawrapper: Please activate your email address'),
-            $activation_mail,
-            array(
-                'name' => $user->guessName(),
-                'activation_link' => $activationLink
-            )
-        );
+        DatawrapperHooks::execute(DatawrapperHooks::SEND_ACTIVATION_EMAIL, $data->email, $data->email, $activationLink);
+
         // we don't need to annoy the user with a login form now,
         // so just log in..
         DatawrapperSession::login($user);
@@ -187,20 +170,10 @@ $app->put('/users/:id', function($user_id) use ($app) {
                             // non-admins need to confirm new emails addresses
                             $token = hash_hmac('sha256', $user->getEmail().'/'.$payload->email.'/'.time(), DW_TOKEN_SALT);
                             $token_link = get_current_protocol() . '://' . $GLOBALS['dw_config']['domain'] . '/account/profile?token='.$token;
-                            // send email with token
-                            require(ROOT_PATH . 'lib/templates/email-change-email.php');
 
-                            dw_send_support_email(
-                                $payload->email,
-                                __('Datawrapper: You requested a change of your email address'),
-                                $email_change_mail,
-                                array(
-                                    'name' => $user->guessName(),
-                                    'email_change_token_link' => $token_link,
-                                    'old_email' => $user->getEmail(),
-                                    'new_email' => $payload->email
-                                )
-                            );
+                            DatawrapperHooks::execute(DatawrapperHooks::SEND_CHANGE_EMAIL_EMAIL, 
+                                $payload->email, $user->guessName(), $user->getEmail(), $token_link);
+
                             // log action for later confirmation
                             Action::logAction($curUser, 'email-change-request', array(
                                 'old-email' => $user->getEmail(),

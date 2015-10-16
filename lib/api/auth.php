@@ -92,15 +92,7 @@ $app->post('/account/reset-password', function() use($app) {
 
         include(ROOT_PATH . 'lib/templates/password-reset-email.php');
 
-        dw_send_support_email(
-            $user->getEmail(),
-            __('Datawrapper: You requested a reset of your password'),
-            $password_reset_mail,
-            array(
-                'name' => $user->guessName(),
-                'password_reset_link' => $passwordResetLink
-            )
-        );
+        DatawrapperHooks::execute(DatawrapperHooks::SEND_RESET_PASSWORD_EMAIL, $user->getEmail(), $user->guessName(), $passwordResetLink);
 
         ok(__('You should soon receive an email with further instructions.'));
 
@@ -137,16 +129,9 @@ $app->post('/account/resend-activation', function() use($app) {
         $activationLink = $protocol . '://' . $domain . '/account/activate/' . $token;
 
         include(ROOT_PATH . 'lib/templates/activation-email.php');
-
-        dw_send_support_email(
-            $user->getEmail(),
-            __('Datawrapper: Please activate your email address'),
-            $activation_mail,
-            array(
-                'name' => $user->guessName(),
-                'activation_link' => $activationLink
-            )
-        );
+ 
+        DatawrapperHooks::execute(DatawrapperHooks::SEND_ACTIVATION_EMAIL, $user->getEmail(), 
+          $user->guessName(), $activationLink);
 
         ok(__('The activation email has been send to your email address, again.'));
 
@@ -173,18 +158,9 @@ $app->post('/account/resend-invitation', function() use($app) {
         $protocol       = get_current_protocol();
         $invitationLink = $protocol . '://' . $domain . '/account/invite/' . $token;
         $name           = $user->getEmail();
-        include('../../lib/templates/invitation-email.php');
-        $from           = $GLOBALS['dw_config']['email']['invite'];
 
-        dw_send_support_email(
-            $user->getEmail(),
-            __('You have been invited to Datawrapper!'),
-            $invitation_mail,
-            array(
-                'name' => $user->guessName(),
-                'invitation_link' => $invitationLink
-            )
-        );
+        DatawrapperHooks::execute(DatawrapperHooks::SEND_TEAM_INVITE_EMAIL_TO_NEW_USER,
+            $user->getEmail(), $user->guessName(), $teamName, $invitationLink);
         ok(__('You should soon receive an email with further instructions.'));
     } else {
         error('login-email-unknown', __('The email is not registered yet.'));
