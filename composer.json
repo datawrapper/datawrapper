@@ -21,7 +21,6 @@
             "lib"
         ],
         "files": [
-            "lib/mail.php",
             "lib/utils/add_editor_nav.php",
             "lib/utils/add_header_vars.php",
             "lib/utils/alphaID.php",
