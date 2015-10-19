@@ -7,36 +7,47 @@ import csv
 from collections import OrderedDict
 import json
 
-plugin = sys.argv[1]
+if len(sys.argv) < 2:
+    print 'Usage:'
+    print '         python parse_translations.py [scope]\n'
+    print '         Valid scopes are plugin names or "core"'
+    print '         e.g. python parse_translations.py theme-default-single\n'
+    exit(-1)
+
+scope = sys.argv[1]
 
 remap_keys = False
 found_in = dict()
 
-if plugin == 'core':
+if scope == 'core':
     glob_base = './'
     glob_patterns = ['*.php', 'controller/*.php', 'controller/*/*.php',
         'lib/*.php', 'lib/*/*.php', 'lib/*/*/*.php', 'templates/*.twig', 'templates/*/*.twig', 'templates/*/*/*.twig']
 else:
-    glob_base = 'plugins/'+plugin+'/'
+    glob_base = 'plugins/'+scope+'/'
     glob_patterns = ['*.php', '*/*.php', 'templates/*.twig']
 
 out = OrderedDict()
 
 locales = set()
 
-if plugin == 'core':
-    existing = dict()
-    for f in glob('locale/*_*.json'):
-        s = json.loads(open(f).read())
-        loc = f[-10:-5]
-        locales.add(loc)
-        existing[loc] = s
+existing = dict()
 
+if scope == 'core':
+    locale_path = 'locale/'
+else:
+    locale_path = 'plugins/'+scope+'/locale/'
+
+for f in glob(locale_path + '*_*.json'):
+    s = json.loads(open(f).read())
+    loc = f[-10:-5]
+    locales.add(loc)
+    existing[loc] = s
 
 for gp in glob_patterns:
     for f in glob(glob_base + gp):
         fn = f.replace(glob_base, '')
-        if plugin == 'core' and fn[:18] == 'templates/plugins/':
+        if scope == 'core' and fn[:18] == 'templates/scopes/':
             continue
         print fn
         s = open(f).read()
@@ -67,16 +78,15 @@ for gp in glob_patterns:
         open(f, 'w').write(s)
 
 
-locale_dir = 'locale'
 
-if plugin != 'core':
-    locale_dir = 'plugins/'+plugin+'/locale'
-    if not path.exists(locale_dir):
-        os.mkdir(locale_dir)
-else:
+if scope != 'core':
+    if not path.exists(locale_path[:-1]):
+        os.mkdir(locale_path[:-1])
+
+if path.exists(locale_path + 'messages.json'):
     missing = 0
     keymap = dict()
-    ref = json.load(open('locale/messages.json'))
+    ref = json.load(open(locale_path + 'messages.json'))
     for k in sorted(ref.keys()):
         k2 = k
         if k2 not in out:
@@ -88,16 +98,16 @@ else:
         keymap[k2] = k
     print 'missing total', missing
 
-open(locale_dir + '/en_US.json', 'w').write(json.dumps(out))
+open(locale_path + 'en_US.json', 'w').write(json.dumps(out))
 
 
-f_out = open(locale_dir + '/messages.tsv', 'w')
+f_out = open(locale_path + 'messages.tsv', 'w')
 log = csv.writer(f_out, dialect='excel-tab')
-if plugin == 'core':
+if scope == 'core':
     locales = list(locales)
     log.writerow(['found in', 'key'] + locales)
 for k in out:
-    if plugin == 'core':
+    if scope == 'core':
         row = [found_in[k], k]
         for loc in locales:
             if k in keymap and keymap[k] in existing[loc]:
@@ -106,6 +116,7 @@ for k in out:
                 row.append(out[k])
         log.writerow(row)
     else:
-        log.writerow([plugin, k, out[k], out[k]])
+        if k != '':
+            log.writerow([scope, k, out[k], out[k]])
 
 f_out.close()
