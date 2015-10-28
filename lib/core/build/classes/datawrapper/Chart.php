@@ -45,13 +45,18 @@ class Chart extends BaseChart {
         return $json;
     }
 
-    public function toJSON($public = false) {
+    public function toStruct($public = false) {
         $chart = $this->serialize();
         if ($public) {
             // remove any sensitive user data
             unset($chart['author']);
         }
-        return trim(addslashes(json_encode($chart)));
+
+        return $chart;
+    }
+
+    public function toJSON($public = false) {
+        return trim(addslashes(json_encode($this->toStruct($public))));
     }
 
     public function unserialize($json) {
@@ -168,7 +173,7 @@ class Chart extends BaseChart {
                 // this user is the chart author
             if ($this->getAuthorId() == $user->getId()
                 // the user is a graphics editor and in the same organization
-                || (!empty($org) && $org->hasUser($user) && $user->isGraphicEditor())
+                || (!empty($org) && $org->hasUser($user))
                 // or the user is an admin
                 || $user->isAdmin()) {
                 return true;

@@ -17,14 +17,14 @@ dw.backend.ready(function() {
     <div class="row">
 
         <div class="span4">
-            <h3>{% trans "It all starts with your data..." %}</h3>
-            <p>{% trans "Select your data (including header row/column) in Excel or OpenOffice and paste it in the text field on the right. You can also upload a CSV file from your computer." %} <a href="http://docs.datawrapper.de/tutorial/" target="_blank">{% trans "Learn more about how to upload your data" %}</a>.</p>
+            <h3>{% trans "upload / headline" %}</h3>
+            <p>{% trans "upload / quick help" %} <a href="http://docs.datawrapper.de/tutorial/" target="_blank">{% trans "upload / learn more" %}</a>.</p>
 
 
             <div class="demo-datasets">
-                <p>{% trans "If you just want to try Datawrapper, here‘s a list of some example datasets you can use:" %}</p>
+                <p>{% trans "upload / try a dataset" %}</p>
                 <select id="demo-datasets" class="">
-                    <option>{% trans "Select a sample dataset" %}</option>
+                    <option>{% trans "upload / sample dataset" %}</option>
                     {% for group in datasets %}
                     <optgroup label="{{ group.type }}">
                     {% for dataset in group.datasets %}
@@ -41,10 +41,10 @@ dw.backend.ready(function() {
 
             <form class="upload-form">
                 <div class="control-group">
-                    <textarea id="upload-data-text" data-drop-here="{% trans "drop your csv file here " %}" style="resize:none" placeholder="{% trans "Paste your copied data here..." %}">{{ chartData }}</textarea>
+                    <textarea id="upload-data-text" data-drop-here="{% trans "upload / drop csv" %}" style="resize:none" placeholder="{% trans "upload / paste here" %}">{{ chartData }}</textarea>
                 </div>
 
-                <div id="upload-data" class="btn btn-primary pull-right">{% trans "Upload and continue" %} <i class="icon-chevron-right icon-white"></i></div>
+                <div id="upload-data" class="btn btn-primary pull-right">{% trans "upload / continue button" %} <i class="icon-chevron-right icon-white"></i></div>
                 <div id="upload" style="display:inline-block"></div>
 
             </form>
@@ -55,9 +55,9 @@ dw.backend.ready(function() {
     </div>
 
     <div class="upload-template hidden">
-        <div class="upload-drop">{% trans "drop your csv file here " %}</div>
+        <div class="upload-drop">{% trans "upload / drop csv" %}</div>
         <div class="btn upload-button" id="pick-file-from-disk"><span>
-        <i class="icon-upload"></i> {% trans "..or upload a CSV file" %}</span></div>
+        <i class="icon-upload"></i> {% trans "upload / or upload csv" %}</span></div>
         <ul class="qq-upload-list" style="display:none"></ul>
     </div>
 
