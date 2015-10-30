@@ -25,7 +25,7 @@ if scope == 'core':
         'lib/*.php', 'lib/*/*.php', 'lib/*/*/*.php', 'templates/*.twig', 'templates/*/*.twig', 'templates/*/*/*.twig']
 else:
     glob_base = 'plugins/'+scope+'/'
-    glob_patterns = ['*.php', '*/*.php', 'templates/*.twig']
+    glob_patterns = ['*.php', '*/*.php', 'templates/*.twig', 'templates/*/*.twig', 'templates/*/*/*.twig']
 
 out = OrderedDict()
 
@@ -59,6 +59,7 @@ for gp in glob_patterns:
         for pattern in patterns:
             for msg in re.findall(pattern, s):
                 msg = msg.strip().replace('\\\'', '\'').replace('\\"', '"')
+                print msg
                 if msg not in out:
                     if remap_keys:
                         key = raw_input('Is there a better key for "'+msg+'": ')
@@ -93,30 +94,48 @@ if path.exists(locale_path + 'messages.json'):
             k2 = k.replace('\n', '').strip().encode('utf-8')
             if k2 not in out:
                 missing += 1
-                print 'missing "{}"'.format(k)
+                print 'found in json, but missing in source: "{}"'.format(k)
                 continue
         keymap[k2] = k
-    print 'missing total', missing
+    print '-----'
+    missing2 = 0
+    for k in sorted(out.keys()):
+        k2 = k
+        if k2 not in ref:
+            k2 = k.replace('\n', '').strip().encode('utf-8')
+            if k2 not in ref:
+                missing2 += 1
+                print 'found in source, but missing in json: "{}"'.format(k)
+                continue
+        keymap[k2] = k
+    print 'missing in source total', missing
+    print 'missing in json', missing2
 
-open(locale_path + 'en_US.json', 'w').write(json.dumps(out))
+# open(locale_path + 'en_US.json', 'w').write(json.dumps(out))
+
+
 
 
 f_out = open(locale_path + 'messages.tsv', 'w')
 log = csv.writer(f_out, dialect='excel-tab')
+# 
+locales = ['en_US', 'de_DE', 'fr_FR', 'es_ES', 'it_IT', 'zh_CN', 'pt_BR', 'fi_FI', 'da_DK', 'nl_NL', 'sl_SI']
 if scope == 'core':
-    locales = list(locales)
     log.writerow(['found in', 'key'] + locales)
+else:
+    log.writerow(['scope', 'key'] + locales)
+
 for k in out:
     if scope == 'core':
         row = [found_in[k], k]
-        for loc in locales:
-            if k in keymap and keymap[k] in existing[loc]:
-                row.append(existing[loc][keymap[k]].encode('utf-8'))
-            else:
-                row.append(out[k])
-        log.writerow(row)
     else:
-        if k != '':
-            log.writerow([scope, k, out[k], out[k]])
+        row = [scope, k]
 
+    for loc in locales:
+        if loc in existing and k in keymap and keymap[k] in existing[loc]:
+            row.append(existing[loc][keymap[k]].encode('utf-8'))
+        else:
+            row.append(out[k])
+    log.writerow(row)
+    
 f_out.close()
