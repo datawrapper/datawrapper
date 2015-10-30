@@ -39,26 +39,23 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
     $abs = $protocol . '://' . $GLOBALS['dw_config']['domain'];
 
     $debug = $GLOBALS['dw_config']['debug'] == true || $debug;
+    $culture = str_replace('_', '-', $locale);
 
     if ($published && !$debug && !empty($GLOBALS['dw_config']['asset_domain'])) {
         $base_js = array(
             '//' . $GLOBALS['dw_config']['asset_domain'] . '/globalize.min.js',
+            '//' . $GLOBALS['dw_config']['asset_domain'] . '/cultures/globalize.culture.' . $culture . '.js',
             '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js',
             '//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js'
         );
-        if (substr($locale, 0, 2) != 'en') {
-            $base_js[] = '//' . $GLOBALS['dw_config']['asset_domain'] . '/cultures/globalize.culture.' . str_replace('_', '-', $locale) . '.js';
-        }
     } else {
         // use local assets
         $base_js = array(
             $abs . '/static/vendor/globalize/globalize.min.js',
+            $abs . '/static/vendor/globalize/cultures/globalize.culture.' . $culture . '.js',
             $abs . '/static/vendor/underscore/underscore-min.js',
             $abs . '/static/vendor/jquery/jquery.min.js'
         );
-        if (substr($locale, 0, 2) != 'en') {
-            $base_js[] = $abs . '/static/vendor/globalize/cultures/globalize.culture.' . str_replace('_', '-', $locale) . '.js';
-        }
     }
 
     $vis_js = array();
