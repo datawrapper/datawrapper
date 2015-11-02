@@ -140,4 +140,8 @@ class User extends BaseUser {
 			->count() > 0;
     }
 
+    public function isActivated() {
+        return $this->getActivateToken() == '';
+    }
+
 } // User
