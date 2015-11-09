@@ -3,15 +3,18 @@ CHANGELOG
 
 ### 1.10.0
 
-* added computed columns
-* in data table: indicating what cells have been changed
-* inline editing of notes
-* memorize what vis groups a user had open
-* allowing transparent navbar
-* don't mess with location.hash in chart popups
-* bugfix of chart localization
-* we're now using grunt and bower instead of bundling 3rd party libs into the repo. please run `grunt` after update.
-* added Python script `parse_translations.py` for parsing plugin translations so we don't need xgettext anymore.
+* Added computed columns
+* The data table now indicated what cells have been changed
+* Inline editing of notes
+* Memorize what vis groups a user had open
+* Added transparent navbar style
+* Added d3.js to Datawrapper core so every module can require it.
+* All charts are now writable to everyone within an organization.
+* We migrated our translation system from crowdin.net to a simple Google Spreadsheet. Check the readme to learn how to contribute as translator. 
+* Added Python script `parse_translations.py` for parsing plugin translations so we don't need xgettext anymore.
+* Important: we're now using grunt and bower instead of bundling 3rd party libs into our repo. Please run `npm install` after updating
+* Bugfix: don't mess with location.hash in chart popups
+* Bugfix of chart localization
 
 ### 1.9.7
 
