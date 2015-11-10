@@ -67,6 +67,24 @@
     <column name="default_theme" type="varchar" size="128" default="" />
   </table>
 
+  <!-- organization invite -->
+  <table name="organization_invite" phpName="OrganizationInvite">
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+    <column name="invite_token" type="varchar" size="128" required="true" primaryKey="true" />
+    <column name="organization_id" type="varchar" size="128" required="true" />
+    <column name="user_id" type="integer" required="true" />
+
+    <foreign-key foreignTable="user">
+      <reference local="user_id" foreign="id"/>
+    </foreign-key>
+    <foreign-key foreignTable="organization">
+      <reference local="organization_id" foreign="id"/>
+    </foreign-key>
+  </table>
+
+
   <!-- cross reference user - organization -->
   <table name="user_organization" isCrossRef="true">
     <column name="user_id" type="integer" primaryKey="true" />

@@ -41,7 +41,7 @@ class SessionTableMap extends TableMap
         $this->addPrimaryKey('session_id', 'SessionId', 'VARCHAR', true, 32, null);
         $this->addColumn('date_created', 'DateCreated', 'TIMESTAMP', true, null, null);
         $this->addColumn('last_updated', 'LastUpdated', 'TIMESTAMP', true, null, null);
-        $this->addColumn('session_data', 'SessionData', 'VARCHAR', true, 4096, null);
+        $this->addColumn('session_data', 'SessionData', 'CLOB', true, null, null);
         // validators
     } // initialize()
 
