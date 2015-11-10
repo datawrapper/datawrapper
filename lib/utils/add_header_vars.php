@@ -31,7 +31,7 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
 
     $user = DatawrapperSession::getUser();
     $headlinks = array();
-    if ($user->isLoggedIn() || empty($config['prevent_guest_charts'])) {
+    if ($user->isLoggedIn()) {
         $headlinks[] = array(
             'url' => '/chart/create',
             'id' => 'chart',
