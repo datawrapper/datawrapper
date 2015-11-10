@@ -15,6 +15,9 @@ CHANGELOG
 * Important: we're now using grunt and bower instead of bundling 3rd party libs into our repo. Please run `npm install` after updating
 * Bugfix: don't mess with location.hash in chart popups
 * Bugfix of chart localization
+* Moved email notifications to hooks
+* Added OrganizationInvite Table
+* you need to migrate the database schema, see [commit message](https://github.com/datawrapper/datawrapper/commit/22ccce9c4304fb21c58c0a00ee314bf730f9a34c)
 
 ### 1.9.7
 
