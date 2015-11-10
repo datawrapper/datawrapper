@@ -195,7 +195,8 @@ $(function() {
         }
 
         function getLabels() {
-            return args.option.axis ? _.unique(vis.axes(true)[args.option.axis].values()) : vis.keys();
+            return args.option.axis ? _.unique(vis.axes(true)[args.option.axis].values()) :
+                (vis.colorKeys ? vis.colorKeys() : vis.keys());
         }
 
     }
