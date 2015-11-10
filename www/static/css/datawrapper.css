@@ -78,6 +78,12 @@ label {
 .control-group .control-label {
   text-align: left;
 }
+html .navbar.navbar-transparent .navbar-inner {
+  height: 65px;
+}
+html .navbar.navbar-transparent .navbar-inner .nav li .divider-vertical {
+  height: 65px;
+}
 html .navbar .navbar-inner {
   font-weight: 300;
   background: #f5f5f5;
@@ -101,7 +107,6 @@ html .navbar .navbar-inner .nav > li > a {
   padding-top: 11px;
   padding-bottom: 10px;
   font-size: 13px;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.45);
 }
 html .navbar .navbar-inner .nav > li > a:hover {
   color: #000;
@@ -127,10 +132,9 @@ html .navbar .navbar-inner .nav li.dropdown.active > .dropdown-toggle:hover {
   color: #222!important;
 }
 html .navbar .navbar-inner .brand {
+  color: #556;
   padding-top: 14px;
   padding-bottom: 4px;
-  color: #556;
-  text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.55);
   white-space: nowrap;
   padding-left: 0px;
   font-size: 18px;
@@ -185,6 +189,25 @@ html .navbar.navbar-transparent .navbar-inner {
   position: relative;
   z-index: 100000;
 }
+html .navbar.navbar-transparent .navbar-inner .nav > li > a {
+  text-shadow: none;
+  color: #fff;
+  font-weight: 100;
+  font-size: 14px;
+  margin-top: 10px;
+  margin-left: 4px;
+}
+html .navbar.navbar-transparent .navbar-inner .nav li a i.fa {
+  color: #fff;
+  margin-right: 4px;
+}
+html .navbar.navbar-transparent .navbar-inner .brand {
+  text-shadow: none;
+  color: #fff;
+  font-weight: 100;
+  font-size: 24px;
+  margin-top: 8px;
+}
 html .navbar.navbar-inverse .navbar-inner {
   background: #000;
 }
@@ -193,9 +216,6 @@ html .navbar.navbar-inverse .navbar-inner li a i.fa {
 }
 html .navbar.navbar-inverse .navbar-inner li a:hover i.fa {
   color: #08c;
-}
-html .navbar.navbar-inverse .navbar-inner .nav > li > a {
-  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.45);
 }
 html .navbar.navbar-inverse .navbar-inner .nav > li > a:hover {
   color: #fff;

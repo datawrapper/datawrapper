@@ -1,3 +1,10 @@
+html .navbar.navbar-transparent .navbar-inner {
+    height: 65px;
+ 
+    .nav li .divider-vertical {
+        height: 65px;
+    }
+} 
 
 html .navbar .navbar-inner {
     font-weight: 300;
@@ -27,9 +34,7 @@ html .navbar .navbar-inner {
                 padding-top: 11px;
                 padding-bottom: 10px;
                 font-size: 13px;
-
-                text-shadow: 0 1px 0 rgba(255, 255, 255, 0.45);
-
+ 
                 &:hover {
                     color: #000;
                     .fa { color: #08c; }
@@ -57,10 +62,9 @@ html .navbar .navbar-inner {
     } // end .nav
 
     .brand {
+        color: #556;
         padding-top: 14px;
         padding-bottom: 4px;
-        color: #556;
-        text-shadow: 1px 1px 0 rgba(255, 255, 255, .55);
         white-space: nowrap;
         padding-left: 0px;
         font-size: 18px;
@@ -122,6 +126,30 @@ html .navbar.navbar-transparent .navbar-inner {
     border-bottom-color: transparent;
     position: relative;
     z-index: 100000;
+
+    .nav {
+        & > li > a {
+            text-shadow: none;
+            color: #fff;
+            font-weight: 100;
+            font-size: 14px;
+            margin-top: 10px;
+            margin-left: 4px;
+        }
+
+        li a i.fa {
+            color: #fff;
+            margin-right: 4px;
+        }
+    }
+
+    .brand {
+        text-shadow: none;
+        color: #fff;
+        font-weight: 100;
+        font-size: 24px;
+        margin-top: 8px;
+    }
 }
 
 
@@ -135,7 +163,6 @@ html .navbar.navbar-inverse {
 
         .nav {
             & > li > a {
-                text-shadow: 0 1px 0 rgba(0, 0, 0, 0.45);
                 &:hover { color: #fff; }
             }
             .active > a,
