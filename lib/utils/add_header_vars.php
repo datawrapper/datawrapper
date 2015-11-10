@@ -48,6 +48,10 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
         $headlinks[] = $link;
     }
 
+    if (!$user->isLoggedIn()) {
+        header_nav_hook($headlinks, 'logged_out_nav'); 
+    }
+
     header_nav_hook($headlinks, 'custom_nav');
 
     // language dropdown
