@@ -84,6 +84,8 @@ if scope != 'core':
     if not path.exists(locale_path[:-1]):
         os.mkdir(locale_path[:-1])
 
+keymap = None
+
 if path.exists(locale_path + 'messages.json'):
     missing = 0
     keymap = dict()
@@ -132,7 +134,7 @@ for k in out:
         row = [scope, k]
 
     for loc in locales:
-        if loc in existing and k in keymap and keymap[k] in existing[loc]:
+        if loc in existing and keymap is not None and k in keymap and keymap[k] in existing[loc]:
             row.append(existing[loc][keymap[k]].encode('utf-8'))
         else:
             row.append(out[k])
