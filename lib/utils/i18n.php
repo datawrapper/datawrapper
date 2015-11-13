@@ -20,3 +20,20 @@ function get_metric_prefix($locale) {
     }
 }
 
+
+function number_format2($number, $decimals = 0) {
+    switch(substr(DatawrapperSession::getLanguage(), 0, 2)) {
+        case 'de':
+            $k = '.';
+            $d = ',';
+            break;
+        case 'fr':
+            $k = ' ';
+            $d = ',';
+            break;
+        default:
+            $k = ',';
+            $d = '.';
+    }
+    return number_format($number, $decimals, $d, $k);
+}
