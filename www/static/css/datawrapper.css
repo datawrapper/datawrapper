@@ -1443,6 +1443,15 @@ html .btn-inverse {
   top: 10px;
   text-align: center;
 }
+.dw-create-publish .chart-actions li.promo {
+  box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.6), inset 0 0 31px rgba(128, 0, 128, 0.05), inset 0 -1px 2px rgba(128, 0, 128, 0.25);
+}
+.dw-create-publish .chart-actions li.promo a {
+  color: #460046 !important;
+}
+.dw-create-publish .chart-actions li.promo i.fa {
+  color: rgba(50, 0, 50, 0.4) !important;
+}
 .publish-chart-action-modal {
   width: 600px;
   margin-left: -300px;
