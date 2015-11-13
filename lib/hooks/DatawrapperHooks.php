@@ -188,6 +188,10 @@ class DatawrapperHooks {
     const SEND_RESET_PASSWORD_EMAIL = 'send_reset_password_email';
     const SEND_CHANGE_EMAIL_EMAIL = 'send_change_email_email';
 
+    // hooks to add markup in chart editor steps below nav 
+    const UPLOAD_BEFORE_CONTENT = 'upload_before_content';
+    const DESCRIBE_BEFORE_CONTENT = 'describe_before_content';
+    const VISUALIZE_BEFORE_CONTENT = 'visualize_before_content';
+    const PUBLISH_BEFORE_CONTENT = 'publish_before_content';
+
 }
-
-

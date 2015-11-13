@@ -3,6 +3,8 @@
 
 {{ parent() }}
 
+{{ hook('visualize_before_content') }}
+
 {% set vismeta = chart.metadata.visualize %}
 
 <script type="text/javascript" charset="utf-8" src="/static/vendor/canvg/canvg.bundle.min.js"></script>
