@@ -64,7 +64,9 @@ function dwInitTwigEnvironment(Twig_Environment $twig) {
         return $out;
     }, array('is_safe' => array('html')) ));
 
-    \Moment\Moment::setLocale(str_replace('-', '_', DatawrapperSession::getLanguage()));
+    $loc = DatawrapperSession::getLanguage();
+    if ($loc == 'en') $loc = 'en-US';
+    \Moment\Moment::setLocale(str_replace('-', '_', $loc));
 
     $twig->addFilter(new Twig_SimpleFilter('reltime', function($time) {
         // return $time;
@@ -74,6 +76,6 @@ function dwInitTwigEnvironment(Twig_Environment $twig) {
     if (!empty($GLOBALS['dw_config']['debug'])) {
         $twig->addFilter('var_dump', new Twig_Filter_Function('var_dump'));
     }
-    
+
     return $twig;
 }
