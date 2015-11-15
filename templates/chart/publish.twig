@@ -3,6 +3,8 @@
 
 {{ parent() }}
 
+{{ hook('publish_before_content') }}
+
 <script type="text/javascript">
 dw.backend.ready(function() {
     require(['dw/chart/publish'], function(publish) {
