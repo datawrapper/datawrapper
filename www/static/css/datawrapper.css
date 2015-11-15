@@ -1649,7 +1649,7 @@ html .navbar-static-top {
   .nav-collapse li i {
     margin-right: 10px;
   }
-  body .docs h1.title {
+  body h1.title {
     font-size: 36px;
     margin-bottom: 10px;
   }
@@ -1832,9 +1832,9 @@ html .tooltip .tooltip-inner {
 .collapse-shown:after {
   content: "";
 }
-.docs h1.title,
+h1.title,
 .admin h1.title {
-  font-size: 48px;
+  font-size: 38px;
   margin: 0px 0 48px;
   font-weight: 300;
   letter-spacing: -1px;
@@ -1842,11 +1842,11 @@ html .tooltip .tooltip-inner {
 h1.title small {
   white-space: nowrap;
 }
-.docs h2,
-.docs h3 {
-  font-weight: 400;
+h2,
+h3 {
+  font-weight: 300;
   font-size: 24px;
-  margin: 1.5em 0 0.5em;
+  margin: 0.5em 0 0.5em;
 }
 .admin h2,
 .admin h3 {
