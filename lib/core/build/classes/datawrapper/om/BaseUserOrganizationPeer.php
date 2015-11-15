@@ -24,13 +24,13 @@ abstract class BaseUserOrganizationPeer
     const TM_CLASS = 'UserOrganizationTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 3;
+    const NUM_COLUMNS = 4;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 3;
+    const NUM_HYDRATE_COLUMNS = 4;
 
     /** the column name for the user_id field */
     const USER_ID = 'user_organization.user_id';
@@ -40,6 +40,9 @@ abstract class BaseUserOrganizationPeer
 
     /** the column name for the organization_role field */
     const ORGANIZATION_ROLE = 'user_organization.organization_role';
+
+    /** the column name for the invite_token field */
+    const INVITE_TOKEN = 'user_organization.invite_token';
 
     /** The enumerated values for the organization_role field */
     const ORGANIZATION_ROLE_ADMIN = 'admin';
@@ -64,12 +67,12 @@ abstract class BaseUserOrganizationPeer
      * e.g. UserOrganizationPeer::$fieldNames[UserOrganizationPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('UserId', 'OrganizationId', 'OrganizationRole', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('userId', 'organizationId', 'organizationRole', ),
-        BasePeer::TYPE_COLNAME => array (UserOrganizationPeer::USER_ID, UserOrganizationPeer::ORGANIZATION_ID, UserOrganizationPeer::ORGANIZATION_ROLE, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('USER_ID', 'ORGANIZATION_ID', 'ORGANIZATION_ROLE', ),
-        BasePeer::TYPE_FIELDNAME => array ('user_id', 'organization_id', 'organization_role', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, )
+        BasePeer::TYPE_PHPNAME => array ('UserId', 'OrganizationId', 'OrganizationRole', 'InviteToken', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('userId', 'organizationId', 'organizationRole', 'inviteToken', ),
+        BasePeer::TYPE_COLNAME => array (UserOrganizationPeer::USER_ID, UserOrganizationPeer::ORGANIZATION_ID, UserOrganizationPeer::ORGANIZATION_ROLE, UserOrganizationPeer::INVITE_TOKEN, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('USER_ID', 'ORGANIZATION_ID', 'ORGANIZATION_ROLE', 'INVITE_TOKEN', ),
+        BasePeer::TYPE_FIELDNAME => array ('user_id', 'organization_id', 'organization_role', 'invite_token', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
     );
 
     /**
@@ -79,12 +82,12 @@ abstract class BaseUserOrganizationPeer
      * e.g. UserOrganizationPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('UserId' => 0, 'OrganizationId' => 1, 'OrganizationRole' => 2, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('userId' => 0, 'organizationId' => 1, 'organizationRole' => 2, ),
-        BasePeer::TYPE_COLNAME => array (UserOrganizationPeer::USER_ID => 0, UserOrganizationPeer::ORGANIZATION_ID => 1, UserOrganizationPeer::ORGANIZATION_ROLE => 2, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('USER_ID' => 0, 'ORGANIZATION_ID' => 1, 'ORGANIZATION_ROLE' => 2, ),
-        BasePeer::TYPE_FIELDNAME => array ('user_id' => 0, 'organization_id' => 1, 'organization_role' => 2, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, )
+        BasePeer::TYPE_PHPNAME => array ('UserId' => 0, 'OrganizationId' => 1, 'OrganizationRole' => 2, 'InviteToken' => 3, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('userId' => 0, 'organizationId' => 1, 'organizationRole' => 2, 'inviteToken' => 3, ),
+        BasePeer::TYPE_COLNAME => array (UserOrganizationPeer::USER_ID => 0, UserOrganizationPeer::ORGANIZATION_ID => 1, UserOrganizationPeer::ORGANIZATION_ROLE => 2, UserOrganizationPeer::INVITE_TOKEN => 3, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('USER_ID' => 0, 'ORGANIZATION_ID' => 1, 'ORGANIZATION_ROLE' => 2, 'INVITE_TOKEN' => 3, ),
+        BasePeer::TYPE_FIELDNAME => array ('user_id' => 0, 'organization_id' => 1, 'organization_role' => 2, 'invite_token' => 3, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
     );
 
     /** The enumerated values for this table */
@@ -213,10 +216,12 @@ abstract class BaseUserOrganizationPeer
             $criteria->addSelectColumn(UserOrganizationPeer::USER_ID);
             $criteria->addSelectColumn(UserOrganizationPeer::ORGANIZATION_ID);
             $criteria->addSelectColumn(UserOrganizationPeer::ORGANIZATION_ROLE);
+            $criteria->addSelectColumn(UserOrganizationPeer::INVITE_TOKEN);
         } else {
             $criteria->addSelectColumn($alias . '.user_id');
             $criteria->addSelectColumn($alias . '.organization_id');
             $criteria->addSelectColumn($alias . '.organization_role');
+            $criteria->addSelectColumn($alias . '.invite_token');
         }
     }
 
@@ -343,7 +348,7 @@ abstract class BaseUserOrganizationPeer
     {
         if (Propel::isInstancePoolingEnabled()) {
             if ($key === null) {
-                $key = serialize(array((string) $obj->getUserId(), (string) $obj->getOrganizationId()));
+                $key = serialize(array((string) $obj->getUserId(), (string) $obj->getOrganizationId(), (string) $obj->getInviteToken()));
             } // if key === null
             UserOrganizationPeer::$instances[$key] = $obj;
         }
@@ -366,10 +371,10 @@ abstract class BaseUserOrganizationPeer
     {
         if (Propel::isInstancePoolingEnabled() && $value !== null) {
             if (is_object($value) && $value instanceof UserOrganization) {
-                $key = serialize(array((string) $value->getUserId(), (string) $value->getOrganizationId()));
-            } elseif (is_array($value) && count($value) === 2) {
+                $key = serialize(array((string) $value->getUserId(), (string) $value->getOrganizationId(), (string) $value->getInviteToken()));
+            } elseif (is_array($value) && count($value) === 3) {
                 // assume we've been passed a primary key
-                $key = serialize(array((string) $value[0], (string) $value[1]));
+                $key = serialize(array((string) $value[0], (string) $value[1], (string) $value[2]));
             } else {
                 $e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or UserOrganization object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value,true)));
                 throw $e;
@@ -438,11 +443,11 @@ abstract class BaseUserOrganizationPeer
     public static function getPrimaryKeyHashFromRow($row, $startcol = 0)
     {
         // If the PK cannot be derived from the row, return null.
-        if ($row[$startcol] === null && $row[$startcol + 1] === null) {
+        if ($row[$startcol] === null && $row[$startcol + 1] === null && $row[$startcol + 3] === null) {
             return null;
         }
 
-        return serialize(array((string) $row[$startcol], (string) $row[$startcol + 1]));
+        return serialize(array((string) $row[$startcol], (string) $row[$startcol + 1], (string) $row[$startcol + 3]));
     }
 
     /**
@@ -457,7 +462,7 @@ abstract class BaseUserOrganizationPeer
     public static function getPrimaryKeyFromRow($row, $startcol = 0)
     {
 
-        return array((int) $row[$startcol], (string) $row[$startcol + 1]);
+        return array((int) $row[$startcol], (string) $row[$startcol + 1], (string) $row[$startcol + 3]);
     }
 
     /**
@@ -1270,6 +1275,14 @@ abstract class BaseUserOrganizationPeer
                 $selectCriteria->setPrimaryTableName(UserOrganizationPeer::TABLE_NAME);
             }
 
+            $comparison = $criteria->getComparison(UserOrganizationPeer::INVITE_TOKEN);
+            $value = $criteria->remove(UserOrganizationPeer::INVITE_TOKEN);
+            if ($value) {
+                $selectCriteria->add(UserOrganizationPeer::INVITE_TOKEN, $value, $comparison);
+            } else {
+                $selectCriteria->setPrimaryTableName(UserOrganizationPeer::TABLE_NAME);
+            }
+
         } else { // $values is UserOrganization object
             $criteria = $values->buildCriteria(); // gets full criteria
             $selectCriteria = $values->buildPkeyCriteria(); // gets criteria w/ primary key(s)
@@ -1353,6 +1366,7 @@ abstract class BaseUserOrganizationPeer
             foreach ($values as $value) {
                 $criterion = $criteria->getNewCriterion(UserOrganizationPeer::USER_ID, $value[0]);
                 $criterion->addAnd($criteria->getNewCriterion(UserOrganizationPeer::ORGANIZATION_ID, $value[1]));
+                $criterion->addAnd($criteria->getNewCriterion(UserOrganizationPeer::INVITE_TOKEN, $value[2]));
                 $criteria->addOr($criterion);
                 // we can invalidate the cache for this single PK
                 UserOrganizationPeer::removeInstanceFromPool($value);
@@ -1421,11 +1435,12 @@ abstract class BaseUserOrganizationPeer
      * Retrieve object using using composite pkey values.
      * @param   int $user_id
      * @param   string $organization_id
+     * @param   string $invite_token
      * @param      PropelPDO $con
      * @return   UserOrganization
      */
-    public static function retrieveByPK($user_id, $organization_id, PropelPDO $con = null) {
-        $_instancePoolKey = serialize(array((string) $user_id, (string) $organization_id));
+    public static function retrieveByPK($user_id, $organization_id, $invite_token, PropelPDO $con = null) {
+        $_instancePoolKey = serialize(array((string) $user_id, (string) $organization_id, (string) $invite_token));
          if (null !== ($obj = UserOrganizationPeer::getInstanceFromPool($_instancePoolKey))) {
              return $obj;
         }
@@ -1436,6 +1451,7 @@ abstract class BaseUserOrganizationPeer
         $criteria = new Criteria(UserOrganizationPeer::DATABASE_NAME);
         $criteria->add(UserOrganizationPeer::USER_ID, $user_id);
         $criteria->add(UserOrganizationPeer::ORGANIZATION_ID, $organization_id);
+        $criteria->add(UserOrganizationPeer::INVITE_TOKEN, $invite_token);
         $v = UserOrganizationPeer::doSelect($criteria, $con);
 
         return !empty($v) ? $v[0] : null;

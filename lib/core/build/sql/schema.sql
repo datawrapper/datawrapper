@@ -86,28 +86,6 @@ CREATE TABLE `organization`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
--- organization_invite
--- ---------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `organization_invite`;
-
-CREATE TABLE `organization_invite`
-(
-    `invite_token` VARCHAR(128) NOT NULL,
-    `organization_id` VARCHAR(128) NOT NULL,
-    `user_id` INTEGER NOT NULL,
-    PRIMARY KEY (`invite_token`),
-    INDEX `organization_invite_FI_1` (`user_id`),
-    INDEX `organization_invite_FI_2` (`organization_id`),
-    CONSTRAINT `organization_invite_FK_1`
-        FOREIGN KEY (`user_id`)
-        REFERENCES `user` (`id`),
-    CONSTRAINT `organization_invite_FK_2`
-        FOREIGN KEY (`organization_id`)
-        REFERENCES `organization` (`id`)
-) ENGINE=InnoDB;
-
--- ---------------------------------------------------------------------
 -- user_organization
 -- ---------------------------------------------------------------------
 
@@ -118,7 +96,8 @@ CREATE TABLE `user_organization`
     `user_id` INTEGER NOT NULL,
     `organization_id` VARCHAR(128) NOT NULL,
     `organization_role` TINYINT DEFAULT 1 NOT NULL,
-    PRIMARY KEY (`user_id`,`organization_id`),
+    `invite_token` VARCHAR(128) DEFAULT '' NOT NULL,
+    PRIMARY KEY (`user_id`,`organization_id`,`invite_token`),
     INDEX `user_organization_FI_2` (`organization_id`)
 ) ENGINE=MyISAM;
 

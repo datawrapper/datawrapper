@@ -27,6 +27,7 @@ class Organization extends BaseOrganization
         return UserOrganizationQuery::create()
             ->filterByOrganization($this)
             ->filterByUser($user)
+            ->filterByInviteToken('')
             ->count() > 0;
     }
 
@@ -34,6 +35,7 @@ class Organization extends BaseOrganization
         return UserOrganizationQuery::create()
             ->filterByOrganization($this)
             ->filterByOrganizationRole(UserOrganizationPeer::ORGANIZATION_ROLE_ADMIN)
+            ->filterByInviteToken('')
             ->find();
     }
 
@@ -53,6 +55,13 @@ class Organization extends BaseOrganization
         if ($uo) {
             $uo->setOrganizationRole($role)->save();
         }
+    }
+
+    public function getActiveUsers() {
+        return UserOrganizationQuery::create()
+            ->filterByOrganization($this)
+            ->filterByInviteToken('')
+            ->find();
     }
 
 }

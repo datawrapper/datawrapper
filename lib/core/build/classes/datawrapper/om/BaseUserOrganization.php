@@ -49,6 +49,13 @@ abstract class BaseUserOrganization extends BaseObject implements Persistent
     protected $organization_role;
 
     /**
+     * The value for the invite_token field.
+     * Note: this column has a database default value of: ''
+     * @var        string
+     */
+    protected $invite_token;
+
+    /**
      * @var        User
      */
     protected $aUser;
@@ -87,6 +94,7 @@ abstract class BaseUserOrganization extends BaseObject implements Persistent
     public function applyDefaultValues()
     {
         $this->organization_role = 1;
+        $this->invite_token = '';
     }
 
     /**
@@ -136,6 +144,16 @@ abstract class BaseUserOrganization extends BaseObject implements Persistent
         }
 
         return $valueSet[$this->organization_role];
+    }
+
+    /**
+     * Get the [invite_token] column value.
+     *
+     * @return string
+     */
+    public function getInviteToken()
+    {
+        return $this->invite_token;
     }
 
     /**
@@ -215,6 +233,27 @@ abstract class BaseUserOrganization extends BaseObject implements Persistent
     } // setOrganizationRole()
 
     /**
+     * Set the value of [invite_token] column.
+     *
+     * @param string $v new value
+     * @return UserOrganization The current object (for fluent API support)
+     */
+    public function setInviteToken($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (string) $v;
+        }
+
+        if ($this->invite_token !== $v) {
+            $this->invite_token = $v;
+            $this->modifiedColumns[] = UserOrganizationPeer::INVITE_TOKEN;
+        }
+
+
+        return $this;
+    } // setInviteToken()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -225,6 +264,10 @@ abstract class BaseUserOrganization extends BaseObject implements Persistent
     public function hasOnlyDefaultValues()
     {
             if ($this->organization_role !== 1) {
+                return false;
+            }
+
+            if ($this->invite_token !== '') {
                 return false;
             }
 
@@ -253,6 +296,7 @@ abstract class BaseUserOrganization extends BaseObject implements Persistent
             $this->user_id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
             $this->organization_id = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
             $this->organization_role = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
+            $this->invite_token = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -261,7 +305,7 @@ abstract class BaseUserOrganization extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
             $this->postHydrate($row, $startcol, $rehydrate);
-            return $startcol + 3; // 3 = UserOrganizationPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 4; // 4 = UserOrganizationPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating UserOrganization object", $e);
@@ -505,6 +549,9 @@ abstract class BaseUserOrganization extends BaseObject implements Persistent
         if ($this->isColumnModified(UserOrganizationPeer::ORGANIZATION_ROLE)) {
             $modifiedColumns[':p' . $index++]  = '`organization_role`';
         }
+        if ($this->isColumnModified(UserOrganizationPeer::INVITE_TOKEN)) {
+            $modifiedColumns[':p' . $index++]  = '`invite_token`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `user_organization` (%s) VALUES (%s)',
@@ -524,6 +571,9 @@ abstract class BaseUserOrganization extends BaseObject implements Persistent
                         break;
                     case '`organization_role`':
                         $stmt->bindValue($identifier, $this->organization_role, PDO::PARAM_INT);
+                        break;
+                    case '`invite_token`':
+                        $stmt->bindValue($identifier, $this->invite_token, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -679,6 +729,9 @@ abstract class BaseUserOrganization extends BaseObject implements Persistent
             case 2:
                 return $this->getOrganizationRole();
                 break;
+            case 3:
+                return $this->getInviteToken();
+                break;
             default:
                 return null;
                 break;
@@ -711,6 +764,7 @@ abstract class BaseUserOrganization extends BaseObject implements Persistent
             $keys[0] => $this->getUserId(),
             $keys[1] => $this->getOrganizationId(),
             $keys[2] => $this->getOrganizationRole(),
+            $keys[3] => $this->getInviteToken(),
         );
         if ($includeForeignObjects) {
             if (null !== $this->aUser) {
@@ -766,6 +820,9 @@ abstract class BaseUserOrganization extends BaseObject implements Persistent
                 }
                 $this->setOrganizationRole($value);
                 break;
+            case 3:
+                $this->setInviteToken($value);
+                break;
         } // switch()
     }
 
@@ -793,6 +850,7 @@ abstract class BaseUserOrganization extends BaseObject implements Persistent
         if (array_key_exists($keys[0], $arr)) $this->setUserId($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setOrganizationId($arr[$keys[1]]);
         if (array_key_exists($keys[2], $arr)) $this->setOrganizationRole($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setInviteToken($arr[$keys[3]]);
     }
 
     /**
@@ -807,6 +865,7 @@ abstract class BaseUserOrganization extends BaseObject implements Persistent
         if ($this->isColumnModified(UserOrganizationPeer::USER_ID)) $criteria->add(UserOrganizationPeer::USER_ID, $this->user_id);
         if ($this->isColumnModified(UserOrganizationPeer::ORGANIZATION_ID)) $criteria->add(UserOrganizationPeer::ORGANIZATION_ID, $this->organization_id);
         if ($this->isColumnModified(UserOrganizationPeer::ORGANIZATION_ROLE)) $criteria->add(UserOrganizationPeer::ORGANIZATION_ROLE, $this->organization_role);
+        if ($this->isColumnModified(UserOrganizationPeer::INVITE_TOKEN)) $criteria->add(UserOrganizationPeer::INVITE_TOKEN, $this->invite_token);
 
         return $criteria;
     }
@@ -824,6 +883,7 @@ abstract class BaseUserOrganization extends BaseObject implements Persistent
         $criteria = new Criteria(UserOrganizationPeer::DATABASE_NAME);
         $criteria->add(UserOrganizationPeer::USER_ID, $this->user_id);
         $criteria->add(UserOrganizationPeer::ORGANIZATION_ID, $this->organization_id);
+        $criteria->add(UserOrganizationPeer::INVITE_TOKEN, $this->invite_token);
 
         return $criteria;
     }
@@ -838,6 +898,7 @@ abstract class BaseUserOrganization extends BaseObject implements Persistent
         $pks = array();
         $pks[0] = $this->getUserId();
         $pks[1] = $this->getOrganizationId();
+        $pks[2] = $this->getInviteToken();
 
         return $pks;
     }
@@ -852,6 +913,7 @@ abstract class BaseUserOrganization extends BaseObject implements Persistent
     {
         $this->setUserId($keys[0]);
         $this->setOrganizationId($keys[1]);
+        $this->setInviteToken($keys[2]);
     }
 
     /**
@@ -861,7 +923,7 @@ abstract class BaseUserOrganization extends BaseObject implements Persistent
     public function isPrimaryKeyNull()
     {
 
-        return (null === $this->getUserId()) && (null === $this->getOrganizationId());
+        return (null === $this->getUserId()) && (null === $this->getOrganizationId()) && (null === $this->getInviteToken());
     }
 
     /**
@@ -880,6 +942,7 @@ abstract class BaseUserOrganization extends BaseObject implements Persistent
         $copyObj->setUserId($this->getUserId());
         $copyObj->setOrganizationId($this->getOrganizationId());
         $copyObj->setOrganizationRole($this->getOrganizationRole());
+        $copyObj->setInviteToken($this->getInviteToken());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1049,6 +1112,7 @@ abstract class BaseUserOrganization extends BaseObject implements Persistent
         $this->user_id = null;
         $this->organization_id = null;
         $this->organization_role = null;
+        $this->invite_token = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;

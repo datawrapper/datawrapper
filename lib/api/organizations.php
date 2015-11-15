@@ -104,6 +104,7 @@ $app->post('/organizations/:id/users', function($org_id) use ($app) {
                     // number of organization users
                     $c = UserOrganizationQuery::create()
                         ->filterByOrganization($org)
+                        ->filterByInviteToken('', Criteria::NOT_EQUAL)
                         ->count();
                     if ($c > 0 && $org->hasUser($u)) {
                         $alreadyInOrg[] = $u->guessName();

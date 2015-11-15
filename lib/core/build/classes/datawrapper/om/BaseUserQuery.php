@@ -42,10 +42,6 @@
  * @method UserQuery rightJoinChart($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Chart relation
  * @method UserQuery innerJoinChart($relationAlias = null) Adds a INNER JOIN clause to the query using the Chart relation
  *
- * @method UserQuery leftJoinOrganizationInvite($relationAlias = null) Adds a LEFT JOIN clause to the query using the OrganizationInvite relation
- * @method UserQuery rightJoinOrganizationInvite($relationAlias = null) Adds a RIGHT JOIN clause to the query using the OrganizationInvite relation
- * @method UserQuery innerJoinOrganizationInvite($relationAlias = null) Adds a INNER JOIN clause to the query using the OrganizationInvite relation
- *
  * @method UserQuery leftJoinUserOrganization($relationAlias = null) Adds a LEFT JOIN clause to the query using the UserOrganization relation
  * @method UserQuery rightJoinUserOrganization($relationAlias = null) Adds a RIGHT JOIN clause to the query using the UserOrganization relation
  * @method UserQuery innerJoinUserOrganization($relationAlias = null) Adds a INNER JOIN clause to the query using the UserOrganization relation
@@ -755,80 +751,6 @@ abstract class BaseUserQuery extends ModelCriteria
         return $this
             ->joinChart($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'Chart', 'ChartQuery');
-    }
-
-    /**
-     * Filter the query by a related OrganizationInvite object
-     *
-     * @param   OrganizationInvite|PropelObjectCollection $organizationInvite  the related object to use as filter
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return                 UserQuery The current query, for fluid interface
-     * @throws PropelException - if the provided filter is invalid.
-     */
-    public function filterByOrganizationInvite($organizationInvite, $comparison = null)
-    {
-        if ($organizationInvite instanceof OrganizationInvite) {
-            return $this
-                ->addUsingAlias(UserPeer::ID, $organizationInvite->getUserId(), $comparison);
-        } elseif ($organizationInvite instanceof PropelObjectCollection) {
-            return $this
-                ->useOrganizationInviteQuery()
-                ->filterByPrimaryKeys($organizationInvite->getPrimaryKeys())
-                ->endUse();
-        } else {
-            throw new PropelException('filterByOrganizationInvite() only accepts arguments of type OrganizationInvite or PropelCollection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the OrganizationInvite relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return UserQuery The current query, for fluid interface
-     */
-    public function joinOrganizationInvite($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('OrganizationInvite');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'OrganizationInvite');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the OrganizationInvite relation OrganizationInvite object
-     *
-     * @see       useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return   OrganizationInviteQuery A secondary query class using the current class as primary query
-     */
-    public function useOrganizationInviteQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        return $this
-            ->joinOrganizationInvite($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'OrganizationInvite', 'OrganizationInviteQuery');
     }
 
     /**

@@ -117,12 +117,6 @@ abstract class BaseUser extends BaseObject implements Persistent
     protected $collChartsPartial;
 
     /**
-     * @var        PropelObjectCollection|OrganizationInvite[] Collection to store aggregation of OrganizationInvite objects.
-     */
-    protected $collOrganizationInvites;
-    protected $collOrganizationInvitesPartial;
-
-    /**
      * @var        PropelObjectCollection|UserOrganization[] Collection to store aggregation of UserOrganization objects.
      */
     protected $collUserOrganizations;
@@ -193,12 +187,6 @@ abstract class BaseUser extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $chartsScheduledForDeletion = null;
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
-     */
-    protected $organizationInvitesScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -833,8 +821,6 @@ abstract class BaseUser extends BaseObject implements Persistent
 
             $this->collCharts = null;
 
-            $this->collOrganizationInvites = null;
-
             $this->collUserOrganizations = null;
 
             $this->collActions = null;
@@ -1033,23 +1019,6 @@ abstract class BaseUser extends BaseObject implements Persistent
 
             if ($this->collCharts !== null) {
                 foreach ($this->collCharts as $referrerFK) {
-                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
-            }
-
-            if ($this->organizationInvitesScheduledForDeletion !== null) {
-                if (!$this->organizationInvitesScheduledForDeletion->isEmpty()) {
-                    OrganizationInviteQuery::create()
-                        ->filterByPrimaryKeys($this->organizationInvitesScheduledForDeletion->getPrimaryKeys(false))
-                        ->delete($con);
-                    $this->organizationInvitesScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collOrganizationInvites !== null) {
-                foreach ($this->collOrganizationInvites as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -1346,14 +1315,6 @@ abstract class BaseUser extends BaseObject implements Persistent
                     }
                 }
 
-                if ($this->collOrganizationInvites !== null) {
-                    foreach ($this->collOrganizationInvites as $referrerFK) {
-                        if (!$referrerFK->validate($columns)) {
-                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-                        }
-                    }
-                }
-
                 if ($this->collUserOrganizations !== null) {
                     foreach ($this->collUserOrganizations as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
@@ -1506,9 +1467,6 @@ abstract class BaseUser extends BaseObject implements Persistent
         if ($includeForeignObjects) {
             if (null !== $this->collCharts) {
                 $result['Charts'] = $this->collCharts->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
-            }
-            if (null !== $this->collOrganizationInvites) {
-                $result['OrganizationInvites'] = $this->collOrganizationInvites->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
             if (null !== $this->collUserOrganizations) {
                 $result['UserOrganizations'] = $this->collUserOrganizations->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -1749,12 +1707,6 @@ abstract class BaseUser extends BaseObject implements Persistent
                 }
             }
 
-            foreach ($this->getOrganizationInvites() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addOrganizationInvite($relObj->copy($deepCopy));
-                }
-            }
-
             foreach ($this->getUserOrganizations() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addUserOrganization($relObj->copy($deepCopy));
@@ -1842,9 +1794,6 @@ abstract class BaseUser extends BaseObject implements Persistent
     {
         if ('Chart' == $relationName) {
             $this->initCharts();
-        }
-        if ('OrganizationInvite' == $relationName) {
-            $this->initOrganizationInvites();
         }
         if ('UserOrganization' == $relationName) {
             $this->initUserOrganizations();
@@ -2126,249 +2075,6 @@ abstract class BaseUser extends BaseObject implements Persistent
         $query->joinWith('ChartRelatedByForkedFrom', $join_behavior);
 
         return $this->getCharts($query, $con);
-    }
-
-    /**
-     * Clears out the collOrganizationInvites collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return User The current object (for fluent API support)
-     * @see        addOrganizationInvites()
-     */
-    public function clearOrganizationInvites()
-    {
-        $this->collOrganizationInvites = null; // important to set this to null since that means it is uninitialized
-        $this->collOrganizationInvitesPartial = null;
-
-        return $this;
-    }
-
-    /**
-     * reset is the collOrganizationInvites collection loaded partially
-     *
-     * @return void
-     */
-    public function resetPartialOrganizationInvites($v = true)
-    {
-        $this->collOrganizationInvitesPartial = $v;
-    }
-
-    /**
-     * Initializes the collOrganizationInvites collection.
-     *
-     * By default this just sets the collOrganizationInvites collection to an empty array (like clearcollOrganizationInvites());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initOrganizationInvites($overrideExisting = true)
-    {
-        if (null !== $this->collOrganizationInvites && !$overrideExisting) {
-            return;
-        }
-        $this->collOrganizationInvites = new PropelObjectCollection();
-        $this->collOrganizationInvites->setModel('OrganizationInvite');
-    }
-
-    /**
-     * Gets an array of OrganizationInvite objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this User is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|OrganizationInvite[] List of OrganizationInvite objects
-     * @throws PropelException
-     */
-    public function getOrganizationInvites($criteria = null, PropelPDO $con = null)
-    {
-        $partial = $this->collOrganizationInvitesPartial && !$this->isNew();
-        if (null === $this->collOrganizationInvites || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collOrganizationInvites) {
-                // return empty collection
-                $this->initOrganizationInvites();
-            } else {
-                $collOrganizationInvites = OrganizationInviteQuery::create(null, $criteria)
-                    ->filterByUser($this)
-                    ->find($con);
-                if (null !== $criteria) {
-                    if (false !== $this->collOrganizationInvitesPartial && count($collOrganizationInvites)) {
-                      $this->initOrganizationInvites(false);
-
-                      foreach($collOrganizationInvites as $obj) {
-                        if (false == $this->collOrganizationInvites->contains($obj)) {
-                          $this->collOrganizationInvites->append($obj);
-                        }
-                      }
-
-                      $this->collOrganizationInvitesPartial = true;
-                    }
-
-                    $collOrganizationInvites->getInternalIterator()->rewind();
-                    return $collOrganizationInvites;
-                }
-
-                if($partial && $this->collOrganizationInvites) {
-                    foreach($this->collOrganizationInvites as $obj) {
-                        if($obj->isNew()) {
-                            $collOrganizationInvites[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collOrganizationInvites = $collOrganizationInvites;
-                $this->collOrganizationInvitesPartial = false;
-            }
-        }
-
-        return $this->collOrganizationInvites;
-    }
-
-    /**
-     * Sets a collection of OrganizationInvite objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param PropelCollection $organizationInvites A Propel collection.
-     * @param PropelPDO $con Optional connection object
-     * @return User The current object (for fluent API support)
-     */
-    public function setOrganizationInvites(PropelCollection $organizationInvites, PropelPDO $con = null)
-    {
-        $organizationInvitesToDelete = $this->getOrganizationInvites(new Criteria(), $con)->diff($organizationInvites);
-
-        $this->organizationInvitesScheduledForDeletion = unserialize(serialize($organizationInvitesToDelete));
-
-        foreach ($organizationInvitesToDelete as $organizationInviteRemoved) {
-            $organizationInviteRemoved->setUser(null);
-        }
-
-        $this->collOrganizationInvites = null;
-        foreach ($organizationInvites as $organizationInvite) {
-            $this->addOrganizationInvite($organizationInvite);
-        }
-
-        $this->collOrganizationInvites = $organizationInvites;
-        $this->collOrganizationInvitesPartial = false;
-
-        return $this;
-    }
-
-    /**
-     * Returns the number of related OrganizationInvite objects.
-     *
-     * @param Criteria $criteria
-     * @param boolean $distinct
-     * @param PropelPDO $con
-     * @return int             Count of related OrganizationInvite objects.
-     * @throws PropelException
-     */
-    public function countOrganizationInvites(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
-    {
-        $partial = $this->collOrganizationInvitesPartial && !$this->isNew();
-        if (null === $this->collOrganizationInvites || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collOrganizationInvites) {
-                return 0;
-            }
-
-            if($partial && !$criteria) {
-                return count($this->getOrganizationInvites());
-            }
-            $query = OrganizationInviteQuery::create(null, $criteria);
-            if ($distinct) {
-                $query->distinct();
-            }
-
-            return $query
-                ->filterByUser($this)
-                ->count($con);
-        }
-
-        return count($this->collOrganizationInvites);
-    }
-
-    /**
-     * Method called to associate a OrganizationInvite object to this object
-     * through the OrganizationInvite foreign key attribute.
-     *
-     * @param    OrganizationInvite $l OrganizationInvite
-     * @return User The current object (for fluent API support)
-     */
-    public function addOrganizationInvite(OrganizationInvite $l)
-    {
-        if ($this->collOrganizationInvites === null) {
-            $this->initOrganizationInvites();
-            $this->collOrganizationInvitesPartial = true;
-        }
-        if (!in_array($l, $this->collOrganizationInvites->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddOrganizationInvite($l);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param	OrganizationInvite $organizationInvite The organizationInvite object to add.
-     */
-    protected function doAddOrganizationInvite($organizationInvite)
-    {
-        $this->collOrganizationInvites[]= $organizationInvite;
-        $organizationInvite->setUser($this);
-    }
-
-    /**
-     * @param	OrganizationInvite $organizationInvite The organizationInvite object to remove.
-     * @return User The current object (for fluent API support)
-     */
-    public function removeOrganizationInvite($organizationInvite)
-    {
-        if ($this->getOrganizationInvites()->contains($organizationInvite)) {
-            $this->collOrganizationInvites->remove($this->collOrganizationInvites->search($organizationInvite));
-            if (null === $this->organizationInvitesScheduledForDeletion) {
-                $this->organizationInvitesScheduledForDeletion = clone $this->collOrganizationInvites;
-                $this->organizationInvitesScheduledForDeletion->clear();
-            }
-            $this->organizationInvitesScheduledForDeletion[]= clone $organizationInvite;
-            $organizationInvite->setUser(null);
-        }
-
-        return $this;
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this User is new, it will return
-     * an empty collection; or if this User has previously
-     * been saved, it will retrieve related OrganizationInvites from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in User.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|OrganizationInvite[] List of OrganizationInvite objects
-     */
-    public function getOrganizationInvitesJoinOrganization($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = OrganizationInviteQuery::create(null, $criteria);
-        $query->joinWith('Organization', $join_behavior);
-
-        return $this->getOrganizationInvites($query, $con);
     }
 
     /**
@@ -3718,11 +3424,6 @@ abstract class BaseUser extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
-            if ($this->collOrganizationInvites) {
-                foreach ($this->collOrganizationInvites as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
             if ($this->collUserOrganizations) {
                 foreach ($this->collUserOrganizations as $o) {
                     $o->clearAllReferences($deep);
@@ -3761,10 +3462,6 @@ abstract class BaseUser extends BaseObject implements Persistent
             $this->collCharts->clearIterator();
         }
         $this->collCharts = null;
-        if ($this->collOrganizationInvites instanceof PropelCollection) {
-            $this->collOrganizationInvites->clearIterator();
-        }
-        $this->collOrganizationInvites = null;
         if ($this->collUserOrganizations instanceof PropelCollection) {
             $this->collUserOrganizations->clearIterator();
         }
