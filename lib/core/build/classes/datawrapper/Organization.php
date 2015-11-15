@@ -58,19 +58,19 @@ class Organization extends BaseOrganization
     }
 
     public function getActiveUsers() {
-        return UserQuery::create()
-            ->filterByOrganization($this)
-            ->leftJoin('UserOrganization')
-            ->addJoinCondition('UserOrganization', 'UserOrganization.InviteToken = ?', '')
-            ->find();
+        $crit = UserQuery::create()
+            ->useUserOrganizationQuery()
+            ->filterByInviteToken('')
+            ->endUse();
+        return $this->getUsers($crit);
     }
 
     public function getPendingUsers() {
-        return UserQuery::create()
-            ->filterByOrganization($this)
-            ->leftJoin('UserOrganization')
-            ->addJoinCondition('UserOrganization', 'UserOrganization.InviteToken <> ?', '')
-            ->find();
+        $crit = UserQuery::create()
+            ->useUserOrganizationQuery()
+            ->filterByInviteToken('', Criteria::NOT_EQUAL)
+            ->endUse();
+        return $this->getUsers($crit);
     }
 
 }
