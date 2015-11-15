@@ -71,5 +71,9 @@ function dwInitTwigEnvironment(Twig_Environment $twig) {
         return (new \Moment\Moment($time))->fromNow()->getRelative();
     }));
 
+    if (!empty($GLOBALS['dw_config']['debug'])) {
+        $twig->addFilter('var_dump', new Twig_Filter_Function('var_dump'));
+    }
+    
     return $twig;
 }
