@@ -183,8 +183,8 @@ class DatawrapperHooks {
 
     // hooks for sending transactional e-mails
     const SEND_ACTIVATION_EMAIL = 'send_activation_email';
+    const SEND_INVITE_EMAIL_TO_NEW_USER = 'send_invite_to_new_user';
     const SEND_TEAM_INVITE_EMAIL = 'send_team_invite_email';
-    const SEND_TEAM_INVITE_EMAIL_TO_NEW_USER = 'send_team_invite_to_new_user';
     const SEND_RESET_PASSWORD_EMAIL = 'send_reset_password_email';
     const SEND_CHANGE_EMAIL_EMAIL = 'send_change_email_email';
 

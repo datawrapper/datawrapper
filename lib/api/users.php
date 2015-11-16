@@ -98,8 +98,8 @@ $app->post('/users', function() use ($app) {
     if ($invitation) {
         // send invitation
         $invitationLink = $protocol . '://' . $domain . '/account/invite/' . $user->getActivateToken();
-        DatawrapperHooks::execute(DatawrapperHooks::SEND_TEAM_INVITE_EMAIL_TO_NEW_USER, 
-            $data->email, $user->guessName(), $teamName, $invitationLink);
+        DatawrapperHooks::execute(DatawrapperHooks::SEND_INVITE_EMAIL_TO_NEW_USER, 
+            $data->email, $user->guessName(), $invitationLink);
     } else {
         // send account activation link
         $activationLink = $protocol . '://' . $domain . '/account/activate/' . $user->getActivateToken();

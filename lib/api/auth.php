@@ -155,8 +155,8 @@ $app->post('/account/resend-invitation', function() use($app) {
         $invitationLink = $protocol . '://' . $domain . '/account/invite/' . $token;
         $name           = $user->getEmail();
 
-        DatawrapperHooks::execute(DatawrapperHooks::SEND_TEAM_INVITE_EMAIL_TO_NEW_USER,
-            $user->getEmail(), $user->guessName(), $teamName, $invitationLink);
+        DatawrapperHooks::execute(DatawrapperHooks::SEND_INVITE_EMAIL_TO_NEW_USER,
+            $user->getEmail(), $user->guessName(), $invitationLink);
         ok(__('You should soon receive an email with further instructions.'));
     } else {
         error('login-email-unknown', __('The email is not registered yet.'));

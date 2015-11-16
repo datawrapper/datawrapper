@@ -29,10 +29,14 @@ function send_dw_mail ($to, $subject, $message, $replacements = array()) {
     return mail($to, $subject, $message, $headers);
 }
 
+
+/*
+ * email when a new user joins datawrapper, to confirm the email address is correct
+ */
 DatawrapperHooks::register(DatawrapperHooks::SEND_ACTIVATION_EMAIL,
     function ($userEmail, $userName, $activationLink) {
-        $body = __("email / activation");
-        send_dw_mail($userEmail, __('Datawrapper: Please activate your email address'), $body,
+        $body = __("email / activation / body");
+        send_dw_mail($userEmail, __('email / activation / subject'), $body,
         array(
             'name' => $userName,
             'activation_link' => $activationLink
@@ -40,32 +44,15 @@ DatawrapperHooks::register(DatawrapperHooks::SEND_ACTIVATION_EMAIL,
     }
 );
 
-DatawrapperHooks::register(DatawrapperHooks::SEND_TEAM_INVITE_EMAIL,
-    function ($userEmail, $userName, $teamName, $activationLink) {
-
-    }
-);
-
-DatawrapperHooks::register(DatawrapperHooks::SEND_TEAM_INVITE_EMAIL_TO_NEW_USER,
-    function ($userEmail, $userName, $teamName, $activationLink) {
-
-    }
-);
-
+/*
+ * email when someone wants to reset password
+ */
 DatawrapperHooks::register(DatawrapperHooks::SEND_RESET_PASSWORD_EMAIL, 
     function ($userEmail, $userName, $passwordResetLink) {
 
-$body = __("
-Hello %name%,
-Someone, probably you, filed a request to reset your password.
-If that's true, please click the following link to reset your password.
-%password_reset_link%
-If you ignore this email, your password stays the same as before.
-Best,
-Datawrapper
-");
+$body = __("email / password-reset / body");
 
-        send_dw_mail($userEmail, __('Datawrapper: You requested a reset of your password'), $body,
+        send_dw_mail($userEmail, __('email / password-reset / subject'), $body,
         array(
             'name' => $userName,
             'password_reset_link' => $passwordResetLink
@@ -73,10 +60,13 @@ Datawrapper
     }
 );
 
+/*
+ * confirmation email when someone requests a change of email address
+ */
 DatawrapperHooks::register(DatawrapperHooks::SEND_CHANGE_EMAIL_EMAIL,
     function ($userEmail, $userName, $oldEmail, $confirmationLink) {
-        $body = __("email / change-email");
-        send_dw_mail($userEmail, __('Datawrapper: You requested a change of your email address'), $body,
+        $body = __('email / change-email / body');
+        send_dw_mail($userEmail, __('email / change-email / subject'), $body,
         array(
             'name' => $userName,
             'email_change_token_link' => $confirmationLink,
@@ -85,3 +75,34 @@ DatawrapperHooks::register(DatawrapperHooks::SEND_CHANGE_EMAIL_EMAIL,
         ));
     }
 );
+
+/*
+ * classic invite email
+ */
+DatawrapperHooks::register(DatawrapperHooks::SEND_INVITE_EMAIL_TO_NEW_USER,
+    function ($userEmail, $userName, $inviteLink) {
+        $body = __("email / invite / body");
+        send_dw_mail($userEmail, __('email / invite / subject'), $body,
+        array(
+            'name' => $userName,
+            'invite_link' => $inviteLink
+        ));
+    }
+);
+
+/*
+ * invite email to join a team
+ */
+DatawrapperHooks::register(DatawrapperHooks::SEND_TEAM_INVITE_EMAIL,
+    function ($userEmail, $userName, $invitedByName, $teamName, $inviteLink) {
+        $body = __("email / team-invite / body");
+        send_dw_mail($userEmail, __('email / team-invite / subject'), $body,
+        array(
+            'name' => $userName,
+            'team_name' => $teamName,
+            'invited_by' => $invitedByName,
+            'invite_link' => $inviteLink
+        ));
+    }
+);
+
