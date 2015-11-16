@@ -107,7 +107,7 @@ class User extends BaseUser {
      * returns the currently selected organization
      */
     public function getCurrentOrganization() {
-        $organizations = $this->getOrganizations();
+        $organizations = $this->getActiveOrganizations();
         if (count($organizations) < 1) return null;
         if (!empty($_SESSION['dw-user-organization'])) {
             foreach ($organizations as $org) {
@@ -142,6 +142,30 @@ class User extends BaseUser {
 
     public function isActivated() {
         return $this->getActivateToken() == '';
+    }
+
+    /*
+     * get a list of all organiztions in which the membership
+     * has been activated
+     */
+    public function getActiveOrganizations() {
+        $crit = OrganizationQuery::create()
+            ->useUserOrganizationQuery()
+            ->filterByInviteToken('')
+            ->endUse();
+        return $this->getOrganizations($crit);
+    }
+
+    /*
+     * get a list of organization in which the invitation
+     * is still pending
+     */
+    public function getPendingOrganizations() {
+        $crit = OrganizationQuery::create()
+            ->useUserOrganizationQuery()
+            ->filterByInviteToken('', Criteria::NOT_EQUAL)
+            ->endUse();
+        return $this->getOrganizations($crit);
     }
 
 } // User
