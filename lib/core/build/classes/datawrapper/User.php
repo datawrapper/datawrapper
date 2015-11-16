@@ -161,11 +161,12 @@ class User extends BaseUser {
      * is still pending
      */
     public function getPendingOrganizations() {
-        $crit = OrganizationQuery::create()
-            ->useUserOrganizationQuery()
-            ->filterByInviteToken('', Criteria::NOT_EQUAL)
-            ->endUse();
-        return $this->getOrganizations($crit);
+        return OrganizationQuery::create()
+            ->leftJoin('UserOrganization')
+            ->where('UserOrganization.InviteToken <> ""')
+            ->withColumn('UserOrganization.InviteToken', 'InviteToken')
+            ->where('UserOrganization.UserId = ?', $this->getId())
+            ->find();
     }
 
 } // User
