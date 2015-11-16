@@ -15,6 +15,13 @@ date_default_timezone_set('Europe/Berlin');
 $hook = $argv[1];
 
 if (!empty($hook)) {
-    DatawrapperHooks::execute($argv[1], isset($argv[2]) ? $argv[2] : null);
+    if (DatawrapperHooks::hookRegistered($hook)) {
+        DatawrapperHooks::execute($hook,
+            isset($argv[2]) ? $argv[2] : null,
+            isset($argv[3]) ? $argv[3] : null,
+            isset($argv[4]) ? $argv[4] : null);        
+    } else {
+        print "no callback registered under the name ".$hook."\n";
+    }
 }
 
