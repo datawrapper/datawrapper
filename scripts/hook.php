@@ -8,9 +8,10 @@ define('ROOT_PATH', dirname(dirname(__FILE__)) . '/');
 define('NO_SLIM', 1);
 define('NO_SESSION', 1);
 
+define('DATAWRAPPER_VERSION', json_decode(file_get_contents(ROOT_PATH . 'package.json'))['version']);
+
 require_once ROOT_PATH . 'lib/bootstrap.php';
 date_default_timezone_set('Europe/Berlin');
-
 
 $hook = $argv[1];
 
