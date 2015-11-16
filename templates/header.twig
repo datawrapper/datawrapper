@@ -5,7 +5,7 @@
         <li class="divider"></li>
     {% elseif slink.dropdown %}
         <li class="dropdown-submenu">
-            <a tabindex="-1" href="#">{{ slink.title }}</a>
+            <a tabindex="-1" href="#">{{ slink.title | raw }}</a>
             <ul class="dropdown-menu">
                 {% for slink in slink.dropdown %}
                     {{ block('header_nav_dropdown_link') }}
