@@ -46,7 +46,7 @@ class UserOrganizationTableMap extends TableMap
   0 => 'admin',
   1 => 'member',
 ));
-        $this->addPrimaryKey('invite_token', 'InviteToken', 'VARCHAR', true, 128, '');
+        $this->addColumn('invite_token', 'InviteToken', 'VARCHAR', true, 128, '');
         // validators
     } // initialize()
 

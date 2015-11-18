@@ -87,11 +87,11 @@ abstract class BaseUserOrganizationQuery extends ModelCriteria
      * Go fast if the query is untouched.
      *
      * <code>
-     * $obj = $c->findPk(array(12, 34, 56), $con);
+     * $obj = $c->findPk(array(12, 34), $con);
      * </code>
      *
      * @param array $key Primary key to use for the query
-                         A Primary key composition: [$user_id, $organization_id, $invite_token]
+                         A Primary key composition: [$user_id, $organization_id]
      * @param     PropelPDO $con an optional connection object
      *
      * @return   UserOrganization|UserOrganization[]|mixed the result, formatted by the current formatter
@@ -101,7 +101,7 @@ abstract class BaseUserOrganizationQuery extends ModelCriteria
         if ($key === null) {
             return null;
         }
-        if ((null !== ($obj = UserOrganizationPeer::getInstanceFromPool(serialize(array((string) $key[0], (string) $key[1], (string) $key[2]))))) && !$this->formatter) {
+        if ((null !== ($obj = UserOrganizationPeer::getInstanceFromPool(serialize(array((string) $key[0], (string) $key[1]))))) && !$this->formatter) {
             // the object is alredy in the instance pool
             return $obj;
         }
@@ -130,12 +130,11 @@ abstract class BaseUserOrganizationQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `user_id`, `organization_id`, `organization_role`, `invite_token` FROM `user_organization` WHERE `user_id` = :p0 AND `organization_id` = :p1 AND `invite_token` = :p2';
+        $sql = 'SELECT `user_id`, `organization_id`, `organization_role`, `invite_token` FROM `user_organization` WHERE `user_id` = :p0 AND `organization_id` = :p1';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);
             $stmt->bindValue(':p1', $key[1], PDO::PARAM_STR);
-            $stmt->bindValue(':p2', $key[2], PDO::PARAM_STR);
             $stmt->execute();
         } catch (Exception $e) {
             Propel::log($e->getMessage(), Propel::LOG_ERR);
@@ -145,7 +144,7 @@ abstract class BaseUserOrganizationQuery extends ModelCriteria
         if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
             $obj = new UserOrganization();
             $obj->hydrate($row);
-            UserOrganizationPeer::addInstanceToPool($obj, serialize(array((string) $key[0], (string) $key[1], (string) $key[2])));
+            UserOrganizationPeer::addInstanceToPool($obj, serialize(array((string) $key[0], (string) $key[1])));
         }
         $stmt->closeCursor();
 
@@ -206,7 +205,6 @@ abstract class BaseUserOrganizationQuery extends ModelCriteria
     {
         $this->addUsingAlias(UserOrganizationPeer::USER_ID, $key[0], Criteria::EQUAL);
         $this->addUsingAlias(UserOrganizationPeer::ORGANIZATION_ID, $key[1], Criteria::EQUAL);
-        $this->addUsingAlias(UserOrganizationPeer::INVITE_TOKEN, $key[2], Criteria::EQUAL);
 
         return $this;
     }
@@ -227,8 +225,6 @@ abstract class BaseUserOrganizationQuery extends ModelCriteria
             $cton0 = $this->getNewCriterion(UserOrganizationPeer::USER_ID, $key[0], Criteria::EQUAL);
             $cton1 = $this->getNewCriterion(UserOrganizationPeer::ORGANIZATION_ID, $key[1], Criteria::EQUAL);
             $cton0->addAnd($cton1);
-            $cton2 = $this->getNewCriterion(UserOrganizationPeer::INVITE_TOKEN, $key[2], Criteria::EQUAL);
-            $cton0->addAnd($cton2);
             $this->addOr($cton0);
         }
 
@@ -528,8 +524,7 @@ abstract class BaseUserOrganizationQuery extends ModelCriteria
         if ($userOrganization) {
             $this->addCond('pruneCond0', $this->getAliasedColName(UserOrganizationPeer::USER_ID), $userOrganization->getUserId(), Criteria::NOT_EQUAL);
             $this->addCond('pruneCond1', $this->getAliasedColName(UserOrganizationPeer::ORGANIZATION_ID), $userOrganization->getOrganizationId(), Criteria::NOT_EQUAL);
-            $this->addCond('pruneCond2', $this->getAliasedColName(UserOrganizationPeer::INVITE_TOKEN), $userOrganization->getInviteToken(), Criteria::NOT_EQUAL);
-            $this->combine(array('pruneCond0', 'pruneCond1', 'pruneCond2'), Criteria::LOGICAL_OR);
+            $this->combine(array('pruneCond0', 'pruneCond1'), Criteria::LOGICAL_OR);
         }
 
         return $this;

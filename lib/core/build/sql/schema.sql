@@ -97,7 +97,7 @@ CREATE TABLE `user_organization`
     `organization_id` VARCHAR(128) NOT NULL,
     `organization_role` TINYINT DEFAULT 1 NOT NULL,
     `invite_token` VARCHAR(128) DEFAULT '' NOT NULL,
-    PRIMARY KEY (`user_id`,`organization_id`,`invite_token`),
+    PRIMARY KEY (`user_id`,`organization_id`),
     INDEX `user_organization_FI_2` (`organization_id`)
 ) ENGINE=MyISAM;
 

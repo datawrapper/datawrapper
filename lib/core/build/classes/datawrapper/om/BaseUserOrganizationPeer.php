@@ -348,7 +348,7 @@ abstract class BaseUserOrganizationPeer
     {
         if (Propel::isInstancePoolingEnabled()) {
             if ($key === null) {
-                $key = serialize(array((string) $obj->getUserId(), (string) $obj->getOrganizationId(), (string) $obj->getInviteToken()));
+                $key = serialize(array((string) $obj->getUserId(), (string) $obj->getOrganizationId()));
             } // if key === null
             UserOrganizationPeer::$instances[$key] = $obj;
         }
@@ -371,10 +371,10 @@ abstract class BaseUserOrganizationPeer
     {
         if (Propel::isInstancePoolingEnabled() && $value !== null) {
             if (is_object($value) && $value instanceof UserOrganization) {
-                $key = serialize(array((string) $value->getUserId(), (string) $value->getOrganizationId(), (string) $value->getInviteToken()));
-            } elseif (is_array($value) && count($value) === 3) {
+                $key = serialize(array((string) $value->getUserId(), (string) $value->getOrganizationId()));
+            } elseif (is_array($value) && count($value) === 2) {
                 // assume we've been passed a primary key
-                $key = serialize(array((string) $value[0], (string) $value[1], (string) $value[2]));
+                $key = serialize(array((string) $value[0], (string) $value[1]));
             } else {
                 $e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or UserOrganization object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value,true)));
                 throw $e;
@@ -443,11 +443,11 @@ abstract class BaseUserOrganizationPeer
     public static function getPrimaryKeyHashFromRow($row, $startcol = 0)
     {
         // If the PK cannot be derived from the row, return null.
-        if ($row[$startcol] === null && $row[$startcol + 1] === null && $row[$startcol + 3] === null) {
+        if ($row[$startcol] === null && $row[$startcol + 1] === null) {
             return null;
         }
 
-        return serialize(array((string) $row[$startcol], (string) $row[$startcol + 1], (string) $row[$startcol + 3]));
+        return serialize(array((string) $row[$startcol], (string) $row[$startcol + 1]));
     }
 
     /**
@@ -462,7 +462,7 @@ abstract class BaseUserOrganizationPeer
     public static function getPrimaryKeyFromRow($row, $startcol = 0)
     {
 
-        return array((int) $row[$startcol], (string) $row[$startcol + 1], (string) $row[$startcol + 3]);
+        return array((int) $row[$startcol], (string) $row[$startcol + 1]);
     }
 
     /**
@@ -1275,14 +1275,6 @@ abstract class BaseUserOrganizationPeer
                 $selectCriteria->setPrimaryTableName(UserOrganizationPeer::TABLE_NAME);
             }
 
-            $comparison = $criteria->getComparison(UserOrganizationPeer::INVITE_TOKEN);
-            $value = $criteria->remove(UserOrganizationPeer::INVITE_TOKEN);
-            if ($value) {
-                $selectCriteria->add(UserOrganizationPeer::INVITE_TOKEN, $value, $comparison);
-            } else {
-                $selectCriteria->setPrimaryTableName(UserOrganizationPeer::TABLE_NAME);
-            }
-
         } else { // $values is UserOrganization object
             $criteria = $values->buildCriteria(); // gets full criteria
             $selectCriteria = $values->buildPkeyCriteria(); // gets criteria w/ primary key(s)
@@ -1366,7 +1358,6 @@ abstract class BaseUserOrganizationPeer
             foreach ($values as $value) {
                 $criterion = $criteria->getNewCriterion(UserOrganizationPeer::USER_ID, $value[0]);
                 $criterion->addAnd($criteria->getNewCriterion(UserOrganizationPeer::ORGANIZATION_ID, $value[1]));
-                $criterion->addAnd($criteria->getNewCriterion(UserOrganizationPeer::INVITE_TOKEN, $value[2]));
                 $criteria->addOr($criterion);
                 // we can invalidate the cache for this single PK
                 UserOrganizationPeer::removeInstanceFromPool($value);
@@ -1435,12 +1426,11 @@ abstract class BaseUserOrganizationPeer
      * Retrieve object using using composite pkey values.
      * @param   int $user_id
      * @param   string $organization_id
-     * @param   string $invite_token
      * @param      PropelPDO $con
      * @return   UserOrganization
      */
-    public static function retrieveByPK($user_id, $organization_id, $invite_token, PropelPDO $con = null) {
-        $_instancePoolKey = serialize(array((string) $user_id, (string) $organization_id, (string) $invite_token));
+    public static function retrieveByPK($user_id, $organization_id, PropelPDO $con = null) {
+        $_instancePoolKey = serialize(array((string) $user_id, (string) $organization_id));
          if (null !== ($obj = UserOrganizationPeer::getInstanceFromPool($_instancePoolKey))) {
              return $obj;
         }
@@ -1451,7 +1441,6 @@ abstract class BaseUserOrganizationPeer
         $criteria = new Criteria(UserOrganizationPeer::DATABASE_NAME);
         $criteria->add(UserOrganizationPeer::USER_ID, $user_id);
         $criteria->add(UserOrganizationPeer::ORGANIZATION_ID, $organization_id);
-        $criteria->add(UserOrganizationPeer::INVITE_TOKEN, $invite_token);
         $v = UserOrganizationPeer::doSelect($criteria, $con);
 
         return !empty($v) ? $v[0] : null;

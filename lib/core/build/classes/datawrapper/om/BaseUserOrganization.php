@@ -883,7 +883,6 @@ abstract class BaseUserOrganization extends BaseObject implements Persistent
         $criteria = new Criteria(UserOrganizationPeer::DATABASE_NAME);
         $criteria->add(UserOrganizationPeer::USER_ID, $this->user_id);
         $criteria->add(UserOrganizationPeer::ORGANIZATION_ID, $this->organization_id);
-        $criteria->add(UserOrganizationPeer::INVITE_TOKEN, $this->invite_token);
 
         return $criteria;
     }
@@ -898,7 +897,6 @@ abstract class BaseUserOrganization extends BaseObject implements Persistent
         $pks = array();
         $pks[0] = $this->getUserId();
         $pks[1] = $this->getOrganizationId();
-        $pks[2] = $this->getInviteToken();
 
         return $pks;
     }
@@ -913,7 +911,6 @@ abstract class BaseUserOrganization extends BaseObject implements Persistent
     {
         $this->setUserId($keys[0]);
         $this->setOrganizationId($keys[1]);
-        $this->setInviteToken($keys[2]);
     }
 
     /**
@@ -923,7 +920,7 @@ abstract class BaseUserOrganization extends BaseObject implements Persistent
     public function isPrimaryKeyNull()
     {
 
-        return (null === $this->getUserId()) && (null === $this->getOrganizationId()) && (null === $this->getInviteToken());
+        return (null === $this->getUserId()) && (null === $this->getOrganizationId());
     }
 
     /**
