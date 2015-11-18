@@ -349,5 +349,6 @@
     "upload \/ paste here": "Paste your copied data here...",
     "upload \/ continue button": "Carica e continua",
     "upload \/ or upload csv": "... o carica un file CSV",
-    "visualize \/ transpose-hint": "Nel caso in cui la visualizzazione non fosse come che ti aspettavi, dovresti cercare di [LINK]trasporre i dati[\/LINK]."
+    "visualize \/ transpose-hint": "Nel caso in cui la visualizzazione non fosse come che ti aspettavi, dovresti cercare di [LINK]trasporre i dati[\/LINK].",
+    "e.g.": "p.e."
 }

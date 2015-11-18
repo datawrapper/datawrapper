@@ -349,5 +349,6 @@
     "upload \/ paste here": "Paste your copied data here...",
     "upload \/ continue button": "\u4e0a\u4f20\u5e76\u7ee7\u7eed",
     "upload \/ or upload csv": "\u6216\u8005\u4e0a\u4f20\u4e00\u4e2aCSV\u6587\u4ef6",
-    "visualize \/ transpose-hint": "In case the visualization doesn't look like you expected, you should try to [LINK]transpose the data[\/LINK]."
+    "visualize \/ transpose-hint": "In case the visualization doesn't look like you expected, you should try to [LINK]transpose the data[\/LINK].",
+    "e.g.": "\u4f8b\u5982"
 }
