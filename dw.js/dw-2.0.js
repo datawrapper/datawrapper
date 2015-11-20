@@ -1802,8 +1802,9 @@ dw.chart = function(attributes) {
 
         function add_computed_column(formula, name) {
             var datefmt = d3.time.format('%Y-%m-%d'),
-                values = data.map(function(row) {
+                values = data.map(function(row, row_i) {
                     var context = [];
+                    context.push('var __row = '+row_i+';');
                     _.each(row, function(val, key) {
                         if (!columnNameToVar[key]) return;
                         context.push('var '+columnNameToVar[key]+' = '+JSON.stringify(val)+';');
