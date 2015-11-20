@@ -256,11 +256,21 @@ dw.chart = function(attributes) {
     function addComputedColumns(dataset) {
         var v_columns = chart.get('metadata.describe.computed-columns', {}),
             data = dataset.list(),
-            columnNameToVar = {};
+            columnNameToVar = {},
+            col_aggregates = {};
 
         dataset.eachColumn(function(col) {
             if (col.isComputed) return;
             columnNameToVar[col.name()] = column_name_to_var(col.name());
+            if (col.type() == 'number') {
+                col_aggregates[col.name()] = {
+                    min: d3.min(col.values()),
+                    max: d3.max(col.values()),
+                    sum: d3.sum(col.values()),
+                    mean: d3.mean(col.values()),
+                    median: d3.median(col.values()),
+                };
+            }
         });
 
         _.each(v_columns, add_computed_column);
@@ -269,15 +279,18 @@ dw.chart = function(attributes) {
 
         function add_computed_column(formula, name) {
             var datefmt = d3.time.format('%Y-%m-%d'),
-                values = data.map(function(row) {
+                values = data.map(function(row, row_i) {
                     var context = [];
+                    context.push('var __row = '+row_i+';');
                     _.each(row, function(val, key) {
                         if (!columnNameToVar[key]) return;
                         context.push('var '+columnNameToVar[key]+' = '+JSON.stringify(val)+';');
                         if (dataset.column(key).type() == 'number') {
-                            context.push('var '+columnNameToVar[key]+'__sum = '+dataset.column(key).total()+';');
-                            context.push('var '+columnNameToVar[key]+'__min = '+dataset.column(key).range()[0]+';');
-                            context.push('var '+columnNameToVar[key]+'__max = '+dataset.column(key).range()[1]+';');
+                            context.push('var '+columnNameToVar[key]+'__sum = '+col_aggregates[key].sum+';');
+                            context.push('var '+columnNameToVar[key]+'__min = '+col_aggregates[key].min+';');
+                            context.push('var '+columnNameToVar[key]+'__max = '+col_aggregates[key].max+';');
+                            context.push('var '+columnNameToVar[key]+'__mean = '+col_aggregates[key].mean+';');
+                            context.push('var '+columnNameToVar[key]+'__median = '+col_aggregates[key].median+';');
                         }
                     });
                     context.push('var round = d3.round, mean = d3.mean, median = d3.median,'+

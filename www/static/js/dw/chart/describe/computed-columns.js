@@ -160,7 +160,7 @@ define(['jquery'], function($) {
                     'cm/addon/display/placeholder',
                 ], function(CodeMirror) {
 
-                    var keywords = [];
+                    var keywords = ['__row'];
 
                     chart.dataset().columns()
                         .filter(function(col) {
@@ -172,6 +172,8 @@ define(['jquery'], function($) {
                                 keywords.push(cname+'__sum');
                                 keywords.push(cname+'__min');
                                 keywords.push(cname+'__max');
+                                keywords.push(cname+'__mean');
+                                keywords.push(cname+'__median');
                             }
                         });
 
