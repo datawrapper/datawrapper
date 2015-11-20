@@ -160,12 +160,22 @@ define(['jquery'], function($) {
                     'cm/addon/display/placeholder',
                 ], function(CodeMirror) {
 
-                    var keywords = chart.dataset().columns()
+                    var keywords = [];
+
+                    chart.dataset().columns()
                         .filter(function(col) {
                             return !col.isComputed;
-                        }).map(function(col) {
-                            return column_name_to_var(col.name());
+                        }).forEach(function(col) {
+                            var cname = column_name_to_var(col.name());
+                            keywords.push(cname);
+                            if (col.type() == 'number') {
+                                keywords.push(cname+'__sum');
+                                keywords.push(cname+'__min');
+                                keywords.push(cname+'__max');
+                            }
                         });
+
+                    keywords = keywords.concat(['sum','round','min','max','median','mean']);
 
                     function scriptHint(editor, options) {
                         // Find the token at the cursor
@@ -225,12 +235,15 @@ define(['jquery'], function($) {
             }
 
             function column_name_to_var(name) {
+                // if you change this, change dw.chart.js as well
                 return name.toString().toLowerCase()
                     .replace(/\s+/g, '_')           // Replace spaces with _
                     .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+                    .replace(/-/g, '_')             // Replace multiple - with single -
                     .replace(/\_\_+/g, '_')         // Replace multiple - with single -
                     .replace(/^_+/, '')             // Trim - from start of text
-                    .replace(/_+$/, '');            // Trim - from end of text
+                    .replace(/_+$/, '')             // Trim - from end of text
+                    .replace(/^(\d)/, '_$1');       // If first char is a number, prefix with _
             }
 
             function columnNameExists(cn) {

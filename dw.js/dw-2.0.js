@@ -1,4 +1,4 @@
-/*! datawrapper - v1.10.0-rc.1 *///
+/*! datawrapper - v1.10.0 *///
 // NOTE: This file is auto-generated using /dw.js/make
 // from the source files /dw.js/src/*.js.
 //
@@ -1793,38 +1793,46 @@ dw.chart = function(attributes) {
         function add_computed_column(formula, name) {
             var datefmt = d3.time.format('%Y-%m-%d'),
                 values = data.map(function(row) {
-                var context = [];
-                _.each(row, function(val, key) {
-                    if (!columnNameToVar[key]) return;
-                    context.push('var '+columnNameToVar[key]+' = '+JSON.stringify(val)+';');
+                    var context = [];
+                    _.each(row, function(val, key) {
+                        if (!columnNameToVar[key]) return;
+                        context.push('var '+columnNameToVar[key]+' = '+JSON.stringify(val)+';');
+                        if (dataset.column(key).type() == 'number') {
+                            context.push('var '+columnNameToVar[key]+'__sum = '+dataset.column(key).total()+';');
+                            context.push('var '+columnNameToVar[key]+'__min = '+dataset.column(key).range()[0]+';');
+                            context.push('var '+columnNameToVar[key]+'__max = '+dataset.column(key).range()[1]+';');
+                        }
+                    });
+                    context.push('var round = d3.round, mean = d3.mean, median = d3.median,'+
+                            'sum = d3.sum, max = Math.max, min = Math.min;');
+                    return (function() {
+                        try {
+                            return eval(this.context.join('\n')+'\n'+formula);                    
+                        } catch (e) {
+                            return 'n/a';
+                        }
+                    }).call({ context: context });
+                }).map(function(v) {
+                    if (_.isBoolean(v)) return v ? 'yes' : 'no';
+                    if (_.isDate(v)) return datefmt(v);
+                    if (_.isNumber(v)) return ''+v;
+                    return String(v);
                 });
-                context.push('var round = d3.round, mean = d3.mean, median = d3.median,'+
-                        'sum = d3.sum, max = d3.max, min = d3.min;');
-                return (function() {
-                    try {
-                        return eval(this.context.join('\n')+'\n'+formula);                    
-                    } catch (e) {
-                        return 'n/a';
-                    }
-                }).call({ context: context });
-            }).map(function(v) {
-                if (_.isBoolean(v)) return v ? 'yes' : 'no';
-                if (_.isDate(v)) return datefmt(v);
-                if (_.isNumber(v)) return ''+v;
-                return String(v);
-            });
             var v_col = dw.column(name, values);
             v_col.isComputed = true;
             dataset.add(v_col);
         }
 
         function column_name_to_var(name) {
+            // if you change this, change computed-columns.js as well
             return name.toString().toLowerCase()
                 .replace(/\s+/g, '_')           // Replace spaces with _
                 .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+                .replace(/-/g, '_')             // Replace multiple - with single -
                 .replace(/\_\_+/g, '_')         // Replace multiple - with single -
                 .replace(/^_+/, '')             // Trim - from start of text
-                .replace(/_+$/, '');            // Trim - from end of text
+                .replace(/_+$/, '')             // Trim - from end of text
+                .replace(/^(\d)/, '_$1');       // If first char is a number, prefix with _
         }
     }
 
