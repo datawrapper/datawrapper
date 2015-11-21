@@ -2,3 +2,8 @@
 .chart.vis-stacked-column-chart {
     overflow: hidden;
 }
+
+
+.chart.vis-stacked-column-chart  .label {
+  position: absolute;
+}
