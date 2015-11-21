@@ -7,8 +7,10 @@ DatawrapperVisualization::register($plugin, array(
     "id" => "raphael-chart",
     "libraries" => array(
         array(
-            'local' => 'vendor/d3.full.min.js',
-            'cdn' => '//'.$GLOBALS['dw_config']['asset_domain'].'/d3/d3-with-jetpack.min.js'
+            "local" => "vendor/d3-light.min.js",
+            "cdn" => !empty($asset_domain)
+                ? $asset_url . "vendor/d3-light/3.1.8/d3-light.min.js"
+                : null
         ),
         array(
             "local" => "vendor/chroma.min.js",

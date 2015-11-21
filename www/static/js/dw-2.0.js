@@ -1787,14 +1787,65 @@ dw.chart = function(attributes) {
             columnNameToVar[col.name()] = column_name_to_var(col.name());
             if (col.type() == 'number') {
                 col_aggregates[col.name()] = {
-                    min: d3.min(col.values()),
-                    max: d3.max(col.values()),
-                    sum: d3.sum(col.values()),
-                    mean: d3.mean(col.values()),
-                    median: d3.median(col.values()),
+                    min: d3_min(col.values()),
+                    max: d3_max(col.values()),
+                    sum: d3_sum(col.values()),
+                    mean: d3_mean(col.values()),
+                    median: d3_median(col.values())
                 };
             }
         });
+
+        function d3_min(array) {
+          var i = -1, n = array.length, a, b;
+          if (arguments.length === 1) {
+            while (++i < n) if ((b = array[i]) != null && b >= b) {
+              a = b;
+              break;
+            }
+            while (++i < n) if ((b = array[i]) != null && a > b) a = b;
+          }
+          return a;
+        }
+        function d3_max(array) {
+          var i = -1, n = array.length, a, b;
+          if (arguments.length === 1) {
+            while (++i < n) if ((b = array[i]) != null && b >= b) {
+              a = b;
+              break;
+            }
+            while (++i < n) if ((b = array[i]) != null && b > a) a = b;
+          }
+          return a;
+        }
+        function d3_sum(array) {
+            var s = 0, n = array.length, a, i = -1;
+            if (arguments.length === 1) {
+                while (++i < n) if (d3_numeric(a = +array[i])) s += a;
+            }
+            return s;
+        }
+        function d3_mean(array) {
+            var s = 0, n = array.length, a, i = -1, j = n;
+            while (++i < n) if (d3_numeric(a = d3_number(array[i]))) s += a; else --j;
+            if (j) return s / j;
+        }
+        function d3_median(array) {
+            var numbers = [], n = array.length, a, i = -1;
+            if (arguments.length === 1) {
+                while (++i < n) if (d3_numeric(a = d3_number(array[i]))) numbers.push(a);
+            }
+            if (numbers.length) return d3_quantile(numbers.sort(d3_ascending), 0.5);
+        }
+        function d3_quantile(values, p) {
+            var H = (values.length - 1) * p + 1, h = Math.floor(H), v = +values[h - 1], e = H - h;
+            return e ? v + e * (values[h] - v) : v;
+        }
+        function d3_number(x) { return x === null ? NaN : +x; }
+        function d3_numeric(x) { return !isNaN(x); }
+        function d3_ascending(a, b) {
+            return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
+        }
 
         _.each(v_columns, add_computed_column);
         

@@ -9,9 +9,6 @@ class DatawrapperPlugin_VisualizationDataTable extends DatawrapperPlugin_Visuali
             "dimensions" => 2,
             "order"      => 70,
             "libraries"  => array(array(
-                'local' => 'vendor/d3.full.min.js',
-                'cdn' => '//'.$GLOBALS['dw_config']['asset_domain'].'/d3/d3-with-jetpack.min.js'
-            ),  array(
                 "local" => "vendor/jquery.dataTables.min.js",
                 "cdn" => "//ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js"
             )),
