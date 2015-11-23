@@ -2,3 +2,7 @@
 .chart.vis-column-chart {
     overflow: hidden;
 }
+
+.chart.vis-column-chart .label {
+    position: absolute;
+}
