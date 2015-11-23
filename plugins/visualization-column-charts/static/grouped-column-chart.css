@@ -2,3 +2,7 @@
 .chart.vis-grouped-column-chart {
     overflow: hidden;
 }
+
+.chart.vis-grouped-column-chart  .label {
+  position: absolute;
+}
