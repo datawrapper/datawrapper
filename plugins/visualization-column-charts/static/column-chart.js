@@ -243,6 +243,20 @@
                             align: lpos.halign,
                             valign: lpos.valign
                         }, theme.duration, theme.easing);
+
+                        if (!lbl.hasClass('value')) {
+                            if (lpos.valign == "bottom") { 
+                                $(lbl.el).addClass("lbl-align-left").removeClass("lbl-align-right"); 
+                            } else if (lpos.valign == "top") { 
+                                $(lbl.el).addClass("lbl-align-right").removeClass("lbl-align-left"); 
+                            }
+                        }
+
+                        if (lbl.hasClass('value')) {
+                            var barDimensions = me.barDimensions(bar, s);
+                            if (lpos.width > barDimensions.width) { lbl.addClass("showOnHover"); lbl.hide(); }
+                            else { lbl.removeClass("showOnHover"); lbl.show() }
+                        }
                     }
                 });
                 updated_bars[bar.name] = true;
@@ -253,6 +267,7 @@
                     me.__barExit(key);
                 }
             });
+
             if (me.__gridLines['0']) me.__gridLines['0'].toFront();
         },
 

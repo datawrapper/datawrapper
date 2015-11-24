@@ -6,3 +6,12 @@
 .chart.vis-column-chart  .label {
   position: absolute;
 }
+
+.chart.vis-column-chart  .label.lbl-align-right {
+  text-align: right;
+}
+
+.chart.vis-column-chart  .label.lbl-align-left {
+  text-align: left;
+}
+
