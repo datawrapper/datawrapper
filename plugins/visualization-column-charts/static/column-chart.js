@@ -254,7 +254,7 @@
 
                         if (lbl.hasClass('value')) {
                             var barDimensions = me.barDimensions(bar, s);
-                            if (lpos.width > barDimensions.width) { lbl.addClass("showOnHover"); lbl.hide(); }
+                            if (lpos.width > (barDimensions.width + barDimensions.width * barDimensions.pad)) { lbl.addClass("showOnHover"); lbl.hide(); }
                             else { lbl.removeClass("showOnHover"); lbl.show() }
                         }
                     }
