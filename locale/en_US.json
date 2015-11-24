@@ -350,5 +350,9 @@
     "upload \/ continue button": "Upload and continue",
     "upload \/ or upload csv": "..or upload a CSV file",
     "visualize \/ transpose-hint": "In case the visualization doesn't look like you expected, you should try to [LINK]transpose the data[\/LINK]",
-    "e.g.": "e.g."
+    "e.g.": "e.g.",
+    "login \/ signup \/ confirmation-email": "Thanks for signing up for Datawrapper! Please check your email inbox for our welcome email and click the activation link to complete signup.",
+    "login \/ signup \/ confirmation-email-hint": "If you do not see an email within five minutes, please make sure to also check the spam folder in your email program.",
+    "login \/ signup \/ confirm": "Got it"
+
 }

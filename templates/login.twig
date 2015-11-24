@@ -7,7 +7,7 @@
         </div>-->
         <div class="modal-body">
             <button type="button" class="close" data-dismiss="modal">×</button>
-            <div class="row">
+            <div class="row login-signup">
                 <div class="span{% if noSignup %}4{% else %}3{% endif %} row-login">
 
                     <h3>Login</h3>
@@ -75,6 +75,19 @@
                 {% endfor %}
             </div>
             {% endif %}
+
+            <div class="row signup-confirm hidden">
+                <div class="span6">
+                    <div class="jumbo-text">
+                        {% trans "login / signup / confirmation-email" %}
+
+                        <div class="sub">{% trans "login / signup / confirmation-email-hint" %}</div>
+
+                        <button class="button btn btn-got-it">{% trans "login / signup / confirm" %}</button>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
     </div>

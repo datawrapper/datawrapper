@@ -62,14 +62,14 @@ define(function() {
                     context: this,
                     success: function(data) {
                         if (data.status == 'ok') {
-                            // If the registration went well, clear sign up form
-                            $('.signup-form input', form).val('');
-                            // and close popup. User should be logged in now.
-                            dw.backend.logMessage('Yeah, sign up went well! You are logged in now...', '.signup-form');
-                            setTimeout(function() {
+                            // If the registration went well, notify user we sent him an email
+                            $('.row.login-signup').addClass("hidden");
+                            $('.row.signup-confirm').removeClass("hidden");
+
+                            $('.btn-got-it', '.row.signup-confirm').click(function() {
                                 $('#dwLoginForm').modal('hide');
                                 window.location.reload();
-                            }, 1000);
+                            });
                         } else {
                             dw.backend.logError(data.code, '.signup-form');
                         }
