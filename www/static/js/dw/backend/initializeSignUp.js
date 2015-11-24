@@ -63,7 +63,7 @@ define(function() {
                     success: function(data) {
                         if (data.status == 'ok') {
                             // If the registration went well, notify user we sent him an email
-                            $('.row.login-signup').addClass("hidden");
+                            $('.row.login-signup, .alternative-signins').addClass("hidden");
                             $('.row.signup-confirm').removeClass("hidden");
 
                             $('.btn-got-it', '.row.signup-confirm').click(function() {
