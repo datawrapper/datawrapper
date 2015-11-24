@@ -6,3 +6,7 @@
 .chart.vis-stacked-column-chart  .label {
   position: absolute;
 }
+
+.chart.vis-stacked-column-chart  .label.series {
+  text-align: right;
+}

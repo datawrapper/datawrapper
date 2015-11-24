@@ -6,3 +6,7 @@
 .chart.vis-grouped-column-chart  .label {
   position: absolute;
 }
+
+.chart.vis-grouped-column-chart  .label.series {
+  text-align: right;
+}
