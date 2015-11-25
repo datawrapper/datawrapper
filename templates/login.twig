@@ -10,9 +10,9 @@
             <div class="row login-signup">
                 <div class="span{% if noSignup %}4{% else %}3{% endif %} row-login">
 
-                    <h3>Login</h3>
+                    <h3>{% trans "login / login / headline" %}</h3>
 
-                    <p>{% trans "We're glad to see you again. Login to access your charts, and create new ones." %}</p>
+                    <p>{% trans "login / login / intro" %}</p>
 
                     <div class="login-form form-vertical">
                         <div class="control-group"><input class="login-email input-xxlarge span3" type="email" value="" placeholder="{% trans "email" %}" /></div>
@@ -40,8 +40,8 @@
                 </div>
                 {% if not noSignup %}
                 <div class="span3 row-signup">
-                    <h3>{% trans "Create a new account" %}</h3>
-                    <p>{% trans "Datawrapper is 100&#37; free and creating an account takes less than a minute. Just enter your email and pick a password, and you're done!" %}</p>
+                    <h3>{% trans "login / signup / headline" %}</h3>
+                    <p>{% trans "login / signup / intro" %}</p>
                     <div class="signup-form form-vertcal">
                         <div class="control-group">
                             <input type="email" class="input-xlarge span2 register-email" placeholder="{% trans "email" %}" />
@@ -69,22 +69,20 @@
             </div>
             {% if has_hook('alternative_signin') %}
             <div class="alternative-signins">
-               {% trans "Alternatively you can sign in via: " %}
+               {% trans "login / alternative signin" %}
                 {% for signin in alternative_signins %}
                     <a href="{{ signin.url }}">{% if signin.icon %}<i class="{{ signin.icon }}"></i>{% endif %} {{ signin.label }}</a>
                 {% endfor %}
             </div>
             {% endif %}
 
-            <div class="row signup-confirm hidden">
-                <div class="span6">
-                    <div class="jumbo-text">
-                        {% trans "login / signup / confirmation-email" %}
+            <div class="signup-confirm hidden">
+                <div class="jumbo-text">
+                    {% trans "login / signup / confirmation-email" %}
 
-                        <div class="sub">{% trans "login / signup / confirmation-email-hint" %}</div>
+                    <div class="sub">{% trans "login / signup / confirmation-email-hint" %}</div>
 
-                        <button class="button btn btn-got-it">{% trans "login / signup / confirm" %}</button>
-                    </div>
+                    <button class="button btn btn-got-it">{% trans "login / signup / confirm" %}</button>
                 </div>
             </div>
 

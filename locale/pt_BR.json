@@ -350,5 +350,13 @@
     "upload \/ continue button": "Enviar e continuar",
     "upload \/ or upload csv": "..ou carregar um arquivo CSV",
     "visualize \/ transpose-hint": "Caso a visualiza\u00e7\u00e3o n\u00e3o se parece com o esperado, voc\u00ea pode tentar [LINK]transpor os dados[\/LINK].",
-    "e.g.": "p.e."
+    "e.g.": "p.e.",
+    "login \/ login \/ headline": "Login",
+    "login \/ login \/ intro": "Estamos felizes por ver voc\u00ea novamente. Fa\u00e7a o login para acessar os seus gr\u00e1fico e criar novos.",
+    "login \/ signup \/ headline": "Criar uma nova conta",
+    "login \/ signup \/ intro": "Datawrapper \u00e9 100&#37; gratuito e crie uma conta, leva menos de um minuto. Basta digitar seu e-mail e uma senha e pronto!",
+    "login \/ alternative signin": "Alternativamente, voc\u00ea pode entrar via:",
+    "login \/ signup \/ confirmation-email": "Thanks for signing up for Datawrapper! Please check your email inbox for our welcome email and click the activation link to complete signup.",
+    "login \/ signup \/ confirmation-email-hint": "If you do not see an email within five minutes, please make sure to also check the spam folder in your email program.",
+    "login \/ signup \/ confirm": "Got it"
 }

@@ -64,9 +64,9 @@ define(function() {
                         if (data.status == 'ok') {
                             // If the registration went well, notify user we sent him an email
                             $('.row.login-signup, .alternative-signins').addClass("hidden");
-                            $('.row.signup-confirm').removeClass("hidden");
+                            $('.signup-confirm').removeClass("hidden");
 
-                            $('.btn-got-it', '.row.signup-confirm').click(function() {
+                            $('.btn-got-it', '.signup-confirm').click(function() {
                                 $('#dwLoginForm').modal('hide');
                                 window.location.reload();
                             });

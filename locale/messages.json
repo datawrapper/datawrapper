@@ -157,7 +157,7 @@
     "Can't recall your password?": "Can't recall your password?",
     "Return to login...": "Return to login...",
     "Create a new account": "Create a new account",
-    "Datawrapper is 100&#37; free and creating an account takes less than a \nminute. Just enter your email and pick a password, and you're done!": "Datawrapper is 100&#37; free and creating an account takes less than a \nminute. Just enter your email and pick a password, and you're done!",
+    "Datawrapper is 100&#37; free and creating an account takes less than a \nminute. Just enter your email and pick a password, and you're done!": "Datawrapper helps you to publish your charts and maps in no time. The service can be used for free. There are paid options, but it is always your choice to use them. Give it a try, registration takes less than a minute and is 100% free.",
     "Sign Up": "Sign Up",
     "Alternatively you can sign in via:": "Alternatively you can sign in via:",
     "Watch out: Your chart needs more space. To get rid of the scrollbars just \n[resize iFrame to chart]": "Watch out: Your chart needs more space. To get rid of the scrollbars just \n[resize iFrame to chart]",
@@ -190,7 +190,7 @@
     "The password reset email has already been sent. Please contact an <a href=\n\"mailto:hello@datawrapper.de\">administrator<\/a>.": "The password reset email has already been sent. Please contact an <a href=\n\"mailto:hello@datawrapper.de\">administrator<\/a>.",
     "You haven't activated this email address yet, so we cannot safely send \nemails to it. Please contact an <a href=\"mailto:hello@datawrapper.de\n\">administrator<\/a>.": "You haven't activated this email address yet, so we cannot safely send \nemails to it. Please contact an <a href=\"mailto:hello@datawrapper.de\n\">administrator<\/a>.",
     "Datawrapper: You requested a reset of your password": "Datawrapper: You requested a reset of your password",
-    "You should soon receive an email with further instructions.": "You should soon receive an email with further instructions.",
+    "You should soon receive an email with further instructions.": "You should soon receive an email with further instructions. If you don't receive an email within five minutes, please make sure to also check the spam folder.",
     "You already resent the activation mail three times, now. Please <a href=\n\"mailto:%support_email%\">contact an administrator<\/a> to proceed with your \naccount activation.": "You already resent the activation mail three times, now. Please <a href=\n\"mailto:%support_email%\">contact an administrator<\/a> to proceed with your \naccount activation.",
     "Datawrapper: Please activate your email address": "Datawrapper: Please activate your email address",
     "The activation email has been send to your email address, again.": "The activation email has been send to your email address, again.",
@@ -350,5 +350,13 @@
     "upload \/ continue button": "Upload and continue",
     "upload \/ or upload csv": "..or upload a CSV file",
     "visualize \/ transpose-hint": "In case the visualization doesn't look like you expected, you should try to [LINK]transpose the data[\/LINK]",
-    "e.g.": "e.g."
+    "e.g.": "e.g.",
+    "login \/ signup \/ confirmation-email": "Thanks for signing up for Datawrapper! Please check your email inbox for our welcome email and click the activation link to complete signup.",
+    "login \/ signup \/ confirmation-email-hint": "If you do not see an email within five minutes, please make sure to also check the spam folder in your email program.",
+    "login \/ signup \/ confirm": "Got it",
+    "login \/ login \/ headline": "Login",
+    "login \/ login \/ intro": "We're glad to see you again. Login to access your charts, and create new ones.",
+    "login \/ signup \/ headline": "Create a new account",
+    "login \/ signup \/ intro": "Datawrapper helps you to publish your charts and maps in no time. Give it a try, registration takes less than a minute and is 100% free. ",
+    "login \/ alternative signin": "Alternatively you can sign in via:"
 }

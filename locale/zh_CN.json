@@ -350,5 +350,13 @@
     "upload \/ continue button": "\u4e0a\u4f20\u5e76\u7ee7\u7eed",
     "upload \/ or upload csv": "\u6216\u8005\u4e0a\u4f20\u4e00\u4e2aCSV\u6587\u4ef6",
     "visualize \/ transpose-hint": "In case the visualization doesn't look like you expected, you should try to [LINK]transpose the data[\/LINK].",
-    "e.g.": "\u4f8b\u5982"
+    "e.g.": "\u4f8b\u5982",
+    "login \/ login \/ headline": "Login",
+    "login \/ login \/ intro": "We're glad to see you again. Login to access your charts, and create new \nones.",
+    "login \/ signup \/ headline": "\u521b\u5efa\u65b0\u5e10\u6237",
+    "login \/ signup \/ intro": "Datawrapper is 100&#37; free and creating an account takes less than a \nminute. Just enter your email and pick a password, and you're done!",
+    "login \/ alternative signin": "Alternatively you can sign in via:",
+    "login \/ signup \/ confirmation-email": "Thanks for signing up for Datawrapper! Please check your email inbox for our welcome email and click the activation link to complete signup.",
+    "login \/ signup \/ confirmation-email-hint": "If you do not see an email within five minutes, please make sure to also check the spam folder in your email program.",
+    "login \/ signup \/ confirm": "Got it"
 }
