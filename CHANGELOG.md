@@ -1,6 +1,11 @@
 CHANGELOG
 ---------
 
+### 1.10.1
+
+* added signup confirmation step
+* bug-fixes for label placement in core chart types
+
 ### 1.10.0
 
 * Added computed columns
