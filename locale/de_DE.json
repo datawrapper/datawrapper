@@ -158,7 +158,7 @@
     "Return to login...": "Zur\u00fcck zum Login",
     "Create a new account": "Benutzerkonto anlegen",
     "Datawrapper is 100&#37; free and creating an account takes less than a \nminute. Just enter your email and pick a password, and you're done!": "Datawrapper hilft dabei Diagramme und Karten in k\u00fcrzester Zeit zu publizieren. Die Registrierung ist kostenfrei, der Basis-Dienst ist ebenfalls kostenlos. F\u00fcr Zusatz-Optionen gibt es faire Bezahloptionen. Probier es aus, die Registrierung dauert weniger als eine Minute.",
-    "Sign Up": "Datawrapper helps you to publish your charts and maps in no time. Give it a try, registration takes less than a minute and is 100% free. ",
+    "Sign Up": "Anmelden",
     "Alternatively you can sign in via:": "Oder melde dich an \u00fcber:",
     "Watch out: Your chart needs more space. To get rid of the scrollbars just \n[resize iFrame to chart]": "Dein Diagramm braucht mehr Platz. Um die Scrollbars loszuwerden kannst du [den iFrame an die Gr\u00f6\u00dfe des Diagramms anpassen]",
     "Your password doesn't meet our security guidelines. Please provide at least \n4 characters.": "Dein Passwort entspricht nicht unseren Sicherheitsanforderungen. Bitte benutze mindestens 4 Zeichen.",
@@ -357,6 +357,6 @@
     "login \/ login \/ headline": "Einloggen",
     "login \/ login \/ intro": "Hallo, sch\u00f6n dich wieder zu sehen. Melde dich an, um deine Diagramme zu sehen und neue zu erstellen.",
     "login \/ signup \/ headline": "Benutzerkonto anlegen",
-    "login \/ signup \/ intro": "Datawrapper hilft dabei Diagramme und Karten in k\u00fcrzester Zeit zu publizieren. Probier es aus, die Registrierung ist kostenlos und dauert weniger als eine Minute.",
+    "login \/ signup \/ intro": "Datawrapper hilft dabei Diagramme und Karten in k\u00fcrzester Zeit zu publizieren. Probier es aus und du hast deine erste Visualisierung in weniger als eine Minute.",
     "login \/ alternative signin": "Oder melde dich an \u00fcber:"
 }
