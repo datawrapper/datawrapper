@@ -249,6 +249,36 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
             if ($('#resize-h').val() != dim[1]) $('#resize-h').val(dim[1]);
             updateSize(dim[0], dim[1]);
         });
+
+        var iframe = $('#iframe-wrapper').addClass('resizable');
+        iframe.append('<div class="resizer icon-resize-horizontal"></div>');
+        $('.resizer', iframe).on('mousedown', dragStart);
+
+        var startX, startY, startWidth, startHeight;
+
+        function dragStart(e) {
+            startX = e.clientX;
+            startY = e.clientY;
+            startWidth = iframe.width();
+            startHeight = iframe.height();
+            $(document).on('mousemove', doDrag);
+            $(document).on('mouseup', stopDrag)
+        }
+
+        function doDrag(e) {
+            iframe.width(startWidth + e.clientX - startX);
+            iframe.height(startHeight + e.clientY - startY);
+            iframe.css('pointer-events', 'none');
+            e.preventDefault();
+            return false;
+        }
+
+        function stopDrag(e) {
+            $(document).unbind('mousemove', doDrag);
+            $(document).unbind('mouseup', stopDrag);
+            updateSize($('#iframe-vis').width(), $('#iframe-vis').height());
+            iframe.css('pointer-events', 'initial');
+        }
     }
 
     function initChartSize() {

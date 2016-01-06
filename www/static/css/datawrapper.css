@@ -943,6 +943,21 @@ html .btn-inverse {
   max-width: 98%;
   margin-top: 20px;
 }
+#iframe-wrapper .resizer {
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  cursor: se-resize;
+  transform: rotate(35deg);
+  -webkit-transform: rotate(35deg);
+  -ie-transform: rotate(35deg);
+  -moz-transform: rotate(35deg);
+}
+#iframe-wrapper.resizable {
+  position: relative;
+}
 #iframe-vis {
   border: 0;
   width: 100%;
