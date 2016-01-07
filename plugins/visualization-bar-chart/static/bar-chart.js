@@ -76,8 +76,11 @@
                 if (me.__domain[0] < 0) {
                     var x = c.lpad + c.zero ;
                     // add y-axis
-                    me.__yaxis = me.path('M' + [x, c.tpad] + 'V' + c.lastBarY, 'axis')
-                        .attr(me.theme().yAxis);
+    
+                    if (!me.__yaxis) me.__yaxis = [];
+
+                    me.__yaxis.push(me.path('M' + [x, c.tpad] + 'V' + c.lastBarY, 'axis')
+                        .attr(me.theme().yAxis));
                 }
                 // enable mouse events
                 el.mousemove(_.bind(me.onMouseMove, me));
@@ -226,14 +229,19 @@
                 var c = me.__canvas,
                     x = c.lpad + c.zero,
                     p = 'M' + [x, c.tpad] + 'V' + c.lastBarY;
+
                 // add y-axis
                 if (me.__yaxis) {
-                    me.__yaxis.animate({ path: p, opacity: 1 }, me.theme().duration, me.theme().easing);
+                    me.__yaxis.forEach(function (axis) {
+                        axis.animate({ path: p, opacity: 1 }, me.theme().duration, me.theme().easing);
+                    });
                 } else {
-                    me.__yaxis = me.path(p, 'axis').attr(me.theme().yAxis);
+                    me.__yaxis = [me.path(p, 'axis').attr(me.theme().yAxis)];
                 }
             } else if (me.__yaxis) {
-                me.__yaxis.animate({ opacity: 0 }, me.theme().duration * 0.5, me.theme().easing);
+                me.__yaxis.forEach(function(axis) {
+                    axis.animate({ opacity: 0 }, me.theme().duration * 0.5, me.theme().easing);
+                });
             }
 
             // hide elements and labels that are marked for hiding
