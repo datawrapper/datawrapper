@@ -1,4 +1,4 @@
-/*! datawrapper - v1.10.0 *///
+/*! datawrapper - v1.10.1 *///
 // NOTE: This file is auto-generated using /dw.js/make
 // from the source files /dw.js/src/*.js.
 //
@@ -1565,7 +1565,7 @@ dw.chart = function(attributes) {
             });
 
             // check if new value is set
-            if (!_.isEqual(pt[lastKey], value)) {
+            if (!is_equal(pt[lastKey], value)) {
                 pt[lastKey] = value;
                 change_callbacks.fire(chart, key, value);
             }
@@ -1898,6 +1898,10 @@ dw.chart = function(attributes) {
                 .replace(/_+$/, '')             // Trim - from end of text
                 .replace(/^(\d)/, '_$1');       // If first char is a number, prefix with _
         }
+    }
+
+    function is_equal(a, b) {
+        return JSON.stringify(a) == JSON.stringify(b);
     }
 
     return chart;
