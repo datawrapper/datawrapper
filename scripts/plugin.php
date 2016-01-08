@@ -131,6 +131,8 @@ function install($pattern) {
         $plugin = PluginQuery::create()->findPk($id);
         if ($plugin) {
             _loadPluginClass($plugin)->install();
+            DatawrapperHooks::execute(DatawrapperHooks::PLUGIN_UPDATED, $id);
+
             print "Re-installed plugin $id.\n";
         } else {
             $plugin = new Plugin();
@@ -138,6 +140,8 @@ function install($pattern) {
             $plugin->setInstalledAt(time());
             $plugin->save();
             _loadPluginClass($plugin)->install();
+            DatawrapperHooks::execute(DatawrapperHooks::PLUGIN_INSTALLED, $id);
+
             print "Installed plugin $id.\n";
         }
         global $argv;
@@ -208,6 +212,8 @@ function uninstall($pattern) {
             $plugin->setId($id);
         }
         _loadPluginClass($plugin)->uninstall();
+        DatawrapperHooks::execute(DatawrapperHooks::PLUGIN_UNINSTALLED, $id);
+
         print "Uninstalled plugin $id.\n";
     });
 }
@@ -268,6 +274,7 @@ function update($pattern) {
                     if ($ret[count($ret)-1] == 'Already up-to-date.') {
                         print "Plugin $id is up-to-date.\n";
                     } else {
+                        DatawrapperHooks::execute(DatawrapperHooks::PLUGIN_UPDATED, $id);
                         print "Updated plugin $id.\n";
                         install($id);
                     }
