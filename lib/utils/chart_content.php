@@ -86,11 +86,12 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
                 }
 
                 // at first we check if the library lives in ./lib of the vis module
-                if (file_exists(ROOT_PATH . 'www/' . $vis['__static_path'] . $script['local'])) {
+                if (file_exists(ROOT_PATH . 'www' . $vis['__static_path'] . $script['local'])) {
                     $u = $vis_static_path . $script['local'];
                 } else if (file_exists(ROOT_PATH . 'www/static/vendor/' . $script['local'])) {
                     $u = $static_path . '/vendor/' . $script['local'];
                 } else {
+                    print ROOT_PATH . 'www' . $vis['__static_path'] . $script['local'];
                     die("could not find required library ".$script["local"]);
                 }
                 $script['src'] = $u;
