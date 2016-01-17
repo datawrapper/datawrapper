@@ -1,6 +1,12 @@
 CHANGELOG
 ---------
 
+### 1.10.2
+
+* added support for generic inline editing
+* introduced core hooks for plugin install/update/uninstall
+* several bug fixes
+
 ### 1.10.1
 
 * added signup confirmation step
