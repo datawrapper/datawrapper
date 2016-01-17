@@ -5,7 +5,7 @@ DatawrapperVisualization::register($plugin, array(
     'title' =>  __('bar chart'),
     'version' => '1.3.2',
     'extends' => 'raphael-chart',
-    'order' => 5,
+    'order' => 995,
     'dimensions' => 1,
     'axes' => array(
         'labels' => array(

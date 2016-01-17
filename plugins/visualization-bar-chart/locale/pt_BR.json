@@ -6,11 +6,11 @@
     "Use different color for negative values": "Usar cores diferentes para valores negativos",
     "Use the same scale for all columns": "Usar a mesma escala para todas as colunas",
     "Filter missing values": "Filtrar valores ausentes",
-    "bar chart": "Bar Chart",
-    "base-color": "Base color",
-    "sort-bars": "Autmatically sort bars",
-    "reverse-order": "Reverse order",
-    "negative-values": "Use different color for negative values",
-    "same-scale": "Use the same scale for all columns",
-    "filter-missing": "Filter missing values"
+    "bar chart": "Gr\u00e1fico de barra",
+    "base-color": "Cor de base",
+    "sort-bars": "Classificar as barras automaticamente",
+    "reverse-order": "Ordem reversa",
+    "negative-values": "Usar cores diferentes para valores negativos",
+    "same-scale": "Usar a mesma escala para todas as colunas",
+    "filter-missing": "Filtrar valores ausentes"
 }
