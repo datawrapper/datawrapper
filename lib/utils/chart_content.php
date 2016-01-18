@@ -33,13 +33,16 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
 
     while (!empty($next_theme_id)) {
         $theme = DatawrapperTheme::get($next_theme_id);
-        $theme_static_path = str_replace('/static/', $static_path . '/', $theme['__static_path']);
+        // $theme_static_path = str_replace('/static/', $static_path . '/', $theme['__static_path']);
+        $theme_static_path = $theme['__static_path'];
         $theme_js[] = $theme_static_path . $next_theme_id . '.js';
         if ($theme['hasStyles']) {
             $theme_css[] =  $theme_static_path . $next_theme_id . '.css';
         }
         $next_theme_id = $theme['extends'];
     }
+
+    $abs = $protocol . '://' . $GLOBALS['dw_config']['domain'];
 
     $debug = $GLOBALS['dw_config']['debug'] == true || $debug;
     $culture = str_replace('_', '-', $locale);
@@ -54,10 +57,10 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
     } else {
         // use "local" assets
         $base_js = array(
-            $static_path . '/vendor/globalize/globalize.min.js',
-            $static_path . '/vendor/globalize/cultures/globalize.culture.' . $culture . '.js',
-            $static_path . '/vendor/underscore/underscore-min.js',
-            $static_path . '/vendor/jquery/jquery.min.js'
+            $abs . '/static/vendor/globalize/globalize.min.js',
+            $abs . '/static/vendor/globalize/cultures/globalize.culture.' . $culture . '.js',
+            $abs . '/static/vendor/underscore/underscore-min.js',
+            $abs . '/static/vendor/jquery/jquery.min.js'
         );
     }
 
