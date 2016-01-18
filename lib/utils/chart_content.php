@@ -44,7 +44,7 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
     $debug = $GLOBALS['dw_config']['debug'] == true || $debug;
     $culture = str_replace('_', '-', $locale);
 
-    if ($published && !$debug && !empty($GLOBALS['dw_config']['asset_domain'])) {
+    if ($published && !empty($GLOBALS['dw_config']['asset_domain'])) {
         $base_js = array(
             '//' . $GLOBALS['dw_config']['asset_domain'] . '/globalize.min.js',
             '//' . $GLOBALS['dw_config']['asset_domain'] . '/cultures/globalize.culture.' . $culture . '.js',
