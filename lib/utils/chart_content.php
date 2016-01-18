@@ -73,7 +73,8 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
 
     while (!empty($next_vis_id)) {
         $vis = DatawrapperVisualization::get($next_vis_id);
-        $vis_static_path = str_replace('/static/', $static_path . '/', $vis['__static_path']);
+        // $vis_static_path = str_replace('/static/', $static_path . '/', $vis['__static_path']);
+        $vis_static_path = $vis['__static_path'];
         $vjs = array();
         if (!empty($vis['libraries'])) {
             foreach (array_reverse($vis['libraries']) as $script) {
@@ -89,7 +90,7 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
                 if (file_exists(ROOT_PATH . 'www' . $vis['__static_path'] . $script['local'])) {
                     $u = $vis_static_path . $script['local'];
                 } else if (file_exists(ROOT_PATH . 'www/static/vendor/' . $script['local'])) {
-                    $u = $static_path . '/vendor/' . $script['local'];
+                    $u = '/static/vendor/' . $script['local'];
                 } else {
                     print ROOT_PATH . 'www' . $vis['__static_path'] . $script['local'];
                     die("could not find required library ".$script["local"]);
@@ -113,7 +114,7 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
     }
 
     $stylesheets = array_merge(
-        array($static_path . '/css/chart.base.css'),
+        array('/static/css/chart.base.css'),
         $vis_css,
         array_reverse($theme_css)
     );
