@@ -1,4 +1,4 @@
-/*! datawrapper - v1.10.1 *///
+/*! datawrapper - v1.10.2 *///
 // NOTE: This file is auto-generated using /dw.js/make
 // from the source files /dw.js/src/*.js.
 //
@@ -1914,6 +1914,12 @@ dw.visualization = (function(){
     var __vis = {};
 
     var visualization = function(id) {
+        if (!__vis[id]) {
+            console.warn('unknown visualization type: '+id);
+            var known = _.keys(__vis);
+            if (known.length > 0) console.warn('try one of these instead: '+known.join(', '));
+            return false;
+        }
         return new __vis[id]();
     };
 
