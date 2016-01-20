@@ -27,11 +27,17 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
         $locale = $chart->getLanguage();
     }
 
+    $static_path = $GLOBALS['dw_config']['static_path'];
+    $abs = $protocol . '://' . $GLOBALS['dw_config']['domain'];
+    if ($static_path == 'static/') $static_path = $abs . $static_path;
+
     while (!empty($next_theme_id)) {
         $theme = DatawrapperTheme::get($next_theme_id);
-        $theme_js[] = $theme['__static_path'] . $next_theme_id . '.js';
+        // $theme_static_path = str_replace('/static/', $static_path . '/', $theme['__static_path']);
+        $theme_static_path = $theme['__static_path'];
+        $theme_js[] = $theme_static_path . $next_theme_id . '.js';
         if ($theme['hasStyles']) {
-            $theme_css[] =  $theme['__static_path'] . $next_theme_id . '.css';
+            $theme_css[] =  $theme_static_path . $next_theme_id . '.css';
         }
         $next_theme_id = $theme['extends'];
     }
@@ -41,7 +47,7 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
     $debug = $GLOBALS['dw_config']['debug'] == true || $debug;
     $culture = str_replace('_', '-', $locale);
 
-    if ($published && !$debug && !empty($GLOBALS['dw_config']['asset_domain'])) {
+    if ($published && !empty($GLOBALS['dw_config']['asset_domain'])) {
         $base_js = array(
             '//' . $GLOBALS['dw_config']['asset_domain'] . '/globalize.min.js',
             '//' . $GLOBALS['dw_config']['asset_domain'] . '/cultures/globalize.culture.' . $culture . '.js',
@@ -49,7 +55,7 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
             '//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js'
         );
     } else {
-        // use local assets
+        // use "local" assets
         $base_js = array(
             $abs . '/static/vendor/globalize/globalize.min.js',
             $abs . '/static/vendor/globalize/cultures/globalize.culture.' . $culture . '.js',
@@ -70,6 +76,8 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
 
     while (!empty($next_vis_id)) {
         $vis = DatawrapperVisualization::get($next_vis_id);
+        // $vis_static_path = str_replace('/static/', $static_path . '/', $vis['__static_path']);
+        $vis_static_path = $vis['__static_path'];
         $vjs = array();
         if (!empty($vis['libraries'])) {
             foreach (array_reverse($vis['libraries']) as $script) {
@@ -82,11 +90,12 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
                 }
 
                 // at first we check if the library lives in ./lib of the vis module
-                if (file_exists(ROOT_PATH . 'www/' . $vis['__static_path'] . $script['local'])) {
-                    $u = $vis['__static_path'] . $script['local'];
+                if (file_exists(ROOT_PATH . 'www' . $vis['__static_path'] . $script['local'])) {
+                    $u = $vis_static_path . $script['local'];
                 } else if (file_exists(ROOT_PATH . 'www/static/vendor/' . $script['local'])) {
                     $u = '/static/vendor/' . $script['local'];
                 } else {
+                    print ROOT_PATH . 'www' . $vis['__static_path'] . $script['local'];
                     die("could not find required library ".$script["local"]);
                 }
                 $script['src'] = $u;
@@ -99,10 +108,10 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
                 if (!isset($vis_locale[$term])) $vis_locale[$term] = $translations;
             }
         }
-        $vjs[] = $vis['__static_path'] . $vis['id'] . '.js';
+        $vjs[] = $vis_static_path . $vis['id'] . '.js';
         $vis_js = array_merge($vis_js, array_reverse($vjs));
         if ($vis['hasCSS']) {
-            $vis_css[] = $vis['__static_path'] . $vis['id'] . '.css';
+            $vis_css[] = $vis_static_path . $vis['id'] . '.css';
         }
         $next_vis_id = !empty($vis['extends']) ? $vis['extends'] : null;
     }
@@ -146,11 +155,11 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
         $scripts = unique_scripts(
             array_merge(
                 $base_js,
-                array('/static/js/dw-2.0'.($debug ? '' : '.min').'.js'),
+                array($static_path . '/js/dw-2.0'.($debug ? '' : '.min').'.js'),
                 array_reverse($theme_js),
                 array_reverse($vis_js),
                 array_reverse($vis_libs),
-                array('/static/js/dw/chart.base.js')
+                array($static_path . '/js/dw/chart.base.js')
             )
         );
     }

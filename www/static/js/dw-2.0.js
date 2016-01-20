@@ -1,4 +1,4 @@
-/*! datawrapper - v1.10.0 *///
+/*! datawrapper - v1.10.2 *///
 // NOTE: This file is auto-generated using /dw.js/make
 // from the source files /dw.js/src/*.js.
 //
@@ -1565,7 +1565,7 @@ dw.chart = function(attributes) {
             });
 
             // check if new value is set
-            if (!_.isEqual(pt[lastKey], value)) {
+            if (!is_equal(pt[lastKey], value)) {
                 pt[lastKey] = value;
                 change_callbacks.fire(chart, key, value);
             }
@@ -1900,6 +1900,10 @@ dw.chart = function(attributes) {
         }
     }
 
+    function is_equal(a, b) {
+        return JSON.stringify(a) == JSON.stringify(b);
+    }
+
     return chart;
 };
 
@@ -1910,6 +1914,12 @@ dw.visualization = (function(){
     var __vis = {};
 
     var visualization = function(id) {
+        if (!__vis[id]) {
+            console.warn('unknown visualization type: '+id);
+            var known = _.keys(__vis);
+            if (known.length > 0) console.warn('try one of these instead: '+known.join(', '));
+            return false;
+        }
         return new __vis[id]();
     };
 

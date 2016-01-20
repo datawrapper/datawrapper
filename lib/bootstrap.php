@@ -23,6 +23,8 @@ if (isset($dw_config['automake']) && $dw_config['automake'] == true && !defined(
     }
 }
 
+if (!isset($dw_config['static_path'])) $dw_config['static_path'] = '/static';
+
 // Include the main Propel script
 // Initialize Propel with the runtime configuration
 // Add the generated 'classes' directory to the include path

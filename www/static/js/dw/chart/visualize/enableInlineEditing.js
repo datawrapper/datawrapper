@@ -71,6 +71,16 @@ define(function() {
                 chart.set('metadata.annotate.notes', $('.dw-chart-notes', doc).html());
                 $('#text-notes').val($('.dw-chart-notes', doc).html());
             });
+
+        $('.label[data-key] span', doc)
+            .initInlineEditing()
+            .off('blur').on('blur', function() {
+                var span = $(this),
+                    lbl = span.parent('.label'),
+                    key = lbl.data('key');
+                chart.set(key, span.text());
+                $('input[data-key="'+key+'"]').val(span.text());
+            });
     };
 
 });

@@ -194,4 +194,10 @@ class DatawrapperHooks {
     const VISUALIZE_BEFORE_CONTENT = 'visualize_before_content';
     const PUBLISH_BEFORE_CONTENT = 'publish_before_content';
 
+    // hooks for plugin installation/update
+    const PLUGIN_INSTALLED = 'plugin_installed';
+    const PLUGIN_UPDATED = 'plugin_updated';
+    const PLUGIN_UNINSTALLED = 'plugin_uninstalled';
+
+
 }
