@@ -152,13 +152,13 @@
                     // we need to add some right padding for the labels
                     c.labelWidth = 0;
                     dataset.eachColumn(function(col) {
-                        c.labelWidth = Math.max(c.labelWidth, vis.labelWidth(col.name(), 'series highlighted'));
+                        c.labelWidth = Math.max(c.labelWidth, vis.labelWidth(col.title(), 'series highlighted'));
                     });
                     // we limit the label width to the 1/4 of the entire width
                     if (c.labelWidth > this.__w * 0.25) {
                         c.labelWidth = this.__w * 0.25;
                     }
-                    c.rpad += c.labelWidth + 20;
+                    c.rpad += c.labelWidth;
                     if (legend.pos == 'right') c.rpad += 15;
                 } else {
                     c.rpad += 5;
@@ -166,7 +166,8 @@
 
                 if (legend.pos != 'direct' && legend.pos != 'right') {
                     // a little more space for last x-label if no right legend
-                    c.rpad += 0.25 * vis.labelWidth(vis.axes(true).x.val(-1));
+                    c.rpad += vis.labelWidth(axesDef.x.raw()[axesDef.x.raw().length-1]);
+
                     legend.xoffset += c.lpad;
                 }
 
@@ -304,7 +305,7 @@
                                 top: lbly+3
                             });
                             legend.cont.append(div);
-                            legend.xoffset += vis.labelWidth(col.name(), 'series')+30;
+                            legend.xoffset += vis.labelWidth(col.title(), 'series')+30;
                         }
                     }
                     lbl = vis.label(lblx, lbly, col.title(), {
