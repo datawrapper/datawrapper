@@ -40,13 +40,28 @@
 
             // compute maximum x-label height
             var lh = 0,
+                lhi = 0,
+                lw = 0,
+                lwi = 0;
                 barColumns = me.getBarColumns(),
                 n = barColumns.length;
             _.each(barColumns, function(column, s) {
-                lh = Math.max(lh, me.labelHeight(column.title(), 'series', c.w / (n)));
-            });
-            c.bpad += lh;
+                var lbl_w = me.labelWidth(column.title(), 'series'),
+                    lbl_h = me.labelHeight(column.title(), 'series'); 
 
+                if (lbl_w >= lw) { lw = lbl_w; lwi = s; }
+                if (lbl_h >= lh) { lh = lbl_h; lhi = s; }
+            });
+
+            var bw = (c.w * 0.9) / (me.axesDef.columns.length*1.5);
+
+            if (bw < 20) {
+                c.bpad += me.labelWidth(barColumns[lwi].title(), 'series smaller');
+            } else if (bw < 30) {
+                c.bpad += lw;
+            } else {
+                c.bpad += lh;
+            }
 
             me.initDimensions();
 
