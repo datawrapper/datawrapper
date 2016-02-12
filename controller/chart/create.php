@@ -30,6 +30,9 @@ $app->map('/chart/create', function() use ($app) {
                 $chart->setTitle($req->post('title'));
             }
         }
+        if ($req->post('theme') != null) {
+            $chart->setTheme($req->post('theme'));
+        }
         $chart->save();
         $app->redirect('/chart/'.$chart->getId().'/'.$step);
     }
