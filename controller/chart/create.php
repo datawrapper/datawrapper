@@ -31,7 +31,10 @@ $app->map('/chart/create', function() use ($app) {
             }
         }
         if ($req->post('theme') != null) {
-            $chart->setTheme($req->post('theme'));
+            $installed_themes = array_map(function($t){ return $t['id']; }, DatawrapperTheme::all());
+            if (in_array($req->post('theme'), $installed_themes)) {
+                $chart->setTheme($req->post('theme'));
+            }
         }
         $chart->save();
         $app->redirect('/chart/'.$chart->getId().'/'.$step);
