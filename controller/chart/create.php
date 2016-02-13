@@ -30,10 +30,9 @@ $app->map('/chart/create', function() use ($app) {
                 $chart->setTitle($req->post('title'));
             }
         }
-        if ($req->post('theme') != null) {
-            $installed_themes = array_map(function($t){ return $t['id']; }, DatawrapperTheme::all());
-            if (in_array($req->post('theme'), $installed_themes)) {
-                $chart->setTheme($req->post('theme'));
+        if ($req->get('theme') != null) {
+            if (DatawrapperTheme::get($req->get('theme')) !== false) {
+                $chart->setTheme($req->get('theme'));
             }
         }
         $chart->save();
