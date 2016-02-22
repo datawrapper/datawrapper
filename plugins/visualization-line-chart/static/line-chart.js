@@ -494,7 +494,7 @@
                     }
                 }
                 addlbl(scales.x(k), labels[k], k);
-                
+
                 if (vis.get('show-grid', false) && theme.verticalGrid) {
                     // draw vertical grid
                     _.each(scales.x.ticks(20), function(tick) {
@@ -518,8 +518,6 @@
                     new_decade, new_quarter,
                     real_data_as_ticks = false;
 
-                
-                console.log('customTicks', customTicks);
 
                 if (customTicks && customTicks.length) {
                     // parse custom ticks
