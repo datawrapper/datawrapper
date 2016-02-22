@@ -494,6 +494,7 @@
                     }
                 }
                 addlbl(scales.x(k), labels[k], k);
+                
                 if (vis.get('show-grid', false) && theme.verticalGrid) {
                     // draw vertical grid
                     _.each(scales.x.ticks(20), function(tick) {
@@ -507,6 +508,7 @@
             function drawDateAxis() {
                 var tickCount = Math.round(c.w / 75),
                     ticks = scales.x.ticks(tickCount),
+                    customTicks = vis.get('custom-ticks', null),
                     fmt = axesDef.x.type(true).format(), // get parsed date format
                     daysDelta = Math.round((rowName(-1).getTime() - rowName(0).getTime()) / 86400000),
                     tickFormat = dw.utils.dateFormat(daysDelta),
@@ -516,7 +518,16 @@
                     new_decade, new_quarter,
                     real_data_as_ticks = false;
 
-                if (ticks.length > axesDef.x.length) {
+                
+                console.log('customTicks', customTicks);
+
+                if (customTicks && customTicks.length) {
+                    // parse custom ticks
+                    var date_col = dw.column('custom-ticks', customTicks.split(/ *, */), 'date');
+                    ticks = date_col.values().sort(function(a,b) { return a.getTime() - b.getTime(); });
+                    scales.x.domain(d3.extent(ticks.concat(scales.x.domain())));
+
+                } else if (ticks.length > axesDef.x.length) {
                     ticks = axesDef.x.values();
                     real_data_as_ticks = true;
                 }

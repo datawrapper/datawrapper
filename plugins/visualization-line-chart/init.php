@@ -119,6 +119,22 @@ DatawrapperVisualization::register($plugin, array(
             ),
             'default' => 'straight'
         ),
+        'sep-x-axis' => array(
+            'type' => 'separator',
+            'label' => __('Customize x-axis'),
+            'depends-on' => array(
+                'chart.column_type[x]' => 'date'
+            )
+        ),
+        'custom-ticks' => array(
+            'type' => 'text',
+            'placeholder' => '2012,2014,2015',
+            'label' => __('Custom ticks'),
+            'depends-on' => array(
+                'chart.column_type[x]' => 'date'
+            ),
+            'help' => __('Enter comma-separated list of dates at which you want to add ticks to the x-axis')
+        ),
         'sep-y-axis' => array(
             'type' => 'separator',
             'label' => __('Customize y-axis')
