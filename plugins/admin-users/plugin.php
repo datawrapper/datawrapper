@@ -58,15 +58,14 @@ class DatawrapperPlugin_AdminUsers extends DatawrapperPlugin {
             'title' => __('Users'),
             'q' => $app->request()->params('q', '')
         ));
+
         $sort = $app->request()->params('sort', '');
         $user = DatawrapperSession::getUser();
+
         function getQuery($user) {
             global $app;
             $sort = $app->request()->params('sort', '');
             $query = UserQuery::create()
-                ->leftJoin('User.Chart')
-                ->withColumn('COUNT(Chart.Id)', 'NbCharts')
-                ->groupBy('User.Id')
                 ->filterByDeleted(false);
             $q = $app->request()->params('q');
             if ($q) {
@@ -78,23 +77,26 @@ class DatawrapperPlugin_AdminUsers extends DatawrapperPlugin {
             switch ($sort) {
                 case 'name': $query->orderByName('asc'); break;
                 case 'email': $query->orderByEmail('asc'); break;
-                case 'charts': $query->orderBy('NbCharts', 'desc'); break;
                 case 'created_at':
                 default:
                     $query->orderBy('createdAt', 'desc'); break;
             }
             return $query;
         }
+
         $curPage = $app->request()->params('page', 0);
-        $total = getQuery($user)->count();
+        $total   = getQuery($user)->count();
         $perPage = 50;
-        $append = '';
+        $append  = '';
+
         if ($page['q']) {
-            $append = '&q=' . $page['q'];
+            $append = '&q='.$page['q'];
         }
+
         if (!empty($sort)) {
             $append .= '&sort='.$sort;
         }
+
         add_pagination_vars($page, $total, $curPage, $perPage, $append);
         $page['users'] = getQuery($user)->limit($perPage)->offset($curPage * $perPage)->find();
 
