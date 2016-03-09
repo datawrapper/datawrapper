@@ -109,9 +109,9 @@ define(['queue'], function(queue) {
             var out_w = Math.min(parent_n.clientWidth, 700),
                 out_h = Math.min(parent_n.clientHeight, 1000);
 
-            var labels = parent.selectAll('.label span,.chart-title,.chart-intro,.footer-left'),
+            var labels = parent.selectAll('.label span,.chart-title,.chart-intro,.footer-left,td,th'),
                 nodes = parent.selectAll('path, line, rect, circle, text'),
-                divs = parent.selectAll('.export-rect,.dw-rect'),
+                divs = parent.selectAll('.export-rect,.dw-rect,tr'),
                 circles = parent.selectAll('.dw-circle');
 
             var svgNodes = parent.selectAll('svg');
