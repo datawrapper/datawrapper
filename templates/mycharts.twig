@@ -126,9 +126,10 @@
     {% if user.hasCharts %}
     <div class="thumbnails js-masonry" data-masonry-options='{ "itemSelector": ".grid-item", "columWidth": 200 }'>
         {% for chart in charts %}
+        
         <div class="span3 chart" data-id="{{ chart.id }}">
             <div class="thumbnail" style="background:{{ chart.metadata.publish.background }}">
-                <a href="/chart/{{ chart.id }}/edit" >
+                <a href="/{{ chart.getNamespace() }}/{{ chart.id }}/edit" >
                     <h3 style="color:{% if chart.metadata.publish.text %}{{ chart.metadata.publish.text }}{% else %}#000{% endif %};text-shadow:1px 1px 3px {% if chart.metadata.publish.background %}{{ chart.metadata.publish.background }}{% else %}#fff{% endif %};">{% if chart.title != '' %}{{ chart.title | replace({'<br/>': ' - '}) | striptags | raw }}{% else %}{{ chart.id }}{% endif %}</h3>
 
                     <img src="{% if chart.hasPreview %}//{{ DW_CHART_CACHE_DOMAIN }}/{{ chart.id }}/m.png{% else %}/static/img/nopreview.png{% endif %}" width="260" >
