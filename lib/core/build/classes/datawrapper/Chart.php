@@ -375,4 +375,10 @@ class Chart extends BaseChart {
         return $this->getID() . '/' . ($version > 0 ? $version . '/' : '');
     }
 
+    public function getNamespace() {
+        return ($this->getType() == "d3-maps-choropleth" &&
+          $this->getMetadata('visualize.map-type-set') != null) ? 
+          "map" : "chart";
+    }
+
 } // Chart
