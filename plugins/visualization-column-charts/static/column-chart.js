@@ -404,9 +404,9 @@
                 // show or update label
                 if (val !== 0) {
                     var lbl = tickLabels[key] = tickLabels[key] ||
-                        me.label(x+2, ly, formatter(val, t == ticks.length-1, true),
+                        me.label(x+2, ly, formatter(val, t == ticks.length-1, false),
                             { align: 'left', cl: 'axis', css: { opacity: 0 } });
-                    lbl.text(formatter(val, t == ticks.length-1, true));
+                    lbl.text(formatter(val, t == ticks.length-1, false));
                     lbl.animate({ x: c.lpad+2, y: ly, css: { opacity: 1 } }, theme.duration, theme.easing);
                 }
                 if (theme.yTicks) {
