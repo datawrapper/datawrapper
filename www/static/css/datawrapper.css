@@ -1111,14 +1111,14 @@ html .btn-inverse {
   width: auto;
   float: none;
   margin-right: 1em;
-  vertical-align: top;
+  vertical-align: baseline;
 }
 .chart-editor.dw-create-visualize #vis-options .controls {
   display: inline-block;
   width: auto;
   float: none;
   margin-left: 0;
-  vertical-align: top;
+  vertical-align: baseline;
 }
 .chart-editor.dw-create-visualize #vis-options .tooltip .tooltip-inner {
   background: #eee;
