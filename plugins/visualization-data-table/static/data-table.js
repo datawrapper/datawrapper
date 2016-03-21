@@ -35,7 +35,13 @@
                 colType.push(column.type());
                 tr.append(th);
             });
-            $('thead', table).append(tr);
+
+            if (!me.chart().get('metadata.visualize.hide-header')) {
+                $('thead', table).append(tr);
+            } else {
+                $('thead', table).addClass("hidden");
+            }
+
             _.each(_.range(dataset.numRows()), function(r) {
                 tr = $('<tr />');
                 var highlighted_rows = me.get('highlighted-rows');

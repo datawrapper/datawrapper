@@ -83,6 +83,11 @@ class DatawrapperPlugin_VisualizationDataTable extends DatawrapperPlugin_Visuali
             "filter" => array(
                 "type" => "checkbox",
                 "label" =>  __("Show filter", $id)
+            ),
+            "hide-header" => array(
+                "type" => "checkbox",
+                "label" =>  __("Hide header", $id),
+                "default" => false
             )
         );
         return $options;
