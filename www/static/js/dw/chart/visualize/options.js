@@ -45,6 +45,18 @@ function(initCustomColors, syncVisOptions, unsyncVisOptions) {
                     localStorage.setItem('dw-vis-groups', JSON.stringify(usrPref));
                 } catch (e) {}
             });
+
+            $('.vis-option-group').each(function() {
+                var $control_grp = $(this),
+                    $control_lbl = $('.control-label', $control_grp).css('max-width', 'auto'),
+                    $controls = $('.controls', $control_grp).css('max-width', 'auto');
+                
+                if ($control_lbl.length && $controls.length) {
+                    var total_w = $control_grp.width(),
+                        lbl_w = $control_lbl.width();
+                    $controls.css('max-width', (0.95 - lbl_w / total_w) * 100 + '%');
+                }
+            });
         },
 
         reset: function() {

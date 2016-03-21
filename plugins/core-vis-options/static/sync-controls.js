@@ -126,7 +126,8 @@ $(function() {
         });
 
         function tonum(v) {
-            return v.trim() === '' ? '' : +v;
+            return v.trim() === '' ? '' : 
+                _.isFinite(+v) ? +v : v;
         }
     }
 
