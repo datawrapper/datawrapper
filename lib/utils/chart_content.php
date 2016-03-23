@@ -127,7 +127,7 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
     $the_theme = DatawrapperTheme::get($chart->getTheme());
     $l10n__domain = $the_theme['__static_path'];
 
-    $the_vis_js = get_vis_js($the_vis, array_merge(array_reverse($vis_js), $vis_libs_local));
+    $the_vis_js = get_vis_js($the_vis, array_merge(array_reverse($vis_js), array_reverse($vis_libs_local)));
     $the_theme_js = get_theme_js($the_theme, array_reverse($theme_js));
     $the_chart_js = get_chart_js();
 
