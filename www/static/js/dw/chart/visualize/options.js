@@ -54,7 +54,7 @@ function(initCustomColors, syncVisOptions, unsyncVisOptions) {
                 if ($control_lbl.length && $controls.length) {
                     var total_w = $control_grp.width(),
                         lbl_w = $control_lbl.width();
-                    $controls.css('max-width', (0.95 - lbl_w / total_w) * 100 + '%');
+                    $controls.css('max-width', (0.9 - lbl_w / total_w) * 100 + '%');
                 }
             });
         },
