@@ -579,6 +579,13 @@
                     min_contrast = chart.hasHighlight() ? (chart.isHighlighted(column) ? 4.5 : 1.45) : 1.7,
                     i = 0;
 
+                if (chart.get('metadata.visualize.custom-colors')
+                  && chart.get('metadata.visualize.custom-colors')[column.name()]) {
+
+                    return col.hex();
+
+                }
+
                 // make sure there's enough contrast with background
                 while (chroma.contrast(bgcol, col) < min_contrast && i++ < 20) {
                     if (bglum > 0.5) col = col.darken(5);
