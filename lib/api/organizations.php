@@ -197,6 +197,7 @@ $app->put('/organizations/:id/plugins/:op/:plugin_id', function($org_id, $op, $p
  * get charts of an organization
  */
 $app->get('/organizations/:id/charts', function($org_id) use ($app) {
+    disable_cache($app);
     $user = DatawrapperSession::getUser();
     $org = OrganizationQuery::create()->findPk($org_id);
     if ($org) {
