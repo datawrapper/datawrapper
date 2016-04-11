@@ -99,8 +99,10 @@ define(function() {
                                 compare(dw.utils.magnitudeRange(dw.utils.minMax(axesColumns[key])));
                         } else if (columnTypeRegex.test(key)) {
                             key = key.match(columnTypeRegex)[1];
-                            visible = visible && !_.isUndefined(axesColumns[key]) &&
-                                        axesColumns[key][0].type() == val;
+                            visible = visible && 
+                                !_.isUndefined(axesColumns[key]) &&
+                                !_.isEmpty(axesColumns[key]) &&
+                                axesColumns[key][0].type() == val;
                         } else if (isNullRegex.test(key)) {
                             key = key.match(isNullRegex)[1];
                             visible = visible && _.isNull(chart.get('metadata.visualize.'+key, null)) === val;
