@@ -96,7 +96,11 @@
                             .appendTo(el)
                             .css({ position: 'absolute', top: 0, left: 0 });
 
-            _.each(all_series, renderLine);  // _.each(all_series,
+            var maxX = 0;
+            all_series.forEach(function(col, index) {
+                var x = renderLine(col, index, maxX);
+                if (x > maxX) maxX = x;
+            });
 
             if (axesDef.y1.length > 1) {
                 if (legend.pos == 'direct') {
@@ -183,7 +187,7 @@
                 ).attr(theme.frame);
             }
 
-            function renderLine(col, index) {
+            function renderLine(col, index, maxX) {
                 var paths = [],
                     pts_ = [],
                     pts = [],
@@ -217,7 +221,11 @@
 
                 renderMissingValueConnections();
 
+                if (x < maxX) x = maxX;
+
                 if (lineLabelsVisible()) renderLabels();
+
+                return x;
 
                 function buildPathPoints(val, i) {
                     if (!_.isNumber(val)) {
