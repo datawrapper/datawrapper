@@ -30,6 +30,7 @@
     "masonry": "3.3.2",
     "queue-async": "1.0.7",
     "requirejs": "2.1.20",
-    "underscore": "1.8.3"
+    "underscore": "1.8.3",
+    "ScrollToFixed": "scrolltofixed#^1.0.6"
   }
 }

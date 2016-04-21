@@ -36,6 +36,7 @@ module.exports = function(grunt) {
                     'queue-async': 'queue-async/queue*js',
                     requirejs: 'requirejs/require*.js',
                     underscore: 'underscore/underscore*',
+                    scrolltofixed: 'ScrollToFixed/jquery-scrolltofixed-min.js'
                 }
             }
         }

@@ -8,6 +8,7 @@
 {% set vismeta = chart.metadata.visualize %}
 
 <script type="text/javascript" charset="utf-8" src="/static/vendor/canvg/canvg.bundle.min.js"></script>
+<script type="text/javascript" src="/static/vendor/scrolltofixed/jquery-scrolltofixed-min.js"></script>
 
 {% for vis in visualizations_deps %}
 <script type="text/javascript" charset="utf-8" src="{{ vis.__static_path }}/{{ vis.id }}.js"></script>
@@ -29,7 +30,7 @@ dw.backend.ready(function() {
 
         <div class="span8">
 
-            <div data-offset-top="100" data-offset-bottom="130">
+            <div class="scrollfix-cont" data-offset-top="100" data-offset-bottom="130">
                 <div id="iframe-wrapper" style="height:500px;" >
                     <iframe src="" id="iframe-vis" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen>
                     </iframe>
