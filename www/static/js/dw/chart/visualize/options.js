@@ -40,6 +40,7 @@ function(initCustomColors, syncVisOptions, unsyncVisOptions) {
 
             $('.vis-option-type-group > label.group-title').click(function() {
                 var $g = $(this).parents('.vis-option-type-group').toggleClass('group-open');
+                $(window).resize();
                 try {
                     usrPref[type][$g.data('group-key')] = $g.hasClass('group-open') ? 'open' : 'closed';
                     localStorage.setItem('dw-vis-groups', JSON.stringify(usrPref));

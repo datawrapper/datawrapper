@@ -352,7 +352,9 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
         var scrollFixCont = $('.scrollfix-cont');
         scrollFixCont.scrollToFixed({
             marginTop: 0,
-            limit: $('footer.footer').offset().top - scrollFixCont.height() - 40
+            limit: function() {
+                return $('footer.footer').offset().top - scrollFixCont.height() - 60;
+            }
         });
     }
 
