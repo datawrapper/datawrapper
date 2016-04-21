@@ -48,6 +48,7 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
         initVisSelector();
         initResizeChart();
         initChartSize();
+        initScrollToFix();
 
         $(window).on('keyup', function(e) {
             if (e.ctrlKey && e.keyCode == 82) {
@@ -344,6 +345,14 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
         $('#iframe-wrapper').css({
             'background-color': white ? '#ffffff' : bgcol,
             'border-color': border
+        });
+    }
+
+    function initScrollToFix() {
+        var scrollFixCont = $('.scrollfix-cont');
+        scrollFixCont.scrollToFixed({
+            marginTop: 0,
+            limit: $('footer.footer').offset().top - scrollFixCont.height() - 40
         });
     }
 
