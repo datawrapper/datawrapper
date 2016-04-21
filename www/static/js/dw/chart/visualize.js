@@ -353,7 +353,10 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
         scrollFixCont.scrollToFixed({
             marginTop: 0,
             limit: function() {
-                return $('footer.footer').offset().top - scrollFixCont.height() - 60;
+                var sftop =  scrollFixCont.offset().top,
+                    ftminsfh = $('footer.footer').offset().top - scrollFixCont.height() - 60;
+                // if (sftop > ftminsfh) return sftop+10;
+                return ftminsfh;
             }
         });
     }
