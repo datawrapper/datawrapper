@@ -48,6 +48,14 @@
                 if (_.isArray(highlighted_rows) && _.indexOf(highlighted_rows, "Row "+(me.chart().rowLabel(r)+1)) >= 0) {
                     tr.addClass('highlight');
                 }
+
+                if (me.get('hide-header') &&
+                      ((r == 0)
+                        || ((r % 10 == 0 || r % 25 == 0)&& me.get('paginate')))) {
+
+                   tr.css('border-top', '1px solid #bbb');
+                }
+
                 dataset.eachColumn(function(column, s) {
                     var cell_content = me.chart().columnFormatter(column)(column.val(r), true);
                     if (cell_content == "n/a") {
