@@ -304,7 +304,10 @@
                     total = formatValue(total, true);
                 }
                 if (me.__labelTotal) me.__labelTotal.remove();
-                me.__labelTotal = me.label(cx, c.cy, '<strong>Total:</strong><br />'+total, {
+
+                var totalLbl = me.translate('Total:');
+
+                me.__labelTotal = me.label(cx, c.cy, '<strong>' +totalLbl+ '</strong><br />'+total, {
                     w: 50,
                     align: 'center',
                     valign: 'middle'
