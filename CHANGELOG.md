@@ -6,6 +6,8 @@ CHANGELOG
 * added support for generic inline editing
 * introduced core hooks for plugin install/update/uninstall
 * several bug fixes
+* added settings-column for organizations to store organization-wide preferences
+* You need to migrate the database schema, see [commit message](https://github.com/datawrapper/datawrapper/commit/50e02d72f871c94b4faee933b2b74b6d5be56e78)
 
 ### 1.10.1
 
