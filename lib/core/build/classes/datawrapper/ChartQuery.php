@@ -40,12 +40,22 @@ class ChartQuery extends BaseChartQuery {
         $title = '[ ' . $untitled . ' ]';
         $chart->setTitle($title);
 
+        $chart->setLocale(''); // no default locale
+        $chart->setType(isset($defaults['vis']) ? $defaults['vis'] : 'bar-chart');
+        $chart->setPublicUrl($chart->getLocalUrl());
+
+
         // todo: use global default theme
         $chart->setTheme(isset($defaults['theme']) ? $defaults['theme'] : 'default');
-        // use organization default theme if possible
+
         if ($user->isLoggedIn()) {
             $org = $user->getCurrentOrganization();
             if (!empty($org)) {
+                $settings = $org->getSettings();
+                if (isset($settings["default"]) && isset($settings["default"]["locale"])) {
+                    $chart->setLocale($settings["default"]["locale"]);
+                }
+                
                 $def_org_theme = $org->getDefaultTheme();
                 if (!empty($def_org_theme) && DatawrapperTheme::get($def_org_theme)) {
                     $chart->setTheme($def_org_theme);
@@ -62,10 +72,6 @@ class ChartQuery extends BaseChartQuery {
             }
         }
 	
-        $chart->setLocale(''); // no default locale
-        $chart->setType(isset($defaults['vis']) ? $defaults['vis'] : 'bar-chart');
-        $chart->setPublicUrl($chart->getLocalUrl());
-
         $defaultMeta = Chart::defaultMetaData();
 
         if (isset($def_org_theme_default_width)) {

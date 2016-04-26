@@ -11,12 +11,14 @@
  * @method OrganizationQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method OrganizationQuery orderByDeleted($order = Criteria::ASC) Order by the deleted column
  * @method OrganizationQuery orderByDefaultTheme($order = Criteria::ASC) Order by the default_theme column
+ * @method OrganizationQuery orderBySettings($order = Criteria::ASC) Order by the settings column
  *
  * @method OrganizationQuery groupById() Group by the id column
  * @method OrganizationQuery groupByName() Group by the name column
  * @method OrganizationQuery groupByCreatedAt() Group by the created_at column
  * @method OrganizationQuery groupByDeleted() Group by the deleted column
  * @method OrganizationQuery groupByDefaultTheme() Group by the default_theme column
+ * @method OrganizationQuery groupBySettings() Group by the settings column
  *
  * @method OrganizationQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method OrganizationQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -45,12 +47,14 @@
  * @method Organization findOneByCreatedAt(string $created_at) Return the first Organization filtered by the created_at column
  * @method Organization findOneByDeleted(boolean $deleted) Return the first Organization filtered by the deleted column
  * @method Organization findOneByDefaultTheme(string $default_theme) Return the first Organization filtered by the default_theme column
+ * @method Organization findOneBySettings(string $settings) Return the first Organization filtered by the settings column
  *
  * @method array findById(string $id) Return Organization objects filtered by the id column
  * @method array findByName(string $name) Return Organization objects filtered by the name column
  * @method array findByCreatedAt(string $created_at) Return Organization objects filtered by the created_at column
  * @method array findByDeleted(boolean $deleted) Return Organization objects filtered by the deleted column
  * @method array findByDefaultTheme(string $default_theme) Return Organization objects filtered by the default_theme column
+ * @method array findBySettings(string $settings) Return Organization objects filtered by the settings column
  *
  * @package    propel.generator.datawrapper.om
  */
@@ -154,7 +158,7 @@ abstract class BaseOrganizationQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `name`, `created_at`, `deleted`, `default_theme` FROM `organization` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `name`, `created_at`, `deleted`, `default_theme`, `settings` FROM `organization` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_STR);
@@ -398,6 +402,35 @@ abstract class BaseOrganizationQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(OrganizationPeer::DEFAULT_THEME, $defaultTheme, $comparison);
+    }
+
+    /**
+     * Filter the query on the settings column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterBySettings('fooValue');   // WHERE settings = 'fooValue'
+     * $query->filterBySettings('%fooValue%'); // WHERE settings LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $settings The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return OrganizationQuery The current query, for fluid interface
+     */
+    public function filterBySettings($settings = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($settings)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $settings)) {
+                $settings = str_replace('*', '%', $settings);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(OrganizationPeer::SETTINGS, $settings, $comparison);
     }
 
     /**

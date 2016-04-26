@@ -73,4 +73,39 @@ class Organization extends BaseOrganization
         return $this->getUsers($crit);
     }
 
+    public function getSettings($key = null) {
+        if ($this->settings == null) {
+            return array();
+        } 
+
+        $meta = json_decode($this->settings, true);
+        if (!is_array($meta)) $meta = array();
+
+        if (empty($key)) return $meta;
+        $keys = explode('.', $key);
+        $p = $meta;
+        foreach ($keys as $key) {
+            if (isset($p[$key])) $p = $p[$key];
+            else return null;
+        }
+        return $p;
+    }
+
+    public function updateSettings($key, $value) {
+        $meta = $this->getSettings();
+        $keys = explode('.', $key);
+        $p = &$meta;
+        foreach ($keys as $key) {
+            if (!isset($p[$key])) {
+                $p[$key] = array();
+            }
+            $p = &$p[$key];
+        }
+        $p = $value;
+        $this->setSettings(json_encode($meta));
+    }
+
+
+
+
 }

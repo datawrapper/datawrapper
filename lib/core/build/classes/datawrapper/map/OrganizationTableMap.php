@@ -43,6 +43,7 @@ class OrganizationTableMap extends TableMap
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', true, null, null);
         $this->addColumn('deleted', 'Deleted', 'BOOLEAN', false, 1, false);
         $this->addColumn('default_theme', 'DefaultTheme', 'VARCHAR', false, 128, '');
+        $this->addColumn('settings', 'Settings', 'CLOB', false, null, null);
         // validators
     } // initialize()
 

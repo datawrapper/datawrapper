@@ -82,6 +82,7 @@ CREATE TABLE `organization`
     `created_at` DATETIME NOT NULL,
     `deleted` TINYINT(1) DEFAULT 0,
     `default_theme` VARCHAR(128) DEFAULT '',
+    `settings` LONGTEXT,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 

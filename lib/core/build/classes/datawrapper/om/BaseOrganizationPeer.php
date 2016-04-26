@@ -24,13 +24,13 @@ abstract class BaseOrganizationPeer
     const TM_CLASS = 'OrganizationTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 5;
+    const NUM_COLUMNS = 6;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 5;
+    const NUM_HYDRATE_COLUMNS = 6;
 
     /** the column name for the id field */
     const ID = 'organization.id';
@@ -46,6 +46,9 @@ abstract class BaseOrganizationPeer
 
     /** the column name for the default_theme field */
     const DEFAULT_THEME = 'organization.default_theme';
+
+    /** the column name for the settings field */
+    const SETTINGS = 'organization.settings';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -66,12 +69,12 @@ abstract class BaseOrganizationPeer
      * e.g. OrganizationPeer::$fieldNames[OrganizationPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'CreatedAt', 'Deleted', 'DefaultTheme', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'createdAt', 'deleted', 'defaultTheme', ),
-        BasePeer::TYPE_COLNAME => array (OrganizationPeer::ID, OrganizationPeer::NAME, OrganizationPeer::CREATED_AT, OrganizationPeer::DELETED, OrganizationPeer::DEFAULT_THEME, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'NAME', 'CREATED_AT', 'DELETED', 'DEFAULT_THEME', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'created_at', 'deleted', 'default_theme', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'CreatedAt', 'Deleted', 'DefaultTheme', 'Settings', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'createdAt', 'deleted', 'defaultTheme', 'settings', ),
+        BasePeer::TYPE_COLNAME => array (OrganizationPeer::ID, OrganizationPeer::NAME, OrganizationPeer::CREATED_AT, OrganizationPeer::DELETED, OrganizationPeer::DEFAULT_THEME, OrganizationPeer::SETTINGS, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'NAME', 'CREATED_AT', 'DELETED', 'DEFAULT_THEME', 'SETTINGS', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'created_at', 'deleted', 'default_theme', 'settings', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
     );
 
     /**
@@ -81,12 +84,12 @@ abstract class BaseOrganizationPeer
      * e.g. OrganizationPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'CreatedAt' => 2, 'Deleted' => 3, 'DefaultTheme' => 4, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'createdAt' => 2, 'deleted' => 3, 'defaultTheme' => 4, ),
-        BasePeer::TYPE_COLNAME => array (OrganizationPeer::ID => 0, OrganizationPeer::NAME => 1, OrganizationPeer::CREATED_AT => 2, OrganizationPeer::DELETED => 3, OrganizationPeer::DEFAULT_THEME => 4, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'NAME' => 1, 'CREATED_AT' => 2, 'DELETED' => 3, 'DEFAULT_THEME' => 4, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'created_at' => 2, 'deleted' => 3, 'default_theme' => 4, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'CreatedAt' => 2, 'Deleted' => 3, 'DefaultTheme' => 4, 'Settings' => 5, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'createdAt' => 2, 'deleted' => 3, 'defaultTheme' => 4, 'settings' => 5, ),
+        BasePeer::TYPE_COLNAME => array (OrganizationPeer::ID => 0, OrganizationPeer::NAME => 1, OrganizationPeer::CREATED_AT => 2, OrganizationPeer::DELETED => 3, OrganizationPeer::DEFAULT_THEME => 4, OrganizationPeer::SETTINGS => 5, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'NAME' => 1, 'CREATED_AT' => 2, 'DELETED' => 3, 'DEFAULT_THEME' => 4, 'SETTINGS' => 5, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'created_at' => 2, 'deleted' => 3, 'default_theme' => 4, 'settings' => 5, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
     );
 
     /**
@@ -165,12 +168,14 @@ abstract class BaseOrganizationPeer
             $criteria->addSelectColumn(OrganizationPeer::CREATED_AT);
             $criteria->addSelectColumn(OrganizationPeer::DELETED);
             $criteria->addSelectColumn(OrganizationPeer::DEFAULT_THEME);
+            $criteria->addSelectColumn(OrganizationPeer::SETTINGS);
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.name');
             $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.deleted');
             $criteria->addSelectColumn($alias . '.default_theme');
+            $criteria->addSelectColumn($alias . '.settings');
         }
     }
 

@@ -62,6 +62,12 @@ abstract class BaseOrganization extends BaseObject implements Persistent
     protected $default_theme;
 
     /**
+     * The value for the settings field.
+     * @var        string
+     */
+    protected $settings;
+
+    /**
      * @var        PropelObjectCollection|Chart[] Collection to store aggregation of Chart objects.
      */
     protected $collCharts;
@@ -265,6 +271,16 @@ abstract class BaseOrganization extends BaseObject implements Persistent
     }
 
     /**
+     * Get the [settings] column value.
+     *
+     * @return string
+     */
+    public function getSettings()
+    {
+        return $this->settings;
+    }
+
+    /**
      * Set the value of [id] column.
      *
      * @param string $v new value
@@ -380,6 +396,27 @@ abstract class BaseOrganization extends BaseObject implements Persistent
     } // setDefaultTheme()
 
     /**
+     * Set the value of [settings] column.
+     *
+     * @param string $v new value
+     * @return Organization The current object (for fluent API support)
+     */
+    public function setSettings($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (string) $v;
+        }
+
+        if ($this->settings !== $v) {
+            $this->settings = $v;
+            $this->modifiedColumns[] = OrganizationPeer::SETTINGS;
+        }
+
+
+        return $this;
+    } // setSettings()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -424,6 +461,7 @@ abstract class BaseOrganization extends BaseObject implements Persistent
             $this->created_at = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
             $this->deleted = ($row[$startcol + 3] !== null) ? (boolean) $row[$startcol + 3] : null;
             $this->default_theme = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->settings = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -432,7 +470,7 @@ abstract class BaseOrganization extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
             $this->postHydrate($row, $startcol, $rehydrate);
-            return $startcol + 5; // 5 = OrganizationPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 6; // 6 = OrganizationPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Organization object", $e);
@@ -813,6 +851,9 @@ abstract class BaseOrganization extends BaseObject implements Persistent
         if ($this->isColumnModified(OrganizationPeer::DEFAULT_THEME)) {
             $modifiedColumns[':p' . $index++]  = '`default_theme`';
         }
+        if ($this->isColumnModified(OrganizationPeer::SETTINGS)) {
+            $modifiedColumns[':p' . $index++]  = '`settings`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `organization` (%s) VALUES (%s)',
@@ -838,6 +879,9 @@ abstract class BaseOrganization extends BaseObject implements Persistent
                         break;
                     case '`default_theme`':
                         $stmt->bindValue($identifier, $this->default_theme, PDO::PARAM_STR);
+                        break;
+                    case '`settings`':
+                        $stmt->bindValue($identifier, $this->settings, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -1013,6 +1057,9 @@ abstract class BaseOrganization extends BaseObject implements Persistent
             case 4:
                 return $this->getDefaultTheme();
                 break;
+            case 5:
+                return $this->getSettings();
+                break;
             default:
                 return null;
                 break;
@@ -1047,6 +1094,7 @@ abstract class BaseOrganization extends BaseObject implements Persistent
             $keys[2] => $this->getCreatedAt(),
             $keys[3] => $this->getDeleted(),
             $keys[4] => $this->getDefaultTheme(),
+            $keys[5] => $this->getSettings(),
         );
         if ($includeForeignObjects) {
             if (null !== $this->collCharts) {
@@ -1110,6 +1158,9 @@ abstract class BaseOrganization extends BaseObject implements Persistent
             case 4:
                 $this->setDefaultTheme($value);
                 break;
+            case 5:
+                $this->setSettings($value);
+                break;
         } // switch()
     }
 
@@ -1139,6 +1190,7 @@ abstract class BaseOrganization extends BaseObject implements Persistent
         if (array_key_exists($keys[2], $arr)) $this->setCreatedAt($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setDeleted($arr[$keys[3]]);
         if (array_key_exists($keys[4], $arr)) $this->setDefaultTheme($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setSettings($arr[$keys[5]]);
     }
 
     /**
@@ -1155,6 +1207,7 @@ abstract class BaseOrganization extends BaseObject implements Persistent
         if ($this->isColumnModified(OrganizationPeer::CREATED_AT)) $criteria->add(OrganizationPeer::CREATED_AT, $this->created_at);
         if ($this->isColumnModified(OrganizationPeer::DELETED)) $criteria->add(OrganizationPeer::DELETED, $this->deleted);
         if ($this->isColumnModified(OrganizationPeer::DEFAULT_THEME)) $criteria->add(OrganizationPeer::DEFAULT_THEME, $this->default_theme);
+        if ($this->isColumnModified(OrganizationPeer::SETTINGS)) $criteria->add(OrganizationPeer::SETTINGS, $this->settings);
 
         return $criteria;
     }
@@ -1222,6 +1275,7 @@ abstract class BaseOrganization extends BaseObject implements Persistent
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setDeleted($this->getDeleted());
         $copyObj->setDefaultTheme($this->getDefaultTheme());
+        $copyObj->setSettings($this->getSettings());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -2867,6 +2921,7 @@ abstract class BaseOrganization extends BaseObject implements Persistent
         $this->created_at = null;
         $this->deleted = null;
         $this->default_theme = null;
+        $this->settings = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
