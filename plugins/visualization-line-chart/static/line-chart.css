@@ -1,7 +1,7 @@
 
 
 .line-chart .label span {
-    background-color: #fff;
+    background-color: transparent;
 }
 
 html .line-chart  .label.tooltip span {
@@ -14,7 +14,7 @@ html .line-chart  .label.tooltip span {
 
 .line-chart .label.highlighted span,
 .line-chart .label.axis span {
-    background-color: #fff;
+    background-color: transparent;
 }
 
 .line-chart .label.rotate45 {
