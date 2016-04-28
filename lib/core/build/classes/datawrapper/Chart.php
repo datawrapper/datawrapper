@@ -376,8 +376,7 @@ class Chart extends BaseChart {
     }
 
     public function getNamespace() {
-        return (($this->getType() == "d3-maps-choropleth"
-          || $this->getType() == "d3-maps-symbols") &&
+        return ($this->getType() == "d3-maps-choropleth" &&
           $this->getMetadata('visualize.map-type-set') != null) ? 
           "map" : "chart";
     }

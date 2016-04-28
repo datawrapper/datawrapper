@@ -75,7 +75,7 @@ define(function() {
             success: function(data) {
                 if (data.status == "ok") {
                     // redirect to copied chart
-                    var type = ((dw.backend.currentChart.get('type') == "d3-maps-choropleth" || dw.backend.currentChart.get('type') == 'd3-maps-symbols') && dw.backend.currentChart.get('metadata.visualize.map-type-set') != undefined) ? "map" : "chart";
+                    var type = (dw.backend.currentChart.get('type') == "d3-maps-choropleth" && dw.backend.currentChart.get('metadata.visualize.map-type-set') != undefined) ? "map" : "chart";
                     location.href = '/' + type + '/'+data.data.id+'/visualize';
                 } else {
                     console.warn(data);
