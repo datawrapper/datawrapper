@@ -181,6 +181,10 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
     $page['alternative_signins'] = DatawrapperHooks::execute(DatawrapperHooks::ALTERNATIVE_SIGNIN);
     $page['footer'] = DatawrapperHooks::execute(DatawrapperHooks::GET_FOOTER);
 
+    if (isset ($config['maintenance']) && $config['maintenance'] == true) {
+        $page['maintenance'] = true;
+    } 
+
     $uri = $app->request()->getResourceUri();
     $plugin_assets = DatawrapperHooks::execute(DatawrapperHooks::GET_PLUGIN_ASSETS, $uri);
     if (!empty($plugin_assets)) {
