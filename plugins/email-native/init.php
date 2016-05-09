@@ -85,7 +85,7 @@ DatawrapperHooks::register(DatawrapperHooks::SEND_INVITE_EMAIL_TO_NEW_USER,
         send_dw_mail($userEmail, __('email / invite / subject'), $body,
         array(
             'name' => $userName,
-            'invite_link' => $inviteLink
+            'invitation_link' => $inviteLink
         ));
     }
 );
@@ -101,7 +101,7 @@ DatawrapperHooks::register(DatawrapperHooks::SEND_TEAM_INVITE_EMAIL,
             'name' => $userName,
             'team_name' => $teamName,
             'invited_by' => $invitedByName,
-            'invite_link' => $inviteLink
+            'invitation_link' => $inviteLink
         ));
     }
 );
