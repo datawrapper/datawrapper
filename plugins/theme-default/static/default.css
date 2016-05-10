@@ -213,30 +213,21 @@ svg .axis, svg .tick, svg .grid, svg rect {
 .filter-links {
     height: 30px;
     overflow: hidden;
+    border-bottom: 1px solid #ccc;
 }
 
 .filter-links a {
-    padding: 0px 10px;
-    box-shadow: 0 0 10px #ddd inset;
-    border: 1px solid #bbb;
-    border-left: 0;
-    display: block;
-    float: left;
-    text-decoration: underline;
     color: #666;
     height: 28px;
     line-height: 28px;
-    background: #fbfbfb;
+    padding: 10px;
+    text-decoration: none;
 }
 
 .filter-links a:hover {
     background: #fff;
-    color: #0088CC;
+    color: #222;
 }
-
-*+html .filter-links a {  background: #eeeeee; } /** IE7 hack **/
-.filter-links a { background: #eeeeee\0/; }  /** IE8 hack **/
-
 
 .filter-links a.active {
     font-weight: bold;
@@ -245,15 +236,10 @@ svg .axis, svg .tick, svg .grid, svg rect {
     background: #fff;
     cursor: default;
     text-decoration: none;
-}
 
-.filter-links a:first-child {
-    border-radius: 10px 0 0 10px;
-    border-left: 1px solid #bbb;
-}
+    border-bottom: 3px solid #555;
+    padding: 10px 10px 6px 10px;
 
-.filter-links a:last-child {
-    border-radius: 0 10px 10px 0;
 }
 
 .filter-select {
@@ -277,4 +263,44 @@ and (max-device-width : 480px) {
     .fs-btn {
         display: none!important;
     }
+}
+
+.point {
+    border: 1px solid #ccc;
+    display: inline-block;
+    position: absolute;
+    background: #fff;
+    z-index: 100;
+    cursor: pointer;
+
+    height: 20px;
+    width: 20px;
+    border-radius: 20px;
+    top: 20px;
+}
+
+.point:hover {
+    background: #ebebeb;
+}
+
+.point-label {
+    position: absolute;
+}
+
+.point.active {
+    background: #ccc;
+    height: 20px;
+    width: 20px;
+    border-radius: 20px;
+    top: 20px;
+    border-color: #888;
+}  
+
+.line {
+    height: 1px;
+    background: #ccc;
+    position: absolute;
+    left: 0px;
+    top: 30px;
+    z-index: 1;
 }
