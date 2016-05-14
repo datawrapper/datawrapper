@@ -1,4 +1,4 @@
-/*! datawrapper - v1.10.2 *///
+/*! datawrapper - v1.10.3 *///
 // NOTE: This file is auto-generated using /dw.js/make
 // from the source files /dw.js/src/*.js.
 //
@@ -1351,6 +1351,16 @@ dw.utils.filter = function (column, active, type, format) {
                 update(a.data('row'));
             });
             div.appendTo('body');
+
+            var fy = $('a:first', div).offset().top,   
+                ly = $('a:last', div).offset().top,
+                diff = ly - fy;  
+
+            if (diff > 1) {   
+                div.remove();   
+                return getFilterUI('select')(vis); // fall back to select   
+            }
+
             return div;
         };
 
