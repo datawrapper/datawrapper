@@ -63,6 +63,18 @@
                 c.bpad += lh;
             }
 
+            if (dataset.numRows() > 1) {
+                var items = [],
+                    lblFmt = me.chart().columnFormatter(me.axes(true).labels);
+                dataset.eachRow(function(r) {
+                    items.push({
+                        label: lblFmt(me.axes(true).labels.val(r)),
+                        color: me.getColor(null, r, { varyLightness: true, key: me.axes(true).labels.val(r) })
+                    });
+                });
+                me.addLegend(items, $('#header', c.root.parent()));
+            }
+
             me.initDimensions();
 
             // store bar references for updates
@@ -79,17 +91,6 @@
             // enable mouse events
             el.mousemove(_.bind(me.onMouseMove, me));
 
-            if (dataset.numRows() > 1) {
-                var items = [],
-                    lblFmt = me.chart().columnFormatter(me.axes(true).labels);
-                dataset.eachRow(function(r) {
-                    items.push({
-                        label: lblFmt(me.axes(true).labels.val(r)),
-                        color: me.getColor(null, r, { varyLightness: true, key: me.axes(true).labels.val(r) })
-                    });
-                });
-                me.addLegend(items, $('#header', c.root.parent()));
-            }
             $('.showOnHover').hide();
 
             if (me.theme().columnChart.cutGridLines) me.horzGrid();
@@ -212,8 +213,16 @@
             me.__scales = {
                 y: d3.scale.linear().domain(me.__domain)
             };
-            //                                                    v-- substract a few pixel to get space for the legend!
-            me.__scales.y.rangeRound([0, c.h - c.bpad - c.tpad - 30]);
+
+            var lh = ($('.legend div:last').offset().top - $('.legend div:first').offset().top),
+                svg = $(me._svgCanvas()),
+                ch = $(svg.parent()); 
+
+            $(svg).height($(svg).height()-lh);
+            $(ch).height($(ch).height()-lh);
+
+            // -- substract a few pixel to get space for the legend!
+            me.__scales.y.rangeRound([0, c.h - c.bpad - c.tpad - (lh+20)]);
         },
 
         /*

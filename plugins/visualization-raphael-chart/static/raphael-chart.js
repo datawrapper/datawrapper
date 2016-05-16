@@ -576,24 +576,37 @@
             // add legend
             var me = this,
                 l = $('<div class="legend"></div>'),
-                xo = me.__canvas.lpad;
+                xo = me.__canvas.lpad,
+                posTop = 1;
 
             _.each(items, function(item) {
                 div = $('<div></div>');
+
                 div.css({
                     background: item.color,
                     width: 12,
                     height: 12,
                     position: 'absolute',
                     left: xo,
-                    top: 1
+                    top: posTop
                 });
+
                 l.append(div);
-                lbl = me.label(xo + 15, 0, item.label, {
+                lbl = me.label(xo + 15, (posTop-1), item.label, {
                     valign: 'left',
                     root: l
                 });
                 xo += me.labelWidth(item.label)+30;
+
+                if (xo > me.__canvas.w) {
+                    posTop += 18;
+                    xo = me.__canvas.lpad;
+
+                    div.css({top:posTop, left: xo});
+                    lbl.el.css({left: xo+15, top:(posTop-1)});
+
+                    xo += me.labelWidth(item.label)+30;
+                }
             });
             l.css({
                 position: 'relative'

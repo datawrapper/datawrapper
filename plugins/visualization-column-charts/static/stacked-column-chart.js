@@ -50,8 +50,16 @@
             me.__scales = {
                 y: d3.scale.linear().domain(me.__domain)
             };
-            //                                                    v-- substract a few pixel to get space for the legend!
-            me.__scales.y.rangeRound([0, c.h - c.bpad - c.tpad - 30]);
+            
+            var lh = ($('.legend div:last').offset().top - $('.legend div:first').offset().top),
+                svg = $(me._svgCanvas()),
+                ch = $(svg.parent()); 
+
+            $(svg).height($(svg).height()-lh);
+            $(ch).height($(ch).height()-lh);
+
+            // -- substract a few pixel to get space for the legend!
+            me.__scales.y.rangeRound([0, c.h - c.bpad - c.tpad - (lh+20)]);
             return;
         },
 
