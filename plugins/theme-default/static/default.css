@@ -212,7 +212,7 @@ svg .axis, svg .tick, svg .grid, svg rect {
 
 .filter-links {
     height: 30px;
-    overflow: hidden;
+    overflow: visible;
     border-bottom: 1px solid #ccc;
 }
 

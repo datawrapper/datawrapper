@@ -1352,13 +1352,13 @@ dw.utils.filter = function (column, active, type, format) {
             });
             div.appendTo('body');
 
-            var fy = $('a:first', div).offset().top,   
-                ly = $('a:last', div).offset().top,
+            var fy = $('a:first', div).offset().top + $('a:first', div).height(),   
+                ly = $('a:last', div).offset().top + $('a:last', div).height(),
                 diff = ly - fy;  
 
             if (diff > 1) {   
                 div.remove();   
-                return getFilterUI('select')(vis); // fall back to select   
+                return getFilterUI('select')(vis); // fall back to select
             }
 
             return div;
