@@ -16,11 +16,35 @@ define(function() {
 
         _.extend(__dw, {
             attributes: function(attrs) {
-                var render = false;
-                if (changed('type') || changed('theme') || changed('metadata.data.transpose') || changed('metadata.axes') || changed('language')) {
-                    needReload = true;
-                    return;
+                var render = false,
+                    requiresReload = ['type', 'theme', 'metadata.data.transpose', 'metadata.axes', 'language'],
+                    options = dw.backend.currentVis.meta.options;
+
+                for (var name in options) {
+                    var o = options[name];
+
+                    if (o["requires-reload"]) {
+                        requiresReload.push('metadata.visualize.'+name);
+                    }
+
+                    if (o.type == "group") {
+                        for (var name in o.options) {
+                            var o = options[name];
+
+                            if (o["requires-reload"]) {
+                                requiresReload.push('metadata.visualize.'+name);
+                            }
+                        }
+                    } 
                 }
+
+                requiresReload.forEach(function(key) {
+                    if (changed(key)) {
+                        needReload = true;
+                        return;
+                    }
+                });
+
                 // check if we need to update chart
                 if (changed('metadata.visualize')) {
                     __dw.vis.chart().attributes(attrs);
