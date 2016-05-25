@@ -42,10 +42,9 @@ define(function() {
                     var changes = chart.get('metadata.data.changes', []).slice(0);
                     r.forEach(function(r) {
                         change = { row: r, column: c, value: val };
-                        console.log(change);
                         changes.push(change);
                     });
-                    chart.set('metadata.data.changes', changes);
+                    chart.set('metadata.data.changes', clone(changes));
                     if (!lastNotification) lastNotification = dw.backend.notify(dw.backend.messages.liveEditSuccess.replace('[', '<a href="describe">').replace(']', '</a>'));
                 }
             });
@@ -82,5 +81,9 @@ define(function() {
                 $('input[data-key="'+key+'"]').val(span.text());
             });
     };
+
+    function clone(o) {
+        return JSON.parse(JSON.stringify(o));
+    }
 
 });
