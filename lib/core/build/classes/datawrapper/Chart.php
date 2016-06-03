@@ -109,6 +109,16 @@ class Chart extends BaseChart {
         return $path;
     }
 
+    public function getRelativeDataPath() {
+        $path = 'data/' . $this->getCreatedAt('Ym');
+        return $path;
+    }
+
+    public function getRelativeStaticPath() {
+        $path = 'static/' . $this->getID();
+        return $path;
+    }
+
     /**
      * get the filename of this charts data file, which is usually
      * just the chart id + csv extension
@@ -129,6 +139,29 @@ class Chart extends BaseChart {
         }
         $filename = $path . '/' . $this->getDataFilename();
         file_put_contents($filename, $csvdata);
+
+        $cfg = $GLOBALS['dw_config'];
+  
+        if (isset($cfg['charts-s3'])
+          && isset($cfg['charts-s3']['write'])
+          && $cfg['charts-s3']['write'] == true) {
+  
+            $config = $cfg['charts-s3'];
+
+            $cmd = 
+                'export AWS_ACCESS_KEY_ID='.
+                $config['aws-access-key-id'].'; '.
+                'export AWS_SECRET_ACCESS_KEY='.
+                $config['aws-secret-access-key'].'; '.
+                'aws s3 --region '.
+                $config['region'].
+                ' cp '.$filename.
+                ' s3://' . $config['bucket'].
+                '/'.$this->getRelativeDataPath().'/';
+    
+            @exec($cmd);
+        }
+
         return $filename;
     }
 

@@ -298,6 +298,29 @@ $app->put('/charts/:id/thumbnail/:thumb', function($chart_id, $thumb) use ($app)
             $imgdata = base64_decode(substr($imgurl, strpos($imgurl, ",") + 1));
             $static_path = get_static_path($chart);
             file_put_contents($static_path . "/" . $thumb . '.png', $imgdata);
+
+            $cfg = $GLOBALS['dw_config'];
+
+            if (isset($cfg['charts-s3'])
+              && isset($cfg['charts-s3']['write'])
+              && $cfg['charts-s3']['write'] == true) {
+
+                $config = $cfg['charts-s3'];
+
+                $cmd =
+                    'export AWS_ACCESS_KEY_ID='.
+                    $config['aws-access-key-id'].'; '.
+                    'export AWS_SECRET_ACCESS_KEY='.
+                    $config['aws-secret-access-key'].'; '.
+                    'aws s3 --region '.
+                    $config['region'].
+                    ' cp '.$static_path . "/" . $thumb . '.png'.
+                    ' s3://' . $config['bucket'].
+                    '/'.get_relative_static_path($chart).'/';
+
+                @exec($cmd);
+            }
+
             // DatawrapperHooks::execute(DatawrapperHooks::PUBLISH_FILES, array(
             //     array(
             //         $static_path . "/" . $thumb . '.png',
