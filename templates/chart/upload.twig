@@ -45,7 +45,7 @@ dw.backend.ready(function() {
                     <textarea id="upload-data-text" data-drop-here="{% trans "upload / drop csv" %}" style="resize:none" placeholder="{% trans "upload / paste here" %}">{{ chartData }}</textarea>
                 </div>
 
-                <div id="upload-data" class="btn btn-primary pull-right">{% trans "upload / continue button" %} <i class="icon-chevron-right icon-white"></i></div>
+                <div id="upload-data" class="btn btn-primary pull-right"><i class="fa fa-circle-o-notch fa-spin" style="display:none; color: #fff; margin:0px 4px 0px -2px;"></i> {% trans "upload / continue button" %} <i class="icon-chevron-right icon-white"></i></div>
                 <div id="upload" style="display:inline-block"></div>
 
             </form>

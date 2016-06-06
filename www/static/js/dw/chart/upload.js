@@ -8,6 +8,7 @@ define(function() {
         chart = dw.backend.currentChart;
 
         $('#upload-data, .create-nav .submit').click(function(e) {
+            $(e.target).find('i.fa-circle-o-notch').show();
             uploadData('describe');
             e.preventDefault();
         });
@@ -75,6 +76,7 @@ define(function() {
         var uploadReady,
             theData = $('#upload-data-text').val();
         if ($.trim(theData) === "") {
+            $('#upload-data').find('i.fa-circle-o-notch').hide();
             dw.backend.alert(dw.backend.messages.noData);
             $('.upload-form .control-group').addClass('warning');
             return false;
