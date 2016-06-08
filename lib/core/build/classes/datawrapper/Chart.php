@@ -133,13 +133,6 @@ class Chart extends BaseChart {
      * @param csvdata  raw csv data string
      */
     public function writeData($csvdata) {
-        $path = $this->getDataPath();
-        if (!file_exists($path)) {
-            mkdir($path, 0775);
-        }
-        $filename = $path . '/' . $this->getDataFilename();
-        file_put_contents($filename, $csvdata);
-
         $cfg = $GLOBALS['dw_config'];
   
         if (isset($cfg['charts-s3'])
@@ -148,18 +141,20 @@ class Chart extends BaseChart {
   
             $config = $cfg['charts-s3'];
 
-            $cmd = 
-                'export AWS_ACCESS_KEY_ID='.
-                $config['aws-access-key-id'].'; '.
-                'export AWS_SECRET_ACCESS_KEY='.
-                $config['aws-secret-access-key'].'; '.
-                'aws s3 --region '.
-                $config['region'].
-                ' cp '.$filename.
-                ' s3://' . $config['bucket'].
-                '/'.$this->getRelativeDataPath().'/';
-    
-            @exec($cmd);
+            $filename = 's3://' . $cfg['charts-s3']['bucket'] . '/' .
+                $this->getRelativeDataPath() . '/' . $this->getDataFilename();
+
+            file_put_contents($filename, $csvdata);
+        } else {
+            $path = $this->getDataPath();
+
+            if (!file_exists($path)) {
+                mkdir($path, 0775);
+            }
+
+            $filename = $path . '/' . $this->getDataFilename();
+
+            file_put_contents($filename, $csvdata);
         }
 
         return $filename;
@@ -169,11 +164,26 @@ class Chart extends BaseChart {
      * load data from file sytem
      */
     public function loadData() {
-        $filename = $this->getDataPath() . '/' . $this->getDataFilename();
-        if (!file_exists($filename)) {
-            return '';
+        $config = $GLOBALS['dw_config'];
+
+        if (isset($config['charts-s3']) &&
+            $config['charts-s3']['read']) {
+
+            $s3url = 's3://' . $config['charts-s3']['bucket'] . '/' . 
+              $this->getRelativeDataPath() . '/' .$this->getDataFilename();
+
+            try {
+                return file_get_contents($s3url);
+            } catch (Exception $ex) {
+                return '';
+            }
         } else {
-            return file_get_contents($filename);
+            $filename = $this->getDataPath() . '/' . $this->getDataFilename();
+            if (!file_exists($filename)) {
+                return '';
+            } else {
+                return file_get_contents($filename);
+            }
         }
     }
 
@@ -379,7 +389,23 @@ class Chart extends BaseChart {
     }
 
     public function hasPreview() {
-        return file_exists($this->getStaticPath() . '/m.png');
+        $cfg = $GLOBALS['dw_config'];
+
+        if (isset($cfg['charts-s3'])
+          && isset($cfg['charts-s3']['read'])
+          && $cfg['charts-s3']['read'] == true) {
+  
+            $path = 's3://' . $cfg['charts-s3']['bucket'] . '/' .
+                $this->getRelativeStaticPath() . '/m.png';
+        } else {
+            $path = $this->getStaticPath() . '/m.png';
+        }
+
+        try {
+            return file_exists($path);
+        } catch (Exception $ex) {
+            return false;
+        }
     }
 
     public function thumbUrl($forceLocal = false) {

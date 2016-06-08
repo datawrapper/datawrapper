@@ -106,6 +106,19 @@ if (isset($dw_config['memcache'])) {
     $memcache->connect($memcfg['host'], $memcfg['port']) or die ("Could not connect");
 }
 
+if (isset($dw_config['charts-s3'])) {
+    $charts_s3 = new Aws\S3\S3Client([
+        'region' => 'eu-central-1',
+        'version' => 'latest',
+        'credentials' => [
+            'key' => $dw_config['charts-s3']['aws-access-key-id'],
+            'secret' => $dw_config['charts-s3']['aws-secret-access-key']
+        ]
+    ]);
+
+    $charts_s3->registerStreamWrapper();
+}
+
 DatawrapperPluginManager::load();
 
 // notify the core that all plugins are loaded
