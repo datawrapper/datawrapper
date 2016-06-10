@@ -105,7 +105,8 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
             foreach ($user->getRecentCharts(9) as $chart) {
                 $mycharts['dropdown'][] = array(
                     'url' => '/'.$chart->getNamespace().'/'.$chart->getId().'/visualize#tell-the-story',
-                    'title' => '<img width="30" src="'.($chart->hasPreview() ? $chart->thumbUrl(true) : '').'" class="icon" /> '
+                    'title' => '<div style="height:20px; width:30px; position:absolute; left:10px;top:4px;'.
+				'background-image:url('.$chart->thumbUrl(true).'); background-size:cover;"></div>'
                         . '<span>' . strip_tags($chart->getTitle()) . '</span>'
                 );
             }

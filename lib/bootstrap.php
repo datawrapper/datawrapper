@@ -47,6 +47,10 @@ function secure_password($pwd) {
 }
 
 function get_current_protocol() {
+    global $dw_config;
+
+    if (isset($dw_config['protocol'])) return $dw_config['protocol'];
+
     $ssl = isset($_SERVER['HTTPS']) ? $_SERVER['HTTPS'] : null;
     $ssl = $ssl == 1 || strtolower($ssl) === 'on';
 
