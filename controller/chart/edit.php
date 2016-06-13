@@ -12,6 +12,6 @@ $app->get('/chart/:id/edit', function($chartid) use ($app) {
             case 2: $step = 'describe'; break;
             default: $step = 'visualize#tell-the-story';
         }
-        $app->redirect('/chart/'.$chart->getId() . '/' . $step);
+        $app->redirect('/'.$chart->getNamespace().'/'.$chart->getId() . '/' . $step);
     });
 });
