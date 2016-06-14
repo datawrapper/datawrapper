@@ -76,11 +76,6 @@ $app->post('/account/reset-password', function() use($app) {
             return;
         }
 
-        if ($user->getRole() == 'pending') {
-            error('account-not-activated', __('You haven\'t activated this email address yet, so we cannot safely send emails to it. Please contact an <a href="mailto:hello@datawrapper.de">administrator</a>.'));
-            return;
-        }
-
         $token = hash_hmac('sha256', $user->getEmail().'/'.$user->getPwd().'/'.microtime(), DW_TOKEN_SALT);
         Action::logAction($user, 'reset-password', $token);
 
