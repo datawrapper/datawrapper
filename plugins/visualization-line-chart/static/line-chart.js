@@ -652,7 +652,8 @@
                             align: 'center',
                             valign: 'middle',
                             css: {
-                                background: lineColor(column)
+                                background: lineColor(column),
+                                borderColor: lineColor(column)
                             }
                         });
                     }
