@@ -12,7 +12,9 @@
             positive: '#85B4D4',
             negative: '#E31A1C',
             background: '#272B30',
-            text: '#eeeeee'
+            text: '#eeeeee',
+            axis: 'white',
+            grid: '#555565'
         },
 
         horizontalGrid: {
