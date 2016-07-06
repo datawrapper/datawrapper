@@ -54,6 +54,68 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
 
     header_nav_hook($headlinks, 'custom_nav');
 
+
+    if ($user->isLoggedIn()) {
+
+
+        $username = $user->guessName();
+        if ($username == $user->getEmail()) {
+            $username = strlen($username) > 18 ? substr($username, 0, 9).'…'.substr($username, strlen($username)-9) : $username;
+        } else {
+            if (strlen($username) > 18) $username = substr($username, 0, 16).'…';
+        }
+
+        $headlinks[] = 'divider';
+
+        $headlinks[] = array(
+            'url' => '/account',
+            'id' => 'account',
+            'title' => '<i class="fa fa-lock"></i> &nbsp;My Account'
+        );
+
+
+        $headlinks[] = 'divider';
+
+        // the place where settings used to be
+
+        header_nav_hook($headlinks, 'settings');
+
+        if ($user->hasCharts()) {
+            // mycharts
+            $mycharts = array(
+                'url' => '/mycharts/',
+                'id' => 'mycharts',
+                'title' => __('My Charts'),
+                //'justicon' => true,
+                'icon' => 'fa fa-bar-chart-o',
+                'dropdown' => array()
+            );
+            foreach ($user->getRecentCharts(9) as $chart) {
+                $mycharts['dropdown'][] = array(
+                    'url' => '/'.$chart->getNamespace().'/'.$chart->getId().'/visualize#tell-the-story',
+                    'title' => '<div style="height:20px; width:30px; position:absolute; left:10px;top:4px;'.
+				'background-image:url('.$chart->thumbUrl(true).'); background-size:cover;"></div>'
+                        . '<span>' . strip_tags($chart->getTitle()) . '</span>'
+                );
+            }
+            $mycharts['dropdown'][] = 'divider';
+            $mycharts['dropdown'][] = array('url' => '/mycharts/', 'title' => __('All charts'));
+            $headlinks[] = $mycharts;
+        }
+
+        header_nav_hook($headlinks, 'mycharts');
+
+
+
+    } else {
+        $headlinks[] = array(
+            'url' => '#login',
+            'id' => 'login',
+            'title' => $config['prevent_guest_access'] ? __('Login') : __('Login / Sign Up'),
+            'icon' => 'fa fa-sign-in'
+        );
+    }
+
     // language dropdown
     if (!empty($config['languages'])) {
         $langDropdown = array(
@@ -76,58 +138,6 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
     header_nav_hook($headlinks, 'languages');
 
 
-    if ($user->isLoggedIn()) {
-
-        $headlinks[] = 'divider';
-
-        $username = $user->guessName();
-        if ($username == $user->getEmail()) {
-            $username = strlen($username) > 18 ? substr($username, 0, 9).'…'.substr($username, strlen($username)-9) : $username;
-        } else {
-            if (strlen($username) > 18) $username = substr($username, 0, 16).'…';
-        }
-        $headlinks[] = array(
-            'url' => '/account/profile',
-            'id' => 'account',
-            'title' => '<img style="height:22px;position:relative;top:-2px;border-radius:7px;margin-right:7px" src="//www.gravatar.com/avatar/' . md5(strtolower(trim($user->getEmail()))) . '?s=44&amp;d=mm" /><b>'.htmlspecialchars($username, ENT_QUOTES, 'UTF-8').'</b>'
-        );
-
-        if ($user->hasCharts()) {
-            // mycharts
-            $mycharts = array(
-                'url' => '/mycharts/',
-                'id' => 'mycharts',
-                'title' => __('My Charts'),
-                //'justicon' => true,
-                'icon' => 'fa fa-bar-chart-o',
-                'dropdown' => array()
-            );
-            foreach ($user->getRecentCharts(9) as $chart) {
-                $mycharts['dropdown'][] = array(
-                    'url' => '/'.$chart->getNamespace().'/'.$chart->getId().'/visualize#tell-the-story',
-                    'title' => '<img width="30" src="'.($chart->hasPreview() ? $chart->thumbUrl(true) : '').'" class="icon" /> '
-                        . '<span>' . strip_tags($chart->getTitle()) . '</span>'
-                );
-            }
-            $mycharts['dropdown'][] = 'divider';
-            $mycharts['dropdown'][] = array('url' => '/mycharts/', 'title' => __('All charts'));
-            $headlinks[] = $mycharts;
-        }
-
-        header_nav_hook($headlinks, 'mycharts');
-
-        // the place where settings used to be
-
-        header_nav_hook($headlinks, 'settings');
-
-    } else {
-        $headlinks[] = array(
-            'url' => '#login',
-            'id' => 'login',
-            'title' => $config['prevent_guest_access'] ? __('Login') : __('Login / Sign Up'),
-            'icon' => 'fa fa-sign-in'
-        );
-    }
 
     if ($user->isLoggedIn()) {
         $headlinks[] = array(
