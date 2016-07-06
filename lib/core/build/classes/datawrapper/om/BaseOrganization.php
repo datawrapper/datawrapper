@@ -55,6 +55,13 @@ abstract class BaseOrganization extends BaseObject implements Persistent
     protected $deleted;
 
     /**
+     * The value for the disabled field.
+     * Note: this column has a database default value of: false
+     * @var        boolean
+     */
+    protected $disabled;
+
+    /**
      * The value for the default_theme field.
      * Note: this column has a database default value of: ''
      * @var        string
@@ -177,6 +184,7 @@ abstract class BaseOrganization extends BaseObject implements Persistent
     public function applyDefaultValues()
     {
         $this->deleted = false;
+        $this->disabled = false;
         $this->default_theme = '';
     }
 
@@ -258,6 +266,16 @@ abstract class BaseOrganization extends BaseObject implements Persistent
     public function getDeleted()
     {
         return $this->deleted;
+    }
+
+    /**
+     * Get the [disabled] column value.
+     *
+     * @return boolean
+     */
+    public function getDisabled()
+    {
+        return $this->disabled;
     }
 
     /**
@@ -375,6 +393,35 @@ abstract class BaseOrganization extends BaseObject implements Persistent
     } // setDeleted()
 
     /**
+     * Sets the value of the [disabled] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param boolean|integer|string $v The new value
+     * @return Organization The current object (for fluent API support)
+     */
+    public function setDisabled($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->disabled !== $v) {
+            $this->disabled = $v;
+            $this->modifiedColumns[] = OrganizationPeer::DISABLED;
+        }
+
+
+        return $this;
+    } // setDisabled()
+
+    /**
      * Set the value of [default_theme] column.
      *
      * @param string $v new value
@@ -430,6 +477,10 @@ abstract class BaseOrganization extends BaseObject implements Persistent
                 return false;
             }
 
+            if ($this->disabled !== false) {
+                return false;
+            }
+
             if ($this->default_theme !== '') {
                 return false;
             }
@@ -460,8 +511,9 @@ abstract class BaseOrganization extends BaseObject implements Persistent
             $this->name = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
             $this->created_at = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
             $this->deleted = ($row[$startcol + 3] !== null) ? (boolean) $row[$startcol + 3] : null;
-            $this->default_theme = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
-            $this->settings = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+            $this->disabled = ($row[$startcol + 4] !== null) ? (boolean) $row[$startcol + 4] : null;
+            $this->default_theme = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+            $this->settings = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -470,7 +522,7 @@ abstract class BaseOrganization extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
             $this->postHydrate($row, $startcol, $rehydrate);
-            return $startcol + 6; // 6 = OrganizationPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 7; // 7 = OrganizationPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Organization object", $e);
@@ -848,6 +900,9 @@ abstract class BaseOrganization extends BaseObject implements Persistent
         if ($this->isColumnModified(OrganizationPeer::DELETED)) {
             $modifiedColumns[':p' . $index++]  = '`deleted`';
         }
+        if ($this->isColumnModified(OrganizationPeer::DISABLED)) {
+            $modifiedColumns[':p' . $index++]  = '`disabled`';
+        }
         if ($this->isColumnModified(OrganizationPeer::DEFAULT_THEME)) {
             $modifiedColumns[':p' . $index++]  = '`default_theme`';
         }
@@ -876,6 +931,9 @@ abstract class BaseOrganization extends BaseObject implements Persistent
                         break;
                     case '`deleted`':
                         $stmt->bindValue($identifier, (int) $this->deleted, PDO::PARAM_INT);
+                        break;
+                    case '`disabled`':
+                        $stmt->bindValue($identifier, (int) $this->disabled, PDO::PARAM_INT);
                         break;
                     case '`default_theme`':
                         $stmt->bindValue($identifier, $this->default_theme, PDO::PARAM_STR);
@@ -1055,9 +1113,12 @@ abstract class BaseOrganization extends BaseObject implements Persistent
                 return $this->getDeleted();
                 break;
             case 4:
-                return $this->getDefaultTheme();
+                return $this->getDisabled();
                 break;
             case 5:
+                return $this->getDefaultTheme();
+                break;
+            case 6:
                 return $this->getSettings();
                 break;
             default:
@@ -1093,8 +1154,9 @@ abstract class BaseOrganization extends BaseObject implements Persistent
             $keys[1] => $this->getName(),
             $keys[2] => $this->getCreatedAt(),
             $keys[3] => $this->getDeleted(),
-            $keys[4] => $this->getDefaultTheme(),
-            $keys[5] => $this->getSettings(),
+            $keys[4] => $this->getDisabled(),
+            $keys[5] => $this->getDefaultTheme(),
+            $keys[6] => $this->getSettings(),
         );
         if ($includeForeignObjects) {
             if (null !== $this->collCharts) {
@@ -1156,9 +1218,12 @@ abstract class BaseOrganization extends BaseObject implements Persistent
                 $this->setDeleted($value);
                 break;
             case 4:
-                $this->setDefaultTheme($value);
+                $this->setDisabled($value);
                 break;
             case 5:
+                $this->setDefaultTheme($value);
+                break;
+            case 6:
                 $this->setSettings($value);
                 break;
         } // switch()
@@ -1189,8 +1254,9 @@ abstract class BaseOrganization extends BaseObject implements Persistent
         if (array_key_exists($keys[1], $arr)) $this->setName($arr[$keys[1]]);
         if (array_key_exists($keys[2], $arr)) $this->setCreatedAt($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setDeleted($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setDefaultTheme($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setSettings($arr[$keys[5]]);
+        if (array_key_exists($keys[4], $arr)) $this->setDisabled($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setDefaultTheme($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setSettings($arr[$keys[6]]);
     }
 
     /**
@@ -1206,6 +1272,7 @@ abstract class BaseOrganization extends BaseObject implements Persistent
         if ($this->isColumnModified(OrganizationPeer::NAME)) $criteria->add(OrganizationPeer::NAME, $this->name);
         if ($this->isColumnModified(OrganizationPeer::CREATED_AT)) $criteria->add(OrganizationPeer::CREATED_AT, $this->created_at);
         if ($this->isColumnModified(OrganizationPeer::DELETED)) $criteria->add(OrganizationPeer::DELETED, $this->deleted);
+        if ($this->isColumnModified(OrganizationPeer::DISABLED)) $criteria->add(OrganizationPeer::DISABLED, $this->disabled);
         if ($this->isColumnModified(OrganizationPeer::DEFAULT_THEME)) $criteria->add(OrganizationPeer::DEFAULT_THEME, $this->default_theme);
         if ($this->isColumnModified(OrganizationPeer::SETTINGS)) $criteria->add(OrganizationPeer::SETTINGS, $this->settings);
 
@@ -1274,6 +1341,7 @@ abstract class BaseOrganization extends BaseObject implements Persistent
         $copyObj->setName($this->getName());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setDeleted($this->getDeleted());
+        $copyObj->setDisabled($this->getDisabled());
         $copyObj->setDefaultTheme($this->getDefaultTheme());
         $copyObj->setSettings($this->getSettings());
 
@@ -2920,6 +2988,7 @@ abstract class BaseOrganization extends BaseObject implements Persistent
         $this->name = null;
         $this->created_at = null;
         $this->deleted = null;
+        $this->disabled = null;
         $this->default_theme = null;
         $this->settings = null;
         $this->alreadyInSave = false;

@@ -10,6 +10,7 @@
  * @method OrganizationQuery orderByName($order = Criteria::ASC) Order by the name column
  * @method OrganizationQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method OrganizationQuery orderByDeleted($order = Criteria::ASC) Order by the deleted column
+ * @method OrganizationQuery orderByDisabled($order = Criteria::ASC) Order by the disabled column
  * @method OrganizationQuery orderByDefaultTheme($order = Criteria::ASC) Order by the default_theme column
  * @method OrganizationQuery orderBySettings($order = Criteria::ASC) Order by the settings column
  *
@@ -17,6 +18,7 @@
  * @method OrganizationQuery groupByName() Group by the name column
  * @method OrganizationQuery groupByCreatedAt() Group by the created_at column
  * @method OrganizationQuery groupByDeleted() Group by the deleted column
+ * @method OrganizationQuery groupByDisabled() Group by the disabled column
  * @method OrganizationQuery groupByDefaultTheme() Group by the default_theme column
  * @method OrganizationQuery groupBySettings() Group by the settings column
  *
@@ -46,6 +48,7 @@
  * @method Organization findOneByName(string $name) Return the first Organization filtered by the name column
  * @method Organization findOneByCreatedAt(string $created_at) Return the first Organization filtered by the created_at column
  * @method Organization findOneByDeleted(boolean $deleted) Return the first Organization filtered by the deleted column
+ * @method Organization findOneByDisabled(boolean $disabled) Return the first Organization filtered by the disabled column
  * @method Organization findOneByDefaultTheme(string $default_theme) Return the first Organization filtered by the default_theme column
  * @method Organization findOneBySettings(string $settings) Return the first Organization filtered by the settings column
  *
@@ -53,6 +56,7 @@
  * @method array findByName(string $name) Return Organization objects filtered by the name column
  * @method array findByCreatedAt(string $created_at) Return Organization objects filtered by the created_at column
  * @method array findByDeleted(boolean $deleted) Return Organization objects filtered by the deleted column
+ * @method array findByDisabled(boolean $disabled) Return Organization objects filtered by the disabled column
  * @method array findByDefaultTheme(string $default_theme) Return Organization objects filtered by the default_theme column
  * @method array findBySettings(string $settings) Return Organization objects filtered by the settings column
  *
@@ -158,7 +162,7 @@ abstract class BaseOrganizationQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `name`, `created_at`, `deleted`, `default_theme`, `settings` FROM `organization` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `name`, `created_at`, `deleted`, `disabled`, `default_theme`, `settings` FROM `organization` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_STR);
@@ -373,6 +377,33 @@ abstract class BaseOrganizationQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(OrganizationPeer::DELETED, $deleted, $comparison);
+    }
+
+    /**
+     * Filter the query on the disabled column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByDisabled(true); // WHERE disabled = true
+     * $query->filterByDisabled('yes'); // WHERE disabled = true
+     * </code>
+     *
+     * @param     boolean|string $disabled The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return OrganizationQuery The current query, for fluid interface
+     */
+    public function filterByDisabled($disabled = null, $comparison = null)
+    {
+        if (is_string($disabled)) {
+            $disabled = in_array(strtolower($disabled), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(OrganizationPeer::DISABLED, $disabled, $comparison);
     }
 
     /**
