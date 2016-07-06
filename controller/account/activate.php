@@ -34,10 +34,24 @@ $app->get('/account/activate/:token', function ($token) use ($app) {
 $app->get('/account/invite/:token', function($token) use ($app) {
     disable_cache($app);
     _checkInviteTokenAndExec($token, function($user) use ($app) {
+        $chartId = $app->request()->params('chart');
+
         $page = array(
             'email' => $user->getEmail(),
-            'auth_salt' => DW_AUTH_SALT
+            'auth_salt' => DW_AUTH_SALT,
+            'redirect' => '/'
         );
+
+
+        if (!empty($chartId)) {
+            $chart = ChartQuery::create()->findPk($chartId);
+
+            if ($chart) {
+                $page['redirect'] = '/' . $chart->getNamespace()
+                    . '/' . $chartId . '/publish';
+            } 
+        }
+
         add_header_vars($page, 'about', 'account/invite.css');
         $app->render('account/invite.twig', $page);
     });
@@ -62,7 +76,7 @@ $app->post('/account/invite/:token', function($token) use ($app) {
 function _checkInviteTokenAndExec($token, $func) {
     if (!empty($token)) {
         $user = UserQuery::create()->findOneByActivateToken($token);
-        if ($user && $user->getRole() != 'pending') {
+        if ($user) {
             $func($user);
         } else {
             // this is not a valid token!

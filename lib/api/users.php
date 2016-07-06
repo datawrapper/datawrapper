@@ -45,6 +45,7 @@ $app->post('/users', function() use ($app) {
     $data = json_decode($app->request()->getBody());
     $currUser = DatawrapperSession::getUser();
     $invitation = empty($data->invitation)? false : (bool) $data->invitation;
+    $chartId = empty($data->chartId)? false : $data->chartId;
     // check values
     $checks = array(
         'email-missing' => function($d) { return trim($d->email) != ''; },
@@ -95,33 +96,21 @@ $app->post('/users', function() use ($app) {
     $name     = $data->email;
     $domain   = $GLOBALS['dw_config']['domain'];
     $protocol = get_current_protocol();
+
     if ($invitation) {
         // send invitation
-        $invitationLink = $protocol . '://' . $domain . '/account/invite/' . $user->getActivateToken();
+        $invitationLink = $protocol . '://' . $domain . '/account/invite/' . $user->getActivateToken() . ($chartId ? ('?chart=' . $chartId) : '');
         DatawrapperHooks::execute(DatawrapperHooks::SEND_INVITE_EMAIL_TO_NEW_USER, 
             $data->email, $user->guessName(), $invitationLink);
     } else {
         // send account activation link
         $activationLink = $protocol . '://' . $domain . '/account/activate/' . $user->getActivateToken();
         DatawrapperHooks::execute(DatawrapperHooks::SEND_ACTIVATION_EMAIL, $data->email, $data->email, $activationLink);
-
-        // we don't need to annoy the user with a login form now,
-        // so just log in..
-        DatawrapperSession::login($user);
     }
 
-    $welcome_msg = __("Hello %name%,
-
-Welcome to your new Datawrapper account.
-
-Cheers,
-Datawrapper");
-
-    DatawrapperHooks::execute(DatawrapperHooks::NOTIFY_USER, $user,
-        __('Welcome to Datawrapper!'),
-        str_replace('%name%', $user->guessName(), $welcome_msg)
-    );
-
+    // we don't need to annoy the user with a login form now,
+    // so just log in..
+    DatawrapperSession::login($user);
 
     ok($result);
 });
