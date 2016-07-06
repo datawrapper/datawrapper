@@ -16,6 +16,8 @@
 class UserProduct extends BaseUserProduct
 {
     public function isExpired(){
+        if (!$this->expires) return false;
+
         return strtotime($this->expires) < time();
     }
 }
