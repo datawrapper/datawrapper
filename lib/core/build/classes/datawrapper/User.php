@@ -145,11 +145,12 @@ class User extends BaseUser {
     }
 
     /*
-     * get a list of all organiztions in which the membership
+     * get a list of all enabled organiztions in which the membership
      * has been activated
      */
     public function getActiveOrganizations() {
         $crit = OrganizationQuery::create()
+            ->filterByDisabled(0)
             ->useUserOrganizationQuery()
             ->filterByInviteToken('')
             ->endUse();
@@ -157,11 +158,26 @@ class User extends BaseUser {
     }
 
     /*
+     * get a list of all disabled organiztions in which the membership
+     * has been activated
+     */
+    public function getDisabledOrganizations() {
+        $crit = OrganizationQuery::create()
+            ->filterByDisabled(1)
+            ->useUserOrganizationQuery()
+            ->filterByInviteToken('')
+            ->endUse();
+        return $this->getOrganizations($crit);
+    }
+
+
+    /*
      * get a list of organization in which the invitation
      * is still pending
      */
     public function getPendingOrganizations() {
         return OrganizationQuery::create()
+            ->filterByDisabled(0)
             ->leftJoin('UserOrganization')
             ->where('UserOrganization.InviteToken <> ""')
             ->withColumn('UserOrganization.InviteToken', 'InviteToken')
