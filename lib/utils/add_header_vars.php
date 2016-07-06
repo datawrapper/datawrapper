@@ -54,31 +54,9 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
 
     header_nav_hook($headlinks, 'custom_nav');
 
-    // language dropdown
-    if (!empty($config['languages'])) {
-        $langDropdown = array(
-            'url' => '',
-            'id' => 'lang',
-            'dropdown' => array(),
-            'title' => strtoupper(substr(DatawrapperSession::getLanguage(), 0, 2)),
-            'icon' => false,
-            'tooltip' => __('Switch language')
-        );
-        foreach ($config['languages'] as $lang) {
-            $langDropdown['dropdown'][] = array(
-                'url' => '#lang-'.$lang['id'],
-                'title' => $lang['title']
-            );
-        }
-        if (count($langDropdown['dropdown']) > 1) $headlinks[] = $langDropdown;
-    }
-
-    header_nav_hook($headlinks, 'languages');
-
 
     if ($user->isLoggedIn()) {
 
-        $headlinks[] = 'divider';
 
         $username = $user->guessName();
         if ($username == $user->getEmail()) {
@@ -86,11 +64,21 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
         } else {
             if (strlen($username) > 18) $username = substr($username, 0, 16).'…';
         }
+
+        $headlinks[] = 'divider';
+
         $headlinks[] = array(
-            'url' => '/account/profile',
+            'url' => '/account',
             'id' => 'account',
-            'title' => '<img style="height:22px;position:relative;top:-2px;border-radius:7px;margin-right:7px" src="//www.gravatar.com/avatar/' . md5(strtolower(trim($user->getEmail()))) . '?s=44&amp;d=mm" /><b>'.htmlspecialchars($username, ENT_QUOTES, 'UTF-8').'</b>'
+            'title' => '<i class="fa fa-lock"></i> &nbsp;My Account'
         );
+
+
+        $headlinks[] = 'divider';
+
+        // the place where settings used to be
+
+        header_nav_hook($headlinks, 'settings');
 
         if ($user->hasCharts()) {
             // mycharts
@@ -117,9 +105,7 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
 
         header_nav_hook($headlinks, 'mycharts');
 
-        // the place where settings used to be
 
-        header_nav_hook($headlinks, 'settings');
 
     } else {
         $headlinks[] = array(
@@ -129,6 +115,29 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
             'icon' => 'fa fa-sign-in'
         );
     }
+
+    // language dropdown
+    if (!empty($config['languages'])) {
+        $langDropdown = array(
+            'url' => '',
+            'id' => 'lang',
+            'dropdown' => array(),
+            'title' => strtoupper(substr(DatawrapperSession::getLanguage(), 0, 2)),
+            'icon' => false,
+            'tooltip' => __('Switch language')
+        );
+        foreach ($config['languages'] as $lang) {
+            $langDropdown['dropdown'][] = array(
+                'url' => '#lang-'.$lang['id'],
+                'title' => $lang['title']
+            );
+        }
+        if (count($langDropdown['dropdown']) > 1) $headlinks[] = $langDropdown;
+    }
+
+    header_nav_hook($headlinks, 'languages');
+
+
 
     if ($user->isLoggedIn()) {
         $headlinks[] = array(

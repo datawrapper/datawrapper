@@ -6,6 +6,17 @@
 <script type="text/javascript">
 
 $(function() {
+    var resizeModal = function() {
+        var modalHeight = $('.modal').height(),
+            windowHeight = $(window).height(),
+            modalTopMargin = windowHeight / 2 - modalHeight / 2;
+
+        $('.modal').css('margin-top', modalTopMargin);
+    };
+    
+    resizeModal();
+    $(window).on('resize', resizeModal);
+
     // set password and login
     $('button.login').click(function() {
         $.ajax({
@@ -18,7 +29,7 @@ $(function() {
             success: function(res) {
                 $('.login-pwd').val('');
                 if (res.result == "ok") {
-                    location.href = "/";
+                    location.href = "{{ redirect }}";
                 }
             }
         });
@@ -34,8 +45,8 @@ $(function() {
 </div>
 <div class="modal">
     <div class="modal-body">
-        <h3>{% trans "Welcome to Datawrapper!" %}</h3>
-        <p>{% trans "Hi, good to see you. Now please pick a password to complete the sign up." %}</p>
+        <h3>{% trans "Der letzte Schritt vor deinem Diagramm:" %}</h3>
+        <p>{% trans "Wähle ein Passwort, mit dem du deine Diagramme und Karten in Zukunft erreichst. Danach wirst du zu deinem Diagramm weitergeleitet und kannst es veröffentlichen." %}</p>
         <div class="login-form form-vertical">
             <div class="control-group">
                 <div class="controls">
@@ -52,7 +63,9 @@ $(function() {
         </div>
 
         <button class="btn btn-primary btn-large login">
-            Set password <span class="amp">&amp;</span> login
+            Set password &amp; get chart 
+            &nbsp;
+            <i class="fa fa-chevron-right"></i>
         </button>
 
 
@@ -115,11 +128,11 @@ body.login .modal h3 {
     margin-bottom: 20px;
 }
 
-.amp {
-    font-family: Baskerville, Georgia;
-    font-style: italic;
+.login-help { 
+    color: #999;
+    padding-bottom: 10px;
 }
-.login-help { color: #999; }
+
 span.email {
     color: #222;
 }

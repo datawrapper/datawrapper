@@ -3,27 +3,44 @@
 /*
  * PUBLISH STEP - shows progress of publishing action and thumbnail generation
  */
-$app->get('/chart/:id/publish', function ($id) use ($app) {
+$app->get('/(chart|map)/:id/publish', function ($id) use ($app) {
     disable_cache($app);
 
     check_chart_writable($id, function($user, $chart) use ($app) {
 
         $cfg = $GLOBALS['dw_config'];
 
-        $chartActions = DatawrapperHooks::execute(DatawrapperHooks::GET_CHART_ACTIONS, $chart);
+        DatawrapperHooks::register(
+            'render_chart_actions', 
+            function($chart, $user) use ($app) {
+                $cap = DatawrapperHooks::execute("get_chart_action_provider");
 
-        // add duplicate action
-        $chartActions[] = array(
-            'id' => 'duplicate',
-            'icon' => 'code-fork',
-            'title' => __('Duplicate this chart'),
-            'order' => 500
+                if ($cap == null || sizeof($cap) == 0) {
+                    $chartActions = DatawrapperHooks::execute(DatawrapperHooks::GET_CHART_ACTIONS, $chart);
+
+                    // add duplicate action
+                    $chartActions[] = array(
+                        'id' => 'duplicate',
+                        'icon' => 'code-fork',
+                        'title' => __('Duplicate this chart'),
+                        'order' => 500
+                    );
+
+                    // sort actions
+                    usort($chartActions, function($a, $b) {
+                        return (isset($a['order']) ? $a['order'] : 999) - (isset($b['order']) ? $b['order'] : 999);
+                    });
+
+                    $app->render('chart/chart-actions.twig', array(
+                        "chart" => $chart,
+                        "chartActions" => $chartActions,
+                        "user" => $user
+                    ));
+                } else {
+                    $cap[0]($app, $chart, $user);                
+                }
+            }
         );
-
-        // sort actions
-        usort($chartActions, function($a, $b) {
-            return (isset($a['order']) ? $a['order'] : 999) - (isset($b['order']) ? $b['order'] : 999);
-        });
 
         $chartW = $chart->getMetadata('publish.embed-width');
         $chartH = $chart->getMetadata('publish.embed-height');
@@ -43,7 +60,6 @@ $app->get('/chart/:id/publish', function ($id) use ($app) {
             'embedHeight' => $chartH,
             'themes' => DatawrapperTheme::all(),
             'exportStaticImage' => !empty($cfg['phantomjs']),
-            'chartActions' => $chartActions,
             'estExportTime' => ceil(JobQuery::create()->estimatedTime('export') / 60)
         );
 
@@ -51,7 +67,6 @@ $app->get('/chart/:id/publish', function ($id) use ($app) {
         add_editor_nav($page, 4);
 
         $app->render('chart/publish.twig', $page);
-
     });
 });
 
