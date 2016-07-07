@@ -43,7 +43,7 @@ abstract class BaseUserOrganization extends BaseObject implements Persistent
 
     /**
      * The value for the organization_role field.
-     * Note: this column has a database default value of: 1
+     * Note: this column has a database default value of: 2
      * @var        int
      */
     protected $organization_role;
@@ -93,7 +93,7 @@ abstract class BaseUserOrganization extends BaseObject implements Persistent
      */
     public function applyDefaultValues()
     {
-        $this->organization_role = 1;
+        $this->organization_role = 2;
         $this->invite_token = '';
     }
 
@@ -263,7 +263,7 @@ abstract class BaseUserOrganization extends BaseObject implements Persistent
      */
     public function hasOnlyDefaultValues()
     {
-            if ($this->organization_role !== 1) {
+            if ($this->organization_role !== 2) {
                 return false;
             }
 

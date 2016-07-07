@@ -74,7 +74,7 @@
   <table name="user_organization" isCrossRef="true">
     <column name="user_id" type="integer" primaryKey="true" />
     <column name="organization_id" type="varchar" size="128" primaryKey="true" />
-    <column name="organization_role" type="enum" valueSet="admin,member" required="true" default="member" />
+    <column name="organization_role" type="enum" valueSet="owner,admin,member" required="true" default="member" />
     <column name="invite_token" type="varchar" size="128" required="true" default="" />
     <foreign-key foreignTable="user">
       <reference local="user_id" foreign="id"/>

@@ -45,6 +45,7 @@ abstract class BaseUserOrganizationPeer
     const INVITE_TOKEN = 'user_organization.invite_token';
 
     /** The enumerated values for the organization_role field */
+    const ORGANIZATION_ROLE_OWNER = 'owner';
     const ORGANIZATION_ROLE_ADMIN = 'admin';
     const ORGANIZATION_ROLE_MEMBER = 'member';
 
@@ -93,6 +94,7 @@ abstract class BaseUserOrganizationPeer
     /** The enumerated values for this table */
     protected static $enumValueSets = array(
         UserOrganizationPeer::ORGANIZATION_ROLE => array(
+            UserOrganizationPeer::ORGANIZATION_ROLE_OWNER,
             UserOrganizationPeer::ORGANIZATION_ROLE_ADMIN,
             UserOrganizationPeer::ORGANIZATION_ROLE_MEMBER,
         ),

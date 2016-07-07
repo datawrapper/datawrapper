@@ -43,8 +43,9 @@ class UserOrganizationTableMap extends TableMap
         $this->addForeignPrimaryKey('organization_id', 'OrganizationId', 'VARCHAR' , 'organization', 'id', true, 128, null);
         $this->addColumn('organization_role', 'OrganizationRole', 'ENUM', true, null, 'member');
         $this->getColumn('organization_role', false)->setValueSet(array (
-  0 => 'admin',
-  1 => 'member',
+  0 => 'owner',
+  1 => 'admin',
+  2 => 'member',
 ));
         $this->addColumn('invite_token', 'InviteToken', 'VARCHAR', true, 128, '');
         // validators
