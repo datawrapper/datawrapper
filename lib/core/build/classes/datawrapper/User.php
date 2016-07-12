@@ -119,6 +119,21 @@ class User extends BaseUser {
         return $organizations[0];
     }
 
+    public function getCurrentOrganizationRole() {
+        $org = $this->getCurrentOrganization();
+
+        if (!$org) return null;
+
+        $userOrganization = UserOrganizationQuery::create()
+                            ->filterByUserId($this->getId())
+                            ->filterByOrganizationId($this->getCurrentOrganization()->getId())
+                            ->findOne();
+
+        return $userOrganization->getOrganizationRole(); 
+    }
+
+
+
     /*
      * returns an Array serialization with less
      * sensitive information than $user->toArray()
