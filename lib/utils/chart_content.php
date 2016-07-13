@@ -80,7 +80,7 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
         $vis_static_path = $vis['__static_path'];
         $vjs = array();
         if (!empty($vis['libraries'])) {
-            foreach (array_reverse($vis['libraries']) as $script) {
+            foreach ($vis['libraries'] as $script) {
                 if (!is_array($script)) {
                     $script = array("local" => $script, "cdn" => false);
                 }
@@ -127,7 +127,7 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
     $the_theme = DatawrapperTheme::get($chart->getTheme());
     $l10n__domain = $the_theme['__static_path'];
 
-    $the_vis_js = get_vis_js($the_vis, array_merge(array_reverse($vis_js), array_reverse($vis_libs_local)));
+    $the_vis_js = get_vis_js($the_vis, array_merge(array_reverse($vis_js), $vis_libs_local));
     $the_theme_js = get_theme_js($the_theme, array_reverse($theme_js));
     $the_chart_js = get_chart_js();
 
@@ -158,7 +158,7 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
                 array($static_path . '/js/dw-2.0'.($debug ? '' : '.min').'.js'),
                 array_reverse($theme_js),
                 array_reverse($vis_js),
-                array_reverse($vis_libs),
+                $vis_libs,
                 array($static_path . '/js/dw/chart.base.js')
             )
         );
