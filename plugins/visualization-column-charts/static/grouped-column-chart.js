@@ -130,7 +130,7 @@
                     me.__barLbls[key].animate({
                         x: d.x + d.w * 0.5,
                         y: d.y + d.h * 0.5,
-                        txt: me.formatValue(column.val(r))
+                        txt: me.formatValue(column.val(r), true)
                     }, 1000, 'expoInOut');
                     me.__barLbls[key].data('row', r);
                     me.__barLbls[key].hide();
