@@ -18,17 +18,19 @@ define(function() {
         if ($('#resize-w').val() != w) $('#resize-w').val(w);
         if ($('#resize-h').val() != h) $('#resize-h').val(h);
 
-        $('#iframe-wrapper').animate({
-            width: w,
-            height: h,
-            'margin-left': (maxW - realW) * 0.5
-        }, 400, 'easeOutExpo');
+        if (!$('#iframe-wrapper').is(':animated')) {
+            $('#iframe-wrapper').animate({
+                width: w,
+                height: h,
+                'margin-left': (maxW - realW) * 0.5
+            }, 400, 'easeOutExpo');
 
-        console.log('updateSize', (+h)+115);
-        $('.visconfig').css('min-height', (+h)+115);
+            console.log('updateSize', (+h)+115);
+            $('.visconfig').css('min-height', (+h)+115);
 
-        chart.set('metadata.publish.embed-width', w);
-        chart.set('metadata.publish.embed-height', h);
+            chart.set('metadata.publish.embed-width', w);
+            chart.set('metadata.publish.embed-height', h);
+        }
     };
 
 });
