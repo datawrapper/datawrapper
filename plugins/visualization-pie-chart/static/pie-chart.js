@@ -329,7 +329,7 @@
                 if (me.getFullArc() < TWO_PI) return false;
                 // this is a rough guess
                 return o.name.length > 10 ? o.value / total < 0.15
-                    : o.name.length > 5 ? o.value / total < 0.1 : false;
+                    : o.name.length > 3 ? o.value / total < 0.15 : false;
             }
 
         },
