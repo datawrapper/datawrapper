@@ -201,7 +201,7 @@ class Chart extends BaseChart {
         } else if ($this->getGuestSession() == session_id()) {
             return true;
         }
-        return false;
+        return $this->isPublic();
     }
 
     /**
