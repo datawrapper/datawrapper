@@ -10,3 +10,7 @@
 .chart.vis-grouped-column-chart  .label.series {
   text-align: right;
 }
+
+.chart.vis-grouped-column-chart .legend .label {
+    white-space: nowrap;
+}
