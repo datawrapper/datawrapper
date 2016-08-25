@@ -996,19 +996,23 @@ html .btn-inverse {
 .chart-editor.dw-create-visualize .visualization [contenteditable]:focus:after {
   content: '';
 }
-.chart-editor.dw-create-visualize #vis-options fieldset legend {
+.chart-editor.dw-create-visualize #vis-options fieldset legend,
+.chart-editor.dw-create-visualize .vis-options fieldset legend {
   margin-bottom: 10px;
 }
-.chart-editor.dw-create-visualize #vis-options .vis-option-group {
+.chart-editor.dw-create-visualize #vis-options .vis-option-group,
+.chart-editor.dw-create-visualize .vis-options .vis-option-group {
   margin-bottom: 9px;
   position: relative;
 }
-.chart-editor.dw-create-visualize #vis-options .vis-option-group.inline {
+.chart-editor.dw-create-visualize #vis-options .vis-option-group.inline,
+.chart-editor.dw-create-visualize .vis-options .vis-option-group.inline {
   display: inline-block;
   vertical-align: top;
   margin-right: 20px;
 }
-.chart-editor.dw-create-visualize #vis-options .vis-option-group .vis-option-help {
+.chart-editor.dw-create-visualize #vis-options .vis-option-group .vis-option-help,
+.chart-editor.dw-create-visualize .vis-options .vis-option-group .vis-option-help {
   position: absolute;
   top: 0px;
   right: 0px;
@@ -1016,7 +1020,8 @@ html .btn-inverse {
   padding-left: 15px;
   z-index: 100;
 }
-.chart-editor.dw-create-visualize #vis-options .vis-option-group .vis-option-help span {
+.chart-editor.dw-create-visualize #vis-options .vis-option-group .vis-option-help span,
+.chart-editor.dw-create-visualize .vis-options .vis-option-group .vis-option-help span {
   display: block;
   width: 22px;
   height: 22px;
@@ -1028,46 +1033,58 @@ html .btn-inverse {
   color: #ccc;
   font-weight: 400;
 }
-.chart-editor.dw-create-visualize #vis-options .vis-option-group .vis-option-help:hover {
+.chart-editor.dw-create-visualize #vis-options .vis-option-group .vis-option-help:hover,
+.chart-editor.dw-create-visualize .vis-options .vis-option-group .vis-option-help:hover {
   text-decoration: none;
 }
-.chart-editor.dw-create-visualize #vis-options .vis-option-group .vis-option-help:hover span {
+.chart-editor.dw-create-visualize #vis-options .vis-option-group .vis-option-help:hover span,
+.chart-editor.dw-create-visualize .vis-options .vis-option-group .vis-option-help:hover span {
   background: #eee;
   color: #444;
 }
-.chart-editor.dw-create-visualize #vis-options .vis-option-group.vis-option-type-radio-left .vis-option-help {
+.chart-editor.dw-create-visualize #vis-options .vis-option-group.vis-option-type-radio-left .vis-option-help,
+.chart-editor.dw-create-visualize .vis-options .vis-option-group.vis-option-type-radio-left .vis-option-help {
   top: 32px;
 }
-.chart-editor.dw-create-visualize #vis-options .vis-option-group.vis-option-type-separator .vis-option-help {
+.chart-editor.dw-create-visualize #vis-options .vis-option-group.vis-option-type-separator .vis-option-help,
+.chart-editor.dw-create-visualize .vis-options .vis-option-group.vis-option-type-separator .vis-option-help {
   top: 32px;
 }
-.chart-editor.dw-create-visualize #vis-options .vis-option-group.vis-option-type-select-axis-column .vis-option-help {
+.chart-editor.dw-create-visualize #vis-options .vis-option-group.vis-option-type-select-axis-column .vis-option-help,
+.chart-editor.dw-create-visualize .vis-options .vis-option-group.vis-option-type-select-axis-column .vis-option-help {
   top: 3px;
 }
-.chart-editor.dw-create-visualize #vis-options .vis-option-group legend + .control-group {
+.chart-editor.dw-create-visualize #vis-options .vis-option-group legend + .control-group,
+.chart-editor.dw-create-visualize .vis-options .vis-option-group legend + .control-group {
   margin-top: 0;
 }
-.chart-editor.dw-create-visualize #vis-options .vis-option-group.vis-option-type-select-axis-column .controls {
+.chart-editor.dw-create-visualize #vis-options .vis-option-group.vis-option-type-select-axis-column .controls,
+.chart-editor.dw-create-visualize .vis-options .vis-option-group.vis-option-type-select-axis-column .controls {
   margin-right: 20px;
 }
-.chart-editor.dw-create-visualize #vis-options .vis-option-group.vis-option-type-select {
+.chart-editor.dw-create-visualize #vis-options .vis-option-group.vis-option-type-select,
+.chart-editor.dw-create-visualize .vis-options .vis-option-group.vis-option-type-select {
   margin-bottom: 15px;
 }
-.chart-editor.dw-create-visualize #vis-options .vis-option-type-group {
+.chart-editor.dw-create-visualize #vis-options .vis-option-type-group,
+.chart-editor.dw-create-visualize .vis-options .vis-option-type-group {
   padding-bottom: 0;
   margin-bottom: 15px;
   border-bottom: 1px solid #ddd;
 }
-.chart-editor.dw-create-visualize #vis-options .vis-option-type-group label.group-title {
+.chart-editor.dw-create-visualize #vis-options .vis-option-type-group label.group-title,
+.chart-editor.dw-create-visualize .vis-options .vis-option-type-group label.group-title {
   padding: 8px 0;
   margin-bottom: 0;
   font-weight: 500!important;
   font-family: 'Roboto', Helvetica, sans-serif;
 }
-.chart-editor.dw-create-visualize #vis-options .vis-option-type-group label.group-title:hover {
+.chart-editor.dw-create-visualize #vis-options .vis-option-type-group label.group-title:hover,
+.chart-editor.dw-create-visualize .vis-options .vis-option-type-group label.group-title:hover {
   background: #f9f9f9;
 }
-.chart-editor.dw-create-visualize #vis-options .vis-option-type-group label.group-title:hover:after {
+.chart-editor.dw-create-visualize #vis-options .vis-option-type-group label.group-title:hover:after,
+.chart-editor.dw-create-visualize .vis-options .vis-option-type-group label.group-title:hover:after {
   content: 'Click to expand group';
   float: right;
   font-weight: 300;
@@ -1075,50 +1092,61 @@ html .btn-inverse {
   font-size: 12px;
   color: #bbb;
 }
-.chart-editor.dw-create-visualize #vis-options .vis-option-type-group label.group-title .fa {
+.chart-editor.dw-create-visualize #vis-options .vis-option-type-group label.group-title .fa,
+.chart-editor.dw-create-visualize .vis-options .vis-option-type-group label.group-title .fa {
   font-weight: normal;
   margin-right: 0.5ex;
 }
-.chart-editor.dw-create-visualize #vis-options .vis-option-type-group label.group-title .collapse-group {
+.chart-editor.dw-create-visualize #vis-options .vis-option-type-group label.group-title .collapse-group,
+.chart-editor.dw-create-visualize .vis-options .vis-option-type-group label.group-title .collapse-group {
   display: none;
 }
-.chart-editor.dw-create-visualize #vis-options .vis-option-type-group .option-group-content {
+.chart-editor.dw-create-visualize #vis-options .vis-option-type-group .option-group-content,
+.chart-editor.dw-create-visualize .vis-options .vis-option-type-group .option-group-content {
   position: absolute;
   visibility: hidden;
 }
-.chart-editor.dw-create-visualize #vis-options .vis-option-type-group.group-open {
+.chart-editor.dw-create-visualize #vis-options .vis-option-type-group.group-open,
+.chart-editor.dw-create-visualize .vis-options .vis-option-type-group.group-open {
   border-bottom: none;
   margin-left: -10px;
   margin-right: -10px;
   border-radius: 5px;
   background: #f9f9f9;
 }
-.chart-editor.dw-create-visualize #vis-options .vis-option-type-group.group-open label.group-title {
+.chart-editor.dw-create-visualize #vis-options .vis-option-type-group.group-open label.group-title,
+.chart-editor.dw-create-visualize .vis-options .vis-option-type-group.group-open label.group-title {
   background: #f2f2f2;
   padding-left: 10px;
   padding-right: 10px;
   margin-bottom: 15px;
 }
-.chart-editor.dw-create-visualize #vis-options .vis-option-type-group.group-open label.group-title .collapse-group {
+.chart-editor.dw-create-visualize #vis-options .vis-option-type-group.group-open label.group-title .collapse-group,
+.chart-editor.dw-create-visualize .vis-options .vis-option-type-group.group-open label.group-title .collapse-group {
   display: inline-block;
 }
-.chart-editor.dw-create-visualize #vis-options .vis-option-type-group.group-open label.group-title .expand-group {
+.chart-editor.dw-create-visualize #vis-options .vis-option-type-group.group-open label.group-title .expand-group,
+.chart-editor.dw-create-visualize .vis-options .vis-option-type-group.group-open label.group-title .expand-group {
   display: none;
 }
-.chart-editor.dw-create-visualize #vis-options .vis-option-type-group.group-open label.group-title:hover {
+.chart-editor.dw-create-visualize #vis-options .vis-option-type-group.group-open label.group-title:hover,
+.chart-editor.dw-create-visualize .vis-options .vis-option-type-group.group-open label.group-title:hover {
   background: #f0f0f0;
 }
-.chart-editor.dw-create-visualize #vis-options .vis-option-type-group.group-open label.group-title:hover:after {
+.chart-editor.dw-create-visualize #vis-options .vis-option-type-group.group-open label.group-title:hover:after,
+.chart-editor.dw-create-visualize .vis-options .vis-option-type-group.group-open label.group-title:hover:after {
   content: 'Click to collapse group';
 }
-.chart-editor.dw-create-visualize #vis-options .vis-option-type-group.group-open .option-group-content {
+.chart-editor.dw-create-visualize #vis-options .vis-option-type-group.group-open .option-group-content,
+.chart-editor.dw-create-visualize .vis-options .vis-option-type-group.group-open .option-group-content {
   position: static;
   visibility: visible;
   padding-left: 10px;
   padding-right: 10px;
   padding-bottom: 5px;
 }
-.chart-editor.dw-create-visualize #vis-options .control-label {
+.chart-editor.dw-create-visualize #vis-options .control-label,
+.chart-editor.dw-create-visualize .vis-options .control-label {
   display: inline-block;
   text-align: top;
   width: auto;
@@ -1126,14 +1154,16 @@ html .btn-inverse {
   margin-right: 1em;
   vertical-align: baseline;
 }
-.chart-editor.dw-create-visualize #vis-options .controls {
+.chart-editor.dw-create-visualize #vis-options .controls,
+.chart-editor.dw-create-visualize .vis-options .controls {
   display: inline-block;
   width: auto;
   float: none;
   margin-left: 0;
   vertical-align: baseline;
 }
-.chart-editor.dw-create-visualize #vis-options .tooltip .tooltip-inner {
+.chart-editor.dw-create-visualize #vis-options .tooltip .tooltip-inner,
+.chart-editor.dw-create-visualize .vis-options .tooltip .tooltip-inner {
   background: #eee;
   border-color: #eee;
   font-size: 14px;
@@ -1142,7 +1172,8 @@ html .btn-inverse {
   line-height: 18px;
   box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.03);
 }
-.chart-editor.dw-create-visualize #vis-options .tooltip.right .tooltip-arrow {
+.chart-editor.dw-create-visualize #vis-options .tooltip.right .tooltip-arrow,
+.chart-editor.dw-create-visualize .vis-options .tooltip.right .tooltip-arrow {
   border-right-color: #eee;
 }
 .chart-editor.dw-create-visualize .highlighted-series li {

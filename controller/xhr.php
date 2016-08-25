@@ -35,14 +35,18 @@ $app->get('/xhr/home-login', function() use ($app) {
  */
 $app->get('/xhr/:chartid/vis-options', function($id) use ($app) {
     disable_cache($app);
+    
 
     check_chart_writable($id, function($user, $chart) use ($app) {
+        $a = $app->request()->params('annotate');
+
         $page = array(
             'vis' => DatawrapperVisualization::get($chart->getType()),
             'theme' => DatawrapperTheme::get($chart->getTheme()),
             'language' => substr(DatawrapperSession::getLanguage(), 0, 2)
         );
-        $app->render('chart/visualize/options.twig', $page);
+        $app->render('chart/visualize/'.(!empty($a) ? 'annotate' : 'options').'.twig', $page);
     });
 });
+
 

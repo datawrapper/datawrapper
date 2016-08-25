@@ -5,7 +5,7 @@
     <ul class="nav nav-tabs visualize-nav-tabs" data-target="tab-container">
         <li class="active"><a href="#vis" data-target="select-visualization">{% trans "Chart type" %}</a></li>
         <li><a href="#refine" data-target="refine-the-chart">{% trans "Refine" %}</a></li>
-        <li ><a href="#story" data-target="tell-the-story">{% trans "Annotate" %}</a></li>
+        <li ><a href="#story" data-target="annotate">{% trans "Annotate" %}</a></li>
         <li ><a href="#design" data-target="design">{% trans "Design" %}</a></li>
     </ul>
 
@@ -34,41 +34,16 @@
 
             </div>
 
-            <div class="section tell-the-story">
+            <div class="section annotate">
                 {# <h3>{% trans "Tell the story" %}</h3> #}
 
                 <div class="story">
-                    <div class="story-title control-group">
-                        <div class="pull-left">
-                            <label for="text-title">{% trans "Title" %}</label>
-                            <input type="text" id="text-title" class="input-xlarge span4" />
-
-                            <label for="text-intro">{% trans "Description" %}</label>
-                            <textarea type="text" id="text-intro" class="input-xlarge span4"></textarea>
-
-                            <label for="text-notes">{% trans "Notes" %}</label>
-                            <input type="text" id="text-notes" class="input-xlarge span4" />
-                        </div>
+                    <div class="vis-options form-horizontal vis-options-annotate">
+                        {% include "chart/visualize/annotate.twig" %}
                     </div>
 
-                    {% include "chart/visualize/highlight.twig" %}
 
-                    {# {% include "chart/visualize/annotate.twig" %} #}
-
-                    {# repeat data source attribution one more time #}
-                    <div class="data-source control-group" style="clear:both">
-                        <label class="separator">{% trans "Where did you get the data?" %}</label>
-                        <div class="row">
-                            <div class="span2">
-                                <label>{% trans "Source name" %}</label>
-                                <input id="describe-source-name" type="text" class="span2" placeholder="{% trans "name of the organisation" %}">
-                            </div>
-                            <div class="span2">
-                                <label>{% trans "Source URL" %}</label>
-                                <input id="describe-source-url" type="text" class="span2" placeholder="{% trans "URL of the dataset" %}">
-                            </div>
-                        </div>
-                    </div>
+                    
 
                 </div>
 
@@ -79,7 +54,7 @@
             <div class="section refine-the-chart">
                 {# <h3>{% trans "Refine the chart" %}</h3> #}
 
-                <div id="vis-options" class="form-horizontal">
+                <div class="form-horizontal vis-options vis-options-refine">
 
                     {% include 'chart/visualize/options.twig' %}
 

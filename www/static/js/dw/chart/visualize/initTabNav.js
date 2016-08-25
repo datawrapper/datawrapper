@@ -79,7 +79,7 @@ define(function() {
             if (location.hash) {
                 var a = location.hash.substr(1);
                 if (a != 'select-visualization' && a != 'refine-the-chart' &&
-                    a != 'tell-the-story' && a != 'design') {
+                    a != 'annotate' && a != 'design') {
                     return;
                 }
                 show($('a[data-target='+a+']'));
