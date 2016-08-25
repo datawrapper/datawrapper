@@ -27,7 +27,6 @@ define(function() {
 
         // at first set default values
         _.each(vis.options, function(opt, key) {
-            console.log('opt', key);
             if (opt.type == 'group') return;
             if (_.isUndefined(chart.get('metadata.visualize.'+key)) && !_.isUndefined(opt.default)) {
                 chart.set('metadata.visualize.'+key, opt.default);

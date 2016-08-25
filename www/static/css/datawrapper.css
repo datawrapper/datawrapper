@@ -1458,6 +1458,18 @@ html .btn-inverse {
 .vis-option-type-chart-description textarea {
   margin-bottom: 5px;
 }
+.vis-archive-select {
+  margin: 15px 0 0 0px;
+  border-top: 1px solid #eee;
+  padding-top: 10px;
+  background: #f9f9f9;
+  padding-left: 12px;
+}
+.vis-archive-select select {
+  margin-left: 7px;
+  vertical-align: baseline;
+  max-width: 180px;
+}
 .dw-create-publish h3 {
   margin-bottom: 1ex;
 }
