@@ -16,10 +16,10 @@
     }
   },
   "devDependencies": {
-    "grunt": "^0.4.5",
-    "grunt-bowercopy": "^1.2.3",
-    "grunt-subgrunt": "^0.4.5",
-    "less": "^1.7.5"
+    "grunt": "^1.0.1",
+    "grunt-bowercopy": "^1.2.4",
+    "grunt-subgrunt": "^1.2.0",
+    "less": "^2.7.1"
   },
   "scripts": {
     "install": "grunt"
