@@ -70,7 +70,7 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
         $headlinks[] = array(
             'url' => '/account',
             'id' => 'account',
-            'title' => '<i class="fa fa-lock"></i> &nbsp;My Account'
+            'title' => '<i class="fa fa-lock"></i> &nbsp;' . __('My Account')
         );
 
 

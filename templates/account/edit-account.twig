@@ -59,27 +59,27 @@
 
 <div class="row">
     <div class="span10 offset1">
-        <h1>Edit your profile</h1>
-        <h2>Change the e-mail address or password you use to log into Datawrapper.</h2>
+        <h1>{% trans "Edit Profile" %}</h1>
+        <h2>{% trans "Change the e-mail address or password you use to log into Datawrapper." %}</h2>
     </div>
 </div>
 <div class="row edit-account">
     <div class="span6 offset3">
         <table>
           <tr>
-            <td>E-Mail:</td>
+            <td>{% trans "E-Mail" %}:</td>
             <td><input id="input-email" disabled value="{{ user.email }}" type="text"/></td>
-            <td><button id="edit-account-change-email" class="btn btn-save btn-default">Change E-Mail</button></td>
+            <td><button id="edit-account-change-email" class="btn btn-save btn-default">{% trans "Change E-Mail" %}</button></td>
           </tr>
           <tr>
-            <td>Password:</td>
+            <td>{% trans "Password" %}:</td>
             <td><input id="input-password" disabled value="abcdefgh" type="password"/></td>
-            <td><button id="edit-account-change-password" class="btn btn-save btn-default">Change Password</button></td>
+            <td><button id="edit-account-change-password" class="btn btn-save btn-default">{% trans "Change Password" %}</button></td>
           </tr>
           <tr>
             <td></td>
             <td style="text-align:center;">
-              or <a id="edit-account-delete" href="#">delete your account</a>.
+              {% trans "or" %} <a id="edit-account-delete" href="#">{% trans "delete your account" %}</a>.
             </td>
           </tr>
         </table>
@@ -99,7 +99,7 @@
                     </div>
                 </div>
                <div class="">
-                    <button class="btn btn-save btn-default btn-back">Back</button>
+                    <button class="btn btn-save btn-default btn-back">{% trans "Back" %}</button>
                     <button class="btn btn-save btn-primary" type="submit" id="save-profile" style="float:right">{% trans "Change E-Mail" %}</button>
                 </div>
             </fieldset>
@@ -139,7 +139,7 @@
                 </div>
 
                 <div class="">
-                    <button class="btn btn-save btn-default btn-back">Back</button>
+                    <button class="btn btn-save btn-default btn-back">{% trans "Back" %}</button>
                     <button class="btn btn-save btn-primary" type="submit" id="change-password" style="float:right">{% trans "Change Password" %}</button>
                 </div>
             </fieldset>
@@ -152,11 +152,11 @@
         <div class="iconholder">
             <i class="fa fa-times"></i>
         </div>
-        <h2 style="margin-bottom:20px">Are you sure you want to delete your account?</h2>
+        <h2 style="margin-bottom:20px">{% trans "Are you sure you want to delete your account?" %}</h2>
 
-        <button class="btn btn-back btn-primary"><i class="fa fa-chevron-left"></i> &nbsp; No, go back</button>
-        <div style="display:block; margin:10px 0px">or</div>
-        <button id="btn-delete" class="btn btn-default"><i class="fa fa-times"></i> &nbsp;Yes, delete my account</button>
+        <button class="btn btn-back btn-primary"><i class="fa fa-chevron-left"></i> &nbsp; {% trans "No, go back" %}</button>
+        <div style="display:block; margin:10px 0px">{% trans "or" %}</div>
+        <button id="btn-delete" class="btn btn-default"><i class="fa fa-times"></i> &nbsp; {% trans "Yes, delete my account" %}</button>
     </div>
 </div>
 
