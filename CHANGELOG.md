@@ -1,6 +1,15 @@
 CHANGELOG
 ---------
 
+### 1.11
+* requires PHP 5.6
+* can store chart CSVs and thumbnails on S3
+* allow visualizations to define annotate-options
+* add UserOrganization-role "owner"
+* you need to migrate the database schema, see [migration](https://github.com/datawrapper/datawrapper/blob/7911673d5ca5bc37f649ffca88676dfdd8f84a1a/scripts/migrate/sql/1.10.5.sql)
+* re-ordered top navigation bar
+* new one-page account settings
+
 ### 1.10.2
 
 * added support for generic inline editing
