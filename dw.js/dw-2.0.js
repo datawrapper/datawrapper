@@ -261,7 +261,7 @@ dw.column = function(name, rows, type) {
          */
         values: function(unfiltered) {
             var r = unfiltered ? origRows : rows;
-            r = _.map(r, dw.utils.purifyHtml);
+            r = _.map(r, function(d) { return dw.utils.purifyHtml(d); });
             return _.map(r, type.parse);
         },
 

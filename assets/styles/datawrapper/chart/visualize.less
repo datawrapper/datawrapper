@@ -29,6 +29,19 @@
         -ie-transform: rotate(35deg);
         -moz-transform: rotate(35deg);
     }
+
+    .info-text {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        padding: 10px;
+        // background: white;
+        text-align: center;
+        font-weight: bold;
+        color: #0088cc;
+        background: mix(white, #0088cc, 90%);
+    }
 }
 
 #iframe-wrapper.resizable {
@@ -67,7 +80,7 @@
       content: '';
     }
 
-    #vis-options {
+    #vis-options, .vis-options {
         fieldset legend {
             margin-bottom: 10px;
         }
@@ -385,15 +398,15 @@
         margin-bottom: 10px;
     }
 
-    .control-group .pull-left label,
-    .control-group .row label {
-        font-size: 11px;
-        color: #222;
-        text-transform: uppercase;
-        margin: 0 0 3px 2px;
-        font-family: @base-font;
-        font-weight: bold;
-    }
+    // .control-group .pull-left label,
+    // .control-group .row label {
+    //     font-size: 11px;
+    //     color: #222;
+    //     text-transform: uppercase;
+    //     margin: 0 0 3px 2px;
+    //     font-family: @base-font;
+    //     font-weight: bold;
+    // }
 
     .custom-color-selector-body {
         .btn {
@@ -442,4 +455,25 @@
         @import 'visualize/custom-range';
     }
 
+}
+
+.vis-option-type-chart-description {
+    input[type="text"], textarea {
+        margin-bottom: 5px;
+    }
+    padding-bottom: 1px;
+}
+
+.vis-archive-select {
+    margin: 15px 0 0 0px;
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+    background: #f9f9f9;
+    padding-left: 12px;
+
+    select {
+        margin-left: 7px;
+        vertical-align: baseline;
+        max-width: 180px;
+    }
 }

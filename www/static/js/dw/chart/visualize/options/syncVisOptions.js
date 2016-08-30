@@ -12,6 +12,19 @@ define(function() {
             }
         });
 
+        // also move annotate_options back to options
+        if (vis.annotate_options) {
+            _.each(vis.annotate_options, function(opt, key) {
+                if (opt.type == 'group') {
+                    _.each(opt.options, function(o,k) {
+                        vis.options[k] = o;
+                    });
+                } else {
+                    vis.options[key] = opt;
+                }
+            });
+        }
+
         // at first set default values
         _.each(vis.options, function(opt, key) {
             if (opt.type == 'group') return;

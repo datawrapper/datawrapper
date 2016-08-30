@@ -358,5 +358,7 @@
     "login \/ login \/ intro": "Hallo, sch\u00f6n dich wieder zu sehen. Melde dich an, um deine Diagramme zu sehen und neue zu erstellen.",
     "login \/ signup \/ headline": "Benutzerkonto anlegen",
     "login \/ signup \/ intro": "Datawrapper hilft dabei Diagramme und Karten in k\u00fcrzester Zeit zu publizieren. Probier es aus und du hast deine erste Visualisierung in weniger als eine Minute.",
-    "login \/ alternative signin": "Oder melde dich an \u00fcber:"
+    "login \/ alternative signin": "Oder melde dich an \u00fcber:",
+    "annotate \/ chart description": "Titel \/ Beschreibung \/ Quelle",
+    "visualize \/ vis archive": "Archivierte Diagr.-typen:"
 }

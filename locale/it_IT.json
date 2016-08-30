@@ -358,5 +358,7 @@
     "login \/ alternative signin": "In alternativa puoi accedere tramite:",
     "login \/ signup \/ confirmation-email": "Thanks for signing up for Datawrapper! Please check your email inbox for our welcome email and click the activation link to complete signup.",
     "login \/ signup \/ confirmation-email-hint": "If you do not see an email within five minutes, please make sure to also check the spam folder in your email program.",
-    "login \/ signup \/ confirm": "Got it"
+    "login \/ signup \/ confirm": "Got it",
+    "annotate \/ chart description": "Title \/ Description \/ Source",
+    "visualize \/ vis archive": "Archived chart types:"
 }

@@ -9,12 +9,11 @@ define([
     './visualize/enableInlineEditing',
     './visualize/liveUpdate',
     './visualize/updateSize',
-    './visualize/options',
     'js/misc/classify',
     'js/misc/jquery.easing'],
 
 function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
-    initTabNav, enableInlineEditing, liveUpdate, updateSize, options, classify) {
+    initTabNav, enableInlineEditing, liveUpdate, updateSize, classify) {
 
     var _typeHasChanged = false,
         _themeHasChanged = false,
@@ -190,13 +189,21 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
     function loadOptions() {
         var loaded = $.Deferred();
         _optionsSynchronized = false;
-        $('#vis-options').load(
-            '/xhr/'+chart.get('id')+'/vis-options?nocache='+Math.random(),
-            function() {
-                loaded.resolve();
-                loadVis();
-            }
+        var l = 0;
+        $('.vis-options-refine').load(
+            '/xhr/'+chart.get('id')+'/vis-options?nocache='+Math.random(), _loaded
         );
+        $('.vis-options-annotate').load(
+            '/xhr/'+chart.get('id')+'/vis-options?annotate=1&nocache='+Math.random(), _loaded
+        );
+        function _loaded() {
+            l++;
+            if (l == 2) {
+                loaded.resolve();
+                loadVis();    
+            }
+        }
+        
         return loaded.promise();
     }
 
@@ -216,7 +223,9 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
         var unfolded = $('.vis-selector-unfolded'),
             folded = $('.vis-selector-folded'),
             thumbs = $('.vis-thumb'),
-            selVis = $('.vis-selected');
+            selVis = $('.vis-selected'),
+            archived = $('.vis-archive-select select');
+
         unfolded.show().data('h', unfolded.height()).hide();
         thumbs.click(function(e) {
             var thumb = $(e.target);
@@ -231,6 +240,9 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
                 });*/
                 chart.set('type', thumb.data('id'));
             }, 100);
+            if (archived.length) {
+                archived.prop('value', '');
+            }
         });
 
         folded.click(function() {
@@ -240,6 +252,16 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
 
         unfolded.show();
         folded.hide();
+
+        if (archived.length) {
+            archived.on('change', function() {
+                var vis_id = archived.prop('value');
+                if (vis_id) {
+                    thumbs.removeClass('active');
+                    chart.set('type', vis_id);
+                }
+            });
+        }
     }
 
     function initResizeChart() {
@@ -263,7 +285,7 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
             startWidth = iframe.width();
             startHeight = iframe.height();
             $(document).on('mousemove', doDrag);
-            $(document).on('mouseup', stopDrag)
+            $(document).on('mouseup', stopDrag);
         }
 
         function doDrag(e) {
@@ -325,10 +347,10 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
         dw.backend.currentVis.chart(chart);
         dw.backend.currentVis.dataset = chart.dataset().reset();
         dw.backend.currentVis.meta = visMetas[chart.get('type')];
-        options.init(chart, visMetas[chart.get('type')]);
+        visOptions.init(chart, visMetas[chart.get('type')]);
         if (!_optionsSynchronized) {
             _optionsSynchronized = true;
-            options.sync();
+            visOptions.sync();
         }
         loadVisDfd.resolve();
     }
