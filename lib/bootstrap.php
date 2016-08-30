@@ -7,6 +7,9 @@
 // if not done yet, include the autoloader
 require_once ROOT_PATH . 'vendor/autoload.php';
 
+// store flag if we're running from command-line
+define('CLI', php_sapi_name() == "cli");
+
 // load YAML parser and config
 $GLOBALS['dw_config'] = $dw_config = Spyc::YAMLLoad(ROOT_PATH . 'config.yaml');
 
