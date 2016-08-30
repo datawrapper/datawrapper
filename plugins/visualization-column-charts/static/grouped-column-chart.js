@@ -72,7 +72,7 @@
                         color: me.getColor(null, r, { varyLightness: true, key: me.axes(true).labels.val(r) })
                     });
                 });
-                me.addLegend(items, $('#header', c.root.parent()));
+                me.addLegend(items, $('#header'));
             }
 
             me.initDimensions();
