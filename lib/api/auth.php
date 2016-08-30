@@ -177,6 +177,7 @@ $app->post('/account/invitation/:token', function ($token) use ($app) {
             $user = $users[0];
             $user->setActivateToken('');
             $user->setPwd($data->pwd1);
+            $user->setRole(UserPeer::ROLE_EDITOR);
             $user->save();
             // NOTE: we don't need a confirmation.
             # send confirmation email
