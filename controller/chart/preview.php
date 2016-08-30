@@ -6,7 +6,7 @@
 $app->get('/chart/:id/preview', function ($id) use ($app) {
     disable_cache($app);
 
-    check_chart_readable($id, function($user, $chart) use ($app) {
+    check_chart_writable($id, function($user, $chart) use ($app) {
         if ($chart->getLanguage() != '') {
             global $__l10n;
             $__l10n->loadMessages($chart->getLanguage());
