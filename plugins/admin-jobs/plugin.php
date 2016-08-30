@@ -18,6 +18,8 @@ class DatawrapperPlugin_AdminJobs extends DatawrapperPlugin {
                     'url' => '/jobs',
                     'title' => $title,
                     'controller' => array($plugin, 'jobsAdmin'),
+                    'group' => __('Admin'),
+                    'icon' => 'fa-hourglass-half',
                     'order' => '10'
                 );
             }

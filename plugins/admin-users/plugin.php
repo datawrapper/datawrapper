@@ -13,7 +13,9 @@ class DatawrapperPlugin_AdminUsers extends DatawrapperPlugin {
                     'url' => '/users',
                     'title' => __('Users', $plugin->getName()),
                     'controller' => array($plugin, 'users'),
-                    'order' => '2'
+                    'group' => __('Users'),
+                    'icon' => 'fa-users',
+                    'order' => 1
                 );
             }
         );
@@ -35,11 +37,34 @@ class DatawrapperPlugin_AdminUsers extends DatawrapperPlugin {
                     $page = array(
                         'title' => 'Users » '.$theUser->guessName()
                     );
-                    // manually add the admin nav menu vars
+
                     global $__dw_admin_pages;
+                    // add admin pages to menu
                     foreach ($__dw_admin_pages as $adm_pg) {
-                        $page['adminmenu'][$adm_pg['url']] = $adm_pg['title'];
+                        if (empty($adm_pg['hide'])) {
+                            $group = __('Other');
+
+                            if (isset($adm_pg['group'])) $group = $adm_pg['group'];
+
+                            if (!isset($page['adminmenu'][$group])) {
+                                $page['adminmenu'][$group] = array();
+                            }
+
+                            $icon = "";
+
+                            if (isset($adm_pg['icon'])) {
+                                $icon = $adm_pg['icon'];
+                            }
+
+                            $page['adminmenu'][$group][] = array(
+                                "title" => $adm_pg['title'],
+                                "url" => $adm_pg['url'],
+                                "icon" => $icon
+                            );
+
+                        }
                     }
+
                     add_header_vars($page, 'admin');
                     $page['the_user'] = $theUser;
                     $page['userPlugins'] = DatawrapperPluginManager::getUserPlugins($theUser->getId(), false);

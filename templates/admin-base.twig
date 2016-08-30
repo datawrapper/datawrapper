@@ -12,6 +12,12 @@
 .admin .nav-stacked.nav-tabs li.active a .badge-info {
     background-color: #A9D5EB;
 }
+.admin .admingroup {
+    text-transform: uppercase;
+    padding: 8px;
+    font-weight: bold;
+    font-size: 12px;
+}
 </style>
 
 <div class="admin">
@@ -20,13 +26,17 @@
 
     <div class="row">
         <div class="span2">
-            <ul class="nav nav-stacked nav-tabs">
-                {% for url, title in adminmenu %}
-                <li{% if url == adminactive %} class="active" {% endif %}>
-                    <a href="/admin{{ url }}">{{ title | raw }}</a>
-                </li>
-                {% endfor %}
-            </ul>
+            {% for group, items in adminmenu %}
+                <div class="admingroup">{{ group }}</div>
+
+                <ul class="nav nav-stacked nav-tabs">
+                    {% for item in items %}
+                    <li{% if item.url == adminactive %} class="active" {% endif %}>
+                        <a href="/admin{{ item.url }}"><i class="fa {{ item.icon }}"></i> &nbsp;{{ item.title | raw }}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            {% endfor %}
         </div>
         <div class="span10">
             {{ block('adminpage') }}

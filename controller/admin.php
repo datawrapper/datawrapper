@@ -32,7 +32,26 @@ if (DatawrapperHooks::hookRegistered(DatawrapperHooks::GET_ADMIN_PAGES)) {
                 // add admin pages to menu
                 foreach ($__dw_admin_pages as $adm_pg) {
                     if (empty($adm_pg['hide'])) {
-                        $page_vars['adminmenu'][$adm_pg['url']] = $adm_pg['title'];
+                        $group = __('Other');
+
+                        if (isset($adm_pg['group'])) $group = $adm_pg['group'];
+
+                        if (!isset($page_vars['adminmenu'][$group])) {
+                            $page_vars['adminmenu'][$group] = array();
+                        }
+
+                        $icon = "";
+
+                        if (isset($adm_pg['icon'])) {
+                            $icon = $adm_pg['icon'];
+                        }
+
+                        $page_vars['adminmenu'][$group][] = array(
+                            "title" => $adm_pg['title'],
+                            "url" => $adm_pg['url'],
+                            "icon" => $icon
+                        );
+
                     }
                 }
                 add_header_vars($page_vars, 'admin');
