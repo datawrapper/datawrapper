@@ -187,6 +187,11 @@ class DatawrapperHooks {
     const SEND_TEAM_INVITE_EMAIL = 'send_team_invite_email';
     const SEND_RESET_PASSWORD_EMAIL = 'send_reset_password_email';
     const SEND_CHANGE_EMAIL_EMAIL = 'send_change_email_email';
+    const SEND_FIRST_INVOICE_EMAIL = 'send_first_invoice_email';
+    const SEND_INVOICE_EMAIL = 'send_invoice_email';
+    const SEND_CARD_EXPIRY_EMAIL = 'send_card_expiry_email';
+    const SEND_FAILED_PAYMENT_EMAIL = 'send_failed_payment_email';
+    const SEND_DOWNGRADE_EMAIL = 'send_downgrade_email';
 
     // hooks to add markup in chart editor steps below nav 
     const UPLOAD_BEFORE_CONTENT = 'upload_before_content';

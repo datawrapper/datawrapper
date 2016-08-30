@@ -6,8 +6,16 @@ define(['./updateSize'], function(updateSize) {
         var iframe = $('#iframe-vis').contents();
         if (!iframe.get(0)) return; // content not loaded yet
 
-        var vis_h = iframe.height(),
-            vis_w = iframe.width(),
+        var vis_h = $(iframe).find('body').height(),
+            footer = $(iframe).find('#footer') || $(iframe).find('.dw-chart-footer');
+
+        if (footer.css('position') == 'absolute' 
+            || footer.css('position') == 'fixed') {
+
+            vis_h += $(footer).outerHeight();
+        }
+
+        var vis_w = iframe.width(),
             iframe_h = $('#iframe-vis').height(),
             iframe_w = $('#iframe-vis').width(),
             $notification;

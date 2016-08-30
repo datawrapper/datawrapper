@@ -132,7 +132,7 @@ class DatawrapperPluginManager {
                         ->useUserProductQuery(null, Criteria::LEFT_JOIN)
                         ->endUse()
                         ->where(
-                            '((product.deleted=? AND user_product.user_id=? AND user_product.expires >= NOW())
+                            '((product.deleted=? AND user_product.user_id=? AND (user_product.expires >= NOW() OR user_product.expires IS NULL))
                             OR (product.deleted=? AND user_organization.user_id=? AND user_organization.invite_token = "" AND organization_product.expires >= NOW()))',
                             array(false, $user_id, false, $user_id)
                         )

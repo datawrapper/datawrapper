@@ -81,6 +81,7 @@ CREATE TABLE `organization`
     `name` VARCHAR(512) NOT NULL,
     `created_at` DATETIME NOT NULL,
     `deleted` TINYINT(1) DEFAULT 0,
+    `disabled` TINYINT(1) DEFAULT 0,
     `default_theme` VARCHAR(128) DEFAULT '',
     `settings` LONGTEXT,
     PRIMARY KEY (`id`)
@@ -96,7 +97,7 @@ CREATE TABLE `user_organization`
 (
     `user_id` INTEGER NOT NULL,
     `organization_id` VARCHAR(128) NOT NULL,
-    `organization_role` TINYINT DEFAULT 1 NOT NULL,
+    `organization_role` TINYINT DEFAULT 2 NOT NULL,
     `invite_token` VARCHAR(128) DEFAULT '' NOT NULL,
     PRIMARY KEY (`user_id`,`organization_id`),
     INDEX `user_organization_FI_2` (`organization_id`)

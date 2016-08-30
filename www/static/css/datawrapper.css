@@ -167,9 +167,16 @@ html .navbar .navbar-inner .mycharts.dropdown li img.icon {
 html .navbar .navbar-inner .mycharts.dropdown li {
   position: relative;
   max-width: 240px;
+  min-height: 26px;
 }
 html .navbar .navbar-inner .mycharts.dropdown li a {
   padding-left: 45px;
+}
+html .navbar .navbar-inner .mycharts.dropdown .divider {
+  min-height: 0;
+}
+html .navbar .navbar-inner .mycharts.dropdown a {
+  min-height: 20px;
 }
 html .navbar .navbar-inner .mycharts.dropdown li a span {
   overflow: hidden;

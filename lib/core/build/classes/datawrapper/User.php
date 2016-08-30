@@ -119,6 +119,21 @@ class User extends BaseUser {
         return $organizations[0];
     }
 
+    public function getCurrentOrganizationRole() {
+        $org = $this->getCurrentOrganization();
+
+        if (!$org) return null;
+
+        $userOrganization = UserOrganizationQuery::create()
+                            ->filterByUserId($this->getId())
+                            ->filterByOrganizationId($this->getCurrentOrganization()->getId())
+                            ->findOne();
+
+        return $userOrganization->getOrganizationRole(); 
+    }
+
+
+
     /*
      * returns an Array serialization with less
      * sensitive information than $user->toArray()
@@ -134,7 +149,7 @@ class User extends BaseUser {
     }
 
 	public function hasProduct(Product $product) {
-		return UserProductsQuery::create()
+		return UserProductQuery::create()
 			->filterByProduct($product)
 			->filterByUser($this)
 			->count() > 0;
@@ -145,11 +160,12 @@ class User extends BaseUser {
     }
 
     /*
-     * get a list of all organiztions in which the membership
+     * get a list of all enabled organiztions in which the membership
      * has been activated
      */
     public function getActiveOrganizations() {
         $crit = OrganizationQuery::create()
+            ->filterByDisabled(0)
             ->useUserOrganizationQuery()
             ->filterByInviteToken('')
             ->endUse();
@@ -157,11 +173,26 @@ class User extends BaseUser {
     }
 
     /*
+     * get a list of all disabled organiztions in which the membership
+     * has been activated
+     */
+    public function getDisabledOrganizations() {
+        $crit = OrganizationQuery::create()
+            ->filterByDisabled(1)
+            ->useUserOrganizationQuery()
+            ->filterByInviteToken('')
+            ->endUse();
+        return $this->getOrganizations($crit);
+    }
+
+
+    /*
      * get a list of organization in which the invitation
      * is still pending
      */
     public function getPendingOrganizations() {
         return OrganizationQuery::create()
+            ->filterByDisabled(0)
             ->leftJoin('UserOrganization')
             ->where('UserOrganization.InviteToken <> ""')
             ->withColumn('UserOrganization.InviteToken', 'InviteToken')

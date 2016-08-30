@@ -1,71 +1,13 @@
-{% extends "core.twig" %}
+{% use "utils.twig" %}{% extends "core.twig" %}
 
 {% block content %}
-{# header #}
 
 <style type="text/css">
-
-.account-header {
-    margin-bottom: 20px;
-    padding-left: 5px;
-}
-
-.account-header .avatar {
-    border-radius: 8px;
-    width: 32px;
-    height: 32px;
-}
-
-.user-name {
-    font-size: 18px;
-    line-height: 32px;
-    font-weight: 300;
-    display: inline-block;
-    vertical-align: top;
-    margin-left: 5px;
-}
-
-.account-body h2 {
-    font-weight: 300;
-    margin-top: 0;
-}
-.account-menu li i.fa {
-    width: 17px;
-    text-align: center;
-    position: relative;
-    left: -3px;
-}
-.account-menu li.delete a {
-    color: darkred;
+hr {
+  margin: 30px 0px;
 }
 </style>
 
-<div class="container">
-    <div class="row">
-        <div class="span3 offset0">
-            <div class="account-header">
-                <img class="avatar" src="//www.gravatar.com/avatar/{{ gravatar }}?s=64&amp;d=mm" />
-                <div class="user-name">{{ user.guessName() }}</div>
-            </div>
-            <div class="account-menu">
-                <ul class="nav nav-tabs nav-stacked">
-                    {% for page in pages %}
-                    <li class="{{ page.url }}{% if page.url == active %} active{% endif %}">
-                        <a href="/account/{{ page.url }}/{% if page.params %}{{ page.params }}{% endif %}">{% if page.icon %}<i class="fa {{ page.icon }}"></i> {% endif %}{{ page.title }}</a>
-                    </li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </div>
-        <div class="span9">
-            {% if notme %}<div class="alert alert-warning">
-                <b>Watch out, sysadmin!</b> You are about to edit someone elses user account ({{ user.guessName() }}). Find your own account <a href="/account">here</a>.
-            </div>{% endif %}
-            <div class="account-body {{ active | lower }}">
-                {{ block('account_content') }}
-            </div>
-        </div>
-    </div>
-</div>
+{{ hook('render_account_pages') }}
 
 {% endblock %}

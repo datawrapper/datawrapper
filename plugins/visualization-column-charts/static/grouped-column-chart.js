@@ -44,13 +44,19 @@
                 lw = 0,
                 lwi = 0;
                 barColumns = me.getBarColumns(),
-                n = barColumns.length;
+                n = barColumns.length,
+                all_values_negative = true;
+
             _.each(barColumns, function(column, s) {
                 var lbl_w = me.labelWidth(column.title(), 'series'),
                     lbl_h = me.labelHeight(column.title(), 'series'); 
 
                 if (lbl_w >= lw) { lw = lbl_w; lwi = s; }
                 if (lbl_h >= lh) { lh = lbl_h; lhi = s; }
+
+                column.each(function(val) {
+                    if (val > 0) all_values_negative = false;
+                });
             });
 
             var bw = (c.w * 0.9) / (me.axesDef.columns.length*1.5);
@@ -63,6 +69,11 @@
                 c.bpad += lh;
             }
 
+            if (all_values_negative) {
+                c.tpad = 30;
+                c.bpad = 0;
+            }
+
             if (dataset.numRows() > 1) {
                 var items = [],
                     lblFmt = me.chart().columnFormatter(me.axes(true).labels);
@@ -72,7 +83,7 @@
                         color: me.getColor(null, r, { varyLightness: true, key: me.axes(true).labels.val(r) })
                     });
                 });
-                me.addLegend(items, $('#header', c.root.parent()));
+                me.addLegend(items, $('#header'));
             }
 
             me.initDimensions();
@@ -130,7 +141,7 @@
                     me.__barLbls[key].animate({
                         x: d.x + d.w * 0.5,
                         y: d.y + d.h * 0.5,
-                        txt: me.formatValue(column.val(r))
+                        txt: me.formatValue(column.val(r), true)
                     }, 1000, 'expoInOut');
                     me.__barLbls[key].data('row', r);
                     me.__barLbls[key].hide();
