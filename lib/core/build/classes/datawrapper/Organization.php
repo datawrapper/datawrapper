@@ -73,6 +73,12 @@ class Organization extends BaseOrganization
         return $this->getUsers($crit);
     }
 
+    public function getType() {
+        $type = $this->getSettings('type');
+        if (empty($type)) return 'dev';
+        return $type;
+    }
+
     public function getSettings($key = null) {
         if ($this->settings == null) {
             return array();
