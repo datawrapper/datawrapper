@@ -7,7 +7,7 @@ define(function() {
             if (res.status == "ok") {
                 var chart = res.data,
                     chartUrl = preview ? location.protocol + '//' + dw.backend.__domain + '/chart/' + chart.id + '/preview?innersvg=1' :
-                        location.protocol + '//' + dw.backend.__chartCacheDomain + '/' + chart.id + '/index.html';
+                        chart.publicUrl || location.protocol + '//' + dw.backend.__chartCacheDomain + '/' + chart.id + '/index.html';
                     chartIframe = $('<iframe src="'+chartUrl+'" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>'),
                     wrapper = $('<div></div>'),
                     overlay = wrapper.overlay({
