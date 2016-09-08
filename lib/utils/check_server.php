@@ -124,7 +124,7 @@ function check_plugins() {
     foreach ($depends as $id => $deps) {
         foreach ($deps as $dep_id => $dep_ver) {
             if (!isset($installed[$dep_id]) && $dep_id != 'core') {
-                $missing_dep[] = $dep_id;
+                $missing_dep[] = [$dep_id, $id];
             } else {
                 if ($dep_id != 'core') {
                     if (version_compare($installed[$dep_id], $dep_ver) < 0) {
@@ -161,7 +161,7 @@ function check_plugins() {
     if (count($missing_dep) > 0) {
         return '<h2>Some plugins are missing</h2>'
             . '<p>The following plugins are declared as dependencies by other plugins:</p>'
-            . '<ul><li><code>'. join('</li></code><li><code>', $missing_dep) . '</code></li></ul>';
+            . '<ul><li><code>'. join('</li></code><li><code>', array_map(function($d) { return $d[0].' (required by '.$d[1].')'; }, $missing_dep)) . '</code></li></ul>';
     }
     if ($cnt == 0) {
         return '<h2>Please install some plugins</h2>'
