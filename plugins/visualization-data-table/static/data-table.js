@@ -158,6 +158,18 @@
                 last_sort = [th.index(), dir.substr(0, dir.charAt(0) == 'a' ? 3 : 4)];
             });
 
+            var c = me.get('header-color');
+
+            if (typeof c == "undefined") {
+                c = me.theme().colors.palette[0];
+            } else if (typeof c == "number") {
+                c = me.theme().colors.palette[c];
+            } else if (typeof c == "string") {
+                c = c;
+            }
+
+            $('.chart.vis-data-table .datatable-default th').css('background', c);
+
             el.append('<br style="clear:both"/>');
             me.renderingComplete();
         },

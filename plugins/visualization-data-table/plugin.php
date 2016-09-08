@@ -54,6 +54,11 @@ class DatawrapperPlugin_VisualizationDataTable extends DatawrapperPlugin_Visuali
                 "type" => "checkbox",
                 "label" =>  __("Hide header", $id),
                 "default" => false
+            ),
+            "header-color" => array(
+                "type" => "base-color",
+                "hideCustomColorSelector" => true,
+                "label" => __("Header color")
             )
         );
         return $options;
