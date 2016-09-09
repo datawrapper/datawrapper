@@ -335,10 +335,6 @@ and (max-device-width : 480px) {
     background: #fafafa !important;
 }
 
-.chart.vis-data-table .datatable-default td.not-available, .chart.vis-data-table .datatable-default td.number, .chart.vis-data-table .datatable-default td.number-decimal, .chart.vis-data-table .datatable-default td.number-small {
-    text-align: left !important;
-}
-
 .chart.vis-data-table .datatable-default th.sorting:hover, .chart.vis-data-table .datatable-default th.sorting_desc:hover, .chart.vis-data-table .datatable-default th.sorting_asc:hover {
     text-decoration: none;
 }
