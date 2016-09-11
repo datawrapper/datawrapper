@@ -6,19 +6,16 @@ class DatawrapperPlugin_AdminUsers extends DatawrapperPlugin {
     public function init() {
         $plugin = $this;
         // register plugin controller
-        DatawrapperHooks::register(
-            DatawrapperHooks::GET_ADMIN_PAGES,
-            function() use ($plugin) {
-                return array(
-                    'url' => '/users',
-                    'title' => __('Users', $plugin->getName()),
-                    'controller' => array($plugin, 'users'),
-                    'group' => __('Users'),
-                    'icon' => 'fa-users',
-                    'order' => 1
-                );
-            }
-        );
+        $this->registerAdminPage(function() use ($plugin) {
+            return array(
+                'url' => '/users',
+                'title' => __('Users', $plugin->getName()),
+                'controller' => array($plugin, 'users'),
+                'group' => __('Users'),
+                'icon' => 'fa-users',
+                'order' => 1
+            );
+        });
 
         $this->declareAssets(
             array(
