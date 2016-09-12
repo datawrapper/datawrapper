@@ -93,7 +93,10 @@ formats =
         'values': ['2013-w07','2013-w08','2013-w09','2013-w10','2013-w11']
     'ISO week dates':
         '1st': new Date(Date.UTC(2011, 6, 27))
-        'values': ['2011-W30-3','2011-W30-4','2011-W30-5','2011-W30-6']
+        'values': ['2011-W30-3','2011-W30-4','2011-W30-5','2011-W30-6'],
+    'Abbreviated months':
+        '1st': new Date(2007,11,1)
+        'values': ['Dec-07', 'Jan-08', 'Feb-08', 'Mar-08', 'Apr-08', 'May-08', 'Jun-08', 'Jul-08', 'Aug-08', 'Sep-08', 'Oct-08', 'Nov-08', 'Dec-08', 'Jan-09', 'Feb-09', 'Mar-09', 'Apr-09', 'May-09', 'Jun-09', 'Jul-09', 'Aug-09', 'Sep-09', 'Oct-09', 'Nov-09', 'Dec-09']
 
 batch = {}
 for k of formats
