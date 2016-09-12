@@ -1,7 +1,7 @@
 CHANGELOG
 ---------
 
-### 1.11
+### 1.11.0
 * requires PHP 5.6
 * can store chart CSVs and thumbnails on S3
 * allow visualizations to define annotate-options
