@@ -17,13 +17,14 @@ function(initCustomColors, syncVisOptions, unsyncVisOptions) {
             $('.select-row').hide();
             initCustomColors(_chart);
 
+            console.log('fooltip', $('.vis-option-help').tooltip);
             $('.vis-option-help').tooltip({
                 placement: 'right',
                 html: true,
                 delay: 0,
                 animation: false,
                 trigger: 'hover focus',
-                container: '#vis-options'
+                container: '.vis-options'
             });
 
             var type = _chart.get('type'), usrPref = {};
