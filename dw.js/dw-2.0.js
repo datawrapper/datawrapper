@@ -562,8 +562,18 @@ dw.column.types.date = function(sample) {
                 precision: 'month'
             },
             'M-YYYY': {
-                test: /^ *(0?[1-9]|1[0-2]) ?[ \-\/\.][12]\d{3} *$/,
-                parse: /^ *(0?[1-9]|1[0-2]) ?[ \-\/\.](\d{4}) *$/,
+                test: /^ *(0?[1-9]|1[0-2]) ?[ \-\/\.] ?[12]\d{3} *$/,
+                parse: /^ *(0?[1-9]|1[0-2]) ?[ \-\/\.] ?(\d{4}) *$/,
+                precision: 'month'
+            },
+            'MMM-YYYY': {
+                test: /^ *(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) ?[ \-] ?[12]\d{3} *$/i,
+                parse: /^ *(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) ?[ \-] ?(\d{4}) *$/i,
+                precision: 'month'
+            },
+            'MMM-YY': {
+                test: /^ *(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) ?[ \--] ?\d{2} *$/i,
+                parse: /^ *(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) ?[ \--] ?(\d{2}) *$/i,
                 precision: 'month'
             },
             'YYYY-WW': {
@@ -692,6 +702,13 @@ dw.column.types.date = function(sample) {
                 // increment errors anyway if string doesn't match strict format
                 if (!test(raw, format)) errors++;
             }
+            var months = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
+            
+            function guessTwoDigitYear(yr) {
+                if (yr < 20) return 2000 + yr;
+                else return 1900 + yr;
+            }
+            
             switch (format) {
                 case 'YYYY': return new Date(m[1], 0, 1);
                 case 'YYYY-H': return new Date(m[1], (m[2]-1) * 6, 1);
@@ -700,6 +717,8 @@ dw.column.types.date = function(sample) {
                 case 'Q-YYYY': return new Date(m[2], (m[1]-1) * 3, 1);
                 case 'YYYY-M': return new Date(m[1], (m[2]-1), 1);
                 case 'M-YYYY': return new Date(m[2], (m[1]-1), 1);
+                case 'MMM-YYYY': return new Date(+m[2], months.indexOf(m[1].toLowerCase()), 1);
+                case 'MMM-YY': return new Date(guessTwoDigitYear(+m[2]), months.indexOf(m[1].toLowerCase()), 1);
                 case 'YYYY-WW': return dateFromIsoWeek(m[1], m[2], 1);
                 case 'YYYY-WW-d': return dateFromIsoWeek(m[1], m[2], m[3]);
                 case 'YYYY-MM-DD': return new Date(m[1], (m[3]-1), m[4]);

@@ -24,6 +24,8 @@
     </ul>
 </div>
 
+{{ hook('admin_user_detail_top', the_user) }}
+
 <div class="row">
     <div class="span3">
         <h3 style="margin:30px 0 10px">Private Plugins</h3>
@@ -50,5 +52,7 @@
         </ul>
     </div>
 </div>
+
+{{ hook('admin_user_detail_bottom') }}
 
 {% endblock %}
