@@ -39,6 +39,9 @@ $app->post('/organizations', function() use ($app) {
             if (isset($params['default_theme'])) {
                 $org->setDefaultTheme($params['default_theme']);
             }
+            if (isset($params['type'])) {
+                $org->updateSettings('type', $params['type']);
+            }
             $org->setCreatedAt(time());
             $org->save();
             ok();
