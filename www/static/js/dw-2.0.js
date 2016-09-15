@@ -603,18 +603,18 @@ dw.column.types.date = function(sample) {
             },
             // dates with a time
             'MM/DD/YYYY HH:MM': {
-                test: /^ *(0?[1-9]|1[0-2])([-\/] ?)(0?[1-9]|[1-2]\d|3[01])\2([12]\d{3}) *[ \-\|] *(0?\d|1\d|2[0-3]):([0-5]\d) *$/,
-                parse: /^ *(0?[1-9]|1[0-2])([-\/] ?)(0?[1-9]|[1-2]\d|3[01])\2(\d{4}) *[ \-\|] *(0?\d|1\d|2[0-3]):([0-5]\d) *$/,
+                test: /^ *(0?[1-9]|1[0-2])([-\/] ?)(0?[1-9]|[1-2]\d|3[01])\2([12]\d{3}) *[ \-\|] *(0?\d|1\d|2[0-3]):([0-5]\d)(AM|PM)? *$/i,
+                parse: /^ *(0?[1-9]|1[0-2])([-\/] ?)(0?[1-9]|[1-2]\d|3[01])\2(\d{4}) *[ \-\|] *(0?\d|1\d|2[0-3]):([0-5]\d)(AM|PM)? *$/i,
                 precision: 'day-minutes'
             },
             'DD.MM.YYYY HH:MM': {
-                test: /^ *(0?[1-9]|[1-2]\d|3[01])([-\.\/ ?])(0?[1-9]|1[0-2])\2([12]\d{3}) *[ \-\|] *(0?\d|1\d|2[0-3]):([0-5]\d) *$/,
-                parse: /^ *(0?[1-9]|[1-2]\d|3[01])([-\.\/ ?])(0?[1-9]|1[0-2])\2(\d{4}) *[ \-\|] *(0?\d|1\d|2[0-3]):([0-5]\d) *$/,
+                test: /^ *(0?[1-9]|[1-2]\d|3[01])([-\.\/ ?])(0?[1-9]|1[0-2])\2([12]\d{3}) *[ \-\|] *(0?\d|1\d|2[0-3]):([0-5]\d)(AM|PM)? *$/i,
+                parse: /^ *(0?[1-9]|[1-2]\d|3[01])([-\.\/ ?])(0?[1-9]|1[0-2])\2(\d{4}) *[ \-\|] *(0?\d|1\d|2[0-3]):([0-5]\d)(AM|PM)? *$/i,
                 precision: 'day-minutes'
             },
             'YYYY-MM-DD HH:MM': {
-                test: /^ *([12]\d{3})([-\/\. ?])(0?[1-9]|1[0-2])\2(0?[1-9]|[1-2]\d|3[01]) *[ \-\|] *(0?\d|1\d|2[0-3]):([0-5]\d) *$/,
-                parse: /^ *(\d{4})([-\/\. ?])(0?[1-9]|1[0-2])\2(0?[1-9]|[1-2]\d|3[01]) *[ \-\|] *(0?\d|1\d|2[0-3]):([0-5]\d) *$/,
+                test: /^ *([12]\d{3})([-\/\. ?])(0?[1-9]|1[0-2])\2(0?[1-9]|[1-2]\d|3[01]) *[ \-\|] *(0?\d|1\d|2[0-3]):([0-5]\d)(AM|PM)? *$/i,
+                parse: /^ *(\d{4})([-\/\. ?])(0?[1-9]|1[0-2])\2(0?[1-9]|[1-2]\d|3[01]) *[ \-\|] *(0?\d|1\d|2[0-3]):([0-5]\d)(AM|PM)? *$/i,
                 precision: 'day-minutes'
             },
             // dates with a time
@@ -693,7 +693,7 @@ dw.column.types.date = function(sample) {
                 return raw;
             }
 
-            var m = parse(raw, format);
+            var m = parse(raw.toLowerCase(), format);
 
             if (!m) {
                 errors++;
@@ -717,16 +717,16 @@ dw.column.types.date = function(sample) {
                 case 'Q-YYYY': return new Date(m[2], (m[1]-1) * 3, 1);
                 case 'YYYY-M': return new Date(m[1], (m[2]-1), 1);
                 case 'M-YYYY': return new Date(m[2], (m[1]-1), 1);
-                case 'MMM-YYYY': return new Date(+m[2], months.indexOf(m[1].toLowerCase()), 1);
-                case 'MMM-YY': return new Date(guessTwoDigitYear(+m[2]), months.indexOf(m[1].toLowerCase()), 1);
+                case 'MMM-YYYY': return new Date(+m[2], months.indexOf(m[1]), 1);
+                case 'MMM-YY': return new Date(guessTwoDigitYear(+m[2]), months.indexOf(m[1]), 1);
                 case 'YYYY-WW': return dateFromIsoWeek(m[1], m[2], 1);
                 case 'YYYY-WW-d': return dateFromIsoWeek(m[1], m[2], m[3]);
                 case 'YYYY-MM-DD': return new Date(m[1], (m[3]-1), m[4]);
                 case 'DD/MM/YYYY': return new Date(m[4], (m[3]-1), m[1]);
                 case 'MM/DD/YYYY': return new Date(m[4], (m[1]-1), m[3]);
-                case 'YYYY-MM-DD HH:MM': return new Date(m[1], (m[3]-1), m[4], m[5] || 0, m[6] || 0, 0);
-                case 'DD.MM.YYYY HH:MM': return new Date(m[4], (m[3]-1), m[1], m[5] || 0, m[6] || 0, 0);
-                case 'MM/DD/YYYY HH:MM': return new Date(m[4], (m[1]-1), m[3], m[5] || 0, m[6] || 0, 0);
+                case 'YYYY-MM-DD HH:MM': return new Date(m[1], (m[3]-1), m[4], ((m[7] || '') == 'pm' && m[5] != 12 ? 12 : 0) + (+m[5] || 0), m[6] || 0, 0);
+                case 'DD.MM.YYYY HH:MM': return new Date(m[4], (m[3]-1), m[1], ((m[7] || '') == 'pm' && m[5] != 12 ? 12 : 0) + (+m[5] || 0), m[6] || 0, 0);
+                case 'MM/DD/YYYY HH:MM': return new Date(m[4], (m[1]-1), m[3], ((m[7] || '') == 'pm' && m[5] != 12 ? 12 : 0) + (+m[5] || 0), m[6] || 0, 0);
                 case 'YYYY-MM-DD HH:MM:SS': return new Date(m[1], (m[3]-1), m[4], m[5] || 0, m[6] || 0, m[7] || 0);
                 case 'DD.MM.YYYY HH:MM:SS': return new Date(m[4], (m[3]-1), m[1], m[5] || 0, m[6] || 0, m[7] || 0);
                 case 'MM/DD/YYYY HH:MM:SS': return new Date(m[4], (m[1]-1), m[3], m[5] || 0, m[6] || 0, m[7] || 0);

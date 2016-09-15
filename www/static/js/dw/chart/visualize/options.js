@@ -17,7 +17,6 @@ function(initCustomColors, syncVisOptions, unsyncVisOptions) {
             $('.select-row').hide();
             initCustomColors(_chart);
 
-            console.log('fooltip', $('.vis-option-help').tooltip);
             $('.vis-option-help').tooltip({
                 placement: 'right',
                 html: true,
