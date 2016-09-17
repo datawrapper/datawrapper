@@ -8,7 +8,10 @@ define(function() {
         chart = dw.backend.currentChart;
 
         $('#upload-data, .create-nav .submit').click(function(e) {
-            $(e.target).find('i.fa-circle-o-notch').show();
+            $(e.target).find('.fa')
+                .removeClass('fa-chevron-right')
+                .addClass('fa-spin')
+                .addClass('fa-circle-o-notch');
             uploadData('describe');
             e.preventDefault();
         });
