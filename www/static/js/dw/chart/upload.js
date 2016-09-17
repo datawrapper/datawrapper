@@ -8,10 +8,10 @@ define(function() {
         chart = dw.backend.currentChart;
 
         $('#upload-data, .create-nav .submit').click(function(e) {
-            $(e.target).find('.fa')
-                .removeClass('fa-chevron-right')
-                .addClass('fa-spin')
-                .addClass('fa-circle-o-notch');
+            $(e.target).find('.icon-chevron-right')
+                .removeClass('icon-white icon-chevron-right')
+                .addClass('fa-spin fa fa-circle-o-notch')
+
             uploadData('describe');
             e.preventDefault();
         });
