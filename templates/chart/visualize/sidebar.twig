@@ -28,10 +28,10 @@
                     {% if config.vis_archive %}
                     <div class="vis-archive-select">
                         {% trans "visualize / vis archive" %} <select>
-                            <option value="---"{% if vis.id == chart.type %} selected="selected" {% endif %}>{% trans "" %}</option>
+                            <option value="---">{% trans "" %}</option>
                         {% for vis in visualizations %}{% if vis.namespace != 'map' and vis.id in config.vis_archive %}
                         {% if vis.title %}
-                            <option value="{{ vis.id }}">{{ vis.title | raw }}</option>
+                            <option {% if vis.id == chart.type %} selected="selected" {% endif %}value="{{ vis.id }}">{{ vis.title | raw }}</option>
                         {% endif %}{% endif %}{% endfor %}
                         </select>
                     </div>
