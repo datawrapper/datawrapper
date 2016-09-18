@@ -41,38 +41,15 @@ $app->get('/xhr/:chartid/vis-options', function($id) use ($app) {
         $a = $app->request()->params('annotate');
 
         $vis = DatawrapperVisualization::get($chart->getType());
-        // clean vis options
-        
-        foreach ($vis['options'] as $key => $g_option) {
-            if ($g_option['type'] != 'group') {
-                $options = [$g_option];
-            } else {
-                $options = $g_option['options'];
-            }
-            foreach ($options as $sub_key => $option) {
-                if (!empty($option['options'])) {
-                    $opts = $option['options'];
-                    if (array_keys($opts) !== range(0, count($opts) - 1)) {
-                        // associative array, convert to sequential
-                        $new_opts = [];
-                        foreach ($opts as $val => $label) {
-                            $new_opts[] = ['value' => $val, 'label' => $label];
-                        }
-                        if ($g_option['type'] != 'group') {
-                            $vis['options'][$key]['options'] = $new_opts;
-                        } else {
-                            $vis['options'][$key]['options'][$sub_key]['options'] = $new_opts;
-                        }
-                    } 
-                }
-            }
-        }
+
+        parse_vis_options($vis);
 
         $page = array(
             'vis' => $vis,
             'theme' => DatawrapperTheme::get($chart->getTheme()),
             'language' => substr(DatawrapperSession::getLanguage(), 0, 2)
         );
+
         $app->render('chart/visualize/'.(!empty($a) ? 'annotate' : 'options').'.twig', $page);
     });
 });
