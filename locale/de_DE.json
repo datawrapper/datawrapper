@@ -372,5 +372,7 @@
     "login \/ signup \/ intro": "Datawrapper hilft dabei Diagramme und Karten in k\u00fcrzester Zeit zu publizieren. Probier es aus und du hast deine erste Visualisierung in weniger als eine Minute.",
     "login \/ alternative signin": "Oder melde dich an \u00fcber:",
     "annotate \/ chart description": "Titel \/ Beschreibung \/ Quelle",
-    "visualize \/ vis archive": "Archivierte Diagr.-typen:"
+    "visualize \/ vis archive": "Archivierte Diagr.-typen:",
+    "annotate / title": "Diagramm beschreiben",
+    "annotate / highlight element": "Element hervorheben"
 }
