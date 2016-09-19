@@ -17,13 +17,17 @@ function(initCustomColors, syncVisOptions, unsyncVisOptions) {
             $('.select-row').hide();
             initCustomColors(_chart);
 
-            $('.vis-option-help').tooltip({
-                placement: 'right',
-                html: true,
-                delay: 0,
-                animation: false,
-                trigger: 'hover focus',
-                container: '.vis-options'
+            var containers = $('.vis-options');
+
+            containers.each(function(i, el) {
+                $('.vis-option-help', el).tooltip({
+                    placement: 'right',
+                    html: true,
+                    delay: 0,
+                    animation: false,
+                    trigger: 'hover focus',
+                    container: el
+                });
             });
 
             var type = _chart.get('type'), usrPref = {};
