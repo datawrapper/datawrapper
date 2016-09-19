@@ -200,6 +200,7 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
             l++;
             if (l == 2) {
                 loaded.resolve();
+                syncUI();
                 loadVis();    
             }
         }
