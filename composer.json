@@ -37,6 +37,7 @@
             "lib/utils/i18n.php",
             "lib/utils/pagination.php",
             "lib/utils/parse_config.php",
+            "lib/utils/parse_vis_options.php",
             "lib/utils/themes.php",
             "lib/utils/twig-init.php",
             "lib/utils/vksprintf.php"
