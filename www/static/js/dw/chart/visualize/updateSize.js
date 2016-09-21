@@ -25,7 +25,7 @@ define(function() {
                 'margin-left': (maxW - realW) * 0.5
             }, 400, 'easeOutExpo');
 
-            console.log('updateSize', (+h)+115);
+            // console.log('updateSize', (+h)+115);
             $('.visconfig').css('min-height', (+h)+115);
 
             chart.set('metadata.publish.embed-width', w);
