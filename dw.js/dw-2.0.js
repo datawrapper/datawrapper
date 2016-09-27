@@ -525,7 +525,7 @@ dw.column.types.number = function(sample) {
 dw.column.types.date = (function() {
 
     var begin = /^ */.source,
-        end = / *$/.source,
+        end = /\*? *$/.source,
         s0 = /[ \-\/\.]?/.source, // optional separator
         s1 = /[ \-\/\.]/.source, // mandatory separator
         s2 = /[ \-\/\.,]/.source, // mandatory separator
@@ -545,7 +545,7 @@ dw.column.types.date = (function() {
         };
 
     var MONTHS = { // feel free to add more month variations
-        0:  ['jan','january','januar','janv','janvier','ene','enero','gen','gennaio'],
+        0:  ['jan','january','januar','jänner','jän','janv','janvier','ene','enero','gen','gennaio'],
         1:  ['feb','february','februar','févr','février','febrero','febbraio'],
         2:  ['mar','mär','march','mrz','märz','mars','mars','marzo','marzo'],
         3:  ['apr','april','apr','april','avr','avril','abr','abril','aprile'],
@@ -556,7 +556,7 @@ dw.column.types.date = (function() {
         8:  ['sep','september','sept','septembre','septiembre','set','settembre'],
         9:  ['oct','october','okt','oktober','octobre','octubre','ott','ottobre'],
         10: ['nov','november','november','novembre','noviembre','novembre'],
-        11: ['dec','december','dez','dezember','déc','décembre','dic','diciembre','dicembre'],
+        11: ['dec','december','dez','des','dezember','déc','décembre','dic','diciembre','dicembre','desember'],
         },
         MMM_key = {},
         MMM_reg = [];
@@ -649,6 +649,16 @@ dw.column.types.date = (function() {
         'DD/MM/YYYY': {
             test: reg(rx.DD.test, '([\\-\\.\\/ ?])', rx.MM.test, '\\2', rx.YYYY.test),
             parse: reg(rx.DD.parse, '([\\-\\.\\/ ?])', rx.MM.parse, '\\2', rx.YYYY.parse),
+            precision: 'day'
+        },
+        'DD/MMM/YYYY': {
+            test: reg(rx.DD.test, '([\\-\\.\\/ ?])', rx.MMM.test, '\\2', rx.YYYY.test),
+            parse: reg(rx.DD.parse, '([\\-\\.\\/ ?])', rx.MMM.parse, '\\2', rx.YYYY.parse),
+            precision: 'day'
+        },
+        'DD/MMM/YY': {
+            test: reg(rx.DD.test, '([\\-\\.\\/ ?])', rx.MMM.test, '\\2', rx.YY.test),
+            parse: reg(rx.DD.parse, '([\\-\\.\\/ ?])', rx.MMM.parse, '\\2', rx.YY.parse),
             precision: 'day'
         },
         'YYYY-MM-DD': {
@@ -770,9 +780,9 @@ dw.column.types.date = (function() {
                     // increment errors anyway if string doesn't match strict format
                     if (!test(raw, format)) errors++;
                 }
-                var months = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
                 
                 function guessTwoDigitYear(yr) {
+                    yr = +yr;
                     if (yr < 20) return 2000 + yr;
                     else return 1900 + yr;
                 }
@@ -799,6 +809,8 @@ dw.column.types.date = (function() {
                     case 'YYYY-WW-d': return dateFromIsoWeek(m[1], m[2], m[3]);
                     case 'YYYY-MM-DD': return new Date(m[1], (m[3]-1), m[4]);
                     case 'DD/MM/YYYY': return new Date(m[4], (m[3]-1), m[1]);
+                    case 'DD/MMM/YYYY': return new Date(m[4], MMM_key[m[3]], m[1]);
+                    case 'DD/MMM/YY': return new Date(guessTwoDigitYear(m[4]), MMM_key[m[3]], m[1]);
                     case 'MM/DD/YYYY': return new Date(m[4], (m[1]-1), m[3]);
                     case 'MMM-DD-YYYY': return new Date(m[3], MMM_key[m[1]], m[2]);
 
