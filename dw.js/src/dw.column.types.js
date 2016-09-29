@@ -182,19 +182,19 @@ dw.column.types.date = (function() {
             HHMM:  { parse: /(0?\d|1\d|2[0-3]):([0-5]\d)(?::([0-5]\d))? *(am|pm)?/ },
         };
 
-    var MONTHS = { // feel free to add more month variations
-        0:  ['jan','january','januar','jänner','jän','janv','janvier','ene','enero','gen','gennaio'],
-        1:  ['feb','february','februar','févr','février','febrero','febbraio'],
-        2:  ['mar','mär','march','mrz','märz','mars','mars','marzo','marzo'],
+    var MONTHS = { // feel free to add more localized month names
+        0:  ['jan','january','januar','jänner','jän','janv','janvier','ene','enero','gen','gennaio','janeiro'],
+        1:  ['feb','february','februar','févr','février','febrero','febbraio','fev','fevereiro'],
+        2:  ['mar','mär','march','mrz','märz','mars','mars','marzo','marzo','março'],
         3:  ['apr','april','apr','april','avr','avril','abr','abril','aprile'],
-        4:  ['may','mai','mayo','mag','maggio'],
-        5:  ['jun','june','juni','juin','junio','giu','giugno'],
-        6:  ['jul','july','juli','juil','juillet','julio','lug','luglio'],
+        4:  ['may','mai','mayo','mag','maggio','maio'],
+        5:  ['jun','june','juni','juin','junio','giu','giugno','junho'],
+        6:  ['jul','july','juli','juil','juillet','julio','lug','luglio','julho'],
         7:  ['aug','august','août','ago','agosto'],
-        8:  ['sep','september','sept','septembre','septiembre','set','settembre'],
-        9:  ['oct','october','okt','oktober','octobre','octubre','ott','ottobre'],
-        10: ['nov','november','november','novembre','noviembre','novembre'],
-        11: ['dec','december','dez','des','dezember','déc','décembre','dic','diciembre','dicembre','desember'],
+        8:  ['sep','september','sept','septembre','septiembre','set','settembre','setembro'],
+        9:  ['oct','october','okt','oktober','octobre','octubre','ott','ottobre','out','outubro'],
+        10: ['nov','november','november','novembre','noviembre','novembre','novembro'],
+        11: ['dec','december','dez','des','dezember','déc','décembre','dic','diciembre','dicembre','desember','dezembro'],
         },
         MMM_key = {},
         MMM_reg = [];
