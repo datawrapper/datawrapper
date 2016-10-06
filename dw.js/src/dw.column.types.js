@@ -163,7 +163,7 @@ dw.column.types.number = function(sample) {
 dw.column.types.date = (function() {
 
     var begin = /^ */.source,
-        end = /[\*']? *$/.source,
+        end = /[\*']* *$/.source,
         s0 = /[ \-\/\.]?/.source, // optional separator
         s1 = /[ \-\/\.]/.source, // mandatory separator
         s2 = /[ \-\/\.,]/.source, // mandatory separator
@@ -184,10 +184,10 @@ dw.column.types.date = (function() {
 
     var MONTHS = { // feel free to add more localized month names
         0:  ['jan','january','januar','jänner','jän','janv','janvier','ene','enero','gen','gennaio','janeiro'],
-        1:  ['feb','february','februar','févr','février','febrero','febbraio','fev','fevereiro'],
+        1:  ['feb','february','febr','februar','fév','févr','février','febrero','febbraio','fev','fevereiro'],
         2:  ['mar','mär','march','mrz','märz','mars','mars','marzo','marzo','março'],
         3:  ['apr','april','apr','april','avr','avril','abr','abril','aprile'],
-        4:  ['may','mai','mayo','mag','maggio','maio'],
+        4:  ['may','mai','mayo','mag','maggio','maio','maj'],
         5:  ['jun','june','juni','juin','junio','giu','giugno','junho'],
         6:  ['jul','july','juli','juil','juillet','julio','lug','luglio','julho'],
         7:  ['aug','august','août','ago','agosto'],
