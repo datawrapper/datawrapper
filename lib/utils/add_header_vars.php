@@ -14,6 +14,10 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
         }
     }
 
+    if (!isset($page['page_description'])) {
+        $page['page_description'] = __('Datawrapper is an open source tool helping everyone to create simple, correct and embeddable charts in minutes.', 'core');
+    }
+
     // define the header links
     global $app;
     $config = $GLOBALS['dw_config'];
