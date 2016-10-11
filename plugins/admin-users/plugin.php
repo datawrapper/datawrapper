@@ -65,6 +65,7 @@ class DatawrapperPlugin_AdminUsers extends DatawrapperPlugin {
                     add_header_vars($page, 'admin');
                     $page['the_user'] = $theUser;
                     $page['userPlugins'] = DatawrapperPluginManager::getUserPlugins($theUser->getId(), false);
+                    $page['history'] = $plugin->getUserHistory($theUser);
 
                     $app->render('plugins/admin-users/admin-user-detail.twig', $page);
                 });
@@ -123,6 +124,25 @@ class DatawrapperPlugin_AdminUsers extends DatawrapperPlugin {
         $page['users'] = getQuery($user)->limit($perPage)->offset($curPage * $perPage)->find();
 
         $app->render('plugins/admin-users/admin-users.twig', $page);
+    }
+
+    private function getUserHistory($user) {
+        $history = [];
+        $history[] = ['event' => 'User created', 'time' => $user->getCreatedAt()];
+        foreach ($user->getCharts() as $chart) {
+            $ch = '<a title="'.$chart->getTitle().'" href="/chart/'.$chart->getId().'/visualize">'.$chart->getId().'</a>';
+            $history[] = ['event' => 'New chart '.$ch, 'time' => $chart->getCreatedAt()];
+            if ($chart->isPublic()) {
+                $history[] = ['event' => 'Published chart '.$ch, 'time' => $chart->getPublishedAt()];
+            }
+            if ($chart->_isDeleted()) {
+                $history[] = ['event' => 'Deleted chart '.$ch, 'time' => $chart->getDeletedAt()];   
+            }
+        }
+        usort($history, function($a,$b) {
+            return strtotime($a['time']) - strtotime($b['time']);
+        });
+        return $history;
     }
 
 }

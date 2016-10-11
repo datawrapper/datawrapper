@@ -1,6 +1,9 @@
 CHANGELOG
 ---------
 
+### 1.11.1
+* improved date parsing
+
 ### 1.11.0
 * requires PHP 5.6
 * can store chart CSVs and thumbnails on S3

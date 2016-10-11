@@ -367,11 +367,11 @@ html .btn-primary {
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
   background-color: #006dcc;
   *background-color: #0276B0;
-  background-image: -moz-linear-gradient(top, #0088cc, #0276b0);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#0088cc), to(#0276b0));
-  background-image: -webkit-linear-gradient(top, #0088cc, #0276b0);
-  background-image: -o-linear-gradient(top, #0088cc, #0276b0);
-  background-image: linear-gradient(to bottom, #0088cc, #0276b0);
+  background-image: -moz-linear-gradient(top, #0088cc, #0276B0);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#0088cc), to(#0276B0));
+  background-image: -webkit-linear-gradient(top, #0088cc, #0276B0);
+  background-image: -o-linear-gradient(top, #0088cc, #0276B0);
+  background-image: linear-gradient(to bottom, #0088cc, #0276B0);
   background-repeat: repeat-x;
   border-color: #0276B0 #0276B0 #0276B0;
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1);
@@ -963,7 +963,7 @@ html .btn-inverse {
   font-weight: bold;
 }
 #iframe-wrapper {
-  box-shadow: 1px 1px 64px rgba(0, 0, 0, 0.13), 0px 0px 2px #cccccc;
+  box-shadow: 1px 1px 64px rgba(0, 0, 0, 0.13), 0px 0px 2px #ccc;
   border: 1px solid #fff;
   padding: 10px;
   border-radius: 0px;
@@ -1259,10 +1259,10 @@ html .btn-inverse {
 .chart-editor.dw-create-visualize .vis-thumbs .vis-thumb svg path,
 .chart-editor.dw-create-visualize .vis-thumbs .vis-thumb svg rect,
 .chart-editor.dw-create-visualize .vis-thumbs .vis-thumb svg circle {
-  fill: #93b0d6;
+  fill: #93B0D6;
 }
 .chart-editor.dw-create-visualize .vis-thumbs .vis-thumb svg line {
-  stroke: #93b0d6;
+  stroke: #93B0D6;
 }
 @media (max-width: 1199px) {
   .chart-editor.dw-create-visualize .vis-thumbs .vis-thumb svg {
@@ -1281,7 +1281,7 @@ html .btn-inverse {
   font-family: 'Roboto Condensed', Helvetica, sans-serif;
   line-height: 15px;
   text-align: center;
-  text-shadow: 1px 1px 0px #ffffff, 0px 1px 0px #ffffff, -1px 1px 0px #ffffff, 1px -1px 0px #ffffff, 0px -1px 0px #ffffff, -1px -1px 0px #ffffff, 1px 0px 0px #ffffff, 0px 0px 0px #ffffff, -1px 0px 0px #ffffff;
+  text-shadow: 1px 1px 0px #fff, 0px 1px 0px #fff, -1px 1px 0px #fff, 1px -1px 0px #fff, 0px -1px 0px #fff, -1px -1px 0px #fff, 1px 0px 0px #fff, 0px 0px 0px #fff, -1px 0px 0px #fff;
   color: #555;
 }
 .chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active {
@@ -1735,6 +1735,10 @@ body {
   background: #fff;
   color: #444;
   position: relative;
+}
+body.dw h1 {
+  font-weight: 300;
+  font-size: 32px;
 }
 html h2 {
   font-size: 24px;
