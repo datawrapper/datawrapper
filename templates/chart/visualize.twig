@@ -15,11 +15,11 @@
 {% endfor %}
 
 <script type="text/javascript">
+var visData = {{ vis_data | raw }};
+
 dw.backend.ready(function() {
     require(['dw/chart/visualize'], function(visualize) {
-        $.get('/api/charts/{{ chart.id }}/vis-data', function(response) {
-            visualize.init(response.data.themes, response.data.visualizations, response.data.vis);
-        });
+        visualize.init(visData.themes, visData.visualizations, visData.vis);
     });
 });
 </script>
@@ -31,11 +31,22 @@ dw.backend.ready(function() {
         <div class="span8">
 
             <div class="scrollfix-cont" data-offset-top="100" data-offset-bottom="130">
-                <div id="iframe-wrapper" style="height:500px;" >
+                <div id="iframe-wrapper" style="height:500px; overflow:visible;" >
                     <iframe src="" id="iframe-vis" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen>
                     </iframe>
+                    <div class="size-presets">
+                        <div class="preset mobile-s selected">
+                            <span class="title">Mobile (S)</span>
+                        </div>
+                        <div class="preset mobile-l">
+                            <span class="title">Mobile (L)</span>
+                        </div>
+                        <div class="preset desktop">
+                            <span class="title">Desktop</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="resize-chart-wrap">
+                <div class="resize-chart-wrap hidden">
                     <div class="resize-chart">
                         {% trans "Resize to: " %}
                         <input id="resize-w" class="input-large" type="text" value="" /> ×

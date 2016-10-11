@@ -8,6 +8,28 @@
     padding-top: 30px;
 }
 
+.size-presets {
+    position: absolute;
+    top: 30px;
+    right: 0;
+    margin-right: -102px;
+    width: 100px;
+    border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+}
+
+.preset {
+    text-align: center;
+    background: #fff;
+    border-top: 1px solid #ccc;
+    cursor: pointer;
+    padding: 10px 0px;
+}
+
+.preset.selected {
+    font-weight: bold;
+}
+
 #iframe-wrapper {
     box-shadow: 1px 1px 64px rgba(0, 0, 0, 0.13),0px 0px 2px #ccc;
     border: 1px solid #fff;
@@ -23,6 +45,10 @@
         position:absolute;
         right: 0;
         bottom: 0;
+        cursor: e-resize;
+    }
+
+    .resizer-both {
         cursor: se-resize;
         transform: rotate(35deg);
         -webkit-transform: rotate(35deg);

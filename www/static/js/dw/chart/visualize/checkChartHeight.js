@@ -2,38 +2,28 @@
 
 define(['./updateSize'], function(updateSize) {
 
-    return function() {
+    return function(heightType) {
         var iframe = $('#iframe-vis').contents();
         if (!iframe.get(0)) return; // content not loaded yet
 
-        var vis_h = $(iframe).find('body').height(),
-            footer = $(iframe).find('#footer') || $(iframe).find('.dw-chart-footer');
+        var vis_h = $(iframe).find('html').outerHeight(true),
+            iframe_h = $('#iframe-vis').height(),
+            iframe_w = $('#iframe-vis').width();
 
-        if (footer.css('position') == 'absolute' 
-            || footer.css('position') == 'fixed') {
-
-            vis_h += $(footer).outerHeight();
+        if (iframe_w < 300) {
+            $('.size-presets .preset').removeClass('selected');
+            $('.size-presets .mobile-s').addClass('selected');
+        } else if (iframe_w < 400) {
+            $('.size-presets .preset').removeClass('selected');
+            $('.size-presets .mobile-l').addClass('selected');
+        } else {
+            $('.size-presets .preset').removeClass('selected');
+            $('.size-presets .desktop').addClass('selected');
         }
 
-        var vis_w = iframe.width(),
-            iframe_h = $('#iframe-vis').height(),
-            iframe_w = $('#iframe-vis').width(),
-            $notification;
-
-        if (vis_h > iframe_h+5 || vis_w > iframe_w) {
-
-            $notification = dw.backend.notify(dw.backend.messages.needMoreSpace.replace('[', '<a href="#" id="resize-iframe">').replace(']', '</a>'));
-
-            $('#resize-iframe').click(function(e) {
-                e.preventDefault();
-                if (vis_h > iframe_h) $('#resize-h').val(vis_h);
-                if (vis_w > iframe_w) $('#resize-w').val(vis_w);
-                updateSize();
-                if ($notification) $notification.fadeOutAndRemove();
-                warningShowed = false;
-            });
-        } else {
-            if ($notification) $notification.fadeOutAndRemove();
+        if (heightType == "fixed") {
+            $('#resize-h').val(vis_h);
+            updateSize();
         }
     };
 

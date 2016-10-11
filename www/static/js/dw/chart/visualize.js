@@ -34,7 +34,10 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
 
         dw.backend.__currentVisLoaded = loadVisDfd.promise();
 
-        chart.onSave(onChartSave);
+        chart.onSave(function(chart) {
+            var heightType = visMetas[chart.get('type')].height;
+            onChartSave(chart, heightType);
+        });
 
         syncUI();
 
@@ -42,12 +45,15 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
         iframe.load(iframeLoaded);
 
         // initialize some UI actions
-        initTabNav();
+        initTabNav(visMetas[chart.get('type')].namespace);
         initTransposeLink();
         initVisSelector();
+
         initResizeChart();
         initChartSize();
         initScrollToFix();
+
+        checkChartHeight();
 
         $(window).on('keyup', function(e) {
             if (e.ctrlKey && e.keyCode == 82) {
@@ -57,7 +63,7 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
         });
     }
 
-    function onChartSave(chart) {
+    function onChartSave(chart, heightType) {
         if (_themeHasChanged) {
             // update the iframe background color after theme changed
             iframe.one('load', updateVisBackground);
@@ -84,6 +90,7 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
         if (_typeHasChanged) {
             iframe.attr('src', '');
             dw.backend.fire('type-changed');
+            initResizeChart();
         }
 
         if (_axesHaveChanged) dw.backend.fire('axes-changed');
@@ -108,8 +115,10 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
         if (iframeWin.__dw && iframeWin.__dw.saved) {
             iframeWin.__dw.saved();
         }
+
         scheduleThumbnail();
-        checkChartHeight();
+
+        checkChartHeight(heightType);
     }
 
     function syncUI() {
@@ -178,7 +187,7 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
      * called as soon the vis is rendered (after iframe reload)
      */
     function visualizationRendered() {
-        checkChartHeight();
+        checkChartHeight(visMetas[chart.get('type')].height == "fixed");
         enableInlineEditing(iframe, chart);
         if (initHighlightSeries) initHighlightSeries();
     }
@@ -266,6 +275,8 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
     }
 
     function initResizeChart() {
+        var heightType = visMetas[chart.get('type')].height;
+
         $('.resize-chart a').click(function(e) {
             e.preventDefault();
             var dim = $(e.target).html().split('×');
@@ -275,10 +286,33 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
         });
 
         var iframe = $('#iframe-wrapper').addClass('resizable');
-        iframe.append('<div class="resizer icon-resize-horizontal"></div>');
+
+        iframe.find('.resizer').remove();
+
+        if (heightType == "fixed") {
+            iframe.append('<div class="resizer icon-resize-horizontal"></div>');
+        } else {
+            iframe.append('<div class="resizer resizer-both icon-resize-horizontal"></div>');
+        }
+
         $('.resizer', iframe).on('mousedown', dragStart);
 
         var startX, startY, startWidth, startHeight;
+
+        $('.size-presets .preset').click(function() {
+            $('.preset').removeClass('selected');
+            $(this).addClass('selected');
+
+            if ($(this).hasClass('mobile-s')) {
+                $('#resize-w').val(280);
+            } else if ($(this).hasClass('mobile-l')) {
+                $('#resize-w').val(370);
+            } else if ($(this).hasClass('desktop')) {
+                $('#resize-w').val(600);
+            }
+
+            updateSize();
+        });
 
         function dragStart(e) {
             startX = e.clientX;
@@ -290,8 +324,11 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
         }
 
         function doDrag(e) {
+            if (heightType != "fixed") {
+                iframe.height(startHeight + e.clientY - startY);
+            }
+
             iframe.width(startWidth + e.clientX - startX);
-            iframe.height(startHeight + e.clientY - startY);
             iframe.css('pointer-events', 'none');
             e.preventDefault();
             return false;

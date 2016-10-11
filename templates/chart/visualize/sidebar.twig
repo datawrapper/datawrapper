@@ -3,8 +3,11 @@
 <div class="span4 visconfig">
 
     <ul class="nav nav-tabs visualize-nav-tabs" data-target="tab-container">
-        <li class="active"><a href="#vis" data-target="select-visualization">{% trans "Chart type" %}</a></li>
-        <li><a href="#refine" data-target="refine-the-chart">{% trans "Refine" %}</a></li>
+        {% if type != "map" %}
+            <li class="active"><a href="#vis" data-target="select-visualization">{% trans "Chart type" %}</a></li>
+        {% endif %}
+
+        <li class="{% if type == "map" %}active{% endif %}"><a href="#refine" data-target="refine-the-chart">{% trans "Refine" %}</a></li>
         <li ><a href="#story" data-target="annotate">{% trans "Annotate" %}</a></li>
         <li ><a href="#design" data-target="design">{% trans "Design" %}</a></li>
     </ul>
@@ -13,6 +16,7 @@
 
         <div class="tab-container">
 
+            {% if type != "map" %}
             <div class="section select-visualization">
                 <div class="vis-selector-unfolded">
                 {# <h3>{% trans "Select visualization" %}</h3> #}
@@ -45,6 +49,7 @@
                 </p>
 
             </div>
+            {% endif %}
 
             <div class="section annotate">
                 {# <h3>{% trans "Tell the story" %}</h3> #}

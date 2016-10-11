@@ -22,8 +22,14 @@ define(function() {
             $('#iframe-wrapper').animate({
                 width: w,
                 height: h,
-                'margin-left': (maxW - realW) * 0.5
-            }, 400, 'easeOutExpo');
+                'margin-left': (maxW - realW) * 0.5,
+            }, {
+                duration: 400,
+                easing: 'easeOutExpo',
+                step: function() {
+                    $(this).css('overflow', 'visible');
+                }
+            });
 
             console.log('updateSize', (+h)+115);
             $('.visconfig').css('min-height', (+h)+115);
