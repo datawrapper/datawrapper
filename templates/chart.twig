@@ -38,6 +38,7 @@
 
 </head>
 <body class="dw-chart chart{% if fullscreen %} fullscreen{% endif %}{% if plain %} plain{% endif %} theme-{{ chart.theme }} vis-{{ chart.type }}">
+    {{ hook('chart_before_body', chart, published) }}
 
     {# some convenient short cuts for theme templates #}
     {% set title = chart.title %}{% set intro = chart.metadata.describe.intro %}{% set source = chart.metadata.describe['source-name'] %}{% set sourceURL = chart.metadata.describe['source-url'] %}

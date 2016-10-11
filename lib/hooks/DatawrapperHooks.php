@@ -62,7 +62,8 @@ class DatawrapperHooks {
         return isset($me->hooks[$hookName]);
     }
 
-    // print something below a charts HTML body
+    // print something above / below a charts HTML body
+    const CHART_BEFORE_BODY = 'chart_before_body';
     const CHART_AFTER_BODY = 'chart_after_body';
 
     // print something in <head> section of a chart
