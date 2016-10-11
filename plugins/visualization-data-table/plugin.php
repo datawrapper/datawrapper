@@ -11,6 +11,7 @@ class DatawrapperPlugin_VisualizationDataTable extends DatawrapperPlugin_Visuali
             "id"         => "data-table",
             "dimensions" => 2,
             "order"      => 71,
+            "height"     => "fixed",
             "libraries"  => array(array(
                 "local" => "vendor/jquery.dataTables.min.js",
                 "cdn" => "//ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js"
