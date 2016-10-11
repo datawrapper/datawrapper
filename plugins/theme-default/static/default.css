@@ -150,28 +150,6 @@ within the .toggleable-panel */
 }
 
 
-/* Target screens under 400px */
-@media all and (max-width: 400px) {
-
-    .chart .dw-chart-footer,
-    .chart #footer { height: auto; }
-
-    .chart #footer .footer-left,
-    .chart .dw-chart-footer .footer-left {
-        position: static;
-    }
-
-    .chart #footer .footer-right,
-    .chart .dw-chart-footer .footer-right {
-        position:static;
-        float:none;
-        text-align:left;
-        /* Vertical text align */
-        padding: 0;
-        margin: 2px 0 0;
-    }
-}
-
 .clearfix:after {
     content: ".";
     display: block;
@@ -254,16 +232,6 @@ svg .axis, svg .tick, svg .grid, svg rect {
 
 .line-chart .tooltip {
     border-radius: 5px;
-}
-
-/* Smartphones (portrait and landscape) ----------- */
-@media only screen
-and (min-device-width : 320px)
-and (max-device-width : 480px) {
-    /* no fullscreen button on smartphones, never */
-    .fs-btn {
-        display: none!important;
-    }
 }
 
 .point {
