@@ -3,14 +3,33 @@
 /*
  * VISUALIZE STEP
  */
-$app->get('/chart/:id/visualize', function ($id) use ($app) {
+$app->get('/(chart|map)/:id/visualize', function ($id) use ($app) {
     disable_cache($app);
 
     check_chart_writable($id, function($user, $chart) use ($app) {
+        $visData = "";
+
+        try {
+            $allVis = array();
+
+            foreach (DatawrapperVisualization::all() as $vis) {
+                unset($vis['options']['basemap']);
+                unset($vis['icon']);
+                $allVis[$vis['id']] = $vis;
+            }
+
+            $visData = json_encode(array(
+                'visualizations' => $allVis,
+                'vis' => DatawrapperVisualization::get($chart->getType()),
+                'themes' => DatawrapperTheme::all(),
+            ));
+        } catch (Exception $e) {
+            error('io-error', $e->getMessage());
+        }
 
         $vis = DatawrapperVisualization::get($chart->getType());
-        
         parse_vis_options($vis);
+
 
         $page = array(
             'title' => $chart->getID() . ' :: '.__('Visualize'),
@@ -21,10 +40,12 @@ $app->get('/chart/:id/visualize', function ($id) use ($app) {
             'vis' => $vis,
             'themes' => DatawrapperTheme::all(),
             'theme' => DatawrapperTheme::get($chart->getTheme()),
-            'debug' => !empty($GLOBALS['dw_config']['debug_export_test_cases']) ? '1' : '0'
+            'type' => $chart->getNamespace(),
+            'debug' => !empty($GLOBALS['dw_config']['debug_export_test_cases']) ? '1' : '0',
+            'vis_data' => $visData
         );
-        add_header_vars($page, 'chart');
-        add_editor_nav($page, 3);
+        add_header_vars($page, $chart->getNamespace());
+        add_editor_nav($page, 3, $chart->getNamespace());
 
         $app->render('chart/visualize.twig', $page);
     });
