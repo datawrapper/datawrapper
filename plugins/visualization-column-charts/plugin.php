@@ -67,7 +67,17 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                         array("value" => "show", "label" => __("Show", $id)),
                         array("value" => "hide", "label" => __("Hide", $id))
                     ),
-                    "default" => false
+                    "default" => 'auto'
+                ),
+                "value-labels" => array(
+                    "type" => "radio-left",
+                    "label" => __("Value labels", $id),
+                    "options" => array(
+                        array("value" => "auto", "label" => __("Automatic", $id)),
+                        array("value" => "show", "label" => __("Show", $id)),
+                        array("value" => "hide", "label" => __("Hide", $id))
+                    ),
+                    "default" => 'auto'
                 )
             )
         );
