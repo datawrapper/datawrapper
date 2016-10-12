@@ -103,15 +103,15 @@
                 theme = me.theme(),
                 val = barv.value,
                 fill = me.getBarColor(barv, me.get('negative-color', false)),
-                stroke = chroma.color(fill).darken(theme.columnChart.darkenStroke).hex(),
                 bar,
                 formatter = chart.columnFormatter(me.getBarColumn());
 
             // create bar
             bar = me.registerElement(c.paper.rect().attr(d).attr({
-                'stroke': stroke,
-                'fill': fill
-            }).data('strokeCol', stroke), barv.name);
+                // 'stroke': stroke,
+                stroke: null,
+                fill: fill
+            }), barv.name);
 
             if (theme.columnChart.barAttrs) {
                 bar.attr(theme.columnChart.barAttrs);
@@ -476,11 +476,10 @@
                     }
                 });
                 _.each(me.__elements[bar.name], function(el) {
-                    var fill = me.getKeyColor(bar.name, bar.value, me.get('negative-color', false)), stroke;
+                    var fill = me.getKeyColor(bar.name, bar.value, me.get('negative-color', false)),
+                        stroke;
                     if (hover_key !== undefined && bar.name == hover_key) fill = chroma.color(fill).darken(14).hex();
-                    stroke = chroma.color(fill).darken(14).hex();
-                    if (el.attrs.fill != fill || el.attrs.stroke != stroke)
-                        el.animate({ fill: fill, stroke: stroke }, 50);
+                    if (el.attrs.fill != fill) el.animate({ fill: fill }, 50);
                 });
             });
         },
