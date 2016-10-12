@@ -4,9 +4,6 @@
  * chart. It's main purpose is to trigger the chart rendering.
  */
 
-// fullscreen
-(function(){var a={supportsFullScreen:!1,nonNativeSupportsFullScreen:!1,isFullScreen:function(){return!1},requestFullScreen:function(){},cancelFullScreen:function(){},fullScreenEventName:"",prefix:""},b="webkit moz o ms khtml".split(" ");if(typeof document.cancelFullScreen!="undefined")a.supportsFullScreen=!0;else for(var c=0,d=b.length;c<d;c++){a.prefix=b[c];if(typeof document[a.prefix+"CancelFullScreen"]!="undefined"){a.supportsFullScreen=!0;break}}a.supportsFullScreen?(a.fullScreenEventName=a.prefix+"fullscreenchange",a.isFullScreen=function(){switch(this.prefix){case"":return document.fullScreen;case"webkit":return document.webkitIsFullScreen;default:return document[this.prefix+"FullScreen"]}},a.requestFullScreen=function(a){return this.prefix===""?a.requestFullScreen():a[this.prefix+"RequestFullScreen"]()},a.cancelFullScreen=function(a){return this.prefix===""?document.cancelFullScreen():document[this.prefix+"CancelFullScreen"]()}):typeof window.ActiveXObject!="undefined"&&(a.nonNativeSupportsFullScreen=!0,a.requestFullScreen=a.requestFullScreen=function(a){var b=new ActiveXObject("WScript.Shell");b!==null&&b.SendKeys("{F11}")},a.isFullScreen=function(){return document.body.clientHeight==screen.height&&document.body.clientWidth==screen.width}),typeof jQuery!="undefined"&&(jQuery.fn.requestFullScreen=function(){return this.each(function(){a.supportsFullScreen&&a.requestFullScreen(this)})}),window.fullScreenApi=a})();
-
 (function() {
 
     var chart,
@@ -14,6 +11,7 @@
         reload_timer;
 
     function renderChart() {
+        
         if (__dw.vis && !__dw.vis.supportsSmartRendering()) {
             // a current visualization exists but it is not smart
             // enough to re-render itself properly, so we need to
@@ -59,8 +57,7 @@
 
         vis.size(w, h);
 
-        initResizeHandler();
-        initFullscreen();
+        initResizeHandler(vis, $chart);
 
         // update data link to point to edited dataset
         if (!window['__ltie9']) {
@@ -89,51 +86,33 @@
         return vis;
     }
 
-    function reloadLater() {
+    function renderLater() {
         clearTimeout(reload_timer);
         reload_timer = setTimeout(function() {
             renderChart();
         }, 300);
     }
 
-    function initResizeHandler() {
+    function initResizeHandler(vis, container) {
+        var height = vis.meta.height || 'fit',
+            curWidth = container.width(),
+            resize = _.debounce(height == 'fixed' ? resizeFixed : renderChart, 400);
+        
         // IE continuosly reloads the chart for some strange reasons
         if (navigator.userAgent.match(/iPad|iPhone|iPod|msie/i) === null) {
-            $(window).on('resize', function() {
-                // IMPORTANT: throttle resize events, do not remover timeout
-                reloadLater();
-            });
-        }
-    }
-
-    function initFullscreen() {
-        var wasFullScreen = fullScreenApi.isFullScreen(),
-            resizeTimer;
-
-        $(window).on('resize', function() {
-            clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(resized, 300);
-        });
-
-        function resized() {
-            if (wasFullScreen != fullScreenApi.isFullScreen()) { // video fullscreen mode has changed
-                if (wasFullScreen) {
-                    $('.chart').removeClass('fullscreen');
-                    // you have just EXITED full screen video
-                } else {
-                    $('.chart').addClass('fullscreen');
-                    // you have just ENTERED full screen video
-                }
-                wasFullScreen = fullScreenApi.isFullScreen();
-            }
+            $(window)
+                .off('resize', resize)
+                .on('resize', resize);
         }
 
-        $("a[data-toggle='fullscreen']").click(function(e) {
-            if (fullScreenApi.supportsFullScreen) {
-                e.preventDefault();
-                $('html').requestFullScreen();
+        function resizeFixed() {
+            var w = container.width();
+            // console.log(curWidth, w);
+            if (curWidth != w) {
+                curWidth = w;
+                renderChart();
             }
-        });
+        }
     }
 
     window.__dw = {
@@ -148,7 +127,7 @@
                 chartLoaded().done(renderChart);
             });
         },
-        render: reloadLater
+        render: renderLater
     };
 
 })();
