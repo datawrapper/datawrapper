@@ -291,8 +291,10 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
 
         if (heightType == "fixed") {
             iframe.append('<div class="resizer icon-resize-horizontal"></div>');
+            $('#resize-h').prop("disabled", true);
         } else {
             iframe.append('<div class="resizer resizer-both icon-resize-horizontal"></div>');
+            $('#resize-h').prop("disabled", false);
         }
 
         $('.resizer', iframe).on('mousedown', dragStart);
@@ -321,6 +323,7 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
             startHeight = iframe.height();
             $(document).on('mousemove', doDrag);
             $(document).on('mouseup', stopDrag);
+            $('#iframe-vis').addClass('resizing');
         }
 
         function doDrag(e) {
@@ -339,6 +342,7 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
             $(document).unbind('mouseup', stopDrag);
             updateSize($('#iframe-vis').width(), $('#iframe-vis').height());
             iframe.css('pointer-events', 'initial');
+            $('#iframe-vis').removeClass('resizing');
         }
     }
 

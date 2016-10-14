@@ -31,7 +31,6 @@ define(function() {
                 }
             });
 
-            // console.log('updateSize', (+h)+115);
             $('.visconfig').css('min-height', (+h)+115);
 
             chart.set('metadata.publish.embed-width', w);

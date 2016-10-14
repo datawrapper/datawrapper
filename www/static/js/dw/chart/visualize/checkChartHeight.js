@@ -2,29 +2,23 @@
 
 define(['./updateSize'], function(updateSize) {
 
-    return function(heightType) {
-        var iframe = $('#iframe-vis').contents();
-        if (!iframe.get(0)) return; // content not loaded yet
+    window.addEventListener('message', function(e) {
+        var message = e.data;
 
-        var vis_h = $(iframe).find('html').outerHeight(true),
-            iframe_h = $('#iframe-vis').height(),
-            iframe_w = $('#iframe-vis').width();
+        if (typeof message['datawrapper-height'] != "undefined") {
+            var h;
 
-        if (iframe_w < 300) {
-            $('.size-presets .preset').removeClass('selected');
-            $('.size-presets .mobile-s').addClass('selected');
-        } else if (iframe_w < 400) {
-            $('.size-presets .preset').removeClass('selected');
-            $('.size-presets .mobile-l').addClass('selected');
-        } else {
-            $('.size-presets .preset').removeClass('selected');
-            $('.size-presets .desktop').addClass('selected');
+            for (var chartId in message['datawrapper-height']) {
+                h = message['datawrapper-height'][chartId];
+            }
+
+            if (!$('#iframe-vis').hasClass('resizing')) {
+                $('#resize-h').val(h);
+                updateSize();
+            }
         }
+    });
 
-        if (heightType == "fixed") {
-            $('#resize-h').val(vis_h);
-            updateSize();
-        }
-    };
+    return function() {};
 
 });
