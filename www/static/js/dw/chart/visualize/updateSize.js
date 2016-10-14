@@ -33,6 +33,15 @@ define(function() {
 
             $('.visconfig').css('min-height', (+h)+115);
 
+            $('.size-presets .preset').removeClass('selected');
+            if (w <= 280) {
+                $('.size-presets .preset.mobile-s').addClass('selected');
+            } else if (w <= 370) {
+                $('.size-presets .preset.mobile-l').addClass('selected');
+            } else {
+                $('.size-presets .preset.desktop').addClass('selected');
+            }
+
             chart.set('metadata.publish.embed-width', w);
             chart.set('metadata.publish.embed-height', h);
         }
