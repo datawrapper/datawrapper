@@ -110,7 +110,7 @@
             // console.log(curWidth, w);
             if (curWidth != w) {
                 curWidth = w;
-                renderChart();
+                renderLater();
             }
         }
     }

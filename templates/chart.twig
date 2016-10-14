@@ -56,16 +56,29 @@
 
     if (document.getElementsByTagName('script').length > 0) $('body').addClass('js');
 
+    var visJSON = {{ visualization | json | raw }};
+
     __dw.init({
         chartJSON: {{ chart.toStruct(true) | json | raw }},
         chartLocale: '{{ chartLocale }}',
         themeId: '{{ theme.id }}',
         visId: '{{ visualization.id }}',
-        visJSON: {{ visualization | json | raw }},
+        visJSON: visJSON,
         metricPrefix: {{ metricPrefix | json | raw }},
         lang: '{{ lang }}',
         data: {{ chart.loadData | json | raw }}
     });
+
+    if (visJSON.height == "fixed") { 
+        setInterval(function() {
+            var desiredHeight = $('html').outerHeight(true);
+            window.parent.postMessage({
+                'datawrapper-height': {
+                    '{{ chart.id }}': desiredHeight
+                }
+            }, "*");
+        }, 1000);
+    }
 
     </script>
 
