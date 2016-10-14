@@ -78,7 +78,15 @@
 
             if (!theme.columnChart.cutGridLines) me.horzGrid();
 
-            _.each(me.getBarValues(sortBars, reverse), _.bind(me.__barEnter, me));
+            var barValues = me.getBarValues(sortBars, reverse);
+
+            _.each(barValues, _.bind(me.__barEnter, me));
+
+            if (me.get('value-labels') == 'auto') {
+                if ($('.label.value.showOnHover', el).length) {
+                    $('.label.value', el).addClass('showOnHover');
+                }
+            }
 
             var y = c.h - me.__scales.y(0) - c.bpad;
             /*me.path([['M', c.lpad, y], ['L', c.w - c.rpad, y]], 'axis')
@@ -126,17 +134,20 @@
                 lbl_w  = c.w / (n+2),
                 valign = val > 0 ? 'top' : 'bottom',
                 halign = 'center',
-                alwaysShow = (chart.hasHighlight() &&
-                    chart.isHighlighted(barv.name)) ||
-                    (bw > vlbl_w);
+                is_local_max = (!barv._prev || Math.abs(barv._prev.value) < Math.abs(val)) &&
+                    (!barv._next || Math.abs(barv._next.value) < Math.abs(val)),
+                vlbl_space = bw * (is_local_max ? 3 : 1),
+                showValueLabel = me.get('value-labels') == 'show' || vlbl_w < vlbl_space,
+                hideValueLabels = me.get('value-labels') == 'hide';
+
             var lpos = me.labelPosition(barv, s, 'value'),
                 spos = me.labelPosition(barv, s, 'series');
 
             // add value labels
-            me.registerLabel(me.label(lpos.left, lpos.top, formatter(barv.value, true),{
+            if (!hideValueLabels) me.registerLabel(me.label(lpos.left, lpos.top, formatter(barv.value, true),{
                 w: lpos.width,
                 align: 'center',
-                cl: 'value outline ' + (alwaysShow ? '' : ' showOnHover')
+                cl: 'value outline ' + (showValueLabel ? '' : ' showOnHover')
             }), barv.name);
 
             if (chart.hasHighlight() && chart.isHighlighted(barv.name)) {
@@ -191,6 +202,11 @@
             });
             if (sortBars) values.sort(function(a,b) { return (isNaN(b.value) ? 0 : b.value) - (isNaN(a.value) ? 0 : a.value); });
             if (reverse) values.reverse();
+            // add pointers to prev/next values
+            values.forEach(function(v,i) {
+                if (i) v._prev = values[i-1];
+                if (i < values.length-1) v._next = values[i+1];
+            });
             return values;
         },
 
@@ -469,17 +485,17 @@
                 _.each(me.__labels[bar.name], function(lbl) {
                     if (hover_key !== undefined && bar.name == hover_key) {
                         lbl.addClass('hover');
-                        if (lbl.hasClass('showOnHover')) lbl.show(0.5);
+                        if (lbl.hasClass('showOnHover')) lbl.show();
                     } else {
                         lbl.removeClass('hover');
-                        if (lbl.hasClass('showOnHover')) lbl.hide(0.5);
+                        if (lbl.hasClass('showOnHover')) lbl.hide();
                     }
                 });
                 _.each(me.__elements[bar.name], function(el) {
                     var fill = me.getKeyColor(bar.name, bar.value, me.get('negative-color', false)),
                         stroke;
                     if (hover_key !== undefined && bar.name == hover_key) fill = chroma.color(fill).darken(14).hex();
-                    if (el.attrs.fill != fill) el.animate({ fill: fill }, 50);
+                    if (el.attrs.fill != fill) el.attr({ fill: fill });
                 });
             });
         },
@@ -493,8 +509,9 @@
             var me = this;
             return me.get('grid-lines', 'show') == 'show' ? true :
                 me.get('grid-lines') == 'hide' ? false :
-                (me.__canvas.w / me.getBarValues().length) < 50 || me.getBarValues().length > 8;
-        }
+                (me.__canvas.w / me.getBarValues().length) < 50 || me.getBarValues().length > 8 || me.get('value-labels') == 'hide';
+        },
+
     });
 
 }).call(this);
