@@ -1,6 +1,9 @@
 CHANGELOG
 ---------
 
+### 1.11.2
+* introduced fixed-height charts
+
 ### 1.11.1
 * improved date parsing
 
