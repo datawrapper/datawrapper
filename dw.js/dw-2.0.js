@@ -1475,7 +1475,7 @@ dw.utils.filter = function (column, active, type, format) {
         };
 
         if (type == 'timescale') f = function(vis) {
-            var w = Math.min(vis.__w-30);
+            var w = Math.min(vis.__w-35);
                 timesel = $('<div></div>').css({
                     position:'relative',
                     height: 45,
