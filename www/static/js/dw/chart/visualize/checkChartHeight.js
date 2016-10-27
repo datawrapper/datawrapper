@@ -12,7 +12,7 @@ define(['./updateSize'], function(updateSize) {
                 h = message['datawrapper-height'][chartId];
             }
 
-            if (!$('#iframe-vis').hasClass('resizing')) {
+            if (!$('.preset.manual').hasClass('selected') && !$('#iframe-vis').hasClass('resizing')) {
                 $('#resize-h').val(h);
                 updateSize();
             }

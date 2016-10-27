@@ -292,12 +292,15 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
         if (heightType == "fixed") {
             iframe.append('<div class="resizer icon-resize-horizontal"></div>');
             $('#resize-h').prop("disabled", true);
+            $('.preset.manual').show();
         } else {
             iframe.append('<div class="resizer resizer-both icon-resize-horizontal"></div>');
             $('#resize-h').prop("disabled", false);
+            $('.preset.manual').hide();
         }
 
         $('.resizer', iframe).on('mousedown', dragStart);
+        $('.resizer').attr('data-mode', heightType);
 
         var startX, startY, startWidth, startHeight;
 
@@ -305,12 +308,26 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
             $('.preset').removeClass('selected');
             $(this).addClass('selected');
 
+            var heightMode = $('.resizer').attr('data-mode');
+
+            if (heightMode == "fixed") {
+                $('.resizer').removeClass('resizer-both');
+                $('#resize-h').prop("disabled", true);
+            } else {
+                $('.resizer').addClass('resizer-both');
+                $('#resize-h').prop("disabled", false);
+            }
+
             if ($(this).hasClass('mobile-s')) {
                 $('#resize-w').val(280);
             } else if ($(this).hasClass('mobile-l')) {
                 $('#resize-w').val(370);
             } else if ($(this).hasClass('desktop')) {
                 $('#resize-w').val(600);
+            } else if ($(this).hasClass('manual')) {
+                $('.resizer').addClass('resizer-both');
+                $('.resizer').addClass('resizer-both');
+                $('#resize-h').prop("disabled", false);
             }
 
             updateSize();
@@ -327,7 +344,7 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
         }
 
         function doDrag(e) {
-            if (heightType != "fixed") {
+            if (heightType != "fixed" || $('.preset.manual').hasClass('selected')) {
                 iframe.height(startHeight + e.clientY - startY);
             }
 
