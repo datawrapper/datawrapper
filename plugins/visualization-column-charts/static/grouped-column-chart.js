@@ -121,7 +121,7 @@
                     me._color_opts.key = me.axes(true).labels.val(r);
                     var d = me.barDimensions(column, s, r),
                         fill = me.getColor(column, r, me._color_opts),
-                        stroke = chroma.color(fill).darken(10).hex(),
+                        stroke = fill, //chroma.color(fill).darken(10).hex(),
                         key = column.name()+'-'+r,
                         bar_attrs = {
                             x: d.x,
@@ -137,10 +137,12 @@
                         me.__bars[key].attr(me.theme().columnChart.barAttrs);
                     }
 
-                    me.__barLbls[key] = me.__barLbls[key] || me.registerLabel(me.label(0,0,'X', { align: 'center', cl: 'value' }), column.name());
+                    me.__barLbls[key] = me.__barLbls[key] || me.registerLabel(me.label(0,0,'X', { align: 'center', cl: 'value'+(d.h <= 30 ? ' inside' : '') }), column.name());
                     me.__barLbls[key].animate({
                         x: d.x + d.w * 0.5,
-                        y: d.y + d.h * 0.5,
+                        y: d.y + (column.val(r) >= 0 ? 
+                            (d.h > 30 ? d.h - 12 : -12) : // > 0
+                            (d.h > 30 ? 12 : d.h + 12) ), // < 0
                         txt: me.formatValue(column.val(r), true)
                     }, 1000, 'expoInOut');
                     me.__barLbls[key].data('row', r);
@@ -297,7 +299,7 @@
             _.each(ticks, function(val, t) {
                 var y = c.h - c.bpad - yscale(val),
                     x = c.lpad, ly = y-10, lbl,
-                    txt = me.formatValue(val, t == ticks.length-1, true);
+                    txt = me.formatValue(val, true);
                 // c.paper.text(x, y, val).attr(styles.labels).attr({ 'text-anchor': 'end' });
                 if (me.theme().columnChart.cutGridLines) ly += 10;
 
@@ -365,14 +367,14 @@
                     if (lbl.hasClass('value')) {
                         lbl.removeClass('hover');
                         fill = getFill(column, lbl);
-                            lbl.addClass('inverted');
+                        if (!lbl.hasClass('inside')) lbl.addClass('inverted');
                         //}
                     }
                 });
                 // animate the bar fill & stroke
                 _.each(me.__elements[column.name()], function(el) {
                     fill = getFill(column, el);
-                    stroke = chroma.color(fill).darken(10).hex();
+                    stroke = fill; //chroma.color(fill).darken(10).hex();
                     if (el.attrs.fill != fill || el.attrs.stroke != stroke)
                         el.animate({ fill: fill, stroke: stroke }, 50);
                 });
