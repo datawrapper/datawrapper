@@ -240,20 +240,3 @@ only screen and (max-width: 560px),
     .responsive td:nth-of-type(11):before { content: attr(title); }
     .responsive td:nth-of-type(12):before { content: attr(title); }
 }
-
-/* Smartphones (portrait and landscape) ----------- */
-@media only screen
-and (min-device-width : 320px)
-and (max-device-width : 480px) {
-    body {
-        padding: 0;
-        margin: 0;
-        width: 320px; }
-    }
-
-/* iPads (portrait and landscape) ----------- */
-@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
-    body {
-        width: 495px;
-    }
-}
