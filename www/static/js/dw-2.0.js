@@ -1241,9 +1241,15 @@ dw.utils = {
         var ch = 0, bottom = 0; // summed height of children, 10px for top & bottom margin
         $('body > *').each(function(i, el) {
             var t = el.tagName.toLowerCase();
-            if (t != 'script' && t != 'style' && el.id != 'chart' && !$(el).hasClass('tooltip') &&
-                !$(el).hasClass('qtip') && !$(el).hasClass('container') &&
-                !$(el).hasClass('noscript')) {
+            if (    
+                t != 'script' && 
+                t != 'style' && 
+                el.id != 'chart' && 
+                !$(el).hasClass('tooltip') &&
+                !$(el).hasClass('qtip') && 
+                !$(el).hasClass('container') &&
+                !$(el).hasClass('noscript') &&
+                !$(el).prop('aria-hidden')) {
                 ch += $(el).outerHeight(false); // element height
             }
             ch += Math.max(margin(el, 'top'), bottom);
