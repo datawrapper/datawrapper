@@ -267,12 +267,6 @@
                                 $(lbl.el).addClass("lbl-align-right").removeClass("lbl-align-left"); 
                             }
                         }
-
-                        if (lbl.hasClass('value')) {
-                            var barDimensions = me.barDimensions(bar, s);
-                            if (lpos.width > (barDimensions.width + barDimensions.width * barDimensions.pad)) { lbl.addClass("showOnHover"); lbl.hide(); }
-                            else { lbl.removeClass("showOnHover"); lbl.show() }
-                        }
                     }
                 });
                 updated_bars[bar.name] = true;
