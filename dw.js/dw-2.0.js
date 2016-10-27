@@ -1249,7 +1249,7 @@ dw.utils = {
                 !$(el).hasClass('qtip') && 
                 !$(el).hasClass('container') &&
                 !$(el).hasClass('noscript') &&
-                !$(el).prop('aria-hidden')) {
+                !$(el).attr('aria-hidden')) {
                 ch += $(el).outerHeight(false); // element height
             }
             ch += Math.max(margin(el, 'top'), bottom);
