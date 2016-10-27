@@ -251,9 +251,10 @@ $app->get('/organizations/:id/charts', function($org_id) use ($app) {
                     ->condition('c2', 'Chart.Metadata LIKE ?', '%"intro":"%'.$q.'%"%')
                     ->condition('c3', 'Chart.Metadata LIKE ?', '%"source-name":"%'.$q.'%"%')
                     ->condition('c4', 'Chart.Metadata LIKE ?', '%"source-url":"%'.$q.'%"%')
-                    ->condition('c5', 'User.Email LIKE ?', '%'.$q.'%')
-                    ->condition('c6', 'User.Name LIKE ?', '%'.$q.'%')
-                    ->where(array('c1','c2','c3','c4','c5','c6'), 'or');
+                    ->condition('c5', 'Chart.Id LIKE ?', '%'.$q.'%')
+                    ->condition('c6', 'User.Email LIKE ?', '%'.$q.'%')
+                    ->condition('c7', 'User.Name LIKE ?', '%'.$q.'%')
+                    ->where(array('c1','c2','c3','c4','c5','c6','c7'), 'or');
             }
 
             $total = $query->count();
