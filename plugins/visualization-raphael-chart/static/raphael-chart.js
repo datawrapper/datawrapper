@@ -201,7 +201,7 @@
         label: function(x, y, txt, _attrs) {
 
             var me = this,
-                rot_w = 100,
+                rot_w = Math.max(_attrs.w || 0, 100),
                 lbl,  // $(<div class="label" />)
                 attrs = {  // default attributes
                     root: this.__canvas.root,

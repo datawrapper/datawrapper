@@ -52,6 +52,11 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                     "label" => __("Ignore missing values", $id),
                     "default" => false
                 ),
+                "rotate-labels" => array(
+                    "type" => "checkbox",
+                    "label" => __("Rotate labels", $id),
+                    "default" => false
+                ),
                 "absolute-scale" => array(
                     "type" => "checkbox",
                     "label" => __("Use the same scale for all columns", $id),
@@ -123,7 +128,7 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                     "depends-on" => array(
                         "chart.min_value[columns]" => '<0'
                     )
-                )
+                ),
             ),
             "libraries" => array()
         );
