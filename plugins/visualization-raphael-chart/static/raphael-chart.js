@@ -248,6 +248,7 @@
                 if (attrs.valign == 'bottom') {
                     css.top = 'auto';
                     css.bottom = me.__canvas.h - y + (attrs.rotate == -90 ? -20 : 0);
+                    css.height = 'auto';
                 }
                 if (attrs.size) {
                     css['font-size'] = attrs.size;
@@ -534,8 +535,20 @@
 
         setKeyColor: function(key, color) {
             var me = this;
+            
             if (!me.__customColors) me.__customColors = {};
+            
+            
             me.__customColors[key] = color;
+        },
+
+        hasKeyColor: function(key) {
+            var me = this;
+            key = String(key);
+            if (me.__customColors && me.__customColors[key]) return true;
+            var userCustomColors = me.get('custom-colors', {});
+            if (userCustomColors[key]) return true;
+            return false;
         },
 
         getYTicks: function(yscale, h, noDomain, useLogScale) {
