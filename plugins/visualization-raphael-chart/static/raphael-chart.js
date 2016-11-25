@@ -201,6 +201,7 @@
         label: function(x, y, txt, _attrs) {
 
             var me = this,
+                rot_w = 100,
                 lbl,  // $(<div class="label" />)
                 attrs = {  // default attributes
                     root: this.__canvas.root,
@@ -229,12 +230,11 @@
                 var w = attrs.w || me.labelWidth(attrs.txt, attrs.cl, attrs.size),
                     h = attrs.h || lbl.height(),
                     x = attrs.x,
-                    y = attrs.y,
-                    rot_w = 100;
+                    y = attrs.y;
                 var css = attrs.rotate == -90 ? {
                     // rotated
                     left: x - rot_w * 0.5,
-                    top: attrs.valign == 'top' ? y + rot_w * 0.5 : y - rot_w * 0.5,
+                    top: y + rot_w, //attrs.valign == 'top' ? y + rot_w * 0.5 : y - rot_w * 0.5,
                     width: rot_w,
                     height: 20,
                     'text-align': attrs.valign == 'top' ? 'right' : 'left'
@@ -245,21 +245,31 @@
                     width: w,
                     height: h
                 };
+                if (attrs.valign == 'bottom') {
+                    css.top = 'auto';
+                    css.bottom = me.__canvas.h - y + (attrs.rotate == -90 ? -20 : 0);
+                }
                 if (attrs.size) {
                     css['font-size'] = attrs.size;
                 }
                 return css;
             }
 
+            
+            
+
             // create label DIV element
             lbl.css($.extend({}, attrs.css, position()));
 
             if (attrs.rotate == -90) {
+                var lbl_inner_w = lbl.find('span').width();
+                console.log(lbl_inner_w);
+                var r = 'rotate(-90deg) translate('+(rot_w*0.5)+'px,0) ';
                 lbl.css({
-                    '-moz-transform': 'rotate(-90deg)',
-                    '-webkit-transform': 'rotate(-90deg)',
-                    '-ms-transform': 'rotate(-90deg)',
-                    '-o-transform': 'rotate(-90deg)',
+                    '-moz-transform': r,
+                    '-webkit-transform': r,
+                    '-ms-transform': r,
+                    '-o-transform': r,
                     'filter': 'progid:DXImageTransform.Microsoft.BasicImage(rotation=3)'
                 });
             }
