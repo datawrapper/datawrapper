@@ -62,6 +62,10 @@
                 mm_r = mm[0] >= 0 ? 1 : mm[1] <= 0 ? 0 : mm[1] / (mm[1] - mm[0]),
                 n = me.__n = bars.length;
 
+            me.__maxLabelWidth = d3.max(bars, function(d) {
+                return me.labelWidth(d.name, 'label series');
+            })
+
             _.each(bars, function(bar, s) {
                 lh = Math.max(lh,
                     chart_width /(n + (n-1) * 0.35) > 38 ?
@@ -69,8 +73,14 @@
                       Math.min(80, me.labelWidth(bar.name, 'series'))
                 );
             });
-            c.bpad = c.bpad - 30 + lh * mm_r + 15;
-            c.tpad += lh * (1-mm_r);
+            if (me.get('rotate-labels')) {
+                c.bpad = c.bpad - 30 + me.__maxLabelWidth * mm_r + 15;
+                c.tpad += me.__maxLabelWidth * (1-mm_r);
+            } else {
+                c.bpad = c.bpad - 30 + lh * mm_r + 15;
+                c.tpad += lh * (1-mm_r);
+            }
+            
 
             me.initDimensions();
 
@@ -166,7 +176,7 @@
                     align: spos.halign,
                     valign: spos.valign,
                     cl: lblcl.join(' '),
-                    rotate: d.bw < 30 ? -90 : 0
+                    rotate: d.bw < 30 || me.get('rotate-labels', false) ? -90 : 0
                 }), barv.name, me.axes().labels, barv.row);
             }
         },
@@ -361,10 +371,14 @@
                 return { left: d.x + d.width * 0.5, top: val_y, width: lbl_w };
             } else if (type == "series") {
                 lbl_w = c.w / (me.getBarValues().length+2);
-                if (d.bw < 30) {
+                
+                if (d.bw < 30 || me.get('rotate-labels')) {
                     //lblcl.push('rotate90');
                     lbl_y -= 10;  // move towards zero axis
                     lbl_w = 100;
+                    if (d.bw >= 30) {
+                        if (me.__maxLabelWidth) lbl_w = me.__maxLabelWidth;
+                    }
                     halign = 'right'; // lbl_top ? 'right' : 'left';
                 }
                 if (d.bw < 20) {

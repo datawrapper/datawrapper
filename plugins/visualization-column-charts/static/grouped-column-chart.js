@@ -80,7 +80,7 @@
                 dataset.eachRow(function(r) {
                     items.push({
                         label: lblFmt(me.axes(true).labels.val(r)),
-                        color: me.getColor(null, r, { varyLightness: true, key: me.axes(true).labels.val(r) })
+                        color: me.getBarColor(null, r, { varyLightness: true, key: me.axes(true).labels.val(r) })
                     });
                 });
                 me.addLegend(items, $('#header'));
@@ -120,7 +120,7 @@
                 column.each(function(val, r) {
                     me._color_opts.key = me.axes(true).labels.val(r);
                     var d = me.barDimensions(column, s, r),
-                        fill = me.getColor(column, r, me._color_opts),
+                        fill = me.getBarColor(column, r, me._color_opts),
                         stroke = fill, //chroma.color(fill).darken(10).hex(),
                         key = column.name()+'-'+r,
                         bar_attrs = {
@@ -196,6 +196,16 @@
             var y = c.h - me.__scales.y(0) - c.bpad;
             me.path([['M', c.lpad, y], ['L', c.w - c.rpad, y]], 'axis')
                 .attr(me.theme().yAxis);
+        },
+
+        getBarColor: function(bar, row, opts) {
+            var me = this;
+            var ax = me.axes(true).labels,
+                fmt = me.chart().columnFormatter(ax),
+                key = fmt(ax.values()[row]);
+            
+            if (me.hasKeyColor(key)) return me.getKeyColor(key);
+            return me.getColor(bar, row, opts);
         },
 
         getBarColumns: function(sortBars, reverse) {
@@ -344,7 +354,7 @@
 
             // compute fill color, depending on hoveredSeries
             function getFill(col, el) {
-                var fill = me.getColor(null, el.data('row'), { varyLightness: true, key: me.axes(true).labels.val(el.data('row')) });
+                var fill = me.getBarColor(null, el.data('row'), { varyLightness: true, key: me.axes(true).labels.val(el.data('row')) });
                 if (hoveredSeries !== undefined && col.name() == dw.utils.name(hoveredSeries)) {
                     fill = chroma.color(fill).darken(whitishBg ? 15 : -25).hex();
                 }
