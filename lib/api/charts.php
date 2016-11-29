@@ -258,8 +258,11 @@ function if_chart_is_readable($chart_id, $callback) {
 $app->post('/charts/:id/copy', function($chart_id) use ($app) {
     if_chart_is_readable($chart_id, function($user, $chart) use ($app) {
         try {
+            $user = DatawrapperSession::getUser();
+
             $copy = ChartQuery::create()->copyChart($chart);
-            $copy->setUser(DatawrapperSession::getUser());
+            $copy->setUser($user);
+            $copy->setOrganization($user->getCurrentOrganization());
             $copy->save();
             ok(array('id' => $copy->getId()));
         } catch (Exception $e) {
