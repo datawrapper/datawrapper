@@ -53,9 +53,16 @@
             var c = me.initCanvas({}, 0, filterH),
                 FA = me.getFullArc(); // full arc
 
+            c.outside_labels = me.get('outside-labels', true) && c.w > 400;
+
             c.cx = c.w * 0.5;
             c.cy = (c.h-c.bpad+30) * (FA < TWO_PI ? 0.69 : 0.5); // 1:1 1.5:1
             c.or = Math.min(FA == TWO_PI ? (c.h-c.bpad+30) * 0.5 : c.h * 0.66, c.w * 0.35) - 3;
+
+            if (!c.outside_labels) {
+                c.or = Math.min(FA == TWO_PI ? (c.h-c.bpad+30) * 0.5 : c.h * 0.66, c.w * 0.45) - 3;
+            }
+
             c.ir = donut ? c.or * 0.3 : 0;
             c.or_sq = c.or * c.or;
             c.ir_sq = c.ir * c.ir;
@@ -148,15 +155,15 @@
                 max = Math.max(max, s.value);
             });
             reverse = min < total / slices.length * 0.66 || max > total/slices.length * 1.5;
-            sa = -HALF_PI;
+            sa = c.outside_labels ? -HALF_PI : 0;
             if (reverse) sa += FA * (slices[0].value / total);
 
             if (FA < TWO_PI) {
                 reverse = false;
                 sa = -HALF_PI - FA * 0.5;
             } else {
-                sa = -QUARTER_PI*0.8 - (slices[slices.length-1].value / total * Math.PI);
-                reverse = true;
+                sa = c.outside_labels ? -QUARTER_PI*0.8 - (slices[slices.length-1].value / total * Math.PI) : -Math.PI * 0.5;
+                reverse = c.outside_labels;
             }
 
             me.__seriesAngles = {};
@@ -184,7 +191,7 @@
                 out_label_w = 0;
 
             _.each(slices, function(o) {
-                if (lblOutside(o)) {
+                if (lblOutside(o) && c.outside_labels) {
                     all_labels_inside = false;
                     out_label_w = Math.max(
                         out_label_w,
@@ -214,7 +221,7 @@
                     // create new label
                     var lblcl = me.chart().hasHighlight() && me.chart().isHighlighted(o.name) ? 'series highlighted' : 'series';
                     if (me.invertLabel(fill)) lblcl += ' inverted';
-                    if (lblOutside(o)) lblcl += ' outside';
+                    if (lblOutside(o) && c.outside_labels) lblcl += ' outside';
 
                     var lbl = me.registerLabel(me.label(0, 0, '<b>'+o.name+'</b>'+value, {
                         w: 80, cl: lblcl, align: 'center', valign: 'middle'
@@ -234,14 +241,14 @@
                     // update existing label
                     slice = me.__slices[o.name];
                     slice.label.text('<b>'+o.name+'</b>'+value);
-                    slice.label[lblOutside(o) ? 'addClass' : 'removeClass']('outside');
+                    slice.label[lblOutside(o) && c.outside_labels ? 'addClass' : 'removeClass']('outside');
                     slice.animate(cx, c.cy, c.or, c.ir, a0, a1, me.theme().duration, me.theme().easing, o.value > 0 ? 1 : 0.5);
                 }
 
                 me.__seriesAngles[o.name] = normalize(a0, a1);
                 sa += reverse ? -da : da;
 
-                if (lblOutside(o)) {
+                if (lblOutside(o) && c.outside_labels) {
                     // add additional label
                     var lx = cx + c.or + 30,
                         ca = (me.__seriesAngles[o.name][0] + me.__seriesAngles[o.name][1]) * 0.5 - HALF_PI,
@@ -327,9 +334,14 @@
             function lblOutside(o) {
                 // not available for election donuts (yet)
                 if (me.getFullArc() < TWO_PI) return false;
-                // this is a rough guess
-                return o.name.length > 10 ? o.value / total < 0.15
-                    : o.name.length > 3 ? o.value / total < 0.15 : false;
+                var c = me.__canvas,
+                    pie_area = Math.PI * c.or * c.or - Math.PI * c.ir * c.ir;
+                console.log(o.name, Math.sqrt(o.name.length) * 1500, o.value / total * pie_area);
+                return Math.sqrt(o.name.length) * 2000 > (o.value / total) * pie_area;
+
+                // // this is a rough guess
+                // return o.name.length > 10 ? o.value / total < 0.15
+                //     : o.name.length > 3 ? o.value / total < 0.15 : false;
             }
 
         },
