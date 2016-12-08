@@ -51,7 +51,7 @@ DatawrapperVisualization::register($plugin, array(
 DatawrapperVisualization::register($plugin, array(
     'id' => 'donut-chart',
     'title' => __('Donut chart'),
-    'version' => '1.3.0',
+    'version' => '1.3.1',
     'extends' => 'pie-chart',
     'author' => array(
         'name' => 'gka',
@@ -79,6 +79,14 @@ DatawrapperVisualization::register($plugin, array(
             'label' => __('Show total value in center'),
             'default' => true
         ),
+        'show-percentages' => array(
+            'type' => 'checkbox',
+            'label' => __('Show values as percentages'),
+            'default' => true,
+            'depends-on' => array(
+                'show-total' => true
+            )
+        ),
         'custom-total' => array(
             'type' => 'checkbox',
             'label' => __('Use custom total value instead of sum'),
@@ -105,6 +113,11 @@ DatawrapperVisualization::register($plugin, array(
             ),
             'min' => 2,
             'max' => 100
-        )
+        ),
+        'outside-labels' => [
+            'type' => 'checkbox',
+            'label' => __('Label smaller slices outside chart'),
+            'default' => true
+        ]
     )
 ));

@@ -53,14 +53,17 @@
             var c = me.initCanvas({}, 0, filterH),
                 FA = me.getFullArc(); // full arc
 
+
+
             c.outside_labels = me.get('outside-labels', true) && c.w > 400;
 
             c.cx = c.w * 0.5;
-            c.cy = (c.h-c.bpad+30) * (FA < TWO_PI ? 0.69 : 0.5); // 1:1 1.5:1
-            c.or = Math.min(FA == TWO_PI ? (c.h-c.bpad+30) * 0.5 : c.h * 0.66, c.w * 0.35) - 3;
+            c.cy = (c.h-c.bpad+30) * (FA < TWO_PI ? 0.69 : 0.47); // 1:1 1.5:1
+            c.or = Math.min(FA == TWO_PI ? (c.h-c.bpad+30) * 0.47 : c.h * 0.66, c.w * 0.45) - 3;
+            c.cy = c.or+10;
 
             if (!c.outside_labels) {
-                c.or = Math.min(FA == TWO_PI ? (c.h-c.bpad+30) * 0.5 : c.h * 0.66, c.w * 0.45) - 3;
+                c.or = Math.min(FA == TWO_PI ? (c.h-c.bpad+30) * 0.47 : c.h * 0.66, c.w * 0.45) - 3;
             }
 
             c.ir = donut ? c.or * 0.3 : 0;
@@ -68,6 +71,9 @@
             c.ir_sq = c.ir * c.ir;
 
             me.init();
+
+            me._footNotes = $('<div />').appendTo(el).addClass('pie-foot-notes');
+            me._footNotes.html('').css('top', c.or*2+20);
 
             $('.tooltip').hide();
 
@@ -190,18 +196,31 @@
                 num_labels_outside = 0,
                 out_label_w = 0;
 
+            var footnotes = [];
+
             _.each(slices, function(o) {
-                if (lblOutside(o) && c.outside_labels) {
-                    all_labels_inside = false;
-                    out_label_w = Math.max(
-                        out_label_w,
-                        Math.min(out_labels_max_width, me.labelWidth(o.name, 'series out'))
-                    );
-                    o.__lbl_h = me.labelHeight(o.name, 'series out', out_labels_max_width);
-                    out_labels_total_height += o.__lbl_h + 20;
-                    num_labels_outside++;
+                o.label = o.name;
+                if (lblOutside(o)) {
+                    if (c.outside_labels) {
+                        all_labels_inside = false;
+                        out_label_w = Math.max(
+                            out_label_w,
+                            Math.min(out_labels_max_width, me.labelWidth(o.name, 'series out'))
+                        );
+                        o.__lbl_h = me.labelHeight(o.name, 'series out', out_labels_max_width);
+                        out_labels_total_height += o.__lbl_h + 20;
+                        num_labels_outside++;
+                    } else {
+                        // console.log('lbl footnote');
+                        footnotes.push(o);
+                        o.label = footnotes.length;
+                    }
                 }
             });
+
+            me._footNotes.html(footnotes.map(function(o) {
+                return '<span><b>'+o.label +'</b>&nbsp;'+o.name+'</span>';
+            }).join(' ')); 
 
             var cx = c.cx - (all_labels_inside ? 0 : (out_label_w+50)*0.5),
                 lbl_duration = _.keys(me.__slices).length > 0 ? me.theme().duration : 100;
@@ -213,7 +232,7 @@
                     stroke = chroma.color(fill).darken(15).hex(),
                     a0 = reverse ? sa - da : sa,
                     a1 = reverse ? sa : sa + da,
-                    value = showTotal ? Math.round(o.value / total * 100)+'%' : formatValue(o.value, true);
+                    value = showTotal && me.get('show-percentages', false) ? Math.round(o.value / total * 100)+'%' : formatValue(o.value, true);
 
                 me.__sliceKeys.push(o.name);
 
@@ -222,8 +241,9 @@
                     var lblcl = me.chart().hasHighlight() && me.chart().isHighlighted(o.name) ? 'series highlighted' : 'series';
                     if (me.invertLabel(fill)) lblcl += ' inverted';
                     if (lblOutside(o) && c.outside_labels) lblcl += ' outside';
+                    if (o.name != o.label) lblcl += ' dw-circle';
 
-                    var lbl = me.registerLabel(me.label(0, 0, '<b>'+o.name+'</b>'+value, {
+                    var lbl = me.registerLabel(me.label(0, 0, '<b>'+o.label+'</b>'+value, {
                         w: 80, cl: lblcl, align: 'center', valign: 'middle'
                     }), o.name);
 
@@ -240,8 +260,9 @@
                 } else {
                     // update existing label
                     slice = me.__slices[o.name];
-                    slice.label.text('<b>'+o.name+'</b>'+value);
+                    slice.label.text('<b>'+o.label+'</b>'+value);
                     slice.label[lblOutside(o) && c.outside_labels ? 'addClass' : 'removeClass']('outside');
+                    slice.label[o.name != o.label ? 'addClass' : 'removeClass']('dw-circle');
                     slice.animate(cx, c.cy, c.or, c.ir, a0, a1, me.theme().duration, me.theme().easing, o.value > 0 ? 1 : 0.5);
                 }
 
@@ -336,7 +357,7 @@
                 if (me.getFullArc() < TWO_PI) return false;
                 var c = me.__canvas,
                     pie_area = Math.PI * c.or * c.or - Math.PI * c.ir * c.ir;
-                console.log(o.name, Math.sqrt(o.name.length) * 1500, o.value / total * pie_area);
+                // console.log(o.name, Math.sqrt(o.name.length) * 1500, o.value / total * pie_area);
                 return Math.sqrt(o.name.length) * 2000 > (o.value / total) * pie_area;
 
                 // // this is a rough guess

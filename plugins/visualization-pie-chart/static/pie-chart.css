@@ -11,3 +11,35 @@ div.label.series.outside span b {
 .label.series.out {
     font-weight: bold;
 }
+
+.pie-foot-notes {
+	position: absolute;
+    left: 10px;
+    font-size: 11px;
+    right: 10px;
+	text-align: center;
+}
+
+.label.series.dw-circle b {
+    width: 18px;
+    height: 18px;
+    line-height: 18px;
+    margin: 0 auto 3px;
+    background: white;
+    border-radius: 50%;
+}
+.pie-foot-notes span {
+	margin-left: 10px;
+}
+.pie-foot-notes span:first-child {
+	margin-left: 0px;
+}
+.pie-foot-notes b {
+	display: inline-block;
+ 	width: 16px;
+    height: 16px;
+    line-height: 16px;
+    margin-right: 3px;
+    background: #eee;
+    border-radius: 50%;
+}
