@@ -57,7 +57,7 @@
 
             c.cx = c.w * 0.5;
             c.cy = (c.h-c.bpad+30) * (FA < TWO_PI ? 0.69 : 0.5); // 1:1 1.5:1
-            c.or = Math.min(FA == TWO_PI ? (c.h-c.bpad+30) * 0.5 : c.h * 0.66, c.w * 0.35) - 3;
+            c.or = Math.min(FA == TWO_PI ? (c.h-c.bpad+30) * 0.5 : c.h * 0.66, c.w * 0.45) - 3;
 
             if (!c.outside_labels) {
                 c.or = Math.min(FA == TWO_PI ? (c.h-c.bpad+30) * 0.5 : c.h * 0.66, c.w * 0.45) - 3;

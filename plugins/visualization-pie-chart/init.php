@@ -105,6 +105,11 @@ DatawrapperVisualization::register($plugin, array(
             ),
             'min' => 2,
             'max' => 100
-        )
+        ),
+        'outside-labels' => [
+            'type' => 'checkbox',
+            'label' => __('Label smaller slices outside chart'),
+            'default' => true
+        ]
     )
 ));
