@@ -11,3 +11,20 @@ div.label.series.outside span b {
 .label.series.out {
     font-weight: bold;
 }
+
+.pie-foot-notes {
+	position: absolute;
+    bottom: -10px;
+    left: 10px;
+    right: 10px;
+	text-align: center;
+}
+
+.label.series.dw-circle b {
+    width: 18px;
+    height: 18px;
+    line-height: 18px;
+    margin: 0 auto 3px;
+    background: white;
+    border-radius: 50%;
+}
