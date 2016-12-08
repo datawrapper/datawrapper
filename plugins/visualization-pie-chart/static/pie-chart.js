@@ -59,10 +59,10 @@
 
             c.cx = c.w * 0.5;
             c.cy = (c.h-c.bpad+30) * (FA < TWO_PI ? 0.69 : 0.47); // 1:1 1.5:1
-            c.or = Math.min(FA == TWO_PI ? (c.h-c.bpad+30) * 0.5 : c.h * 0.66, c.w * 0.45) - 3;
+            c.or = Math.min(FA == TWO_PI ? (c.h-c.bpad+30) * 0.47 : c.h * 0.66, c.w * 0.45) - 3;
 
             if (!c.outside_labels) {
-                c.or = Math.min(FA == TWO_PI ? (c.h-c.bpad+30) * 0.5 : c.h * 0.66, c.w * 0.45) - 3;
+                c.or = Math.min(FA == TWO_PI ? (c.h-c.bpad+30) * 0.47 : c.h * 0.66, c.w * 0.45) - 3;
             }
 
             c.ir = donut ? c.or * 0.3 : 0;
@@ -218,8 +218,8 @@
             });
 
             me._footNotes.html(footnotes.map(function(o) {
-                return '<b>'+o.label +'</b>: '+o.name;
-            }).join(', ')); 
+                return '<span><b>'+o.label +'</b>&nbsp;'+o.name+'</span>';
+            }).join(' ')); 
 
             var cx = c.cx - (all_labels_inside ? 0 : (out_label_w+50)*0.5),
                 lbl_duration = _.keys(me.__slices).length > 0 ? me.theme().duration : 100;
