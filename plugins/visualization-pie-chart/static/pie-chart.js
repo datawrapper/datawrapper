@@ -60,6 +60,7 @@
             c.cx = c.w * 0.5;
             c.cy = (c.h-c.bpad+30) * (FA < TWO_PI ? 0.69 : 0.47); // 1:1 1.5:1
             c.or = Math.min(FA == TWO_PI ? (c.h-c.bpad+30) * 0.47 : c.h * 0.66, c.w * 0.45) - 3;
+            c.cy = c.or+10;
 
             if (!c.outside_labels) {
                 c.or = Math.min(FA == TWO_PI ? (c.h-c.bpad+30) * 0.47 : c.h * 0.66, c.w * 0.45) - 3;
@@ -72,7 +73,7 @@
             me.init();
 
             me._footNotes = $('<div />').appendTo(el).addClass('pie-foot-notes');
-            me._footNotes.html('');
+            me._footNotes.html('').css('top', c.or*2+20);
 
             $('.tooltip').hide();
 
@@ -231,7 +232,7 @@
                     stroke = chroma.color(fill).darken(15).hex(),
                     a0 = reverse ? sa - da : sa,
                     a1 = reverse ? sa : sa + da,
-                    value = showTotal ? Math.round(o.value / total * 100)+'%' : formatValue(o.value, true);
+                    value = showTotal && me.get('show-percentages', false) ? Math.round(o.value / total * 100)+'%' : formatValue(o.value, true);
 
                 me.__sliceKeys.push(o.name);
 

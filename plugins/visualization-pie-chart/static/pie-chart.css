@@ -14,8 +14,8 @@ div.label.series.outside span b {
 
 .pie-foot-notes {
 	position: absolute;
-    bottom: -10px;
     left: 10px;
+    font-size: 11px;
     right: 10px;
 	text-align: center;
 }
@@ -36,9 +36,9 @@ div.label.series.outside span b {
 }
 .pie-foot-notes b {
 	display: inline-block;
- 	width: 18px;
-    height: 18px;
-    line-height: 18px;
+ 	width: 16px;
+    height: 16px;
+    line-height: 16px;
     margin-right: 3px;
     background: #eee;
     border-radius: 50%;
