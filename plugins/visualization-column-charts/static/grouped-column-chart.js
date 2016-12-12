@@ -79,6 +79,7 @@
                     lblFmt = me.chart().columnFormatter(me.axes(true).labels);
                 dataset.eachRow(function(r) {
                     items.push({
+                        key: 'row-'+r,
                         label: lblFmt(me.axes(true).labels.val(r)),
                         color: me.getBarColor(null, r, { varyLightness: true, key: me.axes(true).labels.val(r) })
                     });
@@ -115,6 +116,8 @@
                 c = me.__canvas,
                 n = me.axesDef.columns.length;
 
+            me.__rowx = [];
+
             // draw bars
             _.each(me.getBarColumns(me.get('sort-values'), me.get('reverse-order')), function(column, s) {
                 column.each(function(val, r) {
@@ -131,6 +134,7 @@
                             stroke: stroke,
                             fill: fill
                         };
+                    me.__rowx.push([d.x, d.x+d.w, r]);
 
                     me.__bars[key] = me.__bars[key] || me.registerElement(c.paper.rect().attr(bar_attrs), column.name(), r);
                     if (me.theme().columnChart.barAttrs) {
@@ -138,13 +142,12 @@
                     }
 
                     me.__barLbls[key] = me.__barLbls[key] || me.registerLabel(me.label(0,0,'X', { align: 'center', cl: 'value'+(d.h <= 30 ? ' inside' : '') }), column.name());
+                    // console.log('xxx', column.name(), r, d.y, d.h, 'y:', +d.y + (column.val(r) >= 0 ? +(d.h > 30 ? d.h - 12 : -12) : +(d.h > 30 ? 12 : d.h + 12) ))
                     me.__barLbls[key].animate({
                         x: d.x + d.w * 0.5,
-                        y: d.y + (column.val(r) >= 0 ? 
-                            (d.h > 30 ? d.h - 12 : -12) : // > 0
-                            (d.h > 30 ? 12 : d.h + 12) ), // < 0
+                        y: +d.y + (column.val(r) >= 0 ? +(d.h > 30 ? 12 : -12) : +(d.h > 30 ? d.h- 12 : d.h + 12) ), // < 0
                         txt: me.formatValue(column.val(r), true)
-                    }, 1000, 'expoInOut');
+                    }, 0, 'expoInOut');
                     me.__barLbls[key].data('row', r);
                     me.__barLbls[key].hide();
 
@@ -279,7 +282,9 @@
         },
 
         getDataRowByPoint: function(x, y) {
-            return 0;
+            return (_.find(this.__rowx, function(d) {
+                return x >= d[0] && x <= d[1];
+            }) || [0,0,0])[2];
         },
 
         showTooltip: function() {
@@ -348,10 +353,9 @@
         /*
          * highlights hovered bars and displays value labels
          */
-        hover: function(hoveredSeries) {
+        hover: function(hoveredSeries, row) {
             var me = this,
                 whitishBg = chroma.color(me.theme().colors.background).lch()[0] > 60;
-
             // compute fill color, depending on hoveredSeries
             function getFill(col, el) {
                 var fill = me.getBarColor(null, el.data('row'), { varyLightness: true, key: me.axes(true).labels.val(el.data('row')) });
@@ -368,8 +372,8 @@
                 // highlight/invert the column title
                 _.each(me.__labels[column.name()], function(lbl) {
                     if (hoveredSeries !== undefined && column.name() == dw.utils.name(hoveredSeries)) {
-                        lbl.addClass('hover');
-                        if (lbl.hasClass('showOnHover')) lbl.show(0.5);
+                        // lbl.addClass('hover');
+                        // if (lbl.hasClass('showOnHover')) lbl.show(0.5);
                     } else {
                         lbl.removeClass('hover');
                         if (lbl.hasClass('showOnHover')) lbl.hide(0.5);
@@ -381,24 +385,28 @@
                         //}
                     }
                 });
+
+                $('.dw-chart .legend > div').removeClass('hover');
+                if (hoveredSeries) $('.dw-chart .legend > div[data-key="row-'+row+'"]').addClass('hover');
                 // animate the bar fill & stroke
-                _.each(me.__elements[column.name()], function(el) {
-                    fill = getFill(column, el);
-                    stroke = fill; //chroma.color(fill).darken(10).hex();
-                    if (el.attrs.fill != fill || el.attrs.stroke != stroke)
-                        el.animate({ fill: fill, stroke: stroke }, 50);
-                });
+                // _.each(me.__elements[column.name()], function(el) {
+                //     fill = getFill(column, el);
+                //     stroke = fill; //chroma.color(fill).darken(10).hex();
+                //     if (el.attrs.fill != fill || el.attrs.stroke != stroke)
+                //         el.animate({ fill: fill, stroke: stroke }, 50);
+                // });
             });
 
             // show/hide the labels that show values on top of the bars
             var visibleLbls = [];
             _.each(me.__barLbls, function(lbl, key) {
-                if (hoveredSeries && lbl.data('key') == dw.utils.name(hoveredSeries)) {
+                // if (hoveredSeries && lbl.data('key') == dw.utils.name(hoveredSeries)) {
+                if (hoveredSeries && lbl.data('row') == row) {
                     lbl.show();
                     visibleLbls.push(lbl.data('label'));
                 } else lbl.hide();
             });
-            me.optimizeLabelPositions(visibleLbls, 5);
+            // me.optiizmeLabelPositions(visibleLbls, 5);
         },
 
         unhoverSeries: function() {

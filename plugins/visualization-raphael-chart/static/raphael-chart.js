@@ -113,7 +113,7 @@
                 me.__mouseOverTimer = setTimeout(function() {
                     clearTimeout(me.__mouseOverTimer);
                     clearTimeout(me.__mouseOutTimer);
-                    if (theme.hover) me.hover(hovered_key);
+                    if (theme.hover) me.hover(hovered_key, row);
                     //if (theme.tooltip && hoveredNode) me.showTooltip(series, row, x, y);
                 }, 100);
             }
@@ -614,11 +614,19 @@
                     top: posTop
                 });
 
+                
+
                 l.append(div);
                 lbl = me.label(xo + 15, (posTop-1), item.label, {
                     valign: 'left',
                     root: l
                 });
+
+                if (item.key) {
+                    div.attr('data-key', item.key);
+                    lbl.el.attr('data-key', item.key);
+                }
+
                 xo += me.labelWidth(item.label)+30;
 
                 if (xo > me.__canvas.w) {
@@ -638,12 +646,12 @@
         },
 
 
-        optimizeLabelPositions: function(labels, pad, valign) {
+        optimizeLabelPositions: function(labels, pad, valign, ymin, ymax) {
             if (!labels.length) return;
             var i = 1,
                 c = valign == 'top' ? 0 : valign == 'middle' ? 0.5 : 1,
-                min_y = labels[0].el.parent().offset().top,
-                max_y = min_y + labels[0].el.parent().height();
+                min_y = ymin === undefined ? labels[0].el.parent().offset().top : ymin,
+                max_y = ymax === undefined ? min_y + labels[0].el.parent().height() : ymax;
 
             labels = _.filter(labels, function(lbl) { return lbl.el.is(":visible"); });
             if (!labels.length) return;
