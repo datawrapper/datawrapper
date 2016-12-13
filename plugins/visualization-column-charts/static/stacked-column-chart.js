@@ -6,6 +6,8 @@
         // some config
         _showValueLabels: function() { return false; },
 
+        _isStacked: function() { return true; },
+
         /*
          * returns a modified version of the original columns
          * that contains stacked numbers

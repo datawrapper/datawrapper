@@ -6,6 +6,8 @@
         // some config
         _showValueLabels: function() { return true; },
 
+        _isStacked: function() { return false; },
+
         render: function(el) {
 
             this.setRoot(el);
@@ -23,6 +25,8 @@
             if (!_.isUndefined(me.get('selected-row'))) {
                 row = me.get('selected-row');
             }
+
+            me.__top = $(el).offset().top - $(el).parent().offset().top;
 
             me.checkData();
 
@@ -134,18 +138,21 @@
                             stroke: stroke,
                             fill: fill
                         };
-                    me.__rowx.push([d.x, d.x+d.w, r]);
+                    me.__rowx.push([d.x, d.x+d.w, d.y, d.y + d.h, r]);
 
                     me.__bars[key] = me.__bars[key] || me.registerElement(c.paper.rect().attr(bar_attrs), column.name(), r);
                     if (me.theme().columnChart.barAttrs) {
                         me.__bars[key].attr(me.theme().columnChart.barAttrs);
                     }
 
-                    me.__barLbls[key] = me.__barLbls[key] || me.registerLabel(me.label(0,0,'X', { align: 'center', cl: 'value'+(d.h <= 30 ? ' inside' : '') }), column.name());
+                    me.__barLbls[key] = me.__barLbls[key] || me.registerLabel(me.label(0,0,'X', {
+                            align: 'center', cl: 'value'+(d.h <= 30 || me._isStacked() ? ' inside' : '') }), column.name());
                     // console.log('xxx', column.name(), r, d.y, d.h, 'y:', +d.y + (column.val(r) >= 0 ? +(d.h > 30 ? d.h - 12 : -12) : +(d.h > 30 ? 12 : d.h + 12) ))
                     me.__barLbls[key].animate({
                         x: d.x + d.w * 0.5,
-                        y: +d.y + (column.val(r) >= 0 ? +(d.h > 30 ? 12 : -12) : +(d.h > 30 ? d.h- 12 : d.h + 12) ), // < 0
+                        y: me._isStacked() ?    
+                            d.y + d.h * 0.5 :
+                            +d.y + (column.val(r) >= 0 ? +(d.h > 30 ? 12 : -12) : +(d.h > 30 ? d.h- 12 : d.h + 12) ), // < 0
                         txt: me.formatValue(column.val(r), true)
                     }, 0, 'expoInOut');
                     me.__barLbls[key].data('row', r);
@@ -282,9 +289,10 @@
         },
 
         getDataRowByPoint: function(x, y) {
+            var me = this;
             return (_.find(this.__rowx, function(d) {
-                return x >= d[0] && x <= d[1];
-            }) || [0,0,0])[2];
+                return x >= d[0] && x <= d[1] && y-me.__top >= d[2] && y-me.__top <= d[3];
+            }) || [0,0,0,0,-1])[4];
         },
 
         showTooltip: function() {
@@ -359,9 +367,9 @@
             // compute fill color, depending on hoveredSeries
             function getFill(col, el) {
                 var fill = me.getBarColor(null, el.data('row'), { varyLightness: true, key: me.axes(true).labels.val(el.data('row')) });
-                if (hoveredSeries !== undefined && col.name() == dw.utils.name(hoveredSeries)) {
-                    fill = chroma.color(fill).darken(whitishBg ? 15 : -25).hex();
-                }
+                // if (hoveredSeries !== undefined && col.name() == dw.utils.name(hoveredSeries)) {
+                //     fill = chroma.color(fill).darken(whitishBg ? 15 : -25).hex();
+                // }
                 return fill;
             }
 
@@ -381,7 +389,8 @@
                     if (lbl.hasClass('value')) {
                         lbl.removeClass('hover');
                         fill = getFill(column, lbl);
-                        if (!lbl.hasClass('inside')) lbl.addClass('inverted');
+                        // console.log(fill, );
+                        if (lbl.hasClass('inside') && chroma(fill).lab()[0] < 60) lbl.addClass('inverted');
                         //}
                     }
                 });
