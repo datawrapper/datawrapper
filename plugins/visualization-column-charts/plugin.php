@@ -13,7 +13,7 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
 
         $meta = array(
             "id" => "column-chart",
-            "title" => __("Column Chart", $id),
+            "title" => __("Column Chart"),
             "version" => $this->getVersion(),
             "dimensions" => 1,
             "extends" => "raphael-chart",
@@ -34,53 +34,53 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                 ),
                 "sort-values" => array(
                     "type" => "checkbox",
-                    "label" => __("Automatically sort bars", $id)
+                    "label" => __("Automatically sort bars")
                 ),
                 "reverse-order" => array(
                     "type" => "checkbox",
-                    "label" => __("Reverse order", $id)
+                    "label" => __("Reverse order")
                 ),
                 "negative-color" => array(
                     "type" => "checkbox",
-                    "label" => __("Use different color for negative values", $id),
+                    "label" => __("Use different color for negative values"),
                     "depends-on" => array(
                         "chart.min_value[columns]" => '<0'
                     )
                 ),
                 "ignore-missing-values" => array(
                     "type" => "checkbox",
-                    "label" => __("Ignore missing values", $id),
+                    "label" => __("Ignore missing values"),
                     "default" => false
                 ),
                 "rotate-labels" => array(
                     "type" => "checkbox",
-                    "label" => __("Rotate labels", $id),
+                    "label" => __("Rotate labels"),
                     "default" => false
                 ),
                 "absolute-scale" => array(
                     "type" => "checkbox",
-                    "label" => __("Use the same scale for all columns", $id),
+                    "label" => __("Use the same scale for all columns"),
                     "depends-on" => array(
                         "chart.min_columns[columns]" => 2
                     )
                 ),
                 "grid-lines" => array(
                     "type" => "radio-left",
-                    "label" => __("Grid lines", $id),
+                    "label" => __("Grid lines"),
                     "options" => array(
-                        array("value" => "auto", "label" => __("Automatic", $id)),
-                        array("value" => "show", "label" => __("Show", $id)),
-                        array("value" => "hide", "label" => __("Hide", $id))
+                        array("value" => "auto", "label" => __("Automatic")),
+                        array("value" => "show", "label" => __("Show")),
+                        array("value" => "hide", "label" => __("Hide"))
                     ),
                     "default" => 'auto'
                 ),
                 "value-labels" => array(
                     "type" => "radio-left",
-                    "label" => __("Value labels", $id),
+                    "label" => __("Value labels"),
                     "options" => array(
-                        array("value" => "auto", "label" => __("Automatic", $id)),
-                        array("value" => "show", "label" => __("Show", $id)),
-                        array("value" => "hide", "label" => __("Hide", $id))
+                        array("value" => "auto", "label" => __("Automatic")),
+                        array("value" => "show", "label" => __("Show")),
+                        array("value" => "hide", "label" => __("Hide"))
                     ),
                     "default" => 'auto'
                 )
@@ -94,7 +94,7 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
 
         $meta = array(
             "id" => "grouped-column-chart",
-            "title" => __("Grouped Column Chart", $id),
+            "title" => __("Grouped Column Chart"),
             "version" => $this->getVersion(),
             "dimensions" => 2,
             "extends" => "raphael-chart",
@@ -116,15 +116,15 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                 ),
                 "sort-values" => array(
                     "type" => "checkbox",
-                    "label" => __("Automatically sort bars", $id)
+                    "label" => __("Automatically sort bars")
                 ),
                 "reverse-order" => array(
                     "type" => "checkbox",
-                    "label" => __("Reverse order", $id)
+                    "label" => __("Reverse order")
                 ),
                 "negative-color" => array(
                     "type" => "checkbox",
-                    "label" => __("Use different color for negative values", $id),
+                    "label" => __("Use different color for negative values"),
                     "depends-on" => array(
                         "chart.min_value[columns]" => '<0'
                     )
@@ -140,7 +140,7 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
 
         $meta = array(
             "id" => "stacked-column-chart",
-            "title" => __("Stacked Column Chart", $id),
+            "title" => __("Stacked Column Chart"),
             "version" => $this->getVersion(),
             "dimensions" => 2,
             "extends" => "grouped-column-chart",
@@ -162,7 +162,7 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                 ),
                 "sort-values" => array(
                     "type" => "checkbox",
-                    "label" => __("Automatically sort bars", $id)
+                    "label" => __("Automatically sort bars")
                 ),
                 "sort-by" => array(
                     'type' => 'radio',
@@ -181,15 +181,15 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                 ),
                 "reverse-order" => array(
                     "type" => "checkbox",
-                    "label" => __("Reverse order", $id)
+                    "label" => __("Reverse order")
                 ),
                 // "negative-color" => array(
                 //     "type" => "checkbox",
-                //     "label" => __("Use different color for negative values", $id)
+                //     "label" => __("Use different color for negative values")
                 // ),
                 "normalize" => array(
                     "type" => "checkbox",
-                    "label" => __("Stack percentages", $id),
+                    "label" => __("Stack percentages"),
                     "default" => false
                 ),
                 "normalize-user" => [
@@ -290,8 +290,8 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                 
             ],
             "locale" => array(
-                "stack percentages" => __("stack percentages", $id),
-                "cannotShowNegativeValues" => __("Negative values, as contained in your dataset, cannot be stacked on top of each other in a stacked column chart. Please consider using a different chart type instead (eg. a grouped column chart).", $id)
+                "stack percentages" => __("stack percentages"),
+                "cannotShowNegativeValues" => __("negative-values")
             )
         );
         return $meta;
