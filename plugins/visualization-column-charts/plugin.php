@@ -294,7 +294,8 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                         'label-space-mobile' => [
                             'type' => 'slider',
                             'depends-on' => [
-                                'direct-labeling' => 'always'
+                                'direct-labeling-mobile' => 'always',
+                                'same-as-desktop' => false
                             ],
                             'label' => __('Direct label space (%)'),
                             'default' => 30,
