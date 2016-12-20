@@ -119,7 +119,6 @@
 
             if (!me.theme().columnChart.cutGridLines) me.horzGrid();
 
-            console.log('update');
             me.update();
 
             // enable mouse events
