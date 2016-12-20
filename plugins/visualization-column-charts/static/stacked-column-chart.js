@@ -6,6 +6,8 @@
         // some config
         _showValueLabels: function() { return false; },
 
+        _isStacked: function() { return true; },
+
         /*
          * returns a modified version of the original columns
          * that contains stacked numbers
@@ -14,7 +16,8 @@
             var me = this,
                 stackedColumns = [],
                 normalize = me.is_normalized(),
-                columns = me._getBarColumns(sortBars, reverse);
+                columns = me._getBarColumns(sortBars, reverse),
+                sortByFirst = me.get('sort-by') != 'last';
 
             _.each(columns, function(column) {
                 var normValues;
@@ -23,11 +26,22 @@
                     column.each(function(val) {
                         normValues.push(val / column.total());
                     });
-                    stackedColumns.push(dw.column(column.name(), normValues));
+                    stackedColumns.push(dw.column(column.name(), normValues).title(column.title()));
                 } else {
                     stackedColumns.push(column);
                 }
             });
+            if (normalize && sortBars) {
+                // sort agains
+                stackedColumns = stackedColumns.sort(function(a, b) {
+                    var aType = a.type(true),
+                        bType = b.type(true),
+                        r = sortByFirst ? 0 : a.length-1,
+                        a_val = aType.toNum ? aType.toNum(a.val(r)) : a.val(r),
+                        b_val = bType.toNum ? bType.toNum(b.val(r)) : b.val(r);
+                    return a_val > b_val ? 1 : a_val < b_val ? -1 : 0;
+                });
+            }
             return stackedColumns;
         },
 
@@ -51,7 +65,7 @@
                 y: d3.scale.linear().domain(me.__domain)
             };
             
-            var lh = ($('.legend div:last').offset().top - $('.legend div:first').offset().top),
+            var lh = me._directLabeling() ? 0 : ($('.legend div:last').offset().top - $('.legend div:first').offset().top),
                 svg = $(me._svgCanvas()),
                 ch = $(svg.parent()); 
 
@@ -59,7 +73,7 @@
             $(ch).height($(ch).height()-lh);
 
             // -- substract a few pixel to get space for the legend!
-            me.__scales.y.rangeRound([0, c.h - c.bpad - c.tpad - (lh+20)]);
+            me.__scales.y.rangeRound([0, c.h - c.bpad - c.tpad - (lh+0)]);
             return;
         },
 
@@ -70,26 +84,31 @@
                 c = me.__canvas,
                 n = me.axesDef.columns.length,
                 w, h, x, y, i, cw, bw,
-                pad = 0.35,
-                vspace = 0.1;
+                mobile = me.get('same-as-desktop') || c.w > 420 ? '' : '-mobile',
+                pad = me.get('padding'+mobile)/100,
+                vspace = me.get('margin'+mobile)/100;
 
-            if (c.w / n < 30) vspace = 0.05;
+            if (c.w / n < 30) vspace *= 0.5;
+             // console.log('s', me.get('grid-lines'));
+            // if (me._isStacked() && !me.get('grid-lines')) vspace = 0;
 
             cw = (c.w - c.lpad - c.rpad) * (1 - vspace - vspace);
             bw = bw = cw / (n + (n-1) * pad);
-            h = sc.y(column.val(r)) - sc.y(0);
             if (r === 0) yo = 0;
             w = bw; //w = Math.round(bw / column.length);
-            if (h >= 0) {
-                y = c.h - c.bpad - sc.y(0) - h;
-            } else {
-                y = c.h - c.bpad - sc.y(0);
-                h *= -1;
+            if (sc && sc.y) {
+                h = sc.y(column.val(r)) - sc.y(0);
+                if (h >= 0) {
+                    y = c.h - c.bpad - sc.y(0) - h;
+                } else {
+                    y = c.h - c.bpad - sc.y(0);
+                    h *= -1;
+                }
+                y = y - yo;
+                me.__yoffset = yo + h;
             }
-            x = Math.round((c.w - c.lpad - c.rpad) * vspace + c.lpad + s * (bw + bw * pad));
-            y = y - yo;
-            me.__yoffset = yo + h;
-            return { w: w, h: h, x: x, y: y, bx: x, bw: bw };
+            x = Math.round( (c.w - c.lpad - c.rpad) * vspace  + c.lpad + s * (bw + bw * pad) );
+            return { w: w, h: h, x: x, y: y, bx: x, bw: bw, tw: bw + bw * pad };
         },
 
         formatValue: function() {

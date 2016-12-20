@@ -113,7 +113,7 @@
                 me.__mouseOverTimer = setTimeout(function() {
                     clearTimeout(me.__mouseOverTimer);
                     clearTimeout(me.__mouseOutTimer);
-                    if (theme.hover) me.hover(hovered_key);
+                    if (theme.hover) me.hover(hovered_key, row);
                     //if (theme.tooltip && hoveredNode) me.showTooltip(series, row, x, y);
                 }, 100);
             }
@@ -264,7 +264,7 @@
 
             if (attrs.rotate == -90) {
                 var lbl_inner_w = lbl.find('span').width();
-                console.log(lbl_inner_w);
+
                 var r = 'rotate(-90deg) translate('+(rot_w*0.5)+'px,0) ';
                 lbl.css({
                     '-moz-transform': r,
@@ -614,11 +614,19 @@
                     top: posTop
                 });
 
+                
+
                 l.append(div);
                 lbl = me.label(xo + 15, (posTop-1), item.label, {
                     valign: 'left',
                     root: l
                 });
+
+                if (item.key) {
+                    div.attr('data-key', item.key);
+                    lbl.el.attr('data-key', item.key);
+                }
+
                 xo += me.labelWidth(item.label)+30;
 
                 if (xo > me.__canvas.w) {
@@ -638,19 +646,20 @@
         },
 
 
-        optimizeLabelPositions: function(labels, pad, valign) {
+        optimizeLabelPositions: function(labels, pad, valign, ymin, ymax) {
             if (!labels.length) return;
+            
             var i = 1,
                 c = valign == 'top' ? 0 : valign == 'middle' ? 0.5 : 1,
-                min_y = labels[0].el.parent().offset().top,
-                max_y = min_y + labels[0].el.parent().height();
+                min_y = ymin === undefined ? labels[0].el.parent().offset().top : ymin,
+                max_y = ymax === undefined ? min_y + labels[0].el.parent().height() : ymax;
 
             labels = _.filter(labels, function(lbl) { return lbl.el.is(":visible"); });
             if (!labels.length) return;
             _.each(labels, function(lbl) {
                 lbl.__noverlap = {
-                    otop: lbl.top(),
-                    top: lbl.top(),
+                    otop: lbl.__attrs ? lbl.__attrs.y : lbl.top(),
+                    top: lbl.__attrs ? lbl.__attrs.y : lbl.top(),
                     dy: 0
                 };
                 lbl.height('auto');
@@ -684,7 +693,8 @@
                 if (overlap && ++i < 10) loop();
             })();  // end loop()
             _.each(labels, function(lbl) {
-                lbl.el.css({ top: lbl.__noverlap.top - lbl.el.parent().offset().top });  // apply new label pos
+                lbl.__noverlap.dy = lbl.__noverlap.top - lbl.__noverlap.otop;
+                if (!lbl.__attrs) lbl.el.css({ top: lbl.__noverlap.top - lbl.el.parent().offset().top });  // apply new label pos
             });
         },
 
