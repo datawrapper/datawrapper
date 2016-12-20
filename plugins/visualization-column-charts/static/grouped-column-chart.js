@@ -72,8 +72,11 @@
             });
 
             if (label_direct) {
+                var mobile = me.get('same-as-desktop') || c.w > 420 ? '' : '-mobile',
+                    labelSpace = me.get('label-space'+mobile)/100;
+
                 c.tpad = 2;
-                c.rpad = Math.min(c.w*0.3, 150);
+                c.rpad = Math.max(c.w * labelSpace, 1);
             } else c.tpad += 20;
 
             if (me.get('grid-lines') && me._isStacked()) c.tpad += 10;
@@ -163,25 +166,35 @@
                     last_bar = d;
                     me.__rowx.push([d.x, d.x+d.w, d.y, d.y + d.h, r]);
 
+                    var valueLabels = me.get('value-labels');
+
                     me.__bars[key] = me.__bars[key] || me.registerElement(c.paper.rect().attr(bar_attrs), column.name(), r);
                     if (me.theme().columnChart.barAttrs) {
                         me.__bars[key].attr(me.theme().columnChart.barAttrs);
                     }
 
-                    me.__barLbls[key] = me.__barLbls[key] || me.registerLabel(me.label(0,0,'X', {
-                            align: 'center', cl: 'value'+(d.h > 30 || me._isStacked() ? ' inside' : '') }), column.name());
-                    // console.log('xxx', column.name(), r, d.y, d.h, 'y:', +d.y + (column.val(r) >= 0 ? +(d.h > 30 ? d.h - 12 : -12) : +(d.h > 30 ? 12 : d.h + 12) ))
-                    me.__barLbls[key].animate({
-                        x: d.x + d.w * 0.5,
-                        y: me._isStacked() ?    
-                            d.y + d.h * 0.5 :
-                            +d.y + (column.val(r) >= 0 ? +(d.h > 30 ? 12 : -12) : +(d.h > 30 ? d.h- 12 : d.h + 12) ), // < 0
-                        txt: me.formatValue(column.val(r), true)
-                    }, 0, 'expoInOut');
-                    me.__barLbls[key].data('row', r);
-                    me.__barLbls[key].hide();
+                    if (valueLabels != "hide") {
+                        me.__barLbls[key] = me.__barLbls[key] || me.registerLabel(me.label(0,0,'X', {
+                                align: 'center', cl: 'value'+(d.h > 30 || me._isStacked() ? ' inside' : '') }), column.name());
+                        // console.log('xxx', column.name(), r, d.y, d.h, 'y:', +d.y + (column.val(r) >= 0 ? +(d.h > 30 ? d.h - 12 : -12) : +(d.h > 30 ? 12 : d.h + 12) ))
+                        me.__barLbls[key].animate({
+                            x: d.x + d.w * 0.5,
+                            y: me._isStacked() ?
+                                d.y + d.h * 0.5 :
+                                +d.y + (column.val(r) >= 0 ? +(d.h > 30 ? 12 : -12) : +(d.h > 30 ? d.h- 12 : d.h + 12) ), // < 0
+                            txt: me.formatValue(column.val(r), true)
+                        }, 0, 'expoInOut');
+                        me.__barLbls[key].data('row', r);
 
-                    me.__bars[key].animate(bar_attrs, me.theme().duration, me.theme().easing).data('strokeCol', stroke);
+
+                        if (!valueLabels || valueLabels == "auto") {
+                            me.__barLbls[key].hide();
+                        } else if (valueLabels == "always") {
+                            me.__barLbls[key].show();
+                        }
+
+                        me.__bars[key].animate(bar_attrs, me.theme().duration, me.theme().easing).data('strokeCol', stroke);
+                    }
 
                     var val_y = val >= 0 ? d.y - 10 : d.y + d.h + 10,
                         lbl_y = val < 0 ? d.y - 10 : d.y + d.h + 5,
@@ -476,11 +489,13 @@
             // show/hide the labels that show values on top of the bars
             var visibleLbls = [];
             _.each(me.__barLbls, function(lbl, key) {
-                // if (hoveredSeries && lbl.data('key') == dw.utils.name(hoveredSeries)) {
-                if (hoveredSeries && lbl.data('row') == row) {
-                    lbl.show();
-                    visibleLbls.push(lbl.data('label'));
-                } else lbl.hide();
+                var valueLabels = me.get('value-labels');
+                if (!valueLabels || valueLabels == "auto") {
+                    if (hoveredSeries && lbl.data('row') == row) {
+                        lbl.show();
+                        visibleLbls.push(lbl.data('label'));
+                    } else lbl.hide();
+                }  
             });
             // me.optimizmeLabelPositions(visibleLbls, 5);
         },

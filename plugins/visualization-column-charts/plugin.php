@@ -122,12 +122,15 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                     "type" => "checkbox",
                     "label" => __("Reverse order")
                 ),
-                "negative-color" => array(
-                    "type" => "checkbox",
-                    "label" => __("Use different color for negative values"),
-                    "depends-on" => array(
-                        "chart.min_value[columns]" => '<0'
-                    )
+                "value-labels" => array(
+                    "type" => "radio-left",
+                    "label" => __("Value labels"),
+                    "options" => array(
+                        array("value" => "auto", "label" => __("On hover")),
+                        array("value" => "show", "label" => __("Show")),
+                        array("value" => "hide", "label" => __("Hide"))
+                    ),
+                    "default" => 'auto'
                 ),
             ),
             "libraries" => array()
@@ -168,6 +171,9 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                     'type' => 'radio',
                     'label' => __('Sort by'),
                     'default' => 'first',
+                    "depends-on" => [
+                        "sort-values" => true
+                    ],
                     'options' => [
                         [
                             'value' => 'first',
@@ -181,30 +187,37 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                 ),
                 "reverse-order" => array(
                     "type" => "checkbox",
+                    "depends-on" => [
+                        "sort-values" => true
+                    ],
                     "label" => __("Reverse order")
                 ),
-                // "negative-color" => array(
-                //     "type" => "checkbox",
-                //     "label" => __("Use different color for negative values")
-                // ),
                 "normalize" => array(
                     "type" => "checkbox",
                     "label" => __("Stack percentages"),
                     "default" => false
                 ),
-                "normalize-user" => [
-                    "type" => "checkbox",
-                    "label" => __("Let user switch mode"),
-                    "depends-on" => [
-                        "normalize" => true
-                    ]
+                "labels" => [
+                    "type" => "group",
+                    "label" => __('Labels'),
+                    "options" => [
+                        "grid-lines" => [
+                            "type" => "checkbox",
+                            "label" => __("Show grid lines"),
+                            "default" => false
+                        ],
+                        "value-labels" => array(
+                            "type" => "radio-left",
+                            "label" => __("Value labels"),
+                            "options" => array(
+                                array("value" => "auto", "label" => __("On hover")),
+                                array("value" => "show", "label" => __("Show")),
+                                array("value" => "hide", "label" => __("Hide"))
+                            ),
+                            "default" => 'auto'
+                        ),
+                    ],
                 ],
-                "grid-lines" => [
-                    "type" => "checkbox",
-                    "label" => __("Show grid lines"),
-                    "default" => false
-                ],
-                
                 'group-layout' => [
                     'type' => 'group',
                     'label' => __('Layout (desktop)'),
@@ -224,6 +237,17 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                                 ],
                             ]
                         ],
+                        'label-space' => [
+                            'type' => 'slider',
+                            'depends-on' => [
+                                'direct-labeling' => 'always'
+                            ],
+                            'label' => __('Direct label space (%)'),
+                            'default' => 30,
+                            'min' => 10,
+                            'max' => 50,
+                            'step' => 1
+                        ],
                         'padding' => [
                             'type' => 'slider',
                             'label' => __('Inner margin (%)'),
@@ -239,7 +263,7 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                             'min' => 0,
                             'max' => 30,
                             'step' => 1
-                        ]
+                        ],
                     ]
                 ],
                 'group-layout-mobile' => [
@@ -266,6 +290,17 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                                 ],
                             ],
                             'depends-on' => [ 'same-as-desktop' => false ]
+                        ],
+                        'label-space-mobile' => [
+                            'type' => 'slider',
+                            'depends-on' => [
+                                'direct-labeling' => 'always'
+                            ],
+                            'label' => __('Direct label space (%)'),
+                            'default' => 30,
+                            'min' => 10,
+                            'max' => 50,
+                            'step' => 1
                         ],
                         'padding-mobile' => [
                             'type' => 'slider',
