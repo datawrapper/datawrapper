@@ -155,7 +155,7 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                     "multiple" => true
                 )
             ),
-            "options" => array(
+            "options" => [
                 "base-color" => array(
                     "type" => "base-color",
                     "label" => __("Base color")
@@ -164,27 +164,131 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                     "type" => "checkbox",
                     "label" => __("Automatically sort bars", $id)
                 ),
+                "sort-by" => array(
+                    'type' => 'radio',
+                    'label' => __('Sort by'),
+                    'default' => 'first',
+                    'options' => [
+                        [
+                            'value' => 'first',
+                            'label' => __('first')
+                        ],
+                        [
+                            'value' => 'last',
+                            'label' => __('last'),
+                        ],
+                    ]
+                ),
                 "reverse-order" => array(
                     "type" => "checkbox",
                     "label" => __("Reverse order", $id)
                 ),
-                "negative-color" => array(
-                    "type" => "checkbox",
-                    "label" => __("Use different color for negative values", $id)
-                ),
+                // "negative-color" => array(
+                //     "type" => "checkbox",
+                //     "label" => __("Use different color for negative values", $id)
+                // ),
                 "normalize" => array(
                     "type" => "checkbox",
                     "label" => __("Stack percentages", $id),
                     "default" => false
                 ),
-                "normalize-user" => array(
+                "normalize-user" => [
                     "type" => "checkbox",
                     "label" => __("Let user switch mode"),
-                    "depends-on" => array(
+                    "depends-on" => [
                         "normalize" => true
-                    )
-                )
-            ),
+                    ]
+                ],
+                "grid-lines" => [
+                    "type" => "checkbox",
+                    "label" => __("Show grid lines"),
+                    "default" => false
+                ],
+                
+                'group-layout' => [
+                    'type' => 'group',
+                    'label' => __('Layout (desktop)'),
+                    'options' => [
+                        'direct-labeling' => [
+                            'type' => 'radio',
+                            'label' => __('Direct labeling'),
+                            'default' => 'always',
+                            'options' => [
+                                [
+                                    'value' => 'no',
+                                    'label' => __('no')
+                                ],
+                                [
+                                    'value' => 'always',
+                                    'label' => __('yes'),
+                                ],
+                            ]
+                        ],
+                        'padding' => [
+                            'type' => 'slider',
+                            'label' => __('Inner margin (%)'),
+                            'default' => 35,
+                            'min' => 0,
+                            'max' => 100,
+                            'step' => 1
+                        ],
+                        'margin' => [
+                            'type' => 'slider',
+                            'label' => __('Outer margin (%)'),
+                            'default' => 10,
+                            'min' => 0,
+                            'max' => 30,
+                            'step' => 1
+                        ]
+                    ]
+                ],
+                'group-layout-mobile' => [
+                    'type' => 'group',
+                    'label' => __('Layout (mobile)'),
+                    'options' => [
+                        'same-as-desktop' => [
+                            'type' => 'checkbox',
+                            'default' => true,
+                            'label' => __('same as destkop')
+                        ],
+                        'direct-labeling-mobile' => [
+                            'type' => 'radio',
+                            'label' => __('Direct labeling'),
+                            'default' => 'always',
+                            'options' => [
+                                [
+                                    'value' => 'no',
+                                    'label' => __('no')
+                                ],
+                                [
+                                    'value' => 'always',
+                                    'label' => __('yes'),
+                                ],
+                            ],
+                            'depends-on' => [ 'same-as-desktop' => false ]
+                        ],
+                        'padding-mobile' => [
+                            'type' => 'slider',
+                            'label' => __('Inner margin (%)'),
+                            'default' => 35,
+                            'min' => 0,
+                            'max' => 100,
+                            'step' => 1,
+                            'depends-on' => [ 'same-as-desktop' => false ]
+                        ],
+                        'margin-mobile' => [
+                            'type' => 'slider',
+                            'label' => __('Outer margin (%)'),
+                            'default' => 10,
+                            'min' => 0,
+                            'max' => 30,
+                            'step' => 1,
+                            'depends-on' => [ 'same-as-desktop' => false ]
+                        ]
+                    ]
+                ]
+                
+            ],
             "locale" => array(
                 "stack percentages" => __("stack percentages", $id),
                 "cannotShowNegativeValues" => __("Negative values, as contained in your dataset, cannot be stacked on top of each other in a stacked column chart. Please consider using a different chart type instead (eg. a grouped column chart).", $id)

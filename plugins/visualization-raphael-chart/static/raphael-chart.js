@@ -264,7 +264,7 @@
 
             if (attrs.rotate == -90) {
                 var lbl_inner_w = lbl.find('span').width();
-                console.log(lbl_inner_w);
+
                 var r = 'rotate(-90deg) translate('+(rot_w*0.5)+'px,0) ';
                 lbl.css({
                     '-moz-transform': r,
@@ -648,6 +648,7 @@
 
         optimizeLabelPositions: function(labels, pad, valign, ymin, ymax) {
             if (!labels.length) return;
+            
             var i = 1,
                 c = valign == 'top' ? 0 : valign == 'middle' ? 0.5 : 1,
                 min_y = ymin === undefined ? labels[0].el.parent().offset().top : ymin,
@@ -657,8 +658,8 @@
             if (!labels.length) return;
             _.each(labels, function(lbl) {
                 lbl.__noverlap = {
-                    otop: lbl.top(),
-                    top: lbl.top(),
+                    otop: lbl.__attrs ? lbl.__attrs.y : lbl.top(),
+                    top: lbl.__attrs ? lbl.__attrs.y : lbl.top(),
                     dy: 0
                 };
                 lbl.height('auto');
@@ -692,7 +693,8 @@
                 if (overlap && ++i < 10) loop();
             })();  // end loop()
             _.each(labels, function(lbl) {
-                lbl.el.css({ top: lbl.__noverlap.top - lbl.el.parent().offset().top });  // apply new label pos
+                lbl.__noverlap.dy = lbl.__noverlap.top - lbl.__noverlap.otop;
+                if (!lbl.__attrs) lbl.el.css({ top: lbl.__noverlap.top - lbl.el.parent().offset().top });  // apply new label pos
             });
         },
 
