@@ -32,3 +32,4 @@ node_modules
 bower_components/
 
 locale/messages.tsv
+.python-version
