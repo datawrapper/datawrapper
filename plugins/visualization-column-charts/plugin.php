@@ -221,7 +221,7 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
 
                 'connect-bars' => [
                     'type' => 'checkbox',
-                    'label' => __('connect bars'),
+                    'label' => __('stacked / connect-bars'),
                     'default' => false,
                 ],
                 
