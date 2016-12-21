@@ -30,5 +30,6 @@
     "same as destkop": "same as destkop",
     "stacked \/ direct-labeling": "stacked \/ direct-labeling",
     "negative-values": "Negative values, as contained in your dataset, cannot be stacked on top of each other in a stacked column chart. Please consider using a different chart type instead (eg. a grouped column chart).",
-    "stack percentages": "stack percentages"
+    "stack percentages": "stack percentages",
+    "stacked \/ connect-bars": "connect bars with areas"
 }

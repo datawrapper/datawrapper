@@ -16,8 +16,8 @@
     "Let user switch mode": "Nutzer kann Modus wechseln",
     "stack percentages": "Prozente stapeln",
     "Negative values, as contained in your dataset, cannot be stacked on top of \neach other in a stacked column chart. Please consider using a different \nchart type instead (eg. a grouped column chart).": "Negative Werte lassen sich nicht \u00fcbereinander stapeln. Bitte verwende stattdessen einen anderen Diagrammtyp (z.B. die Gruppierten S\u00e4ulen).",
-    "Rotate labels": "Beschriftungen drehen",
-    "Value labels": "Wertbeschriftungen",
+    "Rotate labels": "Rotate labels",
+    "Value labels": "Value labels",
     "Show grid lines": "Zeige Hilfslinien",
     "Sort by": "Sortieren nach",
     "first": "erstem",
@@ -28,11 +28,12 @@
     "On hover": "Bei Mouse-Over",
     "no": "nein",
     "yes": "ja",
-    "Direct label space (%)": "Platz für direkte Beschriftung (%)",
+    "Direct label space (%)": "Platz f\u00fcr direkte Beschriftung (%)",
     "Show value labels": "Wertbeschriftungen einblenden",
     "Inner margin (%)": "Innerer Abstand (%)",
     "Outer margin (%)": "\u00c4u\u00dferer Abstand (%)",
     "same as destkop": "wie Desktop",
     "stacked \/ direct-labeling": "stacked \/ direct-labeling",
-    "negative-values": "Negative Werte lassen sich nicht \u00fcbereinander stapeln. Bitte verwende stattdessen einen anderen Diagrammtyp (z.B. die Gruppierten S\u00e4ulen)."
+    "negative-values": "Negative Werte lassen sich nicht \u00fcbereinander stapeln. Bitte verwende stattdessen einen anderen Diagrammtyp (z.B. die Gruppierten S\u00e4ulen).",
+    "stacked \/ connect-bars": "S\u00e4ulen mit Fl\u00e4chen verbinden"
 }
