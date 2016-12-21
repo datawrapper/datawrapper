@@ -218,6 +218,13 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                         ),
                     ],
                 ],
+
+                'connect-bars' => [
+                    'type' => 'checkbox',
+                    'label' => __('connect bars'),
+                    'default' => false,
+                ],
+                
                 'group-layout' => [
                     'type' => 'group',
                     'label' => __('Layout (desktop)'),
@@ -253,7 +260,7 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                             'label' => __('Inner margin (%)'),
                             'default' => 35,
                             'min' => 0,
-                            'max' => 100,
+                            'max' => 150,
                             'step' => 1
                         ],
                         'margin' => [
@@ -308,7 +315,7 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                             'label' => __('Inner margin (%)'),
                             'default' => 35,
                             'min' => 0,
-                            'max' => 100,
+                            'max' => 150,
                             'step' => 1,
                             'depends-on' => [ 'same-as-desktop' => false ]
                         ],

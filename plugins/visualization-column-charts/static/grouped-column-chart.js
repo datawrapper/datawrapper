@@ -119,6 +119,7 @@
             me.__series_names = {};
             me.__row_labels = {};
             me.__row_label_lines = {};
+            me.__barCn = {};
 
             if (!me.theme().columnChart.cutGridLines) me.horzGrid();
 
@@ -145,7 +146,8 @@
             me.__rowx = [];
 
             var directLbls = [],
-                last_bar;
+                last_bar,
+                bar_dims = {};
 
             // draw bars
             _.each(columns, function(column, s) {
@@ -163,6 +165,7 @@
                             stroke: stroke,
                             fill: fill
                         };
+                    bar_dims[s+'/'+r] = d;
                     last_bar = d;
                     me.__rowx.push([d.x, d.x+d.w, d.y, d.y + d.h, r]);
 
@@ -217,6 +220,19 @@
                         lblcl.push('smaller');
                         lbl_w = 90;
                     }
+
+                    if (me._isStacked() && me.get('connect-bars') && s > 0) {
+                        var pp = bar_dims[(s-1)+'/'+(r)];
+                            cn_attrs = {
+                                fill: fill,
+                                stroke: fill,
+                                opacity: 0.15,
+                                path: 'M'+[pp.x+pp.w, pp.y]+'L'+[d.x, d.y, d.x, d.y + d.h, pp.x+pp.w, pp.y+pp.h]
+                            };
+                        me.__barCn[key] = me.__barCn[key] || me.registerElement(c.paper.path().attr(cn_attrs), column.name(), r);
+                        me.__barCn[key].animate(cn_attrs, me.theme().duration, me.theme().easing);
+                    }
+
                     // add series label
                     if (!/^X\.\d+$/.test(column.title()) && r === 0) {
 
