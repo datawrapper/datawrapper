@@ -243,11 +243,12 @@ function publish_push_to_cdn($cdn_files, $chart) {
 
 
 function download($url, $outf) {
+    $strCookie = 'DW-SESSION=' . $_COOKIE['DW-SESSION'] . '; path=/';
+
     if (function_exists('curl_init')) {
         $ch = curl_init($url);
         $fp = fopen($outf, 'w');
 
-        $strCookie = 'DW-SESSION=' . $_COOKIE['DW-SESSION'] . '; path=/';
         session_write_close();
 
         curl_setopt($ch, CURLOPT_FILE, $fp);
@@ -263,7 +264,7 @@ function download($url, $outf) {
     } else {
         $cfg = array(
             'http' => array(
-                'header' => 'Connection: close\r\n',
+                'header' => "Connection: close\r\nCookie: $strCookie\r\n",
                 'method' => 'GET'
             )
         );
