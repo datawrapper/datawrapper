@@ -61,11 +61,21 @@
 
         // update data link to point to edited dataset
         if (!window['__ltie9']) {
-            $('a[href=data]')
-                .addClass('dw-data-link')
-                .attr('download', 'data-'+chart.get('id')+'.csv')
-                .attr('href', 'data:application/octet-stream;charset=utf-8,' +
-                    encodeURIComponent(chart.dataset().toCSV()));
+            if (window.navigator.msSaveOrOpenBlob){
+                var blobObject = new Blob([chart.dataset().toCSV()]);
+                $('a[href=data]')
+                    .addClass('dw-data-link')
+                    .click(function() {
+                        window.navigator.msSaveOrOpenBlob(blobObject, 'data-' + chart.get('id') + '.csv');
+                        return false;
+                    });
+            } else {
+                $('a[href=data]')
+                    .addClass('dw-data-link')
+                    .attr('download', 'data-'+chart.get('id')+'.csv')
+                    .attr('href', 'data:application/octet-stream;charset=utf-8,' +
+                        encodeURIComponent(chart.dataset().toCSV()));
+            }
         }
 
         chart.render($chart);
@@ -96,7 +106,7 @@
     function initResizeHandler(vis, container) {
         var height = vis.meta.height || 'fit',
             curWidth = container.width(),
-            resize = _.debounce(height == 'fixed' ? resizeFixed : renderChart, 400);
+            resize = (height == 'fixed' ? resizeFixed : renderLater);
         
         // IE continuosly reloads the chart for some strange reasons
         if (navigator.userAgent.match(/iPad|iPhone|iPod|msie/i) === null) {
