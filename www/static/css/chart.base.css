@@ -50,4 +50,6 @@
 .chart .label.annotation span {
   background: transparent;
 }
-
+.chart .legend-item.hover .label {
+  font-weight: bold;
+}

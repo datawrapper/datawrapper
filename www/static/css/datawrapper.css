@@ -774,6 +774,11 @@ html .btn-inverse {
   padding: 10px;
   width: 80%;
   background: #f7f7f7;
+  max-height: 180px;
+  overflow-x: scroll;
+  font-size: 13px;
+  line-height: 21px;
+  white-space: nowrap;
 }
 #computed-columns .CodeMirror {
   border-radius: 1px;
@@ -819,6 +824,10 @@ html .btn-inverse {
 #computed-columns .code.disabled .CodeMirror {
   pointer-events: none;
   background: #eee;
+}
+#computed-columns .btn-close {
+  position: absolute;
+  bottom: 20px;
 }
 #computed-columns .btn-remove {
   color: #b00;
@@ -1183,6 +1192,10 @@ html .btn-inverse {
   margin-right: 1em;
   vertical-align: baseline;
 }
+.chart-editor.dw-create-visualize #vis-options .vis-option-type-radio .control-label,
+.chart-editor.dw-create-visualize .vis-options .vis-option-type-radio .control-label {
+  vertical-align: text-top;
+}
 .chart-editor.dw-create-visualize #vis-options .controls,
 .chart-editor.dw-create-visualize .vis-options .controls {
   display: inline-block;
@@ -1445,11 +1458,29 @@ html .btn-inverse {
   }
 }
 .chart-editor.dw-create-visualize .visconfig label.separator {
-  font-weight: 500!important;
+  font-weight: 500;
   text-align: left;
   margin-top: 10px;
   line-height: 20px;
   font-family: 'Roboto', Helvetica, sans-serif;
+}
+.chart-editor.dw-create-visualize .visconfig .vis-option-type-group .vis-option-type-separator label.separator {
+  font-weight: 400;
+  text-align: left;
+  font-size: 11px;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+  line-height: 15px;
+  font-family: 'Roboto', Helvetica, sans-serif;
+  margin-top: 10px;
+  color: #555;
+  text-shadow: -2px -2px 0px #fff;
+  letter-spacing: 1px;
+  display: block;
+  border-bottom: 2px solid #efefef;
+}
+.chart-editor.dw-create-visualize .visconfig .vis-option-type-group .vis-option-type-separator:first-child label.separator {
+  margin-top: -5px;
 }
 .chart-editor.dw-create-visualize .visconfig input[type="radio"],
 .chart-editor.dw-create-visualize .visconfig input[type="checkbox"] {

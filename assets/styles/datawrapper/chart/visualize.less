@@ -247,7 +247,10 @@
             float: none;
             margin-right: 1em;
             vertical-align: baseline;
+        }
 
+        .vis-option-type-radio .control-label {
+            vertical-align: text-top;
         }
 
         .controls {
@@ -462,11 +465,32 @@
         }
 
         label.separator {
-            font-weight: 500!important;
+            font-weight: 500;
             text-align: left;
             margin-top: 10px;
             line-height: 20px;
             font-family: @base-font;
+        }
+
+        .vis-option-type-group .vis-option-type-separator label.separator {
+            font-weight: 400;
+            text-align: left;
+            font-size: 11px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+            line-height: 15px;
+            font-family: @base-font;
+            margin-top: 10px;
+            color: #555;
+            // border-top: 1px solid #eee;
+            text-shadow: -2px -2px 0px #fff;
+            letter-spacing: 1px;
+            display: block;
+            border-bottom: 2px solid #efefef;
+        }
+
+        .vis-option-type-group .vis-option-type-separator:first-child  label.separator {
+            margin-top: -5px;
         }
 
         input[type="radio"],

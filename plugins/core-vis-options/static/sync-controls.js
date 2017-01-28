@@ -54,7 +54,7 @@ $(function() {
                 defCol = args.vis.axes()[axis.id];
 
             if (axisMeta.optional) {
-                $('<option />').text('--').appendTo(select);
+                $('<option />').text(axis['na-label'] || '--').appendTo(select);
             }
 
             // populate select with columns that match accepted types for axis
