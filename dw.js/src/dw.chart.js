@@ -329,7 +329,7 @@ dw.chart = function(attributes) {
         return dataset;
 
         function add_computed_column(formula, name) {
-            var datefmt = d3.time.format('%Y-%m-%d'),
+            var datefmt = d3.timeFormat ? d3.timeFormat('%Y-%m-%d') : d3.time.format('%Y-%m-%d'),
                 values = data.map(function(row, row_i) {
                     var context = [];
                     context.push('var __row = '+row_i+';');
@@ -346,10 +346,12 @@ dw.chart = function(attributes) {
                     });
                     context.push('var round = d3.round, mean = d3.mean, median = d3.median,'+
                             'sum = d3.sum, max = Math.max, min = Math.min;');
+                    // console.log(context.join('\n'));
                     return (function() {
                         try {
                             return eval(this.context.join('\n')+'\n'+formula);                    
                         } catch (e) {
+                            console.warn(e);
                             return 'n/a';
                         }
                     }).call({ context: context });
@@ -373,7 +375,8 @@ dw.chart = function(attributes) {
                 .replace(/\_\_+/g, '_')         // Replace multiple - with single -
                 .replace(/^_+/, '')             // Trim - from start of text
                 .replace(/_+$/, '')             // Trim - from end of text
-                .replace(/^(\d)/, '_$1');       // If first char is a number, prefix with _
+                .replace(/^(\d)/, '_$1')        // If first char is a number, prefix with _
+                .replace(/(abstract|arguments|await|boolean|break|byte|case|catch|char|class|const|continue|debugger|default|delete|do|double|else|enum|eval|export|extends|false|final|finally|float|for|function|goto|if|implements|import|in|instanceof|int|interface|let|long|native|new|null|package|private|protected|public|return|short|static|super|switch|synchronized|this|throw|throws|transient|true|try|typeof|var|void|volatile|while|window|with|yield)/, '$1_'); // avoid reserved keywords
         }
     }
 

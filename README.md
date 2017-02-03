@@ -1,10 +1,10 @@
-# Datawrapper
+# Datawrapper Core
 
-Datawrapper is a tool that enables anyone to create visualizations in seconds, without any programming skills.
+This is Datawrapper Core, the open source platform that powers the charting tools hosted as free service on [datawrapper.de](https://datawrapper.de).
 
-It draws inspiration from [ManyEyes](http://www-958.ibm.com/software/data/cognos/manyeyes/) and [GoogleCharts](https://developers.google.com/chart/) but remains entirely open-source and independent from a third-party server.
+Most of the functionality in Datawrapper is provided by plugins, [some of which are open source](https://github.com/datawrapper?utf8=%E2%9C%93&q=plugin-&type=public&language=) but the majority is not. However, you are free to [create your own visualization plugins](https://github.com/datawrapper/datawrapper/wiki/Extending-Datawrapper).
 
-It was created by [Mirko Lorenz](http://www.mirkolorenz.com/), [Nicolas Kayser-Bril](http://nkb.fr) and [Gregor Aisch](http://driven-by-data.net/) and was funded by [ABZV](http://www.abzv.de/).
+Datawrapper was created by [Mirko Lorenz](http://www.mirkolorenz.com/), [Nicolas Kayser-Bril](http://nkb.fr) and [Gregor Aisch](http://driven-by-data.net/) and has in the past received funding by [ABZV](http://www.abzv.de/).
 
 * Live service: <http://datawrapper.de/>
 * Documentation: <http://docs.datawrapper.de/> ([Install](https://github.com/datawrapper/datawrapper/wiki/Installing-Datawrapper))
