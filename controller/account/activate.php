@@ -65,6 +65,7 @@ $app->post('/account/invite/:token', function($token) use ($app) {
         $data = json_decode($app->request()->getBody());
         $user->setPwd($data->pwd);
         $user->setActivateToken('');
+        $user->setRole('editor');
         $user->save();
         // notify plugins about the newly activated user
         DatawrapperHooks::execute(DatawrapperHooks::USER_ACTIVATED, $user);
