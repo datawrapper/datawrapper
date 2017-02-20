@@ -6,8 +6,8 @@ Most of the functionality in Datawrapper is provided by plugins, [some of which 
 
 Datawrapper was created by [Mirko Lorenz](http://www.mirkolorenz.com/), [Nicolas Kayser-Bril](http://nkb.fr) and [Gregor Aisch](http://driven-by-data.net/) and has in the past received funding by [ABZV](http://www.abzv.de/).
 
-* Live service: <http://datawrapper.de/>
-* Documentation: <http://docs.datawrapper.de/> ([Install](https://github.com/datawrapper/datawrapper/wiki/Installing-Datawrapper))
+* Live service: <https://datawrapper.de/>
+* Documentation: <https://academy.datawrapper.de/> ([Install](https://github.com/datawrapper/datawrapper/wiki/Installing-Datawrapper))
 
 ## Contact
 
