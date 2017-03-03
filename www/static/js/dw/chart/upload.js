@@ -1,7 +1,8 @@
 
 define(function() {
 
-    var chart;
+    var chart,
+        theOldData = $('#upload-data-text').val();
 
     function init(dropCSVHereMsg, uploadCSVFileMsg) {
 
@@ -10,7 +11,7 @@ define(function() {
         $('#upload-data, .create-nav .submit').click(function(e) {
             $(e.target).find('.icon-chevron-right')
                 .removeClass('icon-white icon-chevron-right')
-                .addClass('fa-spin fa fa-circle-o-notch')
+                .addClass('fa-spin fa fa-circle-o-notch');
 
             uploadData('describe');
             e.preventDefault();
@@ -78,6 +79,11 @@ define(function() {
     function uploadData(url) {
         var uploadReady,
             theData = $('#upload-data-text').val();
+        if (theData == theOldData) {
+            // no need to re-upload same data
+            // immediately proceed to next page
+            return nextPage(url);
+        }
         if ($.trim(theData) === "") {
             $('#upload-data').find('i.fa-circle-o-notch').hide();
             dw.backend.alert(dw.backend.messages.noData);
