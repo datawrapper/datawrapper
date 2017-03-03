@@ -156,7 +156,7 @@ class Chart extends BaseChart {
 
             file_put_contents($filename, $csvdata);
         }
-
+        $this->setLastModifiedAt(time());
         return $filename;
     }
 
