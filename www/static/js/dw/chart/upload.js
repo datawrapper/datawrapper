@@ -2,33 +2,20 @@
 define(function() {
 
     var chart,
-        theOldData = $('#upload-data-text').val();
+        theOldData = $('#upload-data-text').val(),
+        uploadBtn = $('#upload-data');
 
     function init(dropCSVHereMsg, uploadCSVFileMsg) {
 
         chart = dw.backend.currentChart;
 
-        $('#upload-data, .create-nav .submit').click(function(e) {
-            $(e.target).find('.icon-chevron-right')
-                .removeClass('icon-white icon-chevron-right')
-                .addClass('fa-spin fa fa-circle-o-notch');
 
-            uploadData('describe');
+        $('#upload-data, .create-nav .submit').click(function(e) {
+            uploadData($(e.target).attr('href') || 'describe');
             e.preventDefault();
         });
 
         initFileUpload();
-
-        $('.submit').click(function(e) {
-            var txtarea = $('#upload-data-text');
-            if (txtarea.val() != txtarea.data('orig-val')) {
-                e.preventDefault();
-                var a = $(e.target);
-                if (e.target.nodeName.toLowerCase() != "a") a = a.parents('a');
-                uploadData(a.attr('href'));
-            }
-        });
-
         initDemoDatasets();
     }
 
@@ -84,8 +71,12 @@ define(function() {
             // immediately proceed to next page
             return nextPage(url);
         }
+        uploadBtn.find('.icon-chevron-right')
+            .removeClass('icon-white icon-chevron-right')
+            .addClass('fa-spin fa fa-circle-o-notch');
+
         if ($.trim(theData) === "") {
-            $('#upload-data').find('i.fa-circle-o-notch').hide();
+            uploadBtn.find('i.fa-circle-o-notch').hide();
             dw.backend.alert(dw.backend.messages.noData);
             $('.upload-form .control-group').addClass('warning');
             return false;
@@ -104,6 +95,7 @@ define(function() {
         }
         function proceed(res) {
             if (_.isArray(res)) res = res[0];
+            uploadBtn.find('i.fa-circle-o-notch').hide();
             if (res.status == "ok") {
                 // data is saved correctly, so proceed
                 nextPage(url);
