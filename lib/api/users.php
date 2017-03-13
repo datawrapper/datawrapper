@@ -193,6 +193,10 @@ $app->put('/users/:id', function($user_id) use ($app) {
                     }
                 }
                 $user->setRole($payload->role);
+                
+                if ($payload->role != "pending") {
+                    $user->setActivateToken("");
+                }
             }
 
             if (!empty($payload->website)) {
