@@ -5,7 +5,7 @@ define(function() {
     return function(_w, _h) {
         var maxW = $('#iframe-wrapper').parent().parent().width()-22,
             w = _w || $('#resize-w').val() || 580,
-            h = _h || $('#resize-h').val() || 400,
+            h = Math.min((_h || $('#resize-h').val() || 400), 600),
             chart = dw.backend.currentChart;
 
         if (Number(w) > maxW) {
