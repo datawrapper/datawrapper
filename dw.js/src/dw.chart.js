@@ -50,7 +50,7 @@ dw.chart = function(attributes) {
         },
 
         // loads the dataset and returns a deferred
-        load: function(csv) {
+        load: function(csv, externalData) {
             var datasource,
                 dsopts = {
                     firstRowIsHeader: chart.get('metadata.data.horizontal-header', true),
@@ -58,7 +58,7 @@ dw.chart = function(attributes) {
                 };
 
             if (csv) dsopts.csv = csv;
-            else dsopts.url = 'data.csv';
+            else dsopts.url = externalData || 'data.csv';
 
             datasource = dw.datasource.delimited(dsopts);
 
