@@ -33,6 +33,7 @@
     <foreign-key foreignTable="chart">
       <reference local="forked_from" foreign="id"/>
     </foreign-key>
+    <column name="external_data" type="varchar" size="255" required="false" />
   </table>
 
   <table name="user" phpName="User">

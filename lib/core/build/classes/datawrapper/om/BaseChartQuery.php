@@ -25,6 +25,7 @@
  * @method ChartQuery orderByPublicVersion($order = Criteria::ASC) Order by the public_version column
  * @method ChartQuery orderByOrganizationId($order = Criteria::ASC) Order by the organization_id column
  * @method ChartQuery orderByForkedFrom($order = Criteria::ASC) Order by the forked_from column
+ * @method ChartQuery orderByExternalData($order = Criteria::ASC) Order by the external_data column
  *
  * @method ChartQuery groupById() Group by the id column
  * @method ChartQuery groupByTitle() Group by the title column
@@ -45,6 +46,7 @@
  * @method ChartQuery groupByPublicVersion() Group by the public_version column
  * @method ChartQuery groupByOrganizationId() Group by the organization_id column
  * @method ChartQuery groupByForkedFrom() Group by the forked_from column
+ * @method ChartQuery groupByExternalData() Group by the external_data column
  *
  * @method ChartQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method ChartQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -91,6 +93,7 @@
  * @method Chart findOneByPublicVersion(int $public_version) Return the first Chart filtered by the public_version column
  * @method Chart findOneByOrganizationId(string $organization_id) Return the first Chart filtered by the organization_id column
  * @method Chart findOneByForkedFrom(string $forked_from) Return the first Chart filtered by the forked_from column
+ * @method Chart findOneByExternalData(string $external_data) Return the first Chart filtered by the external_data column
  *
  * @method array findById(string $id) Return Chart objects filtered by the id column
  * @method array findByTitle(string $title) Return Chart objects filtered by the title column
@@ -111,6 +114,7 @@
  * @method array findByPublicVersion(int $public_version) Return Chart objects filtered by the public_version column
  * @method array findByOrganizationId(string $organization_id) Return Chart objects filtered by the organization_id column
  * @method array findByForkedFrom(string $forked_from) Return Chart objects filtered by the forked_from column
+ * @method array findByExternalData(string $external_data) Return Chart objects filtered by the external_data column
  *
  * @package    propel.generator.datawrapper.om
  */
@@ -214,7 +218,7 @@ abstract class BaseChartQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `title`, `theme`, `created_at`, `last_modified_at`, `type`, `metadata`, `deleted`, `deleted_at`, `author_id`, `show_in_gallery`, `language`, `guest_session`, `last_edit_step`, `published_at`, `public_url`, `public_version`, `organization_id`, `forked_from` FROM `chart` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `title`, `theme`, `created_at`, `last_modified_at`, `type`, `metadata`, `deleted`, `deleted_at`, `author_id`, `show_in_gallery`, `language`, `guest_session`, `last_edit_step`, `published_at`, `public_url`, `public_version`, `organization_id`, `forked_from`, `external_data` FROM `chart` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_STR);
@@ -945,6 +949,35 @@ abstract class BaseChartQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(ChartPeer::FORKED_FROM, $forkedFrom, $comparison);
+    }
+
+    /**
+     * Filter the query on the external_data column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByExternalData('fooValue');   // WHERE external_data = 'fooValue'
+     * $query->filterByExternalData('%fooValue%'); // WHERE external_data LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $externalData The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChartQuery The current query, for fluid interface
+     */
+    public function filterByExternalData($externalData = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($externalData)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $externalData)) {
+                $externalData = str_replace('*', '%', $externalData);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(ChartPeer::EXTERNAL_DATA, $externalData, $comparison);
     }
 
     /**

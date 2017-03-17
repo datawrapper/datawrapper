@@ -24,13 +24,13 @@ abstract class BaseChartPeer
     const TM_CLASS = 'ChartTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 19;
+    const NUM_COLUMNS = 20;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 19;
+    const NUM_HYDRATE_COLUMNS = 20;
 
     /** the column name for the id field */
     const ID = 'chart.id';
@@ -89,6 +89,9 @@ abstract class BaseChartPeer
     /** the column name for the forked_from field */
     const FORKED_FROM = 'chart.forked_from';
 
+    /** the column name for the external_data field */
+    const EXTERNAL_DATA = 'chart.external_data';
+
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
 
@@ -108,12 +111,12 @@ abstract class BaseChartPeer
      * e.g. ChartPeer::$fieldNames[ChartPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'Title', 'Theme', 'CreatedAt', 'LastModifiedAt', 'Type', 'Metadata', 'Deleted', 'DeletedAt', 'AuthorId', 'ShowInGallery', 'Language', 'GuestSession', 'LastEditStep', 'PublishedAt', 'PublicUrl', 'PublicVersion', 'OrganizationId', 'ForkedFrom', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'title', 'theme', 'createdAt', 'lastModifiedAt', 'type', 'metadata', 'deleted', 'deletedAt', 'authorId', 'showInGallery', 'language', 'guestSession', 'lastEditStep', 'publishedAt', 'publicUrl', 'publicVersion', 'organizationId', 'forkedFrom', ),
-        BasePeer::TYPE_COLNAME => array (ChartPeer::ID, ChartPeer::TITLE, ChartPeer::THEME, ChartPeer::CREATED_AT, ChartPeer::LAST_MODIFIED_AT, ChartPeer::TYPE, ChartPeer::METADATA, ChartPeer::DELETED, ChartPeer::DELETED_AT, ChartPeer::AUTHOR_ID, ChartPeer::SHOW_IN_GALLERY, ChartPeer::LANGUAGE, ChartPeer::GUEST_SESSION, ChartPeer::LAST_EDIT_STEP, ChartPeer::PUBLISHED_AT, ChartPeer::PUBLIC_URL, ChartPeer::PUBLIC_VERSION, ChartPeer::ORGANIZATION_ID, ChartPeer::FORKED_FROM, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'TITLE', 'THEME', 'CREATED_AT', 'LAST_MODIFIED_AT', 'TYPE', 'METADATA', 'DELETED', 'DELETED_AT', 'AUTHOR_ID', 'SHOW_IN_GALLERY', 'LANGUAGE', 'GUEST_SESSION', 'LAST_EDIT_STEP', 'PUBLISHED_AT', 'PUBLIC_URL', 'PUBLIC_VERSION', 'ORGANIZATION_ID', 'FORKED_FROM', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'title', 'theme', 'created_at', 'last_modified_at', 'type', 'metadata', 'deleted', 'deleted_at', 'author_id', 'show_in_gallery', 'language', 'guest_session', 'last_edit_step', 'published_at', 'public_url', 'public_version', 'organization_id', 'forked_from', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Title', 'Theme', 'CreatedAt', 'LastModifiedAt', 'Type', 'Metadata', 'Deleted', 'DeletedAt', 'AuthorId', 'ShowInGallery', 'Language', 'GuestSession', 'LastEditStep', 'PublishedAt', 'PublicUrl', 'PublicVersion', 'OrganizationId', 'ForkedFrom', 'ExternalData', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'title', 'theme', 'createdAt', 'lastModifiedAt', 'type', 'metadata', 'deleted', 'deletedAt', 'authorId', 'showInGallery', 'language', 'guestSession', 'lastEditStep', 'publishedAt', 'publicUrl', 'publicVersion', 'organizationId', 'forkedFrom', 'externalData', ),
+        BasePeer::TYPE_COLNAME => array (ChartPeer::ID, ChartPeer::TITLE, ChartPeer::THEME, ChartPeer::CREATED_AT, ChartPeer::LAST_MODIFIED_AT, ChartPeer::TYPE, ChartPeer::METADATA, ChartPeer::DELETED, ChartPeer::DELETED_AT, ChartPeer::AUTHOR_ID, ChartPeer::SHOW_IN_GALLERY, ChartPeer::LANGUAGE, ChartPeer::GUEST_SESSION, ChartPeer::LAST_EDIT_STEP, ChartPeer::PUBLISHED_AT, ChartPeer::PUBLIC_URL, ChartPeer::PUBLIC_VERSION, ChartPeer::ORGANIZATION_ID, ChartPeer::FORKED_FROM, ChartPeer::EXTERNAL_DATA, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'TITLE', 'THEME', 'CREATED_AT', 'LAST_MODIFIED_AT', 'TYPE', 'METADATA', 'DELETED', 'DELETED_AT', 'AUTHOR_ID', 'SHOW_IN_GALLERY', 'LANGUAGE', 'GUEST_SESSION', 'LAST_EDIT_STEP', 'PUBLISHED_AT', 'PUBLIC_URL', 'PUBLIC_VERSION', 'ORGANIZATION_ID', 'FORKED_FROM', 'EXTERNAL_DATA', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'title', 'theme', 'created_at', 'last_modified_at', 'type', 'metadata', 'deleted', 'deleted_at', 'author_id', 'show_in_gallery', 'language', 'guest_session', 'last_edit_step', 'published_at', 'public_url', 'public_version', 'organization_id', 'forked_from', 'external_data', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, )
     );
 
     /**
@@ -123,12 +126,12 @@ abstract class BaseChartPeer
      * e.g. ChartPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Title' => 1, 'Theme' => 2, 'CreatedAt' => 3, 'LastModifiedAt' => 4, 'Type' => 5, 'Metadata' => 6, 'Deleted' => 7, 'DeletedAt' => 8, 'AuthorId' => 9, 'ShowInGallery' => 10, 'Language' => 11, 'GuestSession' => 12, 'LastEditStep' => 13, 'PublishedAt' => 14, 'PublicUrl' => 15, 'PublicVersion' => 16, 'OrganizationId' => 17, 'ForkedFrom' => 18, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'title' => 1, 'theme' => 2, 'createdAt' => 3, 'lastModifiedAt' => 4, 'type' => 5, 'metadata' => 6, 'deleted' => 7, 'deletedAt' => 8, 'authorId' => 9, 'showInGallery' => 10, 'language' => 11, 'guestSession' => 12, 'lastEditStep' => 13, 'publishedAt' => 14, 'publicUrl' => 15, 'publicVersion' => 16, 'organizationId' => 17, 'forkedFrom' => 18, ),
-        BasePeer::TYPE_COLNAME => array (ChartPeer::ID => 0, ChartPeer::TITLE => 1, ChartPeer::THEME => 2, ChartPeer::CREATED_AT => 3, ChartPeer::LAST_MODIFIED_AT => 4, ChartPeer::TYPE => 5, ChartPeer::METADATA => 6, ChartPeer::DELETED => 7, ChartPeer::DELETED_AT => 8, ChartPeer::AUTHOR_ID => 9, ChartPeer::SHOW_IN_GALLERY => 10, ChartPeer::LANGUAGE => 11, ChartPeer::GUEST_SESSION => 12, ChartPeer::LAST_EDIT_STEP => 13, ChartPeer::PUBLISHED_AT => 14, ChartPeer::PUBLIC_URL => 15, ChartPeer::PUBLIC_VERSION => 16, ChartPeer::ORGANIZATION_ID => 17, ChartPeer::FORKED_FROM => 18, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'TITLE' => 1, 'THEME' => 2, 'CREATED_AT' => 3, 'LAST_MODIFIED_AT' => 4, 'TYPE' => 5, 'METADATA' => 6, 'DELETED' => 7, 'DELETED_AT' => 8, 'AUTHOR_ID' => 9, 'SHOW_IN_GALLERY' => 10, 'LANGUAGE' => 11, 'GUEST_SESSION' => 12, 'LAST_EDIT_STEP' => 13, 'PUBLISHED_AT' => 14, 'PUBLIC_URL' => 15, 'PUBLIC_VERSION' => 16, 'ORGANIZATION_ID' => 17, 'FORKED_FROM' => 18, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'title' => 1, 'theme' => 2, 'created_at' => 3, 'last_modified_at' => 4, 'type' => 5, 'metadata' => 6, 'deleted' => 7, 'deleted_at' => 8, 'author_id' => 9, 'show_in_gallery' => 10, 'language' => 11, 'guest_session' => 12, 'last_edit_step' => 13, 'published_at' => 14, 'public_url' => 15, 'public_version' => 16, 'organization_id' => 17, 'forked_from' => 18, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Title' => 1, 'Theme' => 2, 'CreatedAt' => 3, 'LastModifiedAt' => 4, 'Type' => 5, 'Metadata' => 6, 'Deleted' => 7, 'DeletedAt' => 8, 'AuthorId' => 9, 'ShowInGallery' => 10, 'Language' => 11, 'GuestSession' => 12, 'LastEditStep' => 13, 'PublishedAt' => 14, 'PublicUrl' => 15, 'PublicVersion' => 16, 'OrganizationId' => 17, 'ForkedFrom' => 18, 'ExternalData' => 19, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'title' => 1, 'theme' => 2, 'createdAt' => 3, 'lastModifiedAt' => 4, 'type' => 5, 'metadata' => 6, 'deleted' => 7, 'deletedAt' => 8, 'authorId' => 9, 'showInGallery' => 10, 'language' => 11, 'guestSession' => 12, 'lastEditStep' => 13, 'publishedAt' => 14, 'publicUrl' => 15, 'publicVersion' => 16, 'organizationId' => 17, 'forkedFrom' => 18, 'externalData' => 19, ),
+        BasePeer::TYPE_COLNAME => array (ChartPeer::ID => 0, ChartPeer::TITLE => 1, ChartPeer::THEME => 2, ChartPeer::CREATED_AT => 3, ChartPeer::LAST_MODIFIED_AT => 4, ChartPeer::TYPE => 5, ChartPeer::METADATA => 6, ChartPeer::DELETED => 7, ChartPeer::DELETED_AT => 8, ChartPeer::AUTHOR_ID => 9, ChartPeer::SHOW_IN_GALLERY => 10, ChartPeer::LANGUAGE => 11, ChartPeer::GUEST_SESSION => 12, ChartPeer::LAST_EDIT_STEP => 13, ChartPeer::PUBLISHED_AT => 14, ChartPeer::PUBLIC_URL => 15, ChartPeer::PUBLIC_VERSION => 16, ChartPeer::ORGANIZATION_ID => 17, ChartPeer::FORKED_FROM => 18, ChartPeer::EXTERNAL_DATA => 19, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'TITLE' => 1, 'THEME' => 2, 'CREATED_AT' => 3, 'LAST_MODIFIED_AT' => 4, 'TYPE' => 5, 'METADATA' => 6, 'DELETED' => 7, 'DELETED_AT' => 8, 'AUTHOR_ID' => 9, 'SHOW_IN_GALLERY' => 10, 'LANGUAGE' => 11, 'GUEST_SESSION' => 12, 'LAST_EDIT_STEP' => 13, 'PUBLISHED_AT' => 14, 'PUBLIC_URL' => 15, 'PUBLIC_VERSION' => 16, 'ORGANIZATION_ID' => 17, 'FORKED_FROM' => 18, 'EXTERNAL_DATA' => 19, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'title' => 1, 'theme' => 2, 'created_at' => 3, 'last_modified_at' => 4, 'type' => 5, 'metadata' => 6, 'deleted' => 7, 'deleted_at' => 8, 'author_id' => 9, 'show_in_gallery' => 10, 'language' => 11, 'guest_session' => 12, 'last_edit_step' => 13, 'published_at' => 14, 'public_url' => 15, 'public_version' => 16, 'organization_id' => 17, 'forked_from' => 18, 'external_data' => 19, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, )
     );
 
     /**
@@ -221,6 +224,7 @@ abstract class BaseChartPeer
             $criteria->addSelectColumn(ChartPeer::PUBLIC_VERSION);
             $criteria->addSelectColumn(ChartPeer::ORGANIZATION_ID);
             $criteria->addSelectColumn(ChartPeer::FORKED_FROM);
+            $criteria->addSelectColumn(ChartPeer::EXTERNAL_DATA);
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.title');
@@ -241,6 +245,7 @@ abstract class BaseChartPeer
             $criteria->addSelectColumn($alias . '.public_version');
             $criteria->addSelectColumn($alias . '.organization_id');
             $criteria->addSelectColumn($alias . '.forked_from');
+            $criteria->addSelectColumn($alias . '.external_data');
         }
     }
 
