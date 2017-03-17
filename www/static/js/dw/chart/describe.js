@@ -221,6 +221,7 @@ define(['handsontable', './describe/computed-columns'], function(handsontable) {
                 ht.render();
             }
             else {
+                var readOnly = _.isString(chart.get('externalData')) && chart.get('externalData') != '';
                 $dataPreview.handsontable({
                     data: data,
                     startRows: 6,
@@ -231,7 +232,7 @@ define(['handsontable', './describe/computed-columns'], function(handsontable) {
                     stretchH: 'all',
                     cells: function (row, col, prop) {
                         return {
-                            readOnly: dataset.column(col).isComputed && row == 0,
+                            readOnly: readOnly || dataset.column(col).isComputed && row == 0,
                             renderer: myRenderer
                         };
                     },
