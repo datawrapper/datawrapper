@@ -82,12 +82,11 @@
     }
 
     function chartLoaded() {
-        var attrs = __dw.params.chartJSON;
-        chart = dw.chart(attrs)
+        chart = dw.chart(__dw.params.chartJSON)
                 .locale(__dw.params.chartLocale)
                 .metricPrefix(__dw.params.metricPrefix)
                 .theme(dw.theme(__dw.params.themeId));
-        return chart.load(attrs.externalData ? null : __dw.params.data, attrs.externalData);
+        return chart.load(__dw.params.data, __dw.params.chartJSON.externalData);
     }
 
     function getVis() {

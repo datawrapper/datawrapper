@@ -57,7 +57,7 @@ dw.chart = function(attributes) {
                     transpose: chart.get('metadata.data.transpose', false)
                 };
 
-            if (csv) dsopts.csv = csv;
+            if (csv && !externalData) dsopts.csv = csv;
             else dsopts.url = externalData || 'data.csv';
 
             datasource = dw.datasource.delimited(dsopts);
