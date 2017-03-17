@@ -187,6 +187,14 @@ class Chart extends BaseChart {
         }
     }
 
+    public function refreshExternalData() {
+        $url = $this->getExternalData();
+        if (!empty($url)) {
+            $new_data = file_get_contents($url);
+            if (!empty($new_data)) $this->writeData($new_data);
+        }
+    }
+
     /*
      * checks if a user has the privilege to access the chart
      */
