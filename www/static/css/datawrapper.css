@@ -454,9 +454,17 @@ html .btn-inverse {
 }
 /** dw-create-upload **/
 .dw-create-upload textarea {
-  width: 98%;
+  width: 100%;
+  box-sizing: border-box;
   height: 200px;
   margin-top: 20px;
+}
+.dw-create-upload textarea:placeholder-shown {
+  color: #555;
+  font-size: 20px;
+  opacity: 1;
+  padding: 20px;
+  text-align: left;
 }
 .dw-create-upload p {
   margin-bottom: 1.5em;

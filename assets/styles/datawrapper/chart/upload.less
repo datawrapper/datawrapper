@@ -1,10 +1,25 @@
 /** dw-create-upload **/
 
+
 .dw-create-upload {
+
+    label.control-label {  }
+
     textarea {
-        width: 98%;
+        width: 100%;
+        box-sizing: border-box;
         height: 200px;
         margin-top: 20px;
+
+
+        &:placeholder-shown { 
+            color: #555;
+            font-size: 20px;
+            opacity: 1;
+            padding: 20px;
+            text-align: left;
+        }
+        
     }
 
     p {

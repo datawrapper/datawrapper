@@ -190,7 +190,13 @@ class Chart extends BaseChart {
     public function refreshExternalData() {
         $url = $this->getExternalData();
         if (!empty($url)) {
-            $new_data = file_get_contents($url);
+            $ch = curl_init($url);
+            curl_setopt_array($ch, [
+                CURLOPT_SSL_VERIFYPEER => false,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_CONNECTTIMEOUT => 5,
+            ]);
+            $new_data = curl_exec($ch);
             if (!empty($new_data)) $this->writeData($new_data);
         }
     }
