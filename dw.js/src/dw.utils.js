@@ -149,7 +149,7 @@ dw.utils = {
     purifyHtml: function(input, allowed) {
         var tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>/gi,
             commentsAndPhpTags = /<!--[\s\S]*?-->|<\?(?:php)?[\s\S]*?\?>/gi,
-            default_allowed = "<b><br><br/><i><strong><sup><sub><strike><u><em><tt>",
+            default_allowed = "<a><b><br><br/><i><strong><sup><sub><strike><u><em><tt>",
             allowed_split = {};
 
         if (allowed === undefined) allowed = default_allowed;
