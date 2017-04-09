@@ -34,6 +34,7 @@
       <reference local="forked_from" foreign="id"/>
     </foreign-key>
     <column name="external_data" type="varchar" size="255" required="false" />
+    <column name="forkable" type="boolean" default="false" />
   </table>
 
   <table name="user" phpName="User">
