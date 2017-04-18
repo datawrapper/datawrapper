@@ -1,0 +1,14 @@
+{
+  "globals": {
+	"require": false,
+	"window": false,
+	"process": false,
+	"console": false,
+	"document": false,
+	"$": false,
+	"_": false,
+	"dw": false
+  },
+  "undef": true,
+  "esnext": true
+}
