@@ -5,6 +5,8 @@
 	"process": false,
 	"console": false,
 	"document": false,
+	"setTimeout": false,
+	"setInterval": false,
 	"$": false,
 	"_": false,
 	"dw": false
