@@ -144,7 +144,8 @@ class User extends BaseUser {
             'email' => $this->getEmail(),
             'name' => $this->getName(),
             'website' => $this->getWebsite(),
-            'socialmedia' => $this->getSmProfile()
+            'socialmedia' => $this->getSmProfile(),
+            'organization' => $this->getCurrentOrganization()->serialize()
         );
     }
 
