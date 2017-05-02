@@ -139,14 +139,19 @@ class User extends BaseUser {
      * sensitive information than $user->toArray()
      */
     public function serialize() {
-        return array(
+        $res = array(
             'id' => $this->getId(),
             'email' => $this->getEmail(),
             'name' => $this->getName(),
             'website' => $this->getWebsite(),
             'socialmedia' => $this->getSmProfile(),
-            'organization' => $this->getCurrentOrganization()->serialize()
         );
+
+        if ($this->getCurrentOrganization() != null) {
+            $res['organization'] = $this->getCurrentOrganization()->serialize();
+        }
+        
+        return $res;
     }
 
 	public function hasProduct(Product $product) {
