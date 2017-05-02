@@ -58,6 +58,10 @@
  * @method UserQuery rightJoinUserProduct($relationAlias = null) Adds a RIGHT JOIN clause to the query using the UserProduct relation
  * @method UserQuery innerJoinUserProduct($relationAlias = null) Adds a INNER JOIN clause to the query using the UserProduct relation
  *
+ * @method UserQuery leftJoinUserTheme($relationAlias = null) Adds a LEFT JOIN clause to the query using the UserTheme relation
+ * @method UserQuery rightJoinUserTheme($relationAlias = null) Adds a RIGHT JOIN clause to the query using the UserTheme relation
+ * @method UserQuery innerJoinUserTheme($relationAlias = null) Adds a INNER JOIN clause to the query using the UserTheme relation
+ *
  * @method User findOne(PropelPDO $con = null) Return the first User matching the query
  * @method User findOneOrCreate(PropelPDO $con = null) Return the first User matching the query, or a new User object populated from the query conditions when no match is found
  *
@@ -1050,6 +1054,80 @@ abstract class BaseUserQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query by a related UserTheme object
+     *
+     * @param   UserTheme|PropelObjectCollection $userTheme  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 UserQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByUserTheme($userTheme, $comparison = null)
+    {
+        if ($userTheme instanceof UserTheme) {
+            return $this
+                ->addUsingAlias(UserPeer::ID, $userTheme->getUserId(), $comparison);
+        } elseif ($userTheme instanceof PropelObjectCollection) {
+            return $this
+                ->useUserThemeQuery()
+                ->filterByPrimaryKeys($userTheme->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByUserTheme() only accepts arguments of type UserTheme or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the UserTheme relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return UserQuery The current query, for fluid interface
+     */
+    public function joinUserTheme($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('UserTheme');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'UserTheme');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the UserTheme relation UserTheme object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   UserThemeQuery A secondary query class using the current class as primary query
+     */
+    public function useUserThemeQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinUserTheme($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'UserTheme', 'UserThemeQuery');
+    }
+
+    /**
      * Filter the query by a related Organization object
      * using the user_organization table as cross reference
      *
@@ -1080,6 +1158,23 @@ abstract class BaseUserQuery extends ModelCriteria
         return $this
             ->useUserProductQuery()
             ->filterByProduct($product, $comparison)
+            ->endUse();
+    }
+
+    /**
+     * Filter the query by a related Theme object
+     * using the user_theme table as cross reference
+     *
+     * @param   Theme $theme the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return   UserQuery The current query, for fluid interface
+     */
+    public function filterByTheme($theme, $comparison = Criteria::EQUAL)
+    {
+        return $this
+            ->useUserThemeQuery()
+            ->filterByTheme($theme, $comparison)
             ->endUse();
     }
 

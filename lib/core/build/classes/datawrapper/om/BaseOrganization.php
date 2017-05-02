@@ -99,6 +99,12 @@ abstract class BaseOrganization extends BaseObject implements Persistent
     protected $collOrganizationProductsPartial;
 
     /**
+     * @var        PropelObjectCollection|OrganizationTheme[] Collection to store aggregation of OrganizationTheme objects.
+     */
+    protected $collOrganizationThemes;
+    protected $collOrganizationThemesPartial;
+
+    /**
      * @var        PropelObjectCollection|User[] Collection to store aggregation of User objects.
      */
     protected $collUsers;
@@ -112,6 +118,11 @@ abstract class BaseOrganization extends BaseObject implements Persistent
      * @var        PropelObjectCollection|Product[] Collection to store aggregation of Product objects.
      */
     protected $collProducts;
+
+    /**
+     * @var        PropelObjectCollection|Theme[] Collection to store aggregation of Theme objects.
+     */
+    protected $collThemes;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -155,6 +166,12 @@ abstract class BaseOrganization extends BaseObject implements Persistent
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
      */
+    protected $themesScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
     protected $chartsScheduledForDeletion = null;
 
     /**
@@ -174,6 +191,12 @@ abstract class BaseOrganization extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $organizationProductsScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $organizationThemesScheduledForDeletion = null;
 
     /**
      * Applies default values to this object.
@@ -592,9 +615,12 @@ abstract class BaseOrganization extends BaseObject implements Persistent
 
             $this->collOrganizationProducts = null;
 
+            $this->collOrganizationThemes = null;
+
             $this->collUsers = null;
             $this->collPlugins = null;
             $this->collProducts = null;
+            $this->collThemes = null;
         } // if (deep)
     }
 
@@ -797,6 +823,32 @@ abstract class BaseOrganization extends BaseObject implements Persistent
                 }
             }
 
+            if ($this->themesScheduledForDeletion !== null) {
+                if (!$this->themesScheduledForDeletion->isEmpty()) {
+                    $pks = array();
+                    $pk = $this->getPrimaryKey();
+                    foreach ($this->themesScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
+                        $pks[] = array($pk, $remotePk);
+                    }
+                    OrganizationThemeQuery::create()
+                        ->filterByPrimaryKeys($pks)
+                        ->delete($con);
+                    $this->themesScheduledForDeletion = null;
+                }
+
+                foreach ($this->getThemes() as $theme) {
+                    if ($theme->isModified()) {
+                        $theme->save($con);
+                    }
+                }
+            } elseif ($this->collThemes) {
+                foreach ($this->collThemes as $theme) {
+                    if ($theme->isModified()) {
+                        $theme->save($con);
+                    }
+                }
+            }
+
             if ($this->chartsScheduledForDeletion !== null) {
                 if (!$this->chartsScheduledForDeletion->isEmpty()) {
                     foreach ($this->chartsScheduledForDeletion as $chart) {
@@ -860,6 +912,23 @@ abstract class BaseOrganization extends BaseObject implements Persistent
 
             if ($this->collOrganizationProducts !== null) {
                 foreach ($this->collOrganizationProducts as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->organizationThemesScheduledForDeletion !== null) {
+                if (!$this->organizationThemesScheduledForDeletion->isEmpty()) {
+                    OrganizationThemeQuery::create()
+                        ->filterByPrimaryKeys($this->organizationThemesScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->organizationThemesScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collOrganizationThemes !== null) {
+                foreach ($this->collOrganizationThemes as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -1065,6 +1134,14 @@ abstract class BaseOrganization extends BaseObject implements Persistent
                     }
                 }
 
+                if ($this->collOrganizationThemes !== null) {
+                    foreach ($this->collOrganizationThemes as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
 
             $this->alreadyInValidation = false;
         }
@@ -1170,6 +1247,9 @@ abstract class BaseOrganization extends BaseObject implements Persistent
             }
             if (null !== $this->collOrganizationProducts) {
                 $result['OrganizationProducts'] = $this->collOrganizationProducts->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collOrganizationThemes) {
+                $result['OrganizationThemes'] = $this->collOrganizationThemes->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -1376,6 +1456,12 @@ abstract class BaseOrganization extends BaseObject implements Persistent
                 }
             }
 
+            foreach ($this->getOrganizationThemes() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addOrganizationTheme($relObj->copy($deepCopy));
+                }
+            }
+
             //unflag object copy
             $this->startCopy = false;
         } // if ($deepCopy)
@@ -1448,6 +1534,9 @@ abstract class BaseOrganization extends BaseObject implements Persistent
         }
         if ('OrganizationProduct' == $relationName) {
             $this->initOrganizationProducts();
+        }
+        if ('OrganizationTheme' == $relationName) {
+            $this->initOrganizationThemes();
         }
     }
 
@@ -2449,6 +2538,249 @@ abstract class BaseOrganization extends BaseObject implements Persistent
     }
 
     /**
+     * Clears out the collOrganizationThemes collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return Organization The current object (for fluent API support)
+     * @see        addOrganizationThemes()
+     */
+    public function clearOrganizationThemes()
+    {
+        $this->collOrganizationThemes = null; // important to set this to null since that means it is uninitialized
+        $this->collOrganizationThemesPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collOrganizationThemes collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialOrganizationThemes($v = true)
+    {
+        $this->collOrganizationThemesPartial = $v;
+    }
+
+    /**
+     * Initializes the collOrganizationThemes collection.
+     *
+     * By default this just sets the collOrganizationThemes collection to an empty array (like clearcollOrganizationThemes());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initOrganizationThemes($overrideExisting = true)
+    {
+        if (null !== $this->collOrganizationThemes && !$overrideExisting) {
+            return;
+        }
+        $this->collOrganizationThemes = new PropelObjectCollection();
+        $this->collOrganizationThemes->setModel('OrganizationTheme');
+    }
+
+    /**
+     * Gets an array of OrganizationTheme objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Organization is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|OrganizationTheme[] List of OrganizationTheme objects
+     * @throws PropelException
+     */
+    public function getOrganizationThemes($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collOrganizationThemesPartial && !$this->isNew();
+        if (null === $this->collOrganizationThemes || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collOrganizationThemes) {
+                // return empty collection
+                $this->initOrganizationThemes();
+            } else {
+                $collOrganizationThemes = OrganizationThemeQuery::create(null, $criteria)
+                    ->filterByOrganization($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collOrganizationThemesPartial && count($collOrganizationThemes)) {
+                      $this->initOrganizationThemes(false);
+
+                      foreach($collOrganizationThemes as $obj) {
+                        if (false == $this->collOrganizationThemes->contains($obj)) {
+                          $this->collOrganizationThemes->append($obj);
+                        }
+                      }
+
+                      $this->collOrganizationThemesPartial = true;
+                    }
+
+                    $collOrganizationThemes->getInternalIterator()->rewind();
+                    return $collOrganizationThemes;
+                }
+
+                if($partial && $this->collOrganizationThemes) {
+                    foreach($this->collOrganizationThemes as $obj) {
+                        if($obj->isNew()) {
+                            $collOrganizationThemes[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collOrganizationThemes = $collOrganizationThemes;
+                $this->collOrganizationThemesPartial = false;
+            }
+        }
+
+        return $this->collOrganizationThemes;
+    }
+
+    /**
+     * Sets a collection of OrganizationTheme objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $organizationThemes A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return Organization The current object (for fluent API support)
+     */
+    public function setOrganizationThemes(PropelCollection $organizationThemes, PropelPDO $con = null)
+    {
+        $organizationThemesToDelete = $this->getOrganizationThemes(new Criteria(), $con)->diff($organizationThemes);
+
+        $this->organizationThemesScheduledForDeletion = unserialize(serialize($organizationThemesToDelete));
+
+        foreach ($organizationThemesToDelete as $organizationThemeRemoved) {
+            $organizationThemeRemoved->setOrganization(null);
+        }
+
+        $this->collOrganizationThemes = null;
+        foreach ($organizationThemes as $organizationTheme) {
+            $this->addOrganizationTheme($organizationTheme);
+        }
+
+        $this->collOrganizationThemes = $organizationThemes;
+        $this->collOrganizationThemesPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related OrganizationTheme objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related OrganizationTheme objects.
+     * @throws PropelException
+     */
+    public function countOrganizationThemes(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collOrganizationThemesPartial && !$this->isNew();
+        if (null === $this->collOrganizationThemes || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collOrganizationThemes) {
+                return 0;
+            }
+
+            if($partial && !$criteria) {
+                return count($this->getOrganizationThemes());
+            }
+            $query = OrganizationThemeQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByOrganization($this)
+                ->count($con);
+        }
+
+        return count($this->collOrganizationThemes);
+    }
+
+    /**
+     * Method called to associate a OrganizationTheme object to this object
+     * through the OrganizationTheme foreign key attribute.
+     *
+     * @param    OrganizationTheme $l OrganizationTheme
+     * @return Organization The current object (for fluent API support)
+     */
+    public function addOrganizationTheme(OrganizationTheme $l)
+    {
+        if ($this->collOrganizationThemes === null) {
+            $this->initOrganizationThemes();
+            $this->collOrganizationThemesPartial = true;
+        }
+        if (!in_array($l, $this->collOrganizationThemes->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddOrganizationTheme($l);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	OrganizationTheme $organizationTheme The organizationTheme object to add.
+     */
+    protected function doAddOrganizationTheme($organizationTheme)
+    {
+        $this->collOrganizationThemes[]= $organizationTheme;
+        $organizationTheme->setOrganization($this);
+    }
+
+    /**
+     * @param	OrganizationTheme $organizationTheme The organizationTheme object to remove.
+     * @return Organization The current object (for fluent API support)
+     */
+    public function removeOrganizationTheme($organizationTheme)
+    {
+        if ($this->getOrganizationThemes()->contains($organizationTheme)) {
+            $this->collOrganizationThemes->remove($this->collOrganizationThemes->search($organizationTheme));
+            if (null === $this->organizationThemesScheduledForDeletion) {
+                $this->organizationThemesScheduledForDeletion = clone $this->collOrganizationThemes;
+                $this->organizationThemesScheduledForDeletion->clear();
+            }
+            $this->organizationThemesScheduledForDeletion[]= clone $organizationTheme;
+            $organizationTheme->setOrganization(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Organization is new, it will return
+     * an empty collection; or if this Organization has previously
+     * been saved, it will retrieve related OrganizationThemes from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Organization.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|OrganizationTheme[] List of OrganizationTheme objects
+     */
+    public function getOrganizationThemesJoinTheme($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = OrganizationThemeQuery::create(null, $criteria);
+        $query->joinWith('Theme', $join_behavior);
+
+        return $this->getOrganizationThemes($query, $con);
+    }
+
+    /**
      * Clears out the collUsers collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
@@ -2980,6 +3312,183 @@ abstract class BaseOrganization extends BaseObject implements Persistent
     }
 
     /**
+     * Clears out the collThemes collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return Organization The current object (for fluent API support)
+     * @see        addThemes()
+     */
+    public function clearThemes()
+    {
+        $this->collThemes = null; // important to set this to null since that means it is uninitialized
+        $this->collThemesPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * Initializes the collThemes collection.
+     *
+     * By default this just sets the collThemes collection to an empty collection (like clearThemes());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @return void
+     */
+    public function initThemes()
+    {
+        $this->collThemes = new PropelObjectCollection();
+        $this->collThemes->setModel('Theme');
+    }
+
+    /**
+     * Gets a collection of Theme objects related by a many-to-many relationship
+     * to the current object by way of the organization_theme cross-reference table.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Organization is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria Optional query object to filter the query
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return PropelObjectCollection|Theme[] List of Theme objects
+     */
+    public function getThemes($criteria = null, PropelPDO $con = null)
+    {
+        if (null === $this->collThemes || null !== $criteria) {
+            if ($this->isNew() && null === $this->collThemes) {
+                // return empty collection
+                $this->initThemes();
+            } else {
+                $collThemes = ThemeQuery::create(null, $criteria)
+                    ->filterByOrganization($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    return $collThemes;
+                }
+                $this->collThemes = $collThemes;
+            }
+        }
+
+        return $this->collThemes;
+    }
+
+    /**
+     * Sets a collection of Theme objects related by a many-to-many relationship
+     * to the current object by way of the organization_theme cross-reference table.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $themes A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return Organization The current object (for fluent API support)
+     */
+    public function setThemes(PropelCollection $themes, PropelPDO $con = null)
+    {
+        $this->clearThemes();
+        $currentThemes = $this->getThemes();
+
+        $this->themesScheduledForDeletion = $currentThemes->diff($themes);
+
+        foreach ($themes as $theme) {
+            if (!$currentThemes->contains($theme)) {
+                $this->doAddTheme($theme);
+            }
+        }
+
+        $this->collThemes = $themes;
+
+        return $this;
+    }
+
+    /**
+     * Gets the number of Theme objects related by a many-to-many relationship
+     * to the current object by way of the organization_theme cross-reference table.
+     *
+     * @param Criteria $criteria Optional query object to filter the query
+     * @param boolean $distinct Set to true to force count distinct
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return int the number of related Theme objects
+     */
+    public function countThemes($criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        if (null === $this->collThemes || null !== $criteria) {
+            if ($this->isNew() && null === $this->collThemes) {
+                return 0;
+            } else {
+                $query = ThemeQuery::create(null, $criteria);
+                if ($distinct) {
+                    $query->distinct();
+                }
+
+                return $query
+                    ->filterByOrganization($this)
+                    ->count($con);
+            }
+        } else {
+            return count($this->collThemes);
+        }
+    }
+
+    /**
+     * Associate a Theme object to this object
+     * through the organization_theme cross reference table.
+     *
+     * @param  Theme $theme The OrganizationTheme object to relate
+     * @return Organization The current object (for fluent API support)
+     */
+    public function addTheme(Theme $theme)
+    {
+        if ($this->collThemes === null) {
+            $this->initThemes();
+        }
+        if (!$this->collThemes->contains($theme)) { // only add it if the **same** object is not already associated
+            $this->doAddTheme($theme);
+
+            $this->collThemes[]= $theme;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	Theme $theme The theme object to add.
+     */
+    protected function doAddTheme($theme)
+    {
+        $organizationTheme = new OrganizationTheme();
+        $organizationTheme->setTheme($theme);
+        $this->addOrganizationTheme($organizationTheme);
+    }
+
+    /**
+     * Remove a Theme object to this object
+     * through the organization_theme cross reference table.
+     *
+     * @param Theme $theme The OrganizationTheme object to relate
+     * @return Organization The current object (for fluent API support)
+     */
+    public function removeTheme(Theme $theme)
+    {
+        if ($this->getThemes()->contains($theme)) {
+            $this->collThemes->remove($this->collThemes->search($theme));
+            if (null === $this->themesScheduledForDeletion) {
+                $this->themesScheduledForDeletion = clone $this->collThemes;
+                $this->themesScheduledForDeletion->clear();
+            }
+            $this->themesScheduledForDeletion[]= $theme;
+        }
+
+        return $this;
+    }
+
+    /**
      * Clears the current object and sets all attributes to their default values
      */
     public function clear()
@@ -3034,6 +3543,11 @@ abstract class BaseOrganization extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collOrganizationThemes) {
+                foreach ($this->collOrganizationThemes as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collUsers) {
                 foreach ($this->collUsers as $o) {
                     $o->clearAllReferences($deep);
@@ -3046,6 +3560,11 @@ abstract class BaseOrganization extends BaseObject implements Persistent
             }
             if ($this->collProducts) {
                 foreach ($this->collProducts as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collThemes) {
+                foreach ($this->collThemes as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
@@ -3069,6 +3588,10 @@ abstract class BaseOrganization extends BaseObject implements Persistent
             $this->collOrganizationProducts->clearIterator();
         }
         $this->collOrganizationProducts = null;
+        if ($this->collOrganizationThemes instanceof PropelCollection) {
+            $this->collOrganizationThemes->clearIterator();
+        }
+        $this->collOrganizationThemes = null;
         if ($this->collUsers instanceof PropelCollection) {
             $this->collUsers->clearIterator();
         }
@@ -3081,6 +3604,10 @@ abstract class BaseOrganization extends BaseObject implements Persistent
             $this->collProducts->clearIterator();
         }
         $this->collProducts = null;
+        if ($this->collThemes instanceof PropelCollection) {
+            $this->collThemes->clearIterator();
+        }
+        $this->collThemes = null;
     }
 
     /**

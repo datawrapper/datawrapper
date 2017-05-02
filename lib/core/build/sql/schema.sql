@@ -292,5 +292,49 @@ CREATE TABLE `organization_product`
     INDEX `organization_product_FI_2` (`product_id`)
 ) ENGINE=MyISAM;
 
+-- ---------------------------------------------------------------------
+-- theme
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `theme`;
+
+CREATE TABLE `theme`
+(
+    `id` VARCHAR(128) NOT NULL,
+    `created_at` DATETIME NOT NULL,
+    `extend` VARCHAR(128),
+    `title` VARCHAR(128),
+    `data` LONGTEXT,
+    PRIMARY KEY (`id`)
+) ENGINE=MyISAM;
+
+-- ---------------------------------------------------------------------
+-- organization_theme
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `organization_theme`;
+
+CREATE TABLE `organization_theme`
+(
+    `organization_id` VARCHAR(128) NOT NULL,
+    `theme_id` VARCHAR(128) NOT NULL,
+    PRIMARY KEY (`organization_id`,`theme_id`),
+    INDEX `organization_theme_FI_2` (`theme_id`)
+) ENGINE=MyISAM;
+
+-- ---------------------------------------------------------------------
+-- user_theme
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `user_theme`;
+
+CREATE TABLE `user_theme`
+(
+    `user_id` INTEGER NOT NULL,
+    `theme_id` VARCHAR(128) NOT NULL,
+    PRIMARY KEY (`user_id`,`theme_id`),
+    INDEX `user_theme_FI_2` (`theme_id`)
+) ENGINE=MyISAM;
+
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;

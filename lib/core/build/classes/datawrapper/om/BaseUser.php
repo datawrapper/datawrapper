@@ -141,6 +141,12 @@ abstract class BaseUser extends BaseObject implements Persistent
     protected $collUserProductsPartial;
 
     /**
+     * @var        PropelObjectCollection|UserTheme[] Collection to store aggregation of UserTheme objects.
+     */
+    protected $collUserThemes;
+    protected $collUserThemesPartial;
+
+    /**
      * @var        PropelObjectCollection|Organization[] Collection to store aggregation of Organization objects.
      */
     protected $collOrganizations;
@@ -149,6 +155,11 @@ abstract class BaseUser extends BaseObject implements Persistent
      * @var        PropelObjectCollection|Product[] Collection to store aggregation of Product objects.
      */
     protected $collProducts;
+
+    /**
+     * @var        PropelObjectCollection|Theme[] Collection to store aggregation of Theme objects.
+     */
+    protected $collThemes;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -186,6 +197,12 @@ abstract class BaseUser extends BaseObject implements Persistent
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
      */
+    protected $themesScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
     protected $chartsScheduledForDeletion = null;
 
     /**
@@ -211,6 +228,12 @@ abstract class BaseUser extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $userProductsScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $userThemesScheduledForDeletion = null;
 
     /**
      * Applies default values to this object.
@@ -829,8 +852,11 @@ abstract class BaseUser extends BaseObject implements Persistent
 
             $this->collUserProducts = null;
 
+            $this->collUserThemes = null;
+
             $this->collOrganizations = null;
             $this->collProducts = null;
+            $this->collThemes = null;
         } // if (deep)
     }
 
@@ -1007,6 +1033,32 @@ abstract class BaseUser extends BaseObject implements Persistent
                 }
             }
 
+            if ($this->themesScheduledForDeletion !== null) {
+                if (!$this->themesScheduledForDeletion->isEmpty()) {
+                    $pks = array();
+                    $pk = $this->getPrimaryKey();
+                    foreach ($this->themesScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
+                        $pks[] = array($pk, $remotePk);
+                    }
+                    UserThemeQuery::create()
+                        ->filterByPrimaryKeys($pks)
+                        ->delete($con);
+                    $this->themesScheduledForDeletion = null;
+                }
+
+                foreach ($this->getThemes() as $theme) {
+                    if ($theme->isModified()) {
+                        $theme->save($con);
+                    }
+                }
+            } elseif ($this->collThemes) {
+                foreach ($this->collThemes as $theme) {
+                    if ($theme->isModified()) {
+                        $theme->save($con);
+                    }
+                }
+            }
+
             if ($this->chartsScheduledForDeletion !== null) {
                 if (!$this->chartsScheduledForDeletion->isEmpty()) {
                     foreach ($this->chartsScheduledForDeletion as $chart) {
@@ -1087,6 +1139,23 @@ abstract class BaseUser extends BaseObject implements Persistent
 
             if ($this->collUserProducts !== null) {
                 foreach ($this->collUserProducts as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->userThemesScheduledForDeletion !== null) {
+                if (!$this->userThemesScheduledForDeletion->isEmpty()) {
+                    UserThemeQuery::create()
+                        ->filterByPrimaryKeys($this->userThemesScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->userThemesScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collUserThemes !== null) {
+                foreach ($this->collUserThemes as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -1347,6 +1416,14 @@ abstract class BaseUser extends BaseObject implements Persistent
                     }
                 }
 
+                if ($this->collUserThemes !== null) {
+                    foreach ($this->collUserThemes as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
 
             $this->alreadyInValidation = false;
         }
@@ -1479,6 +1556,9 @@ abstract class BaseUser extends BaseObject implements Persistent
             }
             if (null !== $this->collUserProducts) {
                 $result['UserProducts'] = $this->collUserProducts->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collUserThemes) {
+                $result['UserThemes'] = $this->collUserThemes->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -1731,6 +1811,12 @@ abstract class BaseUser extends BaseObject implements Persistent
                 }
             }
 
+            foreach ($this->getUserThemes() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addUserTheme($relObj->copy($deepCopy));
+                }
+            }
+
             //unflag object copy
             $this->startCopy = false;
         } // if ($deepCopy)
@@ -1806,6 +1892,9 @@ abstract class BaseUser extends BaseObject implements Persistent
         }
         if ('UserProduct' == $relationName) {
             $this->initUserProducts();
+        }
+        if ('UserTheme' == $relationName) {
+            $this->initUserThemes();
         }
     }
 
@@ -3025,6 +3114,249 @@ abstract class BaseUser extends BaseObject implements Persistent
     }
 
     /**
+     * Clears out the collUserThemes collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return User The current object (for fluent API support)
+     * @see        addUserThemes()
+     */
+    public function clearUserThemes()
+    {
+        $this->collUserThemes = null; // important to set this to null since that means it is uninitialized
+        $this->collUserThemesPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collUserThemes collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialUserThemes($v = true)
+    {
+        $this->collUserThemesPartial = $v;
+    }
+
+    /**
+     * Initializes the collUserThemes collection.
+     *
+     * By default this just sets the collUserThemes collection to an empty array (like clearcollUserThemes());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initUserThemes($overrideExisting = true)
+    {
+        if (null !== $this->collUserThemes && !$overrideExisting) {
+            return;
+        }
+        $this->collUserThemes = new PropelObjectCollection();
+        $this->collUserThemes->setModel('UserTheme');
+    }
+
+    /**
+     * Gets an array of UserTheme objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this User is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|UserTheme[] List of UserTheme objects
+     * @throws PropelException
+     */
+    public function getUserThemes($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collUserThemesPartial && !$this->isNew();
+        if (null === $this->collUserThemes || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collUserThemes) {
+                // return empty collection
+                $this->initUserThemes();
+            } else {
+                $collUserThemes = UserThemeQuery::create(null, $criteria)
+                    ->filterByUser($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collUserThemesPartial && count($collUserThemes)) {
+                      $this->initUserThemes(false);
+
+                      foreach($collUserThemes as $obj) {
+                        if (false == $this->collUserThemes->contains($obj)) {
+                          $this->collUserThemes->append($obj);
+                        }
+                      }
+
+                      $this->collUserThemesPartial = true;
+                    }
+
+                    $collUserThemes->getInternalIterator()->rewind();
+                    return $collUserThemes;
+                }
+
+                if($partial && $this->collUserThemes) {
+                    foreach($this->collUserThemes as $obj) {
+                        if($obj->isNew()) {
+                            $collUserThemes[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collUserThemes = $collUserThemes;
+                $this->collUserThemesPartial = false;
+            }
+        }
+
+        return $this->collUserThemes;
+    }
+
+    /**
+     * Sets a collection of UserTheme objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $userThemes A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return User The current object (for fluent API support)
+     */
+    public function setUserThemes(PropelCollection $userThemes, PropelPDO $con = null)
+    {
+        $userThemesToDelete = $this->getUserThemes(new Criteria(), $con)->diff($userThemes);
+
+        $this->userThemesScheduledForDeletion = unserialize(serialize($userThemesToDelete));
+
+        foreach ($userThemesToDelete as $userThemeRemoved) {
+            $userThemeRemoved->setUser(null);
+        }
+
+        $this->collUserThemes = null;
+        foreach ($userThemes as $userTheme) {
+            $this->addUserTheme($userTheme);
+        }
+
+        $this->collUserThemes = $userThemes;
+        $this->collUserThemesPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related UserTheme objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related UserTheme objects.
+     * @throws PropelException
+     */
+    public function countUserThemes(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collUserThemesPartial && !$this->isNew();
+        if (null === $this->collUserThemes || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collUserThemes) {
+                return 0;
+            }
+
+            if($partial && !$criteria) {
+                return count($this->getUserThemes());
+            }
+            $query = UserThemeQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByUser($this)
+                ->count($con);
+        }
+
+        return count($this->collUserThemes);
+    }
+
+    /**
+     * Method called to associate a UserTheme object to this object
+     * through the UserTheme foreign key attribute.
+     *
+     * @param    UserTheme $l UserTheme
+     * @return User The current object (for fluent API support)
+     */
+    public function addUserTheme(UserTheme $l)
+    {
+        if ($this->collUserThemes === null) {
+            $this->initUserThemes();
+            $this->collUserThemesPartial = true;
+        }
+        if (!in_array($l, $this->collUserThemes->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddUserTheme($l);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	UserTheme $userTheme The userTheme object to add.
+     */
+    protected function doAddUserTheme($userTheme)
+    {
+        $this->collUserThemes[]= $userTheme;
+        $userTheme->setUser($this);
+    }
+
+    /**
+     * @param	UserTheme $userTheme The userTheme object to remove.
+     * @return User The current object (for fluent API support)
+     */
+    public function removeUserTheme($userTheme)
+    {
+        if ($this->getUserThemes()->contains($userTheme)) {
+            $this->collUserThemes->remove($this->collUserThemes->search($userTheme));
+            if (null === $this->userThemesScheduledForDeletion) {
+                $this->userThemesScheduledForDeletion = clone $this->collUserThemes;
+                $this->userThemesScheduledForDeletion->clear();
+            }
+            $this->userThemesScheduledForDeletion[]= clone $userTheme;
+            $userTheme->setUser(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this User is new, it will return
+     * an empty collection; or if this User has previously
+     * been saved, it will retrieve related UserThemes from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in User.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|UserTheme[] List of UserTheme objects
+     */
+    public function getUserThemesJoinTheme($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = UserThemeQuery::create(null, $criteria);
+        $query->joinWith('Theme', $join_behavior);
+
+        return $this->getUserThemes($query, $con);
+    }
+
+    /**
      * Clears out the collOrganizations collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
@@ -3379,6 +3711,183 @@ abstract class BaseUser extends BaseObject implements Persistent
     }
 
     /**
+     * Clears out the collThemes collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return User The current object (for fluent API support)
+     * @see        addThemes()
+     */
+    public function clearThemes()
+    {
+        $this->collThemes = null; // important to set this to null since that means it is uninitialized
+        $this->collThemesPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * Initializes the collThemes collection.
+     *
+     * By default this just sets the collThemes collection to an empty collection (like clearThemes());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @return void
+     */
+    public function initThemes()
+    {
+        $this->collThemes = new PropelObjectCollection();
+        $this->collThemes->setModel('Theme');
+    }
+
+    /**
+     * Gets a collection of Theme objects related by a many-to-many relationship
+     * to the current object by way of the user_theme cross-reference table.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this User is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria Optional query object to filter the query
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return PropelObjectCollection|Theme[] List of Theme objects
+     */
+    public function getThemes($criteria = null, PropelPDO $con = null)
+    {
+        if (null === $this->collThemes || null !== $criteria) {
+            if ($this->isNew() && null === $this->collThemes) {
+                // return empty collection
+                $this->initThemes();
+            } else {
+                $collThemes = ThemeQuery::create(null, $criteria)
+                    ->filterByUser($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    return $collThemes;
+                }
+                $this->collThemes = $collThemes;
+            }
+        }
+
+        return $this->collThemes;
+    }
+
+    /**
+     * Sets a collection of Theme objects related by a many-to-many relationship
+     * to the current object by way of the user_theme cross-reference table.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $themes A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return User The current object (for fluent API support)
+     */
+    public function setThemes(PropelCollection $themes, PropelPDO $con = null)
+    {
+        $this->clearThemes();
+        $currentThemes = $this->getThemes();
+
+        $this->themesScheduledForDeletion = $currentThemes->diff($themes);
+
+        foreach ($themes as $theme) {
+            if (!$currentThemes->contains($theme)) {
+                $this->doAddTheme($theme);
+            }
+        }
+
+        $this->collThemes = $themes;
+
+        return $this;
+    }
+
+    /**
+     * Gets the number of Theme objects related by a many-to-many relationship
+     * to the current object by way of the user_theme cross-reference table.
+     *
+     * @param Criteria $criteria Optional query object to filter the query
+     * @param boolean $distinct Set to true to force count distinct
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return int the number of related Theme objects
+     */
+    public function countThemes($criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        if (null === $this->collThemes || null !== $criteria) {
+            if ($this->isNew() && null === $this->collThemes) {
+                return 0;
+            } else {
+                $query = ThemeQuery::create(null, $criteria);
+                if ($distinct) {
+                    $query->distinct();
+                }
+
+                return $query
+                    ->filterByUser($this)
+                    ->count($con);
+            }
+        } else {
+            return count($this->collThemes);
+        }
+    }
+
+    /**
+     * Associate a Theme object to this object
+     * through the user_theme cross reference table.
+     *
+     * @param  Theme $theme The UserTheme object to relate
+     * @return User The current object (for fluent API support)
+     */
+    public function addTheme(Theme $theme)
+    {
+        if ($this->collThemes === null) {
+            $this->initThemes();
+        }
+        if (!$this->collThemes->contains($theme)) { // only add it if the **same** object is not already associated
+            $this->doAddTheme($theme);
+
+            $this->collThemes[]= $theme;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	Theme $theme The theme object to add.
+     */
+    protected function doAddTheme($theme)
+    {
+        $userTheme = new UserTheme();
+        $userTheme->setTheme($theme);
+        $this->addUserTheme($userTheme);
+    }
+
+    /**
+     * Remove a Theme object to this object
+     * through the user_theme cross reference table.
+     *
+     * @param Theme $theme The UserTheme object to relate
+     * @return User The current object (for fluent API support)
+     */
+    public function removeTheme(Theme $theme)
+    {
+        if ($this->getThemes()->contains($theme)) {
+            $this->collThemes->remove($this->collThemes->search($theme));
+            if (null === $this->themesScheduledForDeletion) {
+                $this->themesScheduledForDeletion = clone $this->collThemes;
+                $this->themesScheduledForDeletion->clear();
+            }
+            $this->themesScheduledForDeletion[]= $theme;
+        }
+
+        return $this;
+    }
+
+    /**
      * Clears the current object and sets all attributes to their default values
      */
     public function clear()
@@ -3444,6 +3953,11 @@ abstract class BaseUser extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collUserThemes) {
+                foreach ($this->collUserThemes as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collOrganizations) {
                 foreach ($this->collOrganizations as $o) {
                     $o->clearAllReferences($deep);
@@ -3451,6 +3965,11 @@ abstract class BaseUser extends BaseObject implements Persistent
             }
             if ($this->collProducts) {
                 foreach ($this->collProducts as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collThemes) {
+                foreach ($this->collThemes as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
@@ -3478,6 +3997,10 @@ abstract class BaseUser extends BaseObject implements Persistent
             $this->collUserProducts->clearIterator();
         }
         $this->collUserProducts = null;
+        if ($this->collUserThemes instanceof PropelCollection) {
+            $this->collUserThemes->clearIterator();
+        }
+        $this->collUserThemes = null;
         if ($this->collOrganizations instanceof PropelCollection) {
             $this->collOrganizations->clearIterator();
         }
@@ -3486,6 +4009,10 @@ abstract class BaseUser extends BaseObject implements Persistent
             $this->collProducts->clearIterator();
         }
         $this->collProducts = null;
+        if ($this->collThemes instanceof PropelCollection) {
+            $this->collThemes->clearIterator();
+        }
+        $this->collThemes = null;
     }
 
     /**
