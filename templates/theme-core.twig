@@ -36,5 +36,12 @@
 {% endblock %}
 
 {% block chart_fullscreen %}
-    <a href="{{ chartUrlFs }}" target="_blank" class="fs-btn top-right" title="{% trans "Fullscreen" %}" data-toggle="fullscreen"></a>
+{% endblock %}
+
+
+{% block chart_source %}
+    {% if chartSource %}
+        <span data-src="{% trans "Source: " %}" class="source-block">{% trans "Source: " %}
+        {{ chartSource | raw }}</span>
+    {% endif %}
 {% endblock %}
