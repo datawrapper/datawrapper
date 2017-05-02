@@ -5,11 +5,16 @@ define(function() {
     return function(_w, _h) {
         var maxW = $('#iframe-wrapper').parent().parent().width()-22,
             w = _w || $('#resize-w').val() || 580,
-            h = Math.min((_h || $('#resize-h').val() || 400), 600),
+            h = (_h || $('#resize-h').val() || 400),
             chart = dw.backend.currentChart;
 
         if (Number(w) > maxW) {
             w = maxW;
+        }
+
+        if ((visData.vis.height || "fit") == "fixed" 
+            && (!$('.size-presets .preset.manual').hasClass('selected'))) {
+            h = Math.min(h, 600); 
         }
 
         var m = String(w).match(/^(\d+(?:\.\d+)?)%$/),
