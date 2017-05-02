@@ -109,7 +109,7 @@
             resize = (height == 'fixed' ? resizeFixed : renderLater);
         
         // IE continuosly reloads the chart for some strange reasons
-        if (navigator.userAgent.match(/iPad|iPhone|iPod|msie/i) === null) {
+        if (navigator.userAgent.match(/msie/i) === null) {
             $(window)
                 .off('resize', resize)
                 .on('resize', resize);
