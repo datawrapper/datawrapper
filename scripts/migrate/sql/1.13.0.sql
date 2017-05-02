@@ -1,5 +1,5 @@
 -- ---------------------------------------------------------------------
--- adding column for external data url
+-- adding column for forkable charts
 -- ---------------------------------------------------------------------
 
-ALTER TABLE chart ADD COLUMN `external_data` VARCHAR(255);
+ALTER TABLE chart ADD COLUMN `forkable` TINYINT(1) DEFAULT 0;

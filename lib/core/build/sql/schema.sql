@@ -31,6 +31,7 @@ CREATE TABLE `chart`
     `organization_id` VARCHAR(128),
     `forked_from` VARCHAR(5),
     `external_data` VARCHAR(255),
+    `forkable` TINYINT(1) DEFAULT 0,
     PRIMARY KEY (`id`),
     INDEX `chart_FI_1` (`author_id`),
     INDEX `chart_FI_2` (`organization_id`),

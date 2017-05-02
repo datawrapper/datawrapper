@@ -155,6 +155,13 @@ abstract class BaseChart extends BaseObject implements Persistent
     protected $external_data;
 
     /**
+     * The value for the forkable field.
+     * Note: this column has a database default value of: false
+     * @var        boolean
+     */
+    protected $forkable;
+
+    /**
      * @var        User
      */
     protected $aUser;
@@ -226,6 +233,7 @@ abstract class BaseChart extends BaseObject implements Persistent
         $this->language = '';
         $this->last_edit_step = 0;
         $this->public_version = 0;
+        $this->forkable = false;
     }
 
     /**
@@ -556,6 +564,16 @@ abstract class BaseChart extends BaseObject implements Persistent
     public function getExternalData()
     {
         return $this->external_data;
+    }
+
+    /**
+     * Get the [forkable] column value.
+     *
+     * @return boolean
+     */
+    public function getForkable()
+    {
+        return $this->forkable;
     }
 
     /**
@@ -1015,6 +1033,35 @@ abstract class BaseChart extends BaseObject implements Persistent
     } // setExternalData()
 
     /**
+     * Sets the value of the [forkable] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param boolean|integer|string $v The new value
+     * @return Chart The current object (for fluent API support)
+     */
+    public function setForkable($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->forkable !== $v) {
+            $this->forkable = $v;
+            $this->modifiedColumns[] = ChartPeer::FORKABLE;
+        }
+
+
+        return $this;
+    } // setForkable()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -1041,6 +1088,10 @@ abstract class BaseChart extends BaseObject implements Persistent
             }
 
             if ($this->public_version !== 0) {
+                return false;
+            }
+
+            if ($this->forkable !== false) {
                 return false;
             }
 
@@ -1086,6 +1137,7 @@ abstract class BaseChart extends BaseObject implements Persistent
             $this->organization_id = ($row[$startcol + 17] !== null) ? (string) $row[$startcol + 17] : null;
             $this->forked_from = ($row[$startcol + 18] !== null) ? (string) $row[$startcol + 18] : null;
             $this->external_data = ($row[$startcol + 19] !== null) ? (string) $row[$startcol + 19] : null;
+            $this->forkable = ($row[$startcol + 20] !== null) ? (boolean) $row[$startcol + 20] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -1094,7 +1146,7 @@ abstract class BaseChart extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
             $this->postHydrate($row, $startcol, $rehydrate);
-            return $startcol + 20; // 20 = ChartPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 21; // 21 = ChartPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Chart object", $e);
@@ -1439,6 +1491,9 @@ abstract class BaseChart extends BaseObject implements Persistent
         if ($this->isColumnModified(ChartPeer::EXTERNAL_DATA)) {
             $modifiedColumns[':p' . $index++]  = '`external_data`';
         }
+        if ($this->isColumnModified(ChartPeer::FORKABLE)) {
+            $modifiedColumns[':p' . $index++]  = '`forkable`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `chart` (%s) VALUES (%s)',
@@ -1509,6 +1564,9 @@ abstract class BaseChart extends BaseObject implements Persistent
                         break;
                     case '`external_data`':
                         $stmt->bindValue($identifier, $this->external_data, PDO::PARAM_STR);
+                        break;
+                    case '`forkable`':
+                        $stmt->bindValue($identifier, (int) $this->forkable, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -1737,6 +1795,9 @@ abstract class BaseChart extends BaseObject implements Persistent
             case 19:
                 return $this->getExternalData();
                 break;
+            case 20:
+                return $this->getForkable();
+                break;
             default:
                 return null;
                 break;
@@ -1786,6 +1847,7 @@ abstract class BaseChart extends BaseObject implements Persistent
             $keys[17] => $this->getOrganizationId(),
             $keys[18] => $this->getForkedFrom(),
             $keys[19] => $this->getExternalData(),
+            $keys[20] => $this->getForkable(),
         );
         if ($includeForeignObjects) {
             if (null !== $this->aUser) {
@@ -1897,6 +1959,9 @@ abstract class BaseChart extends BaseObject implements Persistent
             case 19:
                 $this->setExternalData($value);
                 break;
+            case 20:
+                $this->setForkable($value);
+                break;
         } // switch()
     }
 
@@ -1941,6 +2006,7 @@ abstract class BaseChart extends BaseObject implements Persistent
         if (array_key_exists($keys[17], $arr)) $this->setOrganizationId($arr[$keys[17]]);
         if (array_key_exists($keys[18], $arr)) $this->setForkedFrom($arr[$keys[18]]);
         if (array_key_exists($keys[19], $arr)) $this->setExternalData($arr[$keys[19]]);
+        if (array_key_exists($keys[20], $arr)) $this->setForkable($arr[$keys[20]]);
     }
 
     /**
@@ -1972,6 +2038,7 @@ abstract class BaseChart extends BaseObject implements Persistent
         if ($this->isColumnModified(ChartPeer::ORGANIZATION_ID)) $criteria->add(ChartPeer::ORGANIZATION_ID, $this->organization_id);
         if ($this->isColumnModified(ChartPeer::FORKED_FROM)) $criteria->add(ChartPeer::FORKED_FROM, $this->forked_from);
         if ($this->isColumnModified(ChartPeer::EXTERNAL_DATA)) $criteria->add(ChartPeer::EXTERNAL_DATA, $this->external_data);
+        if ($this->isColumnModified(ChartPeer::FORKABLE)) $criteria->add(ChartPeer::FORKABLE, $this->forkable);
 
         return $criteria;
     }
@@ -2054,6 +2121,7 @@ abstract class BaseChart extends BaseObject implements Persistent
         $copyObj->setOrganizationId($this->getOrganizationId());
         $copyObj->setForkedFrom($this->getForkedFrom());
         $copyObj->setExternalData($this->getExternalData());
+        $copyObj->setForkable($this->getForkable());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -2835,6 +2903,7 @@ abstract class BaseChart extends BaseObject implements Persistent
         $this->organization_id = null;
         $this->forked_from = null;
         $this->external_data = null;
+        $this->forkable = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;

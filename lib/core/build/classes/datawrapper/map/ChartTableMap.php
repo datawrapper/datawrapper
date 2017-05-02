@@ -58,6 +58,7 @@ class ChartTableMap extends TableMap
         $this->addForeignKey('organization_id', 'OrganizationId', 'VARCHAR', 'organization', 'id', false, 128, null);
         $this->addForeignKey('forked_from', 'ForkedFrom', 'VARCHAR', 'chart', 'id', false, 5, null);
         $this->addColumn('external_data', 'ExternalData', 'VARCHAR', false, 255, null);
+        $this->addColumn('forkable', 'Forkable', 'BOOLEAN', false, 1, false);
         // validators
     } // initialize()
 

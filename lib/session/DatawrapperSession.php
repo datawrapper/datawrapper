@@ -64,7 +64,7 @@ class DatawrapperSession {
     }
 
     public function _toArray() {
-        $res = array('user' => $this->user->toArray());
+        $res = array('user' => $this->user->serialize());
         return $res;
     }
 

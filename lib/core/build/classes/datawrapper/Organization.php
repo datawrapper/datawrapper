@@ -111,7 +111,16 @@ class Organization extends BaseOrganization
         $this->setSettings(json_encode($meta));
     }
 
-
+    /*
+     * returns an Array serialization with less
+     * sensitive information than $user->toArray()
+     */
+    public function serialize() {
+        return array(
+            'id' => $this->getId(),
+            'name' => $this->getName()
+        );
+    }
 
 
 }

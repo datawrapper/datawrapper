@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     {% set project_title = config.custom_title | default('Datawrapper'|trans) %}
-    <title>{{ project_title }}{% if title and title != project_title %} / {{ title }}{% endif %}</title>
+    <title>{% if title and title != project_title %}{{ title }} | {% endif %}{{ project_title }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="{{ page_description }}">
     <meta name="author" content="{% trans "Mirko Lorenz, David Kokkelink, Gregor Aisch" %}">
