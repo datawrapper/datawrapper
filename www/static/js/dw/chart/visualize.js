@@ -77,13 +77,10 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
                 }
             });
 
-            // load themes
-            themes.load().done(function() {
-                dw.backend.fire('theme-changed-and-loaded');
-                loadOptions().done(function() {
-                    loadVis();
-                    themes.updateUI();
-                });
+            dw.backend.fire('theme-changed-and-loaded');
+            loadOptions().done(function() {
+                loadVis();
+                themes.updateUI();
             });
         }
 
@@ -393,7 +390,6 @@ function(initHighlightSeries, visOptions, themes, checkChartHeight, loadVisDfd,
                 return false;
             }
         });
-        themes.load();
     }
 
     /** Set into `dw.backend.currentVis` the edited visualization (editor side) */

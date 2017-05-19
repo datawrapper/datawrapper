@@ -18,7 +18,7 @@
     <script type="text/javascript" charset="utf-8" src="{{ config.static_path }}/vendor/innersvg/innersvg.js"></script>
     {% endif %}
 
-    {{ hook('chart_html_head', chart) }}
+        {{ hook('chart_html_head', chart) }}
 
 {% for src in stylesheets %}
     <link rel="stylesheet" type="text/css" href="{{ src }}"></link>
@@ -36,6 +36,18 @@
   {% endif %}
 {% endfor %}
 
+    <script type="text/javascript">
+        (function() {
+            dw.theme.register('{{ themeId }}', {{ themeData | json | raw }});
+        }).call(this);
+    </script>
+
+
+    <style type="text/css">
+        {{ themeCSS }}
+    </style>
+
+
 </head>
 <body class="dw-chart chart{% if fullscreen %} fullscreen{% endif %}{% if plain %} plain{% endif %} vis-height-{{ visualization.height ? visualization.height : "fit" }} theme-{{ chart.theme }} vis-{{ chart.type }}">
     {{ hook('chart_before_body', chart, published) }}
@@ -44,7 +56,8 @@
     {% set title = chart.title %}{% set intro = chart.metadata.describe.intro %}{% set source = chart.metadata.describe['source-name'] %}{% set sourceURL = chart.metadata.describe['source-url'] %}
 
 
-    {% include theme.template ? theme.template : 'plugins/theme-default/default.twig' %}
+    {% include 'plugins/theme-default/default.twig' %}
+    {# include theme.template ? theme.template : 'plugins/theme-default/default.twig' #}
 
     {# <div class="noscript" style="position: absolute;top: 0;left: 0;z-index: -10;">
         <a href="static.html"><img src="nojs.png" alt="{% trans "Please activate JavaScript to see the interactive chart." %}" /></a>
@@ -61,7 +74,7 @@
     __dw.init({
         chartJSON: {{ chart.toStruct(true) | json | raw }},
         chartLocale: '{{ chartLocale }}',
-        themeId: '{{ theme.id }}',
+        themeId: '{{ themeId }}',
         visId: '{{ visualization.id }}',
         visJSON: visJSON,
         metricPrefix: {{ metricPrefix | json | raw }},
@@ -79,6 +92,7 @@
             }, "*");
         }, 1000);
     }
+
 
     </script>
 

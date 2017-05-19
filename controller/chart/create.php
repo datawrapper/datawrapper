@@ -31,7 +31,7 @@ $app->map('/chart/create', function() use ($app) {
             }
         }
         if ($req->post('theme') != null) {
-            if (DatawrapperTheme::get($req->post('theme')) !== false) {
+            if (ThemeQuery::findPk($req->post('theme')) !== false) {
                 $chart->setTheme($req->post('theme'));
             }
         }

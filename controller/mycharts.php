@@ -33,9 +33,9 @@ function nbChartsByLayout($user) {
     $rs = $con->query($sql);
     $res = array();
     foreach ($rs as $r) {
-        $theme = DatawrapperTheme::get($r['theme']);
+        $theme = ThemeQuery::create()->findPk($r['theme']);
         if (!$theme) continue; // ignoring charts whose themes have been removed
-        $res[] = array('count' => $r['c'], 'id' => $r['theme'], 'name' => $theme['title']);
+        $res[] = array('count' => $r['c'], 'id' => $r['theme'], 'name' => $theme->getTitle());
     }
     return $res;
 }
