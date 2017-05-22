@@ -6,5 +6,10 @@
     {{ block('content') }}
 </div>
 <div class="modal-footer">
-    <a class="btn" data-dismiss="modal">{% trans "Close" %}</a>
+	{% set _footer = block('footer') %}
+	{% if _footer is not empty %}
+		{{ _footer|raw }}
+	{% else %}
+   		<a class="btn" data-dismiss="modal">{% trans "Close" %}</a>
+	{% endif %}
 </div>

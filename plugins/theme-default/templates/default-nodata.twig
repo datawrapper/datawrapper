@@ -10,10 +10,7 @@
 <div id="footer">
     {% if not plain %}
         <div class="footer-left">
-            {% if source %}
-                <span data-src="{% trans "Source: " %}" class="source-block">{% trans "Source: " %}
-                {% if sourceURL %}<a target="_blank" class="source" href="{{ sourceURL }}">{% endif %}{{ source }}{% if sourceURL %}</a>{% endif %}</span>
-            {% endif %}
+            {{ block('chart_source') }}
         </div>
         <div class="footer-right">
             {% trans "Created with" %} <a href="{{ DW_DOMAIN }}_/{{ chart.id }}" target="_blank">{% trans "Datawrapper" %}</a>
