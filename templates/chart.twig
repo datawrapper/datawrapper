@@ -69,7 +69,11 @@
         data: {{ chart.loadData | json | raw }}
     });
 
-    if (visJSON.height == "fixed") { 
+    if (/iP(hone|od|ad)/.test(navigator.platform)) {
+        window.onload = __dw.render();
+    }
+
+    if (visJSON.height == "fixed") {
         setInterval(function() {
             var desiredHeight = $('html').outerHeight(true);
             window.parent.postMessage({
