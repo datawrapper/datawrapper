@@ -33,3 +33,8 @@ bower_components/
 
 locale/messages.tsv
 .python-version
+exports/*
+legacy/*
+composer.phar
+dw-translations.p12
+.idea/*
