@@ -172,6 +172,31 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
         $chart_url = $published_urls[0];  // ignore urls except from the first one
     }
 
+    $data_source = $chart->getMetadata('describe.source-name');
+    if (!empty($data_source)) {
+        $data_source_url = $chart->getMetadata('describe.source-url');
+        if (!empty($data_source_url)) {
+            $data_source = '<a class="source" target="_blank" href="'.$data_source_url.'">'.$data_source.'</a>';
+        }
+    }
+
+    $forked_from = $chart->getForkedFrom();
+    if (!empty($forked_from)) {
+        // find the original chart
+        $origChart = ChartQuery::create()->findOneById($forked_from);
+        if ($origChart) {
+            $chart_source = $origChart->getMetadata('publish.chart-source-name');
+            if (!empty($chart_source)) {
+                $chart_source_url = $origChart->getMetadata('publish.chart-source-url');
+                if (!empty($chart_source_url)) {
+                    $chart_source = '<a class="source" target="_blank" href="'.$chart_source_url.'">'.$chart_source.'</a>';
+                }
+                $data_source = $chart_source . (!empty($data_source) ? ', ' : '') . $data_source;
+            }
+        }
+    }
+    
+
     $page = array(
         'chartData' => $chart->loadData(),
         'chart' => $chart,
@@ -186,6 +211,7 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
         'chartUrl' => $chart_url,
         'embedCode' => '<iframe src="' .$chart_url. '" frameborder="0" allowtransparency="true" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen width="'.$chart->getMetadata('publish.embed-width') . '" height="'. $chart->getMetadata('publish.embed-height') .'"></iframe>',
         'chartUrlFs' => strpos($chart_url, '.html') > 0 ? str_replace('index.html', 'fs.html', $chart_url) : $chart_url . '?fs=1',
+        'chartSource' => $data_source,
 
         // used in chart.twig
         'stylesheets' => $stylesheets,
