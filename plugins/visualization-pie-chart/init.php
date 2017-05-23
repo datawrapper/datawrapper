@@ -11,6 +11,7 @@ DatawrapperVisualization::register($plugin, array(
         'email' => 'gka@vis4.net'
     ),
     'order' => 50,
+    "less" => dirname(__FILE__ ) . "/static/pie-chart.less",
     'dimensions' => 1,
     'axes' => array(
         'labels' => array(

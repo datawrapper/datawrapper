@@ -16,7 +16,7 @@
 class Theme extends BaseTheme
 {
 
-    public function getCSS($vis) {
+    public function getCSS($visLess) {
         // compile: theme-variables, chart.base.less, visulization.less
 
         $less = new lessc;
@@ -32,9 +32,14 @@ class Theme extends BaseTheme
         ));
 
         $base = file_get_contents(ROOT_PATH . 'assets/styles/chart.base/main.less');
-        $vis = file_get_contents($vis["less"]);
 
-        return $less->compile($base . "\n" . $vis);
+        $allVisLess = "";
+
+        foreach ($visLess as $vis) {
+            $allVisLess .= "\n\n\n" . file_get_contents($vis);
+        }
+
+        return $less->compile($base . "\n" . $allVisLess);
     }
 
     public function getThemeData() {

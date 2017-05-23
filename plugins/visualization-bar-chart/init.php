@@ -6,6 +6,7 @@ DatawrapperVisualization::register($plugin, array(
     'version' => '1.3.2',
     'extends' => 'raphael-chart',
     'order' => 995,
+    "less" => dirname(__FILE__ ) . "/static/bar-chart.less",
     'dimensions' => 1,
     'axes' => array(
         'labels' => array(

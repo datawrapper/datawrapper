@@ -16,11 +16,7 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
         }
     }
 
-    $theme_css = array();
-    $theme_js = array();
     $protocol = get_current_protocol();
-
-    $next_theme_id = $chart->getTheme();
 
     $locale = DatawrapperSession::getLanguage();
     if ($chart->getLanguage() != '') {
@@ -30,17 +26,6 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
     $static_path = $GLOBALS['dw_config']['static_path'];
     $abs = $protocol . '://' . $GLOBALS['dw_config']['domain'];
     if ($static_path == 'static/') $static_path = $abs . $static_path;
-
-    while (!empty($next_theme_id)) {
-        $theme = DatawrapperTheme::get($next_theme_id);
-        // $theme_static_path = str_replace('/static/', $static_path . '/', $theme['__static_path']);
-        $theme_static_path = $theme['__static_path'];
-        $theme_js[] = $theme_static_path . $next_theme_id . '.js';
-        if ($theme['hasStyles']) {
-            $theme_css[] =  $theme_static_path . $next_theme_id . '.css';
-        }
-        $next_theme_id = $theme['extends'];
-    }
 
     $abs = $protocol . '://' . $GLOBALS['dw_config']['domain'];
 
@@ -65,7 +50,7 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
     }
 
     $vis_js = array();
-    $vis_css = array();
+    $vis_less = array();
     $next_vis_id = $chart->getType();
 
     $vis_libs = array();
@@ -110,25 +95,19 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
         }
         $vjs[] = $vis_static_path . $vis['id'] . '.js';
         $vis_js = array_merge($vis_js, array_reverse($vjs));
-        if ($vis['hasCSS']) {
-            $vis_css[] = $vis_static_path . $vis['id'] . '.css';
+        if (!empty($vis['less'])) {
+            $vis_less[] = $vis['less'];
         }
         $next_vis_id = !empty($vis['extends']) ? $vis['extends'] : null;
     }
 
     $stylesheets = array_merge(
-        array('/static/css/chart.base.css'),
-        $vis_css,
-        array_reverse($theme_css)
+        array('/static/css/chart.base.css')
     );
 
     $the_vis = DatawrapperVisualization::get($chart->getType());
     $the_vis['locale'] = $vis_locale;
-    $the_theme = DatawrapperTheme::get($chart->getTheme());
-    $l10n__domain = $the_theme['__static_path'];
-
     $the_vis_js = get_vis_js($the_vis, array_merge(array_reverse($vis_js), $vis_libs_local));
-    $the_theme_js = get_theme_js($the_theme, array_reverse($theme_js));
     $the_chart_js = get_chart_js();
 
     if ($published) {
@@ -137,7 +116,6 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
             $vis_libs_cdn,
             array(
                 '/lib/' . $the_vis_js[0],
-                '/lib/' . $the_theme_js[0],
                 '/lib/' . $the_chart_js[0]
             )
         );
@@ -150,13 +128,11 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
             $replace_by,                    // replace by
             strrpos($replace_in, $replace), // position
             strlen($replace));              // length
-        $the_theme['__static_path'] = '';
     } else {
         $scripts = unique_scripts(
             array_merge(
                 $base_js,
                 array($static_path . '/js/dw-2.0'.($debug ? '' : '.min').'.js'),
-                array_reverse($theme_js),
                 array_reverse($vis_js),
                 $vis_libs,
                 array($static_path . '/js/dw/chart.base.js')
@@ -195,18 +171,18 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
             }
         }
     }
-    
+
+    $theme = ThemeQuery::create()->findPk($chart->getTheme());
+    if (empty($theme)) $theme = ThemeQuery::create()->findPk("default");
 
     $page = array(
         'chartData' => $chart->loadData(),
         'chart' => $chart,
         'lang' => strtolower(substr($locale, 0, 2)),
         'metricPrefix' => get_metric_prefix($locale),
-        'l10n__domain' => $l10n__domain,
         'origin' => !empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '',
         'DW_DOMAIN' => $protocol . '://' . $cfg['domain'] . '/',
         'DW_CHART_DATA' => $protocol . '://' . $cfg['domain'] . '/chart/' . $chart->getID() . '/data.csv',
-        'ASSET_PATH' => $published ? '' : $the_theme['__static_path'],
         'published' => $published,
         'chartUrl' => $chart_url,
         'embedCode' => '<iframe src="' .$chart_url. '" frameborder="0" allowtransparency="true" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen width="'.$chart->getMetadata('publish.embed-width') . '" height="'. $chart->getMetadata('publish.embed-height') .'"></iframe>',
@@ -217,12 +193,13 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
         'stylesheets' => $stylesheets,
         'scripts' => $scripts,
         'visualization' => $the_vis,
-        'theme' => $the_theme,
+        'themeId' => $theme->getId(),
+        'themeData' => $theme->getData(),
+        'themeCSS' => $theme->getCSS($vis_less),
         'chartLocale' => str_replace('_', '-', $locale),
 
         // the following is used by chart_publish.php
         'vis_js' => $the_vis_js,
-        'theme_js' => $the_theme_js,
         'chart_js' => $the_chart_js
 
     );
@@ -254,28 +231,6 @@ function get_vis_js($vis, $visJS) {
     $vis_js_md5 = md5($all.$org);
     $vis_path = 'vis/' . $vis['id'] . '-' . $vis_js_md5 . '.min.js';
     return array($vis_path, $all);
-}
-
-/*
- * returns an array
- *   [0] filename of the theme js class, eg, theme/default-7266c4ee39b3d19f007f01be8853ac87.min.js
- *   [1] minified source code
- */
-function get_theme_js($theme, $themeJS) {
-    $all = '';
-    $org = DatawrapperSession::getUser()->getCurrentOrganization();
-    if (!empty($org)) $org = '/'.$org->getID(); else $org = '';
-    $keys = DatawrapperHooks::execute(DatawrapperHooks::GET_PUBLISH_STORAGE_KEY);
-    if (is_array($keys)) $org .= '/' . join($keys, '/');
-    foreach ($themeJS as $js) {
-        if (substr($js, 0, 7) != "http://" && substr($js, 0, 8) != "https://" && substr($js, 0, 2) != '//') {
-            $all .= "\n\n\n" . file_get_contents(ROOT_PATH . 'www' . $js);
-        }
-    }
-    $all = jsminify($all);
-    $theme_js_md5 = md5($all.$org);
-    $theme_path = 'theme/' . $theme['id'] . '-' . $theme_js_md5 . '.min.js';
-    return array($theme_path, $all);
 }
 
 function get_chart_js() {
