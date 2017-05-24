@@ -15,22 +15,12 @@
  */
 class Theme extends BaseTheme
 {
-
     public function getCSS($visLess) {
         // compile: theme-variables, chart.base.less, visulization.less
 
         $less = new lessc;
 
-        $less->setVariables(array(
-            "chart_background" => "transparent",
-            "chart_padding" => "10px",
-            "chart_fontFamily" => "Roboto, sans-serif",
-            "headline_fontSize" => "26px",
-            "headline_fontWeight" => 700,
-            "intro_fontSize" => "16px",
-            "intro_fontWeight" => 500,
-        ));
-
+        $less->setVariables($this->getThemeDataAsFlatArray());
         $base = file_get_contents(ROOT_PATH . 'assets/styles/chart.base/main.less');
 
         $allVisLess = "";
@@ -43,8 +33,47 @@ class Theme extends BaseTheme
     }
 
     public function getThemeData() {
-        // extend all the things
-        return $this->getData();
+        $theme = $this;
+        $themeData = [$theme->getData()];
+
+        while ($theme->getExtend() != null) {
+            $theme = ThemeQuery::create()->findPk($theme->getExtend());
+            $themeData[] = $theme->getData();
+        }
+
+        $themeList = array_reverse($themeData);
+
+        $data = array();
+
+        foreach ($themeList as $theme) {
+            $data = array_merge($data, $theme);
+        }
+
+        return $data;
+    }
+
+    public function getThemeDataAsFlatArray($data = null, $prefix = "") {
+        if ($data == null) $data = $this->getThemeData();
+
+        $f = array();
+
+        foreach ($data as $k => $d) {
+            $px = $prefix;
+
+            if ($px == "") {
+                $px = $k;
+            } else {
+                $px .= "_" . $k;
+            }
+
+            if (is_array($d)) {
+                $f = array_merge($f, $this->getThemeDataAsFlatArray($d, $px));
+            } else {
+                $f[$px] = $d;
+            }
+        }
+
+        return $f;
     }
 
     /**
@@ -79,4 +108,7 @@ class Theme extends BaseTheme
         $this->setData(json_encode($meta));
     }
 
+    public function getRawData($key = null) {
+        return parent::getData();
+    }
 }

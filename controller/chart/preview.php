@@ -16,6 +16,7 @@ $app->get('/chart/:id/preview', function ($id) use ($app) {
         $page['fullscreen'] = $app->request()->get('fs') == 1;
         $page['innersvg'] = $app->request()->get('innersvg') == 1;
         $page['config'] = $GLOBALS['dw_config'];
+        $page['theme'] = ThemeQuery::create()->findPk($chart->getTheme())->getThemeData();
 
         if (!empty($GLOBALS['dw_config']['prevent_chart_preview_in_iframes'])) {
             // prevent this url from being rendered in iframes on different

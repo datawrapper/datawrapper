@@ -56,8 +56,42 @@
     {% set title = chart.title %}{% set intro = chart.metadata.describe.intro %}{% set source = chart.metadata.describe['source-name'] %}{% set sourceURL = chart.metadata.describe['source-url'] %}
 
 
-    {% include 'plugins/theme-default/default.twig' %}
-    {# include theme.template ? theme.template : 'plugins/theme-default/default.twig' #}
+
+    <div class="dw-chart-header" id="header">
+        {% if not plain %}
+            <h1 {% if not title %}class="hidden"{% endif %}>
+                <span class="chart-title">{{ title | purify | raw }}</span>
+            </h1>
+
+            <p class="chart-intro{% if not intro %} hidden{% endif %}">{{ intro|purify|raw }}</p>
+        {% endif %}
+    </div>
+
+    <div class="dw-chart-body" id="chart"></div>
+
+    <div class="dw-chart-footer" id="footer">
+        {% if not plain %}
+            <div class="footer-left">
+                {% if chartSource %}
+                    <span data-src="{% trans "Source: " %}" class="source-block">{% trans "Source: " %}
+                        {{ chartSource | raw }}</span>
+                {% endif %}
+
+                {% if chartSource and theme.links.getTheData %}
+                &nbsp;•&nbsp;
+                {% endif %}
+
+                {% if theme.links.getTheData %}
+                    <a href="data">{% trans "Get the data" %}</a>
+                {% endif %}
+            </div>
+            <div class="footer-right">
+                {% if theme.links.createdWithDatawrapper %}
+                    {% trans "Created with" %} <a href="{{ DW_DOMAIN }}_/{{ chart.id }}" target="_blank">{% trans "Datawrapper" %}</a>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
 
     {# <div class="noscript" style="position: absolute;top: 0;left: 0;z-index: -10;">
         <a href="static.html"><img src="nojs.png" alt="{% trans "Please activate JavaScript to see the interactive chart." %}" /></a>
