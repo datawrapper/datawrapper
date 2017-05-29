@@ -38,3 +38,4 @@ legacy/*
 composer.phar
 dw-translations.p12
 .idea/*
+lib/core/propel-gen
