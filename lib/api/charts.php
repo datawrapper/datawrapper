@@ -228,7 +228,7 @@ $app->delete('/charts/:id', function($id) use ($app) {
 
 
 /**
- * checks if a chart is reable by the current user (or guest)
+ * checks if a chart is readable by the current user (or guest)
  *
  * @param chart_id
  * @param callback the function to be executed if chart is writable
@@ -248,6 +248,7 @@ function if_chart_is_readable($chart_id, $callback) {
         error_chart_not_found($id);
     }
 }
+
 
 
 /**
