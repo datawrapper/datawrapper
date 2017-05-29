@@ -240,6 +240,7 @@
 	<column name="extend" type="varchar" size="128" />
 	<column name="title" type="varchar" size="128" />
     <column name="data" type="clob" />
+    <column name="less" type="clob" />
   </table>
 
   <!-- organization <-> theme map -->

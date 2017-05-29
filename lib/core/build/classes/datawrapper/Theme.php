@@ -46,11 +46,13 @@ class Theme extends BaseTheme
         $data = array();
 
         foreach ($themeList as $theme) {
-            $data = array_replace_recursive($data, $theme);
+            $data = $this->extendArray($data, $theme);
+
         }
 
         return $data;
     }
+
 
     public function getThemeDataAsFlatArray($data = null, $prefix = "") {
         if ($data == null) $data = $this->getThemeData();
@@ -67,7 +69,9 @@ class Theme extends BaseTheme
             }
 
             if (is_array($d)) {
-                $f = array_merge($f, $this->getThemeDataAsFlatArray($d, $px));
+                if (sizeof($d) > 0) {
+                    $f = array_merge($f, $this->getThemeDataAsFlatArray($d, $px));
+                }
             } else {
                 $f[$px] = $d;
             }
@@ -91,6 +95,7 @@ class Theme extends BaseTheme
         }
         return $p;
     }
+
     /*
      * update a part of the data
      */
@@ -110,5 +115,34 @@ class Theme extends BaseTheme
 
     public function getRawData($key = null) {
         return parent::getData();
+    }
+
+    /*
+     * Two helper functions that handle array extensions
+     */
+
+    private function isNumericArray($array) {
+        foreach ($array as $a => $b) {
+            if (!is_int($a)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private function extendArray($arr, $arr2) {
+        foreach ($arr2 as $key => $val) {
+            $arr1IsObject = (isset($arr[$key]) && is_array($arr[$key]) && !$this->isNumericArray($arr[$key]));
+            $arr2IsObject = (isset($val) && is_array($val) && !$this->isNumericArray($val));
+
+            if ($arr1IsObject && $arr2IsObject) {
+                $arr[$key] = $this->extendArray($arr[$key], $val);
+            } else {
+                $arr[$key] = $val;
+            }
+        }
+
+        return $arr;
     }
 }
