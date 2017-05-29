@@ -9,14 +9,14 @@ $app->get('/(chart|map)/:id/visualize', function ($id) use ($app) {
     check_chart_writable($id, function($user, $chart) use ($app) {
         $visData = "";
 
-        $allThemes = ThemeQuery::create()->findAll();
+        $allThemes = ThemeQuery::create()->allThemesForUser();
         $themeMeta = [];
 
         foreach ($allThemes as $theme) {
             $themeMeta[] = array(
                 "id" => $theme->getId(),
                 "title" => $theme->getTitle(),
-                "data" => $theme->getData()
+                "data" => $theme->getThemeData()
             );
         }
 

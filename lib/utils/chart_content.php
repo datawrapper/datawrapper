@@ -194,7 +194,7 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
         'scripts' => $scripts,
         'visualization' => $the_vis,
         'themeId' => $theme->getId(),
-        'themeData' => $theme->getData(),
+        'themeData' => $theme->getThemeData(),
         'themeCSS' => $theme->getCSS($vis_less),
         'chartLocale' => str_replace('_', '-', $locale),
 

@@ -16,17 +16,17 @@
 class ThemeQuery extends BaseThemeQuery
 {
 
-    static function findAll() {
+    public function allThemesForUser() {
         $user = DatawrapperSession::getUser();
 
-        $themes= array(ThemeQuery::create()->findPk("default"));
+        $themes = array(ThemeQuery::create()->findPk("default"));
 
         $userThemes = UserThemeQuery::create()
                 ->filterByUser($user)
                 ->find();
 
         foreach ($userThemes as $theme) {
-            $themes[] = $theme;
+            $themes[] = $theme->getTheme();
         }
 
         $organization = $user->getCurrentOrganization();
@@ -37,13 +37,12 @@ class ThemeQuery extends BaseThemeQuery
                     ->find();
 
             foreach ($orgThemes as $theme) {
-                $themes[] = $theme;
+                $themes[] = $theme->getTheme();
             }
 
         }
 
         return $themes;
     }
-
 
 }

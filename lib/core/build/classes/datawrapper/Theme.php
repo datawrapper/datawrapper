@@ -46,7 +46,7 @@ class Theme extends BaseTheme
         $data = array();
 
         foreach ($themeList as $theme) {
-            $data = array_merge($data, $theme);
+            $data = array_replace_recursive($data, $theme);
         }
 
         return $data;
