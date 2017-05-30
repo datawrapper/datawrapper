@@ -106,7 +106,7 @@ vows
                     return
 
                 'the first column name is correct': (dataset, f) ->
-                    assert.equal dataset.column(0).name(), 'Bezirk'
+                    assert.equal 'Bezirk', dataset.column(0).name()
 
 
     .export module
