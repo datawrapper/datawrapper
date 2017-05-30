@@ -27,6 +27,7 @@
  * @method ChartQuery orderByForkedFrom($order = Criteria::ASC) Order by the forked_from column
  * @method ChartQuery orderByExternalData($order = Criteria::ASC) Order by the external_data column
  * @method ChartQuery orderByForkable($order = Criteria::ASC) Order by the forkable column
+ * @method ChartQuery orderByIsFork($order = Criteria::ASC) Order by the is_fork column
  *
  * @method ChartQuery groupById() Group by the id column
  * @method ChartQuery groupByTitle() Group by the title column
@@ -49,6 +50,7 @@
  * @method ChartQuery groupByForkedFrom() Group by the forked_from column
  * @method ChartQuery groupByExternalData() Group by the external_data column
  * @method ChartQuery groupByForkable() Group by the forkable column
+ * @method ChartQuery groupByIsFork() Group by the is_fork column
  *
  * @method ChartQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method ChartQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -97,6 +99,7 @@
  * @method Chart findOneByForkedFrom(string $forked_from) Return the first Chart filtered by the forked_from column
  * @method Chart findOneByExternalData(string $external_data) Return the first Chart filtered by the external_data column
  * @method Chart findOneByForkable(boolean $forkable) Return the first Chart filtered by the forkable column
+ * @method Chart findOneByIsFork(boolean $is_fork) Return the first Chart filtered by the is_fork column
  *
  * @method array findById(string $id) Return Chart objects filtered by the id column
  * @method array findByTitle(string $title) Return Chart objects filtered by the title column
@@ -119,6 +122,7 @@
  * @method array findByForkedFrom(string $forked_from) Return Chart objects filtered by the forked_from column
  * @method array findByExternalData(string $external_data) Return Chart objects filtered by the external_data column
  * @method array findByForkable(boolean $forkable) Return Chart objects filtered by the forkable column
+ * @method array findByIsFork(boolean $is_fork) Return Chart objects filtered by the is_fork column
  *
  * @package    propel.generator.datawrapper.om
  */
@@ -222,7 +226,7 @@ abstract class BaseChartQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `title`, `theme`, `created_at`, `last_modified_at`, `type`, `metadata`, `deleted`, `deleted_at`, `author_id`, `show_in_gallery`, `language`, `guest_session`, `last_edit_step`, `published_at`, `public_url`, `public_version`, `organization_id`, `forked_from`, `external_data`, `forkable` FROM `chart` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `title`, `theme`, `created_at`, `last_modified_at`, `type`, `metadata`, `deleted`, `deleted_at`, `author_id`, `show_in_gallery`, `language`, `guest_session`, `last_edit_step`, `published_at`, `public_url`, `public_version`, `organization_id`, `forked_from`, `external_data`, `forkable`, `is_fork` FROM `chart` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_STR);
@@ -1009,6 +1013,33 @@ abstract class BaseChartQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(ChartPeer::FORKABLE, $forkable, $comparison);
+    }
+
+    /**
+     * Filter the query on the is_fork column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByIsFork(true); // WHERE is_fork = true
+     * $query->filterByIsFork('yes'); // WHERE is_fork = true
+     * </code>
+     *
+     * @param     boolean|string $isFork The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChartQuery The current query, for fluid interface
+     */
+    public function filterByIsFork($isFork = null, $comparison = null)
+    {
+        if (is_string($isFork)) {
+            $isFork = in_array(strtolower($isFork), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(ChartPeer::IS_FORK, $isFork, $comparison);
     }
 
     /**
