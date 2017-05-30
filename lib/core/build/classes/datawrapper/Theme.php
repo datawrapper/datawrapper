@@ -23,13 +23,21 @@ class Theme extends BaseTheme
         $less->setVariables($this->getThemeDataAsFlatArray());
         $base = file_get_contents(ROOT_PATH . 'assets/styles/chart.base/main.less');
 
+        $theme = $this;
+        $allThemeLess = $this->getLess();
+
+        while (!empty($theme->getExtend())) {
+            $theme = ThemeQuery::create()->findPk($theme->getExtend());
+            $allThemeLess .= "\n\n\n" . $theme->getLess();
+        }
+
         $allVisLess = "";
 
         foreach ($visLess as $vis) {
             $allVisLess .= "\n\n\n" . file_get_contents($vis);
         }
 
-        return $less->compile($base . "\n" . $allVisLess);
+        return $less->compile($base . "\n" . $allVisLess . "\n" . $allThemeLess);
     }
 
     public function getThemeData() {
