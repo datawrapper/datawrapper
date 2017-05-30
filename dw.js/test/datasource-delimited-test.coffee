@@ -1,7 +1,10 @@
 
-root._ = require 'underscore'
-root.$ = require 'jquery'
-root.Globalize = require 'globalize'
+global._ = require 'underscore'
+JSDOM = require('jsdom').JSDOM
+dom = new JSDOM '<html></html>'
+global.$ = require("jquery") dom.window
+# root.$ = require 'jquery'
+global.Globalize = require 'globalize'
 vows = require 'vows'
 assert = require 'assert'
 
@@ -14,7 +17,6 @@ vows
     .describe('Reading different CSV datasets')
 
     .addBatch
-
 
         'The tsv "women-in-parliament"':
             topic: dw.datasource.delimited
@@ -92,6 +94,19 @@ vows
 
                 'has correct column types': (dataset, f) ->
                     assert.deepEqual _.map(dataset.columns(), _types), ['number', 'text', 'text', 'number']
+
+        'everything is quoted':
+            topic: dw.datasource.delimited
+                csv: '"Bezirk","Anzahl","Mittelwert Miete Euro pro qm"\n"Charlottenburg-Wilmersdorf","609.0","17.573844996618483"\n"Friedrichshain-Kreuzberg","366.0","18.732384651551758"'
+
+            'when loaded as dataset':
+                topic: (src) ->
+                    console.log(src)
+                    src.dataset().done @callback
+                    return
+
+                'the first column name is correct': (dataset, f) ->
+                    assert.equal dataset.column(0).name(), 'Bezirk'
 
 
     .export module
