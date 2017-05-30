@@ -222,7 +222,7 @@ class Chart extends BaseChart {
      * checks if a chart is forkable
      */
     public function isForkable() {
-        return $this->getForkable();
+        return $this->getForkable() && !$this->getIsFork();
     }
 
     /**

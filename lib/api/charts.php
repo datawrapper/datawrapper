@@ -258,6 +258,10 @@ function if_chart_is_readable($chart_id, $callback) {
  */
 $app->post('/charts/:id/copy', function($chart_id) use ($app) {
     if_chart_is_readable($chart_id, function($user, $chart) use ($app) {
+        if ($chart->getIsFork() == true) {
+            // no duplicating allowed
+            return error('not-allowed', __('You can not duplicate a forked chart.'));
+        }
         try {
             $copy = ChartQuery::create()->copyChart($chart);
             $copy->setUser(DatawrapperSession::getUser());
@@ -284,8 +288,7 @@ function if_chart_is_forkable($chart_id, $callback) {
         if ($chart->isForkable()) {
             call_user_func($callback, $user, $chart);
         } else {
-            // no such chart
-            error_chart_not_writable();
+            error('not-allowed', __('You can not re-fork a forked chart.'));
         }
     } else {
         // no such chart
