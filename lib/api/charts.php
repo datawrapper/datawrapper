@@ -260,7 +260,7 @@ $app->post('/charts/:id/copy', function($chart_id) use ($app) {
     if_chart_is_readable($chart_id, function($user, $chart) use ($app) {
         try {
             $copy = ChartQuery::create()->copyChart($chart);
-            $copy->setUser($user->getId());
+            $copy->setUser(DatawrapperSession::getUser());
             $copy->setOrganization($user->getCurrentOrganization());
             $copy->save();
             ok(array('id' => $copy->getId()));
