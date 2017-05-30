@@ -205,10 +205,6 @@ class Chart extends BaseChart {
      * checks if a user has the privilege to access the chart
      */
     public function isReadable($user) {
-        if ($this->getForkable()) {
-            // forkable charts are readable to anyone
-            return true;
-        }
         if ($user->isLoggedIn()) {
             $org = $this->getOrganization();
             if ($this->getAuthorId() == $user->getId() ||
@@ -220,6 +216,13 @@ class Chart extends BaseChart {
             return true;
         }
         return $this->isPublic();
+    }
+
+    /*
+     * checks if a chart is forkable
+     */
+    public function isForkable() {
+        return $this->getForkable();
     }
 
     /**
