@@ -1,4 +1,4 @@
-/*! datawrapper - v1.12.1 *///
+/*! datawrapper - v1.13.1 *///
 // NOTE: This file is auto-generated using /dw.js/make
 // from the source files /dw.js/src/*.js.
 //
@@ -1252,12 +1252,10 @@ dw.utils = {
                 !$(el).attr('aria-hidden')) {
                 ch += $(el).outerHeight(false); // element height
             }
-            ch += Math.max(margin(el, 'top'), bottom);
-            bottom = margin(el, 'bottom');
+            ch += margin(el, 'top');
+            ch += margin(el, 'bottom');
         });
-        ch += bottom;
-        // subtract body padding
-        //ch += $('body').innerHeight() - $('body').height();
+
         var mt = $('#chart').css('margin-top').replace('px', ''),
             mb = $('#chart').css('margin-bottom').replace('px', ''),
             // FIXME: -8 instead of -2 because when `introduction` is filled, a scrollbar appears.
