@@ -88,6 +88,49 @@ class Theme extends BaseTheme
         return $f;
     }
 
+    public function addAssetFile($name, $url) {
+        $assets = json_decode(parent::getAssets(), true);
+        if (!is_array($assets)) $assets = array();
+
+        $assets[$name] = array(
+            "url" => $url,
+            "type" => "file"
+        );
+
+        $this->setAssets(json_encode($assets));
+        $this->save();
+    }
+
+    public function addAssetFont($name, $urls) {
+        $assets = json_decode(parent::getAssets(), true);
+        if (!is_array($assets)) $assets = array();
+
+        $assets[$name] = $urls;
+        $assets['type'] = "font";
+
+        $this->setAssets(json_encode($assets));
+    }
+
+    public function getAssetFiles() {
+        $assets = json_decode(parent::getAssets(), true);
+        if (!is_array($assets)) $assets = array();
+        return array_filter($assets, function($v) { return $v['type'] == "file"; });
+    }
+
+    public function getAssetFonts() {
+        $assets = json_decode(parent::getAssets(), true);
+        if (!is_array($assets)) $assets = array();
+        return array_filter($assets, function($v) { return $v['type'] == "font"; });
+    }
+
+    public function removeAsset($name) {
+        $assets = json_decode(parent::getAssets(), true);
+        if (!is_array($assets)) $assets = array();
+        unset($assets[$name]);
+        $this->setAssets(json_encode($assets));
+        $this->save();
+    }
+
     /**
      * returns the theme data
      */
