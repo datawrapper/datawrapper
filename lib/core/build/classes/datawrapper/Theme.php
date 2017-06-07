@@ -16,15 +16,17 @@
 class Theme extends BaseTheme
 {
     public function getCSS($visLess) {
-        // compile: theme-variables, chart.base.less, visulization.less
-
-        $less = new scssc();
-        $data = $this->getThemeDataAsFlatArray();
-        $less->setVariables($data);
-
-        $base = file_get_contents(ROOT_PATH . 'assets/styles/chart.base/main.less');
-
+        global $app;
         $theme = $this;
+
+        // compile: theme-variables, chart.base.less, visulization.less
+        $data = $this->getThemeDataAsFlatArray();
+
+        $twig = $app->view()->getEnvironment();
+        $twigData = $data;
+        $twigData['fonts'] = $this->getAssetFonts();
+        $baseLess = $twig->render('chart-styles.less.twig', $twigData);
+
         $allThemeLess = $this->getLess();
 
         while (!empty($theme->getExtend())) {
@@ -38,7 +40,9 @@ class Theme extends BaseTheme
             $allVisLess .= "\n\n\n" . file_get_contents($vis);
         }
 
-        return $less->compile($base . "\n" . $allVisLess . "\n" . $allThemeLess);
+        $less = new lessc;
+        $less->setVariables($data);
+        return $less->compile($baseLess . "\n" . $allVisLess . "\n" . $allThemeLess);
     }
 
     public function getThemeData() {

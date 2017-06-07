@@ -3,14 +3,50 @@
  * base stylesheets included in every chart
  */
 
+{% for name, urls in fonts %}
+@font-face {
+    font-family: "{{ name }}";
+    src: url('{{ urls.files.eot }}');
+    src: url('{{ urls.files.eot }}?#iefix') format('embedded-opentype'),
+    url('{{ urls.files.woff }}.woff') format('woff'),
+    url('{{ urls.files.ttf }}') format('truetype'),
+    url('{{ urls.files.svg }}#{{ name }}') format('svg');
+}
+{% endfor %}
+
 .chart {
+    {% if typography_fontFamily %}
+        font-family: @typography_fontFamily;
+    {% endif %}
+    
+    {% if typography_fontSize %}
+        font-size: @typography_fontSize;
+    {% endif %}
+    
+    {% if typography_fontWeight %}
+        font-weight: @typography_fontWeight;
+    {% endif %}
+    
+    {% if typography_lineHeight %}
+        line-height: @typography_lineHeight;
+    {% endif %}
+    
+    {% if typography_fontStyle %}
+        font-style: @typography_fontStyle;
+    {% endif %}
+    
+    {% if typography_color%}
+        color: @typography_color;
+    {% endif %}
 
-    font-family: @typography_fontFamily;
-    background: @colors_background;
-    padding: @chart_padding;
+    {% if colors_background %}
+        background: @colors_background;
+    {% endif %}
 
-    font-weight: 400;
-    font-size: 12px;
+    {% if chart_padding %}
+        padding: @chart_padding;
+    {% endif %}
+    
     margin: 0 0px;
     height: 100%;
 
@@ -29,18 +65,92 @@
     }
 
     h1 {
-        font-size: @typography_headline_fontSize;
-        font-weight: @typography_headline_fontWeight;
+        {% if typography_headline_fontFamily %}
+            font-family: @typography_headline_fontFamily;
+        {% endif %}
+
+        {% if typography_headline_fontSize %}
+            font-size: @typography_headline_fontSize;
+        {% endif %}
+
+        {% if typography_headline_fontWeight %}
+            font-weight: @typography_headline_fontWeight;
+        {% endif %}
+
+        {% if typography_headline_lineHeight %}
+            line-height: @typography_headline_lineHeight;
+        {% endif %}
+
+        {% if typography_headline_fontStyle %}
+            font-style: @typography_headline_fontStyle;
+        {% endif %}
+
+        {% if typography_headline_color%}
+            color: @typography_headline_color;
+        {% endif %}
+
         margin: 0 0 10px;
         text-align: left;
     }
 
 
     p {
-        font-size: @typography_intro_fontSize;
-        font-weight: @typography_intro_fontWeight;
+        {% if typography_intro_fontFamily %}
+            font-family: @typography_intro_fontFamily;
+        {% endif %}
+    
+        {% if typography_intro_fontSize %}
+            font-size: @typography_intro_fontSize;
+        {% endif %}
+    
+        {% if typography_intro_fontWeight %}
+            font-weight: @typography_intro_fontWeight;
+        {% endif %}
+    
+        {% if typography_intro_lineHeight %}
+            line-height: @typography_intro_lineHeight;
+        {% endif %}
+    
+        {% if typography_intro_fontStyle %}
+            font-style: @typography_intro_fontStyle;
+        {% endif %}
+    
+        {% if typography_intro_color%}
+            color: @typography_intro_color;
+        {% endif %}
+        
         margin: 5px 0 10px !important;
         line-height: 17px;
+    }
+
+    .dw-chart-notes {
+        {% if typography_notes_fontFamily %}
+            font-size: @typography_notes_fontFamily;
+        {% endif %}
+    
+        {% if typography_notes_fontSize %}
+            font-size: @typography_notes_fontSize;
+        {% endif %}
+    
+        {% if typography_notes_fontWeight %}
+            font-size: @typography_notes_fontWeight;
+        {% endif %}
+    
+        {% if typography_notes_lineHeight %}
+            font-size: @typography_notes_lineHeight;
+        {% endif %}
+    
+        {% if typography_notes_fontStyle %}
+            font-size: @typography_notes_fontStyle;
+        {% endif %}
+    
+        {% if typography_notes_color%}
+            font-size: @typography_notes_color;
+        {% endif %}
+
+        margin-bottom: 5px;
+        position: relative;
+        margin-top: 10px;
     }
 
     a {
@@ -163,13 +273,6 @@
             bottom: @chart_padding;
         }
 
-    }
-
-    .dw-chart-notes {
-        font-style: italic;
-        margin-bottom: 5px;
-        position: relative;
-        margin-top: 10px;
     }
 
     .logo {
