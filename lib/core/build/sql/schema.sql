@@ -306,6 +306,7 @@ CREATE TABLE `theme`
     `title` VARCHAR(128),
     `data` LONGTEXT,
     `less` LONGTEXT,
+    `assets` LONGTEXT,
     PRIMARY KEY (`id`)
 ) ENGINE=MyISAM;
 

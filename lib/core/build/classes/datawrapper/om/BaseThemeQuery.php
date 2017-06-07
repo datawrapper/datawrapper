@@ -12,6 +12,7 @@
  * @method ThemeQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method ThemeQuery orderByData($order = Criteria::ASC) Order by the data column
  * @method ThemeQuery orderByLess($order = Criteria::ASC) Order by the less column
+ * @method ThemeQuery orderByAssets($order = Criteria::ASC) Order by the assets column
  *
  * @method ThemeQuery groupById() Group by the id column
  * @method ThemeQuery groupByCreatedAt() Group by the created_at column
@@ -19,6 +20,7 @@
  * @method ThemeQuery groupByTitle() Group by the title column
  * @method ThemeQuery groupByData() Group by the data column
  * @method ThemeQuery groupByLess() Group by the less column
+ * @method ThemeQuery groupByAssets() Group by the assets column
  *
  * @method ThemeQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method ThemeQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -40,6 +42,7 @@
  * @method Theme findOneByTitle(string $title) Return the first Theme filtered by the title column
  * @method Theme findOneByData(string $data) Return the first Theme filtered by the data column
  * @method Theme findOneByLess(string $less) Return the first Theme filtered by the less column
+ * @method Theme findOneByAssets(string $assets) Return the first Theme filtered by the assets column
  *
  * @method array findById(string $id) Return Theme objects filtered by the id column
  * @method array findByCreatedAt(string $created_at) Return Theme objects filtered by the created_at column
@@ -47,6 +50,7 @@
  * @method array findByTitle(string $title) Return Theme objects filtered by the title column
  * @method array findByData(string $data) Return Theme objects filtered by the data column
  * @method array findByLess(string $less) Return Theme objects filtered by the less column
+ * @method array findByAssets(string $assets) Return Theme objects filtered by the assets column
  *
  * @package    propel.generator.datawrapper.om
  */
@@ -150,7 +154,7 @@ abstract class BaseThemeQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `created_at`, `extend`, `title`, `data`, `less` FROM `theme` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `created_at`, `extend`, `title`, `data`, `less`, `assets` FROM `theme` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_STR);
@@ -425,6 +429,35 @@ abstract class BaseThemeQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(ThemePeer::LESS, $less, $comparison);
+    }
+
+    /**
+     * Filter the query on the assets column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByAssets('fooValue');   // WHERE assets = 'fooValue'
+     * $query->filterByAssets('%fooValue%'); // WHERE assets LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $assets The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ThemeQuery The current query, for fluid interface
+     */
+    public function filterByAssets($assets = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($assets)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $assets)) {
+                $assets = str_replace('*', '%', $assets);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(ThemePeer::ASSETS, $assets, $comparison);
     }
 
     /**

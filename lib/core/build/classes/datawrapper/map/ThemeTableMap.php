@@ -45,6 +45,7 @@ class ThemeTableMap extends TableMap
         $this->addColumn('title', 'Title', 'VARCHAR', false, 128, null);
         $this->addColumn('data', 'Data', 'CLOB', false, null, null);
         $this->addColumn('less', 'Less', 'CLOB', false, null, null);
+        $this->addColumn('assets', 'Assets', 'CLOB', false, null, null);
         // validators
     } // initialize()
 

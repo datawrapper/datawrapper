@@ -241,6 +241,7 @@
 	<column name="title" type="varchar" size="128" />
     <column name="data" type="clob" />
     <column name="less" type="clob" />
+    <column name="assets" type="clob" />
   </table>
 
   <!-- organization <-> theme map -->

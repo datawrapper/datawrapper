@@ -35,9 +35,3 @@ CREATE TABLE `user_theme`
     PRIMARY KEY (`user_id`,`theme_id`),
     INDEX `user_theme_FI_2` (`theme_id`)
 ) ENGINE=MyISAM;
-
--- ---------------------------------------------------------------------
--- adding column for theme less
--- ---------------------------------------------------------------------
-
-ALTER TABLE `theme` ADD COLUMN `less` LONGTEXT;
