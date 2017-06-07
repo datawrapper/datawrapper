@@ -39,6 +39,10 @@
         color: @typography_color;
     {% endif %}
 
+    {% if typography_textDecoration%}
+        text-decoration: @typography_textDecoration;
+    {% endif %}
+
     {% if colors_background %}
         background: @colors_background;
     {% endif %}
@@ -84,7 +88,11 @@
         {% if typography_headline_fontStyle %}
             font-style: @typography_headline_fontStyle;
         {% endif %}
-
+        
+        {% if typography_headline_textDecoration%}
+            text-decoration: @typography_headline_textDecoration;
+        {% endif %}
+        
         {% if typography_headline_color%}
             color: @typography_headline_color;
         {% endif %}
@@ -115,6 +123,10 @@
             font-style: @typography_intro_fontStyle;
         {% endif %}
     
+        {% if typography_intro_textDecoration%}
+            text-decoration: @typography_intro_textDecoration;
+        {% endif %}
+        
         {% if typography_intro_color%}
             color: @typography_intro_color;
         {% endif %}
@@ -125,7 +137,7 @@
 
     .dw-chart-notes {
         {% if typography_notes_fontFamily %}
-            font-size: @typography_notes_fontFamily;
+            font-family: @typography_notes_fontFamily;
         {% endif %}
     
         {% if typography_notes_fontSize %}
@@ -133,19 +145,23 @@
         {% endif %}
     
         {% if typography_notes_fontWeight %}
-            font-size: @typography_notes_fontWeight;
+            font-weight: @typography_notes_fontWeight;
         {% endif %}
     
         {% if typography_notes_lineHeight %}
-            font-size: @typography_notes_lineHeight;
+            line-height: @typography_notes_lineHeight;
         {% endif %}
     
         {% if typography_notes_fontStyle %}
-            font-size: @typography_notes_fontStyle;
+            font-style: @typography_notes_fontStyle;
         {% endif %}
     
+        {% if typography_notes_textDecoration%}
+            text-decoration: @typography_notes_textDecoration;
+        {% endif %}
+
         {% if typography_notes_color%}
-            font-size: @typography_notes_color;
+            colors: @typography_notes_color;
         {% endif %}
 
         margin-bottom: 5px;
@@ -153,8 +169,89 @@
         margin-top: 10px;
     }
 
-    a {
-        color: #0088CC;
+    #footer, .dw-chart-footer {
+        min-height: 1px;
+        position: absolute;
+        bottom: 0;
+        left:0;
+        right:0;
+        height: 25px;
+        background: transparent;
+    
+        {% if typography_footer_fontFamily %}
+            font-family: @typography_footer_fontFamily;
+        {% endif %}
+    
+        {% if typography_footer_fontSize %}
+            font-size: @typography_footer_fontSize;
+        {% endif %}
+    
+        {% if typography_footer_fontWeight %}
+            font-weight: @typography_footer_fontWeight;
+        {% endif %}
+    
+        {% if typography_footer_lineHeight %}
+            line-height: @typography_footer_lineHeight;
+        {% endif %}
+    
+        {% if typography_footer_fontStyle %}
+            font-style: @typography_footer_fontStyle;
+        {% endif %}
+    
+        {% if typography_footer_textDecoration%}
+            text-decoration: @typography_footer_textDecoration;
+        {% endif %}
+    
+        {% if typography_footer_color%}
+            color: @typography_footer_color;
+        {% endif %}
+            
+        a {
+            {% if typography_footer_links_fontFamily %}
+                font-family: @typography_footer_links_fontFamily;
+            {% endif %}
+    
+            {% if typography_footer_links_fontSize %}
+                font-size: @typography_footer_links_fontSize;
+            {% endif %}
+    
+            {% if typography_footer_links_fontWeight %}
+                font-weight: @typography_footer_links_fontWeight;
+            {% endif %}
+    
+            {% if typography_footer_links_lineHeight %}
+                line-height: @typography_footer_links_lineHeight;
+            {% endif %}
+    
+            {% if typography_footer_links_fontStyle %}
+                font-style: @typography_footer_links_fontStyle;
+            {% endif %}
+    
+            {% if typography_footer_links_textDecoration%}
+                text-decoration: @typography_footer_links_textDecoration;
+            {% endif %}
+    
+            {% if typography_footer_links_color%}
+                color: @typography_footer_links_color;
+            {% endif %}
+        }
+
+        .footer-left, .footer-right {
+            position: absolute;
+            bottom: 5px;
+            z-index: 1000;
+        }
+
+        .footer-left {
+            left: @chart_padding;
+            bottom: @chart_padding;
+        }
+
+        .footer-right {
+            right: @chart_padding;
+            bottom: @chart_padding;
+        }
+
     }
 
     a img {
@@ -244,35 +341,6 @@
     .dw-chart-notes {
         font-style: italic;
         margin-bottom: 10px;
-    }
-
-    #footer, .dw-chart-footer {
-        min-height: 1px;
-        position: absolute;
-        bottom: 0;
-        left:0;
-        right:0;
-        height: 25px;
-        font-size: 11px;
-        color: #888;
-        background:transparent;
-
-        .footer-left, .footer-right {
-            position: absolute;
-            bottom: 5px;
-            z-index: 1000;
-        }
-
-        .footer-left {
-            left: @chart_padding;
-            bottom: @chart_padding;
-        }
-
-        .footer-right {
-            right: @chart_padding;
-            bottom: @chart_padding;
-        }
-
     }
 
     .logo {
