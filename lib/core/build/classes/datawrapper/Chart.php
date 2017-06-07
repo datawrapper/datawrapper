@@ -218,6 +218,13 @@ class Chart extends BaseChart {
         return $this->isPublic();
     }
 
+    /*
+     * checks if a chart is forkable
+     */
+    public function isForkable() {
+        return $this->getForkable() && !$this->getIsFork();
+    }
+
     /**
      * checks if a chart is writeable by a user
      *

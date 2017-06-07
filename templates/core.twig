@@ -197,14 +197,14 @@ L143.178,296.9z M124.338,205.555H73.211v25.062h51.127V205.555z"></path> </svg>
     <script type="text/javascript" src="{{ config.static_path }}/vendor/bootstrap/js/bootstrap.min.js"></script>
     <script type="text/javascript">
 
-$(function() {
-  dw.backend.__chartCacheDomain = '{{ DW_CHART_CACHE_DOMAIN }}';
-  dw.backend.__domain = '{{ DW_DOMAIN }}';
-  dw.backend.__asset_domain = '{{ ASSET_DOMAIN }}';
-  dw.backend.__locale = '{{ locale | replace({'_':'-'}) }}';
+      dw.backend.__chartCacheDomain = '{{ DW_CHART_CACHE_DOMAIN }}';
+      dw.backend.__domain = '{{ DW_DOMAIN }}';
+      dw.backend.__asset_domain = '{{ ASSET_DOMAIN }}';
+      dw.backend.__locale = '{{ locale | replace({'_':'-'}) }}';
 
-  Globalize.culture('{{ locale | replace({'_':'-'}) }}');
-});
+      $(function() {
+        Globalize.culture('{{ locale | replace({'_':'-'}) }}');
+      });
     </script>
     {% use "messages.twig" %}
     {{ block('messages') }}

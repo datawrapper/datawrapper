@@ -1,4 +1,4 @@
-/*! datawrapper - v1.13.1 *///
+/*! datawrapper - v1.13.2 *///
 // NOTE: This file is auto-generated using /dw.js/make
 // from the source files /dw.js/src/*.js.
 //
@@ -899,25 +899,24 @@ dw.datasource.delimited = function(opts) {
             return $.ajax({
                 url: opts.url,
                 method: 'GET',
-                dataType: "text" // NOTE (edouard): Without that jquery try to parse the content and return a Document
+                dataType: "text"
             }).then(function(raw) {
                 return new DelimitedParser(opts).parse(raw);
             });
         } else if (opts.csv) {
             var dfd = $.Deferred(),
                 parsed = dfd.then(function(raw) {
-                return new DelimitedParser(opts).parse(raw);
-            });
+                    return new DelimitedParser(opts).parse(raw);
+                });
             dfd.resolve(opts.csv);
             return parsed;
         }
         throw 'you need to provide either an URL or CSV data.';
     }
 
-    var delimited = {
+    return {
         dataset: loadAndParseCsv
     };
-    return delimited;
 };
 
 
@@ -963,7 +962,7 @@ _.extend(DelimitedParser.prototype, {
         var closure = opts.delimiter != '|' ? '|' : '#',
             arrData;
 
-        data = closure + data.replace(/\s+$/g, '') + closure;
+        data = closure + '\n' + data.replace(/\s+$/g, '') + closure;
 
         function parseCSV(delimiterPattern, strData, strDelimiter) {
             // implementation and regex borrowed from:
@@ -1038,7 +1037,7 @@ _.extend(DelimitedParser.prototype, {
             }
 
             // Return the parsed data.
-            return (arrData);
+            return (arrData.slice(1));
         } // end parseCSV
 
         function transpose(arrMatrix) {

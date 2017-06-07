@@ -228,7 +228,7 @@ $app->delete('/charts/:id', function($id) use ($app) {
 
 
 /**
- * checks if a chart is reable by the current user (or guest)
+ * checks if a chart is readable by the current user (or guest)
  *
  * @param chart_id
  * @param callback the function to be executed if chart is writable
@@ -250,21 +250,67 @@ function if_chart_is_readable($chart_id, $callback) {
 }
 
 
+
 /**
- * API: copy/duplicate/fork a chart
+ * API: copy/duplicate a chart
  *
  * @param chart_id chart id
  */
 $app->post('/charts/:id/copy', function($chart_id) use ($app) {
     if_chart_is_readable($chart_id, function($user, $chart) use ($app) {
+        if ($chart->getIsFork() == true) {
+            // no duplicating allowed
+            return error('not-allowed', __('You can not duplicate a forked chart.'));
+        }
         try {
-            $user = DatawrapperSession::getUser();
-
             $copy = ChartQuery::create()->copyChart($chart);
-            $copy->setUser($user);
+            $copy->setUser(DatawrapperSession::getUser());
             $copy->setOrganization($user->getCurrentOrganization());
             $copy->save();
             ok(array('id' => $copy->getId()));
+        } catch (Exception $e) {
+            error('io-error', $e->getMessage());
+        }
+    });
+});
+
+
+/**
+ * checks if a chart is forkable by the current user (or guest)
+ *
+ * @param chart_id
+ * @param callback the function to be executed if chart is writable
+ */
+function if_chart_is_forkable($chart_id, $callback) {
+    $chart = ChartQuery::create()->findPK($chart_id);
+    if ($chart) {
+        $user = DatawrapperSession::getUser();
+        if ($chart->isForkable()) {
+            call_user_func($callback, $user, $chart);
+        } else {
+            error('not-allowed', __('You can not re-fork a forked chart.'));
+        }
+    } else {
+        // no such chart
+        error_chart_not_found($id);
+    }
+}
+
+
+/**
+ * API: fork a chart
+ *
+ * @param chart_id chart id
+ */
+$app->post('/charts/:id/fork', function($chart_id) use ($app) {
+    if_chart_is_forkable($chart_id, function($user, $chart) use ($app) {
+        try {
+            $fork = ChartQuery::create()->copyChart($chart);
+            $fork->setUser(DatawrapperSession::getUser());
+            $fork->setOrganization($user->getCurrentOrganization());
+            $fork->setIsFork(true);
+            $fork->save();
+            ok(array('id' => $fork->getId()));
         } catch (Exception $e) {
             error('io-error', $e->getMessage());
         }
