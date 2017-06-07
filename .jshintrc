@@ -9,7 +9,8 @@
 	"setInterval": false,
 	"$": false,
 	"_": false,
-	"dw": false
+	"dw": false,
+	"chart": false
   },
   "undef": true,
   "esnext": true

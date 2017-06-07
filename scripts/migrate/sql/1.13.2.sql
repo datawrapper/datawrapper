@@ -1,7 +1,5 @@
--- ---------------------------------------------------------------------
--- adding column for theme less
+-- adding column for is_fork charts
 -- ---------------------------------------------------------------------
 
-ALTER TABLE `theme` ADD COLUMN `less` LONGTEXT;
+ALTER TABLE chart ADD COLUMN `is_fork` TINYINT(1) DEFAULT 0;
 
-ALTER TABLE `theme` ADD COLUMN `assets` LONGTEXT;
