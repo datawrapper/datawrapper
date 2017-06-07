@@ -19,7 +19,7 @@ $app->get('/chart/:id/preview', function ($id) use ($app) {
 
         $theme = ThemeQuery::create()->findPk($chart->getTheme());
         if (empty($theme)) $theme = ThemeQuery::create()->findPk("default");
-        $page['theme'] = $theme->getThemeData();
+        $page['theme'] = $theme;
 
         if (!empty($GLOBALS['dw_config']['prevent_chart_preview_in_iframes'])) {
             // prevent this url from being rendered in iframes on different

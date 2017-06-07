@@ -18,9 +18,10 @@ class Theme extends BaseTheme
     public function getCSS($visLess) {
         // compile: theme-variables, chart.base.less, visulization.less
 
-        $less = new lessc;
+        $less = new scssc();
+        $data = $this->getThemeDataAsFlatArray();
+        $less->setVariables($data);
 
-        $less->setVariables($this->getThemeDataAsFlatArray());
         $base = file_get_contents(ROOT_PATH . 'assets/styles/chart.base/main.less');
 
         $theme = $this;
@@ -88,6 +89,12 @@ class Theme extends BaseTheme
         return $f;
     }
 
+    public function getAssetUrl($name) {
+        $assets = json_decode(parent::getAssets(), true);
+        if (!is_array($assets)) $assets = array();
+        return $assets[$name]['url'];
+    }
+
     public function addAssetFile($name, $url) {
         $assets = json_decode(parent::getAssets(), true);
         if (!is_array($assets)) $assets = array();
@@ -105,10 +112,12 @@ class Theme extends BaseTheme
         $assets = json_decode(parent::getAssets(), true);
         if (!is_array($assets)) $assets = array();
 
-        $assets[$name] = $urls;
-        $assets['type'] = "font";
+        $assets[$name] = [];
+        $assets[$name]['files'] = $urls;
+        $assets[$name]['type'] = "font";
 
         $this->setAssets(json_encode($assets));
+        $this->save();
     }
 
     public function getAssetFiles() {

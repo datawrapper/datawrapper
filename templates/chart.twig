@@ -72,22 +72,30 @@
     <div class="dw-chart-footer" id="footer">
         {% if not plain %}
             <div class="footer-left">
+                {% if themeData.logo and themeData.logo.position == 'bottom-left' %}
+                    <img src="{{ theme.getAssetUrl(themeData.logo.image) }}">
+                {% endif %}
+
                 {% if chartSource %}
                     <span data-src="{% trans "Source: " %}" class="source-block">{% trans "Source: " %}
                         {{ chartSource | raw }}</span>
                 {% endif %}
 
-                {% if chartSource and theme.links.getTheData %}
+                {% if chartSource and themeData.links.getTheData %}
                 &nbsp;•&nbsp;
                 {% endif %}
 
-                {% if theme.links.getTheData %}
+                {% if themeData.links.getTheData %}
                     <a href="data">{% trans "Get the data" %}</a>
                 {% endif %}
             </div>
             <div class="footer-right">
-                {% if theme.links.createdWithDatawrapper %}
+                {% if themeData.links.createdWithDatawrapper %}
                     {% trans "Created with" %} <a href="{{ DW_DOMAIN }}_/{{ chart.id }}" target="_blank">{% trans "Datawrapper" %}</a>
+                {% endif %}
+
+                {% if themeData.logo and themeData.logo.position == 'bottom-right' %}
+                    <img height="{{ themeData.logo.height }}" width="{{ themeData.logo.width }}" src="{{ theme.assetUrl("tv2.png") }}">
                 {% endif %}
             </div>
         {% endif %}
