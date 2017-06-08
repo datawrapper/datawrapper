@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.28.10",
+            "version": "3.29.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "2077a5c8cbfb3f16326a145da926166395405953"
+                "reference": "ad2206be87d722de5a52b3d1b0d6549fe2980fc7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/2077a5c8cbfb3f16326a145da926166395405953",
-                "reference": "2077a5c8cbfb3f16326a145da926166395405953",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/ad2206be87d722de5a52b3d1b0d6549fe2980fc7",
+                "reference": "ad2206be87d722de5a52b3d1b0d6549fe2980fc7",
                 "shasum": ""
             },
             "require": {
@@ -84,7 +84,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2017-06-06T22:53:07+00:00"
+            "time": "2017-06-07T22:44:10+00:00"
         },
         {
             "name": "ezyang/htmlpurifier",
@@ -943,9 +943,7 @@
             "authors": [
                 {
                     "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com",
-                    "homepage": "http://fabien.potencier.org",
-                    "role": "Lead Developer"
+                    "email": "fabien@symfony.com"
                 }
             ],
             "description": "Common additional features for Twig that do not directly belong in core",
@@ -992,14 +990,11 @@
             "authors": [
                 {
                     "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com",
-                    "homepage": "http://fabien.potencier.org",
-                    "role": "Lead Developer"
+                    "email": "fabien@symfony.com"
                 },
                 {
                     "name": "Armin Ronacher",
-                    "email": "armin.ronacher@active-4.com",
-                    "role": "Project Founder"
+                    "email": "armin.ronacher@active-4.com"
                 }
             ],
             "description": "Twig, the flexible, fast, and secure template language for PHP",

@@ -15,32 +15,32 @@
 {% endfor %}
 
 .chart {
-    {% if typography_fontFamily %}
-        font-family: @typography_fontFamily;
-    {% endif %}
-    
-    {% if typography_fontSize %}
-        font-size: @typography_fontSize;
-    {% endif %}
-    
-    {% if typography_fontWeight %}
-        font-weight: @typography_fontWeight;
-    {% endif %}
-    
-    {% if typography_lineHeight %}
-        line-height: @typography_lineHeight;
-    {% endif %}
-    
-    {% if typography_fontStyle %}
-        font-style: @typography_fontStyle;
-    {% endif %}
-    
-    {% if typography_color%}
-        color: @typography_color;
+    {% if typography_chart_typeface %}
+        font-family: @typography_chart_typeface;
     {% endif %}
 
-    {% if typography_textDecoration%}
-        text-decoration: @typography_textDecoration;
+    {% if typography_chart_color %}
+        color: @typography_chart_color;
+    {% endif %}
+
+    {% if typography_chart_fontAppearance_fontSize %}
+        font-size: @typography_chart_fontAppearance_fontSize;
+    {% endif %}
+    
+    {% if typography_chart_fontAppearance_fontWeight %}
+        font-weight: @typography_chart_fontAppearance_fontWeight;
+    {% endif %}
+
+    {% if typography_chart_fontAppearance_fontStyle %}
+        font-style: @typography_chart_fontAppearance_fontStyle;
+    {% endif %}
+
+    {% if typography_chart_fontAppearance_textDecoration%}
+        text-decoration: @typography_chart_fontAppearance_textDecoration;
+    {% endif %}
+
+    {% if typography_chart_lineHeight %}
+        line-height: @typography_chart_lineHeight;
     {% endif %}
 
     {% if colors_background %}
@@ -69,28 +69,28 @@
     }
 
     h1 {
-        {% if typography_headline_fontFamily %}
-            font-family: @typography_headline_fontFamily;
+        {% if typography_headline_typeface %}
+            font-family: @typography_headline_typeface;
         {% endif %}
 
-        {% if typography_headline_fontSize %}
-            font-size: @typography_headline_fontSize;
+        {% if typography_headline_fontAppearance_fontSize %}
+            font-size: @typography_headline_fontAppearance_fontSize;
         {% endif %}
 
-        {% if typography_headline_fontWeight %}
-            font-weight: @typography_headline_fontWeight;
+        {% if typography_headline_fontAppearance_fontWeight %}
+            font-weight: @typography_headline_fontAppearance_fontWeight;
         {% endif %}
 
         {% if typography_headline_lineHeight %}
             line-height: @typography_headline_lineHeight;
         {% endif %}
 
-        {% if typography_headline_fontStyle %}
-            font-style: @typography_headline_fontStyle;
+        {% if typography_headline_fontAppearance_fontStyle %}
+            font-style: @typography_headline_fontAppearance_fontStyle;
         {% endif %}
         
-        {% if typography_headline_textDecoration%}
-            text-decoration: @typography_headline_textDecoration;
+        {% if typography_headline_fontAppearance_textDecoration%}
+            text-decoration: @typography_headline_fontAppearance_textDecoration;
         {% endif %}
         
         {% if typography_headline_color%}
@@ -103,32 +103,32 @@
 
 
     p {
-        {% if typography_intro_fontFamily %}
-            font-family: @typography_intro_fontFamily;
+        {% if typography_description_typeface %}
+            font-family: @typography_description_typeface;
         {% endif %}
     
-        {% if typography_intro_fontSize %}
-            font-size: @typography_intro_fontSize;
+        {% if typography_description_fontAppearance_fontSize %}
+            font-size: @typography_description_fontAppearance_fontSize;
         {% endif %}
     
-        {% if typography_intro_fontWeight %}
-            font-weight: @typography_intro_fontWeight;
+        {% if typography_description_fontAppearance_fontWeight %}
+            font-weight: @typography_description_fontAppearance_fontWeight;
         {% endif %}
     
-        {% if typography_intro_lineHeight %}
-            line-height: @typography_intro_lineHeight;
+        {% if typography_description_lineHeight %}
+            line-height: @typography_description_lineHeight;
         {% endif %}
     
-        {% if typography_intro_fontStyle %}
-            font-style: @typography_intro_fontStyle;
+        {% if typography_description_fontAppearance_fontStyle %}
+            font-style: @typography_description_fontAppearance_fontStyle;
         {% endif %}
     
-        {% if typography_intro_textDecoration%}
-            text-decoration: @typography_intro_textDecoration;
+        {% if typography_description_fontAppearance_textDecoration%}
+            text-decoration: @typography_description_fontAppearance_textDecoration;
         {% endif %}
         
-        {% if typography_intro_color%}
-            color: @typography_intro_color;
+        {% if typography_description_color%}
+            color: @typography_description_color;
         {% endif %}
         
         margin: 5px 0 10px !important;
@@ -136,28 +136,28 @@
     }
 
     .dw-chart-notes {
-        {% if typography_notes_fontFamily %}
-            font-family: @typography_notes_fontFamily;
+        {% if typography_notes_typeface %}
+            font-family: @typography_notes_typeface;
         {% endif %}
     
-        {% if typography_notes_fontSize %}
-            font-size: @typography_notes_fontSize;
+        {% if typography_notes_fontAppearance_fontSize %}
+            font-size: @typography_notes_fontAppearance_fontSize;
         {% endif %}
     
-        {% if typography_notes_fontWeight %}
-            font-weight: @typography_notes_fontWeight;
+        {% if typography_notes_fontAppearance_fontWeight %}
+            font-weight: @typography_notes_fontAppearance_fontWeight;
         {% endif %}
     
         {% if typography_notes_lineHeight %}
             line-height: @typography_notes_lineHeight;
         {% endif %}
     
-        {% if typography_notes_fontStyle %}
-            font-style: @typography_notes_fontStyle;
+        {% if typography_notes_fontAppearance_fontStyle %}
+            font-style: @typography_notes_fontAppearance_fontStyle;
         {% endif %}
     
-        {% if typography_notes_textDecoration%}
-            text-decoration: @typography_notes_textDecoration;
+        {% if typography_notes_fontAppearance_textDecoration %}
+            text-decoration: @typography_notes_fontAppearance_textDecoration;
         {% endif %}
 
         {% if typography_notes_color%}
@@ -178,8 +178,8 @@
         height: 25px;
         background: transparent;
     
-        {% if typography_footer_fontFamily %}
-            font-family: @typography_footer_fontFamily;
+        {% if typography_footer_typeface %}
+            font-family: @typography_footer_typeface;
         {% endif %}
     
         {% if typography_footer_fontSize %}
@@ -207,8 +207,8 @@
         {% endif %}
             
         a {
-            {% if typography_footer_links_fontFamily %}
-                font-family: @typography_footer_links_fontFamily;
+            {% if typography_footer_links_typeface %}
+                font-family: @typography_footer_links_typeface;
             {% endif %}
     
             {% if typography_footer_links_fontSize %}
