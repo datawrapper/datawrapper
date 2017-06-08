@@ -203,7 +203,7 @@ class Theme extends BaseTheme
             if ($arr1IsObject && $arr2IsObject) {
                 $arr[$key] = $this->extendArray($arr[$key], $val);
             } else {
-                $arr[$key] = $val;
+                if ($val != array()) $arr[$key] = $val;
             }
         }
 
