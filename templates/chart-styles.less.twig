@@ -43,12 +43,12 @@
         line-height: @typography_chart_lineHeight;
     {% endif %}
 
-    {% if colors_background %}
-        background: @colors_background;
+    {% if colors_general_background %}
+        background: @colors_general_background;
     {% endif %}
 
-    {% if chart_padding %}
-        padding: @chart_padding;
+    {% if colors_general_padding %}
+        padding: ~'@{colors_general_padding}px';
     {% endif %}
     
     margin: 0 0px;
@@ -161,7 +161,7 @@
         {% endif %}
 
         {% if typography_notes_color%}
-            colors: @typography_notes_color;
+            color: @typography_notes_color;
         {% endif %}
 
         margin-bottom: 5px;
@@ -170,86 +170,97 @@
     }
 
     #footer, .dw-chart-footer {
-        min-height: 1px;
         position: absolute;
-        bottom: 0;
-        left:0;
-        right:0;
-        height: 25px;
-        background: transparent;
-    
+        width: 100%;
+        heigth: auto;
+
+        {% if colors_general_padding %}
+            bottom: ~'@{colors_general_padding}px';
+        {% else %}
+            bottom: 0;
+        {% endif %}
+
         {% if typography_footer_typeface %}
             font-family: @typography_footer_typeface;
         {% endif %}
     
-        {% if typography_footer_fontSize %}
-            font-size: @typography_footer_fontSize;
+        {% if typography_footer_fontAppearance_fontSize %}
+            font-size: @typography_footer_fontAppearance_fontSize;
         {% endif %}
     
-        {% if typography_footer_fontWeight %}
-            font-weight: @typography_footer_fontWeight;
+        {% if typography_footer_fontAppearance_fontWeight %}
+            font-weight: @typography_footer_fontAppearance_fontWeight;
         {% endif %}
     
         {% if typography_footer_lineHeight %}
             line-height: @typography_footer_lineHeight;
         {% endif %}
     
-        {% if typography_footer_fontStyle %}
-            font-style: @typography_footer_fontStyle;
+        {% if typography_footer_fontAppearance_fontStyle %}
+            font-style: @typography_footer_fontAppearance_fontStyle;
         {% endif %}
     
-        {% if typography_footer_textDecoration%}
-            text-decoration: @typography_footer_textDecoration;
+        {% if typography_footer_fontAppearance_textDecoration %}
+            text-decoration: @typography_footer_fontAppearance_textDecoration;
         {% endif %}
     
-        {% if typography_footer_color%}
+        {% if typography_footer_color %}
             color: @typography_footer_color;
         {% endif %}
             
         a {
-            {% if typography_footer_links_typeface %}
-                font-family: @typography_footer_links_typeface;
+            {% if typography_links_typeface %}
+                font-family: @typography_links_typeface;
             {% endif %}
     
-            {% if typography_footer_links_fontSize %}
-                font-size: @typography_footer_links_fontSize;
+            {% if typography_links_fontAppearance_fontSize %}
+                font-size: @typography_links_fontAppearance_fontSize;
             {% endif %}
     
-            {% if typography_footer_links_fontWeight %}
-                font-weight: @typography_footer_links_fontWeight;
+            {% if typography_links_fontAppearance_fontWeight %}
+                font-weight: @typography_links_fontAppearance_fontWeight;
             {% endif %}
     
-            {% if typography_footer_links_lineHeight %}
-                line-height: @typography_footer_links_lineHeight;
+            {% if typography_links_lineHeight %}
+                line-height: @typography_links_lineHeight;
             {% endif %}
     
-            {% if typography_footer_links_fontStyle %}
-                font-style: @typography_footer_links_fontStyle;
+            {% if typography_links_fontAppearance_fontStyle %}
+                font-style: @typography_links_fontAppearance_fontStyle;
             {% endif %}
     
-            {% if typography_footer_links_textDecoration%}
-                text-decoration: @typography_footer_links_textDecoration;
+            {% if typography_links_fontAppearance_textDecoration %}
+                text-decoration: @typography_links_fontAppearance_textDecoration;
             {% endif %}
     
-            {% if typography_footer_links_color%}
-                color: @typography_footer_links_color;
+            {% if typography_links_color %}
+                color: @typography_links_color;
             {% endif %}
         }
 
         .footer-left, .footer-right {
-            position: absolute;
-            bottom: 5px;
-            z-index: 1000;
+            display: inline-block;
+            width: 49%
         }
 
         .footer-left {
-            left: @chart_padding;
-            bottom: @chart_padding;
+            text-align: left;
+
+            {% if colors_general_padding %}
+                left: ~'@{colors_general_padding}px';
+            {% else %}
+                left: 0px;
+            {% endif %}
         }
 
         .footer-right {
-            right: @chart_padding;
-            bottom: @chart_padding;
+            text-align: right;
+        }
+
+        .footer-right > * {
+            {% if colors_general_padding %}
+                padding-right: ~'@{colors_general_padding}px';
+            {% endif %}
         }
 
     }

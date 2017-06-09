@@ -101,9 +101,7 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
         $next_vis_id = !empty($vis['extends']) ? $vis['extends'] : null;
     }
 
-    $stylesheets = array_merge(
-        array('/static/css/chart.base.css')
-    );
+    $stylesheets = array();
 
     $the_vis = DatawrapperVisualization::get($chart->getType());
     $the_vis['locale'] = $vis_locale;

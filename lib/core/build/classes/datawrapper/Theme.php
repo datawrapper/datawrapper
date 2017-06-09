@@ -67,7 +67,7 @@ class Theme extends BaseTheme
     }
 
 
-    public function getThemeDataAsFlatArray($data = null, $prefix = "") {
+    public function getThemeDataAsFlatArray($data = null, $prefix = "", $format = 'twig') {
         if ($data == null) $data = $this->getThemeData();
 
         $f = array();
@@ -86,7 +86,16 @@ class Theme extends BaseTheme
                     $f = array_merge($f, $this->getThemeDataAsFlatArray($d, $px));
                 }
             } else {
-                $f[$px] = $d;
+                if ($format = "less") {
+                    if (is_string($d)) {
+                        $f[$px] = '~"' . $d . '"';
+                    } else {
+                        $f[$px] = $d;
+                    }
+                } else {
+                    $f[$px] = $d;
+                }
+
             }
         }
 
