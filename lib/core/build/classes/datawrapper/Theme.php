@@ -46,6 +46,10 @@ class Theme extends BaseTheme
     }
 
     public function getThemeData() {
+        if ($this->getId() == "default" && DatawrapperHooks::hookRegistered("get_default_theme")) {
+            return DatawrapperHooks::execute("get_default_theme")[0];
+        }
+
         $theme = $this;
         $themeData = [$theme->getData()];
 
@@ -157,7 +161,12 @@ class Theme extends BaseTheme
      * returns the theme data
      */
     public function getData($key = null) {
-        $meta = json_decode(parent::getData(), true);
+        if ($this->getId() == "default" && DatawrapperHooks::hookRegistered("get_default_theme")) {
+            $meta = DatawrapperHooks::execute("get_default_theme")[0];
+        } else {
+            $meta = json_decode(parent::getData(), true);
+        }
+
         if (!is_array($meta)) $meta = array();
         if (empty($key)) return $meta;
         $keys = explode('.', $key);

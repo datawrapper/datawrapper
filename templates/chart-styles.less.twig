@@ -23,24 +23,12 @@
         color: @typography_chart_color;
     {% endif %}
 
-    {% if typography_chart_fontAppearance_fontSize %}
-        font-size: @typography_chart_fontAppearance_fontSize;
+    {% if typography_chart_fontWeight %}
+        font-weight: @typography_chart_fontWeight;
     {% endif %}
     
-    {% if typography_chart_fontAppearance_fontWeight %}
-        font-weight: @typography_chart_fontAppearance_fontWeight;
-    {% endif %}
-
-    {% if typography_chart_fontAppearance_fontStyle %}
-        font-style: @typography_chart_fontAppearance_fontStyle;
-    {% endif %}
-
-    {% if typography_chart_fontAppearance_textDecoration%}
-        text-decoration: @typography_chart_fontAppearance_textDecoration;
-    {% endif %}
-
-    {% if typography_chart_lineHeight %}
-        line-height: @typography_chart_lineHeight;
+    {% if typography_chart_fontSize %}
+        font-size: ~'@{typography_chart_fontSize}px';
     {% endif %}
 
     {% if colors_general_background %}
@@ -73,26 +61,30 @@
             font-family: @typography_headline_typeface;
         {% endif %}
 
-        {% if typography_headline_fontAppearance_fontSize %}
-            font-size: @typography_headline_fontAppearance_fontSize;
+        {% if typography_headline_fontWeight %}
+            font-weight: @typography_headline_fontWeight;
         {% endif %}
 
-        {% if typography_headline_fontAppearance_fontWeight %}
-            font-weight: @typography_headline_fontAppearance_fontWeight;
+        {% if typography_headline_fontSize %}
+            font-size: ~'@{typography_headline_fontSize}px';
         {% endif %}
 
         {% if typography_headline_lineHeight %}
             line-height: @typography_headline_lineHeight;
         {% endif %}
 
-        {% if typography_headline_fontAppearance_fontStyle %}
-            font-style: @typography_headline_fontAppearance_fontStyle;
+        {% if typography_headline_cursive %}
+            font-style: italic;
+        {% else %}
+            font-style: normal;
         {% endif %}
-        
-        {% if typography_headline_fontAppearance_textDecoration%}
-            text-decoration: @typography_headline_fontAppearance_textDecoration;
+    
+        {% if typography_headline_underlined %}
+            text-decoration: underline;
+        {% else %}
+            text-decoration: none;
         {% endif %}
-        
+
         {% if typography_headline_color%}
             color: @typography_headline_color;
         {% endif %}
@@ -107,24 +99,28 @@
             font-family: @typography_description_typeface;
         {% endif %}
     
-        {% if typography_description_fontAppearance_fontSize %}
-            font-size: @typography_description_fontAppearance_fontSize;
+        {% if typography_description_fontWeight %}
+            font-weight: @typography_description_fontWeight;
         {% endif %}
     
-        {% if typography_description_fontAppearance_fontWeight %}
-            font-weight: @typography_description_fontAppearance_fontWeight;
+        {% if typography_description_fontSize %}
+            font-size: ~'@{typography_description_fontSize}px';
         {% endif %}
-    
+
         {% if typography_description_lineHeight %}
             line-height: @typography_description_lineHeight;
         {% endif %}
-    
-        {% if typography_description_fontAppearance_fontStyle %}
-            font-style: @typography_description_fontAppearance_fontStyle;
+
+        {% if typography_description_cursive %}
+            font-style: italic;
+        {% else %}
+            font-style: normal;
         {% endif %}
     
-        {% if typography_description_fontAppearance_textDecoration%}
-            text-decoration: @typography_description_fontAppearance_textDecoration;
+        {% if typography_description_underlined %}
+            text-decoration: underline;
+        {% else %}
+            text-decoration: none;
         {% endif %}
         
         {% if typography_description_color%}
@@ -140,24 +136,28 @@
             font-family: @typography_notes_typeface;
         {% endif %}
     
-        {% if typography_notes_fontAppearance_fontSize %}
-            font-size: @typography_notes_fontAppearance_fontSize;
+        {% if typography_notes_fontWeight %}
+            font-weight: @typography_notes_fontWeight;
         {% endif %}
     
-        {% if typography_notes_fontAppearance_fontWeight %}
-            font-weight: @typography_notes_fontAppearance_fontWeight;
+        {% if typography_notes_fontsize %}
+            font-size: @typography_notes_fontsize;
         {% endif %}
     
         {% if typography_notes_lineHeight %}
             line-height: @typography_notes_lineHeight;
         {% endif %}
-    
-        {% if typography_notes_fontAppearance_fontStyle %}
-            font-style: @typography_notes_fontAppearance_fontStyle;
+
+        {% if typography_notes_cursive %}
+            font-style: italic;
+        {% else %}
+            font-style: normal;
         {% endif %}
     
-        {% if typography_notes_fontAppearance_textDecoration %}
-            text-decoration: @typography_notes_fontAppearance_textDecoration;
+        {% if typography_notes_underlined %}
+            text-decoration: underline;
+        {% else %}
+            text-decoration: none;
         {% endif %}
 
         {% if typography_notes_color%}
@@ -184,26 +184,30 @@
             font-family: @typography_footer_typeface;
         {% endif %}
     
-        {% if typography_footer_fontAppearance_fontSize %}
-            font-size: @typography_footer_fontAppearance_fontSize;
+        {% if typography_footer_fontWeight %}
+            font-weight: @typography_footer_fontWeight;
         {% endif %}
     
-        {% if typography_footer_fontAppearance_fontWeight %}
-            font-weight: @typography_footer_fontAppearance_fontWeight;
+        {% if typography_footer_fontSize %}
+            font-size: ~'@{typography_footer_fontSize}px';
         {% endif %}
     
         {% if typography_footer_lineHeight %}
             line-height: @typography_footer_lineHeight;
         {% endif %}
-    
-        {% if typography_footer_fontAppearance_fontStyle %}
-            font-style: @typography_footer_fontAppearance_fontStyle;
+
+        {% if typography_footer_cursive %}
+            font-style: italic;
+        {% else %}
+            font-style: normal;
         {% endif %}
     
-        {% if typography_footer_fontAppearance_textDecoration %}
-            text-decoration: @typography_footer_fontAppearance_textDecoration;
+        {% if typography_footer_underlined %}
+            text-decoration: underline;
+        {% else %}
+            text-decoration: none;
         {% endif %}
-    
+
         {% if typography_footer_color %}
             color: @typography_footer_color;
         {% endif %}
@@ -213,24 +217,28 @@
                 font-family: @typography_links_typeface;
             {% endif %}
     
-            {% if typography_links_fontAppearance_fontSize %}
-                font-size: @typography_links_fontAppearance_fontSize;
+            {% if typography_links_fontWeight %}
+                font-weight: @typography_links_fontWeight;
             {% endif %}
     
-            {% if typography_links_fontAppearance_fontWeight %}
-                font-weight: @typography_links_fontAppearance_fontWeight;
+            {% if typography_links_fontSize %}
+                font-size: ~'@{typography_links_fontSize}px';
             {% endif %}
     
             {% if typography_links_lineHeight %}
                 line-height: @typography_links_lineHeight;
             {% endif %}
     
-            {% if typography_links_fontAppearance_fontStyle %}
-                font-style: @typography_links_fontAppearance_fontStyle;
+            {% if typography_links_cursive %}
+                font-style: italic;
+            {% else %}
+                font-style: normal;
             {% endif %}
     
-            {% if typography_links_fontAppearance_textDecoration %}
-                text-decoration: @typography_links_fontAppearance_textDecoration;
+            {% if typography_links_underlined %}
+                text-decoration: underline;
+            {% else %}
+                text-decoration: none;
             {% endif %}
     
             {% if typography_links_color %}
