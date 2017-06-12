@@ -154,6 +154,9 @@ function install($pattern) {
 }
 
 function download_from_git($url) {
+    if (!is_git_url($url)) {
+        $url = 'git@github.com:datawrapper/plugin-'.$url.'.git';
+    }
     if (is_git_url($url)) {
         // checkout git repository into tmp directory
         // ROOT_PATH . "plugins" . DIRECTORY_SEPARATOR
@@ -172,7 +175,7 @@ function download_from_git($url) {
             if (!empty($pkg_info['name'])) {
                 $plugin_path = ROOT_PATH . 'plugins' . DIRECTORY_SEPARATOR . $pkg_info['name'];
                 if (!file_exists($plugin_path)) {
-                    rename($tmp_name, $plugin_path);
+                    recurse_copy($tmp_name, $plugin_path);
                     install($pkg_info['name']);
                 } else {
                     print 'Plugin '.$pkg_info['name'].' seems to be already installed';
@@ -367,6 +370,7 @@ switch ($cmd) {
     case 'disable': disable($argv[2]); break;
     case 'update': update($argv[2]); break;
     case 'download': download_from_git($argv[2]); break;
+    case 'clone': download_from_git($argv[2]); break;
     case 'check': break;
     default:
         print 'Unknown command '.$cmd."\n";
