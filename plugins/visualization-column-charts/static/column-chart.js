@@ -420,6 +420,8 @@
                 return val >= domain[0] && val <= domain[1];
             });
 
+            if (me.get('grid-lines') == 'axis') ticks = [0];
+
             _.each(ticks, function(val, t) {
                 var y = c.h - c.bpad - yscale(val), x = c.lpad, ly = y-10;
                 // c.paper.text(x, y, val).attr(styles.labels).attr({ 'text-anchor': 'end' });
@@ -516,8 +518,9 @@
         gridVisible: function() {
             var me = this;
             return me.get('grid-lines', 'show') == 'show' ? true :
-                me.get('grid-lines') == 'hide' ? false :
-                (me.__canvas.w / me.getBarValues().length) < 50 || me.getBarValues().length > 8 || me.get('value-labels') == 'hide';
+                me.get('grid-lines') == 'hide' || me.get('grid-lines') == 'axis' ? false :
+                (me.__canvas.w / me.getBarValues().length) < 50 || 
+                me.getBarValues().length > 8 || me.get('value-labels') == 'hide';
         },
 
     });
