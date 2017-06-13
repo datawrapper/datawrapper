@@ -30,6 +30,10 @@ $app->get('/(chart|map)/:id/visualize', function ($id) use ($app) {
         $vis = DatawrapperVisualization::get($chart->getType());
         parse_vis_options($vis);
 
+        $themes = DatawrapperTheme::all();
+        usort($themes, function($a, $b) {
+            return $a['title'] > $b['title'] ? 1 : -1;
+        });
 
         $page = array(
             'title' => $chart->getID() . ' :: '.__('Visualize'),
@@ -38,7 +42,7 @@ $app->get('/(chart|map)/:id/visualize', function ($id) use ($app) {
             'visualizations_deps' => DatawrapperVisualization::all('dependencies'),
             'visualizations' => DatawrapperVisualization::all(),
             'vis' => $vis,
-            'themes' => DatawrapperTheme::all(),
+            'themes' => $themes,
             'theme' => DatawrapperTheme::get($chart->getTheme()),
             'type' => $chart->getNamespace(),
             'debug' => !empty($GLOBALS['dw_config']['debug_export_test_cases']) ? '1' : '0',

@@ -8,8 +8,8 @@
     "Use the same scale for all columns": "Gleiche Achsen f\u00fcr alle S\u00e4ulen",
     "Grid lines": "Hilfslinien",
     "Automatic": "Automatisch",
-    "Show": "Einblenden",
-    "Hide": "Ausblenden",
+    "Show": "An",
+    "Hide": "Aus",
     "Grouped Column Chart": "S\u00e4ulen (gruppiert)",
     "Stacked Column Chart": "S\u00e4ulen (gestapelt)",
     "Stack percentages": "Prozente stapeln",
@@ -17,7 +17,7 @@
     "stack percentages": "Prozente stapeln",
     "Negative values, as contained in your dataset, cannot be stacked on top of \neach other in a stacked column chart. Please consider using a different \nchart type instead (eg. a grouped column chart).": "Negative Werte lassen sich nicht \u00fcbereinander stapeln. Bitte verwende stattdessen einen anderen Diagrammtyp (z.B. die Gruppierten S\u00e4ulen).",
     "Rotate labels": "Rotate labels",
-    "Value labels": "Value labels",
+    "Value labels": "Balkenwerte beschriften",
     "Show grid lines": "Zeige Hilfslinien",
     "Sort by": "Sortieren nach",
     "first": "erstem",
@@ -35,5 +35,6 @@
     "same as destkop": "wie Desktop",
     "stacked \/ direct-labeling": "stacked \/ direct-labeling",
     "negative-values": "Negative Werte lassen sich nicht \u00fcbereinander stapeln. Bitte verwende stattdessen einen anderen Diagrammtyp (z.B. die Gruppierten S\u00e4ulen).",
-    "stacked \/ connect-bars": "S\u00e4ulen mit Fl\u00e4chen verbinden"
+    "stacked \/ connect-bars": "S\u00e4ulen mit Fl\u00e4chen verbinden",
+    "Just axis": "Nur Achse"
 }

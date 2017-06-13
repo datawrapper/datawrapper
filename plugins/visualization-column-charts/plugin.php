@@ -68,9 +68,10 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                     "type" => "radio-left",
                     "label" => __("Grid lines"),
                     "options" => array(
-                        array("value" => "auto", "label" => __("Automatic")),
                         array("value" => "show", "label" => __("Show")),
-                        array("value" => "hide", "label" => __("Hide"))
+                        array("value" => "hide", "label" => __("Hide")),
+                        array("value" => "auto", "label" => __("Automatic")),
+                        array("value" => "axis", "label" => __("Just axis")),
                     ),
                     "default" => 'auto'
                 ),
@@ -78,9 +79,9 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                     "type" => "radio-left",
                     "label" => __("Value labels"),
                     "options" => array(
-                        array("value" => "auto", "label" => __("Automatic")),
                         array("value" => "show", "label" => __("Show")),
-                        array("value" => "hide", "label" => __("Hide"))
+                        array("value" => "hide", "label" => __("Hide")),
+                        array("value" => "auto", "label" => __("Automatic")),
                     ),
                     "default" => 'auto'
                 )

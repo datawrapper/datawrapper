@@ -14,6 +14,7 @@ class DatawrapperPlugin_ThemeAutumn extends DatawrapperPlugin {
           'extends' => 'default',
           'restricted' => NULL,
           'version' => '1.5.0',
+          'hidden' => true,
           'option-filter' => 
           array (
             'line-chart' => 
