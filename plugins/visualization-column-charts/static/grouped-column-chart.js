@@ -197,6 +197,7 @@
                         }
 
                         me.__bars[key].animate(bar_attrs, me.theme().duration, me.theme().easing).data('strokeCol', stroke);
+
                     }
 
                     var val_y = val >= 0 ? d.y - 10 : d.y + d.h + 10,
@@ -271,6 +272,23 @@
                         directLbls.push(sl2);
                     }
 
+                });
+            });
+
+
+            function getFill(col, el) {
+                var fill = me.getBarColor(null, el.data('row'), { varyLightness: true, key: me.axes(true).labels.val(el.data('row')) });
+                return fill;
+            }
+
+            _.each(me.getBarColumns(), function(column) {
+                var fill, stroke;
+
+                _.each(me.__labels[column.name()], function(lbl) {
+                    if (lbl.hasClass('value')) {
+                        fill = getFill(column, lbl);
+                        if (lbl.hasClass('inside') && chroma(fill).lab()[0] < 50) { lbl.addClass('inverted'); }
+                    }
                 });
             });
 
