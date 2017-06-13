@@ -21,25 +21,35 @@ class ThemeQuery extends BaseThemeQuery
 
         $themes = array(ThemeQuery::create()->findPk("default"));
 
-        $userThemes = UserThemeQuery::create()
+        if ($user->isAdmin()) {
+            $allThemes = ThemeQuery::create()->find();
+
+            foreach ($allThemes as $theme) {
+                if ($theme->getId() == "default") continue;
+
+                $themes[] = $theme;
+            }
+        } else {
+            $userThemes = UserThemeQuery::create()
                 ->filterByUser($user)
                 ->find();
 
-        foreach ($userThemes as $theme) {
-            $themes[] = $theme->getTheme();
-        }
-
-        $organization = $user->getCurrentOrganization();
-
-        if ($organization) {
-            $orgThemes = OrganizationThemeQuery::create()
-                    ->filterByOrganization($organization)
-                    ->find();
-
-            foreach ($orgThemes as $theme) {
+            foreach ($userThemes as $theme) {
                 $themes[] = $theme->getTheme();
             }
 
+            $organization = $user->getCurrentOrganization();
+
+            if ($organization) {
+                $orgThemes = OrganizationThemeQuery::create()
+                    ->filterByOrganization($organization)
+                    ->find();
+
+                foreach ($orgThemes as $theme) {
+                    $themes[] = $theme->getTheme();
+                }
+
+            }
         }
 
         return $themes;
