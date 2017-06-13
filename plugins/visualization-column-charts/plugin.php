@@ -71,7 +71,6 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                         array("value" => "show", "label" => __("Show")),
                         array("value" => "hide", "label" => __("Hide")),
                         array("value" => "auto", "label" => __("Automatic")),
-                        array("value" => "axis", "label" => __("Just axis")),
                     ),
                     "default" => 'auto'
                 ),
