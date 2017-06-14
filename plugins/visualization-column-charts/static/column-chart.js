@@ -420,7 +420,7 @@
                 return val >= domain[0] && val <= domain[1];
             });
 
-            if (me.get('grid-lines') == 'axis') ticks = [0];
+            if (!ticks.length) ticks = [0];
 
             _.each(ticks, function(val, t) {
                 var y = c.h - c.bpad - yscale(val), x = c.lpad, ly = y-10;
