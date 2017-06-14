@@ -1,6 +1,6 @@
 <?php
 
-function get_chart_content($chart, $user, $published = false, $debug = false) {
+function get_chart_content($chart, $user, $theme, $published = false, $debug = false) {
 
     if (!function_exists('unique_scripts')) {
         function unique_scripts($scripts) {
@@ -170,7 +170,6 @@ function get_chart_content($chart, $user, $published = false, $debug = false) {
         }
     }
 
-    $theme = ThemeQuery::create()->findPk($chart->getTheme());
     if (empty($theme)) $theme = ThemeQuery::create()->findPk("default");
 
     $page = array(

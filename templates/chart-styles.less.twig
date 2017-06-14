@@ -8,7 +8,7 @@
     font-family: "{{ name }}";
     src: url('{{ urls.files.eot }}');
     src: url('{{ urls.files.eot }}?#iefix') format('embedded-opentype'),
-    url('{{ urls.files.woff }}.woff') format('woff'),
+    url('{{ urls.files.woff }}') format('woff'),
     url('{{ urls.files.ttf }}') format('truetype'),
     url('{{ urls.files.svg }}#{{ name }}') format('svg');
 }
@@ -172,7 +172,7 @@
     #footer, .dw-chart-footer {
         position: absolute;
         width: 100%;
-        heigth: auto;
+        height: auto;
 
         {% if colors_general_padding %}
             bottom: ~'@{colors_general_padding}px';
@@ -219,10 +219,6 @@
     
             {% if typography_links_fontWeight %}
                 font-weight: @typography_links_fontWeight;
-            {% endif %}
-    
-            {% if typography_links_fontSize %}
-                font-size: ~'@{typography_links_fontSize}px';
             {% endif %}
     
             {% if typography_links_lineHeight %}
@@ -276,6 +272,45 @@
     a img {
         border: 0px;
     }
+
+    {% if options_footer_embed %}
+        .embed-code {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            width: 150px%;
+            padding: 15px;
+            background: #eee;
+            color: #000;
+            border-radius: 6px;
+            text-transform: none;
+            font-size: 1em;
+            box-shadow: 2px 2px 0px rgba(0,0,0,.4);
+        }
+
+        .embed-code textarea {
+            width: 90%;
+            margin-top: 2%;
+            height: 7em;
+        }
+
+        .hide {
+            display: none;
+        }
+
+        .embed-code .close {
+            cursor: pointer;
+            position: absolute;
+            right: 2%;
+            top: 2%;
+            font-size: 1.125em;
+            opacity: 0.7;
+        }
+
+        .embed-code .close:hover {
+            opacity: 1;
+        }
+    {% endif %}
 
 
     .label {

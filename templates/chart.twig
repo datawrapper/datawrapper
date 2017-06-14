@@ -90,6 +90,25 @@
                 {% if themeData.options.footer.getTheData %}
                     <a href="data">{% trans "Get the data" %}</a>
                 {% endif %}
+
+                {% if themeData.options.footer.getTheData and themeData.options.footer.embed %}
+                    &nbsp;•&nbsp;
+                {% endif %}
+
+                {% if themeData.options.footer.embed %}
+                    <a href="#embed">Embed</a>&nbsp;&nbsp;
+
+                    <div class="embed-code hide">
+                        <div class="close">×</div>
+                        <div>Please use the following HTML code to embed this chart:</div>
+                        <textarea>{{ embedCode }}</textarea>
+                    </div>
+                    <script type="text/javascript">
+                        $('a[href=#embed], .embed-code .close').click(function() { $('.embed-code').toggleClass('hide'); });
+                        $('.embed-code textarea').click(function() { $(this).focus().select(); });
+                    </script>
+
+                {% endif %}
             </div>
             <div class="footer-right">
                 {% if themeData.options.footer.sourcePosition and themeData.options.footer.sourcePosition == "right" %}

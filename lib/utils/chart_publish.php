@@ -119,7 +119,7 @@ function publish_html($user, $chart) {
 function publish_js($user, $chart) {
     $cdn_files = array();
     $static_path = chart_publish_directory() . 'static/lib/';
-    $data = get_chart_content($chart, $user, false, '../');
+    $data = get_chart_content($chart, $user, $chart->getTheme(), false, '../');
 
     // generate visualization script
     $vis = $data['visualization'];
@@ -172,7 +172,7 @@ function publish_js($user, $chart) {
 function publish_css($user, $chart) {
     $cdn_files = array();
     $static_path = get_static_path($chart);
-    $data = get_chart_content($chart, $user, false, '../');
+    $data = get_chart_content($chart, $user, $chart->getTheme(), false, '../');
 
     $all = '';
 
