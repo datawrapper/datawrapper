@@ -286,3 +286,15 @@ class DatawrapperPlugin {
     }
 }
 
+
+class DatawrapperTheme {
+    private static $instance;
+
+    public static function register($plugin, $meta) {
+        //echo "Note: Trying to register theme " . $meta['id'] . " using deprecated plugin " . $plugin->getName();
+    }
+
+    public static function get($id) {
+        //echo "Note: Trying to get theme id deprecated method";
+    }
+}
