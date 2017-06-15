@@ -193,7 +193,6 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
     $page['invert_navbar'] = isset($config['invert_header']) && $config['invert_header'] || substr($config['domain'], -4) == '.pro';
     $page['noSignup'] = $config['prevent_guest_access'];
     $page['alternative_signins'] = DatawrapperHooks::execute(DatawrapperHooks::ALTERNATIVE_SIGNIN);
-    $page['footer'] = DatawrapperHooks::execute(DatawrapperHooks::GET_FOOTER);
 
     if (isset ($config['maintenance']) && $config['maintenance'] == true) {
         $page['maintenance'] = true;

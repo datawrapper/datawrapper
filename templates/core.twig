@@ -144,24 +144,8 @@
           <span class="version">version <a href="https://github.com/datawrapper/datawrapper/blob/master/CHANGELOG.md#{{ DW_VERSION | replace({ '.': '' }) }}">{{ DW_VERSION }}</a> {{ BRANCH | raw }}</span>
         </p>
 
-        <p>
-          {% if footer %}
-            {% for line in footer %}
-              {% include (line) %}
-            {% endfor %}
-          {% else %}
-            {% trans %}
-            Datawrapper is an <a href="https://github.com/datawrapper/datawrapper">open source</a> project by <a href="http://abzv.de">ABZV</a> - a German training institution for newspaper journalists.
-            {% endtrans %}
-          {% endif %}
-        </p>
-        {% if config.footer_links %}
-        <div class="footer-links">
-          {% for link in config.footer_links %}
-            <a href="{{ link.url | replace({'%lang': language }) }}">{{ link.title[language] }}</a>
-          {% endfor %}
-        </div>
-        {% endif %}
+
+        {{ hook('get_footer') }}
       </footer>
     {% endif %}
 
