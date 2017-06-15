@@ -4,14 +4,19 @@
  */
 
 {% for name, urls in fonts %}
-@font-face {
-    font-family: "{{ name }}";
-    src: url('{{ urls.files.eot }}');
-    src: url('{{ urls.files.eot }}?#iefix') format('embedded-opentype'),
-    url('{{ urls.files.woff }}') format('woff'),
-    url('{{ urls.files.ttf }}') format('truetype'),
-    url('{{ urls.files.svg }}#{{ name }}') format('svg');
-}
+    {% if urls.method == "import" %}
+        @import '{{ urls.import | raw }}';
+    {% else %}
+        @font-face {
+            font-family: "{{ name }}";
+            src: url('{{ urls.files.eot }}');
+            src: url('{{ urls.files.eot }}?#iefix') format('embedded-opentype'),
+            url('{{ urls.files.woff }}') format('woff'),
+            url('{{ urls.files.ttf }}') format('truetype'),
+            url('{{ urls.files.svg }}#{{ name }}') format('svg');
+        }
+    {% endif %}
+
 {% endfor %}
 
 .chart {

@@ -81,33 +81,33 @@
                         <span data-src="{% trans "Source: " %}" class="source-block">{% trans "Source: " %}
                             {{ chartSource | raw }}</span>
                     {% endif %}
-                {% endif %}
 
-                {% if chartSource and themeData.options.footer.getTheData %}
-                &nbsp;•&nbsp;
-                {% endif %}
+                    {% if chartSource and themeData.options.footer.getTheData %}
+                        &nbsp;•&nbsp;
+                    {% endif %}
 
-                {% if themeData.options.footer.getTheData %}
-                    <a href="data">{% trans "Get the data" %}</a>
-                {% endif %}
+                    {% if themeData.options.footer.getTheData %}
+                        <a href="data">{% trans "Get the data" %}</a>
+                    {% endif %}
 
-                {% if themeData.options.footer.getTheData and themeData.options.footer.embed %}
-                    &nbsp;•&nbsp;
-                {% endif %}
+                    {% if themeData.options.footer.getTheData and themeData.options.footer.embed %}
+                        &nbsp;•&nbsp;
+                    {% endif %}
 
-                {% if themeData.options.footer.embed %}
-                    <a href="#embed">Embed</a>&nbsp;&nbsp;
+                    {% if themeData.options.footer.embed %}
+                        <a href="#embed">Embed</a>&nbsp;&nbsp;
 
-                    <div class="embed-code hide">
-                        <div class="close">×</div>
-                        <div>Please use the following HTML code to embed this chart:</div>
-                        <textarea>{{ embedCode }}</textarea>
-                    </div>
-                    <script type="text/javascript">
-                        $('a[href=#embed], .embed-code .close').click(function() { $('.embed-code').toggleClass('hide'); });
-                        $('.embed-code textarea').click(function() { $(this).focus().select(); });
-                    </script>
+                        <div class="embed-code hide">
+                            <div class="close">×</div>
+                            <div>Please use the following HTML code to embed this chart:</div>
+                            <textarea>{{ embedCode }}</textarea>
+                        </div>
+                        <script type="text/javascript">
+                            $('a[href=#embed], .embed-code .close').click(function() { $('.embed-code').toggleClass('hide'); });
+                            $('.embed-code textarea').click(function() { $(this).focus().select(); });
+                        </script>
 
+                    {% endif %}
                 {% endif %}
             </div>
             <div class="footer-right">
@@ -116,14 +116,37 @@
                         <span data-src="{% trans "Source: " %}" class="source-block">{% trans "Source: " %}
                             {{ chartSource | raw }}</span>
                     {% endif %}
+
+                    {% if chartSource and themeData.options.footer.getTheData %}
+                        &nbsp;•&nbsp;
+                    {% endif %}
+
+                    {% if themeData.options.footer.getTheData %}
+                        <a href="data">{% trans "Get the data" %}</a>
+                    {% endif %}
+
+                    {% if themeData.options.footer.getTheData and themeData.options.footer.embed %}
+                        &nbsp;•&nbsp;
+                    {% endif %}
+
+                    {% if themeData.options.footer.embed %}
+                        <a href="#embed">Embed</a>&nbsp;&nbsp;
+
+                        <div class="embed-code hide">
+                            <div class="close">×</div>
+                            <div>Please use the following HTML code to embed this chart:</div>
+                            <textarea>{{ embedCode }}</textarea>
+                        </div>
+                        <script type="text/javascript">
+                            $('a[href=#embed], .embed-code .close').click(function() { $('.embed-code').toggleClass('hide'); });
+                            $('.embed-code textarea').click(function() { $(this).focus().select(); });
+                        </script>
+
+                    {% endif %}
                 {% endif %}
 
                 {% if themeData.options.footer.logo and themeData.options.footer.logo.enabled and themeData.options.footer.logo.position == 'right' %}
                     <img height="{{ themeData.options.footer.logo.height }}" src="{{ themeData.options.footer.logo.url }}">
-                {% endif %}
-
-                {% if themeData.options.footer.createdWithDatawrapper %}
-                    {% trans "Created with" %} <a href="{{ DW_DOMAIN }}_/{{ chart.id }}" target="_blank">{% trans "Datawrapper" %}</a>
                 {% endif %}
             </div>
         {% endif %}

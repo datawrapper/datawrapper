@@ -31,7 +31,7 @@ class Theme extends BaseTheme
 
         while (!empty($theme->getExtend())) {
             $theme = ThemeQuery::create()->findPk($theme->getExtend());
-            $allThemeLess .= "\n\n\n" . $theme->getLess();
+            $allThemeLess = $theme->getLess() . "\n\n\n" . $allThemeLess;
         }
 
         $allVisLess = "";
@@ -125,12 +125,19 @@ class Theme extends BaseTheme
         $this->save();
     }
 
-    public function addAssetFont($name, $urls) {
+    public function addAssetFont($name, $type, $urls) {
         $assets = json_decode(parent::getAssets(), true);
         if (!is_array($assets)) $assets = array();
 
         $assets[$name] = [];
-        $assets[$name]['files'] = $urls;
+        $assets[$name]['method'] = $type;
+
+        if ($type == "import") {
+            $assets[$name]['import'] = $urls['import'];
+        } else {
+            $assets[$name]['files'] = $urls;
+        }
+
         $assets[$name]['type'] = "font";
 
         $this->setAssets(json_encode($assets));
