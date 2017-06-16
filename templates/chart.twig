@@ -108,6 +108,14 @@
                         </script>
 
                     {% endif %}
+
+                    {% if themeData.options.footer.embed and themeData.options.footer.staticImage %}
+                        &nbsp;•&nbsp;
+                    {% endif %}
+
+                    {% if themeData.options.footer.staticImage %}
+                        <a href="//s3.eu-central-1.amazonaws.com/datawrapper-exports/exports/{{ chart.id }}.png">{% trans "Image" %}</a>
+                    {% endif %}
                 {% endif %}
             </div>
             <div class="footer-right">
@@ -142,6 +150,14 @@
                             $('.embed-code textarea').click(function() { $(this).focus().select(); });
                         </script>
 
+                    {% endif %}
+
+                    {% if themeData.options.footer.embed and themeData.options.footer.staticImage %}
+                        &nbsp;•&nbsp;
+                    {% endif %}
+
+                    {% if themeData.options.footer.staticImage %}
+                        <a href="//s3.eu-central-1.amazonaws.com/datawrapper-exports/exports/{{ chart.id }}.png">{% trans "Image" %}</a>
                     {% endif %}
                 {% endif %}
 
