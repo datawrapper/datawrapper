@@ -58,20 +58,18 @@
 
     var visJSON = {{ visualization | json | raw }};
 
-    __dw.init({
-        chartJSON: {{ chart.toStruct(true) | json | raw }},
-        chartLocale: '{{ chartLocale }}',
-        themeId: '{{ theme.id }}',
-        visId: '{{ visualization.id }}',
-        visJSON: visJSON,
-        metricPrefix: {{ metricPrefix | json | raw }},
-        lang: '{{ lang }}',
-        data: {{ chart.loadData | json | raw }}
-    });
-
-    if (/iP(hone|od|ad)/.test(navigator.platform)) {
-        window.onload = __dw.render();
-    }
+    window.onload = function() {
+        __dw.init({
+            chartJSON: {{ chart.toStruct(true) | json | raw }},
+            chartLocale: '{{ chartLocale }}',
+            themeId: '{{ theme.id }}',
+            visId: '{{ visualization.id }}',
+            visJSON: visJSON,
+            metricPrefix: {{ metricPrefix | json | raw }},
+            lang: '{{ lang }}',
+            data: {{ chart.loadData | json | raw }}
+        });
+    };
 
     if (visJSON.height == "fixed") {
         setInterval(function() {
