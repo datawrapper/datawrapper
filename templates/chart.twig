@@ -52,6 +52,9 @@
     <div class="noscript" style="height:95%;position:absolute;top:0;width:98%;z-index:10;overflow:hidden">
         <div style="position:relative;top:50%;text-align:center;font-size:18px;padding:0 20px"><a style="color: rgba(0,0,0,.2); text-shadow: 0 0 7px #fff, 0 0 7px #fff, 0 0 7px #fff, 0 0 7px #fff, 0 0 7px #fff, 0 0 7px #fff, 0 0 7px #fff, 0 0 7px #fff, 0 0 7px #fff, 0 0 7px #fff, 0 0 7px #fff; text-decoration: none;" href="static.html" >{% trans "Please activate JavaScript to see the interactive chart." %}</a></div>
     </div>#}
+
+    {{ hook('chart_after_body', chart, published) }}
+
     <script type="text/javascript" charset="utf-8">
 
     if (document.getElementsByTagName('script').length > 0) $('body').addClass('js');
@@ -59,7 +62,7 @@
     var visJSON = {{ visualization | json | raw }};
 
     window.onload = function() {
-        __dw.init({
+        __dw.init($.extend({
             chartJSON: {{ chart.toStruct(true) | json | raw }},
             chartLocale: '{{ chartLocale }}',
             themeId: '{{ theme.id }}',
@@ -68,7 +71,7 @@
             metricPrefix: {{ metricPrefix | json | raw }},
             lang: '{{ lang }}',
             data: {{ chart.loadData | json | raw }}
-        });
+        }, window.__dwParams));
     };
 
     if (visJSON.height == "fixed") {
@@ -83,7 +86,5 @@
     }
 
     </script>
-
-    {{ hook('chart_after_body', chart, published) }}
 </body>
 </html>
