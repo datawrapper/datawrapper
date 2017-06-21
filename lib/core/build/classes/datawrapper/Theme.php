@@ -45,7 +45,7 @@ class Theme extends BaseTheme
         return $less->compile($baseLess . "\n" . $allVisLess . "\n" . $allThemeLess);
     }
 
-    public function getThemeData() {
+    public function getThemeData($key = null) {
         if ($this->getId() == "default" && DatawrapperHooks::hookRegistered("get_default_theme")) {
             return DatawrapperHooks::execute("get_default_theme")[0];
         }
@@ -64,10 +64,13 @@ class Theme extends BaseTheme
 
         foreach ($themeList as $theme) {
             $data = $this->extendArray($data, $theme);
-
         }
 
-        return $data;
+        if ($key == null) {
+            return $data;
+        } else {
+            return $this->getData($key, $data);
+        }
     }
 
 
@@ -145,14 +148,12 @@ class Theme extends BaseTheme
     }
 
     public function getAssetFiles() {
-        $assets = json_decode(parent::getAssets(), true);
-        if (!is_array($assets)) $assets = array();
+        $assets = $this->getExtendedAssets();
         return array_filter($assets, function($v) { return $v['type'] == "file"; });
     }
 
     public function getAssetFonts() {
-        $assets = json_decode(parent::getAssets(), true);
-        if (!is_array($assets)) $assets = array();
+        $assets = $this->getExtendedAssets();
         return array_filter($assets, function($v) { return $v['type'] == "font"; });
     }
 
@@ -164,17 +165,32 @@ class Theme extends BaseTheme
         $this->save();
     }
 
+    public function getExtendedAssets() {
+        $themeAssets = json_decode($this->getAssets(), 1) ?? [];
+
+        $extend = $this->getExtend();
+        if (!empty($extend)) {
+            $ex = ThemeQuery::create()->findPk($extend)->getExtendedAssets();
+            $themeAssets = array_merge($themeAssets, $ex);
+        }
+
+        return $themeAssets ?? [];
+    }
+
     /**
      * returns the theme data
      */
-    public function getData($key = null) {
-        if ($this->getId() == "default" && DatawrapperHooks::hookRegistered("get_default_theme")) {
-            $meta = DatawrapperHooks::execute("get_default_theme")[0];
-        } else {
-            $meta = json_decode(parent::getData(), true);
+    public function getData($key = null, $meta = null) {
+        if (empty($meta)) {
+            if ($this->getId() == "default" && DatawrapperHooks::hookRegistered("get_default_theme")) {
+                $meta = DatawrapperHooks::execute("get_default_theme")[0];
+            } else {
+                $meta = json_decode(parent::getData(), true);
+            }
+
+            if (!is_array($meta)) $meta = array();
         }
 
-        if (!is_array($meta)) $meta = array();
         if (empty($key)) return $meta;
         $keys = explode('.', $key);
         $p = $meta;
