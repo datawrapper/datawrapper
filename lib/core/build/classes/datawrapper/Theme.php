@@ -47,23 +47,23 @@ class Theme extends BaseTheme
 
     public function getThemeData($key = null) {
         if ($this->getId() == "default" && DatawrapperHooks::hookRegistered("get_default_theme")) {
-            return DatawrapperHooks::execute("get_default_theme")[0];
-        }
+            $data = DatawrapperHooks::execute("get_default_theme")[0];
+        } else {
+            $theme = $this;
+            $themeData = [$theme->getData()];
 
-        $theme = $this;
-        $themeData = [$theme->getData()];
+            while ($theme->getExtend() != null) {
+                $theme = ThemeQuery::create()->findPk($theme->getExtend());
+                $themeData[] = $theme->getData();
+            }
 
-        while ($theme->getExtend() != null) {
-            $theme = ThemeQuery::create()->findPk($theme->getExtend());
-            $themeData[] = $theme->getData();
-        }
+            $themeList = array_reverse($themeData);
 
-        $themeList = array_reverse($themeData);
+            $data = array();
 
-        $data = array();
-
-        foreach ($themeList as $theme) {
-            $data = $this->extendArray($data, $theme);
+            foreach ($themeList as $theme) {
+                $data = $this->extendArray($data, $theme);
+            }
         }
 
         if ($key == null) {
