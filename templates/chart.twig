@@ -61,18 +61,21 @@
 
     var visJSON = {{ visualization | json | raw }};
 
-    window.onload = function() {
-        __dw.init($.extend({
-            chartJSON: {{ chart.toStruct(true) | json | raw }},
-            chartLocale: '{{ chartLocale }}',
-            themeId: '{{ theme.id }}',
-            visId: '{{ visualization.id }}',
-            visJSON: visJSON,
-            metricPrefix: {{ metricPrefix | json | raw }},
-            lang: '{{ lang }}',
-            data: {{ chart.loadData | json | raw }}
-        }, window.__dwParams));
-    };
+
+    __dw.init($.extend({
+        chartJSON: {{ chart.toStruct(true) | json | raw }},
+        chartLocale: '{{ chartLocale }}',
+        themeId: '{{ theme.id }}',
+        visId: '{{ visualization.id }}',
+        visJSON: visJSON,
+        metricPrefix: {{ metricPrefix | json | raw }},
+        lang: '{{ lang }}',
+        data: {{ chart.loadData | json | raw }}
+    }, window.__dwParams));
+
+    if (/iP(hone|od|ad)/.test(navigator.platform)) {
+        window.onload = __dw.render();
+    }
 
     if (visJSON.height == "fixed") {
         setInterval(function() {
