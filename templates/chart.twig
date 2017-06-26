@@ -79,33 +79,36 @@
                 {% if theme.getThemeData("options.footer.sourcePosition") == "left" %}
                     {% block footer %}
                         {% if chartSource %}
-                        <span data-src="{% trans "Source: " %}" class="source-block">{{ theme.getThemeData('options.footer.sourceCaption') }}:
-                            {{ chartSource | raw }}</span>&nbsp;•&nbsp;
+                            <span data-src="{% trans "Source: " %}" class="source-block">{{ theme.getThemeData('options.footer.sourceCaption') }}:
+                            {{ chartSource | raw }}</span>
                         {% endif %}
 
                         {% if theme.getThemeData("options.footer.getTheData.enabled") %}
-                            <a href="data">{{ theme.getThemeData("options.footer.getTheData.caption") }}</a>&nbsp;•&nbsp;
+                            <a href="data">{{ theme.getThemeData("options.footer.getTheData.caption") }}</a>
                         {% endif %}
 
                         {% if theme.getThemeData("options.footer.embed.enabled") %}
-                        <a href="#embed">{{ theme.getThemeData("options.footer.embed.caption") }}</a> •&nbsp;
+                            <a href="#embed">{{ theme.getThemeData("options.footer.embed.caption") }}</a>
 
-                        <div class="embed-code hide">
-                            <div class="close">×</div>
-                            <div>Please use the following HTML code to embed this chart:</div>
-                            <textarea>{{ embedCode }}</textarea>
-                        </div>
-                        <script type="text/javascript">
-                            $('a[href=#embed], .embed-code .close').click(function() { $('.embed-code').toggleClass('hide'); });
-                            $('.embed-code textarea').click(function() { $(this).focus().select(); });
-                        </script>
-
+                            <div class="embed-code hide">
+                                <div class="close">×</div>
+                                <div>Please use the following HTML code to embed this chart:</div>
+                                <textarea>{{ embedCode }}</textarea>
+                            </div>
+                            <script type="text/javascript">
+                                $('a[href=#embed], .embed-code .close').click(function() { $('.embed-code').toggleClass('hide'); });
+                                $('.embed-code textarea').click(function() { $(this).focus().select(); });
+                            </script>
                         {% endif %}
 
                         {% if theme.getThemeData("options.footer.staticImage.enabled") %}
                             <a href="//s3.eu-central-1.amazonaws.com/datawrapper-exports/exports/{{ chart.id }}.png">
                                 {{ theme.getThemeData("options.footer.staticImage.caption") }}
                             </a>
+                        {% endif %}
+
+                        {% if theme.getThemeData("options.footer.createdWithDatawrapper") %}
+                            <a href="{{ DW_DOMAIN }}_/{{ chart.id }}" target="_blank">{% trans "Created with" %}  {% trans "Datawrapper" %}</a>
                         {% endif %}
                     {% endblock %}
                 {% endif %}

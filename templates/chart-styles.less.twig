@@ -28,13 +28,7 @@
         color: @typography_chart_color;
     {% endif %}
 
-    {% if typography_chart_fontWeight %}
-        font-weight: @typography_chart_fontWeight;
-    {% endif %}
-    
-    {% if typography_chart_fontSize %}
-        font-size: ~'@{typography_chart_fontSize}px';
-    {% endif %}
+    font-size: 12px;
 
     {% if colors_general_background %}
         background: @colors_general_background;
@@ -178,6 +172,17 @@
         position: absolute;
         width: 100%;
         height: auto;
+
+        & > div > a::before, & > div > .source-block::before {
+            content: "•";
+            display: inline-block;
+            margin-right: 4px;
+        }
+
+        & > div > a:first-child::before, & > div > .source-block:first-child::before {
+            content: "";
+            margin-right: 0px;
+        }
 
         {% if colors_general_padding %}
             bottom: ~'@{colors_general_padding}px';
