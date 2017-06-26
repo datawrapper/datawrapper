@@ -11,6 +11,7 @@ class DatawrapperPlugin_VisualizationDataTable extends DatawrapperPlugin_Visuali
             "id"         => "data-table",
             "dimensions" => 2,
             "order"      => 71,
+            "less" => dirname(__FILE__ ) . "/static/data-table.less",
             "height"     => "fixed",
             "libraries"  => array(array(
                 "local" => "vendor/jquery.dataTables.min.js",

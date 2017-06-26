@@ -18,6 +18,7 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
             "dimensions" => 1,
             "extends" => "raphael-chart",
             "order" => 9,
+            "less" => dirname(__FILE__ ) . "/static/column-chart.less",
             "axes" => array(
                 "labels" => array(
                     "accepts" => array("text", "date")
@@ -100,6 +101,7 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
             "extends" => "raphael-chart",
             "color-by" => "row",
             "order" => 10,
+            "less" => dirname(__FILE__ ) . "/static/grouped-column-chart.less",
             "axes" => array(
                 "labels" => array(
                     "accepts" => array("text", "date")
@@ -149,6 +151,7 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
             "extends" => "grouped-column-chart",
             "color-by" => "row",
             "order" => 11,
+            "less" => dirname(__FILE__ ) . "/static/stacked-column-chart.less",
             "axes" => array(
                 "labels" => array(
                     "accepts" => array("text", "date")

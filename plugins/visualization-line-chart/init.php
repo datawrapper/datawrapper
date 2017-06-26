@@ -6,6 +6,7 @@ DatawrapperVisualization::register($plugin, array(
     'extends' => 'raphael-chart',
     'dimensions' => 2,
     'order' => 40,
+    "less" => dirname(__FILE__ ) . "/static/line-chart.less",
     'axes' => array(
         'x' => array(
             'accepts' => array('text', 'date'),

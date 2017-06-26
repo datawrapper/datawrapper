@@ -125,7 +125,6 @@ class DatawrapperVisualization {
     private function _get($id) {
         if (!isset($this->visualizations[$id])) return false;
         $meta = $this->visualizations[$id];
-        $meta['hasCSS'] = file_exists(ROOT_PATH . 'www' . $meta['__static_path'] . $id. '.css');
         return $meta;
     }
 }

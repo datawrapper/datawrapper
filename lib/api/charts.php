@@ -414,7 +414,7 @@ $app->get('/charts/:id/vis-data', function ($chart_id) {
             ok(array(
                 'visualizations' => $allVis,
                 'vis' => DatawrapperVisualization::get($chart->getType()),
-                'themes' => DatawrapperTheme::all(),
+                'themes' => ThemeQuery::findAll(),
             ));
         } catch (Exception $e) {
             error('io-error', $e->getMessage());

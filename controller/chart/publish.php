@@ -58,7 +58,7 @@ $app->get('/(chart|map)/:id/publish', function ($id) use ($app) {
             'chartUrlLocal' => '/chart/' . $chart->getID() . '/preview',
             'embedWidth' => $chartW,
             'embedHeight' => $chartH,
-            'themes' => DatawrapperTheme::all(),
+            'themes' => ThemeQuery::create()->allThemesForUser(),
             'exportStaticImage' => !empty($cfg['phantomjs']),
             'estExportTime' => ceil(JobQuery::create()->estimatedTime('export') / 60)
         );

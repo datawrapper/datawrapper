@@ -9,6 +9,17 @@ $app->get('/(chart|map)/:id/visualize', function ($id) use ($app) {
     check_chart_writable($id, function($user, $chart) use ($app) {
         $visData = "";
 
+        $allThemes = ThemeQuery::create()->allThemesForUser();
+        $themeMeta = [];
+
+        foreach ($allThemes as $theme) {
+            $themeMeta[] = array(
+                "id" => $theme->getId(),
+                "title" => $theme->getTitle(),
+                "data" => $theme->getThemeData()
+            );
+        }
+
         try {
             $allVis = array();
 
@@ -21,7 +32,7 @@ $app->get('/(chart|map)/:id/visualize', function ($id) use ($app) {
             $visData = json_encode(array(
                 'visualizations' => $allVis,
                 'vis' => DatawrapperVisualization::get($chart->getType()),
-                'themes' => DatawrapperTheme::all(),
+                'themes' => $themeMeta,
             ));
         } catch (Exception $e) {
             error('io-error', $e->getMessage());
@@ -35,6 +46,12 @@ $app->get('/(chart|map)/:id/visualize', function ($id) use ($app) {
             return $a['title'] > $b['title'] ? 1 : -1;
         });
 
+        $theme = ThemeQuery::create()->findPk($chart->getTheme());
+
+        if (empty($theme)) {
+            $theme = ThemeQuery::create()->findPk("default");
+        }
+
         $page = array(
             'title' => $chart->getID() . ' :: '.__('Visualize'),
             'chartData' => $chart->loadData(),
@@ -42,8 +59,8 @@ $app->get('/(chart|map)/:id/visualize', function ($id) use ($app) {
             'visualizations_deps' => DatawrapperVisualization::all('dependencies'),
             'visualizations' => DatawrapperVisualization::all(),
             'vis' => $vis,
-            'themes' => $themes,
-            'theme' => DatawrapperTheme::get($chart->getTheme()),
+            'themes' => $themeMeta,
+            'theme' => $theme,
             'type' => $chart->getNamespace(),
             'debug' => !empty($GLOBALS['dw_config']['debug_export_test_cases']) ? '1' : '0',
             'vis_data' => $visData

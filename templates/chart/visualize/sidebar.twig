@@ -85,9 +85,9 @@
                 <div style="">
                     <label class="pull-left" style="padding-right:1ex;line-height:28px" for="select-theme">{% trans "Select layout:" %}</label>
                     <select id="select-theme" class="span2">
-                        {% for theme in themes %}{% if not theme.hidden %}
+                        {% for theme in themes %}
                         <option value="{{ theme.id }}">{{ theme.title }}</option>
-                        {% endif %}{% endfor %}
+                        {% endfor %}
                     </select>
                 </div>
 

@@ -18,7 +18,7 @@
     <script type="text/javascript" charset="utf-8" src="{{ config.static_path }}/vendor/innersvg/innersvg.js"></script>
     {% endif %}
 
-    {{ hook('chart_html_head', chart) }}
+        {{ hook('chart_html_head', chart) }}
 
 {% for src in stylesheets %}
     <link rel="stylesheet" type="text/css" href="{{ src }}"></link>
@@ -36,6 +36,18 @@
   {% endif %}
 {% endfor %}
 
+    <script type="text/javascript">
+        (function() {
+            dw.theme.register('{{ theme.id }}', {{ theme.getThemeData() | json | raw }});
+        }).call(this);
+    </script>
+
+
+    <style type="text/css">
+        {{ themeCSS | raw }}
+    </style>
+
+
 </head>
 <body class="dw-chart chart{% if fullscreen %} fullscreen{% endif %}{% if plain %} plain{% endif %} vis-height-{{ visualization.height ? visualization.height : "fit" }} theme-{{ chart.theme }} vis-{{ chart.type }}">
     {{ hook('chart_before_body', chart, published) }}
@@ -44,7 +56,74 @@
     {% set title = chart.title %}{% set intro = chart.metadata.describe.intro %}{% set source = chart.metadata.describe['source-name'] %}{% set sourceURL = chart.metadata.describe['source-url'] %}
 
 
-    {% include theme.template ? theme.template : 'plugins/theme-default/default.twig' %}
+
+    <div class="dw-chart-header" id="header">
+        {% if not plain %}
+            <h1 {% if not title %}class="hidden"{% endif %}>
+                <span class="chart-title">{{ title | purify | raw }}</span>
+            </h1>
+
+            <p class="chart-intro{% if not intro %} hidden{% endif %}">{{ intro|purify|raw }}</p>
+        {% endif %}
+    </div>
+
+    <div class="dw-chart-body" id="chart"></div>
+
+    <div class="dw-chart-footer" id="footer">
+        {% if not plain %}
+            <div class="footer-left">
+                {% if theme.getThemeData('options.footer.logo.enabled') and theme.getThemeData('options.footer.logo.position') == "left" %}
+                    <img height="{{ theme.getThemeData('options.footer.logo.height') }}" src="{{ theme.getThemeData('options.footer.logo.url') }}">
+                {% endif %}
+
+                {% if theme.getThemeData("options.footer.sourcePosition") == "left" %}
+                    {% block footer %}
+                        {% if chartSource %}
+                            <span data-src="{% trans "Source: " %}" class="source-block">{{ theme.getThemeData('options.footer.sourceCaption') }}:
+                            {{ chartSource | raw }}</span>
+                        {% endif %}
+
+                        {% if theme.getThemeData("options.footer.getTheData.enabled") %}
+                            <a href="data">{{ theme.getThemeData("options.footer.getTheData.caption") }}</a>
+                        {% endif %}
+
+                        {% if theme.getThemeData("options.footer.embed.enabled") %}
+                            <a href="#embed">{{ theme.getThemeData("options.footer.embed.caption") }}</a>
+
+                            <div class="embed-code hide">
+                                <div class="close">×</div>
+                                <div>Please use the following HTML code to embed this chart:</div>
+                                <textarea>{{ embedCode }}</textarea>
+                            </div>
+                            <script type="text/javascript">
+                                $('a[href=#embed], .embed-code .close').click(function() { $('.embed-code').toggleClass('hide'); });
+                                $('.embed-code textarea').click(function() { $(this).focus().select(); });
+                            </script>
+                        {% endif %}
+
+                        {% if theme.getThemeData("options.footer.staticImage.enabled") %}
+                            <a href="//s3.eu-central-1.amazonaws.com/datawrapper-exports/exports/{{ chart.id }}.png">
+                                {{ theme.getThemeData("options.footer.staticImage.caption") }}
+                            </a>
+                        {% endif %}
+
+                        {% if theme.getThemeData("options.footer.createdWithDatawrapper") %}
+                            <a href="{{ DW_DOMAIN }}_/{{ chart.id }}" target="_blank">{% trans "Created with" %}  {% trans "Datawrapper" %}</a>
+                        {% endif %}
+                    {% endblock %}
+                {% endif %}
+            </div>
+            <div class="footer-right">
+                {% if theme.getThemeData("options.footer.sourcePosition") and theme.getThemeData("options.footer.sourcePosition") == "right" %}
+                    {{ block('footer') }}
+                {% endif %}
+
+                {% if theme.getThemeData('options.footer.logo.enabled') and theme.getThemeData('options.footer.logo.position') == "right" %}
+                    <img height="{{ theme.getThemeData('options.footer.logo.height') }}" src="{{ theme.getThemeData('options.footer.logo.url') }}">
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
 
     {# <div class="noscript" style="position: absolute;top: 0;left: 0;z-index: -10;">
         <a href="static.html"><img src="nojs.png" alt="{% trans "Please activate JavaScript to see the interactive chart." %}" /></a>
@@ -88,6 +167,11 @@
         }, 1000);
     }
 
+
     </script>
+
+    {% if theme.getThemeData('template.afterChart') %}
+        {{ theme.getThemeData('template.afterChart') | raw }}
+    {% endif %}
 </body>
 </html>

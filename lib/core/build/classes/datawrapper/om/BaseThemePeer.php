@@ -24,13 +24,13 @@ abstract class BaseThemePeer
     const TM_CLASS = 'ThemeTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 5;
+    const NUM_COLUMNS = 7;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 5;
+    const NUM_HYDRATE_COLUMNS = 7;
 
     /** the column name for the id field */
     const ID = 'theme.id';
@@ -46,6 +46,12 @@ abstract class BaseThemePeer
 
     /** the column name for the data field */
     const DATA = 'theme.data';
+
+    /** the column name for the less field */
+    const LESS = 'theme.less';
+
+    /** the column name for the assets field */
+    const ASSETS = 'theme.assets';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -66,12 +72,12 @@ abstract class BaseThemePeer
      * e.g. ThemePeer::$fieldNames[ThemePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'CreatedAt', 'Extend', 'Title', 'Data', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'createdAt', 'extend', 'title', 'data', ),
-        BasePeer::TYPE_COLNAME => array (ThemePeer::ID, ThemePeer::CREATED_AT, ThemePeer::EXTEND, ThemePeer::TITLE, ThemePeer::DATA, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'CREATED_AT', 'EXTEND', 'TITLE', 'DATA', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'created_at', 'extend', 'title', 'data', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'CreatedAt', 'Extend', 'Title', 'Data', 'Less', 'Assets', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'createdAt', 'extend', 'title', 'data', 'less', 'assets', ),
+        BasePeer::TYPE_COLNAME => array (ThemePeer::ID, ThemePeer::CREATED_AT, ThemePeer::EXTEND, ThemePeer::TITLE, ThemePeer::DATA, ThemePeer::LESS, ThemePeer::ASSETS, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'CREATED_AT', 'EXTEND', 'TITLE', 'DATA', 'LESS', 'ASSETS', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'created_at', 'extend', 'title', 'data', 'less', 'assets', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
     );
 
     /**
@@ -81,12 +87,12 @@ abstract class BaseThemePeer
      * e.g. ThemePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'CreatedAt' => 1, 'Extend' => 2, 'Title' => 3, 'Data' => 4, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'createdAt' => 1, 'extend' => 2, 'title' => 3, 'data' => 4, ),
-        BasePeer::TYPE_COLNAME => array (ThemePeer::ID => 0, ThemePeer::CREATED_AT => 1, ThemePeer::EXTEND => 2, ThemePeer::TITLE => 3, ThemePeer::DATA => 4, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'CREATED_AT' => 1, 'EXTEND' => 2, 'TITLE' => 3, 'DATA' => 4, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'created_at' => 1, 'extend' => 2, 'title' => 3, 'data' => 4, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'CreatedAt' => 1, 'Extend' => 2, 'Title' => 3, 'Data' => 4, 'Less' => 5, 'Assets' => 6, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'createdAt' => 1, 'extend' => 2, 'title' => 3, 'data' => 4, 'less' => 5, 'assets' => 6, ),
+        BasePeer::TYPE_COLNAME => array (ThemePeer::ID => 0, ThemePeer::CREATED_AT => 1, ThemePeer::EXTEND => 2, ThemePeer::TITLE => 3, ThemePeer::DATA => 4, ThemePeer::LESS => 5, ThemePeer::ASSETS => 6, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'CREATED_AT' => 1, 'EXTEND' => 2, 'TITLE' => 3, 'DATA' => 4, 'LESS' => 5, 'ASSETS' => 6, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'created_at' => 1, 'extend' => 2, 'title' => 3, 'data' => 4, 'less' => 5, 'assets' => 6, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
     );
 
     /**
@@ -165,12 +171,16 @@ abstract class BaseThemePeer
             $criteria->addSelectColumn(ThemePeer::EXTEND);
             $criteria->addSelectColumn(ThemePeer::TITLE);
             $criteria->addSelectColumn(ThemePeer::DATA);
+            $criteria->addSelectColumn(ThemePeer::LESS);
+            $criteria->addSelectColumn(ThemePeer::ASSETS);
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.extend');
             $criteria->addSelectColumn($alias . '.title');
             $criteria->addSelectColumn($alias . '.data');
+            $criteria->addSelectColumn($alias . '.less');
+            $criteria->addSelectColumn($alias . '.assets');
         }
     }
 

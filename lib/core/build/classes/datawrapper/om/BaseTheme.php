@@ -60,6 +60,18 @@ abstract class BaseTheme extends BaseObject implements Persistent
     protected $data;
 
     /**
+     * The value for the less field.
+     * @var        string
+     */
+    protected $less;
+
+    /**
+     * The value for the assets field.
+     * @var        string
+     */
+    protected $assets;
+
+    /**
      * @var        PropelObjectCollection|OrganizationTheme[] Collection to store aggregation of OrganizationTheme objects.
      */
     protected $collOrganizationThemes;
@@ -206,6 +218,26 @@ abstract class BaseTheme extends BaseObject implements Persistent
     }
 
     /**
+     * Get the [less] column value.
+     *
+     * @return string
+     */
+    public function getLess()
+    {
+        return $this->less;
+    }
+
+    /**
+     * Get the [assets] column value.
+     *
+     * @return string
+     */
+    public function getAssets()
+    {
+        return $this->assets;
+    }
+
+    /**
      * Set the value of [id] column.
      *
      * @param string $v new value
@@ -313,6 +345,48 @@ abstract class BaseTheme extends BaseObject implements Persistent
     } // setData()
 
     /**
+     * Set the value of [less] column.
+     *
+     * @param string $v new value
+     * @return Theme The current object (for fluent API support)
+     */
+    public function setLess($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (string) $v;
+        }
+
+        if ($this->less !== $v) {
+            $this->less = $v;
+            $this->modifiedColumns[] = ThemePeer::LESS;
+        }
+
+
+        return $this;
+    } // setLess()
+
+    /**
+     * Set the value of [assets] column.
+     *
+     * @param string $v new value
+     * @return Theme The current object (for fluent API support)
+     */
+    public function setAssets($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (string) $v;
+        }
+
+        if ($this->assets !== $v) {
+            $this->assets = $v;
+            $this->modifiedColumns[] = ThemePeer::ASSETS;
+        }
+
+
+        return $this;
+    } // setAssets()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -349,6 +423,8 @@ abstract class BaseTheme extends BaseObject implements Persistent
             $this->extend = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
             $this->title = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
             $this->data = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->less = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+            $this->assets = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -357,7 +433,7 @@ abstract class BaseTheme extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
             $this->postHydrate($row, $startcol, $rehydrate);
-            return $startcol + 5; // 5 = ThemePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 7; // 7 = ThemePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Theme object", $e);
@@ -672,6 +748,12 @@ abstract class BaseTheme extends BaseObject implements Persistent
         if ($this->isColumnModified(ThemePeer::DATA)) {
             $modifiedColumns[':p' . $index++]  = '`data`';
         }
+        if ($this->isColumnModified(ThemePeer::LESS)) {
+            $modifiedColumns[':p' . $index++]  = '`less`';
+        }
+        if ($this->isColumnModified(ThemePeer::ASSETS)) {
+            $modifiedColumns[':p' . $index++]  = '`assets`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `theme` (%s) VALUES (%s)',
@@ -697,6 +779,12 @@ abstract class BaseTheme extends BaseObject implements Persistent
                         break;
                     case '`data`':
                         $stmt->bindValue($identifier, $this->data, PDO::PARAM_STR);
+                        break;
+                    case '`less`':
+                        $stmt->bindValue($identifier, $this->less, PDO::PARAM_STR);
+                        break;
+                    case '`assets`':
+                        $stmt->bindValue($identifier, $this->assets, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -856,6 +944,12 @@ abstract class BaseTheme extends BaseObject implements Persistent
             case 4:
                 return $this->getData();
                 break;
+            case 5:
+                return $this->getLess();
+                break;
+            case 6:
+                return $this->getAssets();
+                break;
             default:
                 return null;
                 break;
@@ -890,6 +984,8 @@ abstract class BaseTheme extends BaseObject implements Persistent
             $keys[2] => $this->getExtend(),
             $keys[3] => $this->getTitle(),
             $keys[4] => $this->getData(),
+            $keys[5] => $this->getLess(),
+            $keys[6] => $this->getAssets(),
         );
         if ($includeForeignObjects) {
             if (null !== $this->collOrganizationThemes) {
@@ -947,6 +1043,12 @@ abstract class BaseTheme extends BaseObject implements Persistent
             case 4:
                 $this->setData($value);
                 break;
+            case 5:
+                $this->setLess($value);
+                break;
+            case 6:
+                $this->setAssets($value);
+                break;
         } // switch()
     }
 
@@ -976,6 +1078,8 @@ abstract class BaseTheme extends BaseObject implements Persistent
         if (array_key_exists($keys[2], $arr)) $this->setExtend($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setTitle($arr[$keys[3]]);
         if (array_key_exists($keys[4], $arr)) $this->setData($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setLess($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setAssets($arr[$keys[6]]);
     }
 
     /**
@@ -992,6 +1096,8 @@ abstract class BaseTheme extends BaseObject implements Persistent
         if ($this->isColumnModified(ThemePeer::EXTEND)) $criteria->add(ThemePeer::EXTEND, $this->extend);
         if ($this->isColumnModified(ThemePeer::TITLE)) $criteria->add(ThemePeer::TITLE, $this->title);
         if ($this->isColumnModified(ThemePeer::DATA)) $criteria->add(ThemePeer::DATA, $this->data);
+        if ($this->isColumnModified(ThemePeer::LESS)) $criteria->add(ThemePeer::LESS, $this->less);
+        if ($this->isColumnModified(ThemePeer::ASSETS)) $criteria->add(ThemePeer::ASSETS, $this->assets);
 
         return $criteria;
     }
@@ -1059,6 +1165,8 @@ abstract class BaseTheme extends BaseObject implements Persistent
         $copyObj->setExtend($this->getExtend());
         $copyObj->setTitle($this->getTitle());
         $copyObj->setData($this->getData());
+        $copyObj->setLess($this->getLess());
+        $copyObj->setAssets($this->getAssets());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1998,6 +2106,8 @@ abstract class BaseTheme extends BaseObject implements Persistent
         $this->extend = null;
         $this->title = null;
         $this->data = null;
+        $this->less = null;
+        $this->assets = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
