@@ -136,21 +136,6 @@ function publish_js($user, $chart) {
         'application/javascript'
     );
 
-    // generate theme script
-    $theme = $data['theme'];
-    $theme_js = $data['theme_js'];
-
-    $theme_js[1] = "/*\n * datawrapper / theme / {$theme['id']} v{$theme['version']}\n"
-                 . " * generated on ".date('c')."\n */\n"
-                 . $theme_js[1];
-    file_put_contents($static_path . $theme_js[0], $theme_js[1]);
-
-    $cdn_files[] = array(
-        $static_path . $theme_js[0],
-        'lib/' . $theme_js[0],
-        'application/javascript'
-    );
-
     // generate chart script
     $chart_js = $data['chart_js'];
 
@@ -198,19 +183,6 @@ function publish_css($user, $chart) {
         $static_path."/".$chart->getID().'.all.css',
         $chart->getCDNPath() . $chart->getID().'.all.css', 'text/css'
     );
-
-    // copy themes assets
-    $theme = $data['theme'];
-    if (isset($theme['assets'])) {
-        foreach ($theme['assets'] as $asset) {
-            $asset_src = '../../www/' . $theme['__static_path'] . '/' . $asset;
-            $asset_tgt = $static_path . "/" . $asset;
-            if (file_exists($asset_src)) {
-                file_put_contents($asset_tgt, file_get_contents($asset_src));
-                $cdn_files[] = array($asset_src, $chart->getCDNPath() . $asset);
-            }
-        }
-    }
 
     // copy visualization assets
     $vis = $data['visualization'];

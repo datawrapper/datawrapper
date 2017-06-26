@@ -17,12 +17,13 @@ class Theme extends BaseTheme
 {
     public function getCSS($visLess) {
         global $app;
+        global $appTwig;
         $theme = $this;
 
         // compile: theme-variables, chart.base.less, visulization.less
         $data = $this->getThemeDataAsFlatArray();
 
-        $twig = $app->view()->getEnvironment();
+        $twig = (empty($appTwig) ? $app->view()->getEnvironment() : $appTwig->view()->getEnvironment());
         $twigData = $data;
         $twigData['fonts'] = $this->getAssetFonts();
         $baseLess = $twig->render('chart-styles.less.twig', $twigData);

@@ -104,6 +104,12 @@ if (!defined('NO_SLIM')) {
     } else {
         // ..or with JSONView for API.
         $app = new Slim(array( 'view' => 'JSONView' ));
+
+        $appTwig = new Slim(array(
+            'view' => new TwigView(),
+            'templates.path' => '../../templates',
+            'session.handler' => null
+        ));
     }
 }
 
