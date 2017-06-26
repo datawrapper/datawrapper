@@ -41,11 +41,6 @@ $app->get('/(chart|map)/:id/visualize', function ($id) use ($app) {
         $vis = DatawrapperVisualization::get($chart->getType());
         parse_vis_options($vis);
 
-        $themes = DatawrapperTheme::all();
-        usort($themes, function($a, $b) {
-            return $a['title'] > $b['title'] ? 1 : -1;
-        });
-
         $theme = ThemeQuery::create()->findPk($chart->getTheme());
 
         if (empty($theme)) {

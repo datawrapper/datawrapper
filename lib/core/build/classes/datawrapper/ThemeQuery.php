@@ -17,15 +17,23 @@ class ThemeQuery extends BaseThemeQuery
 {
 
     public function allThemesForUser() {
+        global $dw_config;
+
         $user = DatawrapperSession::getUser();
 
-        $themes = array(ThemeQuery::create()->findPk("default"));
+        $themes = array();
+
+        $defaultIds = $dw_config['default-themes'] ?? ["default"];
+
+        foreach ($defaultIds as $def) {
+            $themes[] = ThemeQuery::create()->findPk($def);
+        }
 
         if ($user->isAdmin()) {
             $allThemes = ThemeQuery::create()->find();
 
             foreach ($allThemes as $theme) {
-                if ($theme->getId() == "default") continue;
+                if (in_array($theme->getId(), $defaultIds)) continue;
 
                 $themes[] = $theme;
             }
