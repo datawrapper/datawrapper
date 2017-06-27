@@ -58,7 +58,9 @@ class DatawrapperPluginManager {
             $init_queue[] = $pluginClass;
             return $pluginClass;
         };
-        while (count($not_loaded_yet) > 0) {
+        $retries = 0;
+
+        while (count($not_loaded_yet) && $retries < 100) {
             $try = $not_loaded_yet;
             $not_loaded_yet = array();
             while (count($try) > 0) {
@@ -90,6 +92,7 @@ class DatawrapperPluginManager {
                 } else {
                     if (!isset($could_not_install[$id])) {
                         $not_loaded_yet[] = $plugin; // so try next time
+                        $retries++;
                     }
                 }
             }
@@ -100,6 +103,7 @@ class DatawrapperPluginManager {
             $pluginClass->init();
         }
     }
+
 
     public static function loaded($plugin_id) {
         return isset(self::$loaded[$plugin_id]) && self::$loaded[$plugin_id];
