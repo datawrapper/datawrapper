@@ -57,17 +57,8 @@ class ChartQuery extends BaseChartQuery {
                 }
                 
                 $def_org_theme = $org->getDefaultTheme();
-                if (!empty($def_org_theme) && DatawrapperTheme::get($def_org_theme)) {
+                if (!empty($def_org_theme) && ThemeQuery::create()->findPk($def_org_theme)) {
                     $chart->setTheme($def_org_theme);
-                    $theme = DatawrapperTheme::get($def_org_theme);
-
-                    if (isset($theme['default_width'])) {
-                        $def_org_theme_default_width = $theme['default_width'];
-                    }
-                    
-                    if (isset($theme['default_height'])) {
-                        $def_org_theme_default_height = $theme['default_height'];
-                    }
                 }
             }
         }
