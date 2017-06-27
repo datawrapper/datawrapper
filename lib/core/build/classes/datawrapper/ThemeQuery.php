@@ -60,6 +60,10 @@ class ThemeQuery extends BaseThemeQuery
             }
         }
 
+        usort($themes, function($a, $b) {
+            return strtolower($a->getTitle()) > strtolower($b->getTitle()) ? 1 : -1;
+        });
+
         return $themes;
     }
 
