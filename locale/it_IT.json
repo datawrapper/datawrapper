@@ -360,5 +360,6 @@
     "login \/ signup \/ confirmation-email-hint": "If you do not see an email within five minutes, please make sure to also check the spam folder in your email program.",
     "login \/ signup \/ confirm": "Got it",
     "annotate \/ chart description": "Title \/ Description \/ Source",
-    "visualize \/ vis archive": "Archived chart types:"
+    "visualize \/ vis archive": "Archived chart types:",
+    "Source": "Fonte"
 }

@@ -16,6 +16,7 @@ class Datawrapper_L10N {
             $msg = $memcache->get($mkey);
             if (!empty($msg)) return $msg;
         }
+
         $messages = $this->loadMessageJSON($locale);
         if ($locale != 'en_US') {
             $fallback = $this->loadMessageJSON('en_US');

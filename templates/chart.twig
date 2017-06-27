@@ -79,12 +79,14 @@
                 {% if theme.getThemeData("options.footer.sourcePosition") == "left" %}
                     {% block footer %}
                         {% if chartSource %}
-                            <span data-src="{% trans "Source: " %}" class="source-block">{{ theme.getThemeData('options.footer.sourceCaption') }}:
+                            {% set sourceCaption = theme.getThemeData('options.footer.sourceCaption') %}
+                            <span data-src="{% trans "Source: " %}" class="source-block">{%  trans sourceCaption %}:
                             {{ chartSource | raw }}</span>
                         {% endif %}
 
                         {% if theme.getThemeData("options.footer.getTheData.enabled") %}
-                            <a href="data">{{ theme.getThemeData("options.footer.getTheData.caption") }}</a>
+                            {% set getTheDataCaption = theme.getThemeData("options.footer.getTheData.caption") %}
+                            <a href="data">{% trans getTheDataCaption %}</a>
                         {% endif %}
 
                         {% if theme.getThemeData("options.footer.embed.enabled") %}

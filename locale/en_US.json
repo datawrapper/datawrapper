@@ -23,8 +23,8 @@
     "Goodbye!": "Goodbye!",
     "Welcome to Datawrapper!": "Welcome to Datawrapper!",
     "Der letzte Schritt vor deinem Diagramm:": "The last step before your chart:",
-    "Wähle ein Passwort, mit dem du deine Diagramme und Karten in Zukunft erreichst. Danach wirst du zu deinem Diagramm weitergeleitet und kannst es veröffentlichen.": "Please choose a password to access your chats and maps in the future. After that, you will be redircted to your chart to embed it.",
-    "password": "Password",
+    "W\u00e4hle ein Passwort, mit dem du deine Diagramme und Karten in Zukunft erreichst. Danach wirst du zu deinem Diagramm weitergeleitet und kannst es ver\u00f6ffentlichen.": "Please choose a password to access your chats and maps in the future. After that, you will be redircted to your chart to embed it.",
+    "password": "password",
     "Show password in clear text": "Show password in clear text",
     "By the way, your login is %s.": "By the way, your login is %s.",
     "Set password &amp; get chart": "Set password &amp; get chart",
@@ -373,7 +373,8 @@
     "login \/ alternative signin": "Alternatively you can sign in via:",
     "annotate \/ chart description": "Title \/ Description \/ Source",
     "visualize \/ vis archive": "Archived chart types:",
-    "annotate / title": "Describe chart",
-    "annotate / highlight element": "Highlight element"
-
+    "annotate \/ title": "Describe chart",
+    "annotate \/ highlight element": "Highlight element",
+    "Hi, good to see you. Now please pick a password to complete the sign up.": "Hi, good to see you. Now please pick a password to complete the sign up.",
+    "Source": "Source"
 }
