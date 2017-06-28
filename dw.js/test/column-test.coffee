@@ -7,7 +7,7 @@ dw = require '../dw-2.0.js'
 
 
 sample_data = ['-13363', '40212', '2000', '3819', '45181', '4018', '38681', '31552', '', '38479', '-24131', '-48902', '28567', '743', '28324', '26446', '35948', '-43687', '49140', '17597', '23847', '12167', '24885', '31393', '16453', '-42788', '21017', '4647', '10721', '11091', '27875', '-13968', '42165', '487', '-11276', '25426', '-34332', '-33182', '-23273', '4333', '13135', '2753', '41574', '31647', '-47673', '25742', '4758', '-31039', '-14942', '-37304']
-
+text_col_data = ['A','A',null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null]
 
 vows
     .describe('Some basic tests for column API')
@@ -73,6 +73,10 @@ vows
             'column.raw': (topic) -> assert.deepEqual topic.raw(), sample_data
             'column.values': (topic) -> assert.equal topic.values().length, sample_data.length
             'column.indexOf': (topic) -> assert.equal topic.indexOf(45181), 4
+
+        'detect text col':
+            'topic': dw.column('t', text_col_data)
+            'range': (topic) -> assert.deepEqual 'text', topic.type()
 
 
     .export module
