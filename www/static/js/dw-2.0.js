@@ -212,13 +212,11 @@ dw.column = function(name, rows, type) {
         return type;
     }
 
-    // we pick random 100 values for column type testing
+    // we pick random 200 non-empty values for column type testing
     var sample = _.shuffle(_.range(rows.length))
         .filter(function(i) { return notEmpty(rows[i]); })
         .slice(0, 200)
         .map(function(i) { return rows[i]; });
-
-    if (name == 't') console.log(type, 'sample', sample, guessType(sample).name());
 
     type = type ? dw.column.types[type](sample) : guessType(sample);
 
