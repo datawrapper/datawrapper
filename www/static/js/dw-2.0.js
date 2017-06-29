@@ -1,4 +1,4 @@
-/*! datawrapper - v1.13.2 *///
+/*! datawrapper - v1.13.3 *///
 // NOTE: This file is auto-generated using /dw.js/make
 // from the source files /dw.js/src/*.js.
 //
@@ -181,6 +181,10 @@ dw.dataset = function(columns, opts) {
 
 dw.column = function(name, rows, type) {
 
+    function notEmpty(d) {
+        return d !== null && d !== undefined && d !== '';
+    }
+
     function guessType(sample) {
 
         if (_.every(rows, _.isNumber)) return dw.column.types.number();
@@ -193,7 +197,7 @@ dw.column = function(name, rows, type) {
                 dw.column.types.text()
             ],
             type,
-            k = rows.length,
+            k = rows.filter(notEmpty).length,
             tolerance = 0.1; // allowing 10% mis-parsed values
 
         _.each(rows, function(val) {
@@ -208,8 +212,11 @@ dw.column = function(name, rows, type) {
         return type;
     }
 
-    // we pick random 100 values for column type testing
-    var sample = _.map(_.shuffle(_.range(rows.length)).slice(0, 200), function(i) { return rows[i]; });
+    // we pick random 200 non-empty values for column type testing
+    var sample = _.shuffle(_.range(rows.length))
+        .filter(function(i) { return notEmpty(rows[i]); })
+        .slice(0, 200)
+        .map(function(i) { return rows[i]; });
 
     type = type ? dw.column.types[type](sample) : guessType(sample);
 
