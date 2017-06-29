@@ -168,10 +168,10 @@
         margin-top: 10px;
     }
     #footer, .dw-chart-footer {
-
-        position: absolute;
-        width: 100%;
-        height: auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 00px;
 
         & > div > a::before, & > div > .source-block::before {
             content: "•";
@@ -249,31 +249,6 @@
     
             {% if typography_links_color %}
                 color: @typography_links_color;
-            {% endif %}
-        }
-
-        .footer-left, .footer-right {
-            display: inline-block;
-            width: 49%
-        }
-
-        .footer-left {
-            text-align: left;
-
-            {% if colors_general_padding %}
-                left: ~'@{colors_general_padding}px';
-            {% else %}
-                left: 0px;
-            {% endif %}
-        }
-
-        .footer-right {
-            text-align: right;
-        }
-
-        .footer-right > * {
-            {% if colors_general_padding %}
-                padding-right: ~'@{colors_general_padding}px';
             {% endif %}
         }
 
