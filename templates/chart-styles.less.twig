@@ -171,7 +171,6 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-top: 00px;
 
         & > div > a::before, & > div > .source-block::before {
             content: "•";
@@ -183,12 +182,6 @@
             content: "";
             margin-right: 0px;
         }
-
-        {% if colors_general_padding %}
-            bottom: ~'@{colors_general_padding}px';
-        {% else %}
-            bottom: 0;
-        {% endif %}
 
         {% if typography_footer_typeface %}
             font-family: @typography_footer_typeface;
