@@ -112,7 +112,9 @@ define(['queue'], function(queue) {
             var labels = parent.selectAll('.label span,.chart-title,.chart-intro,.footer-left,td,th'),
                 nodes = parent.selectAll('path, line, rect, circle, text'),
                 divs = parent.selectAll('.export-rect,.dw-rect,tr'),
-                circles = parent.selectAll('.dw-circle');
+                circles = parent.selectAll('.dw-circle'),
+                lines = parent.selectAll('.dw-line'),
+                arrows = parent.selectAll('.dw-arrow');
 
             var svgNodes = parent.selectAll('svg');
 
@@ -138,6 +140,8 @@ define(['queue'], function(queue) {
             nodes.each(function() { q.defer(addNode, this); });
             divs.each(function() { q.defer(addDiv, this); });
             circles.each(function() { q.defer(addDivCircle, this); });
+            lines.each(function() { q.defer(addDivLine, this); });
+            arrows.each(function() { q.defer(addDivArrow, this); });
             labels.each(function() { q.defer(addLabel, this); });
 
             q.awaitAll(function(err) {
@@ -153,7 +157,7 @@ define(['queue'], function(queue) {
                         bbox,
                         transforms = [];
                     while (cur) {
-                        curCSS = getComputedStyle(cur);
+                        curCSS = window.getComputedStyle(cur);
                         if (cur.nodeName == 'defs') return cb(null);
                         if (cur.nodeName != 'svg') {
                             // check node visibility
@@ -181,7 +185,7 @@ define(['queue'], function(queue) {
             function addDiv(el, cb) {
                 if (deferred) setTimeout(add, 0); else add();
                 function add() {
-                    var css = getComputedStyle(el),
+                    var css = window.getComputedStyle(el),
                         bbox = el.getBoundingClientRect(),
                         stroke = css.borderColor,
                         strokeW = css.borderWidth,
@@ -202,7 +206,7 @@ define(['queue'], function(queue) {
             function addDivCircle(el, cb) {
                 if (deferred) setTimeout(add, 0); else add();
                 function add() {
-                    var css = getComputedStyle(el),
+                    var css = window.getComputedStyle(el),
                         bbox = el.getBoundingClientRect(),
                         stroke = css.borderColor,
                         strokeW = css.borderWidth,
@@ -220,6 +224,59 @@ define(['queue'], function(queue) {
                     cb(null);
                 }
             }
+
+            function addDivLine(el, cb) {
+                if (deferred) setTimeout(add, 0); else add();
+                function add() {
+                    var css = window.getComputedStyle(el),
+                        bbox = el.getBoundingClientRect(),
+                        len = bbox.width,
+                        path = 'M'+[bbox.left,bbox.top-offsetTop]+'h'+len,
+                        opacity =  css.opacity,
+                        stroke = css.borderTopColor;
+
+                    out_nodes.append('path')
+                        .style('fill', 'none')
+                        .style('opacity', opacity)
+                        .style('stroke', stroke)
+                        .style('stroke-linejoin', 'round')
+                        .style('stroke-lineend', 'round')
+                        .style('stroke-width', 1)
+                        .attr('d', path);
+
+                    cb(null);
+                }
+            }
+
+            function addDivArrow(el, cb) {
+                if (deferred) setTimeout(add, 0); else add();
+                function add() {
+                    var css = window.getComputedStyle(el),
+                        bbox = el.getBoundingClientRect(),
+                        dir = el.classList.contains('dw-arrow-left') ? 'left' : 'right',
+                        len = bbox.width,
+                        y = bbox.top + bbox.height * 0.5 - offsetTop,
+                        h = 5,
+                        path = dir == 'right' ?
+                            'M'+[bbox.left,y]+'h'+len+' l'+[-5,-5]+'l'+[5,5]+'l'+[-5,5]+'l'+[5,-5] :
+                            'M'+[bbox.left+len,y]+'h'+(-len)+' l'+[5,-5]+'l'+[-5,5]+'l'+[5,5]+'l'+[-5,-5],
+                        opacity =  css.opacity,
+                        fill = css.backgroundColor,
+                        r = bbox.width * 0.5;
+
+                    out_nodes.append('path.arrow')
+                        .style('fill', 'none')
+                        .style('opacity', opacity)
+                        .style('stroke', fill)
+                        .style('stroke-linejoin', 'round')
+                        .style('stroke-lineend', 'round')
+                        .style('stroke-width', 2)
+                        .attr('d', path);
+
+                    cb(null);
+                }
+            }
+
 
             function addLabel(el, cb) {
                 if (deferred) setTimeout(add, 0); else add();
