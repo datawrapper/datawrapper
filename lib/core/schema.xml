@@ -56,6 +56,7 @@
     <column name="website" type="varchar" required="false" size="512" />
     <column name="sm_profile" type="varchar" required="false" size="512" />
     <column name="oauth_signin" type="varchar" required="false" size="512" phpName="OAuthSignIn" />
+    <column name="customer_id" type="varchar" size="512" />
   </table>
 
   <!-- organizations -->

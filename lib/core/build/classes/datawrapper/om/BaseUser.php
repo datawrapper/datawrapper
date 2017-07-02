@@ -111,6 +111,12 @@ abstract class BaseUser extends BaseObject implements Persistent
     protected $oauth_signin;
 
     /**
+     * The value for the customer_id field.
+     * @var        string
+     */
+    protected $customer_id;
+
+    /**
      * @var        PropelObjectCollection|Chart[] Collection to store aggregation of Chart objects.
      */
     protected $collCharts;
@@ -428,6 +434,16 @@ abstract class BaseUser extends BaseObject implements Persistent
     }
 
     /**
+     * Get the [customer_id] column value.
+     *
+     * @return string
+     */
+    public function getCustomerId()
+    {
+        return $this->customer_id;
+    }
+
+    /**
      * Set the value of [id] column.
      *
      * @param int $v new value
@@ -716,6 +732,27 @@ abstract class BaseUser extends BaseObject implements Persistent
     } // setOAuthSignIn()
 
     /**
+     * Set the value of [customer_id] column.
+     *
+     * @param string $v new value
+     * @return User The current object (for fluent API support)
+     */
+    public function setCustomerId($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (string) $v;
+        }
+
+        if ($this->customer_id !== $v) {
+            $this->customer_id = $v;
+            $this->modifiedColumns[] = UserPeer::CUSTOMER_ID;
+        }
+
+
+        return $this;
+    } // setCustomerId()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -772,6 +809,7 @@ abstract class BaseUser extends BaseObject implements Persistent
             $this->website = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
             $this->sm_profile = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
             $this->oauth_signin = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
+            $this->customer_id = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -780,7 +818,7 @@ abstract class BaseUser extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
             $this->postHydrate($row, $startcol, $rehydrate);
-            return $startcol + 13; // 13 = UserPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 14; // 14 = UserPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating User object", $e);
@@ -1227,6 +1265,9 @@ abstract class BaseUser extends BaseObject implements Persistent
         if ($this->isColumnModified(UserPeer::OAUTH_SIGNIN)) {
             $modifiedColumns[':p' . $index++]  = '`oauth_signin`';
         }
+        if ($this->isColumnModified(UserPeer::CUSTOMER_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`customer_id`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `user` (%s) VALUES (%s)',
@@ -1276,6 +1317,9 @@ abstract class BaseUser extends BaseObject implements Persistent
                         break;
                     case '`oauth_signin`':
                         $stmt->bindValue($identifier, $this->oauth_signin, PDO::PARAM_STR);
+                        break;
+                    case '`customer_id`':
+                        $stmt->bindValue($identifier, $this->customer_id, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -1498,6 +1542,9 @@ abstract class BaseUser extends BaseObject implements Persistent
             case 12:
                 return $this->getOAuthSignIn();
                 break;
+            case 13:
+                return $this->getCustomerId();
+                break;
             default:
                 return null;
                 break;
@@ -1540,6 +1587,7 @@ abstract class BaseUser extends BaseObject implements Persistent
             $keys[10] => $this->getWebsite(),
             $keys[11] => $this->getSmProfile(),
             $keys[12] => $this->getOAuthSignIn(),
+            $keys[13] => $this->getCustomerId(),
         );
         if ($includeForeignObjects) {
             if (null !== $this->collCharts) {
@@ -1637,6 +1685,9 @@ abstract class BaseUser extends BaseObject implements Persistent
             case 12:
                 $this->setOAuthSignIn($value);
                 break;
+            case 13:
+                $this->setCustomerId($value);
+                break;
         } // switch()
     }
 
@@ -1674,6 +1725,7 @@ abstract class BaseUser extends BaseObject implements Persistent
         if (array_key_exists($keys[10], $arr)) $this->setWebsite($arr[$keys[10]]);
         if (array_key_exists($keys[11], $arr)) $this->setSmProfile($arr[$keys[11]]);
         if (array_key_exists($keys[12], $arr)) $this->setOAuthSignIn($arr[$keys[12]]);
+        if (array_key_exists($keys[13], $arr)) $this->setCustomerId($arr[$keys[13]]);
     }
 
     /**
@@ -1698,6 +1750,7 @@ abstract class BaseUser extends BaseObject implements Persistent
         if ($this->isColumnModified(UserPeer::WEBSITE)) $criteria->add(UserPeer::WEBSITE, $this->website);
         if ($this->isColumnModified(UserPeer::SM_PROFILE)) $criteria->add(UserPeer::SM_PROFILE, $this->sm_profile);
         if ($this->isColumnModified(UserPeer::OAUTH_SIGNIN)) $criteria->add(UserPeer::OAUTH_SIGNIN, $this->oauth_signin);
+        if ($this->isColumnModified(UserPeer::CUSTOMER_ID)) $criteria->add(UserPeer::CUSTOMER_ID, $this->customer_id);
 
         return $criteria;
     }
@@ -1773,6 +1826,7 @@ abstract class BaseUser extends BaseObject implements Persistent
         $copyObj->setWebsite($this->getWebsite());
         $copyObj->setSmProfile($this->getSmProfile());
         $copyObj->setOAuthSignIn($this->getOAuthSignIn());
+        $copyObj->setCustomerId($this->getCustomerId());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -3905,6 +3959,7 @@ abstract class BaseUser extends BaseObject implements Persistent
         $this->website = null;
         $this->sm_profile = null;
         $this->oauth_signin = null;
+        $this->customer_id = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
