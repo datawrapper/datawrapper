@@ -71,15 +71,6 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
 
         $headlinks[] = 'divider';
 
-        $headlinks[] = array(
-            'url' => '/account',
-            'id' => 'account',
-            'title' => '<i class="fa fa-lock"></i> &nbsp;' . __('My Account')
-        );
-
-
-        $headlinks[] = 'divider';
-
         // the place where settings used to be
 
         header_nav_hook($headlinks, 'settings');
@@ -120,15 +111,16 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
         );
     }
 
+
     // language dropdown
     if (!empty($config['languages'])) {
         $langDropdown = array(
             'url' => '',
             'id' => 'lang',
+            'icon' => 'fa fa-globe',
             'dropdown' => array(),
             'title' => strtoupper(substr(DatawrapperSession::getLanguage(), 0, 2)),
-            'icon' => false,
-            'tooltip' => __('Switch language')
+            'tooltip' => "&nbsp;" . __('Switch language')
         );
         foreach ($config['languages'] as $lang) {
             $langDropdown['dropdown'][] = array(
@@ -136,39 +128,64 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
                 'title' => $lang['title']
             );
         }
-        if (count($langDropdown['dropdown']) > 1) $headlinks[] = $langDropdown;
+
     }
-
-    header_nav_hook($headlinks, 'languages');
-
-
 
     if ($user->isLoggedIn()) {
-        $headlinks[] = array(
-            'url' => '#logout',
-            'id' => 'signout',
-            'icon' => 'fa fa-sign-out',
-            'justicon' => true,
-            'tooltip' => __('Sign out')
-        );
-    }
-
-    header_nav_hook($headlinks, 'user');
-
-    // admin link
-    if ($user->isLoggedIn() && $user->isAdmin()
-        && DatawrapperHooks::hookRegistered(DatawrapperHooks::GET_ADMIN_PAGES)) {
         $headlinks[] = 'divider';
-        $headlinks[] = array(
-            'url' => '/admin',
-            'id' => 'admin',
-            'icon' => 'fa fa-gears',
-            'justicon' => true,
-            'tooltip' => __('Admin')
-        );
-    }
 
-    header_nav_hook($headlinks, 'admin');
+        $acc = array(
+            "id" => "account",
+            "icon" => "fa fa-chevron-down",
+            "dropdown" => [
+                [
+                    "id" => "my-account",
+                    'icon' => 'fa fa-lock',
+                    "url" => "/account",
+                    "title" => "&nbsp;" . __('My Account')
+                ]
+            ]
+        );
+
+        if (count($langDropdown['dropdown']) > 1) $acc["dropdown"][] = $langDropdown;
+
+        header_nav_hook($headlinks, 'languages');
+
+        if ($user->isLoggedIn()) {
+            $acc["dropdown"][] = array(
+                'url' => '#logout',
+                'id' => 'signout',
+                'title' => 'Logout',
+                'icon' => 'fa fa-sign-out',
+                'justicon' => true,
+                'tooltip' => __('Sign out')
+            );
+        }
+
+        header_nav_hook($headlinks, 'user');
+
+        // admin link
+        if ($user->isLoggedIn() && $user->isAdmin()
+            && DatawrapperHooks::hookRegistered(DatawrapperHooks::GET_ADMIN_PAGES)) {
+            $acc["dropdown"][] = 'divider';
+            $acc["dropdown"][] = array(
+                'url' => '/admin',
+                'id' => 'admin',
+                'title' => '&nbsp; Admin',
+                'icon' => 'fa fa-gears',
+                'justicon' => true,
+                'tooltip' => __('Admin')
+            );
+        }
+
+        header_nav_hook($headlinks, 'admin');
+
+        $headlinks[] = $acc;
+    } else {
+        if (count($langDropdown['dropdown']) > 1) $headlinks[] = $langDropdown;
+
+        header_nav_hook($headlinks, 'languages');
+    }
 
     if (DatawrapperHooks::hookRegistered(DatawrapperHooks::CUSTOM_LOGO)) {
         $logos = DatawrapperHooks::execute(DatawrapperHooks::CUSTOM_LOGO);
