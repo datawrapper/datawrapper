@@ -1,8 +1,7 @@
 
 GENERATED_FILES = \
 	dw.js/dw-2.0.js \
-	www/static/css/datawrapper.css \
-	www/static/css/chart.base.css
+	www/static/css/datawrapper.css
 
 all: $(GENERATED_FILES)
 
@@ -25,6 +24,3 @@ messages:
 
 www/static/css/datawrapper.css: assets/styles/datawrapper/* assets/styles/datawrapper/**/* assets/styles/datawrapper/**/**/*
 	node_modules/.bin/lessc assets/styles/datawrapper/main.less > $@
-
-www/static/css/chart.base.css: assets/styles/chart.base/*
-	node_modules/.bin/lessc assets/styles/chart.base/main.less > $@
