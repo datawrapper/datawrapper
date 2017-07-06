@@ -37,7 +37,7 @@ define(['queue'], function(queue) {
 
         // console.log('snapshot.js - start');
 
-        chartToSvg(chartBody, function(svg) {
+        chartToSvg(chartBody, function(svg, canvas) {
             // console.log('snapshot.js - chartToSVG', ((new Date()).getTime() - t0)/1000);
 
             var bbox = svg.node().getBoundingClientRect();
@@ -49,14 +49,14 @@ define(['queue'], function(queue) {
 
             svg.remove();
 
-            (serverSide ? svgToPngServer : svgToPngClient)(svg_src, bbox, function(err) {
+            (serverSide ? svgToPngServer : svgToPngClient)(svg_src, canvas, bbox, function(err) {
                 // console.log('done', serverSide, err);
                 // console.log('snapshot.js! total', ((new Date()).getTime() - t0)/1000);
             });
             // 
         });
 
-        function svgToPngServer(svg_src, bbox, callback) {
+        function svgToPngServer(svg_src, canv, bbox, callback) {
             $.ajax({
                 url: '/api/plugin/snapshot',
                 type: 'POST',
@@ -77,12 +77,18 @@ define(['queue'], function(queue) {
             });
         }
 
-        function svgToPngClient(svg_src, bbox, callback) {
+        function svgToPngClient(svg_src, canv, bbox, callback) {
             var canvas = document.createElement("canvas"),
                 ctx = canvas.getContext("2d");
 
             canvas.width = bbox.width * 2;
             canvas.height = bbox.height * 2;
+
+            if (canv) {
+                // if the chart has some parts rendered in canvas
+                // we want to draw them as well
+                ctx.drawImage(canv, 0, 0, bbox.width * 2, bbox.height * 2);
+            }
 
             ctx.drawSvg(svg_src, 0, 0, bbox.width * 2, bbox.height * 2);
             // document.body.appendChild(canvas);
@@ -146,7 +152,7 @@ define(['queue'], function(queue) {
 
             q.awaitAll(function(err) {
                 // console.log('all done', err);
-                callback(cont);
+                callback(cont, parent.select('canvas').node());
             });
 
             function addNode(el, cb) {
