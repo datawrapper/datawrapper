@@ -39,9 +39,10 @@ class ActionTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
-        $this->addForeignKey('user_id', 'UserId', 'INTEGER', 'user', 'id', true, null, null);
+        $this->addForeignKey('user_id', 'UserId', 'INTEGER', 'user', 'id', false, null, null);
         $this->addColumn('action_time', 'ActionTime', 'TIMESTAMP', true, null, null);
         $this->addColumn('key', 'Key', 'VARCHAR', true, 100, null);
+        $this->addColumn('identifier', 'Identifier', 'VARCHAR', false, 512, null);
         $this->addColumn('details', 'Details', 'VARCHAR', false, 512, null);
         // validators
     } // initialize()

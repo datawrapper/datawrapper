@@ -54,6 +54,12 @@ abstract class BaseAction extends BaseObject implements Persistent
     protected $key;
 
     /**
+     * The value for the identifier field.
+     * @var        string
+     */
+    protected $identifier;
+
+    /**
      * The value for the details field.
      * @var        string
      */
@@ -152,6 +158,16 @@ abstract class BaseAction extends BaseObject implements Persistent
     public function getKey()
     {
         return $this->key;
+    }
+
+    /**
+     * Get the [identifier] column value.
+     *
+     * @return string
+     */
+    public function getIdentifier()
+    {
+        return $this->identifier;
     }
 
     /**
@@ -255,6 +271,27 @@ abstract class BaseAction extends BaseObject implements Persistent
     } // setKey()
 
     /**
+     * Set the value of [identifier] column.
+     *
+     * @param string $v new value
+     * @return Action The current object (for fluent API support)
+     */
+    public function setIdentifier($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (string) $v;
+        }
+
+        if ($this->identifier !== $v) {
+            $this->identifier = $v;
+            $this->modifiedColumns[] = ActionPeer::IDENTIFIER;
+        }
+
+
+        return $this;
+    } // setIdentifier()
+
+    /**
      * Set the value of [details] column.
      *
      * @param string $v new value
@@ -311,7 +348,8 @@ abstract class BaseAction extends BaseObject implements Persistent
             $this->user_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
             $this->action_time = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
             $this->key = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
-            $this->details = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->identifier = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->details = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -320,7 +358,7 @@ abstract class BaseAction extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
             $this->postHydrate($row, $startcol, $rehydrate);
-            return $startcol + 5; // 5 = ActionPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 6; // 6 = ActionPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Action object", $e);
@@ -560,6 +598,9 @@ abstract class BaseAction extends BaseObject implements Persistent
         if ($this->isColumnModified(ActionPeer::KEY)) {
             $modifiedColumns[':p' . $index++]  = '`key`';
         }
+        if ($this->isColumnModified(ActionPeer::IDENTIFIER)) {
+            $modifiedColumns[':p' . $index++]  = '`identifier`';
+        }
         if ($this->isColumnModified(ActionPeer::DETAILS)) {
             $modifiedColumns[':p' . $index++]  = '`details`';
         }
@@ -585,6 +626,9 @@ abstract class BaseAction extends BaseObject implements Persistent
                         break;
                     case '`key`':
                         $stmt->bindValue($identifier, $this->key, PDO::PARAM_STR);
+                        break;
+                    case '`identifier`':
+                        $stmt->bindValue($identifier, $this->identifier, PDO::PARAM_STR);
                         break;
                     case '`details`':
                         $stmt->bindValue($identifier, $this->details, PDO::PARAM_STR);
@@ -748,6 +792,9 @@ abstract class BaseAction extends BaseObject implements Persistent
                 return $this->getKey();
                 break;
             case 4:
+                return $this->getIdentifier();
+                break;
+            case 5:
                 return $this->getDetails();
                 break;
             default:
@@ -783,7 +830,8 @@ abstract class BaseAction extends BaseObject implements Persistent
             $keys[1] => $this->getUserId(),
             $keys[2] => $this->getActionTime(),
             $keys[3] => $this->getKey(),
-            $keys[4] => $this->getDetails(),
+            $keys[4] => $this->getIdentifier(),
+            $keys[5] => $this->getDetails(),
         );
         if ($includeForeignObjects) {
             if (null !== $this->aUser) {
@@ -836,6 +884,9 @@ abstract class BaseAction extends BaseObject implements Persistent
                 $this->setKey($value);
                 break;
             case 4:
+                $this->setIdentifier($value);
+                break;
+            case 5:
                 $this->setDetails($value);
                 break;
         } // switch()
@@ -866,7 +917,8 @@ abstract class BaseAction extends BaseObject implements Persistent
         if (array_key_exists($keys[1], $arr)) $this->setUserId($arr[$keys[1]]);
         if (array_key_exists($keys[2], $arr)) $this->setActionTime($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setKey($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setDetails($arr[$keys[4]]);
+        if (array_key_exists($keys[4], $arr)) $this->setIdentifier($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setDetails($arr[$keys[5]]);
     }
 
     /**
@@ -882,6 +934,7 @@ abstract class BaseAction extends BaseObject implements Persistent
         if ($this->isColumnModified(ActionPeer::USER_ID)) $criteria->add(ActionPeer::USER_ID, $this->user_id);
         if ($this->isColumnModified(ActionPeer::ACTION_TIME)) $criteria->add(ActionPeer::ACTION_TIME, $this->action_time);
         if ($this->isColumnModified(ActionPeer::KEY)) $criteria->add(ActionPeer::KEY, $this->key);
+        if ($this->isColumnModified(ActionPeer::IDENTIFIER)) $criteria->add(ActionPeer::IDENTIFIER, $this->identifier);
         if ($this->isColumnModified(ActionPeer::DETAILS)) $criteria->add(ActionPeer::DETAILS, $this->details);
 
         return $criteria;
@@ -949,6 +1002,7 @@ abstract class BaseAction extends BaseObject implements Persistent
         $copyObj->setUserId($this->getUserId());
         $copyObj->setActionTime($this->getActionTime());
         $copyObj->setKey($this->getKey());
+        $copyObj->setIdentifier($this->getIdentifier());
         $copyObj->setDetails($this->getDetails());
 
         if ($deepCopy && !$this->startCopy) {
@@ -1069,6 +1123,7 @@ abstract class BaseAction extends BaseObject implements Persistent
         $this->user_id = null;
         $this->action_time = null;
         $this->key = null;
+        $this->identifier = null;
         $this->details = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;

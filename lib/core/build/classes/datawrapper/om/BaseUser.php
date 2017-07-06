@@ -1134,9 +1134,10 @@ abstract class BaseUser extends BaseObject implements Persistent
 
             if ($this->actionsScheduledForDeletion !== null) {
                 if (!$this->actionsScheduledForDeletion->isEmpty()) {
-                    ActionQuery::create()
-                        ->filterByPrimaryKeys($this->actionsScheduledForDeletion->getPrimaryKeys(false))
-                        ->delete($con);
+                    foreach ($this->actionsScheduledForDeletion as $action) {
+                        // need to save related object because we set the relation to null
+                        $action->save($con);
+                    }
                     $this->actionsScheduledForDeletion = null;
                 }
             }
@@ -2674,7 +2675,7 @@ abstract class BaseUser extends BaseObject implements Persistent
                 $this->actionsScheduledForDeletion = clone $this->collActions;
                 $this->actionsScheduledForDeletion->clear();
             }
-            $this->actionsScheduledForDeletion[]= clone $action;
+            $this->actionsScheduledForDeletion[]= $action;
             $action->setUser(null);
         }
 

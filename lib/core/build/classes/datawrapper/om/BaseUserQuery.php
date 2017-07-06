@@ -896,7 +896,7 @@ abstract class BaseUserQuery extends ModelCriteria
      *
      * @return UserQuery The current query, for fluid interface
      */
-    public function joinAction($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinAction($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('Action');
@@ -931,7 +931,7 @@ abstract class BaseUserQuery extends ModelCriteria
      *
      * @return   ActionQuery A secondary query class using the current class as primary query
      */
-    public function useActionQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function useActionQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         return $this
             ->joinAction($relationAlias, $joinType)
