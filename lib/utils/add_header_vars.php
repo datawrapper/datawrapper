@@ -69,13 +69,13 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
             if (strlen($username) > 18) $username = substr($username, 0, 16).'…';
         }
 
-        $headlinks[] = 'divider';
-
         // the place where settings used to be
 
         header_nav_hook($headlinks, 'settings');
 
         if ($user->hasCharts()) {
+            $headlinks[] = 'divider';
+
             // mycharts
             $mycharts = array(
                 'url' => '/mycharts/',
