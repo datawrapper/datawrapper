@@ -37,7 +37,11 @@ $app->get('/(chart|map)/:id/publish', function ($id) use ($app) {
                         "user" => $user
                     ));
                 } else {
-                    $cap[0]($app, $chart, $user);                
+                    usort($cap, function ($item1, $item2) {
+                        return $item1['priority'] > $item2['priority'] ? 0 : 1;
+                    });
+
+                    $cap[0]['render']($app, $chart, $user);
                 }
             }
         );

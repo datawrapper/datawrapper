@@ -24,13 +24,13 @@ abstract class BaseUserPeer
     const TM_CLASS = 'UserTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 13;
+    const NUM_COLUMNS = 14;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 13;
+    const NUM_HYDRATE_COLUMNS = 14;
 
     /** the column name for the id field */
     const ID = 'user.id';
@@ -71,6 +71,9 @@ abstract class BaseUserPeer
     /** the column name for the oauth_signin field */
     const OAUTH_SIGNIN = 'user.oauth_signin';
 
+    /** the column name for the customer_id field */
+    const CUSTOMER_ID = 'user.customer_id';
+
     /** The enumerated values for the role field */
     const ROLE_ADMIN = 'admin';
     const ROLE_EDITOR = 'editor';
@@ -98,12 +101,12 @@ abstract class BaseUserPeer
      * e.g. UserPeer::$fieldNames[UserPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'Email', 'Pwd', 'ActivateToken', 'ResetPasswordToken', 'Role', 'Deleted', 'Language', 'CreatedAt', 'Name', 'Website', 'SmProfile', 'OAuthSignIn', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'email', 'pwd', 'activateToken', 'resetPasswordToken', 'role', 'deleted', 'language', 'createdAt', 'name', 'website', 'smProfile', 'oAuthSignIn', ),
-        BasePeer::TYPE_COLNAME => array (UserPeer::ID, UserPeer::EMAIL, UserPeer::PWD, UserPeer::ACTIVATE_TOKEN, UserPeer::RESET_PASSWORD_TOKEN, UserPeer::ROLE, UserPeer::DELETED, UserPeer::LANGUAGE, UserPeer::CREATED_AT, UserPeer::NAME, UserPeer::WEBSITE, UserPeer::SM_PROFILE, UserPeer::OAUTH_SIGNIN, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'EMAIL', 'PWD', 'ACTIVATE_TOKEN', 'RESET_PASSWORD_TOKEN', 'ROLE', 'DELETED', 'LANGUAGE', 'CREATED_AT', 'NAME', 'WEBSITE', 'SM_PROFILE', 'OAUTH_SIGNIN', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'email', 'pwd', 'activate_token', 'reset_password_token', 'role', 'deleted', 'language', 'created_at', 'name', 'website', 'sm_profile', 'oauth_signin', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Email', 'Pwd', 'ActivateToken', 'ResetPasswordToken', 'Role', 'Deleted', 'Language', 'CreatedAt', 'Name', 'Website', 'SmProfile', 'OAuthSignIn', 'CustomerId', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'email', 'pwd', 'activateToken', 'resetPasswordToken', 'role', 'deleted', 'language', 'createdAt', 'name', 'website', 'smProfile', 'oAuthSignIn', 'customerId', ),
+        BasePeer::TYPE_COLNAME => array (UserPeer::ID, UserPeer::EMAIL, UserPeer::PWD, UserPeer::ACTIVATE_TOKEN, UserPeer::RESET_PASSWORD_TOKEN, UserPeer::ROLE, UserPeer::DELETED, UserPeer::LANGUAGE, UserPeer::CREATED_AT, UserPeer::NAME, UserPeer::WEBSITE, UserPeer::SM_PROFILE, UserPeer::OAUTH_SIGNIN, UserPeer::CUSTOMER_ID, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'EMAIL', 'PWD', 'ACTIVATE_TOKEN', 'RESET_PASSWORD_TOKEN', 'ROLE', 'DELETED', 'LANGUAGE', 'CREATED_AT', 'NAME', 'WEBSITE', 'SM_PROFILE', 'OAUTH_SIGNIN', 'CUSTOMER_ID', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'email', 'pwd', 'activate_token', 'reset_password_token', 'role', 'deleted', 'language', 'created_at', 'name', 'website', 'sm_profile', 'oauth_signin', 'customer_id', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, )
     );
 
     /**
@@ -113,12 +116,12 @@ abstract class BaseUserPeer
      * e.g. UserPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Email' => 1, 'Pwd' => 2, 'ActivateToken' => 3, 'ResetPasswordToken' => 4, 'Role' => 5, 'Deleted' => 6, 'Language' => 7, 'CreatedAt' => 8, 'Name' => 9, 'Website' => 10, 'SmProfile' => 11, 'OAuthSignIn' => 12, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'email' => 1, 'pwd' => 2, 'activateToken' => 3, 'resetPasswordToken' => 4, 'role' => 5, 'deleted' => 6, 'language' => 7, 'createdAt' => 8, 'name' => 9, 'website' => 10, 'smProfile' => 11, 'oAuthSignIn' => 12, ),
-        BasePeer::TYPE_COLNAME => array (UserPeer::ID => 0, UserPeer::EMAIL => 1, UserPeer::PWD => 2, UserPeer::ACTIVATE_TOKEN => 3, UserPeer::RESET_PASSWORD_TOKEN => 4, UserPeer::ROLE => 5, UserPeer::DELETED => 6, UserPeer::LANGUAGE => 7, UserPeer::CREATED_AT => 8, UserPeer::NAME => 9, UserPeer::WEBSITE => 10, UserPeer::SM_PROFILE => 11, UserPeer::OAUTH_SIGNIN => 12, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'EMAIL' => 1, 'PWD' => 2, 'ACTIVATE_TOKEN' => 3, 'RESET_PASSWORD_TOKEN' => 4, 'ROLE' => 5, 'DELETED' => 6, 'LANGUAGE' => 7, 'CREATED_AT' => 8, 'NAME' => 9, 'WEBSITE' => 10, 'SM_PROFILE' => 11, 'OAUTH_SIGNIN' => 12, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'email' => 1, 'pwd' => 2, 'activate_token' => 3, 'reset_password_token' => 4, 'role' => 5, 'deleted' => 6, 'language' => 7, 'created_at' => 8, 'name' => 9, 'website' => 10, 'sm_profile' => 11, 'oauth_signin' => 12, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Email' => 1, 'Pwd' => 2, 'ActivateToken' => 3, 'ResetPasswordToken' => 4, 'Role' => 5, 'Deleted' => 6, 'Language' => 7, 'CreatedAt' => 8, 'Name' => 9, 'Website' => 10, 'SmProfile' => 11, 'OAuthSignIn' => 12, 'CustomerId' => 13, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'email' => 1, 'pwd' => 2, 'activateToken' => 3, 'resetPasswordToken' => 4, 'role' => 5, 'deleted' => 6, 'language' => 7, 'createdAt' => 8, 'name' => 9, 'website' => 10, 'smProfile' => 11, 'oAuthSignIn' => 12, 'customerId' => 13, ),
+        BasePeer::TYPE_COLNAME => array (UserPeer::ID => 0, UserPeer::EMAIL => 1, UserPeer::PWD => 2, UserPeer::ACTIVATE_TOKEN => 3, UserPeer::RESET_PASSWORD_TOKEN => 4, UserPeer::ROLE => 5, UserPeer::DELETED => 6, UserPeer::LANGUAGE => 7, UserPeer::CREATED_AT => 8, UserPeer::NAME => 9, UserPeer::WEBSITE => 10, UserPeer::SM_PROFILE => 11, UserPeer::OAUTH_SIGNIN => 12, UserPeer::CUSTOMER_ID => 13, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'EMAIL' => 1, 'PWD' => 2, 'ACTIVATE_TOKEN' => 3, 'RESET_PASSWORD_TOKEN' => 4, 'ROLE' => 5, 'DELETED' => 6, 'LANGUAGE' => 7, 'CREATED_AT' => 8, 'NAME' => 9, 'WEBSITE' => 10, 'SM_PROFILE' => 11, 'OAUTH_SIGNIN' => 12, 'CUSTOMER_ID' => 13, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'email' => 1, 'pwd' => 2, 'activate_token' => 3, 'reset_password_token' => 4, 'role' => 5, 'deleted' => 6, 'language' => 7, 'created_at' => 8, 'name' => 9, 'website' => 10, 'sm_profile' => 11, 'oauth_signin' => 12, 'customer_id' => 13, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, )
     );
 
     /** The enumerated values for this table */
@@ -261,6 +264,7 @@ abstract class BaseUserPeer
             $criteria->addSelectColumn(UserPeer::WEBSITE);
             $criteria->addSelectColumn(UserPeer::SM_PROFILE);
             $criteria->addSelectColumn(UserPeer::OAUTH_SIGNIN);
+            $criteria->addSelectColumn(UserPeer::CUSTOMER_ID);
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.email');
@@ -275,6 +279,7 @@ abstract class BaseUserPeer
             $criteria->addSelectColumn($alias . '.website');
             $criteria->addSelectColumn($alias . '.sm_profile');
             $criteria->addSelectColumn($alias . '.oauth_signin');
+            $criteria->addSelectColumn($alias . '.customer_id');
         }
     }
 

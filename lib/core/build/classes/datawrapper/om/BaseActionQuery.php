@@ -10,12 +10,14 @@
  * @method ActionQuery orderByUserId($order = Criteria::ASC) Order by the user_id column
  * @method ActionQuery orderByActionTime($order = Criteria::ASC) Order by the action_time column
  * @method ActionQuery orderByKey($order = Criteria::ASC) Order by the key column
+ * @method ActionQuery orderByIdentifier($order = Criteria::ASC) Order by the identifier column
  * @method ActionQuery orderByDetails($order = Criteria::ASC) Order by the details column
  *
  * @method ActionQuery groupById() Group by the id column
  * @method ActionQuery groupByUserId() Group by the user_id column
  * @method ActionQuery groupByActionTime() Group by the action_time column
  * @method ActionQuery groupByKey() Group by the key column
+ * @method ActionQuery groupByIdentifier() Group by the identifier column
  * @method ActionQuery groupByDetails() Group by the details column
  *
  * @method ActionQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
@@ -32,12 +34,14 @@
  * @method Action findOneByUserId(int $user_id) Return the first Action filtered by the user_id column
  * @method Action findOneByActionTime(string $action_time) Return the first Action filtered by the action_time column
  * @method Action findOneByKey(string $key) Return the first Action filtered by the key column
+ * @method Action findOneByIdentifier(string $identifier) Return the first Action filtered by the identifier column
  * @method Action findOneByDetails(string $details) Return the first Action filtered by the details column
  *
  * @method array findById(int $id) Return Action objects filtered by the id column
  * @method array findByUserId(int $user_id) Return Action objects filtered by the user_id column
  * @method array findByActionTime(string $action_time) Return Action objects filtered by the action_time column
  * @method array findByKey(string $key) Return Action objects filtered by the key column
+ * @method array findByIdentifier(string $identifier) Return Action objects filtered by the identifier column
  * @method array findByDetails(string $details) Return Action objects filtered by the details column
  *
  * @package    propel.generator.datawrapper.om
@@ -142,7 +146,7 @@ abstract class BaseActionQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `user_id`, `action_time`, `key`, `details` FROM `action` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `user_id`, `action_time`, `key`, `identifier`, `details` FROM `action` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -390,6 +394,35 @@ abstract class BaseActionQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the identifier column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByIdentifier('fooValue');   // WHERE identifier = 'fooValue'
+     * $query->filterByIdentifier('%fooValue%'); // WHERE identifier LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $identifier The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ActionQuery The current query, for fluid interface
+     */
+    public function filterByIdentifier($identifier = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($identifier)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $identifier)) {
+                $identifier = str_replace('*', '%', $identifier);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(ActionPeer::IDENTIFIER, $identifier, $comparison);
+    }
+
+    /**
      * Filter the query on the details column
      *
      * Example usage:
@@ -452,7 +485,7 @@ abstract class BaseActionQuery extends ModelCriteria
      *
      * @return ActionQuery The current query, for fluid interface
      */
-    public function joinUser($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinUser($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('User');
@@ -487,7 +520,7 @@ abstract class BaseActionQuery extends ModelCriteria
      *
      * @return   UserQuery A secondary query class using the current class as primary query
      */
-    public function useUserQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function useUserQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         return $this
             ->joinUser($relationAlias, $joinType)
