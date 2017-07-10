@@ -196,6 +196,22 @@ abstract class BaseChart extends BaseObject implements Persistent
     protected $collJobsPartial;
 
     /**
+     * @var        PropelObjectCollection|ChartFolders[] Collection to store aggregation of ChartFolders objects.
+     */
+    protected $collChartFolderss;
+    protected $collChartFolderssPartial;
+
+    /**
+     * @var        PropelObjectCollection|UserFolders[] Collection to store aggregation of UserFolders objects.
+     */
+    protected $collUserFolderss;
+
+    /**
+     * @var        PropelObjectCollection|OrganizationFolders[] Collection to store aggregation of OrganizationFolders objects.
+     */
+    protected $collOrganizationFolderss;
+
+    /**
      * Flag to prevent endless save loop, if this object is referenced
      * by another object which falls in this transaction.
      * @var        boolean
@@ -219,6 +235,18 @@ abstract class BaseChart extends BaseObject implements Persistent
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
      */
+    protected $userFolderssScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $organizationFolderssScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
     protected $chartsRelatedByIdScheduledForDeletion = null;
 
     /**
@@ -226,6 +254,12 @@ abstract class BaseChart extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $jobsScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $chartFolderssScheduledForDeletion = null;
 
     /**
      * Applies default values to this object.
@@ -1276,6 +1310,10 @@ abstract class BaseChart extends BaseObject implements Persistent
 
             $this->collJobs = null;
 
+            $this->collChartFolderss = null;
+
+            $this->collUserFolderss = null;
+            $this->collOrganizationFolderss = null;
         } // if (deep)
     }
 
@@ -1426,6 +1464,58 @@ abstract class BaseChart extends BaseObject implements Persistent
                 $this->resetModified();
             }
 
+            if ($this->userFolderssScheduledForDeletion !== null) {
+                if (!$this->userFolderssScheduledForDeletion->isEmpty()) {
+                    $pks = array();
+                    $pk = $this->getPrimaryKey();
+                    foreach ($this->userFolderssScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
+                        $pks[] = array($pk, $remotePk);
+                    }
+                    ChartFoldersQuery::create()
+                        ->filterByPrimaryKeys($pks)
+                        ->delete($con);
+                    $this->userFolderssScheduledForDeletion = null;
+                }
+
+                foreach ($this->getUserFolderss() as $userFolders) {
+                    if ($userFolders->isModified()) {
+                        $userFolders->save($con);
+                    }
+                }
+            } elseif ($this->collUserFolderss) {
+                foreach ($this->collUserFolderss as $userFolders) {
+                    if ($userFolders->isModified()) {
+                        $userFolders->save($con);
+                    }
+                }
+            }
+
+            if ($this->organizationFolderssScheduledForDeletion !== null) {
+                if (!$this->organizationFolderssScheduledForDeletion->isEmpty()) {
+                    $pks = array();
+                    $pk = $this->getPrimaryKey();
+                    foreach ($this->organizationFolderssScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
+                        $pks[] = array($pk, $remotePk);
+                    }
+                    ChartFoldersQuery::create()
+                        ->filterByPrimaryKeys($pks)
+                        ->delete($con);
+                    $this->organizationFolderssScheduledForDeletion = null;
+                }
+
+                foreach ($this->getOrganizationFolderss() as $organizationFolders) {
+                    if ($organizationFolders->isModified()) {
+                        $organizationFolders->save($con);
+                    }
+                }
+            } elseif ($this->collOrganizationFolderss) {
+                foreach ($this->collOrganizationFolderss as $organizationFolders) {
+                    if ($organizationFolders->isModified()) {
+                        $organizationFolders->save($con);
+                    }
+                }
+            }
+
             if ($this->chartsRelatedByIdScheduledForDeletion !== null) {
                 if (!$this->chartsRelatedByIdScheduledForDeletion->isEmpty()) {
                     foreach ($this->chartsRelatedByIdScheduledForDeletion as $chartRelatedById) {
@@ -1455,6 +1545,24 @@ abstract class BaseChart extends BaseObject implements Persistent
 
             if ($this->collJobs !== null) {
                 foreach ($this->collJobs as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->chartFolderssScheduledForDeletion !== null) {
+                if (!$this->chartFolderssScheduledForDeletion->isEmpty()) {
+                    foreach ($this->chartFolderssScheduledForDeletion as $chartFolders) {
+                        // need to save related object because we set the relation to null
+                        $chartFolders->save($con);
+                    }
+                    $this->chartFolderssScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collChartFolderss !== null) {
+                foreach ($this->collChartFolderss as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -1758,6 +1866,14 @@ abstract class BaseChart extends BaseObject implements Persistent
                     }
                 }
 
+                if ($this->collChartFolderss !== null) {
+                    foreach ($this->collChartFolderss as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
 
             $this->alreadyInValidation = false;
         }
@@ -1926,6 +2042,9 @@ abstract class BaseChart extends BaseObject implements Persistent
             }
             if (null !== $this->collJobs) {
                 $result['Jobs'] = $this->collJobs->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collChartFolderss) {
+                $result['ChartFolderss'] = $this->collChartFolderss->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -2210,6 +2329,12 @@ abstract class BaseChart extends BaseObject implements Persistent
                 }
             }
 
+            foreach ($this->getChartFolderss() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addChartFolders($relObj->copy($deepCopy));
+                }
+            }
+
             //unflag object copy
             $this->startCopy = false;
         } // if ($deepCopy)
@@ -2432,6 +2557,9 @@ abstract class BaseChart extends BaseObject implements Persistent
         }
         if ('Job' == $relationName) {
             $this->initJobs();
+        }
+        if ('ChartFolders' == $relationName) {
+            $this->initChartFolderss();
         }
     }
 
@@ -2947,6 +3075,628 @@ abstract class BaseChart extends BaseObject implements Persistent
     }
 
     /**
+     * Clears out the collChartFolderss collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return Chart The current object (for fluent API support)
+     * @see        addChartFolderss()
+     */
+    public function clearChartFolderss()
+    {
+        $this->collChartFolderss = null; // important to set this to null since that means it is uninitialized
+        $this->collChartFolderssPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collChartFolderss collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialChartFolderss($v = true)
+    {
+        $this->collChartFolderssPartial = $v;
+    }
+
+    /**
+     * Initializes the collChartFolderss collection.
+     *
+     * By default this just sets the collChartFolderss collection to an empty array (like clearcollChartFolderss());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initChartFolderss($overrideExisting = true)
+    {
+        if (null !== $this->collChartFolderss && !$overrideExisting) {
+            return;
+        }
+        $this->collChartFolderss = new PropelObjectCollection();
+        $this->collChartFolderss->setModel('ChartFolders');
+    }
+
+    /**
+     * Gets an array of ChartFolders objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Chart is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|ChartFolders[] List of ChartFolders objects
+     * @throws PropelException
+     */
+    public function getChartFolderss($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collChartFolderssPartial && !$this->isNew();
+        if (null === $this->collChartFolderss || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collChartFolderss) {
+                // return empty collection
+                $this->initChartFolderss();
+            } else {
+                $collChartFolderss = ChartFoldersQuery::create(null, $criteria)
+                    ->filterByChart($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collChartFolderssPartial && count($collChartFolderss)) {
+                      $this->initChartFolderss(false);
+
+                      foreach($collChartFolderss as $obj) {
+                        if (false == $this->collChartFolderss->contains($obj)) {
+                          $this->collChartFolderss->append($obj);
+                        }
+                      }
+
+                      $this->collChartFolderssPartial = true;
+                    }
+
+                    $collChartFolderss->getInternalIterator()->rewind();
+                    return $collChartFolderss;
+                }
+
+                if($partial && $this->collChartFolderss) {
+                    foreach($this->collChartFolderss as $obj) {
+                        if($obj->isNew()) {
+                            $collChartFolderss[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collChartFolderss = $collChartFolderss;
+                $this->collChartFolderssPartial = false;
+            }
+        }
+
+        return $this->collChartFolderss;
+    }
+
+    /**
+     * Sets a collection of ChartFolders objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $chartFolderss A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return Chart The current object (for fluent API support)
+     */
+    public function setChartFolderss(PropelCollection $chartFolderss, PropelPDO $con = null)
+    {
+        $chartFolderssToDelete = $this->getChartFolderss(new Criteria(), $con)->diff($chartFolderss);
+
+        $this->chartFolderssScheduledForDeletion = unserialize(serialize($chartFolderssToDelete));
+
+        foreach ($chartFolderssToDelete as $chartFoldersRemoved) {
+            $chartFoldersRemoved->setChart(null);
+        }
+
+        $this->collChartFolderss = null;
+        foreach ($chartFolderss as $chartFolders) {
+            $this->addChartFolders($chartFolders);
+        }
+
+        $this->collChartFolderss = $chartFolderss;
+        $this->collChartFolderssPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related ChartFolders objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related ChartFolders objects.
+     * @throws PropelException
+     */
+    public function countChartFolderss(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collChartFolderssPartial && !$this->isNew();
+        if (null === $this->collChartFolderss || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collChartFolderss) {
+                return 0;
+            }
+
+            if($partial && !$criteria) {
+                return count($this->getChartFolderss());
+            }
+            $query = ChartFoldersQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByChart($this)
+                ->count($con);
+        }
+
+        return count($this->collChartFolderss);
+    }
+
+    /**
+     * Method called to associate a ChartFolders object to this object
+     * through the ChartFolders foreign key attribute.
+     *
+     * @param    ChartFolders $l ChartFolders
+     * @return Chart The current object (for fluent API support)
+     */
+    public function addChartFolders(ChartFolders $l)
+    {
+        if ($this->collChartFolderss === null) {
+            $this->initChartFolderss();
+            $this->collChartFolderssPartial = true;
+        }
+        if (!in_array($l, $this->collChartFolderss->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddChartFolders($l);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	ChartFolders $chartFolders The chartFolders object to add.
+     */
+    protected function doAddChartFolders($chartFolders)
+    {
+        $this->collChartFolderss[]= $chartFolders;
+        $chartFolders->setChart($this);
+    }
+
+    /**
+     * @param	ChartFolders $chartFolders The chartFolders object to remove.
+     * @return Chart The current object (for fluent API support)
+     */
+    public function removeChartFolders($chartFolders)
+    {
+        if ($this->getChartFolderss()->contains($chartFolders)) {
+            $this->collChartFolderss->remove($this->collChartFolderss->search($chartFolders));
+            if (null === $this->chartFolderssScheduledForDeletion) {
+                $this->chartFolderssScheduledForDeletion = clone $this->collChartFolderss;
+                $this->chartFolderssScheduledForDeletion->clear();
+            }
+            $this->chartFolderssScheduledForDeletion[]= $chartFolders;
+            $chartFolders->setChart(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Chart is new, it will return
+     * an empty collection; or if this Chart has previously
+     * been saved, it will retrieve related ChartFolderss from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Chart.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|ChartFolders[] List of ChartFolders objects
+     */
+    public function getChartFolderssJoinUserFolders($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChartFoldersQuery::create(null, $criteria);
+        $query->joinWith('UserFolders', $join_behavior);
+
+        return $this->getChartFolderss($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Chart is new, it will return
+     * an empty collection; or if this Chart has previously
+     * been saved, it will retrieve related ChartFolderss from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Chart.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|ChartFolders[] List of ChartFolders objects
+     */
+    public function getChartFolderssJoinOrganizationFolders($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChartFoldersQuery::create(null, $criteria);
+        $query->joinWith('OrganizationFolders', $join_behavior);
+
+        return $this->getChartFolderss($query, $con);
+    }
+
+    /**
+     * Clears out the collUserFolderss collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return Chart The current object (for fluent API support)
+     * @see        addUserFolderss()
+     */
+    public function clearUserFolderss()
+    {
+        $this->collUserFolderss = null; // important to set this to null since that means it is uninitialized
+        $this->collUserFolderssPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * Initializes the collUserFolderss collection.
+     *
+     * By default this just sets the collUserFolderss collection to an empty collection (like clearUserFolderss());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @return void
+     */
+    public function initUserFolderss()
+    {
+        $this->collUserFolderss = new PropelObjectCollection();
+        $this->collUserFolderss->setModel('UserFolders');
+    }
+
+    /**
+     * Gets a collection of UserFolders objects related by a many-to-many relationship
+     * to the current object by way of the chart_folders cross-reference table.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Chart is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria Optional query object to filter the query
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return PropelObjectCollection|UserFolders[] List of UserFolders objects
+     */
+    public function getUserFolderss($criteria = null, PropelPDO $con = null)
+    {
+        if (null === $this->collUserFolderss || null !== $criteria) {
+            if ($this->isNew() && null === $this->collUserFolderss) {
+                // return empty collection
+                $this->initUserFolderss();
+            } else {
+                $collUserFolderss = UserFoldersQuery::create(null, $criteria)
+                    ->filterByChart($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    return $collUserFolderss;
+                }
+                $this->collUserFolderss = $collUserFolderss;
+            }
+        }
+
+        return $this->collUserFolderss;
+    }
+
+    /**
+     * Sets a collection of UserFolders objects related by a many-to-many relationship
+     * to the current object by way of the chart_folders cross-reference table.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $userFolderss A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return Chart The current object (for fluent API support)
+     */
+    public function setUserFolderss(PropelCollection $userFolderss, PropelPDO $con = null)
+    {
+        $this->clearUserFolderss();
+        $currentUserFolderss = $this->getUserFolderss();
+
+        $this->userFolderssScheduledForDeletion = $currentUserFolderss->diff($userFolderss);
+
+        foreach ($userFolderss as $userFolders) {
+            if (!$currentUserFolderss->contains($userFolders)) {
+                $this->doAddUserFolders($userFolders);
+            }
+        }
+
+        $this->collUserFolderss = $userFolderss;
+
+        return $this;
+    }
+
+    /**
+     * Gets the number of UserFolders objects related by a many-to-many relationship
+     * to the current object by way of the chart_folders cross-reference table.
+     *
+     * @param Criteria $criteria Optional query object to filter the query
+     * @param boolean $distinct Set to true to force count distinct
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return int the number of related UserFolders objects
+     */
+    public function countUserFolderss($criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        if (null === $this->collUserFolderss || null !== $criteria) {
+            if ($this->isNew() && null === $this->collUserFolderss) {
+                return 0;
+            } else {
+                $query = UserFoldersQuery::create(null, $criteria);
+                if ($distinct) {
+                    $query->distinct();
+                }
+
+                return $query
+                    ->filterByChart($this)
+                    ->count($con);
+            }
+        } else {
+            return count($this->collUserFolderss);
+        }
+    }
+
+    /**
+     * Associate a UserFolders object to this object
+     * through the chart_folders cross reference table.
+     *
+     * @param  UserFolders $userFolders The ChartFolders object to relate
+     * @return Chart The current object (for fluent API support)
+     */
+    public function addUserFolders(UserFolders $userFolders)
+    {
+        if ($this->collUserFolderss === null) {
+            $this->initUserFolderss();
+        }
+        if (!$this->collUserFolderss->contains($userFolders)) { // only add it if the **same** object is not already associated
+            $this->doAddUserFolders($userFolders);
+
+            $this->collUserFolderss[]= $userFolders;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	UserFolders $userFolders The userFolders object to add.
+     */
+    protected function doAddUserFolders($userFolders)
+    {
+        $chartFolders = new ChartFolders();
+        $chartFolders->setUserFolders($userFolders);
+        $this->addChartFolders($chartFolders);
+    }
+
+    /**
+     * Remove a UserFolders object to this object
+     * through the chart_folders cross reference table.
+     *
+     * @param UserFolders $userFolders The ChartFolders object to relate
+     * @return Chart The current object (for fluent API support)
+     */
+    public function removeUserFolders(UserFolders $userFolders)
+    {
+        if ($this->getUserFolderss()->contains($userFolders)) {
+            $this->collUserFolderss->remove($this->collUserFolderss->search($userFolders));
+            if (null === $this->userFolderssScheduledForDeletion) {
+                $this->userFolderssScheduledForDeletion = clone $this->collUserFolderss;
+                $this->userFolderssScheduledForDeletion->clear();
+            }
+            $this->userFolderssScheduledForDeletion[]= $userFolders;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Clears out the collOrganizationFolderss collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return Chart The current object (for fluent API support)
+     * @see        addOrganizationFolderss()
+     */
+    public function clearOrganizationFolderss()
+    {
+        $this->collOrganizationFolderss = null; // important to set this to null since that means it is uninitialized
+        $this->collOrganizationFolderssPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * Initializes the collOrganizationFolderss collection.
+     *
+     * By default this just sets the collOrganizationFolderss collection to an empty collection (like clearOrganizationFolderss());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @return void
+     */
+    public function initOrganizationFolderss()
+    {
+        $this->collOrganizationFolderss = new PropelObjectCollection();
+        $this->collOrganizationFolderss->setModel('OrganizationFolders');
+    }
+
+    /**
+     * Gets a collection of OrganizationFolders objects related by a many-to-many relationship
+     * to the current object by way of the chart_folders cross-reference table.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Chart is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria Optional query object to filter the query
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return PropelObjectCollection|OrganizationFolders[] List of OrganizationFolders objects
+     */
+    public function getOrganizationFolderss($criteria = null, PropelPDO $con = null)
+    {
+        if (null === $this->collOrganizationFolderss || null !== $criteria) {
+            if ($this->isNew() && null === $this->collOrganizationFolderss) {
+                // return empty collection
+                $this->initOrganizationFolderss();
+            } else {
+                $collOrganizationFolderss = OrganizationFoldersQuery::create(null, $criteria)
+                    ->filterByChart($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    return $collOrganizationFolderss;
+                }
+                $this->collOrganizationFolderss = $collOrganizationFolderss;
+            }
+        }
+
+        return $this->collOrganizationFolderss;
+    }
+
+    /**
+     * Sets a collection of OrganizationFolders objects related by a many-to-many relationship
+     * to the current object by way of the chart_folders cross-reference table.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $organizationFolderss A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return Chart The current object (for fluent API support)
+     */
+    public function setOrganizationFolderss(PropelCollection $organizationFolderss, PropelPDO $con = null)
+    {
+        $this->clearOrganizationFolderss();
+        $currentOrganizationFolderss = $this->getOrganizationFolderss();
+
+        $this->organizationFolderssScheduledForDeletion = $currentOrganizationFolderss->diff($organizationFolderss);
+
+        foreach ($organizationFolderss as $organizationFolders) {
+            if (!$currentOrganizationFolderss->contains($organizationFolders)) {
+                $this->doAddOrganizationFolders($organizationFolders);
+            }
+        }
+
+        $this->collOrganizationFolderss = $organizationFolderss;
+
+        return $this;
+    }
+
+    /**
+     * Gets the number of OrganizationFolders objects related by a many-to-many relationship
+     * to the current object by way of the chart_folders cross-reference table.
+     *
+     * @param Criteria $criteria Optional query object to filter the query
+     * @param boolean $distinct Set to true to force count distinct
+     * @param PropelPDO $con Optional connection object
+     *
+     * @return int the number of related OrganizationFolders objects
+     */
+    public function countOrganizationFolderss($criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        if (null === $this->collOrganizationFolderss || null !== $criteria) {
+            if ($this->isNew() && null === $this->collOrganizationFolderss) {
+                return 0;
+            } else {
+                $query = OrganizationFoldersQuery::create(null, $criteria);
+                if ($distinct) {
+                    $query->distinct();
+                }
+
+                return $query
+                    ->filterByChart($this)
+                    ->count($con);
+            }
+        } else {
+            return count($this->collOrganizationFolderss);
+        }
+    }
+
+    /**
+     * Associate a OrganizationFolders object to this object
+     * through the chart_folders cross reference table.
+     *
+     * @param  OrganizationFolders $organizationFolders The ChartFolders object to relate
+     * @return Chart The current object (for fluent API support)
+     */
+    public function addOrganizationFolders(OrganizationFolders $organizationFolders)
+    {
+        if ($this->collOrganizationFolderss === null) {
+            $this->initOrganizationFolderss();
+        }
+        if (!$this->collOrganizationFolderss->contains($organizationFolders)) { // only add it if the **same** object is not already associated
+            $this->doAddOrganizationFolders($organizationFolders);
+
+            $this->collOrganizationFolderss[]= $organizationFolders;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	OrganizationFolders $organizationFolders The organizationFolders object to add.
+     */
+    protected function doAddOrganizationFolders($organizationFolders)
+    {
+        $chartFolders = new ChartFolders();
+        $chartFolders->setOrganizationFolders($organizationFolders);
+        $this->addChartFolders($chartFolders);
+    }
+
+    /**
+     * Remove a OrganizationFolders object to this object
+     * through the chart_folders cross reference table.
+     *
+     * @param OrganizationFolders $organizationFolders The ChartFolders object to relate
+     * @return Chart The current object (for fluent API support)
+     */
+    public function removeOrganizationFolders(OrganizationFolders $organizationFolders)
+    {
+        if ($this->getOrganizationFolderss()->contains($organizationFolders)) {
+            $this->collOrganizationFolderss->remove($this->collOrganizationFolderss->search($organizationFolders));
+            if (null === $this->organizationFolderssScheduledForDeletion) {
+                $this->organizationFolderssScheduledForDeletion = clone $this->collOrganizationFolderss;
+                $this->organizationFolderssScheduledForDeletion->clear();
+            }
+            $this->organizationFolderssScheduledForDeletion[]= $organizationFolders;
+        }
+
+        return $this;
+    }
+
+    /**
      * Clears the current object and sets all attributes to their default values
      */
     public function clear()
@@ -3006,6 +3756,21 @@ abstract class BaseChart extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collChartFolderss) {
+                foreach ($this->collChartFolderss as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collUserFolderss) {
+                foreach ($this->collUserFolderss as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collOrganizationFolderss) {
+                foreach ($this->collOrganizationFolderss as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->aUser instanceof Persistent) {
               $this->aUser->clearAllReferences($deep);
             }
@@ -3027,6 +3792,18 @@ abstract class BaseChart extends BaseObject implements Persistent
             $this->collJobs->clearIterator();
         }
         $this->collJobs = null;
+        if ($this->collChartFolderss instanceof PropelCollection) {
+            $this->collChartFolderss->clearIterator();
+        }
+        $this->collChartFolderss = null;
+        if ($this->collUserFolderss instanceof PropelCollection) {
+            $this->collUserFolderss->clearIterator();
+        }
+        $this->collUserFolderss = null;
+        if ($this->collOrganizationFolderss instanceof PropelCollection) {
+            $this->collOrganizationFolderss->clearIterator();
+        }
+        $this->collOrganizationFolderss = null;
         $this->aUser = null;
         $this->aOrganization = null;
         $this->aChartRelatedByForkedFrom = null;
