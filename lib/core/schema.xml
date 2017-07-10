@@ -296,31 +296,56 @@
   </table>
 
   <table name="user_folders">
-    <column name="uf_id" type="integer" primaryKey="true" />
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+      <parameter name="Charset" value="utf8"/>
+    </vendor>
+    <column name="uf_id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+    <column name="user_id" type="integer" />
     <foreign-key foreignTable="user">
       <reference local="user_id" foreign="id" />
     </foreign-key>
     <column name="folder_name" type="varchar" size="128" />
     <column name="parent_id" type="integer" primaryKey="true" />
+    <index>
+      <index-column name="parent_id" />
+    </index>
   </table>
 
   <table name="organization_folders">
-    <column name="of_id" type="integer" primaryKey="true" />
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+      <parameter name="Charset" value="utf8"/>
+    </vendor>
+    <column name="of_id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+    <column name="org_id" type="varchar" size="128" />
     <foreign-key foreignTable="organization">
       <reference local="org_id" foreign="id" />
     </foreign-key>
     <column name="folder_name" type="varchar" size="128" />
     <column name="parent_id" type="integer" primaryKey="true" />
+    <index>
+      <index-column name="parent_id" />
+    </index>
   </table>
 
   <!-- chart <-> folder map -->
   <table name="chart_folders" isCrossRef="true">
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+      <parameter name="Charset" value="utf8"/>
+    </vendor>
+    <!-- this id is useless, but needed to have a PRI_KEY that can be unique -->
+    <column name="map_id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+    <column name="chart_id" type="varchar" size="5" />
     <foreign-key foreignTable="chart">
       <reference local="chart_id" foreign="id" />
     </foreign-key>
+    <column name="user_folder" type="integer" />
     <foreign-key foreignTable="user_folders">
       <reference local="user_folder" foreign="uf_id" />
     </foreign-key>
+    <column name="org_folder" type="integer" />
     <foreign-key foreignTable="organization_folders">
       <reference local="org_folder" foreign="of_id" />
     </foreign-key>
