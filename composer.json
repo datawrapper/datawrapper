@@ -15,7 +15,8 @@
         "tedivm/jshrink": "~1.0",
         "fightbulc/moment": "^1.26",
         "aws/aws-sdk-php": "^3.18",
-        "leafo/lessphp": "^0.5.0"
+        "leafo/lessphp": "^0.5.0",
+        "chargebee/chargebee-php": "^2.2"
     },
     "autoload": {
         "classmap": [
