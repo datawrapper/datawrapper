@@ -383,5 +383,72 @@ CREATE TABLE `user_theme`
         REFERENCES `theme` (`id`)
 ) ENGINE=InnoDB;
 
+-- ---------------------------------------------------------------------
+-- user_folders
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `user_folders`;
+
+CREATE TABLE `user_folders`
+(
+    `uf_id` INTEGER NOT NULL AUTO_INCREMENT,
+    `user_id` INTEGER,
+    `folder_name` VARCHAR(128),
+    `parent_id` INTEGER NOT NULL,
+    PRIMARY KEY (`uf_id`,`parent_id`),
+    INDEX `user_folders_I_1` (`parent_id`),
+    INDEX `user_folders_FI_1` (`user_id`),
+    CONSTRAINT `user_folders_FK_1`
+        FOREIGN KEY (`user_id`)
+        REFERENCES `user` (`id`)
+) ENGINE=InnoDB CHARACTER SET='utf8';
+
+-- ---------------------------------------------------------------------
+-- organization_folders
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `organization_folders`;
+
+CREATE TABLE `organization_folders`
+(
+    `of_id` INTEGER NOT NULL AUTO_INCREMENT,
+    `org_id` VARCHAR(128),
+    `folder_name` VARCHAR(128),
+    `parent_id` INTEGER NOT NULL,
+    PRIMARY KEY (`of_id`,`parent_id`),
+    INDEX `organization_folders_I_1` (`parent_id`),
+    INDEX `organization_folders_FI_1` (`org_id`),
+    CONSTRAINT `organization_folders_FK_1`
+        FOREIGN KEY (`org_id`)
+        REFERENCES `organization` (`id`)
+) ENGINE=InnoDB CHARACTER SET='utf8';
+
+-- ---------------------------------------------------------------------
+-- chart_folders
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `chart_folders`;
+
+CREATE TABLE `chart_folders`
+(
+    `map_id` INTEGER NOT NULL AUTO_INCREMENT,
+    `chart_id` VARCHAR(5),
+    `user_folder` INTEGER,
+    `org_folder` INTEGER,
+    PRIMARY KEY (`map_id`),
+    INDEX `chart_folders_FI_1` (`chart_id`),
+    INDEX `chart_folders_FI_2` (`user_folder`),
+    INDEX `chart_folders_FI_3` (`org_folder`),
+    CONSTRAINT `chart_folders_FK_1`
+        FOREIGN KEY (`chart_id`)
+        REFERENCES `chart` (`id`),
+    CONSTRAINT `chart_folders_FK_2`
+        FOREIGN KEY (`user_folder`)
+        REFERENCES `user_folders` (`uf_id`),
+    CONSTRAINT `chart_folders_FK_3`
+        FOREIGN KEY (`org_folder`)
+        REFERENCES `organization_folders` (`of_id`)
+) ENGINE=InnoDB CHARACTER SET='utf8';
+
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;
