@@ -1,4 +1,4 @@
-/*! datawrapper - v1.13.3 *///
+/*! datawrapper - v1.13.4 *///
 // NOTE: This file is auto-generated using /dw.js/make
 // from the source files /dw.js/src/*.js.
 //
@@ -209,6 +209,7 @@ dw.column = function(name, rows, type) {
             if (t.errors() / k < tolerance) type = t;
             return !type;
         });
+        if (_.isUndefined(type)) type = types[2]; // default to text;
         return type;
     }
 
