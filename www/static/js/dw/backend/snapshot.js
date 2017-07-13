@@ -1,5 +1,5 @@
 
-define(['queue'], function(queue) {
+define(['queue', 'd3'], function(queue, d3) {
 
     var prefix = {
         xmlns: "http://www.w3.org/2000/xmlns/",
