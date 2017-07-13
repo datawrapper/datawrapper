@@ -133,7 +133,7 @@ define(['queue', 'd3'], function(queue, d3) {
             // get empty css declaration
             var emptyCSS = window.getComputedStyle(out.node());
 
-            out.attr({ width: out_w, height: out_h });
+            out.at({ width: out_w, height: out_h });
             cont.style({ position: 'absolute', left: '-5020px', top: '20px' });
 
             var out_g = out.append('g').attr('id', 'graphic');
@@ -203,8 +203,8 @@ define(['queue', 'd3'], function(queue, d3) {
                         .style('opacity', opacity)
                         .style('stroke', stroke)
                         .style('stroke-width', strokeW)
-                        .attr({ x: bbox.left, y: bbox.top-offsetTop })
-                        .attr({ width: bbox.width, height: bbox.height });
+                        .at({ x: bbox.left, y: bbox.top-offsetTop })
+                        .at({ width: bbox.width, height: bbox.height });
                     cb(null);
                 }
             }
@@ -225,7 +225,7 @@ define(['queue', 'd3'], function(queue, d3) {
                         .style('opacity', opacity)
                         .style('stroke', stroke)
                         .style('stroke-width', strokeW)
-                        .attr({ cx: bbox.left + r, cy: bbox.top-offsetTop + r })
+                        .at({ cx: bbox.left + r, cy: bbox.top-offsetTop + r })
                         .attr('r', r);
                     cb(null);
                 }
@@ -296,7 +296,7 @@ define(['queue', 'd3'], function(queue, d3) {
 
                     var txt = out_text.append('text')
                         .text(content)
-                        .attr({ x: bbox.left });
+                        .at({ x: bbox.left });
 
                     copyTextStyles(el, txt.node());
 
