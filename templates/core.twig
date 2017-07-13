@@ -44,9 +44,6 @@
     {% if config.custom_css %}<link href="{{ config.static_path }}/custom/{{ config.custom_css }}" rel="stylesheet">{% endif %}
     {% if config.custom_favicon %}<link href="{{ config.custom_favicon }}" rel="shortcut icon">{% endif %}
 
-    <script type="text/javascript" charset="utf-8" src="{{ config.static_path }}/vendor/d3/d3.min.js"></script>
-    <script type="text/javascript" charset="utf-8" src="{{ config.static_path }}/vendor/d3-jetpack/d3-jetpack.js"></script>
-
     <script type="text/javascript" charset="utf-8" src="{{ config.static_path }}/vendor/requirejs/require.js"></script>
     <script type="text/javascript" charset="utf-8">
         require.config({
@@ -60,7 +57,7 @@
                 imagesloaded: 'vendor/imagesloaded/imagesloaded.pkgd.min',
                 chroma:       'vendor/chroma-js/chroma.min',
                 cm:           'vendor/codemirror',
-                d3:           'vendor/d3/d3.min'
+                d3:           'vendor/d3/d3v4+jetpack.min'
             },
             waitSeconds: 0,
             urlArgs: 'v={{ DW_VERSION }}'
