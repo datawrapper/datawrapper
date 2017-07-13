@@ -13,28 +13,42 @@
     <h1 class="title">
         {% if user2 %}
             {{ "Charts by %s" | trans | replace({'%s': user2.email }) }}
-        {% else %}
-            {% trans "My Charts" %}
+{#         {% else %}
+            {% trans "My Charts" %} #}
         {% endif %}
     </h1>
 </div>
 
 <style type="text/css">
 
-.gallery-filter { margin-bottom: 40px; }
-
+.gallery-filter {
+    display: flex;
+    margin-bottom: 40px;
+    width: 100%;
+}
+.gallery-filter .folder-line { align-self: flex-start; }
+.gallery-filter form { margin-left: auto; }
 .gallery-filter form .btn-group { margin-left: 10px; }
 
+.folders-and-gallery { display: flex; }
+.folders-and-gallery .folders { flex: 1 0 0; }
+.folders-and-gallery .gallery { flex: 3 0 0;}
+
 .gallery .thumbnails .span3.chart {
-    float: none;
     min-height: 190px;
 }
 
 .gallery .thumbnails .span3.chart h3 {
     position: static;
 }
+
+.project { margin-bottom: 40px; }
 </style>
 <div class="gallery-filter">
+
+    <div class="folder-line">
+        <span>foo > baz > bar</span>
+    </div>
 
     <form method="get" class="form form-inline" action="">
         <b>{% trans "Filter" %}:</b> 
@@ -96,7 +110,7 @@
             </ul>
         </div>
         
-        <div class="btn-group">
+{#         <div class="btn-group">
             <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
                 {% trans "By Layout" %}
                 <span class="caret"></span>
@@ -112,7 +126,7 @@
 
                 {% endfor %}
             </ul>
-        </div>
+        </div> #}
         
         
     </form>
@@ -120,49 +134,57 @@
     
 </div>
 
+<div class="project">
+    <h1>[Aktives Projekt]</h1>
+</div>
 
-<div class="gallery">
-
-    {% if user.hasCharts %}
-    <div class="thumbnails js-masonry" data-masonry-options='{ "itemSelector": ".grid-item", "columWidth": 200 }'>
-        {% for chart in charts %}
-        
-        <div class="span3 chart" data-id="{{ chart.id }}">
-            <div class="thumbnail" style="background:{{ chart.metadata.publish.background }}">
-                <a href="/{{ chart.getNamespace() }}/{{ chart.id }}/edit" >
-                    <h3 style="color:{% if chart.metadata.publish.text %}{{ chart.metadata.publish.text }}{% else %}#000{% endif %};text-shadow:1px 1px 3px {% if chart.metadata.publish.background %}{{ chart.metadata.publish.background }}{% else %}#fff{% endif %};">{% if chart.title != '' %}{{ chart.title | replace({'<br/>': ' - '}) | striptags | raw }}{% else %}{{ chart.id }}{% endif %}</h3>
-
-                    <img src="{% if chart.hasPreview %}//{{ DW_CHART_CACHE_DOMAIN }}/{{ chart.id }}/m.png{% else %}/static/img/nopreview.png{% endif %}" width="260" >
-                 </a>
-
-                 <div class="btn-group">
-                    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                      <i class="icon-wrench"></i>
-                    <span class="caret"></span>
-                    </a>
-                     <ul class="dropdown-menu">
-                        {% if user2 %}
-                        <li><a class="edit" href="#"><i class="icon-edit"></i> {% trans "Edit" %}</a></li>
-                        {% endif %}
-                        <li><a class="duplicate" href="#"><i class="icon-plus"></i> {% trans "Duplicate" %}</a></li>
-                        {# <li><a href="/chart/{{ chart.id }}/static?w=700&amp;h=490&amp;f=pdf&amp;padding=20"><i class="icon-download"></i> {% trans "Save as PDF" %}</a></li>
-                        <li class="divider"></li> #}
-                        <li><a href="" class="delete"><i class="icon-remove"></i> {% trans "Delete" %}</a></li>
-                    <!-- dropdown menu links -->
-                    </ul>
-                 </div>
-                {# <p>{% trans "Created" %}: {{ chart.createdAt|date() }}<br/>
-                 {% trans "Layout" %}: {{ chart.theme }} </p> #}
-            </div>
-        </div>
-        {% endfor %}
+<div class="folders-and-gallery">
+    <div class="folders">
+        <span>🗁 Alle Diagramme</span>
     </div>
-    {% else %}
+    <div class="gallery">
 
-        <h2>{% trans "No charts here, yet" %}</h2>
-        <p>{% trans "Why not <a href='/chart/create'>create a new chart now</a>?" %}</p>
+        {% if user.hasCharts %}
+        <div class="thumbnails js-masonry" data-masonry-options='{ "itemSelector": ".grid-item", "columWidth": 200 }'>
+            {% for chart in charts %}
 
-    {% endif %}
+            <div class="span3 chart" data-id="{{ chart.id }}">
+                <div class="thumbnail" style="background:{{ chart.metadata.publish.background }}">
+                    <a href="/{{ chart.getNamespace() }}/{{ chart.id }}/edit" >
+                        <h3 style="color:{% if chart.metadata.publish.text %}{{ chart.metadata.publish.text }}{% else %}#000{% endif %};text-shadow:1px 1px 3px {% if chart.metadata.publish.background %}{{ chart.metadata.publish.background }}{% else %}#fff{% endif %};">{% if chart.title != '' %}{{ chart.title | replace({'<br/>': ' - '}) | striptags | raw }}{% else %}{{ chart.id }}{% endif %}</h3>
+
+                        <img src="{% if chart.hasPreview %}//{{ DW_CHART_CACHE_DOMAIN }}/{{ chart.id }}/m.png{% else %}/static/img/nopreview.png{% endif %}" width="260" >
+                     </a>
+
+                     <div class="btn-group">
+                        <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                          <i class="icon-wrench"></i>
+                        <span class="caret"></span>
+                        </a>
+                         <ul class="dropdown-menu">
+                            {% if user2 %}
+                            <li><a class="edit" href="#"><i class="icon-edit"></i> {% trans "Edit" %}</a></li>
+                            {% endif %}
+                            <li><a class="duplicate" href="#"><i class="icon-plus"></i> {% trans "Duplicate" %}</a></li>
+                            {# <li><a href="/chart/{{ chart.id }}/static?w=700&amp;h=490&amp;f=pdf&amp;padding=20"><i class="icon-download"></i> {% trans "Save as PDF" %}</a></li>
+                            <li class="divider"></li> #}
+                            <li><a href="" class="delete"><i class="icon-remove"></i> {% trans "Delete" %}</a></li>
+                        <!-- dropdown menu links -->
+                        </ul>
+                     </div>
+                    {# <p>{% trans "Created" %}: {{ chart.createdAt|date() }}<br/>
+                     {% trans "Layout" %}: {{ chart.theme }} </p> #}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+
+            <h2>{% trans "No charts here, yet" %}</h2>
+            <p>{% trans "Why not <a href='/chart/create'>create a new chart now</a>?" %}</p>
+
+        {% endif %}
+    </div>
 </div>
 
 
