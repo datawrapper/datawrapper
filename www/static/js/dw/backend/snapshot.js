@@ -1,4 +1,3 @@
-
 define(['queue', 'd3'], function(queue, d3) {
 
     var prefix = {
@@ -37,10 +36,10 @@ define(['queue', 'd3'], function(queue, d3) {
 
         // console.log('snapshot.js - start');
 
-        chartToSvg(chartBody, function(svg, canvas) {
+        chartToSvg(chartBody, function(svg, canvas, bbox) {
             // console.log('snapshot.js - chartToSVG', ((new Date()).getTime() - t0)/1000);
 
-            var bbox = svg.node().getBoundingClientRect();
+            // var bbox = svg.node().getBoundingClientRect();
 
             var svg_src = svg.node().innerHTML;
             // remove url fills
@@ -91,8 +90,8 @@ define(['queue', 'd3'], function(queue, d3) {
             }
 
             ctx.drawSvg(svg_src, 0, 0, bbox.width * 2, bbox.height * 2);
-            // document.body.appendChild(canvas);
 
+            // document.body.appendChild(canvas);
             var imgData = canvas.toDataURL("image/png");
 
             $.ajax({
@@ -110,7 +109,8 @@ define(['queue', 'd3'], function(queue, d3) {
         function chartToSvg(parent_n, callback) {
 
             var parent = d3.select(parent_n),
-                offsetTop = parent_n.getBoundingClientRect().top - parent_n.parentNode.getBoundingClientRect().top;
+                parent_bbox = parent_n.getBoundingClientRect(),
+                offsetTop = parent_bbox.top - parent_n.parentNode.getBoundingClientRect().top;
 
             var out_w = Math.min(parent_n.clientWidth, 700),
                 out_h = Math.min(parent_n.clientHeight, 1000);
@@ -133,7 +133,8 @@ define(['queue', 'd3'], function(queue, d3) {
             // get empty css declaration
             var emptyCSS = window.getComputedStyle(out.node());
 
-            out.at({ width: out_w, height: out_h });
+            // out.at({ width: out_w, height: out_h });
+            out.attr('width', out_w).attr('height', out_h);
             cont.style({ position: 'absolute', left: '-5020px', top: '20px' });
 
             var out_g = out.append('g').attr('id', 'graphic');
@@ -152,7 +153,7 @@ define(['queue', 'd3'], function(queue, d3) {
 
             q.awaitAll(function(err) {
                 // console.log('all done', err);
-                callback(cont, parent.select('canvas').node());
+                callback(cont, parent.select('canvas').node(), parent_bbox);
             });
 
             function addNode(el, cb) {
@@ -203,8 +204,12 @@ define(['queue', 'd3'], function(queue, d3) {
                         .style('opacity', opacity)
                         .style('stroke', stroke)
                         .style('stroke-width', strokeW)
-                        .at({ x: bbox.left, y: bbox.top-offsetTop })
-                        .at({ width: bbox.width, height: bbox.height });
+                        .at({
+                            x: bbox.left,
+                            y: bbox.top-offsetTop,
+                            width: bbox.width,
+                            height: bbox.height
+                        });
                     cb(null);
                 }
             }
@@ -296,7 +301,7 @@ define(['queue', 'd3'], function(queue, d3) {
 
                     var txt = out_text.append('text')
                         .text(content)
-                        .at({ x: bbox.left });
+                        .attr('x', bbox.left);
 
                     copyTextStyles(el, txt.node());
 
