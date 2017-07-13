@@ -1873,13 +1873,18 @@ dw.chart = function(attributes) {
         function d3_ascending(a, b) {
             return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
         }
+        function left_pad(s, l, pad) {
+            s = String(s);
+            while (s.length < l) s = String(pad) + s;
+            return s;
+        }
 
         _.each(v_columns, add_computed_column);
         
         return dataset;
 
         function add_computed_column(formula, name) {
-            var datefmt = d3.timeFormat ? d3.timeFormat('%Y-%m-%d') : d3.time.format('%Y-%m-%d'),
+            var datefmt = function(d) { return d.getFullYear()+'-'+left_pad(1+d.getMonth(), 2, 0)+'-'+left_pad(1+d.getDate(), 2, 0); },
                 values = data.map(function(row, row_i) {
                     var context = [];
                     context.push('var __row = '+row_i+';');
@@ -1894,8 +1899,7 @@ dw.chart = function(attributes) {
                             context.push('var '+columnNameToVar[key]+'__median = '+col_aggregates[key].median+';');
                         }
                     });
-                    context.push('var round = d3.round, mean = d3.mean, median = d3.median,'+
-                            'sum = d3.sum, max = Math.max, min = Math.min;');
+                    context.push('var max = Math.max, min = Math.min;');
                     // console.log(context.join('\n'));
                     return (function() {
                         try {
