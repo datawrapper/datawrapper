@@ -135,7 +135,7 @@ class DatawrapperPlugin {
     public function getLastInstallTime() {
         $meta = $this->getPackageJSON();
         $pluginDir = ROOT_PATH . 'plugins/' . $this->getName();
-        return filemtime($pluginDir);
+        return filemtime($pluginDir . '/package.json');
     }
 
     /*
