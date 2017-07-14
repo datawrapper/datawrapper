@@ -11,7 +11,7 @@
 <script type="text/javascript" src="/static/vendor/scrolltofixed/jquery-scrolltofixed-min.js"></script>
 
 {% for vis in visualizations_deps %}
-<script type="text/javascript" charset="utf-8" src="{{ vis.__static_path }}/{{ vis.id }}.js"></script>
+<script type="text/javascript" charset="utf-8" src="{{ vis.__static_path }}/{{ vis.id }}.js?v={{ vis.version }}"></script>
 {% endfor %}
 
 <script type="text/javascript">
