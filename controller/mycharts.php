@@ -49,7 +49,6 @@ function nbChartsByStatus($user) {
     );
 }
 
-
 /*
  * shows MyChart page for a given user, which is typically the
  * logged user, but admins can view others MyCharts page, too.
@@ -99,6 +98,59 @@ $app->get('/mycharts(/?|/by/:key/:val)', function ($key = false, $val = false) u
     }
 });
 
+$app->get('/mycharts/mkdir/(:path+/|):dirname', function($path = false, $dirname) use ($app) {
+    disable_cache($app);
+    $user = DatawrapperSession::getUser();
+    $user_id = $user->getId();
+    if ($user->isLoggedIn()) {
+    $folders = UserFoldersQuery::create()->findByUserId($user_id);
+    // Does the user have a root folder?
+    if ($folders->count() == 0) {
+        $rootfolder = new UserFolders();
+        $rootfolder->setUserId($user_id)->setFolderName('ROOT')->setParentId(0)->save();
+    }
+    // find root
+    $root_id = UserFoldersQuery::create()->filterByUserId($user_id)->findOneByParentId(0)->getUfId();
+
+    // easy case
+    if (empty($path[0])) {
+        $new_folder = new UserFolders();
+        $new_folder->setUserId($user_id)->setFolderName($dirname)->setParentId($root_id)->save();
+    }
+
+    // verify the path
+    $base_query = UserFoldersQuery::create()->filterByUserId($user_id);
+    $traversed = true;
+    $parent_id = $root_id;
+    $resultpath = '/';
+    foreach ($path as $segment) {
+        $db_seg = $base_query->filterByParentId($parent_id)->findOneByFolderName($segment);
+        if (empty($db_seg)) {
+            $traversed = false;
+            break;
+        }
+        $parent_id = $db_seg->getUfId();
+        $resultpath .= $segment . '/';
+    }
+
+    // append new dir
+    if ($traversed) {
+        $new_folder = new UserFolders();
+        $new_folder->setUserId($user_id)->setFolderName($dirname)->setParentId($parent_id)->save();
+    }
+
+    var_export(array(
+        'dir' => $dirname,
+        'path' => $path,
+        'id' => $user_id,
+        'count' => $folders->count(),
+        'root_id' => $root_id,
+        'resultpath' => $resultpath . $dirname
+    ));
+    } else {
+        error_mycharts_need_login();
+    }
+});
 
 $app->get('/admin/charts/:userid(/?|/by/:key/:val)', function($userid, $key = false, $val = false) use ($app) {
     disable_cache($app);
@@ -114,4 +166,3 @@ $app->get('/admin/charts/:userid(/?|/by/:key/:val)', function($userid, $key = fa
         $app->notFound();
     }
 });
-
