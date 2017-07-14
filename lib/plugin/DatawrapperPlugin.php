@@ -133,7 +133,6 @@ class DatawrapperPlugin {
      * returns the timestamp of the last install
      */
     public function getLastInstallTime() {
-        $meta = $this->getPackageJSON();
         $pluginDir = ROOT_PATH . 'plugins/' . $this->getName();
         return filemtime($pluginDir);
     }
