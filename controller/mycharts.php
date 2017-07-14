@@ -116,27 +116,27 @@ $app->get('/mycharts/mkdir/(:path+/|):dirname', function($path = false, $dirname
     if (empty($path[0])) {
         $new_folder = new UserFolders();
         $new_folder->setUserId($user_id)->setFolderName($dirname)->setParentId($root_id)->save();
-    }
-
-    // verify the path
-    $base_query = UserFoldersQuery::create()->filterByUserId($user_id);
-    $traversed = true;
-    $parent_id = $root_id;
-    $resultpath = '/';
-    foreach ($path as $segment) {
-        $db_seg = $base_query->filterByParentId($parent_id)->findOneByFolderName($segment);
-        if (empty($db_seg)) {
-            $traversed = false;
-            break;
+    } else {
+        // verify the path
+        $base_query = UserFoldersQuery::create()->filterByUserId($user_id);
+        $traversed = true;
+        $parent_id = $root_id;
+        $resultpath = '/';
+        foreach ($path as $segment) {
+            $db_seg = $base_query->filterByParentId($parent_id)->findOneByFolderName($segment);
+            if (empty($db_seg)) {
+                $traversed = false;
+                break;
+            }
+            $parent_id = $db_seg->getUfId();
+            $resultpath .= $segment . '/';
         }
-        $parent_id = $db_seg->getUfId();
-        $resultpath .= $segment . '/';
-    }
 
-    // append new dir
-    if ($traversed) {
-        $new_folder = new UserFolders();
-        $new_folder->setUserId($user_id)->setFolderName($dirname)->setParentId($parent_id)->save();
+        // append new dir
+        if ($traversed) {
+            $new_folder = new UserFolders();
+            $new_folder->setUserId($user_id)->setFolderName($dirname)->setParentId($parent_id)->save();
+        }
     }
 
     var_export(array(
