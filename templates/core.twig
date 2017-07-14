@@ -60,7 +60,7 @@
                 d3:           'vendor/d3/d3v4+jetpack.min'
             },
             waitSeconds: 0,
-            urlArgs: 'v={{ DW_VERSION }}'
+            urlArgs: 'v={{ COMMIT_SHA }}'
         });
     </script>
     <script type="text/javascript" charset="utf-8" src="{{ config.static_path }}/vendor/jquery/jquery.min.js"></script>
@@ -182,6 +182,7 @@ L143.178,296.9z M124.338,205.555H73.211v25.062h51.127V205.555z"></path> </svg>
       dw.backend.__domain = '{{ DW_DOMAIN }}';
       dw.backend.__asset_domain = '{{ ASSET_DOMAIN }}';
       dw.backend.__locale = '{{ locale | replace({'_':'-'}) }}';
+      dw.backend.__commit_sha = '{{ COMMIT_SHA }}';
 
       $(function() {
         Globalize.culture('{{ locale | replace({'_':'-'}) }}');
