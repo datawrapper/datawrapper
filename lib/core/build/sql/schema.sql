@@ -384,70 +384,70 @@ CREATE TABLE `user_theme`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
--- user_folders
+-- user_folder
 -- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `user_folders`;
+DROP TABLE IF EXISTS `user_folder`;
 
-CREATE TABLE `user_folders`
+CREATE TABLE `user_folder`
 (
     `uf_id` INTEGER NOT NULL AUTO_INCREMENT,
     `user_id` INTEGER,
     `folder_name` VARCHAR(128),
     `parent_id` INTEGER NOT NULL,
     PRIMARY KEY (`uf_id`,`parent_id`),
-    INDEX `user_folders_I_1` (`parent_id`),
-    INDEX `user_folders_FI_1` (`user_id`),
-    CONSTRAINT `user_folders_FK_1`
+    INDEX `user_folder_I_1` (`parent_id`),
+    INDEX `user_folder_FI_1` (`user_id`),
+    CONSTRAINT `user_folder_FK_1`
         FOREIGN KEY (`user_id`)
         REFERENCES `user` (`id`)
 ) ENGINE=InnoDB CHARACTER SET='utf8';
 
 -- ---------------------------------------------------------------------
--- organization_folders
+-- organization_folder
 -- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `organization_folders`;
+DROP TABLE IF EXISTS `organization_folder`;
 
-CREATE TABLE `organization_folders`
+CREATE TABLE `organization_folder`
 (
     `of_id` INTEGER NOT NULL AUTO_INCREMENT,
     `org_id` VARCHAR(128),
     `folder_name` VARCHAR(128),
     `parent_id` INTEGER NOT NULL,
     PRIMARY KEY (`of_id`,`parent_id`),
-    INDEX `organization_folders_I_1` (`parent_id`),
-    INDEX `organization_folders_FI_1` (`org_id`),
-    CONSTRAINT `organization_folders_FK_1`
+    INDEX `organization_folder_I_1` (`parent_id`),
+    INDEX `organization_folder_FI_1` (`org_id`),
+    CONSTRAINT `organization_folder_FK_1`
         FOREIGN KEY (`org_id`)
         REFERENCES `organization` (`id`)
 ) ENGINE=InnoDB CHARACTER SET='utf8';
 
 -- ---------------------------------------------------------------------
--- chart_folders
+-- chart_folder
 -- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `chart_folders`;
+DROP TABLE IF EXISTS `chart_folder`;
 
-CREATE TABLE `chart_folders`
+CREATE TABLE `chart_folder`
 (
     `map_id` INTEGER NOT NULL AUTO_INCREMENT,
     `chart_id` VARCHAR(5),
-    `user_folder` INTEGER,
+    `usr_folder` INTEGER,
     `org_folder` INTEGER,
     PRIMARY KEY (`map_id`),
-    INDEX `chart_folders_FI_1` (`chart_id`),
-    INDEX `chart_folders_FI_2` (`user_folder`),
-    INDEX `chart_folders_FI_3` (`org_folder`),
-    CONSTRAINT `chart_folders_FK_1`
+    INDEX `chart_folder_FI_1` (`chart_id`),
+    INDEX `chart_folder_FI_2` (`usr_folder`),
+    INDEX `chart_folder_FI_3` (`org_folder`),
+    CONSTRAINT `chart_folder_FK_1`
         FOREIGN KEY (`chart_id`)
         REFERENCES `chart` (`id`),
-    CONSTRAINT `chart_folders_FK_2`
-        FOREIGN KEY (`user_folder`)
-        REFERENCES `user_folders` (`uf_id`),
-    CONSTRAINT `chart_folders_FK_3`
+    CONSTRAINT `chart_folder_FK_2`
+        FOREIGN KEY (`usr_folder`)
+        REFERENCES `user_folder` (`uf_id`),
+    CONSTRAINT `chart_folder_FK_3`
         FOREIGN KEY (`org_folder`)
-        REFERENCES `organization_folders` (`of_id`)
+        REFERENCES `organization_folder` (`of_id`)
 ) ENGINE=InnoDB CHARACTER SET='utf8';
 
 # This restores the fkey checks, after having unset them earlier

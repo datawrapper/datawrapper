@@ -153,10 +153,10 @@ abstract class BaseUser extends BaseObject implements Persistent
     protected $collUserThemesPartial;
 
     /**
-     * @var        PropelObjectCollection|UserFolders[] Collection to store aggregation of UserFolders objects.
+     * @var        PropelObjectCollection|UserFolder[] Collection to store aggregation of UserFolder objects.
      */
-    protected $collUserFolderss;
-    protected $collUserFolderssPartial;
+    protected $collUserFolders;
+    protected $collUserFoldersPartial;
 
     /**
      * @var        PropelObjectCollection|Organization[] Collection to store aggregation of Organization objects.
@@ -251,7 +251,7 @@ abstract class BaseUser extends BaseObject implements Persistent
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
      */
-    protected $userFolderssScheduledForDeletion = null;
+    protected $userFoldersScheduledForDeletion = null;
 
     /**
      * Applies default values to this object.
@@ -904,7 +904,7 @@ abstract class BaseUser extends BaseObject implements Persistent
 
             $this->collUserThemes = null;
 
-            $this->collUserFolderss = null;
+            $this->collUserFolders = null;
 
             $this->collOrganizations = null;
             $this->collProducts = null;
@@ -1215,18 +1215,18 @@ abstract class BaseUser extends BaseObject implements Persistent
                 }
             }
 
-            if ($this->userFolderssScheduledForDeletion !== null) {
-                if (!$this->userFolderssScheduledForDeletion->isEmpty()) {
-                    foreach ($this->userFolderssScheduledForDeletion as $userFolders) {
+            if ($this->userFoldersScheduledForDeletion !== null) {
+                if (!$this->userFoldersScheduledForDeletion->isEmpty()) {
+                    foreach ($this->userFoldersScheduledForDeletion as $userFolder) {
                         // need to save related object because we set the relation to null
-                        $userFolders->save($con);
+                        $userFolder->save($con);
                     }
-                    $this->userFolderssScheduledForDeletion = null;
+                    $this->userFoldersScheduledForDeletion = null;
                 }
             }
 
-            if ($this->collUserFolderss !== null) {
-                foreach ($this->collUserFolderss as $referrerFK) {
+            if ($this->collUserFolders !== null) {
+                foreach ($this->collUserFolders as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -1501,8 +1501,8 @@ abstract class BaseUser extends BaseObject implements Persistent
                     }
                 }
 
-                if ($this->collUserFolderss !== null) {
-                    foreach ($this->collUserFolderss as $referrerFK) {
+                if ($this->collUserFolders !== null) {
+                    foreach ($this->collUserFolders as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
                             $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
                         }
@@ -1649,8 +1649,8 @@ abstract class BaseUser extends BaseObject implements Persistent
             if (null !== $this->collUserThemes) {
                 $result['UserThemes'] = $this->collUserThemes->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
-            if (null !== $this->collUserFolderss) {
-                $result['UserFolderss'] = $this->collUserFolderss->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            if (null !== $this->collUserFolders) {
+                $result['UserFolders'] = $this->collUserFolders->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -1915,9 +1915,9 @@ abstract class BaseUser extends BaseObject implements Persistent
                 }
             }
 
-            foreach ($this->getUserFolderss() as $relObj) {
+            foreach ($this->getUserFolders() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addUserFolders($relObj->copy($deepCopy));
+                    $copyObj->addUserFolder($relObj->copy($deepCopy));
                 }
             }
 
@@ -2000,8 +2000,8 @@ abstract class BaseUser extends BaseObject implements Persistent
         if ('UserTheme' == $relationName) {
             $this->initUserThemes();
         }
-        if ('UserFolders' == $relationName) {
-            $this->initUserFolderss();
+        if ('UserFolder' == $relationName) {
+            $this->initUserFolders();
         }
     }
 
@@ -3464,36 +3464,36 @@ abstract class BaseUser extends BaseObject implements Persistent
     }
 
     /**
-     * Clears out the collUserFolderss collection
+     * Clears out the collUserFolders collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
      * @return User The current object (for fluent API support)
-     * @see        addUserFolderss()
+     * @see        addUserFolders()
      */
-    public function clearUserFolderss()
+    public function clearUserFolders()
     {
-        $this->collUserFolderss = null; // important to set this to null since that means it is uninitialized
-        $this->collUserFolderssPartial = null;
+        $this->collUserFolders = null; // important to set this to null since that means it is uninitialized
+        $this->collUserFoldersPartial = null;
 
         return $this;
     }
 
     /**
-     * reset is the collUserFolderss collection loaded partially
+     * reset is the collUserFolders collection loaded partially
      *
      * @return void
      */
-    public function resetPartialUserFolderss($v = true)
+    public function resetPartialUserFolders($v = true)
     {
-        $this->collUserFolderssPartial = $v;
+        $this->collUserFoldersPartial = $v;
     }
 
     /**
-     * Initializes the collUserFolderss collection.
+     * Initializes the collUserFolders collection.
      *
-     * By default this just sets the collUserFolderss collection to an empty array (like clearcollUserFolderss());
+     * By default this just sets the collUserFolders collection to an empty array (like clearcollUserFolders());
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
@@ -3502,17 +3502,17 @@ abstract class BaseUser extends BaseObject implements Persistent
      *
      * @return void
      */
-    public function initUserFolderss($overrideExisting = true)
+    public function initUserFolders($overrideExisting = true)
     {
-        if (null !== $this->collUserFolderss && !$overrideExisting) {
+        if (null !== $this->collUserFolders && !$overrideExisting) {
             return;
         }
-        $this->collUserFolderss = new PropelObjectCollection();
-        $this->collUserFolderss->setModel('UserFolders');
+        $this->collUserFolders = new PropelObjectCollection();
+        $this->collUserFolders->setModel('UserFolder');
     }
 
     /**
-     * Gets an array of UserFolders objects which contain a foreign key that references this object.
+     * Gets an array of UserFolder objects which contain a foreign key that references this object.
      *
      * If the $criteria is not null, it is used to always fetch the results from the database.
      * Otherwise the results are fetched from the database the first time, then cached.
@@ -3522,105 +3522,105 @@ abstract class BaseUser extends BaseObject implements Persistent
      *
      * @param Criteria $criteria optional Criteria object to narrow the query
      * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|UserFolders[] List of UserFolders objects
+     * @return PropelObjectCollection|UserFolder[] List of UserFolder objects
      * @throws PropelException
      */
-    public function getUserFolderss($criteria = null, PropelPDO $con = null)
+    public function getUserFolders($criteria = null, PropelPDO $con = null)
     {
-        $partial = $this->collUserFolderssPartial && !$this->isNew();
-        if (null === $this->collUserFolderss || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collUserFolderss) {
+        $partial = $this->collUserFoldersPartial && !$this->isNew();
+        if (null === $this->collUserFolders || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collUserFolders) {
                 // return empty collection
-                $this->initUserFolderss();
+                $this->initUserFolders();
             } else {
-                $collUserFolderss = UserFoldersQuery::create(null, $criteria)
+                $collUserFolders = UserFolderQuery::create(null, $criteria)
                     ->filterByUser($this)
                     ->find($con);
                 if (null !== $criteria) {
-                    if (false !== $this->collUserFolderssPartial && count($collUserFolderss)) {
-                      $this->initUserFolderss(false);
+                    if (false !== $this->collUserFoldersPartial && count($collUserFolders)) {
+                      $this->initUserFolders(false);
 
-                      foreach($collUserFolderss as $obj) {
-                        if (false == $this->collUserFolderss->contains($obj)) {
-                          $this->collUserFolderss->append($obj);
+                      foreach($collUserFolders as $obj) {
+                        if (false == $this->collUserFolders->contains($obj)) {
+                          $this->collUserFolders->append($obj);
                         }
                       }
 
-                      $this->collUserFolderssPartial = true;
+                      $this->collUserFoldersPartial = true;
                     }
 
-                    $collUserFolderss->getInternalIterator()->rewind();
-                    return $collUserFolderss;
+                    $collUserFolders->getInternalIterator()->rewind();
+                    return $collUserFolders;
                 }
 
-                if($partial && $this->collUserFolderss) {
-                    foreach($this->collUserFolderss as $obj) {
+                if($partial && $this->collUserFolders) {
+                    foreach($this->collUserFolders as $obj) {
                         if($obj->isNew()) {
-                            $collUserFolderss[] = $obj;
+                            $collUserFolders[] = $obj;
                         }
                     }
                 }
 
-                $this->collUserFolderss = $collUserFolderss;
-                $this->collUserFolderssPartial = false;
+                $this->collUserFolders = $collUserFolders;
+                $this->collUserFoldersPartial = false;
             }
         }
 
-        return $this->collUserFolderss;
+        return $this->collUserFolders;
     }
 
     /**
-     * Sets a collection of UserFolders objects related by a one-to-many relationship
+     * Sets a collection of UserFolder objects related by a one-to-many relationship
      * to the current object.
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param PropelCollection $userFolderss A Propel collection.
+     * @param PropelCollection $userFolders A Propel collection.
      * @param PropelPDO $con Optional connection object
      * @return User The current object (for fluent API support)
      */
-    public function setUserFolderss(PropelCollection $userFolderss, PropelPDO $con = null)
+    public function setUserFolders(PropelCollection $userFolders, PropelPDO $con = null)
     {
-        $userFolderssToDelete = $this->getUserFolderss(new Criteria(), $con)->diff($userFolderss);
+        $userFoldersToDelete = $this->getUserFolders(new Criteria(), $con)->diff($userFolders);
 
-        $this->userFolderssScheduledForDeletion = unserialize(serialize($userFolderssToDelete));
+        $this->userFoldersScheduledForDeletion = unserialize(serialize($userFoldersToDelete));
 
-        foreach ($userFolderssToDelete as $userFoldersRemoved) {
-            $userFoldersRemoved->setUser(null);
+        foreach ($userFoldersToDelete as $userFolderRemoved) {
+            $userFolderRemoved->setUser(null);
         }
 
-        $this->collUserFolderss = null;
-        foreach ($userFolderss as $userFolders) {
-            $this->addUserFolders($userFolders);
+        $this->collUserFolders = null;
+        foreach ($userFolders as $userFolder) {
+            $this->addUserFolder($userFolder);
         }
 
-        $this->collUserFolderss = $userFolderss;
-        $this->collUserFolderssPartial = false;
+        $this->collUserFolders = $userFolders;
+        $this->collUserFoldersPartial = false;
 
         return $this;
     }
 
     /**
-     * Returns the number of related UserFolders objects.
+     * Returns the number of related UserFolder objects.
      *
      * @param Criteria $criteria
      * @param boolean $distinct
      * @param PropelPDO $con
-     * @return int             Count of related UserFolders objects.
+     * @return int             Count of related UserFolder objects.
      * @throws PropelException
      */
-    public function countUserFolderss(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    public function countUserFolders(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
     {
-        $partial = $this->collUserFolderssPartial && !$this->isNew();
-        if (null === $this->collUserFolderss || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collUserFolderss) {
+        $partial = $this->collUserFoldersPartial && !$this->isNew();
+        if (null === $this->collUserFolders || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collUserFolders) {
                 return 0;
             }
 
             if($partial && !$criteria) {
-                return count($this->getUserFolderss());
+                return count($this->getUserFolders());
             }
-            $query = UserFoldersQuery::create(null, $criteria);
+            $query = UserFolderQuery::create(null, $criteria);
             if ($distinct) {
                 $query->distinct();
             }
@@ -3630,52 +3630,52 @@ abstract class BaseUser extends BaseObject implements Persistent
                 ->count($con);
         }
 
-        return count($this->collUserFolderss);
+        return count($this->collUserFolders);
     }
 
     /**
-     * Method called to associate a UserFolders object to this object
-     * through the UserFolders foreign key attribute.
+     * Method called to associate a UserFolder object to this object
+     * through the UserFolder foreign key attribute.
      *
-     * @param    UserFolders $l UserFolders
+     * @param    UserFolder $l UserFolder
      * @return User The current object (for fluent API support)
      */
-    public function addUserFolders(UserFolders $l)
+    public function addUserFolder(UserFolder $l)
     {
-        if ($this->collUserFolderss === null) {
-            $this->initUserFolderss();
-            $this->collUserFolderssPartial = true;
+        if ($this->collUserFolders === null) {
+            $this->initUserFolders();
+            $this->collUserFoldersPartial = true;
         }
-        if (!in_array($l, $this->collUserFolderss->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddUserFolders($l);
+        if (!in_array($l, $this->collUserFolders->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddUserFolder($l);
         }
 
         return $this;
     }
 
     /**
-     * @param	UserFolders $userFolders The userFolders object to add.
+     * @param	UserFolder $userFolder The userFolder object to add.
      */
-    protected function doAddUserFolders($userFolders)
+    protected function doAddUserFolder($userFolder)
     {
-        $this->collUserFolderss[]= $userFolders;
-        $userFolders->setUser($this);
+        $this->collUserFolders[]= $userFolder;
+        $userFolder->setUser($this);
     }
 
     /**
-     * @param	UserFolders $userFolders The userFolders object to remove.
+     * @param	UserFolder $userFolder The userFolder object to remove.
      * @return User The current object (for fluent API support)
      */
-    public function removeUserFolders($userFolders)
+    public function removeUserFolder($userFolder)
     {
-        if ($this->getUserFolderss()->contains($userFolders)) {
-            $this->collUserFolderss->remove($this->collUserFolderss->search($userFolders));
-            if (null === $this->userFolderssScheduledForDeletion) {
-                $this->userFolderssScheduledForDeletion = clone $this->collUserFolderss;
-                $this->userFolderssScheduledForDeletion->clear();
+        if ($this->getUserFolders()->contains($userFolder)) {
+            $this->collUserFolders->remove($this->collUserFolders->search($userFolder));
+            if (null === $this->userFoldersScheduledForDeletion) {
+                $this->userFoldersScheduledForDeletion = clone $this->collUserFolders;
+                $this->userFoldersScheduledForDeletion->clear();
             }
-            $this->userFolderssScheduledForDeletion[]= $userFolders;
-            $userFolders->setUser(null);
+            $this->userFoldersScheduledForDeletion[]= $userFolder;
+            $userFolder->setUser(null);
         }
 
         return $this;
@@ -4284,8 +4284,8 @@ abstract class BaseUser extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
-            if ($this->collUserFolderss) {
-                foreach ($this->collUserFolderss as $o) {
+            if ($this->collUserFolders) {
+                foreach ($this->collUserFolders as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
@@ -4332,10 +4332,10 @@ abstract class BaseUser extends BaseObject implements Persistent
             $this->collUserThemes->clearIterator();
         }
         $this->collUserThemes = null;
-        if ($this->collUserFolderss instanceof PropelCollection) {
-            $this->collUserFolderss->clearIterator();
+        if ($this->collUserFolders instanceof PropelCollection) {
+            $this->collUserFolders->clearIterator();
         }
-        $this->collUserFolderss = null;
+        $this->collUserFolders = null;
         if ($this->collOrganizations instanceof PropelCollection) {
             $this->collOrganizations->clearIterator();
         }

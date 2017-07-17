@@ -76,9 +76,9 @@
  * @method ChartQuery rightJoinJob($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Job relation
  * @method ChartQuery innerJoinJob($relationAlias = null) Adds a INNER JOIN clause to the query using the Job relation
  *
- * @method ChartQuery leftJoinChartFolders($relationAlias = null) Adds a LEFT JOIN clause to the query using the ChartFolders relation
- * @method ChartQuery rightJoinChartFolders($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ChartFolders relation
- * @method ChartQuery innerJoinChartFolders($relationAlias = null) Adds a INNER JOIN clause to the query using the ChartFolders relation
+ * @method ChartQuery leftJoinChartFolder($relationAlias = null) Adds a LEFT JOIN clause to the query using the ChartFolder relation
+ * @method ChartQuery rightJoinChartFolder($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ChartFolder relation
+ * @method ChartQuery innerJoinChartFolder($relationAlias = null) Adds a INNER JOIN clause to the query using the ChartFolder relation
  *
  * @method Chart findOne(PropelPDO $con = null) Return the first Chart matching the query
  * @method Chart findOneOrCreate(PropelPDO $con = null) Return the first Chart matching the query, or a new Chart object populated from the query conditions when no match is found
@@ -1423,41 +1423,41 @@ abstract class BaseChartQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query by a related ChartFolders object
+     * Filter the query by a related ChartFolder object
      *
-     * @param   ChartFolders|PropelObjectCollection $chartFolders  the related object to use as filter
+     * @param   ChartFolder|PropelObjectCollection $chartFolder  the related object to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return                 ChartQuery The current query, for fluid interface
      * @throws PropelException - if the provided filter is invalid.
      */
-    public function filterByChartFolders($chartFolders, $comparison = null)
+    public function filterByChartFolder($chartFolder, $comparison = null)
     {
-        if ($chartFolders instanceof ChartFolders) {
+        if ($chartFolder instanceof ChartFolder) {
             return $this
-                ->addUsingAlias(ChartPeer::ID, $chartFolders->getChartId(), $comparison);
-        } elseif ($chartFolders instanceof PropelObjectCollection) {
+                ->addUsingAlias(ChartPeer::ID, $chartFolder->getChartId(), $comparison);
+        } elseif ($chartFolder instanceof PropelObjectCollection) {
             return $this
-                ->useChartFoldersQuery()
-                ->filterByPrimaryKeys($chartFolders->getPrimaryKeys())
+                ->useChartFolderQuery()
+                ->filterByPrimaryKeys($chartFolder->getPrimaryKeys())
                 ->endUse();
         } else {
-            throw new PropelException('filterByChartFolders() only accepts arguments of type ChartFolders or PropelCollection');
+            throw new PropelException('filterByChartFolder() only accepts arguments of type ChartFolder or PropelCollection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the ChartFolders relation
+     * Adds a JOIN clause to the query using the ChartFolder relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return ChartQuery The current query, for fluid interface
      */
-    public function joinChartFolders($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    public function joinChartFolder($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('ChartFolders');
+        $relationMap = $tableMap->getRelation('ChartFolder');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -1472,14 +1472,14 @@ abstract class BaseChartQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'ChartFolders');
+            $this->addJoinObject($join, 'ChartFolder');
         }
 
         return $this;
     }
 
     /**
-     * Use the ChartFolders relation ChartFolders object
+     * Use the ChartFolder relation ChartFolder object
      *
      * @see       useQuery()
      *
@@ -1487,46 +1487,46 @@ abstract class BaseChartQuery extends ModelCriteria
      *                                   to be used as main alias in the secondary query
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return   ChartFoldersQuery A secondary query class using the current class as primary query
+     * @return   ChartFolderQuery A secondary query class using the current class as primary query
      */
-    public function useChartFoldersQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    public function useChartFolderQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         return $this
-            ->joinChartFolders($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'ChartFolders', 'ChartFoldersQuery');
+            ->joinChartFolder($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'ChartFolder', 'ChartFolderQuery');
     }
 
     /**
-     * Filter the query by a related UserFolders object
-     * using the chart_folders table as cross reference
+     * Filter the query by a related UserFolder object
+     * using the chart_folder table as cross reference
      *
-     * @param   UserFolders $userFolders the related object to use as filter
+     * @param   UserFolder $userFolder the related object to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return   ChartQuery The current query, for fluid interface
      */
-    public function filterByUserFolders($userFolders, $comparison = Criteria::EQUAL)
+    public function filterByUserFolder($userFolder, $comparison = Criteria::EQUAL)
     {
         return $this
-            ->useChartFoldersQuery()
-            ->filterByUserFolders($userFolders, $comparison)
+            ->useChartFolderQuery()
+            ->filterByUserFolder($userFolder, $comparison)
             ->endUse();
     }
 
     /**
-     * Filter the query by a related OrganizationFolders object
-     * using the chart_folders table as cross reference
+     * Filter the query by a related OrganizationFolder object
+     * using the chart_folder table as cross reference
      *
-     * @param   OrganizationFolders $organizationFolders the related object to use as filter
+     * @param   OrganizationFolder $organizationFolder the related object to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return   ChartQuery The current query, for fluid interface
      */
-    public function filterByOrganizationFolders($organizationFolders, $comparison = Criteria::EQUAL)
+    public function filterByOrganizationFolder($organizationFolder, $comparison = Criteria::EQUAL)
     {
         return $this
-            ->useChartFoldersQuery()
-            ->filterByOrganizationFolders($organizationFolders, $comparison)
+            ->useChartFolderQuery()
+            ->filterByOrganizationFolder($organizationFolder, $comparison)
             ->endUse();
     }
 
