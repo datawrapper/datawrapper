@@ -98,30 +98,30 @@ $app->get('/mycharts(/?|/by/:key/:val)', function ($key = false, $val = false) u
     }
 });
 
-$app->get('/mycharts/mkdir/(:path+/|):dirname', function($path = false, $dirname) use ($app) {
+$app->get('/mycharts/mkdir/(:path+/|):dirname/?', function($path = false, $dirname) use ($app) {
     disable_cache($app);
     $user = DatawrapperSession::getUser();
     $user_id = $user->getId();
     if ($user->isLoggedIn()) {
-    $folders = UserFoldersQuery::create()->findByUserId($user_id);
+    $folders = UserFolderQuery::create()->findByUserId($user_id);
     // Does the user have a root folder?
     if ($folders->count() == 0) {
-        $rootfolder = new UserFolders();
+        $rootfolder = new UserFolder();
         $rootfolder->setUserId($user_id)->setFolderName('ROOT')->setParentId(0)->save();
     }
     // find root
-    $root_id = UserFoldersQuery::create()->filterByUserId($user_id)->findOneByParentId(0)->getUfId();
+    $root_id = UserFolderQuery::create()->filterByUserId($user_id)->findOneByParentId(0)->getUfId();
 
-    // easy case
+    $resultpath = '/';
     if (empty($path[0])) {
-        $new_folder = new UserFolders();
+        // easy case
+        $new_folder = new UserFolder();
         $new_folder->setUserId($user_id)->setFolderName($dirname)->setParentId($root_id)->save();
     } else {
         // verify the path
-        $base_query = UserFoldersQuery::create()->filterByUserId($user_id);
+        $base_query = UserFolderQuery::create()->filterByUserId($user_id);
         $traversed = true;
         $parent_id = $root_id;
-        $resultpath = '/';
         foreach ($path as $segment) {
             $db_seg = $base_query->filterByParentId($parent_id)->findOneByFolderName($segment);
             if (empty($db_seg)) {
@@ -134,7 +134,7 @@ $app->get('/mycharts/mkdir/(:path+/|):dirname', function($path = false, $dirname
 
         // append new dir
         if ($traversed) {
-            $new_folder = new UserFolders();
+            $new_folder = new UserFolder();
             $new_folder->setUserId($user_id)->setFolderName($dirname)->setParentId($parent_id)->save();
         }
     }
