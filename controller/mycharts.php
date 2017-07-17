@@ -98,57 +98,66 @@ $app->get('/mycharts(/?|/by/:key/:val)', function ($key = false, $val = false) u
     }
 });
 
+function verify_path($path, $user_id, &$parent_id) {
+    $base_query = UserFolderQuery::create()->filterByUserId($user_id);
+    $traversed = true;
+    foreach ($path as $segment) {
+        $db_seg = $base_query->filterByParentId($parent_id)->findOneByFolderName($segment);
+        if (empty($db_seg)) {
+            $traversed = false;
+            break;
+        }
+        $parent_id = $db_seg->getUfId();
+    }
+
+    return $traversed;
+}
+
+function json_reply($status, $error = false) {
+    if ($status) {
+        $rep = array('status' => 'ok');
+    } else {
+        $rep = array(
+            'status' => 'error',
+            'error' => $error
+        );
+    }
+    echo(json_encode($rep));
+}
+
 $app->get('/mycharts/mkdir/(:path+/|):dirname/?', function($path = false, $dirname) use ($app) {
     disable_cache($app);
     $user = DatawrapperSession::getUser();
     $user_id = $user->getId();
     if ($user->isLoggedIn()) {
-    $folders = UserFolderQuery::create()->findByUserId($user_id);
-    // Does the user have a root folder?
-    if ($folders->count() == 0) {
-        $rootfolder = new UserFolder();
-        $rootfolder->setUserId($user_id)->setFolderName('ROOT')->setParentId(0)->save();
-    }
-    // find root
-    $root_id = UserFolderQuery::create()->filterByUserId($user_id)->findOneByParentId(0)->getUfId();
-
-    $resultpath = '/';
-    if (empty($path[0])) {
-        // easy case
-        $new_folder = new UserFolder();
-        $new_folder->setUserId($user_id)->setFolderName($dirname)->setParentId($root_id)->save();
-    } else {
-        // verify the path
-        $base_query = UserFolderQuery::create()->filterByUserId($user_id);
-        $traversed = true;
-        $parent_id = $root_id;
-        foreach ($path as $segment) {
-            $db_seg = $base_query->filterByParentId($parent_id)->findOneByFolderName($segment);
-            if (empty($db_seg)) {
-                $traversed = false;
-                break;
-            }
-            $parent_id = $db_seg->getUfId();
-            $resultpath .= $segment . '/';
+        $folders = UserFolderQuery::create()->findByUserId($user_id);
+        // Does the user have a root folder?
+        if ($folders->count() == 0) {
+            $rootfolder = new UserFolder();
+            $rootfolder->setUserId($user_id)->setFolderName('ROOT')->setParentId(0)->save();
         }
+        // find root
+        $root_id = UserFolderQuery::create()->filterByUserId($user_id)->findOneByParentId(0)->getUfId();
 
-        // append new dir
-        if ($traversed) {
+        if (empty($path[0])) {
+            // easy case
             $new_folder = new UserFolder();
-            $new_folder->setUserId($user_id)->setFolderName($dirname)->setParentId($parent_id)->save();
+            $new_folder->setUserId($user_id)->setFolderName($dirname)->setParentId($root_id)->save();
+            json_reply(true);
+            return;
+        } else {
+            // append new dir (if path exists)
+            if (verify_path($path, $user_id, $root_id)) {
+                $new_folder = new UserFolder();
+                // behold: $root_id was overwritten by verify_path()
+                $new_folder->setUserId($user_id)->setFolderName($dirname)->setParentId($root_id)->save();
+                json_reply(true);
+                return;
+            }
         }
-    }
-
-    var_export(array(
-        'dir' => $dirname,
-        'path' => $path,
-        'id' => $user_id,
-        'count' => $folders->count(),
-        'root_id' => $root_id,
-        'resultpath' => $resultpath . $dirname
-    ));
+        json_reply(false, 'Folder could not be created.');
     } else {
-        error_mycharts_need_login();
+        json_reply(false, 'User is not logged in.');
     }
 });
 
