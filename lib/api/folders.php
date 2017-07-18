@@ -36,8 +36,8 @@ function verify_path($type, $path, $user_id, $parent_id) {
  * make a chart available in a certain folder
  *
  * @param type the type of folder
- * @param chart the chart_id
- * @param folder the destination folder
+ * @param chart_id the charts id?
+ * @param path the destination folder
  */
 $app->put('/folders/chart/:type/:chart_id/:path+', function($type, $chart_id, $path) use ($app) {
     disable_cache($app);
