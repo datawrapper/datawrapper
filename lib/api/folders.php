@@ -11,28 +11,26 @@ function get_folder_base_query($type) {
     }
 }
 
-function verify_path($type, $path, $user_id, &$parent_id) {
-    $traversed = true;
-    foreach ($path as $segment) {
-        if (empty($segment)) {
-            // an empty segment at the end may be produced by slim
-            break;
-        }
-
-        $base_query = get_folder_base_query($type);
-        if (!$base_query) {
-            return false;
-        }
-
-        $db_seg = $base_query->filterByUserId($user_id)->filterByParentId($parent_id)->findOneByFolderName($segment);
-        if (empty($db_seg)) {
-            $traversed = false;
-            break;
-        }
-        $parent_id = $db_seg->getUfId();
+function verify_path($type, $path, $user_id, $parent_id) {
+    $base_query = get_folder_base_query($type);
+    if (!$base_query) {
+        return array('verified' => false);
     }
 
-    return $traversed;
+    $segment = array_shift($path);
+    if (empty($segment)) {
+        return array(
+            'verified' => true,
+            'pid' => $parent_id
+        );
+    }
+
+    $db_seg = $base_query->filterByUserId($user_id)->filterByParentId($parent_id)->findOneByFolderName($segment);
+    if (empty($db_seg)) {
+        return array('verified' => false);
+    }
+
+    return verify_path($type, $path, $user_id, $db_seg->getUfId());
 }
 
 
@@ -87,12 +85,12 @@ $app->put('/folders/dir/:type/(:path+/|):dirname/?', function($type, $path, $dir
         $root_id = $base_query->filterByUserId($user_id)->findOneByParentId(0)->getUfId();
 
         // does path exists? ("" is ok, too)
-        if (verify_path($type, $path, $user_id, $root_id)) {
+        $pv = verify_path($type, $path, $user_id, $root_id);
+        if ($pv['verified']) {
             if (empty($base_query->filterByUserId($user_id)->findOneByFolderName($dirname))) {
                 // Does not exist → create it!
                 $new_folder = new UserFolder();
-                // behold: $root_id was overwritten by verify_path()
-                $new_folder->setUserId($user_id)->setFolderName($dirname)->setParentId($root_id)->save();
+                $new_folder->setUserId($user_id)->setFolderName($dirname)->setParentId($pv['pid'])->save();
             }
             // does exists → that's ok, too
             ok();
