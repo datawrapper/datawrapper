@@ -18,20 +18,27 @@ function verify_path($path, $user_id, &$parent_id) {
     return $traversed;
 }
 
-// $app->get('/mycharts/add2dir/:chart_id/:path+', function($chart_id, $path) use ($app) {
-//     disable_cache($app);
-//     $user = DatawrapperSession::getUser();
+/**
+ * make a chart available in a certain folder
+ *
+ * @param type the type of folder
+ * @param chart the chart_id
+ * @param folder the destination folder
+ */
+$app->put('/folders/chart/:type/:chart_id/:path+', function($type, $chart_id, $path) use ($app) {
+    disable_cache($app);
+    $user = DatawrapperSession::getUser();
 
-//     if ($user->isLoggedIn()) {
-//         $user_id = $user->getId();
-//         echo(json_encode(array(
-//             'chart_id' => $chart_id,
-//             'path' => $path
-//         )));
-//     } else {
-//         json_reply(false, $app, 'User is not logged in.');
-//     }
-// });
+    if ($user->isLoggedIn()) {
+        $user_id = $user->getId();
+        ok(json_encode(array(
+            'chart_id' => $chart_id,
+            'path' => $path
+        )));
+    } else {
+        error('access-denied', 'User is not logged in.');
+    }
+});
 
  /**
   * create a new folder
@@ -40,8 +47,7 @@ function verify_path($path, $user_id, &$parent_id) {
   * @param path the absolue path where the directory should be created
   * @param dirname the name of the directory to be created
   */
-
-$app->put('/folders/:type/(:path+/|):dirname/?', function($type, $path, $dirname) use ($app){
+$app->put('/folders/dir/:type/(:path+/|):dirname/?', function($type, $path, $dirname) use ($app){
     disable_cache($app);
     $user = DatawrapperSession::getUser();
 
@@ -68,8 +74,8 @@ $app->put('/folders/:type/(:path+/|):dirname/?', function($type, $path, $dirname
             ok();
             return;
         }
-        error(409, 'Path does not exist.');
+        error('no-such-path', 'Path does not exist.');
     } else {
-        error(403, 'User is not logged in.');
+        error('access-denied', 'User is not logged in.');
     }
 });
