@@ -45,11 +45,9 @@ $app->put('/folders/chart/:type/:chart_id/:path+', function($type, $chart_id, $p
 
     if ($user->isLoggedIn()) {
         $accessible = false;
-        $access_test = function($user, $chart) use (&$accessible) {
+        if_chart_is_writable($chart_id, function($user, $chart) use (&$accessible) {
             $accessible = true;
-        };
-        if_chart_is_writable($chart_id, $access_test);
-
+        });
         if(!$accessible) {
             return;
         }
