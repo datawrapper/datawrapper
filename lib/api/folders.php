@@ -86,6 +86,7 @@ $app->put('/folders/chart/:type/:chart_id/:path+', function($type, $chart_id, $p
                 $cf = new ChartFolder();
                 $cf->setChartId($chart_id)->setOrgFolder($uo_folder)->save();
             }
+            ok();
         } else {
             error('no-such-path', 'Path does not exist.');
         }
