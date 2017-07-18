@@ -116,19 +116,6 @@ function verify_path($path, $user_id, &$parent_id) {
     return $traversed;
 }
 
-function json_reply($status, $app = false, $error = false) {
-    if ($status) {
-        $rep = array('status' => 'ok');
-    } else {
-        $app->status(400);
-        $rep = array(
-            'status' => 'error',
-            'error' => $error
-        );
-    }
-    echo(json_encode($rep));
-}
-
 // $app->get('/mycharts/add2dir/:chart_id/:path+', function($chart_id, $path) use ($app) {
 //     disable_cache($app);
 //     $user = DatawrapperSession::getUser();
@@ -168,12 +155,12 @@ $app->get('/mycharts/mkdir/(:path+/|):dirname/?', function($path = false, $dirna
                 $new_folder->setUserId($user_id)->setFolderName($dirname)->setParentId($root_id)->save();
             }
             // does exists → that's ok, too
-            json_reply(true);
+            ok();
             return;
         }
-        json_reply(false, $app, 'Path does not exist.');
+        error(409, 'Path does not exist.');
     } else {
-        json_reply(false, $app, 'User is not logged in.');
+        error(403, 'User is not logged in.');
     }
 });
 
