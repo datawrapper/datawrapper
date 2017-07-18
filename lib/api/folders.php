@@ -7,16 +7,14 @@ function get_folder_base_query($type) {
     case 'organization':
         return OrganizationFolderQuery::create();
     default:
+        error('no-such-folder-type', "We don't have that type of folder(, yet?)");
         return false;
     }
 }
 
+// you should have veryfied $type is usable before calling this!
 function verify_path($type, $path, $user_id, $parent_id) {
     $base_query = get_folder_base_query($type);
-    if (!$base_query) {
-        return array('verified' => false);
-    }
-
     $segment = array_shift($path);
     if (empty($segment)) {
         return array(
@@ -46,11 +44,52 @@ $app->put('/folders/chart/:type/:chart_id/:path+', function($type, $chart_id, $p
     $user = DatawrapperSession::getUser();
 
     if ($user->isLoggedIn()) {
+        // could have used if_chart_is_writable, but it doesn't need to be writable for this THIS IS WRONG!
+        $chart = ChartQuery::create()->findPK($chart_id);
+        if (empty($chart)) {
+            error('no-such-chart', 'really!');
+            return;
+        }
+        // BAM! Every user can do this! FIXIT by using if_chart_is_writable
+        $base_query = get_folder_base_query($type);
+        if (!$base_query) {
+            return;
+        }
+
         $user_id = $user->getId();
-        ok(json_encode(array(
-            'chart_id' => $chart_id,
-            'path' => $path
-        )));
+        $folders = $base_query->findByUserId($user_id);
+        if ($folders->count() == 0) {
+            error('no-folders', "This user hasn't got any folders of the requested type.")
+        }
+
+        // this should be save, because noone can delete his root folder manually (without DB access)
+        $root_id = $base_query->filterByUserId($user_id)->findOneByParentId(0)->getUfId();
+        $pv = verify_path($type, $path, $user_id, $root_id);
+
+        if ($pv['verified']) {
+            $uo_folder = $pv['pid'];
+            if ($type == 'user') {
+                $old_link = ChartFolderQuery::create()->filterByChartId($chart_id)->findOneByUsrFolder($uo_folder);
+                if (!empty($old_link)) {
+                    ok();
+                    return;
+                }
+                // this IS new. link it
+                $cf = new ChartFolder();
+                $cf->setChartId($chart_id)->setUsrFolder($uo_folder)->save();
+            } else {
+                //everything but organiztion would not have gotten that far
+                $old_link = ChartFolderQuery::create()->filterByChartId($chart_id)->findOneByOrgFolder($uo_folder);
+                if (!empty($old_link))
+                    ok();
+                    return;
+                }
+                $cf = new ChartFolder();
+                $cf->setChartId($chart_id)->setOrgFolder($uo_folder)->save();
+            }
+        } else {
+            error('no-such-path', 'Path does not exist.');
+        }
     } else {
         error('access-denied', 'User is not logged in.');
     }
@@ -69,10 +108,7 @@ $app->put('/folders/dir/:type/(:path+/|):dirname/?', function($type, $path, $dir
 
     if ($user->isLoggedIn()) {
         $base_query = get_folder_base_query($type);
-        if (!$base_query) {
-            error('no-such-folder-type', "We don't have that type of folder(, yet?)");
-            return;
-        }
+        if (!$base_query) return;
 
         $user_id = $user->getId();
         $folders = $base_query->findByUserId($user_id);
