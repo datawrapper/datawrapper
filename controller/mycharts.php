@@ -129,19 +129,20 @@ function json_reply($status, $app = false, $error = false) {
     echo(json_encode($rep));
 }
 
-/*$app->get('/mycharts/add2dir/:chart_id/:path+', function($chart_id, $path) use ($app) {
-    disable_cache($app);
-    $user = DatawrapperSession::getUser();
-    $user_id = $user->getId();
-    if ($user->isLoggedIn()) {
-        echo(json_encode(array(
-            'chart_id' => $chart_id,
-            'path' => $path
-        )));
-    } else {
-        json_reply(false, 'User is not logged in.');
-    }
-});*/
+// $app->get('/mycharts/add2dir/:chart_id/:path+', function($chart_id, $path) use ($app) {
+//     disable_cache($app);
+//     $user = DatawrapperSession::getUser();
+
+//     if ($user->isLoggedIn()) {
+//         $user_id = $user->getId();
+//         echo(json_encode(array(
+//             'chart_id' => $chart_id,
+//             'path' => $path
+//         )));
+//     } else {
+//         json_reply(false, $app, 'User is not logged in.');
+//     }
+// });
 
 $app->get('/mycharts/mkdir/(:path+/|):dirname/?', function($path = false, $dirname) use ($app){
     disable_cache($app);
