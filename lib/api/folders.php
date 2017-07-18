@@ -44,13 +44,12 @@ $app->put('/folders/chart/:type/:chart_id/:path+', function($type, $chart_id, $p
     $user = DatawrapperSession::getUser();
 
     if ($user->isLoggedIn()) {
-        // could have used if_chart_is_writable, but it doesn't need to be writable for this THIS IS WRONG!
+        // only check if readable
         $chart = ChartQuery::create()->findPK($chart_id);
-        if (empty($chart)) {
-            error('no-such-chart', 'really!');
+        if (empty($chart) || !$chart->isReadable($user)) {
+            error('no-such-chart', 'Or at last you should not access it.');
             return;
         }
-        // BAM! Every user can do this! FIXIT by using if_chart_is_writable
         $base_query = get_folder_base_query($type);
         if (!$base_query) {
             return;
