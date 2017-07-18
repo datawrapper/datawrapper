@@ -44,12 +44,16 @@ $app->put('/folders/chart/:type/:chart_id/:path+', function($type, $chart_id, $p
     $user = DatawrapperSession::getUser();
 
     if ($user->isLoggedIn()) {
-        // only check if readable
-        $chart = ChartQuery::create()->findPK($chart_id);
-        if (empty($chart) || !$chart->isReadable($user)) {
-            error('no-such-chart', 'Or at last you should not access it.');
+        $accessible = false;
+        $access_test = function($user, $chart) use (&$accessible) {
+            $accessible = true;
+        };
+        if_chart_is_writable($chart_id, $access_test);
+
+        if(!$accessible) {
             return;
         }
+
         $base_query = get_folder_base_query($type);
         if (!$base_query) {
             return;
