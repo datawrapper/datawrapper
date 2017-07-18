@@ -58,7 +58,7 @@ $app->put('/folders/chart/:type/:chart_id/:path+', function($type, $chart_id, $p
         $user_id = $user->getId();
         $folders = $base_query->findByUserId($user_id);
         if ($folders->count() == 0) {
-            error('no-folders', "This user hasn't got any folders of the requested type.")
+            error('no-folders', "This user hasn't got any folders of the requested type.");
         }
 
         // this should be save, because noone can delete his root folder manually (without DB access)
@@ -79,7 +79,7 @@ $app->put('/folders/chart/:type/:chart_id/:path+', function($type, $chart_id, $p
             } else {
                 //everything but organiztion would not have gotten that far
                 $old_link = ChartFolderQuery::create()->filterByChartId($chart_id)->findOneByOrgFolder($uo_folder);
-                if (!empty($old_link))
+                if (!empty($old_link)) {
                     ok();
                     return;
                 }
