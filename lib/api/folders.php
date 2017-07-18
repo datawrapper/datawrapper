@@ -33,7 +33,15 @@ function verify_path($path, $user_id, &$parent_id) {
 //     }
 // });
 
-$app->get('/mycharts/mkdir/(:path+/|):dirname/?', function($path = false, $dirname) use ($app){
+ /**
+  * create a new folder
+  *
+  * @param type the type of folder which should be created
+  * @param path the absolue path where the directory should be created
+  * @param dirname the name of the directory to be created
+  */
+
+$app->put('/folders/:type/(:path+/|):dirname/?', function($type, $path, $dirname) use ($app){
     disable_cache($app);
     $user = DatawrapperSession::getUser();
 
