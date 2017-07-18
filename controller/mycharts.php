@@ -99,10 +99,13 @@ $app->get('/mycharts(/?|/by/:key/:val)', function ($key = false, $val = false) u
 });
 
 function verify_path($path, $user_id, &$parent_id) {
-    $base_query = UserFolderQuery::create()->filterByUserId($user_id);
     $traversed = true;
     foreach ($path as $segment) {
-        $db_seg = $base_query->filterByParentId($parent_id)->findOneByFolderName($segment);
+        if (empty($segment)) {
+            // an empty segment at the end may be produced by slim
+            break;
+        }
+        $db_seg = UserFolderQuery::create()->filterByUserId($user_id)->filterByParentId($parent_id)->findOneByFolderName($segment);
         if (empty($db_seg)) {
             $traversed = false;
             break;
@@ -113,10 +116,11 @@ function verify_path($path, $user_id, &$parent_id) {
     return $traversed;
 }
 
-function json_reply($status, $error = false) {
+function json_reply($status, $app = false, $error = false) {
     if ($status) {
         $rep = array('status' => 'ok');
     } else {
+        $app->status(400);
         $rep = array(
             'status' => 'error',
             'error' => $error
@@ -125,11 +129,26 @@ function json_reply($status, $error = false) {
     echo(json_encode($rep));
 }
 
-$app->get('/mycharts/mkdir/(:path+/|):dirname/?', function($path = false, $dirname) use ($app) {
+/*$app->get('/mycharts/add2dir/:chart_id/:path+', function($chart_id, $path) use ($app) {
     disable_cache($app);
     $user = DatawrapperSession::getUser();
     $user_id = $user->getId();
     if ($user->isLoggedIn()) {
+        echo(json_encode(array(
+            'chart_id' => $chart_id,
+            'path' => $path
+        )));
+    } else {
+        json_reply(false, 'User is not logged in.');
+    }
+});*/
+
+$app->get('/mycharts/mkdir/(:path+/|):dirname/?', function($path = false, $dirname) use ($app){
+    disable_cache($app);
+    $user = DatawrapperSession::getUser();
+
+    if ($user->isLoggedIn()) {
+        $user_id = $user->getId();
         $folders = UserFolderQuery::create()->findByUserId($user_id);
         // Does the user have a root folder?
         if ($folders->count() == 0) {
@@ -139,25 +158,21 @@ $app->get('/mycharts/mkdir/(:path+/|):dirname/?', function($path = false, $dirna
         // find root
         $root_id = UserFolderQuery::create()->filterByUserId($user_id)->findOneByParentId(0)->getUfId();
 
-        if (empty($path[0])) {
-            // easy case
-            $new_folder = new UserFolder();
-            $new_folder->setUserId($user_id)->setFolderName($dirname)->setParentId($root_id)->save();
-            json_reply(true);
-            return;
-        } else {
-            // append new dir (if path exists)
-            if (verify_path($path, $user_id, $root_id)) {
+        // does path exists? ("" is ok, too)
+        if (verify_path($path, $user_id, $root_id)) {
+            if (empty(UserFolderQuery::create()->filterByUserId($user_id)->findOneByFolderName($dirname))) {
+                // Does not exist → create it!
                 $new_folder = new UserFolder();
                 // behold: $root_id was overwritten by verify_path()
                 $new_folder->setUserId($user_id)->setFolderName($dirname)->setParentId($root_id)->save();
-                json_reply(true);
-                return;
             }
+            // does exists → that's ok, too
+            json_reply(true);
+            return;
         }
-        json_reply(false, 'Folder could not be created.');
+        json_reply(false, $app, 'Path does not exist.');
     } else {
-        json_reply(false, 'User is not logged in.');
+        json_reply(false, $app, 'User is not logged in.');
     }
 });
 
