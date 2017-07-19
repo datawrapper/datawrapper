@@ -12,7 +12,7 @@ function get_folder_base_query($type) {
     }
 }
 
-// you should have veryfied $type is usable before calling this!
+// you should have verified $type is usable before calling this!
 function verify_path($type, $path, $user_id, $parent_id) {
     $base_query = get_folder_base_query($type);
     $segment = array_shift($path);
@@ -97,6 +97,49 @@ $app->put('/folders/chart/:type/:chart_id/:path+', function($type, $chart_id, $p
     }
 });
 
+
+/**
+ * get an array of all chart ids in a folder
+ *
+ * @param type the type of folder
+ * @param path the destination folder
+ */
+$app->get('/folders/chart/:type/:path+/?', function($type, $path) use ($app) {
+    $user = DatawrapperSession::getUser();
+
+    if ($user->isLoggedIn()) {
+        $base_query = get_folder_base_query($type);
+        if (!$base_query) return;
+
+        $user_id = $user->getId();
+        $root_id = $base_query->filterByUserId($user_id)->findOneByParentId(0)->getUfId();
+        if (empty($root_id)) {
+            error('no-folders', 'This user hasn\'t got any folders');
+            return;
+        }
+        $pv = verify_path($type, $path, $user_id, $root_id);
+
+        if ($pv['verified']) {
+            $folder_id = $pv['pid'];
+            $q = ChartFolderQuery::create();
+            if ($type == 'user') {
+                $res = $q->findByUsrFolder($folder_id);
+            } else {
+                $res = $q->findByOrgFolder($folder_id);
+            }
+            $mapped = array_map(function($entry) {
+                return $entry->getChartId();
+            }, (array)$res);
+            ok($mapped);
+        } else {
+            error('no-such-path', 'Path does not exist.');
+        }
+    } else {
+        error('access-denied', 'User is not logged in.');
+    }
+});
+
+
  /**
   * create a new folder
   *
@@ -125,6 +168,7 @@ $app->put('/folders/dir/:type/(:path+/|):dirname/?', function($type, $path, $dir
         // does path exists? ("" is ok, too)
         $pv = verify_path($type, $path, $user_id, $root_id);
         if ($pv['verified']) {
+            // FIXME: If one name is used in several subdirs this is ambigous!
             if (empty($base_query->filterByUserId($user_id)->findOneByFolderName($dirname))) {
                 // Does not exist → create it!
                 $new_folder = new UserFolder();
