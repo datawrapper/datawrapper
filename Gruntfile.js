@@ -24,8 +24,6 @@ module.exports = function(grunt) {
                     'codemirror/addon': 'codemirror/addon',
                     'codemirror/lib': 'codemirror/lib',
                     'codemirror/mode/javascript': 'codemirror/mode/javascript',
-                    d3: 'd3/d3*.js',
-                    'd3-jetpack': 'd3-jetpack/d3-jetpack*.js',
                     'font-awesome/css': 'font-awesome/css',
                     'font-awesome/fonts': 'font-awesome/fonts',
                     handsontable: 'handsontable/dist/*',

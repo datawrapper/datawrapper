@@ -58,11 +58,13 @@ function get_chart_content($chart, $user, $theme, $published = false, $debug = f
     $vis_libs_local = array();
 
     $vis_locale = array();  // visualizations may define localized strings, e.g. "other"
+    $vis_versions = [];
 
     while (!empty($next_vis_id)) {
         $vis = DatawrapperVisualization::get($next_vis_id);
         // $vis_static_path = str_replace('/static/', $static_path . '/', $vis['__static_path']);
         $vis_static_path = $vis['__static_path'];
+        $vis_versions[] = $vis['version'];
         $vjs = array();
         if (!empty($vis['libraries'])) {
             foreach ($vis['libraries'] as $script) {
@@ -196,7 +198,8 @@ function get_chart_content($chart, $user, $theme, $published = false, $debug = f
 
         // the following is used by chart_publish.php
         'vis_js' => $the_vis_js,
-        'chart_js' => $the_chart_js
+        'chart_js' => $the_chart_js,
+        'vis_version' => substr(md5(join($vis_versions, '-')), 0, 8)
 
     );
 

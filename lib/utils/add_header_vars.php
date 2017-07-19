@@ -225,8 +225,9 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
             foreach ($assets as $asset) {
                 $file = $asset[0];
                 $plugin = $asset[1];
-                if (substr($file, -3) == '.js') $plugin_js_files[] = $file . '?v=' . $plugin->getVersion();
-                if (substr($file, -4) == '.css') $plugin_css_files[] = $file . '?v=' . $plugin->getVersion();
+                $version = substr(md5($plugin->getLastInstallTime()),0, 8);
+                if (substr($file, -3) == '.js') $plugin_js_files[] = $file . '?v=' . $version;
+                if (substr($file, -4) == '.css') $plugin_css_files[] = $file . '?v=' . $version;
             }
         }
         $page['plugin_js'] = $plugin_js_files;
@@ -250,6 +251,7 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
             $output = array();
             exec('git rev-parse HEAD', $output);
             $commit = $output[0];
+            $page['COMMIT_SHA'] = substr($commit, 0, 8);
             $page['BRANCH'] = ' (<a href="https://github.com/datawrapper/datawrapper/tree/'.$commit.'">'.$branch.'</a>)';
         }
     }
