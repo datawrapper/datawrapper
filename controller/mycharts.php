@@ -27,7 +27,7 @@ function nbChartsByType($user) {
     return $res;
 }
 
-function nbChartsByLayout($user) {
+/*function nbChartsByLayout($user) {
     $con = Propel::getConnection();
     $sql = "SELECT theme, COUNT(*) c FROM chart WHERE author_id = ". $user->getId() ." AND deleted = 0 AND last_edit_step >= 2 GROUP BY theme ORDER BY c DESC ;";
     $rs = $con->query($sql);
@@ -38,7 +38,7 @@ function nbChartsByLayout($user) {
         $res[] = array('count' => $r['c'], 'id' => $r['theme'], 'name' => $theme->getTitle());
     }
     return $res;
-}
+}*/
 
 function nbChartsByStatus($user) {
     $published = ChartQuery::create()->filterByUser($user)->filterByDeleted(false)->filterByLastEditStep(array('min'=>4))->count();
@@ -68,7 +68,7 @@ function user_charts($app, $user, $key, $val) {
         'charts' => $charts,
         'bymonth' => nbChartsByMonth($user),
         'byvis' => nbChartsByType($user),
-        'bylayout' => nbChartsByLayout($user),
+        // 'bylayout' => nbChartsByLayout($user),
         'bystatus' => nbChartsByStatus($user),
         'key' => $key,
         'val' => $val,
