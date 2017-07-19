@@ -168,11 +168,13 @@ $app->put('/folders/dir/:type/(:path+/|):dirname/?', function($type, $path, $dir
         // does path exists? ("" is ok, too)
         $pv = verify_path($type, $path, $user_id, $root_id);
         if ($pv['verified']) {
-            // FIXME: If one name is used in several subdirs this is ambigous!
-            if (empty($base_query->filterByUserId($user_id)->findOneByFolderName($dirname))) {
+            // We need a fresh base_query here! Don't ask me why, but we do. (tested)
+            $base_query = get_folder_base_query($type);
+            $parent_id = $pv['pid'];
+            if (empty($base_query->filterByUserId($user_id)->filterByParentId($parent_id)->findOneByFolderName($dirname))) {
                 // Does not exist → create it!
                 $new_folder = new UserFolder();
-                $new_folder->setUserId($user_id)->setFolderName($dirname)->setParentId($pv['pid'])->save();
+                $new_folder->setUserId($user_id)->setFolderName($dirname)->setParentId($parent_id)->save();
             }
             // does exists → that's ok, too
             ok();
