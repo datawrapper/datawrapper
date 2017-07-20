@@ -109,13 +109,12 @@ $app->get('/folders/chart/:type/(:path+|)/?', function($type, $path = false) use
 
     if ($user->isLoggedIn()) {
         $base_query = get_folder_base_query($type);
+        if (!$base_query) return;
 
         if (!$path) {
             error('no-path', 'Will not list charts in root - use /api/charts.');
             return;
         }
-
-        if (!$base_query) return;
 
         $user_id = $user->getId();
         $root_id = $base_query->filterByUserId($user_id)->findOneByParentId(0)->getUfId();
@@ -146,13 +145,13 @@ $app->get('/folders/chart/:type/(:path+|)/?', function($type, $path = false) use
 });
 
 
- /**
-  * create a new folder
-  *
-  * @param type the type of folder which should be created
-  * @param path the absolue path where the directory should be created
-  * @param dirname the name of the directory to be created
-  */
+/**
+ * create a new folder
+ *
+ * @param type the type of folder which should be created
+ * @param path the absolue path where the directory should be created
+ * @param dirname the name of the directory to be created
+ */
 $app->put('/folders/dir/:type/(:path+/|):dirname/?', function($type, $path, $dirname) use ($app){
     disable_cache($app);
     $user = DatawrapperSession::getUser();
@@ -184,6 +183,60 @@ $app->put('/folders/dir/:type/(:path+/|):dirname/?', function($type, $path, $dir
             }
             // does exists → that's ok, too
             ok();
+            return;
+        }
+        error('no-such-path', 'Path does not exist.');
+    } else {
+        error('access-denied', 'User is not logged in.');
+    }
+});
+
+function list_subdirs($type, $user_id, $parent_id) {
+    $base_query = get_folder_base_query($type);
+    $subdirs = $base_query->filterByUserId($user_id)->findByParentId($parent_id);
+
+    var_export($subdirs);
+
+    // if (empty($subdirs))
+        return array();
+
+    $mapped = array_map(function($dir) use ($type, $user_id) {
+        $base_query = get_folder_base_query($type);
+        if ($type == 'user') {
+            $dir_id = $base_query->filterByUserId($user_id)->findByParentId($dir->getUfId());
+        } else {
+            $dir_id = $base_query->filterByUserId($user_id)->findByParentId($dir->getOfId());
+        }
+        return list_subdirs($type, $user_id, $dir_id);
+    }, (array) $subdirs);
+
+    return $mapped;
+}
+
+/**
+ * list all subdirectorys
+ * 
+ * @param type the type of folder which should be listed
+ * @param path the startding point in the dir tree
+ */ 
+$app->get('/folders/dir/:type/(:path+|)/?', function($type, $path = []) use ($app) {
+    disable_cache($app);
+    $user = DatawrapperSession::getUser();
+
+    if ($user->isLoggedIn()) {
+        $base_query = get_folder_base_query($type);
+        if (!$base_query) return;
+
+        $user_id = $user->getId();
+        $folders = $base_query->findByUserId($user_id);
+
+        // find root
+        $root_id = $base_query->filterByUserId($user_id)->findOneByParentId(0)->getUfId();
+
+        // does path exists? ("" is ok, too)
+        $pv = verify_path($type, $path, $user_id, $root_id);
+        if ($pv['verified']) {
+            ok(list_subdirs($type, $user_id, $pv['pid']));
             return;
         }
         error('no-such-path', 'Path does not exist.');
