@@ -104,11 +104,17 @@ $app->put('/folders/chart/:type/:chart_id/:path+', function($type, $chart_id, $p
  * @param type the type of folder
  * @param path the destination folder
  */
-$app->get('/folders/chart/:type/:path+/?', function($type, $path) use ($app) {
+$app->get('/folders/chart/:type/(:path+|)/?', function($type, $path = false) use ($app) {
     $user = DatawrapperSession::getUser();
 
     if ($user->isLoggedIn()) {
         $base_query = get_folder_base_query($type);
+
+        if (!$path) {
+            error('no-path', 'Will not list charts in root - use /api/charts.');
+            return;
+        }
+
         if (!$base_query) return;
 
         $user_id = $user->getId();
