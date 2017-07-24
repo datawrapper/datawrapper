@@ -1,11 +1,12 @@
 <?php
 
-function get_folder_base_query($type) {
+function get_folder_base_query($type, $user_id, $org_id = false) {
     switch ($type) {
     case 'user':
-        return UserFolderQuery::create();
+        return FolderQuery::create()->filterByUserId($user_id);
     case 'organization':
-        return OrganizationFolderQuery::create();
+        // unimplmented
+        return false;
     default:
         error('no-such-folder-type', "We don't have that type of folder(, yet?)");
         return false;
@@ -14,7 +15,7 @@ function get_folder_base_query($type) {
 
 // you should have verified $type is usable before calling this!
 function verify_path($type, $path, $user_id, $parent_id) {
-    $base_query = get_folder_base_query($type);
+    $base_query = get_folder_base_query($type, $user_id);
     $segment = array_shift($path);
     if (empty($segment)) {
         return array(
@@ -23,12 +24,12 @@ function verify_path($type, $path, $user_id, $parent_id) {
         );
     }
 
-    $db_seg = $base_query->filterByUserId($user_id)->filterByParentId($parent_id)->findOneByFolderName($segment);
+    $db_seg = $base_query->filterByParentId($parent_id)->findOneByFolderName($segment);
     if (empty($db_seg)) {
         return array('verified' => false);
     }
 
-    return verify_path($type, $path, $user_id, $db_seg->getUfId());
+    return verify_path($type, $path, $user_id, $db_seg->getFolderId());
 }
 
 
@@ -157,28 +158,28 @@ $app->put('/folders/dir/:type/(:path+/|):dirname/?', function($type, $path, $dir
     $user = DatawrapperSession::getUser();
 
     if ($user->isLoggedIn()) {
-        $base_query = get_folder_base_query($type);
+        $user_id = $user->getId();
+        $base_query = get_folder_base_query($type, $user_id);
         if (!$base_query) return;
 
-        $user_id = $user->getId();
-        $folders = $base_query->findByUserId($user_id);
+        $folders = $base_query->find();
         // Does the user have a root folder?
         if ($folders->count() == 0) {
-            $rootfolder = new UserFolder();
-            $rootfolder->setUserId($user_id)->setFolderName('ROOT')->setParentId(0)->save();
+            $rootfolder = new Folder();
+            $rootfolder->setUserId($user_id)->setFolderName('ROOT')->save();
         }
         // find root
-        $root_id = $base_query->filterByUserId($user_id)->findOneByParentId(0)->getUfId();
+        $root_id = $base_query->where('parent_id is NULL')->findOne()->getFolderId();
 
         // does path exists? ("" is ok, too)
         $pv = verify_path($type, $path, $user_id, $root_id);
         if ($pv['verified']) {
             // We need a fresh base_query here! Don't ask me why, but we do. (tested)
-            $base_query = get_folder_base_query($type);
+            $base_query = get_folder_base_query($type, $user_id);
             $parent_id = $pv['pid'];
-            if (empty($base_query->filterByUserId($user_id)->filterByParentId($parent_id)->findOneByFolderName($dirname))) {
+            if (empty($base_query->filterByParentId($parent_id)->findOneByFolderName($dirname))) {
                 // Does not exist → create it!
-                $new_folder = new UserFolder();
+                $new_folder = new Folder();
                 $new_folder->setUserId($user_id)->setFolderName($dirname)->setParentId($parent_id)->save();
             }
             // does exists → that's ok, too
