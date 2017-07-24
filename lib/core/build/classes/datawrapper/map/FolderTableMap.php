@@ -39,10 +39,10 @@ class FolderTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('folder_id', 'FolderId', 'INTEGER', true, null, null);
-        $this->addForeignPrimaryKey('parent_id', 'ParentId', 'INTEGER' , 'folder', 'folder_id', true, null, null);
+        $this->addForeignKey('parent_id', 'ParentId', 'INTEGER', 'folder', 'folder_id', false, null, null);
         $this->addColumn('folder_name', 'FolderName', 'VARCHAR', false, 128, null);
-        $this->addForeignKey('user_id', 'UserId', 'INTEGER', 'user', 'id', false, null, -1);
-        $this->addForeignKey('org_id', 'OrgId', 'VARCHAR', 'organization', 'id', false, 128, '');
+        $this->addForeignKey('user_id', 'UserId', 'INTEGER', 'user', 'id', false, null, null);
+        $this->addForeignKey('org_id', 'OrgId', 'VARCHAR', 'organization', 'id', false, 128, null);
         // validators
     } // initialize()
 

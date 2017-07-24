@@ -2544,9 +2544,7 @@ abstract class BaseChart extends BaseObject implements Persistent
     public function getFolder(PropelPDO $con = null, $doQuery = true)
     {
         if ($this->aFolder === null && ($this->in_folder !== null) && $doQuery) {
-            $this->aFolder = FolderQuery::create()
-                ->filterByChart($this) // here
-                ->findOne($con);
+            $this->aFolder = FolderQuery::create()->findPk($this->in_folder, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
                 to this object.  This level of coupling may, however, be

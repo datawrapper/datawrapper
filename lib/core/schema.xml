@@ -305,16 +305,16 @@
       <parameter name="Charset" value="utf8"/>
     </vendor>
     <column name="folder_id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
-    <column name="parent_id" type="integer" primaryKey="true" />
+    <column name="parent_id" type="integer" />
     <foreign-key foreignTable="folder">
       <reference local="parent_id" foreign="folder_id" />
     </foreign-key>
     <column name="folder_name" type="varchar" size="128" />
-    <column name="user_id" type="integer" default="-1"/>
+    <column name="user_id" type="integer" />
     <foreign-key foreignTable="user">
       <reference local="user_id" foreign="id" />
     </foreign-key>
-    <column name="org_id" type="varchar" size="128" default=""/>
+    <column name="org_id" type="varchar" size="128" />
     <foreign-key foreignTable="organization">
       <reference local="org_id" foreign="id" />
     </foreign-key>

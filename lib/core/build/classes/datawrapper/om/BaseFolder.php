@@ -49,14 +49,12 @@ abstract class BaseFolder extends BaseObject implements Persistent
 
     /**
      * The value for the user_id field.
-     * Note: this column has a database default value of: -1
      * @var        int
      */
     protected $user_id;
 
     /**
      * The value for the org_id field.
-     * Note: this column has a database default value of: ''
      * @var        string
      */
     protected $org_id;
@@ -119,28 +117,6 @@ abstract class BaseFolder extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $foldersRelatedByFolderIdScheduledForDeletion = null;
-
-    /**
-     * Applies default values to this object.
-     * This method should be called from the object's constructor (or
-     * equivalent initialization method).
-     * @see        __construct()
-     */
-    public function applyDefaultValues()
-    {
-        $this->user_id = -1;
-        $this->org_id = '';
-    }
-
-    /**
-     * Initializes internal state of BaseFolder object.
-     * @see        applyDefaults()
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->applyDefaultValues();
-    }
 
     /**
      * Get the [folder_id] column value.
@@ -319,14 +295,6 @@ abstract class BaseFolder extends BaseObject implements Persistent
      */
     public function hasOnlyDefaultValues()
     {
-            if ($this->user_id !== -1) {
-                return false;
-            }
-
-            if ($this->org_id !== '') {
-                return false;
-            }
-
         // otherwise, everything was equal, so return true
         return true;
     } // hasOnlyDefaultValues()
@@ -610,9 +578,10 @@ abstract class BaseFolder extends BaseObject implements Persistent
 
             if ($this->foldersRelatedByFolderIdScheduledForDeletion !== null) {
                 if (!$this->foldersRelatedByFolderIdScheduledForDeletion->isEmpty()) {
-                    FolderQuery::create()
-                        ->filterByPrimaryKeys($this->foldersRelatedByFolderIdScheduledForDeletion->getPrimaryKeys(false))
-                        ->delete($con);
+                    foreach ($this->foldersRelatedByFolderIdScheduledForDeletion as $folderRelatedByFolderId) {
+                        // need to save related object because we set the relation to null
+                        $folderRelatedByFolderId->save($con);
+                    }
                     $this->foldersRelatedByFolderIdScheduledForDeletion = null;
                 }
             }
@@ -904,10 +873,10 @@ abstract class BaseFolder extends BaseObject implements Persistent
      */
     public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
-        if (isset($alreadyDumpedObjects['Folder'][serialize($this->getPrimaryKey())])) {
+        if (isset($alreadyDumpedObjects['Folder'][$this->getPrimaryKey()])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['Folder'][serialize($this->getPrimaryKey())] = true;
+        $alreadyDumpedObjects['Folder'][$this->getPrimaryKey()] = true;
         $keys = FolderPeer::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getFolderId(),
@@ -1042,35 +1011,28 @@ abstract class BaseFolder extends BaseObject implements Persistent
     {
         $criteria = new Criteria(FolderPeer::DATABASE_NAME);
         $criteria->add(FolderPeer::FOLDER_ID, $this->folder_id);
-        $criteria->add(FolderPeer::PARENT_ID, $this->parent_id);
 
         return $criteria;
     }
 
     /**
-     * Returns the composite primary key for this object.
-     * The array elements will be in same order as specified in XML.
-     * @return array
+     * Returns the primary key for this object (row).
+     * @return int
      */
     public function getPrimaryKey()
     {
-        $pks = array();
-        $pks[0] = $this->getFolderId();
-        $pks[1] = $this->getParentId();
-
-        return $pks;
+        return $this->getFolderId();
     }
 
     /**
-     * Set the [composite] primary key.
+     * Generic method to set the primary key (folder_id column).
      *
-     * @param array $keys The elements of the composite key (order must match the order in XML file).
+     * @param  int $key Primary key.
      * @return void
      */
-    public function setPrimaryKey($keys)
+    public function setPrimaryKey($key)
     {
-        $this->setFolderId($keys[0]);
-        $this->setParentId($keys[1]);
+        $this->setFolderId($key);
     }
 
     /**
@@ -1080,7 +1042,7 @@ abstract class BaseFolder extends BaseObject implements Persistent
     public function isPrimaryKeyNull()
     {
 
-        return (null === $this->getFolderId()) && (null === $this->getParentId());
+        return null === $this->getFolderId();
     }
 
     /**
@@ -1209,9 +1171,7 @@ abstract class BaseFolder extends BaseObject implements Persistent
     public function getFolderRelatedByParentId(PropelPDO $con = null, $doQuery = true)
     {
         if ($this->aFolderRelatedByParentId === null && ($this->parent_id !== null) && $doQuery) {
-            $this->aFolderRelatedByParentId = FolderQuery::create()
-                ->filterByFolderRelatedByFolderId($this) // here
-                ->findOne($con);
+            $this->aFolderRelatedByParentId = FolderQuery::create()->findPk($this->parent_id, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
                 to this object.  This level of coupling may, however, be
@@ -1234,7 +1194,7 @@ abstract class BaseFolder extends BaseObject implements Persistent
     public function setUser(User $v = null)
     {
         if ($v === null) {
-            $this->setUserId(-1);
+            $this->setUserId(NULL);
         } else {
             $this->setUserId($v->getId());
         }
@@ -1286,7 +1246,7 @@ abstract class BaseFolder extends BaseObject implements Persistent
     public function setOrganization(Organization $v = null)
     {
         if ($v === null) {
-            $this->setOrgId('');
+            $this->setOrgId(NULL);
         } else {
             $this->setOrgId($v->getId());
         }
@@ -1851,7 +1811,7 @@ abstract class BaseFolder extends BaseObject implements Persistent
                 $this->foldersRelatedByFolderIdScheduledForDeletion = clone $this->collFoldersRelatedByFolderId;
                 $this->foldersRelatedByFolderIdScheduledForDeletion->clear();
             }
-            $this->foldersRelatedByFolderIdScheduledForDeletion[]= clone $folderRelatedByFolderId;
+            $this->foldersRelatedByFolderIdScheduledForDeletion[]= $folderRelatedByFolderId;
             $folderRelatedByFolderId->setFolderRelatedByParentId(null);
         }
 
@@ -1922,7 +1882,6 @@ abstract class BaseFolder extends BaseObject implements Persistent
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
         $this->clearAllReferences();
-        $this->applyDefaultValues();
         $this->resetModified();
         $this->setNew(true);
         $this->setDeleted(false);

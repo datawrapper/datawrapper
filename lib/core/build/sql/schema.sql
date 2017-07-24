@@ -397,11 +397,11 @@ DROP TABLE IF EXISTS `folder`;
 CREATE TABLE `folder`
 (
     `folder_id` INTEGER NOT NULL AUTO_INCREMENT,
-    `parent_id` INTEGER NOT NULL,
+    `parent_id` INTEGER,
     `folder_name` VARCHAR(128),
-    `user_id` INTEGER DEFAULT -1,
-    `org_id` VARCHAR(128) DEFAULT '',
-    PRIMARY KEY (`folder_id`,`parent_id`),
+    `user_id` INTEGER,
+    `org_id` VARCHAR(128),
+    PRIMARY KEY (`folder_id`),
     INDEX `folder_FI_1` (`parent_id`),
     INDEX `folder_FI_2` (`user_id`),
     INDEX `folder_FI_3` (`org_id`),
