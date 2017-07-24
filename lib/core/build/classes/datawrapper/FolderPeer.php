@@ -3,7 +3,7 @@
 
 
 /**
- * Skeleton subclass for performing query and update operations on the 'user_folder' table.
+ * Skeleton subclass for performing query and update operations on the 'folder' table.
  *
  *
  *
@@ -13,6 +13,6 @@
  *
  * @package    propel.generator.datawrapper
  */
-class UserFolderPeer extends BaseUserFolderPeer
+class FolderPeer extends BaseFolderPeer
 {
 }

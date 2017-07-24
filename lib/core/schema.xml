@@ -27,15 +27,19 @@
     <column name="public_version" type="integer" default="0" />
     <column name="organization_id" type="varchar" size="128" required="false" />
     <foreign-key foreignTable="organization">
-      <reference local="organization_id" foreign="id"/>
+      <reference local="organization_id" foreign="id" />
     </foreign-key>
     <column name="forked_from" type="varchar" size="5" required="false" />
     <foreign-key foreignTable="chart">
-      <reference local="forked_from" foreign="id"/>
+      <reference local="forked_from" foreign="id" />
     </foreign-key>
     <column name="external_data" type="varchar" size="255" required="false" />
     <column name="forkable" type="boolean" default="false" />
     <column name="is_fork" type="boolean" default="false" />
+    <column name="in_folder" type="integer" default="-1" />
+    <foreign-key foreignTable="folder">
+      <reference local="in_folder" foreign="folder_id" />
+    </foreign-key>
   </table>
 
   <table name="user" phpName="User">
@@ -295,60 +299,24 @@
     </foreign-key>
   </table>
 
-  <table name="user_folder">
+  <table name="folder">
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
       <parameter name="Charset" value="utf8"/>
     </vendor>
-    <column name="uf_id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
-    <column name="user_id" type="integer" />
+    <column name="folder_id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+    <column name="parent_id" type="integer" primaryKey="true" />
+    <foreign-key foreignTable="folder">
+      <reference local="parent_id" foreign="folder_id" />
+    </foreign-key>
+    <column name="folder_name" type="varchar" size="128" />
+    <column name="user_id" type="integer" default="-1"/>
     <foreign-key foreignTable="user">
       <reference local="user_id" foreign="id" />
     </foreign-key>
-    <column name="folder_name" type="varchar" size="128" />
-    <column name="parent_id" type="integer" primaryKey="true" />
-    <index>
-      <index-column name="parent_id" />
-    </index>
-  </table>
-
-  <table name="organization_folder">
-    <vendor type="mysql">
-      <parameter name="Engine" value="InnoDB"/>
-      <parameter name="Charset" value="utf8"/>
-    </vendor>
-    <column name="of_id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
-    <column name="org_id" type="varchar" size="128" />
+    <column name="org_id" type="varchar" size="128" default=""/>
     <foreign-key foreignTable="organization">
       <reference local="org_id" foreign="id" />
     </foreign-key>
-    <column name="folder_name" type="varchar" size="128" />
-    <column name="parent_id" type="integer" primaryKey="true" />
-    <index>
-      <index-column name="parent_id" />
-    </index>
   </table>
-
-  <!-- chart <-> folder map -->
-  <table name="chart_folder" isCrossRef="true">
-    <vendor type="mysql">
-      <parameter name="Engine" value="InnoDB"/>
-      <parameter name="Charset" value="utf8"/>
-    </vendor>
-    <!-- this id is useless, but needed to have a PRI_KEY that can be unique -->
-    <column name="map_id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
-    <column name="chart_id" type="varchar" size="5" />
-    <foreign-key foreignTable="chart">
-      <reference local="chart_id" foreign="id" />
-    </foreign-key>
-    <column name="usr_folder" type="integer" />
-    <foreign-key foreignTable="user_folder">
-      <reference local="usr_folder" foreign="uf_id" />
-    </foreign-key>
-    <column name="org_folder" type="integer" />
-    <foreign-key foreignTable="organization_folder">
-      <reference local="org_folder" foreign="of_id" />
-    </foreign-key>
-  </table>
-
 </database>
