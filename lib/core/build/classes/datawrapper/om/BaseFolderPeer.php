@@ -297,7 +297,7 @@ abstract class BaseFolderPeer
     {
         if (Propel::isInstancePoolingEnabled()) {
             if ($key === null) {
-                $key = serialize(array((string) $obj->getFolderId(), (string) $obj->getParentId()));
+                $key = (string) $obj->getFolderId();
             } // if key === null
             FolderPeer::$instances[$key] = $obj;
         }
@@ -320,10 +320,10 @@ abstract class BaseFolderPeer
     {
         if (Propel::isInstancePoolingEnabled() && $value !== null) {
             if (is_object($value) && $value instanceof Folder) {
-                $key = serialize(array((string) $value->getFolderId(), (string) $value->getParentId()));
-            } elseif (is_array($value) && count($value) === 2) {
+                $key = (string) $value->getFolderId();
+            } elseif (is_scalar($value)) {
                 // assume we've been passed a primary key
-                $key = serialize(array((string) $value[0], (string) $value[1]));
+                $key = (string) $value;
             } else {
                 $e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or Folder object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value,true)));
                 throw $e;
@@ -392,11 +392,11 @@ abstract class BaseFolderPeer
     public static function getPrimaryKeyHashFromRow($row, $startcol = 0)
     {
         // If the PK cannot be derived from the row, return null.
-        if ($row[$startcol] === null && $row[$startcol + 1] === null) {
+        if ($row[$startcol] === null) {
             return null;
         }
 
-        return serialize(array((string) $row[$startcol], (string) $row[$startcol + 1]));
+        return (string) $row[$startcol];
     }
 
     /**
@@ -411,7 +411,7 @@ abstract class BaseFolderPeer
     public static function getPrimaryKeyFromRow($row, $startcol = 0)
     {
 
-        return array((int) $row[$startcol], (int) $row[$startcol + 1]);
+        return (int) $row[$startcol];
     }
 
     /**
@@ -1360,14 +1360,6 @@ abstract class BaseFolderPeer
                 $selectCriteria->setPrimaryTableName(FolderPeer::TABLE_NAME);
             }
 
-            $comparison = $criteria->getComparison(FolderPeer::PARENT_ID);
-            $value = $criteria->remove(FolderPeer::PARENT_ID);
-            if ($value) {
-                $selectCriteria->add(FolderPeer::PARENT_ID, $value, $comparison);
-            } else {
-                $selectCriteria->setPrimaryTableName(FolderPeer::TABLE_NAME);
-            }
-
         } else { // $values is Folder object
             $criteria = $values->buildCriteria(); // gets full criteria
             $selectCriteria = $values->buildPkeyCriteria(); // gets criteria w/ primary key(s)
@@ -1442,18 +1434,10 @@ abstract class BaseFolderPeer
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
             $criteria = new Criteria(FolderPeer::DATABASE_NAME);
-            // primary key is composite; we therefore, expect
-            // the primary key passed to be an array of pkey values
-            if (count($values) == count($values, COUNT_RECURSIVE)) {
-                // array is not multi-dimensional
-                $values = array($values);
-            }
-            foreach ($values as $value) {
-                $criterion = $criteria->getNewCriterion(FolderPeer::FOLDER_ID, $value[0]);
-                $criterion->addAnd($criteria->getNewCriterion(FolderPeer::PARENT_ID, $value[1]));
-                $criteria->addOr($criterion);
-                // we can invalidate the cache for this single PK
-                FolderPeer::removeInstanceFromPool($value);
+            $criteria->add(FolderPeer::FOLDER_ID, (array) $values, Criteria::IN);
+            // invalidate the cache for this object(s)
+            foreach ((array) $values as $singleval) {
+                FolderPeer::removeInstanceFromPool($singleval);
             }
         }
 
@@ -1516,28 +1500,58 @@ abstract class BaseFolderPeer
     }
 
     /**
-     * Retrieve object using using composite pkey values.
-     * @param   int $folder_id
-     * @param   int $parent_id
-     * @param      PropelPDO $con
-     * @return   Folder
+     * Retrieve a single object by pkey.
+     *
+     * @param      int $pk the primary key.
+     * @param      PropelPDO $con the connection to use
+     * @return Folder
      */
-    public static function retrieveByPK($folder_id, $parent_id, PropelPDO $con = null) {
-        $_instancePoolKey = serialize(array((string) $folder_id, (string) $parent_id));
-         if (null !== ($obj = FolderPeer::getInstanceFromPool($_instancePoolKey))) {
-             return $obj;
+    public static function retrieveByPK($pk, PropelPDO $con = null)
+    {
+
+        if (null !== ($obj = FolderPeer::getInstanceFromPool((string) $pk))) {
+            return $obj;
         }
 
         if ($con === null) {
             $con = Propel::getConnection(FolderPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
+
         $criteria = new Criteria(FolderPeer::DATABASE_NAME);
-        $criteria->add(FolderPeer::FOLDER_ID, $folder_id);
-        $criteria->add(FolderPeer::PARENT_ID, $parent_id);
+        $criteria->add(FolderPeer::FOLDER_ID, $pk);
+
         $v = FolderPeer::doSelect($criteria, $con);
 
-        return !empty($v) ? $v[0] : null;
+        return !empty($v) > 0 ? $v[0] : null;
     }
+
+    /**
+     * Retrieve multiple objects by pkey.
+     *
+     * @param      array $pks List of primary keys
+     * @param      PropelPDO $con the connection to use
+     * @return Folder[]
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function retrieveByPKs($pks, PropelPDO $con = null)
+    {
+        if ($con === null) {
+            $con = Propel::getConnection(FolderPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $objs = null;
+        if (empty($pks)) {
+            $objs = array();
+        } else {
+            $criteria = new Criteria(FolderPeer::DATABASE_NAME);
+            $criteria->add(FolderPeer::FOLDER_ID, $pks, Criteria::IN);
+            $objs = FolderPeer::doSelect($criteria, $con);
+        }
+
+        return $objs;
+    }
+
 } // BaseFolderPeer
 
 // This is the static code needed to register the TableMap for this table with the main Propel class.

@@ -1342,7 +1342,7 @@ abstract class BaseChartQuery extends ModelCriteria
             }
 
             return $this
-                ->addUsingAlias(ChartPeer::IN_FOLDER, $folder->toKeyValue('FolderId', 'FolderId'), $comparison);
+                ->addUsingAlias(ChartPeer::IN_FOLDER, $folder->toKeyValue('PrimaryKey', 'FolderId'), $comparison);
         } else {
             throw new PropelException('filterByFolder() only accepts arguments of type Folder or PropelCollection');
         }

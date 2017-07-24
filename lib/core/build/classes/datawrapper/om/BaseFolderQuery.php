@@ -45,7 +45,6 @@
  * @method Folder findOne(PropelPDO $con = null) Return the first Folder matching the query
  * @method Folder findOneOrCreate(PropelPDO $con = null) Return the first Folder matching the query, or a new Folder object populated from the query conditions when no match is found
  *
- * @method Folder findOneByFolderId(int $folder_id) Return the first Folder filtered by the folder_id column
  * @method Folder findOneByParentId(int $parent_id) Return the first Folder filtered by the parent_id column
  * @method Folder findOneByFolderName(string $folder_name) Return the first Folder filtered by the folder_name column
  * @method Folder findOneByUserId(int $user_id) Return the first Folder filtered by the user_id column
@@ -103,11 +102,10 @@ abstract class BaseFolderQuery extends ModelCriteria
      * Go fast if the query is untouched.
      *
      * <code>
-     * $obj = $c->findPk(array(12, 34), $con);
+     * $obj  = $c->findPk(12, $con);
      * </code>
      *
-     * @param array $key Primary key to use for the query
-                         A Primary key composition: [$folder_id, $parent_id]
+     * @param mixed $key Primary key to use for the query
      * @param     PropelPDO $con an optional connection object
      *
      * @return   Folder|Folder[]|mixed the result, formatted by the current formatter
@@ -117,7 +115,7 @@ abstract class BaseFolderQuery extends ModelCriteria
         if ($key === null) {
             return null;
         }
-        if ((null !== ($obj = FolderPeer::getInstanceFromPool(serialize(array((string) $key[0], (string) $key[1]))))) && !$this->formatter) {
+        if ((null !== ($obj = FolderPeer::getInstanceFromPool((string) $key))) && !$this->formatter) {
             // the object is alredy in the instance pool
             return $obj;
         }
@@ -135,6 +133,20 @@ abstract class BaseFolderQuery extends ModelCriteria
     }
 
     /**
+     * Alias of findPk to use instance pooling
+     *
+     * @param     mixed $key Primary key to use for the query
+     * @param     PropelPDO $con A connection object
+     *
+     * @return                 Folder A model object, or null if the key is not found
+     * @throws PropelException
+     */
+     public function findOneByFolderId($key, $con = null)
+     {
+        return $this->findPk($key, $con);
+     }
+
+    /**
      * Find object by primary key using raw SQL to go fast.
      * Bypass doSelect() and the object formatter by using generated code.
      *
@@ -146,11 +158,10 @@ abstract class BaseFolderQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `folder_id`, `parent_id`, `folder_name`, `user_id`, `org_id` FROM `folder` WHERE `folder_id` = :p0 AND `parent_id` = :p1';
+        $sql = 'SELECT `folder_id`, `parent_id`, `folder_name`, `user_id`, `org_id` FROM `folder` WHERE `folder_id` = :p0';
         try {
             $stmt = $con->prepare($sql);
-            $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);
-            $stmt->bindValue(':p1', $key[1], PDO::PARAM_INT);
+            $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
             Propel::log($e->getMessage(), Propel::LOG_ERR);
@@ -160,7 +171,7 @@ abstract class BaseFolderQuery extends ModelCriteria
         if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
             $obj = new Folder();
             $obj->hydrate($row);
-            FolderPeer::addInstanceToPool($obj, serialize(array((string) $key[0], (string) $key[1])));
+            FolderPeer::addInstanceToPool($obj, (string) $key);
         }
         $stmt->closeCursor();
 
@@ -189,7 +200,7 @@ abstract class BaseFolderQuery extends ModelCriteria
     /**
      * Find objects by primary key
      * <code>
-     * $objs = $c->findPks(array(array(12, 56), array(832, 123), array(123, 456)), $con);
+     * $objs = $c->findPks(array(12, 56, 832), $con);
      * </code>
      * @param     array $keys Primary keys to use for the query
      * @param     PropelPDO $con an optional connection object
@@ -219,10 +230,8 @@ abstract class BaseFolderQuery extends ModelCriteria
      */
     public function filterByPrimaryKey($key)
     {
-        $this->addUsingAlias(FolderPeer::FOLDER_ID, $key[0], Criteria::EQUAL);
-        $this->addUsingAlias(FolderPeer::PARENT_ID, $key[1], Criteria::EQUAL);
 
-        return $this;
+        return $this->addUsingAlias(FolderPeer::FOLDER_ID, $key, Criteria::EQUAL);
     }
 
     /**
@@ -234,17 +243,8 @@ abstract class BaseFolderQuery extends ModelCriteria
      */
     public function filterByPrimaryKeys($keys)
     {
-        if (empty($keys)) {
-            return $this->add(null, '1<>1', Criteria::CUSTOM);
-        }
-        foreach ($keys as $key) {
-            $cton0 = $this->getNewCriterion(FolderPeer::FOLDER_ID, $key[0], Criteria::EQUAL);
-            $cton1 = $this->getNewCriterion(FolderPeer::PARENT_ID, $key[1], Criteria::EQUAL);
-            $cton0->addAnd($cton1);
-            $this->addOr($cton0);
-        }
 
-        return $this;
+        return $this->addUsingAlias(FolderPeer::FOLDER_ID, $keys, Criteria::IN);
     }
 
     /**
@@ -455,7 +455,7 @@ abstract class BaseFolderQuery extends ModelCriteria
             }
 
             return $this
-                ->addUsingAlias(FolderPeer::PARENT_ID, $folder->toKeyValue('FolderId', 'FolderId'), $comparison);
+                ->addUsingAlias(FolderPeer::PARENT_ID, $folder->toKeyValue('PrimaryKey', 'FolderId'), $comparison);
         } else {
             throw new PropelException('filterByFolderRelatedByParentId() only accepts arguments of type Folder or PropelCollection');
         }
@@ -469,7 +469,7 @@ abstract class BaseFolderQuery extends ModelCriteria
      *
      * @return FolderQuery The current query, for fluid interface
      */
-    public function joinFolderRelatedByParentId($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinFolderRelatedByParentId($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('FolderRelatedByParentId');
@@ -504,7 +504,7 @@ abstract class BaseFolderQuery extends ModelCriteria
      *
      * @return   FolderQuery A secondary query class using the current class as primary query
      */
-    public function useFolderRelatedByParentIdQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function useFolderRelatedByParentIdQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         return $this
             ->joinFolderRelatedByParentId($relationAlias, $joinType)
@@ -769,7 +769,7 @@ abstract class BaseFolderQuery extends ModelCriteria
      *
      * @return FolderQuery The current query, for fluid interface
      */
-    public function joinFolderRelatedByFolderId($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinFolderRelatedByFolderId($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('FolderRelatedByFolderId');
@@ -804,7 +804,7 @@ abstract class BaseFolderQuery extends ModelCriteria
      *
      * @return   FolderQuery A secondary query class using the current class as primary query
      */
-    public function useFolderRelatedByFolderIdQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function useFolderRelatedByFolderIdQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         return $this
             ->joinFolderRelatedByFolderId($relationAlias, $joinType)
@@ -821,9 +821,7 @@ abstract class BaseFolderQuery extends ModelCriteria
     public function prune($folder = null)
     {
         if ($folder) {
-            $this->addCond('pruneCond0', $this->getAliasedColName(FolderPeer::FOLDER_ID), $folder->getFolderId(), Criteria::NOT_EQUAL);
-            $this->addCond('pruneCond1', $this->getAliasedColName(FolderPeer::PARENT_ID), $folder->getParentId(), Criteria::NOT_EQUAL);
-            $this->combine(array('pruneCond0', 'pruneCond1'), Criteria::LOGICAL_OR);
+            $this->addUsingAlias(FolderPeer::FOLDER_ID, $folder->getFolderId(), Criteria::NOT_EQUAL);
         }
 
         return $this;
