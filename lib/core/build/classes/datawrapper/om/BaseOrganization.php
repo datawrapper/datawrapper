@@ -105,10 +105,10 @@ abstract class BaseOrganization extends BaseObject implements Persistent
     protected $collOrganizationThemesPartial;
 
     /**
-     * @var        PropelObjectCollection|OrganizationFolder[] Collection to store aggregation of OrganizationFolder objects.
+     * @var        PropelObjectCollection|Folder[] Collection to store aggregation of Folder objects.
      */
-    protected $collOrganizationFolders;
-    protected $collOrganizationFoldersPartial;
+    protected $collFolders;
+    protected $collFoldersPartial;
 
     /**
      * @var        PropelObjectCollection|User[] Collection to store aggregation of User objects.
@@ -208,7 +208,7 @@ abstract class BaseOrganization extends BaseObject implements Persistent
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
      */
-    protected $organizationFoldersScheduledForDeletion = null;
+    protected $foldersScheduledForDeletion = null;
 
     /**
      * Applies default values to this object.
@@ -629,7 +629,7 @@ abstract class BaseOrganization extends BaseObject implements Persistent
 
             $this->collOrganizationThemes = null;
 
-            $this->collOrganizationFolders = null;
+            $this->collFolders = null;
 
             $this->collUsers = null;
             $this->collPlugins = null;
@@ -949,18 +949,18 @@ abstract class BaseOrganization extends BaseObject implements Persistent
                 }
             }
 
-            if ($this->organizationFoldersScheduledForDeletion !== null) {
-                if (!$this->organizationFoldersScheduledForDeletion->isEmpty()) {
-                    foreach ($this->organizationFoldersScheduledForDeletion as $organizationFolder) {
+            if ($this->foldersScheduledForDeletion !== null) {
+                if (!$this->foldersScheduledForDeletion->isEmpty()) {
+                    foreach ($this->foldersScheduledForDeletion as $folder) {
                         // need to save related object because we set the relation to null
-                        $organizationFolder->save($con);
+                        $folder->save($con);
                     }
-                    $this->organizationFoldersScheduledForDeletion = null;
+                    $this->foldersScheduledForDeletion = null;
                 }
             }
 
-            if ($this->collOrganizationFolders !== null) {
-                foreach ($this->collOrganizationFolders as $referrerFK) {
+            if ($this->collFolders !== null) {
+                foreach ($this->collFolders as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -1174,8 +1174,8 @@ abstract class BaseOrganization extends BaseObject implements Persistent
                     }
                 }
 
-                if ($this->collOrganizationFolders !== null) {
-                    foreach ($this->collOrganizationFolders as $referrerFK) {
+                if ($this->collFolders !== null) {
+                    foreach ($this->collFolders as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
                             $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
                         }
@@ -1291,8 +1291,8 @@ abstract class BaseOrganization extends BaseObject implements Persistent
             if (null !== $this->collOrganizationThemes) {
                 $result['OrganizationThemes'] = $this->collOrganizationThemes->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
-            if (null !== $this->collOrganizationFolders) {
-                $result['OrganizationFolders'] = $this->collOrganizationFolders->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            if (null !== $this->collFolders) {
+                $result['Folders'] = $this->collFolders->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -1505,9 +1505,9 @@ abstract class BaseOrganization extends BaseObject implements Persistent
                 }
             }
 
-            foreach ($this->getOrganizationFolders() as $relObj) {
+            foreach ($this->getFolders() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addOrganizationFolder($relObj->copy($deepCopy));
+                    $copyObj->addFolder($relObj->copy($deepCopy));
                 }
             }
 
@@ -1587,8 +1587,8 @@ abstract class BaseOrganization extends BaseObject implements Persistent
         if ('OrganizationTheme' == $relationName) {
             $this->initOrganizationThemes();
         }
-        if ('OrganizationFolder' == $relationName) {
-            $this->initOrganizationFolders();
+        if ('Folder' == $relationName) {
+            $this->initFolders();
         }
     }
 
@@ -1856,6 +1856,31 @@ abstract class BaseOrganization extends BaseObject implements Persistent
     {
         $query = ChartQuery::create(null, $criteria);
         $query->joinWith('ChartRelatedByForkedFrom', $join_behavior);
+
+        return $this->getCharts($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Organization is new, it will return
+     * an empty collection; or if this Organization has previously
+     * been saved, it will retrieve related Charts from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Organization.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Chart[] List of Chart objects
+     */
+    public function getChartsJoinFolder($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChartQuery::create(null, $criteria);
+        $query->joinWith('Folder', $join_behavior);
 
         return $this->getCharts($query, $con);
     }
@@ -2833,36 +2858,36 @@ abstract class BaseOrganization extends BaseObject implements Persistent
     }
 
     /**
-     * Clears out the collOrganizationFolders collection
+     * Clears out the collFolders collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
      * @return Organization The current object (for fluent API support)
-     * @see        addOrganizationFolders()
+     * @see        addFolders()
      */
-    public function clearOrganizationFolders()
+    public function clearFolders()
     {
-        $this->collOrganizationFolders = null; // important to set this to null since that means it is uninitialized
-        $this->collOrganizationFoldersPartial = null;
+        $this->collFolders = null; // important to set this to null since that means it is uninitialized
+        $this->collFoldersPartial = null;
 
         return $this;
     }
 
     /**
-     * reset is the collOrganizationFolders collection loaded partially
+     * reset is the collFolders collection loaded partially
      *
      * @return void
      */
-    public function resetPartialOrganizationFolders($v = true)
+    public function resetPartialFolders($v = true)
     {
-        $this->collOrganizationFoldersPartial = $v;
+        $this->collFoldersPartial = $v;
     }
 
     /**
-     * Initializes the collOrganizationFolders collection.
+     * Initializes the collFolders collection.
      *
-     * By default this just sets the collOrganizationFolders collection to an empty array (like clearcollOrganizationFolders());
+     * By default this just sets the collFolders collection to an empty array (like clearcollFolders());
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
@@ -2871,17 +2896,17 @@ abstract class BaseOrganization extends BaseObject implements Persistent
      *
      * @return void
      */
-    public function initOrganizationFolders($overrideExisting = true)
+    public function initFolders($overrideExisting = true)
     {
-        if (null !== $this->collOrganizationFolders && !$overrideExisting) {
+        if (null !== $this->collFolders && !$overrideExisting) {
             return;
         }
-        $this->collOrganizationFolders = new PropelObjectCollection();
-        $this->collOrganizationFolders->setModel('OrganizationFolder');
+        $this->collFolders = new PropelObjectCollection();
+        $this->collFolders->setModel('Folder');
     }
 
     /**
-     * Gets an array of OrganizationFolder objects which contain a foreign key that references this object.
+     * Gets an array of Folder objects which contain a foreign key that references this object.
      *
      * If the $criteria is not null, it is used to always fetch the results from the database.
      * Otherwise the results are fetched from the database the first time, then cached.
@@ -2891,105 +2916,105 @@ abstract class BaseOrganization extends BaseObject implements Persistent
      *
      * @param Criteria $criteria optional Criteria object to narrow the query
      * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|OrganizationFolder[] List of OrganizationFolder objects
+     * @return PropelObjectCollection|Folder[] List of Folder objects
      * @throws PropelException
      */
-    public function getOrganizationFolders($criteria = null, PropelPDO $con = null)
+    public function getFolders($criteria = null, PropelPDO $con = null)
     {
-        $partial = $this->collOrganizationFoldersPartial && !$this->isNew();
-        if (null === $this->collOrganizationFolders || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collOrganizationFolders) {
+        $partial = $this->collFoldersPartial && !$this->isNew();
+        if (null === $this->collFolders || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collFolders) {
                 // return empty collection
-                $this->initOrganizationFolders();
+                $this->initFolders();
             } else {
-                $collOrganizationFolders = OrganizationFolderQuery::create(null, $criteria)
+                $collFolders = FolderQuery::create(null, $criteria)
                     ->filterByOrganization($this)
                     ->find($con);
                 if (null !== $criteria) {
-                    if (false !== $this->collOrganizationFoldersPartial && count($collOrganizationFolders)) {
-                      $this->initOrganizationFolders(false);
+                    if (false !== $this->collFoldersPartial && count($collFolders)) {
+                      $this->initFolders(false);
 
-                      foreach($collOrganizationFolders as $obj) {
-                        if (false == $this->collOrganizationFolders->contains($obj)) {
-                          $this->collOrganizationFolders->append($obj);
+                      foreach($collFolders as $obj) {
+                        if (false == $this->collFolders->contains($obj)) {
+                          $this->collFolders->append($obj);
                         }
                       }
 
-                      $this->collOrganizationFoldersPartial = true;
+                      $this->collFoldersPartial = true;
                     }
 
-                    $collOrganizationFolders->getInternalIterator()->rewind();
-                    return $collOrganizationFolders;
+                    $collFolders->getInternalIterator()->rewind();
+                    return $collFolders;
                 }
 
-                if($partial && $this->collOrganizationFolders) {
-                    foreach($this->collOrganizationFolders as $obj) {
+                if($partial && $this->collFolders) {
+                    foreach($this->collFolders as $obj) {
                         if($obj->isNew()) {
-                            $collOrganizationFolders[] = $obj;
+                            $collFolders[] = $obj;
                         }
                     }
                 }
 
-                $this->collOrganizationFolders = $collOrganizationFolders;
-                $this->collOrganizationFoldersPartial = false;
+                $this->collFolders = $collFolders;
+                $this->collFoldersPartial = false;
             }
         }
 
-        return $this->collOrganizationFolders;
+        return $this->collFolders;
     }
 
     /**
-     * Sets a collection of OrganizationFolder objects related by a one-to-many relationship
+     * Sets a collection of Folder objects related by a one-to-many relationship
      * to the current object.
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param PropelCollection $organizationFolders A Propel collection.
+     * @param PropelCollection $folders A Propel collection.
      * @param PropelPDO $con Optional connection object
      * @return Organization The current object (for fluent API support)
      */
-    public function setOrganizationFolders(PropelCollection $organizationFolders, PropelPDO $con = null)
+    public function setFolders(PropelCollection $folders, PropelPDO $con = null)
     {
-        $organizationFoldersToDelete = $this->getOrganizationFolders(new Criteria(), $con)->diff($organizationFolders);
+        $foldersToDelete = $this->getFolders(new Criteria(), $con)->diff($folders);
 
-        $this->organizationFoldersScheduledForDeletion = unserialize(serialize($organizationFoldersToDelete));
+        $this->foldersScheduledForDeletion = unserialize(serialize($foldersToDelete));
 
-        foreach ($organizationFoldersToDelete as $organizationFolderRemoved) {
-            $organizationFolderRemoved->setOrganization(null);
+        foreach ($foldersToDelete as $folderRemoved) {
+            $folderRemoved->setOrganization(null);
         }
 
-        $this->collOrganizationFolders = null;
-        foreach ($organizationFolders as $organizationFolder) {
-            $this->addOrganizationFolder($organizationFolder);
+        $this->collFolders = null;
+        foreach ($folders as $folder) {
+            $this->addFolder($folder);
         }
 
-        $this->collOrganizationFolders = $organizationFolders;
-        $this->collOrganizationFoldersPartial = false;
+        $this->collFolders = $folders;
+        $this->collFoldersPartial = false;
 
         return $this;
     }
 
     /**
-     * Returns the number of related OrganizationFolder objects.
+     * Returns the number of related Folder objects.
      *
      * @param Criteria $criteria
      * @param boolean $distinct
      * @param PropelPDO $con
-     * @return int             Count of related OrganizationFolder objects.
+     * @return int             Count of related Folder objects.
      * @throws PropelException
      */
-    public function countOrganizationFolders(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    public function countFolders(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
     {
-        $partial = $this->collOrganizationFoldersPartial && !$this->isNew();
-        if (null === $this->collOrganizationFolders || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collOrganizationFolders) {
+        $partial = $this->collFoldersPartial && !$this->isNew();
+        if (null === $this->collFolders || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collFolders) {
                 return 0;
             }
 
             if($partial && !$criteria) {
-                return count($this->getOrganizationFolders());
+                return count($this->getFolders());
             }
-            $query = OrganizationFolderQuery::create(null, $criteria);
+            $query = FolderQuery::create(null, $criteria);
             if ($distinct) {
                 $query->distinct();
             }
@@ -2999,55 +3024,105 @@ abstract class BaseOrganization extends BaseObject implements Persistent
                 ->count($con);
         }
 
-        return count($this->collOrganizationFolders);
+        return count($this->collFolders);
     }
 
     /**
-     * Method called to associate a OrganizationFolder object to this object
-     * through the OrganizationFolder foreign key attribute.
+     * Method called to associate a Folder object to this object
+     * through the Folder foreign key attribute.
      *
-     * @param    OrganizationFolder $l OrganizationFolder
+     * @param    Folder $l Folder
      * @return Organization The current object (for fluent API support)
      */
-    public function addOrganizationFolder(OrganizationFolder $l)
+    public function addFolder(Folder $l)
     {
-        if ($this->collOrganizationFolders === null) {
-            $this->initOrganizationFolders();
-            $this->collOrganizationFoldersPartial = true;
+        if ($this->collFolders === null) {
+            $this->initFolders();
+            $this->collFoldersPartial = true;
         }
-        if (!in_array($l, $this->collOrganizationFolders->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddOrganizationFolder($l);
+        if (!in_array($l, $this->collFolders->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddFolder($l);
         }
 
         return $this;
     }
 
     /**
-     * @param	OrganizationFolder $organizationFolder The organizationFolder object to add.
+     * @param	Folder $folder The folder object to add.
      */
-    protected function doAddOrganizationFolder($organizationFolder)
+    protected function doAddFolder($folder)
     {
-        $this->collOrganizationFolders[]= $organizationFolder;
-        $organizationFolder->setOrganization($this);
+        $this->collFolders[]= $folder;
+        $folder->setOrganization($this);
     }
 
     /**
-     * @param	OrganizationFolder $organizationFolder The organizationFolder object to remove.
+     * @param	Folder $folder The folder object to remove.
      * @return Organization The current object (for fluent API support)
      */
-    public function removeOrganizationFolder($organizationFolder)
+    public function removeFolder($folder)
     {
-        if ($this->getOrganizationFolders()->contains($organizationFolder)) {
-            $this->collOrganizationFolders->remove($this->collOrganizationFolders->search($organizationFolder));
-            if (null === $this->organizationFoldersScheduledForDeletion) {
-                $this->organizationFoldersScheduledForDeletion = clone $this->collOrganizationFolders;
-                $this->organizationFoldersScheduledForDeletion->clear();
+        if ($this->getFolders()->contains($folder)) {
+            $this->collFolders->remove($this->collFolders->search($folder));
+            if (null === $this->foldersScheduledForDeletion) {
+                $this->foldersScheduledForDeletion = clone $this->collFolders;
+                $this->foldersScheduledForDeletion->clear();
             }
-            $this->organizationFoldersScheduledForDeletion[]= $organizationFolder;
-            $organizationFolder->setOrganization(null);
+            $this->foldersScheduledForDeletion[]= $folder;
+            $folder->setOrganization(null);
         }
 
         return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Organization is new, it will return
+     * an empty collection; or if this Organization has previously
+     * been saved, it will retrieve related Folders from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Organization.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Folder[] List of Folder objects
+     */
+    public function getFoldersJoinFolderRelatedByParentId($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = FolderQuery::create(null, $criteria);
+        $query->joinWith('FolderRelatedByParentId', $join_behavior);
+
+        return $this->getFolders($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Organization is new, it will return
+     * an empty collection; or if this Organization has previously
+     * been saved, it will retrieve related Folders from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Organization.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Folder[] List of Folder objects
+     */
+    public function getFoldersJoinUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = FolderQuery::create(null, $criteria);
+        $query->joinWith('User', $join_behavior);
+
+        return $this->getFolders($query, $con);
     }
 
     /**
@@ -3818,8 +3893,8 @@ abstract class BaseOrganization extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
-            if ($this->collOrganizationFolders) {
-                foreach ($this->collOrganizationFolders as $o) {
+            if ($this->collFolders) {
+                foreach ($this->collFolders as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
@@ -3867,10 +3942,10 @@ abstract class BaseOrganization extends BaseObject implements Persistent
             $this->collOrganizationThemes->clearIterator();
         }
         $this->collOrganizationThemes = null;
-        if ($this->collOrganizationFolders instanceof PropelCollection) {
-            $this->collOrganizationFolders->clearIterator();
+        if ($this->collFolders instanceof PropelCollection) {
+            $this->collFolders->clearIterator();
         }
-        $this->collOrganizationFolders = null;
+        $this->collFolders = null;
         if ($this->collUsers instanceof PropelCollection) {
             $this->collUsers->clearIterator();
         }

@@ -46,9 +46,9 @@
  * @method OrganizationQuery rightJoinOrganizationTheme($relationAlias = null) Adds a RIGHT JOIN clause to the query using the OrganizationTheme relation
  * @method OrganizationQuery innerJoinOrganizationTheme($relationAlias = null) Adds a INNER JOIN clause to the query using the OrganizationTheme relation
  *
- * @method OrganizationQuery leftJoinOrganizationFolder($relationAlias = null) Adds a LEFT JOIN clause to the query using the OrganizationFolder relation
- * @method OrganizationQuery rightJoinOrganizationFolder($relationAlias = null) Adds a RIGHT JOIN clause to the query using the OrganizationFolder relation
- * @method OrganizationQuery innerJoinOrganizationFolder($relationAlias = null) Adds a INNER JOIN clause to the query using the OrganizationFolder relation
+ * @method OrganizationQuery leftJoinFolder($relationAlias = null) Adds a LEFT JOIN clause to the query using the Folder relation
+ * @method OrganizationQuery rightJoinFolder($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Folder relation
+ * @method OrganizationQuery innerJoinFolder($relationAlias = null) Adds a INNER JOIN clause to the query using the Folder relation
  *
  * @method Organization findOne(PropelPDO $con = null) Return the first Organization matching the query
  * @method Organization findOneOrCreate(PropelPDO $con = null) Return the first Organization matching the query, or a new Organization object populated from the query conditions when no match is found
@@ -843,41 +843,41 @@ abstract class BaseOrganizationQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query by a related OrganizationFolder object
+     * Filter the query by a related Folder object
      *
-     * @param   OrganizationFolder|PropelObjectCollection $organizationFolder  the related object to use as filter
+     * @param   Folder|PropelObjectCollection $folder  the related object to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return                 OrganizationQuery The current query, for fluid interface
      * @throws PropelException - if the provided filter is invalid.
      */
-    public function filterByOrganizationFolder($organizationFolder, $comparison = null)
+    public function filterByFolder($folder, $comparison = null)
     {
-        if ($organizationFolder instanceof OrganizationFolder) {
+        if ($folder instanceof Folder) {
             return $this
-                ->addUsingAlias(OrganizationPeer::ID, $organizationFolder->getOrgId(), $comparison);
-        } elseif ($organizationFolder instanceof PropelObjectCollection) {
+                ->addUsingAlias(OrganizationPeer::ID, $folder->getOrgId(), $comparison);
+        } elseif ($folder instanceof PropelObjectCollection) {
             return $this
-                ->useOrganizationFolderQuery()
-                ->filterByPrimaryKeys($organizationFolder->getPrimaryKeys())
+                ->useFolderQuery()
+                ->filterByPrimaryKeys($folder->getPrimaryKeys())
                 ->endUse();
         } else {
-            throw new PropelException('filterByOrganizationFolder() only accepts arguments of type OrganizationFolder or PropelCollection');
+            throw new PropelException('filterByFolder() only accepts arguments of type Folder or PropelCollection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the OrganizationFolder relation
+     * Adds a JOIN clause to the query using the Folder relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return OrganizationQuery The current query, for fluid interface
      */
-    public function joinOrganizationFolder($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    public function joinFolder($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('OrganizationFolder');
+        $relationMap = $tableMap->getRelation('Folder');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -892,14 +892,14 @@ abstract class BaseOrganizationQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'OrganizationFolder');
+            $this->addJoinObject($join, 'Folder');
         }
 
         return $this;
     }
 
     /**
-     * Use the OrganizationFolder relation OrganizationFolder object
+     * Use the Folder relation Folder object
      *
      * @see       useQuery()
      *
@@ -907,13 +907,13 @@ abstract class BaseOrganizationQuery extends ModelCriteria
      *                                   to be used as main alias in the secondary query
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return   OrganizationFolderQuery A secondary query class using the current class as primary query
+     * @return   FolderQuery A secondary query class using the current class as primary query
      */
-    public function useOrganizationFolderQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    public function useFolderQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         return $this
-            ->joinOrganizationFolder($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'OrganizationFolder', 'OrganizationFolderQuery');
+            ->joinFolder($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Folder', 'FolderQuery');
     }
 
     /**

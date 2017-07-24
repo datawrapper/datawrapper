@@ -3,7 +3,7 @@
 
 
 /**
- * Skeleton subclass for performing query and update operations on the 'chart_folder' table.
+ * Skeleton subclass for representing a row from the 'folder' table.
  *
  *
  *
@@ -13,6 +13,6 @@
  *
  * @package    propel.generator.datawrapper
  */
-class ChartFolderPeer extends BaseChartFolderPeer
+class Folder extends BaseFolder
 {
 }

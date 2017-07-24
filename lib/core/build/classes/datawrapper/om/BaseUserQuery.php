@@ -64,9 +64,9 @@
  * @method UserQuery rightJoinUserTheme($relationAlias = null) Adds a RIGHT JOIN clause to the query using the UserTheme relation
  * @method UserQuery innerJoinUserTheme($relationAlias = null) Adds a INNER JOIN clause to the query using the UserTheme relation
  *
- * @method UserQuery leftJoinUserFolder($relationAlias = null) Adds a LEFT JOIN clause to the query using the UserFolder relation
- * @method UserQuery rightJoinUserFolder($relationAlias = null) Adds a RIGHT JOIN clause to the query using the UserFolder relation
- * @method UserQuery innerJoinUserFolder($relationAlias = null) Adds a INNER JOIN clause to the query using the UserFolder relation
+ * @method UserQuery leftJoinFolder($relationAlias = null) Adds a LEFT JOIN clause to the query using the Folder relation
+ * @method UserQuery rightJoinFolder($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Folder relation
+ * @method UserQuery innerJoinFolder($relationAlias = null) Adds a INNER JOIN clause to the query using the Folder relation
  *
  * @method User findOne(PropelPDO $con = null) Return the first User matching the query
  * @method User findOneOrCreate(PropelPDO $con = null) Return the first User matching the query, or a new User object populated from the query conditions when no match is found
@@ -1165,41 +1165,41 @@ abstract class BaseUserQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query by a related UserFolder object
+     * Filter the query by a related Folder object
      *
-     * @param   UserFolder|PropelObjectCollection $userFolder  the related object to use as filter
+     * @param   Folder|PropelObjectCollection $folder  the related object to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return                 UserQuery The current query, for fluid interface
      * @throws PropelException - if the provided filter is invalid.
      */
-    public function filterByUserFolder($userFolder, $comparison = null)
+    public function filterByFolder($folder, $comparison = null)
     {
-        if ($userFolder instanceof UserFolder) {
+        if ($folder instanceof Folder) {
             return $this
-                ->addUsingAlias(UserPeer::ID, $userFolder->getUserId(), $comparison);
-        } elseif ($userFolder instanceof PropelObjectCollection) {
+                ->addUsingAlias(UserPeer::ID, $folder->getUserId(), $comparison);
+        } elseif ($folder instanceof PropelObjectCollection) {
             return $this
-                ->useUserFolderQuery()
-                ->filterByPrimaryKeys($userFolder->getPrimaryKeys())
+                ->useFolderQuery()
+                ->filterByPrimaryKeys($folder->getPrimaryKeys())
                 ->endUse();
         } else {
-            throw new PropelException('filterByUserFolder() only accepts arguments of type UserFolder or PropelCollection');
+            throw new PropelException('filterByFolder() only accepts arguments of type Folder or PropelCollection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the UserFolder relation
+     * Adds a JOIN clause to the query using the Folder relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return UserQuery The current query, for fluid interface
      */
-    public function joinUserFolder($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    public function joinFolder($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('UserFolder');
+        $relationMap = $tableMap->getRelation('Folder');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -1214,14 +1214,14 @@ abstract class BaseUserQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'UserFolder');
+            $this->addJoinObject($join, 'Folder');
         }
 
         return $this;
     }
 
     /**
-     * Use the UserFolder relation UserFolder object
+     * Use the Folder relation Folder object
      *
      * @see       useQuery()
      *
@@ -1229,13 +1229,13 @@ abstract class BaseUserQuery extends ModelCriteria
      *                                   to be used as main alias in the secondary query
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return   UserFolderQuery A secondary query class using the current class as primary query
+     * @return   FolderQuery A secondary query class using the current class as primary query
      */
-    public function useUserFolderQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    public function useFolderQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         return $this
-            ->joinUserFolder($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'UserFolder', 'UserFolderQuery');
+            ->joinFolder($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Folder', 'FolderQuery');
     }
 
     /**

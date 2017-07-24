@@ -24,13 +24,13 @@ abstract class BaseChartPeer
     const TM_CLASS = 'ChartTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 22;
+    const NUM_COLUMNS = 23;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 22;
+    const NUM_HYDRATE_COLUMNS = 23;
 
     /** the column name for the id field */
     const ID = 'chart.id';
@@ -98,6 +98,9 @@ abstract class BaseChartPeer
     /** the column name for the is_fork field */
     const IS_FORK = 'chart.is_fork';
 
+    /** the column name for the in_folder field */
+    const IN_FOLDER = 'chart.in_folder';
+
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
 
@@ -117,12 +120,12 @@ abstract class BaseChartPeer
      * e.g. ChartPeer::$fieldNames[ChartPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'Title', 'Theme', 'CreatedAt', 'LastModifiedAt', 'Type', 'Metadata', 'Deleted', 'DeletedAt', 'AuthorId', 'ShowInGallery', 'Language', 'GuestSession', 'LastEditStep', 'PublishedAt', 'PublicUrl', 'PublicVersion', 'OrganizationId', 'ForkedFrom', 'ExternalData', 'Forkable', 'IsFork', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'title', 'theme', 'createdAt', 'lastModifiedAt', 'type', 'metadata', 'deleted', 'deletedAt', 'authorId', 'showInGallery', 'language', 'guestSession', 'lastEditStep', 'publishedAt', 'publicUrl', 'publicVersion', 'organizationId', 'forkedFrom', 'externalData', 'forkable', 'isFork', ),
-        BasePeer::TYPE_COLNAME => array (ChartPeer::ID, ChartPeer::TITLE, ChartPeer::THEME, ChartPeer::CREATED_AT, ChartPeer::LAST_MODIFIED_AT, ChartPeer::TYPE, ChartPeer::METADATA, ChartPeer::DELETED, ChartPeer::DELETED_AT, ChartPeer::AUTHOR_ID, ChartPeer::SHOW_IN_GALLERY, ChartPeer::LANGUAGE, ChartPeer::GUEST_SESSION, ChartPeer::LAST_EDIT_STEP, ChartPeer::PUBLISHED_AT, ChartPeer::PUBLIC_URL, ChartPeer::PUBLIC_VERSION, ChartPeer::ORGANIZATION_ID, ChartPeer::FORKED_FROM, ChartPeer::EXTERNAL_DATA, ChartPeer::FORKABLE, ChartPeer::IS_FORK, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'TITLE', 'THEME', 'CREATED_AT', 'LAST_MODIFIED_AT', 'TYPE', 'METADATA', 'DELETED', 'DELETED_AT', 'AUTHOR_ID', 'SHOW_IN_GALLERY', 'LANGUAGE', 'GUEST_SESSION', 'LAST_EDIT_STEP', 'PUBLISHED_AT', 'PUBLIC_URL', 'PUBLIC_VERSION', 'ORGANIZATION_ID', 'FORKED_FROM', 'EXTERNAL_DATA', 'FORKABLE', 'IS_FORK', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'title', 'theme', 'created_at', 'last_modified_at', 'type', 'metadata', 'deleted', 'deleted_at', 'author_id', 'show_in_gallery', 'language', 'guest_session', 'last_edit_step', 'published_at', 'public_url', 'public_version', 'organization_id', 'forked_from', 'external_data', 'forkable', 'is_fork', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Title', 'Theme', 'CreatedAt', 'LastModifiedAt', 'Type', 'Metadata', 'Deleted', 'DeletedAt', 'AuthorId', 'ShowInGallery', 'Language', 'GuestSession', 'LastEditStep', 'PublishedAt', 'PublicUrl', 'PublicVersion', 'OrganizationId', 'ForkedFrom', 'ExternalData', 'Forkable', 'IsFork', 'InFolder', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'title', 'theme', 'createdAt', 'lastModifiedAt', 'type', 'metadata', 'deleted', 'deletedAt', 'authorId', 'showInGallery', 'language', 'guestSession', 'lastEditStep', 'publishedAt', 'publicUrl', 'publicVersion', 'organizationId', 'forkedFrom', 'externalData', 'forkable', 'isFork', 'inFolder', ),
+        BasePeer::TYPE_COLNAME => array (ChartPeer::ID, ChartPeer::TITLE, ChartPeer::THEME, ChartPeer::CREATED_AT, ChartPeer::LAST_MODIFIED_AT, ChartPeer::TYPE, ChartPeer::METADATA, ChartPeer::DELETED, ChartPeer::DELETED_AT, ChartPeer::AUTHOR_ID, ChartPeer::SHOW_IN_GALLERY, ChartPeer::LANGUAGE, ChartPeer::GUEST_SESSION, ChartPeer::LAST_EDIT_STEP, ChartPeer::PUBLISHED_AT, ChartPeer::PUBLIC_URL, ChartPeer::PUBLIC_VERSION, ChartPeer::ORGANIZATION_ID, ChartPeer::FORKED_FROM, ChartPeer::EXTERNAL_DATA, ChartPeer::FORKABLE, ChartPeer::IS_FORK, ChartPeer::IN_FOLDER, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'TITLE', 'THEME', 'CREATED_AT', 'LAST_MODIFIED_AT', 'TYPE', 'METADATA', 'DELETED', 'DELETED_AT', 'AUTHOR_ID', 'SHOW_IN_GALLERY', 'LANGUAGE', 'GUEST_SESSION', 'LAST_EDIT_STEP', 'PUBLISHED_AT', 'PUBLIC_URL', 'PUBLIC_VERSION', 'ORGANIZATION_ID', 'FORKED_FROM', 'EXTERNAL_DATA', 'FORKABLE', 'IS_FORK', 'IN_FOLDER', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'title', 'theme', 'created_at', 'last_modified_at', 'type', 'metadata', 'deleted', 'deleted_at', 'author_id', 'show_in_gallery', 'language', 'guest_session', 'last_edit_step', 'published_at', 'public_url', 'public_version', 'organization_id', 'forked_from', 'external_data', 'forkable', 'is_fork', 'in_folder', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, )
     );
 
     /**
@@ -132,12 +135,12 @@ abstract class BaseChartPeer
      * e.g. ChartPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Title' => 1, 'Theme' => 2, 'CreatedAt' => 3, 'LastModifiedAt' => 4, 'Type' => 5, 'Metadata' => 6, 'Deleted' => 7, 'DeletedAt' => 8, 'AuthorId' => 9, 'ShowInGallery' => 10, 'Language' => 11, 'GuestSession' => 12, 'LastEditStep' => 13, 'PublishedAt' => 14, 'PublicUrl' => 15, 'PublicVersion' => 16, 'OrganizationId' => 17, 'ForkedFrom' => 18, 'ExternalData' => 19, 'Forkable' => 20, 'IsFork' => 21, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'title' => 1, 'theme' => 2, 'createdAt' => 3, 'lastModifiedAt' => 4, 'type' => 5, 'metadata' => 6, 'deleted' => 7, 'deletedAt' => 8, 'authorId' => 9, 'showInGallery' => 10, 'language' => 11, 'guestSession' => 12, 'lastEditStep' => 13, 'publishedAt' => 14, 'publicUrl' => 15, 'publicVersion' => 16, 'organizationId' => 17, 'forkedFrom' => 18, 'externalData' => 19, 'forkable' => 20, 'isFork' => 21, ),
-        BasePeer::TYPE_COLNAME => array (ChartPeer::ID => 0, ChartPeer::TITLE => 1, ChartPeer::THEME => 2, ChartPeer::CREATED_AT => 3, ChartPeer::LAST_MODIFIED_AT => 4, ChartPeer::TYPE => 5, ChartPeer::METADATA => 6, ChartPeer::DELETED => 7, ChartPeer::DELETED_AT => 8, ChartPeer::AUTHOR_ID => 9, ChartPeer::SHOW_IN_GALLERY => 10, ChartPeer::LANGUAGE => 11, ChartPeer::GUEST_SESSION => 12, ChartPeer::LAST_EDIT_STEP => 13, ChartPeer::PUBLISHED_AT => 14, ChartPeer::PUBLIC_URL => 15, ChartPeer::PUBLIC_VERSION => 16, ChartPeer::ORGANIZATION_ID => 17, ChartPeer::FORKED_FROM => 18, ChartPeer::EXTERNAL_DATA => 19, ChartPeer::FORKABLE => 20, ChartPeer::IS_FORK => 21, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'TITLE' => 1, 'THEME' => 2, 'CREATED_AT' => 3, 'LAST_MODIFIED_AT' => 4, 'TYPE' => 5, 'METADATA' => 6, 'DELETED' => 7, 'DELETED_AT' => 8, 'AUTHOR_ID' => 9, 'SHOW_IN_GALLERY' => 10, 'LANGUAGE' => 11, 'GUEST_SESSION' => 12, 'LAST_EDIT_STEP' => 13, 'PUBLISHED_AT' => 14, 'PUBLIC_URL' => 15, 'PUBLIC_VERSION' => 16, 'ORGANIZATION_ID' => 17, 'FORKED_FROM' => 18, 'EXTERNAL_DATA' => 19, 'FORKABLE' => 20, 'IS_FORK' => 21, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'title' => 1, 'theme' => 2, 'created_at' => 3, 'last_modified_at' => 4, 'type' => 5, 'metadata' => 6, 'deleted' => 7, 'deleted_at' => 8, 'author_id' => 9, 'show_in_gallery' => 10, 'language' => 11, 'guest_session' => 12, 'last_edit_step' => 13, 'published_at' => 14, 'public_url' => 15, 'public_version' => 16, 'organization_id' => 17, 'forked_from' => 18, 'external_data' => 19, 'forkable' => 20, 'is_fork' => 21, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Title' => 1, 'Theme' => 2, 'CreatedAt' => 3, 'LastModifiedAt' => 4, 'Type' => 5, 'Metadata' => 6, 'Deleted' => 7, 'DeletedAt' => 8, 'AuthorId' => 9, 'ShowInGallery' => 10, 'Language' => 11, 'GuestSession' => 12, 'LastEditStep' => 13, 'PublishedAt' => 14, 'PublicUrl' => 15, 'PublicVersion' => 16, 'OrganizationId' => 17, 'ForkedFrom' => 18, 'ExternalData' => 19, 'Forkable' => 20, 'IsFork' => 21, 'InFolder' => 22, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'title' => 1, 'theme' => 2, 'createdAt' => 3, 'lastModifiedAt' => 4, 'type' => 5, 'metadata' => 6, 'deleted' => 7, 'deletedAt' => 8, 'authorId' => 9, 'showInGallery' => 10, 'language' => 11, 'guestSession' => 12, 'lastEditStep' => 13, 'publishedAt' => 14, 'publicUrl' => 15, 'publicVersion' => 16, 'organizationId' => 17, 'forkedFrom' => 18, 'externalData' => 19, 'forkable' => 20, 'isFork' => 21, 'inFolder' => 22, ),
+        BasePeer::TYPE_COLNAME => array (ChartPeer::ID => 0, ChartPeer::TITLE => 1, ChartPeer::THEME => 2, ChartPeer::CREATED_AT => 3, ChartPeer::LAST_MODIFIED_AT => 4, ChartPeer::TYPE => 5, ChartPeer::METADATA => 6, ChartPeer::DELETED => 7, ChartPeer::DELETED_AT => 8, ChartPeer::AUTHOR_ID => 9, ChartPeer::SHOW_IN_GALLERY => 10, ChartPeer::LANGUAGE => 11, ChartPeer::GUEST_SESSION => 12, ChartPeer::LAST_EDIT_STEP => 13, ChartPeer::PUBLISHED_AT => 14, ChartPeer::PUBLIC_URL => 15, ChartPeer::PUBLIC_VERSION => 16, ChartPeer::ORGANIZATION_ID => 17, ChartPeer::FORKED_FROM => 18, ChartPeer::EXTERNAL_DATA => 19, ChartPeer::FORKABLE => 20, ChartPeer::IS_FORK => 21, ChartPeer::IN_FOLDER => 22, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'TITLE' => 1, 'THEME' => 2, 'CREATED_AT' => 3, 'LAST_MODIFIED_AT' => 4, 'TYPE' => 5, 'METADATA' => 6, 'DELETED' => 7, 'DELETED_AT' => 8, 'AUTHOR_ID' => 9, 'SHOW_IN_GALLERY' => 10, 'LANGUAGE' => 11, 'GUEST_SESSION' => 12, 'LAST_EDIT_STEP' => 13, 'PUBLISHED_AT' => 14, 'PUBLIC_URL' => 15, 'PUBLIC_VERSION' => 16, 'ORGANIZATION_ID' => 17, 'FORKED_FROM' => 18, 'EXTERNAL_DATA' => 19, 'FORKABLE' => 20, 'IS_FORK' => 21, 'IN_FOLDER' => 22, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'title' => 1, 'theme' => 2, 'created_at' => 3, 'last_modified_at' => 4, 'type' => 5, 'metadata' => 6, 'deleted' => 7, 'deleted_at' => 8, 'author_id' => 9, 'show_in_gallery' => 10, 'language' => 11, 'guest_session' => 12, 'last_edit_step' => 13, 'published_at' => 14, 'public_url' => 15, 'public_version' => 16, 'organization_id' => 17, 'forked_from' => 18, 'external_data' => 19, 'forkable' => 20, 'is_fork' => 21, 'in_folder' => 22, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, )
     );
 
     /**
@@ -233,6 +236,7 @@ abstract class BaseChartPeer
             $criteria->addSelectColumn(ChartPeer::EXTERNAL_DATA);
             $criteria->addSelectColumn(ChartPeer::FORKABLE);
             $criteria->addSelectColumn(ChartPeer::IS_FORK);
+            $criteria->addSelectColumn(ChartPeer::IN_FOLDER);
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.title');
@@ -256,6 +260,7 @@ abstract class BaseChartPeer
             $criteria->addSelectColumn($alias . '.external_data');
             $criteria->addSelectColumn($alias . '.forkable');
             $criteria->addSelectColumn($alias . '.is_fork');
+            $criteria->addSelectColumn($alias . '.in_folder');
         }
     }
 
@@ -662,6 +667,57 @@ abstract class BaseChartPeer
 
 
     /**
+     * Returns the number of rows matching criteria, joining the related Folder table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinFolder(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(ChartPeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            ChartPeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
+
+        // Set the correct dbName
+        $criteria->setDbName(ChartPeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(ChartPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(ChartPeer::IN_FOLDER, FolderPeer::FOLDER_ID, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+
+    /**
      * Selects a collection of Chart objects pre-filled with their User objects.
      * @param      Criteria  $criteria
      * @param      PropelPDO $con
@@ -796,6 +852,73 @@ abstract class BaseChartPeer
 
 
     /**
+     * Selects a collection of Chart objects pre-filled with their Folder objects.
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of Chart objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinFolder(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(ChartPeer::DATABASE_NAME);
+        }
+
+        ChartPeer::addSelectColumns($criteria);
+        $startcol = ChartPeer::NUM_HYDRATE_COLUMNS;
+        FolderPeer::addSelectColumns($criteria);
+
+        $criteria->addJoin(ChartPeer::IN_FOLDER, FolderPeer::FOLDER_ID, $join_behavior);
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = ChartPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = ChartPeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+
+                $cls = ChartPeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                ChartPeer::addInstanceToPool($obj1, $key1);
+            } // if $obj1 already loaded
+
+            $key2 = FolderPeer::getPrimaryKeyHashFromRow($row, $startcol);
+            if ($key2 !== null) {
+                $obj2 = FolderPeer::getInstanceFromPool($key2);
+                if (!$obj2) {
+
+                    $cls = FolderPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol);
+                    FolderPeer::addInstanceToPool($obj2, $key2);
+                } // if obj2 already loaded
+
+                // Add the $obj1 (Chart) to $obj2 (Folder)
+                $obj2->addChart($obj1);
+
+            } // if joined row was not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
      * Returns the number of rows matching criteria, joining all related tables
      *
      * @param      Criteria $criteria
@@ -834,6 +957,8 @@ abstract class BaseChartPeer
         $criteria->addJoin(ChartPeer::AUTHOR_ID, UserPeer::ID, $join_behavior);
 
         $criteria->addJoin(ChartPeer::ORGANIZATION_ID, OrganizationPeer::ID, $join_behavior);
+
+        $criteria->addJoin(ChartPeer::IN_FOLDER, FolderPeer::FOLDER_ID, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -875,9 +1000,14 @@ abstract class BaseChartPeer
         OrganizationPeer::addSelectColumns($criteria);
         $startcol4 = $startcol3 + OrganizationPeer::NUM_HYDRATE_COLUMNS;
 
+        FolderPeer::addSelectColumns($criteria);
+        $startcol5 = $startcol4 + FolderPeer::NUM_HYDRATE_COLUMNS;
+
         $criteria->addJoin(ChartPeer::AUTHOR_ID, UserPeer::ID, $join_behavior);
 
         $criteria->addJoin(ChartPeer::ORGANIZATION_ID, OrganizationPeer::ID, $join_behavior);
+
+        $criteria->addJoin(ChartPeer::IN_FOLDER, FolderPeer::FOLDER_ID, $join_behavior);
 
         $stmt = BasePeer::doSelect($criteria, $con);
         $results = array();
@@ -932,6 +1062,24 @@ abstract class BaseChartPeer
                 $obj3->addChart($obj1);
             } // if joined row not null
 
+            // Add objects for joined Folder rows
+
+            $key4 = FolderPeer::getPrimaryKeyHashFromRow($row, $startcol4);
+            if ($key4 !== null) {
+                $obj4 = FolderPeer::getInstanceFromPool($key4);
+                if (!$obj4) {
+
+                    $cls = FolderPeer::getOMClass();
+
+                    $obj4 = new $cls();
+                    $obj4->hydrate($row, $startcol4);
+                    FolderPeer::addInstanceToPool($obj4, $key4);
+                } // if obj4 loaded
+
+                // Add the $obj1 (Chart) to the collection in $obj4 (Folder)
+                $obj4->addChart($obj1);
+            } // if joined row not null
+
             $results[] = $obj1;
         }
         $stmt->closeCursor();
@@ -977,6 +1125,8 @@ abstract class BaseChartPeer
         }
 
         $criteria->addJoin(ChartPeer::ORGANIZATION_ID, OrganizationPeer::ID, $join_behavior);
+
+        $criteria->addJoin(ChartPeer::IN_FOLDER, FolderPeer::FOLDER_ID, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -1029,6 +1179,8 @@ abstract class BaseChartPeer
 
         $criteria->addJoin(ChartPeer::AUTHOR_ID, UserPeer::ID, $join_behavior);
 
+        $criteria->addJoin(ChartPeer::IN_FOLDER, FolderPeer::FOLDER_ID, $join_behavior);
+
         $stmt = BasePeer::doCount($criteria, $con);
 
         if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -1052,6 +1204,61 @@ abstract class BaseChartPeer
      * @return int Number of matching rows.
      */
     public static function doCountJoinAllExceptChartRelatedByForkedFrom(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(ChartPeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            ChartPeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY should not affect count
+
+        // Set the correct dbName
+        $criteria->setDbName(ChartPeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(ChartPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(ChartPeer::AUTHOR_ID, UserPeer::ID, $join_behavior);
+
+        $criteria->addJoin(ChartPeer::ORGANIZATION_ID, OrganizationPeer::ID, $join_behavior);
+
+        $criteria->addJoin(ChartPeer::IN_FOLDER, FolderPeer::FOLDER_ID, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+
+    /**
+     * Returns the number of rows matching criteria, joining the related Folder table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinAllExceptFolder(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         // we're going to modify criteria, so copy it first
         $criteria = clone $criteria;
@@ -1122,7 +1329,12 @@ abstract class BaseChartPeer
         OrganizationPeer::addSelectColumns($criteria);
         $startcol3 = $startcol2 + OrganizationPeer::NUM_HYDRATE_COLUMNS;
 
+        FolderPeer::addSelectColumns($criteria);
+        $startcol4 = $startcol3 + FolderPeer::NUM_HYDRATE_COLUMNS;
+
         $criteria->addJoin(ChartPeer::ORGANIZATION_ID, OrganizationPeer::ID, $join_behavior);
+
+        $criteria->addJoin(ChartPeer::IN_FOLDER, FolderPeer::FOLDER_ID, $join_behavior);
 
 
         $stmt = BasePeer::doSelect($criteria, $con);
@@ -1161,6 +1373,25 @@ abstract class BaseChartPeer
 
             } // if joined row is not null
 
+                // Add objects for joined Folder rows
+
+                $key3 = FolderPeer::getPrimaryKeyHashFromRow($row, $startcol3);
+                if ($key3 !== null) {
+                    $obj3 = FolderPeer::getInstanceFromPool($key3);
+                    if (!$obj3) {
+
+                        $cls = FolderPeer::getOMClass();
+
+                    $obj3 = new $cls();
+                    $obj3->hydrate($row, $startcol3);
+                    FolderPeer::addInstanceToPool($obj3, $key3);
+                } // if $obj3 already loaded
+
+                // Add the $obj1 (Chart) to the collection in $obj3 (Folder)
+                $obj3->addChart($obj1);
+
+            } // if joined row is not null
+
             $results[] = $obj1;
         }
         $stmt->closeCursor();
@@ -1196,7 +1427,12 @@ abstract class BaseChartPeer
         UserPeer::addSelectColumns($criteria);
         $startcol3 = $startcol2 + UserPeer::NUM_HYDRATE_COLUMNS;
 
+        FolderPeer::addSelectColumns($criteria);
+        $startcol4 = $startcol3 + FolderPeer::NUM_HYDRATE_COLUMNS;
+
         $criteria->addJoin(ChartPeer::AUTHOR_ID, UserPeer::ID, $join_behavior);
+
+        $criteria->addJoin(ChartPeer::IN_FOLDER, FolderPeer::FOLDER_ID, $join_behavior);
 
 
         $stmt = BasePeer::doSelect($criteria, $con);
@@ -1235,6 +1471,25 @@ abstract class BaseChartPeer
 
             } // if joined row is not null
 
+                // Add objects for joined Folder rows
+
+                $key3 = FolderPeer::getPrimaryKeyHashFromRow($row, $startcol3);
+                if ($key3 !== null) {
+                    $obj3 = FolderPeer::getInstanceFromPool($key3);
+                    if (!$obj3) {
+
+                        $cls = FolderPeer::getOMClass();
+
+                    $obj3 = new $cls();
+                    $obj3->hydrate($row, $startcol3);
+                    FolderPeer::addInstanceToPool($obj3, $key3);
+                } // if $obj3 already loaded
+
+                // Add the $obj1 (Chart) to the collection in $obj3 (Folder)
+                $obj3->addChart($obj1);
+
+            } // if joined row is not null
+
             $results[] = $obj1;
         }
         $stmt->closeCursor();
@@ -1254,6 +1509,128 @@ abstract class BaseChartPeer
      *		 rethrown wrapped into a PropelException.
      */
     public static function doSelectJoinAllExceptChartRelatedByForkedFrom(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        // $criteria->getDbName() will return the same object if not set to another value
+        // so == check is okay and faster
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(ChartPeer::DATABASE_NAME);
+        }
+
+        ChartPeer::addSelectColumns($criteria);
+        $startcol2 = ChartPeer::NUM_HYDRATE_COLUMNS;
+
+        UserPeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + UserPeer::NUM_HYDRATE_COLUMNS;
+
+        OrganizationPeer::addSelectColumns($criteria);
+        $startcol4 = $startcol3 + OrganizationPeer::NUM_HYDRATE_COLUMNS;
+
+        FolderPeer::addSelectColumns($criteria);
+        $startcol5 = $startcol4 + FolderPeer::NUM_HYDRATE_COLUMNS;
+
+        $criteria->addJoin(ChartPeer::AUTHOR_ID, UserPeer::ID, $join_behavior);
+
+        $criteria->addJoin(ChartPeer::ORGANIZATION_ID, OrganizationPeer::ID, $join_behavior);
+
+        $criteria->addJoin(ChartPeer::IN_FOLDER, FolderPeer::FOLDER_ID, $join_behavior);
+
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = ChartPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = ChartPeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+                $cls = ChartPeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                ChartPeer::addInstanceToPool($obj1, $key1);
+            } // if obj1 already loaded
+
+                // Add objects for joined User rows
+
+                $key2 = UserPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+                if ($key2 !== null) {
+                    $obj2 = UserPeer::getInstanceFromPool($key2);
+                    if (!$obj2) {
+
+                        $cls = UserPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol2);
+                    UserPeer::addInstanceToPool($obj2, $key2);
+                } // if $obj2 already loaded
+
+                // Add the $obj1 (Chart) to the collection in $obj2 (User)
+                $obj2->addChart($obj1);
+
+            } // if joined row is not null
+
+                // Add objects for joined Organization rows
+
+                $key3 = OrganizationPeer::getPrimaryKeyHashFromRow($row, $startcol3);
+                if ($key3 !== null) {
+                    $obj3 = OrganizationPeer::getInstanceFromPool($key3);
+                    if (!$obj3) {
+
+                        $cls = OrganizationPeer::getOMClass();
+
+                    $obj3 = new $cls();
+                    $obj3->hydrate($row, $startcol3);
+                    OrganizationPeer::addInstanceToPool($obj3, $key3);
+                } // if $obj3 already loaded
+
+                // Add the $obj1 (Chart) to the collection in $obj3 (Organization)
+                $obj3->addChart($obj1);
+
+            } // if joined row is not null
+
+                // Add objects for joined Folder rows
+
+                $key4 = FolderPeer::getPrimaryKeyHashFromRow($row, $startcol4);
+                if ($key4 !== null) {
+                    $obj4 = FolderPeer::getInstanceFromPool($key4);
+                    if (!$obj4) {
+
+                        $cls = FolderPeer::getOMClass();
+
+                    $obj4 = new $cls();
+                    $obj4->hydrate($row, $startcol4);
+                    FolderPeer::addInstanceToPool($obj4, $key4);
+                } // if $obj4 already loaded
+
+                // Add the $obj1 (Chart) to the collection in $obj4 (Folder)
+                $obj4->addChart($obj1);
+
+            } // if joined row is not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
+     * Selects a collection of Chart objects pre-filled with all related objects except Folder.
+     *
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of Chart objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinAllExceptFolder(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $criteria = clone $criteria;
 
