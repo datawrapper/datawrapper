@@ -109,7 +109,8 @@ $app->get('/folders/chart/:type/(:path+|)/?', function($type, $path = false) use
     $user = DatawrapperSession::getUser();
 
     if ($user->isLoggedIn()) {
-        $base_query = get_folder_base_query($type);
+        $user_id = $user->getId();
+        $base_query = get_folder_base_query($type, $user_id);
         if (!$base_query) return;
 
         if (!$path) {
@@ -117,24 +118,19 @@ $app->get('/folders/chart/:type/(:path+|)/?', function($type, $path = false) use
             return;
         }
 
-        $user_id = $user->getId();
-        $root_id = $base_query->filterByUserId($user_id)->findOneByParentId(0)->getUfId();
+        $root_id = $base_query->findOneByParentId(null)->getFolderId();
         if (empty($root_id)) {
             error('no-folders', 'This user hasn\'t got any folders');
             return;
         }
-        $pv = verify_path($type, $path, $user_id, $root_id);
+
+        $pv = verify_path($type, $path, $root_id, $user_id);
 
         if ($pv['verified']) {
-            $folder_id = $pv['pid'];
-            $q = ChartFolderQuery::create();
-            if ($type == 'user') {
-                $res = $q->findByUsrFolder($folder_id);
-            } else {
-                $res = $q->findByOrgFolder($folder_id);
-            }
+            $res = ChartQuery::create()->findByInFolder($pv['pid']);
+
             $mapped = array_map(function($entry) {
-                return $entry->getChartId();
+                return $entry->getId();
             }, (array)$res);
             ok($mapped);
         } else {
@@ -228,6 +224,10 @@ $app->get('/folders/dir/:type/(:path+|)/?', function($type, $path = []) use ($ap
 
         // find root
         $root_id = $base_query->findOneByParentId(null)->getFolderId();
+        if (empty($root_id)) {
+            error('no-folders', 'This user hasn\'t got any folders');
+            return;
+        }
 
         // does path exists? ("" is ok, too)
         $pv = verify_path($type, $path, $root_id, $user_id);
