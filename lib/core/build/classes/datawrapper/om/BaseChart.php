@@ -170,7 +170,6 @@ abstract class BaseChart extends BaseObject implements Persistent
 
     /**
      * The value for the in_folder field.
-     * Note: this column has a database default value of: -1
      * @var        int
      */
     protected $in_folder;
@@ -254,7 +253,6 @@ abstract class BaseChart extends BaseObject implements Persistent
         $this->public_version = 0;
         $this->forkable = false;
         $this->is_fork = false;
-        $this->in_folder = -1;
     }
 
     /**
@@ -1191,10 +1189,6 @@ abstract class BaseChart extends BaseObject implements Persistent
             }
 
             if ($this->is_fork !== false) {
-                return false;
-            }
-
-            if ($this->in_folder !== -1) {
                 return false;
             }
 
@@ -2515,7 +2509,7 @@ abstract class BaseChart extends BaseObject implements Persistent
     public function setFolder(Folder $v = null)
     {
         if ($v === null) {
-            $this->setInFolder(-1);
+            $this->setInFolder(NULL);
         } else {
             $this->setInFolder($v->getFolderId());
         }
