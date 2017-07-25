@@ -53,42 +53,24 @@ $app->put('/folders/chart/:type/:chart_id/:path+', function($type, $chart_id, $p
             return;
         }
 
-        $base_query = get_folder_base_query($type);
+        $user_id = $user->getId();
+        $base_query = get_folder_base_query($type, $user_id);
         if (!$base_query) {
             return;
         }
 
-        $user_id = $user->getId();
-        $folders = $base_query->findByUserId($user_id);
+        $folders = $base_query->find();
         if ($folders->count() == 0) {
             error('no-folders', "This user hasn't got any folders of the requested type.");
         }
 
         // this should be save, because noone can delete his root folder manually (without DB access)
-        $root_id = $base_query->filterByUserId($user_id)->findOneByParentId(0)->getUfId();
-        $pv = verify_path($type, $path, $user_id, $root_id);
+        $root_id = $base_query->findOneByParentId(null)->getFolderId();
+        $pv = verify_path($type, $path, $root_id, $user_id);
 
         if ($pv['verified']) {
-            $uo_folder = $pv['pid'];
-            if ($type == 'user') {
-                $old_link = ChartFolderQuery::create()->filterByChartId($chart_id)->findOneByUsrFolder($uo_folder);
-                if (!empty($old_link)) {
-                    ok();
-                    return;
-                }
-                // this IS new. link it
-                $cf = new ChartFolder();
-                $cf->setChartId($chart_id)->setUsrFolder($uo_folder)->save();
-            } else {
-                //everything but organiztion would not have gotten that far
-                $old_link = ChartFolderQuery::create()->filterByChartId($chart_id)->findOneByOrgFolder($uo_folder);
-                if (!empty($old_link)) {
-                    ok();
-                    return;
-                }
-                $cf = new ChartFolder();
-                $cf->setChartId($chart_id)->setOrgFolder($uo_folder)->save();
-            }
+            $chart = ChartQuery::create()->findPK($chart_id);
+            $chart->setInFolder($pv['pid'])->save();
             ok();
         } else {
             error('no-such-path', 'Path does not exist.');
