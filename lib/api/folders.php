@@ -14,7 +14,7 @@ function get_folder_base_query($type, $user_id, $org_id = false) {
 }
 
 // you should have verified $type is usable before calling this!
-function verify_path($type, $path, $user_id, $parent_id) {
+function verify_path($type, $path, $parent_id, $user_id, $org_id = false) {
     $base_query = get_folder_base_query($type, $user_id);
     $segment = array_shift($path);
     if (empty($segment)) {
@@ -29,7 +29,7 @@ function verify_path($type, $path, $user_id, $parent_id) {
         return array('verified' => false);
     }
 
-    return verify_path($type, $path, $user_id, $db_seg->getFolderId());
+    return verify_path($type, $path, $db_seg->getFolderId(), $user_id);
 }
 
 
@@ -169,10 +169,10 @@ $app->put('/folders/dir/:type/(:path+/|):dirname/?', function($type, $path, $dir
             $rootfolder->setUserId($user_id)->setFolderName('ROOT')->save();
         }
         // find root
-        $root_id = $base_query->where('parent_id is NULL')->findOne()->getFolderId();
+        $root_id = $base_query->findOneByParentId(null)->getFolderId();
 
         // does path exists? ("" is ok, too)
-        $pv = verify_path($type, $path, $user_id, $root_id);
+        $pv = verify_path($type, $path, $root_id, $user_id);
         if ($pv['verified']) {
             // We need a fresh base_query here! Don't ask me why, but we do. (tested)
             $base_query = get_folder_base_query($type, $user_id);
@@ -192,26 +192,23 @@ $app->put('/folders/dir/:type/(:path+/|):dirname/?', function($type, $path, $dir
     }
 });
 
-function list_subdirs($type, $user_id, $parent_id) {
-    $base_query = get_folder_base_query($type);
-    $subdirs = $base_query->filterByUserId($user_id)->findByParentId($parent_id);
+function list_subdirs($type, $parent_id, $user_id, $org_id = false) {
+    $base_query = get_folder_base_query($type, $user_id);
+    $subdirs = $base_query->findByParentId($parent_id);
 
-    var_export($subdirs);
+    $node = new stdClass();
 
-    // if (empty($subdirs))
-        return array();
+    if ($subdirs->count() == 0) {
+        return false;
+    }
 
-    $mapped = array_map(function($dir) use ($type, $user_id) {
-        $base_query = get_folder_base_query($type);
-        if ($type == 'user') {
-            $dir_id = $base_query->filterByUserId($user_id)->findByParentId($dir->getUfId());
-        } else {
-            $dir_id = $base_query->filterByUserId($user_id)->findByParentId($dir->getOfId());
-        }
-        return list_subdirs($type, $user_id, $dir_id);
-    }, (array) $subdirs);
+    foreach ($subdirs as $dir) {
+        $name = $dir->getFolderName();
+        $dir_id = $dir->getFolderId();
+        $node->$name = list_subdirs($type, $dir_id, $user_id);
+    }
 
-    return $mapped;
+    return $node;
 }
 
 /**
@@ -225,19 +222,17 @@ $app->get('/folders/dir/:type/(:path+|)/?', function($type, $path = []) use ($ap
     $user = DatawrapperSession::getUser();
 
     if ($user->isLoggedIn()) {
-        $base_query = get_folder_base_query($type);
+        $user_id = $user->getId();
+        $base_query = get_folder_base_query($type, $user_id);
         if (!$base_query) return;
 
-        $user_id = $user->getId();
-        $folders = $base_query->findByUserId($user_id);
-
         // find root
-        $root_id = $base_query->filterByUserId($user_id)->findOneByParentId(0)->getUfId();
+        $root_id = $base_query->findOneByParentId(null)->getFolderId();
 
         // does path exists? ("" is ok, too)
-        $pv = verify_path($type, $path, $user_id, $root_id);
+        $pv = verify_path($type, $path, $root_id, $user_id);
         if ($pv['verified']) {
-            ok(list_subdirs($type, $user_id, $pv['pid']));
+            ok(list_subdirs($type, $pv['pid'], $user_id));
             return;
         }
         error('no-such-path', 'Path does not exist.');
