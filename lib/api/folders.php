@@ -253,3 +253,60 @@ $app->get('/folders/dir/:type/(:path+|)/?', function($type, $path = []) use ($ap
         error('access-denied', 'User is not logged in.');
     }
 });
+
+
+/**
+ * delete a subfolder
+ * root can not be removed
+ * folders which still contain other subfolders can not be removed
+ * if a folder contains charts, all of those will be moved to the parent folder
+ *
+ * @param type the type of folder which should be deleted
+ * @param path the folder to be deleted
+ */
+$app->delete('/folders/dir/:type/:path+/?', function($type, $path) use ($app) {
+    disable_cache($app);
+    $user = DatawrapperSession::getUser();
+
+    if ($user->isLoggedIn()) {
+        $user_id = $user->getId();
+        $base_query = get_folder_base_query($type, $user_id);
+        if (!$base_query) return;
+
+        // find root
+        $root_id = $base_query->findOneByParentId(null)->getFolderId();
+        if (empty($root_id)) {
+            error('no-folders', 'This user hasn\'t got any folders');
+            return;
+        }
+
+        // does path exists? ("" is ok, too)
+        $pv = verify_path($type, $path, $root_id, $user_id);
+        if ($pv['verified']) {
+            $parent_id = $pv['pid'];
+            $tree = list_subdirs($type, $parent_id, $user_id);
+            if (!$tree) {
+                $current_id = $parent_id;
+                $current_folder = FolderQuery::create()->findOneByFolderId($current_id);
+                $parent_id = $current_folder->getParentId();
+                if ($parent_id == $root_id) {
+                    // prevent charts to go back to the virtual root folder
+                    $parent_id = null;
+                }
+                $charts = ChartQuery::create()->findByInFolder($current_id);
+                foreach ($charts as $chart) {
+                    $chart->setInFolder($parent_id)->save();
+                }
+                //finally delete folder
+                $current_folder->delete();
+                ok();
+            } else {
+                error('remaining-subfolders', 'You have to remove all subdfolders, before you can delete a folder');
+            }
+        } else {
+            error('no-such-path', 'Path does not exist.');
+        }
+    } else {
+        error('access-denied', 'User is not logged in.');
+    }
+});
