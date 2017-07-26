@@ -280,7 +280,7 @@ $app->delete('/folders/dir/:type/:path+/?', function($type, $path) use ($app) {
             return;
         }
 
-        // does path exists? ("" is ok, too)
+        // does path exists? ("" can not happen!)
         $pv = verify_path($type, $path, $root_id, $user_id);
         if ($pv['verified']) {
             $parent_id = $pv['pid'];
