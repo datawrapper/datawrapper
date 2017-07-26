@@ -82,6 +82,37 @@ $app->put('/folders/chart/:type/:chart_id/:path+', function($type, $chart_id, $p
 
 
 /**
+ * remove a chart from a folder
+ * when a chart is removed its in_folder field will be set to NULL making it go back to all charts
+ * bacause the chart can only be located in one folder it is not necessary to specify the path
+ *
+ * @param type the type of folder
+ * @param chart_id the charts id?
+ */
+$app->delete('/folders/chart/:type/:chart_id', function($type, $chart_id) use ($app) {
+    disable_cache($app);
+    $user = DatawrapperSession::getUser();
+
+    if ($user->isLoggedIn()) {
+        $accessible = false;
+        if_chart_is_writable($chart_id, function($user, $chart) use (&$accessible) {
+            $accessible = true;
+        });
+        if(!$accessible) {
+            return;
+        }
+
+        $chart = ChartQuery::create()->findPK($chart_id);
+        $chart->setInFolder(null)->save();
+
+        ok();
+    } else {
+        error('access-denied', 'User is not logged in.');
+    }
+});
+
+
+/**
  * get an array of all chart ids in a folder
  *
  * @param type the type of folder
