@@ -26,6 +26,9 @@
     margin-bottom: 40px;
     width: 100%;
 }
+
+.gallery-filter h1 { margin-top: 0; }
+
 .gallery-filter .folder-line { align-self: flex-start; }
 .gallery-filter form { margin-left: auto; }
 .gallery-filter form .btn-group { margin-left: 10px; }
@@ -42,12 +45,23 @@
     position: static;
 }
 
-.project { margin-bottom: 40px; }
+.folders ul {
+    list-style-type: none;
+    margin-left: 0;
+}
+
+.folders ul ul {
+    margin-left: 25px;
+}
+
+.folders li:before { content:"🗁 "; }
+
 </style>
 <div class="gallery-filter">
 
     <div class="folder-line">
-        <span>foo > baz > bar</span>
+        <a>{% trans "My Charts" %}</a><span class="folder-sequence"></span>
+        <h1 class"current-folder">&nbsp</h1>
     </div>
 
     <form method="get" class="form form-inline" action="">
@@ -134,13 +148,13 @@
     
 </div>
 
-<div class="project">
-    <h1>[Aktives Projekt]</h1>
-</div>
-
 <div class="folders-and-gallery">
     <div class="folders">
-        <span>🗁 Alle Diagramme</span>
+        <ul>
+            <li><a id="tree-root">{% trans "My Charts" %}</a></li>
+            <ul id="dynamic-tree">
+            </ul>
+        </ul>
     </div>
     <div class="gallery">
 
@@ -297,8 +311,41 @@ $(function(){
     });
 });
 
+// what's this supposed to do?
 $('body').load(function() {
 
+});
+
+const build_tree_list = function(tree, parent, path = '') {
+    var subfolders = Object.keys(tree);
+    console.log(path);
+
+    subfolders.forEach(function(folder) {
+        var d = document.createElement('li');
+        d.innerHTML = "<a>" + folder + "</a>";
+        d.path = path + folder + '/';
+        parent.append(d);
+
+        if (tree[folder]) {
+            var nu_par = document.createElement('ul');
+            parent.append(nu_par);
+            build_tree_list(tree[folder], $(nu_par), d.path);
+        }
+    });
+};
+
+$('document').ready(function() {
+    $.getJSON('/api/folders/dir/user/')
+        .done(function(res) {
+            if (res.status == 'error') {
+                alert(res.message);
+            } else if (res.status == 'ok') {
+                build_tree_list(res.data, $('#dynamic-tree'));
+            }
+        })
+        .fail(function(err) {
+            alert('API Error');
+        });
 });
 
 </script>
