@@ -28,6 +28,7 @@
 }
 
 .gallery-filter h1 { margin-top: 0; }
+.gallery-filter a { cursor: pointer; }
 
 .gallery-filter .folder-line { align-self: flex-start; }
 .gallery-filter form { margin-left: auto; }
@@ -37,31 +38,25 @@
 .folders-and-gallery .folders { flex: 1 0 0; }
 .folders-and-gallery .gallery { flex: 3 0 0;}
 
-.gallery .thumbnails .span3.chart {
-    min-height: 190px;
-}
+.gallery .thumbnails .span3.chart { min-height: 190px; }
 
-.gallery .thumbnails .span3.chart h3 {
-    position: static;
-}
+.gallery .thumbnails .span3.chart h3 { position: static; }
 
 .folders ul {
     list-style-type: none;
     margin-left: 0;
 }
 
-.folders ul ul {
-    margin-left: 25px;
-}
-
+.folders ul ul { margin-left: 25px; }
+.folders li a { cursor: pointer; }
 .folders li:before { content:"🗁 "; }
 
 </style>
 <div class="gallery-filter">
 
     <div class="folder-line">
-        <a>{% trans "My Charts" %}</a><span class="folder-sequence"></span>
-        <h1 class"current-folder">&nbsp</h1>
+        <a id="line-root">{% trans "My Charts" %}</a><span id="folder-sequence"></span>
+        <h1 id="current-folder"> </h1>
     </div>
 
     <form method="get" class="form form-inline" action="">
@@ -316,22 +311,56 @@ $('body').load(function() {
 
 });
 
-const build_tree_list = function(tree, parent, path = '') {
+const dir_click = function(e) {
+    var cwd, mypath,
+        line = $('#folder-sequence');
+        sep = ' > ';
+
+    e.preventDefault();
+    line.text('');
+
+    mypath = Array.from(e.currentTarget.path);
+    cwd = mypath.pop();
+
+    mypath.forEach(function(dir, idx) {
+        var a = document.createElement('a');
+
+        a.innerText = dir;
+        a.path = mypath.slice(0, idx + 1);
+        $(a).click(dir_click);
+        line.append(sep, a);
+    });
+    line.append(sep);
+    $('#current-folder').text(cwd);
+};
+
+const build_tree_list = function(tree, parent, path) {
     var subfolders = Object.keys(tree);
-    console.log(path);
+
+    if (typeof(path)==='undefined') path = [];
 
     subfolders.forEach(function(folder) {
-        var d = document.createElement('li');
-        d.innerHTML = "<a>" + folder + "</a>";
-        d.path = path + folder + '/';
-        parent.append(d);
+        var l = document.createElement('li'),
+            a = document.createElement('a');
+        a.innerText = folder;
+        path.push(folder);
+        a.path = Array.from(path);
+        $(a).click(dir_click);
+        l.append(a);
+        parent.append(l);
+        path.pop(folder);
 
         if (tree[folder]) {
             var nu_par = document.createElement('ul');
             parent.append(nu_par);
-            build_tree_list(tree[folder], $(nu_par), d.path);
+            build_tree_list(tree[folder], $(nu_par), a.path);
         }
     });
+};
+
+const clean_root = function() {
+    $('#folder-sequence').text('');
+    $('#current-folder').text(' ');  
 };
 
 $('document').ready(function() {
@@ -346,6 +375,7 @@ $('document').ready(function() {
         .fail(function(err) {
             alert('API Error');
         });
+    $('#line-root, #tree-root').click(clean_root);
 });
 
 </script>
