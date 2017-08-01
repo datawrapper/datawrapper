@@ -346,7 +346,7 @@ const build_tree_list = function(tree, parent, path) {
         path.push(folder);
         a.path = Array.from(path);
         $(a).click(dir_click);
-        l.append(a);
+        l.appendChild(a);
         parent.append(l);
         path.pop(folder);
 
