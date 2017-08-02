@@ -144,19 +144,30 @@ class ChartQuery extends BaseChartQuery {
         $query->filterByLastEditStep(array('min' => 2));
         if (count($filter) > 0) {
             foreach ($filter as $key => $val) {
-                if ($key == 'layout' || $key == 'theme') $query->filterByTheme($val);
-                if ($key == 'vis') $query->filterByType($val);
-                if ($key == 'month') $query->filterByCreatedAt(array('min' => $val.'-01', 'max' => $val.'-31'));
-                if ($key == 'q') {
-                    $query->condition('in-title', 'Chart.Title LIKE ?', '%'.$val.'%');
-                    $query->condition('in-intro', 'Chart.Metadata LIKE ?', '%"intro":"%'.$val.'%"%');
-                    $query->condition('in-source', 'Chart.Metadata LIKE ?', '%"source-name":"%'.$val.'%"%');
-                    $query->condition('in-source-url', 'Chart.Metadata LIKE ?', '%"source-url":"%'.$val.'%"%');
-                    $query->where(array('in-title', 'in-intro', 'in-source', 'in-source-url'), 'or');
-                }
-                if ($key == 'status') {
-                    if ($val == 'published') $query->filterByLastEditStep(array('min' => 4));
-                    else if ($val == 'draft') $query->filterByLastEditStep(array('max'=> 3));
+                switch ($key) {
+                    case 'layout':
+                    case 'theme':
+                        $query->filterByTheme($val);
+                        break;
+                    case 'vis':
+                        $query->filterByType($val);
+                        break;
+                    case 'month':
+                        $query->filterByCreatedAt(array('min' => $val.'-01', 'max' => $val.'-31'));
+                        break;
+                    case 'folder':
+                        $query->filterByInFolder($val);
+                        break;
+                    case 'q':
+                        $query->condition('in-title', 'Chart.Title LIKE ?', '%'.$val.'%');
+                        $query->condition('in-intro', 'Chart.Metadata LIKE ?', '%"intro":"%'.$val.'%"%');
+                        $query->condition('in-source', 'Chart.Metadata LIKE ?', '%"source-name":"%'.$val.'%"%');
+                        $query->condition('in-source-url', 'Chart.Metadata LIKE ?', '%"source-url":"%'.$val.'%"%');
+                        $query->where(array('in-title', 'in-intro', 'in-source', 'in-source-url'), 'or');
+                        break;
+                    case 'status':
+                        if ($val == 'published') $query->filterByLastEditStep(array('min' => 4));
+                        else if ($val == 'draft') $query->filterByLastEditStep(array('max'=> 3));
                 }
             }
         }
