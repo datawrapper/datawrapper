@@ -311,53 +311,58 @@ $('body').load(function() {
 
 });
 
-const dir_click = function(e) {
-    var cwd, mypath,
+var folder_tree;
+
+const build_line = function(path) {
+    var cwd, mypath, hopper,
         line = $('#folder-sequence');
         sep = ' > ';
 
-    e.preventDefault();
     line.text('');
 
-    mypath = Array.from(e.currentTarget.path);
+    mypath = Array.from(path);
     cwd = mypath.pop();
+    hopper = folder_tree;
 
-    mypath.forEach(function(dir, idx) {
+    mypath.forEach(function(dir) {
         var a = document.createElement('a');
 
         a.innerText = dir;
-        a.path = mypath.slice(0, idx + 1);
-        $(a).click(dir_click);
+        a.setAttribute('href', '{{ mycharts_base }}/by/folder/' + hopper[dir].id);
         line.append(sep, a);
+        hopper = hopper[dir].sub
     });
     line.append(sep);
     $('#current-folder').text(cwd);
 };
 
 const build_tree_list = function(tree, parent, path) {
-    var subfolders = Object.keys(tree);
+    const filter = { 
+        key: '{{key}}',
+        val: '{{val}}'
+    };
+    var nu_path,
+        subfolders = Object.keys(tree);
 
-    if (typeof(path)==='undefined') path = [];
+    if (typeof(path) === 'undefined') path = [];
 
     subfolders.forEach(function(folder) {
         var l = document.createElement('li'),
             a = document.createElement('a');
         a.innerText = folder;
-        a.setAttribute("href", "{{ mycharts_base }}/by/folder/" + tree[folder].id);
-        a.folder_id = tree[folder].id;
+        a.setAttribute('href', '{{ mycharts_base }}/by/folder/' + tree[folder].id);
 
-        path.push(folder);
-        a.path = Array.from(path);
-        path.pop(folder);
+        nu_path = path.concat(folder);
+        if (filter.key === 'folder' && filter.val == tree[folder].id)
+            build_line(nu_path);
 
-        // $(a).click(dir_click);
         l.appendChild(a);
         parent.append(l);
 
         if (tree[folder]) {
             var nu_par = document.createElement('ul');
             parent.append(nu_par);
-            build_tree_list(tree[folder].sub, $(nu_par), a.path);
+            build_tree_list(tree[folder].sub, $(nu_par), nu_path);
         }
     });
 };
@@ -368,7 +373,8 @@ $('document').ready(function() {
             if (res.status == 'error') {
                 alert(res.message);
             } else if (res.status == 'ok') {
-                build_tree_list(res.data, $('#dynamic-tree'));
+                folder_tree = res.data
+                build_tree_list(folder_tree, $('#dynamic-tree'));
             }
         })
         .fail(function(err) {
