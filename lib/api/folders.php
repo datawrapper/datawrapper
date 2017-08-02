@@ -214,7 +214,10 @@ function list_subdirs($type, $parent_id, $user_id, $org_id = false) {
     foreach ($subdirs as $dir) {
         $name = $dir->getFolderName();
         $dir_id = $dir->getFolderId();
-        $node->$name = list_subdirs($type, $dir_id, $user_id);
+        $data = new stdClass();
+        $data->id = $dir_id;
+        $data->sub = list_subdirs($type, $dir_id, $user_id);
+        $node->$name = $data;
     }
 
     return $node;
