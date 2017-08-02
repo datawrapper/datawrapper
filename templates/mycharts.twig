@@ -55,7 +55,7 @@
 <div class="gallery-filter">
 
     <div class="folder-line">
-        <a id="line-root">{% trans "My Charts" %}</a><span id="folder-sequence"></span>
+        <a href="{{ mycharts_base }}">{% trans "My Charts" %}</a><span id="folder-sequence"></span>
         <h1 id="current-folder"> </h1>
     </div>
 
@@ -146,7 +146,7 @@
 <div class="folders-and-gallery">
     <div class="folders">
         <ul>
-            <li><a id="tree-root">{% trans "My Charts" %}</a></li>
+            <li><a href="{{ mycharts_base }}">{% trans "My Charts" %}</a></li>
             <ul id="dynamic-tree">
             </ul>
         </ul>
@@ -343,13 +343,16 @@ const build_tree_list = function(tree, parent, path) {
         var l = document.createElement('li'),
             a = document.createElement('a');
         a.innerText = folder;
+        a.setAttribute("href", "{{ mycharts_base }}/by/folder/" + tree[folder].id);
+        a.folder_id = tree[folder].id;
+
         path.push(folder);
         a.path = Array.from(path);
-        a.folder_id = tree[folder].id;
-        $(a).click(dir_click);
+        path.pop(folder);
+
+        // $(a).click(dir_click);
         l.appendChild(a);
         parent.append(l);
-        path.pop(folder);
 
         if (tree[folder]) {
             var nu_par = document.createElement('ul');
@@ -357,11 +360,6 @@ const build_tree_list = function(tree, parent, path) {
             build_tree_list(tree[folder].sub, $(nu_par), a.path);
         }
     });
-};
-
-const clean_root = function() {
-    $('#folder-sequence').text('');
-    $('#current-folder').text(' ');  
 };
 
 $('document').ready(function() {
@@ -376,7 +374,6 @@ $('document').ready(function() {
         .fail(function(err) {
             alert('API Error');
         });
-    $('#line-root, #tree-root').click(clean_root);
 });
 
 </script>
