@@ -345,6 +345,7 @@ const build_tree_list = function(tree, parent, path) {
         a.innerText = folder;
         path.push(folder);
         a.path = Array.from(path);
+        a.folder_id = tree[folder].id;
         $(a).click(dir_click);
         l.appendChild(a);
         parent.append(l);
@@ -353,7 +354,7 @@ const build_tree_list = function(tree, parent, path) {
         if (tree[folder]) {
             var nu_par = document.createElement('ul');
             parent.append(nu_par);
-            build_tree_list(tree[folder], $(nu_par), a.path);
+            build_tree_list(tree[folder].sub, $(nu_par), a.path);
         }
     });
 };
