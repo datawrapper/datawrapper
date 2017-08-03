@@ -1244,72 +1244,75 @@ html .btn-inverse {
 }
 .chart-editor.dw-create-visualize .vis-thumbs .vis-thumb {
   width: 80px;
-  height: 90px;
+  height: 78px;
   border-radius: 0px;
-  border: 1px solid #fff;
-  background: #fff;
+  border: 2px solid #fff;
+  background: #f9f9f9;
   position: relative;
   display: inline-block;
-  margin: 0 5px 4px 0;
+  margin: 0 8px 8px 0;
   cursor: pointer;
 }
 @media (max-width: 1199px) {
   .chart-editor.dw-create-visualize .vis-thumbs .vis-thumb {
-    width: 65px;
+    width: 75px;
     height: 75px;
   }
 }
 .chart-editor.dw-create-visualize .vis-thumbs .vis-thumb svg {
-  width: 55px;
-  height: 60px;
-  margin-left: 10px;
-  margin-top: 5px;
+  width: 30px;
+  height: 40px;
+  margin-left: 25px;
+  margin-top: 10px;
 }
 .chart-editor.dw-create-visualize .vis-thumbs .vis-thumb svg path,
 .chart-editor.dw-create-visualize .vis-thumbs .vis-thumb svg rect,
-.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb svg circle {
-  fill: #93B0D6;
-}
-.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb svg line {
-  stroke: #93B0D6;
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb svg circle,
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb svg ellipse,
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb svg polyline {
+  fill: #0088cc;
 }
 @media (max-width: 1199px) {
   .chart-editor.dw-create-visualize .vis-thumbs .vis-thumb svg {
-    width: 45px;
-    height: 55px;
-    margin-left: 10px;
-    margin-top: 3px;
+    width: 30px;
+    height: 40px;
+    margin-left: 23px;
+    margin-top: 10px;
   }
 }
 .chart-editor.dw-create-visualize .vis-thumbs .vis-thumb .title {
   position: absolute;
-  bottom: 3px;
+  bottom: 5px;
   left: 5px;
   right: 5px;
-  font-size: 13px;
-  font-family: 'Roboto Condensed', Helvetica, sans-serif;
-  line-height: 15px;
+  font-size: 11px;
+  font-family: 'Roboto', Helvetica, sans-serif;
+  font-weight: 500;
+  line-height: 14px;
   text-align: center;
-  text-shadow: 1px 1px 0px #fff, 0px 1px 0px #fff, -1px 1px 0px #fff, 1px -1px 0px #fff, 0px -1px 0px #fff, -1px -1px 0px #fff, 1px 0px 0px #fff, 0px 0px 0px #fff, -1px 0px 0px #fff;
+  text-shadow: 1px 1px 0px #f9f9f9, 0px 1px 0px #f9f9f9, -1px 1px 0px #f9f9f9, 1px -1px 0px #f9f9f9, 0px -1px 0px #f9f9f9, -1px -1px 0px #f9f9f9, 1px 0px 0px #f9f9f9, 0px 0px 0px #f9f9f9, -1px 0px 0px #f9f9f9;
   color: #555;
 }
 .chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active {
-  border: 1px solid #1981DD;
-  box-shadow: 0 0 10px rgba(25, 129, 221, 0.6);
+  border: 2px solid rgba(0, 136, 204, 0.8);
+  background: #CCE7F5;
 }
 .chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active .title {
   color: #000;
+  text-shadow: 1px 1px 0px #CCE7F5, 0px 1px 0px #CCE7F5, -1px 1px 0px #CCE7F5, 1px -1px 0px #CCE7F5, 0px -1px 0px #CCE7F5, -1px -1px 0px #CCE7F5, 1px 0px 0px #CCE7F5, 0px 0px 0px #CCE7F5, -1px 0px 0px #CCE7F5;
 }
 .chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active svg path,
 .chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active svg rect,
-.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active svg circle {
-  fill: #000;
-}
-.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active svg line {
-  stroke: #000;
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active svg circle,
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active svg ellipse,
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active svg polyline {
+  fill: #00679b;
 }
 .chart-editor.dw-create-visualize .vis-thumbs .vis-thumb:hover {
-  border: 1px solid #ccc;
+  background: #CCE7F5;
+}
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb:hover .title {
+  text-shadow: 1px 1px 0px #CCE7F5, 0px 1px 0px #CCE7F5, -1px 1px 0px #CCE7F5, 1px -1px 0px #CCE7F5, 0px -1px 0px #CCE7F5, -1px -1px 0px #CCE7F5, 1px 0px 0px #CCE7F5, 0px 0px 0px #CCE7F5, -1px 0px 0px #CCE7F5;
 }
 @media only screen and (max-width: 1199px) {
   .chart-editor.dw-create-visualize .vis-thumb {
