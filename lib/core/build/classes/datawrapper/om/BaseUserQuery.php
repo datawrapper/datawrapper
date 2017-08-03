@@ -19,6 +19,7 @@
  * @method UserQuery orderByWebsite($order = Criteria::ASC) Order by the website column
  * @method UserQuery orderBySmProfile($order = Criteria::ASC) Order by the sm_profile column
  * @method UserQuery orderByOAuthSignIn($order = Criteria::ASC) Order by the oauth_signin column
+ * @method UserQuery orderByCustomerId($order = Criteria::ASC) Order by the customer_id column
  *
  * @method UserQuery groupById() Group by the id column
  * @method UserQuery groupByEmail() Group by the email column
@@ -33,6 +34,7 @@
  * @method UserQuery groupByWebsite() Group by the website column
  * @method UserQuery groupBySmProfile() Group by the sm_profile column
  * @method UserQuery groupByOAuthSignIn() Group by the oauth_signin column
+ * @method UserQuery groupByCustomerId() Group by the customer_id column
  *
  * @method UserQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method UserQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -77,6 +79,7 @@
  * @method User findOneByWebsite(string $website) Return the first User filtered by the website column
  * @method User findOneBySmProfile(string $sm_profile) Return the first User filtered by the sm_profile column
  * @method User findOneByOAuthSignIn(string $oauth_signin) Return the first User filtered by the oauth_signin column
+ * @method User findOneByCustomerId(string $customer_id) Return the first User filtered by the customer_id column
  *
  * @method array findById(int $id) Return User objects filtered by the id column
  * @method array findByEmail(string $email) Return User objects filtered by the email column
@@ -91,6 +94,7 @@
  * @method array findByWebsite(string $website) Return User objects filtered by the website column
  * @method array findBySmProfile(string $sm_profile) Return User objects filtered by the sm_profile column
  * @method array findByOAuthSignIn(string $oauth_signin) Return User objects filtered by the oauth_signin column
+ * @method array findByCustomerId(string $customer_id) Return User objects filtered by the customer_id column
  *
  * @package    propel.generator.datawrapper.om
  */
@@ -194,7 +198,7 @@ abstract class BaseUserQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `email`, `pwd`, `activate_token`, `reset_password_token`, `role`, `deleted`, `language`, `created_at`, `name`, `website`, `sm_profile`, `oauth_signin` FROM `user` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `email`, `pwd`, `activate_token`, `reset_password_token`, `role`, `deleted`, `language`, `created_at`, `name`, `website`, `sm_profile`, `oauth_signin`, `customer_id` FROM `user` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -684,6 +688,35 @@ abstract class BaseUserQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the customer_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByCustomerId('fooValue');   // WHERE customer_id = 'fooValue'
+     * $query->filterByCustomerId('%fooValue%'); // WHERE customer_id LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $customerId The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return UserQuery The current query, for fluid interface
+     */
+    public function filterByCustomerId($customerId = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($customerId)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $customerId)) {
+                $customerId = str_replace('*', '%', $customerId);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(UserPeer::CUSTOMER_ID, $customerId, $comparison);
+    }
+
+    /**
      * Filter the query by a related Chart object
      *
      * @param   Chart|PropelObjectCollection $chart  the related object to use as filter
@@ -863,7 +896,7 @@ abstract class BaseUserQuery extends ModelCriteria
      *
      * @return UserQuery The current query, for fluid interface
      */
-    public function joinAction($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinAction($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('Action');
@@ -898,7 +931,7 @@ abstract class BaseUserQuery extends ModelCriteria
      *
      * @return   ActionQuery A secondary query class using the current class as primary query
      */
-    public function useActionQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function useActionQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         return $this
             ->joinAction($relationAlias, $joinType)

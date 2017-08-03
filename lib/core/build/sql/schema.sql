@@ -69,6 +69,7 @@ CREATE TABLE `user`
     `website` VARCHAR(512),
     `sm_profile` VARCHAR(512),
     `oauth_signin` VARCHAR(512),
+    `customer_id` VARCHAR(512),
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 
@@ -115,9 +116,10 @@ DROP TABLE IF EXISTS `action`;
 CREATE TABLE `action`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `user_id` INTEGER NOT NULL,
+    `user_id` INTEGER,
     `action_time` DATETIME NOT NULL,
     `key` VARCHAR(100) NOT NULL,
+    `identifier` VARCHAR(512),
     `details` VARCHAR(512),
     PRIMARY KEY (`id`),
     INDEX `action_FI_1` (`user_id`),

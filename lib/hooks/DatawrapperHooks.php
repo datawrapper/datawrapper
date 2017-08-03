@@ -194,6 +194,7 @@ class DatawrapperHooks {
     const SEND_CARD_EXPIRY_EMAIL = 'send_card_expiry_email';
     const SEND_FAILED_PAYMENT_EMAIL = 'send_failed_payment_email';
     const SEND_DOWNGRADE_EMAIL = 'send_downgrade_email';
+    const SEND_TEAM_SETUP_EMAIL = 'send_team_setup_email';
 
     // hooks to add markup in chart editor steps below nav 
     const UPLOAD_BEFORE_CONTENT = 'upload_before_content';

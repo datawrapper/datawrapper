@@ -56,6 +56,7 @@
     <column name="website" type="varchar" required="false" size="512" />
     <column name="sm_profile" type="varchar" required="false" size="512" />
     <column name="oauth_signin" type="varchar" required="false" size="512" phpName="OAuthSignIn" />
+    <column name="customer_id" type="varchar" size="512" />
   </table>
 
   <!-- organizations -->
@@ -93,12 +94,13 @@
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
     <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
-    <column name="user_id" type="integer" required="true"/>
+    <column name="user_id" type="integer"/>
     <foreign-key foreignTable="user">
       <reference local="user_id" foreign="id"/>
     </foreign-key>
     <column name="action_time" type="timestamp" required="true" />
     <column name="key" type="varchar" size="100" required="true" />
+    <column name="identifier" type="varchar" size="512" />
     <column name="details" type="varchar" size="512" required="false" />
   </table>
 

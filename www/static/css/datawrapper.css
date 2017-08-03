@@ -361,32 +361,24 @@ footer .version {
 }
 html .btn {
   border-radius: 5px;
+  background-image: none!important;
 }
 html .btn-primary {
   color: #ffffff;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-  background-color: #006dcc;
-  *background-color: #0276B0;
-  background-image: -moz-linear-gradient(top, #0088cc, #0276B0);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#0088cc), to(#0276B0));
-  background-image: -webkit-linear-gradient(top, #0088cc, #0276B0);
-  background-image: -o-linear-gradient(top, #0088cc, #0276B0);
-  background-image: linear-gradient(to bottom, #0088cc, #0276B0);
+  background-color: #08c;
   background-repeat: repeat-x;
   border-color: #0276B0 #0276B0 #0276B0;
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff0276B0', GradientType=0);
-  filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
 }
-.btn-primary:hover,
-.btn-primary:focus,
-.btn-primary:active,
-.btn-primary.active,
-.btn-primary.disabled,
-.btn-primary[disabled] {
+html .btn-primary:hover,
+html .btn-primary:focus,
+html .btn-primary:active,
+html .btn-primary.active,
+html .btn-primary.disabled,
+html .btn-primary[disabled] {
   color: #ffffff;
-  background-color: #0276B0;
-  *background-color: #003bb3;
+  background: #08c!important;
 }
 html .btn-inverse {
   background: #555;
@@ -734,7 +726,6 @@ html .btn-inverse {
 #computed-columns {
   width: 710px;
   margin-left: -355px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
   border: 0;
 }
 #computed-columns .modal-body {
@@ -980,7 +971,6 @@ html .btn-inverse {
   font-weight: bold;
 }
 #iframe-wrapper {
-  box-shadow: 1px 1px 64px rgba(0, 0, 0, 0.13), 0px 0px 2px #ccc;
   border: 1px solid #fff;
   padding: 10px;
   border-radius: 0px;
@@ -1034,7 +1024,6 @@ html .btn-inverse {
 .chart-editor.dw-create-visualize .visualization [contenteditable]:hover,
 .chart-editor.dw-create-visualize .visualization [contenteditable]:focus {
   background: #fff;
-  box-shadow: inset 0 0 3px #999;
 }
 .chart-editor.dw-create-visualize .visualization [contenteditable]:hover {
   padding: 5px;
@@ -1220,7 +1209,6 @@ html .btn-inverse {
   font-family: 'Roboto Condensed', Helvetica, sans-serif;
   color: #444;
   line-height: 18px;
-  box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.03);
 }
 .chart-editor.dw-create-visualize #vis-options .tooltip.right .tooltip-arrow,
 .chart-editor.dw-create-visualize .vis-options .tooltip.right .tooltip-arrow {
@@ -1419,7 +1407,6 @@ html .btn-inverse {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  box-shadow: inset 0px -5px 7px rgba(0, 0, 0, 0.05);
   border: 1px solid #e5e5e5;
   background: #f9f9f9;
   border-bottom: 0;
@@ -1427,7 +1414,6 @@ html .btn-inverse {
 .chart-editor.dw-create-visualize .visualize-nav-tabs .active a {
   color: #000;
   font-weight: bold;
-  box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.05) inset;
   background: #fff;
 }
 .chart-editor.dw-create-visualize .control-group .pull-left {
@@ -1542,7 +1528,6 @@ html .btn-inverse {
   margin-bottom: 1ex;
 }
 .dw-create-publish #iframe-vis {
-  box-shadow: 2px 2px 11px rgba(0, 0, 0, 0.2);
   border: 10px solid #fff;
   -webkit-transition: all 800ms cubic-bezier(0.19, 1, 0.22, 1);
   -moz-transition: all 800ms cubic-bezier(0.19, 1, 0.22, 1);
@@ -1577,7 +1562,6 @@ html .btn-inverse {
   overflow: hidden;
   position: relative;
   padding: 15px 0 15px;
-  box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.6), inset 0 0 31px rgba(0, 0, 0, 0.05), inset 0 -1px 2px rgba(0, 0, 0, 0.25);
 }
 .dw-create-publish .chart-actions li a .title {
   display: inline-block;
@@ -1608,9 +1592,6 @@ html .btn-inverse {
   right: -23px;
   top: 10px;
   text-align: center;
-}
-.dw-create-publish .chart-actions li.promo {
-  box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.6), inset 0 0 31px rgba(128, 0, 128, 0.05), inset 0 -1px 2px rgba(128, 0, 128, 0.25);
 }
 .dw-create-publish .chart-actions li.promo a {
   color: #460046 !important;
@@ -1725,7 +1706,6 @@ html .btn-inverse {
   border: 1px solid #eee;
   border-radius: 0;
   padding: 10px;
-  box-shadow: 0 0 80px #f5f5f5;
   background: #fff;
   margin-bottom: 30px;
 }
@@ -1799,7 +1779,6 @@ html .navbar-static-top {
   margin-right: 30px;
 }
 #recent-charts img {
-  box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
   background: #fff;
 }
 @media (max-width: 979px) {
@@ -1988,7 +1967,6 @@ dl.dl-horizontal dd {
 html .tooltip .tooltip-inner {
   background: #fff;
   color: #000;
-  box-shadow: 0 0 14px rgba(0, 0, 0, 0.1);
   font-size: 11px;
   border: 1px solid #000;
   line-height: 14px;
@@ -2066,7 +2044,6 @@ form.well form {
 }
 .well {
   background: #f2f2f2;
-  box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.05) inset;
 }
 .well hr {
   border-top-color: #ccc;
@@ -2129,7 +2106,6 @@ form.well form {
   background: none repeat scroll 0 0 #333333;
   border: 2px solid #FFFFFF;
   border-radius: 13px 13px 13px 13px;
-  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
   color: #FFFFFF;
   cursor: pointer;
   font-size: 15px;

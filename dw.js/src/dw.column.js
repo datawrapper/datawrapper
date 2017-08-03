@@ -43,6 +43,7 @@ dw.column = function(name, rows, type) {
             if (t.errors() / k < tolerance) type = t;
             return !type;
         });
+        if (_.isUndefined(type)) type = types[2]; // default to text;
         return type;
     }
 

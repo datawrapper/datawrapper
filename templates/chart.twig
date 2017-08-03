@@ -21,7 +21,7 @@
         {{ hook('chart_html_head', chart) }}
 
 {% for src in stylesheets %}
-    <link rel="stylesheet" type="text/css" href="{{ src }}"></link>
+    <link rel="stylesheet" type="text/css" href="{{ src }}?v={{ vis_version }}"></link>
 {% endfor %}
 
     <script type="text/javascript" charset="utf-8">
@@ -31,7 +31,7 @@
 {% for script in scripts %}
   {% if script.ie %}<!--[if {{ script.ie }}]>
   {% endif %}
-    <script type="text/javascript" charset="utf-8" src="{% if script.src %}{{ script.src }}{% else %}{{ script }}{% endif %}"></script>
+    <script type="text/javascript" charset="utf-8" src="{% if script.src %}{{ script.src }}{% else %}{{ script }}{% endif %}?v={{ vis_version }}"></script>
   {% if script.ie %}<![endif]-->
   {% endif %}
 {% endfor %}
@@ -68,6 +68,10 @@
     </div>
 
     <div class="dw-chart-body" id="chart"></div>
+
+    {% if theme.getThemeData('template.afterChart') %}
+        {{ theme.getThemeData('template.afterChart') | raw }}
+    {% endif %}
 
     <div class="dw-chart-footer" id="footer">
         {% if not plain %}
@@ -172,8 +176,5 @@
 
     </script>
 
-    {% if theme.getThemeData('template.afterChart') %}
-        {{ theme.getThemeData('template.afterChart') | raw }}
-    {% endif %}
 </body>
 </html>

@@ -24,13 +24,13 @@ abstract class BaseActionPeer
     const TM_CLASS = 'ActionTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 5;
+    const NUM_COLUMNS = 6;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 5;
+    const NUM_HYDRATE_COLUMNS = 6;
 
     /** the column name for the id field */
     const ID = 'action.id';
@@ -43,6 +43,9 @@ abstract class BaseActionPeer
 
     /** the column name for the key field */
     const KEY = 'action.key';
+
+    /** the column name for the identifier field */
+    const IDENTIFIER = 'action.identifier';
 
     /** the column name for the details field */
     const DETAILS = 'action.details';
@@ -66,12 +69,12 @@ abstract class BaseActionPeer
      * e.g. ActionPeer::$fieldNames[ActionPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'UserId', 'ActionTime', 'Key', 'Details', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'userId', 'actionTime', 'key', 'details', ),
-        BasePeer::TYPE_COLNAME => array (ActionPeer::ID, ActionPeer::USER_ID, ActionPeer::ACTION_TIME, ActionPeer::KEY, ActionPeer::DETAILS, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'USER_ID', 'ACTION_TIME', 'KEY', 'DETAILS', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'user_id', 'action_time', 'key', 'details', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'UserId', 'ActionTime', 'Key', 'Identifier', 'Details', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'userId', 'actionTime', 'key', 'identifier', 'details', ),
+        BasePeer::TYPE_COLNAME => array (ActionPeer::ID, ActionPeer::USER_ID, ActionPeer::ACTION_TIME, ActionPeer::KEY, ActionPeer::IDENTIFIER, ActionPeer::DETAILS, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'USER_ID', 'ACTION_TIME', 'KEY', 'IDENTIFIER', 'DETAILS', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'user_id', 'action_time', 'key', 'identifier', 'details', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
     );
 
     /**
@@ -81,12 +84,12 @@ abstract class BaseActionPeer
      * e.g. ActionPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'UserId' => 1, 'ActionTime' => 2, 'Key' => 3, 'Details' => 4, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'userId' => 1, 'actionTime' => 2, 'key' => 3, 'details' => 4, ),
-        BasePeer::TYPE_COLNAME => array (ActionPeer::ID => 0, ActionPeer::USER_ID => 1, ActionPeer::ACTION_TIME => 2, ActionPeer::KEY => 3, ActionPeer::DETAILS => 4, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'USER_ID' => 1, 'ACTION_TIME' => 2, 'KEY' => 3, 'DETAILS' => 4, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'user_id' => 1, 'action_time' => 2, 'key' => 3, 'details' => 4, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'UserId' => 1, 'ActionTime' => 2, 'Key' => 3, 'Identifier' => 4, 'Details' => 5, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'userId' => 1, 'actionTime' => 2, 'key' => 3, 'identifier' => 4, 'details' => 5, ),
+        BasePeer::TYPE_COLNAME => array (ActionPeer::ID => 0, ActionPeer::USER_ID => 1, ActionPeer::ACTION_TIME => 2, ActionPeer::KEY => 3, ActionPeer::IDENTIFIER => 4, ActionPeer::DETAILS => 5, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'USER_ID' => 1, 'ACTION_TIME' => 2, 'KEY' => 3, 'IDENTIFIER' => 4, 'DETAILS' => 5, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'user_id' => 1, 'action_time' => 2, 'key' => 3, 'identifier' => 4, 'details' => 5, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
     );
 
     /**
@@ -164,12 +167,14 @@ abstract class BaseActionPeer
             $criteria->addSelectColumn(ActionPeer::USER_ID);
             $criteria->addSelectColumn(ActionPeer::ACTION_TIME);
             $criteria->addSelectColumn(ActionPeer::KEY);
+            $criteria->addSelectColumn(ActionPeer::IDENTIFIER);
             $criteria->addSelectColumn(ActionPeer::DETAILS);
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.user_id');
             $criteria->addSelectColumn($alias . '.action_time');
             $criteria->addSelectColumn($alias . '.key');
+            $criteria->addSelectColumn($alias . '.identifier');
             $criteria->addSelectColumn($alias . '.details');
         }
     }
