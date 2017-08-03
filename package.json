@@ -15,13 +15,15 @@
       "d3": true
     }
   },
+  "scripts": {
+    "install": "grunt",
+    "watch": "watch 'make assets' assets/"
+  },
   "devDependencies": {
     "grunt": "^1.0.1",
     "grunt-bowercopy": "^1.2.4",
     "grunt-subgrunt": "^1.2.0",
-    "less": "^2.7.1"
-  },
-  "scripts": {
-    "install": "grunt"
+    "less": "^2.7.1",
+    "watch": "^1.0.2"
   }
 }
