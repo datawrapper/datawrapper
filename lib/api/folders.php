@@ -216,6 +216,7 @@ function list_subdirs($type, $parent_id, $user_id, $org_id = false) {
         $dir_id = $dir->getFolderId();
         $data = new stdClass();
         $data->id = $dir_id;
+        $data->charts = ChartQuery::create()->findByInFolder($dir_id)->count();
         $data->sub = list_subdirs($type, $dir_id, $user_id);
         $node->$name = $data;
     }
