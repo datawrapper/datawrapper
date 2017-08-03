@@ -350,6 +350,8 @@ const build_tree_list = function(tree, parent, path) {
         var l = document.createElement('li'),
             a = document.createElement('a');
         a.innerText = folder;
+        if (tree[folder].charts > 0)
+            a.innerText += ' (' + tree[folder].charts + ')';
         a.setAttribute('href', '{{ mycharts_base }}/by/folder/' + tree[folder].id);
 
         nu_path = path.concat(folder);
