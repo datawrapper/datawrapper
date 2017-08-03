@@ -10,68 +10,80 @@
 
     .vis-thumb {
         width: 80px;
-        height: 90px;
+        height: 78px; //90
         border-radius: 0px;
-        border: 1px solid #fff;
-        background: #fff;
+        border: 2px solid #fff;
+        background: @light-grey;
         position: relative;
         display: inline-block;
-        margin: 0 5px 4px 0;
+        margin: 0 8px 8px 0;
         cursor: pointer;
 
         @media (max-width: 1199px) {
-            width: 65px;
+            width: 75px;
             height: 75px;
         }
 
         svg {
-            width: 55px;
-            height: 60px;
-            margin-left: 10px;
-            margin-top: 5px;
+            width: 30px; //55
+            height: 40px; //60
+            margin-left: 25px; //10
+            margin-top: 10px; //5
 
-            path, rect, circle { fill: @pale-blue; }
-            line { stroke: @pale-blue; }
+            path, rect, circle, ellipse, polyline { fill: @bright-blue; }
+          //  line { stroke: @bright-blue; }
 
             @media (max-width: 1199px) {
-                width: 45px;
-                height: 55px;
-                margin-left: 10px;
-                margin-top: 3px;
+                width: 30px;
+                height: 40px;
+                margin-left: 23px;
+                margin-top: 10px;
             }
         }
 
         .title {
             position: absolute;
-            bottom: 3px;
+            bottom: 5px;
             left: 5px;
             right: 5px;
-            font-size: 13px;
-            font-family: @base-font-cd;
-            line-height: 15px;
+            font-size: 11px;
+            font-family: @base-font;
+            font-weight: 500;
+            line-height: 14px;
             text-align: center;
-            text-shadow: 1px 1px 0px #fff,0px 1px 0px #fff,-1px 1px 0px #fff,
-                1px -1px 0px #fff,0px -1px 0px #fff,-1px -1px 0px #fff,
-                1px 0px 0px #fff,0px 0px 0px #fff,-1px 0px 0px #fff;
+            text-shadow: 1px 1px 0px @light-grey,0px 1px 0px @light-grey,-1px 1px 0px @light-grey,
+                1px -1px 0px @light-grey,0px -1px 0px @light-grey,-1px -1px 0px @light-grey,
+                1px 0px 0px @light-grey,0px 0px 0px @light-grey,-1px 0px 0px @light-grey;
             color: #555;
         }
 
         &.active {
-            border: 1px solid #1981DD;
-            box-shadow: 0 0 10px rgba(25, 129, 221, .6);
+          border: 2px solid fade(@bright-blue,80%);
+          background: #CCE7F5; // equals fade()@bright-blue, 20%)
+            //box-shadow: 0 0 10px rgba(25, 129, 221, .6);
 
             .title {
                 color: #000;
+                text-shadow: 1px 1px 0px #CCE7F5,0px 1px 0px #CCE7F5,-1px 1px 0px #CCE7F5,
+                    1px -1px 0px #CCE7F5, 0px -1px 0px #CCE7F5, -1px -1px 0px #CCE7F5,
+                    1px 0px 0px #CCE7F5, 0px 0px 0px #CCE7F5, -1px 0px 0px #CCE7F5;
             }
 
             svg {
-                path, rect, circle { fill: #000; }
-                line { stroke: #000; }
+                path, rect, circle, ellipse, polyline { fill: #00679b; }
+              //  line { stroke: #000; }
             }
         }
 
         &:hover {
-            border: 1px solid #ccc;
+            //border: 2px solid @bright-blue;
+            background: #CCE7F5;
+
+            .title {
+                text-shadow: 1px 1px 0px #CCE7F5,0px 1px 0px #CCE7F5,-1px 1px 0px #CCE7F5,
+                    1px -1px 0px #CCE7F5, 0px -1px 0px #CCE7F5, -1px -1px 0px #CCE7F5,
+                    1px 0px 0px #CCE7F5, 0px 0px 0px #CCE7F5, -1px 0px 0px #CCE7F5;
+            }
         }
     }
 }
