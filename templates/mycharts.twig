@@ -321,8 +321,7 @@ $('body').load(function() {
 
 });
 
-var folder_tree,
-    folder_list = [];
+var folder_tree;
 
 const build_line = function(path) {
     var cwd, mypath, hopper,
@@ -388,7 +387,7 @@ const build_tree_list = function(tree, parent, path, pathstring) {
             a2.setAttribute('href', '#');
             a2.setAttribute('tabindex', '-1');
             l2.appendChild(a2);
-            folder_list.push(l2);
+
             $('.dropdown-menu.folder-list').append(l2);
         }
 
@@ -408,10 +407,32 @@ $('document').ready(function() {
             } else if (res.status == 'ok') {
                 folder_tree = res.data
                 build_tree_list(folder_tree, $('#dynamic-tree'));
+
+                $('.chart .folder-list a').click(function(e) {
+                    //only user for now
+                    const folder_type = 'user';
+                    var id = $(e.target).parents('.chart').data('id');
+                    e.preventDefault();
+
+                    $.ajax({
+                        url: '/api/folders/chart/' + folder_type + '/' + id + '/' + $(e.target).text(),
+                        type: 'PUT',
+                        dataType: 'JSON'
+                    }).done(function(res) {
+                        if (res.status == 'error') {
+                            alert(res.message);
+                        } else if (res.status == 'ok') {
+                            location.reload(true);
+                        }
+                    }).fail(function(err) {
+                        alert('API Error');
+                        console.error(err);
+                    });
+                });
             }
-        })
-        .fail(function(err) {
+        }).fail(function(err) {
             alert('API Error');
+            console.error(err);
         });
 });
 
