@@ -61,7 +61,6 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
 
     if ($user->isLoggedIn()) {
 
-
         $username = $user->guessName();
         if ($username == $user->getEmail()) {
             $username = strlen($username) > 18 ? substr($username, 0, 9).'…'.substr($username, strlen($username)-9) : $username;
@@ -99,8 +98,6 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
         }
 
         header_nav_hook($headlinks, 'mycharts');
-
-
 
     } else {
         $headlinks[] = array(
@@ -190,6 +187,13 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
     if (DatawrapperHooks::hookRegistered(DatawrapperHooks::CUSTOM_LOGO)) {
         $logos = DatawrapperHooks::execute(DatawrapperHooks::CUSTOM_LOGO);
         $page['custom_logo'] = $logos[0];
+    }
+
+    if ($user->isAdmin()) {
+        $plugin_status = check_plugins();
+        if (!empty($plugin_status)) {
+            $page['alertMessage'] = $plugin_status;
+        }
     }
 
     foreach ($headlinks as $i => $link) {
