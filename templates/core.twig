@@ -96,6 +96,12 @@
         </div>
     {% endif %}
 
+    {% if alertMessage %}
+        <div class="dw-alert-message">
+            {{ alertMessage | raw }}
+        </div>
+    {% endif %}
+
     {% if not noHeader %}
 
     <header class="header">

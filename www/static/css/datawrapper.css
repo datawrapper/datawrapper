@@ -1765,6 +1765,34 @@ body.dw h1 {
   font-weight: 300;
   font-size: 32px;
 }
+.dw-alert-message {
+  padding: 10px;
+  width: 100%;
+  z-index: 10000;
+  background: #210;
+  color: #ffb;
+  text-align: center;
+}
+.dw-alert-message h2,
+.dw-alert-message p,
+.dw-alert-message li {
+  color: #fff;
+}
+.dw-alert-message li {
+  display: inline-block;
+  margin-right: 1em;
+}
+.dw-alert-message h2 {
+  margin: 0 0 0px;
+  font-size: 18px;
+  font-weight: bold;
+}
+.dw-alert-message code {
+  background: #300;
+  font-size: 14px;
+  color: #ff6;
+  border: 0;
+}
 html h2 {
   font-size: 24px;
   line-height: 36px;

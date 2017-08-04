@@ -180,7 +180,7 @@ function check_server() {
     $check[] = 'check_config';
     $check[] = 'check_path_permissions';
     $check[] = 'check_database';
-    $check[] = 'check_plugins';
+    // $check[] = 'check_plugins';
 
     foreach ($check as $func) {
         $msg = call_user_func($func);
