@@ -51,6 +51,12 @@
 .folders li a { cursor: pointer; }
 .folders li:before { content:"🗁 "; }
 
+.dropdown-submenu .dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -1px;
+}
+
 </style>
 <div class="gallery-filter">
 
@@ -170,14 +176,18 @@
                           <i class="icon-wrench"></i>
                         <span class="caret"></span>
                         </a>
-                         <ul class="dropdown-menu">
+                        <ul class="dropdown-menu">
                             {% if user2 %}
                             <li><a class="edit" href="#"><i class="icon-edit"></i> {% trans "Edit" %}</a></li>
                             {% endif %}
                             <li><a class="duplicate" href="#"><i class="icon-plus"></i> {% trans "Duplicate" %}</a></li>
                             {# <li><a href="/chart/{{ chart.id }}/static?w=700&amp;h=490&amp;f=pdf&amp;padding=20"><i class="icon-download"></i> {% trans "Save as PDF" %}</a></li>
                             <li class="divider"></li> #}
-                            <li><a href="" class="delete"><i class="icon-remove"></i> {% trans "Delete" %}</a></li>
+                            <li><a class="delete" href="#"><i class="icon-remove"></i> {% trans "Delete" %}</a></li>
+                            <li class="dropdown-submenu">
+                                <a class="test" tabindex="-1" href="#"><i class="icon-folder-open"></i> {% trans "MoveTo" %}</a>
+                                <ul class="dropdown-menu folder-list"></ul>
+                            </li>
                         <!-- dropdown menu links -->
                         </ul>
                      </div>
@@ -311,7 +321,8 @@ $('body').load(function() {
 
 });
 
-var folder_tree;
+var folder_tree,
+    folder_list = [];
 
 const build_line = function(path) {
     var cwd, mypath, hopper,
@@ -336,35 +347,55 @@ const build_line = function(path) {
     $('#current-folder').text(cwd);
 };
 
-const build_tree_list = function(tree, parent, path) {
+const build_tree_list = function(tree, parent, path, pathstring) {
     const filter = { 
         key: '{{key}}',
         val: '{{val}}'
     };
+    // const folder_icon = '<i class="icon-folder-open"></i>';
     var nu_path,
         subfolders = Object.keys(tree);
 
-    if (typeof(path) === 'undefined') path = [];
+    if (typeof(path) === 'undefined'){
+        path = [];
+        pathstring = '';
+    }
 
     subfolders.forEach(function(folder) {
-        var l = document.createElement('li'),
-            a = document.createElement('a');
-        a.innerText = folder;
+        var l1 = document.createElement('li'),
+            a1 = document.createElement('a'),
+            l2 = document.createElement('li'),
+            a2 = document.createElement('a');
+
+        // l.innerHTML = folder_icon;
+        a1.innerText = folder;
         if (tree[folder].charts > 0)
-            a.innerText += ' (' + tree[folder].charts + ')';
-        a.setAttribute('href', '{{ mycharts_base }}/by/folder/' + tree[folder].id);
+            a1.innerText += ' (' + tree[folder].charts + ')';
+        a1.setAttribute('href', '{{ mycharts_base }}/by/folder/' + tree[folder].id);
 
         nu_path = path.concat(folder);
-        if (filter.key === 'folder' && filter.val == tree[folder].id)
-            build_line(nu_path);
+        nu_pstr = pathstring + '/' + folder;
 
-        l.appendChild(a);
-        parent.append(l);
+        l1.appendChild(a1);
+        parent.append(l1);
+
+        if (filter.key === 'folder' && filter.val == tree[folder].id) {
+            // hijack this pass to build active folder line
+            build_line(nu_path);
+        } else {
+            // or append this folder to the MoveTo submenu
+            a2.innerText = nu_pstr.slice(1);
+            a2.setAttribute('href', '#');
+            a2.setAttribute('tabindex', '-1');
+            l2.appendChild(a2);
+            folder_list.push(l2);
+            $('.dropdown-menu.folder-list').append(l2);
+        }
 
         if (tree[folder]) {
             var nu_par = document.createElement('ul');
             parent.append(nu_par);
-            build_tree_list(tree[folder].sub, $(nu_par), nu_path);
+            build_tree_list(tree[folder].sub, $(nu_par), nu_path, nu_pstr);
         }
     });
 };
