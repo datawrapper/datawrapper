@@ -185,7 +185,7 @@
                             <li class="divider"></li> #}
                             <li><a class="delete" href="#"><i class="icon-remove"></i> {% trans "Delete" %}</a></li>
                             <li class="dropdown-submenu">
-                                <a class="move-to-dir" tabindex="-1" href="#"><i class="icon-folder-open"></i> {% trans "Move" %}</a>
+                                <a tabindex="-1" href="#"><i class="icon-folder-open"></i> {% trans "Move" %}</a>
                                 <ul class="dropdown-menu folder-list"></ul>
                             </li>
                             {% if key == 'folder' %}
@@ -403,17 +403,30 @@ const build_tree_list = function(tree, parent, path, pathstring) {
 };
 
 $('document').ready(function() {
+    var fail = function(err) {
+        alert('API Error');
+        console.error(err);
+    };
+
     $.getJSON('/api/folders/dir/user/')
         .done(function(res) {
             if (res.status == 'error') {
                 alert(res.message);
             } else if (res.status == 'ok') {
+                //only user for now
+                const folder_type = 'user';
+                var done = function(res) {
+                    if (res.status == 'error') {
+                        alert(res.message);
+                    } else if (res.status == 'ok') {
+                        location.reload(true);
+                    }
+                }
+
                 folder_tree = res.data
                 build_tree_list(folder_tree, $('#dynamic-tree'));
 
                 $('.chart .folder-list a').click(function(e) {
-                    //only user for now
-                    const folder_type = 'user';
                     var id = $(e.target).parents('.chart').data('id');
                     e.preventDefault();
 
@@ -421,22 +434,21 @@ $('document').ready(function() {
                         url: '/api/folders/chart/' + folder_type + '/' + id + '/' + $(e.target).text(),
                         type: 'PUT',
                         dataType: 'JSON'
-                    }).done(function(res) {
-                        if (res.status == 'error') {
-                            alert(res.message);
-                        } else if (res.status == 'ok') {
-                            location.reload(true);
-                        }
-                    }).fail(function(err) {
-                        alert('API Error');
-                        console.error(err);
-                    });
+                    }).done(done).fail(fail);
+                });
+
+                $('.chart .remove-from-dir').click(function(e) {
+                    var id = $(e.target).parents('.chart').data('id');
+                    e.preventDefault();
+
+                    $.ajax({
+                        url: '/api/folders/chart/' + folder_type + '/' + id,
+                        type: 'DELETE',
+                        dataType: 'JSON'
+                    }).done(done).fail(fail);
                 });
             }
-        }).fail(function(err) {
-            alert('API Error');
-            console.error(err);
-        });
+        }).fail(fail);
 });
 
 </script>
