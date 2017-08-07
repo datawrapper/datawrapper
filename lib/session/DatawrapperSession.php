@@ -141,7 +141,7 @@ class DatawrapperSession {
     }
 
     /**
-     * retreive the currently used frontend locale
+     * retrieve the currently used frontend locale
      *
      * For historical reasons, this is named getLanguage(), even though it always returned the
      * full locale and all places where it's called actually do a substr(_,0,2) themselves.
