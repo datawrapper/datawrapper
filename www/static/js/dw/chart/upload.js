@@ -44,7 +44,7 @@ define(function() {
                 if (res.status == "ok") nextPage('describe');
                 else {
                     if (typeof(res.message) === 'undefined')
-                        res.message = "Data can not be parsed!"
+                        res.message = "Data can not be parsed!";
                     dw.backend.logError(res.message, txtarea.parent().parent());
                 }
             }
