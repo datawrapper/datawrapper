@@ -83,7 +83,7 @@ $app->put('/folders/chart/:type/:chart_id/:path+', function($type, $chart_id, $p
 
 /**
  * remove a chart from a folder
- * when a chart is removed its in_folder field will be set to NULL making it go back to all charts
+ * when a chart is removed, its in_folder field will be set to NULL making it go back to all charts
  * bacause the chart can only be located in one folder it is not necessary to specify the path
  *
  * @param type the type of folder
