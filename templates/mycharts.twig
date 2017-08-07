@@ -185,10 +185,12 @@
                             <li class="divider"></li> #}
                             <li><a class="delete" href="#"><i class="icon-remove"></i> {% trans "Delete" %}</a></li>
                             <li class="dropdown-submenu">
-                                <a class="test" tabindex="-1" href="#"><i class="icon-folder-open"></i> {% trans "Move To" %}</a>
+                                <a class="move-to-dir" tabindex="-1" href="#"><i class="icon-folder-open"></i> {% trans "Move" %}</a>
                                 <ul class="dropdown-menu folder-list"></ul>
                             </li>
-                            <li><a class="test" tabindex="-1" href="#"><i class="icon-folder-open"></i> {% trans "Remove" %}</a></li>
+                            {% if key == 'folder' %}
+                            <li><a class="remove-from-dir" tabindex="-1" href="#"><i class="icon-folder-open"></i> {% trans "Remove" %}</a></li>
+                            {% endif %}
                         <!-- dropdown menu links -->
                         </ul>
                      </div>
