@@ -43,6 +43,8 @@ define(function() {
             onComplete: function(code, filename, res) {
                 if (res.status == "ok") nextPage('describe');
                 else {
+                    if (typeof(res.message) === 'undefined')
+                        res.message = "Data can not be parsed!";
                     dw.backend.logError(res.message, txtarea.parent().parent());
                 }
             }
