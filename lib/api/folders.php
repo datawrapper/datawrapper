@@ -226,10 +226,10 @@ function list_subdirs($type, $parent_id, $user_id, $org_id = false) {
 
 /**
  * list all subdirectorys
- * 
+ *
  * @param type the type of folder which should be listed
  * @param path the startding point in the dir tree
- */ 
+ */
 $app->get('/folders/dir/:type/(:path+|)/?', function($type, $path = []) use ($app) {
     disable_cache($app);
     $user = DatawrapperSession::getUser();
