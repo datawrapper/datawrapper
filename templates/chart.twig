@@ -170,6 +170,12 @@
                     '{{ chart.id }}': desiredHeight
                 }
             }, "*");
+
+            window.parent.postMessage({
+                sentinel: 'amp',
+                type: 'embed-size',
+                height: desiredHeight
+            }, '*');
         }, 1000);
     }
 
