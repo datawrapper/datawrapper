@@ -55,6 +55,10 @@
 }
 .folders li .btn-group { visibility: hidden; }
 .folders li:hover .btn-group { visibility: visible; }
+.folders .dropdown-menu {
+    top: -5px;
+    left: 31px;
+}
 
 .dropdown-submenu .dropdown-menu {
     top: 0;
@@ -331,7 +335,21 @@ $('body').load(function() {
 
 var folder_tree;
 
-const folder_menu = function(el) {
+const handler = {
+    fail: function(err) {
+        alert('API Error');
+        console.error(err);
+    },
+    done: function(res) {
+        if (res.status == 'error') {
+            alert(res.message);
+        } else if (res.status == 'ok') {
+            location.reload(true);
+        }
+    }
+};
+
+const folder_menu = function(el, path, id) {
     const html_blob = `
         <div class="btn-group">
             <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
@@ -339,11 +357,27 @@ const folder_menu = function(el) {
                 <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
-                <li><a class="duplicate" href="#"><i class="icon-plus"></i> Placeholder</a></li>
+                <li><a class="delete" href="#"><i class="icon-remove"></i> {% trans "Remove" %}</a></li>
             </ul>
         </div>`;
+    const folder_type = 'user';
+    var menu;
 
     el.append(html_blob);
+    menu = el.find(".btn-group .dropdown-menu");
+
+    menu.find(".delete").click(function() {
+        console.log(path);
+        $.ajax({
+            url: '/api/folders/dir/' + folder_type + '/' + path,
+            type: 'DELETE',
+            dataType: 'JSON'
+        }).done(handler.done).fail(handler.fail);
+    });
+
+    // can't delete root!
+    if(!path)
+        menu.find(".delete").remove();
 }
 
 const build_line = function(path) {
@@ -387,22 +421,23 @@ const build_tree_list = function(tree, parent, path, pathstring) {
         var l1 = document.createElement('li'),
             a1 = document.createElement('a'),
             l2 = document.createElement('li'),
-            a2 = document.createElement('a');
+            a2 = document.createElement('a'),
+            id = tree[folder].id;
 
         // l.innerHTML = folder_icon;
         a1.innerHTML = folder_icon + ' ' + folder;
         if (tree[folder].charts > 0)
             a1.innerHTML += ' (' + tree[folder].charts + ')';
-        a1.setAttribute('href', '{{ mycharts_base }}/by/folder/' + tree[folder].id);
+        a1.setAttribute('href', '{{ mycharts_base }}/by/folder/' + id);
 
         nu_path = path.concat(folder);
         nu_pstr = pathstring + '/' + folder;
 
         l1.appendChild(a1);
-        folder_menu($(l1));
+        folder_menu($(l1), nu_pstr.slice(1), id);
         parent.append(l1);
 
-        if (filter.key === 'folder' && filter.val == tree[folder].id) {
+        if (filter.key === 'folder' && filter.val == id) {
             // hijack this pass to build active folder line
             build_line(nu_path);
         } else {
@@ -424,11 +459,6 @@ const build_tree_list = function(tree, parent, path, pathstring) {
 };
 
 $('document').ready(function() {
-    var fail = function(err) {
-        alert('API Error');
-        console.error(err);
-    };
-
     $.getJSON('/api/folders/dir/user/')
         .done(function(res) {
             if (res.status == 'error') {
@@ -444,7 +474,7 @@ $('document').ready(function() {
                     }
                 }
 
-                folder_menu($("#base-folder"));
+                folder_menu($("#base-folder"), false);
                 folder_tree = res.data;
                 build_tree_list(folder_tree, $('#dynamic-tree'));
 
@@ -456,7 +486,7 @@ $('document').ready(function() {
                         url: '/api/folders/chart/' + folder_type + '/' + id + '/' + $(e.target).text(),
                         type: 'PUT',
                         dataType: 'JSON'
-                    }).done(done).fail(fail);
+                    }).done(handler.done).fail(handler.fail);
                 });
 
                 $('.chart .remove-from-dir').click(function(e) {
@@ -467,10 +497,10 @@ $('document').ready(function() {
                         url: '/api/folders/chart/' + folder_type + '/' + id,
                         type: 'DELETE',
                         dataType: 'JSON'
-                    }).done(done).fail(fail);
+                    }).done(handler.done).fail(handler.fail);
                 });
             }
-        }).fail(fail);
+        }).fail(handler.fail);
 });
 
 </script>
