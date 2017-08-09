@@ -48,8 +48,13 @@
 }
 
 .folders ul ul { margin-left: 25px; }
-.folders li a { cursor: pointer; }
-.folders li:before { content:"🗁 "; }
+.folders li { line-height: 30px; }
+.folders li a {
+    cursor: pointer;
+    margin-right: 1em;
+}
+.folders li .btn-group { visibility: hidden; }
+.folders li:hover .btn-group { visibility: visible; }
 
 .dropdown-submenu .dropdown-menu {
     top: 0;
@@ -152,7 +157,7 @@
 <div class="folders-and-gallery">
     <div class="folders">
         <ul>
-            <li><a href="{{ mycharts_base }}">{% trans "My Charts" %}</a></li>
+            <li id="base-folder"><a href="{{ mycharts_base }}"><i class="icon-folder-open"></i> {% trans "My Charts" %}</a></li>
             <ul id="dynamic-tree">
             </ul>
         </ul>
@@ -173,8 +178,8 @@
 
                      <div class="btn-group">
                         <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                          <i class="icon-wrench"></i>
-                        <span class="caret"></span>
+                            <i class="icon-wrench"></i>
+                            <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
                             {% if user2 %}
@@ -326,6 +331,21 @@ $('body').load(function() {
 
 var folder_tree;
 
+const folder_menu = function(el) {
+    const html_blob = `
+        <div class="btn-group">
+            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                <i class="icon-wrench"></i>
+                <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a class="duplicate" href="#"><i class="icon-plus"></i> Placeholder</a></li>
+            </ul>
+        </div>`;
+
+    el.append(html_blob);
+}
+
 const build_line = function(path) {
     var cwd, mypath, hopper,
         line = $('#folder-sequence');
@@ -354,7 +374,7 @@ const build_tree_list = function(tree, parent, path, pathstring) {
         key: '{{key}}',
         val: '{{val}}'
     };
-    // const folder_icon = '<i class="icon-folder-open"></i>';
+    const folder_icon = '<i class="icon-folder-open"></i>';
     var nu_path,
         subfolders = Object.keys(tree);
 
@@ -370,15 +390,16 @@ const build_tree_list = function(tree, parent, path, pathstring) {
             a2 = document.createElement('a');
 
         // l.innerHTML = folder_icon;
-        a1.innerText = folder;
+        a1.innerHTML = folder_icon + ' ' + folder;
         if (tree[folder].charts > 0)
-            a1.innerText += ' (' + tree[folder].charts + ')';
+            a1.innerHTML += ' (' + tree[folder].charts + ')';
         a1.setAttribute('href', '{{ mycharts_base }}/by/folder/' + tree[folder].id);
 
         nu_path = path.concat(folder);
         nu_pstr = pathstring + '/' + folder;
 
         l1.appendChild(a1);
+        folder_menu($(l1));
         parent.append(l1);
 
         if (filter.key === 'folder' && filter.val == tree[folder].id) {
@@ -423,7 +444,8 @@ $('document').ready(function() {
                     }
                 }
 
-                folder_tree = res.data
+                folder_menu($("#base-folder"));
+                folder_tree = res.data;
                 build_tree_list(folder_tree, $('#dynamic-tree'));
 
                 $('.chart .folder-list a').click(function(e) {
