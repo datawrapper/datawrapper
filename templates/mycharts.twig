@@ -349,7 +349,7 @@ const handler = {
     }
 };
 
-const folder_menu = function(el, path, id) {
+const folder_menu = function(el, path, id, subfolders) {
     const html_blob = `
         <div class="btn-group">
             <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
@@ -376,7 +376,7 @@ const folder_menu = function(el, path, id) {
     });
 
     // can't delete root!
-    if(!path)
+    if(!path || subfolders)
         menu.find(".delete").remove();
 }
 
@@ -434,7 +434,7 @@ const build_tree_list = function(tree, parent, path, pathstring) {
         nu_pstr = pathstring + '/' + folder;
 
         l1.appendChild(a1);
-        folder_menu($(l1), nu_pstr.slice(1), id);
+        folder_menu($(l1), nu_pstr.slice(1), id, tree[folder].sub != false); //last param evaluates to bool
         parent.append(l1);
 
         if (filter.key === 'folder' && filter.val == id) {
@@ -450,7 +450,7 @@ const build_tree_list = function(tree, parent, path, pathstring) {
             $('.dropdown-menu.folder-list').append(l2);
         }
 
-        if (tree[folder]) {
+        if (tree[folder].sub) {
             var nu_par = document.createElement('ul');
             parent.append(nu_par);
             build_tree_list(tree[folder].sub, $(nu_par), nu_path, nu_pstr);
