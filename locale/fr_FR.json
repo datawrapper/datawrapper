@@ -361,5 +361,7 @@
     "login \/ signup \/ confirm": "Got it",
     "annotate \/ chart description": "Title \/ Description \/ Source",
     "visualize \/ vis archive": "Archived chart types:",
-    "Source": "Source"
+    "Source": "Source",
+    "Move": "Move",
+    "Remove": "Remove"
 }
