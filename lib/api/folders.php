@@ -305,7 +305,7 @@ $app->delete('/folders/dir/:type/:path+/?', function($type, $path) use ($app) {
                 $current_folder->delete();
                 ok();
             } else {
-                error('remaining-subfolders', 'You have to remove all subdfolders, before you can delete a folder');
+                error('remaining-subfolders', 'You have to remove all subdfolders, before you can delete a folder.');
             }
         } else {
             error('no-such-path', 'Path does not exist.');
