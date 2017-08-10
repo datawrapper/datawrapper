@@ -219,6 +219,13 @@ class Chart extends BaseChart {
     }
 
     /*
+     * checks if a user has the privilege to change the data in a chart
+     */
+    public function isDataWritable($user) {
+        return $this->isWritable() && !$this->getIsFork();
+    }
+
+    /*
      * checks if a chart is forkable
      */
     public function isForkable() {
