@@ -70,6 +70,11 @@ $app->get('/(chart|map)/:id/publish', function ($id) use ($app) {
         add_header_vars($page, 'chart', 'chart-editor/publish.css');
         add_editor_nav($page, 4);
 
+        if (!$chart->isDataWritable($user)) {
+            $page['steps'][0]['readonly'] = true;
+            $page['steps'][1]['readonly'] = true;
+        }
+
         $app->render('chart/publish.twig', $page);
     });
 });
