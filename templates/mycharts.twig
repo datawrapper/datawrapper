@@ -59,6 +59,18 @@
     top: -5px;
     left: 31px;
 }
+.folders .dropdown-menu .dropdown-menu {
+    top: -6px;
+    margin: 0px;
+    padding: 1px;
+}
+.folders .dropdown-menu .folder-confirm {
+    padding: 4px;
+    margin: 2px 2px 2px 0px;
+}
+.folders .dropdown-menu .folder-input {
+    margin: 2px;
+}
 
 .dropdown-submenu .dropdown-menu {
     top: 0;
@@ -357,7 +369,16 @@ const folder_menu = function(el, path, id, subfolders) {
                 <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
-                <li><a class="delete" href="#"><i class="icon-remove"></i> {% trans "Remove" %}</a></li>
+                <li><a class="delete-folder" tabindex="-1" href="#"><i class="icon-remove"></i> {% trans "Remove" %}</a></li>
+                <li class="dropdown-submenu">
+                    <a class="add-folder" tabindex="-1" href="#"><i class="icon-folder-open"></i> {% trans "Add" %}</a>
+                    <ul class="dropdown-menu">
+                        <div class="form-group">
+                            <input type="text" class="form-control folder-input">
+                            <button type="button" class="btn folder-confirm">OK</button>
+                        </div>
+                    </ul>
+                </li>
             </ul>
         </div>`;
     const folder_type = 'user';
@@ -365,6 +386,10 @@ const folder_menu = function(el, path, id, subfolders) {
 
     el.append(html_blob);
     menu = el.find(".btn-group .dropdown-menu");
+
+    menu.find(".folder-input").click(function(ev) {
+        ev.stopPropagation();
+    });
 
     menu.find(".delete").click(function() {
         console.log(path);
@@ -377,7 +402,7 @@ const folder_menu = function(el, path, id, subfolders) {
 
     // can't delete root or folders with subfolders
     if(!path || subfolders)
-        menu.find(".delete").remove();
+        menu.find(".delete-folder").remove();
 }
 
 const build_line = function(path) {
