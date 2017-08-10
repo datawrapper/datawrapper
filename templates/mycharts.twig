@@ -375,7 +375,7 @@ const folder_menu = function(el, path, id, subfolders) {
                     <ul class="dropdown-menu">
                         <div class="form-group">
                             <input type="text" class="form-control folder-input">
-                            <button type="button" class="btn folder-confirm">OK</button>
+                            <button type="button" class="btn folder-confirm disabled">OK</button>
                         </div>
                     </ul>
                 </li>
@@ -391,8 +391,35 @@ const folder_menu = function(el, path, id, subfolders) {
         ev.stopPropagation();
     });
 
-    menu.find(".delete").click(function() {
-        console.log(path);
+    menu.find(".folder-input").on("input", function(ev) {
+        menu.find(".folder-confirm").removeClass("disabled");
+        $(ev.currentTarget).off();
+    });
+
+    menu.find(".folder-confirm").click(function() {
+        const pathcheck = function(p) {
+            if (p)
+                return '/' + p;
+            else
+                return '';
+        };
+        var val = menu.find(".folder-input")[0].value,
+            encoded;
+
+        if (val.search("/") != -1) {
+            alert("Your folder name may not contain any slashes.");
+            return;
+        }
+        encoded = encodeURI(val);
+
+        $.ajax({
+            url: '/api/folders/dir/' + folder_type + pathcheck(path) + '/' + encoded,
+            type: 'put',
+            dataType: 'JSON'
+        }).done(handler.done).fail(handler.fail);
+    });
+
+    menu.find(".delete-folder").click(function() {
         $.ajax({
             url: '/api/folders/dir/' + folder_type + '/' + path,
             type: 'DELETE',
