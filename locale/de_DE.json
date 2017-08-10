@@ -376,5 +376,7 @@
     "annotate \/ title": "Diagramm beschreiben",
     "annotate \/ highlight element": "Element hervorheben",
     "Hi, good to see you. Now please pick a password to complete the sign up.": "Hallo, sch\u00f6n, dich sehen. Jetzt bitte w\u00e4hlen ein Passwort, um die Anmeldung abzuschlie\u00dfen.",
-    "Source": "Quelle"
+    "Source": "Quelle",
+    "Move": "Verschieben",
+    "Remove": "Entfernen"
 }
