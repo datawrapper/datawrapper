@@ -17,7 +17,8 @@ $app->get('/chart/:id/upload', function ($id) use ($app) {
             'title' => $chart->getID() . ' :: '.__('Upload Data'),
             'chartData' => $chart->loadData(),
             'chart' => $chart,
-            'datasets' => $groups
+            'datasets' => $groups,
+            'readonly' => !$chart->isDataWritable($user)
         );
         add_header_vars($page, 'chart');
         add_editor_nav($page, 1);
