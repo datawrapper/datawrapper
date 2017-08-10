@@ -8,14 +8,14 @@
 
 <div class="row create-nav">
     {% for step in steps %}
-        {% if createstep > step.index or createstep != step.index and chart.lastEditStep >= step.index %}
+        {% if not step.readonly and (createstep > step.index or createstep != step.index and chart.lastEditStep >= step.index) %}
             <a href="{{ step.id }}" class="submit span3{% if createstep == step.index %} active{% else %}{% if createstep > step.index %} passed{% endif %}{% endif %}">
                 <span class="step">{{ step.index }}</span>
                 <span class="title">{{ step.title }}</span>
                 <i class="icon-ok"></i>
                  <div class="corner"></div>
             </a>
-        {% elseif createstep == step.index-1 %}
+        {% elseif createstep < step.index and createstep == step.index-1 %}
             <a href="{{ step.id }}" class="submit span3{% if createstep == step.index %} active{% else %}{% if createstep > step.index %} passed{% else %} unseen{% endif %}{% endif %}">
                 <span class="step">{{ step.index }}</span>
                 {{ step.title }}

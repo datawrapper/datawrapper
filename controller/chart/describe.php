@@ -13,7 +13,8 @@ $app->get('/chart/:id/describe', function ($id) use ($app) {
         $page = array(
             'title' => $chart->getID() . ' :: '.__('Check & Describe'),
             'chartData' => $chart->loadData(),
-            'chart' => $chart
+            'chart' => $chart,
+            'readonly' => !$chart->isDataWritable($user)
         );
         add_header_vars($page, 'chart');
         add_editor_nav($page, 2);
@@ -35,7 +36,7 @@ $app->get('/chart/:id/describe', function ($id) use ($app) {
         $page['columntypes'] = array(
             'text' => 'Text',
             'number' => 'Number',
-            'date' => 'Date',
+            'date' => 'Date'
         );
 
         $page['numberformats'] = array(
