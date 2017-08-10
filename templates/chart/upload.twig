@@ -9,14 +9,23 @@
 <script type="text/javascript">
 dw.backend.ready(function() {
     require(['dw/chart/upload'], function(upload) {
-        upload.init();
+        {% if not readonly %}upload.init();{% endif %}
     });
 });
 </script>
 
 <div class="dw-create-upload chart-editor upload-data">
+
     <div class="row">
 
+        {% if readonly %}
+        <div class="span12">
+            <div class="alert">
+                <div>{% trans "Sorry, but the data in forked charts is read-only." %}</div>
+            </div>
+        </div>
+        {% endif %}
+        
         <div class="span4">
             <h3>{% trans "upload / headline" %}</h3>
             <p>{% trans "upload / quick help" %} <a href="http://docs.datawrapper.de/tutorial/" target="_blank">{% trans "upload / learn more" %}</a>.</p>
@@ -24,7 +33,7 @@ dw.backend.ready(function() {
 
             <div class="demo-datasets">
                 <p>{% trans "upload / try a dataset" %}</p>
-                <select id="demo-datasets" class="">
+                <select {% if readonly %}disabled{% endif %} id="demo-datasets" class="">
                     <option>{% trans "upload / sample dataset" %}</option>
                     {% for group in datasets %}
                     <optgroup label="{{ group.type }}">
@@ -36,22 +45,27 @@ dw.backend.ready(function() {
                 </select>
             </div>
 
+            {% if not readonly %}
             {{ hook('upload_after_demo_datasets') }}
-
+            {% endif %}
             
         </div>
 
         <div class="span8" >
 
             <form class="upload-form" style="padding-left:20px">
-                <div class="control-group">
-                    <textarea id="upload-data-text" data-drop-here="{% trans "upload / drop csv" %}" style="resize:none" placeholder="{% trans "upload / paste here" %}">{{ chartData }}</textarea>
+                <div class="control-group" {% if readonly %}style="pointer-events:none"{% endif %}>
+                    <textarea {% if readonly %}readonly="readonly"{% endif %} id="upload-data-text" data-drop-here="{% trans "upload / drop csv" %}" style="resize:none" placeholder="{% trans "upload / paste here" %}">{{ chartData }}</textarea>
                 </div>
 
+                {% if readonly %}
+                    <a href="visualize" class="btn btn-primary pull-right">{% trans "Proceed" %} <i class="fa fa-chevron-right"></i></a>
+                {% else %}
+                    <div id="upload-data" {% if readonly %}style="pointer-events:none"{% endif %} class="btn btn-primary pull-right"><i class="fa fa-circle-o-notch fa-spin" style="display:none; color: #fff; margin:0px 4px 0px -2px;"></i> {% trans "upload / continue button" %} <i class="fa fa-chevron-right"></i></div>
 
-                <div id="upload-data" class="btn btn-primary pull-right"><i class="fa fa-circle-o-notch fa-spin" style="display:none; color: #fff; margin:0px 4px 0px -2px;"></i> {% trans "upload / continue button" %} <i class="fa fa-chevron-right"></i></div>
-
-                <div id="upload" style="display:inline-block"></div>
+                    <div id="upload" style="display:inline-block"></div>
+                {% endif %}
+                
                 
 
             </form>

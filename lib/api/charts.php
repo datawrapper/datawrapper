@@ -147,6 +147,10 @@ $app->get('/charts/:id/data', function($chart_id) use ($app) {
  */
 $app->put('/charts/:id/data', function($chart_id) use ($app) {
     if_chart_is_writable($chart_id, function($user, $chart) use ($app) {
+        if (!$chart->isDataWritable($user)) {
+            error('read-only', 'the data is read-only');
+            return false;
+        }
         $data = $app->request()->getBody();
         try {
             $filename = $chart->writeData($data);
@@ -166,6 +170,11 @@ $app->put('/charts/:id/data', function($chart_id) use ($app) {
 $app->post('/charts/:id/data', function($chart_id) use ($app) {
     disable_cache($app);
     if_chart_is_writable($chart_id, function($user, $chart) use ($app) {
+        if (!$chart->isDataWritable($user)) {
+            error('read-only', 'the data is read-only');
+            return false;
+        }
+
         $allowedExtensions = array('txt', 'csv', 'tsv');
         $sizeLimit         = 2 * 1024 * 1024; // byte
 

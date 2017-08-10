@@ -134,7 +134,7 @@ class Chart extends BaseChart {
      */
     public function writeData($csvdata) {
         $cfg = $GLOBALS['dw_config'];
-  
+    
         if (isset($cfg['charts-s3'])
           && isset($cfg['charts-s3']['write'])
           && $cfg['charts-s3']['write'] == true) {
@@ -222,7 +222,7 @@ class Chart extends BaseChart {
      * checks if a user has the privilege to change the data in a chart
      */
     public function isDataWritable($user) {
-        return $this->isWritable() && !$this->getIsFork();
+        return $this->isWritable($user) && !$this->getIsFork();
     }
 
     /*
