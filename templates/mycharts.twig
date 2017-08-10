@@ -375,7 +375,7 @@ const folder_menu = function(el, path, id, subfolders) {
         }).done(handler.done).fail(handler.fail);
     });
 
-    // can't delete root!
+    // can't delete root or folders with subfolders
     if(!path || subfolders)
         menu.find(".delete").remove();
 }
