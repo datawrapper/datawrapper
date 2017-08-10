@@ -363,5 +363,6 @@
     "visualize \/ vis archive": "Archived chart types:",
     "Source": "Source",
     "Move": "Move",
-    "Remove": "Remove"
+    "Remove": "Remove",
+    "Add": "Add"
 }

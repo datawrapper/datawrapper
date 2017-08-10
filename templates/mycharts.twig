@@ -369,7 +369,6 @@ const folder_menu = function(el, path, id, subfolders) {
                 <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
-                <li><a class="delete-folder" tabindex="-1" href="#"><i class="icon-remove"></i> {% trans "Remove" %}</a></li>
                 <li class="dropdown-submenu">
                     <a class="add-folder" tabindex="-1" href="#"><i class="icon-folder-open"></i> {% trans "Add" %}</a>
                     <ul class="dropdown-menu">
@@ -379,6 +378,7 @@ const folder_menu = function(el, path, id, subfolders) {
                         </div>
                     </ul>
                 </li>
+                <li><a class="delete-folder" tabindex="-1" href="#"><i class="icon-remove"></i> {% trans "Remove" %}</a></li>
             </ul>
         </div>`;
     const folder_type = 'user';
