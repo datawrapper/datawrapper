@@ -146,7 +146,7 @@ $app->get('/folders/chart/:type/(:path+|)/?', function($type, $path = false) use
 
     $root_id = $base_query->findOneByParentId(null)->getFolderId();
     if (empty($root_id)) {
-        error('no-folders', 'This user hasn\'t got any folders');
+        error('no-folders', "This user hasn\'t got any folders");
         return;
     }
 
@@ -365,7 +365,7 @@ $app->put('/folders/dir/:type/:path+/?', function($type, $path) use ($app) {
 
     $root_id = $base_query->findOneByParentId(null)->getFolderId();
     if (empty($root_id)) {
-        error('no-folders', 'This user hasn\'t got any folders');
+        error('no-folders', "This user hasn\'t got any folders");
         return;
     }
 
