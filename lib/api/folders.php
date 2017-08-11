@@ -58,14 +58,13 @@ $app->put('/folders/chart/:type/:chart_id/:path+', function($type, $chart_id, $p
         $accessible = true;
     });
     if(!$accessible) {
+        error('access-denied', 'You may not (re)move this chart.');
         return;
     }
 
     $user_id = $user->getId();
     $base_query = get_folder_base_query($type, $user_id);
-    if (!$base_query) {
-        return;
-    }
+    if (!$base_query) return;
 
     $folders = $base_query->find();
     if ($folders->count() == 0) {
@@ -216,6 +215,7 @@ $app->post('/folders/dir/:type/(:path+/|):dirname/?', function($type, $path, $di
 
 function list_subdirs($type, $parent_id, $user_id, $org_id = false) {
     $base_query = get_folder_base_query($type, $user_id);
+    if (!$base_query) return;
     $subdirs = $base_query->findByParentId($parent_id);
 
     $node = new stdClass();
