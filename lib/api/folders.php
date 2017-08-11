@@ -48,40 +48,43 @@ $app->put('/folders/chart/:type/:chart_id/:path+', function($type, $chart_id, $p
     disable_cache($app);
     $user = DatawrapperSession::getUser();
 
-    if ($user->isLoggedIn()) {
-        $accessible = false;
-        if_chart_is_writable($chart_id, function($user, $chart) use (&$accessible) {
-            $accessible = true;
-        });
-        if(!$accessible) {
-            return;
-        }
-
-        $user_id = $user->getId();
-        $base_query = get_folder_base_query($type, $user_id);
-        if (!$base_query) {
-            return;
-        }
-
-        $folders = $base_query->find();
-        if ($folders->count() == 0) {
-            error('no-folders', "This user hasn't got any folders of the requested type.");
-        }
-
-        // this should be save, because noone can delete his root folder manually (without DB access)
-        $root_id = $base_query->findOneByParentId(null)->getFolderId();
-        $pv = verify_path($type, $path, $root_id, $user_id);
-
-        if ($pv['verified']) {
-            $chart = ChartQuery::create()->findPK($chart_id);
-            $chart->setInFolder($pv['pid'])->save();
-            ok();
-        } else {
-            error('no-such-path', 'Path does not exist.');
-        }
-    } else {
+    if (!$user->isLoggedIn()) {
         error('access-denied', 'User is not logged in.');
+        return;
     }
+
+    $accessible = false;
+    if_chart_is_writable($chart_id, function($user, $chart) use (&$accessible) {
+        $accessible = true;
+    });
+    if(!$accessible) {
+        return;
+    }
+
+    $user_id = $user->getId();
+    $base_query = get_folder_base_query($type, $user_id);
+    if (!$base_query) {
+        return;
+    }
+
+    $folders = $base_query->find();
+    if ($folders->count() == 0) {
+        error('no-folders', "This user hasn't got any folders of the requested type.");
+        return;
+    }
+
+    // this should be save, because noone can delete his root folder manually (without DB access)
+    $root_id = $base_query->findOneByParentId(null)->getFolderId();
+    $pv = verify_path($type, $path, $root_id, $user_id);
+
+    if (!$pv['verified']) {
+        error('no-such-path', 'Path does not exist.');
+        return;
+    }
+
+    $chart = ChartQuery::create()->findPK($chart_id);
+    $chart->setInFolder($pv['pid'])->save();
+    ok();
 });
 
 
@@ -97,22 +100,24 @@ $app->delete('/folders/chart/:type/:chart_id', function($type, $chart_id) use ($
     disable_cache($app);
     $user = DatawrapperSession::getUser();
 
-    if ($user->isLoggedIn()) {
-        $accessible = false;
-        if_chart_is_writable($chart_id, function($user, $chart) use (&$accessible) {
-            $accessible = true;
-        });
-        if(!$accessible) {
-            return;
-        }
-
-        $chart = ChartQuery::create()->findPK($chart_id);
-        $chart->setInFolder(null)->save();
-
-        ok();
-    } else {
+    if (!$user->isLoggedIn()) {
         error('access-denied', 'User is not logged in.');
+        return;
     }
+
+    $accessible = false;
+    if_chart_is_writable($chart_id, function($user, $chart) use (&$accessible) {
+        $accessible = true;
+    });
+    if(!$accessible) {
+        error('access-denied', 'You may not (re)move this chart.');
+        return;
+    }
+
+    $chart = ChartQuery::create()->findPK($chart_id);
+    $chart->setInFolder(null)->save();
+
+    ok();
 });
 
 
@@ -123,39 +128,41 @@ $app->delete('/folders/chart/:type/:chart_id', function($type, $chart_id) use ($
  * @param path the destination folder
  */
 $app->get('/folders/chart/:type/(:path+|)/?', function($type, $path = false) use ($app) {
+    disable_cache($app);
     $user = DatawrapperSession::getUser();
 
-    if ($user->isLoggedIn()) {
-        $user_id = $user->getId();
-        $base_query = get_folder_base_query($type, $user_id);
-        if (!$base_query) return;
-
-        if (!$path) {
-            error('no-path', 'Will not list charts in root - use /api/charts.');
-            return;
-        }
-
-        $root_id = $base_query->findOneByParentId(null)->getFolderId();
-        if (empty($root_id)) {
-            error('no-folders', 'This user hasn\'t got any folders');
-            return;
-        }
-
-        $pv = verify_path($type, $path, $root_id, $user_id);
-
-        if ($pv['verified']) {
-            $res = ChartQuery::create()->findByInFolder($pv['pid']);
-
-            $mapped = array_map(function($entry) {
-                return $entry->getId();
-            }, (array)$res);
-            ok($mapped);
-        } else {
-            error('no-such-path', 'Path does not exist.');
-        }
-    } else {
+    if (!$user->isLoggedIn()) {
         error('access-denied', 'User is not logged in.');
+        return;
     }
+
+    $user_id = $user->getId();
+    $base_query = get_folder_base_query($type, $user_id);
+    if (!$base_query) return;
+
+    if (!$path) {
+        error('no-path', 'Will not list charts in root - use /api/charts.');
+        return;
+    }
+
+    $root_id = $base_query->findOneByParentId(null)->getFolderId();
+    if (empty($root_id)) {
+        error('no-folders', 'This user hasn\'t got any folders');
+        return;
+    }
+
+    $pv = verify_path($type, $path, $root_id, $user_id);
+
+    if (!$pv['verified']) {
+        error('no-such-path', 'Path does not exist.');
+        return;
+    }
+
+    $res = ChartQuery::create()->findByInFolder($pv['pid']);
+    $mapped = array_map(function($entry) {
+        return $entry->getId();
+    }, (array)$res);
+    ok($mapped);
 });
 
 
@@ -170,39 +177,41 @@ $app->post('/folders/dir/:type/(:path+/|):dirname/?', function($type, $path, $di
     disable_cache($app);
     $user = DatawrapperSession::getUser();
 
-    if ($user->isLoggedIn()) {
-        $user_id = $user->getId();
-        $base_query = get_folder_base_query($type, $user_id);
-        if (!$base_query) return;
-
-        $folders = $base_query->find();
-        // Does the user have a root folder?
-        if ($folders->count() == 0) {
-            $rootfolder = new Folder();
-            $rootfolder->setUserId($user_id)->setFolderName('ROOT')->save();
-        }
-        // find root
-        $root_id = $base_query->findOneByParentId(null)->getFolderId();
-
-        // does path exists? ("" is ok, too)
-        $pv = verify_path($type, $path, $root_id, $user_id);
-        if ($pv['verified']) {
-            // We need a fresh base_query here! Don't ask me why, but we do. (tested)
-            $base_query = get_folder_base_query($type, $user_id);
-            $parent_id = $pv['pid'];
-            if (empty($base_query->filterByParentId($parent_id)->findOneByFolderName($dirname))) {
-                // Does not exist → create it!
-                $new_folder = new Folder();
-                $new_folder->setUserId($user_id)->setFolderName($dirname)->setParentId($parent_id)->save();
-            }
-            // does exists → that's ok, too
-            ok();
-            return;
-        }
-        error('no-such-path', 'Path does not exist.');
-    } else {
+    if (!$user->isLoggedIn()) {
         error('access-denied', 'User is not logged in.');
+        return;
     }
+
+    $user_id = $user->getId();
+    $base_query = get_folder_base_query($type, $user_id);
+    if (!$base_query) return;
+
+    $folders = $base_query->find();
+    // Does the user have a root folder?
+    if ($folders->count() == 0) {
+        $rootfolder = new Folder();
+        $rootfolder->setUserId($user_id)->setFolderName('ROOT')->save();
+    }
+    // find root
+    $root_id = $base_query->findOneByParentId(null)->getFolderId();
+
+    // does path exists? ("" is ok, too)
+    $pv = verify_path($type, $path, $root_id, $user_id);
+    if (!$pv['verified']) {
+        error('no-such-path', 'Path does not exist.');
+        return;
+    }
+
+    // We need a fresh base_query here! Don't ask me why, but we do. (tested)
+    $base_query = get_folder_base_query($type, $user_id);
+    $parent_id = $pv['pid'];
+    if (empty($base_query->filterByParentId($parent_id)->findOneByFolderName($dirname))) {
+        // Does not exist → create it!
+        $new_folder = new Folder();
+        $new_folder->setUserId($user_id)->setFolderName($dirname)->setParentId($parent_id)->save();
+    }
+    // does exists → that's ok, too
+    ok();
 });
 
 function list_subdirs($type, $parent_id, $user_id, $org_id = false) {
@@ -238,28 +247,30 @@ $app->get('/folders/dir/:type/(:path+|)/?', function($type, $path = []) use ($ap
     disable_cache($app);
     $user = DatawrapperSession::getUser();
 
-    if ($user->isLoggedIn()) {
-        $user_id = $user->getId();
-        $base_query = get_folder_base_query($type, $user_id);
-        if (!$base_query) return;
-
-        // find root
-        $root_id = $base_query->findOneByParentId(null)->getFolderId();
-        if (empty($root_id)) {
-            error('no-folders', 'This user hasn\'t got any folders');
-            return;
-        }
-
-        // does path exists? ("" is ok, too)
-        $pv = verify_path($type, $path, $root_id, $user_id);
-        if ($pv['verified']) {
-            ok(list_subdirs($type, $pv['pid'], $user_id));
-            return;
-        }
-        error('no-such-path', 'Path does not exist.');
-    } else {
+    if (!$user->isLoggedIn()) {
         error('access-denied', 'User is not logged in.');
+        return;
     }
+
+    $user_id = $user->getId();
+    $base_query = get_folder_base_query($type, $user_id);
+    if (!$base_query) return;
+
+    // find root
+    $root_id = $base_query->findOneByParentId(null)->getFolderId();
+    if (empty($root_id)) {
+        error('no-folders', "This user hasn\'t got any folders");
+        return;
+    }
+
+    // does path exists? ("" is ok, too)
+    $pv = verify_path($type, $path, $root_id, $user_id);
+    if (!$pv['verified']) {
+        error('no-such-path', 'Path does not exist.');
+        return;
+    }
+
+    ok(list_subdirs($type, $pv['pid'], $user_id));
 });
 
 
@@ -276,47 +287,49 @@ $app->delete('/folders/dir/:type/:path+/?', function($type, $path) use ($app) {
     disable_cache($app);
     $user = DatawrapperSession::getUser();
 
-    if ($user->isLoggedIn()) {
-        $user_id = $user->getId();
-        $base_query = get_folder_base_query($type, $user_id);
-        if (!$base_query) return;
-
-        // find root
-        $root_id = $base_query->findOneByParentId(null)->getFolderId();
-        if (empty($root_id)) {
-            error('no-folders', 'This user hasn\'t got any folders');
-            return;
-        }
-
-        // does path exists? ("" can not happen!)
-        $pv = verify_path($type, $path, $root_id, $user_id);
-        if ($pv['verified']) {
-            $parent_id = $pv['pid'];
-            $tree = list_subdirs($type, $parent_id, $user_id);
-            if (!$tree) {
-                $current_id = $parent_id;
-                $current_folder = FolderQuery::create()->findOneByFolderId($current_id);
-                $parent_id = $current_folder->getParentId();
-                if ($parent_id == $root_id) {
-                    // prevent charts to go back to the virtual root folder
-                    $parent_id = null;
-                }
-                $charts = ChartQuery::create()->findByInFolder($current_id);
-                foreach ($charts as $chart) {
-                    $chart->setInFolder($parent_id)->save();
-                }
-                //finally delete folder
-                $current_folder->delete();
-                ok();
-            } else {
-                error('remaining-subfolders', 'You have to remove all subdfolders, before you can delete a folder.');
-            }
-        } else {
-            error('no-such-path', 'Path does not exist.');
-        }
-    } else {
+    if (!$user->isLoggedIn()) {
         error('access-denied', 'User is not logged in.');
+        return;
     }
+
+    $user_id = $user->getId();
+    $base_query = get_folder_base_query($type, $user_id);
+    if (!$base_query) return;
+
+    // find root
+    $root_id = $base_query->findOneByParentId(null)->getFolderId();
+    if (empty($root_id)) {
+        error('no-folders', "This user hasn\'t got any folders");
+        return;
+    }
+
+    // does path exists? ("" can not happen!)
+    $pv = verify_path($type, $path, $root_id, $user_id);
+    if (!$pv['verified']) {
+        error('no-such-path', 'Path does not exist.');
+        return;
+    }
+
+    $current_id = $pv['pid'];
+    $tree = list_subdirs($type, $current_id, $user_id);
+    if ($tree) {
+        error('remaining-subfolders', 'You have to remove all subdfolders, before you can delete a folder.');
+        return;
+    }
+
+    $current_folder = FolderQuery::create()->findOneByFolderId($current_id);
+    $parent_id = $current_folder->getParentId();
+    if ($parent_id == $root_id) {
+        // prevent charts to go back to the virtual root folder
+        $parent_id = null;
+    }
+    $charts = ChartQuery::create()->findByInFolder($current_id);
+    foreach ($charts as $chart) {
+        $chart->setInFolder($parent_id)->save();
+    }
+    //finally delete folder
+    $current_folder->delete();
+    ok();
 });
 
 
@@ -333,41 +346,45 @@ $app->put('/folders/dir/:type/:path+/?', function($type, $path) use ($app) {
     disable_cache($app);
     $user = DatawrapperSession::getUser();
 
-    if ($user->isLoggedIn()) {
-        $user_id = $user->getId();
-        $base_query = get_folder_base_query($type, $user_id);
-        if (!$base_query) return;
-
-        $dst = $app->request()->get('dst');
-        if (!empty($dst)) {
-            $dst_path = explode('/', trim($dst,'/'));
-
-            $root_id = $base_query->findOneByParentId(null)->getFolderId();
-            if (empty($root_id)) {
-                error('no-folders', 'This user hasn\'t got any folders');
-                return;
-            }
-
-            // do paths exists? ("" can not happen!)
-            $pv = verify_path($type, $path, $root_id, $user_id);
-            if ($pv['verified']) {
-                $current_id = $pv['pid'];
-                // if current folder is part of the path, verification will fail
-                $pv = verify_path($type, $dst_path, $root_id, $user_id, $current_id);
-                if ($pv['verified']) {
-                    $dst_id = $pv['pid'];
-                    FolderQuery::create()->findOneByFolderId($current_id)->setParentId($dst_id)->save();
-                    ok();
-                } else {
-                    error('no-destination-path', 'Destination path does not exist.');
-                }
-            } else {
-                error('no-source-path', 'Source path does not exist.');
-            }
-        } else {
-            error('no-destination', 'The destination to move this dir to was not set.');
-        }
-    } else {
+    if (!$user->isLoggedIn()) {
         error('access-denied', 'User is not logged in.');
+        return;
     }
+
+    $user_id = $user->getId();
+    $base_query = get_folder_base_query($type, $user_id);
+    if (!$base_query) return;
+
+    $dst = $app->request()->get('dst');
+    if (empty($dst)) {
+        error('no-destination', 'The destination to move this dir to was not set.');
+        return;
+    }
+
+    $dst_path = explode('/', trim($dst,'/'));
+
+    $root_id = $base_query->findOneByParentId(null)->getFolderId();
+    if (empty($root_id)) {
+        error('no-folders', 'This user hasn\'t got any folders');
+        return;
+    }
+
+    // do paths exists? ("" can not happen!)
+    $pv = verify_path($type, $path, $root_id, $user_id);
+    if (!$pv['verified']) {
+        error('no-source-path', 'Source path does not exist.');
+        return;
+    }
+
+    $current_id = $pv['pid'];
+    // if current folder is part of the path, verification will fail
+    $pv = verify_path($type, $dst_path, $root_id, $user_id, $current_id);
+    if (!$pv['verified']) {
+        error('no-destination-path', 'Destination path does not exist.');
+        return;
+    }
+
+    $dst_id = $pv['pid'];
+    FolderQuery::create()->findOneByFolderId($current_id)->setParentId($dst_id)->save();
+    ok();
 });
