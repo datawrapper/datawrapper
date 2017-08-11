@@ -66,10 +66,10 @@
 }
 .folders .dropdown-menu .folder-confirm {
     padding: 4px;
-    margin: 2px 2px 2px 0px;
+    margin: 2px 0px 2px 2px;
 }
 .folders .dropdown-menu .folder-input {
-    margin: 2px;
+    margin: 2px 2px 2px 0px;
 }
 
 .dropdown-submenu .dropdown-menu {
@@ -373,8 +373,8 @@ const folder_menu = function(el, path, id, subfolders) {
                     <a class="add-folder" tabindex="-1" href="#"><i class="icon-folder-open"></i> {% trans "Add" %}</a>
                     <ul class="dropdown-menu">
                         <div class="form-group">
-                            <input type="text" class="form-control folder-input">
                             <button type="button" class="btn folder-confirm disabled">OK</button>
+                            <input type="text" class="form-control folder-input">
                         </div>
                     </ul>
                 </li>
@@ -414,7 +414,7 @@ const folder_menu = function(el, path, id, subfolders) {
 
         $.ajax({
             url: '/api/folders/dir/' + folder_type + pathcheck(path) + '/' + encoded,
-            type: 'put',
+            type: 'POST',
             dataType: 'JSON'
         }).done(handler.done).fail(handler.fail);
     });
