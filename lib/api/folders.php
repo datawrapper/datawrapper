@@ -162,7 +162,7 @@ $app->get('/folders/chart/:type/(:path+|)/?', function($type, $path = false) use
  * @param path the absolue path where the directory should be created
  * @param dirname the name of the directory to be created
  */
-$app->put('/folders/dir/:type/(:path+/|):dirname/?', function($type, $path, $dirname) use ($app){
+$app->post('/folders/dir/:type/(:path+/|):dirname/?', function($type, $path, $dirname) use ($app){
     disable_cache($app);
     $user = DatawrapperSession::getUser();
 
