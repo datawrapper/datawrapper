@@ -1,6 +1,6 @@
 <?php
 
-function get_folder_base_query($type, $user_id, $org_id = false) {
+function get_folder_base_query($type, $user_id) {
     switch ($type) {
     case 'user':
         return FolderQuery::create()->filterByUserId($user_id);
@@ -14,22 +14,26 @@ function get_folder_base_query($type, $user_id, $org_id = false) {
 }
 
 // you should have verified $type is usable before calling this!
-function verify_path($type, $path, $parent_id, $user_id, $org_id = false) {
+function verify_path($type, $path, $parent_id, $user_id, $forbidden_id = false) {
     $base_query = get_folder_base_query($type, $user_id);
     $segment = array_shift($path);
-    if (empty($segment)) {
+    if (empty($segment))
         return array(
             'verified' => true,
             'pid' => $parent_id
         );
-    }
 
     $db_seg = $base_query->filterByParentId($parent_id)->findOneByFolderName($segment);
-    if (empty($db_seg)) {
+    if (empty($db_seg))
         return array('verified' => false);
-    }
 
-    return verify_path($type, $path, $db_seg->getFolderId(), $user_id);
+    $folder_id = $db_seg->getFolderId();
+    // This is used to verify that a certain folder is not part of the path.
+    // Knowing this is important for "Move".
+    if (!empty($forbidden_id) && $folder_id == $forbidden_id)
+        return array('verified' => false);
+
+    return verify_path($type, $path, $folder_id, $user_id);
 }
 
 
@@ -345,18 +349,23 @@ $app->put('/folders/dir/:type/:path+/?', function($type, $path) use ($app) {
             }
 
             // do paths exists? ("" can not happen!)
-            $pvs = verify_path($type, $path, $root_id, $user_id);
-            $pvd = verify_path($type, $dst_path, $root_id, $user_id);
-            if ($pvs['verified'] && $pvs['verified']) {
-                $current_id = $pvs['pid'];
-                $dst_id = $pvd['pid'];
-                FolderQuery::create()->findOneByFolderId($current_id)->setParentId($dst_id)->save();
-                ok();
+            $pv = verify_path($type, $path, $root_id, $user_id);
+            if ($pv['verified']) {
+                $current_id = $pv['pid'];
+                // if current folder is part of the path, verification will fail
+                $pv = verify_path($type, $dst_path, $root_id, $user_id, $current_id);
+                if ($pv['verified']) {
+                    $dst_id = $pv['pid'];
+                    FolderQuery::create()->findOneByFolderId($current_id)->setParentId($dst_id)->save();
+                    ok();
+                } else {
+                    error('no-destination-path', 'Destination path does not exist.');
+                }
             } else {
-                error('no-such-path', 'Path does not exist.');
+                error('no-source-path', 'Source path does not exist.');
             }
         } else {
-            error("no-destination", "The destination to move this dir to was not set.");
+            error('no-destination', 'The destination to move this dir to was not set.');
         }
     } else {
         error('access-denied', 'User is not logged in.');
