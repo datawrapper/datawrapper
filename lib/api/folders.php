@@ -314,3 +314,51 @@ $app->delete('/folders/dir/:type/:path+/?', function($type, $path) use ($app) {
         error('access-denied', 'User is not logged in.');
     }
 });
+
+
+/**
+ * move a folder to another folder
+ * basically this means just to change the parent id of the folder
+ *
+ * @param type the type of folder which should be moved
+ * @param path the folder to be moved
+ * @param dst (query string!) the destination folder
+ */
+
+$app->put('/folders/dir/:type/:path+/?', function($type, $path) use ($app) {
+    disable_cache($app);
+    $user = DatawrapperSession::getUser();
+
+    if ($user->isLoggedIn()) {
+        $user_id = $user->getId();
+        $base_query = get_folder_base_query($type, $user_id);
+        if (!$base_query) return;
+
+        $dst = $app->request()->get('dst');
+        if (!empty($dst)) {
+            $dst_path = explode('/', trim($dst,'/'));
+
+            $root_id = $base_query->findOneByParentId(null)->getFolderId();
+            if (empty($root_id)) {
+                error('no-folders', 'This user hasn\'t got any folders');
+                return;
+            }
+
+            // do paths exists? ("" can not happen!)
+            $pvs = verify_path($type, $path, $root_id, $user_id);
+            $pvd = verify_path($type, $dst_path, $root_id, $user_id);
+            if ($pvs['verified'] && $pvs['verified']) {
+                $current_id = $pvs['pid'];
+                $dst_id = $pvd['pid'];
+                FolderQuery::create()->findOneByFolderId($current_id)->setParentId($dst_id)->save();
+                ok();
+            } else {
+                error('no-such-path', 'Path does not exist.');
+            }
+        } else {
+            error("no-destination", "The destination to move this dir to was not set.");
+        }
+    } else {
+        error('access-denied', 'User is not logged in.');
+    }
+});
