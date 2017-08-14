@@ -453,7 +453,7 @@ const build_folder_2_folder_movelinks = function() {
             if (folder.startsWith(source_path.slice(0, source_path.lastIndexOf('/')))) return;
             move_menu = $(entry).find(".dropdown-menu .move-links");
 
-            a.innerText = folder;
+            a.innerText = folder.slice(1);
             a.setAttribute('href', '#');
             $(a).click(function(e) {
                 e.preventDefault();
@@ -564,13 +564,6 @@ $('document').ready(function() {
             } else if (res.status == 'ok') {
                 //only user for now
                 const folder_type = 'user';
-                var done = function(res) {
-                    if (res.status == 'error') {
-                        alert(res.message);
-                    } else if (res.status == 'ok') {
-                        location.reload(true);
-                    }
-                }
 
                 folder_menu($("#base-folder"), false);
                 folder_tree = res.data;
