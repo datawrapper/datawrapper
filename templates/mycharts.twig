@@ -64,6 +64,9 @@
     margin: 0px;
     padding: 1px;
 }
+.folders .dropdown-menu .move-links {
+    top: -2px;
+}
 .folders .dropdown-menu .folder-confirm {
     padding: 4px;
     margin: 2px 0px 2px 2px;
@@ -73,9 +76,8 @@
 }
 
 .dropdown-submenu .dropdown-menu {
-    top: 0;
     left: 100%;
-    margin-top: -1px;
+    margin-top: -6px;
 }
 
 </style>
@@ -345,7 +347,7 @@ $('body').load(function() {
 
 });
 
-var folder_tree;
+var folder_tree, flat_list = [];
 
 const handler = {
     fail: function(err) {
@@ -377,6 +379,10 @@ const folder_menu = function(el, path, id, subfolders) {
                             <input type="text" class="form-control folder-input">
                         </div>
                     </ul>
+                </li>
+                <li class="dropdown-submenu">
+                    <a class="move-to-folder" tabindex="-1" href="#"><i class="icon-folder-open"></i> {% trans "Move" %}</a>
+                    <ul class="dropdown-menu move-links"></ul>
                 </li>
                 <li><a class="delete-folder" tabindex="-1" href="#"><i class="icon-remove"></i> {% trans "Remove" %}</a></li>
             </ul>
@@ -432,6 +438,40 @@ const folder_menu = function(el, path, id, subfolders) {
         menu.find(".delete-folder").remove();
 }
 
+const build_folder_2_folder_movelinks = function() {
+    $("#dynamic-tree .folder-list-item").each(function(i, entry) {
+        var source_path = $.data(entry, "fullpath");
+
+        flat_list.forEach(function(folder) {
+            var l = document.createElement('li'),
+                a = document.createElement('a'),
+                move_menu;
+
+            // Do not create links for subfolders of this path
+            if (folder.startsWith(source_path.slice(0, source_path.lastIndexOf('/')))) return;
+            move_menu = $(entry).find(".dropdown-menu .move-links");
+
+            a.innerText = folder;
+            a.setAttribute('href', '#');
+            $(a).click(function() {
+                $.ajax({
+                    url: '/api/folders/dir/user' + source_path + '?dst=' + folder,
+                    type: 'PUT',
+                    dataType: 'JSON'
+                }).done(handler.done).fail(handler.fail);
+            });
+            l.appendChild(a);
+            move_menu.append(l);
+        });
+    });
+
+    // now remove the whole structure for folders that can't be moved anywhere
+    $(".dropdown-menu .move-links").each(function(i, list){
+        if (list.childElementCount === 0)
+            $(list).parent().remove();
+    });
+};
+
 const build_line = function(path) {
     var cwd, mypath, hopper,
         line = $('#folder-sequence');
@@ -484,9 +524,12 @@ const build_tree_list = function(tree, parent, path, pathstring) {
 
         nu_path = path.concat(folder);
         nu_pstr = pathstring + '/' + folder;
+        flat_list.push(nu_pstr);
 
+        l1.classList.add("folder-list-item");
         l1.appendChild(a1);
         folder_menu($(l1), nu_pstr.slice(1), id, tree[folder].sub != false); //last param evaluates to bool
+        $.data(l1, "fullpath", nu_pstr);
         parent.append(l1);
 
         if (filter.key === 'folder' && filter.val == id) {
@@ -499,7 +542,7 @@ const build_tree_list = function(tree, parent, path, pathstring) {
             a2.setAttribute('tabindex', '-1');
             l2.appendChild(a2);
 
-            $('.dropdown-menu.folder-list').append(l2);
+            $('.dropdown-menu .folder-list').append(l2);
         }
 
         if (tree[folder].sub) {
@@ -529,6 +572,7 @@ $('document').ready(function() {
                 folder_menu($("#base-folder"), false);
                 folder_tree = res.data;
                 build_tree_list(folder_tree, $('#dynamic-tree'));
+                build_folder_2_folder_movelinks();
 
                 $('.chart .folder-list a').click(function(e) {
                     var id = $(e.target).parents('.chart').data('id');
