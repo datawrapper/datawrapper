@@ -402,7 +402,7 @@ const folder_menu = function(el, path, id, subfolders) {
         $(ev.currentTarget).off();
     });
 
-    menu.find(".folder-confirm").click(function() {
+    menu.find(".folder-confirm").click(function(e) {
         const pathcheck = function(p) {
             if (p)
                 return '/' + p;
@@ -411,6 +411,7 @@ const folder_menu = function(el, path, id, subfolders) {
         };
         var val = menu.find(".folder-input")[0].value,
             encoded;
+        e.preventDefault();
 
         if (val.search("/") != -1) {
             alert("Your folder name may not contain any slashes.");
@@ -425,7 +426,8 @@ const folder_menu = function(el, path, id, subfolders) {
         }).done(handler.done).fail(handler.fail);
     });
 
-    menu.find(".delete-folder").click(function() {
+    menu.find(".delete-folder").click(function(e) {
+        e.preventDefault();
         $.ajax({
             url: '/api/folders/dir/' + folder_type + '/' + path,
             type: 'DELETE',
@@ -453,7 +455,8 @@ const build_folder_2_folder_movelinks = function() {
 
             a.innerText = folder;
             a.setAttribute('href', '#');
-            $(a).click(function() {
+            $(a).click(function(e) {
+                e.preventDefault();
                 $.ajax({
                     url: '/api/folders/dir/user' + source_path + '?dst=' + folder,
                     type: 'PUT',
