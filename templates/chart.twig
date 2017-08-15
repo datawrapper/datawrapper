@@ -179,6 +179,9 @@
         }, 1000);
     }
 
+    {% if theme.getThemeData('template.js') %}
+        {{ theme.getThemeData('template.js') | raw }}
+    {% endif %}
 
     </script>
 
