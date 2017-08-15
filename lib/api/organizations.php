@@ -155,6 +155,29 @@ $app->delete('/organizations/:id/users/:uid', function($org_id, $user_id) use ($
 });
 
 /*
+ * list all organizations in which the current user is a member
+ */
+$app->get('/organizations/user', function() use ($app) {
+    $user = DatawrapperSession::getUser();
+
+    if (!$user->isLoggedIn()) {
+        error('access-denied', 'User is not logged in.');
+        return;
+    }
+
+    $user_id = $user->getId();
+    $organizations = UserOrganizationQuery::create()->findByUserId($user_id);
+    $res = array();
+    foreach ($organizations as $org) {
+        if (!$org->getOrganization()->getDisabled())
+            $res[] = $org->getOrganizationId();
+    }
+
+    ok($res);
+});
+
+
+/*
  * toggle plugin permissions of organization
  */
 $app->put('/organizations/:id/plugins/:op/:plugin_id', function($org_id, $op, $plugin_id) use ($app) {
