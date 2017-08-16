@@ -1,12 +1,11 @@
 <?php
 
-function get_folder_base_query($type, $user_id) {
+function get_folder_base_query($type, $id) {
     switch ($type) {
     case 'user':
-        return FolderQuery::create()->filterByUserId($user_id);
+        return FolderQuery::create()->filterByUserId($id);
     case 'organization':
-        // unimplmented
-        return false;
+        return FolderQuery::create()->filterByOrgId($id);
     default:
         error('no-such-folder-type', "We don't have that type of folder(, yet?)");
         return false;
@@ -14,8 +13,8 @@ function get_folder_base_query($type, $user_id) {
 }
 
 // you should have verified $type is usable before calling this!
-function verify_path($type, $path, $parent_id, $user_id, $forbidden_id = false) {
-    $base_query = get_folder_base_query($type, $user_id);
+function verify_path($type, $path, $parent_id, $id, $forbidden_id = false) {
+    $base_query = get_folder_base_query($type, $id);
     $segment = array_shift($path);
     if (empty($segment))
         return array(
@@ -33,7 +32,7 @@ function verify_path($type, $path, $parent_id, $user_id, $forbidden_id = false) 
     if (!empty($forbidden_id) && $folder_id == $forbidden_id)
         return array('verified' => false);
 
-    return verify_path($type, $path, $folder_id, $user_id);
+    return verify_path($type, $path, $folder_id, $id);
 }
 
 
@@ -165,14 +164,7 @@ $app->get('/folders/chart/:type/(:path+|)/?', function($type, $path = false) use
 });
 
 
-/**
- * create a new folder
- *
- * @param type the type of folder which should be created
- * @param path the absolue path where the directory should be created
- * @param dirname the name of the directory to be created
- */
-$app->post('/folders/dir/:type/(:path+/|):dirname/?', function($type, $path, $dirname) use ($app){
+function folder_mkdir($app, $type, $path, $dirname, $org_id = false) {
     disable_cache($app);
     $user = DatawrapperSession::getUser();
 
@@ -181,36 +173,57 @@ $app->post('/folders/dir/:type/(:path+/|):dirname/?', function($type, $path, $di
         return;
     }
 
-    $user_id = $user->getId();
-    $base_query = get_folder_base_query($type, $user_id);
+    $id = $org_id ? $org_id : $user->getId();
+
+    $base_query = get_folder_base_query($type, $id);
     if (!$base_query) return;
 
     $folders = $base_query->find();
     // Does the user have a root folder?
     if ($folders->count() == 0) {
         $rootfolder = new Folder();
-        $rootfolder->setUserId($user_id)->setFolderName('ROOT')->save();
+        if ($org_id)
+            $rootfolder->setOrgId($id)->setFolderName('ROOT')->save();
+        else
+            $rootfolder->setUserId($id)->setFolderName('ROOT')->save();
     }
     // find root
     $root_id = $base_query->findOneByParentId(null)->getFolderId();
 
     // does path exists? ("" is ok, too)
-    $pv = verify_path($type, $path, $root_id, $user_id);
+    $pv = verify_path($type, $path, $root_id, $id);
     if (!$pv['verified']) {
         error('no-such-path', 'Path does not exist.');
         return;
     }
 
     // We need a fresh base_query here! Don't ask me why, but we do. (tested)
-    $base_query = get_folder_base_query($type, $user_id);
+    $base_query = get_folder_base_query($type, $id);
     $parent_id = $pv['pid'];
     if (empty($base_query->filterByParentId($parent_id)->findOneByFolderName($dirname))) {
         // Does not exist → create it!
         $new_folder = new Folder();
-        $new_folder->setUserId($user_id)->setFolderName($dirname)->setParentId($parent_id)->save();
+        if ($org_id)
+            $new_folder->setOrgId($id)->setFolderName($dirname)->setParentId($parent_id)->save();
+        else
+            $new_folder->setUserId($id)->setFolderName($dirname)->setParentId($parent_id)->save();
     }
     // does exists → that's ok, too
     ok();
+}
+
+/**
+ * create a new folder
+ *
+ * @param path the absolue path where the directory should be created
+ * @param dirname the name of the directory to be created
+ * @param org_id (if specified) the identifier of the organization
+ */
+$app->post('/folders/dir/organization/:org_id/(:path+/|):dirname/?', function($org_id, $path, $dirname) use ($app) {
+    folder_mkdir($app, 'organization', $path, $dirname, $org_id);
+});
+$app->post('/folders/dir/user/(:path+/|):dirname/?', function($path, $dirname) use ($app) {
+    folder_mkdir($app, 'user', $path, $dirname);
 });
 
 function list_subdirs($type, $parent_id, $user_id, $org_id = false) {
