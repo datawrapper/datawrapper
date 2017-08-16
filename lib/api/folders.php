@@ -35,6 +35,21 @@ function verify_path($type, $path, $parent_id, $id, $forbidden_id = false) {
     return verify_path($type, $path, $folder_id, $id);
 }
 
+function is_user_member_of($org_id) {
+    $the_org = OrganizationQuery::create()->findOneById($org_id);
+
+    if (empty($the_org)) {
+        error('no-such-organization', 'The specified organization does not exist.');
+        return;
+    }
+
+    $user = DatawrapperSession::getUser();
+    if ($the_org->hasUser($user))
+        return true;
+
+    error('not-a-member', 'The current user is not a member of the specified organization.');
+    return false;
+}
 
 /**
  * make a chart available in a certain folder
@@ -220,6 +235,7 @@ function folder_mkdir($app, $type, $path, $dirname, $org_id = false) {
  * @param org_id (if specified) the identifier of the organization
  */
 $app->post('/folders/dir/organization/:org_id/(:path+/|):dirname/?', function($org_id, $path, $dirname) use ($app) {
+    if (!is_user_member_of($org_id)) return;
     folder_mkdir($app, 'organization', $path, $dirname, $org_id);
 });
 $app->post('/folders/dir/user/(:path+/|):dirname/?', function($path, $dirname) use ($app) {
