@@ -35,7 +35,7 @@ function verify_path($type, $path, $parent_id, $id, $forbidden_id = false) {
     return verify_path($type, $path, $folder_id, $id);
 }
 
-function is_user_member_of($org_id) {
+function user_is_member_of($org_id) {
     $the_org = OrganizationQuery::create()->findOneById($org_id);
 
     if (empty($the_org)) {
@@ -96,11 +96,12 @@ function add_chart_to_folder($app, $type, $chart_id, $path, $org_id = false) {
  * make a chart available in a certain folder
  *
  * @param type the type of folder
+ * @param org_id (if specified) the identifier of the organization
  * @param chart_id the charts id?
  * @param path the destination folder
  */
 $app->put('/folders/chart/organization/:org_id/:chart_id/:path+', function($org_id, $chart_id, $path) use ($app) {
-    if (!is_user_member_of($org_id)) return;
+    if (!user_is_member_of($org_id)) return;
     add_chart_to_folder($app, 'organization', $chart_id, $path, $org_id);
 });
 $app->put('/folders/chart/user/:chart_id/:path+', function($chart_id, $path) use ($app) {
@@ -116,7 +117,6 @@ $app->put('/folders/chart/user/:chart_id/:path+', function($chart_id, $path) use
  * when a chart is removed, its in_folder field will be set to NULL making it go back to all charts
  * bacause the chart can only be located in one folder it is not necessary to specify the path
  *
- * @param type the type of folder
  * @param chart_id the charts id?
  */
 $app->delete('/folders/chart/:chart_id', function($chart_id) use ($app) {
@@ -143,24 +143,11 @@ $app->delete('/folders/chart/:chart_id', function($chart_id) use ($app) {
     ok();
 });
 
-
-/**
- * get an array of all chart ids in a folder
- *
- * @param type the type of folder
- * @param path the destination folder
- */
-$app->get('/folders/chart/:type/(:path+|)/?', function($type, $path = false) use ($app) {
+function get_chart_list($app, $type, $path, $org_id = false) {
     disable_cache($app);
-    $user = DatawrapperSession::getUser();
 
-    if (!$user->isLoggedIn()) {
-        error('access-denied', 'User is not logged in.');
-        return;
-    }
-
-    $user_id = $user->getId();
-    $base_query = get_folder_base_query($type, $user_id);
+    $id = $org_id ? $org_id : DatawrapperSession::getUser()->getId();
+    $base_query = get_folder_base_query($type, $id);
     if (!$base_query) return;
 
     if (!$path) {
@@ -170,11 +157,11 @@ $app->get('/folders/chart/:type/(:path+|)/?', function($type, $path = false) use
 
     $root_id = $base_query->findOneByParentId(null)->getFolderId();
     if (empty($root_id)) {
-        error('no-folders', "This user hasn\'t got any folders");
+        error('no-folders', "This user hasn't got any folders");
         return;
     }
 
-    $pv = verify_path($type, $path, $root_id, $user_id);
+    $pv = verify_path($type, $path, $root_id, $id);
 
     if (!$pv['verified']) {
         error('no-such-path', 'Path does not exist.');
@@ -186,8 +173,26 @@ $app->get('/folders/chart/:type/(:path+|)/?', function($type, $path = false) use
         return $entry->getId();
     }, (array)$res);
     ok($mapped);
-});
+}
 
+/**
+ * get an array of all chart ids in a folder
+ *
+ * @param type the type of folder
+ * @param org_id (if specified) the identifier of the organization
+ * @param path the destination folder
+ */
+$app->get('/folders/chart/organization/:org_id/(:path+|)/?', function($org_id, $path = false) use ($app) {
+    if (!user_is_member_of($org_id)) return;
+    get_chart_list($app, 'organization', $path, $org_id);
+});
+$app->get('/folders/chart/user/(:path+|)/?', function($path = false) use ($app) {
+    if (!DatawrapperSession::getUser()->isLoggedIn()) {
+        error('access-denied', 'User is not logged in.');
+        return;
+    }
+    get_chart_list($app, 'user', $path);
+});
 
 function folder_mkdir($app, $type, $path, $dirname, $org_id = false) {
     disable_cache($app);
@@ -238,7 +243,7 @@ function folder_mkdir($app, $type, $path, $dirname, $org_id = false) {
  * @param org_id (if specified) the identifier of the organization
  */
 $app->post('/folders/dir/organization/:org_id/(:path+/|):dirname/?', function($org_id, $path, $dirname) use ($app) {
-    if (!is_user_member_of($org_id)) return;
+    if (!user_is_member_of($org_id)) return;
     folder_mkdir($app, 'organization', $path, $dirname, $org_id);
 });
 $app->post('/folders/dir/user/(:path+/|):dirname/?', function($path, $dirname) use ($app) {
@@ -283,7 +288,7 @@ function subdir_wrapper($app, $type, $path, $org_id = false) {
     // find root
     $root_id = $base_query->findOneByParentId(null)->getFolderId();
     if (empty($root_id)) {
-        error('no-folders', "This ".$type." hasn\'t got any folders");
+        error('no-folders', "This ".$type." hasn't got any folders");
         return;
     }
 
@@ -305,7 +310,7 @@ function subdir_wrapper($app, $type, $path, $org_id = false) {
  * @param org_id (if specified) the identifier of the organization
  */
 $app->get('/folders/dir/organization/:org_id/(:path+|)/?', function($org_id, $path = []) use ($app) {
-    if (!is_user_member_of($org_id)) return;
+    if (!user_is_member_of($org_id)) return;
     subdir_wrapper($app, 'organization', $path, $org_id);
 });
 $app->get('/folders/dir/user/(:path+|)/?', function($path = []) use ($app) {
@@ -326,7 +331,7 @@ function delete_folder($app, $type, $path, $org_id = null) {
     // find root
     $root_id = $base_query->findOneByParentId(null)->getFolderId();
     if (empty($root_id)) {
-        error('no-folders', "This ".$type." hasn\'t got any folders");
+        error('no-folders', "This ".$type." hasn't got any folders");
         return;
     }
 
@@ -370,7 +375,7 @@ function delete_folder($app, $type, $path, $org_id = null) {
  * @param org_id (if specified) the identifier of the organization
  */
 $app->delete('/folders/dir/organization/:org_id/:path+/?', function($org_id, $path) use ($app) {
-    if (!is_user_member_of($org_id)) return;
+    if (!user_is_member_of($org_id)) return;
     delete_folder($app, 'organization', $path, $org_id);
 });
 $app->delete('/folders/dir/user/:path+/?', function($path) use ($app) {
@@ -398,7 +403,7 @@ function move_folder($app, $type, $path, $org_id = false) {
 
     $root_id = $base_query->findOneByParentId(null)->getFolderId();
     if (empty($root_id)) {
-        error('no-folders', "This ".$type." hasn\'t got any folders");
+        error('no-folders', "This ".$type." hasn't got any folders");
         return;
     }
 
@@ -439,6 +444,6 @@ $app->put('/folders/dir/user/:path+/?', function($path) use ($app) {
     move_folder($app, 'user', $path);
 });
 $app->put('/folders/dir/organization/:org_id/:path+/?', function($org_id, $path) use ($app) {
-    if (!is_user_member_of($org_id)) return;
+    if (!user_is_member_of($org_id)) return;
     move_folder($app, 'organization', $path, $org_id);
 });
