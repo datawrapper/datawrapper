@@ -59,8 +59,6 @@ function is_user_member_of($org_id) {
 function add_chart_to_folder($app, $type, $chart_id, $path, $org_id = false) {
     disable_cache($app);
 
-    $user = DatawrapperSession::getUser();
-
     $accessible = false;
     if_chart_is_writable($chart_id, function($user, $chart) use (&$accessible) {
         $accessible = true;
@@ -70,7 +68,7 @@ function add_chart_to_folder($app, $type, $chart_id, $path, $org_id = false) {
         return;
     }
 
-    $id = $org_id ? $org_id : $user->getId();
+    $id = $org_id ? $org_id : DatawrapperSession::getUser()->getId();
     $base_query = get_folder_base_query($type, $id);
     if (!$base_query) return;
 
@@ -121,7 +119,7 @@ $app->put('/folders/chart/user/:chart_id/:path+', function($chart_id, $path) use
  * @param type the type of folder
  * @param chart_id the charts id?
  */
-$app->delete('/folders/chart/:type/:chart_id', function($type, $chart_id) use ($app) {
+$app->delete('/folders/chart/:chart_id', function($chart_id) use ($app) {
     disable_cache($app);
     $user = DatawrapperSession::getUser();
 
