@@ -376,26 +376,11 @@ $app->delete('/folders/dir/user/:path+/?', function($path) use ($app) {
     delete_folder($app, 'user', $path);
 });
 
-/**
- * move a folder to another folder
- * basically this means just to change the parent id of the folder
- *
- * @param type the type of folder which should be moved
- * @param path the folder to be moved
- * @param dst (query string!) the destination folder
- */
-
-$app->put('/folders/dir/:type/:path+/?', function($type, $path) use ($app) {
+function move_folder($app, $type, $path, $org_id = false) {
     disable_cache($app);
-    $user = DatawrapperSession::getUser();
 
-    if (!$user->isLoggedIn()) {
-        error('access-denied', 'User is not logged in.');
-        return;
-    }
-
-    $user_id = $user->getId();
-    $base_query = get_folder_base_query($type, $user_id);
+    $id = $org_id ? $org_id : DatawrapperSession::getUser()->getId();
+    $base_query = get_folder_base_query($type, $id);
     if (!$base_query) return;
 
     $dst = $app->request()->get('dst');
@@ -408,12 +393,12 @@ $app->put('/folders/dir/:type/:path+/?', function($type, $path) use ($app) {
 
     $root_id = $base_query->findOneByParentId(null)->getFolderId();
     if (empty($root_id)) {
-        error('no-folders', "This user hasn\'t got any folders");
+        error('no-folders', "This ".$type." hasn\'t got any folders");
         return;
     }
 
     // do paths exists? ("" can not happen!)
-    $pv = verify_path($type, $path, $root_id, $user_id);
+    $pv = verify_path($type, $path, $root_id, $id);
     if (!$pv['verified']) {
         error('no-source-path', 'Source path does not exist.');
         return;
@@ -421,7 +406,7 @@ $app->put('/folders/dir/:type/:path+/?', function($type, $path) use ($app) {
 
     $current_id = $pv['pid'];
     // if current folder is part of the path, verification will fail
-    $pv = verify_path($type, $dst_path, $root_id, $user_id, $current_id);
+    $pv = verify_path($type, $dst_path, $root_id, $id, $current_id);
     if (!$pv['verified']) {
         error('no-destination-path', 'Destination path does not exist.');
         return;
@@ -430,4 +415,25 @@ $app->put('/folders/dir/:type/:path+/?', function($type, $path) use ($app) {
     $dst_id = $pv['pid'];
     FolderQuery::create()->findOneByFolderId($current_id)->setParentId($dst_id)->save();
     ok();
+}
+
+/**
+ * move a folder to another folder
+ * basically this means just to change the parent id of the folder
+ *
+ * @param type the type of folder which should be moved
+ * @param path the folder to be moved
+ * @param org_id (if specified) the identifier of the organization
+ * @param dst (query string!) the destination folder
+ */
+$app->put('/folders/dir/user/:path+/?', function($path) use ($app) {
+    if (!DatawrapperSession::getUser()->isLoggedIn()) {
+        error('access-denied', 'User is not logged in.');
+        return;
+    }
+    move_folder($app, 'user', $path);
+});
+$app->put('/folders/dir/organization/:org_id/:path+/?', function($org_id, $path) use ($app) {
+    if (!is_user_member_of($org_id)) return;
+    move_folder($app, 'organization', $path, $org_id);
 });
