@@ -56,21 +56,10 @@ function is_user_member_of($org_id) {
     return false;
 }
 
-/**
- * make a chart available in a certain folder
- *
- * @param type the type of folder
- * @param chart_id the charts id?
- * @param path the destination folder
- */
-$app->put('/folders/chart/:type/:chart_id/:path+', function($type, $chart_id, $path) use ($app) {
+function add_chart_to_folder($app, $type, $chart_id, $path, $org_id = false) {
     disable_cache($app);
-    $user = DatawrapperSession::getUser();
 
-    if (!$user->isLoggedIn()) {
-        error('access-denied', 'User is not logged in.');
-        return;
-    }
+    $user = DatawrapperSession::getUser();
 
     $accessible = false;
     if_chart_is_writable($chart_id, function($user, $chart) use (&$accessible) {
@@ -81,19 +70,19 @@ $app->put('/folders/chart/:type/:chart_id/:path+', function($type, $chart_id, $p
         return;
     }
 
-    $user_id = $user->getId();
-    $base_query = get_folder_base_query($type, $user_id);
+    $id = $org_id ? $org_id : $user->getId();
+    $base_query = get_folder_base_query($type, $id);
     if (!$base_query) return;
 
     $folders = $base_query->find();
     if ($folders->count() == 0) {
-        error('no-folders', "This user hasn't got any folders of the requested type.");
+        error('no-folders', "This ".$type." hasn't got any folders of the requested type.");
         return;
     }
 
     // this should be save, because noone can delete his root folder manually (without DB access)
     $root_id = $base_query->findOneByParentId(null)->getFolderId();
-    $pv = verify_path($type, $path, $root_id, $user_id);
+    $pv = verify_path($type, $path, $root_id, $id);
 
     if (!$pv['verified']) {
         error('no-such-path', 'Path does not exist.');
@@ -103,8 +92,26 @@ $app->put('/folders/chart/:type/:chart_id/:path+', function($type, $chart_id, $p
     $chart = ChartQuery::create()->findPK($chart_id);
     $chart->setInFolder($pv['pid'])->save();
     ok();
-});
+}
 
+/**
+ * make a chart available in a certain folder
+ *
+ * @param type the type of folder
+ * @param chart_id the charts id?
+ * @param path the destination folder
+ */
+$app->put('/folders/chart/organization/:org_id/:chart_id/:path+', function($org_id, $chart_id, $path) use ($app) {
+    if (!is_user_member_of($org_id)) return;
+    add_chart_to_folder($app, 'organization', $chart_id, $path, $org_id);
+});
+$app->put('/folders/chart/user/:chart_id/:path+', function($chart_id, $path) use ($app) {
+    if (!DatawrapperSession::getUser()->isLoggedIn()) {
+        error('access-denied', 'User is not logged in.');
+        return;
+    }
+    add_chart_to_folder($app, 'user', $chart_id, $path);
+});
 
 /**
  * remove a chart from a folder
