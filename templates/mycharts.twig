@@ -586,7 +586,7 @@ $('document').ready(function() {
                     e.preventDefault();
 
                     $.ajax({
-                        url: '/api/folders/chart/' + folder_type + '/' + id,
+                        url: '/api/folders/chart/' + id,
                         type: 'DELETE',
                         dataType: 'JSON'
                     }).done(handler.done).fail(handler.fail);
