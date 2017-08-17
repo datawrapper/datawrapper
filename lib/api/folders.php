@@ -44,6 +44,11 @@ function is_user_member_of($org_id) {
     }
 
     $user = DatawrapperSession::getUser();
+    if (!$user->isLoggedIn()) {
+        error('access-denied', 'User is not logged in.');
+        return false;
+    }
+
     if ($the_org->hasUser($user))
         return true;
 
@@ -181,15 +186,8 @@ $app->get('/folders/chart/:type/(:path+|)/?', function($type, $path = false) use
 
 function folder_mkdir($app, $type, $path, $dirname, $org_id = false) {
     disable_cache($app);
-    $user = DatawrapperSession::getUser();
 
-    if (!$user->isLoggedIn()) {
-        error('access-denied', 'User is not logged in.');
-        return;
-    }
-
-    $id = $org_id ? $org_id : $user->getId();
-
+    $id = $org_id ? $org_id : DatawrapperSession::getUser()->getId();
     $base_query = get_folder_base_query($type, $id);
     if (!$base_query) return;
 
@@ -239,50 +237,42 @@ $app->post('/folders/dir/organization/:org_id/(:path+/|):dirname/?', function($o
     folder_mkdir($app, 'organization', $path, $dirname, $org_id);
 });
 $app->post('/folders/dir/user/(:path+/|):dirname/?', function($path, $dirname) use ($app) {
+    if (!DatawrapperSession::getUser()->isLoggedIn()) {
+        error('access-denied', 'User is not logged in.');
+        return;
+    }
     folder_mkdir($app, 'user', $path, $dirname);
 });
 
-function list_subdirs($type, $parent_id, $user_id, $org_id = false) {
-    $base_query = get_folder_base_query($type, $user_id);
+function list_subdirs($type, $parent_id, $id) {
+    $base_query = get_folder_base_query($type, $id);
     if (!$base_query) return;
     $subdirs = $base_query->findByParentId($parent_id);
-
-    $node = new stdClass();
 
     if ($subdirs->count() == 0) {
         return false;
     }
 
+    $node = new stdClass();
     foreach ($subdirs as $dir) {
         $name = $dir->getFolderName();
         $dir_id = $dir->getFolderId();
         $data = new stdClass();
         $data->id = $dir_id;
         $data->charts = ChartQuery::create()->findByInFolder($dir_id)->count();
-        $data->sub = list_subdirs($type, $dir_id, $user_id);
+        $data->sub = list_subdirs($type, $dir_id, $id);
         $node->$name = $data;
     }
 
     return $node;
 }
 
-/**
- * list all subdirectorys
- *
- * @param type the type of folder which should be listed
- * @param path the startding point in the dir tree
- */
-$app->get('/folders/dir/:type/(:path+|)/?', function($type, $path = []) use ($app) {
+function subdir_wrapper($app, $type, $path, $org_id = false) {
     disable_cache($app);
-    $user = DatawrapperSession::getUser();
 
-    if (!$user->isLoggedIn()) {
-        error('access-denied', 'User is not logged in.');
-        return;
-    }
+    $id = $org_id ? $org_id : DatawrapperSession::getUser()->getId();
 
-    $user_id = $user->getId();
-    $base_query = get_folder_base_query($type, $user_id);
+    $base_query = get_folder_base_query($type, $id);
     if (!$base_query) return;
 
     // find root
@@ -293,13 +283,32 @@ $app->get('/folders/dir/:type/(:path+|)/?', function($type, $path = []) use ($ap
     }
 
     // does path exists? ("" is ok, too)
-    $pv = verify_path($type, $path, $root_id, $user_id);
+    $pv = verify_path($type, $path, $root_id, $id);
     if (!$pv['verified']) {
         error('no-such-path', 'Path does not exist.');
         return;
     }
 
-    ok(list_subdirs($type, $pv['pid'], $user_id));
+    ok(list_subdirs($type, $pv['pid'], $id));
+}
+
+/**
+ * list all subdirectorys
+ *
+ * @param type the type of folder which should be listed
+ * @param path the startding point in the dir tree
+ * @param org_id (if specified) the identifier of the organization
+ */
+$app->get('/folders/dir/organization/:org_id/(:path+|)/?', function($org_id, $path = []) use ($app) {
+    if (!is_user_member_of($org_id)) return;
+    subdir_wrapper($app, 'organization', $path, $org_id);
+});
+$app->get('/folders/dir/user/(:path+|)/?', function($path = []) use ($app) {
+    if (!DatawrapperSession::getUser()->isLoggedIn()) {
+        error('access-denied', 'User is not logged in.');
+        return;
+    }
+    subdir_wrapper($app, 'user', $path);
 });
 
 
