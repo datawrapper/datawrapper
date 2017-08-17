@@ -278,7 +278,7 @@ function subdir_wrapper($app, $type, $path, $org_id = false) {
     // find root
     $root_id = $base_query->findOneByParentId(null)->getFolderId();
     if (empty($root_id)) {
-        error('no-folders', "This user hasn\'t got any folders");
+        error('no-folders', "This ".$type." hasn\'t got any folders");
         return;
     }
 
@@ -311,45 +311,29 @@ $app->get('/folders/dir/user/(:path+|)/?', function($path = []) use ($app) {
     subdir_wrapper($app, 'user', $path);
 });
 
-
-/**
- * delete a subfolder
- * root can not be removed
- * folders which still contain other subfolders can not be removed
- * if a folder contains charts, all of those will be moved to the parent folder
- *
- * @param type the type of folder which should be deleted
- * @param path the folder to be deleted
- */
-$app->delete('/folders/dir/:type/:path+/?', function($type, $path) use ($app) {
+function delete_folder($app, $type, $path, $org_id = null) {
     disable_cache($app);
-    $user = DatawrapperSession::getUser();
 
-    if (!$user->isLoggedIn()) {
-        error('access-denied', 'User is not logged in.');
-        return;
-    }
-
-    $user_id = $user->getId();
-    $base_query = get_folder_base_query($type, $user_id);
+    $id = $org_id ? $org_id : DatawrapperSession::getUser()->getId();
+    $base_query = get_folder_base_query($type, $id);
     if (!$base_query) return;
 
     // find root
     $root_id = $base_query->findOneByParentId(null)->getFolderId();
     if (empty($root_id)) {
-        error('no-folders', "This user hasn\'t got any folders");
+        error('no-folders', "This ".$type." hasn\'t got any folders");
         return;
     }
 
     // does path exists? ("" can not happen!)
-    $pv = verify_path($type, $path, $root_id, $user_id);
+    $pv = verify_path($type, $path, $root_id, $id);
     if (!$pv['verified']) {
         error('no-such-path', 'Path does not exist.');
         return;
     }
 
     $current_id = $pv['pid'];
-    $tree = list_subdirs($type, $current_id, $user_id);
+    $tree = list_subdirs($type, $current_id, $id);
     if ($tree) {
         error('remaining-subfolders', 'You have to remove all subdfolders, before you can delete a folder.');
         return;
@@ -368,8 +352,29 @@ $app->delete('/folders/dir/:type/:path+/?', function($type, $path) use ($app) {
     //finally delete folder
     $current_folder->delete();
     ok();
-});
+}
 
+/**
+ * delete a subfolder
+ * root can not be removed
+ * folders which still contain other subfolders can not be removed
+ * if a folder contains charts, all of those will be moved to the parent folder
+ *
+ * @param type the type of folder which should be deleted
+ * @param path the folder to be deleted
+ * @param org_id (if specified) the identifier of the organization
+ */
+$app->delete('/folders/dir/organization/:org_id/:path+/?', function($org_id, $path) use ($app) {
+    if (!is_user_member_of($org_id)) return;
+    delete_folder($app, 'organization', $path, $org_id);
+});
+$app->delete('/folders/dir/user/:path+/?', function($path) use ($app) {
+    if (!DatawrapperSession::getUser()->isLoggedIn()) {
+        error('access-denied', 'User is not logged in.');
+        return;
+    }
+    delete_folder($app, 'user', $path);
+});
 
 /**
  * move a folder to another folder
