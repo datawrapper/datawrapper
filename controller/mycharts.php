@@ -49,6 +49,24 @@ function nbChartsByStatus($user) {
     );
 }
 
+function list_organizations($user) {
+    $user_id = $user->getId();
+    $organizations = UserOrganizationQuery::create()->findByUserId($user_id);
+    $orgs = array();
+    foreach ($organizations as $user_org) {
+        $org = $user_org->getOrganization();
+        if (!$org->getDisabled())
+            $orgs[preg_replace(array('/[^[:alnum:] -]/', '/(\s+|\-+)/'), array('', '-'), $org->getId())] = $org->getName();
+    }
+
+    uasort($orgs, function($a, $b) {
+        if ($a == $b) return 0;
+        return ($a < $b) ? -1 : 1;
+    });
+
+    return $orgs;
+}
+
 /*
  * shows MyChart page for a given user, which is typically the
  * logged user, but admins can view others MyCharts page, too.
@@ -73,7 +91,8 @@ function user_charts($app, $user, $key, $val) {
         'key' => $key,
         'val' => $val,
         'search_query' => empty($q) ? '' : $q,
-        'mycharts_base' => '/mycharts'
+        'mycharts_base' => '/mycharts',
+        'organizations' => list_organizations($user)
     );
 
     if (DatawrapperSession::getUser()->isAdmin() && $user != DatawrapperSession::getUser()) {

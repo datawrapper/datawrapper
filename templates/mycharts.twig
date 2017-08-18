@@ -178,6 +178,11 @@
             <li id="base-folder"><a href="{{ mycharts_base }}"><i class="icon-folder-open"></i> {% trans "My Charts" %}</a></li>
             <ul id="dynamic-tree">
             </ul>
+            {% for org_id, org_name in organizations %}
+            <li id="base-folder-{{ org_id }}"><a href="#"><i class="icon-folder-open"></i> {{ "Charts by %s" | trans | replace({'%s': org_name }) }}</a></li>
+            <ul id="dynamic-tree-{{ org_id }}">
+            </ul>
+            {% endfor %}
         </ul>
     </div>
     <div class="gallery">
