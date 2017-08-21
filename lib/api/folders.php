@@ -155,11 +155,12 @@ function get_chart_list($app, $type, $path, $org_id = false) {
         return;
     }
 
-    $root_id = $base_query->findOneByParentId(null)->getFolderId();
-    if (empty($root_id)) {
-        error('no-folders', "This user hasn't got any folders");
+    $root_folder = $base_query->findOneByParentId(null);
+    if (empty($root_folder)) {
+        error('no-folders', "This ".$type." hasn't got any folders");
         return;
     }
+    $root_id = $root_folder->getFolderId();
 
     $pv = verify_path($type, $path, $root_id, $id);
 
@@ -287,13 +288,13 @@ function subdir_wrapper($app, $type, $path, $org_id = false) {
 
     // find root
 
-    $root_query = $base_query->findOneByParentId(null);
+    $root_folder = $base_query->findOneByParentId(null);
     if (empty($root_query)) {
         // this might actually be queried by mycharts, so just return empty object
         ok('{}');
         return;
     }
-    $root_id = $root_query->getFolderId();;
+    $root_id = $root_folder->getFolderId();;
 
     // does path exists? ("" is ok, too)
     $pv = verify_path($type, $path, $root_id, $id);
@@ -332,11 +333,12 @@ function delete_folder($app, $type, $path, $org_id = null) {
     if (!$base_query) return;
 
     // find root
-    $root_id = $base_query->findOneByParentId(null)->getFolderId();
-    if (empty($root_id)) {
+    $root_folder = $base_query->findOneByParentId(null);
+    if (empty($root_folder)) {
         error('no-folders', "This ".$type." hasn't got any folders");
         return;
     }
+    $root_id = $root_folder->getFolderId();
 
     // does path exists? ("" can not happen!)
     $pv = verify_path($type, $path, $root_id, $id);
@@ -404,11 +406,12 @@ function move_folder($app, $type, $path, $org_id = false) {
 
     $dst_path = explode('/', trim($dst,'/'));
 
-    $root_id = $base_query->findOneByParentId(null)->getFolderId();
-    if (empty($root_id)) {
+    $root_folder = $base_query->findOneByParentId(null);
+    if (empty($root_folder)) {
         error('no-folders', "This ".$type." hasn't got any folders");
         return;
     }
+    $root_id = $root_folder->getFolderId();
 
     // do paths exists? ("" can not happen!)
     $pv = verify_path($type, $path, $root_id, $id);
