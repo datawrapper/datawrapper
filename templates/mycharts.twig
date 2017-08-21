@@ -353,7 +353,6 @@ $('body').load(function() {
 });
 
 var user_organization_cleaned = {{organizations|json_encode()|raw}};
-var flat_list = []; // ← this needs to be removed, to make it work for multiple trees! keep it local.
 
 const handler = {
     fail: function(err) {
@@ -369,6 +368,7 @@ const handler = {
     }
 };
 
+// FIXME: Must work with organizations (param?)
 const folder_menu = function(el, path, id, subfolders) {
     const html_blob = `
         <div class="btn-group">
@@ -393,6 +393,7 @@ const folder_menu = function(el, path, id, subfolders) {
                 <li><a class="delete-folder" tabindex="-1" href="#"><i class="icon-remove"></i> {% trans "Remove" %}</a></li>
             </ul>
         </div>`;
+    // FIXME: Remove me!
     const folder_type = 'user';
     var menu;
 
@@ -446,11 +447,10 @@ const folder_menu = function(el, path, id, subfolders) {
         menu.find(".delete-folder").remove();
 }
 
-const build_folder_2_folder_movelinks = function() {
-    $("#dynamic-tree .folder-list-item").each(function(i, entry) {
+const build_folder_2_folder_movelinks = function(entrypoint, flat_list) {
+    $(entrypoint + " .folder-list-item").each(function(i, entry) {
         var source_path = $.data(entry, "fullpath");
 
-        // FIXME: Don't expect a global flat_list!
         flat_list.forEach(function(folder) {
             var l = document.createElement('li'),
                 a = document.createElement('a'),
@@ -505,7 +505,7 @@ const build_line = function(path, tree) {
     $('#current-folder').text(cwd);
 };
 
-const build_tree_list = function(branch, parent, path, pathstring, tree) {
+const build_tree_list = function(branch, parent, flatter, path, pathstring, tree) {
     const filter = {
         key: '{{key}}',
         val: '{{val}}'
@@ -515,9 +515,9 @@ const build_tree_list = function(branch, parent, path, pathstring, tree) {
         subfolders = Object.keys(branch);
 
     // first pass, initialize data
-    if (typeof(path) === 'undefined'){
+    if (typeof(path) === 'undefined') {
         path = [];
-        pathstring = '',
+        pathstring = '';
         tree = branch;
     }
 
@@ -536,7 +536,7 @@ const build_tree_list = function(branch, parent, path, pathstring, tree) {
 
         nu_path = path.concat(folder);
         nu_pstr = pathstring + '/' + folder;
-        flat_list.push(nu_pstr);
+        flatter(nu_pstr);
 
         l1.classList.add("folder-list-item");
         l1.appendChild(a1);
@@ -560,7 +560,7 @@ const build_tree_list = function(branch, parent, path, pathstring, tree) {
         if (branch[folder].sub) {
             var nu_par = document.createElement('ul');
             parent.append(nu_par);
-            build_tree_list(branch[folder].sub, $(nu_par), nu_path, nu_pstr, tree);
+            build_tree_list(branch[folder].sub, $(nu_par), flatter, nu_path, nu_pstr, tree);
         }
     });
 };
@@ -595,8 +595,13 @@ const add_chart_functions = function () {
 const do_stuff_with_folders = function(folder_obj) {
     console.log("called", folder_obj);
     if (folder_obj.type === 'user') {
-        build_tree_list(folder_obj.tree, $('#dynamic-tree'));
-        build_folder_2_folder_movelinks();
+        var flatened_tree = [];
+        // FIXME: entrypoints eventually must match org entrypoints
+        build_tree_list(folder_obj.tree, $('#dynamic-tree'), function(path) {
+            flatened_tree.push(path);
+        });
+        console.log(flatened_tree);
+        build_folder_2_folder_movelinks('#dynamic-tree', flatened_tree);
     }
 };
 
