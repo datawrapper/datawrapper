@@ -175,11 +175,11 @@
 <div class="folders-and-gallery">
     <div class="folders">
         <ul>
-            <li id="base-folder"><a href="{{ mycharts_base }}"><i class="icon-folder-open"></i> {% trans "My Charts" %}</a></li>
+            <li class="base-folder"><a href="{{ mycharts_base }}"><i class="icon-folder-open"></i> {% trans "My Charts" %}</a></li>
             <ul id="dynamic-tree">
             </ul>
             {% for org_id, org_name in organizations %}
-            <li id="base-folder-{{ org_id }}"><a href="#"><i class="icon-folder-open"></i> {{ "Charts by %s" | trans | replace({'%s': org_name }) }}</a></li>
+            <li class="base-folder"><a href="#"><i class="icon-folder-open"></i> {{ org_name }}</a></li>
             <ul id="dynamic-tree-{{ org_id }}">
             </ul>
             {% endfor %}
@@ -352,7 +352,8 @@ $('body').load(function() {
 
 });
 
-var folder_tree, flat_list = [];
+var user_organization_cleaned = {{organizations|json_encode()|raw}};
+var flat_list = []; // ← this needs to be removed, to make it work for multiple trees! keep it local.
 
 const handler = {
     fail: function(err) {
@@ -441,7 +442,7 @@ const folder_menu = function(el, path, id, subfolders) {
     });
 
     // can't delete root or folders with subfolders
-    if(!path || subfolders)
+    if(typeof(path) === 'undefined' || subfolders)
         menu.find(".delete-folder").remove();
 }
 
@@ -449,6 +450,7 @@ const build_folder_2_folder_movelinks = function() {
     $("#dynamic-tree .folder-list-item").each(function(i, entry) {
         var source_path = $.data(entry, "fullpath");
 
+        // FIXME: Don't expect a global flat_list!
         flat_list.forEach(function(folder) {
             var l = document.createElement('li'),
                 a = document.createElement('a'),
@@ -463,6 +465,7 @@ const build_folder_2_folder_movelinks = function() {
             $(a).click(function(e) {
                 e.preventDefault();
                 $.ajax({
+                    // FIXME: use user | organization !
                     url: '/api/folders/dir/user' + source_path + '?dst=' + folder,
                     type: 'PUT',
                     dataType: 'JSON'
@@ -480,6 +483,7 @@ const build_folder_2_folder_movelinks = function() {
     });
 };
 
+// FIXME: This can not depend on a global tree anymore.
 const build_line = function(path) {
     var cwd, mypath, hopper,
         line = $('#folder-sequence');
@@ -542,7 +546,8 @@ const build_tree_list = function(tree, parent, path, pathstring) {
 
         if (filter.key === 'folder' && filter.val == id) {
             // hijack this pass to build active folder line
-            build_line(nu_path);
+            // FIXME: somehow need to pass the complete tree here!
+            // build_line(nu_path);
         } else {
             // or append this folder to the MoveTo submenu
             a2.innerText = nu_pstr.slice(1);
@@ -561,41 +566,77 @@ const build_tree_list = function(tree, parent, path, pathstring) {
     });
 };
 
-$('document').ready(function() {
-    $.getJSON('/api/folders/dir/user/')
+const add_chart_functions = function () {
+    // FIXME: request type needs to be extraced from the path somehow
+    const folder_type = "user";
+
+    $('.chart .folder-list a').click(function(e) {
+        var id = $(e.target).parents('.chart').data('id');
+        e.preventDefault();
+
+        $.ajax({
+            url: '/api/folders/chart/' + folder_type + '/' + id + '/' + $(e.target).text(),
+            type: 'PUT',
+            dataType: 'JSON'
+        }).done(handler.done).fail(handler.fail);
+    });
+
+    $('.chart .remove-from-dir').click(function(e) {
+        var id = $(e.target).parents('.chart').data('id');
+        e.preventDefault();
+
+        $.ajax({
+            url: '/api/folders/chart/' + id,
+            type: 'DELETE',
+            dataType: 'JSON'
+        }).done(handler.done).fail(handler.fail);
+    });
+};
+
+const do_stuff_with_folders = function(folder_obj) {
+    console.log("called", folder_obj);
+    if (folder_obj.type === 'user') {
+        build_tree_list(folder_obj.tree, $('#dynamic-tree'));
+        build_folder_2_folder_movelinks();
+    }
+};
+
+const get_folders = function(org_ids) {
+    var api_calls = [],
+        folders = [];
+
+    api_calls.push($.getJSON('/api/folders/dir/user/')
         .done(function(res) {
             if (res.status == 'error') {
                 alert(res.message);
             } else if (res.status == 'ok') {
-                //only user for now
-                const folder_type = 'user';
+                folders.push({ type: 'user', tree: res.data });
+            }
+        }).fail(handler.fail));
+    org_ids.forEach(function(id) {
+        api_calls.push($.getJSON('/api/folders/dir/organization/' + id + '/')
+            .done(function(res) {
+                if (res.status == 'error') {
+                    alert(res.message);
+                } else if (res.status == 'ok') {
+                    folders.push({ type: 'organization', org_id: id, tree: res.data });
+                }
+            }).fail(handler.fail));
+    });
+    $.when.apply(null, api_calls).done(function() {
+        folders.forEach(do_stuff_with_folders);
+        add_chart_functions();
+    });
+}
 
-                folder_menu($("#base-folder"), false);
-                folder_tree = res.data;
-                build_tree_list(folder_tree, $('#dynamic-tree'));
-                build_folder_2_folder_movelinks();
-
-                $('.chart .folder-list a').click(function(e) {
-                    var id = $(e.target).parents('.chart').data('id');
-                    e.preventDefault();
-
-                    $.ajax({
-                        url: '/api/folders/chart/' + folder_type + '/' + id + '/' + $(e.target).text(),
-                        type: 'PUT',
-                        dataType: 'JSON'
-                    }).done(handler.done).fail(handler.fail);
-                });
-
-                $('.chart .remove-from-dir').click(function(e) {
-                    var id = $(e.target).parents('.chart').data('id');
-                    e.preventDefault();
-
-                    $.ajax({
-                        url: '/api/folders/chart/' + id,
-                        type: 'DELETE',
-                        dataType: 'JSON'
-                    }).done(handler.done).fail(handler.fail);
-                });
+$('document').ready(function() {
+    folder_menu($(".base-folder"));
+    $.getJSON('/api/organizations/user')
+        .done(function(res) {
+            if (res.status == 'error') {
+                alert(res.message);
+            } else if (res.status == 'ok') {
+                get_folders(res.data);
             }
         }).fail(handler.fail);
 });
