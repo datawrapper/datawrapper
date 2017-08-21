@@ -483,8 +483,7 @@ const build_folder_2_folder_movelinks = function() {
     });
 };
 
-// FIXME: This can not depend on a global tree anymore.
-const build_line = function(path) {
+const build_line = function(path, tree) {
     var cwd, mypath, hopper,
         line = $('#folder-sequence');
         sep = ' > ';
@@ -493,32 +492,33 @@ const build_line = function(path) {
 
     mypath = Array.from(path);
     cwd = mypath.pop();
-    hopper = folder_tree;
 
     mypath.forEach(function(dir) {
         var a = document.createElement('a');
 
         a.innerText = dir;
-        a.setAttribute('href', '{{ mycharts_base }}/by/folder/' + hopper[dir].id);
+        a.setAttribute('href', '{{ mycharts_base }}/by/folder/' + tree[dir].id);
         line.append(sep, a);
-        hopper = hopper[dir].sub
+        tree = tree[dir].sub
     });
     line.append(sep);
     $('#current-folder').text(cwd);
 };
 
-const build_tree_list = function(tree, parent, path, pathstring) {
+const build_tree_list = function(branch, parent, path, pathstring, tree) {
     const filter = {
         key: '{{key}}',
         val: '{{val}}'
     };
     const folder_icon = '<i class="icon-folder-open"></i>';
     var nu_path,
-        subfolders = Object.keys(tree);
+        subfolders = Object.keys(branch);
 
+    // first pass, initialize data
     if (typeof(path) === 'undefined'){
         path = [];
-        pathstring = '';
+        pathstring = '',
+        tree = branch;
     }
 
     subfolders.forEach(function(folder) {
@@ -526,12 +526,12 @@ const build_tree_list = function(tree, parent, path, pathstring) {
             a1 = document.createElement('a'),
             l2 = document.createElement('li'),
             a2 = document.createElement('a'),
-            id = tree[folder].id;
+            id = branch[folder].id;
 
         // l.innerHTML = folder_icon;
         a1.innerHTML = folder_icon + ' ' + folder;
-        if (tree[folder].charts > 0)
-            a1.innerHTML += ' (' + tree[folder].charts + ')';
+        if (branch[folder].charts > 0)
+            a1.innerHTML += ' (' + branch[folder].charts + ')';
         a1.setAttribute('href', '{{ mycharts_base }}/by/folder/' + id);
 
         nu_path = path.concat(folder);
@@ -540,14 +540,13 @@ const build_tree_list = function(tree, parent, path, pathstring) {
 
         l1.classList.add("folder-list-item");
         l1.appendChild(a1);
-        folder_menu($(l1), nu_pstr.slice(1), id, tree[folder].sub != false); //last param evaluates to bool
+        folder_menu($(l1), nu_pstr.slice(1), id, branch[folder].sub != false); //last param evaluates to bool
         $.data(l1, "fullpath", nu_pstr);
         parent.append(l1);
 
         if (filter.key === 'folder' && filter.val == id) {
             // hijack this pass to build active folder line
-            // FIXME: somehow need to pass the complete tree here!
-            // build_line(nu_path);
+            build_line(nu_path, tree);
         } else {
             // or append this folder to the MoveTo submenu
             a2.innerText = nu_pstr.slice(1);
@@ -558,10 +557,10 @@ const build_tree_list = function(tree, parent, path, pathstring) {
             $('.dropdown-menu .folder-list').append(l2);
         }
 
-        if (tree[folder].sub) {
+        if (branch[folder].sub) {
             var nu_par = document.createElement('ul');
             parent.append(nu_par);
-            build_tree_list(tree[folder].sub, $(nu_par), nu_path, nu_pstr);
+            build_tree_list(branch[folder].sub, $(nu_par), nu_path, nu_pstr, tree);
         }
     });
 };
