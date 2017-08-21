@@ -291,7 +291,7 @@ function subdir_wrapper($app, $type, $path, $org_id = false) {
     $root_folder = $base_query->findOneByParentId(null);
     if (empty($root_folder)) {
         // this might actually be queried by mycharts, so just return empty object
-        ok('{}');
+        ok(new stdClass());
         return;
     }
     $root_id = $root_folder->getFolderId();;
