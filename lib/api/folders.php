@@ -286,11 +286,14 @@ function subdir_wrapper($app, $type, $path, $org_id = false) {
     if (!$base_query) return;
 
     // find root
-    $root_id = $base_query->findOneByParentId(null)->getFolderId();
-    if (empty($root_id)) {
-        error('no-folders', "This ".$type." hasn't got any folders");
+
+    $root_query = $base_query->findOneByParentId(null);
+    if (empty($root_query)) {
+        // this might actually be queried by mycharts, so just return empty object
+        ok('{}');
         return;
     }
+    $root_id = $root_query->getFolderId();;
 
     // does path exists? ("" is ok, too)
     $pv = verify_path($type, $path, $root_id, $id);
