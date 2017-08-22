@@ -55,13 +55,18 @@ function list_organizations($user) {
     $orgs = array();
     foreach ($organizations as $user_org) {
         $org = $user_org->getOrganization();
-        if (!$org->getDisabled())
-            $orgs[preg_replace(array('/[^[:alnum:] -]/', '/(\s+|\-+)/'), array('', '-'), $org->getId())] = $org->getName();
+        if (!$org->getDisabled()) {
+            $obj = new stdClass();
+            $obj->id = $org->getId();
+            $obj->name = $org->getName();
+            $obj->tag = preg_replace(array('/[^[:alnum:] -]/', '/(\s+|\-+)/'), array('', '-'), $org->getId());
+            $orgs[] = $obj;
+        }
     }
 
     uasort($orgs, function($a, $b) {
-        if ($a == $b) return 0;
-        return ($a < $b) ? -1 : 1;
+        if ($a->name == $b->name) return 0;
+        return ($a->name < $b->name) ? -1 : 1;
     });
 
     return $orgs;
