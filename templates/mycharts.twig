@@ -593,21 +593,23 @@ const add_chart_functions = function () {
 };
 
 const do_stuff_with_folders = function(folder_obj) {
-    console.log("called", folder_obj);
-    if (folder_obj.type === 'user') {
-        var flatened_tree = [];
-        // FIXME: entrypoints eventually must match org entrypoints
-        build_tree_list(folder_obj.tree, $('#dynamic-tree'), function(path) {
-            flatened_tree.push(path);
-        });
-        console.log(flatened_tree);
-        build_folder_2_folder_movelinks('#dynamic-tree', flatened_tree);
-    }
+    var flatened_tree = this,
+        entrypoint;
+
+    entrypoint = '#dynamic-tree'
+    entrypoint += (folder_obj.type === 'user') ? '' : '-' + folder_obj.org_id.replace(' ','-').replace(/[^a-zA-Z0-9-]/g,'');
+    console.log("called", folder_obj, entrypoint);
+
+    build_tree_list(folder_obj.tree, $(entrypoint), function(path) {
+        flatened_tree.push(path);
+    });
+    build_folder_2_folder_movelinks(entrypoint, flatened_tree);
 };
 
 const get_folders = function(org_ids) {
     var api_calls = [],
-        folders = [];
+        folders = [],
+        flatened_tree = [];
 
     api_calls.push($.getJSON('/api/folders/dir/user/')
         .done(function(res) {
@@ -628,7 +630,13 @@ const get_folders = function(org_ids) {
             }).fail(handler.fail));
     });
     $.when.apply(null, api_calls).done(function() {
-        folders.forEach(do_stuff_with_folders);
+        folders.sort(function(a, b) {
+            if (a.type == 'user') return -1;
+            if (b.type == 'user') return 1;
+            return a.org_id.localeCompare(b.org_id);
+        });
+        folders.forEach(do_stuff_with_folders, flatened_tree);
+        console.log(flatened_tree);
         add_chart_functions();
     });
 }
