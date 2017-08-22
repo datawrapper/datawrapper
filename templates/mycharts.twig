@@ -178,10 +178,10 @@
             <li class="base-folder"><a href="{{ mycharts_base }}"><i class="icon-folder-open"></i> {% trans "My Charts" %}</a></li>
             <ul id="dynamic-tree">
             </ul>
-            {% for org_id, org_name in organizations %}
-            <li class="base-folder"><a href="#"><i class="icon-folder-open"></i> {{ org_name }}</a></li>
-            <ul id="dynamic-tree-{{ org_id }}">
-            </ul>
+            {% for org in organizations %}
+            <li class="base-folder"><a href="{{ mycharts_base }}/organization/{{ org.id }}"><i class="icon-folder-open"></i> {{ org.name }}</a></li>
+            <ul id="dynamic-tree-{{ org.tag }}"
+>            </ul>
             {% endfor %}
         </ul>
     </div>
@@ -505,7 +505,7 @@ const build_line = function(path, tree) {
     $('#current-folder').text(cwd);
 };
 
-const build_tree_list = function(branch, parent, flatter, path, pathstring, tree) {
+const build_tree_list = function(branch, parent, org_id, flatter, path, pathstring, tree) {
     const filter = {
         key: '{{key}}',
         val: '{{val}}'
@@ -526,13 +526,13 @@ const build_tree_list = function(branch, parent, flatter, path, pathstring, tree
             a1 = document.createElement('a'),
             l2 = document.createElement('li'),
             a2 = document.createElement('a'),
-            id = branch[folder].id;
+            id = branch[folder].id,
+            org_snipplet = (org_id) ? '/organization/' + org_id : '';
 
-        // l.innerHTML = folder_icon;
         a1.innerHTML = folder_icon + ' ' + folder;
         if (branch[folder].charts > 0)
             a1.innerHTML += ' (' + branch[folder].charts + ')';
-        a1.setAttribute('href', '{{ mycharts_base }}/by/folder/' + id);
+        a1.setAttribute('href', '{{ mycharts_base }}' + org_snipplet + '/by/folder/' + id);
 
         nu_path = path.concat(folder);
         nu_pstr = pathstring + '/' + folder;
@@ -560,7 +560,7 @@ const build_tree_list = function(branch, parent, flatter, path, pathstring, tree
         if (branch[folder].sub) {
             var nu_par = document.createElement('ul');
             parent.append(nu_par);
-            build_tree_list(branch[folder].sub, $(nu_par), flatter, nu_path, nu_pstr, tree);
+            build_tree_list(branch[folder].sub, $(nu_par), org_id, flatter, nu_path, nu_pstr, tree);
         }
     });
 };
@@ -597,13 +597,14 @@ const do_stuff_with_folders = function(folder_obj) {
         entrypoint;
 
     entrypoint = '#dynamic-tree'
-    entrypoint += (folder_obj.type === 'user') ? '' : '-' + folder_obj.org_id.replace(' ','-').replace(/[^a-zA-Z0-9-]/g,'');
+    if (folder_obj.org_id !== false)
+        entrypoint += '-' + folder_obj.org_id.replace(' ','-').replace(/[^a-zA-Z0-9-]/g,'');
     console.log("called", folder_obj, entrypoint);
 
-    build_tree_list(folder_obj.tree, $(entrypoint), function(path) {
+    build_tree_list(folder_obj.tree, $(entrypoint), folder_obj.org_id, function(path) {
         flatened_tree.push(path);
     });
-    build_folder_2_folder_movelinks(entrypoint, flatened_tree);
+    // build_folder_2_folder_movelinks(entrypoint, flatened_tree);
 };
 
 const get_folders = function(org_ids) {
@@ -616,7 +617,7 @@ const get_folders = function(org_ids) {
             if (res.status == 'error') {
                 alert(res.message);
             } else if (res.status == 'ok') {
-                folders.push({ type: 'user', tree: res.data });
+                folders.push({ org_id: false, tree: res.data });
             }
         }).fail(handler.fail));
     org_ids.forEach(function(id) {
@@ -625,14 +626,14 @@ const get_folders = function(org_ids) {
                 if (res.status == 'error') {
                     alert(res.message);
                 } else if (res.status == 'ok') {
-                    folders.push({ type: 'organization', org_id: id, tree: res.data });
+                    folders.push({ org_id: id, tree: res.data });
                 }
             }).fail(handler.fail));
     });
     $.when.apply(null, api_calls).done(function() {
         folders.sort(function(a, b) {
-            if (a.type == 'user') return -1;
-            if (b.type == 'user') return 1;
+            if (!a.org_id) return -1;
+            if (!b.org_id) return 1;
             return a.org_id.localeCompare(b.org_id);
         });
         folders.forEach(do_stuff_with_folders, flatened_tree);
