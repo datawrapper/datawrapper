@@ -352,8 +352,6 @@ $('body').load(function() {
 
 });
 
-var user_organization_cleaned = {{organizations|json_encode()|raw}};
-
 const handler = {
     fail: function(err) {
         alert('API Error');
@@ -549,7 +547,7 @@ const build_tree_list = function(branch, parent, org_id, flatter, path, pathstri
             build_line(nu_path, tree);
         } else {
             // or append this folder to the MoveTo submenu
-            a2.innerText = nu_pstr.slice(1);
+            a2.innerHTML = (org_id) ? '<b>' + org_id + '</b><span>' + nu_pstr + '</span>': nu_pstr.slice(1);
             a2.setAttribute('href', '#');
             a2.setAttribute('tabindex', '-1');
             l2.appendChild(a2);
@@ -566,15 +564,17 @@ const build_tree_list = function(branch, parent, org_id, flatter, path, pathstri
 };
 
 const add_chart_functions = function () {
-    // FIXME: request type needs to be extraced from the path somehow
-    const folder_type = "user";
-
     $('.chart .folder-list a').click(function(e) {
-        var id = $(e.target).parents('.chart').data('id');
+        var tar = $(e.currentTarget),
+            id = tar.parents('.chart').data('id'),
+            org_part = tar.find('b'),
+            put_url = '/api/folders/chart/';
         e.preventDefault();
 
+        put_url += (org_part.length) ? 'organization/' + org_part.text() + '/' + id + tar.find('span').text() : 'user/' + id + '/' + tar.text();
+
         $.ajax({
-            url: '/api/folders/chart/' + folder_type + '/' + id + '/' + $(e.target).text(),
+            url: put_url,
             type: 'PUT',
             dataType: 'JSON'
         }).done(handler.done).fail(handler.fail);
@@ -599,12 +599,11 @@ const do_stuff_with_folders = function(folder_obj) {
     entrypoint = '#dynamic-tree'
     if (folder_obj.org_id !== false)
         entrypoint += '-' + folder_obj.org_id.replace(' ','-').replace(/[^a-zA-Z0-9-]/g,'');
-    console.log("called", folder_obj, entrypoint);
 
     build_tree_list(folder_obj.tree, $(entrypoint), folder_obj.org_id, function(path) {
         flatened_tree.push(path);
     });
-    // build_folder_2_folder_movelinks(entrypoint, flatened_tree);
+    build_folder_2_folder_movelinks(entrypoint, flatened_tree);
 };
 
 const get_folders = function(org_ids) {
@@ -637,7 +636,6 @@ const get_folders = function(org_ids) {
             return a.org_id.localeCompare(b.org_id);
         });
         folders.forEach(do_stuff_with_folders, flatened_tree);
-        console.log(flatened_tree);
         add_chart_functions();
     });
 }
