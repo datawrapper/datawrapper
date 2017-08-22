@@ -180,8 +180,8 @@
             </ul>
             {% for org in organizations %}
             <li class="base-folder"><a href="{{ mycharts_base }}/organization/{{ org.id }}"><i class="icon-folder-open"></i> {{ org.name }}</a></li>
-            <ul id="dynamic-tree-{{ org.tag }}"
->            </ul>
+            <ul id="dynamic-tree-{{ org.tag }}">
+            </ul>
             {% endfor %}
         </ul>
     </div>
