@@ -366,8 +366,7 @@ const handler = {
     }
 };
 
-// FIXME: Must work with organizations (param?)
-const folder_menu = function(el, path, id, subfolders) {
+const folder_menu = function(el, path, id, org_id, subfolders) {
     const html_blob = `
         <div class="btn-group">
             <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
@@ -391,8 +390,6 @@ const folder_menu = function(el, path, id, subfolders) {
                 <li><a class="delete-folder" tabindex="-1" href="#"><i class="icon-remove"></i> {% trans "Remove" %}</a></li>
             </ul>
         </div>`;
-    // FIXME: Remove me!
-    const folder_type = 'user';
     var menu;
 
     el.append(html_blob);
@@ -408,33 +405,30 @@ const folder_menu = function(el, path, id, subfolders) {
     });
 
     menu.find(".folder-confirm").click(function(e) {
-        const pathcheck = function(p) {
-            if (p)
-                return '/' + p;
-            else
-                return '';
-        };
         var val = menu.find(".folder-input")[0].value,
-            encoded;
+            post_url = '/api/folders/dir/';
         e.preventDefault();
-
         if (val.search("/") != -1) {
             alert("Your folder name may not contain any slashes.");
             return;
         }
-        encoded = encodeURI(val);
-
+        post_url += (org_id) ? 'organization/' + org_id + '/': 'user/';
+        post_url += (path) ? path + '/': '';
+        post_url += val;
         $.ajax({
-            url: '/api/folders/dir/' + folder_type + pathcheck(path) + '/' + encoded,
+            url: post_url,
             type: 'POST',
             dataType: 'JSON'
         }).done(handler.done).fail(handler.fail);
     });
 
     menu.find(".delete-folder").click(function(e) {
+        var del_url = '/api/folders/dir/';
         e.preventDefault();
+        del_url += (org_id) ? 'organization/' + org_id + '/' : 'user/';
+        del_url += path;
         $.ajax({
-            url: '/api/folders/dir/' + folder_type + '/' + path,
+            url: del_url,
             type: 'DELETE',
             dataType: 'JSON'
         }).done(handler.done).fail(handler.fail);
@@ -445,26 +439,29 @@ const folder_menu = function(el, path, id, subfolders) {
         menu.find(".delete-folder").remove();
 }
 
-const build_folder_2_folder_movelinks = function(entrypoint, flat_list) {
+const build_folder_2_folder_movelinks = function(entrypoint, flat_list, org_id) {
     $(entrypoint + " .folder-list-item").each(function(i, entry) {
-        var source_path = $.data(entry, "fullpath");
+        var source_path = $.data(entry, "fullpath"),
+            source_parent = source_path.slice(0, source_path.lastIndexOf('/'));
 
         flat_list.forEach(function(folder) {
             var l = document.createElement('li'),
                 a = document.createElement('a'),
-                move_menu;
+                move_menu,
+                put_url = '/api/folders/dir/';
 
             // Do not create links for subfolders of this path
-            if (folder.startsWith(source_path.slice(0, source_path.lastIndexOf('/')))) return;
+            if (folder === source_path || (source_parent !== '' && folder.startsWith(source_parent))) return;
             move_menu = $(entry).find(".dropdown-menu .move-links");
 
             a.innerText = folder.slice(1);
             a.setAttribute('href', '#');
+            put_url += (org_id) ? 'organization/' + org_id : 'user';
+            put_url += source_path + '?dst=' + folder;
             $(a).click(function(e) {
                 e.preventDefault();
                 $.ajax({
-                    // FIXME: use user | organization !
-                    url: '/api/folders/dir/user' + source_path + '?dst=' + folder,
+                    url: put_url,
                     type: 'PUT',
                     dataType: 'JSON'
                 }).done(handler.done).fail(handler.fail);
@@ -538,7 +535,7 @@ const build_tree_list = function(branch, parent, org_id, flatter, path, pathstri
 
         l1.classList.add("folder-list-item");
         l1.appendChild(a1);
-        folder_menu($(l1), nu_pstr.slice(1), id, branch[folder].sub != false); //last param evaluates to bool
+        folder_menu($(l1), nu_pstr.slice(1), id, org_id, branch[folder].sub != false); //last param evaluates to bool
         $.data(l1, "fullpath", nu_pstr);
         parent.append(l1);
 
@@ -603,7 +600,8 @@ const do_stuff_with_folders = function(folder_obj) {
     build_tree_list(folder_obj.tree, $(entrypoint), folder_obj.org_id, function(path) {
         flatened_tree.push(path);
     });
-    build_folder_2_folder_movelinks(entrypoint, flatened_tree);
+    // FIXME: This must be taken out of the loop
+    build_folder_2_folder_movelinks(entrypoint, flatened_tree, folder_obj.org_id);
 };
 
 const get_folders = function(org_ids) {
