@@ -590,7 +590,7 @@ const add_chart_functions = function () {
 };
 
 const do_stuff_with_folders = function(folder_obj) {
-    var flatened_tree = this,
+    var flatened_tree = [],
         entrypoint;
 
     entrypoint = '#dynamic-tree'
@@ -600,14 +600,12 @@ const do_stuff_with_folders = function(folder_obj) {
     build_tree_list(folder_obj.tree, $(entrypoint), folder_obj.org_id, function(path) {
         flatened_tree.push(path);
     });
-    // FIXME: This must be taken out of the loop
     build_folder_2_folder_movelinks(entrypoint, flatened_tree, folder_obj.org_id);
 };
 
 const get_folders = function(org_ids) {
     var api_calls = [],
-        folders = [],
-        flatened_tree = [];
+        folders = [];
 
     api_calls.push($.getJSON('/api/folders/dir/user/')
         .done(function(res) {
@@ -633,7 +631,7 @@ const get_folders = function(org_ids) {
             if (!b.org_id) return 1;
             return a.org_id.localeCompare(b.org_id);
         });
-        folders.forEach(do_stuff_with_folders, flatened_tree);
+        folders.forEach(do_stuff_with_folders);
         add_chart_functions();
     });
 }
