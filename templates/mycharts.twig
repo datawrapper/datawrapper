@@ -595,7 +595,7 @@ const do_stuff_with_folders = function(folder_obj) {
         entrypoint = '#dynamic-tree';
 
     if (folder_obj.org_id !== false) {
-        let org_tag = '-' + folder_obj.org_id.replace(' ','-').replace(/[^a-zA-Z0-9-]/g,'');
+        var org_tag = '-' + folder_obj.org_id.replace(' ','-').replace(/[^a-zA-Z0-9-]/g,'');
         entrypoint += org_tag;
         root_id += org_tag;
     }
@@ -609,7 +609,7 @@ const do_stuff_with_folders = function(folder_obj) {
     build_folder_2_folder_movelinks(entrypoint, flatened_tree, folder_obj.org_id);
 };
 
-const get_folders = function(org_ids) {
+const get_folders = function(orgs) {
     var api_calls = [],
         folders = [];
 
@@ -621,13 +621,14 @@ const get_folders = function(org_ids) {
                 folders.push({ org_id: false, tree: res.data });
             }
         }).fail(handler.fail));
-    org_ids.forEach(function(id) {
-        api_calls.push($.getJSON('/api/folders/dir/organization/' + id + '/')
+    Object.keys(orgs).forEach(function(key) {
+        var org = orgs[key];
+        api_calls.push($.getJSON('/api/folders/dir/organization/' + org.id + '/')
             .done(function(res) {
                 if (res.status == 'error') {
                     alert(res.message);
                 } else if (res.status == 'ok') {
-                    folders.push({ org_id: id, tree: res.data });
+                    folders.push({ org_id: org.id, org_name: org.name, tree: res.data });
                 }
             }).fail(handler.fail));
     });
@@ -635,7 +636,7 @@ const get_folders = function(org_ids) {
         folders.sort(function(a, b) {
             if (!a.org_id) return -1;
             if (!b.org_id) return 1;
-            return a.org_id.localeCompare(b.org_id);
+            return a.org_name.localeCompare(b.org_name);
         });
         folders.forEach(do_stuff_with_folders);
         add_chart_functions();
@@ -643,14 +644,7 @@ const get_folders = function(org_ids) {
 }
 
 $('document').ready(function() {
-    $.getJSON('/api/organizations/user')
-        .done(function(res) {
-            if (res.status == 'error') {
-                alert(res.message);
-            } else if (res.status == 'ok') {
-                get_folders(res.data);
-            }
-        }).fail(handler.fail);
+    get_folders({{ organizations | json | raw }});
 });
 
 </script>
