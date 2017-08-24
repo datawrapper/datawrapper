@@ -175,11 +175,11 @@
 <div class="folders-and-gallery">
     <div class="folders">
         <ul>
-            <li class="base-folder"><a href="{{ mycharts_base }}"><i class="icon-folder-open"></i> {% trans "My Charts" %}</a></li>
+            <li id="base-folder"><a href="{{ mycharts_base }}"><i class="icon-folder-open"></i> {% trans "My Charts" %}</a></li>
             <ul id="dynamic-tree">
             </ul>
             {% for org in organizations %}
-            <li class="base-folder"><a href="{{ mycharts_base }}/organization/{{ org.id }}"><i class="icon-folder-open"></i> {{ org.name }}</a></li>
+            <li id="base-folder-{{ org.tag }}"><a href="{{ mycharts_base }}/organization/{{ org.id }}"><i class="icon-folder-open"></i> {{ org.name }}</a></li>
             <ul id="dynamic-tree-{{ org.tag }}">
             </ul>
             {% endfor %}
@@ -366,7 +366,7 @@ const handler = {
     }
 };
 
-const folder_menu = function(el, path, id, org_id, subfolders) {
+const folder_menu = function(el, org_id, path, subfolders) {
     const html_blob = `
         <div class="btn-group">
             <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
@@ -535,7 +535,7 @@ const build_tree_list = function(branch, parent, org_id, flatter, path, pathstri
 
         l1.classList.add("folder-list-item");
         l1.appendChild(a1);
-        folder_menu($(l1), nu_pstr.slice(1), id, org_id, branch[folder].sub != false); //last param evaluates to bool
+        folder_menu($(l1), org_id, nu_pstr.slice(1), branch[folder].sub != false); //last param evaluates to bool
         $.data(l1, "fullpath", nu_pstr);
         parent.append(l1);
 
@@ -591,15 +591,21 @@ const add_chart_functions = function () {
 
 const do_stuff_with_folders = function(folder_obj) {
     var flatened_tree = [],
-        entrypoint;
+        root_id = '#base-folder'
+        entrypoint = '#dynamic-tree';
 
-    entrypoint = '#dynamic-tree'
-    if (folder_obj.org_id !== false)
-        entrypoint += '-' + folder_obj.org_id.replace(' ','-').replace(/[^a-zA-Z0-9-]/g,'');
+    if (folder_obj.org_id !== false) {
+        let org_tag = '-' + folder_obj.org_id.replace(' ','-').replace(/[^a-zA-Z0-9-]/g,'');
+        entrypoint += org_tag;
+        root_id += org_tag;
+    }
+
+    folder_menu($(root_id), folder_obj.org_id);
 
     build_tree_list(folder_obj.tree, $(entrypoint), folder_obj.org_id, function(path) {
         flatened_tree.push(path);
     });
+
     build_folder_2_folder_movelinks(entrypoint, flatened_tree, folder_obj.org_id);
 };
 
@@ -637,7 +643,6 @@ const get_folders = function(org_ids) {
 }
 
 $('document').ready(function() {
-    folder_menu($(".base-folder"));
     $.getJSON('/api/organizations/user')
         .done(function(res) {
             if (res.status == 'error') {
