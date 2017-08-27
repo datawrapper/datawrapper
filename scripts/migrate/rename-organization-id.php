@@ -1,13 +1,7 @@
 <?php
 
 /*
- * This scripts secures all passwords in the database with the
- * secure_auth_key that was introduced in 1.3.2.
- *
- * Please run this script only once(!) when migrating to 1.3.2 and
- * please BACK UP YOUR DATABASE first, in case something goes wrong.
- *
- * OTHERWISE your users won't be able to login anymore.
+ * This scripts renames an organization_id
  */
 
 define('ROOT_PATH', '../../');
