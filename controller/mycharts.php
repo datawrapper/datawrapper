@@ -73,18 +73,25 @@ function list_organizations($user) {
 }
 
 /*
- * shows MyChart page for a given user, which is typically the
+ * shows MyChart page for a given user (or organization), which is typically the
  * logged user, but admins can view others MyCharts page, too.
  */
-function user_charts($app, $user, $key, $val) {
+function any_charts($app, $user, $key, $val, $org_id = false) {
     $curPage = $app->request()->params('page');
     $q = $app->request()->params('q');
     if (empty($curPage)) $curPage = 0;
     $perPage = 48;
     $filter = !empty($key) ? array($key => $val) : array();
     if (!empty($q)) $filter['q'] = $q;
-    $charts =  ChartQuery::create()->getPublicChartsByUser($user, $filter, $curPage * $perPage, $perPage, 'lastUpdated');
-    $total = ChartQuery::create()->countPublicChartsByUser($user, $filter);
+    if ($org_id) {
+        $id = $org_id;
+        $is_org = true;
+    } else {
+        $id = $user->getId();
+        $is_org = false;
+    }
+    $charts =  ChartQuery::create()->getPublicChartsById($id, $is_org, $filter, $curPage * $perPage, $perPage, 'lastUpdated');
+    $total = ChartQuery::create()->countPublicChartsById($id, $is_org, $filter);
 
     $page = array(
         'title' => __('My Charts'),
@@ -111,11 +118,11 @@ function user_charts($app, $user, $key, $val) {
     $app->render('mycharts.twig', $page);
 }
 
-$app->get('/mycharts(/?|/by/:key/:val)', function ($key = false, $val = false) use ($app) {
+$app->get('/mycharts(/organization/:org_id)?(/?|/by/:key/:val)', function ($org_id = false, $key = false, $val = false) use ($app) {
     disable_cache($app);
     $user = DatawrapperSession::getUser();
     if ($user->isLoggedIn()) {
-        user_charts($app, $user, $key, $val);
+        any_charts($app, $user, $key, $val, $org_id);
     } else {
         error_mycharts_need_login();
     }
@@ -127,7 +134,7 @@ $app->get('/admin/charts/:userid(/?|/by/:key/:val)', function($userid, $key = fa
     if ($user->isAdmin()) {
         $user2 = UserQuery::create()->findOneById($userid);
         if ($user2) {
-            user_charts($app, $user2, $key, $val);
+            any_charts($app, $user2, $key, $val);
         } else {
             error_mycharts_user_not_found();
         }
