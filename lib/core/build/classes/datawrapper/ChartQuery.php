@@ -132,7 +132,7 @@ class ChartQuery extends BaseChartQuery {
      * My Charts
      */
 
-    private function publicChartsByIDQuery($id, $org, $filter, $order='date') {
+    private function publicChartsByIdQuery($id, $org, $filter, $order='date') {
         if ($org) {
             $query = $this->filterByOrganizationId($id)
                 ->filterByDeleted(false);
@@ -181,7 +181,7 @@ class ChartQuery extends BaseChartQuery {
 
     public function getPublicChartsById($id, $org, $filter=array(), $start=0, $perPage=15, $order=false) {
         return $this
-            ->publicChartsByIDQuery($id, $org, $filter, $order)
+            ->publicChartsByIdQuery($id, $org, $filter, $order)
             ->limit($perPage)
             ->offset($start)
             ->find();
@@ -189,7 +189,7 @@ class ChartQuery extends BaseChartQuery {
 
     public function countPublicChartsById($id, $org, $filter=array()) {
         return $this
-            ->publicChartsByIDQuery($id, $org, $filter)
+            ->publicChartsByIdQuery($id, $org, $filter)
             ->count();
     }
 
