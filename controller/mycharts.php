@@ -1,8 +1,9 @@
 <?php
 
-function nbChartsByMonth($user) {
+function nbChartsByMonth($id, $is_org) {
+    $where_clause = ($is_org) ? "organization_id = '".$id."'" : "author_id = '".$id."'";
     $con = Propel::getConnection();
-    $sql = "SELECT DATE_FORMAT(created_at, '%Y-%m') ym, COUNT(*) c FROM chart WHERE author_id = ". $user->getId() ." AND deleted = 0 AND last_edit_step >= 2 GROUP BY ym ORDER BY ym DESC ;";
+    $sql = "SELECT DATE_FORMAT(created_at, '%Y-%m') ym, COUNT(*) c FROM chart WHERE ". $where_clause ." AND deleted = 0 AND last_edit_step >= 2 GROUP BY ym ORDER BY ym DESC ;";
     $rs = $con->query($sql);
     $res = array();
     foreach ($rs as $r) {
@@ -11,9 +12,10 @@ function nbChartsByMonth($user) {
     return $res;
 }
 
-function nbChartsByType($user) {
+function nbChartsByType($id, $is_org) {
+    $where_clause = ($is_org) ? "organization_id = '".$id."'" : "author_id = '".$id."'";
     $con = Propel::getConnection();
-    $sql = "SELECT type, COUNT(*) c FROM chart WHERE author_id = ". $user->getId() ." AND deleted = 0 AND last_edit_step >= 2 GROUP BY type ORDER BY c DESC ;";
+    $sql = "SELECT type, COUNT(*) c FROM chart WHERE ". $where_clause ." AND deleted = 0 AND last_edit_step >= 2 GROUP BY type ORDER BY c DESC ;";
     $rs = $con->query($sql);
     $res = array();
 
@@ -40,9 +42,14 @@ function nbChartsByType($user) {
     return $res;
 }*/
 
-function nbChartsByStatus($user) {
-    $published = ChartQuery::create()->filterByUser($user)->filterByDeleted(false)->filterByLastEditStep(array('min'=>4))->count();
-    $draft = ChartQuery::create()->filterByUser($user)->filterByDeleted(false)->filterByLastEditStep(3)->count();
+function nbChartsByStatus($id, $is_org) {
+    if ($is_org) {
+        $published = ChartQuery::create()->filterByOrganizationId($id)->filterByDeleted(false)->filterByLastEditStep(array('min'=>4))->count();
+        $draft = ChartQuery::create()->filterByOrganizationId($id)->filterByDeleted(false)->filterByLastEditStep(3)->count();
+    } else {
+        $published = ChartQuery::create()->filterByAuthorId($id)->filterByDeleted(false)->filterByLastEditStep(array('min'=>4))->count();
+        $draft = ChartQuery::create()->filterByAuthorId($id)->filterByDeleted(false)->filterByLastEditStep(3)->count();
+    }
     return array(
         array('id'=>'published', 'name' => __('Published'), 'count' => $published),
         array('id'=>'draft', 'name' => __('Draft'), 'count' => $draft)
@@ -96,10 +103,10 @@ function any_charts($app, $user, $key, $val, $org_id = false) {
     $page = array(
         'title' => __('My Charts'),
         'charts' => $charts,
-        'bymonth' => nbChartsByMonth($user),
-        'byvis' => nbChartsByType($user),
+        'bymonth' => nbChartsByMonth($id, $is_org),
+        'byvis' => nbChartsByType($id, $is_org),
         // 'bylayout' => nbChartsByLayout($user),
-        'bystatus' => nbChartsByStatus($user),
+        'bystatus' => nbChartsByStatus($id, $is_org),
         'key' => $key,
         'val' => $val,
         'search_query' => empty($q) ? '' : $q,
