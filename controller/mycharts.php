@@ -91,6 +91,7 @@ function any_charts($app, $user, $key, $val, $org_id = false) {
     $filter = !empty($key) ? array($key => $val) : array();
     if (!empty($q)) $filter['q'] = $q;
     if ($org_id) {
+        // FIXME: Make sure if user is a member of organization
         $id = $org_id;
         $is_org = true;
     } else {
