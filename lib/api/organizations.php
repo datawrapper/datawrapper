@@ -28,6 +28,11 @@ $app->post('/organizations', function() use ($app) {
     if_is_admin(function() use ($app) {
         try {
             $params = json_decode($app->request()->getBody(), true);
+            // check for weird characters
+            if(!preg_match('/^[a-z0-9]+(-[a-z0-9]+)*$/', $params['id'])) {
+                error('bad-chars', 'Organization id must match Regex: /^[a-z0-9]+(-[a-z0-9]+)*$/');
+                return;
+            }
             // check if organization id already exists
             if (OrganizationQuery::create()->findPk($params['id'])) {
                 error('id-already-exists', 'Sorry, there is already an organization with that id.');
