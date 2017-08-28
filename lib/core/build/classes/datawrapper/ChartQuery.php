@@ -132,9 +132,14 @@ class ChartQuery extends BaseChartQuery {
      * My Charts
      */
 
-    private function publicChartsByUserQuery($user, $filter, $order='date') {
-        $query = $this->filterByAuthorId($user->getId())
-            ->filterByDeleted(false);
+    private function publicChartsByIDQuery($id, $org, $filter, $order='date') {
+        if ($org) {
+            $query = $this->filterByOrganizationId($id)
+                ->filterByDeleted(false);
+        } else {
+            $query = $this->filterByAuthorId($id)
+                ->filterByDeleted(false);
+        }
         switch ($order) {
             case 'theme': $query->orderByTheme(); break;
             case 'type': $query->orderByType(); break;
@@ -174,17 +179,17 @@ class ChartQuery extends BaseChartQuery {
         return $query;
     }
 
-    public function getPublicChartsByUser($user, $filter=array(), $start=0, $perPage=15, $order=false) {
+    public function getPublicChartsById($id, $org, $filter=array(), $start=0, $perPage=15, $order=false) {
         return $this
-            ->publicChartsByUserQuery($user, $filter, $order)
+            ->publicChartsByIDQuery($id, $org, $filter, $order)
             ->limit($perPage)
             ->offset($start)
             ->find();
     }
 
-    public function countPublicChartsByUser($user, $filter=array()) {
+    public function countPublicChartsById($id, $org, $filter=array()) {
         return $this
-            ->publicChartsByUserQuery($user, $filter)
+            ->publicChartsByIDQuery($id, $org, $filter)
             ->count();
     }
 
