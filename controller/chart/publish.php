@@ -16,7 +16,8 @@ $app->get('/(chart|map)/:id/publish', function ($id) use ($app) {
                 $cap = DatawrapperHooks::execute("get_chart_action_provider");
 
                 if ($cap == null || sizeof($cap) == 0) {
-                    $chartActions = DatawrapperHooks::execute(DatawrapperHooks::GET_CHART_ACTIONS, $chart);
+                    $user = DatawrapperSession::getUser();
+                    $chartActions = DatawrapperHooks::execute(DatawrapperHooks::GET_CHART_ACTIONS, $chart, $user);
 
                     // add duplicate action
                     $chartActions[] = array(
