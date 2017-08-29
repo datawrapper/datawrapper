@@ -50,7 +50,18 @@ function check_access($org_id) {
     return true;
 }
 
-function add_chart_to_folder($app, $type, $chart_id, $path, $org_id = false) {
+
+/**
+ * make a chart available in a certain folder
+ *
+ * @param type the type of folder
+ * @param org_id (if specified) the identifier of the organization
+ * @param chart_id the charts id?
+ * @param path the destination folder
+ */
+$app->put('/folders/chart/(user|organization/:org_id)/:chart_id/:path+', function($org_id = false, $chart_id, $path) use ($app) {
+    if (!check_access($org_id)) return;
+
     disable_cache($app);
 
     $accessible = false;
@@ -62,6 +73,7 @@ function add_chart_to_folder($app, $type, $chart_id, $path, $org_id = false) {
         return;
     }
 
+    $type = $org_id ? 'organization' : 'user';
     $id = $org_id ? $org_id : DatawrapperSession::getUser()->getId();
     $base_query = get_folder_base_query($type, $id);
     if (!$base_query) return;
@@ -84,29 +96,13 @@ function add_chart_to_folder($app, $type, $chart_id, $path, $org_id = false) {
     $chart = ChartQuery::create()->findPK($chart_id);
     $chart->setInFolder($pv['pid'])->save();
     ok();
-}
+});
 
-/**
- * make a chart available in a certain folder
- *
- * @param type the type of folder
- * @param org_id (if specified) the identifier of the organization
- * @param chart_id the charts id?
- * @param path the destination folder
- */
-$app->put('/folders/chart/organization/:org_id/:chart_id/:path+', function($org_id, $chart_id, $path) use ($app) {
-    if (!check_access($org_id)) return;
-    add_chart_to_folder($app, 'organization', $chart_id, $path, $org_id);
-});
-$app->put('/folders/chart/user/:chart_id/:path+', function($chart_id, $path) use ($app) {
-if (!check_access(false)) return;
-    add_chart_to_folder($app, 'user', $chart_id, $path);
-});
 
 /**
  * remove a chart from a folder
  * when a chart is removed, its in_folder field will be set to NULL making it go back to all charts
- * bacause the chart can only be located in one folder it is not necessary to specify the path
+ * because the chart can only be located in one folder it is not necessary to specify the path
  *
  * @param chart_id the charts id?
  */
@@ -134,9 +130,20 @@ $app->delete('/folders/chart/:chart_id', function($chart_id) use ($app) {
     ok();
 });
 
-function get_chart_list($app, $type, $path, $org_id = false) {
+
+/**
+ * get an array of all chart ids in a folder
+ *
+ * @param type the type of folder
+ * @param org_id (if specified) the identifier of the organization
+ * @param path the destination folder
+ */
+$app->get('/folders/chart/(user|organization/:org_id)/(:path+|)/?', function($org_id = false, $path = false) use ($app) {
+    if (!check_access($org_id)) return;
+
     disable_cache($app);
 
+    $type = $org_id ? 'organization' : 'user';
     $id = $org_id ? $org_id : DatawrapperSession::getUser()->getId();
     $base_query = get_folder_base_query($type, $id);
     if (!$base_query) return;
@@ -165,22 +172,6 @@ function get_chart_list($app, $type, $path, $org_id = false) {
         return $entry->getId();
     }, (array)$res);
     ok($mapped);
-}
-
-/**
- * get an array of all chart ids in a folder
- *
- * @param type the type of folder
- * @param org_id (if specified) the identifier of the organization
- * @param path the destination folder
- */
-$app->get('/folders/chart/organization/:org_id/(:path+|)/?', function($org_id, $path = false) use ($app) {
-    if (!check_access($org_id)) return;
-    get_chart_list($app, 'organization', $path, $org_id);
-});
-$app->get('/folders/chart/user/(:path+|)/?', function($path = false) use ($app) {
-if (!check_access(false)) return;
-    get_chart_list($app, 'user', $path);
 });
 
 
