@@ -166,6 +166,20 @@ class User extends BaseUser {
     }
 
     /*
+     *  check if a user is allowed to view an organizations data / charts
+     */
+
+    public function isMemberOf($org_id) {
+        $org = OrganizationQuery::create()
+            ->filterByDisabled(0)
+            ->findOneById($org_id);
+
+        if (empty($org)) return false;
+        if ($org->hasUser($this)) return true;
+        return false;
+    }
+
+    /*
      * get a list of all enabled organiztions in which the membership
      * has been activated
      */
