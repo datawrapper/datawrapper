@@ -161,7 +161,9 @@ function get_chart_content($chart, $user, $theme, $published = false, $debug = f
         // find the original chart
         $origChart = ChartQuery::create()->findOneById($forked_from);
         if ($origChart) {
-            $chart_source = $origChart->getMetadata('publish.chart-source-name');
+            $chart_source = ($origChart->getOrganizationId() ?
+                OrganizationQuery::create()->findPk($origChart->getOrganizationId()) :
+                $origChart->getUser())->getName();
             if (!empty($chart_source)) {
                 $chart_source_url = $origChart->getMetadata('publish.chart-source-url');
                 if (!empty($chart_source_url)) {
