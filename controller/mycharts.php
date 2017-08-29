@@ -129,11 +129,15 @@ function any_charts($app, $user, $key, $val, $org_id = false) {
 $app->get('/mycharts(/organization/:org_id)?(/?|/by/:key/:val)', function ($org_id = false, $key = false, $val = false) use ($app) {
     disable_cache($app);
     $user = DatawrapperSession::getUser();
-    if ($user->isLoggedIn()) {
-        any_charts($app, $user, $key, $val, $org_id);
-    } else {
+    if (!$user->isLoggedIn()) {
         error_mycharts_need_login();
+        return;
     }
+    if ($org_id && !$user->isMemberOf($org_id)) {
+        error_mycharts_not_a_member();
+        return;
+    }
+    any_charts($app, $user, $key, $val, $org_id);
 });
 
 $app->get('/admin/charts/:userid(/?|/by/:key/:val)', function($userid, $key = false, $val = false) use ($app) {

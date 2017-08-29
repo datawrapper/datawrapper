@@ -379,5 +379,7 @@
     "Source": "Source",
     "Move": "Move",
     "Remove": "Remove",
-    "Add": "Add"
+    "Add": "Add",
+    "You are not a member of the requested organization.": "You are not a member of the requested organization.",
+    "If you think you should have access, ask for an invitation.": "If you think you should have access, ask for an invitation."
 }
