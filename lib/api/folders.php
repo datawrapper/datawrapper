@@ -95,14 +95,11 @@ function add_chart_to_folder($app, $type, $chart_id, $path, $org_id = false) {
  * @param path the destination folder
  */
 $app->put('/folders/chart/organization/:org_id/:chart_id/:path+', function($org_id, $chart_id, $path) use ($app) {
-    if (!user_is_member_of($org_id)) return;
+    if (!check_access($org_id)) return;
     add_chart_to_folder($app, 'organization', $chart_id, $path, $org_id);
 });
 $app->put('/folders/chart/user/:chart_id/:path+', function($chart_id, $path) use ($app) {
-    if (!DatawrapperSession::getUser()->isLoggedIn()) {
-        error('access-denied', 'User is not logged in.');
-        return;
-    }
+if (!check_access(false)) return;
     add_chart_to_folder($app, 'user', $chart_id, $path);
 });
 
@@ -178,20 +175,28 @@ function get_chart_list($app, $type, $path, $org_id = false) {
  * @param path the destination folder
  */
 $app->get('/folders/chart/organization/:org_id/(:path+|)/?', function($org_id, $path = false) use ($app) {
-    if (!user_is_member_of($org_id)) return;
+    if (!check_access($org_id)) return;
     get_chart_list($app, 'organization', $path, $org_id);
 });
 $app->get('/folders/chart/user/(:path+|)/?', function($path = false) use ($app) {
-    if (!DatawrapperSession::getUser()->isLoggedIn()) {
-        error('access-denied', 'User is not logged in.');
-        return;
-    }
+if (!check_access(false)) return;
     get_chart_list($app, 'user', $path);
 });
 
-function folder_mkdir($app, $type, $path, $dirname, $org_id = false) {
+
+/**
+ * create a new folder
+ *
+ * @param path the absolue path where the directory should be created
+ * @param dirname the name of the directory to be created
+ * @param org_id (if specified) the identifier of the organization
+ */
+$app->post('/folders/dir/(user|organization/:org_id)/(:path+/|):dirname/?', function($org_id = false, $path, $dirname) use ($app) {
+    if (!check_access($org_id)) return;
+
     disable_cache($app);
 
+    $type = $org_id ? 'organization' : 'user';
     $id = $org_id ? $org_id : DatawrapperSession::getUser()->getId();
     $base_query = get_folder_base_query($type, $id);
     if (!$base_query) return;
@@ -228,31 +233,13 @@ function folder_mkdir($app, $type, $path, $dirname, $org_id = false) {
     }
     // does exists → that's ok, too
     ok();
-}
+});
 
-/**
- * create a new folder
- *
- * @param path the absolue path where the directory should be created
- * @param dirname the name of the directory to be created
- * @param org_id (if specified) the identifier of the organization
- */
-$app->post('/folders/dir/organization/:org_id/(:path+/|):dirname/?', function($org_id, $path, $dirname) use ($app) {
-    if (!user_is_member_of($org_id)) return;
-    folder_mkdir($app, 'organization', $path, $dirname, $org_id);
-});
-$app->post('/folders/dir/user/(:path+/|):dirname/?', function($path, $dirname) use ($app) {
-    if (!DatawrapperSession::getUser()->isLoggedIn()) {
-        error('access-denied', 'User is not logged in.');
-        return;
-    }
-    folder_mkdir($app, 'user', $path, $dirname);
-});
 
 function list_subdirs($type, $parent_id, $id) {
     $base_query = get_folder_base_query($type, $id);
     if (!$base_query) return;
-    $subdirs = $base_query->findByParentId($parent_id);
+    $subdirs = $base_query->orderByFolderName()->findByParentId($parent_id);
 
     if ($subdirs->count() == 0) {
         return false;
@@ -272,9 +259,19 @@ function list_subdirs($type, $parent_id, $id) {
     return $node;
 }
 
-function subdir_wrapper($app, $type, $path, $org_id = false) {
+/**
+ * list all subdirectorys
+ *
+ * @param type the type of folder which should be listed
+ * @param path the startding point in the dir tree
+ * @param org_id (if specified) the identifier of the organization
+ */
+$app->get('/folders/dir/(user|organization/:org_id)/(:path+|)/?', function($org_id = false, $path = []) use ($app) {
+    if (!check_access($org_id)) return;
+
     disable_cache($app);
 
+    $type = $org_id ? 'organization' : 'user';
     $id = $org_id ? $org_id : DatawrapperSession::getUser()->getId();
 
     $base_query = get_folder_base_query($type, $id);
@@ -298,30 +295,25 @@ function subdir_wrapper($app, $type, $path, $org_id = false) {
     }
 
     ok(list_subdirs($type, $pv['pid'], $id));
-}
+});
+
 
 /**
- * list all subdirectorys
+ * delete a subfolder
+ * root can not be removed
+ * folders which still contain other subfolders can not be removed
+ * if a folder contains charts, all of those will be moved to the parent folder
  *
- * @param type the type of folder which should be listed
- * @param path the startding point in the dir tree
+ * @param type the type of folder which should be deleted
+ * @param path the folder to be deleted
  * @param org_id (if specified) the identifier of the organization
  */
-$app->get('/folders/dir/organization/:org_id/(:path+|)/?', function($org_id, $path = []) use ($app) {
-    if (!user_is_member_of($org_id)) return;
-    subdir_wrapper($app, 'organization', $path, $org_id);
-});
-$app->get('/folders/dir/user/(:path+|)/?', function($path = []) use ($app) {
-    if (!DatawrapperSession::getUser()->isLoggedIn()) {
-        error('access-denied', 'User is not logged in.');
-        return;
-    }
-    subdir_wrapper($app, 'user', $path);
-});
+$app->delete('/folders/dir/(user|organization/:org_id)/:path+/?', function($org_id = false, $path) use ($app) {
+    if (!check_access($org_id)) return;
 
-function delete_folder($app, $type, $path, $org_id = null) {
     disable_cache($app);
 
+    $type = $org_id ? 'organization' : 'user';
     $id = $org_id ? $org_id : DatawrapperSession::getUser()->getId();
     $base_query = get_folder_base_query($type, $id);
     if (!$base_query) return;
@@ -361,33 +353,24 @@ function delete_folder($app, $type, $path, $org_id = null) {
     //finally delete folder
     $current_folder->delete();
     ok();
-}
+});
+
 
 /**
- * delete a subfolder
- * root can not be removed
- * folders which still contain other subfolders can not be removed
- * if a folder contains charts, all of those will be moved to the parent folder
+ * move a folder to another folder
+ * basically this means just to change the parent id of the folder
  *
- * @param type the type of folder which should be deleted
- * @param path the folder to be deleted
+ * @param type the type of folder which should be moved
+ * @param path the folder to be moved
  * @param org_id (if specified) the identifier of the organization
+ * @param dst (query string!) the destination folder
  */
-$app->delete('/folders/dir/organization/:org_id/:path+/?', function($org_id, $path) use ($app) {
-    if (!user_is_member_of($org_id)) return;
-    delete_folder($app, 'organization', $path, $org_id);
-});
-$app->delete('/folders/dir/user/:path+/?', function($path) use ($app) {
-    if (!DatawrapperSession::getUser()->isLoggedIn()) {
-        error('access-denied', 'User is not logged in.');
-        return;
-    }
-    delete_folder($app, 'user', $path);
-});
+$app->put('/folders/dir/(user|organization/:org_id)/:path+/?', function($org_id = false, $path) use ($app) {
+if (!check_access($org_id)) return;
 
-function move_folder($app, $type, $path, $org_id = false) {
     disable_cache($app);
 
+    $type = $org_id ? 'organization' : 'user';
     $id = $org_id ? $org_id : DatawrapperSession::getUser()->getId();
     $base_query = get_folder_base_query($type, $id);
     if (!$base_query) return;
@@ -425,25 +408,4 @@ function move_folder($app, $type, $path, $org_id = false) {
     $dst_id = $pv['pid'];
     FolderQuery::create()->findOneByFolderId($current_id)->setParentId($dst_id)->save();
     ok();
-}
-
-/**
- * move a folder to another folder
- * basically this means just to change the parent id of the folder
- *
- * @param type the type of folder which should be moved
- * @param path the folder to be moved
- * @param org_id (if specified) the identifier of the organization
- * @param dst (query string!) the destination folder
- */
-$app->put('/folders/dir/user/:path+/?', function($path) use ($app) {
-    if (!DatawrapperSession::getUser()->isLoggedIn()) {
-        error('access-denied', 'User is not logged in.');
-        return;
-    }
-    move_folder($app, 'user', $path);
-});
-$app->put('/folders/dir/organization/:org_id/:path+/?', function($org_id, $path) use ($app) {
-    if (!user_is_member_of($org_id)) return;
-    move_folder($app, 'organization', $path, $org_id);
 });
