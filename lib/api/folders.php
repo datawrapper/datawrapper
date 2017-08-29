@@ -35,25 +35,19 @@ function verify_path($type, $path, $parent_id, $id, $forbidden_id = false) {
     return verify_path($type, $path, $folder_id, $id);
 }
 
-function user_is_member_of($org_id) {
-    $the_org = OrganizationQuery::create()->findOneById($org_id);
-
-    if (empty($the_org)) {
-        error('no-such-organization', 'The specified organization does not exist.');
-        return;
-    }
-
+function check_access($org_id) {
     $user = DatawrapperSession::getUser();
     if (!$user->isLoggedIn()) {
         error('access-denied', 'User is not logged in.');
         return false;
     }
 
-    if ($the_org->hasUser($user))
-        return true;
+    if ($org_id && !$user->isMemberOf($org_id)) {
+        error('not-a-member', 'The current user is not a member of the specified organization.');
+        return false;
+    }
 
-    error('not-a-member', 'The current user is not a member of the specified organization.');
-    return false;
+    return true;
 }
 
 function add_chart_to_folder($app, $type, $chart_id, $path, $org_id = false) {
