@@ -157,7 +157,7 @@ function get_chart_content($chart, $user, $theme, $published = false, $debug = f
     }
 
     $forked_from = $chart->getForkedFrom();
-    if (!empty($forked_from)) {
+    if (!empty($forked_from) && $chart->getIsFork()) {
         // find the original chart
         $origChart = ChartQuery::create()->findOneById($forked_from);
         if ($origChart) {
