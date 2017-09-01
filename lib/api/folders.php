@@ -59,7 +59,7 @@ function check_access($org_id) {
  * @param chart_id the charts id?
  * @param path the destination folder
  */
-$app->put('/folders/chart/(user|organization/:org_id)/:chart_id/:path+', function($org_id = false, $chart_id, $path) use ($app) {
+$app->put('/folders/chart/(user|organization/:org_id)/:chart_id/(:path+)?', function($org_id = false, $chart_id, $path = false) use ($app) {
     if (!check_access($org_id)) return;
 
     disable_cache($app);
@@ -84,8 +84,23 @@ $app->put('/folders/chart/(user|organization/:org_id)/:chart_id/:path+', functio
         return;
     }
 
-    // this should be save, because noone can delete his root folder manually (without DB access)
-    $root_id = $base_query->findOneByParentId(null)->getFolderId();
+    // this replaces the former DELETE operation
+    if (!$path) {
+        $chart = ChartQuery::create()->findPK($chart_id);
+        $chart
+            ->setInFolder(null)
+            ->setOrganizationId(($org_id) ? $org_id : null)
+            ->save();
+        ok();
+        return;
+    }
+
+    $root_folder = $base_query->findOneByParentId(null);
+    if (empty($root_folder)) {
+        error('no-folders', "This ".$type." hasn't got any folders");
+        return;
+    }
+    $root_id = $root_folder->getFolderId();
     $pv = verify_path($type, $path, $root_id, $id);
 
     if (!$pv['verified']) {
@@ -94,39 +109,10 @@ $app->put('/folders/chart/(user|organization/:org_id)/:chart_id/:path+', functio
     }
 
     $chart = ChartQuery::create()->findPK($chart_id);
-    $chart->setInFolder($pv['pid'])->save();
-    ok();
-});
-
-
-/**
- * remove a chart from a folder
- * when a chart is removed, its in_folder field will be set to NULL making it go back to all charts
- * because the chart can only be located in one folder it is not necessary to specify the path
- *
- * @param chart_id the charts id?
- */
-$app->delete('/folders/chart/:chart_id', function($chart_id) use ($app) {
-    disable_cache($app);
-    $user = DatawrapperSession::getUser();
-
-    if (!$user->isLoggedIn()) {
-        error('access-denied', 'User is not logged in.');
-        return;
-    }
-
-    $accessible = false;
-    if_chart_is_writable($chart_id, function($user, $chart) use (&$accessible) {
-        $accessible = true;
-    });
-    if(!$accessible) {
-        error('access-denied', 'You may not (re)move this chart.');
-        return;
-    }
-
-    $chart = ChartQuery::create()->findPK($chart_id);
-    $chart->setInFolder(null)->save();
-
+    $chart
+        ->setInFolder($pv['pid'])
+        ->setOrganizationId(($org_id) ? $org_id : null)
+        ->save();
     ok();
 });
 
