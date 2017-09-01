@@ -216,9 +216,6 @@
                                 <a tabindex="-1" href="#"><i class="icon-folder-open"></i> {% trans "Move" %}</a>
                                 <ul class="dropdown-menu folder-list"></ul>
                             </li>
-                            {% if key == 'folder' %}
-                            <li><a class="remove-from-dir" tabindex="-1" href="#"><i class="icon-folder-open"></i> {% trans "Remove" %}</a></li>
-                            {% endif %}
                         <!-- dropdown menu links -->
                         </ul>
                      </div>
@@ -547,7 +544,7 @@ const build_tree_list = function(branch, parent, org_id, flatter, path, pathstri
             build_line(nu_path, tree);
         } else {
             // or append this folder to the MoveTo submenu
-            a2.innerHTML = (org_id) ? '<b>' + org_id + '</b><span>' + nu_pstr + '</span>': nu_pstr.slice(1);
+            a2.innerHTML = (org_id) ? '<b>' + org_id + '</b><span>' + nu_pstr + '</span>': nu_pstr;
             a2.setAttribute('href', '#');
             a2.setAttribute('tabindex', '-1');
             l2.appendChild(a2);
@@ -571,24 +568,21 @@ const add_chart_functions = function () {
             put_url = '/api/folders/chart/';
         e.preventDefault();
 
-        put_url += (org_part.length) ? 'organization/' + org_part.text() + '/' + id + tar.find('span').text() : 'user/' + id + '/' + tar.text();
+        if ((org_part.length && !tar.find('span').length) || tar.text() === '/') {
+            $.ajax({
+                url: '/api/folders/chart/' + id,
+                type: 'DELETE',
+                dataType: 'JSON'
+            }).done(handler.done).fail(handler.fail);
+        } else {
+            put_url += (org_part.length) ? 'organization/' + org_part.text() + '/' + id + tar.find('span').text() : 'user/' + id + tar.text();
 
-        $.ajax({
-            url: put_url,
-            type: 'PUT',
-            dataType: 'JSON'
-        }).done(handler.done).fail(handler.fail);
-    });
-
-    $('.chart .remove-from-dir').click(function(e) {
-        var id = $(e.target).parents('.chart').data('id');
-        e.preventDefault();
-
-        $.ajax({
-            url: '/api/folders/chart/' + id,
-            type: 'DELETE',
-            dataType: 'JSON'
-        }).done(handler.done).fail(handler.fail);
+            $.ajax({
+                url: put_url,
+                type: 'PUT',
+                dataType: 'JSON'
+            }).done(handler.done).fail(handler.fail);
+        }
     });
 };
 
@@ -605,6 +599,7 @@ const do_stuff_with_folders = function(folder_obj) {
 
     folder_menu($(root_id), folder_obj.org_id);
 
+    $('.dropdown-menu .folder-list').append('<li><a href="#" tabindex=-1>' + ((folder_obj.org_id) ? '<b>' + folder_obj.org_id + '</b>' : '') + '/</a></li>');
     build_tree_list(folder_obj.tree, $(entrypoint), folder_obj.org_id, function(path) {
         flatened_tree.push(path);
     });
