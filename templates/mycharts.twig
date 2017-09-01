@@ -451,10 +451,13 @@ const build_folder_2_folder_movelinks = function(entrypoint, flat_list, org_id) 
                 put_url = '/api/folders/dir/';
 
             // Do not create links for subfolders of this path
-            if (folder === source_path || (source_parent !== '' && folder.startsWith(source_parent))) return;
+            if (folder === source_path ||
+                folder.startsWith(source_path) ||
+                (source_parent !== '' && folder.startsWith(source_parent)) ||
+                (source_parent === '' && folder === '/')) return;
             move_menu = $(entry).find(".dropdown-menu .move-links");
 
-            a.innerText = folder.slice(1);
+            a.innerText = folder;
             a.setAttribute('href', '#');
             put_url += (org_id) ? 'organization/' + org_id : 'user';
             put_url += source_path + '?dst=' + folder;
@@ -590,7 +593,7 @@ const add_chart_functions = function () {
 };
 
 const do_stuff_with_folders = function(folder_obj) {
-    var flatened_tree = [],
+    var flatened_tree = ['/'],
         root_id = '#base-folder'
         entrypoint = '#dynamic-tree';
 
