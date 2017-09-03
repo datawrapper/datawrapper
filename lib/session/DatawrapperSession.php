@@ -27,7 +27,13 @@ class DatawrapperSession {
         session_cache_limiter(false);
         $ses = 'DW-SESSION';
         $lifetime = 86400 * 90;  // 90 days
-        session_set_cookie_params($lifetime);
+        // use cookie_domain if specified in config
+        if (!empty($GLOBALS['dw_config']['cookie_domain'])) {
+            $domain = $GLOBALS['dw_config']['cookie_domain'];
+        } else {
+            $domain = $GLOBALS['dw_config']['domain'];
+        }
+        session_set_cookie_params($lifetime, '/', $domain);
         session_name($ses);
         session_cache_limiter('private_no_expire');
         session_cache_expire(1440 * 90);  // 90 days
@@ -39,6 +45,8 @@ class DatawrapperSession {
         // Reset the expiration time upon page load
         if (isset($_COOKIE[$ses]))
             setcookie($ses, $_COOKIE[$ses], time() + $lifetime, "/");
+
+
     }
 
     /**
