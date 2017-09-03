@@ -6,6 +6,7 @@
  */
 
 define('ROOT_PATH', '../../');
+define('IS_API', true);
 
 require_once ROOT_PATH . 'lib/bootstrap.php';
 

@@ -92,13 +92,13 @@ parse_config();
 
 if (!defined('NO_SLIM')) {
     // Initialize Slim app..
-    if (ROOT_PATH == '../') {
+    if (!defined('IS_API')) {
         // ..either with TwigView for Datawrapper UI,...
         TwigView::$twigDirectory = ROOT_PATH . 'vendor/Twig';
 
         $app = new Slim(array(
             'view' => new TwigView(),
-            'templates.path' => '../templates',
+            'templates.path' => ROOT_PATH . 'templates',
             'session.handler' => null
         ));
     } else {
@@ -107,7 +107,7 @@ if (!defined('NO_SLIM')) {
 
         $appTwig = new Slim(array(
             'view' => new TwigView(),
-            'templates.path' => '../../templates',
+            'templates.path' => ROOT_PATH . 'templates',
             'session.handler' => null
         ));
     }
