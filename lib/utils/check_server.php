@@ -37,7 +37,7 @@ function check_path_permissions() {
 }
 
 function check_config() {
-    if (!file_exists('../config.yaml')) {
+    if (!file_exists(ROOT_PATH . 'config.yaml')) {
         return '<h2>Could not find <b>config.yaml</b></h2>'
           . '<p>Please copy the template configuration from <code>config.template.yaml</code> to <code>config.yaml</code> and change the configuration according to your server.</p>';
     }
@@ -45,7 +45,7 @@ function check_config() {
 }
 
 function connect_database() {
-    @include '../lib/core/build/conf/datawrapper-conf.php';
+    @include ROOT_PATH . 'lib/core/build/conf/datawrapper-conf.php';
     $dbconn = $conf['datasources']['datawrapper']['connection'];
 
     return new PDO($dbconn['dsn'], $dbconn['user'], $dbconn['password']);
@@ -53,7 +53,7 @@ function connect_database() {
 
 
 function check_database() {
-    if (!file_exists('../lib/core/build/conf/datawrapper-conf.php')) {
+    if (!file_exists(ROOT_PATH . 'lib/core/build/conf/datawrapper-conf.php')) {
         return '<h2>No database configuration found!</h2>'
             . '<p>Please copy <code>lib/core/build/conf/datawrapper-conf.php.master</code> to <code>'
             . 'lib/core/build/conf/datawrapper-conf.php</code> and update your database settings '
