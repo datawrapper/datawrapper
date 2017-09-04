@@ -11,9 +11,9 @@ Datawrapper was created by [Mirko Lorenz](http://www.mirkolorenz.com/), [Nicolas
 
 ## Contact
 
-* IRC: #datawrapper on [freenode.net](https://webchat.freenode.net/)
 * Twitter: [@datawrapper](http://twitter.com/datawrapper)
 * Blog: [blog.datawrapper.de](http://blog.datawrapper.de)
+* Support: [support@datawrapper.de](mailto:support@datawrapper.de)
 
 ## Translators
 
