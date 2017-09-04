@@ -1,8 +1,11 @@
 # Datawrapper configuration
 #
 
-domain: datawrapper
-chart_domain: c.datawrapper
+domain: datawrapper.local
+chart_domain: c.datawrapper.local
+api_domain: api.datawrapper.local
+cookie_domain: .datawrapper.local
+
 # asset_domain: ...
 
 ## the following keys are used to hash passwords.
