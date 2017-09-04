@@ -66,6 +66,19 @@ $app->notFound(function() {
     error('not-found', 'Not Found');
 });
 
+$app->hook('slim.before.router', function () use ($app, $dw_config) {
+    $req = $app->request();
+    $headers = $req->headers();
+    $origin = !empty($headers['ORIGIN']) ? $headers['ORIGIN'] : $headers['HOST'];
+    $host = str_replace(['http://', 'https://'], ['', ''], $origin);
+    $reg = "/^.*" . str_replace('.', '\.', $dw_config['cookie_domain']) . "$/";
+
+    if (preg_match($reg, $host)) {
+        $app->response()->header('Access-Control-Allow-Origin', $origin);
+        $app->response()->header('Access-Control-Allow-Credentials', 'true');
+    }
+});
+
 require_once '../../lib/api/users.php';
 require_once '../../lib/api/auth.php';
 require_once '../../lib/api/charts.php';
