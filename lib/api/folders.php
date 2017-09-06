@@ -22,6 +22,7 @@
         ok($folders);
     });
 
+
     /*
      * get single folder
      */
@@ -46,12 +47,15 @@
         if (empty($folder) && empty($payload['name']))
             return error('need-name', 'you must specify a name');
 
+        $owner_changed = false;
         // create folder if empty
         if (empty($folder)) $folder = new Folder();
         // update name
         if (!empty($payload['name'])) $folder->setFolderName($payload['name']);
 
-        if (empty($payload['organization'])) $payload['organization'] = null;
+        if (!isset($payload['organization'])) $payload['organization'] = null;
+        if (!isset($payload['parent'])) $payload['parent'] = null;
+
         // verify (new?) parent folder
         if (!empty($payload['parent'])) {
             // check if parent folder exists and user has access
@@ -59,23 +63,38 @@
             if (!$parentFolder->isValidParent($user, $payload['organization'])) {
                 return error('parent-invalid', 'parent folder is invalid');
             }
-            if (!$folder->isNew()) {
-                // move charts (and subfolders)
-            }
             $folder->setParentId($parentFolder->getId());
+            // use owner from parent folder
+            if ($parentFolder->getType() == 'user') $payload['organization'] == false;
+            else $payload['organization'] == $parentFolder->getOrgId();
+
+        } else if ($payload['parent'] === false) {
+            // we want to move the folder to the current root, w/o changing owner
+            $folder->setParentId(null);
         }
+
         // verify organization
         if (!empty($payload['organization'])) {
-            // check if user has access to organization
+            // load and verify organization
             $organization = OrganizationQuery::create()->findPk($payload['organization']);
             if (empty($organization) || !$organization->hasUser($user)) {
                 return error('org-invalid', 'you dont have access to this organization');
             }
+            // check if user has access to organization
             $folder->setOrgId($organization->getId());
             $folder->setUserId(null);
-        } else {
+            $owner_changed = true;
+
+        } else if ($folder->isNew() || $payload['organization'] === false) {
             $folder->setUserId($user->getId());
             $folder->setOrgId(null);
+            $owner_changed = true;
+        }
+
+        if (!$folder->isNew() && $owner_changed) {
+            $new_type = $folder->getType();
+            $new_id = $new_type == 'organization' ? $payload['organization'] : $user->getId();
+            $folder->changeOwner($new_type, $new_id);
         }
         return $folder;
     };
@@ -135,7 +154,11 @@
         if (!$folder->isAccessibleBy($user))
             return error('access-denied', 'you dont have access to this folder');
 
-        // move charts to parent folder?
+        // check if empty
+        if ($folder->hasSubFolders())
+            return error('has-subfolders', 'delete subfolders first');
+
+        // move charts to parent folder
         $folder->moveChartsToParent();
 
         // delete folder
