@@ -58,6 +58,8 @@ class Folder extends BaseFolder {
      */
     public function isValidParent($user, $org_id) {
         $type = $this->getType();
+        if (!$this->isAccessibleBy($user))
+            return false;
         if ($type == 'user') {
             // check if user id matches
             return $user->getId() == $this->getUserId();
@@ -77,8 +79,55 @@ class Folder extends BaseFolder {
         ]);
     }
 
-    public function moveFolder() {
+    public function hasSubFolders() {
+        return FolderQuery::create()->filterByParentId($this->getId())->count() > 0;
+    }
 
+    public function getSubFolders() {
+        return FolderQuery::create()->findByParentId($this->getId());
+    }
+
+    public function changeOwner($new_type, $new_id) {
+        // first let's get a list of all sub-folders
+        $folder_ids = [];
+        $traverse = function($folder) use ($folder_ids) {
+            $folder_ids[] = $folder->getId();
+            $subfolders = $folder->getSubFolders();
+            foreach ($subfolders as $sfolder) {
+                $traverse($sfolder);
+            }
+        };
+        $traverse($this);
+
+        // update folders
+        $folders = FolderQuery::create()
+            ->filterByFolderId($folder_ids);
+        if ($new_type == 'organization') {
+            $folders->update([
+                'UserId' => null,
+                'OrgId' => $new_id
+            ]);
+        } else {
+            $folders->update([
+                'UserId' => $new_id,
+                'OrgId' => null
+            ]);
+        }
+
+        // now get a list of all charts in those folders
+        $charts = ChartQuery::create()
+            ->filterByFolder($folder_ids);
+        // and update their owner
+        if ($new_type == 'organization') {
+            $charts->update([
+                'Organization' => $new_id
+            ]);
+        } else {
+            $charts->update([
+                'AuthorId' => $new_id,
+                'Organization' => null
+            ]);
+        }
     }
 
 }
