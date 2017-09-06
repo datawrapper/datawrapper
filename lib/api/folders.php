@@ -8,7 +8,6 @@
      */
     $app->get('/folders', function() {
         $user = DatawrapperSession::getUser();
-        $user = UserQuery::create()->findPk(29);
         $folders = FolderQuery::create()->getUserFolders($user);
         foreach ($folders as $i => $group) {
             if ($group['type'] == 'organization') {
@@ -28,7 +27,6 @@
      */
     $app->get('/folders/:folder_id', function($folder_id) {
         $user = DatawrapperSession::getUser();
-        $user = UserQuery::create()->findPk(29);
         $folder = FolderQuery::create()->findPk($folder_id);
 
         if (empty($folder)) return error('not-found', 'folder not found');
@@ -105,7 +103,6 @@
      */
     $app->post('/folders', function() use ($app, $upsertFolder) {
         $user = DatawrapperSession::getUser();
-        $user = UserQuery::create()->findPk(29);
         if (!$user->isLoggedIn())
             return error('access-denied', 'you must be logged in to create a folder');
 
@@ -122,7 +119,6 @@
      */
     $app->put('/folders/:folder_id', function($folder_id) use ($app, $upsertFolder) {
         $user = DatawrapperSession::getUser();
-        $user = UserQuery::create()->findPk(29);
         if (!$user->isLoggedIn())
             return error('access-denied', 'you must be logged in to update a folder');
         $folder = FolderQuery::create()->findPk($folder_id);
@@ -144,7 +140,6 @@
      */
     $app->delete('/folders/:folder_id', function($folder_id) {
         $user = DatawrapperSession::getUser();
-        $user = UserQuery::create()->findPk(29);
         if (!$user->isLoggedIn())
             return error('access-denied', 'you must be logged in to delete a folder');
         $folder = FolderQuery::create()->findPk($folder_id);
