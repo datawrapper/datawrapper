@@ -69,6 +69,9 @@ class Folder extends BaseFolder {
         }
     }
 
+    /*
+     * move all charts in this folder to it's parent folder
+     */
     public function moveChartsToParent() {
         $pdo = Propel::getConnection();
         $sql = 'UPDATE chart SET folder = :new WHERE folder = :old';
@@ -79,14 +82,24 @@ class Folder extends BaseFolder {
         ]);
     }
 
+    /*
+     * checks if a folder has subfolders
+     */
     public function hasSubFolders() {
         return FolderQuery::create()->filterByParentId($this->getId())->count() > 0;
     }
 
+    /*
+     * return a list of direct subfolders in a folder
+     */
     public function getSubFolders() {
         return FolderQuery::create()->findByParentId($this->getId());
     }
 
+    /*
+     * propagate owner changes through the sub-folders
+     * and all charts in them
+     */
     public function changeOwner($new_type, $new_id) {
         // first let's get a list of all sub-folders
         $folder_ids = [];
