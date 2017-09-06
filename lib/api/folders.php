@@ -1,5 +1,156 @@
 <?php
 
+// NEW API
+(function() use ($app) {
+
+    /*
+     * get list of folders for current user
+     */
+    $app->get('/folders', function() {
+        $user = DatawrapperSession::getUser();
+        $user = UserQuery::create()->findPk(29);
+        $folders = FolderQuery::create()->getUserFolders($user);
+        foreach ($folders as $i => $group) {
+            if ($group['type'] == 'organization') {
+                $folders[$i]['organization'] = $group['organization']->serialize();
+            }
+            $folders[$i]['folders'] = [];
+            foreach ($group['folders'] as $j => $fold) {
+                $folders[$i]['folders'][] = $fold->serialize();
+            }
+        }
+        ok($folders);
+    });
+
+    /*
+     * get single folder
+     */
+    $app->get('/folders/:folder_id', function($folder_id) {
+        $user = DatawrapperSession::getUser();
+        $user = UserQuery::create()->findPk(29);
+        $folder = FolderQuery::create()->findPk($folder_id);
+
+        if (empty($folder)) return error('not-found', 'folder not found');
+
+        if (!$folder->isAccessibleBy($user)) {
+            return error('access-denied', 'you dont have access to this folder');
+        }
+        ok($folder->serialize());
+    });
+
+
+    /*
+     * handles insert and update operations on folders
+     */
+    $upsertFolder = function($folder, $user, $payload) {
+        if (empty($folder) && empty($payload['name']))
+            return error('need-name', 'you must specify a name');
+
+        // create folder if empty
+        if (empty($folder)) $folder = new Folder();
+        // update name
+        if (!empty($payload['name'])) $folder->setFolderName($payload['name']);
+
+        if (empty($payload['organization'])) $payload['organization'] = null;
+        // verify (new?) parent folder
+        if (!empty($payload['parent'])) {
+            // check if parent folder exists and user has access
+            $parentFolder = FolderQuery::create()->findPk($payload['parent']);
+            if (!$parentFolder->isValidParent($user, $payload['organization'])) {
+                return error('parent-invalid', 'parent folder is invalid');
+            }
+            if (!$folder->isNew()) {
+                // move charts (and subfolders)
+            }
+            $folder->setParentId($parentFolder->getId());
+        }
+        // verify organization
+        if (!empty($payload['organization'])) {
+            // check if user has access to organization
+            $organization = OrganizationQuery::create()->findPk($payload['organization']);
+            if (empty($organization) || !$organization->hasUser($user)) {
+                return error('org-invalid', 'you dont have access to this organization');
+            }
+            $folder->setOrgId($organization->getId());
+            $folder->setUserId(null);
+        } else {
+            $folder->setUserId($user->getId());
+            $folder->setOrgId(null);
+        }
+        return $folder;
+    };
+
+
+    /*
+     * create a new folder
+     */
+    $app->post('/folders', function() use ($app, $upsertFolder) {
+        $user = DatawrapperSession::getUser();
+        $user = UserQuery::create()->findPk(29);
+        if (!$user->isLoggedIn())
+            return error('access-denied', 'you must be logged in to create a folder');
+
+        $payload = json_decode($app->request()->getBody(), true);
+
+        $folder = $upsertFolder(null, $user, $payload);
+        $folder->save();
+        ok($folder->serialize());
+    });
+
+
+    /*
+     * update a folder name or change parent folder
+     */
+    $app->put('/folders/:folder_id', function($folder_id) use ($app, $upsertFolder) {
+        $user = DatawrapperSession::getUser();
+        $user = UserQuery::create()->findPk(29);
+        if (!$user->isLoggedIn())
+            return error('access-denied', 'you must be logged in to update a folder');
+        $folder = FolderQuery::create()->findPk($folder_id);
+
+        if (empty($folder)) return error('not-found', 'folder not found');
+
+        if (!$folder->isAccessibleBy($user))
+            return error('access-denied', 'you dont have access to this folder');
+
+        $payload = json_decode($app->request()->getBody(), true);
+        $folder = $upsertFolder($folder, $user, $payload);
+        $folder->save();
+        ok($folder->serialize());
+    });
+
+
+    /*
+     * remove a folder, but move charts to parent folder first
+     */
+    $app->delete('/folders/:folder_id', function($folder_id) {
+        $user = DatawrapperSession::getUser();
+        $user = UserQuery::create()->findPk(29);
+        if (!$user->isLoggedIn())
+            return error('access-denied', 'you must be logged in to delete a folder');
+        $folder = FolderQuery::create()->findPk($folder_id);
+        if (empty($folder)) return error('not-found', 'folder not found');
+
+        // check access
+        if (!$folder->isAccessibleBy($user))
+            return error('access-denied', 'you dont have access to this folder');
+
+        // move charts to parent folder?
+        $folder->moveChartsToParent();
+
+        // delete folder
+        $folder->delete();
+    });
+
+})();
+
+
+
+
+
+
+// OLD API BELOW
+
 function get_folder_base_query($type, $id) {
     switch ($type) {
     case 'user':

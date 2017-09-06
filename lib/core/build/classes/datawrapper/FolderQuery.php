@@ -1,7 +1,5 @@
 <?php
 
-
-
 /**
  * Skeleton subclass for performing query and update operations on the 'folder' table.
  *
@@ -13,6 +11,29 @@
  *
  * @package    propel.generator.datawrapper
  */
-class FolderQuery extends BaseFolderQuery
-{
+class FolderQuery extends BaseFolderQuery {
+
+    /*
+     * returns a list of all folders a user has access to
+     *
+     * @param include_org_folders set to false if you don't want to
+     *                            include the organization folders
+     */
+    public function getUserFolders($user) {
+        $folders = [];
+        $folders[] = [
+            'type' => 'user',
+            'folders' => $user->getFolders()
+        ];
+        foreach ($user->getOrganizations() as $organization) {
+            // var_dump($organization);
+            $folders[] = [
+                'type' => 'organization',
+                'organization' => $organization,
+                'folders' => $organization->getFolders()
+            ];
+        }
+        return $folders;
+    }
+
 }
