@@ -8,20 +8,7 @@
      */
     $app->get('/folders', function() {
         $user = DatawrapperSession::getUser();
-        $folders = FolderQuery::create()->getUserFolders($user);
-        foreach ($folders as &$group) {
-            if ($group['type'] == 'organization') {
-                $group['organization'] = $group['organization']->serialize();
-            }
-            $tmpfolders = [];
-            foreach ($group['folders'] as $idx => &$fold) {
-                $tmpfolders[$idx] = $fold->serialize();
-                $tmpfolders[$idx]['charts'] = ChartQuery::create()
-                    ->findByInFolder($fold->getFolderId())->count();
-            }
-            $group['folders'] = $tmpfolders;
-        }
-        ok($folders);
+        ok(FolderQuery::create()->getParsableFolders($user));
     });
 
 
