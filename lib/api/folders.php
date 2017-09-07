@@ -9,14 +9,17 @@
     $app->get('/folders', function() {
         $user = DatawrapperSession::getUser();
         $folders = FolderQuery::create()->getUserFolders($user);
-        foreach ($folders as $i => $group) {
+        foreach ($folders as &$group) {
             if ($group['type'] == 'organization') {
-                $folders[$i]['organization'] = $group['organization']->serialize();
+                $group['organization'] = $group['organization']->serialize();
             }
-            $folders[$i]['folders'] = [];
-            foreach ($group['folders'] as $j => $fold) {
-                $folders[$i]['folders'][] = $fold->serialize();
+            $tmpfolders = [];
+            foreach ($group['folders'] as $idx => &$fold) {
+                $tmpfolders[$idx] = $fold->serialize();
+                $tmpfolders[$idx]['charts'] = ChartQuery::create()
+                    ->findByInFolder($fold->getFolderId())->count();
             }
+            $group['folders'] = $tmpfolders;
         }
         ok($folders);
     });
