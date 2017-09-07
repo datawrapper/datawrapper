@@ -36,4 +36,20 @@ class FolderQuery extends BaseFolderQuery {
         return $folders;
     }
 
+    public function getParsableFolders($user) {
+        $folders = $this->getUserFolders($user);
+        foreach ($folders as &$group) {
+            if ($group['type'] == 'organization') {
+                $group['organization'] = $group['organization']->serialize();
+            }
+            $tmpfolders = [];
+            foreach ($group['folders'] as $idx => &$fold) {
+                $tmpfolders[$idx] = $fold->serialize();
+                $tmpfolders[$idx]['charts'] = ChartQuery::create()
+                    ->findByInFolder($fold->getFolderId())->count();
+            }
+            $group['folders'] = $tmpfolders;
+        }
+        return $folders;
+    }
 }
