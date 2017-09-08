@@ -364,29 +364,29 @@ var handler = {
 };
 
 function folder_menu(el, org_id, path, subfolders) {
-    var html_blob = '\
-        <div class="btn-group">  \
-            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#"> \
-                <i class="icon-wrench"></i> \
-                <span class="caret"></span> \
-            </a> \
-            <ul class="dropdown-menu"> \
-                <li class="dropdown-submenu"> \
-                    <a class="add-folder" tabindex="-1" href="#"><i class="icon-folder-open"></i> {% trans "Add" %}</a> \
-                    <ul class="dropdown-menu"> \
-                        <div class="form-group"> \
-                            <button type="button" class="btn folder-confirm disabled">OK</button> \
-                            <input type="text" class="form-control folder-input"> \
-                        </div> \
-                    </ul> \
-                </li> \
-                <li class="dropdown-submenu"> \
-                    <a class="move-to-folder" tabindex="-1" href="#"><i class="icon-folder-open"></i> {% trans "Move" %}</a> \
-                    <ul class="dropdown-menu move-links"></ul> \
-                </li> \
-                <li><a class="delete-folder" tabindex="-1" href="#"><i class="icon-remove"></i> {% trans "Remove" %}</a></li> \
-            </ul> \
-        </div>',
+    var html_blob = "\
+        <div class=\"btn-group\">\n\
+            <a class=\"btn dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\">\n\
+                <i class=\"icon-wrench\"></i>\n\
+                <span class=\"caret\"></span>\n\
+            </a>\n\
+            <ul class=\"dropdown-menu\">\n\
+                <li class=\"dropdown-submenu\">\n\
+                    <a class=\"add-folder\" tabindex=\"-1\" href=\"#\"><i class=\"icon-folder-open\"></i> {% trans "Add" %}</a>\n\
+                    <ul class=\"dropdown-menu\">\n\
+                        <div class=\"form-group\">\n\
+                            <button type=\"button\" class=\"btn folder-confirm disabled\">OK</button>\n\
+                            <input type=\"text\" class=\"form-control folder-input\">\n\
+                        </div>\n\
+                    </ul>\n\
+                </li>\n\
+                <li class=\"dropdown-submenu\">\n\
+                    <a class=\"move-to-folder\" tabindex=\"-1\" href=\"#\"><i class=\"icon-folder-open\"></i> {% trans "Move" %}</a>\n\
+                    <ul class=\"dropdown-menu move-links\"></ul>\n\
+                </li>\n\
+                <li><a class=\"delete-folder\" tabindex=\"-1\" href=\"#\"><i class=\"icon-remove\"></i> {% trans "Remove" %}</a></li>\n\
+            </ul>\n\
+        </div>",
         menu;
 
     el.append(html_blob);
