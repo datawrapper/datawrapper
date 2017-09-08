@@ -600,11 +600,6 @@ function do_stuff_with_folders(folder_obj) {
     build_folder_2_folder_movelinks(entrypoint, flatened_tree, folder_obj.org_id);
 };
 
-function get_folders(tree) {
-    kill_ROOT(tree);
-    treeyfy(tree).forEach(do_stuff_with_folders);
-}
-
 /*
  * FIXME: this is a temporary hotfix to remove old ROOT folder on which the old API still depends
  *        and sets the parent of all first level folders to null
@@ -657,6 +652,11 @@ function treeyfy(tree) {
     });
 
     return tree;
+}
+
+function get_folders(tree) {
+    kill_ROOT(tree);
+    treeyfy(tree).forEach(do_stuff_with_folders);
 }
 
 $('document').ready(function() {
