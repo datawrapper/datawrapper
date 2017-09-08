@@ -633,20 +633,43 @@ function get_folders(orgs) {
     });
 }
 
+function do_other_stuff_with_folders(folder_obj) {
+    console.log(folder_obj);
+    var flatened_tree = ['/'],
+        root_id = '#base-folder'
+        entrypoint = '#dynamic-tree',
+        org_id = (folder_obj.organization) ? folder_obj.organization.id : false;
+
+    if (org_id) {
+        var org_tag = '-' + org_id.replace(' ','-').replace(/[^a-zA-Z0-9-]/g,'');
+        entrypoint += org_tag;
+        root_id += org_tag;
+    }
+
+    folder_menu($(root_id), folder_obj.org_id);
+
+    $('.dropdown-menu .folder-list').append('<li><a href="#" tabindex=-1>' + ((org_id) ? '<b>' + org_id + '</b><span>/</span>' : '/') + '</a></li>');
+    build_tree_list(folder_obj.tree, $(entrypoint), org_id, function(path) {
+        flatened_tree.push(path);
+    });
+
+    build_folder_2_folder_movelinks(entrypoint, flatened_tree, folder_obj.org_id);
+};
+
 /*
  * FIXME: this is a temporary hotfix to remove old ROOT folder on which the old API still depends
  *        and sets the parent of all first level folders to null
  *        as soon as the UI is ported to the new API this needs to be removed*
  */
 function kill_ROOT(tree) {
-    var root_ids, filtered_tree;
+    var root_ids;
 
     root_ids = tree.map(function(group) {
         return group.folders.reduce(function(old, cur) {
             return (!old && cur.parent === null) ? cur.id : old;
         }, false);
     });
-    filtered_tree = tree.map(function(group, idx) {
+    tree.map(function(group, idx) {
         group.folders = group.folders.filter(function(folder) {
             return (folder.id == root_ids[idx]) ? false : true;
         }).map(function(folder) {
@@ -658,13 +681,42 @@ function kill_ROOT(tree) {
     });
 }
 
+function treeyfy(tree) {
+    tree.map(function(group) {
+        if (group.type === "user")
+            group.organization = false;
+        delete(group.type);
+        group.folders.forEach(function(folder) {
+            delete(folder.type);
+            delete(folder.user);
+            delete(folder.organization);
+            folder.sub = group.folders.filter(function(potential_subfolder) {
+                return (potential_subfolder.parent == folder.id) ? true : false;
+            });
+            if (!folder.sub.length)
+                folder.sub = false;
+        });
+        group.folders = group.folders.filter(function(folder) {
+            return (folder.parent == null) ? true : false;
+        });
+    });
+
+    tree = tree.sort(function(a, b) {
+        if (!a.organization) return -1;
+        if (!b.organization) return 1;
+        return a.organization.name.localeCompare(b.organization.name);
+    });
+
+    return tree;
+}
+
 function get_new_folders(tree) {
     kill_ROOT(tree);
-    console.log(tree);
+    treeyfy(tree).forEach(do_other_stuff_with_folders);
 }
 
 $('document').ready(function() {
-    get_folders({{ organizations | json | raw }});
+    // get_folders({{ organizations | json | raw }});
     get_new_folders({{ preload | json | raw }});
 });
 
