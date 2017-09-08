@@ -479,22 +479,24 @@ function build_folder_2_folder_movelinks(entrypoint, flat_list, org_id) {
 };
 
 function build_line(path, tree) {
-    var cwd, mypath, hopper,
+    var cwd, mypath,
         line = $('#folder-sequence'),
         sep = ' > ';
-
-    line.text('');
 
     mypath = Array.from(path);
     cwd = mypath.pop();
 
     mypath.forEach(function(dir) {
-        var a = document.createElement('a');
+        var a = document.createElement('a'),
+            folder;
 
         a.innerText = dir;
-        a.setAttribute('href', '{{ mycharts_base }}/by/folder/' + tree[dir].id);
+        folder = tree.reduce(function(old, cur) {
+            return (!old && cur.name === dir) ? cur : old;
+        }, false);
+        a.setAttribute('href', '{{ mycharts_base }}/by/folder/' + folder.id);
         line.append(sep, a);
-        tree = tree[dir].sub
+        tree = folder.sub
     });
     line.append(sep);
     $('#current-folder').text(cwd);
@@ -506,7 +508,6 @@ function build_tree_list(branch, parent, org_id, flatter, path, pathstring, tree
         val: '{{val}}'
     },
         folder_icon = '<i class="icon-folder-open"></i>',
-        subfolders = Object.keys(branch),
         nu_path;
 
     // first pass, initialize data
@@ -516,30 +517,29 @@ function build_tree_list(branch, parent, org_id, flatter, path, pathstring, tree
         tree = branch;
     }
 
-    subfolders.forEach(function(folder) {
+    branch.forEach(function(folder) {
         var l1 = document.createElement('li'),
             a1 = document.createElement('a'),
             l2 = document.createElement('li'),
             a2 = document.createElement('a'),
-            id = branch[folder].id,
             org_snipplet = (org_id) ? '/organization/' + org_id : '';
 
-        a1.innerHTML = folder_icon + ' ' + folder;
-        if (branch[folder].charts > 0)
-            a1.innerHTML += ' (' + branch[folder].charts + ')';
-        a1.setAttribute('href', '{{ mycharts_base }}' + org_snipplet + '/by/folder/' + id);
+        a1.innerHTML = folder_icon + ' ' + folder.name;
+        if (folder.charts > 0)
+            a1.innerHTML += ' (' + folder.charts + ')';
+        a1.setAttribute('href', '{{ mycharts_base }}' + org_snipplet + '/by/folder/' + folder.id);
 
-        nu_path = path.concat(folder);
-        nu_pstr = pathstring + '/' + folder;
+        nu_path = path.concat(folder.name);
+        nu_pstr = pathstring + '/' + folder.name;
         flatter(nu_pstr);
 
         l1.classList.add("folder-list-item");
         l1.appendChild(a1);
-        folder_menu($(l1), org_id, nu_pstr.slice(1), branch[folder].sub != false); //last param evaluates to bool
+        folder_menu($(l1), org_id, nu_pstr.slice(1), folder.sub != false); //last param evaluates to bool
         $.data(l1, "fullpath", nu_pstr);
         parent.append(l1);
 
-        if (filter.key === 'folder' && filter.val == id) {
+        if (filter.key === 'folder' && filter.val == folder.id) {
             // hijack this pass to build active folder line
             build_line(nu_path, tree);
         } else {
@@ -552,10 +552,10 @@ function build_tree_list(branch, parent, org_id, flatter, path, pathstring, tree
             $('.dropdown-menu .folder-list').append(l2);
         }
 
-        if (branch[folder].sub) {
+        if (folder.sub) {
             var nu_par = document.createElement('ul');
             parent.append(nu_par);
-            build_tree_list(branch[folder].sub, $(nu_par), org_id, flatter, nu_path, nu_pstr, tree);
+            build_tree_list(folder.sub, $(nu_par), org_id, flatter, nu_path, nu_pstr, tree);
         }
     });
 };
@@ -581,62 +581,6 @@ function add_chart_functions () {
 function do_stuff_with_folders(folder_obj) {
     var flatened_tree = ['/'],
         root_id = '#base-folder'
-        entrypoint = '#dynamic-tree';
-
-    if (folder_obj.org_id !== false) {
-        var org_tag = '-' + folder_obj.org_id.replace(' ','-').replace(/[^a-zA-Z0-9-]/g,'');
-        entrypoint += org_tag;
-        root_id += org_tag;
-    }
-
-    folder_menu($(root_id), folder_obj.org_id);
-
-    $('.dropdown-menu .folder-list').append('<li><a href="#" tabindex=-1>' + ((folder_obj.org_id) ? '<b>' + folder_obj.org_id + '</b><span>/</span>' : '/') + '</a></li>');
-    build_tree_list(folder_obj.tree, $(entrypoint), folder_obj.org_id, function(path) {
-        flatened_tree.push(path);
-    });
-
-    build_folder_2_folder_movelinks(entrypoint, flatened_tree, folder_obj.org_id);
-};
-
-function get_folders(orgs) {
-    var api_calls = [],
-        folders = [];
-
-    api_calls.push($.getJSON('/api/folders/dir/user/')
-        .done(function(res) {
-            if (res.status == 'error') {
-                alert(res.message);
-            } else if (res.status == 'ok') {
-                folders.push({ org_id: false, tree: res.data });
-            }
-        }).fail(handler.fail));
-    Object.keys(orgs).forEach(function(key) {
-        var org = orgs[key];
-        api_calls.push($.getJSON('/api/folders/dir/organization/' + org.id + '/')
-            .done(function(res) {
-                if (res.status == 'error') {
-                    alert(res.message);
-                } else if (res.status == 'ok') {
-                    folders.push({ org_id: org.id, org_name: org.name, tree: res.data });
-                }
-            }).fail(handler.fail));
-    });
-    $.when.apply(null, api_calls).done(function() {
-        folders.sort(function(a, b) {
-            if (!a.org_id) return -1;
-            if (!b.org_id) return 1;
-            return a.org_name.localeCompare(b.org_name);
-        });
-        folders.forEach(do_stuff_with_folders);
-        add_chart_functions();
-    });
-}
-
-function do_other_stuff_with_folders(folder_obj) {
-    console.log(folder_obj);
-    var flatened_tree = ['/'],
-        root_id = '#base-folder'
         entrypoint = '#dynamic-tree',
         org_id = (folder_obj.organization) ? folder_obj.organization.id : false;
 
@@ -649,12 +593,17 @@ function do_other_stuff_with_folders(folder_obj) {
     folder_menu($(root_id), folder_obj.org_id);
 
     $('.dropdown-menu .folder-list').append('<li><a href="#" tabindex=-1>' + ((org_id) ? '<b>' + org_id + '</b><span>/</span>' : '/') + '</a></li>');
-    build_tree_list(folder_obj.tree, $(entrypoint), org_id, function(path) {
+    build_tree_list(folder_obj.folders, $(entrypoint), org_id, function(path) {
         flatened_tree.push(path);
     });
 
     build_folder_2_folder_movelinks(entrypoint, flatened_tree, folder_obj.org_id);
 };
+
+function get_folders(tree) {
+    kill_ROOT(tree);
+    treeyfy(tree).forEach(do_stuff_with_folders);
+}
 
 /*
  * FIXME: this is a temporary hotfix to remove old ROOT folder on which the old API still depends
@@ -710,14 +659,8 @@ function treeyfy(tree) {
     return tree;
 }
 
-function get_new_folders(tree) {
-    kill_ROOT(tree);
-    treeyfy(tree).forEach(do_other_stuff_with_folders);
-}
-
 $('document').ready(function() {
-    // get_folders({{ organizations | json | raw }});
-    get_new_folders({{ preload | json | raw }});
+    get_folders({{ preload | json | raw }});
 });
 
 </script>
