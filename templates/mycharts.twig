@@ -633,8 +633,39 @@ function get_folders(orgs) {
     });
 }
 
+/*
+ * FIXME: this is a temporary hotfix to remove old ROOT folder on which the old API still depends
+ *        and sets the parent of all first level folders to null
+ *        as soon as the UI is ported to the new API this needs to be removed*
+ */
+function kill_ROOT(tree) {
+    var root_ids, filtered_tree;
+
+    root_ids = tree.map(function(group) {
+        return group.folders.reduce(function(old, cur) {
+            return (!old && cur.parent === null) ? cur.id : old;
+        }, false);
+    });
+    filtered_tree = tree.map(function(group, idx) {
+        group.folders = group.folders.filter(function(folder) {
+            return (folder.id == root_ids[idx]) ? false : true;
+        }).map(function(folder) {
+            if (folder.parent == root_ids[idx])
+                folder.parent = null;
+            return folder;
+        });
+        return group;
+    });
+}
+
+function get_new_folders(tree) {
+    kill_ROOT(tree);
+    console.log(tree);
+}
+
 $('document').ready(function() {
     get_folders({{ organizations | json | raw }});
+    get_new_folders({{ preload | json | raw }});
 });
 
 </script>
