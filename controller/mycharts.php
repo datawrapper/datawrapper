@@ -112,7 +112,8 @@ function any_charts($app, $user, $key, $val, $org_id = false) {
         'val' => $val,
         'search_query' => empty($q) ? '' : $q,
         'mycharts_base' => '/mycharts',
-        'organizations' => list_organizations($user)
+        'organizations' => list_organizations($user),
+        'preload' => FolderQuery::create()->getParsableFolders($user)
     );
 
     if (DatawrapperSession::getUser()->isAdmin() && $user != DatawrapperSession::getUser()) {
