@@ -349,7 +349,7 @@ $('body').load(function() {
 
 });
 
-const handler = {
+var handler = {
     fail: function(err) {
         alert('API Error');
         console.error(err);
@@ -363,31 +363,31 @@ const handler = {
     }
 };
 
-const folder_menu = function(el, org_id, path, subfolders) {
-    const html_blob = `
-        <div class="btn-group">
-            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                <i class="icon-wrench"></i>
-                <span class="caret"></span>
-            </a>
-            <ul class="dropdown-menu">
-                <li class="dropdown-submenu">
-                    <a class="add-folder" tabindex="-1" href="#"><i class="icon-folder-open"></i> {% trans "Add" %}</a>
-                    <ul class="dropdown-menu">
-                        <div class="form-group">
-                            <button type="button" class="btn folder-confirm disabled">OK</button>
-                            <input type="text" class="form-control folder-input">
-                        </div>
-                    </ul>
-                </li>
-                <li class="dropdown-submenu">
-                    <a class="move-to-folder" tabindex="-1" href="#"><i class="icon-folder-open"></i> {% trans "Move" %}</a>
-                    <ul class="dropdown-menu move-links"></ul>
-                </li>
-                <li><a class="delete-folder" tabindex="-1" href="#"><i class="icon-remove"></i> {% trans "Remove" %}</a></li>
-            </ul>
-        </div>`;
-    var menu;
+function folder_menu(el, org_id, path, subfolders) {
+    var html_blob = '\
+        <div class="btn-group">  \
+            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#"> \
+                <i class="icon-wrench"></i> \
+                <span class="caret"></span> \
+            </a> \
+            <ul class="dropdown-menu"> \
+                <li class="dropdown-submenu"> \
+                    <a class="add-folder" tabindex="-1" href="#"><i class="icon-folder-open"></i> {% trans "Add" %}</a> \
+                    <ul class="dropdown-menu"> \
+                        <div class="form-group"> \
+                            <button type="button" class="btn folder-confirm disabled">OK</button> \
+                            <input type="text" class="form-control folder-input"> \
+                        </div> \
+                    </ul> \
+                </li> \
+                <li class="dropdown-submenu"> \
+                    <a class="move-to-folder" tabindex="-1" href="#"><i class="icon-folder-open"></i> {% trans "Move" %}</a> \
+                    <ul class="dropdown-menu move-links"></ul> \
+                </li> \
+                <li><a class="delete-folder" tabindex="-1" href="#"><i class="icon-remove"></i> {% trans "Remove" %}</a></li> \
+            </ul> \
+        </div>',
+        menu;
 
     el.append(html_blob);
     menu = el.find(".btn-group .dropdown-menu");
@@ -436,7 +436,7 @@ const folder_menu = function(el, org_id, path, subfolders) {
         menu.find(".delete-folder").remove();
 }
 
-const build_folder_2_folder_movelinks = function(entrypoint, flat_list, org_id) {
+function build_folder_2_folder_movelinks(entrypoint, flat_list, org_id) {
     $(entrypoint + " .folder-list-item").each(function(i, entry) {
         var source_path = $.data(entry, "fullpath"),
             source_parent = source_path.slice(0, source_path.lastIndexOf('/'));
@@ -478,9 +478,9 @@ const build_folder_2_folder_movelinks = function(entrypoint, flat_list, org_id) 
     });
 };
 
-const build_line = function(path, tree) {
+function build_line(path, tree) {
     var cwd, mypath, hopper,
-        line = $('#folder-sequence');
+        line = $('#folder-sequence'),
         sep = ' > ';
 
     line.text('');
@@ -500,14 +500,14 @@ const build_line = function(path, tree) {
     $('#current-folder').text(cwd);
 };
 
-const build_tree_list = function(branch, parent, org_id, flatter, path, pathstring, tree) {
-    const filter = {
+function build_tree_list(branch, parent, org_id, flatter, path, pathstring, tree) {
+    var filter = {
         key: '{{key}}',
         val: '{{val}}'
-    };
-    const folder_icon = '<i class="icon-folder-open"></i>';
-    var nu_path,
-        subfolders = Object.keys(branch);
+    },
+        folder_icon = '<i class="icon-folder-open"></i>',
+        subfolders = Object.keys(branch),
+        nu_path;
 
     // first pass, initialize data
     if (typeof(path) === 'undefined') {
@@ -560,7 +560,7 @@ const build_tree_list = function(branch, parent, org_id, flatter, path, pathstri
     });
 };
 
-const add_chart_functions = function () {
+function add_chart_functions () {
     $('.chart .folder-list a').click(function(e) {
         var tar = $(e.currentTarget),
             id = tar.parents('.chart').data('id'),
@@ -578,7 +578,7 @@ const add_chart_functions = function () {
     });
 };
 
-const do_stuff_with_folders = function(folder_obj) {
+function do_stuff_with_folders(folder_obj) {
     var flatened_tree = ['/'],
         root_id = '#base-folder'
         entrypoint = '#dynamic-tree';
@@ -599,7 +599,7 @@ const do_stuff_with_folders = function(folder_obj) {
     build_folder_2_folder_movelinks(entrypoint, flatened_tree, folder_obj.org_id);
 };
 
-const get_folders = function(orgs) {
+function get_folders(orgs) {
     var api_calls = [],
         folders = [];
 
