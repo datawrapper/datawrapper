@@ -53,26 +53,13 @@
     cursor: pointer;
     margin-right: 1em;
 }
-.folders li .btn-group { visibility: hidden; }
-.folders li:hover .btn-group { visibility: visible; }
-.folders .dropdown-menu {
-    top: -5px;
-    left: 31px;
-}
-.folders .dropdown-menu .dropdown-menu {
+#current-folder .dropdown-menu .dropdown-menu {
     top: -6px;
     margin: 0px;
     padding: 1px;
 }
-.folders .dropdown-menu .move-links {
+#current-folder .dropdown-menu .move-links {
     top: -2px;
-}
-.folders .dropdown-menu .folder-confirm {
-    padding: 4px;
-    margin: 2px 0px 2px 2px;
-}
-.folders .dropdown-menu .folder-input {
-    margin: 2px 2px 2px 0px;
 }
 
 .dropdown-submenu .dropdown-menu {
@@ -363,7 +350,7 @@ var handler = {
     }
 };
 
-function folder_menu(el, org_id, path, subfolders) {
+function folder_menu(org_id, path, subfolders) {
     var html_blob = "\
         <div class=\"btn-group\">\n\
             <a class=\"btn dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\">\n\
@@ -371,26 +358,20 @@ function folder_menu(el, org_id, path, subfolders) {
                 <span class=\"caret\"></span>\n\
             </a>\n\
             <ul class=\"dropdown-menu\">\n\
-                <li class=\"dropdown-submenu\">\n\
+                <li>\n\
                     <a class=\"add-folder\" tabindex=\"-1\" href=\"#\"><i class=\"icon-folder-open\"></i> {% trans "Add" %}</a>\n\
-                    <ul class=\"dropdown-menu\">\n\
-                        <div class=\"form-group\">\n\
-                            <button type=\"button\" class=\"btn folder-confirm disabled\">OK</button>\n\
-                            <input type=\"text\" class=\"form-control folder-input\">\n\
-                        </div>\n\
-                    </ul>\n\
                 </li>\n\
                 <li class=\"dropdown-submenu\">\n\
                     <a class=\"move-to-folder\" tabindex=\"-1\" href=\"#\"><i class=\"icon-folder-open\"></i> {% trans "Move" %}</a>\n\
-                    <ul class=\"dropdown-menu move-links\"></ul>\n\
+                    <ul class=\"dropdown-menu move-links move-root\"></ul>\n\
                 </li>\n\
                 <li><a class=\"delete-folder\" tabindex=\"-1\" href=\"#\"><i class=\"icon-remove\"></i> {% trans "Remove" %}</a></li>\n\
             </ul>\n\
         </div>",
         menu;
 
-    el.append(html_blob);
-    menu = el.find(".btn-group .dropdown-menu");
+    $('#current-folder').append(html_blob);
+    menu = $('#current-folder').find(".btn-group .dropdown-menu");
 
     menu.find(".folder-input").click(function(ev) {
         ev.stopPropagation();
@@ -436,45 +417,42 @@ function folder_menu(el, org_id, path, subfolders) {
         menu.find(".delete-folder").remove();
 }
 
-function build_folder_2_folder_movelinks(entrypoint, flat_list, org_id) {
-    $(entrypoint + " .folder-list-item").each(function(i, entry) {
-        var source_path = $.data(entry, "fullpath"),
-            source_parent = source_path.slice(0, source_path.lastIndexOf('/'));
+function build_folder_2_folder_movelinks(flat_list, org_id) {
+    var source_path = $.data($('#current-folder')[0], "fullpath")
+        source_parent = source_path.slice(0, source_path.lastIndexOf('/')),
+        move_menu = '';
 
-        flat_list.forEach(function(folder) {
-            var l = document.createElement('li'),
-                a = document.createElement('a'),
-                move_menu,
-                put_url = '/api/folders/dir/';
+    if (org_id) {
+        $('#current-folder').find(".dropdown-menu .move-root").append("\
+            <li class=\"dropdown-submenu\">\n\
+                <a class=\"move-to-folder\" tabindex=\"-1\" href=\"#\"><i class=\"icon-folder-open\"></i> " + org_id + "</a>\n\
+                <ul class=\"dropdown-menu move-links move-org\"></ul>\n\
+            </li>\n\
+        ");
+        move_menu = $('#current-folder').find(".dropdown-menu .move-org").last();
+    } else {
+        move_menu = $('#current-folder').find(".dropdown-menu .move-root");
+    }
 
-            // Do not create links for subfolders of this path
-            if (folder === source_path ||
-                folder.startsWith(source_path) ||
-                (source_parent !== '' && folder.startsWith(source_parent)) ||
-                (source_parent === '' && folder === '/')) return;
-            move_menu = $(entry).find(".dropdown-menu .move-links");
+    flat_list.forEach(function(folder) {
+        var l = document.createElement('li'),
+            a = document.createElement('a'),
+            put_url = '/api/folders/dir/';
 
-            a.innerText = folder;
-            a.setAttribute('href', '#');
-            put_url += (org_id) ? 'organization/' + org_id : 'user';
-            put_url += source_path + '?dst=' + folder;
-            $(a).click(function(e) {
-                e.preventDefault();
-                $.ajax({
-                    url: put_url,
-                    type: 'PUT',
-                    dataType: 'JSON'
-                }).done(handler.done).fail(handler.fail);
-            });
-            l.appendChild(a);
-            move_menu.append(l);
+        // Do not create links for subfolders of this path
+        if (folder === source_path ||
+            folder.startsWith(source_path) ||
+            (source_parent !== '' && folder.startsWith(source_parent)) ||
+            (source_parent === '' && folder === '/')) return;
+
+        a.innerText = folder;
+        a.setAttribute('href', '#');
+        $(a).click(function(e) {
+            e.preventDefault();
+            alert("Unimplemented!");
         });
-    });
-
-    // now remove the whole structure for folders that can't be moved anywhere
-    $(".dropdown-menu .move-links").each(function(i, list){
-        if (list.childElementCount === 0)
-            $(list).parent().remove();
+        l.appendChild(a);
+        move_menu.append(l);
     });
 };
 
@@ -535,14 +513,14 @@ function build_tree_list(branch, parent, org_id, flatter, path, pathstring, tree
 
         l1.classList.add("folder-list-item");
         l1.appendChild(a1);
-        // folder_menu($(l1), org_id, nu_pstr.slice(1), folder.sub != false); //last param evaluates to bool
-        // $.data(l1, "fullpath", nu_pstr);
         parent.append(l1);
 
         // filter "by folder" will be removed soon™
         if (filter.key === 'folder' && filter.val == folder.id) {
             // hijack this pass to build active folder line
             build_line(nu_path, tree);
+            folder_menu(org_id, nu_pstr.slice(1), folder.sub != false); //last param evaluates to bool
+            $.data($('#current-folder')[0], 'fullpath', nu_pstr);
         } else {
             // or append this folder to the MoveTo submenu
             a2.innerHTML = (org_id) ? '<b>' + org_id + '</b><span>' + nu_pstr + '</span>': nu_pstr;
@@ -598,7 +576,7 @@ function do_stuff_with_folders(folder_obj) {
         flatened_tree.push(path);
     });
 
-    // build_folder_2_folder_movelinks(entrypoint, flatened_tree, org_id);
+    build_folder_2_folder_movelinks(flatened_tree, org_id);
 };
 
 /*
