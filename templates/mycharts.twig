@@ -535,10 +535,11 @@ function build_tree_list(branch, parent, org_id, flatter, path, pathstring, tree
 
         l1.classList.add("folder-list-item");
         l1.appendChild(a1);
-        folder_menu($(l1), org_id, nu_pstr.slice(1), folder.sub != false); //last param evaluates to bool
-        $.data(l1, "fullpath", nu_pstr);
+        // folder_menu($(l1), org_id, nu_pstr.slice(1), folder.sub != false); //last param evaluates to bool
+        // $.data(l1, "fullpath", nu_pstr);
         parent.append(l1);
 
+        // filter "by folder" will be removed soon™
         if (filter.key === 'folder' && filter.val == folder.id) {
             // hijack this pass to build active folder line
             build_line(nu_path, tree);
@@ -590,14 +591,14 @@ function do_stuff_with_folders(folder_obj) {
         root_id += org_tag;
     }
 
-    folder_menu($(root_id), folder_obj.org_id);
+    // folder_menu($(root_id), folder_obj.org_id);
 
     $('.dropdown-menu .folder-list').append('<li><a href="#" tabindex=-1>' + ((org_id) ? '<b>' + org_id + '</b><span>/</span>' : '/') + '</a></li>');
     build_tree_list(folder_obj.folders, $(entrypoint), org_id, function(path) {
         flatened_tree.push(path);
     });
 
-    build_folder_2_folder_movelinks(entrypoint, flatened_tree, org_id);
+    // build_folder_2_folder_movelinks(entrypoint, flatened_tree, org_id);
 };
 
 /*
