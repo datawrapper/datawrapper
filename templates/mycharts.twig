@@ -419,8 +419,14 @@ function folder_menu(org_id, path, subfolders) {
 
 function build_folder_2_folder_movelinks(flat_list, org_id) {
     var source_path = $.data($('#current-folder')[0], "fullpath")
-        source_parent = source_path.slice(0, source_path.lastIndexOf('/')),
+        source_parent = '',
         move_menu = '';
+
+    if (typeof(source_path) === 'undefined') {
+        return;
+    } else {
+        source_parent = source_path.slice(0, source_path.lastIndexOf('/'));
+    }
 
     if (org_id) {
         $('#current-folder').find(".dropdown-menu .move-root").append("\
