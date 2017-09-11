@@ -35,14 +35,18 @@
         if (empty($folder) && empty($payload['name']))
             return error('need-name', 'you must specify a name');
 
-        $owner_changed = false;
         // create folder if empty
-        if (empty($folder)) $folder = new Folder();
+        if (empty($folder)) {
+            $folder = new Folder();
+            $folder->setUserId($user->getId());
+        }
         // update name
         if (!empty($payload['name'])) $folder->setFolderName($payload['name']);
 
         if (!isset($payload['organization'])) $payload['organization'] = null;
         if (!isset($payload['parent'])) $payload['parent'] = null;
+
+        $old_owner = $folder->getOwnerId();
 
         // verify (new?) parent folder
         if (!empty($payload['parent'])) {
@@ -52,9 +56,17 @@
                 return error('parent-invalid', 'parent folder is invalid');
             }
             $folder->setParentId($parentFolder->getId());
+
             // use owner from parent folder
-            if ($parentFolder->getType() == 'user') $payload['organization'] == false;
-            else $payload['organization'] == $parentFolder->getOrgId();
+            if ($parentFolder->getType() == 'user') {
+                $folder->setOrgId(null);
+                $folder->setUserId($parentFolder->getUserId());
+            } else {
+                $folder->setOrgId($parentFolder->getOrgId());
+                $folder->setUserId(null);
+            }
+            // folder overwrites organization
+            unset($payload['organization']);
 
         } else if ($payload['parent'] === false) {
             // we want to move the folder to the current root, w/o changing owner
@@ -73,16 +85,18 @@
             $folder->setUserId(null);
             $owner_changed = true;
 
-        } else if ($folder->isNew() || $payload['organization'] === false) {
+            if (empty($payload['folder'])) {
+                // remove parent folder
+                $folder->setParentId(null);
+            }
+
+        } else if (isset($payload['organization']) && $payload['organization'] === false) {
             $folder->setUserId($user->getId());
             $folder->setOrgId(null);
-            $owner_changed = true;
         }
 
-        if (!$folder->isNew() && $owner_changed) {
-            $new_type = $folder->getType();
-            $new_id = $new_type == 'organization' ? $payload['organization'] : $user->getId();
-            $folder->changeOwner($new_type, $new_id);
+        if (!$folder->isNew() && $folder->getOwnerId() != $old_owner) {
+            $folder->propagateOwner();
         }
         return $folder;
     };

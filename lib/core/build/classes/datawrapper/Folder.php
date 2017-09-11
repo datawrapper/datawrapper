@@ -52,6 +52,12 @@ class Folder extends BaseFolder {
         throw new Error('invalid folder type');
     }
 
+    public function getOwnerId() {
+        if ($this->getType() == 'user') return $this->getUserId();
+        if ($this->getType() == 'organization') return $this->getOrgId();
+        return null;
+    }
+
     /*
      * test if this folder would be a valid parent for
      * a new folder created by this user in this org
@@ -100,10 +106,12 @@ class Folder extends BaseFolder {
      * propagate owner changes through the sub-folders
      * and all charts in them
      */
-    public function changeOwner($new_type, $new_id) {
+    public function propagateOwner() {
         // first let's get a list of all sub-folders
         $folder_ids = [];
-        $traverse = function($folder) use ($folder_ids) {
+        $user_id = $this->getUserId();
+        $org_id = $this->getOrgId();
+        $traverse = function($folder) use (&$folder_ids, &$traverse) {
             $folder_ids[] = $folder->getId();
             $subfolders = $folder->getSubFolders();
             foreach ($subfolders as $sfolder) {
@@ -113,32 +121,24 @@ class Folder extends BaseFolder {
         $traverse($this);
 
         // update folders
-        $folders = FolderQuery::create()
-            ->filterByFolderId($folder_ids);
-        if ($new_type == 'organization') {
-            $folders->update([
-                'UserId' => null,
-                'OrgId' => $new_id
-            ]);
-        } else {
-            $folders->update([
-                'UserId' => $new_id,
-                'OrgId' => null
-            ]);
-        }
+        $folders = FolderQuery::create()->filterByFolderId($folder_ids);
+        $folders->update([
+            'UserId' => $user_id,
+            'OrgId' => $org_id
+        ]);
 
         // now get a list of all charts in those folders
         $charts = ChartQuery::create()
-            ->filterByFolder($folder_ids);
+            ->filterByInFolder($folder_ids);
         // and update their owner
-        if ($new_type == 'organization') {
+        if ($this->getType() == 'organization') {
             $charts->update([
-                'Organization' => $new_id
+                'OrganizationId' => $this->getOrgId()
             ]);
         } else {
             $charts->update([
-                'AuthorId' => $new_id,
-                'Organization' => null
+                'AuthorId' => $this->getUserId(),
+                'OrganizationId' => null
             ]);
         }
     }
