@@ -20,6 +20,12 @@ cookie_domain: .datawrapper.local
 # auth_salt: "MY_AUTH_SALT"
 # secure_auth_key: "MY_SECRET_AUTH_KEY"
 
+## prevent chart previews to display in iframes on other domains
+prevent_chart_preview_in_iframes: true
+
+## list of domains white-listed for iframe embedding
+allow_preview_domains:
+  - foo.datawrapper.dev
 
 ## show debug message?
 debug: true
