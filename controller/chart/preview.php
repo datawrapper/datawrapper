@@ -1,5 +1,7 @@
 <?php
 
+require_once ROOT_PATH . 'lib/utils/check_iframe_origin.php';
+
 /*
  * Shows a preview of a chart for display in an iFrame
  */
@@ -23,12 +25,7 @@ $app->get('/chart/:id/preview', function ($id) use ($app) {
         $page['innersvg'] = $app->request()->get('innersvg') == 1;
         $page['config'] = $GLOBALS['dw_config'];
 
-        if (!empty($GLOBALS['dw_config']['prevent_chart_preview_in_iframes'])) {
-            // prevent this url from being rendered in iframes on different
-            // domains, mainly to protect server resources
-            $res = $app->response();
-            $res['X-Frame-Options'] = 'SAMEORIGIN';
-        }
+        check_iframe_origin($app);
 
         $app->render('chart.twig', $page);
     });

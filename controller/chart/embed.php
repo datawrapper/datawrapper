@@ -1,5 +1,7 @@
 <?php
 
+require_once ROOT_PATH . 'lib/utils/check_iframe_origin.php';
+
 /*
  * Main controller for chart rendering
  */
@@ -24,12 +26,8 @@ $app->get('/chart/:id/', function ($id) use ($app) {
         $page['plain'] = $app->request()->get('plain') == 1;
         $page['fullscreen'] = $app->request()->get('fs') == 1;
 
-        if (!empty($GLOBALS['dw_config']['prevent_chart_preview_in_iframes'])) {
-            // prevent this url from being rendered in iframes on different
-            // domains, mainly to protect server resources
-            $res = $app->response();
-            $res['X-Frame-Options'] = 'SAMEORIGIN';
-        }
+        check_iframe_origin($app);
+
         $app->render('chart.twig', $page);
     });
 });
