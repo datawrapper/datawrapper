@@ -577,6 +577,14 @@ function treelist_wrapper(folder_obj) {
     return flatened_tree;
 };
 
+function remove_empty_folder_move_targets() {
+    $('#current-folder .move-org').each(function(idx, move_org){
+        var list = $(move_org);
+        if (!list.find('li').length)
+            list.parent().remove();
+    });
+}
+
 /*
  * FIXME: this is a temporary hotfix to remove old ROOT folder on which the old API still depends
  *        and sets the parent of all first level folders to null
@@ -644,6 +652,7 @@ function get_folders(tree) {
     cleaned_tree.forEach(function(folder_obj, idx) {
         build_folder_2_folder_movelinks(walked_tree[idx], (folder_obj.organization) ? folder_obj.organization.id : false);
     });
+    remove_empty_folder_move_targets();
 }
 
 $('document').ready(function() {
