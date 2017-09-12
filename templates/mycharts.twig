@@ -72,7 +72,24 @@
 
     <div class="folder-line">
         <a href="{{ mycharts_base }}">{% trans "My Charts" %}</a><span id="folder-sequence"></span>
-        <h1 id="current-folder"> </h1>
+        <h1 id="current-folder">
+            <div class="btn-group">
+                <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                    <i class="icon-wrench"></i>
+                    <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a class="add-folder" tabindex="-1" href="#"><i class="icon-folder-open"></i> {% trans "Add" %}</a>
+                    </li>
+                    <li class="dropdown-submenu">
+                        <a class="move-to-folder" style="display: none;" tabindex="-1" href="#"><i class="icon-folder-open"></i> {% trans "Move" %}</a>
+                        <ul class="dropdown-menu move-links move-root"></ul>
+                    </li>
+                    <li><a class="delete-folder" style="display: none;" tabindex="-1" href="#"><i class="icon-remove"></i> {% trans "Remove" %}</a></li>
+                </ul>
+            </div>
+        </h1>
     </div>
 
     <form method="get" class="form form-inline" action="">
@@ -162,11 +179,11 @@
 <div class="folders-and-gallery">
     <div class="folders">
         <ul>
-            <li id="base-folder"><a href="{{ mycharts_base }}"><i class="icon-folder-open"></i> {% trans "My Charts" %}</a></li>
+            <li><a href="{{ mycharts_base }}"><i class="icon-folder-open"></i> {% trans "My Charts" %}</a></li>
             <ul id="dynamic-tree">
             </ul>
             {% for org in organizations %}
-            <li id="base-folder-{{ org.tag }}"><a href="{{ mycharts_base }}/organization/{{ org.id }}"><i class="icon-folder-open"></i> {{ org.name }}</a></li>
+            <li><a href="{{ mycharts_base }}/organization/{{ org.id }}"><i class="icon-folder-open"></i> {{ org.name }}</a></li>
             <ul id="dynamic-tree-{{ org.tag }}">
             </ul>
             {% endfor %}
@@ -351,27 +368,7 @@ var handler = {
 };
 
 function folder_menu(org_id, path, subfolders) {
-    var html_blob = "\
-        <div class=\"btn-group\">\n\
-            <a class=\"btn dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\">\n\
-                <i class=\"icon-wrench\"></i>\n\
-                <span class=\"caret\"></span>\n\
-            </a>\n\
-            <ul class=\"dropdown-menu\">\n\
-                <li>\n\
-                    <a class=\"add-folder\" tabindex=\"-1\" href=\"#\"><i class=\"icon-folder-open\"></i> {% trans "Add" %}</a>\n\
-                </li>\n\
-                <li class=\"dropdown-submenu\">\n\
-                    <a class=\"move-to-folder\" tabindex=\"-1\" href=\"#\"><i class=\"icon-folder-open\"></i> {% trans "Move" %}</a>\n\
-                    <ul class=\"dropdown-menu move-links move-root\"></ul>\n\
-                </li>\n\
-                <li><a class=\"delete-folder\" tabindex=\"-1\" href=\"#\"><i class=\"icon-remove\"></i> {% trans "Remove" %}</a></li>\n\
-            </ul>\n\
-        </div>",
-        menu;
-
-    $('#current-folder').append(html_blob);
-    menu = $('#current-folder').find(".btn-group .dropdown-menu");
+    var menu = $('#current-folder').find(".btn-group .dropdown-menu");
 
     menu.find(".folder-input").click(function(ev) {
         ev.stopPropagation();
@@ -390,9 +387,9 @@ function folder_menu(org_id, path, subfolders) {
             alert("Your folder name may not contain any slashes.");
             return;
         }
-        post_url += (org_id) ? 'organization/' + org_id + '/': 'user/';
-        post_url += (path) ? path + '/': '';
-        post_url += val;
+        post_url += (org_id) ? 'organization/' + org_id: 'user';
+        post_url += (path) ? path : '';
+        post_url += '/' + val;
         $.ajax({
             url: post_url,
             type: 'POST',
@@ -403,7 +400,7 @@ function folder_menu(org_id, path, subfolders) {
     menu.find(".delete-folder").click(function(e) {
         var del_url = '/api/folders/dir/';
         e.preventDefault();
-        del_url += (org_id) ? 'organization/' + org_id + '/' : 'user/';
+        del_url += (org_id) ? 'organization/' + org_id: 'user';
         del_url += path;
         $.ajax({
             url: del_url,
@@ -418,15 +415,12 @@ function folder_menu(org_id, path, subfolders) {
 }
 
 function build_folder_2_folder_movelinks(flat_list, org_id) {
-    var source_path = $.data($('#current-folder')[0], "fullpath")
+    var source_path = $.data($('#current-folder')[0], "fullpath"),
         source_parent = '',
         move_menu = '';
 
-    if (typeof(source_path) === 'undefined') {
-        return;
-    } else {
-        source_parent = source_path.slice(0, source_path.lastIndexOf('/'));
-    }
+    if (typeof(source_path) === 'undefined') return;
+    source_parent = source_path.slice(0, source_path.lastIndexOf('/'));
 
     if (org_id) {
         $('#current-folder').find(".dropdown-menu .move-root").append("\
@@ -446,10 +440,11 @@ function build_folder_2_folder_movelinks(flat_list, org_id) {
             put_url = '/api/folders/dir/';
 
         // Do not create links for subfolders of this path
-        if (folder === source_path ||
+        if ($.data($('#current-folder')[0], 'organization') === org_id &&
+            (folder === source_path ||
             folder.startsWith(source_path) ||
             (source_parent !== '' && folder.startsWith(source_parent)) ||
-            (source_parent === '' && folder === '/')) return;
+            folder === '/')) return;
 
         a.innerText = folder;
         a.setAttribute('href', '#');
@@ -483,7 +478,7 @@ function build_line(path, tree) {
         tree = folder.sub
     });
     line.append(sep);
-    $('#current-folder').text(cwd);
+    $('#current-folder').prepend(cwd);
 };
 
 function build_tree_list(branch, parent, org_id, flatter, path, pathstring, tree) {
@@ -517,16 +512,18 @@ function build_tree_list(branch, parent, org_id, flatter, path, pathstring, tree
         nu_pstr = pathstring + '/' + folder.name;
         flatter(nu_pstr);
 
-        l1.classList.add("folder-list-item");
         l1.appendChild(a1);
         parent.append(l1);
 
         // filter "by folder" will be removed soon™
         if (filter.key === 'folder' && filter.val == folder.id) {
+            var curfol = $('#current-folder');
             // hijack this pass to build active folder line
             build_line(nu_path, tree);
             folder_menu(org_id, nu_pstr.slice(1), folder.sub != false); //last param evaluates to bool
-            $.data($('#current-folder')[0], 'fullpath', nu_pstr);
+            curfol.find('.btn-group .move-to-folder,.delete-folder').show();
+            $.data(curfol[0], 'fullpath', nu_pstr);
+            $.data(curfol[0], 'organization', org_id);
         } else {
             // or append this folder to the MoveTo submenu
             a2.innerHTML = (org_id) ? '<b>' + org_id + '</b><span>' + nu_pstr + '</span>': nu_pstr;
@@ -563,26 +560,21 @@ function add_chart_functions () {
     });
 };
 
-function do_stuff_with_folders(folder_obj) {
+function treelist_wrapper(folder_obj) {
     var flatened_tree = ['/'],
-        root_id = '#base-folder'
         entrypoint = '#dynamic-tree',
         org_id = (folder_obj.organization) ? folder_obj.organization.id : false;
 
     if (org_id) {
         var org_tag = '-' + org_id.replace(' ','-').replace(/[^a-zA-Z0-9-]/g,'');
         entrypoint += org_tag;
-        root_id += org_tag;
     }
 
-    // folder_menu($(root_id), folder_obj.org_id);
-
-    $('.dropdown-menu .folder-list').append('<li><a href="#" tabindex=-1>' + ((org_id) ? '<b>' + org_id + '</b><span>/</span>' : '/') + '</a></li>');
     build_tree_list(folder_obj.folders, $(entrypoint), org_id, function(path) {
         flatened_tree.push(path);
     });
 
-    build_folder_2_folder_movelinks(flatened_tree, org_id);
+    return flatened_tree;
 };
 
 /*
@@ -640,8 +632,18 @@ function treeyfy(tree) {
 }
 
 function get_folders(tree) {
+    var walked_tree = [],
+        cleaned_tree;
+
     kill_ROOT(tree);
-    treeyfy(tree).forEach(do_stuff_with_folders);
+    cleaned_tree = treeyfy(tree);
+
+    cleaned_tree.forEach(function(folder_obj) {
+        walked_tree.push(treelist_wrapper(folder_obj));
+    });
+    cleaned_tree.forEach(function(folder_obj, idx) {
+        build_folder_2_folder_movelinks(walked_tree[idx], (folder_obj.organization) ? folder_obj.organization.id : false);
+    });
 }
 
 $('document').ready(function() {
