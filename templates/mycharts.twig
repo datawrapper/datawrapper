@@ -380,48 +380,16 @@ var handler = {
 function folder_menu(org_id, path, subfolders) {
     var menu = $('#current-folder').find(".btn-group .dropdown-menu");
 
-    menu.find(".folder-input").click(function(ev) {
-        ev.stopPropagation();
-    });
-
-    menu.find(".folder-input").on("input", function(ev) {
-        menu.find(".folder-confirm").removeClass("disabled");
-        $(ev.currentTarget).off();
-    });
-
-    menu.find(".folder-confirm").click(function(e) {
-        var val = menu.find(".folder-input")[0].value,
-            post_url = '/api/folders/dir/';
-        e.preventDefault();
-        if (val.search("/") != -1) {
-            alert("Your folder name may not contain any slashes.");
-            return;
-        }
-        post_url += (org_id) ? 'organization/' + org_id: 'user';
-        post_url += (path) ? path : '';
-        post_url += '/' + val;
-        $.ajax({
-            url: post_url,
-            type: 'POST',
-            dataType: 'JSON'
-        }).done(handler.done).fail(handler.fail);
-    });
-
-    menu.find(".delete-folder").click(function(e) {
-        var del_url = '/api/folders/dir/';
-        e.preventDefault();
-        del_url += (org_id) ? 'organization/' + org_id: 'user';
-        del_url += path;
-        $.ajax({
-            url: del_url,
-            type: 'DELETE',
-            dataType: 'JSON'
-        }).done(handler.done).fail(handler.fail);
+    menu.find('.add-folder').click(function(e) {
+        alert('Unimplemented!');
     });
 
     // can't delete root or folders with subfolders
-    if(typeof(path) === 'undefined' || subfolders)
-        menu.find(".delete-folder").remove();
+    if (!(typeof(path) === 'undefined' || subfolders)) {
+        menu.find('.delete-folder').click(function(e) {
+            alert('Unimplemented!');
+        });
+    }
 }
 
 function build_folder_2_folder_movelinks(flat_list, org_id) {
@@ -558,21 +526,9 @@ function build_tree_list(branch, parent, org_id, flatter, path, pathstring, tree
     });
 };
 
-function add_chart_functions () {
+function add_chart_move_function() {
     $('.chart .folder-list a').click(function(e) {
-        var tar = $(e.currentTarget),
-            id = tar.parents('.chart').data('id'),
-            org_part = tar.find('b'),
-            put_url = '/api/folders/chart/';
-        e.preventDefault();
-
-        put_url += (org_part.length) ? 'organization/' + org_part.text() + '/' + id + tar.find('span').text() : 'user/' + id + tar.text();
-
-        $.ajax({
-            url: put_url,
-            type: 'PUT',
-            dataType: 'JSON'
-        }).done(handler.done).fail(handler.fail);
+        alert('Unimplemented!');
     });
 };
 
@@ -668,6 +624,7 @@ function get_folders(tree) {
     cleaned_tree.forEach(function(folder_obj) {
         walked_tree.push(treelist_wrapper(folder_obj));
     });
+    add_chart_move_function();
     cleaned_tree.forEach(function(folder_obj, idx) {
         build_folder_2_folder_movelinks(walked_tree[idx], (folder_obj.organization) ? folder_obj.organization.id : false);
     });
