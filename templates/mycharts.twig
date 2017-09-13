@@ -560,31 +560,6 @@ function remove_empty_folder_move_targets() {
     });
 }
 
-/*
- * FIXME: this is a temporary hotfix to remove old ROOT folder on which the old API still depends
- *        and sets the parent of all first level folders to null
- *        as soon as the UI is ported to the new API this needs to be removed*
- */
-function kill_ROOT(tree) {
-    var root_ids;
-
-    root_ids = tree.map(function(group) {
-        return group.folders.reduce(function(old, cur) {
-            return (!old && cur.parent === null) ? cur.id : old;
-        }, false);
-    });
-    tree.map(function(group, idx) {
-        group.folders = group.folders.filter(function(folder) {
-            return (folder.id == root_ids[idx]) ? false : true;
-        }).map(function(folder) {
-            if (folder.parent == root_ids[idx])
-                folder.parent = null;
-            return folder;
-        });
-        return group;
-    });
-}
-
 function treeyfy(tree) {
     tree.map(function(group) {
         if (group.type === "user")
@@ -618,7 +593,6 @@ function get_folders(tree) {
     var walked_tree = [],
         cleaned_tree;
 
-    kill_ROOT(tree);
     cleaned_tree = treeyfy(tree);
 
     cleaned_tree.forEach(function(folder_obj) {
