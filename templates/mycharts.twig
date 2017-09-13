@@ -73,7 +73,7 @@
 <div class="gallery-filter">
 
     <div class="folder-line">
-        <a href="{{ mycharts_base }}">{% trans "My Charts" %}</a><span id="folder-sequence"></span>
+        <a id="current-root" href="{{ mycharts_base }}">{% trans "My Charts" %}</a><span id="folder-sequence"></span>
         <h1 id="current-folder">
             <div class="btn-group">
                 <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
@@ -435,7 +435,13 @@ function build_folder_2_folder_movelinks(flat_list, org_id) {
     });
 };
 
-function build_line(path, tree) {
+function change_root_folder(org) {
+    var root_folder = $('#current-root');
+    root_folder.attr('href', '/organization/' + org.id);
+    root_folder.text(org.name);
+}
+
+function build_line(org, path, tree) {
     var cwd, mypath,
         line = $('#folder-sequence'),
         sep = ' > ';
@@ -451,7 +457,7 @@ function build_line(path, tree) {
         folder = tree.reduce(function(old, cur) {
             return (!old && cur.name === dir) ? cur : old;
         }, false);
-        a.setAttribute('href', '{{ mycharts_base }}/by/folder/' + folder.id);
+        a.setAttribute('href', (org) ? '/organization/' + org.id + '/' + folder.id : '{{ mycharts_base }}/' + folder.id);
         line.append(sep, a);
         tree = folder.sub
     });
@@ -459,14 +465,12 @@ function build_line(path, tree) {
     $('#current-folder').prepend(cwd);
 };
 
-function build_tree_list(branch, parent, org_id, flatter, path, pathstring, tree) {
-    var filter = {
-        key: '{{key}}',
-        val: '{{val}}'
-    },
+function build_tree_list(branch, parent, org, flatter, path, pathstring, tree) {
+    var current_folder = '{{current.folder}}',
         folder_icon = '<i class="icon-folder-open"></i>',
         nu_path,
         seper = $('#folder-list-separator'),
+        org_id = (org) ? org.id : false,
         org_tag = (org_id) ? '-' + org_id.replace(' ','-').replace(/[^a-zA-Z0-9-]/g,'') : '';
 
     // first pass, initialize data
@@ -495,15 +499,15 @@ function build_tree_list(branch, parent, org_id, flatter, path, pathstring, tree
         l1.appendChild(a1);
         parent.append(l1);
 
-        // filter "by folder" will be removed soon™
-        if (filter.key === 'folder' && filter.val == folder.id) {
-            var curfol = $('#current-folder');
+        // beware! this a string compare! '' == false && '<num>' == <num>
+        if (current_folder && current_folder == folder.id) {
+            var curfol_elem = $('#current-folder');
             // hijack this pass to build active folder line
-            build_line(nu_path, tree);
+            build_line(org, nu_path, tree);
             folder_menu(org_id, nu_pstr.slice(1), folder.sub != false); //last param evaluates to bool
-            curfol.find('.btn-group .move-to-folder,.delete-folder').show();
-            $.data(curfol[0], 'fullpath', nu_pstr);
-            $.data(curfol[0], 'organization', org_id);
+            curfol_elem.find('.btn-group .move-to-folder,.delete-folder').show();
+            $.data(curfol_elem[0], 'fullpath', nu_pstr);
+            $.data(curfol_elem[0], 'organization', org_id);
         } else {
             // or append this folder to the MoveTo submenu
             a2.innerHTML = nu_pstr;
@@ -521,7 +525,7 @@ function build_tree_list(branch, parent, org_id, flatter, path, pathstring, tree
         if (folder.sub) {
             var nu_par = document.createElement('ul');
             parent.append(nu_par);
-            build_tree_list(folder.sub, $(nu_par), org_id, flatter, nu_path, nu_pstr, tree);
+            build_tree_list(folder.sub, $(nu_par), org, flatter, nu_path, nu_pstr, tree);
         }
     });
 };
@@ -535,17 +539,20 @@ function add_chart_move_function() {
 function treelist_wrapper(folder_obj) {
     var flatened_tree = ['/'],
         entrypoint = '#dynamic-tree',
-        org_id = (folder_obj.organization) ? folder_obj.organization.id : false;
+        org = (folder_obj.organization) ? folder_obj.organization : false,
+        current_org = '{{current.organization}}';
 
-    if (org_id) {
-        var org_tag = '-' + org_id.replace(' ','-').replace(/[^a-zA-Z0-9-]/g,'');
+    if (org) {
+        var org_tag = '-' + org.id.replace(' ','-').replace(/[^a-zA-Z0-9-]/g,'');
         entrypoint += org_tag;
         $('.dropdown-menu .folder-list .folder-list' + org_tag).append('<li><a href="#" tabindex=-1>/</a></li>');
     } else {
         $('<li><a href="#" tabindex=-1>/</a></li>').insertBefore($('#folder-list-separator'));
     }
 
-    build_tree_list(folder_obj.folders, $(entrypoint), org_id, function(path) {
+    if (current_org == org.id) change_root_folder(org);
+
+    build_tree_list(folder_obj.folders, $(entrypoint), org, function(path) {
         flatened_tree.push(path);
     });
 

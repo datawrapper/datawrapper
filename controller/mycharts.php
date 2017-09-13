@@ -111,6 +111,10 @@ function any_charts($app, $user, $folder_id = false, $org_id = false) {
         'bystatus' => nbChartsByStatus($id, $is_org),
         'key' => $key,
         'val' => $val,
+        'current' => array(
+            'folder' => $folder_id,
+            'organization' => $org_id
+        ),
         'search_query' => empty($q) ? '' : $q,
         'mycharts_base' => '/mycharts',
         'organizations' => list_organizations($user),
