@@ -185,7 +185,7 @@
             <ul id="dynamic-tree">
             </ul>
             {% for org in organizations %}
-            <li><a href="{{ mycharts_base }}/organization/{{ org.id }}"><i class="icon-folder-open"></i> {{ org.name }}</a></li>
+            <li><a href="/organization/{{ org.id }}"><i class="icon-folder-open"></i> {{ org.name }}</a></li>
             <ul id="dynamic-tree-{{ org.tag }}">
             </ul>
             {% endfor %}
@@ -486,7 +486,7 @@ function build_tree_list(branch, parent, org_id, flatter, path, pathstring, tree
         a1.innerHTML = folder_icon + ' ' + folder.name;
         if (folder.charts > 0)
             a1.innerHTML += ' (' + folder.charts + ')';
-        a1.setAttribute('href', '{{ mycharts_base }}' + org_snipplet + '/by/folder/' + folder.id);
+        a1.setAttribute('href', (org_id) ? '/organization/' + org_id + '/' + folder.id : '{{ mycharts_base }}/' + folder.id);
 
         nu_path = path.concat(folder.name);
         nu_pstr = pathstring + '/' + folder.name;
