@@ -83,15 +83,17 @@ function list_organizations($user) {
  * shows MyChart page for a given user (or organization), which is typically the
  * logged user, but admins can view others MyCharts page, too.
  */
-function any_charts($app, $user, $key, $val, $org_id = false) {
+function any_charts($app, $user, $folder_id = false, $org_id = false) {
     $curPage = $app->request()->params('page');
     $q = $app->request()->params('q');
+    $key = $app->request()->params('key');
+    $val = $app->request()->params('val');
     if (empty($curPage)) $curPage = 0;
     $perPage = 48;
-    $filter = !empty($key) ? array($key => $val) : array();
+    $filter = !(empty($key) || empty($val)) ? array($key => $val) : array();
+    if ($folder_id !== false) $filter = array_merge($filter, array('folder' => $folder_id));
     if (!empty($q)) $filter['q'] = $q;
     if ($org_id) {
-        // FIXME: Make sure if user is a member of organization
         $id = $org_id;
         $is_org = true;
     } else {
@@ -106,7 +108,6 @@ function any_charts($app, $user, $key, $val, $org_id = false) {
         'charts' => $charts,
         'bymonth' => nbChartsByMonth($id, $is_org),
         'byvis' => nbChartsByType($id, $is_org),
-        // 'bylayout' => nbChartsByLayout($user),
         'bystatus' => nbChartsByStatus($id, $is_org),
         'key' => $key,
         'val' => $val,
@@ -127,7 +128,11 @@ function any_charts($app, $user, $key, $val, $org_id = false) {
     $app->render('mycharts.twig', $page);
 }
 
-$app->get('/mycharts(/organization/:org_id)?(/?|/by/:key/:val)', function ($org_id = false, $key = false, $val = false) use ($app) {
+/*
+ * pitfall: folder_id = null → root folder
+ * getting all user/organization charts via mycharts/organization is no longer possible
+ */
+$app->get('(/mycharts|/organization/:org_id)(/?|/:folder_id/?)', function ($org_id = false, $folder_id = null) use ($app) {
     disable_cache($app);
     $user = DatawrapperSession::getUser();
     if (!$user->isLoggedIn()) {
@@ -138,16 +143,16 @@ $app->get('/mycharts(/organization/:org_id)?(/?|/by/:key/:val)', function ($org_
         error_mycharts_not_a_member();
         return;
     }
-    any_charts($app, $user, $key, $val, $org_id);
+    any_charts($app, $user, $folder_id, $org_id);
 });
 
-$app->get('/admin/charts/:userid(/?|/by/:key/:val)', function($userid, $key = false, $val = false) use ($app) {
+$app->get('/admin/charts/:userid/?', function($userid) use ($app) {
     disable_cache($app);
     $user = DatawrapperSession::getUser();
     if ($user->isAdmin()) {
         $user2 = UserQuery::create()->findOneById($userid);
         if ($user2) {
-            any_charts($app, $user2, $key, $val);
+            any_charts($app, $user2);
         } else {
             error_mycharts_user_not_found();
         }
