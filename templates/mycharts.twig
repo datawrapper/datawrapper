@@ -625,17 +625,29 @@ function treelist_wrapper(folder_obj) {
         entrypoint = '#dynamic-tree',
         org = (folder_obj.organization) ? folder_obj.organization : false,
         current_org = '{{current.organization}}',
-        root_link;
+        root_link,
+        move_to_root = $('<li><a href="#" tabindex=-1>/</a></li>');
 
+    // create move to root links, because root is not a real folder
     if (org) {
         var org_tag = '-' + org.id.replace(' ','-').replace(/[^a-zA-Z0-9-]/g,'');
         entrypoint += org_tag;
-        $('.dropdown-menu .folder-list .folder-list' + org_tag).append('<li><a href="#" tabindex=-1>/</a></li>');
+        move_to_root.find('a').data({
+            inFolder: null,
+            organizationId: org.id
+        });
+        $('.dropdown-menu .folder-list .folder-list' + org_tag).append(move_to_root);
         root_link = $('#org-root' + org_tag);
     } else {
-        $('<li><a href="#" tabindex=-1>/</a></li>').insertBefore($('#folder-list-separator'));
+        move_to_root.find('a').data({
+            inFolder: null,
+            organizationId: null
+        });
+        $(move_to_root).insertBefore($('#folder-list-separator'));
         root_link = $('#user-root');
     }
+
+    // root_link contains a link to the root folder on the left side. don't mix up these two
     if (folder_obj.charts > 0) root_link.text(root_link.text() + ' (' + folder_obj.charts + ')');
 
     if (current_org == org.id) change_root_folder(org);
