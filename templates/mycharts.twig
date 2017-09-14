@@ -483,7 +483,6 @@ function build_folder_2_folder_movelinks(flat_list, org_id) {
 
         // Do not create links for subfolders of this path
         if ($('#current-folder').data('organization') == org_id && (
-            folder == source_path ||
             folder == source_parent ||
             folder.startsWith(source_path)
         )) return;
