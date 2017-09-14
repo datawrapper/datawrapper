@@ -579,6 +579,10 @@ function build_tree_list(branch, parent, org, flatter, path, pathstring, tree) {
             a2.innerHTML = nu_pstr;
             a2.setAttribute('href', '#');
             a2.setAttribute('tabindex', '-1');
+            $.data(a2, {
+                inFolder: folder.id,
+                organizationId: org_id
+            });
             l2.appendChild(a2);
 
             if (org_id) {
@@ -598,7 +602,21 @@ function build_tree_list(branch, parent, org, flatter, path, pathstring, tree) {
 
 function add_chart_move_function() {
     $('.chart .folder-list a').click(function(e) {
-        alert('Unimplemented!');
+        var tar = $(e.target),
+            id = tar.parents('.chart').data('id'),
+            payload = tar.data();
+
+        e.preventDefault();
+
+        if (payload.organizationId === false) payload.organizationId = null;
+        $.ajax({
+            url: '/api/charts/' + id,
+            type: 'PUT',
+            processData: false,
+            contentType: "application/json",
+            data: JSON.stringify(payload),
+            dataType: 'JSON'
+        }).done(handler.done).fail(handler.fail);
     });
 };
 
