@@ -456,12 +456,13 @@ function folder_menu(org_id, path, subfolders) {
 }
 
 function build_folder_2_folder_movelinks(flat_list, org_id) {
-    var source_path = $.data($('#current-folder')[0], "fullpath"),
+    var source_path = $('#current-folder').data('fullpath'),
         source_parent = '',
         move_menu = '';
 
     if (typeof(source_path) === 'undefined') return;
     source_parent = source_path.slice(0, source_path.lastIndexOf('/'));
+    if (source_parent == '') source_parent = '/';
 
     if (org_id) {
         $('#current-folder').find(".dropdown-menu .move-root").append("\
@@ -481,11 +482,11 @@ function build_folder_2_folder_movelinks(flat_list, org_id) {
             put_url = '/api/folders/dir/';
 
         // Do not create links for subfolders of this path
-        if ($.data($('#current-folder')[0], 'organization') === org_id &&
-            (folder === source_path ||
-            folder.startsWith(source_path) ||
-            (source_parent !== '' && folder.startsWith(source_parent)) ||
-            folder === '/')) return;
+        if ($('#current-folder').data('organization') == org_id && (
+            folder == source_path ||
+            folder == source_parent ||
+            folder.startsWith(source_path)
+        )) return;
 
         a.innerText = folder;
         a.setAttribute('href', '#');
@@ -572,8 +573,10 @@ function build_tree_list(branch, parent, org, flatter, path, pathstring, tree) {
             build_line(org, nu_path, tree);
             folder_menu(org_id, nu_pstr.slice(1), folder.sub != false); //last param evaluates to bool
             curfol_elem.find('.btn-group .move-to-folder,.delete-folder').show();
-            $.data(curfol_elem[0], 'fullpath', nu_pstr);
-            $.data(curfol_elem[0], 'organization', org_id);
+            curfol_elem.data({
+                fullpath: nu_pstr,
+                organization: org_id
+            });
         } else {
             // or append this folder to the MoveTo submenu
             a2.innerHTML = nu_pstr;
