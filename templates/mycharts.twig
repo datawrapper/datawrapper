@@ -648,7 +648,7 @@ function treelist_wrapper(folder_obj) {
     }
 
     // root_link contains a link to the root folder on the left side. don't mix up these two
-    if (folder_obj.charts > 0) root_link.text(root_link.text() + ' (' + folder_obj.charts + ')');
+    if (folder_obj.charts > 0) root_link.html(root_link.html() + ' (' + folder_obj.charts + ')');
 
     if (current_org == org.id) change_root_folder(org);
 
