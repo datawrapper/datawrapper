@@ -119,8 +119,10 @@ function if_chart_exists($id, $callback) {
 $app->put('/charts/:id', function($id) use ($app) {
     if_chart_is_writable($id, function($user, $chart) use ($app) {
         $json = json_decode($app->request()->getBody(), true);
-        $chart->unserialize($json);
-        ok($chart->serialize());
+        if ($chart->unserialize($json))
+            ok($chart->serialize());
+        else
+            error('bad-put-body', 'Unable to parse request body.');
     });
 });
 
