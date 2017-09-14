@@ -138,6 +138,7 @@ class ChartQuery extends BaseChartQuery {
                 ->filterByDeleted(false);
         } else {
             $query = $this->filterByAuthorId($id)
+                ->filterByOrganizationId(null)
                 ->filterByDeleted(false);
         }
         switch ($order) {
