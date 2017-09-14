@@ -48,12 +48,19 @@
 }
 
 .folders ul ul { margin-left: 1em; }
-.folders li { line-height: 30px; }
+.folders li { line-height: 40px; font-size: 18px;}
 .folders li.active { font-weight: bold; }
 .folders li.active a { color: black; }
 .folders li a {
     cursor: pointer;
     margin-right: 1em;
+}
+.folder-line {
+    border-bottom:1px solid #ddd;
+    margin-bottom: 40px;
+}
+h1#current-folder {
+    font-size: 26px;
 }
 #current-folder .dropdown-menu .dropdown-menu {
     top: -6px;
@@ -68,33 +75,16 @@
     left: 100%;
     margin-top: -6px;
 }
-
+#folder-sequence .sep {
+    display: inline-block;
+    margin-left: 10px;
+    margin-right: 14px;
+    color: #999;
+}
 #folder-list-separator { display: none; }
 
 </style>
 <div class="gallery-filter">
-
-    <div class="folder-line">
-        <a id="current-root" href="{{ mycharts_base }}">{% trans "My Charts" %}</a><span id="folder-sequence"></span>
-        <h1 id="current-folder">
-            <div class="btn-group">
-                <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                    <i class="icon-wrench"></i>
-                    <span class="caret"></span>
-                </a>
-                <ul class="dropdown-menu">
-                    <li>
-                        <a class="add-folder" tabindex="-1" href="#"><i class="icon-folder-open"></i> {% trans "Add" %}</a>
-                    </li>
-                    <li class="dropdown-submenu">
-                        <a class="move-to-folder" style="display: none;" tabindex="-1" href="#"><i class="icon-folder-open"></i> {% trans "Move" %}</a>
-                        <ul class="dropdown-menu move-links move-root"></ul>
-                    </li>
-                    <li><a class="delete-folder" style="display: none;" tabindex="-1" href="#"><i class="icon-remove"></i> {% trans "Remove" %}</a></li>
-                </ul>
-            </div>
-        </h1>
-    </div>
 
     <form method="get" class="form form-inline" action="">
         <b>{% trans "Filter" %}:</b>
@@ -180,8 +170,32 @@
 
 </div>
 
-<div class="folders-and-gallery">
-    <div class="folders">
+<div class="folder-line">
+    <h1 id="current-folder">
+        <a id="current-root" href="{{ mycharts_base }}">{% trans "My Charts" %}</a>
+        <span id="folder-sequence"></span>
+        <span id="current-folder-name"></span>
+        <div class="btn-group" style="display:inline-block; position: relative">
+            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#"
+                style="border:0;background:none;box-shadow:none">
+                <i class="fa fa-caret-down" style="font-size:18px;color:#999"></i>
+            </a>
+            <ul class="dropdown-menu">
+                <li>
+                    <a class="add-folder" tabindex="-1" href="#"><i class="icon-folder-open"></i> {% trans "Add" %}</a>
+                </li>
+                <li class="dropdown-submenu">
+                    <a class="move-to-folder" style="display: none;" tabindex="-1" href="#"><i class="icon-folder-open"></i> {% trans "Move" %}</a>
+                    <ul class="dropdown-menu move-links move-root"></ul>
+                </li>
+                <li><a class="delete-folder" style="display: none;" tabindex="-1" href="#"><i class="icon-remove"></i> {% trans "Remove" %}</a></li>
+            </ul>
+        </div>
+    </h1>
+</div>
+
+<div class="folders-and-gallery row">
+    <div class="folders span3">
         <ul>
             <li><a href="{{ mycharts_base }}"><i class="icon-folder-open"></i> {% trans "My Charts" %}</a></li>
             <ul id="dynamic-tree">
@@ -193,7 +207,8 @@
             {% endfor %}
         </ul>
     </div>
-    <div class="gallery">
+    
+    <div class="gallery span 9">
 
         {% if user.hasCharts %}
         <div class="thumbnails js-masonry" data-masonry-options='{ "itemSelector": ".grid-item", "columWidth": 200 }'>
@@ -446,7 +461,7 @@ function change_root_folder(org) {
 function build_line(org, path, tree) {
     var cwd, mypath,
         line = $('#folder-sequence'),
-        sep = ' > ';
+        sep = '<span class="sep">›</span>';
 
     mypath = Array.from(path);
     cwd = mypath.pop();
@@ -464,7 +479,7 @@ function build_line(org, path, tree) {
         tree = folder.sub
     });
     line.append(sep);
-    $('#current-folder').prepend(cwd);
+    $('#current-folder-name').html(cwd);
 };
 
 function build_tree_list(branch, parent, org, flatter, path, pathstring, tree) {
