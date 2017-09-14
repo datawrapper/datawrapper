@@ -61,7 +61,7 @@ class Chart extends BaseChart {
 
     public function unserialize($json) {
         // encode metadata as json string … if there IS metadata
-        if (!empty($json['metadata'])) $json['metadata'] = json_encode($json['metadata']);
+        if (array_key_exists('metadata', $json)) $json['metadata'] = json_encode($json['metadata']);
         // then we upperkeys the keys
         $json = $this->uppercaseKeys($json);
         // finally we ignore changes to some protected fields
