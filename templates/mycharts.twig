@@ -85,7 +85,7 @@ h1#current-folder {
     margin-right: 14px;
     color: #999;
 }
-#folder-list-separator { display: none; }
+.folder-list-separator { display: none; }
 @media (min-width: 1200px) {
     .span2 { width: 191px;  }
 }
@@ -207,7 +207,7 @@ div.folders li .fa {
                            <li class="dropdown-submenu">
                                <a tabindex="-1" href="#"><i class="icon-folder-open"></i> {% trans "Move" %}</a>
                                <ul class="dropdown-menu folder-list">
-                                   <li id="folder-list-separator"></li>
+                                   <li class="folder-list-separator"></li>
                                    {% for org in organizations %}
                                    <li class="dropdown-submenu">
                                        <a tabindex="-1" href="#"><i class="icon-folder-open"></i> {{ org.id }}</a>
@@ -533,7 +533,7 @@ function build_tree_list(branch, parent, org, flatter, path, pathstring, tree) {
         folder_icon_open = '<i class="fa fa-folder-open fa-fw"></i>',
         folder_icon_closed = '<i class="fa fa-folder fa-fw"></i>',
         nu_path,
-        seper = $('#folder-list-separator'),
+        seper = $('.folder-list-separator'),
         org_id = (org) ? org.id : false,
         org_tag = (org_id) ? '-' + org_id.replace(' ','-').replace(/[^a-zA-Z0-9-]/g,'') : '';
 
@@ -643,7 +643,7 @@ function treelist_wrapper(folder_obj) {
             inFolder: null,
             organizationId: null
         });
-        $(move_to_root).insertBefore($('#folder-list-separator'));
+        move_to_root.insertBefore($('.folder-list-separator'));
         root_link = $('#user-root');
     }
 
