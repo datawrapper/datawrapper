@@ -115,6 +115,9 @@ h1#current-folder {
 .gallery .subfolders .thumbnail .fa {
     color: #999;
 }
+div.folders li .fa {
+    color: #999;
+}
 
 </style>
 
@@ -131,10 +134,10 @@ h1#current-folder {
             </a>
             <ul class="dropdown-menu">
                 <li>
-                    <a class="add-folder" tabindex="-1" href="#"><i class="icon-folder-open"></i> {% trans "Add" %}</a>
+                    <a class="add-folder" tabindex="-1" href="#"><i class="fa fa-plus"></i> {% trans "Add subfolder" %}</a>
                 </li>
                 <li class="dropdown-submenu">
-                    <a class="move-to-folder" style="display: none;" tabindex="-1" href="#"><i class="icon-folder-open"></i> {% trans "Move" %}</a>
+                    <a class="move-to-folder" style="display: none;" tabindex="-1" href="#"><i class="icon-folder-open"></i> {% trans "Move folder" %}</a>
                     <ul class="dropdown-menu move-links move-root"></ul>
                 </li>
                 <li><a class="delete-folder" style="display: none;" tabindex="-1" href="#"><i class="icon-remove"></i> {% trans "Remove" %}</a></li>
@@ -146,11 +149,11 @@ h1#current-folder {
 <div class="folders-and-gallery row">
     <div class="folders span2">
         <ul>
-            <li><a href="{{ mycharts_base }}"><i class="icon-folder-open"></i> {% trans "My Charts" %}</a></li>
+            <li><a href="{{ mycharts_base }}"><i class="fa fa-fw fa-user"></i> {% trans "My Charts" %}</a></li>
             <ul id="dynamic-tree">
             </ul>
             {% for org in organizations %}
-            <li><a href="/organization/{{ org.id }}"><i class="icon-folder-open"></i> {{ org.name }}</a></li>
+            <li style="margin-top:10px"><a href="/organization/{{ org.id }}"><i class="fa fa-fw fa-university"></i> {{ org.name }}</a></li>
             <ul id="dynamic-tree-{{ org.tag }}">
             </ul>
             {% endfor %}
@@ -527,8 +530,8 @@ function build_line(org, path, tree) {
 
 function build_tree_list(branch, parent, org, flatter, path, pathstring, tree) {
     var current_folder = '{{current.folder}}',
-        folder_icon_open = '<i class="icon-folder-open"></i>',
-        folder_icon_closed = '<i class="icon-folder-close"></i>',
+        folder_icon_open = '<i class="fa fa-folder-open fa-fw"></i>',
+        folder_icon_closed = '<i class="fa fa-folder fa-fw"></i>',
         nu_path,
         seper = $('#folder-list-separator'),
         org_id = (org) ? org.id : false,
