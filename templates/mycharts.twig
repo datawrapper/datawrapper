@@ -149,11 +149,11 @@ div.folders li .fa {
 <div class="folders-and-gallery row">
     <div class="folders span2">
         <ul>
-            <li><a href="{{ mycharts_base }}"><i class="fa fa-fw fa-user"></i> {% trans "My Charts" %}</a></li>
+            <li><a id="user-root" href="{{ mycharts_base }}"><i class="fa fa-fw fa-user"></i> {% trans "My Charts" %}</a></li>
             <ul id="dynamic-tree">
             </ul>
             {% for org in organizations %}
-            <li style="margin-top:10px"><a href="/organization/{{ org.id }}"><i class="fa fa-fw fa-university"></i> {{ org.name }}</a></li>
+            <li style="margin-top:10px"><a id="org-root-{{ org.tag }}"href="/organization/{{ org.id }}"><i class="fa fa-fw fa-university"></i> {{ org.name }}</a></li>
             <ul id="dynamic-tree-{{ org.tag }}">
             </ul>
             {% endfor %}
@@ -606,15 +606,19 @@ function treelist_wrapper(folder_obj) {
     var flatened_tree = ['/'],
         entrypoint = '#dynamic-tree',
         org = (folder_obj.organization) ? folder_obj.organization : false,
-        current_org = '{{current.organization}}';
+        current_org = '{{current.organization}}',
+        root_link;
 
     if (org) {
         var org_tag = '-' + org.id.replace(' ','-').replace(/[^a-zA-Z0-9-]/g,'');
         entrypoint += org_tag;
         $('.dropdown-menu .folder-list .folder-list' + org_tag).append('<li><a href="#" tabindex=-1>/</a></li>');
+        root_link = $('#org-root' + org_tag);
     } else {
         $('<li><a href="#" tabindex=-1>/</a></li>').insertBefore($('#folder-list-separator'));
+        root_link = $('#user-root');
     }
+    if (folder_obj.charts > 0) root_link.text(root_link.text() + ' (' + folder_obj.charts + ')');
 
     if (current_org == org.id) change_root_folder(org);
 
