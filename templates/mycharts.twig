@@ -21,6 +21,14 @@
 
 <style type="text/css">
 
+body {
+    background: #f3f3f3;
+}
+
+html .navbar .navbar-inner {
+    background: white;
+}
+
 .gallery-filter {
     display: flex;
     margin-bottom: 40px;
@@ -37,10 +45,6 @@
 .folders-and-gallery { display: flex; }
 .folders-and-gallery .folders { flex: 1 0 0; }
 .folders-and-gallery .gallery { flex: 3 0 0;}
-
-.gallery .thumbnails .span3.chart { min-height: 190px; }
-
-.gallery .thumbnails .span3.chart h3 { position: static; }
 
 .folders ul {
     list-style-type: none;
@@ -82,8 +86,155 @@ h1#current-folder {
     color: #999;
 }
 #folder-list-separator { display: none; }
+@media (min-width: 1200px) {
+    .span2 { width: 191px;  }
+}
+
+.gallery .thumbnail h3 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+    margin-top:10px;
+    height:40px;
+    margin-bottom:0;
+    -webkit-line-clamp: 2;
+    display: block;
+    display: -webkit-box;
+}
+
+.gallery .subfolders {
+}
+.gallery .subfolders {
+    margin-bottom: 0px;
+}
+.gallery .subfolders .thumbnail {
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 0;
+}
+.gallery .subfolders .thumbnail .fa {
+    color: #999;
+}
 
 </style>
+
+
+<div class="folder-line">
+    <h1 id="current-folder">
+        <a id="current-root" href="{{ mycharts_base }}">{% trans "My Charts" %}</a>
+        <span id="folder-sequence"></span>
+        <span id="current-folder-name"></span>
+        <div class="btn-group" style="display:inline-block; position: relative">
+            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#"
+                style="border:0;background:none;box-shadow:none">
+                <i class="fa fa-caret-down" style="font-size:18px;color:#999"></i>
+            </a>
+            <ul class="dropdown-menu">
+                <li>
+                    <a class="add-folder" tabindex="-1" href="#"><i class="icon-folder-open"></i> {% trans "Add" %}</a>
+                </li>
+                <li class="dropdown-submenu">
+                    <a class="move-to-folder" style="display: none;" tabindex="-1" href="#"><i class="icon-folder-open"></i> {% trans "Move" %}</a>
+                    <ul class="dropdown-menu move-links move-root"></ul>
+                </li>
+                <li><a class="delete-folder" style="display: none;" tabindex="-1" href="#"><i class="icon-remove"></i> {% trans "Remove" %}</a></li>
+            </ul>
+        </div>
+    </h1>
+</div>
+
+<div class="folders-and-gallery row">
+    <div class="folders span2">
+        <ul>
+            <li><a href="{{ mycharts_base }}"><i class="icon-folder-open"></i> {% trans "My Charts" %}</a></li>
+            <ul id="dynamic-tree">
+            </ul>
+            {% for org in organizations %}
+            <li><a href="/organization/{{ org.id }}"><i class="icon-folder-open"></i> {{ org.name }}</a></li>
+            <ul id="dynamic-tree-{{ org.tag }}">
+            </ul>
+            {% endfor %}
+        </ul>
+    </div>
+    
+    <div class="gallery span10">
+
+        {# DUMMY FOLDER VIEW #}
+        <ul class="thumbnails subfolders">
+            {% for folder in [1,2,3] %}
+            <li class="span2">
+                <a class="thumbnail" href="/mycharts/folder/123/">
+                    <i class="fa fa-folder fa-fw"></i> Subfolder {{ folder }}
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+        {# END DUMMY FOLDER #}
+
+        <hr></hr>
+
+        {% if user.hasCharts %}
+        <ul class="thumbnails">
+            {% for chart in charts %}
+
+            <li class="span2 chrt" data-id="{{ chart.id }}">
+
+                <div class="thumbnail" data-foo="bar">
+
+                    <a href="/{{ chart.getNamespace() }}/{{ chart.id }}/edit">
+                        <div class="image" style="width:100%; height:130px; background:url({% if chart.hasPreview %}//{{ DW_CHART_CACHE_DOMAIN }}/{{ chart.id }}/m.png{% else %}/static/img/nopreview.png{% endif %}) top left no-repeat;background-size:cover"></div>
+
+                        <h3>
+                            {% if chart.title != '' %}{{ chart.title | replace({'<br/>': ' - '}) | striptags | raw }}{% else %}{{ chart.id }}{% endif %}
+                        </h3>
+                    </a>
+
+                    <div class="btn-group">
+                       <button class="btn dropdown-toggle" data-toggle="dropdown">
+                           <i class="fa fa-caret-down"></i>
+                       </button>
+                       <ul class="dropdown-menu">
+                           {% if user2 %}
+                           <li><a class="edit" href="#"><i class="icon-edit"></i> {% trans "Edit" %}</a></li>
+                           {% endif %}
+                           <li><a class="duplicate" href="#"><i class="icon-plus"></i> {% trans "Duplicate" %}</a></li>
+                           {# <li><a href="/chart/{{ chart.id }}/static?w=700&amp;h=490&amp;f=pdf&amp;padding=20"><i class="icon-download"></i> {% trans "Save as PDF" %}</a></li>
+                           <li class="divider"></li> #}
+                           <li><a class="delete" href="#"><i class="icon-remove"></i> {% trans "Delete" %}</a></li>
+                           <li class="dropdown-submenu">
+                               <a tabindex="-1" href="#"><i class="icon-folder-open"></i> {% trans "Move" %}</a>
+                               <ul class="dropdown-menu folder-list">
+                                   <li id="folder-list-separator"></li>
+                                   {% for org in organizations %}
+                                   <li class="dropdown-submenu">
+                                       <a tabindex="-1" href="#"><i class="icon-folder-open"></i> {{ org.id }}</a>
+                                       <ul class="dropdown-menu folder-list-{{ org.tag }}"></ul>
+                                   </li>
+                                   {% endfor %}
+                               </ul>
+                           </li>
+                       <!-- dropdown menu links -->
+                       </ul>
+                    </div>
+
+                 </div>
+
+                    {# <p>{% trans "Created" %}: {{ chart.createdAt|date() }}<br/>
+                     {% trans "Layout" %}: {{ chart.theme }} </p> #}
+
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+
+            <h2>{% trans "No charts here, yet" %}</h2>
+            <p>{% trans "Why not <a href='/chart/create'>create a new chart now</a>?" %}</p>
+
+        {% endif %}
+    </div>
+</div>
+
+
 <div class="gallery-filter">
 
     <form method="get" class="form form-inline" action="">
@@ -170,101 +321,6 @@ h1#current-folder {
 
 </div>
 
-<div class="folder-line">
-    <h1 id="current-folder">
-        <a id="current-root" href="{{ mycharts_base }}">{% trans "My Charts" %}</a>
-        <span id="folder-sequence"></span>
-        <span id="current-folder-name"></span>
-        <div class="btn-group" style="display:inline-block; position: relative">
-            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#"
-                style="border:0;background:none;box-shadow:none">
-                <i class="fa fa-caret-down" style="font-size:18px;color:#999"></i>
-            </a>
-            <ul class="dropdown-menu">
-                <li>
-                    <a class="add-folder" tabindex="-1" href="#"><i class="icon-folder-open"></i> {% trans "Add" %}</a>
-                </li>
-                <li class="dropdown-submenu">
-                    <a class="move-to-folder" style="display: none;" tabindex="-1" href="#"><i class="icon-folder-open"></i> {% trans "Move" %}</a>
-                    <ul class="dropdown-menu move-links move-root"></ul>
-                </li>
-                <li><a class="delete-folder" style="display: none;" tabindex="-1" href="#"><i class="icon-remove"></i> {% trans "Remove" %}</a></li>
-            </ul>
-        </div>
-    </h1>
-</div>
-
-<div class="folders-and-gallery row">
-    <div class="folders span3">
-        <ul>
-            <li><a href="{{ mycharts_base }}"><i class="icon-folder-open"></i> {% trans "My Charts" %}</a></li>
-            <ul id="dynamic-tree">
-            </ul>
-            {% for org in organizations %}
-            <li><a href="/organization/{{ org.id }}"><i class="icon-folder-open"></i> {{ org.name }}</a></li>
-            <ul id="dynamic-tree-{{ org.tag }}">
-            </ul>
-            {% endfor %}
-        </ul>
-    </div>
-    
-    <div class="gallery span 9">
-
-        {% if user.hasCharts %}
-        <div class="thumbnails js-masonry" data-masonry-options='{ "itemSelector": ".grid-item", "columWidth": 200 }'>
-            {% for chart in charts %}
-
-            <div class="span3 chart" data-id="{{ chart.id }}">
-                <div class="thumbnail" style="background:{{ chart.metadata.publish.background }}">
-                    <a href="/{{ chart.getNamespace() }}/{{ chart.id }}/edit" >
-                        <h3 style="color:{% if chart.metadata.publish.text %}{{ chart.metadata.publish.text }}{% else %}#000{% endif %};text-shadow:1px 1px 3px {% if chart.metadata.publish.background %}{{ chart.metadata.publish.background }}{% else %}#fff{% endif %};">{% if chart.title != '' %}{{ chart.title | replace({'<br/>': ' - '}) | striptags | raw }}{% else %}{{ chart.id }}{% endif %}</h3>
-
-                        <img src="{% if chart.hasPreview %}//{{ DW_CHART_CACHE_DOMAIN }}/{{ chart.id }}/m.png{% else %}/static/img/nopreview.png{% endif %}" width="260" >
-                     </a>
-
-                     <div class="btn-group">
-                        <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                            <i class="icon-wrench"></i>
-                            <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            {% if user2 %}
-                            <li><a class="edit" href="#"><i class="icon-edit"></i> {% trans "Edit" %}</a></li>
-                            {% endif %}
-                            <li><a class="duplicate" href="#"><i class="icon-plus"></i> {% trans "Duplicate" %}</a></li>
-                            {# <li><a href="/chart/{{ chart.id }}/static?w=700&amp;h=490&amp;f=pdf&amp;padding=20"><i class="icon-download"></i> {% trans "Save as PDF" %}</a></li>
-                            <li class="divider"></li> #}
-                            <li><a class="delete" href="#"><i class="icon-remove"></i> {% trans "Delete" %}</a></li>
-                            <li class="dropdown-submenu">
-                                <a tabindex="-1" href="#"><i class="icon-folder-open"></i> {% trans "Move" %}</a>
-                                <ul class="dropdown-menu folder-list">
-                                    <li id="folder-list-separator"></li>
-                                    {% for org in organizations %}
-                                    <li class="dropdown-submenu">
-                                        <a tabindex="-1" href="#"><i class="icon-folder-open"></i> {{ org.id }}</a>
-                                        <ul class="dropdown-menu folder-list-{{ org.tag }}"></ul>
-                                    </li>
-                                    {% endfor %}
-                                </ul>
-                            </li>
-                        <!-- dropdown menu links -->
-                        </ul>
-                     </div>
-                    {# <p>{% trans "Created" %}: {{ chart.createdAt|date() }}<br/>
-                     {% trans "Layout" %}: {{ chart.theme }} </p> #}
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-        {% else %}
-
-            <h2>{% trans "No charts here, yet" %}</h2>
-            <p>{% trans "Why not <a href='/chart/create'>create a new chart now</a>?" %}</p>
-
-        {% endif %}
-    </div>
-</div>
-
 
 <div class="after-gallery row">
     <div class="span9">
@@ -308,20 +364,7 @@ h1#current-folder {
 <script type="text/javascript">
 $(function(){
 
-    require(['masonry', 'imagesloaded'], function(Masonry, imagesLoaded) {
-        var imgLoad = imagesLoaded('.thumbnails');
-        imgLoad.on('progress', _.debounce(layout, 200));
-        imgLoad.on('always', layout);
-        function layout() {
-            setTimeout(function() {
-                new Masonry('.thumbnails', {
-                    itemSelector: '.chart',
-                    transitionDuration: 0
-                });
-            }, 100);
-        }
-    });
-
+    return;
   //*
   // */
    {% if user2 %}
