@@ -49,6 +49,8 @@
 
 .folders ul ul { margin-left: 1em; }
 .folders li { line-height: 30px; }
+.folders li.active { font-weight: bold; }
+.folders li.active a { color: black; }
 .folders li a {
     cursor: pointer;
     margin-right: 1em;
@@ -467,7 +469,8 @@ function build_line(org, path, tree) {
 
 function build_tree_list(branch, parent, org, flatter, path, pathstring, tree) {
     var current_folder = '{{current.folder}}',
-        folder_icon = '<i class="icon-folder-open"></i>',
+        folder_icon_open = '<i class="icon-folder-open"></i>',
+        folder_icon_closed = '<i class="icon-folder-close"></i>',
         nu_path,
         seper = $('#folder-list-separator'),
         org_id = (org) ? org.id : false,
@@ -487,7 +490,8 @@ function build_tree_list(branch, parent, org, flatter, path, pathstring, tree) {
             a2 = document.createElement('a'),
             org_snipplet = (org_id) ? '/organization/' + org_id : '';
 
-        a1.innerHTML = folder_icon + ' ' + folder.name;
+        a1.innerHTML = (current_folder && current_folder == folder.id ? folder_icon_open : folder_icon_closed)
+             + ' ' + folder.name;
         if (folder.charts > 0)
             a1.innerHTML += ' (' + folder.charts + ')';
         a1.setAttribute('href', (org_id) ? '/organization/' + org_id + '/' + folder.id : '{{ mycharts_base }}/' + folder.id);
@@ -501,6 +505,7 @@ function build_tree_list(branch, parent, org, flatter, path, pathstring, tree) {
 
         // beware! this a string compare! '' == false && '<num>' == <num>
         if (current_folder && current_folder == folder.id) {
+            l1.classList.add('active');
             var curfol_elem = $('#current-folder');
             // hijack this pass to build active folder line
             build_line(org, nu_path, tree);
