@@ -40,7 +40,14 @@ class FolderQuery extends BaseFolderQuery {
         $folders = $this->getUserFolders($user);
         foreach ($folders as &$group) {
             if ($group['type'] == 'organization') {
+                $group['charts'] = ChartQuery::create()
+                    ->filterByOrganization($group['organization'])
+                    ->findByInFolder(null)->count();
                 $group['organization'] = $group['organization']->serialize();
+            } else {
+                $group['charts'] = ChartQuery::create()
+                    ->filterByOrganizationId(null)
+                    ->findByInFolder(null)->count();
             }
             $tmpfolders = [];
             foreach ($group['folders'] as $idx => &$fold) {
