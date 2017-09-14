@@ -60,8 +60,10 @@ class Chart extends BaseChart {
     }
 
     public function unserialize($json) {
+        // bad payload?
+        if (!is_array($json)) return false;
         // encode metadata as json string … if there IS metadata
-        if (is_array($json) && array_key_exists('metadata', $json)) $json['metadata'] = json_encode($json['metadata']);
+        if (array_key_exists('metadata', $json)) $json['metadata'] = json_encode($json['metadata']);
         // then we upperkeys the keys
         $json = $this->uppercaseKeys($json);
         // finally we ignore changes to some protected fields
@@ -72,6 +74,7 @@ class Chart extends BaseChart {
         // and update the chart
         $this->fromArray($json);
         $this->save();
+        return true;
     }
 
     public function preSave(PropelPDO $con = null) {
