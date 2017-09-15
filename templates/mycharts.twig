@@ -764,7 +764,7 @@ function add_to_root_helper() {
         if (splitted[1] === 'mycharts') {
             $('.add-folder').click(add_folder_helper(null, false));
         } else {
-            $('.add-folder').click(add_folder_helper(null, unescape(splitted[2])));
+            $('.add-folder').click(add_folder_helper(null, decodeURIComponent(splitted[2])));
         }
     }
 }
