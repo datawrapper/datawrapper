@@ -134,13 +134,14 @@ div.folders li .fa {
             </a>
             <ul class="dropdown-menu">
                 <li>
-                    <a class="add-folder" tabindex="-1" href="#"><i class="fa fa-plus"></i> {% trans "Add" %}</a>
+                    <a id="add-folder" tabindex="-1" href="#"><i class="fa fa-plus"></i> {% trans "Add" %}</a>
                 </li>
                 <li class="dropdown-submenu">
-                    <a class="move-to-folder" style="display: none;" tabindex="-1" href="#"><i class="icon-folder-open"></i> {% trans "Move" %}</a>
+                    <a class="move-to-folder" style="display: none;" tabindex="-1" href="#"><i class="fa fa-folder-open"></i> {% trans "Move" %}</a>
                     <ul class="dropdown-menu move-links move-root"></ul>
                 </li>
-                <li><a class="delete-folder" style="display: none;" tabindex="-1" href="#"><i class="icon-remove"></i> {% trans "Remove" %}</a></li>
+                <li><a id="rename-folder" style="display: none;" tabindex="-1" href="#"><i class="fa fa-edit"></i> {% trans "Rename" %}</a></li>
+                <li><a id="delete-folder" style="display: none;" tabindex="-1" href="#"><i class="fa fa-remove"></i> {% trans "Remove" %}</a></li>
             </ul>
         </div>
     </h1>
@@ -451,13 +452,13 @@ var handler = {
 function folder_menu(org_id, path, subfolders) {
     var menu = $('#current-folder').find(".btn-group .dropdown-menu");
 
-    menu.find('.add-folder').click(function(e) {
+    menu.find('#add-folder').click(function(e) {
         alert('Unimplemented!');
     });
 
     // can't delete root or folders with subfolders
     if (!(typeof(path) === 'undefined' || subfolders)) {
-        menu.find('.delete-folder').click(function(e) {
+        menu.find('#delete-folder').click(function(e) {
             alert('Unimplemented!');
         });
     }
@@ -475,7 +476,7 @@ function build_folder_2_folder_movelinks(flat_list, org_id) {
     if (org_id) {
         $('#current-folder').find(".dropdown-menu .move-root").append("\
             <li class=\"dropdown-submenu\">\n\
-                <a class=\"move-to-folder\" tabindex=\"-1\" href=\"#\"><i class=\"icon-folder-open\"></i> " + org_id + "</a>\n\
+                <a class=\"move-to-folder\" tabindex=\"-1\" href=\"#\"><i class=\"fa fa-folder-open\"></i> " + org_id + "</a>\n\
                 <ul class=\"dropdown-menu move-links move-org\"></ul>\n\
             </li>\n\
         ");
@@ -579,7 +580,7 @@ function build_tree_list(branch, parent, org, flatter, path, pathstring, tree) {
             // hijack this pass to build active folder line
             build_line(org, nu_path, tree);
             folder_menu(org_id, nu_pstr.slice(1), folder.sub != false); //last param evaluates to bool
-            curfol_elem.find('.btn-group .move-to-folder,.delete-folder').show();
+            curfol_elem.find('#delete-folder, #rename-folder').show();
             curfol_elem.data({
                 fullpath: nu_pstr,
                 organization: org_id
