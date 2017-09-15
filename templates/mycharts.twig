@@ -584,7 +584,8 @@ function build_tree_list(branch, parent, org, flatter, path, pathstring, tree) {
             curfol_elem.data({
                 fullpath: nu_pstr,
                 organization: org_id,
-                folder_id: folder.id
+                folder_id: folder.id,
+                name: folder.name
             });
         } else {
             // or append this folder to the MoveTo submenu
@@ -682,10 +683,11 @@ function remove_empty_folder_move_targets() {
 function add_remaining_chart_functions() {
     $('#rename-folder').click(function(e) {
         var nuname,
-            id = $('#current-folder').data('folder_id');
+            id = $('#current-folder').data('folder_id'),
+            oldname = $('#current-folder').data('name');
 
         e.preventDefault();
-        nuname = prompt('{{ "Enter new folder name:" | trans }}');
+        nuname = prompt('{{ "Enter new folder name:" | trans }}', oldname);
 
         $.ajax({
             url: '/api/folders/' + id,
