@@ -174,7 +174,7 @@ div.folders li .fa {
                             {% else %}
                 <a class="thumbnail" href="/organization/{{ current.organization }}/{{ folder.id }}">
                             {% endif %}
-                    <i class="fa fa-folder fa-fw"></i>{{ folder.name }}
+                    <i class="fa fa-folder fa-fw"></i>{{ folder.name | striptags }}
                 </a>
             </li>
                         {% endif %}
@@ -555,7 +555,7 @@ function build_line(org, path, tree) {
         tree = folder.sub
     });
     line.append(sep);
-    $('#current-folder-name').html(cwd);
+    $('#current-folder-name').html(dw.utils.purifyHtml(cwd, ''));
 };
 
 function build_tree_list(branch, parent, org, flatter, path, pathstring, tree) {
@@ -582,7 +582,7 @@ function build_tree_list(branch, parent, org, flatter, path, pathstring, tree) {
             org_snipplet = (org_id) ? '/organization/' + org_id : '';
 
         a1.innerHTML = (current_folder && current_folder == folder.id ? folder_icon_open : folder_icon_closed)
-             + ' ' + folder.name;
+             + ' ' + dw.utils.purifyHtml(folder.name, '');
         if (folder.charts > 0)
             a1.innerHTML += ' (' + folder.charts + ')';
         a1.setAttribute('href', (org_id) ? '/organization/' + org_id + '/' + folder.id : '{{ mycharts_base }}/' + folder.id);
