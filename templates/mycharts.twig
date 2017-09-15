@@ -162,17 +162,25 @@ div.folders li .fa {
     
     <div class="gallery span10">
 
-        {# DUMMY FOLDER VIEW #}
         <ul class="thumbnails subfolders">
-            {% for folder in [1,2,3] %}
+            {% for group in preload %}
+                {% if (group.type == 'user' and not current.organization) or (group.type == 'organization' and (group.organization.id == current.organization)) %}
+                    {% for folder in group.folders %}
+                        {% if folder.parent == current.folder %}
             <li class="span2">
-                <a class="thumbnail" href="/mycharts/folder/123/">
-                    <i class="fa fa-folder fa-fw"></i> Subfolder {{ folder }}
+                            {% if group.type == 'user' %}
+                <a class="thumbnail" href="/mycharts/{{ folder.id }}">
+                            {% else %}
+                <a class="thumbnail" href="/organization/{{ current.organization }}/{{ folder.id }}">
+                            {% endif %}
+                    <i class="fa fa-folder fa-fw"></i>{{ folder.name }}
                 </a>
             </li>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
             {% endfor %}
         </ul>
-        {# END DUMMY FOLDER #}
 
         <hr></hr>
 
