@@ -168,7 +168,7 @@ div.folders ul > li > a > span {
             </a>
             <ul class="dropdown-menu">
                 <li>
-                    <a id="add-folder" tabindex="-1" href="#"><i class="fa fa-plus"></i> {% trans "Add" %}</a>
+                    <a class="add-folder" tabindex="-1" href="#"><i class="fa fa-plus"></i> {% trans "Add" %}</a>
                 </li>
                 <li class="dropdown-submenu">
                     <a class="move-to-folder" style="display: none;" tabindex="-1" href="#"><i class="fa fa-folder-open"></i> {% trans "Move" %}</a>
@@ -489,11 +489,30 @@ var handler = {
     }
 };
 
+function add_folder_helper(folder_id, org_id) {
+    return function(e) {
+        var nuname;
+
+        e.preventDefault();
+        nuname = prompt('{{ "Enter new folder name:" | trans }}');
+
+        $.ajax({
+            url: '/api/folders',
+            type: 'POST',
+            processData: false,
+            contentType: "application/json",
+            data: JSON.stringify({
+                name: nuname,
+                parent: folder_id,
+                organization: org_id
+            }),
+            dataType: 'JSON'
+        }).done(handler.done).fail(handler.fail);
+    }
+}
+
 function folder_menu(folder, org_id, path) {
-    console.log("ding", path);
-    $('#add-folder,.add-folder').click(function(e) {
-        alert('Unimplemented!');
-    });
+    $('.add-folder').click(add_folder_helper(folder.id, org_id));
 
     $('#rename-folder').click(function(e) {
         var nuname;
@@ -739,6 +758,17 @@ function remove_empty_folder_move_targets() {
     });
 }
 
+function add_to_root_helper() {
+    if (isNaN(parseInt(location.pathname.slice(location.pathname.lastIndexOf('/') + 1)))) {
+        var splitted = location.pathname.split('/');
+        if (splitted[1] === 'mycharts') {
+            $('.add-folder').click(add_folder_helper(null, false));
+        } else {
+            $('.add-folder').click(add_folder_helper(null, unescape(splitted[2])));
+        }
+    }
+}
+
 function treeyfy(tree) {
     tree.map(function(group) {
         if (group.type === "user")
@@ -782,6 +812,7 @@ function get_folders(tree) {
         build_folder_2_folder_movelinks(walked_tree[idx], (folder_obj.organization) ? folder_obj.organization.id : false);
     });
     remove_empty_folder_move_targets();
+    add_to_root_helper();
 }
 
 $('document').ready(function() {
