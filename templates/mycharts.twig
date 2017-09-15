@@ -449,21 +449,20 @@ var handler = {
     }
 };
 
-function folder_menu(org_id, path, subfolders) {
+function folder_menu(folder, org_id, path) {
+    console.log("ding", path);
     $('#add-folder').click(function(e) {
         alert('Unimplemented!');
     });
 
     $('#rename-folder').click(function(e) {
-        var nuname,
-            id = $('#current-folder').data('folder_id'),
-            oldname = $('#current-folder').data('name');
+        var nuname;
 
         e.preventDefault();
-        nuname = prompt('{{ "Enter new folder name:" | trans }}', oldname);
+        nuname = prompt('{{ "Enter new folder name:" | trans }}', folder.name);
 
         $.ajax({
-            url: '/api/folders/' + id,
+            url: '/api/folders/' + folder.id,
             type: 'PUT',
             processData: false,
             contentType: "application/json",
@@ -473,13 +472,11 @@ function folder_menu(org_id, path, subfolders) {
     });
 
     // can't delete root or folders with subfolders
-    if (!(typeof(path) === 'undefined' || subfolders)) {
+    if (!(typeof(path) === 'undefined' || folder.sub != false)) {
         $('#delete-folder').click(function(e) {
-            var id = $('#current-folder').data('folder_id');
-
             e.preventDefault();
             $.ajax({
-                url: '/api/folders/' + id,
+                url: '/api/folders/' + folder.id,
                 type: 'DELETE',
                 contentType: "application/json",
                 dataType: 'JSON'
@@ -603,13 +600,11 @@ function build_tree_list(branch, parent, org, flatter, path, pathstring, tree) {
             var curfol_elem = $('#current-folder');
             // hijack this pass to build active folder line
             build_line(org, nu_path, tree);
-            folder_menu(org_id, nu_pstr.slice(1), folder.sub != false); //last param evaluates to bool
+            folder_menu(folder, org_id, nu_pstr); //last param evaluates to bool
             curfol_elem.find('#delete-folder, #rename-folder').show();
             curfol_elem.data({
                 fullpath: nu_pstr,
-                organization: org_id,
-                folder_id: folder.id,
-                name: folder.name
+                organization: org_id
             });
         } else {
             // or append this folder to the MoveTo submenu
