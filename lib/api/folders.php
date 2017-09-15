@@ -40,8 +40,6 @@
             $folder = new Folder();
             $folder->setUserId($user->getId());
         }
-        // update name
-        if (!empty($payload['name'])) $folder->setFolderName($payload['name']);
 
         if (!isset($payload['organization'])) $payload['organization'] = null;
         if (!isset($payload['parent'])) $payload['parent'] = null;
@@ -98,6 +96,24 @@
         if (!$folder->isNew() && $folder->getOwnerId() != $old_owner) {
             $folder->propagateOwner();
         }
+
+        // update name
+        if (!empty($payload['name'])) {
+            $new_name = trim($payload['name']);
+            // but check if another folder
+            $c = FolderQuery::create()
+                ->filterByFolderName($new_name)
+                ->filterByParentId($folder->getParentId())
+                ->filterByUserId($folder->getUserId())
+                ->filterByOrgId($folder->getOrgId())
+                ->count();
+            if ($c == 0) {
+                $folder->setFolderName($payload['name']);
+            } else {
+                return error('duplicate-name', 'a folder with that name already exists');
+            }
+        }
+
         return $folder;
     };
 
@@ -113,8 +129,11 @@
         $payload = json_decode($app->request()->getBody(), true);
 
         $folder = $upsertFolder(null, $user, $payload);
-        $folder->save();
-        ok($folder->serialize());
+        if ($folder instanceof Folder) {
+            // not an error
+            $folder->save();
+            ok($folder->serialize());
+        }
     });
 
 
@@ -134,8 +153,11 @@
 
         $payload = json_decode($app->request()->getBody(), true);
         $folder = $upsertFolder($folder, $user, $payload);
-        $folder->save();
-        ok($folder->serialize());
+        if ($folder instanceof Folder) {
+            // not an error
+            $folder->save();
+            ok($folder->serialize());
+        }
     });
 
 
