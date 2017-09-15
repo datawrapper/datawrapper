@@ -583,7 +583,8 @@ function build_tree_list(branch, parent, org, flatter, path, pathstring, tree) {
             curfol_elem.find('#delete-folder, #rename-folder').show();
             curfol_elem.data({
                 fullpath: nu_pstr,
-                organization: org_id
+                organization: org_id,
+                folder_id: folder.id
             });
         } else {
             // or append this folder to the MoveTo submenu
@@ -678,6 +679,25 @@ function remove_empty_folder_move_targets() {
     });
 }
 
+function add_remaining_chart_functions() {
+    $('#rename-folder').click(function(e) {
+        var nuname,
+            id = $('#current-folder').data('folder_id');
+
+        e.preventDefault();
+        nuname = prompt('{{ "Enter new folder name:" | trans }}');
+
+        $.ajax({
+            url: '/api/folders/' + id,
+            type: 'PUT',
+            processData: false,
+            contentType: "application/json",
+            data: JSON.stringify({ name: nuname }),
+            dataType: 'JSON'
+        }).done(handler.done).fail(handler.fail);
+    });
+}
+
 function treeyfy(tree) {
     tree.map(function(group) {
         if (group.type === "user")
@@ -721,6 +741,7 @@ function get_folders(tree) {
         build_folder_2_folder_movelinks(walked_tree[idx], (folder_obj.organization) ? folder_obj.organization.id : false);
     });
     remove_empty_folder_move_targets();
+    add_remaining_chart_functions();
 }
 
 $('document').ready(function() {
