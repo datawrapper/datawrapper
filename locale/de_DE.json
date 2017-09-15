@@ -381,5 +381,7 @@
     "Remove": "Entfernen",
     "Add": "Hinzuf\u00fcgen",
     "You are not a member of the requested organization.": "Du bist kein Mitglied dieser Organisation.",
-    "If you think you should have access, ask for an invitation.": "Wenn du der Meinung bist, du solltest Zugriff haben, frage nach einer Einladung."
+    "If you think you should have access, ask for an invitation.": "Wenn du der Meinung bist, du solltest Zugriff haben, frage nach einer Einladung.",
+    "Rename": "Umbenennen",
+    "Enter new folder name:": "Gib einen neuen Namen ein:"
 }
