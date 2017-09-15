@@ -80,7 +80,7 @@ class Folder extends BaseFolder {
      */
     public function moveChartsToParent() {
         $pdo = Propel::getConnection();
-        $sql = 'UPDATE chart SET folder = :new WHERE folder = :old';
+        $sql = 'UPDATE chart SET in_Folder = :new WHERE in_Folder = :old';
         $stmt = $pdo->prepare($sql);
         $stmt->execute([
             ':new' => $this->getParentId(),
