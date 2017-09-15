@@ -183,6 +183,7 @@
 
         // delete folder
         $folder->delete();
+        ok();
     });
 
 })();
