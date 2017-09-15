@@ -450,16 +450,40 @@ var handler = {
 };
 
 function folder_menu(org_id, path, subfolders) {
-    var menu = $('#current-folder').find(".btn-group .dropdown-menu");
-
-    menu.find('#add-folder').click(function(e) {
+    $('#add-folder').click(function(e) {
         alert('Unimplemented!');
+    });
+
+    $('#rename-folder').click(function(e) {
+        var nuname,
+            id = $('#current-folder').data('folder_id'),
+            oldname = $('#current-folder').data('name');
+
+        e.preventDefault();
+        nuname = prompt('{{ "Enter new folder name:" | trans }}', oldname);
+
+        $.ajax({
+            url: '/api/folders/' + id,
+            type: 'PUT',
+            processData: false,
+            contentType: "application/json",
+            data: JSON.stringify({ name: nuname }),
+            dataType: 'JSON'
+        }).done(handler.done).fail(handler.fail);
     });
 
     // can't delete root or folders with subfolders
     if (!(typeof(path) === 'undefined' || subfolders)) {
-        menu.find('#delete-folder').click(function(e) {
-            alert('Unimplemented!');
+        $('#delete-folder').click(function(e) {
+            var id = $('#current-folder').data('folder_id');
+
+            e.preventDefault();
+            $.ajax({
+                url: '/api/folders/' + id,
+                type: 'DELETE',
+                contentType: "application/json",
+                dataType: 'JSON'
+            }).done(handler.done).fail(handler.fail);
         });
     }
 }
@@ -680,26 +704,6 @@ function remove_empty_folder_move_targets() {
     });
 }
 
-function add_remaining_chart_functions() {
-    $('#rename-folder').click(function(e) {
-        var nuname,
-            id = $('#current-folder').data('folder_id'),
-            oldname = $('#current-folder').data('name');
-
-        e.preventDefault();
-        nuname = prompt('{{ "Enter new folder name:" | trans }}', oldname);
-
-        $.ajax({
-            url: '/api/folders/' + id,
-            type: 'PUT',
-            processData: false,
-            contentType: "application/json",
-            data: JSON.stringify({ name: nuname }),
-            dataType: 'JSON'
-        }).done(handler.done).fail(handler.fail);
-    });
-}
-
 function treeyfy(tree) {
     tree.map(function(group) {
         if (group.type === "user")
@@ -743,7 +747,6 @@ function get_folders(tree) {
         build_folder_2_folder_movelinks(walked_tree[idx], (folder_obj.organization) ? folder_obj.organization.id : false);
     });
     remove_empty_folder_move_targets();
-    add_remaining_chart_functions();
 }
 
 $('document').ready(function() {
