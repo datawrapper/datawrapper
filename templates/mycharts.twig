@@ -52,7 +52,7 @@ html .navbar .navbar-inner {
 }
 
 .folders ul ul { margin-left: 1em; }
-.folders li { line-height: 40px; font-size: 18px;}
+.folders li { line-height: 20px; font-size: 18px;}
 .folders li.active { font-weight: bold; }
 .folders li.active a { color: black; }
 .folders li a {
@@ -115,8 +115,23 @@ h1#current-folder {
 .gallery .subfolders .thumbnail .fa {
     color: #999;
 }
-div.folders li .fa {
+div.folders > ul {
+    margin-bottom: 40px;
+}
+div.folders ul > li {
+    position: relative;
+    margin: 0 0 15px;
+}
+div.folders ul > li > a > .fa {
     color: #999;
+    position: absolute;
+    left:0px;
+    top:3px;
+}
+div.folders ul > li > a > span {
+    display: inline-block;
+    margin-left: 30px;
+    vertical-align: top;
 }
 
 </style>
@@ -150,11 +165,11 @@ div.folders li .fa {
 <div class="folders-and-gallery row">
     <div class="folders span2">
         <ul>
-            <li><a id="user-root" href="{{ mycharts_base }}"><i class="fa fa-fw fa-user"></i> {% trans "My Charts" %}</a></li>
+            <li><a id="user-root" href="{{ mycharts_base }}"><i class="fa fa-fw fa-user"></i> <span>{% trans "My Charts" %}</span></a></li>
             <ul id="dynamic-tree">
             </ul>
             {% for org in organizations %}
-            <li style="margin-top:10px"><a id="org-root-{{ org.tag }}"href="/organization/{{ org.id }}"><i class="fa fa-fw fa-university"></i> {{ org.name }}</a></li>
+            <li style="margin-top:30px"><a id="org-root-{{ org.tag }}"href="/organization/{{ org.id }}"><i class="fa fa-fw fa-university"></i> <span>{{ org.name }}</span></a></li>
             <ul id="dynamic-tree-{{ org.tag }}">
             </ul>
             {% endfor %}
@@ -581,8 +596,8 @@ function build_tree_list(branch, parent, org, flatter, path, pathstring, tree) {
             a2 = document.createElement('a'),
             org_snipplet = (org_id) ? '/organization/' + org_id : '';
 
-        a1.innerHTML = (current_folder && current_folder == folder.id ? folder_icon_open : folder_icon_closed)
-             + ' ' + dw.utils.purifyHtml(folder.name, '');
+        a1.innerHTML = (current_folder && current_folder == folder.id ? folder_icon_open : folder_icon_closed) + ' <span>'
+             + dw.utils.purifyHtml(folder.name, '')+'</span>';
         if (folder.charts > 0)
             a1.innerHTML += ' (' + folder.charts + ')';
         a1.setAttribute('href', (org_id) ? '/organization/' + org_id + '/' + folder.id : '{{ mycharts_base }}/' + folder.id);
