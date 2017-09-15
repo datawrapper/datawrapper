@@ -133,7 +133,26 @@ div.folders ul > li > a > span {
     margin-left: 30px;
     vertical-align: top;
 }
-
+.thumbnails.subfolders li {
+    position: relative;
+}
+.thumbnails.subfolders li > a > .fa {
+    position: absolute;
+    left: 10px;
+    top: 12px;
+}
+.thumbnails.subfolders li > a > span {
+    display: inline-block;
+    margin-left: 25px;
+    vertical-align: top;
+}
+.thumbnail.add-folder {
+    background: transparent;
+    border-color: transparent;
+}
+.thumbnail.add-folder span {
+    font-weight: 300;
+}
 </style>
 
 
@@ -189,13 +208,19 @@ div.folders ul > li > a > span {
                             {% else %}
                 <a class="thumbnail" href="/organization/{{ current.organization }}/{{ folder.id }}">
                             {% endif %}
-                    <i class="fa fa-folder fa-fw"></i>{{ folder.name | striptags }}
+                    <i class="fa fa-folder fa-fw"></i> <span>{{ folder.name | striptags }}</span>
                 </a>
             </li>
                         {% endif %}
                     {% endfor %}
                 {% endif %}
             {% endfor %}
+            <li class="span2">
+
+                <a class="thumbnail add-folder" href="#">
+                    <i class="fa fa-plus fa-fw"></i> <span>add folder...</span>
+                </a>
+            </li>
         </ul>
 
         <hr></hr>
