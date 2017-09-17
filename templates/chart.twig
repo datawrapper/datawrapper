@@ -47,6 +47,7 @@
         {{ themeCSS | raw }}
     </style>
 
+    {{ hook('chart_html_head_end', chart) }}
 
 </head>
 <body class="dw-chart chart{% if fullscreen %} fullscreen{% endif %}{% if plain %} plain{% endif %} vis-height-{{ visualization.height ? visualization.height : "fit" }} theme-{{ chart.theme }} vis-{{ chart.type }}">
