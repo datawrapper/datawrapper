@@ -1,9 +1,10 @@
 <?php
 
-function nbChartsByMonth($id, $is_org) {
-    $where_clause = ($is_org) ? "organization_id = '".$id."'" : "author_id = '".$id."'";
+function nbChartsByMonth($id, $is_org, $folder_id) {
+    $id_clause = ($is_org) ? "organization_id = '".$id."'" : "author_id = '".$id."'";
+    $folder_id = (!is_null($folder_id)) ? "= '".$folder_id."'" : 'is NULL';
     $con = Propel::getConnection();
-    $sql = "SELECT DATE_FORMAT(created_at, '%Y-%m') ym, COUNT(*) c FROM chart WHERE ". $where_clause ." AND deleted = 0 AND last_edit_step >= 2 GROUP BY ym ORDER BY ym DESC ;";
+    $sql = "SELECT DATE_FORMAT(created_at, '%Y-%m') ym, COUNT(*) c FROM chart WHERE ".$id_clause." AND in_folder ".$folder_id." AND deleted = 0 AND last_edit_step >= 2 GROUP BY ym ORDER BY ym DESC ;";
     $rs = $con->query($sql);
     $res = array();
     foreach ($rs as $r) {
@@ -12,10 +13,11 @@ function nbChartsByMonth($id, $is_org) {
     return $res;
 }
 
-function nbChartsByType($id, $is_org) {
-    $where_clause = ($is_org) ? "organization_id = '".$id."'" : "author_id = '".$id."'";
+function nbChartsByType($id, $is_org, $folder_id) {
+    $id_clause = ($is_org) ? "organization_id = '".$id."'" : "author_id = '".$id."'";
+    $folder_id = (!is_null($folder_id)) ? "= '".$folder_id."'" : 'is NULL';
     $con = Propel::getConnection();
-    $sql = "SELECT type, COUNT(*) c FROM chart WHERE ". $where_clause ." AND deleted = 0 AND last_edit_step >= 2 GROUP BY type ORDER BY c DESC ;";
+    $sql = "SELECT type, COUNT(*) c FROM chart WHERE ".$id_clause." AND in_folder ".$folder_id." AND deleted = 0 AND last_edit_step >= 2 GROUP BY type ORDER BY c DESC ;";
     $rs = $con->query($sql);
     $res = array();
 
@@ -42,14 +44,22 @@ function nbChartsByType($id, $is_org) {
     return $res;
 }*/
 
-function nbChartsByStatus($id, $is_org) {
+function nbChartsByStatus($id, $is_org, $folder_id) {
     if ($is_org) {
-        $published = ChartQuery::create()->filterByOrganizationId($id)->filterByDeleted(false)->filterByLastEditStep(array('min'=>4))->count();
-        $draft = ChartQuery::create()->filterByOrganizationId($id)->filterByDeleted(false)->filterByLastEditStep(3)->count();
+        $published = ChartQuery::create()->filterByOrganizationId($id);
+        $draft = ChartQuery::create()->filterByOrganizationId($id);
     } else {
-        $published = ChartQuery::create()->filterByAuthorId($id)->filterByDeleted(false)->filterByLastEditStep(array('min'=>4))->count();
-        $draft = ChartQuery::create()->filterByAuthorId($id)->filterByDeleted(false)->filterByLastEditStep(3)->count();
+        $published = ChartQuery::create()->filterByAuthorId($id)->filterByOrganizationId(null);
+        $draft = ChartQuery::create()->filterByAuthorId($id)->filterByOrganizationId(null);
     }
+    $published = $published->filterByDeleted(false)
+        ->filterByLastEditStep(array('min'=>4))
+        ->filterByInFolder($folder_id)
+        ->count();
+    $draft = $draft->filterByDeleted(false)
+        ->filterByLastEditStep(3)
+        ->filterByInFolder($folder_id)
+        ->count();
     return array(
         array('id'=>'published', 'name' => __('Published'), 'count' => $published),
         array('id'=>'draft', 'name' => __('Draft'), 'count' => $draft)
@@ -106,9 +116,9 @@ function any_charts($app, $user, $folder_id = false, $org_id = false) {
     $page = array(
         'title' => __('My Charts'),
         'charts' => $charts,
-        'bymonth' => nbChartsByMonth($id, $is_org),
-        'byvis' => nbChartsByType($id, $is_org),
-        'bystatus' => nbChartsByStatus($id, $is_org),
+        'bymonth' => nbChartsByMonth($id, $is_org, $folder_id),
+        'byvis' => nbChartsByType($id, $is_org, $folder_id),
+        'bystatus' => nbChartsByStatus($id, $is_org, $folder_id),
         'key' => $key,
         'val' => $val,
         'current' => array(
