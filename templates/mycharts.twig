@@ -320,9 +320,17 @@ div.folders li > a > span .chart-count {
             <ul class="dropdown-menu">
                 {% for status in bystatus %}
                 {% if key == 'status' and val == status.id %}
-                <li class="active"><a href="{{ mycharts_base }}/"><i class="icon-check"></i> {{ status.name }} ({{ status.count }})</a></li>
+                    {% if current.organization %}
+                <li class="active"><a href="/organization/{{ current.organization }}/{{ current.folder }}"><i class="icon-check"></i> {{ status.name }} ({{ status.count }})</a></li>
+                    {% else %}
+                <li class="active"><a href="{{ mycharts_base }}/{{ current.folder }}"><i class="icon-check"></i> {{ status.name }} ({{ status.count }})</a></li>
+                    {% endif %}
                 {% else %}
-                <li><a href="{{ mycharts_base }}/by/status/{{ status.id }}">{{ status.name }} ({{ status.count }})</a></li>
+                    {% if current.organization %}
+                <li><a href="/organization/{{ current.organization }}/{{ current.folder }}?key=status&val={{ status.id }}">{{ status.name }} ({{ status.count }})</a></li>
+                    {% else %}
+                <li><a href="{{ mycharts_base }}/{{ current.folder }}?key=status&val={{ status.id }}">{{ status.name }} ({{ status.count }})</a></li>
+                    {% endif %}
                 {% endif %}
 
                 {% endfor %}
