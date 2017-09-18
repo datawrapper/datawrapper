@@ -161,6 +161,11 @@ $app->get('/(mycharts|organization/:org_id)(/:folder_id)?/?', function ($org_id 
 })->conditions(array('folder_id' => '\d+'));
 
 
+$app->get('/organization/:org_id/charts', function($org_id) use ($app) {
+    $app->redirect('/organization/'.$org_id.'/');
+});
+
+
 $app->get('/admin/charts/:userid/?', function($userid) use ($app) {
     disable_cache($app);
     $user = DatawrapperSession::getUser();
