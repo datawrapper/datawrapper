@@ -346,9 +346,17 @@ div.folders li > a > span .chart-count {
                 <!-- dropdown menu links -->
             {% for month in bymonth %}
                 {% if key == 'month' and val == month.id %}
-                <li class="active"><a href="{{ mycharts_base }}/"><i class="icon-check"></i> {{ month.name }} ({{ month.count }})</a> </li>
+                    {% if current.organization %}
+                <li class="active"><a href="/organization/{{ current.organization }}/{{ current.folder }}"><i class="icon-check"></i> {{ month.name }} ({{ month.count }})</a> </li>
+                    {% else %}
+                <li class="active"><a href="{{ mycharts_base }}/{{ current.folder }}"><i class="icon-check"></i> {{ month.name }} ({{ month.count }})</a> </li>
+                    {% endif %}
                 {% else %}
-                <li><a href="{{ mycharts_base }}/by/month/{{ month.id }}">{{ month.name }} ({{ month.count }})</a></li>
+                    {% if current.organization %}
+                <li><a href="/organization/{{ current.organization }}/{{ current.folder }}?key=month&val={{ month.id }}">{{ month.name }} ({{ month.count }})</a></li>
+                    {% else %}
+                <li><a href="{{ mycharts_base }}/{{ current.folder }}?key=month&val={{ month.id }}">{{ month.name }} ({{ month.count }})</a></li>
+                    {% endif %}
                 {% endif %}
             {% endfor %}
             </ul>
@@ -361,13 +369,13 @@ div.folders li > a > span .chart-count {
             </a>
 
             <ul class="dropdown-menu">
-                {% for vis in byvis %}
+            {% for vis in byvis %}
                 {% if key == 'vis' and val == vis.id %}
                 <li class="active"><a href="{{ mycharts_base }}/"><i class="icon-check"></i> {{ vis.name }} ({{ vis.count }})</a> </li>
                 {% else %}
                 <li><a href="{{ mycharts_base }}/by/vis/{{ vis.id }}">{{ vis.name }} ({{ vis.count }})</a></li>
                 {% endif %}
-                {% endfor %}
+            {% endfor %}
             </ul>
         </div>
 
