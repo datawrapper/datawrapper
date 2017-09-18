@@ -148,7 +148,8 @@ $app->get('/(mycharts|organization/:org_id)(/:folder_id)?/?', function ($org_id 
         return;
     }
     any_charts($app, $user, $folder_id, $org_id);
-});
+})->conditions(array('folder_id' => '\d+'));
+
 
 $app->get('/admin/charts/:userid/?', function($userid) use ($app) {
     disable_cache($app);
@@ -163,4 +164,4 @@ $app->get('/admin/charts/:userid/?', function($userid) use ($app) {
     } else {
         $app->notFound();
     }
-});
+})->conditions(array('userid' => '\d+'));
