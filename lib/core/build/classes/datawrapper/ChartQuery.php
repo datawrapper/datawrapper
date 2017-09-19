@@ -40,7 +40,7 @@ class ChartQuery extends BaseChartQuery {
         $title = '[ ' . $untitled . ' ]';
         $chart->setTitle($title);
 
-        $chart->setLocale(DatawrapperSession::getLanguage()); 
+        $chart->setLocale(DatawrapperSession::getLanguage());
         $chart->setType(isset($defaults['vis']) ? $defaults['vis'] : 'bar-chart');
         $chart->setPublicUrl($chart->getLocalUrl());
 
@@ -55,14 +55,14 @@ class ChartQuery extends BaseChartQuery {
                 if (isset($settings["default"]) && isset($settings["default"]["locale"])) {
                     $chart->setLocale($settings["default"]["locale"]);
                 }
-                
+
                 $def_org_theme = $org->getDefaultTheme();
                 if (!empty($def_org_theme) && ThemeQuery::create()->findPk($def_org_theme)) {
                     $chart->setTheme($def_org_theme);
                 }
             }
         }
-	
+
         $defaultMeta = Chart::defaultMetaData();
 
         if (isset($def_org_theme_default_width)) {
@@ -231,6 +231,18 @@ class ChartQuery extends BaseChartQuery {
         return $this
             ->galleryChartsQuery($filter)
             ->count();
+    }
+
+    public function filterByUserAccess($user) {
+        $org_ids = [];
+        foreach ($user->getOrganizations() as $org) {
+            $org_ids[] = $org->getId();
+        }
+        return $this
+            ->filterByDeleted(false)
+            ->condition('user', 'chart.author_id = ?', $user->getId())
+            ->condition('org', 'chart.organization_id IN ?', $org_ids)
+            ->where(['user', 'org'], 'or');
     }
 
 } // ChartQuery

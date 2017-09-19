@@ -113,6 +113,20 @@
             }
         }
 
+        // move multiple charts into a folder
+        if (!empty($payload['add'])) {
+            $update = [
+                'InFolder' => $folder->getFolderId(),
+                'OrganizationId' => $folder->getOrganization()
+            ];
+            if ($folder->getType() == 'user') {
+                $update['AuthorId'] = $folder->getUserId();
+            }
+            ChartQuery::create()->filterById($payload['add'])
+                ->filterByUserAccess($user)
+                ->update($update);
+        }
+
         return $folder;
     };
 
