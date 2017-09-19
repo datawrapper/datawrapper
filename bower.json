@@ -22,7 +22,7 @@
     "codemirror": "5.7.0",
     "d3": "3.5.6",
     "d3-jetpack": "1.0.5",
-    "font-awesome": "fontawesome#4.4.0",
+    "font-awesome": "fontawesome#4.7.0",
     "handsontable": "0.12.3",
     "imagesloaded": "3.1.8",
     "JSON-js": "json-js#*",
