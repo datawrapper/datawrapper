@@ -53,8 +53,8 @@ html .navbar .navbar-inner {
 
 .folders ul ul { margin-left: 1em; }
 .folders li { line-height: 20px; font-size: 18px;}
-.folders li.active { font-weight: bold; }
-.folders li.active a { color: black; }
+.folders li.active { }
+.folders li.active a { font-weight: bold; color: black; }
 .folders li a {
     cursor: pointer;
     margin-right: 1em;
@@ -161,7 +161,7 @@ div.folders li > a > span .chart-count {
 }
 </style>
 
-
+{{ folder }}
 <div class="folder-line">
     <h1 id="current-folder">
         <a id="current-root" href="{{ mycharts_base }}">{% trans "My Charts" %}</a>
@@ -190,14 +190,14 @@ div.folders li > a > span .chart-count {
 <div class="folders-and-gallery row">
     <div class="folders span2">
         <ul>
-            <li><a id="user-root" href="{{ mycharts_base }}">
+            <li {% if not current.folder and not current.organization %}class="active"{% endif %}><a id="user-root" href="{{ mycharts_base }}">
                 <i class="fa fa-fw fa-user"></i>
                 <span>{% trans "My Charts" %}</span></a>
             </li>
             <ul id="dynamic-tree">
             </ul>
             {% for org in organizations %}
-            <li style="margin-top:30px">
+            <li {% if not current.folder and current.organization == org.id %}class="active"{% endif %} style="margin-top:30px">
                 <a id="org-root-{{ org.tag }}"href="/organization/{{ org.id }}">
                     <i class="fa fa-fw fa-university"></i>
                     <span>{{ org.name }}</span>
