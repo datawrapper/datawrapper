@@ -24,7 +24,7 @@
             return error('access-denied', 'you dont have access to this folder');
         }
         ok($folder->serialize());
-    });
+    })->conditions(array('folder_id' => '\d+'));
 
 
     /*
@@ -157,7 +157,7 @@
             $folder->save();
             ok($folder->serialize());
         }
-    });
+    })->conditions(array('folder_id' => '\d+'));
 
 
     /*
@@ -184,7 +184,7 @@
         // delete folder
         $folder->delete();
         ok();
-    });
+    })->conditions(array('folder_id' => '\d+'));
 
 })();
 
