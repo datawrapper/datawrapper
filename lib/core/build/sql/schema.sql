@@ -104,8 +104,14 @@ CREATE TABLE `user_organization`
     `organization_role` TINYINT DEFAULT 2 NOT NULL,
     `invite_token` VARCHAR(128) DEFAULT '' NOT NULL,
     PRIMARY KEY (`user_id`,`organization_id`),
-    INDEX `user_organization_FI_2` (`organization_id`)
-) ENGINE=MyISAM;
+    INDEX `user_organization_FI_2` (`organization_id`),
+    CONSTRAINT `user_organization_FK_1`
+        FOREIGN KEY (`user_id`)
+        REFERENCES `user` (`id`),
+    CONSTRAINT `user_organization_FK_2`
+        FOREIGN KEY (`organization_id`)
+        REFERENCES `organization` (`id`)
+) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
 -- action
@@ -212,8 +218,14 @@ CREATE TABLE `plugin_organization`
     `plugin_id` VARCHAR(128) NOT NULL,
     `organization_id` VARCHAR(128) NOT NULL,
     PRIMARY KEY (`plugin_id`,`organization_id`),
-    INDEX `plugin_organization_FI_2` (`organization_id`)
-) ENGINE=MyISAM;
+    INDEX `plugin_organization_FI_2` (`organization_id`),
+    CONSTRAINT `plugin_organization_FK_1`
+        FOREIGN KEY (`plugin_id`)
+        REFERENCES `plugin` (`id`),
+    CONSTRAINT `plugin_organization_FK_2`
+        FOREIGN KEY (`organization_id`)
+        REFERENCES `organization` (`id`)
+) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
 -- plugin_data
@@ -262,8 +274,14 @@ CREATE TABLE `product_plugin`
     `product_id` VARCHAR(128) NOT NULL,
     `plugin_id` VARCHAR(128) NOT NULL,
     PRIMARY KEY (`product_id`,`plugin_id`),
-    INDEX `product_plugin_FI_2` (`plugin_id`)
-) ENGINE=MyISAM;
+    INDEX `product_plugin_FI_2` (`plugin_id`),
+    CONSTRAINT `product_plugin_FK_1`
+        FOREIGN KEY (`product_id`)
+        REFERENCES `product` (`id`),
+    CONSTRAINT `product_plugin_FK_2`
+        FOREIGN KEY (`plugin_id`)
+        REFERENCES `plugin` (`id`)
+) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
 -- user_product
@@ -277,8 +295,14 @@ CREATE TABLE `user_product`
     `product_id` INTEGER NOT NULL,
     `expires` DATETIME,
     PRIMARY KEY (`user_id`,`product_id`),
-    INDEX `user_product_FI_2` (`product_id`)
-) ENGINE=MyISAM;
+    INDEX `user_product_FI_2` (`product_id`),
+    CONSTRAINT `user_product_FK_1`
+        FOREIGN KEY (`user_id`)
+        REFERENCES `user` (`id`),
+    CONSTRAINT `user_product_FK_2`
+        FOREIGN KEY (`product_id`)
+        REFERENCES `product` (`id`)
+) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
 -- organization_product
@@ -292,8 +316,14 @@ CREATE TABLE `organization_product`
     `product_id` INTEGER NOT NULL,
     `expires` DATETIME,
     PRIMARY KEY (`organization_id`,`product_id`),
-    INDEX `organization_product_FI_2` (`product_id`)
-) ENGINE=MyISAM;
+    INDEX `organization_product_FI_2` (`product_id`),
+    CONSTRAINT `organization_product_FK_1`
+        FOREIGN KEY (`organization_id`)
+        REFERENCES `organization` (`id`),
+    CONSTRAINT `organization_product_FK_2`
+        FOREIGN KEY (`product_id`)
+        REFERENCES `product` (`id`)
+) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
 -- theme
@@ -311,7 +341,7 @@ CREATE TABLE `theme`
     `less` LONGTEXT,
     `assets` LONGTEXT,
     PRIMARY KEY (`id`)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
 -- organization_theme
@@ -324,8 +354,14 @@ CREATE TABLE `organization_theme`
     `organization_id` VARCHAR(128) NOT NULL,
     `theme_id` VARCHAR(128) NOT NULL,
     PRIMARY KEY (`organization_id`,`theme_id`),
-    INDEX `organization_theme_FI_2` (`theme_id`)
-) ENGINE=MyISAM;
+    INDEX `organization_theme_FI_2` (`theme_id`),
+    CONSTRAINT `organization_theme_FK_1`
+        FOREIGN KEY (`organization_id`)
+        REFERENCES `organization` (`id`),
+    CONSTRAINT `organization_theme_FK_2`
+        FOREIGN KEY (`theme_id`)
+        REFERENCES `theme` (`id`)
+) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
 -- user_theme
@@ -338,8 +374,14 @@ CREATE TABLE `user_theme`
     `user_id` INTEGER NOT NULL,
     `theme_id` VARCHAR(128) NOT NULL,
     PRIMARY KEY (`user_id`,`theme_id`),
-    INDEX `user_theme_FI_2` (`theme_id`)
-) ENGINE=MyISAM;
+    INDEX `user_theme_FI_2` (`theme_id`),
+    CONSTRAINT `user_theme_FK_1`
+        FOREIGN KEY (`user_id`)
+        REFERENCES `user` (`id`),
+    CONSTRAINT `user_theme_FK_2`
+        FOREIGN KEY (`theme_id`)
+        REFERENCES `theme` (`id`)
+) ENGINE=InnoDB;
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;

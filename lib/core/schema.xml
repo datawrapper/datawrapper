@@ -76,6 +76,9 @@
 
   <!-- cross reference user - organization -->
   <table name="user_organization" isCrossRef="true">
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
     <column name="user_id" type="integer" primaryKey="true" />
     <column name="organization_id" type="varchar" size="128" primaryKey="true" />
     <column name="organization_role" type="enum" valueSet="owner,admin,member" required="true" default="member" />
@@ -161,6 +164,9 @@
 
   <!-- DEPRECATED: cross reference table to define plugins available to each organization -->
   <table name="plugin_organization" isCrossRef="true">
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
     <column name="plugin_id" type="varchar" size="128" primaryKey="true" />
     <column name="organization_id" type="varchar" size="128" primaryKey="true" />
     <foreign-key foreignTable="plugin">
@@ -200,6 +206,9 @@
 
   <!-- product <-> plugin map -->
   <table name="product_plugin" isCrossRef="true">
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
 	<column name="product_id" type="varchar" size="128" primaryKey="true" />
     <column name="plugin_id" type="varchar" size="128" primaryKey="true" />
     <foreign-key foreignTable="product">
@@ -212,6 +221,9 @@
 
   <!-- user <-> product map -->
   <table name="user_product" isCrossRef="true">
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
 	<column name="user_id" type="integer" primaryKey="true" />
     <column name="product_id" type="integer" primaryKey="true" />
 	<column name="expires" type="timestamp" />
@@ -225,6 +237,9 @@
 
   <!-- organization <-> product map -->
   <table name="organization_product" isCrossRef="true">
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
 	<column name="organization_id" type="varchar" size="128" primaryKey="true" />
     <column name="product_id" type="integer" primaryKey="true" />
 	<column name="expires" type="timestamp" />
@@ -238,6 +253,9 @@
 
   <!-- themes  -->
   <table name="theme" isCrossRef="true">
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
 	<column name="id" type="varchar" size="128" primaryKey="true" />
     <column name="created_at" type="timestamp" required="true" />
 	<column name="extend" type="varchar" size="128" />
@@ -249,6 +267,9 @@
 
   <!-- organization <-> theme map -->
   <table name="organization_theme" isCrossRef="true">
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
 	<column name="organization_id" type="varchar" size="128" primaryKey="true" />
     <column name="theme_id" type="varchar" size="128" primaryKey="true" />
     <foreign-key foreignTable="organization">
@@ -261,6 +282,9 @@
 
   <!-- user <-> theme map -->
   <table name="user_theme" isCrossRef="true">
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
     <column name="user_id" type="integer" primaryKey="true" />
     <column name="theme_id" type="varchar" size="128" primaryKey="true" />
     <foreign-key foreignTable="user">
