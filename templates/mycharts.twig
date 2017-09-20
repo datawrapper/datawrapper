@@ -495,10 +495,6 @@ require(['dw/mycharts']);
 
 <script type="text/javascript">
 $(function(){
-
-    return;
-  //*
-  // */
    {% if user2 %}
     $('.thumbnail > a').click(function(e) {
         e.preventDefault();
@@ -548,11 +544,6 @@ $(function(){
             }
         });
     });
-});
-
-// what's this supposed to do?
-$('body').load(function() {
-
 });
 
 var handler = {
@@ -806,7 +797,7 @@ function add_chart_move_function() {
         e.preventDefault();
 
         if (payload.organizationId === false) payload.organizationId = null;
-        if ()
+
         $.ajax({
             url: '/api/charts/' + id,
             type: 'PUT',
