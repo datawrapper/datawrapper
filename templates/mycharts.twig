@@ -489,11 +489,10 @@ div.folders li > a > span .chart-count {
     </div>
 </div>
 
+<script type="text/javascript">
+require(['dw/mycharts']);
+</script>
 
-
-
-
-<script type="text/javascript" src="/static/vendor/overlay/ender.overlay.js"></script>
 <script type="text/javascript">
 $(function(){
 
@@ -807,6 +806,7 @@ function add_chart_move_function() {
         e.preventDefault();
 
         if (payload.organizationId === false) payload.organizationId = null;
+        if ()
         $.ajax({
             url: '/api/charts/' + id,
             type: 'PUT',
@@ -906,7 +906,7 @@ function treeyfy(tree) {
         return a.organization.name.localeCompare(b.organization.name);
     });
 
-    return tree;
+    return tree;move
 }
 
 function get_folders(tree) {
@@ -933,7 +933,6 @@ $('.chart .thumbnail .dw-checkbox')
         evt.stopPropagation();
         evt.preventDefault();
         var thumb = $(this).parent('.thumbnail');
-        console.log(thumb);
         var chart_id = thumb.data('id');
         if (!selected[chart_id]) {
             selected[chart_id] = true;
@@ -942,7 +941,20 @@ $('.chart .thumbnail .dw-checkbox')
             delete selected[chart_id];
             thumb.removeClass('checked');
         }
+        console.log(selected);
     });
+
+$('.chart .thumbnail .dropdown-toggle')
+    .on('click', function() {
+        var thumb = $(this).parents('.thumbnail');
+        var chart_id = thumb.data('id');
+        console.log(chart_id);
+        if (!selected[chart_id]) {
+            // unselect all
+            selected = {};
+            $('.chart .thumbnail').removeClass('checked');
+        }
+    })
 
 $('document').ready(function() {
     get_folders({{ preload | json | raw }});
