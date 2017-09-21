@@ -4,24 +4,11 @@ define(function(require) {
         chart_functions = require('./mycharts/generic-chart-functions'),
         treeyfy = require('./mycharts/treeyfy'),
         multiselection = require('./mycharts/multiselection'),
+        handler = require('./mycharts/handler'),
         twig_globals;
 
     function do_it() {
         chart_functions(twig_globals.user2);
-
-        var handler = {
-            fail: function(err) {
-                alert('API Error');
-                console.error(err);
-            },
-            done: function(res) {
-                if (res.status == 'error') {
-                    alert(res.message);
-                } else if (res.status == 'ok') {
-                    location.reload(true);
-                }
-            }
-        };
 
         function add_folder_helper(folder_id, org_id) {
             return function(e) {
@@ -259,7 +246,7 @@ define(function(require) {
 
                 e.preventDefault();
 
-                if (Object.keys(selected).length > 1) {
+                if (Object.keys(multiselection.selected).length > 1) {
                     // multi-select move
                     console.log('MULTI-SELECT', payload);
                     $.ajax({
@@ -270,7 +257,7 @@ define(function(require) {
                         processData: false,
                         contentType: "application/json",
                         data: JSON.stringify({
-                            add: Object.keys(selected)
+                            add: Object.keys(multiselection.selected)
                         }),
                         dataType: 'JSON'
                     }).done(handler.done).fail(handler.fail);
@@ -369,7 +356,7 @@ define(function(require) {
             add_to_root_helper();
         }
 
-        multiselection();
+        multiselection.init();
 
         $('document').ready(function() {
             get_folders(twig_globals.preload);
