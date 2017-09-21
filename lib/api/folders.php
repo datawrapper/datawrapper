@@ -3,31 +3,6 @@
 (function() use ($app) {
 
     /*
-     * get list of folders for current user
-     */
-    $app->get('/folders', function() {
-        $user = DatawrapperSession::getUser();
-        ok(FolderQuery::create()->getParsableFolders($user));
-    });
-
-
-    /*
-     * get single folder
-     */
-    $app->get('/folders/:folder_id', function($folder_id) {
-        $user = DatawrapperSession::getUser();
-        $folder = FolderQuery::create()->findPk($folder_id);
-
-        if (empty($folder)) return error('not-found', 'folder not found');
-
-        if (!$folder->isAccessibleBy($user)) {
-            return error('access-denied', 'you dont have access to this folder');
-        }
-        ok($folder->serialize());
-    })->conditions(array('folder_id' => '\d+'));
-
-
-    /*
      * handles insert and update operations on folders
      */
     $upsertFolder = function($folder, $user, $payload) {
@@ -117,7 +92,7 @@
         if (!empty($payload['add'])) {
             $update = [
                 'InFolder' => $folder->getFolderId(),
-                'OrganizationId' => $folder->getOrganization()
+                'OrganizationId' => $folder->getOrgId()
             ];
             if ($folder->getType() == 'user') {
                 $update['AuthorId'] = $folder->getUserId();
@@ -129,6 +104,31 @@
 
         return $folder;
     };
+
+
+    /*
+     * get list of folders for current user
+     */
+    $app->get('/folders', function() {
+        $user = DatawrapperSession::getUser();
+        ok(FolderQuery::create()->getParsableFolders($user));
+    });
+
+
+    /*
+     * get single folder
+     */
+    $app->get('/folders/:folder_id', function($folder_id) {
+        $user = DatawrapperSession::getUser();
+        $folder = FolderQuery::create()->findPk($folder_id);
+
+        if (empty($folder)) return error('not-found', 'folder not found');
+
+        if (!$folder->isAccessibleBy($user)) {
+            return error('access-denied', 'you dont have access to this folder');
+        }
+        ok($folder->serialize());
+    })->conditions(array('folder_id' => '\d+'));
 
 
     /*
@@ -199,6 +199,28 @@
         $folder->delete();
         ok();
     })->conditions(array('folder_id' => '\d+'));
+
+
+    /*
+     * move charts into root folder
+     */
+    $app->put('/folders/root(/:org_id)?', function($org_id = false) use ($app){
+        $user = DatawrapperSession::getUser();
+        if (!$user->isLoggedIn())
+            return error('access-denied', 'you must be logged in to create a folder');
+        $payload = json_decode($app->request()->getBody(), true);
+        $org = OrganizationQuery::create()->findPk($org_id);
+        if (!$org) return error('404', 'org not found');
+        if (!$org->hasUser($user)) return error('404', 'no access');
+        if (empty($payload['add'])) return error('no-charts', 'must provide ids of charts to move');
+        $update = [
+            'InFolder' => null,
+            'OrganizationId' => !empty($org_id) ? $org_id : null
+        ];
+        ChartQuery::create()->filterById($payload['add'])
+            ->filterByUserAccess($user)
+            ->update($update);
+    });
 
 })();
 

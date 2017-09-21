@@ -199,6 +199,18 @@ div.folders li > a > span .chart-count {
 .thumbnail.checked .dw-checkbox .fa {
     display: inline-block;
 }
+
+.thumbnails.multi-select .thumbnail.checked .dropdown-menu .duplicate,
+.thumbnails.multi-select .thumbnail.checked .dropdown-menu .delete {
+    display: none;
+}
+.thumbnails .dropdown-menu .move .selected {
+    display: none;
+}
+.thumbnails.multi-select .dropdown-menu .move .selected {
+    display: inline;
+}
+
 </style>
 
 <div class="folder-line">
@@ -310,8 +322,8 @@ div.folders li > a > span .chart-count {
                            {# <li><a href="/chart/{{ chart.id }}/static?w=700&amp;h=490&amp;f=pdf&amp;padding=20"><i class="icon-download"></i> {% trans "Save as PDF" %}</a></li>
                            <li class="divider"></li> #}
                            <li><a class="delete" href="#"><i class="icon-remove"></i> {% trans "Delete" %}</a></li>
-                           <li class="dropdown-submenu">
-                               <a tabindex="-1" href="#"><i class="icon-folder-open"></i> {% trans "Move" %}</a>
+                           <li class="dropdown-submenu move">
+                               <a tabindex="-1" href="#"><i class="icon-folder-open"></i> {% trans "Move" %}<span class="selected"> {% trans "selected" %}</span></a>
                                <ul class="dropdown-menu folder-list">
                                    <li class="folder-list-separator"></li>
                                    {% for org in organizations %}
@@ -796,6 +808,24 @@ function add_chart_move_function() {
 
         e.preventDefault();
 
+        if (Object.keys(selected).length > 1) {
+            // multi-select move
+            console.log('MULTI-SELECT', payload);
+            $.ajax({
+                url: '/api/folders/' + (payload.inFolder ?
+                    payload.inFolder : 'root' + ( payload.organizationId ?
+                        '/'+payload.organizationId : '')),
+                type: 'PUT',
+                processData: false,
+                contentType: "application/json",
+                data: JSON.stringify({
+                    add: Object.keys(selected)
+                }),
+                dataType: 'JSON'
+            }).done(handler.done).fail(handler.fail);
+            return;
+        }
+
         if (payload.organizationId === false) payload.organizationId = null;
 
         $.ajax({
@@ -919,6 +949,8 @@ function get_folders(tree) {
 
 var selected = {};
 
+var thumbnails = $('.thumbnails');
+
 $('.chart .thumbnail .dw-checkbox')
     .on('click', function(evt) {
         evt.stopPropagation();
@@ -932,7 +964,7 @@ $('.chart .thumbnail .dw-checkbox')
             delete selected[chart_id];
             thumb.removeClass('checked');
         }
-        console.log(selected);
+        thumbnails[Object.keys(selected).length > 1 ? 'addClass' : 'removeClass']('multi-select');
     });
 
 $('.chart .thumbnail .dropdown-toggle')
@@ -944,6 +976,7 @@ $('.chart .thumbnail .dropdown-toggle')
             // unselect all
             selected = {};
             $('.chart .thumbnail').removeClass('checked');
+            thumbnails.removeClass('multi-select');
         }
     })
 
