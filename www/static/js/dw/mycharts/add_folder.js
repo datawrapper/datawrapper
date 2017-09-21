@@ -1,6 +1,7 @@
 define(function(require) {
-	var twig = require('./twig_globals'),
-		handler = require('./handler');
+    var $ = require('jquery'),
+        twig = require('./twig_globals'),
+        handler = require('./handler');
 
     return function(folder_id, org_id) {
         return function(e) {
