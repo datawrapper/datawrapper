@@ -13,6 +13,35 @@
 </div>
 
 <div class="folder-line">
+    <div class="mycharts-filter pull-right">
+        <div class="btn-group">
+            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                {% trans "Sort by" %}
+                <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a href="?sort=modified_at&group={{ current.group }}">Last edit time</a></li>
+                <li class="active"><a href="?sort=created_at&group={{ current.group }}">Creation time</a></li>
+                <li><a href="?sort=published_at&group={{ current.group }}">Publish time</a></li>
+                <li><a href="?sort=title&group={{ current.group }}">Title</a></li>
+            </ul>
+        </div>
+
+        <div class="btn-group">
+            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                {% trans "Group by" %}
+                <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                <li class="active"><a href="?sort={{ current.sort }}&group=">(no grouping)</a></li>
+                <li><a href="?sort={{ current.sort }}&group=status">Status (published/draft)</a></li>
+                <li><a href="?sort={{ current.sort }}&group=type">Visualization type</a></li>
+                <li><a href="?sort={{ current.sort }}&group=month">Month</a></li>
+            </ul>
+        </div>
+
+        &nbsp;<input name="q" class="search-query input-medium" type="text" placeholder="{% trans "Search" %}" value="{{ search_query }}" />
+    </div>
     <h1 id="current-folder">
         <a id="current-root" href="{{ mycharts_base }}">
             {% if user2 %}
@@ -158,117 +187,6 @@
 
         {% endif %}
     </div>
-</div>
-
-
-<div class="gallery-filter">
-
-    <form method="get" class="form form-inline" action="">
-        <b>{% trans "Filter" %}:</b>
-
-        &nbsp;
-
-        <input name="q" class="search-query input-medium" type="text" placeholder="{% trans "Search" %}" value="{{ search_query }}" />
-
-        &nbsp;
-
-        <div class="btn-group">
-            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                {% trans "By Status" %}
-                <span class="caret"></span>
-            </a>
-            <ul class="dropdown-menu">
-                {% for status in bystatus %}
-                {% if key == 'status' and val == status.id %}
-                    {% if current.organization %}
-                <li class="active"><a href="/organization/{{ current.organization }}/{{ current.folder }}"><i class="icon-check"></i> {{ status.name }} ({{ status.count }})</a></li>
-                    {% else %}
-                <li class="active"><a href="{{ mycharts_base }}/{{ current.folder }}"><i class="icon-check"></i> {{ status.name }} ({{ status.count }})</a></li>
-                    {% endif %}
-                {% else %}
-                    {% if current.organization %}
-                <li><a href="/organization/{{ current.organization }}/{{ current.folder }}?key=status&val={{ status.id }}">{{ status.name }} ({{ status.count }})</a></li>
-                    {% else %}
-                <li><a href="{{ mycharts_base }}/{{ current.folder }}?key=status&val={{ status.id }}">{{ status.name }} ({{ status.count }})</a></li>
-                    {% endif %}
-                {% endif %}
-
-                {% endfor %}
-            </ul>
-        </div>
-
-        <div class="btn-group">
-            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                {% trans "By Month" %}
-                <span class="caret"></span>
-            </a>
-            <ul class="dropdown-menu by-month">
-                <!-- dropdown menu links -->
-            {% for month in bymonth %}
-                {% if key == 'month' and val == month.id %}
-                    {% if current.organization %}
-                <li class="active"><a href="/organization/{{ current.organization }}/{{ current.folder }}"><i class="icon-check"></i> {{ month.name }} ({{ month.count }})</a> </li>
-                    {% else %}
-                <li class="active"><a href="{{ mycharts_base }}/{{ current.folder }}"><i class="icon-check"></i> {{ month.name }} ({{ month.count }})</a> </li>
-                    {% endif %}
-                {% else %}
-                    {% if current.organization %}
-                <li><a href="/organization/{{ current.organization }}/{{ current.folder }}?key=month&val={{ month.id }}">{{ month.name }} ({{ month.count }})</a></li>
-                    {% else %}
-                <li><a href="{{ mycharts_base }}/{{ current.folder }}?key=month&val={{ month.id }}">{{ month.name }} ({{ month.count }})</a></li>
-                    {% endif %}
-                {% endif %}
-            {% endfor %}
-            </ul>
-        </div>
-
-        <div class="btn-group">
-            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                {% trans "By Visualisation" %}
-                <span class="caret"></span>
-            </a>
-
-            <ul class="dropdown-menu">
-            {% for vis in byvis %}
-                {% if key == 'vis' and val == vis.id %}
-                    {% if current.organization %}
-                <li class="active"><a href="/organization/{{ current.organization }}/{{ current.folder }}"><i class="icon-check"></i> {{ vis.name }} ({{ vis.count }})</a> </li>
-                    {% else %}
-                <li class="active"><a href="{{ mycharts_base }}/{{ current.folder }}"><i class="icon-check"></i> {{ vis.name }} ({{ vis.count }})</a> </li>
-                    {% endif %}
-                {% else %}
-                    {% if current.organization %}
-                <li><a href="/organization/{{ current.organization }}/{{ current.folder }}?key=vis&val={{ vis.id }}">{{ vis.name }} ({{ vis.count }})</a></li>
-                    {% else %}
-                <li><a href="{{ mycharts_base }}/{{ current.folder }}?key=vis&val={{ vis.id }}">{{ vis.name }} ({{ vis.count }})</a></li>
-                    {% endif %}
-                {% endif %}
-            {% endfor %}
-            </ul>
-        </div>
-
-{#         <div class="btn-group">
-            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                {% trans "By Layout" %}
-                <span class="caret"></span>
-            </a>
-
-            <ul class="dropdown-menu">
-                {% for layout in bylayout %}
-                {% if key == 'layout' and val == layout.id %}
-                <li class="active"><a href="{{ mycharts_base }}/"><i class="icon-check"></i> {{ layout.name }} ({{ layout.count }})</a></li>
-                {% else %}
-                <li><a href="{{ mycharts_base }}/by/layout/{{ layout.id }}">{{ layout.name }} ({{ layout.count }})</a></li>
-                {% endif %}
-
-                {% endfor %}
-            </ul>
-        </div> #}
-
-
-    </form>
-
-
 </div>
 
 
