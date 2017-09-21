@@ -1,5 +1,7 @@
 <?php
 
+require_once ROOT_PATH . 'lib/utils/str_to_unicode.php';
+
 /**
  * Skeleton subclass for representing a row from the 'chart' table.
  *
@@ -137,11 +139,11 @@ class Chart extends BaseChart {
      */
     public function writeData($csvdata) {
         $cfg = $GLOBALS['dw_config'];
-    
+
         if (isset($cfg['charts-s3'])
           && isset($cfg['charts-s3']['write'])
           && $cfg['charts-s3']['write'] == true) {
-  
+
             $config = $cfg['charts-s3'];
 
             $filename = 's3://' . $cfg['charts-s3']['bucket'] . '/' .
@@ -172,7 +174,7 @@ class Chart extends BaseChart {
         if (isset($config['charts-s3']) &&
             $config['charts-s3']['read']) {
 
-            $s3url = 's3://' . $config['charts-s3']['bucket'] . '/' . 
+            $s3url = 's3://' . $config['charts-s3']['bucket'] . '/' .
               $this->getRelativeDataPath() . '/' .$this->getDataFilename();
 
             try {
@@ -200,6 +202,8 @@ class Chart extends BaseChart {
                 CURLOPT_CONNECTTIMEOUT => 5,
             ]);
             $new_data = curl_exec($ch);
+            // check encoding of data
+            $new_data = str_to_unicode($new_data);
             if (!empty($new_data)) $this->writeData($new_data);
         }
     }
@@ -425,7 +429,7 @@ class Chart extends BaseChart {
         if (isset($cfg['charts-s3'])
           && isset($cfg['charts-s3']['read'])
           && $cfg['charts-s3']['read'] == true) {
-  
+
             $path = 's3://' . $cfg['charts-s3']['bucket'] . '/' .
                 $this->getRelativeStaticPath() . '/m.png';
         } else {
@@ -468,7 +472,7 @@ class Chart extends BaseChart {
     public function getNamespace() {
         return (($this->getType() == "d3-maps-choropleth"
           || $this->getType() == "d3-maps-symbols") &&
-          $this->getMetadata('visualize.map-type-set') != null) ? 
+          $this->getMetadata('visualize.map-type-set') != null) ?
           "map" : "chart";
     }
 
