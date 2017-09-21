@@ -229,26 +229,38 @@ require(['dw/mycharts']);
 </script>
 
 <script type="text/javascript">
-$(function(){
-   {% if user2 %}
-    $('.thumbnail > a').click(function(e) {
-        e.preventDefault();
-        dw.backend.popupChart($(e.target).parents('.chart').data('id'), true);
-    });
 
-    $('a.edit').click(function(e) {
-        e.preventDefault();
-        var chart = $(e.target).parents('.chart');
-        location.href = $('.thumbnail > a', chart).attr('href');
-    });
-   {% endif %}
+var twig_globals = {
+    strings: {
+        confirm_chart_delete: {{ "Do you really want to delete the chart? Note that after deleting this chart won\'t be embedable any more." | trans | json | raw }},
+        enter_folder_name: '{{ "Enter new folder name:" | trans }}',
+        mycharts_base: '{{ mycharts_base }}'
+    },
+    current: {{ current | json | raw }},
+    preload: {{ preload | json | raw }},
+    user2: {{ user2 | json | raw }}
+};
+
+$(function(){
+    if (twig_globals.user2) {
+        $('.thumbnail > a').click(function(e) {
+            e.preventDefault();
+            dw.backend.popupChart($(e.target).parents('.chart').data('id'), true);
+        });
+
+        $('a.edit').click(function(e) {
+            e.preventDefault();
+            var chart = $(e.target).parents('.chart');
+            location.href = $('.thumbnail > a', chart).attr('href');
+        });
+    }
 
 
     $('a.delete').click(function(e) {
         e.preventDefault();
         var chart = $(e.target).parents('.chart'),
             id = chart.data('id');
-        if (window.confirm({{ "Do you really want to delete the chart? Note that after deleting this chart won\'t be embedable any more." | trans | json | raw }})) {
+        if (window.confirm(twig_globals.strings.confirm_chart_delete)) {
              $.ajax({
                 url: '/api/charts/'+id,
                 type: 'DELETE',
@@ -300,7 +312,7 @@ function add_folder_helper(folder_id, org_id) {
         var nuname;
 
         e.preventDefault();
-        nuname = prompt('{{ "Enter new folder name:" | trans }}');
+        nuname = prompt(twig_globals.strings.enter_folder_name);
 
         $.ajax({
             url: '/api/folders',
@@ -325,7 +337,7 @@ function folder_menu(folder, org_id, path) {
         var nuname;
 
         e.preventDefault();
-        nuname = prompt('{{ "Enter new folder name:" | trans }}', folder.name);
+        nuname = prompt(twig_globals.strings.enter_folder_name, folder.name);
 
         $.ajax({
             url: '/api/folders/' + folder.id,
@@ -368,7 +380,7 @@ function move_to_folder_helper(folder_id, org_id) {
                 alert(res.message);
             } else if (res.status == 'ok') {
                 // page reload would be an error - follow new path
-                location.assign((org_id) ? '/organization/' + org_id + '/' + current_folder : '{{mycharts_base}}/' + current_folder);
+                location.assign((org_id) ? '/organization/' + org_id + '/' + current_folder : twig_globals.strings.mycharts_base + '/' + current_folder);
             }
         }).fail(handler.fail);
     }
@@ -435,7 +447,7 @@ function build_line(org, path, tree) {
         folder = tree.reduce(function(old, cur) {
             return (!old && cur.name === dir) ? cur : old;
         }, false);
-        a.setAttribute('href', (org) ? '/organization/' + org.id + '/' + folder.id : '{{ mycharts_base }}/' + folder.id);
+        a.setAttribute('href', (org) ? '/organization/' + org.id + '/' + folder.id : twig_globals.strings.mycharts_base + '/' + folder.id);
         line.append(sep, a);
         tree = folder.sub
     });
@@ -444,7 +456,7 @@ function build_line(org, path, tree) {
 };
 
 function build_tree_list(branch, parent, org, flatter, path, pathstring, tree) {
-    var current_folder = '{{current.folder}}',
+    var current_folder = twig_globals.current.folder,
         folder_icon_open = '<i class="fa fa-folder-open fa-fw"></i>',
         folder_icon_closed = '<i class="fa fa-folder fa-fw"></i>',
         nu_path,
@@ -472,7 +484,7 @@ function build_tree_list(branch, parent, org, flatter, path, pathstring, tree) {
         }
         html += '</span>';
         a1.innerHTML = html;
-        a1.setAttribute('href', (org_id) ? '/organization/' + org_id + '/' + folder.id : '{{ mycharts_base }}/' + folder.id);
+        a1.setAttribute('href', (org_id) ? '/organization/' + org_id + '/' + folder.id : twig_globals.strings.mycharts_base + '/' + folder.id);
 
         nu_path = path.concat(folder.name);
         nu_pstr = pathstring + '/' + folder.name;
@@ -570,7 +582,7 @@ function treelist_wrapper(folder_obj) {
         }],
         entrypoint = '#dynamic-tree',
         org = (folder_obj.organization) ? folder_obj.organization : false,
-        current_org = '{{current.organization}}',
+        current_org = twig_globals.current.organization,
         root_link,
         move_to_root = $('<li><a href="#" tabindex=-1>/</a></li>');
 
@@ -704,7 +716,7 @@ $('.chart .thumbnail .dropdown-toggle')
     })
 
 $('document').ready(function() {
-    get_folders({{ preload | json | raw }});
+    get_folders(twig_globals.preload);
 });
 
 </script>
