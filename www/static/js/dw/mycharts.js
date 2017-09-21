@@ -4,18 +4,18 @@ define(function(require) {
         chart_functions = require('./mycharts/generic-chart-functions'),
         treeyfy = require('./mycharts/treeyfy'),
         multiselection = require('./mycharts/multiselection'),
-        handler = require('./mycharts/handler'),
-        twig_globals;
+        handler = require('./mycharts/handler')
+        build_folder_2_folder_movelinks = require('./mycharts/folder_2_folder');
 
-    function do_it() {
-        chart_functions(twig_globals.user2);
+    function do_it(twig) {
+        chart_functions(twig.globals.user2);
 
         function add_folder_helper(folder_id, org_id) {
             return function(e) {
                 var nuname;
 
                 e.preventDefault();
-                nuname = prompt(twig_globals.strings.enter_folder_name);
+                nuname = prompt(twig.globals.strings.enter_folder_name);
 
                 $.ajax({
                     url: '/api/folders',
@@ -40,7 +40,7 @@ define(function(require) {
                 var nuname;
 
                 e.preventDefault();
-                nuname = prompt(twig_globals.strings.enter_folder_name, folder.name);
+                nuname = prompt(twig.globals.strings.enter_folder_name, folder.name);
 
                 $.ajax({
                     url: '/api/folders/' + folder.id,
@@ -66,68 +66,6 @@ define(function(require) {
             }
         }
 
-        function move_to_folder_helper(folder_id, org_id) {
-            return function(e) {
-                var current_folder = $('#current-folder').data('folder_id');
-                e.preventDefault();
-
-                $.ajax({
-                    url: '/api/folders/' + current_folder,
-                    type: 'PUT',
-                    processData: false,
-                    contentType: "application/json",
-                    data: JSON.stringify({ parent: folder_id, organization: org_id }),
-                    dataType: 'JSON'
-                }).done(function(res) {
-                    if (res.status == 'error') {
-                        alert(res.message);
-                    } else if (res.status == 'ok') {
-                        // page reload would be an error - follow new path
-                        location.assign((org_id) ? '/organization/' + org_id + '/' + current_folder : twig_globals.strings.mycharts_base + '/' + current_folder);
-                    }
-                }).fail(handler.fail);
-            }
-        }
-
-        function build_folder_2_folder_movelinks(flat_list, org_id) {
-            var source_path = $('#current-folder').data('fullpath'),
-                source_parent = '',
-                move_menu = '';
-
-            if (typeof(source_path) === 'undefined') return;
-            source_parent = source_path.slice(0, source_path.lastIndexOf('/'));
-            if (source_parent == '') source_parent = '/';
-
-            if (org_id) {
-                $('#current-folder').find(".dropdown-menu .move-root").append("\
-                    <li class=\"dropdown-submenu\">\n\
-                        <a class=\"move-to-folder\" tabindex=\"-1\" href=\"#\"><i class=\"fa fa-folder-open\"></i> " + org_id + "</a>\n\
-                        <ul class=\"dropdown-menu move-links move-org\"></ul>\n\
-                    </li>\n\
-                ");
-                move_menu = $('#current-folder').find(".dropdown-menu .move-org").last();
-            } else {
-                move_menu = $('#current-folder').find(".dropdown-menu .move-root");
-            }
-
-            flat_list.forEach(function(folder) {
-                var l = document.createElement('li'),
-                    a = document.createElement('a');
-
-                // Do not create links for subfolders of this path
-                if ($('#current-folder').data('organization') == org_id && (
-                    folder.path == source_parent ||
-                    folder.path.startsWith(source_path)
-                )) return;
-
-                a.innerText = folder.path;
-                a.setAttribute('href', '#');
-                $(a).click(move_to_folder_helper(folder.id, org_id));
-                l.appendChild(a);
-                move_menu.append(l);
-            });
-        };
-
         function change_root_folder(org) {
             var root_folder = $('#current-root');
             root_folder.attr('href', '/organization/' + org.id);
@@ -150,7 +88,7 @@ define(function(require) {
                 folder = tree.reduce(function(old, cur) {
                     return (!old && cur.name === dir) ? cur : old;
                 }, false);
-                a.setAttribute('href', (org) ? '/organization/' + org.id + '/' + folder.id : twig_globals.strings.mycharts_base + '/' + folder.id);
+                a.setAttribute('href', (org) ? '/organization/' + org.id + '/' + folder.id : twig.globals.strings.mycharts_base + '/' + folder.id);
                 line.append(sep, a);
                 tree = folder.sub
             });
@@ -159,7 +97,7 @@ define(function(require) {
         };
 
         function build_tree_list(branch, parent, org, flatter, path, pathstring, tree) {
-            var current_folder = twig_globals.current.folder,
+            var current_folder = twig.globals.current.folder,
                 folder_icon_open = '<i class="fa fa-folder-open fa-fw"></i>',
                 folder_icon_closed = '<i class="fa fa-folder fa-fw"></i>',
                 nu_path,
@@ -187,7 +125,7 @@ define(function(require) {
                 }
                 html += '</span>';
                 a1.innerHTML = html;
-                a1.setAttribute('href', (org_id) ? '/organization/' + org_id + '/' + folder.id : twig_globals.strings.mycharts_base + '/' + folder.id);
+                a1.setAttribute('href', (org_id) ? '/organization/' + org_id + '/' + folder.id : twig.globals.strings.mycharts_base + '/' + folder.id);
 
                 nu_path = path.concat(folder.name);
                 nu_pstr = pathstring + '/' + folder.name;
@@ -285,7 +223,7 @@ define(function(require) {
                 }],
                 entrypoint = '#dynamic-tree',
                 org = (folder_obj.organization) ? folder_obj.organization : false,
-                current_org = twig_globals.current.organization,
+                current_org = twig.globals.current.organization,
                 root_link,
                 move_to_root = $('<li><a href="#" tabindex=-1>/</a></li>');
 
@@ -359,12 +297,13 @@ define(function(require) {
         multiselection.init();
 
         $('document').ready(function() {
-            get_folders(twig_globals.preload);
+            get_folders(twig.globals.preload);
         });
     }
 
-    return function(twig) {
-        twig_globals = twig;
-        do_it();
+    return function(obj) {
+        var twig = require('./mycharts/twig_globals');
+        twig.init(obj);
+        do_it(twig);
     }
 });
