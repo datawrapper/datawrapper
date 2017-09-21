@@ -124,7 +124,9 @@ function any_charts($app, $user, $folder_id = false, $org_id = false) {
         'val' => $val,
         'current' => array(
             'folder' => $folder_id,
-            'organization' => $org_id
+            'organization' => $org_id,
+            'group' => $app->request()->params('group'),
+            'sort' => $app->request()->params('sort'),
         ),
         'search_query' => empty($q) ? '' : $q,
         'mycharts_base' => '/mycharts',
