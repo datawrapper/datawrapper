@@ -1,5 +1,5 @@
 define(function(require) {
-    return function treeyfy(tree) {
+    return function(tree) {
         tree.map(function(group) {
             if (group.type === "user")
                 group.organization = false;
