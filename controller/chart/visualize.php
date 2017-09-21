@@ -9,6 +9,13 @@ $app->get('/(chart|map)/:id/visualize', function ($id) use ($app) {
     check_chart_writable($id, function($user, $chart) use ($app) {
         $visData = "";
 
+        // check if path and namespace match
+        $path = explode('/', $app->request()->getPath())[1];
+        if ($path != $chart->getNamespace()) {
+            // and redirect
+            $app->redirect('/'.$chart->getNamespace().'/'.$chart->getId().'/visualize');
+        }
+
         $allThemes = ThemeQuery::create()->allThemesForUser();
         $themeMeta = [];
 
