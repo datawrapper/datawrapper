@@ -1,8 +1,8 @@
 define(function(require){
-	var $ = require('jquery');
+    var $ = require('jquery');
 
-	return function(user2) {
-		if (user2) {
+    return function(user2) {
+        if (user2) {
             $('.thumbnail > a').click(function(e) {
                 e.preventDefault();
                 dw.backend.popupChart($(e.target).parents('.chart').data('id'), true);
@@ -50,5 +50,5 @@ define(function(require){
                 }
             });
         });
-	};
+    };
 });
