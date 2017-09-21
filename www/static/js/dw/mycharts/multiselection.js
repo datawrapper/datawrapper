@@ -1,5 +1,5 @@
 define(function(require) {
-    var $ = require('jquery');
+    var $ = require('jquery'),
         selected = {},
         thumbnails = $('.thumbnails');
 
