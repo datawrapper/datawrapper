@@ -5,32 +5,11 @@ define(function(require) {
         treeyfy = require('./mycharts/treeyfy'),
         multiselection = require('./mycharts/multiselection'),
         handler = require('./mycharts/handler')
-        build_folder_2_folder_movelinks = require('./mycharts/folder_2_folder');
+        build_folder_2_folder_movelinks = require('./mycharts/folder_2_folder'),
+        add_folder_helper = require('./mycharts/add_folder');
 
     function do_it(twig) {
         chart_functions(twig.globals.user2);
-
-        function add_folder_helper(folder_id, org_id) {
-            return function(e) {
-                var nuname;
-
-                e.preventDefault();
-                nuname = prompt(twig.globals.strings.enter_folder_name);
-
-                $.ajax({
-                    url: '/api/folders',
-                    type: 'POST',
-                    processData: false,
-                    contentType: "application/json",
-                    data: JSON.stringify({
-                        name: nuname,
-                        parent: folder_id,
-                        organization: org_id
-                    }),
-                    dataType: 'JSON'
-                }).done(handler.done).fail(handler.fail);
-            }
-        }
 
         function folder_menu(folder, org_id, path) {
             $('.add-folder').click(add_folder_helper(folder.id, org_id));
