@@ -10,18 +10,17 @@
     <div class="pull-right" style="position:relative;top:-16px">
         {{ block('pagination') }}
     </div>
-    <h1 class="title">
-        {% if user2 %}
-            {{ "Charts by %s" | trans | replace({'%s': user2.email }) }}
-{#         {% else %}
-            {% trans "My Charts" %} #}
-        {% endif %}
-    </h1>
 </div>
 
 <div class="folder-line">
     <h1 id="current-folder">
-        <a id="current-root" href="{{ mycharts_base }}">{% trans "My Charts" %}</a>
+        <a id="current-root" href="{{ mycharts_base }}">
+            {% if user2 %}
+            {{ "Charts by %s" | trans | replace({'%s': user2.email }) }}
+            {% else %}
+            {% trans "My Charts" %}
+            {% endif %}
+        </a>
         <span id="folder-sequence"></span>
         <span id="current-folder-name"></span>
         <div class="btn-group" style="display:inline-block; position: relative">
