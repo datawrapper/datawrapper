@@ -3,6 +3,7 @@ define(function(require) {
     var $ = require('jquery'),
         chart_functions = require('./mycharts/generic-chart-functions'),
         treeyfy = require('./mycharts/treeyfy'),
+        multiselection = require('./mycharts/multiselection'),
         twig_globals;
 
     function do_it() {
@@ -367,6 +368,8 @@ define(function(require) {
             remove_empty_folder_move_targets();
             add_to_root_helper();
         }
+
+        multiselection();
 
         $('document').ready(function() {
             get_folders(twig_globals.preload);
