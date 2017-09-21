@@ -120,6 +120,7 @@ function any_charts($app, $user, $folder_id = false, $org_id = false) {
         'byvis' => nbChartsByType($id, $is_org, $folder_id),
         'bystatus' => nbChartsByStatus($id, $is_org, $folder_id),
         'key' => $key,
+        'pageClass' => 'dw-mycharts',
         'val' => $val,
         'current' => array(
             'folder' => $folder_id,
