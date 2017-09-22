@@ -5,6 +5,7 @@
 
 {% block content %}
 
+<link rel="stylesheet" type="text/css" href="//cdn.iconmonstr.com/1.2.0/css/iconmonstr-iconic-font.min.css">
 
 <div class="docs">
     <div class="pull-right" style="position:relative;top:-16px">
@@ -55,18 +56,18 @@
         <div class="btn-group" style="display:inline-block; position: relative">
             <a class="btn dropdown-toggle" data-toggle="dropdown" href="#"
                 style="border:0;background:none;box-shadow:none">
-                <i class="fa fa-caret-down" style="font-size:18px;color:#999"></i>
+                <i class="im im-care-down"></i>
             </a>
             <ul class="dropdown-menu">
                 <li>
-                    <a class="add-folder" tabindex="-1" href="#"><i class="fa fa-plus"></i> {% trans "Add subfolder" %}</a>
+                    <a class="add-folder" tabindex="-1" href="#"><i class="im im-plus-circle"></i> {% trans "Add subfolder" %}</a>
                 </li>
                 <li class="dropdown-submenu">
-                    <a class="move-to-folder" style="display: none;" tabindex="-1" href="#"><i class="fa fa-folder-open"></i> {% trans "Move to …" %}</a>
+                    <a class="move-to-folder" style="display: none;" tabindex="-1" href="#"><i class="im im-folder-open"></i> {% trans "Move to …" %}</a>
                     <ul class="dropdown-menu move-links move-root"></ul>
                 </li>
-                <li><a id="rename-folder" style="display: none;" tabindex="-1" href="#"><i class="fa fa-edit"></i> {% trans "Rename folder" %}</a></li>
-                <li><a id="delete-folder" style="display: none;" tabindex="-1" href="#"><i class="fa fa-remove"></i> {% trans "Remove folder" %}</a></li>
+                <li><a id="rename-folder" style="display: none;" tabindex="-1" href="#"><i class="im im-edit"></i> {% trans "Rename folder" %}</a></li>
+                <li><a id="delete-folder" style="display: none;" tabindex="-1" href="#"><i class="im im-trash-can"></i> {% trans "Remove folder" %}</a></li>
             </ul>
         </div>
     </h1>
@@ -76,15 +77,15 @@
     <div class="folders span2">
         <ul>
             <li {% if not current.folder and not current.organization %}class="active"{% endif %}><a id="user-root" href="{{ mycharts_base }}">
-                <i class="fa fa-fw fa-user"></i>
+                <i class="im im-user-male"></i>
                 <span>{% trans "My Charts" %}</span></a>
             </li>
             <ul id="dynamic-tree">
             </ul>
             {% for org in organizations %}
-            <li {% if not current.folder and current.organization == org.id %}class="active"{% endif %} style="margin-top:30px">
+            <li {% if not current.folder and current.organization == org.id %}class="active"{% endif %} style="margin-top:40px">
                 <a id="org-root-{{ org.tag }}"href="/organization/{{ org.id }}">
-                    <i class="fa fa-fw fa-university"></i>
+                    <i class="im im-users"></i>
                     <span>{{ org.name }}</span>
                 </a>
             </li>
@@ -107,7 +108,7 @@
                             {% else %}
                 <a class="thumbnail" href="/organization/{{ current.organization }}/{{ folder.id }}">
                             {% endif %}
-                    <i class="fa fa-folder fa-fw"></i> <span>{{ folder.name | striptags }}</span>
+                    <i class="im im-folder im-fw"></i> <span>{{ folder.name | striptags }}</span>
                 </a>
             </li>
                         {% endif %}
@@ -117,7 +118,7 @@
             <li class="span2">
 
                 <a class="thumbnail add-folder" href="#">
-                    <i class="fa fa-plus fa-fw"></i> <span>add folder...</span>
+                    <i class="im im-plus-circle im-fw"></i> <span>add folder...</span>
                 </a>
             </li>
         </ul>

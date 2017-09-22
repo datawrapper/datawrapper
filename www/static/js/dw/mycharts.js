@@ -4,7 +4,7 @@ define(function(require) {
         chart_functions = require('./mycharts/generic-chart-functions'),
         treeyfy = require('./mycharts/treeyfy'),
         multiselection = require('./mycharts/multiselection'),
-        handler = require('./mycharts/handler')
+        handler = require('./mycharts/handler'),
         build_folder_2_folder_movelinks = require('./mycharts/folder_2_folder'),
         add_chart_move = require('./mycharts/add_chart_move'),
         add_folder_helper = require('./mycharts/add_folder'),
