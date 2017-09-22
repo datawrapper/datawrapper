@@ -1,5 +1,5 @@
 define(function(require) {
-	var twig = require('./twig_globals')
+	var twig = require('./twig_globals');
 
     return function(org, path, tree) {
         var cwd, mypath,
