@@ -1762,6 +1762,19 @@ html body.dw-mycharts .navbar .navbar-inner {
 body.dw-mycharts {
   background: #f3f3f3;
 }
+body.dw-mycharts .im {
+  font: normal normal normal 18px/1 'iconmonstr-iconic-font';
+  vertical-align: middle;
+}
+body.dw-mycharts .dropdown-menu .im {
+  font-size: 15px;
+  position: relative;
+  left: -5px;
+}
+body.dw-mycharts #current-folder .dropdown-toggle .im {
+  font-size: 12px;
+  color: #999;
+}
 body.dw-mycharts .gallery-filter {
   display: flex;
   margin-bottom: 40px;
@@ -1800,7 +1813,7 @@ body.dw-mycharts .folders ul ul {
 }
 body.dw-mycharts .folders li {
   line-height: 20px;
-  font-size: 18px;
+  font-size: 16px;
 }
 body.dw-mycharts .folders li.active a {
   font-weight: bold;
@@ -1862,6 +1875,7 @@ body.dw-mycharts .gallery .subfolders .thumbnail {
   font-size: 16px;
   margin-bottom: 0;
 }
+body.dw-mycharts .gallery .subfolders .thumbnail .im,
 body.dw-mycharts .gallery .subfolders .thumbnail .fa {
   color: #999;
 }
@@ -1872,6 +1886,7 @@ body.dw-mycharts div.folders ul > li {
   position: relative;
   margin: 0 0 15px;
 }
+body.dw-mycharts div.folders ul > li > a > .im,
 body.dw-mycharts div.folders ul > li > a > .fa {
   color: #999;
   position: absolute;
@@ -1892,6 +1907,7 @@ body.dw-mycharts div.folders li > a > span .chart-count {
 body.dw-mycharts .thumbnails.subfolders li {
   position: relative;
 }
+body.dw-mycharts .thumbnails.subfolders li > a > .im,
 body.dw-mycharts .thumbnails.subfolders li > a > .fa {
   position: absolute;
   left: 10px;
@@ -1935,6 +1951,7 @@ body.dw-mycharts .thumbnail:hover .dw-checkbox:hover {
   display: block;
   border-color: #09c;
 }
+body.dw-mycharts .thumbnail .dw-checkbox .im,
 body.dw-mycharts .thumbnail .dw-checkbox .fa {
   display: none;
 }
@@ -1944,6 +1961,7 @@ body.dw-mycharts .thumbnail.checked .dw-checkbox {
   color: white;
   display: block;
 }
+body.dw-mycharts .thumbnail.checked .dw-checkbox .im,
 body.dw-mycharts .thumbnail.checked .dw-checkbox .fa {
   display: inline-block;
 }
