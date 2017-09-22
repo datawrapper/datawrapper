@@ -1,5 +1,6 @@
 define(function(require) {
 	var $ = require('jquery');
+    var add_folder_helper = require('./add_folder');
 
     return function(folder, org_id, path) {
         $('.add-folder').click(add_folder_helper(folder.id, org_id));
