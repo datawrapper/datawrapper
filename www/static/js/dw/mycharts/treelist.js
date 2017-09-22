@@ -12,8 +12,8 @@ define(function(require) {
 
     function build_tree_list(branch, parent, org, flatter, path, pathstring, tree) {
         var current_folder = twig.globals.current.folder,
-            folder_icon_open = '<i class="fa fa-folder-open fa-fw"></i>',
-            folder_icon_closed = '<i class="fa fa-folder fa-fw"></i>',
+            folder_icon_open = '<i class="im im-folder-open"></i>',
+            folder_icon_closed = '<i class="im im-folder"></i>',
             nu_path,
             seper = $('.folder-list-separator'),
             org_id = (org) ? org.id : false,
