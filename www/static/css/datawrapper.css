@@ -1763,16 +1763,16 @@ body.dw-mycharts {
   background: #f3f3f3;
 }
 body.dw-mycharts .im {
-  font: normal normal normal 18px/1 'iconmonstr-iconic-font';
+  font: normal normal normal 16px/1 'iconmonstr-iconic-font';
   vertical-align: middle;
 }
 body.dw-mycharts .dropdown-menu .im {
-  font-size: 15px;
+  font-size: 14px;
   position: relative;
   left: -5px;
 }
 body.dw-mycharts #current-folder .dropdown-toggle .im {
-  font-size: 12px;
+  font-size: 10px;
   color: #999;
 }
 body.dw-mycharts .gallery-filter {
@@ -1895,7 +1895,7 @@ body.dw-mycharts div.folders ul > li > a > .fa {
 }
 body.dw-mycharts div.folders ul > li > a > span {
   display: inline-block;
-  margin-left: 30px;
+  margin-left: 23px;
   vertical-align: top;
 }
 body.dw-mycharts div.folders li > a > span .chart-count {
