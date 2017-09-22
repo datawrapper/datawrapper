@@ -4,6 +4,12 @@ define(function(require) {
         build_line = require('./build_line'),
         folder_menu = require('./folder_menu');
 
+    function change_root_folder(org) {
+        var root_folder = $('#current-root');
+        root_folder.attr('href', '/organization/' + org.id);
+        root_folder.text(org.name);
+    }
+
     function build_tree_list(branch, parent, org, flatter, path, pathstring, tree) {
         var current_folder = twig.globals.current.folder,
             folder_icon_open = '<i class="fa fa-folder-open fa-fw"></i>',

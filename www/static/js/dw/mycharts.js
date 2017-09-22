@@ -13,38 +13,6 @@ define(function(require) {
     function do_it(twig) {
         chart_functions(twig.globals.user2);
 
-
-
-        function change_root_folder(org) {
-            var root_folder = $('#current-root');
-            root_folder.attr('href', '/organization/' + org.id);
-            root_folder.text(org.name);
-        }
-
-        function build_line(org, path, tree) {
-            var cwd, mypath,
-                line = $('#folder-sequence'),
-                sep = '<span class="sep">›</span>';
-
-            mypath = Array.from(path);
-            cwd = mypath.pop();
-
-            mypath.forEach(function(dir) {
-                var a = document.createElement('a'),
-                    folder;
-
-                a.innerText = dw.utils.purifyHtml(dir, '');
-                folder = tree.reduce(function(old, cur) {
-                    return (!old && cur.name === dir) ? cur : old;
-                }, false);
-                a.setAttribute('href', (org) ? '/organization/' + org.id + '/' + folder.id : twig.globals.strings.mycharts_base + '/' + folder.id);
-                line.append(sep, a);
-                tree = folder.sub
-            });
-            line.append(sep);
-            $('#current-folder-name').html(dw.utils.purifyHtml(cwd, ''));
-        };
-
         function remove_empty_folder_move_targets() {
             $('#current-folder .move-org').each(function(idx, move_org){
                 var list = $(move_org);
