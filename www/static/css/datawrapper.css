@@ -1963,6 +1963,7 @@ body.dw-mycharts .thumbnail.checked .dw-checkbox {
 }
 body.dw-mycharts .thumbnail.checked .dw-checkbox .im,
 body.dw-mycharts .thumbnail.checked .dw-checkbox .fa {
+  font-size: 14px;
   display: inline-block;
 }
 body.dw-mycharts .thumbnails.multi-select .thumbnail.checked .dropdown-menu .duplicate,
