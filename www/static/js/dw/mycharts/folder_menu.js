@@ -1,6 +1,7 @@
 define(function(require) {
     var $ = require('jquery'),
-        add_folder_helper = require('./add_folder');
+        add_folder_helper = require('./add_folder'),
+        twig = require('./twig_globals');
 
     return function(folder, org_id, path) {
         $('.add-folder').click(add_folder_helper(folder.id, org_id));
