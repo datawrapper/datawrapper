@@ -6,6 +6,7 @@ define(function(require) {
         multiselection = require('./mycharts/multiselection'),
         handler = require('./mycharts/handler')
         build_folder_2_folder_movelinks = require('./mycharts/folder_2_folder'),
+        add_chart_move = require('./mycharts/add_chart_move'),
         add_folder_helper = require('./mycharts/add_folder');
 
     function do_it(twig) {
@@ -155,45 +156,6 @@ define(function(require) {
             });
         };
 
-        function add_chart_move_function() {
-            $('.chart .folder-list a').click(function(e) {
-                var tar = $(e.target),
-                    id = tar.parents('.chart').data('id'),
-                    payload = tar.data();
-
-                e.preventDefault();
-
-                if (Object.keys(multiselection.selected).length > 1) {
-                    // multi-select move
-                    console.log('MULTI-SELECT', payload);
-                    $.ajax({
-                        url: '/api/folders/' + (payload.inFolder ?
-                            payload.inFolder : 'root' + ( payload.organizationId ?
-                                '/'+payload.organizationId : '')),
-                        type: 'PUT',
-                        processData: false,
-                        contentType: "application/json",
-                        data: JSON.stringify({
-                            add: Object.keys(multiselection.selected)
-                        }),
-                        dataType: 'JSON'
-                    }).done(handler.done).fail(handler.fail);
-                    return;
-                }
-
-                if (payload.organizationId === false) payload.organizationId = null;
-
-                $.ajax({
-                    url: '/api/charts/' + id,
-                    type: 'PUT',
-                    processData: false,
-                    contentType: "application/json",
-                    data: JSON.stringify(payload),
-                    dataType: 'JSON'
-                }).done(handler.done).fail(handler.fail);
-            });
-        };
-
         function treelist_wrapper(folder_obj) {
             // prepare move to root
             var flatened_tree = [{
@@ -265,7 +227,7 @@ define(function(require) {
             cleaned_tree.forEach(function(folder_obj) {
                 walked_tree.push(treelist_wrapper(folder_obj));
             });
-            add_chart_move_function();
+            add_chart_move();
             cleaned_tree.forEach(function(folder_obj, idx) {
                 build_folder_2_folder_movelinks(walked_tree[idx], (folder_obj.organization) ? folder_obj.organization.id : false);
             });
