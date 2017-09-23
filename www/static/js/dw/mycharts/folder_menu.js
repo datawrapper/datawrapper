@@ -1,6 +1,7 @@
 define(function(require) {
     var $ = require('jquery'),
         add_folder_helper = require('./add_folder'),
+        handler = require('./handler'),
         twig = require('./twig_globals');
 
     return function(folder, org_id, path) {
@@ -11,7 +12,7 @@ define(function(require) {
             var nuname;
 
             e.preventDefault();
-            nuname = prompt(twig.globals.strings.enter_folder_name, folder.name);
+            nuname = window.prompt(twig.globals.strings.enter_folder_name, folder.name);
 
             $.ajax({
                 url: '/api/folders/' + folder.id,
@@ -35,5 +36,5 @@ define(function(require) {
                 }).done(handler.done).fail(handler.fail);
             });
         }
-    }
+    };
 });
