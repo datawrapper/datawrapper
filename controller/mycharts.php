@@ -117,7 +117,8 @@ function any_charts($app, $user, $folder_id = false, $org_id = false) {
     foreach ($charts as $chart) {
         $chart = $chart->serialize();
         unset($chart['metadata']);
-        $serialized_charts[] = $chart;
+        $serialized_charts[$chart['id']] = $chart;
+        unset($serialized_charts[$chart['id']]['id']);
     }
 
     $page = array(

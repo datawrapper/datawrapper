@@ -9,6 +9,7 @@ define(function(require) {
         add_chart_move = require('./mycharts/add_chart_move'),
         add_folder_helper = require('./mycharts/add_folder'),
         treelist = require('./mycharts/treelist');
+        // sortngroup = require('./mycharts/sortngroup');
 
     function do_it(twig) {
         chart_functions(twig.globals.user2);
@@ -52,7 +53,8 @@ define(function(require) {
         multiselection.init();
 
         $('document').ready(function() {
-            get_folders(twig.globals.preload);
+            get_folders(twig.globals.preload.folders);
+            // sortngroup();
         });
     }
 
