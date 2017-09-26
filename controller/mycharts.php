@@ -112,6 +112,13 @@ function any_charts($app, $user, $folder_id = false, $org_id = false) {
     }
     $charts =  ChartQuery::create()->getPublicChartsById($id, $is_org, $filter, $curPage * $perPage, $perPage, 'lastUpdated');
     $total = ChartQuery::create()->countPublicChartsById($id, $is_org, $filter);
+    $serialized_charts = array();
+
+    foreach ($charts as $chart) {
+        $chart = $chart->serialize();
+        unset($chart['metadata']);
+        $serialized_charts[] = $chart;
+    }
 
     $page = array(
         'title' => __('My Charts'),
@@ -131,7 +138,10 @@ function any_charts($app, $user, $folder_id = false, $org_id = false) {
         'search_query' => empty($q) ? '' : $q,
         'mycharts_base' => '/mycharts',
         'organizations' => list_organizations($user),
-        'preload' => FolderQuery::create()->getParsableFolders($user)
+        'preload' => array(
+            'folders' => FolderQuery::create()->getParsableFolders($user),
+            'charts' => $serialized_charts,
+        ),
     );
 
     if (DatawrapperSession::getUser()->isAdmin() && $user != DatawrapperSession::getUser()) {
