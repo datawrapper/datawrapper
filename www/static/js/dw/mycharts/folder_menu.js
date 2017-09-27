@@ -63,7 +63,7 @@ define(function(require) {
                             alert(res.message);
                             curname.text(folder.name);
                         } else if (res.status == 'ok') {
-                            $('.folders li.active a span').text(new_name);
+                            $('.folders li.active a span').text(res.data.name);
                         }
                     }).fail(function(err) {
                         alert('API Error');
