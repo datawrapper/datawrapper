@@ -58,7 +58,16 @@ define(function(require) {
                         contentType: "application/json",
                         data: JSON.stringify({ name: new_name }),
                         dataType: 'JSON'
-                    }).done(handler.done).fail(handler.fail);
+                    }).done(function(res) {
+                        if (res.status == 'error') {
+                            alert(res.message);
+                            curname.text(folder.name);
+                        }
+                    }).fail(function(err) {
+                        alert('API Error');
+                        console.error(err);
+                        curname.text(folder.name);
+                    });
                 }
             }
 
