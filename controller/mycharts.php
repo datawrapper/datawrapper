@@ -163,7 +163,7 @@ function any_charts($app, $user, $folder_id = false, $org_id = false) {
         $id = $user->getId();
         $is_org = false;
     }
-    $charts =  ChartQuery::create()->getPublicChartsById($id, $is_org, $filter, $curPage * $perPage, $perPage, 'lastUpdated');
+    $charts =  ChartQuery::create()->getPublicChartsById($id, $is_org, $filter, $curPage * $perPage, $perPage, $app->request()->params('sort'));
     $total = ChartQuery::create()->countPublicChartsById($id, $is_org, $filter);
     $serialized_charts = array();
 

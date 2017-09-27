@@ -142,9 +142,12 @@ class ChartQuery extends BaseChartQuery {
                 ->filterByDeleted(false);
         }
         switch ($order) {
+            case 'title': $query->orderByTitle(); break;
+            case 'published_at': $query->orderByPublishedAt('desc'); break;
             case 'theme': $query->orderByTheme(); break;
             case 'type': $query->orderByType(); break;
             case 'lastUpdated': $query->orderByLastModifiedAt('desc'); break;
+            case 'modified_at': $query->orderByLastModifiedAt('desc'); break;
             default: $query->orderByCreatedAt('desc'); break;
         }
         $query->filterByLastEditStep(array('min' => 2));
