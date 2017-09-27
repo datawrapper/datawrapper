@@ -51,11 +51,7 @@ define(function(require) {
                 return old;
             else {
                 var pair = cur.split('=');
-
-                if (decodeURIComponent(pair[0]) == variable) {
-                    return(decodeURIComponent(pair[1]));
-                }
-                return old;
+                return (decodeURIComponent(pair[0]) == variable) ? decodeURIComponent(pair[1]) : old;
             }
         }, false);
     }
@@ -68,12 +64,25 @@ define(function(require) {
         twig.globals.current.sort = getQueryVariable(tar.href, 'sort');
 
         sort_charts();
+        set_active_sort();
+    }
+
+    function set_active_sort() {
+        $('.sort-menu li')
+            .removeAttr('class')
+            .each(function(idx, el) {
+                var je = $(el);
+
+                if (getQueryVariable(je.find('a').attr('href'), 'sort') == twig.globals.current.sort)
+                    je.addClass('active');
+            });
     }
 
     return function() {
         charts = $('ul.thumbnails').not('.subfolders');
         chart_data = twig.globals.preload.charts;
         sort_charts();
+        set_active_sort();
 
         if (!links_dead) {
             $('.sort-menu a').click(no_reload_sort_click);
