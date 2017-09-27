@@ -9,19 +9,61 @@ define(function(require) {
         $('.move-to-folder').show();
 
         $('#rename-folder').click(function(e) {
-            var nuname;
+            // fancier inline editing!
+            var curname = $('#current-folder-name')
+                .attr('contenteditable', true)
+                .on('focus', function(evt) {
+                    // select all on focus
+                    var div = evt.target;
+                    window.setTimeout(function() {
+                        var sel, range;
+                        if (window.getSelection && document.createRange) {
+                            range = document.createRange();
+                            range.selectNodeContents(div);
+                            sel = window.getSelection();
+                            sel.removeAllRanges();
+                            sel.addRange(range);
+                        } else if (document.body.createTextRange) {
+                            range = document.body.createTextRange();
+                            range.moveToElementText(div);
+                            range.select();
+                        }
+                    }, 1);
+                })
+                .on('keypress', function(evt) {
+                    if (evt.which == 13) { // return
+                        done();
+                        evt.preventDefault();
+                    } else if (evt.keyCode == 27) { // esc
+                        curname.text(folder.name)
+                            .attr('contenteditable', null);
+                    }
+                })
+                .on('blur', done)
+                .focus();
+
+            function done() {
+                var new_name = curname
+                    .attr('contenteditable', null)
+                    .text().trim();
+
+                curname.text(new_name);
+
+                if (new_name != folder.name && new_name) {
+                    folder.name = new_name;
+                    $.ajax({
+                        url: '/api/folders/' + folder.id,
+                        type: 'PUT',
+                        processData: false,
+                        contentType: "application/json",
+                        data: JSON.stringify({ name: new_name }),
+                        dataType: 'JSON'
+                    }).done(handler.done).fail(handler.fail);
+                }
+            }
 
             e.preventDefault();
-            nuname = window.prompt(twig.globals.strings.enter_folder_name, folder.name);
-
-            $.ajax({
-                url: '/api/folders/' + folder.id,
-                type: 'PUT',
-                processData: false,
-                contentType: "application/json",
-                data: JSON.stringify({ name: nuname }),
-                dataType: 'JSON'
-            }).done(handler.done).fail(handler.fail);
+            // nuname = window.prompt(twig.globals.strings.enter_folder_name, folder.name);
         });
 
         // can't delete root or folders with subfolders
