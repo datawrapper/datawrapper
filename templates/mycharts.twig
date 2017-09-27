@@ -126,8 +126,13 @@
         <hr></hr>
 
         {% if user.hasCharts %}
+
+        {% for group in chart_groups %}
+        {% if group.title %}
+            <h3>{{ group.title }}</h3>
+        {% endif %}
         <ul class="thumbnails">
-            {% for chart in charts %}
+            {% for chart in group.charts %}
 
             <li class="span2 chart" data-id="{{ chart.id }}">
 
@@ -181,6 +186,7 @@
             </li>
             {% endfor %}
         </ul>
+        {% endfor %}
         {% else %}
 
             <h2>{% trans "No charts here, yet" %}</h2>

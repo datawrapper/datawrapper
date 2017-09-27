@@ -89,6 +89,59 @@ function list_organizations($user) {
     return $orgs;
 }
 
+function mycharts_group_charts($charts_res, $groups) {
+    // TODO: group charts
+    $out = [];
+    // convert Propel Collection to array
+    $charts = [];
+    foreach ($charts_res as $chart) { $charts[] = $chart; }
+
+    foreach ($groups as $id => $group) {
+        $group['id'] = $id;
+        if (isset($group['filter'])) {
+            $group['charts'] = array_filter($charts, $group['filter']);
+            unset($group['filter']);
+        }
+        $out[] = $group;
+    }
+    return $out;
+}
+
+function mycharts_group_by_month($charts) {
+    $groups = [];
+
+    foreach ($charts as $chart) {
+        $month = $chart->getLastModifiedAt('Y-m');
+        if (!isset($groups[$month])) {
+            $groups[$month] = [
+                'title' => $month,
+                'id' => $month,
+                'charts' => []
+            ];
+        }
+        $groups[$month]['charts'][] = $chart;
+    }
+    return $groups;
+}
+
+function mycharts_group_by_type($charts) {
+    $groups = [];
+
+    foreach ($charts as $chart) {
+        $type = $chart->getType();
+        if (!isset($groups[$type])) {
+            $groups[$type] = [
+                'title' => $type,
+                'id' => $type,
+                'charts' => []
+            ];
+        }
+        $groups[$type]['charts'][] = $chart;
+    }
+    return $groups;
+}
+
+
 /*
  * shows MyChart page for a given user (or organization), which is typically the
  * logged user, but admins can view others MyCharts page, too.
@@ -121,9 +174,35 @@ function any_charts($app, $user, $folder_id = false, $org_id = false) {
         unset($serialized_charts[$chart['id']]['id']);
     }
 
+    $groupings = [
+        'no-group' => [
+            'all' => [
+                'title' => '',
+                'filter' => function() { return true; }
+            ]
+        ],
+        'status' => [
+            'published' => [
+                'title' => __('published'),
+                'filter' => function($chart) { return $chart->getLastEditStep() > 3; }
+            ],
+            'draft' => [
+                'title' => __('drafts'),
+                'filter' => function($chart) { return $chart->getLastEditStep() <= 3; }
+            ],
+        ],
+        'month' => mycharts_group_by_month($charts),
+        'type' => mycharts_group_by_type($charts),
+    ];
+
+    $group_by = $app->request()->params('group');
+    if (empty($group_by)) $group_by = 'no-group';
+    $grouped = mycharts_group_charts($charts, $groupings[$group_by]);
+
     $page = array(
         'title' => __('My Charts'),
         'charts' => $charts,
+        'chart_groups' => $grouped,
         'bymonth' => nbChartsByMonth($id, $is_org, $folder_id),
         'byvis' => nbChartsByType($id, $is_org, $folder_id),
         'bystatus' => nbChartsByStatus($id, $is_org, $folder_id),
