@@ -62,6 +62,8 @@ define(function(require) {
                         if (res.status == 'error') {
                             alert(res.message);
                             curname.text(folder.name);
+                        } else if (res.status == 'ok') {
+                            $('.folders li.active a span').text(new_name);
                         }
                     }).fail(function(err) {
                         alert('API Error');
