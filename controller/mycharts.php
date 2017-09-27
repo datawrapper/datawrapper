@@ -152,7 +152,7 @@ function any_charts($app, $user, $folder_id = false, $org_id = false) {
     $key = $app->request()->params('key');
     $val = $app->request()->params('val');
     if (empty($curPage)) $curPage = 0;
-    $perPage = 48;
+    $perPage = 148;
     $filter = !(empty($key) || empty($val)) ? array($key => $val) : array();
     if ($folder_id !== false) $filter = array_merge($filter, array('folder' => $folder_id));
     if (!empty($q)) $filter['q'] = $q;
