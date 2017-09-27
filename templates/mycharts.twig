@@ -98,7 +98,7 @@
     <div class="gallery span10">
 
         <ul class="thumbnails subfolders">
-            {% for group in preload %}
+            {% for group in preload.folders %}
                 {% if (group.type == 'user' and not current.organization) or (group.type == 'organization' and (group.organization.id == current.organization)) %}
                     {% for folder in group.folders %}
                         {% if folder.parent == current.folder %}
