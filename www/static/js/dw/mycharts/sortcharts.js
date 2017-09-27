@@ -21,6 +21,14 @@ define(function(require) {
                 return function(a, b) {
                     return chart_data[$(a).data('id')].title.localeCompare(chart_data[$(b).data('id')].title);
                 }
+            case 'created_at':
+                return function(a, b) {
+                    return date_compare(chart_data[$(a).data('id')].createdAt, chart_data[$(b).data('id')].createdAt);
+                }
+            case 'published_at':
+                return function(a, b) {
+                    return date_compare(chart_data[$(a).data('id')].publishedAt, chart_data[$(b).data('id')].publishedAt);
+                }
             default:
                 if (twig.globals.current.sort !== '')
                     console.error('undefined sorting criterium: ' + twig.globals.current.sort);
