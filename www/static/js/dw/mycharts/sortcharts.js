@@ -4,11 +4,18 @@ define(function(require) {
         charts,
         chart_data;
 
+    function date_compare(a, b) {
+        var d1 = new Date(a),
+            d2 = new Date(b);
+
+        return d1 > d2 ? -1 : d1 < d2 ? 1 : 0;
+    }
+
     function gen_sort_func() {
         switch (twig.globals.current.sort) {
             case 'modified_at':
                 return function(a, b) {
-                    console.log(a, b);
+                    return date_compare(chart_data[$(a).data('id')].lastModifiedAt, chart_data[$(b).data('id')].lastModifiedAt);
                 };
             case 'title':
                 return function(a, b) {
