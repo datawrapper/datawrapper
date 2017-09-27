@@ -52,25 +52,12 @@ define(function(require) {
         twig.globals.current.sort = qstring_parser(tar.href, 'sort');
 
         sort_charts();
-        set_active_sort();
-    }
-
-    function set_active_sort() {
-        $('.sort-menu li')
-            .removeAttr('class')
-            .each(function(idx, el) {
-                var je = $(el);
-
-                if (qstring_parser(je.find('a').attr('href'), 'sort') == twig.globals.current.sort)
-                    je.addClass('active');
-            });
     }
 
     return function() {
         charts = $('ul.thumbnails').not('.subfolders');
         chart_data = twig.globals.preload.charts;
         sort_charts();
-        set_active_sort();
 
         if (!links_dead) {
             $('.sort-menu a').click(no_reload_sort_click);
