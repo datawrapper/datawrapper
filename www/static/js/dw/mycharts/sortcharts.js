@@ -1,6 +1,7 @@
 define(function(require) {
     var $ = require('jquery'),
         twig = require('./twig_globals'),
+        qstring_parser = require('./qstring_parser'),
         charts,
         chart_data,
         links_dead = false;
@@ -43,25 +44,12 @@ define(function(require) {
         });
     }
 
-    function getQueryVariable(href, variable) {
-        var vars = href.slice(href.lastIndexOf('?') + 1).split('&');
-
-        return vars.reduce(function(old, cur) {
-            if (old)
-                return old;
-            else {
-                var pair = cur.split('=');
-                return (decodeURIComponent(pair[0]) == variable) ? decodeURIComponent(pair[1]) : old;
-            }
-        }, false);
-    }
-
     function no_reload_sort_click(e) {
         var tar = e.target;
 
         e.preventDefault();
         history.replaceState(null, "Sorted Charts", tar.href);
-        twig.globals.current.sort = getQueryVariable(tar.href, 'sort');
+        twig.globals.current.sort = qstring_parser(tar.href, 'sort');
 
         sort_charts();
         set_active_sort();
@@ -73,7 +61,7 @@ define(function(require) {
             .each(function(idx, el) {
                 var je = $(el);
 
-                if (getQueryVariable(je.find('a').attr('href'), 'sort') == twig.globals.current.sort)
+                if (qstring_parser(je.find('a').attr('href'), 'sort') == twig.globals.current.sort)
                     je.addClass('active');
             });
     }
