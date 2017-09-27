@@ -1774,6 +1774,9 @@ body.dw-mycharts #current-folder .dropdown-toggle .im {
   font-size: 10px;
   color: #999;
 }
+body.dw-mycharts span#current-folder-name[contenteditable] {
+  display: inline-block;
+}
 body.dw-mycharts .gallery-filter {
   display: flex;
   margin-bottom: 40px;
