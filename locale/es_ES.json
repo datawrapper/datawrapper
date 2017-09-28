@@ -373,5 +373,11 @@
     "Remove folder": "Remove folder",
     "Rename folder": "Rename folder",
     "Add subfolder": "Add subfolder",
-    "Move selected": "Move selected"
+    "Move selected": "Move selected",
+    "Sort by": "Sort by",
+    "Last edit time": "Last edit time",
+    "Creation time": "Creation time",
+    "Publish time": "Publish time",
+    "Type": "Type",
+    "Status": "Status"
 }

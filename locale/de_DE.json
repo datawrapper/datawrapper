@@ -388,5 +388,11 @@
     "Remove folder": "Ordner entfernen",
     "Rename folder": "Ordner umbenennen",
     "Add subfolder": "Ordner hinzuf\u00fcgen",
-    "Move selected": "Ausgew\u00e4hlte verschieben"
+    "Move selected": "Ausgew\u00e4hlte verschieben",
+    "Sort by": "Sortieren nach",
+    "Last edit time": "Letzte \u00c4nderung",
+    "Creation time": "Erstellung",
+    "Publish time": "Ver\u00f6ffentlichung",
+    "Type": "Typ",
+    "Status": "Status"
 }
