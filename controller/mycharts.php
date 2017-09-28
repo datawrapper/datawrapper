@@ -142,11 +142,7 @@ function mycharts_group_by_type($charts) {
 }
 
 
-/*
- * shows MyChart page for a given user (or organization), which is typically the
- * logged user, but admins can view others MyCharts page, too.
- */
-function any_charts($app, $user, $folder_id = false, $org_id = false) {
+function mycharts_get_user_charts(&$page, $app, $user, $folder_id = false, $org_id = false) {
     $curPage = $app->request()->params('page');
     $q = $app->request()->params('q');
     $key = $app->request()->params('key');
@@ -163,17 +159,11 @@ function any_charts($app, $user, $folder_id = false, $org_id = false) {
         $id = $user->getId();
         $is_org = false;
     }
+    // get list of charts
     $charts =  ChartQuery::create()->getPublicChartsById($id, $is_org, $filter, $curPage * $perPage, $perPage, $app->request()->params('sort'));
     $total = ChartQuery::create()->countPublicChartsById($id, $is_org, $filter);
-    $serialized_charts = array();
 
-    foreach ($charts as $chart) {
-        $chart = $chart->serialize();
-        unset($chart['metadata']);
-        $serialized_charts[$chart['id']] = $chart;
-        unset($serialized_charts[$chart['id']]['id']);
-    }
-
+    // group charts
     $groupings = [
         'no-group' => [
             'all' => [
@@ -199,40 +189,64 @@ function any_charts($app, $user, $folder_id = false, $org_id = false) {
     if (empty($group_by)) $group_by = 'no-group';
     $grouped = mycharts_group_charts($charts, $groupings[$group_by]);
 
-    $page = array(
-        'title' => __('My Charts'),
-        'charts' => $charts,
-        'chart_groups' => $grouped,
-        'bymonth' => nbChartsByMonth($id, $is_org, $folder_id),
-        'byvis' => nbChartsByType($id, $is_org, $folder_id),
-        'bystatus' => nbChartsByStatus($id, $is_org, $folder_id),
-        'key' => $key,
-        'pageClass' => 'dw-mycharts',
-        'val' => $val,
-        'current' => array(
-            'folder' => $folder_id,
-            'organization' => $org_id,
-            'group' => $app->request()->params('group'),
-            'sort' => $app->request()->params('sort'),
-        ),
-        'search_query' => empty($q) ? '' : $q,
-        'mycharts_base' => '/mycharts',
-        'organizations' => list_organizations($user),
-        'preload' => array(
-            'folders' => FolderQuery::create()->getParsableFolders($user),
-            'charts' => $serialized_charts,
-        ),
-    );
+    // save result to page
+    $page['charts'] = $charts;
+    $page['chart_groups'] = $grouped;
+    add_pagination_vars($page, $total, $curPage, $perPage, empty($q) ? '' : '&q='.$q);
+}
 
-    if (DatawrapperSession::getUser()->isAdmin() && $user != DatawrapperSession::getUser()) {
-        $page['user2'] = $user;
-        $page['mycharts_base'] = '/admin/charts/' . $user->getId();
-        $page['all_users'] = UserQuery::create()->filterByDeleted(false)->orderByEmail()->find();
+/*
+ * shows MyChart page for a given user (or organization), which is typically the
+ * logged user, but admins can view others MyCharts page, too.
+ */
+function any_charts($app, $user, $folder_id = false, $org_id = false) {
+
+    $is_xhr = !empty($app->request()->params('xhr'));
+
+    if ($is_xhr) {
+        $page = [];
+    } else {
+        $page = [
+            'title' => __('My Charts'),
+            'pageClass' => 'dw-mycharts',
+            'current' => array(
+                'folder' => $folder_id,
+                'organization' => $org_id,
+                'group' => $app->request()->params('group'),
+                'sort' => $app->request()->params('sort'),
+            ),
+            'search_query' => empty($q) ? '' : $q,
+            'mycharts_base' => '/mycharts',
+            'organizations' => list_organizations($user),
+            'preload' => array(
+                'folders' => FolderQuery::create()->getParsableFolders($user),
+            ),
+        ];
+    }
+
+    mycharts_get_user_charts($page, $app, $user, $folder_id, $org_id);
+
+    if (!$is_xhr) {
+        $serialized_charts = array();
+
+        foreach ($page['charts'] as $chart) {
+            $chart = $chart->serialize();
+            unset($chart['metadata']);
+            $serialized_charts[$chart['id']] = $chart;
+            unset($serialized_charts[$chart['id']]['id']);
+        }
+
+        $page['preload']['charts'] = $serialized_charts;
+
+        if (DatawrapperSession::getUser()->isAdmin() && $user != DatawrapperSession::getUser()) {
+            $page['user2'] = $user;
+            $page['mycharts_base'] = '/admin/charts/' . $user->getId();
+            $page['all_users'] = UserQuery::create()->filterByDeleted(false)->orderByEmail()->find();
+        }
     }
 
     add_header_vars($page, 'mycharts');
-    add_pagination_vars($page, $total, $curPage, $perPage, empty($q) ? '' : '&q='.$q);
-    $app->render('mycharts.twig', $page);
+    $app->render(!$is_xhr ? 'mycharts.twig' : 'mycharts/chart-list.twig', $page);
 }
 
 /*
@@ -273,3 +287,4 @@ $app->get('/admin/charts/:userid/?', function($userid) use ($app) {
         $app->notFound();
     }
 })->conditions(array('userid' => '\d+'));
+
