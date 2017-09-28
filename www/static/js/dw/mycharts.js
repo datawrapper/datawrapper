@@ -62,7 +62,7 @@ define(function(require) {
         multiselection.init();
 
         $('document').ready(function() {
-            get_folders(twig.globals.preload.folders);
+            get_folders(twig.globals.preload);
             set_active_order();
         });
     }

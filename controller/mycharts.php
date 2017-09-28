@@ -230,31 +230,16 @@ function any_charts($app, $user, $folder_id = false, $org_id = false) {
             'search_query' => empty($q) ? '' : $q,
             'mycharts_base' => '/mycharts',
             'organizations' => list_organizations($user),
-            'preload' => array(
-                'folders' => FolderQuery::create()->getParsableFolders($user),
-            ),
+            'preload' => FolderQuery::create()->getParsableFolders($user),
         ];
     }
 
     mycharts_get_user_charts($page, $app, $user, $folder_id, $org_id);
 
-    if (!$is_xhr) {
-        $serialized_charts = array();
-
-        foreach ($page['charts'] as $chart) {
-            $chart = $chart->serialize();
-            unset($chart['metadata']);
-            $serialized_charts[$chart['id']] = $chart;
-            unset($serialized_charts[$chart['id']]['id']);
-        }
-
-        $page['preload']['charts'] = $serialized_charts;
-
-        if (DatawrapperSession::getUser()->isAdmin() && $user != DatawrapperSession::getUser()) {
-            $page['user2'] = $user;
-            $page['mycharts_base'] = '/admin/charts/' . $user->getId();
-            $page['all_users'] = UserQuery::create()->filterByDeleted(false)->orderByEmail()->find();
-        }
+    if (!$is_xhr && (DatawrapperSession::getUser()->isAdmin() && $user != DatawrapperSession::getUser())) {
+        $page['user2'] = $user;
+        $page['mycharts_base'] = '/admin/charts/' . $user->getId();
+        $page['all_users'] = UserQuery::create()->filterByDeleted(false)->orderByEmail()->find();
     }
 
     add_header_vars($page, 'mycharts');
