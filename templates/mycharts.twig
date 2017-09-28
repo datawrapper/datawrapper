@@ -97,31 +97,7 @@
 
     <div class="gallery span10">
 
-        <ul class="thumbnails subfolders">
-            {% for group in preload.folders %}
-                {% if (group.type == 'user' and not current.organization) or (group.type == 'organization' and (group.organization.id == current.organization)) %}
-                    {% for folder in group.folders %}
-                        {% if folder.parent == current.folder %}
-            <li class="span2">
-                            {% if group.type == 'user' %}
-                <a class="thumbnail" href="/mycharts/{{ folder.id }}">
-                            {% else %}
-                <a class="thumbnail" href="/organization/{{ current.organization }}/{{ folder.id }}">
-                            {% endif %}
-                    <i class="im im-folder im-fw"></i> <span>{{ folder.name | striptags }}</span>
-                </a>
-            </li>
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
-            {% endfor %}
-            <li class="span2">
-
-                <a class="thumbnail add-folder" href="#">
-                    <i class="im im-plus-circle im-fw"></i> <span>add folder...</span>
-                </a>
-            </li>
-        </ul>
+        {% include 'mycharts/subfolder-list.twig' %}
 
         <hr></hr>
 
