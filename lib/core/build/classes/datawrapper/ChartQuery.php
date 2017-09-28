@@ -146,9 +146,7 @@ class ChartQuery extends BaseChartQuery {
             case 'published_at': $query->orderByPublishedAt('desc'); break;
             case 'theme': $query->orderByTheme(); break;
             case 'type': $query->orderByType(); break;
-            case 'lastUpdated': $query->orderByLastModifiedAt('desc'); break;
-            case 'modified_at': $query->orderByLastModifiedAt('desc'); break;
-            default: $query->orderByCreatedAt('desc'); break;
+            default: $query->orderByLastModifiedAt('desc'); break;
         }
         $query->filterByLastEditStep(array('min' => 2));
         if (count($filter) > 0) {
