@@ -35,7 +35,6 @@ $app->get('/xhr/home-login', function() use ($app) {
  */
 $app->get('/xhr/:chartid/vis-options', function($id) use ($app) {
     disable_cache($app);
-    
 
     check_chart_writable($id, function($user, $chart) use ($app) {
         $a = $app->request()->params('annotate');
