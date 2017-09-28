@@ -1972,11 +1972,17 @@ body.dw-mycharts .thumbnails.multi-select .thumbnail.checked .dropdown-menu .dup
 body.dw-mycharts .thumbnails.multi-select .thumbnail.checked .dropdown-menu .delete {
   display: none;
 }
-body.dw-mycharts .thumbnails .dropdown-menu .move .selected {
+body.dw-mycharts .thumbnails .dropdown-menu .move .multi-mode {
   display: none;
 }
-body.dw-mycharts .thumbnails.multi-select .dropdown-menu .move .selected {
+body.dw-mycharts .thumbnails .dropdown-menu .move .non-multi {
   display: inline;
+}
+body.dw-mycharts .thumbnails.multi-select .dropdown-menu .move .multi-mode {
+  display: inline;
+}
+body.dw-mycharts .thumbnails.multi-select .dropdown-menu .move .non-multi {
+  display: none;
 }
 body {
   background: #fff;
