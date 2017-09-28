@@ -109,7 +109,6 @@ function mycharts_group_charts($charts_res, $groups) {
 
 function mycharts_group_by_month($charts) {
     $groups = [];
-
     foreach ($charts as $chart) {
         $month = $chart->getLastModifiedAt('Y-m');
         if (!isset($groups[$month])) {
@@ -128,16 +127,20 @@ function mycharts_group_by_type($charts) {
     $groups = [];
 
     foreach ($charts as $chart) {
-        $type = $chart->getType();
+        $id = $chart->getType();
+        $type = DatawrapperVisualization::get($id)['title'];
+        if (empty($type)) continue;
         if (!isset($groups[$type])) {
             $groups[$type] = [
                 'title' => $type,
-                'id' => $type,
+                'id' => $id,
                 'charts' => []
             ];
         }
         $groups[$type]['charts'][] = $chart;
     }
+    // sort groups by type name
+    ksort($groups);
     return $groups;
 }
 
@@ -161,7 +164,8 @@ function mycharts_get_user_charts(&$page, $app, $user, $folder_id = false, $org_
     }
 
     // get list of charts
-    $charts =  ChartQuery::create()->getPublicChartsById($id, $is_org, $filter, $curPage * $perPage, $perPage, $app->request()->params('sort'));
+    $sort_by = $app->request()->params('sort');
+    $charts =  ChartQuery::create()->getPublicChartsById($id, $is_org, $filter, $curPage * $perPage, $perPage, $sort_by);
     $total = ChartQuery::create()->countPublicChartsById($id, $is_org, $filter);
 
     // group charts
@@ -179,7 +183,11 @@ function mycharts_get_user_charts(&$page, $app, $user, $folder_id = false, $org_
             ],
             'draft' => [
                 'title' => __('drafts'),
-                'filter' => function($chart) { return $chart->getLastEditStep() <= 3; }
+                'filter' => function($chart) { return $chart->getLastEditStep() == 3; }
+            ],
+            'just-data' => [
+                'title' => __('just data'),
+                'filter' => function($chart) { return $chart->getLastEditStep() <= 2; }
             ],
         ],
         'month' => mycharts_group_by_month($charts),
@@ -189,7 +197,9 @@ function mycharts_get_user_charts(&$page, $app, $user, $folder_id = false, $org_
     $group_by = $app->request()->params('group');
     if (empty($group_by)) {
         $group_by = 'no-group';
-        if ($total > 40 && $sort_by == 'modified_at') $group_by = 'month';
+        if (($sort_by == 'modified_at' || empty($sort_by)) && $total > 40) $group_by = 'month';
+        if ($sort_by == 'type') $group_by = 'type';
+        if ($sort_by == 'status') $group_by = 'status';
     }
     $grouped = mycharts_group_charts($charts, $groupings[$group_by]);
 

@@ -25,10 +25,12 @@
                 <li class="active"><a href="?sort=created_at&group={{ current.group }}">Creation time</a></li>
                 <li><a href="?sort=published_at&group={{ current.group }}">Publish time</a></li>
                 <li><a href="?sort=title&group={{ current.group }}">Title</a></li>
+                <li><a href="?sort=type&group={{ current.group }}">Type</a></li>
+                <li><a href="?sort=status&group={{ current.group }}">Status</a></li>
             </ul>
         </div>
 
-        <div class="btn-group">
+        {# <div class="btn-group">
             <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
                 {% trans "Group by" %}
                 <span class="caret"></span>
@@ -39,7 +41,7 @@
                 <li><a href="?sort={{ current.sort }}&group=type">Visualization type</a></li>
                 <li><a href="?sort={{ current.sort }}&group=month">Month</a></li>
             </ul>
-        </div>
+        </div> #}
 
         &nbsp;<input name="q" class="search-query input-medium" type="text" placeholder="{% trans "Search" %}" value="{{ search_query }}" />
     </div>
