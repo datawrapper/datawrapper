@@ -110,7 +110,9 @@ function mycharts_group_charts($charts_res, $groups) {
 function mycharts_group_by_month($charts) {
     $groups = [];
     foreach ($charts as $chart) {
-        $month = $chart->getLastModifiedAt('Y-m');
+        $ym = $chart->getLastModifiedAt('Y-m');
+        $ts = strtotime($ym.'-01');
+        $month = strftime('%B, %Y', $ts);
         if (!isset($groups[$month])) {
             $groups[$month] = [
                 'title' => $month,
