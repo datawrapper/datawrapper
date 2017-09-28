@@ -14,6 +14,13 @@ define(function(require) {
     function do_it(twig) {
         chart_functions(twig.globals.user2);
 
+        $('ul.sort-menu li a')
+            .on('click', function(evt) {
+                evt.preventDefault();
+                $('.mycharts-chart-list')
+                    .load(location.pathname+$(evt.target).attr('href')+'&xhr=1');
+            });
+
         function remove_empty_folder_move_targets() {
             $('#current-folder .move-org').each(function(idx, move_org){
                 var list = $(move_org);
@@ -62,5 +69,5 @@ define(function(require) {
         var twig = require('./mycharts/twig_globals');
         twig.init(obj);
         do_it(twig);
-    }
+    };
 });
