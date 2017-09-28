@@ -17,8 +17,10 @@ define(function(require) {
         $('ul.sort-menu li a')
             .on('click', function(evt) {
                 evt.preventDefault();
+                var path = window.location.pathname+$(evt.target).attr('href');
                 $('.mycharts-chart-list')
-                    .load(location.pathname+$(evt.target).attr('href')+'&xhr=1');
+                    .load(path+'&xhr=1');
+                window.history.replaceState({}, '', path);
             });
 
         function remove_empty_folder_move_targets() {

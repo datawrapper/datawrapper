@@ -196,13 +196,10 @@ function mycharts_get_user_charts(&$page, $app, $user, $folder_id = false, $org_
         'type' => mycharts_group_by_type($charts),
     ];
 
-    $group_by = $app->request()->params('group');
-    if (empty($group_by)) {
-        $group_by = 'no-group';
-        if (($sort_by == 'modified_at' || empty($sort_by)) && $total > 40) $group_by = 'month';
-        if ($sort_by == 'type') $group_by = 'type';
-        if ($sort_by == 'status') $group_by = 'status';
-    }
+    $group_by = 'no-group';
+    if (($sort_by == 'modified_at' || empty($sort_by)) && $total > 40) $group_by = 'month';
+    if ($sort_by == 'type') $group_by = 'type';
+    if ($sort_by == 'status') $group_by = 'status';
     $grouped = mycharts_group_charts($charts, $groupings[$group_by]);
 
     // save result to page
@@ -228,7 +225,6 @@ function any_charts($app, $user, $folder_id = false, $org_id = false) {
             'current' => array(
                 'folder' => $folder_id,
                 'organization' => $org_id,
-                'group' => $app->request()->params('group'),
                 'sort' => $app->request()->params('sort'),
             ),
             'search_query' => empty($q) ? '' : $q,
