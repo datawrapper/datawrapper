@@ -25,50 +25,49 @@
                     </div>
 
                     <div class="btn-group">
-                       <button class="btn dropdown-toggle" data-toggle="dropdown">
-                           <i class="fa fa-caret-down"></i>
-                       </button>
-                       <ul class="dropdown-menu">
-                           {% if user2 %}
-                           <li>
+                        <button class="btn dropdown-toggle" data-toggle="dropdown">
+                            <i class="fa fa-caret-down"></i>
+                        </button>
+                        <ul class="dropdown-menu">
+                            {% if user2 %}
+                            <li>
                                 <a class="edit" href="#"><i class="im im-edit"></i> {% trans "Edit" %}</a>
                             </li>
-                           {% endif %}
-                           <li>
+                            {% endif %}
+                            <li>
                                 <a class="duplicate" href="#"><i class="im im-copy"></i> {% trans "Duplicate" %}</a>
                             </li>
-                           {# <li><a href="/chart/{{ chart.id }}/static?w=700&amp;h=490&amp;f=pdf&amp;padding=20"><i class="icon-download"></i> {% trans "Save as PDF" %}</a></li>
-                           <li class="divider"></li> #}
-                           <li class="dropdown-submenu move">
-                               <a tabindex="-1" href="#">
+                            {# <li><a href="/chart/{{ chart.id }}/static?w=700&amp;h=490&amp;f=pdf&amp;padding=20"><i class="icon-download"></i> {% trans "Save as PDF" %}</a></li>
+                            <li class="divider"></li> #}
+                            <li class="dropdown-submenu move">
+                                <a tabindex="-1" href="#">
                                     <i class="im im-folder"></i> {% trans "Move" %}
                                     <span class="selected"> {% trans "selected" %}</span>
                                 </a>
-                               <ul class="dropdown-menu folder-list">
-                                   <li class="folder-list-separator"></li>
-                                   {% for org in organizations %}
-                                   <li class="dropdown-submenu">
-                                       <a tabindex="-1" href="#">
+                                <ul class="dropdown-menu folder-list">
+                                    <li class="folder-list-separator"></li>
+                                    {% for org in organizations %}
+                                    <li class="dropdown-submenu">
+                                        <a tabindex="-1" href="#">
                                             <i class="im im-folder"></i> {{ org.id }}
                                         </a>
-                                       <ul class="dropdown-menu folder-list-{{ org.tag }}">
-                                       </ul>
-                                   </li>
-                                   {% endfor %}
-                               </ul>
-                           </li>
-                           <li class="divider"></li>
-                           <li>
+                                        <ul class="dropdown-menu folder-list-{{ org.tag }}"></ul>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
                                 <a class="delete" href="#"><i class="im im-trash-can"></i> {% trans "Delete" %}</a>
                             </li>
-                       <!-- dropdown menu links -->
-                       </ul>
+                        <!-- dropdown menu links -->
+                        </ul>
                     </div>
 
                  </div>
 
                     {# <p>{% trans "Created" %}: {{ chart.createdAt|date() }}<br/>
-                     {% trans "Layout" %}: {{ chart.theme }} </p> #}
+                    {% trans "Layout" %}: {{ chart.theme }} </p> #}
 
             </li>
             {% endfor %}
