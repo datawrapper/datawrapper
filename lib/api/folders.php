@@ -209,9 +209,12 @@
         if (!$user->isLoggedIn())
             return error('access-denied', 'you must be logged in to create a folder');
         $payload = json_decode($app->request()->getBody(), true);
-        $org = OrganizationQuery::create()->findPk($org_id);
-        if (!$org) return error('404', 'org not found');
-        if (!$org->hasUser($user)) return error('404', 'no access');
+        // make sure personal root is ok, too
+        if ($org_id) {
+            $org = OrganizationQuery::create()->findPk($org_id);
+            if (!$org) return error('404', 'org not found');
+            if (!$org->hasUser($user)) return error('404', 'no access');
+        }
         if (empty($payload['add'])) return error('no-charts', 'must provide ids of charts to move');
         $update = [
             'InFolder' => null,
@@ -220,6 +223,7 @@
         ChartQuery::create()->filterById($payload['add'])
             ->filterByUserAccess($user)
             ->update($update);
+        ok();
     });
 
 })();
