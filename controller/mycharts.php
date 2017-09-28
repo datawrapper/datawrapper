@@ -159,10 +159,9 @@ function mycharts_get_user_charts(&$page, $app, $user, $folder_id = false, $org_
         $id = $user->getId();
         $is_org = false;
     }
-    $sort_by = $app->request()->params('sort');
-    if (empty($sort_by)) $sort_by = 'modified_at';
+
     // get list of charts
-    $charts =  ChartQuery::create()->getPublicChartsById($id, $is_org, $filter, $curPage * $perPage, $perPage, $sort_by);
+    $charts =  ChartQuery::create()->getPublicChartsById($id, $is_org, $filter, $curPage * $perPage, $perPage, $app->request()->params('sort'));
     $total = ChartQuery::create()->countPublicChartsById($id, $is_org, $filter);
 
     // group charts
