@@ -187,7 +187,10 @@ function mycharts_get_user_charts(&$page, $app, $user, $folder_id = false, $org_
     ];
 
     $group_by = $app->request()->params('group');
-    if (empty($group_by)) $group_by = 'no-group';
+    if (empty($group_by)) {
+        $group_by = 'no-group';
+        if ($total > 40 && $sort_by == 'modified_at') $group_by = 'month';
+    }
     $grouped = mycharts_group_charts($charts, $groupings[$group_by]);
 
     // save result to page
