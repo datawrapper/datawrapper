@@ -10,6 +10,7 @@ define(function(require) {
         add_chart_move = require('./mycharts/add_chart_move'),
         add_folder_helper = require('./mycharts/add_folder'),
         treelist = require('./mycharts/treelist'),
+        qstring_parser = require('./mycharts/qstring_parser'),
         set_active_order = require('./mycharts/set_active_order');
 
     function do_it(twig) {
@@ -19,8 +20,10 @@ define(function(require) {
             .on('click', function(evt) {
                 evt.preventDefault();
                 var path = window.location.pathname+$(evt.target).attr('href');
+
+                twig.globals.current.sort = qstring_parser(path, 'sort');
                 $('.mycharts-chart-list')
-                    .load(path+'&xhr=1');
+                    .load(path+'&xhr=1', set_active_order);
                 window.history.replaceState({}, '', path);
             });
 

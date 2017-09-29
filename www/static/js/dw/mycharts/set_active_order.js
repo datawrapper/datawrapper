@@ -16,6 +16,6 @@ define(function(require) {
 
     return function() {
         set_active('sort');
-        set_active('group');
+        // set_active('group');
     };
 });
