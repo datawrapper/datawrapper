@@ -64,7 +64,7 @@
 
 <div class="folders-and-gallery row">
     <div class="folders span2">
-        <ul>
+        <ul style="position:sticky;top:50px">
             <li {% if not current.folder and not current.organization %}class="active"{% endif %}><a id="user-root" href="{{ mycharts_base }}">
                 <i class="im im-user-male"></i>
                 <span>{% trans "My Charts" %}</span></a>
