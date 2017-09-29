@@ -149,9 +149,11 @@ function mycharts_group_by_type($charts) {
 function mycharts_group_by_folder($charts, $user) {
     $groups = [];
     $folder_lookup = [];
+    $folder_link = [];
     foreach (FolderQuery::create()->getUserFolders($user) as $group) {
         foreach ($group['folders'] as $folder) {
             $folder_lookup[$folder->getId()] = $folder;
+            $folder_link[$folder->getId()] = ($group['type'] == 'user' ? '/mycharts/' : '/organization/'.$group['organization']->getId().'/') . $folder->getId(); 
         }
     };
     $folder_paths = [];
@@ -171,9 +173,9 @@ function mycharts_group_by_folder($charts, $user) {
     }
 
     foreach ($charts as $chart) {
-        $parent = $chart->getOrganizationId();
-        if (empty($parent)) $parent = 'MyCharts';
-        else $parent = $org_lookup[$parent];
+        $org_id = $chart->getOrganizationId();
+        if (empty($org_id)) $parent = 'MyCharts';
+        else $parent = $org_lookup[$org_id];
         $folder = $chart->getInFolder();
         $path = $parent;
         if (!empty($folder)) {
@@ -183,6 +185,7 @@ function mycharts_group_by_folder($charts, $user) {
             $groups[$path] = [
                 'title' => $path,
                 'id' => $folder,
+                'link' => empty($folder) ? (empty($org_id) ? '/mycharts/': '/organization/'.$org_id.'/') : $folder_link[$folder],
                 'charts' => []
             ];
         }

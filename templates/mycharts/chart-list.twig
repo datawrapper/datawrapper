@@ -2,7 +2,7 @@
 
     {% for group in chart_groups %}
         {% if group.title %}
-            <h3>{{ group.title }}</h3>
+            <h3>{% if group.link %}<a href="{{ group.link }}">{% endif %}{{ group.title }}{% if group.link %}</a>{% endif %}</h3>
         {% endif %}
 
         <ul class="thumbnails">
