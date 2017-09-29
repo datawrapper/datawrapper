@@ -1832,7 +1832,7 @@ body.dw-mycharts .folders li a {
   cursor: pointer;
   margin-right: 1em;
 }
-body.dw-mycharts .folders ul.folder-list {
+body.dw-mycharts .folders ul.folders-left {
   position: sticky;
   top: 50px;
 }
