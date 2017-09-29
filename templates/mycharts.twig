@@ -14,7 +14,9 @@
 </div>
 
 <div class="folder-line">
-    <div class="mycharts-filter pull-right">
+    <div class="mycharts-filter pull-right" style="position:relative">
+        <span style="position:absolute; top:9px;left:10px;color:#bbb" class="im im-magnifier"></span><input name="q" style="padding-left:30px;border-radius: 20px;" class="search-query input-large" type="text" placeholder="{% trans "Search" %}" value="{{ search_query }}" />
+        &nbsp;
         <div class="btn-group">
             <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
                 {% trans "mycharts / Sort by" %}
@@ -29,21 +31,6 @@
                 <li><a href="?sort=status">{% trans "mycharts / Status" %}</a></li>
             </ul>
         </div>
-
-        {# <div class="btn-group">
-            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                {% trans "Group by" %}
-                <span class="caret"></span>
-            </a>
-            <ul class="dropdown-menu group-menu">
-                <li class="active"><a href="?sort={{ current.sort }}&group=">(no grouping)</a></li>
-                <li><a href="?sort={{ current.sort }}&group=status">Status (published/draft)</a></li>
-                <li><a href="?sort={{ current.sort }}&group=type">Visualization type</a></li>
-                <li><a href="?sort={{ current.sort }}&group=month">Month</a></li>
-            </ul>
-        </div> #}
-
-        &nbsp;<input name="q" class="search-query input-medium" type="text" placeholder="{% trans "Search" %}" value="{{ search_query }}" />
     </div>
     <h1 id="current-folder">
         <a id="current-root" href="{{ mycharts_base }}">
