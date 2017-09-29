@@ -1761,12 +1761,20 @@ html body.dw-mycharts .navbar .navbar-inner {
 body.dw-mycharts {
   background: #f3f3f3;
 }
+body.dw-mycharts .pagination-right {
+  position: relative;
+  top: -10px;
+  margin-left: 10px;
+}
 body.dw-mycharts .mycharts-chart-list > h3 {
   font-weight: 400;
   color: #777;
   margin: 10px 0 20px;
   font-size: 21px;
   line-height: 26px;
+}
+body.dw-mycharts .mycharts-chart-list > h3 a {
+  color: #777;
 }
 body.dw-mycharts .im {
   font: normal normal normal 16px/1 'iconmonstr-iconic-font';
