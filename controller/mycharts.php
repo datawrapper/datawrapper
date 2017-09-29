@@ -146,8 +146,54 @@ function mycharts_group_by_type($charts) {
     return $groups;
 }
 
+function mycharts_group_by_folder($charts, $user) {
+    $groups = [];
+    $folder_lookup = [];
+    foreach (FolderQuery::create()->getUserFolders($user) as $group) {
+        foreach ($group['folders'] as $folder) {
+            $folder_lookup[$folder->getId()] = $folder;
+        }
+    };
+    $folder_paths = [];
+    foreach ($folder_lookup as $id => $folder) {
+        $path = $folder->getFolderName();
+        $pid = $folder->getParentId();
+        while (!empty($pid)) {
+            $folder = $folder_lookup[$pid];
+            $path = $folder->getFolderName() .' / '.$path;
+            $pid = $folder->getParentId();
+        }
+        $folder_paths[$id] = $path;
+    }
+    $org_lookup = [];
+    foreach ($user->getOrganizations() as $org) {
+        $org_lookup[$org->getId()] = $org->getName();
+    }
 
-function mycharts_get_user_charts(&$page, $app, $user, $folder_id = false, $org_id = false) {
+    foreach ($charts as $chart) {
+        $parent = $chart->getOrganizationId();
+        if (empty($parent)) $parent = 'MyCharts';
+        else $parent = $org_lookup[$parent];
+        $folder = $chart->getInFolder();
+        $path = $parent;
+        if (!empty($folder)) {
+            $path .= ' / '.$folder_paths[$folder];
+        }
+        if (!isset($groups[$path])) {
+            $groups[$path] = [
+                'title' => $path,
+                'id' => $folder,
+                'charts' => []
+            ];
+        }
+        $groups[$path]['charts'][] = $chart;
+    }
+    ksort($groups);
+    return $groups;
+}
+
+
+function mycharts_get_user_charts(&$page, $app, $user, $folder_id = false, $org_id = false, $query = false) {
     $curPage = $app->request()->params('page');
     $q = $app->request()->params('q');
     $key = $app->request()->params('key');
@@ -156,8 +202,12 @@ function mycharts_get_user_charts(&$page, $app, $user, $folder_id = false, $org_
     $perPage = 148;
     $filter = !(empty($key) || empty($val)) ? array($key => $val) : array();
     if ($folder_id !== false) $filter = array_merge($filter, array('folder' => $folder_id));
-    if (!empty($q)) $filter['q'] = $q;
-    if ($org_id) {
+    if (!empty($q)) {
+        unset($filter['folder']);
+        $filter['q'] = $q;
+    }
+
+    if ($org_id && empty($filter['q'])) {
         $id = $org_id;
         $is_org = true;
     } else {
@@ -194,12 +244,14 @@ function mycharts_get_user_charts(&$page, $app, $user, $folder_id = false, $org_
         ],
         'month' => mycharts_group_by_month($charts),
         'type' => mycharts_group_by_type($charts),
+        'folder' => mycharts_group_by_folder($charts, $user),
     ];
 
     $group_by = 'no-group';
-    if (($sort_by == 'modified_at' || empty($sort_by)) && $total > 40) $group_by = 'month';
-    if ($sort_by == 'type') $group_by = 'type';
-    if ($sort_by == 'status') $group_by = 'status';
+    if (!empty($filter['q'])) $group_by = 'folder';
+    else if (($sort_by == 'modified_at' || empty($sort_by)) && $total > 40) $group_by = 'month';
+    else if ($sort_by == 'type') $group_by = 'type';
+    else if ($sort_by == 'status') $group_by = 'status';
     $grouped = mycharts_group_charts($charts, $groupings[$group_by]);
 
     // save result to page

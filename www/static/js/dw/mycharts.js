@@ -1,6 +1,7 @@
 define(function(require) {
 
     var $ = require('jquery'),
+        _ = require('underscore'),
         chart_functions = require('./mycharts/generic-chart-functions'),
         treeyfy = require('./mycharts/treeyfy'),
         multiselection = require('./mycharts/multiselection'),
@@ -22,6 +23,12 @@ define(function(require) {
                     .load(path+'&xhr=1');
                 window.history.replaceState({}, '', path);
             });
+
+        var q = $('.search-query')
+            .on('keyup', _.throttle(function() {
+                var path = window.location.pathname+'?q='+q.val().trim();
+                $('.mycharts-chart-list').load(path+'&xhr=1');
+            }, 1000));
 
         function remove_empty_folder_move_targets() {
             $('#current-folder .move-org').each(function(idx, move_org){

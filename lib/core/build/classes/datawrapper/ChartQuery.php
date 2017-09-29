@@ -131,16 +131,33 @@ class ChartQuery extends BaseChartQuery {
     /*
      * My Charts
      */
-
     private function publicChartsByIdQuery($id, $org, $filter, $order='date') {
-        if ($org) {
-            $query = $this->filterByOrganizationId($id)
-                ->filterByDeleted(false);
+        if (isset($filter['q'])) {
+            // search everywhere in user charts and org charts
+            $user = UserQuery::create()->findPk($id);
+            $conditions = ['user'];
+            $query = $this->condition('is-user', 'Chart.AuthorId = ?', $user->getId())
+                ->condition('no-org', 'chart.organization_id is NULL')
+                ->combine(['is-user', 'no-org'], 'and', 'user');
+            $orgs = [];
+            foreach ($user->getOrganizations() as $org) {
+                $query = $query->condition('org-'.$org->getId(), 'Chart.OrganizationId = ?', $org->getId());
+                $orgs[] = $org->getId();
+                $conditions[] = 'org-'.$org->getId();
+            }
+            $query = $query->where($conditions, 'or');
+
         } else {
-            $query = $this->filterByAuthorId($id)
-                ->filterByOrganizationId(null)
-                ->filterByDeleted(false);
+            if ($org) {
+                $query = $this->filterByOrganizationId($id)
+                    ->filterByDeleted(false);
+            } else {
+                $query = $this->filterByAuthorId($id)
+                    ->filterByOrganizationId(null)
+                    ->filterByDeleted(false);
+            }
         }
+
         switch ($order) {
             case 'title': $query->orderByTitle(); break;
             case 'published_at': $query->orderByPublishedAt('desc'); break;
