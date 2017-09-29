@@ -10,28 +10,10 @@ define(function(require) {
         add_chart_move = require('./mycharts/add_chart_move'),
         add_folder_helper = require('./mycharts/add_folder'),
         treelist = require('./mycharts/treelist'),
-        qstring_parser = require('./mycharts/qstring_parser'),
-        set_active_order = require('./mycharts/set_active_order');
+        sort_order_and_search = require('./mycharts/sort_order_and_search');
 
     function do_it(twig) {
         chart_functions(twig.globals.user2);
-
-        $('ul.sort-menu li a')
-            .on('click', function(evt) {
-                evt.preventDefault();
-                var path = window.location.pathname+$(evt.target).attr('href');
-
-                twig.globals.current.sort = qstring_parser(path, 'sort');
-                $('.mycharts-chart-list')
-                    .load(path+'&xhr=1', set_active_order);
-                window.history.replaceState({}, '', path);
-            });
-
-        var q = $('.search-query')
-            .on('keyup', _.throttle(function() {
-                var path = window.location.pathname+'?q='+q.val().trim();
-                $('.mycharts-chart-list').load(path+'&xhr=1');
-            }, 1000));
 
         function remove_empty_folder_move_targets() {
             $('#current-folder .move-org').each(function(idx, move_org){
@@ -73,7 +55,7 @@ define(function(require) {
 
         $('document').ready(function() {
             get_folders(twig.globals.preload);
-            set_active_order();
+            sort_order_and_search();
         });
     }
 
