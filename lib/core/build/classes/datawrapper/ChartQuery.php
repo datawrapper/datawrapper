@@ -133,7 +133,8 @@ class ChartQuery extends BaseChartQuery {
      */
     private function publicChartsByIdQuery($id, $org, $filter, $order='date') {
         if (isset($filter['q'])) {
-            // search everywhere in user charts and org charts
+            // this is a special hack for the mycharts search, where
+            // we want to search accross all charts a user has access to
             $user = UserQuery::create()->findPk($id);
             $conditions = ['user'];
             $query = $this->condition('is-user', 'Chart.AuthorId = ?', $user->getId())
