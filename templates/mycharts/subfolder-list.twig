@@ -1,5 +1,5 @@
 <ul class="thumbnails subfolders">
-    {% for group in preload.folders %}
+    {% for group in preload %}
         {% if (group.type == 'user' and not current.organization) or (group.type == 'organization' and (group.organization.id == current.organization)) %}
             {% for folder in group.folders %}
                 {% if folder.parent == current.folder %}
