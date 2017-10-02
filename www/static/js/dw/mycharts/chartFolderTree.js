@@ -71,13 +71,18 @@ define(function(require) {
             console.log(this.tree, this.list);
         },
         getPathToFolder: function(f_id) {
-            return this.list[f_id].path_info.strings;
+            return (typeof this.list[f_id] !== "undefined") ? this.list[f_id].path_info.strings : false;
         },
         getIdsToFolder: function(f_id) {
-            return this.list[f_id].path_info.ids;
+            return (typeof this.list[f_id] !== "undefined") ? this.list[f_id].path_info.ids : false;
         },
         getSubFolders: function(f_id) {
-            return this.list[f_id].folder.sub;
+            return (typeof this.list[f_id] !== "undefined") ? this.list[f_id].folder.sub : false;
+        },
+        getRootSubFolders: function(org_id) {
+            return this.tree.filter(function(group) {
+                return (group.organization) ? (group.organization.id === org_id) : (group.organization === org_id);
+            })[0].folders;
         }
     };
 
