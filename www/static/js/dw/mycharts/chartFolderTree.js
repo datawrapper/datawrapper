@@ -70,6 +70,9 @@ define(function(require) {
         debugTree: function() {
             console.log(this.tree, this.list);
         },
+        getFolderById: function(f_id) {
+            return (typeof this.list[f_id] !== "undefined") ? this.list[f_id].folder : false;
+        },
         getPathToFolder: function(f_id) {
             return (typeof this.list[f_id] !== "undefined") ? this.list[f_id].path_info.strings : false;
         },
