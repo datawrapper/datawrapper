@@ -71,13 +71,13 @@ define(function(require) {
             console.log(this.tree, this.list);
         },
         getPathToFolder: function(f_id) {
-            return this.list[f_id].strings;
+            return this.list[f_id].path_info.strings;
         },
         getIdsToFolder: function(f_id) {
-            return this.list[f_id].ids;
+            return this.list[f_id].path_info.ids;
         },
         getSubFolders: function(f_id) {
-            return this.list[f_id].sub;
+            return this.list[f_id].folder.sub;
         }
     };
 
