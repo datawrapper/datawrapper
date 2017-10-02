@@ -81,8 +81,8 @@ define(function(require) {
         $('#current-folder-name').html(dw.utils.purifyHtml(cft.getFolderById(id.folder).name, ''));
     }
 
-    function set_click() {
-        $('ul.folders-left li a')
+    function set_click(selector) {
+        $(selector)
             .on('click', function(evt) {
                 var path = $(evt.currentTarget).attr('href');
                 evt.preventDefault();
@@ -96,12 +96,16 @@ define(function(require) {
                         set_active_folder(tar);
                         repaint_subfolders(tar);
                         repaint_breadcrumb(tar);
+                        set_click('#folder-sequence a');
+                        set_click('ul.subfolders a');
                     });
             });
     }
 
     return function() {
         cft = window['ChartFolderTree'];
-        set_click();
+        set_click('ul.folders-left li a');
+        set_click('#folder-sequence a');
+        set_click('ul.subfolders a');
     }
 });
