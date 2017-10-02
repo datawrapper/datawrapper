@@ -1,11 +1,11 @@
 define(function(require) {
     var ChartFolderTree = function(raw_folders) {
         this.tree = genTree(raw_folders);
-        // this.list = genList(this.tree);
+        this.list = genList();
     }
 
     function genTree(raw) {
-        raw.map(function(group) {
+        raw.forEach(function(group) {
             if (group.type === "user")
                 group.organization = false;
             delete(group.type);
@@ -32,12 +32,46 @@ define(function(require) {
         return tree;
     }
 
+    function genList() {
+        var list = [];
+
+        function traverse(folder, path_obj) {
+            if (folder.sub) {
+                var new_path_obj = {
+                    strings: path_obj.strings.concat(folder.name),
+                    ids: path_obj.ids.concat(folder.id)
+                }
+                folder.sub.forEach(function(sub_folder) {
+                    traverse(sub_folder, new_path_obj);
+                });
+            }
+            list[folder.id] = {
+                folder: folder,
+                path_info: path_obj
+            };
+        }
+
+        this.tree.forEach(function(group) {
+            group.folders.forEach(function(folder) {
+                traverse(folder, {
+                    strings: [],
+                    ids: []
+                });
+            });
+        });
+
+        return list;
+    }
+
     ChartFolderTree.prototype = {
         getLegacyTree: function() {
             return this.tree;
         },
         debugTree: function() {
-            console.log(this.tree);
+            console.log(this.tree, this.list);
+        },
+        getFolderInfo(f_id) {
+            return this.list[f_id];
         }
     };
 
