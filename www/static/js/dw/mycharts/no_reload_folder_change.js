@@ -40,8 +40,17 @@ define(function(require) {
     }
 
     function set_active_folder(tar) {
-        // FIXME: bugged for click on breadcrumb root
         $('ul.folders-left li.active').removeAttr('class');
+        if (tar.attr('id') == 'current-root') {
+            var id = link_reader(tar.attr('href')),
+                org_tag = (id.org) ? '-' + id.org.replace(' ','-').replace(/[^a-zA-Z0-9-]/g,'') : false;
+            console.log(id, org_tag);
+            if (org_tag) {
+                $('#org-root' + org_tag).parent().addClass('active');
+            } else {
+                $('#user-root').parent().addClass('active');
+            }
+        }
         tar.parent().addClass('active');
     }
 
