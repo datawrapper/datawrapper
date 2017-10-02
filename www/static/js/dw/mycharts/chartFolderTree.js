@@ -70,8 +70,14 @@ define(function(require) {
         debugTree: function() {
             console.log(this.tree, this.list);
         },
-        getFolderInfo(f_id) {
-            return this.list[f_id];
+        getPathToFolder: function(f_id) {
+            return this.list[f_id].strings;
+        },
+        getIdsToFolder: function(f_id) {
+            return this.list[f_id].ids;
+        },
+        getSubFolders: function(f_id) {
+            return this.list[f_id].sub;
         }
     };
 
