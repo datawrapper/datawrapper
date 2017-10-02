@@ -36,12 +36,15 @@ define(function(require) {
         }
 
         function get_folders(raw_folders) {
-            var cft = new chartFolderTree(raw_folders),
-                walked_tree = [],
-                cleaned_tree;
+            var cft, cleaned_tree,
+                walked_tree = [];
+
+            // most likely this will move back to the template without require → make it global
+            window['ChartFolderTree'] = new chartFolderTree(raw_folders);
+            cft = window['ChartFolderTree'];
+            cft.debugTree();
 
             cleaned_tree = cft.getLegacyTree();
-
             cleaned_tree.forEach(function(folder_obj) {
                 walked_tree.push(treelist(folder_obj));
             });
