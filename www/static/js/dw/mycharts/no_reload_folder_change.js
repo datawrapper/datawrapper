@@ -40,6 +40,7 @@ define(function(require) {
     }
 
     function set_active_folder(tar) {
+        // FIXME: bugged for click on breadcrumb root
         $('ul.folders-left li.active').removeAttr('class');
         tar.parent().addClass('active');
     }
@@ -65,16 +66,27 @@ define(function(require) {
     function repaint_breadcrumb(tar) {
         var id = link_reader(tar.attr('href')),
             line = $('#folder-sequence'),
-            sep = '<span class="sep">›</span>';
+            sep = '<span class="sep">›</span>',
+            cur_org_name = cft.getOrgNameById(id.org);
 
         line.empty();
+        $('#current-folder-name').empty();
+        $('#current-root').attr('href', (id.org) ? '/organization/' + id.org : twig.globals.strings.mycharts_base);
 
+        if (!cur_org_name) {
+            // this is rediculous we don't have this string localized in JS
+            cur_org_name = $('#user-root span').not('.chart-count').text();
+            cur_org_name = cur_org_name.slice(0, cur_org_name.lastIndexOf('(')) ;
+        }
+        $('#current-root').text(cur_org_name);
+
+        if (!id.folder) return;
         cft.getIdsToFolder(id.folder).forEach(function(id) {
             var a = document.createElement('a'),
                 folder = cft.getFolderById(id);
 
             a.innerText = dw.utils.purifyHtml(folder.name, '');
-            a.setAttribute('href', (folder.organization) ? '/organization/' + folder.organization.id + '/' + folder.id : twig.globals.strings.mycharts_base + '/' + folder.id);
+            a.setAttribute('href', (folder.organization) ? '/organization/' + folder.organization + '/' + folder.id : twig.globals.strings.mycharts_base + '/' + folder.id);
             line.append(sep, a);
         });
         line.append(sep);
@@ -104,6 +116,7 @@ define(function(require) {
 
     return function() {
         cft = window['ChartFolderTree'];
+        set_click('#current-root');
         set_click('ul.folders-left li a');
         set_click('#folder-sequence a');
         set_click('ul.subfolders a');
