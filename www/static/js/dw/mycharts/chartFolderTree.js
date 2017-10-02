@@ -77,12 +77,14 @@ define(function(require) {
             return (typeof this.list[f_id] !== "undefined") ? this.list[f_id].path_info.ids : false;
         },
         getSubFolders: function(f_id) {
-            return (typeof this.list[f_id] !== "undefined") ? this.list[f_id].folder.sub : false;
+            var subfolders = (typeof this.list[f_id] !== "undefined") ? this.list[f_id].folder.sub : false;
+            return (subfolders) ? subfolders : [];
         },
         getRootSubFolders: function(org_id) {
-            return this.tree.filter(function(group) {
+            var subfolders = this.tree.filter(function(group) {
                 return (group.organization) ? (group.organization.id === org_id) : (group.organization === org_id);
             })[0].folders;
+            return (subfolders) ? subfolders : [];
         }
     };
 
