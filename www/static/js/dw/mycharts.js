@@ -3,7 +3,7 @@ define(function(require) {
     var $ = require('jquery'),
         _ = require('underscore'),
         chart_functions = require('./mycharts/generic-chart-functions'),
-        treeyfy = require('./mycharts/treeyfy'),
+        chartFolderTree = require('./mycharts/chartFolderTree'),
         multiselection = require('./mycharts/multiselection'),
         handler = require('./mycharts/handler'),
         build_folder_2_folder_movelinks = require('./mycharts/folder_2_folder'),
@@ -35,11 +35,12 @@ define(function(require) {
             }
         }
 
-        function get_folders(tree) {
-            var walked_tree = [],
+        function get_folders(raw_folders) {
+            var cft = new chartFolderTree(raw_folders),
+                walked_tree = [],
                 cleaned_tree;
 
-            cleaned_tree = treeyfy(tree);
+            cleaned_tree = cft.getLegacyTree();
 
             cleaned_tree.forEach(function(folder_obj) {
                 walked_tree.push(treelist(folder_obj));

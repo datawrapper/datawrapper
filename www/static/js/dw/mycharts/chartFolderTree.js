@@ -1,13 +1,17 @@
 define(function(require) {
-    return function(tree) {
-        tree.map(function(group) {
+    var ChartFolderTree = function(raw_folders) {
+        this.tree = genTree(raw_folders);
+        // this.list = genList(this.tree);
+    }
+
+    function genTree(raw) {
+        raw.map(function(group) {
             if (group.type === "user")
                 group.organization = false;
             delete(group.type);
             group.folders.forEach(function(folder) {
                 delete(folder.type);
                 delete(folder.user);
-                delete(folder.organization);
                 folder.sub = group.folders.filter(function(potential_subfolder) {
                     return (potential_subfolder.parent == folder.id) ? true : false;
                 });
@@ -19,7 +23,7 @@ define(function(require) {
             });
         });
 
-        tree = tree.sort(function(a, b) {
+        tree = raw.sort(function(a, b) {
             if (!a.organization) return -1;
             if (!b.organization) return 1;
             return a.organization.name.localeCompare(b.organization.name);
@@ -27,4 +31,15 @@ define(function(require) {
 
         return tree;
     }
+
+    ChartFolderTree.prototype = {
+        getLegacyTree: function() {
+            return this.tree;
+        },
+        debugTree: function() {
+            console.log(this.tree);
+        }
+    };
+
+    return ChartFolderTree;
 });
