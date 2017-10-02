@@ -49,6 +49,7 @@ define(function(require) {
             } else {
                 $('#user-root').parent().addClass('active');
             }
+            return;
         }
         tar.parent().addClass('active');
     }
