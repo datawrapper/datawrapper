@@ -1,6 +1,7 @@
 define(function(require) {
     var $ = require('jquery'),
-        twig = require('./twig_globals');
+        twig = require('./twig_globals'),
+        cft;
 
     function link_reader(link) {
         var parsed = link.slice(1).split('/'),
@@ -44,31 +45,21 @@ define(function(require) {
     }
 
     function repaint_subfolders(tar) {
-        var id = link_reader(tar.attr('href')),
-            folders,
-            traverse = function(folders, searched_id) {
-                if (searched_id)
-                    return folders.reduce(function(old, cur) {
-                        if (cur.id == searched_id) return cur.sub;
-                        if (!old && cur.sub) return traverse(cur.sub, searched_id);
-                        return old;
-                    }, false);
-                else return folders;
-            },
-            subfolders = $('ul.subfolders');
+        var id = link_reader(tar.attr('href'));
 
         $('ul.subfolders li.span2').not('.add-button').remove();
+        subfolders = $('ul.subfolders');
 
-        folders = traverse(twig.globals.preload.filter(function(candidate) {
-            if (!id.org && !candidate.organization) return true;
-            if (id.org == candidate.organization.id) return true;
-            return false;
-        })[0].folders, id.folder);
-
-        if (folders)
-            folders.forEach(function(folder) {
+        if (id.folder) {
+            cft.getSubFolders(id.folder).forEach(function(folder) {
                 subfolders.prepend(build_thumbnail(folder, id.org));
             });
+        } else {
+            cft.getRootSubFolders(id.org).forEach(function(folder) {
+                subfolders.prepend(build_thumbnail(folder, id.org));
+            });
+        }
+
     }
 
     function repaint_breadcrumb(tar) {
@@ -94,6 +85,7 @@ define(function(require) {
     }
 
     return function() {
+        cft = window['ChartFolderTree'];
         set_click();
     }
 });
