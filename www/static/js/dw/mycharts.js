@@ -42,7 +42,6 @@ define(function(require) {
             // most likely this will move back to the template without require → make it global
             window['ChartFolderTree'] = new chartFolderTree(raw_folders);
             cft = window['ChartFolderTree'];
-            cft.debugTree();
 
             cleaned_tree = cft.getLegacyTree();
             cleaned_tree.forEach(function(folder_obj) {
