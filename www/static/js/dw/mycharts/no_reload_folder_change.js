@@ -63,7 +63,22 @@ define(function(require) {
     }
 
     function repaint_breadcrumb(tar) {
-        console.log('repaint_breadcrumb_stub');
+        var id = link_reader(tar.attr('href')),
+            line = $('#folder-sequence'),
+            sep = '<span class="sep">›</span>';
+
+        line.empty();
+
+        cft.getIdsToFolder(id.folder).forEach(function(id) {
+            var a = document.createElement('a'),
+                folder = cft.getFolderById(id);
+
+            a.innerText = dw.utils.purifyHtml(folder.name, '');
+            a.setAttribute('href', (folder.organization) ? '/organization/' + folder.organization.id + '/' + folder.id : twig.globals.strings.mycharts_base + '/' + folder.id);
+            line.append(sep, a);
+        });
+        line.append(sep);
+        $('#current-folder-name').html(dw.utils.purifyHtml(cft.getFolderById(id.folder).name, ''));
     }
 
     function set_click() {
@@ -80,6 +95,7 @@ define(function(require) {
                         window.history.pushState(null, '', path.slice(0, path.lastIndexOf('xhr=1') - 1));
                         set_active_folder(tar);
                         repaint_subfolders(tar);
+                        repaint_breadcrumb(tar);
                     });
             });
     }
