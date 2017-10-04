@@ -81,13 +81,7 @@ define(function(require) {
         line.empty();
         $('#current-folder-name').empty();
         $('#current-root').attr('href', (id.org) ? '/organization/' + id.org : twig.globals.strings.mycharts_base);
-
-        if (!cur_org_name) {
-            // this is rediculous we don't have this string localized in JS
-            cur_org_name = $('#user-root span').not('.chart-count').text();
-            cur_org_name = cur_org_name.slice(0, cur_org_name.lastIndexOf('(')) ;
-        }
-        $('#current-root').text(cur_org_name);
+        $('#current-root').text((cur_org_name) ? cur_org_name : twig.globals.string.mycharts_trans);
 
         if (!id.folder) return;
         cft.getIdsToFolder(id.folder).forEach(function(id) {
