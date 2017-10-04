@@ -20,12 +20,8 @@ define(function(require) {
 
         drop_targets.on('dragenter', function(e) {
             e.preventDefault();
-            e.target.classList.add('dragtar');
-        });
-
-        drop_targets.on('dragleave', function(e) {
-            e.preventDefault();
-            e.target.classList.remove('dragtar');
+            drop_targets.removeClass('dragtar');
+            e.currentTarget.classList.add('dragtar');
         });
 
         drop_targets.on('dragover', function(e) {
@@ -34,7 +30,7 @@ define(function(require) {
 
         drop_targets.on('drop', function(e) {
             e.preventDefault();
-            e.target.classList.remove('dragtar');
+            drop_targets.removeClass('dragtar');
             console.log(e.originalEvent.dataTransfer.getData('application/json'));
         });
     }
