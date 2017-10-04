@@ -122,11 +122,16 @@ define(function(require) {
             });
     }
 
-    return function() {
+    function init() {
         cft = window['ChartFolderTree'];
         set_click('#current-root');
         set_click('ul.folders-left li a');
         set_click('#folder-sequence a');
         set_click('ul.subfolders a');
     }
+
+    return {
+        init: init,
+        enable_for_selector: set_click
+    };
 });

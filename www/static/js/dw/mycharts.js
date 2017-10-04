@@ -60,7 +60,7 @@ define(function(require) {
         $('document').ready(function() {
             get_folders(twig.globals.preload);
             sort_order_and_search();
-            no_reload_folder_change();
+            no_reload_folder_change.init();
         });
     }
 

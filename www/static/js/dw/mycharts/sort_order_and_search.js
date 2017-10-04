@@ -1,7 +1,8 @@
 define(function(require) {
     var $ = require('jquery'),
         twig = require('./twig_globals'),
-        qstring_parser = require('./qstring_parser');
+        qstring_parser = require('./qstring_parser'),
+        no_reload_folder_change = require('./no_reload_folder_change');
 
     function set_active() {
         $('.sort-menu li')
@@ -29,7 +30,9 @@ define(function(require) {
     var q = $('.search-query')
         .on('keyup', _.throttle(function() {
             var path = window.location.pathname+'?q='+q.val().trim();
-            $('.mycharts-chart-list').load(path+'&xhr=1');
+            $('.mycharts-chart-list').load(path+'&xhr=1', function() {
+                no_reload_folder_change.enable_for_selector('.mycharts-chart-list h3 a');
+            });
         }, 1000));
     }
 
