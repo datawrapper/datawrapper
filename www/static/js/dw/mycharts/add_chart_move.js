@@ -11,7 +11,7 @@ define(function(require) {
 
             e.preventDefault();
 
-            if (Object.keys(multiselection.selected).length > 1) {
+            if (multiselection.selected.size() > 1) {
                 // multi-select move
                 console.log('MULTI-SELECT', payload);
                 $.ajax({
@@ -22,7 +22,7 @@ define(function(require) {
                     processData: false,
                     contentType: "application/json",
                     data: JSON.stringify({
-                        add: Object.keys(multiselection.selected)
+                        add: multiselection.selected.values()
                     }),
                     dataType: 'JSON'
                 }).done(handler.done).fail(handler.fail);

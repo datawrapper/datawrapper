@@ -1,10 +1,11 @@
 define(function(require) {
     var $ = require('jquery'),
-        selected = {},
+        d3 = require('d3'),
+        selected = d3.set([]), // https://github.com/d3/d3-collection#sets
         thumbnails = $('.thumbnails');
 
     function selectNone() {
-        selected = {};
+        selected.clear();
         $('.chart .thumbnail').removeClass('checked');
         thumbnails.removeClass('multi-select');
     }
@@ -17,11 +18,11 @@ define(function(require) {
                     evt.preventDefault();
                     var thumb = $(this).parent('.thumbnail');
                     var chart_id = thumb.data('id');
-                    if (!selected[chart_id]) {
-                        selected[chart_id] = true;
+                    if (!selected.has(chart_id)) {
+                        selected.add(chart_id);
                         thumb.addClass('checked');
                     } else {
-                        delete selected[chart_id];
+                        selected.remove(chart_id);
                         thumb.removeClass('checked');
                     }
                     thumbnails[Object.keys(selected).length > 1 ? 'addClass' : 'removeClass']('multi-select');
@@ -31,8 +32,7 @@ define(function(require) {
                 .on('click', function() {
                     var thumb = $(this).parents('.thumbnail');
                     var chart_id = thumb.data('id');
-                    console.log(chart_id);
-                    if (!selected[chart_id]) {
+                    if (!selected.has(chart_id)) {
                         // unselect all
                         selectNone();
                     }
