@@ -11,7 +11,8 @@ define(function(require) {
         add_folder_helper = require('./mycharts/add_folder'),
         treelist = require('./mycharts/treelist'),
         sort_order_and_search = require('./mycharts/sort_order_and_search'),
-        no_reload_folder_change = require('./mycharts/no_reload_folder_change');
+        no_reload_folder_change = require('./mycharts/no_reload_folder_change'),
+        drag_n_drop = require('./mycharts/drag_n_drop');
 
     function do_it(twig) {
         chart_functions(twig.globals.user2);
@@ -61,6 +62,7 @@ define(function(require) {
             get_folders(twig.globals.preload);
             sort_order_and_search();
             no_reload_folder_change.init();
+            drag_n_drop();
         });
     }
 

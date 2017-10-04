@@ -73,6 +73,7 @@ body.dw-mycharts {
     .folders li { line-height: 20px; font-size: 16px;}
     .folders li.active { }
     .folders li.active a { font-weight: bold; color: black; }
+    .folders li.dragtar a { font-weight: bold; color: black; background-color: white; }
     .folders li a {
         cursor: pointer;
         margin-right: 1em;
@@ -154,6 +155,8 @@ body.dw-mycharts {
     }
     div.folders ul > li.active > a > .im-folder-open { display: inline-block; }
     div.folders ul > li.active > a > .im-folder { display: none; }
+    div.folders ul > li.dragtar > a > .im-folder-open { display: inline-block; }
+    div.folders ul > li.dragtar > a > .im-folder { display: none; }
     div.folders ul > li > a > .im-folder-open { display: none; }
     div.folders ul > li > a > .im-folder { display: inline-block; }
     div.folders ul > li > a > span {

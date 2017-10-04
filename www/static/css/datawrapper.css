@@ -1836,6 +1836,11 @@ body.dw-mycharts .folders li.active a {
   font-weight: bold;
   color: black;
 }
+body.dw-mycharts .folders li.dragtar a {
+  font-weight: bold;
+  color: black;
+  background-color: white;
+}
 body.dw-mycharts .folders li a {
   cursor: pointer;
   margin-right: 1em;
@@ -1918,6 +1923,12 @@ body.dw-mycharts div.folders ul > li.active > a > .im-folder-open {
   display: inline-block;
 }
 body.dw-mycharts div.folders ul > li.active > a > .im-folder {
+  display: none;
+}
+body.dw-mycharts div.folders ul > li.dragtar > a > .im-folder-open {
+  display: inline-block;
+}
+body.dw-mycharts div.folders ul > li.dragtar > a > .im-folder {
   display: none;
 }
 body.dw-mycharts div.folders ul > li > a > .im-folder-open {
