@@ -31,14 +31,13 @@ define(function(require) {
                 a1 = document.createElement('a'),
                 l2 = document.createElement('li'),
                 a2 = document.createElement('a'),
-                org_snipplet = (org_id) ? '/organization/' + org_id : '';
+                org_snipplet = (org_id) ? '/organization/' + org_id : '',
+                html = folder_icon_open + folder_icon_closed + ' <span>' + dw.utils.purifyHtml(folder.name, '');
 
-            var html = (current_folder && current_folder == folder.id ? folder_icon_open : folder_icon_closed) + ' <span>' + dw.utils.purifyHtml(folder.name, '');
             if (folder.charts > 0) {
                 html += '<span class="chart-count">(' + folder.charts + ')</span>';
             }
-            html += '</span>';
-            a1.innerHTML = html;
+            a1.innerHTML = html + '</span>';
             a1.setAttribute('href', (org_id) ? '/organization/' + org_id + '/' + folder.id : twig.globals.strings.mycharts_base + '/' + folder.id);
 
             nu_path = path.concat(folder.name);
