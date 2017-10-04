@@ -13,6 +13,10 @@ define(function(require) {
             ev.dataTransfer.setDragImage(e.target, 0 ,0);
             ev.dropEffect = "move";
         });
+
+        charts.on('dragend', function(e) {
+            $('ul.folders-left li').removeClass('dragtar');
+        });
     }
 
     function enableDrop() {
