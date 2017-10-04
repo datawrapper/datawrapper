@@ -35,5 +35,5 @@ define(function(require) {
                 });
         },
         selected: selected
-    }
+    };
 });

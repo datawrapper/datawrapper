@@ -1,5 +1,6 @@
 define(function(require) {
     var $ = require('jquery');
+    var multiselection = require('./multiselection');
 
     function enableDrag() {
         var charts = $('div.mycharts-chart-list ul.thumbnails li.chart');
@@ -10,7 +11,7 @@ define(function(require) {
             var chart_id = e.target.getAttribute('data-id'),
                 ev = e.originalEvent;
             ev.dataTransfer.setData('application/json', JSON.stringify([ chart_id ]));
-            ev.dataTransfer.setDragImage(e.target, 0 ,0);
+            ev.dataTransfer.setDragImage(e.target, ev.offsetX || 10, ev.offsetY || 10);
             ev.dropEffect = "move";
         });
 
@@ -42,5 +43,5 @@ define(function(require) {
     return function() {
         enableDrag();
         enableDrop();
-    }
+    };
 });
