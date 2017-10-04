@@ -2003,6 +2003,9 @@ body.dw-mycharts .thumbnails.multi-select .dropdown-menu .move .multi-mode {
 body.dw-mycharts .thumbnails.multi-select .dropdown-menu .move .non-multi {
   display: none;
 }
+body.dw-mycharts .pagination {
+  text-align: right;
+}
 body {
   background: #fff;
   color: #444;

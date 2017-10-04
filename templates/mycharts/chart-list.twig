@@ -1,3 +1,5 @@
+{% use "utils.twig" %}
+
 {% if user.hasCharts %}
 
     {% for group in chart_groups %}
@@ -73,6 +75,7 @@
             </li>
             {% endfor %}
         </ul>
+
     {% endfor %}
     {% else %}
 
@@ -80,3 +83,5 @@
     <p>{% trans "Why not <a href='/chart/create'>create a new chart now</a>?" %}</p>
 
 {% endif %}
+
+{{ block('pagination') }}
