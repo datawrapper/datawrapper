@@ -3,6 +3,12 @@ define(function(require) {
         selected = {},
         thumbnails = $('.thumbnails');
 
+    function selectNone() {
+        selected = {};
+        $('.chart .thumbnail').removeClass('checked');
+        thumbnails.removeClass('multi-select');
+    }
+
     return {
         init: function() {
             $('.chart .thumbnail .dw-checkbox')
@@ -28,12 +34,11 @@ define(function(require) {
                     console.log(chart_id);
                     if (!selected[chart_id]) {
                         // unselect all
-                        selected = {};
-                        $('.chart .thumbnail').removeClass('checked');
-                        thumbnails.removeClass('multi-select');
+                        selectNone();
                     }
                 });
         },
-        selected: selected
+        selected: selected,
+        selectNone: selectNone
     };
 });

@@ -8,9 +8,14 @@ define(function(require) {
         charts.find('*').attr('draggable', 'false');
         charts.attr('draggable', 'true');
         charts.on('dragstart', function(e) {
-            var chart_id = e.target.getAttribute('data-id'),
+            var chart_ids = [e.target.getAttribute('data-id')],
                 ev = e.originalEvent;
-            ev.dataTransfer.setData('application/json', JSON.stringify([ chart_id ]));
+            if (multiselection.selected[chart_ids[0]]) {
+                chart_ids = Object.keys(multiselection.selected);
+            } else {
+                multiselection.selectNone();
+            }
+            ev.dataTransfer.setData('application/json', JSON.stringify(chart_ids));
             ev.dataTransfer.setDragImage(e.target, ev.offsetX || 10, ev.offsetY || 10);
             ev.dropEffect = "move";
         });
