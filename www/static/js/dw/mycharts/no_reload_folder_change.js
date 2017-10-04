@@ -1,6 +1,7 @@
 define(function(require) {
     var $ = require('jquery'),
         twig = require('./twig_globals'),
+        multiselection = require('./multiselection'),
         cft;
 
     function link_reader(link) {
@@ -109,10 +110,14 @@ define(function(require) {
                         var tar = $(evt.currentTarget);
                         window.history.pushState(null, '', path.slice(0, path.lastIndexOf('xhr=1') - 1));
                         set_active_folder(tar);
+
                         repaint_subfolders(tar);
+                        set_click('ul.subfolders a');
+
                         repaint_breadcrumb(tar);
                         set_click('#folder-sequence a');
-                        set_click('ul.subfolders a');
+
+                        multiselection.init();
                     });
             });
     }
