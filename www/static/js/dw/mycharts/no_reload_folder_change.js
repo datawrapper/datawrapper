@@ -81,7 +81,7 @@ define(function(require) {
         line.empty();
         $('#current-folder-name').empty();
         $('#current-root').attr('href', (id.org) ? '/organization/' + id.org : twig.globals.strings.mycharts_base);
-        $('#current-root').text((cur_org_name) ? cur_org_name : twig.globals.string.mycharts_trans);
+        $('#current-root').text((cur_org_name) ? cur_org_name : twig.globals.strings.mycharts_trans);
 
         if (!id.folder) return;
         cft.getIdsToFolder(id.folder).forEach(function(id) {
