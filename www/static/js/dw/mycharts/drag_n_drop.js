@@ -1,6 +1,8 @@
 define(function(require) {
-    var $ = require('jquery');
-    var multiselection = require('./multiselection');
+    var $ = require('jquery'),
+        multiselection = require('./multiselection'),
+        // twig = require('./twig_globals'),
+        handler = require('./handler');
 
     function enableDrag() {
         var charts = $('div.mycharts-chart-list ul.thumbnails li.chart');
@@ -17,7 +19,10 @@ define(function(require) {
             } else {
                 multiselection.selectNone();
             }
-            ev.dataTransfer.setData('application/json', JSON.stringify(chart_ids));
+            ev.dataTransfer.setData('application/json', JSON.stringify({
+                type: 'charts',
+                charts: chart_ids
+            }));
             dragImage = chart_ids.length == 1 ? e.target : getMultiDragImage(chart_ids);
             ev.dataTransfer.setDragImage(dragImage, 0,0);
             ev.dropEffect = "move";
@@ -27,6 +32,41 @@ define(function(require) {
             $('ul.folders-left li').removeClass('dragtar');
             $('.custom-drag-image').remove();
         });
+    }
+
+    function moveCharts(charts, id) {
+        $.ajax({
+            url: '/api/folders/' + id.folder + id.org,
+            type: 'PUT',
+            processData: false,
+            contentType: "application/json",
+            data: JSON.stringify({
+                add: charts
+            }),
+            dataType: 'JSON'
+        }).done(function() {
+            console.warn("We're not done yet! Need to update chart counts on folders and XHR reload this.");
+        }).fail(handler.fail);
+    }
+
+    function readLink(link) {
+        var parsed = link.slice(1).split('/'),
+            id = {
+                org: '',
+                folder: 'root'
+            };
+
+        if (parsed[0] == 'mycharts') {
+            if (parsed.length > 1) id.folder = parsed[1];
+        } else {
+            id.org =  '/' + parsed[1];
+            if (parsed.length > 2) {
+                id.folder = parsed[2];
+                id.org = '';
+            }
+        }
+
+        return id;
     }
 
     function enableDrop() {
@@ -43,9 +83,28 @@ define(function(require) {
         });
 
         drop_targets.on('drop', function(e) {
+            var trans, id;
             e.preventDefault();
             drop_targets.removeClass('dragtar');
-            console.log(e.originalEvent.dataTransfer.getData('application/json'));
+            id = readLink($(e.currentTarget).find('a').attr('href'));
+            try {
+                trans = JSON.parse(e.originalEvent.dataTransfer.getData('application/json'));
+            } catch(e) {
+                trans = false;
+            }
+            if(!trans || typeof(trans.type) === 'undefined') {
+                alert("You may drop this here, but I can't work with it");
+                return;
+            }
+            switch (trans.type) {
+                case 'charts':
+                    moveCharts(trans.charts, id);
+                    break;
+                case 'folder':
+                    break;
+                default:
+                    console.error("We don't have this type.");
+            }
         });
     }
 
