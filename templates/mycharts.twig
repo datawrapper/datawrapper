@@ -65,22 +65,22 @@
 <div class="folders-and-gallery row">
     <div class="folders span2">
         <ul class="folders-left">
+            {% for org in organizations %}
+            <li {% if not current.folder and current.organization == org.id %}class="active"{% endif %}>
+                <a id="org-root-{{ org.tag }}"href="/organization/{{ org.id }}">
+                    <i class="im im-users"></i>
+                    <span>{{ org.name }}</span>
+                </a>
+            </li>
+            <ul id="dynamic-tree-{{ org.tag }}" style="margin-bottom:40px">
+            </ul>
+            {% endfor %}
             <li {% if not current.folder and not current.organization %}class="active"{% endif %}><a id="user-root" href="{{ mycharts_base }}">
                 <i class="im im-user-male"></i>
                 <span>{% trans "My Charts" %}</span></a>
             </li>
             <ul id="dynamic-tree">
             </ul>
-            {% for org in organizations %}
-            <li {% if not current.folder and current.organization == org.id %}class="active"{% endif %} style="margin-top:40px">
-                <a id="org-root-{{ org.tag }}"href="/organization/{{ org.id }}">
-                    <i class="im im-users"></i>
-                    <span>{{ org.name }}</span>
-                </a>
-            </li>
-            <ul id="dynamic-tree-{{ org.tag }}">
-            </ul>
-            {% endfor %}
         </ul>
     </div>
 
