@@ -66,12 +66,13 @@ function nbChartsByStatus($id, $is_org, $folder_id) {
     );
 }
 
-function list_organizations($user) {
+function mycharts_list_organizations($user) {
     $user_id = $user->getId();
-    $organizations = UserOrganizationQuery::create()->findByUserId($user_id);
+    $organizations = $user->getOrganizations();
+    $current_org = $user->getCurrentOrganization();
+    if (!empty($current_org)) $current_org = $current_org->getId();
     $orgs = array();
-    foreach ($organizations as $user_org) {
-        $org = $user_org->getOrganization();
+    foreach ($organizations as $org) {
         if (!$org->getDisabled()) {
             $obj = new stdClass();
             $obj->id = $org->getId();
@@ -81,7 +82,9 @@ function list_organizations($user) {
         }
     }
 
-    uasort($orgs, function($a, $b) {
+    uasort($orgs, function($a, $b) use ($current_org) {
+        if ($a->id == $current_org) return -1;
+        if ($b->id == $current_org) return 1;
         if ($a->name == $b->name) return 0;
         return ($a->name < $b->name) ? -1 : 1;
     });
@@ -284,7 +287,7 @@ function any_charts($app, $user, $folder_id = false, $org_id = false) {
             ),
             'search_query' => empty($q) ? '' : $q,
             'mycharts_base' => '/mycharts',
-            'organizations' => list_organizations($user),
+            'organizations' => mycharts_list_organizations($user),
             'preload' => FolderQuery::create()->getParsableFolders($user),
         ];
     }
