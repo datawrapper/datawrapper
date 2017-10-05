@@ -76,12 +76,19 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
             $headlinks[] = 'divider';
 
             // mycharts
-            $mycharts = array(
+            $mycharts_link = array(
                 'url' => '/mycharts/',
                 'id' => 'mycharts',
                 'title' => __('My Charts'),
                 //'justicon' => true,
                 'icon' => 'fa fa-bar-chart-o',
+            );
+            $mycharts = array(
+                'url' => '/mycharts/',
+                'id' => 'mycharts_dd',
+                'title' => '',
+                //'justicon' => true,
+                'icon' => 'fa  fa-caret-down',
                 'dropdown' => array()
             );
             foreach ($user->getRecentCharts(9) as $chart) {
@@ -94,6 +101,7 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
             }
             $mycharts['dropdown'][] = 'divider';
             $mycharts['dropdown'][] = array('url' => '/mycharts/', 'title' => __('All charts'));
+            $headlinks[] = $mycharts_link;
             $headlinks[] = $mycharts;
         }
 
@@ -133,7 +141,7 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
 
         $acc = array(
             "id" => "account",
-            "icon" => "fa fa-chevron-down",
+            "icon" => "fa fa-bars",
             "dropdown" => [
                 [
                     "id" => "my-account",
@@ -160,6 +168,7 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
         }
 
         header_nav_hook($headlinks, 'user');
+        header_nav_hook($acc["dropdown"], 'hamburger');
 
         // admin link
         if ($user->isLoggedIn() && $user->isAdmin()

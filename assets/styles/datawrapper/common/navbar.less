@@ -90,40 +90,49 @@ html .navbar .navbar-inner {
         }
     }
 
-    .mycharts.dropdown li {
+    .mycharts_dd.dropdown {
+        margin-left: -20px;
 
+        li {
+            position: relative;
+            max-width: 240px;
+            min-height: 26px;
+
+            img.icon {
+                height: 20px!important;
+                width: 30px!important;
+                position: absolute;
+                left: 10px;
+                top: 4px;
+            }
+
+            a {
+                padding-left: 45px;
+                min-height: 20px;
+
+                span {
+                    overflow: hidden;
+                    display: block;
+                    width: 100%;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                }
+            }
+
+            &.divider {
+                min-height: 0;
+            }
+        }
+
+        &.open {
+            #dw-header-link-mycharts_dd {
+                background: none;
+            }
+        }
     }
-    .mycharts.dropdown li img.icon {
-        height: 20px!important;
-        width: 30px!important;
-        position: absolute;
-        left: 10px;
-        top: 4px;
-    }
-    .mycharts.dropdown li {
-        position: relative;
-        max-width: 240px;
-        min-height: 26px;
-    }
-    .mycharts.dropdown li a {
-        padding-left: 45px;
-    }
-    .mycharts.dropdown .divider {
-        min-height: 0;
-    }
-    .mycharts.dropdown a {
-        min-height: 20px;
-    }
-    .mycharts.dropdown li a span {
-        overflow: hidden;
-        display: block;
-        width: 100%;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-    }
+
 
     .nav li.dropdown .dropdown-toggle .caret, .nav li.dropdown.open .caret,
-
     li a .tt { display: none; }
 
 }

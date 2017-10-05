@@ -157,33 +157,37 @@ html .navbar .navbar-inner .brand .beta {
   left: 3px;
   color: #aaa;
 }
-html .navbar .navbar-inner .mycharts.dropdown li img.icon {
+html .navbar .navbar-inner .mycharts_dd.dropdown {
+  margin-left: -20px;
+}
+html .navbar .navbar-inner .mycharts_dd.dropdown li {
+  position: relative;
+  max-width: 240px;
+  min-height: 26px;
+}
+html .navbar .navbar-inner .mycharts_dd.dropdown li img.icon {
   height: 20px!important;
   width: 30px!important;
   position: absolute;
   left: 10px;
   top: 4px;
 }
-html .navbar .navbar-inner .mycharts.dropdown li {
-  position: relative;
-  max-width: 240px;
-  min-height: 26px;
-}
-html .navbar .navbar-inner .mycharts.dropdown li a {
+html .navbar .navbar-inner .mycharts_dd.dropdown li a {
   padding-left: 45px;
-}
-html .navbar .navbar-inner .mycharts.dropdown .divider {
-  min-height: 0;
-}
-html .navbar .navbar-inner .mycharts.dropdown a {
   min-height: 20px;
 }
-html .navbar .navbar-inner .mycharts.dropdown li a span {
+html .navbar .navbar-inner .mycharts_dd.dropdown li a span {
   overflow: hidden;
   display: block;
   width: 100%;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+html .navbar .navbar-inner .mycharts_dd.dropdown li.divider {
+  min-height: 0;
+}
+html .navbar .navbar-inner .mycharts_dd.dropdown.open #dw-header-link-mycharts_dd {
+  background: none;
 }
 html .navbar .navbar-inner .nav li.dropdown .dropdown-toggle .caret,
 html .navbar .navbar-inner .nav li.dropdown.open .caret,
