@@ -75,9 +75,10 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
         if ($user->hasCharts()) {
             $headlinks[] = 'divider';
 
+            $org = $user->getCurrentOrganization();
             // mycharts
             $mycharts_link = array(
-                'url' => '/mycharts/',
+                'url' => empty($org) ? '/mycharts/' : '/organization/'.$org->getId().'/',
                 'id' => 'mycharts',
                 'title' => __('My Charts'),
                 //'justicon' => true,
