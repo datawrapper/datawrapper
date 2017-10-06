@@ -74,7 +74,6 @@ define(function(require) {
             }
 
             e.preventDefault();
-            // nuname = window.prompt(twig.globals.strings.enter_folder_name, folder.name);
         });
 
         // can't delete root or folders with subfolders
