@@ -3,7 +3,8 @@ define(function(require) {
         multiselection = require('./multiselection'),
         twig = require('./twig_globals'),
         no_reload_folder_change = require('./no_reload_folder_change'),
-        handler = require('./handler');
+        handler = require('./handler'),
+        cft;
 
     function enableDrag() {
         var charts = $('div.mycharts-chart-list ul.thumbnails li.chart');
@@ -36,10 +37,10 @@ define(function(require) {
     }
 
     function buildLink() {
-        var id = twig.globals.current,
-            link = '/';
+        var id = cft.getCurrentFolder(),
+            link = '';
 
-        link += (id.organization) ? 'organization/' + id.organization : 'mycharts';
+        link += (id.organization) ? '/organization/' + id.organization : twig.globals.strings.mycharts_base;
         if (id.folder) { link += '/' + id.folder }
         return link;
     }
@@ -147,8 +148,10 @@ define(function(require) {
     // this needs to become an object exporting several functions soon™
     // (folder drag_n_drop doesn't need to be enabled after chart reload)
     return function() {
+
         enableDrag();
         enableDrop();
         no_reload_folder_change.setDragNDropCallback(enableDrag);
+        cft = window['ChartFolderTree'];
     };
 });

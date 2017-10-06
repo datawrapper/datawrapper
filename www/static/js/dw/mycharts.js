@@ -36,12 +36,12 @@ define(function(require) {
             }
         }
 
-        function get_folders(raw_folders) {
+        function get_folders(twig_globals) {
             var cft, cleaned_tree,
                 walked_tree = [];
 
             // most likely this will move back to the template without require → make it global
-            window['ChartFolderTree'] = new chartFolderTree(raw_folders);
+            window['ChartFolderTree'] = new chartFolderTree(twig_globals.preload, twig_globals.current);
             cft = window['ChartFolderTree'];
 
             cleaned_tree = cft.getLegacyTree();
@@ -59,8 +59,9 @@ define(function(require) {
         multiselection.init();
 
         $('document').ready(function() {
-            get_folders(twig.globals.preload);
+            get_folders(twig.globals);
             delete twig.globals.preload;
+            delete twig.globals.current;
             sort_order_and_search();
             no_reload_folder_change.init();
             drag_n_drop();

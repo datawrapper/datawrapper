@@ -41,49 +41,55 @@ define(function(require) {
         return li;
     }
 
-    // FIXME: This does not work for subfolders in chart list!
-    function set_active_folder(tar) {
+    function set_active_folder() {
         $('ul.folders-left li.active').removeAttr('class');
-        if (tar.attr('id') == 'current-root') {
-            var id = link_reader(tar.attr('href')),
-                org_tag = (id.org) ? '-' + id.org.replace(' ','-').replace(/[^a-zA-Z0-9-]/g,'') : false;
+        var id = cft.getCurrentFolder(),
+            org_tag = (id.organization) ? '-' + id.organization.replace(' ','-').replace(/[^a-zA-Z0-9-]/g,'') : '';
+
+        if (id.folder) {
+            var links = $('#dynamic-tree' + org_tag).find('a');
+            links.each(function(idx, a) {
+                var href = a.getAttribute('href');
+                if (href.slice(href.lastIndexOf('/') + 1, href.length) == id.folder) {
+                    $(a).parent().addClass('active');
+                }
+            });
+        } else {
             if (org_tag) {
                 $('#org-root' + org_tag).parent().addClass('active');
             } else {
                 $('#user-root').parent().addClass('active');
             }
-            return;
         }
-        tar.parent().addClass('active');
     }
 
-    function repaint_subfolders(path) {
-        var id = link_reader(path);
+    function repaint_subfolders() {
+        var id = cft.getCurrentFolder();
 
         $('ul.subfolders li.span2').not('.add-button').remove();
         subfolders = $('ul.subfolders');
 
         if (id.folder) {
             cft.getSubFolders(id.folder).forEach(function(folder) {
-                subfolders.prepend(build_thumbnail(folder, id.org));
+                subfolders.prepend(build_thumbnail(folder, id.organization));
             });
         } else {
-            cft.getRootSubFolders(id.org).forEach(function(folder) {
-                subfolders.prepend(build_thumbnail(folder, id.org));
+            cft.getRootSubFolders(id.organization).forEach(function(folder) {
+                subfolders.prepend(build_thumbnail(folder, id.organization));
             });
         }
 
     }
 
-    function repaint_breadcrumb(path) {
-        var id = link_reader(path),
+    function repaint_breadcrumb() {
+        var id = cft.getCurrentFolder(),
             line = $('#folder-sequence'),
             sep = '<span class="sep">›</span>',
-            cur_org_name = cft.getOrgNameById(id.org);
+            cur_org_name = cft.getOrgNameById(id.organization);
 
         line.empty();
         $('#current-folder-name').empty();
-        $('#current-root').attr('href', (id.org) ? '/organization/' + id.org : twig.globals.strings.mycharts_base);
+        $('#current-root').attr('href', (id.organization) ? '/organization/' + id.organization : twig.globals.strings.mycharts_base);
         $('#current-root').text((cur_org_name) ? cur_org_name : twig.globals.strings.mycharts_trans);
 
         if (!id.folder) return;
@@ -100,17 +106,22 @@ define(function(require) {
     }
 
     function reloadLink(path) {
-        var path_sort = path + ((twig.globals.current.sort) ? '?sort=' + twig.globals.current.sort + '&xhr=1' : '?xhr=1');
+        var sort = cft.getCurrentSort();
+            path_sort = path + ((sort) ? '?sort=' + sort + '&xhr=1' : '?xhr=1');
 
         $('.mycharts-chart-list')
             .load(path_sort, function() {
-                window.history.pushState(null, '', path_sort.slice(0, path_sort.lastIndexOf('xhr=1') - 1));
-                // set_active_folder(tar);
+                var id = link_reader(path);
 
-                repaint_subfolders(path);
+                cft.setCurrentFolder(id.folder, id.org);
+                window.history.pushState(null, '', path_sort.slice(0, path_sort.lastIndexOf('xhr=1') - 1));
+
+                set_active_folder();
+
+                repaint_subfolders();
                 set_click('ul.subfolders a');
 
-                repaint_breadcrumb(path);
+                repaint_breadcrumb();
                 set_click('#folder-sequence a');
 
                 multiselection.init();

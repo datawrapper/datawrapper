@@ -2,7 +2,8 @@ define(function(require) {
     var $ = require('jquery'),
         twig = require('./twig_globals'),
         qstring_parser = require('./qstring_parser'),
-        no_reload_folder_change = require('./no_reload_folder_change');
+        no_reload_folder_change = require('./no_reload_folder_change'),
+        cft;
 
     function set_active() {
         $('.sort-menu li')
@@ -10,7 +11,7 @@ define(function(require) {
             .each(function(idx, el) {
                 var je = $(el);
 
-                if (qstring_parser(je.find('a').attr('href'), 'sort') == twig.globals.current.sort)
+                if (qstring_parser(je.find('a').attr('href'), 'sort') == cft.getCurrentSort())
                     je.addClass('active');
             });
     }
@@ -21,7 +22,7 @@ define(function(require) {
                 evt.preventDefault();
                 var path = window.location.pathname+$(evt.target).attr('href');
 
-                twig.globals.current.sort = qstring_parser(path, 'sort');
+                cft.setCurrentSort(qstring_parser(path, 'sort'));
                 $('.mycharts-chart-list')
                     .load(path+'&xhr=1', set_active);
                 window.history.replaceState({}, '', path);
@@ -37,6 +38,7 @@ define(function(require) {
     }
 
     return function() {
+        cft = window['ChartFolderTree'];
         attatch_functions();
         set_active();
     };

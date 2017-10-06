@@ -1,7 +1,8 @@
 define(function(require) {
-    var ChartFolderTree = function(raw_folders) {
+    var ChartFolderTree = function(raw_folders, current) {
         this.tree = genTree(raw_folders);
         this.list = genList();
+        this.current = current;
     }
 
     function genTree(raw) {
@@ -94,6 +95,22 @@ define(function(require) {
                 return (group.organization) ? (group.organization.id === org_id) : (group.organization === org_id);
             })[0].organization;
             return (org) ? org.name : false;
+        },
+        setCurrentSort: function(sort) {
+            this.current.sort = sort;
+        },
+        getCurrentSort: function() {
+            return this.current.sort;
+        },
+        setCurrentFolder: function(folder_id, org_id) {
+            this.current.folder = folder_id;
+            this.current.organization = org_id;
+        },
+        getCurrentFolder: function() {
+            return {
+                folder: this.current.folder,
+                organization: this.current.organization
+            };
         }
     };
 
