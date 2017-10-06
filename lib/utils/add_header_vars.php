@@ -210,8 +210,10 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
         if ($link == 'divider') continue;
         $headlinks[$i]['active'] = $headlinks[$i]['id'] == $active;
     }
+    $user = DatawrapperSession::getUser();
     $page['headlinks'] = $headlinks;
-    $page['user'] = DatawrapperSession::getUser();
+    $page['user'] = $user;
+    $page['userData'] = $user->isLoggedIn() ? $user->getUserData() : false;
     $page['language'] = substr(DatawrapperSession::getLanguage(), 0, 2);
     $page['locale'] = DatawrapperSession::getLanguage();
     $page['DW_DOMAIN'] = $config['domain'];
@@ -228,7 +230,7 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
 
     if (isset ($config['maintenance']) && $config['maintenance'] == true) {
         $page['maintenance'] = true;
-    } 
+    }
 
     $uri = $app->request()->getResourceUri();
     $plugin_assets = DatawrapperHooks::execute(DatawrapperHooks::GET_PLUGIN_ASSETS, $uri);

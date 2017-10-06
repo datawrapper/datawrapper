@@ -416,5 +416,25 @@ CREATE TABLE `folder`
         REFERENCES `organization` (`id`)
 ) ENGINE=InnoDB CHARACTER SET='utf8';
 
+-- ---------------------------------------------------------------------
+-- user_data
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `user_data`;
+
+CREATE TABLE `user_data`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `user_id` INTEGER NOT NULL,
+    `stored_at` TIMESTAMP NOT NULL DEFAULT NOW(),
+    `key` VARCHAR(128) NOT NULL,
+    `value` VARCHAR(4096),
+    PRIMARY KEY (`id`),
+    UNIQUE INDEX `user_data_U_1` (`user_id`, `key`),
+    CONSTRAINT `user_data_FK_1`
+        FOREIGN KEY (`user_id`)
+        REFERENCES `user` (`id`)
+) ENGINE=InnoDB;
+
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;

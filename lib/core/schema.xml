@@ -319,4 +319,24 @@
       <reference local="org_id" foreign="id" />
     </foreign-key>
   </table>
+
+  <!-- user data -->
+  <table name="user_data" phpName="UserData">
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+    <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+    <column name="user_id" type="integer" required="true" />
+    <foreign-key foreignTable="user">
+      <reference local="user_id" foreign="id"/>
+    </foreign-key>
+    <column name="stored_at" type="timestamp" required="true" defaultExpr="NOW()" />
+    <column name="key" type="varchar" size="128" required="true" />
+    <column name="value" type="varchar" size="4096" />
+    <unique>
+       <unique-column name="user_id" />
+       <unique-column name="key" />
+     </unique>
+  </table>
+
 </database>

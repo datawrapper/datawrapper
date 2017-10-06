@@ -22,3 +22,18 @@ CREATE TABLE `folder`
 
 ALTER TABLE chart ADD in_folder int(11) NULL;
 ALTER TABLE chart ADD CONSTRAINT chart_FK_4 FOREIGN KEY (in_folder) REFERENCES folder (folder_id);
+
+
+CREATE TABLE `user_data`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `user_id` INTEGER NOT NULL,
+    `stored_at` TIMESTAMP NOT NULL DEFAULT NOW(),
+    `key` VARCHAR(128) NOT NULL,
+    `value` VARCHAR(4096),
+    PRIMARY KEY (`id`),
+    UNIQUE INDEX `user_data_U_1` (`user_id`, `key`),
+    CONSTRAINT `user_data_FK_1`
+        FOREIGN KEY (`user_id`)
+        REFERENCES `user` (`id`)
+) ENGINE=InnoDB;
