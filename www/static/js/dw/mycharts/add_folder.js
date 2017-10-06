@@ -9,6 +9,7 @@ define(function(require) {
 
             e.preventDefault();
             nuname = prompt(twig.globals.strings.enter_folder_name);
+            if (!nuname) return;
 
             $.ajax({
                 url: '/api/folders',
