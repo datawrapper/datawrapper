@@ -6,26 +6,6 @@ define(function(require) {
         handler = require('./handler'),
         cft;
 
-    function readLink(link) {
-        var parsed = link.slice(1).split('/'),
-            id = {
-                org: '',
-                folder: 'root'
-            };
-
-        if (parsed[0] == 'mycharts') {
-            if (parsed.length > 1) id.folder = parsed[1];
-        } else {
-            id.org =  '/' + parsed[1];
-            if (parsed.length > 2) {
-                id.folder = parsed[2];
-                id.org = '';
-            }
-        }
-
-        return id;
-    }
-
     function buildLink() {
         var id = cft.getCurrentFolder(),
             link = '';
@@ -97,9 +77,10 @@ define(function(require) {
         enableFolderDragForJQO($('ul.subfolders li.span2').not('.add-button'));
     }
 
-    function moveCharts(charts, id) {
+    function moveCharts(charts, target) {
+        console.log(target);
         $.ajax({
-            url: '/api/folders/' + id.folder + id.org,
+            url: '/api/folders/' + target,
             type: 'PUT',
             processData: false,
             contentType: "application/json",
@@ -114,7 +95,52 @@ define(function(require) {
     }
 
     function moveFolder(folder, target) {
+        console.log(folder, target);
 
+        $.ajax({
+            url: '/api/folders/' + folder,
+            type: 'PUT',
+            processData: false,
+            contentType: "application/json",
+            data: JSON.stringify(target),
+            dataType: 'JSON'
+        }).done(function(res) {
+            if (res.status == 'error') {
+                alert(res.message);
+            } else if (res.status == 'ok') {
+                console.warn("We're not done yet! Need to update Folder List and if this was a subfolder link we need to XHR the folder-view");
+            }
+        }).fail(handler.fail);
+    }
+
+    function prepareChartTarget(link) {
+        var parsed = link.slice(1).split('/');
+
+        if (parsed[0] == 'mycharts') {
+            return (parsed.length > 1) ? parsed[1] : 'root';
+        } else {
+            return (parsed.length > 2) ? parsed[2] : 'root/' + parsed[1];
+        }
+    }
+
+    function prepareFolderTarget(link) {
+        var parsed = link.slice(1).split('/'),
+            target = {
+                parent: false,
+                organization: false
+            };
+
+        if (parsed[0] == 'mycharts') {
+            if (parsed.length > 1) {
+                target.parent = parsed[1];
+            }
+        } else {
+            target.organization = parsed[1];
+            if (parsed.length > 2) {
+                target.parent = parsed[2];
+            }
+        }
+        return target;
     }
 
     // FIXME: Drop targets need to be filtered to prevent draging folders into their own subfolders
@@ -135,7 +161,7 @@ define(function(require) {
             var trans, id;
             e.preventDefault();
             drop_targets.removeClass('dragtar');
-            id = readLink($(e.currentTarget).find('a').attr('href'));
+            href = $(e.currentTarget).find('a').attr('href');
             try {
                 trans = JSON.parse(e.originalEvent.dataTransfer.getData('application/json'));
             } catch(e) {
@@ -147,10 +173,10 @@ define(function(require) {
             }
             switch (trans.type) {
                 case 'charts':
-                    moveCharts(trans.charts, id);
+                    moveCharts(trans.charts, prepareChartTarget(href));
                     break;
                 case 'folder':
-                    console.log(trans.id);
+                    moveFolder(trans.id, prepareFolderTarget(href));
                     break;
                 default:
                     console.error("We don't have this type.");
