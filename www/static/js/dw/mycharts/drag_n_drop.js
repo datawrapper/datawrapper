@@ -149,5 +149,6 @@ define(function(require) {
     return function() {
         enableDrag();
         enableDrop();
+        no_reload_folder_change.setDragNDropCallback(enableDrag);
     };
 });

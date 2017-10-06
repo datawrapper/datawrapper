@@ -2,6 +2,7 @@ define(function(require) {
     var $ = require('jquery'),
         twig = require('./twig_globals'),
         multiselection = require('./multiselection'),
+        drag_n_drop_callback = false,
         cft;
 
     function link_reader(link) {
@@ -113,6 +114,7 @@ define(function(require) {
                 set_click('#folder-sequence a');
 
                 multiselection.init();
+                if (drag_n_drop_callback) drag_n_drop_callback();
             });
     }
 
@@ -133,9 +135,14 @@ define(function(require) {
         set_click('ul.subfolders a');
     }
 
+    function setDragNDropCallback(func) {
+        drag_n_drop_callback = func;
+    }
+
     return {
         init: init,
         enable_for_selector: set_click,
-        reloadLink: reloadLink
+        reloadLink: reloadLink,
+        setDragNDropCallback: setDragNDropCallback
     };
 });
