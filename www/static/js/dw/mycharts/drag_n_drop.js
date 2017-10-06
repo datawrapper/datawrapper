@@ -87,7 +87,9 @@ define(function(require) {
     }
 
     function enableFolderDrag() {
-        enableFolderDragForJQO($('ul.folders-left li').add('ul.subfolders li.span2').not('.add-button'));
+        enableFolderDragForJQO($('ul.folders-left li').add('ul.subfolders li.span2').not('.add-button,.root-folder'));
+        // FIXME: We should disable some more things likely to be dragged, that we don't want to be dragged
+        $('li.root-folder').find('*').attr('draggable', false);
     }
 
     function enableDrag() {
@@ -111,6 +113,11 @@ define(function(require) {
         }).fail(handler.fail);
     }
 
+    function moveFolder(folder, target) {
+
+    }
+
+    // FIXME: Drop targets need to be filtered to prevent draging folders into their own subfolders
     function enableDrop() {
         var drop_targets = $('ul.folders-left li');
 
