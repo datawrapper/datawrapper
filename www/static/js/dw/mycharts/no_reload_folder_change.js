@@ -2,7 +2,6 @@ define(function(require) {
     var $ = require('jquery'),
         twig = require('./twig_globals'),
         multiselection = require('./multiselection'),
-        drag_n_drop = require('./drag_n_drop'),
         cft;
 
     function link_reader(link) {
@@ -41,6 +40,7 @@ define(function(require) {
         return li;
     }
 
+    // FIXME: This does not work for subfolders in chart list!
     function set_active_folder(tar) {
         $('ul.folders-left li.active').removeAttr('class');
         if (tar.attr('id') == 'current-root') {
@@ -56,8 +56,8 @@ define(function(require) {
         tar.parent().addClass('active');
     }
 
-    function repaint_subfolders(tar) {
-        var id = link_reader(tar.attr('href'));
+    function repaint_subfolders(path) {
+        var id = link_reader(path);
 
         $('ul.subfolders li.span2').not('.add-button').remove();
         subfolders = $('ul.subfolders');
@@ -74,8 +74,8 @@ define(function(require) {
 
     }
 
-    function repaint_breadcrumb(tar) {
-        var id = link_reader(tar.attr('href')),
+    function repaint_breadcrumb(path) {
+        var id = link_reader(path),
             line = $('#folder-sequence'),
             sep = '<span class="sep">›</span>',
             cur_org_name = cft.getOrgNameById(id.org);
@@ -99,22 +99,20 @@ define(function(require) {
     }
 
     function reloadLink(path) {
-        path += (twig.globals.current.sort) ? '?sort=' + twig.globals.current.sort + '&xhr=1' : '?xhr=1';
+        var path_sort = path + ((twig.globals.current.sort) ? '?sort=' + twig.globals.current.sort + '&xhr=1' : '?xhr=1');
 
         $('.mycharts-chart-list')
-            .load(path, function() {
-                var tar = $(evt.currentTarget);
-                window.history.pushState(null, '', path.slice(0, path.lastIndexOf('xhr=1') - 1));
-                set_active_folder(tar);
+            .load(path_sort, function() {
+                window.history.pushState(null, '', path_sort.slice(0, path_sort.lastIndexOf('xhr=1') - 1));
+                // set_active_folder(tar);
 
-                repaint_subfolders(tar);
+                repaint_subfolders(path);
                 set_click('ul.subfolders a');
 
-                repaint_breadcrumb(tar);
+                repaint_breadcrumb(path);
                 set_click('#folder-sequence a');
 
                 multiselection.init();
-                drag_n_drop();
             });
     }
 
@@ -137,6 +135,7 @@ define(function(require) {
 
     return {
         init: init,
-        enable_for_selector: set_click
+        enable_for_selector: set_click,
+        reloadLink: reloadLink
     };
 });

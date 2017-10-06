@@ -1,7 +1,8 @@
 define(function(require) {
     var $ = require('jquery'),
         multiselection = require('./multiselection'),
-        // twig = require('./twig_globals'),
+        twig = require('./twig_globals'),
+        no_reload_folder_change = require('./no_reload_folder_change'),
         handler = require('./handler');
 
     function enableDrag() {
@@ -34,6 +35,15 @@ define(function(require) {
         });
     }
 
+    function buildLink() {
+        var id = twig.globals.current,
+            link = '/';
+
+        link += (id.organization) ? 'organization/' + id.organization : 'mycharts';
+        if (id.folder) { link += '/' + id.folder }
+        return link;
+    }
+
     function moveCharts(charts, id) {
         $.ajax({
             url: '/api/folders/' + id.folder + id.org,
@@ -45,7 +55,8 @@ define(function(require) {
             }),
             dataType: 'JSON'
         }).done(function() {
-            console.warn("We're not done yet! Need to update chart counts on folders and XHR reload this.");
+            no_reload_folder_change.reloadLink(buildLink());
+            console.warn("We're not done yet! Need to update chart counts on folders and rebuild Drag'n'Drop!");
         }).fail(handler.fail);
     }
 
@@ -133,6 +144,8 @@ define(function(require) {
         return div.get(0);
     }
 
+    // this needs to become an object exporting several functions soon™
+    // (folder drag_n_drop doesn't need to be enabled after chart reload)
     return function() {
         enableDrag();
         enableDrop();
