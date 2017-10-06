@@ -12,6 +12,7 @@ define(function(require) {
 
     return {
         init: function() {
+            selected.clear();
             $('.chart .thumbnail .dw-checkbox')
                 .on('click', function(evt) {
                     evt.stopPropagation();
