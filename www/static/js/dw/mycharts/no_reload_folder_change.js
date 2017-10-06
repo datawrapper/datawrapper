@@ -2,6 +2,7 @@ define(function(require) {
     var $ = require('jquery'),
         twig = require('./twig_globals'),
         multiselection = require('./multiselection'),
+        drag_n_drop = require('./drag_n_drop'),
         cft;
 
     function link_reader(link) {
@@ -97,12 +98,7 @@ define(function(require) {
         $('#current-folder-name').html(dw.utils.purifyHtml(cft.getFolderById(id.folder).name, ''));
     }
 
-    function set_click(selector) {
-        $(selector)
-            .on('click', function(evt) {
-                var path = $(evt.currentTarget).attr('href');
-                evt.preventDefault();
-
+    function reloadLink(path) {
                 path += (twig.globals.current.sort) ? '?sort=' + twig.globals.current.sort + '&xhr=1' : '?xhr=1';
 
                 $('.mycharts-chart-list')
@@ -118,7 +114,16 @@ define(function(require) {
                         set_click('#folder-sequence a');
 
                         multiselection.init();
+                        drag_n_drop();
                     });
+    }
+
+    function set_click(selector) {
+        $(selector)
+            .on('click', function(evt) {
+                var path = $(evt.currentTarget).attr('href');
+                evt.preventDefault();
+                reloadLink(path);
             });
     }
 
