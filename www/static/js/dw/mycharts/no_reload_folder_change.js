@@ -99,23 +99,23 @@ define(function(require) {
     }
 
     function reloadLink(path) {
-                path += (twig.globals.current.sort) ? '?sort=' + twig.globals.current.sort + '&xhr=1' : '?xhr=1';
+        path += (twig.globals.current.sort) ? '?sort=' + twig.globals.current.sort + '&xhr=1' : '?xhr=1';
 
-                $('.mycharts-chart-list')
-                    .load(path, function() {
-                        var tar = $(evt.currentTarget);
-                        window.history.pushState(null, '', path.slice(0, path.lastIndexOf('xhr=1') - 1));
-                        set_active_folder(tar);
+        $('.mycharts-chart-list')
+            .load(path, function() {
+                var tar = $(evt.currentTarget);
+                window.history.pushState(null, '', path.slice(0, path.lastIndexOf('xhr=1') - 1));
+                set_active_folder(tar);
 
-                        repaint_subfolders(tar);
-                        set_click('ul.subfolders a');
+                repaint_subfolders(tar);
+                set_click('ul.subfolders a');
 
-                        repaint_breadcrumb(tar);
-                        set_click('#folder-sequence a');
+                repaint_breadcrumb(tar);
+                set_click('#folder-sequence a');
 
-                        multiselection.init();
-                        drag_n_drop();
-                    });
+                multiselection.init();
+                drag_n_drop();
+            });
     }
 
     function set_click(selector) {
