@@ -6,7 +6,7 @@ define(function(require) {
         handler = require('./handler'),
         cft;
 
-    function enableDrag() {
+    function enableChartDrag() {
         var charts = $('div.mycharts-chart-list ul.thumbnails li.chart');
 
         var dragImage;
@@ -57,7 +57,7 @@ define(function(require) {
             dataType: 'JSON'
         }).done(function() {
             no_reload_folder_change.reloadLink(buildLink());
-            console.warn("We're not done yet! Need to update chart counts on folders and rebuild Drag'n'Drop!");
+            console.warn("We're not done yet! Need to update Folder List.");
         }).fail(handler.fail);
     }
 
@@ -148,10 +148,9 @@ define(function(require) {
     // this needs to become an object exporting several functions soon™
     // (folder drag_n_drop doesn't need to be enabled after chart reload)
     return function() {
-
-        enableDrag();
+        enableChartDrag();
         enableDrop();
-        no_reload_folder_change.setDragNDropCallback(enableDrag);
+        no_reload_folder_change.setDragNDropCallback(enableChartDrag);
         cft = window['ChartFolderTree'];
     };
 });
