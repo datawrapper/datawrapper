@@ -6,10 +6,38 @@ define(function(require) {
         handler = require('./handler'),
         cft;
 
-    function enableChartDrag() {
-        var charts = $('div.mycharts-chart-list ul.thumbnails li.chart');
+    function readLink(link) {
+        var parsed = link.slice(1).split('/'),
+            id = {
+                org: '',
+                folder: 'root'
+            };
 
-        var dragImage;
+        if (parsed[0] == 'mycharts') {
+            if (parsed.length > 1) id.folder = parsed[1];
+        } else {
+            id.org =  '/' + parsed[1];
+            if (parsed.length > 2) {
+                id.folder = parsed[2];
+                id.org = '';
+            }
+        }
+
+        return id;
+    }
+
+    function buildLink() {
+        var id = cft.getCurrentFolder(),
+            link = '';
+
+        link += (id.organization) ? '/organization/' + id.organization : twig.globals.strings.mycharts_base;
+        if (id.folder) { link += '/' + id.folder }
+        return link;
+    }
+
+    function enableChartDrag() {
+        var charts = $('div.mycharts-chart-list ul.thumbnails li.chart'),
+            dragImage;
 
         charts.find('*').attr('draggable', 'false');
         charts.attr('draggable', 'true');
@@ -36,13 +64,35 @@ define(function(require) {
         });
     }
 
-    function buildLink() {
-        var id = cft.getCurrentFolder(),
-            link = '';
+    function enableFolderDragForJQO(folders) {
+        folders.find('*').attr('draggable', 'false');
+        folders.attr('draggable', 'true');
+        folders.on('dragstart', function(e) {
+            var ev = e.originalEvent,
+                tar = e.currentTarget,
+                href = $(tar).find('a').attr('href'),
+                folder_id = href.slice(href.lastIndexOf('/') + 1, href.length);
 
-        link += (id.organization) ? '/organization/' + id.organization : twig.globals.strings.mycharts_base;
-        if (id.folder) { link += '/' + id.folder }
-        return link;
+            ev.dataTransfer.setData('application/json', JSON.stringify({
+                type: 'folder',
+                id: folder_id
+            }));
+            ev.dataTransfer.setDragImage(tar, 0,0);
+            ev.dropEffect = "move";
+        });
+
+        folders.on('dragend', function(e) {
+            $('ul.folders-left li').removeClass('dragtar');
+        });
+    }
+
+    function enableFolderDrag() {
+        enableFolderDragForJQO($('ul.folders-left li').add('ul.subfolders li.span2').not('.add-button'));
+    }
+
+    function enableDrag() {
+        enableChartDrag();
+        enableFolderDragForJQO($('ul.subfolders li.span2').not('.add-button'));
     }
 
     function moveCharts(charts, id) {
@@ -59,26 +109,6 @@ define(function(require) {
             no_reload_folder_change.reloadLink(buildLink());
             console.warn("We're not done yet! Need to update Folder List.");
         }).fail(handler.fail);
-    }
-
-    function readLink(link) {
-        var parsed = link.slice(1).split('/'),
-            id = {
-                org: '',
-                folder: 'root'
-            };
-
-        if (parsed[0] == 'mycharts') {
-            if (parsed.length > 1) id.folder = parsed[1];
-        } else {
-            id.org =  '/' + parsed[1];
-            if (parsed.length > 2) {
-                id.folder = parsed[2];
-                id.org = '';
-            }
-        }
-
-        return id;
     }
 
     function enableDrop() {
@@ -113,6 +143,7 @@ define(function(require) {
                     moveCharts(trans.charts, id);
                     break;
                 case 'folder':
+                    console.log(trans.id);
                     break;
                 default:
                     console.error("We don't have this type.");
@@ -149,8 +180,9 @@ define(function(require) {
     // (folder drag_n_drop doesn't need to be enabled after chart reload)
     return function() {
         enableChartDrag();
+        enableFolderDrag();
         enableDrop();
-        no_reload_folder_change.setDragNDropCallback(enableChartDrag);
+        no_reload_folder_change.setDragNDropCallback(enableDrag);
         cft = window['ChartFolderTree'];
     };
 });
