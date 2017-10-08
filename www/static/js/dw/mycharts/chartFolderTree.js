@@ -3,6 +3,7 @@ define(function(require) {
         this.tree = genTree(raw_folders);
         this.list = genList();
         this.current = current;
+        this.rendercallbacks = {};
     }
 
     function genTree(raw) {
@@ -65,9 +66,6 @@ define(function(require) {
     }
 
     ChartFolderTree.prototype = {
-        getLegacyTree: function() {
-            return this.tree;
-        },
         debugTree: function() {
             console.log(this.tree, this.list);
         },
@@ -111,6 +109,18 @@ define(function(require) {
                 folder: this.current.folder,
                 organization: this.current.organization
             };
+        },
+        setRenderCallbacks: function(callbacks) {
+            this.rendercallbacks = callbacks;
+        },
+        reRenderTree: function() {
+            var cbs = this.rendercallbacks,
+                cur = this.current;
+            this.tree.forEach(function(group) {
+                cbs.changeChartCount(false, group.organization.id, group.charts);
+                cbs.renderSubtree(group.organization.id, group.folders);
+            });
+            cbs.changeActiveFolder(cur.folder, cur.organization);
         }
     };
 

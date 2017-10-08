@@ -66,8 +66,8 @@
     <div class="folders span2">
         <ul class="folders-left">
             {% for org in organizations %}
-            <li {% if not current.folder and current.organization == org.id %}class="active root-folder"{% else %}class="root-folder"{% endif %}>
-                <a id="org-root-{{ org.tag }}"href="/organization/{{ org.id }}">
+            <li id="org-root-{{ org.tag }}" {% if not current.folder and current.organization == org.id %}class="active root-folder"{% else %}class="root-folder"{% endif %}>
+                <a href="/organization/{{ org.id }}">
                     <i class="im im-users"></i>
                     <span>{{ org.name }}</span>
                 </a>
@@ -75,7 +75,8 @@
             <ul id="dynamic-tree-{{ org.tag }}" style="margin-bottom:40px">
             </ul>
             {% endfor %}
-            <li {% if not current.folder and not current.organization %}class="active root-folder"{% else %}class="root-folder"{% endif %}><a id="user-root" href="{{ mycharts_base }}">
+            <li id="user-root" {% if not current.folder and not current.organization %}class="active root-folder"{% else %}class="root-folder"{% endif %}>
+                <a href="{{ mycharts_base }}">
                 <i class="im im-user-male"></i>
                 <span>{% trans "My Charts" %}</span></a>
             </li>
