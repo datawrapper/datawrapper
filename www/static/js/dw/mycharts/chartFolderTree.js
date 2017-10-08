@@ -65,6 +65,12 @@ define(function(require) {
         return list;
     }
 
+    function getRoot(org_id) {
+        return this.tree.filter(function(group) {
+            return (group.organization) ? (group.organization.id === org_id) : (group.organization === org_id);
+        })[0];
+    }
+
     ChartFolderTree.prototype = {
         debugTree: function() {
             console.log(this.tree, this.list);
@@ -122,6 +128,17 @@ define(function(require) {
                 cbs.renderSubtree(group.organization.id, group.folders);
             });
             cbs.changeActiveFolder(cur.folder, cur.organization);
+        },
+        moveNChartsTo: function(num, dest) {
+            var folder;
+
+            folder = (dest.folder) ? this.list[dest.folder].folder : getRoot(dest.organization);
+            folder.charts += num;
+            this.rendercallbacks.changeChartCount(dest.folder, dest.organization, folder.charts);
+
+            folder = (this.current.folder) ? this.list[this.current.folder].folder : getRoot(this.current.organization);
+            folder.charts -= num;
+            this.rendercallbacks.changeChartCount(this.current.folder, this.current.organization, folder.charts);
         }
     };
 

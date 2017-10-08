@@ -77,8 +77,7 @@ define(function(require) {
         enableFolderDragForJQO($('ul.subfolders li.span2').not('.add-button'));
     }
 
-    function moveCharts(charts, target) {
-        console.log(target);
+    function moveCharts(charts, target, id) {
         $.ajax({
             url: '/api/folders/' + target,
             type: 'PUT',
@@ -90,7 +89,7 @@ define(function(require) {
             dataType: 'JSON'
         }).done(function() {
             no_reload_folder_change.reloadLink(buildLink());
-            console.warn("We're not done yet! Need to update Folder List.");
+            cft.moveNChartsTo(charts.length, id);
         }).fail(handler.fail);
     }
 
@@ -113,34 +112,32 @@ define(function(require) {
         }).fail(handler.fail);
     }
 
-    function prepareChartTarget(link) {
-        var parsed = link.slice(1).split('/');
-
-        if (parsed[0] == 'mycharts') {
-            return (parsed.length > 1) ? parsed[1] : 'root';
-        } else {
-            return (parsed.length > 2) ? parsed[2] : 'root/' + parsed[1];
-        }
+    function prepareChartTarget(id) {
+        if (id.folder) return id.folder;
+        else if (id.organization) return 'root/' + id.organization;
+        else return 'root'
     }
 
-    function prepareFolderTarget(link) {
-        var parsed = link.slice(1).split('/'),
-            target = {
-                parent: false,
-                organization: false
-            };
+    function prepareFolderTarget(id) {
+        return {
+            parent: id.folder,
+            organization: id.organization
+        };
+    }
 
-        if (parsed[0] == 'mycharts') {
-            if (parsed.length > 1) {
-                target.parent = parsed[1];
-            }
+    function identifyTarget(target) {
+        var id = { organization: false }
+
+
+        id.folder = target.attr('folder-id');
+
+        if (id.folder) {
+            return id;
         } else {
-            target.organization = parsed[1];
-            if (parsed.length > 2) {
-                target.parent = parsed[2];
-            }
+            var parsed = target.find('a').attr('href').slice(1).split('/');
+            id.organization = (parsed[0] == 'mycharts') ? false : parsed[1];
+            return id;
         }
-        return target;
     }
 
     // FIXME: Drop targets need to be filtered to prevent draging folders into their own subfolders
@@ -158,10 +155,10 @@ define(function(require) {
         });
 
         drop_targets.on('drop', function(e) {
-            var trans, id;
+            var trans,
+                id = identifyTarget($(e.currentTarget));
             e.preventDefault();
             drop_targets.removeClass('dragtar');
-            href = $(e.currentTarget).find('a').attr('href');
             try {
                 trans = JSON.parse(e.originalEvent.dataTransfer.getData('application/json'));
             } catch(e) {
@@ -173,10 +170,10 @@ define(function(require) {
             }
             switch (trans.type) {
                 case 'charts':
-                    moveCharts(trans.charts, prepareChartTarget(href));
+                    moveCharts(trans.charts, prepareChartTarget(id), id);
                     break;
                 case 'folder':
-                    moveFolder(trans.id, prepareFolderTarget(href));
+                    moveFolder(trans.id, prepareFolderTarget(id), id);
                     break;
                 default:
                     console.error("We don't have this type.");
