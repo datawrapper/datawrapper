@@ -103,6 +103,7 @@ define(function(require) {
         setCurrentFolder: function(folder_id, org_id) {
             this.current.folder = folder_id;
             this.current.organization = org_id;
+            this.rendercallbacks.changeActiveFolder(folder_id, org_id);
         },
         getCurrentFolder: function() {
             return {

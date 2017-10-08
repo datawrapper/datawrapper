@@ -41,28 +41,6 @@ define(function(require) {
         return li;
     }
 
-    function set_active_folder() {
-        $('ul.folders-left li.active').removeAttr('class');
-        var id = cft.getCurrentFolder(),
-            org_tag = (id.organization) ? '-' + id.organization.replace(' ','-').replace(/[^a-zA-Z0-9-]/g,'') : '';
-
-        if (id.folder) {
-            var links = $('#dynamic-tree' + org_tag).find('a');
-            links.each(function(idx, a) {
-                var href = a.getAttribute('href');
-                if (href.slice(href.lastIndexOf('/') + 1, href.length) == id.folder) {
-                    $(a).parent().addClass('active');
-                }
-            });
-        } else {
-            if (org_tag) {
-                $('#org-root' + org_tag).parent().addClass('active');
-            } else {
-                $('#user-root').parent().addClass('active');
-            }
-        }
-    }
-
     function repaint_subfolders() {
         var id = cft.getCurrentFolder();
 
@@ -115,8 +93,6 @@ define(function(require) {
 
                 cft.setCurrentFolder(id.folder, id.org);
                 window.history.pushState(null, '', path_sort.slice(0, path_sort.lastIndexOf('xhr=1') - 1));
-
-                set_active_folder();
 
                 repaint_subfolders();
                 set_click('ul.subfolders a');
