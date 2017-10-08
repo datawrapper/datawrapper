@@ -128,13 +128,13 @@ define(function(require) {
     function identifyTarget(target) {
         var id = { organization: false }
 
-
         id.folder = target.attr('folder-id');
 
         if (id.folder) {
             return id;
         } else {
             var parsed = target.find('a').attr('href').slice(1).split('/');
+            id.folder = false;
             id.organization = (parsed[0] == 'mycharts') ? false : parsed[1];
             return id;
         }
