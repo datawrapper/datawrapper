@@ -31,7 +31,7 @@ define(function(require) {
     }
 
     function renderSubtree(org_id, tree) {
-        var tag = (org_id) ? '#dynamic-tree' + getOrgTag(org_id) : '#dynamic-tree',
+        var tag = '#dynamic-tree' + getOrgTag(org_id),
             folder_icon_open = '<i class="im im-folder-open"></i>',
             folder_icon_closed = '<i class="im im-folder"></i>';
 
