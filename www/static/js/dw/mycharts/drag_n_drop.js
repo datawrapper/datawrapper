@@ -107,7 +107,7 @@ define(function(require) {
             if (res.status == 'error') {
                 alert(res.message);
             } else if (res.status == 'ok') {
-                console.warn("We're not done yet! Need to update Folder List and if this was a subfolder link we need to XHR the folder-view");
+                console.warn("We're not done yet! Need to update Folder List and if this was a subfolder link we need to repaint subfolders.");
             }
         }).fail(handler.fail);
     }
@@ -206,8 +206,6 @@ define(function(require) {
         return div.get(0);
     }
 
-    // this needs to become an object exporting several functions soon™
-    // (folder drag_n_drop doesn't need to be enabled after chart reload)
     return function() {
         enableChartDrag();
         enableFolderDrag();
