@@ -13,6 +13,9 @@ define(function(require) {
             if (group.type === "user")
                 group.organization = false;
             delete(group.type);
+            group.folders.sort(function(a, b) {
+                return a.name.localeCompare(b.name);
+            });
             group.folders.forEach(function(folder) {
                 delete(folder.type);
                 delete(folder.user);
