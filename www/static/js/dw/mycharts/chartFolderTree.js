@@ -181,9 +181,6 @@ define(function(require) {
 
             moved_folder_obj.parent = dest.folder;
             moved_folder_obj.organization = dest.organization;
-
-            console.log(moved_folder_obj, source_folder_obj, dest_folder_obj);
-            this.reRenderTree();
         },
         moveNChartsTo: function(num, dest) {
             var folder;

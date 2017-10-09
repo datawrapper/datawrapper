@@ -72,12 +72,6 @@ define(function(require) {
         $('li.root-folder').find('*').attr('draggable', false);
     }
 
-    function enableTreeFolderDrag() {
-        enableFolderDragForJQO($('ul.folders-left li').add('ul.subfolders li.span2').not('.add-button,.root-folder'));
-        // FIXME: We should disable some more things likely to be dragged, that we don't want to be dragged
-        $('li.root-folder').find('*').attr('draggable', false);
-    }
-
     function enableDrag() {
         enableChartDrag();
         enableFolderDragForJQO($('ul.subfolders li.span2').not('.add-button'));
@@ -112,7 +106,10 @@ define(function(require) {
                 alert(res.message);
             } else if (res.status == 'ok') {
                 cft.moveFolderToFolder(folder, id);
-                console.warn("We're not done yet! If this was a subfolder link we need to repaint subfolders.");
+                no_reload_folder_change.repaintBreadcrumb();
+                no_reload_folder_change.repaintSubfolders();
+                cft.reRenderTree();
+                no_reload_folder_change.init();
             }
         }).fail(handler.fail);
     }
@@ -219,7 +216,7 @@ define(function(require) {
         cft = window['ChartFolderTree'];
         cft.setDropCallback(function(){
             enableDrop();
-            enableTreeFolderDrag();
+            enableFolderDrag();
         });
     };
 });

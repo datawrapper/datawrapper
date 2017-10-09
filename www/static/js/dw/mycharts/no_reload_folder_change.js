@@ -135,6 +135,7 @@ define(function(require) {
         enable_for_selector: set_click,
         reloadLink: reloadLink,
         setDragNDropCallback: setDragNDropCallback,
-        repaintBreadcrumb: repaint_breadcrumb
+        repaintBreadcrumb: repaint_breadcrumb,
+        repaintSubfolders: repaint_subfolders
     };
 });
