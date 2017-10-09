@@ -120,11 +120,12 @@ define(function(require) {
     }
 
     function identifyTarget(target) {
-        var id = { organization: false }
+        var id = {};
 
         id.folder = parseInt(target.attr('folder-id'));
 
         if (id.folder) {
+            id.organization = cft.getFolderOrgById(id.folder);
             return id;
         } else {
             var parsed = target.find('a').attr('href').slice(1).split('/');
