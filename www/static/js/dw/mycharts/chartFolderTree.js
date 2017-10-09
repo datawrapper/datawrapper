@@ -71,8 +71,10 @@ define(function(require) {
     }
 
     function getRoot(org_id) {
+        if (!org_id)
+            org_id = false;
         return this.tree.filter(function(group) {
-            return (group.organization) ? (group.organization.id === org_id) : (group.organization === false);
+            return (group.organization) ? (group.organization.id === org_id) : (group.organization == org_id);
         })[0];
     }
 
@@ -101,14 +103,18 @@ define(function(require) {
             return (subfolders) ? subfolders : [];
         },
         getRootSubFolders: function(org_id) {
-            var subfolders = this.tree.filter(function(group) {
-                return (group.organization) ? (group.organization.id === org_id) : (group.organization === false);
+            var subfolders;
+            if (!org_id) org_id = false;
+            subfolders = this.tree.filter(function(group) {
+                return (group.organization) ? (group.organization.id === org_id) : (group.organization == org_id);
             })[0].folders;
             return (subfolders) ? subfolders : [];
         },
         getOrgNameById: function(org_id) {
-            var org = this.tree.filter(function(group) {
-                return (group.organization) ? (group.organization.id === org_id) : (group.organization === false);
+            var org;
+            if (!org_id) org_id = false;
+            org = this.tree.filter(function(group) {
+                return (group.organization) ? (group.organization.id === org_id) : (group.organization == org_id);
             })[0].organization;
             return (org) ? org.name : false;
         },
@@ -185,6 +191,20 @@ define(function(require) {
 
             moved_folder_obj.parent = dest.folder;
             moved_folder_obj.organization = dest.organization;
+            this.list = genList();
+        },
+        addFolder: function(folder) {
+            var dest_folder_obj = (folder.parent) ? this.getFolderById(folder.parent) : getRoot(folder.organization),
+                dest_array = (folder.parent) ? dest_folder_obj.sub : dest_folder_obj.folders;
+
+            if (folder.parent || !dest_array)  {
+                dest_folder_obj.sub = [];
+                dest_array = dest_folder_obj.sub;
+            }
+            dest_array.push(folder);
+            dest_array.sort(function(a, b) {
+                return a.name.localeCompare(b.name);
+            });
             this.list = genList();
         },
         moveNChartsTo: function(num, dest) {
