@@ -26,7 +26,15 @@ define(function(require) {
                     organization: id.organization
                 }),
                 dataType: 'JSON'
-            }).done(handler.done).fail(handler.fail);
+            }).done(function(res) {
+                if (res.status == 'error') {
+                    alert(res.message);
+                } else if (res.status == 'ok') {
+                    // location.reload(true);
+                    console.warn("Need to update tree here and do a tree repaint, or bad things will happen.\n\
+This one is really bad. We need the new ID allocated for the folder and I don't know if the API provides it, yet.");
+                }
+            }).fail(handler.fail);
         });
 
         $('#rename-folder').click(function(e) {
@@ -88,6 +96,7 @@ define(function(require) {
                             curname.text(folder_name);
                         } else if (res.status == 'ok') {
                             $('.folders li.active a span').text(res.data.name);
+                            console.warn('Need to update tree here, or bad things will happen.');
                         }
                     }).fail(function(err) {
                         alert('API Error');
@@ -109,7 +118,14 @@ define(function(require) {
                 type: 'DELETE',
                 contentType: "application/json",
                 dataType: 'JSON'
-            }).done(handler.done).fail(handler.fail);
+            }).done(function(res) {
+                if (res.status == 'error') {
+                    alert(res.message);
+                } else if (res.status == 'ok') {
+                    // location.reload(true);
+                    console.warn('Need to update tree here and do a tree repaint, also we need to change to parent dir, or bad things will happen.');
+                }
+            }).fail(handler.fail);
         });
 
         cft.setCurrentFolderFuncs(function(is_root) {
