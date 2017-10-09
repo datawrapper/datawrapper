@@ -4,16 +4,8 @@ define(function(require) {
         twig = require('./twig_globals'),
         no_reload_folder_change = require('./no_reload_folder_change'),
         handler = require('./handler'),
+        buildLink = require('./buildLink'),
         cft;
-
-    function buildLink() {
-        var id = cft.getCurrentFolder(),
-            link = '';
-
-        link += (id.organization) ? '/organization/' + id.organization : twig.globals.strings.mycharts_base;
-        if (id.folder) { link += '/' + id.folder }
-        return link;
-    }
 
     function enableChartDrag() {
         var charts = $('div.mycharts-chart-list ul.thumbnails li.chart'),
@@ -88,14 +80,12 @@ define(function(require) {
             }),
             dataType: 'JSON'
         }).done(function() {
-            no_reload_folder_change.reloadLink(buildLink());
+            no_reload_folder_change.reloadLink(buildLink(cft.getCurrentFolder()));
             cft.moveNChartsTo(charts.length, id);
         }).fail(handler.fail);
     }
 
-    function moveFolder(folder, target) {
-        console.log(folder, target);
-
+    function moveFolder(folder, target, id) {
         $.ajax({
             url: '/api/folders/' + folder,
             type: 'PUT',
@@ -107,7 +97,11 @@ define(function(require) {
             if (res.status == 'error') {
                 alert(res.message);
             } else if (res.status == 'ok') {
-                console.warn("We're not done yet! Need to update Folder List and if this was a subfolder link we need to repaint subfolders.");
+                cft.moveFolderToFolder(folder, id);
+                no_reload_folder_change.repaintBreadcrumb();
+                no_reload_folder_change.repaintSubfolders();
+                cft.reRenderTree();
+                no_reload_folder_change.init();
             }
         }).fail(handler.fail);
     }
@@ -126,11 +120,12 @@ define(function(require) {
     }
 
     function identifyTarget(target) {
-        var id = { organization: false }
+        var id = {};
 
-        id.folder = target.attr('folder-id');
+        id.folder = parseInt(target.attr('folder-id'));
 
         if (id.folder) {
+            id.organization = cft.getFolderOrgById(id.folder);
             return id;
         } else {
             var parsed = target.find('a').attr('href').slice(1).split('/');
@@ -212,5 +207,9 @@ define(function(require) {
         enableDrop();
         no_reload_folder_change.setDragNDropCallback(enableDrag);
         cft = window['ChartFolderTree'];
+        cft.setDropCallback(function(){
+            enableDrop();
+            enableFolderDrag();
+        });
     };
 });

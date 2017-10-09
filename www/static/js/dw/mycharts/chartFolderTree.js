@@ -5,6 +5,7 @@ define(function(require) {
         this.current = current;
         this.rendercallbacks = {};
         this.current_folder_funcs = {};
+        this.dropcallback = function(){};
     }
 
     function genTree(raw) {
@@ -12,6 +13,9 @@ define(function(require) {
             if (group.type === "user")
                 group.organization = false;
             delete(group.type);
+            group.folders.sort(function(a, b) {
+                return a.name.localeCompare(b.name);
+            });
             group.folders.forEach(function(folder) {
                 delete(folder.type);
                 delete(folder.user);
@@ -67,8 +71,10 @@ define(function(require) {
     }
 
     function getRoot(org_id) {
+        if (!org_id)
+            org_id = false;
         return this.tree.filter(function(group) {
-            return (group.organization) ? (group.organization.id === org_id) : (group.organization === org_id);
+            return (group.organization) ? (group.organization.id === org_id) : (group.organization == org_id);
         })[0];
     }
 
@@ -82,6 +88,22 @@ define(function(require) {
         getFolderNameById: function(f_id) {
             return (typeof this.list[f_id] !== "undefined") ? this.list[f_id].folder.name : false;
         },
+        getFolderOrgById: function(f_id) {
+            return (typeof this.list[f_id] !== "undefined") ? this.list[f_id].folder.organization : false;
+        },
+        setFolderName: function(f_id, name) {
+            if (typeof this.list[f_id] !== "undefined")
+                this.list[f_id].folder.name = name;
+        },
+        getParentFolder: function(id) {
+            var parent = (typeof this.list[id.folder] !== "undefined") ? this.list[id.folder].folder.parent : false,
+                parent_folder_obj = (parent) ? this.getFolderById(parent) : getRoot(id.organization);
+
+            return {
+                id: (parent_folder_obj.id) ? parent_folder_obj.id : false,
+                organization: (parent_folder_obj.organization) ? ((parent_folder_obj.organization.id) ? parent_folder_obj.organization.id : parent_folder_obj.organization) : false
+            };
+        },
         getPathToFolder: function(f_id) {
             return (typeof this.list[f_id] !== "undefined") ? this.list[f_id].path_info.strings : false;
         },
@@ -93,13 +115,17 @@ define(function(require) {
             return (subfolders) ? subfolders : [];
         },
         getRootSubFolders: function(org_id) {
-            var subfolders = this.tree.filter(function(group) {
+            var subfolders;
+            if (!org_id) org_id = false;
+            subfolders = this.tree.filter(function(group) {
                 return (group.organization) ? (group.organization.id === org_id) : (group.organization == org_id);
             })[0].folders;
             return (subfolders) ? subfolders : [];
         },
         getOrgNameById: function(org_id) {
-            var org = this.tree.filter(function(group) {
+            var org;
+            if (!org_id) org_id = false;
+            org = this.tree.filter(function(group) {
                 return (group.organization) ? (group.organization.id === org_id) : (group.organization == org_id);
             })[0].organization;
             return (org) ? org.name : false;
@@ -130,6 +156,9 @@ define(function(require) {
         setRenderCallbacks: function(callbacks) {
             this.rendercallbacks = callbacks;
         },
+        setDropCallback: function(callback) {
+            this.dropcallback = callback;
+        },
         reRenderTree: function() {
             var cbs = this.rendercallbacks,
                 cur = this.current;
@@ -138,6 +167,72 @@ define(function(require) {
                 cbs.renderSubtree(group.organization.id, group.folders);
             });
             cbs.changeActiveFolder(cur.folder, cur.organization);
+            this.dropcallback();
+        },
+        moveFolderToFolder: function(moved_id, dest) {
+            var moved_folder_obj = this.getFolderById(moved_id),
+                dest_folder_obj = (dest.folder) ? this.getFolderById(dest.folder) : getRoot(dest.organization),
+                source_folder_obj = (moved_folder_obj.parent) ? this.getFolderById(moved_folder_obj.parent) : getRoot(moved_folder_obj.organization);
+
+
+            if (dest.folder) {
+                if (!dest_folder_obj.sub)
+                    dest_folder_obj.sub = [];
+                dest_folder_obj.sub.push(moved_folder_obj);
+                dest_folder_obj.sub.sort(function(a, b) {
+                    return a.name.localeCompare(b.name);
+                });
+            } else {
+                dest_folder_obj.folders.push(moved_folder_obj);
+                dest_folder_obj.folders.sort(function(a, b) {
+                    return a.name.localeCompare(b.name);
+                });
+            }
+
+            if (moved_folder_obj.parent) {
+                source_folder_obj.sub = source_folder_obj.sub.filter(function(folder) {
+                    return folder.id != moved_id;
+                });
+                if (source_folder_obj.sub.length === 0)
+                    source_folder_obj.sub = false;
+            } else {
+                source_folder_obj.folders = source_folder_obj.folders.filter(function(folder) {
+                    return folder.id != moved_id;
+                });
+            }
+
+            moved_folder_obj.parent = dest.folder;
+            moved_folder_obj.organization = dest.organization;
+            this.list = genList();
+        },
+        addFolder: function(folder) {
+            var dest_folder_obj = (folder.parent) ? this.getFolderById(folder.parent) : getRoot(folder.organization),
+                dest_array = (folder.parent) ? dest_folder_obj.sub : dest_folder_obj.folders;
+
+            if (folder.parent || !dest_array)  {
+                dest_folder_obj.sub = [];
+                dest_array = dest_folder_obj.sub;
+            }
+            dest_array.push(folder);
+            dest_array.sort(function(a, b) {
+                return a.name.localeCompare(b.name);
+            });
+            this.list = genList();
+        },
+        deleteFolder: function(delme) {
+            var parent = (typeof this.list[delme.folder] !== "undefined") ? this.list[delme.folder].folder.parent : false,
+                parent_folder_obj = (parent) ? this.getFolderById(parent) : getRoot(delme.organization);
+
+            if (parent_folder_obj.id) {
+                parent_folder_obj.sub = parent_folder_obj.sub.filter(function(folder) {
+                    return folder.id != delme.folder;
+                });
+            } else {
+                parent_folder_obj.folders = parent_folder_obj.folders.filter(function(folder) {
+                    return folder.id != delme.folder;
+                });
+            }
+            this.list = genList();
         },
         moveNChartsTo: function(num, dest) {
             var folder;

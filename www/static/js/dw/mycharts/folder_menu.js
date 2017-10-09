@@ -2,10 +2,20 @@ define(function(require) {
     var $ = require('jquery'),
         handler = require('./handler'),
         twig = require('./twig_globals'),
+        no_reload_folder_change = require('./no_reload_folder_change'),
+        buildLink = require('./buildLink'),
         cft;
 
     return function() {
         cft = window['ChartFolderTree'];
+
+        function cleanResponse(folder) {
+            delete folder.user;
+            delete folder.type;
+            folder.sub = false;
+            folder.charts = 0;
+            return folder;
+        }
 
         $('.add-folder').click(function(e) {
             var nuname,
@@ -30,9 +40,10 @@ define(function(require) {
                 if (res.status == 'error') {
                     alert(res.message);
                 } else if (res.status == 'ok') {
-                    // location.reload(true);
-                    console.warn("Need to update tree here and do a tree repaint, or bad things will happen.\n\
-This one is really bad. We need the new ID allocated for the folder and I don't know if the API provides it, yet.");
+                    cft.addFolder(cleanResponse(res.data));
+                    no_reload_folder_change.repaintSubfolders();
+                    cft.reRenderTree();
+                    no_reload_folder_change.init();
                 }
             }).fail(handler.fail);
         });
@@ -96,7 +107,7 @@ This one is really bad. We need the new ID allocated for the folder and I don't 
                             curname.text(folder_name);
                         } else if (res.status == 'ok') {
                             $('.folders li.active a span').text(res.data.name);
-                            console.warn('Need to update tree here, or bad things will happen.');
+                            cft.setFolderName(id.folder, res.data.name);
                         }
                     }).fail(function(err) {
                         alert('API Error');
@@ -122,8 +133,11 @@ This one is really bad. We need the new ID allocated for the folder and I don't 
                 if (res.status == 'error') {
                     alert(res.message);
                 } else if (res.status == 'ok') {
-                    // location.reload(true);
-                    console.warn('Need to update tree here and do a tree repaint, also we need to change to parent dir, or bad things will happen.');
+                    var parent_link = buildLink(cft.getParentFolder(id));
+                    cft.deleteFolder(id);
+                    no_reload_folder_change.reloadLink(parent_link);
+                    cft.reRenderTree();
+                    no_reload_folder_change.init();
                 }
             }).fail(handler.fail);
         });

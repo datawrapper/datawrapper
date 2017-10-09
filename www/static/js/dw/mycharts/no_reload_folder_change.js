@@ -30,6 +30,7 @@ define(function(require) {
             span = document.createElement('span');
 
         li.classList.add('span2');
+        li.setAttribute('folder-id', folder.id);
         a.classList.add('thumbnail');
         a.setAttribute('href', (org_id) ? '/organization/' + org_id + '/' + folder.id : '/mycharts/' + folder.id);
         i.classList.add('im');
@@ -81,7 +82,7 @@ define(function(require) {
             line.append(sep, a);
         });
         line.append(sep);
-        $('#current-folder-name').html(dw.utils.purifyHtml(cft.getFolderById(id.folder).name, ''));
+        $('#current-folder-name').html(dw.utils.purifyHtml(cft.getFolderNameById(id.folder), ''));
     }
 
     function reloadLink(path) {
@@ -96,7 +97,7 @@ define(function(require) {
                 window.history.pushState(null, '', path_sort.slice(0, path_sort.lastIndexOf('xhr=1') - 1));
 
                 repaint_subfolders();
-                set_click('ul.subfolders a');
+                set_click('ul.subfolders a:not(.add-folder)');
 
                 repaint_breadcrumb();
                 set_click('#folder-sequence a');
@@ -122,7 +123,7 @@ define(function(require) {
         set_click('#current-root');
         set_click('ul.folders-left li a');
         set_click('#folder-sequence a');
-        set_click('ul.subfolders a');
+        set_click('ul.subfolders a:not(.add-folder)');
     }
 
     function setDragNDropCallback(func) {
@@ -134,6 +135,7 @@ define(function(require) {
         enable_for_selector: set_click,
         reloadLink: reloadLink,
         setDragNDropCallback: setDragNDropCallback,
-        repaintBreadcrumb: repaint_breadcrumb
+        repaintBreadcrumb: repaint_breadcrumb,
+        repaintSubfolders: repaint_subfolders
     };
 });
