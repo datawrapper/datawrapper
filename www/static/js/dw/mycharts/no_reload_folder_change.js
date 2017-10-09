@@ -97,7 +97,7 @@ define(function(require) {
                 window.history.pushState(null, '', path_sort.slice(0, path_sort.lastIndexOf('xhr=1') - 1));
 
                 repaint_subfolders();
-                set_click('ul.subfolders a');
+                set_click('ul.subfolders a:not(.add-folder)');
 
                 repaint_breadcrumb();
                 set_click('#folder-sequence a');
@@ -123,7 +123,7 @@ define(function(require) {
         set_click('#current-root');
         set_click('ul.folders-left li a');
         set_click('#folder-sequence a');
-        set_click('ul.subfolders a');
+        set_click('ul.subfolders a:not(.add-folder)');
     }
 
     function setDragNDropCallback(func) {
