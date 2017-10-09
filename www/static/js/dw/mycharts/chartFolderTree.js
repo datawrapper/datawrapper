@@ -94,13 +94,13 @@ define(function(require) {
         },
         getRootSubFolders: function(org_id) {
             var subfolders = this.tree.filter(function(group) {
-                return (group.organization) ? (group.organization.id === org_id) : (group.organization === org_id);
+                return (group.organization) ? (group.organization.id === org_id) : (group.organization == org_id);
             })[0].folders;
             return (subfolders) ? subfolders : [];
         },
         getOrgNameById: function(org_id) {
             var org = this.tree.filter(function(group) {
-                return (group.organization) ? (group.organization.id === org_id) : (group.organization === org_id);
+                return (group.organization) ? (group.organization.id === org_id) : (group.organization == org_id);
             })[0].organization;
             return (org) ? org.name : false;
         },
