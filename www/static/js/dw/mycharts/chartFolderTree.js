@@ -185,6 +185,7 @@ define(function(require) {
 
             moved_folder_obj.parent = dest.folder;
             moved_folder_obj.organization = dest.organization;
+            this.list = genList();
         },
         moveNChartsTo: function(num, dest) {
             var folder;
