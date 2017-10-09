@@ -2,10 +2,19 @@ define(function(require) {
     var $ = require('jquery'),
         handler = require('./handler'),
         twig = require('./twig_globals'),
+        no_reload_folder_change = require('./no_reload_folder_change'),
         cft;
 
     return function() {
         cft = window['ChartFolderTree'];
+
+        function cleanResponse(folder) {
+            delete folder.user;
+            delete folder.type;
+            folder.sub = false;
+            folder.charts = 0;
+            return folder;
+        }
 
         $('.add-folder').click(function(e) {
             var nuname,
@@ -13,6 +22,7 @@ define(function(require) {
 
             e.preventDefault();
             nuname = prompt(twig.globals.strings.enter_folder_name);
+            console.log(nuname);
             if (!nuname) return;
 
             $.ajax({
@@ -30,9 +40,10 @@ define(function(require) {
                 if (res.status == 'error') {
                     alert(res.message);
                 } else if (res.status == 'ok') {
-                    // location.reload(true);
-                    console.warn("Need to update tree here and do a tree repaint, or bad things will happen.\n\
-This one is really bad. We need the new ID allocated for the folder and I don't know if the API provides it, yet.");
+                    cft.addFolder(cleanResponse(res.data));
+                    no_reload_folder_change.repaintSubfolders();
+                    cft.reRenderTree();
+                    no_reload_folder_change.init();
                 }
             }).fail(handler.fail);
         });
