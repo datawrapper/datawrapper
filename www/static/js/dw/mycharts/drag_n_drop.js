@@ -130,7 +130,7 @@ define(function(require) {
     function identifyTarget(target) {
         var id = { organization: false }
 
-        id.folder = target.attr('folder-id');
+        id.folder = parseInt(target.attr('folder-id'));
 
         if (id.folder) {
             return id;
