@@ -30,6 +30,7 @@ define(function(require) {
             span = document.createElement('span');
 
         li.classList.add('span2');
+        li.setAttribute('folder-id', folder.id);
         a.classList.add('thumbnail');
         a.setAttribute('href', (org_id) ? '/organization/' + org_id + '/' + folder.id : '/mycharts/' + folder.id);
         i.classList.add('im');

@@ -3,7 +3,7 @@
         {% if (group.type == 'user' and not current.organization) or (group.type == 'organization' and (group.organization.id == current.organization)) %}
             {% for folder in group.folders %}
                 {% if folder.parent == current.folder %}
-    <li class="span2">
+    <li class="span2" folder-id="{{ folder.id }}">
                     {% if group.type == 'user' %}
         <a class="thumbnail" href="/mycharts/{{ folder.id }}">
                     {% else %}
