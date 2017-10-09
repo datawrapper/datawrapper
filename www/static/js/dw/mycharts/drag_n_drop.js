@@ -4,16 +4,8 @@ define(function(require) {
         twig = require('./twig_globals'),
         no_reload_folder_change = require('./no_reload_folder_change'),
         handler = require('./handler'),
+        buildLink = require('./buildLink'),
         cft;
-
-    function buildLink() {
-        var id = cft.getCurrentFolder(),
-            link = '';
-
-        link += (id.organization) ? '/organization/' + id.organization : twig.globals.strings.mycharts_base;
-        if (id.folder) { link += '/' + id.folder }
-        return link;
-    }
 
     function enableChartDrag() {
         var charts = $('div.mycharts-chart-list ul.thumbnails li.chart'),
@@ -88,7 +80,7 @@ define(function(require) {
             }),
             dataType: 'JSON'
         }).done(function() {
-            no_reload_folder_change.reloadLink(buildLink());
+            no_reload_folder_change.reloadLink(buildLink(cft.getCurrentFolder()));
             cft.moveNChartsTo(charts.length, id);
         }).fail(handler.fail);
     }

@@ -92,6 +92,15 @@ define(function(require) {
             if (typeof this.list[f_id] !== "undefined")
                 this.list[f_id].folder.name = name;
         },
+        getParentFolder: function(id) {
+            var parent = (typeof this.list[id.folder] !== "undefined") ? this.list[id.folder].folder.parent : false,
+                parent_folder_obj = (parent) ? this.getFolderById(parent) : getRoot(id.organization);
+
+            return {
+                id: (parent_folder_obj.id) ? parent_folder_obj.id : false,
+                organization: (parent_folder_obj.organization) ? ((parent_folder_obj.organization.id) ? parent_folder_obj.organization.id : parent_folder_obj.organization) : false
+            };
+        },
         getPathToFolder: function(f_id) {
             return (typeof this.list[f_id] !== "undefined") ? this.list[f_id].path_info.strings : false;
         },
@@ -205,6 +214,21 @@ define(function(require) {
             dest_array.sort(function(a, b) {
                 return a.name.localeCompare(b.name);
             });
+            this.list = genList();
+        },
+        deleteFolder: function(delme) {
+            var parent = (typeof this.list[delme.folder] !== "undefined") ? this.list[delme.folder].folder.parent : false,
+                parent_folder_obj = (parent) ? this.getFolderById(parent) : getRoot(delme.organization);
+
+            if (parent_folder_obj.id) {
+                parent_folder_obj.sub = parent_folder_obj.sub.filter(function(folder) {
+                    return folder.id != delme.folder;
+                });
+            } else {
+                parent_folder_obj.folders = parent_folder_obj.folders.filter(function(folder) {
+                    return folder.id != delme.folder;
+                });
+            }
             this.list = genList();
         },
         moveNChartsTo: function(num, dest) {

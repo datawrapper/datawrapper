@@ -3,6 +3,7 @@ define(function(require) {
         handler = require('./handler'),
         twig = require('./twig_globals'),
         no_reload_folder_change = require('./no_reload_folder_change'),
+        buildLink = require('./buildLink'),
         cft;
 
     return function() {
@@ -22,7 +23,6 @@ define(function(require) {
 
             e.preventDefault();
             nuname = prompt(twig.globals.strings.enter_folder_name);
-            console.log(nuname);
             if (!nuname) return;
 
             $.ajax({
@@ -133,8 +133,11 @@ define(function(require) {
                 if (res.status == 'error') {
                     alert(res.message);
                 } else if (res.status == 'ok') {
-                    // location.reload(true);
-                    console.warn('Need to update tree here and do a tree repaint, also we need to change to parent dir, or bad things will happen.');
+                    var parent_link = buildLink(cft.getParentFolder(id));
+                    cft.deleteFolder(id);
+                    no_reload_folder_change.reloadLink(parent_link);
+                    cft.reRenderTree();
+                    no_reload_folder_change.init();
                 }
             }).fail(handler.fail);
         });
