@@ -82,7 +82,7 @@ define(function(require) {
             line.append(sep, a);
         });
         line.append(sep);
-        $('#current-folder-name').html(dw.utils.purifyHtml(cft.getFolderById(id.folder).name, ''));
+        $('#current-folder-name').html(dw.utils.purifyHtml(cft.getFolderNameById(id.folder), ''));
     }
 
     function reloadLink(path) {

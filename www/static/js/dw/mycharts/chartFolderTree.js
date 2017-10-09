@@ -88,6 +88,9 @@ define(function(require) {
         getFolderNameById: function(f_id) {
             return (typeof this.list[f_id] !== "undefined") ? this.list[f_id].folder.name : false;
         },
+        getFolderOrgById: function(f_id) {
+            return (typeof this.list[f_id] !== "undefined") ? this.list[f_id].folder.organization : false;
+        },
         setFolderName: function(f_id, name) {
             if (typeof this.list[f_id] !== "undefined")
                 this.list[f_id].folder.name = name;
