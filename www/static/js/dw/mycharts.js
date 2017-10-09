@@ -2,6 +2,7 @@ define(function(require) {
 
     var $ = require('jquery'),
         _ = require('underscore'),
+        twig = require('./mycharts/twig_globals'),
         chartFolderTree = require('./mycharts/chartFolderTree'),
         handler = require('./mycharts/handler'),
         chart_functions = require('./mycharts/generic-chart-functions'),
@@ -12,7 +13,6 @@ define(function(require) {
         drag_n_drop = require('./mycharts/drag_n_drop');
 
     return function(obj) {
-        var twig = require('./mycharts/twig_globals');
         twig.init(obj);
 
         $('document').ready(function() {
