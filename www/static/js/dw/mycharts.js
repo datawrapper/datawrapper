@@ -21,7 +21,7 @@ define(function(require) {
             delete twig.globals.current;
             cft = window['ChartFolderTree'];
             renderTree();
-            chart_functions(twig.globals.user2);
+            chart_functions();
             multiselection.init();
             sort_order_and_search();
             no_reload_folder_change.init();
