@@ -96,7 +96,7 @@ This one is really bad. We need the new ID allocated for the folder and I don't 
                             curname.text(folder_name);
                         } else if (res.status == 'ok') {
                             $('.folders li.active a span').text(res.data.name);
-                            console.warn('Need to update tree here, or bad things will happen.');
+                            cft.setFolderName(id.folder, res.data.name);
                         }
                     }).fail(function(err) {
                         alert('API Error');

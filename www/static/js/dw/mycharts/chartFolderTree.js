@@ -86,6 +86,10 @@ define(function(require) {
         getFolderNameById: function(f_id) {
             return (typeof this.list[f_id] !== "undefined") ? this.list[f_id].folder.name : false;
         },
+        setFolderName: function(f_id, name) {
+            if (typeof this.list[f_id] !== "undefined")
+                this.list[f_id].folder.name = name;
+        },
         getPathToFolder: function(f_id) {
             return (typeof this.list[f_id] !== "undefined") ? this.list[f_id].path_info.strings : false;
         },
