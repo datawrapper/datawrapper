@@ -7,10 +7,10 @@ define(function(require) {
         handler = require('./mycharts/handler'),
         chart_functions = require('./mycharts/generic-chart-functions'),
         renderTree = require('./mycharts/renderTree'),
+        no_reload_folder_change = require('./mycharts/no_reload_folder_change'),
         folder_menu = require('./mycharts/folder_menu'),
         multiselection = require('./mycharts/multiselection'),
         sort_order_and_search = require('./mycharts/sort_order_and_search'),
-        no_reload_folder_change = require('./mycharts/no_reload_folder_change'),
         drag_n_drop = require('./mycharts/drag_n_drop');
 
     return function(obj) {
@@ -22,11 +22,12 @@ define(function(require) {
             delete twig.globals.current;
             cft = window['ChartFolderTree'];
             renderTree();
+            no_reload_folder_change.init();
+            no_reload_folder_change.repaintBreadcrumb();
             chart_functions();
             folder_menu();
             multiselection.init();
             sort_order_and_search();
-            no_reload_folder_change.init();
             drag_n_drop();
         });
     };

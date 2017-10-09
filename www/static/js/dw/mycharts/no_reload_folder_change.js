@@ -133,6 +133,7 @@ define(function(require) {
         init: init,
         enable_for_selector: set_click,
         reloadLink: reloadLink,
-        setDragNDropCallback: setDragNDropCallback
+        setDragNDropCallback: setDragNDropCallback,
+        repaintBreadcrumb: repaint_breadcrumb
     };
 });
