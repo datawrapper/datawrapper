@@ -5,6 +5,7 @@ define(function(require) {
         this.current = current;
         this.rendercallbacks = {};
         this.current_folder_funcs = {};
+        this.dropcallback = function(){};
     }
 
     function genTree(raw) {
@@ -68,7 +69,7 @@ define(function(require) {
 
     function getRoot(org_id) {
         return this.tree.filter(function(group) {
-            return (group.organization) ? (group.organization.id === org_id) : (group.organization === org_id);
+            return (group.organization) ? (group.organization.id === org_id) : (group.organization === false);
         })[0];
     }
 
@@ -94,13 +95,13 @@ define(function(require) {
         },
         getRootSubFolders: function(org_id) {
             var subfolders = this.tree.filter(function(group) {
-                return (group.organization) ? (group.organization.id === org_id) : (group.organization == org_id);
+                return (group.organization) ? (group.organization.id === org_id) : (group.organization === false);
             })[0].folders;
             return (subfolders) ? subfolders : [];
         },
         getOrgNameById: function(org_id) {
             var org = this.tree.filter(function(group) {
-                return (group.organization) ? (group.organization.id === org_id) : (group.organization == org_id);
+                return (group.organization) ? (group.organization.id === org_id) : (group.organization === false);
             })[0].organization;
             return (org) ? org.name : false;
         },
@@ -130,6 +131,9 @@ define(function(require) {
         setRenderCallbacks: function(callbacks) {
             this.rendercallbacks = callbacks;
         },
+        setDropCallback: function(callback) {
+            this.dropcallback = callback;
+        },
         reRenderTree: function() {
             var cbs = this.rendercallbacks,
                 cur = this.current;
@@ -138,6 +142,45 @@ define(function(require) {
                 cbs.renderSubtree(group.organization.id, group.folders);
             });
             cbs.changeActiveFolder(cur.folder, cur.organization);
+            this.dropcallback();
+        },
+        moveFolderToFolder: function(moved_id, dest) {
+            var moved_folder_obj = this.getFolderById(moved_id),
+                dest_folder_obj = (dest.folder) ? this.getFolderById(dest.folder) : getRoot(dest.organization),
+                source_folder_obj = (moved_folder_obj.parent) ? this.getFolderById(moved_folder_obj.parent) : getRoot(moved_folder_obj.organization);
+
+
+            if (dest.folder) {
+                if (!dest_folder_obj.sub)
+                    dest_folder_obj.sub = [];
+                dest_folder_obj.sub.push(moved_folder_obj);
+                dest_folder_obj.sub.sort(function(a, b) {
+                    return a.name.localeCompare(b.name);
+                });
+            } else {
+                dest_folder_obj.folders.push(moved_folder_obj);
+                dest_folder_obj.folders.sort(function(a, b) {
+                    return a.name.localeCompare(b.name);
+                });
+            }
+
+            if (moved_folder_obj.parent) {
+                source_folder_obj.sub = source_folder_obj.sub.filter(function(folder) {
+                    return folder.id != moved_id;
+                });
+                if (source_folder_obj.sub.length === 0)
+                    source_folder_obj.sub = false;
+            } else {
+                source_folder_obj.folders = source_folder_obj.folders.filter(function(folder) {
+                    return folder.id != moved_id;
+                });
+            }
+
+            moved_folder_obj.parent = dest.folder;
+            moved_folder_obj.organization = dest.organization;
+
+            console.log(moved_folder_obj, source_folder_obj, dest_folder_obj);
+            this.reRenderTree();
         },
         moveNChartsTo: function(num, dest) {
             var folder;

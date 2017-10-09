@@ -72,6 +72,12 @@ define(function(require) {
         $('li.root-folder').find('*').attr('draggable', false);
     }
 
+    function enableTreeFolderDrag() {
+        enableFolderDragForJQO($('ul.folders-left li').add('ul.subfolders li.span2').not('.add-button,.root-folder'));
+        // FIXME: We should disable some more things likely to be dragged, that we don't want to be dragged
+        $('li.root-folder').find('*').attr('draggable', false);
+    }
+
     function enableDrag() {
         enableChartDrag();
         enableFolderDragForJQO($('ul.subfolders li.span2').not('.add-button'));
@@ -93,9 +99,7 @@ define(function(require) {
         }).fail(handler.fail);
     }
 
-    function moveFolder(folder, target) {
-        console.log(folder, target);
-
+    function moveFolder(folder, target, id) {
         $.ajax({
             url: '/api/folders/' + folder,
             type: 'PUT',
@@ -107,7 +111,8 @@ define(function(require) {
             if (res.status == 'error') {
                 alert(res.message);
             } else if (res.status == 'ok') {
-                console.warn("We're not done yet! Need to update Folder List and if this was a subfolder link we need to repaint subfolders.");
+                cft.moveFolderToFolder(folder, id);
+                console.warn("We're not done yet! If this was a subfolder link we need to repaint subfolders.");
             }
         }).fail(handler.fail);
     }
@@ -212,5 +217,9 @@ define(function(require) {
         enableDrop();
         no_reload_folder_change.setDragNDropCallback(enableDrag);
         cft = window['ChartFolderTree'];
+        cft.setDropCallback(function(){
+            enableDrop();
+            enableTreeFolderDrag();
+        });
     };
 });
