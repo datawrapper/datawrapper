@@ -9,6 +9,8 @@ $app->get('/(chart|map)/:id/visualize', function ($id) use ($app) {
     check_chart_writable($id, function($user, $chart) use ($app) {
         $visData = "";
 
+        if ($app->request()->get('mode') == "print") $chart->usePrint();
+
         // check if path and namespace match
         $path = explode('/', $app->request()->getPath())[1];
         if ($path != $chart->getNamespace()) {
@@ -65,7 +67,8 @@ $app->get('/(chart|map)/:id/visualize', function ($id) use ($app) {
             'theme' => $theme,
             'type' => $chart->getNamespace(),
             'debug' => !empty($GLOBALS['dw_config']['debug_export_test_cases']) ? '1' : '0',
-            'vis_data' => $visData
+            'vis_data' => $visData,
+            'mode' => $app->request()->get('mode') == "print" ? "print": "web"
         );
         add_header_vars($page, $chart->getNamespace());
         add_editor_nav($page, 3, $chart->getNamespace());

@@ -54,8 +54,10 @@
     {{ hook('chart_before_body', chart, published) }}
 
     {# some convenient short cuts for theme templates #}
-    {% set title = chart.title %}{% set intro = chart.metadata.describe.intro %}{% set source = chart.metadata.describe['source-name'] %}{% set sourceURL = chart.metadata.describe['source-url'] %}
-
+    {% set title = chart.title %}
+    {% set intro = chart.getMetadata('describe.intro') %}
+    {% set source = chart.getMetadata('describe.source-name') %}
+    {% set sourceURL = chart.getMetadata('describe.source-url') %}
 
 
     <div class="dw-chart-header" id="header">

@@ -119,6 +119,9 @@ function if_chart_exists($id, $callback) {
 $app->put('/charts/:id', function($id) use ($app) {
     if_chart_is_writable($id, function($user, $chart) use ($app) {
         $json = json_decode($app->request()->getBody(), true);
+
+        if ($app->request()->get('mode') == "print") $chart->usePrint();
+
         if ($chart->unserialize($json))
             ok($chart->serialize());
         else

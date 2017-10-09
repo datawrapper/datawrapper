@@ -160,6 +160,9 @@ html .navbar .navbar-inner .brand .beta {
 html .navbar .navbar-inner .mycharts_dd.dropdown {
   margin-left: -20px;
 }
+html .navbar .navbar-inner .mycharts_dd.dropdown ul {
+  z-index: 1001;
+}
 html .navbar .navbar-inner .mycharts_dd.dropdown li {
   position: relative;
   max-width: 240px;
@@ -981,6 +984,7 @@ html .btn-inverse {
   overflow: hidden;
   background: #fff;
   max-width: 98%;
+  position: relative;
 }
 #iframe-wrapper .resizer {
   width: 20px;
@@ -1008,15 +1012,15 @@ html .btn-inverse {
   color: #0088cc;
   background: #e6f3fa;
 }
-#iframe-wrapper.resizable {
-  position: relative;
-}
 #iframe-vis {
   border: 0;
   width: 100%;
   height: 100%;
   margin: 0;
   padding: 0;
+}
+.chart-editor.dw-create-visualize.chart-editor-print .resizer {
+  display: none;
 }
 .chart-editor.dw-create-visualize .visualization [contenteditable=true]:hover:after {
   content: ' click to edit';
@@ -1035,9 +1039,31 @@ html .btn-inverse {
 .chart-editor.dw-create-visualize .visualization [contenteditable]:focus:after {
   content: '';
 }
+.chart-editor.dw-create-visualize #vis-options,
+.chart-editor.dw-create-visualize .vis-options {
+  position: relative;
+}
 .chart-editor.dw-create-visualize #vis-options fieldset legend,
 .chart-editor.dw-create-visualize .vis-options fieldset legend {
   margin-bottom: 10px;
+}
+.chart-editor.dw-create-visualize #vis-options .vis-options-refine-loading,
+.chart-editor.dw-create-visualize .vis-options .vis-options-refine-loading {
+  z-index: 100000;
+  position: absolute;
+  left: -10px;
+  top: 0;
+  width: calc(100% + 20px);
+  height: 100%;
+  background: rgba(0, 0, 0, 0.2);
+}
+.chart-editor.dw-create-visualize #vis-options .vis-options-refine-loading > .fa-spinner,
+.chart-editor.dw-create-visualize .vis-options .vis-options-refine-loading > .fa-spinner {
+  position: absolute;
+  color: #fff;
+  left: calc(50% - 22px);
+  top: 100px;
+  font-size: 44px;
 }
 .chart-editor.dw-create-visualize #vis-options .vis-option-group,
 .chart-editor.dw-create-visualize .vis-options .vis-option-group {

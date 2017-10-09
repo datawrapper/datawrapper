@@ -14,16 +14,21 @@ $app->get('/chart/:id/preview', function ($id) use ($app) {
             $__l10n->loadMessages($chart->getLanguage());
         }
 
+        if ($app->request()->get('mode') == "print") $chart->usePrint();
+
         $theme = (empty($app->request()->get('theme')) ? $chart->getTheme() : $app->request()->get('theme'));
         $theme = ThemeQuery::create()->findPk($theme);
         if (empty($theme)) $theme = ThemeQuery::create()->findPk("default");
         $page['theme'] = $theme;
 
         $page = get_chart_content($chart, $user, $theme, $app->request()->get('minify'), $app->request()->get('debug'));
+        $page['chartData'] = $chart->toStruct(1, "print");
         $page['plain'] = $app->request()->get('plain') == 1;
         $page['fullscreen'] = $app->request()->get('fs') == 1;
         $page['innersvg'] = $app->request()->get('innersvg') == 1;
         $page['config'] = $GLOBALS['dw_config'];
+        $page['chartData'] = $chart->getMetadata();
+
 
         check_iframe_origin($app);
 

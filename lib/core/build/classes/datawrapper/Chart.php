@@ -32,6 +32,20 @@ class Chart extends BaseChart {
         return $this->lowercaseKeys($arr);
     }
 
+    public function usePrint() {
+        $this->usePrintVersion = true;
+
+        $meta = $this->getMetadata();
+        if (!isset($meta['print'])) {
+            // copy web chart for print
+            $meta['print'] = $meta;
+            $meta['print']['describe']['title'] = parent::getTitle();
+
+            $this->setMetadata(json_encode($meta));
+            $this->save();
+        }
+    }
+
     /**
      * this function converts the chart
      */
@@ -41,8 +55,15 @@ class Chart extends BaseChart {
         unset($json['DeletedAt']);
         // at first we lowercase the keys
         $json = $this->lowercaseKeys($json);
-        // then decode metadata from json string
+
         $json['metadata'] = $this->getMetadata();
+
+        if (isset($this->usePrintVersion) && $this->usePrintVersion) {
+            $json['metadata'] = $json['metadata']['print'];
+        } else {
+            unset($json['metadata']['print']);
+        }
+
         if ($this->getUser()) $json['author'] = $this->getUser()->serialize();
         return $json;
     }
@@ -64,8 +85,28 @@ class Chart extends BaseChart {
     public function unserialize($json) {
         // bad payload?
         if (!is_array($json)) return false;
-        // encode metadata as json string … if there IS metadata
-        if (array_key_exists('metadata', $json)) $json['metadata'] = json_encode($json['metadata']);
+
+        if (isset($this->usePrintVersion) && $this->usePrintVersion) {
+            if (isset($json['metadata'])) {
+                $json['metadata']['describe']['title'] = $json['title'];
+            }
+
+            $json['title'] = parent::getTitle();
+        }
+
+        if (array_key_exists('metadata', $json)) {
+            if (isset($this->usePrintVersion) && $this->usePrintVersion) {
+                $m = $this->getMetadata();
+                $m['print'] = $json['metadata'];
+                $json['metadata'] = json_encode($m);
+            } else {
+                // encode metadata as json string … if there IS metadata
+                $m = $this->getMetadata();
+                if (isset($m['print'])) { $json['metadata']['print'] = $m['print']; }
+                $json['metadata'] = json_encode($json['metadata']);
+            }
+        }
+
         // then we upperkeys the keys
         $json = $this->uppercaseKeys($json);
         // finally we ignore changes to some protected fields
@@ -273,6 +314,10 @@ class Chart extends BaseChart {
      * returns the chart meta data
      */
     public function getMetadata($key = null) {
+        if (isset($this->usePrintVersion) && $this->usePrintVersion && $key) {
+            $key = "print." . $key;
+        }
+
         $default = Chart::defaultMetaData();
         $meta = json_decode(parent::getMetadata(), true);
         if (!is_array($meta)) $meta = array();
@@ -456,6 +501,14 @@ class Chart extends BaseChart {
 
     public function assetUrl($file) {
         return dirname($this->getPublicUrl() . '_') . '/' . $file;
+    }
+
+    public function getTitle() {
+        if (isset($this->usePrintVersion) && $this->usePrintVersion) {
+            return $this->getMetadata('describe.title');
+        } else {
+            return parent::getTitle();
+        }
     }
 
     /*
