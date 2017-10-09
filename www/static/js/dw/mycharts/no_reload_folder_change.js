@@ -2,6 +2,7 @@ define(function(require) {
     var $ = require('jquery'),
         twig = require('./twig_globals'),
         multiselection = require('./multiselection'),
+        generic_chart_functions = require('./generic-chart-functions'),
         drag_n_drop_callback = false,
         cft;
 
@@ -101,6 +102,7 @@ define(function(require) {
                 set_click('#folder-sequence a');
 
                 multiselection.init();
+                generic_chart_functions();
                 if (drag_n_drop_callback) drag_n_drop_callback();
             });
     }

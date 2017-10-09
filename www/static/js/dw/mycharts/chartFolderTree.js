@@ -139,6 +139,10 @@ define(function(require) {
             folder = (this.current.folder) ? this.list[this.current.folder].folder : getRoot(this.current.organization);
             folder.charts -= num;
             this.rendercallbacks.changeChartCount(this.current.folder, this.current.organization, folder.charts);
+        },
+        removeChartFromCurrent: function() {
+            var folder = (this.current.folder) ? this.list[this.current.folder].folder : getRoot(this.current.organization);
+            this.rendercallbacks.changeChartCount(this.current.folder, this.current.organization, --folder.charts);
         }
     };
 

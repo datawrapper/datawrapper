@@ -1,8 +1,11 @@
 define(function(require){
-    var $ = require('jquery');
+    var $ = require('jquery'),
+        twig = require('./twig_globals'),
+        cft;
 
-    return function(user2) {
-        if (user2) {
+    return function() {
+        cft = window['ChartFolderTree'];
+        if (twig.globals.user2) {
             $('.thumbnail > a').click(function(e) {
                 e.preventDefault();
                 dw.backend.popupChart($(e.target).parents('.chart').data('id'), true);
@@ -19,12 +22,13 @@ define(function(require){
             e.preventDefault();
             var chart = $(e.target).parents('.chart'),
                 id = chart.data('id');
-            if (window.confirm(twig_globals.strings.confirm_chart_delete)) {
+            if (window.confirm(twig.globals.strings.confirm_chart_delete)) {
                  $.ajax({
                     url: '/api/charts/'+id,
                     type: 'DELETE',
                     success: function(data) {
                         chart.remove();
+                        cft.removeChartFromCurrent();
                     }
                 });
             };
