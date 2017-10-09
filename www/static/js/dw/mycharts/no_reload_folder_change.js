@@ -127,7 +127,7 @@ define(function(require) {
     }
 
     function reenableClicks() {
-        set_click('ul.folders-left li a:not(.root-folder)');
+        set_click('ul.folders-left li:not(.root-folder) a');
         set_click('#folder-sequence a');
         set_click('ul.subfolders a:not(.add-folder)')
     }
