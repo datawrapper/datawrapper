@@ -101,7 +101,7 @@ define(function(require) {
                 no_reload_folder_change.repaintBreadcrumb();
                 no_reload_folder_change.repaintSubfolders();
                 cft.reRenderTree();
-                no_reload_folder_change.init();
+                no_reload_folder_change.reenableClicks();
             }
         }).fail(handler.fail);
     }
@@ -138,6 +138,8 @@ define(function(require) {
     // FIXME: Drop targets need to be filtered to prevent draging folders into their own subfolders
     function enableDrop() {
         var drop_targets = $('ul.folders-left li');
+
+        $('ul.folders-left li.root-folder').off();
 
         drop_targets.on('dragenter', function(e) {
             e.preventDefault();

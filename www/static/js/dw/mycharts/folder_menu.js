@@ -43,7 +43,6 @@ define(function(require) {
                     cft.addFolder(cleanResponse(res.data));
                     no_reload_folder_change.repaintSubfolders();
                     cft.reRenderTree();
-                    no_reload_folder_change.init();
                 }
             }).fail(handler.fail);
         });
@@ -137,7 +136,6 @@ define(function(require) {
                     cft.deleteFolder(id);
                     no_reload_folder_change.reloadLink(parent_link);
                     cft.reRenderTree();
-                    no_reload_folder_change.init();
                 }
             }).fail(handler.fail);
         });
