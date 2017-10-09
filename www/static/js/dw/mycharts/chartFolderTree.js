@@ -4,6 +4,7 @@ define(function(require) {
         this.list = genList();
         this.current = current;
         this.rendercallbacks = {};
+        this.current_folder_funcs = {};
     }
 
     function genTree(raw) {
@@ -78,6 +79,9 @@ define(function(require) {
         getFolderById: function(f_id) {
             return (typeof this.list[f_id] !== "undefined") ? this.list[f_id].folder : false;
         },
+        getFolderNameById: function(f_id) {
+            return (typeof this.list[f_id] !== "undefined") ? this.list[f_id].folder.name : false;
+        },
         getPathToFolder: function(f_id) {
             return (typeof this.list[f_id] !== "undefined") ? this.list[f_id].path_info.strings : false;
         },
@@ -116,6 +120,12 @@ define(function(require) {
                 folder: this.current.folder,
                 organization: this.current.organization
             };
+        },
+        setCurrentFolderFuncs: function(callback) {
+            this.current_folder_funcs = callback;
+        },
+        updateCurrentFolderFuncs: function() {
+            this.current_folder_funcs(!this.current.folder);
         },
         setRenderCallbacks: function(callbacks) {
             this.rendercallbacks = callbacks;

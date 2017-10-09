@@ -1,16 +1,40 @@
 define(function(require) {
     var $ = require('jquery'),
-        add_folder_helper = require('./add_folder'),
         handler = require('./handler'),
-        twig = require('./twig_globals');
+        twig = require('./twig_globals'),
+        cft;
 
-    return function(folder, org_id, path) {
-        $('.add-folder').click(add_folder_helper(folder.id, org_id));
-        $('.move-to-folder').show();
+    return function() {
+        cft = window['ChartFolderTree'];
+
+        $('.add-folder').click(function(e) {
+            var nuname,
+                id = cft.getCurrentFolder();
+
+            e.preventDefault();
+            nuname = prompt(twig.globals.strings.enter_folder_name);
+            if (!nuname) return;
+
+            $.ajax({
+                url: '/api/folders',
+                type: 'POST',
+                processData: false,
+                contentType: "application/json",
+                data: JSON.stringify({
+                    name: nuname,
+                    parent: id.folder,
+                    organization: id.organization
+                }),
+                dataType: 'JSON'
+            }).done(handler.done).fail(handler.fail);
+        });
 
         $('#rename-folder').click(function(e) {
             // fancier inline editing!
-            var curname = $('#current-folder-name')
+            var id = cft.getCurrentFolder(),
+                folder_name = cft.getFolderNameById(id.folder),
+
+                curname = $('#current-folder-name')
                 .attr('contenteditable', true)
                 .on('focus', function(evt) {
                     // select all on focus
@@ -35,7 +59,7 @@ define(function(require) {
                         done();
                         evt.preventDefault();
                     } else if (evt.keyCode == 27) { // esc
-                        curname.text(folder.name)
+                        curname.text(folder_name)
                             .attr('contenteditable', null);
                     }
                 })
@@ -49,10 +73,10 @@ define(function(require) {
 
                 curname.text(new_name);
 
-                if (new_name != folder.name && new_name) {
-                    folder.name = new_name;
+                if (new_name != folder_name && new_name) {
+                    folder_name = new_name;
                     $.ajax({
-                        url: '/api/folders/' + folder.id,
+                        url: '/api/folders/' + id.folder,
                         type: 'PUT',
                         processData: false,
                         contentType: "application/json",
@@ -61,14 +85,14 @@ define(function(require) {
                     }).done(function(res) {
                         if (res.status == 'error') {
                             alert(res.message);
-                            curname.text(folder.name);
+                            curname.text(folder_name);
                         } else if (res.status == 'ok') {
                             $('.folders li.active a span').text(res.data.name);
                         }
                     }).fail(function(err) {
                         alert('API Error');
                         console.error(err);
-                        curname.text(folder.name);
+                        curname.text(folder_name);
                     });
                 }
             }
@@ -76,17 +100,24 @@ define(function(require) {
             e.preventDefault();
         });
 
-        // can't delete root or folders with subfolders
-        if (!(typeof(path) === 'undefined' || folder.sub != false)) {
-            $('#delete-folder').click(function(e) {
-                e.preventDefault();
-                $.ajax({
-                    url: '/api/folders/' + folder.id,
-                    type: 'DELETE',
-                    contentType: "application/json",
-                    dataType: 'JSON'
-                }).done(handler.done).fail(handler.fail);
-            });
-        }
+        $('#delete-folder').click(function(e) {
+            var id = cft.getCurrentFolder();
+
+            e.preventDefault();
+            $.ajax({
+                url: '/api/folders/' + id.folder,
+                type: 'DELETE',
+                contentType: "application/json",
+                dataType: 'JSON'
+            }).done(handler.done).fail(handler.fail);
+        });
+
+        cft.setCurrentFolderFuncs(function(is_root) {
+            var ren_del = $('#rename-folder, #delete-folder');
+
+            if (is_root) ren_del.hide();
+            else ren_del.show();
+        });
+        cft.updateCurrentFolderFuncs();
     };
 });

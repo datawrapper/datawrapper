@@ -7,6 +7,7 @@ define(function(require) {
         handler = require('./mycharts/handler'),
         chart_functions = require('./mycharts/generic-chart-functions'),
         renderTree = require('./mycharts/renderTree'),
+        folder_menu = require('./mycharts/folder_menu'),
         multiselection = require('./mycharts/multiselection'),
         sort_order_and_search = require('./mycharts/sort_order_and_search'),
         no_reload_folder_change = require('./mycharts/no_reload_folder_change'),
@@ -22,6 +23,7 @@ define(function(require) {
             cft = window['ChartFolderTree'];
             renderTree();
             chart_functions();
+            folder_menu();
             multiselection.init();
             sort_order_and_search();
             no_reload_folder_change.init();

@@ -103,6 +103,7 @@ define(function(require) {
 
                 multiselection.init();
                 generic_chart_functions();
+                cft.updateCurrentFolderFuncs();
                 if (drag_n_drop_callback) drag_n_drop_callback();
             });
     }
