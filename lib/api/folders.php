@@ -34,7 +34,7 @@
             // check if parent id is a child folder
             $subtree_ids = $folder->getSubtreeFolderIds();
             if (in_array($parentFolder->getId(), $subtree_ids)) {
-                return error('move-folder-inside-substree', 'you can\'t move a folder inside it\'s own subtree!');
+                return error('move-folder-inside-substree', 'you can\'t move a folder inside its own subtree!');
             }
             $folder->setParentId($parentFolder->getId());
 
