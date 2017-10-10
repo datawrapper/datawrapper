@@ -95,6 +95,26 @@ define(function(require) {
             if (typeof this.list[f_id] !== "undefined")
                 this.list[f_id].folder.name = name;
         },
+        isParentFolder: function(source, dest) {
+            var source_folder_obj = (typeof this.list[source] !== "undefined") ? this.list[source].folder : false,
+                dest_folder_obj = (typeof this.list[dest.id] !== "undefined") ? this.list[dest.id].folder : getRoot(dest.organization),
+                parent_folder_obj = (source_folder_obj) ? ((source_folder_obj.parent) ? this.list[source_folder_obj.parent].folder : getRoot(source_folder_obj.organization)) : false;
+
+            if (!source_folder_obj) {
+                console.warn('Source folder can not be a root folder. Operation prohibited.');
+                return true;
+            }
+            if (parent_folder_obj.id && dest_folder_obj.id) {
+                return (parent_folder_obj.id == dest_folder_obj.id)
+            } else if (parent_folder_obj.organization.id && dest_folder_obj.organization.id) {
+                return (parent_folder_obj.organization.id == dest_folder_obj.organization.id)
+            } else if (!dest_folder_obj || !parent_folder_obj) {
+                console.warn('You should never get here. Returning true for security reasons');
+                return true;
+            } else {
+                return false;
+            }
+        },
         getParentFolder: function(id) {
             var parent = (typeof this.list[id.folder] !== "undefined") ? this.list[id.folder].folder.parent : false,
                 parent_folder_obj = (parent) ? this.getFolderById(parent) : getRoot(id.organization);
