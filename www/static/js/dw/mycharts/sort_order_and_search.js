@@ -36,7 +36,10 @@ define(function(require) {
 
                 cft.setCurrentSort(qstring_parser(path, 'sort'));
                 $('.mycharts-chart-list')
-                    .load(path+'&xhr=1', set_active);
+                    .load(path+'&xhr=1', function(){
+                        set_active();
+                        no_reload_folder_change.enable_for_selector('div.pagination li a');
+                    });
                 window.history.replaceState({}, '', path);
             });
 

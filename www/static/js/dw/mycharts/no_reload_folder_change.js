@@ -3,6 +3,7 @@ define(function(require) {
         twig = require('./twig_globals'),
         multiselection = require('./multiselection'),
         generic_chart_functions = require('./generic-chart-functions'),
+        buildLink = require('./buildLink'),
         drag_n_drop_callback = false,
         cft;
 
@@ -86,21 +87,37 @@ define(function(require) {
     }
 
     function reloadLink(path) {
-        var sort = cft.getCurrentSort();
-            path_sort = path + ((sort) ? '?sort=' + sort + '&xhr=1' : '?xhr=1');
+        var sort = cft.getCurrentSort(),
+            pag_str = false, path_pag_sort;
+
+        if (path.startsWith('?page')) {
+            pag_str = path;
+            path = buildLink(cft.getCurrentFolder());
+        }
+        if (pag_str && sort) {
+            path_pag_sort = path + pag_str + '&sort='+ sort + '&xhr=1';
+        } else if (pag_str) {
+            path_pag_sort = path + pag_str + '&xhr=1';
+        } else if (sort) {
+            path_pag_sort = path + '?sort=' + sort + '&xhr=1'
+        } else {
+            path_pag_sort = path + '?xhr=1'
+        }
 
         $('.mycharts-chart-list')
-            .load(path_sort, function() {
+            .load(path_pag_sort, function() {
                 var id = link_reader(path);
 
                 cft.setCurrentFolder(id.folder, id.org);
-                window.history.pushState(null, '', path_sort.slice(0, path_sort.lastIndexOf('xhr=1') - 1));
+                window.history.pushState(null, '', path_pag_sort.slice(0, path_pag_sort.lastIndexOf('xhr=1') - 1));
 
                 repaint_subfolders();
                 set_click('ul.subfolders a:not(.add-folder)');
 
                 repaint_breadcrumb();
                 set_click('#folder-sequence a');
+
+                set_click('div.pagination li a');
 
                 multiselection.init();
                 generic_chart_functions();
@@ -124,12 +141,14 @@ define(function(require) {
         set_click('ul.folders-left li a');
         set_click('#folder-sequence a');
         set_click('ul.subfolders a:not(.add-folder)');
+        set_click('div.pagination li a');
     }
 
     function reenableClicks() {
         set_click('ul.folders-left li:not(.root-folder) a');
         set_click('#folder-sequence a');
-        set_click('ul.subfolders a:not(.add-folder)')
+        set_click('ul.subfolders a:not(.add-folder)');
+        set_click('div.pagination li a');
     }
 
     function setDragNDropCallback(func) {
