@@ -111,6 +111,8 @@ define(function(require) {
             } else if (!dest_folder_obj || !parent_folder_obj) {
                 console.warn('You should never get here. Returning true for security reasons');
                 return true;
+            } else if (!source_folder_obj.organization && !dest_folder_obj.id) {
+                 return true;
             } else {
                 return false;
             }
