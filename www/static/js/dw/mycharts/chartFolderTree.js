@@ -252,17 +252,21 @@ define(function(require) {
             this.list = genList();
         },
         addFolder: function(folder) {
-            var dest_folder_obj = (folder.parent) ? this.getFolderById(folder.parent) : getRoot(folder.organization),
-                dest_array = (folder.parent) ? dest_folder_obj.sub : dest_folder_obj.folders;
+            var dest_folder_obj = (folder.parent) ? this.getFolderById(folder.parent) : getRoot(folder.organization);
 
-            if (folder.parent || !dest_array)  {
-                dest_folder_obj.sub = [];
-                dest_array = dest_folder_obj.sub;
+            if (dest_folder_obj.id)  {
+                if (!dest_folder_obj.sub) dest_folder_obj.sub = [];
+                dest_folder_obj.sub.push(folder);
+                dest_folder_obj.sub.sort(function(a, b) {
+                    return a.name.localeCompare(b.name);
+                });
+            } else {
+                dest_folder_obj.folders.push(folder);
+                dest_folder_obj.folders.sort(function(a, b) {
+                    return a.name.localeCompare(b.name);
+                });
             }
-            dest_array.push(folder);
-            dest_array.sort(function(a, b) {
-                return a.name.localeCompare(b.name);
-            });
+
             this.list = genList();
         },
         deleteFolder: function(delme) {
