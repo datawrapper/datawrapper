@@ -80,6 +80,7 @@ define(function(require) {
                     } else if (evt.keyCode == 27) { // esc
                         curname.text(folder_name)
                             .attr('contenteditable', null);
+                        curname.off('focus keypress blur');
                     }
                 })
                 .on('blur', done)
@@ -115,6 +116,7 @@ define(function(require) {
                         curname.text(folder_name);
                     });
                 }
+                curname.off('focus keypress blur');
             }
 
             e.preventDefault();
