@@ -403,5 +403,6 @@
     "mycharts \/ Type": "Typ",
     "mycharts \/ Status": "Status",
     "mycharts \/ add-subfoler": "Unterordner anlegen",
-    "mycharts \/ empty-folder": "Dieser Ordner ist noch leer. M\u00f6chtest du ein <a href=\"\/chart\/create?folder=%folder%\">Diagramm erstellen<\/a>?"
+    "mycharts \/ empty-folder": "Dieser Ordner ist noch leer. M\u00f6chtest du ein <a href=\"\/chart\/create?folder=%folder%\">Diagramm erstellen<\/a>?",
+    "mycharts \/ add-subfolder": "Ordner anlegen"
 }

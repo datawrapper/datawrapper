@@ -403,5 +403,6 @@
     "mycharts \/ Type": "Type",
     "mycharts \/ Status": "Status",
     "mycharts \/ add-subfoler": "add subfolder",
-    "mycharts \/ empty-folder": "No charts here, yet. Do you want to <a href=\"\/chart\/create?folder=%folder%\">create one now<\/a>?"
+    "mycharts \/ empty-folder": "No charts here, yet. Do you want to <a href=\"\/chart\/create?folder=%folder%\">create one now<\/a>?",
+    "mycharts \/ add-subfolder": "add subfolder"
 }
