@@ -134,6 +134,10 @@ define(function(require) {
             var subfolders = (typeof this.list[f_id] !== "undefined") ? this.list[f_id].folder.sub : false;
             return (subfolders) ? subfolders : [];
         },
+        hasSubFolders: function(f_id) {
+            var subfolders = (typeof this.list[f_id] !== "undefined") ? this.list[f_id].folder.sub : false;
+            return (subfolders);
+        },
         getRootSubFolders: function(org_id) {
             var subfolders;
             if (!org_id) org_id = false;
@@ -193,7 +197,7 @@ define(function(require) {
             this.current_folder_funcs = callback;
         },
         updateCurrentFolderFuncs: function() {
-            this.current_folder_funcs(!this.current.folder);
+            this.current_folder_funcs();
         },
         setRenderCallbacks: function(callbacks) {
             this.rendercallbacks = callbacks;

@@ -143,11 +143,19 @@ define(function(require) {
             }).fail(handler.fail);
         });
 
-        cft.setCurrentFolderFuncs(function(is_root) {
-            var ren_del = $('#rename-folder, #delete-folder');
+        cft.setCurrentFolderFuncs(function() {
+            var cur = cft.getCurrentFolder(),
+                ren = $('#rename-folder'),
+                del = $('#delete-folder');
 
-            if (is_root) ren_del.hide();
-            else ren_del.show();
+            if (cur.folder) {
+                if (cft.hasSubFolders(cur.folder)) del.hide();
+                else del.show();
+                ren.show();
+            } else {
+                ren.hide();
+                del.hide();
+            }
         });
         cft.updateCurrentFolderFuncs();
     };
