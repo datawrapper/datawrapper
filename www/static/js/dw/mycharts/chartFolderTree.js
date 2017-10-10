@@ -255,7 +255,7 @@ define(function(require) {
             var dest_folder_obj = (folder.parent) ? this.getFolderById(folder.parent) : getRoot(folder.organization),
                 dest_array = (folder.parent) ? dest_folder_obj.sub : dest_folder_obj.folders;
 
-            if (folder.parent || !dest_array)  {
+            if (folder.parent && !dest_array)  {
                 dest_folder_obj.sub = [];
                 dest_array = dest_folder_obj.sub;
             }
