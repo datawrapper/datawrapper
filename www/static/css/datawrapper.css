@@ -1019,6 +1019,14 @@ html .btn-inverse {
   margin: 0;
   padding: 0;
 }
+#iframe-pdf {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 110%;
+  width: 100%;
+}
 .chart-editor.dw-create-visualize.chart-editor-print .resizer {
   display: none;
 }
@@ -1537,6 +1545,89 @@ html .btn-inverse {
 .chart-editor.dw-create-visualize .visconfig .vis-option-type-custom-range input.max {
   width: 5ex;
   text-align: right;
+}
+.chart-editor.dw-create-visualize .toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  width: auto;
+  height: 42px;
+  margin-top: 70px;
+}
+.chart-editor.dw-create-visualize .toolbar .toolbar-container {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: #fff;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20px;
+}
+.chart-editor.dw-create-visualize .toolbar .toolbar-container.hide {
+  display: none;
+}
+.chart-editor.dw-create-visualize .toolbar .toolbar-container:last-child {
+  margin-right: 0;
+}
+.chart-editor.dw-create-visualize .toolbar .toolbar-container .button {
+  cursor: pointer;
+  padding: 0px 16px;
+  height: 39px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+}
+.chart-editor.dw-create-visualize .toolbar .toolbar-container.print .button {
+  padding: 0px 14px;
+}
+.chart-editor.dw-create-visualize .toolbar .toolbar-container .button.active {
+  background: rgba(0, 0, 0, 0.05);
+}
+.chart-editor.dw-create-visualize .toolbar .toolbar-container > *:last-child {
+  border-right: none;
+}
+.chart-editor.dw-create-visualize .toolbar .toolbar-container .button:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+.chart-editor.dw-create-visualize .toolbar .toolbar-container .button .column {
+  border-radius: 1px;
+  background: rgba(0, 0, 0, 0.05);
+  width: 5px;
+  height: 10px;
+  margin-right: 2px;
+  margin-top: -10px;
+}
+.chart-editor.dw-create-visualize .toolbar .toolbar-container .button .column.active {
+  background: rgba(0, 0, 0, 0.2);
+  height: 20px;
+  margin-top: 0;
+}
+.chart-editor.dw-create-visualize .toolbar .toolbar-container .input-resize {
+  border: none;
+  box-shadow: none;
+  border-bottom: 2px dotted #ccc;
+  width: 20px;
+  text-align: center;
+  background: transparent;
+  margin-bottom: 4px;
+}
+.chart-editor.dw-create-visualize .toolbar .toolbar-container .input-resize#resize-w,
+.chart-editor.dw-create-visualize .toolbar .toolbar-container .input-resize#resize-mm-w {
+  margin-left: 10px;
+  margin-right: 5px;
+}
+.chart-editor.dw-create-visualize .toolbar .toolbar-container .input-resize#resize-h,
+.chart-editor.dw-create-visualize .toolbar .toolbar-container .input-resize#resize-mm-h {
+  margin-right: 10px;
+  margin-left: 5px;
+}
+.chart-editor.dw-create-visualize .toolbar .toolbar-container .btn-ppm .btn {
+  font-size: 10px;
+  box-shadow: none;
+  padding: 2px 10px;
 }
 .vis-option-type-chart-description {
   padding-bottom: 1px;

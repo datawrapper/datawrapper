@@ -209,6 +209,8 @@ class DatawrapperHooks {
     const PLUGIN_UPDATED = 'plugin_updated';
     const PLUGIN_UNINSTALLED = 'plugin_uninstalled';
 
+    const RENDER_RESIZE_CONTROL = 'render_resize_control';
+
     // admin user page
     const ADMIN_USER_DETAIL_TOP = 'admin_user_detail_top';
     const ADMIN_USER_DETAIL_BOTTOM = 'admin_user_detail_bottom';

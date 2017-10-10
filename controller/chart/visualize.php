@@ -11,6 +11,13 @@ $app->get('/(chart|map)/:id/visualize', function ($id) use ($app) {
 
         if ($app->request()->get('mode') == "print") $chart->usePrint();
 
+        if (!DatawrapperHooks::hookRegistered(DatawrapperHooks::RENDER_RESIZE_CONTROL)) {
+            DatawrapperHooks::register(DatawrapperHooks::RENDER_RESIZE_CONTROL, function() {
+                global $app;
+                $app->render('chart/visualize/resizer.twig');
+            });
+        }
+
         // check if path and namespace match
         $path = explode('/', $app->request()->getPath())[1];
         if ($path != $chart->getNamespace()) {

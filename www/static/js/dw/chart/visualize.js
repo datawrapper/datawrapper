@@ -7,12 +7,10 @@ define([
     './visualize/initTabNav',
     './visualize/enableInlineEditing',
     './visualize/liveUpdate',
-    './visualize/handleResizeControl',
     'js/misc/classify',
     'js/misc/jquery.easing'],
 
-function(initHighlightSeries, visOptions, themes, loadVisDfd, initTabNav, enableInlineEditing, liveUpdate,
-         handleResizeControl, classify) {
+function(initHighlightSeries, visOptions, themes, loadVisDfd, initTabNav, enableInlineEditing, liveUpdate, classify) {
 
     var _typeHasChanged = false,
         _themeHasChanged = false,
@@ -47,8 +45,6 @@ function(initHighlightSeries, visOptions, themes, loadVisDfd, initTabNav, enable
         initVisSelector();
 
         initScrollToFix();
-
-        handleResizeControl.init(mode);
 
         $(window).on('keyup', function(e) {
             if (e.ctrlKey && e.keyCode == 82) {
