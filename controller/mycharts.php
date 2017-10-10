@@ -163,10 +163,18 @@ function mycharts_group_by_folder($charts, $user) {
     foreach ($folder_lookup as $id => $folder) {
         $path = $folder->getFolderName();
         $pid = $folder->getParentId();
-        while (!empty($pid)) {
+        $max_depth = 100;
+        while (!empty($pid) && $max_depth-- > 0) {
             $folder = $folder_lookup[$pid];
             $path = $folder->getFolderName() .' / '.$path;
             $pid = $folder->getParentId();
+            if ($pid == $folder->getId()) {
+                $GLOBALS['dw_alert'] = 'DB Error: Folder '.$pid.' has itself set as parent folder';
+                break;
+            }
+        }
+        if ($max_depth < 1) {
+            $GLOBALS['dw_alert'] = 'Maximum folder depth reached, likely a bug in the folder table!';
         }
         $folder_paths[$id] = $path;
     }
