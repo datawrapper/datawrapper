@@ -395,14 +395,14 @@
     "Publish time": "Publish time",
     "Type": "Type",
     "Status": "Status",
-    "mycharts \/ Sort by": "Sort by",
-    "mycharts \/ Last edit time": "Last edit time",
-    "mycharts \/ Creation time": "Creation time",
-    "mycharts \/ Publish time": "Publish time",
+    "mycharts \/ Sort by": "Arrange by",
+    "mycharts \/ Last edit time": "Last edit date",
+    "mycharts \/ Creation time": "Creation date",
+    "mycharts \/ Publish time": "Publish date",
     "mycharts \/ Title": "Title",
     "mycharts \/ Type": "Type",
     "mycharts \/ Status": "Status",
     "mycharts \/ add-subfoler": "add subfolder",
     "mycharts \/ empty-folder": "No charts here, yet. Do you want to <a href=\"\/chart\/create?folder=%folder%\">create one now<\/a>?",
-    "mycharts \/ add-subfolder": "add subfolder"
+    "mycharts \/ add-subfolder": "Add subfolder"
 }
