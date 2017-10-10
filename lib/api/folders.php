@@ -27,6 +27,9 @@
             if (!$parentFolder->isValidParent($user, $payload['organization'])) {
                 return error('parent-invalid', 'parent folder is invalid');
             }
+            if ($parentFolder->getId() == $folder->getId()) {
+                return error('move-folder-inside-itself', 'you can\'t move a folder inside itself!');
+            }
             $folder->setParentId($parentFolder->getId());
 
             // use owner from parent folder
