@@ -98,8 +98,27 @@ class Folder extends BaseFolder {
     /*
      * return a list of direct subfolders in a folder
      */
-    public function getSubFolders() {
-        return FolderQuery::create()->findByParentId($this->getId());
+    public function getSubFolders($as_array=false) {
+        $folders = FolderQuery::create()->findByParentId($this->getId());
+        if (!$as_array) return $folders;
+        $out = [];
+        foreach ($folders as $folder) {
+            $out[] = $folder;
+        }
+        return $out;
+    }
+
+    public function getSubtreeFolderIds() {
+        $queue = $this->getSubFolders(true);
+        $folder_ids = [];
+        $max_iter = 10000;
+        while (!empty($queue) && $max_iter-->0) {
+            $f = array_shift($queue);
+            // append children to array
+            $queue = array_merge($queue, $f->getSubFolders(true));
+            $folder_ids[] = $f->getId();
+        }
+        return $folder_ids;
     }
 
     /*
