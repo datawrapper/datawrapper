@@ -35,6 +35,17 @@ $app->map('/chart/create', function() use ($app) {
                 $chart->setTheme($req->post('theme'));
             }
         }
+        if ($req->params('folder') != null) {
+            $folder = FolderQuery::create()->findPk($req->get('folder'));
+            if ($folder->isAccessibleBy($user)) {
+                $chart->setInFolder($folder->getId());
+                if ($folder->getType() == 'user') {
+                    $chart->setOrganizationId(null);
+                } else {
+                    $chart->setOrganizationId($folder->getOrgId());
+                }
+            }
+        }
         $chart->save();
         $app->redirect('/chart/'.$chart->getId().'/'.$step);
     }
