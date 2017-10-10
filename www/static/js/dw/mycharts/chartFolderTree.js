@@ -122,6 +122,28 @@ define(function(require) {
             })[0].folders;
             return (subfolders) ? subfolders : [];
         },
+        isSubfolderOf: function(source, dest) {
+            var source_folder_obj = this.getFolderById(source),
+                dest_folder_obj = this.getFolderById(dest);
+
+            if (!dest_folder_obj) return false;
+            if (!source_folder_obj) {
+                console.warn("Root folders can not be moved. Since this id didn't resolve to a folder, further operation is prohibited.");
+                return true;
+            }
+
+            function traverse(folder) {
+                if (folder.id == dest_folder_obj.id) return true;
+                if (!folder.sub) return false;
+
+                return folder.sub.reduce(function(ret, sub) {
+                    return (ret || traverse(sub));
+                }, false);
+            }
+
+            return traverse(source_folder_obj);
+
+        },
         getOrgNameById: function(org_id) {
             var org;
             if (!org_id) org_id = false;
