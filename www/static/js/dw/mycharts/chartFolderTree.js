@@ -120,7 +120,7 @@ define(function(require) {
                 parent_folder_obj = (parent) ? this.getFolderById(parent) : getRoot(id.organization);
 
             return {
-                id: (parent_folder_obj.id) ? parent_folder_obj.id : false,
+                folder: (parent_folder_obj.id) ? parent_folder_obj.id : false,
                 organization: (parent_folder_obj.organization) ? ((parent_folder_obj.organization.id) ? parent_folder_obj.organization.id : parent_folder_obj.organization) : false
             };
         },
