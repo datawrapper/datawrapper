@@ -5,7 +5,8 @@ define(function(require) {
         no_reload_folder_change = require('./no_reload_folder_change'),
         handler = require('./handler'),
         buildLink = require('./buildLink'),
-        cft;
+        cft,
+        drag_data;
 
     function enableChartDrag() {
         var charts = $('div.mycharts-chart-list ul.thumbnails li.chart'),
@@ -13,6 +14,7 @@ define(function(require) {
 
         charts.find('*').attr('draggable', 'false');
         charts.attr('draggable', 'true');
+
         charts.on('dragstart', function(e) {
             var chart_ids = [e.target.getAttribute('data-id')],
                 ev = e.originalEvent;
@@ -21,13 +23,14 @@ define(function(require) {
             } else {
                 multiselection.selectNone();
             }
-            ev.dataTransfer.setData('application/json', JSON.stringify({
+            drag_data = {
                 type: 'charts',
                 charts: chart_ids
-            }));
+            }
+            ev.dataTransfer.setData('application/json', JSON.stringify(drag_data));
             dragImage = chart_ids.length == 1 ? e.target : getMultiDragImage(chart_ids);
             ev.dataTransfer.setDragImage(dragImage, 0,0);
-            ev.dropEffect = "move";
+            ev.dataTransfer.dropEffect = "move";
         });
 
         charts.on('dragend', function(e) {
@@ -43,14 +46,15 @@ define(function(require) {
             var ev = e.originalEvent,
                 tar = e.currentTarget,
                 href = $(tar).find('a').attr('href'),
-                folder_id = href.slice(href.lastIndexOf('/') + 1, href.length);
+                folder_id = parseInt($(tar).attr('folder-id'))
 
-            ev.dataTransfer.setData('application/json', JSON.stringify({
+            drag_data = {
                 type: 'folder',
                 id: folder_id
-            }));
+            };
+            ev.dataTransfer.setData('application/json', JSON.stringify(drag_data));
             ev.dataTransfer.setDragImage(tar, 0,0);
-            ev.dropEffect = "move";
+            ev.dataTransfer.dropEffect = "move";
         });
 
         folders.on('dragend', function(e) {
@@ -141,10 +145,34 @@ define(function(require) {
 
         $('ul.folders-left li.root-folder').off();
 
+        function getTrans(e) {
+            var trans;
+            try {
+                trans = JSON.parse(e.originalEvent.dataTransfer.getData('application/json'));
+            } catch(e) {
+                trans = false;
+            }
+            return trans;
+        }
+
+        function isValidDrop(e) {
+            if (drag_data.type === 'folder') {
+                var target = identifyTarget($(e.currentTarget));
+                return !(cft.isSubfolderOf(drag_data.id, target.folder) || 
+                    cft.isParentFolder(drag_data.id, {id: target.folder, organization: target.organization}));
+            }
+            return true;
+        }
+
         drop_targets.on('dragenter', function(e) {
             e.preventDefault();
             drop_targets.removeClass('dragtar');
-            e.currentTarget.classList.add('dragtar');
+            if (isValidDrop(e)) {
+                e.currentTarget.classList.add('dragtar');
+                e.originalEvent.dataTransfer.dropEffect = 'move';
+            } else {
+                e.originalEvent.dataTransfer.dropEffect = 'none';
+            }
         });
 
         drop_targets.on('dragover', function(e) {
@@ -156,11 +184,7 @@ define(function(require) {
                 id = identifyTarget($(e.currentTarget));
             e.preventDefault();
             drop_targets.removeClass('dragtar');
-            try {
-                trans = JSON.parse(e.originalEvent.dataTransfer.getData('application/json'));
-            } catch(e) {
-                trans = false;
-            }
+            trans = getTrans(e);
             if(!trans || typeof(trans.type) === 'undefined') {
                 alert("You may drop this here, but I can't work with it");
                 return;
@@ -170,6 +194,10 @@ define(function(require) {
                     moveCharts(trans.charts, prepareChartTarget(id), id);
                     break;
                 case 'folder':
+                    if (!isValidDrop(e)) {
+                        alert('A folder may not be dragged into itself, or one of its subfolders! (needs trans)');
+                        break;
+                    }
                     moveFolder(trans.id, prepareFolderTarget(id), id);
                     break;
                 default:
