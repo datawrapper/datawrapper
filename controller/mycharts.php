@@ -276,6 +276,7 @@ function mycharts_get_user_charts(&$page, $app, $user, $folder_id = false, $org_
 
     // save result to page
     $page['charts'] = $charts;
+    $page['num_charts'] = count($charts);
     $page['chart_groups'] = $grouped;
     add_pagination_vars($page, $total, $curPage, $perPage, empty($q) ? '' : '&q='.$q);
 }
@@ -289,7 +290,13 @@ function any_charts($app, $user, $folder_id = false, $org_id = false) {
     $is_xhr = !empty($app->request()->params('xhr'));
 
     if ($is_xhr) {
-        $page = [];
+        $page = [
+            'current' => array(
+                'folder' => $folder_id,
+                'organization' => $org_id,
+                'sort' => $app->request()->params('sort'),
+            )
+        ];
     } else {
         $page = [
             'title' => __('My Charts'),

@@ -36,7 +36,7 @@ $app->map('/chart/create', function() use ($app) {
             }
         }
         if ($req->params('folder') != null) {
-            $folder = FolderQuery::create()->findPk($req->get('folder'));
+            $folder = FolderQuery::create()->findPk($req->params('folder'));
             if ($folder->isAccessibleBy($user)) {
                 $chart->setInFolder($folder->getId());
                 if ($folder->getType() == 'user') {

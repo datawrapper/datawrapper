@@ -1771,11 +1771,18 @@ body.dw-mycharts .pagination-right {
   margin-left: 10px;
 }
 body.dw-mycharts .mycharts-chart-list > h3 {
-  font-weight: 400;
+  font-weight: 300;
   color: #777;
   margin: 10px 0 20px;
   font-size: 21px;
   line-height: 26px;
+}
+body.dw-mycharts .mycharts-chart-list > h3.no-charts {
+  font-weight: 300;
+  margin-top: 30px;
+}
+body.dw-mycharts .mycharts-chart-list > h3.no-charts a {
+  color: #0088cc;
 }
 body.dw-mycharts .mycharts-chart-list > h3 a {
   color: #777;
