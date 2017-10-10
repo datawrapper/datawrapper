@@ -43,7 +43,7 @@ define(function(require) {
                     cft.addFolder(cleanResponse(res.data));
                     no_reload_folder_change.repaintSubfolders();
                     cft.reRenderTree();
-                    no_reload_folder_change.init();
+                    no_reload_folder_change.reenableClicks();
                 }
             }).fail(handler.fail);
         });
@@ -135,9 +135,10 @@ define(function(require) {
                 } else if (res.status == 'ok') {
                     var parent_link = buildLink(cft.getParentFolder(id));
                     cft.deleteFolder(id);
+                    // FIXME: still bugged. jumps too root sometimes instead of parent.
                     no_reload_folder_change.reloadLink(parent_link);
                     cft.reRenderTree();
-                    no_reload_folder_change.init();
+                    no_reload_folder_change.reenableClicks();
                 }
             }).fail(handler.fail);
         });

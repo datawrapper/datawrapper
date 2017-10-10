@@ -163,10 +163,24 @@ function mycharts_group_by_folder($charts, $user) {
     foreach ($folder_lookup as $id => $folder) {
         $path = $folder->getFolderName();
         $pid = $folder->getParentId();
-        while (!empty($pid)) {
+        $known_ids = [];
+        $max_depth = 100;
+        while (!empty($pid) && $max_depth-- > 0) {
             $folder = $folder_lookup[$pid];
             $path = $folder->getFolderName() .' / '.$path;
             $pid = $folder->getParentId();
+            if ($pid == $folder->getId()) {
+                $GLOBALS['dw_alert'] = 'Folder DB Error: Folder '.$pid.' has itself set as parent folder';
+                break;
+            }
+            if (in_array($pid, $known_ids)) {
+                $GLOBALS['dw_alert'] = 'Folder DB Error: The folder tree is not a tree but a cyclic graph (check id '.$pid.')!';
+                break;
+            }
+            $known_ids[] = $folder->getId();
+        }
+        if ($max_depth < 1) {
+            $GLOBALS['dw_alert'] = 'Maximum folder depth reached, likely a bug in the folder table!';
         }
         $folder_paths[$id] = $path;
     }
@@ -262,6 +276,7 @@ function mycharts_get_user_charts(&$page, $app, $user, $folder_id = false, $org_
 
     // save result to page
     $page['charts'] = $charts;
+    $page['num_charts'] = count($charts);
     $page['chart_groups'] = $grouped;
     add_pagination_vars($page, $total, $curPage, $perPage, empty($q) ? '' : '&q='.$q);
 }
@@ -275,7 +290,13 @@ function any_charts($app, $user, $folder_id = false, $org_id = false) {
     $is_xhr = !empty($app->request()->params('xhr'));
 
     if ($is_xhr) {
-        $page = [];
+        $page = [
+            'current' => array(
+                'folder' => $folder_id,
+                'organization' => $org_id,
+                'sort' => $app->request()->params('sort'),
+            )
+        ];
     } else {
         $page = [
             'title' => __('My Charts'),

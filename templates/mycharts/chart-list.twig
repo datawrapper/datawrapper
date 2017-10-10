@@ -1,7 +1,9 @@
 {% use "utils.twig" %}
 
 {% if user.hasCharts %}
-
+    {% if num_charts == 0 %}
+        <h3 class="no-charts">No charts here, yet. Do you want to <a href="/chart/create?folder={{ current.folder }}">create one now</a>?</h3>
+    {% endif %}
     {% for group in chart_groups %}
         {% if group.title %}
             <h3>{% if group.link %}<a href="{{ group.link }}">{% endif %}{{ group.title }}{% if group.link %}</a>{% endif %}</h3>

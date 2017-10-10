@@ -126,6 +126,12 @@ define(function(require) {
         set_click('ul.subfolders a:not(.add-folder)');
     }
 
+    function reenableClicks() {
+        set_click('ul.folders-left li:not(.root-folder) a');
+        set_click('#folder-sequence a');
+        set_click('ul.subfolders a:not(.add-folder)')
+    }
+
     function setDragNDropCallback(func) {
         drag_n_drop_callback = func;
     }
@@ -134,6 +140,7 @@ define(function(require) {
         init: init,
         enable_for_selector: set_click,
         reloadLink: reloadLink,
+        reenableClicks: reenableClicks,
         setDragNDropCallback: setDragNDropCallback,
         repaintBreadcrumb: repaint_breadcrumb,
         repaintSubfolders: repaint_subfolders

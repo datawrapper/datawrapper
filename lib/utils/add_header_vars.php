@@ -201,9 +201,9 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
 
     if ($user->isAdmin()) {
         $plugin_status = check_plugins();
-        if (!empty($plugin_status)) {
-            $page['alertMessage'] = $plugin_status;
-        }
+        $page['alertMessage'] = '';
+        if (!empty($plugin_status)) $page['alertMessage'] .= $plugin_status;
+        if (isset($GLOBALS['dw_alert'])) $page['alertMessage'] .= $GLOBALS['dw_alert'];
     }
 
     foreach ($headlinks as $i => $link) {

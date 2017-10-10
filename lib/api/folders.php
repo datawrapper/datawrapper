@@ -27,6 +27,15 @@
             if (!$parentFolder->isValidParent($user, $payload['organization'])) {
                 return error('parent-invalid', 'parent folder is invalid');
             }
+            // check if parent == folder
+            if ($parentFolder->getId() == $folder->getId()) {
+                return error('move-folder-inside-itself', 'you can\'t move a folder inside itself!');
+            }
+            // check if parent id is a child folder
+            $subtree_ids = $folder->getSubtreeFolderIds();
+            if (in_array($parentFolder->getId(), $subtree_ids)) {
+                return error('move-folder-inside-substree', 'you can\'t move a folder inside its own subtree!');
+            }
             $folder->setParentId($parentFolder->getId());
 
             // use owner from parent folder
