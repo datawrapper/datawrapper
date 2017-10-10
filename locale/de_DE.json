@@ -401,5 +401,7 @@
     "mycharts \/ Publish time": "Ver\u00f6ffentlichung",
     "mycharts \/ Title": "Titel",
     "mycharts \/ Type": "Typ",
-    "mycharts \/ Status": "Status"
+    "mycharts \/ Status": "Status",
+    "mycharts \/ add-subfoler": "Unterordner anlegen",
+    "mycharts \/ empty-folder": "Dieser Ordner ist noch leer. M\u00f6chtest du ein <a href=\"\/chart\/create?folder=%folder%\">Diagramm erstellen<\/a>?"
 }

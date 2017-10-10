@@ -2,7 +2,7 @@
 
 {% if user.hasCharts %}
     {% if num_charts == 0 %}
-        <h3 class="no-charts">No charts here, yet. Do you want to <a href="/chart/create?folder={{ current.folder }}">create one now</a>?</h3>
+        <h3 class="no-charts">{{ "mycharts / empty-folder" | trans | replace({'%folder%':current.folder}) | raw }}</h3>
     {% endif %}
     {% for group in chart_groups %}
         {% if group.title %}
