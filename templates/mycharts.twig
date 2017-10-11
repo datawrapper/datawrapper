@@ -125,8 +125,10 @@
     require(['dw/mycharts'], function(init) {
         init({
             strings: {
-                confirm_chart_delete: {{ "Do you really want to delete the chart? Note that after deleting this chart won\'t be embedable any more." | trans | json | raw }},
-                enter_folder_name: '{{ "Enter new folder name:" | trans }}',
+                confirm_move_to_user: '',
+                confirm_move_to_org: '',
+                confirm_chart_delete: {{ "mycharts / confirm-chart-delete" | trans | json | raw }},
+                enter_folder_name: '{{ "mycharts / enter-folder-name" | trans }}',
                 mycharts_base: '{{ mycharts_base }}',
                 mycharts_trans: '{{ "My Charts" | trans }}'
             },
