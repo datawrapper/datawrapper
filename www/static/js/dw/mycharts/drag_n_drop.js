@@ -139,7 +139,6 @@ define(function(require) {
         }
     }
 
-    // FIXME: Drop targets need to be filtered to prevent draging folders into their own subfolders
     function enableDrop() {
         var drop_targets = $('ul.folders-left li');
 
@@ -195,7 +194,7 @@ define(function(require) {
                     break;
                 case 'folder':
                     if (!isValidDrop(e)) {
-                        alert('A folder may not be dragged into itself, or one of its subfolders! (needs trans)');
+                        alert(twig.globals.strings.move_prohibited_alert);
                         break;
                     }
                     moveFolder(trans.id, prepareFolderTarget(id), id);

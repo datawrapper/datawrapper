@@ -387,5 +387,6 @@
     "mycharts \/ Title": "Title",
     "mycharts \/ Type": "Type",
     "mycharts \/ Status": "Status",
-    "mycharts \/ confirm-chart-delete": "Voulez vous vraiement supprimer ce graphique? Notez qu'apr\u00e8s suppression, il ne sera plus jamais int\u00e9grable."
+    "mycharts \/ confirm-chart-delete": "Voulez vous vraiement supprimer ce graphique? Notez qu'apr\u00e8s suppression, il ne sera plus jamais int\u00e9grable.",
+    "mycharts \/ move-prohibited-alert": "A folder can not be moved into its current parent folder, itself, or one of its own subfolders."
 }

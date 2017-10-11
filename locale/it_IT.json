@@ -387,5 +387,6 @@
     "mycharts \/ Title": "Title",
     "mycharts \/ Type": "Type",
     "mycharts \/ Status": "Status",
-    "mycharts \/ confirm-chart-delete": "Sei sicuro di voler eliminare il grafico? Dopo che l'avrai cancellato, non potr\u00e0 pi\u00f9 essere incluso nel tuo sito."
+    "mycharts \/ confirm-chart-delete": "Sei sicuro di voler eliminare il grafico? Dopo che l'avrai cancellato, non potr\u00e0 pi\u00f9 essere incluso nel tuo sito.",
+    "mycharts \/ move-prohibited-alert": "A folder can not be moved into its current parent folder, itself, or one of its own subfolders."
 }
