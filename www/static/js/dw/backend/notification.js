@@ -3,12 +3,12 @@ define(function() {
 
     $(function() {
         $('div.did-you-know[data-notification-key]')
-            .each(function(evt) {
-                evt.preventDefault();
+            .each(function() {
                 var div = $(this),
                     key = div.data('notification-key');
-                div.find('a.close').on('click', function() {
+                div.find('a.close').on('click', function(evt) {
                     var d = {};
+                    evt.preventDefault();
                     d[key] = 'closed';
                     dw.backend.setUserData(d);
                     div.hide();
