@@ -76,9 +76,9 @@
             </li>
             <ul id="dynamic-tree">
             </ul>
-                {% if not hasFolders %}
-                <div class="welcome-to-folders did-you-know" style="margin-top:84px">
-                    <h3><i class="im im-gift"></i> {% trans 'mycharts / new-feature' %}</h3>
+                {% if not hasFolders and not userData.mycharts_folder_intro %}
+                <div data-notification-key="mycharts_folder_intro" class="welcome-to-folders did-you-know" style="margin-top:84px">
+                    <h3><a href="#" class="close pull-right"><i class="im im-check-mark"></i></a><i class="im im-gift"></i> {% trans 'mycharts / new-feature' %}</h3>
                     <p>{% trans 'mycharts / welcome-folders' %}</p>
                 </div>
                 {% endif %}

@@ -226,9 +226,9 @@ class User extends BaseUser {
         $values = [];
         $pdo = Propel::getConnection();
         foreach ($data as $key => $value) {
-            $values = '('.join(',', [$this->getId(), $pdo->quote($key), $pdo->quote($value)]).')';
+            $values[] = '('.implode(',', [$this->getId(), $pdo->quote($key), $pdo->quote($value)]).')';
         }
-        $sql = 'INSERT INTO user_data (user_id, `key`, `value`) VALUES '.join(', ', $values).
+        $sql = 'INSERT INTO user_data (user_id, `key`, `value`) VALUES '.implode(', ', $values).
             ' ON DUPLICATE KEY UPDATE `value` = VALUES(`value`)';
         $pdo->query($sql);
         $this->userData = $data;

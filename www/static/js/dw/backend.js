@@ -14,12 +14,13 @@ define([
     './backend/ui/NumberStepper',
     './backend/popupChart',
     './backend/resendActivationMail',
-    './backend/notification'
+    './backend/notification',
+    './backend/setUserData'
     ],
 
 function(syncChart, initializeSignUp, initLanguageLinks, initializeLogout,
     snapshot, checkPassword, ColorSelector, NumberStepper, popupChart,
-    resendActivationMail, notification) {
+    resendActivationMail, notification, setUserData) {
 
     var backend = {};
 
@@ -44,7 +45,8 @@ function(syncChart, initializeSignUp, initLanguageLinks, initializeLogout,
         popupChart: popupChart,
         snapshot: snapshot,
         checkPassword: checkPassword,
-        resendActivationMail: resendActivationMail
+        resendActivationMail: resendActivationMail,
+        setUserData: setUserData
 
     }, notification);
 

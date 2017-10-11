@@ -2559,6 +2559,12 @@ input[type="color"],
   background: #09c;
   color: white;
 }
+.did-you-know .close {
+  opacity: 0.6;
+}
+.did-you-know .close .im {
+  color: white;
+}
 .did-you-know h3 {
   font-weight: bold;
   color: white;

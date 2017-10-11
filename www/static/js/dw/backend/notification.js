@@ -1,6 +1,20 @@
 
 define(function() {
 
+    $(function() {
+        $('div.did-you-know[data-notification-key]')
+            .each(function() {
+                var div = $(this),
+                    key = div.data('notification-key');
+                div.find('a.close').on('click', function() {
+                    var d = {};
+                    d[key] = 'closed';
+                    dw.backend.setUserData(d);
+                    div.hide();
+                });
+            });
+    });
+
     /*
      * display an alert block
      */
