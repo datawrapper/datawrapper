@@ -46,14 +46,17 @@ class FolderQuery extends BaseFolderQuery {
                     ->filterByOrganization($group['organization'])
                     ->filterByDeleted(false)
                     ->filterByLastEditStep(array('min'=>3))
-                    ->findByInFolder(null)->count();
+                    ->filterByInFolder(null)
+                    ->count();
                 $group['organization'] = $group['organization']->serialize();
             } else {
                 $group['charts'] = ChartQuery::create()
                     ->filterByOrganizationId(null)
                     ->filterByDeleted(false)
                     ->filterByLastEditStep(array('min'=>3))
-                    ->findByInFolder(null)->count();
+                    ->filterByInFolder(null)
+                    ->filterByUser($user)
+                    ->count();
             }
             $tmpfolders = [];
             foreach ($group['folders'] as $idx => &$fold) {
