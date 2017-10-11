@@ -3,7 +3,8 @@ define(function() {
 
     $(function() {
         $('div.did-you-know[data-notification-key]')
-            .each(function() {
+            .each(function(evt) {
+                evt.preventDefault();
                 var div = $(this),
                     key = div.data('notification-key');
                 div.find('a.close').on('click', function() {
