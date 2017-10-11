@@ -395,7 +395,7 @@
     "Publish time": "Ver\u00f6ffentlichung",
     "Type": "Typ",
     "Status": "Status",
-    "mycharts \/ Sort by": "Anordnen nach",
+    "mycharts \/ Sort by": "Anordnen nach...",
     "mycharts \/ Last edit time": "Letzte \u00c4nderung",
     "mycharts \/ Creation time": "Erstellung",
     "mycharts \/ Publish time": "Ver\u00f6ffentlichung",
@@ -404,5 +404,9 @@
     "mycharts \/ Status": "Status",
     "mycharts \/ add-subfoler": "Unterordner anlegen",
     "mycharts \/ empty-folder": "Dieser Ordner ist noch leer. M\u00f6chtest du ein <a href=\"\/chart\/create?folder=%folder%\">Diagramm erstellen<\/a>?",
-    "mycharts \/ add-subfolder": "Ordner anlegen"
+    "mycharts \/ add-subfolder": "Ordner anlegen",
+    "mycharts \/ confirm-chart-delete": "Willst du das Diagramm wirklich l\u00f6schen? Nach der L\u00f6schung kann es nicht mehr in andere Webseiten eingebettet werden.",
+    "mycharts \/ enter-folder-name": "Gib einen neuen Namen ein:",
+    "mycharts \/ new-feature": "Neu in Datawrapper: Ordner",
+    "mycharts \/ welcome-folders": "Du kannst deine Diagramme jetzt in Ordnern organisieren. Klicke auf \"Ordner anlegen\" um einen neuen Ordner zu erstellen. Danach kannst du Diagramme einfach in die Ordner hineinziehen."
 }

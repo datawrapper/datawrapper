@@ -386,5 +386,6 @@
     "mycharts \/ Publish time": "Publish time",
     "mycharts \/ Title": "Title",
     "mycharts \/ Type": "Type",
-    "mycharts \/ Status": "Status"
+    "mycharts \/ Status": "Status",
+    "mycharts \/ confirm-chart-delete": "Voc\u00ea realmente quer deletar esse gr\u00e1fico? Apos deletar o gr\u00e1fico n\u00e3o ser\u00e1 poss\u00edvel incorpor\u00e1-lo."
 }

@@ -2551,3 +2551,17 @@ input[type="color"],
 .uneditable-input {
   border-radius: 1px;
 }
+.did-you-know {
+  margin-top: 30px;
+  font-size: 15px;
+  line-height: 1.4;
+  padding: 10px;
+  background: #09c;
+  color: white;
+}
+.did-you-know h3 {
+  font-weight: bold;
+  color: white;
+  margin-top: 0;
+  font-size: 15px;
+}

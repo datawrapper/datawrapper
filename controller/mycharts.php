@@ -298,6 +298,14 @@ function any_charts($app, $user, $folder_id = false, $org_id = false) {
             )
         ];
     } else {
+        $folders = FolderQuery::create()->getParsableFolders($user);
+        $hasFolders = false;
+        foreach ($folders as $group) {
+            if (count($group['folders']) > 0) {
+                $hasFolders = true;
+                break;
+            }
+        }
         $page = [
             'title' => __('My Charts'),
             'pageClass' => 'dw-mycharts',
@@ -309,7 +317,8 @@ function any_charts($app, $user, $folder_id = false, $org_id = false) {
             'search_query' => empty($q) ? '' : $q,
             'mycharts_base' => '/mycharts',
             'organizations' => mycharts_list_organizations($user),
-            'preload' => FolderQuery::create()->getParsableFolders($user),
+            'preload' => $folders,
+            'hasFolders' => $hasFolders
         ];
     }
 

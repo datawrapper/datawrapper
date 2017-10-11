@@ -386,5 +386,6 @@
     "mycharts \/ Publish time": "Publish time",
     "mycharts \/ Title": "Title",
     "mycharts \/ Type": "Type",
-    "mycharts \/ Status": "Status"
+    "mycharts \/ Status": "Status",
+    "mycharts \/ confirm-chart-delete": "Do you really want to delete the chart? Note that after deleting this chart \nwon't be embedable any more."
 }
