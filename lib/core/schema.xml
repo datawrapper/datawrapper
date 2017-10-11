@@ -27,15 +27,19 @@
     <column name="public_version" type="integer" default="0" />
     <column name="organization_id" type="varchar" size="128" required="false" />
     <foreign-key foreignTable="organization">
-      <reference local="organization_id" foreign="id"/>
+      <reference local="organization_id" foreign="id" />
     </foreign-key>
     <column name="forked_from" type="varchar" size="5" required="false" />
     <foreign-key foreignTable="chart">
-      <reference local="forked_from" foreign="id"/>
+      <reference local="forked_from" foreign="id" />
     </foreign-key>
     <column name="external_data" type="varchar" size="255" required="false" />
     <column name="forkable" type="boolean" default="false" />
     <column name="is_fork" type="boolean" default="false" />
+    <column name="in_folder" type="integer" />
+    <foreign-key foreignTable="folder">
+      <reference local="in_folder" foreign="folder_id" />
+    </foreign-key>
   </table>
 
   <table name="user" phpName="User">
@@ -293,6 +297,46 @@
     <foreign-key foreignTable="theme">
       <reference local="theme_id" foreign="id"/>
     </foreign-key>
+  </table>
+
+  <table name="folder">
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+      <parameter name="Charset" value="utf8"/>
+    </vendor>
+    <column name="folder_id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+    <column name="parent_id" type="integer" />
+    <foreign-key foreignTable="folder">
+      <reference local="parent_id" foreign="folder_id" />
+    </foreign-key>
+    <column name="folder_name" type="varchar" size="128" />
+    <column name="user_id" type="integer" />
+    <foreign-key foreignTable="user">
+      <reference local="user_id" foreign="id" />
+    </foreign-key>
+    <column name="org_id" type="varchar" size="128" />
+    <foreign-key foreignTable="organization">
+      <reference local="org_id" foreign="id" />
+    </foreign-key>
+  </table>
+
+  <!-- user data -->
+  <table name="user_data" phpName="UserData">
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+    <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+    <column name="user_id" type="integer" required="true" />
+    <foreign-key foreignTable="user">
+      <reference local="user_id" foreign="id"/>
+    </foreign-key>
+    <column name="stored_at" type="timestamp" required="true" defaultExpr="NOW()" />
+    <column name="key" type="varchar" size="128" required="true" />
+    <column name="value" type="varchar" size="4096" />
+    <unique>
+       <unique-column name="user_id" />
+       <unique-column name="key" />
+     </unique>
   </table>
 
 </database>

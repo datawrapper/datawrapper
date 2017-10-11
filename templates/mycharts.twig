@@ -5,170 +5,96 @@
 
 {% block content %}
 
+<link rel="stylesheet" type="text/css" href="/static/vendor/iconicfont/css/iconmonstr-iconic-font.min.css">
 
-<div class="docs">
-    <div class="pull-right" style="position:relative;top:-16px">
+{# <div class="docs">
+    <div class="pull-right pagination-right">
         {{ block('pagination') }}
     </div>
-    <h1 class="title">
-        {% if user2 %}
+</div> #}
+
+<div class="folder-line">
+    <div class="mycharts-filter pull-right" style="position:relative">
+        <span style="position:absolute; top:9px;left:10px;color:#bbb" class="im im-magnifier"></span><input name="q" style="padding-left:30px;border-radius: 20px;" class="search-query input-large" type="text" placeholder="{% trans "Search" %}" value="{{ search_query }}" />
+        &nbsp;
+        <div class="btn-group">
+            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                {% trans "mycharts / Sort by" %}
+                <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu sort-menu">
+                <li><a href="?sort=modified_at">{% trans "mycharts / Last edit time" %}</a></li>
+                <li class="active"><a href="?sort=created_at">{% trans "mycharts / Creation time" %}</a></li>
+                <li><a href="?sort=published_at">{% trans "mycharts / Publish time" %}</a></li>
+                <li><a href="?sort=title">{% trans "mycharts / Title" %}</a></li>
+                <li><a href="?sort=type">{% trans "mycharts / Type" %}</a></li>
+                <li><a href="?sort=status">{% trans "mycharts / Status" %}</a></li>
+            </ul>
+        </div>
+    </div>
+    <h1 id="current-folder">
+        <a id="current-root" href="{{ mycharts_base }}">
+            {% if user2 %}
             {{ "Charts by %s" | trans | replace({'%s': user2.email }) }}
-        {% else %}
+            {% else %}
             {% trans "My Charts" %}
-        {% endif %}
+            {% endif %}
+        </a>
+        <span id="folder-sequence"></span>
+        <span id="current-folder-name"></span>
+        <div class="btn-group" style="display:inline-block; position: relative">
+            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#"
+                style="border:0;background:none;box-shadow:none">
+                <i class="im im-care-down"></i>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a class="add-folder" tabindex="-1" href="#"><i class="im im-plus-circle"></i> {% trans "Add subfolder" %}</a></li>
+                <li><a id="rename-folder" style="display: none;" tabindex="-1" href="#"><i class="im im-edit"></i> {% trans "Rename folder" %}</a></li>
+                <li><a id="delete-folder" style="display: none;" tabindex="-1" href="#"><i class="im im-trash-can"></i> {% trans "Remove folder" %}</a></li>
+            </ul>
+        </div>
     </h1>
 </div>
 
-<style type="text/css">
-
-.gallery-filter { margin-bottom: 40px; }
-
-.gallery-filter form .btn-group { margin-left: 10px; }
-
-.gallery .thumbnails .span3.chart {
-    float: none;
-    min-height: 190px;
-}
-
-.gallery .thumbnails .span3.chart h3 {
-    position: static;
-}
-</style>
-<div class="gallery-filter">
-
-    <form method="get" class="form form-inline" action="">
-        <b>{% trans "Filter" %}:</b> 
-
-        &nbsp;
-
-        <input name="q" class="search-query input-medium" type="text" placeholder="{% trans "Search" %}" value="{{ search_query }}" />
-
-        &nbsp;
-
-        <div class="btn-group">
-            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                {% trans "By Status" %}
-                <span class="caret"></span>
-            </a>
-            <ul class="dropdown-menu">
-                {% for status in bystatus %}
-                {% if key == 'status' and val == status.id %}
-                <li class="active"><a href="{{ mycharts_base }}/"><i class="icon-check"></i> {{ status.name }} ({{ status.count }})</a></li>
-                {% else %}
-                <li><a href="{{ mycharts_base }}/by/status/{{ status.id }}">{{ status.name }} ({{ status.count }})</a></li>
-                {% endif %}
-
-                {% endfor %}
+<div class="folders-and-gallery row">
+    <div class="folders span2">
+        <ul class="folders-left">
+            {% for org in organizations %}
+            <li id="org-root-{{ org.tag }}" {% if not current.folder and current.organization == org.id %}class="active root-folder"{% else %}class="root-folder"{% endif %}>
+                <a href="/organization/{{ org.id }}">
+                    <i class="im im-users"></i>
+                    <span>{{ org.name }}</span>
+                </a>
+            </li>
+            <ul id="dynamic-tree-{{ org.tag }}" style="margin-bottom:40px">
             </ul>
-        </div>
-
-        <div class="btn-group">
-            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                {% trans "By Month" %}
-                <span class="caret"></span>
-            </a>
-            <ul class="dropdown-menu by-month">
-                <!-- dropdown menu links -->
-            {% for month in bymonth %}
-                {% if key == 'month' and val == month.id %}
-                <li class="active"><a href="{{ mycharts_base }}/"><i class="icon-check"></i> {{ month.name }} ({{ month.count }})</a> </li>
-                {% else %}
-                <li><a href="{{ mycharts_base }}/by/month/{{ month.id }}">{{ month.name }} ({{ month.count }})</a></li>
-                {% endif %}
             {% endfor %}
+            <li id="user-root" {% if not current.folder and not current.organization %}class="active root-folder"{% else %}class="root-folder"{% endif %}>
+                <a href="{{ mycharts_base }}">
+                <i class="im im-user-male"></i>
+                <span>{% trans "My Charts" %}</span></a>
+            </li>
+            <ul id="dynamic-tree">
             </ul>
-        </div>
-
-        <div class="btn-group">
-            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                {% trans "By Visualisation" %}
-                <span class="caret"></span>
-            </a>
-
-            <ul class="dropdown-menu">
-                {% for vis in byvis %}
-                {% if key == 'vis' and val == vis.id %}
-                <li class="active"><a href="{{ mycharts_base }}/"><i class="icon-check"></i> {{ vis.name }} ({{ vis.count }})</a> </li>
-                {% else %}
-                <li><a href="{{ mycharts_base }}/by/vis/{{ vis.id }}">{{ vis.name }} ({{ vis.count }})</a></li>
-                {% endif %}
-                {% endfor %}
-            </ul>
-        </div>
-        
-        <div class="btn-group">
-            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                {% trans "By Layout" %}
-                <span class="caret"></span>
-            </a>
-
-            <ul class="dropdown-menu">
-                {% for layout in bylayout %}
-                {% if key == 'layout' and val == layout.id %}
-                <li class="active"><a href="{{ mycharts_base }}/"><i class="icon-check"></i> {{ layout.name }} ({{ layout.count }})</a></li>
-                {% else %}
-                <li><a href="{{ mycharts_base }}/by/layout/{{ layout.id }}">{{ layout.name }} ({{ layout.count }})</a></li>
-                {% endif %}
-
-                {% endfor %}
-            </ul>
-        </div>
-        
-        
-    </form>
-    
-    
-</div>
-
-
-<div class="gallery">
-
-    {% if user.hasCharts %}
-    <div class="thumbnails js-masonry" data-masonry-options='{ "itemSelector": ".grid-item", "columWidth": 200 }'>
-        {% for chart in charts %}
-        
-        <div class="span3 chart" data-id="{{ chart.id }}">
-            <div class="thumbnail" style="background:{{ chart.metadata.publish.background }}">
-                <a href="/{{ chart.getNamespace() }}/{{ chart.id }}/edit" >
-                    <h3 style="color:{% if chart.metadata.publish.text %}{{ chart.metadata.publish.text }}{% else %}#000{% endif %};text-shadow:1px 1px 3px {% if chart.metadata.publish.background %}{{ chart.metadata.publish.background }}{% else %}#fff{% endif %};">{% if chart.title != '' %}{{ chart.title | replace({'<br/>': ' - '}) | striptags | raw }}{% else %}{{ chart.id }}{% endif %}</h3>
-
-                    <img src="{% if chart.hasPreview %}//{{ DW_CHART_CACHE_DOMAIN }}/{{ chart.id }}/m.png{% else %}/static/img/nopreview.png{% endif %}" width="260" >
-                 </a>
-
-                 <div class="btn-group">
-                    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                      <i class="icon-wrench"></i>
-                    <span class="caret"></span>
-                    </a>
-                     <ul class="dropdown-menu">
-                        {% if user2 %}
-                        <li><a class="edit" href="#"><i class="icon-edit"></i> {% trans "Edit" %}</a></li>
-                        {% endif %}
-                        <li><a class="duplicate" href="#"><i class="icon-plus"></i> {% trans "Duplicate" %}</a></li>
-                        {# <li><a href="/chart/{{ chart.id }}/static?w=700&amp;h=490&amp;f=pdf&amp;padding=20"><i class="icon-download"></i> {% trans "Save as PDF" %}</a></li>
-                        <li class="divider"></li> #}
-                        <li><a href="" class="delete"><i class="icon-remove"></i> {% trans "Delete" %}</a></li>
-                    <!-- dropdown menu links -->
-                    </ul>
-                 </div>
-                {# <p>{% trans "Created" %}: {{ chart.createdAt|date() }}<br/>
-                 {% trans "Layout" %}: {{ chart.theme }} </p> #}
-            </div>
-        </div>
-        {% endfor %}
+        </ul>
     </div>
-    {% else %}
 
-        <h2>{% trans "No charts here, yet" %}</h2>
-        <p>{% trans "Why not <a href='/chart/create'>create a new chart now</a>?" %}</p>
+    <div class="gallery span10">
 
-    {% endif %}
+        {% include 'mycharts/subfolder-list.twig' %}
+
+        <hr />
+
+        <div class="mycharts-chart-list">
+            {% include 'mycharts/chart-list.twig' %}
+        </div>
+    </div>
 </div>
 
 
 <div class="after-gallery row">
     <div class="span9">
-        
+
         {% if not user2 %}
 
             {{ hook('mycharts_after_sidebar', chart, user) }}
@@ -193,92 +119,24 @@
 
     </div>
 
-    <div class="span3">
-        <div class="pull-right">
-            {{ block('pagination') }}
-        </div>
-    </div>
 </div>
 
-
-
-
-
-<script type="text/javascript" src="/static/vendor/overlay/ender.overlay.js"></script>
 <script type="text/javascript">
-$(function(){
-
-    require(['masonry', 'imagesloaded'], function(Masonry, imagesLoaded) {
-        var imgLoad = imagesLoaded('.thumbnails');
-        imgLoad.on('progress', _.debounce(layout, 200));
-        imgLoad.on('always', layout);
-        function layout() {
-            setTimeout(function() {
-                new Masonry('.thumbnails', {
-                    itemSelector: '.chart',
-                    transitionDuration: 0
-                });
-            }, 100);
-        }
-    });
-
-  //*
-  // */
-   {% if user2 %}
-    $('.thumbnail > a').click(function(e) {
-        e.preventDefault();
-        dw.backend.popupChart($(e.target).parents('.chart').data('id'), true);
-    });
-
-    $('a.edit').click(function(e) {
-        e.preventDefault();
-        var chart = $(e.target).parents('.chart');
-        location.href = $('.thumbnail > a', chart).attr('href');
-    });
-   {% endif %}
-
-
-    $('a.delete').click(function(e) {
-        e.preventDefault();
-        var chart = $(e.target).parents('.chart'),
-            id = chart.data('id');
-        if (window.confirm({{ "Do you really want to delete the chart? Note that after deleting this chart won\'t be embedable any more." | trans | json | raw }})) {
-             $.ajax({
-                url: '/api/charts/'+id,
-                type: 'DELETE',
-                success: function(data) {
-                    chart.remove();
-                }
-            });
-        };
-    });
-
-    $('.chart a.duplicate').click(function(e) {
-        e.preventDefault();
-        var id = $(e.target).parents('.chart').data('id');
-        $.ajax({
-            url: '/api/charts/'+id+'/copy',
-            type: 'POST',
-            success: function(data) {
-                try {
-                    if (data.status == "ok") {
-                        // redirect to copied chart
-                        location.href = '/chart/'+data.data.id+'/visualize';
-                    } else {
-                        console.warn(data);
-                    }
-                } catch (e) {
-                    console.warn(data);
-                }
-            }
+    require(['dw/mycharts'], function(init) {
+        init({
+            strings: {
+                confirm_move_to_user: '',
+                confirm_move_to_org: '',
+                confirm_chart_delete: {{ "mycharts / confirm-chart-delete" | trans | json | raw }},
+                enter_folder_name: '{{ "mycharts / enter-folder-name" | trans }}',
+                mycharts_base: '{{ mycharts_base }}',
+                mycharts_trans: '{{ "My Charts" | trans }}'
+            },
+            current: {{ current | json | raw }},
+            preload: {{ preload | json | raw }},
+            user2: {{ user2 | json | raw }}
         });
     });
-});
-
-$('body').load(function() {
-
-});
-
 </script>
 
 {{ parent() }}

@@ -28,6 +28,7 @@
  * @method ChartQuery orderByExternalData($order = Criteria::ASC) Order by the external_data column
  * @method ChartQuery orderByForkable($order = Criteria::ASC) Order by the forkable column
  * @method ChartQuery orderByIsFork($order = Criteria::ASC) Order by the is_fork column
+ * @method ChartQuery orderByInFolder($order = Criteria::ASC) Order by the in_folder column
  *
  * @method ChartQuery groupById() Group by the id column
  * @method ChartQuery groupByTitle() Group by the title column
@@ -51,6 +52,7 @@
  * @method ChartQuery groupByExternalData() Group by the external_data column
  * @method ChartQuery groupByForkable() Group by the forkable column
  * @method ChartQuery groupByIsFork() Group by the is_fork column
+ * @method ChartQuery groupByInFolder() Group by the in_folder column
  *
  * @method ChartQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method ChartQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -67,6 +69,10 @@
  * @method ChartQuery leftJoinChartRelatedByForkedFrom($relationAlias = null) Adds a LEFT JOIN clause to the query using the ChartRelatedByForkedFrom relation
  * @method ChartQuery rightJoinChartRelatedByForkedFrom($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ChartRelatedByForkedFrom relation
  * @method ChartQuery innerJoinChartRelatedByForkedFrom($relationAlias = null) Adds a INNER JOIN clause to the query using the ChartRelatedByForkedFrom relation
+ *
+ * @method ChartQuery leftJoinFolder($relationAlias = null) Adds a LEFT JOIN clause to the query using the Folder relation
+ * @method ChartQuery rightJoinFolder($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Folder relation
+ * @method ChartQuery innerJoinFolder($relationAlias = null) Adds a INNER JOIN clause to the query using the Folder relation
  *
  * @method ChartQuery leftJoinChartRelatedById($relationAlias = null) Adds a LEFT JOIN clause to the query using the ChartRelatedById relation
  * @method ChartQuery rightJoinChartRelatedById($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ChartRelatedById relation
@@ -100,6 +106,7 @@
  * @method Chart findOneByExternalData(string $external_data) Return the first Chart filtered by the external_data column
  * @method Chart findOneByForkable(boolean $forkable) Return the first Chart filtered by the forkable column
  * @method Chart findOneByIsFork(boolean $is_fork) Return the first Chart filtered by the is_fork column
+ * @method Chart findOneByInFolder(int $in_folder) Return the first Chart filtered by the in_folder column
  *
  * @method array findById(string $id) Return Chart objects filtered by the id column
  * @method array findByTitle(string $title) Return Chart objects filtered by the title column
@@ -123,6 +130,7 @@
  * @method array findByExternalData(string $external_data) Return Chart objects filtered by the external_data column
  * @method array findByForkable(boolean $forkable) Return Chart objects filtered by the forkable column
  * @method array findByIsFork(boolean $is_fork) Return Chart objects filtered by the is_fork column
+ * @method array findByInFolder(int $in_folder) Return Chart objects filtered by the in_folder column
  *
  * @package    propel.generator.datawrapper.om
  */
@@ -226,7 +234,7 @@ abstract class BaseChartQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `title`, `theme`, `created_at`, `last_modified_at`, `type`, `metadata`, `deleted`, `deleted_at`, `author_id`, `show_in_gallery`, `language`, `guest_session`, `last_edit_step`, `published_at`, `public_url`, `public_version`, `organization_id`, `forked_from`, `external_data`, `forkable`, `is_fork` FROM `chart` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `title`, `theme`, `created_at`, `last_modified_at`, `type`, `metadata`, `deleted`, `deleted_at`, `author_id`, `show_in_gallery`, `language`, `guest_session`, `last_edit_step`, `published_at`, `public_url`, `public_version`, `organization_id`, `forked_from`, `external_data`, `forkable`, `is_fork`, `in_folder` FROM `chart` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_STR);
@@ -1043,6 +1051,50 @@ abstract class BaseChartQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the in_folder column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByInFolder(1234); // WHERE in_folder = 1234
+     * $query->filterByInFolder(array(12, 34)); // WHERE in_folder IN (12, 34)
+     * $query->filterByInFolder(array('min' => 12)); // WHERE in_folder >= 12
+     * $query->filterByInFolder(array('max' => 12)); // WHERE in_folder <= 12
+     * </code>
+     *
+     * @see       filterByFolder()
+     *
+     * @param     mixed $inFolder The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChartQuery The current query, for fluid interface
+     */
+    public function filterByInFolder($inFolder = null, $comparison = null)
+    {
+        if (is_array($inFolder)) {
+            $useMinMax = false;
+            if (isset($inFolder['min'])) {
+                $this->addUsingAlias(ChartPeer::IN_FOLDER, $inFolder['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($inFolder['max'])) {
+                $this->addUsingAlias(ChartPeer::IN_FOLDER, $inFolder['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(ChartPeer::IN_FOLDER, $inFolder, $comparison);
+    }
+
+    /**
      * Filter the query by a related User object
      *
      * @param   User|PropelObjectCollection $user The related object(s) to use as filter
@@ -1268,6 +1320,82 @@ abstract class BaseChartQuery extends ModelCriteria
         return $this
             ->joinChartRelatedByForkedFrom($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'ChartRelatedByForkedFrom', 'ChartQuery');
+    }
+
+    /**
+     * Filter the query by a related Folder object
+     *
+     * @param   Folder|PropelObjectCollection $folder The related object(s) to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 ChartQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByFolder($folder, $comparison = null)
+    {
+        if ($folder instanceof Folder) {
+            return $this
+                ->addUsingAlias(ChartPeer::IN_FOLDER, $folder->getFolderId(), $comparison);
+        } elseif ($folder instanceof PropelObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(ChartPeer::IN_FOLDER, $folder->toKeyValue('PrimaryKey', 'FolderId'), $comparison);
+        } else {
+            throw new PropelException('filterByFolder() only accepts arguments of type Folder or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Folder relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return ChartQuery The current query, for fluid interface
+     */
+    public function joinFolder($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Folder');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Folder');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Folder relation Folder object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   FolderQuery A secondary query class using the current class as primary query
+     */
+    public function useFolderQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinFolder($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Folder', 'FolderQuery');
     }
 
     /**

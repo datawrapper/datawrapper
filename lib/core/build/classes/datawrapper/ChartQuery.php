@@ -40,7 +40,7 @@ class ChartQuery extends BaseChartQuery {
         $title = '[ ' . $untitled . ' ]';
         $chart->setTitle($title);
 
-        $chart->setLocale(DatawrapperSession::getLanguage()); 
+        $chart->setLocale(DatawrapperSession::getLanguage());
         $chart->setType(isset($defaults['vis']) ? $defaults['vis'] : 'bar-chart');
         $chart->setPublicUrl($chart->getLocalUrl());
 
@@ -55,14 +55,14 @@ class ChartQuery extends BaseChartQuery {
                 if (isset($settings["default"]) && isset($settings["default"]["locale"])) {
                     $chart->setLocale($settings["default"]["locale"]);
                 }
-                
+
                 $def_org_theme = $org->getDefaultTheme();
                 if (!empty($def_org_theme) && ThemeQuery::create()->findPk($def_org_theme)) {
                     $chart->setTheme($def_org_theme);
                 }
             }
         }
-	
+
         $defaultMeta = Chart::defaultMetaData();
 
         if (isset($def_org_theme_default_width)) {
@@ -131,49 +131,87 @@ class ChartQuery extends BaseChartQuery {
     /*
      * My Charts
      */
+    private function publicChartsByIdQuery($id, $org, $filter, $order='date') {
+        if (isset($filter['q'])) {
+            // this is a special hack for the mycharts search, where
+            // we want to search accross all charts a user has access to
+            $user = UserQuery::create()->findPk($id);
+            $conditions = ['user'];
+            $query = $this->condition('is-user', 'Chart.AuthorId = ?', $user->getId())
+                ->condition('no-org', 'chart.organization_id is NULL')
+                ->combine(['is-user', 'no-org'], 'and', 'user');
+            $orgs = [];
+            foreach ($user->getOrganizations() as $org) {
+                $query = $query->condition('org-'.$org->getId(), 'Chart.OrganizationId = ?', $org->getId());
+                $orgs[] = $org->getId();
+                $conditions[] = 'org-'.$org->getId();
+            }
+            $query = $query->where($conditions, 'or');
 
-    private function publicChartsByUserQuery($user, $filter, $order='date') {
-        $query = $this->filterByAuthorId($user->getId())
-            ->filterByDeleted(false);
+        } else {
+            if ($org) {
+                $query = $this->filterByOrganizationId($id)
+                    ->filterByDeleted(false);
+            } else {
+                $query = $this->filterByAuthorId($id)
+                    ->filterByOrganizationId(null)
+                    ->filterByDeleted(false);
+            }
+        }
+
         switch ($order) {
+            case 'title': $query->orderByTitle(); break;
+            case 'published_at': $query->orderByPublishedAt('desc'); break;
             case 'theme': $query->orderByTheme(); break;
             case 'type': $query->orderByType(); break;
-            case 'lastUpdated': $query->orderByLastModifiedAt('desc'); break;
-            default: $query->orderByCreatedAt('desc'); break;
+            case 'status': $query->orderByLastEditStep('desc'); break;
+            case 'created_at': $query->orderByCreatedAt('desc'); break;
+            default: $query->orderByLastModifiedAt('desc'); break;
         }
         $query->filterByLastEditStep(array('min' => 2));
         if (count($filter) > 0) {
             foreach ($filter as $key => $val) {
-                if ($key == 'layout' || $key == 'theme') $query->filterByTheme($val);
-                if ($key == 'vis') $query->filterByType($val);
-                if ($key == 'month') $query->filterByCreatedAt(array('min' => $val.'-01', 'max' => $val.'-31'));
-                if ($key == 'q') {
-                    $query->condition('in-title', 'Chart.Title LIKE ?', '%'.$val.'%');
-                    $query->condition('in-intro', 'Chart.Metadata LIKE ?', '%"intro":"%'.$val.'%"%');
-                    $query->condition('in-source', 'Chart.Metadata LIKE ?', '%"source-name":"%'.$val.'%"%');
-                    $query->condition('in-source-url', 'Chart.Metadata LIKE ?', '%"source-url":"%'.$val.'%"%');
-                    $query->where(array('in-title', 'in-intro', 'in-source', 'in-source-url'), 'or');
-                }
-                if ($key == 'status') {
-                    if ($val == 'published') $query->filterByLastEditStep(array('min' => 4));
-                    else if ($val == 'draft') $query->filterByLastEditStep(array('max'=> 3));
+                switch ($key) {
+                    case 'layout':
+                    case 'theme':
+                        $query->filterByTheme($val);
+                        break;
+                    case 'vis':
+                        $query->filterByType($val);
+                        break;
+                    case 'month':
+                        $query->filterByCreatedAt(array('min' => $val.'-01', 'max' => $val.'-31'));
+                        break;
+                    case 'folder':
+                        $query->filterByInFolder($val);
+                        break;
+                    case 'q':
+                        $query->condition('in-title', 'Chart.Title LIKE ?', '%'.$val.'%');
+                        $query->condition('in-intro', 'Chart.Metadata LIKE ?', '%"intro":"%'.$val.'%"%');
+                        $query->condition('in-source', 'Chart.Metadata LIKE ?', '%"source-name":"%'.$val.'%"%');
+                        $query->condition('in-source-url', 'Chart.Metadata LIKE ?', '%"source-url":"%'.$val.'%"%');
+                        $query->where(array('in-title', 'in-intro', 'in-source', 'in-source-url'), 'or');
+                        break;
+                    case 'status':
+                        if ($val == 'published') $query->filterByLastEditStep(array('min' => 4));
+                        else if ($val == 'draft') $query->filterByLastEditStep(array('max'=> 3));
                 }
             }
         }
         return $query;
     }
 
-    public function getPublicChartsByUser($user, $filter=array(), $start=0, $perPage=15, $order=false) {
+    public function getPublicChartsById($id, $org, $filter=array(), $start=0, $perPage=15, $order=false) {
         return $this
-            ->publicChartsByUserQuery($user, $filter, $order)
+            ->publicChartsByIdQuery($id, $org, $filter, $order)
             ->limit($perPage)
             ->offset($start)
             ->find();
     }
 
-    public function countPublicChartsByUser($user, $filter=array()) {
+    public function countPublicChartsById($id, $org, $filter=array()) {
         return $this
-            ->publicChartsByUserQuery($user, $filter)
+            ->publicChartsByIdQuery($id, $org, $filter)
             ->count();
     }
 
@@ -214,6 +252,18 @@ class ChartQuery extends BaseChartQuery {
         return $this
             ->galleryChartsQuery($filter)
             ->count();
+    }
+
+    public function filterByUserAccess($user) {
+        $org_ids = [];
+        foreach ($user->getOrganizations() as $org) {
+            $org_ids[] = $org->getId();
+        }
+        return $this
+            ->filterByDeleted(false)
+            ->condition('user', 'chart.author_id = ?', $user->getId())
+            ->condition('org', 'chart.organization_id IN ?', $org_ids)
+            ->where(['user', 'org'], 'or');
     }
 
 } // ChartQuery

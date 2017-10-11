@@ -1,0 +1,55 @@
+{% use "utils.twig" %}
+
+{% if user.hasCharts %}
+    {% if num_charts == 0 %}
+        <h3 class="no-charts">{{ "mycharts / empty-folder" | trans | replace({'%folder%':current.folder}) | raw }}</h3>
+    {% endif %}
+    {% for group in chart_groups %}
+        {% if group.title %}
+            <h3>{% if group.link %}<a href="{{ group.link }}">{% endif %}{{ group.title }}{% if group.link %}</a>{% endif %}</h3>
+        {% endif %}
+
+        <ul class="thumbnails">
+            {% for chart in group.charts %}
+
+            <li class="span2 chart" data-id="{{ chart.id }}">
+
+                <div class="thumbnail" data-id="{{ chart.id }}">
+
+                    <a href="/{{ chart.getNamespace() }}/{{ chart.id }}/edit">
+                        <div class="image" style="width:100%; height:130px; background:url({% if chart.hasPreview %}//{{ DW_CHART_CACHE_DOMAIN }}/{{ chart.id }}/m.png{% else %}/static/img/nopreview.png{% endif %}) top left no-repeat;background-size:cover"></div>
+
+                        <h3>
+                            {% if chart.title != '' %}{{ chart.title | replace({'<br/>': ' - '}) | striptags | raw }}{% else %}{{ chart.id }}{% endif %}
+                        </h3>
+                    </a>
+
+                    <div class="dw-checkbox"><i class="im im-check-mark"></i></div>
+
+                    <div class="btn-group">
+                        <button class="btn dropdown-toggle" data-toggle="dropdown">
+                            <i class="fa fa-caret-down"></i>
+                        </button>
+                        <ul class="dropdown-menu">
+                            {% if user2 %}
+                            <li><a class="edit" href="#"><i class="im im-edit"></i> {% trans "Edit" %}</a></li>
+                            {% endif %}
+                            <li><a class="duplicate" href="#"><i class="im im-copy"></i> {% trans "Duplicate" %}</a></li>
+                            <li><a class="delete" href="#"><i class="im im-trash-can"></i> {% trans "Delete" %}</a></li>
+                        <!-- dropdown menu links -->
+                        </ul>
+                    </div>
+                 </div>
+            </li>
+            {% endfor %}
+        </ul>
+
+    {% endfor %}
+    {% else %}
+
+    <h2>{% trans "No charts here, yet" %}</h2>
+    <p>{% trans "Why not <a href='/chart/create'>create a new chart now</a>?" %}</p>
+
+{% endif %}
+
+{{ block('pagination') }}

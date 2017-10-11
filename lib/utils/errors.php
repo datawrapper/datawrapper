@@ -81,6 +81,15 @@ function error_mycharts_need_login() {
     );
 }
 
+function error_mycharts_not_a_member() {
+    error_page('mycharts',
+        __('You are not a member of the requested organization.'),
+        __('If you think you should have access, ask for an invitation.'),
+        false,
+        403
+    );
+}
+
 function error_access_denied() {
     error_page('chart',
         __('Access denied.'),

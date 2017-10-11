@@ -150,7 +150,7 @@ class User extends BaseUser {
         if ($this->getCurrentOrganization() != null) {
             $res['organization'] = $this->getCurrentOrganization()->serialize();
         }
-        
+
         return $res;
     }
 
@@ -218,6 +218,31 @@ class User extends BaseUser {
             ->withColumn('UserOrganization.InviteToken', 'InviteToken')
             ->where('UserOrganization.UserId = ?', $this->getId())
             ->find();
+    }
+
+    protected $userData = null;
+
+    public function setUserData($data) {
+        $values = [];
+        $pdo = Propel::getConnection();
+        foreach ($data as $key => $value) {
+            $values = '('.join(',', [$this->getId(), $pdo->quote($key), $pdo->quote($value)]).')';
+        }
+        $sql = 'INSERT INTO user_data (user_id, `key`, `value`) VALUES '.join(', ', $values).
+            ' ON DUPLICATE KEY UPDATE `value` = VALUES(`value`)';
+        $pdo->query($sql);
+        $this->userData = $data;
+    }
+
+    public function getUserData() {
+        if (!empty($this->userData)) return $this->userData;
+        $userData = [];
+        $res = UserDataQuery::create()->filterByUser($this)->find();
+        foreach ($res as $row) {
+            $userData[$row->getKey()] = $row->getValue();
+        }
+        $this->userData = $userData;
+        return $userData;
     }
 
 } // User

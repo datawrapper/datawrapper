@@ -18,7 +18,6 @@ define(function() {
         initFileUpload();
         initDemoDatasets();
 
-        
     }
 
     function initFileUpload() {

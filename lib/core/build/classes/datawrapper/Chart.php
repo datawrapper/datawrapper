@@ -73,6 +73,7 @@ class Chart extends BaseChart {
         $json['AuthorId'] = $this->getAuthorId();
         $json['Deleted'] = $this->getDeleted();
         $json['DeletedAt'] = $this->getDeletedAt();
+        $json['InFolder'] = $this->getInFolder();
         // and update the chart
         $this->fromArray($json);
         $this->save();

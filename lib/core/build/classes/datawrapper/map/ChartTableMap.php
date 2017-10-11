@@ -60,6 +60,7 @@ class ChartTableMap extends TableMap
         $this->addColumn('external_data', 'ExternalData', 'VARCHAR', false, 255, null);
         $this->addColumn('forkable', 'Forkable', 'BOOLEAN', false, 1, false);
         $this->addColumn('is_fork', 'IsFork', 'BOOLEAN', false, 1, false);
+        $this->addForeignKey('in_folder', 'InFolder', 'INTEGER', 'folder', 'folder_id', false, null, null);
         // validators
     } // initialize()
 
@@ -71,6 +72,7 @@ class ChartTableMap extends TableMap
         $this->addRelation('User', 'User', RelationMap::MANY_TO_ONE, array('author_id' => 'id', ), null, null);
         $this->addRelation('Organization', 'Organization', RelationMap::MANY_TO_ONE, array('organization_id' => 'id', ), null, null);
         $this->addRelation('ChartRelatedByForkedFrom', 'Chart', RelationMap::MANY_TO_ONE, array('forked_from' => 'id', ), null, null);
+        $this->addRelation('Folder', 'Folder', RelationMap::MANY_TO_ONE, array('in_folder' => 'folder_id', ), null, null);
         $this->addRelation('ChartRelatedById', 'Chart', RelationMap::ONE_TO_MANY, array('id' => 'forked_from', ), null, null, 'ChartsRelatedById');
         $this->addRelation('Job', 'Job', RelationMap::ONE_TO_MANY, array('id' => 'chart_id', ), null, null, 'Jobs');
     } // buildRelations()

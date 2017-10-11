@@ -157,33 +157,37 @@ html .navbar .navbar-inner .brand .beta {
   left: 3px;
   color: #aaa;
 }
-html .navbar .navbar-inner .mycharts.dropdown li img.icon {
+html .navbar .navbar-inner .mycharts_dd.dropdown {
+  margin-left: -20px;
+}
+html .navbar .navbar-inner .mycharts_dd.dropdown li {
+  position: relative;
+  max-width: 240px;
+  min-height: 26px;
+}
+html .navbar .navbar-inner .mycharts_dd.dropdown li img.icon {
   height: 20px!important;
   width: 30px!important;
   position: absolute;
   left: 10px;
   top: 4px;
 }
-html .navbar .navbar-inner .mycharts.dropdown li {
-  position: relative;
-  max-width: 240px;
-  min-height: 26px;
-}
-html .navbar .navbar-inner .mycharts.dropdown li a {
+html .navbar .navbar-inner .mycharts_dd.dropdown li a {
   padding-left: 45px;
-}
-html .navbar .navbar-inner .mycharts.dropdown .divider {
-  min-height: 0;
-}
-html .navbar .navbar-inner .mycharts.dropdown a {
   min-height: 20px;
 }
-html .navbar .navbar-inner .mycharts.dropdown li a span {
+html .navbar .navbar-inner .mycharts_dd.dropdown li a span {
   overflow: hidden;
   display: block;
   width: 100%;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+html .navbar .navbar-inner .mycharts_dd.dropdown li.divider {
+  min-height: 0;
+}
+html .navbar .navbar-inner .mycharts_dd.dropdown.open #dw-header-link-mycharts_dd {
+  background: none;
 }
 html .navbar .navbar-inner .nav li.dropdown .dropdown-toggle .caret,
 html .navbar .navbar-inner .nav li.dropdown.open .caret,
@@ -1754,7 +1758,288 @@ html .btn-inverse {
 }
 .gallery .dropdown-menu {
   left: auto;
-  right: 0;
+}
+html body.dw-mycharts .navbar .navbar-inner {
+  background: white;
+}
+body.dw-mycharts {
+  background: #f3f3f3;
+}
+body.dw-mycharts .pagination-right {
+  position: relative;
+  top: -10px;
+  margin-left: 10px;
+}
+body.dw-mycharts .mycharts-chart-list > h3 {
+  font-weight: 300;
+  color: #777;
+  margin: 10px 0 20px;
+  font-size: 21px;
+  line-height: 26px;
+}
+body.dw-mycharts .mycharts-chart-list > h3.no-charts {
+  font-weight: 300;
+  margin-top: 30px;
+}
+body.dw-mycharts .mycharts-chart-list > h3.no-charts a {
+  color: #0088cc;
+}
+body.dw-mycharts .mycharts-chart-list > h3 a {
+  color: #777;
+}
+body.dw-mycharts .im {
+  font: normal normal normal 16px/1 'iconmonstr-iconic-font';
+  vertical-align: middle;
+}
+body.dw-mycharts .dropdown-menu .im {
+  font-size: 14px;
+  position: relative;
+  left: -5px;
+}
+body.dw-mycharts #current-folder .dropdown-toggle .im {
+  font-size: 10px;
+  color: #999;
+}
+body.dw-mycharts span#current-folder-name[contenteditable] {
+  display: inline-block;
+}
+body.dw-mycharts .gallery-filter {
+  display: flex;
+  margin-bottom: 40px;
+  width: 100%;
+}
+body.dw-mycharts .gallery-filter h1 {
+  margin-top: 0;
+}
+body.dw-mycharts .gallery-filter a {
+  cursor: pointer;
+}
+body.dw-mycharts .gallery-filter .folder-line {
+  align-self: flex-start;
+}
+body.dw-mycharts .gallery-filter form {
+  margin-left: auto;
+}
+body.dw-mycharts .gallery-filter form .btn-group {
+  margin-left: 10px;
+}
+body.dw-mycharts .folders-and-gallery {
+  display: flex;
+}
+body.dw-mycharts .folders-and-gallery .folders {
+  flex: 1 0 0;
+}
+body.dw-mycharts .folders-and-gallery .gallery {
+  flex: 3 0 0;
+}
+body.dw-mycharts .folders ul {
+  list-style-type: none;
+  margin-left: 0;
+}
+body.dw-mycharts .folders ul ul {
+  margin-left: 1em;
+}
+body.dw-mycharts .folders li {
+  line-height: 20px;
+  font-size: 16px;
+}
+body.dw-mycharts .folders li.active a {
+  font-weight: bold;
+  color: black;
+}
+body.dw-mycharts .folders li.dragtar a {
+  font-weight: bold;
+  color: black;
+  background-color: white;
+}
+body.dw-mycharts .folders li a {
+  cursor: pointer;
+  margin-right: 1em;
+}
+body.dw-mycharts .folders ul.folders-left {
+  position: sticky;
+  top: 50px;
+}
+body.dw-mycharts .folder-line {
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 40px;
+}
+body.dw-mycharts h1#current-folder {
+  font-size: 26px;
+}
+body.dw-mycharts #current-folder .dropdown-menu .dropdown-menu {
+  top: -6px;
+  margin: 0px;
+  padding: 1px;
+}
+body.dw-mycharts #current-folder .dropdown-menu .move-links {
+  top: -2px;
+}
+body.dw-mycharts .dropdown-submenu .dropdown-menu {
+  left: 100%;
+  margin-top: -6px;
+}
+body.dw-mycharts #folder-sequence .sep {
+  display: inline-block;
+  margin-left: 10px;
+  margin-right: 14px;
+  color: #999;
+}
+body.dw-mycharts .folder-list-separator {
+  display: none;
+}
+@media (min-width: 1200px) {
+  body.dw-mycharts .span2 {
+    width: 191px;
+  }
+}
+body.dw-mycharts .gallery .thumbnail h3 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+  margin-top: 10px;
+  height: 40px;
+  margin-bottom: 0;
+  -webkit-line-clamp: 2;
+  display: block;
+  display: -webkit-box;
+}
+body.dw-mycharts .gallery .subfolders {
+  margin-bottom: 0px;
+}
+body.dw-mycharts .gallery .subfolders .thumbnail {
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 0;
+}
+body.dw-mycharts .gallery .subfolders .thumbnail .im,
+body.dw-mycharts .gallery .subfolders .thumbnail .fa {
+  color: #999;
+}
+body.dw-mycharts div.folders > ul {
+  margin-bottom: 40px;
+}
+body.dw-mycharts div.folders ul > li {
+  position: relative;
+  margin: 0 0 15px;
+}
+body.dw-mycharts div.folders ul > li > a > .im,
+body.dw-mycharts div.folders ul > li > a > .fa {
+  color: #999;
+  position: absolute;
+  left: 0px;
+  top: 3px;
+}
+body.dw-mycharts div.folders ul > li.active > a > .im-folder-open {
+  display: inline-block;
+}
+body.dw-mycharts div.folders ul > li.active > a > .im-folder {
+  display: none;
+}
+body.dw-mycharts div.folders ul > li.dragtar > a > .im-folder-open {
+  display: inline-block;
+}
+body.dw-mycharts div.folders ul > li.dragtar > a > .im-folder {
+  display: none;
+}
+body.dw-mycharts div.folders ul > li > a > .im-folder-open {
+  display: none;
+}
+body.dw-mycharts div.folders ul > li > a > .im-folder {
+  display: inline-block;
+}
+body.dw-mycharts div.folders ul > li > a > span {
+  display: inline-block;
+  margin-left: 23px;
+  vertical-align: top;
+}
+body.dw-mycharts div.folders li > a > span .chart-count {
+  color: #999;
+  display: inline-block;
+  margin-left: 5px;
+  font-size: 14px;
+}
+body.dw-mycharts .thumbnails.subfolders li {
+  position: relative;
+}
+body.dw-mycharts .thumbnails.subfolders li > a > .im,
+body.dw-mycharts .thumbnails.subfolders li > a > .fa {
+  position: absolute;
+  left: 10px;
+  top: 12px;
+}
+body.dw-mycharts .thumbnails.subfolders li > a > span {
+  display: inline-block;
+  margin-left: 25px;
+  vertical-align: top;
+}
+body.dw-mycharts .thumbnail.add-folder {
+  background: transparent;
+  border-color: transparent;
+}
+body.dw-mycharts .thumbnail.add-folder span {
+  font-weight: 300;
+}
+body.dw-mycharts .thumbnail .dw-checkbox {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  top: 10px;
+  left: 10px;
+  border: 1px solid #ddd;
+  background: rgba(255, 255, 255, 0.8);
+  text-align: center;
+  cursor: pointer;
+  display: none;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+}
+body.dw-mycharts .thumbnail:hover {
+  border-color: #acf!important;
+}
+body.dw-mycharts .thumbnail.checked {
+  border-color: #09c!important;
+}
+body.dw-mycharts .thumbnail:hover .dw-checkbox {
+  display: block;
+}
+body.dw-mycharts .thumbnail:hover .dw-checkbox:hover {
+  display: block;
+  border-color: #09c;
+}
+body.dw-mycharts .thumbnail .dw-checkbox .im,
+body.dw-mycharts .thumbnail .dw-checkbox .fa {
+  display: none;
+}
+body.dw-mycharts .thumbnail.checked .dw-checkbox {
+  background: #09c;
+  border-color: #09c;
+  color: white;
+  display: block;
+}
+body.dw-mycharts .thumbnail.checked .dw-checkbox .im,
+body.dw-mycharts .thumbnail.checked .dw-checkbox .fa {
+  font-size: 14px;
+  display: inline-block;
+}
+body.dw-mycharts .thumbnails.multi-select .thumbnail.checked .dropdown-menu .duplicate,
+body.dw-mycharts .thumbnails.multi-select .thumbnail.checked .dropdown-menu .delete {
+  display: none;
+}
+body.dw-mycharts .thumbnails .dropdown-menu .move .multi-mode {
+  display: none;
+}
+body.dw-mycharts .thumbnails .dropdown-menu .move .non-multi {
+  display: inline;
+}
+body.dw-mycharts .thumbnails.multi-select .dropdown-menu .move .multi-mode {
+  display: inline;
+}
+body.dw-mycharts .thumbnails.multi-select .dropdown-menu .move .non-multi {
+  display: none;
+}
+body.dw-mycharts .pagination {
+  text-align: right;
+  margin-top: -20px;
 }
 body {
   background: #fff;

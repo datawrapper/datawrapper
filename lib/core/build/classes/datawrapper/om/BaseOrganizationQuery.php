@@ -46,6 +46,10 @@
  * @method OrganizationQuery rightJoinOrganizationTheme($relationAlias = null) Adds a RIGHT JOIN clause to the query using the OrganizationTheme relation
  * @method OrganizationQuery innerJoinOrganizationTheme($relationAlias = null) Adds a INNER JOIN clause to the query using the OrganizationTheme relation
  *
+ * @method OrganizationQuery leftJoinFolder($relationAlias = null) Adds a LEFT JOIN clause to the query using the Folder relation
+ * @method OrganizationQuery rightJoinFolder($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Folder relation
+ * @method OrganizationQuery innerJoinFolder($relationAlias = null) Adds a INNER JOIN clause to the query using the Folder relation
+ *
  * @method Organization findOne(PropelPDO $con = null) Return the first Organization matching the query
  * @method Organization findOneOrCreate(PropelPDO $con = null) Return the first Organization matching the query, or a new Organization object populated from the query conditions when no match is found
  *
@@ -836,6 +840,80 @@ abstract class BaseOrganizationQuery extends ModelCriteria
         return $this
             ->joinOrganizationTheme($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'OrganizationTheme', 'OrganizationThemeQuery');
+    }
+
+    /**
+     * Filter the query by a related Folder object
+     *
+     * @param   Folder|PropelObjectCollection $folder  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 OrganizationQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByFolder($folder, $comparison = null)
+    {
+        if ($folder instanceof Folder) {
+            return $this
+                ->addUsingAlias(OrganizationPeer::ID, $folder->getOrgId(), $comparison);
+        } elseif ($folder instanceof PropelObjectCollection) {
+            return $this
+                ->useFolderQuery()
+                ->filterByPrimaryKeys($folder->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByFolder() only accepts arguments of type Folder or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Folder relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return OrganizationQuery The current query, for fluid interface
+     */
+    public function joinFolder($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Folder');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Folder');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Folder relation Folder object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   FolderQuery A secondary query class using the current class as primary query
+     */
+    public function useFolderQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinFolder($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Folder', 'FolderQuery');
     }
 
     /**

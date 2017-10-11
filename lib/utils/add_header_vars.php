@@ -75,13 +75,21 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
         if ($user->hasCharts()) {
             $headlinks[] = 'divider';
 
+            $org = $user->getCurrentOrganization();
             // mycharts
-            $mycharts = array(
-                'url' => '/mycharts/',
+            $mycharts_link = array(
+                'url' => empty($org) ? '/mycharts/' : '/organization/'.$org->getId().'/',
                 'id' => 'mycharts',
                 'title' => __('My Charts'),
                 //'justicon' => true,
                 'icon' => 'fa fa-bar-chart-o',
+            );
+            $mycharts = array(
+                'url' => '/mycharts/',
+                'id' => 'mycharts_dd',
+                'title' => '',
+                //'justicon' => true,
+                'icon' => 'fa  fa-caret-down',
                 'dropdown' => array()
             );
             foreach ($user->getRecentCharts(9) as $chart) {
@@ -94,6 +102,7 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
             }
             $mycharts['dropdown'][] = 'divider';
             $mycharts['dropdown'][] = array('url' => '/mycharts/', 'title' => __('All charts'));
+            $headlinks[] = $mycharts_link;
             $headlinks[] = $mycharts;
         }
 
@@ -133,7 +142,7 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
 
         $acc = array(
             "id" => "account",
-            "icon" => "fa fa-chevron-down",
+            "icon" => "fa fa-bars",
             "dropdown" => [
                 [
                     "id" => "my-account",
@@ -160,6 +169,7 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
         }
 
         header_nav_hook($headlinks, 'user');
+        header_nav_hook($acc["dropdown"], 'hamburger');
 
         // admin link
         if ($user->isLoggedIn() && $user->isAdmin()
@@ -191,22 +201,25 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
 
     if ($user->isAdmin()) {
         $plugin_status = check_plugins();
-        if (!empty($plugin_status)) {
-            $page['alertMessage'] = $plugin_status;
-        }
+        $page['alertMessage'] = '';
+        if (!empty($plugin_status)) $page['alertMessage'] .= $plugin_status;
+        if (isset($GLOBALS['dw_alert'])) $page['alertMessage'] .= $GLOBALS['dw_alert'];
     }
 
     foreach ($headlinks as $i => $link) {
         if ($link == 'divider') continue;
         $headlinks[$i]['active'] = $headlinks[$i]['id'] == $active;
     }
+    $user = DatawrapperSession::getUser();
     $page['headlinks'] = $headlinks;
-    $page['user'] = DatawrapperSession::getUser();
+    $page['user'] = $user;
+    $page['userData'] = $user->isLoggedIn() ? $user->getUserData() : false;
     $page['language'] = substr(DatawrapperSession::getLanguage(), 0, 2);
     $page['locale'] = DatawrapperSession::getLanguage();
     $page['DW_DOMAIN'] = $config['domain'];
     $page['DW_VERSION'] = DATAWRAPPER_VERSION;
     $page['ASSET_DOMAIN'] = $config['asset_domain'];
+    $page['API_DOMAIN'] = $config['api_domain'];
     $page['DW_CHART_CACHE_DOMAIN'] = $config['chart_domain'];
     $page['SUPPORT_EMAIL'] = $config['email']['support'];
     $page['config'] = $config;
@@ -217,7 +230,7 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
 
     if (isset ($config['maintenance']) && $config['maintenance'] == true) {
         $page['maintenance'] = true;
-    } 
+    }
 
     $uri = $app->request()->getResourceUri();
     $plugin_assets = DatawrapperHooks::execute(DatawrapperHooks::GET_PLUGIN_ASSETS, $uri);

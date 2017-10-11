@@ -169,6 +169,12 @@ abstract class BaseChart extends BaseObject implements Persistent
     protected $is_fork;
 
     /**
+     * The value for the in_folder field.
+     * @var        int
+     */
+    protected $in_folder;
+
+    /**
      * @var        User
      */
     protected $aUser;
@@ -182,6 +188,11 @@ abstract class BaseChart extends BaseObject implements Persistent
      * @var        Chart
      */
     protected $aChartRelatedByForkedFrom;
+
+    /**
+     * @var        Folder
+     */
+    protected $aFolder;
 
     /**
      * @var        PropelObjectCollection|Chart[] Collection to store aggregation of Chart objects.
@@ -592,6 +603,16 @@ abstract class BaseChart extends BaseObject implements Persistent
     public function getIsFork()
     {
         return $this->is_fork;
+    }
+
+    /**
+     * Get the [in_folder] column value.
+     *
+     * @return int
+     */
+    public function getInFolder()
+    {
+        return $this->in_folder;
     }
 
     /**
@@ -1109,6 +1130,31 @@ abstract class BaseChart extends BaseObject implements Persistent
     } // setIsFork()
 
     /**
+     * Set the value of [in_folder] column.
+     *
+     * @param int $v new value
+     * @return Chart The current object (for fluent API support)
+     */
+    public function setInFolder($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->in_folder !== $v) {
+            $this->in_folder = $v;
+            $this->modifiedColumns[] = ChartPeer::IN_FOLDER;
+        }
+
+        if ($this->aFolder !== null && $this->aFolder->getFolderId() !== $v) {
+            $this->aFolder = null;
+        }
+
+
+        return $this;
+    } // setInFolder()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -1190,6 +1236,7 @@ abstract class BaseChart extends BaseObject implements Persistent
             $this->external_data = ($row[$startcol + 19] !== null) ? (string) $row[$startcol + 19] : null;
             $this->forkable = ($row[$startcol + 20] !== null) ? (boolean) $row[$startcol + 20] : null;
             $this->is_fork = ($row[$startcol + 21] !== null) ? (boolean) $row[$startcol + 21] : null;
+            $this->in_folder = ($row[$startcol + 22] !== null) ? (int) $row[$startcol + 22] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -1198,7 +1245,7 @@ abstract class BaseChart extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
             $this->postHydrate($row, $startcol, $rehydrate);
-            return $startcol + 22; // 22 = ChartPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 23; // 23 = ChartPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Chart object", $e);
@@ -1229,6 +1276,9 @@ abstract class BaseChart extends BaseObject implements Persistent
         }
         if ($this->aChartRelatedByForkedFrom !== null && $this->forked_from !== $this->aChartRelatedByForkedFrom->getId()) {
             $this->aChartRelatedByForkedFrom = null;
+        }
+        if ($this->aFolder !== null && $this->in_folder !== $this->aFolder->getFolderId()) {
+            $this->aFolder = null;
         }
     } // ensureConsistency
 
@@ -1272,6 +1322,7 @@ abstract class BaseChart extends BaseObject implements Persistent
             $this->aUser = null;
             $this->aOrganization = null;
             $this->aChartRelatedByForkedFrom = null;
+            $this->aFolder = null;
             $this->collChartsRelatedById = null;
 
             $this->collJobs = null;
@@ -1415,6 +1466,13 @@ abstract class BaseChart extends BaseObject implements Persistent
                 $this->setChartRelatedByForkedFrom($this->aChartRelatedByForkedFrom);
             }
 
+            if ($this->aFolder !== null) {
+                if ($this->aFolder->isModified() || $this->aFolder->isNew()) {
+                    $affectedRows += $this->aFolder->save($con);
+                }
+                $this->setFolder($this->aFolder);
+            }
+
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
                 if ($this->isNew()) {
@@ -1549,6 +1607,9 @@ abstract class BaseChart extends BaseObject implements Persistent
         if ($this->isColumnModified(ChartPeer::IS_FORK)) {
             $modifiedColumns[':p' . $index++]  = '`is_fork`';
         }
+        if ($this->isColumnModified(ChartPeer::IN_FOLDER)) {
+            $modifiedColumns[':p' . $index++]  = '`in_folder`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `chart` (%s) VALUES (%s)',
@@ -1625,6 +1686,9 @@ abstract class BaseChart extends BaseObject implements Persistent
                         break;
                     case '`is_fork`':
                         $stmt->bindValue($identifier, (int) $this->is_fork, PDO::PARAM_INT);
+                        break;
+                    case '`in_folder`':
+                        $stmt->bindValue($identifier, $this->in_folder, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -1733,6 +1797,12 @@ abstract class BaseChart extends BaseObject implements Persistent
             if ($this->aChartRelatedByForkedFrom !== null) {
                 if (!$this->aChartRelatedByForkedFrom->validate($columns)) {
                     $failureMap = array_merge($failureMap, $this->aChartRelatedByForkedFrom->getValidationFailures());
+                }
+            }
+
+            if ($this->aFolder !== null) {
+                if (!$this->aFolder->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aFolder->getValidationFailures());
                 }
             }
 
@@ -1859,6 +1929,9 @@ abstract class BaseChart extends BaseObject implements Persistent
             case 21:
                 return $this->getIsFork();
                 break;
+            case 22:
+                return $this->getInFolder();
+                break;
             default:
                 return null;
                 break;
@@ -1910,6 +1983,7 @@ abstract class BaseChart extends BaseObject implements Persistent
             $keys[19] => $this->getExternalData(),
             $keys[20] => $this->getForkable(),
             $keys[21] => $this->getIsFork(),
+            $keys[22] => $this->getInFolder(),
         );
         if ($includeForeignObjects) {
             if (null !== $this->aUser) {
@@ -1920,6 +1994,9 @@ abstract class BaseChart extends BaseObject implements Persistent
             }
             if (null !== $this->aChartRelatedByForkedFrom) {
                 $result['ChartRelatedByForkedFrom'] = $this->aChartRelatedByForkedFrom->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->aFolder) {
+                $result['Folder'] = $this->aFolder->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
             if (null !== $this->collChartsRelatedById) {
                 $result['ChartsRelatedById'] = $this->collChartsRelatedById->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -2027,6 +2104,9 @@ abstract class BaseChart extends BaseObject implements Persistent
             case 21:
                 $this->setIsFork($value);
                 break;
+            case 22:
+                $this->setInFolder($value);
+                break;
         } // switch()
     }
 
@@ -2073,6 +2153,7 @@ abstract class BaseChart extends BaseObject implements Persistent
         if (array_key_exists($keys[19], $arr)) $this->setExternalData($arr[$keys[19]]);
         if (array_key_exists($keys[20], $arr)) $this->setForkable($arr[$keys[20]]);
         if (array_key_exists($keys[21], $arr)) $this->setIsFork($arr[$keys[21]]);
+        if (array_key_exists($keys[22], $arr)) $this->setInFolder($arr[$keys[22]]);
     }
 
     /**
@@ -2106,6 +2187,7 @@ abstract class BaseChart extends BaseObject implements Persistent
         if ($this->isColumnModified(ChartPeer::EXTERNAL_DATA)) $criteria->add(ChartPeer::EXTERNAL_DATA, $this->external_data);
         if ($this->isColumnModified(ChartPeer::FORKABLE)) $criteria->add(ChartPeer::FORKABLE, $this->forkable);
         if ($this->isColumnModified(ChartPeer::IS_FORK)) $criteria->add(ChartPeer::IS_FORK, $this->is_fork);
+        if ($this->isColumnModified(ChartPeer::IN_FOLDER)) $criteria->add(ChartPeer::IN_FOLDER, $this->in_folder);
 
         return $criteria;
     }
@@ -2190,6 +2272,7 @@ abstract class BaseChart extends BaseObject implements Persistent
         $copyObj->setExternalData($this->getExternalData());
         $copyObj->setForkable($this->getForkable());
         $copyObj->setIsFork($this->getIsFork());
+        $copyObj->setInFolder($this->getInFolder());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -2414,6 +2497,58 @@ abstract class BaseChart extends BaseObject implements Persistent
         }
 
         return $this->aChartRelatedByForkedFrom;
+    }
+
+    /**
+     * Declares an association between this object and a Folder object.
+     *
+     * @param             Folder $v
+     * @return Chart The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setFolder(Folder $v = null)
+    {
+        if ($v === null) {
+            $this->setInFolder(NULL);
+        } else {
+            $this->setInFolder($v->getFolderId());
+        }
+
+        $this->aFolder = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the Folder object, it will not be re-added.
+        if ($v !== null) {
+            $v->addChart($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated Folder object
+     *
+     * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
+     * @return Folder The associated Folder object.
+     * @throws PropelException
+     */
+    public function getFolder(PropelPDO $con = null, $doQuery = true)
+    {
+        if ($this->aFolder === null && ($this->in_folder !== null) && $doQuery) {
+            $this->aFolder = FolderQuery::create()->findPk($this->in_folder, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aFolder->addCharts($this);
+             */
+        }
+
+        return $this->aFolder;
     }
 
 
@@ -2703,6 +2838,31 @@ abstract class BaseChart extends BaseObject implements Persistent
         return $this->getChartsRelatedById($query, $con);
     }
 
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Chart is new, it will return
+     * an empty collection; or if this Chart has previously
+     * been saved, it will retrieve related ChartsRelatedById from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Chart.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Chart[] List of Chart objects
+     */
+    public function getChartsRelatedByIdJoinFolder($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChartQuery::create(null, $criteria);
+        $query->joinWith('Folder', $join_behavior);
+
+        return $this->getChartsRelatedById($query, $con);
+    }
+
     /**
      * Clears out the collJobs collection
      *
@@ -2973,6 +3133,7 @@ abstract class BaseChart extends BaseObject implements Persistent
         $this->external_data = null;
         $this->forkable = null;
         $this->is_fork = null;
+        $this->in_folder = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
@@ -3015,6 +3176,9 @@ abstract class BaseChart extends BaseObject implements Persistent
             if ($this->aChartRelatedByForkedFrom instanceof Persistent) {
               $this->aChartRelatedByForkedFrom->clearAllReferences($deep);
             }
+            if ($this->aFolder instanceof Persistent) {
+              $this->aFolder->clearAllReferences($deep);
+            }
 
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
@@ -3030,6 +3194,7 @@ abstract class BaseChart extends BaseObject implements Persistent
         $this->aUser = null;
         $this->aOrganization = null;
         $this->aChartRelatedByForkedFrom = null;
+        $this->aFolder = null;
     }
 
     /**

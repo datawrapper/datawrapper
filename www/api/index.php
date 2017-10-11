@@ -87,6 +87,7 @@ require_once '../../lib/api/visualizations.php';
 require_once '../../lib/api/plugins.php';
 require_once '../../lib/api/organizations.php';
 require_once '../../lib/api/products.php';
+require_once '../../lib/api/folders.php';
 
 /**
  * Step 4: Run the Slim application

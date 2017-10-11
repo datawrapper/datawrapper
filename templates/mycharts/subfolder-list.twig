@@ -1,0 +1,24 @@
+<ul class="thumbnails subfolders">
+    {% for group in preload %}
+        {% if (group.type == 'user' and not current.organization) or (group.type == 'organization' and (group.organization.id == current.organization)) %}
+            {% for folder in group.folders %}
+                {% if folder.parent == current.folder %}
+    <li class="span2" folder-id="{{ folder.id }}">
+                    {% if group.type == 'user' %}
+        <a class="thumbnail" href="/mycharts/{{ folder.id }}">
+                    {% else %}
+        <a class="thumbnail" href="/organization/{{ current.organization }}/{{ folder.id }}">
+                    {% endif %}
+            <i class="im im-folder im-fw"></i> <span>{{ folder.name | striptags }}</span>
+        </a>
+    </li>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    {% endfor %}
+    <li class="span2 add-button">
+        <a class="thumbnail add-folder" href="#">
+            <i class="im im-plus-circle im-fw"></i> <span>{% trans "mycharts / add-subfolder" %}...</span>
+        </a>
+    </li>
+</ul>

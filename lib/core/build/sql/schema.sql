@@ -33,10 +33,12 @@ CREATE TABLE `chart`
     `external_data` VARCHAR(255),
     `forkable` TINYINT(1) DEFAULT 0,
     `is_fork` TINYINT(1) DEFAULT 0,
+    `in_folder` INTEGER,
     PRIMARY KEY (`id`),
     INDEX `chart_FI_1` (`author_id`),
     INDEX `chart_FI_2` (`organization_id`),
     INDEX `chart_FI_3` (`forked_from`),
+    INDEX `chart_FI_4` (`in_folder`),
     CONSTRAINT `chart_FK_1`
         FOREIGN KEY (`author_id`)
         REFERENCES `user` (`id`),
@@ -45,7 +47,10 @@ CREATE TABLE `chart`
         REFERENCES `organization` (`id`),
     CONSTRAINT `chart_FK_3`
         FOREIGN KEY (`forked_from`)
-        REFERENCES `chart` (`id`)
+        REFERENCES `chart` (`id`),
+    CONSTRAINT `chart_FK_4`
+        FOREIGN KEY (`in_folder`)
+        REFERENCES `folder` (`folder_id`)
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
@@ -381,6 +386,54 @@ CREATE TABLE `user_theme`
     CONSTRAINT `user_theme_FK_2`
         FOREIGN KEY (`theme_id`)
         REFERENCES `theme` (`id`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- folder
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `folder`;
+
+CREATE TABLE `folder`
+(
+    `folder_id` INTEGER NOT NULL AUTO_INCREMENT,
+    `parent_id` INTEGER,
+    `folder_name` VARCHAR(128),
+    `user_id` INTEGER,
+    `org_id` VARCHAR(128),
+    PRIMARY KEY (`folder_id`),
+    INDEX `folder_FI_1` (`parent_id`),
+    INDEX `folder_FI_2` (`user_id`),
+    INDEX `folder_FI_3` (`org_id`),
+    CONSTRAINT `folder_FK_1`
+        FOREIGN KEY (`parent_id`)
+        REFERENCES `folder` (`folder_id`),
+    CONSTRAINT `folder_FK_2`
+        FOREIGN KEY (`user_id`)
+        REFERENCES `user` (`id`),
+    CONSTRAINT `folder_FK_3`
+        FOREIGN KEY (`org_id`)
+        REFERENCES `organization` (`id`)
+) ENGINE=InnoDB CHARACTER SET='utf8';
+
+-- ---------------------------------------------------------------------
+-- user_data
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `user_data`;
+
+CREATE TABLE `user_data`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `user_id` INTEGER NOT NULL,
+    `stored_at` TIMESTAMP NOT NULL DEFAULT NOW(),
+    `key` VARCHAR(128) NOT NULL,
+    `value` VARCHAR(4096),
+    PRIMARY KEY (`id`),
+    UNIQUE INDEX `user_data_U_1` (`user_id`, `key`),
+    CONSTRAINT `user_data_FK_1`
+        FOREIGN KEY (`user_id`)
+        REFERENCES `user` (`id`)
 ) ENGINE=InnoDB;
 
 # This restores the fkey checks, after having unset them earlier
