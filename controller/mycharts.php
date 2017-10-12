@@ -110,10 +110,14 @@ function mycharts_group_charts($charts_res, $groups) {
     return $out;
 }
 
-function mycharts_group_by_month($charts) {
+function mycharts_group_by_month($charts, $date='') {
     $groups = [];
     foreach ($charts as $chart) {
-        $ym = $chart->getLastModifiedAt('Y-m');
+        switch ($date) {
+            case 'created_at': $ym = $chart->getCreatedAt('Y-m'); break;
+            case 'published_at': $ym = $chart->getPublishedAt('Y-m'); break;
+            default: $ym = $chart->getLastModifiedAt('Y-m'); break;
+        }
         $ts = strtotime($ym.'-01');
         $month = strftime('%B, %Y', $ts);
         if (!isset($groups[$month])) {
@@ -285,6 +289,8 @@ function mycharts_get_user_charts(&$page, $app, $user, $folder_id = false, $org_
             ],
         ],
         'month' => mycharts_group_by_month($charts),
+        'month_created_at' => mycharts_group_by_month($charts, 'created_at'),
+        'month_published_at' => mycharts_group_by_month($charts, 'published_at'),
         'type' => mycharts_group_by_type($charts),
         'folder' => mycharts_group_by_folder($charts, $user),
         'author' => mycharts_group_by_author($charts)
@@ -293,6 +299,7 @@ function mycharts_get_user_charts(&$page, $app, $user, $folder_id = false, $org_
     $group_by = 'no-group';
     if (!empty($filter['q'])) $group_by = 'folder';
     else if (($sort_by == 'modified_at' || empty($sort_by)) && $total > 40) $group_by = 'month';
+    else if (($sort_by == 'created_at' || $sort_by == 'published_at') && $total > 40) $group_by = 'month_'.$sort_by;
     else if ($sort_by == 'type') $group_by = 'type';
     else if ($sort_by == 'status') $group_by = 'status';
     else if ($sort_by == 'author') $group_by = 'author';
