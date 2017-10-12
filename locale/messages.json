@@ -412,5 +412,9 @@
     "mycharts \/ move-prohibited-alert": "A folder can not be moved into its current parent folder, itself, or one of its own subfolders.",
     "mycharts \/ Author": "Author",
     "mycharts \/ confirm-move-to-user": "After moving a chart to your user folder, members of your team won't be able to access it anymore.",
-    "mycharts \/ confirm-move-to-org": "After moving the chart, all team members of <b>%s<\/b> can access the chart."
+    "mycharts \/ confirm-move-to-org": "After moving the chart, all team members of <b>%s<\/b> can access the chart.",
+    "mycharts \/ confirm-move-chart-to-user": "After moving a chart to your user folder, members of your team won't be able to access it anymore.",
+    "mycharts \/ confirm-move-chart-to-org": "After moving the chart, all team members of <b>%s<\/b> can access the chart.",
+    "mycharts \/ confirm-move-folder-to-user": "After moving this folder to your user folder, your team members won't be able to access the charts in it anymore.",
+    "mycharts \/ confirm-move-folder-to-org": "After moving the folder, all team members of <b>%s<\/b> can access the charts in it."
 }

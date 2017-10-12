@@ -412,5 +412,9 @@
     "mycharts \/ move-prohibited-alert": "Ein Ordner kann nicht in den Ordner in dem er sich bereits befindet, sich selbst, oder einen seiner eigenen Unterordner verschoben werden.",
     "mycharts \/ Author": "Autor",
     "mycharts \/ confirm-move-to-user": "Nachdem du das Diagramm in deinen Nutzerordner verschoben hast k\u00f6nnen andere Teammitglieder nicht mehr darauf zugreifen.",
-    "mycharts \/ confirm-move-to-org": "Nachdem Verschieben k\u00f6nnen alle Teammitglieder von <b>%s<\/b> auf das Diagramm zugreifen."
+    "mycharts \/ confirm-move-to-org": "Nachdem Verschieben k\u00f6nnen alle Teammitglieder von <b>%s<\/b> auf das Diagramm zugreifen.",
+    "mycharts \/ confirm-move-chart-to-user": "Nachdem du das Diagramm in deinen Nutzerordner verschoben hast k\u00f6nnen andere Teammitglieder nicht mehr darauf zugreifen.",
+    "mycharts \/ confirm-move-chart-to-org": "Nachdem Verschieben k\u00f6nnen alle Teammitglieder von <b>%s<\/b> auf das Diagramm zugreifen.",
+    "mycharts \/ confirm-move-folder-to-user": "Nachdem du das Diagramm in deinen Nutzerordner verschoben hast k\u00f6nnen andere Teammitglieder nicht mehr darauf zugreifen.",
+    "mycharts \/ confirm-move-folder-to-org": "Nachdem Verschieben k\u00f6nnen alle Teammitglieder von <b>%s<\/b> auf die Diagramme im Ordner zugreifen."
 }

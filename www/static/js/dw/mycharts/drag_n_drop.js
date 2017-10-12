@@ -184,13 +184,19 @@ define(function(require) {
                 e.currentTarget.classList.add('dragtar');
                 e.originalEvent.dataTransfer.dropEffect = 'move';
                 if (isUserToOrgMove(e)) {
+                    console.log(drag_data.type);
                     $('<div class="chart-move-message" />')
                         .appendTo('body')
-                        .html(twig.globals.strings.confirm_move_to_org.replace('%s', cft.getOrgNameById(identifyTarget($(e.currentTarget)).organization)));
+                        .html(twig.globals.strings[
+                                drag_data.type == 'folder' ? 'confirm_move_folder_to_org' : 'confirm_move_chart_to_org'
+                            ].replace('%s', cft.getOrgNameById(identifyTarget($(e.currentTarget)).organization))
+                        );
                 } else if (isOrgToUserMove(e)) {
                     $('<div class="chart-move-message" />')
                         .appendTo('body')
-                        .html(twig.globals.strings.confirm_move_to_user);
+                        .html(twig.globals.strings[
+                            drag_data.type == 'folder' ? 'confirm_move_folder_to_user' : 'confirm_move_chart_to_user'
+                        ]);
                 }
             } else {
                 e.originalEvent.dataTransfer.dropEffect = 'none';
