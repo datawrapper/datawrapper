@@ -53,7 +53,7 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
     }
 
     if (!$user->isLoggedIn()) {
-        header_nav_hook($headlinks, 'logged_out_nav'); 
+        header_nav_hook($headlinks, 'logged_out_nav');
     }
 
     header_nav_hook($headlinks, 'custom_nav');
@@ -259,7 +259,8 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
         }
     }
 
-    if ($config['debug']) {
+    // if ($config['debug']) {
+    try {
         if (file_exists('../.git')) {
             // parse git branch
             $head = file_get_contents('../.git/HEAD');
@@ -268,9 +269,15 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
             $output = array();
             exec('git rev-parse HEAD', $output);
             $commit = $output[0];
-            $page['COMMIT_SHA'] = 'jhsjhdjs';//substr($commit, 0, 8);
-            $page['BRANCH'] = ' (<a href="https://github.com/datawrapper/datawrapper/tree/'.$commit.'">'.$branch.'</a>)';
+            $page['COMMIT_SHA'] = substr($commit, 0, 8);
+            if ($config['debug']) {
+                $page['BRANCH'] = ' (<a href="https://github.com/datawrapper/datawrapper/tree/'.$commit.'">'.$branch.'</a>)';
+            }
         }
+    } catch (Error $e) {
+        // ignore
+        $page['COMMIT_SHA'] = 'error';
     }
+    // }
 }
 
