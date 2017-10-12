@@ -185,6 +185,12 @@ define(function(require) {
         getCurrentSort: function() {
             return this.current.sort;
         },
+        setCurrentPage: function(page) {
+            this.current.page = page;
+        },
+        getCurrentPage: function() {
+            return this.current.page;
+        },
         setCurrentFolder: function(folder_id, org_id) {
             this.current.folder = folder_id;
             this.current.organization = org_id;
