@@ -63,7 +63,7 @@
         <ul class="folders-left">
             {% for org in organizations %}
             <li id="org-root-{{ org.tag }}" {% if not current.folder and current.organization == org.id %}class="active root-folder"{% else %}class="root-folder"{% endif %}>
-                <a href="/organization/{{ org.id }}">
+                <a href="/team/{{ org.id }}">
                     <i class="im im-users"></i>
                     <span>{{ org.name }}</span>
                 </a>

@@ -369,7 +369,7 @@ function any_charts($app, $user, $folder_id = false, $org_id = false) {
  * pitfall: folder_id = null → root folder
  * getting all user/organization charts via mycharts/organization is no longer possible
  */
-$app->get('/(mycharts|organization/:org_id)(/:folder_id)?/?', function ($org_id = false, $folder_id = null) use ($app) {
+$app->get('/(mycharts|team/:org_id)(/:folder_id)?/?', function ($org_id = false, $folder_id = null) use ($app) {
     disable_cache($app);
     $user = DatawrapperSession::getUser();
     if (!$user->isLoggedIn()) {
@@ -384,8 +384,8 @@ $app->get('/(mycharts|organization/:org_id)(/:folder_id)?/?', function ($org_id 
 })->conditions(array('folder_id' => '\d+'));
 
 
-$app->get('/organization/:org_id/charts', function($org_id) use ($app) {
-    $app->redirect('/organization/'.$org_id.'/');
+$app->get('/organization/:org_id(/charts)?', function($org_id) use ($app) {
+    $app->redirect('/team/'.$org_id.'/');
 });
 
 
