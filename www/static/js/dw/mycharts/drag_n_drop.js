@@ -26,7 +26,7 @@ define(function(require) {
             drag_data = {
                 type: 'charts',
                 charts: chart_ids
-            }
+            };
             ev.dataTransfer.setData('application/json', JSON.stringify(drag_data));
             dragImage = chart_ids.length == 1 ? e.target : getMultiDragImage(chart_ids);
             ev.dataTransfer.setDragImage(dragImage, 0,0);
@@ -34,6 +34,7 @@ define(function(require) {
         });
 
         charts.on('dragend', function(e) {
+            $('.chart-move-message').remove();
             $('ul.folders-left li').removeClass('dragtar');
             $('.custom-drag-image').remove();
         });
@@ -160,15 +161,37 @@ define(function(require) {
                 return !(cft.isSubfolderOf(drag_data.id, target.folder) || 
                     cft.isParentFolder(drag_data.id, {id: target.folder, organization: target.organization}));
             }
+            // else is chart
             return true;
+        }
+
+        function isUserToOrgMove(e) {
+            var target = identifyTarget($(e.currentTarget));
+            return cft.isUserToOrgMove(drag_data, target);
+        }
+
+        function isOrgToUserMove(e) {
+            var target = identifyTarget($(e.currentTarget));
+            return cft.isOrgToUserMove(drag_data, target);
         }
 
         drop_targets.on('dragenter', function(e) {
             e.preventDefault();
             drop_targets.removeClass('dragtar');
+            $('.chart-move-message').remove();
+
             if (isValidDrop(e)) {
                 e.currentTarget.classList.add('dragtar');
                 e.originalEvent.dataTransfer.dropEffect = 'move';
+                if (isUserToOrgMove(e)) {
+                    $('<div class="chart-move-message" />')
+                        .appendTo('body')
+                        .html(twig.globals.strings.confirm_move_to_org.replace('%s', cft.getOrgNameById(identifyTarget($(e.currentTarget)).organization)));
+                } else if (isOrgToUserMove(e)) {
+                    $('<div class="chart-move-message" />')
+                        .appendTo('body')
+                        .html(twig.globals.strings.confirm_move_to_user);
+                }
             } else {
                 e.originalEvent.dataTransfer.dropEffect = 'none';
             }

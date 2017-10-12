@@ -405,10 +405,12 @@
     "mycharts \/ add-subfoler": "add subfolder",
     "mycharts \/ empty-folder": "No charts here, yet. Do you want to <a href=\"\/chart\/create?folder=%folder%\">create one now<\/a>?",
     "mycharts \/ add-subfolder": "Add subfolder",
-    "mycharts \/ confirm-chart-delete": "Do you really want to delete the chart? Note that after deleting this chart won't be embedable any more.",
+    "mycharts \/ confirm-chart-delete": "Do you really want to delete the chart? Note that after deleting this chart won't be embeddable any more.",
     "mycharts \/ enter-folder-name": "Enter new folder name:",
     "mycharts \/ new-feature": "New Feature: Chart Folders!",
     "mycharts \/ welcome-folders": "Now you can organize your charts in folders. Click on \"create subfolder\" to get started. Then you can drag your charts into folders.",
     "mycharts \/ move-prohibited-alert": "A folder can not be moved into its current parent folder, itself, or one of its own subfolders.",
-    "mycharts \/ Author": "Author"
+    "mycharts \/ Author": "Author",
+    "mycharts \/ confirm-move-to-user": "After moving a chart to your user folder, members of your team won't be able to access it anymore.",
+    "mycharts \/ confirm-move-to-org": "After moving the chart, all team members of <b>%s<\/b> can access the chart."
 }

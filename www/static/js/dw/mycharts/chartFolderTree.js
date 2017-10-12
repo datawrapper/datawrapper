@@ -106,9 +106,10 @@ define(function(require) {
                 return true;
             }
             if (parent_folder_obj.id && dest_folder_obj.id) {
-                return (parent_folder_obj.id == dest_folder_obj.id)
-            } else if (parent_folder_obj.organization.id && dest_folder_obj.organization.id) {
-                return (parent_folder_obj.organization.id == dest_folder_obj.organization.id)
+                return (parent_folder_obj.id == dest_folder_obj.id);
+            } else if (parent_folder_obj.organization && parent_folder_obj.organization.id &&
+                 dest_folder_obj.organization && dest_folder_obj.organization.id) {
+                return (parent_folder_obj.organization.id == dest_folder_obj.organization.id);
             } else if (!dest_folder_obj || !parent_folder_obj) {
                 console.warn('You should never get here. Returning true for security reasons');
                 return true;
@@ -117,6 +118,16 @@ define(function(require) {
             } else {
                 return false;
             }
+        },
+        isUserToOrgMove: function(drag_data, target) {
+            var curFolder = drag_data.type === 'folder' ? this.list[drag_data.id].folder : this.current;
+            var curOrg = curFolder ? curFolder.organization : null;
+            return (!curOrg && target.organization) || (curOrg != target.organization && target.organization);
+        },
+        isOrgToUserMove: function(drag_data, target) {
+            var curFolder = drag_data.type === 'folder' ? this.list[drag_data.id].folder : this.current;
+            var curOrg = curFolder ? curFolder.organization : null;
+            return curOrg && !target.organization;
         },
         getParentFolder: function(id) {
             var parent = (typeof this.list[id.folder] !== "undefined") ? this.list[id.folder].folder.parent : false,

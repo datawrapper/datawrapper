@@ -410,5 +410,7 @@
     "mycharts \/ new-feature": "Neu in Datawrapper: Ordner",
     "mycharts \/ welcome-folders": "Du kannst deine Diagramme jetzt in Ordnern organisieren. Klicke auf \"Ordner anlegen\" um einen neuen Ordner zu erstellen. Danach kannst du Diagramme einfach in die Ordner hineinziehen.",
     "mycharts \/ move-prohibited-alert": "Ein Ordner kann nicht in den Ordner in dem er sich bereits befindet, sich selbst, oder einen seiner eigenen Unterordner verschoben werden.",
-    "mycharts \/ Author": "Autor"
+    "mycharts \/ Author": "Autor",
+    "mycharts \/ confirm-move-to-user": "Nachdem du das Diagramm in deinen Nutzerordner verschoben hast k\u00f6nnen andere Teammitglieder nicht mehr darauf zugreifen.",
+    "mycharts \/ confirm-move-to-org": "Nachdem Verschieben k\u00f6nnen alle Teammitglieder von <b>%s<\/b> auf das Diagramm zugreifen."
 }

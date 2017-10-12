@@ -1765,6 +1765,18 @@ html body.dw-mycharts .navbar .navbar-inner {
 body.dw-mycharts {
   background: #f3f3f3;
 }
+body.dw-mycharts .chart-move-message {
+  position: fixed;
+  top: 20px;
+  left: 240px;
+  right: 240px;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  font-size: 18px;
+  line-height: 24px;
+  padding: 20px;
+  text-align: center;
+}
 body.dw-mycharts .pagination-right {
   position: relative;
   top: -10px;
