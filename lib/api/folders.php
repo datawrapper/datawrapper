@@ -109,6 +109,7 @@
             ChartQuery::create()->filterById($payload['add'])
                 ->filterByUserAccess($user)
                 ->update($update);
+            Action::logAction($user, 'move-charts', '['.implode(',', $payload['add']).'] --> '.$folder->getFolderId());
         }
 
         return $folder;
@@ -226,7 +227,9 @@
             if (!$org) return error('404', 'org not found');
             if (!$org->hasUser($user)) return error('404', 'no access');
         }
-        if (empty($payload['add'])) return error('no-charts', 'must provide ids of charts to move');
+        if (empty($payload['add'])) {
+            return error('no-charts', 'must provide ids of charts to move');
+        }
         $update = [
             'InFolder' => null,
             'OrganizationId' => !empty($org_id) ? $org_id : null
@@ -234,6 +237,8 @@
         ChartQuery::create()->filterById($payload['add'])
             ->filterByUserAccess($user)
             ->update($update);
+        Action::logAction($user, 'move-charts',
+            '['.implode(',', $payload['add']).'] --> '.(!empty($org_id) ? $org_id : '(my charts)'));
         ok();
     });
 
