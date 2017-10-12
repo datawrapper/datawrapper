@@ -400,7 +400,7 @@
     "mycharts \/ Creation time": "Creation date",
     "mycharts \/ Publish time": "Publish date",
     "mycharts \/ Title": "Title",
-    "mycharts \/ Type": "Type",
+    "mycharts \/ Type": "Chart type",
     "mycharts \/ Status": "Status",
     "mycharts \/ add-subfoler": "add subfolder",
     "mycharts \/ empty-folder": "No charts here, yet. Do you want to <a href=\"\/chart\/create?folder=%folder%\">create one now<\/a>?",
@@ -409,5 +409,6 @@
     "mycharts \/ enter-folder-name": "Enter new folder name:",
     "mycharts \/ new-feature": "New Feature: Chart Folders!",
     "mycharts \/ welcome-folders": "Now you can organize your charts in folders. Click on \"create subfolder\" to get started. Then you can drag your charts into folders.",
-    "mycharts \/ move-prohibited-alert": "A folder can not be moved into its current parent folder, itself, or one of its own subfolders."
+    "mycharts \/ move-prohibited-alert": "A folder can not be moved into its current parent folder, itself, or one of its own subfolders.",
+    "mycharts \/ Author": "Author"
 }

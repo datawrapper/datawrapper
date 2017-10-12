@@ -23,13 +23,14 @@
                 <span class="caret"></span>
             </a>
             <ul class="dropdown-menu sort-menu">
+                <li><a href="?sort=title">{% trans "mycharts / Title" %}</a></li>
+                <li><a href="?sort=status">{% trans "mycharts / Status" %}</a></li>
+                <li><a href="?sort=author">{% trans "mycharts / Author" %}</a></li>
+                <li><a href="?sort=type">{% trans "mycharts / Type" %}</a></li>
+                <li class="divider" style="height: 1px;margin: 9px 1px;overflow: hidden;background-color: #e5e5e5;border-bottom: 1px solid #ffffff;"></li>
                 <li><a href="?sort=modified_at">{% trans "mycharts / Last edit time" %}</a></li>
                 <li class="active"><a href="?sort=created_at">{% trans "mycharts / Creation time" %}</a></li>
                 <li><a href="?sort=published_at">{% trans "mycharts / Publish time" %}</a></li>
-                <li><a href="?sort=title">{% trans "mycharts / Title" %}</a></li>
-                <li><a href="?sort=type">{% trans "mycharts / Type" %}</a></li>
-                <li><a href="?sort=status">{% trans "mycharts / Status" %}</a></li>
-                <li><a href="?sort=author">{% trans "mycharts / Author" %}</a></li>
             </ul>
         </div>
     </div>

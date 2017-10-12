@@ -400,7 +400,7 @@
     "mycharts \/ Creation time": "Erstellung",
     "mycharts \/ Publish time": "Ver\u00f6ffentlichung",
     "mycharts \/ Title": "Titel",
-    "mycharts \/ Type": "Typ",
+    "mycharts \/ Type": "Diagrammtyp",
     "mycharts \/ Status": "Status",
     "mycharts \/ add-subfoler": "Unterordner anlegen",
     "mycharts \/ empty-folder": "Dieser Ordner ist noch leer. M\u00f6chtest du ein <a href=\"\/chart\/create?folder=%folder%\">Diagramm erstellen<\/a>?",
@@ -409,5 +409,6 @@
     "mycharts \/ enter-folder-name": "Gib einen neuen Namen ein:",
     "mycharts \/ new-feature": "Neu in Datawrapper: Ordner",
     "mycharts \/ welcome-folders": "Du kannst deine Diagramme jetzt in Ordnern organisieren. Klicke auf \"Ordner anlegen\" um einen neuen Ordner zu erstellen. Danach kannst du Diagramme einfach in die Ordner hineinziehen.",
-    "mycharts \/ move-prohibited-alert": "Ein Ordner kann nicht in den Ordner in dem er sich bereits befindet, sich selbst, oder einen seiner eigenen Unterordner verschoben werden."
+    "mycharts \/ move-prohibited-alert": "Ein Ordner kann nicht in den Ordner in dem er sich bereits befindet, sich selbst, oder einen seiner eigenen Unterordner verschoben werden.",
+    "mycharts \/ Author": "Autor"
 }
