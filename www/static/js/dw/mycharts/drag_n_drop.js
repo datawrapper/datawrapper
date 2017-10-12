@@ -184,7 +184,6 @@ define(function(require) {
                 e.currentTarget.classList.add('dragtar');
                 e.originalEvent.dataTransfer.dropEffect = 'move';
                 if (isUserToOrgMove(e)) {
-                    console.log(drag_data.type);
                     $('<div class="chart-move-message" />')
                         .appendTo('body')
                         .html(twig.globals.strings[
