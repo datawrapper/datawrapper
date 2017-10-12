@@ -98,6 +98,7 @@ define(function(require) {
         if (path.startsWith('?page')) {
             // click on pagination
             pag_str = path;
+            cft.setCurrentPage(+params.get('path'));
             path = buildLink(cft.getCurrentFolder());
         }
         if (pag_str && sort) {

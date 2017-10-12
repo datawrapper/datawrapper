@@ -276,7 +276,7 @@ $app->post('/charts/:id/copy', function($chart_id) use ($app) {
         try {
             $copy = ChartQuery::create()->copyChart($chart);
             $copy->setUser(DatawrapperSession::getUser());
-            $copy->setOrganization($user->getCurrentOrganization());
+            // $copy->setOrganization($user->getCurrentOrganization());
             $copy->save();
             ok(array('id' => $copy->getId()));
         } catch (Exception $e) {

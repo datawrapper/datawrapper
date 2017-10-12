@@ -28,7 +28,7 @@ define(function(require){
                     type: 'DELETE',
                     success: function(data) {
                         chart.remove();
-                        cft.removeChartFromCurrent();
+                        cft.removeChartFromCurrent(false);
                     }
                 });
             };
@@ -44,8 +44,7 @@ define(function(require){
                     try {
                         if (data.status == "ok") {
                             // redirect to copied chart
-                            reloadLink(location.path);
-                            // location.href = '/chart/'+data.data.id+'/visualize';
+                            location.reload();
                         } else {
                             console.warn(data);
                         }
