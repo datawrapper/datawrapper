@@ -268,7 +268,7 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
             $output = array();
             exec('git rev-parse HEAD', $output);
             $commit = $output[0];
-            $page['COMMIT_SHA'] = substr($commit, 0, 8);
+            $page['COMMIT_SHA'] = 'jhsjhdjs';//substr($commit, 0, 8);
             $page['BRANCH'] = ' (<a href="https://github.com/datawrapper/datawrapper/tree/'.$commit.'">'.$branch.'</a>)';
         }
     }
