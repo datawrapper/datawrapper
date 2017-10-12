@@ -59,6 +59,7 @@ define(function(require) {
         });
 
         folders.on('dragend', function(e) {
+            $('.chart-move-message').remove();
             $('ul.folders-left li').removeClass('dragtar');
         });
     }
