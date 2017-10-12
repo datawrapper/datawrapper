@@ -268,7 +268,8 @@ define(function(require) {
             this.list = genList();
         },
         deleteFolder: function(delme) {
-            var parent = (typeof this.list[delme.folder] !== "undefined") ? this.list[delme.folder].folder.parent : false,
+            var current = (typeof this.list[delme.folder] !== "undefined") ? this.list[delme.folder].folder : false,
+                parent = (current) ? this.list[delme.folder].folder.parent : false,
                 parent_folder_obj = (parent) ? this.getFolderById(parent) : getRoot(delme.organization);
 
             if (parent_folder_obj.id) {
@@ -280,6 +281,7 @@ define(function(require) {
                     return folder.id != delme.folder;
                 });
             }
+            parent_folder_obj.charts += current.charts; 
             this.list = genList();
         },
         moveNChartsTo: function(num, dest) {
