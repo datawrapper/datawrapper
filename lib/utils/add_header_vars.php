@@ -80,7 +80,7 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
             $mycharts_link = array(
                 'url' => empty($org) ? '/mycharts/' : '/team/'.$org->getId().'/',
                 'id' => 'mycharts',
-                'title' => __('My Charts'),
+                'title' => empty($org) ? __('My Charts') : __('Team Charts'),
                 //'justicon' => true,
                 'icon' => 'fa fa-bar-chart-o',
             );
