@@ -33,7 +33,7 @@ define(function(require) {
         li.classList.add('span2');
         li.setAttribute('folder-id', folder.id);
         a.classList.add('thumbnail');
-        a.setAttribute('href', (org_id) ? '/organization/' + org_id + '/' + folder.id : '/mycharts/' + folder.id);
+        a.setAttribute('href', (org_id) ? '/team/' + org_id + '/' + folder.id : '/mycharts/' + folder.id);
         i.classList.add('im');
         i.classList.add('im-folder');
         i.classList.add('im-fw');
@@ -70,7 +70,7 @@ define(function(require) {
 
         line.empty();
         $('#current-folder-name').empty();
-        $('#current-root').attr('href', (id.organization) ? '/organization/' + id.organization : twig.globals.strings.mycharts_base);
+        $('#current-root').attr('href', (id.organization) ? '/team/' + id.organization : twig.globals.strings.mycharts_base);
         $('#current-root').text((cur_org_name) ? cur_org_name : twig.globals.strings.mycharts_trans);
 
         if (!id.folder) return;
@@ -79,7 +79,7 @@ define(function(require) {
                 folder = cft.getFolderById(id);
 
             a.innerText = dw.utils.purifyHtml(folder.name, '');
-            a.setAttribute('href', (folder.organization) ? '/organization/' + folder.organization + '/' + folder.id : twig.globals.strings.mycharts_base + '/' + folder.id);
+            a.setAttribute('href', (folder.organization) ? '/team/' + folder.organization + '/' + folder.id : twig.globals.strings.mycharts_base + '/' + folder.id);
             line.append(sep, a);
         });
         line.append(sep);
