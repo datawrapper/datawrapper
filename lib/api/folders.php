@@ -154,6 +154,7 @@
         if ($folder instanceof Folder) {
             // not an error
             $folder->save();
+            Action::logAction($user, 'folder-create', $folder->getId());
             ok($folder->serialize());
         }
     });
@@ -206,6 +207,7 @@
 
         // delete folder
         $folder->delete();
+        Action::logAction($user, 'folder-delete', $folder->getId());
         ok();
     })->conditions(array('folder_id' => '\d+'));
 
