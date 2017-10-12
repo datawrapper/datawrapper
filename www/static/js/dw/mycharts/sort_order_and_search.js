@@ -18,7 +18,7 @@ define(function(require) {
     };
 
     function set_active() {
-        $('.sort-menu li')
+        $('.sort-menu li:not(.divider)')
             .removeAttr('class')
             .each(function(idx, el) {
                 var je = $(el);
