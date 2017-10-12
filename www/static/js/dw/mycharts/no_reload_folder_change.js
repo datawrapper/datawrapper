@@ -5,6 +5,7 @@ define(function(require) {
         generic_chart_functions = require('./generic-chart-functions'),
         buildLink = require('./buildLink'),
         drag_n_drop_callback = false,
+        last_path = null,
         cft;
 
     function link_reader(link) {
@@ -87,10 +88,15 @@ define(function(require) {
     }
 
     function reloadLink(path) {
-        var sort = cft.getCurrentSort(),
-            pag_str = false, path_pag_sort;
+        // normalize path
+        var url = 'https://'+location.host + location.pathname + location.search,
+            params = new URL(url).searchParams,
+            sort = cft.getCurrentSort(),
+            pag_str = false,
+            path_pag_sort;
 
         if (path.startsWith('?page')) {
+            // click on pagination
             pag_str = path;
             path = buildLink(cft.getCurrentFolder());
         }
@@ -99,9 +105,9 @@ define(function(require) {
         } else if (pag_str) {
             path_pag_sort = path + pag_str + '&xhr=1';
         } else if (sort) {
-            path_pag_sort = path + '?sort=' + sort + '&xhr=1'
+            path_pag_sort = path + '?sort=' + sort + '&xhr=1';
         } else {
-            path_pag_sort = path + '?xhr=1'
+            path_pag_sort = path + '?xhr=1';
         }
 
         $('.mycharts-chart-list')
@@ -120,10 +126,11 @@ define(function(require) {
                 set_click('div.pagination li a');
 
                 multiselection.init();
-                generic_chart_functions();
+                generic_chart_functions(reloadLink);
                 cft.updateCurrentFolderFuncs();
                 if (drag_n_drop_callback) drag_n_drop_callback();
             });
+        last_path = path;
     }
 
     function set_click(selector) {

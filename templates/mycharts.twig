@@ -134,8 +134,8 @@
     require(['dw/mycharts'], function(init) {
         init({
             strings: {
-                confirm_move_to_user: '',
-                confirm_move_to_org: '',
+                confirm_move_to_user: '{{ "mycharts / confirm-move-to-user" | trans }}',
+                confirm_move_to_org: '{{ "mycharts / confirm-move-to-org" | trans }}',
                 move_prohibited_alert: '{{ "mycharts / move-prohibited-alert" | trans }}',
                 confirm_chart_delete: {{ "mycharts / confirm-chart-delete" | trans | json | raw }},
                 enter_folder_name: '{{ "mycharts / enter-folder-name" | trans }}',

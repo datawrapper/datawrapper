@@ -105,6 +105,7 @@ class ChartQuery extends BaseChartQuery {
         $chart->setLastModifiedAt(time());
         $chart->setForkedFrom($src->getId());
         $chart->setOrganization($src->getOrganization());
+        $chart->setInFolder($src->getInFolder());
 
         $chart->setLastEditStep(3);
 

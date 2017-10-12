@@ -1,4 +1,5 @@
 define(function(require) {
+
     var ChartFolderTree = function(raw_folders, current) {
         this.tree = genTree(raw_folders);
         this.list = genList();
@@ -6,7 +7,7 @@ define(function(require) {
         this.rendercallbacks = {};
         this.current_folder_funcs = {};
         this.dropcallback = function(){};
-    }
+    };
 
     function genTree(raw) {
         raw.forEach(function(group) {

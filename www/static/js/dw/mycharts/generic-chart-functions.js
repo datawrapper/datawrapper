@@ -3,7 +3,7 @@ define(function(require){
         twig = require('./twig_globals'),
         cft;
 
-    return function() {
+    return function(reloadLink) {
         cft = window['ChartFolderTree'];
         if (twig.globals.user2) {
             $('.thumbnail > a').click(function(e) {
@@ -44,7 +44,8 @@ define(function(require){
                     try {
                         if (data.status == "ok") {
                             // redirect to copied chart
-                            location.href = '/chart/'+data.data.id+'/visualize';
+                            reloadLink(location.path);
+                            // location.href = '/chart/'+data.data.id+'/visualize';
                         } else {
                             console.warn(data);
                         }
