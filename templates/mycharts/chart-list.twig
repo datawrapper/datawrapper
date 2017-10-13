@@ -35,7 +35,7 @@
                             <li><a class="edit" href="#"><i class="im im-edit"></i> {% trans "Edit" %}</a></li>
                             {% endif %}
                             <li><a class="duplicate" href="#"><i class="im im-copy"></i> {% trans "Duplicate" %}</a></li>
-                            {% if not current.organization %}<li><a class="delete" href="#"><i class="im im-trash-can"></i> {% trans "Delete" %}</a></li>
+                            {% if not current.organization or current.organization_role < 2 %}<li><a class="delete" href="#"><i class="im im-trash-can"></i> {% trans "Delete" %}</a></li>
                             {% endif %}
                         <!-- dropdown menu links -->
                         </ul>

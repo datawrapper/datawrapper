@@ -317,11 +317,6 @@ function any_charts($app, $user, $folder_id = false, $org_id = false) {
 
     if ($is_xhr) {
         $page = [
-            'current' => array(
-                'folder' => $folder_id,
-                'organization' => $org_id,
-                'sort' => $app->request()->params('sort'),
-            )
         ];
     } else {
         $folders = FolderQuery::create()->getParsableFolders($user);
@@ -335,11 +330,6 @@ function any_charts($app, $user, $folder_id = false, $org_id = false) {
         $page = [
             'title' => __('My Charts'),
             'pageClass' => 'dw-mycharts',
-            'current' => array(
-                'folder' => $folder_id,
-                'organization' => $org_id,
-                'sort' => $app->request()->params('sort'),
-            ),
             'search_query' => empty($q) ? '' : $q,
             'mycharts_base' => '/mycharts',
             'organizations' => mycharts_list_organizations($user),
@@ -347,6 +337,16 @@ function any_charts($app, $user, $folder_id = false, $org_id = false) {
             'hasFolders' => $hasFolders
         ];
     }
+
+    $con = Propel::getConnection();
+    $sql = "SELECT organization_role FROM user_organization WHERE user_id = ".$con->quote($user->getId())." AND organization_id = ".$con->quote($org_id).";";
+
+    $page['current'] = [
+        'folder' => $folder_id,
+        'organization' => $org_id,
+        'organization_role' => !empty($org_id) ? $con->query($sql)->fetch()['organization_role'] : null,
+        'sort' => $app->request()->params('sort'),
+    ];
 
     mycharts_get_user_charts($page, $app, $user, $folder_id, $org_id);
 
