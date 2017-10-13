@@ -266,15 +266,16 @@ function mycharts_get_user_charts(&$page, $app, $user, $folder_id = false, $org_
     $charts =  ChartQuery::create()->getPublicChartsById($id, $is_org, $filter, $curPage * $perPage, $perPage, $sort_by);
     $total = ChartQuery::create()->countPublicChartsById($id, $is_org, $filter);
 
-    // group charts
-    $groupings = [
-        'no-group' => [
-            'all' => [
-                'title' => '',
-                'filter' => function() { return true; }
-            ]
-        ],
-        'status' => [
+    if (!empty($filter['q'])) {
+        $grouped = mycharts_group_charts($charts, mycharts_group_by_folder($charts, $user));
+    } else if (($sort_by == 'modified_at' || empty($sort_by)) && $total > 40) {
+        $grouped = mycharts_group_charts($charts, mycharts_group_by_month($charts));
+    } else if (($sort_by == 'created_at' || $sort_by == 'published_at') && $total > 40) {
+        $grouped = mycharts_group_charts($charts, mycharts_group_by_month($charts, $sort_by));
+    } else if ($sort_by == 'type') {
+        $grouped = mycharts_group_charts($charts, mycharts_group_by_type($charts));
+    } else if ($sort_by == 'status') {
+        $grouped = mycharts_group_charts($charts, [
             'published' => [
                 'title' => __('published'),
                 'filter' => function($chart) { return $chart->getLastEditStep() > 3; }
@@ -287,23 +288,17 @@ function mycharts_get_user_charts(&$page, $app, $user, $folder_id = false, $org_
                 'title' => __('just data'),
                 'filter' => function($chart) { return $chart->getLastEditStep() <= 2; }
             ],
-        ],
-        'month' => mycharts_group_by_month($charts),
-        'month_created_at' => mycharts_group_by_month($charts, 'created_at'),
-        'month_published_at' => mycharts_group_by_month($charts, 'published_at'),
-        'type' => mycharts_group_by_type($charts),
-        'folder' => mycharts_group_by_folder($charts, $user),
-        'author' => mycharts_group_by_author($charts)
-    ];
-
-    $group_by = 'no-group';
-    if (!empty($filter['q'])) $group_by = 'folder';
-    else if (($sort_by == 'modified_at' || empty($sort_by)) && $total > 40) $group_by = 'month';
-    else if (($sort_by == 'created_at' || $sort_by == 'published_at') && $total > 40) $group_by = 'month_'.$sort_by;
-    else if ($sort_by == 'type') $group_by = 'type';
-    else if ($sort_by == 'status') $group_by = 'status';
-    else if ($sort_by == 'author') $group_by = 'author';
-    $grouped = mycharts_group_charts($charts, $groupings[$group_by]);
+        ]);
+    } else if ($sort_by == 'author') {
+        $grouped = mycharts_group_charts($charts, mycharts_group_by_author($charts));
+    } else {
+        $grouped = mycharts_group_charts($charts, [
+            'all' => [
+                'title' => '',
+                'filter' => function() { return true; }
+            ]
+        ]);
+    }
 
     // save result to page
     $page['charts'] = $charts;
