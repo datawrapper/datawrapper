@@ -35,6 +35,7 @@ CREATE TABLE `chart`
     `is_fork` TINYINT(1) DEFAULT 0,
     `in_folder` INTEGER,
     PRIMARY KEY (`id`),
+    INDEX `chart_I_1` (`email`),
     INDEX `chart_FI_1` (`author_id`),
     INDEX `chart_FI_2` (`organization_id`),
     INDEX `chart_FI_3` (`forked_from`),
@@ -276,7 +277,7 @@ DROP TABLE IF EXISTS `product_plugin`;
 
 CREATE TABLE `product_plugin`
 (
-    `product_id` VARCHAR(128) NOT NULL,
+    `product_id` INTEGER NOT NULL,
     `plugin_id` VARCHAR(128) NOT NULL,
     PRIMARY KEY (`product_id`,`plugin_id`),
     INDEX `product_plugin_FI_2` (`plugin_id`),
