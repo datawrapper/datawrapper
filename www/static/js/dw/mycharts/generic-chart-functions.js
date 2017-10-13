@@ -31,7 +31,7 @@ define(function(require){
                         cft.removeChartFromCurrent(false);
                     }
                 });
-            };
+            }
         });
 
         $('.chart a.duplicate').click(function(e) {

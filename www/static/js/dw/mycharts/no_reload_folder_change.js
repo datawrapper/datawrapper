@@ -111,7 +111,8 @@ define(function(require) {
             path_pag_sort = path + '?xhr=1';
         }
 
-        $('.mycharts-chart-list')
+        var chart_list = $('.mycharts-chart-list')
+            .addClass('reloading')
             .load(path_pag_sort, function() {
                 var id = link_reader(path);
 
@@ -130,6 +131,7 @@ define(function(require) {
                 generic_chart_functions(reloadLink);
                 cft.updateCurrentFolderFuncs();
                 if (drag_n_drop_callback) drag_n_drop_callback();
+                chart_list.removeClass('reloading');
             });
         last_path = path;
     }

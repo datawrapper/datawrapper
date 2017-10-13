@@ -1799,6 +1799,11 @@ body.dw-mycharts .mycharts-chart-list > h3.no-charts a {
 body.dw-mycharts .mycharts-chart-list > h3 a {
   color: #777;
 }
+body.dw-mycharts .mycharts-chart-list.reloading {
+  pointer-events: none;
+  opacity: 0.5;
+  filter: blur(2px);
+}
 body.dw-mycharts .im {
   font: normal normal normal 16px/1 'iconmonstr-iconic-font';
   vertical-align: middle;

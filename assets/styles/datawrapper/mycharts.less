@@ -25,23 +25,33 @@ body.dw-mycharts {
         margin-left: 10px;
     }
 
-    .mycharts-chart-list > h3 {
-        font-weight: 300;
-        color: #777;
-        margin: 10px 0 20px;
-        font-size: 21px;
-        line-height: 26px;
 
-        &.no-charts {
+
+    .mycharts-chart-list {
+        > h3 {
             font-weight: 300;
-            margin-top: 30px;
+            color: #777;
+            margin: 10px 0 20px;
+            font-size: 21px;
+            line-height: 26px;
+
+            &.no-charts {
+                font-weight: 300;
+                margin-top: 30px;
+                a {
+                    color: #0088cc;
+                }
+            }
+
             a {
-                color: #0088cc;
+                color: #777;
             }
         }
 
-        a {
-            color: #777;
+        &.reloading {
+            pointer-events: none;
+            opacity: 0.5;
+            filter: blur(2px);
         }
     }
 
