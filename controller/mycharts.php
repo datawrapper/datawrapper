@@ -263,7 +263,7 @@ function mycharts_get_user_charts(&$page, $app, $user, $folder_id = false, $org_
 
     // get list of charts
     $sort_by = $app->request()->params('sort');
-    $charts =  ChartQuery::create()->getPublicChartsById($id, $is_org, $filter, $curPage * $perPage, $perPage, $sort_by != 'author' ? $sort_by : 'modified_at');
+    $charts =  ChartQuery::create()->getPublicChartsById($id, $is_org, $filter, $curPage * $perPage, $perPage, $sort_by);
     $total = ChartQuery::create()->countPublicChartsById($id, $is_org, $filter);
 
     // group charts
