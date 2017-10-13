@@ -44,7 +44,9 @@ define(function(require){
                     try {
                         if (data.status == "ok") {
                             // redirect to copied chart
-                            location.reload();
+                            window.location.href = '/chart/'+data.data.id+'/visualize';
+                            // or stay on mycharts?
+                            // location.reload();
                         } else {
                             console.warn(data);
                         }
