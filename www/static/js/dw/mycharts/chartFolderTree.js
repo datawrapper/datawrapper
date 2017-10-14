@@ -301,10 +301,16 @@ define(function(require) {
                 parent_folder_obj.sub = parent_folder_obj.sub.filter(function(folder) {
                     return folder.id != delme.folder;
                 });
+                if (parent_folder_obj.sub.length === 0) {
+                    parent_folder_obj.sub = false;
+                }
             } else {
                 parent_folder_obj.folders = parent_folder_obj.folders.filter(function(folder) {
                     return folder.id != delme.folder;
                 });
+                if (parent_folder_obj.folders.length === 0) {
+                    parent_folder_obj.folders = false;
+                }
             }
             parent_folder_obj.charts += current.charts; 
             this.list = genList();
