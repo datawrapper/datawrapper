@@ -131,14 +131,11 @@ dw.utils = {
             // FIXME: -8 instead of -2 because when `introduction` is filled, a scrollbar appears.
             // Should be dynamic.
             maxH = $(window).height() - ch - 8;
-        // check min-height
-
-        var minH = +$('#chart').css('min-height').replace('px', '') || 0;
         // IE Fix
         if (!$.support.leadingWhitespace) maxH -= 15;
         maxH -= $('body').css('padding-top').replace('px', '');
         maxH -= $('body').css('padding-bottom').replace('px', '');
-        return Math.max(minH, maxH);
+        return maxH;
     },
 
     /*
