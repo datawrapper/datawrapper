@@ -85,7 +85,7 @@
                     {% block footer %}
                         {% if chartSource %}
                             {% set sourceCaption = theme.getThemeData('options.footer.sourceCaption') %}
-                            <span data-src="{% trans "Source: " %}" class="source-block">{%  trans sourceCaption %}:
+                            <span class="source-block">{{ sourceCaption }}:
                             {{ chartSource | raw }}</span>
                         {% endif %}
 
