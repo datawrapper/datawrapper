@@ -58,7 +58,6 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
 
     header_nav_hook($headlinks, 'custom_nav');
 
-
     if ($user->isLoggedIn()) {
 
         $username = $user->guessName();
@@ -153,6 +152,10 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
             ]
         );
 
+        header_nav_hook($headlinks, 'user');
+        header_nav_hook($acc["dropdown"], 'hamburger');
+
+
         if (count($langDropdown['dropdown']) > 1) $acc["dropdown"][] = $langDropdown;
 
         header_nav_hook($headlinks, 'languages');
@@ -167,9 +170,6 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
                 'tooltip' => __('Sign out')
             );
         }
-
-        header_nav_hook($headlinks, 'user');
-        header_nav_hook($acc["dropdown"], 'hamburger');
 
         // admin link
         if ($user->isLoggedIn() && $user->isAdmin()
