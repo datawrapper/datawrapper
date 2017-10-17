@@ -1,7 +1,9 @@
 define(function(require) {
     var $ = require('jquery'),
         twig = require('./twig_globals'),
+        multiselection = require('./multiselection'),
         no_reload_folder_change = require('./no_reload_folder_change'),
+        generic_chart_functions = require('./generic-chart-functions'),
         cft;
 
     function qstring_parser(href, variable) {
@@ -15,10 +17,27 @@ define(function(require) {
                 return (decodeURIComponent(pair[0]) == variable) ? decodeURIComponent(pair[1]) : old;
             }
         }, false);
-    };
+    }
+
+    function link_reader(link) {
+        var parsed = link.slice(1).split('/'),
+            id = {
+                org: false,
+                folder: false
+            };
+
+        if (parsed[0] == 'mycharts')
+            id.folder = (parsed.length > 1) ? parsed[1] : false;
+        else {
+            id.org = parsed[1];
+            id.folder = (parsed.length > 2) ? parsed[2] : false;
+        }
+
+        return id;
+    }
 
     function set_active() {
-        $('.sort-menu li')
+        $('.sort-menu li:not(.divider)')
             .removeAttr('class')
             .each(function(idx, el) {
                 var je = $(el);
@@ -35,17 +54,45 @@ define(function(require) {
                 var path = window.location.pathname+$(evt.target).attr('href');
 
                 cft.setCurrentSort(qstring_parser(path, 'sort'));
-                $('.mycharts-chart-list')
-                    .load(path+'&xhr=1', set_active);
+                var chart_list = $('.mycharts-chart-list')
+                    .addClass('reloading')
+                    .load(path+'&xhr=1', function(){
+                        set_active();
+                        no_reload_folder_change.enable_for_selector('div.pagination li a');
+
+                        var id = link_reader(path);
+
+                        cft.setCurrentFolder(id.folder, id.org);
+
+                        multiselection.init();
+                        generic_chart_functions(cft.reloadLink);
+                        cft.updateCurrentFolderFuncs();
+
+                        chart_list.removeClass('reloading');
+                    });
                 window.history.replaceState({}, '', path);
             });
 
     var q = $('.search-query')
         .on('keyup', _.throttle(function() {
             var path = window.location.pathname+'?q='+q.val().trim();
-            $('.mycharts-chart-list').load(path+'&xhr=1', function() {
-                no_reload_folder_change.enable_for_selector('.mycharts-chart-list h3 a');
-            });
+            var chart_list = $('.mycharts-chart-list')
+                .addClass('reloading')
+                .load(path+'&xhr=1', function() {
+                    set_active();
+                    no_reload_folder_change.enable_for_selector('.mycharts-chart-list h3 a');
+                    no_reload_folder_change.enable_for_selector('div.pagination li a');
+
+                    var id = link_reader(path);
+
+                    cft.setCurrentFolder(id.folder, id.org);
+
+                    multiselection.init();
+                    generic_chart_functions(cft.reloadLink);
+                    cft.updateCurrentFolderFuncs();
+
+                    chart_list.removeClass('reloading');
+                });
         }, 1000));
     }
 

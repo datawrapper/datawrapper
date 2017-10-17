@@ -313,3 +313,17 @@ $app->post('/user/:id/products', function($id) use ($app) {
 		}
 	});
 });
+
+
+$app->post('/user/data', function() use ($app) {
+    $user = DatawrapperSession::getUser();
+    if ($user->isLoggedIn()) {
+        $data = json_decode($app->request()->getBody(), true);
+        $userData = $user->getUserData();
+        foreach ($data as $key => $value) {
+            $userData[$key] = $value;
+        }
+        $user->setUserData($userData);
+    }
+    ok();
+});

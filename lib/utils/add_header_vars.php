@@ -53,11 +53,10 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
     }
 
     if (!$user->isLoggedIn()) {
-        header_nav_hook($headlinks, 'logged_out_nav'); 
+        header_nav_hook($headlinks, 'logged_out_nav');
     }
 
     header_nav_hook($headlinks, 'custom_nav');
-
 
     if ($user->isLoggedIn()) {
 
@@ -78,9 +77,9 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
             $org = $user->getCurrentOrganization();
             // mycharts
             $mycharts_link = array(
-                'url' => empty($org) ? '/mycharts/' : '/organization/'.$org->getId().'/',
+                'url' => empty($org) ? '/mycharts/' : '/team/'.$org->getId().'/',
                 'id' => 'mycharts',
-                'title' => __('My Charts'),
+                'title' => empty($org) ? __('My Charts') : __('Team Charts'),
                 //'justicon' => true,
                 'icon' => 'fa fa-bar-chart-o',
             );
@@ -153,6 +152,10 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
             ]
         );
 
+        header_nav_hook($headlinks, 'user');
+        header_nav_hook($acc["dropdown"], 'hamburger');
+
+
         if (count($langDropdown['dropdown']) > 1) $acc["dropdown"][] = $langDropdown;
 
         header_nav_hook($headlinks, 'languages');
@@ -167,9 +170,6 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
                 'tooltip' => __('Sign out')
             );
         }
-
-        header_nav_hook($headlinks, 'user');
-        header_nav_hook($acc["dropdown"], 'hamburger');
 
         // admin link
         if ($user->isLoggedIn() && $user->isAdmin()
@@ -259,7 +259,8 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
         }
     }
 
-    if ($config['debug']) {
+    // if ($config['debug']) {
+    try {
         if (file_exists('../.git')) {
             // parse git branch
             $head = file_get_contents('../.git/HEAD');
@@ -269,8 +270,14 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
             exec('git rev-parse HEAD', $output);
             $commit = $output[0];
             $page['COMMIT_SHA'] = substr($commit, 0, 8);
-            $page['BRANCH'] = ' (<a href="https://github.com/datawrapper/datawrapper/tree/'.$commit.'">'.$branch.'</a>)';
+            if ($config['debug']) {
+                $page['BRANCH'] = ' (<a href="https://github.com/datawrapper/datawrapper/tree/'.$commit.'">'.$branch.'</a>)';
+            }
         }
+    } catch (Error $e) {
+        // ignore
+        $page['COMMIT_SHA'] = 'error';
     }
+    // }
 }
 

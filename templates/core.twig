@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="{{ page_description }}">
     <meta name="author" content="{% trans "Mirko Lorenz, David Kokkelink, Gregor Aisch" %}">
-    <meta http-equiv="X-UA-Compatible" content="IE=8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
     <!-- favicon -->
     <link rel="apple-touch-icon" sizes="57x57" href="/static/img/icon/apple-icon-57x57.png">
@@ -31,7 +31,7 @@
     <!-- Le stylesi -->
     <link href="{{ config.static_path }}/vendor/bootstrap/css/bootstrap.css" rel="stylesheet">
     <link href="{{ config.static_path }}/vendor/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
-    <link href="{{ config.static_path }}/css/datawrapper.css" rel="stylesheet">
+    <link href="{{ config.static_path }}/css/datawrapper.css?v={{ COMMIT_SHA }}" rel="stylesheet">
     <link href="{{ config.static_path }}/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -41,7 +41,7 @@
       <link href="{{ config.static_path }}/css/datawrapper-ie.css" rel="stylesheet">
     <![endif]-->
 
-    {% if config.custom_css %}<link href="{{ config.static_path }}/custom/{{ config.custom_css }}" rel="stylesheet">{% endif %}
+    {% if config.custom_css %}<link href="{{ config.static_path }}/custom/{{ config.custom_css }}?v={{ COMMIT_SHA }}" rel="stylesheet">{% endif %}
     {% if config.custom_favicon %}<link href="{{ config.custom_favicon }}" rel="shortcut icon">{% endif %}
 
     <script type="text/javascript" charset="utf-8" src="{{ config.static_path }}/vendor/requirejs/require.js"></script>
@@ -73,7 +73,7 @@
     <script type="text/javascript" charset="utf-8" src="{{ config.static_path }}/js/dw-backend.js"></script>
 
     {% if page_css %}
-    <link href="{{ config.static_path }}/css/{{ page_css }}" rel="stylesheet">
+    <link href="{{ config.static_path }}/css/{{ page_css }}?v={{ COMMIT_SHA }}" rel="stylesheet">
     {% endif %}
 
     {% for js in plugin_js %}
@@ -185,13 +185,16 @@ L143.178,296.9z M124.338,205.555H73.211v25.062h51.127V205.555z"></path> </svg>
     <script type="text/javascript">
 
       dw.backend.__chartCacheDomain = '{{ DW_CHART_CACHE_DOMAIN }}';
+      dw.backend.__userData = {{ userData | json | raw }};
       dw.backend.__domain = '{{ DW_DOMAIN }}';
       dw.backend.__asset_domain = '{{ ASSET_DOMAIN }}';
       dw.backend.__api_domain = '{{ API_DOMAIN }}';
       dw.backend.__locale = '{{ locale | replace({'_':'-'}) }}';
       dw.backend.__commit_sha = '{{ COMMIT_SHA }}';
-      dw.backend.__user_data = {{ userData | json | raw }};
 
+      if (dw.backend.__userData.length === 0) {
+        dw.backend.__userData = {};
+      }
       $(function() {
         Globalize.culture('{{ locale | replace({'_':'-'}) }}');
       });

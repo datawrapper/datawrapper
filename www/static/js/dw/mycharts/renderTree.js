@@ -7,7 +7,7 @@ define(function(require) {
     }
 
     function genHref(org_id, folder_id) {
-        return ((org_id) ? '/organization/' + org_id + '/' : twig.globals.strings.mycharts_base + '/') + folder_id;
+        return ((org_id) ? '/team/' + org_id + '/' : twig.globals.strings.mycharts_base + '/') + folder_id;
     }
 
     function changeChartCount(folder_id, org_id, chart_count) {

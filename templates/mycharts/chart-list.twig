@@ -2,11 +2,11 @@
 
 {% if user.hasCharts %}
     {% if num_charts == 0 %}
-        <h3 class="no-charts">No charts here, yet. Do you want to <a href="/chart/create?folder={{ current.folder }}">create one now</a>?</h3>
+        <h3 class="no-charts">{{ "mycharts / empty-folder" | trans | replace({'%folder%':current.folder}) | raw }}</h3>
     {% endif %}
     {% for group in chart_groups %}
         {% if group.title %}
-            <h3>{% if group.link %}<a href="{{ group.link }}">{% endif %}{{ group.title }}{% if group.link %}</a>{% endif %}</h3>
+            <h3 id="group-{{ group.id }}">{% if group.link %}<a href="{{ group.link }}">{% endif %}{{ group.title }}{% if group.link %}</a>{% endif %}</h3>
         {% endif %}
 
         <ul class="thumbnails">
@@ -35,7 +35,8 @@
                             <li><a class="edit" href="#"><i class="im im-edit"></i> {% trans "Edit" %}</a></li>
                             {% endif %}
                             <li><a class="duplicate" href="#"><i class="im im-copy"></i> {% trans "Duplicate" %}</a></li>
-                            <li><a class="delete" href="#"><i class="im im-trash-can"></i> {% trans "Delete" %}</a></li>
+                            {% if not current.organization or current.organization_role < 2 %}<li><a class="delete" href="#"><i class="im im-trash-can"></i> {% trans "Delete" %}</a></li>
+                            {% endif %}
                         <!-- dropdown menu links -->
                         </ul>
                     </div>

@@ -33,7 +33,7 @@
             }
             // check if parent id is a child folder
             $subtree_ids = $folder->getSubtreeFolderIds();
-            if (in_array($parentFolder->getId(), $subtree_ids)) {
+            if (!$folder->isNew() && in_array($parentFolder->getId(), $subtree_ids)) {
                 return error('move-folder-inside-substree', 'you can\'t move a folder inside its own subtree!');
             }
             $folder->setParentId($parentFolder->getId());
@@ -109,6 +109,7 @@
             ChartQuery::create()->filterById($payload['add'])
                 ->filterByUserAccess($user)
                 ->update($update);
+            Action::logAction($user, 'move-charts', '['.implode(',', $payload['add']).'] --> '.$folder->getFolderId());
         }
 
         return $folder;
@@ -154,6 +155,7 @@
         if ($folder instanceof Folder) {
             // not an error
             $folder->save();
+            Action::logAction($user, 'folder-create', $folder->getId());
             ok($folder->serialize());
         }
     });
@@ -206,6 +208,7 @@
 
         // delete folder
         $folder->delete();
+        Action::logAction($user, 'folder-delete', $folder->getId());
         ok();
     })->conditions(array('folder_id' => '\d+'));
 
@@ -224,7 +227,9 @@
             if (!$org) return error('404', 'org not found');
             if (!$org->hasUser($user)) return error('404', 'no access');
         }
-        if (empty($payload['add'])) return error('no-charts', 'must provide ids of charts to move');
+        if (empty($payload['add'])) {
+            return error('no-charts', 'must provide ids of charts to move');
+        }
         $update = [
             'InFolder' => null,
             'OrganizationId' => !empty($org_id) ? $org_id : null
@@ -232,6 +237,8 @@
         ChartQuery::create()->filterById($payload['add'])
             ->filterByUserAccess($user)
             ->update($update);
+        Action::logAction($user, 'move-charts',
+            '['.implode(',', $payload['add']).'] --> '.(!empty($org_id) ? $org_id : '(my charts)'));
         ok();
     });
 

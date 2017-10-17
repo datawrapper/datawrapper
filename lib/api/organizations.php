@@ -105,7 +105,7 @@ $app->post('/organizations/:id/users', function($org_id) use ($app) {
         if ($org) {
             $data = json_decode($app->request()->getBody(), true);
             $alreadyInOrg = array();
-            $added = 0;
+            $added = [];
             foreach ($data as $u_id) {
                 $u = UserQuery::create()->findPk($u_id);
                 if ($u) {
@@ -118,7 +118,7 @@ $app->post('/organizations/:id/users', function($org_id) use ($app) {
                         $alreadyInOrg[] = $u->guessName();
                     } else {
                         $org->addUser($u);
-                        $added++;
+                        $added[] = $u_id;
                         // make first user the admin
                         // if ($c == 0) {
                         //     $org->save();
@@ -128,8 +128,10 @@ $app->post('/organizations/:id/users', function($org_id) use ($app) {
                     }
                 }
             }
+            Action::logAction(DatawrapperSession::getUser(), 'add-team-member',
+                '['.implode(',', $added).'] --> '.$org->getId());
             $org->save();
-            ok(array('added' => $added));
+            ok(array('added' => count($added)));
         } else {
             return error('unknown-organization', 'Organization not found');
         }
@@ -147,6 +149,8 @@ $app->delete('/organizations/:id/users/:uid', function($org_id, $user_id) use ($
             $org->removeUser($user);
             $org->save();
             DatawrapperHooks::execute(DatawrapperHooks::USER_ORGANIZATION_REMOVE, $org, $user);
+            Action::logAction(DatawrapperSession::getUser(), 'remove-team-member',
+                $user_id.' from '.$org->getId());
             ok();
         } else {
             return error('unknown-organization-or-user', 'Organization or user not found');

@@ -80,6 +80,7 @@ define(function(require) {
                     } else if (evt.keyCode == 27) { // esc
                         curname.text(folder_name)
                             .attr('contenteditable', null);
+                        curname.off('focus keypress blur');
                     }
                 })
                 .on('blur', done)
@@ -115,6 +116,7 @@ define(function(require) {
                         curname.text(folder_name);
                     });
                 }
+                curname.off('focus keypress blur');
             }
 
             e.preventDefault();
@@ -135,7 +137,6 @@ define(function(require) {
                 } else if (res.status == 'ok') {
                     var parent_link = buildLink(cft.getParentFolder(id));
                     cft.deleteFolder(id);
-                    // FIXME: still bugged. jumps too root sometimes instead of parent.
                     no_reload_folder_change.reloadLink(parent_link);
                     cft.reRenderTree();
                     no_reload_folder_change.reenableClicks();
@@ -143,11 +144,19 @@ define(function(require) {
             }).fail(handler.fail);
         });
 
-        cft.setCurrentFolderFuncs(function(is_root) {
-            var ren_del = $('#rename-folder, #delete-folder');
+        cft.setCurrentFolderFuncs(function() {
+            var cur = cft.getCurrentFolder(),
+                ren = $('#rename-folder'),
+                del = $('#delete-folder');
 
-            if (is_root) ren_del.hide();
-            else ren_del.show();
+            if (cur.folder) {
+                if (cft.hasSubFolders(cur.folder)) del.hide();
+                else del.show();
+                ren.show();
+            } else {
+                ren.hide();
+                del.hide();
+            }
         });
         cft.updateCurrentFolderFuncs();
     };

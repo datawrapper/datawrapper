@@ -100,7 +100,7 @@ function mycharts_group_charts($charts_res, $groups) {
     foreach ($charts_res as $chart) { $charts[] = $chart; }
 
     foreach ($groups as $id => $group) {
-        $group['id'] = $id;
+        if (!isset($group['id'])) $group['id'] = $id;
         if (isset($group['filter'])) {
             $group['charts'] = array_filter($charts, $group['filter']);
             unset($group['filter']);
@@ -110,10 +110,14 @@ function mycharts_group_charts($charts_res, $groups) {
     return $out;
 }
 
-function mycharts_group_by_month($charts) {
+function mycharts_group_by_month($charts, $date='') {
     $groups = [];
     foreach ($charts as $chart) {
-        $ym = $chart->getLastModifiedAt('Y-m');
+        switch ($date) {
+            case 'created_at': $ym = $chart->getCreatedAt('Y-m'); break;
+            case 'published_at': $ym = $chart->getPublishedAt('Y-m'); break;
+            default: $ym = $chart->getLastModifiedAt('Y-m'); break;
+        }
         $ts = strtotime($ym.'-01');
         $month = strftime('%B, %Y', $ts);
         if (!isset($groups[$month])) {
@@ -133,6 +137,8 @@ function mycharts_group_by_type($charts) {
 
     foreach ($charts as $chart) {
         $id = $chart->getType();
+        if ($id == 'line-chart') $id = 'd3-lines';
+        if ($id == 'bar-chart') $id = 'd3-bars';
         $type = DatawrapperVisualization::get($id)['title'];
         if (empty($type)) continue;
         if (!isset($groups[$type])) {
@@ -143,6 +149,26 @@ function mycharts_group_by_type($charts) {
             ];
         }
         $groups[$type]['charts'][] = $chart;
+    }
+    // sort groups by type name
+    ksort($groups);
+    return $groups;
+}
+
+function mycharts_group_by_author($charts) {
+    $groups = [];
+
+    foreach ($charts as $chart) {
+        $user = $chart->getUser();
+        $name = $user->guessName();
+        if (!isset($groups[$name])) {
+            $groups[$name] = [
+                'title' => $name,
+                'id' => $user->getId(),
+                'charts' => []
+            ];
+        }
+        $groups[$name]['charts'][] = $chart;
     }
     // sort groups by type name
     ksort($groups);
@@ -240,15 +266,16 @@ function mycharts_get_user_charts(&$page, $app, $user, $folder_id = false, $org_
     $charts =  ChartQuery::create()->getPublicChartsById($id, $is_org, $filter, $curPage * $perPage, $perPage, $sort_by);
     $total = ChartQuery::create()->countPublicChartsById($id, $is_org, $filter);
 
-    // group charts
-    $groupings = [
-        'no-group' => [
-            'all' => [
-                'title' => '',
-                'filter' => function() { return true; }
-            ]
-        ],
-        'status' => [
+    if (!empty($filter['q'])) {
+        $grouped = mycharts_group_charts($charts, mycharts_group_by_folder($charts, $user));
+    } else if (($sort_by == 'modified_at' || empty($sort_by)) && $total > 40) {
+        $grouped = mycharts_group_charts($charts, mycharts_group_by_month($charts));
+    } else if (($sort_by == 'created_at' || $sort_by == 'published_at') && $total > 40) {
+        $grouped = mycharts_group_charts($charts, mycharts_group_by_month($charts, $sort_by));
+    } else if ($sort_by == 'type') {
+        $grouped = mycharts_group_charts($charts, mycharts_group_by_type($charts));
+    } else if ($sort_by == 'status') {
+        $grouped = mycharts_group_charts($charts, [
             'published' => [
                 'title' => __('published'),
                 'filter' => function($chart) { return $chart->getLastEditStep() > 3; }
@@ -261,18 +288,17 @@ function mycharts_get_user_charts(&$page, $app, $user, $folder_id = false, $org_
                 'title' => __('just data'),
                 'filter' => function($chart) { return $chart->getLastEditStep() <= 2; }
             ],
-        ],
-        'month' => mycharts_group_by_month($charts),
-        'type' => mycharts_group_by_type($charts),
-        'folder' => mycharts_group_by_folder($charts, $user),
-    ];
-
-    $group_by = 'no-group';
-    if (!empty($filter['q'])) $group_by = 'folder';
-    else if (($sort_by == 'modified_at' || empty($sort_by)) && $total > 40) $group_by = 'month';
-    else if ($sort_by == 'type') $group_by = 'type';
-    else if ($sort_by == 'status') $group_by = 'status';
-    $grouped = mycharts_group_charts($charts, $groupings[$group_by]);
+        ]);
+    } else if ($sort_by == 'author') {
+        $grouped = mycharts_group_charts($charts, mycharts_group_by_author($charts));
+    } else {
+        $grouped = mycharts_group_charts($charts, [
+            'all' => [
+                'title' => '',
+                'filter' => function() { return true; }
+            ]
+        ]);
+    }
 
     // save result to page
     $page['charts'] = $charts;
@@ -291,27 +317,36 @@ function any_charts($app, $user, $folder_id = false, $org_id = false) {
 
     if ($is_xhr) {
         $page = [
-            'current' => array(
-                'folder' => $folder_id,
-                'organization' => $org_id,
-                'sort' => $app->request()->params('sort'),
-            )
         ];
     } else {
+        $folders = FolderQuery::create()->getParsableFolders($user);
+        $hasFolders = false;
+        foreach ($folders as $group) {
+            if (count($group['folders']) > 0) {
+                $hasFolders = true;
+                break;
+            }
+        }
         $page = [
             'title' => __('My Charts'),
             'pageClass' => 'dw-mycharts',
-            'current' => array(
-                'folder' => $folder_id,
-                'organization' => $org_id,
-                'sort' => $app->request()->params('sort'),
-            ),
             'search_query' => empty($q) ? '' : $q,
             'mycharts_base' => '/mycharts',
             'organizations' => mycharts_list_organizations($user),
-            'preload' => FolderQuery::create()->getParsableFolders($user),
+            'preload' => $folders,
+            'hasFolders' => $hasFolders
         ];
     }
+
+    $con = Propel::getConnection();
+    $sql = "SELECT organization_role FROM user_organization WHERE user_id = ".$con->quote($user->getId())." AND organization_id = ".$con->quote($org_id).";";
+
+    $page['current'] = [
+        'folder' => $folder_id,
+        'organization' => $org_id,
+        'organization_role' => !empty($org_id) ? $con->query($sql)->fetch()['organization_role'] : null,
+        'sort' => $app->request()->params('sort'),
+    ];
 
     mycharts_get_user_charts($page, $app, $user, $folder_id, $org_id);
 
@@ -329,7 +364,7 @@ function any_charts($app, $user, $folder_id = false, $org_id = false) {
  * pitfall: folder_id = null → root folder
  * getting all user/organization charts via mycharts/organization is no longer possible
  */
-$app->get('/(mycharts|organization/:org_id)(/:folder_id)?/?', function ($org_id = false, $folder_id = null) use ($app) {
+$app->get('/(mycharts|team/:org_id)(/:folder_id)?/?', function ($org_id = false, $folder_id = null) use ($app) {
     disable_cache($app);
     $user = DatawrapperSession::getUser();
     if (!$user->isLoggedIn()) {
@@ -344,8 +379,8 @@ $app->get('/(mycharts|organization/:org_id)(/:folder_id)?/?', function ($org_id 
 })->conditions(array('folder_id' => '\d+'));
 
 
-$app->get('/organization/:org_id/charts', function($org_id) use ($app) {
-    $app->redirect('/organization/'.$org_id.'/');
+$app->get('/organization/:org_id(/charts)?', function($org_id) use ($app) {
+    $app->redirect('/team/'.$org_id.'/');
 });
 
 

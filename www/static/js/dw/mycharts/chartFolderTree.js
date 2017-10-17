@@ -1,4 +1,5 @@
 define(function(require) {
+
     var ChartFolderTree = function(raw_folders, current) {
         this.tree = genTree(raw_folders);
         this.list = genList();
@@ -6,7 +7,7 @@ define(function(require) {
         this.rendercallbacks = {};
         this.current_folder_funcs = {};
         this.dropcallback = function(){};
-    }
+    };
 
     function genTree(raw) {
         raw.forEach(function(group) {
@@ -95,12 +96,52 @@ define(function(require) {
             if (typeof this.list[f_id] !== "undefined")
                 this.list[f_id].folder.name = name;
         },
+        isParentFolder: function(child, dest) {
+            var child_folder_obj = (typeof this.list[child] !== "undefined") ? this.list[child].folder : false,
+                dest_folder_obj = (typeof this.list[dest.id] !== "undefined") ? this.list[dest.id].folder : getRoot(dest.organization),
+                parent_folder_obj = (child_folder_obj) ? ((child_folder_obj.parent) ? this.list[child_folder_obj.parent].folder : getRoot(child_folder_obj.organization)) : false;
+
+            if (!child_folder_obj) {
+                console.warn('Source folder can not be a root folder. Operation prohibited.');
+                return true;
+            }
+            if (parent_folder_obj && parent_folder_obj.id) {
+                // my parent is a folder
+                if (dest_folder_obj && dest_folder_obj.id) {
+                    // destination is a folder
+                    return parent_folder_obj.id == dest_folder_obj.id;
+                }
+                return false;
+            } else {
+                // my parent is a root
+                if (dest_folder_obj && dest_folder_obj.id) {
+                    // destination is a folder
+                    return false;
+                }
+                // two roots, but are they the same?
+                if (dest_folder_obj.organization && parent_folder_obj.organization) {
+                    // two organizations!!!
+                    return dest_folder_obj.organization.id == parent_folder_obj.organization.id;
+                }
+                return !(dest_folder_obj.organization || parent_folder_obj.organization);
+            }
+        },
+        isUserToOrgMove: function(drag_data, target) {
+            var curFolder = drag_data.type === 'folder' ? this.list[drag_data.id].folder : this.current;
+            var curOrg = curFolder ? curFolder.organization : null;
+            return (!curOrg && target.organization) || (curOrg != target.organization && target.organization);
+        },
+        isOrgToUserMove: function(drag_data, target) {
+            var curFolder = drag_data.type === 'folder' ? this.list[drag_data.id].folder : this.current;
+            var curOrg = curFolder ? curFolder.organization : null;
+            return curOrg && !target.organization;
+        },
         getParentFolder: function(id) {
             var parent = (typeof this.list[id.folder] !== "undefined") ? this.list[id.folder].folder.parent : false,
                 parent_folder_obj = (parent) ? this.getFolderById(parent) : getRoot(id.organization);
 
             return {
-                id: (parent_folder_obj.id) ? parent_folder_obj.id : false,
+                folder: (parent_folder_obj.id) ? parent_folder_obj.id : false,
                 organization: (parent_folder_obj.organization) ? ((parent_folder_obj.organization.id) ? parent_folder_obj.organization.id : parent_folder_obj.organization) : false
             };
         },
@@ -113,6 +154,10 @@ define(function(require) {
         getSubFolders: function(f_id) {
             var subfolders = (typeof this.list[f_id] !== "undefined") ? this.list[f_id].folder.sub : false;
             return (subfolders) ? subfolders : [];
+        },
+        hasSubFolders: function(f_id) {
+            var subfolders = (typeof this.list[f_id] !== "undefined") ? this.list[f_id].folder.sub : false;
+            return (subfolders);
         },
         getRootSubFolders: function(org_id) {
             var subfolders;
@@ -158,6 +203,12 @@ define(function(require) {
         getCurrentSort: function() {
             return this.current.sort;
         },
+        setCurrentPage: function(page) {
+            this.current.page = page;
+        },
+        getCurrentPage: function() {
+            return this.current.page;
+        },
         setCurrentFolder: function(folder_id, org_id) {
             this.current.folder = folder_id;
             this.current.organization = org_id;
@@ -173,7 +224,7 @@ define(function(require) {
             this.current_folder_funcs = callback;
         },
         updateCurrentFolderFuncs: function() {
-            this.current_folder_funcs(!this.current.folder);
+            this.current_folder_funcs();
         },
         setRenderCallbacks: function(callbacks) {
             this.rendercallbacks = callbacks;
@@ -231,7 +282,7 @@ define(function(require) {
             var dest_folder_obj = (folder.parent) ? this.getFolderById(folder.parent) : getRoot(folder.organization),
                 dest_array = (folder.parent) ? dest_folder_obj.sub : dest_folder_obj.folders;
 
-            if (folder.parent || !dest_array)  {
+            if (folder.parent && !dest_array)  {
                 dest_folder_obj.sub = [];
                 dest_array = dest_folder_obj.sub;
             }
@@ -242,18 +293,26 @@ define(function(require) {
             this.list = genList();
         },
         deleteFolder: function(delme) {
-            var parent = (typeof this.list[delme.folder] !== "undefined") ? this.list[delme.folder].folder.parent : false,
+            var current = (typeof this.list[delme.folder] !== "undefined") ? this.list[delme.folder].folder : false,
+                parent = (current) ? this.list[delme.folder].folder.parent : false,
                 parent_folder_obj = (parent) ? this.getFolderById(parent) : getRoot(delme.organization);
 
             if (parent_folder_obj.id) {
                 parent_folder_obj.sub = parent_folder_obj.sub.filter(function(folder) {
                     return folder.id != delme.folder;
                 });
+                if (parent_folder_obj.sub.length === 0) {
+                    parent_folder_obj.sub = false;
+                }
             } else {
                 parent_folder_obj.folders = parent_folder_obj.folders.filter(function(folder) {
                     return folder.id != delme.folder;
                 });
+                if (parent_folder_obj.folders.length === 0) {
+                    parent_folder_obj.folders = false;
+                }
             }
+            parent_folder_obj.charts += current.charts; 
             this.list = genList();
         },
         moveNChartsTo: function(num, dest) {

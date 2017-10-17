@@ -40,6 +40,9 @@
     <foreign-key foreignTable="folder">
       <reference local="in_folder" foreign="folder_id" />
     </foreign-key>
+    <index>
+      <index-column name="/author_id/" />
+    </index>
   </table>
 
   <table name="user" phpName="User">
@@ -61,6 +64,9 @@
     <column name="sm_profile" type="varchar" required="false" size="512" />
     <column name="oauth_signin" type="varchar" required="false" size="512" phpName="OAuthSignIn" />
     <column name="customer_id" type="varchar" size="512" />
+    <index>
+      <index-column name="/email/" />
+    </index>
   </table>
 
   <!-- organizations -->
@@ -203,9 +209,9 @@
     </vendor>
     <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
     <column name="name" type="varchar" size="512" required="true" />
-	<column name="created_at" type="timestamp" required="true" />
-	<column name="deleted" type="boolean" default="false" />
-	<column name="data" type="clob" />
+  <column name="created_at" type="timestamp" required="true" />
+  <column name="deleted" type="boolean" default="false" />
+  <column name="data" type="clob" />
   </table>
 
   <!-- product <-> plugin map -->
@@ -213,7 +219,7 @@
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
-	<column name="product_id" type="varchar" size="128" primaryKey="true" />
+    <column name="product_id" type="integer" primaryKey="true" />
     <column name="plugin_id" type="varchar" size="128" primaryKey="true" />
     <foreign-key foreignTable="product">
       <reference local="product_id" foreign="id"/>
@@ -228,9 +234,9 @@
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
-	<column name="user_id" type="integer" primaryKey="true" />
+  <column name="user_id" type="integer" primaryKey="true" />
     <column name="product_id" type="integer" primaryKey="true" />
-	<column name="expires" type="timestamp" />
+  <column name="expires" type="timestamp" />
     <foreign-key foreignTable="user">
       <reference local="user_id" foreign="id"/>
     </foreign-key>
@@ -244,9 +250,9 @@
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
-	<column name="organization_id" type="varchar" size="128" primaryKey="true" />
+    <column name="organization_id" type="varchar" size="128" primaryKey="true" />
     <column name="product_id" type="integer" primaryKey="true" />
-	<column name="expires" type="timestamp" />
+    <column name="expires" type="timestamp" />
     <foreign-key foreignTable="organization">
       <reference local="organization_id" foreign="id"/>
     </foreign-key>
@@ -260,10 +266,10 @@
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
-	<column name="id" type="varchar" size="128" primaryKey="true" />
+    <column name="id" type="varchar" size="128" primaryKey="true" />
     <column name="created_at" type="timestamp" required="true" />
-	<column name="extend" type="varchar" size="128" />
-	<column name="title" type="varchar" size="128" />
+    <column name="extend" type="varchar" size="128" />
+    <column name="title" type="varchar" size="128" />
     <column name="data" type="clob" />
     <column name="less" type="clob" />
     <column name="assets" type="clob" />
@@ -274,7 +280,7 @@
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
-	<column name="organization_id" type="varchar" size="128" primaryKey="true" />
+    <column name="organization_id" type="varchar" size="128" primaryKey="true" />
     <column name="theme_id" type="varchar" size="128" primaryKey="true" />
     <foreign-key foreignTable="organization">
       <reference local="organization_id" foreign="id"/>
