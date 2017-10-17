@@ -31,17 +31,12 @@
             $('#resize-mm-w').val(w / 4);
             $('#resize-mm-h').val(h / 4);
 
-            $('#iframe-wrapper').css('width', w + "px");
-            $('#iframe-wrapper').css('height', h + "px");
-            $('#iframe-wrapper').css('margin-left', (maxW - realW) * 0.5 + "px");
-
             $('#iframe-wrapper').animate({
                 width: w,
                 height: h,
                 'margin-left': (maxW - realW) * 0.5,
             }, {
-                duration: 400,
-                easing: 'easeOutExpo',
+                duration: 200,
                 step: function () {
                     $(this).css('overflow', 'visible');
                 }
