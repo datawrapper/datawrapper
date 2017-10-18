@@ -98,7 +98,7 @@ define(function(require) {
 
 
         path = path.split('?');
-        url = new URL(location.protocol + '//' + location.host + ((path.length > 1) ? '?' + path[1] : ''));
+        url = new URL(location.origin + ((path.length > 1) ? '?' + path[1] : ''));
         path = path[0];
         params = url.searchParams;
 
