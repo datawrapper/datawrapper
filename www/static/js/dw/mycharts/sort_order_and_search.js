@@ -51,48 +51,17 @@ define(function(require) {
         $('ul.sort-menu li a')
             .on('click', function(evt) {
                 evt.preventDefault();
-                var path = window.location.pathname + $(evt.target).attr('href');
+                var path = window.location.pathname;
 
-                cft.setCurrentSort(qstring_parser(path, 'sort'));
-                var chart_list = $('.mycharts-chart-list')
-                    .addClass('reloading')
-                    .load(path+'&xhr=1', function(){
-                        set_active();
-                        no_reload_folder_change.enable_for_selector('div.pagination li a');
-
-                        var id = link_reader(path);
-
-                        cft.setCurrentFolder(id.folder, id.org);
-
-                        multiselection.init();
-                        generic_chart_functions();
-                        cft.updateCurrentFolderFuncs();
-
-                        chart_list.removeClass('reloading');
-                    });
-                window.history.replaceState({}, '', path);
+                cft.setCurrentSort(qstring_parser($(evt.target).attr('href'), 'sort'));
+                set_active();
+                no_reload_folder_change.reloadLink(path);
             });
 
     var q = $('.search-query')
         .on('keyup', _.throttle(function() {
             var path = window.location.pathname+'?q='+q.val().trim();
-            var chart_list = $('.mycharts-chart-list')
-                .addClass('reloading')
-                .load(path+'&xhr=1', function() {
-                    set_active();
-                    no_reload_folder_change.enable_for_selector('.mycharts-chart-list h3 a');
-                    no_reload_folder_change.enable_for_selector('div.pagination li a');
-
-                    var id = link_reader(path);
-
-                    cft.setCurrentFolder(id.folder, id.org);
-
-                    multiselection.init();
-                    generic_chart_functions();
-                    cft.updateCurrentFolderFuncs();
-
-                    chart_list.removeClass('reloading');
-                });
+            no_reload_folder_change.reloadLink(path);
         }, 1000));
     }
 
