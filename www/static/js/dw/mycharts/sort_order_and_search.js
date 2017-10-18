@@ -6,43 +6,14 @@ define(function(require) {
         generic_chart_functions = require('./generic-chart-functions'),
         cft;
 
-    function qstring_parser(href, variable) {
-        var vars = href.slice(href.lastIndexOf('?') + 1).split('&');
-
-        return vars.reduce(function(old, cur) {
-            if (old)
-                return old;
-            else {
-                var pair = cur.split('=');
-                return (decodeURIComponent(pair[0]) == variable) ? decodeURIComponent(pair[1]) : old;
-            }
-        }, false);
-    }
-
-    function link_reader(link) {
-        var parsed = link.slice(1).split('/'),
-            id = {
-                org: false,
-                folder: false
-            };
-
-        if (parsed[0] == 'mycharts')
-            id.folder = (parsed.length > 1) ? parsed[1] : false;
-        else {
-            id.org = parsed[1];
-            id.folder = (parsed.length > 2) ? parsed[2] : false;
-        }
-
-        return id;
-    }
-
-    function set_active() {
+    function set_active(sort) {
         $('.sort-menu li:not(.divider)')
             .removeAttr('class')
             .each(function(idx, el) {
-                var je = $(el);
+                var je = $(el),
+                    url = new URL(je.find('a')[0].href);
 
-                if (qstring_parser(je.find('a').attr('href'), 'sort') == cft.getCurrentSort())
+                if (url.searchParams.get('sort') == sort)
                     je.addClass('active');
             });
     }
@@ -51,17 +22,21 @@ define(function(require) {
         $('ul.sort-menu li a')
             .on('click', function(evt) {
                 evt.preventDefault();
-                var path = window.location.pathname;
+                var path = $(evt.target)[0].href,
+                    params = new URL(path).searchParams,
+                    sort = params.get('sort');
 
-                cft.setCurrentSort(qstring_parser($(evt.target).attr('href'), 'sort'));
-                set_active();
+                cft.setCurrentSort(sort);
+                set_active(sort);
                 no_reload_folder_change.reloadLink(path);
             });
 
     var q = $('.search-query')
         .on('keyup', _.throttle(function() {
-            var path = window.location.pathname+'?q='+q.val().trim();
-            no_reload_folder_change.reloadLink(path);
+            var url = new URL(location.protocol + '//' + location.host + location.pathname + location.search);
+
+            url.searchParams.set('q', q.val().trim());
+            no_reload_folder_change.reloadLink(url.toString());
         }, 1000));
     }
 
