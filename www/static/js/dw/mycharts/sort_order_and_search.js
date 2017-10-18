@@ -51,7 +51,7 @@ define(function(require) {
         $('ul.sort-menu li a')
             .on('click', function(evt) {
                 evt.preventDefault();
-                var path = window.location.pathname+$(evt.target).attr('href');
+                var path = window.location.pathname + $(evt.target).attr('href');
 
                 cft.setCurrentSort(qstring_parser(path, 'sort'));
                 var chart_list = $('.mycharts-chart-list')
@@ -65,7 +65,7 @@ define(function(require) {
                         cft.setCurrentFolder(id.folder, id.org);
 
                         multiselection.init();
-                        generic_chart_functions(cft.reloadLink);
+                        generic_chart_functions();
                         cft.updateCurrentFolderFuncs();
 
                         chart_list.removeClass('reloading');
@@ -88,7 +88,7 @@ define(function(require) {
                     cft.setCurrentFolder(id.folder, id.org);
 
                     multiselection.init();
-                    generic_chart_functions(cft.reloadLink);
+                    generic_chart_functions();
                     cft.updateCurrentFolderFuncs();
 
                     chart_list.removeClass('reloading');

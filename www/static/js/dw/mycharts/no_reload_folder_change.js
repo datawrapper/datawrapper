@@ -128,7 +128,7 @@ define(function(require) {
                 set_click('div.pagination li a');
 
                 multiselection.init();
-                generic_chart_functions(reloadLink);
+                generic_chart_functions();
                 cft.updateCurrentFolderFuncs();
                 if (drag_n_drop_callback) drag_n_drop_callback();
                 chart_list.removeClass('reloading');

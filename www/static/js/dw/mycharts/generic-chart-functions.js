@@ -3,7 +3,7 @@ define(function(require){
         twig = require('./twig_globals'),
         cft;
 
-    return function(reloadLink) {
+    return function() {
         cft = window['ChartFolderTree'];
         if (twig.globals.user2) {
             $('.thumbnail > a').click(function(e) {
