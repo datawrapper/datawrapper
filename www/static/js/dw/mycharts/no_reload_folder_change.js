@@ -96,7 +96,6 @@ define(function(require) {
         var url, params,
             sort = cft.getCurrentSort();
 
-
         path = path.split('?');
         url = new URL(location.origin + ((path.length > 1) ? '?' + path[1] : ''));
         path = path[0];

@@ -86,7 +86,7 @@ define(function(require) {
             }),
             dataType: 'JSON'
         }).done(function() {
-            no_reload_folder_change.reloadLink(buildLink(cft.getCurrentFolder()));
+            no_reload_folder_change.reloadLink(location.href);
             cft.moveNChartsTo(charts.length, id);
         }).fail(handler.fail);
     }
