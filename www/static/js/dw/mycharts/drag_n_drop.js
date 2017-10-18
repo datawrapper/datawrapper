@@ -4,7 +4,6 @@ define(function(require) {
         twig = require('./twig_globals'),
         no_reload_folder_change = require('./no_reload_folder_change'),
         handler = require('./handler'),
-        buildLink = require('./buildLink'),
         cft,
         drag_data;
 

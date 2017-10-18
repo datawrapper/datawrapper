@@ -3,7 +3,6 @@ define(function(require) {
         twig = require('./twig_globals'),
         multiselection = require('./multiselection'),
         generic_chart_functions = require('./generic-chart-functions'),
-        buildLink = require('./buildLink'),
         drag_n_drop_callback = false,
         cft;
 
