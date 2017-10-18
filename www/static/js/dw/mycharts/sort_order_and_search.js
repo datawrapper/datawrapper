@@ -39,7 +39,6 @@ define(function(require) {
                 else {
                     cft.setCurrentSort(false);
                     url.searchParams.delete('sort');
-                    console.log('deactivate!')
                 }
                 no_reload_folder_change.reloadLink(url.toString());
             });
