@@ -8,17 +8,22 @@ define(function(require) {
         cft;
 
     function link_reader(link) {
-        var parsed = link.slice(1).split('/'),
+        var parsed = link.split('?')[0].slice(1).split('/'),
             id = {
                 org: false,
                 folder: false
             };
 
-        if (parsed[0] == 'mycharts')
-            id.folder = (parsed.length > 1) ? parsed[1] : false;
-        else {
-            id.org = parsed[1];
-            id.folder = (parsed.length > 2) ? parsed[2] : false;
+        switch(parsed[0]) {
+            case 'mycharts':
+                id.folder = (parsed.length > 1) ? parsed[1] : false;
+                break;
+            case 'team':
+                id.org = parsed[1];
+                id.folder = (parsed.length > 2) ? parsed[2] : false;
+                break;
+            default:
+                return false;
         }
 
         return id;
@@ -88,36 +93,32 @@ define(function(require) {
     }
 
     function reloadLink(path) {
-        // normalize path
-        var url = 'https://'+location.host + location.pathname + location.search,
-            params = new URL(url).searchParams,
-            sort = cft.getCurrentSort(),
-            pag_str = false,
-            path_pag_sort;
+        var url, params,
+            sort = cft.getCurrentSort();
 
-        if (path.startsWith('?page')) {
-            // click on pagination
-            pag_str = path;
-            cft.setCurrentPage(params.get('path'));
-            path = buildLink(cft.getCurrentFolder());
-        }
-        if (pag_str && sort) {
-            path_pag_sort = path + pag_str + '&sort='+ sort + '&xhr=1';
-        } else if (pag_str) {
-            path_pag_sort = path + pag_str + '&xhr=1';
-        } else if (sort) {
-            path_pag_sort = path + '?sort=' + sort + '&xhr=1';
-        } else {
-            path_pag_sort = path + '?xhr=1';
-        }
+
+        path = path.split('?');
+        url = new URL(location.protocol + '//' + location.host + ((path.length > 1) ? '?' + path[1] : ''));
+        path = path[0];
+        params = url.searchParams;
+
+        if (sort)
+            params.set('sort', sort);
+        if (params.get('q'))
+            path = twig.globals.strings.mycharts_base;
+
+        params.set('xhr', 1);
+        if (!params.entries().next().done)
+            path += '?' + params.toString();
 
         var chart_list = $('.mycharts-chart-list')
             .addClass('reloading')
-            .load(path_pag_sort, function() {
+            .load(path, function() {
                 var id = link_reader(path);
 
-                cft.setCurrentFolder(id.folder, id.org);
-                window.history.pushState(null, '', path_pag_sort.slice(0, path_pag_sort.lastIndexOf('xhr=1') - 1));
+                if (id)
+                    cft.setCurrentFolder(id.folder, id.org);
+                window.history.pushState(null, '', path.slice(0, path.lastIndexOf('xhr=1') - 1));
 
                 repaint_subfolders();
                 repaint_breadcrumb();
