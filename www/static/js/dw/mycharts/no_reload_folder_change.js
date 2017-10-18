@@ -5,7 +5,6 @@ define(function(require) {
         generic_chart_functions = require('./generic-chart-functions'),
         buildLink = require('./buildLink'),
         drag_n_drop_callback = false,
-        last_path = null,
         cft;
 
     function link_reader(link) {
@@ -60,7 +59,7 @@ define(function(require) {
                 subfolders.prepend(build_thumbnail(folder, id.organization));
             });
         }
-
+        set_click('ul.subfolders a:not(.add-folder)');
     }
 
     function repaint_breadcrumb() {
@@ -85,6 +84,7 @@ define(function(require) {
         });
         line.append(sep);
         $('#current-folder-name').html(dw.utils.purifyHtml(cft.getFolderNameById(id.folder), ''));
+        set_click('#folder-sequence a');
     }
 
     function reloadLink(path) {
@@ -98,7 +98,7 @@ define(function(require) {
         if (path.startsWith('?page')) {
             // click on pagination
             pag_str = path;
-            cft.setCurrentPage(+params.get('path'));
+            cft.setCurrentPage(params.get('path'));
             path = buildLink(cft.getCurrentFolder());
         }
         if (pag_str && sort) {
@@ -120,12 +120,9 @@ define(function(require) {
                 window.history.pushState(null, '', path_pag_sort.slice(0, path_pag_sort.lastIndexOf('xhr=1') - 1));
 
                 repaint_subfolders();
-                set_click('ul.subfolders a:not(.add-folder)');
-
                 repaint_breadcrumb();
-                set_click('#folder-sequence a');
-
                 set_click('div.pagination li a');
+                set_click('.mycharts-chart-list h3 a');
 
                 multiselection.init();
                 generic_chart_functions();
@@ -133,7 +130,6 @@ define(function(require) {
                 if (drag_n_drop_callback) drag_n_drop_callback();
                 chart_list.removeClass('reloading');
             });
-        last_path = path;
     }
 
     function set_click(selector) {
