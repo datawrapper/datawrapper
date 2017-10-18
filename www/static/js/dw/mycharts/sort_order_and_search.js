@@ -7,28 +7,41 @@ define(function(require) {
         cft;
 
     function set_active(sort) {
+        var activated = true;
         $('.sort-menu li:not(.divider)')
-            .removeAttr('class')
             .each(function(idx, el) {
                 var je = $(el),
                     url = new URL(je.find('a')[0].href);
 
-                if (url.searchParams.get('sort') == sort)
-                    je.addClass('active');
+                if (url.searchParams.get('sort') == sort) {
+                    if (je.hasClass('active')) {
+                        je.removeAttr('class');
+                        activated = false;
+                    } else {
+                        je.addClass('active');
+                    }
+                } else {
+                    je.removeAttr('class');
+                }
             });
+        return activated;
     }
 
     function attatch_functions() {
         $('ul.sort-menu li a')
             .on('click', function(evt) {
                 evt.preventDefault();
-                var path = $(evt.target)[0].href,
-                    params = new URL(path).searchParams,
-                    sort = params.get('sort');
+                var url = new URL($(evt.target)[0].href),
+                    sort = url.searchParams.get('sort');
 
-                cft.setCurrentSort(sort);
-                set_active(sort);
-                no_reload_folder_change.reloadLink(path);
+                if (set_active(sort))
+                    cft.setCurrentSort(sort);
+                else {
+                    cft.setCurrentSort(false);
+                    url.searchParams.delete('sort');
+                    console.log('deactivate!')
+                }
+                no_reload_folder_change.reloadLink(url.toString());
             });
 
     var q = $('.search-query')
