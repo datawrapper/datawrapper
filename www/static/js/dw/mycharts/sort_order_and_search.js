@@ -33,7 +33,7 @@ define(function(require) {
 
     var q = $('.search-query')
         .on('keyup', _.throttle(function() {
-            var url = new URL(location.protocol + '//' + location.host + location.pathname + location.search);
+            var url = new URL(location.origin + location.pathname + location.search);
 
             url.searchParams.set('q', q.val().trim());
             no_reload_folder_change.reloadLink(url.toString());
