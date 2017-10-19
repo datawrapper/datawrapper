@@ -96,10 +96,11 @@ define(function(require) {
         $('.gallery hr').hide();
         $('#current-folder > *').not('#current-folder-name').hide();
         $('ul.folders-left li.active').removeClass('active');
-        $('#current-folder-name').text('Search');
+        $('#current-folder-name').text(twig.globals.strings.search);
     }
 
     function normalRepaint() {
+        $('input.search-query').val('');
         $('ul.subfolders').show();
         $('.gallery hr').show();
         $('#current-folder > *').not('#current-folder-name').show();
