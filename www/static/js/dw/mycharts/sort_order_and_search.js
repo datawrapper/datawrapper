@@ -45,14 +45,16 @@ define(function(require) {
 
     var q = $('.search-query')
         .on('keyup', _.throttle(function() {
-            var url = new URL(location.origin + '/search' + location.search),
+            var base_url = new URL(location.origin + location.pathname + location.search),
+                search_url = new URL(location.origin + '/search' + location.search),
                 query = q.val().trim();
 
-            cft.setSearchActive(query);
+            cft.setSearchActive(base_url, query);
             set_active(cft.getCurrentSort());
-            url.searchParams.delete('sort');
-            url.searchParams.set('q', query);
-            no_reload_folder_change.reloadLink(url.toString());
+            search_url.searchParams.delete('sort');
+            search_url.searchParams.set('q', query);
+            console.log(search_url.toString());
+            no_reload_folder_change.reloadLink(search_url.toString());
         }, 1000));
     }
 
