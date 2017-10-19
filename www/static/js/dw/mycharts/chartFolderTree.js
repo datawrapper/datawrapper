@@ -1,8 +1,8 @@
 define(function() {
 
-    var ChartFolderTree = function(raw_folders, current) {
+    function ChartFolderTree(raw_folders, current) {
         this.tree = genTree(raw_folders);
-        this.list = genList();
+        this.list = genList(this.tree);
         this.current = current;
         this.rendercallbacks = {};
         this.current_folder_funcs = {};
@@ -32,16 +32,14 @@ define(function() {
             });
         });
 
-        tree = raw.sort(function(a, b) {
+        return raw.sort(function(a, b) {
             if (!a.organization) return -1;
             if (!b.organization) return 1;
             return a.organization.name.localeCompare(b.organization.name);
         });
-
-        return tree;
     }
 
-    function genList() {
+    function genList(tree) {
         var list = [];
 
         function traverse(folder, path_obj) {
@@ -60,7 +58,7 @@ define(function() {
             };
         }
 
-        this.tree.forEach(function(group) {
+        tree.forEach(function(group) {
             group.folders.forEach(function(folder) {
                 traverse(folder, {
                     strings: [],
@@ -72,15 +70,15 @@ define(function() {
         return list;
     }
 
-    function getRoot(org_id) {
-        if (!org_id)
-            org_id = false;
-        return this.tree.filter(function(group) {
-            return (group.organization) ? (group.organization.id === org_id) : (group.organization == org_id);
-        })[0];
-    }
 
     ChartFolderTree.prototype = {
+        getRoot: function(org_id) {
+            if (!org_id)
+                org_id = false;
+            return this.tree.filter(function(group) {
+                return (group.organization) ? (group.organization.id === org_id) : (group.organization == org_id);
+            })[0];
+        },
         debugTree: function() {
             console.log(this.tree, this.list);
         },
@@ -99,8 +97,8 @@ define(function() {
         },
         isParentFolder: function(child, dest) {
             var child_folder_obj = (typeof this.list[child] !== "undefined") ? this.list[child].folder : false,
-                dest_folder_obj = (typeof this.list[dest.id] !== "undefined") ? this.list[dest.id].folder : getRoot(dest.organization),
-                parent_folder_obj = (child_folder_obj) ? ((child_folder_obj.parent) ? this.list[child_folder_obj.parent].folder : getRoot(child_folder_obj.organization)) : false;
+                dest_folder_obj = (typeof this.list[dest.id] !== "undefined") ? this.list[dest.id].folder : this.getRoot(dest.organization),
+                parent_folder_obj = (child_folder_obj) ? ((child_folder_obj.parent) ? this.list[child_folder_obj.parent].folder : this.getRoot(child_folder_obj.organization)) : false;
 
             if (!child_folder_obj) {
                 console.warn('Source folder can not be a root folder. Operation prohibited.');
@@ -139,7 +137,7 @@ define(function() {
         },
         getParentFolder: function(id) {
             var parent = (typeof this.list[id.folder] !== "undefined") ? this.list[id.folder].folder.parent : false,
-                parent_folder_obj = (parent) ? this.getFolderById(parent) : getRoot(id.organization);
+                parent_folder_obj = (parent) ? this.getFolderById(parent) : this.getRoot(id.organization);
 
             return {
                 folder: (parent_folder_obj.id) ? parent_folder_obj.id : false,
@@ -266,8 +264,8 @@ define(function() {
         },
         moveFolderToFolder: function(moved_id, dest) {
             var moved_folder_obj = this.getFolderById(moved_id),
-                dest_folder_obj = (dest.folder) ? this.getFolderById(dest.folder) : getRoot(dest.organization),
-                source_folder_obj = (moved_folder_obj.parent) ? this.getFolderById(moved_folder_obj.parent) : getRoot(moved_folder_obj.organization);
+                dest_folder_obj = (dest.folder) ? this.getFolderById(dest.folder) : this.getRoot(dest.organization),
+                source_folder_obj = (moved_folder_obj.parent) ? this.getFolderById(moved_folder_obj.parent) : this.getRoot(moved_folder_obj.organization);
 
 
             if (dest.folder) {
@@ -301,7 +299,7 @@ define(function() {
             this.list = genList();
         },
         addFolder: function(folder) {
-            var dest_folder_obj = (folder.parent) ? this.getFolderById(folder.parent) : getRoot(folder.organization),
+            var dest_folder_obj = (folder.parent) ? this.getFolderById(folder.parent) : this.getRoot(folder.organization),
                 dest_array = (folder.parent) ? dest_folder_obj.sub : dest_folder_obj.folders;
 
             if (folder.parent && !dest_array)  {
@@ -317,7 +315,7 @@ define(function() {
         deleteFolder: function(delme) {
             var current = (typeof this.list[delme.folder] !== "undefined") ? this.list[delme.folder].folder : false,
                 parent = (current) ? this.list[delme.folder].folder.parent : false,
-                parent_folder_obj = (parent) ? this.getFolderById(parent) : getRoot(delme.organization);
+                parent_folder_obj = (parent) ? this.getFolderById(parent) : this.getRoot(delme.organization);
 
             if (parent_folder_obj.id) {
                 parent_folder_obj.sub = parent_folder_obj.sub.filter(function(folder) {
@@ -340,16 +338,16 @@ define(function() {
         moveNChartsTo: function(num, dest) {
             var folder;
 
-            folder = (dest.folder) ? this.list[dest.folder].folder : getRoot(dest.organization);
+            folder = (dest.folder) ? this.list[dest.folder].folder : this.getRoot(dest.organization);
             folder.charts += num;
             this.rendercallbacks.changeChartCount(dest.folder, dest.organization, folder.charts);
 
-            folder = (this.current.folder) ? this.list[this.current.folder].folder : getRoot(this.current.organization);
+            folder = (this.current.folder) ? this.list[this.current.folder].folder : this.getRoot(this.current.organization);
             folder.charts -= num;
             this.rendercallbacks.changeChartCount(this.current.folder, this.current.organization, folder.charts);
         },
         removeChartFromCurrent: function() {
-            var folder = (this.current.folder) ? this.list[this.current.folder].folder : getRoot(this.current.organization);
+            var folder = (this.current.folder) ? this.list[this.current.folder].folder : this.getRoot(this.current.organization);
             this.rendercallbacks.changeChartCount(this.current.folder, this.current.organization, --folder.charts);
         }
     };
