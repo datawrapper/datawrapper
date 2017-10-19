@@ -45,6 +45,16 @@ define(function(require) {
 
     var last_query = '';
 
+    $('.mycharts-search-wrapper .im-x-mark-circle').click(function() {
+        var base_url = cft.getSearchParams().base_url;
+        cft.setSearchDisabled();
+        if (!base_url) {
+            no_reload_folder_change.reloadLink('/mycharts');
+        } else {
+            no_reload_folder_change.reloadLink(base_url.toString().slice(location.origin.length));
+        }
+    });
+
     var q = $('.search-query')
         .on('keyup', _.debounce(function() {
             var base_url = new URL(location.origin + location.pathname + location.search),
@@ -56,6 +66,7 @@ define(function(require) {
                 return;
             }
             last_query = query;
+            $('body')[query ? 'addClass' : 'removeClass']('mycharts-search-results');
 
             if (query !== '') {
                 cft.setSearchActive(base_url, query);
@@ -73,8 +84,10 @@ define(function(require) {
 
     return function() {
         cft = window['ChartFolderTree'];
-        if (location.pathname.startsWith('/search'))
+        if (location.pathname.startsWith('/search')) {
+            $('body').addClass('mycharts-search-results');
             no_reload_folder_change.searchSpecialRender();
+        }
         attatch_functions();
         set_active();
     };

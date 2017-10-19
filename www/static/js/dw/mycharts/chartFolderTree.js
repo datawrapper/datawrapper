@@ -228,12 +228,14 @@ define(function(require) {
             this.current_folder_funcs();
         },
         setSearchActive: function(base_url, q) {
+            $('body').addClass('mycharts-search-results');
             this.search.active = true;
             if (!this.search.base_url)
                 this.search.base_url = base_url;
             this.search.query = q;
         },
         setSearchDisabled: function() {
+            $('body').removeClass('mycharts-search-results');
             this.search.active = false;
             this.search.base_url = null;
         },

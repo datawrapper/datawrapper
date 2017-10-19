@@ -2175,6 +2175,20 @@ body.dw-mycharts .pagination {
   text-align: right;
   margin-top: -20px;
 }
+body.dw-mycharts .mycharts-search-wrapper .im.im-x-mark-circle {
+  display: none;
+  position: absolute;
+  top: 9px;
+  right: 10px;
+  color: #bbb;
+  cursor: pointer;
+}
+body.dw-mycharts .mycharts-search-wrapper .im.im-x-mark-circle:hover {
+  color: #09c;
+}
+body.dw-mycharts.mycharts-search-results .mycharts-search-wrapper .im.im-x-mark-circle {
+  display: inline-block;
+}
 body {
   background: #fff;
   color: #444;

@@ -288,4 +288,26 @@ body.dw-mycharts {
         text-align: right;
         margin-top: -20px;
     }
+
+    .mycharts-search-wrapper {
+        .im.im-x-mark-circle {
+            display: none;
+            position: absolute;
+            top: 9px;
+            right: 10px;
+            color: #bbb;
+            cursor: pointer;
+            &:hover {
+                color: #09c;
+            }
+        }
+    }
+
+    &.mycharts-search-results {
+        .mycharts-search-wrapper {
+            .im.im-x-mark-circle {
+                display: inline-block;
+            }
+        }
+    }
 }
