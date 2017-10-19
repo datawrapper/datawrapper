@@ -11,8 +11,6 @@ define(function() {
     };
 
     function genTree(raw) {
-        var tree;
-
         raw.forEach(function(group) {
             if (group.type === "user")
                 group.organization = false;
