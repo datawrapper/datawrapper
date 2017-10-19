@@ -314,6 +314,7 @@ function mycharts_get_user_charts(&$page, $app, $user, $folder_id = false, $org_
 function any_charts($app, $user, $folder_id = false, $org_id = false) {
 
     $is_xhr = !empty($app->request()->params('xhr'));
+    $q = $app->request()->params('q');
 
     if ($is_xhr) {
         $page = [
