@@ -43,11 +43,19 @@ define(function(require) {
                 no_reload_folder_change.reloadLink(url.toString());
             });
 
+    var last_query = '';
+
     var q = $('.search-query')
-        .on('keyup', _.throttle(function() {
+        .on('keyup', _.debounce(function() {
             var base_url = new URL(location.origin + location.pathname + location.search),
                 search_url = new URL(location.origin + '/search' + location.search),
-                query = q.val().trim();
+                query = q.val().trim().toLowerCase();
+
+            if (query == last_query) {
+                // no need to fire enother request!
+                return;
+            }
+            last_query = query;
 
             if (query !== '') {
                 cft.setSearchActive(base_url, query);
@@ -57,10 +65,10 @@ define(function(require) {
                 no_reload_folder_change.reloadLink(search_url.toString());
             } else if (cft.isSearchActive()) {
                 base_url = cft.getSearchParams().base_url.toString();
-                cft.setSearchDisabled()
+                cft.setSearchDisabled();
                 no_reload_folder_change.reloadLink(base_url.slice(location.origin.length));
             }
-        }, 1000));
+        }, 600));
     }
 
     return function() {
