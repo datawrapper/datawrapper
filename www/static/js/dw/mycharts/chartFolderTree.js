@@ -6,6 +6,7 @@ define(function(require) {
         this.current = current;
         this.rendercallbacks = {};
         this.current_folder_funcs = {};
+        this.search = { active: false }
         this.dropcallback = function(){};
     };
 
@@ -225,6 +226,25 @@ define(function(require) {
         },
         updateCurrentFolderFuncs: function() {
             this.current_folder_funcs();
+        },
+        setSearchActive: function(base_url, q) {
+            this.search = {
+                active: true,
+                base_url: base_url,
+                query: q
+            };
+        },
+        setSearchDisabled: function() {
+            this.search.active = false;
+        },
+        isSearchActive: function() {
+            return this.search.active;
+        },
+        getSearchParams: function() {
+            return {
+                base_url: this.search.base_url,
+                query: this.search.query
+            };
         },
         setRenderCallbacks: function(callbacks) {
             this.rendercallbacks = callbacks;
