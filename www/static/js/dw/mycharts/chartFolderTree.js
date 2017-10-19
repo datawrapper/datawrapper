@@ -227,10 +227,9 @@ define(function(require) {
         updateCurrentFolderFuncs: function() {
             this.current_folder_funcs();
         },
-        setSearchActive: function(base_url, q) {
+        setSearchActive: function(q) {
             this.search = {
                 active: true,
-                base_url: base_url,
                 query: q
             };
         },
@@ -240,11 +239,8 @@ define(function(require) {
         isSearchActive: function() {
             return this.search.active;
         },
-        getSearchParams: function() {
-            return {
-                base_url: this.search.base_url,
-                query: this.search.query
-            };
+        getSearchQuery: function() {
+            return this.search.query;
         },
         setRenderCallbacks: function(callbacks) {
             this.rendercallbacks = callbacks;
