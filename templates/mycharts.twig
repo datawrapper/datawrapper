@@ -35,7 +35,7 @@
         </div>
     </div>
     <h1 id="current-folder">
-        <a id="current-root" href="{{ mycharts_base }}">
+        <a id="current-root" href="{{ mycharts_base }}"{% if not search_query is empty %} style="display: none;"{% endif %}>
             {% if user2 %}
             {{ "Charts by %s" | trans | replace({'%s': user2.email }) }}
             {% else %}
@@ -43,7 +43,7 @@
             {% endif %}
         </a>
         <span id="folder-sequence"></span>
-        <span id="current-folder-name"></span>
+        <span id="current-folder-name">{% if not search_query is empty %}{{ "Search" | trans }}{% endif %}</span>
         <div class="btn-group" style="display:inline-block; position: relative">
             <a class="btn dropdown-toggle" data-toggle="dropdown" href="#"
                 style="border:0;background:none;box-shadow:none">
@@ -92,7 +92,7 @@
 
         {% include 'mycharts/subfolder-list.twig' %}
 
-        <hr />
+        <hr {% if not search_query is empty %}style="display: none;"{% endif %}/>
 
         <div class="mycharts-chart-list">
             {% include 'mycharts/chart-list.twig' %}
@@ -142,7 +142,8 @@
                 confirm_chart_delete: {{ "mycharts / confirm-chart-delete" | trans | json | raw }},
                 enter_folder_name: '{{ "mycharts / enter-folder-name" | trans }}',
                 mycharts_base: '{{ mycharts_base }}',
-                mycharts_trans: '{{ "My Charts" | trans }}'
+                mycharts_trans: '{{ "My Charts" | trans }}',
+                search: '{{ "Search" | trans }}'
             },
             current: {{ current | json | raw }},
             preload: {{ preload | json | raw }},
