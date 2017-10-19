@@ -55,8 +55,10 @@ define(function(require) {
                 search_url.searchParams.delete('sort');
                 search_url.searchParams.set('q', query);
                 no_reload_folder_change.reloadLink(search_url.toString());
-            } else {
-                no_reload_folder_change.reloadLink(cft.getSearchParams().base_url.toString());
+            } else if (cft.isSearchActive()) {
+                base_url = cft.getSearchParams().base_url.toString();
+                cft.setSearchDisabled()
+                no_reload_folder_change.reloadLink(base_url.slice(location.origin.length));
             }
         }, 1000));
     }
