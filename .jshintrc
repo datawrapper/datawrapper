@@ -1,17 +1,20 @@
 {
   "globals": {
-	"require": false,
-	"window": false,
-	"process": false,
-	"console": false,
-	"document": false,
-	"setTimeout": false,
-	"setInterval": false,
-	"$": false,
-	"_": false,
-	"dw": false,
-	"d3": false,
-	"chart": false
+    "require": false,
+    "define": false,
+    "window": false,
+    "location": false,
+    "process": false,
+    "console": false,
+    "document": false,
+    "setTimeout": false,
+    "setInterval": false,
+    "URL": false,
+    "$": false,
+    "_": false,
+    "dw": false,
+    "d3": false,
+    "chart": false
   },
   "undef": true,
   "esnext": true
