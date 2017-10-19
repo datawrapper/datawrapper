@@ -232,6 +232,10 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
     }
     if (isset($GLOBALS['dw_alert'])) $page['alertMessage'] .= $GLOBALS['dw_alert'];
 
+    if (empty($user->getUserData()['downtime-notice-20171019'])) {
+        $page['alertMessage'] = '<b>Attention!</b> Datawrapper will be offline for about 30 minutes starting at 2am (CEST) tonight.<br>We\'re moving our database to a faster server. Your charts will not be affected by this. &nbsp; <a href=\'javascript:$(".dw-alert-message").remove();dw.backend.setUserData({"downtime-notice-20171019": 1})\'><i class="fa fa-fw fa-check"></i>Got it!</a>';
+    }
+
     foreach ($headlinks as $i => $link) {
         if ($link == 'divider') continue;
         $headlinks[$i]['active'] = $headlinks[$i]['id'] == $active;

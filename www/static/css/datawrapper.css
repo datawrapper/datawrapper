@@ -2297,8 +2297,8 @@ body.dw h1 {
   padding: 10px;
   width: 100%;
   z-index: 10000;
-  background: #210;
-  color: #ffb;
+  background: #e8e0c0;
+  color: #333;
   text-align: center;
 }
 .dw-alert-message h2,
@@ -2320,6 +2320,10 @@ body.dw h1 {
   font-size: 14px;
   color: #ff6;
   border: 0;
+}
+.dw-alert-message a {
+  font-weight: bold;
+  text-decoration: underline;
 }
 html h2 {
   font-size: 24px;

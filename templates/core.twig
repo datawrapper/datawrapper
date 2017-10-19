@@ -89,9 +89,14 @@
 
     {% if maintenance == true %}
         <div style="height:100%; width:100%; overflow:hidden; z-index:10000; position: absolute; top:0;left:0; background:#fff; text-align:center;">
-          <div style="width:500px; display:inline-block; margin-top:100px;">
-              <h1>Datawrapper is undergoing some maintenance.</h1>
+          <div style="width:620px; display:inline-block; margin-top:100px;">
+              {#
+              <h1>Datawrapper is undergoing some maintanance</h1>
               <h2>We'll be right back. (Your charts are unaffected by this, they always stay online.)</h2>
+              #}
+              <h1>We apologize for the inconvenience!</h1>
+              <h2>We're moving our database to a faster server.<br>Datawrapper will be back around 2.30 am (CEST).<br>Your charts are unaffected by this, they always stay online.</h2>
+              <p>You can check our <a href="https://twitter.com/datawrapper">Twitter account</a> for status updates</p>
           </div>
         </div>
     {% endif %}
