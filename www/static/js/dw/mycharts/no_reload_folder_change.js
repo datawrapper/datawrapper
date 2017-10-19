@@ -91,6 +91,22 @@ define(function(require) {
         set_click('#folder-sequence a');
     }
 
+    function searchSpecialRender() {
+        $('ul.subfolders').hide();
+        $('.gallery hr').hide();
+        $('#current-folder > *').not('#current-folder-name').hide();
+        $('ul.folders-left li.active').removeClass('active');
+        $('#current-folder-name').text('Search');
+    }
+
+    function normalRepaint() {
+        $('ul.subfolders').show();
+        $('.gallery hr').show();
+        $('#current-folder > *').not('#current-folder-name').show();
+        repaint_breadcrumb();
+        repaint_subfolders();
+    }
+
     function reloadLink(path) {
         var url, params,
             sort = cft.getCurrentSort();
@@ -100,10 +116,8 @@ define(function(require) {
         path = path[0];
         params = url.searchParams;
 
-        if (sort)
+        if (sort && !cft.isSearchActive())
             params.set('sort', sort);
-        if (params.get('q'))
-            path = twig.globals.strings.mycharts_base;
 
         params.set('xhr', 1);
         if (!params.entries().next().done)
@@ -114,12 +128,16 @@ define(function(require) {
             .load(path, function() {
                 var id = link_reader(path);
 
-                if (id)
-                    cft.setCurrentFolder(id.folder, id.org);
                 window.history.pushState(null, '', path.slice(0, path.lastIndexOf('xhr=1') - 1));
 
-                repaint_subfolders();
-                repaint_breadcrumb();
+                if (id)
+                    cft.setCurrentFolder(id.folder, id.org);
+
+                if (cft.isSearchActive())
+                    searchSpecialRender();
+                else
+                    normalRepaint();
+
                 set_click('div.pagination li a');
                 set_click('.mycharts-chart-list h3 a');
 
@@ -136,6 +154,8 @@ define(function(require) {
             .on('click', function(evt) {
                 var path = $(evt.currentTarget).attr('href');
                 evt.preventDefault();
+                if (!$(evt.currentTarget).hasClass('pagination'))
+                    cft.setSearchDisabled();
                 reloadLink(path);
             });
     }
@@ -167,6 +187,7 @@ define(function(require) {
         reenableClicks: reenableClicks,
         setDragNDropCallback: setDragNDropCallback,
         repaintBreadcrumb: repaint_breadcrumb,
-        repaintSubfolders: repaint_subfolders
+        repaintSubfolders: repaint_subfolders,
+        searchSpecialRender: searchSpecialRender
     };
 });
