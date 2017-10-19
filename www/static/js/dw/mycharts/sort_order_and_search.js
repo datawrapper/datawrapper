@@ -49,12 +49,15 @@ define(function(require) {
                 search_url = new URL(location.origin + '/search' + location.search),
                 query = q.val().trim();
 
-            cft.setSearchActive(base_url, query);
-            set_active(cft.getCurrentSort());
-            search_url.searchParams.delete('sort');
-            search_url.searchParams.set('q', query);
-            console.log(search_url.toString());
-            no_reload_folder_change.reloadLink(search_url.toString());
+            if (query !== '') {
+                cft.setSearchActive(base_url, query);
+                set_active(cft.getCurrentSort());
+                search_url.searchParams.delete('sort');
+                search_url.searchParams.set('q', query);
+                no_reload_folder_change.reloadLink(search_url.toString());
+            } else {
+                no_reload_folder_change.reloadLink(cft.getSearchParams().base_url.toString());
+            }
         }, 1000));
     }
 

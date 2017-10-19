@@ -228,14 +228,14 @@ define(function(require) {
             this.current_folder_funcs();
         },
         setSearchActive: function(base_url, q) {
-            this.search = {
-                active: true,
-                base_url: base_url,
-                query: q
-            };
+            this.search.active = true;
+            if (!this.search.base_url)
+                this.search.base_url = base_url;
+            this.search.query = q;
         },
         setSearchDisabled: function() {
             this.search.active = false;
+            this.search.base_url = null;
         },
         isSearchActive: function() {
             return this.search.active;
