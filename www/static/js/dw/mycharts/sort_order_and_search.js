@@ -45,15 +45,23 @@ define(function(require) {
 
     var q = $('.search-query')
         .on('keyup', _.throttle(function() {
-            var url = new URL(location.origin + location.pathname + location.search);
+            var base_url = new URL(location.origin + location.pathname + location.search),
+                search_url = new URL(location.origin + '/search' + location.search),
+                query = q.val().trim();
 
-            url.searchParams.set('q', q.val().trim());
-            no_reload_folder_change.reloadLink(url.toString());
+            cft.setSearchActive(base_url, query);
+            set_active(cft.getCurrentSort());
+            search_url.searchParams.delete('sort');
+            search_url.searchParams.set('q', query);
+            console.log(search_url.toString());
+            no_reload_folder_change.reloadLink(search_url.toString());
         }, 1000));
     }
 
     return function() {
         cft = window['ChartFolderTree'];
+        if (location.pathname.startsWith('/search'))
+            no_reload_folder_change.searchSpecialRender();
         attatch_functions();
         set_active();
     };
