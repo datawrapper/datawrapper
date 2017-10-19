@@ -92,6 +92,8 @@ define(function(require) {
     }
 
     function searchSpecialRender() {
+        $('#sort-dropdown').attr('disabled', 'true');
+        $('#sort-dropdown').removeAttr('data-toggle');
         $('ul.subfolders').hide();
         $('.gallery hr').hide();
         $('#current-folder > *').not('#current-folder-name').hide();
@@ -100,6 +102,8 @@ define(function(require) {
     }
 
     function normalRepaint() {
+        $('#sort-dropdown').removeAttr('disabled');
+        $('#sort-dropdown').attr('data-toggle','dropdown');
         $('input.search-query').val('');
         $('ul.subfolders').show();
         $('.gallery hr').show();
