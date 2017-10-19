@@ -1,4 +1,4 @@
-define(function(require) {
+define(function() {
     return {
         fail: function(err) {
             alert('API Error');

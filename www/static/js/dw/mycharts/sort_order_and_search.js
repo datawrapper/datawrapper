@@ -1,9 +1,6 @@
 define(function(require) {
     var $ = require('jquery'),
-        twig = require('./twig_globals'),
-        multiselection = require('./multiselection'),
         no_reload_folder_change = require('./no_reload_folder_change'),
-        generic_chart_functions = require('./generic-chart-functions'),
         cft;
 
     function set_active(sort) {

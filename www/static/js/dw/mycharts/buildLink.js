@@ -1,5 +1,5 @@
 define(function(require) {
-    var twig = twig = require('./twig_globals');
+    var twig = require('./twig_globals');
 
     return function buildLink(id, page) {
         var link = '';

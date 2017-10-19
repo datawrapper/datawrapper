@@ -49,10 +49,10 @@ define(function(require) {
     }
 
     function repaint_subfolders() {
-        var id = cft.getCurrentFolder();
+        var id = cft.getCurrentFolder(),
+            subfolders = $('ul.subfolders');
 
         $('ul.subfolders li.span2').not('.add-button').remove();
-        subfolders = $('ul.subfolders');
 
         if (id.folder) {
             cft.getSubFolders(id.folder).forEach(function(folder) {

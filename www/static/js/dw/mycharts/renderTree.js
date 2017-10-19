@@ -26,7 +26,7 @@ define(function(require) {
             $('ul.folders-left li[folder-id="' + folder_id + '"]').addClass('active');
         } else {
             var tag = (org_id) ? '#org-root' + getOrgTag(org_id) : '#user-root';
-            $(tag).addClass('active')
+            $(tag).addClass('active');
         }
     }
 
@@ -67,5 +67,5 @@ define(function(require) {
             renderSubtree: renderSubtree
         });
         cft.reRenderTree();
-    }
+    };
 });

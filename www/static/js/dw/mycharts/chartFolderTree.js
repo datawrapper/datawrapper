@@ -1,4 +1,4 @@
-define(function(require) {
+define(function() {
 
     var ChartFolderTree = function(raw_folders, current) {
         this.tree = genTree(raw_folders);
@@ -6,11 +6,13 @@ define(function(require) {
         this.current = current;
         this.rendercallbacks = {};
         this.current_folder_funcs = {};
-        this.search = { active: false }
+        this.search = { active: false };
         this.dropcallback = function(){};
     };
 
     function genTree(raw) {
+        var tree;
+
         raw.forEach(function(group) {
             if (group.type === "user")
                 group.organization = false;
@@ -28,7 +30,7 @@ define(function(require) {
                     folder.sub = false;
             });
             group.folders = group.folders.filter(function(folder) {
-                return (folder.parent == null) ? true : false;
+                return (folder.parent === null) ? true : false;
             });
         });
 
@@ -49,7 +51,7 @@ define(function(require) {
                 var new_path_obj = {
                     strings: path_obj.strings.concat(folder.name),
                     ids: path_obj.ids.concat(folder.id)
-                }
+                };
                 folder.sub.forEach(function(sub_folder) {
                     traverse(sub_folder, new_path_obj);
                 });

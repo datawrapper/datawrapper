@@ -32,7 +32,7 @@ define(function(require) {
             ev.dataTransfer.dropEffect = "move";
         });
 
-        charts.on('dragend', function(e) {
+        charts.on('dragend', function() {
             $('.chart-move-message').remove();
             $('ul.folders-left li').removeClass('dragtar');
             $('.custom-drag-image').remove();
@@ -45,8 +45,7 @@ define(function(require) {
         folders.on('dragstart', function(e) {
             var ev = e.originalEvent,
                 tar = e.currentTarget,
-                href = $(tar).find('a').attr('href'),
-                folder_id = parseInt($(tar).attr('folder-id'))
+                folder_id = parseInt($(tar).attr('folder-id'));
 
             drag_data = {
                 type: 'folder',
@@ -57,7 +56,7 @@ define(function(require) {
             ev.dataTransfer.dropEffect = "move";
         });
 
-        folders.on('dragend', function(e) {
+        folders.on('dragend', function() {
             $('.chart-move-message').remove();
             $('ul.folders-left li').removeClass('dragtar');
         });
@@ -114,7 +113,7 @@ define(function(require) {
     function prepareChartTarget(id) {
         if (id.folder) return id.folder;
         else if (id.organization) return 'root/' + id.organization;
-        else return 'root'
+        else return 'root';
     }
 
     function prepareFolderTarget(id) {
@@ -149,7 +148,7 @@ define(function(require) {
             var trans;
             try {
                 trans = JSON.parse(e.originalEvent.dataTransfer.getData('application/json'));
-            } catch(e) {
+            } catch(err) {
                 trans = false;
             }
             return trans;

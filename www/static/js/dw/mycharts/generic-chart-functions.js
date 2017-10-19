@@ -26,7 +26,7 @@ define(function(require){
                  $.ajax({
                     url: '/api/charts/'+id,
                     type: 'DELETE',
-                    success: function(data) {
+                    success: function() {
                         chart.remove();
                         cft.removeChartFromCurrent(false);
                     }
