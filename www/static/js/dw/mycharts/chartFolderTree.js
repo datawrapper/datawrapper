@@ -296,7 +296,7 @@ define(function() {
 
             moved_folder_obj.parent = dest.folder;
             moved_folder_obj.organization = dest.organization;
-            this.list = genList();
+            this.list = genList(this.tree);
         },
         addFolder: function(folder) {
             var dest_folder_obj = (folder.parent) ? this.getFolderById(folder.parent) : this.getRoot(folder.organization),
@@ -310,7 +310,7 @@ define(function() {
             dest_array.sort(function(a, b) {
                 return a.name.localeCompare(b.name);
             });
-            this.list = genList();
+            this.list = genList(this.tree);
         },
         deleteFolder: function(delme) {
             var current = (typeof this.list[delme.folder] !== "undefined") ? this.list[delme.folder].folder : false,
@@ -333,7 +333,7 @@ define(function() {
                 }
             }
             parent_folder_obj.charts += current.charts; 
-            this.list = genList();
+            this.list = genList(this.tree);
         },
         moveNChartsTo: function(num, dest) {
             var folder;
