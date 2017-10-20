@@ -84,8 +84,8 @@ define(function(require) {
             }),
             dataType: 'JSON'
         }).done(function() {
-            no_reload_folder_change.reloadLink(location.href);
             cft.moveNChartsTo(charts, id);
+            no_reload_folder_change.reloadLink(location.href);
         }).fail(handler.fail);
     }
 
