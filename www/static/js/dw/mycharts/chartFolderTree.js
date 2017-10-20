@@ -338,15 +338,6 @@ define(function() {
                 }
             }
 
-            chart_ids.forEach(function(id) {
-                var chart = this.charts[id];
-
-                if (chart.inFolder == current.id && chart.organizationId == current.organization) {
-                    chart.inFolder = (parent_folder_obj.id) ? parent_folder_obj.id : false;
-                    chart.organizationId = (parent_folder_obj.organization.id) ? parent_folder_obj.organization.id : parent_folder_obj.organization;
-                }
-            }, this);
-
             parent_folder_obj.charts += current.charts; 
             this.list = genList(this.tree);
         },
