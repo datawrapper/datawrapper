@@ -43,10 +43,9 @@ class DatawrapperSession {
         if(!session_id()) session_regenerate_id();
 
         // Reset the expiration time upon page load
-        if (isset($_COOKIE[$ses]))
+        if (isset($_COOKIE[$ses])) {
             setcookie($ses, $_COOKIE[$ses], time() + $lifetime, "/");
-
-
+        }
     }
 
     /**
@@ -188,6 +187,10 @@ class DatawrapperSession {
 
     public static function getUser() {
         return self::getInstance()->user;
+    }
+
+    public static function setUser($user) {
+        self::getInstance()->user = $user;
     }
 
     public static function login($user, $keepLoggedIn = true, $dontLog = false) {

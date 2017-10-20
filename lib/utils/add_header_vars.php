@@ -199,12 +199,12 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
         $page['custom_logo'] = $logos[0];
     }
 
+    $page['alertMessage'] = '';
     if ($user->isAdmin()) {
         $plugin_status = check_plugins();
-        $page['alertMessage'] = '';
         if (!empty($plugin_status)) $page['alertMessage'] .= $plugin_status;
-        if (isset($GLOBALS['dw_alert'])) $page['alertMessage'] .= $GLOBALS['dw_alert'];
     }
+    if (isset($GLOBALS['dw_alert'])) $page['alertMessage'] .= $GLOBALS['dw_alert'];
 
     foreach ($headlinks as $i => $link) {
         if ($link == 'divider') continue;
