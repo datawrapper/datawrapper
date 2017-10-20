@@ -9,7 +9,7 @@ define(function() {
         this.current_folder_funcs = {};
         this.search = { active: false };
         this.dropcallback = function(){};
-    };
+    }
 
     function genTree(raw) {
         raw.forEach(function(group) {
@@ -316,7 +316,8 @@ define(function() {
         deleteFolder: function(delme) {
             var current = (typeof this.list[delme.folder] !== "undefined") ? this.list[delme.folder].folder : false,
                 parent = (current) ? this.list[delme.folder].folder.parent : false,
-                parent_folder_obj = (parent) ? this.getFolderById(parent) : this.getRoot(delme.organization);
+                parent_folder_obj = (parent) ? this.getFolderById(parent) : this.getRoot(delme.organization),
+                chart_ids = Object.keys(this.charts);
 
             if (parent_folder_obj.id) {
                 parent_folder_obj.sub = parent_folder_obj.sub.filter(function(folder) {
@@ -333,6 +334,16 @@ define(function() {
                     parent_folder_obj.folders = false;
                 }
             }
+
+            chart_ids.forEach(function(id) {
+                var chart = this.charts[id];
+
+                if (chart.inFolder == current.id && chart.organizationId == current.organization) {
+                    chart.inFolder = (parent_folder_obj.id) ? parent_folder_obj.id : false;
+                    chart.organizationId = (parent_folder_obj.organization.id) ? parent_folder_obj.organization.id : parent_folder_obj.organization;
+                }
+            }, this);
+
             parent_folder_obj.charts += current.charts; 
             this.list = genList(this.tree);
         },
