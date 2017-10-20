@@ -17,9 +17,10 @@ define(function(require) {
         twig.init(obj);
 
         $('document').ready(function() {
-            window['ChartFolderTree'] = new chartFolderTree(twig.globals.preload, twig.globals.current);
+            window['ChartFolderTree'] = new chartFolderTree(twig.globals.preload, twig.globals.current, twig.globals.charts);
             delete twig.globals.preload;
             delete twig.globals.current;
+            delete twig.globals.charts;
             cft = window['ChartFolderTree'];
             renderTree();
             no_reload_folder_change.init();

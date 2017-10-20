@@ -1,9 +1,10 @@
 define(function() {
 
-    function ChartFolderTree(raw_folders, current) {
+    function ChartFolderTree(raw_folders, current, charts) {
         this.tree = genTree(raw_folders);
         this.list = genList(this.tree);
         this.current = current;
+        this.charts = charts;
         this.rendercallbacks = {};
         this.current_folder_funcs = {};
         this.search = { active: false };
