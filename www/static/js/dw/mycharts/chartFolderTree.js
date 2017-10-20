@@ -73,15 +73,8 @@ define(function() {
 
 
     ChartFolderTree.prototype = {
-        getRoot: function(org_id) {
-            if (!org_id)
-                org_id = false;
-            return this.tree.filter(function(group) {
-                return (group.organization) ? (group.organization.id === org_id) : (group.organization == org_id);
-            })[0];
-        },
         debugTree: function() {
-            console.log(this.tree, this.list);
+            console.log(this.tree, this.list, this.charts);
         },
         getFolderById: function(f_id) {
             return (typeof this.list[f_id] !== "undefined") ? this.list[f_id].folder : false;
@@ -158,6 +151,13 @@ define(function() {
         hasSubFolders: function(f_id) {
             var subfolders = (typeof this.list[f_id] !== "undefined") ? this.list[f_id].folder.sub : false;
             return (subfolders);
+        },
+        getRoot: function(org_id) {
+            if (!org_id)
+                org_id = false;
+            return this.tree.filter(function(group) {
+                return (group.organization) ? (group.organization.id === org_id) : (group.organization == org_id);
+            })[0];
         },
         getRootSubFolders: function(org_id) {
             var subfolders;
@@ -336,19 +336,26 @@ define(function() {
             parent_folder_obj.charts += current.charts; 
             this.list = genList(this.tree);
         },
-        moveNChartsTo: function(num, dest) {
-            var folder;
+        moveNChartsTo: function(charts, dest) {
+            var num = charts.length,
+                folder;
 
+            console.log(charts);
             folder = (dest.folder) ? this.list[dest.folder].folder : this.getRoot(dest.organization);
             folder.charts += num;
             this.rendercallbacks.changeChartCount(dest.folder, dest.organization, folder.charts);
 
-            folder = (this.current.folder) ? this.list[this.current.folder].folder : this.getRoot(this.current.organization);
-            folder.charts -= num;
-            this.rendercallbacks.changeChartCount(this.current.folder, this.current.organization, folder.charts);
+            charts.forEach(function(id) {
+                var chart = this.charts[id];
+
+                folder = (chart.inFolder) ? this.list[chart.inFolder].folder : this.getRoot(chart.organizationId);
+                folder.charts--;
+                this.rendercallbacks.changeChartCount(chart.inFolder, chart.organizationId, folder.charts);
+            }, this);
         },
-        removeChartFromCurrent: function() {
+        removeChartFromCurrent: function(chart_id) {
             var folder = (this.current.folder) ? this.list[this.current.folder].folder : this.getRoot(this.current.organization);
+            delete this.charts[chart_id];
             this.rendercallbacks.changeChartCount(this.current.folder, this.current.organization, --folder.charts);
         }
     };

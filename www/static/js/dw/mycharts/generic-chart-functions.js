@@ -28,7 +28,7 @@ define(function(require){
                     type: 'DELETE',
                     success: function() {
                         chart.remove();
-                        cft.removeChartFromCurrent(false);
+                        cft.removeChartFromCurrent(id);
                     }
                 });
             }
