@@ -1,6 +1,5 @@
 {% use "utils.twig" %}
 
-{% if user.hasCharts %}
     {% if num_charts == 0 %}
         <h3 class="no-charts">{{ "mycharts / empty-folder" | trans | replace({'%folder%':current.folder}) | raw }}</h3>
     {% endif %}
@@ -46,11 +45,5 @@
         </ul>
 
     {% endfor %}
-    {% else %}
-
-    <h2>{% trans "No charts here, yet" %}</h2>
-    <p>{% trans "Why not <a href='/chart/create'>create a new chart now</a>?" %}</p>
-
-{% endif %}
 
 {{ block('pagination') }}

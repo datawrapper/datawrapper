@@ -71,39 +71,37 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
 
         header_nav_hook($headlinks, 'settings');
 
-        if ($user->hasCharts()) {
-            $headlinks[] = 'divider';
+        $headlinks[] = 'divider';
 
-            $org = $user->getCurrentOrganization();
-            // mycharts
-            $mycharts_link = array(
-                'url' => empty($org) ? '/mycharts/' : '/team/'.$org->getId().'/',
-                'id' => 'mycharts',
-                'title' => empty($org) ? __('My Charts') : __('Team Charts'),
-                //'justicon' => true,
-                'icon' => 'fa fa-bar-chart-o',
+        $org = $user->getCurrentOrganization();
+        // mycharts
+        $mycharts_link = array(
+            'url' => empty($org) ? '/mycharts/' : '/team/'.$org->getId().'/',
+            'id' => 'mycharts',
+            'title' => empty($org) ? __('My Charts') : __('Team Charts'),
+            //'justicon' => true,
+            'icon' => 'fa fa-bar-chart-o',
+        );
+        $mycharts = array(
+            'url' => '/mycharts/',
+            'id' => 'mycharts_dd',
+            'title' => '',
+            //'justicon' => true,
+            'icon' => 'fa  fa-caret-down',
+            'dropdown' => array()
+        );
+        foreach ($user->getRecentCharts(9) as $chart) {
+            $mycharts['dropdown'][] = array(
+                'url' => '/'.$chart->getNamespace().'/'.$chart->getId().'/visualize#tell-the-story',
+                'title' => '<div style="height:20px; width:30px; position:absolute; left:10px;top:4px;'.
+			'background-image:url('.$chart->thumbUrl(true).'); background-size:cover;"></div>'
+                    . '<span>' . strip_tags($chart->getTitle()) . '</span>'
             );
-            $mycharts = array(
-                'url' => '/mycharts/',
-                'id' => 'mycharts_dd',
-                'title' => '',
-                //'justicon' => true,
-                'icon' => 'fa  fa-caret-down',
-                'dropdown' => array()
-            );
-            foreach ($user->getRecentCharts(9) as $chart) {
-                $mycharts['dropdown'][] = array(
-                    'url' => '/'.$chart->getNamespace().'/'.$chart->getId().'/visualize#tell-the-story',
-                    'title' => '<div style="height:20px; width:30px; position:absolute; left:10px;top:4px;'.
-				'background-image:url('.$chart->thumbUrl(true).'); background-size:cover;"></div>'
-                        . '<span>' . strip_tags($chart->getTitle()) . '</span>'
-                );
-            }
-            $mycharts['dropdown'][] = 'divider';
-            $mycharts['dropdown'][] = array('url' => '/mycharts/', 'title' => __('All charts'));
-            $headlinks[] = $mycharts_link;
-            $headlinks[] = $mycharts;
         }
+        $mycharts['dropdown'][] = 'divider';
+        $mycharts['dropdown'][] = array('url' => '/mycharts/', 'title' => __('All charts'));
+        $headlinks[] = $mycharts_link;
+        $headlinks[] = $mycharts;
 
         header_nav_hook($headlinks, 'mycharts');
 
