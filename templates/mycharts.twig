@@ -119,7 +119,7 @@
                 <option {% if user == user2 %}selected="selected" {% endif %}value="{{ user.id }}">{{ user.email }}</option>
                 {% endfor %}
             </select>
-            <script type="text/javascript">
+        <script type="text/javascript">
             $('#switch_user').change(function(e) {
                 e.preventDefault();
                 location.href = '/admin/charts/' + $('#switch_user').val();
