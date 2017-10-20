@@ -238,6 +238,17 @@ function mycharts_group_by_folder($charts, $user) {
     return $groups;
 }
 
+function prepare_short_arrays($charts) {
+    $shorty = [];
+
+    foreach ($charts as $chart) {
+        $flat = $chart->shortArray();
+        $shorty[$flat['id']] = $flat;
+        unset($shorty[$flat['id']]['id']);
+    }
+
+    return $shorty;
+}
 
 function mycharts_get_user_charts(&$page, $app, $user, $folder_id = false, $org_id = false, $query = false) {
     $curPage = $app->request()->params('page');
@@ -301,7 +312,7 @@ function mycharts_get_user_charts(&$page, $app, $user, $folder_id = false, $org_
     }
 
     // save result to page
-    $page['charts'] = $charts;
+    $page['charts'] = prepare_short_arrays($charts);
     $page['num_charts'] = count($charts);
     $page['chart_groups'] = $grouped;
     add_pagination_vars($page, $total, $curPage, $perPage, empty($q) ? '' : '&q='.$q);
