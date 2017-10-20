@@ -76,6 +76,9 @@ define(function() {
         debugTree: function() {
             console.log(this.tree, this.list, this.charts);
         },
+        updateCharts: function(charts) {
+            this.charts = charts;
+        },
         getFolderById: function(f_id) {
             return (typeof this.list[f_id] !== "undefined") ? this.list[f_id].folder : false;
         },

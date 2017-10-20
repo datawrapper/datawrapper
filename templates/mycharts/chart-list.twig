@@ -47,3 +47,9 @@
     {% endfor %}
 
 {{ block('pagination') }}
+
+{% if not title is defined %}
+        <script type="text/javascript">
+            cft.updateCharts({{ charts | json | raw }});
+        </script>
+{% endif %}
