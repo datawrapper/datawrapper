@@ -17,7 +17,7 @@
         </li>
     {% else %}
         <li>
-            <a {% if slink.data %}{% for k,v in slink.data %}data-{{ k }}="{{ v }}" {% endfor %}{% endif %}href="{{ slink.url }}">{%if slink.icon %}<i class="{{ slink.icon }}"></i>
+            <a {% if slink.data %}{% for k,v in slink.data %}data-{{ k }}="{{ v }}" {% endfor %}{% endif %}{% if slink.url %}href="{{ slink.url }}"{% else %} class="group"{% endif %}>{%if slink.icon %}<i class="{{ slink.icon }}"></i>
              {% endif %}{{ slink.title | raw }}</a>
         </li>
     {% endif %}

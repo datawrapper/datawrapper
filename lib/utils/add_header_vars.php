@@ -172,15 +172,43 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
         // admin link
         if ($user->isLoggedIn() && $user->isAdmin()
             && DatawrapperHooks::hookRegistered(DatawrapperHooks::GET_ADMIN_PAGES)) {
-            $acc["dropdown"][] = 'divider';
-            $acc["dropdown"][] = array(
+            $adminLink = array(
                 'url' => '/admin',
                 'id' => 'admin',
                 'title' => '&nbsp; Admin',
-                'icon' => 'fa fa-gears',
+                'icon' => 'fa fa-magic',
                 'justicon' => true,
-                'tooltip' => __('Admin')
+                'tooltip' => __('Admin'),
+                'dropdown' => [
+                ]
             );
+            $adm_pgs = DatawrapperHooks::execute(DatawrapperHooks::GET_ADMIN_PAGES);
+            // // order admin pages by index "order"
+            usort($adm_pgs, function($a, $b) {
+                return (isset($a['order']) ? $a['order'] : 9999) - (isset($b['order']) ? $b['order'] : 9999);
+            });
+            $adm_groups = [];
+            foreach ($adm_pgs as $adm_pg) {
+                if (empty($adm_pg['hide'])) {
+                    $adm_group = __('Other');
+                    if (isset($adm_pg['group'])) $adm_group = $adm_pg['group'];
+                    if (!isset($adm_groups[$adm_group])) $adm_groups[$adm_group] = [];
+                    $adm_groups[$adm_group][] = [
+                        'url' => '/admin'.$adm_pg['url'],
+                        'title' => $adm_pg['title'],
+                        'icon' => empty($adm_pg['icon']) ? null : 'fa '.$adm_pg['icon']
+                    ];
+                }
+            }
+            foreach ($adm_groups as $grp => $items) {
+                # code...
+                $adminLink['dropdown'][] = [
+                    'title' => $grp
+                ];
+                foreach ($items as $item) $adminLink['dropdown'][] = $item;
+            }
+            $headlinks[] = $adminLink;
+            $headlinks[] = 'divider';
         }
 
         header_nav_hook($headlinks, 'admin');
