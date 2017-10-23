@@ -8,7 +8,7 @@ define(function() {
         this.rendercallbacks = {};
         this.current_folder_funcs = {};
         this.search = { active: false };
-        this.dropcallback = function(){};
+        this.dndcallback = function(){};
     }
 
     function genTree(raw) {
@@ -253,8 +253,8 @@ define(function() {
         setRenderCallbacks: function(callbacks) {
             this.rendercallbacks = callbacks;
         },
-        setDropCallback: function(callback) {
-            this.dropcallback = callback;
+        setDnDCallback: function(callback) {
+            this.dndcallback = callback;
         },
         reRenderTree: function() {
             var cbs = this.rendercallbacks,
@@ -264,7 +264,7 @@ define(function() {
                 cbs.renderSubtree(group.organization.id, group.folders);
             });
             cbs.changeActiveFolder(cur.folder, cur.organization);
-            this.dropcallback();
+            this.dndcallback();
         },
         moveFolderToFolder: function(moved_id, dest) {
             var moved_folder_obj = this.getFolderById(moved_id),
