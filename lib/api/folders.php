@@ -109,7 +109,7 @@
             ChartQuery::create()->filterById($payload['add'])
                 ->filterByUserAccess($user)
                 ->update($update);
-            Action::logAction($user, 'move-charts', '['.implode(',', $payload['add']).'] --> '.$folder->getFolderId());
+            Action::logAction($user, 'chart/move', '['.implode(',', $payload['add']).'] --> '.$folder->getFolderId());
         }
 
         return $folder;
@@ -155,7 +155,7 @@
         if ($folder instanceof Folder) {
             // not an error
             $folder->save();
-            Action::logAction($user, 'folder-create', $folder->getId());
+            Action::logAction($user, 'folder/create', $folder->getId());
             ok($folder->serialize());
         }
     });
@@ -208,7 +208,7 @@
 
         // delete folder
         $folder->delete();
-        Action::logAction($user, 'folder-delete', $folder->getId());
+        Action::logAction($user, 'folder/delete', $folder->getId());
         ok();
     })->conditions(array('folder_id' => '\d+'));
 
@@ -237,7 +237,7 @@
         ChartQuery::create()->filterById($payload['add'])
             ->filterByUserAccess($user)
             ->update($update);
-        Action::logAction($user, 'move-charts',
+        Action::logAction($user, 'chart/move',
             '['.implode(',', $payload['add']).'] --> '.(!empty($org_id) ? $org_id : '(my charts)'));
         ok();
     });

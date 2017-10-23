@@ -122,7 +122,10 @@ class Chart extends BaseChart {
     }
 
     public function preSave(PropelPDO $con = null) {
-        if ($this->isModified()) $this->setLastModifiedAt(time());
+        if ($this->isModified()) {
+            $this->setLastModifiedAt(time());
+            Action::logAction(DatawrapperSession::getUser(), 'chart/edit', $this->getId());
+        }
         return true;
     }
 
@@ -409,6 +412,8 @@ class Chart extends BaseChart {
             $this->setPublicUrl($this->getLocalUrl());
         }
         $this->save();
+        // log chart publish action
+        Action::logAction(DatawrapperSession::getUser(), 'chart/publish', $this->getId());
     }
 
     /*
