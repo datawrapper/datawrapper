@@ -60,7 +60,7 @@ define(function(require){
 
         $('.chart a.popup').click(function(e) {
             e.preventDefault();
-            var chart = $(e.target).parents('.chart').data('chart');
+            var chart = cft.charts[$(e.target).parents('.chart').data('id')];
             showChartModal(chart);
         });
     };
