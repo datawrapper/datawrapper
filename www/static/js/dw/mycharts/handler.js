@@ -3,6 +3,7 @@ define(function() {
         fail: function(err) {
             alert('API Error');
             console.error(err);
+            location.reload();
         },
         done: function(res) {
             if (res.status == 'error') {
