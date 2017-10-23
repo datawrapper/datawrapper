@@ -90,8 +90,8 @@ define(function(require) {
         $('.mycharts-chart-list ul.thumbnails li.span2.chart').not('.drag-image').each(function(idx, chart) {
             if (charts.filter(function (ele) {
                 if (ele === $(chart).data('id'))
-                    return true
-                return false
+                    return true;
+                return false;
             }).length > 0) {
                 chart.remove();
             }
