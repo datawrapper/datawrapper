@@ -7,6 +7,32 @@ define(function(require) {
         cft,
         drag_data;
 
+    function getMultiDragImage(chart_ids) {
+        var l = chart_ids.length + 5,
+            offset = 10,
+            div = $('<div class="custom-drag-image" />')
+                .css({
+                    position: 'absolute',
+                    top:-1000,
+                    left: -1000,
+                })
+                .appendTo('ul.thumbnails');
+        chart_ids.forEach(function(id, i) {
+            $('.thumbnails li.chart[data-id="'+id+'"]')
+                .clone(false)
+                .css({
+                    position: 'absolute',
+                    zIndex: l-i,
+                    top: (offset*i)+'px',
+                    left: (offset*i)+'px',
+                    opacity: 1 - (i*0.1)
+                })
+                .addClass('drag-image')
+                .appendTo(div);
+        });
+        return div.get(0);
+    }
+
     function enableChartDrag() {
         var charts = $('div.mycharts-chart-list ul.thumbnails li.chart'),
             dragImage;
@@ -39,7 +65,10 @@ define(function(require) {
         });
     }
 
-    function enableFolderDragForJQO(folders) {
+    function enableFolderDrag() {
+        var folders = $('ul.folders-left li').add('ul.subfolders li.span2').not('.add-button,.root-folder');
+        // FIXME: We should disable some more things likely to be dragged, that we don't want to be dragged
+
         folders.find('*').attr('draggable', 'false');
         folders.attr('draggable', 'true');
         folders.on('dragstart', function(e) {
@@ -52,7 +81,7 @@ define(function(require) {
                 id: folder_id
             };
             ev.dataTransfer.setData('application/json', JSON.stringify(drag_data));
-            ev.dataTransfer.setDragImage(tar, 0,0);
+            ev.dataTransfer.setDragImage(tar, 0, 0);
             ev.dataTransfer.dropEffect = "move";
         });
 
@@ -60,17 +89,7 @@ define(function(require) {
             $('.chart-move-message').remove();
             $('ul.folders-left li').removeClass('dragtar');
         });
-    }
-
-    function enableFolderDrag() {
-        enableFolderDragForJQO($('ul.folders-left li').add('ul.subfolders li.span2').not('.add-button,.root-folder'));
-        // FIXME: We should disable some more things likely to be dragged, that we don't want to be dragged
         $('li.root-folder').find('*').attr('draggable', false);
-    }
-
-    function enableDrag() {
-        enableChartDrag();
-        enableFolderDragForJQO($('ul.subfolders li.span2').not('.add-button'));
     }
 
     function moveCharts(charts, target, id) {
@@ -149,9 +168,9 @@ define(function(require) {
     }
 
     function enableDrop() {
-        var drop_targets = $('ul.folders-left li');
+        var drop_targets = $('ul.folders-left li').add('ul.subfolders li.span2').not('.add-button');
 
-        $('ul.folders-left li.root-folder').off();
+        drop_targets.off();
 
         function getTrans(e) {
             var trans;
@@ -241,41 +260,15 @@ define(function(require) {
         });
     }
 
-    function getMultiDragImage(chart_ids) {
-        var l = chart_ids.length + 5,
-            offset = 10,
-            div = $('<div class="custom-drag-image" />')
-                .css({
-                    position: 'absolute',
-                    top:-1000,
-                    left: -1000,
-                })
-                .appendTo('ul.thumbnails');
-        chart_ids.forEach(function(id, i) {
-            $('.thumbnails li.chart[data-id="'+id+'"]')
-                .clone(false)
-                .css({
-                    position: 'absolute',
-                    zIndex: l-i,
-                    top: (offset*i)+'px',
-                    left: (offset*i)+'px',
-                    opacity: 1 - (i*0.1)
-                })
-                .addClass('drag-image')
-                .appendTo(div);
-        });
-        return div.get(0);
+    function enableDnD() {
+        enableDrop();
+        enableChartDrag();
+        enableFolderDrag();
     }
 
     return function() {
-        enableChartDrag();
-        enableFolderDrag();
-        enableDrop();
-        no_reload_folder_change.setDragNDropCallback(enableDrag);
+        enableDnD();
         cft = window['ChartFolderTree'];
-        cft.setDropCallback(function(){
-            enableDrop();
-            enableFolderDrag();
-        });
+        cft.setDnDCallback(enableDnD);
     };
 });
