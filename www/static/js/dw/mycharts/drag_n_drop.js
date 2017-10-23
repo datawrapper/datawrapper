@@ -87,6 +87,15 @@ define(function(require) {
             cft.moveNChartsTo(charts, id);
             no_reload_folder_change.reloadLink(location.href);
         }).fail(handler.fail);
+        $('.mycharts-chart-list ul.thumbnails li.span2.chart').not('.drag-image').each(function(idx, chart) {
+            if (charts.filter(function (ele) {
+                if (ele === ($(chart).data('id')))
+                    return true
+                return false
+            }).length > 0) {
+                chart.remove();
+            }
+        });
     }
 
     function moveFolder(folder, target, id) {
@@ -252,6 +261,7 @@ define(function(require) {
                     left: (offset*i)+'px',
                     opacity: 1 - (i*0.1)
                 })
+                .addClass('drag-image')
                 .appendTo(div);
         });
         return div.get(0);
