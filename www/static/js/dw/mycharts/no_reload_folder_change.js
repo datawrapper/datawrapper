@@ -3,7 +3,6 @@ define(function(require) {
         twig = require('./twig_globals'),
         multiselection = require('./multiselection'),
         generic_chart_functions = require('./generic-chart-functions'),
-        drag_n_drop_callback = false,
         cft;
 
     function link_reader(link) {
@@ -149,8 +148,8 @@ define(function(require) {
                 multiselection.init();
                 generic_chart_functions();
                 cft.updateCurrentFolderFuncs();
-                if (drag_n_drop_callback) drag_n_drop_callback();
                 chart_list.removeClass('reloading');
+                cft.dndcallback();
             });
     }
 
@@ -181,16 +180,11 @@ define(function(require) {
         set_click('div.pagination li a');
     }
 
-    function setDragNDropCallback(func) {
-        drag_n_drop_callback = func;
-    }
-
     return {
         init: init,
         enable_for_selector: set_click,
         reloadLink: reloadLink,
         reenableClicks: reenableClicks,
-        setDragNDropCallback: setDragNDropCallback,
         repaintBreadcrumb: repaint_breadcrumb,
         repaintSubfolders: repaint_subfolders,
         searchSpecialRender: searchSpecialRender
