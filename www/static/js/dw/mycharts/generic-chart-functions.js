@@ -1,10 +1,11 @@
 define(function(require){
     var $ = require('jquery'),
         twig = require('./twig_globals'),
+        showChartModal = require('./showChartModal'),
         cft;
 
     return function() {
-        cft = window['ChartFolderTree'];
+        cft = window.ChartFolderTree;
         if (twig.globals.user2) {
             $('.thumbnail > a').click(function(e) {
                 e.preventDefault();
@@ -55,6 +56,12 @@ define(function(require){
                     }
                 }
             });
+        });
+
+        $('.chart a.popup').click(function(e) {
+            e.preventDefault();
+            var chart = $(e.target).parents('.chart').data('chart');
+            showChartModal(chart);
         });
     };
 });

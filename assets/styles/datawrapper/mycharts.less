@@ -311,3 +311,110 @@ body.dw-mycharts {
         }
     }
 }
+
+
+.mycharts-modal {
+    border-radius: 2px;
+    background: #f8f8f8;
+    padding: 25px 25px 28px;
+
+
+    .close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        opacity: 0.2;
+    }
+
+    .close:hover {
+        opacity: 0.5;
+        color: #300;
+        -webkit-transition: opacity .25s linear;
+           -moz-transition: opacity .25s linear;
+            -ms-transition: opacity .25s linear;
+             -o-transition: opacity .25s linear;
+                transition: opacity .25s linear;
+    }
+
+    iframe {
+        border-radius: 5px;
+        border: 10px solid #fff;
+        box-shadow: 0px 0px 1px #aaa;
+    }
+
+    .sidebar {
+        float: right;
+        width: 200px;
+        padding-left: 20px;
+    }
+
+    .chart-id {
+        font-weight: 300;
+        font-size: 32px;
+        margin: 10px 0 20px;
+        color: #aaa;
+        font-family: Courier New;
+    }
+
+    label {
+        font-weight: bold;
+        margin-bottom: 0;
+    }
+
+    .sidebar ul {
+        margin-top: 20px;
+    }
+    .sidebar ul li {
+        margin-bottom: 10px;
+    }
+    .sidebar .public-url {
+        overflow: hidden;
+        display: inline-block;
+        width: 100%;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .embed-code {
+        position: absolute;
+        top: 25px;
+        left: 25px;
+        padding: 10px;
+        background: rgba(80,80,80,.7);
+        border-radius: 5px;
+    }
+
+    .embed-code div {
+        background: #444;
+        color: #fff;
+        margin: 30px;
+        padding: 20px;
+        border-radius: 2px;
+        box-shadow: 0 0 25px #444;
+    }
+
+    .btn.embed .embed-hide {
+        display: none;
+    }
+
+    .btn.embed.embed-shown .embed-hide {
+        display: inline;
+    }
+
+    .btn.embed.embed-shown .embed-show {
+        display: none;
+    }
+}
+
+
+
+#mycharts-modal {
+    width: 622px;
+    margin-left: -311px;
+
+    iframe {
+        width: 100%;
+        height: 300px;
+        border: 0;
+    }
+}

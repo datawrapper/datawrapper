@@ -155,5 +155,62 @@
     });
 </script>
 
+<div id="mycharts-modal" class="hidden">
+    <div class="mycharts-modal" style="[[ wrapperW ]]" data-user-id="{{ user.id }}" data-is-gfxed="{{ user.isGraphicEditor or user.isAdmin }}">
+        <a class="close" href="#close">✕</a>
+        <div class="sidebar">
+            {# Sidebar #}
+            <div class="chart-id">[[ chartID ]]</div>
+
+            <label>{% trans "Author" %}</label>
+            <p>[[ author ]]</p>
+
+            <label>{% trans "Created" %}</label>
+            <p>[[ createdAt ]]</p>
+
+            <div class="forked">
+                <label>{% trans "Copied from" %}</label>
+                <p><a href="#[[ forkedFrom ]]">[[ forkedFrom ]]</a></p>
+            </div>
+
+            <div class="published">
+                <label>{% trans "Published" %}</label>
+                <p>[[ publishedAt ]]</p>
+
+                <label>{% trans "Public Url" %}</label>
+                <p><a class="public-url" href="[[ publicUrl ]]">[[ publicUrl ]]</a></p>
+            </div>
+
+
+            <ul class="unstyled">
+                <li>
+                    <a href="/[[ namespace ]]/[[ chartID ]]/edit" class="btn btn-edit hidden">
+                        <i class="icon-pencil"></i> {% trans "Edit this chart" %}
+                    </a>
+                </li>
+                <li class="published">
+                    <a class="btn embed hidden">
+                        <i class="icon-share"></i>
+                        <span class="embed-show">{% trans "Show embed code" %}</span>
+                        <span class="embed-hide">{% trans "Hide embed code" %}</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="btn duplicate">
+                        <i class="icon-plus"></i> {% trans "Duplicate this chart" %}
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+        <iframe src="[[ chartUrl ]]" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen="" oallowfullscreen="" msallowfullscreen="" style="background: [[ iframeBg ]]; border-color: [[ iframeBg ]]; width: [[ iframeW ]]px; height: [[ iframeH ]]px"></iframe>
+        <div class="embed-code hidden" style="width:[[ iframeW ]]px; height: [[ iframeH ]]px">
+            <div>&lt;iframe src="[[ publicUrl ]]" frameborder="0" allowtransparency="true" allowfullscreen="allowfullscreen" webkitallowfullscreen="webkitallowfullscreen" mozallowfullscreen="mozallowfullscreen" oallowfullscreen="oallowfullscreen" msallowfullscreen="msallowfullscreen" width="[[ iframeW ]]" height="[[ iframeH ]]" &gt;&lt;/iframe&gt;</div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="/static/vendor/overlay/ender.overlay.js"></script>
+
 {{ parent() }}
 {% endblock %}

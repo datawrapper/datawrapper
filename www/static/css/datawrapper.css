@@ -2189,6 +2189,94 @@ body.dw-mycharts .mycharts-search-wrapper .im.im-x-mark-circle:hover {
 body.dw-mycharts.mycharts-search-results .mycharts-search-wrapper .im.im-x-mark-circle {
   display: inline-block;
 }
+.mycharts-modal {
+  border-radius: 2px;
+  background: #f8f8f8;
+  padding: 25px 25px 28px;
+}
+.mycharts-modal .close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  opacity: 0.2;
+}
+.mycharts-modal .close:hover {
+  opacity: 0.5;
+  color: #300;
+  -webkit-transition: opacity .25s linear;
+  -moz-transition: opacity .25s linear;
+  -ms-transition: opacity .25s linear;
+  -o-transition: opacity .25s linear;
+  transition: opacity .25s linear;
+}
+.mycharts-modal iframe {
+  border-radius: 5px;
+  border: 10px solid #fff;
+  box-shadow: 0px 0px 1px #aaa;
+}
+.mycharts-modal .sidebar {
+  float: right;
+  width: 200px;
+  padding-left: 20px;
+}
+.mycharts-modal .chart-id {
+  font-weight: 300;
+  font-size: 32px;
+  margin: 10px 0 20px;
+  color: #aaa;
+  font-family: Courier New;
+}
+.mycharts-modal label {
+  font-weight: bold;
+  margin-bottom: 0;
+}
+.mycharts-modal .sidebar ul {
+  margin-top: 20px;
+}
+.mycharts-modal .sidebar ul li {
+  margin-bottom: 10px;
+}
+.mycharts-modal .sidebar .public-url {
+  overflow: hidden;
+  display: inline-block;
+  width: 100%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.mycharts-modal .embed-code {
+  position: absolute;
+  top: 25px;
+  left: 25px;
+  padding: 10px;
+  background: rgba(80, 80, 80, 0.7);
+  border-radius: 5px;
+}
+.mycharts-modal .embed-code div {
+  background: #444;
+  color: #fff;
+  margin: 30px;
+  padding: 20px;
+  border-radius: 2px;
+  box-shadow: 0 0 25px #444;
+}
+.mycharts-modal .btn.embed .embed-hide {
+  display: none;
+}
+.mycharts-modal .btn.embed.embed-shown .embed-hide {
+  display: inline;
+}
+.mycharts-modal .btn.embed.embed-shown .embed-show {
+  display: none;
+}
+#mycharts-modal {
+  width: 622px;
+  margin-left: -311px;
+}
+#mycharts-modal iframe {
+  width: 100%;
+  height: 300px;
+  border: 0;
+}
 body {
   background: #fff;
   color: #444;

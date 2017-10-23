@@ -1,0 +1,78 @@
+define(function() {
+
+    _.templateSettings = { interpolate: /\[\[(.+?)\]\]/g };
+    var chartDetailTpl = _.template($('#mycharts-modal').html());
+
+    return function(chart) {
+        // open modal
+        var meta = chart.metadata,
+            bg = meta.publish && meta.publish.background ? meta.publish.background : '#fff',
+            chart_w = Math.max(350, Math.min(650, chart.metadata.publish['embed-width'])),
+            date_fmt = function(d) {
+                d = new Date(d.split(" ")[0]);
+                return Globalize.format(d, 'ddd')+', '+Globalize.format(d, 'd');
+            },
+            data = {
+                chartID: chart.id,
+                namespace: ((chart.type == "d3-maps-choropleth" || chart.type == "d3-maps-symbols") && chart.metadata.visualize["map-type-set"]) ? "map" : "chart",
+                chartUrl: location.protocol + '//' + dw.backend.__domain + '/chart/' + chart.id + '/preview',
+                publicUrl: chart.publicUrl,
+                src: 'src',
+                iframeW: chart_w,
+                iframeH: chart.metadata.publish['embed-height'],
+                iframeBg: bg,
+                wrapperW: chart_w + 260,
+                author: chart.author.email ? chart.author.email : chart.author.name,
+                createdAt: date_fmt(chart.createdAt),
+                publishedAt: chart.publishedAt ? date_fmt(chart.publishedAt) : '—',
+                forkedFrom: chart.forkedFrom ? chart.forkedFrom : false
+            },
+            wrapper = $(chartDetailTpl(data)),
+            userId = wrapper.data('is-writable'),
+            isGfxEd = wrapper.data('is-gfxed'),
+            overlay = wrapper.overlay({
+                mask: {
+                    opacity: 0.8,
+                    color: '#222'
+                }
+            });
+        $('.close', wrapper).click(function(e) {
+            e.preventDefault();
+            overlay.close();
+        });
+        $('.duplicate', wrapper).click(function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: '/api/charts/'+chart.id+'/copy',
+                type: 'POST',
+                success: function(data) {
+                    if (data.status == "ok") {
+                        // redirect to copied chart
+                        location.href = '/chart/'+data.data.id+'/edit';
+                    } else {
+                        console.warn(data);
+                    }
+                }
+            });
+        });
+        $('.embed', wrapper).click(function(e) {
+            e.preventDefault();
+            $('.embed-code', wrapper).toggleClass('hidden');
+            $('.embed', wrapper).toggleClass('embed-shown');
+        });
+        $('.btn-edit', wrapper).removeClass('hidden');
+        if (!chart.publishedAt) $('.published', wrapper).remove();
+        if (!chart.forkedFrom) $('.forked', wrapper).remove();
+        else {
+            $('.forked a', wrapper).click(function(e) {
+                // navigate to source chart
+                e.preventDefault();
+                $.getJSON('/api/charts/' + chart.forkedFrom, function(res) {
+                    popupChart(res.data);
+                });
+            });
+        }
+        overlay.open();
+    }
+
+});
