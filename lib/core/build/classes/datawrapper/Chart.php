@@ -74,7 +74,6 @@ class Chart extends BaseChart {
             // remove any sensitive user data
             unset($chart['author']);
         }
-
         return $chart;
     }
 

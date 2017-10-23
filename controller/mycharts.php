@@ -242,9 +242,8 @@ function prepare_short_arrays($charts) {
     $shorty = [];
 
     foreach ($charts as $chart) {
-        $flat = $chart->shortArray();
+        $flat = $chart->serialize(true);
         $shorty[$flat['id']] = $flat;
-        unset($shorty[$flat['id']]['id']);
     }
 
     return $shorty;
