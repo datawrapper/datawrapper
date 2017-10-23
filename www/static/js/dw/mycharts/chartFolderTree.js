@@ -345,7 +345,6 @@ define(function() {
             var num = charts.length,
                 folder;
 
-            console.log(charts);
             folder = (dest.folder) ? this.list[dest.folder].folder : this.getRoot(dest.organization);
             folder.charts += num;
             this.rendercallbacks.changeChartCount(dest.folder, dest.organization, folder.charts);
