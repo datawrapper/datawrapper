@@ -88,7 +88,7 @@
   <body class="dw {{ pageClass }} {{ language }}" data-locale="{{ locale }}">
 
     {% if maintenance == true %}
-        <div style="height:100%; width:100%; overflow:hidden; z-index:10000; position: absolute; top:0;left:0; background:#fff; text-align:center;">
+        <div style="height:100%; width:100%; z-index:10000; position: absolute; top:0;left:0; background:#fff; text-align:center;">
           <div style="width:620px; display:inline-block; margin-top:100px;">
               {#
               <h1>Datawrapper is undergoing some maintanance</h1>
@@ -99,7 +99,7 @@
               <p>You can check our <a href="https://twitter.com/datawrapper">Twitter account</a> for status updates</p>
           </div>
         </div>
-    {% endif %}
+    {% else %}
 
     {% if alertMessage %}
         <div class="dw-alert-message">
@@ -210,5 +210,7 @@ L143.178,296.9z M124.338,205.555H73.211v25.062h51.127V205.555z"></path> </svg>
     {{ hook('core_after_body') }}
     {# For backwards compatibility, we call the following hook as well. In 2.x, this will be gone and only the above one is used. #}
     {{ hook('after_core_body') }}
+
+    {% endif %}
   </body>
 </html>
