@@ -149,7 +149,7 @@
             },
             current: {{ current | json | raw }},
             preload: {{ preload | json | raw }},
-            charts: {% if charts.length > 0 %}{{ charts | json | raw }}{% else %}[]{% endif %},
+            charts: {{ charts | json | raw }},
             user2: {{ user2 | json | raw }}
         });
     });
