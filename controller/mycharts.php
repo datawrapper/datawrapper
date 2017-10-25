@@ -311,7 +311,14 @@ function mycharts_get_user_charts(&$page, $app, $user, $folder_id = false, $org_
     }
 
     // save result to page
-    $page['charts'] = prepare_short_arrays($charts);
+    $shortCharts = prepare_short_arrays($charts);
+
+    array_walk_recursive($shortCharts, function(&$value) {
+        $value = str_to_Unicode($value);
+    });
+
+    $page['charts'] = $shortCharts;
+
     $page['num_charts'] = count($charts);
     $page['chart_groups'] = $grouped;
     add_pagination_vars($page, $total, $curPage, $perPage, empty($q) ? '' : '&q='.$q);
