@@ -123,7 +123,11 @@ class Chart extends BaseChart {
     public function preSave(PropelPDO $con = null) {
         if ($this->isModified()) {
             $this->setLastModifiedAt(time());
-            Action::logAction(DatawrapperSession::getUser(), 'chart/edit', $this->getId());
+
+            $user = DatawrapperSession::getUser();
+            if ($user->getRole() != UserPeer::ROLE_GUEST) {
+                Action::logAction(DatawrapperSession::getUser(), 'chart/edit', $this->getId());
+            }
         }
         return true;
     }
