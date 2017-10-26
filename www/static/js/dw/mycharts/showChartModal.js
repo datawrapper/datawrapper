@@ -3,7 +3,7 @@ define(function() {
     _.templateSettings = { interpolate: /\[\[(.+?)\]\]/g };
     var chartDetailTpl = _.template($('#mycharts-modal').html());
 
-    return function(chart) {
+    return function showChartModal(chart) {
         // open modal
         var meta = chart.metadata,
             bg = meta.publish && meta.publish.background ? meta.publish.background : '#fff',
@@ -36,6 +36,7 @@ define(function() {
                     color: '#222'
                 }
             });
+        $('iframe', wrapper).attr('src', data.chartUrl);
         $('.close', wrapper).click(function(e) {
             e.preventDefault();
             overlay.close();
@@ -68,11 +69,11 @@ define(function() {
                 // navigate to source chart
                 e.preventDefault();
                 $.getJSON('/api/charts/' + chart.forkedFrom, function(res) {
-                    popupChart(res.data);
+                    showChartModal(res.data);
                 });
             });
         }
         overlay.open();
-    }
+    };
 
 });

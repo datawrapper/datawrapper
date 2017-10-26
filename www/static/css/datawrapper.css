@@ -2299,6 +2299,7 @@ body.dw h1 {
   z-index: 10000;
   background: #e8e0c0;
   color: #333;
+  box-sizing: border-box;
   text-align: center;
 }
 .dw-alert-message h2,
