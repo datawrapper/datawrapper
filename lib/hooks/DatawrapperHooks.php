@@ -99,7 +99,7 @@ class DatawrapperHooks {
     // Runs every 15 minutes via cronjob
     const CRON_QUARTER_HOURLY = 'cron_quarter_hourly';
 
-    // Runs every 15 minutes via cronjob
+    // Runs every 5 minutes via cronjob
     const CRON_FIVE_MINUTELY = 'cron_five_minutely';
 
     // Runs every minute via cronjob

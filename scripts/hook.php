@@ -20,7 +20,7 @@ if (!empty($hook)) {
         DatawrapperHooks::execute($hook,
             isset($argv[2]) ? $argv[2] : null,
             isset($argv[3]) ? $argv[3] : null,
-            isset($argv[4]) ? $argv[4] : null);        
+            isset($argv[4]) ? $argv[4] : null);
     } else {
         print "no callback registered under the name ".$hook."\n";
     }
