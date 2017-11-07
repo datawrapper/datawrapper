@@ -11,7 +11,7 @@ $app->get('/(chart|map)/:id/publish', function ($id) use ($app) {
         $cfg = $GLOBALS['dw_config'];
 
         DatawrapperHooks::register(
-            'render_chart_actions', 
+            'render_chart_actions',
             function($chart, $user) use ($app) {
                 $cap = DatawrapperHooks::execute("get_chart_action_provider");
 

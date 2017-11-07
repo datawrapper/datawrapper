@@ -62,7 +62,9 @@ class FolderQuery extends BaseFolderQuery {
             foreach ($group['folders'] as $idx => &$fold) {
                 $tmpfolders[$idx] = $fold->serialize();
                 $tmpfolders[$idx]['charts'] = ChartQuery::create()
-                    ->findByInFolder($fold->getFolderId())->count();
+                    ->filterByLastEditStep(array('min'=>3))
+                    ->findByInFolder($fold->getFolderId())
+                    ->count();
             }
             $group['folders'] = $tmpfolders;
         }
