@@ -19,6 +19,8 @@
 <script type="text/javascript">
     var resizer = function() {
 
+        var old_height, old_width;
+
         var measureChartHeight = _.debounce(function() {
             var iframe = $('#iframe-vis').get(0).contentWindow;
             if (iframe) {
@@ -79,10 +81,15 @@
             var m = String(w).match(/^(\d+(?:\.\d+)?)%$/),
                 realW = m ? (+m[1] / 100) * maxW : w;
 
-            chart.set('metadata.publish.embed-width', w);
-            chart.set('metadata.publish.embed-height', h);
+            if (w != old_width || h != old_height) {
+                old_width = w;
+                old_height = h;
 
-            this.resizeIframe();
+                chart.set('metadata.publish.embed-width', w);
+                chart.set('metadata.publish.embed-height', h);
+
+                this.resizeIframe();
+            }
         };
 
         this.initWebMode = function () {
