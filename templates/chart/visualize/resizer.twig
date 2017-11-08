@@ -18,6 +18,23 @@
 
 <script type="text/javascript">
     var resizer = function() {
+
+        var measureChartHeight = _.debounce(function() {
+            var iframe = $('#iframe-vis').get(0).contentWindow;
+            if (iframe) {
+                var chartBody = iframe.document.querySelector('.dw-chart-body');
+                if (chartBody && chartBody.getBoundingClientRect) {
+                    var h = chartBody.getBoundingClientRect().height;
+                    chart.set('metadata.publish.chart-height', h);
+                    chart.save();
+                    // console.log('measured chart height to', h, 'pixel');
+                } else {
+                    // try again later
+                    setTimeout(measureChartHeight, 2000);
+                }
+            }
+        }, 800);
+
         this.resizeIframe = function () {
             var maxW = $('#iframe-wrapper').parent().parent().width() - 22,
                 w = chart.get('metadata.publish.embed-width'),
@@ -45,6 +62,7 @@
             $('.visconfig').css('min-height', (+h) + 250);
 
             dw.backend.fire('chart-resize');
+            measureChartHeight();
         };
 
         this.updateSize = function (w, h) {
