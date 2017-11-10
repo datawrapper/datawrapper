@@ -86,7 +86,8 @@
                 {% if theme.getThemeData("options.footer.sourcePosition") == "left" %}
                     {% block footer %}
                         {% if chartByline %}
-                            <span class="byline-block">Chart: 
+                            <span class="byline-block">
+                            {{ theme.getThemeData('options.footer.chartCaption') }}:
                             {{ chartByline | raw }}</span>
                         {% endif %}
 
