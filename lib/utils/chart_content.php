@@ -157,19 +157,17 @@ function get_chart_content($chart, $user, $theme, $published = false, $debug = f
     }
 
     $forked_from = $chart->getForkedFrom();
+    $chart_byline = '';
     if (!empty($forked_from) && $chart->getIsFork()) {
         // find the original chart
         $origChart = ChartQuery::create()->findOneById($forked_from);
-        if ($origChart) {
-            $chart_source = ($origChart->getOrganizationId() ?
+        $chartMeta = DatawrapperPlugin_ForkableCharts::getChartMeta($origChart->getId(), $origChart);
+        if ($origChart && $chartMeta['attribution']) {
+            $chart_byline = ($origChart->getOrganizationId() ?
                 OrganizationQuery::create()->findPk($origChart->getOrganizationId()) :
                 $origChart->getUser())->getName();
-            if (!empty($chart_source)) {
-                $chart_source_url = $origChart->getMetadata('publish.chart-source-url');
-                if (!empty($chart_source_url)) {
-                    $chart_source = '<a class="source" target="_blank" href="'.$chart_source_url.'">'.$chart_source.'</a>';
-                }
-                $data_source = $chart_source . (!empty($data_source) ? ', ' : '') . $data_source;
+            if (!empty($chartMeta['source_url'])) {
+                $chart_byline = '<a class="byline" target="_blank" href="'.$chartMeta['source_url'].'">'.$chart_byline.'</a>';
             }
         }
     }
@@ -189,6 +187,7 @@ function get_chart_content($chart, $user, $theme, $published = false, $debug = f
         'embedCode' => '<iframe src="' .$chart_url. '" frameborder="0" allowtransparency="true" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen width="'.$chart->getMetadata('publish.embed-width') . '" height="'. $chart->getMetadata('publish.embed-height') .'"></iframe>',
         'chartUrlFs' => strpos($chart_url, '.html') > 0 ? str_replace('index.html', 'fs.html', $chart_url) : $chart_url . '?fs=1',
         'chartSource' => $data_source,
+        'chartByline' => $chart_byline,
 
         // used in chart.twig
         'stylesheets' => $stylesheets,
@@ -223,7 +222,9 @@ function get_vis_js($vis, $visJS) {
     foreach ($visJS as $js) {
         if (is_array($js)) $js = $js['src'];
         if (substr($js, 0, 7) != "http://" && substr($js, 0, 8) != "https://" && substr($js, 0, 2) != '//') {
-            $all .= "\n\n\n" . file_get_contents(ROOT_PATH . 'www' . $js);
+            if (file_exists(ROOT_PATH . 'www' . $js)) {
+                $all .= "\n\n\n" . file_get_contents(ROOT_PATH . 'www' . $js);
+            }
         }
     }
     $all = jsminify($all);
