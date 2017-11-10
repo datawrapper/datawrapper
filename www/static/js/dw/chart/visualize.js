@@ -194,10 +194,10 @@ function(initHighlightSeries, visOptions, themes, loadVisDfd, initTabNav, enable
             if (l == 2) {
                 loaded.resolve();
                 syncUI();
-                loadVis();    
+                loadVis();
             }
         }
-        
+
         return loaded.promise();
     }
 
@@ -254,9 +254,9 @@ function(initHighlightSeries, visOptions, themes, loadVisDfd, initTabNav, enable
         if (archived.length) {
             archived.on('change', function() {
                 var vis_id = archived.prop('value');
-                if (vis_id) {
+                if (vis_id && vis_id != '---') {
                     thumbs.removeClass('active');
-                    chart.set('type', vis_id);
+                    chart.set('ype', vis_id);
                 }
             });
         }
