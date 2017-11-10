@@ -28,14 +28,14 @@ define(function() {
                     }
 
                     if (o.type == "group") {
-                        for (var name in o.options) {
-                            var o = options[name];
+                        for (name in o.options) {
+                            var o2 = options[name];
 
-                            if (o["requires-reload"]) {
+                            if (o2["requires-reload"]) {
                                 requiresReload.push('metadata.visualize.'+name);
                             }
                         }
-                    } 
+                    }
                 }
 
                 requiresReload.forEach(function(key) {
@@ -114,9 +114,11 @@ define(function() {
                         );
                     }
                 }
+
                 __dw.vis.chart().attributes(attrs);
                 __dw.old_attrs = $.extend(true, {}, attrs);
-
+                // update dataset to reflect changes
+                __dw.vis.chart().load(__dw.params.data);
                 if (render) __dw.render();
 
                 function changed(key) {
