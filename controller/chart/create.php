@@ -61,9 +61,11 @@ $app->map('/chart/create', function() use ($app) {
                     // copy title, type
                     $chart->setTitle($chart_tpl->getTitle());
                     $chart->setType($chart_tpl->getType());
+                    $chart->setForkedFrom($chart_tpl->getId());
                     // set last step to visualize
                     $step = 'visualize';
                     $chart->setLastEditStep(3);
+                    Action::logAction(DatawrapperSession::getUser(), 'chart-template', $chart_tpl->getId());
                 }
             }
         }
