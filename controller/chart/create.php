@@ -46,6 +46,26 @@ $app->map('/chart/create', function() use ($app) {
                 }
             }
         }
+        // copy entire chart from chart template
+        if ($req->post('chart-template') != null) {
+            // see if there's a chart with that id
+            $chart_tpl = ChartQuery::create()->findPk($req->post('chart-template'));
+            if ($chart_tpl) {
+                // test if this chart is a valid chart template
+                if ($chart_tpl->getMetadata('publish.is-chart-template') == '1') {
+                    // copy data
+                    $chart->writeData($chart_tpl->loadData());
+                    // copy metadata
+                    $chart->setMetadata(json_encode($chart_tpl->getMetadata()));
+                    // copy title, type
+                    $chart->setTitle($chart_tpl->getTitle());
+                    $chart->setType($chart_tpl->getType());
+                    // set last step to visualize
+                    $step = 'visualize';
+                    $chart->setLastEditStep(3);
+                }
+            }
+        }
         $chart->save();
         $app->redirect('/chart/'.$chart->getId().'/'.$step);
     }
