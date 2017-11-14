@@ -52,7 +52,8 @@ $app->map('/chart/create', function() use ($app) {
             $chart_tpl = ChartQuery::create()->findPk($req->post('chart-template'));
             if ($chart_tpl) {
                 // test if this chart is a valid chart template
-                if ($chart_tpl->getMetadata('publish.is-chart-template') == '1') {
+                $chart_tpl_org = $chart_tpl->getOrganization();
+                if ($chart_tpl_org && $chart_tpl_org->getSettings('chart-templates')) {
                     // copy data
                     $chart->writeData($chart_tpl->loadData());
                     // copy metadata
