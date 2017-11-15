@@ -132,7 +132,10 @@ if (isset($dw_config['charts-s3'])) {
     $charts_s3->registerStreamWrapper();
 }
 
-DatawrapperPluginManager::load();
+if (!defined('NO_PLUGINS')) {
+    DatawrapperPluginManager::load();
 
-// notify the core that all plugins are loaded
-DatawrapperHooks::execute(DatawrapperHooks::ALL_PLUGINS_LOADED);
+    // notify the core that all plugins are loaded
+    DatawrapperHooks::execute(DatawrapperHooks::ALL_PLUGINS_LOADED);
+}
+
