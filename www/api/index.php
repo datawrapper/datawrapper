@@ -79,6 +79,10 @@ $app->hook('slim.before.router', function () use ($app, $dw_config) {
     }
 });
 
+$app->get('/status', function() use ($app) {
+    ok();
+});
+
 require_once ROOT_PATH . 'lib/api/users.php';
 require_once ROOT_PATH . 'lib/api/auth.php';
 require_once ROOT_PATH . 'lib/api/charts.php';
