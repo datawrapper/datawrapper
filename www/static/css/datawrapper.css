@@ -577,7 +577,7 @@ html .btn-inverse {
 }
 .chart-editor.dw-create-describe .handsontable tr td {
   padding: 3px 6px;
-  font-family: 'Roboto', Helvetica, sans-serif;
+  font-family: 'Roboto Mono', fixed;
 }
 .chart-editor.dw-create-describe .handsontable tr td.htDimmed {
   /*revert default HOT style for readOnly cells*/
