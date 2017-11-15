@@ -79,15 +79,15 @@ $app->hook('slim.before.router', function () use ($app, $dw_config) {
     }
 });
 
-require_once '../../lib/api/users.php';
-require_once '../../lib/api/auth.php';
-require_once '../../lib/api/charts.php';
-require_once '../../lib/api/jobs.php';
-require_once '../../lib/api/visualizations.php';
-require_once '../../lib/api/plugins.php';
-require_once '../../lib/api/organizations.php';
-require_once '../../lib/api/products.php';
-require_once '../../lib/api/folders.php';
+require_once ROOT_PATH . 'lib/api/users.php';
+require_once ROOT_PATH . 'lib/api/auth.php';
+require_once ROOT_PATH . 'lib/api/charts.php';
+require_once ROOT_PATH . 'lib/api/jobs.php';
+require_once ROOT_PATH . 'lib/api/visualizations.php';
+require_once ROOT_PATH . 'lib/api/plugins.php';
+require_once ROOT_PATH . 'lib/api/organizations.php';
+require_once ROOT_PATH . 'lib/api/products.php';
+require_once ROOT_PATH . 'lib/api/folders.php';
 
 /**
  * Step 4: Run the Slim application
