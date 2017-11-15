@@ -1,118 +1,65 @@
+@base-font: 'Roboto', Helvetica, sans-serif;
+@base-font-cd: 'Roboto', Helvetica, sans-serif;
 
 @font-face {
     font-family: 'Desyrel';
     src: url('fonts/desyrel/desyrel-webfont.eot');
     src: url('fonts/desyrel/desyrel-webfont.eot?#iefix') format('embedded-opentype'),
-         url('fonts/desyrel/desyrel-webfont.woff') format('woff'),
-         url('fonts/desyrel/desyrel-webfont.ttf') format('truetype'),
-         url('fonts/desyrel/desyrel-webfont.svg#Desyrel') format('svg');
+         url('fonts/desyrel/desyrel-webfont.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 }
 
+
 @font-face {
-    font-family: 'Roboto';
-    src: url('fonts/roboto/roboto-thin.eot');
-    src: local('Roboto Thin'), local('Roboto-Thin'),
-         url('fonts/roboto/roboto-thin.eot?#iefix') format('embedded-opentype'),
-         url('fonts/roboto/roboto-thin.woff2') format('woff2'),
-         url('fonts/roboto/roboto-thin.woff') format('woff'),
-         url('fonts/roboto/roboto-thin.ttf') format('truetype');
-    font-weight: 100;
+    font-family: 'Roboto_';
+    src: url('fonts/roboto/Roboto-Bold-webfont.eot');
+    src: url('fonts/roboto/Roboto-Bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/roboto/Roboto-Bold-webfont.woff') format('woff');
+    font-weight: 700;
     font-style: normal;
+
 }
 
 @font-face {
-    font-family: 'Roboto';
-    src: url('fonts/roboto/roboto-light.eot');
+    font-family: 'Roboto_';
+    src: url('fonts/roboto/Roboto-Italic-webfont.eot');
+    src: url('fonts/roboto/Roboto-Italic-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/roboto/Roboto-Italic-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: italic;
+
+}
+
+@font-face {
+    font-family: 'Roboto_';
+    src: url('fonts/roboto/Roboto-LightItalic-webfont.eot');
+    src: url('fonts/roboto/Roboto-LightItalic-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/roboto/Roboto-LightItalic-webfont.woff') format('woff');
+    font-weight: 300;
+    font-style: italic;
+
+}
+
+@font-face {
+    font-family: 'Roboto_';
+    src: url('fonts/roboto/Roboto-Light-webfont.eot');
     src: local('Roboto Light'), local('Roboto-Light'),
-         url('fonts/roboto/roboto-light.eot?#iefix') format('embedded-opentype'),
-         url('fonts/roboto/roboto-light.woff2') format('woff2'),
-         url('fonts/roboto/roboto-light.woff') format('woff'),
-         url('fonts/roboto/roboto-light.ttf') format('truetype');
+         url('fonts/roboto/Roboto-Light-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/roboto/Roboto-Light-webfont.woff') format('woff');
     font-weight: 300;
     font-style: normal;
+
 }
 
 @font-face {
-    font-family: 'Roboto';
-    src: url('fonts/roboto/roboto-regular.eot');
+    font-family: 'Roboto_';
+    src: url('fonts/roboto/Roboto-Regular-webfont.eot');
     src: local('Roboto Regular'), local('Roboto-Regular'),
-         url('fonts/roboto/roboto-regular.eot?#iefix') format('embedded-opentype'),
-         url('fonts/roboto/roboto-regular.woff2') format('woff2'),
-         url('fonts/roboto/roboto-regular.woff') format('woff'),
-         url('fonts/roboto/roboto-regular.ttf') format('truetype');
-    font-weight: 400;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'Roboto';
-    src: url('fonts/roboto/roboto-medium.eot');
-    src: local('Roboto Medium'), local('Roboto-Medium'),
-         url('fonts/roboto/roboto-medium.eot?#iefix') format('embedded-opentype'),
-         url('fonts/roboto/roboto-medium.woff2') format('woff2'),
-         url('fonts/roboto/roboto-medium.woff') format('woff'),
-         url('fonts/roboto/roboto-medium.ttf') format('truetype');
-    font-weight: 500;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'Roboto';
-    src: url('fonts/roboto/roboto-bold.eot');
-    src: local('Roboto Bold'), local('Roboto-Bold'),
-         url('fonts/roboto/roboto-bold.eot?#iefix') format('embedded-opentype'),
-         url('fonts/roboto/roboto-bold.woff2') format('woff2'),
-         url('fonts/roboto/roboto-bold.woff') format('woff'),
-         url('fonts/roboto/roboto-bold.ttf') format('truetype');
-    font-weight: 700;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'Roboto Condensed';
-    src: url('fonts/roboto/robotocondensed-light.eot');
-    src: local('Roboto Condensed Light'), url('fonts/roboto/robotocondensed-light.eot?#iefix') format('embedded-opentype'),
-         url('fonts/roboto/robotocondensed-light.woff2') format('woff2'),
-         url('fonts/roboto/robotocondensed-light.woff') format('woff'),
-         url('fonts/roboto/robotocondensed-light.ttf') format('truetype');
-    font-weight: 300;
-    font-style: normal;
-
-}
-
-@font-face {
-    font-family: 'Roboto Condensed';
-    src: url('fonts/roboto/robotocondensed-regular.eot');
-    src: local('Roboto Condensed'), url('fonts/roboto/robotocondensed-regular.eot?#iefix') format('embedded-opentype'),
-         url('fonts/roboto/robotocondensed-regular.woff2') format('woff2'),
-         url('fonts/roboto/robotocondensed-regular.woff') format('woff'),
-         url('fonts/roboto/robotocondensed-regular.ttf') format('truetype');
+         url('fonts/roboto/Roboto-Regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/roboto/Roboto-Regular-webfont.woff') format('woff');
     font-weight: normal;
     font-style: normal;
-}
-
-@font-face {
-    font-family: 'Roboto Condensed';
-    src: url('fonts/roboto/robotocondensed-bold.eot');
-    src: local('Roboto Condensed Bold'), url('fonts/roboto/robotocondensed-bold.eot?#iefix') format('embedded-opentype'),
-         url('fonts/roboto/robotocondensed-bold.woff2') format('woff2'),
-         url('fonts/roboto/robotocondensed-bold.woff') format('woff'),
-         url('fonts/roboto/robotocondensed-bold.ttf') format('truetype');
-    font-weight: 700;
-    font-style: normal;
 
 }
 
-@base-font: 'Roboto', Helvetica, sans-serif;
-@base-font-cd: 'Roboto Condensed', Helvetica, sans-serif;
-
-body, input, textarea, select {
-    font-family: @base-font;
-    font-weight: 300;
-    color: #000;
-}
-label {
-    font-weight: 500;
-}
