@@ -62,8 +62,12 @@ function get_current_protocol() {
 
 /*
  * delete expired products
+ * (once per minute is enough)
  */
-Propel::getConnection()->exec('DELETE FROM user_product WHERE expires IS NOT NULL AND expires <= NOW()');
+DatawrapperHooks::register(DatawrapperHooks::CRON_MINUTELY, function() {
+    Propel::getConnection()
+       ->exec('DELETE FROM user_product WHERE expires IS NOT NULL AND expires <= NOW()');
+});
 
 if (!defined('NO_SESSION')) {
     // forcing require of database session handler
