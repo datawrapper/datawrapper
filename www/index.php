@@ -15,6 +15,11 @@ require_once ROOT_PATH . 'vendor/autoload.php';
 
 check_server();
 
+if (isset($_GET['xhr']) && $_GET['xhr'] == '1' &&
+    isset($_GET['no_plugins']) && $_GET['no_plugins'] == '1') {
+    define('NO_PLUGINS', true);
+}
+
 require ROOT_PATH . 'lib/bootstrap.php';
 
 $twig = $app->view()->getEnvironment();
