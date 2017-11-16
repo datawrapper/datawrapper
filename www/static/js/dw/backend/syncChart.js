@@ -9,7 +9,7 @@ define(function() {
 
         function save() {
             $.ajax({
-                url: '/api/charts/'+chart.get('id') + window.location.search,
+                url: '/api/2/charts/'+chart.get('id') + window.location.search,
                 type: 'PUT',
                 dataType: 'json',
                 data: JSON.stringify(chart.attributes()),
