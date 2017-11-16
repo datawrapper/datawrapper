@@ -254,6 +254,7 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
     $page['API_DOMAIN'] = $config['api_domain'];
     $page['DW_CHART_CACHE_DOMAIN'] = $config['chart_domain'];
     $page['SUPPORT_EMAIL'] = $config['email']['support'];
+    $page['DW_AUTH_SALT'] = DW_AUTH_SALT;
     $page['config'] = $config;
     $page['page_css'] = $page_css;
     $page['invert_navbar'] = isset($config['invert_header']) && $config['invert_header'] || substr($config['domain'], -4) == '.pro';

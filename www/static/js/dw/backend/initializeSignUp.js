@@ -7,11 +7,11 @@ define(function() {
     return function() {
 
         function refreshSalt() {
-            $.getJSON('/api/auth/salt', function(res) {
-               if (res.status == 'ok') {
-                  $('.btn-register, .btn-login').data('salt', res.data.salt);
-               }
-            });
+            $('.btn-register, .btn-login').data('salt', dw.backend.__auth_salt);
+            // $.getJSON('/api/2/auth/salt', function(res) {
+            //    if (res.status == 'ok') {
+               // }
+            // });
         }
 
         $('a[href=#login], a[href=#signup]').click(function(e) {
