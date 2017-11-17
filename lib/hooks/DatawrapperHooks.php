@@ -157,6 +157,10 @@ class DatawrapperHooks {
     const PRODUCT_ORGANIZATION_ADD = 'product_organization_add';
     const PRODUCT_ORGANIZATION_REMOVE = 'product_organization_remove';
 
+    // when a product is added/removed from a user
+    const PRODUCT_USER_ADD = 'product_user_add';
+    const PRODUCT_USER_REMOVE = 'product_user_remove';
+
     const VISUALIZE_BEFORE_THEME_SELECTOR = 'visualize_before_theme_selector';
     const VISUALIZE_AFTER_THEME_SELECTOR = 'visualize_after_theme_selector';
 

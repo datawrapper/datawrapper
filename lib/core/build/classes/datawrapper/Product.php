@@ -57,6 +57,16 @@ class Product extends BaseProduct
         return null;
     }
 
+    public function addUserProduct(UserProduct $userProduct) {
+        DatawrapperHooks::execute(DatawrapperHooks::PRODUCT_USER_ADD, $this, $userProduct->getUser());
+        parent::addUserProduct($userProduct);
+    }
+
+    public function removeUser(User $user) {
+        DatawrapperHooks::execute(DatawrapperHooks::PRODUCT_USER_REMOVE, $this, $user);
+        parent::removeUser($user);
+    }
+
     public function addOrganizationProduct(OrganizationProduct $orgProduct) {
         DatawrapperHooks::execute(DatawrapperHooks::PRODUCT_ORGANIZATION_ADD, $this, $orgProduct->getOrganization());
         parent::addOrganizationProduct($orgProduct);
