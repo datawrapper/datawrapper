@@ -313,6 +313,7 @@ function(initHighlightSeries, visOptions, themes, loadVisDfd, initTabNav, enable
         var scrollFixCont = $('.scrollfix-cont');
         scrollFixCont.scrollToFixed({
             marginTop: 0,
+            zIndex : 999,
             limit: function() {
                 var sftop =  scrollFixCont.offset().top,
                     ftminsfh = $('footer.footer').offset().top - scrollFixCont.height() - 60;
