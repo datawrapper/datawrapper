@@ -27,10 +27,10 @@
  * @method ProductPlugin findOne(PropelPDO $con = null) Return the first ProductPlugin matching the query
  * @method ProductPlugin findOneOrCreate(PropelPDO $con = null) Return the first ProductPlugin matching the query, or a new ProductPlugin object populated from the query conditions when no match is found
  *
- * @method ProductPlugin findOneByProductId(string $product_id) Return the first ProductPlugin filtered by the product_id column
+ * @method ProductPlugin findOneByProductId(int $product_id) Return the first ProductPlugin filtered by the product_id column
  * @method ProductPlugin findOneByPluginId(string $plugin_id) Return the first ProductPlugin filtered by the plugin_id column
  *
- * @method array findByProductId(string $product_id) Return ProductPlugin objects filtered by the product_id column
+ * @method array findByProductId(int $product_id) Return ProductPlugin objects filtered by the product_id column
  * @method array findByPluginId(string $plugin_id) Return ProductPlugin objects filtered by the plugin_id column
  *
  * @package    propel.generator.datawrapper.om
@@ -125,7 +125,7 @@ abstract class BaseProductPluginQuery extends ModelCriteria
         $sql = 'SELECT `product_id`, `plugin_id` FROM `product_plugin` WHERE `product_id` = :p0 AND `plugin_id` = :p1';
         try {
             $stmt = $con->prepare($sql);
-            $stmt->bindValue(':p0', $key[0], PDO::PARAM_STR);
+            $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);
             $stmt->bindValue(':p1', $key[1], PDO::PARAM_STR);
             $stmt->execute();
         } catch (Exception $e) {
@@ -228,24 +228,39 @@ abstract class BaseProductPluginQuery extends ModelCriteria
      *
      * Example usage:
      * <code>
-     * $query->filterByProductId('fooValue');   // WHERE product_id = 'fooValue'
-     * $query->filterByProductId('%fooValue%'); // WHERE product_id LIKE '%fooValue%'
+     * $query->filterByProductId(1234); // WHERE product_id = 1234
+     * $query->filterByProductId(array(12, 34)); // WHERE product_id IN (12, 34)
+     * $query->filterByProductId(array('min' => 12)); // WHERE product_id >= 12
+     * $query->filterByProductId(array('max' => 12)); // WHERE product_id <= 12
      * </code>
      *
-     * @param     string $productId The value to use as filter.
-     *              Accepts wildcards (* and % trigger a LIKE)
+     * @see       filterByProduct()
+     *
+     * @param     mixed $productId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ProductPluginQuery The current query, for fluid interface
      */
     public function filterByProductId($productId = null, $comparison = null)
     {
-        if (null === $comparison) {
-            if (is_array($productId)) {
+        if (is_array($productId)) {
+            $useMinMax = false;
+            if (isset($productId['min'])) {
+                $this->addUsingAlias(ProductPluginPeer::PRODUCT_ID, $productId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($productId['max'])) {
+                $this->addUsingAlias(ProductPluginPeer::PRODUCT_ID, $productId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
                 $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $productId)) {
-                $productId = str_replace('*', '%', $productId);
-                $comparison = Criteria::LIKE;
             }
         }
 

@@ -396,7 +396,7 @@ abstract class BaseProductPluginPeer
     public static function getPrimaryKeyFromRow($row, $startcol = 0)
     {
 
-        return array((string) $row[$startcol], (string) $row[$startcol + 1]);
+        return array((int) $row[$startcol], (string) $row[$startcol + 1]);
     }
 
     /**
@@ -1347,7 +1347,7 @@ abstract class BaseProductPluginPeer
 
     /**
      * Retrieve object using using composite pkey values.
-     * @param   string $product_id
+     * @param   int $product_id
      * @param   string $plugin_id
      * @param      PropelPDO $con
      * @return   ProductPlugin

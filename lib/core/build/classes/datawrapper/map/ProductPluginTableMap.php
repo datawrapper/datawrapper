@@ -39,7 +39,7 @@ class ProductPluginTableMap extends TableMap
         $this->setUseIdGenerator(false);
         $this->setIsCrossRef(true);
         // columns
-        $this->addForeignPrimaryKey('product_id', 'ProductId', 'VARCHAR' , 'product', 'id', true, 128, null);
+        $this->addForeignPrimaryKey('product_id', 'ProductId', 'INTEGER' , 'product', 'id', true, null, null);
         $this->addForeignPrimaryKey('plugin_id', 'PluginId', 'VARCHAR' , 'plugin', 'id', true, 128, null);
         // validators
     } // initialize()
