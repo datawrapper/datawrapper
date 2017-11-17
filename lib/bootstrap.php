@@ -137,6 +137,7 @@ if (isset($dw_config['charts-s3'])) {
 }
 
 if (!defined('NO_PLUGINS')) {
+    UserPluginCacheQuery::initInvalidateHooks();
     DatawrapperPluginManager::load();
 
     // notify the core that all plugins are loaded
