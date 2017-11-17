@@ -57,6 +57,17 @@ class Product extends BaseProduct
         return null;
     }
 
+    /* overwrite some BaseProduct functions so we can fire internal hooks */
+    public function addPlugin(Plugin $plugin) {
+        DatawrapperHooks::execute(DatawrapperHooks::PRODUCT_PLUGIN_ADD, $this, $plugin);
+        parent::addPlugin($plugin);
+    }
+
+    public function removePlugin(Plugin $plugin) {
+        DatawrapperHooks::execute(DatawrapperHooks::PRODUCT_PLUGIN_REMOVE, $this, $plugin);
+        parent::removePlugin($plugin);
+    }
+
     public function addUserProduct(UserProduct $userProduct) {
         DatawrapperHooks::execute(DatawrapperHooks::PRODUCT_USER_ADD, $this, $userProduct->getUser());
         parent::addUserProduct($userProduct);

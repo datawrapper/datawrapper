@@ -150,6 +150,7 @@ class DatawrapperHooks {
     // a new user as bean created
     const USER_SIGNUP = 'user_signup';
 
+    // when a user is added/removed from a team
     const USER_ORGANIZATION_ADD = 'user_organization_add';
     const USER_ORGANIZATION_REMOVE = 'user_organization_remove';
 
@@ -160,6 +161,10 @@ class DatawrapperHooks {
     // when a product is added/removed from a user
     const PRODUCT_USER_ADD = 'product_user_add';
     const PRODUCT_USER_REMOVE = 'product_user_remove';
+
+    // when a plugin is added/removed from a product
+    const PRODUCT_PLUGIN_ADD = 'product_plugin_add';
+    const PRODUCT_PLUGIN_REMOVE = 'product_plugin_remove';
 
     const VISUALIZE_BEFORE_THEME_SELECTOR = 'visualize_before_theme_selector';
     const VISUALIZE_AFTER_THEME_SELECTOR = 'visualize_after_theme_selector';
