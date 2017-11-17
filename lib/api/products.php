@@ -139,7 +139,9 @@ $app->delete('/products/:id/plugins', function($id) use ($app) {
 	});
 });
 
-
+/*
+ * add user(s) to product
+ */
 $app->post('/products/:id/users', function($id) use ($app) {
 	if_is_admin(function() use ($app, $id) {
 		$product = ProductQuery::create()->findPk($id);
@@ -196,6 +198,9 @@ $app->put('/products/:id/users', function($id) use ($app) {
 	});
 });
 
+/*
+ * remove users from product
+ */
 $app->delete('/products/:id/users', function($id) use ($app) {
 	if_is_admin(function() use ($app, $id) {
 		$product = ProductQuery::create()->findPk($id);
