@@ -56,5 +56,15 @@ class Product extends BaseProduct
         if (isset($d[$key])) return $d[$key];
         return null;
     }
+
+    public function addOrganizationProduct(OrganizationProduct $orgProduct) {
+        DatawrapperHooks::execute(DatawrapperHooks::PRODUCT_ORGANIZATION_ADD, $this, $orgProduct->getOrganization());
+        parent::addOrganizationProduct($orgProduct);
+    }
+
+    public function removeOrganization(Organization $org) {
+        DatawrapperHooks::execute(DatawrapperHooks::PRODUCT_ORGANIZATION_REMOVE, $this, $org);
+        parent::removeOrganization($org);
+    }
 }
 
