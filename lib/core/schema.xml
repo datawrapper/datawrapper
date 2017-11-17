@@ -40,9 +40,6 @@
     <foreign-key foreignTable="folder">
       <reference local="in_folder" foreign="folder_id" />
     </foreign-key>
-    <index>
-      <index-column name="/author_id/" />
-    </index>
   </table>
 
   <table name="user" phpName="User">
@@ -64,9 +61,6 @@
     <column name="sm_profile" type="varchar" required="false" size="512" />
     <column name="oauth_signin" type="varchar" required="false" size="512" phpName="OAuthSignIn" />
     <column name="customer_id" type="varchar" size="512" />
-    <index>
-      <index-column name="/email/" />
-    </index>
   </table>
 
   <!-- organizations -->
