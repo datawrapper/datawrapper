@@ -165,6 +165,11 @@ abstract class BaseUser extends BaseObject implements Persistent
     protected $collUserDatasPartial;
 
     /**
+     * @var        UserPluginCache one-to-one related UserPluginCache object
+     */
+    protected $singleUserPluginCache;
+
+    /**
      * @var        PropelObjectCollection|Organization[] Collection to store aggregation of Organization objects.
      */
     protected $collOrganizations;
@@ -264,6 +269,12 @@ abstract class BaseUser extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $userDatasScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $userPluginCachesScheduledForDeletion = null;
 
     /**
      * Applies default values to this object.
@@ -920,6 +931,8 @@ abstract class BaseUser extends BaseObject implements Persistent
 
             $this->collUserDatas = null;
 
+            $this->singleUserPluginCache = null;
+
             $this->collOrganizations = null;
             $this->collProducts = null;
             $this->collThemes = null;
@@ -1264,6 +1277,21 @@ abstract class BaseUser extends BaseObject implements Persistent
                 }
             }
 
+            if ($this->userPluginCachesScheduledForDeletion !== null) {
+                if (!$this->userPluginCachesScheduledForDeletion->isEmpty()) {
+                    UserPluginCacheQuery::create()
+                        ->filterByPrimaryKeys($this->userPluginCachesScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->userPluginCachesScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->singleUserPluginCache !== null) {
+                if (!$this->singleUserPluginCache->isDeleted() && ($this->singleUserPluginCache->isNew() || $this->singleUserPluginCache->isModified())) {
+                        $affectedRows += $this->singleUserPluginCache->save($con);
+                }
+            }
+
             $this->alreadyInSave = false;
 
         }
@@ -1548,6 +1576,12 @@ abstract class BaseUser extends BaseObject implements Persistent
                     }
                 }
 
+                if ($this->singleUserPluginCache !== null) {
+                    if (!$this->singleUserPluginCache->validate($columns)) {
+                        $failureMap = array_merge($failureMap, $this->singleUserPluginCache->getValidationFailures());
+                    }
+                }
+
 
             $this->alreadyInValidation = false;
         }
@@ -1693,6 +1727,9 @@ abstract class BaseUser extends BaseObject implements Persistent
             }
             if (null !== $this->collUserDatas) {
                 $result['UserDatas'] = $this->collUserDatas->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->singleUserPluginCache) {
+                $result['UserPluginCache'] = $this->singleUserPluginCache->toArray($keyType, $includeLazyLoadColumns, $alreadyDumpedObjects, true);
             }
         }
 
@@ -1967,6 +2004,11 @@ abstract class BaseUser extends BaseObject implements Persistent
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addUserData($relObj->copy($deepCopy));
                 }
+            }
+
+            $relObj = $this->getUserPluginCache();
+            if ($relObj) {
+                $copyObj->setUserPluginCache($relObj->copy($deepCopy));
             }
 
             //unflag object copy
@@ -4026,6 +4068,42 @@ abstract class BaseUser extends BaseObject implements Persistent
     }
 
     /**
+     * Gets a single UserPluginCache object, which is related to this object by a one-to-one relationship.
+     *
+     * @param PropelPDO $con optional connection object
+     * @return UserPluginCache
+     * @throws PropelException
+     */
+    public function getUserPluginCache(PropelPDO $con = null)
+    {
+
+        if ($this->singleUserPluginCache === null && !$this->isNew()) {
+            $this->singleUserPluginCache = UserPluginCacheQuery::create()->findPk($this->getPrimaryKey(), $con);
+        }
+
+        return $this->singleUserPluginCache;
+    }
+
+    /**
+     * Sets a single UserPluginCache object as related to this object by a one-to-one relationship.
+     *
+     * @param             UserPluginCache $v UserPluginCache
+     * @return User The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setUserPluginCache(UserPluginCache $v = null)
+    {
+        $this->singleUserPluginCache = $v;
+
+        // Make sure that that the passed-in UserPluginCache isn't already associated with this object
+        if ($v !== null && $v->getUser(null, false) === null) {
+            $v->setUser($this);
+        }
+
+        return $this;
+    }
+
+    /**
      * Clears out the collOrganizations collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
@@ -4638,6 +4716,9 @@ abstract class BaseUser extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->singleUserPluginCache) {
+                $this->singleUserPluginCache->clearAllReferences($deep);
+            }
             if ($this->collOrganizations) {
                 foreach ($this->collOrganizations as $o) {
                     $o->clearAllReferences($deep);
@@ -4689,6 +4770,10 @@ abstract class BaseUser extends BaseObject implements Persistent
             $this->collUserDatas->clearIterator();
         }
         $this->collUserDatas = null;
+        if ($this->singleUserPluginCache instanceof PropelCollection) {
+            $this->singleUserPluginCache->clearIterator();
+        }
+        $this->singleUserPluginCache = null;
         if ($this->collOrganizations instanceof PropelCollection) {
             $this->collOrganizations->clearIterator();
         }

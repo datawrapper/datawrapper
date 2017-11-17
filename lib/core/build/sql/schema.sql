@@ -35,7 +35,6 @@ CREATE TABLE `chart`
     `is_fork` TINYINT(1) DEFAULT 0,
     `in_folder` INTEGER,
     PRIMARY KEY (`id`),
-    INDEX `chart_I_1` (`email`),
     INDEX `chart_FI_1` (`author_id`),
     INDEX `chart_FI_2` (`organization_id`),
     INDEX `chart_FI_3` (`forked_from`),
@@ -433,6 +432,22 @@ CREATE TABLE `user_data`
     PRIMARY KEY (`id`),
     UNIQUE INDEX `user_data_U_1` (`user_id`, `key`),
     CONSTRAINT `user_data_FK_1`
+        FOREIGN KEY (`user_id`)
+        REFERENCES `user` (`id`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- user_plugin_cache
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `user_plugin_cache`;
+
+CREATE TABLE `user_plugin_cache`
+(
+    `user_id` INTEGER NOT NULL,
+    `plugins` LONGTEXT NOT NULL,
+    PRIMARY KEY (`user_id`),
+    CONSTRAINT `user_plugin_cache_FK_1`
         FOREIGN KEY (`user_id`)
         REFERENCES `user` (`id`)
 ) ENGINE=InnoDB;
