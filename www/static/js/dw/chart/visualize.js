@@ -256,7 +256,7 @@ function(initHighlightSeries, visOptions, themes, loadVisDfd, initTabNav, enable
                 var vis_id = archived.prop('value');
                 if (vis_id && vis_id != '---') {
                     thumbs.removeClass('active');
-                    chart.set('ype', vis_id);
+                    chart.set('type', vis_id);
                 }
             });
         }
