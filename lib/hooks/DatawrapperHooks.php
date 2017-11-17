@@ -208,6 +208,7 @@ class DatawrapperHooks {
     const PLUGIN_INSTALLED = 'plugin_installed';
     const PLUGIN_UPDATED = 'plugin_updated';
     const PLUGIN_UNINSTALLED = 'plugin_uninstalled';
+    const PLUGIN_SET_PRIVATE = 'plugin_set_private';
 
     const RENDER_RESIZE_CONTROL = 'render_resize_control';
 
