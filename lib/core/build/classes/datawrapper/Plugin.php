@@ -80,4 +80,11 @@ class Plugin extends BasePlugin {
         return $as_timestamp ? $this->__lastModTimeTS : $this->__lastModTime;
     }
 
+    public function setIsPrivate($v) {
+        if ($v != $this->getIsPrivate()) {
+            DatawrapperHooks::execute(DatawrapperHooks::PLUGIN_SET_PRIVATE, $this);
+        }
+        parent::setIsPrivate($v);
+    }
+
 } // Plugin

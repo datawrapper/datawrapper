@@ -7,13 +7,18 @@
 
 
 
-define('DATAWRAPPER_VERSION', '1.14.0');  // must match with package.json
+define('DATAWRAPPER_VERSION', '1.15.0');  // must match with package.json
 
 define('ROOT_PATH', '../');
 
 require_once ROOT_PATH . 'vendor/autoload.php';
 
 check_server();
+
+if (isset($_GET['xhr']) && $_GET['xhr'] == '1' &&
+    isset($_GET['no_plugins']) && $_GET['no_plugins'] == '1') {
+    define('NO_PLUGINS', true);
+}
 
 require ROOT_PATH . 'lib/bootstrap.php';
 

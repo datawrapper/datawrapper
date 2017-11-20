@@ -2,24 +2,24 @@
 
 
 /**
- * Base class that represents a row from the 'product_plugin' table.
+ * Base class that represents a row from the 'user_plugin_cache' table.
  *
  *
  *
  * @package    propel.generator.datawrapper.om
  */
-abstract class BaseProductPlugin extends BaseObject implements Persistent
+abstract class BaseUserPluginCache extends BaseObject implements Persistent
 {
     /**
      * Peer class name
      */
-    const PEER = 'ProductPluginPeer';
+    const PEER = 'UserPluginCachePeer';
 
     /**
      * The Peer class.
      * Instance provides a convenient way of calling static methods on a class
      * that calling code may not be able to identify.
-     * @var        ProductPluginPeer
+     * @var        UserPluginCachePeer
      */
     protected static $peer;
 
@@ -30,26 +30,21 @@ abstract class BaseProductPlugin extends BaseObject implements Persistent
     protected $startCopy = false;
 
     /**
-     * The value for the product_id field.
+     * The value for the user_id field.
      * @var        int
      */
-    protected $product_id;
+    protected $user_id;
 
     /**
-     * The value for the plugin_id field.
+     * The value for the plugins field.
      * @var        string
      */
-    protected $plugin_id;
+    protected $plugins;
 
     /**
-     * @var        Product
+     * @var        User
      */
-    protected $aProduct;
-
-    /**
-     * @var        Plugin
-     */
-    protected $aPlugin;
+    protected $aUser;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -72,74 +67,70 @@ abstract class BaseProductPlugin extends BaseObject implements Persistent
     protected $alreadyInClearAllReferencesDeep = false;
 
     /**
-     * Get the [product_id] column value.
+     * Get the [user_id] column value.
      *
      * @return int
      */
-    public function getProductId()
+    public function getUserId()
     {
-        return $this->product_id;
+        return $this->user_id;
     }
 
     /**
-     * Get the [plugin_id] column value.
+     * Get the [plugins] column value.
      *
      * @return string
      */
-    public function getPluginId()
+    public function getPlugins()
     {
-        return $this->plugin_id;
+        return $this->plugins;
     }
 
     /**
-     * Set the value of [product_id] column.
+     * Set the value of [user_id] column.
      *
      * @param int $v new value
-     * @return ProductPlugin The current object (for fluent API support)
+     * @return UserPluginCache The current object (for fluent API support)
      */
-    public function setProductId($v)
+    public function setUserId($v)
     {
         if ($v !== null && is_numeric($v)) {
             $v = (int) $v;
         }
 
-        if ($this->product_id !== $v) {
-            $this->product_id = $v;
-            $this->modifiedColumns[] = ProductPluginPeer::PRODUCT_ID;
+        if ($this->user_id !== $v) {
+            $this->user_id = $v;
+            $this->modifiedColumns[] = UserPluginCachePeer::USER_ID;
         }
 
-        if ($this->aProduct !== null && $this->aProduct->getId() !== $v) {
-            $this->aProduct = null;
+        if ($this->aUser !== null && $this->aUser->getId() !== $v) {
+            $this->aUser = null;
         }
 
 
         return $this;
-    } // setProductId()
+    } // setUserId()
 
     /**
-     * Set the value of [plugin_id] column.
+     * Set the value of [plugins] column.
      *
      * @param string $v new value
-     * @return ProductPlugin The current object (for fluent API support)
+     * @return UserPluginCache The current object (for fluent API support)
      */
-    public function setPluginId($v)
+    public function setPlugins($v)
     {
         if ($v !== null && is_numeric($v)) {
             $v = (string) $v;
         }
 
-        if ($this->plugin_id !== $v) {
-            $this->plugin_id = $v;
-            $this->modifiedColumns[] = ProductPluginPeer::PLUGIN_ID;
-        }
-
-        if ($this->aPlugin !== null && $this->aPlugin->getId() !== $v) {
-            $this->aPlugin = null;
+        if ($this->plugins !== $v) {
+            $this->plugins = $v;
+            $this->modifiedColumns[] = UserPluginCachePeer::PLUGINS;
         }
 
 
         return $this;
-    } // setPluginId()
+    } // setPlugins()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -173,8 +164,8 @@ abstract class BaseProductPlugin extends BaseObject implements Persistent
     {
         try {
 
-            $this->product_id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
-            $this->plugin_id = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
+            $this->user_id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
+            $this->plugins = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -183,10 +174,10 @@ abstract class BaseProductPlugin extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
             $this->postHydrate($row, $startcol, $rehydrate);
-            return $startcol + 2; // 2 = ProductPluginPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 2; // 2 = UserPluginCachePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
-            throw new PropelException("Error populating ProductPlugin object", $e);
+            throw new PropelException("Error populating UserPluginCache object", $e);
         }
     }
 
@@ -206,11 +197,8 @@ abstract class BaseProductPlugin extends BaseObject implements Persistent
     public function ensureConsistency()
     {
 
-        if ($this->aProduct !== null && $this->product_id !== $this->aProduct->getId()) {
-            $this->aProduct = null;
-        }
-        if ($this->aPlugin !== null && $this->plugin_id !== $this->aPlugin->getId()) {
-            $this->aPlugin = null;
+        if ($this->aUser !== null && $this->user_id !== $this->aUser->getId()) {
+            $this->aUser = null;
         }
     } // ensureConsistency
 
@@ -235,13 +223,13 @@ abstract class BaseProductPlugin extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(ProductPluginPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(UserPluginCachePeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         // We don't need to alter the object instance pool; we're just modifying this instance
         // already in the pool.
 
-        $stmt = ProductPluginPeer::doSelectStmt($this->buildPkeyCriteria(), $con);
+        $stmt = UserPluginCachePeer::doSelectStmt($this->buildPkeyCriteria(), $con);
         $row = $stmt->fetch(PDO::FETCH_NUM);
         $stmt->closeCursor();
         if (!$row) {
@@ -251,8 +239,7 @@ abstract class BaseProductPlugin extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
-            $this->aProduct = null;
-            $this->aPlugin = null;
+            $this->aUser = null;
         } // if (deep)
     }
 
@@ -273,12 +260,12 @@ abstract class BaseProductPlugin extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(ProductPluginPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(UserPluginCachePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         $con->beginTransaction();
         try {
-            $deleteQuery = ProductPluginQuery::create()
+            $deleteQuery = UserPluginCacheQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
             if ($ret) {
@@ -316,7 +303,7 @@ abstract class BaseProductPlugin extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(ProductPluginPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(UserPluginCachePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         $con->beginTransaction();
@@ -336,7 +323,7 @@ abstract class BaseProductPlugin extends BaseObject implements Persistent
                     $this->postUpdate($con);
                 }
                 $this->postSave($con);
-                ProductPluginPeer::addInstanceToPool($this);
+                UserPluginCachePeer::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
             }
@@ -371,18 +358,11 @@ abstract class BaseProductPlugin extends BaseObject implements Persistent
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
-            if ($this->aProduct !== null) {
-                if ($this->aProduct->isModified() || $this->aProduct->isNew()) {
-                    $affectedRows += $this->aProduct->save($con);
+            if ($this->aUser !== null) {
+                if ($this->aUser->isModified() || $this->aUser->isNew()) {
+                    $affectedRows += $this->aUser->save($con);
                 }
-                $this->setProduct($this->aProduct);
-            }
-
-            if ($this->aPlugin !== null) {
-                if ($this->aPlugin->isModified() || $this->aPlugin->isNew()) {
-                    $affectedRows += $this->aPlugin->save($con);
-                }
-                $this->setPlugin($this->aPlugin);
+                $this->setUser($this->aUser);
             }
 
             if ($this->isNew() || $this->isModified()) {
@@ -418,15 +398,15 @@ abstract class BaseProductPlugin extends BaseObject implements Persistent
 
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(ProductPluginPeer::PRODUCT_ID)) {
-            $modifiedColumns[':p' . $index++]  = '`product_id`';
+        if ($this->isColumnModified(UserPluginCachePeer::USER_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`user_id`';
         }
-        if ($this->isColumnModified(ProductPluginPeer::PLUGIN_ID)) {
-            $modifiedColumns[':p' . $index++]  = '`plugin_id`';
+        if ($this->isColumnModified(UserPluginCachePeer::PLUGINS)) {
+            $modifiedColumns[':p' . $index++]  = '`plugins`';
         }
 
         $sql = sprintf(
-            'INSERT INTO `product_plugin` (%s) VALUES (%s)',
+            'INSERT INTO `user_plugin_cache` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -435,11 +415,11 @@ abstract class BaseProductPlugin extends BaseObject implements Persistent
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case '`product_id`':
-                        $stmt->bindValue($identifier, $this->product_id, PDO::PARAM_INT);
+                    case '`user_id`':
+                        $stmt->bindValue($identifier, $this->user_id, PDO::PARAM_INT);
                         break;
-                    case '`plugin_id`':
-                        $stmt->bindValue($identifier, $this->plugin_id, PDO::PARAM_STR);
+                    case '`plugins`':
+                        $stmt->bindValue($identifier, $this->plugins, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -533,20 +513,14 @@ abstract class BaseProductPlugin extends BaseObject implements Persistent
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
-            if ($this->aProduct !== null) {
-                if (!$this->aProduct->validate($columns)) {
-                    $failureMap = array_merge($failureMap, $this->aProduct->getValidationFailures());
-                }
-            }
-
-            if ($this->aPlugin !== null) {
-                if (!$this->aPlugin->validate($columns)) {
-                    $failureMap = array_merge($failureMap, $this->aPlugin->getValidationFailures());
+            if ($this->aUser !== null) {
+                if (!$this->aUser->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aUser->getValidationFailures());
                 }
             }
 
 
-            if (($retval = ProductPluginPeer::doValidate($this, $columns)) !== true) {
+            if (($retval = UserPluginCachePeer::doValidate($this, $columns)) !== true) {
                 $failureMap = array_merge($failureMap, $retval);
             }
 
@@ -570,7 +544,7 @@ abstract class BaseProductPlugin extends BaseObject implements Persistent
      */
     public function getByName($name, $type = BasePeer::TYPE_PHPNAME)
     {
-        $pos = ProductPluginPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+        $pos = UserPluginCachePeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
         $field = $this->getByPosition($pos);
 
         return $field;
@@ -587,10 +561,10 @@ abstract class BaseProductPlugin extends BaseObject implements Persistent
     {
         switch ($pos) {
             case 0:
-                return $this->getProductId();
+                return $this->getUserId();
                 break;
             case 1:
-                return $this->getPluginId();
+                return $this->getPlugins();
                 break;
             default:
                 return null;
@@ -615,21 +589,18 @@ abstract class BaseProductPlugin extends BaseObject implements Persistent
      */
     public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
-        if (isset($alreadyDumpedObjects['ProductPlugin'][serialize($this->getPrimaryKey())])) {
+        if (isset($alreadyDumpedObjects['UserPluginCache'][$this->getPrimaryKey()])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['ProductPlugin'][serialize($this->getPrimaryKey())] = true;
-        $keys = ProductPluginPeer::getFieldNames($keyType);
+        $alreadyDumpedObjects['UserPluginCache'][$this->getPrimaryKey()] = true;
+        $keys = UserPluginCachePeer::getFieldNames($keyType);
         $result = array(
-            $keys[0] => $this->getProductId(),
-            $keys[1] => $this->getPluginId(),
+            $keys[0] => $this->getUserId(),
+            $keys[1] => $this->getPlugins(),
         );
         if ($includeForeignObjects) {
-            if (null !== $this->aProduct) {
-                $result['Product'] = $this->aProduct->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
-            }
-            if (null !== $this->aPlugin) {
-                $result['Plugin'] = $this->aPlugin->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            if (null !== $this->aUser) {
+                $result['User'] = $this->aUser->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
         }
 
@@ -649,7 +620,7 @@ abstract class BaseProductPlugin extends BaseObject implements Persistent
      */
     public function setByName($name, $value, $type = BasePeer::TYPE_PHPNAME)
     {
-        $pos = ProductPluginPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+        $pos = UserPluginCachePeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
 
         $this->setByPosition($pos, $value);
     }
@@ -666,10 +637,10 @@ abstract class BaseProductPlugin extends BaseObject implements Persistent
     {
         switch ($pos) {
             case 0:
-                $this->setProductId($value);
+                $this->setUserId($value);
                 break;
             case 1:
-                $this->setPluginId($value);
+                $this->setPlugins($value);
                 break;
         } // switch()
     }
@@ -693,10 +664,10 @@ abstract class BaseProductPlugin extends BaseObject implements Persistent
      */
     public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
     {
-        $keys = ProductPluginPeer::getFieldNames($keyType);
+        $keys = UserPluginCachePeer::getFieldNames($keyType);
 
-        if (array_key_exists($keys[0], $arr)) $this->setProductId($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setPluginId($arr[$keys[1]]);
+        if (array_key_exists($keys[0], $arr)) $this->setUserId($arr[$keys[0]]);
+        if (array_key_exists($keys[1], $arr)) $this->setPlugins($arr[$keys[1]]);
     }
 
     /**
@@ -706,10 +677,10 @@ abstract class BaseProductPlugin extends BaseObject implements Persistent
      */
     public function buildCriteria()
     {
-        $criteria = new Criteria(ProductPluginPeer::DATABASE_NAME);
+        $criteria = new Criteria(UserPluginCachePeer::DATABASE_NAME);
 
-        if ($this->isColumnModified(ProductPluginPeer::PRODUCT_ID)) $criteria->add(ProductPluginPeer::PRODUCT_ID, $this->product_id);
-        if ($this->isColumnModified(ProductPluginPeer::PLUGIN_ID)) $criteria->add(ProductPluginPeer::PLUGIN_ID, $this->plugin_id);
+        if ($this->isColumnModified(UserPluginCachePeer::USER_ID)) $criteria->add(UserPluginCachePeer::USER_ID, $this->user_id);
+        if ($this->isColumnModified(UserPluginCachePeer::PLUGINS)) $criteria->add(UserPluginCachePeer::PLUGINS, $this->plugins);
 
         return $criteria;
     }
@@ -724,37 +695,30 @@ abstract class BaseProductPlugin extends BaseObject implements Persistent
      */
     public function buildPkeyCriteria()
     {
-        $criteria = new Criteria(ProductPluginPeer::DATABASE_NAME);
-        $criteria->add(ProductPluginPeer::PRODUCT_ID, $this->product_id);
-        $criteria->add(ProductPluginPeer::PLUGIN_ID, $this->plugin_id);
+        $criteria = new Criteria(UserPluginCachePeer::DATABASE_NAME);
+        $criteria->add(UserPluginCachePeer::USER_ID, $this->user_id);
 
         return $criteria;
     }
 
     /**
-     * Returns the composite primary key for this object.
-     * The array elements will be in same order as specified in XML.
-     * @return array
+     * Returns the primary key for this object (row).
+     * @return int
      */
     public function getPrimaryKey()
     {
-        $pks = array();
-        $pks[0] = $this->getProductId();
-        $pks[1] = $this->getPluginId();
-
-        return $pks;
+        return $this->getUserId();
     }
 
     /**
-     * Set the [composite] primary key.
+     * Generic method to set the primary key (user_id column).
      *
-     * @param array $keys The elements of the composite key (order must match the order in XML file).
+     * @param  int $key Primary key.
      * @return void
      */
-    public function setPrimaryKey($keys)
+    public function setPrimaryKey($key)
     {
-        $this->setProductId($keys[0]);
-        $this->setPluginId($keys[1]);
+        $this->setUserId($key);
     }
 
     /**
@@ -764,7 +728,7 @@ abstract class BaseProductPlugin extends BaseObject implements Persistent
     public function isPrimaryKeyNull()
     {
 
-        return (null === $this->getProductId()) && (null === $this->getPluginId());
+        return null === $this->getUserId();
     }
 
     /**
@@ -773,15 +737,14 @@ abstract class BaseProductPlugin extends BaseObject implements Persistent
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param object $copyObj An object of ProductPlugin (or compatible) type.
+     * @param object $copyObj An object of UserPluginCache (or compatible) type.
      * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @param boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setProductId($this->getProductId());
-        $copyObj->setPluginId($this->getPluginId());
+        $copyObj->setPlugins($this->getPlugins());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -790,12 +753,18 @@ abstract class BaseProductPlugin extends BaseObject implements Persistent
             // store object hash to prevent cycle
             $this->startCopy = true;
 
+            $relObj = $this->getUser();
+            if ($relObj) {
+                $copyObj->setUser($relObj->copy($deepCopy));
+            }
+
             //unflag object copy
             $this->startCopy = false;
         } // if ($deepCopy)
 
         if ($makeNew) {
             $copyObj->setNew(true);
+            $copyObj->setUserId(NULL); // this is a auto-increment column, so set to default value
         }
     }
 
@@ -808,7 +777,7 @@ abstract class BaseProductPlugin extends BaseObject implements Persistent
      * objects.
      *
      * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return ProductPlugin Clone of current object.
+     * @return UserPluginCache Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -828,38 +797,37 @@ abstract class BaseProductPlugin extends BaseObject implements Persistent
      * same instance for all member of this class. The method could therefore
      * be static, but this would prevent one from overriding the behavior.
      *
-     * @return ProductPluginPeer
+     * @return UserPluginCachePeer
      */
     public function getPeer()
     {
         if (self::$peer === null) {
-            self::$peer = new ProductPluginPeer();
+            self::$peer = new UserPluginCachePeer();
         }
 
         return self::$peer;
     }
 
     /**
-     * Declares an association between this object and a Product object.
+     * Declares an association between this object and a User object.
      *
-     * @param             Product $v
-     * @return ProductPlugin The current object (for fluent API support)
+     * @param             User $v
+     * @return UserPluginCache The current object (for fluent API support)
      * @throws PropelException
      */
-    public function setProduct(Product $v = null)
+    public function setUser(User $v = null)
     {
         if ($v === null) {
-            $this->setProductId(NULL);
+            $this->setUserId(NULL);
         } else {
-            $this->setProductId($v->getId());
+            $this->setUserId($v->getId());
         }
 
-        $this->aProduct = $v;
+        $this->aUser = $v;
 
-        // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the Product object, it will not be re-added.
+        // Add binding for other direction of this 1:1 relationship.
         if ($v !== null) {
-            $v->addProductPlugin($this);
+            $v->setUserPluginCache($this);
         }
 
 
@@ -868,79 +836,22 @@ abstract class BaseProductPlugin extends BaseObject implements Persistent
 
 
     /**
-     * Get the associated Product object
+     * Get the associated User object
      *
      * @param PropelPDO $con Optional Connection object.
      * @param $doQuery Executes a query to get the object if required
-     * @return Product The associated Product object.
+     * @return User The associated User object.
      * @throws PropelException
      */
-    public function getProduct(PropelPDO $con = null, $doQuery = true)
+    public function getUser(PropelPDO $con = null, $doQuery = true)
     {
-        if ($this->aProduct === null && ($this->product_id !== null) && $doQuery) {
-            $this->aProduct = ProductQuery::create()->findPk($this->product_id, $con);
-            /* The following can be used additionally to
-                guarantee the related object contains a reference
-                to this object.  This level of coupling may, however, be
-                undesirable since it could result in an only partially populated collection
-                in the referenced object.
-                $this->aProduct->addProductPlugins($this);
-             */
+        if ($this->aUser === null && ($this->user_id !== null) && $doQuery) {
+            $this->aUser = UserQuery::create()->findPk($this->user_id, $con);
+            // Because this foreign key represents a one-to-one relationship, we will create a bi-directional association.
+            $this->aUser->setUserPluginCache($this);
         }
 
-        return $this->aProduct;
-    }
-
-    /**
-     * Declares an association between this object and a Plugin object.
-     *
-     * @param             Plugin $v
-     * @return ProductPlugin The current object (for fluent API support)
-     * @throws PropelException
-     */
-    public function setPlugin(Plugin $v = null)
-    {
-        if ($v === null) {
-            $this->setPluginId(NULL);
-        } else {
-            $this->setPluginId($v->getId());
-        }
-
-        $this->aPlugin = $v;
-
-        // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the Plugin object, it will not be re-added.
-        if ($v !== null) {
-            $v->addProductPlugin($this);
-        }
-
-
-        return $this;
-    }
-
-
-    /**
-     * Get the associated Plugin object
-     *
-     * @param PropelPDO $con Optional Connection object.
-     * @param $doQuery Executes a query to get the object if required
-     * @return Plugin The associated Plugin object.
-     * @throws PropelException
-     */
-    public function getPlugin(PropelPDO $con = null, $doQuery = true)
-    {
-        if ($this->aPlugin === null && (($this->plugin_id !== "" && $this->plugin_id !== null)) && $doQuery) {
-            $this->aPlugin = PluginQuery::create()->findPk($this->plugin_id, $con);
-            /* The following can be used additionally to
-                guarantee the related object contains a reference
-                to this object.  This level of coupling may, however, be
-                undesirable since it could result in an only partially populated collection
-                in the referenced object.
-                $this->aPlugin->addProductPlugins($this);
-             */
-        }
-
-        return $this->aPlugin;
+        return $this->aUser;
     }
 
     /**
@@ -948,8 +859,8 @@ abstract class BaseProductPlugin extends BaseObject implements Persistent
      */
     public function clear()
     {
-        $this->product_id = null;
-        $this->plugin_id = null;
+        $this->user_id = null;
+        $this->plugins = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
@@ -972,18 +883,14 @@ abstract class BaseProductPlugin extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
-            if ($this->aProduct instanceof Persistent) {
-              $this->aProduct->clearAllReferences($deep);
-            }
-            if ($this->aPlugin instanceof Persistent) {
-              $this->aPlugin->clearAllReferences($deep);
+            if ($this->aUser instanceof Persistent) {
+              $this->aUser->clearAllReferences($deep);
             }
 
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
-        $this->aProduct = null;
-        $this->aPlugin = null;
+        $this->aUser = null;
     }
 
     /**
@@ -993,7 +900,7 @@ abstract class BaseProductPlugin extends BaseObject implements Persistent
      */
     public function __toString()
     {
-        return (string) $this->exportTo(ProductPluginPeer::DEFAULT_STRING_FORMAT);
+        return (string) $this->exportTo(UserPluginCachePeer::DEFAULT_STRING_FORMAT);
     }
 
     /**

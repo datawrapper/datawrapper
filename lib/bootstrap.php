@@ -62,8 +62,12 @@ function get_current_protocol() {
 
 /*
  * delete expired products
+ * (once per minute is enough)
  */
-Propel::getConnection()->exec('DELETE FROM user_product WHERE expires IS NOT NULL AND expires <= NOW()');
+DatawrapperHooks::register(DatawrapperHooks::CRON_MINUTELY, function() {
+    Propel::getConnection()
+       ->exec('DELETE FROM user_product WHERE expires IS NOT NULL AND expires <= NOW()');
+});
 
 if (!defined('NO_SESSION')) {
     // forcing require of database session handler
@@ -132,7 +136,11 @@ if (isset($dw_config['charts-s3'])) {
     $charts_s3->registerStreamWrapper();
 }
 
-DatawrapperPluginManager::load();
+if (!defined('NO_PLUGINS')) {
+    UserPluginCacheQuery::initInvalidateHooks();
+    DatawrapperPluginManager::load();
 
-// notify the core that all plugins are loaded
-DatawrapperHooks::execute(DatawrapperHooks::ALL_PLUGINS_LOADED);
+    // notify the core that all plugins are loaded
+    DatawrapperHooks::execute(DatawrapperHooks::ALL_PLUGINS_LOADED);
+}
+

@@ -1,6 +1,21 @@
 CHANGELOG
 ---------
 
+### 1.15
+* added user plugin caching table to speed up datawrapper
+* added more core hooks for events that should invalidate the user plugin cache
+* you need to migrate the database schema, see [migration query](https://github.com/datawrapper/datawrapper/blob/master/scripts/migrate/sql/1.15.0.sql)
+* by-pass plugins in folder reload requests
+* hard-coded auth salt into template
+* added a new, faster API for request that don't depend on plugins
+* updated Roboto font to 2014 version
+* added chart templates for "edit this chart" button in blog & academy
+* fixed bug that prevented the chart preview reloading on setting changes
+
+### 1.14
+* complete re-design of MyCharts and team chart page
+* added chart folders
+
 ### 1.11.2
 * introduced fixed-height charts
 

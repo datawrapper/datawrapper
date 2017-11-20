@@ -256,7 +256,7 @@ function(initHighlightSeries, visOptions, themes, loadVisDfd, initTabNav, enable
                 var vis_id = archived.prop('value');
                 if (vis_id && vis_id != '---') {
                     thumbs.removeClass('active');
-                    chart.set('ype', vis_id);
+                    chart.set('type', vis_id);
                 }
             });
         }
@@ -313,6 +313,7 @@ function(initHighlightSeries, visOptions, themes, loadVisDfd, initTabNav, enable
         var scrollFixCont = $('.scrollfix-cont');
         scrollFixCont.scrollToFixed({
             marginTop: 0,
+            zIndex : 999,
             limit: function() {
                 var sftop =  scrollFixCont.offset().top,
                     ftminsfh = $('footer.footer').offset().top - scrollFixCont.height() - 60;

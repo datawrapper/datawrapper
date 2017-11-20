@@ -118,33 +118,50 @@ class DatawrapperPluginManager {
 
     public static function getUserPlugins($user_id, $include_public=true) {
         $plugins = PluginQuery::create()
-                ->distinct()
                 ->filterByEnabled(true);
 
         if ($include_public) $plugins->filterByIsPrivate(false)->_or();
 
         if (!empty($user_id)) {
-            $plugins
-                ->useProductPluginQuery(null, Criteria::LEFT_JOIN)
-                    ->useProductQuery(null, Criteria::LEFT_JOIN)
-                        ->useOrganizationProductQuery(null, Criteria::LEFT_JOIN)
-                            ->useOrganizationQuery(null, Criteria::LEFT_JOIN)
-                                ->useUserOrganizationQuery(null, Criteria::LEFT_JOIN)
+            // try to load user row from user_plugins_cache first
+            $cached = UserPluginCacheQuery::create()->findPk($user_id);
+            $plugin_ids = [];
+            if ($cached) {
+                $plugin_ids = explode(',', $cached->getPlugins());
+            } else {
+                $tmp = PluginQuery::create()
+                    ->distinct()
+                    ->useProductPluginQuery(null, Criteria::LEFT_JOIN)
+                        ->useProductQuery(null, Criteria::LEFT_JOIN)
+                            ->useOrganizationProductQuery(null, Criteria::LEFT_JOIN)
+                                ->useOrganizationQuery(null, Criteria::LEFT_JOIN)
+                                    ->useUserOrganizationQuery(null, Criteria::LEFT_JOIN)
+                                    ->endUse()
                                 ->endUse()
                             ->endUse()
+                            ->useUserProductQuery(null, Criteria::LEFT_JOIN)
+                            ->endUse()
+                            ->where(
+                                '(
+                                    product.deleted = false AND 
+                                        ((user_product.user_id = ? AND (user_product.expires >= NOW() OR user_product.expires IS NULL))
+                                            OR
+                                        (user_organization.user_id= ? AND user_organization.invite_token = "" AND (organization_product.expires >= NOW() OR organization_product.expires IS NULL))))',
+                                array($user_id, $user_id)
+                            )
                         ->endUse()
-                        ->useUserProductQuery(null, Criteria::LEFT_JOIN)
-                        ->endUse()
-                        ->where(
-                            '(
-                                product.deleted = false AND 
-                                    ((user_product.user_id = ? AND (user_product.expires >= NOW() OR user_product.expires IS NULL))
-                                        OR
-                                    (user_organization.user_id= ? AND user_organization.invite_token = "" AND (organization_product.expires >= NOW() OR organization_product.expires IS NULL))))',
-                            array($user_id, $user_id)
-                        )
                     ->endUse()
-                ->endUse();
+                    ->find();
+                foreach ($tmp as $p) {
+                    $plugin_ids[] = $p->getId();
+                }
+                // save user plugins to cache
+                $c = new UserPluginCache();
+                $c->setUserId($user_id);
+                $c->setPlugins(implode(',', $plugin_ids));
+                $c->save();
+            }
+            $plugins->filterById($plugin_ids);
         }
         return $plugins->find();
     }

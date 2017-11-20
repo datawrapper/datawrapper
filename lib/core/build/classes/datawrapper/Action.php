@@ -17,7 +17,7 @@ class Action extends BaseAction {
 
     public static function logAction($user, $key, $details = null) {
         $action = new Action();
-        $action->setUser($user);
+        $action->setUser($user->isLoggedIn() ? $user : null);
         $action->setKey($key);
         if (!empty($details)) {
             if (!is_numeric($details) && !is_string($details)) {

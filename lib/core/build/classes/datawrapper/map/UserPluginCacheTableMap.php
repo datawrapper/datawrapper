@@ -3,7 +3,7 @@
 
 
 /**
- * This class defines the structure of the 'product_plugin' table.
+ * This class defines the structure of the 'user_plugin_cache' table.
  *
  *
  *
@@ -14,13 +14,13 @@
  *
  * @package    propel.generator.datawrapper.map
  */
-class ProductPluginTableMap extends TableMap
+class UserPluginCacheTableMap extends TableMap
 {
 
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'datawrapper.map.ProductPluginTableMap';
+    const CLASS_NAME = 'datawrapper.map.UserPluginCacheTableMap';
 
     /**
      * Initialize the table attributes, columns and validators
@@ -32,15 +32,14 @@ class ProductPluginTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('product_plugin');
-        $this->setPhpName('ProductPlugin');
-        $this->setClassname('ProductPlugin');
+        $this->setName('user_plugin_cache');
+        $this->setPhpName('UserPluginCache');
+        $this->setClassname('UserPluginCache');
         $this->setPackage('datawrapper');
         $this->setUseIdGenerator(false);
-        $this->setIsCrossRef(true);
         // columns
-        $this->addForeignPrimaryKey('product_id', 'ProductId', 'INTEGER' , 'product', 'id', true, null, null);
-        $this->addForeignPrimaryKey('plugin_id', 'PluginId', 'VARCHAR' , 'plugin', 'id', true, 128, null);
+        $this->addForeignPrimaryKey('user_id', 'UserId', 'INTEGER' , 'user', 'id', true, null, null);
+        $this->addColumn('plugins', 'Plugins', 'CLOB', true, null, null);
         // validators
     } // initialize()
 
@@ -49,8 +48,7 @@ class ProductPluginTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Product', 'Product', RelationMap::MANY_TO_ONE, array('product_id' => 'id', ), null, null);
-        $this->addRelation('Plugin', 'Plugin', RelationMap::MANY_TO_ONE, array('plugin_id' => 'id', ), null, null);
+        $this->addRelation('User', 'User', RelationMap::MANY_TO_ONE, array('user_id' => 'id', ), null, null);
     } // buildRelations()
 
-} // ProductPluginTableMap
+} // UserPluginCacheTableMap

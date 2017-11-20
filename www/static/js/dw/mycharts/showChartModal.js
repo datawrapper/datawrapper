@@ -44,7 +44,7 @@ define(function() {
         $('.duplicate', wrapper).click(function(e) {
             e.preventDefault();
             $.ajax({
-                url: '/api/charts/'+chart.id+'/copy',
+                url: '/api/2/charts/'+chart.id+'/copy',
                 type: 'POST',
                 success: function(data) {
                     if (data.status == "ok") {
@@ -68,7 +68,7 @@ define(function() {
             $('.forked a', wrapper).click(function(e) {
                 // navigate to source chart
                 e.preventDefault();
-                $.getJSON('/api/charts/' + chart.forkedFrom, function(res) {
+                $.getJSON('/api/2/charts/' + chart.forkedFrom, function(res) {
                     showChartModal(res.data);
                 });
             });
