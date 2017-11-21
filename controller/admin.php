@@ -18,7 +18,7 @@ if (DatawrapperHooks::hookRegistered(DatawrapperHooks::GET_ADMIN_PAGES)) {
 
     foreach ($__dw_admin_pages as $admin_page) {
 
-        $app->map('/admin' . $admin_page['url'], function() use ($app, $admin_page, $__dw_admin_pages) {
+        $app->map('/admin' . (isset($admin_page['route']) ? $admin_page['route'] : $admin_page['url']), function() use ($app, $admin_page, $__dw_admin_pages) {
             $args = func_get_args();
             disable_cache($app);
 
