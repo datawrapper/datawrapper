@@ -1,6 +1,15 @@
 CHANGELOG
 ---------
 
+### next version
+* improved duplicate logic in mycharts chart modal: duplicated chart now opens in new tab and the old view refreshes in the old tab
+* improved query performance on mycharts page
+* added convenience method `User.getOrganizationIds()`
+* added new hook `MYCHARTS_MODAL_ACTIONS` for adding new chart actions on mycharts page
+* bugfix: group by chart type is back working
+* admin pages can now define a custom route (for multipage admin pages using the same controller)
+* added a unicode-safe `json_encode_safe` function to core (always use this instead of json_encode!)
+
 ### 1.15
 * added user plugin caching table to speed up datawrapper
 * added more core hooks for events that should invalidate the user plugin cache
