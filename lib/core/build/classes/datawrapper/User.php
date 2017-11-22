@@ -132,6 +132,17 @@ class User extends BaseUser {
         return $userOrganization->getOrganizationRole(); 
     }
 
+    /*
+     * returns an array! of all organization ids this user
+     * is a member of
+     */
+    public function getOrganizationIds() {
+        $ids = [];
+        foreach ($this->getOrganizations() as $org) {
+            $ids[] = $org->getId();
+        }
+        return $ids;
+    }
 
 
     /*
