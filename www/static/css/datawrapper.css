@@ -136,7 +136,7 @@ html .navbar .navbar-inner .nav > li > a:hover {
   color: #000;
 }
 html .navbar .navbar-inner .nav > li > a:hover .fa {
-  color: #08c;
+  color: #1d81a2;
 }
 html .navbar .navbar-inner .nav > li > a b {
   font-weight: 500;
@@ -2315,6 +2315,12 @@ body {
   color: #444;
   position: relative;
   font-family: 'Roboto', Helvetica, sans-serif;
+}
+body a {
+  color: #1d81a2;
+}
+body a:hover {
+  color: #15607a;
 }
 body.dw h1 {
   font-weight: 300;
