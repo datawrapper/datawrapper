@@ -117,6 +117,9 @@ class DatawrapperHooks {
     // render something after sidebar on mycharts page
     const MYCHARTS_AFTER_SIDEBAR = 'mycharts_after_sidebar';
 
+    // for adding new actions in chart modal on mycharts page
+    const MYCHARTS_MODAL_ACTIONS = 'mycharts_modal_actions';
+
     // a hook for providing new api actions
     const PROVIDE_API = 'provide_api';
 
