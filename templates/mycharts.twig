@@ -195,10 +195,13 @@
                         <span class="embed-hide">{% trans "Hide embed code" %}</span>
                     </a>
                 </li>
-                <li>
-                    <a class="btn duplicate">
-                        <i class="icon-plus"></i> {% trans "Duplicate this chart" %}
-                    </a>
+                <li class="action-duplicate">
+                    <form method="post" target="_blank" action="/api/2/chart/:id/copy">
+                        <input type="hidden" name="redirect" value="1" />
+                        <button type="submit" class="btn duplicate">
+                            <i class="icon-plus"></i> {% trans "Duplicate this chart" %}
+                        </button>
+                    </form>
                 </li>
             </ul>
 

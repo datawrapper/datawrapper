@@ -281,7 +281,11 @@ $app->post('/charts/:id/copy', function($chart_id) use ($app) {
             $copy->setUser(DatawrapperSession::getUser());
             // $copy->setOrganization($user->getCurrentOrganization());
             $copy->save();
-            ok(array('id' => $copy->getId()));
+            if ($app->request()->post('redirect') == '1') {
+                print '<script>window.location.href = "/chart/'.$copy->getId().'/visualize";</script>';
+            } else {
+                ok(array('id' => $copy->getId()));
+            }
         } catch (Exception $e) {
             error('io-error', $e->getMessage());
         }

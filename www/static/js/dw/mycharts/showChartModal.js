@@ -41,21 +41,11 @@ define(function() {
             e.preventDefault();
             overlay.close();
         });
-        $('.duplicate', wrapper).click(function(e) {
-            e.preventDefault();
-            $.ajax({
-                url: '/api/2/charts/'+chart.id+'/copy',
-                type: 'POST',
-                success: function(data) {
-                    if (data.status == "ok") {
-                        // redirect to copied chart
-                        location.href = '/chart/'+data.data.id+'/edit';
-                    } else {
-                        console.warn(data);
-                    }
-                }
-            });
-        });
+
+        // update form action for duplicate button
+        $('.action-duplicate form', wrapper)
+            .attr('action', '/api/2/charts/'+chart.id+'/copy');
+
         $('.embed', wrapper).click(function(e) {
             e.preventDefault();
             $('.embed-code', wrapper).toggleClass('hidden');
