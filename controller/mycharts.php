@@ -272,9 +272,48 @@ function mycharts_get_user_charts(&$page, $app, $user, $folder_id = false, $org_
     }
 
     // get list of charts
+    $pdo = Propel::getConnection();
     $sort_by = $app->request()->params('sort');
-    $charts =  ChartQuery::create()->getPublicChartsById($id, $is_org, $filter, $curPage * $perPage, $perPage, $sort_by);
-    $total = ChartQuery::create()->countPublicChartsById($id, $is_org, $filter);
+    $sql_is_org = 'organization_id = '.$pdo->quote($org_id);
+    $sql_is_any_org = implode(' OR ', array_map(
+        function($o) use ($pdo) { return 'organization_id = '.$pdo->quote($o); },
+        $user->getOrganizationIds()));
+    $sql_is_user = 'author_id = '.intval($user->getId());
+
+    $sql = 'SELECT id FROM (SELECT * FROM chart WHERE '
+         . (empty($q) ?
+            ($is_org ? $sql_is_org : $sql_is_user) :
+            '('.$sql_is_user.' AND organization_id IS NULL) OR '.$sql_is_any_org).') chart '
+         . 'WHERE deleted = 0 AND last_edit_step > 1 '
+         . (empty($q) ? ' AND in_folder '.($folder_id ? '= '.intval($folder_id) : 'IS NULL') : '');
+
+    if (!empty($q)) {
+        // remove double quotes
+        $q = str_replace(['"', "'"], '', $q);
+        $query_terms = explode(' ', strtolower($q));
+        $query_cond = [];
+        $fields = ['title', 'type', 'id'];
+        foreach ($query_terms as $term) {
+            $cond2 = [];
+            foreach ($fields as $field) {
+                $cond2[] = "(LOWER(`$field`) LIKE \"%$term%\")";
+            }
+            // uncomment the next 2 lines to enable searching in intro and source name
+            // once chart.metadata is converted to JSON column
+            // $cond2[] = "(LOWER(JSON_EXTRACT(metadata, '$.describe.intro')) LIKE \"%$term%\")";
+            // $cond2[] = "(LOWER(JSON_EXTRACT(metadata, '$.describe.\"source-name\"')) LIKE \"%$term%\")";
+            $query_cond[] = '('.implode(' OR ', $cond2).')';
+        }
+        $sql .= ' AND ('.implode(' AND ', $query_cond).')';
+    }
+
+    $chart_ids = $pdo->query($sql)->fetchAll(PDO::FETCH_COLUMN, 0);
+
+    $total = count($chart_ids);
+    $charts = ChartQuery::create()->findPks($chart_ids);
+
+    // $charts =  ChartQuery::create()->getPublicChartsById($id, $is_org, $filter, $curPage * $perPage, $perPage, $sort_by);
+    // $total = ChartQuery::create()->countPublicChartsById($id, $is_org, $filter);
 
     if (!empty($filter['q'])) {
         $grouped = mycharts_group_charts($charts, mycharts_group_by_folder($charts, $user));
@@ -309,6 +348,23 @@ function mycharts_get_user_charts(&$page, $app, $user, $folder_id = false, $org_
             ]
         ]);
     }
+
+    $keepGroups = [];
+    $i = 0;
+    $min = $perPage * $curPage;
+    $max = $min + $perPage;
+    // cut off groups
+    foreach ($grouped as $group) {
+        $newGroup = ['title'=>$group['title'],'id'=>$group['id'],'charts'=>[]];
+        foreach ($group['charts'] as $chart) {
+            if ($i >= $min && $i < $max) {
+                $newGroup['charts'][] = $chart;
+            }
+            $i++;
+        }
+        if (count($newGroup['charts'])>0) $keepGroups[] = $newGroup;
+    }
+    $grouped = $keepGroups;
 
     // save result to page
     $shortCharts = prepare_short_arrays($charts);
