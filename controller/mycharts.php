@@ -306,11 +306,22 @@ function mycharts_get_user_charts(&$page, $app, $user, $folder_id = false, $org_
         }
         $sql .= ' AND ('.implode(' AND ', $query_cond).')';
     }
+    // var_dump($sql);
 
     $chart_ids = $pdo->query($sql)->fetchAll(PDO::FETCH_COLUMN, 0);
 
     $total = count($chart_ids);
-    $charts = ChartQuery::create()->findPks($chart_ids);
+    $chartQuery = ChartQuery::create();
+    switch ($sort_by) {
+        case 'title': $chartQuery->orderByTitle(); break;
+        case 'published_at': $chartQuery->orderByPublishedAt('desc'); break;
+        case 'theme': $chartQuery->orderByTheme(); break;
+        case 'type': $chartQuery->orderByType(); break;
+        case 'status': $chartQuery->orderByLastEditStep('desc'); break;
+        case 'created_at': $chartQuery->orderByCreatedAt('desc'); break;
+        default: $chartQuery->orderByLastModifiedAt('desc'); break;
+    }
+    $charts = $chartQuery->findPks($chart_ids);
 
     // $charts =  ChartQuery::create()->getPublicChartsById($id, $is_org, $filter, $curPage * $perPage, $perPage, $sort_by);
     // $total = ChartQuery::create()->countPublicChartsById($id, $is_org, $filter);
