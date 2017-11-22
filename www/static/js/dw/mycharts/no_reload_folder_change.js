@@ -124,7 +124,6 @@ define(function(require) {
             params.set('sort', sort);
 
         params.set('xhr', 1);
-        params.set('no_plugins', 1);
         if (!params.entries().next().done)
             path += '?' + params.toString();
 
