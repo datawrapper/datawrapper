@@ -71,11 +71,12 @@ $app->hook('slim.before.router', function () use ($app, $dw_config) {
     $headers = $req->headers();
     $origin = !empty($headers['ORIGIN']) ? $headers['ORIGIN'] : $headers['HOST'];
     $host = str_replace(['http://', 'https://'], ['', ''], $origin);
+    if (isset($dw_config['cookie_domain'])) {
     $reg = "/^.*" . str_replace('.', '\.', $dw_config['cookie_domain']) . "$/";
-
-    if (preg_match($reg, $host)) {
-        $app->response()->header('Access-Control-Allow-Origin', $origin);
-        $app->response()->header('Access-Control-Allow-Credentials', 'true');
+        if (preg_match($reg, $host)) {
+            $app->response()->header('Access-Control-Allow-Origin', $origin);
+            $app->response()->header('Access-Control-Allow-Credentials', 'true');
+        }
     }
 });
 
