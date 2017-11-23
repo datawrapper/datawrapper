@@ -9,8 +9,10 @@ CHANGELOG
 * bugfix: group by chart type is back working
 * admin pages can now define a custom route (for multipage admin pages using the same controller)
 * added a unicode-safe `json_encode_safe` function to core (always use this instead of json_encode!)
+* changed type of chart.metadata column to JSON
+* chart search on mycharts now searches in description and source name
 
-### 1.15
+### 1.15.0
 * added user plugin caching table to speed up datawrapper
 * added more core hooks for events that should invalidate the user plugin cache
 * you need to migrate the database schema, see [migration query](https://github.com/datawrapper/datawrapper/blob/master/scripts/migrate/sql/1.15.0.sql)
@@ -21,7 +23,7 @@ CHANGELOG
 * added chart templates for "edit this chart" button in blog & academy
 * fixed bug that prevented the chart preview reloading on setting changes
 
-### 1.14
+### 1.14.0
 * complete re-design of MyCharts and team chart page
 * added chart folders
 
