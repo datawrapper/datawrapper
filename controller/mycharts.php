@@ -300,8 +300,8 @@ function mycharts_get_user_charts(&$page, $app, $user, $folder_id = false, $org_
             }
             // uncomment the next 2 lines to enable searching in intro and source name
             // once chart.metadata is converted to JSON column
-            // $cond2[] = "(LOWER(JSON_EXTRACT(metadata, '$.describe.intro')) LIKE \"%$term%\")";
-            // $cond2[] = "(LOWER(JSON_EXTRACT(metadata, '$.describe.\"source-name\"')) LIKE \"%$term%\")";
+            $cond2[] = "(LOWER(JSON_EXTRACT(metadata, '$.describe.intro')) LIKE \"%$term%\")";
+            $cond2[] = "(LOWER(JSON_EXTRACT(metadata, '$.describe.\"source-name\"')) LIKE \"%$term%\")";
             $query_cond[] = '('.implode(' OR ', $cond2).')';
         }
         $sql .= ' AND ('.implode(' AND ', $query_cond).')';
