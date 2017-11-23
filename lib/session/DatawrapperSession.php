@@ -44,7 +44,7 @@ class DatawrapperSession {
 
         // Reset the expiration time upon page load
         if (isset($_COOKIE[$ses])) {
-            setcookie($ses, $_COOKIE[$ses], time() + $lifetime, "/");
+            setcookie($ses, $_COOKIE[$ses], time() + $lifetime, "/", $domain);
         }
     }
 
