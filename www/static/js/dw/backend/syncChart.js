@@ -27,7 +27,12 @@ define(function() {
                         nextSaveDeferred = $.Deferred();
                     } else {
                         console.warn('could not save the chart', data);
+                        dw.backend.logError('The chart changes could not be saved because of a server error.', '.chart-editor');
                     }
+                },
+                error: function(err, res) {
+                    console.log(err.responseText);
+                    dw.backend.logError('The chart changes could not be saved because of a server error.', '.chart-editor');
                 }
             });
         }
