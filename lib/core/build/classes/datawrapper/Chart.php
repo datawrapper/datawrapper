@@ -1,7 +1,6 @@
 <?php
 
 require_once ROOT_PATH . 'lib/utils/str_to_unicode.php';
-require_once ROOT_PATH . 'lib/utils/json_encode_safe.php';
 
 /**
  * Skeleton subclass for representing a row from the 'chart' table.
@@ -42,7 +41,7 @@ class Chart extends BaseChart {
             $meta['print'] = $meta;
             $meta['print']['describe']['title'] = parent::getTitle();
 
-            $this->setMetadata(json_encode_safe($meta));
+            $this->setMetadata(json_encode($meta));
             $this->save();
         }
     }
@@ -79,7 +78,7 @@ class Chart extends BaseChart {
     }
 
     public function toJSON($public = false) {
-        return trim(addslashes(json_encode_safe($this->toStruct($public))));
+        return trim(addslashes(json_encode($this->toStruct($public))));
     }
 
     public function unserialize($json) {
@@ -98,12 +97,12 @@ class Chart extends BaseChart {
             if (isset($this->usePrintVersion) && $this->usePrintVersion) {
                 $m = $this->getMetadata();
                 $m['print'] = $json['metadata'];
-                $json['metadata'] = json_encode_safe($m);
+                $json['metadata'] = json_encode($m);
             } else {
                 // encode metadata as json string … if there IS metadata
                 $m = $this->getMetadata();
                 if (isset($m['print'])) { $json['metadata']['print'] = $m['print']; }
-                $json['metadata'] = json_encode_safe($json['metadata']);
+                $json['metadata'] = json_encode($json['metadata']);
             }
         }
 
@@ -360,7 +359,7 @@ class Chart extends BaseChart {
             $p = &$p[$key];
         }
         $p = $value;
-        $this->setMetadata(json_encode_safe($meta));
+        $this->setMetadata(json_encode($meta));
     }
 
     public function isPublic() {
