@@ -63,5 +63,66 @@ define(function(require){
             var chart = cft.charts[$(e.target).parents('.chart').data('id')];
             showChartModal(chart);
         });
+
+        $('a.popup h3').click(function(e) {
+            e.stopPropagation();
+            // e.preventDefault();
+            var title = $(this);
+            title.data('old-content', title.html());
+        })
+        .on('focus', function() {
+            // select all
+            var div = $(this).get(0);
+            window.setTimeout(function() {
+                var sel, range;
+                if (window.getSelection && document.createRange) {
+                    range = document.createRange();
+                    range.selectNodeContents(div);
+                    sel = window.getSelection();
+                    sel.removeAllRanges();
+                    sel.addRange(range);
+                } else if (document.body.createTextRange) {
+                    range = document.body.createTextRange();
+                    range.moveToElementText(div);
+                    range.select();
+                }
+            }, 1);
+        })
+        .on('keypress', function(e) {
+            var title = $(this);
+            if (title.html().trim() != title.data('old-content')) {
+                title.parents('.thumbnail').addClass('unsaved-change');
+            } else {
+                title.parents('.thumbnail').removeClass('unsaved-change');
+            }
+            if (e.keyCode == 13) {
+                // RETURN
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('return');
+                title.blur();
+            } else if (e.keyCode == 27) {
+                // ESC
+                title.html(title.data('old-content'));
+                console.log('escape');
+                title.blur();
+            }
+        }).on('blur', function(e) {
+            var title = $(this);
+            if (title.html().trim() != title.data('old-content')) {
+                console.log('save changes');
+                $.ajax({
+                    url: '/api/2/charts/'+title.parents('.thumbnail').data('id'),
+                    method: 'PUT',
+                    dataType: 'json',
+                    data: JSON.stringify({title: title.html().trim()}),
+                    success: function() {
+                        title.parents('.thumbnail').removeClass('unsaved-change');
+                    }
+                });
+            } else {
+                title.parents('.thumbnail').removeClass('unsaved-change');
+            }
+        });
     };
 });

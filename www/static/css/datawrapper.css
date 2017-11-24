@@ -2071,6 +2071,9 @@ body.dw-mycharts .gallery .thumbnail h3 {
   display: block;
   display: -webkit-box;
 }
+body.dw-mycharts .gallery .thumbnail.unsaved-change {
+  border-color: #ffdc08 !important;
+}
 body.dw-mycharts .gallery .subfolders {
   margin-bottom: 0px;
 }
