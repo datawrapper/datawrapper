@@ -1,6 +1,7 @@
 <?php
 
 require_once ROOT_PATH . 'lib/utils/str_to_unicode.php';
+require_once ROOT_PATH . 'lib/utils/json_encode_safe.php';
 
 /**
  * Skeleton subclass for representing a row from the 'chart' table.
@@ -41,7 +42,7 @@ class Chart extends BaseChart {
             $meta['print'] = $meta;
             $meta['print']['describe']['title'] = parent::getTitle();
 
-            $this->setMetadata(json_encode($meta));
+            $this->setMetadata(json_encode($meta, JSON_UNESCAPED_UNICODE));
             $this->save();
         }
     }
@@ -78,7 +79,7 @@ class Chart extends BaseChart {
     }
 
     public function toJSON($public = false) {
-        return trim(addslashes(json_encode($this->toStruct($public))));
+        return trim(addslashes(json_encode($this->toStruct($public), JSON_UNESCAPED_UNICODE)));
     }
 
     public function unserialize($json) {
@@ -97,12 +98,12 @@ class Chart extends BaseChart {
             if (isset($this->usePrintVersion) && $this->usePrintVersion) {
                 $m = $this->getMetadata();
                 $m['print'] = $json['metadata'];
-                $json['metadata'] = json_encode($m);
+                $json['metadata'] = json_encode($m, JSON_UNESCAPED_UNICODE);
             } else {
                 // encode metadata as json string … if there IS metadata
                 $m = $this->getMetadata();
                 if (isset($m['print'])) { $json['metadata']['print'] = $m['print']; }
-                $json['metadata'] = json_encode($json['metadata']);
+                $json['metadata'] = json_encode($json['metadata'], JSON_UNESCAPED_UNICODE);
             }
         }
 
@@ -329,11 +330,15 @@ class Chart extends BaseChart {
         $raw_meta = parent::getMetadata();
         // try normal decoding first
         $meta = json_decode($raw_meta, true);
+        $utf8 = false;
         if (empty($meta)) {
+            $json_err = json_last_error_msg();
+            $utf8 = true;
             // now try utf8_encode
             $meta = json_decode(utf8_encode($raw_meta), true);
         }
         if (!is_array($meta)) $meta = array();
+        $meta['json_error'] = isset($json_err) ? $json_err : null;
         $meta = array_merge_recursive_simple($default, $meta);
         if (empty($key)) return $meta;
         $keys = explode('.', $key);
@@ -359,7 +364,7 @@ class Chart extends BaseChart {
             $p = &$p[$key];
         }
         $p = $value;
-        $this->setMetadata(json_encode($meta));
+        $this->setMetadata(json_encode($meta, JSON_UNESCAPED_UNICODE));
     }
 
     public function isPublic() {
