@@ -326,7 +326,10 @@ class Chart extends BaseChart {
         }
 
         $default = Chart::defaultMetaData();
-        $meta = json_decode(parent::getMetadata(), true);
+
+        $raw_meta = parent::getMetadata();
+        $meta = json_decode(utf8_encode($raw_meta), true);
+
         if (!is_array($meta)) $meta = array();
         $meta = array_merge_recursive_simple($default, $meta);
         if (empty($key)) return $meta;
