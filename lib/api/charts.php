@@ -439,3 +439,19 @@ $app->get('/charts/:id/vis-data', function ($chart_id) {
         }
     });
 });
+
+// endpoint to fix unicode problems in a chart
+$app->get('/charts/:id/fix', function($id) use ($app) {
+    $user = DatawrapperSession::getUser();
+    $pdo = Propel::getConnection();
+    $pdo->exec("SET character_set_results = 'utf8'");
+    $res = $pdo->query("SELECT metadata FROM chart WHERE NOT JSON_CONTAINS_PATH(metadata, 'one', '$.data.\"charset-fixed\"') AND id = ".$pdo->quote($id));
+    $metadata = $res->fetchColumn(0);
+    if (!empty($metadata)) {
+        print "fixing chart\n";
+        $pdo->exec("UPDATE chart SET metadata = ".$pdo->quote($metadata)." WHERE id = ".$pdo->quote($id));
+        $pdo->exec("UPDATE chart SET metadata = JSON_SET(metadata, '$.data.\"charset-fixed\"', true) WHERE id = ".$pdo->quote($id));
+    } else {
+            print "this chart has been fixed already\n";
+    }
+});
