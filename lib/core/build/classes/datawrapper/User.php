@@ -82,6 +82,8 @@ class User extends BaseUser {
         $u->setPwd('');
         $u->setDeleted(true);
         $u->save();
+
+        DatawrapperHooks::execute(DatawrapperHooks::USER_DELETED, $u);
     }
 
     public function guessName() {
