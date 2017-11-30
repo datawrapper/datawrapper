@@ -243,6 +243,7 @@ class DatawrapperSession {
         } else {
             $domain = $GLOBALS['dw_config']['domain'];
         }
+        setcookie('DW-SESSION', null, 0, '/');
         setcookie('DW-SESSION', null, 0, '/', $domain);
     }
 
