@@ -238,7 +238,12 @@ class DatawrapperSession {
         $_SESSION['dw-user-id'] = null;
         $_SESSION['dw-user-organization'] = null;
         self::getInstance()->initUser();
-        setcookie('DW-SESSION', null, 0, '/');
+        if (!empty($GLOBALS['dw_config']['cookie_domain'])) {
+            $domain = $GLOBALS['dw_config']['cookie_domain'];
+        } else {
+            $domain = $GLOBALS['dw_config']['domain'];
+        }
+        setcookie('DW-SESSION', null, 0, '/', $domain);
     }
 
 
