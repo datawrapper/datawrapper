@@ -112,6 +112,12 @@ class ChartQuery extends BaseChartQuery {
         // we need to copy the data, too
         $chart->writeData($src->loadData());
 
+        // also, let's copy the thumbnail!
+        $old_thumb_path = $src->getThumbFilename('m');
+        $new_thumb_path = $chart->getThumbFilename('m');
+
+        file_put_contents($new_thumb_path, file_get_contents($old_thumb_path));
+
         $chart->save();
 
         return $chart;
