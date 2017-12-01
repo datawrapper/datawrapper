@@ -1,4 +1,4 @@
-/*! datawrapper - v1.14.0 *///
+/*! datawrapper - v1.15.0 *///
 // NOTE: This file is auto-generated using /dw.js/make
 // from the source files /dw.js/src/*.js.
 //
