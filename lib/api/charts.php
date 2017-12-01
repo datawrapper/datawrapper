@@ -363,30 +363,8 @@ $app->put('/charts/:id/thumbnail/:thumb', function($chart_id, $thumb) use ($app)
         try {
             $imgurl = $app->request()->getBody();
             $imgdata = base64_decode(substr($imgurl, strpos($imgurl, ",") + 1));
-            $static_path = get_static_path($chart);
-
-            $cfg = $GLOBALS['dw_config'];
-
-            if (isset($cfg['charts-s3'])
-              && isset($cfg['charts-s3']['write'])
-              && $cfg['charts-s3']['write'] == true) {
-
-                $s3url = 's3://' . $cfg['charts-s3']['bucket'] . '/' .
-                    get_relative_static_path($chart) . '/' . $thumb . '.png';
-
-                file_put_contents($s3url, $imgdata);
-
-            } else {
-                file_put_contents($static_path . "/" . $thumb . '.png', $imgdata);
-            }
-
-            // DatawrapperHooks::execute(DatawrapperHooks::PUBLISH_FILES, array(
-            //     array(
-            //         $static_path . "/" . $thumb . '.png',
-            //         $chart->getID() . '/' . $thumb . '.png',
-            //         'image/png'
-            //     )
-            // ));
+            $thumb_filename = $chart->getThumbFilename($thumb);
+            file_put_contents($thumb_filename, $imgdata);
             ok();
         } catch (Exception $e) {
             print $e;

@@ -515,6 +515,19 @@ class Chart extends BaseChart {
             $this->assetUrl('m.png');
     }
 
+    public function getThumbFilename($thumb) {
+        $cfg = $GLOBALS['dw_config'];
+        if (isset($cfg['charts-s3']) && isset($cfg['charts-s3']['write'])
+            && $cfg['charts-s3']['write'] == true) {
+            // use S3 file url
+            return 's3://' . $cfg['charts-s3']['bucket'] . '/'
+                . get_relative_static_path($this) . '/' . $thumb . '.png';
+        } else {
+            // use local file url
+            return get_static_path($this) . "/" . $thumb . '.png';
+        }
+    }
+
     public function plainUrl() {
         return $this->assetUrl('plain.html');
     }
