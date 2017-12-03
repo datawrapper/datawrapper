@@ -281,9 +281,10 @@ function mycharts_get_user_charts(&$page, $app, $user, $folder_id = false, $org_
     $sql_is_user = 'organization_id is NULL AND author_id = '.intval($user->getId());
 
     $sql = 'SELECT id FROM (SELECT * FROM chart WHERE '
-         . (empty($q) ?
-            ($is_org ? $sql_is_org : $sql_is_user) :
-            '('.$sql_is_user.' AND organization_id IS NULL) OR '.$sql_is_any_org).') chart '
+         .  (empty($q) ?
+                ($is_org ? $sql_is_org : $sql_is_user) :
+                '('.$sql_is_user.' AND organization_id IS NULL) '. ($sql_is_any_org ? (" OR " .$sql_is_any_org) : ""))
+          .') chart '
          . 'WHERE deleted = 0 AND last_edit_step > 1 '
          . (empty($q) ? ' AND in_folder '.($folder_id ? '= '.intval($folder_id) : 'IS NULL') : '');
 
