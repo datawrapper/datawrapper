@@ -20,8 +20,8 @@
 }
 
 #delete-account-2 button,
-#delete-account button, 
-.edit-account-confirm .btn-save, 
+#delete-account button,
+.edit-account-confirm .btn-save,
 .edit-account .btn-save {
   border: none;
   background-image: none;
@@ -86,7 +86,7 @@
     </div>
 </div>
 
-<div class="row" id="edit-account-email">
+<div class="row" id="edit-account-email" data-piwik-mask>
     <div class="span6 offset3">
         <div class="form-horizontal edit-account-confirm">
             <h2>{% trans "Change E-Mail" %}</h2>
@@ -107,7 +107,7 @@
     </div>
 </div>
 
-<div class="row" id="edit-account-password" style="margin-top:20px">
+<div class="row" id="edit-account-password" style="margin-top:20px" data-piwik-mask>
     <div class="span6 offset3">
         <div class="form-horizontal edit-account-confirm">
             <h2>{% trans "Change password" %}</h2>
