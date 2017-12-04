@@ -39,7 +39,7 @@ define(function(require){
             e.preventDefault();
             var id = $(e.target).parents('.chart').data('id');
             $.ajax({
-                url: '/api/2/charts/'+id+'/copy',
+                url: '/api/charts/'+id+'/copy',
                 type: 'POST',
                 success: function(data) {
                     try {
