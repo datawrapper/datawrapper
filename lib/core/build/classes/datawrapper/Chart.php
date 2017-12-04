@@ -544,6 +544,17 @@ class Chart extends BaseChart {
         }
     }
 
+    public function getType() {
+        $type = parent::getType();
+        if (!DatawrapperVisualization::has($type)) {
+            // fall back to default chart type
+            return isset($GLOBALS['dw_config']['defaults']) &&
+                isset($GLOBALS['dw_config']['defaults']['vis']) ?
+                $GLOBALS['dw_config']['defaults']['vis'] : 'table';
+        }
+        return $type;
+    }
+
     /*
      * return URL of this chart on Datawrapper
      */
