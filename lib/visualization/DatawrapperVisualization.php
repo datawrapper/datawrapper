@@ -27,6 +27,11 @@ class DatawrapperVisualization {
     public static function get($id) { return self::getInstance()->_get($id); }
 
     /*
+     * checks if a given visualization is registered
+     */
+    public static function has($id) { return self::getInstance()->_has($id); }
+
+    /*
      * returns a list of dynamic assets needed by a visualization
      * to render a specific chart
      */
@@ -127,6 +132,10 @@ class DatawrapperVisualization {
         if (!isset($this->visualizations[$id])) return false;
         $meta = $this->visualizations[$id];
         return $meta;
+    }
+
+    private function _has($id) {
+        return isset($this->visualizations[$id]);
     }
 }
 
