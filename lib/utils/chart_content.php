@@ -161,7 +161,7 @@ function get_chart_content($chart, $user, $theme, $published = false, $debug = f
     if (!empty($forked_from) && $chart->getIsFork()) {
         // find the original chart
         $origChart = ChartQuery::create()->findOneById($forked_from);
-        $chartMeta = DatawrapperPlugin_ForkableCharts::getChartMeta($origChart->getId(), $origChart);
+        $chartMeta = DatawrapperPlugin_River::getChartMeta($origChart->getId(), $origChart);
         if ($origChart && $chartMeta['attribution']) {
             $chart_byline = ($origChart->getOrganizationId() ?
                 OrganizationQuery::create()->findPk($origChart->getOrganizationId()) :
