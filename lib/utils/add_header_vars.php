@@ -122,13 +122,15 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
             'id' => 'lang',
             'icon' => 'fa fa-globe',
             'dropdown' => array(),
-            'title' => strtoupper(substr(DatawrapperSession::getLanguage(), 0, 2)),
+            'title' => __('Language'), //strtoupper(substr(DatawrapperSession::getLanguage(), 0, 2)),
             'tooltip' => "&nbsp;" . __('Switch language')
         );
         foreach ($config['languages'] as $lang) {
             $langDropdown['dropdown'][] = array(
                 'url' => '#lang-'.$lang['id'],
-                'title' => $lang['title']
+                'title' => $lang['title'],
+                'icon' => strtolower(substr(DatawrapperSession::getLanguage(), 0, 2)) == strtolower(substr($lang['id'], 0, 2)) ?
+                    'fa fa-fw fa-check' : 'fa fa-fw'
             );
         }
 
@@ -203,7 +205,8 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
             foreach ($adm_groups as $grp => $items) {
                 # code...
                 $adminLink['dropdown'][] = [
-                    'title' => $grp
+                    'title' => $grp,
+                    'group' => true
                 ];
                 foreach ($items as $item) $adminLink['dropdown'][] = $item;
             }
