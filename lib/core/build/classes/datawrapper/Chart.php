@@ -350,6 +350,14 @@ class Chart extends BaseChart {
         return $p;
     }
 
+    public function getRawMetadata() {
+        return parent::getMetadata();
+    }
+
+    public function setRawMetadata($meta) {
+        parent::setMetadata($meta);
+    }
+
     /*
      * update a part of the metadata
      */

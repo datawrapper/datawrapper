@@ -56,8 +56,8 @@ $app->map('/chart/create', function() use ($app) {
                 if ($chart_tpl_org && $chart_tpl_org->getSettings('chart-templates')) {
                     // copy data
                     $chart->writeData($chart_tpl->loadData());
-                    // copy metadata
-                    $chart->setMetadata(json_encode($chart_tpl->getMetadata()));
+                    // copy raw metadata
+                    $chart->setRawMetadata($chart_tpl->getRawMetadata());
                     // copy title, type
                     $chart->setTitle($chart_tpl->getTitle());
                     $chart->setType($chart_tpl->getType());
