@@ -153,8 +153,11 @@
           <span class="version">version <a href="//www.datawrapper.de/changelog">{{ DW_VERSION }}</a> {{ BRANCH | raw }}</span>
         </p>
 
-
-        {{ hook('get_footer') }}
+        {% if has_hook('get_footer') %}
+          {{ hook('get_footer') }}
+        {% else %}
+          {% include 'footer.twig' %}
+        {% endif %}
       </footer>
     {% endif %}
 
