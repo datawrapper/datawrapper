@@ -1,0 +1,12 @@
+<p>
+    {% trans %}
+    Datawrapper is developed by <b>Datawrapper GmbH</b>.
+    {% endtrans %}
+</p>
+{% if config.footer_links %}
+<div class="footer-links">
+  {% for link in config.footer_links %}
+    <a href="{{ link.url | replace({'%lang': language }) }}">{{ link.title[language] }}</a>
+  {% endfor %}
+</div>
+{% endif %}
