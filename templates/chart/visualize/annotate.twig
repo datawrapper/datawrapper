@@ -2,11 +2,11 @@
  Annotations
  #}
 
-    
+
  <div class="vis-option-type-group group-open">
      <label class="group-title">
-     	<i class="fa fa-angle-double-right expand-group"></i>
-     	<i class="fa fa-angle-double-down collapse-group"></i>
+     	<i class="fa fa-chevron-up expand-group pull-right"></i>
+        <i class="fa fa-chevron-down collapse-group pull-right"></i>
      	{% trans "annotate / title" %}</label>
      <div class="option-group-content vis-option-type-chart-description">
          <div class="story-title control-group">
@@ -33,19 +33,19 @@
              </div>
          </div>
      </div>
-     
+
  </div>
 
  {% if vis.annotate_options %}
- 
+
      {% for key, option in vis.annotate_options %}
          {% if option.type == 'group' %}
          <div id="vis-options-{{ key }}" data-group-key="{{ key }}" class="vis-option-type-group{% if option.open %} group-open{% endif %}">
              <label class="group-title">
-                 <i class="fa fa-angle-double-right expand-group"></i>
-                 <i class="fa fa-angle-double-down collapse-group"></i>
-                 {{ option.label|raw }}
-             </label>
+                {{ option.label|raw }}
+                <i class="fa fa-chevron-up expand-group pull-right"></i>
+                <i class="fa fa-chevron-down collapse-group pull-right"></i>
+            </label>
              <div class="option-group-content">
              {% for key, option in option.options %}
              {{ block('option') }}

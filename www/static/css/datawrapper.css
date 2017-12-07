@@ -181,9 +181,6 @@ html .navbar .navbar-inner .brand {
   height: 37px;
   line-height: 18px;
 }
-html .navbar .navbar-inner .brand:hover {
-  background: white;
-}
 html .navbar .navbar-inner .mycharts_dd.dropdown {
   margin-left: -20px;
 }
@@ -1212,10 +1209,6 @@ html .btn-inverse {
 .chart-editor.dw-create-visualize .vis-options .vis-option-type-group.group-open {
   border-bottom: none;
   border: 0px solid #f9f9f9;
-  margin-top: 2px;
-  margin-left: 0px;
-  margin-right: -5px;
-  border-radius: 5px;
   background: #f9f9f9;
 }
 .chart-editor.dw-create-visualize #vis-options .vis-option-type-group.group-open label.group-title,
@@ -1234,9 +1227,6 @@ html .btn-inverse {
 .chart-editor.dw-create-visualize .vis-options .vis-option-type-group.group-open .option-group-content {
   position: static;
   visibility: visible;
-  padding-left: 2px;
-  padding-right: 0px;
-  padding-bottom: 5px;
 }
 .chart-editor.dw-create-visualize #vis-options .control-label,
 .chart-editor.dw-create-visualize .vis-options .control-label {
