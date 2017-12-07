@@ -25,10 +25,10 @@
 
 .dw .create-nav {
     & > * {
-        background: #f2f2f2;
+        background: darken(@dw_lightgray, 2%);
         position: relative;
-        box-shadow: 2px 2px 2px #e2e2e2 inset;
-        border-radius: 10px 0 0 10px;
+        // box-shadow: 2px 2px 2px @dw_lightgray inset;
+        border-radius: 4px 0 0 4px;
         text-align: left;
         height: 50px;
         font-size: 16px;
@@ -43,12 +43,13 @@
     }
 
     .corner {
-        background: url(../img/create-nav-bg.png) left center no-repeat;
-        width: 25px;
+        background: url(../img/nav-corner.svg) right center no-repeat;
+        background-size: 22px;
+        width: 22px;
         height: 100%;
         position: absolute;
         top: 0;
-        right: 0;
+        right: -1px;
         border-radius: 0;
         box-shadow: none;
     }
@@ -69,7 +70,7 @@
     }
 
     & > a.passed {
-        background: #ddd;
+        // background: #ddd;
     }
 
     & > * .step {
@@ -81,6 +82,6 @@
         top: 3px;
         margin-left: 18px;
         margin-right: 5px;
-        text-shadow: 1px 1px 2px rgba(0,0,0,.17);
+        text-shadow: 1px 1px 0px rgba(0,0,0,.1);
     }
 }

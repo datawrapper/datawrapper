@@ -1,18 +1,19 @@
 html .navbar.navbar-transparent .navbar-inner {
     height: 65px;
- 
+
     .nav li .divider-vertical {
         height: 65px;
     }
-} 
+}
 
 html .navbar .navbar-inner {
     font-weight: 400;
-    background: #f5f5f5;
-    min-height: 45px;
-    border-bottom: 1px solid #e5e5e5;
+    background: @dw_background;
+    min-height: 55px;
+    padding-top: 10px;
+    border-bottom: 1px solid @dw_background;
     box-shadow: none;
-    height: 45px;
+    height: 55px;
 
     li {
         line-height: 26px;
@@ -27,14 +28,15 @@ html .navbar .navbar-inner {
 
             .fa {
                 color: #222;
-                font-size: 14px;
+                font-size: 15px;
+                margin-right: 2px;
             }
 
             & > a {
                 padding-top: 11px;
                 padding-bottom: 10px;
-                font-size: 13px;
- 
+                font-size: 15px;
+
                 &:hover {
                     color: #000;
                     .fa { color: @dw_blue_medium; }
@@ -70,31 +72,29 @@ html .navbar .navbar-inner {
     } // end .nav
 
     .brand {
-        color: #556;
-        padding-top: 14px;
-        padding-bottom: 4px;
-        white-space: nowrap;
-        padding-left: 0px;
+        font-weight: 400;
+        color: #000;
+        border: 1px solid #000; //@dw_green;
+        padding-left: 12px;
+        padding-top: 8px;
+        padding-bottom: 6px;
         font-size: 18px;
-        font-weight: 300;
-        margin-left: 0px;
+        margin-top: 10px;
+        margin-left: 1px;
+        padding-right: 12px;
+        border-top: 0;
+        border-right: 0;
+        box-sizing: border-box;
+        height: 37px;
+        line-height: 18px;
 
-        img {
-            float: left;
-            margin-right: 7px;
-            margin-left: 4px;
-            height: 28px;
-            position:relative;
-            top:-4px;
-        }
+        // NEW LOGO????
+        // border: 2px solid #888; //@dw_green;
+        // font-weight: 700;
+        // width: 30px;
 
-        .beta {
-            font-size:10px;
-            font-weight: 400;
-            position:relative;
-            top:-8px;
-            left:3px;
-            color:#aaa;
+        &:hover {
+            background: white;
         }
     }
 

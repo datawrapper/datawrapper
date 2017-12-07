@@ -110,11 +110,12 @@ html .navbar.navbar-transparent .navbar-inner .nav li .divider-vertical {
 }
 html .navbar .navbar-inner {
   font-weight: 400;
-  background: #f5f5f5;
-  min-height: 45px;
-  border-bottom: 1px solid #e5e5e5;
+  background: #f9f9f9;
+  min-height: 55px;
+  padding-top: 10px;
+  border-bottom: 1px solid #f9f9f9;
   box-shadow: none;
-  height: 45px;
+  height: 55px;
 }
 html .navbar .navbar-inner li {
   line-height: 26px;
@@ -125,12 +126,13 @@ html .navbar .navbar-inner .nav > li.icon > a {
 }
 html .navbar .navbar-inner .nav > li .fa {
   color: #222;
-  font-size: 14px;
+  font-size: 15px;
+  margin-right: 2px;
 }
 html .navbar .navbar-inner .nav > li > a {
   padding-top: 11px;
   padding-bottom: 10px;
-  font-size: 13px;
+  font-size: 15px;
 }
 html .navbar .navbar-inner .nav > li > a:hover {
   color: #000;
@@ -163,30 +165,24 @@ html .navbar .navbar-inner .nav .dropdown a.group {
   pointer-events: none;
 }
 html .navbar .navbar-inner .brand {
-  color: #556;
-  padding-top: 14px;
-  padding-bottom: 4px;
-  white-space: nowrap;
-  padding-left: 0px;
-  font-size: 18px;
-  font-weight: 300;
-  margin-left: 0px;
-}
-html .navbar .navbar-inner .brand img {
-  float: left;
-  margin-right: 7px;
-  margin-left: 4px;
-  height: 28px;
-  position: relative;
-  top: -4px;
-}
-html .navbar .navbar-inner .brand .beta {
-  font-size: 10px;
   font-weight: 400;
-  position: relative;
-  top: -8px;
-  left: 3px;
-  color: #aaa;
+  color: #000;
+  border: 1px solid #000;
+  padding-left: 12px;
+  padding-top: 8px;
+  padding-bottom: 6px;
+  font-size: 18px;
+  margin-top: 10px;
+  margin-left: 1px;
+  padding-right: 12px;
+  border-top: 0;
+  border-right: 0;
+  box-sizing: border-box;
+  height: 37px;
+  line-height: 18px;
+}
+html .navbar .navbar-inner .brand:hover {
+  background: white;
 }
 html .navbar .navbar-inner .mycharts_dd.dropdown {
   margin-left: -20px;
@@ -1021,6 +1017,7 @@ html .btn-inverse {
 }
 #iframe-wrapper {
   border: 1px solid #fff;
+  border: none!important;
   padding: 10px;
   border-radius: 0px;
   overflow: hidden;
@@ -1143,7 +1140,7 @@ html .btn-inverse {
   line-height: 22px;
   text-align: center;
   pointer-events: none;
-  border-radius: 11px;
+  border-radius: 4px;
   background: none;
   color: #ccc;
   font-weight: 400;
@@ -1185,7 +1182,7 @@ html .btn-inverse {
 .chart-editor.dw-create-visualize .vis-options .vis-option-type-group {
   padding-bottom: 0;
   margin-bottom: 15px;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 2px solid #eaeaea;
 }
 .chart-editor.dw-create-visualize #vis-options .vis-option-type-group label.group-title,
 .chart-editor.dw-create-visualize .vis-options .vis-option-type-group label.group-title {
@@ -1224,6 +1221,7 @@ html .btn-inverse {
 .chart-editor.dw-create-visualize #vis-options .vis-option-type-group.group-open,
 .chart-editor.dw-create-visualize .vis-options .vis-option-type-group.group-open {
   border-bottom: none;
+  border: 2px solid #f9f9f9;
   margin-left: -10px;
   margin-right: -10px;
   border-radius: 5px;
@@ -1231,7 +1229,7 @@ html .btn-inverse {
 }
 .chart-editor.dw-create-visualize #vis-options .vis-option-type-group.group-open label.group-title,
 .chart-editor.dw-create-visualize .vis-options .vis-option-type-group.group-open label.group-title {
-  background: #f2f2f2;
+  background: #eaeaea;
   padding-left: 10px;
   padding-right: 10px;
   margin-bottom: 15px;
@@ -1246,7 +1244,7 @@ html .btn-inverse {
 }
 .chart-editor.dw-create-visualize #vis-options .vis-option-type-group.group-open label.group-title:hover,
 .chart-editor.dw-create-visualize .vis-options .vis-option-type-group.group-open label.group-title:hover {
-  background: #f0f0f0;
+  background: #eaeaea;
 }
 .chart-editor.dw-create-visualize #vis-options .vis-option-type-group.group-open label.group-title:hover:after,
 .chart-editor.dw-create-visualize .vis-options .vis-option-type-group.group-open label.group-title:hover:after {
@@ -1259,6 +1257,10 @@ html .btn-inverse {
   padding-left: 10px;
   padding-right: 10px;
   padding-bottom: 5px;
+}
+.chart-editor.dw-create-visualize #vis-options .vis-option-type-group.group-open:hover,
+.chart-editor.dw-create-visualize .vis-options .vis-option-type-group.group-open:hover {
+  border: 2px solid #eaeaea;
 }
 .chart-editor.dw-create-visualize #vis-options .control-label,
 .chart-editor.dw-create-visualize .vis-options .control-label {
@@ -1327,7 +1329,7 @@ html .btn-inverse {
   height: 78px;
   border-radius: 0px;
   border: 2px solid #fff;
-  background: #f9f9f9;
+  background: #fff;
   position: relative;
   display: inline-block;
   margin: 0 8px 8px 0;
@@ -1509,7 +1511,7 @@ html .btn-inverse {
   margin-bottom: -4px;
   z-index: 4;
   position: relative;
-  background: #fff;
+  background: #f9f9f9;
 }
 .chart-editor.dw-create-visualize .visualize-nav-tabs li {
   max-width: 33%;
@@ -1521,14 +1523,14 @@ html .btn-inverse {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  border: 1px solid #e5e5e5;
-  background: #f9f9f9;
-  border-bottom: 0;
+  border: 1px solid #ddd;
+  background: #f4f4f4;
 }
 .chart-editor.dw-create-visualize .visualize-nav-tabs .active a {
   color: #000;
   font-weight: bold;
-  background: #fff;
+  background: #f9f9f9;
+  border-bottom-color: #f9f9f9;
 }
 .chart-editor.dw-create-visualize .control-group .pull-left {
   margin-right: 20px;
@@ -1766,6 +1768,7 @@ html .btn-inverse {
   margin: 0 2% 3% 0;
   border-radius: 6px;
   border: 1px solid #eee;
+  background: #fff;
   overflow: hidden;
   position: relative;
   padding: 15px 0 15px;
@@ -1840,10 +1843,9 @@ html .btn-inverse {
   font-weight: 300;
 }
 .dw .create-nav > * {
-  background: #f2f2f2;
+  background: #e5e5e5;
   position: relative;
-  box-shadow: 2px 2px 2px #e2e2e2 inset;
-  border-radius: 10px 0 0 10px;
+  border-radius: 4px 0 0 4px;
   text-align: left;
   height: 50px;
   font-size: 16px;
@@ -1856,12 +1858,13 @@ html .btn-inverse {
   pointer-events: none;
 }
 .dw .create-nav .corner {
-  background: url(../img/create-nav-bg.png) left center no-repeat;
-  width: 25px;
+  background: url(../img/nav-corner.svg) right center no-repeat;
+  background-size: 22px;
+  width: 22px;
   height: 100%;
   position: absolute;
   top: 0;
-  right: 0;
+  right: -1px;
   border-radius: 0;
   box-shadow: none;
 }
@@ -1877,9 +1880,6 @@ html .btn-inverse {
 .dw .create-nav > a:hover {
   text-decoration: none;
 }
-.dw .create-nav > a.passed {
-  background: #ddd;
-}
 .dw .create-nav > * .step {
   font-weight: bold;
   color: #fff;
@@ -1889,7 +1889,7 @@ html .btn-inverse {
   top: 3px;
   margin-left: 18px;
   margin-right: 5px;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.17);
+  text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.1);
 }
 .mysettings .row {
   margin-bottom: 30px;
@@ -1958,12 +1958,6 @@ html .btn-inverse {
 }
 .gallery .dropdown-menu {
   left: auto;
-}
-html body.dw-mycharts .navbar .navbar-inner {
-  background: white;
-}
-body.dw-mycharts {
-  background: #f3f3f3;
 }
 body.dw-mycharts .chart-move-message {
   position: fixed;
@@ -2364,7 +2358,7 @@ body.dw-mycharts.mycharts-search-results .mycharts-search-wrapper .im.im-x-mark-
   border: 0;
 }
 body {
-  background: #fff;
+  background: #f9f9f9;
   color: #444;
   position: relative;
   font-family: 'Roboto', Helvetica, sans-serif;
