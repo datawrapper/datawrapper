@@ -484,8 +484,8 @@
 
     .visconfig {
         .btn {
-            font-weight: 300;
-        } 
+            font-weight: 400;
+        }
 
         label, select, input[type=text], textarea {
             font-size: 14px;
@@ -532,6 +532,16 @@
 
         label.checkbox { padding-left: 17px; }
         label.checkbox input[type="checkbox"] { margin-left: -17px; }
+
+        .publish-btn, .proceed-btn {
+            border-top-right-radius: 4px!important;
+            border-bottom-right-radius: 4px!important;
+        }
+
+        .btn-stepback, .btn-tabback {
+            border-top-left-radius: 4px!important;
+            border-bottom-left-radius: 4px!important;
+        }
 
         @import 'visualize/textarea';
         @import 'visualize/custom-range';
@@ -614,8 +624,8 @@
     .toolbar .toolbar-container .input-resize {
         border: none;
         box-shadow: none;
-        border-bottom: 2px dotted #ccc;
-        width: 20px;
+        border-bottom: 1px dotted #ccc;
+        width: 40px;
         text-align: center;
         background: transparent;
         margin-bottom: 4px;

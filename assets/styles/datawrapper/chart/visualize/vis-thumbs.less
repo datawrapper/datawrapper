@@ -30,7 +30,7 @@
             margin-left: 25px; //10
             margin-top: 10px; //5
 
-            path, rect, circle, ellipse, polyline { fill: @bright-blue; }
+            path, rect, circle, ellipse, polyline { fill: @dw_blue_medium; }
           //  line { stroke: @bright-blue; }
 
             @media (max-width: 1199px) {
@@ -57,27 +57,28 @@
             color: #555;
         }
 
-        &.active {
-          border: 2px solid fade(@bright-blue,80%);
-          background: #CCE7F5; // equals fade()@bright-blue, 20%)
-            //box-shadow: 0 0 10px rgba(25, 129, 221, .6);
+        &.active, &:active {
+            @active_color: @dw_blue_medium;
+            border: 2px solid @active_color; // fade(@active_color,80%);
+            background: @active_color;
 
             .title {
-                color: #000;
-                text-shadow: 1px 1px 0px #CCE7F5,0px 1px 0px #CCE7F5,-1px 1px 0px #CCE7F5,
-                    1px -1px 0px #CCE7F5, 0px -1px 0px #CCE7F5, -1px -1px 0px #CCE7F5,
-                    1px 0px 0px #CCE7F5, 0px 0px 0px #CCE7F5, -1px 0px 0px #CCE7F5;
+                color:#fff;
+                text-shadow: 1px 1px 0px @active_color,0px 1px 0px @active_color,-1px 1px 0px @active_color,
+                    1px -1px 0px @active_color, 0px -1px 0px @active_color, -1px -1px 0px @active_color,
+                    1px 0px 0px @active_color, 0px 0px 0px @active_color, -1px 0px 0px @active_color;
             }
 
             svg {
-                path, rect, circle, ellipse, polyline { fill: #00679b; }
+                path, rect, circle, ellipse, polyline { fill:#fff; }
+                .st0, .st1, .st2, .st3, .st4 { opacity: 1}
               //  line { stroke: #000; }
             }
         }
 
         &:hover {
             //border: 2px solid @bright-blue;
-            background: #CCE7F5;
+            background: fade(@dw_blue_medium, 20%);
 
             .title {
                 text-shadow: 1px 1px 0px #CCE7F5,0px 1px 0px #CCE7F5,-1px 1px 0px #CCE7F5,

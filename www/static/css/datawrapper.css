@@ -285,7 +285,7 @@ html .navbar.navbar-inverse .navbar-inner .brand {
 }
 .modal .btn {
   font-family: 'Roboto', Helvetica, sans-serif;
-  font-weight: 300;
+  font-weight: 400;
 }
 footer {
   border-top: 1px solid silver;
@@ -398,16 +398,25 @@ footer .version {
   margin-bottom: 0;
 }
 html .btn {
-  border-radius: 5px;
+  border-radius: 4px;
   background-image: none!important;
 }
+html .btn .fa {
+  line-height: 19px;
+}
+html .btn .fa.icon-btn-left {
+  margin-left: -6px;
+}
+html .btn .fa.icon-btn-right {
+  margin-right: -6px;
+}
 html .btn-primary {
-  color: #ffffff;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-  background-color: #08c;
+  color: #fff!important;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25) !important;
+  background-color: #1d81a2;
   background-repeat: repeat-x;
-  border-color: #0276B0 #0276B0 #0276B0;
-  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1);
+  box-shadow: none;
+  border-color: darker(#1d81a2, 5%);
 }
 html .btn-primary:hover,
 html .btn-primary:focus,
@@ -416,7 +425,7 @@ html .btn-primary.active,
 html .btn-primary.disabled,
 html .btn-primary[disabled] {
   color: #ffffff;
-  background: #08c!important;
+  background: #1d81a2 !important;
 }
 html .btn-inverse {
   background: #555;
@@ -1341,7 +1350,7 @@ html .btn-inverse {
 .chart-editor.dw-create-visualize .vis-thumbs .vis-thumb svg circle,
 .chart-editor.dw-create-visualize .vis-thumbs .vis-thumb svg ellipse,
 .chart-editor.dw-create-visualize .vis-thumbs .vis-thumb svg polyline {
-  fill: #0088cc;
+  fill: #1d81a2;
 }
 @media (max-width: 1199px) {
   .chart-editor.dw-create-visualize .vis-thumbs .vis-thumb svg {
@@ -1364,23 +1373,42 @@ html .btn-inverse {
   text-shadow: 1px 1px 0px #f9f9f9, 0px 1px 0px #f9f9f9, -1px 1px 0px #f9f9f9, 1px -1px 0px #f9f9f9, 0px -1px 0px #f9f9f9, -1px -1px 0px #f9f9f9, 1px 0px 0px #f9f9f9, 0px 0px 0px #f9f9f9, -1px 0px 0px #f9f9f9;
   color: #555;
 }
-.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active {
-  border: 2px solid rgba(0, 136, 204, 0.8);
-  background: #CCE7F5;
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active,
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb:active {
+  border: 2px solid #1d81a2;
+  background: #1d81a2;
 }
-.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active .title {
-  color: #000;
-  text-shadow: 1px 1px 0px #CCE7F5, 0px 1px 0px #CCE7F5, -1px 1px 0px #CCE7F5, 1px -1px 0px #CCE7F5, 0px -1px 0px #CCE7F5, -1px -1px 0px #CCE7F5, 1px 0px 0px #CCE7F5, 0px 0px 0px #CCE7F5, -1px 0px 0px #CCE7F5;
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active .title,
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb:active .title {
+  color: #fff;
+  text-shadow: 1px 1px 0px #1d81a2, 0px 1px 0px #1d81a2, -1px 1px 0px #1d81a2, 1px -1px 0px #1d81a2, 0px -1px 0px #1d81a2, -1px -1px 0px #1d81a2, 1px 0px 0px #1d81a2, 0px 0px 0px #1d81a2, -1px 0px 0px #1d81a2;
 }
 .chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active svg path,
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb:active svg path,
 .chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active svg rect,
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb:active svg rect,
 .chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active svg circle,
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb:active svg circle,
 .chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active svg ellipse,
-.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active svg polyline {
-  fill: #00679b;
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb:active svg ellipse,
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active svg polyline,
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb:active svg polyline {
+  fill: #fff;
+}
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active svg .st0,
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb:active svg .st0,
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active svg .st1,
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb:active svg .st1,
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active svg .st2,
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb:active svg .st2,
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active svg .st3,
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb:active svg .st3,
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active svg .st4,
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb:active svg .st4 {
+  opacity: 1;
 }
 .chart-editor.dw-create-visualize .vis-thumbs .vis-thumb:hover {
-  background: #CCE7F5;
+  background: rgba(29, 129, 162, 0.2);
 }
 .chart-editor.dw-create-visualize .vis-thumbs .vis-thumb:hover .title {
   text-shadow: 1px 1px 0px #CCE7F5, 0px 1px 0px #CCE7F5, -1px 1px 0px #CCE7F5, 1px -1px 0px #CCE7F5, 0px -1px 0px #CCE7F5, -1px -1px 0px #CCE7F5, 1px 0px 0px #CCE7F5, 0px 0px 0px #CCE7F5, -1px 0px 0px #CCE7F5;
@@ -1505,7 +1533,7 @@ html .btn-inverse {
   background: #e0eaf0;
 }
 .chart-editor.dw-create-visualize .visconfig .btn {
-  font-weight: 300;
+  font-weight: 400;
 }
 .chart-editor.dw-create-visualize .visconfig label,
 .chart-editor.dw-create-visualize .visconfig select,
@@ -1559,6 +1587,16 @@ html .btn-inverse {
 }
 .chart-editor.dw-create-visualize .visconfig label.checkbox input[type="checkbox"] {
   margin-left: -17px;
+}
+.chart-editor.dw-create-visualize .visconfig .publish-btn,
+.chart-editor.dw-create-visualize .visconfig .proceed-btn {
+  border-top-right-radius: 4px!important;
+  border-bottom-right-radius: 4px!important;
+}
+.chart-editor.dw-create-visualize .visconfig .btn-stepback,
+.chart-editor.dw-create-visualize .visconfig .btn-tabback {
+  border-top-left-radius: 4px!important;
+  border-bottom-left-radius: 4px!important;
 }
 .chart-editor.dw-create-visualize .visconfig .vis-option-type-textarea {
   margin-top: 10px;
@@ -1641,8 +1679,8 @@ html .btn-inverse {
 .chart-editor.dw-create-visualize .toolbar .toolbar-container .input-resize {
   border: none;
   box-shadow: none;
-  border-bottom: 2px dotted #ccc;
-  width: 20px;
+  border-bottom: 1px dotted #ccc;
+  width: 40px;
   text-align: center;
   background: transparent;
   margin-bottom: 4px;
@@ -1816,7 +1854,7 @@ html .btn-inverse {
   box-shadow: none;
 }
 .dw .create-nav > div.active {
-  background: #cc0000;
+  background: #c71e1d;
   box-shadow: none;
   font-weight: normal;
   color: #fff;
