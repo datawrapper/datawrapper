@@ -1373,45 +1373,57 @@ html .btn-inverse {
   text-shadow: 1px 1px 0px #f9f9f9, 0px 1px 0px #f9f9f9, -1px 1px 0px #f9f9f9, 1px -1px 0px #f9f9f9, 0px -1px 0px #f9f9f9, -1px -1px 0px #f9f9f9, 1px 0px 0px #f9f9f9, 0px 0px 0px #f9f9f9, -1px 0px 0px #f9f9f9;
   color: #555;
 }
-.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active,
-.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb:active {
-  border: 2px solid #1d81a2;
-  background: #1d81a2;
-}
-.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active .title,
-.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb:active .title {
-  color: #fff;
-  text-shadow: 1px 1px 0px #1d81a2, 0px 1px 0px #1d81a2, -1px 1px 0px #1d81a2, 1px -1px 0px #1d81a2, 0px -1px 0px #1d81a2, -1px -1px 0px #1d81a2, 1px 0px 0px #1d81a2, 0px 0px 0px #1d81a2, -1px 0px 0px #1d81a2;
-}
-.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active svg path,
-.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb:active svg path,
-.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active svg rect,
-.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb:active svg rect,
-.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active svg circle,
-.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb:active svg circle,
-.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active svg ellipse,
-.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb:active svg ellipse,
-.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active svg polyline,
-.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb:active svg polyline {
-  fill: #fff;
-}
-.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active svg .st0,
-.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb:active svg .st0,
-.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active svg .st1,
-.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb:active svg .st1,
-.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active svg .st2,
-.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb:active svg .st2,
-.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active svg .st3,
-.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb:active svg .st3,
-.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active svg .st4,
-.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb:active svg .st4 {
-  opacity: 1;
-}
 .chart-editor.dw-create-visualize .vis-thumbs .vis-thumb:hover {
   background: rgba(29, 129, 162, 0.2);
 }
 .chart-editor.dw-create-visualize .vis-thumbs .vis-thumb:hover .title {
   text-shadow: 1px 1px 0px #CCE7F5, 0px 1px 0px #CCE7F5, -1px 1px 0px #CCE7F5, 1px -1px 0px #CCE7F5, 0px -1px 0px #CCE7F5, -1px -1px 0px #CCE7F5, 1px 0px 0px #CCE7F5, 0px 0px 0px #CCE7F5, -1px 0px 0px #CCE7F5;
+}
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active,
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb:active,
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active:hover {
+  border: 2px solid #1d81a2;
+  background: #1d81a2;
+}
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active .title,
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb:active .title,
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active:hover .title {
+  color: #fff;
+  text-shadow: 1px 1px 0px #1d81a2, 0px 1px 0px #1d81a2, -1px 1px 0px #1d81a2, 1px -1px 0px #1d81a2, 0px -1px 0px #1d81a2, -1px -1px 0px #1d81a2, 1px 0px 0px #1d81a2, 0px 0px 0px #1d81a2, -1px 0px 0px #1d81a2;
+}
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active svg path,
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb:active svg path,
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active:hover svg path,
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active svg rect,
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb:active svg rect,
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active:hover svg rect,
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active svg circle,
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb:active svg circle,
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active:hover svg circle,
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active svg ellipse,
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb:active svg ellipse,
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active:hover svg ellipse,
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active svg polyline,
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb:active svg polyline,
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active:hover svg polyline {
+  fill: #fff;
+}
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active svg .st0,
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb:active svg .st0,
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active:hover svg .st0,
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active svg .st1,
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb:active svg .st1,
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active:hover svg .st1,
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active svg .st2,
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb:active svg .st2,
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active:hover svg .st2,
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active svg .st3,
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb:active svg .st3,
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active:hover svg .st3,
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active svg .st4,
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb:active svg .st4,
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active:hover svg .st4 {
+  opacity: 1;
 }
 @media only screen and (max-width: 1199px) {
   .chart-editor.dw-create-visualize .vis-thumb {

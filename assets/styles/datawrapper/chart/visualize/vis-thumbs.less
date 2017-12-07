@@ -57,7 +57,18 @@
             color: #555;
         }
 
-        &.active, &:active {
+        &:hover {
+            //border: 2px solid @bright-blue;
+            background: fade(@dw_blue_medium, 20%);
+
+            .title {
+                text-shadow: 1px 1px 0px #CCE7F5,0px 1px 0px #CCE7F5,-1px 1px 0px #CCE7F5,
+                    1px -1px 0px #CCE7F5, 0px -1px 0px #CCE7F5, -1px -1px 0px #CCE7F5,
+                    1px 0px 0px #CCE7F5, 0px 0px 0px #CCE7F5, -1px 0px 0px #CCE7F5;
+            }
+        }
+
+        &.active, &:active, &.active:hover {
             @active_color: @dw_blue_medium;
             border: 2px solid @active_color; // fade(@active_color,80%);
             background: @active_color;
@@ -73,17 +84,6 @@
                 path, rect, circle, ellipse, polyline { fill:#fff; }
                 .st0, .st1, .st2, .st3, .st4 { opacity: 1}
               //  line { stroke: #000; }
-            }
-        }
-
-        &:hover {
-            //border: 2px solid @bright-blue;
-            background: fade(@dw_blue_medium, 20%);
-
-            .title {
-                text-shadow: 1px 1px 0px #CCE7F5,0px 1px 0px #CCE7F5,-1px 1px 0px #CCE7F5,
-                    1px -1px 0px #CCE7F5, 0px -1px 0px #CCE7F5, -1px -1px 0px #CCE7F5,
-                    1px 0px 0px #CCE7F5, 0px 0px 0px #CCE7F5, -1px 0px 0px #CCE7F5;
             }
         }
     }
