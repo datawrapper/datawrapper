@@ -299,7 +299,7 @@ function(initHighlightSeries, visOptions, themes, loadVisDfd, initTabNav, enable
         var iframe = $('#iframe-vis').contents(),
             bgcol =  $('body', iframe).css('background-color'),
             white = bgcol == 'rgb(255, 255, 255)' || bgcol == '#ffffff' || bgcol == 'white' || bgcol == 'transparent',
-            border = white ? '#ffffff' : '#bbb';
+            border = white ? '#ffffff' : '#ddd';
 
         bgcol = dw.backend.currentChart.get('metadata.publish.contextBg') || dw.backend.currentChart.get('metadata.publish.background');
 
