@@ -1181,28 +1181,18 @@ html .btn-inverse {
 .chart-editor.dw-create-visualize #vis-options .vis-option-type-group,
 .chart-editor.dw-create-visualize .vis-options .vis-option-type-group {
   padding-bottom: 0;
-  margin-bottom: 15px;
-  border-bottom: 2px solid #eaeaea;
+  margin-bottom: 20px;
 }
 .chart-editor.dw-create-visualize #vis-options .vis-option-type-group label.group-title,
 .chart-editor.dw-create-visualize .vis-options .vis-option-type-group label.group-title {
-  padding: 8px 0;
-  margin-bottom: 0;
-  font-weight: 500!important;
-  font-family: 'Roboto', Helvetica, sans-serif;
-}
-.chart-editor.dw-create-visualize #vis-options .vis-option-type-group label.group-title:hover,
-.chart-editor.dw-create-visualize .vis-options .vis-option-type-group label.group-title:hover {
+  border-top: 2px solid #ddd;
   background: #f9f9f9;
-}
-.chart-editor.dw-create-visualize #vis-options .vis-option-type-group label.group-title:hover:after,
-.chart-editor.dw-create-visualize .vis-options .vis-option-type-group label.group-title:hover:after {
-  content: 'Click to expand group';
-  float: right;
-  font-weight: 300;
-  padding-right: 10px;
-  font-size: 12px;
-  color: #bbb;
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#eaeaea+1,f9f9f9+100 */
+  color: #000;
+  padding: 8px 2px;
+  margin-bottom: 10px;
+  font-weight: 700!important;
+  font-family: 'Roboto', Helvetica, sans-serif;
 }
 .chart-editor.dw-create-visualize #vis-options .vis-option-type-group label.group-title .fa,
 .chart-editor.dw-create-visualize .vis-options .vis-option-type-group label.group-title .fa {
@@ -1221,17 +1211,15 @@ html .btn-inverse {
 .chart-editor.dw-create-visualize #vis-options .vis-option-type-group.group-open,
 .chart-editor.dw-create-visualize .vis-options .vis-option-type-group.group-open {
   border-bottom: none;
-  border: 2px solid #f9f9f9;
-  margin-left: -10px;
-  margin-right: -10px;
+  border: 0px solid #f9f9f9;
+  margin-top: 2px;
+  margin-left: 0px;
+  margin-right: -5px;
   border-radius: 5px;
   background: #f9f9f9;
 }
 .chart-editor.dw-create-visualize #vis-options .vis-option-type-group.group-open label.group-title,
 .chart-editor.dw-create-visualize .vis-options .vis-option-type-group.group-open label.group-title {
-  background: #eaeaea;
-  padding-left: 10px;
-  padding-right: 10px;
   margin-bottom: 15px;
 }
 .chart-editor.dw-create-visualize #vis-options .vis-option-type-group.group-open label.group-title .collapse-group,
@@ -1242,25 +1230,13 @@ html .btn-inverse {
 .chart-editor.dw-create-visualize .vis-options .vis-option-type-group.group-open label.group-title .expand-group {
   display: none;
 }
-.chart-editor.dw-create-visualize #vis-options .vis-option-type-group.group-open label.group-title:hover,
-.chart-editor.dw-create-visualize .vis-options .vis-option-type-group.group-open label.group-title:hover {
-  background: #eaeaea;
-}
-.chart-editor.dw-create-visualize #vis-options .vis-option-type-group.group-open label.group-title:hover:after,
-.chart-editor.dw-create-visualize .vis-options .vis-option-type-group.group-open label.group-title:hover:after {
-  content: 'Click to collapse group';
-}
 .chart-editor.dw-create-visualize #vis-options .vis-option-type-group.group-open .option-group-content,
 .chart-editor.dw-create-visualize .vis-options .vis-option-type-group.group-open .option-group-content {
   position: static;
   visibility: visible;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-left: 2px;
+  padding-right: 0px;
   padding-bottom: 5px;
-}
-.chart-editor.dw-create-visualize #vis-options .vis-option-type-group.group-open:hover,
-.chart-editor.dw-create-visualize .vis-options .vis-option-type-group.group-open:hover {
-  border: 2px solid #eaeaea;
 }
 .chart-editor.dw-create-visualize #vis-options .control-label,
 .chart-editor.dw-create-visualize .vis-options .control-label {
@@ -1325,10 +1301,8 @@ html .btn-inverse {
   margin-right: -10px;
 }
 .chart-editor.dw-create-visualize .vis-thumbs .vis-thumb {
-  width: 80px;
-  height: 78px;
-  border-radius: 0px;
-  border: 2px solid #fff;
+  width: 84px;
+  height: 82px;
   background: #fff;
   position: relative;
   display: inline-block;
@@ -1364,7 +1338,7 @@ html .btn-inverse {
 }
 .chart-editor.dw-create-visualize .vis-thumbs .vis-thumb .title {
   position: absolute;
-  bottom: 5px;
+  bottom: 8px;
   left: 5px;
   right: 5px;
   font-size: 11px;
@@ -1384,7 +1358,6 @@ html .btn-inverse {
 .chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active,
 .chart-editor.dw-create-visualize .vis-thumbs .vis-thumb:active,
 .chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active:hover {
-  border: 2px solid #1d81a2;
   background: #1d81a2;
 }
 .chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active .title,

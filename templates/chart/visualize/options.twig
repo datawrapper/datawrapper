@@ -15,9 +15,9 @@
         {% if option.type == 'group' %}
         <div id="vis-options-{{ key }}" data-group-key="{{ key }}" class="vis-option-type-group{% if option.open %} group-open{% endif %}">
             <label class="group-title">
-                <i class="fa fa-angle-double-right expand-group"></i>
-                <i class="fa fa-angle-double-down collapse-group"></i>
                 {{ option.label|raw }}
+                <i class="fa fa-chevron-up expand-group pull-right"></i>
+                <i class="fa fa-chevron-down collapse-group pull-right"></i>
             </label>
             <div class="option-group-content">
             {% for key, option in option.options %}

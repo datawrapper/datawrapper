@@ -210,20 +210,30 @@
 
         .vis-option-type-group {
             label.group-title {
-                &:hover {
-                    background: #f9f9f9;
-                    &:after {
-                        content: 'Click to expand group';
-                        float: right;
-                        font-weight: 300;
-                        padding-right: 10px;
-                        font-size: 12px;
-                        color: #bbb;
-                    }
-                }
-                padding: 8px 0;
-                margin-bottom: 0;
-                font-weight: 500!important;
+                border-top: 2px solid #ddd;
+                background: @dw_background;
+                /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#eaeaea+1,f9f9f9+100 */
+                // background: #eaeaea; /* Old browsers */
+                // background: -moz-linear-gradient(top, #f2f2f2 1%, #f9f9f9 100%); /* FF3.6-15 */
+                // background: -webkit-linear-gradient(top, #f2f2f2 1%,#f9f9f9 100%); /* Chrome10-25,Safari5.1-6 */
+                // background: linear-gradient(to bottom, #f2f2f2 1%,#f9f9f9 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+                // filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f2f2f2', endColorstr='#f9f9f9',GradientType=0 ); /* IE6-9 */
+                color: #000;
+
+                // &:hover {
+                //     background: #f9f9f9;
+                //     &:after {
+                //         content: 'Click to expand group';
+                //         float: right;
+                //         font-weight: 300;
+                //         padding-right: 10px;
+                //         font-size: 12px;
+                //         color: #bbb;
+                //     }
+                // }
+                padding: 8px 2px;
+                margin-bottom: 10px;
+                font-weight: 700!important;
 
                 font-family: @base-font;
                 .fa {
@@ -233,8 +243,8 @@
                 .collapse-group { display: none }
             }
             padding-bottom: 0;
-            margin-bottom: 15px;
-            border-bottom: 2px solid #eaeaea;
+            margin-bottom: 20px;
+            // border-bottom: 2px solid #eaeaea;
 
             .option-group-content {
                 position: absolute;
@@ -242,36 +252,48 @@
             }
             &.group-open {
                 label.group-title {
-                    background: #eaeaea;
-                    padding-left: 10px;
-                    padding-right: 10px;
+
                     .collapse-group { display: inline-block; }
                     .expand-group { display: none; }
                     margin-bottom: 15px;
-                    &:hover {
-                        background: #eaeaea;
-                        &:after {
-                            content: 'Click to collapse group';
-                        }
-                    }
+                    // &:hover {
+                    //     background: #eaeaea;
+                    //     &:after {
+                    //         content: 'Click to collapse group';
+                    //     }
+                    // }
                 }
                 .option-group-content {
                     position: static;
                     visibility: visible;
-                    padding-left: 10px;
-                    padding-right: 10px;
+                    padding-left: 2px;
+                    padding-right: 0px;
                     padding-bottom: 5px;
                 }
                 border-bottom: none;
-                border: 2px solid @dw_background;
-                margin-left: -10px;
-                margin-right: -10px;
+                border: 0px solid @dw_background;
+                margin-top: 2px;
+                margin-left: 0px;
+                margin-right: -5px;
                 border-radius: 5px;
                 background: @dw_background;
                 // box-shadow: inset 2px 2px 5px #eee;
-                &:hover {
-                    border: 2px solid #eaeaea;
-                }
+                // &:hover {
+                //     border: 2px solid #eaeaea;
+                //     margin-top: 0px;
+                //     margin-bottom: 0px;
+                //     margin-left: -10px;
+                //     margin-right: -12px;
+
+                //     .option-group-content {
+                //         padding-left: 8px;
+                //         padding-right: 8px;
+                //     }
+
+                //     label.group-title {
+                //         padding-left: 14px;
+                //     }
+                // }
             }
 
         }
