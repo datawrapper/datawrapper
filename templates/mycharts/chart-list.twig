@@ -16,7 +16,7 @@
                 <div class="thumbnail" data-id="{{ chart.id }}">
 
                     <a class="popup" href="#/_/{{ chart.id }}">
-                        <div class="image" style="width:100%; height:130px; background:url({% if chart.hasPreview %}//{{ DW_CHART_CACHE_DOMAIN }}/{{ chart.id }}/m.png{% else %}/static/img/nopreview.png{% endif %}) top left no-repeat;background-size:cover"></div>
+                        <div class="image" style="width:100%; height:130px; background:url(//{{ IMG_DOMAIN }}/{{chart.id}}/{{chart.getHash}}/plain.png) top left no-repeat;background-size:cover"></div>
 
                         <h3 contenteditable spellcheck="false">
                             {% if chart.title != '' %}{{ chart.title | replace({'<br/>': ' - '}) | striptags | raw }}{% else %}{{ chart.id }}{% endif %}
