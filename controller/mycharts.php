@@ -243,6 +243,7 @@ function prepare_short_arrays($charts) {
 
     foreach ($charts as $chart) {
         $flat = $chart->serialize(true);
+        unset($flat['metadata']['publish']['embed-codes']);
         $shorty[$flat['id']] = $flat;
     }
 
