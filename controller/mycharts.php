@@ -182,7 +182,7 @@ function mycharts_group_by_folder($charts, $user) {
     foreach (FolderQuery::create()->getUserFolders($user) as $group) {
         foreach ($group['folders'] as $folder) {
             $folder_lookup[$folder->getId()] = $folder;
-            $folder_link[$folder->getId()] = ($group['type'] == 'user' ? '/mycharts/' : '/organization/'.$group['organization']->getId().'/') . $folder->getId(); 
+            $folder_link[$folder->getId()] = ($group['type'] == 'user' ? '/mycharts/' : '/organization/'.$group['organization']->getId().'/') . $folder->getId();
         }
     };
     $folder_paths = [];
