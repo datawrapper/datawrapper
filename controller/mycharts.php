@@ -244,6 +244,7 @@ function prepare_short_arrays($charts) {
     foreach ($charts as $chart) {
         $flat = $chart->serialize(true);
         unset($flat['metadata']['publish']['embed-codes']);
+        $flat['hash'] = $chart->getHash();
         $shorty[$flat['id']] = $flat;
     }
 
@@ -313,7 +314,9 @@ function mycharts_get_user_charts(&$page, $app, $user, $folder_id = false, $org_
     $chart_ids = $pdo->query($sql)->fetchAll(PDO::FETCH_COLUMN, 0);
 
     $total = count($chart_ids);
-    $chartQuery = ChartQuery::create();
+    $chartQuery = ChartQuery::create()
+        ->withColumn('MD5(CONCAT(id, "--",UNIX_TIMESTAMP(created_at)))', 'hash');
+
     switch ($sort_by) {
         case 'title': $chartQuery->orderByTitle(); break;
         case 'published_at': $chartQuery->orderByPublishedAt('desc'); break;
