@@ -94,7 +94,7 @@ function(initHighlightSeries, visOptions, themes, loadVisDfd, initTabNav, enable
             iframeWin.__dw.saved();
         }
 
-        scheduleThumbnail();
+        // scheduleThumbnail();
     }
 
     function syncUI() {
@@ -263,10 +263,10 @@ function(initHighlightSeries, visOptions, themes, loadVisDfd, initTabNav, enable
     }
 
     function scheduleThumbnail() {
-        clearTimeout(__thumbTimer);
-        __thumbTimer = setTimeout(function() {
-            dw.backend.snapshot(iframe, dw.backend.currentChart.get('id'));
-        }, 1500);
+        // clearTimeout(__thumbTimer);
+        // __thumbTimer = setTimeout(function() {
+        //     dw.backend.snapshot(iframe, dw.backend.currentChart.get('id'));
+        // }, 1500);
     }
 
     function onDatasetLoaded() {
