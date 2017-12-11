@@ -1,16 +1,9 @@
 {
-    "Bar Chart": "Balken (alt)",
-    "Base color": "Basisfarbe",
-    "Autmatically sort bars": "Balken sortieren",
-    "Reverse order": "Reihenfolge umkehren",
-    "Use different color for negative values": "Alternative Farbe f\u00fcr negative Werte verwenden",
-    "Use the same scale for all columns": "Gleiche Achsen f\u00fcr alle S\u00e4ulen",
-    "Filter missing values": "Fehlende Werte nicht anzeigen",
-    "bar chart": "Balken (alt)",
-    "base-color": "Basisfarbe",
-    "sort-bars": "Balken sortieren",
-    "reverse-order": "Reihenfolge umkehren",
-    "negative-values": "Alternative Farbe f\u00fcr negative Werte verwenden",
-    "same-scale": "Gleiche Achsen f\u00fcr alle S\u00e4ulen",
-    "filter-missing": "Fehlende Werte nicht anzeigen"
+  "bar chart": "Balken (alt)",
+  "base-color": "Basisfarbe",
+  "sort-bars": "Balken sortieren",
+  "reverse-order": "Reihenfolge umkehren",
+  "negative-values": "Alternative Farbe für negative Werte verwenden",
+  "same-scale": "Gleiche Achsen für alle Säulen",
+  "filter-missing": "Fehlende Werte nicht anzeigen"
 }

@@ -147,7 +147,7 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
                     "id" => "my-account",
                     'icon' => 'fa fa-lock',
                     "url" => "/account",
-                    "title" => "&nbsp;" . __('My Account')
+                    "title" => "&nbsp;" . __('My account')
                 ]
             ]
         );
