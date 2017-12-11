@@ -38,6 +38,7 @@
     | replace({"%email": chart.user.email, "%uid": chart.user.id }) | raw }}
 </div>
 {% endif %}
+{{ hook('chart_editor_alert', chart, user) }}
 
 <script type="text/javascript">
 
