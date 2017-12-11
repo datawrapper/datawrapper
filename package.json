@@ -20,10 +20,15 @@
     "watch": "watch 'make assets' assets/"
   },
   "devDependencies": {
+    "chalk": "^2.3.0",
+    "d3-dsv": "^1.0.8",
+    "download-google-spreadsheet": "^0.1.1",
     "grunt": "^1.0.1",
     "grunt-bowercopy": "^1.2.4",
     "grunt-subgrunt": "^1.2.0",
+    "js-yaml": "^3.10.0",
     "less": "^2.7.1",
+    "underscore": "^1.8.3",
     "watch": "^1.0.2"
   }
 }

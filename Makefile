@@ -19,8 +19,8 @@ assets: www/static/css/datawrapper.css www/static/css/chart.base.css
 # www/static/js/dw-2.0.min.js: dw.js/dw-2.0.js
 # 	@php -r "require 'vendor/autoload.php'; file_put_contents('www/static/js/dw-2.0.min.js', \JShrink\Minifier::minify(file_get_contents('dw.js/dw-2.0.js')));"
 
-messages:
-	scripts/update-messages.sh
+translations:
+	scripts/update-translations
 
 www/static/css/datawrapper.css: assets/styles/datawrapper/* assets/styles/datawrapper/**/* assets/styles/datawrapper/**/**/*
 	node_modules/.bin/lessc assets/styles/datawrapper/main.less > $@

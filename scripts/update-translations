@@ -1,0 +1,65 @@
+#!/usr/bin/env node
+
+const fs = require('fs');
+const yaml = require('js-yaml');
+const _ = require('underscore');
+const chalk = require('chalk');
+const d3 = require('d3-dsv');
+const downloadGoogleSpreadsheet = require('download-google-spreadsheet').default;
+
+const config = yaml.safeLoad(fs.readFileSync('./config.yaml'));
+
+var sheets = [{
+    dest: './tmp/translations/core.csv',
+    fileId: '1Duu-1CJ_pZFMZUm90uSHA5rgsxLTGhtZvXAxI9p65UI',
+    gid: '1737256870'
+}, {
+    dest: './tmp/translations/plugins.csv',
+    fileId: '1Duu-1CJ_pZFMZUm90uSHA5rgsxLTGhtZvXAxI9p65UI',
+    gid: '1978328882',
+}];
+
+var opts = {};
+
+downloadGoogleSpreadsheet(sheets, opts, function (err) {
+    if (err) throw err;
+
+    const core = d3.csvParse(fs.readFileSync(sheets[0].dest, 'utf-8'));
+    const plugins = d3.csvParse(fs.readFileSync(sheets[1].dest, 'utf-8'));
+
+    // write core locales/*.json
+    writeLocales(core, './locale');
+
+    _.each(_.groupBy(plugins, 'plugin'), (src, k) => {
+        if (fs.existsSync(`./plugins/${k}`)) {
+            writeLocales(src, `./plugins/${k}/locale`);
+        } else {
+            console.log(chalk.yellowBright.bold(' ⚇ '), 'ignoring missing plugin', chalk.bold(k));
+        }
+    });
+
+    // fs.writeFileSync(sheets[0].dest.replace('.csv', '.json'), JSON.stringify(d, null, 3));
+    // fs.unlinkSync(sheets[0].dest);
+    console.log('Done.');
+});
+
+function writeLocales(src, path) {
+    if (!fs.existsSync(path)) fs.mkdir(path);
+    var err = false;
+    config.languages.forEach((lang) => {
+        const f = `${path}/${lang.id.replace('-','_')}.json`;
+        try {
+            fs.accessSync(f, fs.constants.R_OK | fs.constants.W_OK);
+        } catch (e) {
+            console.error(chalk.red(' ✖ '), 'no permission to write', f);
+            err = true;
+            return;
+        }
+        const locale = {};
+        src.forEach((row) => {
+            locale[row.key] = row[lang.id];
+        });
+        fs.writeFileSync(f, JSON.stringify(locale, null, 2));
+    });
+    if (!err) console.log(chalk.green(' ✔ ')+' updated translations for', chalk.bold(src[0].plugin || 'core'));
+}
