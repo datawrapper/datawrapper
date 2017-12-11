@@ -83,6 +83,12 @@
     <link href="{{ config.static_path }}/plugins/{{ css }}" rel="stylesheet">
     {% endfor %}
 
+    {% if has_hook('page_inline_css') %}
+    <style type="text/css">
+    {{ hook('page_inline_css') | raw }}
+    </style>
+    {% endif %}
+
   </head>
 
 

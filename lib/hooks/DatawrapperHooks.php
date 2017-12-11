@@ -213,7 +213,7 @@ class DatawrapperHooks {
     const SEND_DOWNGRADE_EMAIL = 'send_downgrade_email';
     const SEND_TEAM_SETUP_EMAIL = 'send_team_setup_email';
 
-    // hooks to add markup in chart editor steps below nav 
+    // hooks to add markup in chart editor steps below nav
     const UPLOAD_BEFORE_CONTENT = 'upload_before_content';
     const UPLOAD_AFTER_DEMO_DATASETS = 'upload_after_demo_datasets';
     const UPLOAD_AFTER_CONTENT = 'upload_after_content';
@@ -234,4 +234,5 @@ class DatawrapperHooks {
     const ADMIN_USER_DETAIL_BOTTOM = 'admin_user_detail_bottom';
 
     const CHART_EDITOR_ALERT = 'chart_editor_alert';
+    const PAGE_INLINE_CSS = 'page_inline_css';
 }
