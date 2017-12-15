@@ -8,7 +8,7 @@
                     {% if group.type == 'user' %}
         <a class="thumbnail" href="/mycharts/{{ folder.id }}">
                     {% else %}
-        <a class="thumbnail" href="/organization/{{ current.organization }}/{{ folder.id }}">
+        <a class="thumbnail" href="/team/{{ current.organization }}/{{ folder.id }}">
                     {% endif %}
             <i class="im im-folder im-fw"></i> <span>{{ folder.name | striptags }}</span>
         </a>
