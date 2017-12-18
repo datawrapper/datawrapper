@@ -285,7 +285,7 @@ class Chart extends BaseChart {
      * checks if a chart is forkable
      */
     public function isForkable() {
-        return $this->getForkable() && !$this->getIsFork();
+        return $this->isPublic() && $this->getForkable() && !$this->getIsFork();
     }
 
     /**
