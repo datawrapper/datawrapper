@@ -105,6 +105,9 @@ class DatawrapperHooks {
     // Runs every minute via cronjob
     const CRON_MINUTELY = 'cron_minutely';
 
+    // Executed before a chart has been published (args: chart, user)
+    const PRE_CHART_PUBLISH = 'pre_chart_publish';
+
     // Executed after a chart has been published (args: chart, user)
     const POST_CHART_PUBLISH = 'post_chart_publish';
 
