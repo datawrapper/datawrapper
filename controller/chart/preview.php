@@ -5,7 +5,7 @@ require_once ROOT_PATH . 'lib/utils/check_iframe_origin.php';
 /*
  * Shows a preview of a chart for display in an iFrame
  */
-$app->get('/chart/:id/preview', function ($id) use ($app) {
+$app->get('/(chart|map)/:id/preview', function ($id) use ($app) {
     disable_cache($app);
 
     check_chart_writable($id, function($user, $chart) use ($app) {
