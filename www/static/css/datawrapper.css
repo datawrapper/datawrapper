@@ -1180,6 +1180,10 @@ html .btn-inverse {
 .chart-editor.dw-create-visualize .vis-options .vis-option-group.vis-option-type-select {
   margin-bottom: 15px;
 }
+.chart-editor.dw-create-visualize #vis-options .tooltip,
+.chart-editor.dw-create-visualize .vis-options .tooltip {
+  min-width: 200px;
+}
 .chart-editor.dw-create-visualize #vis-options .vis-option-type-group,
 .chart-editor.dw-create-visualize .vis-options .vis-option-type-group {
   padding-bottom: 0;
