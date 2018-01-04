@@ -44,7 +44,7 @@ define(function() {
 
         // update form action for duplicate button
         $('.action-duplicate form', wrapper)
-            .attr('action', '/api/2/charts/'+chart.id+'/copy')
+            .attr('action', '/api/charts/'+chart.id+'/copy')
             .on('submit', function() {
                 require(['dw/mycharts/no_reload_folder_change'], function(api) {
                     api.reloadLink(location.pathname);
