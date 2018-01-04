@@ -26,6 +26,7 @@ function(initCustomColors, syncVisOptions, unsyncVisOptions) {
                     delay: 0,
                     animation: false,
                     trigger: 'hover focus',
+                    // trigger: 'click',  // for debugging
                     container: el
                 });
             });
@@ -34,7 +35,7 @@ function(initCustomColors, syncVisOptions, unsyncVisOptions) {
             try {
                 usrPref = JSON.parse(localStorage.getItem('dw-vis-groups')) || {};
             } catch (e) {}
-            
+
             if (!usrPref[type]) usrPref[type] = {};
 
             _.each(usrPref[type], function(val, key) {
@@ -55,7 +56,7 @@ function(initCustomColors, syncVisOptions, unsyncVisOptions) {
                 var $control_grp = $(this),
                     $control_lbl = $('.control-label', $control_grp).css('max-width', 'auto'),
                     $controls = $('.controls', $control_grp).css('max-width', 'auto');
-                
+
                 if ($control_lbl.length && $controls.length) {
                     var total_w = $control_grp.width(),
                         lbl_w = $control_lbl.width();

@@ -9,6 +9,12 @@
  * @param $justLocal  true if chart should only be published to local file system
  */
 function publish_chart($user, $chart, $fromCli = false, $justLocal = false) {
+    
+    DatawrapperHooks::execute(
+        DatawrapperHooks::PRE_CHART_PUBLISH,
+        $chart, $user
+    );
+
     $files = array();
     if (!$fromCli) _setPublishStatus($chart, 0.01);
     else print "Publishing chart ".$chart->getID().".\n";

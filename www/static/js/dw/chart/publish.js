@@ -64,6 +64,16 @@ define(function() {
             }
         }
 
+        // new help popovers
+        $('.publish-step div.help').each(function(){
+            var $toggle = $('span', this),
+                $tpl = $('.content', this);
+            $toggle.popover({
+                html: $tpl.html().trim(),
+                trigger: 'hover'
+            });
+        });
+
     }
 
     function triggerDuplicate(e) {
@@ -77,7 +87,7 @@ define(function() {
                     // redirect to copied chart
                     var type = ((dw.backend.currentChart.get('type') == "d3-maps-choropleth" ||
                         dw.backend.currentChart.get('type') == 'd3-maps-symbols') &&
-                        dw.backend.currentChart.get('metadata.visualize.map-type-set') !== undefined) ? 
+                        dw.backend.currentChart.get('metadata.visualize.map-type-set') !== undefined) ?
                         "map" : "chart";
                     window.location.href = '/' + type + '/'+data.data.id+'/visualize';
                 } else {

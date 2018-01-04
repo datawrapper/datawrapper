@@ -57,7 +57,7 @@ function writeLocales(src, path) {
         }
         const locale = {};
         src.forEach((row) => {
-            locale[row.key] = row[lang.id];
+            if (row.key) locale[row.key] = row[lang.id];
         });
         fs.writeFileSync(f, JSON.stringify(locale, null, 2));
     });
