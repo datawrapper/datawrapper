@@ -76,13 +76,14 @@
                     <span class="icon-bar"></span>
                 </a>
 
-                {% if custom_logo %}
-                    <img src="{{ custom_logo }}" />
-                {% endif %}
+                <a href="/">
+                    {% if custom_logo %}
+                        <img src="{{ custom_logo }}" />
+                    {% endif %}
 
-                <a class="brand" href="/">
-
-                    {% if config.custom_title %}{{ config.custom_title }}{% else %}{% trans "Datawrapper" %}{% endif %}<span class="beta">{{ config.custom_title_tag }}</span>
+                    <span class="brand">
+                        {% if config.custom_title %}{{ config.custom_title }}{% else %}{% trans "Datawrapper" %}{% endif %}<span class="beta">{{ config.custom_title_tag }}</span>
+                    </span>
                 </a>
 
                 <div class="nav-collapse">
