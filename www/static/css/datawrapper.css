@@ -1783,6 +1783,102 @@ html .btn-inverse {
 .dw-create-publish .chart-actions li.promo i.fa {
   color: rgba(50, 0, 50, 0.4) !important;
 }
+.dw-create-publish .publish-step .btn-aside {
+  display: inline-block;
+  max-width: 280px;
+  vertical-align: top;
+  margin-left: 10px;
+  border-color: #e9d4ad;
+}
+.dw-create-publish .publish-step .svelte-publish .btn-aside,
+.dw-create-publish .publish-step .svelte-publish .alert {
+  max-width: 100%;
+  margin-top: 7px;
+  margin-left: 0;
+}
+.dw-create-publish .publish-step .svelte-publish .alert.publishing .progress {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+.dw-create-publish .publish-step h2.pad-top {
+  margin-top: 30px;
+}
+.dw-create-publish .publish-step .btn-copy {
+  vertical-align: top;
+}
+.dw-create-publish .publish-step .block {
+  position: relative;
+  margin-bottom: 20px;
+}
+.dw-create-publish .publish-step .block .icon {
+  font-size: 42px;
+  min-width: 54px;
+  height: 46px;
+  vertical-align: top;
+  position: relative;
+  top: 10px;
+}
+.dw-create-publish .publish-step .block .icon.fa-river {
+  top: 3px;
+}
+.dw-create-publish .publish-step .block .ctrls {
+  vertical-align: top;
+  display: inline-block;
+  width: calc(100% - 60px);
+}
+.dw-create-publish .publish-step .block .inpt {
+  margin-top: 5px;
+}
+.dw-create-publish .publish-step .block .help {
+  position: absolute;
+  top: 10px;
+  right: 0;
+}
+.dw-create-publish .publish-step .block .help .fa {
+  font-size: 26px;
+  color: #999;
+}
+.dw-create-publish .publish-step .block .help .content {
+  display: none;
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  padding: 8px 40px 8px 10px;
+  background: #9cbfd1;
+  color: #f9f9f9;
+  width: 350px;
+  border-radius: 4px;
+  box-shadow: 3px 2px 2px rgba(0, 0, 0, 0.1);
+  z-index: 10000;
+}
+.dw-create-publish .publish-step .block .help .content:after {
+  content: '?';
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+.dw-create-publish .publish-step .block .help:hover .content {
+  display: block;
+}
+.dw-create-publish .publish-step .block .help .content:after,
+.dw-create-publish .publish-step .block .help span {
+  font-family: Roboto Mono;
+  display: block;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #9cbfd1;
+  text-align: center;
+  color: #f9f9f9;
+  font-size: 17px;
+  line-height: 24px;
+}
+.dw-create-publish .publish-step label.radio {
+  display: inline-block;
+  margin-right: 5px;
+  margin-top: 5px;
+  margin-left: 5px;
+}
 .publish-chart-action-modal {
   width: 600px;
   margin-left: -300px;
