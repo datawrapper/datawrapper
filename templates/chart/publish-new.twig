@@ -25,8 +25,8 @@ dw.backend.ready(function() {
 
             {{ hook('publish_after_embed', chart, user) }}
 
-            <h2 class="pad-top">Export or duplicate chart</h2>
-            <p>You can export your chart in various format:</p>
+            <h2 class="pad-top">{% trans "publish / export-duplicate" %}</h2>
+            <p>{% trans "publish / export-duplicate / intro" %}</p>
 
             <ul class="chart-actions">
             {% for action in chartActions %}
@@ -43,8 +43,8 @@ dw.backend.ready(function() {
             {% endfor %}
             </ul>
 
-           {# {{ hook('render_chart_actions', chart, user) }} #}
         </div>
+
         <div class="span7">
             {% if user.isAbleToPublish %}
 

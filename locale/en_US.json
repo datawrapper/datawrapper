@@ -334,5 +334,7 @@
   "publish / embed / responsive": "responsive iframe",
   "publish / embed / iframe": "iframe",
   "publish / copy": "copy",
-  "publish / copy-success": "Embed code was copied to clipboard!"
+  "publish / copy-success": "Embed code was copied to clipboard!",
+  "publish / export-duplicate": "Export or duplicate chart",
+  "publish / export-duplicate / intro": "You can <b>export</b> your chart in various formats. Or <b>duplicate</b> it to start editing a copy of the chart."
 }

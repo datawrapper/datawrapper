@@ -334,5 +334,7 @@
   "publish / embed / responsive": "Responsiver Iframe",
   "publish / embed / iframe": "Iframe",
   "publish / copy": "kopieren",
-  "publish / copy-success": "Der Code wurde kopiert!"
+  "publish / copy-success": "Der Code wurde kopiert!",
+  "publish / export-duplicate": "Diagramm exportieren oder duplizieren",
+  "publish / export-duplicate / intro": "Du kannst dein Diagramm in verschiedene Formate <b>exportieren</b>. Oder <b>dupliziere</b> es, um eine neue Kopie des Diagramms zu bearbeiten."
 }
