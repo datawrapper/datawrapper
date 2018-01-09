@@ -271,3 +271,66 @@ function chart_publish_directory() {
 
     return rtrim(realpath($dir), DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
 }
+
+function publish_get_embed_templates() {
+    $templates = [];
+
+    // responsive iframe
+    $templates[] = [
+        "id" => "responsive",
+        "title" => __("publish / embed / responsive"),
+        "text" => __("publish / embed / responsive / text"),
+        "template" => '<iframe id="datawrapper-chart-%chart_id%" src="%chart_url%" scrolling="no" frameborder="0" allowtransparency="true" allowfullscreen="allowfullscreen" webkitallowfullscreen="webkitallowfullscreen" mozallowfullscreen="mozallowfullscreen" oallowfullscreen="oallowfullscreen" msallowfullscreen="msallowfullscreen" style="width: 0; min-width: 100% !important;" height="%chart_height%"></iframe><script type="text/javascript">if("undefined"==typeof window.datawrapper)window.datawrapper={};window.datawrapper["%chart_id%"]={},window.datawrapper["%chart_id%"].embedDeltas=%embed_heights%,window.datawrapper["%chart_id%"].iframe=document.getElementById("datawrapper-chart-%chart_id%"),window.datawrapper["%chart_id%"].iframe.style.height=window.datawrapper["%chart_id%"].embedDeltas[Math.min(1e3,Math.max(100*Math.floor(window.datawrapper["%chart_id%"].iframe.offsetWidth/100),100))]+"px",window.addEventListener("message",function(a){if("undefined"!=typeof a.data["datawrapper-height"])for(var b in a.data["datawrapper-height"])if("%chart_id%"==b)window.datawrapper["%chart_id%"].iframe.style.height=a.data["datawrapper-height"][b]+"px"});</script>',
+    ];
+
+    // standard iframe
+    $templates[] = [
+        "id" => "iframe",
+        "title" => __("publish / embed / iframe"),
+        "text" => __("publish / embed / iframe / text"),
+        "template" => '<iframe src="%chart_url%" scrolling="no" frameborder="0" allowtransparency="true" allowfullscreen="allowfullscreen" webkitallowfullscreen="webkitallowfullscreen" mozallowfullscreen="mozallowfullscreen" oallowfullscreen="oallowfullscreen" msallowfullscreen="msallowfullscreen" width="%chart_width%" height="%chart_height%"></iframe>',
+    ];
+
+    // add team embed codes
+    $user = DatawrapperSession::getUser();
+    $org = $user->getCurrentOrganization();
+
+    if (!empty($org)) {
+        $embed = $org->getSettings('embed');
+
+        if (!empty($embed["preferred_embed"]) && $embed["preferred_embed"] == "custom") {
+            $embed['custom_embed']['id'] = 'custom';
+            $templates[] = $embed['custom_embed'];
+        }
+    }
+    return $templates;
+}
+
+function publish_get_preferred_embed_type() {
+    $user = DatawrapperSession::getUser();
+    $org = $user->getCurrentOrganization();
+    if (!empty($org)) {
+        $embed = $org->getSettings('embed');
+        if (isset($embed["preferred_embed"])) {
+            // for members of teams with custom embed,
+            // the custom type is always the preferred type
+            return $embed['preferred_embed'];
+        }
+    }
+    // for other users it's whatever they selected last
+    if (!empty($user->getUserData()['embed_type'])) {
+        return $user->getUserData()['embed_type'];
+    }
+    // or responsive
+    return 'responsive';
+}
+
+function publish_get_preferred_shareurl_type() {
+    $user = DatawrapperSession::getUser();
+    // whatever the user selected last
+    if (!empty($user->getUserData()['shareurl_type'])) {
+        return $user->getUserData()['shareurl_type'];
+    }
+    // or standalone
+    return 'standalone';
+}
