@@ -164,7 +164,7 @@
         visJSON: visJSON,
         metricPrefix: {{ metricPrefix | json | raw }},
         lang: '{{ lang }}',
-        data: {{ chart.loadData | json | raw }}
+        data: {{ chartData | json | raw }}
     }, window.__dwParams));
 
     if (/iP(hone|od|ad)/.test(navigator.platform)) {
