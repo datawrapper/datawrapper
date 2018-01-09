@@ -97,6 +97,22 @@ function dwInitTwigEnvironment(Twig_Environment $twig) {
         return (new \Moment\Moment($time))->fromNow()->getRelative();
     }));
 
+    // adding new svelte() twig function
+    $twig->addFunction(new Twig_SimpleFunction('svelte', function($app_id, $data = null) {
+        $locale = DatawrapperSession::getLanguage();
+        if (!file_exists(ROOT_PATH.'www/static/js/svelte/'.$app_id.'.'.$locale.'.js')) {
+            $locale = 'en_US';
+        }
+        print "<div class='svelte-$app_id'></div>\n";
+        print "<script type='text/javascript' src='/static/js/svelte/$app_id.$locale.js'></script>\n";
+        print "<link rel='stylesheet' type='text/css' href='/static/css/svelte/$app_id.css'>\n";
+        if (!empty($data)) {
+            print "<script type='text/javascript'>";
+            print $app_id.'.set('.json_encode_safe($data).")\n";
+            print "</script>\n";
+        }
+    }));
+
     if (!empty($GLOBALS['dw_config']['debug'])) {
         $twig->addFilter('var_dump', new Twig_Filter_Function('var_dump'));
     }
