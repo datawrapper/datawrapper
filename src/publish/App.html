@@ -215,6 +215,7 @@
                 window.chart
                     .set('publicVersion', chartInfo.publicVersion)
                     .set('publicUrl', chartInfo.publicUrl)
+                    .set('publishedAt', chartInfo.publishedAt)
                     .set('metadata', chartInfo.metadata);
                 // re-generate embed codes (with new public url)
                 const embedCodes = generateEmbedCodes(window.chart, me.get('embed_templates'));
