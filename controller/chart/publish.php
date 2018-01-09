@@ -53,6 +53,35 @@ $app->get('/(chart|map)/:id/publish(/:sub_page)?', function ($id) use ($app) {
         if (substr($chartW, -1) != '%') $chartW .= 'px';
         if (substr($chartH, -1) != '%') $chartH .= 'px';
 
+        // get chart simple actions for new template
+        $user = Session::getUser();
+        $chartActions = Hooks::execute(Hooks::GET_CHART_ACTIONS, $chart, $user);
+
+        // remove publish-s3
+        $chartActions = array_filter($chartActions, function($a) {
+            return $a['id'] != 'publish-s3';
+        });
+        // give actions a shorter name
+        $chartActions = array_map(function($a) {
+            if ($a['id'] == 'export-image') $a['title'] = 'PNG';
+            if ($a['id'] == 'export-jspdf') $a['title'] = 'PDF';
+            if ($a['id'] == 'export-zip') $a['title'] = 'ZIP';
+            return $a;
+        }, $chartActions);
+
+        // add core duplicate action
+        $chartActions[] = array(
+            'id' => 'duplicate',
+            'icon' => 'code-fork',
+            'title' => __('Duplicate'),
+            'order' => 500
+        );
+
+        // sort actions by self-defined order
+        usort($chartActions, function($a, $b) {
+            return (isset($a['order']) ? $a['order'] : 999) - (isset($b['order']) ? $b['order'] : 999);
+        });
+
         $page = array(
             'title' => $chart->getID() . ' :: '.__('Publish'),
             'chartData' => $chart->loadData(),
@@ -65,7 +94,8 @@ $app->get('/(chart|map)/:id/publish(/:sub_page)?', function ($id) use ($app) {
             'embedHeight' => $chartH,
             'themes' => ThemeQuery::create()->allThemesForUser(),
             'exportStaticImage' => !empty($cfg['phantomjs']),
-            'estExportTime' => ceil(JobQuery::create()->estimatedTime('export') / 60)
+            'estExportTime' => ceil(JobQuery::create()->estimatedTime('export') / 60),
+            'chartActions' => $chartActions
         );
 
         add_header_vars($page, 'chart', 'chart-editor/publish.css');
