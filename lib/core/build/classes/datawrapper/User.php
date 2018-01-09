@@ -131,7 +131,7 @@ class User extends BaseUser {
                             ->filterByOrganizationId($this->getCurrentOrganization()->getId())
                             ->findOne();
 
-        return $userOrganization->getOrganizationRole(); 
+        return $userOrganization->getOrganizationRole();
     }
 
     /*

@@ -9,7 +9,7 @@
  * @param $justLocal  true if chart should only be published to local file system
  */
 function publish_chart($user, $chart, $fromCli = false, $justLocal = false) {
-    
+
     DatawrapperHooks::execute(
         DatawrapperHooks::PRE_CHART_PUBLISH,
         $chart, $user
