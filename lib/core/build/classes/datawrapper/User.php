@@ -258,4 +258,18 @@ class User extends BaseUser {
         return $userData;
     }
 
+    /*
+     * returns true|false
+     */
+    public function mayPublish() {
+        if (!$this->isLoggedIn() || !$this->isActivated()) return false;
+        if (DatawrapperHooks::hookRegistered(DatawrapperHooks::USER_MAY_PUBLISH)) {
+            $user = DatawrapperSession::getUser(0);
+            foreach (DatawrapperHooks::execute(DatawrapperHooks::USER_MAY_PUBLISH, $user) as $value) {
+                if ($value === false) return false;
+            }
+        }
+        return true;
+    }
+
 } // User

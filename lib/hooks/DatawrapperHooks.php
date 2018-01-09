@@ -238,6 +238,9 @@ class DatawrapperHooks {
 
     const CHART_EDITOR_ALERT = 'chart_editor_alert';
     const PAGE_INLINE_CSS = 'page_inline_css';
+
+    // allow plugins to revoke publishing rights
+    const USER_MAY_PUBLISH = 'user_may_publish';
 }
 
 class_alias('DatawrapperHooks', 'Hooks');
