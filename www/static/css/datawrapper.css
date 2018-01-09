@@ -1879,6 +1879,26 @@ html .btn-inverse {
   margin-top: 5px;
   margin-left: 5px;
 }
+.dw-create-publish .publish-step .chart-actions li {
+  text-align: center;
+  border-radius: 2px;
+  min-height: 50px;
+  width: 21%;
+  margin: 0 10px 10px 0;
+  padding: 15px 0 10px;
+}
+.dw-create-publish .publish-step .chart-actions li i.fa {
+  display: block;
+  margin: 0 auto;
+  font-size: 32px!important;
+}
+.dw-create-publish .publish-step .chart-actions li .title {
+  font-size: 12px;
+  text-transform: uppercase;
+  line-height: 15px;
+  display: block;
+  padding: 4px 10px 0;
+}
 .publish-chart-action-modal {
   width: 600px;
   margin-left: -300px;
