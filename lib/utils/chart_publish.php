@@ -48,6 +48,8 @@ function publish_chart($user, $chart, $fromCli = false, $justLocal = false) {
     } else print "Files pushed to CDN.\n";
 
     $chart->redirectPreviousVersions();
+    // correct publish time
+    $chart->setPublishedAt(time());
 
     DatawrapperHooks::execute(
         DatawrapperHooks::POST_CHART_PUBLISH,
