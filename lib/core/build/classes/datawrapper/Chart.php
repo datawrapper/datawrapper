@@ -442,14 +442,19 @@ class Chart extends BaseChart {
     /*
      * redirect previous chart versions to the most current one
      */
-    public function redirectPreviousVersions() {
+    public function redirectPreviousVersions($justLast20=true) {
         $current_target = $this->getCDNPath();
         $redirect_html = '<html><head><meta http-equiv="REFRESH" content="0; url=/'.$current_target.'"></head></html>';
         $redirect_file = chart_publish_directory() . 'static/' . $this->getID() . '/redirect.html';
         file_put_contents($redirect_file, $redirect_html);
         $files = array();
         for ($v=0; $v < $this->getPublicVersion(); $v++) {
-            $files[] = array($redirect_file, $this->getCDNPath($v) . 'index.html', 'text/html');
+            if (!$justLast20 || $this->getPublicVersion() - $v < 20) {
+                $files[] = [
+                    $redirect_file,
+                    $this->getCDNPath($v) . 'index.html', 'text/html'
+                ];
+            }
         }
         DatawrapperHooks::execute(DatawrapperHooks::PUBLISH_FILES, $files);
     }
