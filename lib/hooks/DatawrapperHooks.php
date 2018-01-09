@@ -239,3 +239,5 @@ class DatawrapperHooks {
     const CHART_EDITOR_ALERT = 'chart_editor_alert';
     const PAGE_INLINE_CSS = 'page_inline_css';
 }
+
+class_alias('DatawrapperHooks', 'Hooks');

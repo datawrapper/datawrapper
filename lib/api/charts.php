@@ -4,7 +4,7 @@
  * API: get list of all charts by the current user
  */
 $app->get('/charts', function() use ($app) {
-    $user = DatawrapperSession::getUser();
+    $user = Session::getUser();
     if ($user->isLoggedIn()) {
         $filter = array();
         if ($app->request()->get('filter')) {
@@ -29,7 +29,7 @@ $app->get('/charts', function() use ($app) {
  * API: create a new empty chart
  */
 $app->post('/charts', function() {
-    $user = DatawrapperSession::getUser();
+    $user = Session::getUser();
     try {
         $chart = ChartQuery::create()->createEmptyChart($user);
         $result = array($chart->serialize());
@@ -73,7 +73,7 @@ $app->get('/gallery', function() use ($app) {
  */
 $app->get('/charts/:id', function($id) use ($app) {
     $chart = ChartQuery::create()->findPK($id);
-    $user = DatawrapperSession::getUser();
+    $user = Session::getUser();
     if (!empty($chart) && $chart->isReadable($user)) {
         ok($chart->serialize());
     } else {
@@ -92,7 +92,7 @@ $app->get('/charts/:id', function($id) use ($app) {
 function if_chart_is_writable($chart_id, $callback) {
     $chart = ChartQuery::create()->findPK($chart_id);
     if (!empty($chart)) {
-        $user = DatawrapperSession::getUser();
+        $user = Session::getUser();
         $res = $chart->isWritable($user);
         if ($res === true) {
             call_user_func($callback, $user, $chart);
@@ -250,7 +250,7 @@ $app->delete('/charts/:id', function($id) use ($app) {
 function if_chart_is_readable($chart_id, $callback) {
     $chart = ChartQuery::create()->findPK($chart_id);
     if ($chart) {
-        $user = DatawrapperSession::getUser();
+        $user = Session::getUser();
         if ($chart->isReadable($user) === true) {
             call_user_func($callback, $user, $chart);
         } else {
@@ -278,7 +278,7 @@ $app->post('/charts/:id/copy', function($chart_id) use ($app) {
         }
         try {
             $copy = ChartQuery::create()->copyChart($chart);
-            $copy->setUser(DatawrapperSession::getUser());
+            $copy->setUser(Session::getUser());
             // $copy->setOrganization($user->getCurrentOrganization());
             $copy->save();
             if ($app->request()->post('redirect') == '1') {
@@ -302,7 +302,7 @@ $app->post('/charts/:id/copy', function($chart_id) use ($app) {
 function if_chart_is_forkable($chart_id, $callback) {
     $chart = ChartQuery::create()->findPK($chart_id);
     if ($chart) {
-        $user = DatawrapperSession::getUser();
+        $user = Session::getUser();
         if ($chart->isForkable()) {
             call_user_func($callback, $user, $chart);
         } else {
@@ -324,7 +324,7 @@ $app->post('/charts/:id/fork', function($chart_id) use ($app) {
     if_chart_is_forkable($chart_id, function($user, $chart) use ($app) {
         try {
             $fork = ChartQuery::create()->copyChart($chart);
-            $fork->setUser(DatawrapperSession::getUser());
+            $fork->setUser(Session::getUser());
             $fork->setOrganization($user->getCurrentOrganization());
             $fork->setIsFork(true);
             $fork->save();
@@ -420,7 +420,7 @@ $app->get('/charts/:id/vis-data', function ($chart_id) {
 
 // endpoint to fix unicode problems in a chart
 $app->get('/charts/:id/fix', function($id) use ($app) {
-    $user = DatawrapperSession::getUser();
+    $user = Session::getUser();
     $pdo = Propel::getConnection();
     $pdo->exec("SET character_set_results = 'utf8'");
     $res = $pdo->query("SELECT metadata FROM chart WHERE NOT JSON_CONTAINS_PATH(metadata, 'one', '$.data.\"charset-fixed\"') AND id = ".$pdo->quote($id));

@@ -125,9 +125,9 @@ class Chart extends BaseChart {
         if ($this->isModified()) {
             $this->setLastModifiedAt(time());
 
-            $user = DatawrapperSession::getUser();
+            $user = Session::getUser();
             if ($user->getRole() != UserPeer::ROLE_GUEST) {
-                Action::logAction(DatawrapperSession::getUser(), 'chart/edit', $this->getId());
+                Action::logAction(Session::getUser(), 'chart/edit', $this->getId());
             }
         }
         return true;
@@ -426,7 +426,7 @@ class Chart extends BaseChart {
     public function publish() {
         // increment public version
         $this->setPublicVersion($this->getPublicVersion() + 1);
-        $published_urls = DatawrapperHooks::execute(DatawrapperHooks::GET_PUBLISHED_URL, $this);
+        $published_urls = Hooks::execute(Hooks::GET_PUBLISHED_URL, $this);
         if (!empty($published_urls)) {
             // store public url from first publish module
             $this->setPublicUrl($published_urls[0]);
@@ -436,7 +436,7 @@ class Chart extends BaseChart {
         }
         $this->save();
         // log chart publish action
-        Action::logAction(DatawrapperSession::getUser(), 'chart/publish', $this->getId());
+        Action::logAction(Session::getUser(), 'chart/publish', $this->getId());
     }
 
     /*
@@ -456,7 +456,7 @@ class Chart extends BaseChart {
                 ];
             }
         }
-        DatawrapperHooks::execute(DatawrapperHooks::PUBLISH_FILES, $files);
+        Hooks::execute(Hooks::PUBLISH_FILES, $files);
     }
 
     public function unpublish() {

@@ -260,4 +260,4 @@ class DatawrapperSession {
     }
 }
 
-
+class_alias('DatawrapperSession', 'Session');

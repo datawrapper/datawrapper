@@ -10,14 +10,14 @@ $app->get('/(chart|map)/:id/publish(/:sub_page)?', function ($id) use ($app) {
 
         $cfg = $GLOBALS['dw_config'];
 
-        DatawrapperHooks::register(
+        Hooks::register(
             'render_chart_actions',
             function($chart, $user) use ($app) {
-                $cap = DatawrapperHooks::execute("get_chart_action_provider");
+                $cap = Hooks::execute("get_chart_action_provider");
 
                 if ($cap == null || sizeof($cap) == 0) {
-                    $user = DatawrapperSession::getUser();
-                    $chartActions = DatawrapperHooks::execute(DatawrapperHooks::GET_CHART_ACTIONS, $chart, $user);
+                    $user = Session::getUser();
+                    $chartActions = Hooks::execute(Hooks::GET_CHART_ACTIONS, $chart, $user);
 
                     // add duplicate action
                     $chartActions[] = array(
