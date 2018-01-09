@@ -234,6 +234,7 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
         if (!empty($plugin_status)) $page['alertMessage'] .= $plugin_status;
     }
     if (isset($GLOBALS['dw_alert'])) $page['alertMessage'] .= $GLOBALS['dw_alert'];
+    if (isset($GLOBALS['dw_alert_class'])) $page['alertClass'] = $GLOBALS['dw_alert_class'];
 
     if (isset($config['system-notification'])) {
         if (empty($user->getUserData()[$config['system-notification']['key']])) {

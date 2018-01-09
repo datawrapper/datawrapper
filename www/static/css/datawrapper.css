@@ -2351,8 +2351,9 @@ body.dw h1 {
   padding: 10px;
   width: 100%;
   z-index: 10000;
-  background: #e8e0c0;
-  color: #333;
+  background: #fcf8e3;
+  color: #c09853;
+  border-bottom: 1px solid #edddbe;
   box-sizing: border-box;
   text-align: center;
 }
@@ -2379,6 +2380,15 @@ body.dw h1 {
 .dw-alert-message a {
   font-weight: bold;
   text-decoration: underline;
+}
+.dw-alert-message.dw-alert-warning {
+  background: #e35b5b;
+  border-bottom: 1px solid #c71e1d;
+  color: white;
+  font-weight: bold;
+}
+.dw-alert-message.dw-alert-warning a {
+  color: #f6d99d;
 }
 html h2 {
   font-size: 24px;
