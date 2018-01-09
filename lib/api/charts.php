@@ -353,7 +353,7 @@ $app->post('/charts/:id/publish', function($chart_id) use ($app) {
 $app->get('/charts/:id/publish/status', function($chart_id) use ($app) {
     disable_cache($app);
     if_chart_is_writable($chart_id, function($user, $chart) use ($app) {
-        echo _getPublishStatus($chart);
+        echo json_encode(_getPublishStatus($chart));
     });
 });
 
