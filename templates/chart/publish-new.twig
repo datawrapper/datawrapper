@@ -1,0 +1,105 @@
+{% extends "chart/base.twig" %}
+{% block content %}
+
+{{ parent() }}
+
+{{ hook('publish_before_content') }}
+
+<script type="text/javascript">
+dw.backend.ready(function() {
+    require(['dw/chart/publish'], function(publish) {
+        publish.init('{{ chartUrl }}'{% if publish %}, true{% if republish %}, true{% endif %}{% endif %});
+    });
+});
+</script>
+
+<style type="text/css">
+
+html .publish-step .chart-actions li {
+    text-align: center;
+    border-radius: 2px;
+    min-height: 50px;
+    width: 21%;
+    margin: 0 10px 10px 0;
+    padding: 15px 0 10px;
+}
+html .publish-step .chart-actions li i.fa {
+    display: block;
+    margin: 0 auto;
+    font-size: 32px!important;
+}
+html .publish-step .chart-actions li .title {
+    font-size: 12px;
+    text-transform: uppercase;
+    line-height: 15px;
+    display: block;
+    padding: 4px 10px 0;
+}
+.publish-step .public-only {
+    pointer-events: none;
+    opacity: 0.3;
+    display: none;
+}
+.publish-step .btn-publish {
+    padding-left: 16px;
+}
+.publish-step.is-public .btn-publish .publish {
+    display: none;
+}
+.publish-step.is-public .public-only {
+    pointer-events: all;
+    opacity: 1;
+    display: block;
+}
+</style>
+
+<div class="dw-create-publish chart-editor">
+    <div class="row">
+        <div class="span5 publish-step">
+
+            {{ svelte('publish', svelte_data) }}
+
+            {{ hook('publish_after_embed', chart, user) }}
+
+            <h2 class="pad-top">Export or duplicate chart</h2>
+            <p>You can export your chart in various format:</p>
+
+            <ul class="chart-actions">
+            {% for action in chartActions %}
+                {% if action %}
+                <li class="action action-{{ action.id }}{% if action.class %} {{ action.class }}{% endif %}"{% if action.data %}{% for k,v in action.data %}data-{{ k }}="{{ v }}"{% endfor %}{% endif %}>
+                    <a role="button" href="{% if action.url %}{{ action.url }}{% else %}#{{ action.id }}{% endif %}">
+                        <i class="fa fa-{{ action.icon }}"></i><span class="title">{{ action.title | raw }}</span>
+                    </a>
+                    {% if action.banner and action.banner.text != "FALSE" and action.banner.text != "-" %}
+                    <div class="banner" style="{{ action.banner.style }}">{{ action.banner.text }}</div>
+                    {% endif %}
+                </li>
+                {% endif %}
+            {% endfor %}
+            </ul>
+
+           {# {{ hook('render_chart_actions', chart, user) }} #}
+        </div>
+        <div class="span7">
+            {% if user.isAbleToPublish %}
+
+            <div class="messages"></div>
+
+            <iframe src="{{ chartUrlLocal }}" id="iframe-vis" style="width:{{ embedWidth }};height:{{ embedHeight }}" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>
+
+            {% else %}
+
+            <iframe src="/chart/{{ chart.id }}/preview" id="iframe-vis" style="width:{{ embedWidth }};height:{{ embedHeight }}" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>
+
+
+            {% endif %}
+        </div>
+    </div>
+
+</div>
+
+
+
+{% endblock %}
+

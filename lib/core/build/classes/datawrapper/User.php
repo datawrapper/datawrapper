@@ -40,7 +40,7 @@ class User extends BaseUser {
     }
 
     public function isAbleToPublish() {
-        return DatawrapperHooks::hookRegistered(DatawrapperHooks::PUBLISH_FILES);
+        return $this->mayPublish();
     }
 
     public function hasCharts() {
