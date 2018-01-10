@@ -47,8 +47,12 @@
         <div class="ctrls">
             <div class="h">
                 <b>{{{ __('publish / share-url') }}}</b>
-                <label class="radio"><input bind:group='shareurl_type' value='standalone' type="radio" name="url-type"> {{{ __('publish / share-url / standalone') }}}</label>
-                <label class="radio"><input bind:group='shareurl_type' value='fullscreen' type="radio" name="url-type"> {{{ __('publish / share-url / fullscreen') }}}</label>
+                <div class="embed-options">
+                    <label class="radio"><input bind:group='shareurl_type' value='default' type="radio" name="url-type"> {{{ __('publish / share-url / fullscreen') }}}</label>
+                    {{#each plugin_shareurls as tpl}}
+                    <label class="radio"><input bind:group='shareurl_type' value='{{tpl.id}}' type="radio" name="url-type"> {{{tpl.name}}}</label>
+                    {{/each}}
+                </div>
             </div>
             <div class="inpt">
                 <a target="_blank" class="share-url" href="{{shareUrl}}">{{shareUrl}}</a>
@@ -124,7 +128,9 @@
         opacity: 1;
         transition: none;
     }
-
+    .embed-options {
+        display: inline-block;
+    }
 </style>
 
 <script>
@@ -143,11 +149,13 @@
         },
         computed: {
 
-            shareUrl (shareurl_type, chart) {
-                return shareurl_type == 'standalone' ?
-                    `https://www.datawrapper.de/_/${chart.id}` :
-                    chart.publicUrl ||
-                    `https://datawrapper.dwcdn.net/${chart.id}/${chart.publicVersion}/`;
+            shareUrl (shareurl_type, chart, plugin_shareurls) {
+                if (shareurl_type == 'default') return chart.publicUrl;
+                let url = '';
+                plugin_shareurls.forEach(t => {
+                    if (t.id == shareurl_type) url = t.url.replace(/%chart_id%/g, chart.id);
+                });
+                return url;
             },
 
             embedCode (embed_type, chart) {

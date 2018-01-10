@@ -342,5 +342,15 @@ function publish_get_preferred_shareurl_type() {
         return $user->getUserData()['shareurl_type'];
     }
     // or standalone
-    return 'standalone';
+    return 'default';
+}
+
+/*
+ * plugins may provide alternative shareurls for published
+ * charts via a hook. this function collects the shareurls
+ * and returns them for use in the new publish UI
+ */
+function publish_get_plugin_shareurls() {
+    if (!Hooks::hookRegistered(Hooks::CHART_ADD_SHARE_URL)) return [];
+    return Hooks::execute(Hooks::CHART_ADD_SHARE_URL);
 }

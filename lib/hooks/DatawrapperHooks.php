@@ -241,6 +241,9 @@ class DatawrapperHooks {
 
     // allow plugins to revoke publishing rights
     const USER_MAY_PUBLISH = 'user_may_publish';
+
+    // custom share urls
+    const CHART_ADD_SHARE_URL = 'chart_add_share_url';
 }
 
 class_alias('DatawrapperHooks', 'Hooks');
