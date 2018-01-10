@@ -105,7 +105,7 @@ function dwInitTwigEnvironment(Twig_Environment $twig) {
         }
         print "<div class='svelte-$app_id'></div>\n";
         print "<script type='text/javascript' src='/static/js/svelte/$app_id.$locale.js'></script>\n";
-        print "<link rel='stylesheet' type='text/css' href='/static/css/svelte/$app_id.css'>\n";
+        print "<link rel='stylesheet' type='text/css' href='/static/css/svelte/$app_id.$locale.css'>\n";
         if (!empty($data)) {
             print "<script type='text/javascript'>";
             print $app_id.'.set('.json_encode_safe($data).")\n";

@@ -30,12 +30,13 @@ function buildLocale(app_id, locale, callback) {
                 // we'll extract any component CSS out into
                 // a separate file — better for performance
                 css: css => {
-                    css.write(`../www/static/css/svelte/${app_id}.css`);
+                    css.write(`../www/static/css/svelte/${app_id}.${locale}.css`);
                 },
                 // this results in smaller CSS files
                 cascade: false,
                 store: true
             }),
+
 
             // If you have external dependencies installed from
             // npm, you'll most likely need these plugins. In
