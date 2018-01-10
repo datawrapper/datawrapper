@@ -27,6 +27,10 @@ class User extends BaseUser {
         return $this->getRole() != UserPeer::ROLE_GUEST;
     }
 
+    public function isGuest() {
+        return $this->getRole() == UserPeer::ROLE_GUEST;
+    }
+
     public function isAdmin() {
         return in_array($this->getRole(), array(UserPeer::ROLE_ADMIN, UserPeer::ROLE_SYSADMIN));
     }
