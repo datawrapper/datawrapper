@@ -128,7 +128,7 @@
     // import Header from './Header.html';
 
     import {getJSON, postJSON} from '../shared/utils';
-    import generateEmbedCodes from './generate-embed-codes';
+    import computeEmbedHeights from './compute-embed-heights';
 
     var fakeProgress = 0;
 
@@ -160,20 +160,24 @@
                     progress: 0
                 });
                 // generate embed codes
-                chart.metadata.publish['embed-codes'] =
-                    generateEmbedCodes(window.chart, me.get('embed_templates'));
+                chart.metadata.publish['embed-heights'] =
+                    computeEmbedHeights(chart, me.get('embed_templates'));
+                // update charts
                 me.set({chart});
-
-                // window.dw.backend.fire('chart:publish', chart);
-
-                postJSON(`/api/charts/${chart.id}/publish`, null, (res) => {
-                    if (res.status == 'ok') {
-                        console.log(res.data.publicUrl, res.data.publicVersion);
-                        me.publishFinished(res.data);
-                    }
+                // save embed heights and wait until it's done before
+                // we start to publish the chart
+                window.chart.attributes(chart).save().then((d) => {
+                    // publish chart
+                    postJSON(`/api/charts/${chart.id}/publish`, null, (res) => {
+                        if (res.status == 'ok') {
+                            me.publishFinished(res.data);
+                        } else {
+                            me.set({publish_error: res.message });
+                        }
+                    });
+                    fakeProgress = 0;
+                    me.updateStatus();
                 });
-                fakeProgress = 0;
-                me.updateStatus();
             },
 
             updateProgressBar (p) {
@@ -204,26 +208,8 @@
                     needs_republish: false
                 });
                 setTimeout(() => this.set({publishing: false}), 500);
-                this.updateChartInfo(chartInfo);
-            },
-
-            updateChartInfo (chartInfo) {
-                const me = this;
-                const chart = me.get('chart');
-                console.log('new version', chartInfo.publicVersion);
-                // update local dw.chart
-                window.chart
-                    .set('publicVersion', chartInfo.publicVersion)
-                    .set('publicUrl', chartInfo.publicUrl)
-                    .set('publishedAt', chartInfo.publishedAt)
-                    .set('metadata', chartInfo.metadata);
-                // re-generate embed codes (with new public url)
-                const embedCodes = generateEmbedCodes(window.chart, me.get('embed_templates'));
-                // update local svelte chart
-                chartInfo.metadata.publish['embed-codes'] = embedCodes;
-                me.set({chart: chartInfo});
-                // update dw.chart
-                window.chart.set('metadata.publish.embed-codes', embedCodes);
+                this.set({ chart: chartInfo });
+                window.chart.attributes(chartInfo);
             },
 
             copy (embedCode) {
@@ -252,18 +238,18 @@
                 me.updateProgressBar(p);
             });
             // persist embed_type and shareurl
-            const backend = window.dw.backend;
             me.observe('embed_type', (v) => {
-                const data = backend.__userData;
+                const data = window.dw.backend.__userData;
                 if (!v || !data) return;
                 data.embed_type = v;
-                backend.setUserData(data);
+                window.dw.backend.setUserData(data);
             });
+
             me.observe('shareurl_type', (v) => {
-                const data = backend.__userData;
+                const data = window.dw.backend.__userData;
                 if (!v || !data) return;
                 data.shareurl_type = v;
-                backend.setUserData(data);
+                window.dw.backend.setUserData(data);
             });
         }
     };

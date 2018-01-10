@@ -426,6 +426,7 @@ class Chart extends BaseChart {
     public function publish() {
         // increment public version
         $this->setPublicVersion($this->getPublicVersion() + 1);
+        // generate public url
         $published_urls = Hooks::execute(Hooks::GET_PUBLISHED_URL, $this);
         if (!empty($published_urls)) {
             // store public url from first publish module
@@ -434,6 +435,7 @@ class Chart extends BaseChart {
             // fallback to local url
             $this->setPublicUrl($this->getLocalUrl());
         }
+        $this->generateEmbedCodes();
         $this->save();
         // log chart publish action
         Action::logAction(Session::getUser(), 'chart/publish', $this->getId());
@@ -457,6 +459,32 @@ class Chart extends BaseChart {
             }
         }
         Hooks::execute(Hooks::PUBLISH_FILES, $files);
+    }
+
+    public function generateEmbedCodes() {
+        // generate embed codes
+        $embedcodes = [];
+        $search = [
+            '%chart_id%',
+            '%chart_url%',
+            '%chart_width%',
+            '%chart_height%',
+            '%embed_heights%',
+            '%embed_heights_escaped%'
+        ];
+        $replace = [
+            $this->getID(),
+            $this->getPublicUrl(),
+            $this->getMetadata('publish.embed-width'),
+            $this->getMetadata('publish.embed-height'),
+            json_encode($this->getMetadata('publish.embed-heights')),
+            str_replace('"', '&quot;', json_encode($this->getMetadata('publish.embed-heights'))),
+        ];
+        foreach (publish_get_embed_templates() as $template) {
+            $code = str_replace($search, $replace, $template['template']);
+            $embedcodes['embed-method-'.$template['id']] = $code;
+        }
+        $this->updateMetadata('publish.embed-codes', $embedcodes);
     }
 
     public function unpublish() {
