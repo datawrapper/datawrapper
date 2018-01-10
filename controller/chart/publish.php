@@ -106,7 +106,26 @@ $app->get('/(chart|map)/:id/publish(/:sub_page)?', function ($id) use ($app) {
             $page['steps'][1]['readonly'] = true;
         }
 
-        $app->render('chart/publish.twig', $page);
+
+        if ($user->mayPublish() && $app->request()->get('beta') !== null) {
+            // new publish step
+            // var_dump(($chart->getLastModifiedAt()));
+            // var_dump(($chart->getPublishedAt()));
+            $page['svelte_data'] = [
+                'published' => $chart->getLastEditStep() > 4,
+                'needs_republish' => $chart->getLastEditStep() > 4 &&
+                    strtotime($chart->getLastModifiedAt()) - strtotime($chart->getPublishedAt()) > 20,
+                'chart' => $chart->toStruct(),
+                'embed_templates' => publish_get_embed_templates(),
+                'embed_type' => publish_get_preferred_embed_type(),
+                'shareurl_type' => publish_get_preferred_shareurl_type(),
+                'plugin_shareurls' => publish_get_plugin_shareurls()
+            ];
+            $app->render('chart/publish-new.twig', $page);
+        } else {
+            // old publish step (also fallback for guests etc)
+            $app->render('chart/publish.twig', $page);
+        }
     });
 });
 
