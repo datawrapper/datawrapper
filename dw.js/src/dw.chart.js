@@ -118,7 +118,6 @@ dw.chart = function(attributes) {
                 } else {
                     $.getScript("/static/vendor/globalize/cultures/globalize.culture." +
                       locale + ".js", function () {
-       
                         chart.locale(locale);
                         if (typeof callback == "function") callback();
                     });
@@ -330,7 +329,7 @@ dw.chart = function(attributes) {
         }
 
         _.each(v_columns, add_computed_column);
-        
+
         return dataset;
 
         function add_computed_column(formula, name) {
@@ -353,7 +352,7 @@ dw.chart = function(attributes) {
                     // console.log(context.join('\n'));
                     return (function() {
                         try {
-                            return eval(this.context.join('\n')+'\n'+formula);                    
+                            return eval(this.context.join('\n')+'\n'+formula);
                         } catch (e) {
                             console.warn(e);
                             return 'n/a';
