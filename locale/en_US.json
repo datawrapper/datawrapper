@@ -319,7 +319,7 @@
   "My account": "My account",
   "publish / share-embed": "Publish to Share & Embed",
   "publish / republish-intro": "This chart has been published! If you make changes to the chart you will need to re-publish them.",
-  "publish / publish-intro": "To <b>share</b> or <b>embed</b> your chart/map you need to publish it. It will only be visible to people who know the chart URL.",
+  "publish / publish-intro": "To <b>share</b> your chart or or <b>embed it to your website or CMS</b> you need to publish it. It will only be visible to people who know the chart URL.",
   "publish / publish-btn": "Publish chart",
   "publish / republish-btn": "Re-publish chart",
   "publish / republish-alert": "You have changed the chart after its last publication. To make these changes show up you got to <b>publish the chart again</b>.",
@@ -336,5 +336,5 @@
   "publish / copy": "copy",
   "publish / copy-success": "Embed code was copied to clipboard!",
   "publish / export-duplicate": "Export or duplicate chart",
-  "publish / export-duplicate / intro": "You can <b>export</b> your chart in various formats. Or <b>duplicate</b> it to start editing a copy of the chart."
+  "publish / export-duplicate / intro": "You can also <b>export</b> your chart in various formats including PNG and PDF image files. Or <b>duplicate</b> it to start editing a copy of the chart."
 }

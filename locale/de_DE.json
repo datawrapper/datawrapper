@@ -319,7 +319,7 @@
   "My account": "Mein Nutzerkonto",
   "publish / share-embed": "Veröffentlichen zum Teilen & Einbetten",
   "publish / republish-intro": "Dieses Diagramm wurde bereits veröffentlicht. Wenn du weitere Änderungen vornimmst, musst du das Diagramm hier erneut veröffentlichen.",
-  "publish / publish-intro": "Um dein Diagramm zu <b>teilen</b> oder <b>einzubetten</b> musst du es veröffentlichen. Es wird nur für Personen sichtbar sein, die die URL des Diagramms kennen.",
+  "publish / publish-intro": "Um dein Diagramm zu <b>teilen</b> oder auf deiner <b>Website oder CMS einzubetten</b> musst du es veröffentlichen. Es wird nur für Personen sichtbar sein, die die URL des Diagramms kennen.",
   "publish / publish-btn": "Veröffentlichen",
   "publish / republish-btn": "Erneut veröffentlichen",
   "publish / republish-alert": "Dein Diagramm wurde geändert nachdem es veröffentlicht wurde. Du musst es <b>erneut veröffentlichen</b> damit die Änderungen wirksam werden.",
@@ -336,5 +336,5 @@
   "publish / copy": "kopieren",
   "publish / copy-success": "Der Code wurde kopiert!",
   "publish / export-duplicate": "Diagramm exportieren oder duplizieren",
-  "publish / export-duplicate / intro": "Du kannst dein Diagramm in verschiedene Formate <b>exportieren</b>. Oder <b>dupliziere</b> es, um eine neue Kopie des Diagramms zu bearbeiten."
+  "publish / export-duplicate / intro": "Du kannst dein Diagramm auch in verschiedene Formate wie PNG oder PDF-Bilddateien <b>exportieren</b>. Oder <b>dupliziere</b> es, um eine neue Kopie des Diagramms zu bearbeiten."
 }
