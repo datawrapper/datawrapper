@@ -294,7 +294,7 @@ function publish_get_embed_templates() {
     ];
 
     // add team embed codes
-    $user = DatawrapperSession::getUser();
+    $user = Session::getUser();
     $org = $user->getCurrentOrganization();
 
     if (!empty($org)) {
@@ -308,8 +308,12 @@ function publish_get_embed_templates() {
     return $templates;
 }
 
+/*
+ * returns the id of the embed type that is
+ * pre-selected on load of the publish step
+ */
 function publish_get_preferred_embed_type() {
-    $user = DatawrapperSession::getUser();
+    $user = Session::getUser();
     $org = $user->getCurrentOrganization();
     if (!empty($org)) {
         $embed = $org->getSettings('embed');
@@ -327,8 +331,12 @@ function publish_get_preferred_embed_type() {
     return 'responsive';
 }
 
+/*
+ * returns the id of the shareurl type that
+ * is pre-selected on load of the publishs step
+ */
 function publish_get_preferred_shareurl_type() {
-    $user = DatawrapperSession::getUser();
+    $user = Session::getUser();
     // whatever the user selected last
     if (!empty($user->getUserData()['shareurl_type'])) {
         return $user->getUserData()['shareurl_type'];
