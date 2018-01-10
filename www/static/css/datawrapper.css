@@ -1808,11 +1808,17 @@ html .btn-inverse {
 }
 .dw-create-publish .publish-step .block {
   position: relative;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 20px;
+}
+.dw-create-publish .publish-step .block:last-child {
+  border-bottom: none;
 }
 .dw-create-publish .publish-step .block .icon {
-  font-size: 42px;
-  min-width: 54px;
+  font-size: 27px;
+  min-width: 47px;
+  text-align: left;
   height: 46px;
   vertical-align: top;
   position: relative;
