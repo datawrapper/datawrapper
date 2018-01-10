@@ -78,6 +78,10 @@
  * @method ChartQuery rightJoinChartRelatedById($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ChartRelatedById relation
  * @method ChartQuery innerJoinChartRelatedById($relationAlias = null) Adds a INNER JOIN clause to the query using the ChartRelatedById relation
  *
+ * @method ChartQuery leftJoinPublicChart($relationAlias = null) Adds a LEFT JOIN clause to the query using the PublicChart relation
+ * @method ChartQuery rightJoinPublicChart($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PublicChart relation
+ * @method ChartQuery innerJoinPublicChart($relationAlias = null) Adds a INNER JOIN clause to the query using the PublicChart relation
+ *
  * @method ChartQuery leftJoinJob($relationAlias = null) Adds a LEFT JOIN clause to the query using the Job relation
  * @method ChartQuery rightJoinJob($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Job relation
  * @method ChartQuery innerJoinJob($relationAlias = null) Adds a INNER JOIN clause to the query using the Job relation
@@ -1470,6 +1474,80 @@ abstract class BaseChartQuery extends ModelCriteria
         return $this
             ->joinChartRelatedById($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'ChartRelatedById', 'ChartQuery');
+    }
+
+    /**
+     * Filter the query by a related PublicChart object
+     *
+     * @param   PublicChart|PropelObjectCollection $publicChart  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 ChartQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPublicChart($publicChart, $comparison = null)
+    {
+        if ($publicChart instanceof PublicChart) {
+            return $this
+                ->addUsingAlias(ChartPeer::ID, $publicChart->getId(), $comparison);
+        } elseif ($publicChart instanceof PropelObjectCollection) {
+            return $this
+                ->usePublicChartQuery()
+                ->filterByPrimaryKeys($publicChart->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPublicChart() only accepts arguments of type PublicChart or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the PublicChart relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return ChartQuery The current query, for fluid interface
+     */
+    public function joinPublicChart($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('PublicChart');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'PublicChart');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the PublicChart relation PublicChart object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   PublicChartQuery A secondary query class using the current class as primary query
+     */
+    public function usePublicChartQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinPublicChart($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'PublicChart', 'PublicChartQuery');
     }
 
     /**

@@ -42,6 +42,20 @@
     </foreign-key>
   </table>
 
+  <table name="chart_public" phpName="PublicChart">
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+    <column name="id" type="varchar" size="5" required="true" primaryKey="true"/>
+    <column name="title" type="varchar" size="255" required="true" />
+    <column name="type" type="varchar" size="200" required="true" />
+    <column name="metadata" type="clob" required="true" />
+    <column name="external_data" type="varchar" size="255" required="false" />
+    <foreign-key foreignTable="chart">
+      <reference local="id" foreign="id"/>
+    </foreign-key>
+  </table>
+
   <table name="user" phpName="User">
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>

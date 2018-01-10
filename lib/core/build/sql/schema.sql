@@ -54,6 +54,25 @@ CREATE TABLE `chart`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
+-- chart_public
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `chart_public`;
+
+CREATE TABLE `chart_public`
+(
+    `id` VARCHAR(5) NOT NULL,
+    `title` VARCHAR(255) NOT NULL,
+    `type` VARCHAR(200) NOT NULL,
+    `metadata` LONGTEXT NOT NULL,
+    `external_data` VARCHAR(255),
+    PRIMARY KEY (`id`),
+    CONSTRAINT `chart_public_FK_1`
+        FOREIGN KEY (`id`)
+        REFERENCES `chart` (`id`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
 -- user
 -- ---------------------------------------------------------------------
 
