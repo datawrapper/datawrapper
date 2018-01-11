@@ -244,6 +244,7 @@ class DatawrapperHooks {
 
     // custom share urls
     const CHART_ADD_SHARE_URL = 'chart_add_share_url';
+    const CHART_CREATED_WITH_DATAWRAPPER_URL = 'chart_created_with_datawrapper_url';
 }
 
 class_alias('DatawrapperHooks', 'Hooks');
