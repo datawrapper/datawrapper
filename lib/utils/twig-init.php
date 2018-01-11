@@ -72,6 +72,10 @@ function dwInitTwigEnvironment(Twig_Environment $twig) {
         call_user_func_array(array(DatawrapperHooks::getInstance(), 'execute'), func_get_args());
     }));
 
+    $twig->addFunction(new Twig_SimpleFunction('hook_return', function() {
+        return call_user_func_array(array(DatawrapperHooks::getInstance(), 'execute'), func_get_args());
+    }));
+
     $twig->addFunction(new Twig_SimpleFunction('has_hook', function($hook) {
         return DatawrapperHooks::getInstance()->hookRegistered($hook);
     }));
