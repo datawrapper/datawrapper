@@ -336,5 +336,7 @@
   "publish / copy": "copy",
   "publish / copy-success": "Embed code was copied to clipboard!",
   "publish / export-duplicate": "Export or duplicate chart",
-  "publish / export-duplicate / intro": "You can also <b>export</b> your chart in various formats including PNG and PDF image files. Or <b>duplicate</b> it to start editing a copy of the chart."
+  "publish / export-duplicate / intro": "You can also <b>export</b> your chart in various formats including PNG and PDF image files. Or <b>duplicate</b> it to start editing a copy of the chart.",
+  "publish / unactivated / h1": "You've got mail!",
+  "publish / unactivated / p": "We've send you a link to your chart via e-mail. Please check your inbox and click the confirmation link to get your chart. If you don't receive a mail within 15 minutes, please get in touch via <a href=\"mailto:support@datawrapper.de\">support@datawrapper.de</a>."
 }

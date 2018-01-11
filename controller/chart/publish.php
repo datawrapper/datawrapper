@@ -107,7 +107,7 @@ $app->get('/(chart|map)/:id/publish(/:sub_page)?', function ($id) use ($app) {
         }
 
 
-        if ($user->mayPublish() && $app->request()->get('beta') !== null) {
+        if ($app->request()->get('beta') !== null) {
             // new publish step
             // var_dump(($chart->getLastModifiedAt()));
             // var_dump(($chart->getPublishedAt()));
