@@ -120,6 +120,28 @@ class ChartQuery extends BaseChartQuery {
         return $chart;
     }
 
+    public function copyPublicChart($src) {
+        if ($src->getLastEditStep() < 5) {
+            return null;
+        }
+        $chart = $this->copyChart($src);
+        // use original title
+        $chart->setTitle($src->getTitle());
+        $public = $src->getPublicChart();
+        if ($public) {
+            $chart->setType($public->getType());
+            if (!empty($public->getExternalData())) {
+                $chart->setExternalData($public->getExternalData());
+                $chart->refreshExternalData();
+            } else {
+                $chart->writeData($public->loadData());
+            }
+            $chart->setTitle($public->getTitle());
+            $chart->setRawMetadata($public->getMetadata());
+        }
+        $chart->save();
+        return $chart;
+    }
 
     /*
      * generate a random id string for charts

@@ -323,12 +323,16 @@ function if_chart_is_forkable($chart_id, $callback) {
 $app->post('/charts/:id/fork', function($chart_id) use ($app) {
     if_chart_is_forkable($chart_id, function($user, $chart) use ($app) {
         try {
-            $fork = ChartQuery::create()->copyChart($chart);
-            $fork->setUser(Session::getUser());
-            $fork->setOrganization($user->getCurrentOrganization());
-            $fork->setIsFork(true);
-            $fork->save();
-            ok(array('id' => $fork->getId()));
+            $fork = ChartQuery::create()->copyPublicChart($chart);
+            if ($fork) {
+                $fork->setUser(Session::getUser());
+                $fork->setOrganization($user->getCurrentOrganization());
+                $fork->setIsFork(true);
+                $fork->save();
+                ok(array('id' => $fork->getId()));
+            } else {
+                error('not-found');
+            }
         } catch (Exception $e) {
             error('io-error', $e->getMessage());
         }
