@@ -69,6 +69,9 @@ class DatawrapperHooks {
     // print something in <head> section of a chart
     const CHART_HTML_HEAD = 'chart_html_head';
 
+    // for adding more sources to a chart, e.g. map data attribution
+    const CHART_FOOTER_AFTER_SOURCE = 'chart_footer_after_source';
+
     // print something below the Datawrapper HTML body
     const CORE_AFTER_BODY = 'core_after_body';
 
