@@ -106,11 +106,10 @@ $app->get('/(chart|map)/:id/publish(/:sub_page)?', function ($id) use ($app) {
             $page['steps'][1]['readonly'] = true;
         }
 
+        // test with 5% of our users
+        if ($app->request()->get('beta') !== null || ($user->getID() % 20 == 0)) {
 
-        if ($app->request()->get('beta') !== null) {
             // new publish step
-            // var_dump(($chart->getLastModifiedAt()));
-            // var_dump(($chart->getPublishedAt()));
             $page['svelte_data'] = [
                 'published' => $chart->getLastEditStep() > 4,
                 'needs_republish' => $chart->getLastEditStep() > 4 &&
