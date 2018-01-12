@@ -64,13 +64,18 @@ $app->map('/chart/create', function() use ($app) {
                         // copy title, type
                         $chart->setTitle($public_tpl->getTitle());
                         $chart->setType($public_tpl->getType());
-                        $chart->setForkedFrom($public_tpl->getId());
                         // set last step to visualize
-                        $step = 'visualize';
-                        $chart->setLastEditStep(3);
-                        Action::logAction(DatawrapperSession::getUser(), 'chart-template', $chart_tpl->getId());
-
+                    } else {
+                        // if not we use the last version in datawrapper as fallback
+                        $chart->writeData($chart_tpl->loadData());
+                        $chart->setRawMetadata($chart_tpl->getRawMetadata());
+                        $chart->setTitle($chart_tpl->getTitle());
+                        $chart->setType($chart_tpl->getType());
                     }
+                    $chart->setForkedFrom($chart_tpl->getId());
+                    $step = 'visualize';
+                    $chart->setLastEditStep(3);
+                    Action::logAction(DatawrapperSession::getUser(), 'chart-template', $chart_tpl->getId());
                 }
             }
         }
