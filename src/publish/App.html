@@ -159,7 +159,7 @@
             },
 
             embedCode (embed_type, chart) {
-                if (!chart.metadata || !chart.metadata.publish || !chart.metadata.publish['embed-codes']) return '';
+                if (!chart.metadata || !chart.metadata.publish || !chart.metadata.publish['embed-codes']) return `<iframe src="${chart.publicUrl}" width="100%" height="${chart.metadata.publish['embed-height']}" scrolling="no" frameborder="0" allowtransparency="true"></iframe>`;
                 return chart.metadata.publish['embed-codes']['embed-method-'+embed_type];
             }
         },
