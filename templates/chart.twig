@@ -127,7 +127,7 @@
                         {% endif %}
 
                         {% if theme.getThemeData("options.footer.createdWithDatawrapper") %}
-                            <a href="{% if has_hook('chart_created_with_datawrapper_url') %}{{ hook('chart_created_with_datawrapper_url', chart)[0] }}{% else %}{{ DW_DOMAIN }}{% endif %}" target="_blank">{% trans "Created with" %}  {% trans "Datawrapper" %}</a>
+                            <a href="{% if has_hook('chart_created_with_datawrapper_url') %}{{ hook_return('chart_created_with_datawrapper_url', chart)[0] }}{% else %}{{ DW_DOMAIN }}{% endif %}" target="_blank">{% trans "Created with" %}  {% trans "Datawrapper" %}</a>
                         {% endif %}
                     {% endblock %}
                 {% endif %}
