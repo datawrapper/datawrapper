@@ -106,8 +106,8 @@ $app->get('/(chart|map)/:id/publish(/:sub_page)?', function ($id) use ($app) {
             $page['steps'][1]['readonly'] = true;
         }
 
-        // test with 5% of our users
-        if ($app->request()->get('beta') !== null || ($user->getID() % 20 == 0)) {
+        // test with 10% of our users
+        if ($app->request()->get('beta') !== null || ($user->getID() % 10 == 0)) {
 
             // new publish step
             $page['svelte_data'] = [
