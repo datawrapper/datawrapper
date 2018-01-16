@@ -308,6 +308,12 @@ footer .version {
 .footer-links a + a:before {
   content: ' – ';
 }
+.footer-links a.highlight {
+  background: #18a1cd;
+  color: white;
+  padding: 4px 9px;
+  font-weight: bold;
+}
 #alertModal {
   width: 400px;
   margin-left: -200px;
