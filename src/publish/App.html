@@ -169,6 +169,11 @@
 
             publish () {
                 const me = this;
+                // wait another 100ms until the page is ready
+                if (!window.chart.save) {
+                    setTimeout(() => { me.publish(); }, 100);
+                    return;
+                }
                 const chart = me.get('chart');
                 me.set({
                     publishing: true,
