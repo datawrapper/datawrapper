@@ -70,9 +70,9 @@ class PublicChart extends BasePublicChart {
 
         if (isset($config['charts-s3']) && $config['charts-s3']['read']) {
             $filename = 's3://' . $config['charts-s3']['bucket'] . '/' .
-              $this->getRelativeDataPath() . '/' .$this->getDataFilename();
+              $this->getChart()->getRelativeDataPath() . '/' .$this->getDataFilename();
         } else {
-            $filename = $this->getDataPath() . '/' . $this->getDataFilename();
+            $filename = $this->getChart()->getDataPath() . '/' . $this->getDataFilename();
         }
         try {
             return file_get_contents($filename);
