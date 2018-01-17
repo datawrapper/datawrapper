@@ -89,8 +89,9 @@
 
                         {% if chartByline %}
                             <span class="byline-block">
-                            {{ theme.getThemeData('options.footer.chartCaption') }}:
-                            {{ chartByline | raw }}</span>
+                                {{ theme.getThemeData('options.footer.chartCaption') }}
+                                <span class="chart-byline">{{ chartByline | raw }}</span>
+                            </span>
                         {% endif %}
 
                         {% if chartSource %}
