@@ -24,3 +24,9 @@ translations:
 
 www/static/css/datawrapper.css: assets/styles/datawrapper/* assets/styles/datawrapper/**/* assets/styles/datawrapper/**/**/*
 	node_modules/.bin/lessc assets/styles/datawrapper/main.less > $@
+
+svelte:
+	cd src && node rollup.js
+
+svelte-dev:
+	cd src && watch 'ROLLUP_WATCH=1 node rollup.js' .

@@ -201,6 +201,11 @@ abstract class BaseChart extends BaseObject implements Persistent
     protected $collChartsRelatedByIdPartial;
 
     /**
+     * @var        PublicChart one-to-one related PublicChart object
+     */
+    protected $singlePublicChart;
+
+    /**
      * @var        PropelObjectCollection|Job[] Collection to store aggregation of Job objects.
      */
     protected $collJobs;
@@ -231,6 +236,12 @@ abstract class BaseChart extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $chartsRelatedByIdScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $publicChartsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -1325,6 +1336,8 @@ abstract class BaseChart extends BaseObject implements Persistent
             $this->aFolder = null;
             $this->collChartsRelatedById = null;
 
+            $this->singlePublicChart = null;
+
             $this->collJobs = null;
 
         } // if (deep)
@@ -1499,6 +1512,21 @@ abstract class BaseChart extends BaseObject implements Persistent
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
+                }
+            }
+
+            if ($this->publicChartsScheduledForDeletion !== null) {
+                if (!$this->publicChartsScheduledForDeletion->isEmpty()) {
+                    PublicChartQuery::create()
+                        ->filterByPrimaryKeys($this->publicChartsScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->publicChartsScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->singlePublicChart !== null) {
+                if (!$this->singlePublicChart->isDeleted() && ($this->singlePublicChart->isNew() || $this->singlePublicChart->isModified())) {
+                        $affectedRows += $this->singlePublicChart->save($con);
                 }
             }
 
@@ -1820,6 +1848,12 @@ abstract class BaseChart extends BaseObject implements Persistent
                     }
                 }
 
+                if ($this->singlePublicChart !== null) {
+                    if (!$this->singlePublicChart->validate($columns)) {
+                        $failureMap = array_merge($failureMap, $this->singlePublicChart->getValidationFailures());
+                    }
+                }
+
                 if ($this->collJobs !== null) {
                     foreach ($this->collJobs as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
@@ -2000,6 +2034,9 @@ abstract class BaseChart extends BaseObject implements Persistent
             }
             if (null !== $this->collChartsRelatedById) {
                 $result['ChartsRelatedById'] = $this->collChartsRelatedById->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->singlePublicChart) {
+                $result['PublicChart'] = $this->singlePublicChart->toArray($keyType, $includeLazyLoadColumns, $alreadyDumpedObjects, true);
             }
             if (null !== $this->collJobs) {
                 $result['Jobs'] = $this->collJobs->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -2285,6 +2322,11 @@ abstract class BaseChart extends BaseObject implements Persistent
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addChartRelatedById($relObj->copy($deepCopy));
                 }
+            }
+
+            $relObj = $this->getPublicChart();
+            if ($relObj) {
+                $copyObj->setPublicChart($relObj->copy($deepCopy));
             }
 
             foreach ($this->getJobs() as $relObj) {
@@ -2864,6 +2906,42 @@ abstract class BaseChart extends BaseObject implements Persistent
     }
 
     /**
+     * Gets a single PublicChart object, which is related to this object by a one-to-one relationship.
+     *
+     * @param PropelPDO $con optional connection object
+     * @return PublicChart
+     * @throws PropelException
+     */
+    public function getPublicChart(PropelPDO $con = null)
+    {
+
+        if ($this->singlePublicChart === null && !$this->isNew()) {
+            $this->singlePublicChart = PublicChartQuery::create()->findPk($this->getPrimaryKey(), $con);
+        }
+
+        return $this->singlePublicChart;
+    }
+
+    /**
+     * Sets a single PublicChart object as related to this object by a one-to-one relationship.
+     *
+     * @param             PublicChart $v PublicChart
+     * @return Chart The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setPublicChart(PublicChart $v = null)
+    {
+        $this->singlePublicChart = $v;
+
+        // Make sure that that the passed-in PublicChart isn't already associated with this object
+        if ($v !== null && $v->getChart(null, false) === null) {
+            $v->setChart($this);
+        }
+
+        return $this;
+    }
+
+    /**
      * Clears out the collJobs collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
@@ -3162,6 +3240,9 @@ abstract class BaseChart extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->singlePublicChart) {
+                $this->singlePublicChart->clearAllReferences($deep);
+            }
             if ($this->collJobs) {
                 foreach ($this->collJobs as $o) {
                     $o->clearAllReferences($deep);
@@ -3187,6 +3268,10 @@ abstract class BaseChart extends BaseObject implements Persistent
             $this->collChartsRelatedById->clearIterator();
         }
         $this->collChartsRelatedById = null;
+        if ($this->singlePublicChart instanceof PropelCollection) {
+            $this->singlePublicChart->clearIterator();
+        }
+        $this->singlePublicChart = null;
         if ($this->collJobs instanceof PropelCollection) {
             $this->collJobs->clearIterator();
         }

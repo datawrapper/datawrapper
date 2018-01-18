@@ -74,6 +74,7 @@ class ChartTableMap extends TableMap
         $this->addRelation('ChartRelatedByForkedFrom', 'Chart', RelationMap::MANY_TO_ONE, array('forked_from' => 'id', ), null, null);
         $this->addRelation('Folder', 'Folder', RelationMap::MANY_TO_ONE, array('in_folder' => 'folder_id', ), null, null);
         $this->addRelation('ChartRelatedById', 'Chart', RelationMap::ONE_TO_MANY, array('id' => 'forked_from', ), null, null, 'ChartsRelatedById');
+        $this->addRelation('PublicChart', 'PublicChart', RelationMap::ONE_TO_ONE, array('id' => 'id', ), null, null);
         $this->addRelation('Job', 'Job', RelationMap::ONE_TO_MANY, array('id' => 'chart_id', ), null, null, 'Jobs');
     } // buildRelations()
 

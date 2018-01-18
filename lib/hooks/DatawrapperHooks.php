@@ -69,6 +69,9 @@ class DatawrapperHooks {
     // print something in <head> section of a chart
     const CHART_HTML_HEAD = 'chart_html_head';
 
+    // for adding more sources to a chart, e.g. map data attribution
+    const CHART_FOOTER_AFTER_SOURCE = 'chart_footer_after_source';
+
     // print something below the Datawrapper HTML body
     const CORE_AFTER_BODY = 'core_after_body';
 
@@ -224,6 +227,12 @@ class DatawrapperHooks {
     const VISUALIZE_BEFORE_CONTENT = 'visualize_before_content';
     const PUBLISH_BEFORE_CONTENT = 'publish_before_content';
 
+    // new hooks for publish page for different user scenarios
+    const PUBLISH_CUSTOM_PAGE_GUEST = 'publish_custom_page_guest';
+    const PUBLISH_CUSTOM_PAGE_PENDING_ACTIVATION = 'publish_custom_page_pending_activation';
+    const PUBLISH_CUSTOM_PAGE_NOT_ALLOWED = 'publish_custom_page_not_allowed';
+    const PUBLISH_CUSTOM_EXPORT_ACTIONS_HEADER = 'publish_custom_export_actions_header';
+
     // hooks for plugin installation/update
     const PLUGIN_INSTALLED = 'plugin_installed';
     const PLUGIN_UPDATED = 'plugin_updated';
@@ -238,4 +247,13 @@ class DatawrapperHooks {
 
     const CHART_EDITOR_ALERT = 'chart_editor_alert';
     const PAGE_INLINE_CSS = 'page_inline_css';
+
+    // allow plugins to revoke publishing rights
+    const USER_MAY_PUBLISH = 'user_may_publish';
+
+    // custom share urls
+    const CHART_ADD_SHARE_URL = 'chart_add_share_url';
+    const CHART_CREATED_WITH_DATAWRAPPER_URL = 'chart_created_with_datawrapper_url';
 }
+
+class_alias('DatawrapperHooks', 'Hooks');

@@ -308,6 +308,12 @@ footer .version {
 .footer-links a + a:before {
   content: ' – ';
 }
+.footer-links a.highlight {
+  background: #18a1cd;
+  color: white;
+  padding: 4px 9px;
+  font-weight: bold;
+}
 #alertModal {
   width: 400px;
   margin-left: -200px;
@@ -1699,6 +1705,9 @@ body.cms-mode .footer {
   box-shadow: none;
   padding: 2px 10px;
 }
+.chart-editor.dw-create-visualize .chart-byline {
+  margin-top: 4px;
+}
 .vis-option-type-chart-description {
   padding-bottom: 1px;
 }
@@ -1789,6 +1798,132 @@ body.cms-mode .footer {
 }
 .dw-create-publish .chart-actions li.promo i.fa {
   color: rgba(50, 0, 50, 0.4) !important;
+}
+.dw-create-publish .publish-step .btn-aside {
+  display: inline-block;
+  max-width: 280px;
+  vertical-align: top;
+  margin-left: 10px;
+  border-color: #e9d4ad;
+}
+.dw-create-publish .publish-step .svelte-publish .btn-aside,
+.dw-create-publish .publish-step .svelte-publish .alert {
+  max-width: 100%;
+  margin-top: 7px;
+  margin-left: 0;
+}
+.dw-create-publish .publish-step .svelte-publish .alert.publishing .progress {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+.dw-create-publish .publish-step .inactive,
+.dw-create-publish .publish-step:not(.is-published) .published-only {
+  display: none;
+}
+.dw-create-publish .publish-step h2.pad-top {
+  margin-top: 30px;
+}
+.dw-create-publish .publish-step .btn-copy {
+  vertical-align: top;
+}
+.dw-create-publish .publish-step .block {
+  position: relative;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 20px;
+}
+.dw-create-publish .publish-step .block:last-child {
+  border-bottom: none;
+}
+.dw-create-publish .publish-step .block .icon {
+  font-size: 27px;
+  min-width: 47px;
+  text-align: left;
+  height: 46px;
+  vertical-align: top;
+  position: relative;
+  top: 10px;
+}
+.dw-create-publish .publish-step .block .icon.fa-river {
+  top: 3px;
+}
+.dw-create-publish .publish-step .block .ctrls {
+  vertical-align: top;
+  display: inline-block;
+  width: calc(100% - 60px);
+}
+.dw-create-publish .publish-step .block .inpt {
+  margin-top: 5px;
+}
+.dw-create-publish .publish-step .block .help {
+  position: absolute;
+  top: 10px;
+  right: 0;
+}
+.dw-create-publish .publish-step .block .help .fa {
+  font-size: 26px;
+  color: #999;
+}
+.dw-create-publish .publish-step .block .help .content {
+  display: none;
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  padding: 8px 40px 8px 10px;
+  background: #9cbfd1;
+  color: #f9f9f9;
+  width: 350px;
+  border-radius: 4px;
+  box-shadow: 3px 2px 2px rgba(0, 0, 0, 0.1);
+  z-index: 10000;
+}
+.dw-create-publish .publish-step .block .help .content:after {
+  content: '?';
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+.dw-create-publish .publish-step .block .help:hover .content {
+  display: block;
+}
+.dw-create-publish .publish-step .block .help .content:after,
+.dw-create-publish .publish-step .block .help span {
+  font-family: Roboto Mono;
+  display: block;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #9cbfd1;
+  text-align: center;
+  color: #f9f9f9;
+  font-size: 17px;
+  line-height: 24px;
+}
+.dw-create-publish .publish-step label.radio {
+  display: inline-block;
+  margin-right: 5px;
+  margin-top: 5px;
+  margin-left: 5px;
+}
+.dw-create-publish .publish-step .chart-actions li {
+  text-align: center;
+  border-radius: 2px;
+  min-height: 50px;
+  width: 21%;
+  margin: 0 10px 10px 0;
+  padding: 15px 0 10px;
+}
+.dw-create-publish .publish-step .chart-actions li i.fa {
+  display: block;
+  margin: 0 auto;
+  font-size: 32px!important;
+}
+.dw-create-publish .publish-step .chart-actions li .title {
+  font-size: 12px;
+  text-transform: uppercase;
+  line-height: 15px;
+  display: block;
+  padding: 4px 10px 0;
 }
 .publish-chart-action-modal {
   width: 600px;
@@ -2358,8 +2493,9 @@ body.dw h1 {
   padding: 10px;
   width: 100%;
   z-index: 10000;
-  background: #e8e0c0;
-  color: #333;
+  background: #fcf8e3;
+  color: #c09853;
+  border-bottom: 1px solid #edddbe;
   box-sizing: border-box;
   text-align: center;
 }
@@ -2386,6 +2522,15 @@ body.dw h1 {
 .dw-alert-message a {
   font-weight: bold;
   text-decoration: underline;
+}
+.dw-alert-message.dw-alert-warning {
+  background: #e35b5b;
+  border-bottom: 1px solid #c71e1d;
+  color: white;
+  font-weight: bold;
+}
+.dw-alert-message.dw-alert-warning a {
+  color: #f6d99d;
 }
 html h2 {
   font-size: 24px;

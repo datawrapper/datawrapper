@@ -115,7 +115,7 @@
     {% else %}
 
     {% if alertMessage %}
-        <div class="dw-alert-message">
+        <div class="dw-alert-message {% if alertClass %}dw-alert-{{ alertClass }}{% endif %}">
             {{ alertMessage | raw }}
         </div>
     {% endif %}

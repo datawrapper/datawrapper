@@ -125,9 +125,9 @@ class Chart extends BaseChart {
         if ($this->isModified()) {
             $this->setLastModifiedAt(time());
 
-            $user = DatawrapperSession::getUser();
+            $user = Session::getUser();
             if ($user->getRole() != UserPeer::ROLE_GUEST) {
-                Action::logAction(DatawrapperSession::getUser(), 'chart/edit', $this->getId());
+                Action::logAction(Session::getUser(), 'chart/edit', $this->getId());
             }
         }
         return true;
@@ -426,7 +426,8 @@ class Chart extends BaseChart {
     public function publish() {
         // increment public version
         $this->setPublicVersion($this->getPublicVersion() + 1);
-        $published_urls = DatawrapperHooks::execute(DatawrapperHooks::GET_PUBLISHED_URL, $this);
+        // generate public url
+        $published_urls = Hooks::execute(Hooks::GET_PUBLISHED_URL, $this);
         if (!empty($published_urls)) {
             // store public url from first publish module
             $this->setPublicUrl($published_urls[0]);
@@ -434,24 +435,63 @@ class Chart extends BaseChart {
             // fallback to local url
             $this->setPublicUrl($this->getLocalUrl());
         }
+        $this->generateEmbedCodes();
         $this->save();
+        // copy data to public
+        if (empty($this->getPublicChart())) {
+            // create new public chart
+            $publicChart = new PublicChart();
+            $this->setPublicChart($publicChart);
+        }
+        $this->getPublicChart()->update();
         // log chart publish action
-        Action::logAction(DatawrapperSession::getUser(), 'chart/publish', $this->getId());
+        Action::logAction(Session::getUser(), 'chart/publish', $this->getId());
     }
 
     /*
      * redirect previous chart versions to the most current one
      */
-    public function redirectPreviousVersions() {
+    public function redirectPreviousVersions($justLast20=true) {
         $current_target = $this->getCDNPath();
         $redirect_html = '<html><head><meta http-equiv="REFRESH" content="0; url=/'.$current_target.'"></head></html>';
         $redirect_file = chart_publish_directory() . 'static/' . $this->getID() . '/redirect.html';
         file_put_contents($redirect_file, $redirect_html);
         $files = array();
         for ($v=0; $v < $this->getPublicVersion(); $v++) {
-            $files[] = array($redirect_file, $this->getCDNPath($v) . 'index.html', 'text/html');
+            if (!$justLast20 || $this->getPublicVersion() - $v < 20) {
+                $files[] = [
+                    $redirect_file,
+                    $this->getCDNPath($v) . 'index.html', 'text/html'
+                ];
+            }
         }
-        DatawrapperHooks::execute(DatawrapperHooks::PUBLISH_FILES, $files);
+        Hooks::execute(Hooks::PUBLISH_FILES, $files);
+    }
+
+    public function generateEmbedCodes() {
+        // generate embed codes
+        $embedcodes = [];
+        $search = [
+            '%chart_id%',
+            '%chart_url%',
+            '%chart_width%',
+            '%chart_height%',
+            '%embed_heights%',
+            '%embed_heights_escaped%'
+        ];
+        $replace = [
+            $this->getID(),
+            $this->getPublicUrl(),
+            $this->getMetadata('publish.embed-width'),
+            $this->getMetadata('publish.embed-height'),
+            json_encode($this->getMetadata('publish.embed-heights')),
+            str_replace('"', '&quot;', json_encode($this->getMetadata('publish.embed-heights'))),
+        ];
+        foreach (publish_get_embed_templates() as $template) {
+            $code = str_replace($search, $replace, $template['template']);
+            $embedcodes['embed-method-'.$template['id']] = $code;
+        }
+        $this->updateMetadata('publish.embed-codes', $embedcodes);
     }
 
     public function unpublish() {

@@ -104,6 +104,7 @@ function(initHighlightSeries, visOptions, themes, loadVisDfd, initTabNav, enable
         chart.sync('#text-notes', 'metadata.annotate.notes');
         chart.sync('#describe-source-name', 'metadata.describe.source-name');
         chart.sync('#describe-source-url', 'metadata.describe.source-url');
+        chart.sync('#describe-byline', 'metadata.describe.byline');
 
         chart.onChange(function(chart, key, value) {
             if (key == 'type') _typeHasChanged = true;

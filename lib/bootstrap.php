@@ -60,14 +60,6 @@ function get_current_protocol() {
     return $ssl ? 'https' : 'http';
 }
 
-/*
- * delete expired products
- * (once per minute is enough)
- */
-DatawrapperHooks::register(DatawrapperHooks::CRON_MINUTELY, function() {
-    Propel::getConnection()
-       ->exec('DELETE FROM user_product WHERE expires IS NOT NULL AND expires <= NOW()');
-});
 
 if (!defined('NO_SESSION')) {
     // forcing require of database session handler
@@ -115,6 +107,9 @@ if (!defined('NO_SLIM')) {
             'session.handler' => null
         ));
     }
+} else {
+    // called from command line, e.g. via scripts/hook.php
+    require_once ROOT_PATH . 'lib/maintenance.php';
 }
 
 if (isset($dw_config['memcache'])) {

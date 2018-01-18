@@ -27,6 +27,10 @@ class User extends BaseUser {
         return $this->getRole() != UserPeer::ROLE_GUEST;
     }
 
+    public function isGuest() {
+        return $this->getRole() == UserPeer::ROLE_GUEST;
+    }
+
     public function isAdmin() {
         return in_array($this->getRole(), array(UserPeer::ROLE_ADMIN, UserPeer::ROLE_SYSADMIN));
     }
@@ -40,7 +44,7 @@ class User extends BaseUser {
     }
 
     public function isAbleToPublish() {
-        return DatawrapperHooks::hookRegistered(DatawrapperHooks::PUBLISH_FILES);
+        return $this->mayPublish();
     }
 
     public function hasCharts() {
@@ -131,7 +135,7 @@ class User extends BaseUser {
                             ->filterByOrganizationId($this->getCurrentOrganization()->getId())
                             ->findOne();
 
-        return $userOrganization->getOrganizationRole(); 
+        return $userOrganization->getOrganizationRole();
     }
 
     /*
@@ -256,6 +260,20 @@ class User extends BaseUser {
         }
         $this->userData = $userData;
         return $userData;
+    }
+
+    /*
+     * returns true|false
+     */
+    public function mayPublish() {
+        if (!$this->isLoggedIn() || !$this->isActivated()) return false;
+        if (DatawrapperHooks::hookRegistered(DatawrapperHooks::USER_MAY_PUBLISH)) {
+            $user = DatawrapperSession::getUser(0);
+            foreach (DatawrapperHooks::execute(DatawrapperHooks::USER_MAY_PUBLISH, $user) as $value) {
+                if ($value === false) return false;
+            }
+        }
+        return true;
     }
 
 } // User

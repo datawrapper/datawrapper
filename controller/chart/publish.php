@@ -10,14 +10,14 @@ $app->get('/(chart|map)/:id/publish(/:sub_page)?', function ($id) use ($app) {
 
         $cfg = $GLOBALS['dw_config'];
 
-        DatawrapperHooks::register(
+        Hooks::register(
             'render_chart_actions',
             function($chart, $user) use ($app) {
-                $cap = DatawrapperHooks::execute("get_chart_action_provider");
+                $cap = Hooks::execute("get_chart_action_provider");
 
                 if ($cap == null || sizeof($cap) == 0) {
-                    $user = DatawrapperSession::getUser();
-                    $chartActions = DatawrapperHooks::execute(DatawrapperHooks::GET_CHART_ACTIONS, $chart, $user);
+                    $user = Session::getUser();
+                    $chartActions = Hooks::execute(Hooks::GET_CHART_ACTIONS, $chart, $user);
 
                     // add duplicate action
                     $chartActions[] = array(
@@ -53,6 +53,35 @@ $app->get('/(chart|map)/:id/publish(/:sub_page)?', function ($id) use ($app) {
         if (substr($chartW, -1) != '%') $chartW .= 'px';
         if (substr($chartH, -1) != '%') $chartH .= 'px';
 
+        // get chart simple actions for new template
+        $user = Session::getUser();
+        $chartActions = Hooks::execute(Hooks::GET_CHART_ACTIONS, $chart, $user);
+
+        // remove publish-s3
+        $chartActions = array_filter($chartActions, function($a) {
+            return $a['id'] != 'publish-s3';
+        });
+        // give actions a shorter name
+        $chartActions = array_map(function($a) {
+            if ($a['id'] == 'export-image') $a['title'] = 'PNG';
+            if ($a['id'] == 'export-jspdf') $a['title'] = 'PDF';
+            if ($a['id'] == 'export-zip') $a['title'] = 'ZIP';
+            return $a;
+        }, $chartActions);
+
+        // add core duplicate action
+        $chartActions[] = array(
+            'id' => 'duplicate',
+            'icon' => 'code-fork',
+            'title' => __('Duplicate'),
+            'order' => 500
+        );
+
+        // sort actions by self-defined order
+        usort($chartActions, function($a, $b) {
+            return (isset($a['order']) ? $a['order'] : 999) - (isset($b['order']) ? $b['order'] : 999);
+        });
+
         $page = array(
             'title' => $chart->getID() . ' :: '.__('Publish'),
             'chartData' => $chart->loadData(),
@@ -65,7 +94,8 @@ $app->get('/(chart|map)/:id/publish(/:sub_page)?', function ($id) use ($app) {
             'embedHeight' => $chartH,
             'themes' => ThemeQuery::create()->allThemesForUser(),
             'exportStaticImage' => !empty($cfg['phantomjs']),
-            'estExportTime' => ceil(JobQuery::create()->estimatedTime('export') / 60)
+            'estExportTime' => ceil(JobQuery::create()->estimatedTime('export') / 60),
+            'chartActions' => $chartActions
         );
 
         add_header_vars($page, 'chart', 'chart-editor/publish.css');
@@ -76,7 +106,25 @@ $app->get('/(chart|map)/:id/publish(/:sub_page)?', function ($id) use ($app) {
             $page['steps'][1]['readonly'] = true;
         }
 
-        $app->render('chart/publish.twig', $page);
+        // test with 10% of our users
+        if ($app->request()->get('beta') !== null || ($user->getID() % 5 == 0)) {
+
+            // new publish step
+            $page['svelte_data'] = [
+                'published' => $chart->getLastEditStep() > 4,
+                'needs_republish' => $chart->getLastEditStep() > 4 &&
+                    strtotime($chart->getLastModifiedAt()) - strtotime($chart->getPublishedAt()) > 20,
+                'chart' => $chart->toStruct(),
+                'embed_templates' => publish_get_embed_templates(),
+                'embed_type' => publish_get_preferred_embed_type(),
+                'shareurl_type' => publish_get_preferred_shareurl_type(),
+                'plugin_shareurls' => publish_get_plugin_shareurls()
+            ];
+            $app->render('chart/publish-new.twig', $page);
+        } else {
+            // old publish step (also fallback for guests etc)
+            $app->render('chart/publish.twig', $page);
+        }
     });
 });
 

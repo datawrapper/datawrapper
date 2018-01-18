@@ -159,12 +159,11 @@ class DatawrapperSession {
 
         // otherwise use user preference, or browser language
         if (self::getUser()->isLoggedIn()) {
-            return self::getUser()->getLanguage();
+            return str_replace('-', '_', self::getUser()->getLanguage());
         }
         elseif (isset($_SESSION['dw-lang'])) {
-            return $_SESSION['dw-lang'];
+            return str_replace('-', '_', $_SESSION['dw-lang']);
         }
-
         return self::getBrowserLocale();
     }
 
@@ -260,4 +259,4 @@ class DatawrapperSession {
     }
 }
 
-
+class_alias('DatawrapperSession', 'Session');

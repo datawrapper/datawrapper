@@ -1,0 +1,14 @@
+{# this is what users see who are not activated yet #}
+
+
+{% if has_hook('publish_custom_page_pending_activation') %}
+
+	{{ hook('publish_custom_page_pending_activation') }}
+
+{% else %}
+
+	<h2>{% trans "publish / unactivated / h1" %}</h2>
+
+	<p style="font-size: 16px;line-height: 23px;">{% trans "publish / unactivated / p" %}</p>
+
+{% endif %}

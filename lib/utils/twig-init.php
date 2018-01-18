@@ -72,6 +72,10 @@ function dwInitTwigEnvironment(Twig_Environment $twig) {
         call_user_func_array(array(DatawrapperHooks::getInstance(), 'execute'), func_get_args());
     }));
 
+    $twig->addFunction(new Twig_SimpleFunction('hook_return', function() {
+        return call_user_func_array(array(DatawrapperHooks::getInstance(), 'execute'), func_get_args());
+    }));
+
     $twig->addFunction(new Twig_SimpleFunction('has_hook', function($hook) {
         return DatawrapperHooks::getInstance()->hookRegistered($hook);
     }));
@@ -95,6 +99,24 @@ function dwInitTwigEnvironment(Twig_Environment $twig) {
     $twig->addFilter(new Twig_SimpleFilter('reltime', function($time) {
         // return $time;
         return (new \Moment\Moment($time))->fromNow()->getRelative();
+    }));
+
+    // adding new svelte() twig function
+    $twig->addFunction(new Twig_SimpleFunction('svelte', function($app_id, $data = null) {
+        $locale = DatawrapperSession::getLanguage();
+        if (!file_exists(ROOT_PATH . 'www/static/js/svelte/'.$app_id.'.'.$locale.'.js')) {
+            $locale = 'en_US';
+        }
+        // compute a sha for cache busting
+        $sha = substr(md5(file_get_contents(ROOT_PATH."www/static/js/svelte/$app_id.$locale.js")), 0, 8);
+        print "<div class='svelte-$app_id'></div>\n";
+        print "<script type='text/javascript' src='/static/js/svelte/$app_id.$locale.js?v=$sha'></script>\n";
+        print "<link rel='stylesheet' type='text/css' href='/static/css/svelte/$app_id.$locale.css?v=$sha'>\n";
+        if (!empty($data)) {
+            print "<script type='text/javascript'>";
+            print $app_id.'.set('.json_encode_safe($data).")\n";
+            print "</script>\n";
+        }
     }));
 
     if (!empty($GLOBALS['dw_config']['debug'])) {

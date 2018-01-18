@@ -54,15 +54,25 @@ $app->map('/chart/create', function() use ($app) {
                 // test if this chart is a valid chart template
                 $chart_tpl_org = $chart_tpl->getOrganization();
                 if ($chart_tpl_org && $chart_tpl_org->getSettings('chart-templates')) {
-                    // copy data
-                    $chart->writeData($chart_tpl->loadData());
-                    // copy raw metadata
-                    $chart->setRawMetadata($chart_tpl->getRawMetadata());
-                    // copy title, type
-                    $chart->setTitle($chart_tpl->getTitle());
-                    $chart->setType($chart_tpl->getType());
+                    // test if chart has been published before
+                    $public_tpl = $chart_tpl->getPublicChart();
+                    if ($public_tpl) {
+                        // copy data
+                        $chart->writeData($public_tpl->loadData());
+                        // copy raw metadata from public chart
+                        $chart->setRawMetadata($public_tpl->getMetadata());
+                        // copy title, type
+                        $chart->setTitle($public_tpl->getTitle());
+                        $chart->setType($public_tpl->getType());
+                        // set last step to visualize
+                    } else {
+                        // if not we use the last version in datawrapper as fallback
+                        $chart->writeData($chart_tpl->loadData());
+                        $chart->setRawMetadata($chart_tpl->getRawMetadata());
+                        $chart->setTitle($chart_tpl->getTitle());
+                        $chart->setType($chart_tpl->getType());
+                    }
                     $chart->setForkedFrom($chart_tpl->getId());
-                    // set last step to visualize
                     $step = 'visualize';
                     $chart->setLastEditStep(3);
                     Action::logAction(DatawrapperSession::getUser(), 'chart-template', $chart_tpl->getId());

@@ -85,10 +85,13 @@
 
                 {% if theme.getThemeData("options.footer.sourcePosition") == "left" %}
                     {% block footer %}
+
+
                         {% if chartByline %}
                             <span class="byline-block">
-                            {{ theme.getThemeData('options.footer.chartCaption') }}:
-                            {{ chartByline | raw }}</span>
+                                {{ theme.getThemeData('options.footer.chartCaption') }}
+                                <span class="chart-byline">{{ chartByline | raw }}</span>
+                            </span>
                         {% endif %}
 
                         {% if chartSource %}
@@ -96,6 +99,8 @@
                             <span class="source-block">{{ sourceCaption }}:
                             {{ chartSource | raw }}</span>
                         {% endif %}
+
+                        {{ hook('chart_footer_after_source', chart) }}
 
                         {% if theme.getThemeData("options.footer.getTheData.enabled") %}
                             {% set getTheDataCaption = theme.getThemeData("options.footer.getTheData.caption") %}
@@ -123,7 +128,7 @@
                         {% endif %}
 
                         {% if theme.getThemeData("options.footer.createdWithDatawrapper") %}
-                            <a href="{{ DW_DOMAIN }}_/{{ chart.id }}" target="_blank">{% trans "Created with" %}  {% trans "Datawrapper" %}</a>
+                            <a href="{% if has_hook('chart_created_with_datawrapper_url') %}{{ hook_return('chart_created_with_datawrapper_url', chart)[0] }}{% else %}{{ DW_DOMAIN }}{% endif %}" target="_blank">{% trans "Created with" %}  {% trans "Datawrapper" %}</a>
                         {% endif %}
                     {% endblock %}
                 {% endif %}
@@ -164,7 +169,7 @@
         visJSON: visJSON,
         metricPrefix: {{ metricPrefix | json | raw }},
         lang: '{{ lang }}',
-        data: {{ chart.loadData | json | raw }}
+        data: {{ chartData | json | raw }}
     }, window.__dwParams));
 
     if (/iP(hone|od|ad)/.test(navigator.platform)) {

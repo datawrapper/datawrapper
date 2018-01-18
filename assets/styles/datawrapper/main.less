@@ -46,8 +46,9 @@ body.dw {
     padding: 10px;
     width:100%;
     z-index:10000;
-    background:#e8e0c0;
-    color: #333;
+    background:#fcf8e3;
+    color: #c09853;
+    border-bottom: 1px solid #edddbe;
     box-sizing: border-box;
     text-align:center;
     h2, p, li { color: #fff; }
@@ -55,6 +56,14 @@ body.dw {
     h2 { margin: 0 0 0px; font-size: 18px; font-weight:bold; }
     code { background: #300; font-size: 14px; color: #ff6; border:0; }
     a { font-weight:bold; text-decoration: underline; }
+
+    &.dw-alert-warning {
+        background: #e35b5b;
+        border-bottom: 1px solid #c71e1d;
+        color: white;
+        font-weight: bold;
+        a {  color: #f6d99d }
+    }
 }
 
 html h2 {

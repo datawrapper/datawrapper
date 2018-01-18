@@ -8,7 +8,7 @@ define(function() {
             saveCallbacks = [];
 
         function save() {
-            $.ajax({
+            return $.ajax({
                 url: '/api/2/charts/'+chart.get('id') + window.location.search,
                 type: 'PUT',
                 dataType: 'json',

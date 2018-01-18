@@ -16,6 +16,10 @@ dw.backend.ready(function() {
     <div class="row">
         <div class="span5">
 
+            {% if user.isAbleToPublish %}
+                <a style="font-size:12px;display:block;text-align:right" href="?beta">Curious to beta-test our new publish interface?</a>
+            {% endif %}
+
             {{ hook('render_chart_actions', chart, user) }}
 
         </div>

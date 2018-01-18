@@ -1,0 +1,55 @@
+{% extends "chart/base.twig" %}
+{% block content %}
+
+{{ parent() }}
+
+{{ hook('publish_before_content') }}
+
+<script type="text/javascript">
+dw.backend.ready(function() {
+    require(['dw/chart/publish'], function(publish) {
+        publish.init('{{ chartUrl }}'{% if publish %}, true{% if republish %}, true{% endif %}{% endif %});
+    });
+});
+</script>
+
+<style type="text/css">
+
+</style>
+
+<div class="dw-create-publish chart-editor">
+    <div class="row">
+        <div class="span5 publish-step">
+
+        {% if user.isGuest %}
+            {% include "chart/publish/guest.twig" %}
+        {% elseif not user.isActivated %}
+            {% include "chart/publish/pending-activation.twig" %}
+        {% else %}
+            {% include "chart/publish/activated.twig" %}
+        {% endif %}
+
+        </div>
+
+        <div class="span7">
+            {% if user.isAbleToPublish %}
+
+            <div class="messages"></div>
+
+            <iframe src="{{ chartUrlLocal }}" id="iframe-vis" style="width:{{ embedWidth }};height:{{ embedHeight }}" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>
+
+            {% else %}
+
+            <iframe src="/chart/{{ chart.id }}/preview" id="iframe-vis" style="width:{{ embedWidth }};height:{{ embedHeight }}" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>
+
+
+            {% endif %}
+        </div>
+    </div>
+
+</div>
+
+
+
+{% endblock %}
+

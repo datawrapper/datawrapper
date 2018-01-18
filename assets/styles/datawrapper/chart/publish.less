@@ -89,6 +89,149 @@
             }
         }
     }
+
+    .publish-step {
+
+        .btn-aside {
+            display: inline-block;
+            max-width: 280px;
+            vertical-align: top;
+            margin-left: 10px;
+            border-color: #e9d4ad;
+        }
+
+        .svelte-publish {
+            .btn-aside, .alert {
+                max-width: 100%;
+                margin-top: 7px;
+                margin-left: 0;
+            }
+            .alert.publishing {
+                .progress {
+                    margin-top: 5px;
+                    margin-bottom: 5px;
+                }
+            }
+        }
+
+        .inactive, &:not(.is-published) .published-only {
+            display: none;
+        }
+
+        h2.pad-top {
+            margin-top: 30px;
+        }
+        .btn-copy {
+            vertical-align:top;
+        }
+        .block {
+            position: relative;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 20px;
+            &:last-child {
+                border-bottom: none;
+            }
+
+            .icon {
+                font-size: 27px;
+                min-width: 47px;
+                text-align: left;
+                height: 46px;
+                vertical-align: top;
+                position: relative;
+                top: 10px;
+                &.fa-river {
+                    top: 3px;
+                }
+            }
+            .ctrls {
+                vertical-align: top;
+                display: inline-block;
+                width: ~'calc(100% - 60px)';
+            }
+            .inpt {
+                margin-top: 5px;
+            }
+            .help {
+                position: absolute;
+                top: 10px;
+                right: 0;
+
+                .fa {
+                    font-size: 26px;
+                    color: #999;
+                }
+
+                .content {
+                    display: none;
+                    position: absolute;
+                    top: -8px;
+                    right: -8px;
+                    padding: 8px 40px 8px 10px;
+                    background: #9cbfd1;
+                    color: @dw_background;
+                    width: 350px;
+                    border-radius: 4px;
+                    box-shadow: 3px 2px 2px rgba(0,0,0,.1);
+                    z-index: 10000;
+                    &:after {
+                        content: '?';
+                        position: absolute;
+                        top: 8px;
+                        right: 8px;
+                    }
+                }
+
+                &:hover .content {
+                    display: block;
+                }
+
+                .content:after, span {
+                    font-family: Roboto Mono;
+                    display: block;
+                    width: 24px;
+                    height: 24px;
+                    border-radius: 50%;
+                    background:#9cbfd1;;
+                    text-align: center;
+                    color: @dw_background;
+                    font-size: 17px;
+                    line-height: 24px;
+                }
+            }
+        }
+
+        label.radio {
+            display: inline-block;
+            margin-right: 5px;
+            margin-top: 5px;
+            margin-left: 5px;
+        }
+
+        .chart-actions li {
+            text-align: center;
+            border-radius: 2px;
+            min-height: 50px;
+            width: 21%;
+            margin: 0 10px 10px 0;
+            padding: 15px 0 10px;
+
+            i.fa {
+                display: block;
+                margin: 0 auto;
+                font-size: 32px!important;
+            }
+
+            .title {
+                font-size: 12px;
+                text-transform: uppercase;
+                line-height: 15px;
+                display: block;
+                padding: 4px 10px 0;
+            }
+        }
+    }
 }
 
 .publish-chart-action-modal {
@@ -107,4 +250,4 @@
         left: 10px;
     }
 
-}
+} // action modal
