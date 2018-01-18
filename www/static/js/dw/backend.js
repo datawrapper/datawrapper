@@ -15,12 +15,13 @@ define([
     './backend/popupChart',
     './backend/resendActivationMail',
     './backend/notification',
-    './backend/setUserData'
+    './backend/setUserData',
+    './backend/cmsMode',
     ],
 
 function(syncChart, initializeSignUp, initLanguageLinks, initializeLogout,
     snapshot, checkPassword, ColorSelector, NumberStepper, popupChart,
-    resendActivationMail, notification, setUserData) {
+    resendActivationMail, notification, setUserData, cmsMode) {
 
     var backend = {};
 
@@ -30,9 +31,12 @@ function(syncChart, initializeSignUp, initLanguageLinks, initializeLogout,
             initializeSignUp();
             initLanguageLinks();
             initializeLogout();
+
             // init custom jquery ui
             ColorSelector();
             NumberStepper();
+
+            this.cmsMode.init();
 
             $('a[data-toggle=modal]').click(function(e) {
                 var a = $(e.target),
@@ -46,7 +50,8 @@ function(syncChart, initializeSignUp, initLanguageLinks, initializeLogout,
         snapshot: snapshot,
         checkPassword: checkPassword,
         resendActivationMail: resendActivationMail,
-        setUserData: setUserData
+        setUserData: setUserData,
+        cmsMode: cmsMode
 
     }, notification);
 

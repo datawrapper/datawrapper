@@ -490,6 +490,13 @@ html .btn-inverse {
   position: relative;
   top: 21px;
 }
+body.cms-mode {
+  padding-top: 30px;
+}
+body.cms-mode .navbar,
+body.cms-mode .footer {
+  display: none;
+}
 /** dw-create-upload **/
 .dw-create-upload textarea {
   width: 100%;
