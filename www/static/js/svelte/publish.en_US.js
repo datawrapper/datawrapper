@@ -1,1 +1,1736 @@
-var publish=function(){"use strict";function e(){}function t(e){for(var t,n,s=arguments,i=1,r=arguments.length;i<r;i++){n=s[i];for(t in n)e[t]=n[t]}return e}function n(e,t){t.appendChild(e)}function s(e,t,n){t.insertBefore(e,n)}function i(e){e.parentNode.removeChild(e)}function r(e){for(;e.nextSibling;)e.parentNode.removeChild(e.nextSibling)}function a(e){for(var t=0;t<e.length;t+=1)e[t]&&e[t].d()}function o(e){return document.createElement(e)}function u(e){return document.createTextNode(e)}function c(e,t,n){e.addEventListener(t,n,!1)}function h(e,t,n){e.removeEventListener(t,n,!1)}function l(){return Object.create(null)}function d(t){this.destroy=e,this.fire("destroy"),this.set=this.get=e,!1!==t&&this._fragment.u(),this._fragment.d(),this._fragment=this._state=null}function p(e,t){return e!==t||e&&"object"==typeof e||"function"==typeof e}function f(e,t,n,s,i){for(var r in t)if(n[r]){var a=s[r],o=i[r],u=t[r];if(u)for(var c=0;c<u.length;c+=1){var h=u[c];h.__calling||(h.__calling=!0,h.call(e,a,o),h.__calling=!1)}}}function _(e){return e?this._state[e]:this._state}function b(e,t,n){var s=n&&n.defer?this._observers.post:this._observers.pre;return(s[e]||(s[e]=[])).push(t),n&&!1===n.init||(t.__calling=!0,t.call(this,this._state[e]),t.__calling=!1),{cancel:function(){var n=s[e].indexOf(t);~n&&s[e].splice(n,1)}}}function m(e){for(;e&&e.length;)e.pop()()}function g(e,t,n,s){window.fetch(e,{credentials:"include",method:t,body:n}).then(function(e){if(200!=e.status)return new Error(e.statusText);try{return e.json()}catch(t){return e.text()}}).then(s).catch(function(e){console.error(e)})}function v(e){!function(e,t,n){e.setAttribute(t,n)}(e,"svelte-2881116715","")}function y(e,t){function n(e){t.publish()}var r,a,l,d,p,f,_,b,m,g,v=S(e),y=v(e,t),w=j(e),N=w(e,t),T=e.needs_republish&&!e.publishing&&L(e,t),H=e.published&&!e.needs_republish&&1==e.progress&&!e.publishing&&M(e,t),x=e.publish_error&&C(e,t),U=e.publishing&&k(e,t),P=e.published&&E(e,t);return{c:function(){r=o("h2"),a=u("\n\n"),y.c(),l=u("\n\n"),d=o("button"),N.c(),p=u("\n\n"),T&&T.c(),f=u("\n"),H&&H.c(),_=u("\n\n"),x&&x.c(),b=u("\n\n"),U&&U.c(),m=u("\n\n"),P&&P.c(),g=document.createComment(""),this.h()},h:function(){d.disabled=e.publishing,d.className="btn-publish btn btn-primary btn-large",c(d,"click",n)},m:function(e,t){s(r,e,t),r.innerHTML="Publish to Share & Embed",s(a,e,t),y.m(e,t),s(l,e,t),s(d,e,t),N.m(d,null),s(p,e,t),T&&T.m(e,t),s(f,e,t),H&&H.m(e,t),s(_,e,t),x&&x.m(e,t),s(b,e,t),U&&U.m(e,t),s(m,e,t),P&&P.m(e,t),s(g,e,t)},p:function(e,n){v!==(v=S(n))&&(y.u(),y.d(),(y=v(n,t)).c(),y.m(l.parentNode,l)),w===(w=j(n))&&N?N.p(e,n):(N.u(),N.d(),(N=w(n,t)).c(),N.m(d,null)),e.publishing&&(d.disabled=n.publishing),n.needs_republish&&!n.publishing?T||((T=L(n,t)).c(),T.m(f.parentNode,f)):T&&(T.u(),T.d(),T=null),!n.published||n.needs_republish||1!=n.progress||n.publishing?H&&(H.u(),H.d(),H=null):H||((H=M(n,t)).c(),H.m(_.parentNode,_)),n.publish_error?x?x.p(e,n):((x=C(n,t)).c(),x.m(b.parentNode,b)):x&&(x.u(),x.d(),x=null),n.publishing?U?U.p(e,n):((U=k(n,t)).c(),U.m(m.parentNode,m)):U&&(U.u(),U.d(),U=null),n.published?P?P.p(e,n):((P=E(n,t)).c(),P.m(g.parentNode,g)):P&&(P.u(),P.d(),P=null)},u:function(){r.innerHTML="",i(r),i(a),y.u(),i(l),i(d),N.u(),i(p),T&&T.u(),i(f),H&&H.u(),i(_),x&&x.u(),i(b),U&&U.u(),i(m),P&&P.u(),i(g)},d:function(){y.d(),N.d(),h(d,"click",n),T&&T.d(),H&&H.d(),x&&x.d(),U&&U.d(),P&&P.d()}}}function w(t,n){var r;return{c:function(){r=o("p")},m:function(e,t){s(r,e,t),r.innerHTML="This chart has been published! If you make changes to the chart you will need to re-publish them."},u:function(){r.innerHTML="",i(r)},d:e}}function N(t,n){var r;return{c:function(){r=o("p")},m:function(e,t){s(r,e,t),r.innerHTML="To <b>share</b> your chart or or <b>embed it to your website or CMS</b> you need to publish it. It will only be visible to people who know the chart URL."},u:function(){r.innerHTML="",i(r)},d:e}}function T(t,r){var a,c,h,l,d;return{c:function(){a=o("span"),c=o("i"),l=u(" "),d=u("Re-publish chart"),this.h()},h:function(){v(c),c.className=h="fa fa-fw fa-refresh "+(t.publishing?"fa-spin":""),a.className="re-publish"},m:function(e,t){s(a,e,t),n(c,a),n(l,a),n(d,a)},p:function(e,t){e.publishing&&h!==(h="fa fa-fw fa-refresh "+(t.publishing?"fa-spin":""))&&(c.className=h)},u:function(){i(a)},d:e}}function H(t,r){var a,c,h,l,d;return{c:function(){a=o("span"),c=o("i"),l=u(" "),d=u("Publish chart"),this.h()},h:function(){v(c),c.className=h="fa fa-fw "+(t.publishing?"fa-refresh fa-spin":"fa-cloud-upload"),a.className="publish"},m:function(e,t){s(a,e,t),n(c,a),n(l,a),n(d,a)},p:function(e,t){e.publishing&&h!==(h="fa fa-fw "+(t.publishing?"fa-refresh fa-spin":"fa-cloud-upload"))&&(c.className=h)},u:function(){i(a)},d:e}}function L(t,n){var r;return{c:function(){r=o("div"),this.h()},h:function(){v(r),r.className="btn-aside alert"},m:function(e,t){s(r,e,t),r.innerHTML="You have changed the chart after its last publication. To make these changes show up you got to <b>publish the chart again</b>."},u:function(){r.innerHTML="",i(r)},d:e}}function M(t,n){var r;return{c:function(){r=o("div"),this.h()},h:function(){r.className="alert alert-success"},m:function(e,t){s(r,e,t),r.innerHTML="Congratulations, your chart can now be shared and embedded on your site."},u:function(){r.innerHTML="",i(r)},d:e}}function C(t,n){var r;return{c:function(){r=o("div"),this.h()},h:function(){r.className="alert alert-error"},m:function(e,n){s(r,e,n),r.innerHTML=t.publish_error},p:function(e,t){e.publish_error&&(r.innerHTML=t.publish_error)},u:function(){r.innerHTML="",i(r)},d:e}}function k(e,t){var r,a,c,h,l,d,p;return{c:function(){r=o("div"),a=u("Your chart is now being prepared for publication and should be ready in a few seconds."),c=u("\n    "),h=o("div"),l=o("div"),this.h()},h:function(){v(r),v(h),v(l),l.className=d="bar "+(e.progress<1?"":"bar-success"),h.className="progress progress-striped active",r.className=p="alert "+(e.progress<1?"alert-info":"alert-success")+" publishing"},m:function(e,i){s(r,e,i),n(a,r),n(c,r),n(h,r),n(l,h),t.refs.bar=l},p:function(e,t){e.progress&&d!==(d="bar "+(t.progress<1?"":"bar-success"))&&(l.className=d),e.progress&&p!==(p="alert "+(t.progress<1?"alert-info":"alert-success")+" publishing")&&(r.className=p)},u:function(){i(r)},d:function(){t.refs.bar===l&&(t.refs.bar=null)}}}function x(e,t,a,l,d){function p(){d.set({shareurl_type:_.__value})}var f,_,b,m,g,y=a.name;return{c:function(){f=o("label"),_=o("input"),m=u(" "),g=o("noscript"),this.h()},h:function(){v(_),d._bindingGroups[0].push(_),c(_,"change",p),_.__value=b=a.id,_.value=_.__value,_.type="radio",_.name="url-type",f.className="radio"},m:function(t,i){s(f,t,i),n(_,f),_.checked=_.__value===e.shareurl_type,n(m,f),n(g,f),g.insertAdjacentHTML("afterend",y)},p:function(e,t,n,s,i){_.checked=_.__value===t.shareurl_type,e.plugin_shareurls&&b!==(b=s.id)&&(_.__value=b),_.value=_.__value,e.plugin_shareurls&&y!==(y=s.name)&&(r(g),g.insertAdjacentHTML("afterend",y))},u:function(){r(g),i(f)},d:function(){d._bindingGroups[0].splice(d._bindingGroups[0].indexOf(_),1),h(_,"change",p)}}}function U(e,t,a,l,d){function p(){d.set({embed_type:_.__value})}var f,_,b,m,g,y=a.title;return{c:function(){f=o("label"),_=o("input"),m=u(" "),g=o("noscript"),this.h()},h:function(){v(_),d._bindingGroups[1].push(_),c(_,"change",p),_.type="radio",_.__value=b=a.id,_.value=_.__value,f.className="radio"},m:function(t,i){s(f,t,i),n(_,f),_.checked=_.__value===e.embed_type,n(m,f),n(g,f),g.insertAdjacentHTML("afterend",y)},p:function(e,t,n,s,i){_.checked=_.__value===t.embed_type,e.embed_templates&&b!==(b=s.id)&&(_.__value=b),_.value=_.__value,e.embed_templates&&y!==(y=s.title)&&(r(g),g.insertAdjacentHTML("afterend",y))},u:function(){r(g),i(f)},d:function(){d._bindingGroups[1].splice(d._bindingGroups[1].indexOf(_),1),h(_,"change",p)}}}function P(t,a,c,h,l){var d,p,f,_,b,m,g=c.title,v=c.text;return{c:function(){d=o("div"),p=o("b"),f=u(g),_=u(":"),b=u(" "),m=o("noscript")},m:function(e,t){s(d,e,t),n(p,d),n(f,p),n(_,p),n(b,d),n(m,d),m.insertAdjacentHTML("afterend",v)},p:function(e,t,n,s,i){e.embed_templates&&g!==(g=s.title)&&(f.data=g),e.embed_templates&&v!==(v=s.text)&&(r(m),m.insertAdjacentHTML("afterend",v))},u:function(){r(m),i(d)},d:e}}function E(e,t){function l(){t.set({shareurl_type:H.__value})}function d(e){var n=t.get();t.copy(n.embedCode)}for(var p,f,_,b,m,g,y,w,N,T,H,L,M,C,k,E,S,j,G,O,A,I,D,R,B,z,F,Y,$,q,J,K,Q,V,W,X,Z,ee,te,ne,se,ie,re,ae,oe,ue,ce,he,le,de,pe,fe=e.plugin_shareurls,_e=[],be=0;be<fe.length;be+=1)_e[be]=x(e,0,fe[be],0,t);var me=e.embed_templates,ge=[];for(be=0;be<me.length;be+=1)ge[be]=U(e,0,me[be],0,t);var ve=e.embed_templates.slice(2),ye=[];for(be=0;be<ve.length;be+=1)ye[be]=P(0,0,ve[be]);return{c:function(){p=o("div"),f=o("div"),_=o("i"),b=u("\n        "),m=o("div"),g=o("div"),y=o("b"),w=u("\n                "),N=o("div"),T=o("label"),H=o("input"),L=u(" "),M=o("noscript"),C=u("\n                    ");for(var t=0;t<_e.length;t+=1)_e[t].c();k=u("\n            "),E=o("div"),S=o("a"),j=u(e.shareUrl),G=u("\n        "),O=o("div"),(A=o("span")).textContent="?",I=u("\n            "),D=o("div"),R=u("\n\n    "),B=o("div"),z=o("i"),F=u("\n        "),Y=o("div"),$=o("div"),q=o("b"),J=u("\n                "),K=o("div");for(t=0;t<ge.length;t+=1)ge[t].c();Q=u("\n            "),V=o("div"),W=o("input"),X=u(" "),Z=o("button"),ee=o("i"),te=u(" "),ne=u("copy"),se=u("\n                "),ie=o("div"),re=u("Embed code was copied to clipboard!"),oe=u("\n        "),ue=o("div"),(ce=o("span")).textContent="?",he=u("\n            "),le=o("div"),de=o("noscript"),pe=u("\n                ");for(t=0;t<ye.length;t+=1)ye[t].c();this.h()},h:function(){_.className="icon fa fa-link fa-fw",v(N),v(H),t._bindingGroups[0].push(H),c(H,"change",l),H.__value="default",H.value=H.__value,H.type="radio",H.name="url-type",T.className="radio",N.className="embed-options",g.className="h",v(S),S.target="_blank",S.className="share-url",S.href=e.shareUrl,E.className="inpt",m.className="ctrls",D.className="content",O.className="help",f.className="block",z.className="icon fa fa-code fa-fw",v(K),K.className="embed-options",$.className="h",W.type="text",W.className="input embed-code",W.readOnly=!0,W.value=e.embedCode,ee.className="fa fa-copy",Z.className="btn btn-copy",Z.title="copy",c(Z,"click",d),v(ie),ie.className=ae="copy-success "+(e.copy_success?"show":""),V.className="inpt",Y.className="ctrls",le.className="content",ue.className="help",B.className="block",function(e,t,n){e.style.setProperty(t,n)}(p,"margin-top","20px")},m:function(i,r){s(p,i,r),n(f,p),n(_,f),n(b,f),n(m,f),n(g,m),n(y,g),y.innerHTML="Share via URL",n(w,g),n(N,g),n(T,N),n(H,T),H.checked=H.__value===e.shareurl_type,n(L,T),n(M,T),M.insertAdjacentHTML("afterend","fullscreen"),n(C,N);for(var a=0;a<_e.length;a+=1)_e[a].m(N,null);n(k,m),n(E,m),n(S,E),n(j,S),n(G,f),n(O,f),n(A,O),n(I,O),n(D,O),D.innerHTML="The <b>normal size</b> URL displays the chart exactly the size you created it, and is useful for sharing on social media sites. The <b>fullscreen</b> URL will show your chart sized to fill the entire browser window.",n(R,p),n(B,p),n(z,B),n(F,B),n(Y,B),n($,Y),n(q,$),q.innerHTML="Copy Embed code",n(J,$),n(K,$);for(a=0;a<ge.length;a+=1)ge[a].m(K,null);n(Q,Y),n(V,Y),n(W,V),t.refs.embedInput=W,n(X,V),n(Z,V),n(ee,Z),n(te,Z),n(ne,Z),n(se,V),n(ie,V),n(re,ie),n(oe,B),n(ue,B),n(ce,ue),n(he,ue),n(le,ue),n(de,le),de.insertAdjacentHTML("beforebegin","Copy and paste this HTML code into your website or CMS to embed your chart. The <b>responsive iframe</b> automatically adjusts its height to fit both headline and chart on different devices."),n(pe,le);for(a=0;a<ye.length;a+=1)ye[a].m(le,null)},p:function(e,n){H.checked=H.__value===n.shareurl_type;var s=n.plugin_shareurls;if(e.shareurl_type||e.plugin_shareurls){for(var i=0;i<s.length;i+=1)_e[i]?_e[i].p(e,n,s,s[i],i):(_e[i]=x(n,0,s[i],0,t),_e[i].c(),_e[i].m(N,null));for(;i<_e.length;i+=1)_e[i].u(),_e[i].d();_e.length=s.length}e.shareUrl&&(j.data=n.shareUrl,S.href=n.shareUrl);var r=n.embed_templates;if(e.embed_type||e.embed_templates){for(i=0;i<r.length;i+=1)ge[i]?ge[i].p(e,n,r,r[i],i):(ge[i]=U(n,0,r[i],0,t),ge[i].c(),ge[i].m(K,null));for(;i<ge.length;i+=1)ge[i].u(),ge[i].d();ge.length=r.length}e.embedCode&&(W.value=n.embedCode),e.copy_success&&ae!==(ae="copy-success "+(n.copy_success?"show":""))&&(ie.className=ae);var a=n.embed_templates.slice(2);if(e.embed_templates){for(i=0;i<a.length;i+=1)ye[i]?ye[i].p(e,n,a,a[i],i):(ye[i]=P(0,0,a[i]),ye[i].c(),ye[i].m(le,null));for(;i<ye.length;i+=1)ye[i].u(),ye[i].d();ye.length=a.length}},u:function(){y.innerHTML="",r(M),D.innerHTML="",q.innerHTML="",function(e){for(;e.previousSibling;)e.parentNode.removeChild(e.previousSibling)}(de),i(p);for(var e=0;e<_e.length;e+=1)_e[e].u();for(e=0;e<ge.length;e+=1)ge[e].u();for(e=0;e<ye.length;e+=1)ye[e].u()},d:function(){t._bindingGroups[0].splice(t._bindingGroups[0].indexOf(H),1),h(H,"change",l),a(_e),a(ge),t.refs.embedInput===W&&(t.refs.embedInput=null),h(Z,"click",d),a(ye)}}}function S(e){return e.published?w:N}function j(e){return e.published?T:H}function G(e){!function(e,t){e._observers={pre:l(),post:l()},e._handlers=l(),e._bind=t._bind,e.options=t,e.root=t.root||e,e.store=e.root.store||t.store}(this,e),this.refs={},this._state=t({},e.data),this._recompute({shareurl_type:1,chart:1,plugin_shareurls:1,embed_type:1},this._state),this._bindingGroups=[[],[]];var n=function(){var e=this;e.observe("publishing",function(t){t&&e.updateProgressBar(e.get("progress"))}),e.observe("progress",function(t){e.updateProgressBar(t)}),e.observe("embed_type",function(e){var t=window.dw.backend.__userData;e&&t&&(t.embed_type=e,window.dw.backend.setUserData(t))}),e.observe("shareurl_type",function(e){var t=window.dw.backend.__userData;e&&t&&(t.shareurl_type=e,window.dw.backend.setUserData(t))})}.bind(this);e.root?this.root._oncreate.push(n):this._oncreate=[n],this._fragment=y(this._state,this),e.target&&(this._fragment.c(),this._fragment.m(e.target,e.anchor||null),m(this._oncreate))}function O(e){this._observers={pre:l(),post:l()},this._changeHandlers=[],this._dependents=[],this._computed=l(),this._sortedComputedProperties=[],this._state=t({},e)}var A=[100,200,300,400,500,700,800,900,1e3],I=0;t(G.prototype,{publish:function(){var e=this;if(window.chart.save){var t=e.get("chart");e.set({publishing:!0,progress:0,publish_error:!1}),t.metadata.publish["embed-heights"]=function(){var e={},t=window.$,n=t(t("#iframe-vis")[0].contentDocument),s=t("h1",n).height()+t(".chart-intro",n).height()+t(".dw-chart-notes",n).height(),i=t("#iframe-vis").height();return A.forEach(function(r){n.find("h1,.chart-intro,.dw-chart-notes").css("width",r+"px");var a=t("h1",n).height()+t(".chart-intro",n).height()+t(".dw-chart-notes",n).height();e[r]=i+(a-s)}),e}(e.get("embed_templates")),e.set({chart:t}),window.chart.attributes(t).save().then(function(n){!function(e,t,n){g(e,"POST",t,n)}("/api/charts/"+t.id+"/publish",null,function(t){"ok"==t.status?e.publishFinished(t.data):e.set({publish_error:t.message})}),I=0,e.updateStatus()})}else setTimeout(function(){e.publish()},100)},updateProgressBar:function(e){this.refs.bar&&(this.refs.bar.style.width=(100*e).toFixed()+"%")},updateStatus:function(){var e=this,t=e.get("chart");I+=.05,function(e,t){g(e,"GET",null,t)}("/api/charts/"+t.id+"/publish/status",function(t){t&&(t=+t/100+I,e.set({progress:Math.min(1,t)})),e.get("publishing")&&setTimeout(function(){e.updateStatus()},400)})},publishFinished:function(e){var t=this;this.set({progress:1,published:!0,needs_republish:!1}),setTimeout(function(){return t.set({publishing:!1})},500),this.set({chart:e}),window.chart.attributes(e)},copy:function(e){var t=this;console.log("COPY",e),t.refs.embedInput.select();try{document.execCommand("copy")&&(t.set({copy_success:!0}),setTimeout(function(){return t.set({copy_success:!1})},300))}catch(e){}}},{destroy:d,get:_,fire:function(e,t){var n=e in this._handlers&&this._handlers[e].slice();if(n)for(var s=0;s<n.length;s+=1)n[s].call(this,t)},observe:b,on:function(e,t){if("teardown"===e)return this.on("destroy",t);var n=this._handlers[e]||(this._handlers[e]=[]);return n.push(t),{cancel:function(){var e=n.indexOf(t);~e&&n.splice(e,1)}}},set:function(e){this._set(t({},e)),this.root._lock||(this.root._lock=!0,m(this.root._beforecreate),m(this.root._oncreate),m(this.root._aftercreate),this.root._lock=!1)},teardown:d,_recompute:e,_set:function(e){var n=this._state,s={},i=!1;for(var r in e)p(e[r],n[r])&&(s[r]=i=!0);i&&(this._state=t({},n,e),this._recompute(s,this._state),this._bind&&this._bind(s,this._state),this._fragment&&(f(this,this._observers.pre,s,this._state,n),this._fragment.p(s,this._state),f(this,this._observers.post,s,this._state,n)))},_mount:function(e,t){this._fragment.m(e,t)},_unmount:function(){this._fragment&&this._fragment.u()}}),G.prototype._recompute=function(e,t){(e.shareurl_type||e.chart||e.plugin_shareurls)&&p(t.shareUrl,t.shareUrl=function(e,t,n){if("default"==e)return t.publicUrl;var s="";return n.forEach(function(n){n.id==e&&(s=n.url.replace(/%chart_id%/g,t.id))}),s}(t.shareurl_type,t.chart,t.plugin_shareurls))&&(e.shareUrl=!0),(e.embed_type||e.chart)&&p(t.embedCode,t.embedCode=function(e,t){return t.metadata?t.metadata.publish&&!t.metadata.publish["embed-codes"]?'<iframe src="'+t.publicUrl+'" width="100%" height="'+t.metadata.publish["embed-height"]+'" scrolling="no" frameborder="0" allowtransparency="true"></iframe>':t.metadata.publish["embed-codes"]["embed-method-"+e]:""}(t.embed_type,t.chart))&&(e.embedCode=!0)},t(O.prototype,{_add:function(e,t){this._dependents.push({component:e,props:t})},_init:function(e){for(var t={},n=0;n<e.length;n+=1){var s=e[n];t["$"+s]=this._state[s]}return t},_remove:function(e){for(var t=this._dependents.length;t--;)if(this._dependents[t].component===e)return void this._dependents.splice(t,1)},_sortComputedProperties:function(){function e(r){if(t[r])throw new Error("Cyclical dependency detected");if(!i[r]){i[r]=!0;var a=n[r];a&&(t[r]=!0,a.deps.forEach(e),s.push(a))}}var t,n=this._computed,s=this._sortedComputedProperties=[],i=l();for(var r in this._computed)t=l(),e(r)},compute:function(e,t,n){var s,i={deps:t,update:function(i,r,a){var o=t.map(function(e){return e in r&&(a=!0),i[e]});if(a){var u=n.apply(null,o);p(u,s)&&(s=u,r[e]=!0,i[e]=s)}}};i.update(this._state,{},!0),this._computed[e]=i,this._sortComputedProperties()},get:_,observe:b,onchange:function(e){return this._changeHandlers.push(e),{cancel:function(){var t=this._changeHandlers.indexOf(e);~t&&this._changeHandlers.splice(t,1)}}},set:function(e){var n=this._state,s=this._changed={},i=!1;for(var r in e){if(this._computed[r])throw new Error("'"+r+"' is a read-only property");p(e[r],n[r])&&(s[r]=i=!0)}if(i){this._state=t({},n,e);for(var a=0;a<this._sortedComputedProperties.length;a+=1)this._sortedComputedProperties[a].update(this._state,s);for(a=0;a<this._changeHandlers.length;a+=1)this._changeHandlers[a](this._state,s);f(this,this._observers.pre,s,this._state,n);var o=this._dependents.slice();for(a=0;a<o.length;a+=1){var u=o[a],c={};i=!1;for(var h=0;h<u.props.length;h+=1){var l=u.props[h];l in s&&(c["$"+l]=this._state[l],i=!0)}i&&u.component.set(c)}f(this,this._observers.post,s,this._state,n)}}});var D=new O({});return new G({target:document.querySelector(".svelte-publish"),store:D,data:{chart:{id:""},embed_templates:[],plugin_shareurls:[],published:!1,publishing:!1,needs_republish:!1,publish_error:!1,progress:0,shareurl_type:"default",embed_type:"responsive",copy_success:!1}})}();
+var publish = (function () {
+'use strict';
+
+function noop() {}
+
+function assign(target) {
+	var k,
+		source,
+		i = 1,
+		len = arguments.length;
+	for (; i < len; i++) {
+		source = arguments[i];
+		for (k in source) target[k] = source[k];
+	}
+
+	return target;
+}
+
+function appendNode(node, target) {
+	target.appendChild(node);
+}
+
+function insertNode(node, target, anchor) {
+	target.insertBefore(node, anchor);
+}
+
+function detachNode(node) {
+	node.parentNode.removeChild(node);
+}
+
+function detachBefore(after) {
+	while (after.previousSibling) {
+		after.parentNode.removeChild(after.previousSibling);
+	}
+}
+
+function detachAfter(before) {
+	while (before.nextSibling) {
+		before.parentNode.removeChild(before.nextSibling);
+	}
+}
+
+function destroyEach(iterations) {
+	for (var i = 0; i < iterations.length; i += 1) {
+		if (iterations[i]) iterations[i].d();
+	}
+}
+
+function createElement(name) {
+	return document.createElement(name);
+}
+
+function createText(data) {
+	return document.createTextNode(data);
+}
+
+function addListener(node, event, handler) {
+	node.addEventListener(event, handler, false);
+}
+
+function removeListener(node, event, handler) {
+	node.removeEventListener(event, handler, false);
+}
+
+function setAttribute(node, attribute, value) {
+	node.setAttribute(attribute, value);
+}
+
+function setStyle(node, key, value) {
+	node.style.setProperty(key, value);
+}
+
+function blankObject() {
+	return Object.create(null);
+}
+
+function destroy(detach) {
+	this.destroy = noop;
+	this.fire('destroy');
+	this.set = this.get = noop;
+
+	if (detach !== false) this._fragment.u();
+	this._fragment.d();
+	this._fragment = this._state = null;
+}
+
+function destroyDev(detach) {
+	destroy.call(this, detach);
+	this.destroy = function() {
+		console.warn('Component was already destroyed');
+	};
+}
+
+function differs(a, b) {
+	return a !== b || ((a && typeof a === 'object') || typeof a === 'function');
+}
+
+function dispatchObservers(component, group, changed, newState, oldState) {
+	for (var key in group) {
+		if (!changed[key]) continue;
+
+		var newValue = newState[key];
+		var oldValue = oldState[key];
+
+		var callbacks = group[key];
+		if (!callbacks) continue;
+
+		for (var i = 0; i < callbacks.length; i += 1) {
+			var callback = callbacks[i];
+			if (callback.__calling) continue;
+
+			callback.__calling = true;
+			callback.call(component, newValue, oldValue);
+			callback.__calling = false;
+		}
+	}
+}
+
+function fire(eventName, data) {
+	var handlers =
+		eventName in this._handlers && this._handlers[eventName].slice();
+	if (!handlers) return;
+
+	for (var i = 0; i < handlers.length; i += 1) {
+		handlers[i].call(this, data);
+	}
+}
+
+function get(key) {
+	return key ? this._state[key] : this._state;
+}
+
+function init(component, options) {
+	component._observers = { pre: blankObject(), post: blankObject() };
+	component._handlers = blankObject();
+	component._bind = options._bind;
+
+	component.options = options;
+	component.root = options.root || component;
+	component.store = component.root.store || options.store;
+}
+
+function observe(key, callback, options) {
+	var group = options && options.defer
+		? this._observers.post
+		: this._observers.pre;
+
+	(group[key] || (group[key] = [])).push(callback);
+
+	if (!options || options.init !== false) {
+		callback.__calling = true;
+		callback.call(this, this._state[key]);
+		callback.__calling = false;
+	}
+
+	return {
+		cancel: function() {
+			var index = group[key].indexOf(callback);
+			if (~index) group[key].splice(index, 1);
+		}
+	};
+}
+
+function observeDev(key, callback, options) {
+	var c = (key = '' + key).search(/[^\w]/);
+	if (c > -1) {
+		var message =
+			'The first argument to component.observe(...) must be the name of a top-level property';
+		if (c > 0)
+			message += ", i.e. '" + key.slice(0, c) + "' rather than '" + key + "'";
+
+		throw new Error(message);
+	}
+
+	return observe.call(this, key, callback, options);
+}
+
+function on(eventName, handler) {
+	if (eventName === 'teardown') return this.on('destroy', handler);
+
+	var handlers = this._handlers[eventName] || (this._handlers[eventName] = []);
+	handlers.push(handler);
+
+	return {
+		cancel: function() {
+			var index = handlers.indexOf(handler);
+			if (~index) handlers.splice(index, 1);
+		}
+	};
+}
+
+function onDev(eventName, handler) {
+	if (eventName === 'teardown') {
+		console.warn(
+			"Use component.on('destroy', ...) instead of component.on('teardown', ...) which has been deprecated and will be unsupported in Svelte 2"
+		);
+		return this.on('destroy', handler);
+	}
+
+	return on.call(this, eventName, handler);
+}
+
+function set(newState) {
+	this._set(assign({}, newState));
+	if (this.root._lock) return;
+	this.root._lock = true;
+	callAll(this.root._beforecreate);
+	callAll(this.root._oncreate);
+	callAll(this.root._aftercreate);
+	this.root._lock = false;
+}
+
+function _set(newState) {
+	var oldState = this._state,
+		changed = {},
+		dirty = false;
+
+	for (var key in newState) {
+		if (differs(newState[key], oldState[key])) changed[key] = dirty = true;
+	}
+	if (!dirty) return;
+
+	this._state = assign({}, oldState, newState);
+	this._recompute(changed, this._state);
+	if (this._bind) this._bind(changed, this._state);
+
+	if (this._fragment) {
+		dispatchObservers(this, this._observers.pre, changed, this._state, oldState);
+		this._fragment.p(changed, this._state);
+		dispatchObservers(this, this._observers.post, changed, this._state, oldState);
+	}
+}
+
+function setDev(newState) {
+	if (typeof newState !== 'object') {
+		throw new Error(
+			this._debugName + '.set was called without an object of data key-values to update.'
+		);
+	}
+
+	this._checkReadOnly(newState);
+	set.call(this, newState);
+}
+
+function callAll(fns) {
+	while (fns && fns.length) fns.pop()();
+}
+
+function _mount(target, anchor) {
+	this._fragment.m(target, anchor);
+}
+
+function _unmount() {
+	if (this._fragment) this._fragment.u();
+}
+
+var protoDev = {
+	destroy: destroyDev,
+	get: get,
+	fire: fire,
+	observe: observeDev,
+	on: onDev,
+	set: setDev,
+	teardown: destroyDev,
+	_recompute: noop,
+	_set: _set,
+	_mount: _mount,
+	_unmount: _unmount
+};
+
+function fetchJSON(url, method, body, callback) {
+    window.fetch(url, {
+        credentials: 'include',
+        method: method,
+        body: body
+    })
+    .then((res) => {
+        // console.log('status', res);
+        if (res.status != 200) return new Error(res.statusText);
+        try {
+            return res.json();
+        } catch (Error) {
+            // could not parse json, so just return text
+            return res.text();
+        }
+    })
+    .then(callback)
+    .catch((err) => {
+        console.error(err);
+    });
+}
+
+function getJSON(url, callback) { return fetchJSON(url, 'GET', null, callback); }
+function postJSON(url, body, callback) { return fetchJSON(url, 'POST', body, callback); }
+
+const widths = [100,200,300,400,500,700,800,900,1000];
+
+function computeEmbedHeights() {
+    const embedHeights = {};
+
+    // compute embed deltas
+    const $ = window.$;
+    const previewChart = $($('#iframe-vis')[0].contentDocument);
+    // find out default heights
+    const defaultHeight = $('h1', previewChart).height() +
+        $('.chart-intro', previewChart).height() +
+        $('.dw-chart-notes', previewChart).height();
+
+    const totalHeight = $('#iframe-vis').height();
+
+    widths.forEach(width => {
+        // now we resize headline, intro and footer
+        previewChart.find('h1,.chart-intro,.dw-chart-notes')
+            .css('width', width + "px");
+
+        const height = $('h1', previewChart).height() +
+            $('.chart-intro', previewChart).height() +
+            $('.dw-chart-notes', previewChart).height();
+
+        embedHeights[width] = totalHeight + (height - defaultHeight);
+    });
+
+    return embedHeights;
+}
+
+/* publish/App.html generated by Svelte v1.50.1 */
+var fakeProgress = 0;
+
+function shareUrl(shareurl_type, chart, plugin_shareurls, published) {
+    if (!published) return 'https://www.datawrapper.de/...';
+    if (shareurl_type == 'default') return chart.publicUrl;
+    let url = '';
+    plugin_shareurls.forEach(t => {
+        if (t.id == shareurl_type) url = t.url.replace(/%chart_id%/g, chart.id);
+    });
+    return url;
+}
+
+function embedCode(embed_type, chart) {
+    if (!chart.metadata) return '';
+    if (chart.metadata.publish && !chart.metadata.publish['embed-codes'])
+        return `<iframe src="${chart.publicUrl}" width="100%" height="${chart.metadata.publish['embed-height']}" scrolling="no" frameborder="0" allowtransparency="true"></iframe>`;
+    return chart.metadata.publish['embed-codes']['embed-method-'+embed_type];
+}
+
+var methods = {
+
+    publish () {
+        const me = this;
+        // wait another 100ms until the page is ready
+        if (!window.chart.save) {
+            setTimeout(() => { me.publish(); }, 100);
+            return;
+        }
+        const chart = me.get('chart');
+        me.set({
+            publishing: true,
+            progress: 0,
+            publish_error: false
+        });
+        // generate embed codes
+        chart.metadata.publish['embed-heights'] =
+            computeEmbedHeights(chart, me.get('embed_templates'));
+        // update charts
+        me.set({chart});
+        // save embed heights and wait until it's done before
+        // we start to publish the chart
+        window.chart.attributes(chart).save().then((d) => {
+            // publish chart
+            postJSON(`/api/charts/${chart.id}/publish`, null, (res) => {
+                if (res.status == 'ok') {
+                    me.publishFinished(res.data);
+                } else {
+                    me.set({publish_error: res.message });
+                }
+            });
+            fakeProgress = 0;
+            me.updateStatus();
+        });
+    },
+
+    updateProgressBar (p) {
+        if (this.refs.bar) {
+            this.refs.bar.style.width = (p*100).toFixed()+'%';
+        }
+    },
+
+    updateStatus () {
+        const me = this;
+        const chart = me.get('chart');
+        fakeProgress += 0.05;
+        getJSON(`/api/charts/${chart.id}/publish/status`, (res) => {
+            if (res) {
+                res = (+res / 100) + fakeProgress;
+                me.set({progress: Math.min(1,res)});
+            }
+            if (me.get('publishing')) {
+                setTimeout(() => { me.updateStatus(); },400);
+            }
+        });
+    },
+
+    publishFinished (chartInfo) {
+        this.set({
+            progress: 1,
+            published: true,
+            needs_republish: false
+        });
+        setTimeout(() => this.set({publishing: false}), 500);
+        this.set({ chart: chartInfo });
+        window.chart.attributes(chartInfo);
+    },
+
+    copy (embedCode) {
+        const me = this;
+        console.log('COPY', embedCode);
+        me.refs.embedInput.select();
+        try {
+            var successful = document.execCommand('copy');
+            if (successful) {
+                me.set({copy_success: true});
+                setTimeout(() => me.set({copy_success:false}), 300);
+            }
+        } catch (err) {
+            // console.log('Oops, unable to copy');
+        }
+    }
+};
+
+function oncreate() {
+    const me = this;
+    me.observe('publishing', (p) => {
+        if (p) me.updateProgressBar(me.get('progress'));
+    });
+    me.observe('progress', (p) => {
+        me.updateProgressBar(p);
+    });
+    // persist embed_type and shareurl
+    me.observe('embed_type', (v) => {
+        const data = window.dw.backend.__userData;
+        if (!v || !data) return;
+        data.embed_type = v;
+        window.dw.backend.setUserData(data);
+    });
+
+    me.observe('shareurl_type', (v) => {
+        const data = window.dw.backend.__userData;
+        if (!v || !data) return;
+        data.shareurl_type = v;
+        window.dw.backend.setUserData(data);
+    });
+
+    me.observe('published', (p) => {
+        window.document
+            .querySelector('.dw-create-publish .publish-step')
+            .classList[p ? 'add' : 'remove']('is-published');
+    });
+}
+
+function encapsulateStyles(node) {
+	setAttribute(node, "svelte-1512688531", "");
+}
+
+function create_main_fragment(state, component) {
+	var text, button, button_class_value, text_2, text_3, text_4, text_5, text_6, text_7, div, h2, raw_value = "Share & Embed", text_8, div_1, i, text_9, div_2, div_3, b, raw_1_value = "Share via URL", text_10, div_4, label, input, text_11, raw_2_value = "fullscreen", raw_2_before, text_12, text_15, div_5, a, text_16, text_19, div_6, span, text_21, div_7, raw_3_value = "The <b>normal size</b> URL displays the chart exactly the size you created it, and is useful for sharing on social media sites. The <b>fullscreen</b> URL will show your chart sized to fill the entire browser window.", text_25, div_8, i_1, text_26, div_9, div_10, b_1, raw_4_value = "Copy Embed code", text_27, div_11, text_30, div_12, input_1, text_31, button_1, i_2, text_32, text_33_value = "copy", text_33, text_34, div_13, text_35_value = "Embed code was copied to clipboard!", text_35, div_13_class_value, text_39, div_14, span_1, text_41, div_15, raw_5_value = "Copy and paste this HTML code into your website or CMS to embed your chart. The <b>responsive iframe</b> automatically adjusts its height to fit both headline and chart on different devices.", raw_5_after, text_42, div_class_value;
+
+	var current_block_type = select_block_type(state);
+	var if_block = current_block_type(state, component);
+
+	var current_block_type_1 = select_block_type_1(state);
+	var if_block_1 = current_block_type_1(state, component);
+
+	function click_handler(event) {
+		component.publish();
+	}
+
+	var if_block_2 = (!state.published) && create_if_block_4(state, component);
+
+	var if_block_3 = (state.needs_republish && !state.publishing) && create_if_block_5(state, component);
+
+	var if_block_4 = (state.published && !state.needs_republish && state.progress == 1 && !state.publishing) && create_if_block_6(state, component);
+
+	var if_block_5 = (state.publish_error) && create_if_block_7(state, component);
+
+	var if_block_6 = (state.publishing) && create_if_block_8(state, component);
+
+	function input_change_handler() {
+		component.set({ shareurl_type: input.__value });
+	}
+
+	var plugin_shareurls = state.plugin_shareurls;
+
+	var each_blocks = [];
+
+	for (var i_3 = 0; i_3 < plugin_shareurls.length; i_3 += 1) {
+		each_blocks[i_3] = create_each_block(state, plugin_shareurls, plugin_shareurls[i_3], i_3, component);
+	}
+
+	var embed_templates = state.embed_templates;
+
+	var each_1_blocks = [];
+
+	for (var i_3 = 0; i_3 < embed_templates.length; i_3 += 1) {
+		each_1_blocks[i_3] = create_each_block_1(state, embed_templates, embed_templates[i_3], i_3, component);
+	}
+
+	function click_handler_1(event) {
+		var state = component.get();
+		component.copy(state.embedCode);
+	}
+
+	var each_value = state.embed_templates.slice(2);
+
+	var each_2_blocks = [];
+
+	for (var i_3 = 0; i_3 < each_value.length; i_3 += 1) {
+		each_2_blocks[i_3] = create_each_block_2(state, each_value, each_value[i_3], i_3, component);
+	}
+
+	return {
+		c: function create() {
+			if_block.c();
+			text = createText("\n\n");
+			button = createElement("button");
+			if_block_1.c();
+			text_2 = createText("\n\n\n");
+			if (if_block_2) if_block_2.c();
+			text_3 = createText("\n\n\n");
+			if (if_block_3) if_block_3.c();
+			text_4 = createText("\n");
+			if (if_block_4) if_block_4.c();
+			text_5 = createText("\n\n");
+			if (if_block_5) if_block_5.c();
+			text_6 = createText("\n\n");
+			if (if_block_6) if_block_6.c();
+			text_7 = createText("\n\n");
+			div = createElement("div");
+			h2 = createElement("h2");
+			text_8 = createText("\n    ");
+			div_1 = createElement("div");
+			i = createElement("i");
+			text_9 = createText("\n        ");
+			div_2 = createElement("div");
+			div_3 = createElement("div");
+			b = createElement("b");
+			text_10 = createText("\n                ");
+			div_4 = createElement("div");
+			label = createElement("label");
+			input = createElement("input");
+			text_11 = createText(" ");
+			raw_2_before = createElement('noscript');
+			text_12 = createText("\n                    ");
+
+			for (var i_3 = 0; i_3 < each_blocks.length; i_3 += 1) {
+				each_blocks[i_3].c();
+			}
+
+			text_15 = createText("\n            ");
+			div_5 = createElement("div");
+			a = createElement("a");
+			text_16 = createText(state.shareUrl);
+			text_19 = createText("\n        ");
+			div_6 = createElement("div");
+			span = createElement("span");
+			span.textContent = "?";
+			text_21 = createText("\n            ");
+			div_7 = createElement("div");
+			text_25 = createText("\n\n    ");
+			div_8 = createElement("div");
+			i_1 = createElement("i");
+			text_26 = createText("\n        ");
+			div_9 = createElement("div");
+			div_10 = createElement("div");
+			b_1 = createElement("b");
+			text_27 = createText("\n                ");
+			div_11 = createElement("div");
+
+			for (var i_3 = 0; i_3 < each_1_blocks.length; i_3 += 1) {
+				each_1_blocks[i_3].c();
+			}
+
+			text_30 = createText("\n            ");
+			div_12 = createElement("div");
+			input_1 = createElement("input");
+			text_31 = createText(" ");
+			button_1 = createElement("button");
+			i_2 = createElement("i");
+			text_32 = createText(" ");
+			text_33 = createText(text_33_value);
+			text_34 = createText("\n                ");
+			div_13 = createElement("div");
+			text_35 = createText(text_35_value);
+			text_39 = createText("\n        ");
+			div_14 = createElement("div");
+			span_1 = createElement("span");
+			span_1.textContent = "?";
+			text_41 = createText("\n            ");
+			div_15 = createElement("div");
+			raw_5_after = createElement('noscript');
+			text_42 = createText("\n                ");
+
+			for (var i_3 = 0; i_3 < each_2_blocks.length; i_3 += 1) {
+				each_2_blocks[i_3].c();
+			}
+			this.h();
+		},
+
+		h: function hydrate() {
+			encapsulateStyles(button);
+			button.disabled = state.publishing;
+			button.className = button_class_value = "btn-publish btn btn-primary btn-large " + (state.published?'':'btn-first-publish');
+			addListener(button, "click", click_handler);
+			i.className = "icon fa fa-link fa-fw";
+			encapsulateStyles(div_4);
+			encapsulateStyles(input);
+			component._bindingGroups[0].push(input);
+			addListener(input, "change", input_change_handler);
+			input.__value = "default";
+			input.value = input.__value;
+			input.type = "radio";
+			input.name = "url-type";
+			label.className = "radio";
+			div_4.className = "embed-options";
+			div_3.className = "h";
+			encapsulateStyles(a);
+			a.target = "_blank";
+			a.className = "share-url";
+			a.href = state.shareUrl;
+			div_5.className = "inpt";
+			div_2.className = "ctrls";
+			div_7.className = "content";
+			div_6.className = "help";
+			div_1.className = "block";
+			i_1.className = "icon fa fa-code fa-fw";
+			encapsulateStyles(div_11);
+			div_11.className = "embed-options";
+			div_10.className = "h";
+			input_1.type = "text";
+			input_1.className = "input embed-code";
+			input_1.readOnly = true;
+			input_1.value = state.embedCode;
+			i_2.className = "fa fa-copy";
+			button_1.className = "btn btn-copy";
+			button_1.title = "copy";
+			addListener(button_1, "click", click_handler_1);
+			encapsulateStyles(div_13);
+			div_13.className = div_13_class_value = "copy-success " + (state.copy_success ? 'show':'');
+			div_12.className = "inpt";
+			div_9.className = "ctrls";
+			div_15.className = "content";
+			div_14.className = "help";
+			div_8.className = "block";
+			setStyle(div, "margin-top", "20px");
+			div.className = div_class_value = state.published?'':'inactive';
+		},
+
+		m: function mount(target, anchor) {
+			if_block.m(target, anchor);
+			insertNode(text, target, anchor);
+			insertNode(button, target, anchor);
+			if_block_1.m(button, null);
+			insertNode(text_2, target, anchor);
+			if (if_block_2) if_block_2.m(target, anchor);
+			insertNode(text_3, target, anchor);
+			if (if_block_3) if_block_3.m(target, anchor);
+			insertNode(text_4, target, anchor);
+			if (if_block_4) if_block_4.m(target, anchor);
+			insertNode(text_5, target, anchor);
+			if (if_block_5) if_block_5.m(target, anchor);
+			insertNode(text_6, target, anchor);
+			if (if_block_6) if_block_6.m(target, anchor);
+			insertNode(text_7, target, anchor);
+			insertNode(div, target, anchor);
+			appendNode(h2, div);
+			h2.innerHTML = raw_value;
+			appendNode(text_8, div);
+			appendNode(div_1, div);
+			appendNode(i, div_1);
+			appendNode(text_9, div_1);
+			appendNode(div_2, div_1);
+			appendNode(div_3, div_2);
+			appendNode(b, div_3);
+			b.innerHTML = raw_1_value;
+			appendNode(text_10, div_3);
+			appendNode(div_4, div_3);
+			appendNode(label, div_4);
+			appendNode(input, label);
+
+			input.checked = input.__value === state.shareurl_type;
+
+			appendNode(text_11, label);
+			appendNode(raw_2_before, label);
+			raw_2_before.insertAdjacentHTML("afterend", raw_2_value);
+			appendNode(text_12, div_4);
+
+			for (var i_3 = 0; i_3 < each_blocks.length; i_3 += 1) {
+				each_blocks[i_3].m(div_4, null);
+			}
+
+			appendNode(text_15, div_2);
+			appendNode(div_5, div_2);
+			appendNode(a, div_5);
+			appendNode(text_16, a);
+			appendNode(text_19, div_1);
+			appendNode(div_6, div_1);
+			appendNode(span, div_6);
+			appendNode(text_21, div_6);
+			appendNode(div_7, div_6);
+			div_7.innerHTML = raw_3_value;
+			appendNode(text_25, div);
+			appendNode(div_8, div);
+			appendNode(i_1, div_8);
+			appendNode(text_26, div_8);
+			appendNode(div_9, div_8);
+			appendNode(div_10, div_9);
+			appendNode(b_1, div_10);
+			b_1.innerHTML = raw_4_value;
+			appendNode(text_27, div_10);
+			appendNode(div_11, div_10);
+
+			for (var i_3 = 0; i_3 < each_1_blocks.length; i_3 += 1) {
+				each_1_blocks[i_3].m(div_11, null);
+			}
+
+			appendNode(text_30, div_9);
+			appendNode(div_12, div_9);
+			appendNode(input_1, div_12);
+			component.refs.embedInput = input_1;
+			appendNode(text_31, div_12);
+			appendNode(button_1, div_12);
+			appendNode(i_2, button_1);
+			appendNode(text_32, button_1);
+			appendNode(text_33, button_1);
+			appendNode(text_34, div_12);
+			appendNode(div_13, div_12);
+			appendNode(text_35, div_13);
+			appendNode(text_39, div_8);
+			appendNode(div_14, div_8);
+			appendNode(span_1, div_14);
+			appendNode(text_41, div_14);
+			appendNode(div_15, div_14);
+			appendNode(raw_5_after, div_15);
+			raw_5_after.insertAdjacentHTML("beforebegin", raw_5_value);
+			appendNode(text_42, div_15);
+
+			for (var i_3 = 0; i_3 < each_2_blocks.length; i_3 += 1) {
+				each_2_blocks[i_3].m(div_15, null);
+			}
+		},
+
+		p: function update(changed, state) {
+			if (current_block_type !== (current_block_type = select_block_type(state))) {
+				if_block.u();
+				if_block.d();
+				if_block = current_block_type(state, component);
+				if_block.c();
+				if_block.m(text.parentNode, text);
+			}
+
+			if (current_block_type_1 === (current_block_type_1 = select_block_type_1(state)) && if_block_1) {
+				if_block_1.p(changed, state);
+			} else {
+				if_block_1.u();
+				if_block_1.d();
+				if_block_1 = current_block_type_1(state, component);
+				if_block_1.c();
+				if_block_1.m(button, null);
+			}
+
+			if (changed.publishing) {
+				button.disabled = state.publishing;
+			}
+
+			if ((changed.published) && button_class_value !== (button_class_value = "btn-publish btn btn-primary btn-large " + (state.published?'':'btn-first-publish'))) {
+				button.className = button_class_value;
+			}
+
+			if (!state.published) {
+				if (!if_block_2) {
+					if_block_2 = create_if_block_4(state, component);
+					if_block_2.c();
+					if_block_2.m(text_3.parentNode, text_3);
+				}
+			} else if (if_block_2) {
+				if_block_2.u();
+				if_block_2.d();
+				if_block_2 = null;
+			}
+
+			if (state.needs_republish && !state.publishing) {
+				if (!if_block_3) {
+					if_block_3 = create_if_block_5(state, component);
+					if_block_3.c();
+					if_block_3.m(text_4.parentNode, text_4);
+				}
+			} else if (if_block_3) {
+				if_block_3.u();
+				if_block_3.d();
+				if_block_3 = null;
+			}
+
+			if (state.published && !state.needs_republish && state.progress == 1 && !state.publishing) {
+				if (!if_block_4) {
+					if_block_4 = create_if_block_6(state, component);
+					if_block_4.c();
+					if_block_4.m(text_5.parentNode, text_5);
+				}
+			} else if (if_block_4) {
+				if_block_4.u();
+				if_block_4.d();
+				if_block_4 = null;
+			}
+
+			if (state.publish_error) {
+				if (if_block_5) {
+					if_block_5.p(changed, state);
+				} else {
+					if_block_5 = create_if_block_7(state, component);
+					if_block_5.c();
+					if_block_5.m(text_6.parentNode, text_6);
+				}
+			} else if (if_block_5) {
+				if_block_5.u();
+				if_block_5.d();
+				if_block_5 = null;
+			}
+
+			if (state.publishing) {
+				if (if_block_6) {
+					if_block_6.p(changed, state);
+				} else {
+					if_block_6 = create_if_block_8(state, component);
+					if_block_6.c();
+					if_block_6.m(text_7.parentNode, text_7);
+				}
+			} else if (if_block_6) {
+				if_block_6.u();
+				if_block_6.d();
+				if_block_6 = null;
+			}
+
+			input.checked = input.__value === state.shareurl_type;
+
+			var plugin_shareurls = state.plugin_shareurls;
+
+			if (changed.shareurl_type || changed.plugin_shareurls) {
+				for (var i_3 = 0; i_3 < plugin_shareurls.length; i_3 += 1) {
+					if (each_blocks[i_3]) {
+						each_blocks[i_3].p(changed, state, plugin_shareurls, plugin_shareurls[i_3], i_3);
+					} else {
+						each_blocks[i_3] = create_each_block(state, plugin_shareurls, plugin_shareurls[i_3], i_3, component);
+						each_blocks[i_3].c();
+						each_blocks[i_3].m(div_4, null);
+					}
+				}
+
+				for (; i_3 < each_blocks.length; i_3 += 1) {
+					each_blocks[i_3].u();
+					each_blocks[i_3].d();
+				}
+				each_blocks.length = plugin_shareurls.length;
+			}
+
+			if (changed.shareUrl) {
+				text_16.data = state.shareUrl;
+				a.href = state.shareUrl;
+			}
+
+			var embed_templates = state.embed_templates;
+
+			if (changed.embed_type || changed.embed_templates) {
+				for (var i_3 = 0; i_3 < embed_templates.length; i_3 += 1) {
+					if (each_1_blocks[i_3]) {
+						each_1_blocks[i_3].p(changed, state, embed_templates, embed_templates[i_3], i_3);
+					} else {
+						each_1_blocks[i_3] = create_each_block_1(state, embed_templates, embed_templates[i_3], i_3, component);
+						each_1_blocks[i_3].c();
+						each_1_blocks[i_3].m(div_11, null);
+					}
+				}
+
+				for (; i_3 < each_1_blocks.length; i_3 += 1) {
+					each_1_blocks[i_3].u();
+					each_1_blocks[i_3].d();
+				}
+				each_1_blocks.length = embed_templates.length;
+			}
+
+			if (changed.embedCode) {
+				input_1.value = state.embedCode;
+			}
+
+			if ((changed.copy_success) && div_13_class_value !== (div_13_class_value = "copy-success " + (state.copy_success ? 'show':''))) {
+				div_13.className = div_13_class_value;
+			}
+
+			var each_value = state.embed_templates.slice(2);
+
+			if (changed.embed_templates) {
+				for (var i_3 = 0; i_3 < each_value.length; i_3 += 1) {
+					if (each_2_blocks[i_3]) {
+						each_2_blocks[i_3].p(changed, state, each_value, each_value[i_3], i_3);
+					} else {
+						each_2_blocks[i_3] = create_each_block_2(state, each_value, each_value[i_3], i_3, component);
+						each_2_blocks[i_3].c();
+						each_2_blocks[i_3].m(div_15, null);
+					}
+				}
+
+				for (; i_3 < each_2_blocks.length; i_3 += 1) {
+					each_2_blocks[i_3].u();
+					each_2_blocks[i_3].d();
+				}
+				each_2_blocks.length = each_value.length;
+			}
+
+			if ((changed.published) && div_class_value !== (div_class_value = state.published?'':'inactive')) {
+				div.className = div_class_value;
+			}
+		},
+
+		u: function unmount() {
+			h2.innerHTML = '';
+
+			b.innerHTML = '';
+
+			detachAfter(raw_2_before);
+
+			div_7.innerHTML = '';
+
+			b_1.innerHTML = '';
+
+			detachBefore(raw_5_after);
+
+			if_block.u();
+			detachNode(text);
+			detachNode(button);
+			if_block_1.u();
+			detachNode(text_2);
+			if (if_block_2) if_block_2.u();
+			detachNode(text_3);
+			if (if_block_3) if_block_3.u();
+			detachNode(text_4);
+			if (if_block_4) if_block_4.u();
+			detachNode(text_5);
+			if (if_block_5) if_block_5.u();
+			detachNode(text_6);
+			if (if_block_6) if_block_6.u();
+			detachNode(text_7);
+			detachNode(div);
+
+			for (var i_3 = 0; i_3 < each_blocks.length; i_3 += 1) {
+				each_blocks[i_3].u();
+			}
+
+			for (var i_3 = 0; i_3 < each_1_blocks.length; i_3 += 1) {
+				each_1_blocks[i_3].u();
+			}
+
+			for (var i_3 = 0; i_3 < each_2_blocks.length; i_3 += 1) {
+				each_2_blocks[i_3].u();
+			}
+		},
+
+		d: function destroy$$1() {
+			if_block.d();
+			if_block_1.d();
+			removeListener(button, "click", click_handler);
+			if (if_block_2) if_block_2.d();
+			if (if_block_3) if_block_3.d();
+			if (if_block_4) if_block_4.d();
+			if (if_block_5) if_block_5.d();
+			if (if_block_6) if_block_6.d();
+			component._bindingGroups[0].splice(component._bindingGroups[0].indexOf(input), 1);
+			removeListener(input, "change", input_change_handler);
+
+			destroyEach(each_blocks);
+
+			destroyEach(each_1_blocks);
+
+			if (component.refs.embedInput === input_1) component.refs.embedInput = null;
+			removeListener(button_1, "click", click_handler_1);
+
+			destroyEach(each_2_blocks);
+		}
+	};
+}
+
+// (1:0) {{#if published}}
+function create_if_block(state, component) {
+	var p, raw_value = "This chart has been published! If you make changes to the chart you will need to re-publish them.";
+
+	return {
+		c: function create() {
+			p = createElement("p");
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(p, target, anchor);
+			p.innerHTML = raw_value;
+		},
+
+		u: function unmount() {
+			p.innerHTML = '';
+
+			detachNode(p);
+		},
+
+		d: noop
+	};
+}
+
+// (3:0) {{else}}
+function create_if_block_1(state, component) {
+	var p, raw_value = "To share or embed your chart you need to publish it. It will only be visible to people who know the chart URL.";
+
+	return {
+		c: function create() {
+			p = createElement("p");
+			this.h();
+		},
+
+		h: function hydrate() {
+			setStyle(p, "margin-bottom", "20px");
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(p, target, anchor);
+			p.innerHTML = raw_value;
+		},
+
+		u: function unmount() {
+			p.innerHTML = '';
+
+			detachNode(p);
+		},
+
+		d: noop
+	};
+}
+
+// (8:4) {{#if published}}
+function create_if_block_2(state, component) {
+	var span, i, i_class_value, text, span_1, text_1_value = "Re-publish chart", text_1;
+
+	return {
+		c: function create() {
+			span = createElement("span");
+			i = createElement("i");
+			text = createText(" ");
+			span_1 = createElement("span");
+			text_1 = createText(text_1_value);
+			this.h();
+		},
+
+		h: function hydrate() {
+			encapsulateStyles(i);
+			i.className = i_class_value = "fa fa-fw fa-refresh " + (state.publishing ? 'fa-spin' : '');
+			encapsulateStyles(span_1);
+			span_1.className = "title";
+			span.className = "re-publish";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(span, target, anchor);
+			appendNode(i, span);
+			appendNode(text, span);
+			appendNode(span_1, span);
+			appendNode(text_1, span_1);
+		},
+
+		p: function update(changed, state) {
+			if ((changed.publishing) && i_class_value !== (i_class_value = "fa fa-fw fa-refresh " + (state.publishing ? 'fa-spin' : ''))) {
+				i.className = i_class_value;
+			}
+		},
+
+		u: function unmount() {
+			detachNode(span);
+		},
+
+		d: noop
+	};
+}
+
+// (10:4) {{else}}
+function create_if_block_3(state, component) {
+	var span, i, i_class_value, text, span_1, text_1_value = "Publish chart", text_1;
+
+	return {
+		c: function create() {
+			span = createElement("span");
+			i = createElement("i");
+			text = createText(" ");
+			span_1 = createElement("span");
+			text_1 = createText(text_1_value);
+			this.h();
+		},
+
+		h: function hydrate() {
+			encapsulateStyles(i);
+			i.className = i_class_value = "fa fa-fw " + (state.publishing ? 'fa-refresh fa-spin' : 'fa-cloud-upload');
+			encapsulateStyles(span_1);
+			span_1.className = "title";
+			span.className = "publish";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(span, target, anchor);
+			appendNode(i, span);
+			appendNode(text, span);
+			appendNode(span_1, span);
+			appendNode(text_1, span_1);
+		},
+
+		p: function update(changed, state) {
+			if ((changed.publishing) && i_class_value !== (i_class_value = "fa fa-fw " + (state.publishing ? 'fa-refresh fa-spin' : 'fa-cloud-upload'))) {
+				i.className = i_class_value;
+			}
+		},
+
+		u: function unmount() {
+			detachNode(span);
+		},
+
+		d: noop
+	};
+}
+
+// (16:0) {{#if !published}}
+function create_if_block_4(state, component) {
+	var div, div_1, text_1, div_2, raw_value = "Click here if you want to embed your chart in your <b>website</b> or <b>CMS</b>.";
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			div_1 = createElement("div");
+			div_1.innerHTML = "<i class=\"fa fa-chevron-left\"></i>";
+			text_1 = createText("\n    ");
+			div_2 = createElement("div");
+			this.h();
+		},
+
+		h: function hydrate() {
+			encapsulateStyles(div);
+			encapsulateStyles(div_1);
+			div_1.className = "arrow";
+			encapsulateStyles(div_2);
+			div_2.className = "text";
+			div.className = "publish-intro";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			appendNode(div_1, div);
+			appendNode(text_1, div);
+			appendNode(div_2, div);
+			div_2.innerHTML = raw_value;
+		},
+
+		u: function unmount() {
+			div_2.innerHTML = '';
+
+			detachNode(div);
+		},
+
+		d: noop
+	};
+}
+
+// (28:0) {{#if needs_republish && !publishing}}
+function create_if_block_5(state, component) {
+	var div, raw_value = "You have changed the chart after its last publication. To make these changes show up you got to <b>publish the chart again</b>.";
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			this.h();
+		},
+
+		h: function hydrate() {
+			encapsulateStyles(div);
+			div.className = "btn-aside alert";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			div.innerHTML = raw_value;
+		},
+
+		u: function unmount() {
+			div.innerHTML = '';
+
+			detachNode(div);
+		},
+
+		d: noop
+	};
+}
+
+// (33:0) {{#if published && !needs_republish && progress == 1 && !publishing}}
+function create_if_block_6(state, component) {
+	var div, raw_value = "Congratulations, your chart can now be shared and embedded on your site.";
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			this.h();
+		},
+
+		h: function hydrate() {
+			div.className = "alert alert-success";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			div.innerHTML = raw_value;
+		},
+
+		u: function unmount() {
+			div.innerHTML = '';
+
+			detachNode(div);
+		},
+
+		d: noop
+	};
+}
+
+// (39:0) {{#if publish_error}}
+function create_if_block_7(state, component) {
+	var div;
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			this.h();
+		},
+
+		h: function hydrate() {
+			div.className = "alert alert-error";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			div.innerHTML = state.publish_error;
+		},
+
+		p: function update(changed, state) {
+			if (changed.publish_error) {
+				div.innerHTML = state.publish_error;
+			}
+		},
+
+		u: function unmount() {
+			div.innerHTML = '';
+
+			detachNode(div);
+		},
+
+		d: noop
+	};
+}
+
+// (45:0) {{#if publishing}}
+function create_if_block_8(state, component) {
+	var div, text_value = "Your chart is now being prepared for publication and should be ready in a few seconds.", text, text_1, div_1, div_2, div_2_class_value, div_class_value;
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			text = createText(text_value);
+			text_1 = createText("\n    ");
+			div_1 = createElement("div");
+			div_2 = createElement("div");
+			this.h();
+		},
+
+		h: function hydrate() {
+			encapsulateStyles(div);
+			encapsulateStyles(div_1);
+			encapsulateStyles(div_2);
+			div_2.className = div_2_class_value = "bar " + (state.progress < 1 ? '' : 'bar-success');
+			div_1.className = "progress progress-striped active";
+			div.className = div_class_value = "alert " + (state.progress < 1 ? 'alert-info' : 'alert-success') + " publishing";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			appendNode(text, div);
+			appendNode(text_1, div);
+			appendNode(div_1, div);
+			appendNode(div_2, div_1);
+			component.refs.bar = div_2;
+		},
+
+		p: function update(changed, state) {
+			if ((changed.progress) && div_2_class_value !== (div_2_class_value = "bar " + (state.progress < 1 ? '' : 'bar-success'))) {
+				div_2.className = div_2_class_value;
+			}
+
+			if ((changed.progress) && div_class_value !== (div_class_value = "alert " + (state.progress < 1 ? 'alert-info' : 'alert-success') + " publishing")) {
+				div.className = div_class_value;
+			}
+		},
+
+		u: function unmount() {
+			detachNode(div);
+		},
+
+		d: function destroy$$1() {
+			if (component.refs.bar === div_2) component.refs.bar = null;
+		}
+	};
+}
+
+// (63:20) {{#each plugin_shareurls as tpl}}
+function create_each_block(state, plugin_shareurls, tpl, tpl_index, component) {
+	var label, input, input_value_value, text, raw_value = tpl.name, raw_before;
+
+	function input_change_handler() {
+		component.set({ shareurl_type: input.__value });
+	}
+
+	return {
+		c: function create() {
+			label = createElement("label");
+			input = createElement("input");
+			text = createText(" ");
+			raw_before = createElement('noscript');
+			this.h();
+		},
+
+		h: function hydrate() {
+			encapsulateStyles(input);
+			component._bindingGroups[0].push(input);
+			addListener(input, "change", input_change_handler);
+			input.__value = input_value_value = tpl.id;
+			input.value = input.__value;
+			input.type = "radio";
+			input.name = "url-type";
+			label.className = "radio";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(label, target, anchor);
+			appendNode(input, label);
+
+			input.checked = input.__value === state.shareurl_type;
+
+			appendNode(text, label);
+			appendNode(raw_before, label);
+			raw_before.insertAdjacentHTML("afterend", raw_value);
+		},
+
+		p: function update(changed, state, plugin_shareurls, tpl, tpl_index) {
+			input.checked = input.__value === state.shareurl_type;
+			if ((changed.plugin_shareurls) && input_value_value !== (input_value_value = tpl.id)) {
+				input.__value = input_value_value;
+			}
+
+			input.value = input.__value;
+			if ((changed.plugin_shareurls) && raw_value !== (raw_value = tpl.name)) {
+				detachAfter(raw_before);
+				raw_before.insertAdjacentHTML("afterend", raw_value);
+			}
+		},
+
+		u: function unmount() {
+			detachAfter(raw_before);
+
+			detachNode(label);
+		},
+
+		d: function destroy$$1() {
+			component._bindingGroups[0].splice(component._bindingGroups[0].indexOf(input), 1);
+			removeListener(input, "change", input_change_handler);
+		}
+	};
+}
+
+// (86:20) {{#each embed_templates as tpl}}
+function create_each_block_1(state, embed_templates, tpl_1, tpl_index_1, component) {
+	var label, input, input_value_value, text, raw_value = tpl_1.title, raw_before;
+
+	function input_change_handler() {
+		component.set({ embed_type: input.__value });
+	}
+
+	return {
+		c: function create() {
+			label = createElement("label");
+			input = createElement("input");
+			text = createText(" ");
+			raw_before = createElement('noscript');
+			this.h();
+		},
+
+		h: function hydrate() {
+			encapsulateStyles(input);
+			component._bindingGroups[1].push(input);
+			addListener(input, "change", input_change_handler);
+			input.type = "radio";
+			input.__value = input_value_value = tpl_1.id;
+			input.value = input.__value;
+			label.className = "radio";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(label, target, anchor);
+			appendNode(input, label);
+
+			input.checked = input.__value === state.embed_type;
+
+			appendNode(text, label);
+			appendNode(raw_before, label);
+			raw_before.insertAdjacentHTML("afterend", raw_value);
+		},
+
+		p: function update(changed, state, embed_templates, tpl_1, tpl_index_1) {
+			input.checked = input.__value === state.embed_type;
+			if ((changed.embed_templates) && input_value_value !== (input_value_value = tpl_1.id)) {
+				input.__value = input_value_value;
+			}
+
+			input.value = input.__value;
+			if ((changed.embed_templates) && raw_value !== (raw_value = tpl_1.title)) {
+				detachAfter(raw_before);
+				raw_before.insertAdjacentHTML("afterend", raw_value);
+			}
+		},
+
+		u: function unmount() {
+			detachAfter(raw_before);
+
+			detachNode(label);
+		},
+
+		d: function destroy$$1() {
+			component._bindingGroups[1].splice(component._bindingGroups[1].indexOf(input), 1);
+			removeListener(input, "change", input_change_handler);
+		}
+	};
+}
+
+// (102:16) {{#each embed_templates.slice(2) as tpl}}
+function create_each_block_2(state, each_value, tpl_2, tpl_index_2, component) {
+	var div, b, text_value = tpl_2.title, text, text_1, text_2, raw_value = tpl_2.text, raw_before;
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			b = createElement("b");
+			text = createText(text_value);
+			text_1 = createText(":");
+			text_2 = createText(" ");
+			raw_before = createElement('noscript');
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			appendNode(b, div);
+			appendNode(text, b);
+			appendNode(text_1, b);
+			appendNode(text_2, div);
+			appendNode(raw_before, div);
+			raw_before.insertAdjacentHTML("afterend", raw_value);
+		},
+
+		p: function update(changed, state, each_value, tpl_2, tpl_index_2) {
+			if ((changed.embed_templates) && text_value !== (text_value = tpl_2.title)) {
+				text.data = text_value;
+			}
+
+			if ((changed.embed_templates) && raw_value !== (raw_value = tpl_2.text)) {
+				detachAfter(raw_before);
+				raw_before.insertAdjacentHTML("afterend", raw_value);
+			}
+		},
+
+		u: function unmount() {
+			detachAfter(raw_before);
+
+			detachNode(div);
+		},
+
+		d: noop
+	};
+}
+
+function select_block_type(state) {
+	if (state.published) return create_if_block;
+	return create_if_block_1;
+}
+
+function select_block_type_1(state) {
+	if (state.published) return create_if_block_2;
+	return create_if_block_3;
+}
+
+function App(options) {
+	this._debugName = '<App>';
+	if (!options || (!options.target && !options.root)) throw new Error("'target' is a required option");
+	init(this, options);
+	this.refs = {};
+	this._state = assign({}, options.data);
+	this._recompute({ shareurl_type: 1, chart: 1, plugin_shareurls: 1, published: 1, embed_type: 1 }, this._state);
+	if (!('shareurl_type' in this._state)) console.warn("<App> was created without expected data property 'shareurl_type'");
+	if (!('chart' in this._state)) console.warn("<App> was created without expected data property 'chart'");
+	if (!('plugin_shareurls' in this._state)) console.warn("<App> was created without expected data property 'plugin_shareurls'");
+	if (!('published' in this._state)) console.warn("<App> was created without expected data property 'published'");
+	if (!('embed_type' in this._state)) console.warn("<App> was created without expected data property 'embed_type'");
+	if (!('publishing' in this._state)) console.warn("<App> was created without expected data property 'publishing'");
+	if (!('needs_republish' in this._state)) console.warn("<App> was created without expected data property 'needs_republish'");
+	if (!('progress' in this._state)) console.warn("<App> was created without expected data property 'progress'");
+	if (!('publish_error' in this._state)) console.warn("<App> was created without expected data property 'publish_error'");
+	if (!('shareUrl' in this._state)) console.warn("<App> was created without expected data property 'shareUrl'");
+	if (!('embed_templates' in this._state)) console.warn("<App> was created without expected data property 'embed_templates'");
+	if (!('embedCode' in this._state)) console.warn("<App> was created without expected data property 'embedCode'");
+	if (!('copy_success' in this._state)) console.warn("<App> was created without expected data property 'copy_success'");
+	this._bindingGroups = [[], []];
+
+	var _oncreate = oncreate.bind(this);
+
+	if (!options.root) {
+		this._oncreate = [_oncreate];
+	} else {
+	 	this.root._oncreate.push(_oncreate);
+	 }
+
+	this._fragment = create_main_fragment(this._state, this);
+
+	if (options.target) {
+		if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		this._fragment.c();
+		this._fragment.m(options.target, options.anchor || null);
+
+		callAll(this._oncreate);
+	}
+}
+
+assign(App.prototype, methods, protoDev);
+
+App.prototype._checkReadOnly = function _checkReadOnly(newState) {
+	if ('shareUrl' in newState && !this._updatingReadonlyProperty) throw new Error("<App>: Cannot set read-only property 'shareUrl'");
+	if ('embedCode' in newState && !this._updatingReadonlyProperty) throw new Error("<App>: Cannot set read-only property 'embedCode'");
+};
+
+App.prototype._recompute = function _recompute(changed, state) {
+	if (changed.shareurl_type || changed.chart || changed.plugin_shareurls || changed.published) {
+		if (differs(state.shareUrl, (state.shareUrl = shareUrl(state.shareurl_type, state.chart, state.plugin_shareurls, state.published)))) changed.shareUrl = true;
+	}
+
+	if (changed.embed_type || changed.chart) {
+		if (differs(state.embedCode, (state.embedCode = embedCode(state.embed_type, state.chart)))) changed.embedCode = true;
+	}
+};
+
+function Store(state) {
+	this._observers = { pre: blankObject(), post: blankObject() };
+	this._changeHandlers = [];
+	this._dependents = [];
+
+	this._computed = blankObject();
+	this._sortedComputedProperties = [];
+
+	this._state = assign({}, state);
+}
+
+assign(Store.prototype, {
+	_add: function(component, props) {
+		this._dependents.push({
+			component: component,
+			props: props
+		});
+	},
+
+	_init: function(props) {
+		var state = {};
+		for (var i = 0; i < props.length; i += 1) {
+			var prop = props[i];
+			state['$' + prop] = this._state[prop];
+		}
+		return state;
+	},
+
+	_remove: function(component) {
+		var i = this._dependents.length;
+		while (i--) {
+			if (this._dependents[i].component === component) {
+				this._dependents.splice(i, 1);
+				return;
+			}
+		}
+	},
+
+	_sortComputedProperties: function() {
+		var computed = this._computed;
+		var sorted = this._sortedComputedProperties = [];
+		var cycles;
+		var visited = blankObject();
+
+		function visit(key) {
+			if (cycles[key]) {
+				throw new Error('Cyclical dependency detected');
+			}
+
+			if (visited[key]) return;
+			visited[key] = true;
+
+			var c = computed[key];
+
+			if (c) {
+				cycles[key] = true;
+				c.deps.forEach(visit);
+				sorted.push(c);
+			}
+		}
+
+		for (var key in this._computed) {
+			cycles = blankObject();
+			visit(key);
+		}
+	},
+
+	compute: function(key, deps, fn) {
+		var value;
+
+		var c = {
+			deps: deps,
+			update: function(state, changed, dirty) {
+				var values = deps.map(function(dep) {
+					if (dep in changed) dirty = true;
+					return state[dep];
+				});
+
+				if (dirty) {
+					var newValue = fn.apply(null, values);
+					if (differs(newValue, value)) {
+						value = newValue;
+						changed[key] = true;
+						state[key] = value;
+					}
+				}
+			}
+		};
+
+		c.update(this._state, {}, true);
+
+		this._computed[key] = c;
+		this._sortComputedProperties();
+	},
+
+	get: get,
+
+	observe: observe,
+
+	onchange: function(callback) {
+		this._changeHandlers.push(callback);
+		return {
+			cancel: function() {
+				var index = this._changeHandlers.indexOf(callback);
+				if (~index) this._changeHandlers.splice(index, 1);
+			}
+		};
+	},
+
+	set: function(newState) {
+		var oldState = this._state,
+			changed = this._changed = {},
+			dirty = false;
+
+		for (var key in newState) {
+			if (this._computed[key]) throw new Error("'" + key + "' is a read-only property");
+			if (differs(newState[key], oldState[key])) changed[key] = dirty = true;
+		}
+		if (!dirty) return;
+
+		this._state = assign({}, oldState, newState);
+
+		for (var i = 0; i < this._sortedComputedProperties.length; i += 1) {
+			this._sortedComputedProperties[i].update(this._state, changed);
+		}
+
+		for (var i = 0; i < this._changeHandlers.length; i += 1) {
+			this._changeHandlers[i](this._state, changed);
+		}
+
+		dispatchObservers(this, this._observers.pre, changed, this._state, oldState);
+
+		var dependents = this._dependents.slice(); // guard against mutations
+		for (var i = 0; i < dependents.length; i += 1) {
+			var dependent = dependents[i];
+			var componentState = {};
+			dirty = false;
+
+			for (var j = 0; j < dependent.props.length; j += 1) {
+				var prop = dependent.props[j];
+				if (prop in changed) {
+					componentState['$' + prop] = this._state[prop];
+					dirty = true;
+				}
+			}
+
+			if (dirty) dependent.component.set(componentState);
+		}
+
+		dispatchObservers(this, this._observers.post, changed, this._state, oldState);
+	}
+});
+
+const store = new Store({});
+
+var app = new App({
+    target: document.querySelector('.svelte-publish'),
+    store: store,
+    data: {
+        chart: {
+            id: ''
+        },
+        embed_templates: [],
+        plugin_shareurls: [],
+        published: false,
+        publishing: false,
+        needs_republish: false,
+        publish_error: false,
+        progress: 0,
+        shareurl_type: 'default',
+        embed_type: 'responsive',
+        copy_success: false
+    }
+});
+
+return app;
+
+}());

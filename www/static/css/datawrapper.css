@@ -1809,6 +1809,10 @@ html .btn-inverse {
   margin-top: 5px;
   margin-bottom: 5px;
 }
+.dw-create-publish .publish-step .inactive,
+.dw-create-publish .publish-step:not(.is-published) .published-only {
+  display: none;
+}
 .dw-create-publish .publish-step h2.pad-top {
   margin-top: 30px;
 }

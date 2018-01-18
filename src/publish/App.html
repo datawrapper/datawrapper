@@ -1,18 +1,29 @@
-<h2>{{{ __('publish / share-embed') }}}</h2>
-
 {{#if published}}
 <p>{{{ __('publish / republish-intro') }}}</p>
 {{else}}
-<p>{{{ __('publish / publish-intro') }}}</p>
+<p style="margin-bottom: 20px">{{{ __('publish / publish-intro') }}}</p>
 {{/if}}
 
-<button disabled="{{ publishing }}" on:click="publish()" class="btn-publish btn btn-primary btn-large">
+<button disabled="{{ publishing }}" on:click="publish()" class="btn-publish btn btn-primary btn-large {{published?'':'btn-first-publish'}}">
     {{#if published}}
-    <span class="re-publish"><i class="fa fa-fw fa-refresh {{publishing ? 'fa-spin' : ''}}"></i> {{ __('publish / republish-btn') }}</span>
+    <span class="re-publish"><i class="fa fa-fw fa-refresh {{publishing ? 'fa-spin' : ''}}"></i> <span class="title">{{ __('publish / republish-btn') }}</span></span>
     {{else}}
-    <span class="publish"><i class="fa fa-fw {{publishing ? 'fa-refresh fa-spin' : 'fa-cloud-upload'}}"></i> {{ __('publish / publish-btn') }}</span>
+    <span class="publish"><i class="fa fa-fw {{publishing ? 'fa-refresh fa-spin' : 'fa-cloud-upload'}}"></i> <span class="title">{{ __('publish / publish-btn') }}</span></span>
     {{/if}}
 </button>
+
+
+{{#if !published}}
+<div class="publish-intro">
+    <div class="arrow">
+        <i class="fa fa-chevron-left"></i>
+    </div>
+    <div class="text">
+        {{{ __('publish / publish-btn-intro') }}}
+    </div>
+</div>
+{{/if}}
+
 
 {{#if needs_republish && !publishing}}
 <div class="btn-aside alert">
@@ -40,8 +51,8 @@
 </div>
 {{/if}}
 
-{{#if published}}
-<div style="margin-top:20px">
+<div style="margin-top:20px" class="{{published?'':'inactive'}}">
+    <h2>{{{ __('publish / share-embed') }}}</h2>
     <div class="block">
         <i class="icon fa fa-link fa-fw"></i>
         <div class="ctrls">
@@ -95,9 +106,54 @@
         </div>
     </div>
 </div>
-{{/if}}
 
 <style>
+    .btn-publish {
+        border-color: #1d81a2!important;
+        box-shadow: 0px 3px 6px rgba(0,0,0,0.25);
+        line-height: 20px;
+        padding: 15px;
+    }
+
+    .btn-first-publish {
+        text-align: center;
+        width: 170px;
+        vertical-align: middle;
+        padding: 15px 0 15px;
+    }
+
+    .btn-publish i.fa {
+        font-size: 20px;
+    }
+    .btn-first-publish i.fa {
+        font-size: 32px;
+        display: block;
+        margin: 5px auto;
+    }
+
+    .btn-first-publish .title {
+        display: block;
+        text-align: center;
+        font-size: 18px;
+        line-height: 22px;
+        padding: 5px 20px 0px 20px;
+    }
+    .publish-intro {
+        display: inline-block;
+        font-size: 18px!important;
+        line-height: 22px;
+    }
+    .publish-intro .arrow {
+        vertical-align: middle;
+        display: inline-block;
+        padding: 15px;
+    }
+    .publish-intro .text {
+        vertical-align: middle;
+        display: inline-block;
+        width: 200px;
+    }
+
     div.progress {
         margin-top: 8px;
         margin-bottom: 4px;
@@ -149,7 +205,8 @@
         },
         computed: {
 
-            shareUrl (shareurl_type, chart, plugin_shareurls) {
+            shareUrl (shareurl_type, chart, plugin_shareurls, published) {
+                if (!published) return 'https://www.datawrapper.de/...';
                 if (shareurl_type == 'default') return chart.publicUrl;
                 let url = '';
                 plugin_shareurls.forEach(t => {
@@ -271,6 +328,12 @@
                 if (!v || !data) return;
                 data.shareurl_type = v;
                 window.dw.backend.setUserData(data);
+            });
+
+            me.observe('published', (p) => {
+                window.document
+                    .querySelector('.dw-create-publish .publish-step')
+                    .classList[p ? 'add' : 'remove']('is-published');
             });
         }
     };
