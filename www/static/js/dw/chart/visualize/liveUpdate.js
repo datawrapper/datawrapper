@@ -106,12 +106,12 @@ define(function() {
                     if (attrs.metadata.describe['source-name'] && !$$('.source-block').length) needReload = true;
                     if (!attrs.metadata.describe['source-name'] && $$('.source-block').length) needReload = true;
                     if (!needReload) {
-                        $$('.source-block').html(
+                        $$('.source-block').html(dw.utils.purifyHtml(
                             ($$('.source-block').data('src') || 'Source:')+' '+
                             (attrs.metadata.describe['source-url'] ?
                             '<a href="'+attrs.metadata.describe['source-url']+'">'+attrs.metadata.describe['source-name']+'</a>' :
                             attrs.metadata.describe['source-name'])
-                        );
+                        ));
                     }
                 }
                 if (changed('metadata.describe.byline')) {
@@ -142,7 +142,7 @@ define(function() {
                 }
                 function heightChanged(el, html) {
                     var old_h = el.height();
-                    el.html(html);
+                    el.html(dw.utils.purifyHtml(html));
                     return el.height() != old_h;
                 }
             },
