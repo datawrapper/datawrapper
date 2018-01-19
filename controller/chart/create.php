@@ -23,12 +23,17 @@ $app->map('/chart/create', function() use ($app) {
                 $chart->updateMetadata('describe.source-url', $req->post('source-url'));
                 $step = 'visualize';
             }
-            if ($req->post('type') != null) {
-                $chart->setType($req->post('type'));
-            }
             if ($req->post('title') != null) {
                 $chart->setTitle($req->post('title'));
             }
+        }
+        if ($req->post('type') != null) {
+            $chart->setType($req->post('type'));
+        }
+        if ($req->post('basemap')) {
+            $chart->updateMetadata('visualize.map-type-set', 'true');
+            $chart->updateMetadata('visualize.basemap', $req->post('basemap'));
+            $step = 'data';
         }
         if ($req->post('theme') != null) {
             if (ThemeQuery::findPk($req->post('theme')) !== false) {
@@ -80,6 +85,6 @@ $app->map('/chart/create', function() use ($app) {
             }
         }
         $chart->save();
-        $app->redirect('/chart/'.$chart->getId().'/'.$step);
+        $app->redirect('/' . $chart->getNamespace() . '/'.$chart->getId().'/'.$step);
     }
 })->via('GET', 'POST');
