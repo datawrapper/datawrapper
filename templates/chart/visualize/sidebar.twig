@@ -1,6 +1,8 @@
 
 <div class="span4 visconfig">
 
+    {{ hook('visualize_before_sidebar', chart) }}
+
     <ul class="nav nav-tabs visualize-nav-tabs" data-target="tab-container">
         {% if type != "map" %}
             <li class="active"><a href="#vis" data-target="select-visualization">{% trans "Chart type" %}</a></li>

@@ -1,4 +1,4 @@
-/*! datawrapper - v1.15.0 *///
+/*! datawrapper - v1.16.0 *///
 // NOTE: This file is auto-generated using /dw.js/make
 // from the source files /dw.js/src/*.js.
 //
@@ -1248,12 +1248,12 @@ dw.utils = {
         var ch = 0, bottom = 0; // summed height of children, 10px for top & bottom margin
         $('body > *').each(function(i, el) {
             var t = el.tagName.toLowerCase();
-            if (    
-                t != 'script' && 
-                t != 'style' && 
-                el.id != 'chart' && 
+            if (
+                t != 'script' &&
+                t != 'style' &&
+                el.id != 'chart' &&
                 !$(el).hasClass('tooltip') &&
-                !$(el).hasClass('qtip') && 
+                !$(el).hasClass('qtip') &&
                 !$(el).hasClass('container') &&
                 !$(el).hasClass('noscript') &&
                 !$(el).attr('aria-hidden')) {
@@ -1284,25 +1284,42 @@ dw.utils = {
     purifyHtml: function(input, allowed) {
         var tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>/gi,
             commentsAndPhpTags = /<!--[\s\S]*?-->|<\?(?:php)?[\s\S]*?\?>/gi,
-            default_allowed = "<a><b><br><br/><i><strong><sup><sub><strike><u><em><tt>",
-            allowed_split = {};
-
-        if (allowed === undefined) allowed = default_allowed;
-        allowed_split[allowed] = (((allowed || "") + "").toLowerCase().match(/<[a-z][a-z0-9]*>/g) || []).join(''); // making sure the allowed arg is a string containing only tags in lowercase (<a><b><c>)
+            default_allowed = "<a><b><br><br/><i><strong><sup><sub><strike><u><em><tt>";
 
         function purifyHtml(input, allowed) {
-            if (!_.isString(input) || input.indexOf("<") < 0) {
-                return input;
+            // strip tags
+            input = stripTags(input, allowed);
+            // remove all event attributes
+            var d = document.createElement('div');
+            d.innerHTML = input;
+            var sel = d.querySelectorAll('*');
+            for (var i=0; i<sel.length; i++) {
+                for (var j=0; j<sel[i].attributes.length; j++) {
+                    var attrib = sel[i].attributes[j];
+                    if (attrib.specified) {
+                        if (attrib.name.substr(0,2) == 'on') sel[i].removeAttribute(attrib.name);
+                    }
+                }
             }
-            if (allowed === undefined) {
-                allowed = default_allowed;
+            return d.innerHTML;
+        }
+        function stripTags(input, allowed) {
+            // making sure the allowed arg is a string containing only tags in lowercase (<a><b><c>)
+            allowed = (((allowed !== undefined ? allowed || '' : default_allowed) + '').toLowerCase().match(/<[a-z][a-z0-9]*>/g) || []).join('')
+
+            var before = input;
+            var after = input;
+            // recursively remove tags to ensure that the returned string doesn't contain forbidden tags after previous passes (e.g. '<<bait/>switch/>')
+            while (true) {
+                before = after;
+                after = before.replace(commentsAndPhpTags, '').replace(tags, function ($0, $1) {
+                    return allowed.indexOf('<' + $1.toLowerCase() + '>') > -1 ? $0 : ''
+                });
+                // return once no more tags are removed
+                if (before === after) {
+                    return after;
+                }
             }
-            if (!allowed_split[allowed]) {
-                allowed_split[allowed] = (((allowed || "") + "").toLowerCase().match(/<[a-z][a-z0-9]*>/g) || []).join(''); // making sure the allowed arg is a string containing only tags in lowercase (<a><b><c>)
-            }
-            return input.replace(commentsAndPhpTags, '').replace(tags, function ($0, $1) {
-                return allowed_split[allowed].indexOf('<' + $1.toLowerCase() + '>') > -1 ? $0 : '';
-            });
         }
         dw.utils.purifyHtml = purifyHtml;
         return purifyHtml(input, allowed);
@@ -1668,7 +1685,6 @@ dw.chart = function(attributes) {
                 } else {
                     $.getScript("/static/vendor/globalize/cultures/globalize.culture." +
                       locale + ".js", function () {
-       
                         chart.locale(locale);
                         if (typeof callback == "function") callback();
                     });
@@ -1880,7 +1896,7 @@ dw.chart = function(attributes) {
         }
 
         _.each(v_columns, add_computed_column);
-        
+
         return dataset;
 
         function add_computed_column(formula, name) {
@@ -1903,7 +1919,7 @@ dw.chart = function(attributes) {
                     // console.log(context.join('\n'));
                     return (function() {
                         try {
-                            return eval(this.context.join('\n')+'\n'+formula);                    
+                            return eval(this.context.join('\n')+'\n'+formula);
                         } catch (e) {
                             console.warn(e);
                             return 'n/a';

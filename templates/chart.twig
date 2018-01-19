@@ -56,9 +56,9 @@
     {# some convenient short cuts for theme templates #}
     {% set title = chart.title %}
     {% set intro = chart.getMetadata('describe.intro') %}
+    {% set notes = chart.getMetadata('annotate.notes') %}
     {% set source = chart.getMetadata('describe.source-name') %}
     {% set sourceURL = chart.getMetadata('describe.source-url') %}
-
 
     <div class="dw-chart-header" id="header">
         {% if not plain %}
@@ -66,11 +66,15 @@
                 <span class="chart-title">{{ title | purify | raw }}</span>
             </h1>
 
-            <p class="chart-intro{% if not intro %} hidden{% endif %}">{{ intro|purify|raw }}</p>
+            <p class="chart-intro{% if not intro %} hidden{% endif %}">{{ intro | purify | raw }}</p>
         {% endif %}
     </div>
 
     <div class="dw-chart-body" id="chart"></div>
+
+    <div class="dw-chart-notes {% if not notes %}hidden{% endif %}">
+        {{ notes | purify | raw }}
+    </div>
 
     {% if theme.getThemeData('template.afterChart') %}
         {{ theme.getThemeData('template.afterChart') | raw }}
@@ -90,14 +94,14 @@
                         {% if chartByline %}
                             <span class="byline-block">
                                 {{ theme.getThemeData('options.footer.chartCaption') }}
-                                <span class="chart-byline">{{ chartByline | raw }}</span>
+                                <span class="chart-byline">{{ chartByline | purify | raw }}</span>
                             </span>
                         {% endif %}
 
                         {% if chartSource %}
                             {% set sourceCaption = theme.getThemeData('options.footer.sourceCaption') %}
                             <span class="source-block">{{ sourceCaption }}:
-                            {{ chartSource | raw }}</span>
+                            {{ chartSource | purify | raw }}</span>
                         {% endif %}
 
                         {{ hook('chart_footer_after_source', chart) }}
