@@ -80,4 +80,16 @@ class PublicChart extends BasePublicChart {
             return '';
         }
     }
+
+    public function updateMetadata($key, $value) {
+        $meta = json_decode($this->getMetadata(), true);
+        $keys = explode('.', $key);
+        $p = &$meta;
+        foreach ($keys as $key) {
+            if (!isset($p[$key])) $p[$key] = array();
+            $p = &$p[$key];
+        }
+        $p = $value;
+        $this->setMetadata(json_encode($meta, JSON_UNESCAPED_UNICODE));
+    }
 }
