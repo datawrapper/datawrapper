@@ -2,6 +2,7 @@ function fetchJSON(url, method, body, callback) {
     window.fetch(url, {
         credentials: 'include',
         method: method,
+        mode: 'cors',
         body: body
     })
     .then((res) => {
