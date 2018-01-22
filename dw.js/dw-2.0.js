@@ -1287,6 +1287,7 @@ dw.utils = {
             default_allowed = "<a><b><br><br/><i><strong><sup><sub><strike><u><em><tt>";
 
         function purifyHtml(input, allowed) {
+            if (!input) return '';
             // strip tags
             input = stripTags(input, allowed);
             // remove all event attributes
@@ -1312,7 +1313,6 @@ dw.utils = {
             // recursively remove tags to ensure that the returned string doesn't contain forbidden tags after previous passes (e.g. '<<bait/>switch/>')
             while (true) {
                 before = after;
-                if (!before) return; // i have no idea what i'm doing
                 after = before.replace(commentsAndPhpTags, '').replace(tags, function ($0, $1) {
                     return allowed.indexOf('<' + $1.toLowerCase() + '>') > -1 ? $0 : ''
                 });
