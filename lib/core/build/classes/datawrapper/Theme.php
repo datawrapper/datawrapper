@@ -192,7 +192,18 @@ class Theme extends BaseTheme
             if (!is_array($meta)) $meta = array();
         }
 
-        if (empty($key)) return $meta;
+        if (empty($key)) {
+            // fall back to default caption if captions are set but empty
+            if (isset($meta['options']) && isset($meta['options']['footer'])) {
+                if (isset($meta['options']['footer']['sourceCaption']) && empty($meta['options']['footer']['sourceCaption'])) {
+                    unset($meta['options']['footer']['sourceCaption']);
+                }
+                if (isset($meta['options']['footer']['chartCaption']) && empty($meta['options']['footer']['chartCaption'])) {
+                    unset($meta['options']['footer']['chartCaption']);
+                }
+            }
+            return $meta;
+        }
         $keys = explode('.', $key);
         $p = $meta;
         foreach ($keys as $key) {
