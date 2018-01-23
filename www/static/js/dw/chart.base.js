@@ -11,7 +11,7 @@
         reload_timer;
 
     function renderChart() {
-        
+
         if (__dw.vis && !__dw.vis.supportsSmartRendering()) {
             // a current visualization exists but it is not smart
             // enough to re-render itself properly, so we need to
@@ -19,22 +19,7 @@
             __dw.vis.reset();
         }
         var $chart = $('#chart'),
-            $body = $('body'),
-            $notes = $chart.parent().find('.dw-chart-notes');
-
-        if (!$notes.length) {
-            $notes = $('<div />').addClass('dw-chart-notes hidden');
-            $chart.after($notes);
-        }
-
-        if (chart.get('metadata.annotate.notes')) {
-            $notes.removeClass('hidden')
-                .html(chart.get('metadata.annotate.notes'));
-        } else {
-            if ($notes.length) {
-                $notes.addClass('hidden').html('');
-            }
-        }
+            $body = $('body');
 
         // compute chart dimensions
         var w = $chart.width(),
@@ -108,7 +93,7 @@
         var height = vis.meta.height || 'fit',
             curWidth = container.width(),
             resize = (height == 'fixed' ? resizeFixed : renderLater);
-        
+
         // IE continuosly reloads the chart for some strange reasons
         if (navigator.userAgent.match(/msie/i) === null) {
             $(window)

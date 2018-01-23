@@ -71,11 +71,22 @@ $app->hook('slim.before.router', function () use ($app, $dw_config) {
     $headers = $req->headers();
     $origin = !empty($headers['ORIGIN']) ? $headers['ORIGIN'] : $headers['HOST'];
     $host = str_replace(['http://', 'https://'], ['', ''], $origin);
+    $app->response()->header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, PUT, DELETE');
+    $app->response()->header('Access-Control-Allow-Headers', 'Content-Type, X-Auth-Token, Origin, Authorization');
     if (isset($dw_config['cookie_domain'])) {
-    $reg = "/^.*" . str_replace('.', '\.', $dw_config['cookie_domain']) . "$/";
+        $reg = "/^.*" . str_replace('.', '\.', $dw_config['cookie_domain']) . "$/";
         if (preg_match($reg, $host)) {
             $app->response()->header('Access-Control-Allow-Origin', $origin);
             $app->response()->header('Access-Control-Allow-Credentials', 'true');
+
+            if ($req->getMethod() == "OPTIONS") {
+                // The client-side application can set only headers allowed in Access-Control-Allow-Headers
+                $app->response()->status(200);
+                header('Access-Control-Allow-Methods: POST,GET,OPTIONS,PUT,DELETE');
+                header('Access-Control-Allow-Origin: '. $origin);
+                header('Access-Control-Allow-Credentials: true');
+                die();
+            }
         }
     }
 });

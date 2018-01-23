@@ -139,4 +139,6 @@ class DatawrapperVisualization {
     }
 }
 
+class_alias('DatawrapperVisualization', 'Visualization');
+
 

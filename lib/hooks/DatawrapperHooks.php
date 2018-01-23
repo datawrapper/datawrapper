@@ -225,12 +225,14 @@ class DatawrapperHooks {
     const UPLOAD_AFTER_CONTENT = 'upload_after_content';
     const DESCRIBE_BEFORE_CONTENT = 'describe_before_content';
     const VISUALIZE_BEFORE_CONTENT = 'visualize_before_content';
+    const VISUALIZE_BEFORE_SIDEBAR = 'visualize_before_sidebar';
     const PUBLISH_BEFORE_CONTENT = 'publish_before_content';
 
     // new hooks for publish page for different user scenarios
     const PUBLISH_CUSTOM_PAGE_GUEST = 'publish_custom_page_guest';
     const PUBLISH_CUSTOM_PAGE_PENDING_ACTIVATION = 'publish_custom_page_pending_activation';
     const PUBLISH_CUSTOM_PAGE_NOT_ALLOWED = 'publish_custom_page_not_allowed';
+    const PUBLISH_CUSTOM_EXPORT_ACTIONS_HEADER = 'publish_custom_export_actions_header';
 
     // hooks for plugin installation/update
     const PLUGIN_INSTALLED = 'plugin_installed';

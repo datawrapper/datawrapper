@@ -157,15 +157,14 @@ function get_chart_content($chart, $user, $theme, $published = false, $debug = f
     }
 
     $forked_from = $chart->getForkedFrom();
-    $chart_byline = '';
+    $chart_byline = strip_tags($chart->getMetadata('describe.byline'));
+
     if (!empty($forked_from) && $chart->getIsFork()) {
         // find the original chart
         $origChart = ChartQuery::create()->findOneById($forked_from);
         $chartMeta = DatawrapperPlugin_River::getChartMeta($origChart->getId(), $origChart);
-        if ($origChart && $chartMeta['attribution']) {
-            $chart_byline = ($origChart->getOrganizationId() ?
-                OrganizationQuery::create()->findPk($origChart->getOrganizationId()) :
-                $origChart->getUser())->getName();
+        if ($origChart && !empty($origChart->getMetadata('describe.byline'))) {
+            $chart_byline = $origChart->getMetadata('describe.byline');
             if (!empty($chartMeta['source_url'])) {
                 $chart_byline = '<a class="byline" target="_blank" href="'.$chartMeta['source_url'].'">'.$chart_byline.'</a>';
             }

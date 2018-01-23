@@ -106,25 +106,18 @@ $app->get('/(chart|map)/:id/publish(/:sub_page)?', function ($id) use ($app) {
             $page['steps'][1]['readonly'] = true;
         }
 
-        // test with 10% of our users
-        if ($app->request()->get('beta') !== null || ($user->getID() % 5 == 0)) {
-
-            // new publish step
-            $page['svelte_data'] = [
-                'published' => $chart->getLastEditStep() > 4,
-                'needs_republish' => $chart->getLastEditStep() > 4 &&
-                    strtotime($chart->getLastModifiedAt()) - strtotime($chart->getPublishedAt()) > 20,
-                'chart' => $chart->toStruct(),
-                'embed_templates' => publish_get_embed_templates(),
-                'embed_type' => publish_get_preferred_embed_type(),
-                'shareurl_type' => publish_get_preferred_shareurl_type(),
-                'plugin_shareurls' => publish_get_plugin_shareurls()
-            ];
-            $app->render('chart/publish-new.twig', $page);
-        } else {
-            // old publish step (also fallback for guests etc)
-            $app->render('chart/publish.twig', $page);
-        }
+        // new publish step
+        $page['svelte_data'] = [
+            'published' => $chart->getLastEditStep() > 4,
+            'needs_republish' => $chart->getLastEditStep() > 4 &&
+                strtotime($chart->getLastModifiedAt()) - strtotime($chart->getPublishedAt()) > 20,
+            'chart' => $chart->toStruct(),
+            'embed_templates' => publish_get_embed_templates(),
+            'embed_type' => publish_get_preferred_embed_type(),
+            'shareurl_type' => publish_get_preferred_shareurl_type(),
+            'plugin_shareurls' => publish_get_plugin_shareurls()
+        ];
+        $app->render('chart/publish-new.twig', $page);
     });
 });
 

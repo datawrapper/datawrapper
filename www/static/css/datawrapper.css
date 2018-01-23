@@ -496,6 +496,13 @@ html .btn-inverse {
   position: relative;
   top: 21px;
 }
+body.cms-mode {
+  padding-top: 30px;
+}
+body.cms-mode .navbar,
+body.cms-mode .footer {
+  display: none;
+}
 /** dw-create-upload **/
 .dw-create-upload textarea {
   width: 100%;
@@ -1698,6 +1705,9 @@ html .btn-inverse {
   box-shadow: none;
   padding: 2px 10px;
 }
+.chart-editor.dw-create-visualize .chart-byline {
+  margin-top: 4px;
+}
 .vis-option-type-chart-description {
   padding-bottom: 1px;
 }
@@ -1805,6 +1815,10 @@ html .btn-inverse {
 .dw-create-publish .publish-step .svelte-publish .alert.publishing .progress {
   margin-top: 5px;
   margin-bottom: 5px;
+}
+.dw-create-publish .publish-step .inactive,
+.dw-create-publish .publish-step:not(.is-published) .published-only {
+  display: none;
 }
 .dw-create-publish .publish-step h2.pad-top {
   margin-top: 30px;
