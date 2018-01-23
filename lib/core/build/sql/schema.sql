@@ -433,7 +433,7 @@ CREATE TABLE `folder`
     CONSTRAINT `folder_FK_3`
         FOREIGN KEY (`org_id`)
         REFERENCES `organization` (`id`)
-) ENGINE=InnoDB CHARACTER SET='utf8';
+) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
 -- user_data
