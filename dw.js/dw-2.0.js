@@ -1306,10 +1306,10 @@ dw.utils = {
         }
         function stripTags(input, allowed) {
             // making sure the allowed arg is a string containing only tags in lowercase (<a><b><c>)
-            allowed = (((allowed !== undefined ? allowed || '' : default_allowed) + '').toLowerCase().match(/<[a-z][a-z0-9]*>/g) || []).join('')
+            allowed = (((allowed !== undefined ? allowed || '' : default_allowed) + '').toLowerCase().match(/<[a-z][a-z0-9]*>/g) || []).join('');
 
-            var before = input;
-            var after = input;
+            var before = input || '';
+            var after = input || '';
             // recursively remove tags to ensure that the returned string doesn't contain forbidden tags after previous passes (e.g. '<<bait/>switch/>')
             while (true) {
                 before = after;
