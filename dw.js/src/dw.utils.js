@@ -150,9 +150,8 @@ dw.utils = {
             default_allowed = "<a><b><br><br/><i><strong><sup><sub><strike><u><em><tt>";
 
         function purifyHtml(input, allowed) {
-            if (!input) return '';
             // strip tags
-            input = stripTags(input, allowed);
+            input = stripTags(String(input), allowed);
             // remove all event attributes
             var d = document.createElement('div');
             d.innerHTML = input;
@@ -171,15 +170,15 @@ dw.utils = {
             // making sure the allowed arg is a string containing only tags in lowercase (<a><b><c>)
             allowed = (((allowed !== undefined ? allowed || '' : default_allowed) + '').toLowerCase().match(/<[a-z][a-z0-9]*>/g) || []).join('');
 
-            var before = input || '';
-            var after = input || '';
+            var before = input;
+            var after = input;
             // recursively remove tags to ensure that the returned string doesn't contain forbidden tags after previous passes (e.g. '<<bait/>switch/>')
             while (true) {
                 before = after;
                 after = before.replace(commentsAndPhpTags, '').replace(tags, function ($0, $1) {
                     return allowed.indexOf('<' + $1.toLowerCase() + '>') > -1 ? $0 : ''
-                });
-                // return once no more tags are removed
+                })
+;                // return once no more tags are removed
                 if (before === after) {
                     return after;
                 }
