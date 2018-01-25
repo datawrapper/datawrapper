@@ -115,7 +115,8 @@ $app->get('/(chart|map)/:id/publish(/:sub_page)?', function ($id) use ($app) {
             'embed_templates' => publish_get_embed_templates(),
             'embed_type' => publish_get_preferred_embed_type(),
             'shareurl_type' => publish_get_preferred_shareurl_type(),
-            'plugin_shareurls' => publish_get_plugin_shareurls()
+            'plugin_shareurls' => publish_get_plugin_shareurls(),
+            'auto_publish' => !empty($app->request()->params('doit'))
         ];
         $app->render('chart/publish-new.twig', $page);
     });

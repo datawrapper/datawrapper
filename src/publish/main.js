@@ -17,6 +17,7 @@ var app = new App({
         publishing: false,
         needs_republish: false,
         publish_error: false,
+        auto_publish: false,
         progress: 0,
         shareurl_type: 'default',
         embed_type: 'responsive',

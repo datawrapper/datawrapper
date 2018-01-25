@@ -349,9 +349,16 @@
                     .querySelector('.dw-create-publish .publish-step')
                     .classList[p ? 'add' : 'remove']('is-published');
             });
+
+            var initial_auto_publish = true;
+            me.observe('auto_publish', (p) => {
+                if (p && initial_auto_publish) {
+                    me.publish();
+                    initial_auto_publish = false;
+                    window.history.replaceState('','', location.pathname);
+                }
+            });
         }
     };
 </script>
-
-
 
