@@ -30,7 +30,7 @@ function buildLocale(app_id, locale, callback) {
                 // we'll extract any component CSS out into
                 // a separate file — better for performance
                 css: css => {
-                    css.write(`../www/static/css/svelte/${app_id}.${locale}.css`);
+                    css.write(`../www/static/css/svelte/${app_id}.css`);
                 },
                 // this results in smaller CSS files
                 cascade: false,

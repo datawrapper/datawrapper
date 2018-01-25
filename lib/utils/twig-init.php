@@ -111,7 +111,7 @@ function dwInitTwigEnvironment(Twig_Environment $twig) {
         $sha = substr(md5(file_get_contents(ROOT_PATH."www/static/js/svelte/$app_id.$locale.js")), 0, 8);
         print "<div class='svelte-$app_id'></div>\n";
         print "<script type='text/javascript' src='/static/js/svelte/$app_id.$locale.js?v=$sha'></script>\n";
-        print "<link rel='stylesheet' type='text/css' href='/static/css/svelte/$app_id.$locale.css?v=$sha'>\n";
+        print "<link rel='stylesheet' type='text/css' href='/static/css/svelte/$app_id.css?v=$sha'>\n";
         if (!empty($data)) {
             print "<script type='text/javascript'>";
             print $app_id.'.set('.json_encode_safe($data).")\n";
