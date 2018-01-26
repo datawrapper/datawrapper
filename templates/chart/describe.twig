@@ -4,7 +4,7 @@
 
 {{ parent() }}
 
-{{ hook('describe_before_content') }}
+{{ hook('describe_before_content', chart, user) }}
 
 <link rel="stylesheet" type="text/css" href="/static/vendor/handsontable/handsontable.full.min.css">
 <link rel="stylesheet" type="text/css" href="/static/vendor/handsontable-bootstrap/handsontable.bootstrap.css">
@@ -25,15 +25,10 @@ dw.backend.ready(function() {
 
     <div class="row">
 
-        {% if readonly %}
-        <div class="span12">
-            <div class="alert">
-                <div>{% trans "note / readonly data" %}</div>
-            </div>
-        </div>
-        {% endif %}
-
         <div class="span4">
+
+            {{ hook('describe_before_sidebar', chart, user) }}
+
             <div class="sidebar">
                 <div id="table-options">
 
