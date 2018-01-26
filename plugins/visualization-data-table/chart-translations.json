@@ -12,7 +12,7 @@
         "ru": "No data available in table",
         "nb": "No data available in table",
         "da": "Ingen resultater",
-        "no": "Ingen data tilgjengelig i tabellen",
+        "nb": "Ingen data tilgjengelig i tabellen",
         "se": "No data available in table"
     },
     "sInfo": {
@@ -28,7 +28,7 @@
         "ru": "Showing _START_ to _END_ of _TOTAL_ entries",
         "nb": "Showing _START_ to _END_ of _TOTAL_ entries",
         "da": "Viser _START_-_END_ af _TOTAL_ rækker",
-        "no": "Viser _START_ til _END_ av _TOTAL_ linjer",
+        "nb": "Viser _START_ til _END_ av _TOTAL_ linjer",
         "se": "Visar _START_ till _END_ av _TOTAL_ antalet poster"
     },
     "sInfoEmpty": {
@@ -44,7 +44,7 @@
         "ru": "Showing 0 to 0 of 0 entries",
         "nb": "Showing 0 to 0 of 0 entries",
         "da": "Viser 0-0 af 0 rækker",
-        "no": "Viser 0 til 0 av 0 linjer",
+        "nb": "Viser 0 til 0 av 0 linjer",
         "se": "–"
     },
     "sInfoFiltered": {
@@ -60,7 +60,7 @@
         "ru": "(filtered from _MAX_ total entries)",
         "nb": "(filtered from _MAX_ total entries)",
         "da": "(ud af i alt _MAX_ rækker)",
-        "no": "(filtrert fra _MAX_ totalt antall linjer)",
+        "nb": "(filtrert fra _MAX_ totalt antall linjer)",
         "se": "(Filrerat från _MAX_ totala antalet poster"
     },
     "sInfoThousands": {
@@ -76,7 +76,7 @@
         "ru": ",",
         "nb": ",",
         "da": ",",
-        "no": " ",
+        "nb": " ",
         "se": ","
     },
     "sLengthMenu": {
@@ -92,7 +92,7 @@
         "ru": "Show _MENU_ entries",
         "nb": "Show _MENU_ entries",
         "da": "Viser _MENU_ rækker",
-        "no": "Vis _MENU_ linjer",
+        "nb": "Vis _MENU_ linjer",
         "se": "Visa _MENU_ poster"
     },
     "sLoadingRecords": {
@@ -108,7 +108,7 @@
         "ru": "Loading...",
         "nb": "Loading...",
         "da": "Loading...",
-        "no": "Laster...",
+        "nb": "Laster...",
         "se": "Loading..."
     },
     "sProcessing": {
@@ -124,7 +124,7 @@
         "ru": "Processing...",
         "nb": "Processing...",
         "da": "Processing...",
-        "no": "Laster...",
+        "nb": "Laster...",
         "se": "Processing..."
     },
     "sSearch": {
@@ -140,7 +140,7 @@
         "ru": "Search:",
         "nb": "Search:",
         "da": "Søg:",
-        "no": "S&oslash;k:",
+        "nb": "S&oslash;k:",
         "se": "Sök:"
     },
     "sZeroRecords": {
@@ -156,7 +156,7 @@
         "ru": "No matching records found",
         "nb": "No matching records found",
         "da": "Ingen resultater",
-        "no": "Ingen linjer matcher s&oslash;ket",
+        "nb": "Ingen linjer matcher s&oslash;ket",
         "se": "Inga matchande resultat funna"
     },
     "oPaginate_sFirst": {
@@ -172,7 +172,7 @@
         "ru": "First",
         "nb": "First",
         "da": "Første",
-        "no": "F&oslash;rste",
+        "nb": "F&oslash;rste",
         "se": "Första"
     },
     "oPaginate_sLast": {
@@ -188,7 +188,7 @@
         "ru": "Last",
         "nb": "Last",
         "da": "Sidste",
-        "no": "Siste",
+        "nb": "Siste",
         "se": "Siste"
     },
     "oPaginate_sNext": {
@@ -204,7 +204,7 @@
         "ru": "Next",
         "nb": "Next",
         "da": "Næste",
-        "no": "Neste",
+        "nb": "Neste",
         "se": "Nästa"
     },
     "oPaginate_sPrevious": {
@@ -220,7 +220,7 @@
         "ru": "Previous",
         "nb": "Previous",
         "da": "Forrige",
-        "no": "Forrige",
+        "nb": "Forrige",
         "se": "Föregående"
     },
     "oAria_sSortAscending": {
@@ -236,7 +236,7 @@
         "ru": ": activate to sort column ascending",
         "nb": ": activate to sort column ascending",
         "da": ": activate to sort column ascending",
-        "no": ": aktiver for å sortere kolonnen stigende",
+        "nb": ": aktiver for å sortere kolonnen stigende",
         "se": ": activate to sort column ascending"
     },
     "oAria_sSortDescending": {
@@ -252,7 +252,7 @@
         "ru": ": activate to sort column descending",
         "nb": ": activate to sort column descending",
         "da": ": activate to sort column descending",
-        "no": ": aktiver for å sortere kolonnen synkende",
+        "nb": ": aktiver for å sortere kolonnen synkende",
         "se": ": activate to sort column descending"
     }
 }
