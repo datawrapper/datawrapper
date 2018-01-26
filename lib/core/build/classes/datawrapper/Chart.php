@@ -632,4 +632,8 @@ class Chart extends BaseChart {
           "map" : "chart";
     }
 
+    public function isFork() {
+        return $this->getIsFork();
+    }
+
 } // Chart
