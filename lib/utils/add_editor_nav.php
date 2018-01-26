@@ -1,6 +1,9 @@
 <?php
 
-function add_editor_nav(&$page, $step, $type = "chart") {
+function add_editor_nav(&$page, $step, $chart) {
+    $type = "chart";
+    if ($chart) $type = $chart->getNamespace();
+
     if ($type == "chart") {
         // define 4 step navigation
         $steps = array();
@@ -22,6 +25,11 @@ function add_editor_nav(&$page, $step, $type = "chart") {
         $page['chartLocale'] = $page['locale'];
         $page['metricPrefix'] = get_metric_prefix($page['chartLocale']);
         $page['createstep'] = $step;
+    }
 
+    $user = Session::getUser();
+    if (!$chart->isDataWritable($user)) {
+        $page['steps'][0]['readonly'] = true;
+        if ($type == 'map') $page['steps'][1]['readonly'] = true;
     }
 }

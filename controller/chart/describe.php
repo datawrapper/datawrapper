@@ -7,7 +7,7 @@ $app->get('/chart/:id/describe', function ($id) use ($app) {
     disable_cache($app);
 
     check_chart_writable($id, function($user, $chart) use ($app) {
-        
+
         $chart->refreshExternalData();
 
         $page = array(
@@ -17,7 +17,7 @@ $app->get('/chart/:id/describe', function ($id) use ($app) {
             'readonly' => !$chart->isDataWritable($user)
         );
         add_header_vars($page, 'chart');
-        add_editor_nav($page, 2);
+        add_editor_nav($page, 2, $chart);
 
         switch(substr(DatawrapperSession::getLanguage(), 0, 2)) {
             case 'de':

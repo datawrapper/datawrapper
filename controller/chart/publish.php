@@ -99,7 +99,7 @@ $app->get('/(chart|map)/:id/publish(/:sub_page)?', function ($id) use ($app) {
         );
 
         add_header_vars($page, 'chart', 'chart-editor/publish.css');
-        add_editor_nav($page, 4);
+        add_editor_nav($page, 4, $chart);
 
         if (!$chart->isDataWritable($user)) {
             $page['steps'][0]['readonly'] = true;
