@@ -1,4 +1,4 @@
-/*! datawrapper - v1.16.0 *///
+/*! datawrapper - v1.16.1 *///
 // NOTE: This file is auto-generated using /dw.js/make
 // from the source files /dw.js/src/*.js.
 //
@@ -2065,7 +2065,8 @@ _.extend(dw.visualization.base, {
 
     translate: function(str) {
         var locale = this.meta.locale, lang = this.lang;
-        return locale[str] ? locale[str][lang] || locale[str] : str;
+        return locale[str] ? locale[str][lang] || locale[str].en ||
+            locale[str] : str;
     },
 
     checkBrowserCompatibility: function(){
