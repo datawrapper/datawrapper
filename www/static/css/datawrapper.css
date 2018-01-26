@@ -1966,7 +1966,7 @@ body.cms-mode .footer {
   height: 50px;
   font-size: 16px;
   line-height: 50px;
-  font-weight: 300;
+  font-weight: 400;
   margin-bottom: 0;
   white-space: nowrap;
 }
@@ -1995,6 +1995,9 @@ body.cms-mode .footer {
 }
 .dw .create-nav > a:hover {
   text-decoration: none;
+}
+.dw .create-nav > .readonly {
+  color: #999;
 }
 .dw .create-nav > * .step {
   font-weight: bold;
