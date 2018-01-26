@@ -41,6 +41,7 @@ class Chart extends BaseChart {
             // copy web chart for print
             $meta['print'] = $meta;
             $meta['print']['describe']['title'] = parent::getTitle();
+            $meta['print']['visualize']['type'] = parent::getType();
 
             $this->setMetadata(json_encode($meta, JSON_UNESCAPED_UNICODE));
             $this->save();
@@ -89,9 +90,11 @@ class Chart extends BaseChart {
         if (isset($this->usePrintVersion) && $this->usePrintVersion) {
             if (isset($json['metadata'])) {
                 $json['metadata']['describe']['title'] = $json['title'];
+                $json['metadata']['visualize']['type'] = $json['type'];
             }
 
             $json['title'] = parent::getTitle();
+            $json['type'] = parent::getType();
         }
 
         if (array_key_exists('metadata', $json)) {
@@ -593,13 +596,20 @@ class Chart extends BaseChart {
     }
 
     public function getType() {
-        $type = parent::getType();
+        if (isset($this->usePrintVersion) && $this->usePrintVersion) {
+            $type = $this->getMetadata('visualize.type');
+        } else {
+            $type = parent::getType();
+        }
+
         if (!DatawrapperVisualization::has($type)) {
             // fall back to default chart type
             return isset($GLOBALS['dw_config']['defaults']) &&
                 isset($GLOBALS['dw_config']['defaults']['vis']) ?
                 $GLOBALS['dw_config']['defaults']['vis'] : 'table';
         }
+
+
         return $type;
     }
 
