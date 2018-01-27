@@ -325,8 +325,14 @@ $app->post('/charts/:id/fork', function($chart_id) use ($app) {
         try {
             $fork = ChartQuery::create()->copyPublicChart($chart);
             if ($fork) {
-                $fork->setUser(Session::getUser());
-                $fork->setOrganization($user->getCurrentOrganization());
+                if ($user->isLoggedIn()) {
+                    $fork->setUser($user);
+                    $fork->setOrganization($user->getCurrentOrganization());
+                } else {
+                    // remember session id to be able to assign this chart
+                    // to a newly registered user
+                    $fork->setGuestSession(session_id());
+                }
                 $fork->setIsFork(true);
                 $fork->save();
                 ok(array('id' => $fork->getId()));
