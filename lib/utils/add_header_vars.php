@@ -112,6 +112,7 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
             'title' => $config['prevent_guest_access'] ? __('Login') : __('Login / Sign Up'),
             'icon' => 'fa fa-sign-in'
         );
+        header_nav_hook($headlinks, 'login');
     }
 
 
