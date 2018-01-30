@@ -333,6 +333,7 @@ $app->post('/charts/:id/fork', function($chart_id) use ($app) {
                     // to a newly registered user
                     $fork->setGuestSession(session_id());
                 }
+                $fork->setTheme($GLOBALS['dw_config']['defaults']['theme']);
                 $fork->setIsFork(true);
                 $fork->save();
                 ok(array('id' => $fork->getId()));
