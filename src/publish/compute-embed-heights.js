@@ -27,5 +27,8 @@ export default function() {
         embedHeights[width] = totalHeight + (height - defaultHeight);
     });
 
+    previewChart.find('h1,.chart-intro,.dw-chart-notes')
+        .css('width', 'auto');
+
     return embedHeights;
 }
