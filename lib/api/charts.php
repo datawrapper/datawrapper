@@ -334,6 +334,7 @@ $app->post('/charts/:id/fork', function($chart_id) use ($app) {
                     $fork->setGuestSession(session_id());
                 }
                 $fork->setTheme($GLOBALS['dw_config']['defaults']['theme']);
+                $fork->updateMetadata('describe.byline', '');
                 $fork->setIsFork(true);
                 $fork->save();
                 ok(array('id' => $fork->getId()));
