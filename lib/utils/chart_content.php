@@ -158,15 +158,35 @@ function get_chart_content($chart, $user, $theme, $published = false, $debug = f
 
     $forked_from = $chart->getForkedFrom();
     $chart_byline = strip_tags($chart->getMetadata('describe.byline'));
+    $chart_based_on = false;
 
     if (!empty($forked_from) && $chart->getIsFork()) {
         // find the original chart
         $origChart = ChartQuery::create()->findOneById($forked_from);
         $chartMeta = DatawrapperPlugin_River::getChartMeta($origChart->getId(), $origChart);
+
         if ($origChart && !empty($origChart->getMetadata('describe.byline'))) {
-            $chart_byline = $origChart->getMetadata('describe.byline');
+            $based_on_url = '';
             if (!empty($chartMeta['source_url'])) {
-                $chart_byline = '<a class="byline" target="_blank" href="'.$chartMeta['source_url'].'">'.$chart_byline.'</a>';
+                $based_on_url = $chartMeta['source_url'];
+            } else if (Hooks::hookRegistered('chart_created_with_datawrapper_url')) {
+                // see if we have a chart url
+                $based_on_url = Hooks::execute('chart_created_with_datawrapper_url', $origChart)[0];
+            }
+
+            $chart_based_on = $origChart->getMetadata('describe.byline');
+            if (!empty($based_on_url)) {
+                $chart_based_on = '<a  target="_blank" href="'.$based_on_url.'">'.$chart_based_on.'</a>';
+            }
+
+            // clear byline
+            if ($chart->getID() == $origChart->getID()) {
+                $chart_byline = '';
+            }
+            // combine byline with based on link if possible
+            if (!empty($chart_byline)) {
+                $chart_byline .= ' ('.__('footer / based-on', 'themes').' '.$chart_based_on.')';
+                $chart_based_on = false;
             }
         }
     }
@@ -187,6 +207,7 @@ function get_chart_content($chart, $user, $theme, $published = false, $debug = f
         'chartUrlFs' => strpos($chart_url, '.html') > 0 ? str_replace('index.html', 'fs.html', $chart_url) : $chart_url . '?fs=1',
         'chartSource' => $data_source,
         'chartByline' => $chart_byline,
+        'chartBasedOn' => $chart_based_on,
 
         // used in chart.twig
         'stylesheets' => $stylesheets,

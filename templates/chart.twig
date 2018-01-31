@@ -90,11 +90,15 @@
                 {% if theme.getThemeData("options.footer.sourcePosition") == "left" %}
                     {% block footer %}
 
-
                         {% if chartByline %}
-                            <span class="byline-block">
+                            <span class="footer-block byline-block">
                                 {{ theme.getThemeData('options.footer.chartCaption') }}
                                 <span class="chart-byline">{{ chartByline | purify | raw }}</span>
+                            </span>
+                        {% elseif chartBasedOn %}
+                            <span class="footer-block byline-block">
+                                {{ theme.getThemeData('options.footer.forkCaption') | capitalize }}
+                                <span class="chart-based-on">{{ chartBasedOn | purify | raw }}</span>
                             </span>
                         {% endif %}
 
