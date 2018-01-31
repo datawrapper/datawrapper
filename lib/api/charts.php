@@ -331,8 +331,10 @@ $app->post('/charts/:id/fork', function($chart_id) use ($app) {
                 } else {
                     // remember session id to be able to assign this chart
                     // to a newly registered user
+                    $fork->setOrganization(null);
                     $fork->setGuestSession(session_id());
                 }
+                $fork->setInFolder(null);
                 $fork->setTheme($GLOBALS['dw_config']['defaults']['theme']);
                 $fork->updateMetadata('describe.byline', '');
                 $fork->setIsFork(true);
