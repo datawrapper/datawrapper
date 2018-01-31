@@ -1,5 +1,6 @@
 <div class="toolbar">
     <div class="toolbar-container web {% if mode == "print" %}hide{% endif %}">
+        <div class="toolbar-caption">Chart size</div>
         <input id="resize-w" class="input-resize input-large" type="text" value="320" />
         ×
         <input id="resize-h" class="input-resize input-large" type="text" value="500" />
@@ -14,6 +15,8 @@
             <i class="fa fa-desktop"></i>
         </div>
     </div>
+
+    {% include 'chart/visualize/colorblind-check.twig' %}
 </div>
 
 <script type="text/javascript">

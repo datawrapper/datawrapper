@@ -33,6 +33,7 @@ dw.backend.ready(function() {
                     <iframe src="" id="iframe-vis" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>
                 </div>
 
+                {{ hook('visualize_before_resizer') }}
                 {{ hook('render_resize_control') }}
 
                 <div id="notifications"></div>

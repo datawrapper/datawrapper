@@ -1,0 +1,193 @@
+<div class="toolbar-container web colorblind-check">
+    <div class="toolbar-caption">Colorblind check</div>
+    <div class="button active" data-type="normal">
+        <img src="/static/img/colorblind-check/norm.png" />
+        Norm
+    </div>
+    <div class="button" data-type="deuteranopia">
+        <img src="/static/img/colorblind-check/deut.png" />
+        Deut
+        <div class="more-info">
+            <span class="arrow">▲</span><br>
+            <b>Deuteranopia</b> is a form of red-green blindness affecting 1% of males.
+        </div>
+    </div>
+    <div class="button" data-type="protanopia">
+        <img src="/static/img/colorblind-check/prot.png" />
+        Prot
+        <div class="more-info">
+            <span class="arrow">▲</span><br>
+            <b>Protanopia</b> is a form of red-green blindness affecting 1% of males.
+        </div>
+    </div>
+    <div class="button" data-type="tritanopia">
+        <img src="/static/img/colorblind-check/trit.png" />
+        Trit
+        <div class="more-info">
+            <span class="arrow">▲</span><br>
+            <b>Tritanopia</b> is a form of blue-yellow blindness affecting 1% of males. Try to avoid coloring distinct groups in blue and green.
+        </div>
+    </div>
+</div>
+
+
+{#     <select id="colorblind_type" onchange="simulate()">
+        <option value="normal">normal</option>
+        <option value="deuteranopia">Deuteranope (red/green - 1% of males)</option>
+        <option value="protanopia">Protanope (red/green - 1% of males)</option>
+        <option value="tritanopia">Tritanope (blue/yellow - less than 1%)</option>
+        <option value="deuteranomaly">deuteranomaly (6% of males)</option>
+        <option value="protanomaly">protanomaly (1% of males)</option>
+        <option value="achromatopsia">achromatopsia</option>
+    </select> #}
+
+
+<script type="text/javascript">
+
+$(function() {
+
+    var btns = $('.colorblind-check .button').click(function(e) {
+        var btn = $(e.target),
+            type = btn.data('type');
+        btns.removeClass('active');
+        btn.addClass('active');
+        simulate(type);
+    });
+
+    function reset() {
+        $('#iframe-vis').get(0).contentWindow.__dw.render();
+        $('#iframe-vis').get(0).contentWindow.dispatchEvent(new Event('resize'));
+    }
+
+    function simulate(sim) {
+        require(['chroma'], function(chroma) {
+
+            var iframe = $('#iframe-vis').get(0),
+                iframeWin = iframe.contentWindow,
+                iframeDoc = iframe.contentDocument,
+                __dw = iframeWin.__dw,
+                vis = __dw.vis;
+
+
+            var color_lt = {};
+
+            iframeWin.__dw.colorMap = function(color) {
+                if (!color || color == 'none' ||
+                    color == 'transparent' || color == 'auto') return color;
+                var k = String(color);
+                if (color_lt[k] !== undefined) return color_lt[k];
+                return (color_lt[k] = chroma(color).simulate(fBlind[sim]));
+            };
+
+            reset();
+
+
+        });
+    }
+
+
+    /*
+
+        The Color Blind Simulation function is
+        copyright (c) 2000-2001 by Matthew Wickline and the
+        Human-Computer Interaction Resource Network ( http://hcirn.com/ ).
+
+        It is used with the permission of Matthew Wickline and HCIRN,
+        and is freely available for non-commercial use. For commercial use, please
+        contact the Human-Computer Interaction Resource Network ( http://hcirn.com/ ).
+
+    */
+
+    var rBlind={'protan':{'cpu':0.735,'cpv':0.265,'am':1.273463,'ayi':-0.073894},
+                'deutan':{'cpu':1.14,'cpv':-0.14,'am':0.968437,'ayi':0.003331},
+                'tritan':{'cpu':0.171,'cpv':-0.003,'am':0.062921,'ayi':0.292119}};
+
+    var fBlind={'normal':function(v) { return(v); },
+                'protanopia':function(v) { return(blindMK(v,'protan')); },
+                'protanomaly':function(v) { return(anomylize(v,blindMK(v,'protan'))); },
+                'deuteranopia':function(v) { return(blindMK(v,'deutan')); },
+                'deuteranomaly':function(v) { return(anomylize(v,blindMK(v,'deutan'))); },
+                'tritanopia':function(v) { return(blindMK(v,'tritan')); },
+                'tritanomaly':function(v) { return(anomylize(v,blindMK(v,'tritan'))); },
+                'achromatopsia':function(v) { return(monochrome(v)); },
+                'achromatomaly':function(v) { return(anomylize(v,monochrome(v))); }};
+
+    function blindMK(r,t) {
+        var gamma=2.2, wx=0.312713, wy=0.329016, wz=0.358271;
+
+        function Color() {
+            this.rgb_from_xyz=xyz2rgb; this.xyz_from_rgb=rgb2xyz;
+        }
+
+        var b=r[2], g=r[1], r=r[0], c=new Color;
+
+        c.r=Math.pow(r/255,gamma);
+        c.g=Math.pow(g/255,gamma);
+        c.b=Math.pow(b/255,gamma);
+        c.xyz_from_rgb();
+
+        var sum_xyz=c.x+c.y+c.z; c.u=0; c.v=0;
+        if (sum_xyz!=0) {
+            c.u=c.x/sum_xyz; c.v=c.y/sum_xyz;
+        }
+
+        var nx=wx*c.y/wy, nz=wz*c.y/wy, clm, s=new Color(), d=new Color(); d.y=0;
+
+        if(c.u<rBlind[t].cpu) {
+            clm=(rBlind[t].cpv-c.v)/(rBlind[t].cpu-c.u); } else { clm=(c.v-rBlind[t].cpv)/(c.u-rBlind[t].cpu); }
+
+        var clyi=c.v-c.u*clm;
+        d.u=(rBlind[t].ayi-clyi)/(clm-rBlind[t].am);
+        d.v=(clm*d.u)+clyi;
+
+        s.x=d.u*c.y/d.v;
+        s.y=c.y;
+        s.z=(1-(d.u+d.v))*c.y/d.v;
+        s.rgb_from_xyz();
+
+        d.x=nx-s.x;
+        d.z=nz-s.z;
+        d.rgb_from_xyz();
+
+        var adjr=d.r?((s.r<0?0:1)-s.r)/d.r:0,
+            adjg=d.g?((s.g<0?0:1)-s.g)/d.g:0,
+            adjb=d.b?((s.b<0?0:1)-s.b)/d.b:0;
+
+        var adjust=Math.max(((adjr>1||adjr<0)?0:adjr), ((adjg>1||adjg<0)?0:adjg), ((adjb>1||adjb<0)?0:adjb));
+
+        s.r=s.r+(adjust*d.r); s.g=s.g+(adjust*d.g); s.b=s.b+(adjust*d.b);
+        function z(v) { return(255*(v<=0?0:v>=1?1:Math.pow(v,1/gamma))); }
+        return([z(s.r),z(s.g),z(s.b)]);
+    }
+
+    function rgb2xyz() {
+
+        this.x=(0.430574*this.r+0.341550*this.g+0.178325*this.b);
+        this.y=(0.222015*this.r+0.706655*this.g+0.071330*this.b);
+        this.z=(0.020183*this.r+0.129553*this.g+0.939180*this.b);
+
+        return this;
+
+    }
+
+    function xyz2rgb() {
+        this.r=( 3.063218*this.x-1.393325*this.y-0.475802*this.z);
+        this.g=(-0.969243*this.x+1.875966*this.y+0.041555*this.z);
+        this.b=( 0.067871*this.x-0.228834*this.y+1.069251*this.z);
+
+        return this;
+    }
+
+    function anomylize(a,b) { var v=1.75, d=v*1+1;
+        return([(v*b[0]+a[0]*1)/d, (v*b[1]+a[1]*1)/d, (v*b[2]+a[2]*1)/d]);
+    }
+
+    function monochrome(r) {
+        var z=Math.round(r[0]*.299+r[1]*.587+r[2]*.114); return([z,z,z]);
+    }
+
+
+});
+
+
+</script>
