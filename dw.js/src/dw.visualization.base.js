@@ -285,6 +285,11 @@ _.extend(dw.visualization.base, {
      */
     _svgCanvas: function() {
         return false;
+    },
+
+    colorMap: function() {
+        if (window.__dw && window.__dw.colorMap) return window.__dw.colorMap;
+        return _.identity;
     }
 
 });
