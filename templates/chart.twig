@@ -100,15 +100,18 @@
 
                         {% if chartSource %}
                             {% set sourceCaption = theme.getThemeData('options.footer.sourceCaption') %}
-                            <span class="source-block">{{ sourceCaption }}:
+                            <span class="footer-block source-block">
+                                {{ sourceCaption }}:
                             {{ chartSource | purify | raw }}</span>
                         {% endif %}
 
                         {{ hook('chart_footer_after_source', chart) }}
 
                         {% if theme.getThemeData("options.footer.getTheData.enabled") %}
+                            <span class="footer-block">
                             {% set getTheDataCaption = theme.getThemeData("options.footer.getTheData.caption") %}
-                            <a href="data">{% trans getTheDataCaption %}</a>
+                                <a href="data">{% trans getTheDataCaption %}</a>
+                            </span>
                         {% endif %}
 
                         {% if theme.getThemeData("options.footer.embed.enabled") %}
@@ -132,7 +135,9 @@
                         {% endif %}
 
                         {% if theme.getThemeData("options.footer.createdWithDatawrapper") %}
+                        <span class="footer-block">
                             <a href="{% if has_hook('chart_created_with_datawrapper_url') %}{{ hook_return('chart_created_with_datawrapper_url', chart)[0] }}{% else %}{{ DW_DOMAIN }}{% endif %}" target="_blank">{% trans "Created with" %}  {% trans "Datawrapper" %}</a>
+                        </span>
                         {% endif %}
                     {% endblock %}
                 {% endif %}

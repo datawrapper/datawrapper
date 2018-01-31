@@ -37,7 +37,7 @@
     {% if colors_general_padding %}
         padding: ~'@{colors_general_padding}px';
     {% endif %}
-    
+
     margin: 0 0px;
     height: 100%;
 
@@ -77,7 +77,7 @@
         {% else %}
             font-style: normal;
         {% endif %}
-    
+
         {% if typography_headline_underlined %}
             text-decoration: underline;
         {% else %}
@@ -97,11 +97,11 @@
         {% if typography_description_typeface %}
             font-family: @typography_description_typeface;
         {% endif %}
-    
+
         {% if typography_description_fontWeight %}
             font-weight: @typography_description_fontWeight;
         {% endif %}
-    
+
         {% if typography_description_fontSize %}
             font-size: ~'@{typography_description_fontSize}px';
         {% endif %}
@@ -115,17 +115,17 @@
         {% else %}
             font-style: normal;
         {% endif %}
-    
+
         {% if typography_description_underlined %}
             text-decoration: underline;
         {% else %}
             text-decoration: none;
         {% endif %}
-        
+
         {% if typography_description_color%}
             color: @typography_description_color;
         {% endif %}
-        
+
         margin: 5px 0 10px !important;
         line-height: 17px;
     }
@@ -134,15 +134,15 @@
         {% if typography_notes_typeface %}
             font-family: @typography_notes_typeface;
         {% endif %}
-    
+
         {% if typography_notes_fontWeight %}
             font-weight: @typography_notes_fontWeight;
         {% endif %}
-    
+
         {% if typography_notes_fontSize %}
             font-size: ~'@{typography_notes_fontSize}px';
         {% endif %}
-    
+
         {% if typography_notes_lineHeight %}
             line-height: @typography_notes_lineHeight;
         {% endif %}
@@ -152,7 +152,7 @@
         {% else %}
             font-style: normal;
         {% endif %}
-    
+
         {% if typography_notes_underlined %}
             text-decoration: underline;
         {% else %}
@@ -172,29 +172,29 @@
         justify-content: space-between;
         align-items: center;
 
-        & > div > a::before, & > div > .source-block::before {
+        & > div > a::before, & > div > .source-block::before, & > div > .footer-block::before {
             content: "•";
             display: inline-block;
-            margin-right: 4px;
+            {# margin-right: 4px; #}
         }
 
-        & > div > a:first-child::before, & > div > .source-block:first-child::before {
+        & > div > a:first-child::before, & > div > .source-block:first-child::before, & > div > .footer-block:first-child::before {
             content: "";
-            margin-right: 0px;
+            display: none;
         }
 
         {% if typography_footer_typeface %}
             font-family: @typography_footer_typeface;
         {% endif %}
-    
+
         {% if typography_footer_fontWeight %}
             font-weight: @typography_footer_fontWeight;
         {% endif %}
-    
+
         {% if typography_footer_fontSize %}
             font-size: ~'@{typography_footer_fontSize}px';
         {% endif %}
-    
+
         {% if typography_footer_lineHeight %}
             line-height: @typography_footer_lineHeight;
         {% endif %}
@@ -204,7 +204,7 @@
         {% else %}
             font-style: normal;
         {% endif %}
-    
+
         {% if typography_footer_underlined %}
             text-decoration: underline;
         {% else %}
@@ -214,32 +214,32 @@
         {% if typography_footer_color %}
             color: @typography_footer_color;
         {% endif %}
-            
+
         a {
             {% if typography_links_typeface %}
                 font-family: @typography_links_typeface;
             {% endif %}
-    
+
             {% if typography_links_fontWeight %}
                 font-weight: @typography_links_fontWeight;
             {% endif %}
-    
+
             {% if typography_links_lineHeight %}
                 line-height: @typography_links_lineHeight;
             {% endif %}
-    
+
             {% if typography_links_cursive %}
                 font-style: italic;
             {% else %}
                 font-style: normal;
             {% endif %}
-    
+
             {% if typography_links_underlined %}
                 text-decoration: underline;
             {% else %}
                 text-decoration: none;
             {% endif %}
-    
+
             {% if typography_links_color %}
                 color: @typography_links_color;
             {% endif %}
