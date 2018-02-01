@@ -77,7 +77,8 @@ _.extend(dw.visualization.base, {
 
     translate: function(str) {
         var locale = this.meta.locale, lang = this.lang;
-        return locale[str] ? locale[str][lang] || locale[str] : str;
+        return locale[str] ? locale[str][lang] || locale[str].en ||
+            locale[str] : str;
     },
 
     checkBrowserCompatibility: function(){
@@ -284,6 +285,11 @@ _.extend(dw.visualization.base, {
      */
     _svgCanvas: function() {
         return false;
+    },
+
+    colorMap: function() {
+        if (window.__dw && window.__dw.colorMap) return window.__dw.colorMap;
+        return _.identity;
     }
 
 });

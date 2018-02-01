@@ -2,82 +2,81 @@
 define(['handsontable', './describe/computed-columns'], function(handsontable) {
 
     var _chartLocale;
+    var _readonly = false;
 
     var colTypeIcons = {
         date: 'fa fa-clock-o'
     };
 
-    function init(chartLocale) {
+    function init(chartLocale, readonly) {
         _chartLocale = chartLocale; // store in upper scope
+        _readonly = readonly; // store in upper scope
         var metadata = {
-                changes: {
-                    exist: function() {
-                        return !!chart.get('metadata.data.changes', []).length;
-                    },
-                    add: function(row, column, value) {
-                        var dataChanges = _.clone(chart.get('metadata.data.changes', [])); //clone is needed, otherwise chart.set does not detect this as change
-                        if (chart.get('metadata.data.transpose')) {
-                            dataChanges.push({row: column, column: row, value: value});
-                        }
-                        else {
-                            dataChanges.push({row: row, column: column, value: value});
-                        }
-                        chart.set('metadata.data.changes', dataChanges);
-                    },
-                    revert: function() {
-                        chart.set('metadata.data.changes', []);
-                        chart.set('metadata.data.column-format', {});
-                    }
+            changes: {
+                exist: function() {
+                    return !!chart.get('metadata.data.changes', []).length;
                 },
+                add: function(row, column, value) {
+                    var dataChanges = _.clone(chart.get('metadata.data.changes', [])); //clone is needed, otherwise chart.set does not detect this as change
+                    if (chart.get('metadata.data.transpose')) {
+                        dataChanges.push({row: column, column: row, value: value});
+                    }
+                    else {
+                        dataChanges.push({row: row, column: column, value: value});
+                    }
+                    chart.set('metadata.data.changes', dataChanges);
+                },
+                revert: function() {
+                    chart.set('metadata.data.changes', []);
+                    chart.set('metadata.data.column-format', {});
+                }
+            },
 
-                columnFormat: {
-                    add: function(columnNames, property, value) {
-                        var columnFormats = $.extend(true, {}, chart.get('metadata.data.column-format', {})); //deep clone (_.clone is insufficient because it does a shallow clone)
-                        _.each(columnNames, function(name) {
-                            if (!columnFormats[name]) {
-                                columnFormats[name] = {};
-                            }
-                            if (property) {
-                                if (value === undefined) {
-                                    delete columnFormats[name][property];
-                                    if (!_.keys(columnFormats[name]).length) {
-                                        delete columnFormats[name];
-                                    }
-                                } else {
-                                    columnFormats[name][property] = value;
-                                }
-                                if (property === 'type') {
-                                    dataset.column(name).type(value);
-                                    showColumnSettings();
+            columnFormat: {
+                add: function(columnNames, property, value) {
+                    var columnFormats = $.extend(true, {}, chart.get('metadata.data.column-format', {})); //deep clone (_.clone is insufficient because it does a shallow clone)
+                    _.each(columnNames, function(name) {
+                        if (!columnFormats[name]) {
+                            columnFormats[name] = {};
+                        }
+                        if (property) {
+                            if (value === undefined) {
+                                delete columnFormats[name][property];
+                                if (!_.keys(columnFormats[name]).length) {
+                                    delete columnFormats[name];
                                 }
                             } else {
-                                if (value === undefined) delete columnFormats[name];
-                                else columnFormats[name] = value;
+                                columnFormats[name][property] = value;
                             }
-                        });
-                        chart.set('metadata.data.column-format', columnFormats);
-                    },
-                    get: function(columnName) {
-                        var columnFormat = chart.get('metadata.data.column-format', {});
-                        if (arguments.length) {
-                            return columnFormat[columnName] || {};
+                            if (property === 'type') {
+                                dataset.column(name).type(value);
+                                showColumnSettings();
+                            }
+                        } else {
+                            if (value === undefined) delete columnFormats[name];
+                            else columnFormats[name] = value;
                         }
-                        else {
-                            return columnFormat;
-                        }
+                    });
+                    chart.set('metadata.data.column-format', columnFormats);
+                },
+                get: function(columnName) {
+                    var columnFormat = chart.get('metadata.data.column-format', {});
+                    if (arguments.length) {
+                        return columnFormat[columnName] || {};
+                    }
+                    else {
+                        return columnFormat;
                     }
                 }
-            };
+            }
+        };
 
         var chart = dw.backend.currentChart,
             dataset;
 
         chart.onChange(reload);
 
-        chart.sync('#describe-source-name', 'metadata.describe.source-name');
-        chart.sync('#describe-source-url', 'metadata.describe.source-url');
         chart.sync('#transpose', 'metadata.data.transpose');
-
         chart.sync('#has-headers', 'metadata.data.horizontal-header');
 
         $('#number-format').change(swapUnitAndCurrency);
@@ -92,7 +91,6 @@ define(['handsontable', './describe/computed-columns'], function(handsontable) {
         });
 
         $('#reset-data-changes').click(function(){
-            console.log('revert');
             metadata.changes.revert();
         });
 
@@ -149,14 +147,14 @@ define(['handsontable', './describe/computed-columns'], function(handsontable) {
             metadata.columnFormat.add(columnNames, 'ignore', this.checked);
         });
 
-
         syncColumnFormat('#column-type', 'type');
         syncColumnFormat('#number-format', 'number-format');
         syncColumnFormat('#number-divisor', 'number-divisor');
         syncColumnFormat('#number-append', 'number-append');
         syncColumnFormat('#number-prepend', 'number-prepend');
 
-        $('#describe-source-url').blur(storeCorrectedSourceUrl);
+        if (!readonly) {
+        }
 
         reload();
 
@@ -221,7 +219,7 @@ define(['handsontable', './describe/computed-columns'], function(handsontable) {
                 ht.render();
             }
             else {
-                var readOnly = _.isString(chart.get('externalData')) && chart.get('externalData') != '';
+                var dataIsReadOnly = _readonly || (_.isString(chart.get('externalData')) && chart.get('externalData') != '');
                 $dataPreview.handsontable({
                     data: data,
                     startRows: 6,
@@ -232,7 +230,7 @@ define(['handsontable', './describe/computed-columns'], function(handsontable) {
                     stretchH: 'all',
                     cells: function (row, col, prop) {
                         return {
-                            readOnly: readOnly || dataset.column(col).isComputed && row == 0,
+                            readOnly: dataIsReadOnly || dataset.column(col).isComputed && row == 0,
                             renderer: myRenderer
                         };
                     },

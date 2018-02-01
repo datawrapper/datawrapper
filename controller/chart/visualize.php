@@ -78,12 +78,7 @@ $app->get('/(chart|map)/:id/visualize', function ($id) use ($app) {
             'mode' => $app->request()->get('mode') == "print" ? "print": "web"
         );
         add_header_vars($page, $chart->getNamespace());
-        add_editor_nav($page, 3, $chart->getNamespace());
-
-        if (!$chart->isDataWritable($user)) {
-            $page['steps'][0]['readonly'] = true;
-            $page['steps'][1]['readonly'] = true;
-        }
+        add_editor_nav($page, 3, $chart);
 
         $app->render('chart/visualize.twig', $page);
     });

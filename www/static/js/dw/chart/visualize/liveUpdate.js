@@ -115,8 +115,8 @@ define(function() {
                     }
                 }
                 if (changed('metadata.describe.byline')) {
-                    if (attrs.metadata.describe.byline && !$$('.byline-block').length) needReload = true;
-                    if (!attrs.metadata.describe.byline && $$('.byline-block').length) needReload = true;
+                    if (attrs.metadata.describe.byline && !$$('.byline-block .chart-byline').length) needReload = true;
+                    if (!attrs.metadata.describe.byline && $$('.byline-block .chart-byline').length) needReload = true;
                     if (!needReload) {
                         $$('.byline-block .chart-byline').text(
                             attrs.metadata.describe.byline

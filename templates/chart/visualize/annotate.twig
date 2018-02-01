@@ -24,11 +24,11 @@
              <div class="row">
                  <div class="span2">
                      <label class="control-label">{% trans "Source name" %}</label>
-                     <input id="describe-source-name" type="text" class="span2" placeholder="{% trans "name of the organisation" %}">
+                     <input {% if chart.isFork %}disabled{% endif %} id="describe-source-name" type="text" class="span2" placeholder="{% trans "name of the organisation" %}">
                  </div>
                  <div class="span2">
                      <label class="control-label">{% trans "Source URL" %}</label>
-                     <input id="describe-source-url" type="text" class="span2" placeholder="{% trans "URL of the dataset" %}">
+                     <input {% if chart.isFork %}disabled{% endif %} id="describe-source-url" type="text" class="span2" placeholder="{% trans "URL of the dataset" %}">
                  </div>
              </div>
 

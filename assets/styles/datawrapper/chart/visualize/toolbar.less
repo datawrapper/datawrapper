@@ -1,0 +1,167 @@
+
+.toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    width: auto;
+    height: 42px;
+    margin-top: 30px;
+
+
+    .toolbar-container {
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        background: #fff;
+        height: 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 20px;
+        position: relative;
+
+        .toolbar-caption {
+            position: absolute;
+            top: -24px;
+            left: 0;
+            text-transform: uppercase;
+            font-size: 11px;
+            color: #999;
+        }
+
+        &.hide {
+            display: none;
+        }
+
+        &:last-child {
+            margin-right: 0;
+        }
+
+        .button {
+            cursor: pointer;
+            padding: 0px 16px;
+
+            height: 39px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 14px;
+
+            border-right: 1px solid rgba(0, 0, 0, 0.1);
+
+            &:hover {
+                background: rgba(0,0,0,0.05);
+            }
+
+            .column {
+                border-radius: 1px;
+                background: rgba(0,0,0,0.05);
+                width: 5px;
+                height: 10px;
+                margin-right: 2px;
+                margin-top: -10px;
+
+                &.active {
+                    background: rgba(0,0,0,0.2);
+                    height: 20px;
+                    margin-top: 0;
+                }
+            }
+
+            &.active {
+                background: rgba(0,0,0,0.05);
+            }
+
+        }
+
+        &.print .button {
+            padding: 0px 14px;
+        }
+
+        & > *:last-child {
+            border-right: none;
+        }
+
+        .input-resize {
+            border: none;
+            box-shadow: none;
+            border-bottom: 1px dotted #ccc;
+            width: 40px;
+            text-align: center;
+            background: transparent;
+            margin-bottom: 4px;
+        }
+
+        #resize-w,
+        #resize-mm-w {
+            margin-left: 10px;
+            margin-right: 5px;
+        }
+
+        #resize-h,
+        #resize-mm-h {
+            margin-right: 10px;
+            margin-left: 5px;
+        }
+
+        .btn-ppm .btn {
+            font-size: 10px;
+            box-shadow: none;
+            padding: 2px 10px;
+        }
+
+        &.colorblind-check {
+            .button {
+                display: inline-block;
+                text-align: center;
+                width: 26px;
+                font-size:9px;
+                position: relative;
+                // text-transform: uppercase;
+                color: #222;
+                padding: 0 4px;
+                user-select: none;
+                -webkit-user-select: none;
+                  -moz-user-select: none;
+                  -ms-user-select: none;
+
+                img {
+                    pointer-events: none;
+                    width: 20px;
+                    height: 20px;
+                    display: block;
+                    margin: 0 auto;
+                    position: relative;
+                    top: 3px;
+                }
+
+                .more-info {
+                    display: none;
+                    line-height: 17px;
+                    font-size: 14px;
+                    position: absolute;
+                    top: 38px;
+                    left: -90px;
+                    color: #777;
+                    right: -98px;
+                    .arrow {
+                        color: #ccc;
+                    }
+                }
+
+                &.active .more-info {
+                    display: block;
+                }
+            }
+
+            &:hover .button.active .more-info {
+                display: none;
+            }
+            &:hover .button:hover .more-info {
+                display: block;
+            }
+        }
+
+    } // .toolbar-container
+}

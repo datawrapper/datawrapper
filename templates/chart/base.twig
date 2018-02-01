@@ -22,7 +22,7 @@
                 <div class="corner"></div>
             </a>
         {% else %}
-            <div class="span3{% if createstep == step.index %} active{% else %}{% if createstep > step.index %} passed{% else %} unseen{% endif %}{% endif %}">
+            <div class="span3{% if step.readonly %} readonly{% endif %}{% if createstep == step.index %} active{% else %}{% if createstep > step.index %} passed{% else %} unseen{% endif %}{% endif %}">
                 <span class="step">{{ step.index }}</span>
                 {{ step.title }}
                 <div class="corner"></div>

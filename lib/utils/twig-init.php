@@ -10,7 +10,7 @@ function dwGetHTMLPurifier() {
     if (!$instance) {
         // Twig Extension to clean HTML from malicious code
         $config = HTMLPurifier_Config::createDefault();
-        $config->set('HTML.Allowed', 'a[href],p,b,div,span,strong,u,i,em,q,blockquote,*[style],br,small');
+        $config->set('HTML.Allowed', 'a[href],a[target],p,b,div,span[class],strong,u,i,em,q,blockquote,*[style],br,small');
         $config->set('Cache.SerializerPath', ROOT_PATH.'/tmp/');
 
         $instance = new HTMLPurifier($config);
