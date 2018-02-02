@@ -341,5 +341,10 @@
   "publish / export-duplicate": "Diagramm exportieren oder duplizieren",
   "publish / export-duplicate / intro": "Du kannst dein Diagramm <b>duplizieren</b> es, um eine neue Kopie zu bearbeiten. Oder exportiere das Diagramm in andere Formate.",
   "publish / unactivated / h1": "Du hast Post!",
-  "publish / unactivated / p": "Wir haben dir ein Link zu deinem Diagramm per E-Mail zugesandt. Schau in deinem Postfach und klicke auf den Link um dein Diagramm zu bekommen. Wenn du innerhalb von 15 Minuten keine E-Mail bekommen hast, melde dich bei uns via <a href=\"mailto:support@datawrapper.de\">support@datawrapper.de</a>."
+  "publish / unactivated / p": "Wir haben dir ein Link zu deinem Diagramm per E-Mail zugesandt. Schau in deinem Postfach und klicke auf den Link um dein Diagramm zu bekommen. Wenn du innerhalb von 15 Minuten keine E-Mail bekommen hast, melde dich bei uns via <a href=\"mailto:support@datawrapper.de\">support@datawrapper.de</a>.",
+  "Chart size": "Größe",
+  "colorblind / caption": "Farbblind-test",
+  "colorblind / info / deut": "",
+  "colorblind / info / prot": "",
+  "colorblind / info / trit": ""
 }

@@ -341,5 +341,10 @@
   "publish / export-duplicate": "Export or duplicate chart",
   "publish / export-duplicate / intro": "You can <b>duplicate</b> it to start editing a copy of the chart. Or export it into other formats.",
   "publish / unactivated / h1": "You've got mail!",
-  "publish / unactivated / p": "We've send you a link to your chart via e-mail. Please check your inbox and click the confirmation link to get your chart. If you don't receive a mail within 15 minutes, please get in touch via <a href=\"mailto:support@datawrapper.de\">support@datawrapper.de</a>."
+  "publish / unactivated / p": "We've send you a link to your chart via e-mail. Please check your inbox and click the confirmation link to get your chart. If you don't receive a mail within 15 minutes, please get in touch via <a href=\"mailto:support@datawrapper.de\">support@datawrapper.de</a>.",
+  "Chart size": "Chart size",
+  "colorblind / caption": "Colorblind check",
+  "colorblind / info / deut": "<b>Deuteranopia</b> is a form of green blindness (1% of males).",
+  "colorblind / info / prot": "<b>Protanopia</b> is another form of red blindness (1% of males).",
+  "colorblind / info / trit": "<b>Tritanopia</b> is a form of blue-yellow color blindness (less than 1% of males and females)."
 }
