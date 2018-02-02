@@ -1642,6 +1642,9 @@ body.cms-mode .footer {
   margin-right: 20px;
   position: relative;
 }
+.chart-editor.dw-create-visualize .toolbar .toolbar-container:last-child {
+  margin-right: 0;
+}
 .chart-editor.dw-create-visualize .toolbar .toolbar-container .toolbar-caption {
   position: absolute;
   top: -24px;
@@ -1700,7 +1703,7 @@ body.cms-mode .footer {
   background-color: #fffde6;
 }
 .chart-editor.dw-create-visualize .toolbar .toolbar-container .button.warning.active {
-  background-color: #e6e5d9;
+  background-color: #dbdbd4;
 }
 .chart-editor.dw-create-visualize .toolbar .toolbar-container.print .button {
   padding: 0px 14px;

@@ -16,7 +16,6 @@ fabfile.py*
 archive.tar
 *.log
 templates/plugins/*
-www/static/vendor/d3js/d3.scale.js
 www/static/custom/*
 test/result/*
 crowdin.yaml
@@ -25,12 +24,10 @@ vendor/*
 node_modules/*
 assets/vendor/*
 scripts/lib/execute_jobs.lock
-
 scripts/execute_jobs.lock
 node_modules
 *.bts
 bower_components/
-
 locale/messages.tsv
 .python-version
 exports/*
