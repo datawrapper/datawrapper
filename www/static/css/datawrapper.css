@@ -1639,11 +1639,11 @@ body.cms-mode .footer {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 20px;
+  margin-left: 20px;
   position: relative;
 }
-.chart-editor.dw-create-visualize .toolbar .toolbar-container:last-child {
-  margin-right: 0;
+.chart-editor.dw-create-visualize .toolbar .toolbar-container:first-child {
+  margin-left: 0;
 }
 .chart-editor.dw-create-visualize .toolbar .toolbar-container .toolbar-caption {
   position: absolute;
@@ -1697,6 +1697,9 @@ body.cms-mode .footer {
 .chart-editor.dw-create-visualize .toolbar .toolbar-container .button.active {
   background: rgba(0, 0, 0, 0.05);
 }
+.chart-editor.dw-create-visualize .toolbar .toolbar-container .button > i.warning {
+  display: none;
+}
 .chart-editor.dw-create-visualize .toolbar .toolbar-container .button.warning {
   box-shadow: inset 0px -1px 0px 0px #c71e1d;
   margin-top: 1px;
@@ -1704,6 +1707,21 @@ body.cms-mode .footer {
 }
 .chart-editor.dw-create-visualize .toolbar .toolbar-container .button.warning.active {
   background-color: #dbdbd4;
+}
+.chart-editor.dw-create-visualize .toolbar .toolbar-container .button.warning img {
+  opacity: 0.5;
+}
+.chart-editor.dw-create-visualize .toolbar .toolbar-container .button.warning i.warning {
+  display: inline-block;
+  position: absolute;
+  top: 7px;
+  left: 8px;
+  font-size: 14px;
+  color: #c71e1d;
+  border-radius: 50%;
+  width: 18px;
+  pointer-events: none;
+  height: 18px;
 }
 .chart-editor.dw-create-visualize .toolbar .toolbar-container.print .button {
   padding: 0px 14px;
@@ -1755,7 +1773,7 @@ body.cms-mode .footer {
   display: block;
   margin: 0 auto;
   position: relative;
-  top: 3px;
+  top: 4px;
 }
 .chart-editor.dw-create-visualize .toolbar .toolbar-container.colorblind-check .button .more-info {
   display: none;

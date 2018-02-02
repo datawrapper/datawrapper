@@ -17,11 +17,11 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-right: 20px;
+        margin-left: 20px;
         position: relative;
 
-        &:last-child {
-            margin-right: 0;
+        &:first-child {
+            margin-left: 0;
         }
 
         .toolbar-caption {
@@ -87,6 +87,9 @@
             &.active {
                 background: rgba(0,0,0,0.05);
             }
+            > i.warning {
+                display: none;
+            }
 
             &.warning {
                 box-shadow: inset 0px -1px 0px 0px #c71e1d;
@@ -94,6 +97,23 @@
                 background-color: #fffde6;
                 &.active {
                     background-color: mix(#fffde6, #ccc, 30%);
+                }
+
+                img {
+                    opacity: 0.5;
+                }
+
+                i.warning {
+                   display: inline-block;
+                    position: absolute;
+                    top: 7px;
+                    left: 8px;
+                    font-size: 14px;
+                    color: #c71e1d;
+                    border-radius: 50%;
+                    width: 18px;
+                    pointer-events: none;
+                    height: 18px;
                 }
             }
 
@@ -157,7 +177,7 @@
                     display: block;
                     margin: 0 auto;
                     position: relative;
-                    top: 3px;
+                    top: 4px;
                 }
 
                 .more-info {
