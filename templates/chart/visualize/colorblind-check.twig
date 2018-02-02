@@ -1,5 +1,5 @@
 <div class="toolbar-container web colorblind-check">
-    <div class="toolbar-caption"><i class="fa fa-cog fa-spin prog-ress hide"></i> <i class="warning hide fa fa-exclamation-triangle" aria-hidden="true"></i> Colorblind check </div>
+    <div class="toolbar-caption"><i class="fa fa-cog fa-spin prog-ress hide"></i> <i class="warning hide fa fa-exclamation-triangle" aria-hidden="true"></i> {% trans "colorblind / caption" %} </div>
     <div class="button active" data-type="normal">
         <img src="/static/img/colorblind-check/norm.png" />
         Norm
@@ -9,7 +9,7 @@
         Deut
         <div class="more-info">
             <span class="arrow">▲</span><br>
-            <b>Deuteranopia</b> is a form of green blindness (1% of males).
+            {{ "colorblind / info / deut" | trans | raw }}
         </div>
     </div>
     <div class="button" data-type="protanopia">
@@ -17,7 +17,7 @@
         Prot
         <div class="more-info">
             <span class="arrow">▲</span><br>
-            <b>Protanopia</b> is another form of red blindness (1% of males).
+            {{ "colorblind / info / prot" | trans | raw }}
         </div>
     </div>
     <div class="button" data-type="tritanopia">
@@ -25,7 +25,7 @@
         Trit
         <div class="more-info">
             <span class="arrow">▲</span><br>
-            <b>Tritanopia</b> is a form of blue-yellow color blindness (less than 1% of males and females).
+            {{ "colorblind / info / trit" | trans | raw }}
         </div>
     </div>
 </div>
