@@ -73,7 +73,6 @@ require(['chroma', 'd3'], function(chroma, d3) {
 
     $('#colorblind-type').change(function() {
         state.sim = $('#colorblind-type').val();
-        console.log('foo', state);
          color_lt = {};
         forceRerender();
     })
@@ -109,7 +108,7 @@ require(['chroma', 'd3'], function(chroma, d3) {
     function colorMap(color) {
         // console.log('cm',lastColors.size());
         if (state.sim == 'normal' || !color || color == 'none' ||
-            color == 'transparent' || color == 'auto') return color;
+            color == 'transparent' || color == 'auto' || !color) return color;
         var k = String(color);
         lastColors.add(k);
         if (color_lt[k] !== undefined) return color_lt[k];
@@ -201,6 +200,7 @@ require(['chroma', 'd3'], function(chroma, d3) {
     function testSample(sample, type) {
         var ok = 0, notok = 0;
         var ratio_thres = 5;
+        var smallest_percievable_distance = 9.2;
         var k = sample.length;
         if (!k) {
             // console.log('no sample', type);
@@ -209,12 +209,19 @@ require(['chroma', 'd3'], function(chroma, d3) {
         // compute distances between colors
         for (var a=0; a < k; a++) {
             for (var b=a+1; b < k; b++) {
-                var dst_norm = chroma.deltaE(sample[a], sample[b]);
-                if (dst_norm < 9) continue;
-                var a_sim = blinder[type](chroma(sample[a]).hex());
-                var b_sim = blinder[type](chroma(sample[b]).hex());
+                try {
+                    var col_a = chroma(sample[a]);
+                    var col_b = chroma(sample[b]);
+                } catch (e) {
+                    // something odd with either of the colors, ignore
+                    continue;
+                }
+                var dst_norm = chroma.deltaE(col_a, col_b);
+                if (dst_norm < smallest_percievable_distance) continue;
+                var a_sim = blinder[type](col_a.hex());
+                var b_sim = blinder[type](col_b.hex());
                 var dst_sim = chroma.deltaE(a_sim, b_sim);
-                var is_not_ok = dst_norm/dst_sim > ratio_thres && dst_sim < 9.2;
+                var is_not_ok = dst_norm/dst_sim > ratio_thres && dst_sim < smallest_percievable_distance;
                 if (is_not_ok) {
                     console.log(type, sample[a],sample[b],a_sim+'',b_sim+'', dst_norm, dst_sim, dst_norm/dst_sim);
                 }
