@@ -10,7 +10,7 @@
 
         _directLabeling: function() {
             var me = this,
-                mob = me.get('same-as-desktop') || me.__canvas.w > 420 ? '' : '-mobile'; 
+                mob = me.get('same-as-desktop') || me.__canvas.w > 420 ? '' : '-mobile';
             return me._isStacked() && me.get('direct-labeling'+mob) == 'always';
         },
 
@@ -61,7 +61,7 @@
 
             _.each(barColumns, function(column, s) {
                 var lbl_w = me.labelWidth(column.title(), 'series'),
-                    lbl_h = me.labelHeight(column.title(), 'series'); 
+                    lbl_h = me.labelHeight(column.title(), 'series');
 
                 if (lbl_w >= lw) { lw = lbl_w; lwi = s; }
                 if (lbl_h >= lh) { lh = lbl_h; lhi = s; }
@@ -103,7 +103,7 @@
                     items.push({
                         key: 'row-'+r,
                         label: lblFmt(me.axes(true).labels.val(r)),
-                        color: me.getBarColor(null, r, { varyLightness: true, key: me.axes(true).labels.val(r) })
+                        color: me.colorMap()(me.getBarColor(null, r, { varyLightness: true, key: me.axes(true).labels.val(r) }))
                     });
                 });
                 if (!label_direct) me.addLegend(items, $('#header'));
@@ -149,6 +149,8 @@
                 last_bar,
                 bar_dims = {};
 
+            var cm = me.colorMap();
+
             // draw bars
             _.each(columns, function(column, s) {
                 column.each(function(val, r) {
@@ -162,8 +164,8 @@
                             y: d.y,
                             width: d.w,
                             height: d.h,
-                            stroke: stroke,
-                            fill: fill
+                            stroke: cm(stroke),
+                            fill: cm(fill)
                         };
                     bar_dims[s+'/'+r] = d;
                     last_bar = d;
@@ -225,8 +227,8 @@
                     if (me._isStacked() && me.get('connect-bars') && s > 0) {
                         var pp = bar_dims[(s-1)+'/'+(r)];
                             cn_attrs = {
-                                fill: fill,
-                                stroke: fill,
+                                fill: cm(fill),
+                                stroke: cm(fill),
                                 opacity: 0.15,
                                 path: 'M'+[pp.x+pp.w, pp.y]+'L'+[d.x, d.y, d.x, d.y + d.h, pp.x+pp.w, pp.y+pp.h]
                             };
@@ -268,7 +270,7 @@
                             sl2 = me.__row_labels[sl2_key] = me.__row_labels[sl2_key] ||
                                 me.registerLabel(me.label(rl.x, rl.y, lblFmt(me.axes(true).labels.val(r)), rl), sl2_key);
                             sl2.__attrs = rl;
-                        
+
                         directLbls.push(sl2);
                     }
 
@@ -298,10 +300,10 @@
                 lbl.__attrs.y = lbl.__attrs.oy + lbl.__noverlap.dy;
 
                 var path = 'M'+(last_bar.x + last_bar.w)+','+lbl.__attrs.oy+'L'+(lbl.__attrs.x-3)+','+lbl.__attrs.y;
-                
+
                 if (me.__row_label_lines[r]) me.__row_label_lines[r].animate({path: path}, me.theme().duration, me.theme().easing);
                 else me.__row_label_lines[r] = c.paper.path(path).attr(me.theme().yAxis).attr({ opacity: 0.5 });
-                
+
                 lbl.animate(lbl.__attrs, me.theme().duration, me.theme().easing);
             })
 
@@ -317,7 +319,7 @@
             var ax = me.axes(true).labels,
                 fmt = me.chart().columnFormatter(ax),
                 key = fmt(ax.values()[row]);
-            
+
             if (me.hasKeyColor(key)) return me.getKeyColor(key);
             return me.getColor(bar, row, opts);
         },
@@ -358,7 +360,7 @@
 
             var lh = ($('.legend div:last').offset().top - $('.legend div:first').offset().top),
                 svg = $(me._svgCanvas()),
-                ch = $(svg.parent()); 
+                ch = $(svg.parent());
 
             $(svg).height($(svg).height()-lh);
             $(ch).height($(ch).height()-lh);
@@ -412,7 +414,7 @@
         },
 
         hideTooltip: function() {
-            
+
         },
 
         /*
@@ -529,7 +531,7 @@
                         lbl.show();
                         visibleLbls.push(lbl.data('label'));
                     } else lbl.hide();
-                }  
+                }
             });
             // me.optimizmeLabelPositions(visibleLbls, 5);
         },

@@ -10,7 +10,8 @@ _.extend(dw.visualization.base, {
     // called before rendering
     __init: function() {
         this.__renderedDfd = $.Deferred();
-        if (window.parent && window.parent['postMessage']) {
+        this.__colors = {};
+        if (window.parent && window.parent.postMessage) {
             window.parent.postMessage('datawrapper:vis:init', '*');
         }
         return this;
@@ -288,9 +289,20 @@ _.extend(dw.visualization.base, {
     },
 
     colorMap: function() {
-        if (window.__dw && window.__dw.colorMap) return window.__dw.colorMap;
-        return _.identity;
+        var me = this;
+        return function(color) {
+            me.__colors[color] = 1;
+            if (window.__dw && window.__dwColorMap) {
+                return window.__dwColorMap(color);
+            }
+            return color;
+        };
+    },
+
+    colorsUsed: function() {
+        return Object.keys(this.__colors);
     }
+
 
 });
 

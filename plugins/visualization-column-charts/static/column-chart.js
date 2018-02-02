@@ -4,6 +4,7 @@
     dw.visualization.register('column-chart', 'raphael-chart', {
 
         render: function(el) {
+
             var me = this, filter, filterUI, sortBars, reverse, c, dataset = me.dataset,
                 chart_width, column_gap, row_gap, row, column, bars, theme = me.theme();
 
@@ -80,7 +81,7 @@
                 c.bpad = c.bpad - 30 + lh * mm_r + 15;
                 c.tpad += lh * (1-mm_r);
             }
-            
+
 
             me.initDimensions();
 
@@ -124,11 +125,12 @@
                 bar,
                 formatter = chart.columnFormatter(me.getBarColumn());
 
+            var cm = me.colorMap();
             // create bar
             bar = me.registerElement(c.paper.rect().attr(d).attr({
                 // 'stroke': stroke,
                 stroke: null,
-                fill: fill
+                fill: cm(fill)
             }), barv.name);
 
             if (theme.columnChart.barAttrs) {
@@ -271,10 +273,10 @@
                         }, theme.duration, theme.easing);
 
                         if (!lbl.hasClass('value')) {
-                            if (lpos.valign == "bottom") { 
-                                $(lbl.el).addClass("lbl-align-left").removeClass("lbl-align-right"); 
-                            } else if (lpos.valign == "top") { 
-                                $(lbl.el).addClass("lbl-align-right").removeClass("lbl-align-left"); 
+                            if (lpos.valign == "bottom") {
+                                $(lbl.el).addClass("lbl-align-left").removeClass("lbl-align-right");
+                            } else if (lpos.valign == "top") {
+                                $(lbl.el).addClass("lbl-align-right").removeClass("lbl-align-left");
                             }
                         }
                     }
@@ -371,7 +373,7 @@
                 return { left: d.x + d.width * 0.5, top: val_y, width: lbl_w };
             } else if (type == "series") {
                 lbl_w = c.w / (me.getBarValues().length+2);
-                
+
                 if (d.bw < 30 || me.get('rotate-labels')) {
                     //lblcl.push('rotate90');
                     lbl_y -= 10;  // move towards zero axis
@@ -509,7 +511,7 @@
                 });
             });
         },
-       
+
 
         unhoverSeries: function() {
             this.hoverSeries();
@@ -519,7 +521,7 @@
             var me = this;
             return me.get('grid-lines', 'show') == 'show' ? true :
                 me.get('grid-lines') == 'hide' || me.get('grid-lines') == 'axis' ? false :
-                (me.__canvas.w / me.getBarValues().length) < 50 || 
+                (me.__canvas.w / me.getBarValues().length) < 50 ||
                 me.getBarValues().length > 8 || me.get('value-labels') == 'hide';
         },
 

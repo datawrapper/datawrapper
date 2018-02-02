@@ -7,6 +7,7 @@
     width: auto;
     height: 42px;
     margin-top: 30px;
+    margin-bottom: 80px;
 
 
     .toolbar-container {
@@ -26,6 +27,17 @@
             text-transform: uppercase;
             font-size: 11px;
             color: #999;
+
+            .warning {
+                color: #c71e1d;
+            }
+            .prog-ress {
+                color: #ccc;
+            }
+            .fa.hide {
+                display: none;
+            }
+
         }
 
         &.hide {
@@ -47,7 +59,6 @@
             justify-content: center;
 
             font-size: 14px;
-
             border-right: 1px solid rgba(0, 0, 0, 0.1);
 
             &:hover {
@@ -71,6 +82,15 @@
 
             &.active {
                 background: rgba(0,0,0,0.05);
+            }
+
+            &.warning {
+                box-shadow: inset 0px -1px 0px 0px #c71e1d;
+                margin-top: 1px;
+                background-color: #fffde6;
+                &.active {
+                    background-color: mix(#fffde6, #ccc, 30%);
+                }
             }
 
         }
@@ -138,13 +158,14 @@
 
                 .more-info {
                     display: none;
-                    line-height: 17px;
-                    font-size: 14px;
+                    line-height: 16px;
+                    font-size: 13px;
                     position: absolute;
-                    top: 38px;
+                    top: 40px;
                     left: -90px;
                     color: #777;
                     right: -98px;
+                    background: @dw_background;
                     .arrow {
                         color: #ccc;
                     }

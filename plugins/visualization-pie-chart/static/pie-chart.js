@@ -98,7 +98,7 @@
                 FA = me.getFullArc();
 
             me.__slices = me.__slices ? me.__slices : {};
-            
+
             var column = me.axes(true).slices[row];
             if (!column) return;  // stop rendering here
 
@@ -220,10 +220,12 @@
 
             me._footNotes.html(footnotes.map(function(o) {
                 return '<span><b>'+o.label +'</b>&nbsp;'+o.name+'</span>';
-            }).join(' ')); 
+            }).join(' '));
 
             var cx = c.cx - (all_labels_inside ? 0 : (out_label_w+50)*0.5),
                 lbl_duration = _.keys(me.__slices).length > 0 ? me.theme().duration : 100;
+
+            var cm = me.colorMap();
 
             _.each(slices, function(o, index) {
 
@@ -249,10 +251,10 @@
 
                     slice = me.__slices[o.name] = Slice(c.paper, cx, c.cy, c.or, c.ir, a0, a1, lbl, me.theme);
                     slice.path.attr({
-                        'stroke': me.theme().colors.background,
+                        'stroke': cm(me.theme().colors.background),
                         'stroke-width': 1.6,
                         'stroke-linejoin': 'round',
-                        'fill': fill
+                        'fill': cm(fill)
                     });
                     slice.path.data('slice', slice);
                     me.__sliceSet.push(slice.path);
