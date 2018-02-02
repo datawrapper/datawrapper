@@ -332,6 +332,7 @@ $app->post('/charts/:id/fork', function($chart_id) use ($app) {
                     // remember session id to be able to assign this chart
                     // to a newly registered user
                     $fork->setOrganization(null);
+                    $fork->setAuthorId(null);
                     $fork->setGuestSession(session_id());
                 }
                 $fork->setInFolder(null);
