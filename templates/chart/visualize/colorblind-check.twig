@@ -210,7 +210,13 @@ require(['chroma', 'd3'], function(chroma, d3) {
             });
 
         if (location.search == '?cbchk') {
-            chart.set('metadata.colorblind', res);
+            if (chart.save) {
+                chart.set('metadata.colorblind', res);
+            } else {
+                setTimeout(function() {
+                    chart.set('metadata.colorblind', res);
+                }, 3000);
+            }
         }
 
         color_lt = {};
