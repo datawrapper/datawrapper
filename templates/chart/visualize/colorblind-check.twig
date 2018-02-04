@@ -114,10 +114,11 @@ require(['chroma', 'd3'], function(chroma, d3) {
         if (color_lt[k] !== undefined) return color_lt[k];
         try {
             color = chroma(color).hex();
+            return (color_lt[k] = blinder[state.sim](color));
         } catch (e) {
+            // console.log('unknown color', color);
             return color;
         }
-        return (color_lt[k] = blinder[state.sim]( ));
     }
 
     var btns = $('.colorblind-check .button').click(function(e) {
