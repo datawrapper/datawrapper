@@ -84,6 +84,10 @@ require(['chroma', 'd3'], function(chroma, d3) {
         $('#iframe-vis').get(0).contentWindow.dispatchEvent(new Event('resize'));
     }
 
+    function difference(col_a, col_b) {
+        return 0.5 * (chroma.deltaE(col_a, col_b) + chroma.deltaE(col_b, col_a));
+    }
+
     function initIframe() {
         var iframe = $('#iframe-vis').get(0),
             iframeWin = iframe.contentWindow,
@@ -231,11 +235,11 @@ require(['chroma', 'd3'], function(chroma, d3) {
                     // something odd with either of the colors, ignore
                     continue;
                 }
-                var dst_norm = chroma.deltaE(col_a, col_b);
+                var dst_norm = difference(col_a, col_b);
                 if (dst_norm < smallest_percievable_distance) continue;
                 var a_sim = blinder[type](col_a.hex());
                 var b_sim = blinder[type](col_b.hex());
-                var dst_sim = chroma.deltaE(a_sim, b_sim);
+                var dst_sim = difference(a_sim, b_sim);
                 var is_not_ok = dst_norm/dst_sim > ratio_thres && dst_sim < smallest_percievable_distance;
                 if (is_not_ok) {
                     // console.log(type, sample[a],sample[b],a_sim+'',b_sim+'', dst_norm, dst_sim, dst_norm/dst_sim);
