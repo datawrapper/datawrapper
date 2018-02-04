@@ -105,6 +105,9 @@ require(['chroma', 'd3'], function(chroma, d3) {
             // console.log('-- onChange --');
             progress.removeClass('hide');
             warning.addClass('hide');
+            setTimeout(function() {
+                progress.addClass('hide');
+            }, 4000);
         });
         progress.removeClass('hide');
     }
