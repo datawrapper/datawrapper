@@ -149,14 +149,6 @@ require(['chroma', 'd3'], function(chroma, d3) {
     });
 
     function runTests() {
-        if (__dw.vis.colorsUsed().length < 2) {
-            // everything is ok
-            progress.addClass('hide');
-            warning.addClass('hide');
-            $('.colorblind-check .button').removeClass('warning');
-            return;
-        }
-
         // get list of all colors used in last run
         var colors = __dw.vis.colorsUsed();
         if (colors.length > 30) {
@@ -198,19 +190,28 @@ require(['chroma', 'd3'], function(chroma, d3) {
 
         var res = {};
 
-        $('.colorblind-check .button')
-            .removeClass('warning')
-            .each(function(i,el) {
-                el = $(el);
-                if (el.data('type') == 'normal') return;
-                if (!testSample(sample, el.data('type'))) {
-                    el.addClass('warning');
-                    warning.removeClass('hide');
-                    res[el.data('type')] = 1;
-                } else {
-                    res[el.data('type')] = 0;
-                }
-            });
+        if (colors.length > 1) {
+            $('.colorblind-check .button')
+                .removeClass('warning')
+                .each(function(i,el) {
+                    el = $(el);
+                    if (el.data('type') == 'normal') return;
+                    if (!testSample(sample, el.data('type'))) {
+                        el.addClass('warning');
+                        warning.removeClass('hide');
+                        res[el.data('type')] = 1;
+                    } else {
+                        res[el.data('type')] = 0;
+                    }
+                });
+        } else {
+            // just one color
+            progress.addClass('hide');
+            warning.addClass('hide');
+            $('.colorblind-check .button').removeClass('warning');
+            res = { deuteranopia: 0, protanopia: 0, tritanopia: 0 };
+        }
+
 
         if (location.search == '?cbchk') {
             if (chart.save) {
