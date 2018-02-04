@@ -214,6 +214,8 @@
                     seriesColIndex++;
                 }
 
+                var cm = vis.colorMap();
+
                 var strokeColor = lineColor(col);
                 all_paths.push(paths);
 
@@ -258,7 +260,7 @@
                         'stroke-linecap': 'round',
                         'stroke-linejoin': 'round',
                         'stroke-opacity': 1,
-                        'stroke': strokeColor
+                        'stroke': cm(strokeColor)
                     }), col.name());
 
                     // add invisible line on top to make selection easier
@@ -273,7 +275,7 @@
                         vis.registerElement(c.paper.path(connectMissingValuePath).attr({
                             'stroke-width': sw*0.35,
                             'stroke-dasharray': '- ',
-                            stroke: strokeColor
+                            stroke: cm(strokeColor)
                         }), col.name());
                     }
                 }
@@ -292,7 +294,7 @@
                             lbly = legend.yoffset;
                             div = $('<div></div>');
                             div.css({
-                                background: strokeColor,
+                                background: cm(strokeColor),
                                 width: 10,
                                 height: 10,
                                 position: 'absolute',
@@ -305,7 +307,7 @@
                             lbly = legend.yoffset;
                             div = $('<div></div>');
                             div.css({
-                                background: strokeColor,
+                                background: cm(strokeColor),
                                 width: 10,
                                 height: 10,
                                 position: 'absolute',
