@@ -1,3 +1,6 @@
+
+{% if user.isAdmin %}
+
 <div class="toolbar-container web colorblind-check">
     <div class="toolbar-caption">{% trans "colorblind / caption" %} <i class="fa fa-cog fa-spin prog-ress hide"></i></div>
     <div class="button active" data-type="normal">
@@ -246,3 +249,4 @@ require(['chroma', 'd3'], function(chroma, d3) {
 </script>
 
 
+{% endif %}
