@@ -76,7 +76,7 @@
                 if (me.__domain[0] < 0) {
                     var x = c.lpad + c.zero ;
                     // add y-axis
-    
+
                     if (!me.__yaxis) me.__yaxis = [];
 
                     me.__yaxis.push(me.path('M' + [x, c.tpad] + 'V' + c.lastBarY, 'axis')
@@ -90,6 +90,7 @@
 
         renderBar: function(row) {
             var me = this, c = me.__canvas,
+                cm = me.colorMap(),
                 formatValue = me.chart().columnFormatter(me.getBarColumn());
             return function(barv, s) {
                 var d = me.barDimensions(barv, s, row),
@@ -99,8 +100,8 @@
 
                 // draw bar
                 var bar = me.registerElement(c.paper.rect(d.x, d.y, d.width, d.height).attr({
-                    'stroke': stroke,
-                    'fill': fill
+                    'stroke': cm(stroke),
+                    'fill': cm(fill)
                 }).data('strokeCol', stroke), barv.name);
                 if (me.theme().barChart.barAttrs) {
                     bar.attr(me.theme().barChart.barAttrs);
@@ -384,6 +385,7 @@
 
         hover: function(hover_key) {
             var me = this,
+                cm = me.colorMap(),
                 barvalues = me.getBarValues(),
                 l = barvalues.length;
 
@@ -401,7 +403,7 @@
                     if (hover_key !== undefined && bar.name == hover_key) fill = chroma.color(fill).darken(14).hex();
                     stroke = chroma.color(fill).darken(14).hex();
                     if (el.attrs.fill != fill || el.attrs.stroke != stroke)
-                        el.animate({ fill: fill, stroke: stroke }, 50);
+                        el.animate({ fill: cm(fill), stroke: cm(stroke) }, 50);
                 });
             });
         },
