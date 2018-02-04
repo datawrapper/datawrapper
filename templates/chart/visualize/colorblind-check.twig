@@ -112,7 +112,12 @@ require(['chroma', 'd3'], function(chroma, d3) {
         var k = String(color);
         lastColors.add(k);
         if (color_lt[k] !== undefined) return color_lt[k];
-        return (color_lt[k] = blinder[state.sim]( chroma(color).hex()));
+        try {
+            color = chroma(color).hex();
+        } catch (e) {
+            return color;
+        }
+        return (color_lt[k] = blinder[state.sim]( ));
     }
 
     var btns = $('.colorblind-check .button').click(function(e) {
