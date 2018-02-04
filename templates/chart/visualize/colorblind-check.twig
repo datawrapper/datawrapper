@@ -48,13 +48,7 @@
     width: 20px;
     height: 20px;
 }
-select {
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        appearance: none;
-        background: ▼ right / 20px no-repeat #fff;
-        padding-right: 20px;
-}
+
 </style>
 
 <div style="display:flex;width:600px;">
@@ -189,6 +183,8 @@ require(['chroma', 'd3'], function(chroma, d3) {
         warning.addClass('hide');
         progress.addClass('hide');
 
+        var res = {};
+
         $('.colorblind-check .button')
             .removeClass('warning')
             .each(function(i,el) {
@@ -197,8 +193,15 @@ require(['chroma', 'd3'], function(chroma, d3) {
                 if (!testSample(sample, el.data('type'))) {
                     el.addClass('warning');
                     warning.removeClass('hide');
+                    res[el.data('type')] = 1;
+                } else {
+                    res[el.data('type')] = 0;
                 }
             });
+
+        if (location.search = '?cbchk') {
+            chart.set('metadata.colorblind', res);
+        }
 
         color_lt = {};
     }
@@ -229,7 +232,7 @@ require(['chroma', 'd3'], function(chroma, d3) {
                 var dst_sim = chroma.deltaE(a_sim, b_sim);
                 var is_not_ok = dst_norm/dst_sim > ratio_thres && dst_sim < smallest_percievable_distance;
                 if (is_not_ok) {
-                    console.log(type, sample[a],sample[b],a_sim+'',b_sim+'', dst_norm, dst_sim, dst_norm/dst_sim);
+                    // console.log(type, sample[a],sample[b],a_sim+'',b_sim+'', dst_norm, dst_sim, dst_norm/dst_sim);
                 }
                 // count combinations that are problematic
                 if (is_not_ok) notok++; else ok++;
@@ -239,9 +242,6 @@ require(['chroma', 'd3'], function(chroma, d3) {
         // compute share of problematic samples
         return notok/(ok+notok) < 0.03;
     }
-
-
-
 
 });
 
