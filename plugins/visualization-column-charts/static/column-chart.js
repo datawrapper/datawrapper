@@ -490,6 +490,7 @@
         },
         hover: function(hover_key) {
             var me = this,
+                cm = this.colorMap(),
                 barvalues = me.getBarValues(),
                 l = barvalues.length;
 
@@ -507,7 +508,7 @@
                     var fill = me.getKeyColor(bar.name, bar.value, me.get('negative-color', false)),
                         stroke;
                     if (hover_key !== undefined && bar.name == hover_key) fill = chroma.color(fill).darken(14).hex();
-                    if (el.attrs.fill != fill) el.attr({ fill: fill });
+                    if (el.attrs.fill != fill) el.attr({ fill: cm(fill) });
                 });
             });
         },
