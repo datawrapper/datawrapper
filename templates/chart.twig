@@ -97,7 +97,10 @@
 
                         {% if chartByline %}
                             <span class="footer-block byline-block">
-                                {{ theme.getThemeData('options.footer.chartCaption') }}
+
+                                {{ chart.namespace == 'map' ?
+                                    theme.getThemeData('options.footer.mapCaption') :
+                                    theme.getThemeData('options.footer.chartCaption') }}
                                 {{ chartByline | purify | raw }}
                             </span>
                         {% elseif chartBasedOn %}
