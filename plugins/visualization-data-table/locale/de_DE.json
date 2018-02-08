@@ -21,5 +21,6 @@
   "Make column sortable":"Spalten sortierbar machen",
   "Display content over multiple pages":"Zeilen über mehrere Seiten verteilen",
   "Show filter":"Filter anzeigen",
-  "Hide header":"Beschriftungszeile ausblenden"
+  "Hide header":"Beschriftungszeile ausblenden",
+  "table / responsive": "Responsive Tabelle"
 }

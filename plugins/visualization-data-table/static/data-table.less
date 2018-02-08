@@ -88,15 +88,15 @@ s
 }
 
 .chart.vis-data-table .datatable-default tbody tr:hover {
-    background: #eee;
+    // background: #eee;
 }
 .chart.vis-data-table .datatable-default tbody tr.even:hover {
-    background: #e9e9e9;
+    // background: #e9e9e9;
 }
 
 
 .chart.vis-data-table .datatable-default tbody tr:hover td.highlight {
-    background: #CFD9EF;
+    // background: #CFD9EF;
 }
 
 
@@ -187,10 +187,7 @@ Max width before this PARTICULAR table gets nasty
 This query will take effect for any screen smaller than 760px
 and also iPads specifically.
 */
-@media
-only screen and (max-width: 560px),
-(min-device-width: 768px) and (max-device-width: 1024px)  {
-
+@media only screen and (max-width: 560px)  {
     /* Force table to not be like tables anymore */
     table.responsive, .responsive thead, .responsive tbody, .responsive th, .responsive td, .responsive tr {
         display: block;
@@ -203,7 +200,7 @@ only screen and (max-width: 560px),
         left: -9999px;
     }
 
-    .responsive tr { border: 1px solid #ccc; }
+    .responsive tr { border: 1px solid #ccc; margin-bottom: 10px}
 
     .responsive td {
         /* Behave  like a "row" */
@@ -211,6 +208,17 @@ only screen and (max-width: 560px),
         border-bottom: 1px solid #eee;
         position: relative;
         padding-left: 50%;
+        text-align: right!important;
+
+        :first-child {
+
+        }
+    }
+
+    .chart.vis-data-table .responsive.datatable-default tbody tr:hover,
+    .chart.vis-data-table .responsive.datatable-default tbody tr.odd:hover,
+    .chart.vis-data-table .responsive.datatable-default tbody tr.even:hover {
+        background: auto!important;
     }
 
     .responsive td:before {
@@ -220,6 +228,7 @@ only screen and (max-width: 560px),
         top: 6px;
         left: 6px;
         width: 45%;
+        text-align: left!important;
         padding-right: 10px;
         white-space: nowrap;
     }

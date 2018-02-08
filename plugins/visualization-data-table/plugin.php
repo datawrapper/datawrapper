@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 class DatawrapperPlugin_VisualizationDataTable extends DatawrapperPlugin_Visualization {
     public function getMeta(){
@@ -61,7 +61,12 @@ class DatawrapperPlugin_VisualizationDataTable extends DatawrapperPlugin_Visuali
                 "type" => "base-color",
                 "hideCustomColorSelector" => true,
                 "label" => __("Header color")
-            )
+            ),
+            'table-responsive' => [
+                'type' => 'checkbox',
+                'label' => __('table / responsive'),
+                'default' => false
+            ]
         );
         return $options;
     }
