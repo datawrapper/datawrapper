@@ -1558,6 +1558,10 @@ body.cms-mode .footer {
     line-height: 15px;
   }
 }
+.chart-editor.dw-create-visualize .visconfig #text-intro {
+  min-width: 356px;
+  max-width: 356px;
+}
 .chart-editor.dw-create-visualize .visconfig label.separator {
   font-weight: 500;
   text-align: left;
