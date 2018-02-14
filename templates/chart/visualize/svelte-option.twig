@@ -1,0 +1,52 @@
+{% if option.type == type %}
+
+<div class="{{ type }}" id="{{ type }}-{{ key }}">
+
+</div>
+
+<script type="text/javascript" src="/static/plugins/{{ plugin }}/controls.js"></script>
+<link rel="stylesheet" type="text/css" href="/static/plugins/{{ plugin }}/controls.css">
+<script type="text/javascript">
+
+require(['{{ type }}'], function(controls) {
+
+    controls.globals.set({
+        dw_chart: chart,
+        key: '{{key}}',
+        language: '{{language}}',
+        theme: { colors: { palette: [] }, fake: true }
+    });
+
+    controls.globals.compute('visMeta', ['visMetas'], function(visMetas) {
+        var vis = window.chart.get('type');
+        return visMetas && vis ? visMetas[vis] || null : null;
+    });
+
+    var current = chart.get('metadata.visualize.{{key}}');
+
+    var app = new controls.App({
+        store: controls.globals,
+        target: document.querySelector('#{{ type }}-{{ key }}')
+    });
+
+    window.dw.backend
+        .on('vis-metas', function(visMetas) {
+            console.log('init');
+            app.store.set({
+                visMetas: visMetas,
+                theme: window.dw.theme(chart.get('theme'))
+            });
+        })
+        .on('dataset-loaded', function() {
+            app.store.set({dataset: chart.dataset()});
+        })
+        .on('theme-changed-and-loaded', function() {
+            app.store.set({theme: window.dw.theme(chart.get('theme')) });
+        });
+
+    // extend data with default
+    app.set({ value: _.extend({}, app.get('default') || {}, current) });
+})
+</script>
+
+{% endif %}

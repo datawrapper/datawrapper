@@ -1,0 +1,66 @@
+<div class="control-group vis-option-group">
+    <label class="control-label">
+        {{{ label }}}
+    </label>
+
+    <div class="controls form-inline">
+        <select bind:value="selected">
+            {{#if $visMeta && $visMeta.axes[axis].optional}}
+            <option value="-">{{axis['na-label']||'--'}}</option>
+            {{/if}}
+            {{#each columns as column}}
+            <option value="{{column.name}}">{{column.name}}</option>
+            {{/each}}
+        </select>
+    </div>
+</div>
+
+<style>
+.control-label { width: 100px!important; vertical-align: baseline; }
+select { width: 170px!important; }
+</style>
+
+<script>
+export default {
+    computed: {
+        columns(axis, $visMeta, $dataset) {
+            const columns = [];
+            // const axisMeta =
+            if (!$dataset || !$visMeta || !axis) return [];
+            $dataset.eachColumn((column) => {
+                if (_.indexOf($visMeta.axes[axis].accepts, column.type()) > -1) {
+                    columns.push({
+                        name: column.name()
+                    });
+                }
+            });
+            return columns;
+        }
+    },
+    data() {
+        return {
+            selected: false
+        };
+    },
+    oncreate() {
+        const me = this;
+        me.observe('selected', (sel) => {
+            if (sel) {
+                const {axis} = me.get();
+                var axes = _.clone(window.chart.get('metadata.axes', {}));
+                if (sel == '-') delete axes[axis];
+                else axes[axis] = sel;
+                window.chart.set('metadata.axes', axes);
+            }
+        });
+        me.store.observe('visMeta', (visMeta) => {
+            let {selected, axis} = me.get();
+            if (!selected && visMeta) {
+                // initialize!
+                selected = window.chart.get('metadata.axes')[axis];
+                me.set({selected});
+            }
+        });
+    }
+};
+</script>

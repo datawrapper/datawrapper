@@ -1,0 +1,44 @@
+<div class="control-group">
+    <label class="control-label">{{{ label }}}</label>
+    <div class="controls">
+        <div on:click="set({open:true})" class="base-color-picker color-picker" style="background: {{hexColor}} none repeat scroll 0% 0%;">
+            <div class="arrow"></div>
+        </div>
+        {{value}} - {{hexColor}}
+    </div>
+</div>
+
+{{#if hexColor}}
+<ColorPicker on:change="update(event)" ref:picker color="{{hexColor}}" bind:visible="open" palette="{{palette}}" />
+{{/if}}
+
+<script>
+    import ColorPicker from './ColorPicker.html';
+
+    export default {
+        components: { ColorPicker },
+        computed: {
+            palette ($theme) {
+                console.log($theme);
+                return $theme.colors.palette; //.concat($theme.colors.secondary || []);
+            },
+            hexColor(value, palette) {
+                return typeof value == 'number' ? palette[value%palette.length] : value;
+            }
+        },
+        methods: {
+            update (color) {
+                const {palette} = this.get();
+                const pi = palette.indexOf(color);
+                if (pi > -1) color = pi;
+                console.log('update', color);
+                this.set({value: color});
+            }
+        },
+        data() {
+            return {
+                open: false
+            };
+        }
+    };
+</script>
