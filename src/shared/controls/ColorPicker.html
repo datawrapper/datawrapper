@@ -82,8 +82,20 @@
             };
         },
         oncreate() {
-            this.observe('color', (color) => {
-                this.fire('change', color);
+            const me = this;
+            me.observe('color', (color) => {
+                me.fire('change', color);
+            });
+            window.document.body.addEventListener('click', (event) => {
+                const {visible} = me.get();
+                let el = event.target;
+                if (visible) {
+                    while (!el.classList.contains('color-picker') &&
+                        el.nodeName.toLowerCase() != 'body') {
+                        el = el.parentNode;
+                    }
+                    me.set({visible: el != window.document.body});
+                }
             });
         }
     };
