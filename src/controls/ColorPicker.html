@@ -89,8 +89,9 @@
         },
         oncreate() {
             const me = this;
-            me.observe('color', (color) => {
-                me.fire('change', color);
+            me.observe('color', (color, old_color) => {
+                const {visible} = me.get();
+                if (visible && color != old_color) me.fire('change', color);
             });
             ref = this;
             window.document.body.addEventListener('click', this.bodyClick);
