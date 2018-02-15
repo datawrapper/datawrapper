@@ -1,38 +1,44 @@
-{{#if visible && color}}
-<div class="color-selector">
-    <div class="palette">
-        {{#each palette as c}}
-        <div class="color" on:click="set({color:c})" data-color="{{c}}" style="background: {{c}}"></div>
-        {{/each}}
+<div class="color-picker-cont">
+    <div on:click="set({visible:true})" class="base-color-picker color-picker" style="background: {{color}} none repeat scroll 0% 0%;">
+        <div class="arrow"></div>
     </div>
+    {{#if visible && color}}
+    <div class="color-selector">
+        <div class="palette">
+            {{#each palette as c}}
+            <div class="color" on:click="set({color:c})" on:dblclick="set({color:c, visible:false})" data-color="{{c}}" style="background: {{c}}"></div>
+            {{/each}}
+        </div>
 
-    <div class="color-axis lightness">
-        {{#each gradient_l as c}}
-        <div class="color {{c == nearest_l?'selected':''}}" on:click="set({color:c})" data-color="{{c}}" style="background: {{c}}"></div>
-        {{/each}}
-    </div>
-    <div class="color-axis saturation">
-        {{#each gradient_c as c}}
-        <div class="color {{c == nearest_c?'selected':''}}" on:click="set({color:c})" data-color="{{c}}" style="background: {{c}}"></div>
-        {{/each}}
-    </div>
-    <div class="color-axis hue">
-        {{#each gradient_h as c}}
-        <div class="color {{c == nearest_h?'selected':''}}" on:click="set({color:c})" data-color="{{c}}" style="background: {{c}}"></div>
-        {{/each}}
-    </div>
+        <div class="color-axis lightness">
+            {{#each gradient_l as c}}
+            <div class="color {{c == nearest_l?'selected':''}}" on:click="set({color:c})" data-color="{{c}}" style="background: {{c}}"></div>
+            {{/each}}
+        </div>
+        <div class="color-axis saturation">
+            {{#each gradient_c as c}}
+            <div class="color {{c == nearest_c?'selected':''}}" on:click="set({color:c})" data-color="{{c}}" style="background: {{c}}"></div>
+            {{/each}}
+        </div>
+        <div class="color-axis hue">
+            {{#each gradient_h as c}}
+            <div class="color {{c == nearest_h?'selected':''}}" on:click="set({color:c})" data-color="{{c}}" style="background: {{c}}"></div>
+            {{/each}}
+        </div>
 
-    <div class="footer">
-        <input type="text" style="background: {{color}}; border-color: {{borderColor}}; color: {{textColor}}" bind:value="color" class="hex">
-        <button class="btn btn-small ok" on:click="set({visible:false})"><i class="icon-ok"></i></button>
-        <div class="color selected" style="background: {{color}}"></div>
+        <div class="footer">
+            <input type="text" style="background: {{color}}; border-color: {{borderColor}}; color: {{textColor}}" bind:value="color" class="hex">
+            <button class="btn btn-small ok" on:click="set({visible:false})"><i class="icon-ok"></i></button>
+            <div class="color selected" style="background: {{color}}"></div>
+        </div>
     </div>
+    {{/if}}
 </div>
-{{/if}}
-
 <script>
 
     import chroma from 'chroma';
+
+    let ref;
 
     export default {
         computed: {
@@ -86,17 +92,25 @@
             me.observe('color', (color) => {
                 me.fire('change', color);
             });
-            window.document.body.addEventListener('click', (event) => {
-                const {visible} = me.get();
+            ref = this;
+            window.document.body.addEventListener('click', this.bodyClick);
+        },
+        ondestroy() {
+            window.document.body.removeEventListener('click', this.bodyClick);
+        },
+        methods: {
+            bodyClick (event) {
+                if (!ref.get) return;
+                const {visible} = ref.get();
                 let el = event.target;
                 if (visible) {
-                    while (!el.classList.contains('color-picker') &&
+                    while (!el.classList.contains('color-picker-cont') &&
                         el.nodeName.toLowerCase() != 'body') {
                         el = el.parentNode;
                     }
-                    me.set({visible: el != window.document.body});
+                    ref.set({visible: el != window.document.body});
                 }
-            });
+            }
         }
     };
 
@@ -129,5 +143,6 @@
 </script>
 
 <style>
+.color-picker-cont { display: inline-block; }
 input.hex { margin-bottom:0!important; }
 </style>

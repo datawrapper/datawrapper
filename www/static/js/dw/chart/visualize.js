@@ -90,6 +90,9 @@ function(initHighlightSeries, visOptions, themes, loadVisDfd, initTabNav, enable
             });
             // remove all notifications
             $("#notifications .notification").fadeOutAndRemove();
+        } else if (_axesHaveChanged && svelteControls) {
+            loadVis();
+            $("#notifications .notification").fadeOutAndRemove();
         }
 
         _themeHasChanged = false;
@@ -295,6 +298,8 @@ function(initHighlightSeries, visOptions, themes, loadVisDfd, initTabNav, enable
         dw.backend.currentVis.chart(chart);
         dw.backend.currentVis.dataset = chart.dataset().reset();
         dw.backend.currentVis.meta = visMetas[chart.get('type')];
+        dw.backend.fire('backend-vis-loaded', dw.backend.currentVis);
+
         visOptions.init(chart, visMetas[chart.get('type')]);
         if (!_optionsSynchronized) {
             _optionsSynchronized = true;

@@ -6,6 +6,7 @@
 
 <script type="text/javascript" src="/static/plugins/{{ plugin }}/controls.js"></script>
 <link rel="stylesheet" type="text/css" href="/static/plugins/{{ plugin }}/controls.css">
+<link rel="stylesheet" type="text/css" href="/static/css/svelte/controls.css">
 <script type="text/javascript">
 
 require(['{{ type }}'], function(controls) {
@@ -31,7 +32,6 @@ require(['{{ type }}'], function(controls) {
 
     window.dw.backend
         .on('vis-metas', function(visMetas) {
-            console.log('init');
             app.store.set({
                 visMetas: visMetas,
                 theme: window.dw.theme(chart.get('theme'))
@@ -42,6 +42,12 @@ require(['{{ type }}'], function(controls) {
         })
         .on('theme-changed-and-loaded', function() {
             app.store.set({theme: window.dw.theme(chart.get('theme')) });
+        })
+        .on('backend-vis-loaded', function(vis) { app.store.set({vis: vis}); })
+        .on('axes-changed', function() {
+            setTimeout(function() {
+                app.store.set(app.store.get());
+            }, 1000);
         });
 
     // extend data with default
