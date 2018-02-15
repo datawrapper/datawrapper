@@ -59,8 +59,8 @@
     export default {
         components: { ColorPicker },
         computed: {
-            colorKeys ($vis, axis, custom, palette) {
-                if (!$vis) return [];
+            colorKeys ($vis, customizable, axis, custom, palette) {
+                if (!$vis || !customizable) return [];
                 return (
                     axis ? _.unique($vis.axes(true)[axis].values()) :
                     $vis.colorKeys ? $vis.colorKeys() : $vis.keys()
@@ -75,7 +75,6 @@
                 });
             },
             palette ($theme) {
-                console.log($theme);
                 return $theme.colors.palette; //.concat($theme.colors.secondary || []);
             },
             hexColor (value, palette) {
@@ -84,9 +83,6 @@
             customColor (selected, palette, custom) {
                 return getColor(custom[selected[0]] || 0, palette);
             },
-            customizable (custom) {
-                return custom !== false;
-            }
         },
         methods: {
             update (color) {
@@ -137,8 +133,16 @@
                 customizable: false,
                 expanded: false,
                 selected: [],
-                custom: false
+                custom: {}
             };
+        },
+        oncreate() {
+            this.observe('custom', (c) => {
+                if (c && c.length === 0) {
+                    c = {};
+                }
+                this.set({custom:c});
+            });
         }
     };
 
