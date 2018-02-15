@@ -258,7 +258,7 @@ class DatawrapperPlugin {
     public function registerAssets($assets, $regex = null) {
         $plugin = $this;
         if (is_string($assets)) $assets = array($assets);
-        DatawrapperHooks::register(DatawrapperHooks::GET_PLUGIN_ASSETS, function($uri) use ($assets, $regex, $plugin) {
+        Hooks::register(Hooks::GET_PLUGIN_ASSETS, function($uri) use ($assets, $regex, $plugin) {
             if (empty($regex) || preg_match($regex, $uri)) {
                 $plugin_assets = array();
                 foreach ($assets as $file) {
@@ -271,20 +271,20 @@ class DatawrapperPlugin {
     }
 
     public function addHeaderNav($after = 'mycharts', $link) {
-        DatawrapperHooks::register(DatawrapperHooks::HEADER_NAV . $after,
+        Hooks::register(Hooks::HEADER_NAV . $after,
             function() use ($link) { return $link; });
     }
 
     public function registerController($obj, $func=null) {
-        DatawrapperHooks::register(
-            DatawrapperHooks::GET_PLUGIN_CONTROLLER,
+        Hooks::register(
+            Hooks::GET_PLUGIN_CONTROLLER,
             is_callable($obj) ? $obj : array($obj, $func)
         );
     }
 
     public function registerAdminPage($obj, $func=null) {
-        DatawrapperHooks::register(
-            DatawrapperHooks::GET_ADMIN_PAGES,
+        Hooks::register(
+            Hooks::GET_ADMIN_PAGES,
             is_callable($obj) ? $obj : array($obj, $func)
         );
     }
