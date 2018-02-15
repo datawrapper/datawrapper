@@ -3,7 +3,7 @@ define(['jquery', 'd3'], function($, d3) {
     $(function() {
         // initModal();
         $('.computed-columns').click(initModal);
-        
+
         var firstRun = true,
             active = null,
             columns = {},
@@ -52,14 +52,14 @@ define(['jquery', 'd3'], function($, d3) {
                 chart.save();
                 initNav();
             }
-            
+
 
             function initNav() {
                 columns = dw.utils.clone(chart.get('metadata.describe.computed-columns', {}));
                 if (_.isArray(columns)) columns = {};
 
                 var keys = d3.keys(columns).filter(function(d) { return d; });
-                
+
                 if (!active && keys.length > 0) activate(keys[0]);
                 if (!keys.length) {
                     btnRemove.addClass('hide');
@@ -82,7 +82,7 @@ define(['jquery', 'd3'], function($, d3) {
                     .data(keys)
                     .enter().append('li')
                     .classed('active', function(d, i) { return active == d; });
-                
+
                 li.append('a')
                     .html(function(d) { return d; })
                     .on('click', function(d) {
@@ -110,7 +110,7 @@ define(['jquery', 'd3'], function($, d3) {
                             });
                     });
                     $('.col-select', modal).addClass('active');
-                }   
+                }
             }
 
             function activate(d) {
@@ -184,7 +184,7 @@ define(['jquery', 'd3'], function($, d3) {
                         var cur = editor.getCursor(),
                             token = editor.getTokenAt(cur),
                             match = [];
-                        
+
                         if (token.type == 'variable') {
                             match = keywords.filter(function(chk) {
                                 return chk.toLowerCase().indexOf(token.string.toLowerCase()) === 0;
@@ -218,17 +218,17 @@ define(['jquery', 'd3'], function($, d3) {
                     });
 
                     colname.on('change keyup', _.throttle(onNameChange, 200));
-                    
-                    cm.on('changes', function() {
+
+                    cm.on('changes', _.debounce(function() {
                         if (!active) return;
                         columns[active] = cm.getValue();
                         chart.set('metadata.describe.computed-columns.'+active, cm.getValue());
-                        chart.save();
+                        chart.saveSoon();
                         if (chart.dataset().hasColumn(active)) {
                             val_preview.html(chart.dataset().column(active).raw()
-                                .slice(0,5).join('<br>'));                            
+                                .slice(0,5).join('<br>'));
                         }
-                    });
+                    }, 1000));
 
                     firstRun = false;
 
@@ -252,7 +252,7 @@ define(['jquery', 'd3'], function($, d3) {
             function columnNameExists(cn) {
                 return columns[cn] || chart.dataset().hasColumn(cn);
             }
-            
+
         }
     });
 
