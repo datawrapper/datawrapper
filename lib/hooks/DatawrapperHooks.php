@@ -177,6 +177,7 @@ class DatawrapperHooks {
 
     const VISUALIZE_BEFORE_THEME_SELECTOR = 'visualize_before_theme_selector';
     const VISUALIZE_AFTER_THEME_SELECTOR = 'visualize_after_theme_selector';
+    const CUSTOM_ANNOTATION_CONTROLS = 'custom_annotation_controls';
 
     // extend the settings form
     const USER_SETTINGS = 'user_settings';

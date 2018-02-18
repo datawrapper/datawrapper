@@ -41,6 +41,8 @@
 
  </div>
 
+{{ hook('custom_annotation_controls', chart) }}
+
  {% if vis.annotate_options %}
 
      {% for key, option in vis.annotate_options %}
