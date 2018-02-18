@@ -39,6 +39,8 @@ define(function() {
 
         chart.save = save;
 
+        chart.saveSoon = _.debounce(save, 1000);
+
         chart.onSave = function(callback) {
             saveCallbacks.push(callback);
         };

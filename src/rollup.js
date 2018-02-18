@@ -19,8 +19,8 @@ function buildLocale(app_id, locale, callback) {
     const messages = JSON.parse(fs.readFileSync(`../locale/${locale}.json`, 'utf-8'));
     const inputOptions = {
         input: `${app_id}/main.js`,
+        external: ['chroma'],
         plugins: [
-
             i18n({
                 language: messages
             }),
@@ -49,7 +49,9 @@ function buildLocale(app_id, locale, callback) {
 
             // If we're building for production (npm run build
             // instead of npm run dev), transpile and minify
-            production && buble(),
+            production && buble({
+                transforms: { dangerousForOf: true }
+            }),
             production && uglify()
         ]
     };
@@ -57,7 +59,7 @@ function buildLocale(app_id, locale, callback) {
         sourcemap: false,
         name: app_id,
         file: `../www/static/js/svelte/${app_id}.${locale}.js`,
-        format: 'iife',
+        format: app_id != 'controls' ? 'iife' : 'umd',
     };
 
     _rollup(bundle => {
@@ -95,4 +97,5 @@ function buildLocale(app_id, locale, callback) {
 }
 
 build('publish');
+build('controls');
 

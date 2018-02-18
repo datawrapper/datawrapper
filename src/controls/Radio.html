@@ -1,0 +1,14 @@
+<div class="control-group vis-option-group vis-option-type-radio">
+    <label class="control-label">
+        {{{ label }}}
+    </label>
+
+    <div class="controls form-inline">
+        {{#each options as opt}}
+        <label class="radio">
+            <input type="radio" value="{{ opt.value }}" bind:group="value" />&nbsp;{{ opt.label }}
+        </label>
+        {{/each}}
+    </div>
+</div>
+

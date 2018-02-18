@@ -3,23 +3,23 @@
  * @license
  *
  * chroma.js - JavaScript library for color conversions
- * 
+ *
  * Copyright (c) 2011-2017, Gregor Aisch
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
  *    list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * 3. The name Gregor Aisch may not be used to endorse or promote products
  *    derived from this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -149,7 +149,7 @@
     root.chroma = chroma;
   }
 
-  chroma.version = '1.3.4';
+  chroma.version = '1.3.5';
 
   _input = {};
 
@@ -218,21 +218,21 @@
 
 
   /**
-  	ColorBrewer colors for chroma.js
-  
-  	Copyright (c) 2002 Cynthia Brewer, Mark Harrower, and The 
-  	Pennsylvania State University.
-  
-  	Licensed under the Apache License, Version 2.0 (the "License"); 
-  	you may not use this file except in compliance with the License.
-  	You may obtain a copy of the License at	
-  	http://www.apache.org/licenses/LICENSE-2.0
-  
-  	Unless required by applicable law or agreed to in writing, software distributed
-  	under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
-  	CONDITIONS OF ANY KIND, either express or implied. See the License for the
-  	specific language governing permissions and limitations under the License.
-  
+    ColorBrewer colors for chroma.js
+
+    Copyright (c) 2002 Cynthia Brewer, Mark Harrower, and The
+    Pennsylvania State University.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software distributed
+    under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+    CONDITIONS OF ANY KIND, either express or implied. See the License for the
+    specific language governing permissions and limitations under the License.
+
       @preserve
    */
 
@@ -286,9 +286,9 @@
 
 
   /**
-  	X11 color names
-  
-  	http://www.w3.org/TR/css3-color/#svg-color
+    X11 color names
+
+    http://www.w3.org/TR/css3-color/#svg-color
    */
 
   w3cx11 = {
@@ -642,23 +642,23 @@
 
   /*
       chroma.js
-  
+
       Copyright (c) 2011-2013, Gregor Aisch
       All rights reserved.
-  
+
       Redistribution and use in source and binary forms, with or without
       modification, are permitted provided that the following conditions are met:
-  
+
       * Redistributions of source code must retain the above copyright notice, this
         list of conditions and the following disclaimer.
-  
+
       * Redistributions in binary form must reproduce the above copyright notice,
         this list of conditions and the following disclaimer in the documentation
         and/or other materials provided with the distribution.
-  
+
       * The name Gregor Aisch may not be used to endorse or promote products
         derived from this software without specific prior written permission.
-  
+
       THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
       AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
       IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -669,7 +669,7 @@
       OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
       NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
       EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-  
+
       @source: https://github.com/gka/chroma.js
    */
 
@@ -1489,7 +1489,7 @@
     Convert from a qualitative parameter h and a quantitative parameter l to a 24-bit pixel.
     These formulas were invented by David Dalrymple to obtain maximum contrast without going
     out of gamut if the parameters are in the range 0-1.
-    
+
     A saturation multiplier was added by Gregor Aisch
      */
     var c, h, l, ref;
@@ -2064,7 +2064,7 @@
   };
 
   chroma.scale = function(colors, positions) {
-    var _classes, _colorCache, _colors, _correctLightness, _domain, _fixed, _max, _min, _mode, _nacol, _out, _padding, _pos, _spread, _useCache, classifyValue, f, getClass, getColor, resetCache, setColors, tmap;
+    var _classes, _colorCache, _colors, _correctLightness, _domain, _fixed, _gamma, _max, _min, _mode, _nacol, _out, _padding, _pos, _spread, _useCache, classifyValue, f, getClass, getColor, resetCache, setColors, tmap;
     _mode = 'rgb';
     _nacol = chroma('#ccc');
     _spread = 0;
@@ -2080,6 +2080,7 @@
     _correctLightness = false;
     _colorCache = {};
     _useCache = true;
+    _gamma = 1;
     setColors = function(colors) {
       var c, col, o, ref, ref1, w;
       if (colors == null) {
@@ -2143,11 +2144,8 @@
         if (_classes && _classes.length > 2) {
           c = getClass(val);
           t = c / (_classes.length - 2);
-          t = _padding[0] + (t * (1 - _padding[0] - _padding[1]));
         } else if (_max !== _min) {
           t = (val - _min) / (_max - _min);
-          t = _padding[0] + (t * (1 - _padding[0] - _padding[1]));
-          t = Math.min(1, Math.max(0, t));
         } else {
           t = 1;
         }
@@ -2157,6 +2155,11 @@
       if (!bypassMap) {
         t = tmap(t);
       }
+      if (_gamma !== 1) {
+        t = pow(t, _gamma);
+      }
+      t = _padding[0] + (t * (1 - _padding[0] - _padding[1]));
+      t = Math.min(1, Math.max(0, t));
       k = Math.floor(t * 10000);
       if (_useCache && _colorCache[k]) {
         col = _colorCache[k];
@@ -2360,9 +2363,18 @@
     };
     f.cache = function(c) {
       if (c != null) {
-        return _useCache = c;
+        _useCache = c;
+        return f;
       } else {
         return _useCache;
+      }
+    };
+    f.gamma = function(g) {
+      if (g != null) {
+        _gamma = g;
+        return f;
+      } else {
+        return _gamma;
       }
     };
     return f;

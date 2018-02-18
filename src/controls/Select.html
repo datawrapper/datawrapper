@@ -1,0 +1,23 @@
+<div class="control-group vis-option-type-select">
+    <label class="control-label">
+        {{{ label }}}
+    </label>
+
+    <div class="controls form-inline">
+        <select bind:value="value" style="width:{{ width }}">
+        {{#each options as opt}}
+            <option value="{{opt.value}}">{{opt.label}}</option>
+        {{/each}}
+        </select>
+    </div>
+</div>
+
+<script type="text/javascript">
+export default {
+    data () {
+        return {
+            width: 'auto'
+        };
+    }
+};
+</script>

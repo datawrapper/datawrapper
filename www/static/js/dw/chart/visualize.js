@@ -34,6 +34,9 @@ function(initHighlightSeries, visOptions, themes, loadVisDfd, initTabNav, enable
             onChartSave(chart, heightType);
         });
 
+
+        dw.backend.fire('vis-metas', _visMetas);
+
         syncUI();
 
         chart.load(dw.backend.__currentData).done(onDatasetLoaded);
@@ -55,15 +58,20 @@ function(initHighlightSeries, visOptions, themes, loadVisDfd, initTabNav, enable
     }
 
     function onChartSave(chart, heightType) {
+        var svelteControls = visMetas[dw.backend.currentChart.get('type')]['svelte-controls'];
         if (_themeHasChanged) {
             // update the iframe background color after theme changed
             iframe.one('load', updateVisBackground);
 
             dw.backend.fire('theme-changed-and-loaded');
-            loadOptions().done(function() {
-                loadVis();
+            if (svelteControls) {
                 themes.updateUI();
-            });
+            } else {
+                loadOptions().done(function() {
+                    loadVis();
+                    themes.updateUI();
+                });
+            }
         }
 
         if (_typeHasChanged) {
@@ -74,13 +82,16 @@ function(initHighlightSeries, visOptions, themes, loadVisDfd, initTabNav, enable
         if (_axesHaveChanged) dw.backend.fire('axes-changed');
         if (_transposed) dw.backend.fire('dataset-transposed');
 
-        if (_axesHaveChanged || _transposed || _typeHasChanged) {
+        if ((_axesHaveChanged && !svelteControls) || _transposed || _typeHasChanged) {
             // reload options
             loadOptions().done(function() {
                 dw.backend.fire('options-reloaded');
                 loadVis();
             });
             // remove all notifications
+            $("#notifications .notification").fadeOutAndRemove();
+        } else if (_axesHaveChanged && svelteControls) {
+            loadVis();
             $("#notifications .notification").fadeOutAndRemove();
         }
 
@@ -287,6 +298,8 @@ function(initHighlightSeries, visOptions, themes, loadVisDfd, initTabNav, enable
         dw.backend.currentVis.chart(chart);
         dw.backend.currentVis.dataset = chart.dataset().reset();
         dw.backend.currentVis.meta = visMetas[chart.get('type')];
+        dw.backend.fire('backend-vis-loaded', dw.backend.currentVis);
+
         visOptions.init(chart, visMetas[chart.get('type')]);
         if (!_optionsSynchronized) {
             _optionsSynchronized = true;
