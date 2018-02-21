@@ -3,7 +3,7 @@
 
 {{ parent() }}
 
-{{ hook('publish_before_content') }}
+{{ hook('publish_before_content', chart, user) }}
 
 <script type="text/javascript">
 dw.backend.ready(function() {
