@@ -119,7 +119,6 @@ dw.utils = {
                 !$(el).hasClass('qtip') &&
                 !$(el).hasClass('container') &&
                 !$(el).hasClass('noscript') &&
-                !($(el).attr('class').indexOf('overlay') > -1) &&
                 !$(el).attr('aria-hidden')) {
 
                 ch += $(el).outerHeight(false); // element height
