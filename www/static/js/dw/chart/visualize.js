@@ -1,6 +1,5 @@
 
 define([
-    './visualize/highlight',
     './visualize/options',
     './visualize/themes',
     './visualize/loadVisDeferred',
@@ -10,7 +9,7 @@ define([
     'js/misc/classify',
     'js/misc/jquery.easing'],
 
-function(initHighlightSeries, visOptions, themes, loadVisDfd, initTabNav, enableInlineEditing, liveUpdate, classify) {
+function(visOptions, themes, loadVisDfd, initTabNav, enableInlineEditing, liveUpdate, classify) {
 
     var _typeHasChanged = false,
         _themeHasChanged = false,
@@ -176,7 +175,6 @@ function(initHighlightSeries, visOptions, themes, loadVisDfd, initTabNav, enable
      */
     function visualizationRendered() {
         enableInlineEditing(iframe, chart);
-        if (initHighlightSeries) initHighlightSeries();
     }
 
     function showLoadingIndicator() {
@@ -284,7 +282,6 @@ function(initHighlightSeries, visOptions, themes, loadVisDfd, initTabNav, enable
     function onDatasetLoaded() {
         dw.backend.fire('dataset-loaded');
         loadVis();
-        if (initHighlightSeries) initHighlightSeries();
     }
 
     /** Set into `dw.backend.currentVis` the edited visualization (editor side) */
