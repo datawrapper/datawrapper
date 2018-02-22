@@ -71,9 +71,8 @@
             <i class="fa fa-chevron-up expand-group pull-right"></i>
             <i class="fa fa-chevron-down collapse-group pull-right"></i>
         </label>
-        <div class="option-group-content">
-
-            {% include "chart/visualize/highlight.twig" %}
+        <div class="option-group-content highlight-elements">
+            {{ svelte('highlight', {'chart': chart }) }}
         </div>
     </div>
 

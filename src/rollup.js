@@ -97,5 +97,6 @@ function buildLocale(app_id, locale, callback) {
 }
 
 build('publish');
+build('highlight');
 build('controls');
 
