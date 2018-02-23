@@ -197,6 +197,14 @@ dw.column = function(name, rows, type) {
             return _.find(_.range(rows.length), function(i) {
                 return column.val(i) == val;
             });
+        },
+
+        limitRows: function(numRows) {
+            if (origRows.length > numRows) {
+                origRows.length = numRows;
+                rows.length = numRows;
+                column.length = numRows;
+            }
         }
     };
     return column;

@@ -172,6 +172,19 @@ dw.dataset = function(columns, opts) {
                 columnsByName[col.name()] = col;
             });
             return dataset;
+        },
+
+        limitRows: function(numRows) {
+            _.each(columns, function(col) {
+                col.limitRows(numRows);
+            });
+        },
+
+        limitColumns: function(numCols) {
+            if (columns.length > numCols) {
+                columns.length = numCols;
+                origColumns.length = numCols;
+            }
         }
 
     };
@@ -363,6 +376,14 @@ dw.column = function(name, rows, type) {
             return _.find(_.range(rows.length), function(i) {
                 return column.val(i) == val;
             });
+        },
+
+        limitRows: function(numRows) {
+            if (origRows.length > numRows) {
+                origRows.length = numRows;
+                rows.length = numRows;
+                column.length = numRows;
+            }
         }
     };
     return column;

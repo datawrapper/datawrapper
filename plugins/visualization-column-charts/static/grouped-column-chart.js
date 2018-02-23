@@ -25,6 +25,14 @@
                 series_gap = 0.05, // pull from theme
                 row_gap = 0.01;
 
+            if (dataset.numRows() > 40 || dataset.numColumns() > 50) {
+                console.log('limit');
+                this.notify('Your dataset is too big for this chart type. You may want to consider using a different one (e.g. line chart or scatterplot).');
+            }
+
+            dataset.limitRows(40);
+            dataset.limitColumns(50);
+
             var label_direct = me._directLabeling();
 
             me.axesDef = me.axes();

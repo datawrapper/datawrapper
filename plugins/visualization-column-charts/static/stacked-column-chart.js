@@ -64,10 +64,10 @@
             me.__scales = {
                 y: d3.scale.linear().domain(me.__domain)
             };
-            
+
             var lh = me._directLabeling() ? 0 : ($('.legend div:last').offset().top - $('.legend div:first').offset().top),
                 svg = $(me._svgCanvas()),
-                ch = $(svg.parent()); 
+                ch = $(svg.parent());
 
             $(svg).height($(svg).height()-lh);
             $(ch).height($(ch).height()-lh);
