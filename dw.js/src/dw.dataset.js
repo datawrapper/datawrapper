@@ -148,6 +148,19 @@ dw.dataset = function(columns, opts) {
                 columnsByName[col.name()] = col;
             });
             return dataset;
+        },
+
+        limitRows: function(numRows) {
+            _.each(columns, function(col) {
+                col.limitRows(numRows);
+            });
+        },
+
+        limitColumns: function(numCols) {
+            if (columns.length > numCols) {
+                columns.length = numCols;
+                origColumns.length = numCols;
+            }
         }
 
     };

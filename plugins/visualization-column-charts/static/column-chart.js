@@ -8,6 +8,14 @@
             var me = this, filter, filterUI, sortBars, reverse, c, dataset = me.dataset,
                 chart_width, column_gap, row_gap, row, column, bars, theme = me.theme();
 
+            if (dataset.numRows() > 40 || dataset.numColumns() > 50) {
+                console.log('limit');
+                this.notify('Your dataset is too big for this chart type. You may want to consider using a different one (e.g. line chart or scatterplot).');
+            }
+
+            dataset.limitRows(40);
+            dataset.limitColumns(50);
+
             me.axesDef = me.axes();
             if (!me.axesDef) return;
 

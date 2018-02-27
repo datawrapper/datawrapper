@@ -170,7 +170,7 @@
 
             var css = '{font-weight:bold; background: '+c+'!important; color: #fff!important; border-color: '+c+'!important; }';
             $('<style>.dw-chart table th '+css+'</style>').appendTo(el);
-            $('<style type="text/css">@media (max-width: 560px) { .dw-chart table.responsive tr td:first-child '+css+' }</style>').appendTo(el);
+            $('<style type="text/css">@media (max-device-width: 540px) { .dw-chart table.responsive tr td:first-child '+css+' }</style>').appendTo(el);
             // $('.chart.vis-data-table .datatable-default th').css('background', c);
             // $('.chart.vis-data-table .datatable-default tr td:first-child').css('background', c);
 
