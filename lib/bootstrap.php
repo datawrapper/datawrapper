@@ -119,8 +119,14 @@ if (isset($dw_config['memcache'])) {
 }
 
 if (isset($dw_config['charts-s3'])) {
+    if (isset($dw_config['charts-s3']['region'])) {
+        $region = $dw_config['charts-s3']['region'];
+    } else {
+        $region = 'eu-central-1';
+    }
+
     $charts_s3 = new Aws\S3\S3Client([
-        'region' => 'eu-central-1',
+        'region' => $region,
         'version' => 'latest',
         'credentials' => [
             'key' => $dw_config['charts-s3']['aws-access-key-id'],
