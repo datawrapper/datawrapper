@@ -64,7 +64,7 @@ $app->get('/(chart|map)/:id/visualize', function ($id) use ($app) {
         }
 
         $page = array(
-            'title' => $chart->getID() . ' :: '.__('Visualize'),
+            'title' => strip_tags($chart->getTitle()).' - '.$chart->getID() . ' - '.__('Visualize'),
             'chartData' => $chart->loadData(),
             'chart' => $chart,
             'visualizations_deps' => DatawrapperVisualization::all('dependencies'),
