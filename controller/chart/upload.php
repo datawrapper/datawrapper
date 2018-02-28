@@ -14,7 +14,7 @@ $app->get('/chart/:id/upload', function ($id) use ($app) {
             $groups[$ds['type']]['datasets'][] = $ds;
         }
         $page = array(
-            'title' => $chart->getID() . ' :: '.__('Upload Data'),
+            'title' => strip_tags($chart->getTitle()).' - '.$chart->getID() . ' - '.__('Upload Data'),
             'chartData' => $chart->loadData(),
             'chart' => $chart,
             'datasets' => $groups,

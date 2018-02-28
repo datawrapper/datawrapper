@@ -11,7 +11,7 @@ $app->get('/chart/:id/describe', function ($id) use ($app) {
         $chart->refreshExternalData();
 
         $page = array(
-            'title' => $chart->getID() . ' :: '.__('Check & Describe'),
+            'title' => strip_tags($chart->getTitle()).' - '.$chart->getID() . ' - '.__('Check & Describe'),
             'chartData' => $chart->loadData(),
             'chart' => $chart,
             'readonly' => !$chart->isDataWritable($user)

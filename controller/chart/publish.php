@@ -83,7 +83,7 @@ $app->get('/(chart|map)/:id/publish(/:sub_page)?', function ($id) use ($app) {
         });
 
         $page = array(
-            'title' => $chart->getID() . ' :: '.__('Publish'),
+            'title' => strip_tags($chart->getTitle()).' - '.$chart->getID() . ' - '.__('Publish'),
             'chartData' => $chart->loadData(),
             'chart' => $chart,
             'visualizations' => DatawrapperVisualization::all(),
