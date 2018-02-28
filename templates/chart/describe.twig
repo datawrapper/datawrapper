@@ -160,6 +160,9 @@ dw.backend.ready(function() {
             <div class="buttons below-table pull-right">
                 <a class="btn transpose">{% trans "Transpose dataset" %}</a>
                 <a class="btn computed-columns"><i class="fa fa-calculator"></i> {% trans "computed columns / add-btn" %}...</a>
+
+                {{ hook('describe_after_computed_columns', chart) }}
+
                 <a class="btn disabled" id="reset-data-changes"><i class="fa fa-undo"></i> {% trans "Revert changes" %}...</a>
             </div>
 
