@@ -249,6 +249,7 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
     }
     $user = DatawrapperSession::getUser();
     $page['headlinks'] = $headlinks;
+    $page['favicon'] = $config['debug'] ? 'favicon-dev.png?v=3' : 'favicon.png?v=3';
     $page['user'] = $user;
     $page['userData'] = $user->isLoggedIn() ? $user->getUserData() : false;
     $page['language'] = substr(DatawrapperSession::getLanguage(), 0, 2);
