@@ -30,7 +30,7 @@
                 this.notify('Your dataset is too big for this chart type. You may want to consider using a different one (e.g. line chart or scatterplot).');
             }
 
-            dataset.limitRows(40);
+            dataset.limitRows(100);
             dataset.limitColumns(50);
 
             var label_direct = me._directLabeling();
