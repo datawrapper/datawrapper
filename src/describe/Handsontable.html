@@ -4,22 +4,60 @@
 <script>
     // import '/static/plugins/simple-maps/vendor/hot/handsontable.full.js?foo';
     import HOT from 'Handsontable';
+    import _range from 'underscore-es/range';
 
     export default {
+        methods: {
+            update() {
+                const {data, transpose, firstRowIsHeader, skipRows, hot} = this.get();
+
+                if (!data) return;
+
+                // get chart
+                const chart = this.store.get('dw_chart');
+
+                // pass dataset through chart to apply changes and computed columns
+                const ds = chart.dataset(dw.datasource.delimited({
+                    csv: data,
+                    transpose,
+                    firstRowIsHeader,
+                    skipRows
+                }).parse()).dataset();
+
+                ds.resortColumns([0,1,5,2,4,3]);
+
+                // construct HoT data array
+                const hot_data = [[]];
+                ds.eachColumn(c => hot_data[0].push(c.title()));
+                ds.eachRow(r => {
+                    const row = [];
+                    ds.eachColumn(col => row.push(col.val(r)));
+                    hot_data.push(row);
+                });
+
+                // pass data to hot
+                hot.loadData(hot_data);
+
+                hot.updateSettings({ cells: (row, col, prop) => {
+                    const {readonly} = this.get();
+                    return {
+                        readOnly: readonly || ds.column(col).isComputed && row === 0,
+                        renderer: getCellRenderer(this, ds, HOT, {}),
+                        // rowHeaders: _range(hot_data.length).map(r => 'R'+r)
+                    };
+                }});
+                hot.render();
+            }
+        },
         oncreate() {
             const {table} = this.get();
 
-            const cells = (row, col, prop) => {
-                const {readonly, dataset} = this.get();
-                return {
-                    readOnly: readonly || dataset.column(col).isComputed && row === 0,
-                    renderer: getCellRenderer(dataset, HOT, {})
-                };
-            };
-
             const hot = new HOT(this.refs.hot, {
                 data: [],
-                rowHeaders: true,
+                rowHeaders: (i) => {
+                    const ti = hot.getPlugin('ColumnSorting').translateRow(i);
+                    return ti+1;
+                },
                 colHeaders: true,
                 fixedRowsTop: 1,
                 filters: true,
@@ -29,56 +67,71 @@
                 fillHandle: false,
                 stretchH: 'all',
                 manualColumnMove: true,
-                comments: true,
-                contextMenu: true,
+                // comments: true,
+                // contextMenu: true,
+
+                // sorting
                 columnSorting: true,
                 sortIndicator: true,
-                cells
+                sortFunction: function(sortOrder, columnMeta) {
+                    return function(a, b) {
+                        var plugin = hot.getPlugin('columnSorting');
+                        var sortFunction;
+
+                        if (a[0] === 0) return -1;
+
+                        switch (columnMeta.type) {
+                            case 'date':
+                                sortFunction = plugin.dateSort;
+                                break;
+                            case 'numeric':
+                                sortFunction = plugin.numericSort;
+                                break;
+                            default:
+                                sortFunction = plugin.defaultSort;
+                        }
+
+                        return sortFunction(sortOrder, columnMeta)(a, b);
+                    };
+                },
+
+                // search
+                search: 'search'
             });
-            window.HT = hot;
+
+            this.set({hot});
 
             HOT.hooks.add('afterSetDataAtCell', (a,b,c,d) => {
                 console.log('afterSetDataAtCell', a,b,c,d);
                 // this.set({table});
             });
 
-            this.observe('dataset', (dataset) => {
-                if (!dataset || !dataset.list) return;
-                var header = [];
-                var data = [[]];
-                dataset.eachColumn((c) => data[0].push(c.title()));
-                dataset.eachRow((r,i) => {
-                    var row = [];
-                    dataset.eachColumn((col) => {
-                        row.push(col.val(r));
-                    });
-                    data.push(row);
-                });
-                hot.loadData(data);
-                hot.updateSettings({cells});
-                // comments
-                const comments = hot.getPlugin('comments');
-                comments.setCommentAtCell(2,2, 'Original: foobar');
-                comments.updateCommentMeta(2,2, {readOnly:true});
+            this.observe('data', (csvdata) => {
+                this.update();
+            });
+
+            this.observe('search', (query) => {
+                console.log('search', query);
+                const search_results = hot.search.query(query);
+                this.set({search_results});
                 hot.render();
             });
 
         },
         data() {
             return {
-                dataset: null,
-                table: [
-                    {id: 1, name: 'Ted Right', address: ''},
-                    {id: 2, name: 'Frank Honest', address: ''},
-                    {id: 3, name: 'Joan Well', address: ''},
-                    {id: 4, name: 'Gail Polite', address: ''},
-                    {id: 5, name: 'Michael Fair', address: ''}
-                ]
+                data: '',
+                readonly: false,
+                skipRows: 0,
+                firstRowIsHeader: true,
+                transpose: false,
+                search: '',
+                search_results: []
             };
         }
     };
 
-    function getCellRenderer(dataset, Handsontable, metadata) {
+    function getCellRenderer(app, dataset, Handsontable, metadata) {
         const colTypeIcons = {
             date: 'fa fa-clock-o'
         };
@@ -87,7 +140,8 @@
             TD.innerHTML = escaped; //this is faster than innerHTML. See: https://github.com/warpech/jquery-handsontable/wiki/JavaScript-&-DOM-performance-tips
         }
         return function(instance, td, row, col, prop, value, cellProperties) {
-            var column = dataset.column(col);
+            const column = dataset.column(col);
+            const {search_results} = app.get();
             if (row > 0) {
                 var formatter = chart.columnFormatter(column);
                 value = formatter(column.val(row - 1), true);
@@ -105,13 +159,15 @@
             } else {
                 td.classList.add(row % 2 ? 'oddRow' : 'evenRow');
             }
-
             // if (metadata.columnFormat.get(column.name()).ignore) {
             //     td.classList.add('ignored');
             // }
             // if(selectedColumns.indexOf(col) > -1) {
             //     td.classList.add('area'); //add blue area background if this cell is in selected column
             // }
+            search_results.forEach(res => {
+                if (res.row == row && res.col == col) td.classList.add('htSearchResult');
+            });
             if (row > 0 && !column.type(true).isValid(column.val(row-1))) {
                 td.classList.add('parsingError');
             }
@@ -127,6 +183,7 @@
 </script>
 
 <style lang="less">
+
 :global(#data-preview) {
     width: 770px;
     height: 500px;
@@ -170,11 +227,10 @@
             }
         }
 
-
         &.changed {
             position: relative;
 
-            &:before {
+            &:after {
                 content: ' ';
                 width: 0;
                 height: 0;
@@ -185,6 +241,10 @@
                 left: 0;
                 top: 0;
             }
+        }
+
+        &.htSearchResult {
+            background: yellow;
         }
     }
 
