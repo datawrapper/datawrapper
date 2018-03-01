@@ -12,17 +12,25 @@ dw.backend.ready(function() {
     });
 });
 </script>
+
+<style type="text/css">
+
+</style>
+
 <div class="dw-create-publish chart-editor">
     <div class="row">
-        <div class="span5">
+        <div class="span5 publish-step">
 
-            {% if user.isAbleToPublish %}
-                <a style="font-size:12px;display:block;text-align:right" href="?beta">Curious to beta-test our new publish interface?</a>
-            {% endif %}
-
-            {{ hook('render_chart_actions', chart, user) }}
+        {% if user.isGuest %}
+            {% include "chart/publish/guest.twig" %}
+        {% elseif not user.isActivated %}
+            {% include "chart/publish/pending-activation.twig" %}
+        {% else %}
+            {% include "chart/publish/activated.twig" %}
+        {% endif %}
 
         </div>
+
         <div class="span7">
             {% if user.isAbleToPublish %}
 
@@ -42,4 +50,6 @@ dw.backend.ready(function() {
 </div>
 
 
+
 {% endblock %}
+
