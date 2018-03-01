@@ -59,8 +59,10 @@ function buildLocale(app_id, locale, callback) {
         sourcemap: false,
         name: app_id,
         file: `../www/static/js/svelte/${app_id}.${locale}.js`,
-        format: app_id != 'controls' ? 'iife' : 'umd',
+        format: 'umd',
     };
+
+    if (app_id != 'controls') outputOptions.amd = { id: `svelte/${app_id}` };
 
     _rollup(bundle => {
         _generate(bundle, (code, map) => {
