@@ -1,4 +1,5 @@
 const fs = require('fs');
+const less = require('less');
 const rollup = require('rollup');
 const svelte = require('rollup-plugin-svelte');
 const resolve = require('rollup-plugin-node-resolve');
@@ -34,7 +35,26 @@ function buildLocale(app_id, locale, callback) {
                 },
                 // this results in smaller CSS files
                 cascade: false,
-                store: true
+                store: true,
+                preprocess: {
+                    style: ({ content, attributes }) => {
+                        if (attributes.lang !== 'less') return;
+                        return new Promise((fulfil, reject) => {
+                            less.render(content, {
+                                data: content,
+                                includePaths: ['src'],
+                                sourceMap: true,
+                            }, (err, result) => {
+                                if (err) return reject(err);
+
+                                fulfil({
+                                    code: result.css.toString(),
+                                    map: result.map.toString()
+                                });
+                            });
+                        });
+                    }
+                }
             }),
 
 
