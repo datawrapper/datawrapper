@@ -1,0 +1,49 @@
+<div class="chart-editor">
+    <div class="row">
+        <div class="span4">
+            <h3 class="first">{{ __("Make sure the data looks right") }}</h3>
+
+            <p>{{ __("Please make sure that Datawrapper interprets your data correctly. In the table number columns should be shown in blue, dates in green and text in black.") }}</p>
+
+            <Checkbox label="{{ __("First row as label") }}" bind:value="firstRowIsHeader" />
+            <Checkbox label="transpose" bind:value="transpose" />
+        </div>
+        <div class="span8">
+            <Handsontable bind:dataset />
+        </div>
+    </div>
+</div>
+
+<script>
+    import Handsontable from './Handsontable.html';
+    import Checkbox from '../controls/Checkbox.html';
+
+    export default {
+        components: { Handsontable, Checkbox },
+        computed: {
+            dataset (chartData, transpose, firstRowIsHeader, skipRows) {
+                if (!chartData) return null;
+                var ds = dw.datasource.delimited({
+                    csv: chartData, transpose,
+                    firstRowIsHeader, skipRows
+                }).parse();
+                console.log(chartData, ds);
+                return ds;
+            }
+        },
+        oncreate() {
+
+        },
+        data() {
+            return {
+                table: [
+                    {id: 1, name: 'Ted Right', address: ''},
+                    {id: 2, name: 'Frank Honest', address: ''},
+                    {id: 3, name: 'Joan Well', address: ''},
+                    {id: 4, name: 'Gail Polite', address: ''},
+                    {id: 5, name: 'Michael Fair', address: ''}
+                ]
+            };
+        }
+    };
+</script>

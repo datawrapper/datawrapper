@@ -1,0 +1,14 @@
+{% extends "chart/base.twig" %}
+
+{% block content %}
+
+{{ parent() }}
+
+{{ hook('describe_before_content', chart, user) }}
+
+<script type="text/javascript" src="/static/vendor/hot/handsontable.full.js"></script>
+<link rel="stylesheet" type="text/css" href="/static/vendor/hot/handsontable.min.css">
+
+{{ svelte('describe', svelte_data) }}
+
+{% endblock %}

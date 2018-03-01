@@ -55,6 +55,12 @@ $app->get('/chart/:id/describe', function ($id) use ($app) {
             's1' => '1 ('.number_format(0.01, 2, $d, $k).')'
         );
 
-        $app->render('chart/describe.twig', $page);
+        $page['svelte_data'] = [
+            'chart' => $chart,
+            'readonly' => !$chart->isDataWritable($user),
+            'chartData' => $chart->loadData(),
+        ];
+
+        $app->render('chart/describe'.($user->isAdmin() && $app->request()->get('beta') ? '-new' : '').'.twig', $page);
     });
 });

@@ -1,0 +1,938 @@
+(function (global, factory) {
+	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('Handsontable')) :
+	typeof define === 'function' && define.amd ? define('svelte/describe', ['Handsontable'], factory) :
+	(global.describe = factory(global.HOT));
+}(this, (function (HOT) { 'use strict';
+
+HOT = HOT && HOT.hasOwnProperty('default') ? HOT['default'] : HOT;
+
+function noop() {}
+
+function assign(target) {
+	var k,
+		source,
+		i = 1,
+		len = arguments.length;
+	for (; i < len; i++) {
+		source = arguments[i];
+		for (k in source) target[k] = source[k];
+	}
+
+	return target;
+}
+
+function appendNode(node, target) {
+	target.appendChild(node);
+}
+
+function insertNode(node, target, anchor) {
+	target.insertBefore(node, anchor);
+}
+
+function detachNode(node) {
+	node.parentNode.removeChild(node);
+}
+
+function createElement(name) {
+	return document.createElement(name);
+}
+
+function createText(data) {
+	return document.createTextNode(data);
+}
+
+function addListener(node, event, handler) {
+	node.addEventListener(event, handler, false);
+}
+
+function removeListener(node, event, handler) {
+	node.removeEventListener(event, handler, false);
+}
+
+function setStyle(node, key, value) {
+	node.style.setProperty(key, value);
+}
+
+function blankObject() {
+	return Object.create(null);
+}
+
+function destroy(detach) {
+	this.destroy = noop;
+	this.fire('destroy');
+	this.set = this.get = noop;
+
+	if (detach !== false) this._fragment.u();
+	this._fragment.d();
+	this._fragment = this._state = null;
+}
+
+function destroyDev(detach) {
+	destroy.call(this, detach);
+	this.destroy = function() {
+		console.warn('Component was already destroyed');
+	};
+}
+
+function differs(a, b) {
+	return a !== b || ((a && typeof a === 'object') || typeof a === 'function');
+}
+
+function dispatchObservers(component, group, changed, newState, oldState) {
+	for (var key in group) {
+		if (!changed[key]) continue;
+
+		var newValue = newState[key];
+		var oldValue = oldState[key];
+
+		var callbacks = group[key];
+		if (!callbacks) continue;
+
+		for (var i = 0; i < callbacks.length; i += 1) {
+			var callback = callbacks[i];
+			if (callback.__calling) continue;
+
+			callback.__calling = true;
+			callback.call(component, newValue, oldValue);
+			callback.__calling = false;
+		}
+	}
+}
+
+function fire(eventName, data) {
+	var handlers =
+		eventName in this._handlers && this._handlers[eventName].slice();
+	if (!handlers) return;
+
+	for (var i = 0; i < handlers.length; i += 1) {
+		handlers[i].call(this, data);
+	}
+}
+
+function get(key) {
+	return key ? this._state[key] : this._state;
+}
+
+function init(component, options) {
+	component._observers = { pre: blankObject(), post: blankObject() };
+	component._handlers = blankObject();
+	component._bind = options._bind;
+
+	component.options = options;
+	component.root = options.root || component;
+	component.store = component.root.store || options.store;
+}
+
+function observe(key, callback, options) {
+	var group = options && options.defer
+		? this._observers.post
+		: this._observers.pre;
+
+	(group[key] || (group[key] = [])).push(callback);
+
+	if (!options || options.init !== false) {
+		callback.__calling = true;
+		callback.call(this, this._state[key]);
+		callback.__calling = false;
+	}
+
+	return {
+		cancel: function() {
+			var index = group[key].indexOf(callback);
+			if (~index) group[key].splice(index, 1);
+		}
+	};
+}
+
+function observeDev(key, callback, options) {
+	var c = (key = '' + key).search(/[^\w]/);
+	if (c > -1) {
+		var message =
+			'The first argument to component.observe(...) must be the name of a top-level property';
+		if (c > 0)
+			message += ", i.e. '" + key.slice(0, c) + "' rather than '" + key + "'";
+
+		throw new Error(message);
+	}
+
+	return observe.call(this, key, callback, options);
+}
+
+function on(eventName, handler) {
+	if (eventName === 'teardown') return this.on('destroy', handler);
+
+	var handlers = this._handlers[eventName] || (this._handlers[eventName] = []);
+	handlers.push(handler);
+
+	return {
+		cancel: function() {
+			var index = handlers.indexOf(handler);
+			if (~index) handlers.splice(index, 1);
+		}
+	};
+}
+
+function onDev(eventName, handler) {
+	if (eventName === 'teardown') {
+		console.warn(
+			"Use component.on('destroy', ...) instead of component.on('teardown', ...) which has been deprecated and will be unsupported in Svelte 2"
+		);
+		return this.on('destroy', handler);
+	}
+
+	return on.call(this, eventName, handler);
+}
+
+function set(newState) {
+	this._set(assign({}, newState));
+	if (this.root._lock) return;
+	this.root._lock = true;
+	callAll(this.root._beforecreate);
+	callAll(this.root._oncreate);
+	callAll(this.root._aftercreate);
+	this.root._lock = false;
+}
+
+function _set(newState) {
+	var oldState = this._state,
+		changed = {},
+		dirty = false;
+
+	for (var key in newState) {
+		if (differs(newState[key], oldState[key])) changed[key] = dirty = true;
+	}
+	if (!dirty) return;
+
+	this._state = assign({}, oldState, newState);
+	this._recompute(changed, this._state);
+	if (this._bind) this._bind(changed, this._state);
+
+	if (this._fragment) {
+		dispatchObservers(this, this._observers.pre, changed, this._state, oldState);
+		this._fragment.p(changed, this._state);
+		dispatchObservers(this, this._observers.post, changed, this._state, oldState);
+	}
+}
+
+function setDev(newState) {
+	if (typeof newState !== 'object') {
+		throw new Error(
+			this._debugName + '.set was called without an object of data key-values to update.'
+		);
+	}
+
+	this._checkReadOnly(newState);
+	set.call(this, newState);
+}
+
+function callAll(fns) {
+	while (fns && fns.length) fns.pop()();
+}
+
+function _mount(target, anchor) {
+	this._fragment.m(target, anchor);
+}
+
+function _unmount() {
+	if (this._fragment) this._fragment.u();
+}
+
+var protoDev = {
+	destroy: destroyDev,
+	get: get,
+	fire: fire,
+	observe: observeDev,
+	on: onDev,
+	set: setDev,
+	teardown: destroyDev,
+	_recompute: noop,
+	_set: _set,
+	_mount: _mount,
+	_unmount: _unmount
+};
+
+/* describe/Handsontable.html generated by Svelte v1.53.0 */
+function data() {
+    return {
+        dataset: null,
+        table: [
+            {id: 1, name: 'Ted Right', address: ''},
+            {id: 2, name: 'Frank Honest', address: ''},
+            {id: 3, name: 'Joan Well', address: ''},
+            {id: 4, name: 'Gail Polite', address: ''},
+            {id: 5, name: 'Michael Fair', address: ''}
+        ]
+    };
+}
+
+function oncreate() {
+    const {table} = this.get();
+
+    const cells = (row, col, prop) => {
+        const {readonly, dataset} = this.get();
+        return {
+            readOnly: readonly || dataset.column(col).isComputed && row === 0,
+            renderer: getCellRenderer(dataset, HOT, {})
+        };
+    };
+
+    const hot = new HOT(this.refs.hot, {
+        data: [],
+        rowHeaders: true,
+        colHeaders: true,
+        fixedRowsTop: 1,
+        filters: true,
+        dropdownMenu: true,
+        startRows: 60,
+        startCols: 8,
+        fillHandle: false,
+        stretchH: 'all',
+        manualColumnMove: true,
+        comments: true,
+        contextMenu: true,
+        columnSorting: true,
+        sortIndicator: true,
+        cells
+    });
+    window.HT = hot;
+
+    HOT.hooks.add('afterSetDataAtCell', (a,b,c,d) => {
+        console.log('afterSetDataAtCell', a,b,c,d);
+        // this.set({table});
+    });
+
+    this.observe('dataset', (dataset) => {
+        if (!dataset || !dataset.list) return;
+        var data = [[]];
+        dataset.eachColumn((c) => data[0].push(c.title()));
+        dataset.eachRow((r,i) => {
+            var row = [];
+            dataset.eachColumn((col) => {
+                row.push(col.val(r));
+            });
+            data.push(row);
+        });
+        hot.loadData(data);
+        hot.updateSettings({cells});
+        // comments
+        const comments = hot.getPlugin('comments');
+        comments.setCommentAtCell(2,2, 'Original: foobar');
+        comments.updateCommentMeta(2,2, {readOnly:true});
+        hot.render();
+    });
+
+}
+
+function getCellRenderer(dataset, Handsontable, metadata) {
+    const colTypeIcons = {
+        date: 'fa fa-clock-o'
+    };
+    function HtmlCellRender(instance, TD, row, col, prop, value, cellProperties) {
+        var escaped = dw.utils.purifyHtml(Handsontable.helper.stringify(value));
+        TD.innerHTML = escaped; //this is faster than innerHTML. See: https://github.com/warpech/jquery-handsontable/wiki/JavaScript-&-DOM-performance-tips
+    }
+    return function(instance, td, row, col, prop, value, cellProperties) {
+        var column = dataset.column(col);
+        if (row > 0) {
+            var formatter = chart.columnFormatter(column);
+            value = formatter(column.val(row - 1), true);
+        }
+        if (parseInt(value, 10) < 0) { //if row contains negative number
+            td.classList.add('negative');
+        }
+        td.classList.add(column.type()+'Type');
+
+        if (row === 0) {
+            td.classList.add('firstRow');
+            if (colTypeIcons[column.type()]) {
+                value = '<i class="'+colTypeIcons[column.type()]+'"></i> ' + value;
+            }
+        } else {
+            td.classList.add(row % 2 ? 'oddRow' : 'evenRow');
+        }
+
+        // if (metadata.columnFormat.get(column.name()).ignore) {
+        //     td.classList.add('ignored');
+        // }
+        // if(selectedColumns.indexOf(col) > -1) {
+        //     td.classList.add('area'); //add blue area background if this cell is in selected column
+        // }
+        if (row > 0 && !column.type(true).isValid(column.val(row-1))) {
+            td.classList.add('parsingError');
+        }
+        if (cellProperties.readOnly) td.classList.add('readOnly');
+
+        if (chart.dataCellChanged(col, row)) {
+            td.classList.add('changed');
+        }
+        HtmlCellRender.apply(this, arguments);
+    };
+}
+
+function create_main_fragment(state, component) {
+	var div;
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			this.h();
+		},
+
+		h: function hydrate() {
+			div.id = "data-preview";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			component.refs.hot = div;
+		},
+
+		p: noop,
+
+		u: function unmount() {
+			detachNode(div);
+		},
+
+		d: function destroy$$1() {
+			if (component.refs.hot === div) component.refs.hot = null;
+		}
+	};
+}
+
+function Handsontable_1(options) {
+	this._debugName = '<Handsontable_1>';
+	if (!options || (!options.target && !options.root)) throw new Error("'target' is a required option");
+	init(this, options);
+	this.refs = {};
+	this._state = assign(data(), options.data);
+
+	var _oncreate = oncreate.bind(this);
+
+	if (!options.root) {
+		this._oncreate = [_oncreate];
+	} else {
+	 	this.root._oncreate.push(_oncreate);
+	 }
+
+	this._fragment = create_main_fragment(this._state, this);
+
+	if (options.target) {
+		if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		this._fragment.c();
+		this._fragment.m(options.target, options.anchor || null);
+
+		callAll(this._oncreate);
+	}
+}
+
+assign(Handsontable_1.prototype, protoDev);
+
+Handsontable_1.prototype._checkReadOnly = function _checkReadOnly(newState) {
+};
+
+/* controls/Checkbox.html generated by Svelte v1.53.0 */
+function create_main_fragment$1(state, component) {
+	var div, label, input, text, text_1;
+
+	function input_change_handler() {
+		component.set({ value: input.checked });
+	}
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			label = createElement("label");
+			input = createElement("input");
+			text = createText(" ");
+			text_1 = createText(state.label);
+			this.h();
+		},
+
+		h: function hydrate() {
+			addListener(input, "change", input_change_handler);
+			input.type = "checkbox";
+			label.className = "checkbox";
+			setStyle(label, "text-align", "left");
+			setStyle(label, "width", "100%");
+			setStyle(label, "position", "relative");
+			setStyle(label, "left", "0");
+			div.className = "control-group vis-option-group vis-option-type-checkbox";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			appendNode(label, div);
+			appendNode(input, label);
+
+			input.checked = state.value;
+
+			appendNode(text, label);
+			appendNode(text_1, label);
+		},
+
+		p: function update(changed, state) {
+			input.checked = state.value;
+			if (changed.label) {
+				text_1.data = state.label;
+			}
+		},
+
+		u: function unmount() {
+			detachNode(div);
+		},
+
+		d: function destroy$$1() {
+			removeListener(input, "change", input_change_handler);
+		}
+	};
+}
+
+function Checkbox(options) {
+	this._debugName = '<Checkbox>';
+	if (!options || (!options.target && !options.root)) throw new Error("'target' is a required option");
+	init(this, options);
+	this._state = assign({}, options.data);
+	if (!('value' in this._state)) console.warn("<Checkbox> was created without expected data property 'value'");
+	if (!('label' in this._state)) console.warn("<Checkbox> was created without expected data property 'label'");
+
+	this._fragment = create_main_fragment$1(this._state, this);
+
+	if (options.target) {
+		if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		this._fragment.c();
+		this._fragment.m(options.target, options.anchor || null);
+	}
+}
+
+assign(Checkbox.prototype, protoDev);
+
+Checkbox.prototype._checkReadOnly = function _checkReadOnly(newState) {
+};
+
+/* describe/App.html generated by Svelte v1.53.0 */
+function dataset(chartData, transpose, firstRowIsHeader, skipRows) {
+    if (!chartData) return null;
+    var ds = dw.datasource.delimited({
+        csv: chartData, transpose,
+        firstRowIsHeader, skipRows
+    }).parse();
+    console.log(chartData, ds);
+    return ds;
+}
+
+function data$1() {
+    return {
+        table: [
+            {id: 1, name: 'Ted Right', address: ''},
+            {id: 2, name: 'Frank Honest', address: ''},
+            {id: 3, name: 'Joan Well', address: ''},
+            {id: 4, name: 'Gail Polite', address: ''},
+            {id: 5, name: 'Michael Fair', address: ''}
+        ]
+    };
+}
+
+function oncreate$1() {
+
+}
+
+function create_main_fragment$2(state, component) {
+	var div, div_1, div_2, h3, text_value = "Überprüfe dass die Daten richtig aussehen", text, text_1, p, text_2_value = "Interpretiert Datawrapper deine Daten korrekt? In der nebenstehenden Tabelle sollten Zahlenspalten in blau, Datums-Spalten in grün und Textspalten in schwarz angezeigt werden.", text_2, text_3, checkbox_updating = {}, text_4, checkbox_1_updating = {}, text_6, div_3, handsontable_updating = {};
+
+	var checkbox_initial_data = { label: "Erste Zeile als Beschriftung" };
+	if ('firstRowIsHeader' in state) {
+		checkbox_initial_data.value = state.firstRowIsHeader;
+		checkbox_updating.value = true;
+	}
+	var checkbox = new Checkbox({
+		root: component.root,
+		data: checkbox_initial_data,
+		_bind: function(changed, childState) {
+			var state = component.get(), newState = {};
+			if (!checkbox_updating.value && changed.value) {
+				newState.firstRowIsHeader = childState.value;
+			}
+			checkbox_updating = assign({}, changed);
+			component._set(newState);
+			checkbox_updating = {};
+		}
+	});
+
+	component.root._beforecreate.push(function() {
+		var state = component.get(), childState = checkbox.get(), newState = {};
+		if (!childState) return;
+		if (!checkbox_updating.value) {
+			newState.firstRowIsHeader = childState.value;
+		}
+		checkbox_updating = { value: true };
+		component._set(newState);
+		checkbox_updating = {};
+	});
+
+	var checkbox_1_initial_data = { label: "transpose" };
+	if ('transpose' in state) {
+		checkbox_1_initial_data.value = state.transpose;
+		checkbox_1_updating.value = true;
+	}
+	var checkbox_1 = new Checkbox({
+		root: component.root,
+		data: checkbox_1_initial_data,
+		_bind: function(changed, childState) {
+			var state = component.get(), newState = {};
+			if (!checkbox_1_updating.value && changed.value) {
+				newState.transpose = childState.value;
+			}
+			checkbox_1_updating = assign({}, changed);
+			component._set(newState);
+			checkbox_1_updating = {};
+		}
+	});
+
+	component.root._beforecreate.push(function() {
+		var state = component.get(), childState = checkbox_1.get(), newState = {};
+		if (!childState) return;
+		if (!checkbox_1_updating.value) {
+			newState.transpose = childState.value;
+		}
+		checkbox_1_updating = { value: true };
+		component._set(newState);
+		checkbox_1_updating = {};
+	});
+
+	var handsontable_initial_data = {};
+	if ('dataset' in state) {
+		handsontable_initial_data.dataset = state.dataset ;
+		handsontable_updating.dataset = true;
+	}
+	var handsontable = new Handsontable_1({
+		root: component.root,
+		data: handsontable_initial_data,
+		_bind: function(changed, childState) {
+			var state = component.get(), newState = {};
+			if (!handsontable_updating.dataset && changed.dataset) {
+				newState.dataset = childState.dataset;
+			}
+			handsontable_updating = assign({}, changed);
+			component._set(newState);
+			handsontable_updating = {};
+		}
+	});
+
+	component.root._beforecreate.push(function() {
+		var state = component.get(), childState = handsontable.get(), newState = {};
+		if (!childState) return;
+		if (!handsontable_updating.dataset) {
+			newState.dataset = childState.dataset;
+		}
+		handsontable_updating = { dataset: true };
+		component._set(newState);
+		handsontable_updating = {};
+	});
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			div_1 = createElement("div");
+			div_2 = createElement("div");
+			h3 = createElement("h3");
+			text = createText(text_value);
+			text_1 = createText("\n\n            ");
+			p = createElement("p");
+			text_2 = createText(text_2_value);
+			text_3 = createText("\n\n            ");
+			checkbox._fragment.c();
+			text_4 = createText("\n            ");
+			checkbox_1._fragment.c();
+			text_6 = createText("\n        ");
+			div_3 = createElement("div");
+			handsontable._fragment.c();
+			this.h();
+		},
+
+		h: function hydrate() {
+			h3.className = "first";
+			div_2.className = "span4";
+			div_3.className = "span8";
+			div_1.className = "row";
+			div.className = "chart-editor";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			appendNode(div_1, div);
+			appendNode(div_2, div_1);
+			appendNode(h3, div_2);
+			appendNode(text, h3);
+			appendNode(text_1, div_2);
+			appendNode(p, div_2);
+			appendNode(text_2, p);
+			appendNode(text_3, div_2);
+			checkbox._mount(div_2, null);
+			appendNode(text_4, div_2);
+			checkbox_1._mount(div_2, null);
+			appendNode(text_6, div_1);
+			appendNode(div_3, div_1);
+			handsontable._mount(div_3, null);
+		},
+
+		p: function update(changed, state) {
+			var checkbox_changes = {};
+			checkbox_changes.label = "Erste Zeile als Beschriftung";
+			if (!checkbox_updating.value && changed.firstRowIsHeader) {
+				checkbox_changes.value = state.firstRowIsHeader;
+				checkbox_updating.value = true;
+			}
+			checkbox._set(checkbox_changes);
+			checkbox_updating = {};
+
+			var checkbox_1_changes = {};
+			if (!checkbox_1_updating.value && changed.transpose) {
+				checkbox_1_changes.value = state.transpose;
+				checkbox_1_updating.value = true;
+			}
+			checkbox_1._set(checkbox_1_changes);
+			checkbox_1_updating = {};
+
+			var handsontable_changes = {};
+			if (!handsontable_updating.dataset && changed.dataset) {
+				handsontable_changes.dataset = state.dataset ;
+				handsontable_updating.dataset = true;
+			}
+			handsontable._set(handsontable_changes);
+			handsontable_updating = {};
+
+			
+		},
+
+		u: function unmount() {
+			detachNode(div);
+		},
+
+		d: function destroy$$1() {
+			checkbox.destroy(false);
+			checkbox_1.destroy(false);
+			handsontable.destroy(false);
+		}
+	};
+}
+
+function App(options) {
+	this._debugName = '<App>';
+	if (!options || (!options.target && !options.root)) throw new Error("'target' is a required option");
+	init(this, options);
+	this._state = assign(data$1(), options.data);
+	this._recompute({ chartData: 1, transpose: 1, firstRowIsHeader: 1, skipRows: 1 }, this._state);
+	if (!('chartData' in this._state)) console.warn("<App> was created without expected data property 'chartData'");
+	if (!('transpose' in this._state)) console.warn("<App> was created without expected data property 'transpose'");
+	if (!('firstRowIsHeader' in this._state)) console.warn("<App> was created without expected data property 'firstRowIsHeader'");
+	if (!('skipRows' in this._state)) console.warn("<App> was created without expected data property 'skipRows'");
+	if (!('dataset' in this._state)) console.warn("<App> was created without expected data property 'dataset'");
+
+	var _oncreate = oncreate$1.bind(this);
+
+	if (!options.root) {
+		this._oncreate = [_oncreate];
+		this._beforecreate = [];
+		this._aftercreate = [];
+	} else {
+	 	this.root._oncreate.push(_oncreate);
+	 }
+
+	this._fragment = create_main_fragment$2(this._state, this);
+
+	if (options.target) {
+		if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		this._fragment.c();
+		this._fragment.m(options.target, options.anchor || null);
+
+		this._lock = true;
+		callAll(this._beforecreate);
+		callAll(this._oncreate);
+		callAll(this._aftercreate);
+		this._lock = false;
+	}
+}
+
+assign(App.prototype, protoDev);
+
+App.prototype._checkReadOnly = function _checkReadOnly(newState) {
+	if ('dataset' in newState && !this._updatingReadonlyProperty) throw new Error("<App>: Cannot set read-only property 'dataset'");
+};
+
+App.prototype._recompute = function _recompute(changed, state) {
+	if (changed.chartData || changed.transpose || changed.firstRowIsHeader || changed.skipRows) {
+		if (differs(state.dataset, (state.dataset = dataset(state.chartData, state.transpose, state.firstRowIsHeader, state.skipRows)))) changed.dataset = true;
+	}
+};
+
+function Store(state) {
+	this._observers = { pre: blankObject(), post: blankObject() };
+	this._changeHandlers = [];
+	this._dependents = [];
+
+	this._computed = blankObject();
+	this._sortedComputedProperties = [];
+
+	this._state = assign({}, state);
+}
+
+assign(Store.prototype, {
+	_add: function(component, props) {
+		this._dependents.push({
+			component: component,
+			props: props
+		});
+	},
+
+	_init: function(props) {
+		var state = {};
+		for (var i = 0; i < props.length; i += 1) {
+			var prop = props[i];
+			state['$' + prop] = this._state[prop];
+		}
+		return state;
+	},
+
+	_remove: function(component) {
+		var i = this._dependents.length;
+		while (i--) {
+			if (this._dependents[i].component === component) {
+				this._dependents.splice(i, 1);
+				return;
+			}
+		}
+	},
+
+	_sortComputedProperties: function() {
+		var computed = this._computed;
+		var sorted = this._sortedComputedProperties = [];
+		var cycles;
+		var visited = blankObject();
+
+		function visit(key) {
+			if (cycles[key]) {
+				throw new Error('Cyclical dependency detected');
+			}
+
+			if (visited[key]) return;
+			visited[key] = true;
+
+			var c = computed[key];
+
+			if (c) {
+				cycles[key] = true;
+				c.deps.forEach(visit);
+				sorted.push(c);
+			}
+		}
+
+		for (var key in this._computed) {
+			cycles = blankObject();
+			visit(key);
+		}
+	},
+
+	compute: function(key, deps, fn) {
+		var value;
+
+		var c = {
+			deps: deps,
+			update: function(state, changed, dirty) {
+				var values = deps.map(function(dep) {
+					if (dep in changed) dirty = true;
+					return state[dep];
+				});
+
+				if (dirty) {
+					var newValue = fn.apply(null, values);
+					if (differs(newValue, value)) {
+						value = newValue;
+						changed[key] = true;
+						state[key] = value;
+					}
+				}
+			}
+		};
+
+		c.update(this._state, {}, true);
+
+		this._computed[key] = c;
+		this._sortComputedProperties();
+	},
+
+	get: get,
+
+	observe: observe,
+
+	onchange: function(callback) {
+		this._changeHandlers.push(callback);
+		return {
+			cancel: function() {
+				var index = this._changeHandlers.indexOf(callback);
+				if (~index) this._changeHandlers.splice(index, 1);
+			}
+		};
+	},
+
+	set: function(newState) {
+		var oldState = this._state,
+			changed = this._changed = {},
+			dirty = false;
+
+		for (var key in newState) {
+			if (this._computed[key]) throw new Error("'" + key + "' is a read-only property");
+			if (differs(newState[key], oldState[key])) changed[key] = dirty = true;
+		}
+		if (!dirty) return;
+
+		this._state = assign({}, oldState, newState);
+
+		for (var i = 0; i < this._sortedComputedProperties.length; i += 1) {
+			this._sortedComputedProperties[i].update(this._state, changed);
+		}
+
+		for (var i = 0; i < this._changeHandlers.length; i += 1) {
+			this._changeHandlers[i](this._state, changed);
+		}
+
+		dispatchObservers(this, this._observers.pre, changed, this._state, oldState);
+
+		var dependents = this._dependents.slice(); // guard against mutations
+		for (var i = 0; i < dependents.length; i += 1) {
+			var dependent = dependents[i];
+			var componentState = {};
+			dirty = false;
+
+			for (var j = 0; j < dependent.props.length; j += 1) {
+				var prop = dependent.props[j];
+				if (prop in changed) {
+					componentState['$' + prop] = this._state[prop];
+					dirty = true;
+				}
+			}
+
+			if (dirty) dependent.component.set(componentState);
+		}
+
+		dispatchObservers(this, this._observers.post, changed, this._state, oldState);
+	}
+});
+
+const store = new Store({});
+
+const data$2 = {
+    chart: {
+        id: ''
+    },
+    readonly: false,
+    chartData: '',
+    transpose: false,
+    firstRowIsHeader: true,
+    skipRows: 0
+};
+
+var main = { App, store, data: data$2 };
+
+return main;
+
+})));
