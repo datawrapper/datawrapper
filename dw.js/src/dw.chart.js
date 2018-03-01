@@ -223,6 +223,7 @@ dw.chart = function(attributes) {
     function applyChanges(dataset) {
         var changes = chart.get('metadata.data.changes', []);
         var transpose = chart.get('metadata.data.transpose', false);
+        // apply changes
         _.each(changes, function(change) {
             var row = "row", column = "column";
             if (transpose) {
@@ -240,6 +241,7 @@ dw.chart = function(attributes) {
             }
         });
 
+        // overwrite column types
         var columnFormats = chart.get('metadata.data.column-format', {});
         _.each(columnFormats, function(columnFormat, key) {
             if (columnFormat.type && dataset.hasColumn(key)) {
