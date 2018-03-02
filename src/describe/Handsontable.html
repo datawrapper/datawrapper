@@ -1,4 +1,3 @@
-
 <div id="data-preview" ref:hot />
 
 <script>
@@ -16,6 +15,8 @@
                 // get chart
                 const chart = this.store.get('dw_chart');
 
+                console.log('raw order', chart.get('metadata.data.column-order'));
+
                 // pass dataset through chart to apply changes and computed columns
                 const ds = chart.dataset(dw.datasource.delimited({
                     csv: data,
@@ -24,7 +25,9 @@
                     skipRows
                 }).parse()).dataset();
 
-                ds.resortColumns([0,1,5,2,4,3]);
+
+                this.set({columnOrder: ds.columnOrder()});
+                console.log('col order 1', this.get('columnOrder'));
 
                 // construct HoT data array
                 const hot_data = [[]];
@@ -38,15 +41,30 @@
                 // pass data to hot
                 hot.loadData(hot_data);
 
-                hot.updateSettings({ cells: (row, col, prop) => {
-                    const {readonly} = this.get();
-                    return {
-                        readOnly: readonly || ds.column(col).isComputed && row === 0,
-                        renderer: getCellRenderer(this, ds, HOT, {}),
-                        // rowHeaders: _range(hot_data.length).map(r => 'R'+r)
-                    };
-                }});
+                hot.updateSettings({
+                    cells: (row, col, prop) => {
+                        const {readonly} = this.get();
+                        return {
+                            readOnly: readonly || ds.column(col).isComputed && row === 0,
+                            renderer: getCellRenderer(this, ds, HOT, {}),
+                            // rowHeaders: _range(hot_data.length).map(r => 'R'+r)
+                        };
+                    },
+                    manualColumnMove: []
+                });
                 hot.render();
+            }
+        },
+        computed: {
+            currentResult (searchResults, searchIndex) {
+                if (!searchResults || !searchResults.length) return null;
+                const l = searchResults.length;
+                if (searchIndex < 0 || searchIndex >= l) {
+                    while (searchIndex<0) searchIndex += l;
+                    if (searchIndex > l) searchIndex = searchIndex % l;
+                }
+                console.log(searchResults[searchIndex]);
+                return searchResults[searchIndex];
             }
         },
         oncreate() {
@@ -62,11 +80,13 @@
                 fixedRowsTop: 1,
                 filters: true,
                 dropdownMenu: true,
-                startRows: 60,
+                startRows: 13,
                 startCols: 8,
                 fillHandle: false,
                 stretchH: 'all',
+                height: 400,
                 manualColumnMove: true,
+                selectionMode: 'range',
                 // comments: true,
                 // contextMenu: true,
 
@@ -99,11 +119,38 @@
                 search: 'search'
             });
 
+            window.HT = hot;
+            console.log(hot, window.HT);
             this.set({hot});
 
             HOT.hooks.add('afterSetDataAtCell', (a,b,c,d) => {
                 console.log('afterSetDataAtCell', a,b,c,d);
                 // this.set({table});
+            });
+            HOT.hooks.add('afterColumnMove', (srcColumns, tgtIndex) => {
+                console.log('afterColumnMove', srcColumns, tgtIndex);
+                if (!srcColumns.length) return;
+                const {columnOrder} = this.get();
+                console.log('col order', columnOrder, tgtIndex);
+                const newOrder = columnOrder.slice(0);
+                const after = columnOrder[tgtIndex];
+                console.log('after', after);
+                const elements = newOrder.splice(srcColumns[0], srcColumns.length);
+                console.log('removed elements', elements, 'from order', newOrder);
+                const insertAt = after ? newOrder.indexOf(after) : newOrder.length;
+                newOrder.splice(insertAt, 0, ...elements);
+                console.log('new order', newOrder);
+                this.store.get('dw_chart').set('metadata.data.column-order', newOrder.slice(0));
+                this.set({columnOrder: newOrder});
+                // update selection
+                const {hot} = this.get();
+                HOT.hooks.once('afterRender', () => {
+                    console.log('post render');
+                    setTimeout(() => {
+                        hot.selectCell(0, insertAt, hot.countRows()-1, insertAt+elements.length-1);
+                    }, 10);
+                });
+                this.update();
             });
 
             this.observe('data', (csvdata) => {
@@ -112,8 +159,15 @@
 
             this.observe('search', (query) => {
                 console.log('search', query);
-                const search_results = hot.search.query(query);
-                this.set({search_results});
+                const searchResults = hot.search.query(query);
+                this.set({searchResults});
+                hot.render();
+            });
+
+            this.observe('currentResult', (res) => {
+                // console.log('cur search res', res);
+                if (!res || !hot) return;
+                hot.scrollViewportTo(res.row, res.col, res.col == hot.countRows()-1);
                 hot.render();
             });
 
@@ -124,9 +178,10 @@
                 readonly: false,
                 skipRows: 0,
                 firstRowIsHeader: true,
+                searchIndex: 0,
                 transpose: false,
                 search: '',
-                search_results: []
+                searchResults: [],
             };
         }
     };
@@ -141,7 +196,7 @@
         }
         return function(instance, td, row, col, prop, value, cellProperties) {
             const column = dataset.column(col);
-            const {search_results} = app.get();
+            const {searchResults, currentResult} = app.get();
             if (row > 0) {
                 var formatter = chart.columnFormatter(column);
                 value = formatter(column.val(row - 1), true);
@@ -165,9 +220,14 @@
             // if(selectedColumns.indexOf(col) > -1) {
             //     td.classList.add('area'); //add blue area background if this cell is in selected column
             // }
-            search_results.forEach(res => {
-                if (res.row == row && res.col == col) td.classList.add('htSearchResult');
+            searchResults.forEach(res => {
+                if (res.row == row && res.col == col) {
+                    td.classList.add('htSearchResult');
+                }
             });
+            if (currentResult && currentResult.row == row && currentResult.col == col) {
+                td.classList.add('htCurrentSearchResult');
+            }
             if (row > 0 && !column.type(true).isValid(column.val(row-1))) {
                 td.classList.add('parsingError');
             }
@@ -186,8 +246,7 @@
 
 :global(#data-preview) {
     width: 770px;
-    height: 500px;
-    max-height: 500px;
+    /*height: 400px;*/
     overflow: auto;
 
     tr td, tr th {
@@ -244,7 +303,10 @@
         }
 
         &.htSearchResult {
-            background: yellow;
+            background: #ffd;
+        }
+        &.htCurrentSearchResult {
+            background: #fffe83;
         }
     }
 

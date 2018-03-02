@@ -10,18 +10,30 @@
         </div>
         <div class="span8">
             <div class="input-append">
-                <input type="text" placeholder="{{__('Search data table')}}" bind:value="search" />
+                <input type="text" on:keypress="keyPress(event)" placeholder="{{__('Search data table')}}" bind:value="search" ref:search />
                 <div class="btn-group">
-                  <button class="btn"><i class="fa fa-chevron-up"></i></button>
-                  <button class="btn"><i class="fa fa-chevron-down"></i></button>
+                  <button class="btn" on:click="nextResult(-1)">
+                    <i class="fa fa-chevron-up"></i></button>
+                  <button class="btn" on:click="nextResult(+1)">
+                    <i class="fa fa-chevron-down"></i></button>
                 </div>
+            </div>
+
+            <div class="results">
+            {{#if searchResults.length > 0}}
+                {{searchIndexSafe+1}} of {{searchResults.length}} cells matching
+            {{elseif search}}
+                No matches found
+            {{/if}}
             </div>
 
             <Handsontable
                 bind:data="chartData"
                 bind:transpose
                 bind:firstRowIsHeader
-                bind:search />
+                bind:search
+                bind:searchResults
+                bind:searchIndex />
         </div>
     </div>
 </div>
@@ -33,17 +45,56 @@
     export default {
         components: { Handsontable, Checkbox },
         computed: {
+            searchIndexSafe (searchIndex, searchResults) {
+                if (searchIndex<0) searchIndex+=searchResults.length;
+                searchIndex = searchIndex % searchResults.length;
+                return searchIndex;
+            }
         },
         oncreate() {
-
+            window.addEventListener('keypress', (event) => {
+                console.log('event',event);
+                if (event.ctrlKey && event.key == 'f') {
+                    console.log('search!');
+                    event.preventDefault();
+                    if (this.refs.search != window.document.activeElement) {
+                        this.refs.search.focus();
+                    } else {
+                        this.nextResult(+1);
+                    }
+                }
+            });
+        },
+        methods: {
+            nextResult (diff) {
+                let {searchIndex, searchResults} = this.get();
+                searchIndex += diff;
+                if (searchIndex<0) searchIndex+=searchResults.length;
+                searchIndex = searchIndex % searchResults.length;
+                this.set({searchIndex});
+            },
+            keyPress (event) {
+                if (event.key == 'F3') this.nextResult(event.shiftKey ? -1 : 1);
+            }
         },
         data() {
             return {
                 search: '',
                 chartData: '',
                 transpose: false,
-                firstRowIsHeader: true
+                firstRowIsHeader: true,
+                searchIndex: 0,
+                searchResults: []
             };
         }
     };
 </script>
+
+<style lang="less">
+    .results {
+        color: gray;
+        display: inline-block;
+        vertical-align: text-bottom;
+        margin-left: 1ex;
+    }
+</style>
