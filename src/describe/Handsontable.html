@@ -1,7 +1,6 @@
 <div id="data-preview" ref:hot />
 
 <script>
-    // import '/static/plugins/simple-maps/vendor/hot/handsontable.full.js?foo';
     import HOT from 'Handsontable';
     import _range from 'underscore-es/range';
 
@@ -127,25 +126,20 @@
                 console.log('afterSetDataAtCell', a,b,c,d);
                 // this.set({table});
             });
+
             HOT.hooks.add('afterColumnMove', (srcColumns, tgtIndex) => {
-                console.log('afterColumnMove', srcColumns, tgtIndex);
                 if (!srcColumns.length) return;
                 const {columnOrder} = this.get();
-                console.log('col order', columnOrder, tgtIndex);
                 const newOrder = columnOrder.slice(0);
                 const after = columnOrder[tgtIndex];
-                console.log('after', after);
                 const elements = newOrder.splice(srcColumns[0], srcColumns.length);
-                console.log('removed elements', elements, 'from order', newOrder);
                 const insertAt = after ? newOrder.indexOf(after) : newOrder.length;
                 newOrder.splice(insertAt, 0, ...elements);
-                console.log('new order', newOrder);
                 this.store.get('dw_chart').set('metadata.data.column-order', newOrder.slice(0));
                 this.set({columnOrder: newOrder});
                 // update selection
                 const {hot} = this.get();
                 HOT.hooks.once('afterRender', () => {
-                    console.log('post render');
                     setTimeout(() => {
                         hot.selectCell(0, insertAt, hot.countRows()-1, insertAt+elements.length-1);
                     }, 10);
@@ -158,7 +152,6 @@
             });
 
             this.observe('search', (query) => {
-                console.log('search', query);
                 const searchResults = hot.search.query(query);
                 this.set({searchResults});
                 hot.render();
