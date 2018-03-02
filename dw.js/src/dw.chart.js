@@ -71,7 +71,7 @@ dw.chart = function(attributes) {
         // returns the dataset
         dataset: function(ds) {
             if (arguments.length) {
-                dataset = applyChanges(addComputedColumns(ds));
+                dataset = reorderColumns(applyChanges(addComputedColumns(ds)));
                 return chart;
             }
             return dataset;
@@ -219,6 +219,14 @@ dw.chart = function(attributes) {
         }
 
     };
+
+    function reorderColumns(dataset) {
+        var order = chart.get('metadata.data.column-order', []);
+        if (order.length && order.length == dataset.numColumns()) {
+            dataset.columnOrder(order);
+        }
+        return dataset;
+    }
 
     function applyChanges(dataset) {
         var changes = chart.get('metadata.data.changes', []);

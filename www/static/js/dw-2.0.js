@@ -178,6 +178,7 @@ dw.dataset = function(columns, opts) {
             _.each(columns, function(col) {
                 col.limitRows(numRows);
             });
+            return dataset;
         },
 
         limitColumns: function(numCols) {
@@ -185,7 +186,21 @@ dw.dataset = function(columns, opts) {
                 columns.length = numCols;
                 origColumns.length = numCols;
             }
-        }
+            return dataset;
+        },
+
+        columnOrder: function(sortOrder) {
+            if (arguments.length) {
+                columns.length = 0;
+                sortOrder.forEach(function(i) {
+                    columns.push(origColumns[i]);
+                });
+                return dataset;
+            }
+            return columns.map(function(c) {
+                return origColumns.indexOf(c);
+            });
+        },
 
     };
     return dataset;
@@ -1663,7 +1678,7 @@ dw.chart = function(attributes) {
         // returns the dataset
         dataset: function(ds) {
             if (arguments.length) {
-                dataset = applyChanges(addComputedColumns(ds));
+                dataset = reorderColumns(applyChanges(addComputedColumns(ds)));
                 return chart;
             }
             return dataset;
@@ -1812,9 +1827,18 @@ dw.chart = function(attributes) {
 
     };
 
+    function reorderColumns(dataset) {
+        var order = chart.get('metadata.data.column-order', []);
+        if (order.length && order.length == dataset.numColumns()) {
+            dataset.columnOrder(order);
+        }
+        return dataset;
+    }
+
     function applyChanges(dataset) {
         var changes = chart.get('metadata.data.changes', []);
         var transpose = chart.get('metadata.data.transpose', false);
+        // apply changes
         _.each(changes, function(change) {
             var row = "row", column = "column";
             if (transpose) {
@@ -1832,6 +1856,7 @@ dw.chart = function(attributes) {
             }
         });
 
+        // overwrite column types
         var columnFormats = chart.get('metadata.data.column-format', {});
         _.each(columnFormats, function(columnFormat, key) {
             if (columnFormat.type && dataset.hasColumn(key)) {

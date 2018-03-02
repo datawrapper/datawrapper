@@ -154,6 +154,7 @@ dw.dataset = function(columns, opts) {
             _.each(columns, function(col) {
                 col.limitRows(numRows);
             });
+            return dataset;
         },
 
         limitColumns: function(numCols) {
@@ -161,7 +162,21 @@ dw.dataset = function(columns, opts) {
                 columns.length = numCols;
                 origColumns.length = numCols;
             }
-        }
+            return dataset;
+        },
+
+        columnOrder: function(sortOrder) {
+            if (arguments.length) {
+                columns.length = 0;
+                sortOrder.forEach(function(i) {
+                    columns.push(origColumns[i]);
+                });
+                return dataset;
+            }
+            return columns.map(function(c) {
+                return origColumns.indexOf(c);
+            });
+        },
 
     };
     return dataset;
