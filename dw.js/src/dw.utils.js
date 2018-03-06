@@ -110,7 +110,9 @@ dw.utils = {
         }
         var ch = 0, bottom = 0; // summed height of children, 10px for top & bottom margin
         $('body > *').each(function(i, el) {
-            var t = el.tagName.toLowerCase();
+            var t = el.tagName.toLowerCase(),
+                cls = $(el).attr('class') || "";
+
             if (
                 t != 'script' &&
                 t != 'style' &&
@@ -119,7 +121,8 @@ dw.utils = {
                 !$(el).hasClass('qtip') &&
                 !$(el).hasClass('container') &&
                 !$(el).hasClass('noscript') &&
-                !$(el).attr('aria-hidden')) {
+                !$(el).attr('aria-hidden') &&
+                cls.indexOf("overlay") == -1) {
 
                 ch += $(el).outerHeight(false); // element height
             }
