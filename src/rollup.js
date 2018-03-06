@@ -1,4 +1,5 @@
 const fs = require('fs');
+const less = require('less');
 const rollup = require('rollup');
 const svelte = require('rollup-plugin-svelte');
 const resolve = require('rollup-plugin-node-resolve');
@@ -19,7 +20,7 @@ function buildLocale(app_id, locale, callback) {
     const messages = JSON.parse(fs.readFileSync(`../locale/${locale}.json`, 'utf-8'));
     const inputOptions = {
         input: `${app_id}/main.js`,
-        external: ['chroma'],
+        external: ['chroma', 'Handsontable'],
         plugins: [
             i18n({
                 language: messages
@@ -34,7 +35,26 @@ function buildLocale(app_id, locale, callback) {
                 },
                 // this results in smaller CSS files
                 cascade: false,
-                store: true
+                store: true,
+                preprocess: {
+                    style: ({ content, attributes }) => {
+                        if (attributes.lang !== 'less') return;
+                        return new Promise((fulfil, reject) => {
+                            less.render(content, {
+                                data: content,
+                                includePaths: ['src'],
+                                sourceMap: true,
+                            }, (err, result) => {
+                                if (err) return reject(err);
+
+                                fulfil({
+                                    code: result.css.toString(),
+                                    map: result.map.toString()
+                                });
+                            });
+                        });
+                    }
+                }
             }),
 
 
@@ -59,8 +79,10 @@ function buildLocale(app_id, locale, callback) {
         sourcemap: false,
         name: app_id,
         file: `../www/static/js/svelte/${app_id}.${locale}.js`,
-        format: app_id != 'controls' ? 'iife' : 'umd',
+        format: 'umd',
     };
+
+    if (app_id != 'controls') outputOptions.amd = { id: `svelte/${app_id}` };
 
     _rollup(bundle => {
         _generate(bundle, (code, map) => {
@@ -96,6 +118,7 @@ function buildLocale(app_id, locale, callback) {
     }
 }
 
+build('describe');
 build('publish');
 build('highlight');
 build('controls');

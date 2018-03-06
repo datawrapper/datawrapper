@@ -1,0 +1,24 @@
+<script type="text/javascript" src="/static/js/svelte/{{ app_id }}.{{ locale }}.js?v={{sha}}"></script>
+<link rel="stylesheet" type="text/css" href="/static/css/svelte/{{ app_id }}.css?v={{sha}}">
+<div id="svelte-{{ app_id }}"></div>
+<script type="text/javascript">
+
+require(['svelte/{{ app_id }}'], function(mod) {
+
+    var store = mod.store, App = mod.App, data = mod.data;
+
+    if (dw.backend.currentChart) {
+        store.set({ dw_chart:chart });
+    }
+
+    var app = new App({
+        store: store,
+        target: document.querySelector('#svelte-{{ app_id }}'),
+        data: data || {}
+    });
+
+    app.set({{ twig_data | json | raw }} || {});
+
+    if (mod.init) mod.init(app);
+});
+</script>

@@ -1821,6 +1821,10 @@ uglify-es@^3.3.7:
     commander "~2.13.0"
     source-map "~0.6.1"
 
+underscore-es@^1.9.8:
+  version "1.9.8"
+  resolved "https://registry.yarnpkg.com/underscore-es/-/underscore-es-1.9.8.tgz#a714575274b27b0b1d93de1747a4d153d8de6776"
+
 underscore.string@~3.2.3:
   version "3.2.3"
   resolved "https://registry.yarnpkg.com/underscore.string/-/underscore.string-3.2.3.tgz#806992633665d5e5fcb4db1fb3a862eb68e9e6da"

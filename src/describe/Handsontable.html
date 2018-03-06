@@ -1,0 +1,316 @@
+<div id="data-preview" ref:hot />
+
+<script>
+    import HOT from 'Handsontable';
+    import _range from 'underscore-es/range';
+
+    export default {
+        methods: {
+            update() {
+                const {data, transpose, firstRowIsHeader, skipRows, hot} = this.get();
+
+                if (!data) return;
+
+                // get chart
+                const chart = this.store.get('dw_chart');
+
+                console.log('raw order', chart.get('metadata.data.column-order'));
+
+                // pass dataset through chart to apply changes and computed columns
+                const ds = chart.dataset(dw.datasource.delimited({
+                    csv: data,
+                    transpose,
+                    firstRowIsHeader,
+                    skipRows
+                }).parse()).dataset();
+
+
+                this.set({columnOrder: ds.columnOrder()});
+                console.log('col order 1', this.get('columnOrder'));
+
+                // construct HoT data array
+                const hot_data = [[]];
+                ds.eachColumn(c => hot_data[0].push(c.title()));
+                ds.eachRow(r => {
+                    const row = [];
+                    ds.eachColumn(col => row.push(col.val(r)));
+                    hot_data.push(row);
+                });
+
+                // pass data to hot
+                hot.loadData(hot_data);
+
+                hot.updateSettings({
+                    cells: (row, col, prop) => {
+                        const {readonly} = this.get();
+                        return {
+                            readOnly: readonly || ds.column(col).isComputed && row === 0,
+                            renderer: getCellRenderer(this, ds, HOT, {}),
+                            // rowHeaders: _range(hot_data.length).map(r => 'R'+r)
+                        };
+                    },
+                    manualColumnMove: []
+                });
+                hot.render();
+            }
+        },
+        computed: {
+            currentResult (searchResults, searchIndex) {
+                if (!searchResults || !searchResults.length) return null;
+                const l = searchResults.length;
+                if (searchIndex < 0 || searchIndex >= l) {
+                    while (searchIndex<0) searchIndex += l;
+                    if (searchIndex > l) searchIndex = searchIndex % l;
+                }
+                console.log(searchResults[searchIndex]);
+                return searchResults[searchIndex];
+            }
+        },
+        oncreate() {
+            const {table} = this.get();
+
+            const hot = new HOT(this.refs.hot, {
+                data: [],
+                rowHeaders: (i) => {
+                    const ti = hot.getPlugin('ColumnSorting').translateRow(i);
+                    return ti+1;
+                },
+                colHeaders: true,
+                fixedRowsTop: 1,
+                filters: true,
+                dropdownMenu: true,
+                startRows: 13,
+                startCols: 8,
+                fillHandle: false,
+                stretchH: 'all',
+                height: 400,
+                manualColumnMove: true,
+                selectionMode: 'range',
+                // comments: true,
+                // contextMenu: true,
+
+                // sorting
+                columnSorting: true,
+                sortIndicator: true,
+                sortFunction: function(sortOrder, columnMeta) {
+                    return function(a, b) {
+                        var plugin = hot.getPlugin('columnSorting');
+                        var sortFunction;
+
+                        if (a[0] === 0) return -1;
+
+                        switch (columnMeta.type) {
+                            case 'date':
+                                sortFunction = plugin.dateSort;
+                                break;
+                            case 'numeric':
+                                sortFunction = plugin.numericSort;
+                                break;
+                            default:
+                                sortFunction = plugin.defaultSort;
+                        }
+
+                        return sortFunction(sortOrder, columnMeta)(a, b);
+                    };
+                },
+
+                // search
+                search: 'search'
+            });
+
+            window.HT = hot;
+            console.log(hot, window.HT);
+            this.set({hot});
+
+            HOT.hooks.add('afterSetDataAtCell', (a,b,c,d) => {
+                console.log('afterSetDataAtCell', a,b,c,d);
+                // this.set({table});
+            });
+
+            HOT.hooks.add('afterColumnMove', (srcColumns, tgtIndex) => {
+                if (!srcColumns.length) return;
+                const {columnOrder} = this.get();
+                const newOrder = columnOrder.slice(0);
+                const after = columnOrder[tgtIndex];
+                const elements = newOrder.splice(srcColumns[0], srcColumns.length);
+                const insertAt = after ? newOrder.indexOf(after) : newOrder.length;
+                newOrder.splice(insertAt, 0, ...elements);
+                this.store.get('dw_chart').set('metadata.data.column-order', newOrder.slice(0));
+                this.set({columnOrder: newOrder});
+                // update selection
+                const {hot} = this.get();
+                HOT.hooks.once('afterRender', () => {
+                    setTimeout(() => {
+                        hot.selectCell(0, insertAt, hot.countRows()-1, insertAt+elements.length-1);
+                    }, 10);
+                });
+                this.update();
+            });
+
+            this.observe('data', (csvdata) => {
+                this.update();
+            });
+
+            this.observe('search', (query) => {
+                const searchResults = hot.search.query(query);
+                this.set({searchResults});
+                hot.render();
+            });
+
+            this.observe('currentResult', (res) => {
+                // console.log('cur search res', res);
+                if (!res || !hot) return;
+                hot.scrollViewportTo(res.row, res.col, res.col == hot.countRows()-1);
+                hot.render();
+            });
+
+        },
+        data() {
+            return {
+                data: '',
+                readonly: false,
+                skipRows: 0,
+                firstRowIsHeader: true,
+                searchIndex: 0,
+                transpose: false,
+                search: '',
+                searchResults: [],
+            };
+        }
+    };
+
+    function getCellRenderer(app, dataset, Handsontable, metadata) {
+        const colTypeIcons = {
+            date: 'fa fa-clock-o'
+        };
+        function HtmlCellRender(instance, TD, row, col, prop, value, cellProperties) {
+            var escaped = dw.utils.purifyHtml(Handsontable.helper.stringify(value));
+            TD.innerHTML = escaped; //this is faster than innerHTML. See: https://github.com/warpech/jquery-handsontable/wiki/JavaScript-&-DOM-performance-tips
+        }
+        return function(instance, td, row, col, prop, value, cellProperties) {
+            const column = dataset.column(col);
+            const {searchResults, currentResult} = app.get();
+            if (row > 0) {
+                var formatter = chart.columnFormatter(column);
+                value = formatter(column.val(row - 1), true);
+            }
+            if (parseInt(value, 10) < 0) { //if row contains negative number
+                td.classList.add('negative');
+            }
+            td.classList.add(column.type()+'Type');
+
+            if (row === 0) {
+                td.classList.add('firstRow');
+                if (colTypeIcons[column.type()]) {
+                    value = '<i class="'+colTypeIcons[column.type()]+'"></i> ' + value;
+                }
+            } else {
+                td.classList.add(row % 2 ? 'oddRow' : 'evenRow');
+            }
+            // if (metadata.columnFormat.get(column.name()).ignore) {
+            //     td.classList.add('ignored');
+            // }
+            // if(selectedColumns.indexOf(col) > -1) {
+            //     td.classList.add('area'); //add blue area background if this cell is in selected column
+            // }
+            searchResults.forEach(res => {
+                if (res.row == row && res.col == col) {
+                    td.classList.add('htSearchResult');
+                }
+            });
+            if (currentResult && currentResult.row == row && currentResult.col == col) {
+                td.classList.add('htCurrentSearchResult');
+            }
+            if (row > 0 && !column.type(true).isValid(column.val(row-1))) {
+                td.classList.add('parsingError');
+            }
+            if (cellProperties.readOnly) td.classList.add('readOnly');
+
+            if (chart.dataCellChanged(col, row)) {
+                td.classList.add('changed');
+            }
+            HtmlCellRender.apply(this, arguments);
+        };
+    }
+
+</script>
+
+<style lang="less">
+
+:global(#data-preview) {
+    width: 770px;
+    /*height: 400px;*/
+    overflow: auto;
+
+    tr td, tr th {
+        font-family: 'Roboto Mono', fixed;
+        font-size:12px;
+    }
+
+    tr td {
+        padding: 3px 6px;
+
+        &.textType {
+            color: #000000;
+        }
+
+        &.dateType {
+            color: #39A832;
+            text-align: center;
+        }
+
+        &.numberType {
+            color: #297EA8;
+            text-align: right;
+        }
+
+        &.parsingError {
+            background: #fee;
+            color: #c00;
+        }
+
+        &.readOnly {
+            // background: mix(#F1F0E3, white);
+            // &.evenRow { background: #F1F0E3; }
+            &.firstRow {
+                background: #EAEAEA;
+                border-right-color: #aaa;
+                color: #777;
+            }
+        }
+
+        &.changed {
+            position: relative;
+
+            &:after {
+                content: ' ';
+                width: 0;
+                height: 0;
+                border-top: 7px solid orange;
+                border-right: 7px solid transparent;
+                display: block;
+                position: absolute;
+                left: 0;
+                top: 0;
+            }
+        }
+
+        &.htSearchResult {
+            background: #ffd;
+        }
+        &.htCurrentSearchResult {
+            background: #fffe83;
+        }
+    }
+
+    tbody tr:first-child td {
+        background: #f3f3f3;
+        font-weight: bold;
+        border-bottom: 1px solid #999;
+    }
+    .htCommentCell:after {
+        border-left: 8px solid transparent;
+        border-top: 8px solid orange;
+    }
+}
+</style>
