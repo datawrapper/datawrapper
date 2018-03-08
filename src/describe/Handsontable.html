@@ -1,8 +1,8 @@
 <div id="data-preview" ref:hot />
 
 <script>
+    /* global dw,chart */
     import HOT from 'Handsontable';
-    import _range from 'underscore-es/range';
 
     export default {
         methods: {
@@ -14,8 +14,6 @@
                 // get chart
                 const chart = this.store.get('dw_chart');
 
-                console.log('raw order', chart.get('metadata.data.column-order'));
-
                 // pass dataset through chart to apply changes and computed columns
                 const ds = chart.dataset(dw.datasource.delimited({
                     csv: data,
@@ -23,7 +21,6 @@
                     firstRowIsHeader,
                     skipRows
                 }).parse()).dataset();
-
 
                 this.set({columnOrder: ds.columnOrder()});
                 console.log('col order 1', this.get('columnOrder'));
@@ -41,11 +38,11 @@
                 hot.loadData(hot_data);
 
                 hot.updateSettings({
-                    cells: (row, col, prop) => {
+                    cells: (row, col) => {
                         const {readonly} = this.get();
                         return {
-                            readOnly: readonly || ds.column(col).isComputed && row === 0,
-                            renderer: getCellRenderer(this, ds, HOT, {}),
+                            readOnly: readonly || (ds.column(col).isComputed && row === 0),
+                            renderer: getCellRenderer(this, ds, HOT, {})
                             // rowHeaders: _range(hot_data.length).map(r => 'R'+r)
                         };
                     },
@@ -60,14 +57,13 @@
                 const l = searchResults.length;
                 if (searchIndex < 0 || searchIndex >= l) {
                     while (searchIndex<0) searchIndex += l;
-                    if (searchIndex > l) searchIndex = searchIndex % l;
+                    if (searchIndex > l) searchIndex %= l;
                 }
                 console.log(searchResults[searchIndex]);
                 return searchResults[searchIndex];
             }
         },
         oncreate() {
-            const {table} = this.get();
 
             const hot = new HOT(this.refs.hot, {
                 data: [],
@@ -138,7 +134,6 @@
                 this.store.get('dw_chart').set('metadata.data.column-order', newOrder.slice(0));
                 this.set({columnOrder: newOrder});
                 // update selection
-                const {hot} = this.get();
                 HOT.hooks.once('afterRender', () => {
                     setTimeout(() => {
                         hot.selectCell(0, insertAt, hot.countRows()-1, insertAt+elements.length-1);
@@ -147,9 +142,7 @@
                 this.update();
             });
 
-            this.observe('data', (csvdata) => {
-                this.update();
-            });
+            this.observe('data', () => this.update());
 
             this.observe('search', (query) => {
                 const searchResults = hot.search.query(query);
@@ -160,8 +153,15 @@
             this.observe('currentResult', (res) => {
                 // console.log('cur search res', res);
                 if (!res || !hot) return;
-                hot.scrollViewportTo(res.row, res.col, res.col == hot.countRows()-1);
-                hot.render();
+                // this is a weird hack to deal with HoT's problems to scroll
+                // all the way down after hot.scrollViewportTo(hot.countRows()-1, res.col);
+                // the first scrollViewportTo will trigger a render event
+                hot.render(); // to update the hightlight colors
+                hot.scrollViewportTo(res.row, res.col);
+                setTimeout(() => {
+                    // one more time
+                    hot.scrollViewportTo(res.row, res.col);
+                }, 100);
             });
 
         },
@@ -174,7 +174,7 @@
                 searchIndex: 0,
                 transpose: false,
                 search: '',
-                searchResults: [],
+                searchResults: []
             };
         }
     };
@@ -185,7 +185,7 @@
         };
         function HtmlCellRender(instance, TD, row, col, prop, value, cellProperties) {
             var escaped = dw.utils.purifyHtml(Handsontable.helper.stringify(value));
-            TD.innerHTML = escaped; //this is faster than innerHTML. See: https://github.com/warpech/jquery-handsontable/wiki/JavaScript-&-DOM-performance-tips
+            TD.innerHTML = escaped; // this is faster than innerHTML. See: https://github.com/warpech/jquery-handsontable/wiki/JavaScript-&-DOM-performance-tips
         }
         return function(instance, td, row, col, prop, value, cellProperties) {
             const column = dataset.column(col);
@@ -194,7 +194,7 @@
                 var formatter = chart.columnFormatter(column);
                 value = formatter(column.val(row - 1), true);
             }
-            if (parseInt(value, 10) < 0) { //if row contains negative number
+            if (parseInt(value) < 0) { // if row contains negative number
                 td.classList.add('negative');
             }
             td.classList.add(column.type()+'Type');
@@ -229,7 +229,7 @@
             if (chart.dataCellChanged(col, row)) {
                 td.classList.add('changed');
             }
-            HtmlCellRender.apply(this, arguments);
+            Reflect.apply(HtmlCellRender, this, arguments);
         };
     }
 

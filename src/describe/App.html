@@ -34,6 +34,13 @@
                 bind:search
                 bind:searchResults
                 bind:searchIndex />
+
+            <div class="buttons below-table pull-right">
+                <button class="btn transpose" on:click="toggleTranspose()">{{__("Transpose dataset")}}</button>
+                <button class="btn computed-columns"><i class="fa fa-calculator"></i> {{__("computed columns / add-btn")}}...</button>
+
+                <button class="btn disabled" id="reset-data-changes"><i class="fa fa-undo"></i> {{__("Revert changes")}}...</button>
+            </div>
         </div>
     </div>
 </div>
@@ -52,6 +59,7 @@
             }
         },
         oncreate() {
+            console.log('chart', this.store.get('dw_chart'));
             window.addEventListener('keypress', (event) => {
                 console.log('event',event);
                 if (event.ctrlKey && event.key == 'f') {
@@ -75,6 +83,9 @@
             },
             keyPress (event) {
                 if (event.key == 'F3') this.nextResult(event.shiftKey ? -1 : 1);
+            },
+            toggleTranspose() {
+                this.set({transpose: !this.get('transpose')});
             }
         },
         data() {
@@ -96,5 +107,8 @@
         display: inline-block;
         vertical-align: text-bottom;
         margin-left: 1ex;
+    }
+    .below-table {
+        margin-top: 20px;
     }
 </style>
