@@ -11,13 +11,15 @@ require(['svelte/{{ app_id }}'], function(mod) {
         store.set({ dw_chart:chart });
     }
 
+    console.log('twig data', {{ twig_data | json | raw }} || {});
+
     var app = new App({
         store: store,
         target: document.querySelector('#svelte-{{ app_id }}'),
-        data: data || {}
+        data: {{ twig_data | json | raw }} || data || {}
     });
 
-    app.set({{ twig_data | json | raw }} || {});
+    // app.set({{ twig_data | json | raw }} || {});
 
     if (mod.init) mod.init(app);
 });
