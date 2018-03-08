@@ -75,7 +75,12 @@ $app->get('/charts/:id', function($id) use ($app) {
     $chart = ChartQuery::create()->findPK($id);
     $user = Session::getUser();
     if (!empty($chart) && $chart->isReadable($user)) {
-        ok($chart->serialize());
+        $json = $chart->serialize();
+        // don't expose author info to non-authors
+        if (!$chart->isWritable($user)) {
+            unset($json['author']);
+        }
+        ok($json);
     } else {
         error('chart-not-found', 'No chart with that id was found');
     }
