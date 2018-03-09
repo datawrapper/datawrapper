@@ -2045,9 +2045,11 @@ body.cms-mode .footer {
 .chart-editor h4,
 .chart-editor p {
   font-family: 'Roboto', Helvetica, sans-serif;
+  font-weight: 300;
+  line-height: 1.5;
 }
 .chart-editor h3 {
-  font-weight: 300;
+  font-weight: 500;
   font-size: 19px;
 }
 .chart-editor input,
