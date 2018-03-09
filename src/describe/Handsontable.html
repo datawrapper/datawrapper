@@ -133,6 +133,7 @@
                         const chart = this.store.get('dw_chart');
                         const {transpose} = this.get();
                         const changes = chart.get('metadata.data.changes');
+                        row = hot.toPhysicalRow(row);
                         if (transpose) {
                             // swap row and col
                             const tmp = row;
@@ -231,6 +232,7 @@
             if (dataset.numColumns() <= col) return;
             const column = dataset.column(col);
             const {searchResults, currentResult} = app.get();
+            row = instance.toPhysicalRow(row);
             if (row > 0) {
                 var formatter = chart.columnFormatter(column);
                 value = formatter(column.val(row - 1), true);

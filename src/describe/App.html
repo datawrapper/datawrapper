@@ -33,13 +33,16 @@
                 </div>
 
                 {{#if search}}
-                    <div class="results">
+                <div class="results">
                     {{#if searchResults.length > 0}}
-                        {{searchIndexSafe+1}} {{__("describe / search / of")}} {{searchResults.length}} {{__("describe / search / results")}}
+                        {{searchIndexSafe+1}}
+                        {{__("describe / search / of") }}
+                        {{searchResults.length}}
+                        {{__("describe / search / results") }}
                     {{elseif search}}
-                        {{__("describe / search / no-matches")}}
+                        {{ __("describe / search / no-matches") }}
                     {{/if}}
-                    </div>
+                </div>
                 {{/if}}
             </div>
 
@@ -143,7 +146,9 @@
         input {
             padding-left: 26px;
             border-radius: 4px;
+            width: 24ex;
             &.with-results {
+                width: 18ex;
                 border-bottom-right-radius: 0px;
                 border-top-right-radius: 0px;
             }
