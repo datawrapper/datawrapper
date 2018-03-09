@@ -1,0 +1,130 @@
+<div>
+    <h3 class="first">Edit computed column "{{column.name()}}"</h3>
+    <p>{{__("computed columns / modal / intro")}}</p>
+
+    <label>{{__("computed columns / modal / name")}}</label>
+    <input type="text" bind:value="name" />
+
+    <label>{{__("computed columns / modal / formula")}}</label>
+    <textarea ref:code class="code"></textarea>
+
+    <p style="margin-top: 1em">{{__("computed columns / modal / available columns")}}:</p>
+
+    <ul class="col-select">
+        {{#each metaColumns as column}}
+        <li on:click="insert(column)">{{column.key}}</li>
+        {{/each}}
+    </ul>
+</div>
+
+<style lang="less">
+label {
+    font-weight: bold;
+}
+.col-select {
+    padding: 0;
+    margin: 0;
+    li {
+        font-family: 'Roboto mono';
+        display: inline-block;
+        color: #1d81a2;
+        cursor: pointer;
+        margin: 0px 1em 1ex 0;
+
+        &:hover {
+            background: mix(#1d81a2, white, 10%);
+        }
+    }
+}
+:global(.CodeMirror) {
+    border-radius: 1px;
+    width: 263px;
+    height: 130px;
+    padding: 0px 3px;
+    border: 1px solid #cccccc;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    transition: border linear 0.2s, box-shadow linear 0.2s;
+    background-color: #ffffff;
+
+    .CodeMirror-nonmatchingbracket {
+        color: inherit;
+        background: #fcc;
+    }
+
+    .CodeMirror-matchingbracket {
+        color: inherit;
+        background: #cfc;
+    }
+
+    .CodeMirror-placeholder,
+    .cm-s-default .cm-comment {
+        color: #9C938B;
+    }
+
+    &.CodeMirror-focused {
+        border-color: rgba(82, 168, 236, 0.8);
+        outline: 0;
+        outline: thin dotted \9;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+        -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+    }
+}
+</style>
+
+<script>
+    /* global  */
+    import CodeMirror from 'cm/lib/codemirror';
+    import 'cm/mode/javascript/javascript';
+
+    export default {
+        methods: {
+            insert (column) {
+
+            }
+        },
+        computed: {
+            metaColumns (columns) {
+                if (!columns) return [];
+                return columns.map(col => {
+                    return {
+                        key: column_name_to_var(col.name()),
+                        title: col.title()
+                    };
+                });
+            }
+        },
+        oncreate() {
+            const cm = CodeMirror.fromTextArea(this.refs.code, {
+                value: this.get('formula'),
+                mode: 'javascript'
+            });
+
+            this.observe('formula', (formula) => {
+                if (formula != cm.getValue()) cm.setValue(formula);
+            });
+
+            cm.on('change', (cm) => {
+                this.set({formula: cm.getValue()});
+            });
+
+            cm.on('focus', () => {
+                this.fire('focus');
+            });
+        }
+    }
+
+    function column_name_to_var(name) {
+        // if you change this, change dw.chart.js as well
+        return name.toString().toLowerCase()
+            .replace(/\s+/g, '_')           // Replace spaces with _
+            .replace(/[^\w-]+/g, '')       // Remove all non-word chars
+            .replace(/-/g, '_')             // Replace - with single _
+            .replace(/__+/g, '_')         // Replace multiple _ with single _
+            .replace(/^_+/, '')             // Trim _ from start of text
+            .replace(/_+$/, '')             // Trim _ from end of text
+            .replace(/^(\d)/, '_$1')        // If first char is a number, prefix with _
+            .replace(/(abstract|arguments|await|boolean|break|byte|case|catch|char|class|const|continue|debugger|default|delete|do|double|else|enum|eval|export|extends|false|final|finally|float|for|function|goto|if|implements|import|in|instanceof|int|interface|let|long|native|new|null|package|private|protected|public|return|short|static|super|switch|synchronized|this|throw|throws|transient|true|try|typeof|var|void|volatile|while|window|with|yield)/, '$1_'); // reserved keywords
+    }
+
+</script>

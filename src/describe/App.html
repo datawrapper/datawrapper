@@ -2,16 +2,34 @@
     <div class="row">
         <div class="span4">
             <div class="sidebar">
+                {{#if customColumn}}
+
+                <ComputedColumnEditor
+                    bind:column="customColumn"
+                    bind:formula
+                    bind:columns
+                    on:focus="cmFocus()" />
+
+                {{elseif columnFormat}}
+                COLUMN FORMAT FOR {{columnFormat.title()}}
+
+                {{else}}
                 <h3 class="first">{{ __("Make sure the data looks right") }}</h3>
 
                 <p>{{ __("Please make sure that Datawrapper interprets your data correctly. In the table number columns should be shown in blue, dates in green and text in black.") }}</p>
 
-                <Checkbox label="{{ __("First row as label") }}" bind:value="firstRowIsHeader" />
+                <Checkbox
+                    label="{{ __("First row as label") }}"
+                    bind:value="firstRowIsHeader" />
+
+                [TODO: hook]
+                <hr>
 
                 <div class="btn-group">
                     <a class="btn submit" href="upload"><i class="icon-chevron-left"></i> Zurück</a>
                     <a href="visualize" class="submit btn btn-primary" id="describe-proceed">Weiter <i class="icon-chevron-right icon-white"></i></a>
                 </div>
+                {{/if}}
             </div>
         </div>
         <div class="span8">
@@ -50,6 +68,7 @@
                 bind:data="chartData"
                 bind:transpose
                 bind:firstRowIsHeader
+                bind:activeColumn
                 bind:search
                 bind:searchResults
                 bind:searchIndex />
@@ -64,16 +83,33 @@
 </div>
 
 <script>
+    /* global chart */
     import Handsontable from './Handsontable.html';
+    import ComputedColumnEditor from './ComputedColumnEditor.html';
     import Checkbox from '../controls/Checkbox.html';
 
     export default {
-        components: { Handsontable, Checkbox },
+        components: { Handsontable, Checkbox, ComputedColumnEditor },
         computed: {
             searchIndexSafe (searchIndex, searchResults) {
                 if (searchIndex<0) searchIndex+=searchResults.length;
                 searchIndex = searchIndex % searchResults.length;
                 return searchIndex;
+            },
+            customColumn (activeColumn) {
+                return activeColumn && activeColumn.isComputed ? activeColumn : false;
+            },
+            columnFormat (activeColumn) {
+                return activeColumn && !activeColumn.isComputed ? activeColumn : false;
+            },
+            columns (activeColumn) {
+                if (!activeColumn) return [];
+                try {
+                    const ds = chart.dataset();
+                    return ds.columns().filter(col => !col.isComputed);
+                } catch(e) {
+                    return [];
+                }
             }
         },
         oncreate() {
@@ -94,6 +130,26 @@
             };
             sync('transpose', 'data.transpose');
             sync('firstRowIsHeader', 'data.horizontal-header');
+
+            this.observe('customColumn', (col, old) => {
+                if (col && col != old) {
+                    const chart = this.store.get('dw_chart');
+                    const customCols = chart.get('metadata.describe.computed-columns', {});
+                    this.set({formula: customCols[col.name()] || ''});
+                }
+            });
+
+            this.observe('formula', (formula) => {
+                const {customColumn} = this.get();
+                const chart = this.store.get('dw_chart');
+                if (customColumn) {
+                    const customCols = chart.get('metadata.describe.computed-columns', {});
+                    customCols[customColumn.name()] = formula;
+                    chart.set('metadata.describe.computed-columns', customCols);
+                    chart.saveSoon();
+                    this.refs.hot.update();
+                }
+            });
         },
         methods: {
             nextResult (diff) {
@@ -113,8 +169,13 @@
             revertChanges() {
                 const chart = this.store.get('dw_chart');
                 chart.set('metadata.data.changes', []);
-                chart.save();
+                chart.saveSoon();
                 this.refs.hot.update();
+            },
+            cmFocus () {
+                setTimeout(() => {
+                    this.refs.hot.get('hot').render();
+                }, 100);
             }
         },
         data() {
@@ -124,6 +185,10 @@
                 transpose: false,
                 firstRowIsHeader: true,
                 searchIndex: 0,
+                activeColumn: false,
+                customColumn: false,
+                columnFormat: false,
+                formula: '',
                 searchResults: []
             };
         }

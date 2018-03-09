@@ -51,7 +51,74 @@
                 this.set({has_changes: chart.get('metadata.data.changes', []).length > 0})
 
                 hot.render();
+            },
+            dataChanged (cells) {
+                const {hot} = this.get();
+                let changed = false;
+                cells.forEach(([row, col, old_val, new_val]) => {
+                    if (old_val != new_val) {
+                        const chart = this.store.get('dw_chart');
+                        const {transpose} = this.get();
+                        const changes = chart.get('metadata.data.changes');
+                        row = hot.toPhysicalRow(row);
+                        if (transpose) {
+                            // swap row and col
+                            const tmp = row;
+                            row = col;
+                            col = tmp;
+                        }
+                        // store new change
+                        changes.push({
+                            row, column: col, value: new_val, time: (new Date()).getTime()
+                        });
+                        chart.set('metadata.data.changes', changes);
+                        changed = true;
+                    }
+                })
+                if (changed) {
+                    setTimeout(() => {
+                        this.update();
+                        chart.save();
+                    }, 100);
+                }
+            },
+            columnMoved (srcColumns, tgtIndex) {
+                const {hot} = this.get();
+                if (!srcColumns.length) return;
+                const {columnOrder} = this.get();
+                const newOrder = columnOrder.slice(0);
+                const after = columnOrder[tgtIndex];
+                const elements = newOrder.splice(srcColumns[0], srcColumns.length);
+                const insertAt = after ? newOrder.indexOf(after) : newOrder.length;
+                newOrder.splice(insertAt, 0, ...elements);
+                this.store.get('dw_chart').set('metadata.data.column-order', newOrder.slice(0));
+                this.set({columnOrder: newOrder});
+                // update selection
+                HOT.hooks.once('afterRender', () => {
+                    setTimeout(() => {
+                        hot.selectCell(0, insertAt, hot.countRows()-1, insertAt+elements.length-1);
+                    }, 10);
+                });
+                this.update();
+            },
+            updateHeight () {
+                const h = document.querySelector('.ht_master.handsontable .wtHolder .wtHider').getBoundingClientRect().height;
+                this.refs.hot.style.height = Math.min(400, h+10)+'px';
+            },
+            checkRange (r,c,r2,c2) {
+                // check if
+                // 1. only a single column is selected, and
+                // 2. the range starts at the first row, and
+                // 3. the range extends through he last row
+                const {hot} = this.get();
+                if (c == c2 && r === 0 && r2 == hot.countRows()-1) {
+                    const chart = this.store.get('dw_chart');
+                    this.set({activeColumn: chart.dataset().column(c)});
+                    return;
+                }
+                this.set({activeColumn:null});
             }
+
         },
         computed: {
             currentResult (searchResults, searchIndex) {
@@ -119,60 +186,11 @@
             window.HT = hot;
             this.set({hot});
 
-            HOT.hooks.add('afterSetDataAtCell', (cells) => {
-                let changed = false;
-                cells.forEach(([row, col, old_val, new_val]) => {
-                    if (old_val != new_val) {
-                        const chart = this.store.get('dw_chart');
-                        const {transpose} = this.get();
-                        const changes = chart.get('metadata.data.changes');
-                        row = hot.toPhysicalRow(row);
-                        if (transpose) {
-                            // swap row and col
-                            const tmp = row;
-                            row = col;
-                            col = tmp;
-                        }
-                        // store new change
-                        changes.push({
-                            row, column: col, value: new_val, time: (new Date()).getTime()
-                        });
-                        chart.set('metadata.data.changes', changes);
-                        changed = true;
-                    }
-                })
-                if (changed) {
-                    setTimeout(() => {
-                        this.update();
-                        chart.save();
-                    }, 100);
-                }
-                // this.set({table});
-            });
-
-            HOT.hooks.add('afterColumnMove', (srcColumns, tgtIndex) => {
-                if (!srcColumns.length) return;
-                const {columnOrder} = this.get();
-                const newOrder = columnOrder.slice(0);
-                const after = columnOrder[tgtIndex];
-                const elements = newOrder.splice(srcColumns[0], srcColumns.length);
-                const insertAt = after ? newOrder.indexOf(after) : newOrder.length;
-                newOrder.splice(insertAt, 0, ...elements);
-                this.store.get('dw_chart').set('metadata.data.column-order', newOrder.slice(0));
-                this.set({columnOrder: newOrder});
-                // update selection
-                HOT.hooks.once('afterRender', () => {
-                    setTimeout(() => {
-                        hot.selectCell(0, insertAt, hot.countRows()-1, insertAt+elements.length-1);
-                    }, 10);
-                });
-                this.update();
-            });
-
-            HOT.hooks.add('afterRender', () => {
-                const h = document.querySelector('.ht_master.handsontable .wtHolder .wtHider').getBoundingClientRect().height;
-                this.refs.hot.style.height = Math.min(400, h+10)+'px';
-            });
+            HOT.hooks.add('afterSetDataAtCell', (a) => this.dataChanged(a));
+            HOT.hooks.add('afterColumnMove', (a,b) => this.columnMoved(a,b));
+            HOT.hooks.add('afterRender', () => this.updateHeight());
+            HOT.hooks.add('afterSelection', (r,c,r2,c2) => this.checkRange(r,c,r2,c2));
+            // HOT.hooks.add()
 
             this.observe('data', () => this.update());
             this.observe('transpose', () => this.update());
@@ -207,6 +225,7 @@
                 firstRowIsHeader: true,
                 searchIndex: 0,
                 transpose: false,
+                activeColumn: null,
                 search: '',
                 searchResults: []
             };
@@ -224,7 +243,7 @@
         return function(instance, td, row, col, prop, value, cellProperties) {
             if (dataset.numColumns() <= col) return;
             const column = dataset.column(col);
-            const {searchResults, currentResult} = app.get();
+            const {searchResults, currentResult, activeColumn} = app.get();
             row = instance.toPhysicalRow(row);
             if (row > 0) {
                 var formatter = chart.columnFormatter(column);
@@ -253,6 +272,9 @@
             // if(selectedColumns.indexOf(col) > -1) {
             //     td.classList.add('area'); //add blue area background if this cell is in selected column
             // }
+            if (activeColumn && activeColumn == column) {
+                td.classList.add('area');
+            }
             searchResults.forEach(res => {
                 if (res.row == row && res.col == col) {
                     td.classList.add('htSearchResult');
