@@ -1,3 +1,4 @@
+/* global _,dw,define */
 define(['jquery', 'd3'], function($, d3) {
 
     $(function() {
@@ -7,7 +8,7 @@ define(['jquery', 'd3'], function($, d3) {
         var firstRun = true,
             active = null,
             columns = {},
-            cm = null;
+            cm = null,
             chart = dw.backend.currentChart;
 
         var modal = $('#computed-columns'),
@@ -241,10 +242,10 @@ define(['jquery', 'd3'], function($, d3) {
                 return name.toString().toLowerCase()
                     .replace(/\s+/g, '_')           // Replace spaces with _
                     .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
-                    .replace(/-/g, '_')             // Replace multiple - with single -
-                    .replace(/\_\_+/g, '_')         // Replace multiple - with single -
-                    .replace(/^_+/, '')             // Trim - from start of text
-                    .replace(/_+$/, '')             // Trim - from end of text
+                    .replace(/-/g, '_')             // Replace - with single _
+                    .replace(/\_\_+/g, '_')         // Replace multiple _ with single _
+                    .replace(/^_+/, '')             // Trim _ from start of text
+                    .replace(/_+$/, '')             // Trim _ from end of text
                     .replace(/^(\d)/, '_$1')        // If first char is a number, prefix with _
                     .replace(/(abstract|arguments|await|boolean|break|byte|case|catch|char|class|const|continue|debugger|default|delete|do|double|else|enum|eval|export|extends|false|final|finally|float|for|function|goto|if|implements|import|in|instanceof|int|interface|let|long|native|new|null|package|private|protected|public|return|short|static|super|switch|synchronized|this|throw|throws|transient|true|try|typeof|var|void|volatile|while|window|with|yield)/, '$1_'); // reserved keywords
             }
