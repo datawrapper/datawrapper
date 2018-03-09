@@ -48,14 +48,7 @@
                     manualColumnMove: []
                 });
 
-                // activate special transpose button
-                document.querySelector('.htCore thead tr:first-child th:first-child div.relative')
-                    .addEventListener('click', () => {
-                        console.log('CLICKEEDDDD!');
-                    });
-                // $('#data-preview .htCore thead tr:first-child th:first-child,a.transpose').off('click').on('click', function() {
-                // chart.set('metadata.data.transpose', !chart.get('metadata.data.transpose', false));
-                // ht.render();
+                this.set({has_changes: chart.get('metadata.data.changes', []).length > 0})
 
                 hot.render();
             }

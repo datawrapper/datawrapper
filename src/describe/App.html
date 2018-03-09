@@ -46,7 +46,7 @@
                 {{/if}}
             </div>
 
-            <Handsontable
+            <Handsontable ref:hot
                 bind:data="chartData"
                 bind:transpose
                 bind:firstRowIsHeader
@@ -57,7 +57,7 @@
             <div class="buttons below-table pull-right">
                 <button class="btn computed-columns"><i class="fa fa-calculator"></i> {{__("computed columns / add-btn")}}...</button>
 
-                <button class="btn disabled" id="reset-data-changes"><i class="fa fa-undo"></i> {{__("Revert changes")}}...</button>
+                <button on:click="revertChanges()" class="btn {{has_changes?'':'disabled'}}" id="reset-data-changes"><i class="fa fa-undo"></i> {{__("Revert changes")}}...</button>
             </div>
         </div>
     </div>
@@ -109,6 +109,12 @@
             },
             toggleTranspose() {
                 this.set({transpose: !this.get('transpose')});
+            },
+            revertChanges() {
+                const chart = this.store.get('dw_chart');
+                chart.set('metadata.data.changes', []);
+                chart.save();
+                this.refs.hot.update();
             }
         },
         data() {
