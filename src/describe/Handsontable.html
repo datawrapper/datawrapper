@@ -23,14 +23,14 @@
                 }).parse()).dataset();
 
                 this.set({columnOrder: ds.columnOrder()});
-                console.log('col order 1', this.get('columnOrder'));
 
                 // construct HoT data array
                 const hot_data = [[]];
                 ds.eachColumn(c => hot_data[0].push(c.title()));
+
                 ds.eachRow(r => {
                     const row = [];
-                    ds.eachColumn(col => row.push(col.val(r)));
+                    ds.eachColumn(col => row.push(col.raw(r)));
                     hot_data.push(row);
                 });
 
@@ -41,13 +41,22 @@
                     cells: (row, col) => {
                         const {readonly} = this.get();
                         return {
-                            readOnly: readonly || (ds.column(col).isComputed && row === 0),
+                            readOnly: readonly || (ds.numColumns() > col && ds.column(col).isComputed && row === 0),
                             renderer: getCellRenderer(this, ds, HOT, {})
-                            // rowHeaders: _range(hot_data.length).map(r => 'R'+r)
                         };
                     },
                     manualColumnMove: []
                 });
+
+                // activate special transpose button
+                document.querySelector('.htCore thead tr:first-child th:first-child div.relative')
+                    .addEventListener('click', () => {
+                        console.log('CLICKEEDDDD!');
+                    });
+                // $('#data-preview .htCore thead tr:first-child th:first-child,a.transpose').off('click').on('click', function() {
+                // chart.set('metadata.data.transpose', !chart.get('metadata.data.transpose', false));
+                // ht.render();
+
                 hot.render();
             }
         },
@@ -59,7 +68,6 @@
                     while (searchIndex<0) searchIndex += l;
                     if (searchIndex > l) searchIndex %= l;
                 }
-                console.log(searchResults[searchIndex]);
                 return searchResults[searchIndex];
             }
         },
@@ -82,6 +90,7 @@
                 height: 400,
                 manualColumnMove: true,
                 selectionMode: 'range',
+                autoColumnSize: {useHeaders: true},
                 // comments: true,
                 // contextMenu: true,
 
@@ -115,11 +124,35 @@
             });
 
             window.HT = hot;
-            console.log(hot, window.HT);
             this.set({hot});
 
-            HOT.hooks.add('afterSetDataAtCell', (a,b,c,d) => {
-                console.log('afterSetDataAtCell', a,b,c,d);
+            HOT.hooks.add('afterSetDataAtCell', (cells) => {
+                let changed = false;
+                cells.forEach(([row, col, old_val, new_val]) => {
+                    if (old_val != new_val) {
+                        const chart = this.store.get('dw_chart');
+                        const {transpose} = this.get();
+                        const changes = chart.get('metadata.data.changes');
+                        if (transpose) {
+                            // swap row and col
+                            const tmp = row;
+                            row = col;
+                            col = tmp;
+                        }
+                        // store new change
+                        changes.push({
+                            row, column: col, value: new_val, time: (new Date()).getTime()
+                        });
+                        chart.set('metadata.data.changes', changes);
+                        changed = true;
+                    }
+                })
+                if (changed) {
+                    setTimeout(() => {
+                        this.update();
+                        chart.save();
+                    }, 100);
+                }
                 // this.set({table});
             });
 
@@ -142,7 +175,14 @@
                 this.update();
             });
 
+            HOT.hooks.add('afterRender', () => {
+                const h = document.querySelector('.ht_master.handsontable .wtHolder .wtHider').getBoundingClientRect().height;
+                this.refs.hot.style.height = Math.min(400, h+10)+'px';
+            });
+
             this.observe('data', () => this.update());
+            this.observe('transpose', () => this.update());
+            this.observe('firstRowIsHeader', () => this.update());
 
             this.observe('search', (query) => {
                 const searchResults = hot.search.query(query);
@@ -188,6 +228,7 @@
             TD.innerHTML = escaped; // this is faster than innerHTML. See: https://github.com/warpech/jquery-handsontable/wiki/JavaScript-&-DOM-performance-tips
         }
         return function(instance, td, row, col, prop, value, cellProperties) {
+            if (dataset.numColumns() <= col) return;
             const column = dataset.column(col);
             const {searchResults, currentResult} = app.get();
             if (row > 0) {
@@ -198,6 +239,10 @@
                 td.classList.add('negative');
             }
             td.classList.add(column.type()+'Type');
+
+            if (column.type() == 'text' && value.length > 70) {
+                value = value.substr(0,60)+'…';
+            }
 
             if (row === 0) {
                 td.classList.add('firstRow');
@@ -229,7 +274,8 @@
             if (chart.dataCellChanged(col, row)) {
                 td.classList.add('changed');
             }
-            Reflect.apply(HtmlCellRender, this, arguments);
+            HtmlCellRender(instance, td, row, col, prop, value, cellProperties);
+            // Reflect.apply(HtmlCellRender, this, arguments);
         };
     }
 
@@ -245,6 +291,10 @@
     tr td, tr th {
         font-family: 'Roboto Mono', fixed;
         font-size:12px;
+    }
+
+    colgroup col {
+        max-width: 500px!important;
     }
 
     tr td {
@@ -296,10 +346,14 @@
         }
 
         &.htSearchResult {
-            background: #ffd;
+            /*background: #ffd;*/
+            background: #fff8ef;
+            color: #8d6833!important;
         }
         &.htCurrentSearchResult {
-            background: #fffe83;
+            color: #583707!important;
+            background: #fcedd9;
+            /*background: #fffe83;*/
         }
     }
 

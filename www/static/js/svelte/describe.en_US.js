@@ -1,1 +1,1508 @@
-!function(e,t){"object"==typeof exports&&"undefined"!=typeof module?module.exports=t(require("Handsontable")):"function"==typeof define&&define.amd?define("svelte/describe",["Handsontable"],t):e.describe=t(e.HOT)}(this,function(e){"use strict";function t(){}function s(e){for(var t,s,r=arguments,a=1,n=arguments.length;a<n;a++)for(t in s=r[a])e[t]=s[t];return e}function r(e,t){t.appendChild(e)}function a(e,t,s){t.insertBefore(e,s)}function n(e){e.parentNode.removeChild(e)}function o(e){return document.createElement(e)}function i(e){return document.createTextNode(e)}function c(e,t,s){e.addEventListener(t,s,!1)}function h(e,t,s){e.removeEventListener(t,s,!1)}function u(e,t,s){e.style.setProperty(t,s)}function l(){return Object.create(null)}function d(e){this.destroy=t,this.fire("destroy"),this.set=this.get=t,!1!==e&&this._fragment.u(),this._fragment.d(),this._fragment=this._state=null}function f(e,t){return e!==t||e&&"object"==typeof e||"function"==typeof e}function p(e,t,s,r,a){for(var n in t)if(s[n]){var o=r[n],i=a[n],c=t[n];if(c)for(var h=0;h<c.length;h+=1){var u=c[h];u.__calling||(u.__calling=!0,u.call(e,o,i),u.__calling=!1)}}}function _(e){return e?this._state[e]:this._state}function v(e,t){e._observers={pre:l(),post:l()},e._handlers=l(),e._bind=t._bind,e.options=t,e.root=t.root||e,e.store=e.root.store||t.store}function m(e,t,s){var r=s&&s.defer?this._observers.post:this._observers.pre;return(r[e]||(r[e]=[])).push(t),s&&!1===s.init||(t.__calling=!0,t.call(this,this._state[e]),t.__calling=!1),{cancel:function(){var s=r[e].indexOf(t);~s&&r[e].splice(s,1)}}}function g(e){for(;e&&e.length;)e.pop()()}e=e&&e.hasOwnProperty("default")?e.default:e;var R={destroy:d,get:_,fire:function(e,t){var s=e in this._handlers&&this._handlers[e].slice();if(s)for(var r=0;r<s.length;r+=1)s[r].call(this,t)},observe:m,on:function(e,t){if("teardown"===e)return this.on("destroy",t);var s=this._handlers[e]||(this._handlers[e]=[]);return s.push(t),{cancel:function(){var e=s.indexOf(t);~e&&s.splice(e,1)}}},set:function(e){this._set(s({},e)),this.root._lock||(this.root._lock=!0,g(this.root._beforecreate),g(this.root._oncreate),g(this.root._aftercreate),this.root._lock=!1)},teardown:d,_recompute:t,_set:function(e){var t=this._state,r={},a=!1;for(var n in e)f(e[n],t[n])&&(r[n]=a=!0);a&&(this._state=s({},t,e),this._recompute(r,this._state),this._bind&&this._bind(r,this._state),this._fragment&&(p(this,this._observers.pre,r,this._state,t),this._fragment.p(r,this._state),p(this,this._observers.post,r,this._state,t)))},_mount:function(e,t){this._fragment.m(e,t)},_unmount:function(){this._fragment&&this._fragment.u()}};var w={update:function(){var t=this,s=this.get(),r=s.data,a=s.transpose,n=s.firstRowIsHeader,o=s.skipRows,i=s.hot;if(r){var c=this.store.get("dw_chart").dataset(dw.datasource.delimited({csv:r,transpose:a,firstRowIsHeader:n,skipRows:o}).parse()).dataset();this.set({columnOrder:c.columnOrder()}),console.log("col order 1",this.get("columnOrder"));var h=[[]];c.eachColumn(function(e){return h[0].push(e.title())}),c.eachRow(function(e){var t=[];c.eachColumn(function(s){return t.push(s.val(e))}),h.push(t)}),i.loadData(h),i.updateSettings({cells:function(s,r){return{readOnly:t.get().readonly||c.column(r).isComputed&&0===s,renderer:b(t,c,e,{})}},manualColumnMove:[]}),i.render()}}};function b(e,t,s,r){var a={date:"fa fa-clock-o"};function n(e,t,r,a,n,o,i){var c=dw.utils.purifyHtml(s.helper.stringify(o));t.innerHTML=c}return function(s,r,o,i,c,h,u){var l=t.column(i),d=e.get(),f=d.searchResults,p=d.currentResult;o>0&&(h=chart.columnFormatter(l)(l.val(o-1),!0));parseInt(h)<0&&r.classList.add("negative"),r.classList.add(l.type()+"Type"),0===o?(r.classList.add("firstRow"),a[l.type()]&&(h='<i class="'+a[l.type()]+'"></i> '+h)):r.classList.add(o%2?"oddRow":"evenRow"),f.forEach(function(e){e.row==o&&e.col==i&&r.classList.add("htSearchResult")}),p&&p.row==o&&p.col==i&&r.classList.add("htCurrentSearchResult"),o>0&&!l.type(!0).isValid(l.val(o-1))&&r.classList.add("parsingError"),u.readOnly&&r.classList.add("readOnly"),chart.dataCellChanged(i,o)&&r.classList.add("changed"),Reflect.apply(n,this,arguments)}}function I(r){v(this,r),this.refs={},this._state=s({data:"",readonly:!1,skipRows:0,firstRowIsHeader:!0,searchIndex:0,transpose:!1,search:"",searchResults:[]},r.data),this._recompute({searchResults:1,searchIndex:1},this._state);var i,c,h=function(){var t=this,s=new e(this.refs.hot,{data:[],rowHeaders:function(e){return s.getPlugin("ColumnSorting").translateRow(e)+1},colHeaders:!0,fixedRowsTop:1,filters:!0,dropdownMenu:!0,startRows:13,startCols:8,fillHandle:!1,stretchH:"all",height:400,manualColumnMove:!0,selectionMode:"range",columnSorting:!0,sortIndicator:!0,sortFunction:function(e,t){return function(r,a){var n,o=s.getPlugin("columnSorting");if(0===r[0])return-1;switch(t.type){case"date":n=o.dateSort;break;case"numeric":n=o.numericSort;break;default:n=o.defaultSort}return n(e,t)(r,a)}},search:"search"});window.HT=s,console.log(s,window.HT),this.set({hot:s}),e.hooks.add("afterSetDataAtCell",function(e,t,s,r){console.log("afterSetDataAtCell",e,t,s,r)}),e.hooks.add("afterColumnMove",function(r,a){if(r.length){var n=t.get().columnOrder,o=n.slice(0),i=n[a],c=o.splice(r[0],r.length),h=i?o.indexOf(i):o.length;o.splice.apply(o,[h,0].concat(c)),t.store.get("dw_chart").set("metadata.data.column-order",o.slice(0)),t.set({columnOrder:o}),e.hooks.once("afterRender",function(){setTimeout(function(){s.selectCell(0,h,s.countRows()-1,h+c.length-1)},10)}),t.update()}}),this.observe("data",function(){return t.update()}),this.observe("search",function(e){var r=s.search.query(e);t.set({searchResults:r}),s.render()}),this.observe("currentResult",function(e){e&&s&&(s.render(),s.scrollViewportTo(e.row,e.col),setTimeout(function(){s.scrollViewportTo(e.row,e.col)},100))})}.bind(this);r.root?this.root._oncreate.push(h):this._oncreate=[h],this._fragment=(this._state,i=this,{c:function(){c=o("div"),this.h()},h:function(){c.id="data-preview"},m:function(e,t){a(c,e,t),i.refs.hot=c},p:t,u:function(){n(c)},d:function(){i.refs.hot===c&&(i.refs.hot=null)}}),r.target&&(this._fragment.c(),this._fragment.m(r.target,r.anchor||null),g(this._oncreate))}function y(e){v(this,e),this._state=s({},e.data),this._fragment=function(e,t){var s,l,d,f,p;function _(){t.set({value:d.checked})}return{c:function(){s=o("div"),l=o("label"),d=o("input"),f=i(" "),p=i(e.label),this.h()},h:function(){c(d,"change",_),d.type="checkbox",l.className="checkbox",u(l,"text-align","left"),u(l,"width","100%"),u(l,"position","relative"),u(l,"left","0"),s.className="control-group vis-option-group vis-option-type-checkbox"},m:function(t,n){a(s,t,n),r(l,s),r(d,l),d.checked=e.value,r(f,l),r(p,l)},p:function(e,t){d.checked=t.value,e.label&&(p.data=t.label)},u:function(){n(s)},d:function(){h(d,"change",_)}}}(this._state,this),e.target&&(this._fragment.c(),this._fragment.m(e.target,e.anchor||null))}s(I.prototype,w,R),I.prototype._recompute=function(e,t){(e.searchResults||e.searchIndex)&&f(t.currentResult,t.currentResult=function(e,t){if(!e||!e.length)return null;var s=e.length;if(t<0||t>=s){for(;t<0;)t+=s;t>s&&(t%=s)}return console.log(e[t]),e[t]}(t.searchResults,t.searchIndex))&&(e.currentResult=!0)},s(y.prototype,R);function x(e){!function(e,t,s){e.setAttribute(t,s)}(e,"svelte-771273718","")}function H(e,s){var r,o,c,h,u=e.searchIndexSafe+1,l=e.searchResults.length;return{c:function(){r=i(u),o=i(" of "),c=i(l),h=i(" cells matching")},m:function(e,t){a(r,e,t),a(o,e,t),a(c,e,t),a(h,e,t)},p:function(e,t){e.searchIndexSafe&&u!==(u=t.searchIndexSafe+1)&&(r.data=u),e.searchResults&&l!==(l=t.searchResults.length)&&(c.data=l)},u:function(){n(r),n(o),n(c),n(h)},d:t}}function k(e,s){var r;return{c:function(){r=i("No matches found")},m:function(e,t){a(r,e,t)},p:t,u:function(){n(r)},d:t}}function C(e){return e.searchResults.length>0?H:e.search?k:null}function N(e){v(this,e),this.refs={},this._state=s({search:"",chartData:"",transpose:!1,firstRowIsHeader:!0,searchIndex:0,searchResults:[]},e.data),this._recompute({searchIndex:1,searchResults:1},this._state);var t=function(){var e=this;console.log("chart",this.store.get("dw_chart")),window.addEventListener("keypress",function(t){console.log("event",t),t.ctrlKey&&"f"==t.key&&(console.log("search!"),t.preventDefault(),e.refs.search!=window.document.activeElement?e.refs.search.focus():e.nextResult(1))})}.bind(this);e.root?this.root._oncreate.push(t):(this._oncreate=[t],this._beforecreate=[],this._aftercreate=[]),this._fragment=function(e,t){var u,l,d,f,p,_,v,m,g,R,w,b,H,k,N,S,T,L,O,D,P,E,M,A,F,j,V,q,K,$,B,z,G,J,Q,U,W,X,Y={},Z={},ee=!1,te={},se={label:"First row as label"};"firstRowIsHeader"in e&&(se.value=e.firstRowIsHeader,Y.value=!0);var re=new y({root:t.root,data:se,_bind:function(e,r){t.get();var a={};!Y.value&&e.value&&(a.firstRowIsHeader=r.value),Y=s({},e),t._set(a),Y={}}});t.root._beforecreate.push(function(){t.get();var e=re.get(),s={};e&&(Y.value||(s.firstRowIsHeader=e.value),Y={value:!0},t._set(s),Y={})});var ae={label:"transpose"};"transpose"in e&&(ae.value=e.transpose,Z.value=!0);var ne=new y({root:t.root,data:ae,_bind:function(e,r){t.get();var a={};!Z.value&&e.value&&(a.transpose=r.value),Z=s({},e),t._set(a),Z={}}});function oe(){ee=!0,t.set({search:k.value}),ee=!1}function ie(e){t.keyPress(e)}function ce(e){t.nextResult(-1)}function he(e){t.nextResult(1)}t.root._beforecreate.push(function(){t.get();var e=ne.get(),s={};e&&(Z.value||(s.transpose=e.value),Z={value:!0},t._set(s),Z={})});var ue=C(e),le=ue&&ue(e,t),de={};"chartData"in e&&(de.data=e.chartData,te.data=!0),"transpose"in e&&(de.transpose=e.transpose,te.transpose=!0),"firstRowIsHeader"in e&&(de.firstRowIsHeader=e.firstRowIsHeader,te.firstRowIsHeader=!0),"search"in e&&(de.search=e.search,te.search=!0),"searchResults"in e&&(de.searchResults=e.searchResults,te.searchResults=!0),"searchIndex"in e&&(de.searchIndex=e.searchIndex,te.searchIndex=!0);var fe=new I({root:t.root,data:de,_bind:function(e,r){t.get();var a={};!te.data&&e.data&&(a.chartData=r.data),!te.transpose&&e.transpose&&(a.transpose=r.transpose),!te.firstRowIsHeader&&e.firstRowIsHeader&&(a.firstRowIsHeader=r.firstRowIsHeader),!te.search&&e.search&&(a.search=r.search),!te.searchResults&&e.searchResults&&(a.searchResults=r.searchResults),!te.searchIndex&&e.searchIndex&&(a.searchIndex=r.searchIndex),te=s({},e),t._set(a),te={}}});function pe(e){t.toggleTranspose()}return t.root._beforecreate.push(function(){t.get();var e=fe.get(),s={};e&&(te.data||(s.chartData=e.data),te.transpose||(s.transpose=e.transpose),te.firstRowIsHeader||(s.firstRowIsHeader=e.firstRowIsHeader),te.search||(s.search=e.search),te.searchResults||(s.searchResults=e.searchResults),te.searchIndex||(s.searchIndex=e.searchIndex),te={data:!0,transpose:!0,firstRowIsHeader:!0,search:!0,searchResults:!0,searchIndex:!0},t._set(s),te={})}),{c:function(){u=o("div"),l=o("div"),d=o("div"),f=o("h3"),p=i("Make sure the data looks right"),_=i("\n\n            "),v=o("p"),m=i("Please make sure that Datawrapper interprets your data correctly. In the table number columns should be shown in blue, dates in green and text in black."),g=i("\n\n            "),re._fragment.c(),R=i("\n            "),ne._fragment.c(),w=i("\n        "),b=o("div"),H=o("div"),k=o("input"),N=i("\n                "),S=o("div"),(T=o("button")).innerHTML='<i class="fa fa-chevron-up"></i>',L=i("\n                  "),(O=o("button")).innerHTML='<i class="fa fa-chevron-down"></i>',D=i("\n\n            "),P=o("div"),le&&le.c(),E=i("\n\n            "),fe._fragment.c(),M=i("\n\n            "),A=o("div"),F=o("button"),j=i("Transpose dataset"),V=i("\n                "),q=o("button"),K=o("i"),$=i(" "),B=i("Add column"),z=i("..."),G=i("\n\n                "),J=o("button"),Q=o("i"),U=i(" "),W=i("Revert changes"),X=i("..."),this.h()},h:function(){f.className="first",d.className="span4",c(k,"input",oe),k.type="text",k.placeholder="Search data table",c(k,"keypress",ie),T.className="btn",c(T,"click",ce),O.className="btn",c(O,"click",he),S.className="btn-group",H.className="input-append",x(P),P.className="results",x(A),F.className="btn transpose",c(F,"click",pe),K.className="fa fa-calculator",q.className="btn computed-columns",Q.className="fa fa-undo",J.className="btn disabled",J.id="reset-data-changes",A.className="buttons below-table pull-right",b.className="span8",l.className="row",u.className="chart-editor"},m:function(s,n){a(u,s,n),r(l,u),r(d,l),r(f,d),r(p,f),r(_,d),r(v,d),r(m,v),r(g,d),re._mount(d,null),r(R,d),ne._mount(d,null),r(w,l),r(b,l),r(H,b),r(k,H),t.refs.search=k,k.value=e.search,r(N,H),r(S,H),r(T,S),r(L,S),r(O,S),r(D,b),r(P,b),le&&le.m(P,null),r(E,b),fe._mount(b,null),r(M,b),r(A,b),r(F,A),r(j,F),r(V,A),r(q,A),r(K,q),r($,q),r(B,q),r(z,q),r(G,A),r(J,A),r(Q,J),r(U,J),r(W,J),r(X,J)},p:function(e,s){var r={label:"First row as label"};!Y.value&&e.firstRowIsHeader&&(r.value=s.firstRowIsHeader,Y.value=!0),re._set(r),Y={};var a={};!Z.value&&e.transpose&&(a.value=s.transpose,Z.value=!0),ne._set(a),Z={},ee||(k.value=s.search),ue===(ue=C(s))&&le?le.p(e,s):(le&&(le.u(),le.d()),(le=ue&&ue(s,t))&&le.c(),le&&le.m(P,null));var n={};!te.data&&e.chartData&&(n.data=s.chartData,te.data=!0),!te.transpose&&e.transpose&&(n.transpose=s.transpose,te.transpose=!0),!te.firstRowIsHeader&&e.firstRowIsHeader&&(n.firstRowIsHeader=s.firstRowIsHeader,te.firstRowIsHeader=!0),!te.search&&e.search&&(n.search=s.search,te.search=!0),!te.searchResults&&e.searchResults&&(n.searchResults=s.searchResults,te.searchResults=!0),!te.searchIndex&&e.searchIndex&&(n.searchIndex=s.searchIndex,te.searchIndex=!0),fe._set(n),te={}},u:function(){n(u),le&&le.u()},d:function(){re.destroy(!1),ne.destroy(!1),h(k,"input",oe),h(k,"keypress",ie),t.refs.search===k&&(t.refs.search=null),h(T,"click",ce),h(O,"click",he),le&&le.d(),fe.destroy(!1),h(F,"click",pe)}}}(this._state,this),e.target&&(this._fragment.c(),this._fragment.m(e.target,e.anchor||null),this._lock=!0,g(this._beforecreate),g(this._oncreate),g(this._aftercreate),this._lock=!1)}function S(e){this._observers={pre:l(),post:l()},this._changeHandlers=[],this._dependents=[],this._computed=l(),this._sortedComputedProperties=[],this._state=s({},e)}s(N.prototype,{nextResult:function(e){var t=this.get(),s=t.searchIndex,r=t.searchResults;(s+=e)<0&&(s+=r.length),s%=r.length,this.set({searchIndex:s})},keyPress:function(e){"F3"==e.key&&this.nextResult(e.shiftKey?-1:1)},toggleTranspose:function(){this.set({transpose:!this.get("transpose")})}},R),N.prototype._recompute=function(e,t){var s,r;(e.searchIndex||e.searchResults)&&f(t.searchIndexSafe,t.searchIndexSafe=(s=t.searchIndex,r=t.searchResults,s<0&&(s+=r.length),s%=r.length))&&(e.searchIndexSafe=!0)},s(S.prototype,{_add:function(e,t){this._dependents.push({component:e,props:t})},_init:function(e){for(var t={},s=0;s<e.length;s+=1){var r=e[s];t["$"+r]=this._state[r]}return t},_remove:function(e){for(var t=this._dependents.length;t--;)if(this._dependents[t].component===e)return void this._dependents.splice(t,1)},_sortComputedProperties:function(){var e,t=this._computed,s=this._sortedComputedProperties=[],r=l();function a(n){if(e[n])throw new Error("Cyclical dependency detected");if(!r[n]){r[n]=!0;var o=t[n];o&&(e[n]=!0,o.deps.forEach(a),s.push(o))}}for(var n in this._computed)e=l(),a(n)},compute:function(e,t,s){var r,a={deps:t,update:function(a,n,o){var i=t.map(function(e){return e in n&&(o=!0),a[e]});if(o){var c=s.apply(null,i);f(c,r)&&(r=c,n[e]=!0,a[e]=r)}}};a.update(this._state,{},!0),this._computed[e]=a,this._sortComputedProperties()},get:_,observe:m,onchange:function(e){return this._changeHandlers.push(e),{cancel:function(){var t=this._changeHandlers.indexOf(e);~t&&this._changeHandlers.splice(t,1)}}},set:function(e){var t=this._state,r=this._changed={},a=!1;for(var n in e){if(this._computed[n])throw new Error("'"+n+"' is a read-only property");f(e[n],t[n])&&(r[n]=a=!0)}if(a){this._state=s({},t,e);for(var o=0;o<this._sortedComputedProperties.length;o+=1)this._sortedComputedProperties[o].update(this._state,r);for(o=0;o<this._changeHandlers.length;o+=1)this._changeHandlers[o](this._state,r);p(this,this._observers.pre,r,this._state,t);var i=this._dependents.slice();for(o=0;o<i.length;o+=1){var c=i[o],h={};a=!1;for(var u=0;u<c.props.length;u+=1){var l=c.props[u];l in r&&(h["$"+l]=this._state[l],a=!0)}a&&c.component.set(h)}p(this,this._observers.post,r,this._state,t)}}});return{App:N,store:new S({}),data:{chart:{id:""},readonly:!1,chartData:"",transpose:!1,firstRowIsHeader:!0,skipRows:0}}});
+(function (global, factory) {
+	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('Handsontable')) :
+	typeof define === 'function' && define.amd ? define('svelte/describe', ['Handsontable'], factory) :
+	(global.describe = factory(global.HOT));
+}(this, (function (HOT) { 'use strict';
+
+HOT = HOT && HOT.hasOwnProperty('default') ? HOT['default'] : HOT;
+
+function noop() {}
+
+function assign(target) {
+	var k,
+		source,
+		i = 1,
+		len = arguments.length;
+	for (; i < len; i++) {
+		source = arguments[i];
+		for (k in source) target[k] = source[k];
+	}
+
+	return target;
+}
+
+function appendNode(node, target) {
+	target.appendChild(node);
+}
+
+function insertNode(node, target, anchor) {
+	target.insertBefore(node, anchor);
+}
+
+function detachNode(node) {
+	node.parentNode.removeChild(node);
+}
+
+function createElement(name) {
+	return document.createElement(name);
+}
+
+function createText(data) {
+	return document.createTextNode(data);
+}
+
+function addListener(node, event, handler) {
+	node.addEventListener(event, handler, false);
+}
+
+function removeListener(node, event, handler) {
+	node.removeEventListener(event, handler, false);
+}
+
+function setAttribute(node, attribute, value) {
+	node.setAttribute(attribute, value);
+}
+
+function setStyle(node, key, value) {
+	node.style.setProperty(key, value);
+}
+
+function blankObject() {
+	return Object.create(null);
+}
+
+function destroy(detach) {
+	this.destroy = noop;
+	this.fire('destroy');
+	this.set = this.get = noop;
+
+	if (detach !== false) this._fragment.u();
+	this._fragment.d();
+	this._fragment = this._state = null;
+}
+
+function destroyDev(detach) {
+	destroy.call(this, detach);
+	this.destroy = function() {
+		console.warn('Component was already destroyed');
+	};
+}
+
+function differs(a, b) {
+	return a !== b || ((a && typeof a === 'object') || typeof a === 'function');
+}
+
+function dispatchObservers(component, group, changed, newState, oldState) {
+	for (var key in group) {
+		if (!changed[key]) continue;
+
+		var newValue = newState[key];
+		var oldValue = oldState[key];
+
+		var callbacks = group[key];
+		if (!callbacks) continue;
+
+		for (var i = 0; i < callbacks.length; i += 1) {
+			var callback = callbacks[i];
+			if (callback.__calling) continue;
+
+			callback.__calling = true;
+			callback.call(component, newValue, oldValue);
+			callback.__calling = false;
+		}
+	}
+}
+
+function fire(eventName, data) {
+	var handlers =
+		eventName in this._handlers && this._handlers[eventName].slice();
+	if (!handlers) return;
+
+	for (var i = 0; i < handlers.length; i += 1) {
+		handlers[i].call(this, data);
+	}
+}
+
+function get(key) {
+	return key ? this._state[key] : this._state;
+}
+
+function init(component, options) {
+	component._observers = { pre: blankObject(), post: blankObject() };
+	component._handlers = blankObject();
+	component._bind = options._bind;
+
+	component.options = options;
+	component.root = options.root || component;
+	component.store = component.root.store || options.store;
+}
+
+function observe(key, callback, options) {
+	var group = options && options.defer
+		? this._observers.post
+		: this._observers.pre;
+
+	(group[key] || (group[key] = [])).push(callback);
+
+	if (!options || options.init !== false) {
+		callback.__calling = true;
+		callback.call(this, this._state[key]);
+		callback.__calling = false;
+	}
+
+	return {
+		cancel: function() {
+			var index = group[key].indexOf(callback);
+			if (~index) group[key].splice(index, 1);
+		}
+	};
+}
+
+function observeDev(key, callback, options) {
+	var c = (key = '' + key).search(/[^\w]/);
+	if (c > -1) {
+		var message =
+			'The first argument to component.observe(...) must be the name of a top-level property';
+		if (c > 0)
+			message += ", i.e. '" + key.slice(0, c) + "' rather than '" + key + "'";
+
+		throw new Error(message);
+	}
+
+	return observe.call(this, key, callback, options);
+}
+
+function on(eventName, handler) {
+	if (eventName === 'teardown') return this.on('destroy', handler);
+
+	var handlers = this._handlers[eventName] || (this._handlers[eventName] = []);
+	handlers.push(handler);
+
+	return {
+		cancel: function() {
+			var index = handlers.indexOf(handler);
+			if (~index) handlers.splice(index, 1);
+		}
+	};
+}
+
+function onDev(eventName, handler) {
+	if (eventName === 'teardown') {
+		console.warn(
+			"Use component.on('destroy', ...) instead of component.on('teardown', ...) which has been deprecated and will be unsupported in Svelte 2"
+		);
+		return this.on('destroy', handler);
+	}
+
+	return on.call(this, eventName, handler);
+}
+
+function set(newState) {
+	this._set(assign({}, newState));
+	if (this.root._lock) return;
+	this.root._lock = true;
+	callAll(this.root._beforecreate);
+	callAll(this.root._oncreate);
+	callAll(this.root._aftercreate);
+	this.root._lock = false;
+}
+
+function _set(newState) {
+	var oldState = this._state,
+		changed = {},
+		dirty = false;
+
+	for (var key in newState) {
+		if (differs(newState[key], oldState[key])) changed[key] = dirty = true;
+	}
+	if (!dirty) return;
+
+	this._state = assign({}, oldState, newState);
+	this._recompute(changed, this._state);
+	if (this._bind) this._bind(changed, this._state);
+
+	if (this._fragment) {
+		dispatchObservers(this, this._observers.pre, changed, this._state, oldState);
+		this._fragment.p(changed, this._state);
+		dispatchObservers(this, this._observers.post, changed, this._state, oldState);
+	}
+}
+
+function setDev(newState) {
+	if (typeof newState !== 'object') {
+		throw new Error(
+			this._debugName + '.set was called without an object of data key-values to update.'
+		);
+	}
+
+	this._checkReadOnly(newState);
+	set.call(this, newState);
+}
+
+function callAll(fns) {
+	while (fns && fns.length) fns.pop()();
+}
+
+function _mount(target, anchor) {
+	this._fragment.m(target, anchor);
+}
+
+function _unmount() {
+	if (this._fragment) this._fragment.u();
+}
+
+var protoDev = {
+	destroy: destroyDev,
+	get: get,
+	fire: fire,
+	observe: observeDev,
+	on: onDev,
+	set: setDev,
+	teardown: destroyDev,
+	_recompute: noop,
+	_set: _set,
+	_mount: _mount,
+	_unmount: _unmount
+};
+
+/* describe/Handsontable.html generated by Svelte v1.53.0 */
+function currentResult(searchResults, searchIndex) {
+    if (!searchResults || !searchResults.length) return null;
+    const l = searchResults.length;
+    if (searchIndex < 0 || searchIndex >= l) {
+        while (searchIndex<0) searchIndex += l;
+        if (searchIndex > l) searchIndex %= l;
+    }
+    return searchResults[searchIndex];
+}
+
+function data() {
+    return {
+        data: '',
+        readonly: false,
+        skipRows: 0,
+        firstRowIsHeader: true,
+        searchIndex: 0,
+        transpose: false,
+        search: '',
+        searchResults: []
+    };
+}
+
+var methods = {
+    update() {
+        const {data, transpose, firstRowIsHeader, skipRows, hot} = this.get();
+
+        if (!data) return;
+
+        // get chart
+        const chart = this.store.get('dw_chart');
+
+        // pass dataset through chart to apply changes and computed columns
+        const ds = chart.dataset(dw.datasource.delimited({
+            csv: data,
+            transpose,
+            firstRowIsHeader,
+            skipRows
+        }).parse()).dataset();
+
+        this.set({columnOrder: ds.columnOrder()});
+
+        // construct HoT data array
+        const hot_data = [[]];
+        ds.eachColumn(c => hot_data[0].push(c.title()));
+
+        ds.eachRow(r => {
+            const row = [];
+            ds.eachColumn(col => row.push(col.raw(r)));
+            hot_data.push(row);
+        });
+
+        // pass data to hot
+        hot.loadData(hot_data);
+
+        hot.updateSettings({
+            cells: (row, col) => {
+                const {readonly} = this.get();
+                return {
+                    readOnly: readonly || (ds.numColumns() > col && ds.column(col).isComputed && row === 0),
+                    renderer: getCellRenderer(this, ds, HOT, {})
+                };
+            },
+            manualColumnMove: []
+        });
+
+        // activate special transpose button
+        document.querySelector('.htCore thead tr:first-child th:first-child div.relative')
+            .addEventListener('click', () => {
+                console.log('CLICKEEDDDD!');
+            });
+        // $('#data-preview .htCore thead tr:first-child th:first-child,a.transpose').off('click').on('click', function() {
+        // chart.set('metadata.data.transpose', !chart.get('metadata.data.transpose', false));
+        // ht.render();
+
+        hot.render();
+    }
+};
+
+function oncreate() {
+
+    const hot = new HOT(this.refs.hot, {
+        data: [],
+        rowHeaders: (i) => {
+            const ti = hot.getPlugin('ColumnSorting').translateRow(i);
+            return ti+1;
+        },
+        colHeaders: true,
+        fixedRowsTop: 1,
+        filters: true,
+        dropdownMenu: true,
+        startRows: 13,
+        startCols: 8,
+        fillHandle: false,
+        stretchH: 'all',
+        height: 400,
+        manualColumnMove: true,
+        selectionMode: 'range',
+        autoColumnSize: {useHeaders: true},
+        // comments: true,
+        // contextMenu: true,
+
+        // sorting
+        columnSorting: true,
+        sortIndicator: true,
+        sortFunction: function(sortOrder, columnMeta) {
+            return function(a, b) {
+                var plugin = hot.getPlugin('columnSorting');
+                var sortFunction;
+
+                if (a[0] === 0) return -1;
+
+                switch (columnMeta.type) {
+                    case 'date':
+                        sortFunction = plugin.dateSort;
+                        break;
+                    case 'numeric':
+                        sortFunction = plugin.numericSort;
+                        break;
+                    default:
+                        sortFunction = plugin.defaultSort;
+                }
+
+                return sortFunction(sortOrder, columnMeta)(a, b);
+            };
+        },
+
+        // search
+        search: 'search'
+    });
+
+    window.HT = hot;
+    this.set({hot});
+
+    HOT.hooks.add('afterSetDataAtCell', (cells) => {
+        let changed = false;
+        cells.forEach(([row, col, old_val, new_val]) => {
+            if (old_val != new_val) {
+                const chart = this.store.get('dw_chart');
+                const {transpose} = this.get();
+                const changes = chart.get('metadata.data.changes');
+                if (transpose) {
+                    // swap row and col
+                    const tmp = row;
+                    row = col;
+                    col = tmp;
+                }
+                // store new change
+                changes.push({
+                    row, column: col, value: new_val, time: (new Date()).getTime()
+                });
+                chart.set('metadata.data.changes', changes);
+                changed = true;
+            }
+        });
+        if (changed) {
+            setTimeout(() => {
+                this.update();
+                chart.save();
+            }, 100);
+        }
+        // this.set({table});
+    });
+
+    HOT.hooks.add('afterColumnMove', (srcColumns, tgtIndex) => {
+        if (!srcColumns.length) return;
+        const {columnOrder} = this.get();
+        const newOrder = columnOrder.slice(0);
+        const after = columnOrder[tgtIndex];
+        const elements = newOrder.splice(srcColumns[0], srcColumns.length);
+        const insertAt = after ? newOrder.indexOf(after) : newOrder.length;
+        newOrder.splice(insertAt, 0, ...elements);
+        this.store.get('dw_chart').set('metadata.data.column-order', newOrder.slice(0));
+        this.set({columnOrder: newOrder});
+        // update selection
+        HOT.hooks.once('afterRender', () => {
+            setTimeout(() => {
+                hot.selectCell(0, insertAt, hot.countRows()-1, insertAt+elements.length-1);
+            }, 10);
+        });
+        this.update();
+    });
+
+    HOT.hooks.add('afterRender', () => {
+        const h = document.querySelector('.ht_master.handsontable .wtHolder .wtHider').getBoundingClientRect().height;
+        this.refs.hot.style.height = Math.min(400, h+10)+'px';
+    });
+
+    this.observe('data', () => this.update());
+    this.observe('transpose', () => this.update());
+    this.observe('firstRowIsHeader', () => this.update());
+
+    this.observe('search', (query) => {
+        const searchResults = hot.search.query(query);
+        this.set({searchResults});
+        hot.render();
+    });
+
+    this.observe('currentResult', (res) => {
+        // console.log('cur search res', res);
+        if (!res || !hot) return;
+        // this is a weird hack to deal with HoT's problems to scroll
+        // all the way down after hot.scrollViewportTo(hot.countRows()-1, res.col);
+        // the first scrollViewportTo will trigger a render event
+        hot.render(); // to update the hightlight colors
+        hot.scrollViewportTo(res.row, res.col);
+        setTimeout(() => {
+            // one more time
+            hot.scrollViewportTo(res.row, res.col);
+        }, 100);
+    });
+
+}
+
+function getCellRenderer(app, dataset, Handsontable, metadata) {
+    const colTypeIcons = {
+        date: 'fa fa-clock-o'
+    };
+    function HtmlCellRender(instance, TD, row, col, prop, value, cellProperties) {
+        var escaped = dw.utils.purifyHtml(Handsontable.helper.stringify(value));
+        TD.innerHTML = escaped; // this is faster than innerHTML. See: https://github.com/warpech/jquery-handsontable/wiki/JavaScript-&-DOM-performance-tips
+    }
+    return function(instance, td, row, col, prop, value, cellProperties) {
+        if (dataset.numColumns() <= col) return;
+        const column = dataset.column(col);
+        const {searchResults, currentResult} = app.get();
+        if (row > 0) {
+            var formatter = chart.columnFormatter(column);
+            value = formatter(column.val(row - 1), true);
+        }
+        if (parseInt(value) < 0) { // if row contains negative number
+            td.classList.add('negative');
+        }
+        td.classList.add(column.type()+'Type');
+
+        if (column.type() == 'text' && value.length > 70) {
+            value = value.substr(0,60)+'…';
+        }
+
+        if (row === 0) {
+            td.classList.add('firstRow');
+            if (colTypeIcons[column.type()]) {
+                value = '<i class="'+colTypeIcons[column.type()]+'"></i> ' + value;
+            }
+        } else {
+            td.classList.add(row % 2 ? 'oddRow' : 'evenRow');
+        }
+        // if (metadata.columnFormat.get(column.name()).ignore) {
+        //     td.classList.add('ignored');
+        // }
+        // if(selectedColumns.indexOf(col) > -1) {
+        //     td.classList.add('area'); //add blue area background if this cell is in selected column
+        // }
+        searchResults.forEach(res => {
+            if (res.row == row && res.col == col) {
+                td.classList.add('htSearchResult');
+            }
+        });
+        if (currentResult && currentResult.row == row && currentResult.col == col) {
+            td.classList.add('htCurrentSearchResult');
+        }
+        if (row > 0 && !column.type(true).isValid(column.val(row-1))) {
+            td.classList.add('parsingError');
+        }
+        if (cellProperties.readOnly) td.classList.add('readOnly');
+
+        if (chart.dataCellChanged(col, row)) {
+            td.classList.add('changed');
+        }
+        HtmlCellRender(instance, td, row, col, prop, value, cellProperties);
+        // Reflect.apply(HtmlCellRender, this, arguments);
+    };
+}
+
+function create_main_fragment(state, component) {
+	var div;
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			this.h();
+		},
+
+		h: function hydrate() {
+			div.id = "data-preview";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			component.refs.hot = div;
+		},
+
+		p: noop,
+
+		u: function unmount() {
+			detachNode(div);
+		},
+
+		d: function destroy$$1() {
+			if (component.refs.hot === div) component.refs.hot = null;
+		}
+	};
+}
+
+function Handsontable_1(options) {
+	this._debugName = '<Handsontable_1>';
+	if (!options || (!options.target && !options.root)) throw new Error("'target' is a required option");
+	init(this, options);
+	this.refs = {};
+	this._state = assign(data(), options.data);
+	this._recompute({ searchResults: 1, searchIndex: 1 }, this._state);
+	if (!('searchResults' in this._state)) console.warn("<Handsontable_1> was created without expected data property 'searchResults'");
+	if (!('searchIndex' in this._state)) console.warn("<Handsontable_1> was created without expected data property 'searchIndex'");
+
+	var _oncreate = oncreate.bind(this);
+
+	if (!options.root) {
+		this._oncreate = [_oncreate];
+	} else {
+	 	this.root._oncreate.push(_oncreate);
+	 }
+
+	this._fragment = create_main_fragment(this._state, this);
+
+	if (options.target) {
+		if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		this._fragment.c();
+		this._fragment.m(options.target, options.anchor || null);
+
+		callAll(this._oncreate);
+	}
+}
+
+assign(Handsontable_1.prototype, methods, protoDev);
+
+Handsontable_1.prototype._checkReadOnly = function _checkReadOnly(newState) {
+	if ('currentResult' in newState && !this._updatingReadonlyProperty) throw new Error("<Handsontable_1>: Cannot set read-only property 'currentResult'");
+};
+
+Handsontable_1.prototype._recompute = function _recompute(changed, state) {
+	if (changed.searchResults || changed.searchIndex) {
+		if (differs(state.currentResult, (state.currentResult = currentResult(state.searchResults, state.searchIndex)))) changed.currentResult = true;
+	}
+};
+
+/* controls/Checkbox.html generated by Svelte v1.53.0 */
+function create_main_fragment$1(state, component) {
+	var div, label, input, text, text_1;
+
+	function input_change_handler() {
+		component.set({ value: input.checked });
+	}
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			label = createElement("label");
+			input = createElement("input");
+			text = createText(" ");
+			text_1 = createText(state.label);
+			this.h();
+		},
+
+		h: function hydrate() {
+			addListener(input, "change", input_change_handler);
+			input.type = "checkbox";
+			label.className = "checkbox";
+			setStyle(label, "text-align", "left");
+			setStyle(label, "width", "100%");
+			setStyle(label, "position", "relative");
+			setStyle(label, "left", "0");
+			div.className = "control-group vis-option-group vis-option-type-checkbox";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			appendNode(label, div);
+			appendNode(input, label);
+
+			input.checked = state.value;
+
+			appendNode(text, label);
+			appendNode(text_1, label);
+		},
+
+		p: function update(changed, state) {
+			input.checked = state.value;
+			if (changed.label) {
+				text_1.data = state.label;
+			}
+		},
+
+		u: function unmount() {
+			detachNode(div);
+		},
+
+		d: function destroy$$1() {
+			removeListener(input, "change", input_change_handler);
+		}
+	};
+}
+
+function Checkbox(options) {
+	this._debugName = '<Checkbox>';
+	if (!options || (!options.target && !options.root)) throw new Error("'target' is a required option");
+	init(this, options);
+	this._state = assign({}, options.data);
+	if (!('value' in this._state)) console.warn("<Checkbox> was created without expected data property 'value'");
+	if (!('label' in this._state)) console.warn("<Checkbox> was created without expected data property 'label'");
+
+	this._fragment = create_main_fragment$1(this._state, this);
+
+	if (options.target) {
+		if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		this._fragment.c();
+		this._fragment.m(options.target, options.anchor || null);
+	}
+}
+
+assign(Checkbox.prototype, protoDev);
+
+Checkbox.prototype._checkReadOnly = function _checkReadOnly(newState) {
+};
+
+/* describe/App.html generated by Svelte v1.53.0 */
+function searchIndexSafe(searchIndex, searchResults) {
+    if (searchIndex<0) searchIndex+=searchResults.length;
+    searchIndex = searchIndex % searchResults.length;
+    return searchIndex;
+}
+
+function data$1() {
+    return {
+        search: '',
+        chartData: '',
+        transpose: false,
+        firstRowIsHeader: true,
+        searchIndex: 0,
+        searchResults: []
+    };
+}
+
+var methods$1 = {
+    nextResult (diff) {
+        let {searchIndex, searchResults} = this.get();
+        searchIndex += diff;
+        if (searchIndex<0) searchIndex+=searchResults.length;
+        searchIndex = searchIndex % searchResults.length;
+        this.set({searchIndex});
+    },
+    keyPress (event) {
+        if (event.key == 'F3' || event.key == 'Enter')
+            this.nextResult(event.shiftKey ? -1 : 1);
+    },
+    toggleTranspose() {
+        this.set({transpose: !this.get('transpose')});
+    }
+};
+
+function oncreate$1() {
+    window.addEventListener('keypress', (event) => {
+        if (event.ctrlKey && event.key == 'f') {
+            event.preventDefault();
+            if (this.refs.search != window.document.activeElement) {
+                this.refs.search.focus();
+            } else {
+                this.nextResult(+1);
+            }
+        }
+    });
+    const sync = (svelte_key, metadata_key) => {
+        this.observe(svelte_key, (svelte_value) => {
+            this.store.get('dw_chart').set(`metadata.${metadata_key}`, svelte_value);
+        });
+    };
+    sync('transpose', 'data.transpose');
+    sync('firstRowIsHeader', 'data.horizontal-header');
+}
+
+function encapsulateStyles(node) {
+	setAttribute(node, "svelte-781389954", "");
+}
+
+function create_main_fragment$2(state, component) {
+	var div, div_1, div_2, div_3, h3, text_value = "Make sure the data looks right", text, text_1, p, text_2_value = "Please make sure that Datawrapper interprets your data correctly. In the table number columns should be shown in blue, dates in green and text in black.", text_2, text_3, checkbox_updating = {}, text_4, div_4, text_11, div_5, button, img, text_12, text_13_value = "Swap rows and columns (transpose)", text_13, text_14, div_6, i_2, text_15, div_7, input, input_updating = false, input_placeholder_value, input_class_value, text_16, text_18, text_20, handsontable_updating = {}, text_21, div_8, button_1, i_3, text_22, text_23_value = "Add column", text_23, text_24, text_25, button_2, i_4, text_26, text_27_value = "Revert changes", text_27, text_28;
+
+	var checkbox_initial_data = { label: "First row as label" };
+	if ('firstRowIsHeader' in state) {
+		checkbox_initial_data.value = state.firstRowIsHeader;
+		checkbox_updating.value = true;
+	}
+	var checkbox = new Checkbox({
+		root: component.root,
+		data: checkbox_initial_data,
+		_bind: function(changed, childState) {
+			var state = component.get(), newState = {};
+			if (!checkbox_updating.value && changed.value) {
+				newState.firstRowIsHeader = childState.value;
+			}
+			checkbox_updating = assign({}, changed);
+			component._set(newState);
+			checkbox_updating = {};
+		}
+	});
+
+	component.root._beforecreate.push(function() {
+		var state = component.get(), childState = checkbox.get(), newState = {};
+		if (!childState) return;
+		if (!checkbox_updating.value) {
+			newState.firstRowIsHeader = childState.value;
+		}
+		checkbox_updating = { value: true };
+		component._set(newState);
+		checkbox_updating = {};
+	});
+
+	function click_handler(event) {
+		component.toggleTranspose();
+	}
+
+	function input_input_handler() {
+		input_updating = true;
+		component.set({ search: input.value });
+		input_updating = false;
+	}
+
+	function keypress_handler(event) {
+		component.keyPress(event);
+	}
+
+	var if_block = (state.searchResults.length > 0) && create_if_block(state, component);
+
+	var if_block_1 = (state.search) && create_if_block_1(state, component);
+
+	var handsontable_initial_data = {};
+	if ('chartData' in state) {
+		handsontable_initial_data.data = state.chartData;
+		handsontable_updating.data = true;
+	}
+	if ('transpose' in state) {
+		handsontable_initial_data.transpose = state.transpose
+                ;
+		handsontable_updating.transpose = true;
+	}
+	if ('firstRowIsHeader' in state) {
+		handsontable_initial_data.firstRowIsHeader = state.firstRowIsHeader
+                ;
+		handsontable_updating.firstRowIsHeader = true;
+	}
+	if ('search' in state) {
+		handsontable_initial_data.search = state.search
+                ;
+		handsontable_updating.search = true;
+	}
+	if ('searchResults' in state) {
+		handsontable_initial_data.searchResults = state.searchResults
+                ;
+		handsontable_updating.searchResults = true;
+	}
+	if ('searchIndex' in state) {
+		handsontable_initial_data.searchIndex = state.searchIndex ;
+		handsontable_updating.searchIndex = true;
+	}
+	var handsontable = new Handsontable_1({
+		root: component.root,
+		data: handsontable_initial_data,
+		_bind: function(changed, childState) {
+			var state = component.get(), newState = {};
+			if (!handsontable_updating.data && changed.data) {
+				newState.chartData = childState.data;
+			}
+
+			if (!handsontable_updating.transpose && changed.transpose) {
+				newState.transpose = childState.transpose;
+			}
+
+			if (!handsontable_updating.firstRowIsHeader && changed.firstRowIsHeader) {
+				newState.firstRowIsHeader = childState.firstRowIsHeader;
+			}
+
+			if (!handsontable_updating.search && changed.search) {
+				newState.search = childState.search;
+			}
+
+			if (!handsontable_updating.searchResults && changed.searchResults) {
+				newState.searchResults = childState.searchResults;
+			}
+
+			if (!handsontable_updating.searchIndex && changed.searchIndex) {
+				newState.searchIndex = childState.searchIndex;
+			}
+			handsontable_updating = assign({}, changed);
+			component._set(newState);
+			handsontable_updating = {};
+		}
+	});
+
+	component.root._beforecreate.push(function() {
+		var state = component.get(), childState = handsontable.get(), newState = {};
+		if (!childState) return;
+		if (!handsontable_updating.data) {
+			newState.chartData = childState.data;
+		}
+
+		if (!handsontable_updating.transpose) {
+			newState.transpose = childState.transpose;
+		}
+
+		if (!handsontable_updating.firstRowIsHeader) {
+			newState.firstRowIsHeader = childState.firstRowIsHeader;
+		}
+
+		if (!handsontable_updating.search) {
+			newState.search = childState.search;
+		}
+
+		if (!handsontable_updating.searchResults) {
+			newState.searchResults = childState.searchResults;
+		}
+
+		if (!handsontable_updating.searchIndex) {
+			newState.searchIndex = childState.searchIndex;
+		}
+		handsontable_updating = { data: true, transpose: true, firstRowIsHeader: true, search: true, searchResults: true, searchIndex: true };
+		component._set(newState);
+		handsontable_updating = {};
+	});
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			div_1 = createElement("div");
+			div_2 = createElement("div");
+			div_3 = createElement("div");
+			h3 = createElement("h3");
+			text = createText(text_value);
+			text_1 = createText("\n\n                ");
+			p = createElement("p");
+			text_2 = createText(text_2_value);
+			text_3 = createText("\n\n                ");
+			checkbox._fragment.c();
+			text_4 = createText("\n\n                ");
+			div_4 = createElement("div");
+			div_4.innerHTML = "<a class=\"btn submit\" href=\"upload\"><i class=\"icon-chevron-left\"></i> Zurück</a>\n                    <a href=\"visualize\" class=\"submit btn btn-primary\" id=\"describe-proceed\">Weiter <i class=\"icon-chevron-right icon-white\"></i></a>";
+			text_11 = createText("\n        ");
+			div_5 = createElement("div");
+			button = createElement("button");
+			img = createElement("img");
+			text_12 = createText(" ");
+			text_13 = createText(text_13_value);
+			text_14 = createText("\n\n            ");
+			div_6 = createElement("div");
+			i_2 = createElement("i");
+			text_15 = createText("\n                ");
+			div_7 = createElement("div");
+			input = createElement("input");
+			text_16 = createText("\n                    ");
+			if (if_block) if_block.c();
+			text_18 = createText("\n\n                ");
+			if (if_block_1) if_block_1.c();
+			text_20 = createText("\n\n            ");
+			handsontable._fragment.c();
+			text_21 = createText("\n\n            ");
+			div_8 = createElement("div");
+			button_1 = createElement("button");
+			i_3 = createElement("i");
+			text_22 = createText(" ");
+			text_23 = createText(text_23_value);
+			text_24 = createText("...");
+			text_25 = createText("\n\n                ");
+			button_2 = createElement("button");
+			i_4 = createElement("i");
+			text_26 = createText(" ");
+			text_27 = createText(text_27_value);
+			text_28 = createText("...");
+			this.h();
+		},
+
+		h: function hydrate() {
+			h3.className = "first";
+			div_4.className = "btn-group";
+			div_3.className = "sidebar";
+			div_2.className = "span4";
+			encapsulateStyles(div_5);
+			encapsulateStyles(button);
+			encapsulateStyles(img);
+			img.src = "/static/css/chart-editor/transpose.png";
+			button.className = "btn transpose";
+			addListener(button, "click", click_handler);
+			encapsulateStyles(div_6);
+			encapsulateStyles(i_2);
+			i_2.className = "fa fa-search";
+			encapsulateStyles(input);
+			addListener(input, "input", input_input_handler);
+			input.type = "text";
+			input.placeholder = input_placeholder_value = "Search data table";
+			input.className = input_class_value = state.searchResults.length > 0?'with-results':'';
+			addListener(input, "keypress", keypress_handler);
+			div_7.className = "input-append";
+			div_6.className = "search-box pull-right";
+			encapsulateStyles(div_8);
+			i_3.className = "fa fa-calculator";
+			button_1.className = "btn computed-columns";
+			i_4.className = "fa fa-undo";
+			button_2.className = "btn disabled";
+			button_2.id = "reset-data-changes";
+			div_8.className = "buttons below-table pull-right";
+			div_5.className = "span8";
+			div_1.className = "row";
+			div.className = "chart-editor";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			appendNode(div_1, div);
+			appendNode(div_2, div_1);
+			appendNode(div_3, div_2);
+			appendNode(h3, div_3);
+			appendNode(text, h3);
+			appendNode(text_1, div_3);
+			appendNode(p, div_3);
+			appendNode(text_2, p);
+			appendNode(text_3, div_3);
+			checkbox._mount(div_3, null);
+			appendNode(text_4, div_3);
+			appendNode(div_4, div_3);
+			appendNode(text_11, div_1);
+			appendNode(div_5, div_1);
+			appendNode(button, div_5);
+			appendNode(img, button);
+			appendNode(text_12, button);
+			appendNode(text_13, button);
+			appendNode(text_14, div_5);
+			appendNode(div_6, div_5);
+			appendNode(i_2, div_6);
+			appendNode(text_15, div_6);
+			appendNode(div_7, div_6);
+			appendNode(input, div_7);
+			component.refs.search = input;
+
+			input.value = state.search;
+
+			appendNode(text_16, div_7);
+			if (if_block) if_block.m(div_7, null);
+			appendNode(text_18, div_6);
+			if (if_block_1) if_block_1.m(div_6, null);
+			appendNode(text_20, div_5);
+			handsontable._mount(div_5, null);
+			appendNode(text_21, div_5);
+			appendNode(div_8, div_5);
+			appendNode(button_1, div_8);
+			appendNode(i_3, button_1);
+			appendNode(text_22, button_1);
+			appendNode(text_23, button_1);
+			appendNode(text_24, button_1);
+			appendNode(text_25, div_8);
+			appendNode(button_2, div_8);
+			appendNode(i_4, button_2);
+			appendNode(text_26, button_2);
+			appendNode(text_27, button_2);
+			appendNode(text_28, button_2);
+		},
+
+		p: function update(changed, state) {
+			var checkbox_changes = {};
+			checkbox_changes.label = "First row as label";
+			if (!checkbox_updating.value && changed.firstRowIsHeader) {
+				checkbox_changes.value = state.firstRowIsHeader;
+				checkbox_updating.value = true;
+			}
+			checkbox._set(checkbox_changes);
+			checkbox_updating = {};
+
+			if (!input_updating) input.value = state.search;
+			if ((changed.searchResults) && input_class_value !== (input_class_value = state.searchResults.length > 0?'with-results':'')) {
+				input.className = input_class_value;
+			}
+
+			if (state.searchResults.length > 0) {
+				if (!if_block) {
+					if_block = create_if_block(state, component);
+					if_block.c();
+					if_block.m(div_7, null);
+				}
+			} else if (if_block) {
+				if_block.u();
+				if_block.d();
+				if_block = null;
+			}
+
+			if (state.search) {
+				if (if_block_1) {
+					if_block_1.p(changed, state);
+				} else {
+					if_block_1 = create_if_block_1(state, component);
+					if_block_1.c();
+					if_block_1.m(div_6, null);
+				}
+			} else if (if_block_1) {
+				if_block_1.u();
+				if_block_1.d();
+				if_block_1 = null;
+			}
+
+			var handsontable_changes = {};
+			if (!handsontable_updating.data && changed.chartData) {
+				handsontable_changes.data = state.chartData;
+				handsontable_updating.data = true;
+			}
+			if (!handsontable_updating.transpose && changed.transpose) {
+				handsontable_changes.transpose = state.transpose
+                ;
+				handsontable_updating.transpose = true;
+			}
+			if (!handsontable_updating.firstRowIsHeader && changed.firstRowIsHeader) {
+				handsontable_changes.firstRowIsHeader = state.firstRowIsHeader
+                ;
+				handsontable_updating.firstRowIsHeader = true;
+			}
+			if (!handsontable_updating.search && changed.search) {
+				handsontable_changes.search = state.search
+                ;
+				handsontable_updating.search = true;
+			}
+			if (!handsontable_updating.searchResults && changed.searchResults) {
+				handsontable_changes.searchResults = state.searchResults
+                ;
+				handsontable_updating.searchResults = true;
+			}
+			if (!handsontable_updating.searchIndex && changed.searchIndex) {
+				handsontable_changes.searchIndex = state.searchIndex ;
+				handsontable_updating.searchIndex = true;
+			}
+			handsontable._set(handsontable_changes);
+			handsontable_updating = {};
+
+			
+		},
+
+		u: function unmount() {
+			detachNode(div);
+			if (if_block) if_block.u();
+			if (if_block_1) if_block_1.u();
+		},
+
+		d: function destroy$$1() {
+			checkbox.destroy(false);
+			removeListener(button, "click", click_handler);
+			removeListener(input, "input", input_input_handler);
+			removeListener(input, "keypress", keypress_handler);
+			if (component.refs.search === input) component.refs.search = null;
+			if (if_block) if_block.d();
+			if (if_block_1) if_block_1.d();
+			handsontable.destroy(false);
+		}
+	};
+}
+
+// (25:20) {{#if searchResults.length > 0}}
+function create_if_block(state, component) {
+	var div, button, text, button_1;
+
+	function click_handler(event) {
+		component.nextResult(-1);
+	}
+
+	function click_handler_1(event) {
+		component.nextResult(+1);
+	}
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			button = createElement("button");
+			button.innerHTML = "<i class=\"fa fa-chevron-up\"></i>";
+			text = createText("\n                      ");
+			button_1 = createElement("button");
+			button_1.innerHTML = "<i class=\"fa fa-chevron-down\"></i>";
+			this.h();
+		},
+
+		h: function hydrate() {
+			encapsulateStyles(button);
+			button.className = "btn";
+			addListener(button, "click", click_handler);
+			encapsulateStyles(button_1);
+			button_1.className = "btn";
+			addListener(button_1, "click", click_handler_1);
+			div.className = "btn-group";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			appendNode(button, div);
+			appendNode(text, div);
+			appendNode(button_1, div);
+		},
+
+		u: function unmount() {
+			detachNode(div);
+		},
+
+		d: function destroy$$1() {
+			removeListener(button, "click", click_handler);
+			removeListener(button_1, "click", click_handler_1);
+		}
+	};
+}
+
+// (37:20) {{#if searchResults.length > 0}}
+function create_if_block_2(state, component) {
+	var text_value = state.searchIndexSafe+1, text, text_1, text_2_value = state.searchResults.length, text_2, text_3;
+
+	return {
+		c: function create() {
+			text = createText(text_value);
+			text_1 = createText(" of ");
+			text_2 = createText(text_2_value);
+			text_3 = createText(" results");
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(text, target, anchor);
+			insertNode(text_1, target, anchor);
+			insertNode(text_2, target, anchor);
+			insertNode(text_3, target, anchor);
+		},
+
+		p: function update(changed, state) {
+			if ((changed.searchIndexSafe) && text_value !== (text_value = state.searchIndexSafe+1)) {
+				text.data = text_value;
+			}
+
+			if ((changed.searchResults) && text_2_value !== (text_2_value = state.searchResults.length)) {
+				text_2.data = text_2_value;
+			}
+		},
+
+		u: function unmount() {
+			detachNode(text);
+			detachNode(text_1);
+			detachNode(text_2);
+			detachNode(text_3);
+		},
+
+		d: noop
+	};
+}
+
+// (39:37) 
+function create_if_block_3(state, component) {
+	var text;
+
+	return {
+		c: function create() {
+			text = createText("No matches found");
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(text, target, anchor);
+		},
+
+		p: noop,
+
+		u: function unmount() {
+			detachNode(text);
+		},
+
+		d: noop
+	};
+}
+
+// (35:16) {{#if search}}
+function create_if_block_1(state, component) {
+	var div;
+
+	var current_block_type = select_block_type(state);
+	var if_block = current_block_type && current_block_type(state, component);
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			if (if_block) if_block.c();
+			this.h();
+		},
+
+		h: function hydrate() {
+			encapsulateStyles(div);
+			div.className = "results";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			if (if_block) if_block.m(div, null);
+		},
+
+		p: function update(changed, state) {
+			if (current_block_type === (current_block_type = select_block_type(state)) && if_block) {
+				if_block.p(changed, state);
+			} else {
+				if (if_block) {
+					if_block.u();
+					if_block.d();
+				}
+				if_block = current_block_type && current_block_type(state, component);
+				if (if_block) if_block.c();
+				if (if_block) if_block.m(div, null);
+			}
+		},
+
+		u: function unmount() {
+			detachNode(div);
+			if (if_block) if_block.u();
+		},
+
+		d: function destroy$$1() {
+			if (if_block) if_block.d();
+		}
+	};
+}
+
+function select_block_type(state) {
+	if (state.searchResults.length > 0) return create_if_block_2;
+	if (state.search) return create_if_block_3;
+	return null;
+}
+
+function App(options) {
+	this._debugName = '<App>';
+	if (!options || (!options.target && !options.root)) throw new Error("'target' is a required option");
+	init(this, options);
+	this.refs = {};
+	this._state = assign(data$1(), options.data);
+	this._recompute({ searchIndex: 1, searchResults: 1 }, this._state);
+	if (!('searchIndex' in this._state)) console.warn("<App> was created without expected data property 'searchIndex'");
+	if (!('searchResults' in this._state)) console.warn("<App> was created without expected data property 'searchResults'");
+	if (!('firstRowIsHeader' in this._state)) console.warn("<App> was created without expected data property 'firstRowIsHeader'");
+	if (!('search' in this._state)) console.warn("<App> was created without expected data property 'search'");
+	if (!('searchIndexSafe' in this._state)) console.warn("<App> was created without expected data property 'searchIndexSafe'");
+	if (!('chartData' in this._state)) console.warn("<App> was created without expected data property 'chartData'");
+	if (!('transpose' in this._state)) console.warn("<App> was created without expected data property 'transpose'");
+
+	var _oncreate = oncreate$1.bind(this);
+
+	if (!options.root) {
+		this._oncreate = [_oncreate];
+		this._beforecreate = [];
+		this._aftercreate = [];
+	} else {
+	 	this.root._oncreate.push(_oncreate);
+	 }
+
+	this._fragment = create_main_fragment$2(this._state, this);
+
+	if (options.target) {
+		if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		this._fragment.c();
+		this._fragment.m(options.target, options.anchor || null);
+
+		this._lock = true;
+		callAll(this._beforecreate);
+		callAll(this._oncreate);
+		callAll(this._aftercreate);
+		this._lock = false;
+	}
+}
+
+assign(App.prototype, methods$1, protoDev);
+
+App.prototype._checkReadOnly = function _checkReadOnly(newState) {
+	if ('searchIndexSafe' in newState && !this._updatingReadonlyProperty) throw new Error("<App>: Cannot set read-only property 'searchIndexSafe'");
+};
+
+App.prototype._recompute = function _recompute(changed, state) {
+	if (changed.searchIndex || changed.searchResults) {
+		if (differs(state.searchIndexSafe, (state.searchIndexSafe = searchIndexSafe(state.searchIndex, state.searchResults)))) changed.searchIndexSafe = true;
+	}
+};
+
+function Store(state) {
+	this._observers = { pre: blankObject(), post: blankObject() };
+	this._changeHandlers = [];
+	this._dependents = [];
+
+	this._computed = blankObject();
+	this._sortedComputedProperties = [];
+
+	this._state = assign({}, state);
+}
+
+assign(Store.prototype, {
+	_add: function(component, props) {
+		this._dependents.push({
+			component: component,
+			props: props
+		});
+	},
+
+	_init: function(props) {
+		var state = {};
+		for (var i = 0; i < props.length; i += 1) {
+			var prop = props[i];
+			state['$' + prop] = this._state[prop];
+		}
+		return state;
+	},
+
+	_remove: function(component) {
+		var i = this._dependents.length;
+		while (i--) {
+			if (this._dependents[i].component === component) {
+				this._dependents.splice(i, 1);
+				return;
+			}
+		}
+	},
+
+	_sortComputedProperties: function() {
+		var computed = this._computed;
+		var sorted = this._sortedComputedProperties = [];
+		var cycles;
+		var visited = blankObject();
+
+		function visit(key) {
+			if (cycles[key]) {
+				throw new Error('Cyclical dependency detected');
+			}
+
+			if (visited[key]) return;
+			visited[key] = true;
+
+			var c = computed[key];
+
+			if (c) {
+				cycles[key] = true;
+				c.deps.forEach(visit);
+				sorted.push(c);
+			}
+		}
+
+		for (var key in this._computed) {
+			cycles = blankObject();
+			visit(key);
+		}
+	},
+
+	compute: function(key, deps, fn) {
+		var value;
+
+		var c = {
+			deps: deps,
+			update: function(state, changed, dirty) {
+				var values = deps.map(function(dep) {
+					if (dep in changed) dirty = true;
+					return state[dep];
+				});
+
+				if (dirty) {
+					var newValue = fn.apply(null, values);
+					if (differs(newValue, value)) {
+						value = newValue;
+						changed[key] = true;
+						state[key] = value;
+					}
+				}
+			}
+		};
+
+		c.update(this._state, {}, true);
+
+		this._computed[key] = c;
+		this._sortComputedProperties();
+	},
+
+	get: get,
+
+	observe: observe,
+
+	onchange: function(callback) {
+		this._changeHandlers.push(callback);
+		return {
+			cancel: function() {
+				var index = this._changeHandlers.indexOf(callback);
+				if (~index) this._changeHandlers.splice(index, 1);
+			}
+		};
+	},
+
+	set: function(newState) {
+		var oldState = this._state,
+			changed = this._changed = {},
+			dirty = false;
+
+		for (var key in newState) {
+			if (this._computed[key]) throw new Error("'" + key + "' is a read-only property");
+			if (differs(newState[key], oldState[key])) changed[key] = dirty = true;
+		}
+		if (!dirty) return;
+
+		this._state = assign({}, oldState, newState);
+
+		for (var i = 0; i < this._sortedComputedProperties.length; i += 1) {
+			this._sortedComputedProperties[i].update(this._state, changed);
+		}
+
+		for (var i = 0; i < this._changeHandlers.length; i += 1) {
+			this._changeHandlers[i](this._state, changed);
+		}
+
+		dispatchObservers(this, this._observers.pre, changed, this._state, oldState);
+
+		var dependents = this._dependents.slice(); // guard against mutations
+		for (var i = 0; i < dependents.length; i += 1) {
+			var dependent = dependents[i];
+			var componentState = {};
+			dirty = false;
+
+			for (var j = 0; j < dependent.props.length; j += 1) {
+				var prop = dependent.props[j];
+				if (prop in changed) {
+					componentState['$' + prop] = this._state[prop];
+					dirty = true;
+				}
+			}
+
+			if (dirty) dependent.component.set(componentState);
+		}
+
+		dispatchObservers(this, this._observers.post, changed, this._state, oldState);
+	}
+});
+
+const store = new Store({});
+
+const data$2 = {
+    chart: {
+        id: ''
+    },
+    readonly: false,
+    chartData: '',
+    transpose: false,
+    firstRowIsHeader: true,
+    skipRows: 0
+};
+
+var main = { App, store, data: data$2 };
+
+return main;
+
+})));

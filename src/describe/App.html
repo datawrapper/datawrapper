@@ -1,30 +1,46 @@
 <div class="chart-editor">
     <div class="row">
         <div class="span4">
-            <h3 class="first">{{ __("Make sure the data looks right") }}</h3>
+            <div class="sidebar">
+                <h3 class="first">{{ __("Make sure the data looks right") }}</h3>
 
-            <p>{{ __("Please make sure that Datawrapper interprets your data correctly. In the table number columns should be shown in blue, dates in green and text in black.") }}</p>
+                <p>{{ __("Please make sure that Datawrapper interprets your data correctly. In the table number columns should be shown in blue, dates in green and text in black.") }}</p>
 
-            <Checkbox label="{{ __("First row as label") }}" bind:value="firstRowIsHeader" />
-            <Checkbox label="transpose" bind:value="transpose" />
-        </div>
-        <div class="span8">
-            <div class="input-append">
-                <input type="text" on:keypress="keyPress(event)" placeholder="{{__('Search data table')}}" bind:value="search" ref:search />
+                <Checkbox label="{{ __("First row as label") }}" bind:value="firstRowIsHeader" />
+
                 <div class="btn-group">
-                  <button class="btn" on:click="nextResult(-1)">
-                    <i class="fa fa-chevron-up"></i></button>
-                  <button class="btn" on:click="nextResult(+1)">
-                    <i class="fa fa-chevron-down"></i></button>
+                    <a class="btn submit" href="upload"><i class="icon-chevron-left"></i> Zurück</a>
+                    <a href="visualize" class="submit btn btn-primary" id="describe-proceed">Weiter <i class="icon-chevron-right icon-white"></i></a>
                 </div>
             </div>
+        </div>
+        <div class="span8">
 
-            <div class="results">
-            {{#if searchResults.length > 0}}
-                {{searchIndexSafe+1}} of {{searchResults.length}} cells matching
-            {{elseif search}}
-                No matches found
-            {{/if}}
+            <button class="btn transpose" on:click="toggleTranspose()"><img src="/static/css/chart-editor/transpose.png"> {{__("describe / transpose-long")}}</button>
+
+            <div class="search-box pull-right">
+                <i class="fa fa-search"></i>
+                <div class="input-append">
+                    <input type="text" on:keypress="keyPress(event)" placeholder="{{__('Search data table')}}" bind:value="search" ref:search class="{{searchResults.length > 0?'with-results':''}}" />
+                    {{#if searchResults.length > 0}}
+                    <div class="btn-group">
+                      <button class="btn" on:click="nextResult(-1)">
+                        <i class="fa fa-chevron-up"></i></button>
+                      <button class="btn" on:click="nextResult(+1)">
+                        <i class="fa fa-chevron-down"></i></button>
+                    </div>
+                    {{/if}}
+                </div>
+
+                {{#if search}}
+                    <div class="results">
+                    {{#if searchResults.length > 0}}
+                        {{searchIndexSafe+1}} {{__("describe / search / of")}} {{searchResults.length}} {{__("describe / search / results")}}
+                    {{elseif search}}
+                        {{__("describe / search / no-matches")}}
+                    {{/if}}
+                    </div>
+                {{/if}}
             </div>
 
             <Handsontable
@@ -36,7 +52,6 @@
                 bind:searchIndex />
 
             <div class="buttons below-table pull-right">
-                <button class="btn transpose" on:click="toggleTranspose()">{{__("Transpose dataset")}}</button>
                 <button class="btn computed-columns"><i class="fa fa-calculator"></i> {{__("computed columns / add-btn")}}...</button>
 
                 <button class="btn disabled" id="reset-data-changes"><i class="fa fa-undo"></i> {{__("Revert changes")}}...</button>
@@ -59,11 +74,8 @@
             }
         },
         oncreate() {
-            console.log('chart', this.store.get('dw_chart'));
             window.addEventListener('keypress', (event) => {
-                console.log('event',event);
                 if (event.ctrlKey && event.key == 'f') {
-                    console.log('search!');
                     event.preventDefault();
                     if (this.refs.search != window.document.activeElement) {
                         this.refs.search.focus();
@@ -72,6 +84,13 @@
                     }
                 }
             });
+            const sync = (svelte_key, metadata_key) => {
+                this.observe(svelte_key, (svelte_value) => {
+                    this.store.get('dw_chart').set(`metadata.${metadata_key}`, svelte_value);
+                });
+            };
+            sync('transpose', 'data.transpose');
+            sync('firstRowIsHeader', 'data.horizontal-header');
         },
         methods: {
             nextResult (diff) {
@@ -82,7 +101,8 @@
                 this.set({searchIndex});
             },
             keyPress (event) {
-                if (event.key == 'F3') this.nextResult(event.shiftKey ? -1 : 1);
+                if (event.key == 'F3' || event.key == 'Enter')
+                    this.nextResult(event.shiftKey ? -1 : 1);
             },
             toggleTranspose() {
                 this.set({transpose: !this.get('transpose')});
@@ -102,13 +122,43 @@
 </script>
 
 <style lang="less">
-    .results {
-        color: gray;
-        display: inline-block;
-        vertical-align: text-bottom;
-        margin-left: 1ex;
-    }
     .below-table {
         margin-top: 20px;
+    }
+    .span8 {
+        padding-top: 1em;
+    }
+    .btn.transpose img {
+        width: 12px;
+        vertical-align: baseline;
+    }
+    .search-box {
+        position: relative;
+        .results {
+            color: gray;
+            display: inline-block;
+            vertical-align: text-bottom;
+            margin-left: 1ex;
+        }
+        input {
+            padding-left: 26px;
+            border-radius: 4px;
+            &.with-results {
+                border-bottom-right-radius: 0px;
+                border-top-right-radius: 0px;
+            }
+        }
+        .fa-search {
+            position: absolute;
+            left: 8px;
+            top: 6px;
+            color: #ddd;
+            font-size: 16px;
+            z-index: 4;
+        }
+        .btn-group .btn:first-child {
+            border-bottom-left-radius: 0;
+            border-top-left-radius: 0;
+        }
     }
 </style>
