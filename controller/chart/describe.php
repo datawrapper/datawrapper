@@ -59,6 +59,8 @@ $app->get('/chart/:id/describe', function ($id) use ($app) {
             'chart' => $chart,
             'readonly' => !$chart->isDataWritable($user),
             'chartData' => $chart->loadData(),
+            'transpose' => $chart->getMetadata('data.transpose'),
+            'firstRowIsHeader' => $chart->getMetadata('data.horizontal-header')
         ];
 
         $app->render('chart/describe'.($user->isAdmin() && $app->request()->get('beta') ? '-new' : '').'.twig', $page);
