@@ -1,6 +1,6 @@
 <div class="control-group vis-option-group vis-option-type-checkbox">
     <label class="checkbox {{disabled? 'disabled' :''}}">
-        <input type="checkbox" disabled="disabled" bind:checked="value" />&nbsp;{{ label }}
+        <input type="checkbox" disabled="{{disabled}}" bind:checked="value" />&nbsp;{{ label }}
     </label>
 </div>
 
@@ -17,3 +17,13 @@
         }
     }
 </style>
+
+<script>
+    export default {
+        data() {
+            return {
+                disabled: false
+            }
+        }
+    }
+</script>
