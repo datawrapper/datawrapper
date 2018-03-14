@@ -1,1 +1,2286 @@
-!function(e,t){"object"==typeof exports&&"undefined"!=typeof module?module.exports=t(require("Handsontable"),require("cm/lib/codemirror"),require("cm/mode/javascript/javascript")):"function"==typeof define&&define.amd?define("svelte/describe",["Handsontable","cm/lib/codemirror","cm/mode/javascript/javascript"],t):e.describe=t(e.HOT,e.CodeMirror)}(this,function(e,t){"use strict";function n(){}function s(e){for(var t,n,s=arguments,a=1,r=arguments.length;a<r;a++)for(t in n=s[a])e[t]=n[t];return e}function a(e,t){t.appendChild(e)}function r(e,t,n){t.insertBefore(e,n)}function o(e){e.parentNode.removeChild(e)}function c(e){return document.createElement(e)}function i(e){return document.createTextNode(e)}function u(e,t,n){e.addEventListener(t,n,!1)}function l(e,t,n){e.removeEventListener(t,n,!1)}function h(e,t,n){e.setAttribute(t,n)}function d(){return Object.create(null)}function f(e){this.destroy=n,this.fire("destroy"),this.set=this.get=n,!1!==e&&this._fragment.u(),this._fragment.d(),this._fragment=this._state=null}function m(e,t){return e!==t||e&&"object"==typeof e||"function"==typeof e}function p(e,t,n,s,a){for(var r in t)if(n[r]){var o=s[r],c=a[r],i=t[r];if(i)for(var u=0;u<i.length;u+=1){var l=i[u];l.__calling||(l.__calling=!0,l.call(e,o,c),l.__calling=!1)}}}function v(e){return e?this._state[e]:this._state}function _(e,t){e._observers={pre:d(),post:d()},e._handlers=d(),e._bind=t._bind,e.options=t,e.root=t.root||e,e.store=e.root.store||t.store}function g(e,t,n){var s=n&&n.defer?this._observers.post:this._observers.pre;return(s[e]||(s[e]=[])).push(t),n&&!1===n.init||(t.__calling=!0,t.call(this,this._state[e]),t.__calling=!1),{cancel:function(){var n=s[e].indexOf(t);~n&&s[e].splice(n,1)}}}function b(e){for(;e&&e.length;)e.pop()()}e=e&&e.hasOwnProperty("default")?e.default:e,t=t&&t.hasOwnProperty("default")?t.default:t;var w={destroy:f,get:v,fire:function(e,t){var n=e in this._handlers&&this._handlers[e].slice();if(n)for(var s=0;s<n.length;s+=1)n[s].call(this,t)},observe:g,on:function(e,t){if("teardown"===e)return this.on("destroy",t);var n=this._handlers[e]||(this._handlers[e]=[]);return n.push(t),{cancel:function(){var e=n.indexOf(t);~e&&n.splice(e,1)}}},set:function(e){this._set(s({},e)),this.root._lock||(this.root._lock=!0,b(this.root._beforecreate),b(this.root._oncreate),b(this.root._aftercreate),this.root._lock=!1)},teardown:f,_recompute:n,_set:function(e){var t=this._state,n={},a=!1;for(var r in e)m(e[r],t[r])&&(n[r]=a=!0);a&&(this._state=s({},t,e),this._recompute(n,this._state),this._bind&&this._bind(n,this._state),this._fragment&&(p(this,this._observers.pre,n,this._state,t),this._fragment.p(n,this._state),p(this,this._observers.post,n,this._state,t)))},_mount:function(e,t){this._fragment.m(e,t)},_unmount:function(){this._fragment&&this._fragment.u()}};var R={update:function(){var t=this,n=this.get(),s=n.data,a=n.transpose,r=n.firstRowIsHeader,o=n.skipRows,c=n.hot;if(s){var i=this.store.get("dw_chart"),u=i.dataset(dw.datasource.delimited({csv:s,transpose:a,firstRowIsHeader:r,skipRows:o}).parse()).dataset();this.set({columnOrder:u.columnOrder()});var l=[[]];u.eachColumn(function(e){return l[0].push(e.title())}),u.eachRow(function(e){var t=[];u.eachColumn(function(n){return t.push(n.raw(e))}),l.push(t)}),c.loadData(l),c.updateSettings({cells:function(n,s){return{readOnly:t.get().readonly||u.numColumns()>s&&u.column(s).isComputed&&0===n,renderer:C(t,u,e,{})}},manualColumnMove:[]}),this.set({has_changes:i.get("metadata.data.changes",[]).length>0}),c.render()}},dataChanged:function(e){var t=this,n=this.get().hot,s=!1;e.forEach(function(e){var a=e[0],r=e[1],o=e[2],c=e[3];if(o!=c){var i=t.store.get("dw_chart"),u=t.get().transpose,l=i.get("metadata.data.changes");if(a=n.toPhysicalRow(a),u){var h=a;a=r,r=h}l.push({row:a,column:r,value:c,time:(new Date).getTime()}),i.set("metadata.data.changes",l),s=!0}}),s&&setTimeout(function(){t.update(),chart.save()},100)},columnMoved:function(t,n){var s=this.get().hot;if(t.length){var a=this.get().columnOrder,r=a.slice(0),o=a[n],c=r.splice(t[0],t.length),i=o?r.indexOf(o):r.length;r.splice.apply(r,[i,0].concat(c)),this.store.get("dw_chart").set("metadata.data.column-order",r.slice(0)),this.set({columnOrder:r}),e.hooks.once("afterRender",function(){setTimeout(function(){s.selectCell(0,i,s.countRows()-1,i+c.length-1)},10)}),this.update()}},updateHeight:function(){var e=document.querySelector(".ht_master.handsontable .wtHolder .wtHider").getBoundingClientRect().height;this.refs.hot.style.height=Math.min(400,e+10)+"px"},checkRange:function(e,t,n,s){var a=this.get().hot;if(t!=s||0!==e||n!=a.countRows()-1)this.set({activeColumn:null});else{var r=this.store.get("dw_chart");this.set({activeColumn:r.dataset().column(t)})}}};function C(e,t,n,s){var a={date:"fa fa-clock-o"};return function(s,r,o,c,i,u,l){if(!(t.numColumns()<=c)){var h=t.column(c),d=e.get(),f=d.searchResults,m=d.currentResult,p=d.activeColumn;if((o=s.toPhysicalRow(o))>0)u=chart.columnFormatter(h)(h.val(o-1),!0);parseInt(u)<0&&r.classList.add("negative"),r.classList.add(h.type()+"Type"),"text"==h.type()&&u.length>70&&(u=u.substr(0,60)+"…"),0===o?(r.classList.add("firstRow"),a[h.type()]&&(u='<i class="'+a[h.type()]+'"></i> '+u)):r.classList.add(o%2?"oddRow":"evenRow"),p&&p==h&&r.classList.add("area"),f.forEach(function(e){e.row==o&&e.col==c&&r.classList.add("htSearchResult")}),m&&m.row==o&&m.col==c&&r.classList.add("htCurrentSearchResult"),o>0&&!h.type(!0).isValid(h.val(o-1))&&r.classList.add("parsingError"),l.readOnly&&r.classList.add("readOnly"),chart.dataCellChanged(c,o)&&r.classList.add("changed"),function(e,t,s,a,r,o,c){var i=dw.utils.purifyHtml(n.helper.stringify(o));t.innerHTML=i}(0,r,0,0,0,u)}}}function y(t){_(this,t),this.refs={},this._state=s({data:"",readonly:!1,skipRows:0,firstRowIsHeader:!0,searchIndex:0,transpose:!1,activeColumn:null,search:"",searchResults:[]},t.data),this._recompute({searchResults:1,searchIndex:1},this._state);var a,i,u=function(){var t=this,n=new e(this.refs.hot,{data:[],rowHeaders:function(e){return n.getPlugin("ColumnSorting").translateRow(e)+1},colHeaders:!0,fixedRowsTop:1,filters:!0,dropdownMenu:!0,startRows:13,startCols:8,fillHandle:!1,stretchH:"all",height:400,manualColumnMove:!0,selectionMode:"range",autoColumnSize:{useHeaders:!0},columnSorting:!0,sortIndicator:!0,sortFunction:function(e,t){return function(s,a){var r,o=n.getPlugin("columnSorting");if(0===s[0])return-1;switch(t.type){case"date":r=o.dateSort;break;case"numeric":r=o.numericSort;break;default:r=o.defaultSort}return r(e,t)(s,a)}},search:"search"});window.HT=n,this.set({hot:n}),e.hooks.add("afterSetDataAtCell",function(e){return t.dataChanged(e)}),e.hooks.add("afterColumnMove",function(e,n){return t.columnMoved(e,n)}),e.hooks.add("afterRender",function(){return t.updateHeight()}),e.hooks.add("afterSelection",function(e,n,s,a){return t.checkRange(e,n,s,a)}),this.observe("data",function(){return t.update()}),this.observe("transpose",function(){return t.update()}),this.observe("firstRowIsHeader",function(){return t.update()}),this.observe("search",function(e){var s=n.search.query(e);t.set({searchResults:s}),n.render()}),this.observe("currentResult",function(e){e&&n&&(n.render(),n.scrollViewportTo(e.row,e.col),setTimeout(function(){n.scrollViewportTo(e.row,e.col)},100))})}.bind(this);t.root?this.root._oncreate.push(u):this._oncreate=[u],this._fragment=(this._state,a=this,{c:function(){i=c("div"),this.h()},h:function(){i.id="data-preview"},m:function(e,t){r(i,e,t),a.refs.hot=i},p:n,u:function(){o(i)},d:function(){a.refs.hot===i&&(a.refs.hot=null)}}),t.target&&(this._fragment.c(),this._fragment.m(t.target,t.anchor||null),b(this._oncreate))}s(y.prototype,R,w),y.prototype._recompute=function(e,t){(e.searchResults||e.searchIndex)&&m(t.currentResult,t.currentResult=function(e,t){if(!e||!e.length)return null;var n=e.length;if(t<0||t>=n){for(;t<0;)t+=n;t>n&&(t%=n)}return e[t]}(t.searchResults,t.searchIndex))&&(e.currentResult=!0)};function I(e){h(e,"svelte-3309569136","")}function x(e,t,n,s,h){var d,f,m=n.key;return{c:function(){d=c("li"),f=i(m),this.h()},h:function(){I(d),u(d,"click",k),d._svelte={component:h,metaColumns_1:t,column_index:s}},m:function(e,t){r(d,e,t),a(f,d)},p:function(e,t,n,s,a){e.metaColumns&&m!==(m=s.key)&&(f.data=m),d._svelte.metaColumns_1=n,d._svelte.column_index=a},u:function(){o(d)},d:function(){l(d,"click",k)}}}function k(e){var t=this._svelte.component,n=this._svelte.metaColumns_1[this._svelte.column_index];t.insert(n)}function H(e){_(this,e),this.refs={},this._state=s({},e.data),this._recompute({columns:1},this._state);var n=function(){var e=this,n=t.fromTextArea(this.refs.code,{value:this.get("formula"),mode:"javascript"});this.observe("formula",function(e){e!=n.getValue()&&n.setValue(e)}),n.on("change",function(t){e.set({formula:t.getValue()})}),n.on("focus",function(){e.fire("focus")})}.bind(this);e.root?this.root._oncreate.push(n):this._oncreate=[n],this._fragment=function(e,t){var n,s,h,d,f,m,p,v,_,g,b,w,R,C,y,k,H,N,S,T,O,L,D,F,E=e.column.name(),M=!1;function P(){M=!0,t.set({name:R.value}),M=!1}for(var z=e.metaColumns,j=[],V=0;V<z.length;V+=1)j[V]=x(0,z,z[V],V,t);return{c:function(){n=c("div"),s=c("h3"),h=i('Edit computed column "'),d=i(E),f=i('"'),m=i("\n    "),p=c("p"),v=i("Die Werte in den Spalten können nach einer Formel berechnet werden, wie in Excel."),_=i("\n\n    "),g=c("label"),b=i("computed columns / modal / name"),w=i("\n    "),R=c("input"),C=i("\n\n    "),y=c("label"),k=i("Formel (JavaScript)"),H=i("\n    "),N=c("textarea"),S=i("\n\n    "),T=c("p"),O=i("Verfügbare Spalten"),L=i(":"),D=i("\n\n    "),F=c("ul");for(var e=0;e<j.length;e+=1)j[e].c();this.h()},h:function(){var e,t;s.className="first",I(g),u(R,"input",P),R.type="text",I(y),N.className="code",e="margin-top",t="1em",T.style.setProperty(e,t),I(F),F.className="col-select"},m:function(o,c){r(n,o,c),a(s,n),a(h,s),a(d,s),a(f,s),a(m,n),a(p,n),a(v,p),a(_,n),a(g,n),a(b,g),a(w,n),a(R,n),R.value=e.name,a(C,n),a(y,n),a(k,y),a(H,n),a(N,n),t.refs.code=N,a(S,n),a(T,n),a(O,T),a(L,T),a(D,n),a(F,n);for(var i=0;i<j.length;i+=1)j[i].m(F,null)},p:function(e,n){e.column&&E!==(E=n.column.name())&&(d.data=E),M||(R.value=n.name);var s=n.metaColumns;if(e.metaColumns){for(var a=0;a<s.length;a+=1)j[a]?j[a].p(e,n,s,s[a],a):(j[a]=x(0,s,s[a],a,t),j[a].c(),j[a].m(F,null));for(;a<j.length;a+=1)j[a].u(),j[a].d();j.length=s.length}},u:function(){o(n);for(var e=0;e<j.length;e+=1)j[e].u()},d:function(){l(R,"input",P),t.refs.code===N&&(t.refs.code=null),function(e){for(var t=0;t<e.length;t+=1)e[t]&&e[t].d()}(j)}}}(this._state,this),e.target&&(this._fragment.c(),this._fragment.m(e.target,e.anchor||null),b(this._oncreate))}function N(e){h(e,"svelte-1306209643","")}function S(e){_(this,e),this._state=s({disabled:!1},e.data),this._fragment=function(e,t){var n,s,h,d,f,m;function p(){t.set({value:h.checked})}return{c:function(){n=c("div"),s=c("label"),h=c("input"),d=i(" "),f=i(e.label),this.h()},h:function(){N(s),N(h),u(h,"change",p),h.type="checkbox",h.disabled=e.disabled,s.className=m="checkbox "+(e.disabled?"disabled":""),n.className="control-group vis-option-group vis-option-type-checkbox"},m:function(t,o){r(n,t,o),a(s,n),a(h,s),h.checked=e.value,a(d,s),a(f,s)},p:function(e,t){h.checked=t.value,e.disabled&&(h.disabled=t.disabled),e.label&&(f.data=t.label),e.disabled&&m!==(m="checkbox "+(t.disabled?"disabled":""))&&(s.className=m)},u:function(){o(n)},d:function(){l(h,"change",p)}}}(this._state,this),e.target&&(this._fragment.c(),this._fragment.m(e.target,e.anchor||null))}s(H.prototype,{insert:function(e){}},w),H.prototype._recompute=function(e,t){var n;e.columns&&m(t.metaColumns,t.metaColumns=(n=t.columns)?n.map(function(e){return{key:(t=e.name(),t.toString().toLowerCase().replace(/\s+/g,"_").replace(/[^\w-]+/g,"").replace(/-/g,"_").replace(/__+/g,"_").replace(/^_+/,"").replace(/_+$/,"").replace(/^(\d)/,"_$1").replace(/(abstract|arguments|await|boolean|break|byte|case|catch|char|class|const|continue|debugger|default|delete|do|double|else|enum|eval|export|extends|false|final|finally|float|for|function|goto|if|implements|import|in|instanceof|int|interface|let|long|native|new|null|package|private|protected|public|return|short|static|super|switch|synchronized|this|throw|throws|transient|true|try|typeof|var|void|volatile|while|window|with|yield)/,"$1_")),title:e.title()};var t}):[])&&(e.metaColumns=!0)},s(S.prototype,w);var T={nextResult:function(e){var t=this.get(),n=t.searchIndex,s=t.searchResults;(n+=e)<0&&(n+=s.length),n%=s.length,this.set({searchIndex:n})},keyPress:function(e){"F3"!=e.key&&"Enter"!=e.key||this.nextResult(e.shiftKey?-1:1)},toggleTranspose:function(){this.set({transpose:!this.get("transpose")})},revertChanges:function(){var e=this.store.get("dw_chart");e.set("metadata.data.changes",[]),e.saveSoon(),this.refs.hot.update()},cmFocus:function(){var e=this;setTimeout(function(){e.refs.hot.get("hot").render()},100)}};function O(e){h(e,"svelte-1903720201","")}function L(e,t){var n={},a={};"customColumn"in e&&(a.column=e.customColumn,n.column=!0),"formula"in e&&(a.formula=e.formula,n.formula=!0),"columns"in e&&(a.columns=e.columns,n.columns=!0);var r=new H({root:t.root,data:a,_bind:function(e,a){t.get();var r={};!n.column&&e.column&&(r.customColumn=a.column),!n.formula&&e.formula&&(r.formula=a.formula),!n.columns&&e.columns&&(r.columns=a.columns),n=s({},e),t._set(r),n={}}});return t.root._beforecreate.push(function(){t.get();var e=r.get(),s={};e&&(n.column||(s.customColumn=e.column),n.formula||(s.formula=e.formula),n.columns||(s.columns=e.columns),n={column:!0,formula:!0,columns:!0},t._set(s),n={})}),r.on("focus",function(e){t.cmFocus()}),{c:function(){r._fragment.c()},m:function(e,t){r._mount(e,t)},p:function(e,t){var s={};!n.column&&e.customColumn&&(s.column=t.customColumn,n.column=!0),!n.formula&&e.formula&&(s.formula=t.formula,n.formula=!0),!n.columns&&e.columns&&(s.columns=t.columns,n.columns=!0),r._set(s),n={}},u:function(){r._unmount()},d:function(){r.destroy(!1)}}}function D(e,t){var s,a,c=e.columnFormat.title();return{c:function(){s=i("COLUMN FORMAT FOR "),a=i(c)},m:function(e,t){r(s,e,t),r(a,e,t)},p:function(e,t){e.columnFormat&&c!==(c=t.columnFormat.title())&&(a.data=c)},u:function(){o(s),o(a)},d:n}}function F(e,t){var n,u,l,h,d,f,m,p,v,_,g={},b={label:"Erste Zeile als Beschriftung"};"firstRowIsHeader"in e&&(b.value=e.firstRowIsHeader,g.value=!0);var w=new S({root:t.root,data:b,_bind:function(e,n){t.get();var a={};!g.value&&e.value&&(a.firstRowIsHeader=n.value),g=s({},e),t._set(a),g={}}});return t.root._beforecreate.push(function(){t.get();var e=w.get(),n={};e&&(g.value||(n.firstRowIsHeader=e.value),g={value:!0},t._set(n),g={})}),{c:function(){n=c("h3"),u=i("Überprüfe dass die Daten richtig aussehen"),l=i("\n\n                "),h=c("p"),d=i("Interpretiert Datawrapper deine Daten korrekt? In der nebenstehenden Tabelle sollten Zahlenspalten in blau, Datums-Spalten in grün und Textspalten in schwarz angezeigt werden."),f=i("\n\n                "),w._fragment.c(),m=i("\n\n                [TODO: hook]\n                "),p=c("hr"),v=i("\n\n                "),(_=c("div")).innerHTML='<a class="btn submit" href="upload"><i class="icon-chevron-left"></i> Zurück</a>\n                    <a href="visualize" class="submit btn btn-primary" id="describe-proceed">Weiter <i class="icon-chevron-right icon-white"></i></a>',this.h()},h:function(){n.className="first",_.className="btn-group"},m:function(e,t){r(n,e,t),a(u,n),r(l,e,t),r(h,e,t),a(d,h),r(f,e,t),w._mount(e,t),r(m,e,t),r(p,e,t),r(v,e,t),r(_,e,t)},p:function(e,t){var n={label:"Erste Zeile als Beschriftung"};!g.value&&e.firstRowIsHeader&&(n.value=t.firstRowIsHeader,g.value=!0),w._set(n),g={}},u:function(){o(n),o(l),o(h),o(f),w._unmount(),o(m),o(p),o(v),o(_)},d:function(){w.destroy(!1)}}}function E(e,t){var n,s,h,d;function f(e){t.nextResult(-1)}function m(e){t.nextResult(1)}return{c:function(){n=c("div"),(s=c("button")).innerHTML='<i class="fa fa-chevron-up"></i>',h=i("\n                      "),(d=c("button")).innerHTML='<i class="fa fa-chevron-down"></i>',this.h()},h:function(){O(s),s.className="btn",u(s,"click",f),O(d),d.className="btn",u(d,"click",m),n.className="btn-group"},m:function(e,t){r(n,e,t),a(s,n),a(h,n),a(d,n)},u:function(){o(n)},d:function(){l(s,"click",f),l(d,"click",m)}}}function M(e,t){var s,a,c,u,l,h,d,f=e.searchIndexSafe+1,m=e.searchResults.length;return{c:function(){s=i(f),a=i("\n                        "),c=i("von"),u=i("\n                        "),l=i(m),h=i("\n                        "),d=i("Treffern")},m:function(e,t){r(s,e,t),r(a,e,t),r(c,e,t),r(u,e,t),r(l,e,t),r(h,e,t),r(d,e,t)},p:function(e,t){e.searchIndexSafe&&f!==(f=t.searchIndexSafe+1)&&(s.data=f),e.searchResults&&m!==(m=t.searchResults.length)&&(l.data=m)},u:function(){o(s),o(a),o(c),o(u),o(l),o(h),o(d)},d:n}}function P(e,t){var s;return{c:function(){s=i("Keine Treffer")},m:function(e,t){r(s,e,t)},p:n,u:function(){o(s)},d:n}}function z(e,t){var n,s=V(e),a=s&&s(e,t);return{c:function(){n=c("div"),a&&a.c(),this.h()},h:function(){O(n),n.className="results"},m:function(e,t){r(n,e,t),a&&a.m(n,null)},p:function(e,r){s===(s=V(r))&&a?a.p(e,r):(a&&(a.u(),a.d()),(a=s&&s(r,t))&&a.c(),a&&a.m(n,null))},u:function(){o(n),a&&a.u()},d:function(){a&&a.d()}}}function j(e){return e.customColumn?L:e.columnFormat?D:F}function V(e){return e.searchResults.length>0?M:e.search?P:null}function q(e){_(this,e),this.refs={},this._state=s({search:"",chartData:"",transpose:!1,firstRowIsHeader:!0,searchIndex:0,activeColumn:!1,customColumn:!1,columnFormat:!1,formula:"",searchResults:[]},e.data),this._recompute({searchIndex:1,searchResults:1,activeColumn:1},this._state);var t=function(){var e=this;window.addEventListener("keypress",function(t){t.ctrlKey&&"f"==t.key&&(t.preventDefault(),e.refs.search!=window.document.activeElement?e.refs.search.focus():e.nextResult(1))});var t=function(t,n){e.observe(t,function(t){e.store.get("dw_chart").set("metadata."+n,t)})};t("transpose","data.transpose"),t("firstRowIsHeader","data.horizontal-header"),this.observe("customColumn",function(t,n){if(t&&t!=n){var s=e.store.get("dw_chart").get("metadata.describe.computed-columns",{});e.set({formula:s[t.name()]||""})}}),this.observe("formula",function(t){var n=e.get().customColumn,s=e.store.get("dw_chart");if(n){var a=s.get("metadata.describe.computed-columns",{});a[n.name()]=t,s.set("metadata.describe.computed-columns",a),s.saveSoon(),e.refs.hot.update()}})}.bind(this);e.root?this.root._oncreate.push(t):(this._oncreate=[t],this._beforecreate=[],this._aftercreate=[]),this._fragment=function(e,t){var n,h,d,f,m,p,v,_,g,b,w,R,C,I,x,k,H,N,S,T,L,D,F,M,P,V,q,A,Z,$,B,K,W,J,U=!1,G={},Q=j(e),X=Q(e,t);function Y(e){t.toggleTranspose()}function ee(){U=!0,t.set({search:k.value}),U=!1}function te(e){t.keyPress(e)}var ne=e.searchResults.length>0&&E(0,t),se=e.search&&z(e,t),ae={};"chartData"in e&&(ae.data=e.chartData,G.data=!0),"transpose"in e&&(ae.transpose=e.transpose,G.transpose=!0),"firstRowIsHeader"in e&&(ae.firstRowIsHeader=e.firstRowIsHeader,G.firstRowIsHeader=!0),"activeColumn"in e&&(ae.activeColumn=e.activeColumn,G.activeColumn=!0),"search"in e&&(ae.search=e.search,G.search=!0),"searchResults"in e&&(ae.searchResults=e.searchResults,G.searchResults=!0),"searchIndex"in e&&(ae.searchIndex=e.searchIndex,G.searchIndex=!0);var re=new y({root:t.root,data:ae,_bind:function(e,n){t.get();var a={};!G.data&&e.data&&(a.chartData=n.data),!G.transpose&&e.transpose&&(a.transpose=n.transpose),!G.firstRowIsHeader&&e.firstRowIsHeader&&(a.firstRowIsHeader=n.firstRowIsHeader),!G.activeColumn&&e.activeColumn&&(a.activeColumn=n.activeColumn),!G.search&&e.search&&(a.search=n.search),!G.searchResults&&e.searchResults&&(a.searchResults=n.searchResults),!G.searchIndex&&e.searchIndex&&(a.searchIndex=n.searchIndex),G=s({},e),t._set(a),G={}}});function oe(e){t.revertChanges()}return t.root._beforecreate.push(function(){t.get();var e=re.get(),n={};e&&(G.data||(n.chartData=e.data),G.transpose||(n.transpose=e.transpose),G.firstRowIsHeader||(n.firstRowIsHeader=e.firstRowIsHeader),G.activeColumn||(n.activeColumn=e.activeColumn),G.search||(n.search=e.search),G.searchResults||(n.searchResults=e.searchResults),G.searchIndex||(n.searchIndex=e.searchIndex),G={data:!0,transpose:!0,firstRowIsHeader:!0,activeColumn:!0,search:!0,searchResults:!0,searchIndex:!0},t._set(n),G={})}),t.refs.hot=re,{c:function(){n=c("div"),h=c("div"),d=c("div"),f=c("div"),X.c(),m=i("\n        "),p=c("div"),v=c("button"),_=c("img"),g=i(" "),b=i("Zeilen und Spalten vertauschen (transponieren)"),w=i("\n\n            "),R=c("div"),C=c("i"),I=i("\n                "),x=c("div"),k=c("input"),N=i("\n                    "),ne&&ne.c(),S=i("\n\n                "),se&&se.c(),T=i("\n\n            "),re._fragment.c(),L=i("\n\n            "),D=c("div"),F=c("button"),M=c("i"),P=i(" "),V=i("Spalte hinzufügen"),q=i("..."),A=i("\n\n                "),Z=c("button"),$=c("i"),B=i(" "),K=i("Änderungen zurücksetzen"),W=i("..."),this.h()},h:function(){f.className="sidebar",d.className="span4",O(p),O(v),O(_),_.src="/static/css/chart-editor/transpose.png",v.className="btn transpose",u(v,"click",Y),O(R),O(C),C.className="fa fa-search",O(k),u(k,"input",ee),k.type="text",k.placeholder="Search data table",k.className=H=e.searchResults.length>0?"with-results":"",u(k,"keypress",te),x.className="input-append",R.className="search-box pull-right",O(D),M.className="fa fa-calculator",F.className="btn computed-columns",O(Z),$.className="fa fa-undo",Z.className=J="btn "+(e.has_changes?"":"disabled"),Z.id="reset-data-changes",u(Z,"click",oe),D.className="buttons below-table pull-right",p.className="span8",h.className="row",n.className="chart-editor"},m:function(s,o){r(n,s,o),a(h,n),a(d,h),a(f,d),X.m(f,null),a(m,h),a(p,h),a(v,p),a(_,v),a(g,v),a(b,v),a(w,p),a(R,p),a(C,R),a(I,R),a(x,R),a(k,x),t.refs.search=k,k.value=e.search,a(N,x),ne&&ne.m(x,null),a(S,R),se&&se.m(R,null),a(T,p),re._mount(p,null),a(L,p),a(D,p),a(F,D),a(M,F),a(P,F),a(V,F),a(q,F),a(A,D),a(Z,D),a($,Z),a(B,Z),a(K,Z),a(W,Z)},p:function(e,n){Q===(Q=j(n))&&X?X.p(e,n):(X.u(),X.d(),(X=Q(n,t)).c(),X.m(f,null)),U||(k.value=n.search),e.searchResults&&H!==(H=n.searchResults.length>0?"with-results":"")&&(k.className=H),n.searchResults.length>0?ne||((ne=E(0,t)).c(),ne.m(x,null)):ne&&(ne.u(),ne.d(),ne=null),n.search?se?se.p(e,n):((se=z(n,t)).c(),se.m(R,null)):se&&(se.u(),se.d(),se=null);var s={};!G.data&&e.chartData&&(s.data=n.chartData,G.data=!0),!G.transpose&&e.transpose&&(s.transpose=n.transpose,G.transpose=!0),!G.firstRowIsHeader&&e.firstRowIsHeader&&(s.firstRowIsHeader=n.firstRowIsHeader,G.firstRowIsHeader=!0),!G.activeColumn&&e.activeColumn&&(s.activeColumn=n.activeColumn,G.activeColumn=!0),!G.search&&e.search&&(s.search=n.search,G.search=!0),!G.searchResults&&e.searchResults&&(s.searchResults=n.searchResults,G.searchResults=!0),!G.searchIndex&&e.searchIndex&&(s.searchIndex=n.searchIndex,G.searchIndex=!0),re._set(s),G={},e.has_changes&&J!==(J="btn "+(n.has_changes?"":"disabled"))&&(Z.className=J)},u:function(){o(n),X.u(),ne&&ne.u(),se&&se.u()},d:function(){X.d(),l(v,"click",Y),l(k,"input",ee),l(k,"keypress",te),t.refs.search===k&&(t.refs.search=null),ne&&ne.d(),se&&se.d(),re.destroy(!1),t.refs.hot===re&&(t.refs.hot=null),l(Z,"click",oe)}}}(this._state,this),e.target&&(this._fragment.c(),this._fragment.m(e.target,e.anchor||null),this._lock=!0,b(this._beforecreate),b(this._oncreate),b(this._aftercreate),this._lock=!1)}function A(e){this._observers={pre:d(),post:d()},this._changeHandlers=[],this._dependents=[],this._computed=d(),this._sortedComputedProperties=[],this._state=s({},e)}s(q.prototype,T,w),q.prototype._recompute=function(e,t){var n,s,a;(e.searchIndex||e.searchResults)&&m(t.searchIndexSafe,t.searchIndexSafe=(n=t.searchIndex,s=t.searchResults,n<0&&(n+=s.length),n%=s.length))&&(e.searchIndexSafe=!0),e.activeColumn&&(m(t.customColumn,t.customColumn=!(!(a=t.activeColumn)||!a.isComputed)&&a)&&(e.customColumn=!0),m(t.columnFormat,t.columnFormat=function(e){return!(!e||e.isComputed)&&e}(t.activeColumn))&&(e.columnFormat=!0),m(t.columns,t.columns=function(e){if(!e)return[];try{return chart.dataset().columns().filter(function(e){return!e.isComputed})}catch(e){return[]}}(t.activeColumn))&&(e.columns=!0))},s(A.prototype,{_add:function(e,t){this._dependents.push({component:e,props:t})},_init:function(e){for(var t={},n=0;n<e.length;n+=1){var s=e[n];t["$"+s]=this._state[s]}return t},_remove:function(e){for(var t=this._dependents.length;t--;)if(this._dependents[t].component===e)return void this._dependents.splice(t,1)},_sortComputedProperties:function(){var e,t=this._computed,n=this._sortedComputedProperties=[],s=d();function a(r){if(e[r])throw new Error("Cyclical dependency detected");if(!s[r]){s[r]=!0;var o=t[r];o&&(e[r]=!0,o.deps.forEach(a),n.push(o))}}for(var r in this._computed)e=d(),a(r)},compute:function(e,t,n){var s,a={deps:t,update:function(a,r,o){var c=t.map(function(e){return e in r&&(o=!0),a[e]});if(o){var i=n.apply(null,c);m(i,s)&&(s=i,r[e]=!0,a[e]=s)}}};a.update(this._state,{},!0),this._computed[e]=a,this._sortComputedProperties()},get:v,observe:g,onchange:function(e){return this._changeHandlers.push(e),{cancel:function(){var t=this._changeHandlers.indexOf(e);~t&&this._changeHandlers.splice(t,1)}}},set:function(e){var t=this._state,n=this._changed={},a=!1;for(var r in e){if(this._computed[r])throw new Error("'"+r+"' is a read-only property");m(e[r],t[r])&&(n[r]=a=!0)}if(a){this._state=s({},t,e);for(var o=0;o<this._sortedComputedProperties.length;o+=1)this._sortedComputedProperties[o].update(this._state,n);for(o=0;o<this._changeHandlers.length;o+=1)this._changeHandlers[o](this._state,n);p(this,this._observers.pre,n,this._state,t);var c=this._dependents.slice();for(o=0;o<c.length;o+=1){var i=c[o],u={};a=!1;for(var l=0;l<i.props.length;l+=1){var h=i.props[l];h in n&&(u["$"+h]=this._state[h],a=!0)}a&&i.component.set(u)}p(this,this._observers.post,n,this._state,t)}}});return{App:q,store:new A({}),data:{chart:{id:""},readonly:!1,chartData:"",transpose:!1,firstRowIsHeader:!0,skipRows:0}}});
+(function (global, factory) {
+	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('Handsontable'), require('cm/lib/codemirror'), require('cm/mode/javascript/javascript'), require('cm/addon/mode/simple')) :
+	typeof define === 'function' && define.amd ? define('svelte/describe', ['Handsontable', 'cm/lib/codemirror', 'cm/mode/javascript/javascript', 'cm/addon/mode/simple'], factory) :
+	(global.describe = factory(global.HOT,global.CodeMirror));
+}(this, (function (HOT,CodeMirror) { 'use strict';
+
+HOT = HOT && HOT.hasOwnProperty('default') ? HOT['default'] : HOT;
+CodeMirror = CodeMirror && CodeMirror.hasOwnProperty('default') ? CodeMirror['default'] : CodeMirror;
+
+function noop() {}
+
+function assign(target) {
+	var k,
+		source,
+		i = 1,
+		len = arguments.length;
+	for (; i < len; i++) {
+		source = arguments[i];
+		for (k in source) target[k] = source[k];
+	}
+
+	return target;
+}
+
+function appendNode(node, target) {
+	target.appendChild(node);
+}
+
+function insertNode(node, target, anchor) {
+	target.insertBefore(node, anchor);
+}
+
+function detachNode(node) {
+	node.parentNode.removeChild(node);
+}
+
+function destroyEach(iterations) {
+	for (var i = 0; i < iterations.length; i += 1) {
+		if (iterations[i]) iterations[i].d();
+	}
+}
+
+function createElement(name) {
+	return document.createElement(name);
+}
+
+function createText(data) {
+	return document.createTextNode(data);
+}
+
+function addListener(node, event, handler) {
+	node.addEventListener(event, handler, false);
+}
+
+function removeListener(node, event, handler) {
+	node.removeEventListener(event, handler, false);
+}
+
+function setAttribute(node, attribute, value) {
+	node.setAttribute(attribute, value);
+}
+
+function setStyle(node, key, value) {
+	node.style.setProperty(key, value);
+}
+
+function blankObject() {
+	return Object.create(null);
+}
+
+function destroy(detach) {
+	this.destroy = noop;
+	this.fire('destroy');
+	this.set = this.get = noop;
+
+	if (detach !== false) this._fragment.u();
+	this._fragment.d();
+	this._fragment = this._state = null;
+}
+
+function destroyDev(detach) {
+	destroy.call(this, detach);
+	this.destroy = function() {
+		console.warn('Component was already destroyed');
+	};
+}
+
+function differs(a, b) {
+	return a !== b || ((a && typeof a === 'object') || typeof a === 'function');
+}
+
+function dispatchObservers(component, group, changed, newState, oldState) {
+	for (var key in group) {
+		if (!changed[key]) continue;
+
+		var newValue = newState[key];
+		var oldValue = oldState[key];
+
+		var callbacks = group[key];
+		if (!callbacks) continue;
+
+		for (var i = 0; i < callbacks.length; i += 1) {
+			var callback = callbacks[i];
+			if (callback.__calling) continue;
+
+			callback.__calling = true;
+			callback.call(component, newValue, oldValue);
+			callback.__calling = false;
+		}
+	}
+}
+
+function fire(eventName, data) {
+	var handlers =
+		eventName in this._handlers && this._handlers[eventName].slice();
+	if (!handlers) return;
+
+	for (var i = 0; i < handlers.length; i += 1) {
+		handlers[i].call(this, data);
+	}
+}
+
+function get(key) {
+	return key ? this._state[key] : this._state;
+}
+
+function init(component, options) {
+	component._observers = { pre: blankObject(), post: blankObject() };
+	component._handlers = blankObject();
+	component._bind = options._bind;
+
+	component.options = options;
+	component.root = options.root || component;
+	component.store = component.root.store || options.store;
+}
+
+function observe(key, callback, options) {
+	var group = options && options.defer
+		? this._observers.post
+		: this._observers.pre;
+
+	(group[key] || (group[key] = [])).push(callback);
+
+	if (!options || options.init !== false) {
+		callback.__calling = true;
+		callback.call(this, this._state[key]);
+		callback.__calling = false;
+	}
+
+	return {
+		cancel: function() {
+			var index = group[key].indexOf(callback);
+			if (~index) group[key].splice(index, 1);
+		}
+	};
+}
+
+function observeDev(key, callback, options) {
+	var c = (key = '' + key).search(/[^\w]/);
+	if (c > -1) {
+		var message =
+			'The first argument to component.observe(...) must be the name of a top-level property';
+		if (c > 0)
+			message += ", i.e. '" + key.slice(0, c) + "' rather than '" + key + "'";
+
+		throw new Error(message);
+	}
+
+	return observe.call(this, key, callback, options);
+}
+
+function on(eventName, handler) {
+	if (eventName === 'teardown') return this.on('destroy', handler);
+
+	var handlers = this._handlers[eventName] || (this._handlers[eventName] = []);
+	handlers.push(handler);
+
+	return {
+		cancel: function() {
+			var index = handlers.indexOf(handler);
+			if (~index) handlers.splice(index, 1);
+		}
+	};
+}
+
+function onDev(eventName, handler) {
+	if (eventName === 'teardown') {
+		console.warn(
+			"Use component.on('destroy', ...) instead of component.on('teardown', ...) which has been deprecated and will be unsupported in Svelte 2"
+		);
+		return this.on('destroy', handler);
+	}
+
+	return on.call(this, eventName, handler);
+}
+
+function set(newState) {
+	this._set(assign({}, newState));
+	if (this.root._lock) return;
+	this.root._lock = true;
+	callAll(this.root._beforecreate);
+	callAll(this.root._oncreate);
+	callAll(this.root._aftercreate);
+	this.root._lock = false;
+}
+
+function _set(newState) {
+	var oldState = this._state,
+		changed = {},
+		dirty = false;
+
+	for (var key in newState) {
+		if (differs(newState[key], oldState[key])) changed[key] = dirty = true;
+	}
+	if (!dirty) return;
+
+	this._state = assign({}, oldState, newState);
+	this._recompute(changed, this._state);
+	if (this._bind) this._bind(changed, this._state);
+
+	if (this._fragment) {
+		dispatchObservers(this, this._observers.pre, changed, this._state, oldState);
+		this._fragment.p(changed, this._state);
+		dispatchObservers(this, this._observers.post, changed, this._state, oldState);
+	}
+}
+
+function setDev(newState) {
+	if (typeof newState !== 'object') {
+		throw new Error(
+			this._debugName + '.set was called without an object of data key-values to update.'
+		);
+	}
+
+	this._checkReadOnly(newState);
+	set.call(this, newState);
+}
+
+function callAll(fns) {
+	while (fns && fns.length) fns.pop()();
+}
+
+function _mount(target, anchor) {
+	this._fragment.m(target, anchor);
+}
+
+function _unmount() {
+	if (this._fragment) this._fragment.u();
+}
+
+var protoDev = {
+	destroy: destroyDev,
+	get: get,
+	fire: fire,
+	observe: observeDev,
+	on: onDev,
+	set: setDev,
+	teardown: destroyDev,
+	_recompute: noop,
+	_set: _set,
+	_mount: _mount,
+	_unmount: _unmount
+};
+
+/* describe/Handsontable.html generated by Svelte v1.53.0 */
+function currentResult(searchResults, searchIndex) {
+    if (!searchResults || !searchResults.length) return null;
+    const l = searchResults.length;
+    if (searchIndex < 0 || searchIndex >= l) {
+        while (searchIndex<0) searchIndex += l;
+        if (searchIndex > l) searchIndex %= l;
+    }
+    return searchResults[searchIndex];
+}
+
+function data() {
+    return {
+        data: '',
+        readonly: false,
+        skipRows: 0,
+        firstRowIsHeader: true,
+        searchIndex: 0,
+        transpose: false,
+        activeColumn: null,
+        search: '',
+        searchResults: []
+    };
+}
+
+var methods = {
+    update() {
+        const {data, transpose, firstRowIsHeader, skipRows, hot} = this.get();
+
+        if (!data) return;
+
+        // get chart
+        const chart = this.store.get('dw_chart');
+
+        // pass dataset through chart to apply changes and computed columns
+        const ds = chart.dataset(dw.datasource.delimited({
+            csv: data,
+            transpose,
+            firstRowIsHeader,
+            skipRows
+        }).parse()).dataset();
+
+        this.set({columnOrder: ds.columnOrder()});
+
+        // construct HoT data array
+        const hot_data = [[]];
+        ds.eachColumn(c => hot_data[0].push(c.title()));
+
+        ds.eachRow(r => {
+            const row = [];
+            ds.eachColumn(col => row.push(col.raw(r)));
+            hot_data.push(row);
+        });
+
+        // pass data to hot
+        hot.loadData(hot_data);
+
+        hot.updateSettings({
+            cells: (row, col) => {
+                const {readonly} = this.get();
+                return {
+                    readOnly: readonly || (ds.numColumns() > col && ds.column(col).isComputed && row === 0),
+                    renderer: getCellRenderer(this, ds, HOT, {})
+                };
+            },
+            manualColumnMove: []
+        });
+
+        this.set({ds});
+        this.set({has_changes: chart.get('metadata.data.changes', []).length > 0});
+
+        hot.render();
+    },
+    dataChanged (cells) {
+        const {hot} = this.get();
+        let changed = false;
+        cells.forEach(([row, col, old_val, new_val]) => {
+            if (old_val != new_val) {
+                const chart = this.store.get('dw_chart');
+                const {transpose} = this.get();
+                const changes = chart.get('metadata.data.changes');
+                row = hot.toPhysicalRow(row);
+                if (transpose) {
+                    // swap row and col
+                    const tmp = row;
+                    row = col;
+                    col = tmp;
+                }
+                // store new change
+                changes.push({
+                    row, column: col, value: new_val, time: (new Date()).getTime()
+                });
+                chart.set('metadata.data.changes', changes);
+                changed = true;
+            }
+        });
+        if (changed) {
+            setTimeout(() => {
+                this.update();
+                chart.save();
+            }, 100);
+        }
+    },
+    columnMoved (srcColumns, tgtIndex) {
+        const {hot} = this.get();
+        if (!srcColumns.length) return;
+        const {columnOrder} = this.get();
+        const newOrder = columnOrder.slice(0);
+        const after = columnOrder[tgtIndex];
+        const elements = newOrder.splice(srcColumns[0], srcColumns.length);
+        const insertAt = after ? newOrder.indexOf(after) : newOrder.length;
+        newOrder.splice(insertAt, 0, ...elements);
+        this.store.get('dw_chart').set('metadata.data.column-order', newOrder.slice(0));
+        this.set({columnOrder: newOrder});
+        // update selection
+        HOT.hooks.once('afterRender', () => {
+            setTimeout(() => {
+                hot.selectCell(0, insertAt, hot.countRows()-1, insertAt+elements.length-1);
+            }, 10);
+        });
+        this.update();
+    },
+    updateHeight () {
+        const h = document.querySelector('.ht_master.handsontable .wtHolder .wtHider').getBoundingClientRect().height;
+        this.refs.hot.style.height = Math.min(400, h+10)+'px';
+    },
+    checkRange (r,c,r2,c2) {
+        // check if
+        // 1. only a single column is selected, and
+        // 2. the range starts at the first row, and
+        // 3. the range extends through he last row
+        const {hot} = this.get();
+        if (c == c2 && r === 0 && r2 == hot.countRows()-1) {
+            // const chart = this.store.get('dw_chart');
+            // this.set({activeColumn: chart.dataset().column(c)});
+            return;
+        }
+        this.set({activeColumn:null});
+    },
+    initCustomEvents () {
+        // wait a bit to make sure HoT is rendered
+        setTimeout(() => {
+            const {hot} = this.get();
+            // catch click events on A,B,C,D... header row
+            this.refs.hot.querySelectorAll('.htCore thead th+th').forEach(th => {
+                th.addEventListener('click', evt => {
+                    // reset the HoT selection
+                    hot.deselectCell();
+                    evt.preventDefault();
+                    evt.stopPropagation();
+                    // find out which data column we're in
+                    const k = th.parentNode.children.length;
+                    let th_i = -1;
+                    // (stupid HTMLCollection has no indexOf)
+                    for (let i=0; i<k; i++) {
+                        if (th.parentNode.children.item(i) == th) {
+                            th_i = i;
+                            break;
+                        }
+                    }
+                    // find column index
+                    const col_i = this.refs.hot.querySelector(`.htCore tbody tr:first-child td:nth-child(${th_i+1})`).dataset.column;
+                    const chart = this.store.get('dw_chart');
+                    const {activeColumn} = this.get();
+                    const newActive = chart.dataset().column(+col_i);
+                    // set active column (or unset if it's already set)
+                    this.set({activeColumn: newActive == activeColumn ? false : newActive});
+                });
+            });
+        }, 500);
+    }
+};
+
+function oncreate() {
+
+    HOT.hooks.once('afterRender', () => this.initCustomEvents());
+
+    const chart = this.store.get('dw_chart');
+
+    const hot = new HOT(this.refs.hot, {
+        data: [],
+        rowHeaders: (i) => {
+            const ti = hot.getPlugin('ColumnSorting').translateRow(i);
+            return ti+1;
+        },
+        colHeaders: true,
+        fixedRowsTop: 1,
+        filters: true,
+        dropdownMenu: true,
+        startRows: 13,
+        startCols: 8,
+        fillHandle: false,
+        stretchH: 'all',
+        height: 400,
+        manualColumnMove: true,
+        selectionMode: 'range',
+        autoColumnSize: {useHeaders: true},
+        // comments: true,
+        // contextMenu: true,
+
+        // sorting
+        columnSorting: true,
+        sortIndicator: true,
+        sortFunction: function(sortOrder, columnMeta) {
+            return function(a, b) {
+                var plugin = hot.getPlugin('columnSorting');
+                var sortFunction;
+                if (a[0] === 0) return -1;
+                switch (columnMeta.type) {
+                    case 'date':
+                        sortFunction = plugin.dateSort;
+                        break;
+                    case 'numeric':
+                        sortFunction = plugin.numericSort;
+                        break;
+                    default:
+                        sortFunction = plugin.defaultSort;
+                }
+                return sortFunction(sortOrder, columnMeta)(a, b);
+            };
+        },
+        afterGetColHeader: (col, th) => {
+            const {activeColumn, ds} = this.get();
+            if (!ds) return;
+            if (col && ds.column(col) == activeColumn) {
+                th.classList.add('selected');
+            }
+            return;
+            // console.log(chart.dataset().column(col), activeColumn, th);
+            // if (selectedColumns.indexOf(col) !== -1) {
+            //     TH.classList.add('selected');
+            // }
+
+            // var serie = getSeriesOfIndex(col);
+            // if(metadata.columnFormat.get(serie).ignore) {
+            //     TH.classList.add('ignored');
+            // }
+            // else {
+            //     TH.classList.remove('ignored');
+            // }
+        },
+        // search
+        search: 'search'
+    });
+
+    window.HT = hot;
+    this.set({hot});
+
+    HOT.hooks.add('afterSetDataAtCell', (a) => this.dataChanged(a));
+    HOT.hooks.add('afterColumnMove', (a,b) => this.columnMoved(a,b));
+    HOT.hooks.add('afterRender', () => this.updateHeight());
+    HOT.hooks.add('afterSelection', (r,c,r2,c2) => this.checkRange(r,c,r2,c2));
+
+    // HOT.hooks.add()
+    // $dataPreview.on('mousedown', '.ht_clone_top.handsontable th:has(.colHeader)', function (event) {
+    //     start = getIndexOfTh(this);
+    //     event.stopPropagation();
+    //     $dataPreview.handsontable('deselectCell');
+
+    //     if (selectedColumns.length == 1 && selectedColumns[0] == start) {
+    //         // proceeding click on selected column header will unselect
+    //         deselectColumns();
+    //         $dataPreview.handsontable('render'); // refresh all cells and column headers
+    //         showColumnSettings();
+    //         return;
+    //     }
+    //     setTimeout(function() { //do it in timeout, so input blur has chance to run
+    //         selectColumns(start);
+    //     }, 0);
+    // });
+
+    this.observe('data', () => this.update());
+    this.observe('transpose', () => this.update());
+    this.observe('firstRowIsHeader', () => this.update());
+
+    this.observe('search', (query) => {
+        const searchResults = hot.search.query(query);
+        this.set({searchResults});
+        hot.render();
+    });
+
+    this.observe('currentResult', (res) => {
+        // console.log('cur search res', res);
+        if (!res || !hot) return;
+        // this is a weird hack to deal with HoT's problems to scroll
+        // all the way down after hot.scrollViewportTo(hot.countRows()-1, res.col);
+        // the first scrollViewportTo will trigger a render event
+        hot.render(); // to update the hightlight colors
+        hot.scrollViewportTo(res.row, res.col);
+        setTimeout(() => {
+            // one more time
+            hot.scrollViewportTo(res.row, res.col);
+        }, 100);
+    });
+
+    this.observe('activeColumn', () => hot.render());
+
+}
+
+function getCellRenderer(app, dataset, Handsontable, metadata) {
+    const colTypeIcons = {
+        date: 'fa fa-clock-o'
+    };
+    function HtmlCellRender(instance, TD, row, col, prop, value, cellProperties) {
+        var escaped = dw.utils.purifyHtml(Handsontable.helper.stringify(value));
+        TD.innerHTML = escaped; // this is faster than innerHTML. See: https://github.com/warpech/jquery-handsontable/wiki/JavaScript-&-DOM-performance-tips
+    }
+    return function(instance, td, row, col, prop, value, cellProperties) {
+        if (dataset.numColumns() <= col) return;
+        const column = dataset.column(col);
+        const {searchResults, currentResult, activeColumn} = app.get();
+        row = instance.toPhysicalRow(row);
+        if (row > 0) {
+            var formatter = chart.columnFormatter(column);
+            value = formatter(column.val(row - 1), true);
+        }
+        if (parseInt(value) < 0) { // if row contains negative number
+            td.classList.add('negative');
+        }
+        td.classList.add(column.type()+'Type');
+
+        if (column.type() == 'text' && value.length > 70) {
+            value = value.substr(0,60)+'…';
+        }
+
+        if (row === 0) {
+            td.classList.add('firstRow');
+            if (colTypeIcons[column.type()]) {
+                value = '<i class="'+colTypeIcons[column.type()]+'"></i> ' + value;
+            }
+            td.dataset.column = col;
+        } else {
+            td.classList.add(row % 2 ? 'oddRow' : 'evenRow');
+        }
+        // if (metadata.columnFormat.get(column.name()).ignore) {
+        //     td.classList.add('ignored');
+        // }
+        // if(selectedColumns.indexOf(col) > -1) {
+        //     td.classList.add('area'); //add blue area background if this cell is in selected column
+        // }
+        if (activeColumn && activeColumn == column) {
+            td.classList.add('area');
+        }
+        searchResults.forEach(res => {
+            if (res.row == row && res.col == col) {
+                td.classList.add('htSearchResult');
+            }
+        });
+        if (currentResult && currentResult.row == row && currentResult.col == col) {
+            td.classList.add('htCurrentSearchResult');
+        }
+        if (row > 0 && !column.type(true).isValid(column.val(row-1))) {
+            td.classList.add('parsingError');
+        }
+        if (cellProperties.readOnly) td.classList.add('readOnly');
+
+        if (chart.dataCellChanged(col, row)) {
+            td.classList.add('changed');
+        }
+        HtmlCellRender(instance, td, row, col, prop, value, cellProperties);
+        // Reflect.apply(HtmlCellRender, this, arguments);
+    };
+}
+
+function create_main_fragment(state, component) {
+	var div, text, text_1;
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			text = createText("\n\n");
+			text_1 = createText(state.activeColumn);
+			this.h();
+		},
+
+		h: function hydrate() {
+			div.id = "data-preview";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			component.refs.hot = div;
+			insertNode(text, target, anchor);
+			insertNode(text_1, target, anchor);
+		},
+
+		p: function update(changed, state) {
+			if (changed.activeColumn) {
+				text_1.data = state.activeColumn;
+			}
+		},
+
+		u: function unmount() {
+			detachNode(div);
+			detachNode(text);
+			detachNode(text_1);
+		},
+
+		d: function destroy$$1() {
+			if (component.refs.hot === div) component.refs.hot = null;
+		}
+	};
+}
+
+function Handsontable_1(options) {
+	this._debugName = '<Handsontable_1>';
+	if (!options || (!options.target && !options.root)) throw new Error("'target' is a required option");
+	init(this, options);
+	this.refs = {};
+	this._state = assign(data(), options.data);
+	this._recompute({ searchResults: 1, searchIndex: 1 }, this._state);
+	if (!('searchResults' in this._state)) console.warn("<Handsontable_1> was created without expected data property 'searchResults'");
+	if (!('searchIndex' in this._state)) console.warn("<Handsontable_1> was created without expected data property 'searchIndex'");
+	if (!('activeColumn' in this._state)) console.warn("<Handsontable_1> was created without expected data property 'activeColumn'");
+
+	var _oncreate = oncreate.bind(this);
+
+	if (!options.root) {
+		this._oncreate = [_oncreate];
+	} else {
+	 	this.root._oncreate.push(_oncreate);
+	 }
+
+	this._fragment = create_main_fragment(this._state, this);
+
+	if (options.target) {
+		if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		this._fragment.c();
+		this._fragment.m(options.target, options.anchor || null);
+
+		callAll(this._oncreate);
+	}
+}
+
+assign(Handsontable_1.prototype, methods, protoDev);
+
+Handsontable_1.prototype._checkReadOnly = function _checkReadOnly(newState) {
+	if ('currentResult' in newState && !this._updatingReadonlyProperty) throw new Error("<Handsontable_1>: Cannot set read-only property 'currentResult'");
+};
+
+Handsontable_1.prototype._recompute = function _recompute(changed, state) {
+	if (changed.searchResults || changed.searchIndex) {
+		if (differs(state.currentResult, (state.currentResult = currentResult(state.searchResults, state.searchIndex)))) changed.currentResult = true;
+	}
+};
+
+/* describe/ComputedColumnEditor.html generated by Svelte v1.53.0 */
+function metaColumns(columns) {
+    if (!columns) return [];
+    return columns.map(col => {
+        return {
+            key: column_name_to_var(col.name()),
+            title: col.title()
+        };
+    });
+}
+
+var methods$1 = {
+    insert (column) {
+        const {cm} = this.get();
+        cm.replaceSelection(column.key);
+        cm.focus();
+    }
+};
+
+function oncreate$1() {
+    const cm = CodeMirror.fromTextArea(this.refs.code, {
+        value: this.get('formula'),
+        mode: 'simple'
+    });
+
+    window.CodeMirror = CodeMirror;
+
+    this.set({cm});
+
+    this.observe('formula', (formula) => {
+        if (formula != cm.getValue()) cm.setValue(formula);
+    });
+
+    cm.on('change', (cm) => {
+        this.set({formula: cm.getValue()});
+    });
+
+    cm.on('focus', () => this.fire('focus'));
+
+    this.observe('metaColumns', (cols) => {
+        var columns_regex = new RegExp(`(?:${cols.map(c=>c.key).join('|')})`);
+        CodeMirror.defineSimpleMode("simplemode", {
+            // The start state contains the rules that are intially used
+            start: [
+                // The regex matches the token, the token property contains the type
+                {regex: /"(?:[^\\]|\\.)*?(?:"|$)/, token: "string"},
+                // You can match multiple tokens at once. Note that the captured
+                // groups must span the whole string in this case
+                {regex: /(function)(\s+)([a-z$][\w$]*)/,
+                 token: ["keyword", null, "keyword"]},
+                // Rules are matched in the order in which they appear, so there is
+                // no ambiguity between this one and the one above
+                {regex: /(?:function|var|return|if|for|while|else|do|this)\b/,
+                 token: "keyword"},
+                {regex: /true|false|null|undefined/, token: "atom"},
+                {regex: /0x[a-f\d]+|[-+]?(?:\.\d+|\d+\.?\d*)(?:e[-+]?\d+)?/i,
+                 token: "number"},
+                {regex: /\/\/.*/, token: "comment"},
+                {regex: /\/(?:[^\\]|\\.)*?\//, token: "variable-3"},
+                // A next property will cause the mode to move to a different state
+                {regex: /\/\*/, token: "comment", next: "comment"},
+                {regex: /[-+\/*=<>!]+/, token: "operator"},
+                // indent and dedent properties guide autoindentation
+                {regex: /[\{\[\(]/, indent: true},
+                {regex: /[\}\]\)]/, dedent: true},
+                {regex: columns_regex, token: 'variable-2'},
+                {regex: /[a-z$][\w$]*/, token: "variable"},
+                // You can embed other modes with the mode property. This rule
+                // causes all code between << and >> to be highlighted with the XML
+                // mode.
+                {regex: /<</, token: "meta", mode: {spec: "xml", end: />>/}}
+            ],
+            // The multi-line comment state.
+            comment: [
+                {regex: /.*?\*\//, token: "comment", next: "start"},
+                {regex: /.*/, token: "comment"}
+            ],
+            // The meta property contains global information about the mode. It
+            // can contain properties like lineComment, which are supported by
+            // all modes, and also directives like dontIndentStates, which are
+            // specific to simple modes.
+            meta: {
+                dontIndentStates: ["comment"],
+                lineComment: "//"
+            }
+        });
+
+        cm.setOption('mode', 'simplemode');
+    });
+}
+
+function column_name_to_var(name) {
+    // if you change this, change dw.chart.js as well
+    return name.toString().toLowerCase()
+        .replace(/\s+/g, '_')           // Replace spaces with _
+        .replace(/[^\w-]+/g, '')       // Remove all non-word chars
+        .replace(/-/g, '_')             // Replace - with single _
+        .replace(/__+/g, '_')         // Replace multiple _ with single _
+        .replace(/^_+/, '')             // Trim _ from start of text
+        .replace(/_+$/, '')             // Trim _ from end of text
+        .replace(/^(\d)/, '_$1')        // If first char is a number, prefix with _
+        .replace(/(abstract|arguments|await|boolean|break|byte|case|catch|char|class|const|continue|debugger|default|delete|do|double|else|enum|eval|export|extends|false|final|finally|float|for|function|goto|if|implements|import|in|instanceof|int|interface|let|long|native|new|null|package|private|protected|public|return|short|static|super|switch|synchronized|this|throw|throws|transient|true|try|typeof|var|void|volatile|while|window|with|yield)/, '$1_'); // reserved keywords
+}
+
+function encapsulateStyles(node) {
+	setAttribute(node, "svelte-836747283", "");
+}
+
+function create_main_fragment$1(state, component) {
+	var div, h3, text, text_1_value = state.column.name(), text_1, text_2, text_3, p, text_4_value = "Die Werte in den Spalten können nach einer Formel berechnet werden, wie in Excel.", text_4, text_5, label, text_6_value = "computed columns / modal / name", text_6, text_7, input, input_updating = false, text_8, label_1, text_9_value = "Formel (JavaScript)", text_9, text_10, textarea, text_11, p_1, text_12_value = "Verfügbare Spalten", text_12, text_13, text_14, ul;
+
+	function input_input_handler() {
+		input_updating = true;
+		component.set({ name: input.value });
+		input_updating = false;
+	}
+
+	var metaColumns_1 = state.metaColumns;
+
+	var each_blocks = [];
+
+	for (var i = 0; i < metaColumns_1.length; i += 1) {
+		each_blocks[i] = create_each_block(state, metaColumns_1, metaColumns_1[i], i, component);
+	}
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			h3 = createElement("h3");
+			text = createText("Edit computed column \"");
+			text_1 = createText(text_1_value);
+			text_2 = createText("\"");
+			text_3 = createText("\n    ");
+			p = createElement("p");
+			text_4 = createText(text_4_value);
+			text_5 = createText("\n\n    ");
+			label = createElement("label");
+			text_6 = createText(text_6_value);
+			text_7 = createText("\n    ");
+			input = createElement("input");
+			text_8 = createText("\n\n    ");
+			label_1 = createElement("label");
+			text_9 = createText(text_9_value);
+			text_10 = createText("\n    ");
+			textarea = createElement("textarea");
+			text_11 = createText("\n\n    ");
+			p_1 = createElement("p");
+			text_12 = createText(text_12_value);
+			text_13 = createText(":");
+			text_14 = createText("\n\n    ");
+			ul = createElement("ul");
+
+			for (var i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].c();
+			}
+			this.h();
+		},
+
+		h: function hydrate() {
+			h3.className = "first";
+			encapsulateStyles(label);
+			addListener(input, "input", input_input_handler);
+			input.type = "text";
+			encapsulateStyles(label_1);
+			textarea.className = "code";
+			setStyle(p_1, "margin-top", "1em");
+			encapsulateStyles(ul);
+			ul.className = "col-select";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			appendNode(h3, div);
+			appendNode(text, h3);
+			appendNode(text_1, h3);
+			appendNode(text_2, h3);
+			appendNode(text_3, div);
+			appendNode(p, div);
+			appendNode(text_4, p);
+			appendNode(text_5, div);
+			appendNode(label, div);
+			appendNode(text_6, label);
+			appendNode(text_7, div);
+			appendNode(input, div);
+
+			input.value = state.name;
+
+			appendNode(text_8, div);
+			appendNode(label_1, div);
+			appendNode(text_9, label_1);
+			appendNode(text_10, div);
+			appendNode(textarea, div);
+			component.refs.code = textarea;
+			appendNode(text_11, div);
+			appendNode(p_1, div);
+			appendNode(text_12, p_1);
+			appendNode(text_13, p_1);
+			appendNode(text_14, div);
+			appendNode(ul, div);
+
+			for (var i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].m(ul, null);
+			}
+		},
+
+		p: function update(changed, state) {
+			if ((changed.column) && text_1_value !== (text_1_value = state.column.name())) {
+				text_1.data = text_1_value;
+			}
+
+			if (!input_updating) input.value = state.name;
+
+			var metaColumns_1 = state.metaColumns;
+
+			if (changed.metaColumns) {
+				for (var i = 0; i < metaColumns_1.length; i += 1) {
+					if (each_blocks[i]) {
+						each_blocks[i].p(changed, state, metaColumns_1, metaColumns_1[i], i);
+					} else {
+						each_blocks[i] = create_each_block(state, metaColumns_1, metaColumns_1[i], i, component);
+						each_blocks[i].c();
+						each_blocks[i].m(ul, null);
+					}
+				}
+
+				for (; i < each_blocks.length; i += 1) {
+					each_blocks[i].u();
+					each_blocks[i].d();
+				}
+				each_blocks.length = metaColumns_1.length;
+			}
+		},
+
+		u: function unmount() {
+			detachNode(div);
+
+			for (var i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].u();
+			}
+		},
+
+		d: function destroy$$1() {
+			removeListener(input, "input", input_input_handler);
+			if (component.refs.code === textarea) component.refs.code = null;
+
+			destroyEach(each_blocks);
+		}
+	};
+}
+
+// (14:8) {{#each metaColumns as column}}
+function create_each_block(state, metaColumns_1, column, column_index, component) {
+	var li, text_value = column.key, text;
+
+	return {
+		c: function create() {
+			li = createElement("li");
+			text = createText(text_value);
+			this.h();
+		},
+
+		h: function hydrate() {
+			encapsulateStyles(li);
+			addListener(li, "click", click_handler);
+
+			li._svelte = {
+				component: component,
+				metaColumns_1: metaColumns_1,
+				column_index: column_index
+			};
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(li, target, anchor);
+			appendNode(text, li);
+		},
+
+		p: function update(changed, state, metaColumns_1, column, column_index) {
+			if ((changed.metaColumns) && text_value !== (text_value = column.key)) {
+				text.data = text_value;
+			}
+
+			li._svelte.metaColumns_1 = metaColumns_1;
+			li._svelte.column_index = column_index;
+		},
+
+		u: function unmount() {
+			detachNode(li);
+		},
+
+		d: function destroy$$1() {
+			removeListener(li, "click", click_handler);
+		}
+	};
+}
+
+function click_handler(event) {
+	var component = this._svelte.component;
+	var metaColumns_1 = this._svelte.metaColumns_1, column_index = this._svelte.column_index, column = metaColumns_1[column_index];
+	component.insert(column);
+}
+
+function ComputedColumnEditor(options) {
+	this._debugName = '<ComputedColumnEditor>';
+	if (!options || (!options.target && !options.root)) throw new Error("'target' is a required option");
+	init(this, options);
+	this.refs = {};
+	this._state = assign({}, options.data);
+	this._recompute({ columns: 1 }, this._state);
+	if (!('columns' in this._state)) console.warn("<ComputedColumnEditor> was created without expected data property 'columns'");
+	if (!('column' in this._state)) console.warn("<ComputedColumnEditor> was created without expected data property 'column'");
+	if (!('name' in this._state)) console.warn("<ComputedColumnEditor> was created without expected data property 'name'");
+	if (!('metaColumns' in this._state)) console.warn("<ComputedColumnEditor> was created without expected data property 'metaColumns'");
+
+	var _oncreate = oncreate$1.bind(this);
+
+	if (!options.root) {
+		this._oncreate = [_oncreate];
+	} else {
+	 	this.root._oncreate.push(_oncreate);
+	 }
+
+	this._fragment = create_main_fragment$1(this._state, this);
+
+	if (options.target) {
+		if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		this._fragment.c();
+		this._fragment.m(options.target, options.anchor || null);
+
+		callAll(this._oncreate);
+	}
+}
+
+assign(ComputedColumnEditor.prototype, methods$1, protoDev);
+
+ComputedColumnEditor.prototype._checkReadOnly = function _checkReadOnly(newState) {
+	if ('metaColumns' in newState && !this._updatingReadonlyProperty) throw new Error("<ComputedColumnEditor>: Cannot set read-only property 'metaColumns'");
+};
+
+ComputedColumnEditor.prototype._recompute = function _recompute(changed, state) {
+	if (changed.columns) {
+		if (differs(state.metaColumns, (state.metaColumns = metaColumns(state.columns)))) changed.metaColumns = true;
+	}
+};
+
+/* controls/Checkbox.html generated by Svelte v1.53.0 */
+function data$1() {
+    return {
+        disabled: false
+    }
+}
+
+function encapsulateStyles$1(node) {
+	setAttribute(node, "svelte-1306209643", "");
+}
+
+function create_main_fragment$2(state, component) {
+	var div, label, input, text, text_1, label_class_value;
+
+	function input_change_handler() {
+		component.set({ value: input.checked });
+	}
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			label = createElement("label");
+			input = createElement("input");
+			text = createText(" ");
+			text_1 = createText(state.label);
+			this.h();
+		},
+
+		h: function hydrate() {
+			encapsulateStyles$1(label);
+			encapsulateStyles$1(input);
+			addListener(input, "change", input_change_handler);
+			input.type = "checkbox";
+			input.disabled = state.disabled;
+			label.className = label_class_value = "checkbox " + (state.disabled? 'disabled' :'');
+			div.className = "control-group vis-option-group vis-option-type-checkbox";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			appendNode(label, div);
+			appendNode(input, label);
+
+			input.checked = state.value;
+
+			appendNode(text, label);
+			appendNode(text_1, label);
+		},
+
+		p: function update(changed, state) {
+			input.checked = state.value;
+			if (changed.disabled) {
+				input.disabled = state.disabled;
+			}
+
+			if (changed.label) {
+				text_1.data = state.label;
+			}
+
+			if ((changed.disabled) && label_class_value !== (label_class_value = "checkbox " + (state.disabled? 'disabled' :''))) {
+				label.className = label_class_value;
+			}
+		},
+
+		u: function unmount() {
+			detachNode(div);
+		},
+
+		d: function destroy$$1() {
+			removeListener(input, "change", input_change_handler);
+		}
+	};
+}
+
+function Checkbox(options) {
+	this._debugName = '<Checkbox>';
+	if (!options || (!options.target && !options.root)) throw new Error("'target' is a required option");
+	init(this, options);
+	this._state = assign(data$1(), options.data);
+	if (!('disabled' in this._state)) console.warn("<Checkbox> was created without expected data property 'disabled'");
+	if (!('value' in this._state)) console.warn("<Checkbox> was created without expected data property 'value'");
+	if (!('label' in this._state)) console.warn("<Checkbox> was created without expected data property 'label'");
+
+	this._fragment = create_main_fragment$2(this._state, this);
+
+	if (options.target) {
+		if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		this._fragment.c();
+		this._fragment.m(options.target, options.anchor || null);
+	}
+}
+
+assign(Checkbox.prototype, protoDev);
+
+Checkbox.prototype._checkReadOnly = function _checkReadOnly(newState) {
+};
+
+/* describe/App.html generated by Svelte v1.53.0 */
+function searchIndexSafe(searchIndex, searchResults) {
+    if (searchIndex<0) searchIndex+=searchResults.length;
+    searchIndex = searchIndex % searchResults.length;
+    return searchIndex;
+}
+
+function customColumn(activeColumn) {
+    return activeColumn && activeColumn.isComputed ? activeColumn : false;
+}
+
+function columnFormat(activeColumn) {
+    return activeColumn && !activeColumn.isComputed ? activeColumn : false;
+}
+
+function columns(activeColumn) {
+    if (!activeColumn) return [];
+    try {
+        const ds = chart.dataset();
+        return ds.columns().filter(col => !col.isComputed);
+    } catch(e) {
+        return [];
+    }
+}
+
+function data$2() {
+    return {
+        search: '',
+        chartData: '',
+        transpose: false,
+        firstRowIsHeader: true,
+        searchIndex: 0,
+        activeColumn: false,
+        customColumn: false,
+        columnFormat: false,
+        formula: '',
+        searchResults: []
+    };
+}
+
+var methods$2 = {
+    nextResult (diff) {
+        let {searchIndex, searchResults} = this.get();
+        searchIndex += diff;
+        if (searchIndex<0) searchIndex+=searchResults.length;
+        searchIndex = searchIndex % searchResults.length;
+        this.set({searchIndex});
+    },
+    keyPress (event) {
+        if (event.key == 'F3' || event.key == 'Enter')
+            this.nextResult(event.shiftKey ? -1 : 1);
+    },
+    toggleTranspose() {
+        this.set({transpose: !this.get('transpose')});
+    },
+    revertChanges() {
+        const chart = this.store.get('dw_chart');
+        chart.set('metadata.data.changes', []);
+        chart.saveSoon();
+        this.refs.hot.update();
+    },
+    cmFocus () {
+        setTimeout(() => {
+            this.refs.hot.get('hot').render();
+        }, 100);
+    }
+};
+
+function oncreate$2() {
+    window.addEventListener('keypress', (event) => {
+        if (event.ctrlKey && event.key == 'f') {
+            event.preventDefault();
+            if (this.refs.search != window.document.activeElement) {
+                this.refs.search.focus();
+            } else {
+                this.nextResult(+1);
+            }
+        }
+    });
+    const sync = (svelte_key, metadata_key) => {
+        this.observe(svelte_key, (svelte_value) => {
+            this.store.get('dw_chart').set(`metadata.${metadata_key}`, svelte_value);
+        });
+    };
+    sync('transpose', 'data.transpose');
+    sync('firstRowIsHeader', 'data.horizontal-header');
+
+    this.observe('customColumn', (col, old) => {
+        if (col && col != old) {
+            const chart = this.store.get('dw_chart');
+            const customCols = chart.get('metadata.describe.computed-columns', {});
+            this.set({formula: customCols[col.name()] || ''});
+        }
+    });
+
+    this.observe('formula', (formula) => {
+        const {customColumn} = this.get();
+        const chart = this.store.get('dw_chart');
+        if (customColumn) {
+            const customCols = chart.get('metadata.describe.computed-columns', {});
+            customCols[customColumn.name()] = formula;
+            chart.set('metadata.describe.computed-columns', customCols);
+            chart.saveSoon();
+            this.refs.hot.update();
+        }
+    });
+}
+
+function encapsulateStyles$2(node) {
+	setAttribute(node, "svelte-1903720201", "");
+}
+
+function create_main_fragment$3(state, component) {
+	var div, div_1, div_2, div_3, text_2, div_4, button, img, text_3, text_4_value = "Zeilen und Spalten vertauschen (transponieren)", text_4, text_5, div_5, i, text_6, div_6, input, input_updating = false, input_placeholder_value, input_class_value, text_7, text_9, text_11, handsontable_updating = {}, text_12, div_7, button_1, i_1, text_13, text_14_value = "Spalte hinzufügen", text_14, text_15, text_16, button_2, i_2, text_17, text_18_value = "Änderungen zurücksetzen", text_18, text_19, button_2_class_value;
+
+	var current_block_type = select_block_type(state);
+	var if_block = current_block_type(state, component);
+
+	function click_handler(event) {
+		component.toggleTranspose();
+	}
+
+	function input_input_handler() {
+		input_updating = true;
+		component.set({ search: input.value });
+		input_updating = false;
+	}
+
+	function keypress_handler(event) {
+		component.keyPress(event);
+	}
+
+	var if_block_2 = (state.searchResults.length > 0) && create_if_block_3(state, component);
+
+	var if_block_3 = (state.search) && create_if_block_4(state, component);
+
+	var handsontable_initial_data = {};
+	if ('chartData' in state) {
+		handsontable_initial_data.data = state.chartData;
+		handsontable_updating.data = true;
+	}
+	if ('transpose' in state) {
+		handsontable_initial_data.transpose = state.transpose
+                ;
+		handsontable_updating.transpose = true;
+	}
+	if ('firstRowIsHeader' in state) {
+		handsontable_initial_data.firstRowIsHeader = state.firstRowIsHeader
+                ;
+		handsontable_updating.firstRowIsHeader = true;
+	}
+	if ('activeColumn' in state) {
+		handsontable_initial_data.activeColumn = state.activeColumn
+                ;
+		handsontable_updating.activeColumn = true;
+	}
+	if ('search' in state) {
+		handsontable_initial_data.search = state.search
+                ;
+		handsontable_updating.search = true;
+	}
+	if ('searchResults' in state) {
+		handsontable_initial_data.searchResults = state.searchResults
+                ;
+		handsontable_updating.searchResults = true;
+	}
+	if ('searchIndex' in state) {
+		handsontable_initial_data.searchIndex = state.searchIndex ;
+		handsontable_updating.searchIndex = true;
+	}
+	var handsontable = new Handsontable_1({
+		root: component.root,
+		data: handsontable_initial_data,
+		_bind: function(changed, childState) {
+			var state = component.get(), newState = {};
+			if (!handsontable_updating.data && changed.data) {
+				newState.chartData = childState.data;
+			}
+
+			if (!handsontable_updating.transpose && changed.transpose) {
+				newState.transpose = childState.transpose;
+			}
+
+			if (!handsontable_updating.firstRowIsHeader && changed.firstRowIsHeader) {
+				newState.firstRowIsHeader = childState.firstRowIsHeader;
+			}
+
+			if (!handsontable_updating.activeColumn && changed.activeColumn) {
+				newState.activeColumn = childState.activeColumn;
+			}
+
+			if (!handsontable_updating.search && changed.search) {
+				newState.search = childState.search;
+			}
+
+			if (!handsontable_updating.searchResults && changed.searchResults) {
+				newState.searchResults = childState.searchResults;
+			}
+
+			if (!handsontable_updating.searchIndex && changed.searchIndex) {
+				newState.searchIndex = childState.searchIndex;
+			}
+			handsontable_updating = assign({}, changed);
+			component._set(newState);
+			handsontable_updating = {};
+		}
+	});
+
+	component.root._beforecreate.push(function() {
+		var state = component.get(), childState = handsontable.get(), newState = {};
+		if (!childState) return;
+		if (!handsontable_updating.data) {
+			newState.chartData = childState.data;
+		}
+
+		if (!handsontable_updating.transpose) {
+			newState.transpose = childState.transpose;
+		}
+
+		if (!handsontable_updating.firstRowIsHeader) {
+			newState.firstRowIsHeader = childState.firstRowIsHeader;
+		}
+
+		if (!handsontable_updating.activeColumn) {
+			newState.activeColumn = childState.activeColumn;
+		}
+
+		if (!handsontable_updating.search) {
+			newState.search = childState.search;
+		}
+
+		if (!handsontable_updating.searchResults) {
+			newState.searchResults = childState.searchResults;
+		}
+
+		if (!handsontable_updating.searchIndex) {
+			newState.searchIndex = childState.searchIndex;
+		}
+		handsontable_updating = { data: true, transpose: true, firstRowIsHeader: true, activeColumn: true, search: true, searchResults: true, searchIndex: true };
+		component._set(newState);
+		handsontable_updating = {};
+	});
+
+	component.refs.hot = handsontable;
+
+	function click_handler_1(event) {
+		component.revertChanges();
+	}
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			div_1 = createElement("div");
+			div_2 = createElement("div");
+			div_3 = createElement("div");
+			if_block.c();
+			text_2 = createText("\n        ");
+			div_4 = createElement("div");
+			button = createElement("button");
+			img = createElement("img");
+			text_3 = createText(" ");
+			text_4 = createText(text_4_value);
+			text_5 = createText("\n\n            ");
+			div_5 = createElement("div");
+			i = createElement("i");
+			text_6 = createText("\n                ");
+			div_6 = createElement("div");
+			input = createElement("input");
+			text_7 = createText("\n                    ");
+			if (if_block_2) if_block_2.c();
+			text_9 = createText("\n\n                ");
+			if (if_block_3) if_block_3.c();
+			text_11 = createText("\n\n            ");
+			handsontable._fragment.c();
+			text_12 = createText("\n\n            ");
+			div_7 = createElement("div");
+			button_1 = createElement("button");
+			i_1 = createElement("i");
+			text_13 = createText(" ");
+			text_14 = createText(text_14_value);
+			text_15 = createText("...");
+			text_16 = createText("\n\n                ");
+			button_2 = createElement("button");
+			i_2 = createElement("i");
+			text_17 = createText(" ");
+			text_18 = createText(text_18_value);
+			text_19 = createText("...");
+			this.h();
+		},
+
+		h: function hydrate() {
+			div_3.className = "sidebar";
+			div_2.className = "span4";
+			encapsulateStyles$2(div_4);
+			encapsulateStyles$2(button);
+			encapsulateStyles$2(img);
+			img.src = "/static/css/chart-editor/transpose.png";
+			button.className = "btn transpose";
+			addListener(button, "click", click_handler);
+			encapsulateStyles$2(div_5);
+			encapsulateStyles$2(i);
+			i.className = "fa fa-search";
+			encapsulateStyles$2(input);
+			addListener(input, "input", input_input_handler);
+			input.type = "text";
+			input.placeholder = input_placeholder_value = "Search data table";
+			input.className = input_class_value = state.searchResults.length > 0?'with-results':'';
+			addListener(input, "keypress", keypress_handler);
+			div_6.className = "input-append";
+			div_5.className = "search-box pull-right";
+			encapsulateStyles$2(div_7);
+			i_1.className = "fa fa-calculator";
+			button_1.className = "btn computed-columns";
+			encapsulateStyles$2(button_2);
+			i_2.className = "fa fa-undo";
+			button_2.className = button_2_class_value = "btn " + (state.has_changes?'':'disabled');
+			button_2.id = "reset-data-changes";
+			addListener(button_2, "click", click_handler_1);
+			div_7.className = "buttons below-table pull-right";
+			div_4.className = "span8";
+			div_1.className = "row";
+			div.className = "chart-editor";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			appendNode(div_1, div);
+			appendNode(div_2, div_1);
+			appendNode(div_3, div_2);
+			if_block.m(div_3, null);
+			appendNode(text_2, div_1);
+			appendNode(div_4, div_1);
+			appendNode(button, div_4);
+			appendNode(img, button);
+			appendNode(text_3, button);
+			appendNode(text_4, button);
+			appendNode(text_5, div_4);
+			appendNode(div_5, div_4);
+			appendNode(i, div_5);
+			appendNode(text_6, div_5);
+			appendNode(div_6, div_5);
+			appendNode(input, div_6);
+			component.refs.search = input;
+
+			input.value = state.search;
+
+			appendNode(text_7, div_6);
+			if (if_block_2) if_block_2.m(div_6, null);
+			appendNode(text_9, div_5);
+			if (if_block_3) if_block_3.m(div_5, null);
+			appendNode(text_11, div_4);
+			handsontable._mount(div_4, null);
+			appendNode(text_12, div_4);
+			appendNode(div_7, div_4);
+			appendNode(button_1, div_7);
+			appendNode(i_1, button_1);
+			appendNode(text_13, button_1);
+			appendNode(text_14, button_1);
+			appendNode(text_15, button_1);
+			appendNode(text_16, div_7);
+			appendNode(button_2, div_7);
+			appendNode(i_2, button_2);
+			appendNode(text_17, button_2);
+			appendNode(text_18, button_2);
+			appendNode(text_19, button_2);
+		},
+
+		p: function update(changed, state) {
+			if (current_block_type === (current_block_type = select_block_type(state)) && if_block) {
+				if_block.p(changed, state);
+			} else {
+				if_block.u();
+				if_block.d();
+				if_block = current_block_type(state, component);
+				if_block.c();
+				if_block.m(div_3, null);
+			}
+
+			if (!input_updating) input.value = state.search;
+			if ((changed.searchResults) && input_class_value !== (input_class_value = state.searchResults.length > 0?'with-results':'')) {
+				input.className = input_class_value;
+			}
+
+			if (state.searchResults.length > 0) {
+				if (!if_block_2) {
+					if_block_2 = create_if_block_3(state, component);
+					if_block_2.c();
+					if_block_2.m(div_6, null);
+				}
+			} else if (if_block_2) {
+				if_block_2.u();
+				if_block_2.d();
+				if_block_2 = null;
+			}
+
+			if (state.search) {
+				if (if_block_3) {
+					if_block_3.p(changed, state);
+				} else {
+					if_block_3 = create_if_block_4(state, component);
+					if_block_3.c();
+					if_block_3.m(div_5, null);
+				}
+			} else if (if_block_3) {
+				if_block_3.u();
+				if_block_3.d();
+				if_block_3 = null;
+			}
+
+			var handsontable_changes = {};
+			if (!handsontable_updating.data && changed.chartData) {
+				handsontable_changes.data = state.chartData;
+				handsontable_updating.data = true;
+			}
+			if (!handsontable_updating.transpose && changed.transpose) {
+				handsontable_changes.transpose = state.transpose
+                ;
+				handsontable_updating.transpose = true;
+			}
+			if (!handsontable_updating.firstRowIsHeader && changed.firstRowIsHeader) {
+				handsontable_changes.firstRowIsHeader = state.firstRowIsHeader
+                ;
+				handsontable_updating.firstRowIsHeader = true;
+			}
+			if (!handsontable_updating.activeColumn && changed.activeColumn) {
+				handsontable_changes.activeColumn = state.activeColumn
+                ;
+				handsontable_updating.activeColumn = true;
+			}
+			if (!handsontable_updating.search && changed.search) {
+				handsontable_changes.search = state.search
+                ;
+				handsontable_updating.search = true;
+			}
+			if (!handsontable_updating.searchResults && changed.searchResults) {
+				handsontable_changes.searchResults = state.searchResults
+                ;
+				handsontable_updating.searchResults = true;
+			}
+			if (!handsontable_updating.searchIndex && changed.searchIndex) {
+				handsontable_changes.searchIndex = state.searchIndex ;
+				handsontable_updating.searchIndex = true;
+			}
+			handsontable._set(handsontable_changes);
+			handsontable_updating = {};
+
+			if ((changed.has_changes) && button_2_class_value !== (button_2_class_value = "btn " + (state.has_changes?'':'disabled'))) {
+				button_2.className = button_2_class_value;
+			}
+		},
+
+		u: function unmount() {
+			detachNode(div);
+			if_block.u();
+			if (if_block_2) if_block_2.u();
+			if (if_block_3) if_block_3.u();
+		},
+
+		d: function destroy$$1() {
+			if_block.d();
+			removeListener(button, "click", click_handler);
+			removeListener(input, "input", input_input_handler);
+			removeListener(input, "keypress", keypress_handler);
+			if (component.refs.search === input) component.refs.search = null;
+			if (if_block_2) if_block_2.d();
+			if (if_block_3) if_block_3.d();
+			handsontable.destroy(false);
+			if (component.refs.hot === handsontable) component.refs.hot = null;
+			removeListener(button_2, "click", click_handler_1);
+		}
+	};
+}
+
+// (5:16) {{#if customColumn}}
+function create_if_block(state, component) {
+	var computedcolumneditor_updating = {};
+
+	var computedcolumneditor_initial_data = {};
+	if ('customColumn' in state) {
+		computedcolumneditor_initial_data.column = state.customColumn;
+		computedcolumneditor_updating.column = true;
+	}
+	if ('formula' in state) {
+		computedcolumneditor_initial_data.formula = state.formula
+                    ;
+		computedcolumneditor_updating.formula = true;
+	}
+	if ('columns' in state) {
+		computedcolumneditor_initial_data.columns = state.columns
+                    ;
+		computedcolumneditor_updating.columns = true;
+	}
+	var computedcolumneditor = new ComputedColumnEditor({
+		root: component.root,
+		data: computedcolumneditor_initial_data,
+		_bind: function(changed, childState) {
+			var state = component.get(), newState = {};
+			if (!computedcolumneditor_updating.column && changed.column) {
+				newState.customColumn = childState.column;
+			}
+
+			if (!computedcolumneditor_updating.formula && changed.formula) {
+				newState.formula = childState.formula;
+			}
+
+			if (!computedcolumneditor_updating.columns && changed.columns) {
+				newState.columns = childState.columns;
+			}
+			computedcolumneditor_updating = assign({}, changed);
+			component._set(newState);
+			computedcolumneditor_updating = {};
+		}
+	});
+
+	component.root._beforecreate.push(function() {
+		var state = component.get(), childState = computedcolumneditor.get(), newState = {};
+		if (!childState) return;
+		if (!computedcolumneditor_updating.column) {
+			newState.customColumn = childState.column;
+		}
+
+		if (!computedcolumneditor_updating.formula) {
+			newState.formula = childState.formula;
+		}
+
+		if (!computedcolumneditor_updating.columns) {
+			newState.columns = childState.columns;
+		}
+		computedcolumneditor_updating = { column: true, formula: true, columns: true };
+		component._set(newState);
+		computedcolumneditor_updating = {};
+	});
+
+	computedcolumneditor.on("focus", function(event) {
+		component.cmFocus();
+	});
+
+	return {
+		c: function create() {
+			computedcolumneditor._fragment.c();
+		},
+
+		m: function mount(target, anchor) {
+			computedcolumneditor._mount(target, anchor);
+		},
+
+		p: function update(changed, state) {
+			var computedcolumneditor_changes = {};
+			if (!computedcolumneditor_updating.column && changed.customColumn) {
+				computedcolumneditor_changes.column = state.customColumn;
+				computedcolumneditor_updating.column = true;
+			}
+			if (!computedcolumneditor_updating.formula && changed.formula) {
+				computedcolumneditor_changes.formula = state.formula
+                    ;
+				computedcolumneditor_updating.formula = true;
+			}
+			if (!computedcolumneditor_updating.columns && changed.columns) {
+				computedcolumneditor_changes.columns = state.columns
+                    ;
+				computedcolumneditor_updating.columns = true;
+			}
+			computedcolumneditor._set(computedcolumneditor_changes);
+			computedcolumneditor_updating = {};
+
+			
+		},
+
+		u: function unmount() {
+			computedcolumneditor._unmount();
+		},
+
+		d: function destroy$$1() {
+			computedcolumneditor.destroy(false);
+		}
+	};
+}
+
+// (13:39) 
+function create_if_block_1(state, component) {
+	var text, text_1_value = state.columnFormat.title(), text_1, text_2;
+
+	return {
+		c: function create() {
+			text = createText("COLUMN FORMAT FOR ");
+			text_1 = createText(text_1_value);
+			text_2 = createText("\n\n                Hide Column\n\n                etc");
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(text, target, anchor);
+			insertNode(text_1, target, anchor);
+			insertNode(text_2, target, anchor);
+		},
+
+		p: function update(changed, state) {
+			if ((changed.columnFormat) && text_1_value !== (text_1_value = state.columnFormat.title())) {
+				text_1.data = text_1_value;
+			}
+		},
+
+		u: function unmount() {
+			detachNode(text);
+			detachNode(text_1);
+			detachNode(text_2);
+		},
+
+		d: noop
+	};
+}
+
+// (20:16) {{else}}
+function create_if_block_2(state, component) {
+	var h3, text_value = "Überprüfe dass die Daten richtig aussehen", text, text_1, p, text_2_value = "Interpretiert Datawrapper deine Daten korrekt? In der nebenstehenden Tabelle sollten Zahlenspalten in blau, Datums-Spalten in grün und Textspalten in schwarz angezeigt werden.", text_2, text_3, checkbox_updating = {}, text_4, hr, text_5, div;
+
+	var checkbox_initial_data = { label: "Erste Zeile als Beschriftung" };
+	if ('firstRowIsHeader' in state) {
+		checkbox_initial_data.value = state.firstRowIsHeader;
+		checkbox_updating.value = true;
+	}
+	var checkbox = new Checkbox({
+		root: component.root,
+		data: checkbox_initial_data,
+		_bind: function(changed, childState) {
+			var state = component.get(), newState = {};
+			if (!checkbox_updating.value && changed.value) {
+				newState.firstRowIsHeader = childState.value;
+			}
+			checkbox_updating = assign({}, changed);
+			component._set(newState);
+			checkbox_updating = {};
+		}
+	});
+
+	component.root._beforecreate.push(function() {
+		var state = component.get(), childState = checkbox.get(), newState = {};
+		if (!childState) return;
+		if (!checkbox_updating.value) {
+			newState.firstRowIsHeader = childState.value;
+		}
+		checkbox_updating = { value: true };
+		component._set(newState);
+		checkbox_updating = {};
+	});
+
+	return {
+		c: function create() {
+			h3 = createElement("h3");
+			text = createText(text_value);
+			text_1 = createText("\n\n                ");
+			p = createElement("p");
+			text_2 = createText(text_2_value);
+			text_3 = createText("\n\n                ");
+			checkbox._fragment.c();
+			text_4 = createText("\n\n                [TODO: hook]\n                ");
+			hr = createElement("hr");
+			text_5 = createText("\n\n                ");
+			div = createElement("div");
+			div.innerHTML = "<a class=\"btn submit\" href=\"upload\"><i class=\"icon-chevron-left\"></i> Zurück</a>\n                    <a href=\"visualize\" class=\"submit btn btn-primary\" id=\"describe-proceed\">Weiter <i class=\"icon-chevron-right icon-white\"></i></a>";
+			this.h();
+		},
+
+		h: function hydrate() {
+			h3.className = "first";
+			div.className = "btn-group";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(h3, target, anchor);
+			appendNode(text, h3);
+			insertNode(text_1, target, anchor);
+			insertNode(p, target, anchor);
+			appendNode(text_2, p);
+			insertNode(text_3, target, anchor);
+			checkbox._mount(target, anchor);
+			insertNode(text_4, target, anchor);
+			insertNode(hr, target, anchor);
+			insertNode(text_5, target, anchor);
+			insertNode(div, target, anchor);
+		},
+
+		p: function update(changed, state) {
+			var checkbox_changes = {};
+			checkbox_changes.label = "Erste Zeile als Beschriftung";
+			if (!checkbox_updating.value && changed.firstRowIsHeader) {
+				checkbox_changes.value = state.firstRowIsHeader;
+				checkbox_updating.value = true;
+			}
+			checkbox._set(checkbox_changes);
+			checkbox_updating = {};
+
+			
+		},
+
+		u: function unmount() {
+			detachNode(h3);
+			detachNode(text_1);
+			detachNode(p);
+			detachNode(text_3);
+			checkbox._unmount();
+			detachNode(text_4);
+			detachNode(hr);
+			detachNode(text_5);
+			detachNode(div);
+		},
+
+		d: function destroy$$1() {
+			checkbox.destroy(false);
+		}
+	};
+}
+
+// (47:20) {{#if searchResults.length > 0}}
+function create_if_block_3(state, component) {
+	var div, button, text, button_1;
+
+	function click_handler(event) {
+		component.nextResult(-1);
+	}
+
+	function click_handler_1(event) {
+		component.nextResult(+1);
+	}
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			button = createElement("button");
+			button.innerHTML = "<i class=\"fa fa-chevron-up\"></i>";
+			text = createText("\n                      ");
+			button_1 = createElement("button");
+			button_1.innerHTML = "<i class=\"fa fa-chevron-down\"></i>";
+			this.h();
+		},
+
+		h: function hydrate() {
+			encapsulateStyles$2(button);
+			button.className = "btn";
+			addListener(button, "click", click_handler);
+			encapsulateStyles$2(button_1);
+			button_1.className = "btn";
+			addListener(button_1, "click", click_handler_1);
+			div.className = "btn-group";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			appendNode(button, div);
+			appendNode(text, div);
+			appendNode(button_1, div);
+		},
+
+		u: function unmount() {
+			detachNode(div);
+		},
+
+		d: function destroy$$1() {
+			removeListener(button, "click", click_handler);
+			removeListener(button_1, "click", click_handler_1);
+		}
+	};
+}
+
+// (59:20) {{#if searchResults.length > 0}}
+function create_if_block_5(state, component) {
+	var text_value = state.searchIndexSafe+1, text, text_1, text_2_value = "von", text_2, text_3, text_4_value = state.searchResults.length, text_4, text_5, text_6_value = "Treffern", text_6;
+
+	return {
+		c: function create() {
+			text = createText(text_value);
+			text_1 = createText("\n                        ");
+			text_2 = createText(text_2_value);
+			text_3 = createText("\n                        ");
+			text_4 = createText(text_4_value);
+			text_5 = createText("\n                        ");
+			text_6 = createText(text_6_value);
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(text, target, anchor);
+			insertNode(text_1, target, anchor);
+			insertNode(text_2, target, anchor);
+			insertNode(text_3, target, anchor);
+			insertNode(text_4, target, anchor);
+			insertNode(text_5, target, anchor);
+			insertNode(text_6, target, anchor);
+		},
+
+		p: function update(changed, state) {
+			if ((changed.searchIndexSafe) && text_value !== (text_value = state.searchIndexSafe+1)) {
+				text.data = text_value;
+			}
+
+			if ((changed.searchResults) && text_4_value !== (text_4_value = state.searchResults.length)) {
+				text_4.data = text_4_value;
+			}
+		},
+
+		u: function unmount() {
+			detachNode(text);
+			detachNode(text_1);
+			detachNode(text_2);
+			detachNode(text_3);
+			detachNode(text_4);
+			detachNode(text_5);
+			detachNode(text_6);
+		},
+
+		d: noop
+	};
+}
+
+// (64:37) 
+function create_if_block_6(state, component) {
+	var text_value = "Keine Treffer", text;
+
+	return {
+		c: function create() {
+			text = createText(text_value);
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(text, target, anchor);
+		},
+
+		p: noop,
+
+		u: function unmount() {
+			detachNode(text);
+		},
+
+		d: noop
+	};
+}
+
+// (57:16) {{#if search}}
+function create_if_block_4(state, component) {
+	var div;
+
+	var current_block_type = select_block_type_1(state);
+	var if_block = current_block_type && current_block_type(state, component);
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			if (if_block) if_block.c();
+			this.h();
+		},
+
+		h: function hydrate() {
+			encapsulateStyles$2(div);
+			div.className = "results";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			if (if_block) if_block.m(div, null);
+		},
+
+		p: function update(changed, state) {
+			if (current_block_type === (current_block_type = select_block_type_1(state)) && if_block) {
+				if_block.p(changed, state);
+			} else {
+				if (if_block) {
+					if_block.u();
+					if_block.d();
+				}
+				if_block = current_block_type && current_block_type(state, component);
+				if (if_block) if_block.c();
+				if (if_block) if_block.m(div, null);
+			}
+		},
+
+		u: function unmount() {
+			detachNode(div);
+			if (if_block) if_block.u();
+		},
+
+		d: function destroy$$1() {
+			if (if_block) if_block.d();
+		}
+	};
+}
+
+function select_block_type(state) {
+	if (state.customColumn) return create_if_block;
+	if (state.columnFormat) return create_if_block_1;
+	return create_if_block_2;
+}
+
+function select_block_type_1(state) {
+	if (state.searchResults.length > 0) return create_if_block_5;
+	if (state.search) return create_if_block_6;
+	return null;
+}
+
+function App(options) {
+	this._debugName = '<App>';
+	if (!options || (!options.target && !options.root)) throw new Error("'target' is a required option");
+	init(this, options);
+	this.refs = {};
+	this._state = assign(data$2(), options.data);
+	this._recompute({ searchIndex: 1, searchResults: 1, activeColumn: 1 }, this._state);
+	if (!('searchIndex' in this._state)) console.warn("<App> was created without expected data property 'searchIndex'");
+	if (!('searchResults' in this._state)) console.warn("<App> was created without expected data property 'searchResults'");
+	if (!('activeColumn' in this._state)) console.warn("<App> was created without expected data property 'activeColumn'");
+	if (!('customColumn' in this._state)) console.warn("<App> was created without expected data property 'customColumn'");
+	if (!('formula' in this._state)) console.warn("<App> was created without expected data property 'formula'");
+	if (!('columns' in this._state)) console.warn("<App> was created without expected data property 'columns'");
+	if (!('columnFormat' in this._state)) console.warn("<App> was created without expected data property 'columnFormat'");
+	if (!('firstRowIsHeader' in this._state)) console.warn("<App> was created without expected data property 'firstRowIsHeader'");
+	if (!('search' in this._state)) console.warn("<App> was created without expected data property 'search'");
+	if (!('searchIndexSafe' in this._state)) console.warn("<App> was created without expected data property 'searchIndexSafe'");
+	if (!('chartData' in this._state)) console.warn("<App> was created without expected data property 'chartData'");
+	if (!('transpose' in this._state)) console.warn("<App> was created without expected data property 'transpose'");
+	if (!('has_changes' in this._state)) console.warn("<App> was created without expected data property 'has_changes'");
+
+	var _oncreate = oncreate$2.bind(this);
+
+	if (!options.root) {
+		this._oncreate = [_oncreate];
+		this._beforecreate = [];
+		this._aftercreate = [];
+	} else {
+	 	this.root._oncreate.push(_oncreate);
+	 }
+
+	this._fragment = create_main_fragment$3(this._state, this);
+
+	if (options.target) {
+		if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		this._fragment.c();
+		this._fragment.m(options.target, options.anchor || null);
+
+		this._lock = true;
+		callAll(this._beforecreate);
+		callAll(this._oncreate);
+		callAll(this._aftercreate);
+		this._lock = false;
+	}
+}
+
+assign(App.prototype, methods$2, protoDev);
+
+App.prototype._checkReadOnly = function _checkReadOnly(newState) {
+	if ('searchIndexSafe' in newState && !this._updatingReadonlyProperty) throw new Error("<App>: Cannot set read-only property 'searchIndexSafe'");
+	if ('customColumn' in newState && !this._updatingReadonlyProperty) throw new Error("<App>: Cannot set read-only property 'customColumn'");
+	if ('columnFormat' in newState && !this._updatingReadonlyProperty) throw new Error("<App>: Cannot set read-only property 'columnFormat'");
+	if ('columns' in newState && !this._updatingReadonlyProperty) throw new Error("<App>: Cannot set read-only property 'columns'");
+};
+
+App.prototype._recompute = function _recompute(changed, state) {
+	if (changed.searchIndex || changed.searchResults) {
+		if (differs(state.searchIndexSafe, (state.searchIndexSafe = searchIndexSafe(state.searchIndex, state.searchResults)))) changed.searchIndexSafe = true;
+	}
+
+	if (changed.activeColumn) {
+		if (differs(state.customColumn, (state.customColumn = customColumn(state.activeColumn)))) changed.customColumn = true;
+		if (differs(state.columnFormat, (state.columnFormat = columnFormat(state.activeColumn)))) changed.columnFormat = true;
+		if (differs(state.columns, (state.columns = columns(state.activeColumn)))) changed.columns = true;
+	}
+};
+
+function Store(state) {
+	this._observers = { pre: blankObject(), post: blankObject() };
+	this._changeHandlers = [];
+	this._dependents = [];
+
+	this._computed = blankObject();
+	this._sortedComputedProperties = [];
+
+	this._state = assign({}, state);
+}
+
+assign(Store.prototype, {
+	_add: function(component, props) {
+		this._dependents.push({
+			component: component,
+			props: props
+		});
+	},
+
+	_init: function(props) {
+		var state = {};
+		for (var i = 0; i < props.length; i += 1) {
+			var prop = props[i];
+			state['$' + prop] = this._state[prop];
+		}
+		return state;
+	},
+
+	_remove: function(component) {
+		var i = this._dependents.length;
+		while (i--) {
+			if (this._dependents[i].component === component) {
+				this._dependents.splice(i, 1);
+				return;
+			}
+		}
+	},
+
+	_sortComputedProperties: function() {
+		var computed = this._computed;
+		var sorted = this._sortedComputedProperties = [];
+		var cycles;
+		var visited = blankObject();
+
+		function visit(key) {
+			if (cycles[key]) {
+				throw new Error('Cyclical dependency detected');
+			}
+
+			if (visited[key]) return;
+			visited[key] = true;
+
+			var c = computed[key];
+
+			if (c) {
+				cycles[key] = true;
+				c.deps.forEach(visit);
+				sorted.push(c);
+			}
+		}
+
+		for (var key in this._computed) {
+			cycles = blankObject();
+			visit(key);
+		}
+	},
+
+	compute: function(key, deps, fn) {
+		var value;
+
+		var c = {
+			deps: deps,
+			update: function(state, changed, dirty) {
+				var values = deps.map(function(dep) {
+					if (dep in changed) dirty = true;
+					return state[dep];
+				});
+
+				if (dirty) {
+					var newValue = fn.apply(null, values);
+					if (differs(newValue, value)) {
+						value = newValue;
+						changed[key] = true;
+						state[key] = value;
+					}
+				}
+			}
+		};
+
+		c.update(this._state, {}, true);
+
+		this._computed[key] = c;
+		this._sortComputedProperties();
+	},
+
+	get: get,
+
+	observe: observe,
+
+	onchange: function(callback) {
+		this._changeHandlers.push(callback);
+		return {
+			cancel: function() {
+				var index = this._changeHandlers.indexOf(callback);
+				if (~index) this._changeHandlers.splice(index, 1);
+			}
+		};
+	},
+
+	set: function(newState) {
+		var oldState = this._state,
+			changed = this._changed = {},
+			dirty = false;
+
+		for (var key in newState) {
+			if (this._computed[key]) throw new Error("'" + key + "' is a read-only property");
+			if (differs(newState[key], oldState[key])) changed[key] = dirty = true;
+		}
+		if (!dirty) return;
+
+		this._state = assign({}, oldState, newState);
+
+		for (var i = 0; i < this._sortedComputedProperties.length; i += 1) {
+			this._sortedComputedProperties[i].update(this._state, changed);
+		}
+
+		for (var i = 0; i < this._changeHandlers.length; i += 1) {
+			this._changeHandlers[i](this._state, changed);
+		}
+
+		dispatchObservers(this, this._observers.pre, changed, this._state, oldState);
+
+		var dependents = this._dependents.slice(); // guard against mutations
+		for (var i = 0; i < dependents.length; i += 1) {
+			var dependent = dependents[i];
+			var componentState = {};
+			dirty = false;
+
+			for (var j = 0; j < dependent.props.length; j += 1) {
+				var prop = dependent.props[j];
+				if (prop in changed) {
+					componentState['$' + prop] = this._state[prop];
+					dirty = true;
+				}
+			}
+
+			if (dirty) dependent.component.set(componentState);
+		}
+
+		dispatchObservers(this, this._observers.post, changed, this._state, oldState);
+	}
+});
+
+const store = new Store({});
+
+const data$3 = {
+    chart: {
+        id: ''
+    },
+    readonly: false,
+    chartData: '',
+    transpose: false,
+    firstRowIsHeader: true,
+    skipRows: 0
+};
+
+var main = { App, store, data: data$3 };
+
+return main;
+
+})));

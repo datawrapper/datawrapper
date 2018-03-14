@@ -1,5 +1,8 @@
 <div id="data-preview" ref:hot />
 
+{{activeColumn}}
+
+
 <script>
     /* global dw,chart */
     import HOT from 'Handsontable';
@@ -48,6 +51,7 @@
                     manualColumnMove: []
                 });
 
+                this.set({ds});
                 this.set({has_changes: chart.get('metadata.data.changes', []).length > 0})
 
                 hot.render();
@@ -112,13 +116,44 @@
                 // 3. the range extends through he last row
                 const {hot} = this.get();
                 if (c == c2 && r === 0 && r2 == hot.countRows()-1) {
-                    const chart = this.store.get('dw_chart');
-                    this.set({activeColumn: chart.dataset().column(c)});
+                    // const chart = this.store.get('dw_chart');
+                    // this.set({activeColumn: chart.dataset().column(c)});
                     return;
                 }
                 this.set({activeColumn:null});
+            },
+            initCustomEvents () {
+                // wait a bit to make sure HoT is rendered
+                setTimeout(() => {
+                    const {hot} = this.get();
+                    // catch click events on A,B,C,D... header row
+                    this.refs.hot.querySelectorAll('.htCore thead th+th').forEach(th => {
+                        th.addEventListener('click', evt => {
+                            // reset the HoT selection
+                            hot.deselectCell();
+                            evt.preventDefault();
+                            evt.stopPropagation();
+                            // find out which data column we're in
+                            const k = th.parentNode.children.length;
+                            let th_i = -1;
+                            // (stupid HTMLCollection has no indexOf)
+                            for (let i=0; i<k; i++) {
+                                if (th.parentNode.children.item(i) == th) {
+                                    th_i = i;
+                                    break;
+                                }
+                            }
+                            // find column index
+                            const col_i = this.refs.hot.querySelector(`.htCore tbody tr:first-child td:nth-child(${th_i+1})`).dataset.column;
+                            const chart = this.store.get('dw_chart');
+                            const {activeColumn} = this.get();
+                            const newActive = chart.dataset().column(+col_i);
+                            // set active column (or unset if it's already set)
+                            this.set({activeColumn: newActive == activeColumn ? false : newActive});
+                        });
+                    });
+                }, 500);
             }
-
         },
         computed: {
             currentResult (searchResults, searchIndex) {
@@ -132,6 +167,10 @@
             }
         },
         oncreate() {
+
+            HOT.hooks.once('afterRender', () => this.initCustomEvents());
+
+            const chart = this.store.get('dw_chart');
 
             const hot = new HOT(this.refs.hot, {
                 data: [],
@@ -161,9 +200,7 @@
                     return function(a, b) {
                         var plugin = hot.getPlugin('columnSorting');
                         var sortFunction;
-
                         if (a[0] === 0) return -1;
-
                         switch (columnMeta.type) {
                             case 'date':
                                 sortFunction = plugin.dateSort;
@@ -174,11 +211,29 @@
                             default:
                                 sortFunction = plugin.defaultSort;
                         }
-
                         return sortFunction(sortOrder, columnMeta)(a, b);
                     };
                 },
+                afterGetColHeader: (col, th) => {
+                    const {activeColumn, ds} = this.get();
+                    if (!ds) return;
+                    if (col && ds.column(col) == activeColumn) {
+                        th.classList.add('selected');
+                    }
+                    return;
+                    // console.log(chart.dataset().column(col), activeColumn, th);
+                    // if (selectedColumns.indexOf(col) !== -1) {
+                    //     TH.classList.add('selected');
+                    // }
 
+                    // var serie = getSeriesOfIndex(col);
+                    // if(metadata.columnFormat.get(serie).ignore) {
+                    //     TH.classList.add('ignored');
+                    // }
+                    // else {
+                    //     TH.classList.remove('ignored');
+                    // }
+                },
                 // search
                 search: 'search'
             });
@@ -190,7 +245,24 @@
             HOT.hooks.add('afterColumnMove', (a,b) => this.columnMoved(a,b));
             HOT.hooks.add('afterRender', () => this.updateHeight());
             HOT.hooks.add('afterSelection', (r,c,r2,c2) => this.checkRange(r,c,r2,c2));
+
             // HOT.hooks.add()
+            // $dataPreview.on('mousedown', '.ht_clone_top.handsontable th:has(.colHeader)', function (event) {
+            //     start = getIndexOfTh(this);
+            //     event.stopPropagation();
+            //     $dataPreview.handsontable('deselectCell');
+
+            //     if (selectedColumns.length == 1 && selectedColumns[0] == start) {
+            //         // proceeding click on selected column header will unselect
+            //         deselectColumns();
+            //         $dataPreview.handsontable('render'); // refresh all cells and column headers
+            //         showColumnSettings();
+            //         return;
+            //     }
+            //     setTimeout(function() { //do it in timeout, so input blur has chance to run
+            //         selectColumns(start);
+            //     }, 0);
+            // });
 
             this.observe('data', () => this.update());
             this.observe('transpose', () => this.update());
@@ -215,6 +287,8 @@
                     hot.scrollViewportTo(res.row, res.col);
                 }, 100);
             });
+
+            this.observe('activeColumn', () => hot.render());
 
         },
         data() {
@@ -263,6 +337,7 @@
                 if (colTypeIcons[column.type()]) {
                     value = '<i class="'+colTypeIcons[column.type()]+'"></i> ' + value;
                 }
+                td.dataset.column = col;
             } else {
                 td.classList.add(row % 2 ? 'oddRow' : 'evenRow');
             }
@@ -374,6 +449,41 @@
         }
     }
 
+    thead {
+        th {
+            cursor: pointer;
+            background: #eee;
+            border-right: 1px solid hsl(210,0%,70%);
+
+            &.selected {
+                background: #18a1cd;
+                color: white;
+                font-weight: bold;
+            }
+            &:hover {
+                background: #ddd;
+            }
+            &.selected:hover {
+                background: #18a1cd;
+            }
+        }
+        tr th+th div:after {
+            content: " "url(/static/css/chart-editor/selection-off.png);
+            position: absolute;
+            top: 3px;
+            right: 5px;
+        }
+
+        th+th:hover div:after {
+            content: " "url(/static/css/chart-editor/selection-hover.png);
+        }
+
+        th+th.selected div:after {
+            opacity: 1;
+            content: " "url(/static/css/chart-editor/selection.png);
+        }
+    } // end thead
+
     tbody tr:first-child td {
         background: #f3f3f3;
         font-weight: bold;
@@ -382,6 +492,10 @@
     .htCommentCell:after {
         border-left: 8px solid transparent;
         border-top: 8px solid orange;
+    }
+    // custom highlight color
+    .handsontable td.area-1::before, .handsontable td.area-2::before, .handsontable td.area-3::before, .handsontable td.area-4::before, .handsontable td.area-5::before, .handsontable td.area-6::before, .handsontable td.area-7::before, .handsontable td.area::before {
+        background: #18a1cd;
     }
 }
 </style>
