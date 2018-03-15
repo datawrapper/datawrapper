@@ -15,6 +15,8 @@
         <li on:click="insert(column)">{{column.key}}</li>
         {{/each}}
     </ul>
+    <hr>
+    <button class="btn btn-danger"><i class="fa fa-trash"></i> Remove this column</button>
 </div>
 
 <style lang="less">
@@ -87,6 +89,7 @@ label {
     import CodeMirror from 'cm/lib/codemirror';
     import 'cm/mode/javascript/javascript';
     import 'cm/addon/mode/simple';
+    import _throttle from 'underscore-es/throttle';
 
     export default {
         methods: {
@@ -108,8 +111,18 @@ label {
             }
         },
         oncreate() {
+            const {column} = this.get();
+
+            const chart = this.store.get('dw_chart');
+            const customCols = chart.get('metadata.describe.computed-columns', {});
+
+            this.set({
+                formula: customCols[column.name()] || '',
+                name: column.title()
+            });
+
             const cm = CodeMirror.fromTextArea(this.refs.code, {
-                value: this.get('formula'),
+                value: this.get('formula') || '',
                 mode: 'simple'
             });
 
@@ -117,15 +130,50 @@ label {
 
             this.set({cm});
 
+            const updateTable = _throttle(() => this.fire('updateTable'), 500, {leading: false});
+
             this.observe('formula', (formula) => {
-                if (formula != cm.getValue()) cm.setValue(formula);
+                // update codemirror
+                if (formula != cm.getValue()) {
+                    cm.setValue(formula);
+                }
+                // update dw.chart
+                const customCols = chart.get('metadata.describe.computed-columns', {});
+                if (customCols[column.name()] != formula) {
+                    customCols[column.name()] = formula;
+                    chart.set('metadata.describe.computed-columns', customCols);
+                    if (chart.saveSoon) chart.saveSoon();
+                    updateTable();
+                }
+            });
+
+            this.observe('name', (name) => {
+                const changes = chart.get('metadata.data.changes', []);
+                const ds = chart.dataset();
+                const col = ds.columnOrder()[ds.indexOf(column.name())];
+                let last_col_name_change_i = -1;
+                changes.forEach((change,i) => {
+                    if (change.column == col && change.row === 0) {
+                        last_col_name_change_i = i;
+                    }
+                });
+                if (last_col_name_change_i > -1) {
+                    // update last change of that cell
+                    changes[last_col_name_change_i].value = name;
+                } else {
+                    // add new change
+                    changes.push({
+                        column: col, row: 0, value: name, time: (new Date()).getTime()
+                    });
+                }
+                chart.set('metadata.data.changes', changes);
+                if (chart.saveSoon) chart.saveSoon();
+                updateTable();
             });
 
             cm.on('change', (cm) => {
                 this.set({formula: cm.getValue()});
             });
-
-            cm.on('focus', () => this.fire('focus'));
 
             this.observe('metaColumns', (cols) => {
                 var columns_regex = new RegExp(`(?:${cols.map(c=>c.key).join('|')})`);

@@ -5,17 +5,16 @@
                 {{#if customColumn}}
 
                 <ComputedColumnEditor
+                    on:updateTable="refs.hot.update()"
                     bind:column="customColumn"
-                    bind:formula
-                    bind:columns
-                    on:focus="cmFocus()" />
+                    bind:columns />
 
                 {{elseif columnFormat}}
-                COLUMN FORMAT FOR {{columnFormat.title()}}
 
-                Hide Column
-
-                etc
+                <CustomColumnFormat
+                    on:updateTable="refs.hot.update()"
+                    bind:column="columnFormat"
+                    bind:columns />
 
                 {{else}}
                 <h3 class="first">{{ __("Make sure the data looks right") }}</h3>
@@ -38,8 +37,9 @@
         </div>
         <div class="span8">
 
-            <button class="btn transpose" on:click="toggleTranspose()"><img src="/static/css/chart-editor/transpose.png"> {{__("describe / transpose-long")}}</button>
-
+            <div class="help">
+                Click on table header to edit column properties. <img src="/static/img/arrow.svg" />
+            </div>
             <div class="search-box pull-right">
                 <i class="fa fa-search"></i>
                 <div class="input-append">
@@ -78,6 +78,8 @@
                 bind:searchIndex />
 
             <div class="buttons below-table pull-right">
+                <button class="btn transpose" on:click="toggleTranspose()"><img src="/static/css/chart-editor/transpose.png"> {{__("describe / transpose-long")}}</button>
+
                 <button class="btn computed-columns"><i class="fa fa-calculator"></i> {{__("computed columns / add-btn")}}...</button>
 
                 <button on:click="revertChanges()" class="btn {{has_changes?'':'disabled'}}" id="reset-data-changes"><i class="fa fa-undo"></i> {{__("Revert changes")}}...</button>
@@ -90,10 +92,11 @@
     /* global chart */
     import Handsontable from './Handsontable.html';
     import ComputedColumnEditor from './ComputedColumnEditor.html';
+    import CustomColumnFormat from './CustomColumnFormat.html';
     import Checkbox from '../controls/Checkbox.html';
 
     export default {
-        components: { Handsontable, Checkbox, ComputedColumnEditor },
+        components: { Handsontable, Checkbox, ComputedColumnEditor, CustomColumnFormat },
         computed: {
             searchIndexSafe (searchIndex, searchResults) {
                 if (searchIndex<0) searchIndex+=searchResults.length;
@@ -135,25 +138,7 @@
             sync('transpose', 'data.transpose');
             sync('firstRowIsHeader', 'data.horizontal-header');
 
-            this.observe('customColumn', (col, old) => {
-                if (col && col != old) {
-                    const chart = this.store.get('dw_chart');
-                    const customCols = chart.get('metadata.describe.computed-columns', {});
-                    this.set({formula: customCols[col.name()] || ''});
-                }
-            });
 
-            this.observe('formula', (formula) => {
-                const {customColumn} = this.get();
-                const chart = this.store.get('dw_chart');
-                if (customColumn) {
-                    const customCols = chart.get('metadata.describe.computed-columns', {});
-                    customCols[customColumn.name()] = formula;
-                    chart.set('metadata.describe.computed-columns', customCols);
-                    chart.saveSoon();
-                    this.refs.hot.update();
-                }
-            });
         },
         methods: {
             nextResult (diff) {
@@ -192,7 +177,6 @@
                 activeColumn: false,
                 customColumn: false,
                 columnFormat: false,
-                formula: '',
                 searchResults: []
             };
         }
@@ -200,6 +184,11 @@
 </script>
 
 <style lang="less">
+    .help {
+        display: inline-block;
+        font-style: italic;
+        color: #aaa;
+    }
     .below-table {
         margin-top: 20px;
     }
