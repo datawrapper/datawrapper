@@ -123,7 +123,8 @@
                 chartLoaded().done(renderChart);
             });
         },
-        render: renderLater
+        render: renderLater,
+        renderNow: renderChart
     };
 
 })();

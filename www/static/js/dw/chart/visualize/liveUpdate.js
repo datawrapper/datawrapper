@@ -15,7 +15,7 @@ define(function() {
         }
 
         _.extend(__dw, {
-            attributes: function(attrs) {
+            attributes: function(attrs, renderNow) {
                 var render = false,
                     requiresReload = ['type', 'theme', 'metadata.data.transpose', 'metadata.axes', 'language'],
                     options = dw.backend.currentVis.meta.options;
@@ -128,7 +128,9 @@ define(function() {
                 __dw.old_attrs = $.extend(true, {}, attrs);
                 // update dataset to reflect changes
                 __dw.vis.chart().load(__dw.params.data);
-                if (render) __dw.render();
+
+                if (render || renderNow) __dw.renderNow();
+                else if (render) __dw.render();
 
                 function changed(key) {
                     var p0 = __dw.old_attrs,
