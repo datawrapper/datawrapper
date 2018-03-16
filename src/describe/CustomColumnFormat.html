@@ -1,18 +1,38 @@
 <div>
-    <h3 class="first">Edit column "{{column.name()}}"</h3>
+    <h3 class="first">Edit column "{{column ? column.name() : '--'}}"</h3>
 
     <div class="form-horizontal">
 
-        <Checkbox
-            label="{{ __("Hide column from visualization") }}"
-            bind:value="columnFormat.ignore" />
-
         <Select
-            label="Column format"
+            label="Column type"
             options="{{colTypes}}"
             bind:value="columnFormat.type"
             width="180px"
             />
+
+        {{#if column && column.type() == 'number'}}
+        <h4>Number format</h4>
+        <Select
+            label="Divide/multiply by"
+            optgroups="{{divisors}}"
+            bind:value="columnFormat['number-divisor']"
+            width="180px"
+            />
+        <Select
+            label="Round numbers to"
+            options="{{divisors}}"
+            bind:value="columnFormat['number-format']"
+            width="180px"
+            />
+
+        {{/if}}
+
+        <h4>Hide column</h4>
+        <Checkbox
+            label="{{ __("Hide column from visualization") }}"
+            bind:value="columnFormat.ignore" />
+
+
     </div>
 </div>
 
@@ -28,9 +48,9 @@
 
         },
         oncreate() {
-            const updateTable = _throttle(() => this.fire('updateTable'), 500, {leading: false});
-
-            console.log('CustomColumnFormat create');
+            const updateTable = _throttle(() => {
+                this.fire('updateTable')
+            }, 500, {leading: false});
 
             const {column} = this.get();
             const chart = this.store.get('dw_chart');
@@ -60,13 +80,11 @@
                 const columnFormats = arrayToObject(chrt.get('metadata.data.column-format', {}));
                 let oldFormat = columnFormats[column.name()];
                 if (JSON.stringify(oldFormat) != JSON.stringify(colFormat)) {
-                    console.log('new format!');
                     columnFormats[column.name()] = colFormat;
                     chrt.set('metadata.data.column-format', columnFormats);
                     if (chrt.saveSoon) chrt.saveSoon();
                     updateTable();
                     const t1 = (new Date()).getTime()-t0;
-                    console.log(t1,'ms');
                 }
             });
         },
@@ -76,7 +94,25 @@
                     type: 'auto',
                     ignore: false,
                 },
-                colTypes: []
+                colTypes: [],
+                divisors: [{
+                    label: 'divide by',
+                    options: [
+                        {value:0, label:'-'},
+                        {value:3, label:'1000'},
+                        {value:6, label:'1 million'},
+                        {value:9, label:'1 billion'},
+                    ]
+                }, {
+                    label: 'multiply by',
+                    options: [
+                        {value:-2, label:'100'},
+                        {value:-3, label:'1000'},
+                        {value:-6, label:'1 million'},
+                        {value:-9, label:'1 billion'},
+                        {value:-12, label:'1 trillion'}
+                    ]
+                }]
             }
         }
     };
@@ -86,10 +122,10 @@
 <style lang="less">
 :global(.vis-option-type-select) {
     .control-label {
-        width: 100px;
+        width: 130px;
     }
     .controls {
-        margin-left: 120px;
+        margin-left: 150px;
     }
 }
 </style>
