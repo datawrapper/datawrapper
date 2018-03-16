@@ -16,7 +16,7 @@
         {{/each}}
     </ul>
     <hr>
-    <button class="btn btn-danger"><i class="fa fa-trash"></i> {{__("computed columns / modal / remove")}}</button>
+    <button on:click="removeColumn()" class="btn btn-danger"><i class="fa fa-trash"></i> {{__("computed columns / modal / remove")}}</button>
 </div>
 
 <style lang="less">
@@ -94,6 +94,7 @@ label {
     import 'cm/addon/display/placeholder';
 
     import _debounce from 'underscore-es/debounce';
+    import clone from '../shared/clone.js';
 
     export default {
         methods: {
@@ -101,6 +102,28 @@ label {
                 const {cm} = this.get();
                 cm.replaceSelection(column.key);
                 cm.focus();
+            },
+            removeColumn() {
+                const {column} = this.get();
+                const chart = this.store.get('dw_chart');
+                const ds = chart.dataset();
+                const customCols = clone(chart.get('metadata.describe.computed-columns', {}));
+                delete customCols[column.name()];
+                const col_index = ds.columnOrder()[ds.indexOf(column.name())];
+                console.log('real index', col_index);
+                // delete all changes that have been made to this column
+                const changes = chart.get('metadata.data.changes', []);
+                const changes_new = [];
+                changes.forEach(c => {
+                    if (c.column == col_index) return; // skip
+                    if (c.column > col_index) c.column--;
+                    changes_new.push(c);
+                });
+                chart.set('metadata.describe.computed-columns', customCols);
+                chart.set('metadata.data.changes', changes_new);
+                chart.saveSoon();
+                this.fire('updateTable');
+                this.fire('unselect');
             }
         },
         computed: {
@@ -229,6 +252,7 @@ label {
                 if (last_col_name_change_i > -1) {
                     // update last change of that cell
                     changes[last_col_name_change_i].value = name;
+                    changes[last_col_name_change_i].time = (new Date()).getTime();
                 } else {
                     // add new change
                     changes.push({

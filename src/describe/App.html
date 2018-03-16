@@ -6,6 +6,8 @@
 
                 <ComputedColumnEditor
                     on:updateTable="refs.hot.update()"
+                    on:renderTable="refs.hot.render()"
+                    on:unselect="set({activeColumn:false})"
                     bind:column="customColumn"
                     bind:columns />
 
@@ -13,6 +15,7 @@
 
                 <CustomColumnFormat
                     on:updateTable="refs.hot.update()"
+                    on:renderTable="refs.hot.render()"
                     bind:column="columnFormat"
                     bind:columns />
 
@@ -139,8 +142,6 @@
             };
             sync('transpose', 'data.transpose');
             sync('firstRowIsHeader', 'data.horizontal-header');
-
-
         },
         methods: {
             nextResult (diff) {
@@ -155,7 +156,10 @@
                     this.nextResult(event.shiftKey ? -1 : 1);
             },
             toggleTranspose() {
+                this.set({activeColumn: false});
                 this.set({transpose: !this.get('transpose')});
+                setTimeout(() => this.refs.hot.update(), 500);
+                // ;
             },
             revertChanges() {
                 const chart = this.store.get('dw_chart');
@@ -178,7 +182,6 @@
                     i++;
                 }
                 const id = `Column ${i}`;
-                console.log(id);
                 computed[id] = '';
                 chart.set('metadata.describe.computed-columns', computed);
                 chart.saveSoon();

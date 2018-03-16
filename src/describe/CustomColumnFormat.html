@@ -41,31 +41,30 @@
     import Select from '../controls/Select.html';
     import _throttle from 'underscore-es/throttle';
     import {arrayToObject} from '../shared/utils.js';
+    import clone from '../shared/clone.js';
 
     export default {
         components: { Checkbox, Select },
         methods: {
-
+            getColumnFormat(column) {
+                const chart = this.store.get('dw_chart');
+                const columnFormats = arrayToObject(chart.get('metadata.data.column-format', {}));
+                let columnFormat = clone(columnFormats[column.name()]);
+                if (!columnFormat || columnFormat == 'auto' || columnFormat.length !== undefined) {
+                    // no valid column format
+                    columnFormat = {
+                        type: 'auto',
+                        ignore: false
+                    };
+                }
+                return columnFormat;
+            }
         },
         oncreate() {
-            const updateTable = _throttle(() => {
-                this.fire('updateTable')
-            }, 500, {leading: false});
+            const updateTable = _throttle(() => { this.fire('updateTable') },100, {leading: false});
+            const renderTable = _throttle(() => { this.fire('updateTable') }, 100, {leading: false});
 
             const {column} = this.get();
-            const chart = this.store.get('dw_chart');
-            const columnFormats = arrayToObject(chart.get('metadata.data.column-format', {}));
-
-            let columnFormat = columnFormats[column.name()];
-            if (!columnFormat || columnFormat == 'auto' || columnFormat.length !== undefined) {
-                // no valid column format
-                columnFormat = {
-                    type: 'auto',
-                    ignore: false
-                };
-            }
-
-            this.set({columnFormat});
 
             this.set({colTypes: [
                 { value:'auto', label: 'auto ('+column.type()+')' },
@@ -74,17 +73,25 @@
                 { value:'date', label: 'Date' },
             ]});
 
+            this.set({columnFormat: this.getColumnFormat(column)});
+
+            this.observe('column', (col) => {
+                this.set({columnFormat: this.getColumnFormat(col)});
+                const {colTypes} = this.get();
+                colTypes[0].label = 'auto ('+column.type()+')';
+            });
+
             this.observe('columnFormat', (colFormat) => {
-                const t0 = (new Date()).getTime();
                 const chrt = this.store.get('dw_chart');
+                const {column} = this.get();
                 const columnFormats = arrayToObject(chrt.get('metadata.data.column-format', {}));
-                let oldFormat = columnFormats[column.name()];
+                const oldFormat = columnFormats[column.name()];
                 if (JSON.stringify(oldFormat) != JSON.stringify(colFormat)) {
-                    columnFormats[column.name()] = colFormat;
+                    columnFormats[column.name()] = clone(colFormat);
                     chrt.set('metadata.data.column-format', columnFormats);
                     if (chrt.saveSoon) chrt.saveSoon();
-                    updateTable();
-                    const t1 = (new Date()).getTime()-t0;
+                    if (oldFormat.type != colFormat.type) updateTable();
+                    else renderTable();
                 }
             });
         },

@@ -6,6 +6,9 @@
 
     export default {
         methods: {
+            render() {
+                this.get('hot').render();
+            },
             update() {
                 const {data, transpose, firstRowIsHeader, skipRows, hot} = this.get();
 
@@ -43,7 +46,7 @@
                     cells: (row, col) => {
                         const {readonly} = this.get();
                         return {
-                            readOnly: readonly || (ds.numColumns() > col && ds.column(col).isComputed && row === 0),
+                            readOnly: readonly || (ds.hasColumn(col) && ds.column(col).isComputed && row === 0),
                             renderer: cellRenderer
                         };
                     },
@@ -148,18 +151,20 @@
                                 }
                             }
                             // find column index
-                            const col_i = this.refs.hot.querySelector(`.htCore tbody tr:first-child td:nth-child(${th_i+1})`).dataset.column;
+                            const col_i = +this.refs.hot.querySelector(`.htCore tbody tr:first-child td:nth-child(${th_i+1})`).dataset.column;
                             const chart = this.store.get('dw_chart');
                             const {activeColumn} = this.get();
-                            const newActive = chart.dataset().column(+col_i);
-                            // set active column (or unset if it's already set)
-                            if (activeColumn && activeColumn.name() == newActive.name()) {
-                                evt.target.parentNode.classList.remove('selected');
-                                this.set({activeColumn:false});
-                                hot.deselectCell();
-                            } else {
-                                evt.target.parentNode.classList.add('selected');
-                                this.set({activeColumn: newActive});
+                            if (chart.dataset().hasColumn(col_i)) {
+                                const newActive = chart.dataset().column(+col_i);
+                                // set active column (or unset if it's already set)
+                                if (activeColumn && activeColumn.name() == newActive.name()) {
+                                    evt.target.parentNode.classList.remove('selected');
+                                    this.set({activeColumn:false});
+                                    hot.deselectCell();
+                                } else {
+                                    evt.target.parentNode.classList.add('selected');
+                                    this.set({activeColumn: newActive});
+                                }
                             }
                         });
                     });
@@ -205,7 +210,7 @@
                 height: 400,
                 manualColumnMove: true,
                 selectionMode: 'range',
-                autoColumnSize: {useHeaders: true},
+                autoColumnSize: {useHeaders: true, syncLimit: 5},
                 // comments: true,
                 // contextMenu: true,
 
@@ -232,7 +237,7 @@
                 },
                 afterGetColHeader: (col, th) => {
                     const {activeColumn, ds} = this.get();
-                    if (!ds) return;
+                    if (!ds || !ds.hasColumn(col)) return;
                     if ((col === 0 || col) && activeColumn && ds.column(col).name() == activeColumn.name()) {
                         th.classList.add('selected');
                     }
@@ -258,8 +263,9 @@
             HOT.hooks.add('afterSelection', (r,c,r2,c2) => this.checkRange(r,c,r2,c2));
 
             this.observe('data', () => this.update());
-            this.observe('transpose', () => this.update());
-            this.observe('firstRowIsHeader', () => this.update());
+            this.observe('firstRowIsHeader', (v, vo) => {
+                if (v != vo && vo !== undefined) this.update()
+            });
 
             this.observe('search', (query) => {
                 const searchResults = hot.search.query(query);
@@ -310,14 +316,14 @@
             TD.innerHTML = escaped; // this is faster than innerHTML. See: https://github.com/warpech/jquery-handsontable/wiki/JavaScript-&-DOM-performance-tips
         }
         return function(instance, td, row, col, prop, value, cellProperties) {
-            if (dataset.numColumns() <= col) return;
+            if (dataset.numColumns() <= col || !dataset.hasColumn(col)) return;
             const column = dataset.column(col);
             const {searchResults, currentResult, activeColumn} = app.get();
             const colFormat = app.getColumnFormat(column.name());
             row = instance.toPhysicalRow(row);
             if (row > 0) {
-                var formatter = chart.columnFormatter(column);
-                value = formatter(column.val(row - 1), true);
+                // var formatter = chart.columnFormatter(column);
+                // value = formatter(column.val(row - 1), true);
             }
             if (parseInt(value) < 0) { // if row contains negative number
                 td.classList.add('negative');
@@ -340,9 +346,6 @@
             if (colFormat.ignore) {
                 td.classList.add('ignored');
             }
-            // if(selectedColumns.indexOf(col) > -1) {
-            //     td.classList.add('area'); //add blue area background if this cell is in selected column
-            // }
             if (activeColumn && activeColumn.name() == column.name()) {
                 td.classList.add('active');
             }
