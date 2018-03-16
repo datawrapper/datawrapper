@@ -1623,6 +1623,8 @@ dw.chart = function(attributes) {
         change_callbacks = $.Callbacks(),
         locale;
 
+    var _ds;
+
     // public interface
     var chart = {
         // returns an attribute
@@ -1681,7 +1683,9 @@ dw.chart = function(attributes) {
         // returns the dataset
         dataset: function(ds) {
             if (arguments.length) {
-                dataset = reorderColumns(applyChanges(addComputedColumns(ds)));
+                if (ds !== true) _ds = ds;
+                dataset = reorderColumns(applyChanges(addComputedColumns(ds === true ? _ds : ds)));
+                if (ds === true) return dataset;
                 return chart;
             }
             return dataset;
