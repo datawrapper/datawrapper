@@ -154,8 +154,13 @@ dw.utils = {
             default_allowed = "<a><b><br><br/><i><strong><sup><sub><strike><u><em><tt>";
 
         function purifyHtml(input, allowed) {
+            if (input === null) return null;
+            input = String(input);
             // strip tags
-            input = stripTags(String(input), allowed);
+            if (input.indexOf('<') < 0 || input.indexOf('>') < 0) {
+                return input;
+            }
+            input = stripTags(input, allowed);
             // remove all event attributes
             var d = document.createElement('div');
             d.innerHTML = input;
