@@ -28,7 +28,14 @@
                     label="{{ __("First row as label") }}"
                     bind:value="firstRowIsHeader" />
 
-                [TODO: hook]
+                <h4>Output locale</h4>
+                <p>Defines decimal and thousand separators as well as translation of month and weekday names.</p>
+
+                <select bind:value="locale">
+                    {{#each locales as locale}}
+                    <option value="{{locale.value}}">{{locale.label}} ({{locale.value}})</option>
+                    {{/each}}
+                </select>
                 <hr>
 
                 <div class="btn-group">
@@ -137,11 +144,18 @@
             });
             const sync = (svelte_key, metadata_key) => {
                 this.observe(svelte_key, (svelte_value) => {
-                    this.store.get('dw_chart').set(`metadata.${metadata_key}`, svelte_value);
+                    this.store.get('dw_chart').set(`${metadata_key}`, svelte_value);
+                    if (svelte_key == 'locale') {
+                        this.store.get('dw_chart')
+                            .locale(svelte_value, () => {
+                                this.refs.hot.render();
+                            });
+                    }
                 });
             };
-            sync('transpose', 'data.transpose');
-            sync('firstRowIsHeader', 'data.horizontal-header');
+            sync('transpose', 'metadata.data.transpose');
+            sync('firstRowIsHeader', 'metadata.data.horizontal-header');
+            sync('locale', 'language');
         },
         methods: {
             nextResult (diff) {
@@ -192,6 +206,7 @@
         },
         data() {
             return {
+                locale: null,
                 search: '',
                 chartData: '',
                 transpose: false,
@@ -253,7 +268,9 @@
             border-top-left-radius: 0;
         }
     }
-
+    :global(html .form-horizontal .control-group) {
+        margin-bottom: 10px;
+    }
     :global(.vis-option-type-checkbox) {
         label {
             display: inline-block;

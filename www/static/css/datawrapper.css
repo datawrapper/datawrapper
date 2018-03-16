@@ -2297,6 +2297,10 @@ body.cms-mode .footer {
   font-weight: 500;
   font-size: 19px;
 }
+.chart-editor h4 {
+  font-weight: 700;
+  font-size: 15px;
+}
 .chart-editor input,
 .chart-editor label {
   font-family: 'Roboto', Helvetica, sans-serif;

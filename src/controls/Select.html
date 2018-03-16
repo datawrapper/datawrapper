@@ -3,8 +3,8 @@
         {{{ label }}}
     </label>
 
-    <div class="controls form-inline">
-        <select bind:value="value" style="width:{{ width }}">
+    <div class="controls form-inline {{disabled? 'disabled' :''}}">
+        <select disabled="{{disabled}}" bind:value="value" style="width:{{ width }}">
         {{#if options.length}}
             {{#each options as opt}}
                 <option value="{{opt.value}}">{{opt.label}}</option>
@@ -27,6 +27,7 @@
 export default {
     data () {
         return {
+            disabled: false,
             width: 'auto',
             options: [],
             optgroups: [],

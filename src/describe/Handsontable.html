@@ -322,8 +322,8 @@
             const colFormat = app.getColumnFormat(column.name());
             row = instance.toPhysicalRow(row);
             if (row > 0) {
-                // var formatter = chart.columnFormatter(column);
-                // value = formatter(column.val(row - 1), true);
+                var formatter = chart.columnFormatter(column);
+                value = formatter(column.val(row - 1), true);
             }
             if (parseInt(value) < 0) { // if row contains negative number
                 td.classList.add('negative');
