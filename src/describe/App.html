@@ -146,6 +146,7 @@
                 this.observe(svelte_key, (svelte_value) => {
                     this.store.get('dw_chart').set(`${metadata_key}`, svelte_value);
                     if (svelte_key == 'locale') {
+                        if (!svelte_value) return;
                         this.store.get('dw_chart')
                             .locale(svelte_value, () => {
                                 this.refs.hot.render();
