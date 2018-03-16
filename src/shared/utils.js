@@ -1,3 +1,5 @@
+import _isArray from 'underscore-es/isArray';
+
 function fetchJSON(url, method, body, callback) {
     window.fetch(url, {
         credentials: 'include',
@@ -25,3 +27,11 @@ export function getJSON(url, callback) { return fetchJSON(url, 'GET', null, call
 export function postJSON(url, body, callback) { return fetchJSON(url, 'POST', body, callback); }
 export function putJSON(url, body, callback) { return fetchJSON(url, 'PUT', body, callback); }
 
+export function arrayToObject(o) {
+    if (_isArray(o)) {
+        const obj = {};
+        Object.keys(o).forEach(k => obj[k] = o[k]);
+        return obj;
+    }
+    return o;
+}

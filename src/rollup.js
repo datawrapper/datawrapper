@@ -20,7 +20,7 @@ function buildLocale(app_id, locale, callback) {
     const messages = JSON.parse(fs.readFileSync(`../locale/${locale}.json`, 'utf-8'));
     const inputOptions = {
         input: `${app_id}/main.js`,
-        external: ['chroma', 'Handsontable'],
+        external: ['chroma', 'Handsontable', 'cm'],
         plugins: [
             i18n({
                 language: messages
@@ -119,7 +119,7 @@ function buildLocale(app_id, locale, callback) {
 }
 
 build('describe');
-build('publish');
-build('highlight');
-build('controls');
+// build('publish');
+// build('highlight');
+// build('controls');
 

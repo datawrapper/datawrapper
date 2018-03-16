@@ -32,7 +32,7 @@
                     var h = chartBody.getBoundingClientRect().height;
                     if (h != chart.get('metadata.publish.chart-height')) {
                         chart.set('metadata.publish.chart-height', h);
-                        chart.save();
+                        if (chart.save) chart.save();
                     }
                     // console.log('measured chart height to', h, 'pixel');
                 } else {

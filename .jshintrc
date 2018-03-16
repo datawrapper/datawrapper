@@ -17,5 +17,6 @@
     "chart": false
   },
   "undef": true,
-  "esnext": true
+  "esnext": true,
+  "esversion": 6
 }

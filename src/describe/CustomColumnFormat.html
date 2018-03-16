@@ -1,0 +1,172 @@
+<div>
+    <h3 class="first">Edit column "{{column ? column.name() : '--'}}"</h3>
+
+    <div class="form-horizontal">
+
+        <Select
+            label="Column type"
+            options="{{colTypes}}"
+            bind:value="columnFormat.type"
+            width="180px"
+            />
+
+        <hr />
+        {{#if column && column.type() == 'number'}}
+        <Select
+            label="Divide/multiply by"
+            optgroups="{{divisors}}"
+            bind:value="columnFormat['number-divisor']"
+            width="180px"
+            />
+        <Select
+            label="Round numbers to"
+            options="{{[{value:'-',label:'keep original'}]}}"
+            optgroups="{{numberFormats}}"
+            bind:value="columnFormat['number-format']"
+            width="180px"
+            />
+        <div class="control-group vis-option-type-select">
+            <label class="control-label">
+                Prepend/append
+            </label>
+            <div class="controls form-inline">
+                <input style="width:6ex; text-align:right" data-lpignore="true" name="prepend" type="text" bind:value="columnFormat['number-prepend']">
+                #
+                <input style="width:6ex" data-lpignore="true" name="append" type="text" bind:value="columnFormat['number-append']">
+            </div>
+        </div>
+        {{/if}}
+
+        <hr />
+
+        <Checkbox
+            label="{{ __("Hide column from visualization") }}"
+            bind:value="columnFormat.ignore" />
+
+
+    </div>
+</div>
+
+<script>
+    import Checkbox from '../controls/Checkbox.html';
+    import Select from '../controls/Select.html';
+    import _throttle from 'underscore-es/throttle';
+    import {arrayToObject} from '../shared/utils.js';
+    import clone from '../shared/clone.js';
+
+    export default {
+        components: { Checkbox, Select },
+        methods: {
+            getColumnFormat(column) {
+                const chart = this.store.get('dw_chart');
+                const columnFormats = arrayToObject(chart.get('metadata.data.column-format', {}));
+                let columnFormat = clone(columnFormats[column.name()]);
+                if (!columnFormat || columnFormat == 'auto' || columnFormat.length !== undefined) {
+                    // no valid column format
+                    columnFormat = {
+                        type: 'auto',
+                        ignore: false,
+                        'number-prepend': '',
+                        'number-append': '',
+                    };
+                }
+                return columnFormat;
+            }
+        },
+        oncreate() {
+            const updateTable = _throttle(() => { this.fire('updateTable') },100, {leading: false});
+            const renderTable = _throttle(() => { this.fire('updateTable') }, 100, {leading: false});
+
+            const {column} = this.get();
+
+            this.set({colTypes: [
+                { value:'auto', label: 'auto ('+column.type()+')' },
+                { value:'text', label: 'Text' },
+                { value:'number', label: 'Number' },
+                { value:'date', label: 'Date' },
+            ]});
+
+            this.set({columnFormat: this.getColumnFormat(column)});
+
+            this.observe('column', (col) => {
+                this.set({columnFormat: this.getColumnFormat(col)});
+                const {colTypes} = this.get();
+                colTypes[0].label = 'auto ('+column.type()+')';
+            });
+
+            this.observe('columnFormat', (colFormat) => {
+                const chrt = this.store.get('dw_chart');
+                const {column} = this.get();
+                const columnFormats = arrayToObject(chrt.get('metadata.data.column-format', {}));
+                const oldFormat = columnFormats[column.name()];
+                if (JSON.stringify(oldFormat) != JSON.stringify(colFormat)) {
+                    columnFormats[column.name()] = clone(colFormat);
+                    chrt.set('metadata.data.column-format', columnFormats);
+                    if (chrt.saveSoon) chrt.saveSoon();
+                    if (oldFormat.type != colFormat.type) updateTable();
+                    else renderTable();
+                }
+            });
+        },
+        data() {
+            return {
+                columnFormat: {
+                    type: 'auto',
+                    ignore: false,
+                    'number-prepend': '',
+                    'number-append': '',
+                },
+                colTypes: [],
+                divisors: [{
+                    label: 'divide by',
+                    options: [
+                        {value:0, label:'-'},
+                        {value:3, label:'1000'},
+                        {value:6, label:'1 million'},
+                        {value:9, label:'1 billion'},
+                    ]
+                }, {
+                    label: 'multiply by',
+                    options: [
+                        {value:-2, label:'100'},
+                        {value:-3, label:'1000'},
+                        {value:-6, label:'1 million'},
+                        {value:-9, label:'1 billion'},
+                        {value:-12, label:'1 trillion'}
+                    ]
+                }],
+                numberFormats: [{
+                    label: 'Decimal places',
+                    options: [
+                        {value:'n3', label: '3 (1,234.568)'},
+                        {value:'n2', label: '2 (1,234.57)'},
+                        {value:'n1', label: '1 (1,234.6)'},
+                        {value:'n0', label: '0 (1,235)'},
+                    ]
+                }, {
+                    label: 'Significant digits',
+                    options: [
+                        {value:'s6', label:'6 (1,234.57)'},
+                        {value:'s5', label:'5 (123.45)'},
+                        {value:'s4', label:'4 (12.34)'},
+                        {value:'s3', label:'3 (1.23)'},
+                        {value:'s2', label:'2 (0.12)'},
+                        {value:'s1', label:'1 (0.01)'},
+                    ]
+                }]
+            }
+        }
+    };
+</script>
+
+
+<style lang="less">
+:global(.vis-option-type-select) {
+    .control-label {
+        width: 130px;
+    }
+    .controls {
+        margin-left: 150px;
+    }
+}
+</style>

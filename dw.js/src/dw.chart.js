@@ -1,7 +1,5 @@
 
-/*
- *
- */
+/* globals dw,$,_ */
 
 dw.chart = function(attributes) {
 
@@ -12,6 +10,8 @@ dw.chart = function(attributes) {
         metric_prefix,
         change_callbacks = $.Callbacks(),
         locale;
+
+    var _ds;
 
     // public interface
     var chart = {
@@ -71,7 +71,9 @@ dw.chart = function(attributes) {
         // returns the dataset
         dataset: function(ds) {
             if (arguments.length) {
-                dataset = reorderColumns(applyChanges(addComputedColumns(ds)));
+                if (ds !== true) _ds = ds;
+                dataset = reorderColumns(applyChanges(addComputedColumns(ds === true ? _ds : ds)));
+                if (ds === true) return dataset;
                 return chart;
             }
             return dataset;
@@ -181,7 +183,7 @@ dw.chart = function(attributes) {
             var colFormat = chart.get('metadata.data.column-format', {});
             colFormat = colFormat[column.name()] || {};
 
-            if (column.type() == 'number' && colFormat == 'auto') {
+            if (column.type() == 'number' && (colFormat == 'auto' || colFormat.type == 'auto')) {
                 var mtrSuf = dw.utils.metricSuffix(chart.locale()),
                     values = column.values(),
                     dim = dw.utils.significantDimension(values),
@@ -252,7 +254,7 @@ dw.chart = function(attributes) {
         // overwrite column types
         var columnFormats = chart.get('metadata.data.column-format', {});
         _.each(columnFormats, function(columnFormat, key) {
-            if (columnFormat.type && dataset.hasColumn(key)) {
+            if (columnFormat.type && dataset.hasColumn(key) && columnFormat.type != 'auto') {
                 dataset.column(key).type(columnFormat.type);
             }
             if (columnFormat['input-format'] && dataset.hasColumn(key)) {

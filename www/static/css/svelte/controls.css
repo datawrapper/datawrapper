@@ -1,3 +1,4 @@
+label.checkbox[svelte-1306209643]{text-align:left;width:100%;position:relative;left:0}label.checkbox.disabled[svelte-1306209643]{color:#999}label.checkbox.disabled[svelte-1306209643] input[svelte-1306209643]{opacity:0.5}
 .color-picker-cont[svelte-1718989465]{display:inline-block}input.hex[svelte-1718989465]{margin-bottom:0!important}
 .control-label[svelte-1035002555]{width:100px!important}select[svelte-1035002555],input[svelte-1035002555]{width:110px!important;vertical-align:baseline}input[svelte-1035002555]{width:100px!important}.small[svelte-1035002555]{font-size:12px;line-height:14px;font-style:italic;color:#999;max-width:210px;margin-bottom:6px}
 input[type="range"][svelte-1271772055]{width:130px}input[type="number"][svelte-1271772055]{width:50px;text-align:center;border:0;background:#fcfcfc}.unit[svelte-1271772055]{font-weight:300;color:#999}

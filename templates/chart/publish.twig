@@ -19,8 +19,7 @@ dw.backend.ready(function() {
 
 <div class="dw-create-publish chart-editor">
     <div class="row">
-        <div class="span5 publish-step">
-
+        <div class="span5 publish-step {% if chart.lastEditStep > 4 %}is-published{% endif %}">
         {% if user.isGuest %}
             {% include "chart/publish/guest.twig" %}
         {% elseif not user.isActivated %}

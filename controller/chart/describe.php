@@ -59,6 +59,18 @@ $app->get('/chart/:id/describe', function ($id) use ($app) {
             'chart' => $chart,
             'readonly' => !$chart->isDataWritable($user),
             'chartData' => $chart->loadData(),
+            'transpose' => $chart->getMetadata('data.transpose'),
+            'locale' => $chart->getMetadata('language'),
+            'firstRowIsHeader' => $chart->getMetadata('data.horizontal-header'),
+            'has_changes' => count($chart->getMetadata('data.changes', [])) > 0,
+            'presets' => [
+                'numbers' => $page['numberformats'],
+                'sigdig' => $page['significantdigits']
+            ],
+            'locales' => array_map(function($s) {
+                $s = explode('|', $s);
+                return ['value'=>$s[0], 'label'=>$s[1]];
+             }, explode(',', $GLOBALS['dw_config']['plugins']['chart-locale-select']['locales'] ?? 'en-US|english,de-DE|deutsch'))
         ];
 
         $app->render('chart/describe'.($user->isAdmin() && $app->request()->get('beta') ? '-new' : '').'.twig', $page);

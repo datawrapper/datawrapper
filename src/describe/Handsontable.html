@@ -1,11 +1,14 @@
 <div id="data-preview" ref:hot />
 
 <script>
+    /* global dw,chart */
     import HOT from 'Handsontable';
-    import _range from 'underscore-es/range';
 
     export default {
         methods: {
+            render() {
+                this.get('hot').render();
+            },
             update() {
                 const {data, transpose, firstRowIsHeader, skipRows, hot} = this.get();
 
@@ -13,8 +16,6 @@
 
                 // get chart
                 const chart = this.store.get('dw_chart');
-
-                console.log('raw order', chart.get('metadata.data.column-order'));
 
                 // pass dataset through chart to apply changes and computed columns
                 const ds = chart.dataset(dw.datasource.delimited({
@@ -24,34 +25,155 @@
                     skipRows
                 }).parse()).dataset();
 
-
                 this.set({columnOrder: ds.columnOrder()});
-                console.log('col order 1', this.get('columnOrder'));
 
                 // construct HoT data array
                 const hot_data = [[]];
                 ds.eachColumn(c => hot_data[0].push(c.title()));
+
                 ds.eachRow(r => {
                     const row = [];
-                    ds.eachColumn(col => row.push(col.val(r)));
+                    ds.eachColumn(col => row.push(col.raw(r)));
                     hot_data.push(row);
                 });
 
                 // pass data to hot
                 hot.loadData(hot_data);
 
+                const cellRenderer = getCellRenderer(this, ds, HOT, {});
+
                 hot.updateSettings({
-                    cells: (row, col, prop) => {
+                    cells: (row, col) => {
                         const {readonly} = this.get();
                         return {
-                            readOnly: readonly || ds.column(col).isComputed && row === 0,
-                            renderer: getCellRenderer(this, ds, HOT, {}),
-                            // rowHeaders: _range(hot_data.length).map(r => 'R'+r)
+                            readOnly: readonly || (ds.hasColumn(col) && ds.column(col).isComputed && row === 0),
+                            renderer: cellRenderer
                         };
                     },
                     manualColumnMove: []
                 });
+
+                this.set({ds});
+                this.set({has_changes: chart.get('metadata.data.changes', []).length > 0})
+
                 hot.render();
+            },
+            dataChanged (cells) {
+                const {hot} = this.get();
+                let changed = false;
+                cells.forEach(([row, col, old_val, new_val]) => {
+                    if (old_val != new_val) {
+                        const chart = this.store.get('dw_chart');
+                        const {transpose} = this.get();
+                        const changes = chart.get('metadata.data.changes', []);
+                        row = hot.toPhysicalRow(row);
+                        if (transpose) {
+                            // swap row and col
+                            const tmp = row;
+                            row = col;
+                            col = tmp;
+                        }
+                        // store new change
+                        changes.push({
+                            column: col, row, value: new_val, time: (new Date()).getTime()
+                        });
+                        chart.set('metadata.data.changes', changes);
+                        changed = true;
+                    }
+                })
+                if (changed) {
+                    setTimeout(() => {
+                        this.update();
+                        chart.save();
+                    }, 100);
+                }
+            },
+            columnMoved (srcColumns, tgtIndex) {
+                const {hot} = this.get();
+                if (!srcColumns.length) return;
+                const {columnOrder} = this.get();
+                const newOrder = columnOrder.slice(0);
+                const after = columnOrder[tgtIndex];
+                const elements = newOrder.splice(srcColumns[0], srcColumns.length);
+                const insertAt = after ? newOrder.indexOf(after) : newOrder.length;
+                newOrder.splice(insertAt, 0, ...elements);
+                this.store.get('dw_chart')
+                    .set('metadata.data.column-order', newOrder.slice(0));
+                this.set({columnOrder: newOrder});
+                // update selection
+                HOT.hooks.once('afterRender', () => {
+                    setTimeout(() => {
+                        hot.selectCell(0, insertAt, hot.countRows()-1,
+                            insertAt+elements.length-1);
+                    }, 10);
+                });
+                this.update();
+            },
+            updateHeight () {
+                const h = document.querySelector('.ht_master.handsontable .wtHolder .wtHider').getBoundingClientRect().height;
+                this.refs.hot.style.height = Math.min(400, h+10)+'px';
+            },
+            checkRange (r,c,r2,c2) {
+                // check if
+                // 1. only a single column is selected, and
+                // 2. the range starts at the first row, and
+                // 3. the range extends through he last row
+                const {hot} = this.get();
+                if (c == c2 && r === 0 && r2 == hot.countRows()-1) {
+                    // const chart = this.store.get('dw_chart');
+                    // this.set({activeColumn: chart.dataset().column(c)});
+                    return;
+                }
+                this.set({activeColumn:null});
+            },
+            initCustomEvents () {
+                // wait a bit to make sure HoT is rendered
+                setTimeout(() => {
+                    const {hot} = this.get();
+                    // catch click events on A,B,C,D... header row
+                    this.refs.hot.querySelectorAll('.htCore thead th+th').forEach(th => {
+                        th.addEventListener('click', evt => {
+                            if (evt.target.classList.contains('columnSorting')) {
+                                // user clicked on column sorter, so don't select
+                                // or unselect this column
+                                this.set({activeColumn:false});
+                                return;
+                            }
+                            // reset the HoT selection
+                            // find out which data column we're in
+                            const k = th.parentNode.children.length;
+                            let th_i = -1;
+                            // (stupid HTMLCollection has no indexOf)
+                            for (let i=0; i<k; i++) {
+                                if (th.parentNode.children.item(i) == th) {
+                                    th_i = i;
+                                    break;
+                                }
+                            }
+                            // find column index
+                            const col_i = +this.refs.hot.querySelector(`.htCore tbody tr:first-child td:nth-child(${th_i+1})`).dataset.column;
+                            const chart = this.store.get('dw_chart');
+                            const {activeColumn} = this.get();
+                            if (chart.dataset().hasColumn(col_i)) {
+                                const newActive = chart.dataset().column(+col_i);
+                                // set active column (or unset if it's already set)
+                                if (activeColumn && activeColumn.name() == newActive.name()) {
+                                    evt.target.parentNode.classList.remove('selected');
+                                    this.set({activeColumn:false});
+                                    hot.deselectCell();
+                                } else {
+                                    evt.target.parentNode.classList.add('selected');
+                                    this.set({activeColumn: newActive});
+                                }
+                            }
+                        });
+                    });
+                }, 500);
+            },
+            getColumnFormat(name) {
+                const chart = this.store.get('dw_chart');
+                const colFormats = chart.get('metadata.data.column-format', {});
+                return colFormats[name] || { type: 'auto', ignore: false };
             }
         },
         computed: {
@@ -60,14 +182,16 @@
                 const l = searchResults.length;
                 if (searchIndex < 0 || searchIndex >= l) {
                     while (searchIndex<0) searchIndex += l;
-                    if (searchIndex > l) searchIndex = searchIndex % l;
+                    if (searchIndex > l) searchIndex %= l;
                 }
-                console.log(searchResults[searchIndex]);
                 return searchResults[searchIndex];
             }
         },
         oncreate() {
-            const {table} = this.get();
+
+            HOT.hooks.once('afterRender', () => this.initCustomEvents());
+
+            const chart = this.store.get('dw_chart');
 
             const hot = new HOT(this.refs.hot, {
                 data: [],
@@ -86,6 +210,7 @@
                 height: 400,
                 manualColumnMove: true,
                 selectionMode: 'range',
+                autoColumnSize: {useHeaders: true, syncLimit: 5},
                 // comments: true,
                 // contextMenu: true,
 
@@ -96,9 +221,7 @@
                     return function(a, b) {
                         var plugin = hot.getPlugin('columnSorting');
                         var sortFunction;
-
                         if (a[0] === 0) return -1;
-
                         switch (columnMeta.type) {
                             case 'date':
                                 sortFunction = plugin.dateSort;
@@ -109,46 +232,39 @@
                             default:
                                 sortFunction = plugin.defaultSort;
                         }
-
                         return sortFunction(sortOrder, columnMeta)(a, b);
                     };
                 },
+                afterGetColHeader: (col, th) => {
+                    const {activeColumn, ds} = this.get();
+                    if (!ds || !ds.hasColumn(col)) return;
+                    if ((col === 0 || col) && activeColumn && ds.column(col).name() == activeColumn.name()) {
+                        th.classList.add('selected');
+                    }
 
+                    if (col === 0 || col) {
+                        if (this.getColumnFormat(ds.column(col).name()).ignore) {
+                            th.classList.add('ignored');
+                        } else {
+                            th.classList.remove('ignored');
+                        }
+                    }
+                },
                 // search
                 search: 'search'
             });
 
             window.HT = hot;
-            console.log(hot, window.HT);
             this.set({hot});
 
-            HOT.hooks.add('afterSetDataAtCell', (a,b,c,d) => {
-                console.log('afterSetDataAtCell', a,b,c,d);
-                // this.set({table});
-            });
+            HOT.hooks.add('afterSetDataAtCell', (a) => this.dataChanged(a));
+            HOT.hooks.add('afterColumnMove', (a,b) => this.columnMoved(a,b));
+            HOT.hooks.add('afterRender', () => this.updateHeight());
+            HOT.hooks.add('afterSelection', (r,c,r2,c2) => this.checkRange(r,c,r2,c2));
 
-            HOT.hooks.add('afterColumnMove', (srcColumns, tgtIndex) => {
-                if (!srcColumns.length) return;
-                const {columnOrder} = this.get();
-                const newOrder = columnOrder.slice(0);
-                const after = columnOrder[tgtIndex];
-                const elements = newOrder.splice(srcColumns[0], srcColumns.length);
-                const insertAt = after ? newOrder.indexOf(after) : newOrder.length;
-                newOrder.splice(insertAt, 0, ...elements);
-                this.store.get('dw_chart').set('metadata.data.column-order', newOrder.slice(0));
-                this.set({columnOrder: newOrder});
-                // update selection
-                const {hot} = this.get();
-                HOT.hooks.once('afterRender', () => {
-                    setTimeout(() => {
-                        hot.selectCell(0, insertAt, hot.countRows()-1, insertAt+elements.length-1);
-                    }, 10);
-                });
-                this.update();
-            });
-
-            this.observe('data', (csvdata) => {
-                this.update();
+            this.observe('data', () => this.update());
+            this.observe('firstRowIsHeader', (v, vo) => {
+                if (v != vo && vo !== undefined) this.update()
             });
 
             this.observe('search', (query) => {
@@ -160,8 +276,19 @@
             this.observe('currentResult', (res) => {
                 // console.log('cur search res', res);
                 if (!res || !hot) return;
-                hot.scrollViewportTo(res.row, res.col, res.col == hot.countRows()-1);
-                hot.render();
+                // this is a weird hack to deal with HoT's problems to scroll
+                // all the way down after hot.scrollViewportTo(hot.countRows()-1, res.col);
+                // the first scrollViewportTo will trigger a render event
+                hot.render(); // to update the hightlight colors
+                hot.scrollViewportTo(res.row, res.col);
+                setTimeout(() => {
+                    // one more time
+                    hot.scrollViewportTo(res.row, res.col);
+                }, 100);
+            });
+
+            this.observe('activeColumn', () => {
+                setTimeout(() => hot.render(), 10);
             });
 
         },
@@ -173,8 +300,9 @@
                 firstRowIsHeader: true,
                 searchIndex: 0,
                 transpose: false,
+                activeColumn: null,
                 search: '',
-                searchResults: [],
+                searchResults: []
             };
         }
     };
@@ -185,19 +313,27 @@
         };
         function HtmlCellRender(instance, TD, row, col, prop, value, cellProperties) {
             var escaped = dw.utils.purifyHtml(Handsontable.helper.stringify(value));
-            TD.innerHTML = escaped; //this is faster than innerHTML. See: https://github.com/warpech/jquery-handsontable/wiki/JavaScript-&-DOM-performance-tips
+            TD.innerHTML = escaped; // this is faster than innerHTML. See: https://github.com/warpech/jquery-handsontable/wiki/JavaScript-&-DOM-performance-tips
         }
         return function(instance, td, row, col, prop, value, cellProperties) {
+            if (dataset.numColumns() <= col || !dataset.hasColumn(col)) return;
             const column = dataset.column(col);
-            const {searchResults, currentResult} = app.get();
+            const {searchResults, currentResult, activeColumn} = app.get();
+            const colFormat = app.getColumnFormat(column.name());
+            row = instance.toPhysicalRow(row);
             if (row > 0) {
                 var formatter = chart.columnFormatter(column);
                 value = formatter(column.val(row - 1), true);
             }
-            if (parseInt(value, 10) < 0) { //if row contains negative number
+            if (parseInt(value) < 0) { // if row contains negative number
                 td.classList.add('negative');
             }
             td.classList.add(column.type()+'Type');
+            td.dataset.column = col;
+
+            if (column.type() == 'text' && value.length > 70) {
+                value = value.substr(0,60)+'…';
+            }
 
             if (row === 0) {
                 td.classList.add('firstRow');
@@ -207,12 +343,12 @@
             } else {
                 td.classList.add(row % 2 ? 'oddRow' : 'evenRow');
             }
-            // if (metadata.columnFormat.get(column.name()).ignore) {
-            //     td.classList.add('ignored');
-            // }
-            // if(selectedColumns.indexOf(col) > -1) {
-            //     td.classList.add('area'); //add blue area background if this cell is in selected column
-            // }
+            if (colFormat.ignore) {
+                td.classList.add('ignored');
+            }
+            if (activeColumn && activeColumn.name() == column.name()) {
+                td.classList.add('active');
+            }
             searchResults.forEach(res => {
                 if (res.row == row && res.col == col) {
                     td.classList.add('htSearchResult');
@@ -229,7 +365,8 @@
             if (chart.dataCellChanged(col, row)) {
                 td.classList.add('changed');
             }
-            HtmlCellRender.apply(this, arguments);
+            HtmlCellRender(instance, td, row, col, prop, value, cellProperties);
+            // Reflect.apply(HtmlCellRender, this, arguments);
         };
     }
 
@@ -245,6 +382,10 @@
     tr td, tr th {
         font-family: 'Roboto Mono', fixed;
         font-size:12px;
+    }
+
+    colgroup col {
+        max-width: 500px!important;
     }
 
     tr td {
@@ -269,6 +410,7 @@
             color: #c00;
         }
 
+
         &.readOnly {
             // background: mix(#F1F0E3, white);
             // &.evenRow { background: #F1F0E3; }
@@ -276,6 +418,16 @@
                 background: #EAEAEA;
                 border-right-color: #aaa;
                 color: #777;
+            }
+        }
+
+        &.active {
+            background: mix(#18a1cd, white, 10%);
+            &.firstRow {
+                background: mix(#18a1cd, #EAEAEA, 10%);
+            }
+            &.readOnly {
+
             }
         }
 
@@ -296,11 +448,67 @@
         }
 
         &.htSearchResult {
-            background: #ffd;
+            /*background: #ffd;*/
+            background: #fff8ef;
+            color: #8d6833!important;
         }
         &.htCurrentSearchResult {
-            background: #fffe83;
+            color: #583707!important;
+            background: #fcedd9;
+            /*background: #fffe83;*/
         }
+    }
+
+    thead {
+        th {
+            cursor: pointer;
+            background: #eee;
+            border-right: 1px solid hsl(210,0%,70%);
+
+            &.selected {
+                background: #18a1cd;
+                color: white;
+                font-weight: bold;
+            }
+            &:hover {
+                background: #ddd;
+            }
+            &.selected:hover {
+                background: #18a1cd;
+            }
+        }
+        tr th+th div:after {
+            content: " "url(/static/css/chart-editor/selection-off.png);
+            position: absolute;
+            top: 3px;
+            right: 5px;
+        }
+
+        th+th:hover div:after {
+            content: " "url(/static/css/chart-editor/selection-hover.png);
+        }
+
+        th+th.selected div:after {
+            opacity: 1;
+            content: " "url(/static/css/chart-editor/selection.png);
+        }
+    } // end thead
+
+    td.ignored, th.ignored {
+        color: #aaa!important;
+        text-decoration: line-through;
+        &.firstRow {
+            background-color: #ddd;
+            &.area { background: #d4ddee; }
+        }
+        background-color: #f4f4f4;
+        /*&.area { background: #dce5f7; }*/
+    }
+
+    th.ignored {
+        background-color: #e2e2e2;
+        color: #aaa;
+        text-decoration: line-through
     }
 
     tbody tr:first-child td {
@@ -311,6 +519,22 @@
     .htCommentCell:after {
         border-left: 8px solid transparent;
         border-top: 8px solid orange;
+    }
+    // custom highlight color
+    .handsontable td.area-1::before, .handsontable td.area-2::before, .handsontable td.area-3::before, .handsontable td.area-4::before, .handsontable td.area-5::before, .handsontable td.area-6::before, .handsontable td.area-7::before, .handsontable td.area::before {
+        background: #18a1cd;
+    }
+
+    .handsontable .columnSorting.ascending::after {
+        font: normal normal normal 14px/1 FontAwesome;
+        content: '\f162'; // numeric-asc
+    }
+    .handsontable .columnSorting.descending::after {
+        font: normal normal normal 14px/1 FontAwesome;
+        content: '\f163'; // numeric-desc
+    }
+    .handsontable .selected .columnSorting::after {
+        color: white;
     }
 }
 </style>
