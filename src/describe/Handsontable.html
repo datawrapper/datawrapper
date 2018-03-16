@@ -7,7 +7,6 @@
     export default {
         methods: {
             update() {
-                console.log('update!');
                 const {data, transpose, firstRowIsHeader, skipRows, hot} = this.get();
 
                 if (!data) return;
@@ -134,6 +133,7 @@
                             if (evt.target.classList.contains('columnSorting')) {
                                 // user clicked on column sorter, so don't select
                                 // or unselect this column
+                                this.set({activeColumn:false});
                                 return;
                             }
                             // reset the HoT selection
@@ -154,9 +154,11 @@
                             const newActive = chart.dataset().column(+col_i);
                             // set active column (or unset if it's already set)
                             if (activeColumn && activeColumn.name() == newActive.name()) {
+                                evt.target.parentNode.classList.remove('selected');
                                 this.set({activeColumn:false});
                                 hot.deselectCell();
                             } else {
+                                evt.target.parentNode.classList.add('selected');
                                 this.set({activeColumn: newActive});
                             }
                         });
@@ -255,24 +257,6 @@
             HOT.hooks.add('afterRender', () => this.updateHeight());
             HOT.hooks.add('afterSelection', (r,c,r2,c2) => this.checkRange(r,c,r2,c2));
 
-            // HOT.hooks.add()
-            // $dataPreview.on('mousedown', '.ht_clone_top.handsontable th:has(.colHeader)', function (event) {
-            //     start = getIndexOfTh(this);
-            //     event.stopPropagation();
-            //     $dataPreview.handsontable('deselectCell');
-
-            //     if (selectedColumns.length == 1 && selectedColumns[0] == start) {
-            //         // proceeding click on selected column header will unselect
-            //         deselectColumns();
-            //         $dataPreview.handsontable('render'); // refresh all cells and column headers
-            //         showColumnSettings();
-            //         return;
-            //     }
-            //     setTimeout(function() { //do it in timeout, so input blur has chance to run
-            //         selectColumns(start);
-            //     }, 0);
-            // });
-
             this.observe('data', () => this.update());
             this.observe('transpose', () => this.update());
             this.observe('firstRowIsHeader', () => this.update());
@@ -297,7 +281,9 @@
                 }, 100);
             });
 
-            this.observe('activeColumn', () => hot.render());
+            this.observe('activeColumn', () => {
+                setTimeout(() => hot.render(), 10);
+            });
 
         },
         data() {
@@ -327,6 +313,7 @@
             if (dataset.numColumns() <= col) return;
             const column = dataset.column(col);
             const {searchResults, currentResult, activeColumn} = app.get();
+            const colFormat = app.getColumnFormat(column.name());
             row = instance.toPhysicalRow(row);
             if (row > 0) {
                 var formatter = chart.columnFormatter(column);
@@ -336,6 +323,7 @@
                 td.classList.add('negative');
             }
             td.classList.add(column.type()+'Type');
+            td.dataset.column = col;
 
             if (column.type() == 'text' && value.length > 70) {
                 value = value.substr(0,60)+'…';
@@ -346,13 +334,12 @@
                 if (colTypeIcons[column.type()]) {
                     value = '<i class="'+colTypeIcons[column.type()]+'"></i> ' + value;
                 }
-                td.dataset.column = col;
             } else {
                 td.classList.add(row % 2 ? 'oddRow' : 'evenRow');
             }
-            // if (metadata.columnFormat.get(column.name()).ignore) {
-            //     td.classList.add('ignored');
-            // }
+            if (colFormat.ignore) {
+                td.classList.add('ignored');
+            }
             // if(selectedColumns.indexOf(col) > -1) {
             //     td.classList.add('area'); //add blue area background if this cell is in selected column
             // }
@@ -503,6 +490,23 @@
             content: " "url(/static/css/chart-editor/selection.png);
         }
     } // end thead
+
+    td.ignored, th.ignored {
+        color: #aaa!important;
+        text-decoration: line-through;
+        &.firstRow {
+            background-color: #ddd;
+            &.area { background: #d4ddee; }
+        }
+        background-color: #f4f4f4;
+        /*&.area { background: #dce5f7; }*/
+    }
+
+    th.ignored {
+        background-color: #e2e2e2;
+        color: #aaa;
+        text-decoration: line-through
+    }
 
     tbody tr:first-child td {
         background: #f3f3f3;
