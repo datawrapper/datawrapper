@@ -20,6 +20,7 @@
     import Checkbox from '../controls/Checkbox.html';
     import Select from '../controls/Select.html';
     import _throttle from 'underscore-es/throttle';
+    import {arrayToObject} from '../shared/utils.js';
 
     export default {
         components: { Checkbox, Select },
@@ -33,7 +34,8 @@
 
             const {column} = this.get();
             const chart = this.store.get('dw_chart');
-            const columnFormats = chart.get('metadata.data.column-format', {});
+            const columnFormats = arrayToObject(chart.get('metadata.data.column-format', {}));
+
             let columnFormat = columnFormats[column.name()];
             if (!columnFormat || columnFormat == 'auto' || columnFormat.length !== undefined) {
                 // no valid column format
@@ -55,8 +57,8 @@
             this.observe('columnFormat', (colFormat) => {
                 const t0 = (new Date()).getTime();
                 const chrt = this.store.get('dw_chart');
-                const columnFormats = chrt.get('metadata.data.column-format', {});
-                let oldFormat = columnFormat[column.name()];
+                const columnFormats = arrayToObject(chrt.get('metadata.data.column-format', {}));
+                let oldFormat = columnFormats[column.name()];
                 if (JSON.stringify(oldFormat) != JSON.stringify(colFormat)) {
                     console.log('new format!');
                     columnFormats[column.name()] = colFormat;
