@@ -1,5 +1,5 @@
 <div>
-    <h3 class="first">Edit computed column "{{column.name()}}"</h3>
+    <h3 class="first">Edit computed column "{{column ? column.title() : '--'}}"</h3>
     <p>{{__("computed columns / modal / intro")}}</p>
 
     <label>{{__("computed columns / modal / name")}}</label>
@@ -11,12 +11,12 @@
     <p style="margin-top: 1em">{{__("computed columns / modal / available columns")}}:</p>
 
     <ul class="col-select">
-        {{#each metaColumns as column}}
-        <li on:click="insert(column)">{{column.key}}</li>
+        {{#each metaColumns as col}}
+        <li on:click="insert(col)">{{col.key}}</li>
         {{/each}}
     </ul>
     <hr>
-    <button class="btn btn-danger"><i class="fa fa-trash"></i> Remove this column</button>
+    <button class="btn btn-danger"><i class="fa fa-trash"></i> {{__("computed columns / modal / remove")}}</button>
 </div>
 
 <style lang="less">
@@ -89,7 +89,11 @@ label {
     import CodeMirror from 'cm/lib/codemirror';
     import 'cm/mode/javascript/javascript';
     import 'cm/addon/mode/simple';
-    import _throttle from 'underscore-es/throttle';
+    import 'cm/addon/hint/show-hint';
+    import 'cm/addon/edit/matchbrackets';
+    import 'cm/addon/display/placeholder';
+
+    import _debounce from 'underscore-es/debounce';
 
     export default {
         methods: {
@@ -105,9 +109,24 @@ label {
                 return columns.map(col => {
                     return {
                         key: column_name_to_var(col.name()),
-                        title: col.title()
+                        title: col.title(),
+                        type: col.type()
                     };
                 });
+            },
+            keywords (metaColumns) {
+                const keywords = ['sum','round','min','max','median','mean'];
+                metaColumns.forEach(function(col) {
+                    keywords.push(col.key);
+                    if (col.type == 'number') {
+                        keywords.push(col.key+'__sum');
+                        keywords.push(col.key+'__min');
+                        keywords.push(col.key+'__max');
+                        keywords.push(col.key+'__mean');
+                        keywords.push(col.key+'__median');
+                    }
+                });
+                return keywords;
             }
         },
         oncreate() {
@@ -121,16 +140,64 @@ label {
                 name: column.title()
             });
 
+            // update if column changes
+            this.observe('column', (col) => {
+                if (col) this.set({
+                    formula: customCols[col.name()] || '',
+                    name: col.title()
+                });
+            });
+
+            const app = this;
+
+            function scriptHint(editor, callback) {
+                // Find the token at the cursor
+                var cur = editor.getCursor(),
+                    token = editor.getTokenAt(cur),
+                    match = [];
+
+                const keywords = app.get('keywords');
+
+                if (token.type == 'variable') {
+                    match = keywords.filter(function(chk) {
+                        return chk.toLowerCase()
+                            .indexOf(token.string.toLowerCase()) === 0;
+                    });
+                }
+
+                return {
+                    list: match,
+                    from: CodeMirror.Pos(cur.line, token.start),
+                    to: CodeMirror.Pos(cur.line, token.end)
+                };
+            }
+
+            // CodeMirror.registerHelper("hint", "javascript", function(editor, options) {
+            //     return scriptHint(editor, options);
+            // });
+
             const cm = CodeMirror.fromTextArea(this.refs.code, {
                 value: this.get('formula') || '',
-                mode: 'simple'
+                mode: 'simple',
+                indentUnit: 2,
+                tabSize: 2,
+                lineWrapping: true,
+                matchBrackets: true,
+                placeholder: '// enter formula here',
+                continueComments: "Enter",
+                extraKeys: {
+                    'Tab': 'autocomplete'
+                },
+                hintOptions: {
+                    hint: scriptHint
+                }
             });
 
             window.CodeMirror = CodeMirror;
 
             this.set({cm});
 
-            const updateTable = _throttle(() => this.fire('updateTable'), 500, {leading: false});
+            const updateTable = _debounce(() => this.fire('updateTable'), 1500);
 
             this.observe('formula', (formula) => {
                 // update codemirror
@@ -138,6 +205,7 @@ label {
                     cm.setValue(formula);
                 }
                 // update dw.chart
+                const {column} = this.get();
                 const customCols = chart.get('metadata.describe.computed-columns', {});
                 if (customCols[column.name()] != formula) {
                     customCols[column.name()] = formula;
@@ -148,6 +216,7 @@ label {
             });
 
             this.observe('name', (name) => {
+                const {column} = this.get();
                 const changes = chart.get('metadata.data.changes', []);
                 const ds = chart.dataset();
                 const col = ds.columnOrder()[ds.indexOf(column.name())];
@@ -176,7 +245,7 @@ label {
             });
 
             this.observe('metaColumns', (cols) => {
-                var columns_regex = new RegExp(`(?:${cols.map(c=>c.key).join('|')})`);
+                var columns_regex = new RegExp(`(?:${this.get('keywords').join('|')})`);
                 CodeMirror.defineSimpleMode("simplemode", {
                     // The start state contains the rules that are intially used
                     start: [
