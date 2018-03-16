@@ -5,9 +5,20 @@
 
     <div class="controls form-inline">
         <select bind:value="value" style="width:{{ width }}">
-        {{#each options as opt}}
-            <option value="{{opt.value}}">{{opt.label}}</option>
-        {{/each}}
+        {{#if options.length}}
+            {{#each options as opt}}
+                <option value="{{opt.value}}">{{opt.label}}</option>
+            {{/each}}
+        {{/if}}
+        {{#if optgroups.length}}
+            {{#each optgroups as optgroup}}
+            <optgroup label="{{optgroup.label}}">
+                {{#each optgroup.options as opt}}
+                    <option value="{{opt.value}}">{{opt.label}}</option>
+                {{/each}}
+            </optgroup>
+            {{/each}}
+        {{/if}}
         </select>
     </div>
 </div>
@@ -16,7 +27,9 @@
 export default {
     data () {
         return {
-            width: 'auto'
+            width: 'auto',
+            options: [],
+            optgroups: [],
         };
     }
 };
