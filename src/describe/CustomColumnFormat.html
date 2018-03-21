@@ -99,11 +99,11 @@
                 const {column} = this.get();
                 const columnFormats = arrayToObject(chrt.get('metadata.data.column-format', {}));
                 const oldFormat = columnFormats[column.name()];
-                if (JSON.stringify(oldFormat) != JSON.stringify(colFormat)) {
+                if (!oldFormat || JSON.stringify(oldFormat) != JSON.stringify(colFormat)) {
                     columnFormats[column.name()] = clone(colFormat);
                     chrt.set('metadata.data.column-format', columnFormats);
                     if (chrt.saveSoon) chrt.saveSoon();
-                    if (oldFormat.type != colFormat.type) updateTable();
+                    if (!oldFormat || oldFormat.type != colFormat.type) updateTable();
                     else renderTable();
                 }
             });

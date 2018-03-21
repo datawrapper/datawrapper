@@ -56,7 +56,12 @@
         try { chart.save(); } catch (e) {}
     }
 
+    chart.load(dw.backend.__currentData);
+
+
 dw.backend.ready(function() {
+
+    console.log('ready');
 
     dw.backend.syncChart(chart);
 

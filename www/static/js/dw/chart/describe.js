@@ -1,6 +1,7 @@
+/* global define,_,$,dw */
+define(['handsontable', './describe/computed-columns'], function() {
 
-define(['handsontable', './describe/computed-columns'], function(handsontable) {
-
+    console.log('foo');
     var _chartLocale;
     var _readonly = false;
 
