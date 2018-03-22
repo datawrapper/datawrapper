@@ -22,15 +22,15 @@
                 {{else}}
                 <h3 class="first">{{ __("Make sure the data looks right") }}</h3>
 
-                <p>{{ __("Please make sure that Datawrapper interprets your data correctly. In the table number columns should be shown in blue, dates in green and text in black.") }}</p>
+                <p>{{ __("Please make sure that Datawrapper interprets your data correctly. In the table columns should be shown in blue, dates in green and text in black.") }}</p>
 
                 <Checkbox
                     label="{{ __("First row as label") }}"
                     bind:value="firstRowIsHeader" />
 
-                <h4>Output locale</h4>
+                <h4>{{__("describe / locale-select / hed")}}</h4>
 
-                <p>Defines decimal and thousand separators as well as translation of month and weekday names.</p>
+                <p>{{__("describe / locale-select / body")}}</p>
 
                 <select bind:value="locale">
                     {{#each locales as locale}}
@@ -41,8 +41,8 @@
                 <hr>
 
                 <div class="btn-group">
-                    <a class="btn submit" href="upload"><i class="icon-chevron-left"></i> Zurück</a>
-                    <a href="visualize" class="submit btn btn-primary" id="describe-proceed">Weiter <i class="icon-chevron-right icon-white"></i></a>
+                    <a class="btn submit" href="upload"><i class="icon-chevron-left"></i> {{__("Back")}}</a>
+                    <a href="visualize" class="submit btn btn-primary" id="describe-proceed"> {{__("Proceed")}} <i class="icon-chevron-right icon-white"></i></a>
                 </div>
                 {{/if}}
             </div>
@@ -50,9 +50,23 @@
         <div class="span8">
 
             <div class="help">
-                Click on table header<br>to edit column properties. <img src="/static/img/arrow.svg" />
+                {{{__('describe / info-table-header')}}} <img src="/static/img/arrow.svg" />
             </div>
-            <div class="pull-right">
+            <div class="pull-right" style="margin-bottom: 10px">
+
+                <div class="sort-box">
+                    <div class="btn-group" ref:sortDropdownGroup>
+                        <button class="btn dropdown-toggle" data-toggle="dropdown">
+                           {{{__('describe / sort-by')}}}… <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu sort-menu">
+                            <li class="{{'-'==sortBy?'active':''}}"><a on:click="sort(event, '-')" href="#s">{{{__('describe / no-sorting')}}}</a></li>
+                            {{#each columns as col}}
+                            <li class="{{col.name()==sortBy?'active':''}}"><a on:click="sort(event, col.name(), true)" href="#/{{col.name()}}"><i on:click="sort(event, col.name(), true)" class="fa fa-sort-{{col.type()=='text'?'alpha':'amount'}}-asc fa-fw"></i> <i class="fa fa-sort-{{col.type()=='text'?'alpha':'amount'}}-desc fa-fw"></i>&nbsp;&nbsp;&nbsp;{{col.title()}}</a></li>
+                            {{/each}}
+                        </ul>
+                    </div>
+                </div>
 
                 <div class="search-box form-search">
                     <i class="im im-magnifier"></i>
@@ -82,20 +96,6 @@
                     {{/if}}
                 </div>
 
-                <div class="sort-box">
-                    <div class="btn-group">
-                        <button class="btn dropdown-toggle" data-toggle="dropdown">
-                            Sort by… <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu sort-menu">
-                            <li class="{{'-'==sortBy?'active':''}}"><a on:click="sort(event, '-')" href="#s">(no sorting)</a></li>
-                            {{#each columns as col}}
-                            <li class="{{col.name()==sortBy?'active':''}}"><a on:click="sort(event, col.name())" href="#/{{col.name()}}">{{col.title()}}</a></li>
-                            {{/each}}
-                        </ul>
-                    </div>
-                </div>
-
             </div>
 
             <Handsontable ref:hot
@@ -103,10 +103,11 @@
                 bind:transpose
                 bind:firstRowIsHeader
                 bind:activeColumn
-                bind:sortBy
+                bind:sorting
                 bind:search
                 bind:searchResults
-                bind:searchIndex />
+                bind:searchIndex
+                on:resetSort="set({sortBy:'-'})" />
 
             <div class="buttons below-table pull-right">
                 <button class="btn transpose" on:click="toggleTranspose()"><img src="/static/css/chart-editor/transpose.png"> {{__("describe / transpose-long")}}</button>
@@ -150,6 +151,9 @@
                 } catch(e) {
                     return [];
                 }
+            },
+            sorting (sortBy, sortDir) {
+                return {sortBy,sortDir};
             }
         },
         oncreate() {
@@ -178,10 +182,6 @@
             sync('transpose', 'metadata.data.transpose');
             sync('firstRowIsHeader', 'metadata.data.horizontal-header');
             sync('locale', 'language');
-
-            this.observe('sortBy', (col) => {
-
-            });
         },
         methods: {
             nextResult (diff) {
@@ -229,9 +229,12 @@
                 this.refs.hot.update();
                 this.set({ activeColumn: ds2.column(id) });
             },
-            sort(event, col) {
+            sort(event, col, ascending) {
                 event.preventDefault();
-                this.set({sortBy: col});
+                event.stopPropagation();
+                this.set({sortBy: col, sortDir: ascending});
+                // hide the dropdown menu
+                this.refs.sortDropdownGroup.classList.remove('open');
             }
         },
         data() {
@@ -272,6 +275,17 @@
     .sort-box {
         display: inline-block;
         vertical-align: top;
+        margin-right: 1ex;
+        .sort-menu li a .fa {
+            opacity: 0.5;
+            &:hover {
+                opacity: 1;
+            }
+        }
+
+        .dropdown-menu > li > a {
+            padding: 3px 20px 3px 10px;
+        }
     }
     .search-box {
         display: inline-block;
@@ -311,7 +325,8 @@
         }
         .btn-group .btn:last-child {
             border-bottom-right-radius: 15px;
-                border-top-right-radius: 15px;
+            border-top-right-radius: 15px;
+            padding-right: 9px;
         }
     }
     :global(html .form-horizontal .control-group) {

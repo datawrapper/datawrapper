@@ -103,6 +103,7 @@
                 // update selection
                 HOT.hooks.once('afterRender', () => {
                     setTimeout(() => {
+                        this.fire('resetSort');
                         hot.selectCell(0, insertAt, hot.countRows()-1,
                             insertAt+elements.length-1);
                     }, 10);
@@ -310,9 +311,8 @@
 
             console.log('e', hot.sortingEnabled);
             // if (hot.sortingEnabled) {
-            this.observe('sortBy', (colName) => {
-                console.log('sort by', colName, chart.dataset().indexOf(colName));
-                hot.sort(chart.dataset().indexOf(colName), false);
+            this.observe('sorting', (sorting) => {
+                hot.sort(chart.dataset().indexOf(sorting.sortBy), sorting.sortDir);
             });
             // }
 
@@ -557,11 +557,15 @@
 
     .handsontable .columnSorting.ascending::after {
         font: normal normal normal 14px/1 FontAwesome;
-        content: '\f162'; // numeric-asc
+        content: '\f160'; // sort-amount-asc
+        top: 0px;
+        right: -17px;
     }
     .handsontable .columnSorting.descending::after {
         font: normal normal normal 14px/1 FontAwesome;
-        content: '\f163'; // numeric-desc
+        content: '\f161'; // sort-amount-desc
+        top: 0px;
+        right: -17px;
     }
     .handsontable .selected .columnSorting::after {
         color: white;
