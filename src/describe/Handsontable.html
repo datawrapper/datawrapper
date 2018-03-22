@@ -357,7 +357,7 @@
             td.classList.add(column.type()+'Type');
             td.dataset.column = col;
 
-            if (column.type() == 'text' && value.length > 70) {
+            if (column.type() == 'text' && value && value.length > 70) {
                 value = value.substr(0,60)+'…';
             }
 

@@ -259,7 +259,7 @@
   "describe / search / results": "Treffern",
   "describe / search / no-matches": "Keine Treffer",
   "describe / info-table-header": "Auf Tabellenkopf klicken um<br>Spalteneigenschaften zu ändern",
-  "describe / sort-by": "Sortieren nach",
+  "describe / sort-by": "Ansicht sortieren nach",
   "describe / no-sorting": "Keine Sortierung",
   "describe / locale-select / hed": "Ausgabe-Sprachraum",
   "describe / locale-select / body": "Bestimmt Dezimal- und Tausendertrennzeichen sowie die Übersetzung von Monatsnamen und Wochentagen.",
