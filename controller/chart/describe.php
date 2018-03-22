@@ -73,6 +73,8 @@ $app->get('/chart/:id/describe', function ($id) use ($app) {
              }, explode(',', $GLOBALS['dw_config']['plugins']['chart-locale-select']['locales'] ?? 'en-US|english,de-DE|deutsch'))
         ];
 
-        $app->render('chart/describe'.($user->isAdmin() && $app->request()->get('beta') ? '-new' : '').'.twig', $page);
+        $useBeta = $user->isAdmin() || $app->request()->get('beta');
+
+        $app->render('chart/describe'.($useBeta ? '-new' : '').'.twig', $page);
     });
 });
