@@ -213,7 +213,7 @@ dw.utils = {
                 var exp = Math.log(cur)/Math.LN10;
                 if (exp < 8 && exp > -3) {
                     // use tail length for normal numbers
-                    return acc + Math.min(3, tailLength(uniqValues[0]));
+                    return acc + Math.min(3, dw.utils.tailLength(uniqValues[0]));
                 } else {
                     return acc + (exp > 0 ? (exp-1)*-1 : (exp)*-1 );
                 }
@@ -239,10 +239,14 @@ dw.utils = {
         function round(v) {
             return dw.utils.round(v, dimension);
         }
-        function tailLength(v) {
-            return (String(v - Math.floor(v)).replace(/00000*[0-9]$/, '').replace(/9999*[0-9]$/, '')).length - 2
-        }
         return dimension;
+    },
+
+    /*
+     * returns the number of digits after the decimal
+     */
+    tailLength: function(v) {
+        return (String(v - Math.floor(v)).replace(/00000*[0-9]+$/, '').replace(/99999*[0-9]+$/, '')).length - 2;
     },
 
     round: function(value, dimension) {

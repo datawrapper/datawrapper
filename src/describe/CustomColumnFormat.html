@@ -14,6 +14,7 @@
         {{#if column && column.type() == 'number'}}
         <Select
             label="Divide/multiply by"
+            options="{{[{value:'auto', label:'automatic'},{value:0, label:'keep original'}]}}"
             optgroups="{{divisors}}"
             bind:value="columnFormat['number-divisor']"
             width="180px"
@@ -113,6 +114,7 @@
                 columnFormat: {
                     type: 'auto',
                     ignore: false,
+                    'number-divisor': 'auto',
                     'number-prepend': '',
                     'number-append': '',
                 },
@@ -120,7 +122,6 @@
                 divisors: [{
                     label: 'divide by',
                     options: [
-                        {value:0, label:'-'},
                         {value:3, label:'1000'},
                         {value:6, label:'1 million'},
                         {value:9, label:'1 billion'},
