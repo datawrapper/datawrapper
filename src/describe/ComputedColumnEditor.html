@@ -1,5 +1,5 @@
 <div>
-    <h3 class="first">Edit computed column "{{column ? column.title() : '--'}}"</h3>
+    <h3 class="first">{{title}}</h3>
     <p>{{__("computed columns / modal / intro")}}</p>
 
     <label>{{__("computed columns / modal / name")}}</label>
@@ -127,6 +127,10 @@ label {
             }
         },
         computed: {
+            title(column) {
+                var s = __("describe / edit-column");
+                return s.replace('%s', `"${column ? column.title() || column.name() : '--'}"`)
+            },
             metaColumns (columns) {
                 if (!columns) return [];
                 return columns.map(col => {
@@ -331,7 +335,7 @@ label {
             .replace(/^_+/, '')             // Trim _ from start of text
             .replace(/_+$/, '')             // Trim _ from end of text
             .replace(/^(\d)/, '_$1')        // If first char is a number, prefix with _
-            .replace(/(abstract|arguments|await|boolean|break|byte|case|catch|char|class|const|continue|debugger|default|delete|do|double|else|enum|eval|export|extends|false|final|finally|float|for|function|goto|if|implements|import|in|instanceof|int|interface|let|long|native|new|null|package|private|protected|public|return|short|static|super|switch|synchronized|this|throw|throws|transient|true|try|typeof|var|void|volatile|while|window|with|yield)/, '$1_'); // reserved keywords
+            .replace(/^(abstract|arguments|await|boolean|break|byte|case|catch|char|class|const|continue|debugger|default|delete|do|double|else|enum|eval|export|extends|false|final|finally|float|for|function|goto|if|implements|import|in|instanceof|int|interface|let|long|native|new|null|package|private|protected|public|return|short|static|super|switch|synchronized|this|throw|throws|transient|true|try|typeof|var|void|volatile|while|window|with|yield)$/, '$1_'); // reserved keywords
     }
 
 </script>

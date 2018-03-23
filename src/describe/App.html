@@ -11,6 +11,10 @@
                     bind:column="customColumn"
                     bind:columns />
 
+                <div style="margin-top:1em">
+                   <a on:click="force(event, true)" href="#edit-format">{{__("describe / edit-format")}}</a>
+                </div>
+
                 {{elseif columnFormat}}
 
                 <CustomColumnFormat
@@ -18,6 +22,12 @@
                     on:renderTable="refs.hot.render()"
                     bind:column="columnFormat"
                     bind:columns />
+
+                {{#if columnFormat.isComputed}}
+                <div style="margin-top:1em">
+                   <a on:click="force(event, false)" href="#edit-format">{{__("describe / edit-formula")}}</a>
+                </div>
+                {{/if}}
 
                 {{else}}
                 <h3 class="first">{{ __("Make sure the data looks right") }}</h3>
@@ -139,11 +149,11 @@
                 searchIndex = searchIndex % searchResults.length;
                 return searchIndex;
             },
-            customColumn (activeColumn) {
-                return activeColumn && activeColumn.isComputed ? activeColumn : false;
+            customColumn (activeColumn, forceColumnFormat) {
+                return activeColumn && !forceColumnFormat && activeColumn.isComputed ? activeColumn : false;
             },
-            columnFormat (activeColumn) {
-                return activeColumn && !activeColumn.isComputed ? activeColumn : false;
+            columnFormat (activeColumn, forceColumnFormat) {
+                return activeColumn && (!activeColumn.isComputed || forceColumnFormat) ? activeColumn : false;
             },
             columns (activeColumn) {
                 const ds = chart.dataset();
@@ -184,6 +194,9 @@
             sync('transpose', 'metadata.data.transpose');
             sync('firstRowIsHeader', 'metadata.data.horizontal-header');
             sync('locale', 'language');
+            this.observe('activeColumn', (ac) => {
+                if (!ac) this.set({forceColumnFormat:false});
+            });
         },
         methods: {
             nextResult (diff) {
@@ -237,6 +250,10 @@
                 this.set({sortBy: col, sortDir: ascending});
                 // hide the dropdown menu
                 this.refs.sortDropdownGroup.classList.remove('open');
+            },
+            force(event, val=true) {
+                event.preventDefault();
+                this.set({forceColumnFormat:val});
             }
         },
         data() {
@@ -250,6 +267,7 @@
                 activeColumn: false,
                 customColumn: false,
                 columnFormat: false,
+                forceColumnFormat: false,
                 searchResults: [],
                 sortBy: '-'
             };

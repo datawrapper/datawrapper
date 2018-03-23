@@ -1,34 +1,35 @@
 <div>
-    <h3 class="first">Edit column "{{column ? column.name() : '--'}}"</h3>
+    <h3 class="first">{{title}}</h3>
 
     <div class="form-horizontal">
 
         <Select
-            label="Column type"
+            label="{{__("Column type")}}"
             options="{{colTypes}}"
             bind:value="columnFormat.type"
             width="180px"
             />
 
         <hr />
+
         {{#if column && column.type() == 'number'}}
         <Select
-            label="Divide/multiply by"
-            options="{{[{value:'auto', label:'automatic'},{value:0, label:'keep original'}]}}"
+            label="{{__("Divide numbers by")}}"
+            options="{{divisors_opts}}"
             optgroups="{{divisors}}"
             bind:value="columnFormat['number-divisor']"
             width="180px"
             />
         <Select
-            label="Round numbers to"
-            options="{{[{value:'-',label:'keep original'}]}}"
+            label="{{__("Round numbers to")}}"
+            options="{{[{value:'-',label:__('keep original')}]}}"
             optgroups="{{numberFormats}}"
             bind:value="columnFormat['number-format']"
             width="180px"
             />
         <div class="control-group vis-option-type-select">
             <label class="control-label">
-                Prepend/append
+                {{__("Prepend/Append")}}
             </label>
             <div class="controls form-inline">
                 <input style="width:6ex; text-align:right" data-lpignore="true" name="prepend" type="text" bind:value="columnFormat['number-prepend']">
@@ -36,9 +37,10 @@
                 <input style="width:6ex" data-lpignore="true" name="append" type="text" bind:value="columnFormat['number-append']">
             </div>
         </div>
+        <hr />
+
         {{/if}}
 
-        <hr />
 
         <Checkbox
             label="{{ __("Hide column from visualization") }}"
@@ -72,6 +74,12 @@
                     };
                 }
                 return columnFormat;
+            }
+        },
+        computed: {
+            title(column) {
+                var s = __("describe / edit-column");
+                return s.replace('%s', `"${column ? column.title() || column.name() : '--'}"`)
             }
         },
         oncreate() {
@@ -119,15 +127,19 @@
                     'number-append': '',
                 },
                 colTypes: [],
+                divisors_opts: [
+                    {value:'auto', label: __("describe / column-format / automatic") },
+                    {value:0, label: __("keep original") }
+                ],
                 divisors: [{
-                    label: 'divide by',
+                    label: __("describe / column-format / divide-by"),
                     options: [
                         {value:3, label:'1000'},
                         {value:6, label:'1 million'},
                         {value:9, label:'1 billion'},
                     ]
                 }, {
-                    label: 'multiply by',
+                    label: __("describe / column-format / multiply-by"),
                     options: [
                         {value:-2, label:'100'},
                         {value:-3, label:'1000'},
@@ -137,7 +149,7 @@
                     ]
                 }],
                 numberFormats: [{
-                    label: 'Decimal places',
+                    label: __("Decimal places"),
                     options: [
                         {value:'n3', label: '3 (1,234.568)'},
                         {value:'n2', label: '2 (1,234.57)'},
@@ -145,7 +157,7 @@
                         {value:'n0', label: '0 (1,235)'},
                     ]
                 }, {
-                    label: 'Significant digits',
+                    label: __("Significant digits"),
                     options: [
                         {value:'s6', label:'6 (1,234.57)'},
                         {value:'s5', label:'5 (123.45)'},
