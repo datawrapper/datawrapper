@@ -112,7 +112,7 @@
             },
             updateHeight () {
                 const h = document.querySelector('.ht_master.handsontable .wtHolder .wtHider').getBoundingClientRect().height;
-                this.refs.hot.style.height = Math.min(400, h+10)+'px';
+                this.refs.hot.style.height = Math.min(500, h+10)+'px';
             },
             checkRange (r,c,r2,c2) {
                 // check if
@@ -208,7 +208,7 @@
                 startCols: 8,
                 fillHandle: false,
                 stretchH: 'all',
-                height: 400,
+                height: 500,
                 manualColumnMove: true,
                 selectionMode: 'range',
                 autoColumnSize: {useHeaders: true, syncLimit: 5},
@@ -375,12 +375,13 @@
             if (activeColumn && activeColumn.name() == column.name()) {
                 td.classList.add('active');
             }
+            const row_p = instance.getPlugin('columnSorting').untranslateRow(row);
             searchResults.forEach(res => {
-                if (res.row == row && res.col == col) {
+                if (res.row == row_p && res.col == col) {
                     td.classList.add('htSearchResult');
                 }
             });
-            if (currentResult && currentResult.row == row && currentResult.col == col) {
+            if (currentResult && currentResult.row == row_p && currentResult.col == col) {
                 td.classList.add('htCurrentSearchResult');
             }
             if (row > 0 && !column.type(true).isValid(column.val(row-1))) {

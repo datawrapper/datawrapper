@@ -741,6 +741,22 @@ html .btn-inverse {
   position: relative;
   top: 21px;
 }
+@media (max-device-width: 600px) {
+  html,
+  body {
+    overflow: auto!important;
+  }
+  #dwLoginForm {
+    width: calc(100% + 10px);
+    margin-left: -5px;
+    margin-top: 120px;
+    position: static;
+  }
+  #dwLoginForm .modal-body {
+    margin: 0;
+    max-height: none;
+  }
+}
 body.cms-mode {
   padding-top: 30px;
 }
