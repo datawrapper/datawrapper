@@ -1,6 +1,6 @@
 
-
 dw.utils = {
+    /* global dw,Globalize,_,$ */
 
     /*
      * returns the min/max range of a set of columns
@@ -198,22 +198,33 @@ dw.utils = {
     },
 
     /*
-     *
+     * computes the significant dimensions for a series of number
+     * return value can be read as N places after the decimal
      */
     significantDimension: function(values) {
         var result = [], dimension = 0,
             uniqValues = _.uniq(values),
             check, diff;
 
-        if (uniqValues.length == 1) {
-            return -1 * Math.floor(Math.log(uniqValues[0])/Math.LN10);
+        var accepted = Math.floor(uniqValues.length * 0.4);
+
+        if (uniqValues.length < 3) {
+            return Math.round(uniqValues.reduce(function(acc, cur) {
+                var exp = Math.log(cur)/Math.LN10;
+                if (exp < 8 && exp > -3) {
+                    // use tail length for normal numbers
+                    return acc + Math.min(3, tailLength(uniqValues[0]));
+                } else {
+                    return acc + (exp > 0 ? (exp-1)*-1 : (exp)*-1 );
+                }
+            }, 0) / uniqValues.length);
         }
 
-        if (_.uniq(_.map(uniqValues, round)).length == uniqValues.length) {
-            check = function() { return _.uniq(result).length == uniqValues.length; };
+        if (_.uniq(_.map(uniqValues, round)).length > accepted) {
+            check = function() { return _.uniq(result).length >= accepted; };
             diff = -1;
         } else {
-            check = function() { return _.uniq(result).length < uniqValues.length; };
+            check = function() { return _.uniq(result).length < accepted; };
             diff = +1;
         }
         var max_iter = 100;
@@ -227,6 +238,9 @@ dw.utils = {
         if (diff < 0) dimension += 2; else dimension--;
         function round(v) {
             return dw.utils.round(v, dimension);
+        }
+        function tailLength(v) {
+            return (String(v - Math.floor(v)).replace(/00000*[0-9]$/, '').replace(/9999*[0-9]$/, '')).length - 2
         }
         return dimension;
     },

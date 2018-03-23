@@ -181,17 +181,17 @@ dw.chart = function(attributes) {
             // pull output config from metadata
             // return column.formatter(config);
             var colFormat = chart.get('metadata.data.column-format', {});
-            colFormat = colFormat[column.name()] || {};
+            colFormat = colFormat[column.name()] || { type: 'auto' };
 
             if (column.type() == 'number' && (colFormat == 'auto' || colFormat.type == 'auto')) {
-                var mtrSuf = dw.utils.metricSuffix(chart.locale()),
-                    values = column.values(),
-                    dim = dw.utils.significantDimension(values),
-                    div = dim < -2 ? (Math.round((dim*-1) / 3) * 3) :
-                            (dim > 2 ? dim*-1 : 0),
-                    ndim = dw.utils.significantDimension(_.map(values, function(v) {
-                        return v / Math.pow(10, div);
-                    }));
+                var mtrSuf = dw.utils.metricSuffix(chart.locale());
+                var values = column.values();
+                var dim = dw.utils.significantDimension(values);
+                var div = dim < -2 ? (Math.round((dim*-1) / 3) * 3) :
+                            (dim > 4 ? dim*-1 : 0);
+                var ndim = dw.utils.significantDimension(_.map(values, function(v) {
+                    return v / Math.pow(10, div);
+                }));
 
                 colFormat = {
                     'number-divisor': div,

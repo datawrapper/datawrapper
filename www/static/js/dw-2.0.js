@@ -515,7 +515,6 @@ dw.column.types.number = function(sample) {
                 div = Number(config['number-divisor'] || 0),
                 append = (config['number-append'] || '').replace(/ /g, '\u00A0'),
                 prepend = (config['number-prepend'] || '').replace(/ /g, '\u00A0');
-
             return function(val, full, round) {
                 if (isNaN(val)) return val;
                 var _fmt = format;
@@ -716,7 +715,7 @@ dw.column.types.date = (function() {
             parse: reg(rx.MMM.parse, s1, rx.DD.parse, s2, rx.YYYY.parse),
             precision: 'day'
         },
-        
+
         'YYYY-WW-d': { // year + ISO week + [day]
             test: reg(rx.YYYY.test, s0, rx.W.test, s1, rx.DOW.test),
             parse: reg(rx.YYYY.parse, s0, rx.W.parse, s1, rx.DOW.parse),
@@ -789,7 +788,7 @@ dw.column.types.date = (function() {
             errors = 0,
             matches = {},
             bestMatch = ['', 0];
-            
+
         sample = sample || [];
 
         _.each(knownFormats, function(format, key) {
@@ -824,13 +823,13 @@ dw.column.types.date = (function() {
                     // increment errors anyway if string doesn't match strict format
                     if (!test(raw, format)) errors++;
                 }
-                
+
                 function guessTwoDigitYear(yr) {
                     yr = +yr;
                     if (yr < 20) return 2000 + yr;
                     else return 1900 + yr;
                 }
-                
+
                 var curYear = (new Date()).getFullYear();
 
                 switch (format) {
@@ -1175,8 +1174,8 @@ _.extend(DelimitedParser.prototype, {
 
 
 
-
 dw.utils = {
+    /* global dw,Globalize,_,$ */
 
     /*
      * returns the min/max range of a set of columns
@@ -1374,22 +1373,33 @@ dw.utils = {
     },
 
     /*
-     *
+     * computes the significant dimensions for a series of number
+     * return value can be read as N places after the decimal
      */
     significantDimension: function(values) {
         var result = [], dimension = 0,
             uniqValues = _.uniq(values),
             check, diff;
 
-        if (uniqValues.length == 1) {
-            return -1 * Math.floor(Math.log(uniqValues[0])/Math.LN10);
+        var accepted = Math.floor(uniqValues.length * 0.4);
+
+        if (uniqValues.length < 3) {
+            return Math.round(uniqValues.reduce(function(acc, cur) {
+                var exp = Math.log(cur)/Math.LN10;
+                if (exp < 8 && exp > -3) {
+                    // use tail length for normal numbers
+                    return acc + Math.min(3, tailLength(uniqValues[0]));
+                } else {
+                    return acc + (exp > 0 ? (exp-1)*-1 : (exp)*-1 );
+                }
+            }, 0) / uniqValues.length);
         }
 
-        if (_.uniq(_.map(uniqValues, round)).length == uniqValues.length) {
-            check = function() { return _.uniq(result).length == uniqValues.length; };
+        if (_.uniq(_.map(uniqValues, round)).length > accepted) {
+            check = function() { return _.uniq(result).length >= accepted; };
             diff = -1;
         } else {
-            check = function() { return _.uniq(result).length < uniqValues.length; };
+            check = function() { return _.uniq(result).length < accepted; };
             diff = +1;
         }
         var max_iter = 100;
@@ -1403,6 +1413,9 @@ dw.utils = {
         if (diff < 0) dimension += 2; else dimension--;
         function round(v) {
             return dw.utils.round(v, dimension);
+        }
+        function tailLength(v) {
+            return (String(v - Math.floor(v)).replace(/00000*[0-9]$/, '').replace(/9999*[0-9]$/, '')).length - 2
         }
         return dimension;
     },
@@ -1798,17 +1811,17 @@ dw.chart = function(attributes) {
             // pull output config from metadata
             // return column.formatter(config);
             var colFormat = chart.get('metadata.data.column-format', {});
-            colFormat = colFormat[column.name()] || {};
+            colFormat = colFormat[column.name()] || { type: 'auto' };
 
             if (column.type() == 'number' && (colFormat == 'auto' || colFormat.type == 'auto')) {
-                var mtrSuf = dw.utils.metricSuffix(chart.locale()),
-                    values = column.values(),
-                    dim = dw.utils.significantDimension(values),
-                    div = dim < -2 ? (Math.round((dim*-1) / 3) * 3) :
-                            (dim > 2 ? dim*-1 : 0),
-                    ndim = dw.utils.significantDimension(_.map(values, function(v) {
-                        return v / Math.pow(10, div);
-                    }));
+                var mtrSuf = dw.utils.metricSuffix(chart.locale());
+                var values = column.values();
+                var dim = dw.utils.significantDimension(values);
+                var div = dim < -2 ? (Math.round((dim*-1) / 3) * 3) :
+                            (dim > 4 ? dim*-1 : 0);
+                var ndim = dw.utils.significantDimension(_.map(values, function(v) {
+                    return v / Math.pow(10, div);
+                }));
 
                 colFormat = {
                     'number-divisor': div,

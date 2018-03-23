@@ -109,7 +109,6 @@ dw.column.types.number = function(sample) {
                 div = Number(config['number-divisor'] || 0),
                 append = (config['number-append'] || '').replace(/ /g, '\u00A0'),
                 prepend = (config['number-prepend'] || '').replace(/ /g, '\u00A0');
-
             return function(val, full, round) {
                 if (isNaN(val)) return val;
                 var _fmt = format;
@@ -310,7 +309,7 @@ dw.column.types.date = (function() {
             parse: reg(rx.MMM.parse, s1, rx.DD.parse, s2, rx.YYYY.parse),
             precision: 'day'
         },
-        
+
         'YYYY-WW-d': { // year + ISO week + [day]
             test: reg(rx.YYYY.test, s0, rx.W.test, s1, rx.DOW.test),
             parse: reg(rx.YYYY.parse, s0, rx.W.parse, s1, rx.DOW.parse),
@@ -383,7 +382,7 @@ dw.column.types.date = (function() {
             errors = 0,
             matches = {},
             bestMatch = ['', 0];
-            
+
         sample = sample || [];
 
         _.each(knownFormats, function(format, key) {
@@ -418,13 +417,13 @@ dw.column.types.date = (function() {
                     // increment errors anyway if string doesn't match strict format
                     if (!test(raw, format)) errors++;
                 }
-                
+
                 function guessTwoDigitYear(yr) {
                     yr = +yr;
                     if (yr < 20) return 2000 + yr;
                     else return 1900 + yr;
                 }
-                
+
                 var curYear = (new Date()).getFullYear();
 
                 switch (format) {
