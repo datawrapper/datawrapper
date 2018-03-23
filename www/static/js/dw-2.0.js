@@ -1831,11 +1831,9 @@ dw.chart = function(attributes) {
                     return Math.max(acc, Math.min(3,dw.utils.tailLength(cur)));
                 }, 0);
 
-                colFormat = {
-                    'number-divisor': div,
-                    'number-append': div ? mtrSuf[div] || ' × 10<sup>'+div+'</sup>' : '',
-                    'number-format': 'n'+Math.max(0, ndim)
-                };
+                colFormat['number-divisor'] = div;
+                colFormat['number-format'] = 'n'+Math.max(0, ndim);
+                colFormat['number-append'] = (div ? mtrSuf[div] || ' × 10<sup>'+div+'</sup>' : '') + (colFormat['number-append']||'');
             }
             return column.type(true).formatter(colFormat);
         },
