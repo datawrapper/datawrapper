@@ -62,7 +62,9 @@
                         <ul class="dropdown-menu sort-menu">
                             <li class="{{'-'==sortBy?'active':''}}"><a on:click="sort(event, '-')" href="#s">{{{__('describe / no-sorting')}}}</a></li>
                             {{#each columns as col}}
-                            <li class="{{col.name()==sortBy?'active':''}}"><a on:click="sort(event, col.name(), true)" href="#/{{col.name()}}"><i on:click="sort(event, col.name(), true)" class="fa fa-sort-{{col.type()=='text'?'alpha':'amount'}}-asc fa-fw"></i> <i class="fa fa-sort-{{col.type()=='text'?'alpha':'amount'}}-desc fa-fw"></i>&nbsp;&nbsp;&nbsp;{{col.title()}}</a></li>
+                            <li class="{{col.name()==sortBy?'active':''}}"><a on:click="sort(event, col.name(), true)" href="#/{{col.name()}}">
+                                <i on:click="sort(event, col.name(), true)" class="fa fa-sort-{{col.type()=='text'?'alpha':'amount'}}-asc fa-fw"></i>
+                                <i on:click="sort(event, col.name(), false)" class="fa fa-sort-{{col.type()=='text'?'alpha':'amount'}}-desc fa-fw"></i>&nbsp;&nbsp;&nbsp;{{col.title()}}</a></li>
                             {{/each}}
                         </ul>
                     </div>
