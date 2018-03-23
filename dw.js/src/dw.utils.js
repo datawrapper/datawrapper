@@ -210,7 +210,8 @@ dw.utils = {
 
         if (uniqValues.length < 3) {
             return Math.round(uniqValues.reduce(function(acc, cur) {
-                var exp = Math.log(cur)/Math.LN10;
+                if (!cur) return acc;
+                var exp = Math.log(Math.abs(cur))/Math.LN10;
                 if (exp < 8 && exp > -3) {
                     // use tail length for normal numbers
                     return acc + Math.min(3, dw.utils.tailLength(uniqValues[0]));
