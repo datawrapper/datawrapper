@@ -1819,22 +1819,10 @@ dw.chart = function(attributes) {
             colFormat = colFormat[column.name()] || { type: 'auto', 'number-divisor': 'auto' };
 
             if (column.type() == 'number' && (colFormat == 'auto' || colFormat['number-divisor'] == 'auto')) {
-                var mtrSuf = dw.utils.metricSuffix(chart.locale());
                 var values = column.values();
                 var dim = dw.utils.significantDimension(values);
-                var div = dim < -2 ? (Math.round((dim*-1) / 3) * 3) :
-                            (dim > 4 ? dim*-1 : 0);
-                var nvalues = values.map(function(v) {
-                    return v / Math.pow(10, div);
-                });
-                var ndim = dw.utils.significantDimension(nvalues);
-                if (ndim <= 0) ndim = nvalues.reduce(function(acc, cur) {
-                    return Math.max(acc, Math.min(3,dw.utils.tailLength(cur)));
-                }, 0);
-
-                colFormat['number-divisor'] = div;
-                colFormat['number-format'] = 'n'+Math.max(0, ndim);
-                colFormat['number-append'] = (div ? mtrSuf[div] || ' × 10<sup>'+div+'</sup>' : '') + (colFormat['number-append']||'');
+                colFormat['number-divisor'] = 0;
+                colFormat['number-format'] = 'n'+Math.max(0, dim);
             }
             return column.type(true).formatter(colFormat);
         },
