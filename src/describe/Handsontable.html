@@ -4,6 +4,8 @@
     /* global dw,chart */
     import HOT from 'Handsontable';
 
+    let app = null;
+
     export default {
         methods: {
             render() {
@@ -56,6 +58,7 @@
                 this.set({ds});
                 this.set({has_changes: chart.get('metadata.data.changes', []).length > 0})
 
+                HOT.hooks.once('afterRender', () => this.initCustomEvents());
                 hot.render();
             },
             dataChanged (cells) {
@@ -130,47 +133,14 @@
             initCustomEvents () {
                 // wait a bit to make sure HoT is rendered
                 setTimeout(() => {
-                    const {hot} = this.get();
                     // catch click events on A,B,C,D... header row
                     this.refs.hot.querySelectorAll('.htCore thead th+th').forEach(th => {
-                        th.addEventListener('click', evt => {
-                            if (evt.target.classList.contains('columnSorting')) {
-                                // user clicked on column sorter, so don't select
-                                // or unselect this column
-                                this.set({activeColumn:false});
-                                return;
-                            }
-                            // reset the HoT selection
-                            // find out which data column we're in
-                            const k = th.parentNode.children.length;
-                            let th_i = -1;
-                            // (stupid HTMLCollection has no indexOf)
-                            for (let i=0; i<k; i++) {
-                                if (th.parentNode.children.item(i) == th) {
-                                    th_i = i;
-                                    break;
-                                }
-                            }
-                            // find column index
-                            const col_i = +this.refs.hot.querySelector(`.htCore tbody tr:first-child td:nth-child(${th_i+1})`).dataset.column;
-                            const chart = this.store.get('dw_chart');
-                            const {activeColumn} = this.get();
-                            if (chart.dataset().hasColumn(col_i)) {
-                                const newActive = chart.dataset().column(+col_i);
-                                // set active column (or unset if it's already set)
-                                if (activeColumn && activeColumn.name() == newActive.name()) {
-                                    evt.target.parentNode.classList.remove('selected');
-                                    this.set({activeColumn:false});
-                                    hot.deselectCell();
-                                } else {
-                                    evt.target.parentNode.classList.add('selected');
-                                    this.set({activeColumn: newActive});
-                                }
-                            }
-                        });
+                        th.removeEventListener('click', cellHeaderClick);
+                        th.addEventListener('click', cellHeaderClick);
                     });
                 }, 500);
             },
+
             getColumnFormat(name) {
                 const chart = this.store.get('dw_chart');
                 const colFormats = chart.get('metadata.data.column-format', {});
@@ -189,7 +159,7 @@
             }
         },
         oncreate() {
-
+            app = this;
             HOT.hooks.once('afterRender', () => this.initCustomEvents());
 
             const chart = this.store.get('dw_chart');
@@ -309,7 +279,6 @@
                 setTimeout(() => hot.render(), 10);
             });
 
-            console.log('e', hot.sortingEnabled);
             // if (hot.sortingEnabled) {
             this.observe('sorting', (sorting) => {
                 hot.sort(chart.dataset().indexOf(sorting.sortBy), sorting.sortDir);
@@ -333,7 +302,7 @@
         }
     };
 
-    function getCellRenderer(app, dataset, Handsontable, metadata) {
+    function getCellRenderer(app, dataset, Handsontable) {
         const colTypeIcons = {
             date: 'fa fa-clock-o'
         };
@@ -395,6 +364,37 @@
             HtmlCellRender(instance, td, row, col, prop, value, cellProperties);
             // Reflect.apply(HtmlCellRender, this, arguments);
         };
+    }
+
+    function cellHeaderClick(evt) {
+        const th = this;
+        // reset the HoT selection
+        // find out which data column we're in
+        const k = th.parentNode.children.length;
+        let th_i = -1;
+        // (stupid HTMLCollection has no indexOf)
+        for (let i=0; i<k; i++) {
+            if (th.parentNode.children.item(i) == th) {
+                th_i = i;
+                break;
+            }
+        }
+        // find column index
+        const col_i = +app.refs.hot.querySelector(`.htCore tbody tr:first-child td:nth-child(${th_i+1})`).dataset.column;
+        const chart = app.store.get('dw_chart');
+        const {activeColumn,hot} = app.get();
+        if (chart.dataset().hasColumn(col_i)) {
+            const newActive = chart.dataset().column(+col_i);
+            // set active column (or unset if it's already set)
+            if (activeColumn && activeColumn.name() == newActive.name()) {
+                evt.target.parentNode.classList.remove('selected');
+                app.set({activeColumn:false});
+                hot.deselectCell();
+            } else {
+                evt.target.parentNode.classList.add('selected');
+                app.set({activeColumn: newActive});
+            }
+        }
     }
 
 </script>

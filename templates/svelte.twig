@@ -14,8 +14,6 @@ require(['svelte/{{ app_id }}'], function(mod) {
         store.set({ dw_chart: dw.backend.currentChart });
     }
 
-    console.log(dw.backend.currentChart.dataset());
-
     var app = new App({
         store: store,
         target: document.querySelector('#svelte-{{ app_id }}'),

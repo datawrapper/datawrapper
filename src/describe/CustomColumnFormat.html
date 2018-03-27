@@ -22,7 +22,7 @@
             />
         <Select
             label="{{__("Round numbers to")}}"
-            options="{{[{value:'-',label:__('keep original')}]}}"
+            options="{{[{value:'-',label: '-'}]}}"
             optgroups="{{numberFormats}}"
             bind:value="columnFormat['number-format']"
             width="180px"
@@ -165,7 +165,7 @@
                 },
                 colTypes: [],
                 divisors_opts: [
-                    {value:0, label: __("keep original") }
+                    {value:0, label: '-' }
                 ],
                 divisors: [{
                     label: __("describe / column-format / divide-by"),

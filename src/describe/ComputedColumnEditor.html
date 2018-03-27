@@ -85,7 +85,7 @@ label {
 </style>
 
 <script>
-    /* global  */
+    /* global __ */
     import CodeMirror from 'cm/lib/codemirror';
     import 'cm/mode/javascript/javascript';
     import 'cm/addon/mode/simple';
@@ -98,7 +98,10 @@ label {
 
     export default {
         data() {
-            return { name: '-' }
+            return {
+                name: '',
+                formula: ''
+            }
         },
         methods: {
             insert (column) {
@@ -113,7 +116,6 @@ label {
                 const customCols = clone(chart.get('metadata.describe.computed-columns', {}));
                 delete customCols[column.name()];
                 const col_index = ds.columnOrder()[ds.indexOf(column.name())];
-                console.log('real index', col_index);
                 // delete all changes that have been made to this column
                 const changes = chart.get('metadata.data.changes', []);
                 const changes_new = [];
@@ -180,7 +182,7 @@ label {
 
             const app = this;
 
-            function scriptHint(editor, callback) {
+            function scriptHint(editor) {
                 // Find the token at the cursor
                 var cur = editor.getCursor(),
                     token = editor.getTokenAt(cur),
