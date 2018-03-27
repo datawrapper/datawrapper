@@ -307,6 +307,10 @@ dw.utils = {
             return JSON.parse(JSON.stringify(obj));
         } catch (e) {}
         return obj;
+    },
+
+    equalish: function(a,b) {
+        return a-b < 1e-6;
     }
 
 };

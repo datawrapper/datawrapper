@@ -121,9 +121,10 @@ dw.column.types.number = function(sample) {
                 }
                 if (round) _fmt = 'n0';
                 if (_fmt == '-') {
-                    // guess number format
-                    _fmt = val == Math.round(val) ? 'n0' :
-                        val == Math.round(val*10)*0.1 ? 'n1' : 'n2';
+                    // guess number format based on single number
+                    _fmt = dw.utils.equalish(val, Math.round(val)) ? 'n0' :
+                        dw.utils.equalish(val, Math.round(val*10)*0.1) ? 'n1' :
+                        dw.utils.equalish(val, Math.round(val*100)*0.01) ? 'n2' : 'n3';
                 }
                 val = Globalize.format(val, _fmt != '-' ? _fmt : null);
                 return full ? prepend + val + append : val;
