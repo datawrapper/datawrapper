@@ -39,6 +39,7 @@ for plugin in plugin_list:
 config_changed = False
 # merge configs
 yaml = YAML()
+yaml.indent(offset=2)
 config = yaml.load(open(ROOT_PATH+'/config.yaml'))
 
 for plugin in plugin_list:
