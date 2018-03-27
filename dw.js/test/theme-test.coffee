@@ -1,5 +1,5 @@
 
-_ = require 'underscore'
+global._ = require 'underscore'
 vows = require 'vows'
 assert = require 'assert'
 
