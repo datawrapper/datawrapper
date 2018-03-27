@@ -1909,6 +1909,60 @@ dw.chart = function(attributes) {
             }
         });
 
+        _.each(v_columns, add_computed_column);
+
+        return dataset;
+
+        function add_computed_column(formula, name) {
+            var datefmt = function(d) { return d.getFullYear()+'-'+left_pad(1+d.getMonth(), 2, 0)+'-'+left_pad(1+d.getDate(), 2, 0); },
+                values = data.map(function(row, row_i) {
+                    var context = [];
+                    context.push('var __row = '+row_i+';');
+                    _.each(row, function(val, key) {
+                        if (!columnNameToVar[key]) return;
+                        context.push('var '+columnNameToVar[key]+' = '+JSON.stringify(val)+';');
+                        if (dataset.column(key).type() == 'number') {
+                            context.push('var '+columnNameToVar[key]+'__sum = '+col_aggregates[key].sum+';');
+                            context.push('var '+columnNameToVar[key]+'__min = '+col_aggregates[key].min+';');
+                            context.push('var '+columnNameToVar[key]+'__max = '+col_aggregates[key].max+';');
+                            context.push('var '+columnNameToVar[key]+'__mean = '+col_aggregates[key].mean+';');
+                            context.push('var '+columnNameToVar[key]+'__median = '+col_aggregates[key].median+';');
+                        }
+                    });
+                    context.push('var max = Math.max, min = Math.min;');
+                    // console.log(context.join('\n'));
+                    return (function() {
+                        try {
+                            return eval(this.context.join('\n')+'\n'+formula);
+                        } catch (e) {
+                            console.warn(e);
+                            return 'n/a';
+                        }
+                    }).call({ context: context });
+                }).map(function(v) {
+                    if (_.isBoolean(v)) return v ? 'yes' : 'no';
+                    if (_.isDate(v)) return datefmt(v);
+                    if (_.isNumber(v)) return ''+v;
+                    return String(v);
+                });
+            var v_col = dw.column(name, values);
+            v_col.isComputed = true;
+            dataset.add(v_col);
+        }
+
+        function column_name_to_var(name) {
+            // if you change this, change computed-columns.js as well
+            return name.toString().toLowerCase()
+                .replace(/\s+/g, '_')           // Replace spaces with _
+                .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+                .replace(/-/g, '_')             // Replace multiple - with single -
+                .replace(/\_\_+/g, '_')         // Replace multiple - with single -
+                .replace(/^_+/, '')             // Trim - from start of text
+                .replace(/_+$/, '')             // Trim - from end of text
+                .replace(/^(\d)/, '_$1')        // If first char is a number, prefix with _
+                .replace(/^(abstract|arguments|await|boolean|break|byte|case|catch|char|class|const|continue|debugger|default|delete|do|double|else|enum|eval|export|extends|false|final|finally|float|for|function|goto|if|implements|import|in|instanceof|int|interface|let|long|native|new|null|package|private|protected|public|return|short|static|super|switch|synchronized|this|throw|throws|transient|true|try|typeof|var|void|volatile|while|window|with|yield)$/, '$1_'); // avoid reserved keywords
+        }
+
         function d3_min(array) {
           var i = -1, n = array.length, a, b;
           if (arguments.length === 1) {
@@ -1963,60 +2017,6 @@ dw.chart = function(attributes) {
             s = String(s);
             while (s.length < l) s = String(pad) + s;
             return s;
-        }
-
-        _.each(v_columns, add_computed_column);
-
-        return dataset;
-
-        function add_computed_column(formula, name) {
-            var datefmt = function(d) { return d.getFullYear()+'-'+left_pad(1+d.getMonth(), 2, 0)+'-'+left_pad(1+d.getDate(), 2, 0); },
-                values = data.map(function(row, row_i) {
-                    var context = [];
-                    context.push('var __row = '+row_i+';');
-                    _.each(row, function(val, key) {
-                        if (!columnNameToVar[key]) return;
-                        context.push('var '+columnNameToVar[key]+' = '+JSON.stringify(val)+';');
-                        if (dataset.column(key).type() == 'number') {
-                            context.push('var '+columnNameToVar[key]+'__sum = '+col_aggregates[key].sum+';');
-                            context.push('var '+columnNameToVar[key]+'__min = '+col_aggregates[key].min+';');
-                            context.push('var '+columnNameToVar[key]+'__max = '+col_aggregates[key].max+';');
-                            context.push('var '+columnNameToVar[key]+'__mean = '+col_aggregates[key].mean+';');
-                            context.push('var '+columnNameToVar[key]+'__median = '+col_aggregates[key].median+';');
-                        }
-                    });
-                    context.push('var max = Math.max, min = Math.min;');
-                    // console.log(context.join('\n'));
-                    return (function() {
-                        try {
-                            return eval(this.context.join('\n')+'\n'+formula);
-                        } catch (e) {
-                            console.warn(e);
-                            return 'n/a';
-                        }
-                    }).call({ context: context });
-                }).map(function(v) {
-                    if (_.isBoolean(v)) return v ? 'yes' : 'no';
-                    if (_.isDate(v)) return datefmt(v);
-                    if (_.isNumber(v)) return ''+v;
-                    return String(v);
-                });
-            var v_col = dw.column(name, values);
-            v_col.isComputed = true;
-            dataset.add(v_col);
-        }
-
-        function column_name_to_var(name) {
-            // if you change this, change computed-columns.js as well
-            return name.toString().toLowerCase()
-                .replace(/\s+/g, '_')           // Replace spaces with _
-                .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
-                .replace(/-/g, '_')             // Replace multiple - with single -
-                .replace(/\_\_+/g, '_')         // Replace multiple - with single -
-                .replace(/^_+/, '')             // Trim - from start of text
-                .replace(/_+$/, '')             // Trim - from end of text
-                .replace(/^(\d)/, '_$1')        // If first char is a number, prefix with _
-                .replace(/^(abstract|arguments|await|boolean|break|byte|case|catch|char|class|const|continue|debugger|default|delete|do|double|else|enum|eval|export|extends|false|final|finally|float|for|function|goto|if|implements|import|in|instanceof|int|interface|let|long|native|new|null|package|private|protected|public|return|short|static|super|switch|synchronized|this|throw|throws|transient|true|try|typeof|var|void|volatile|while|window|with|yield)$/, '$1_'); // avoid reserved keywords
         }
     }
 
