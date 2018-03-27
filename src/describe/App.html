@@ -11,9 +11,7 @@
                     bind:column="customColumn"
                     bind:columns />
 
-                <div style="margin-top:1em">
-                   <a on:click="force(event, true)" href="#edit-format">{{__("describe / edit-format")}}</a>
-                </div>
+               <button on:click="force(event, true)" class="btn">{{__("describe / edit-format")}}</button>
 
                 {{elseif columnFormat}}
 
@@ -24,9 +22,7 @@
                     bind:columns />
 
                 {{#if columnFormat.isComputed}}
-                <div style="margin-top:1em">
-                   <a on:click="force(event, false)" href="#edit-format">{{__("describe / edit-formula")}}</a>
-                </div>
+               <button class="btn" on:click="force(event, false)"><i class="fa  fa-chevron-left"></i> {{__("describe / edit-formula")}}</button>
                 {{/if}}
 
                 {{else}}

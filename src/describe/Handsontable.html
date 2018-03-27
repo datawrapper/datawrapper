@@ -162,6 +162,24 @@
             app = this;
             HOT.hooks.once('afterRender', () => this.initCustomEvents());
 
+            window.addEventListener('keypress', (evt) => {
+                const {activeColumn, ds} = this.get();
+                if (!activeColumn) return;
+                if (evt.key == 'ArrowRight' || evt.key == 'ArrowLeft') {
+                    evt.preventDefault();
+                    evt.stopPropagation();
+                    const cur_i = ds.indexOf(activeColumn.name());
+                    if (evt.key == 'ArrowRight') {
+                        // select next column
+                        this.set({activeColumn: ds.column((cur_i+1) % ds.numColumns())});
+                    } else {
+                        // select prev column
+                        this.set({activeColumn: ds.column((cur_i-1+ds.numColumns()) % ds.numColumns())});
+                    }
+                }
+
+            });
+
             const chart = this.store.get('dw_chart');
 
             const hot = new HOT(this.refs.hot, {

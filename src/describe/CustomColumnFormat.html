@@ -10,9 +10,23 @@
             width="180px"
             />
 
+         <Checkbox
+            label="{{ __("Hide column from visualization") }}"
+            bind:value="columnFormat.ignore" />
+
+
         <hr />
 
         {{#if column && column.type() == 'number'}}
+        <Select
+            label="{{__("Round numbers to")}}"
+            options="{{[
+                {value:'-',label: __("describe / column-format / individual")},
+                {value:'auto',label: __("describe / column-format / auto-detect") }]}}"
+            optgroups="{{numberFormats}}"
+            bind:value="columnFormat['number-format']"
+            width="180px"
+            />
         <Select
             label="{{__("Divide numbers by")}}"
             options="{{divisors_opts}}"
@@ -20,13 +34,7 @@
             bind:value="columnFormat['number-divisor']"
             width="180px"
             />
-        <Select
-            label="{{__("Round numbers to")}}"
-            options="{{[{value:'-',label: '-'}]}}"
-            optgroups="{{numberFormats}}"
-            bind:value="columnFormat['number-format']"
-            width="180px"
-            />
+
         <div class="control-group vis-option-type-select">
             <label class="control-label">
                 {{__("Prepend/Append")}}
@@ -38,16 +46,7 @@
             </div>
         </div>
 
-        <button on:click="autoFormat()" class="btn btn-small"><i class="fa fa-magic"></i> {{__("describe / column-format / auto")}}</button>
-        <hr />
-
         {{/if}}
-
-
-        <Checkbox
-            label="{{ __("Hide column from visualization") }}"
-            bind:value="columnFormat.ignore" />
-
 
     </div>
 </div>
@@ -63,7 +62,7 @@
     export default {
         components: { Checkbox, Select },
         methods: {
-            autoFormat() {
+            autoDivisor() {
                 const chart = this.store.get('dw_chart');
                 const {column} = this.get();
                 const mtrSuf = dw.utils.metricSuffix(chart.locale());
@@ -146,6 +145,11 @@
                 const columnFormats = arrayToObject(chrt.get('metadata.data.column-format', {}));
                 const oldFormat = columnFormats[column.name()];
                 if (!oldFormat || JSON.stringify(oldFormat) != JSON.stringify(colFormat)) {
+                    if (colFormat['number-divisor'] == 'auto') {
+                        // stop here and compute divisor automatically
+                        setTimeout(() => this.autoDivisor(), 100);
+                        return;
+                    }
                     columnFormats[column.name()] = clone(colFormat);
                     chrt.set('metadata.data.column-format', columnFormats);
                     if (chrt.saveSoon) chrt.saveSoon();
@@ -159,13 +163,15 @@
                 columnFormat: {
                     type: 'auto',
                     ignore: false,
-                    'number-divisor': 'auto',
+                    'number-divisor': '-',
+                    'number-format': 'auto',
                     'number-prepend': '',
                     'number-append': '',
                 },
                 colTypes: [],
                 divisors_opts: [
-                    {value:0, label: '-' }
+                    {value:0, label: __("describe / column-format / no-change") },
+                    {value:'auto', label: __("describe / column-format / automatic") },
                 ],
                 divisors: [{
                     label: __("describe / column-format / divide-by"),
