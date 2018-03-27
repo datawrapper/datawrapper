@@ -162,6 +162,7 @@ dw.utils = {
             }
             input = stripTags(input, allowed);
             // remove all event attributes
+            if (typeof document == 'undefined') return input;
             var d = document.createElement('div');
             d.innerHTML = input;
             var sel = d.querySelectorAll('*');
