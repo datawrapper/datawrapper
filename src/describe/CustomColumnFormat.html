@@ -53,6 +53,7 @@
 </div>
 
 <script>
+    /* global __,dw */
     import Checkbox from '../controls/Checkbox.html';
     import Select from '../controls/Select.html';
     import _throttle from 'underscore-es/throttle';
@@ -63,6 +64,7 @@
         components: { Checkbox, Select },
         methods: {
             autoFormat() {
+                const chart = this.store.get('dw_chart');
                 const {column} = this.get();
                 const mtrSuf = dw.utils.metricSuffix(chart.locale());
                 const values = column.values();
@@ -78,6 +80,10 @@
                 }, 0);
 
                 if (ndim == div) {
+                    div = 0;
+                    ndim = 0;
+                }
+                if (div > 15) {
                     div = 0;
                     ndim = 0;
                 }
