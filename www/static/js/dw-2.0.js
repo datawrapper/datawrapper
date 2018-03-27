@@ -527,9 +527,10 @@ dw.column.types.number = function(sample) {
                 }
                 if (round) _fmt = 'n0';
                 if (_fmt == '-') {
-                    // guess number format
-                    _fmt = val == Math.round(val) ? 'n0' :
-                        val == Math.round(val*10)*0.1 ? 'n1' : 'n2';
+                    // guess number format based on single number
+                    _fmt = dw.utils.equalish(val, Math.round(val)) ? 'n0' :
+                        dw.utils.equalish(val, Math.round(val*10)*0.1) ? 'n1' :
+                        dw.utils.equalish(val, Math.round(val*100)*0.01) ? 'n2' : 'n3';
                 }
                 val = Globalize.format(val, _fmt != '-' ? _fmt : null);
                 return full ? prepend + val + append : val;
@@ -1337,6 +1338,7 @@ dw.utils = {
             }
             input = stripTags(input, allowed);
             // remove all event attributes
+            if (typeof document == 'undefined') return input;
             var d = document.createElement('div');
             d.innerHTML = input;
             var sel = d.querySelectorAll('*');
@@ -1379,9 +1381,10 @@ dw.utils = {
     significantDimension: function(values) {
         var result = [], dimension = 0,
             uniqValues = _.uniq(values),
+            totalUniq = uniqValues.length,
             check, diff;
 
-        var accepted = Math.floor(uniqValues.length * 0.4);
+        var accepted = Math.floor(totalUniq * 0.8);
 
         if (uniqValues.length < 3) {
             return Math.round(uniqValues.reduce(function(acc, cur) {
@@ -1397,10 +1400,13 @@ dw.utils = {
         }
 
         if (_.uniq(_.map(uniqValues, round)).length > accepted) {
-            check = function() { return _.uniq(result).length >= accepted; };
+            // we seem to have enough precision, but maybe it's too much?
+            check = function() { return _.uniq(result).length == totalUniq; };
             diff = -1;
         } else {
-            check = function() { return _.uniq(result).length < accepted; };
+            // if we end up here it means we're loosing too much information
+            // due to rounding, we need to increase precision
+            check = function() { return _.uniq(result).length <= accepted; };
             diff = +1;
         }
         var max_iter = 100;
@@ -1482,6 +1488,10 @@ dw.utils = {
             return JSON.parse(JSON.stringify(obj));
         } catch (e) {}
         return obj;
+    },
+
+    equalish: function(a,b) {
+        return a-b < 1e-6;
     }
 
 };
@@ -1816,9 +1826,9 @@ dw.chart = function(attributes) {
             // pull output config from metadata
             // return column.formatter(config);
             var colFormat = chart.get('metadata.data.column-format', {});
-            colFormat = colFormat[column.name()] || { type: 'auto', 'number-divisor': 'auto' };
+            colFormat = colFormat[column.name()] || { type: 'auto', 'number-format': 'auto'};
 
-            if (column.type() == 'number' && (colFormat == 'auto' || colFormat['number-divisor'] == 'auto')) {
+            if (column.type() == 'number' && (colFormat == 'auto' || colFormat['number-format'] == 'auto')) {
                 var values = column.values();
                 var dim = dw.utils.significantDimension(values);
                 colFormat['number-divisor'] = 0;

@@ -181,9 +181,9 @@ dw.chart = function(attributes) {
             // pull output config from metadata
             // return column.formatter(config);
             var colFormat = chart.get('metadata.data.column-format', {});
-            colFormat = colFormat[column.name()] || { type: 'auto', 'number-divisor': 'auto' };
+            colFormat = colFormat[column.name()] || { type: 'auto', 'number-format': 'auto'};
 
-            if (column.type() == 'number' && (colFormat == 'auto' || colFormat['number-divisor'] == 'auto')) {
+            if (column.type() == 'number' && (colFormat == 'auto' || colFormat['number-format'] == 'auto')) {
                 var values = column.values();
                 var dim = dw.utils.significantDimension(values);
                 colFormat['number-divisor'] = 0;
