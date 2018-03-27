@@ -97,6 +97,9 @@ label {
     import clone from '../shared/clone.js';
 
     export default {
+        data() {
+            return { name: '-' }
+        },
         methods: {
             insert (column) {
                 const {cm} = this.get();
