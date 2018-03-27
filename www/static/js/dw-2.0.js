@@ -406,7 +406,6 @@ dw.column = function(name, rows, type) {
 
 dw.column.types = {};
 
-
 dw.column.types.text = function() {
     return {
         parse: _.identity,
@@ -530,7 +529,11 @@ dw.column.types.number = function(sample) {
                     // guess number format based on single number
                     _fmt = dw.utils.equalish(val, Math.round(val)) ? 'n0' :
                         dw.utils.equalish(val, Math.round(val*10)*0.1) ? 'n1' :
-                        dw.utils.equalish(val, Math.round(val*100)*0.01) ? 'n2' : 'n3';
+                        dw.utils.equalish(val, Math.round(val*100)*0.01) ? 'n2' :
+                        dw.utils.equalish(val, Math.round(val*1000)*0.001) ? 'n3' :
+                        dw.utils.equalish(val, Math.round(val*10000)*0.0001) ? 'n4' :
+                        dw.utils.equalish(val, Math.round(val*100000)*0.00001) ? 'n5' :
+                        'n6';
                 }
                 val = Globalize.format(val, _fmt != '-' ? _fmt : null);
                 return full ? prepend + val + append : val;
