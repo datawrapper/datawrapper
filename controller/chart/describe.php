@@ -73,7 +73,11 @@ $app->get('/chart/:id/describe', function ($id) use ($app) {
              }, explode(',', $GLOBALS['dw_config']['plugins']['chart-locale-select']['locales'] ?? 'en-US|english,de-DE|deutsch'))
         ];
 
-        $useBeta = ($user->isAdmin() || $app->request()->get('beta') == 1) && $app->request()->get('beta') !== '0';
+
+        // mod 20 -> 5% of users, mod 10 -> 10% of users, mod 5 -> 20% of users
+        $useBeta = ($user->isAdmin() || $app->request()->get('beta') == 1
+            || $user->getID() % 20 == 2)
+            && $app->request()->get('beta') !== '0';
 
         $app->render('chart/describe'.($useBeta ? '-new' : '').'.twig', $page);
     });
