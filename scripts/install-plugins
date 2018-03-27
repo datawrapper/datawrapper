@@ -1,0 +1,64 @@
+#!/usr/bin/env python
+import sys
+from os.path import exists,realpath,dirname
+from subprocess import check_call
+from ruamel.yaml import YAML
+from datetime import datetime
+
+ROOT_PATH = dirname(dirname(realpath(__file__)))
+
+def dw_plugins(*args):
+    return check_call(['/usr/bin/env', 'php', ROOT_PATH+'/scripts/plugin.php'] + list(args))
+
+plugin_file = '/keybase/team/datawrapper/config/plugins.txt'
+if not exists(plugin_file):
+    print('You need to setup keybase and be part of the datawrapper team')
+    exit(-1)
+
+plugin_list = open(plugin_file).read().strip().split('\n')
+
+for plugin in plugin_list:
+    if exists(ROOT_PATH + '/plugins/' + plugin + '/package.json'):
+        print('plugin %s already exists' % plugin)
+        # check if the plugin is up to date
+    else:
+        # installing the plugin
+        dw_plugins('clone', plugin)
+
+## make sure all plugins are in .git/info/exclude
+exclude_file = open(ROOT_PATH + '/.git/info/exclude').read().strip()+'\n'
+excluded_plugins = exclude_file.split('\n')
+exclude_changed = False
+
+for plugin in plugin_list:
+    if ('plugins/'+plugin) not in excluded_plugins and exists(ROOT_PATH + '/plugins/'+plugin+'/.git'):
+        print('adding "plugins/'+plugin+'" to .git/info/exclude')
+        exclude_file += 'plugins/'+plugin+'\n'
+        exclude_changed = True
+
+config_changed = False
+# merge configs
+yaml = YAML()
+config = yaml.load(open(ROOT_PATH+'/config.yaml'))
+
+for plugin in plugin_list:
+    plugin_cfg_file = '/keybase/team/datawrapper/config/plugins/'+plugin+'.yaml'
+    if exists(plugin_cfg_file):
+        plugin_cfg = yaml.load(open(plugin_cfg_file))
+        if plugin not in config['plugins']:
+            print('found a missing config', plugin_cfg)
+            config['plugins'][plugin] = plugin_cfg
+            config_changed = True
+
+if exclude_changed:
+    f = open(ROOT_PATH + '/.git/info/exclude', 'w')
+    f.write(exclude_file)
+    print('wrote .git/info/exclude')
+
+if config_changed:
+    # create timestamped backup
+    bak = open(ROOT_PATH+'/tmp/config.yaml.%s.bak' % datetime.now().strftime('%Y%m%d-%H%M%S'), 'w')
+    bak.write(open(ROOT_PATH+'/config.yaml').read())
+    bak.close()
+    yaml.dump(config, open(ROOT_PATH + '/config.yaml', 'w'))
+    print('wrote config.yaml')

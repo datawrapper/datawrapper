@@ -29,7 +29,6 @@ node_modules
 *.bts
 bower_components/
 locale/messages.tsv
-.python-version
 exports/*
 legacy/*
 composer.phar

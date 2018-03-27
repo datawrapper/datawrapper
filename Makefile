@@ -3,6 +3,8 @@ GENERATED_FILES = \
 	dw.js/dw-2.0.js \
 	www/static/css/datawrapper.css
 
+.PHONY: plugins
+
 all: $(GENERATED_FILES)
 
 clean:
@@ -30,3 +32,6 @@ svelte:
 
 svelte-dev:
 	cd src && watch 'ROLLUP_WATCH=1 node rollup.js' .
+
+plugins:
+	scripts/install-plugins
