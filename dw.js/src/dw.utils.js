@@ -205,9 +205,10 @@ dw.utils = {
     significantDimension: function(values) {
         var result = [], dimension = 0,
             uniqValues = _.uniq(values),
+            totalUniq = uniqValues.length,
             check, diff;
 
-        var accepted = Math.floor(uniqValues.length * 0.4);
+        var accepted = Math.floor(totalUniq * 0.8);
 
         if (uniqValues.length < 3) {
             return Math.round(uniqValues.reduce(function(acc, cur) {
@@ -223,10 +224,13 @@ dw.utils = {
         }
 
         if (_.uniq(_.map(uniqValues, round)).length > accepted) {
-            check = function() { return _.uniq(result).length >= accepted; };
+            // we seem to have enough precision, but maybe it's too much?
+            check = function() { return _.uniq(result).length == totalUniq; };
             diff = -1;
         } else {
-            check = function() { return _.uniq(result).length < accepted; };
+            // if we end up here it means we're loosing too much information
+            // due to rounding, we need to increase precision
+            check = function() { return _.uniq(result).length <= accepted; };
             diff = +1;
         }
         var max_iter = 100;
