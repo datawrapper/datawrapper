@@ -37,3 +37,4 @@ dw-translations.p12
 lib/core/propel-gen
 .env
 .dgsstoken
+dw.js/yarn.lock
