@@ -250,6 +250,8 @@
   "describe / column-format / no-change": "(keine Änderung)",
   "describe / column-format / auto-detect": "(automatisch - einheitlich)",
   "describe / column-format / individual": "(automatisch - individuell)",
+  "describe / not-happy": "Du magst die neue Ansicht nicht? Sag uns <a href='mailto:hello@datawrapper.de?subject=Feedback'>weshalb</a>!<br><a href='?beta=0'>Hier</a> kannst du zur alten Seite wechseln.",
+  "describe / try-beta": "<b>Neugierig auf Features?</b> Wir arbeiten an einer neuen Version dieser Seite. <a href='?beta=1'>Klicke hier</a> um zum aktivieren!",
   "Decimal places": "Nachkommastellen",
   "Significant digits": "Relevante Ziffern",
   "Prepend/Append": "Präfix/Suffix",

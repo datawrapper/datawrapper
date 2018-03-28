@@ -250,6 +250,8 @@
   "describe / column-format / no-change": "(no change)",
   "describe / column-format / auto-detect": "(auto-detect - one for all)",
   "describe / column-format / individual": "(auto-detect - case by case)",
+  "describe / not-happy": "Not happy with the new page? We'd love to <a href='mailto:hello@datawrapper.de?subject=Feedback'>know why!</a><br> You can switch to the old version <a href='?beta=0'>here</a>",
+  "describe / try-beta": "<b>Curious to try new features?</b> We are working on a new version of this page. <a href='?beta=1'>Click here</a> to activate it!",
   "Decimal places": "Decimal places",
   "Significant digits": "Significant digits",
   "Prepend/Append": "Prepend/append",

@@ -3392,3 +3392,17 @@ input[type="color"],
   margin-top: 0;
   font-size: 15px;
 }
+.did-you-know h3 .im {
+  font-size: 15;
+}
+.did-you-know p {
+  font-weight: 400;
+}
+.did-you-know p a {
+  color: white;
+  font-weight: bold;
+  text-decoration: underline;
+}
+.did-you-know p:last-child {
+  margin-bottom: 0;
+}
