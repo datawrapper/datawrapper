@@ -98,7 +98,7 @@
                 const newOrder = columnOrder.slice(0);
                 const after = columnOrder[tgtIndex];
                 const elements = newOrder.splice(srcColumns[0], srcColumns.length);
-                const insertAt = after ? newOrder.indexOf(after) : newOrder.length;
+                const insertAt = after ? newOrder.indexOf(after) : 0;
                 newOrder.splice(insertAt, 0, ...elements);
                 this.store.get('dw_chart')
                     .set('metadata.data.column-order', newOrder.slice(0));
