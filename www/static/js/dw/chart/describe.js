@@ -1,7 +1,6 @@
 /* global define,_,$,dw */
 define(['handsontable', './describe/computed-columns'], function() {
 
-    console.log('foo');
     var _chartLocale;
     var _readonly = false;
 
@@ -281,6 +280,8 @@ define(['handsontable', './describe/computed-columns'], function() {
             $('#data-preview .htCore thead tr:first-child th:first-child,a.transpose').off('click').on('click', function() {
                 chart.set('metadata.data.transpose', !chart.get('metadata.data.transpose', false));
                 ht.render();
+                // track event
+                _paq.push(['trackEvent', 'describe', 'click', 'transpose-btn-top']);
             });
 
             function isNone(val) {
@@ -376,6 +377,7 @@ define(['handsontable', './describe/computed-columns'], function() {
                     min++;
                 }
             }
+            _paq.push(['trackEvent', 'describe', 'select-columns',selectedColumns.length>1?'multiple':'single', selectedColumns.length]);
             $dataPreview.handsontable('render');
             showColumnSettings();
         }
