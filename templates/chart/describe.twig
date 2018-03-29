@@ -103,7 +103,8 @@ dw.backend.ready(function() {
 
                             <div class="controls">
                                 <select id="number-format" class="select number-format" style="width:90%">
-                                    <option value="-">{% trans "keep original" %}</option>
+                                    <option value="auto">{% trans "describe / column-format / auto-detect" %}</option>
+                                    <option value="-">{% trans "describe / column-format / individual" %}</option>
                                     <optgroup label="{% trans "Decimal places" %}">
                                     {% for id, format in numberformats %}
                                         <option value="{{ id }}">{{ format }}</option>

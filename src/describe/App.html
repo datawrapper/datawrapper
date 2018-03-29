@@ -26,17 +26,17 @@
                 {{/if}}
 
                 {{elseif multiSelection}}
-                <h3 class="first">Show/hide multiple columns</h3>
+                <h3 class="first">{{__("describe / show-hide-multi")}}</h3>
 
                 <ul class="unstyled">
-                    <li>
+                    <li style="margin-bottom: 5px">
                         <button class="btn" on:click="hideMultiple(multiSelection, false)">
-                            <i class="fa fa-eye"></i> Show selected columns
+                            <i class="fa fa-eye"></i> {{__("describe / show-selected")}}
                         </button>
                     </li>
                     <li>
                         <button class="btn" on:click="hideMultiple(multiSelection, true)">
-                            <i class="fa fa-eye-slash"></i> Hide selected columns
+                            <i class="fa fa-eye-slash"></i> {{__("describe / hide-selected")}}
                         </button>
                     </li>
                 </ul>
