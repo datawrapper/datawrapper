@@ -1831,7 +1831,7 @@ dw.chart = function(attributes) {
             var colFormat = chart.get('metadata.data.column-format', {});
             colFormat = colFormat[column.name()] || { type: 'auto', 'number-format': 'auto'};
 
-            if (column.type() == 'number' && (colFormat == 'auto' || colFormat['number-format'] == 'auto')) {
+            if (column.type() == 'number' && (colFormat == 'auto' || colFormat['number-format'] === undefined || colFormat['number-format'] == 'auto')) {
                 var values = column.values();
                 var dim = dw.utils.significantDimension(values);
                 colFormat['number-divisor'] = 0;

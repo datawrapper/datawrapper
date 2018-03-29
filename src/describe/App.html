@@ -25,6 +25,21 @@
                <button class="btn" on:click="force(event, false)"><i class="fa  fa-chevron-left"></i> {{__("describe / edit-formula")}}</button>
                 {{/if}}
 
+                {{elseif multiSelection}}
+                <h3 class="first">Show/hide multiple columns</h3>
+
+                <ul class="unstyled">
+                    <li>
+                        <button class="btn" on:click="hideMultiple(multiSelection, false)">
+                            <i class="fa fa-eye"></i> Show selected columns
+                        </button>
+                    </li>
+                    <li>
+                        <button class="btn" on:click="hideMultiple(multiSelection, true)">
+                            <i class="fa fa-eye-slash"></i> Hide selected columns
+                        </button>
+                    </li>
+                </ul>
                 {{else}}
                 <h3 class="first">{{ __("Make sure the data looks right") }}</h3>
 
@@ -117,6 +132,7 @@
                 bind:search
                 bind:searchResults
                 bind:searchIndex
+                bind:multiSelection
                 on:resetSort="set({sortBy:'-'})" />
 
             <div class="buttons below-table pull-right">
@@ -252,6 +268,23 @@
             force(event, val=true) {
                 event.preventDefault();
                 this.set({forceColumnFormat:val});
+            },
+            hideMultiple(columns, hide) {
+                console.log(columns.map(c=>c.name()), hide);
+                const chart = this.store.get('dw_chart');
+                const colFmt = chart.get('metadata.data.column-format', {});
+                columns.forEach(col => {
+                    if (colFmt[col.name()]) colFmt[col.name()].ignore = hide;
+                    else {
+                        colFmt[col.name()] = {type:'auto',ignore:hide};
+                    }
+                });
+                chart.set('metadata.data.column-format', colFmt);
+                chart.saveSoon();
+                setTimeout(() => {
+                    this.refs.hot.get('hot').render();
+                }, 10);
+                this.set({multiSelection: false});
             }
         },
         data() {
@@ -265,6 +298,7 @@
                 activeColumn: false,
                 customColumn: false,
                 columnFormat: false,
+                multiSelection: false,
                 forceColumnFormat: false,
                 searchResults: [],
                 sortBy: '-',

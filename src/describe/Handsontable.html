@@ -123,12 +123,22 @@
                 // 2. the range starts at the first row, and
                 // 3. the range extends through he last row
                 const {hot} = this.get();
+                const {ds} = this.get();
+                const refs = this.refs;
                 if (c == c2 && r === 0 && r2 == hot.countRows()-1) {
                     // const chart = this.store.get('dw_chart');
                     // this.set({activeColumn: chart.dataset().column(c)});
                     return;
                 }
-                this.set({activeColumn:null});
+                if (c != c2 && r === 0 && r2 == hot.countRows()-1) {
+                    const sel = [];
+                    for (let i=Math.min(c,c2); i<=Math.max(c,c2); i ++) {
+                        sel.push(+document.querySelector(`#data-preview .htCore tbody tr:first-child td:nth-child(${i+2})`).dataset.column);
+                    }
+                    this.set({multiSelection:  sel.map(i => ds.column(i)), activeColumn:null});
+                    return;
+                }
+                this.set({activeColumn:null, multiSelection:false});
             },
             initCustomEvents () {
                 // wait a bit to make sure HoT is rendered
