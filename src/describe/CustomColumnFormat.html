@@ -11,9 +11,8 @@
             />
 
          <Checkbox
-            label="{{ __("Hide column from visualization") }}"
+            label="{{ __("Hide column from visualization") }} ()"
             bind:value="columnFormat.ignore" />
-
 
         <hr />
 
@@ -107,6 +106,7 @@
                         ignore: false,
                         'number-prepend': '',
                         'number-append': '',
+                        'number-format': 'auto'
                     };
                 }
                 return columnFormat;
