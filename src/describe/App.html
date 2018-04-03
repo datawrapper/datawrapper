@@ -271,7 +271,6 @@
                 this.set({forceColumnFormat:val});
             },
             hideMultiple(columns, hide) {
-                console.log(columns.map(c=>c.name()), hide);
                 const chart = this.store.get('dw_chart');
                 const colFmt = chart.get('metadata.data.column-format', {});
                 columns.forEach(col => {
