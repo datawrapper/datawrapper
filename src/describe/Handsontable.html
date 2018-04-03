@@ -172,7 +172,7 @@
             app = this;
             HOT.hooks.once('afterRender', () => this.initCustomEvents());
 
-            window.addEventListener('keypress', (evt) => {
+            window.addEventListener('keyup', (evt) => {
                 const {activeColumn, ds} = this.get();
                 if (!activeColumn) return;
                 if (evt.key == 'ArrowRight' || evt.key == 'ArrowLeft') {
@@ -283,7 +283,8 @@
                 if (v != vo && vo !== undefined) this.update()
             });
 
-            this.observe('search', (query) => {
+            this.observe('search', (query, oldquery) => {
+                if (query != oldquery) this.set({searchIndex:0});
                 const searchResults = hot.search.query(query);
                 this.set({searchResults});
                 hot.render();
