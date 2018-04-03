@@ -98,7 +98,7 @@
                 const newOrder = columnOrder.slice(0);
                 const after = columnOrder[tgtIndex];
                 const elements = newOrder.splice(srcColumns[0], srcColumns.length);
-                const insertAt = after ? newOrder.indexOf(after) : 0;
+                const insertAt = after === undefined ? newOrder.length : after ? newOrder.indexOf(after) : 0;
                 newOrder.splice(insertAt, 0, ...elements);
                 this.store.get('dw_chart')
                     .set('metadata.data.column-order', newOrder.slice(0));
@@ -144,6 +144,10 @@
                 // wait a bit to make sure HoT is rendered
                 setTimeout(() => {
                     // catch click events on A,B,C,D... header row
+                    this.refs.hot.querySelectorAll('.htCore thead th+th').forEach(th => {
+                        th.removeEventListener('click', cellHeaderClick);
+                        th.addEventListener('click', cellHeaderClick);
+                    });
                     this.refs.hot.querySelectorAll('.htCore thead th+th').forEach(th => {
                         th.removeEventListener('click', cellHeaderClick);
                         th.addEventListener('click', cellHeaderClick);
