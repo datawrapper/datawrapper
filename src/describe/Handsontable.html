@@ -70,6 +70,7 @@
                         const {transpose} = this.get();
                         const changes = chart.get('metadata.data.changes', []);
                         row = hot.toPhysicalRow(row);
+                        col = chart.dataset().columnOrder()[col];
                         if (transpose) {
                             // swap row and col
                             const tmp = row;
