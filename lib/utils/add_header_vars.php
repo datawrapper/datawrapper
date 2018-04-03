@@ -1,6 +1,5 @@
 <?php
 
-
 function add_header_vars(&$page, $active = null, $page_css = null) {
 
     if (!function_exists('header_nav_hook')) {
@@ -135,6 +134,8 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
             );
         }
 
+    } else {
+        $langDropdown = ['dropdown'=>[]];
     }
 
     if ($user->isLoggedIn()) {
