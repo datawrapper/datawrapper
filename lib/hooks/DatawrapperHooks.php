@@ -254,6 +254,8 @@ class DatawrapperHooks {
 
     // allow plugins to revoke publishing rights
     const USER_MAY_PUBLISH = 'user_may_publish';
+    const IS_CHART_WRITABLE = 'is_chart_writable';
+    const IS_CHART_READABLE = 'is_chart_readable';
 
     // custom share urls
     const CHART_ADD_SHARE_URL = 'chart_add_share_url';

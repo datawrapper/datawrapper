@@ -265,6 +265,15 @@ class Chart extends BaseChart {
      */
     public function isReadable($user) {
         if ($user->isLoggedIn()) {
+            if (Hooks::hookRegistered(Hooks::IS_CHART_READABLE)) {
+                $readables = Hooks::execute(Hooks::IS_CHART_READABLE, $this, $user);
+                foreach ($readables as $readable) {
+                    if ($readable === true) {
+                        return true;
+                    }
+                }
+            }
+
             $org = $this->getOrganization();
             if ($this->getAuthorId() == $user->getId() ||
                 $user->isAdmin() ||
@@ -298,6 +307,15 @@ class Chart extends BaseChart {
      */
     public function isWritable($user) {
         if ($user->isLoggedIn()) {
+            if (Hooks::hookRegistered(Hooks::IS_CHART_WRITABLE)) {
+                $writables = Hooks::execute(Hooks::IS_CHART_WRITABLE, $this, $user);
+                foreach ($writables as $writable) {
+                    if ($writable === true) {
+                        return true;
+                    }
+                }
+            }
+
             $org = $this->getOrganization();
             // chart is writable if...
                 // this user is the chart author
