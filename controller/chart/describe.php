@@ -83,7 +83,7 @@ $app->get('/chart/:id/describe', function ($id) use ($app) {
         $useBeta = (
                 $user->isAdmin() ||
                 ($user->getUserData()['beta_describe'] ?? null) == "1" ||
-                $user->getID() % 10 == 2
+                $user->getID() % 5 == 2
             ) && (
                 ($user->getUserData()['beta_describe'] ?? null) !== '0'
             );
