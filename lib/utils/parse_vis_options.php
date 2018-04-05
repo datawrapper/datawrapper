@@ -16,6 +16,8 @@ function parse_vis_options(&$vis) {
                 if ($g_option['type'] != 'group') {
                     $options = [$g_option];
                 } else {
+                    // open groups by default
+                    if (!isset($g_option['open'])) $vis[$options_key][$key]['open'] = true;
                     $options = $g_option['options'];
                 }
                 foreach ($options as $sub_key => $option) {

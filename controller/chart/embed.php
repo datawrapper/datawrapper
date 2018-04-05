@@ -20,6 +20,16 @@ $app->get('/chart/:id/', function ($id) use ($app) {
         if (empty($theme)) $theme = ThemeQuery::create()->findPk("default");
         $page['theme'] = $theme;
 
+        // copy attributes from last published version
+        $publicChart = $chart->getPublicChart();
+
+        if ($publicChart) {
+            $chart->setType($publicChart->getType());
+            $chart->setExternalData($publicChart->getExternalData());
+            $chart->setTitle($publicChart->getTitle());
+            $chart->setRawMetadata($publicChart->getMetadata());
+        }
+
         $page = get_chart_content($chart, $user, $theme, $app->request()->get('minify'), $app->request()->get('debug'));
         $page['thumb'] = $app->request()->params('t') == 1;
         $page['innersvg'] = $app->request()->get('innersvg') == 1;

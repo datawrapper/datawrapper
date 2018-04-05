@@ -70,6 +70,7 @@
                         const {transpose} = this.get();
                         const changes = chart.get('metadata.data.changes', []);
                         row = hot.toPhysicalRow(row);
+                        col = chart.dataset().columnOrder()[col];
                         if (transpose) {
                             // swap row and col
                             const tmp = row;
@@ -98,7 +99,7 @@
                 const newOrder = columnOrder.slice(0);
                 const after = columnOrder[tgtIndex];
                 const elements = newOrder.splice(srcColumns[0], srcColumns.length);
-                const insertAt = after ? newOrder.indexOf(after) : 0;
+                const insertAt = after === undefined ? newOrder.length : after ? newOrder.indexOf(after) : 0;
                 newOrder.splice(insertAt, 0, ...elements);
                 this.store.get('dw_chart')
                     .set('metadata.data.column-order', newOrder.slice(0));
@@ -144,6 +145,10 @@
                 // wait a bit to make sure HoT is rendered
                 setTimeout(() => {
                     // catch click events on A,B,C,D... header row
+                    this.refs.hot.querySelectorAll('.htCore thead th:first-child').forEach(th => {
+                        th.removeEventListener('click', topLeftCornerClick);
+                        th.addEventListener('click', topLeftCornerClick);
+                    });
                     this.refs.hot.querySelectorAll('.htCore thead th+th').forEach(th => {
                         th.removeEventListener('click', cellHeaderClick);
                         th.addEventListener('click', cellHeaderClick);
@@ -172,7 +177,7 @@
             app = this;
             HOT.hooks.once('afterRender', () => this.initCustomEvents());
 
-            window.addEventListener('keypress', (evt) => {
+            window.addEventListener('keyup', (evt) => {
                 const {activeColumn, ds} = this.get();
                 if (!activeColumn) return;
                 if (evt.key == 'ArrowRight' || evt.key == 'ArrowLeft') {
@@ -283,7 +288,8 @@
                 if (v != vo && vo !== undefined) this.update()
             });
 
-            this.observe('search', (query) => {
+            this.observe('search', (query, oldquery) => {
+                if (query != oldquery) this.set({searchIndex:0});
                 const searchResults = hot.search.query(query);
                 this.set({searchResults});
                 hot.render();
@@ -392,6 +398,13 @@
             HtmlCellRender(instance, td, row, col, prop, value, cellProperties);
             // Reflect.apply(HtmlCellRender, this, arguments);
         };
+    }
+
+    function topLeftCornerClick(evt) {
+        evt.preventDefault();
+        const {transpose} = app.get();
+        app.set({transpose: !transpose});
+        app.update();
     }
 
     function cellHeaderClick(evt) {
@@ -519,7 +532,19 @@
             cursor: pointer;
             background: #eee;
             border-right: 1px solid hsl(210,0%,70%);
-
+            &:first-child {
+                .cornerHeader:after {
+                    display: block;
+                    content: '';
+                    width: 12px;
+                    height: 12px;
+                    background-image: url(/static/css/chart-editor/transpose.png);
+                    background-size: contain;
+                    position: absolute;
+                    top: ~'calc(50% - 6px)';
+                    left: ~'calc(50% - 6px)';
+                }
+            }
             &.selected {
                 background: #18a1cd;
                 color: white;
