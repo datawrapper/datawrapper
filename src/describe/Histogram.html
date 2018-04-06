@@ -6,11 +6,11 @@
             {{#each ticks as tick}}
             <g class='tick' transform='translate({{xScale(tick.x)}},0)'>
                 <line y2="3" />
-                <text y='3'>{{tick.label}}</text>
+                <text y='5'>{{tick.label}}</text>
             </g>
             {{/each}}
             {{#if highlight}}
-            <polygon transform='translate({{xScale(highlight.x)}},0)' points="0,0,3,3,-3,3" />
+            <polygon transform='translate({{xScale(highlight.x)}},0)' points="0,0,4,6,-4,6" />
             {{/if}}
         </g>
 
@@ -99,12 +99,13 @@
             bins (xScale, validValues) {
                 return histogram()
                     .domain(xScale.domain())
-                    .thresholds(thresholdSturges)(validValues);
+                    .thresholds(xScale.ticks(14))(validValues);
             },
 
             xScale (validValues, innerWidth) {
                 return xScale_
                     .domain(extent(validValues))
+                    .nice()
                     .range([0, innerWidth]);
             },
 
@@ -172,6 +173,7 @@
         margin: 0 auto;
     }
     svg {
+        overflow: visible;
         position: relative;
         width: 100%;
         height: 100px;
