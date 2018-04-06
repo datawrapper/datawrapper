@@ -17,7 +17,7 @@
         <g class='bars'>
             {{#each bins as bin, i}}
             <g class="bar" transform="translate({{xScale(bin.x0)}},{{yScale(bin.length)}})">
-                <title>{{__('describe / histogram / tooltip').replace('$1', bin.length).replace('$2', pct(bin.length/validValues.length)).replace('$3', toFixed(bin.x0)).replace('$4', toFixed(bin.x1))}}</title>
+                <title>{{tooltip(bin,i,bins,validValues.length)}}</title>
                 <rect x="1"
                     width="{{ bin.x1 != bin.x0 ? xScale(bin.x1)-xScale(bin.x0)-1 : 20 }}"
                     height='{{ innerHeight - yScale(bin.length) }}'
@@ -49,6 +49,12 @@
     var xScale_ = scaleLinear();
     var yScale_ = scaleLinear();
 
+    const pct = (val) => {
+        if (!val) return '0%';
+        if (val < 0.01) return '<1%';
+        return (val*100).toFixed(0)+'%';
+    };
+
     export default {
         data () {
             return {
@@ -63,12 +69,16 @@
         },
 
         helpers: {
-            toFixed,
-            pct(val) {
-                if (!val) return '0%';
-                if (val < 0.01) return '<1%';
-                return (val*100).toFixed(0)+'%';
+            tooltip(bin, i, bins, len) {
+                const tt = i === 0 ? __("describe / histogram / tooltip / first") :
+                    i == bins.length-1 ? __("describe / histogram / tooltip / last") :
+                    __("describe / histogram / tooltip");
+                return tt.replace('$1', bin.length)
+                    .replace('$2', pct(bin.length / len))
+                    .replace('$3', toFixed(bin.x0))
+                    .replace('$4', toFixed(bin.x1));
             },
+            pct,
             formatMobile(tick) {
                 return "'" + tick % 100;
             }
