@@ -101,9 +101,11 @@
 
             bins (xScale, validValues) {
                 const tickCnt = Math.min(_uniq(validValues).length, 14);
+                const s = extent(validValues);
+                const classw = (s[1]-s[0]);
                 return histogram()
                     .domain(xScale.domain())
-                    .thresholds(xScale.ticks(tickCnt))(validValues);
+                    .thresholds(thresholdSturges)(validValues);
             },
 
             xScale (validValues, innerWidth) {
@@ -121,15 +123,6 @@
 
             barWidth (bins, xScale) {
                 return xScale(bins[0].x1) - xScale(bins[0].x0) - 1
-            },
-
-            mean (validValues, format) {
-                const x = mean(validValues);
-                return {x, label:format(x)};
-            },
-
-            median (validValues, format) {
-
             },
 
             innerWidth (width, padding) {
