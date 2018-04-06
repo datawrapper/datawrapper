@@ -32,7 +32,9 @@
     <li>{{s.name}}: <tt on:mouseleave="show(false)" on:mouseenter="show(s)">{{s.label}}</tt>
     </li>
     {{/each}}
-    <li>{{__('describe / histogram / invalid')}}: <tt style="color:#c71e1d">{{NAs}}</tt> ({{pct(NAs/values.length)}})
+    {{#if NAs>0}}
+    <li>{{__('describe / histogram / invalid')}}: <tt style="color:#c71e1d">{{NAs}}</tt> ({{pct(NAs/values.length)}})</li>
+    {{/if}}
 </ul>
 
 <script>
