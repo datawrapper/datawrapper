@@ -36,6 +36,7 @@
     <li>{{__('describe / histogram / invalid')}}: <tt style="color:#c71e1d">{{NAs}}</tt> ({{pct(NAs/values.length)}})</li>
     {{/if}}
 </ul>
+<p class="learn-more">{{{__("describe / histogram / learn-more")}}}</p>
 
 <script>
     import _range from 'underscore-es/range';
@@ -178,7 +179,7 @@
 </script>
 
 
-<style>
+<style lang="less">
     h3 {
         margin-top: 25px;
     }
@@ -226,8 +227,13 @@
     }
     ul li {
         display: inline-block;
-        margin-right: 1.5em;
+        margin-right: 1em;
         color: #777;
         font-size: 13px;
+    }
+    :global(.learn-more) {
+        margin-top: 15px;
+        font-size: 12px;
+        color: #888;
     }
 </style>
