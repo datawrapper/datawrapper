@@ -17,7 +17,7 @@
         <g class='bars'>
             {{#each bins as bin, i}}
             <g class="bar" transform="translate({{xScale(bin.x0)}},{{yScale(bin.length)}})">
-                <title>{{__('describe / histogram / tooltip').replace('$1', bin.length).replace('$2', pct(bin.length/validValues.length)).replace('$3', bin.x0).replace('$3', bin.x1)}}</title>
+                <title>{{__('describe / histogram / tooltip').replace('$1', bin.length).replace('$2', pct(bin.length/validValues.length)).replace('$3', bin.x0).replace('$4', bin.x1)}}</title>
                 <rect x="1"
                     width="{{ xScale(bin.x1)-xScale(bin.x0)-1 }}"
                     height='{{ innerHeight - yScale(bin.length) }}'
@@ -37,7 +37,7 @@
 <script>
     import { scaleLinear } from 'd3-scale';
     import { histogram, max, extent, mean, median,
-       thresholdFreedmanDiaconis } from 'd3-array';
+       thresholdSturges } from 'd3-array';
 
     var xScale_ = scaleLinear();
     var yScale_ = scaleLinear();
@@ -85,7 +85,7 @@
             bins (xScale, validValues) {
                 return histogram()
                     .domain(xScale.domain())
-                    .thresholds(thresholdFreedmanDiaconis)(validValues);
+                    .thresholds(thresholdSturges)(validValues);
             },
 
             xScale (validValues, innerWidth) {
