@@ -1,0 +1,191 @@
+<h3>{{__('describe / histogram')}}</h3>
+<svg ref:svg>
+    <!-- x axis -->
+    <g transform="translate({{[padding.left,padding.top]}})">
+        <g class='axis x-axis' transform="translate(0, {{innerHeight}})">
+            {{#each ticks as tick}}
+            <g class='tick' transform='translate({{xScale(tick.x)}},0)'>
+                <line y2="3" />
+                <text y='3'>{{tick.label}}</text>
+            </g>
+            {{/each}}
+            {{#if highlight}}
+            <polygon transform='translate({{xScale(highlight.x)}},0)' points="0,0,3,3,-3,3" />
+            {{/if}}
+        </g>
+
+        <g class='bars'>
+            {{#each bins as bin, i}}
+            <g class="bar" transform="translate({{xScale(bin.x0)}},{{yScale(bin.length)}})">
+                <title>{{__('describe / histogram / tooltip').replace('$1', bin.length).replace('$2', pct(bin.length/validValues.length)).replace('$3', bin.x0).replace('$3', bin.x1)}}</title>
+                <rect x="1"
+                    width="{{ xScale(bin.x1)-xScale(bin.x0)-1 }}"
+                    height='{{ innerHeight - yScale(bin.length) }}'
+                ></rect>
+            </g>
+            {{/each}}
+        </g>
+    </g>
+</svg>
+<ul>
+    <li>{{__('describe / histogram / mean')}}: <tt on:mouseleave="set({highlight:false})" on:mousenter="set({highlight:mean})">{{mean.label}}</tt>
+    </li>
+    <li>{{__('describe / histogram / median')}}: <tt on:mouseleave="set({highlight:false})" on:mousenter="set({highlight:median})">{{median.label}}</tt></li>
+    <li>{{__('describe / histogram / invalid')}}: <tt style="color:#c71e1d">{{NAs}}</tt> ({{pct(NAs/values.length)}})
+</ul>
+
+<script>
+    import { scaleLinear } from 'd3-scale';
+    import { histogram, max, extent, mean, median,
+       thresholdFreedmanDiaconis } from 'd3-array';
+
+    var xScale_ = scaleLinear();
+    var yScale_ = scaleLinear();
+
+    export default {
+        data () {
+            return {
+                format: d => d,
+                t: 0,
+                padding: { top: 10, right: 25, bottom: 20, left: 5 },
+                height: 200,
+                width: 500,
+                values: [],
+                highlight: false
+            };
+        },
+
+        helpers: {
+            pct(val) {
+                if (!val) return '0%';
+                if (val < 0.01) return '<1%';
+                return (val*100).toFixed(0)+'%';
+            },
+            formatMobile(tick) {
+                return "'" + tick % 100;
+            }
+        },
+
+        computed: {
+
+            NAs (values) {
+                return values.filter(d => typeof d == 'string' || Number.isNaN(d)).length;
+            },
+
+            validValues (values) {
+                return values.filter(d => typeof d == 'number' && !Number.isNaN(d));
+            },
+
+            ticks (xScale, format) {
+                return xScale.ticks(4).map(x => {
+                    return {x, label:format(x)};
+                });
+            },
+
+            bins (xScale, validValues) {
+                return histogram()
+                    .domain(xScale.domain())
+                    .thresholds(thresholdFreedmanDiaconis)(validValues);
+            },
+
+            xScale (validValues, innerWidth) {
+                return xScale_
+                    .domain(extent(validValues))
+                    .range([0, innerWidth]);
+            },
+
+            yScale (innerHeight, bins) {
+                return yScale_
+                    .domain([0, max(bins, function(d) { return d.length; })])
+                    .range([innerHeight, 0]);
+            },
+
+            barWidth (bins, xScale) {
+                return xScale(bins[0].x1) - xScale(bins[0].x0) - 1
+            },
+
+            mean (validValues, format) {
+                const x = mean(validValues);
+                return {x, label:format(x)};
+            },
+
+            median (validValues, format) {
+                const x = median(validValues);
+                return {x, label:format(x)};
+            },
+
+            innerWidth (width, padding) {
+                return width - padding.left - padding.right;
+            },
+            innerHeight (height, padding) {
+                return height - padding.bottom - padding.top;
+            }
+
+        },
+
+        oncreate() {
+            this.resize();
+        },
+
+        methods: {
+            resize: function () {
+                var bcr = this.refs.svg.getBoundingClientRect();
+
+                this.set({
+                    width: bcr.right - bcr.left,
+                    height: bcr.bottom - bcr.top
+                });
+            }
+        }
+    };
+</script>
+
+
+<style>
+    .chart {
+        width: 100%;
+        max-width: 500px;
+        margin: 0 auto;
+    }
+    svg {
+        position: relative;
+        width: 100%;
+        height: 100px;
+    }
+    .tick {
+        font-family: Roboto, sans-serif;
+        font-size: .725em;
+        font-weight: 200;
+    }
+    .axis line {
+        stroke: #888;
+        shape-rendering: crispEdges;
+    }
+    .tick text {
+        fill: #888;
+        text-anchor: start;
+    }
+    .x-axis .tick text {
+        text-anchor: middle;
+        dominant-baseline: hanging;
+    }
+    .bars rect {
+        fill: #cecece;
+        stroke: none;
+    }
+    tt {
+        font-size: 13px;
+        font-weight: 400;
+        font-family: Roboto;
+        color: #297EA8;
+    }
+    ul {
+        margin: 0;
+        padding: 0;
+    }
+    ul li {
+        display: inline-block;
+        margin-right: 1.5em;
+        font-size: 13px;
+    }
+</style>

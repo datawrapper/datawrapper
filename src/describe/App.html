@@ -2,6 +2,8 @@
     <div class="row">
         <div class="span4">
             <div class="sidebar">
+
+            {{#if activeColumn}}
                 {{#if customColumn}}
 
                 <ComputedColumnEditor
@@ -11,7 +13,7 @@
                     bind:column="customColumn"
                     bind:columns />
 
-               <button on:click="force(event, true)" class="btn">{{__("describe / edit-format")}}</button>
+                <button on:click="force(event, true)" class="btn">{{__("describe / edit-format")}}</button>
 
                 {{elseif columnFormat}}
 
@@ -21,11 +23,18 @@
                     bind:column="columnFormat"
                     bind:columns />
 
-                {{#if columnFormat.isComputed}}
-                <button class="btn" on:click="force(event, false)"><i class="fa  fa-chevron-left"></i> {{__("describe / edit-formula")}}</button>
+                    {{#if columnFormat.isComputed}}
+                    <button class="btn" on:click="force(event, false)"><i class="fa  fa-chevron-left"></i> {{__("describe / edit-formula")}}</button>
+                    {{/if}}
+
                 {{/if}}
 
-                {{elseif multiSelection}}
+                {{#if activeColumn.type() == 'number'}}
+                <Histogram bind:values="activeValues" bind:format="activeFormat" />
+                {{/if}}
+
+            {{elseif multiSelection}}
+
                 <h3 class="first">{{__("describe / show-hide-multi")}}</h3>
 
                 <ul class="unstyled">
@@ -40,7 +49,9 @@
                         </button>
                     </li>
                 </ul>
-                {{else}}
+
+            {{else}}
+
                 <h3 class="first">{{ __("Make sure the data looks right") }}</h3>
 
                 <p>{{ __("Please make sure that Datawrapper interprets your data correctly. In the table columns should be shown in blue, dates in green and text in black.") }}</p>
@@ -59,7 +70,7 @@
                     {{/each}}
                 </select>
 
-                {{/if}}
+            {{/if}}
 
                 <hr>
 
@@ -151,13 +162,15 @@
     /* global chart */
     import ComputedColumnEditor from './ComputedColumnEditor.html';
     import CustomColumnFormat from './CustomColumnFormat.html';
+    import Histogram from './Histogram.html';
     import Handsontable from '../controls/Handsontable.html';
     import Checkbox from '../controls/Checkbox.html';
 
     import {arrayToObject} from '../shared/utils.js';
 
     export default {
-        components: { Handsontable, Checkbox, ComputedColumnEditor, CustomColumnFormat },
+        components: { Handsontable, Checkbox, ComputedColumnEditor,
+            CustomColumnFormat, Histogram },
         computed: {
             searchIndexSafe (searchIndex, searchResults) {
                 if (searchIndex<0) searchIndex+=searchResults.length;
@@ -169,6 +182,12 @@
             },
             columnFormat (activeColumn, forceColumnFormat) {
                 return activeColumn && (!activeColumn.isComputed || forceColumnFormat) ? activeColumn : false;
+            },
+            activeValues (activeColumn) {
+                return activeColumn ? activeColumn.values() : [];
+            },
+            activeFormat (activeColumn, $dw_chart) {
+                return activeColumn ? $dw_chart.columnFormatter(activeColumn) : d => d;
             },
             columns (activeColumn) {
                 const ds = chart.dataset();

@@ -1,4 +1,4 @@
-
+/* global define,$,qq,dw,_ */
 define(function() {
 
     var chart,
