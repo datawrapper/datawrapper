@@ -38,6 +38,7 @@
 </ul>
 
 <script>
+    import _uniq from 'underscore-es/uniq';
     import { scaleLinear } from 'd3-scale';
     import { histogram, max, min, extent, mean, median,
        thresholdSturges } from 'd3-array';
@@ -99,9 +100,10 @@
             },
 
             bins (xScale, validValues) {
+                const tickCnt = Math.min(_uniq(validValues).length, 14);
                 return histogram()
                     .domain(xScale.domain())
-                    .thresholds(xScale.ticks(14))(validValues);
+                    .thresholds(xScale.ticks(tickCnt))(validValues);
             },
 
             xScale (validValues, innerWidth) {
