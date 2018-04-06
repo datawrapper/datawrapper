@@ -17,9 +17,9 @@
         <g class='bars'>
             {{#each bins as bin, i}}
             <g class="bar" transform="translate({{xScale(bin.x0)}},{{yScale(bin.length)}})">
-                <title>{{__('describe / histogram / tooltip').replace('$1', bin.length).replace('$2', pct(bin.length/validValues.length)).replace('$3', bin.x0).replace('$4', bin.x1)}}</title>
+                <title>{{__('describe / histogram / tooltip').replace('$1', bin.length).replace('$2', pct(bin.length/validValues.length)).replace('$3', toFixed(bin.x0)).replace('$4', toFixed(bin.x1))}}</title>
                 <rect x="1"
-                    width="{{ xScale(bin.x1)-xScale(bin.x0)-1 }}"
+                    width="{{ bin.x1 != bin.x0 ? xScale(bin.x1)-xScale(bin.x0)-1 : 20 }}"
                     height='{{ innerHeight - yScale(bin.length) }}'
                 ></rect>
             </g>
@@ -38,7 +38,10 @@
 </ul>
 
 <script>
-    import _uniq from 'underscore-es/uniq';
+    import _range from 'underscore-es/range';
+    import _countBy from 'underscore-es/countBy';
+    import _keys from 'underscore-es/keys';
+    import { toFixed } from '../shared/utils.js';
     import { scaleLinear } from 'd3-scale';
     import { histogram, max, min, extent, mean, median,
        thresholdSturges } from 'd3-array';
@@ -60,6 +63,7 @@
         },
 
         helpers: {
+            toFixed,
             pct(val) {
                 if (!val) return '0%';
                 if (val < 0.01) return '<1%';
@@ -100,12 +104,21 @@
             },
 
             bins (xScale, validValues) {
-                const tickCnt = Math.min(_uniq(validValues).length, 14);
-                const s = extent(validValues);
-                const classw = (s[1]-s[0]);
-                return histogram()
-                    .domain(xScale.domain())
+                // const tickCnt = Math.min(_uniq(validValues).length, 14);
+                const dom = xScale.domain();
+                // const classw = (s[1]-s[0]);
+                const bins = histogram()
+                    .domain(dom)
                     .thresholds(thresholdSturges)(validValues);
+                const bin_widths = _countBy(bins.map(b => b.x1 - b.x0));
+                if (bins.length > 2 && _keys(bin_widths).length > 1) {
+                    // check first and last bin
+                    const binw = bins[1].x1 - bins[1].x0;
+                    const lst = dom[0] + Math.ceil((dom[1]-dom[0])/binw)*binw;
+                    return histogram().domain([dom[0], lst])
+                        .thresholds(_range(dom[0], lst+binw*0.4, binw))(validValues);
+                }
+                return bins;
             },
 
             xScale (validValues, innerWidth) {
@@ -136,15 +149,10 @@
 
         oncreate() {
             this.resize();
-
-            this.observe('highlight', (hl) => {
-                console.log('hl', hl);
-            });
         },
 
         methods: {
             show (value) {
-                console.log('sss', value);
                 this.set({highlight: value});
             },
             resize: function () {
