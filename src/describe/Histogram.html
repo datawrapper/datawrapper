@@ -28,15 +28,16 @@
     </g>
 </svg>
 <ul>
-    <li>{{__('describe / histogram / mean')}}: <tt on:mouseleave="set({highlight:false})" on:mousenter="set({highlight:mean})">{{mean.label}}</tt>
+    {{#each stats as s}}
+    <li>{{s.name}}: <tt on:mouseleave="show(false)" on:mouseenter="show(s)">{{s.label}}</tt>
     </li>
-    <li>{{__('describe / histogram / median')}}: <tt on:mouseleave="set({highlight:false})" on:mousenter="set({highlight:median})">{{median.label}}</tt></li>
+    {{/each}}
     <li>{{__('describe / histogram / invalid')}}: <tt style="color:#c71e1d">{{NAs}}</tt> ({{pct(NAs/values.length)}})
 </ul>
 
 <script>
     import { scaleLinear } from 'd3-scale';
-    import { histogram, max, extent, mean, median,
+    import { histogram, max, min, extent, mean, median,
        thresholdSturges } from 'd3-array';
 
     var xScale_ = scaleLinear();
@@ -70,6 +71,19 @@
 
             NAs (values) {
                 return values.filter(d => typeof d == 'string' || Number.isNaN(d)).length;
+            },
+
+            stats (validValues, format) {
+                const xmin = min(validValues);
+                const xmax = max(validValues);
+                const xmean = mean(validValues);
+                const xmed = median(validValues);
+                return [
+                    {x:xmin, label: format(xmin), name: 'Min'},
+                    {x:xmax, label: format(xmax), name: 'Max'},
+                    {x:xmean, label: format(xmean), name: __('describe / histogram / mean')},
+                    {x:xmed, label: format(xmed), name: __('describe / histogram / median') }
+                ];
             },
 
             validValues (values) {
@@ -110,8 +124,7 @@
             },
 
             median (validValues, format) {
-                const x = median(validValues);
-                return {x, label:format(x)};
+
             },
 
             innerWidth (width, padding) {
@@ -125,9 +138,17 @@
 
         oncreate() {
             this.resize();
+
+            this.observe('highlight', (hl) => {
+                console.log('hl', hl);
+            });
         },
 
         methods: {
+            show (value) {
+                console.log('sss', value);
+                this.set({highlight: value});
+            },
             resize: function () {
                 var bcr = this.refs.svg.getBoundingClientRect();
 
@@ -189,6 +210,7 @@
     ul li {
         display: inline-block;
         margin-right: 1.5em;
+        color: #777;
         font-size: 13px;
     }
 </style>
