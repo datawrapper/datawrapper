@@ -14,17 +14,30 @@
             {{/if}}
         </g>
 
-        <g class='bars'>
+<!--         <g class='bars'>
             {{#each bins as bin, i}}
             <g class="bar" transform="translate({{xScale(bin.x0)}},{{yScale(bin.length)}})">
                 <title>{{tooltip(bin,i,bins,validValues.length)}}</title>
-                <rect x="1"
+                <rect x="0"
                     width="{{ bin.x1 != bin.x0 ? xScale(bin.x1)-xScale(bin.x0)-1 : 20 }}"
                     height='{{ innerHeight - yScale(bin.length) }}'
                 ></rect>
             </g>
             {{/each}}
+        </g> -->
+
+        <g class='bars'>
+            {{#each bins as bin, i}}
+            <g class="bar" transform="translate({{xScaleBand(bin.x0)}},{{yScale(bin.length)}})">
+                <title>{{tooltip(bin,i,bins,validValues.length)}}</title>
+                <rect
+                    width="{{ bin.x1 != bin.x0 ? xScaleBand.bandwidth() : 20 }}"
+                    height='{{ innerHeight - yScale(bin.length) }}'
+                ></rect>
+            </g>
+            {{/each}}
         </g>
+
     </g>
 </svg>
 <ul>
@@ -43,11 +56,12 @@
     import _countBy from 'underscore-es/countBy';
     import _keys from 'underscore-es/keys';
     import { toFixed } from '../shared/utils.js';
-    import { scaleLinear } from 'd3-scale';
+    import { scaleLinear, scaleBand } from 'd3-scale';
     import { histogram, max, min, extent, mean, median,
        thresholdSturges } from 'd3-array';
 
     var xScale_ = scaleLinear();
+    var xScaleBand_ = scaleBand();
     var yScale_ = scaleLinear();
 
     const pct = (val) => {
@@ -114,9 +128,9 @@
                 });
             },
 
-            bins (xScale, validValues) {
+            bins (niceDomain, validValues) {
                 // const tickCnt = Math.min(_uniq(validValues).length, 14);
-                const dom = xScale.domain();
+                const dom = niceDomain;
                 // const classw = (s[1]-s[0]);
                 const bins = histogram()
                     .domain(dom)
@@ -132,11 +146,24 @@
                 return bins;
             },
 
-            xScale (validValues, innerWidth) {
-                return xScale_
+            niceDomain (validValues) {
+                return scaleLinear()
                     .domain(extent(validValues))
-                    .nice()
-                    .range([0, innerWidth]);
+                    .nice().domain();
+            },
+
+            xScaleBand(bins, innerWidth) {
+                return xScaleBand_
+                    .domain(bins.map(d => d.x0))
+                    .paddingInner(0.1)
+                    .rangeRound([0, innerWidth])
+                    .align(0);
+            },
+
+            xScale (niceDomain, bins, xScaleBand) {
+                return xScale_
+                    .domain(niceDomain)
+                    .rangeRound([0, xScaleBand.step() * bins.length]);
             },
 
             yScale (innerHeight, bins) {
@@ -192,12 +219,15 @@
         overflow: visible;
         position: relative;
         width: 100%;
-        height: 100px;
+        height: 135px;
     }
     .tick {
         font-family: Roboto, sans-serif;
         font-size: .725em;
         font-weight: 200;
+        line {
+            shape-rendering: crispEdges;
+        }
     }
     .axis line {
         stroke: #888;
@@ -214,6 +244,7 @@
     .bars rect {
         fill: #cecece;
         stroke: none;
+        shape-rendering: crispEdges;
     }
     tt {
         font-size: 13px;
