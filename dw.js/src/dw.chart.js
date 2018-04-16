@@ -9,6 +9,7 @@ dw.chart = function(attributes) {
         visualization,
         metric_prefix,
         change_callbacks = $.Callbacks(),
+        dataset_change_callbacks = $.Callbacks(),
         locale;
 
     var _ds;
@@ -64,6 +65,7 @@ dw.chart = function(attributes) {
 
             return datasource.dataset().pipe(function(ds) {
                 chart.dataset(ds);
+                dataset_change_callbacks.fire(chart, ds);
                 return ds;
             });
         },
@@ -176,6 +178,8 @@ dw.chart = function(attributes) {
         },
 
         onChange: change_callbacks.add,
+
+        onDatasetChange: dataset_change_callbacks.add,
 
         columnFormatter: function(column) {
             // pull output config from metadata
