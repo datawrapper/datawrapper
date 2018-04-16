@@ -29,10 +29,19 @@ function(visOptions, themes, loadVisDfd, initTabNav, enableInlineEditing, liveUp
         dw.backend.__currentVisLoaded = loadVisDfd.promise();
 
         chart.onSave(function(chart) {
-            var heightType = visMetas[chart.get('type')].height;
-            onChartSave(chart, heightType);
+            onChartSave(chart);
         });
 
+        chart.onDatasetChange(function(chart) {
+            iframe.attr('src', "");
+            // reload options
+            loadOptions().done(function() {
+                dw.backend.fire('options-reloaded');
+                loadVis();
+            });
+            // remove all notifications
+            $("#notifications .notification").fadeOutAndRemove();
+        });
 
         dw.backend.fire('vis-metas', _visMetas);
 
@@ -56,7 +65,7 @@ function(visOptions, themes, loadVisDfd, initTabNav, enableInlineEditing, liveUp
         });
     }
 
-    function onChartSave(chart, heightType) {
+    function onChartSave(chart) {
         var svelteControls = visMetas[dw.backend.currentChart.get('type')]['svelte-controls'];
         if (_themeHasChanged) {
             // update the iframe background color after theme changed
