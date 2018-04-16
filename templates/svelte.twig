@@ -22,7 +22,6 @@ require(['svelte/{{ app_id }}'], function(mod) {
 
     if (mod.init) mod.init(app);
 
-    if (!window.svelteComponents) window.svelteComponents = {}
-    window.svelteComponents.{{ app_id }} = app;
+    mod.app = app; // safe app reference for later use
 });
 </script>
