@@ -1,6 +1,7 @@
 <script type="text/javascript" src="/static/js/svelte/{{ app_id }}.{{ locale }}.js?v={{sha}}"></script>
 <link rel="stylesheet" type="text/css" href="/static/css/svelte/{{ app_id }}.css?v={{sha}}">
 <div id="svelte-{{ app_id }}"></div>
+
 <script type="text/javascript">
 
 require(['svelte/{{ app_id }}'], function(mod) {
@@ -14,7 +15,7 @@ require(['svelte/{{ app_id }}'], function(mod) {
         store.set({ dw_chart: dw.backend.currentChart });
     }
 
-    var app = new App({
+    var app = mod.app = new App({
         store: store,
         target: document.querySelector('#svelte-{{ app_id }}'),
         data: _.extend({}, data, twigdata)
