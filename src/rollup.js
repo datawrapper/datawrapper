@@ -118,7 +118,8 @@ function buildLocale(app_id, locale, callback) {
     }
 }
 
-build('describe');
+build('upload');
+// build('describe');
 // build('controls');
 // build('publish');
 // build('highlight');

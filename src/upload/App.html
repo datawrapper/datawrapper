@@ -1,0 +1,115 @@
+<div class="chart-editor dw-create-upload upload-data">
+    <div class="row">
+        <div class="span5">
+            <div class="sidebar">
+                <h3>How to you want to upload your data?</h3>
+
+                <ul class="import-methods">
+                    {{#each buttons as btn}}
+                    <li on:click="btnAction(btn)" class="action {{active==btn.id?'active':''}}">
+                        <i class="{{btn.icon}}"></i>
+                        <span>{{btn.title}}</span>
+                    </li>
+                    {{/each}}
+                </ul>
+
+                <:Component {UploadHelp} bind:datasets />
+
+            </div>
+        </div>
+        <div class="span7">
+
+            <:Component {Upload}
+                bind:chartData
+                bind:readonly />
+
+            <div class="buttons pull-right">
+                <a href="describe" class="submit btn btn-primary" id="describe-proceed"> {{__("Proceed")}} <i class="icon-chevron-right icon-white"></i></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    /* global chart */
+    import TextAreaUpload from './TextAreaUpload.html';
+    import UploadHelp from './UploadHelp.html';
+    import Btn from './Btn.html';
+
+    export default {
+        data() {
+            return {
+                Upload: TextAreaUpload,
+                UploadHelp: UploadHelp,
+                active: 'copy',
+                buttons: [{
+                    id: 'copy',
+                    title: 'Copy & paste data table',
+                    icon: 'im im-copy',
+                    upload: TextAreaUpload,
+                    action: () => {
+
+                    }
+                },{
+                    id: 'upload',
+                    title: 'Upload CSV/TSV file',
+                    icon: 'im im-upload',
+                    upload: TextAreaUpload,
+                    action: () => {
+                        console.log('upload');
+                    }
+                }]
+            }
+        },
+        methods: {
+            btnAction (btn) {
+                this.set({active:btn.id});
+                if (btn.action) btn.action();
+                if (btn.upload) this.set({Upload:btn.upload});
+            }
+        }
+    };
+</script>
+
+<style lang="less">
+
+.import-methods{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    .action {
+        color: #1d81a2;
+        text-align: center;
+        min-height: 50px;
+        width: ~'calc(25% - 20px)';
+        margin: 0 10px 10px 0;
+        padding: 15px 0 10px;
+        overflow: hidden;
+        position: relative;
+        display: inline-block;
+        vertical-align: top;
+
+        &:hover,&.active {
+            background: #fff;
+            border-radius: 4px;
+        }
+        &.active {
+            color: #222;
+        }
+
+        > i {
+            display: block;
+            margin: 0 auto;
+            font-size: 24px !important;
+        }
+
+        > span {
+            font-size: 12px;
+            line-height: 15px;
+            display: block;
+            padding: 4px 10px 0;
+        }
+    }
+}
+</style>

@@ -1,0 +1,25 @@
+<p>{{ __("upload / quick help") }}</p>
+
+<div class="demo-datasets">
+    <p>{{ __("upload / try a dataset") }}</p>
+    <select disabled="{{readonly}}" id="demo-datasets" class="">
+        <option>{{ __("upload / sample dataset") }}</option>
+        {{#each datasetsArray as group}}
+        <optgroup label="{{group.type}}">
+            {{#each group.datasets as dataset}}
+            <option value="{{dataset.id}}" class="demo-dataset">{{dataset.title}}</option>
+        {{/each}}
+        </optgroup>
+        {{/each}}
+    </select>
+</div>
+
+<script>
+export default {
+    computed: {
+        datasetsArray(datasets) {
+            return Object.keys(datasets).map(k => datasets[k]);
+        }
+    },
+}
+</script>

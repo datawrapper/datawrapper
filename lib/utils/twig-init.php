@@ -113,7 +113,7 @@ function dwInitTwigEnvironment(Twig_Environment $twig) {
             'sha' => substr(md5(file_get_contents(ROOT_PATH."www/static/js/svelte/$app_id.$locale.js")), 0, 8),
             'locale' => $locale,
             'app_id' => $app_id,
-            'twig_data' => !empty($data) ? $data : false
+            'twig_data' => $data ?? false
         ];
 
         global $app;
