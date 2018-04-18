@@ -1,5 +1,10 @@
-<div class="chart-editor dw-create-upload upload-data">
-    <div class="row">
+<div class="chart-editor dw-create-upload upload-data" on:drop="onFileDrop(event)" on:dragover="onDragOver(event)" on:dragenter="set({dragover:true})" on:dragend="resetDrag()" on:dragleave="resetDrag()">
+    {{#if dragover}}
+    <div class="draginfo">
+        Drag your CSV file here to upload...
+    </div>
+    {{/if}}
+    <div class="row" style="{{dragover?'opacity: 0.5;filter:blur(6px);background:white;pointer-events:none':''}}">
         <div class="span5">
             <div class="sidebar">
                 <h3>How to you want to upload your data?</h3>
@@ -43,6 +48,7 @@
     import TextAreaUpload from './TextAreaUpload.html';
     import UploadHelp from './UploadHelp.html';
     import readFile from '../shared/readFile.js';
+    import {putJSON} from '../shared/utils.js';
 
     let app;
 
@@ -50,6 +56,7 @@
         oncreate() { app = this; },
         data() {
             return {
+                dragover: false,
                 Upload: TextAreaUpload,
                 UploadHelp: UploadHelp,
                 active: 'copy',
@@ -71,7 +78,9 @@
                         const file = event.target.files[0];
                         if (file.type.substr(0,5) == 'text/') {
                             readFile(file, (err, result) => {
-                                app.set({chartData: result});
+                                putJSON(`/api/charts/${dw.backend.currentChart.get('id')}/data`, result, () => {
+                                    window.location.href = 'describe';
+                                });
                             });
                         }
                     },
@@ -87,6 +96,44 @@
             },
             btnUpload (btn, event) {
                 if (btn.onFileUpload) btn.onFileUpload(event);
+            },
+            onDragOver (event) {
+                event.preventDefault();
+                this.set({dragover:true});
+            },
+            resetDrag () {
+                this.set({dragover:false});
+            },
+            onFileDrop (event) {
+                // Prevent default behavior (Prevent file from being opened)
+                this.resetDrag();
+                event.preventDefault();
+                const files = [];
+                if (event.dataTransfer.items) {
+                    // Use DataTransferItemList interface to access the file(s)
+                    for (let i=0; i<event.dataTransfer.items.length; i++) {
+                        // If dropped items aren't files, reject them
+                        if (event.dataTransfer.items[i].kind === 'file') {
+                            files.push(event.dataTransfer.items[i].getAsFile());
+                        }
+                    }
+                    event.dataTransfer.items.clear();
+                } else {
+                    // Use DataTransfer interface to access the file(s)
+                    for (let i=0; i<event.dataTransfer.files.length; i++) {
+                        files.push(event.dataTransfer.files[i]);
+                    }
+                    event.dataTransfer.items.clear();
+                }
+                for (let i=0; i<files.length; i++) {
+                    if (files[i].type.substr(0,5) == 'text/') {
+                        return readFile(files[i], (err, result) => {
+                            putJSON(`/api/charts/${dw.backend.currentChart.get('id')}/data`, result, () => {
+                                window.location.href = 'describe';
+                            });
+                        });
+                    }
+                }
             }
         }
     };
@@ -149,5 +196,16 @@
         position: absolute;
         z-index: -1;
     }
+}
+.draginfo {
+    pointer-events: none;
+    height: 0;
+    position: relative;
+    top: 120px;
+    font-size:45px;
+    width: 100%;
+    text-align: center;
+    z-index: 10;
+    font-weight: 100;
 }
 </style>
