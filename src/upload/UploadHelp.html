@@ -20,29 +20,23 @@
 
 <script>
 
-    import {putJSON} from '../shared/utils.js';
-
+    /* globals dw */
     export default {
         data() {
             return {
                 selectedDataset: '--'
             };
         },
-        oncreate() {
-            const chart = this.store.get('dw_chart');
-            this.observe('selectedDataset', (sel) => {
-                if (sel != '--') {
-                    console.log(sel, sel.data);
-                    this.set({chartData: sel.data});
-                    putJSON(`/api/charts/${chart.get('id')}/data`,
-                        sel.data, () => { });
-                    if (sel.presets) {
-                        Object.keys(sel.presets).forEach(k => {
-                            chart.set(k, sel.presets[k]);
-                        });
-                    }
+        onupdate({changed, current}) {
+            if (changed.selectedDataset && current.selectedDataset != '--') {
+                const sel = current.selectedDataset;
+                this.set({chartData: sel.data});
+                if (sel.presets) {
+                    Object.keys(sel.presets).forEach(k => {
+                        dw.backend.currentChart.set(k, sel.presets[k]);
+                    });
                 }
-            });
+            }
         },
         computed: {
             datasetsArray(datasets) {

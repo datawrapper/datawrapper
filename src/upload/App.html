@@ -7,14 +7,20 @@
                 <ul class="import-methods">
                     {{#each buttons as btn}}
                     <li on:click="btnAction(btn)" class="action {{active==btn.id?'active':''}}">
-                        <i class="{{btn.icon}}"></i>
-                        <span>{{btn.title}}</span>
+                        <label>
+                            {{#if btn.isFileUpload}}
+                            <input on:change="btnUpload(btn, event)" class="file-upload" type="file" />
+                            {{/if}}
+                            <i class="{{btn.icon}}"></i>
+                            <span>{{btn.title}}</span>
+                        </label>
                     </li>
                     {{/each}}
                 </ul>
 
                 <:Component {UploadHelp}
                     bind:chartData
+                    bind:readonly
                     bind:datasets />
 
             </div>
@@ -33,12 +39,15 @@
 </div>
 
 <script>
-    /* global chart */
+    /* global dw */
     import TextAreaUpload from './TextAreaUpload.html';
     import UploadHelp from './UploadHelp.html';
-    import Btn from './Btn.html';
+    import readFile from '../shared/readFile.js';
+
+    let app;
 
     export default {
+        oncreate() { app = this; },
         data() {
             return {
                 Upload: TextAreaUpload,
@@ -49,7 +58,7 @@
                     title: 'Copy & paste data table',
                     icon: 'im im-copy',
                     upload: TextAreaUpload,
-                    action: () => {
+                    action() {
 
                     }
                 },{
@@ -57,9 +66,16 @@
                     title: 'Upload CSV/TSV file',
                     icon: 'im im-upload',
                     upload: TextAreaUpload,
-                    action: () => {
-                        console.log('upload');
-                    }
+                    isFileUpload: true,
+                    onFileUpload(event) {
+                        const file = event.target.files[0];
+                        if (file.type.substr(0,5) == 'text/') {
+                            readFile(file, (err, result) => {
+                                app.set({chartData: result});
+                            });
+                        }
+                    },
+                    action() {}
                 }]
             }
         },
@@ -68,6 +84,9 @@
                 this.set({active:btn.id});
                 if (btn.action) btn.action();
                 if (btn.upload) this.set({Upload:btn.upload});
+            },
+            btnUpload (btn, event) {
+                if (btn.onFileUpload) btn.onFileUpload(event);
             }
         }
     };
@@ -102,18 +121,33 @@
             cursor: default;
         }
 
-        > i {
-            display: block;
-            margin: 0 auto;
-            font-size: 24px !important;
+        > label {
+            margin-top: -10px;
+            padding-top: 15px;
+            padding-bottom: 15px;
+            margin-bottom: -10px;
+
+            > i {
+                display: block;
+                margin: 0 auto;
+                font-size: 24px !important;
+            }
+
+            > span {
+                font-size: 12px;
+                line-height: 15px;
+                display: block;
+                padding: 4px 10px 0;
+            }
         }
 
-        > span {
-            font-size: 12px;
-            line-height: 15px;
-            display: block;
-            padding: 4px 10px 0;
-        }
+
+    }
+
+    .file-upload {
+        opacity: 0;
+        position: absolute;
+        z-index: -1;
     }
 }
 </style>

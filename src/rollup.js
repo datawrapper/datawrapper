@@ -20,7 +20,7 @@ function buildLocale(app_id, locale, callback) {
     const messages = JSON.parse(fs.readFileSync(`../locale/${locale}.json`, 'utf-8'));
     const inputOptions = {
         input: `${app_id}/main.js`,
-        external: ['chroma', 'Handsontable', 'cm'],
+        external: ['chroma', 'Handsontable', 'cm', 'vendor', '/static/vendor/jschardet/jschardet.min.js'],
         plugins: [
             i18n({
                 language: messages
@@ -80,6 +80,9 @@ function buildLocale(app_id, locale, callback) {
         name: app_id,
         file: `../www/static/js/svelte/${app_id}.${locale}.js`,
         format: 'umd',
+        globals: {
+            '/static/vendor/jschardet/jschardet.min.js': 'jschardet'
+        }
     };
 
     if (app_id != 'controls') outputOptions.amd = { id: `svelte/${app_id}` };
