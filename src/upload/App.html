@@ -23,7 +23,7 @@
                     {{/each}}
                 </ul>
 
-                <:Component {UploadHelp}
+                <:Component {Sidebar}
                     bind:chartData
                     bind:readonly
                     bind:datasets />
@@ -32,7 +32,7 @@
         </div>
         <div class="span7">
 
-            <:Component {Upload}
+            <:Component {MainPanel}
                 bind:chartData
                 bind:readonly />
 
@@ -57,8 +57,8 @@
         data() {
             return {
                 dragover: false,
-                Upload: TextAreaUpload,
-                UploadHelp: UploadHelp,
+                MainPanel: TextAreaUpload,
+                Sidebar: UploadHelp,
                 active: 'copy',
                 buttons: [{
                     id: 'copy',
@@ -92,7 +92,8 @@
             btnAction (btn) {
                 this.set({active:btn.id});
                 if (btn.action) btn.action();
-                if (btn.upload) this.set({Upload:btn.upload});
+                if (btn.mainPanel) this.set({MainPanel:btn.mainPanel});
+                if (btn.sidebar) this.set({Sidebar:btn.sidebar});
             },
             btnUpload (btn, event) {
                 if (btn.onFileUpload) btn.onFileUpload(event);
