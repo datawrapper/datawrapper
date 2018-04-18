@@ -13,7 +13,9 @@
                     {{/each}}
                 </ul>
 
-                <:Component {UploadHelp} bind:datasets />
+                <:Component {UploadHelp}
+                    bind:chartData
+                    bind:datasets />
 
             </div>
         </div>
@@ -89,6 +91,7 @@
         position: relative;
         display: inline-block;
         vertical-align: top;
+        cursor: pointer;
 
         &:hover,&.active {
             background: #fff;
@@ -96,6 +99,7 @@
         }
         &.active {
             color: #222;
+            cursor: default;
         }
 
         > i {

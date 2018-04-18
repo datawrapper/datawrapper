@@ -2,24 +2,52 @@
 
 <div class="demo-datasets">
     <p>{{ __("upload / try a dataset") }}</p>
-    <select disabled="{{readonly}}" id="demo-datasets" class="">
-        <option>{{ __("upload / sample dataset") }}</option>
+    <select disabled="{{readonly}}" id="demo-datasets" bind:value="selectedDataset">
+        <option value="--">{{ __("upload / sample dataset") }}</option>
         {{#each datasetsArray as group}}
         <optgroup label="{{group.type}}">
             {{#each group.datasets as dataset}}
-            <option value="{{dataset.id}}" class="demo-dataset">{{dataset.title}}</option>
+            <option value="{{dataset}}" class="demo-dataset">{{dataset.title}}</option>
         {{/each}}
         </optgroup>
         {{/each}}
     </select>
 </div>
 
+<style>
+    select { width: 70%; }
+</style>
+
 <script>
-export default {
-    computed: {
-        datasetsArray(datasets) {
-            return Object.keys(datasets).map(k => datasets[k]);
-        }
-    },
-}
+
+    import {putJSON} from '../shared/utils.js';
+
+    export default {
+        data() {
+            return {
+                selectedDataset: '--'
+            };
+        },
+        oncreate() {
+            const chart = this.store.get('dw_chart');
+            this.observe('selectedDataset', (sel) => {
+                if (sel != '--') {
+                    console.log(sel, sel.data);
+                    this.set({chartData: sel.data});
+                    putJSON(`/api/charts/${chart.get('id')}/data`,
+                        sel.data, () => { });
+                    if (sel.presets) {
+                        Object.keys(sel.presets).forEach(k => {
+                            chart.set(k, sel.presets[k]);
+                        });
+                    }
+                }
+            });
+        },
+        computed: {
+            datasetsArray(datasets) {
+                return Object.keys(datasets).map(k => datasets[k]);
+            }
+        },
+    }
 </script>
