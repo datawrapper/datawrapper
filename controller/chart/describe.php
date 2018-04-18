@@ -75,19 +75,6 @@ $app->get('/chart/:id/describe', function ($id) use ($app) {
              }, explode(',', $GLOBALS['dw_config']['plugins']['chart-locale-select']['locales'] ?? 'en-US|english,de-DE|deutsch'))
         ];
 
-        if ($app->request()->get('beta') !== null) {
-            $user->setUserData(['beta_describe' => $app->request()->get('beta') ? '1' : '0']);
-        }
-
-        // mod 20 -> 5% of users, mod 10 -> 10% of users, mod 5 -> 20% of users
-        $useBeta = (
-                $user->isAdmin() ||
-                ($user->getUserData()['beta_describe'] ?? null) == "1" ||
-                $user->getID() % 5 == 2
-            ) && (
-                ($user->getUserData()['beta_describe'] ?? null) !== '0'
-            );
-
-        $app->render('chart/describe-new.twig', $page);
+        $app->render('chart/describe.twig', $page);
     });
 });
