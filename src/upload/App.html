@@ -11,7 +11,7 @@
 
                 <ul class="import-methods">
                     {{#each buttons as btn}}
-                    <li on:click="btnAction(btn)" class="action {{active==btn.id?'active':''}}">
+                    <li on:click="btnAction(btn)" class="action {{active==btn?'active':''}}">
                         <label>
                             {{#if btn.isFileUpload}}
                             <input on:change="btnUpload(btn, event)" class="file-upload" type="file" />
@@ -22,6 +22,8 @@
                     </li>
                     {{/each}}
                 </ul>
+
+                <h4>{{active.title}}</h4>
 
                 <:Component {Sidebar}
                     bind:chartData
@@ -52,6 +54,35 @@
 
     let app;
 
+    const coreUploads = [{
+        id: 'copy',
+        title: 'Copy & paste data table',
+        icon: 'im im-copy',
+        mainPanel: TextAreaUpload,
+        sidebar: UploadHelp,
+        action() {
+
+        }
+    },{
+        id: 'upload',
+        title: 'Upload CSV/TSV file',
+        icon: 'im im-upload',
+        mainPanel: TextAreaUpload,
+        sidebar: UploadHelp,
+        isFileUpload: true,
+        onFileUpload(event) {
+            const file = event.target.files[0];
+            if (file.type.substr(0,5) == 'text/') {
+                readFile(file, (err, result) => {
+                    putJSON(`/api/charts/${dw.backend.currentChart.get('id')}/data`, result, () => {
+                        window.location.href = 'describe';
+                    });
+                });
+            }
+        },
+        action() {}
+    }];
+
     export default {
         oncreate() { app = this; },
         data() {
@@ -59,38 +90,13 @@
                 dragover: false,
                 MainPanel: TextAreaUpload,
                 Sidebar: UploadHelp,
-                active: 'copy',
-                buttons: [{
-                    id: 'copy',
-                    title: 'Copy & paste data table',
-                    icon: 'im im-copy',
-                    upload: TextAreaUpload,
-                    action() {
-
-                    }
-                },{
-                    id: 'upload',
-                    title: 'Upload CSV/TSV file',
-                    icon: 'im im-upload',
-                    upload: TextAreaUpload,
-                    isFileUpload: true,
-                    onFileUpload(event) {
-                        const file = event.target.files[0];
-                        if (file.type.substr(0,5) == 'text/') {
-                            readFile(file, (err, result) => {
-                                putJSON(`/api/charts/${dw.backend.currentChart.get('id')}/data`, result, () => {
-                                    window.location.href = 'describe';
-                                });
-                            });
-                        }
-                    },
-                    action() {}
-                }]
+                active: coreUploads[0],
+                buttons: coreUploads
             }
         },
         methods: {
             btnAction (btn) {
-                this.set({active:btn.id});
+                this.set({active:btn});
                 if (btn.action) btn.action();
                 if (btn.mainPanel) this.set({MainPanel:btn.mainPanel});
                 if (btn.sidebar) this.set({Sidebar:btn.sidebar});
