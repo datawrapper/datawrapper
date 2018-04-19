@@ -85,10 +85,10 @@ function buildLocale(app_id, locale, callback) {
         }
     };
 
-    if (app_id != 'controls') outputOptions.amd = { id: `svelte/${app_id}` };
+    if (app_id.substr(0,8) != 'controls') outputOptions.amd = { id: `svelte/${app_id}` };
 
     _rollup(bundle => {
-        _generate(bundle, (code, map) => {
+        _generate(bundle, () => {
             _write(bundle, () => {
                 console.log(app_id, locale);
             });
@@ -122,8 +122,9 @@ function buildLocale(app_id, locale, callback) {
 }
 
 build('upload');
-// build('describe');
-// build('controls');
+build('describe');
+build('controls');
+build('controls/hot');
 // build('publish');
 // build('highlight');
 
