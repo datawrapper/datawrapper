@@ -257,6 +257,8 @@ class Chart extends BaseChart {
             // check encoding of data
             $new_data = str_to_unicode($new_data);
             if (!empty($new_data)) $this->writeData($new_data);
+        } else {
+            Hooks::execute(Hooks::CUSTOM_EXTERNAL_DATA, $this);
         }
     }
 
