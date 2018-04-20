@@ -84,7 +84,17 @@
     }];
 
     export default {
-        oncreate() { app = this; },
+        oncreate() {
+            app = this;
+            const {dw_chart} = this.store.get();
+            const method = dw_chart.get('metadata.data.upload-method', 'copy');
+            this.set({defaultMethod: method});
+            coreUploads.forEach(u => {
+                if (u.id == method) {
+                    this.set({active:u});
+                }
+            });
+        },
         data() {
             return {
                 dragover: false,
@@ -95,8 +105,26 @@
             }
         },
         methods: {
+            addButton (btn) {
+                coreUploads.push(btn);
+                this.set({buttons:coreUploads});
+                const {defaultMethod} = this.get();
+                if (btn.id == defaultMethod) {
+                    this.btnAction(btn);
+                }
+            },
             btnAction (btn) {
                 this.set({active:btn});
+                let activeKey = btn.id;
+                if (btn.id == 'upload') {
+                    activeKey = 'copy';
+                    setTimeout(() => {
+                    // reset after 1sec
+                        this.set({active:coreUploads[0]});
+                    }, 1000);
+                }
+                const {dw_chart} = this.store.get();
+                dw_chart.set('metadata.data.upload-method', activeKey);
                 if (btn.action) btn.action();
                 if (btn.mainPanel) this.set({MainPanel:btn.mainPanel});
                 if (btn.sidebar) this.set({Sidebar:btn.sidebar});
